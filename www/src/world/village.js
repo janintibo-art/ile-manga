@@ -160,6 +160,9 @@ export function createVillage(scene, shadowGenerator) {
 
   const houseRing = 9;
   for (let i = 0; i < palettes.length; i++) {
+    // L'emplacement i=0 (ancienne maison rouge) est réservé à la maison
+    // détaillée Maison.glb, posée par createDecor() (voir decor.js).
+    if (i === 0) continue;
     const a = (i / palettes.length) * Math.PI * 2;
     const hx = cx + Math.cos(a) * houseRing;
     const hz = cz + Math.sin(a) * houseRing;

@@ -7,8 +7,19 @@ export async function loadGLB(scene, folder, file, opts = {}) {
 
   if (opts.parent) root.parent = opts.parent;
   if (opts.position) root.position.copyFrom(opts.position);
-  if (opts.scale != null) root.scaling.setAll(opts.scale);
-  if (opts.rotationY != null) root.rotation.y = opts.rotationY;
+  if (opts.scale != null) root.scaling.scaleInPlace(opts.scale); // conserve la conversion glTF
+
+  if (opts.rotationY != null) {
+    // Les modèles glTF utilisent un quaternion : on compose au lieu d'écraser.
+    if (root.rotationQuaternion) {
+      root.rotationQuaternion = BABYLON.Quaternion.RotationAxis(
+        BABYLON.Axis.Y,
+        opts.rotationY
+      ).multiply(root.rotationQuaternion);
+    } else {
+      root.rotation.y = opts.rotationY;
+    }
+  }
 
   if (opts.shadowGenerator) {
     result.meshes.forEach((m) => {
