@@ -19,15 +19,16 @@ export async function createGame(engine, canvas) {
   const camera = new BABYLON.ArcRotateCamera(
     "camera",
     -Math.PI / 2,
-    Math.PI / 3,
-    22,
+    1.0, // angle de départ plus en hauteur (meilleure vue d'ensemble)
+    26,
     new BABYLON.Vector3(0, 3, 0),
     scene
   );
   camera.attachControl(canvas, true);
   camera.lowerRadiusLimit = 8;
-  camera.upperRadiusLimit = 45;
-  camera.upperBetaLimit = Math.PI / 2.15; // empêche de passer sous le sol
+  camera.upperRadiusLimit = 50;
+  camera.lowerBetaLimit = 0.3; // évite de passer au-dessus à la verticale
+  camera.upperBetaLimit = 1.45; // empêche de passer sous le sol
   camera.wheelDeltaPercentage = 0.01;
   camera.panningSensibility = 0; // désactive le panoramique, garde l'orbite
 

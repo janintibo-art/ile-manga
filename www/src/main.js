@@ -32,6 +32,11 @@ async function start() {
     stencil: true,
   });
 
+  // Rend l'image plus nette sur mobile (réduit l'effet "escalier").
+  // Si le jeu rame sur un téléphone peu puissant, remplace 2 par 1.5 ou 1.
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  engine.setHardwareScalingLevel(1 / pixelRatio);
+
   try {
     const scene = await createGame(engine, canvas);
     if (loading) loading.style.display = "none";
