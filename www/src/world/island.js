@@ -34,32 +34,26 @@ export function createIsland(scene) {
   );
 
   const positions = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-  const colors = [];
-
   for (let i = 0; i < positions.length; i += 3) {
-    const x = positions[i];
-    const z = positions[i + 2];
-    const h = islandHeight(x, z);
-    positions[i + 1] = h;
-
-    let c;
-    if (h < 0.6) c = [0.94, 0.87, 0.66];      // sable clair (plage)
-    else if (h < 1.4) c = [0.74, 0.78, 0.5];  // herbe sèche (transition douce)
-    else if (h < 4.2) c = [0.42, 0.7, 0.34];  // herbe
-    else if (h < 6.5) c = [0.3, 0.55, 0.28];  // herbe foncée / forêt
-    else c = [0.62, 0.6, 0.58];               // roche (sommets)
-
-    colors.push(c[0], c[1], c[2], 1);
+    positions[i + 1] = islandHeight(positions[i], positions[i + 2]);
   }
-
   ground.updateVerticesData(BABYLON.VertexBuffer.PositionKind, positions);
-  ground.setVerticesData(BABYLON.VertexBuffer.ColorKind, colors);
   ground.createNormals(true);
-  ground.useVertexColors = true;
 
-  const mat = new BABYLON.StandardMaterial("islandMat", scene);
-  mat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+  // Matériau terrain : mélange sable / herbe / pierre selon l'altitude,
+  // piloté par mix.png (R = sable, G = herbe, B = pierre).
+  const dir = "assets/textures/terrain/";
+  const mat = new BABYLON.TerrainMaterial("islandMat", scene);
+  mat.mixTexture = new BABYLON.Texture(dir + "mix.png", scene);
+  mat.diffuseTexture1 = new BABYLON.Texture(dir + "sand.jpg", scene); // canal R
+  mat.diffuseTexture2 = new BABYLON.Texture(dir + "grass.jpg", scene); // canal G
+  mat.diffuseTexture3 = new BABYLON.Texture(dir + "stone.jpg", scene); // canal B
+  for (const t of [mat.diffuseTexture1, mat.diffuseTexture2, mat.diffuseTexture3]) {
+    t.uScale = 18; // répétition (détail) sur les 200 unités de l'île
+    t.vScale = 18;
+  }
   mat.specularColor = new BABYLON.Color3(0, 0, 0); // rendu plat type anime
+  mat.maxSimultaneousLights = 4;
   ground.material = mat;
   ground.receiveShadows = true;
 

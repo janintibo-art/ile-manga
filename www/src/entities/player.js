@@ -94,6 +94,7 @@ export function createPlayer(scene, camera, shadowGenerator) {
     facingOffset: 0,     // correction d'orientation du modèle (0 ou Math.PI)
     charModel: null,     // racine du modèle .glb à tourner
     charBaseQuat: null,  // quaternion de conversion de repère glTF
+    interior: null,      // si défini : on est dans une pièce (sol plat + murs)
   };
 
   // --- Entrées clavier ---
@@ -145,9 +146,16 @@ export function createPlayer(scene, camera, shadowGenerator) {
 
     applyFacing(player);
 
-    // Suit le relief du sol (jamais sous l'eau).
-    const groundY = Math.max(islandHeight(player.position.x, player.position.z), 0);
-    player.position.y = groundY + 0.9;
+    // À l'intérieur : sol plat + on reste dans la pièce. Sinon : relief de l'île.
+    const interior = player.metadata.interior;
+    if (interior) {
+      player.position.x = Math.min(interior.maxX, Math.max(interior.minX, player.position.x));
+      player.position.z = Math.min(interior.maxZ, Math.max(interior.minZ, player.position.z));
+      player.position.y = interior.floorY + 0.9;
+    } else {
+      const groundY = Math.max(islandHeight(player.position.x, player.position.z), 0);
+      player.position.y = groundY + 0.9;
+    }
 
     camera.target = player.position.clone();
 

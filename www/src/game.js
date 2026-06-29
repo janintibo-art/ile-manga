@@ -4,6 +4,7 @@ import { createWater } from "./world/water.js";
 import { createIsland } from "./world/island.js";
 import { createVillage } from "./world/village.js";
 import { createDecor } from "./world/decor.js";
+import { createInterior } from "./world/interior.js";
 import { createPlayer, loadPlayerCharacter } from "./entities/player.js";
 
 export async function createGame(engine, canvas) {
@@ -41,6 +42,9 @@ export async function createGame(engine, canvas) {
   createDecor(scene, shadowGenerator); // maison .glb + île flottante
 
   const player = createPlayer(scene, camera, shadowGenerator);
+
+  // Intérieur de maison explorable (on entre/sort près de la porte en 9,4).
+  createInterior(scene, player, camera);
 
   // Personnage 3D (Punk Emoji Rocker).
   // Animations disponibles dans hero.glb :

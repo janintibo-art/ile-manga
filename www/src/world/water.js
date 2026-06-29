@@ -12,7 +12,11 @@ export function createWater(scene) {
   water.position.y = -0.4;
 
   const mat = new BABYLON.StandardMaterial("waterMat", scene);
-  mat.diffuseColor = new BABYLON.Color3(0.13, 0.5, 0.66);  // turquoise
+  const tex = new BABYLON.Texture("assets/textures/water/water.jpg", scene);
+  tex.uScale = 40;
+  tex.vScale = 40;
+  mat.diffuseTexture = tex;
+  mat.diffuseColor = new BABYLON.Color3(0.7, 0.85, 0.95); // légère teinte fraîche
   mat.specularColor = new BABYLON.Color3(0.5, 0.65, 0.72); // reflets de soleil
   mat.specularPower = 128;
   mat.alpha = 1; // opaque
@@ -25,6 +29,9 @@ export function createWater(scene) {
 
   scene.registerBeforeRender(() => {
     t += scene.getEngine().getDeltaTime() * 0.0012;
+    // Défilement lent de la texture (eau vivante).
+    tex.uOffset += 0.00015 * scene.getEngine().getDeltaTime();
+    tex.vOffset += 0.0001 * scene.getEngine().getDeltaTime();
     for (let i = 0; i < positions.length; i += 3) {
       const x = base[i];
       const z = base[i + 2];
