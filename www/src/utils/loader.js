@@ -29,5 +29,14 @@ export async function loadGLB(scene, folder, file, opts = {}) {
     });
   }
 
+  // Modèle statique : on fige matrices et matériaux pour soulager le CPU
+  // (rien à recalculer chaque image). À ne PAS utiliser sur un objet animé.
+  if (opts.static) {
+    result.meshes.forEach((m) => {
+      if (m.material && m.material.freeze) m.material.freeze();
+      if (m.freezeWorldMatrix) m.freezeWorldMatrix();
+    });
+  }
+
   return result;
 }

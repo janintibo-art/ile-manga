@@ -51,11 +51,16 @@ export function createIsland(scene) {
   for (const t of [mat.diffuseTexture1, mat.diffuseTexture2, mat.diffuseTexture3]) {
     t.uScale = 18; // répétition (détail) sur les 200 unités de l'île
     t.vScale = 18;
+    t.anisotropicFilteringLevel = 4; // sol net même en perspective rasante
   }
   mat.specularColor = new BABYLON.Color3(0, 0, 0); // rendu plat type anime
   mat.maxSimultaneousLights = 4;
   ground.material = mat;
   ground.receiveShadows = true;
+
+  // Terrain statique : on fige matrice et matériau (gain CPU).
+  ground.freezeWorldMatrix();
+  mat.freeze();
 
   return ground;
 }

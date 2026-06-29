@@ -8,9 +8,9 @@ import { islandHeight } from "./island.js";
 const RX = 500; // centre X (loin de l'île)
 const RZ = 500; // centre Z
 const FLOOR_Y = 0; // hauteur du sol intérieur
-const SIZE = 20; // côté de la pièce
+const SIZE = 60; // côté de la pièce (immense : effet "plus grand à l'intérieur")
 const HALF = SIZE / 2;
-const WALL_H = 5; // hauteur des murs
+const WALL_H = 16; // hauteur des murs (hall cathédrale)
 const WALL_T = 0.3; // épaisseur des murs
 
 // --- Zones d'entrée / sortie (= position des tapis lumineux) ---
@@ -25,11 +25,12 @@ const EXIT_R = 2;
 // Réapparition dehors, devant la maison (hors zone d'entrée).
 const OUTSIDE_SPAWN = new BABYLON.Vector3(1.5, 0, 4);
 
-function texMat(scene, name, file, repeat) {
+function texMat(scene, name, file, uRepeat, vRepeat) {
   const m = new BABYLON.StandardMaterial(name, scene);
   const t = new BABYLON.Texture(file, scene);
-  t.uScale = repeat;
-  t.vScale = repeat;
+  t.uScale = uRepeat;
+  t.vScale = vRepeat == null ? uRepeat : vRepeat;
+  t.anisotropicFilteringLevel = 4; // textures nettes dans le grand hall
   m.diffuseTexture = t;
   m.specularColor = BABYLON.Color3.Black();
   m.backFaceCulling = false; // on est à l'intérieur : visible des deux côtés
@@ -56,9 +57,9 @@ export function createInterior(scene, player, camera) {
   scene.collisionsEnabled = true;
 
   const dir = "assets/textures/interior/";
-  const floorMat = texMat(scene, "intFloorMat", dir + "floor.png", 5);
-  const wallMat = texMat(scene, "intWallMat", dir + "wall.png", 3);
-  const ceilMat = texMat(scene, "intCeilMat", dir + "ceiling.png", 5);
+  const floorMat = texMat(scene, "intFloorMat", dir + "floor.png", 15);
+  const wallMat = texMat(scene, "intWallMat", dir + "wall.png", 9, 10);
+  const ceilMat = texMat(scene, "intCeilMat", dir + "ceiling.png", 15);
 
   // Sol
   const floor = BABYLON.MeshBuilder.CreateGround("intFloor", { width: SIZE, height: SIZE }, scene);
@@ -103,15 +104,15 @@ export function createInterior(scene, player, camera) {
   lintel.material = wallMat;
   lintel.checkCollisions = true;
 
-  // Lumière chaude pour une ambiance cosy.
+  // Lumière chaude pour une ambiance cosy (portée élargie pour le grand hall).
   const lamp = new BABYLON.PointLight(
     "intLamp",
-    new BABYLON.Vector3(RX, FLOOR_Y + WALL_H - 1, RZ),
+    new BABYLON.Vector3(RX, FLOOR_Y + WALL_H - 2, RZ),
     scene
   );
   lamp.diffuse = new BABYLON.Color3(1, 0.92, 0.78);
-  lamp.intensity = 0.7;
-  lamp.range = 30;
+  lamp.intensity = 0.85;
+  lamp.range = 80;
 
   // Tapis lumineux : entrée (sur l'île, devant la maison) + sortie (dans la pièce).
   const enterMat = makeMat(
@@ -170,8 +171,8 @@ export function createInterior(scene, player, camera) {
     player.position.copyFrom(INSIDE_SPAWN);
     player.metadata.interior = bounds;
     camera.lowerRadiusLimit = 2.5;
-    camera.upperRadiusLimit = 8;
-    camera.radius = 5;
+    camera.upperRadiusLimit = 14; // on peut reculer pour admirer le grand hall
+    camera.radius = 6;
     camera.checkCollisions = true;
     camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5);
     inside = true;

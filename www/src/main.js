@@ -32,9 +32,9 @@ async function start() {
     stencil: true,
   });
 
-  // Rend l'image plus nette sur mobile (réduit l'effet "escalier").
-  // Si le jeu rame sur un téléphone peu puissant, remplace 2 par 1.5 ou 1.
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  // Compromis netteté / fluidité sur mobile.
+  // 1.5 = bon équilibre. Plus net mais plus lourd : mets 2. Plus fluide : mets 1.25 ou 1.
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
   engine.setHardwareScalingLevel(1 / pixelRatio);
 
   try {

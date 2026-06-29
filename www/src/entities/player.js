@@ -4,11 +4,59 @@
 import { islandHeight } from "../world/island.js";
 import { loadGLB } from "../utils/loader.js";
 import { createControls } from "../ui/controls.js";
+import { obstacles } from "../world/obstacles.js";
+import { createStaminaBar } from "../ui/stamina.js";
 
 const SPEED = 3;
 const SPRINT_MULT = 1.9;
 const JUMP_SPEED = 7.5;
 const GRAVITY = 24;
+const PLAYER_RADIUS = 0.45;
+
+// --- Endurance (sprint) ---
+const STAMINA_MAX = 100;
+const STAMINA_DRAIN = 28; // par seconde en sprint
+const STAMINA_REGEN = 14; // par seconde au repos
+const STAMINA_REARM = 20; // seuil pour pouvoir re-sprinter après épuisement
+
+// Empêche le joueur de pénétrer dans les obstacles (cercles + boîtes, plan X-Z).
+// On corrige la position en la repoussant hors de chaque zone ; deux passes
+// suffisent quand des zones se touchent. Le glissement le long des murs est
+// naturel (on ressort par l'axe le moins enfoncé).
+function resolveCollisions(pos) {
+  for (let pass = 0; pass < 2; pass++) {
+    for (const o of obstacles) {
+      if (o.type === "circle") {
+        const dx = pos.x - o.x;
+        const dz = pos.z - o.z;
+        const min = o.r + PLAYER_RADIUS;
+        const d2 = dx * dx + dz * dz;
+        if (d2 < min * min) {
+          const d = Math.sqrt(d2) || 0.0001;
+          const push = (min - d) / d;
+          pos.x += dx * push;
+          pos.z += dz * push;
+        }
+      } else {
+        const minx = o.x - o.hx - PLAYER_RADIUS;
+        const maxx = o.x + o.hx + PLAYER_RADIUS;
+        const minz = o.z - o.hz - PLAYER_RADIUS;
+        const maxz = o.z + o.hz + PLAYER_RADIUS;
+        if (pos.x > minx && pos.x < maxx && pos.z > minz && pos.z < maxz) {
+          const pl = pos.x - minx;
+          const pr = maxx - pos.x;
+          const pd = pos.z - minz;
+          const pu = maxz - pos.z;
+          const m = Math.min(pl, pr, pd, pu);
+          if (m === pl) pos.x = minx;
+          else if (m === pr) pos.x = maxx;
+          else if (m === pd) pos.z = minz;
+          else pos.z = maxz;
+        }
+      }
+    }
+  }
+}
 
 // Oriente le modèle .glb (ou la capsule) vers la direction courante.
 function applyFacing(player) {
@@ -71,8 +119,13 @@ export function createPlayer(scene, camera, shadowGenerator) {
     interior: null,
     vy: 0,
     jumping: false,
+    stamina: STAMINA_MAX,
+    staminaMax: STAMINA_MAX,
+    canSprint: true,
+    staminaBar: null,
   };
   const md = player.metadata;
+  md.staminaBar = createStaminaBar();
 
   // --- Actions ---
   const doJump = () => {
@@ -137,7 +190,15 @@ export function createPlayer(scene, camera, shadowGenerator) {
     }
     const moving = mag > 0.12;
     md.moving = moving;
-    const sprint = input.sprint || !!keys["shift"];
+
+    // Endurance : on ne sprinte que s'il en reste ; sinon ça régénère.
+    const wantSprint = (input.sprint || !!keys["shift"]) && moving;
+    if (md.stamina <= 0) md.canSprint = false;
+    else if (md.stamina >= STAMINA_REARM) md.canSprint = true;
+    const sprint = wantSprint && md.canSprint;
+    if (sprint) md.stamina = Math.max(0, md.stamina - STAMINA_DRAIN * dt);
+    else md.stamina = Math.min(md.staminaMax, md.stamina + STAMINA_REGEN * dt);
+    if (md.staminaBar) md.staminaBar.set(md.stamina / md.staminaMax, md.canSprint);
 
     if (moving) {
       const forward = camera.getForwardRay().direction;
@@ -151,6 +212,7 @@ export function createPlayer(scene, camera, shadowGenerator) {
 
       player.position.x += move.x;
       player.position.z += move.z;
+      if (!md.interior) resolveCollisions(player.position);
 
       const target = Math.atan2(move.x, move.z);
       let diff = target - md.facingY;

@@ -14,7 +14,7 @@ export function createLighting(scene) {
 
   const shadowGenerator = new BABYLON.ShadowGenerator(1024, sun);
   shadowGenerator.useBlurExponentialShadowMap = true;
-  shadowGenerator.blurKernel = 24;     // ombres bien douces
+  shadowGenerator.blurKernel = 16;    // ombres douces, un peu plus légères
   shadowGenerator.darkness = 0.3;
 
   return { hemi, sun, shadowGenerator };

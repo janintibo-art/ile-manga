@@ -4,6 +4,7 @@
 
 import { loadGLB } from "../utils/loader.js";
 import { islandHeight } from "./island.js";
+import { addBox, addCircle } from "./obstacles.js";
 
 // Positions de départ des accessoires (réglées ensuite via le panneau).
 // NB : les fichiers ont des noms inversés -> Echelle.glb = le chemin (plat),
@@ -23,8 +24,25 @@ export function createDecor(scene, shadowGenerator) {
     position: new BABYLON.Vector3(hx, islandHeight(hx, hz) + 0.8 * hScale, hz),
     scale: hScale,
     rotationY: -Math.PI / 2,
-    shadowGenerator,
+    static: true,
   }).catch((e) => console.error("Maison.glb :", e));
+
+  // Zone bloquante de la maison (le tapis d'entrée reste accessible :
+  // la téléportation se déclenche avant d'atteindre ce mur).
+  addBox(hx, hz, 3.4, 3.4);
+
+  // --- Petite maison (à gauche du village) ---
+  const pmX = -11;
+  const pmZ = 9;
+  const pmScale = 3;
+  loadGLB(scene, "assets/models/buildings/", "Petite_maison.glb", {
+    position: new BABYLON.Vector3(pmX, islandHeight(pmX, pmZ) + 0.748 * pmScale, pmZ),
+    scale: pmScale,
+    rotationY: Math.PI / 2, // oriente la façade (essaie 0, -Math.PI/2, Math.PI)
+    static: true,
+  }).catch((e) => console.error("Petite_maison.glb :", e));
+
+  addBox(pmX, pmZ, 2.6, 2.6);
 
   // --- Île flottante dans le ciel, avec léger flottement vertical ---
   loadGLB(scene, "assets/models/buildings/", "Ile_flottante.glb", {
@@ -49,8 +67,11 @@ export function createDecor(scene, shadowGenerator) {
     position: new BABYLON.Vector3(murX, islandHeight(murX, murZ) + 0.625 * murScale, murZ),
     scale: murScale,
     rotationY: murRotY,
-    shadowGenerator,
+    static: true,
   }).catch((e) => console.error("Mur_de_son.glb :", e));
+
+  // Zone bloquante du mur de son (large en X, fin en Z).
+  addBox(murX, murZ, 5.7, 2.5);
 
   // --- Table de mixage à côté du mur de son ---
   const tabX = 9;
@@ -61,8 +82,11 @@ export function createDecor(scene, shadowGenerator) {
     position: new BABYLON.Vector3(tabX, islandHeight(tabX, tabZ) + 0.395 * tabScale, tabZ),
     scale: tabScale,
     rotationY: tabRotY,
-    shadowGenerator,
+    static: true,
   }).catch((e) => console.error("Table_de_mixage.glb :", e));
+
+  // Zone bloquante de la table de mixage.
+  addCircle(tabX, tabZ, 2.0);
 
   // --- Distributeur 8.6 à gauche du mur de son ---
   const distX = -9;
@@ -73,8 +97,11 @@ export function createDecor(scene, shadowGenerator) {
     position: new BABYLON.Vector3(distX, islandHeight(distX, distZ) + 0.951 * distScale, distZ),
     scale: distScale,
     rotationY: distRotY,
-    shadowGenerator,
+    static: true,
   }).catch((e) => console.error("Distributeur_8_6.glb :", e));
+
+  // Zone bloquante du distributeur.
+  addCircle(distX, distZ, 0.95);
 
   // --- Accessoires + panneau de placement ---
   const reg = PROPS.map((p) => ({
@@ -90,7 +117,6 @@ export function createDecor(scene, shadowGenerator) {
       position: new BABYLON.Vector3(p.pos[0], p.pos[1], p.pos[2]),
       scale: p.scale,
       rotationY: p.rotY,
-      shadowGenerator,
     })
       .then((res) => {
         const e = reg[i];

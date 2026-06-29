@@ -5,11 +5,23 @@ import { createIsland } from "./world/island.js";
 import { createVillage } from "./world/village.js";
 import { createDecor } from "./world/decor.js";
 import { createInterior } from "./world/interior.js";
+import { createPickups } from "./world/pickups.js";
 import { createPlayer, loadPlayerCharacter } from "./entities/player.js";
 
 export async function createGame(engine, canvas) {
   const scene = new BABYLON.Scene(engine);
   scene.clearColor = new BABYLON.Color4(0.53, 0.81, 0.92, 1);
+
+  // Évite de tester des objets à chaque mouvement de doigt (gain CPU).
+  scene.skipPointerMovePicking = true;
+
+  // Rendu un peu plus "filmique" : tone mapping doux + léger contraste.
+  // Subtil pour ne pas dénaturer les couleurs actuelles.
+  const ip = scene.imageProcessingConfiguration;
+  ip.toneMappingEnabled = true;
+  ip.toneMappingType = BABYLON.ImageProcessingConfiguration.TONEMAPPING_ACES;
+  ip.contrast = 1.1;
+  ip.exposure = 1.05;
 
   // Brume légère pour la profondeur (rendu doux façon anime).
   scene.fogMode = BABYLON.Scene.FOGMODE_LINEAR;
@@ -45,6 +57,9 @@ export async function createGame(engine, canvas) {
 
   // Intérieur de maison explorable (on entre/sort près de la porte en 9,4).
   createInterior(scene, player, camera);
+
+  // 8.6 à ramasser au district (plage DJ) pour refaire le plein d'endurance.
+  createPickups(scene, player);
 
   // Personnage 3D (Punk Emoji Rocker).
   // Animations disponibles dans hero.glb :
