@@ -21,14 +21,14 @@ export async function createGame(engine, canvas) {
   const camera = new BABYLON.ArcRotateCamera(
     "camera",
     -Math.PI / 2,
-    1.0, // angle de départ plus en hauteur (meilleure vue d'ensemble)
-    12, // distance de départ rapprochée (on voit bien le personnage)
+    1.1, // angle un peu derrière l'épaule (style jeu vidéo)
+    4.5, // distance rapprochée : caméra 3e personne proche du perso
     new BABYLON.Vector3(0, 3, 0),
     scene
   );
   camera.attachControl(canvas, true);
-  camera.lowerRadiusLimit = 8;
-  camera.upperRadiusLimit = 50;
+  camera.lowerRadiusLimit = 3;
+  camera.upperRadiusLimit = 14;
   camera.lowerBetaLimit = 0.3; // évite de passer au-dessus à la verticale
   camera.upperBetaLimit = 1.45; // empêche de passer sous le sol
   camera.wheelDeltaPercentage = 0.01;

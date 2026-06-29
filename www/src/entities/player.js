@@ -1,72 +1,43 @@
-// Contrôleur du joueur.
-// Au départ : une capsule (placeholder). Plus tard : on remplace par un .glb
-// avec animations intégrées via loadPlayerCharacter().
+// Contrôleur du joueur : déplacement (joystick + clavier), course, saut,
+// danse (emotes), orientation lissée et caméra qui suit derrière le perso.
 
 import { islandHeight } from "../world/island.js";
 import { loadGLB } from "../utils/loader.js";
+import { createControls } from "../ui/controls.js";
 
-const SPEED = 4;
+const SPEED = 3;
+const SPRINT_MULT = 1.9;
+const JUMP_SPEED = 7.5;
+const GRAVITY = 24;
 
-// Manette tactile (affichée seulement sur écran tactile, voir styles.css).
-function setupTouchControls(input) {
-  const joystick = document.getElementById("joystick");
-  if (!joystick) return;
-
-  let active = false;
-  let centerX = 0;
-  let centerY = 0;
-
-  joystick.addEventListener("pointerdown", (e) => {
-    active = true;
-    const rect = joystick.getBoundingClientRect();
-    centerX = rect.left + rect.width / 2;
-    centerY = rect.top + rect.height / 2;
-    joystick.setPointerCapture(e.pointerId);
-    e.preventDefault();
-  });
-
-  joystick.addEventListener("pointermove", (e) => {
-    if (!active) return;
-    input.joyX = Math.max(-1, Math.min(1, (e.clientX - centerX) / 50));
-    input.joyY = Math.max(-1, Math.min(1, -(e.clientY - centerY) / 50));
-    e.preventDefault();
-  });
-
-  const reset = (e) => {
-    active = false;
-    input.joyX = 0;
-    input.joyY = 0;
-    if (e) e.preventDefault();
-  };
-  joystick.addEventListener("pointerup", reset);
-  joystick.addEventListener("pointercancel", reset);
-}
-
-// Applique l'orientation : directement sur le modèle .glb si présent
-// (en conservant la conversion de repère glTF), sinon sur la capsule.
+// Oriente le modèle .glb (ou la capsule) vers la direction courante.
 function applyFacing(player) {
   const md = player.metadata;
   const fy = md.facingY + md.facingOffset;
   if (md.charModel) {
     const q = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, fy);
-    // On écrit la rotation du modèle à chaque frame : il tourne vraiment.
     md.charModel.rotationQuaternion = q.multiply(md.charBaseQuat);
   } else {
     player.rotation.y = fy;
   }
 }
 
-// Bascule entre animation "idle" et "marche" selon le mouvement.
-function updateAnimation(player) {
+// Bascule idle / marche (la danse est prioritaire le cas échéant).
+function updateAnimation(player, sprint) {
   const md = player.metadata;
   if (!md.animationGroups) return;
+  if (md.emoting) return;
 
   const target = md.moving ? md.walkAnim : md.idleAnim;
-  if (!target || target === md.currentAnim) return;
-
-  if (md.currentAnim) md.currentAnim.stop();
-  target.start(true, 1.0, target.from, target.to, false);
-  md.currentAnim = target;
+  if (target && target !== md.currentAnim) {
+    if (md.currentAnim) md.currentAnim.stop();
+    target.start(true, 1.0, target.from, target.to, false);
+    md.currentAnim = target;
+  }
+  // Marche plus rapide quand on court.
+  if (md.currentAnim === md.walkAnim && md.walkAnim) {
+    md.walkAnim.speedRatio = sprint ? 1.6 : 1.0;
+  }
 }
 
 export function createPlayer(scene, camera, shadowGenerator) {
@@ -78,7 +49,7 @@ export function createPlayer(scene, camera, shadowGenerator) {
   player.position.set(2, 6, 8);
 
   const mat = new BABYLON.StandardMaterial("playerMat", scene);
-  mat.diffuseColor = new BABYLON.Color3(0.95, 0.45, 0.6); // rose : placeholder visible
+  mat.diffuseColor = new BABYLON.Color3(0.95, 0.45, 0.6);
   mat.specularColor = BABYLON.Color3.Black();
   player.material = mat;
 
@@ -89,83 +60,162 @@ export function createPlayer(scene, camera, shadowGenerator) {
     animationGroups: null,
     idleAnim: null,
     walkAnim: null,
+    emoteAnims: null,
     currentAnim: null,
-    facingY: 0,          // orientation courante (lissée), en radians
-    facingOffset: 0,     // correction d'orientation du modèle (0 ou Math.PI)
-    charModel: null,     // racine du modèle .glb à tourner
-    charBaseQuat: null,  // quaternion de conversion de repère glTF
-    interior: null,      // si défini : on est dans une pièce (sol plat + murs)
+    currentEmote: null,
+    emoting: false,
+    facingY: 0,
+    facingOffset: 0,
+    charModel: null,
+    charBaseQuat: null,
+    interior: null,
+    vy: 0,
+    jumping: false,
+  };
+  const md = player.metadata;
+
+  // --- Actions ---
+  const doJump = () => {
+    if (!md.jumping) {
+      md.vy = JUMP_SPEED;
+      md.jumping = true;
+    }
+  };
+  const doEmote = () => {
+    if (!md.emoteAnims || !md.emoteAnims.length || md.emoting) return;
+    const g = md.emoteAnims[Math.floor(Math.random() * md.emoteAnims.length)];
+    if (md.currentAnim) md.currentAnim.stop();
+    md.emoting = true;
+    md.currentEmote = g;
+    g.start(false, 1.0, g.from, g.to, false);
   };
 
-  // --- Entrées clavier ---
-  const input = { joyX: 0, joyY: 0 };
-  scene.onKeyboardObservable.add((kbInfo) => {
-    const key = kbInfo.event.key.toLowerCase();
-    input[key] = kbInfo.type === BABYLON.KeyboardEventTypes.KEYDOWN;
+  // --- Caméra qui suit derrière le perso ---
+  let lastManualRotate = 0;
+  let recenter = false;
+  scene.onPointerObservable.add((pi) => {
+    if (pi.type === BABYLON.PointerEventTypes.POINTERMOVE && pi.event.buttons > 0) {
+      lastManualRotate = performance.now();
+    }
   });
+  const doRecenter = () => {
+    recenter = true;
+  };
 
-  setupTouchControls(input);
+  // --- Entrées ---
+  const keys = {};
+  scene.onKeyboardObservable.add((kb) => {
+    const key = kb.event.key.toLowerCase();
+    const down = kb.type === BABYLON.KeyboardEventTypes.KEYDOWN;
+    const was = keys[key];
+    keys[key] = down;
+    if (down && !was) {
+      if (key === " " || key === "spacebar") doJump();
+      if (key === "e") doEmote();
+    }
+  });
+  const input = createControls({ onJump: doJump, onEmote: doEmote, onRecenter: doRecenter });
 
-  // --- Boucle de déplacement (s'exécute APRÈS les animations) ---
+  // --- Boucle ---
   scene.registerBeforeRender(() => {
     const dt = scene.getEngine().getDeltaTime() / 1000;
 
-    // ZQSD + WASD + flèches.
     let mX = 0;
     let mZ = 0;
-    if (input["z"] || input["w"] || input["arrowup"]) mZ += 1;
-    if (input["s"] || input["arrowdown"]) mZ -= 1;
-    if (input["q"] || input["a"] || input["arrowleft"]) mX -= 1;
-    if (input["d"] || input["arrowright"]) mX += 1;
-    mX += input.joyX;
-    mZ += input.joyY;
+    if (keys["z"] || keys["w"] || keys["arrowup"]) mZ += 1;
+    if (keys["s"] || keys["arrowdown"]) mZ -= 1;
+    if (keys["q"] || keys["a"] || keys["arrowleft"]) mX -= 1;
+    if (keys["d"] || keys["arrowright"]) mX += 1;
+    mX += input.moveX;
+    mZ += input.moveY;
 
-    const moving = mX * mX + mZ * mZ > 0.02;
-    player.metadata.moving = moving;
+    // Magnitude analogique (joystick partiel = plus lent), bornée à 1.
+    const mag = Math.hypot(mX, mZ);
+    if (mag > 1) {
+      mX /= mag;
+      mZ /= mag;
+    }
+    const moving = mag > 0.12;
+    md.moving = moving;
+    const sprint = input.sprint || !!keys["shift"];
 
     if (moving) {
-      // Déplacement relatif à la caméra.
       const forward = camera.getForwardRay().direction;
       forward.y = 0;
       forward.normalize();
       const right = BABYLON.Vector3.Cross(BABYLON.Axis.Y, forward).normalize();
 
       const move = forward.scale(mZ).add(right.scale(mX));
-      move.normalize().scaleInPlace(SPEED * dt);
+      const speed = SPEED * (sprint ? SPRINT_MULT : 1);
+      move.scaleInPlace(speed * dt); // garde la magnitude analogique
 
       player.position.x += move.x;
       player.position.z += move.z;
 
-      // Oriente EN DOUCEUR vers la direction du mouvement (plus court chemin).
       const target = Math.atan2(move.x, move.z);
-      let diff = target - player.metadata.facingY;
+      let diff = target - md.facingY;
       while (diff > Math.PI) diff -= Math.PI * 2;
       while (diff < -Math.PI) diff += Math.PI * 2;
-      player.metadata.facingY += diff * Math.min(1, dt * 12);
+      md.facingY += diff * Math.min(1, dt * 12);
     }
 
     applyFacing(player);
 
-    // À l'intérieur : sol plat + on reste dans la pièce. Sinon : relief de l'île.
-    const interior = player.metadata.interior;
+    // Hauteur du sol (île ou pièce intérieure).
+    let floorY;
+    const interior = md.interior;
     if (interior) {
       player.position.x = Math.min(interior.maxX, Math.max(interior.minX, player.position.x));
       player.position.z = Math.min(interior.maxZ, Math.max(interior.minZ, player.position.z));
-      player.position.y = interior.floorY + 0.9;
+      floorY = interior.floorY + 0.9;
     } else {
-      const groundY = Math.max(islandHeight(player.position.x, player.position.z), 0);
-      player.position.y = groundY + 0.9;
+      floorY = Math.max(islandHeight(player.position.x, player.position.z), 0) + 0.9;
     }
 
-    camera.target = player.position.clone();
+    // Saut / gravité.
+    if (md.jumping) {
+      md.vy -= GRAVITY * dt;
+      player.position.y += md.vy * dt;
+      if (player.position.y <= floorY) {
+        player.position.y = floorY;
+        md.vy = 0;
+        md.jumping = false;
+      }
+    } else {
+      player.position.y = floorY;
+    }
 
-    updateAnimation(player);
+    // Vise un peu au-dessus des pieds (meilleur cadrage de près).
+    camera.target = player.position.add(new BABYLON.Vector3(0, 0.6, 0));
+
+    // Caméra : recentrage demandé, sinon suivi doux quand on avance.
+    const targetAlpha = Math.atan2(-Math.cos(md.facingY), -Math.sin(md.facingY));
+    if (recenter) {
+      let da = targetAlpha - camera.alpha;
+      while (da > Math.PI) da -= Math.PI * 2;
+      while (da < -Math.PI) da += Math.PI * 2;
+      camera.alpha += da * Math.min(1, dt * 6);
+      if (Math.abs(da) < 0.03) recenter = false;
+    } else if (moving && performance.now() - lastManualRotate > 1800) {
+      let da = targetAlpha - camera.alpha;
+      while (da > Math.PI) da -= Math.PI * 2;
+      while (da < -Math.PI) da += Math.PI * 2;
+      camera.alpha += da * Math.min(1, dt * 1.3);
+    }
+
+    // Fin de la danse : terminée, ou annulée si on se déplace.
+    if (md.emoting && (moving || (md.currentEmote && !md.currentEmote.isPlaying))) {
+      if (md.currentEmote && moving) md.currentEmote.stop();
+      md.emoting = false;
+      md.currentAnim = null;
+    }
+    updateAnimation(player, sprint);
   });
 
   return player;
 }
 
-// Remplace la capsule par un personnage .glb (à appeler depuis game.js).
+// Remplace la capsule par un personnage .glb.
 // opts : { scale, yOffset, facingOffset, idleName, walkName, shadowGenerator }
 export async function loadPlayerCharacter(player, scene, folder, file, opts = {}) {
   const scale = opts.scale != null ? opts.scale : 1;
@@ -175,11 +225,10 @@ export async function loadPlayerCharacter(player, scene, folder, file, opts = {}
   const result = await loadGLB(scene, folder, file, {});
   const model = result.meshes[0];
 
-  // Le modèle suit la position du joueur ; sa rotation, on la pilote nous-mêmes.
   model.parent = player;
-  player.rotation.y = 0; // la capsule ne tourne plus
+  player.rotation.y = 0;
   model.position = new BABYLON.Vector3(0, yOffset, 0);
-  model.scaling.scaleInPlace(scale); // conserve la conversion glTF (signe inclus)
+  model.scaling.scaleInPlace(scale);
 
   if (!model.rotationQuaternion) {
     model.rotationQuaternion = BABYLON.Quaternion.Identity();
@@ -187,12 +236,11 @@ export async function loadPlayerCharacter(player, scene, folder, file, opts = {}
 
   const md = player.metadata;
   md.charModel = model;
-  md.charBaseQuat = model.rotationQuaternion.clone(); // conversion de repère de base
+  md.charBaseQuat = model.rotationQuaternion.clone();
   md.facingOffset = facingOffset;
 
-  player.isVisible = false; // cache la capsule
+  player.isVisible = false;
 
-  // Le personnage projette une ombre à la place de la capsule.
   if (opts.shadowGenerator) {
     result.meshes.forEach((m) => {
       if (m.getTotalVertices && m.getTotalVertices() > 0) {
@@ -214,10 +262,13 @@ export async function loadPlayerCharacter(player, scene, folder, file, opts = {}
   for (const g of groups) {
     const n = g.name.toLowerCase();
     if (!md.idleAnim && (n.includes("idle") || n.includes("stand") || n.includes("repos"))) md.idleAnim = g;
-    if (!md.walkAnim && (n.includes("walk") || n.includes("run") || n.includes("marche") || n.includes("cours"))) md.walkAnim = g;
+    if (!md.walkAnim && (n.includes("walk") || n.includes("marche"))) md.walkAnim = g;
   }
   if (!md.idleAnim && groups.length) md.idleAnim = groups[0];
   if (!md.walkAnim) md.walkAnim = md.idleAnim;
+
+  // Les autres animations servent d'emotes (danse / salut / etc.).
+  md.emoteAnims = groups.filter((g) => g !== md.idleAnim && g !== md.walkAnim);
 
   groups.forEach((g) => g.stop());
   if (md.idleAnim) {

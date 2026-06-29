@@ -163,7 +163,10 @@ export function createInterior(scene, player, camera) {
     return dx * dx + dz * dz;
   };
 
+  let savedRadius = 12; // zoom extérieur mémorisé
+
   const enterRoom = () => {
+    savedRadius = camera.radius;
     player.position.copyFrom(INSIDE_SPAWN);
     player.metadata.interior = bounds;
     camera.lowerRadiusLimit = 2.5;
@@ -179,9 +182,9 @@ export function createInterior(scene, player, camera) {
     player.position.copyFrom(OUTSIDE_SPAWN);
     player.position.y = islandHeight(OUTSIDE_SPAWN.x, OUTSIDE_SPAWN.z) + 0.9;
     camera.checkCollisions = false;
-    camera.lowerRadiusLimit = 8;
-    camera.upperRadiusLimit = 50;
-    camera.radius = 12;
+    camera.lowerRadiusLimit = 3;
+    camera.upperRadiusLimit = 14;
+    camera.radius = savedRadius; // restitue le zoom d'avant
     inside = false;
   };
 
