@@ -27,9 +27,12 @@ async function start() {
   }
 
   const canvas = document.getElementById("renderCanvas");
-  const engine = new BABYLON.Engine(canvas, true, {
-    preserveDrawingBuffer: true,
+  // antialias:false -> on remplace le MSAA (coûteux) par le FXAA du pipeline.
+  // preserveDrawingBuffer:false -> gain de perfs connu sur mobile.
+  const engine = new BABYLON.Engine(canvas, false, {
+    preserveDrawingBuffer: false,
     stencil: true,
+    powerPreference: "high-performance",
   });
 
   // Compromis netteté / fluidité sur mobile.
@@ -42,6 +45,24 @@ async function start() {
     if (loading) loading.style.display = "none";
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
+
+    // Résolution ADAPTATIVE : si les FPS chutent, on baisse un peu la résolution
+    // (image légèrement plus douce) ; si ça tourne bien, on remonte vers le net.
+    // En VR, on ne touche à rien : le casque gère sa propre résolution.
+    const NIVEAU_NET = 1 / pixelRatio; // le plus net autorisé
+    const NIVEAU_BAS = 1.15;           // le plus "économe" autorisé
+    let niveau = NIVEAU_NET;
+    setInterval(() => {
+      if (scene.metadata && scene.metadata.inXR) return;
+      const fps = engine.getFps();
+      let cible = niveau;
+      if (fps < 26) cible = Math.min(NIVEAU_BAS, niveau + 0.12);
+      else if (fps > 45) cible = Math.max(NIVEAU_NET, niveau - 0.06);
+      if (Math.abs(cible - niveau) > 0.001) {
+        niveau = cible;
+        engine.setHardwareScalingLevel(niveau);
+      }
+    }, 2500);
   } catch (err) {
     console.error(err);
     const msg = err && err.message ? err.message : String(err);

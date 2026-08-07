@@ -6,7 +6,9 @@ import { createVillage } from "./world/village.js";
 import { createDecor } from "./world/decor.js";
 import { createInterior } from "./world/interior.js";
 import { createPickups } from "./world/pickups.js";
+import { createNPC } from "./world/npc.js";
 import { createPlayer, loadPlayerCharacter } from "./entities/player.js";
+import { setupXR } from "./xr.js";
 
 export async function createGame(engine, canvas) {
   const scene = new BABYLON.Scene(engine);
@@ -45,10 +47,25 @@ export async function createGame(engine, canvas) {
   camera.upperBetaLimit = 1.45; // empêche de passer sous le sol
   camera.wheelDeltaPercentage = 0.01;
   camera.panningSensibility = 0; // désactive le panoramique, garde l'orbite
+  camera.maxZ = 600; // rien d'utile au-delà (brume finit à 300) : petit gain
+
+  // Pipeline d'image : FXAA (lissage des bords, remplace le MSAA coupé dans
+  // main.js) + bloom léger (halo sur le feu et les hautes lumières).
+  try {
+    const pipe = new BABYLON.DefaultRenderingPipeline("rendu", false, scene, [camera]);
+    pipe.fxaaEnabled = true;
+    pipe.bloomEnabled = true;   // mets false si tu n'aimes pas le halo
+    pipe.bloomThreshold = 0.85; // seuil : seules les zones très lumineuses brillent
+    pipe.bloomWeight = 0.2;     // intensité du halo (0.1 discret -> 0.4 marqué)
+    pipe.bloomKernel = 24;
+    pipe.bloomScale = 0.5;
+  } catch (e) {
+    console.warn("Pipeline de rendu indisponible :", e);
+  }
 
   const { shadowGenerator } = createLighting(scene);
   createSky(scene);
-  createIsland(scene);
+  const ground = createIsland(scene);
   createWater(scene);
   createVillage(scene, shadowGenerator);
   createDecor(scene, shadowGenerator); // maison .glb + île flottante
@@ -60,6 +77,9 @@ export async function createGame(engine, canvas) {
 
   // 8.6 à ramasser au district (plage DJ) pour refaire le plein d'endurance.
   createPickups(scene, player);
+
+  // PNJ "smiley" doté d'une IA (flâne, te repère, vient te saluer, parle).
+  createNPC(scene, player, camera, shadowGenerator);
 
   // Personnage 3D (Punk Emoji Rocker).
   // Animations disponibles dans hero.glb :
@@ -79,6 +99,14 @@ export async function createGame(engine, canvas) {
     // Si le .glb ne charge pas, on garde la capsule et le jeu continue.
     console.warn("Personnage .glb non chargé :", e);
   }
+
+  // Mode VR (casque type Quest, via son navigateur) : si l'appareil le permet,
+  // un bouton "lunettes" apparaît en bas à droite. Sur téléphone : aucun effet.
+  await setupXR(scene, ground);
+
+  // Tout est en place : on gèle le mécanisme de "matériaux à revérifier"
+  // (les lumières n'évoluent plus). Petit gain CPU constant.
+  scene.blockMaterialDirtyMechanism = true;
 
   return scene;
 }
