@@ -795,7 +795,7 @@ func _new_player_body_v11(label: String, spawn: Vector3) -> CharacterBody3D:
 	body.floor_snap_length = 0.32
 	body.floor_max_angle = deg_to_rad(45.0)
 	body.safe_margin = 0.03
-	body.position = spawn + Vector3.UP * 0.09
+	body.position = spawn + Vector3.UP * 0.22
 	var shape := CollisionShape3D.new()
 	shape.name = "Capsule_joueur"
 	var capsule := CapsuleShape3D.new()
@@ -838,12 +838,15 @@ func _add_obstacle_cylinder_v11(label: String, pos: Vector3, radius: float, heig
 
 
 func _move_player(origin: Node3D, offset: Vector3) -> void:
+	# ILE_MANGA_V11_SOL_CORRECTION: recuperation si capsule sous le terrain.
 	var body: CharacterBody3D = vr_body if origin == xr_origin else pc_body
 	if body == null:
 		return
-	# Mouvement physique avec glissement sur les murs et gravité réelle.
-	# L'autre personnage (PC/VR) est sur une couche indépendante.
 	var step: float = maxf(get_physics_process_delta_time(), 0.001)
+	var ground_before: float = _height_at(body.position.x, body.position.z)
+	if body.position.y < ground_before - 0.12:
+		body.position.y = ground_before + 0.22
+		body.velocity.y = 0.0
 	body.velocity.x = offset.x / step
 	body.velocity.z = offset.z / step
 	if body.is_on_floor():
@@ -853,15 +856,28 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 	body.move_and_slide()
 	body.position.x = clampf(body.position.x, -72.0, 72.0)
 	body.position.z = clampf(body.position.z, -72.0, 72.0)
+	# Filet de securite: evite une chute indefinie si un triangle
+	# de collision est absent/inverse ou si une sauvegarde est ancienne.
+	var ground_after: float = _height_at(body.position.x, body.position.z)
+	if body.position.y < ground_after + 0.02:
+		body.position.y = ground_after + 0.12
+		body.velocity.y = maxf(0.0, body.velocity.y)
 	origin.position = body.position - Vector3.UP * 0.09
 
 
 func _sync_physics_after_load_v11() -> void:
+	# Place le joueur sur le relief, meme pour une sauvegarde creee avant V11.
 	if vr_body != null:
-		vr_body.position = xr_origin.position + Vector3.UP * 0.09
+		var start_vr: Vector3 = xr_origin.position
+		start_vr.y = maxf(start_vr.y, _height_at(start_vr.x, start_vr.z) + 0.04)
+		xr_origin.position = start_vr
+		vr_body.position = start_vr + Vector3.UP * 0.18
 		vr_body.velocity = Vector3.ZERO
 	if pc_body != null:
-		pc_body.position = pc_root.position + Vector3.UP * 0.09
+		var start_pc: Vector3 = pc_root.position
+		start_pc.y = maxf(start_pc.y, _height_at(start_pc.x, start_pc.z) + 0.04)
+		pc_root.position = start_pc
+		pc_body.position = start_pc + Vector3.UP * 0.18
 		pc_body.velocity = Vector3.ZERO
 
 
