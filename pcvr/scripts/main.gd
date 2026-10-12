@@ -1,5 +1,5 @@
 extends Node3D
-## Île Manga V5 : profils graphiques PC haute fidélité et VR confortable.
+## Île Manga V6 : forêt, plages et village enrichis — même base VR stable.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
@@ -35,6 +35,7 @@ func _ready() -> void:
 	_create_water()
 	_create_village()
 	_create_ground_details()
+	_create_scenery_v6()
 	_create_structures()
 	_create_players()
 	_init_native_xr()
@@ -47,10 +48,10 @@ func _configure_quality() -> void:
 	if OS.has_feature("ile_manga_pc"):
 		get_viewport().msaa_3d = Viewport.MSAA_4X
 		get_viewport().scaling_3d_scale = 1.0
-		print("ILE_MANGA_V5: PC NATIF, MSAA 4x, resolution ecran native")
+		print("ILE_MANGA_V6: PC NATIF, MSAA 4x, resolution ecran native")
 	else:
 		get_viewport().msaa_3d = Viewport.MSAA_2X
-		print("ILE_MANGA_V5: VR, MSAA 2x, resolution geree par Quest Link / OpenXR")
+		print("ILE_MANGA_V6: VR, MSAA 2x, resolution geree par Quest Link / OpenXR")
 
 
 func _height_at(x: float, z: float) -> float:
@@ -263,8 +264,147 @@ func _create_ground_details() -> void:
 	patch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	patch.visibility_range_end = 85.0 if OS.has_feature("ile_manga_pc") else 55.0
 	add_child(patch)
-	print("ILE_MANGA_V5: touffes herbe instanciees = ", placed)
+	print("ILE_MANGA_V6: touffes herbe instanciees = ", placed)
 
+
+
+# V6 — Décors naturels : instancing pour éviter un nombre élevé de draw calls.
+# Tous les éléments sont purement visuels : aucun changement des contrôles VR.
+func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: int, seed_value: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = tint
+	mat.roughness = 0.96
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mesh.material = mat
+	var batch := MultiMesh.new()
+	batch.transform_format = MultiMesh.TRANSFORM_3D
+	batch.use_colors = true
+	batch.mesh = mesh
+	batch.instance_count = amount
+	var placed := 0
+	for trial in range(amount * 14):
+		if placed >= amount:
+			break
+		var x := rng.randf_range(-78.0, 78.0)
+		var z := rng.randf_range(-78.0, 78.0)
+		var y := _height_at(x, z)
+		var village_dist := Vector2(x, z - 4.0).length()
+		if category == 0 and (y < 1.3 or y > 6.7 or village_dist < 12.0):
+			continue # forêt : buissons
+		if category == 1 and (y < 0.8 or y > 5.8 or village_dist < 8.0):
+			continue # fleurs
+		if category == 2 and (y < -0.35 or y > 1.55 or village_dist < 9.0):
+			continue # pierres de plage
+		if category == 3 and (y < 0.5 or y > 5.7 or village_dist > 22.0):
+			continue # pierres/galets du village
+		if Vector2(x - 9.0, z - 4.0).length() < 7.0 or Vector2(x + 11.0, z - 9.0).length() < 6.0:
+			continue
+		var size := rng.randf_range(0.7, 1.45)
+		var scale_vec := Vector3(size, size * rng.randf_range(0.7, 1.3), size)
+		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(scale_vec)
+		batch.set_instance_transform(placed, Transform3D(basis, Vector3(x, y + 0.08, z)))
+		batch.set_instance_color(placed, Color(rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), 1.0))
+		placed += 1
+	batch.visible_instance_count = placed
+	var item := MultiMeshInstance3D.new()
+	item.name = name
+	item.multimesh = batch
+	item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	item.visibility_range_end = 100.0 if OS.has_feature("ile_manga_pc") else 65.0
+	add_child(item)
+	print("ILE_MANGA_V6: ", name, "=", placed)
+
+
+func _create_scenery_v6() -> void:
+	var high_quality := OS.has_feature("ile_manga_pc")
+	# Petits feuillages. Le maillage est partagé par toutes les instances.
+	var shrub := SphereMesh.new()
+	shrub.radius = 0.75
+	shrub.height = 1.05
+	shrub.radial_segments = 8
+	shrub.rings = 4
+	_scatter_v6("Buissons_v6", shrub, Color(0.20, 0.48, 0.24), 520 if high_quality else 260, 0, 62131)
+
+	# Fleurs colorées (3 lots) en maillages légers, espacées dans les prairies.
+	for i in range(3):
+		var flower := SphereMesh.new()
+		flower.radius = 0.12
+		flower.height = 0.28
+		flower.radial_segments = 6
+		flower.rings = 3
+		var palette := [Color(0.96, 0.55, 0.68), Color(0.98, 0.85, 0.34), Color(0.70, 0.62, 0.96)]
+		_scatter_v6("Fleurs_v6_" + str(i), flower, palette[i], 330 if high_quality else 130, 1, 71711 + i * 127)
+
+	var pebble := SphereMesh.new()
+	pebble.radius = 0.42
+	pebble.height = 0.32
+	pebble.radial_segments = 8
+	pebble.rings = 4
+	_scatter_v6("Galets_plage_v6", pebble, Color(0.72, 0.68, 0.58), 280 if high_quality else 130, 2, 89111)
+	var pebble_path := SphereMesh.new()
+	pebble_path.radius = 0.23
+	pebble_path.height = 0.095
+	pebble_path.radial_segments = 8
+	pebble_path.rings = 3
+	_scatter_v6("Pierres_village_v6", pebble_path, Color(0.59, 0.55, 0.45), 240 if high_quality else 110, 3, 92231)
+
+	# Sentier entre feu central et maisons : pierres affleurantes, sans collision.
+	var slab := CylinderMesh.new()
+	slab.top_radius = 0.53
+	slab.bottom_radius = 0.59
+	slab.height = 0.07
+	var path_material := _material(Color(0.73, 0.67, 0.54))
+	for j in range(18):
+		var t := float(j) / 17.0
+		var px := lerpf(0.0, 9.0, t)
+		var pz := 4.0 + 0.4 * sin(t * PI)
+		var step_stone := MeshInstance3D.new()
+		step_stone.name = "Sentier_village_v6"
+		step_stone.mesh = slab
+		step_stone.material_override = path_material
+		step_stone.position = Vector3(px, _height_at(px, pz) + 0.04, pz)
+		step_stone.scale = Vector3(1.0, 1.0, 0.65)
+		step_stone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(step_stone)
+
+	# Lanternes au village : lumière chaude réservée à quelques points.
+	var wood := _material(Color(0.28, 0.20, 0.13))
+	var amber := StandardMaterial3D.new()
+	amber.albedo_color = Color(1.0, 0.78, 0.39)
+	amber.emission_enabled = true
+	amber.emission = Color(1.0, 0.52, 0.16)
+	amber.emission_energy_multiplier = 1.8
+	for coord in [Vector2(4.0, 8.0), Vector2(-6.0, 7.0), Vector2(6.0, -1.0), Vector2(-4.0, -3.0)]:
+		var h := _height_at(coord.x, coord.y)
+		var pole := MeshInstance3D.new()
+		pole.name = "Lanterne_poteau_v6"
+		var rod := CylinderMesh.new()
+		rod.top_radius = 0.08
+		rod.bottom_radius = 0.12
+		rod.height = 2.1
+		pole.mesh = rod
+		pole.material_override = wood
+		pole.position = Vector3(coord.x, h + 1.05, coord.y)
+		add_child(pole)
+		var bulb := MeshInstance3D.new()
+		bulb.name = "Lanterne_chaude_v6"
+		var orb := SphereMesh.new()
+		orb.radius = 0.20
+		orb.height = 0.40
+		bulb.mesh = orb
+		bulb.material_override = amber
+		bulb.position = Vector3(coord.x, h + 2.22, coord.y)
+		add_child(bulb)
+		if high_quality:
+			var light := OmniLight3D.new()
+			light.light_color = Color(1.0, 0.72, 0.42)
+			light.light_energy = 0.30
+			light.omni_range = 5.0
+			light.shadow_enabled = false
+			light.position = bulb.position
+			add_child(light)
 
 func _create_village() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -383,7 +523,7 @@ func _create_players() -> void:
 	var hud := CanvasLayer.new()
 	add_child(hud)
 	info = Label.new()
-	info.text = "ÎLE MANGA VR V5  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
+	info.text = "ÎLE MANGA VR V6  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
 	info.add_theme_font_size_override("font_size", 16)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
@@ -451,7 +591,7 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC V5  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
+		info.text = "ÎLE MANGA PC V6  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
 		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
 		print("ILE_MANGA_NATIVE_STATUS: ", message.text)
 		return
@@ -537,7 +677,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif OS.has_feature("ile_manga_pc") and event.keycode == KEY_F6:
 			ultranet_pc = not ultranet_pc
 			get_viewport().scaling_3d_scale = 1.2 if ultranet_pc else 1.0
-			print("ILE_MANGA_V5: suréchantillonnage PC = ", get_viewport().scaling_3d_scale)
+			print("ILE_MANGA_V6: suréchantillonnage PC = ", get_viewport().scaling_3d_scale)
 		elif event.keycode == KEY_R and not xr_active and not OS.has_feature("ile_manga_pc"):
 			_restart_xr()
 	if not xr_active and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):

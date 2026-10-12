@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Ile Manga VR V5"
+config/name="Ile Manga VR V6"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
