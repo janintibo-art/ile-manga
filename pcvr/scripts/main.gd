@@ -30,12 +30,6 @@ var ultranet_pc: bool = false
 var game_menu: Node
 var menu_panorama: Camera3D
 var panorama_seconds: float = 0.0
-var menu_panorama: Camera3D
-var panorama_seconds: float = 0.0
-var menu_panorama: Camera3D
-var panorama_seconds: float = 0.0
-var menu_panorama: Camera3D
-var panorama_seconds: float = 0.0
 var autosave_clock: float = 0.0
 var game_started: bool = false
 
@@ -653,34 +647,6 @@ func _create_game_menu_v8() -> void:
 		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
 		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
 		menu_panorama.current = true
-	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
-	if OS.has_feature("ile_manga_pc"):
-		menu_panorama = Camera3D.new()
-		menu_panorama.name = "Panorama_menu_V10"
-		menu_panorama.fov = 66.0
-		add_child(menu_panorama)
-		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
-		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
-		menu_panorama.current = true
-	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
-	if OS.has_feature("ile_manga_pc"):
-		menu_panorama = Camera3D.new()
-		menu_panorama.name = "Panorama_menu_V10"
-		menu_panorama.fov = 66.0
-		add_child(menu_panorama)
-		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
-		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
-		menu_panorama.current = true
-	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
-	if OS.has_feature("ile_manga_pc"):
-		menu_panorama = Camera3D.new()
-		menu_panorama.name = "Panorama_menu_V10"
-		menu_panorama.fov = 66.0
-		add_child(menu_panorama)
-		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
-		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
-		menu_panorama.current = true
-
 
 func _start_save_slot(slot: int, new_game: bool) -> void:
 	game_started = true

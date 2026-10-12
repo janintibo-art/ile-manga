@@ -13,7 +13,6 @@ var frame: Control
 var list_box: VBoxContainer
 var heading: Label
 var menu_glow_time: float = 0.0
-var menu_glow_time: float = 0.0
 var vr_panel: Node3D
 var vr_text: Label3D
 var vr_help: Label3D
@@ -174,12 +173,6 @@ func _redraw() -> void:
 			button.add_theme_stylebox_override("focus", hover)
 			button.pressed.connect(_activate.bind(i))
 			list_box.add_child(button)
-		if view in ["load", "save", "new", "delete"]:
-			var footer := Label.new()
-			footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			footer.text = "6 emplacements  •  Sauvegardes compatibles V8 / V9"
-			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
-			list_box.add_child(footer)
 		if view in ["load", "save", "new", "delete"]:
 			var footer := Label.new()
 			footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
