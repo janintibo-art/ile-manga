@@ -12,6 +12,8 @@ var pc_layer: CanvasLayer
 var frame: Control
 var list_box: VBoxContainer
 var heading: Label
+var menu_glow_time: float = 0.0
+var menu_glow_time: float = 0.0
 var vr_panel: Node3D
 var vr_text: Label3D
 var vr_help: Label3D
@@ -42,17 +44,17 @@ func _make_pc_panel() -> void:
 	add_child(pc_layer)
 	frame = ColorRect.new()
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	frame.color = Color(0.035, 0.08, 0.15, 0.94)
+	frame.color = Color(0.018, 0.047, 0.085, 0.42)
 	pc_layer.add_child(frame)
 	var center := CenterContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.add_child(center)
 	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(650, 510)
+	card.custom_minimum_size = Vector2(690, 540)
 	# ILE_MANGA_MENU_V9 : panneau aux couleurs de l'aventure.
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.035, 0.11, 0.16, 0.98)
-	style.border_color = Color(0.89, 0.71, 0.36)
+	style.bg_color = Color(0.025, 0.095, 0.145, 0.93)
+	style.border_color = Color(0.98, 0.76, 0.32)
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(18)
 	style.set_content_margin_all(24)
@@ -69,6 +71,20 @@ func _make_pc_panel() -> void:
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading.add_theme_font_size_override("font_size", 34)
 	inner.add_child(heading)
+	var top_line := Label.new()
+	top_line.text = "✦  LES ÎLES DE L'AVENTURE  ✦"
+	top_line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	top_line.add_theme_color_override("font_color", Color(0.74, 0.92, 1.0))
+	top_line.add_theme_font_size_override("font_size", 15)
+	inner.add_child(top_line)
+	var logo_file := load("res://assets/ui/ile_manga_icon.png") as Texture2D
+	if logo_file != null:
+		var logo := TextureRect.new()
+		logo.texture = logo_file
+		logo.custom_minimum_size = Vector2(0, 94)
+		logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		inner.add_child(logo)
 	list_box = VBoxContainer.new()
 	list_box.add_theme_constant_override("separation", 8)
 	inner.add_child(list_box)
@@ -130,18 +146,19 @@ func _redraw() -> void:
 	if not opened:
 		return
 	if xr_mode:
-		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  V9", "", "Saves: 6 emplacements", ""])
+		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  V10", "", "Saves: 6 emplacements", ""])
 		for i in range(options.size()):
 			lines.append(("➤ " if i == selection else "   ") + options[i])
 		vr_text.text = "\n".join(lines)
 	else:
 		for n in list_box.get_children():
 			n.queue_free()
-		heading.text = "ÎLE MANGA  •  " + view.to_upper()
+		heading.text = "✦ ÎLE MANGA ✦  ·  " + view.to_upper()
+		frame.modulate.a = 0.84
 		for i in range(options.size()):
 			var choice: String = options[i]
 			var button := Button.new()
-			button.text = choice
+			button.text = ("✧  " if view == "home" else "▸  ") + choice
 			button.custom_minimum_size.y = 45
 			button.add_theme_font_size_override("font_size", 17)
 			var normal := StyleBoxFlat.new()
@@ -157,6 +174,18 @@ func _redraw() -> void:
 			button.add_theme_stylebox_override("focus", hover)
 			button.pressed.connect(_activate.bind(i))
 			list_box.add_child(button)
+		if view in ["load", "save", "new", "delete"]:
+			var footer := Label.new()
+			footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			footer.text = "6 emplacements  •  Sauvegardes compatibles V8 / V9"
+			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
+			list_box.add_child(footer)
+		if view in ["load", "save", "new", "delete"]:
+			var footer := Label.new()
+			footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			footer.text = "6 emplacements  •  Sauvegardes compatibles V8 / V9"
+			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
+			list_box.add_child(footer)
 		if (view == "load" or view == "save") and playing:
 			var note := Label.new()
 			note.text = "La sauvegarde automatique est mise à jour régulièrement."
@@ -226,6 +255,11 @@ func open_menu() -> void:
 	_show_view("home")
 
 func _process(delta: float) -> void:
+	if opened and not xr_mode and frame != null:
+		frame.modulate.a = move_toward(frame.modulate.a, 1.0, delta * 2.3)
+		menu_glow_time += delta
+		if heading != null:
+			heading.modulate.a = 0.91 + 0.09 * sin(menu_glow_time * 1.45)
 	if playing and not opened:
 		seconds += delta
 	if not opened or not xr_mode or right_hand == null:

@@ -28,6 +28,14 @@ var ocean_material: ShaderMaterial
 var xr_restart_button: Button
 var ultranet_pc: bool = false
 var game_menu: Node
+var menu_panorama: Camera3D
+var panorama_seconds: float = 0.0
+var menu_panorama: Camera3D
+var panorama_seconds: float = 0.0
+var menu_panorama: Camera3D
+var panorama_seconds: float = 0.0
+var menu_panorama: Camera3D
+var panorama_seconds: float = 0.0
 var autosave_clock: float = 0.0
 var game_started: bool = false
 
@@ -636,6 +644,42 @@ func _create_game_menu_v8() -> void:
 	game_menu.delete_requested.connect(_delete_slot)
 	game_menu.resume_requested.connect(func(): pass)
 	game_menu.setup(xr_active, xr_camera, right_hand)
+	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
+	if OS.has_feature("ile_manga_pc"):
+		menu_panorama = Camera3D.new()
+		menu_panorama.name = "Panorama_menu_V10"
+		menu_panorama.fov = 66.0
+		add_child(menu_panorama)
+		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
+		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
+		menu_panorama.current = true
+	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
+	if OS.has_feature("ile_manga_pc"):
+		menu_panorama = Camera3D.new()
+		menu_panorama.name = "Panorama_menu_V10"
+		menu_panorama.fov = 66.0
+		add_child(menu_panorama)
+		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
+		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
+		menu_panorama.current = true
+	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
+	if OS.has_feature("ile_manga_pc"):
+		menu_panorama = Camera3D.new()
+		menu_panorama.name = "Panorama_menu_V10"
+		menu_panorama.fov = 66.0
+		add_child(menu_panorama)
+		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
+		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
+		menu_panorama.current = true
+	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
+	if OS.has_feature("ile_manga_pc"):
+		menu_panorama = Camera3D.new()
+		menu_panorama.name = "Panorama_menu_V10"
+		menu_panorama.fov = 66.0
+		add_child(menu_panorama)
+		menu_panorama.position = Vector3(-26.0, 17.0, 35.0)
+		menu_panorama.look_at(Vector3(0, 4, 0), Vector3.UP)
+		menu_panorama.current = true
 
 
 func _start_save_slot(slot: int, new_game: bool) -> void:
@@ -672,6 +716,17 @@ func _save_slot(slot: int) -> void:
 
 
 func _process(delta: float) -> void:
+	# Défilement contemplatif seulement pendant un menu PC.
+	if menu_panorama != null and game_menu != null:
+		if game_menu.opened:
+			panorama_seconds += delta
+			var angle: float = panorama_seconds * 0.055
+			menu_panorama.position = Vector3(-26.0 + sin(angle) * 6.0, 16.5 + sin(angle * 1.3) * 1.2, 33.0 + cos(angle) * 4.0)
+			menu_panorama.look_at(Vector3(0, 4.5, 0), Vector3.UP)
+			if not menu_panorama.current:
+				menu_panorama.current = true
+		elif menu_panorama.current:
+			pc_camera.current = true
 	if game_menu != null and xr_active and game_started and not game_menu.opened and right_hand.get_float("menu_button") > 0.8:
 		game_menu.open_menu()
 	if game_menu != null and (game_menu.opened or not game_started):
