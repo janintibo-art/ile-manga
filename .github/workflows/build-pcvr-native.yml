@@ -53,7 +53,7 @@ jobs:
           python3 - <<'PYTEST'
           from pathlib import Path
           s = Path('pcvr/scripts/main.gd').read_text()
-          for name in ('CharacterBody3D.new()', 'move_and_slide()', 'create_trimesh_shape()', 'CapsuleShape3D.new()', '_sync_physics_after_load_v12()'):
+          for name in ('CharacterBody3D.new()', 'move_and_slide()', 'create_trimesh_shape()', 'CapsuleShape3D.new()', '_sync_physics_after_load_v11()'):
               assert name in s, f'Physique manquante: {name}'
           assert s.count('func _physics_process(delta: float) -> void:') == 1
           print('Contrôles statiques physique OK')
