@@ -1,10 +1,10 @@
 extends Node3D
-## Île Manga PC VR : première conversion NATIVE, pas un navigateur.
+## Île Manga PC VR V3 : rendu amélioré et diagnostic OpenXR.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
 const TERRAIN_SIZE: float = 200.0
-const TERRAIN_STEPS: int = 110
+const TERRAIN_STEPS: int = 160
 const WALK_SPEED: float = 3.1
 const DEADZONE: float = 0.22
 const TURN_STICK_THRESHOLD: float = 0.75
@@ -22,6 +22,9 @@ var message: Label
 var info: Label
 var turn_ready: bool = true
 var native_vr: XRInterface
+var ocean: MeshInstance3D
+var ocean_material: ShaderMaterial
+var xr_restart_button: Button
 
 
 func _ready() -> void:
@@ -75,29 +78,39 @@ func _create_land() -> void:
 			_append_ground_vertex(surface, x + step, z + step)
 	surface.generate_normals()
 	var terrain := MeshInstance3D.new()
-	terrain.name = "Ile_procedurale"
+	terrain.name = "Ile_terrain_texture"
 	terrain.mesh = surface.commit()
-	var m := StandardMaterial3D.new()
-	m.vertex_color_use_as_albedo = true
-	m.roughness = 1.0
-	m.cull_mode = BaseMaterial3D.CULL_DISABLED
-	terrain.material_override = m
+	var shader: Shader = load("res://shaders/terrain.gdshader")
+	if shader != null:
+		var m := ShaderMaterial.new()
+		m.shader = shader
+		m.set_shader_parameter("sand_tex", load("res://assets/textures/terrain/sand.jpg"))
+		m.set_shader_parameter("grass_tex", load("res://assets/textures/terrain/grass.jpg"))
+		m.set_shader_parameter("stone_tex", load("res://assets/textures/terrain/stone.jpg"))
+		terrain.material_override = m
+	else:
+		var fallback := StandardMaterial3D.new()
+		fallback.vertex_color_use_as_albedo = true
+		terrain.material_override = fallback
 	add_child(terrain)
 
 
 func _create_water() -> void:
-	var sea := MeshInstance3D.new()
-	sea.name = "Ocean"
+	ocean = MeshInstance3D.new()
+	ocean.name = "Ocean_anime"
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(700.0, 700.0)
-	sea.mesh = plane
-	sea.position.y = -0.42
-	var ocean_material := StandardMaterial3D.new()
-	ocean_material.albedo_color = Color(0.22, 0.67, 0.83)
-	ocean_material.metallic = 0.12
-	ocean_material.roughness = 0.29
-	sea.material_override = ocean_material
-	add_child(sea)
+	ocean.mesh = plane
+	ocean.position.y = -0.42
+	var shader: Shader = load("res://shaders/water.gdshader")
+	if shader != null:
+		ocean_material = ShaderMaterial.new()
+		ocean_material.shader = shader
+		ocean_material.set_shader_parameter("water_tex", load("res://assets/textures/water/water.jpg"))
+		ocean.material_override = ocean_material
+	else:
+		ocean.material_override = _material(Color(0.24, 0.65, 0.83))
+	add_child(ocean)
 
 
 func _create_lighting() -> void:
@@ -142,58 +155,82 @@ func _make_box(name: String, pos: Vector3, sz: Vector3, color: Color) -> void:
 	add_child(instance)
 
 
-func _make_tree(x: float, z: float) -> void:
+func _make_tree(x: float, z: float, seed: int) -> void:
 	var y: float = _height_at(x, z)
-	_make_box("Tronc", Vector3(x, y + 1.1, z), Vector3(0.5, 2.2, 0.5), Color(0.41, 0.26, 0.13))
-	var cone := MeshInstance3D.new()
-	var shape := CylinderMesh.new()
-	shape.top_radius = 0.0
-	shape.bottom_radius = 1.7
-	shape.height = 3.6
-	cone.mesh = shape
-	cone.material_override = _material(Color(0.24, 0.65, 0.40))
-	cone.position = Vector3(x, y + 3.3, z)
-	add_child(cone)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	var height: float = rng.randf_range(2.2, 3.5)
+	var trunk := MeshInstance3D.new()
+	trunk.name = "Tronc_arbre"
+	var cylinder := CylinderMesh.new()
+	cylinder.top_radius = 0.22
+	cylinder.bottom_radius = 0.34
+	cylinder.height = height
+	trunk.mesh = cylinder
+	trunk.material_override = _material(Color(0.37, 0.24, 0.14))
+	trunk.position = Vector3(x, y + height * 0.5, z)
+	add_child(trunk)
+	# Trois couronnes rondes au lieu des anciens sapins triangulaires.
+	# Les volumes évitent l'effet décor de démonstration de la V2.
+	for i in range(3):
+		var leaf := MeshInstance3D.new()
+		leaf.name = "Feuillage_anime"
+		var sphere := SphereMesh.new()
+		sphere.radius = 1.55 - i * 0.16
+		sphere.height = sphere.radius * 1.7
+		sphere.radial_segments = 10
+		sphere.rings = 5
+		leaf.mesh = sphere
+		leaf.material_override = _material(Color(0.21 + 0.03 * float(i), 0.51 + 0.04 * float(i), 0.27))
+		leaf.position = Vector3(x + rng.randf_range(-0.45, 0.45), y + height + float(i) * 0.45, z + rng.randf_range(-0.4, 0.4))
+		add_child(leaf)
 
 
 func _create_village() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 8142026
-	for i in range(26):
-		var x: float = rng.randf_range(-68, 68)
-		var z: float = rng.randf_range(-68, 68)
+	var trees_placed := 0
+	for i in range(115):
+		if trees_placed >= 34:
+			break
+		var x: float = rng.randf_range(-71, 71)
+		var z: float = rng.randf_range(-71, 71)
 		var y: float = _height_at(x, z)
-		if y < 0.6 or y > 7.0 or Vector2(x, z - 4.0).length() < 17.0:
+		if y < 0.8 or y > 7.0 or Vector2(x, z - 4.0).length() < 17.0:
 			continue
-		_make_tree(x, z)
-	# Feu de camp au centre du village, conservé sans importer le très lourd GLB.
-	var camp_y: float = _height_at(0, 4)
-	_make_box("Foyer", Vector3(0, camp_y + 0.12, 4), Vector3(2, 0.24, 2), Color(0.45, 0.30, 0.18))
+		_make_tree(x, z, i + 14001)
+		trees_placed += 1
+	var camp_y: float = _height_at(0.0, 4.0)
+	# Le GLB du vrai feu remplace le simple cube de la V2.
+	var camp := _add_glb("res://assets/models/props/Feu.glb", "Feu_camp_original", Vector3(0.0, camp_y + 1.04, 4.0), 1.2, 0.0)
+	if camp == null:
+		_make_box("Foyer_secours", Vector3(0, camp_y + 0.12, 4), Vector3(2, 0.24, 2), Color(0.45, 0.30, 0.18))
 	var fire := OmniLight3D.new()
 	fire.light_color = Color(1, 0.45, 0.20)
-	fire.light_energy = 1.1
-	fire.omni_range = 10
+	fire.light_energy = 1.4
+	fire.omni_range = 13
 	fire.position = Vector3(0, camp_y + 1.0, 4)
 	add_child(fire)
 	var flame := MeshInstance3D.new()
+	flame.name = "Flamme_lumineuse"
 	var flame_mesh := SphereMesh.new()
-	flame_mesh.radius = 0.48
-	flame_mesh.height = 1.15
+	flame_mesh.radius = 0.36
+	flame_mesh.height = 0.85
 	flame.mesh = flame_mesh
 	var flame_mat := StandardMaterial3D.new()
 	flame_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	flame_mat.albedo_color = Color(1.0, 0.52, 0.11)
+	flame_mat.albedo_color = Color(1.0, 0.45, 0.08)
 	flame_mat.emission_enabled = true
-	flame_mat.emission = Color(1.0, 0.25, 0.04)
+	flame_mat.emission = Color(1.0, 0.28, 0.04)
 	flame.material_override = flame_mat
-	flame.position = Vector3(0, camp_y + 0.85, 4)
+	flame.position = Vector3(0, camp_y + 1.0, 4)
 	add_child(flame)
 	var sign := Label3D.new()
-	sign.text = "ILE MANGA  |  VILLAGE"
-	sign.font_size = 50
-	sign.pixel_size = 0.008
-	sign.modulate = Color(0.98, 0.94, 0.75)
-	sign.position = Vector3(0, camp_y + 4.3, 4)
+	sign.text = "Bienvenue sur Île Manga"
+	sign.font_size = 48
+	sign.pixel_size = 0.003
+	sign.modulate = Color(0.98, 0.95, 0.78)
+	sign.position = Vector3(-2, camp_y + 2.2, 4)
 	add_child(sign)
 
 
@@ -224,7 +261,11 @@ func _create_structures() -> void:
 		_make_box("Maison_refuge", Vector3(9, _height_at(9, 4) + 2, 4), Vector3(7, 4, 7), Color(0.83, 0.54, 0.45))
 	_add_glb("res://assets/models/buildings/Petite_maison.glb", "Petite_maison", Vector3(-11, _height_at(-11, 9) + 2.244, 9), 3.0, PI * 0.5)
 	_add_glb("res://assets/models/buildings/Ile_flottante.glb", "Ile_celeste", Vector3(20, 18, -15), 12, 0.0)
-	# Le district plage / mur de son sera repris à la prochaine étape.
+	# Quartier de la plage DJ : éléments originaux Babylon.js réintroduits.
+	_add_glb("res://assets/models/props/Mur_de_son.glb", "Mur_de_son", Vector3(0, _height_at(0, 60) + 3.75, 60), 6, PI)
+	_add_glb("res://assets/models/props/Table_de_mixage.glb", "Table_de_mixage", Vector3(9, _height_at(9, 60) + 0.988, 60), 2.5, PI)
+	_add_glb("res://assets/models/props/Distributeur_8_6.glb", "Distributeur_8_6", Vector3(-9, _height_at(-9, 60) + 1.712, 60), 1.8, PI)
+	_add_glb("res://assets/models/props/Corde.glb", "Corde", Vector3(16, 10, -9), 6.0, 0.0)
 
 
 func _create_players() -> void:
@@ -262,14 +303,19 @@ func _create_players() -> void:
 	var hud := CanvasLayer.new()
 	add_child(hud)
 	info = Label.new()
-	info.text = "ÎLE MANGA PC VR  |  ZQSD pour marcher  •  clic droit + souris : caméra  •  Échap : quitter"
-	info.add_theme_font_size_override("font_size", 17)
+	info.text = "ÎLE MANGA PC VR V3  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
+	info.add_theme_font_size_override("font_size", 16)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
 	message = Label.new()
-	message.position = Vector2(20, 58)
+	message.position = Vector2(20, 54)
 	message.add_theme_font_size_override("font_size", 18)
 	hud.add_child(message)
+	xr_restart_button = Button.new()
+	xr_restart_button.text = "Reconnecter le Quest 3 (redémarrer le jeu)"
+	xr_restart_button.position = Vector2(20, 108)
+	xr_restart_button.pressed.connect(_restart_xr)
+	hud.add_child(xr_restart_button)
 
 
 func _make_hand(controller: XRController3D, color: Color) -> void:
@@ -284,11 +330,10 @@ func _make_hand(controller: XRController3D, color: Color) -> void:
 
 
 func _init_native_xr() -> void:
+	# OpenXR/Vulkan initialise la connexion au démarrage du processus Godot.
+	# Impossible de garantir une reconnexion au casque sans redémarrer le jeu.
 	native_vr = XRServer.find_interface("OpenXR")
-	if native_vr != null:
-		if not native_vr.is_initialized():
-			native_vr.initialize()
-		xr_active = native_vr.is_initialized()
+	xr_active = native_vr != null and native_vr.is_initialized()
 	if xr_active:
 		XRServer.primary_interface = native_vr
 		get_viewport().use_xr = true
@@ -300,19 +345,35 @@ func _init_native_xr() -> void:
 		xr_camera.current = true
 		info.visible = false
 		message.visible = false
+		xr_restart_button.visible = false
+		print("ILE_MANGA_OPENXR: SESSION_OK, interface=", native_vr.get_name())
 	else:
 		get_viewport().use_xr = false
 		pc_camera.current = true
 		left_hand.visible = false
 		right_hand.visible = false
+		xr_restart_button.visible = true
+		push_warning("ILE_MANGA_OPENXR: non initialise au lancement ; controler Meta Link / SteamVR avant de demarrer")
 
 
 func _update_status() -> void:
 	if xr_active:
-		message.text = "OpenXR connecté — Meta Quest Link / SteamVR"
+		message.text = "OpenXR actif : Quest Link / SteamVR"
+	elif native_vr == null:
+		message.text = "OpenXR absent. Relance en activant Meta Quest Link ou SteamVR."
 	else:
-		message.text = "Mode écran : connecte le Quest 3 via Meta Link ou SteamVR puis relance le jeu pour activer OpenXR."
+		message.text = "OpenXR non connecté. Entre d'abord dans Quest Link sur le casque, puis presse R."
 	print("ILE_MANGA_NATIVE_STATUS: ", message.text)
+
+
+func _restart_xr() -> void:
+	if xr_active:
+		return
+	var pid: int = OS.create_instance(PackedStringArray())
+	if pid > 0:
+		get_tree().quit()
+	else:
+		message.text = "Redémarrage impossible : ferme l'application et relance l'EXE après Quest Link."
 
 
 func _process(delta: float) -> void:
@@ -366,7 +427,10 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		get_tree().quit()
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			get_tree().quit()
+		elif event.keycode == KEY_R and not xr_active:
+			_restart_xr()
 	if not xr_active and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		pc_root.rotate_y(-event.relative.x * 0.005)

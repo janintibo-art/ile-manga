@@ -19,6 +19,15 @@ selected = [
     "models/buildings/Maison.glb",
     "models/buildings/Petite_maison.glb",
     "models/buildings/Ile_flottante.glb",
+    "models/props/Feu.glb",
+    "models/props/Mur_de_son.glb",
+    "models/props/Table_de_mixage.glb",
+    "models/props/Distributeur_8_6.glb",
+    "models/props/Corde.glb",
+    "textures/terrain/grass.jpg",
+    "textures/terrain/sand.jpg",
+    "textures/terrain/stone.jpg",
+    "textures/water/water.jpg",
 ]
 
 

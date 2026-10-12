@@ -6,6 +6,7 @@ on:
     paths:
       - "pcvr/**"
       - "www/assets/models/**"
+      - "www/assets/textures/**"
       - ".github/workflows/build-pcvr-native.yml"
   workflow_dispatch:
 
@@ -36,14 +37,31 @@ jobs:
       - name: Importer le projet et les GLB dans Godot
         run: godot --headless --editor --path pcvr --import
 
-      - name: Test de demarrage du monde 3D sans casque
-        run: godot --headless --path pcvr --quit-after 5
+      - name: Diagnostiquer les erreurs GDScript au lancement headless
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v3_test.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v3_test.log; then
+            echo "Erreur de syntaxe Godot detectee"
+            exit 1
+          fi
+
+      - name: Verifier que les shaders, textures et GLB ont ete importes
+        run: |
+          test -s pcvr/assets/textures/terrain/grass.jpg
+          test -s pcvr/assets/textures/terrain/sand.jpg
+          test -s pcvr/assets/textures/terrain/stone.jpg
+          test -s pcvr/assets/models/props/Mur_de_son.glb
+          test -s pcvr/assets/models/props/Feu.glb
+          test -s pcvr/shaders/terrain.gdshader
+          test -s pcvr/shaders/water.gdshader
 
       - name: Exporter Windows OpenXR en fichier EXE
         working-directory: pcvr
         run: |
           mkdir -p build
-          godot --headless --export-release "Windows Desktop" build/Ile_Manga_PC_VR_v2.exe
+          godot --headless --export-release "Windows Desktop" build/Ile_Manga_PC_VR_v3.exe
 
       - name: Afficher les fichiers Windows crees
         run: ls -lah pcvr/build/
@@ -51,7 +69,7 @@ jobs:
       - name: Publier la version native pour Quest Link et SteamVR
         uses: actions/upload-artifact@v4
         with:
-          name: ile-manga-pc-vr-openxr-natif-v2
+          name: ile-manga-pc-vr-openxr-natif-v3
           path: pcvr/build/*
           if-no-files-found: error
           retention-days: 30

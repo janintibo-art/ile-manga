@@ -1,84 +1,40 @@
-# Île Manga — édition PC VR native OpenXR (V2)
+# Île Manga V3 — PC VR native OpenXR (Quest 3 / Meta Link / SteamVR)
 
-## Pourquoi une nouvelle édition ?
+La V3 remplace la petite démonstration de la V2 par une carte enrichie. La version Android, le site Babylon.js et l'ancien EXE Electron ne sont pas modifiés.
 
-Le premier `.exe` dans `desktop/` chargeait l'ancien jeu Babylon.js dans
-Electron, puis ouvrait un navigateur pour WebXR. Il ne lançait pas de session VR
-Windows native. Ajouter ce fichier à la bibliothèque Meta ou Steam ne suffisait
-pas à l'afficher dans le casque.
+## Changements du rendu
 
-La V2 est un **nouveau portage Godot 4.7.2 avec OpenXR**, lancé directement
-comme une application PC VR. Elle ne nécessite pas de navigateur.
+- Terrain d'origine coloré remplacé par les **vraies textures** `grass.jpg`, `sand.jpg`, `stone.jpg` avec transitions progressives selon le relief.
+- Eau texturée et légèrement animée, océan, ciel et soleil.
+- Arbres avec couronnes rondes, plus proches du style manga que les anciens cônes de démonstration.
+- Modèles originaux importés automatiquement sur GitHub depuis `www/assets/` : deux maisons, île flottante, héros, feu de camp, mur de son, table de mixage, distributeur et corde.
+- Mode PC **Forward+** sous Vulkan, anticrénelage MSAA 4x. Les modèles sont encore lourds : baisser la qualité sera peut-être nécessaire en VR si la fluidité diminue.
 
-## État de cette première version
+**Ce n'est pas encore une copie exacte de la version Babylon.js** : le gameplay intérieur, les PNJ et les autres interactions devront être portés séparément.
 
-- Terrain de l'île recréé à partir de la formule du jeu original.
-- Ciel, océan, feu central, arbres stylisés, éclairages.
-- Réutilisation des véritables modèles `Maison.glb`, `Petite_maison.glb`,
-  `Ile_flottante.glb` et `hero.glb` présents dans le dépôt.
-- Suivi stéréo du Quest 3 via OpenXR, si le runtime Windows est actif.
-- Positions des deux manettes, marche au joystick gauche, rotation par paliers
-  au joystick droit (suivant la carte d'actions OpenXR par défaut de Godot).
-- Mode écran clavier/souris en secours pour diagnostiquer les démarrages.
-- Un seul exécutable Windows exporté avec le fichier PCK intégré.
+## Pourquoi le Quest restait en mode écran
 
-**Il ne s'agit pas encore d'un portage complet du gameplay Babylon.js.** Les
-intérieurs, quêtes, PNJ évolués, animations et autres modèles n'y sont pas encore
-reproduits. La priorité de V2 est **un casque reconnu par une vraie application
-OpenXR**, puis l'ajout progressif des fonctionnalités de l'île. Seul un essai
-sur ton casque permet de confirmer que le runtime et les contrôleurs fonctionnent.
+Sur la capture V2, le texte `Mode écran` confirme que Godot n'a pas initialisé OpenXR au démarrage. Le jeu n'apparaît pas automatiquement dans Meta tant qu'il n'est pas reconnu comme application VR externe. Godot/OpenXR sur Vulkan initialise le casque **au démarrage du processus**, pas à volonté au milieu d'une session.
 
-## Télécharger
+1. Démarrer Meta Quest Link sur Windows.
+2. Brancher le Quest 3 avec USB Link **ou** activer Air Link ; entrer dans l'environnement PC VR du casque et vérifier que Link indique une connexion active.
+3. Ouvrir Meta Quest Link PC > **Paramètres > Général** et vérifier **Sources inconnues**.
+4. Dans les paramètres OpenXR, rendre **Meta Quest Link** actif comme runtime (ne pas mettre SteamVR en même temps comme runtime principal).
+5. Lancer ensuite `Ile_Manga_PC_VR_v3.exe` **depuis Windows**, et non le lanceur Electron V1.
+6. Si l'écran affiche `OpenXR non connecté`, terminer la connexion Link puis cliquer **Reconnecter le Quest 3** ou presser **R** : le programme se ferme et redémarre en tentant de réinitialiser OpenXR.
+7. Quand le casque est reconnu, l'interface Windows de secours disparaît et le suivi XR commence. Les manettes dépendent de la cartographie d'actions d'OpenXR ; si elles ne bougent pas, relever les logs.
 
-1. Après un `push` sur `main`, aller dans **GitHub > Actions**.
-2. Choisir **Build PC VR OpenXR Natif EXE** puis le run vert.
-3. Sous **Artifacts**, télécharger `ile-manga-pc-vr-openxr-natif-v2`.
-4. Extraire le ZIP GitHub sur le PC (ne pas lancer le fichier dans l'archive).
-5. Lancer `Ile_Manga_PC_VR_v2.exe` avec le Quest 3 connecté.
+Le bouton redémarre le programme : il ne peut pas forcer Meta Link à créer une session VR si le runtime n'est pas correctement installé/configuré.
 
-L'ancien `.exe` Electron est encore fourni par l'autre workflow pour préserver
-la version écran précédente. Ne pas confondre les deux artefacts.
+## Ajouter l'exécutable à Meta ou SteamVR
 
-## Avec la bibliothèque Meta Quest Link PC
+- Avec Meta : afficher le filtre **Sources inconnues** dans la bibliothèque. Selon les versions de Meta Quest Link, utiliser le signe **+** de la bibliothèque pour chercher et ajouter manuellement l'EXE. Le nom peut être `Ile_Manga_PC_VR_v3.exe`. Les versions récentes de Link peuvent comporter des problèmes d'ajout des applications tierces. La détection ne peut pas être garantie par l'export Godot seul.
+- Avec Steam : **Jeux > Ajouter un jeu non Steam** puis choisir le V3 EXE. Lancer SteamVR, l'établir comme runtime OpenXR actif, puis lancer le raccourci. Ce n'est pas une publication officielle Steam.
 
-1. Sur le PC Windows, ouvrir **Meta Quest Link**, puis **Paramètres > Général**.
-2. Autoriser les **Sources inconnues** (pour lancer ses propres jeux PC VR).
-3. Relier le Quest 3 en **Quest Link** (câble USB) ou **Air Link**.
-4. Vérifier que **Meta Quest Link** est le runtime OpenXR actif dans les
-   paramètres de l'application PC.
-5. Une fois connecté au mode PC VR, lancer l'EXE natif V2 **une première fois
-   depuis Windows**.
-6. Chercher ensuite **Ile_Manga_PC_VR_v2.exe** dans la bibliothèque Meta avec
-   l'affichage des applications inconnues activé. Sa présence dépend des
-   modalités de détection du logiciel Meta : ce n'est pas un ajout automatique
-   garanti par la compilation.
+Ne confonds pas bibliothèque Meta et activation OpenXR : un raccourci peut exister sans que le jeu rende dans le casque.
 
-Le jeu doit être lancé pendant que Quest Link et le casque sont connectés. En
-cas de démarrage seulement à l'écran, fermer l'EXE, vérifier l'OpenXR runtime,
-puis relancer. Le mode écran est un secours volontaire, pas une vraie session VR.
+## Compilation GitHub
 
-## Avec SteamVR
+Le workflow **Build PC VR OpenXR Natif EXE** publie l'artefact `ile-manga-pc-vr-openxr-natif-v3` avec le fichier `Ile_Manga_PC_VR_v3.exe`. Télécharge l'artefact du run vert et extrais-le sur Windows avant de lancer l'EXE.
 
-1. Connecter le casque au PC et lancer **SteamVR**.
-2. Dans SteamVR > Paramètres > OpenXR, sélectionner **SteamVR comme runtime
-   OpenXR actif** (l'option précise varie selon les versions).
-3. Dans Steam sur PC, utiliser **Ajouter un jeu > Ajouter un jeu non Steam**.
-4. Pointer vers `Ile_Manga_PC_VR_v2.exe`, puis lancer ce raccourci avec SteamVR
-   et le casque actifs. Cette opération ajoute un raccourci, pas une fiche
-   officielle Steam ni une publication sur le magasin.
-
-Un seul runtime OpenXR doit être actif : Meta pour Quest Link direct, ou
-SteamVR si tu préfères sa bibliothèque. Il n'est pas nécessaire de lancer les
-DEUX runtimes en même temps pour la même partie.
-
-## Commandes en cas d'erreur
-
-- Réessayer avec le casque et le logiciel PC Link **déjà connectés**.
-- Si écran uniquement : vérifier le **runtime OpenXR actif**.
-- Si crash Windows : depuis PowerShell, lancer l'EXE avec `--verbose`, garder
-  le texte du terminal et envoyer une capture du premier message d'erreur.
-- Si GitHub échoue : envoyer le nom de la première étape rouge et ses logs.
-
-Le dépôt original `www/`, le pipeline APK, les modèles et le lanceur Electron ne
-sont **pas remplacés**. Seuls des fichiers sous `pcvr/`, un workflow et ce guide
-sont ajoutés.
+Un workflow vert prouve la compilation, pas le fonctionnement dans le casque. Le test en vrai reste nécessaire.
