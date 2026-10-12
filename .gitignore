@@ -8,3 +8,6 @@ dist/
 .idea/
 www/assets/models/props/Erable.glb
 pc-site/
+/pcvr/assets/
+/pcvr/.godot/
+/pcvr/build/

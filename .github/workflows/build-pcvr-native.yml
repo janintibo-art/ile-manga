@@ -1,0 +1,57 @@
+name: Build PC VR OpenXR Natif EXE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pcvr/**"
+      - "www/assets/models/**"
+      - ".github/workflows/build-pcvr-native.yml"
+  workflow_dispatch:
+
+jobs:
+  export-windows-pc-vr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 90
+
+    steps:
+      - name: Recuperer Ile Manga et ses modeles 3D
+        uses: actions/checkout@v4
+
+      - name: Installer Godot 4.7.2 et templates Windows
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: true
+
+      - name: Verifier la version de Godot
+        run: godot --version
+
+      - name: Copier uniquement les assets necessaires au portage natif
+        run: python3 pcvr/stage_assets.py
+
+      - name: Importer le projet et les GLB dans Godot
+        run: godot --headless --editor --path pcvr --import
+
+      - name: Test de demarrage du monde 3D sans casque
+        run: godot --headless --path pcvr --quit-after 5
+
+      - name: Exporter Windows OpenXR en fichier EXE
+        working-directory: pcvr
+        run: |
+          mkdir -p build
+          godot --headless --export-release "Windows Desktop" build/Ile_Manga_PC_VR_v2.exe
+
+      - name: Afficher les fichiers Windows crees
+        run: ls -lah pcvr/build/
+
+      - name: Publier la version native pour Quest Link et SteamVR
+        uses: actions/upload-artifact@v4
+        with:
+          name: ile-manga-pc-vr-openxr-natif-v2
+          path: pcvr/build/*
+          if-no-files-found: error
+          retention-days: 30
