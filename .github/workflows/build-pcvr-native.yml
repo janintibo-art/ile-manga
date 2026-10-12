@@ -48,12 +48,23 @@ jobs:
           print('Menu, six sauvegardes, autosave et icone : fichiers OK')
           PYTEST
 
+      - name: Controler la physique V11
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          s = Path('pcvr/scripts/main.gd').read_text()
+          for name in ('CharacterBody3D.new()', 'move_and_slide()', 'create_trimesh_shape()', 'CapsuleShape3D.new()', '_sync_physics_after_load_v11()'):
+              assert name in s, f'Physique manquante: {name}'
+          assert s.count('func _physics_process(delta: float) -> void:') == 1
+          print('Contrôles statiques physique OK')
+          PYTEST
+
       - name: Controle GDScript (VR)
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v10_vr.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v10_vr.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v11_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v11_vr.log; then exit 1; fi
 
       - name: Verifier l'inversion du joystick et la separation PC
         run: |
@@ -82,7 +93,7 @@ jobs:
         working-directory: pcvr
         run: |
           mkdir -p ../dist
-          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v10.exe
+          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v11.exe
 
       - name: Tester la preparation PC (independante du numero de version)
         run: python3 -m py_compile pcvr/set_pc_export.py
@@ -99,12 +110,12 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v10_pc.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v10_pc.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v11_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v11_pc.log; then exit 1; fi
 
       - name: Exporter exe PC normal (clavier / souris)
         working-directory: pcvr
-        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v10.exe
+        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v11.exe
 
       - name: Verifier les shaders haute definition PC et VR
         run: |
@@ -115,8 +126,8 @@ jobs:
       - name: Verifier exactement deux EXE Windows
         shell: bash
         run: |
-          test -s dist/Ile_Manga_VR_v10.exe
-          test -s dist/Ile_Manga_PC_v10.exe
+          test -s dist/Ile_Manga_VR_v11.exe
+          test -s dist/Ile_Manga_PC_v11.exe
           test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
           file dist/*.exe
           du -h dist/*.exe
@@ -124,15 +135,15 @@ jobs:
       - name: Telechargement de la version VR Quest 3
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-VR-v10
-          path: dist/Ile_Manga_VR_v10.exe
+          name: Ile-Manga-VR-v11
+          path: dist/Ile_Manga_VR_v11.exe
           if-no-files-found: error
           retention-days: 30
 
       - name: Telechargement de la version PC classique
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-PC-v10
-          path: dist/Ile_Manga_PC_v10.exe
+          name: Ile-Manga-PC-v11
+          path: dist/Ile_Manga_PC_v11.exe
           if-no-files-found: error
           retention-days: 30
