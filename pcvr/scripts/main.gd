@@ -50,6 +50,7 @@ func _ready() -> void:
 	_create_ground_details()
 	_create_scenery_v6()
 	_create_village_details_v7()
+	_create_scenery_v12()
 	_create_structures()
 	_create_players()
 	_build_physical_world_v11()
@@ -435,6 +436,14 @@ func _create_scenery_v6() -> void:
 			add_child(light)
 
 # Décors V7 séparés du gameplay pour ne pas toucher à OpenXR/aux contrôles.
+# Details uniquement visuels. Aucun changement des collisions ni des commandes VR.
+func _create_scenery_v12() -> void:
+	var visuals := preload("res://scripts/visuals_v12.gd").new()
+	visuals.name = "Paysages_fantasy_V12"
+	add_child(visuals)
+	visuals.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
+
 func _create_village_details_v7() -> void:
 	var details := preload("res://scripts/village_details.gd").new()
 	details.name = "Village_detail_v7"

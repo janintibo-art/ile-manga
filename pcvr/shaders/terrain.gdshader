@@ -45,7 +45,10 @@ void fragment() {
     }
     vec3 ground = mix(sand * vec3(1.02, 0.99, 0.91), grass * vec3(0.90, 1.07, 0.90), grass_weight);
     ground = mix(ground, stone * vec3(0.99, 1.00, 1.04), rock_weight * 0.78);
-    ground *= mix(0.91, 1.08, noise2(world_position.xz * 0.18));
+    // ILE_MANGA_V12_TERRAIN: larges variations douces de teinte (sans changer le relief).
+    float broad = noise2(world_position.xz * 0.025);
+    ground *= mix(0.87, 1.11, broad);
+    ground *= mix(0.94, 1.04, noise2(world_position.xz * 0.18));
 
     ALBEDO = ground;
     ROUGHNESS = mix(0.98, 0.84, rock_weight);

@@ -26,7 +26,10 @@ void fragment() {
 
     ALBEDO = mix(base_color * vec3(0.65, 0.89, 1.15), vec3(0.13, 0.54, 0.75), 0.46);
     ALBEDO = mix(ALBEDO, vec3(0.81, 0.95, 0.98), foam);
-    ROUGHNESS = 0.27 + ripple.x * 0.04;
+    // ILE_MANGA_V12_WATER: micro variations de surface sobres et peu couteuses.
+    float micro = sin(uv.x * 0.82 + t * 0.45) * cos(uv.y * 0.77 - t * 0.51);
+    ALBEDO *= mix(0.97, 1.045, 0.5 + 0.5 * micro);
+    ROUGHNESS = 0.25 + ripple.x * 0.04;
     METALLIC = 0.08;
     SPECULAR = 0.65;
     EMISSION = vec3(0.16, 0.36, 0.45) * sparkle;
