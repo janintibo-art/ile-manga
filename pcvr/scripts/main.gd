@@ -51,6 +51,7 @@ func _ready() -> void:
 	_create_scenery_v6()
 	_create_village_details_v7()
 	_create_scenery_v12()
+	_create_scenery_v13()
 	_create_structures()
 	_create_players()
 	_build_physical_world_v11()
@@ -442,6 +443,13 @@ func _create_scenery_v12() -> void:
 	visuals.name = "Paysages_fantasy_V12"
 	add_child(visuals)
 	visuals.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
+
+func _create_scenery_v13() -> void:
+	var scenic := preload("res://scripts/scenery_v13.gd").new()
+	scenic.name = "Falaises_cascades_v13"
+	add_child(scenic)
+	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
 
 
 func _create_village_details_v7() -> void:
