@@ -544,6 +544,7 @@ func _create_players() -> void:
 
 	pc_root = Node3D.new()
 	pc_root.name = "Joueur_ecran"
+	pc_root.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	pc_root.position = xr_origin.position
 	add_child(pc_root)
 	pc_camera = Camera3D.new()
@@ -765,6 +766,9 @@ func _move_desktop(delta: float) -> void:
 		_move_player(pc_root, Vector3.ZERO)
 	if pc_hero != null:
 		pc_hero.position = pc_root.position
+		if axis.length() > 0.05:
+			var facing: Vector3 = pc_root.global_basis.x * axis.x + pc_root.global_basis.z * axis.y
+			pc_hero.rotation.y = atan2(-facing.x, -facing.z)
 
 
 func _build_physical_world_v11() -> void:
@@ -792,7 +796,7 @@ func _new_player_body_v11(label: String, spawn: Vector3) -> CharacterBody3D:
 	body.name = label
 	body.collision_layer = 2
 	body.collision_mask = COLLISION_LAYER_V11
-	body.floor_snap_length = 0.32
+	body.floor_snap_length = 0.18
 	body.floor_max_angle = deg_to_rad(45.0)
 	body.safe_margin = 0.03
 	body.position = spawn + Vector3.UP * 0.22
@@ -838,30 +842,25 @@ func _add_obstacle_cylinder_v11(label: String, pos: Vector3, radius: float, heig
 
 
 func _move_player(origin: Node3D, offset: Vector3) -> void:
-	# ILE_MANGA_V11_SOL_CORRECTION: recuperation si capsule sous le terrain.
+	# Corps physique unique : aucune teleportation verticale a chaque image.
 	var body: CharacterBody3D = vr_body if origin == xr_origin else pc_body
 	if body == null:
 		return
-	var step: float = maxf(get_physics_process_delta_time(), 0.001)
-	var ground_before: float = _height_at(body.position.x, body.position.z)
-	if body.position.y < ground_before - 0.12:
-		body.position.y = ground_before + 0.22
-		body.velocity.y = 0.0
-	body.velocity.x = offset.x / step
-	body.velocity.z = offset.z / step
+	var dt: float = maxf(get_physics_process_delta_time(), 0.001)
+	body.velocity.x = offset.x / dt
+	body.velocity.z = offset.z / dt
 	if body.is_on_floor():
-		body.velocity.y = -0.2
+		body.velocity.y = 0.0
 	else:
-		body.velocity.y -= GRAVITY_V11 * step
+		body.velocity.y -= GRAVITY_V11 * dt
 	body.move_and_slide()
+	# Secours uniquement si chute sous la carte (jamais proche du sol).
+	var ground: float = _height_at(body.position.x, body.position.z)
+	if body.position.y < ground - 2.5:
+		body.global_position = Vector3(body.position.x, ground + 0.16, body.position.z)
+		body.velocity = Vector3.ZERO
 	body.position.x = clampf(body.position.x, -72.0, 72.0)
 	body.position.z = clampf(body.position.z, -72.0, 72.0)
-	# Filet de securite: evite une chute indefinie si un triangle
-	# de collision est absent/inverse ou si une sauvegarde est ancienne.
-	var ground_after: float = _height_at(body.position.x, body.position.z)
-	if body.position.y < ground_after + 0.02:
-		body.position.y = ground_after + 0.12
-		body.velocity.y = maxf(0.0, body.velocity.y)
 	origin.position = body.position - Vector3.UP * 0.09
 
 
