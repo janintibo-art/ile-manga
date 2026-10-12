@@ -8,3 +8,5 @@ Le workflow `Build Windows EXE VR et PC` génère exactement deux exécutables :
 Terrain et eau sous `shaders/` ; deux niveaux de rendu dans `scripts/main.gd`.
 Assets GLB originaux préparés temporairement par `stage_assets.py` depuis `www/assets/`.
 Voir `../docs/PC_VR_NATIVE.md`.
+
+V7 : détails du village dans `scripts/village_details.gd`, sans changement OpenXR.

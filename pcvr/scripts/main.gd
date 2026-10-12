@@ -1,5 +1,5 @@
 extends Node3D
-## Île Manga V6 : forêt, plages et village enrichis — même base VR stable.
+## Île Manga V7 : hameau détail, bordures végétales et sentiers — contrôles VR inchangés.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
@@ -36,6 +36,7 @@ func _ready() -> void:
 	_create_village()
 	_create_ground_details()
 	_create_scenery_v6()
+	_create_village_details_v7()
 	_create_structures()
 	_create_players()
 	_init_native_xr()
@@ -405,6 +406,14 @@ func _create_scenery_v6() -> void:
 			light.shadow_enabled = false
 			light.position = bulb.position
 			add_child(light)
+
+# Décors V7 séparés du gameplay pour ne pas toucher à OpenXR/aux contrôles.
+func _create_village_details_v7() -> void:
+	var details := preload("res://scripts/village_details.gd").new()
+	details.name = "Village_detail_v7"
+	add_child(details)
+	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
 
 func _create_village() -> void:
 	var rng := RandomNumberGenerator.new()

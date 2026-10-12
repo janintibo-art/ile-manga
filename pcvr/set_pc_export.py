@@ -1,17 +1,13 @@
-"""CI only: prepares a normal PC build that does not start OpenXR/Vulkan.
-
-Run after producing the VR executable. The checkout's local config is the
-VR baseline; GitHub Actions gets a disposable copy and changes it in-place.
-"""
+"""Prepare the non-VR Windows export without tying the check to a version number."""
 from pathlib import Path
+import re
 
 config = Path(__file__).with_name("project.godot")
 text = config.read_text(encoding="utf-8")
-from_name = 'config/name="Ile Manga VR V5"'
-from_xr = 'openxr/enabled=true'
-assert text.count(from_name) == 1, "VR project name missing or ambiguous"
-assert text.count(from_xr) == 1, "OpenXR setting missing or ambiguous"
-text = text.replace(from_name, 'config/name="Ile Manga PC V5"')
-text = text.replace(from_xr, 'openxr/enabled=false')
+pattern = r'config/name="Ile Manga VR V[0-9]+"'
+assert len(re.findall(pattern, text)) == 1, "Expected one Ile Manga VR project name"
+assert text.count("openxr/enabled=true") == 1, "Expected one enabled OpenXR setting"
+text = re.sub(pattern, lambda m: m.group(0).replace(" Manga VR ", " Manga PC "), text, count=1)
+text = text.replace("openxr/enabled=true", "openxr/enabled=false", 1)
 config.write_text(text, encoding="utf-8")
-print("PC CLASSIQUE : OpenXR desactive dans l'export Windows PC")
+print("PC CLASSIQUE : OpenXR desactive dans le projet Godot")
