@@ -19,6 +19,7 @@ var right_hand: XRController3D
 var pc_root: Node3D
 var pc_camera: Camera3D
 var pc_hero: Node3D
+var hero_mesh_floor_offset_v11: float = 0.0
 var message: Label
 var info: Label
 var turn_ready: bool = true
@@ -131,6 +132,8 @@ func _create_land() -> void:
 	terrain_body.collision_mask = 0
 	var collision := CollisionShape3D.new()
 	collision.shape = terrain.mesh.create_trimesh_shape()
+	if collision.shape is ConcavePolygonShape3D:
+		(collision.shape as ConcavePolygonShape3D).backface_collision = true
 	terrain_body.add_child(collision)
 	add_child(terrain_body)
 
@@ -553,6 +556,7 @@ func _create_players() -> void:
 	pc_camera.look_at(pc_root.global_position + Vector3(0, 1.2, 0))
 	pc_camera.current = true
 	pc_hero = _add_glb("res://assets/models/characters/hero.glb", "Heros_PC", pc_root.position, 1.0, 0.0)
+	hero_mesh_floor_offset_v11 = _hero_foot_offset_v11()
 
 	var hud := CanvasLayer.new()
 	add_child(hud)
@@ -760,15 +764,13 @@ func _move_desktop(delta: float) -> void:
 		axis.x += 1.0
 	if axis.length() > 0.0:
 		axis = axis.normalized()
-		var direction: Vector3 = pc_root.global_basis.x * axis.x + pc_root.global_basis.z * axis.y
-		_move_player(pc_root, direction * WALK_SPEED * delta)
-	else:
-		_move_player(pc_root, Vector3.ZERO)
+	var direction: Vector3 = pc_root.global_basis.x * axis.x + pc_root.global_basis.z * axis.y
+	_move_player(pc_root, direction * WALK_SPEED * delta)
 	if pc_hero != null:
-		pc_hero.position = pc_root.position
+		pc_hero.position = pc_root.position + Vector3.UP * hero_mesh_floor_offset_v11
 		if axis.length() > 0.05:
-			var facing: Vector3 = pc_root.global_basis.x * axis.x + pc_root.global_basis.z * axis.y
-			pc_hero.rotation.y = atan2(-facing.x, -facing.z)
+			# Mesh GLB is oriented opposite to the old visual rotation.
+			pc_hero.rotation.y = atan2(-direction.x, -direction.z) + PI
 
 
 func _build_physical_world_v11() -> void:
@@ -842,42 +844,43 @@ func _add_obstacle_cylinder_v11(label: String, pos: Vector3, radius: float, heig
 
 
 func _move_player(origin: Node3D, offset: Vector3) -> void:
-	# Corps physique unique : aucune teleportation verticale a chaque image.
 	var body: CharacterBody3D = vr_body if origin == xr_origin else pc_body
 	if body == null:
 		return
 	var dt: float = maxf(get_physics_process_delta_time(), 0.001)
+	var ground: float = _height_at(body.position.x, body.position.z)
+	if body.position.y < ground - 0.7:
+		# Single rescue outside the surface; capsule must start above the terrain.
+		body.global_position = Vector3(body.position.x, ground + 1.15, body.position.z)
+		body.velocity = Vector3.ZERO
 	body.velocity.x = offset.x / dt
 	body.velocity.z = offset.z / dt
 	if body.is_on_floor():
-		body.velocity.y = 0.0
+		body.velocity.y = -0.05
 	else:
-		body.velocity.y -= GRAVITY_V11 * dt
+		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
 	body.move_and_slide()
-	# Secours uniquement si chute sous la carte (jamais proche du sol).
-	var ground: float = _height_at(body.position.x, body.position.z)
-	if body.position.y < ground - 2.5:
-		body.global_position = Vector3(body.position.x, ground + 0.16, body.position.z)
-		body.velocity = Vector3.ZERO
 	body.position.x = clampf(body.position.x, -72.0, 72.0)
 	body.position.z = clampf(body.position.z, -72.0, 72.0)
-	origin.position = body.position - Vector3.UP * 0.09
+	# Body origin represents the feet; avoid the old -0.09 m offset.
+	origin.position = body.position
 
 
 func _sync_physics_after_load_v11() -> void:
-	# Place le joueur sur le relief, meme pour une sauvegarde creee avant V11.
 	if vr_body != null:
-		var start_vr: Vector3 = xr_origin.position
-		start_vr.y = maxf(start_vr.y, _height_at(start_vr.x, start_vr.z) + 0.04)
-		xr_origin.position = start_vr
-		vr_body.position = start_vr + Vector3.UP * 0.18
+		var pos_vr: Vector3 = xr_origin.position
+		pos_vr.y = maxf(pos_vr.y, _height_at(pos_vr.x, pos_vr.z) + 0.9)
+		vr_body.global_position = pos_vr
 		vr_body.velocity = Vector3.ZERO
+		xr_origin.position = pos_vr
 	if pc_body != null:
-		var start_pc: Vector3 = pc_root.position
-		start_pc.y = maxf(start_pc.y, _height_at(start_pc.x, start_pc.z) + 0.04)
-		pc_root.position = start_pc
-		pc_body.position = start_pc + Vector3.UP * 0.18
+		var pos_pc: Vector3 = pc_root.position
+		pos_pc.y = maxf(pos_pc.y, _height_at(pos_pc.x, pos_pc.z) + 0.9)
+		pc_body.global_position = pos_pc
 		pc_body.velocity = Vector3.ZERO
+		pc_root.position = pos_pc
+	if pc_hero != null:
+		pc_hero.position = pc_root.position + Vector3.UP * hero_mesh_floor_offset_v11
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -907,3 +910,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			_restart_xr()
 	if not xr_active and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		pc_root.rotate_y(-event.relative.x * 0.005)
+
+func _hero_foot_offset_v11() -> float:
+	if pc_hero == null:
+		return 0.0
+	var found: bool = false
+	var min_y: float = 1e20
+	var pending: Array[Node] = [pc_hero]
+	while not pending.is_empty():
+		var n: Node = pending.pop_back()
+		if n is MeshInstance3D:
+			var visual: MeshInstance3D = n as MeshInstance3D
+			if visual.mesh != null:
+				var bounds: AABB = visual.get_aabb()
+				for xx in [0.0, 1.0]:
+					for yy in [0.0, 1.0]:
+						for zz in [0.0, 1.0]:
+							var pt: Vector3 = bounds.position + bounds.size * Vector3(xx, yy, zz)
+							min_y = minf(min_y, (visual.global_transform * pt).y)
+							found = true
+		for c in n.get_children():
+			pending.append(c)
+	return pc_hero.global_position.y - min_y if found else 0.0
+
