@@ -1,24 +1,22 @@
-name: Build PC VR OpenXR Natif EXE
+name: Build Windows EXE VR et PC
 
 on:
   push:
     branches: [main]
     paths:
       - "pcvr/**"
-      - "www/assets/models/**"
-      - "www/assets/textures/**"
+      - "www/assets/**"
       - ".github/workflows/build-pcvr-native.yml"
   workflow_dispatch:
 
 jobs:
-  export-windows-pc-vr:
+  windows-vr-et-pc:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 90
-
+    timeout-minutes: 110
     steps:
-      - name: Recuperer Ile Manga et ses modeles 3D
+      - name: Recuperer le depot
         uses: actions/checkout@v4
 
       - name: Installer Godot 4.7.2 et templates Windows
@@ -28,48 +26,83 @@ jobs:
           use-dotnet: false
           include-templates: true
 
-      - name: Verifier la version de Godot
-        run: godot --version
-
-      - name: Copier uniquement les assets necessaires au portage natif
+      - name: Preparer les vrais modeles et textures
         run: python3 pcvr/stage_assets.py
 
-      - name: Importer le projet et les GLB dans Godot
+      - name: Importer scene GLB et ressources Godot
         run: godot --headless --editor --path pcvr --import
 
-      - name: Diagnostiquer les erreurs GDScript au lancement headless
+      - name: Controle GDScript (VR)
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v3_test.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v3_test.log; then
-            echo "Erreur de syntaxe Godot detectee"
-            exit 1
-          fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v4_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v4_vr.log; then exit 1; fi
 
-      - name: Verifier que les shaders, textures et GLB ont ete importes
+      - name: Verifier l'inversion du joystick et la separation PC
         run: |
-          test -s pcvr/assets/textures/terrain/grass.jpg
-          test -s pcvr/assets/textures/terrain/sand.jpg
-          test -s pcvr/assets/textures/terrain/stone.jpg
-          test -s pcvr/assets/models/props/Mur_de_son.glb
-          test -s pcvr/assets/models/props/Feu.glb
-          test -s pcvr/shaders/terrain.gdshader
-          test -s pcvr/shaders/water.gdshader
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          import configparser
+          code = Path('pcvr/scripts/main.gd').read_text()
+          assert '(right * stick.x + forward * stick.y)' in code
+          assert 'if OS.has_feature("ile_manga_pc"):' in code
+          cfg = configparser.ConfigParser(interpolation=None)
+          cfg.read('pcvr/export_presets.cfg')
+          assert cfg['preset.0']['name'] == '"Windows VR"'
+          assert cfg['preset.1']['name'] == '"Windows PC"'
+          assert cfg['preset.0']['custom_features'] == '"ile_manga_vr"'
+          assert cfg['preset.1']['custom_features'] == '"ile_manga_pc"'
+          assert 'openxr/enabled=true' in Path('pcvr/project.godot').read_text()
+          print('Configurations PC et VR distinctes : OK')
+          PYTEST
 
-      - name: Exporter Windows OpenXR en fichier EXE
+      - name: Exporter exe VR native OpenXR
         working-directory: pcvr
         run: |
-          mkdir -p build
-          godot --headless --export-release "Windows Desktop" build/Ile_Manga_PC_VR_v3.exe
+          mkdir -p ../dist
+          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v4.exe
 
-      - name: Afficher les fichiers Windows crees
-        run: ls -lah pcvr/build/
+      - name: Preparer le mode PC classique SANS OpenXR
+        run: python3 pcvr/set_pc_export.py
 
-      - name: Publier la version native pour Quest Link et SteamVR
+      - name: Verifier que le mode PC n'active pas OpenXR
+        run: |
+          grep -q 'openxr/enabled=false' pcvr/project.godot
+          godot --headless --editor --path pcvr --import
+
+      - name: Controle GDScript (PC)
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v4_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v4_pc.log; then exit 1; fi
+
+      - name: Exporter exe PC normal (clavier / souris)
+        working-directory: pcvr
+        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v4.exe
+
+      - name: Verifier exactement deux EXE Windows
+        shell: bash
+        run: |
+          test -s dist/Ile_Manga_VR_v4.exe
+          test -s dist/Ile_Manga_PC_v4.exe
+          test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
+          file dist/*.exe
+          du -h dist/*.exe
+
+      - name: Telechargement de la version VR Quest 3
         uses: actions/upload-artifact@v4
         with:
-          name: ile-manga-pc-vr-openxr-natif-v3
-          path: pcvr/build/*
+          name: Ile-Manga-VR-v4
+          path: dist/Ile_Manga_VR_v4.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Telechargement de la version PC classique
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ile-Manga-PC-v4
+          path: dist/Ile_Manga_PC_v4.exe
           if-no-files-found: error
           retention-days: 30

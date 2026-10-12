@@ -1,11 +1,14 @@
-# PC VR OpenXR natif V2
+# Île Manga — V4 PC et Quest 3
 
-Portage initial autonome sous Godot 4.7.2. L'exécutable Windows démarre une
-session OpenXR native depuis Meta Quest Link ou SteamVR, sans navigateur.
+Portage Godot OpenXR à deux modes, compilés par un seul workflow GitHub :
 
-Ce dossier contient le CODE seulement. Les assets GLB existants restent dans
-`www/assets/` et sont copiés temporairement par `stage_assets.py` en CI.
-Les modèles 3D et la formule du terrain sont issus du projet Babylon.js.
+- `Ile_Manga_VR_v4.exe` : vrai PC VR Meta Quest Link / SteamVR.
+- `Ile_Manga_PC_v4.exe` : jeu Windows 3D normal, sans OpenXR.
 
-Voir `../docs/PC_VR_NATIVE.md` pour les instructions utilisateur et les
-limitations de cette version de validation VR.
+`stage_assets.py` copie au moment du build les modèles GLB et les textures
+déjà présents dans `www/assets/` ; on n'ajoute jamais ces gros fichiers au ZIP.
+
+`set_pc_export.py` désactive OpenXR dans la configuration CI après l'export VR.
+Les tags d'export Godot `ile_manga_vr` et `ile_manga_pc` sélectionnent le mode.
+
+Voir `../docs/PC_VR_NATIVE.md` pour la marche à suivre.

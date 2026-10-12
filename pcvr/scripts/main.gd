@@ -1,5 +1,5 @@
 extends Node3D
-## Île Manga PC VR V3 : rendu amélioré et diagnostic OpenXR.
+## Île Manga V4 : exports séparés Quest 3 OpenXR et PC normal.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
@@ -303,7 +303,7 @@ func _create_players() -> void:
 	var hud := CanvasLayer.new()
 	add_child(hud)
 	info = Label.new()
-	info.text = "ÎLE MANGA PC VR V3  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
+	info.text = "ÎLE MANGA VR V4  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
 	info.add_theme_font_size_override("font_size", 16)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
@@ -330,6 +330,19 @@ func _make_hand(controller: XRController3D, color: Color) -> void:
 
 
 func _init_native_xr() -> void:
+	# La version PC classique NE doit jamais utiliser la caméra du casque.
+	# Un second export désactive également OpenXR dans project.godot.
+	if OS.has_feature("ile_manga_pc"):
+		xr_active = false
+		native_vr = null
+		get_viewport().use_xr = false
+		pc_camera.current = true
+		xr_camera.current = false
+		left_hand.visible = false
+		right_hand.visible = false
+		xr_restart_button.visible = false
+		print("ILE_MANGA_MODE: PC_CLASSIQUE")
+		return
 	# OpenXR/Vulkan initialise la connexion au démarrage du processus Godot.
 	# Impossible de garantir une reconnexion au casque sans redémarrer le jeu.
 	native_vr = XRServer.find_interface("OpenXR")
@@ -357,6 +370,11 @@ func _init_native_xr() -> void:
 
 
 func _update_status() -> void:
+	if OS.has_feature("ile_manga_pc"):
+		info.text = "ÎLE MANGA PC V4  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
+		message.text = "Mode PC classique — aucun casque VR nécessaire."
+		print("ILE_MANGA_NATIVE_STATUS: ", message.text)
+		return
 	if xr_active:
 		message.text = "OpenXR actif : Quest Link / SteamVR"
 	elif native_vr == null:
@@ -392,7 +410,8 @@ func _move_xr(delta: float) -> void:
 		var right: Vector3 = xr_camera.global_transform.basis.x
 		right.y = 0.0
 		right = right.normalized()
-		var move: Vector3 = (right * stick.x - forward * stick.y)
+		# Axe Quest 3 : pousser le stick vers l’avant = direction de la tête.
+		var move: Vector3 = (right * stick.x + forward * stick.y)
 		_move_player(xr_origin, move * minf(stick.length(), 1.0) * WALK_SPEED * delta)
 	var turn: float = right_hand.get_vector2("primary").x
 	if absf(turn) < 0.35:
