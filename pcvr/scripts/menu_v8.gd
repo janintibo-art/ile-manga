@@ -48,13 +48,24 @@ func _make_pc_panel() -> void:
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.add_child(center)
 	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(580, 440)
+	card.custom_minimum_size = Vector2(650, 510)
+	# ILE_MANGA_MENU_V9 : panneau aux couleurs de l'aventure.
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.035, 0.11, 0.16, 0.98)
+	style.border_color = Color(0.89, 0.71, 0.36)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(18)
+	style.set_content_margin_all(24)
+	style.shadow_color = Color(0, 0, 0, 0.45)
+	style.shadow_size = 16
+	card.add_theme_stylebox_override("panel", style)
 	center.add_child(card)
 	var inner := VBoxContainer.new()
 	inner.add_theme_constant_override("separation", 13)
 	card.add_child(inner)
 	heading = Label.new()
-	heading.text = "ÎLE MANGA  •  AVENTURE"
+	heading.text = "✦  ÎLE MANGA  ✦"
+	heading.add_theme_color_override("font_color", Color(1.0, 0.82, 0.47))
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading.add_theme_font_size_override("font_size", 34)
 	inner.add_child(heading)
@@ -108,7 +119,7 @@ func _show_view(which: String) -> void:
 			var data: Dictionary = Saves.read_slot(i)
 			var info: String = "vide"
 			if not data.is_empty():
-				info = str(data.get("saved_at", "date inconnue")) + " - " + str(int(float(data.get("play_seconds", 0.0)) / 60.0)) + " min"
+				info = "%s  •  %s  •  %d min" % [str(data.get("zone", "Île Manga")), str(data.get("saved_at", "date inconnue")), int(float(data.get("play_seconds", 0.0)) / 60.0)]
 			options.append("Partie %d : %s" % [i, info])
 		options.append("Retour")
 	elif view == "settings":
@@ -119,7 +130,7 @@ func _redraw() -> void:
 	if not opened:
 		return
 	if xr_mode:
-		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  V8", "", "Saves: 6 emplacements", ""])
+		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  V9", "", "Saves: 6 emplacements", ""])
 		for i in range(options.size()):
 			lines.append(("➤ " if i == selection else "   ") + options[i])
 		vr_text.text = "\n".join(lines)
@@ -131,7 +142,19 @@ func _redraw() -> void:
 			var choice: String = options[i]
 			var button := Button.new()
 			button.text = choice
-			button.custom_minimum_size.y = 38
+			button.custom_minimum_size.y = 45
+			button.add_theme_font_size_override("font_size", 17)
+			var normal := StyleBoxFlat.new()
+			normal.bg_color = Color(0.12, 0.25, 0.32)
+			normal.border_color = Color(0.43, 0.47, 0.37)
+			normal.set_border_width_all(1)
+			normal.set_corner_radius_all(9)
+			button.add_theme_stylebox_override("normal", normal)
+			var hover := normal.duplicate() as StyleBoxFlat
+			hover.bg_color = Color(0.24, 0.43, 0.43)
+			hover.border_color = Color(0.99, 0.76, 0.32)
+			button.add_theme_stylebox_override("hover", hover)
+			button.add_theme_stylebox_override("focus", hover)
 			button.pressed.connect(_activate.bind(i))
 			list_box.add_child(button)
 		if (view == "load" or view == "save") and playing:
