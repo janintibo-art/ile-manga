@@ -1,56 +1,41 @@
-# Île Manga V4 — deux exécutables Windows (sans APK ni site web)
+# Île Manga V5 — Qualité graphique PC et VR Quest 3
 
-## Livraison GitHub Actions
+## Version V5 — Deux EXE uniquement
 
-Un seul workflow `Build Windows EXE VR et PC` produit deux artefacts :
+Depuis **Actions > Build Windows EXE VR et PC** :
 
-- `Ile-Manga-VR-v4` contient un seul `Ile_Manga_VR_v4.exe`.
-- `Ile-Manga-PC-v4` contient un seul `Ile_Manga_PC_v4.exe`.
+- Artefact `Ile-Manga-VR-v5` → `Ile_Manga_VR_v5.exe` ; OpenXR natif Quest 3 via Meta Link / SteamVR.
+- Artefact `Ile-Manga-PC-v5` → `Ile_Manga_PC_v5.exe` ; Windows normal sans casque.
 
-Le téléchargement depuis GitHub Actions est un ZIP, mais **à l'intérieur se
-trouve un EXE Windows unique**, directement utilisable après extraction.
-Ces EXE embarquent les ressources du jeu (PCK Godot intégrée).
+GitHub Actions emballe chaque EXE dans un ZIP d'artefact. Extraire le ZIP pour récupérer le fichier EXE.
+Aucun workflow APK, site web ou Electron n'est requis. Le dépôt conserve `www/assets` comme bibliothèque de modèles et textures pour le build Godot.
 
-La compilation APK, le déploiement GitHub Pages et la compilation de l'ancien
-lanceur Electron sont supprimés des workflows, sans supprimer les modèles
-3D d'origine sous `www/assets/`, qui restent la source des ressources natives.
+## Graphismes V5
 
-## Version VR : Ile_Manga_VR_v4.exe
+- Sol : véritable mélange de sable, herbe, pierre par hauteur, pente, bruit spatial, avec détails secondaires PC.
+- Océan : géométrie ondulée et surface animée ; mousse côtière stylisée opaque.
+- Végétation : brins d'herbe MultiMesh (2700 PC, 850 VR) avec distance d'affichage adaptée.
+- Éclairage : ambiance, ombres en cascades avec réglages PC/VR, brume très douce.
+- **PC** : MSAA 4x, SSAO, SSIL, glow discret, retouche colorimétrique. Rendu en résolution native du moniteur.
+- **VR** : MSAA 2x, ombres moins coûteuses, sans post-traitement d'écran coûteux. Résolution contrôlée par Quest Link / SteamVR ; aucun réglage artificiel de suréchantillonnage dans le jeu.
 
-- Connecter le Quest 3 dans **Meta Quest Link** (USB ou Air Link) ou dans
-  **SteamVR** avec son runtime OpenXR actif.
-- Entrer dans l'environnement Link sur le casque AVANT de lancer l'EXE VR.
-- Marcher au joystick gauche : avant = avancer, arrière = reculer.
-- Gauche et droite restent inchangés. Rotation par paliers au stick droit.
-- OpenXR est activé dans le projet VR ; si le casque n'est pas prêt, la
-  fenêtre diagnostic sur le PC permet de relancer après connexion.
+Les détails sont plus riches, mais ces changements ne convertissent pas encore toutes les quêtes, tous les intérieurs et tous les modèles de la version Babylon.js. La VR doit être testée sur casque.
 
-Un export VR natif ne garantit pas à lui seul une apparition automatique dans
-la bibliothèque Meta. Il peut être ajouté comme application inconnue ou comme
-raccourci non-Steam selon les options disponibles dans ces logiciels.
+## Commandes PC normal
 
-## Version PC : Ile_Manga_PC_v4.exe
+- ZQSD / WASD : marche ; clic droit + souris : caméra ; Échap : quitter.
+- **F11** : plein écran exclusif / fenêtre.
+- **F6** : netteté ultra : suréchantillonnage 120 % (très exigeant en 4K). Nouvelle pression : 100 %.
+- La résolution réelle dépend du moniteur. Un EXE ne rend pas automatiquement le PC en 4K si l'écran est en 1080p.
 
-- Se lance normalement sur Windows, sans Quest ni runtime OpenXR.
-- ZQSD / WASD / flèches pour avancer, reculer et se déplacer latéralement.
-- Maintenir le clic droit et bouger la souris pour tourner la caméra.
-- Échap pour fermer le jeu.
-- La configuration du **deuxième export désactive explicitement OpenXR** au
-  démarrage, et la scène utilise le tag d'export `ile_manga_pc` pour imposer
-  la caméra PC.
+## Commandes VR
 
-## Précision sur les ressources
+- Entrer dans Meta Quest Link ou SteamVR **avant** de lancer `Ile_Manga_VR_v5.exe`.
+- Stick gauche : avant pour avancer, arrière pour reculer ; gauche et droite conservés.
+- Stick droit : rotation par paliers.
+- La fréquence VR (72/80/90/120 Hz selon configuration) et la résolution de rendu sont définies dans le logiciel PC Meta / SteamVR ; privilégier la fluidité et le confort.
+- Si le casque n'est pas connecté, l'exécutable VR affiche le diagnostic, puis il peut être relancé après connexion.
 
-Les deux versions sont basées sur le même projet Godot, utilisent les mêmes
-textures et modèles originaux de la V3, et sont compilées à la suite. Ce
-portage continue de reprendre progressivement les fonctions de la version
-historique Babylon.js ; il ne réimplémente pas encore toutes les quêtes et
-interactions présentes dans les anciens fichiers web.
+## Vérification et limites
 
-## Procédure après la V4
-
-Pour les versions suivantes, seul le workflow `Build Windows EXE VR et PC`
-sera maintenu. Les workflows `build-apk.yml`, `deploy-pages.yml` et
-`build-pc-vr.yml` doivent être supprimés avec `git rm` lors de l'envoi de
-l'archive V4. Les anciennes exécutions resteront visibles dans l'historique
-GitHub Actions, mais elles ne seront plus générées.
+GitHub Actions importe les ressources, vérifie les scripts et génère **exactement deux EXE**. Un workflow vert ne prouve pas le rendu final ni les performances dans le casque. Tester d'abord le chargement, l'océan, les arbres et les déplacements. Les effets PC SSAO/SSIL et la végétation peuvent impacter les FPS, notamment en 4K.

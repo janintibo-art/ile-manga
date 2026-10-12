@@ -1,5 +1,5 @@
 extends Node3D
-## Île Manga V4 : exports séparés Quest 3 OpenXR et PC normal.
+## Île Manga V5 : profils graphiques PC haute fidélité et VR confortable.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
@@ -25,18 +25,32 @@ var native_vr: XRInterface
 var ocean: MeshInstance3D
 var ocean_material: ShaderMaterial
 var xr_restart_button: Button
+var ultranet_pc: bool = false
 
 
 func _ready() -> void:
+	_configure_quality()
 	_create_lighting()
 	_create_land()
 	_create_water()
 	_create_village()
+	_create_ground_details()
 	_create_structures()
 	_create_players()
 	_init_native_xr()
 	_update_status()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
+
+
+# Profils distincts : rendu haute définition sur PC, charge VR maîtrisée.
+func _configure_quality() -> void:
+	if OS.has_feature("ile_manga_pc"):
+		get_viewport().msaa_3d = Viewport.MSAA_4X
+		get_viewport().scaling_3d_scale = 1.0
+		print("ILE_MANGA_V5: PC NATIF, MSAA 4x, resolution ecran native")
+	else:
+		get_viewport().msaa_3d = Viewport.MSAA_2X
+		print("ILE_MANGA_V5: VR, MSAA 2x, resolution geree par Quest Link / OpenXR")
 
 
 func _height_at(x: float, z: float) -> float:
@@ -87,6 +101,7 @@ func _create_land() -> void:
 		m.set_shader_parameter("sand_tex", load("res://assets/textures/terrain/sand.jpg"))
 		m.set_shader_parameter("grass_tex", load("res://assets/textures/terrain/grass.jpg"))
 		m.set_shader_parameter("stone_tex", load("res://assets/textures/terrain/stone.jpg"))
+		m.set_shader_parameter("extra_detail", OS.has_feature("ile_manga_pc"))
 		terrain.material_override = m
 	else:
 		var fallback := StandardMaterial3D.new()
@@ -100,6 +115,9 @@ func _create_water() -> void:
 	ocean.name = "Ocean_anime"
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(700.0, 700.0)
+	# Davantage de sommets pour les ondulations réelles de l'eau.
+	plane.subdivide_width = 64 if OS.has_feature("ile_manga_pc") else 40
+	plane.subdivide_depth = 64 if OS.has_feature("ile_manga_pc") else 40
 	ocean.mesh = plane
 	ocean.position.y = -0.42
 	var shader: Shader = load("res://shaders/water.gdshader")
@@ -107,6 +125,7 @@ func _create_water() -> void:
 		ocean_material = ShaderMaterial.new()
 		ocean_material.shader = shader
 		ocean_material.set_shader_parameter("water_tex", load("res://assets/textures/water/water.jpg"))
+		ocean_material.set_shader_parameter("wave_strength", 1.0 if OS.has_feature("ile_manga_pc") else 0.65)
 		ocean.material_override = ocean_material
 	else:
 		ocean.material_override = _material(Color(0.24, 0.65, 0.83))
@@ -127,13 +146,29 @@ func _create_lighting() -> void:
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_BG
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	# Brume aérienne très légère : le paysage garde son contraste de près.
+	env.fog_enabled = true
+	env.fog_light_color = Color(0.73, 0.84, 0.93)
+	env.fog_density = 0.0015
+	# Les effets coûteux restent réservés au PC sans casque.
+	if OS.has_feature("ile_manga_pc"):
+		env.ssao_enabled = true
+		env.ssil_enabled = true
+		env.glow_enabled = true
+		env.glow_intensity = 0.35
+		env.adjustment_enabled = true
+		env.adjustment_contrast = 1.04
+		env.adjustment_saturation = 1.07
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55, -35, -20)
 	sun.light_color = Color(1.0, 0.95, 0.82)
-	sun.light_energy = 1.1
+	sun.light_energy = 1.15
 	sun.shadow_enabled = true
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS if OS.has_feature("ile_manga_pc") else DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+	sun.directional_shadow_max_distance = 135.0 if OS.has_feature("ile_manga_pc") else 85.0
+	sun.directional_shadow_blend_splits = OS.has_feature("ile_manga_pc")
 	add_child(sun)
 
 
@@ -184,6 +219,51 @@ func _make_tree(x: float, z: float, seed: int) -> void:
 		leaf.material_override = _material(Color(0.21 + 0.03 * float(i), 0.51 + 0.04 * float(i), 0.27))
 		leaf.position = Vector3(x + rng.randf_range(-0.45, 0.45), y + height + float(i) * 0.45, z + rng.randf_range(-0.4, 0.4))
 		add_child(leaf)
+
+
+# Brins d'herbe distribués par MultiMesh (un lot, pas des milliers de draw calls).
+# Plus dense en mode PC ; parcimonieux en VR pour préserver le framerate.
+func _create_ground_details() -> void:
+	var target_count: int = 2700 if OS.has_feature("ile_manga_pc") else 850
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 5012026
+	var tuft_mesh := QuadMesh.new()
+	tuft_mesh.size = Vector2(0.24, 0.54)
+	var leaf_mat := StandardMaterial3D.new()
+	leaf_mat.albedo_color = Color(0.27, 0.61, 0.25)
+	leaf_mat.roughness = 1.0
+	leaf_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	tuft_mesh.material = leaf_mat
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = tuft_mesh
+	mm.instance_count = target_count
+	var placed: int = 0
+	for trial in range(target_count * 6):
+		if placed >= target_count:
+			break
+		var x: float = rng.randf_range(-72.0, 72.0)
+		var z: float = rng.randf_range(-72.0, 72.0)
+		var y: float = _height_at(x, z)
+		if y < 1.2 or y > 5.7 or Vector2(x, z - 4.0).length() < 12.0:
+			continue
+		if Vector2(x - 9.0, z - 4.0).length() < 8.0 or Vector2(x + 11.0, z - 9.0).length() < 6.0:
+			continue
+		var scale_value: float = rng.randf_range(0.65, 1.6)
+		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(Vector3(scale_value, scale_value, scale_value))
+		var transform := Transform3D(basis, Vector3(x, y + scale_value * 0.25, z))
+		mm.set_instance_transform(placed, transform)
+		mm.set_instance_color(placed, Color(rng.randf_range(0.84, 1.16), rng.randf_range(0.86, 1.12), rng.randf_range(0.79, 1.08)))
+		placed += 1
+	mm.visible_instance_count = placed
+	var patch := MultiMeshInstance3D.new()
+	patch.name = "Herbes_multimesh"
+	patch.multimesh = mm
+	patch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	patch.visibility_range_end = 85.0 if OS.has_feature("ile_manga_pc") else 55.0
+	add_child(patch)
+	print("ILE_MANGA_V5: touffes herbe instanciees = ", placed)
 
 
 func _create_village() -> void:
@@ -303,7 +383,7 @@ func _create_players() -> void:
 	var hud := CanvasLayer.new()
 	add_child(hud)
 	info = Label.new()
-	info.text = "ÎLE MANGA VR V4  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
+	info.text = "ÎLE MANGA VR V5  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
 	info.add_theme_font_size_override("font_size", 16)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
@@ -371,8 +451,8 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC V4  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
-		message.text = "Mode PC classique — aucun casque VR nécessaire."
+		info.text = "ÎLE MANGA PC V5  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
+		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
 		print("ILE_MANGA_NATIVE_STATUS: ", message.text)
 		return
 	if xr_active:
@@ -449,7 +529,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
-		elif event.keycode == KEY_R and not xr_active:
+		elif OS.has_feature("ile_manga_pc") and event.keycode == KEY_F11:
+			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			else:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+		elif OS.has_feature("ile_manga_pc") and event.keycode == KEY_F6:
+			ultranet_pc = not ultranet_pc
+			get_viewport().scaling_3d_scale = 1.2 if ultranet_pc else 1.0
+			print("ILE_MANGA_V5: suréchantillonnage PC = ", get_viewport().scaling_3d_scale)
+		elif event.keycode == KEY_R and not xr_active and not OS.has_feature("ile_manga_pc"):
 			_restart_xr()
 	if not xr_active and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		pc_root.rotate_y(-event.relative.x * 0.005)

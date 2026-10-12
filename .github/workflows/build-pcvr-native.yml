@@ -36,8 +36,8 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v4_vr.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v4_vr.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v5_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v5_vr.log; then exit 1; fi
 
       - name: Verifier l'inversion du joystick et la separation PC
         run: |
@@ -46,6 +46,9 @@ jobs:
           import configparser
           code = Path('pcvr/scripts/main.gd').read_text()
           assert '(right * stick.x + forward * stick.y)' in code
+          assert 'func _create_ground_details() -> void:' in code
+          assert 'Viewport.MSAA_4X' in code and 'Viewport.MSAA_2X' in code
+          assert 'env.ssao_enabled = true' in code
           assert 'if OS.has_feature("ile_manga_pc"):' in code
           cfg = configparser.ConfigParser(interpolation=None)
           cfg.read('pcvr/export_presets.cfg')
@@ -61,7 +64,7 @@ jobs:
         working-directory: pcvr
         run: |
           mkdir -p ../dist
-          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v4.exe
+          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v5.exe
 
       - name: Preparer le mode PC classique SANS OpenXR
         run: python3 pcvr/set_pc_export.py
@@ -75,18 +78,24 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v4_pc.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v4_pc.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v5_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v5_pc.log; then exit 1; fi
 
       - name: Exporter exe PC normal (clavier / souris)
         working-directory: pcvr
-        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v4.exe
+        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v5.exe
+
+      - name: Verifier les shaders haute definition PC et VR
+        run: |
+          grep -q 'uniform bool extra_detail' pcvr/shaders/terrain.gdshader
+          grep -q 'wave_strength' pcvr/shaders/water.gdshader
+          grep -q 'Herbes_multimesh' pcvr/scripts/main.gd
 
       - name: Verifier exactement deux EXE Windows
         shell: bash
         run: |
-          test -s dist/Ile_Manga_VR_v4.exe
-          test -s dist/Ile_Manga_PC_v4.exe
+          test -s dist/Ile_Manga_VR_v5.exe
+          test -s dist/Ile_Manga_PC_v5.exe
           test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
           file dist/*.exe
           du -h dist/*.exe
@@ -94,15 +103,15 @@ jobs:
       - name: Telechargement de la version VR Quest 3
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-VR-v4
-          path: dist/Ile_Manga_VR_v4.exe
+          name: Ile-Manga-VR-v5
+          path: dist/Ile_Manga_VR_v5.exe
           if-no-files-found: error
           retention-days: 30
 
       - name: Telechargement de la version PC classique
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-PC-v4
-          path: dist/Ile_Manga_PC_v4.exe
+          name: Ile-Manga-PC-v5
+          path: dist/Ile_Manga_PC_v5.exe
           if-no-files-found: error
           retention-days: 30
