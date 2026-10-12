@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 110
     steps:
       - name: Recuperer le depot
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Installer Godot 4.7.2 et templates Windows
         uses: chickensoft-games/setup-godot@v2
@@ -32,12 +32,28 @@ jobs:
       - name: Importer scene GLB et ressources Godot
         run: godot --headless --editor --path pcvr --import
 
+      - name: Verifier systeme de sauvegarde et interface
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          a = Path('pcvr/scripts/main.gd').read_text()
+          b = Path('pcvr/scripts/menu_v8.gd').read_text()
+          c = Path('pcvr/scripts/save_manager.gd').read_text()
+          assert 'func _create_game_menu_v8() -> void:' in a
+          assert 'func _start_save_slot(' in a
+          assert 'SLOT_COUNT: int = 6' in c
+          assert 'autosave.json' in c
+          assert 'right_hand.get_float("trigger")' in b
+          assert 'application/icon="res://assets/ui/ile_manga_icon.ico"' in Path('pcvr/export_presets.cfg').read_text()
+          print('Menu, six sauvegardes, autosave et icone : fichiers OK')
+          PYTEST
+
       - name: Controle GDScript (VR)
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v7_vr.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v7_vr.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v8_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v8_vr.log; then exit 1; fi
 
       - name: Verifier l'inversion du joystick et la separation PC
         run: |
@@ -49,8 +65,8 @@ jobs:
           assert 'func _create_ground_details() -> void:' in code
           assert 'Viewport.MSAA_4X' in code and 'Viewport.MSAA_2X' in code
           assert 'env.ssao_enabled = true' in code
-          assert 'func _create_scenery_v7() -> void:' in code
-          assert 'Galets_plage_v7' in code and 'Lanterne_chaude_v7' in code
+          assert 'func _create_village_details_v7() -> void:' in code
+          assert 'Galets_plage_v6' in code and 'Lanterne_chaude_v6' in code
           assert 'if OS.has_feature("ile_manga_pc"):' in code
           cfg = configparser.ConfigParser(interpolation=None)
           cfg.read('pcvr/export_presets.cfg')
@@ -66,7 +82,7 @@ jobs:
         working-directory: pcvr
         run: |
           mkdir -p ../dist
-          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v7.exe
+          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v8.exe
 
       - name: Tester la preparation PC (independante du numero de version)
         run: python3 -m py_compile pcvr/set_pc_export.py
@@ -83,12 +99,12 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v7_pc.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v7_pc.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v8_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v8_pc.log; then exit 1; fi
 
       - name: Exporter exe PC normal (clavier / souris)
         working-directory: pcvr
-        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v7.exe
+        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v8.exe
 
       - name: Verifier les shaders haute definition PC et VR
         run: |
@@ -99,24 +115,24 @@ jobs:
       - name: Verifier exactement deux EXE Windows
         shell: bash
         run: |
-          test -s dist/Ile_Manga_VR_v7.exe
-          test -s dist/Ile_Manga_PC_v7.exe
+          test -s dist/Ile_Manga_VR_v8.exe
+          test -s dist/Ile_Manga_PC_v8.exe
           test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
           file dist/*.exe
           du -h dist/*.exe
 
       - name: Telechargement de la version VR Quest 3
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-VR-v7
-          path: dist/Ile_Manga_VR_v7.exe
+          name: Ile-Manga-VR-v8
+          path: dist/Ile_Manga_VR_v8.exe
           if-no-files-found: error
           retention-days: 30
 
       - name: Telechargement de la version PC classique
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-PC-v7
-          path: dist/Ile_Manga_PC_v7.exe
+          name: Ile-Manga-PC-v8
+          path: dist/Ile_Manga_PC_v8.exe
           if-no-files-found: error
           retention-days: 30

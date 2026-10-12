@@ -46,9 +46,9 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 	var rails: Array[Transform3D] = []
 	for center in [Vector2(9.0, 4.0), Vector2(-11.0, 9.0)]:
 		for row in range(2):
-			var z := center.y - 5.0 + float(row) * 10.0
+			var z: float = center.y - 5.0 + float(row) * 10.0
 			for i in range(9):
-				var x := center.x - 5.0 + float(i) * 1.25
+				var x: float = center.x - 5.0 + float(i) * 1.25
 				if center.x > 0.0 and x < center.x - 2.0 and row == 0:
 					continue
 				posts.append(_placed(x, z, height_fn, Vector3(0.13, 1.2, 0.13), 0.0, 0.6))
@@ -63,8 +63,8 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 	var stones: Array[Transform3D] = []
 	for i in range(37):
 		var t := float(i) / 36.0
-		var x := lerpf(0.0, -11.0, t) + sin(t * TAU) * 0.8
-		var z := lerpf(4.0, 9.0, t)
+		var x: float = lerpf(0.0, -11.0, t) + sin(t * TAU) * 0.8
+		var z: float = lerpf(4.0, 9.0, t)
 		stones.append(_placed(x, z, height_fn, Vector3(rng.randf_range(0.42, 0.76), 0.08, rng.randf_range(0.40, 0.70)), rng.randf_range(-0.5, 0.5), 0.04))
 	var slab := CylinderMesh.new()
 	slab.top_radius = 0.6
@@ -85,8 +85,8 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 		for i in range(count):
 			var angle := rng.randf_range(-PI, PI)
 			var radius := rng.randf_range(4.0, 17.0)
-			var x := cos(angle) * radius
-			var z := 4.0 + sin(angle) * radius
+			var x: float = cos(angle) * radius
+			var z: float = 4.0 + sin(angle) * radius
 			if Vector2(x - 9.0, z - 4.0).length() < 5.4 or Vector2(x + 11.0, z - 9.0).length() < 4.6:
 				continue
 			var h: float = height_fn.call(x, z)

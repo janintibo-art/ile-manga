@@ -1,5 +1,6 @@
 extends Node3D
-## Île Manga V7 : hameau détail, bordures végétales et sentiers — contrôles VR inchangés.
+const SaveStore = preload("res://scripts/save_manager.gd")
+## Île Manga V8 : hameau détail, bordures végétales et sentiers — contrôles VR inchangés.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
 
@@ -26,6 +27,9 @@ var ocean: MeshInstance3D
 var ocean_material: ShaderMaterial
 var xr_restart_button: Button
 var ultranet_pc: bool = false
+var game_menu: Node
+var autosave_clock: float = 0.0
+var game_started: bool = false
 
 
 func _ready() -> void:
@@ -41,6 +45,7 @@ func _ready() -> void:
 	_create_players()
 	_init_native_xr()
 	_update_status()
+	_create_game_menu_v8()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -623,7 +628,58 @@ func _restart_xr() -> void:
 		message.text = "Redémarrage impossible : ferme l'application et relance l'EXE après Quest Link."
 
 
+func _create_game_menu_v8() -> void:
+	game_menu = preload("res://scripts/menu_v8.gd").new()
+	add_child(game_menu)
+	game_menu.start_slot.connect(_start_save_slot)
+	game_menu.save_requested.connect(_save_slot)
+	game_menu.delete_requested.connect(_delete_slot)
+	game_menu.resume_requested.connect(func(): pass)
+	game_menu.setup(xr_active, xr_camera, right_hand)
+
+
+func _start_save_slot(slot: int, new_game: bool) -> void:
+	game_started = true
+	var origin: Node3D = xr_origin if xr_active else pc_root
+	if new_game:
+		origin.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
+		origin.rotation.y = 0.0
+		game_menu.seconds = 0.0
+		_save_slot(slot)
+	else:
+		var data: Dictionary = SaveStore.read_slot(slot)
+		var a: Array = data.get("position", [])
+		if a.size() == 3:
+			origin.position = Vector3(float(a[0]), float(a[1]), float(a[2]))
+		origin.rotation.y = float(data.get("yaw", 0.0))
+		game_menu.seconds = float(data.get("play_seconds", 0.0))
+	if not xr_active and pc_hero != null:
+		pc_hero.position = origin.position
+		pc_hero.rotation.y = origin.rotation.y
+	autosave_clock = 0.0
+
+
+func _delete_slot(slot: int) -> void:
+	print("ILE_MANGA_DELETE: ", slot, " = ", SaveStore.delete_slot(slot))
+
+
+func _save_slot(slot: int) -> void:
+	if not game_started:
+		return
+	var origin: Node3D = xr_origin if xr_active else pc_root
+	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds)
+	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
+
+
 func _process(delta: float) -> void:
+	if game_menu != null and xr_active and game_started and not game_menu.opened and right_hand.get_float("menu_button") > 0.8:
+		game_menu.open_menu()
+	if game_menu != null and (game_menu.opened or not game_started):
+		return
+	autosave_clock += delta
+	if autosave_clock >= 90.0:
+		_save_slot(0)
+		autosave_clock = 0.0
 	if xr_active:
 		_move_xr(delta)
 	else:
@@ -677,7 +733,17 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
-			get_tree().quit()
+			if game_menu != null:
+				if game_menu.opened and game_started:
+					game_menu._close()
+				else:
+					game_menu.open_menu()
+			else:
+				get_tree().quit()
+		elif event.keycode == KEY_F5 and game_started:
+			_save_slot(game_menu.active_slot)
+		elif event.keycode == KEY_F9 and game_started:
+			game_menu.open_menu()
 		elif OS.has_feature("ile_manga_pc") and event.keycode == KEY_F11:
 			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
 				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
