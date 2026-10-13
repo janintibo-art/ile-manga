@@ -57,6 +57,7 @@ func _ready() -> void:
 	_create_scenery_v17()
 	_create_village_v18()
 	_create_structures()
+	_create_village_v19()
 	_create_players()
 	_build_physical_world_v11()
 	_init_native_xr()
@@ -982,3 +983,10 @@ func _create_scenery_v17() -> void:
 	scenic.name = "Sentiers_et_clairieres_v17"
 	add_child(scenic)
 	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
+
+func _create_village_v19() -> void:
+	var details := preload("res://scripts/village_v19.gd").new()
+	details.name = "Facades_toitures_v19"
+	add_child(details)
+	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
