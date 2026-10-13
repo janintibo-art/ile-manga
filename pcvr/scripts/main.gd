@@ -52,6 +52,7 @@ func _ready() -> void:
 	_create_village_details_v7()
 	_create_scenery_v12()
 	_create_scenery_v13()
+	_create_scenery_v15()
 	_create_structures()
 	_create_players()
 	_build_physical_world_v11()
@@ -950,3 +951,10 @@ func _hero_foot_offset_v11() -> float:
 			pending.append(c)
 	return pc_hero.global_position.y - min_y if found else 0.0
 
+
+
+func _create_scenery_v15() -> void:
+	var scenic := preload("res://scripts/scenery_v15.gd").new()
+	scenic.name = "Paysages_v15"
+	add_child(scenic)
+	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
