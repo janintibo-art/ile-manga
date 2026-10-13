@@ -63,8 +63,8 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v20_vr.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v20_vr.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v21_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v21_vr.log; then exit 1; fi
 
       - name: Verifier l'inversion du joystick et la separation PC
         run: |
@@ -93,7 +93,7 @@ jobs:
         working-directory: pcvr
         run: |
           mkdir -p ../dist
-          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v20.exe
+          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v21.exe
 
       - name: Tester la preparation PC (independante du numero de version)
         run: python3 -m py_compile pcvr/set_pc_export.py
@@ -110,12 +110,12 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v20_pc.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v20_pc.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_v21_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_v21_pc.log; then exit 1; fi
 
       - name: Exporter exe PC normal (clavier / souris)
         working-directory: pcvr
-        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v20.exe
+        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v21.exe
 
       - name: Verifier les shaders haute definition PC et VR
         run: |
@@ -126,8 +126,8 @@ jobs:
       - name: Verifier exactement deux EXE Windows
         shell: bash
         run: |
-          test -s dist/Ile_Manga_VR_v20.exe
-          test -s dist/Ile_Manga_PC_v20.exe
+          test -s dist/Ile_Manga_VR_v21.exe
+          test -s dist/Ile_Manga_PC_v21.exe
           test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
           file dist/*.exe
           du -h dist/*.exe
@@ -135,15 +135,15 @@ jobs:
       - name: Telechargement de la version VR Quest 3
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-VR-v20
-          path: dist/Ile_Manga_VR_v20.exe
+          name: Ile-Manga-VR-v21
+          path: dist/Ile_Manga_VR_v21.exe
           if-no-files-found: error
           retention-days: 30
 
       - name: Telechargement de la version PC classique
         uses: actions/upload-artifact@v4
         with:
-          name: Ile-Manga-PC-v20
-          path: dist/Ile_Manga_PC_v20.exe
+          name: Ile-Manga-PC-v21
+          path: dist/Ile_Manga_PC_v21.exe
           if-no-files-found: error
           retention-days: 30

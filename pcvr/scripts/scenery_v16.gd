@@ -1,6 +1,6 @@
 extends Node3D
 ## V16 : bosquets feeriques, champignons lumineux et fougeres.
-## Purement visuel : aucune modification du terrain ou des collisions.
+## V21 : les troncs sont solides comme les arbres du village.
 
 func build(terrain_height: Callable, pc_quality: bool) -> void:
 	var rng := RandomNumberGenerator.new()
@@ -56,6 +56,7 @@ func build(terrain_height: Callable, pc_quality: bool) -> void:
 		trunks.set_instance_color(count, Color(rng.randf_range(0.88, 1.08), rng.randf_range(0.88, 1.05), 1.0))
 		crowns.set_instance_transform(count, Transform3D(Basis(Vector3.UP, rot).scaled(Vector3(crown_width, rng.randf_range(1.7, 2.25), crown_width)), Vector3(x, y + h + 0.25, z)))
 		crowns.set_instance_color(count, Color(rng.randf_range(0.72, 1.08), rng.randf_range(0.90, 1.11), rng.randf_range(0.81, 1.12)))
+		_add_trunk_collision_v21(Vector3(x, y + h * 0.5, z), h)
 		count += 1
 	trunks.visible_instance_count = count
 	crowns.visible_instance_count = count
@@ -106,3 +107,18 @@ func _create_undergrowth(terrain_height: Callable, centers: Array[Vector2], pc_q
 		placed += 1
 	mm.visible_instance_count = placed
 	_add_batch("Sous_bois_feerique_v16", mm, pc_quality)
+
+
+func _add_trunk_collision_v21(pos: Vector3, height: float) -> void:
+	var body := StaticBody3D.new()
+	body.name = "Tronc_feerique_collision_v21"
+	body.position = pos
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var cyl := CylinderShape3D.new()
+	cyl.radius = 0.42
+	cyl.height = height
+	shape.shape = cyl
+	body.add_child(shape)
+	add_child(body)

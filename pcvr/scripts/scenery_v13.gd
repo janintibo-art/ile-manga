@@ -1,5 +1,5 @@
 extends Node3D
-## V13: falaises et cascades décoratives, volontairement sans collision.
+## V13: falaises et cascades décoratives ; V21 : piliers rocheux solides.
 ## Distantes du village. Aucun contrôle joueur ou relief de navigation modifié.
 var elapsed: float = 0.0
 var falling_water: Array[MeshInstance3D] = []
@@ -56,6 +56,7 @@ func _make_cliff(center: Vector2, radius: float, height: float, ground: Callable
 		stone.rotation.y = rng.randf_range(-PI, PI)
 		stone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if pc_quality else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(stone)
+		_add_solid_v21(stone.position, (cylinder.top_radius + cylinder.bottom_radius) * 0.45, h)
 		if i % 3 == 0:
 			var cap := MeshInstance3D.new()
 			cap.name = "Couronne_vegetale_v13"
@@ -124,3 +125,19 @@ func _process(delta: float) -> void:
 		var curtain: MeshInstance3D = falling_water[i]
 		if is_instance_valid(curtain):
 			curtain.transparency = clampf(0.18 - sin(elapsed * 1.8 + float(i) * 0.65) * 0.12, 0.0, 1.0)
+
+
+# V21 : collision cylindrique sur la couche 1, celle que le joueur heurte.
+func _add_solid_v21(pos: Vector3, radius: float, height: float) -> void:
+	var body := StaticBody3D.new()
+	body.name = "Falaise_collision_v21"
+	body.position = pos
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var cyl := CylinderShape3D.new()
+	cyl.radius = radius
+	cyl.height = height
+	shape.shape = cyl
+	body.add_child(shape)
+	add_child(body)

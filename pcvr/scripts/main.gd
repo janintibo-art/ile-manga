@@ -38,6 +38,8 @@ var vr_body: CharacterBody3D
 var pc_body: CharacterBody3D
 const GRAVITY_V11: float = 18.0
 const COLLISION_LAYER_V11: int = 1
+# V21 : limite ronde de l'île, au bord de l'eau (au-delà le sol passe sous la mer).
+const ISLAND_LIMIT_V21: float = 63.0
 
 
 
@@ -597,7 +599,7 @@ func _create_players() -> void:
 	var hud := CanvasLayer.new()
 	add_child(hud)
 	info = Label.new()
-	info.text = "ÎLE MANGA VR V11  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
+	info.text = "ÎLE MANGA VR " + _version_v21() + "  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
 	info.add_theme_font_size_override("font_size", 16)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
@@ -665,7 +667,7 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC V11  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
+		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
 		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
 		print("ILE_MANGA_NATIVE_STATUS: ", message.text)
 		return
@@ -752,7 +754,7 @@ func _physics_process(delta: float) -> void:
 				menu_panorama.current = true
 		elif menu_panorama.current:
 			pc_camera.current = true
-	if game_menu != null and xr_active and game_started and not game_menu.opened and right_hand.get_float("menu_button") > 0.8:
+	if game_menu != null and xr_active and game_started and not game_menu.opened and left_hand.get_float("menu_button") > 0.8:
 		game_menu.open_menu()
 	if game_menu != null and (game_menu.opened or not game_started):
 		return
@@ -896,8 +898,11 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 	else:
 		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
 	body.move_and_slide()
-	body.position.x = clampf(body.position.x, -72.0, 72.0)
-	body.position.z = clampf(body.position.z, -72.0, 72.0)
+	var flat := Vector2(body.position.x, body.position.z)
+	if flat.length() > ISLAND_LIMIT_V21:
+		flat = flat.normalized() * ISLAND_LIMIT_V21
+		body.position.x = flat.x
+		body.position.z = flat.y
 	# Body origin represents the feet; avoid the old -0.09 m offset.
 	origin.position = body.position
 
@@ -992,3 +997,9 @@ func _create_village_v19() -> void:
 	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
 
 # ILE_MANGA_V20_FINITION_2
+
+
+# V21 : numéro lu dans project.godot, plus jamais d'affichage périmé.
+func _version_v21() -> String:
+	var parts: PackedStringArray = str(ProjectSettings.get_setting("application/config/name", "")).split(" ")
+	return parts[parts.size() - 1] if parts.size() > 0 else ""

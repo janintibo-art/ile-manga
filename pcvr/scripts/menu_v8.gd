@@ -113,7 +113,7 @@ func _make_vr_panel() -> void:
 	vr_text.position = Vector3(0, 0.06, 0.0)
 	vr_panel.add_child(vr_text)
 	vr_help = Label3D.new()
-	vr_help.text = "Joystick droit : choisir | Gâchette droite : valider"
+	vr_help.text = "Joystick droit : choisir | Gâchette droite : valider | Bouton ≡ gauche : menu"
 	vr_help.font_size = 38
 	vr_help.pixel_size = 0.001
 	vr_help.position = Vector3(0, -0.61, 0.01)
@@ -145,7 +145,7 @@ func _redraw() -> void:
 	if not opened:
 		return
 	if xr_mode:
-		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  V10", "", "Saves: 6 emplacements", ""])
+		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  " + _version_v21(), "", "6 emplacements de sauvegarde", ""])
 		for i in range(options.size()):
 			lines.append(("➤ " if i == selection else "   ") + options[i])
 		vr_text.text = "\n".join(lines)
@@ -270,3 +270,8 @@ func _process(delta: float) -> void:
 		_activate(selection)
 	elif not pressed:
 		trigger_ready = true
+
+
+func _version_v21() -> String:
+	var parts: PackedStringArray = str(ProjectSettings.get_setting("application/config/name", "")).split(" ")
+	return parts[parts.size() - 1] if parts.size() > 0 else ""
