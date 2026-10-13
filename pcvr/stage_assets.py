@@ -38,6 +38,8 @@ selected = [
     "textures/flora/bark_n.png",
     "textures/flora/flowers.png",
     "textures/flora/fern.png",
+    "textures/terrain/rock.jpg",
+    "textures/terrain/rock_n.png",
 ]
 
 

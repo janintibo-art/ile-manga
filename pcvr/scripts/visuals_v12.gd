@@ -1,5 +1,7 @@
 extends Node3D
 const Flora = preload("res://scripts/flora_v25.gd")
+const Rocks = preload("res://scripts/rocks_v26.gd")
+const Falls = preload("res://scripts/scenery_v13.gd")
 ## Île Manga V12 : décors supplémentaires exclusivement visuels et instanciés.
 ## Ne crée aucune collision et ne modifie aucun déplacement.
 
@@ -33,7 +35,7 @@ func _create_flower_beds(height_fn: Callable, high_quality: bool) -> void:
 		var x: float = rng.randf_range(-67.0, 67.0)
 		var z: float = rng.randf_range(-67.0, 67.0)
 		var y: float = float(height_fn.call(x, z))
-		if y < 1.5 or y > 6.2:
+		if y < 1.5 or y > 6.2 or Falls.occupied(x, z):
 			continue
 		if Vector2(x - 9.0, z - 4.0).length() < 9.0:
 			continue
@@ -69,7 +71,7 @@ func _create_shore_pebbles(height_fn: Callable, high_quality: bool) -> void:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = true
-	mm.mesh = mesh
+	mm.mesh = Rocks.pebble(120612)
 	mm.instance_count = amount
 	var placed: int = 0
 	for _trial in range(amount * 22):

@@ -6,7 +6,6 @@ const Flora = preload("res://scripts/flora_v25.gd")
 func build(height_func: Callable, pc_quality: bool) -> void:
 	_add_flowerbeds(height_func, pc_quality)
 	_add_coastal_reeds(height_func, pc_quality)
-	_add_cliff_lichen(height_func, pc_quality)
 	print("ILE_MANGA_V15: fleurs, roseaux et mousses, profil PC/VR")
 
 func _make_batch(label: String, mesh: Mesh, count: int, color: Color) -> MultiMesh:

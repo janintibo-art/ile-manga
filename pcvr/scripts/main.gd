@@ -1,6 +1,8 @@
 extends Node3D
 const SaveStore = preload("res://scripts/save_manager.gd")
 const Flora = preload("res://scripts/flora_v25.gd")
+const Rocks = preload("res://scripts/rocks_v26.gd")
+const Falls = preload("res://scripts/scenery_v13.gd")
 ## Île Manga V8 : hameau détail, bordures végétales et sentiers — contrôles VR inchangés.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
@@ -92,6 +94,14 @@ func _configure_quality() -> void:
 
 
 func _height_at(x: float, z: float) -> float:
+	# V26 : relief de base, puis bassins des chutes d'eau (seulement à proximité).
+	var land: float = _base_height_v26(x, z)
+	if Falls.near_pool(x, z):
+		return Falls.carve(x, z, land, Callable(self, "_base_height_v26"))
+	return land
+
+
+func _base_height_v26(x: float, z: float) -> float:
 	var distance: float = sqrt(x * x + z * z) / (TERRAIN_SIZE * 0.5)
 	var falloff: float = maxf(0.0, 1.0 - pow(distance / 0.72, 2.5))
 	var noise: float = (sin(x * 0.045) * cos(z * 0.045) * 3.2
@@ -357,7 +367,7 @@ func _create_ground_details() -> void:
 		var x: float = rng.randf_range(-66.0, 66.0)
 		var z: float = rng.randf_range(-66.0, 66.0)
 		var y: float = _height_at(x, z)
-		if y < 0.9 or y > 6.6:
+		if y < 0.9 or y > 6.6 or Falls.occupied(x, z):
 			continue
 		if Vector2(x - 9.0, z - 4.0).length() < 5.0 or Vector2(x + 11.0, z - 9.0).length() < 3.8 or Vector2(x, z - 4.0).length() < 1.6:
 			continue
@@ -455,6 +465,8 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 			continue # pierres/galets du village
 		if Vector2(x - 9.0, z - 4.0).length() < 7.0 or Vector2(x + 11.0, z - 9.0).length() < 6.0:
 			continue
+		if Falls.occupied(x, z, 1.0):
+			continue
 		var size := rng.randf_range(size_range.x, size_range.y)
 		var scale_vec := Vector3(size, size * rng.randf_range(0.7, 1.3), size)
 		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(scale_vec)
@@ -470,7 +482,7 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 				cs.position = Vector3(x, y + 0.08 + mesh_box.get_center().y * scale_vec.y, z)
 				solid_body.add_child(cs)
 		var variation := Color(rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), 1.0)
-		batch.set_instance_color(placed, variation * tint if own_material and category == 1 else variation)
+		batch.set_instance_color(placed, variation * tint if own_material and category >= 1 else variation)
 		placed += 1
 	batch.visible_instance_count = placed
 	var item := MultiMeshInstance3D.new()
@@ -493,18 +505,9 @@ func _create_scenery_v6() -> void:
 		var palette := [Color(0.96, 0.55, 0.68), Color(0.98, 0.85, 0.34), Color(0.70, 0.62, 0.96)]
 		_scatter_v6("Fleurs_v6_" + str(i), Flora.flower_clump(), palette[i], 330 if high_quality else 130, 1, 71711 + i * 127, Vector2(0.55, 0.95))
 
-	var pebble := SphereMesh.new()
-	pebble.radius = 0.42
-	pebble.height = 0.32
-	pebble.radial_segments = 8
-	pebble.rings = 4
-	_scatter_v6("Galets_plage_v6", pebble, Color(0.72, 0.68, 0.58), 280 if high_quality else 130, 2, 89111)
-	var pebble_path := SphereMesh.new()
-	pebble_path.radius = 0.23
-	pebble_path.height = 0.095
-	pebble_path.radial_segments = 8
-	pebble_path.rings = 3
-	_scatter_v6("Pierres_village_v6", pebble_path, Color(0.59, 0.55, 0.45), 240 if high_quality else 110, 3, 92231)
+	# V26 : galets et pierres sculptés (bruit 3D), teintés par instance.
+	_scatter_v6("Galets_plage_v6", Rocks.pebble(89111), Color(0.95, 0.9, 0.82), 280 if high_quality else 130, 2, 89111)
+	_scatter_v6("Pierres_village_v6", Rocks.flat_stone(92231), Color(0.85, 0.8, 0.7), 240 if high_quality else 110, 3, 92231)
 
 	# Sentier entre feu central et maisons : pierres affleurantes, sans collision.
 	var slab := CylinderMesh.new()
@@ -603,7 +606,7 @@ func _create_village() -> void:
 		var x: float = rng.randf_range(-71, 71)
 		var z: float = rng.randf_range(-71, 71)
 		var y: float = _height_at(x, z)
-		if y < 0.8 or y > 7.0 or Vector2(x, z - 4.0).length() < 17.0:
+		if y < 0.8 or y > 7.0 or Vector2(x, z - 4.0).length() < 17.0 or Falls.occupied(x, z, 3.0):
 			continue
 		_make_tree(x, z, i + 14001)
 		trees_placed += 1

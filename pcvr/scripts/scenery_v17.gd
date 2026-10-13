@@ -1,5 +1,6 @@
 extends Node3D
 const Flora = preload("res://scripts/flora_v25.gd")
+const Rocks = preload("res://scripts/rocks_v26.gd")
 ## Île Manga V17 — sentiers de forêt, clairières, pierres et sous-bois.
 ## Décor uniquement, aucune collision ajoutée au terrain ou au joueur.
 
@@ -43,11 +44,11 @@ func build(ground: Callable, pc_quality: bool) -> void:
 			var z: float = center.y + sin(angle) * radius
 			var pebble := MeshInstance3D.new()
 			pebble.name = "Pierre_clairiere_v17"
-			pebble.mesh = pebble_mesh
-			pebble.material_override = stone_mat if i % 3 == 0 else moss_mat
+			pebble.mesh = Rocks.pebble(1700 + i % 5)
+			pebble.material_override = Rocks.material(Color(0.8, 0.8, 0.76), 0.15 if i % 3 == 0 else 0.75, 0.9)
 			pebble.position = Vector3(x, float(ground.call(x, z)) + 0.08, z)
 			pebble.scale = Vector3(rng.randf_range(0.65, 1.6), 1.0, rng.randf_range(0.7, 1.45))
-			pebble.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			pebble.rotation.y = rng.randf() * TAU
 			add_child(pebble)
 		var grass_count: int = 420 if pc_quality else 140
 		var mm := MultiMesh.new()
