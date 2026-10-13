@@ -173,7 +173,7 @@ func _create_lighting() -> void:
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
 	var sky_mat := ProceduralSkyMaterial.new()
-	sky_mat.sky_top_color = Color(0.17, 0.42, 0.89)
+	sky_mat.sky_top_color = Color(0.23, 0.47, 0.86)
 	sky_mat.sky_horizon_color = Color(0.78, 0.90, 0.99)
 	sky_mat.ground_bottom_color = Color(0.16, 0.36, 0.49)
 	sky.sky_material = sky_mat
@@ -198,7 +198,7 @@ func _create_lighting() -> void:
 	add_child(world)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55, -35, -20)
-	sun.light_color = Color(1.0, 0.95, 0.82)
+	sun.light_color = Color(1.0, 0.96, 0.86)
 	sun.light_energy = 1.15
 	sun.shadow_enabled = true
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS if OS.has_feature("ile_manga_pc") else DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS

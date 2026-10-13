@@ -24,7 +24,7 @@ void fragment() {
     float foam = (1.0 - smoothstep(0.5, 4.0, abs(radius - coast))) * 0.32;
     float sparkle = pow(max(sin(uv.x * 0.53 + t * 1.75) * cos(uv.y * 0.46 - t * 1.08), 0.0), 9.0) * 0.1;
 
-    ALBEDO = mix(base_color * vec3(0.65, 0.89, 1.15), vec3(0.13, 0.54, 0.75), 0.46);
+    ALBEDO = mix(base_color * vec3(0.65, 0.89, 1.15), vec3(0.12, 0.59, 0.73), 0.46);
     ALBEDO = mix(ALBEDO, vec3(0.81, 0.95, 0.98), foam);
     // ILE_MANGA_V12_WATER: micro variations de surface sobres et peu couteuses.
     float micro = sin(uv.x * 0.82 + t * 0.45) * cos(uv.y * 0.77 - t * 0.51);

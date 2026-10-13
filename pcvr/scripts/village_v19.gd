@@ -4,10 +4,10 @@ extends Node3D
 
 func build(ground: Callable, pc_quality: bool) -> void:
 	var roof := StandardMaterial3D.new()
-	roof.albedo_color = Color(0.48, 0.23, 0.20)
+	roof.albedo_color = Color(0.52, 0.27, 0.22)
 	roof.roughness = 0.94
 	var timber := StandardMaterial3D.new()
-	timber.albedo_color = Color(0.30, 0.19, 0.13)
+	timber.albedo_color = Color(0.34, 0.22, 0.15)
 	timber.roughness = 0.96
 	var plaster := StandardMaterial3D.new()
 	plaster.albedo_color = Color(0.91, 0.81, 0.63)
