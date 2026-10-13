@@ -126,6 +126,19 @@ func _create_village_planters(height_fn: Callable, high_quality: bool) -> void:
 		pot.material_override = wood
 		pot.position = Vector3(pos.x, y + 0.21, pos.y)
 		add_child(pot)
+		# V23 : jardinière et sa plante forment un obstacle solide.
+		var body := StaticBody3D.new()
+		body.name = "Jardiniere_collision_v23"
+		body.position = Vector3(pos.x, y + 0.6, pos.y)
+		body.collision_layer = 1
+		body.collision_mask = 0
+		var cs := CollisionShape3D.new()
+		var cyl := CylinderShape3D.new()
+		cyl.radius = 0.42
+		cyl.height = 1.2
+		cs.shape = cyl
+		body.add_child(cs)
+		add_child(body)
 		var bush := MeshInstance3D.new()
 		bush.name = "Plante_village_V12"
 		bush.mesh = bush_mesh

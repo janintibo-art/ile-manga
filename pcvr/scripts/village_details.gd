@@ -54,6 +54,8 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 				posts.append(_placed(x, z, height_fn, Vector3(0.13, 1.2, 0.13), 0.0, 0.6))
 				if i < 8:
 					rails.append(_placed(x + 0.625, z, height_fn, Vector3(1.32, 0.10, 0.10), 0.0, 0.75))
+	# V23 : piquets, lisses et balises solides, en un seul corps statique.
+	_solidify_v23("Clotures_collision_v23", posts + rails)
 	var post_mesh := BoxMesh.new()
 	_batch("Clotures_piquets_v7", post_mesh, posts, _material(Color(0.43, 0.29, 0.19)), visible_distance)
 	var rail_mesh := BoxMesh.new()
@@ -99,8 +101,25 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 	var markers: Array[Transform3D] = []
 	for position in [Vector2(3.0, 1.0), Vector2(-4.0, 5.0), Vector2(-7.0, 7.0), Vector2(6.0, 5.0)]:
 		markers.append(_placed(position.x, position.y, height_fn, Vector3(0.36, 0.46, 0.36), 0.0, 0.55))
+	_solidify_v23("Balises_collision_v23", markers)
 	var orb := SphereMesh.new()
 	orb.radius = 0.4
 	orb.height = 0.8
 	_batch("Balises_dorees_v7", orb, markers, _material(Color(1.0, 0.71, 0.32), true), visible_distance)
 	print("ILE_MANGA_V7: village et chemins enrichis sans modifier la locomotion")
+
+
+# V23 : une boîte de collision par élément, d'après la transformation du lot (maillage 1 x 1 x 1).
+func _solidify_v23(label: String, transforms: Array[Transform3D]) -> void:
+	var body := StaticBody3D.new()
+	body.name = label
+	body.collision_layer = 1
+	body.collision_mask = 0
+	add_child(body)
+	for t in transforms:
+		var box := BoxShape3D.new()
+		box.size = Vector3(maxf(t.basis.x.length(), 0.12), t.basis.y.length(), maxf(t.basis.z.length(), 0.12))
+		var cs := CollisionShape3D.new()
+		cs.shape = box
+		cs.transform = Transform3D(t.basis.orthonormalized(), t.origin)
+		body.add_child(cs)

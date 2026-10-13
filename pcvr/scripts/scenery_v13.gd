@@ -89,6 +89,8 @@ func _make_cliff(center: Vector2, radius: float, height: float, ground: Callable
 		pebble.scale = Vector3(rng.randf_range(0.6, 1.8), 1.0, rng.randf_range(0.7, 1.7))
 		pebble.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(pebble)
+		# V23 : éboulis solides.
+		_add_solid_v21(pebble.position, 0.75 * minf(pebble.scale.x, pebble.scale.z) * 0.85, 0.55)
 
 func _make_falls(center: Vector2, height: float, ground: Callable, water: Material, mist: Material, pc_quality: bool) -> void:
 	var x: float = center.x

@@ -1,6 +1,6 @@
 extends Node3D
 ## V19 : silhouettes de toitures et habillage fantasy des maisons.
-## Décor uniquement : aucune collision ou modification de joueur.
+## V23 : encadrements et appuis de fenêtres solides.
 
 func build(ground: Callable, pc_quality: bool) -> void:
 	var roof := StandardMaterial3D.new()
@@ -58,8 +58,23 @@ func _make_house(center: Vector2, width: float, lift: float, ground: Callable, r
 		var px: float = x + side * width * 0.31
 		var pz: float = z + width * 0.39
 		_box("Encadrement_fenetre_v19", Vector3(px, base + lift * 0.65, pz), Vector3(0.98, 1.06, 0.10), timber)
+		_solid_v23(Vector3(px, base + lift * 0.65, pz + 0.07), Vector3(1.12, 1.06, 0.36))
 		_box("Vitre_fantasy_v19", Vector3(px, base + lift * 0.65, pz + 0.065), Vector3(0.71, 0.78, 0.06), glass)
 		if pc_quality:
 			_box("Appui_pierre_v19", Vector3(px, base + lift * 0.43, pz + 0.13), Vector3(1.12, 0.12, 0.30), plaster)
 
 # ILE_MANGA_V20_FINITION_2
+
+
+func _solid_v23(at: Vector3, size: Vector3) -> void:
+	var body := StaticBody3D.new()
+	body.name = "Fenetre_collision_v23"
+	body.position = at
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	body.add_child(shape)
+	add_child(body)

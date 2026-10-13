@@ -40,6 +40,8 @@ const GRAVITY_V11: float = 18.0
 const COLLISION_LAYER_V11: int = 1
 # V21 : limite ronde de l'île, au bord de l'eau (au-delà le sol passe sous la mer).
 const ISLAND_LIMIT_V21: float = 63.0
+# V23 : hauteur de marche franchissable (perron, petites pierres).
+const STEP_HEIGHT_V23: float = 0.42
 
 
 
@@ -335,6 +337,15 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 	batch.mesh = mesh
 	batch.instance_count = amount
 	var placed := 0
+	# V23 : buissons et gros galets solides, regroupés dans un seul corps statique.
+	var solid_body: StaticBody3D = null
+	if category == 0 or category == 2:
+		solid_body = StaticBody3D.new()
+		solid_body.name = name + "_collision_v23"
+		solid_body.collision_layer = COLLISION_LAYER_V11
+		solid_body.collision_mask = 0
+		add_child(solid_body)
+	var mesh_box: AABB = mesh.get_aabb()
 	for trial in range(amount * 14):
 		if placed >= amount:
 			break
@@ -356,6 +367,16 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 		var scale_vec := Vector3(size, size * rng.randf_range(0.7, 1.3), size)
 		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(scale_vec)
 		batch.set_instance_transform(placed, Transform3D(basis, Vector3(x, y + 0.08, z)))
+		if solid_body != null:
+			var solid_h: float = mesh_box.size.y * scale_vec.y
+			if solid_h > 0.38:
+				var cyl := CylinderShape3D.new()
+				cyl.radius = maxf(mesh_box.size.x * size * 0.4, 0.15)
+				cyl.height = solid_h
+				var cs := CollisionShape3D.new()
+				cs.shape = cyl
+				cs.position = Vector3(x, y + 0.08, z)
+				solid_body.add_child(cs)
 		batch.set_instance_color(placed, Color(rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), 1.0))
 		placed += 1
 	batch.visible_instance_count = placed
@@ -439,6 +460,7 @@ func _create_scenery_v6() -> void:
 		pole.material_override = wood
 		pole.position = Vector3(coord.x, h + 1.05, coord.y)
 		add_child(pole)
+		_add_obstacle_cylinder_v11("Lanterne_collision_v23", pole.position, 0.16, 2.1)
 		var bulb := MeshInstance3D.new()
 		bulb.name = "Lanterne_chaude_v6"
 		var orb := SphereMesh.new()
@@ -567,13 +589,18 @@ func _create_structures() -> void:
 	var home := _add_glb("res://assets/models/buildings/Maison.glb", "Maison_village", Vector3(9, _height_at(9, 4) + 3.6, 4), 4.5, -PI * 0.5)
 	if home == null:
 		_make_box("Maison_refuge", Vector3(9, _height_at(9, 4) + 2, 4), Vector3(7, 4, 7), Color(0.83, 0.54, 0.45))
-	_add_glb("res://assets/models/buildings/Petite_maison.glb", "Petite_maison", Vector3(-11, _height_at(-11, 9) + 2.244, 9), 3.0, PI * 0.5)
+		_add_obstacle_box_v11("Maison_refuge_collision", Vector3(9, _height_at(9, 4) + 2, 4), Vector3(7, 4, 7))
+	# V23 : les murs solides sont ceux du modèle lui-même (porte comprise).
+	_solid_model_v23(home)
+	_solid_model_v23(_add_glb("res://assets/models/buildings/Petite_maison.glb", "Petite_maison", Vector3(-11, _height_at(-11, 9) + 2.244, 9), 3.0, PI * 0.5))
 	_add_glb("res://assets/models/buildings/Ile_flottante.glb", "Ile_celeste", Vector3(20, 18, -15), 12, 0.0)
 	# Quartier de la plage DJ : éléments originaux Babylon.js réintroduits.
-	_add_glb("res://assets/models/props/Mur_de_son.glb", "Mur_de_son", Vector3(0, _height_at(0, 60) + 3.75, 60), 6, PI)
-	_add_glb("res://assets/models/props/Table_de_mixage.glb", "Table_de_mixage", Vector3(9, _height_at(9, 60) + 0.988, 60), 2.5, PI)
-	_add_glb("res://assets/models/props/Distributeur_8_6.glb", "Distributeur_8_6", Vector3(-9, _height_at(-9, 60) + 1.712, 60), 1.8, PI)
-	_add_glb("res://assets/models/props/Corde.glb", "Corde", Vector3(16, 10, -9), 6.0, 0.0)
+	_solid_model_v23(_add_glb("res://assets/models/props/Mur_de_son.glb", "Mur_de_son", Vector3(0, _height_at(0, 60) + 3.75, 60), 6, PI))
+	_solid_model_v23(_add_glb("res://assets/models/props/Table_de_mixage.glb", "Table_de_mixage", Vector3(9, _height_at(9, 60) + 0.988, 60), 2.5, PI))
+	_solid_model_v23(_add_glb("res://assets/models/props/Distributeur_8_6.glb", "Distributeur_8_6", Vector3(-9, _height_at(-9, 60) + 1.712, 60), 1.8, PI))
+	var rope := _add_glb("res://assets/models/props/Corde.glb", "Corde", Vector3(16, 10, -9), 6.0, 0.0)
+	if rope != null:
+		_add_obstacle_cylinder_v11("Corde_collision_v23", Vector3(16, _height_at(16, -9) + 1.5, -9), 0.3, 3.0)
 
 
 func _create_players() -> void:
@@ -793,14 +820,18 @@ func _move_xr(delta: float) -> void:
 		right = right.normalized()
 		# Axe Quest 3 : pousser le stick vers l’avant = direction de la tête.
 		var move: Vector3 = (right * stick.x + forward * stick.y)
-		_move_player(xr_origin, move * minf(stick.length(), 1.0) * WALK_SPEED * delta)
+		_move_xr_body_v23(move * minf(stick.length(), 1.0) * WALK_SPEED * delta)
 	else:
-		_move_player(xr_origin, Vector3.ZERO)
+		_move_xr_body_v23(Vector3.ZERO)
 	var turn: float = right_hand.get_vector2("primary").x
 	if absf(turn) < 0.35:
 		turn_ready = true
 	elif absf(turn) > TURN_STICK_THRESHOLD and turn_ready:
+		# V23 : rotation autour de la tête, le joueur ne glisse plus de côté.
+		var pivot: Vector3 = xr_camera.global_position
 		xr_origin.rotate_y(-signf(turn) * SNAP_TURN)
+		var after: Vector3 = xr_camera.global_position
+		xr_origin.global_position += Vector3(pivot.x - after.x, 0.0, pivot.z - after.z)
 		turn_ready = false
 
 
@@ -828,20 +859,9 @@ func _move_desktop(delta: float) -> void:
 func _build_physical_world_v11() -> void:
 	vr_body = _new_player_body_v11("Physique_Quest3", xr_origin.position)
 	pc_body = _new_player_body_v11("Physique_PC", pc_root.position)
-	# Les maisons ont quatre murs de collision avec une entrée libre côté village.
-	# Ce sont des proxys simples ; les maillages détaillés viendront plus tard.
-	_add_obstacle_box_v11("Maison_fond", Vector3(9, _height_at(9, 4) + 2.0, 7.3), Vector3(7.0, 4.0, 0.45))
-	_add_obstacle_box_v11("Maison_gauche", Vector3(5.5, _height_at(5.5, 4) + 2.0, 4), Vector3(0.45, 4, 6.6))
-	_add_obstacle_box_v11("Maison_droite", Vector3(12.5, _height_at(12.5, 4) + 2.0, 4), Vector3(0.45, 4, 6.6))
-	_add_obstacle_box_v11("Maison_facade_gauche", Vector3(6.5, _height_at(6.5, 1) + 2.0, 1), Vector3(3.0, 4, 0.45))
-	_add_obstacle_box_v11("Maison_facade_droite", Vector3(11.5, _height_at(11.5, 1) + 2.0, 1), Vector3(3.0, 4, 0.45))
-	_add_obstacle_box_v11("Petite_maison_fond", Vector3(-11, _height_at(-11, 9) + 1.5, 11.4), Vector3(5, 3, 0.4))
-	_add_obstacle_box_v11("Petite_maison_cote_1", Vector3(-13.5, _height_at(-13.5, 9) + 1.5, 9), Vector3(0.4, 3, 5))
-	_add_obstacle_box_v11("Petite_maison_cote_2", Vector3(-8.5, _height_at(-8.5, 9) + 1.5, 9), Vector3(0.4, 3, 5))
-	# Le feu et les installations du DJ sont solides, contrairement aux fleurs.
+	# V23 : maisons et installations DJ utilisent la forme exacte de leur modèle
+	# (voir _solid_model_v23) ; les anciens murs estimés sont supprimés.
 	_add_obstacle_cylinder_v11("Feu_collision", Vector3(0, _height_at(0, 4) + 0.55, 4), 0.9, 1.1)
-	_add_obstacle_box_v11("DJ_mur_collision", Vector3(0, _height_at(0, 60) + 2.0, 60), Vector3(7.0, 4.0, 1.5))
-	_add_obstacle_box_v11("DJ_table_collision", Vector3(9, _height_at(9, 60) + 0.8, 60), Vector3(2.6, 1.6, 1.7))
 	print("ILE_MANGA_PHYSICS_V11: terrain, maisons, arbres et props solides")
 
 
@@ -912,6 +932,7 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 	else:
 		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
 	body.move_and_slide()
+	_try_step_v23(body, Vector3(offset.x, 0.0, offset.z))
 	var flat := Vector2(body.position.x, body.position.z)
 	if flat.length() > ISLAND_LIMIT_V21:
 		flat = flat.normalized() * ISLAND_LIMIT_V21
@@ -1017,3 +1038,98 @@ func _create_village_v19() -> void:
 func _version_v21() -> String:
 	var parts: PackedStringArray = str(ProjectSettings.get_setting("application/config/name", "")).split(" ")
 	return parts[parts.size() - 1] if parts.size() > 0 else ""
+
+
+# V23 : collision exacte d'un modèle GLB (murs, porte, perron tels que dessinés).
+func _solid_model_v23(root: Node3D) -> void:
+	if root == null:
+		return
+	var body := StaticBody3D.new()
+	body.name = str(root.name) + "_collision_v23"
+	body.collision_layer = COLLISION_LAYER_V11
+	body.collision_mask = 0
+	add_child(body)
+	var pending: Array[Node] = [root]
+	while not pending.is_empty():
+		var n: Node = pending.pop_back()
+		for c in n.get_children():
+			pending.append(c)
+		if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
+			var visual: MeshInstance3D = n as MeshInstance3D
+			var shape := visual.mesh.create_trimesh_shape()
+			if shape == null:
+				continue
+			(shape as ConcavePolygonShape3D).backface_collision = true
+			var cs := CollisionShape3D.new()
+			cs.shape = shape
+			body.add_child(cs)
+			cs.global_transform = visual.global_transform
+
+
+# V23 : franchir une marche basse (perron, galet) au lieu de rester bloqué.
+# On vérifie que la capsule entière tient au-dessus de la marche : une clôture,
+# une jardinière ou un mur restent infranchissables.
+func _try_step_v23(body: CharacterBody3D, horizontal: Vector3) -> void:
+	# Seulement les pieds au sol : pas de « marche » en pleine chute.
+	if horizontal.length() < 0.0005 or not body.is_on_wall() or not body.is_on_floor():
+		return
+	var shape_node: CollisionShape3D = body.get_node_or_null("Capsule_joueur")
+	if shape_node == null:
+		return
+	var space := body.get_world_3d().direct_space_state
+	var lift := Vector3.UP * STEP_HEIGHT_V23
+	var ahead: Vector3 = horizontal.normalized() * 0.22
+	var probe := PhysicsShapeQueryParameters3D.new()
+	probe.shape = shape_node.shape
+	probe.collision_mask = body.collision_mask
+	probe.exclude = [body.get_rid()]
+	probe.margin = 0.01
+	var start: Transform3D = body.global_transform
+	for place in [start.translated(lift), start.translated(lift + ahead)]:
+		probe.transform = place * shape_node.transform
+		if not space.intersect_shape(probe, 1).is_empty():
+			return
+	var top: Vector3 = start.origin + lift + ahead
+	# Le dessus de la marche se mesure sous l'avant du pied, pas sous le centre.
+	var toe: Vector3 = top + horizontal.normalized() * 0.28
+	var ray := PhysicsRayQueryParameters3D.create(toe + Vector3.UP * 0.05, toe - lift - Vector3.UP * 0.1, body.collision_mask, [body.get_rid()])
+	var floor_hit := space.intersect_ray(ray)
+	if floor_hit.is_empty() or floor_hit.normal.y < 0.7:
+		return
+	var rise: float = floor_hit.position.y - start.origin.y
+	if rise < 0.02 or rise > STEP_HEIGHT_V23:
+		return
+	body.global_position = Vector3(top.x, floor_hit.position.y + 0.01, top.z)
+
+
+# V23 : en VR le corps suit la tête ; si on marche physiquement dans un mur,
+# c'est le monde qui recule : la tête ne traverse plus rien.
+func _move_xr_body_v23(stick_offset: Vector3) -> void:
+	var head: Vector3 = xr_camera.global_position
+	var head_offset := Vector3(head.x - xr_origin.global_position.x, 0.0, head.z - xr_origin.global_position.z)
+	var feet: Vector3 = vr_body.global_position
+	var wanted := Vector3(head.x - feet.x, 0.0, head.z - feet.z) + stick_offset
+	if wanted.length() > 1.5:
+		# Grand saut du suivi (recentrage du casque) : on replace le corps sans physique.
+		vr_body.global_position = Vector3(head.x, feet.y, head.z) + stick_offset
+		wanted = Vector3.ZERO
+	var dt: float = maxf(get_physics_process_delta_time(), 0.001)
+	var ground: float = _height_at(vr_body.position.x, vr_body.position.z)
+	if vr_body.position.y < ground - 0.7:
+		vr_body.global_position = Vector3(vr_body.position.x, ground + 1.15, vr_body.position.z)
+		vr_body.velocity = Vector3.ZERO
+	vr_body.velocity.x = wanted.x / dt
+	vr_body.velocity.z = wanted.z / dt
+	if vr_body.is_on_floor():
+		vr_body.velocity.y = -0.05
+	else:
+		vr_body.velocity.y = maxf(vr_body.velocity.y - GRAVITY_V11 * dt, -24.0)
+	vr_body.move_and_slide()
+	_try_step_v23(vr_body, wanted)
+	var flat := Vector2(vr_body.position.x, vr_body.position.z)
+	if flat.length() > ISLAND_LIMIT_V21:
+		flat = flat.normalized() * ISLAND_LIMIT_V21
+		vr_body.position.x = flat.x
+		vr_body.position.z = flat.y
+	# L'origine se place pour que la tête reste exactement au-dessus du corps.
+	xr_origin.position = Vector3(vr_body.position.x - head_offset.x, vr_body.position.y, vr_body.position.z - head_offset.z)
