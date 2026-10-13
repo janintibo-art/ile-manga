@@ -55,6 +55,7 @@ func _ready() -> void:
 	_create_scenery_v15()
 	_create_scenery_v16()
 	_create_scenery_v17()
+	_create_village_v18()
 	_create_structures()
 	_create_players()
 	_build_physical_world_v11()
@@ -536,6 +537,13 @@ func _add_glb(resource_file: String, model_name: String, world_pos: Vector3, sca
 	root.rotation.y = angle
 	add_child(root)
 	return root
+
+
+func _create_village_v18() -> void:
+	var details := preload("res://scripts/village_v18.gd").new()
+	details.name = "Village_amenage_v18"
+	add_child(details)
+	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
 
 
 func _create_structures() -> void:
