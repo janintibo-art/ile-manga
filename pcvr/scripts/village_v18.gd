@@ -35,10 +35,16 @@ func build(ground: Callable, pc_quality: bool) -> void:
 			_add_box("Caisse_marche_v18", Vector3(pt.x + float(j) * 0.62, y + 0.3, pt.y), Vector3(0.55, 0.6, 0.55), timber)
 	print("ILE_MANGA_V18: village amenage, decor sans collision")
 
+var _flower_cache_v22: Dictionary = {}
+
 func _flower_material(c: Color) -> StandardMaterial3D:
+	var key: String = c.to_html()
+	if _flower_cache_v22.has(key):
+		return _flower_cache_v22[key]
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = c
 	mat.roughness = 1.0
+	_flower_cache_v22[key] = mat
 	return mat
 
 func _add_box(label: String, at: Vector3, size: Vector3, material: Material) -> void:

@@ -32,7 +32,7 @@ selected = [
 
 
 def main() -> int:
-    if not (repo / "www" / "src" / "game.js").exists():
+    if not (repo / "pcvr" / "project.godot").exists() or not source.is_dir():
         print("Erreur: le script attend la racine réelle du dépôt ile-manga", file=sys.stderr)
         return 1
 
@@ -47,7 +47,7 @@ def main() -> int:
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source / rel, dest)
         print(f"Asset Godot: {rel} ({dest.stat().st_size // 1024 // 1024} Mo)")
-    print("Modèles préparés ; les fichiers du navigateur Babylon.js restent inchangés.")
+    print("Modèles et textures préparés pour Godot.")
     return 0
 
 

@@ -128,7 +128,10 @@ func _show_view(which: String) -> void:
 			options.append("Reprendre")
 		if Saves.latest_slot() >= 0:
 			options.append("Continuer")
-		options.append_array(["Nouvelle partie", "Charger / sauvegarder", "Effacer une sauvegarde", "Paramètres", "Quitter"])
+		options.append("Nouvelle partie")
+		if playing:
+			options.append("Sauvegarder")
+		options.append_array(["Charger une partie", "Effacer une sauvegarde", "Paramètres", "Quitter"])
 	elif view == "load" or view == "new" or view == "save" or view == "delete":
 		for i in range(1, 7):
 			var data: Dictionary = Saves.read_slot(i)
@@ -179,6 +182,11 @@ func _redraw() -> void:
 			footer.text = "6 emplacements  •  Sauvegardes compatibles V8 / V9"
 			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
 			list_box.add_child(footer)
+		if view == "load" and playing:
+			var warn := Label.new()
+			warn.text = "Charger remplace la partie en cours : pense à sauvegarder avant."
+			warn.add_theme_color_override("font_color", Color(1.0, 0.78, 0.45))
+			list_box.add_child(warn)
 		if (view == "load" or view == "save") and playing:
 			var note := Label.new()
 			note.text = "La sauvegarde automatique est mise à jour régulièrement."
@@ -200,8 +208,10 @@ func _activate(index: int) -> void:
 					_load_or_create(recent, false)
 			"Nouvelle partie":
 				_show_view("new")
-			"Charger / sauvegarder":
-				_show_view("save" if playing else "load")
+			"Sauvegarder":
+				_show_view("save")
+			"Charger une partie":
+				_show_view("load")
 			"Effacer une sauvegarde":
 				_show_view("delete")
 			"Paramètres":

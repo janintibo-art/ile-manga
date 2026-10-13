@@ -209,10 +209,20 @@ func _create_lighting() -> void:
 	add_child(sun)
 
 
+# V22 : un seul matériau par couleur, partagé par tous les objets (moins de travail GPU en VR).
+var _materials_v22: Dictionary = {}
+var _trunk_mesh_v22: CylinderMesh
+var _leaf_meshes_v22: Array[SphereMesh] = []
+
+
 func _material(color: Color) -> StandardMaterial3D:
+	var key: String = color.to_html()
+	if _materials_v22.has(key):
+		return _materials_v22[key]
 	var m := StandardMaterial3D.new()
 	m.albedo_color = color
 	m.roughness = 0.94
+	_materials_v22[key] = m
 	return m
 
 
@@ -234,11 +244,20 @@ func _make_tree(x: float, z: float, seed: int) -> void:
 	var height: float = rng.randf_range(2.2, 3.5)
 	var trunk := MeshInstance3D.new()
 	trunk.name = "Tronc_arbre"
-	var cylinder := CylinderMesh.new()
-	cylinder.top_radius = 0.22
-	cylinder.bottom_radius = 0.34
-	cylinder.height = height
-	trunk.mesh = cylinder
+	if _trunk_mesh_v22 == null:
+		_trunk_mesh_v22 = CylinderMesh.new()
+		_trunk_mesh_v22.top_radius = 0.22
+		_trunk_mesh_v22.bottom_radius = 0.34
+		_trunk_mesh_v22.height = 1.0
+		for k in range(3):
+			var shared := SphereMesh.new()
+			shared.radius = 1.55 - k * 0.16
+			shared.height = shared.radius * 1.7
+			shared.radial_segments = 10
+			shared.rings = 5
+			_leaf_meshes_v22.append(shared)
+	trunk.mesh = _trunk_mesh_v22
+	trunk.scale = Vector3(1.0, height, 1.0)
 	trunk.material_override = _material(Color(0.37, 0.24, 0.14))
 	trunk.position = Vector3(x, y + height * 0.5, z)
 	add_child(trunk)
@@ -248,12 +267,7 @@ func _make_tree(x: float, z: float, seed: int) -> void:
 	for i in range(3):
 		var leaf := MeshInstance3D.new()
 		leaf.name = "Feuillage_anime"
-		var sphere := SphereMesh.new()
-		sphere.radius = 1.55 - i * 0.16
-		sphere.height = sphere.radius * 1.7
-		sphere.radial_segments = 10
-		sphere.rings = 5
-		leaf.mesh = sphere
+		leaf.mesh = _leaf_meshes_v22[i]
 		leaf.material_override = _material(Color(0.21 + 0.03 * float(i), 0.51 + 0.04 * float(i), 0.27))
 		leaf.position = Vector3(x + rng.randf_range(-0.45, 0.45), y + height + float(i) * 0.45, z + rng.randf_range(-0.4, 0.4))
 		add_child(leaf)

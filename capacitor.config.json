@@ -1,8 +1,0 @@
-{
-  "appId": "com.example.ilemanga",
-  "appName": "Île Manga",
-  "webDir": "www",
-  "server": {
-    "androidScheme": "https"
-  }
-}
