@@ -72,6 +72,7 @@ var current_anim: String = ""
 var ko_time: float = 0.0
 var hurt_cooldown: float = 0.0
 var air_time: float = 0.0
+var climb_time: float = 0.0
 
 ## Fonction appelée pour frapper : (origine, direction, portée, dégâts) -> nombre de cibles touchées.
 var strike: Callable
@@ -190,6 +191,14 @@ func _build_animations() -> void:
 	var w3 := _merge(stance, {"Spine02": Vector3(-12, 0, 0), "RightArm": Vector3(-175, 0, -8), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-150, 0, 10), "LeftForeArm": Vector3(-60, 0, 0)})
 	var s3 := _merge(stance, {"Spine02": Vector3(30, 0, 0), "RightArm": Vector3(-55, 0, -5), "RightForeArm": Vector3(-5, 0, 0), "LeftArm": Vector3(-50, 0, 5), "LeftForeArm": Vector3(-20, 0, 0)})
 	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
+	# V29 : assis sur le banc de la barque, main droite sur la barre.
+	var seated := {"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
+		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0),
+		"RightArm": Vector3(-30, 0, -20), "RightForeArm": Vector3(-45, 0, 0), "LeftArm": Vector3(-35, 0, 12), "LeftForeArm": Vector3(-50, 0, 0)}
+	var seated_b := seated.duplicate()
+	seated_b["Head"] = Vector3(-4, 8, 0)
+	seated_b["Spine02"] = Vector3(6, 3, 0)
+	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
 	anim.add_animation_library("v28", poses)
 
 
@@ -452,7 +461,7 @@ func find_ledge(b: CharacterBody3D, forward: Vector3, reach_max: float = LEDGE_M
 	var exclude := [b.get_rid()]
 	# Un mur juste devant, à hauteur des genoux ou de la taille.
 	var wall := {}
-	for h in [0.55, 1.0, 1.5]:
+	for h in [0.2, 0.55, 1.0, 1.5]:
 		var q := PhysicsRayQueryParameters3D.create(feet + Vector3.UP * h, feet + Vector3.UP * h + forward * 0.85, b.collision_mask, exclude)
 		wall = space.intersect_ray(q)
 		if not wall.is_empty() and absf(wall.normal.y) < 0.6:
@@ -461,18 +470,21 @@ func find_ledge(b: CharacterBody3D, forward: Vector3, reach_max: float = LEDGE_M
 	if wall.is_empty():
 		return {}
 	var n: Vector3 = Vector3(wall.normal.x, 0, wall.normal.z).normalized()
-	var probe_xz: Vector3 = Vector3(wall.position.x, feet.y, wall.position.z) - n * 0.3
-	var down := PhysicsRayQueryParameters3D.create(probe_xz + Vector3.UP * (reach_max + 0.35), probe_xz + Vector3.UP * (LEDGE_MIN - 0.1), b.collision_mask, exclude)
-	var top := space.intersect_ray(down)
-	if top.is_empty() or top.normal.y < 0.72:
-		return {}
-	var rise: float = top.position.y - feet.y
-	if rise < LEDGE_MIN or rise > reach_max:
-		return {}
-	var target: Vector3 = Vector3(wall.position.x, top.position.y + 0.04, wall.position.z) - n * 0.45
-	if not _capsule_free(b, target) or not _capsule_free(b, Vector3(feet.x, top.position.y + 0.06, feet.z)):
-		return {}
-	return {"top": target, "normal": n}
+	# On tâte le dessus de plus en plus loin de l'arête (les bords de rocher sont arrondis).
+	for depth in [0.3, 0.6, 0.9, 1.2]:
+		var probe_xz: Vector3 = Vector3(wall.position.x, feet.y, wall.position.z) - n * float(depth)
+		var down := PhysicsRayQueryParameters3D.create(probe_xz + Vector3.UP * (reach_max + 0.35), probe_xz + Vector3.UP * (LEDGE_MIN - 0.1), b.collision_mask, exclude)
+		var top := space.intersect_ray(down)
+		if top.is_empty() or top.normal.y < 0.72:
+			continue
+		var rise: float = top.position.y - feet.y
+		if rise < LEDGE_MIN or rise > reach_max:
+			continue
+		var target: Vector3 = Vector3(wall.position.x, top.position.y + 0.04, wall.position.z) - n * (float(depth) + 0.15)
+		if not _capsule_free(b, target) or not _capsule_free(b, Vector3(feet.x, top.position.y + 0.06, feet.z)):
+			continue
+		return {"top": target, "normal": n}
+	return {}
 
 
 func _capsule_free(b: CharacterBody3D, at: Vector3) -> bool:
@@ -527,7 +539,8 @@ func _mantle_tick(delta: float) -> void:
 
 ## Surface d'escalade : pente raide, et pas un tronc ou un tonneau (cylindres).
 func _climbable(hit: Dictionary) -> bool:
-	if hit.is_empty() or absf(hit.normal.y) > 0.55:
+	# V29 : tout ce qui est trop raide pour marcher (plus de 45°) s'escalade.
+	if hit.is_empty() or absf(hit.normal.y) > 0.7:
 		return false
 	var col: Object = hit.collider
 	if col is CollisionObject3D:
@@ -548,7 +561,7 @@ func _wall_close(forward: Vector3) -> bool:
 	forward.y = 0.0
 	if forward.length() < 0.01:
 		return false
-	var hit: Dictionary = _wall_ray(1.2, forward.normalized(), 0.62)
+	var hit: Dictionary = _wall_ray(1.2, forward.normalized(), 1.3)
 	return _climbable(hit)
 
 
@@ -558,11 +571,12 @@ func _try_grab_wall(forward: Vector3) -> bool:
 	forward.y = 0.0
 	if forward.length() < 0.01:
 		return false
-	var hit: Dictionary = _wall_ray(1.2, forward.normalized(), 0.85)
+	var hit: Dictionary = _wall_ray(1.2, forward.normalized(), 1.35)
 	if not _climbable(hit):
 		return false
 	wall_normal = Vector3(hit.normal.x, 0, hit.normal.z).normalized()
 	state = "escalade"
+	climb_time = 0.0
 	facing = -wall_normal
 	body.velocity = Vector3.ZERO
 	_play("v28/climb", 0.15, 0.0)
@@ -571,19 +585,25 @@ func _try_grab_wall(forward: Vector3) -> bool:
 
 func _climb_tick(delta: float, axis: Vector2) -> void:
 	body.velocity = Vector3.ZERO
-	var chest: Dictionary = _wall_ray(1.25, -wall_normal, 1.0)
+	var chest: Dictionary = _wall_ray(1.25, -wall_normal, 1.5)
 	var up_along: Vector3 = Vector3.UP
 	if not chest.is_empty() and absf(chest.normal.y) < 0.75:
-		wall_normal = Vector3(chest.normal.x, 0, chest.normal.z).normalized()
-		var n3: Vector3 = chest.normal
+		# Orientation d'ensemble du mur (trois contacts), lissée : les reliefs en grille
+		# ont de petites faces en escalier dont la normale saute d'un carreau à l'autre.
+		var n3: Vector3 = _sample_wall_normal(chest)
+		var flat_n := Vector3(n3.x, 0, n3.z).normalized()
+		if flat_n.dot(wall_normal) > 0.3:
+			wall_normal = wall_normal.lerp(flat_n, 0.25).normalized()
 		up_along = (Vector3.UP - n3 * n3.dot(Vector3.UP)).normalized()
 	elif chest.is_empty():
 		# Plus de mur à hauteur de poitrine : on est en haut, on se hisse.
 		var ledge: Dictionary = find_ledge(body, -wall_normal, 1.6)
+		if ledge.is_empty():
+			ledge = _ledge_from_climb()
 		if not ledge.is_empty():
 			_start_mantle(ledge)
 			return
-		if _wall_ray(0.5, -wall_normal, 1.0).is_empty():
+		if _wall_ray(0.5, -wall_normal, 1.0).is_empty() and _wall_ray(0.1, -wall_normal, 1.0).is_empty():
 			_let_go()
 			return
 	var right: Vector3 = (-wall_normal).cross(Vector3.UP).normalized()
@@ -591,13 +611,19 @@ func _climb_tick(delta: float, axis: Vector2) -> void:
 	# Rester collé au mur à distance constante.
 	if not chest.is_empty():
 		var gap: float = Vector2(chest.position.x - body.global_position.x, chest.position.z - body.global_position.z).length()
-		move += -wall_normal * clampf(gap - 0.42, -0.05, 0.05)
+		move += -wall_normal * clampf(gap - 0.42, -0.05, 0.05) * minf(delta * 90.0, 1.0)
 	body.velocity = move / maxf(delta, 0.001)
 	body.move_and_slide()
 	body.velocity = Vector3.ZERO
 	root.position = body.position
+	climb_time += delta
+	# Arrivé sur un replat où l'on tient debout (vire, sommet en pente douce) : on lâche le mur.
+	if climb_time > 0.4 and body.is_on_floor():
+		state = "sol"
+		fall_top = body.position.y
+		return
 	var moving: bool = axis.length() > 0.1
-	_spend((1.0 if moving else 0.35) * delta)
+	_spend((0.85 if moving else 0.3) * delta)
 	_play("v28/climb", 0.15, 1.2 if moving else 0.0)
 	if stamina <= 0.0:
 		_let_go()
@@ -610,6 +636,41 @@ func _climb_tick(delta: float, axis: Vector2) -> void:
 		if not floor_hit.is_empty() and floor_hit.normal.y > 0.7:
 			state = "sol"
 			fall_top = body.position.y
+
+
+func _sample_wall_normal(center_hit: Dictionary) -> Vector3:
+	var right: Vector3 = (-wall_normal).cross(Vector3.UP).normalized()
+	var space := body.get_world_3d().direct_space_state
+	var pts: Array = []
+	for off in [[-0.35, 1.0], [0.35, 1.0], [0.0, 1.75]]:
+		var o: Vector3 = body.global_position + right * float(off[0]) + Vector3.UP * float(off[1])
+		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(o, o - wall_normal * 1.8, body.collision_mask, [body.get_rid()]))
+		if hit.is_empty():
+			return center_hit.normal
+		pts.append(hit.position)
+	var n: Vector3 = (pts[1] - pts[0]).cross(pts[2] - pts[0])
+	if n.length() < 0.0001:
+		return center_hit.normal
+	n = n.normalized()
+	if n.dot(wall_normal) < 0.0:
+		n = -n
+	return n
+
+
+## Pendant l'escalade : un replat où poser les pieds, juste au-dessus et devant.
+func _ledge_from_climb() -> Dictionary:
+	var space := body.get_world_3d().direct_space_state
+	var feet: Vector3 = body.global_position
+	for i in range(8):
+		var depth: float = 0.45 + i * 0.25
+		var q: Vector3 = feet - wall_normal * depth
+		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(q + Vector3.UP * 2.1, q - Vector3.UP * 0.6, body.collision_mask, [body.get_rid()]))
+		if hit.is_empty() or hit.normal.y < 0.72:
+			continue
+		var target: Vector3 = hit.position + Vector3.UP * 0.04 - wall_normal * 0.15
+		if _capsule_free(body, target) and _capsule_free(body, Vector3(feet.x, hit.position.y + 0.06, feet.z)):
+			return {"top": target, "normal": wall_normal}
+	return {}
 
 
 func _climb_leap() -> void:
@@ -750,6 +811,29 @@ func play_action(name: String, look_at_point: Variant = null) -> void:
 	action_time = 0.0
 	action_length = anim.get_animation("v28/" + name).length
 	_play("v28/" + name, 0.1, 1.0, 0.0)
+
+
+# =================================================================== bateau (V29)
+
+## Le héros assis dans la barque : il suit le banc (tangage et roulis compris).
+func ride(seat: Transform3D) -> void:
+	state = "bateau"
+	if current_anim != "v28/sit":
+		_play("v28/sit", 0.25)
+	if hero != null:
+		hero.global_transform = Transform3D(seat.basis * Basis(Vector3.UP, PI), seat.origin - seat.basis.y * 0.37)
+	facing = -seat.basis.z
+	facing.y = 0.0
+	facing = facing.normalized()
+	update_hud()
+	_update_camera()
+
+
+func leave_ride() -> void:
+	state = "sol"
+	if hero != null:
+		hero.rotation = Vector3(0, hero.rotation.y, 0)
+	_play("v28/idle", 0.2)
 
 
 # =================================================================== vie et endurance

@@ -49,6 +49,11 @@ var hud_v28: CanvasLayer
 var vr_buttons_v28: Dictionary = {}
 var message_clock_v28: float = 0.0
 const JUMP_SPEED_V28: float = 6.6
+# V29 : deuxième île (jungle) et bateau.
+var jungle_v29: Node3D
+var boat_v29: Node3D
+var last_ok_v29: Dictionary = {}
+const ISLAND_DOCK_V29 := [Vector3(0.0, 1.0, -56.5), Vector3(0.0, 1.0, -72.5)]
 # ILE_MANGA_PHYSICS_V11 : locomotion par CharacterBody3D et obstacles statiques.
 var vr_body: CharacterBody3D
 var pc_body: CharacterBody3D
@@ -80,6 +85,7 @@ func _ready() -> void:
 	_create_scenery_v17()
 	_create_village_v18()
 	_create_structures()
+	_create_jungle_v29()
 	_create_players()
 	_build_physical_world_v11()
 	_init_native_xr()
@@ -109,6 +115,14 @@ func _configure_quality() -> void:
 
 
 func _height_at(x: float, z: float) -> float:
+	# V29 : la jungle a son propre relief ; ailleurs, celui de l'île du village.
+	var h: float = _height_island_v29(x, z)
+	if jungle_v29 != null and jungle_v29.contains(x, z):
+		return maxf(h, jungle_v29.height(x, z))
+	return h
+
+
+func _height_island_v29(x: float, z: float) -> float:
 	# V26 : relief de base, puis bassins des chutes d'eau (seulement à proximité).
 	var land: float = _base_height_v26(x, z)
 	# V27 : sous les pièces des maisons, le terrain passe sous le plancher (pas d'herbe qui perce).
@@ -871,6 +885,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			inventory_v28.reset()
 		if hero_v28 != null:
 			hero_v28.set_health(hero_v28.HP_MAX)
+		if boat_v29 != null:
+			boat_v29.driving = false
+			boat_v29.moor(0)
 		_save_slot(slot)
 	else:
 		var data: Dictionary = SaveStore.read_slot(slot)
@@ -886,13 +903,21 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 				inventory_v28.load_data(inv_data)
 		if hero_v28 != null:
 			hero_v28.set_health(int(data.get("vie", hero_v28.HP_MAX)))
+		if boat_v29 != null:
+			var boat_data: Variant = data.get("bateau", {})
+			boat_v29.driving = false
+			boat_v29.load_data(boat_data if boat_data is Dictionary else {})
+			if boat_data is Dictionary and bool(boat_data.get("a_bord", false)):
+				_board_boat_v29()
 	if not xr_active and pc_hero != null:
 		pc_hero.position = origin.position
 		pc_hero.rotation.y = origin.rotation.y
-	if hero_v28 != null:
+	if hero_v28 != null and (boat_v29 == null or not boat_v29.driving):
 		hero_v28.state = "sol"
 		hero_v28.facing = -origin.global_basis.z
-	_sync_physics_after_load_v11()
+	if boat_v29 == null or not boat_v29.driving:
+		_sync_physics_after_load_v11()
+	last_ok_v29.clear()
 	autosave_clock = 0.0
 
 
@@ -909,6 +934,8 @@ func _save_slot(slot: int) -> void:
 		extra["inventaire"] = inventory_v28.serialize()
 	if hero_v28 != null:
 		extra["vie"] = hero_v28.hp
+	if boat_v29 != null:
+		extra["bateau"] = boat_v29.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -939,8 +966,11 @@ func _physics_process(delta: float) -> void:
 		_save_slot(0)
 		autosave_clock = 0.0
 	if xr_active:
-		_move_xr(delta)
-		_vr_actions_v28(delta)
+		if boat_v29 != null and boat_v29.driving:
+			_drive_boat_vr_v29(delta)
+		else:
+			_move_xr(delta)
+			_vr_actions_v28(delta)
 	else:
 		_move_desktop(delta)
 	if message_clock_v28 > 0.0:
@@ -976,6 +1006,9 @@ func _move_xr(delta: float) -> void:
 
 
 func _move_desktop(delta: float) -> void:
+	if boat_v29 != null and boat_v29.driving:
+		_drive_boat_pc_v29(delta)
+		return
 	if hero_v28 != null:
 		if inventory_v28 == null or not inventory_v28.opened:
 			hero_v28.physics(delta)
@@ -1080,11 +1113,7 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
 	body.move_and_slide()
 	_try_step_v23(body, Vector3(offset.x, 0.0, offset.z))
-	var flat := Vector2(body.position.x, body.position.z)
-	if flat.length() > ISLAND_LIMIT_V21:
-		flat = flat.normalized() * ISLAND_LIMIT_V21
-		body.position.x = flat.x
-		body.position.z = flat.y
+	_limit_on_foot_v29(body)
 	# Body origin represents the feet; avoid the old -0.09 m offset.
 	origin.position = body.position
 
@@ -1289,11 +1318,7 @@ func _move_xr_body_v23(stick_offset: Vector3) -> void:
 		vr_body.velocity.y = maxf(vr_body.velocity.y - GRAVITY_V11 * dt, -24.0)
 	vr_body.move_and_slide()
 	_try_step_v23(vr_body, wanted)
-	var flat := Vector2(vr_body.position.x, vr_body.position.z)
-	if flat.length() > ISLAND_LIMIT_V21:
-		flat = flat.normalized() * ISLAND_LIMIT_V21
-		vr_body.position.x = flat.x
-		vr_body.position.z = flat.y
+	_limit_on_foot_v29(vr_body)
 	# L'origine se place pour que la tête reste exactement au-dessus du corps.
 	xr_origin.position = Vector3(vr_body.position.x - head_offset.x, vr_body.position.y, vr_body.position.z - head_offset.z)
 
@@ -1395,8 +1420,21 @@ func _doors_update_v27() -> void:
 		var pick: int = inventory_v28.nearest_pickup(_player_pos_v27())
 		if pick >= 0 and (text == "" or inventory_v28.pickup_distance(pick, _player_pos_v27()) < _door_distance_v28()):
 			text = inventory_v28.prompt_text(_player_pos_v27())
+	if playing and boat_v29 != null and not xr_active:
+		var boat_text: String = boat_v29.prompt(_player_pos_v27())
+		if boat_text != "":
+			text = boat_text
 	if door_prompt_v27 != null:
 		door_prompt_v27.text = text if not xr_active else ""
+	if xr_active and playing and boat_v29 != null:
+		boat_v29.update_vr_label(xr_camera.global_position)
+	if xr_active and playing and boat_v29 != null and not boat_v29.driving and boat_v29.can_board(xr_camera.global_position):
+		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
+			_board_boat_v29()
+		trigger_ready_v27 = right_hand.get_float("trigger") <= 0.7
+		return
+	if xr_active and playing and boat_v29 != null and boat_v29.driving:
+		return
 	if xr_active and playing:
 		var hand_pick: int = inventory_v28.update_vr_labels(right_hand.global_position) if inventory_v28 != null else -1
 		var pressed: bool = right_hand.get_float("trigger") > 0.7
@@ -1459,9 +1497,16 @@ func _door_distance_v28() -> float:
 	return Vector2(c.x - p.x, c.z - p.z).length()
 
 
-## E : ramasser l'objet le plus proche, sinon ouvrir / fermer la porte.
+## E : bateau (monter / débarquer), sinon ramasser l'objet le plus proche, sinon la porte.
 func _interact_v28() -> void:
 	var p: Vector3 = _player_pos_v27()
+	if boat_v29 != null:
+		if boat_v29.driving:
+			_leave_boat_v29()
+			return
+		if boat_v29.can_board(p):
+			_board_boat_v29()
+			return
 	var pick: int = inventory_v28.nearest_pickup(p) if inventory_v28 != null else -1
 	if pick >= 0 and inventory_v28.pickup_distance(pick, p) < _door_distance_v28():
 		var where: Vector3 = inventory_v28.pickups[pick]["pos"]
@@ -1558,3 +1603,107 @@ func vr_jump_v28() -> void:
 			return
 	if vr_body.is_on_floor():
 		vr_body.velocity.y = JUMP_SPEED_V28
+
+
+# =================================================================== V29 : île-jungle et bateau
+
+func _create_jungle_v29() -> void:
+	jungle_v29 = preload("res://scripts/jungle_v29.gd").new()
+	jungle_v29.name = "Ile_jungle_v29"
+	add_child(jungle_v29)
+	jungle_v29.build(OS.has_feature("ile_manga_pc"))
+	boat_v29 = preload("res://scripts/boat_v29.gd").new()
+	boat_v29.name = "Bateau_v29"
+	add_child(boat_v29)
+	boat_v29.build(self, ISLAND_DOCK_V29, [jungle_v29.dock_start, jungle_v29.dock_end])
+
+
+## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
+## la jungle bloque dès que l'eau devient profonde) ; les pontons restent accessibles.
+func _limit_on_foot_v29(body: CharacterBody3D) -> void:
+	var p: Vector3 = body.position
+	var key: String = str(body.name)
+	if boat_v29 != null and boat_v29.on_dock(p):
+		last_ok_v29[key] = p
+		return
+	if jungle_v29 != null and Vector2(p.x, p.z).length() > 120.0:
+		if jungle_v29.height(p.x, p.z) > -0.3:
+			last_ok_v29[key] = p
+			return
+		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	var flat := Vector2(p.x, p.z)
+	if flat.length() > ISLAND_LIMIT_V21:
+		flat = flat.normalized() * ISLAND_LIMIT_V21
+		body.position.x = flat.x
+		body.position.z = flat.y
+	last_ok_v29[key] = body.position
+
+
+func _board_boat_v29() -> void:
+	if inventory_v28 != null and inventory_v28.opened:
+		inventory_v28.close()
+	boat_v29.board()
+	if hero_v28 != null and not xr_active:
+		hero_v28.cam_distance = maxf(hero_v28.cam_distance, 1.5)
+	_show_message_v28("À bord ! Z / S pour avancer, Q / D pour barrer." if not xr_active else "À bord ! Stick gauche pour naviguer.")
+
+
+func _leave_boat_v29() -> void:
+	var spot: Variant = boat_v29.landing_spot()
+	if spot == null:
+		_show_message_v28("Trop loin du rivage : approchez un ponton ou une plage.")
+		return
+	boat_v29.leave()
+	var origin: Node3D = xr_origin if xr_active else pc_root
+	origin.position = spot
+	if xr_active:
+		vr_body.global_position = spot
+		vr_body.velocity = Vector3.ZERO
+	else:
+		pc_body.global_position = spot
+		pc_body.velocity = Vector3.ZERO
+		if hero_v28 != null:
+			hero_v28.leave_ride()
+			hero_v28.cam_distance = 1.0
+	last_ok_v29.clear()
+
+
+func _drive_boat_pc_v29(delta: float) -> void:
+	var throttle: float = 0.0
+	var steer: float = 0.0
+	var can_drive: bool = inventory_v28 == null or not inventory_v28.opened
+	if can_drive:
+		if Input.is_key_pressed(KEY_Z) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+			throttle += 1.0
+		if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+			throttle -= 1.0
+		if Input.is_key_pressed(KEY_Q) or Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+			steer -= 1.0
+		if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+			steer += 1.0
+	var before: float = boat_v29.yaw
+	boat_v29.drive(delta, throttle, steer)
+	# La caméra tourne avec la barque (le clic droit reste libre).
+	pc_root.rotation.y += boat_v29.yaw - before
+	var seat: Transform3D = boat_v29.seat_transform()
+	pc_root.position = seat.origin
+	pc_body.global_position = seat.origin + Vector3.UP * 0.4
+	pc_body.velocity = Vector3.ZERO
+	if hero_v28 != null:
+		hero_v28.ride(seat)
+
+
+func _drive_boat_vr_v29(delta: float) -> void:
+	boat_v29.vr_tick(delta, left_hand.get_vector2("primary"), right_hand.get_float("trigger"))
+	if not boat_v29.driving:
+		return
+	var seat: Transform3D = boat_v29.seat_transform()
+	xr_origin.rotation.y = boat_v29.yaw + boat_v29._vr_yaw_offset
+	var cam_local: Vector3 = xr_camera.position
+	var offset: Vector3 = Basis(Vector3.UP, xr_origin.rotation.y) * Vector3(cam_local.x, 0.0, cam_local.z)
+	xr_origin.position = Vector3(seat.origin.x - offset.x, seat.origin.y - 0.3, seat.origin.z - offset.z)
+	vr_body.global_position = seat.origin + Vector3.UP * 0.4
+	vr_body.velocity = Vector3.ZERO
