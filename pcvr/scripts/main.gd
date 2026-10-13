@@ -54,6 +54,7 @@ func _ready() -> void:
 	_create_scenery_v13()
 	_create_scenery_v15()
 	_create_scenery_v16()
+	_create_scenery_v17()
 	_create_structures()
 	_create_players()
 	_build_physical_world_v11()
@@ -964,5 +965,12 @@ func _hero_foot_offset_v11() -> float:
 func _create_scenery_v15() -> void:
 	var scenic := preload("res://scripts/scenery_v15.gd").new()
 	scenic.name = "Paysages_v15"
+	add_child(scenic)
+	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
+
+func _create_scenery_v17() -> void:
+	var scenic := preload("res://scripts/scenery_v17.gd").new()
+	scenic.name = "Sentiers_et_clairieres_v17"
 	add_child(scenic)
 	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
