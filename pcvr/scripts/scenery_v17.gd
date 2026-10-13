@@ -1,4 +1,5 @@
 extends Node3D
+const Flora = preload("res://scripts/flora_v25.gd")
 ## Île Manga V17 — sentiers de forêt, clairières, pierres et sous-bois.
 ## Décor uniquement, aucune collision ajoutée au terrain ou au joueur.
 
@@ -48,12 +49,11 @@ func build(ground: Callable, pc_quality: bool) -> void:
 			pebble.scale = Vector3(rng.randf_range(0.65, 1.6), 1.0, rng.randf_range(0.7, 1.45))
 			pebble.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			add_child(pebble)
-		var grass_count: int = 75 if pc_quality else 25
+		var grass_count: int = 420 if pc_quality else 140
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
 		mm.use_colors = true
-		mm.mesh = tuft_mesh
-		tuft_mesh.material = blade_mat
+		mm.mesh = Flora.grass_clump(14, 0.55, 0.05, 21)
 		mm.instance_count = grass_count
 		for i in range(grass_count):
 			var a: float = rng.randf_range(0.0, TAU)
@@ -62,7 +62,7 @@ func build(ground: Callable, pc_quality: bool) -> void:
 			var z: float = center.y + sin(a) * radius
 			var size: float = rng.randf_range(0.55, 1.3)
 			var basis := Basis(Vector3.UP, a).scaled(Vector3(size, size, size))
-			mm.set_instance_transform(i, Transform3D(basis, Vector3(x, float(ground.call(x, z)) + 0.22 * size, z)))
+			mm.set_instance_transform(i, Transform3D(basis, Vector3(x, float(ground.call(x, z)) - 0.02, z)))
 			mm.set_instance_color(i, Color(0.85 + 0.15 * rng.randf(), 0.9 + 0.1 * rng.randf(), 0.82 + 0.18 * rng.randf()))
 		var tufts := MultiMeshInstance3D.new()
 		tufts.name = "Sous_bois_v17"

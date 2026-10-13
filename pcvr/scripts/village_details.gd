@@ -1,4 +1,5 @@
 extends Node3D
+const Flora = preload("res://scripts/flora_v25.gd")
 ## V7 : détails graphiques non interactifs. Les pièces sont instanciées en lots.
 
 func _material(color: Color, glow: bool = false) -> StandardMaterial3D:
@@ -15,7 +16,8 @@ func _material(color: Color, glow: bool = false) -> StandardMaterial3D:
 func _batch(name: String, mesh: Mesh, transforms: Array[Transform3D], material: Material, max_range: float) -> void:
 	if transforms.is_empty():
 		return
-	mesh.material = material
+	if mesh is PrimitiveMesh:
+		(mesh as PrimitiveMesh).material = material
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.mesh = mesh
@@ -27,6 +29,8 @@ func _batch(name: String, mesh: Mesh, transforms: Array[Transform3D], material: 
 	node.multimesh = multi
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	node.visibility_range_end = max_range
+	if not (mesh is PrimitiveMesh):
+		node.material_override = material
 	add_child(node)
 
 
@@ -94,8 +98,9 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 			var h: float = height_fn.call(x, z)
 			if h < 0.9:
 				continue
-			flowers.append(_placed(x, z, height_fn, Vector3.ONE * rng.randf_range(0.8, 1.6), 0.0, 0.28))
-		_batch("Massifs_fleurs_v7_" + str(color_id), blossom.duplicate(), flowers, _material(palette[color_id]), visible_distance)
+			flowers.append(_placed(x, z, height_fn, Vector3.ONE * rng.randf_range(0.55, 0.9), rng.randf_range(-PI, PI), -0.02))
+		# V25 : vraies touffes de fleurs, pétales teintés par massif.
+		_batch("Massifs_fleurs_v7_" + str(color_id), Flora.flower_clump(), flowers, Flora.flower_material(palette[color_id]), visible_distance)
 
 	print("ILE_MANGA_V7: village et chemins enrichis sans modifier la locomotion")
 

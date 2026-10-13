@@ -32,6 +32,12 @@ selected = [
     "textures/terrain/sand_n.png",
     "textures/terrain/stone_n.png",
     "textures/water/water_n.png",
+    "textures/flora/leaves.png",
+    "textures/flora/leaves_n.png",
+    "textures/flora/bark.png",
+    "textures/flora/bark_n.png",
+    "textures/flora/flowers.png",
+    "textures/flora/fern.png",
 ]
 
 

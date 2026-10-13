@@ -1,4 +1,5 @@
 extends Node3D
+const Flora = preload("res://scripts/flora_v25.gd")
 ## V18: village ornamental improvements. V23 : jardinières, bornes et caisses solides.
 
 func build(ground: Callable, pc_quality: bool) -> void:
@@ -23,7 +24,14 @@ func build(ground: Callable, pc_quality: bool) -> void:
 		_add_box("Terre_v18", Vector3(pt.x, y + 0.49, pt.y), Vector3(1.42, 0.10, 0.50), stone)
 		for j in range(5 if pc_quality else 3):
 			var x: float = pt.x - 0.56 + float(j) * (1.12 / float(4 if pc_quality else 2))
-			_add_orb("Fleur_v18", Vector3(x, y + 0.68 + 0.07 * sin(float(j)), pt.y), 0.16, _flower_material(colors[j % 3]))
+			var bloom := MeshInstance3D.new()
+			bloom.name = "Fleur_v18"
+			bloom.mesh = Flora.flower_clump()
+			bloom.material_override = Flora.flower_material(colors[j % 3])
+			bloom.scale = Vector3.ONE * 0.75
+			bloom.rotation.y = float(j) * 1.3
+			bloom.position = Vector3(x, y + 0.5, pt.y)
+			add_child(bloom)
 	# Subtle village markers, leaving a wide path towards the campfire.
 	for pt in [Vector2(16.0, 8.0), Vector2(-17.5, 8.0)]:
 		var y: float = float(ground.call(pt.x, pt.y))

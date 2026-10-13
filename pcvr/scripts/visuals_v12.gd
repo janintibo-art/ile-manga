@@ -1,4 +1,5 @@
 extends Node3D
+const Flora = preload("res://scripts/flora_v25.gd")
 ## Île Manga V12 : décors supplémentaires exclusivement visuels et instanciés.
 ## Ne crée aucune collision et ne modifie aucun déplacement.
 
@@ -23,7 +24,7 @@ func _create_flower_beds(height_fn: Callable, high_quality: bool) -> void:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = true
-	mm.mesh = petals
+	mm.mesh = Flora.flower_clump()
 	mm.instance_count = quantity
 	var placed: int = 0
 	for _trial in range(quantity * 12):
@@ -38,9 +39,9 @@ func _create_flower_beds(height_fn: Callable, high_quality: bool) -> void:
 			continue
 		if Vector2(x + 11.0, z - 9.0).length() < 7.0:
 			continue
-		var size: float = rng.randf_range(0.7, 1.25)
+		var size: float = rng.randf_range(0.5, 0.85)
 		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(Vector3.ONE * size)
-		mm.set_instance_transform(placed, Transform3D(basis, Vector3(x, y + 0.12, z)))
+		mm.set_instance_transform(placed, Transform3D(basis, Vector3(x, y - 0.02, z)))
 		var palette: Array[Color] = [Color(1.0, 0.68, 0.75), Color(0.98, 0.81, 0.38), Color(0.67, 0.72, 1.0), Color(0.94, 0.87, 0.95)]
 		mm.set_instance_color(placed, palette[rng.randi_range(0, palette.size() - 1)])
 		placed += 1
@@ -139,15 +140,17 @@ func _create_village_planters(height_fn: Callable, high_quality: bool) -> void:
 		cs.shape = cyl
 		body.add_child(cs)
 		add_child(body)
+		# V25 : arbuste feuillu et fleurs dans chaque pot.
 		var bush := MeshInstance3D.new()
 		bush.name = "Plante_village_V12"
-		bush.mesh = bush_mesh
-		bush.material_override = green
-		bush.position = Vector3(pos.x, y + 0.67, pos.y)
+		bush.mesh = Flora.bush(11)
+		bush.scale = Vector3.ONE * 0.5
+		bush.position = Vector3(pos.x, y + 0.4, pos.y)
 		add_child(bush)
 		var bud := MeshInstance3D.new()
 		bud.name = "Fleurs_jardiniere_V12"
-		bud.mesh = bud_mesh
-		bud.material_override = flower
-		bud.position = Vector3(pos.x, y + 1.07, pos.y)
+		bud.mesh = Flora.flower_clump()
+		bud.material_override = Flora.flower_material(Color(1.0, 0.72, 0.36))
+		bud.scale = Vector3.ONE * 0.7
+		bud.position = Vector3(pos.x + 0.12, y + 0.42, pos.y)
 		add_child(bud)

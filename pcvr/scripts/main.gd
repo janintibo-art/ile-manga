@@ -1,5 +1,6 @@
 extends Node3D
 const SaveStore = preload("res://scripts/save_manager.gd")
+const Flora = preload("res://scripts/flora_v25.gd")
 ## Île Manga V8 : hameau détail, bordures végétales et sentiers — contrôles VR inchangés.
 ## Les coordonnées du monde viennent du prototype Babylon.js existant.
 ## Les contrôles XR utilisent l'action map OpenXR par défaut de Godot.
@@ -326,93 +327,102 @@ func _make_tree(x: float, z: float, seed: int) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
 	var height: float = rng.randf_range(2.2, 3.5)
-	var trunk := MeshInstance3D.new()
-	trunk.name = "Tronc_arbre"
-	if _trunk_mesh_v22 == null:
-		_trunk_mesh_v22 = CylinderMesh.new()
-		_trunk_mesh_v22.top_radius = 0.22
-		_trunk_mesh_v22.bottom_radius = 0.34
-		_trunk_mesh_v22.height = 1.0
-		for k in range(3):
-			var shared := SphereMesh.new()
-			shared.radius = 1.55 - k * 0.16
-			shared.height = shared.radius * 1.7
-			shared.radial_segments = 10
-			shared.rings = 5
-			_leaf_meshes_v22.append(shared)
-	trunk.mesh = _trunk_mesh_v22
-	trunk.scale = Vector3(1.0, height, 1.0)
-	trunk.material_override = _material(Color(0.37, 0.24, 0.14))
-	trunk.position = Vector3(x, y + height * 0.5, z)
-	add_child(trunk)
+	# V25 : feuillu réaliste (tronc, charpentières, grappes de feuilles qui bougent au vent).
+	var tree := MeshInstance3D.new()
+	tree.name = "Arbre_v25"
+	var leaves: int = 300 if OS.has_feature("ile_manga_pc") else 190
+	tree.mesh = Flora.tree(4100 + seed % 4, 7.0, leaves)
+	var s: float = rng.randf_range(0.85, 1.15)
+	tree.scale = Vector3(s, s * rng.randf_range(0.92, 1.1), s)
+	tree.rotation.y = rng.randf() * TAU
+	tree.position = Vector3(x, y - 0.05, z)
+	add_child(tree)
 	_add_obstacle_cylinder_v11("Tronc_collision", Vector3(x, y + height * 0.5, z), 0.34, height)
-	# Trois couronnes rondes au lieu des anciens sapins triangulaires.
-	# Les volumes évitent l'effet décor de démonstration de la V2.
-	for i in range(3):
-		var leaf := MeshInstance3D.new()
-		leaf.name = "Feuillage_anime"
-		leaf.mesh = _leaf_meshes_v22[i]
-		leaf.material_override = _material(Color(0.21 + 0.03 * float(i), 0.51 + 0.04 * float(i), 0.27))
-		leaf.position = Vector3(x + rng.randf_range(-0.45, 0.45), y + height + float(i) * 0.45, z + rng.randf_range(-0.4, 0.4))
-		add_child(leaf)
 
 
-# Brins d'herbe distribués par MultiMesh (un lot, pas des milliers de draw calls).
-# Plus dense en mode PC ; parcimonieux en VR pour préserver le framerate.
+# Brins d'herbe distribués par MultiMesh (Herbes_multimesh), découpés en parcelles de 20 m
+# pour que la carte graphique ignore celles hors champ ou trop lointaines.
 func _create_ground_details() -> void:
-	var target_count: int = 2700 if OS.has_feature("ile_manga_pc") else 850
+	var pc: bool = OS.has_feature("ile_manga_pc")
+	var target_count: int = 60000 if pc else 18000
+	var chunk: float = 20.0
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 5012026
-	var tuft_mesh := QuadMesh.new()
-	tuft_mesh.size = Vector2(0.24, 0.54)
-	var leaf_mat := StandardMaterial3D.new()
-	leaf_mat.albedo_color = Color(0.27, 0.61, 0.25)
-	leaf_mat.roughness = 1.0
-	leaf_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	tuft_mesh.material = leaf_mat
-	var mm := MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.use_colors = true
-	mm.mesh = tuft_mesh
-	mm.instance_count = target_count
+	var clumps: Array[Mesh] = [Flora.grass_clump(14, 0.34, 0.034, 3), Flora.grass_clump(12, 0.26, 0.03, 5), Flora.grass_clump(16, 0.42, 0.036, 9)]
+	var buckets: Dictionary = {}
 	var placed: int = 0
-	for trial in range(target_count * 6):
+	for trial in range(target_count * 4):
 		if placed >= target_count:
 			break
-		var x: float = rng.randf_range(-72.0, 72.0)
-		var z: float = rng.randf_range(-72.0, 72.0)
+		var x: float = rng.randf_range(-66.0, 66.0)
+		var z: float = rng.randf_range(-66.0, 66.0)
 		var y: float = _height_at(x, z)
-		if y < 1.2 or y > 5.7 or Vector2(x, z - 4.0).length() < 12.0:
+		if y < 0.9 or y > 6.6:
 			continue
-		if Vector2(x - 9.0, z - 4.0).length() < 8.0 or Vector2(x + 11.0, z - 9.0).length() < 6.0:
+		if Vector2(x - 9.0, z - 4.0).length() < 5.0 or Vector2(x + 11.0, z - 9.0).length() < 3.8 or Vector2(x, z - 4.0).length() < 1.6:
 			continue
-		var scale_value: float = rng.randf_range(0.65, 1.6)
-		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(Vector3(scale_value, scale_value, scale_value))
-		var transform := Transform3D(basis, Vector3(x, y + scale_value * 0.25, z))
-		mm.set_instance_transform(placed, transform)
-		mm.set_instance_color(placed, Color(rng.randf_range(0.84, 1.16), rng.randf_range(0.86, 1.12), rng.randf_range(0.79, 1.08)))
+		# Pas d'herbe sur les sentiers ni dans le foyer ; clairsemée en lisière de plage.
+		if _near_path_v25(Vector2(x, z)):
+			continue
+		if y < 1.4 and rng.randf() < 0.6:
+			continue
+		var key := Vector3i(int(floor(x / chunk)), rng.randi_range(0, 2), int(floor(z / chunk)))
+		if not buckets.has(key):
+			buckets[key] = []
+		var s: float = rng.randf_range(0.75, 1.2)
+		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(Vector3(s, s * rng.randf_range(0.85, 1.2), s))
+		var tint := Color(rng.randf_range(0.82, 1.08), rng.randf_range(0.88, 1.1), rng.randf_range(0.78, 1.0))
+		buckets[key].append([Transform3D(basis, Vector3(x, y - 0.02, z)), tint])
 		placed += 1
-	mm.visible_instance_count = placed
-	var patch := MultiMeshInstance3D.new()
-	patch.name = "Herbes_multimesh"
-	patch.multimesh = mm
-	patch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	patch.visibility_range_end = 85.0 if OS.has_feature("ile_manga_pc") else 55.0
-	add_child(patch)
-	print("ILE_MANGA_V6: touffes herbe instanciees = ", placed)
+	for key in buckets.keys():
+		var items: Array = buckets[key]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_colors = true
+		mm.mesh = clumps[key.y]
+		mm.instance_count = items.size()
+		for i in range(items.size()):
+			mm.set_instance_transform(i, items[i][0])
+			mm.set_instance_color(i, items[i][1])
+		var patch := MultiMeshInstance3D.new()
+		patch.name = "Herbes_multimesh_%d_%d_%d" % [key.x, key.y, key.z]
+		patch.multimesh = mm
+		patch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		patch.visibility_range_end = 85.0 if pc else 48.0
+		patch.visibility_range_end_margin = 10.0
+		patch.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
+		add_child(patch)
+	print("ILE_MANGA_V25: touffes d'herbe = ", placed, " en ", buckets.size(), " parcelles")
 
+
+
+# V25 : sentiers du village (feu -> grande maison, feu -> petite maison) et foyer dégagés.
+func _near_path_v25(p: Vector2) -> bool:
+	if p.distance_to(Vector2(0.0, 4.0)) < 2.6:
+		return true
+	for seg in [[Vector2(0.0, 4.0), Vector2(9.0, 4.4)], [Vector2(0.0, 4.0), Vector2(-11.0, 9.0)]]:
+		var a: Vector2 = seg[0]
+		var b: Vector2 = seg[1]
+		var t: float = clampf((p - a).dot(b - a) / (b - a).length_squared(), 0.0, 1.0)
+		if p.distance_to(a.lerp(b, t)) < 1.1:
+			return true
+	return false
 
 
 # V6 — Décors naturels : instancing pour éviter un nombre élevé de draw calls.
 # Tous les éléments sont purement visuels : aucun changement des contrôles VR.
-func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: int, seed_value: int) -> void:
+func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: int, seed_value: int, size_range: Vector2 = Vector2(0.7, 1.45)) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = tint
-	mat.roughness = 0.96
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	mesh.material = mat
+	# V25 : les maillages de végétation portent leur propre matériau ; la teinte passe
+	# alors par la couleur de chaque instance (fleurs), sinon matériau simple (galets).
+	var own_material: bool = mesh is ArrayMesh
+	if not own_material:
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = tint
+		mat.roughness = 0.96
+		mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+		(mesh as PrimitiveMesh).material = mat
 	var batch := MultiMesh.new()
 	batch.transform_format = MultiMesh.TRANSFORM_3D
 	batch.use_colors = true
@@ -445,7 +455,7 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 			continue # pierres/galets du village
 		if Vector2(x - 9.0, z - 4.0).length() < 7.0 or Vector2(x + 11.0, z - 9.0).length() < 6.0:
 			continue
-		var size := rng.randf_range(0.7, 1.45)
+		var size := rng.randf_range(size_range.x, size_range.y)
 		var scale_vec := Vector3(size, size * rng.randf_range(0.7, 1.3), size)
 		var basis := Basis(Vector3.UP, rng.randf_range(-PI, PI)).scaled(scale_vec)
 		batch.set_instance_transform(placed, Transform3D(basis, Vector3(x, y + 0.08, z)))
@@ -457,15 +467,17 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 				cyl.height = solid_h
 				var cs := CollisionShape3D.new()
 				cs.shape = cyl
-				cs.position = Vector3(x, y + 0.08, z)
+				cs.position = Vector3(x, y + 0.08 + mesh_box.get_center().y * scale_vec.y, z)
 				solid_body.add_child(cs)
-		batch.set_instance_color(placed, Color(rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), 1.0))
+		var variation := Color(rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), rng.randf_range(0.85, 1.12), 1.0)
+		batch.set_instance_color(placed, variation * tint if own_material and category == 1 else variation)
 		placed += 1
 	batch.visible_instance_count = placed
 	var item := MultiMeshInstance3D.new()
 	item.name = name
 	item.multimesh = batch
-	item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Les buissons projettent une ombre : ils s'ancrent dans le sol.
+	item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if category == 0 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	item.visibility_range_end = 100.0 if OS.has_feature("ile_manga_pc") else 65.0
 	add_child(item)
 	print("ILE_MANGA_V6: ", name, "=", placed)
@@ -474,22 +486,12 @@ func _scatter_v6(name: String, mesh: Mesh, tint: Color, amount: int, category: i
 func _create_scenery_v6() -> void:
 	var high_quality := OS.has_feature("ile_manga_pc")
 	# Petits feuillages. Le maillage est partagé par toutes les instances.
-	var shrub := SphereMesh.new()
-	shrub.radius = 0.75
-	shrub.height = 1.05
-	shrub.radial_segments = 8
-	shrub.rings = 4
-	_scatter_v6("Buissons_v6", shrub, Color(0.20, 0.48, 0.24), 520 if high_quality else 260, 0, 62131)
+	_scatter_v6("Buissons_v6", Flora.bush(7), Color.WHITE, 520 if high_quality else 260, 0, 62131)
 
 	# Fleurs colorées (3 lots) en maillages légers, espacées dans les prairies.
 	for i in range(3):
-		var flower := SphereMesh.new()
-		flower.radius = 0.12
-		flower.height = 0.28
-		flower.radial_segments = 6
-		flower.rings = 3
 		var palette := [Color(0.96, 0.55, 0.68), Color(0.98, 0.85, 0.34), Color(0.70, 0.62, 0.96)]
-		_scatter_v6("Fleurs_v6_" + str(i), flower, palette[i], 330 if high_quality else 130, 1, 71711 + i * 127)
+		_scatter_v6("Fleurs_v6_" + str(i), Flora.flower_clump(), palette[i], 330 if high_quality else 130, 1, 71711 + i * 127, Vector2(0.55, 0.95))
 
 	var pebble := SphereMesh.new()
 	pebble.radius = 0.42
