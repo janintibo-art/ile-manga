@@ -40,6 +40,13 @@ selected = [
     "textures/flora/fern.png",
     "textures/terrain/rock.jpg",
     "textures/terrain/rock_n.png",
+    "textures/doors/door_wood.png",
+    "textures/doors/door_wood_n.png",
+    "textures/doors/wood_plain.png",
+    "textures/doors/plaster.png",
+    "textures/doors/plaster_n.png",
+    "textures/interior/floor.png",
+    "textures/interior/ceiling.png",
 ]
 
 

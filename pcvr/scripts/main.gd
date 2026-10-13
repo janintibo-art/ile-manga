@@ -37,6 +37,9 @@ var panorama_seconds: float = 0.0
 var autosave_clock: float = 0.0
 var game_started: bool = false
 var camp_light_v24: OmniLight3D
+var houses_v27: Node3D
+var door_prompt_v27: Label
+var trigger_ready_v27: bool = true
 var fire_clock_v24: float = 0.0
 # ILE_MANGA_PHYSICS_V11 : locomotion par CharacterBody3D et obstacles statiques.
 var vr_body: CharacterBody3D
@@ -47,6 +50,9 @@ const COLLISION_LAYER_V11: int = 1
 const ISLAND_LIMIT_V21: float = 63.0
 # V23 : hauteur de marche franchissable (perron, petites pierres).
 const STEP_HEIGHT_V23: float = 0.42
+# V27 : emprise au sol des pièces intérieures [x min, x max, z min, z max, plancher]
+# (déduites de houses_v27.HOUSES et de la position des maisons).
+const ROOMS_V27 := [[8.2, 11.4, 0.7, 7.3, 6.33], [-13.6, -9.55, 6.2, 10.7, 4.05]]
 
 
 
@@ -96,6 +102,10 @@ func _configure_quality() -> void:
 func _height_at(x: float, z: float) -> float:
 	# V26 : relief de base, puis bassins des chutes d'eau (seulement à proximité).
 	var land: float = _base_height_v26(x, z)
+	# V27 : sous les pièces des maisons, le terrain passe sous le plancher (pas d'herbe qui perce).
+	for room in ROOMS_V27:
+		if x > room[0] and x < room[1] and z > room[2] and z < room[3]:
+			land = minf(land, room[4] - 0.15)
 	if Falls.near_pool(x, z):
 		return Falls.carve(x, z, land, Callable(self, "_base_height_v26"))
 	return land
@@ -369,7 +379,7 @@ func _create_ground_details() -> void:
 		var y: float = _height_at(x, z)
 		if y < 0.9 or y > 6.6 or Falls.occupied(x, z):
 			continue
-		if Vector2(x - 9.0, z - 4.0).length() < 5.0 or Vector2(x + 11.0, z - 9.0).length() < 3.8 or Vector2(x, z - 4.0).length() < 1.6:
+		if Vector2(x - 9.0, z - 4.0).length() < 5.0 or Vector2(x + 11.0, z - 9.0).length() < 4.8 or Vector2(x, z - 4.0).length() < 1.6:
 			continue
 		# Pas d'herbe sur les sentiers ni dans le foyer ; clairsemée en lisière de plage.
 		if _near_path_v25(Vector2(x, z)):
@@ -662,13 +672,20 @@ func _create_village_v18() -> void:
 
 
 func _create_structures() -> void:
-	var home := _add_glb("res://assets/models/buildings/Maison.glb", "Maison_village", Vector3(9, _height_at(9, 4) + 3.6, 4), 4.5, -PI * 0.5)
+	# Hauteur des maisons prise sur le relief de base (le sol est abaissé sous leurs pièces).
+	var home := _add_glb("res://assets/models/buildings/Maison.glb", "Maison_village", Vector3(9, _base_height_v26(9, 4) + 3.6, 4), 4.5, -PI * 0.5)
 	if home == null:
 		_make_box("Maison_refuge", Vector3(9, _height_at(9, 4) + 2, 4), Vector3(7, 4, 7), Color(0.83, 0.54, 0.45))
 		_add_obstacle_box_v11("Maison_refuge_collision", Vector3(9, _height_at(9, 4) + 2, 4), Vector3(7, 4, 7))
 	# V23 : les murs solides sont ceux du modèle lui-même (porte comprise).
 	_solid_model_v23(home)
-	_solid_model_v23(_add_glb("res://assets/models/buildings/Petite_maison.glb", "Petite_maison", Vector3(-11, _height_at(-11, 9) + 2.244, 9), 3.0, PI * 0.5))
+	# V27 : petite maison agrandie (x 4,15 au lieu de 3) pour que sa double porte (1,86 m) laisse passer.
+	var small := _add_glb("res://assets/models/buildings/Petite_maison.glb", "Petite_maison", Vector3(-11, _base_height_v26(-11, 9) + 0.7477 * 4.15, 9), 4.15, PI * 0.5)
+	_solid_model_v23(small)
+	houses_v27 = preload("res://scripts/houses_v27.gd").new()
+	houses_v27.name = "Maisons_portes_v27"
+	add_child(houses_v27)
+	houses_v27.build([home, small], OS.has_feature("ile_manga_pc"))
 	_add_glb("res://assets/models/buildings/Ile_flottante.glb", "Ile_celeste", Vector3(20, 18, -15), 12, 0.0)
 	# Quartier de la plage DJ : éléments originaux Babylon.js réintroduits.
 	_solid_model_v23(_add_glb("res://assets/models/props/Mur_de_son.glb", "Mur_de_son", Vector3(0, _height_at(0, 60) + 3.75, 60), 6, PI))
@@ -724,6 +741,14 @@ func _create_players() -> void:
 	message.position = Vector2(20, 54)
 	message.add_theme_font_size_override("font_size", 18)
 	hud.add_child(message)
+	door_prompt_v27 = Label.new()
+	door_prompt_v27.add_theme_font_size_override("font_size", 24)
+	door_prompt_v27.add_theme_color_override("font_outline_color", Color.BLACK)
+	door_prompt_v27.add_theme_constant_override("outline_size", 6)
+	door_prompt_v27.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	door_prompt_v27.position.y -= 90
+	door_prompt_v27.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hud.add_child(door_prompt_v27)
 	xr_restart_button = Button.new()
 	xr_restart_button.text = "Reconnecter le Quest 3 (redémarrer le jeu)"
 	xr_restart_button.position = Vector2(20, 108)
@@ -877,6 +902,7 @@ func _physics_process(delta: float) -> void:
 			pc_camera.current = true
 	if game_menu != null and xr_active and game_started and not game_menu.opened and left_hand.get_float("menu_button") > 0.8:
 		game_menu.open_menu()
+	_doors_update_v27()
 	if game_menu != null and (game_menu.opened or not game_started):
 		return
 	autosave_clock += delta
@@ -1049,6 +1075,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					game_menu.open_menu()
 			else:
 				get_tree().quit()
+		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened:
+			houses_v27.interact(_player_pos_v27())
 		elif event.keycode == KEY_F5 and game_started:
 			_save_slot(game_menu.active_slot)
 		elif event.keycode == KEY_F9 and game_started:
@@ -1159,7 +1187,6 @@ func _try_step_v23(body: CharacterBody3D, horizontal: Vector3) -> void:
 	if shape_node == null:
 		return
 	var space := body.get_world_3d().direct_space_state
-	var lift := Vector3.UP * STEP_HEIGHT_V23
 	var ahead: Vector3 = horizontal.normalized() * 0.22
 	var probe := PhysicsShapeQueryParameters3D.new()
 	probe.shape = shape_node.shape
@@ -1167,21 +1194,30 @@ func _try_step_v23(body: CharacterBody3D, horizontal: Vector3) -> void:
 	probe.exclude = [body.get_rid()]
 	probe.margin = 0.01
 	var start: Transform3D = body.global_transform
-	for place in [start.translated(lift), start.translated(lift + ahead)]:
-		probe.transform = place * shape_node.transform
-		if not space.intersect_shape(probe, 1).is_empty():
-			return
-	var top: Vector3 = start.origin + lift + ahead
-	# Le dessus de la marche se mesure sous l'avant du pied, pas sous le centre.
-	var toe: Vector3 = top + horizontal.normalized() * 0.28
-	var ray := PhysicsRayQueryParameters3D.create(toe + Vector3.UP * 0.05, toe - lift - Vector3.UP * 0.1, body.collision_mask, [body.get_rid()])
-	var floor_hit := space.intersect_ray(ray)
-	if floor_hit.is_empty() or floor_hit.normal.y < 0.7:
+	# V27 : on essaie la plus petite hauteur qui suffit (sous un auvent, 0,42 m d'un coup
+	# ferait toucher la tête et la marche serait refusée).
+	for lift_h in [0.12, 0.22, 0.32, STEP_HEIGHT_V23]:
+		var lift := Vector3.UP * float(lift_h)
+		var free: bool = true
+		for place in [start.translated(lift), start.translated(lift + ahead)]:
+			probe.transform = place * shape_node.transform
+			if not space.intersect_shape(probe, 1).is_empty():
+				free = false
+				break
+		if not free:
+			continue
+		var top: Vector3 = start.origin + lift + ahead
+		# Le dessus de la marche se mesure sous l'avant du pied, pas sous le centre.
+		var toe: Vector3 = top + horizontal.normalized() * 0.28
+		var ray := PhysicsRayQueryParameters3D.create(toe + Vector3.UP * 0.05, toe - lift - Vector3.UP * 0.1, body.collision_mask, [body.get_rid()])
+		var floor_hit := space.intersect_ray(ray)
+		if floor_hit.is_empty() or floor_hit.normal.y < 0.7:
+			continue
+		var rise: float = floor_hit.position.y - start.origin.y
+		if rise < 0.02 or rise > float(lift_h):
+			continue
+		body.global_position = Vector3(top.x, floor_hit.position.y + 0.01, top.z)
 		return
-	var rise: float = floor_hit.position.y - start.origin.y
-	if rise < 0.02 or rise > STEP_HEIGHT_V23:
-		return
-	body.global_position = Vector3(top.x, floor_hit.position.y + 0.01, top.z)
 
 
 # V23 : en VR le corps suit la tête ; si on marche physiquement dans un mur,
@@ -1297,3 +1333,22 @@ func _create_fire_v24(at: Vector3) -> void:
 	smoke.add_point(0.2, Color(0.32, 0.31, 0.3, 0.32))
 	smoke.set_color(smoke.get_point_count() - 1, Color(0.5, 0.5, 0.52, 0.0))
 	_particles_v24("Fumee_v24", at + Vector3.UP * 1.0, 26, 4.5, 1.4, smoke, false, Vector2(0.5, 0.9), 0.25)
+
+
+# V27 : position du joueur (tête en VR, corps au PC) pour les portes.
+func _player_pos_v27() -> Vector3:
+	return xr_camera.global_position if xr_active else pc_root.global_position
+
+
+func _doors_update_v27() -> void:
+	if houses_v27 == null:
+		return
+	var playing: bool = game_started and game_menu != null and not game_menu.opened
+	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
+	if door_prompt_v27 != null:
+		door_prompt_v27.text = text if not xr_active else ""
+	if xr_active and playing:
+		var pressed: bool = right_hand.get_float("trigger") > 0.7
+		if pressed and trigger_ready_v27:
+			houses_v27.interact(_player_pos_v27())
+		trigger_ready_v27 = not pressed

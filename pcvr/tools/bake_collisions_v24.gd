@@ -7,12 +7,14 @@ extends SceneTree
 
 const MODELS := {
 	"Maison_village": ["res://assets/models/buildings/Maison.glb", 4.5],
-	"Petite_maison": ["res://assets/models/buildings/Petite_maison.glb", 3.0],
+	"Petite_maison": ["res://assets/models/buildings/Petite_maison.glb", 4.15],
 	"Mur_de_son": ["res://assets/models/props/Mur_de_son.glb", 6.0],
 	"Table_de_mixage": ["res://assets/models/props/Table_de_mixage.glb", 2.5],
 	"Distributeur_8_6": ["res://assets/models/props/Distributeur_8_6.glb", 1.8],
 }
 const CELL_WORLD: float = 0.1
+# V27 : ouvertures des portes (repère du modèle), retirées des collisions.
+const Houses = preload("res://scripts/houses_v27.gd")
 
 
 func _init() -> void:
@@ -23,6 +25,7 @@ func _init() -> void:
 		var root: Node3D = packed.instantiate()
 		# Faces mises à l'échelle du jeu : la collision n'a jamais besoin d'être agrandie.
 		var faces := _collect_faces(root)
+		faces = _without_doorway(faces, Houses.hole_for(label))
 		var scale_factor: float = float(info[1])
 		for i in range(faces.size()):
 			faces[i] *= scale_factor
@@ -79,3 +82,33 @@ func _cluster(faces: PackedVector3Array, cell: float) -> PackedVector3Array:
 		out.append(Vector3(b) * cell)
 		out.append(Vector3(c) * cell)
 	return out
+
+
+# V27 : retire les triangles dont le centre tombe dans l'ouverture de la porte.
+func _without_doorway(faces: PackedVector3Array, hole: Dictionary) -> PackedVector3Array:
+	if hole.is_empty():
+		return faces
+	var out := PackedVector3Array()
+	var removed: int = 0
+	for i in range(0, faces.size(), 3):
+		var c: Vector3 = (faces[i] + faces[i + 1] + faces[i + 2]) / 3.0
+		if _in_hole(c, hole):
+			removed += 1
+			continue
+		out.append(faces[i])
+		out.append(faces[i + 1])
+		out.append(faces[i + 2])
+	print("  ouverture de porte : ", removed, " triangles retirés")
+	return out
+
+
+func _in_hole(p: Vector3, h: Dictionary) -> bool:
+	var hx: Vector2 = h["hole_x"]
+	var hz: Vector2 = h["hole_z"]
+	if p.z < hz.x or p.z > hz.y or p.x < hx.x or p.x > hx.y or p.y < float(h["bottom"]) or p.y > float(h["apex"]):
+		return false
+	if p.y <= float(h["spring"]):
+		return true
+	var u: float = (p.x - (hx.x + hx.y) * 0.5) / ((hx.y - hx.x) * 0.5)
+	var v: float = (p.y - float(h["spring"])) / (float(h["apex"]) - float(h["spring"]))
+	return u * u + v * v < 1.0
