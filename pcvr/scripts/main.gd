@@ -41,6 +41,14 @@ var houses_v27: Node3D
 var door_prompt_v27: Label
 var trigger_ready_v27: bool = true
 var fire_clock_v24: float = 0.0
+# V28 : héros animé, inventaire, combat.
+var hero_v28: Node
+var inventory_v28: Node3D
+var combat_v28: Node3D
+var hud_v28: CanvasLayer
+var vr_buttons_v28: Dictionary = {}
+var message_clock_v28: float = 0.0
+const JUMP_SPEED_V28: float = 6.6
 # ILE_MANGA_PHYSICS_V11 : locomotion par CharacterBody3D et obstacles statiques.
 var vr_body: CharacterBody3D
 var pc_body: CharacterBody3D
@@ -77,6 +85,7 @@ func _ready() -> void:
 	_init_native_xr()
 	_update_status()
 	_create_game_menu_v8()
+	_create_gameplay_v28()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -732,13 +741,14 @@ func _create_players() -> void:
 
 	var hud := CanvasLayer.new()
 	add_child(hud)
+	hud_v28 = hud
 	info = Label.new()
-	info.text = "ÎLE MANGA VR " + _version_v21() + "  |  ZQSD : marcher  •  clic droit : caméra  •  R : relancer la VR  •  Échap : quitter"
-	info.add_theme_font_size_override("font_size", 16)
+	info.text = "ÎLE MANGA VR " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu"
+	info.add_theme_font_size_override("font_size", 15)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
 	message = Label.new()
-	message.position = Vector2(20, 54)
+	message.position = Vector2(20, 66)
 	message.add_theme_font_size_override("font_size", 18)
 	hud.add_child(message)
 	door_prompt_v27 = Label.new()
@@ -857,6 +867,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		origin.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
 		origin.rotation.y = 0.0
 		game_menu.seconds = 0.0
+		if inventory_v28 != null:
+			inventory_v28.reset()
+		if hero_v28 != null:
+			hero_v28.set_health(hero_v28.HP_MAX)
 		_save_slot(slot)
 	else:
 		var data: Dictionary = SaveStore.read_slot(slot)
@@ -865,9 +879,19 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			origin.position = Vector3(float(a[0]), float(a[1]), float(a[2]))
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
+		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
+		if inventory_v28 != null:
+			var inv_data: Variant = data.get("inventaire", {})
+			if inv_data is Dictionary:
+				inventory_v28.load_data(inv_data)
+		if hero_v28 != null:
+			hero_v28.set_health(int(data.get("vie", hero_v28.HP_MAX)))
 	if not xr_active and pc_hero != null:
 		pc_hero.position = origin.position
 		pc_hero.rotation.y = origin.rotation.y
+	if hero_v28 != null:
+		hero_v28.state = "sol"
+		hero_v28.facing = -origin.global_basis.z
 	_sync_physics_after_load_v11()
 	autosave_clock = 0.0
 
@@ -880,7 +904,12 @@ func _save_slot(slot: int) -> void:
 	if not game_started:
 		return
 	var origin: Node3D = xr_origin if xr_active else pc_root
-	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds)
+	var extra: Dictionary = {}
+	if inventory_v28 != null:
+		extra["inventaire"] = inventory_v28.serialize()
+	if hero_v28 != null:
+		extra["vie"] = hero_v28.hp
+	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
 
@@ -911,8 +940,13 @@ func _physics_process(delta: float) -> void:
 		autosave_clock = 0.0
 	if xr_active:
 		_move_xr(delta)
+		_vr_actions_v28(delta)
 	else:
 		_move_desktop(delta)
+	if message_clock_v28 > 0.0:
+		message_clock_v28 -= delta
+		if message_clock_v28 <= 0.0 and message != null:
+			message.text = ""
 
 
 func _move_xr(delta: float) -> void:
@@ -942,6 +976,12 @@ func _move_xr(delta: float) -> void:
 
 
 func _move_desktop(delta: float) -> void:
+	if hero_v28 != null:
+		if inventory_v28 == null or not inventory_v28.opened:
+			hero_v28.physics(delta)
+		else:
+			hero_v28.physics(0.0001)
+		return
 	var axis := Vector2.ZERO
 	if Input.is_key_pressed(KEY_Z) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
 		axis.y -= 1.0
@@ -1033,7 +1073,8 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 		body.velocity = Vector3.ZERO
 	body.velocity.x = offset.x / dt
 	body.velocity.z = offset.z / dt
-	if body.is_on_floor():
+	# V28 : au sol on reste collé, sauf au moment d'un saut (vitesse vers le haut).
+	if body.is_on_floor() and body.velocity.y <= 0.0:
 		body.velocity.y = -0.05
 	else:
 		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
@@ -1067,7 +1108,9 @@ func _sync_physics_after_load_v11() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_ESCAPE:
+		if event.keycode == KEY_ESCAPE and inventory_v28 != null and inventory_v28.opened:
+			inventory_v28.close()
+		elif event.keycode == KEY_ESCAPE:
 			if game_menu != null:
 				if game_menu.opened and game_started:
 					game_menu._close()
@@ -1075,8 +1118,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					game_menu.open_menu()
 			else:
 				get_tree().quit()
-		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened:
-			houses_v27.interact(_player_pos_v27())
+		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
+			_interact_v28()
+		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened:
+			inventory_v28.toggle()
 		elif event.keycode == KEY_F5 and game_started:
 			_save_slot(game_menu.active_slot)
 		elif event.keycode == KEY_F9 and game_started:
@@ -1238,7 +1283,7 @@ func _move_xr_body_v23(stick_offset: Vector3) -> void:
 		vr_body.velocity = Vector3.ZERO
 	vr_body.velocity.x = wanted.x / dt
 	vr_body.velocity.z = wanted.z / dt
-	if vr_body.is_on_floor():
+	if vr_body.is_on_floor() and vr_body.velocity.y <= 0.0:
 		vr_body.velocity.y = -0.05
 	else:
 		vr_body.velocity.y = maxf(vr_body.velocity.y - GRAVITY_V11 * dt, -24.0)
@@ -1343,12 +1388,173 @@ func _player_pos_v27() -> Vector3:
 func _doors_update_v27() -> void:
 	if houses_v27 == null:
 		return
-	var playing: bool = game_started and game_menu != null and not game_menu.opened
+	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened)
 	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
+	# V28 : l'objet à ramasser passe avant la porte s'il est plus proche.
+	if playing and inventory_v28 != null and not xr_active:
+		var pick: int = inventory_v28.nearest_pickup(_player_pos_v27())
+		if pick >= 0 and (text == "" or inventory_v28.pickup_distance(pick, _player_pos_v27()) < _door_distance_v28()):
+			text = inventory_v28.prompt_text(_player_pos_v27())
 	if door_prompt_v27 != null:
 		door_prompt_v27.text = text if not xr_active else ""
 	if xr_active and playing:
+		var hand_pick: int = inventory_v28.update_vr_labels(right_hand.global_position) if inventory_v28 != null else -1
 		var pressed: bool = right_hand.get_float("trigger") > 0.7
 		if pressed and trigger_ready_v27:
-			houses_v27.interact(_player_pos_v27())
+			if hand_pick >= 0:
+				inventory_v28.collect(hand_pick)
+			else:
+				houses_v27.interact(_player_pos_v27())
 		trigger_ready_v27 = not pressed
+
+
+# =================================================================== V28 : mouvements, combat, inventaire
+
+func _create_gameplay_v28() -> void:
+	combat_v28 = preload("res://scripts/combat_v28.gd").new()
+	combat_v28.name = "Combat_v28"
+	add_child(combat_v28)
+	inventory_v28 = preload("res://scripts/inventory_v28.gd").new()
+	inventory_v28.name = "Inventaire_v28"
+	add_child(inventory_v28)
+	inventory_v28.setup(self, xr_active)
+	inventory_v28.notify.connect(_show_message_v28)
+	inventory_v28.equipped_changed.connect(_on_equip_v28)
+	inventory_v28.use_food = func(half_hearts: int) -> bool:
+		return hero_v28.heal(half_hearts) if hero_v28 != null and not xr_active else true
+	inventory_v28.drop_point = _drop_point_v28
+	combat_v28.build(self, inventory_v28)
+	hero_v28 = preload("res://scripts/hero_v28.gd").new()
+	hero_v28.name = "Heros_v28"
+	add_child(hero_v28)
+	hero_v28.setup(self, pc_body, pc_root, pc_hero, pc_camera)
+	hero_v28.strike = combat_v28.strike
+	hero_v28.fainted.connect(_respawn_v28)
+	if not xr_active and hud_v28 != null:
+		hero_v28.make_hud(hud_v28)
+	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
+	_spawn_world_v28.call_deferred()
+
+
+func _spawn_world_v28() -> void:
+	await get_tree().physics_frame
+	inventory_v28.spawn_world()
+	print("ILE_MANGA_V28: ", inventory_v28.pickups.size(), " objets à ramasser")
+
+
+func _show_message_v28(text: String) -> void:
+	if message != null:
+		message.text = text
+		message_clock_v28 = 3.0
+
+
+func _door_distance_v28() -> float:
+	if houses_v27 == null:
+		return INF
+	var i: int = houses_v27.nearest(_player_pos_v27())
+	if i < 0:
+		return INF
+	var c: Vector3 = houses_v27.doors[i]["center"]
+	var p: Vector3 = _player_pos_v27()
+	return Vector2(c.x - p.x, c.z - p.z).length()
+
+
+## E : ramasser l'objet le plus proche, sinon ouvrir / fermer la porte.
+func _interact_v28() -> void:
+	var p: Vector3 = _player_pos_v27()
+	var pick: int = inventory_v28.nearest_pickup(p) if inventory_v28 != null else -1
+	if pick >= 0 and inventory_v28.pickup_distance(pick, p) < _door_distance_v28():
+		var where: Vector3 = inventory_v28.pickups[pick]["pos"]
+		if inventory_v28.collect(pick) and hero_v28 != null:
+			hero_v28.play_action("pickup", where)
+		return
+	var door: int = houses_v27.nearest(p)
+	if houses_v27.interact(p) and hero_v28 != null and door >= 0:
+		hero_v28.play_action("push", houses_v27.doors[door]["center"])
+
+
+func _drop_point_v28() -> Vector3:
+	var origin: Vector3 = _player_pos_v27()
+	var fwd: Vector3 = hero_v28.facing if hero_v28 != null and not xr_active else -xr_camera.global_basis.z
+	fwd.y = 0.0
+	fwd = fwd.normalized() if fwd.length() > 0.01 else Vector3.FORWARD
+	var spot: Vector3 = origin + fwd * 0.8
+	var space := get_world_3d().direct_space_state
+	var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(spot + Vector3.UP * 1.5, spot - Vector3.UP * 3.0, 1))
+	spot.y = hit.position.y if not hit.is_empty() else _height_at(spot.x, spot.z)
+	return spot
+
+
+func _on_equip_v28(item_id: String) -> void:
+	var damage: int = int(inventory_v28.ITEMS[item_id].get("damage", 1)) if item_id != "" else 1
+	if hero_v28 != null:
+		hero_v28.equip(item_id, damage, inventory_v28.make_model(item_id) if item_id != "" else null)
+	# En VR, l'arme se tient dans la main droite, lame vers l'avant.
+	var old: Node = right_hand.get_node_or_null("Arme_VR_v28")
+	if old != null:
+		old.queue_free()
+	if item_id != "":
+		var holder := Node3D.new()
+		holder.name = "Arme_VR_v28"
+		holder.rotation_degrees = Vector3(-90, 0, 0)
+		holder.position = Vector3(0, -0.01, 0.03)
+		holder.add_child(inventory_v28.make_model(item_id))
+		right_hand.add_child(holder)
+		right_hand.get_node("Manette_visible").visible = false
+	else:
+		right_hand.get_node("Manette_visible").visible = true
+
+
+func _respawn_v28() -> void:
+	pc_root.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
+	_sync_physics_after_load_v11()
+	_show_message_v28("Vous vous êtes évanoui… Vous voici de retour au village.")
+
+
+## VR : A pour sauter (ou se hisser sur un rebord devant soi), Y pour l'inventaire,
+## coups de poing ou d'épée en bougeant vite la main. Le déplacement au joystick ne change pas.
+func _vr_actions_v28(delta: float) -> void:
+	var a_now: bool = right_hand.is_button_pressed("ax_button")
+	var y_now: bool = left_hand.is_button_pressed("by_button")
+	var a_edge: bool = a_now and not vr_buttons_v28.get("a", false)
+	var y_edge: bool = y_now and not vr_buttons_v28.get("y", false)
+	vr_buttons_v28["a"] = a_now
+	vr_buttons_v28["y"] = y_now
+	if y_edge and inventory_v28 != null:
+		inventory_v28.toggle()
+	if inventory_v28 != null and inventory_v28.opened:
+		inventory_v28.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.get_float("grip"))
+		return
+	if a_edge:
+		vr_jump_v28()
+	if combat_v28 != null:
+		var armed: bool = inventory_v28 != null and inventory_v28.equipped != ""
+		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
+		if armed:
+			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1))
+			var blade: Vector3 = -right_hand.global_basis.z
+			var mid: Vector3 = right_hand.global_position + blade * 0.45
+			var tip: Vector3 = right_hand.global_position + blade * 0.75
+			points["lame"] = [mid, 0.15, dmg, xr_origin.to_local(mid)]
+			points["pointe"] = [tip, 0.12, dmg, xr_origin.to_local(tip)]
+		else:
+			points["droite"] = [right_hand.global_position, 0.12, 1, right_hand.position]
+		combat_v28.vr_tick(delta, points, xr_camera.global_position)
+
+
+func vr_jump_v28() -> void:
+	if vr_body == null:
+		return
+	var fwd: Vector3 = -xr_camera.global_basis.z
+	if hero_v28 != null:
+		var ledge: Dictionary = hero_v28.find_ledge(vr_body, fwd)
+		if not ledge.is_empty():
+			# Confort : on se retrouve directement sur le rebord, sans mouvement imposé.
+			var head: Vector3 = xr_camera.global_position
+			var head_offset := Vector3(head.x - xr_origin.global_position.x, 0.0, head.z - xr_origin.global_position.z)
+			vr_body.global_position = ledge["top"]
+			vr_body.velocity = Vector3.ZERO
+			xr_origin.position = Vector3(vr_body.position.x - head_offset.x, vr_body.position.y, vr_body.position.z - head_offset.z)
+			return
+	if vr_body.is_on_floor():
+		vr_body.velocity.y = JUMP_SPEED_V28

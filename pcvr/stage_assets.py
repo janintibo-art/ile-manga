@@ -46,6 +46,17 @@ selected = [
     "textures/doors/plaster.png",
     "textures/doors/plaster_n.png",
     "textures/interior/floor.png",
+    "textures/items/pomme.png",
+    "textures/items/champignon.png",
+    "textures/items/baies.png",
+    "textures/items/baton.png",
+    "textures/items/caillou.png",
+    "textures/items/coquillage.png",
+    "textures/items/piece.png",
+    "textures/items/epee_bois.png",
+    "textures/items/coeur_plein.png",
+    "textures/items/coeur_moitie.png",
+    "textures/items/coeur_vide.png",
     "textures/interior/ceiling.png",
 ]
 

@@ -20,7 +20,8 @@ static func read_slot(slot: int) -> Dictionary:
 		return {}
 	return value
 
-static func write_slot(slot: int, position: Vector3, facing: float, seconds: float) -> bool:
+## extra (V28) : inventaire, vie… ajoutés tels quels au fichier.
+static func write_slot(slot: int, position: Vector3, facing: float, seconds: float, extra: Dictionary = {}) -> bool:
 	if slot < 0 or slot > SLOT_COUNT:
 		return false
 	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(SAVE_DIR)) != OK:
@@ -34,6 +35,8 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 		"position": [position.x, position.y, position.z],
 		"yaw": facing
 	}
+	for key in extra:
+		data[key] = extra[key]
 	var handle: FileAccess = FileAccess.open(path_for(slot), FileAccess.WRITE)
 	if handle == null:
 		return false
