@@ -33,6 +33,8 @@ var menu_panorama: Camera3D
 var panorama_seconds: float = 0.0
 var autosave_clock: float = 0.0
 var game_started: bool = false
+var camp_light_v24: OmniLight3D
+var fire_clock_v24: float = 0.0
 # ILE_MANGA_PHYSICS_V11 : locomotion par CharacterBody3D et obstacles statiques.
 var vr_body: CharacterBody3D
 var pc_body: CharacterBody3D
@@ -61,7 +63,6 @@ func _ready() -> void:
 	_create_scenery_v17()
 	_create_village_v18()
 	_create_structures()
-	_create_village_v19()
 	_create_players()
 	_build_physical_world_v11()
 	_init_native_xr()
@@ -70,15 +71,23 @@ func _ready() -> void:
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
-# Profils distincts : rendu haute définition sur PC, charge VR maîtrisée.
+# V24 : profils de qualité réglés pour une RTX 4070 ou mieux.
+# PC : éclairage global, anticrénelage temporel, ombres 8K très douces.
+# VR : même ciel et mêmes matériaux, effets d'écran lourds coupés pour tenir 90 i/s par œil.
 func _configure_quality() -> void:
+	var vp := get_viewport()
+	vp.msaa_3d = Viewport.MSAA_4X
+	vp.mesh_lod_threshold = 0.6
+	RenderingServer.directional_soft_shadow_filter_set_quality(RenderingServer.SHADOW_QUALITY_SOFT_ULTRA)
+	RenderingServer.positional_soft_shadow_filter_set_quality(RenderingServer.SHADOW_QUALITY_SOFT_HIGH)
 	if OS.has_feature("ile_manga_pc"):
-		get_viewport().msaa_3d = Viewport.MSAA_4X
-		get_viewport().scaling_3d_scale = 1.0
-		print("ILE_MANGA_V6: PC NATIF, MSAA 4x, resolution ecran native")
+		vp.use_taa = true
+		vp.scaling_3d_scale = 1.0
+		RenderingServer.directional_shadow_atlas_set_size(8192, true)
+		print("ILE_MANGA_V24: PC ultra, MSAA 4x + TAA, ombres 8192, filtrage ultra")
 	else:
-		get_viewport().msaa_3d = Viewport.MSAA_2X
-		print("ILE_MANGA_V6: VR, MSAA 2x, resolution geree par Quest Link / OpenXR")
+		RenderingServer.directional_shadow_atlas_set_size(4096, true)
+		print("ILE_MANGA_V24: VR haute qualite, MSAA 4x, ombres 4096")
 
 
 func _height_at(x: float, z: float) -> float:
@@ -87,7 +96,12 @@ func _height_at(x: float, z: float) -> float:
 	var noise: float = (sin(x * 0.045) * cos(z * 0.045) * 3.2
 		+ sin(x * 0.1 + 1.3) * cos(z * 0.085) * 1.3
 		+ sin(x * 0.21) * cos(z * 0.19) * 0.35)
-	return noise * falloff * 0.6 + 7.0 * falloff - 2.2
+	var land: float = noise * falloff * 0.6 + 7.0 * falloff - 2.2
+	# V24 : au-delà du rivage, le fond descend vers le large (hors de la zone jouable).
+	var r: float = sqrt(x * x + z * z)
+	if r > 66.0:
+		land -= (r - 66.0) * 0.28
+	return land
 
 
 func _terrain_color(y: float) -> Color:
@@ -105,35 +119,61 @@ func _append_ground_vertex(surface: SurfaceTool, x: float, z: float) -> void:
 
 
 func _create_land() -> void:
-	var surface := SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var step: float = TERRAIN_SIZE / float(TERRAIN_STEPS)
-	for zi in range(TERRAIN_STEPS):
-		for xi in range(TERRAIN_STEPS):
+	# V24 : maillage indexé de 320 x 320 carreaux (62 cm), normales lisses issues du relief.
+	var steps: int = 320
+	var step: float = TERRAIN_SIZE / float(steps)
+	var count: int = steps + 1
+	var verts := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var uvs := PackedVector2Array()
+	verts.resize(count * count)
+	normals.resize(count * count)
+	uvs.resize(count * count)
+	var e: float = 0.25
+	for zi in range(count):
+		for xi in range(count):
 			var x: float = -TERRAIN_SIZE * 0.5 + xi * step
 			var z: float = -TERRAIN_SIZE * 0.5 + zi * step
-			_append_ground_vertex(surface, x, z)
-			_append_ground_vertex(surface, x + step, z + step)
-			_append_ground_vertex(surface, x + step, z)
-			_append_ground_vertex(surface, x, z)
-			_append_ground_vertex(surface, x, z + step)
-			_append_ground_vertex(surface, x + step, z + step)
-	surface.generate_normals()
+			var i: int = zi * count + xi
+			verts[i] = Vector3(x, _height_at(x, z), z)
+			normals[i] = Vector3(_height_at(x - e, z) - _height_at(x + e, z), 2.0 * e, _height_at(x, z - e) - _height_at(x, z + e)).normalized()
+			uvs[i] = Vector2(x, z) * 0.21
+	var indices := PackedInt32Array()
+	indices.resize(steps * steps * 6)
+	var k: int = 0
+	for zi in range(steps):
+		for xi in range(steps):
+			var a: int = zi * count + xi
+			var b: int = a + 1
+			var c: int = a + count
+			var d: int = c + 1
+			# Sens horaire vu du dessus = face visible pour Godot.
+			indices[k] = a; indices[k + 1] = b; indices[k + 2] = d
+			indices[k + 3] = a; indices[k + 4] = d; indices[k + 5] = c
+			k += 6
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = verts
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	arrays[Mesh.ARRAY_INDEX] = indices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	var terrain := MeshInstance3D.new()
 	terrain.name = "Ile_terrain_texture"
-	terrain.mesh = surface.commit()
+	terrain.mesh = mesh
 	var shader: Shader = load("res://shaders/terrain.gdshader")
 	if shader != null:
 		var m := ShaderMaterial.new()
 		m.shader = shader
-		m.set_shader_parameter("sand_tex", load("res://assets/textures/terrain/sand.jpg"))
-		m.set_shader_parameter("grass_tex", load("res://assets/textures/terrain/grass.jpg"))
-		m.set_shader_parameter("stone_tex", load("res://assets/textures/terrain/stone.jpg"))
+		for tex in ["sand", "grass", "stone"]:
+			m.set_shader_parameter(tex + "_tex", load("res://assets/textures/terrain/" + tex + ".jpg"))
+			m.set_shader_parameter(tex + "_n", load("res://assets/textures/terrain/" + tex + "_n.png"))
 		m.set_shader_parameter("extra_detail", OS.has_feature("ile_manga_pc"))
 		terrain.material_override = m
 	else:
 		var fallback := StandardMaterial3D.new()
-		fallback.vertex_color_use_as_albedo = true
+		fallback.albedo_color = Color(0.35, 0.6, 0.3)
 		terrain.material_override = fallback
 	add_child(terrain)
 	# Le relief est un corps statique triangulé pour la gravité et les pentes.
@@ -153,61 +193,103 @@ func _create_water() -> void:
 	ocean = MeshInstance3D.new()
 	ocean.name = "Ocean_anime"
 	var plane := PlaneMesh.new()
-	plane.size = Vector2(700.0, 700.0)
-	# Davantage de sommets pour les ondulations réelles de l'eau.
-	plane.subdivide_width = 64 if OS.has_feature("ile_manga_pc") else 40
-	plane.subdivide_depth = 64 if OS.has_feature("ile_manga_pc") else 40
+	var ripple: Texture2D = load("res://assets/textures/water/water_n.png")
+	if OS.has_feature("ile_manga_pc"):
+		# V24 : océan jusqu'à l'horizon, houle réelle, réfraction et profondeur.
+		plane.size = Vector2(2400.0, 2400.0)
+		plane.subdivide_width = 360
+		plane.subdivide_depth = 360
+		ocean_material = ShaderMaterial.new()
+		ocean_material.shader = load("res://shaders/water_hd.gdshader")
+		ocean_material.set_shader_parameter("ripple_n", ripple)
+	else:
+		plane.size = Vector2(1600.0, 1600.0)
+		plane.subdivide_width = 160
+		plane.subdivide_depth = 160
+		ocean_material = ShaderMaterial.new()
+		ocean_material.shader = load("res://shaders/water.gdshader")
+		ocean_material.set_shader_parameter("water_tex", load("res://assets/textures/water/water.jpg"))
+		ocean_material.set_shader_parameter("ripple_n", ripple)
+		ocean_material.set_shader_parameter("wave_strength", 0.8)
 	ocean.mesh = plane
 	ocean.position.y = -0.42
-	var shader: Shader = load("res://shaders/water.gdshader")
-	if shader != null:
-		ocean_material = ShaderMaterial.new()
-		ocean_material.shader = shader
-		ocean_material.set_shader_parameter("water_tex", load("res://assets/textures/water/water.jpg"))
-		ocean_material.set_shader_parameter("wave_strength", 1.0 if OS.has_feature("ile_manga_pc") else 0.65)
-		ocean.material_override = ocean_material
-	else:
-		ocean.material_override = _material(Color(0.24, 0.65, 0.83))
+	ocean.material_override = ocean_material
+	ocean.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(ocean)
 
 
 func _create_lighting() -> void:
+	var pc: bool = OS.has_feature("ile_manga_pc")
 	var world := WorldEnvironment.new()
 	var env := Environment.new()
+	# V24 : ciel peint par shader (atmosphère, soleil, nuages qui avancent).
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
-	var sky_mat := ProceduralSkyMaterial.new()
-	sky_mat.sky_top_color = Color(0.23, 0.47, 0.86)
-	sky_mat.sky_horizon_color = Color(0.78, 0.90, 0.99)
-	sky_mat.ground_bottom_color = Color(0.16, 0.36, 0.49)
+	var sky_mat := ShaderMaterial.new()
+	sky_mat.shader = load("res://shaders/sky_v24.gdshader")
+	sky_mat.set_shader_parameter("cloud_octaves", 7 if pc else 5)
 	sky.sky_material = sky_mat
+	sky.process_mode = Sky.PROCESS_MODE_INCREMENTAL
+	sky.radiance_size = Sky.RADIANCE_SIZE_256
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.reflected_light_source = Environment.REFLECTION_SOURCE_BG
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	# Brume aérienne très légère : le paysage garde son contraste de près.
+	env.ambient_light_sky_contribution = 1.0
+	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+	env.tonemap_mode = Environment.TONE_MAPPER_AGX
+	env.tonemap_exposure = 1.0
+	# Perspective aérienne : les lointains se fondent dans la couleur du ciel.
 	env.fog_enabled = true
-	env.fog_light_color = Color(0.73, 0.84, 0.93)
-	env.fog_density = 0.00135
-	# Les effets coûteux restent réservés au PC sans casque.
-	if OS.has_feature("ile_manga_pc"):
-		env.ssao_enabled = true
+	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
+	env.fog_light_color = Color(0.66, 0.77, 0.9)
+	env.fog_density = 0.0016
+	env.fog_aerial_perspective = 0.75
+	env.fog_sky_affect = 0.15
+	# Occlusion ambiante et lumière rebondie de près : PC et VR (RTX 4070).
+	env.ssao_enabled = true
+	env.ssao_radius = 1.4
+	env.ssao_intensity = 1.8
+	env.ssao_power = 1.4
+	env.glow_enabled = true
+	env.glow_intensity = 0.35
+	env.glow_bloom = 0.04
+	env.glow_hdr_threshold = 1.15
+	env.adjustment_enabled = true
+	env.adjustment_contrast = 1.05
+	env.adjustment_saturation = 1.06
+	if pc:
+		# Éclairage global temps réel : la lumière rebondit sur le sol et les murs.
+		env.sdfgi_enabled = true
+		env.sdfgi_use_occlusion = true
+		env.sdfgi_cascades = 6
+		env.sdfgi_min_cell_size = 0.15
+		env.sdfgi_energy = 1.0
 		env.ssil_enabled = true
-		env.glow_enabled = true
-		env.glow_intensity = 0.29
-		env.adjustment_enabled = true
-		env.adjustment_contrast = 1.04
-		env.adjustment_saturation = 1.07
+		env.ssil_radius = 4.0
+		env.ssr_enabled = true
+		env.ssr_max_steps = 96
+		env.ssr_fade_in = 0.12
+		env.ssr_fade_out = 2.0
+		# Brume volumétrique légère : rayons de soleil sous les arbres.
+		env.volumetric_fog_enabled = true
+		env.volumetric_fog_density = 0.0035
+		env.volumetric_fog_albedo = Color(0.86, 0.9, 0.96)
+		env.volumetric_fog_length = 96.0
+		env.volumetric_fog_gi_inject = 0.6
+		env.volumetric_fog_anisotropy = 0.55
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-55, -35, -20)
-	sun.light_color = Color(1.0, 0.96, 0.86)
-	sun.light_energy = 1.15
+	sun.name = "Soleil_v24"
+	sun.rotation_degrees = Vector3(-42, -35, 0)
+	sun.light_color = Color(1.0, 0.95, 0.86)
+	sun.light_energy = 1.35
+	sun.light_angular_distance = 0.6
 	sun.shadow_enabled = true
-	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS if OS.has_feature("ile_manga_pc") else DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
-	sun.directional_shadow_max_distance = 135.0 if OS.has_feature("ile_manga_pc") else 85.0
-	sun.directional_shadow_blend_splits = OS.has_feature("ile_manga_pc")
+	sun.shadow_blur = 1.2
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
+	sun.directional_shadow_max_distance = 220.0 if pc else 120.0
+	sun.directional_shadow_blend_splits = true
+	sun.light_volumetric_fog_energy = 1.4
 	add_child(sun)
 
 
@@ -528,26 +610,15 @@ func _create_village() -> void:
 	var camp := _add_glb("res://assets/models/props/Feu.glb", "Feu_camp_original", Vector3(0.0, camp_y + 1.04, 4.0), 1.2, 0.0)
 	if camp == null:
 		_make_box("Foyer_secours", Vector3(0, camp_y + 0.12, 4), Vector3(2, 0.24, 2), Color(0.45, 0.30, 0.18))
-	var fire := OmniLight3D.new()
-	fire.light_color = Color(1, 0.45, 0.20)
-	fire.light_energy = 1.4
-	fire.omni_range = 13
-	fire.position = Vector3(0, camp_y + 1.0, 4)
-	add_child(fire)
-	var flame := MeshInstance3D.new()
-	flame.name = "Flamme_lumineuse"
-	var flame_mesh := SphereMesh.new()
-	flame_mesh.radius = 0.36
-	flame_mesh.height = 0.85
-	flame.mesh = flame_mesh
-	var flame_mat := StandardMaterial3D.new()
-	flame_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	flame_mat.albedo_color = Color(1.0, 0.45, 0.08)
-	flame_mat.emission_enabled = true
-	flame_mat.emission = Color(1.0, 0.28, 0.04)
-	flame.material_override = flame_mat
-	flame.position = Vector3(0, camp_y + 1.0, 4)
-	add_child(flame)
+	camp_light_v24 = OmniLight3D.new()
+	camp_light_v24.name = "Lumiere_feu_v24"
+	camp_light_v24.light_color = Color(1.0, 0.52, 0.22)
+	camp_light_v24.light_energy = 2.2
+	camp_light_v24.omni_range = 14.0
+	camp_light_v24.shadow_enabled = true
+	camp_light_v24.position = Vector3(0, camp_y + 1.1, 4)
+	add_child(camp_light_v24)
+	_create_fire_v24(Vector3(0, camp_y + 0.55, 4))
 	var sign := Label3D.new()
 	sign.text = "Bienvenue sur Île Manga"
 	sign.font_size = 48
@@ -784,6 +855,10 @@ func _save_slot(slot: int) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# V24 : la lumière du feu vacille (deux sinus décalés, sans à-coups).
+	if camp_light_v24 != null:
+		fire_clock_v24 += delta
+		camp_light_v24.light_energy = 2.2 + sin(fire_clock_v24 * 9.1) * 0.25 + sin(fire_clock_v24 * 23.7) * 0.15
 	# Défilement contemplatif seulement pendant un menu PC.
 	if menu_panorama != null and game_menu != null:
 		if game_menu.opened:
@@ -1025,12 +1100,6 @@ func _create_scenery_v17() -> void:
 	scenic.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
 
 
-func _create_village_v19() -> void:
-	var details := preload("res://scripts/village_v19.gd").new()
-	details.name = "Facades_toitures_v19"
-	add_child(details)
-	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
-
 # ILE_MANGA_V20_FINITION_2
 
 
@@ -1049,6 +1118,14 @@ func _solid_model_v23(root: Node3D) -> void:
 	body.collision_layer = COLLISION_LAYER_V11
 	body.collision_mask = 0
 	add_child(body)
+	# V24 : collision pré-calculée (tools/bake_collisions_v24.gd), chargée en un instant.
+	var baked_path := "res://collision/%s.res" % str(root.name)
+	if ResourceLoader.exists(baked_path):
+		var baked := CollisionShape3D.new()
+		baked.shape = load(baked_path)
+		body.add_child(baked)
+		baked.global_transform = Transform3D(root.global_basis.orthonormalized(), root.global_position)
+		return
 	var pending: Array[Node] = [root]
 	while not pending.is_empty():
 		var n: Node = pending.pop_back()
@@ -1133,3 +1210,85 @@ func _move_xr_body_v23(stick_offset: Vector3) -> void:
 		vr_body.position.z = flat.y
 	# L'origine se place pour que la tête reste exactement au-dessus du corps.
 	xr_origin.position = Vector3(vr_body.position.x - head_offset.x, vr_body.position.y, vr_body.position.z - head_offset.z)
+
+
+# V24 : feu de camp en particules (flammes additives, braises, fumée).
+func _soft_dot_v24() -> GradientTexture2D:
+	var grad := Gradient.new()
+	grad.set_color(0, Color(1, 1, 1, 1))
+	grad.set_color(1, Color(1, 1, 1, 0))
+	var tex := GradientTexture2D.new()
+	tex.gradient = grad
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(0.5, 0.0)
+	tex.width = 64
+	tex.height = 64
+	return tex
+
+
+func _particles_v24(label: String, at: Vector3, amount: int, lifetime: float, size: float, ramp: Gradient, additive: bool, velocity: Vector2, spread: float) -> void:
+	var parts := GPUParticles3D.new()
+	parts.name = label
+	parts.amount = amount
+	parts.lifetime = lifetime
+	parts.position = at
+	parts.visibility_aabb = AABB(Vector3(-3, -1, -3), Vector3(6, 8, 6))
+	var process := ParticleProcessMaterial.new()
+	process.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	process.emission_sphere_radius = spread
+	process.direction = Vector3.UP
+	process.spread = 12.0
+	process.initial_velocity_min = velocity.x
+	process.initial_velocity_max = velocity.y
+	process.gravity = Vector3(0, 0.6, 0)
+	process.damping_min = 0.4
+	process.damping_max = 0.9
+	process.scale_min = 0.7
+	process.scale_max = 1.25
+	var curve := Curve.new()
+	curve.add_point(Vector2(0.0, 0.55))
+	curve.add_point(Vector2(0.35, 1.0))
+	curve.add_point(Vector2(1.0, 0.15))
+	var curve_tex := CurveTexture.new()
+	curve_tex.curve = curve
+	process.scale_curve = curve_tex
+	var ramp_tex := GradientTexture1D.new()
+	ramp_tex.gradient = ramp
+	process.color_ramp = ramp_tex
+	process.turbulence_enabled = true
+	process.turbulence_noise_strength = 0.6
+	process.turbulence_noise_scale = 2.4
+	parts.process_material = process
+	var quad := QuadMesh.new()
+	quad.size = Vector2(size, size)
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD if additive else BaseMaterial3D.BLEND_MODE_MIX
+	mat.vertex_color_use_as_albedo = true
+	mat.albedo_texture = _soft_dot_v24()
+	mat.disable_receive_shadows = true
+	quad.material = mat
+	parts.draw_pass_1 = quad
+	parts.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(parts)
+
+
+func _create_fire_v24(at: Vector3) -> void:
+	var flames := Gradient.new()
+	flames.set_color(0, Color(1.0, 0.85, 0.45, 0.0))
+	flames.add_point(0.12, Color(1.0, 0.72, 0.28, 0.95))
+	flames.add_point(0.5, Color(0.95, 0.32, 0.06, 0.7))
+	flames.set_color(flames.get_point_count() - 1, Color(0.4, 0.06, 0.02, 0.0))
+	_particles_v24("Flammes_v24", at, 64, 0.85, 0.55, flames, true, Vector2(0.6, 1.4), 0.28)
+	var embers := Gradient.new()
+	embers.set_color(0, Color(1.0, 0.7, 0.3, 1.0))
+	embers.set_color(1, Color(1.0, 0.3, 0.05, 0.0))
+	_particles_v24("Braises_v24", at + Vector3.UP * 0.3, 24, 2.2, 0.05, embers, true, Vector2(1.0, 2.2), 0.3)
+	var smoke := Gradient.new()
+	smoke.set_color(0, Color(0.35, 0.33, 0.32, 0.0))
+	smoke.add_point(0.2, Color(0.32, 0.31, 0.3, 0.32))
+	smoke.set_color(smoke.get_point_count() - 1, Color(0.5, 0.5, 0.52, 0.0))
+	_particles_v24("Fumee_v24", at + Vector3.UP * 1.0, 26, 4.5, 1.4, smoke, false, Vector2(0.5, 0.9), 0.25)

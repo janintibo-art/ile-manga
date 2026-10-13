@@ -83,7 +83,8 @@ jobs:
           code = Path('pcvr/scripts/main.gd').read_text()
           assert '(right * stick.x + forward * stick.y)' in code
           assert 'func _create_ground_details() -> void:' in code
-          assert 'Viewport.MSAA_4X' in code and 'Viewport.MSAA_2X' in code
+          assert 'Viewport.MSAA_4X' in code
+          assert 'sky_v24.gdshader' in code and 'water_hd.gdshader' in code
           assert 'env.ssao_enabled = true' in code
           assert 'func _create_village_details_v7() -> void:' in code
           assert 'Galets_plage_v6' in code and 'Lanterne_chaude_v6' in code

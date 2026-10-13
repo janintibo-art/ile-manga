@@ -97,15 +97,6 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 			flowers.append(_placed(x, z, height_fn, Vector3.ONE * rng.randf_range(0.8, 1.6), 0.0, 0.28))
 		_batch("Massifs_fleurs_v7_" + str(color_id), blossom.duplicate(), flowers, _material(palette[color_id]), visible_distance)
 
-	# Petites bornes lumineuses, purement émissives en VR (sans lumières dynamiques).
-	var markers: Array[Transform3D] = []
-	for position in [Vector2(3.0, 1.0), Vector2(-4.0, 5.0), Vector2(-7.0, 7.0), Vector2(6.0, 5.0)]:
-		markers.append(_placed(position.x, position.y, height_fn, Vector3(0.36, 0.46, 0.36), 0.0, 0.55))
-	_solidify_v23("Balises_collision_v23", markers)
-	var orb := SphereMesh.new()
-	orb.radius = 0.4
-	orb.height = 0.8
-	_batch("Balises_dorees_v7", orb, markers, _material(Color(1.0, 0.71, 0.32), true), visible_distance)
 	print("ILE_MANGA_V7: village et chemins enrichis sans modifier la locomotion")
 
 
