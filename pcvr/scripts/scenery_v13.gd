@@ -123,4 +123,4 @@ func _process(delta: float) -> void:
 	for i in range(falling_water.size()):
 		var curtain: MeshInstance3D = falling_water[i]
 		if is_instance_valid(curtain):
-			curtain.modulate.a = 0.82 + sin(elapsed * 1.8 + float(i) * 0.65) * 0.12
+			curtain.transparency = clampf(0.18 - sin(elapsed * 1.8 + float(i) * 0.65) * 0.12, 0.0, 1.0)
