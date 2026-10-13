@@ -1612,6 +1612,11 @@ func _create_jungle_v29() -> void:
 	jungle_v29.name = "Ile_jungle_v29"
 	add_child(jungle_v29)
 	jungle_v29.build(OS.has_feature("ile_manga_pc"))
+	# V30 : la forêt tropicale de l'île.
+	var flora: Node3D = preload("res://scripts/jungle_flora_v30.gd").new()
+	flora.name = "Foret_jungle_v30"
+	add_child(flora)
+	flora.build(jungle_v29, OS.has_feature("ile_manga_pc"))
 	boat_v29 = preload("res://scripts/boat_v29.gd").new()
 	boat_v29.name = "Bateau_v29"
 	add_child(boat_v29)

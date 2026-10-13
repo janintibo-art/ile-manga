@@ -13,7 +13,7 @@ jobs:
   windows-vr-et-pc:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     timeout-minutes: 110
     steps:
       - name: Recuperer le depot
@@ -142,18 +142,20 @@ jobs:
           file dist/*.exe
           du -h dist/*.exe
 
-      - name: Telechargement de la version VR Quest 3
-        uses: actions/upload-artifact@v4
-        with:
-          name: Ile-Manga-VR-v${{ env.V }}
-          path: dist/Ile_Manga_VR_v${{ env.V }}.exe
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Telechargement de la version PC classique
-        uses: actions/upload-artifact@v4
-        with:
-          name: Ile-Manga-PC-v${{ env.V }}
-          path: dist/Ile_Manga_PC_v${{ env.V }}.exe
-          if-no-files-found: error
-          retention-days: 30
+      # Les EXE vont dans une Release (onglet Releases du dépôt) et non plus dans les
+      # artefacts d'Actions : les fichiers de Release ne comptent pas dans le quota de stockage.
+      - name: Publier les deux EXE dans la Release V${{ env.V }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ env.V }}"
+          if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/Ile_Manga_VR_v${{ env.V }}.exe dist/Ile_Manga_PC_v${{ env.V }}.exe --clobber --repo "${{ github.repository }}"
+          else
+            gh release create "$TAG" dist/Ile_Manga_VR_v${{ env.V }}.exe dist/Ile_Manga_PC_v${{ env.V }}.exe \
+              --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+              --title "Île Manga V${{ env.V }}" \
+              --notes "Ile_Manga_VR_v${{ env.V }}.exe : version casque (Quest 3 par Link / Air Link). Ile_Manga_PC_v${{ env.V }}.exe : version écran, clavier et souris."
+          fi
+          echo "Release : https://github.com/${{ github.repository }}/releases/tag/$TAG"

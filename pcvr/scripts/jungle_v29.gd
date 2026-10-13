@@ -149,6 +149,19 @@ func height(wx: float, wz: float) -> float:
 	return lerpf(lerpf(a, b, ux), lerpf(c, d, ux), uz)
 
 
+## V30 : distance (m) au lit de la gorge, en coordonnées locales ; INF hors de la gorge.
+## La végétation la laisse libre pour la rivière à venir.
+func gorge_distance(lx: float, lz: float) -> float:
+	if lz <= -55.0 or lz > 95.0:
+		return INF
+	return absf(lx - (11.0 * sin(lz * 0.032 + 0.6) - 4.0))
+
+
+## V30 : rayon du rivage dans la direction du point local (pour savoir si l'on est sur la côte).
+func coast_ratio(lx: float, lz: float) -> float:
+	return sqrt(lx * lx + lz * lz) / _coast_radius(atan2(lz, lx))
+
+
 func contains(wx: float, wz: float) -> bool:
 	return Vector2(wx - CENTER.x, wz - CENTER.z).length() < HALF
 
