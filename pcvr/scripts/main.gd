@@ -184,13 +184,13 @@ func _create_lighting() -> void:
 	# Brume aérienne très légère : le paysage garde son contraste de près.
 	env.fog_enabled = true
 	env.fog_light_color = Color(0.73, 0.84, 0.93)
-	env.fog_density = 0.0015
+	env.fog_density = 0.00135
 	# Les effets coûteux restent réservés au PC sans casque.
 	if OS.has_feature("ile_manga_pc"):
 		env.ssao_enabled = true
 		env.ssil_enabled = true
 		env.glow_enabled = true
-		env.glow_intensity = 0.35
+		env.glow_intensity = 0.29
 		env.adjustment_enabled = true
 		env.adjustment_contrast = 1.04
 		env.adjustment_saturation = 1.07
@@ -990,3 +990,5 @@ func _create_village_v19() -> void:
 	details.name = "Facades_toitures_v19"
 	add_child(details)
 	details.build(Callable(self, "_height_at"), OS.has_feature("ile_manga_pc"))
+
+# ILE_MANGA_V20_FINITION_2

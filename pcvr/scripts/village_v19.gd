@@ -5,16 +5,16 @@ extends Node3D
 func build(ground: Callable, pc_quality: bool) -> void:
 	var roof := StandardMaterial3D.new()
 	roof.albedo_color = Color(0.52, 0.27, 0.22)
-	roof.roughness = 0.94
+	roof.roughness = 0.89
 	var timber := StandardMaterial3D.new()
 	timber.albedo_color = Color(0.34, 0.22, 0.15)
-	timber.roughness = 0.96
+	timber.roughness = 0.91
 	var plaster := StandardMaterial3D.new()
 	plaster.albedo_color = Color(0.91, 0.81, 0.63)
 	plaster.roughness = 0.99
 	var window_mat := StandardMaterial3D.new()
 	window_mat.albedo_color = Color(0.29, 0.63, 0.73)
-	window_mat.roughness = 0.20
+	window_mat.roughness = 0.16
 	window_mat.metallic = 0.08
 	# Surélévations décoratives, positionnées sur les maisons existantes.
 	# Les couvertures sont en surplomb ; leurs hauteurs pourront être ajustées
@@ -61,3 +61,5 @@ func _make_house(center: Vector2, width: float, lift: float, ground: Callable, r
 		_box("Vitre_fantasy_v19", Vector3(px, base + lift * 0.65, pz + 0.065), Vector3(0.71, 0.78, 0.06), glass)
 		if pc_quality:
 			_box("Appui_pierre_v19", Vector3(px, base + lift * 0.43, pz + 0.13), Vector3(1.12, 0.12, 0.30), plaster)
+
+# ILE_MANGA_V20_FINITION_2

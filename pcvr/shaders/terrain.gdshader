@@ -47,11 +47,13 @@ void fragment() {
     ground = mix(ground, stone * vec3(0.99, 1.00, 1.04), rock_weight * 0.78);
     // ILE_MANGA_V12_TERRAIN: larges variations douces de teinte (sans changer le relief).
     float broad = noise2(world_position.xz * 0.025);
-    ground *= mix(0.91, 1.08, broad);
+    ground *= mix(0.935, 1.065, broad);
     ground *= mix(0.94, 1.04, noise2(world_position.xz * 0.18));
 
     ALBEDO = ground;
-    ROUGHNESS = mix(0.98, 0.84, rock_weight);
+    ROUGHNESS = mix(0.97, 0.88, rock_weight);
     METALLIC = 0.0;
-    SPECULAR = 0.17 + 0.08 * beach_weight;
+    SPECULAR = 0.16 + 0.08 * beach_weight;
 }
+
+// ILE_MANGA_V20_FINITION_2

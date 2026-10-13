@@ -25,12 +25,14 @@ void fragment() {
     float sparkle = pow(max(sin(uv.x * 0.53 + t * 1.75) * cos(uv.y * 0.46 - t * 1.08), 0.0), 9.0) * 0.1;
 
     ALBEDO = mix(base_color * vec3(0.65, 0.89, 1.15), vec3(0.12, 0.59, 0.73), 0.46);
-    ALBEDO = mix(ALBEDO, vec3(0.81, 0.95, 0.98), foam);
+    ALBEDO = mix(ALBEDO, vec3(0.86, 0.96, 0.99), foam);
     // ILE_MANGA_V12_WATER: micro variations de surface sobres et peu couteuses.
     float micro = sin(uv.x * 0.82 + t * 0.45) * cos(uv.y * 0.77 - t * 0.51);
     ALBEDO *= mix(0.97, 1.045, 0.5 + 0.5 * micro);
-    ROUGHNESS = 0.25 + ripple.x * 0.04;
+    ROUGHNESS = 0.28 + ripple.x * 0.035;
     METALLIC = 0.08;
     SPECULAR = 0.65;
     EMISSION = vec3(0.16, 0.36, 0.45) * sparkle;
 }
+
+// ILE_MANGA_V20_FINITION_2
