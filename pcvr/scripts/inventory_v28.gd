@@ -30,10 +30,29 @@ const ITEMS := {
 		"desc": "La monnaie de l'île."},
 	"epee_bois": {"name": "Épée en bois", "art": "une épée en bois", "kind": "arme", "max": 1, "damage": 3,
 		"desc": "Une épée d'entraînement taillée à la forge. Dégâts : 3."},
+	# V32 : pêche
+	"canne_peche": {"name": "Canne à pêche", "art": "une canne à pêche", "kind": "canne", "max": 1,
+		"desc": "La vieille canne de Barnabé. Équipe-la, approche-toi de l'eau et maintiens le clic pour lancer."},
+	"sardine": {"name": "Sardine", "art": "une sardine", "kind": "nourriture", "max": 30, "heal": 1,
+		"desc": "Petit poisson argenté des côtes. Rend un demi-cœur."},
+	"maquereau": {"name": "Maquereau", "art": "un maquereau", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Rayé de bleu, vif et nerveux. Rend un cœur."},
+	"dorade": {"name": "Dorade", "art": "une dorade", "kind": "nourriture", "max": 20, "heal": 3,
+		"desc": "Le bandeau doré entre les yeux ne trompe pas. Rend un cœur et demi."},
+	"bar": {"name": "Bar", "art": "un bar", "kind": "nourriture", "max": 20, "heal": 3,
+		"desc": "Un poisson noble qui se défend bien. Rend un cœur et demi."},
+	"poisson_perroquet": {"name": "Poisson-perroquet", "art": "un poisson-perroquet", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Couleurs de Gaston, en poisson. On ne le trouve que dans la baie de la jungle. Rend deux cœurs."},
+	"merou": {"name": "Mérou", "art": "un mérou", "kind": "nourriture", "max": 10, "heal": 6,
+		"desc": "Un colosse des eaux profondes, au bout des pontons. Rend trois cœurs."},
+	"poisson_lune": {"name": "Poisson-lune doré", "art": "un poisson-lune doré", "kind": "tresor", "max": 5,
+		"desc": "Légendaire. Barnabé dit qu'il n'en existe qu'un. Il se trompait."},
+	"vieille_botte": {"name": "Vieille botte", "art": "une vieille botte", "kind": "materiau", "max": 10,
+		"desc": "Gorgée d'eau, avec une algue en prime. Quelqu'un, quelque part, a froid au pied."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
-const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil"}
+const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche"}
 
 var main: Node
 var xr_mode: bool = false
@@ -176,7 +195,7 @@ func use_slot(i: int) -> void:
 				notify.emit(str(info["name"]) + " mangé(e).")
 			else:
 				notify.emit("Vos cœurs sont déjà pleins.")
-		"arme":
+		"arme", "canne":
 			equip_item("" if equipped == id else id)
 		"outil":
 			notify.emit(str(info["desc"]))
@@ -436,6 +455,24 @@ func make_model(id: String) -> Node3D:
 				_part(m, _box_mesh(Vector3(0.006, 0.006, 0.12)), _mat("strie", Color(0.8, 0.6, 0.55)), Vector3(-0.04 + k * 0.02, 0.04, 0), Vector3(0, (k - 2) * 12, 0))
 		"piece":
 			_part(m, _cyl(0.035, 0.035, 0.008, 16), _mat("cuivre", Color(0.78, 0.5, 0.25), 0.3), Vector3(0, 0.004, 0))
+		"canne_peche":
+			# Construite le long de +Y : poignée en bas, scion vers le haut (2 m).
+			var cork := _mat("liege", Color(0.72, 0.58, 0.4), 0.9)
+			var rod := _mat("canne", Color(0.32, 0.2, 0.1), 0.45)
+			_part(m, _cyl(0.018, 0.02, 0.32, 10), cork, Vector3(0, 0.0, 0))
+			_part(m, _cyl(0.006, 0.014, 1.75, 8), rod, Vector3(0, 1.03, 0))
+			_part(m, _cyl(0.035, 0.035, 0.03, 14), _mat("moulinet", Color(0.6, 0.6, 0.64), 0.3), Vector3(0.035, 0.12, 0), Vector3(0, 0, 90))
+			for k in range(4):
+				_part(m, _cyl(0.008, 0.008, 0.004, 8), _mat("anneau", Color(0.8, 0.8, 0.82), 0.2), Vector3(0.012, 0.5 + k * 0.38, 0), Vector3(0, 0, 90))
+			var tip := Marker3D.new()
+			tip.name = "Pointe"
+			tip.position = Vector3(0, 1.9, 0)
+			m.add_child(tip)
+		"vieille_botte":
+			_part(m, _box_mesh(Vector3(0.1, 0.26, 0.12)), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.13, 0))
+			_part(m, _box_mesh(Vector3(0.1, 0.08, 0.24)), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.04, 0.06))
+		"sardine", "maquereau", "dorade", "bar", "poisson_perroquet", "merou", "poisson_lune":
+			_fish_model(m, id)
 		"boussole":
 			_part(m, _cyl(0.05, 0.05, 0.022, 20), _mat("laiton", Color(0.72, 0.56, 0.24), 0.25), Vector3(0, 0.011, 0))
 			_part(m, _cyl(0.042, 0.042, 0.004, 20), _mat("cadran", Color(0.92, 0.88, 0.78), 0.5), Vector3(0, 0.023, 0))
@@ -453,6 +490,32 @@ func make_model(id: String) -> Node3D:
 		if c is MeshInstance3D:
 			(c as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return m
+
+
+## V32 : poisson en volume (corps fuselé, queue, nageoire dorsale), couleurs de l'espèce.
+const FISH_LOOK := {
+	"sardine": [Color(0.5, 0.6, 0.7), Color(0.88, 0.9, 0.92), 0.2, 0.32],
+	"maquereau": [Color(0.18, 0.42, 0.46), Color(0.88, 0.9, 0.88), 0.28, 0.32],
+	"dorade": [Color(0.68, 0.7, 0.72), Color(0.92, 0.92, 0.9), 0.34, 0.44],
+	"bar": [Color(0.45, 0.48, 0.5), Color(0.86, 0.87, 0.86), 0.42, 0.34],
+	"poisson_perroquet": [Color(0.16, 0.74, 0.66), Color(0.94, 0.55, 0.66), 0.36, 0.42],
+	"merou": [Color(0.46, 0.33, 0.22), Color(0.74, 0.62, 0.47), 0.62, 0.46],
+	"poisson_lune": [Color(0.9, 0.74, 0.24), Color(0.98, 0.9, 0.6), 0.4, 0.75],
+}
+
+
+func _fish_model(m: Node3D, id: String) -> void:
+	var look: Array = FISH_LOOK.get(id, FISH_LOOK["sardine"])
+	var length: float = float(look[2])
+	var tall: float = float(look[3])
+	var body_mat := _mat("poisson_" + id, look[0], 0.35)
+	var belly_mat := _mat("ventre_" + id, look[1], 0.35)
+	_part(m, _sphere(length * 0.5), body_mat, Vector3(0, length * tall * 0.5, 0), Vector3.ZERO, Vector3(1, tall, 0.38))
+	_part(m, _sphere(length * 0.45), belly_mat, Vector3(0, length * tall * 0.38, 0), Vector3.ZERO, Vector3(0.95, tall * 0.7, 0.34))
+	_part(m, _box_mesh(Vector3(length * 0.22, length * tall * 0.9, 0.01)), body_mat, Vector3(length * 0.56, length * tall * 0.5, 0), Vector3(0, 0, 0))
+	_part(m, _box_mesh(Vector3(length * 0.3, length * tall * 0.35, 0.008)), body_mat, Vector3(0.02, length * tall * 1.0, 0), Vector3(0, 0, -12))
+	for sz in [-1.0, 1.0]:
+		_part(m, _sphere(length * 0.045), _mat("oeil", Color(0.05, 0.05, 0.06), 0.2), Vector3(-length * 0.36, length * tall * 0.58, sz * length * 0.17))
 
 
 ## Objet ramassable le plus proche (index dans pickups), ou -1.
@@ -729,7 +792,7 @@ func _refresh_pc() -> void:
 	match str(info["kind"]):
 		"nourriture":
 			_use_button.text = "Manger"
-		"arme":
+		"arme", "canne":
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
 		_:
 			_use_button.text = "Examiner"

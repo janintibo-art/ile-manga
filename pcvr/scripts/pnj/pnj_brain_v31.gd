@@ -156,6 +156,19 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 			"sujet_min":
 				var arr: Array = v
 				if int((memoire["sujets"] as Dictionary).get(str(arr[0]), 0)) < int(arr[1]): return false
+			# V32 : objets absents, cadeau précis, pêche.
+			"pas_objet":
+				if int((ctx.get("objets", {}) as Dictionary).get(str(v), 0)) > 0: return false
+			"tient":
+				if str(ctx.get("arme", "")) != str(v): return false
+			"dernier_cadeau":
+				if str(memoire["dernier_cadeau"]) != str(v): return false
+			"peche_min":
+				if int((ctx.get("peche", {}) as Dictionary).get("total", 0)) < int(v): return false
+			"peche_max":
+				if int((ctx.get("peche", {}) as Dictionary).get("total", 0)) > int(v): return false
+			"a_attrape":
+				if int(((ctx.get("peche", {}) as Dictionary).get("especes", {}) as Dictionary).get(str(v), 0)) <= 0: return false
 	return true
 
 
@@ -191,7 +204,14 @@ func _fill(text: String, ctx: Dictionary) -> String:
 			best = int(memoire["sujets"][s])
 			fav = str(s)
 	var absent: float = float(ctx.get("now", 0.0)) - float(memoire.get("absence_ref", memoire["derniere"]))
+	var peche: Dictionary = ctx.get("peche", {})
+	var record: String = "rien du tout"
+	if str(peche.get("record_id", "")) != "":
+		record = _item_name(str(peche["record_id"]), ctx) + (" de %.2f kg" % float(peche.get("record_kg", 0.0))).replace(".", ",")
 	var vars := {
+		"{nb_poissons}": str(int(peche.get("total", 0))), "{record}": record,
+		"{bouton}": "la gâchette" if bool(ctx.get("vr", false)) else "le clic",
+		"{nb_especes}": str((peche.get("especes", {}) as Dictionary).size()),
 		"{surnom}": surnom(), "{visites}": str(memoire["visites"]), "{absence}": _absence_text(absent),
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,
 		"{dernier_cadeau}": _item_name(str(memoire["dernier_cadeau"]), ctx), "{nb_cadeaux}": str(memoire["nb_cadeaux"]),
@@ -247,7 +267,7 @@ func _dress(core: String, intent: String) -> String:
 	var parts: Array = []
 	var prefixes: Dictionary = data.get("prefixes", {})
 	# Le petit mot d'humeur ne va qu'aux sujets « neutres » (pas aux cadeaux, coups, adieux…).
-	if intent in ["humeur", "lui", "ile", "rumeur", "blague", "souvenir", "reponse"] and rng.randf() < 0.35 and prefixes.has(humeur_famille()):
+	if intent in ["humeur", "lui", "ile", "rumeur", "blague", "souvenir", "reponse", "peche"] and rng.randf() < 0.35 and prefixes.has(humeur_famille()):
 		var list: Array = prefixes[humeur_famille()]
 		parts.append(str(list[rng.randi() % list.size()]))
 	parts.append(core)
@@ -270,8 +290,9 @@ func say(intent: String, ctx: Dictionary, dress: bool = true) -> Dictionary:
 	if dress:
 		text = _dress(text, intent)
 	var out := {"texte": text, "geste": str(e.get("geste", "parle"))}
-	if e.has("action"):
-		out["action"] = e["action"]
+	for k in ["action", "donne", "pose"]:
+		if e.has(k):
+			out[k] = e[k]
 	return out
 
 
@@ -320,6 +341,9 @@ func topics(ctx: Dictionary) -> Array:
 	t.append({"id": "rumeur", "label": "Tu as entendu des rumeurs ?"})
 	if float((data.get("traits", {}) as Dictionary).get("humour", 0.0)) > 0.5:
 		t.append({"id": "blague", "label": "Raconte-moi une blague."})
+	# V32 : la pêche, si le personnage a quelque chose à en dire.
+	if ((data.get("repliques", {}) as Dictionary).get("peche", []) as Array).size() > 0:
+		t.append({"id": "peche", "label": "Tu sais pêcher ?" if int((memoire["sujets"] as Dictionary).get("peche", 0)) == 0 else "Parlons pêche."})
 	if str(memoire["quete"]) == "demandee":
 		t.append({"id": "quete", "label": "À propos de tes coquillages…"})
 	if int(memoire["visites"]) >= 3:
@@ -379,6 +403,16 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 	if str(reply.get("action", "")) == "quete_demande" and str(memoire["quete"]) == "":
 		memoire["quete"] = "demandee"
 		_remember("m'a demandé des coquillages", now)
+	# V32 : « donne » — le personnage offre un objet. Avec "pose", une seule fois (le fait est retenu).
+	if str(reply.get("action", "")) == "donne":
+		var pose: String = str(reply.get("pose", ""))
+		if pose == "" or not _has_fact(pose):
+			if pose != "":
+				memoire["faits"][pose] = true
+			reply["donner"] = reply.get("donne", [])
+			_remember("m'a confié " + _item_name(str((reply.get("donne", [[""]]) as Array)[0][0]), ctx), now)
+	for k in ["action", "donne", "pose"]:
+		reply.erase(k)
 	reply["choix"] = topics(ctx)
 	return reply
 
@@ -402,13 +436,17 @@ func _memories_text(ctx: Dictionary) -> String:
 		lines.append("Tu préfères les coquillages %s." % ("ronds" if faits["coquillage_prefere"] == "ronds" else ("pointus" if faits["coquillage_prefere"] == "pointus" else "… aucun, hélas")))
 	if str(memoire["quete"]) == "finie":
 		lines.append("Et grâce à toi, ma collection est complète.")
+	if faits.has("canne"):
+		var total: int = int((ctx.get("peche", {}) as Dictionary).get("total", 0))
+		lines.append("Je t'ai confié ma vieille canne" + (" et tu as sorti %d prise%s de l'eau." % [total, "s" if total > 1 else ""] if total > 0 else ", et tu n'as encore rien attrapé avec."))
 	return " ".join(lines)
 
 
 func _gift(item: String, ctx: Dictionary) -> Dictionary:
 	var now: float = float(ctx.get("now", 0.0))
 	if (data.get("refuse", []) as Array).has(item):
-		var r: Dictionary = say("cadeau_refus", ctx)
+		var specific: bool = (data.get("repliques", {}) as Dictionary).has("cadeau_refus_" + item)
+		var r: Dictionary = say("cadeau_refus_" + item if specific else "cadeau_refus", ctx)
 		r["choix"] = topics(ctx)
 		return r
 	memoire["dernier_cadeau"] = item

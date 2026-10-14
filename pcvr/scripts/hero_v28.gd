@@ -198,6 +198,28 @@ func _build_animations() -> void:
 	var seated_b := seated.duplicate()
 	seated_b["Head"] = Vector3(-4, 8, 0)
 	seated_b["Spine02"] = Vector3(6, 3, 0)
+	# V32 : pêche — canne tenue devant soi, lancer par-dessus l'épaule, moulinet.
+	var hold := _merge(arms_in, {"RightArm": Vector3(-38, 0, -8), "RightForeArm": Vector3(-62, 0, 0), "LeftArm": Vector3(-30, 0, -14), "LeftForeArm": Vector3(-70, 0, 0),
+		"Spine02": Vector3(-3, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "RightUpLeg": Vector3(6, 0, 0),
+		"RightHand": Vector3(-90, 0, 0)})   # poignet cassé : la canne monte devant (~30°)
+	var hold_b := hold.duplicate()
+	hold_b["Head"] = Vector3(3, 4, 0)
+	hold_b["Spine02"] = Vector3(-2, 2, 0)
+	poses.add_animation("peche_tenir", _clip(3.0, true, [[0.0, hold, Vector3.ZERO], [1.5, hold_b, Vector3(0, -0.5, 0)], [3.0, hold, Vector3.ZERO]]))
+	var back := _merge(hold, {"RightArm": Vector3(-165, 0, -15), "RightForeArm": Vector3(-35, 0, 0), "Spine02": Vector3(-12, -18, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(18, 0, 0),
+		"RightHand": Vector3(-80, 0, 0)})   # canne par-dessus l'épaule, vers l'arrière
+	var throw := _merge(hold, {"RightArm": Vector3(-70, 0, -6), "RightForeArm": Vector3(-15, 0, 0), "Spine02": Vector3(14, 8, 0), "LeftUpLeg": Vector3(-26, 0, 0), "LeftLeg": Vector3(22, 0, 0), "RightUpLeg": Vector3(12, 0, 0),
+		"RightHand": Vector3(-60, 0, 0)})
+	poses.add_animation("peche_armer", _clip(0.35, false, [[0.0, hold, Vector3.ZERO], [0.35, back, Vector3(0, -2, -3)]]))
+	poses.add_animation("peche_lancer", _clip(0.55, false, [[0.0, back, Vector3(0, -2, -3)], [0.16, throw, Vector3(0, -4, 6)], [0.55, hold, Vector3.ZERO]]))
+	var reel_a := _merge(hold, {"Spine02": Vector3(-10, 0, 0), "RightArm": Vector3(-55, 0, -8), "RightForeArm": Vector3(-80, 0, 0), "LeftArm": Vector3(-45, 0, -30), "LeftForeArm": Vector3(-95, 0, 0),
+		"LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0),
+		"RightHand": Vector3(-50, 0, 0)})
+	var reel_b := reel_a.duplicate()
+	reel_b["LeftArm"] = Vector3(-60, 0, -22)
+	reel_b["LeftForeArm"] = Vector3(-70, 0, 0)
+	reel_b["Spine02"] = Vector3(-14, 4, 0)
+	poses.add_animation("peche_mouliner", _clip(0.5, true, [[0.0, reel_a, Vector3(0, -3, -2)], [0.25, reel_b, Vector3(0, -4, -3)], [0.5, reel_a, Vector3(0, -3, -2)]]))
 	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
 	anim.add_animation_library("v28", poses)
 
@@ -368,6 +390,11 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 		action_time += delta
 		if action_time >= action_length:
 			state = "sol"
+	elif state == "peche":
+		# Ligne à l'eau : on reste planté sur place (bouger fait remonter la ligne).
+		move = Vector3.ZERO
+		if dir.length() > 0.1 and main.fishing_v32 != null:
+			main.fishing_v32.cancel("Tu bouges : la ligne remonte.")
 	elif blocking:
 		move = dir * 1.2
 	if sprint and state == "sol" and on_floor:
@@ -423,6 +450,10 @@ func _pick_locomotion(move: Vector3, on_floor: bool) -> void:
 	if state != "sol":
 		return
 	if not on_floor:
+		return
+	# V32 : canne en main, immobile : on la tient devant soi.
+	if weapon == "canne_peche" and Vector2(move.x, move.z).length() < 0.3:
+		_play("v28/peche_tenir", 0.3)
 		return
 	if blocking:
 		_play("v28/block", 0.12)
@@ -707,6 +738,9 @@ func _start_roll() -> void:
 
 
 func attack() -> void:
+	# V32 : canne en main, le clic sert à pêcher (voir fishing_v32.gd).
+	if weapon == "canne_peche":
+		return
 	if state == "attaque":
 		combo_queued = true
 		return
@@ -800,6 +834,16 @@ func equip(item_id: String, damage: int, model: Node3D) -> void:
 
 
 # =================================================================== actions simples
+
+## V32 : poses de pêche pilotées par fishing_v32.gd (état « peche » : immobile).
+func fishing_pose(name: String, blend: float = 0.12) -> void:
+	if name == "":
+		if state == "peche":
+			state = "sol"
+		return
+	state = "peche"
+	_play("v28/" + name, blend, 1.0, 0.0 if name in ["peche_armer", "peche_lancer"] else -1.0)
+
 
 func play_action(name: String, look_at_point: Variant = null) -> void:
 	if state != "sol" or anim == null:

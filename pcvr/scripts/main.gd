@@ -57,6 +57,7 @@ const ISLAND_DOCK_V29 := [Vector3(0.0, 1.0, -56.5), Vector3(0.0, 1.0, -72.5)]
 # V31 : habitants (petite IA commune) et dialogues.
 var npcs_v31: Array = []
 var dialogue_v31: Node3D
+var fishing_v32: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -897,6 +898,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		pending_pnj_v31 = {}
 		for npc in npcs_v31:
 			npc.brain.reset()
+		if fishing_v32 != null:
+			fishing_v32.cancel("")
+			fishing_v32.load_data({})
 		_save_slot(slot)
 	else:
 		var data: Dictionary = SaveStore.read_slot(slot)
@@ -914,6 +918,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			hero_v28.set_health(int(data.get("vie", hero_v28.HP_MAX)))
 		var pnj_data: Variant = data.get("pnj", {})
 		pending_pnj_v31 = pnj_data if pnj_data is Dictionary else {}
+		if fishing_v32 != null:
+			var fish_data: Variant = data.get("peche", {})
+			fishing_v32.cancel("")
+			fishing_v32.load_data(fish_data if fish_data is Dictionary else {})
 		for npc in npcs_v31:
 			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
 			npc.load_data(one if one is Dictionary else {})
@@ -957,6 +965,8 @@ func _save_slot(slot: int) -> void:
 		if not pnj.has(id):
 			pnj[id] = pending_pnj_v31[id]
 	extra["pnj"] = pnj
+	if fishing_v32 != null:
+		extra["peche"] = fishing_v32.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1508,6 +1518,11 @@ func _create_gameplay_v28() -> void:
 	add_child(dialogue_v31)
 	dialogue_v31.setup(xr_active)
 	dialogue_v31.chosen.connect(_on_dialogue_choice_v31)
+	# V32 : mode pêche (canne donnée par Barnabé).
+	fishing_v32 = preload("res://scripts/fishing_v32.gd").new()
+	fishing_v32.name = "Peche_v32"
+	add_child(fishing_v32)
+	fishing_v32.setup(self)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1615,6 +1630,10 @@ func _vr_actions_v28(delta: float) -> void:
 		return
 	if a_edge:
 		vr_jump_v28()
+	if fishing_v32 != null:
+		# Près d'une porte ou d'un habitant, la gâchette garde son usage ; sinon elle pêche.
+		var free_hand: bool = fishing_v32.state != "repos" or (_door_distance_v28() > 2.0 and _nearest_npc_v31() == null)
+		fishing_v32.vr_tick(right_hand.get_float("trigger") if fishing_v32.rod_in_hand() and free_hand else 0.0)
 	if combat_v28 != null:
 		var armed: bool = inventory_v28 != null and inventory_v28.equipped != ""
 		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
@@ -1700,6 +1719,8 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 
 
 func _board_boat_v29() -> void:
+	if fishing_v32 != null:
+		fishing_v32.cancel("")
 	if inventory_v28 != null and inventory_v28.opened:
 		inventory_v28.close()
 	boat_v29.board()
@@ -1865,6 +1886,8 @@ func _npc_ctx_v31() -> Dictionary:
 		"vie": hero_v28.hp if hero_v28 != null and not xr_active else 10,
 		"vie_max": hero_v28.HP_MAX if hero_v28 != null else 10,
 		"noms": noms, "articles": arts,
+		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
+		"vr": xr_active,
 	}
 
 
@@ -1874,6 +1897,8 @@ func _talk_v31(npc: Node3D) -> void:
 	if inventory_v28 != null and inventory_v28.opened:
 		inventory_v28.close()
 	talking_npc_v31 = npc
+	if fishing_v32 != null:
+		fishing_v32.cancel("")
 	npc.begin_talk()
 	if hero_v28 != null and not xr_active:
 		var to_npc: Vector3 = npc.global_position - pc_root.global_position
@@ -1899,6 +1924,9 @@ func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
 		var got: int = inventory_v28.add(str(g[0]), int(g[1]))
 		if got > 0:
 			_show_message_v28("+ " + str(inventory_v28.ITEMS[str(g[0])]["name"]) + ("" if got == 1 else " ×%d" % got))
+			# V32 : la canne reçue passe directement en main si elle est libre.
+			if str(g[0]) == "canne_peche" and inventory_v28.equipped == "":
+				inventory_v28.equip_item("canne_peche")
 	npc.gesture(str(r.get("geste", "parle")))
 	var choices: Array = r.get("choix", [])
 	if bool(r.get("fin", false)) or choices.is_empty():

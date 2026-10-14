@@ -9,9 +9,14 @@ extends RefCounted
 ##   affinite_min / affinite_max (0..100), visites_min / visites_max,
 ##   absent_min / absent_max (secondes de jeu depuis la dernière visite),
 ##   fait / pas_fait ("clé" ou "clé=valeur"), objet (le joueur le porte), arme (true/false),
-##   vie_basse (true/false), quete ("", "demandee", "finie"), sujet_min ([sujet, nombre]).
+##   vie_basse (true/false), quete ("", "demandee", "finie"), sujet_min ([sujet, nombre]),
+##   V32 : pas_objet, tient (objet en main), dernier_cadeau, peche_min / peche_max (prises),
+##   a_attrape (espèce déjà pêchée).
 ## Variables dans les textes : {surnom} {visites} {absence} {arme} {objet_joueur}
 ##   {dernier_cadeau} {nb_cadeaux} {coquillages} {manque} {humeur_mot} {sujet_prefere}
+##   V32 : {nb_poissons} {record} {nb_especes} {bouton} (« le clic » ou « la gâchette »)
+## V32 : un refus de cadeau cherche d'abord « cadeau_refus_<objet> ».
+## V32 : une réplique avec "action": "donne" offre les objets de "donne" ; avec "pose", une seule fois.
 
 const DATA := {
 	"id": "barnabe",
@@ -23,9 +28,11 @@ const DATA := {
 	# Traits : 0..1 ; ils règlent la fréquence des tics, des blagues, des digressions.
 	"traits": {"bavard": 0.85, "humour": 0.75, "curiosite": 0.8, "susceptible": 0.45, "rancunier": 0.35},
 	"surnoms": [[0, "étranger"], [25, "moussaillon"], [50, "matelot"], [75, "vieux frère"], [95, "capitaine"]],
-	"aime": {"coquillage": 3.0, "baies": 1.5, "pomme": 1.0, "champignon": 0.5, "piece": 0.8},
+	"aime": {"coquillage": 3.0, "baies": 1.5, "pomme": 1.0, "champignon": 0.5, "piece": 0.8,
+		"sardine": 0.8, "maquereau": 1.2, "dorade": 2.0, "bar": 2.0, "poisson_perroquet": 2.5, "merou": 3.0,
+		"poisson_lune": 5.0, "vieille_botte": 4.0},
 	"deteste": {"caillou": -1.0, "baton": -0.4},
-	"refuse": ["epee_bois"],
+	"refuse": ["epee_bois", "canne_peche"],
 	"quete": {"objet": "coquillage", "nombre": 5, "recompense": [["boussole", 1], ["piece", 15]], "affinite": 20.0},
 	"compagnon": "Gaston",
 
@@ -59,6 +66,8 @@ const DATA := {
 			{"t": "Bonjour bonjour ! Gaston et moi discutions justement de toi. Enfin, surtout Gaston.", "si": {"visites_min": 2}},
 			{"t": "Ah, l'aventurier en personne ! Alors, le vaste monde ?", "si": {"fait": "origine=aventurier", "visites_min": 2}},
 			{"t": "Le voisin du village ! Dis-moi, ils mangent toujours leurs soupes froides là-bas ?", "si": {"fait": "origine=village", "visites_min": 2}},
+			{"t": "Ah ! Le pêcheur ! Ma vieille canne te va comme un gant, {surnom}. Ça mord ?", "si": {"tient": "canne_peche", "visites_min": 2}, "geste": "rire"},
+			{"t": "Te voilà, l'ami des poissons ! {nb_poissons} prises, d'après Gaston. Il compte tout, ce volatile.", "si": {"peche_min": 5, "visites_min": 2}, "geste": "salut"},
 		],
 		# ------------------------------------------------------------ comment ça va
 		"humeur": [
@@ -102,6 +111,30 @@ const DATA := {
 			{"t": "La boussole que je t'ai donnée ne montre pas le nord. Elle montre ce que tu cherches vraiment. En général, c'est le nord.", "si": {"quete": "finie"}},
 		],
 		# ------------------------------------------------------------ blagues
+		# ------------------------------------------------------------ pêche (V32)
+		"peche": [
+			# Avant la canne : il faut d'abord gagner sa confiance (amitié, ou les coquillages).
+			{"t": "Pêcher ? Si je sais pêcher ! J'ai une vieille canne, là, sous mon hamac imaginaire. Mais je ne la prête pas au premier venu, {surnom}. On se connaît à peine.", "si": {"pas_fait": "canne", "affinite_max": 34.999, "quete": ""}},
+			{"t": "Ma canne ? Rends-moi d'abord ce petit service : mes coquillages nacrés. Après, on parlera poissons.", "si": {"pas_fait": "canne", "affinite_max": 34.999, "quete": "demandee"}},
+			{"t": "Tu veux pêcher ? Tu sais quoi… tu m'as rendu ma collection. Tiens, prends ma vieille canne. Elle a attrapé un mérou grand comme Gaston. Gaston n'a pas apprécié.\n\nÉquipe-la, approche-toi de l'eau, maintiens {bouton} pour armer et relâche pour lancer. Quand le flotteur plonge : {bouton} encore, vite !", "si": {"pas_fait": "canne", "quete": "finie"}, "action": "donne", "donne": [["canne_peche", 1]], "pose": "canne", "geste": "rire", "humeur": 0.2},
+			{"t": "Pêcher ? Pour toi, {surnom}, oui. Tiens, prends ma vieille canne. Prends-en soin, c'est la seule chose qui m'ait suivi du naufrage. Avec Gaston. Et mes chaussettes.\n\nÉquipe-la, approche-toi de l'eau, maintiens {bouton} pour armer et relâche pour lancer. Quand le flotteur plonge : {bouton} encore, vite !", "si": {"pas_fait": "canne", "affinite_min": 35}, "action": "donne", "donne": [["canne_peche", 1]], "pose": "canne", "geste": "rire", "humeur": 0.15},
+			# Canne perdue : il en a une de rechange (il fait semblant de s'énerver).
+			{"t": "Tu as PERDU ma canne ?! Sapristi… Bon. J'en ai une autre, taillée dans le même bambou. Ne le dis à personne : celle-là, c'était la vraie.", "si": {"fait": "canne", "pas_objet": "canne_peche"}, "action": "donne", "donne": [["canne_peche", 1]], "geste": "colere"},
+			# Conseils.
+			{"t": "Le secret de la pêche ? Garder la ligne tendue, mais pas trop. Comme une conversation avec Gaston.", "si": {"fait": "canne"}},
+			{"t": "Quand ça mord, mouline par petits coups. Si la tension rougit, lâche un peu. Le poisson se fatigue avant toi. Normalement.", "si": {"fait": "canne"}},
+			{"t": "Lance loin, là où l'eau devient bleu sombre. Les gros poissons aiment la profondeur, comme les philosophes.", "si": {"fait": "canne"}},
+			{"t": "Dans la baie de la jungle, il y a des poissons-perroquets. Ils sont de toutes les couleurs et ils mordent comme des notaires.", "si": {"fait": "canne"}},
+			{"t": "Si le flotteur frétille juste un peu, ne bouge pas. C'est un poisson qui goûte. Attends qu'il plonge pour de vrai.", "si": {"fait": "canne", "peche_max": 2}},
+			{"t": "Tu n'as encore rien attrapé ? Patience, {surnom}. Il m'a fallu trois ans pour mon premier poisson. Mais j'avais une canne en algue.", "si": {"fait": "canne", "peche_max": 0}},
+			# Ses commentaires sur tes prises.
+			{"t": "Déjà {nb_poissons} prises ! Et ton plus beau : {record}. Pas mal pour un débutant.", "si": {"fait": "canne", "peche_min": 1}, "geste": "rire"},
+			{"t": "{nb_poissons} poissons, {nb_especes} espèces ! Tu vas bientôt vider la mer. Laisse-m'en un ou deux.", "si": {"fait": "canne", "peche_min": 8}, "geste": "rire"},
+			{"t": "Ton record, c'est {record} ? Moi, une fois, j'ai attrapé une baleine. Bon, c'était un rocher. Mais il avait l'air d'une baleine.", "si": {"fait": "canne", "peche_min": 3}},
+			{"t": "Tu as remonté une vieille botte ? Montre ! … C'est la mienne ! Je la cherche depuis le naufrage. Rapporte-la-moi, je t'en prie.", "si": {"a_attrape": "vieille_botte"}, "geste": "rire"},
+			{"t": "On raconte qu'un poisson-lune doré rôde au large, là où l'eau est la plus profonde. Personne ne l'a jamais sorti. Sauf peut-être toi, un jour ?", "si": {"fait": "canne", "affinite_min": 30}},
+			{"t": "TU AS PÊCHÉ LE POISSON-LUNE DORÉ ?! Gaston, tombe de ton perchoir, c'est le moment ! Tu es une légende, {surnom} !", "si": {"a_attrape": "poisson_lune"}, "geste": "rire", "humeur": 0.3},
+		],
 		"blague": [
 			{"t": "Pourquoi les poissons détestent l'ordinateur ? Parce qu'ils ont peur du net ! Ha ! Gaston ne rit jamais à celle-là.", "si": {}, "geste": "rire"},
 			{"t": "Qu'est-ce qu'un crabe qui fait du vélo ? Un crabe qui va de travers, mais plus vite.", "si": {}, "geste": "rire"},
@@ -111,6 +144,11 @@ const DATA := {
 		],
 		# ------------------------------------------------------------ cadeaux
 		"cadeau_aime": [
+			{"t": "MA BOTTE ! Ma botte gauche ! Vingt-deux ans que je marche à cloche-pied ! {surnom}, tu es mon héros !", "si": {"dernier_cadeau": "vieille_botte"}, "geste": "rire", "humeur": 0.3},
+			{"t": "Un poisson frais ! Gaston, sors la poêle ! Enfin… la pierre plate.", "si": {"dernier_cadeau": "dorade"}, "geste": "rire"},
+			{"t": "Un poisson-perroquet ! Ne le dis pas à Gaston, il croirait que c'est un cousin.", "si": {"dernier_cadeau": "poisson_perroquet"}, "geste": "rire"},
+			{"t": "Un mérou ! Un vrai, un gros ! Je vais le manger pendant une semaine. Ou le cartographier.", "si": {"dernier_cadeau": "merou"}, "geste": "rire"},
+			{"t": "Le… le poisson-lune doré ? Pour moi ? Je… je ne sais pas quoi dire. Gaston non plus. C'est une première.", "si": {"dernier_cadeau": "poisson_lune"}, "geste": "rire", "humeur": 0.3},
 			{"t": "Oh ! {dernier_cadeau}, pour moi ? Tu es un trésor, {surnom}. Gaston, regarde !", "geste": "rire"},
 			{"t": "Oh… oh oh oh. C'est exactement ce qu'il me fallait. Comment savais-tu ?", "geste": "rire"},
 			{"t": "Encore {dernier_cadeau} ? Tu me gâtes ! Ça fait {nb_cadeaux} cadeaux, je les compte, tu sais.", "si": {"visites_min": 2}},
@@ -125,6 +163,9 @@ const DATA := {
 		],
 		"cadeau_refus": [
 			{"t": "Garde ça, {surnom}. Tu en auras plus besoin que moi. Moi, je me bats avec des métaphores.", "si": {}},
+		],
+		"cadeau_refus_canne_peche": [
+			{"t": "Me rendre ma canne ? Jamais de la vie ! Elle est à toi maintenant. Va pêcher, {surnom}.", "si": {}},
 		],
 		"quete_fin": [
 			{"t": "Cinq coquillages nacrés ! Ma collection est complète ! Tiens, prends ma vieille boussole, et quelques pièces. Tu les as bien méritées, {surnom} !", "geste": "rire", "humeur": 0.5},
