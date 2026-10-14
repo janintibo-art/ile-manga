@@ -130,6 +130,9 @@ const DATA := {
 			{"t": "Deux fragments sur trois ! Le troisième œil de ma carte est sous la jungle, près de la tête de pierre. J'ai dessiné quatre serpents en rond… et une flèche qui tourne. Ou un escargot.", "si": {"a_trouve": "boss1", "pas_trouve": "fragment3"}},
 			# V38
 			{"t": "Quatre serpents qui tournent deux par deux ? Ah, les Anciens et leurs farces… Commence par celui qui est déjà bien placé, et regarde lequel il entraîne.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
+			# V39 : le Puits des Abysses
+			{"t": "Un lac noir, au fond du puits, avec des dalles gravées ? Les Anciens n'avaient qu'une chanson, {surnom} : celle de la fresque. La nuit, la mer, le jour, le serpent. Chante-la en marchant.", "si": {"a_trouve": "abysses", "pas_trouve": "lac"}},
+			{"t": "Nâga… Le Serpent des Abysses. Sur ma carte, il y a juste un grand dessin noir et le mot « NON » écrit trois fois. Je te prépare une soupe. Pour après. S'il y a un après.", "si": {"a_trouve": "abime"}, "geste": "colere", "humeur": -0.1},
 			{"t": "L'Amulette du Serpent ! Reconstituée ! Elle brille vert ? Sur ma carte, sous le grand serpent, il y a écrit « Abysses ». Et un petit dessin de moi en train de fuir.", "si": {"a_trouve": "porte_serpent"}, "geste": "rire", "humeur": 0.25},
 			# V36
 			{"t": "Une galerie sous la mer, jusqu'à la jungle ? Je l'avais dessinée en pointillés sur ma carte. Les pointillés, c'est ce que je ne suis pas sûr. J'avais raison !", "si": {"a_trouve": "tunnel"}, "geste": "rire"},

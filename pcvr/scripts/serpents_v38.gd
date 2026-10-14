@@ -7,7 +7,7 @@ extends Node3D
 ## Côté village : la Porte du Serpent. Avec les trois fragments, elle s'ouvre ; les fragments
 ## se soudent en l'Amulette du Serpent, qui éclaire les ténèbres autour du joueur.
 ## Derrière : le Sanctuaire de l'Œil (grand serpent de bronze, fontaine qui soigne, coffre
-## des offrandes, et le sceau du Puits des Abysses pour l'étape suivante).
+## des offrandes ; le sceau du Puits des Abysses est construit par abysses_v39.gd).
 
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const START_CODE: int = 45                 # orientations de départ [1, 3, 2, 0] (quarts de tour)
@@ -492,7 +492,7 @@ func _use_door() -> void:
 
 func build_sanctuary(s: Node3D) -> void:
 	var y0: float = SANCT_Y
-	d._room(s, -10.5, 10.5, -94.0, -73.6, y0, 12.0, "mur", "sol", [["s", 0.0, 5.0, 6.0]])
+	d._room(s, -10.5, 10.5, -94.0, -73.6, y0, 12.0, "mur", "sol", [["s", 0.0, 5.0, 6.0], ["n", 0.0, 4.6, 4.8]])
 	for x in [-7.0, 7.0]:
 		for z in [-78.0, -84.0, -90.0]:
 			var p := Vector3(x, y0, z)
@@ -504,7 +504,6 @@ func build_sanctuary(s: Node3D) -> void:
 	_great_serpent(s)
 	_fountain(s, Vector3(-9.6, y0, -80.0))
 	_offering_chest(s, Vector3(8.4, y0, -80.0))
-	_abyss_seal(s)
 	for p in [Vector3(-4.0, y0, -76.5), Vector3(4.0, y0, -76.5), Vector3(-4.5, y0, -92.0), Vector3(4.5, y0, -92.0)]:
 		d._brazier_fixed(s, p)
 	d._glow(s, Vector3(-10.2, y0 + 3.0, -88.0), Vector3(1, 0, 0))
@@ -666,35 +665,6 @@ func _open_offering() -> void:
 	d._say("Les offrandes des Anciens : %d pièces, %d pièces d'or%s." % [a, o, " et un rubis" if r > 0 else ""], 5.0)
 	if main.combat_v28 != null:
 		main.combat_v28.puff(_sanct_chest.global_position + Vector3.UP * 0.8, Color(1.0, 0.85, 0.4))
-
-
-## Au fond : le sceau du Puits des Abysses (la suite du chantier).
-func _abyss_seal(s: Node3D) -> void:
-	var y0: float = SANCT_Y
-	for k in range(3):
-		d._box(s, Vector3(6.0 - k * 0.8, 0.25, 1.2), Vector3(0, y0 + 0.125 + k * 0.25, -92.9 - k * 0.3), d._mat("sol"))
-	var disc := _mesh(s, _cone(2.6, 2.6, 0.3, 40), d._mat("mur"), Vector3(0, y0 + 3.7, -93.85), Vector3(PI * 0.5, 0, 0))
-	disc.name = "Sceau_des_Abysses"
-	var g := MeshInstance3D.new()
-	var gq := QuadMesh.new()
-	gq.size = Vector2(3.0, 3.0)
-	g.mesh = gq
-	g.material_override = d._glyph_mat("serpent")
-	g.position = Vector3(0, y0 + 3.7, -93.68)
-	s.add_child(g)
-	for a in [0.75, -0.75]:
-		d._box(s, Vector3(0.14, 5.8, 0.12), Vector3(0, y0 + 3.7, -93.6), d._mat("bronze"), false, Vector3(0, 0, a))
-	var txt := Label3D.new()
-	txt.text = "« Le Puits des Abysses. Ici dort ce que les Anciens ont enchaîné. »"
-	txt.font_size = 40
-	txt.pixel_size = 0.003
-	txt.modulate = Color(0.86, 0.78, 0.6)
-	txt.outline_size = 0
-	txt.position = Vector3(0, y0 + 7.2, -93.95)
-	s.add_child(txt)
-	d._interactions.append({"id": "sceau_abysses", "pos": s.to_global(Vector3(0, y0, -91.6)), "radius": 2.2,
-		"text": "E : examiner le sceau", "vr": "Gâchette : examiner le sceau",
-		"call": func(): d._say("Un sceau de pierre barré de chaînes de bronze. Derrière, un souffle glacé… et, très loin, un grondement. L'Amulette du Serpent vibre doucement. (Suite du chantier !)", 6.0)})
 
 
 # =================================================================== l'amulette éclaire les ténèbres

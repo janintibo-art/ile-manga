@@ -21,7 +21,7 @@ var main: Node
 var inside: bool = false
 var village_trap: Vector3 = Vector3.INF          # surface
 var jungle_trap: Vector3 = Vector3.INF
-var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false}
+var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false}
 var sections: Dictionary = {}                    # "village"/"jungle" -> Node3D (repère local)
 var spawn: Dictionary = {}                       # "village"/"jungle" -> [position, regard]
 var _interactions: Array = []                    # {id, pos, radius, text, vr, call, when}
@@ -62,6 +62,9 @@ var _bar_vr: Label3D
 # V38 : la Salle des Quatre Serpents, la Porte du Serpent et le Sanctuaire
 const SerpentsScript = preload("res://scripts/serpents_v38.gd")
 var serpents: Node3D
+# V39 : le Puits des Abysses et le Lac Noir
+const AbyssesScript = preload("res://scripts/abysses_v39.gd")
+var abysses: Node3D
 
 
 func setup(main_node: Node) -> void:
@@ -76,6 +79,10 @@ func setup(main_node: Node) -> void:
 	serpents.name = "Serpents_v38"
 	add_child(serpents)
 	serpents.setup(self, main)
+	abysses = AbyssesScript.new()
+	abysses.name = "Abysses_v39"
+	add_child(abysses)
+	abysses.setup(self, main)
 	_vr_hint = Label3D.new()
 	_vr_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_vr_hint.font_size = 40
@@ -623,6 +630,7 @@ func _build_village_section(at: Vector3, forward: Vector3) -> void:
 	_torch(s, Vector3(8.95, y0 + 3.5, -60), Vector3(-1, 0, 0), 1.3)
 	serpents.build_door(s, Vector3(0, y0, -73.3))
 	serpents.build_sanctuary(s)
+	abysses.build(s)
 
 
 func _brazier(s: Node3D, symbol: String, p: Vector3) -> void:
@@ -1381,6 +1389,8 @@ func _make_trap(id: String, at: Vector3) -> void:
 func _apply_state() -> void:
 	if serpents != null:
 		serpents.apply_state()
+	if abysses != null:
+		abysses.apply_state()
 	if _passage != null:
 		_passage.position.y = (-3.0 - 3.8) if bool(state["passage"]) else -3.0
 		(_passage.get_node("Passage_collision") as StaticBody3D).collision_layer = 0 if bool(state["passage"]) else 1
@@ -1784,7 +1794,7 @@ func serialize() -> Dictionary:
 
 
 func load_data(d: Dictionary) -> void:
-	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false}
+	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false}
 	for k in state:
 		if d.has(k):
 			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires" or k == "serpents") else bool(d[k])

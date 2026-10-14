@@ -4,7 +4,9 @@ extends CharacterBody3D
 ## Deux espèces pour commencer :
 ##  - le crabe de roche : bas, rapide, pinces levées avant de frapper (1/2 cœur) ;
 ##  - le gardien de corail : un ancien soldat du temple pétrifié, lent, frappe fort (1 cœur)
-##    avec sa lance après l'avoir levée.
+##    avec sa lance après l'avoir levée ;
+##  - V39 : la vipère des abysses : longue, noire, striée de vert ; elle se love, relève la
+##    tête… puis bondit droit devant (1/2 cœur). On l'évite en s'écartant de sa trajectoire.
 ## Comportement : il veille près de son poste, repère le joueur à quelques mètres, le
 ## poursuit sans trop s'éloigner, prépare son coup (le signal pour esquiver ou parer), frappe,
 ## souffle un instant. Touché, il recule et clignote ; à zéro, il s'effondre et laisse du butin.
@@ -16,6 +18,8 @@ const SPECS := {
 		"rayon": 0.5, "haut": 0.3, "nom": "Crabe de roche"},
 	"gardien": {"pv": 22, "vitesse": 1.5, "degats": 2, "portee": 1.9, "armer": 0.85, "repos": 1.6, "vue": 11.0, "laisse": 13.0,
 		"rayon": 0.38, "haut": 1.0, "nom": "Gardien de corail"},
+	"vipere": {"pv": 12, "vitesse": 2.7, "degats": 1, "portee": 2.1, "armer": 0.6, "repos": 1.4, "vue": 9.0, "laisse": 12.0,
+		"rayon": 0.6, "haut": 0.3, "nom": "Vipère des abysses"},
 }
 
 signal died(monster: Node3D)
@@ -39,6 +43,7 @@ var _flash: float = 0.0
 var _flash_mats: Array = []
 var _clock: float = 0.0
 var _knock: Vector3 = Vector3.ZERO
+var _segments: Array = []               # V39 : anneaux du corps de la vipère (de la tête à la queue)
 
 
 func setup(m: Node, k: String, at: Vector3) -> void:
@@ -58,6 +63,11 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		box.size = Vector3(0.9, 0.5, 0.7)
 		cs.shape = box
 		cs.position.y = 0.3
+	elif kind == "vipere":
+		var vb := BoxShape3D.new()
+		vb.size = Vector3(0.5, 0.36, 1.3)
+		cs.shape = vb
+		cs.position = Vector3(0, 0.2, 0.1)
 	else:
 		var cap := CapsuleShape3D.new()
 		cap.radius = 0.32
@@ -69,6 +79,8 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 	add_child(_visual)
 	if kind == "crabe":
 		_build_crab()
+	elif kind == "vipere":
+		_build_viper()
 	else:
 		_build_guardian()
 	add_to_group("cibles_v28")
@@ -146,6 +158,30 @@ func _build_crab() -> void:
 		_mesh(arm, _sphere(0.13), shell, Vector3(0, 0.02, 0.36), Vector3(0.8, 0.7, 1.3))
 		_mesh(arm, _cyl(0.0, 0.06, 0.2), shell, Vector3(sx * 0.04, 0.07, 0.5), Vector3.ONE, Vector3(PI * 0.5, 0, 0))
 		_claws.append(arm)
+
+
+## V39 : vipère des abysses : 22 anneaux qui s'affinent, tête en losange, yeux verts,
+## stries luisantes sur le dos.
+func _build_viper() -> void:
+	var skin := _mat(Color(0.05, 0.06, 0.055), 0.28)
+	var stripe := _mat(Color(0.2, 0.8, 0.42), 0.3, 1.1)
+	var eye := _mat(Color(0.5, 1.0, 0.6), 0.2, 4.0)
+	for k in range(22):
+		var t: float = float(k) / 21.0
+		var seg := Node3D.new()
+		seg.position = Vector3(0, 0.12, 0.55 - k * 0.1)
+		_visual.add_child(seg)
+		var r: float = 0.12 - t * 0.085 + (0.015 if k < 3 else 0.0)
+		_mesh(seg, _sphere(r), skin, Vector3.ZERO, Vector3(1.0, 0.8, 1.4))
+		if k % 3 == 1 and k < 18:
+			_mesh(seg, _sphere(r * 0.35), stripe, Vector3(0, r * 0.75, 0), Vector3(1.6, 0.4, 0.8))
+		_segments.append(seg)
+	var head: Node3D = _segments[0]
+	_mesh(head, _sphere(0.15), skin, Vector3(0, 0.03, 0.14), Vector3(1.05, 0.55, 1.35))
+	for sx in [-1.0, 1.0]:
+		_mesh(head, _sphere(0.032), eye, Vector3(sx * 0.08, 0.08, 0.2))
+	var tongue := _mat(Color(0.75, 0.1, 0.15), 0.4)
+	_mesh(head, _cyl(0.004, 0.008, 0.12), tongue, Vector3(0, 0.0, 0.36), Vector3.ONE, Vector3(PI * 0.5, 0, 0))
 
 
 ## Gardien de corail : le corps du héros, couleur pierre bleutée, coraux et lance, yeux luisants.
@@ -245,21 +281,21 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	var away: Vector3 = global_position - from_pos
 	away.y = 0.0
 	away = away.normalized() if away.length() > 0.01 else -facing
-	_knock = away * (3.2 if kind == "crabe" else 1.6)
+	_knock = away * (3.2 if kind == "crabe" else (2.6 if kind == "vipere" else 1.6))
 	var cb: Node = manager.main.combat_v28
 	if cb != null:
-		var at: Vector3 = global_position + Vector3.UP * (0.9 if kind == "crabe" else 2.1)
+		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind == "gardien" else 0.9)
 		if bool(cb.get("critical")):
 			cb.damage_number_color(at, damage, Color(1.0, 0.55, 0.2), " !")
 		else:
 			cb.damage_number(at, damage)
-		cb.puff(global_position + Vector3.UP * hit_height, Color(0.8, 0.5, 0.4) if kind == "crabe" else Color(0.7, 0.75, 0.78))
+		cb.puff(global_position + Vector3.UP * hit_height, Color(0.8, 0.5, 0.4) if kind == "crabe" else (Color(0.3, 0.6, 0.4) if kind == "vipere" else Color(0.7, 0.75, 0.78)))
 	if hp <= 0:
 		_die()
 		return
 	# Un coup interrompt la préparation de l'attaque (on peut « couper » l'élan).
 	state = "recul"
-	timer = 0.3 if kind == "crabe" else 0.22
+	timer = 0.22 if kind == "gardien" else 0.3
 	if kind == "gardien":
 		_play("v28/hurt", 0.05)
 
@@ -292,6 +328,8 @@ func _physics_process(delta: float) -> void:
 		if kind == "crabe":
 			_visual.rotation.z = minf(timer * 6.0, PI)
 			_visual.position.y = sin(minf(timer * 6.0, PI)) * 0.4
+		elif kind == "vipere":
+			_visual.rotation.z = minf(timer * 5.0, PI * 0.9)
 		if timer > 1.6:
 			_visual.scale = Vector3.ONE * clampf(1.0 - (timer - 1.6) / 0.8, 0.01, 1.0)
 		if timer > 2.4:
@@ -335,7 +373,21 @@ func _physics_process(delta: float) -> void:
 			if timer <= 0.0:
 				state = "frappe"
 				timer = 0.18
-				_strike(dist, dir_p)
+				if kind == "vipere":
+					# Le bond : droit devant, sans corriger sa trajectoire.
+					timer = 0.32
+					_knock = facing * 7.5
+				else:
+					_strike(dist, dir_p)
+		"frappe" when kind == "vipere":
+			if timer > 0.1 and dist < 1.25 and not has_meta("mordu"):
+				set_meta("mordu", true)
+				manager.hurt_player(int(spec["degats"]), global_position)
+			if timer <= 0.0:
+				if has_meta("mordu"):
+					remove_meta("mordu")
+				state = "souffle"
+				timer = float(spec["repos"])
 		"frappe":
 			if timer <= 0.0:
 				state = "souffle"
@@ -365,6 +417,20 @@ func _strike(dist: float, dir_p: Vector3) -> void:
 
 
 func _animate(delta: float, speed: float) -> void:
+	if kind == "vipere":
+		var slither: float = clampf(speed / 2.7, 0.0, 1.0)
+		var coil: float = 0.0
+		if state == "armer":
+			coil = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		for k in range(_segments.size()):
+			var seg: Node3D = _segments[k]
+			var wave: float = sin(_clock * 9.0 - k * 0.45) * (0.05 + k * 0.008) * maxf(slither, 0.25)
+			var z0: float = 0.55 - k * 0.1
+			# Lovée : le corps se replie en S et la tête se dresse.
+			seg.position.x = lerpf(wave, sin(k * 0.55) * 0.22, coil)
+			seg.position.z = lerpf(z0, z0 * 0.6 - 0.1, coil)
+			seg.position.y = 0.12 + (maxf(0.0, 5.0 - k) * 0.075 * coil)
+		return
 	if kind == "crabe":
 		var walk: float = clampf(speed / 2.3, 0.0, 1.0)
 		for l in _legs:

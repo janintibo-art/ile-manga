@@ -14,6 +14,9 @@ const SPAWNS := [
 	["crabe", 15.0, -3.0, -140.0], ["crabe", 16.0, -3.0, -156.0],
 	["gardien", 11.5, -3.0, -183.0], ["gardien", 19.5, -3.0, -183.0], ["crabe", 15.5, -3.0, -176.0],
 	["crabe", 15.0, 0.0, -224.0], ["crabe", 16.0, 0.0, -236.0],
+	# V39 : le fond du puits et les deux rives du Lac Noir
+	["vipere", -5.0, -43.0, -108.5], ["vipere", -8.0, -43.0, -115.0], ["vipere", 6.0, -43.0, -115.6],
+	["vipere", -7.0, -43.0, -140.0], ["vipere", 5.0, -43.0, -143.5], ["vipere", 1.5, -43.0, -147.5],
 ]
 
 var main: Node
@@ -96,6 +99,8 @@ func alert(m: Node3D) -> void:
 	_alerted[m.kind] = true
 	if m.kind == "crabe":
 		donjon._say("Un crabe de roche ! Quand il lève les pinces, recule ou pare (F)… puis frappe-le.", 5.0)
+	elif m.kind == "vipere":
+		donjon._say("Une vipère des abysses ! Quand elle se love et dresse la tête, elle va bondir droit devant : écarte-toi, ou pare (F).", 6.0)
 	else:
 		donjon._say("Un gardien de corail se réveille ! Il lève sa lance avant de frapper : roule (Ctrl) ou pare (F). Trois coups d'épée enchaînés font mal.", 6.0)
 
@@ -175,6 +180,10 @@ func _on_died(m: Node3D) -> void:
 		if _rng.randf() < 0.45:
 			gains.append(["piece", _rng.randi_range(1, 3)])
 		if _rng.randf() < 0.1:
+			gains.append(["perle", 1])
+	elif m.kind == "vipere":
+		gains.append(["piece", _rng.randi_range(2, 5)])
+		if _rng.randf() < 0.15:
 			gains.append(["perle", 1])
 	else:
 		gains.append(["piece", _rng.randi_range(4, 8)])

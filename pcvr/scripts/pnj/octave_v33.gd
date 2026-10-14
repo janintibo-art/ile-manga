@@ -110,6 +110,9 @@ const DATA := {
 			# V37 : Karkinos, le Crabe-Roi
 			{"t": "Un crabe grand comme ma cabane, à l'est de la salle aux colonnes ? Sa carapace, c'est de l'acier. Attends qu'il plante ses pinces dans la roche… et là, cogne.", "si": {"a_trouve": "grille", "pas_trouve": "boss1"}},
 			{"t": "Tu as abattu le Crabe-Roi ?! … Tu me revends sa carapace ? Non ? Dommage. J'en aurais fait des boucliers.", "si": {"a_trouve": "boss1"}, "geste": "rire", "humeur": 0.2},
+			# V39 : les vipères des abysses
+			{"t": "Des vipères noires, au fond du puits ? Elles se lovent avant de bondir, tout droit, comme une flèche. Ne reste pas en face : un pas de côté, et tu lui coupes la tête au retour.", "si": {"a_trouve": "abysses"}},
+			{"t": "Le grand serpent s'est réveillé ? Alors tu vas avoir besoin d'une bonne lame et de beaucoup de noix de coco. Je fais un prix. Non, je plaisante, je ne fais jamais de prix.", "si": {"a_trouve": "abime"}, "geste": "rire"},
 			# V38 : la Salle des Quatre Serpents et le Sanctuaire
 			{"t": "Des statues qui tournent à deux ? C'est une serrure à combinaison, rien de plus. Tourne, compte, réfléchis. Ou tape dessus : ça ne marche jamais, mais ça soulage.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
 			{"t": "Une fontaine qui soigne, sous terre ? On la met en bouteilles et on fait fortune. … Quoi, c'est sacré ? Tout est sacré, tant que ça se vend.", "si": {"a_trouve": "porte_serpent"}, "geste": "rire", "humeur": 0.15},

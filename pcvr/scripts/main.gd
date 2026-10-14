@@ -2279,7 +2279,10 @@ func _npc_ctx_v31() -> Dictionary:
 			"boss1": 1 if donjon_v35 != null and bool(donjon_v35.state["boss1"]) else 0,
 			"serpents": 1 if donjon_v35 != null and bool(donjon_v35.state["enigme_serpents"]) else 0,
 			"fragment3": 1 if donjon_v35 != null and bool(donjon_v35.state["fragment3"]) else 0,
-			"porte_serpent": 1 if donjon_v35 != null and bool(donjon_v35.state["porte_serpent"]) else 0},
+			"porte_serpent": 1 if donjon_v35 != null and bool(donjon_v35.state["porte_serpent"]) else 0,
+			"abysses": 1 if donjon_v35 != null and bool(donjon_v35.state["sceau"]) else 0,
+			"lac": 1 if donjon_v35 != null and bool(donjon_v35.state["lac"]) else 0,
+			"abime": 1 if donjon_v35 != null and bool(donjon_v35.state["abime_eveil"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 
