@@ -29,10 +29,18 @@ var _noise := FastNoiseLite.new()
 var _ridge := FastNoiseLite.new()
 var _detail := FastNoiseLite.new()
 var _coast := FastNoiseLite.new()
+var _t0: int = 0
 
 
 func build(high_quality: bool) -> void:
-	var t0: int = Time.get_ticks_msec()
+	build_heights()
+	finish(high_quality)
+
+
+## V31 : la construction se fait en deux temps pour pouvoir aplanir des terrasses
+## (cabane…) entre le calcul du relief et la fabrication du sol et des collisions.
+func build_heights() -> void:
+	_t0 = Time.get_ticks_msec()
 	_setup_noise()
 	count = int(round(HALF * 2.0 / CELL)) + 1
 	heights.resize(count * count)
@@ -40,10 +48,28 @@ func build(high_quality: bool) -> void:
 		var z: float = -HALF + zi * CELL
 		for xi in range(count):
 			heights[zi * count + xi] = _shape(-HALF + xi * CELL, z)
+	_find_dock()
+
+
+func finish(high_quality: bool) -> void:
 	_build_mesh(high_quality)
 	_build_collision()
-	_find_dock()
-	print("ILE_MANGA_V29: île-jungle ", count, "x", count, " points en ", Time.get_ticks_msec() - t0, " ms")
+	print("ILE_MANGA_V29: île-jungle ", count, "x", count, " points en ", Time.get_ticks_msec() - _t0, " ms")
+
+
+## Aplanit le sol à la hauteur « target » dans un rayon, avec un raccord doux jusqu'à « blend ».
+func flatten(wx: float, wz: float, radius: float, blend: float, target: float) -> void:
+	var cx: float = (wx - CENTER.x + HALF) / CELL
+	var cz: float = (wz - CENTER.z + HALF) / CELL
+	var reach: int = int(ceil(blend / CELL)) + 1
+	for zi in range(maxi(0, int(cz) - reach), mini(count, int(cz) + reach + 1)):
+		for xi in range(maxi(0, int(cx) - reach), mini(count, int(cx) + reach + 1)):
+			var d: float = Vector2((xi - cx) * CELL, (zi - cz) * CELL).length()
+			if d > blend:
+				continue
+			var k: float = smoothstep(radius, blend, d)
+			var i: int = zi * count + xi
+			heights[i] = lerpf(target, heights[i], k)
 
 
 func _setup_noise() -> void:

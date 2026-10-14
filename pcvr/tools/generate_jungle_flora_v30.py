@@ -179,8 +179,23 @@ def palm_trunk():
     print("palm_trunk")
 
 
+def thatch():
+    """V31 : palmes séchées pour les toits (même découpe que la palme, couleur paille)."""
+    src = Image.open(OUT / "palm_frond.png").convert("RGBA")
+    a = np.asarray(src, dtype=np.float32) / 255.0
+    lum = a[..., 0] * 0.3 + a[..., 1] * 0.6 + a[..., 2] * 0.1
+    lum = (lum - lum[a[..., 3] > 0.5].min()) / max(1e-3, np.ptp(lum[a[..., 3] > 0.5]))
+    straw_dark = np.array([0.42, 0.3, 0.16])
+    straw_light = np.array([0.86, 0.72, 0.46])
+    rgb = straw_dark + (straw_light - straw_dark) * lum[..., None]
+    out = np.concatenate([rgb, a[..., 3:4]], -1)
+    Image.fromarray((np.clip(out, 0, 1) * 255).astype(np.uint8), "RGBA").save(OUT / "thatch.png", optimize=True)
+    print("thatch")
+
+
 if __name__ == "__main__":
     palm_frond()
     broadleaf()
     canopy_leaves()
     palm_trunk()
+    thatch()

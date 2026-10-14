@@ -22,6 +22,8 @@ var _meshes: Dictionary = {}
 var _batches: Dictionary = {}          # "espèce|parcelle" -> Array[Transform3D]
 var _trunks: StaticBody3D
 var counts: Dictionary = {}
+## V31 : clairières à laisser libres ([centre local Vector2, rayon]) — la cabane de Barnabé.
+var clearings: Array = []
 
 
 func build(jungle_node: Node3D, high_quality: bool) -> void:
@@ -527,6 +529,9 @@ func _spot(local: Vector2, max_slope: float, min_h: float, clear_gorge: float) -
 	for tw in jungle.TOWERS:
 		if local.distance_to(tw[0]) < float(tw[1]) + 1.5:
 			return {}
+	for cl in clearings:
+		if local.distance_to(cl[0]) < float(cl[1]):
+			return {}
 	# Plage du ponton : dégagée.
 	var dock: Vector3 = jungle.dock_start - c
 	if Vector2(local.x - dock.x, local.y - dock.z).length() < 14.0:
@@ -629,6 +634,12 @@ func _place_bay_palms(target: int) -> void:
 		var l := Vector2(cos(a) * r, sin(a) * r)
 		var h: float = jungle.height(jungle.CENTER.x + l.x, jungle.CENTER.z + l.y)
 		if h < 0.3 or h > 2.6 or Vector2(l.x - dock.x, l.y - dock.z).length() < 9.0:
+			continue
+		var in_clearing: bool = false
+		for cl in clearings:
+			if l.distance_to(cl[0]) < float(cl[1]):
+				in_clearing = true
+		if in_clearing:
 			continue
 		var s: Dictionary = _spot(l, 0.5, 0.3, 4.0)
 		if s.is_empty():

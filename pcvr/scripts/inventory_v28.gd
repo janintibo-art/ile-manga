@@ -14,24 +14,26 @@ const PICK_RADIUS: float = 1.7
 
 ## kind : nourriture, materiau, tresor, arme. heal en demi-cœurs, damage en points.
 const ITEMS := {
-	"pomme": {"name": "Pomme", "kind": "nourriture", "max": 20, "heal": 2,
+	"pomme": {"name": "Pomme", "art": "une pomme", "kind": "nourriture", "max": 20, "heal": 2,
 		"desc": "Une pomme bien rouge tombée d'un arbre. Rend un cœur."},
-	"champignon": {"name": "Champignon des bois", "kind": "nourriture", "max": 20, "heal": 1,
+	"champignon": {"name": "Champignon des bois", "art": "un champignon", "kind": "nourriture", "max": 20, "heal": 1,
 		"desc": "Il pousse à l'ombre des grands arbres. Rend un demi-cœur."},
-	"baies": {"name": "Baies sauvages", "kind": "nourriture", "max": 30, "heal": 1,
+	"baies": {"name": "Baies sauvages", "art": "des baies", "kind": "nourriture", "max": 30, "heal": 1,
 		"desc": "Petites baies sucrées des buissons. Rend un demi-cœur."},
-	"baton": {"name": "Bâton", "kind": "materiau", "max": 30,
+	"baton": {"name": "Bâton", "art": "un bâton", "kind": "materiau", "max": 30,
 		"desc": "Une branche solide. Servira à fabriquer des outils."},
-	"caillou": {"name": "Caillou", "kind": "materiau", "max": 30,
+	"caillou": {"name": "Caillou", "art": "un caillou", "kind": "materiau", "max": 30,
 		"desc": "Un caillou lisse. Servira à fabriquer des outils."},
-	"coquillage": {"name": "Coquillage nacré", "kind": "tresor", "max": 50,
+	"coquillage": {"name": "Coquillage nacré", "art": "un coquillage nacré", "kind": "tresor", "max": 50,
 		"desc": "Il brille au soleil. Un marchand en voudra peut-être."},
-	"piece": {"name": "Pièce de cuivre", "kind": "tresor", "max": 999,
+	"piece": {"name": "Pièce de cuivre", "art": "une pièce", "kind": "tresor", "max": 999,
 		"desc": "La monnaie de l'île."},
-	"epee_bois": {"name": "Épée en bois", "kind": "arme", "max": 1, "damage": 3,
+	"epee_bois": {"name": "Épée en bois", "art": "une épée en bois", "kind": "arme", "max": 1, "damage": 3,
 		"desc": "Une épée d'entraînement taillée à la forge. Dégâts : 3."},
+	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
+		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
-const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme"}
+const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil"}
 
 var main: Node
 var xr_mode: bool = false
@@ -127,6 +129,27 @@ func add(id: String, n: int = 1) -> int:
 	return n - left
 
 
+## V31 : retire n objets d'un type (dons aux personnages, quêtes). Renvoie le nombre retiré.
+func remove(id: String, n: int) -> int:
+	var left: int = n
+	for i in range(slots.size()):
+		if left <= 0:
+			break
+		if slots[i]["id"] == id:
+			var take: int = mini(int(slots[i]["n"]), left)
+			left -= take
+			remove_from_slot(i, take)
+	return n - left
+
+
+func counts() -> Dictionary:
+	var out := {}
+	for s in slots:
+		if s["id"] != "":
+			out[s["id"]] = int(out.get(s["id"], 0)) + int(s["n"])
+	return out
+
+
 func remove_from_slot(i: int, n: int = 1) -> void:
 	if i < 0 or i >= slots.size() or slots[i]["id"] == "":
 		return
@@ -155,6 +178,8 @@ func use_slot(i: int) -> void:
 				notify.emit("Vos cœurs sont déjà pleins.")
 		"arme":
 			equip_item("" if equipped == id else id)
+		"outil":
+			notify.emit(str(info["desc"]))
 		_:
 			notify.emit("Cet objet servira plus tard.")
 
@@ -411,6 +436,10 @@ func make_model(id: String) -> Node3D:
 				_part(m, _box_mesh(Vector3(0.006, 0.006, 0.12)), _mat("strie", Color(0.8, 0.6, 0.55)), Vector3(-0.04 + k * 0.02, 0.04, 0), Vector3(0, (k - 2) * 12, 0))
 		"piece":
 			_part(m, _cyl(0.035, 0.035, 0.008, 16), _mat("cuivre", Color(0.78, 0.5, 0.25), 0.3), Vector3(0, 0.004, 0))
+		"boussole":
+			_part(m, _cyl(0.05, 0.05, 0.022, 20), _mat("laiton", Color(0.72, 0.56, 0.24), 0.25), Vector3(0, 0.011, 0))
+			_part(m, _cyl(0.042, 0.042, 0.004, 20), _mat("cadran", Color(0.92, 0.88, 0.78), 0.5), Vector3(0, 0.023, 0))
+			_part(m, _box_mesh(Vector3(0.006, 0.003, 0.07)), _mat("aiguille", Color(0.75, 0.1, 0.08), 0.4), Vector3(0, 0.027, 0), Vector3(0, 30, 0))
 		"epee_bois":
 			# Construite le long de +Y : poignée en bas, lame vers le haut.
 			var wood := _mat("lame_bois", Color(0.72, 0.56, 0.36), 0.6)

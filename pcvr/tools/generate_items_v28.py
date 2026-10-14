@@ -175,6 +175,22 @@ def piece():
     save(img, "piece")
 
 
+def boussole():
+    img = canvas()
+    shaded_ellipse(img, (70, 70, 442, 442), (190, 146, 60))
+    d = ImageDraw.Draw(img)
+    d.ellipse((120, 120, 392, 392), fill=(236, 226, 200, 255))
+    for k in range(16):
+        a = k * math.pi / 8
+        r0 = 118 if k % 4 else 100
+        d.line((256 + math.cos(a) * r0, 256 + math.sin(a) * r0, 256 + math.cos(a) * 134, 256 + math.sin(a) * 134), fill=(90, 70, 40, 255), width=6 if k % 4 == 0 else 3)
+    d.polygon([(256, 140), (276, 256), (236, 256)], fill=(196, 30, 24, 255))
+    d.polygon([(256, 372), (276, 256), (236, 256)], fill=(60, 60, 70, 255))
+    d.ellipse((244, 244, 268, 268), fill=(180, 140, 60, 255))
+    d.ellipse((236, 40, 276, 80), outline=(160, 120, 50, 255), width=10)
+    save(img, "boussole")
+
+
 def heart(fill_ratio, name):
     img = canvas()
     m = Image.new("L", (S, S), 0)
@@ -203,6 +219,7 @@ if __name__ == "__main__":
     coquillage()
     epee_bois()
     piece()
+    boussole()
     heart(1.0, "coeur_plein")
     heart(0.5, "coeur_moitie")
     heart(0.0, "coeur_vide")

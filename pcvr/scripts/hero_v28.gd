@@ -300,6 +300,8 @@ func _can_act() -> bool:
 		return false
 	if main.inventory_v28 != null and main.inventory_v28.opened:
 		return false
+	if main.dialogue_v31 != null and main.dialogue_v31.opened:
+		return false
 	return true
 
 
@@ -978,6 +980,17 @@ func _update_camera() -> void:
 		return
 	var pivot: Vector3 = root.global_position + Vector3.UP * 1.5
 	var wanted: Vector3 = root.global_transform * (Vector3(0, 2.5, 5.0) * cam_distance + Vector3(0, 1.5 * (1.0 - cam_distance), 0))
+	# V31 : pendant un dialogue, plan de côté qui montre les deux personnages.
+	var npc: Node3D = main.talking_npc_v31 if main.get("talking_npc_v31") != null else null
+	if npc != null:
+		var to_npc: Vector3 = npc.global_position - root.global_position
+		to_npc.y = 0.0
+		var dist: float = maxf(to_npc.length(), 0.5)
+		var fwd: Vector3 = to_npc / dist
+		var side: Vector3 = fwd.cross(Vector3.UP)
+		var mid: Vector3 = root.global_position + to_npc * 0.5 + Vector3.UP * 1.45
+		pivot = mid
+		wanted = mid + side * (2.6 + dist * 0.4) - fwd * 1.2 + Vector3.UP * 0.35
 	var space := body.get_world_3d().direct_space_state
 	var q := PhysicsRayQueryParameters3D.create(pivot, wanted, 1, [body.get_rid()])
 	var hit := space.intersect_ray(q)
@@ -986,5 +999,8 @@ func _update_camera() -> void:
 		place = hit.position + (pivot - hit.position).normalized() * 0.25
 	camera.global_position = place
 	var look: Vector3 = root.global_position + Vector3.UP * 1.2
+	if npc != null:
+		# La fenêtre de dialogue couvre le bas de l'écran : on vise un peu plus bas.
+		look = pivot + Vector3.DOWN * 0.55
 	if place.distance_to(look) > 0.1:
 		camera.look_at(look, Vector3.UP)

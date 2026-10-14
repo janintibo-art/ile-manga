@@ -54,6 +54,12 @@ var jungle_v29: Node3D
 var boat_v29: Node3D
 var last_ok_v29: Dictionary = {}
 const ISLAND_DOCK_V29 := [Vector3(0.0, 1.0, -56.5), Vector3(0.0, 1.0, -72.5)]
+# V31 : habitants (petite IA commune) et dialogues.
+var npcs_v31: Array = []
+var dialogue_v31: Node3D
+var talking_npc_v31: Node3D
+var cabin_spot_v31: Dictionary = {}
+var pending_pnj_v31: Dictionary = {}
 # ILE_MANGA_PHYSICS_V11 : locomotion par CharacterBody3D et obstacles statiques.
 var vr_body: CharacterBody3D
 var pc_body: CharacterBody3D
@@ -888,6 +894,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		if boat_v29 != null:
 			boat_v29.driving = false
 			boat_v29.moor(0)
+		pending_pnj_v31 = {}
+		for npc in npcs_v31:
+			npc.brain.reset()
 		_save_slot(slot)
 	else:
 		var data: Dictionary = SaveStore.read_slot(slot)
@@ -903,6 +912,11 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 				inventory_v28.load_data(inv_data)
 		if hero_v28 != null:
 			hero_v28.set_health(int(data.get("vie", hero_v28.HP_MAX)))
+		var pnj_data: Variant = data.get("pnj", {})
+		pending_pnj_v31 = pnj_data if pnj_data is Dictionary else {}
+		for npc in npcs_v31:
+			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
+			npc.load_data(one if one is Dictionary else {})
 		if boat_v29 != null:
 			var boat_data: Variant = data.get("bateau", {})
 			boat_v29.driving = false
@@ -936,6 +950,13 @@ func _save_slot(slot: int) -> void:
 		extra["vie"] = hero_v28.hp
 	if boat_v29 != null:
 		extra["bateau"] = boat_v29.serialize()
+	var pnj := {}
+	for npc in npcs_v31:
+		pnj[str(npc.profile["id"])] = npc.serialize()
+	for id in pending_pnj_v31:
+		if not pnj.has(id):
+			pnj[id] = pending_pnj_v31[id]
+	extra["pnj"] = pnj
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -968,6 +989,8 @@ func _physics_process(delta: float) -> void:
 	if xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
+		elif dialogue_v31 != null and dialogue_v31.opened:
+			dialogue_v31.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
 		else:
 			_move_xr(delta)
 			_vr_actions_v28(delta)
@@ -1010,7 +1033,7 @@ func _move_desktop(delta: float) -> void:
 		_drive_boat_pc_v29(delta)
 		return
 	if hero_v28 != null:
-		if inventory_v28 == null or not inventory_v28.opened:
+		if (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			hero_v28.physics(delta)
 		else:
 			hero_v28.physics(0.0001)
@@ -1149,7 +1172,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_tree().quit()
 		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
 			_interact_v28()
-		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened:
+		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
 			inventory_v28.toggle()
 		elif event.keycode == KEY_F5 and game_started:
 			_save_slot(game_menu.active_slot)
@@ -1413,7 +1436,7 @@ func _player_pos_v27() -> Vector3:
 func _doors_update_v27() -> void:
 	if houses_v27 == null:
 		return
-	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened)
+	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened)
 	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
 	# V28 : l'objet à ramasser passe avant la porte s'il est plus proche.
 	if playing and inventory_v28 != null and not xr_active:
@@ -1424,6 +1447,16 @@ func _doors_update_v27() -> void:
 		var boat_text: String = boat_v29.prompt(_player_pos_v27())
 		if boat_text != "":
 			text = boat_text
+	var near_npc: Node3D = _nearest_npc_v31() if playing else null
+	if near_npc != null and not xr_active:
+		text = "E : parler à " + str(near_npc.display_name).split(" ")[0]
+	if xr_active and playing and near_npc != null:
+		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
+			_talk_v31(near_npc)
+		trigger_ready_v27 = right_hand.get_float("trigger") <= 0.7
+		if door_prompt_v27 != null:
+			door_prompt_v27.text = ""
+		return
 	if door_prompt_v27 != null:
 		door_prompt_v27.text = text if not xr_active else ""
 	if xr_active and playing and boat_v29 != null:
@@ -1470,6 +1503,11 @@ func _create_gameplay_v28() -> void:
 	hero_v28.fainted.connect(_respawn_v28)
 	if not xr_active and hud_v28 != null:
 		hero_v28.make_hud(hud_v28)
+	dialogue_v31 = preload("res://scripts/pnj/dialogue_v31.gd").new()
+	dialogue_v31.name = "Dialogue_v31"
+	add_child(dialogue_v31)
+	dialogue_v31.setup(xr_active)
+	dialogue_v31.chosen.connect(_on_dialogue_choice_v31)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1478,6 +1516,7 @@ func _spawn_world_v28() -> void:
 	await get_tree().physics_frame
 	inventory_v28.spawn_world()
 	print("ILE_MANGA_V28: ", inventory_v28.pickups.size(), " objets à ramasser")
+	_create_npcs_v31()
 
 
 func _show_message_v28(text: String) -> void:
@@ -1500,6 +1539,10 @@ func _door_distance_v28() -> float:
 ## E : bateau (monter / débarquer), sinon ramasser l'objet le plus proche, sinon la porte.
 func _interact_v28() -> void:
 	var p: Vector3 = _player_pos_v27()
+	var npc: Node3D = _nearest_npc_v31()
+	if npc != null and (boat_v29 == null or not boat_v29.driving):
+		_talk_v31(npc)
+		return
 	if boat_v29 != null:
 		if boat_v29.driving:
 			_leave_boat_v29()
@@ -1611,11 +1654,20 @@ func _create_jungle_v29() -> void:
 	jungle_v29 = preload("res://scripts/jungle_v29.gd").new()
 	jungle_v29.name = "Ile_jungle_v29"
 	add_child(jungle_v29)
-	jungle_v29.build(OS.has_feature("ile_manga_pc"))
+	jungle_v29.build_heights()
+	# V31 : terrasse aplanie pour la cabane de Barnabé, avant de fabriquer le sol.
+	cabin_spot_v31 = _cabin_spot_v31()
+	if not cabin_spot_v31.is_empty():
+		# La cabane suit la pente sur ses pilotis : le sol n'est pas retouché.
+		pass
+	jungle_v29.finish(OS.has_feature("ile_manga_pc"))
 	# V30 : la forêt tropicale de l'île.
 	var flora: Node3D = preload("res://scripts/jungle_flora_v30.gd").new()
 	flora.name = "Foret_jungle_v30"
 	add_child(flora)
+	if not cabin_spot_v31.is_empty():
+		var lc: Vector3 = cabin_spot_v31["pos"] - jungle_v29.CENTER
+		flora.clearings.append([Vector2(lc.x, lc.z) + Vector2(cabin_spot_v31["facing"].x, cabin_spot_v31["facing"].z) * 2.5, 9.5])
 	flora.build(jungle_v29, OS.has_feature("ile_manga_pc"))
 	boat_v29 = preload("res://scripts/boat_v29.gd").new()
 	boat_v29.name = "Bateau_v29"
@@ -1712,3 +1764,151 @@ func _drive_boat_vr_v29(delta: float) -> void:
 	xr_origin.position = Vector3(seat.origin.x - offset.x, seat.origin.y - 0.3, seat.origin.z - offset.z)
 	vr_body.global_position = seat.origin + Vector3.UP * 0.4
 	vr_body.velocity = Vector3.ZERO
+
+
+# =================================================================== V31 : habitants et dialogues
+
+## Emplacement de la cabane sur la plage de la baie, à l'écart du ponton.
+## On essaie plusieurs positions et orientations (face à la mer ou parallèle au rivage) et
+## l'on garde celle qui demande les pilotis les plus courts, avec un escalier qui arrive
+## sur du sable sec. La forme de la cabane : 4,2 m de large, 3,4 m + 1,6 m de terrasse.
+func _cabin_spot_v31() -> Dictionary:
+	if jungle_v29 == null:
+		return {}
+	var c: Vector3 = jungle_v29.CENTER
+	var dock_a: Vector3 = jungle_v29.dock_start
+	var ab: Vector3 = jungle_v29.dock_end - dock_a
+	ab.y = 0.0
+	var best: Dictionary = {}
+	var best_score: float = INF
+	for i in range(4, 34):
+		for sgn in [1.0, -1.0]:
+			var a: float = jungle_v29.BAY_ANGLE - sgn * i * 0.02
+			var radial := Vector3(cos(a), 0, sin(a))
+			for k in range(70):
+				var r: float = 45.0 + k * 0.7
+				var pos: Vector3 = c + radial * r
+				var h0: float = jungle_v29.height(pos.x, pos.z)
+				if h0 < 1.2 or h0 > 3.5:
+					continue
+				var tc: float = clampf((pos - dock_a).dot(ab) / ab.length_squared(), -0.5, 1.0)
+				var closest: Vector3 = dock_a + ab * tc
+				if Vector2(pos.x - closest.x, pos.z - closest.z).length() < 11.0:
+					continue
+				var tangent := Vector3(-radial.z, 0, radial.x)
+				for facing in [radial, tangent, -tangent]:
+					var right: Vector3 = facing.cross(Vector3.UP)
+					var hi: float = -INF
+					var lo: float = INF
+					for corner in [Vector2(-2.1, -1.7), Vector2(2.1, -1.7), Vector2(-2.1, 3.3), Vector2(2.1, 3.3), Vector2(0, 0.8)]:
+						var w: Vector3 = pos + right * corner.x + facing * corner.y
+						var hc: float = jungle_v29.height(w.x, w.z)
+						hi = maxf(hi, hc)
+						lo = minf(lo, hc)
+					var foot: Vector3 = pos + facing * 5.0
+					var hf: float = jungle_v29.height(foot.x, foot.z)
+					if hf < 0.9 or lo < 0.6:
+						continue
+					var drop: float = hi + 0.3 - hf
+					var score: float = drop + 0.6 * (hi - lo) + absf(float(i)) * 0.02
+					if score < best_score:
+						best_score = score
+						best = {"pos": Vector3(pos.x, h0, pos.z), "facing": facing}
+	return best
+
+
+func _create_npcs_v31() -> void:
+	if cabin_spot_v31.is_empty() or inventory_v28 == null:
+		return
+	var cabin: Node3D = preload("res://scripts/pnj/cabane_v31.gd").new()
+	add_child(cabin)
+	var sea: Vector3 = cabin_spot_v31["pos"] - jungle_v29.CENTER
+	cabin.build(self, cabin_spot_v31["pos"], cabin_spot_v31["facing"], inventory_v28, sea)
+	await get_tree().physics_frame
+	var spots: Dictionary = cabin.points.duplicate()
+	spots["marche"] = cabin.stairs_foot
+	var graph := {"interieur": ["porche", "table"], "table": ["interieur"], "porche": ["interieur", "marche"],
+		"marche": ["porche", "feu"], "feu": ["marche", "rivage"], "rivage": ["feu"]}
+	var npc: Node3D = preload("res://scripts/pnj/pnj_v31.gd").new()
+	add_child(npc)
+	npc.setup(self, preload("res://scripts/pnj/barnabe_v31.gd").DATA, spots, graph, "porche")
+	var saved: Variant = pending_pnj_v31.get("barnabe", {})
+	if saved is Dictionary and not (saved as Dictionary).is_empty():
+		npc.load_data(saved)
+	npcs_v31.append(npc)
+	print("ILE_MANGA_V31: cabane et habitant ", npc.display_name, " à ", npc.global_position)
+
+
+func _nearest_npc_v31() -> Node3D:
+	var p: Vector3 = _player_pos_v27()
+	var best: Node3D = null
+	var best_d: float = 2.8
+	for npc in npcs_v31:
+		var d: float = Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z).length()
+		if d < best_d and absf(npc.global_position.y - p.y) < 2.5:
+			best_d = d
+			best = npc
+	return best
+
+
+## État du jeu que le personnage peut « voir » : objets portés, arme, vie, temps.
+func _npc_ctx_v31() -> Dictionary:
+	var noms := {}
+	var arts := {}
+	for id in inventory_v28.ITEMS:
+		noms[id] = str(inventory_v28.ITEMS[id]["name"])
+		arts[id] = str(inventory_v28.ITEMS[id].get("art", noms[id]))
+	return {
+		"now": game_menu.seconds if game_menu != null else 0.0,
+		"objets": inventory_v28.counts() if inventory_v28 != null else {},
+		"arme": inventory_v28.equipped if inventory_v28 != null else "",
+		"vie": hero_v28.hp if hero_v28 != null and not xr_active else 10,
+		"vie_max": hero_v28.HP_MAX if hero_v28 != null else 10,
+		"noms": noms, "articles": arts,
+	}
+
+
+func _talk_v31(npc: Node3D) -> void:
+	if dialogue_v31 == null or dialogue_v31.opened:
+		return
+	if inventory_v28 != null and inventory_v28.opened:
+		inventory_v28.close()
+	talking_npc_v31 = npc
+	npc.begin_talk()
+	if hero_v28 != null and not xr_active:
+		var to_npc: Vector3 = npc.global_position - pc_root.global_position
+		to_npc.y = 0.0
+		if to_npc.length() > 0.05:
+			hero_v28.facing = to_npc.normalized()
+	dialogue_v31.open(npc)
+	_apply_reply_v31(npc, npc.brain.start(_npc_ctx_v31()))
+
+
+func _on_dialogue_choice_v31(id: String) -> void:
+	var npc: Node3D = talking_npc_v31
+	if npc == null or id == "fermer":
+		_close_dialogue_v31()
+		return
+	_apply_reply_v31(npc, npc.brain.choose(id, _npc_ctx_v31()))
+
+
+func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
+	for p in r.get("prendre", []):
+		inventory_v28.remove(str(p[0]), int(p[1]))
+	for g in r.get("donner", []):
+		var got: int = inventory_v28.add(str(g[0]), int(g[1]))
+		if got > 0:
+			_show_message_v28("+ " + str(inventory_v28.ITEMS[str(g[0])]["name"]) + ("" if got == 1 else " ×%d" % got))
+	npc.gesture(str(r.get("geste", "parle")))
+	var choices: Array = r.get("choix", [])
+	if bool(r.get("fin", false)) or choices.is_empty():
+		choices = [{"id": "fermer", "label": "(Partir)"}]
+	dialogue_v31.show_line(npc.display_name, npc.brain.humeur_mot(), str(r.get("texte", "…")), choices)
+
+
+func _close_dialogue_v31() -> void:
+	if dialogue_v31 != null:
+		dialogue_v31.close()
+	if talking_npc_v31 != null:
+		talking_npc_v31.end_talk()
+	talking_npc_v31 = null
