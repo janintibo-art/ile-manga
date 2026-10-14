@@ -53,9 +53,24 @@ const ITEMS := {
 	"pelle": {"name": "Pelle", "art": "une pelle", "kind": "outil", "equip": true, "max": 1, "damage": 2,
 		"desc": "Fer forgé par Octave. En main, clic (gâchette en VR) pour creuser le sable ou la terre : coquillages, pièces… et parfois un trésor."},
 	"hache": {"name": "Hache", "art": "une hache", "kind": "arme", "max": 1, "damage": 5,
-		"desc": "Lourde et bien équilibrée. Octave jure qu'elle a abattu un fromager. Dégâts : 5."},
+		"desc": "Lourde et bien équilibrée. Elle abat les jeunes arbres (une entaille claire sur le tronc) et les cocotiers : bûches, noix de coco, miel… Dégâts : 5."},
 	"epee": {"name": "Épée d'acier", "art": "une épée d'acier", "kind": "arme", "max": 1, "damage": 6,
-		"desc": "Le chef-d'œuvre d'Octave : acier trempé, garde en laiton. Dégâts : 6."},
+		"desc": "Le chef-d'œuvre d'Octave : acier trempé, garde en laiton. Dégâts : 6, et le troisième coup d'un enchaînement frappe moitié plus fort. Prête pour les combats à venir."},
+	# V34 : le bois (hache) et les petits trésors (pelle)
+	"buche": {"name": "Bûche", "art": "une bûche", "kind": "materiau", "max": 30,
+		"desc": "Du bon bois, coupé à la hache. Octave en rachète pour sa forge."},
+	"noix_coco": {"name": "Noix de coco", "art": "une noix de coco", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Tombée d'un cocotier abattu. Son lait rend un cœur."},
+	"miel": {"name": "Miel sauvage", "art": "du miel", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Un rayon de miel trouvé dans un arbre creux. Rend deux cœurs."},
+	"perle": {"name": "Perle", "art": "une perle", "kind": "tresor", "max": 50,
+		"desc": "Une perle bien ronde, sortie d'un trésor enfoui. Octave la rachète 10 pièces."},
+	"bague": {"name": "Bague d'argent", "art": "une bague", "kind": "tresor", "max": 20,
+		"desc": "Une bague de marin, avec une pierre bleue. Octave la rachète 18 pièces."},
+	"rubis": {"name": "Rubis", "art": "un rubis", "kind": "tresor", "max": 20,
+		"desc": "Une pierre rouge qui brille comme une braise. Octave la rachète 30 pièces."},
+	"piece_or": {"name": "Pièce d'or", "art": "une pièce d'or", "kind": "tresor", "max": 99,
+		"desc": "Une vieille pièce d'or frappée d'une couronne. Octave en donne 12 pièces de cuivre."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -516,6 +531,7 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.024, 0.02, 0.1, 8), iron, Vector3(0, 0.93, 0))
 			_part(m, _box_mesh(Vector3(0.21, 0.24, 0.012)), iron, Vector3(0, 1.08, 0.01), Vector3(-8, 0, 0))
 			_part(m, _box_mesh(Vector3(0.15, 0.06, 0.012)), iron, Vector3(0, 1.215, 0.03), Vector3(-8, 0, 0))
+			_tip(m, 1.2)
 		"hache":
 			var haft := _mat("manche_hache", Color(0.56, 0.38, 0.22), 0.7)
 			var head := _mat("fer_hache", Color(0.4, 0.42, 0.45), 0.3)
@@ -525,6 +541,7 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.05, 0.07, 0.05)), head, Vector3(0, 0.62, 0))
 			_part(m, _box_mesh(Vector3(0.012, 0.13, 0.17)), head, Vector3(0, 0.62, 0.1))
 			_part(m, _box_mesh(Vector3(0.008, 0.17, 0.02)), _mat("fil_hache", Color(0.8, 0.82, 0.85), 0.15), Vector3(0, 0.62, 0.19))
+			_tip(m, 0.66, 0.19)
 		"epee":
 			var steel := _mat("acier", Color(0.78, 0.8, 0.83), 0.18)
 			steel.metallic = 0.9
@@ -535,6 +552,27 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.045, 0.7, 0.008)), steel, Vector3(0, 0.45, 0))
 			_part(m, _box_mesh(Vector3(0.032, 0.032, 0.008)), steel, Vector3(0, 0.8, 0), Vector3(0, 0, 45))
 			_part(m, _sphere(0.022), brass, Vector3(0, -0.09, 0))
+			_tip(m, 0.8)
+		"buche":
+			var bark := _mat("ecorce_buche", Color(0.4, 0.27, 0.16), 0.95)
+			_part(m, _cyl(0.09, 0.1, 0.45, 12), bark, Vector3(0, 0.1, 0), Vector3(0, 0, 90))
+			for sx in [-1.0, 1.0]:
+				_part(m, _cyl(0.085, 0.085, 0.01, 12), _mat("tranche", Color(0.82, 0.66, 0.44), 0.8), Vector3(sx * 0.226, 0.1, 0), Vector3(0, 0, 90))
+		"noix_coco":
+			_part(m, _sphere(0.08), _mat("coco", Color(0.38, 0.25, 0.14), 0.95), Vector3(0, 0.075, 0), Vector3.ZERO, Vector3(1, 0.92, 1))
+		"miel":
+			_part(m, _sphere(0.07), _mat("pot", Color(0.62, 0.36, 0.18), 0.6), Vector3(0, 0.07, 0), Vector3.ZERO, Vector3(1, 1.1, 1))
+			_part(m, _cyl(0.05, 0.05, 0.03, 12), _mat("tissu", Color(0.86, 0.78, 0.58), 0.9), Vector3(0, 0.15, 0))
+		"perle":
+			_part(m, _sphere(0.025), _mat("nacre_perle", Color(0.96, 0.94, 0.92), 0.15), Vector3(0, 0.025, 0))
+		"bague":
+			_part(m, _cyl(0.03, 0.03, 0.012, 16), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.006, 0))
+			_part(m, _sphere(0.012), _mat("saphir", Color(0.2, 0.5, 0.85), 0.1), Vector3(0, 0.03, 0))
+		"rubis":
+			_part(m, _cyl(0.0, 0.035, 0.05, 6), _mat("rubis", Color(0.75, 0.05, 0.12), 0.1), Vector3(0, 0.025, 0))
+			_part(m, _cyl(0.035, 0.0, 0.025, 6), _mat("rubis", Color(0.75, 0.05, 0.12), 0.1), Vector3(0, 0.0625, 0))
+		"piece_or":
+			_part(m, _cyl(0.04, 0.04, 0.01, 16), _mat("or", Color(0.95, 0.75, 0.2), 0.25), Vector3(0, 0.005, 0))
 		"epee_bois":
 			# Construite le long de +Y : poignée en bas, lame vers le haut.
 			var wood := _mat("lame_bois", Color(0.72, 0.56, 0.36), 0.6)
@@ -548,6 +586,14 @@ func make_model(id: String) -> Node3D:
 		if c is MeshInstance3D:
 			(c as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	return m
+
+
+## V34 : repère au bout de la lame (traînée des coups d'épée et de hache).
+func _tip(m: Node3D, y: float, z: float = 0.0) -> void:
+	var tip := Marker3D.new()
+	tip.name = "Pointe"
+	tip.position = Vector3(0, y, z)
+	m.add_child(tip)
 
 
 ## V32 : poisson en volume (corps fuselé, queue, nageoire dorsale), couleurs de l'espèce.

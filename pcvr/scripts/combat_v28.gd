@@ -19,6 +19,7 @@ var _floaters: Array = []               # chiffres de dégâts qui montent
 var _shards: Array = []                 # éclats de jarre
 var _vr_prev: Dictionary = {}
 var _vr_cool: Dictionary = {}
+var critical: bool = false            # V34 : le coup en cours est un coup de grâce
 
 
 func build(main_node: Node, inv: Node) -> void:
@@ -257,6 +258,31 @@ func damage_number(at: Vector3, value: int) -> void:
 	add_child(lbl)
 	lbl.global_position = at + Vector3(randf_range(-0.15, 0.15), 0, randf_range(-0.15, 0.15))
 	_floaters.append({"node": lbl, "life": 0.0})
+
+
+## V34 : petit texte qui monte (« Toc ! », « Critique ! », messages en VR).
+func float_text(at: Vector3, text: String, color: Color = Color(1, 1, 1)) -> void:
+	var lbl := Label3D.new()
+	lbl.text = text
+	lbl.font_size = 44 if text.length() < 16 else 30
+	lbl.pixel_size = 0.0035 if text.length() < 16 else 0.0022
+	lbl.width = 700
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.outline_size = 12
+	lbl.modulate = color
+	lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	lbl.no_depth_test = true
+	add_child(lbl)
+	lbl.global_position = at
+	_floaters.append({"node": lbl, "life": -0.8 if text.length() >= 16 else 0.0})
+
+
+## V34 : chiffre de dégâts d'une autre couleur (coup critique, coup de grâce…).
+func damage_number_color(at: Vector3, value: int, color: Color, suffix: String = "") -> void:
+	damage_number(at, value)
+	var f: Dictionary = _floaters[_floaters.size() - 1]
+	(f["node"] as Label3D).modulate = color
+	(f["node"] as Label3D).text = str(value) + suffix
 
 
 func puff(at: Vector3, color: Color) -> void:

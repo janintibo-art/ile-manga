@@ -50,7 +50,10 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	total_damage += damage
 	# Le mannequin bascule dans le sens du coup, puis revient sur son pied.
 	tilt_vel += Vector3.UP.cross(local_d) * (2.2 + damage * 0.9)
-	combat.damage_number(global_position + Vector3.UP * 2.0, damage)
+	if bool(combat.get("critical")):
+		combat.damage_number_color(global_position + Vector3.UP * 2.1, damage, Color(1.0, 0.55, 0.2), " !")
+	else:
+		combat.damage_number(global_position + Vector3.UP * 2.0, damage)
 	combat.puff(center + d * -0.2, Color(0.82, 0.7, 0.42))
 
 

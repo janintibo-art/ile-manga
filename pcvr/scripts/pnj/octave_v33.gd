@@ -19,7 +19,7 @@ const DATA := {
 	"affinite_depart": 5.0,
 	"traits": {"bavard": 0.5, "humour": 0.3, "curiosite": 0.4, "susceptible": 0.6, "rancunier": 0.8, "radin": 0.8},
 	"surnoms": [[0, "client"], [20, "l'ami"], [45, "apprenti"], [70, "compagnon"], [90, "associé"]],
-	"aime": {"piece": 1.5, "baton": 1.0, "caillou": 0.6, "vieille_botte": 2.5, "merou": 2.0, "poisson_lune": 4.0, "bar": 1.0, "dorade": 1.0},
+	"aime": {"piece": 1.5, "baton": 1.0, "buche": 1.2, "miel": 1.5, "piece_or": 2.0, "caillou": 0.6, "vieille_botte": 2.5, "merou": 2.0, "poisson_lune": 4.0, "bar": 1.0, "dorade": 1.0},
 	"deteste": {"coquillage": -1.2, "baies": -0.3},
 	"refuse": ["pelle", "hache", "epee"],
 	"quete": {"objet": "baton", "nombre": 6, "recompense": [["piece", 12]], "affinite": 15.0,
@@ -27,7 +27,8 @@ const DATA := {
 	"boutique": {
 		"vend": {"pelle": 12, "hache": 28, "epee": 50},
 		"achete": {"sardine": 1, "maquereau": 2, "dorade": 4, "bar": 5, "poisson_perroquet": 6, "merou": 12, "poisson_lune": 60,
-			"coquillage": 3, "champignon": 1, "vieille_botte": 8},
+			"coquillage": 3, "champignon": 1, "vieille_botte": 8,
+			"buche": 2, "noix_coco": 1, "miel": 5, "perle": 10, "bague": 18, "rubis": 30, "piece_or": 12},
 	},
 	"compagnon": "Clou",
 
@@ -56,6 +57,9 @@ const DATA := {
 			{"t": "Ma hache ! Tu en prends soin ? Pas sur les cailloux, hein.", "si": {"tient": "hache"}},
 			{"t": "Avec ta pelle sur l'épaule, tu as l'air d'un vrai chercheur de trésor. Tu as trouvé quelque chose ?", "si": {"tient": "pelle"}},
 			{"t": "Cette canne… c'est moi qui l'ai taillée, il y a vingt-deux ans, sur le pont de la Mouette Têtue. Barnabé te l'a donnée ? Le voleur.", "si": {"tient": "canne_peche"}, "geste": "colere"},
+			# V34
+			{"t": "Ta hache sent la sève fraîche. Combien d'arbres, déjà ? {nb_arbres} ? Laisse-m'en un pour l'ombre.", "si": {"tient": "hache", "arbres_min": 3}},
+			{"t": "Tu as déterré le coffre de la Mouette. Je… je n'ai rien à dire. Si : soixante pour cent. Non ? Bon.", "si": {"a_trouve": "mouette"}, "geste": "colere"},
 			{"t": "Tu as une tête de déterré, {surnom}. Assieds-toi. Et mange quelque chose avant de tomber de mon échelle.", "si": {"vie_basse": true}},
 			{"t": "Mon meilleur client ! Clou, sors le tabouret.", "si": {"achats_min": 40, "visites_min": 3}, "geste": "rire"},
 			{"t": "Tu viens de chez Barnabé, toi. Ça se sent : tu sens le coquillage et le radotage.", "si": {"a_rencontre": "barnabe", "visites_min": 2}},
@@ -87,6 +91,8 @@ const DATA := {
 			{"t": "Avec une pelle, on trouve de tout dans le sable de la plage : des coquillages, des pièces de naufragés… J'en vends, des pelles. Je dis ça.", "si": {}},
 			{"t": "Les pitons de pierre, je les escaladais, avant. Maintenant j'ai une échelle, et des genoux qui grincent.", "si": {}},
 			{"t": "Côté est, la mer est plus profonde. Les gros mérous y traînent. Ramène-m'en un, je te le paie bien.", "si": {}},
+			{"t": "Les arbres qui portent une entaille claire, c'est moi qui les ai marqués : du bois tendre, facile à abattre. Les autres, laisse-les tranquilles.", "si": {}},
+			{"t": "Avec la pelle, cherche les petites croix de bois posées sur le sable. Des naufragés y ont caché leurs économies. Ça brille un peu, de près.", "si": {}},
 			{"t": "Il y a un trésor enterré quelque part sur cette île. Le coffre de paie de la Mouette Têtue. Il n'a jamais été retrouvé. Creuse, {surnom}. Creuse.", "si": {"affinite_min": 30}},
 		],
 		# ------------------------------------------------------------ rumeurs
@@ -95,6 +101,8 @@ const DATA := {
 			{"t": "Il paraît que de l'autre côté de l'île vit un vieux fou qui parle aux coquillages. Barnabé, qu'il s'appelle. Ne crois rien de ce qu'il dit sur moi.", "si": {"pas_rencontre": "barnabe", "affinite_min": 10}},
 			{"t": "Barnabé t'a parlé de moi ? Laisse-moi deviner : « c'est Octave qui tenait la barre ». Il ne changera jamais de disque.", "si": {"a_rencontre": "barnabe"}},
 			{"t": "On dit qu'un poisson-lune doré nage au large. Si tu le pêches, je te l'achète une fortune. Barnabé n'aura jamais assez de coquillages pour le payer, lui.", "si": {"affinite_min": 25}},
+			{"t": "Mon épée, c'est pour les combats qui viennent. Il se passe des choses la nuit dans la jungle, {surnom}. Entraîne-toi sur mes mannequins, en bas : trois coups enchaînés, et le dernier fait mal.", "si": {"a_achete": "epee"}},
+			{"t": "{nb_tresors} trésors déterrés ? Tu as le nez d'un cochon truffier. C'est un compliment.", "si": {"tresors_min": 3}},
 			{"t": "Un secret : le coffre de paie de la Mouette était en bois de fer, cerclé de cuivre. Si ta pelle cogne sur du métal, appelle-moi. On partage. Soixante-quarante. Pour moi.", "si": {"affinite_min": 45}},
 		],
 		# ------------------------------------------------------------ boutique
@@ -142,6 +150,12 @@ const DATA := {
 		],
 		"vente_vieille_botte": [
 			{"t": "Cette botte… c'est celle de Barnabé ! Je la reconnais, je l'ai ressemelée moi-même. Je te l'achète {prix} pièces. Il ne la reverra jamais. HA !", "si": {}, "geste": "rire", "humeur": 0.2},
+		],
+		"vente_rubis": [
+			{"t": "Un rubis… Il brille comme ma forge un soir d'hiver. {prix} pièces, et je ne demande pas d'où il vient.", "si": {}, "geste": "rire"},
+		],
+		"vente_buche": [
+			{"t": "Du bois ! Mon charbon te remercie. {prix} pièces la bûche.", "si": {}},
 		],
 		"vente_poisson_lune": [
 			{"t": "Le… le poisson-lune doré. Ma parole. {prix} pièces, et c'est une affaire pour toi. Clou, ferme la bouche.", "si": {}, "geste": "rire", "humeur": 0.3},

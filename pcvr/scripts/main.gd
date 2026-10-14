@@ -64,6 +64,11 @@ var tree_spot_v33: Dictionary = {}
 var treehouse_v33: Node3D
 var digging_v33: Node3D
 var vr_ladder_v33: Dictionary = {}
+# V34 : arbres à abattre, traînée des lames.
+var bucheron_v34: Node3D
+var treasure_jungle_v34: Array = []      # cachettes de la jungle (avant la végétation)
+var mouette_spot_v34: Vector3 = Vector3.INF
+var trainee_v34: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -909,6 +914,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			fishing_v32.load_data({})
 		if digging_v33 != null:
 			digging_v33.load_data({})
+		if bucheron_v34 != null:
+			bucheron_v34.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -934,6 +941,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		if digging_v33 != null:
 			var dig_data: Variant = data.get("fouilles", {})
 			digging_v33.load_data(dig_data if dig_data is Dictionary else {})
+		if bucheron_v34 != null:
+			var wood_data: Variant = data.get("bois", {})
+			bucheron_v34.load_data(wood_data if wood_data is Dictionary else {})
 		vr_ladder_v33 = {}
 		for npc in npcs_v31:
 			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
@@ -982,6 +992,8 @@ func _save_slot(slot: int) -> void:
 		extra["peche"] = fishing_v32.serialize()
 	if digging_v33 != null:
 		extra["fouilles"] = digging_v33.serialize()
+	if bucheron_v34 != null:
+		extra["bois"] = bucheron_v34.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1486,6 +1498,13 @@ func _doors_update_v27() -> void:
 		if door_prompt_v27 != null:
 			door_prompt_v27.text = ""
 		return
+	# V34 : cachette de trésor (pelle en main) ou arbre à abattre tout près.
+	if playing and not xr_active:
+		var dig_text: String = digging_v33.prompt(_player_pos_v27()) if digging_v33 != null else ""
+		if dig_text != "":
+			text = dig_text
+		elif text == "" and bucheron_v34 != null:
+			text = bucheron_v34.prompt(_player_pos_v27())
 	var near_npc: Node3D = _nearest_npc_v31() if playing else null
 	if near_npc != null and not xr_active:
 		text = "E : parler à " + str(near_npc.display_name).split(" ")[0]
@@ -1557,6 +1576,15 @@ func _create_gameplay_v28() -> void:
 	digging_v33.name = "Fouilles_v33"
 	add_child(digging_v33)
 	digging_v33.setup(self)
+	# V34 : bûcheronnage et traînée des coups de lame.
+	bucheron_v34 = preload("res://scripts/bucheron_v34.gd").new()
+	bucheron_v34.name = "Bucheron_v34"
+	add_child(bucheron_v34)
+	bucheron_v34.setup(self)
+	trainee_v34 = preload("res://scripts/trainee_v34.gd").new()
+	trainee_v34.name = "Trainee_v34"
+	add_child(trainee_v34)
+	trainee_v34.setup(self)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1743,6 +1771,15 @@ func _create_jungle_v29() -> void:
 	if not tree_spot_v33.is_empty():
 		var lt: Vector3 = tree_spot_v33["pos"] - jungle_v29.CENTER
 		flora.clearings.append([Vector2(lt.x, lt.z) + Vector2(tree_spot_v33["facing"].x, tree_spot_v33["facing"].z) * 3.0, 13.0])
+	# V34 : les cachettes de trésor de la jungle et le coffre de la Mouette sont choisis avant
+	# de planter la forêt, pour qu'aucune fougère ne pousse sur leur croix de bois.
+	_treasure_candidates_v34()
+	for q in treasure_jungle_v34:
+		var lq: Vector3 = (q as Vector3) - jungle_v29.CENTER
+		flora.clearings.append([Vector2(lq.x, lq.z), 2.6])
+	if mouette_spot_v34 != Vector3.INF:
+		var lm: Vector3 = mouette_spot_v34 - jungle_v29.CENTER
+		flora.clearings.append([Vector2(lm.x, lm.z), 3.2])
 	flora.build(jungle_v29, OS.has_feature("ile_manga_pc"))
 	boat_v29 = preload("res://scripts/boat_v29.gd").new()
 	boat_v29.name = "Bateau_v29"
@@ -1959,6 +1996,7 @@ func _create_npcs_v31() -> void:
 ## V33 : le fromager et la cabane perchée d'Octave Taillefer, puis Octave lui-même.
 func _create_rival_v33() -> void:
 	if tree_spot_v33.is_empty() or inventory_v28 == null:
+		_plant_v34()
 		return
 	treehouse_v33 = preload("res://scripts/pnj/cabane_arbre_v33.gd").new()
 	add_child(treehouse_v33)
@@ -1975,10 +2013,73 @@ func _create_rival_v33() -> void:
 		npc.load_data(saved)
 	npcs_v31.append(npc)
 	print("ILE_MANGA_V33: cabane perchée et habitant ", npc.display_name, " à ", npc.global_position)
+	_plant_v34()
+
+
+## V34 : une fois les habitants installés : arbres à abattre, cachettes de trésors, et deux
+## mannequins d'entraînement au pied de l'arbre d'Octave (pour essayer l'épée).
+func _plant_v34() -> void:
+	if bucheron_v34 != null:
+		bucheron_v34.plant()
+	if digging_v33 != null:
+		digging_v33.plant_treasures()
+	if treehouse_v33 != null and combat_v28 != null:
+		var n: Vector3 = treehouse_v33.ladder_normal
+		var side: Vector3 = n.cross(Vector3.UP)
+		for k in range(2):
+			var p: Vector3 = treehouse_v33.ladder_foot + n * 2.6 + side * (2.8 + k * 2.0)
+			p.y = _height_at(p.x, p.z)
+			combat_v28._make_dummy(20 + k, p)
+			var d: Node3D = combat_v28.get_node("Mannequin_v28_%d" % (20 + k))
+			d.rotation.y = atan2(-n.x, -n.z) + PI
 
 
 ## V33 : un endroit à peu près plat sur la côte est de la jungle (à l'opposé de la baie
 ## de Barnabé), loin des pitons et de la gorge ; l'échelle regarde vers la baie.
+func _treasure_candidates_v34() -> void:
+	treasure_jungle_v34.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 5252
+	var c: Vector3 = jungle_v29.CENTER
+	var tries: int = 0
+	while treasure_jungle_v34.size() < 20 and tries < 4000:
+		tries += 1
+		var a: float = rng.randf() * TAU
+		var r: float = sqrt(rng.randf_range(20.0 * 20.0, 100.0 * 100.0))
+		var l := Vector2(cos(a) * r, sin(a) * r)
+		if jungle_v29.coast_ratio(l.x, l.y) > 0.96 or jungle_v29.gorge_distance(l.x, l.y) < 5.0:
+			continue
+		var bad: bool = false
+		for tw in jungle_v29.TOWERS:
+			if l.distance_to(tw[0]) < float(tw[1]) + 3.0:
+				bad = true
+		var p := Vector3(c.x + l.x, jungle_v29.height(c.x + l.x, c.z + l.y), c.z + l.y)
+		if bad or p.y < 0.3:
+			continue
+		var e: float = 0.8
+		var gx: float = jungle_v29.height(p.x + e, p.z) - jungle_v29.height(p.x - e, p.z)
+		var gz: float = jungle_v29.height(p.x, p.z + e) - jungle_v29.height(p.x, p.z - e)
+		if sqrt(gx * gx + gz * gz) / (2.0 * e) > 0.35:
+			continue
+		for q in treasure_jungle_v34:
+			if (q as Vector3).distance_to(p) < 12.0:
+				bad = true
+		if not bad:
+			treasure_jungle_v34.append(p)
+	# Coffre de la Mouette : côté mer, à une vingtaine de pas du fromager d'Octave.
+	if not tree_spot_v33.is_empty():
+		var t: Vector3 = tree_spot_v33["pos"]
+		var out: Vector3 = t - c
+		out.y = 0.0
+		out = out.normalized()
+		for d in [16.0, 14.0, 18.0, 12.0, 20.0]:
+			var p2: Vector3 = t + out * d
+			var h2: float = jungle_v29.height(p2.x, p2.z)
+			if h2 > 0.5:
+				mouette_spot_v34 = Vector3(p2.x, h2, p2.z)
+				break
+
+
 func _tree_spot_v33() -> Dictionary:
 	if jungle_v29 == null:
 		return {}
@@ -2048,6 +2149,9 @@ func _npc_ctx_v31() -> Dictionary:
 		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
 		"vr": xr_active,
 		"rencontres": _encounters_v33(),
+		"trouvailles": {"mouette": 1 if digging_v33 != null and digging_v33.mouette_found else 0,
+			"tresors": digging_v33.treasures_total if digging_v33 != null else 0,
+			"arbres": bucheron_v34.total_cut if bucheron_v34 != null else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

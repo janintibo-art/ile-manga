@@ -178,6 +178,15 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 				if int(memoire.get("depense", 0)) < int(v): return false
 			"a_achete":
 				if int((memoire.get("achats", {}) as Dictionary).get(str(v), 0)) <= 0: return false
+			# V34 : trésors déterrés, arbres abattus.
+			"a_trouve":
+				if int((ctx.get("trouvailles", {}) as Dictionary).get(str(v), 0)) <= 0: return false
+			"pas_trouve":
+				if int((ctx.get("trouvailles", {}) as Dictionary).get(str(v), 0)) > 0: return false
+			"tresors_min":
+				if int((ctx.get("trouvailles", {}) as Dictionary).get("tresors", 0)) < int(v): return false
+			"arbres_min":
+				if int((ctx.get("trouvailles", {}) as Dictionary).get("arbres", 0)) < int(v): return false
 			"a_attrape":
 				if int(((ctx.get("peche", {}) as Dictionary).get("especes", {}) as Dictionary).get(str(v), 0)) <= 0: return false
 	return true
@@ -224,6 +233,8 @@ func _fill(text: String, ctx: Dictionary) -> String:
 		"{bouton}": "la gâchette" if bool(ctx.get("vr", false)) else "le clic",
 		"{depense}": str(int(memoire.get("depense", 0))), "{objet}": _item_name(str(ctx.get("_objet", "")), ctx),
 		"{prix}": str(int(ctx.get("_prix", 0))), "{pieces}": str(int((ctx.get("objets", {}) as Dictionary).get("piece", 0))),
+		"{nb_tresors}": str(int((ctx.get("trouvailles", {}) as Dictionary).get("tresors", 0))),
+		"{nb_arbres}": str(int((ctx.get("trouvailles", {}) as Dictionary).get("arbres", 0))),
 		"{nb_especes}": str((peche.get("especes", {}) as Dictionary).size()),
 		"{surnom}": surnom(), "{visites}": str(memoire["visites"]), "{absence}": _absence_text(absent),
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,

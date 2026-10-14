@@ -821,7 +821,16 @@ func _deliver_hit() -> void:
 	if not strike.is_valid():
 		return
 	var reach: float = 1.9 if weapon != "" else 1.35
-	strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, weapon_damage if weapon != "" else 1)
+	var dmg: int = weapon_damage if weapon != "" else 1
+	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
+	var finisher: bool = weapon in ["epee", "hache"] and combo_index % SLASHES.size() == 2
+	if finisher:
+		dmg = int(round(dmg * 1.5))
+	if main.combat_v28 != null:
+		main.combat_v28.critical = finisher
+	strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, dmg)
+	if main.combat_v28 != null:
+		main.combat_v28.critical = false
 
 
 func _face_nearest_target() -> void:

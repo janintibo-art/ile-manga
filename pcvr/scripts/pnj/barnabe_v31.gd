@@ -13,6 +13,8 @@ extends RefCounted
 ##   V32 : pas_objet, tient (objet en main), dernier_cadeau, peche_min / peche_max (prises),
 ##   a_attrape (espèce déjà pêchée).
 ##   V33 : a_rencontre / pas_rencontre (autre habitant), achats_min, a_achete (boutique).
+##   V34 : a_trouve / pas_trouve ("mouette", "tresors", "arbres"), tresors_min, arbres_min ;
+##   variables {nb_tresors} {nb_arbres}.
 ## Variables dans les textes : {surnom} {visites} {absence} {arme} {objet_joueur}
 ##   {dernier_cadeau} {nb_cadeaux} {coquillages} {manque} {humeur_mot} {sujet_prefere}
 ##   V32 : {nb_poissons} {record} {nb_especes} {bouton} (« le clic » ou « la gâchette »)
@@ -31,7 +33,7 @@ const DATA := {
 	"surnoms": [[0, "étranger"], [25, "moussaillon"], [50, "matelot"], [75, "vieux frère"], [95, "capitaine"]],
 	"aime": {"coquillage": 3.0, "baies": 1.5, "pomme": 1.0, "champignon": 0.5, "piece": 0.8,
 		"sardine": 0.8, "maquereau": 1.2, "dorade": 2.0, "bar": 2.0, "poisson_perroquet": 2.5, "merou": 3.0,
-		"poisson_lune": 5.0, "vieille_botte": 4.0},
+		"poisson_lune": 5.0, "vieille_botte": 4.0, "perle": 3.0, "miel": 2.0, "noix_coco": 1.0, "bague": 2.0},
 	"deteste": {"caillou": -1.0, "baton": -0.4},
 	"refuse": ["epee_bois", "canne_peche"],
 	"quete": {"objet": "coquillage", "nombre": 5, "recompense": [["boussole", 1], ["piece", 15]], "affinite": 20.0},
@@ -69,6 +71,8 @@ const DATA := {
 			{"t": "Le voisin du village ! Dis-moi, ils mangent toujours leurs soupes froides là-bas ?", "si": {"fait": "origine=village", "visites_min": 2}},
 			# V33 : le rival, Octave Taillefer
 			{"t": "Une épée d'acier ? C'est Octave qui te l'a vendue. Combien ? … Trop. Toujours trop.", "si": {"tient": "epee", "visites_min": 2}, "geste": "colere"},
+			{"t": "Tu as déterré le coffre de la Mouette ! Je l'avais toujours dit : la carte était juste. Ce rocher était mal placé, c'est tout.", "si": {"a_trouve": "mouette", "visites_min": 2}, "geste": "rire"},
+			{"t": "Tu sens la sciure, {surnom}. Tu abats des arbres ? Épargne mes bananiers, ce sont mes confidents.", "si": {"arbres_min": 2, "visites_min": 2}},
 			{"t": "Une pelle d'Octave ! Hmpf. Elle creuse, je suppose. Creuse donc la plage d'ici : à marée basse j'y ai perdu des pièces.", "si": {"tient": "pelle", "visites_min": 2}},
 			{"t": "Tu sens le fer rouillé et le charbon. Tu viens de chez Octave, avoue.", "si": {"a_rencontre": "octave", "visites_min": 2, "pas_fait": "octave"}},
 			{"t": "Ah ! Le pêcheur ! Ma vieille canne te va comme un gant, {surnom}. Ça mord ?", "si": {"tient": "canne_peche", "visites_min": 2}, "geste": "rire"},
@@ -116,6 +120,10 @@ const DATA := {
 			# V33 : le rival
 			{"t": "De l'autre côté de l'île, à l'est, un vieux grincheux vit perché dans un arbre. Octave Taillefer. Il vend des pelles qui se tordent et des épées qui rouillent. Ne lui dis pas que tu me connais.", "si": {"pas_rencontre": "octave", "affinite_min": 20}},
 			{"t": "Tu es allé chez Octave ?! Il t'a dit que c'était ma faute, le naufrage ? C'est faux. La carte était juste. C'est le rocher qui était mal placé.", "si": {"a_rencontre": "octave"}, "geste": "colere"},
+			# V34 : le coffre de paie de la Mouette Têtue
+			{"t": "Un secret de cartographe : sur ma carte, j'avais noté le coffre de paie de la Mouette. Côté mer, à une vingtaine de pas du grand fromager d'Octave, entre trois pierres plates. Il vit juste à côté et ne l'a jamais trouvé. Il ne lit pas mes cartes. Prends une pelle.", "si": {"a_rencontre": "octave", "affinite_min": 35, "pas_trouve": "mouette"}},
+			{"t": "Le coffre de la Mouette ! Tu l'as trouvé là où je l'avais dit ? MA CARTE ÉTAIT JUSTE ! Gaston, note la date !", "si": {"a_trouve": "mouette"}, "geste": "rire", "humeur": 0.3},
+			{"t": "Il paraît qu'on trouve des petites croix de bois sur les plages. Des naufragés plus prévoyants que moi y enterraient leurs économies.", "si": {"pas_trouve": "tresors"}},
 			{"t": "Octave… regrette ? Vraiment ? Hmm. Il m'a quand même fabriqué la plus belle canne du monde. Ne lui répète pas que j'ai dit ça.", "si": {"fait": "octave=regrets"}, "humeur": 0.1},
 			{"t": "La boussole que je t'ai donnée ne montre pas le nord. Elle montre ce que tu cherches vraiment. En général, c'est le nord.", "si": {"quete": "finie"}},
 		],
@@ -155,6 +163,8 @@ const DATA := {
 		"cadeau_aime": [
 			{"t": "MA BOTTE ! Ma botte gauche ! Vingt-deux ans que je marche à cloche-pied ! {surnom}, tu es mon héros !", "si": {"dernier_cadeau": "vieille_botte"}, "geste": "rire", "humeur": 0.3},
 			{"t": "Un poisson frais ! Gaston, sors la poêle ! Enfin… la pierre plate.", "si": {"dernier_cadeau": "dorade"}, "geste": "rire"},
+			{"t": "Une perle ! Elle ira au centre de ma collection, entre la nacre et la nacre. Merci, {surnom}.", "si": {"dernier_cadeau": "perle"}, "geste": "rire"},
+			{"t": "Du miel sauvage ! Gaston, pas touche. … Bon, une goutte.", "si": {"dernier_cadeau": "miel"}, "geste": "rire"},
 			{"t": "Un poisson-perroquet ! Ne le dis pas à Gaston, il croirait que c'est un cousin.", "si": {"dernier_cadeau": "poisson_perroquet"}, "geste": "rire"},
 			{"t": "Un mérou ! Un vrai, un gros ! Je vais le manger pendant une semaine. Ou le cartographier.", "si": {"dernier_cadeau": "merou"}, "geste": "rire"},
 			{"t": "Le… le poisson-lune doré ? Pour moi ? Je… je ne sais pas quoi dire. Gaston non plus. C'est une première.", "si": {"dernier_cadeau": "poisson_lune"}, "geste": "rire", "humeur": 0.3},
