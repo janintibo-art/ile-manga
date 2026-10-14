@@ -176,6 +176,8 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 				if int((ctx.get("rencontres", {}) as Dictionary).get(str(v), 0)) > 0: return false
 			"achats_min":
 				if int(memoire.get("depense", 0)) < int(v): return false
+			"pas_achete":
+				if int((memoire.get("achats", {}) as Dictionary).get(str(v), 0)) > 0: return false
 			"a_achete":
 				if int((memoire.get("achats", {}) as Dictionary).get(str(v), 0)) <= 0: return false
 			# V34 : trésors déterrés, arbres abattus.

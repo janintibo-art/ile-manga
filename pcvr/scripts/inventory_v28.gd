@@ -71,10 +71,13 @@ const ITEMS := {
 		"desc": "Une pierre rouge qui brille comme une braise. Octave la rachète 30 pièces."},
 	"piece_or": {"name": "Pièce d'or", "art": "une pièce d'or", "kind": "tresor", "max": 99,
 		"desc": "Une vieille pièce d'or frappée d'une couronne. Octave en donne 12 pièces de cuivre."},
+	# V35 : le Temple englouti
+	"fragment_amulette": {"name": "Fragment d'amulette", "art": "un fragment d'amulette", "kind": "quete", "max": 3,
+		"desc": "Un morceau d'amulette en jade, gravé d'un œil. Trouvé dans le coffre du gardien du Temple englouti. Il en faut trois pour la Porte du Serpent."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
-const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche"}
+const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
 
 var main: Node
 var xr_mode: bool = false

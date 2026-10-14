@@ -128,7 +128,7 @@ func _check(spot: Vector3) -> bool:
 		_say("Impossible de creuser ici : il faut du sable ou de la terre.")
 		_busy = 0.8
 		return false
-	if _treasure_near(g["pos"]) != -1 or _mouette_near(g["pos"]):
+	if _treasure_near(g["pos"]) != -1 or _mouette_near(g["pos"]) or _trap_near(g["pos"]) != "":
 		_busy = 1.3
 		return true
 	if holes.has(_key(g["pos"])):
@@ -147,11 +147,15 @@ func _dig_after(spot: Vector3, wait: float) -> void:
 	var key: String = _key(g["pos"])
 	var ti: int = _treasure_near(g["pos"])
 	var big: bool = _mouette_near(g["pos"])
-	if holes.has(key) and ti == -1 and not big:
+	if holes.has(key) and ti == -1 and not big and _trap_near(g["pos"]) == "":
 		return
 	if not holes.has(key):
 		holes[key] = str(g["terrain"])
 		_make_hole(key, g["pos"], str(g["terrain"]))
+	var trap: String = _trap_near(g["pos"])
+	if trap != "":
+		main.donjon_v35.reveal_trap(trap)
+		return
 	if big:
 		_dig_mouette(g["pos"])
 		return
@@ -311,6 +315,13 @@ func active_treasures() -> Array:
 	return out
 
 
+## V35 : une trappe du Temple englouti encore enterrée sous ce point ?
+func _trap_near(p: Vector3) -> String:
+	if main.get("donjon_v35") == null:
+		return ""
+	return main.donjon_v35.buried_trap_near(p)
+
+
 func _treasure_near(p: Vector3) -> int:
 	for i in active_treasures():
 		var q: Vector3 = treasure_spots[i]
@@ -329,7 +340,7 @@ func _mouette_near(p: Vector3) -> bool:
 func prompt(p: Vector3) -> String:
 	if main.inventory_v28.equipped != "pelle":
 		return ""
-	if _treasure_near(p) != -1 or _mouette_near(p):
+	if _treasure_near(p) != -1 or _mouette_near(p) or _trap_near(p) != "":
 		return "Clic : creuser ici !"
 	return ""
 

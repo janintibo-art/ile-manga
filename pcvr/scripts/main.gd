@@ -68,6 +68,9 @@ var vr_ladder_v33: Dictionary = {}
 var bucheron_v34: Node3D
 var treasure_jungle_v34: Array = []      # cachettes de la jungle (avant la végétation)
 var mouette_spot_v34: Vector3 = Vector3.INF
+# V35 : le Temple englouti (souterrain sous les deux îles).
+var donjon_v35: Node3D
+var trap_jungle_spot_v35: Vector3 = Vector3.INF
 var trainee_v34: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
@@ -916,6 +919,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			digging_v33.load_data({})
 		if bucheron_v34 != null:
 			bucheron_v34.load_data({})
+		if donjon_v35 != null:
+			donjon_v35.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -944,6 +949,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		if bucheron_v34 != null:
 			var wood_data: Variant = data.get("bois", {})
 			bucheron_v34.load_data(wood_data if wood_data is Dictionary else {})
+		if donjon_v35 != null:
+			var temple_data: Variant = data.get("donjon", {})
+			donjon_v35.load_data(temple_data if temple_data is Dictionary else {})
 		vr_ladder_v33 = {}
 		for npc in npcs_v31:
 			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
@@ -994,6 +1002,8 @@ func _save_slot(slot: int) -> void:
 		extra["fouilles"] = digging_v33.serialize()
 	if bucheron_v34 != null:
 		extra["bois"] = bucheron_v34.serialize()
+	if donjon_v35 != null:
+		extra["donjon"] = donjon_v35.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1162,7 +1172,7 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 		return
 	var dt: float = maxf(get_physics_process_delta_time(), 0.001)
 	var ground: float = _height_at(body.position.x, body.position.z)
-	if body.position.y < ground - 0.7:
+	if body.position.y < ground - 0.7 and not _in_dungeon_v35(body.position):
 		# Single rescue outside the surface; capsule must start above the terrain.
 		body.global_position = Vector3(body.position.x, ground + 1.15, body.position.z)
 		body.velocity = Vector3.ZERO
@@ -1183,13 +1193,15 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 func _sync_physics_after_load_v11() -> void:
 	if vr_body != null:
 		var pos_vr: Vector3 = xr_origin.position
-		pos_vr.y = maxf(pos_vr.y, _height_at(pos_vr.x, pos_vr.z) + 0.9)
+		if not _in_dungeon_v35(pos_vr):
+			pos_vr.y = maxf(pos_vr.y, _height_at(pos_vr.x, pos_vr.z) + 0.9)
 		vr_body.global_position = pos_vr
 		vr_body.velocity = Vector3.ZERO
 		xr_origin.position = pos_vr
 	if pc_body != null:
 		var pos_pc: Vector3 = pc_root.position
-		pos_pc.y = maxf(pos_pc.y, _height_at(pos_pc.x, pos_pc.z) + 0.9)
+		if not _in_dungeon_v35(pos_pc):
+			pos_pc.y = maxf(pos_pc.y, _height_at(pos_pc.x, pos_pc.z) + 0.9)
 		pc_body.global_position = pos_pc
 		pc_body.velocity = Vector3.ZERO
 		pc_root.position = pos_pc
@@ -1369,7 +1381,7 @@ func _move_xr_body_v23(stick_offset: Vector3) -> void:
 		wanted = Vector3.ZERO
 	var dt: float = maxf(get_physics_process_delta_time(), 0.001)
 	var ground: float = _height_at(vr_body.position.x, vr_body.position.z)
-	if vr_body.position.y < ground - 0.7:
+	if vr_body.position.y < ground - 0.7 and not _in_dungeon_v35(vr_body.position):
 		vr_body.global_position = Vector3(vr_body.position.x, ground + 1.15, vr_body.position.z)
 		vr_body.velocity = Vector3.ZERO
 	vr_body.velocity.x = wanted.x / dt
@@ -1491,6 +1503,19 @@ func _doors_update_v27() -> void:
 		text = "E : monter à l'échelle" if ladder == "bas" else "E : descendre l'échelle"
 	if treehouse_v33 != null:
 		treehouse_v33.show_vr_hint(ladder if xr_active and playing and vr_ladder_v33.is_empty() else "")
+	# V35 : Temple englouti (invite PC ; en VR, étiquette et gâchette).
+	var temple_text: String = donjon_v35.prompt(_player_pos_v27()) if playing and donjon_v35 != null else ""
+	if temple_text != "" and not xr_active:
+		text = temple_text
+	if donjon_v35 != null:
+		donjon_v35.show_vr_hint(_player_pos_v27(), xr_active and playing)
+	if xr_active and playing and temple_text != "" and _nearest_npc_v31() == null:
+		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
+			donjon_v35.interact(_player_pos_v27())
+		trigger_ready_v27 = right_hand.get_float("trigger") <= 0.7
+		if door_prompt_v27 != null:
+			door_prompt_v27.text = ""
+		return
 	if xr_active and playing and ladder != "" and vr_ladder_v33.is_empty() and _nearest_npc_v31() == null:
 		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
 			_vr_ladder_start_v33(ladder)
@@ -1585,6 +1610,10 @@ func _create_gameplay_v28() -> void:
 	trainee_v34.name = "Trainee_v34"
 	add_child(trainee_v34)
 	trainee_v34.setup(self)
+	donjon_v35 = preload("res://scripts/donjon_v35.gd").new()
+	donjon_v35.name = "Temple_englouti_v35"
+	add_child(donjon_v35)
+	donjon_v35.setup(self)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1619,6 +1648,9 @@ func _interact_v28() -> void:
 	var npc: Node3D = _nearest_npc_v31()
 	if npc != null and (boat_v29 == null or not boat_v29.driving):
 		_talk_v31(npc)
+		return
+	# V35 : trappes, braseros, coffre, fresque… du Temple englouti.
+	if donjon_v35 != null and donjon_v35.interact(p):
 		return
 	# V33 : l'échelle de la cabane perchée.
 	if treehouse_v33 != null and hero_v28 != null and hero_v28.state in ["sol", "peche"]:
@@ -1774,6 +1806,11 @@ func _create_jungle_v29() -> void:
 	# V34 : les cachettes de trésor de la jungle et le coffre de la Mouette sont choisis avant
 	# de planter la forêt, pour qu'aucune fougère ne pousse sur leur croix de bois.
 	_treasure_candidates_v34()
+	# V35 : la tête de pierre et la trappe de la jungle, dans une petite clairière.
+	trap_jungle_spot_v35 = _trap_jungle_spot_v35()
+	if trap_jungle_spot_v35 != Vector3.INF:
+		var lj: Vector3 = trap_jungle_spot_v35 - jungle_v29.CENTER
+		flora.clearings.append([Vector2(lj.x, lj.z), 7.5])
 	for q in treasure_jungle_v34:
 		var lq: Vector3 = (q as Vector3) - jungle_v29.CENTER
 		flora.clearings.append([Vector2(lq.x, lq.z), 2.6])
@@ -1791,6 +1828,9 @@ func _create_jungle_v29() -> void:
 ## la jungle bloque dès que l'eau devient profonde) ; les pontons restent accessibles.
 func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	var p: Vector3 = body.position
+	# V35 : sous terre, les murs du temple suffisent.
+	if _in_dungeon_v35(p):
+		return
 	var key: String = str(body.name)
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
@@ -1809,6 +1849,34 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		body.position.x = flat.x
 		body.position.z = flat.y
 	last_ok_v29[key] = body.position
+
+
+## V35 : le joueur est-il dans le souterrain (bien sous le niveau de la mer) ?
+func _in_dungeon_v35(p: Vector3) -> bool:
+	return p.y < -40.0
+
+
+## V35 : déplace le joueur (PC ou VR) d'un coup, pieds en « at », regard vers « facing ».
+func place_player_v35(at: Vector3, facing: Vector3) -> void:
+	facing.y = 0.0
+	facing = facing.normalized() if facing.length() > 0.01 else Vector3.FORWARD
+	if xr_active:
+		var head: Vector3 = xr_camera.global_position
+		var head_offset := Vector3(head.x - xr_origin.global_position.x, 0.0, head.z - xr_origin.global_position.z)
+		vr_body.global_position = at
+		vr_body.velocity = Vector3.ZERO
+		xr_origin.position = Vector3(at.x - head_offset.x, at.y, at.z - head_offset.z)
+	else:
+		pc_root.position = at
+		pc_body.global_position = at
+		pc_body.velocity = Vector3.ZERO
+		if hero_v28 != null:
+			hero_v28.state = "sol"
+			hero_v28.fall_top = at.y
+			hero_v28.facing = facing
+		if pc_hero != null:
+			pc_hero.position = pc_root.position + Vector3.UP * hero_mesh_floor_offset_v11
+	last_ok_v29.clear()
 
 
 ## V33 (VR) : gâchette au pied ou en haut de l'échelle : on grimpe (ou on descend) en
@@ -2019,6 +2087,9 @@ func _create_rival_v33() -> void:
 ## V34 : une fois les habitants installés : arbres à abattre, cachettes de trésors, et deux
 ## mannequins d'entraînement au pied de l'arbre d'Octave (pour essayer l'épée).
 func _plant_v34() -> void:
+	# V35 d'abord : le cercle de pierres et la tête de pierre réservent leur place.
+	if donjon_v35 != null:
+		donjon_v35.build(trap_jungle_spot_v35)
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2036,6 +2107,40 @@ func _plant_v34() -> void:
 
 ## V33 : un endroit à peu près plat sur la côte est de la jungle (à l'opposé de la baie
 ## de Barnabé), loin des pitons et de la gorge ; l'échelle regarde vers la baie.
+## V35 : à l'ouest de la gorge, entre la baie et le grand massif, un replat à l'écart.
+func _trap_jungle_spot_v35() -> Vector3:
+	var c: Vector3 = jungle_v29.CENTER
+	var best := Vector3.INF
+	var best_score: float = INF
+	for xi in range(-44, -12, 2):
+		for zi in range(-4, 52, 2):
+			var l := Vector2(float(xi), float(zi))
+			if jungle_v29.gorge_distance(l.x, l.y) < 12.0 or jungle_v29.coast_ratio(l.x, l.y) > 0.8:
+				continue
+			var near_tower: bool = false
+			for tw in jungle_v29.TOWERS:
+				if l.distance_to(tw[0]) < float(tw[1]) + 8.0:
+					near_tower = true
+			if near_tower:
+				continue
+			var p := Vector3(c.x + l.x, 0, c.z + l.y)
+			var h0: float = jungle_v29.height(p.x, p.z)
+			if h0 < 2.5:
+				continue
+			var lo: float = INF
+			var hi: float = -INF
+			for k in range(12):
+				for rr in [2.0, 4.0]:
+					var h: float = jungle_v29.height(p.x + cos(k * PI / 6.0) * rr, p.z + sin(k * PI / 6.0) * rr)
+					lo = minf(lo, h)
+					hi = maxf(hi, h)
+			var score: float = (hi - lo) + l.distance_to(Vector2(-28, 24)) * 0.02
+			if score < best_score:
+				best_score = score
+				best = Vector3(p.x, h0, p.z)
+	return best
+
+
 func _treasure_candidates_v34() -> void:
 	treasure_jungle_v34.clear()
 	var rng := RandomNumberGenerator.new()
@@ -2151,7 +2256,12 @@ func _npc_ctx_v31() -> Dictionary:
 		"rencontres": _encounters_v33(),
 		"trouvailles": {"mouette": 1 if digging_v33 != null and digging_v33.mouette_found else 0,
 			"tresors": digging_v33.treasures_total if digging_v33 != null else 0,
-			"arbres": bucheron_v34.total_cut if bucheron_v34 != null else 0},
+			"arbres": bucheron_v34.total_cut if bucheron_v34 != null else 0,
+			"trappe_village": int(donjon_v35.state["trappe_village"]) if donjon_v35 != null else 0,
+			"trappe_jungle": int(donjon_v35.state["trappe_jungle"]) if donjon_v35 != null else 0,
+			"temple": 1 if donjon_v35 != null and bool(donjon_v35.state["visite"]) else 0,
+			"braseros": 1 if donjon_v35 != null and bool(donjon_v35.state["braseros"]) else 0,
+			"fragment": 1 if donjon_v35 != null and bool(donjon_v35.state["coffre"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

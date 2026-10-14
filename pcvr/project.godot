@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Ile Manga VR V34"
+config/name="Ile Manga VR V35"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"
 run/main_scene="res://scenes/main.tscn"

@@ -103,6 +103,10 @@ const DATA := {
 			{"t": "On dit qu'un poisson-lune doré nage au large. Si tu le pêches, je te l'achète une fortune. Barnabé n'aura jamais assez de coquillages pour le payer, lui.", "si": {"affinite_min": 25}},
 			{"t": "Mon épée, c'est pour les combats qui viennent. Il se passe des choses la nuit dans la jungle, {surnom}. Entraîne-toi sur mes mannequins, en bas : trois coups enchaînés, et le dernier fait mal.", "si": {"a_achete": "epee"}},
 			{"t": "{nb_tresors} trésors déterrés ? Tu as le nez d'un cochon truffier. C'est un compliment.", "si": {"tresors_min": 3}},
+			# V35 : le Temple englouti
+			{"t": "Tu as vu la tête de pierre à moitié enterrée, à l'ouest de la gorge ? Clou refuse d'en approcher. Il dit que ça résonne, juste à côté. Prends une pelle… et une épée.", "si": {"affinite_min": 15, "pas_trouve": "trappe_jungle"}},
+			{"t": "Une trappe près de la tête de pierre ? Et un souterrain qui file vers le village ? Si Barnabé l'apprend, il va dire qu'il le savait. Ne lui dis pas.", "si": {"a_trouve": "trappe_jungle"}},
+			{"t": "Un temple, sous l'île… Si tu croises des bestioles là-dessous, ne viens pas pleurer : achète mon épée avant.", "si": {"a_trouve": "temple", "pas_achete": "epee"}},
 			{"t": "Un secret : le coffre de paie de la Mouette était en bois de fer, cerclé de cuivre. Si ta pelle cogne sur du métal, appelle-moi. On partage. Soixante-quarante. Pour moi.", "si": {"affinite_min": 45}},
 		],
 		# ------------------------------------------------------------ boutique
