@@ -21,7 +21,7 @@ var main: Node
 var inside: bool = false
 var village_trap: Vector3 = Vector3.INF          # surface
 var jungle_trap: Vector3 = Vector3.INF
-var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0}
+var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false}
 var sections: Dictionary = {}                    # "village"/"jungle" -> Node3D (repère local)
 var spawn: Dictionary = {}                       # "village"/"jungle" -> [position, regard]
 var _interactions: Array = []                    # {id, pos, radius, text, vr, call, when}
@@ -46,6 +46,22 @@ var _passage: Node3D
 var _grille: Node3D
 var _rubble: Node3D
 var _rubble_body: CollisionShape3D
+# V37 : l'antre de Karkinos, le Crabe-Roi
+const BossScript = preload("res://scripts/boss_crabe_v37.gd")
+var arena_center: Vector3 = Vector3.INF          # monde
+var boss: Node3D
+var fight: bool = false
+var _grille_est: Node3D
+var _herse: Node3D
+var _boss_chest: Node3D
+var _summoned: Array = []
+var _bar_layer: CanvasLayer
+var _bar_fill: ColorRect
+var _bar_label: Label
+var _bar_vr: Label3D
+# V38 : la Salle des Quatre Serpents, la Porte du Serpent et le Sanctuaire
+const SerpentsScript = preload("res://scripts/serpents_v38.gd")
+var serpents: Node3D
 
 
 func setup(main_node: Node) -> void:
@@ -56,6 +72,10 @@ func setup(main_node: Node) -> void:
 	_body.collision_mask = 0
 	add_child(_body)
 	_fade()
+	serpents = SerpentsScript.new()
+	serpents.name = "Serpents_v38"
+	add_child(serpents)
+	serpents.setup(self, main)
 	_vr_hint = Label3D.new()
 	_vr_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_vr_hint.font_size = 40
@@ -601,7 +621,8 @@ func _build_village_section(at: Vector3, forward: Vector3) -> void:
 		_brazier_fixed(s, p)
 	_torch(s, Vector3(-8.95, y0 + 3.5, -60), Vector3(1, 0, 0), 1.3)
 	_torch(s, Vector3(8.95, y0 + 3.5, -60), Vector3(-1, 0, 0), 1.3)
-	_serpent_door(s, Vector3(0, y0, -73.3))
+	serpents.build_door(s, Vector3(0, y0, -73.3))
+	serpents.build_sanctuary(s)
 
 
 func _brazier(s: Node3D, symbol: String, p: Vector3) -> void:
@@ -742,56 +763,14 @@ func _chest(s: Node3D, p: Vector3) -> void:
 		"text": "E : ouvrir le coffre", "vr": "Gâchette : ouvrir le coffre", "call": _open_chest, "when": func(): return not bool(state["coffre"])})
 
 
-func _serpent_door(s: Node3D, p: Vector3) -> void:
-	var root := Node3D.new()
-	root.name = "Porte_du_Serpent"
-	s.add_child(root)
-	root.position = p
-	_box(root, Vector3(5.0, 6.0, 0.6), Vector3(0, 3.0, 0), _mat("mur"))
-	_box(root, Vector3(0.06, 5.6, 0.62), Vector3(0, 3.0, 0), _mat("noir"), false)
-	# Serpent de bronze enroulé autour de la serrure (anneaux en spirale)
-	for i in range(26):
-		var t: float = float(i) / 25.0
-		var a: float = t * TAU * 1.6
-		var r: float = 1.6 - t * 0.9
-		var ring := MeshInstance3D.new()
-		var sm := SphereMesh.new()
-		sm.radius = 0.2 - t * 0.08
-		sm.height = sm.radius * 2.0
-		ring.mesh = sm
-		ring.material_override = _mat("bronze")
-		ring.position = Vector3(cos(a) * r, 3.0 + sin(a) * r, 0.36)
-		root.add_child(ring)
-	var eye := MeshInstance3D.new()
-	var em := SphereMesh.new()
-	em.radius = 0.22
-	em.height = 0.3
-	eye.mesh = em
-	eye.material_override = _mat("oeil")
-	eye.position = Vector3(0, 3.0, 0.38)
-	root.add_child(eye)
-	for k in range(3):
-		var slot := MeshInstance3D.new()
-		var cm := CylinderMesh.new()
-		cm.top_radius = 0.14
-		cm.bottom_radius = 0.14
-		cm.height = 0.05
-		slot.mesh = cm
-		slot.material_override = _mat("noir")
-		slot.position = Vector3(-0.5 + k * 0.5, 1.6, 0.32)
-		slot.rotation.x = PI * 0.5
-		root.add_child(slot)
-	_interactions.append({"id": "porte_serpent", "pos": s.to_global(p + Vector3(0, 0, 1.2)), "radius": 2.6,
-		"text": "E : examiner la Porte du Serpent", "vr": "Gâchette : examiner la porte", "call": _examine_serpent})
-
-
 # =================================================================== côté jungle
 
 func _build_jungle_section(at: Vector3, forward: Vector3) -> void:
 	var s: Node3D = _section("jungle", at, forward)
 	_arrival(s, "jungle")
-	_room(s, -1.6, 1.6, -20, -4, 0, 4, "mur", "sol", [["s", 0, 3.0, 3.6], ["n", 0, 3.0, 3.6]])
-	_torch(s, Vector3(1.55, 2.5, -9), Vector3(-1, 0, 0), 1.3)
+	_room(s, -1.6, 1.6, -20, -4, 0, 4, "mur", "sol", [["s", 0, 3.0, 3.6], ["n", 0, 3.0, 3.6], ["e", -12.0, 2.6, 3.2]])
+	_torch(s, Vector3(1.55, 2.5, -7), Vector3(-1, 0, 0), 1.3)
+	serpents.build_jungle(s)
 	var rock: Material = Rocks.material(Color(0.58, 0.56, 0.52), 0.1, 0.3)
 	_rubble = Node3D.new()
 	_rubble.name = "Eboulement"
@@ -867,7 +846,8 @@ func _build_tunnel(s: Node3D, d: float) -> void:
 	_drips(s, Vector3(15.5, y + 4.9, -138.0))
 	_drips(s, Vector3(14.5, y + 4.9, -158.0))
 	# Salle aux colonnes : deux gardiens de corail, la grille au nord
-	_room(s, 7.0, 24.0, -194.0, -168.0, y, 9.0, "mur", "sol", [["s", 15.5, 4.0, 4.5], ["n", 15.5, 4.0, 4.5]])
+	_room(s, 7.0, 24.0, -194.0, -168.0, y, 9.0, "mur", "sol", [["s", 15.5, 4.0, 4.5], ["n", 15.5, 4.0, 4.5], ["e", -181.0, 3.4, 4.2]])
+	_build_boss_arena(s, y)
 	for p in [Vector3(10.5, y, -174), Vector3(20.5, y, -174), Vector3(10.5, y, -188), Vector3(20.5, y, -188)]:
 		_box(s, Vector3(1.2, 9.0, 1.2), p + Vector3.UP * 4.5, _mat("mur"))
 		_box(s, Vector3(1.6, 0.4, 1.6), p + Vector3.UP * 0.2, _mat("sol"), false)
@@ -877,32 +857,7 @@ func _build_tunnel(s: Node3D, d: float) -> void:
 		_torch(s, p, Vector3(-1, 0, 0), 1.4)
 	for p in [Vector3(12.5, y, -170.5), Vector3(18.5, y, -170.5)]:
 		_statue(s, p, Vector3(0, 0, -1))
-	_grille = Node3D.new()
-	_grille.name = "Grille"
-	s.add_child(_grille)
-	_grille.position = Vector3(15.5, y, -194.3)
-	for k in range(9):
-		var bar := MeshInstance3D.new()
-		var bc := CylinderMesh.new()
-		bc.top_radius = 0.045
-		bc.bottom_radius = 0.045
-		bc.height = 4.5
-		bc.radial_segments = 6
-		bar.mesh = bc
-		bar.material_override = _mat("bronze")
-		bar.position = Vector3(-1.85 + k * 0.46, 2.25, 0)
-		_grille.add_child(bar)
-	for h in [0.6, 2.2, 3.8]:
-		_box(_grille, Vector3(4.0, 0.08, 0.1), Vector3(0, h, 0), _mat("bronze"), false)
-	var gb := StaticBody3D.new()
-	gb.name = "Grille_collision"
-	var gcs := CollisionShape3D.new()
-	var gbs := BoxShape3D.new()
-	gbs.size = Vector3(4.0, 4.5, 0.3)
-	gcs.shape = gbs
-	gcs.position = Vector3(0, 2.25, 0)
-	gb.add_child(gcs)
-	_grille.add_child(gb)
+	_grille = _portcullis(s, Vector3(15.5, y, -194.3), 4.0, 4.5, 0.0)
 	_interactions.append({"id": "grille", "pos": s.to_global(Vector3(15.5, y, -192.8)), "radius": 2.2,
 		"text": "E : examiner la grille", "vr": "Gâchette : examiner la grille", "call": func(): _say("Une lourde grille de bronze. Pas de serrure… Les deux gardiens de corail semblent la garder.", 4.0),
 		"when": func(): return not bool(state["grille"])})
@@ -927,6 +882,299 @@ func _build_tunnel(s: Node3D, d: float) -> void:
 	_torch(s, Vector3(-1.55, 2.5, zc), Vector3(1, 0, 0), 1.2)
 	_interactions.append({"id": "eboulement_sud", "pos": s.to_global(Vector3(0, 0, -(d - 22.4))), "radius": 1.9,
 		"text": "E : dégager l'éboulement", "vr": "Gâchette : dégager l'éboulement", "call": _clear_rubble, "when": func(): return not bool(state["eboulement"])})
+
+
+## Herse de bronze (barreaux, traverses, collision) ; « yaw » pour la tourner.
+func _portcullis(s: Node3D, pos: Vector3, width: float, height: float, yaw: float) -> Node3D:
+	var g := Node3D.new()
+	g.name = "Herse"
+	s.add_child(g)
+	g.position = pos
+	g.rotation.y = yaw
+	var n: int = int(width / 0.46) + 1
+	for k in range(n):
+		var bar := MeshInstance3D.new()
+		var bc := CylinderMesh.new()
+		bc.top_radius = 0.045
+		bc.bottom_radius = 0.045
+		bc.height = height
+		bc.radial_segments = 6
+		bar.mesh = bc
+		bar.material_override = _mat("bronze")
+		bar.position = Vector3(-width * 0.5 + 0.15 + k * (width - 0.3) / float(n - 1), height * 0.5, 0)
+		g.add_child(bar)
+	for h in [0.6, height * 0.5, height - 0.6]:
+		_box(g, Vector3(width, 0.08, 0.1), Vector3(0, h, 0), _mat("bronze"), false)
+	var gb := StaticBody3D.new()
+	gb.name = "Grille_collision"
+	var gcs := CollisionShape3D.new()
+	var gbs := BoxShape3D.new()
+	gbs.size = Vector3(width, height, 0.3)
+	gcs.shape = gbs
+	gcs.position = Vector3(0, height * 0.5, 0)
+	gb.add_child(gcs)
+	g.add_child(gb)
+	return g
+
+
+# =================================================================== V37 : l'antre du Crabe-Roi
+
+## À l'est de la salle aux colonnes : un couloir (fermé par une herse tant que les gardiens
+## veillent), puis une grande grotte ronde avec un puits d'eau noire au centre.
+func _build_boss_arena(s: Node3D, y: float) -> void:
+	_grille_est = _portcullis(s, Vector3(24.3, y, -181.0), 3.4, 4.2, PI * 0.5)
+	_room(s, 24.6, 32.0, -182.7, -179.3, y, 4.2, "mur", "sol", [["w", -181.0, 3.4, 4.2], ["e", -181.0, 3.4, 4.2]])
+	_torch(s, Vector3(28.0, y + 2.6, -182.65), Vector3(0, 0, 1), 1.2)
+	_room(s, 32.0, 58.0, -194.0, -168.0, y, 12.0, "grotte", "grotte", [["w", -181.0, 3.4, 4.2]], "grotte")
+	_herse = _portcullis(s, Vector3(31.7, y, -181.0), 3.4, 4.2, PI * 0.5)
+	arena_center = s.to_global(Vector3(45.0, y, -181.0))
+	var rock: Material = Rocks.material(Color(0.48, 0.46, 0.44), 0.12, 0.3)
+	# Coins arrondis par de gros blocs, stalactites, ossements et vieilles armures
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 3707
+	for k in range(28):
+		var a: float = TAU * k / 28.0
+		var r: float = rng.randf_range(13.2, 15.5)
+		var p := Vector3(45.0 + cos(a) * r, y, -181.0 + sin(a) * r)
+		if absf(p.z + 181.0) < 3.0 and p.x < 40.0:
+			continue
+		var sz: float = rng.randf_range(2.0, 4.0)
+		var mi := MeshInstance3D.new()
+		mi.mesh = Rocks.shape(3710 + k, Vector3(sz, sz * rng.randf_range(1.0, 2.2), sz), 0.7, 0.22)
+		mi.material_override = rock
+		mi.position = p + Vector3.UP * sz * 0.4
+		mi.rotation.y = rng.randf() * TAU
+		s.add_child(mi)
+	_stalactites(s, Vector3(45.0, y, -181.0), Vector2(11.0, 11.0), y + 12.0, 30, 3720)
+	var bone := StandardMaterial3D.new()
+	bone.albedo_color = Color(0.85, 0.82, 0.72)
+	bone.roughness = 0.8
+	for k in range(10):
+		var b := MeshInstance3D.new()
+		var bm := CylinderMesh.new()
+		bm.top_radius = 0.04
+		bm.bottom_radius = 0.05
+		bm.height = rng.randf_range(0.4, 0.9)
+		b.mesh = bm
+		b.material_override = bone
+		var a2: float = rng.randf() * TAU
+		b.position = Vector3(45.0 + cos(a2) * rng.randf_range(6.0, 10.5), y + 0.05, -181.0 + sin(a2) * rng.randf_range(6.0, 10.5))
+		b.rotation = Vector3(PI * 0.5, rng.randf() * TAU, 0)
+		s.add_child(b)
+	for k in range(3):
+		var helm := MeshInstance3D.new()
+		var hm := SphereMesh.new()
+		hm.radius = 0.2
+		hm.height = 0.2
+		hm.is_hemisphere = true
+		helm.mesh = hm
+		helm.material_override = _mat("bronze")
+		helm.position = Vector3(38.0 + k * 6.5, y + 0.02, -172.0 - (k % 2) * 17.0)
+		helm.rotation.z = 0.3 * k
+		s.add_child(helm)
+	# Le puits d'eau noire d'où sort le Crabe-Roi
+	var well := MeshInstance3D.new()
+	var wm := CylinderMesh.new()
+	wm.top_radius = 3.4
+	wm.bottom_radius = 3.4
+	wm.height = 0.02
+	wm.radial_segments = 32
+	well.mesh = wm
+	var dark_water := StandardMaterial3D.new()
+	dark_water.albedo_color = Color(0.02, 0.06, 0.07, 0.92)
+	dark_water.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	dark_water.roughness = 0.02
+	dark_water.metallic = 0.3
+	well.material_override = dark_water
+	well.position = Vector3(45.0, y + 0.03, -181.0)
+	s.add_child(well)
+	for k in range(16):
+		var a3: float = TAU * k / 16.0
+		_box(s, Vector3(1.4, 0.25, 0.5), Vector3(45.0 + cos(a3) * 3.7, y + 0.12, -181.0 + sin(a3) * 3.7), _mat("sol"), false, Vector3(0, -a3, 0))
+	# Lumières : quatre grands braseros, des algues, un rai de lumière bleue sur le puits
+	for p2 in [Vector3(36.0, y, -172.0), Vector3(54.0, y, -172.0), Vector3(36.0, y, -190.0), Vector3(54.0, y, -190.0)]:
+		_brazier_fixed(s, p2)
+	for g in [[Vector3(32.3, y + 3.0, -174.0), Vector3(1, 0, 0)], [Vector3(57.7, y + 2.5, -178.0), Vector3(-1, 0, 0)], [Vector3(57.7, y + 3.4, -188.0), Vector3(-1, 0, 0)], [Vector3(32.3, y + 2.2, -189.0), Vector3(1, 0, 0)]]:
+		_glow(s, g[0], g[1])
+	var ray := SpotLight3D.new()
+	ray.light_color = Color(0.55, 0.75, 1.0)
+	ray.light_energy = 4.0
+	ray.spot_range = 16.0
+	ray.spot_angle = 22.0
+	ray.position = Vector3(45.0, y + 11.8, -181.0)
+	ray.rotation.x = -PI * 0.5
+	s.add_child(ray)
+	# Le coffre de la victoire (caché tant que le Crabe-Roi vit)
+	_boss_chest = Node3D.new()
+	_boss_chest.name = "Coffre_Karkinos"
+	s.add_child(_boss_chest)
+	_boss_chest.position = Vector3(45.0, y, -186.0)
+	_box(_boss_chest, Vector3(1.1, 0.6, 0.7), Vector3(0, 0.3, 0), _mat("bois"), false)
+	for x in [-0.4, 0.4]:
+		_box(_boss_chest, Vector3(0.06, 0.62, 0.72), Vector3(x, 0.3, 0), _mat("bronze"), false)
+	var hinge := Node3D.new()
+	hinge.name = "Charniere"
+	hinge.position = Vector3(0, 0.6, -0.35)
+	_boss_chest.add_child(hinge)
+	var lid := MeshInstance3D.new()
+	var lm := BoxMesh.new()
+	lm.size = Vector3(1.1, 0.2, 0.7)
+	lid.mesh = lm
+	lid.material_override = _mat("bois")
+	lid.position = Vector3(0, 0.1, 0.35)
+	hinge.add_child(lid)
+	_interactions.append({"id": "coffre_boss1", "pos": s.to_global(Vector3(45.0, y, -186.0)), "radius": 2.0,
+		"text": "E : ouvrir le coffre du Crabe-Roi", "vr": "Gâchette : ouvrir le coffre", "call": _open_boss_chest,
+		"when": func(): return bool(state["boss1"]) and not bool(state["coffre_boss1"]) and not fight})
+	_build_boss_bar()
+
+
+func _build_boss_bar() -> void:
+	_bar_layer = CanvasLayer.new()
+	_bar_layer.layer = 12
+	_bar_layer.visible = false
+	add_child(_bar_layer)
+	var root := Control.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_bar_layer.add_child(root)
+	_bar_label = Label.new()
+	_bar_label.text = "Karkinos, le Crabe-Roi"
+	_bar_label.position = Vector2(-300, 22)
+	_bar_label.size = Vector2(600, 30)
+	_bar_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_bar_label.add_theme_font_size_override("font_size", 22)
+	_bar_label.add_theme_color_override("font_color", Color(1.0, 0.82, 0.6))
+	_bar_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	_bar_label.add_theme_constant_override("outline_size", 6)
+	root.add_child(_bar_label)
+	var back := ColorRect.new()
+	back.color = Color(0.05, 0.02, 0.02, 0.8)
+	back.position = Vector2(-300, 56)
+	back.size = Vector2(600, 18)
+	root.add_child(back)
+	_bar_fill = ColorRect.new()
+	_bar_fill.color = Color(0.85, 0.18, 0.1)
+	_bar_fill.position = Vector2(2, 2)
+	_bar_fill.size = Vector2(596, 14)
+	back.add_child(_bar_fill)
+
+
+func _update_bar(hp: int, hp_max: int) -> void:
+	var r: float = float(hp) / float(hp_max)
+	if _bar_fill != null:
+		_bar_fill.size.x = 596.0 * r
+		_bar_fill.color = Color(0.85, 0.18, 0.1) if r > 0.5 else Color(1.0, 0.45, 0.05)
+	if _bar_vr != null:
+		var n: int = int(round(r * 20.0))
+		_bar_vr.text = "Karkinos, le Crabe-Roi\n" + "█".repeat(n) + "░".repeat(20 - n)
+
+
+func _in_arena(p: Vector3) -> bool:
+	if arena_center == Vector3.INF:
+		return false
+	return Vector2(p.x - arena_center.x, p.z - arena_center.z).length() < 11.0 and absf(p.y - arena_center.y) < 4.0
+
+
+## Le combat commence quand on s'avance dans l'antre : la herse retombe derrière soi.
+func _boss_tick() -> void:
+	if arena_center == Vector3.INF or not inside:
+		return
+	var p: Vector3 = main._player_pos_v27()
+	if not fight and not bool(state["boss1"]) and _in_arena(p) and Vector2(p.x - arena_center.x, p.z - arena_center.z).length() < 9.0:
+		_start_fight()
+	elif fight and boss != null and boss.state != "mort" and (Vector2(p.x - arena_center.x, p.z - arena_center.z).length() > 14.5 or absf(p.y - arena_center.y) > 4.0):
+		_reset_fight()
+
+
+func _start_fight() -> void:
+	fight = true
+	var s: Node3D = sections["village"]
+	var face: Vector3 = s.to_global(Vector3(-1, 0, 0)) - s.to_global(Vector3.ZERO)
+	boss = BossScript.new()
+	add_child(boss)
+	boss.setup(self, arena_center, face)
+	boss.health_changed.connect(_update_bar)
+	boss.defeated.connect(_on_boss_defeated)
+	var hb: StaticBody3D = _herse.get_node("Grille_collision")
+	hb.collision_layer = 1
+	create_tween().tween_property(_herse, "position:y", -3.0, 0.5).set_trans(Tween.TRANS_QUAD)
+	_bar_layer.visible = not main.xr_active
+	if main.xr_active:
+		_bar_vr = Label3D.new()
+		_bar_vr.font_size = 48
+		_bar_vr.pixel_size = 0.004
+		_bar_vr.outline_size = 10
+		_bar_vr.modulate = Color(1.0, 0.6, 0.45)
+		_bar_vr.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		_bar_vr.no_depth_test = true
+		_bar_vr.position = Vector3(0, 3.6, 0)
+		boss.add_child(_bar_vr)
+	_update_bar(boss.hp, boss.HP_MAX)
+	_say("La herse retombe derrière toi… L'eau du puits bouillonne. KARKINOS, LE CRABE-ROI, surgit des profondeurs !", 5.0)
+
+
+## On a quitté l'antre (évanoui, ou sorti) : tout reprend à zéro.
+func _reset_fight() -> void:
+	fight = false
+	if boss != null:
+		boss.queue_free()
+		boss = null
+	_bar_vr = null
+	_bar_layer.visible = false
+	for m in _summoned:
+		if is_instance_valid(m):
+			m.queue_free()
+	_summoned.clear()
+	_apply_state()
+
+
+func summon_crabs(n: int) -> void:
+	var alive: int = 0
+	for m in _summoned:
+		if is_instance_valid(m) and m.state != "mort":
+			alive += 1
+	for k in range(mini(n, 3 - alive)):
+		var a: float = randf() * TAU
+		var at: Vector3 = arena_center + Vector3(cos(a) * 2.4, 0.1, sin(a) * 2.4)
+		var m: Node3D = main.monstres_v36.spawn_extra("crabe", at)
+		_summoned.append(m)
+		if main.combat_v28 != null:
+			main.combat_v28.puff(at + Vector3.UP * 0.2, Color(0.5, 0.7, 0.75))
+	if n > 0:
+		_say("Des crabes sortent du puits !", 2.0)
+
+
+func _on_boss_defeated() -> void:
+	state["boss1"] = true
+	state["victoires"] = int(state["victoires"]) + 1
+	_say("Karkinos s'effondre dans un fracas de carapace ! La herse se relève… et un coffre remonte du puits.", 6.0)
+	await get_tree().create_timer(2.5).timeout
+	fight = false
+	_bar_layer.visible = false
+	for m in _summoned:
+		if is_instance_valid(m) and m.state != "mort":
+			m.take_hit(99, m.global_position + Vector3.UP)
+	_summoned.clear()
+	var hb: StaticBody3D = _herse.get_node("Grille_collision")
+	var tw := create_tween()
+	tw.tween_property(_herse, "position:y", -3.0 + 4.4, 2.5)
+	tw.tween_callback(func(): hb.collision_layer = 0)
+	_boss_chest.visible = true
+	var target_y: float = _boss_chest.position.y
+	_boss_chest.position.y = target_y - 1.0
+	create_tween().tween_property(_boss_chest, "position:y", target_y, 2.0).set_trans(Tween.TRANS_BACK)
+
+
+func _open_boss_chest() -> void:
+	state["coffre_boss1"] = true
+	var hinge: Node3D = _boss_chest.get_node("Charniere")
+	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
+	var a: int = main.inventory_v28.add("piece", 60)
+	var r: int = main.inventory_v28.add("rubis", 1)
+	var f: int = main.inventory_v28.add("fragment_amulette", 1)
+	_say("Le trésor du Crabe-Roi : %d pièces, %s… et le DEUXIÈME fragment de l'amulette, gravé d'une vague !%s" % [a, "un rubis" if r > 0 else "", "" if f > 0 else " (ton sac est plein !)"], 7.0)
+	if main.combat_v28 != null:
+		main.combat_v28.puff(_boss_chest.global_position + Vector3.UP * 0.8, Color(1.0, 0.85, 0.4))
 
 
 ## Algues lumineuses : une tache bleu-vert sur la paroi et sa lueur.
@@ -1131,12 +1379,23 @@ func _make_trap(id: String, at: Vector3) -> void:
 
 
 func _apply_state() -> void:
+	if serpents != null:
+		serpents.apply_state()
 	if _passage != null:
 		_passage.position.y = (-3.0 - 3.8) if bool(state["passage"]) else -3.0
 		(_passage.get_node("Passage_collision") as StaticBody3D).collision_layer = 0 if bool(state["passage"]) else 1
 	if _grille != null:
 		_grille.position.y = (-3.0 + 4.6) if bool(state["grille"]) else -3.0
 		(_grille.get_node("Grille_collision") as StaticBody3D).collision_layer = 0 if bool(state["grille"]) else 1
+	if _grille_est != null:
+		_grille_est.position.y = (-3.0 + 4.4) if bool(state["grille"]) else -3.0
+		(_grille_est.get_node("Grille_collision") as StaticBody3D).collision_layer = 0 if bool(state["grille"]) else 1
+	if _herse != null and not fight:
+		_herse.position.y = -3.0 + 4.4
+		(_herse.get_node("Grille_collision") as StaticBody3D).collision_layer = 0
+	if _boss_chest != null:
+		_boss_chest.visible = bool(state["boss1"])
+		(_boss_chest.get_node("Charniere") as Node3D).rotation.x = -1.8 if bool(state["coffre_boss1"]) else 0.0
 	if _rubble != null:
 		_rubble.visible = not bool(state["eboulement"])
 		_rubble_body.disabled = bool(state["eboulement"])
@@ -1263,14 +1522,6 @@ func _read_fresco() -> void:
 
 func _examine_door() -> void:
 	_say("Une porte de pierre sans poignée, marquée d'un serpent. Les quatre braseros de la salle doivent y être pour quelque chose…", 5.0)
-
-
-func _examine_serpent() -> void:
-	var n: int = main.inventory_v28.count("fragment_amulette") if main.inventory_v28 != null else 0
-	if n >= 3:
-		_say("Les trois fragments vibrent dans ta main… mais la porte ne bouge pas encore. (Suite du chantier !)", 6.0)
-	else:
-		_say("La Porte du Serpent. Un serpent de bronze s'enroule autour d'un œil rouge. Trois empreintes creuses attendent quelque chose : les fragments d'une amulette ? (%d sur 3)" % n, 6.0)
 
 
 ## V36 : la grille de la salle aux colonnes se lève quand ses deux gardiens sont tombés.
@@ -1523,6 +1774,7 @@ func update_inside(force: bool = false) -> void:
 func _process(_delta: float) -> void:
 	if main != null and main.game_started:
 		update_inside()
+		_boss_tick()
 
 
 # =================================================================== sauvegarde
@@ -1532,10 +1784,10 @@ func serialize() -> Dictionary:
 
 
 func load_data(d: Dictionary) -> void:
-	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0}
+	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false}
 	for k in state:
 		if d.has(k):
-			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires") else bool(d[k])
+			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires" or k == "serpents") else bool(d[k])
 	# Sauvegardes de la V35 : le coffre déjà ouvert a révélé le passage.
 	if bool(state["coffre"]):
 		state["passage"] = true
@@ -1543,4 +1795,6 @@ func load_data(d: Dictionary) -> void:
 	for b in _braziers:
 		b["lit"] = false
 	_wall_hp = 3
+	if fight:
+		_reset_fight()
 	_apply_state()

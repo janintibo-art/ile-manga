@@ -61,10 +61,30 @@ func spawn_all() -> void:
 		monsters.append(m)
 
 
+## V37 : un monstre de plus (les crabes appelés par le Crabe-Roi).
+func spawn_extra(kind: String, at: Vector3) -> Node3D:
+	var m: CharacterBody3D = MonsterScript.new()
+	add_child(m)
+	m.setup(self, kind, at)
+	m.died.connect(_on_died)
+	monsters.append(m)
+	m.state = "chasse"
+	return m
+
+
 func alive_count(kind: String = "") -> int:
 	var n: int = 0
 	for m in monsters:
 		if is_instance_valid(m) and m.state != "mort" and (kind == "" or m.kind == kind):
+			n += 1
+	return n
+
+
+## V38 : seuls les gardiens de la salle aux colonnes tiennent la grille.
+func _gardiens_alive() -> int:
+	var n: int = 0
+	for m in monsters:
+		if is_instance_valid(m) and m.state != "mort" and m.kind == "gardien" and str(m.get_meta("salle", "")) == "gardiens":
 			n += 1
 	return n
 
@@ -169,7 +189,7 @@ func _on_died(m: Node3D) -> void:
 			parts.append("+%d %s" % [got, str(main.inventory_v28.ITEMS[str(g[0])]["name"])])
 	if not parts.is_empty() and main.combat_v28 != null:
 		main.combat_v28.float_text(m.global_position + Vector3.UP * 1.6, "  ".join(parts), Color(1.0, 0.9, 0.5))
-	if m.kind == "gardien" and alive_count("gardien") == 0 and not bool(donjon.state.get("grille", false)):
+	if m.kind == "gardien" and str(m.get_meta("salle", "")) == "gardiens" and _gardiens_alive() == 0 and not bool(donjon.state.get("grille", false)):
 		donjon.open_grille()
 
 

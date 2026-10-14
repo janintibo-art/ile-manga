@@ -2275,7 +2275,11 @@ func _npc_ctx_v31() -> Dictionary:
 			"fragment": 1 if donjon_v35 != null and bool(donjon_v35.state["coffre"]) else 0,
 			"tunnel": 1 if donjon_v35 != null and bool(donjon_v35.state["eboulement"]) else 0,
 			"grille": 1 if donjon_v35 != null and bool(donjon_v35.state["grille"]) else 0,
-			"monstres": int(donjon_v35.state["victoires"]) if donjon_v35 != null else 0},
+			"monstres": int(donjon_v35.state["victoires"]) if donjon_v35 != null else 0,
+			"boss1": 1 if donjon_v35 != null and bool(donjon_v35.state["boss1"]) else 0,
+			"serpents": 1 if donjon_v35 != null and bool(donjon_v35.state["enigme_serpents"]) else 0,
+			"fragment3": 1 if donjon_v35 != null and bool(donjon_v35.state["fragment3"]) else 0,
+			"porte_serpent": 1 if donjon_v35 != null and bool(donjon_v35.state["porte_serpent"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

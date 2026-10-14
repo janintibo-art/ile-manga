@@ -107,6 +107,12 @@ const DATA := {
 			{"t": "Tu as vu la tête de pierre à moitié enterrée, à l'ouest de la gorge ? Clou refuse d'en approcher. Il dit que ça résonne, juste à côté. Prends une pelle… et une épée.", "si": {"affinite_min": 15, "pas_trouve": "trappe_jungle"}},
 			{"t": "Une trappe près de la tête de pierre ? Et un souterrain qui file vers le village ? Si Barnabé l'apprend, il va dire qu'il le savait. Ne lui dis pas.", "si": {"a_trouve": "trappe_jungle"}},
 			{"t": "Un temple, sous l'île… Si tu croises des bestioles là-dessous, ne viens pas pleurer : achète mon épée avant.", "si": {"a_trouve": "temple", "pas_achete": "epee"}},
+			# V37 : Karkinos, le Crabe-Roi
+			{"t": "Un crabe grand comme ma cabane, à l'est de la salle aux colonnes ? Sa carapace, c'est de l'acier. Attends qu'il plante ses pinces dans la roche… et là, cogne.", "si": {"a_trouve": "grille", "pas_trouve": "boss1"}},
+			{"t": "Tu as abattu le Crabe-Roi ?! … Tu me revends sa carapace ? Non ? Dommage. J'en aurais fait des boucliers.", "si": {"a_trouve": "boss1"}, "geste": "rire", "humeur": 0.2},
+			# V38 : la Salle des Quatre Serpents et le Sanctuaire
+			{"t": "Des statues qui tournent à deux ? C'est une serrure à combinaison, rien de plus. Tourne, compte, réfléchis. Ou tape dessus : ça ne marche jamais, mais ça soulage.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
+			{"t": "Une fontaine qui soigne, sous terre ? On la met en bouteilles et on fait fortune. … Quoi, c'est sacré ? Tout est sacré, tant que ça se vend.", "si": {"a_trouve": "porte_serpent"}, "geste": "rire", "humeur": 0.15},
 			# V36 : les monstres de la galerie sous la mer
 			{"t": "Des crabes de roche, là-dessous ? Gros comme des tonneaux ? Regarde leurs pinces : quand elles se lèvent, recule. Quand elles retombent, frappe.", "si": {"a_trouve": "fragment", "monstres_min": 0}},
 			{"t": "Les gardiens de corail… Des soldats changés en pierre. Mon épée les découpe comme du pain rassis. Le troisième coup surtout.", "si": {"a_trouve": "grille"}},

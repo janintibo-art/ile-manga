@@ -125,6 +125,12 @@ const DATA := {
 			{"t": "Une trappe sous les pierres levées ?! Et dessous, un temple ?! Je l'ai toujours su. Enfin, je l'ai toujours un peu soupçonné. Gaston, prépare mes bottes. Ma botte.", "si": {"a_trouve": "trappe_village"}, "geste": "rire"},
 			{"t": "Les braseros, la fresque… Les Anciens adoraient les énigmes. Lis bien ce qui est gravé sous les dessins : chez eux, la nuit vient toujours en premier.", "si": {"a_trouve": "temple", "pas_trouve": "braseros"}},
 			{"t": "Un fragment d'amulette avec un œil ? Sur ma carte, il y a trois yeux dessinés. Un sous le village… un sous la jungle… et un sous la mer, entre les deux. Courage.", "si": {"a_trouve": "fragment"}},
+			# V37
+			{"t": "Karkinos ! Le Crabe-Roi des vieilles chansons de marins ! Tu l'as vaincu ? Gaston, on compose une chanson. « Il était un petit héros… »", "si": {"a_trouve": "boss1"}, "geste": "rire", "humeur": 0.25},
+			{"t": "Deux fragments sur trois ! Le troisième œil de ma carte est sous la jungle, près de la tête de pierre. J'ai dessiné quatre serpents en rond… et une flèche qui tourne. Ou un escargot.", "si": {"a_trouve": "boss1", "pas_trouve": "fragment3"}},
+			# V38
+			{"t": "Quatre serpents qui tournent deux par deux ? Ah, les Anciens et leurs farces… Commence par celui qui est déjà bien placé, et regarde lequel il entraîne.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
+			{"t": "L'Amulette du Serpent ! Reconstituée ! Elle brille vert ? Sur ma carte, sous le grand serpent, il y a écrit « Abysses ». Et un petit dessin de moi en train de fuir.", "si": {"a_trouve": "porte_serpent"}, "geste": "rire", "humeur": 0.25},
 			# V36
 			{"t": "Une galerie sous la mer, jusqu'à la jungle ? Je l'avais dessinée en pointillés sur ma carte. Les pointillés, c'est ce que je ne suis pas sûr. J'avais raison !", "si": {"a_trouve": "tunnel"}, "geste": "rire"},
 			{"t": "Des crabes de roche ! Gaston en a fait des cauchemars pendant dix ans. Prends soin de toi, {surnom}, et mange avant de descendre.", "si": {"monstres_min": 1}},

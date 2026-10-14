@@ -86,6 +86,7 @@ selected = [
     "textures/items/rubis.png",
     "textures/items/piece_or.png",
     "textures/items/fragment_amulette.png",
+    "textures/items/amulette_serpent.png",
     "textures/temple/temple_wall.png",
     "textures/temple/temple_wall_n.png",
     "textures/temple/temple_floor.png",

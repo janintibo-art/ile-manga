@@ -73,7 +73,10 @@ const ITEMS := {
 		"desc": "Une vieille pièce d'or frappée d'une couronne. Octave en donne 12 pièces de cuivre."},
 	# V35 : le Temple englouti
 	"fragment_amulette": {"name": "Fragment d'amulette", "art": "un fragment d'amulette", "kind": "quete", "max": 3,
-		"desc": "Un morceau d'amulette en jade, gravé d'un œil. Trouvé dans le coffre du gardien du Temple englouti. Il en faut trois pour la Porte du Serpent."},
+		"desc": "Un morceau d'amulette en jade, gravé d'un symbole ancien. Il en faut trois pour ouvrir la Porte du Serpent, au fond du Temple englouti."},
+	# V38
+	"amulette_serpent": {"name": "Amulette du Serpent", "art": "l'Amulette du Serpent", "kind": "quete", "max": 1,
+		"desc": "Les trois fragments de jade, soudés autour d'un œil vert. Sous terre, elle éclaire les ténèbres autour de toi. Elle vibre près du sceau des Abysses."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -576,6 +579,11 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.035, 0.0, 0.025, 6), _mat("rubis", Color(0.75, 0.05, 0.12), 0.1), Vector3(0, 0.0625, 0))
 		"piece_or":
 			_part(m, _cyl(0.04, 0.04, 0.01, 16), _mat("or", Color(0.95, 0.75, 0.2), 0.25), Vector3(0, 0.005, 0))
+		"fragment_amulette":
+			_part(m, _cyl(0.07, 0.07, 0.012, 3), _mat("jade", Color(0.25, 0.62, 0.42), 0.25), Vector3(0, 0.006, 0))
+		"amulette_serpent":
+			_part(m, _cyl(0.08, 0.08, 0.016, 24), _mat("jade", Color(0.25, 0.62, 0.42), 0.25), Vector3(0, 0.008, 0))
+			_part(m, _sphere(0.022), _mat("oeil_vert", Color(0.3, 0.95, 0.5), 0.1), Vector3(0, 0.02, 0))
 		"epee_bois":
 			# Construite le long de +Y : poignée en bas, lame vers le haut.
 			var wood := _mat("lame_bois", Color(0.72, 0.56, 0.36), 0.6)
