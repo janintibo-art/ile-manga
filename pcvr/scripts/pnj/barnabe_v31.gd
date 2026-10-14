@@ -125,6 +125,9 @@ const DATA := {
 			{"t": "Une trappe sous les pierres levées ?! Et dessous, un temple ?! Je l'ai toujours su. Enfin, je l'ai toujours un peu soupçonné. Gaston, prépare mes bottes. Ma botte.", "si": {"a_trouve": "trappe_village"}, "geste": "rire"},
 			{"t": "Les braseros, la fresque… Les Anciens adoraient les énigmes. Lis bien ce qui est gravé sous les dessins : chez eux, la nuit vient toujours en premier.", "si": {"a_trouve": "temple", "pas_trouve": "braseros"}},
 			{"t": "Un fragment d'amulette avec un œil ? Sur ma carte, il y a trois yeux dessinés. Un sous le village… un sous la jungle… et un sous la mer, entre les deux. Courage.", "si": {"a_trouve": "fragment"}},
+			# V36
+			{"t": "Une galerie sous la mer, jusqu'à la jungle ? Je l'avais dessinée en pointillés sur ma carte. Les pointillés, c'est ce que je ne suis pas sûr. J'avais raison !", "si": {"a_trouve": "tunnel"}, "geste": "rire"},
+			{"t": "Des crabes de roche ! Gaston en a fait des cauchemars pendant dix ans. Prends soin de toi, {surnom}, et mange avant de descendre.", "si": {"monstres_min": 1}},
 			# V34 : le coffre de paie de la Mouette Têtue
 			{"t": "Un secret de cartographe : sur ma carte, j'avais noté le coffre de paie de la Mouette. Côté mer, à une vingtaine de pas du grand fromager d'Octave, entre trois pierres plates. Il vit juste à côté et ne l'a jamais trouvé. Il ne lit pas mes cartes. Prends une pelle.", "si": {"a_rencontre": "octave", "affinite_min": 35, "pas_trouve": "mouette"}},
 			{"t": "Le coffre de la Mouette ! Tu l'as trouvé là où je l'avais dit ? MA CARTE ÉTAIT JUSTE ! Gaston, note la date !", "si": {"a_trouve": "mouette"}, "geste": "rire", "humeur": 0.3},

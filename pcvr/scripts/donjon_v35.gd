@@ -21,7 +21,7 @@ var main: Node
 var inside: bool = false
 var village_trap: Vector3 = Vector3.INF          # surface
 var jungle_trap: Vector3 = Vector3.INF
-var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false}
+var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0}
 var sections: Dictionary = {}                    # "village"/"jungle" -> Node3D (repère local)
 var spawn: Dictionary = {}                       # "village"/"jungle" -> [position, regard]
 var _interactions: Array = []                    # {id, pos, radius, text, vr, call, when}
@@ -40,6 +40,12 @@ var _fade_sphere: MeshInstance3D
 var _vr_hint: Label3D
 var _env_saved: Dictionary = {}
 var _busy: bool = false
+# V36 : galerie sous la mer
+var tunnel_length: float = 0.0                  # distance entre les deux trappes (m)
+var _passage: Node3D
+var _grille: Node3D
+var _rubble: Node3D
+var _rubble_body: CollisionShape3D
 
 
 func setup(main_node: Node) -> void:
@@ -74,8 +80,10 @@ func build(jungle_spot: Vector3) -> void:
 		var f: Vector3 = jungle_trap - village_trap
 		f.y = 0.0
 		f = f.normalized()
+		tunnel_length = Vector2(jungle_trap.x - village_trap.x, jungle_trap.z - village_trap.z).length()
 		_build_village_section(village_trap, f)
 		_build_jungle_section(jungle_trap, -f)
+		_build_tunnel(sections["village"], tunnel_length)
 		_make_trap("village", village_trap)
 		_make_trap("jungle", jungle_trap)
 	_apply_state()
@@ -551,7 +559,30 @@ func _build_village_section(at: Vector3, forward: Vector3) -> void:
 	_torch(s, Vector3(-1.75, 1.8, -46.6), Vector3(1, 0, 0), 1.1)
 	# Salle du gardien : coffre sur l'estrade, statues, Porte du Serpent
 	var y0: float = -drop
-	_room(s, -9, 9, -73, -52.6, y0, 9, "mur", "sol", [["s", 0, 3.6, 4.0], ["n", 0, 5.0, 6.0]])
+	_room(s, -9, 9, -73, -52.6, y0, 9, "mur", "sol", [["s", 0, 3.6, 4.0], ["n", 0, 5.0, 6.0], ["e", -62.5, 3.0, 3.6]])
+	# V36 : dalle qui ferme le passage est, jusqu'à ce qu'on ouvre le coffre
+	_passage = Node3D.new()
+	_passage.name = "Passage_est"
+	s.add_child(_passage)
+	_passage.position = Vector3(9.3, y0, -62.5)
+	_box(_passage, Vector3(0.6, 3.6, 3.0), Vector3(0, 1.8, 0), _mat("mur"), false)
+	var pglyph := MeshInstance3D.new()
+	var pq := QuadMesh.new()
+	pq.size = Vector2(0.9, 0.9)
+	pglyph.mesh = pq
+	pglyph.material_override = _glyph_mat("vague")
+	pglyph.position = Vector3(-0.31, 2.0, 0)
+	pglyph.rotation.y = -PI * 0.5
+	_passage.add_child(pglyph)
+	var pb := StaticBody3D.new()
+	pb.name = "Passage_collision"
+	var pcs := CollisionShape3D.new()
+	var pbs := BoxShape3D.new()
+	pbs.size = Vector3(0.6, 3.6, 3.0)
+	pcs.shape = pbs
+	pcs.position = Vector3(0, 1.8, 0)
+	pb.add_child(pcs)
+	_passage.add_child(pb)
 	_box(s, Vector3(3.4, 0.4, 3.4), Vector3(0, y0 + 0.2, -62.5), _mat("sol"))
 	_box(s, Vector3(2.4, 0.4, 2.4), Vector3(0, y0 + 0.6, -62.5), _mat("sol"))
 	_chest(s, Vector3(0, y0 + 0.8, -62.5))
@@ -759,9 +790,12 @@ func _serpent_door(s: Node3D, p: Vector3) -> void:
 func _build_jungle_section(at: Vector3, forward: Vector3) -> void:
 	var s: Node3D = _section("jungle", at, forward)
 	_arrival(s, "jungle")
-	_room(s, -1.6, 1.6, -20, -4, 0, 4, "mur", "sol", [["s", 0, 3.0, 3.6]])
+	_room(s, -1.6, 1.6, -20, -4, 0, 4, "mur", "sol", [["s", 0, 3.0, 3.6], ["n", 0, 3.0, 3.6]])
 	_torch(s, Vector3(1.55, 2.5, -9), Vector3(-1, 0, 0), 1.3)
 	var rock: Material = Rocks.material(Color(0.58, 0.56, 0.52), 0.1, 0.3)
+	_rubble = Node3D.new()
+	_rubble.name = "Eboulement"
+	s.add_child(_rubble)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 3577
 	for i in range(9):
@@ -769,12 +803,186 @@ func _build_jungle_section(at: Vector3, forward: Vector3) -> void:
 		var sz: float = rng.randf_range(0.8, 1.8)
 		mi.mesh = Rocks.shape(3570 + i, Vector3(sz * 1.2, sz, sz), 0.7, 0.2)
 		mi.material_override = rock
-		mi.position = Vector3(rng.randf_range(-1.3, 1.3), sz * 0.35 + (i / 3) * 0.7, -19.0 + rng.randf_range(-0.6, 0.8))
+		mi.position = Vector3(rng.randf_range(-1.3, 1.3), sz * 0.35 + (i / 3) * 0.7, -19.4 + rng.randf_range(-0.6, 0.6))
 		mi.rotation = Vector3(rng.randf(), rng.randf() * TAU, rng.randf())
-		s.add_child(mi)
+		_rubble.add_child(mi)
 	_box(s, Vector3(3.2, 4.0, 1.4), Vector3(0, 2.0, -19.4), _mat("grotte"), true).visible = false
-	_interactions.append({"id": "eboulement", "pos": s.to_global(Vector3(0, 0, -17.6)), "radius": 1.8,
-		"text": "E : examiner l'éboulement", "vr": "Gâchette : examiner l'éboulement", "call": _examine_rubble})
+	_rubble_body = _body.get_child(_body.get_child_count() - 1)
+	_interactions.append({"id": "eboulement", "pos": s.to_global(Vector3(0, 0, -17.4)), "radius": 1.9,
+		"text": "E : dégager l'éboulement", "vr": "Gâchette : dégager l'éboulement", "call": _clear_rubble, "when": func(): return not bool(state["eboulement"])})
+
+
+# =================================================================== V36 : galerie sous la mer
+
+## La galerie relie la salle du gardien (village) à l'éboulement (jungle), en contournant la
+## Porte du Serpent par l'est. Repère : section « village » ; d = distance entre les trappes.
+## Passage est -> galerie des racines -> grotte des crabes -> galerie inondée (algues
+## lumineuses) -> salle aux colonnes (deux gardiens, grille) -> montée -> galerie de retour.
+func _build_tunnel(s: Node3D, d: float) -> void:
+	var y: float = -3.0
+	var rock: Material = Rocks.material(Color(0.5, 0.5, 0.48), 0.15, 0.3)
+	_room(s, 9.6, 12.0, -64.0, -61.0, y, 3.6, "mur", "sol", [["w", -62.5, 3.0, 3.4], ["e", -62.5, 3.0, 3.4]])
+	# Galerie des racines (grotte)
+	_room(s, 12.0, 19.0, -96.0, -58.0, y, 5.0, "grotte", "grotte", [["w", -62.5, 3.0, 3.4], ["n", 15.5, 4.0, 4.5]], "grotte")
+	_boulders(s, Vector3(15.5, y, -77), Vector2(3.2, 18.5), 16, 3601, rock, 0.9, 1.9)
+	_stalactites(s, Vector3(15.5, y, -77), Vector2(3.0, 17.0), y + 5.0, 18, 3602)
+	_glow(s, Vector3(12.3, y + 1.6, -72), Vector3(1, 0, 0))
+	_glow(s, Vector3(18.7, y + 2.2, -86), Vector3(-1, 0, 0))
+	_torch(s, Vector3(12.05, y + 2.4, -61.0), Vector3(1, 0, 0), 1.2)
+	# Grotte des crabes
+	_room(s, 8.0, 24.0, -122.0, -96.0, y, 8.0, "grotte", "grotte", [["s", 15.5, 4.0, 4.5], ["n", 15.5, 4.0, 4.5]], "grotte")
+	_boulders(s, Vector3(16, y, -109), Vector2(7.6, 12.5), 22, 3611, rock, 1.2, 2.8)
+	_stalactites(s, Vector3(16, y, -109), Vector2(7.0, 12.0), y + 8.0, 26, 3612)
+	for k in range(5):
+		var pool := MeshInstance3D.new()
+		var pm := CylinderMesh.new()
+		pm.top_radius = 1.0 + k * 0.25
+		pm.bottom_radius = pm.top_radius
+		pm.height = 0.02
+		pool.mesh = pm
+		pool.material_override = _mat("eau")
+		pool.position = Vector3(10.5 + k * 3.0, y + 0.02, -100.0 - k * 4.4 + (k % 2) * 3.0)
+		s.add_child(pool)
+	_glow(s, Vector3(8.3, y + 2.0, -104), Vector3(1, 0, 0))
+	_glow(s, Vector3(23.7, y + 3.0, -114), Vector3(-1, 0, 0))
+	_glow(s, Vector3(23.7, y + 1.8, -101), Vector3(-1, 0, 0))
+	_glow(s, Vector3(8.3, y + 2.6, -117), Vector3(1, 0, 0))
+	_torch(s, Vector3(8.05, y + 2.8, -110.0), Vector3(1, 0, 0), 1.4)
+	_torch(s, Vector3(23.95, y + 2.8, -108.0), Vector3(-1, 0, 0), 1.4)
+	_torch(s, Vector3(13.0, y + 2.6, -121.95), Vector3(0, 0, 1), 1.4)
+	_torch(s, Vector3(18.0, y + 2.6, -121.95), Vector3(0, 0, 1), 1.4)
+	# Galerie inondée : de l'eau de part et d'autre d'une chaussée de dalles
+	_room(s, 12.5, 18.5, -168.0, -122.0, y, 5.0, "grotte", "grotte", [["s", 15.5, 4.0, 4.5], ["n", 15.5, 4.0, 4.5]], "grotte")
+	for sx in [13.4, 17.6]:
+		var water := MeshInstance3D.new()
+		var wq := PlaneMesh.new()
+		wq.size = Vector2(1.8, 46.0)
+		water.mesh = wq
+		water.material_override = _mat("eau")
+		water.position = Vector3(sx, y + 0.06, -145.0)
+		s.add_child(water)
+	_box(s, Vector3(2.4, 0.12, 46.0), Vector3(15.5, y + 0.06, -145.0), _mat("sol"), false)
+	for z in [-130.0, -142.0, -154.0, -164.0]:
+		_glow(s, Vector3(12.8 if int(z) % 4 == 0 else 18.2, y + 1.2 + fmod(absf(z), 3.0) * 0.4, z), Vector3(1 if int(z) % 4 == 0 else -1, 0, 0))
+	_drips(s, Vector3(15.5, y + 4.9, -138.0))
+	_drips(s, Vector3(14.5, y + 4.9, -158.0))
+	# Salle aux colonnes : deux gardiens de corail, la grille au nord
+	_room(s, 7.0, 24.0, -194.0, -168.0, y, 9.0, "mur", "sol", [["s", 15.5, 4.0, 4.5], ["n", 15.5, 4.0, 4.5]])
+	for p in [Vector3(10.5, y, -174), Vector3(20.5, y, -174), Vector3(10.5, y, -188), Vector3(20.5, y, -188)]:
+		_box(s, Vector3(1.2, 9.0, 1.2), p + Vector3.UP * 4.5, _mat("mur"))
+		_box(s, Vector3(1.6, 0.4, 1.6), p + Vector3.UP * 0.2, _mat("sol"), false)
+	for p in [Vector3(7.05, y + 3.2, -178.0), Vector3(7.05, y + 3.2, -186.0)]:
+		_torch(s, p, Vector3(1, 0, 0), 1.4)
+	for p in [Vector3(23.95, y + 3.2, -178.0), Vector3(23.95, y + 3.2, -186.0)]:
+		_torch(s, p, Vector3(-1, 0, 0), 1.4)
+	for p in [Vector3(12.5, y, -170.5), Vector3(18.5, y, -170.5)]:
+		_statue(s, p, Vector3(0, 0, -1))
+	_grille = Node3D.new()
+	_grille.name = "Grille"
+	s.add_child(_grille)
+	_grille.position = Vector3(15.5, y, -194.3)
+	for k in range(9):
+		var bar := MeshInstance3D.new()
+		var bc := CylinderMesh.new()
+		bc.top_radius = 0.045
+		bc.bottom_radius = 0.045
+		bc.height = 4.5
+		bc.radial_segments = 6
+		bar.mesh = bc
+		bar.material_override = _mat("bronze")
+		bar.position = Vector3(-1.85 + k * 0.46, 2.25, 0)
+		_grille.add_child(bar)
+	for h in [0.6, 2.2, 3.8]:
+		_box(_grille, Vector3(4.0, 0.08, 0.1), Vector3(0, h, 0), _mat("bronze"), false)
+	var gb := StaticBody3D.new()
+	gb.name = "Grille_collision"
+	var gcs := CollisionShape3D.new()
+	var gbs := BoxShape3D.new()
+	gbs.size = Vector3(4.0, 4.5, 0.3)
+	gcs.shape = gbs
+	gcs.position = Vector3(0, 2.25, 0)
+	gb.add_child(gcs)
+	_grille.add_child(gb)
+	_interactions.append({"id": "grille", "pos": s.to_global(Vector3(15.5, y, -192.8)), "radius": 2.2,
+		"text": "E : examiner la grille", "vr": "Gâchette : examiner la grille", "call": func(): _say("Une lourde grille de bronze. Pas de serrure… Les deux gardiens de corail semblent la garder.", 4.0),
+		"when": func(): return not bool(state["grille"])})
+	# Montée vers la jungle (rampe), puis galerie de retour vers l'axe des trappes
+	var run: float = 14.0
+	var ang: float = atan2(3.0, run)
+	var rl: float = sqrt(run * run + 9.0)
+	_box(s, Vector3(6.0, 0.4, rl), Vector3(15.5, y + 1.5 - 0.2, -194.6 - run * 0.5), _mat("grotte"), true, Vector3(ang, 0, 0))
+	for sx in [12.2, 18.8]:
+		_box(s, Vector3(0.6, 9.0, run), Vector3(sx, y + 3.0, -194.6 - run * 0.5), _mat("grotte"))
+	_box(s, Vector3(7.2, 0.6, rl), Vector3(15.5, y + 6.3, -194.6 - run * 0.5), _mat("grotte"), false, Vector3(ang, 0, 0))
+	_glow(s, Vector3(12.6, y + 2.8, -201.0), Vector3(1, 0, 0))
+	var zc: float = -(d - 27.5)
+	var z_end: float = zc - 1.5
+	_room(s, 12.5, 18.5, z_end, -208.6, 0.0, 4.5, "grotte", "grotte", [["s", 15.5, 6.0, 4.4], ["w", zc, 3.0, 3.6]], "grotte")
+	_boulders(s, Vector3(15.5, 0.0, (z_end - 208.6) * 0.5), Vector2(2.8, absf(z_end + 208.6) * 0.5), 10, 3621, rock, 0.8, 1.6)
+	_glow(s, Vector3(18.2, 2.0, -218.0), Vector3(-1, 0, 0))
+	_glow(s, Vector3(12.8, 1.6, -232.0), Vector3(1, 0, 0))
+	_room(s, 1.6, 12.5, zc - 1.5, zc + 1.5, 0.0, 3.8, "mur", "sol", [["e", zc, 3.0, 3.6], ["w", zc, 3.0, 3.6]])
+	_torch(s, Vector3(7.0, 2.5, zc - 1.45), Vector3(0, 0, 1), 1.3)
+	_room(s, -1.6, 1.6, -(d - 20.6), zc + 1.5, 0.0, 4.0, "mur", "sol", [["n", 0.0, 3.0, 3.6], ["e", zc, 3.0, 3.6]])
+	_torch(s, Vector3(-1.55, 2.5, zc), Vector3(1, 0, 0), 1.2)
+	_interactions.append({"id": "eboulement_sud", "pos": s.to_global(Vector3(0, 0, -(d - 22.4))), "radius": 1.9,
+		"text": "E : dégager l'éboulement", "vr": "Gâchette : dégager l'éboulement", "call": _clear_rubble, "when": func(): return not bool(state["eboulement"])})
+
+
+## Algues lumineuses : une tache bleu-vert sur la paroi et sa lueur.
+func _glow(s: Node3D, pos: Vector3, normal: Vector3) -> void:
+	if not _mats.has("algue"):
+		var m := StandardMaterial3D.new()
+		m.albedo_color = Color(0.25, 0.9, 0.8)
+		m.emission_enabled = true
+		m.emission = Color(0.2, 0.95, 0.85)
+		m.emission_energy_multiplier = 2.5
+		m.roughness = 0.6
+		_mats["algue"] = m
+	var root := Node3D.new()
+	s.add_child(root)
+	root.position = pos
+	root.rotation.y = atan2(normal.x, normal.z)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(absf(pos.z) * 13.0 + pos.x)
+	for k in range(9):
+		var blob := MeshInstance3D.new()
+		var sm := SphereMesh.new()
+		sm.radius = rng.randf_range(0.06, 0.16)
+		sm.height = sm.radius * 1.2
+		sm.radial_segments = 8
+		sm.rings = 4
+		blob.mesh = sm
+		blob.material_override = _mats["algue"]
+		blob.position = Vector3(rng.randf_range(-0.7, 0.7), rng.randf_range(-0.5, 0.6), 0.02)
+		root.add_child(blob)
+	var light := OmniLight3D.new()
+	light.light_color = Color(0.3, 0.95, 0.85)
+	light.light_energy = 1.6
+	light.omni_range = 8.5
+	light.position = Vector3(0, 0, 0.5)
+	root.add_child(light)
+
+
+## Gouttes qui tombent du plafond.
+func _drips(s: Node3D, pos: Vector3) -> void:
+	var p := CPUParticles3D.new()
+	p.amount = 6
+	p.lifetime = 1.2
+	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	p.emission_box_extents = Vector3(1.5, 0.05, 3.0)
+	p.direction = Vector3.DOWN
+	p.spread = 0.0
+	p.initial_velocity_min = 0.5
+	p.initial_velocity_max = 0.8
+	p.gravity = Vector3(0, -9.8, 0)
+	var q := SphereMesh.new()
+	q.radius = 0.012
+	q.height = 0.03
+	q.material = _mat("eau")
+	p.mesh = q
+	p.position = pos
+	s.add_child(p)
 
 
 # =================================================================== repères en surface et trappes
@@ -923,6 +1131,15 @@ func _make_trap(id: String, at: Vector3) -> void:
 
 
 func _apply_state() -> void:
+	if _passage != null:
+		_passage.position.y = (-3.0 - 3.8) if bool(state["passage"]) else -3.0
+		(_passage.get_node("Passage_collision") as StaticBody3D).collision_layer = 0 if bool(state["passage"]) else 1
+	if _grille != null:
+		_grille.position.y = (-3.0 + 4.6) if bool(state["grille"]) else -3.0
+		(_grille.get_node("Grille_collision") as StaticBody3D).collision_layer = 0 if bool(state["grille"]) else 1
+	if _rubble != null:
+		_rubble.visible = not bool(state["eboulement"])
+		_rubble_body.disabled = bool(state["eboulement"])
 	for id in _traps:
 		var t: Dictionary = _traps[id]
 		var st: int = int(state["trappe_" + id])
@@ -1056,6 +1273,37 @@ func _examine_serpent() -> void:
 		_say("La Porte du Serpent. Un serpent de bronze s'enroule autour d'un œil rouge. Trois empreintes creuses attendent quelque chose : les fragments d'une amulette ? (%d sur 3)" % n, 6.0)
 
 
+## V36 : la grille de la salle aux colonnes se lève quand ses deux gardiens sont tombés.
+func open_grille() -> void:
+	if bool(state["grille"]):
+		return
+	state["grille"] = true
+	_say("Les deux gardiens sont tombés. Dans un cliquetis de chaînes, la grille se lève !", 5.0)
+	var gb: StaticBody3D = _grille.get_node("Grille_collision")
+	var tw := create_tween()
+	tw.tween_property(_grille, "position:y", -3.0 + 4.6, 3.0).set_trans(Tween.TRANS_SINE)
+	tw.tween_callback(func(): gb.collision_layer = 0)
+
+
+## V36 : à la pelle, on dégage l'éboulement (des deux côtés) : les deux îles sont reliées.
+func _clear_rubble() -> void:
+	if main.inventory_v28.count("pelle") <= 0:
+		_say("Des blocs et des gravats jusqu'au plafond. À mains nues, impossible… Avec une pelle, peut-être.", 5.0)
+		return
+	_busy = true
+	_say("Tu dégages les gravats à la pelle, pierre après pierre…", 3.0)
+	if main.combat_v28 != null:
+		for k in range(4):
+			main.combat_v28.puff(_rubble.global_position + _rubble.global_basis * Vector3(-1.0 + k * 0.7, 0.6 + k * 0.3, -19.0), Color(0.62, 0.58, 0.52))
+	await _fade_to(0.85, 0.5)
+	await get_tree().create_timer(0.8).timeout
+	state["eboulement"] = true
+	_apply_state()
+	await _fade_to(0.0, 0.5)
+	_busy = false
+	_say("Le passage est libre ! La galerie sous la mer relie maintenant les deux îles.", 5.0)
+
+
 func _examine_rubble() -> void:
 	_say("Un éboulement bloque la galerie. Au-delà, on entend de l'eau couler… Il faudra trouver un autre chemin. (Suite du chantier !)", 5.0)
 
@@ -1112,7 +1360,13 @@ func _open_chest() -> void:
 	tw.tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 30)
 	var b: int = main.inventory_v28.add("fragment_amulette", 1)
-	_say("Le coffre du gardien : %d pièces… et un fragment d'amulette en jade, gravé d'un œil. Le premier des trois ?%s" % [a, "" if b > 0 else " (ton sac est plein !)"], 6.0)
+	_say("Le coffre du gardien : %d pièces… et un fragment d'amulette en jade, gravé d'un œil. Le premier des trois ?%s\nUn grondement : à l'est, une dalle s'enfonce dans le sol…" % [a, "" if b > 0 else " (ton sac est plein !)"], 7.0)
+	state["passage"] = true
+	var pb: StaticBody3D = _passage.get_node("Passage_collision")
+	var tw2 := create_tween()
+	tw2.tween_interval(1.0)
+	tw2.tween_property(_passage, "position:y", _passage.position.y - 3.8, 3.0).set_trans(Tween.TRANS_SINE)
+	tw2.tween_callback(func(): pb.collision_layer = 0)
 	if main.combat_v28 != null:
 		main.combat_v28.puff(chest.global_position + Vector3.UP * 0.8, Color(1.0, 0.85, 0.4))
 
@@ -1239,7 +1493,7 @@ func update_inside(force: bool = false) -> void:
 		env.background_color = Color(0, 0, 0)
 		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 		env.ambient_light_color = Color(0.32, 0.36, 0.42)
-		env.ambient_light_energy = 0.32
+		env.ambient_light_energy = 0.4
 		env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
 		env.fog_light_color = Color(0.02, 0.025, 0.03)
 		env.fog_density = 0.035
@@ -1278,10 +1532,13 @@ func serialize() -> Dictionary:
 
 
 func load_data(d: Dictionary) -> void:
-	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false}
+	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0}
 	for k in state:
 		if d.has(k):
-			state[k] = int(d[k]) if k.begins_with("trappe") else bool(d[k])
+			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires") else bool(d[k])
+	# Sauvegardes de la V35 : le coffre déjà ouvert a révélé le passage.
+	if bool(state["coffre"]):
+		state["passage"] = true
 	_lit.clear()
 	for b in _braziers:
 		b["lit"] = false

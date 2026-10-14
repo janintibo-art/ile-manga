@@ -107,6 +107,11 @@ const DATA := {
 			{"t": "Tu as vu la tête de pierre à moitié enterrée, à l'ouest de la gorge ? Clou refuse d'en approcher. Il dit que ça résonne, juste à côté. Prends une pelle… et une épée.", "si": {"affinite_min": 15, "pas_trouve": "trappe_jungle"}},
 			{"t": "Une trappe près de la tête de pierre ? Et un souterrain qui file vers le village ? Si Barnabé l'apprend, il va dire qu'il le savait. Ne lui dis pas.", "si": {"a_trouve": "trappe_jungle"}},
 			{"t": "Un temple, sous l'île… Si tu croises des bestioles là-dessous, ne viens pas pleurer : achète mon épée avant.", "si": {"a_trouve": "temple", "pas_achete": "epee"}},
+			# V36 : les monstres de la galerie sous la mer
+			{"t": "Des crabes de roche, là-dessous ? Gros comme des tonneaux ? Regarde leurs pinces : quand elles se lèvent, recule. Quand elles retombent, frappe.", "si": {"a_trouve": "fragment", "monstres_min": 0}},
+			{"t": "Les gardiens de corail… Des soldats changés en pierre. Mon épée les découpe comme du pain rassis. Le troisième coup surtout.", "si": {"a_trouve": "grille"}},
+			{"t": "{surnom}, tu as abattu combien de bestioles ? Clou dit que tu sens le crabe. Ça te va bien.", "si": {"monstres_min": 5}},
+			{"t": "La galerie relie les deux îles ? Barnabé pourrait venir me voir à pied, maintenant. Quelle horreur.", "si": {"a_trouve": "tunnel"}, "geste": "colere"},
 			{"t": "Un secret : le coffre de paie de la Mouette était en bois de fer, cerclé de cuivre. Si ta pelle cogne sur du métal, appelle-moi. On partage. Soixante-quarante. Pour moi.", "si": {"affinite_min": 45}},
 		],
 		# ------------------------------------------------------------ boutique

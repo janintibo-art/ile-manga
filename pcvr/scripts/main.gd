@@ -71,6 +71,7 @@ var mouette_spot_v34: Vector3 = Vector3.INF
 # V35 : le Temple englouti (souterrain sous les deux îles).
 var donjon_v35: Node3D
 var trap_jungle_spot_v35: Vector3 = Vector3.INF
+var monstres_v36: Node3D
 var trainee_v34: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
@@ -1614,6 +1615,11 @@ func _create_gameplay_v28() -> void:
 	donjon_v35.name = "Temple_englouti_v35"
 	add_child(donjon_v35)
 	donjon_v35.setup(self)
+	# V36 : les monstres du temple.
+	monstres_v36 = preload("res://scripts/monstres_v36.gd").new()
+	monstres_v36.name = "Monstres_v36"
+	add_child(monstres_v36)
+	monstres_v36.setup(self, donjon_v35)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1714,6 +1720,11 @@ func _on_equip_v28(item_id: String) -> void:
 
 
 func _respawn_v28() -> void:
+	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
+	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
+		monstres_v36.respawn_player()
+		_show_message_v28("Vous vous êtes évanoui… et réveillé au pied de l'échelle.")
+		return
 	pc_root.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
 	_sync_physics_after_load_v11()
 	_show_message_v28("Vous vous êtes évanoui… Vous voici de retour au village.")
@@ -2261,7 +2272,10 @@ func _npc_ctx_v31() -> Dictionary:
 			"trappe_jungle": int(donjon_v35.state["trappe_jungle"]) if donjon_v35 != null else 0,
 			"temple": 1 if donjon_v35 != null and bool(donjon_v35.state["visite"]) else 0,
 			"braseros": 1 if donjon_v35 != null and bool(donjon_v35.state["braseros"]) else 0,
-			"fragment": 1 if donjon_v35 != null and bool(donjon_v35.state["coffre"]) else 0},
+			"fragment": 1 if donjon_v35 != null and bool(donjon_v35.state["coffre"]) else 0,
+			"tunnel": 1 if donjon_v35 != null and bool(donjon_v35.state["eboulement"]) else 0,
+			"grille": 1 if donjon_v35 != null and bool(donjon_v35.state["grille"]) else 0,
+			"monstres": int(donjon_v35.state["victoires"]) if donjon_v35 != null else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

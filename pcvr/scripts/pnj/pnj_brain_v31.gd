@@ -187,6 +187,8 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 				if int((ctx.get("trouvailles", {}) as Dictionary).get(str(v), 0)) > 0: return false
 			"tresors_min":
 				if int((ctx.get("trouvailles", {}) as Dictionary).get("tresors", 0)) < int(v): return false
+			"monstres_min":
+				if int((ctx.get("trouvailles", {}) as Dictionary).get("monstres", 0)) < int(v): return false
 			"arbres_min":
 				if int((ctx.get("trouvailles", {}) as Dictionary).get("arbres", 0)) < int(v): return false
 			"a_attrape":
