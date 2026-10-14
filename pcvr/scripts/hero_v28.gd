@@ -220,6 +220,13 @@ func _build_animations() -> void:
 	reel_b["LeftForeArm"] = Vector3(-70, 0, 0)
 	reel_b["Spine02"] = Vector3(-14, 4, 0)
 	poses.add_animation("peche_mouliner", _clip(0.5, true, [[0.0, reel_a, Vector3(0, -3, -2)], [0.25, reel_b, Vector3(0, -4, -3)], [0.5, reel_a, Vector3(0, -3, -2)]]))
+	# V33 : creuser à la pelle — on enfonce le fer, on fait levier, on rejette la terre.
+	var dig_up := _merge(stance, {"Spine02": Vector3(8, 0, 0), "RightArm": Vector3(-62, 0, -10), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-55, 0, -28), "LeftForeArm": Vector3(-60, 0, 0)})
+	var dig_in := _merge(stance, {"Spine02": Vector3(34, 0, 0), "Head": Vector3(-10, 0, 0), "RightArm": Vector3(-38, 0, -8), "RightForeArm": Vector3(-40, 0, 0),
+		"LeftArm": Vector3(-42, 0, -26), "LeftForeArm": Vector3(-35, 0, 0), "LeftUpLeg": Vector3(-40, 0, 0), "LeftLeg": Vector3(45, 0, 0)})
+	var dig_lift := _merge(stance, {"Spine02": Vector3(-6, 22, 0), "RightArm": Vector3(-80, 0, -20), "RightForeArm": Vector3(-85, 0, 0), "LeftArm": Vector3(-70, 0, -10), "LeftForeArm": Vector3(-50, 0, 0)})
+	poses.add_animation("creuser", _clip(1.25, false, [[0.0, arms_in, Vector3.ZERO], [0.25, dig_up, Vector3(0, -2, 0)], [0.55, dig_in, Vector3(0, -14, 4)],
+		[0.85, dig_lift, Vector3(0, -4, 0)], [1.25, arms_in, Vector3.ZERO]]))
 	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
 	anim.add_animation_library("v28", poses)
 
@@ -656,7 +663,7 @@ func _climb_tick(delta: float, axis: Vector2) -> void:
 		fall_top = body.position.y
 		return
 	var moving: bool = axis.length() > 0.1
-	_spend((0.85 if moving else 0.3) * delta)
+	_spend((0.85 if moving else 0.3) * delta * (0.2 if _on_ladder(chest) else 1.0))
 	_play("v28/climb", 0.15, 1.2 if moving else 0.0)
 	if stamina <= 0.0:
 		_let_go()
@@ -706,6 +713,26 @@ func _ledge_from_climb() -> Dictionary:
 	return {}
 
 
+## V33 : s'accrocher à une échelle (E au pied ou en haut) ; « foot » = pieds du joueur
+## contre l'échelle, « normal » = face de l'échelle tournée vers le joueur.
+func climb_ladder(foot: Vector3, normal: Vector3) -> void:
+	normal.y = 0.0
+	normal = normal.normalized()
+	body.global_position = foot
+	body.velocity = Vector3.ZERO
+	root.position = body.position
+	wall_normal = normal
+	facing = -normal
+	state = "escalade"
+	climb_time = 0.0
+	_play("v28/climb", 0.15, 0.0)
+
+
+## V33 : une échelle fatigue beaucoup moins qu'une paroi.
+func _on_ladder(hit: Dictionary) -> bool:
+	return not hit.is_empty() and hit.collider is Node and (hit.collider as Node).is_in_group("echelle_v33")
+
+
 func _climb_leap() -> void:
 	if stamina < 2.0:
 		return
@@ -740,6 +767,11 @@ func _start_roll() -> void:
 func attack() -> void:
 	# V32 : canne en main, le clic sert à pêcher (voir fishing_v32.gd).
 	if weapon == "canne_peche":
+		return
+	# V33 : pelle en main, le clic sert à creuser (voir digging_v33.gd).
+	if weapon == "pelle":
+		if state == "sol" and not blocking and main.digging_v33 != null:
+			main.digging_v33.dig_hero()
 		return
 	if state == "attaque":
 		combo_queued = true

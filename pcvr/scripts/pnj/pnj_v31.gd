@@ -80,14 +80,17 @@ func _build_body() -> void:
 				a.loop_mode = Animation.LOOP_LINEAR
 	# Teint hâlé de naufragé : le modèle tire ses couleurs de son émission (texture
 	# multipliée par la couleur d'émission), c'est donc elle qu'on réchauffe.
+	# V33 : chaque fiche peut donner sa teinte ([r, g, b]) ; par défaut, le hâle de Barnabé.
+	var tint: Array = profile.get("teinte", [0.95, 0.62, 0.42])
+	var tint_c := Color(float(tint[0]), float(tint[1]), float(tint[2]))
 	for mi in model.find_children("*", "MeshInstance3D", true, false):
 		var m: MeshInstance3D = mi
 		for s in range(m.mesh.get_surface_count()):
 			var src: Material = m.mesh.surface_get_material(s)
 			if src is StandardMaterial3D:
 				var tinted: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
-				tinted.albedo_color = Color(0.95, 0.6, 0.4)
-				tinted.emission = Color(0.95, 0.62, 0.42)
+				tinted.albedo_color = Color(tint_c.r, tint_c.g * 0.97, tint_c.b * 0.95)
+				tinted.emission = tint_c
 				m.set_surface_override_material(s, tinted)
 	# Pieds au sol : décalage mesuré sur la boîte du modèle.
 	floor_offset = 0.0
@@ -187,6 +190,10 @@ func _cyl(top: float, bottom: float, h: float) -> CylinderMesh:
 
 
 func _accessories() -> void:
+	# V33 : la tenue dépend du personnage.
+	if str(profile.get("id", "")) == "octave":
+		_accessories_octave()
+		return
 	# Chapeau de paille cabossé.
 	var hat := Node3D.new()
 	var straw := _mat(Color(0.96, 0.7, 0.36), 0.95)
@@ -220,6 +227,60 @@ func _accessories() -> void:
 	_part(parrot, _cyl(0.008, 0.008, 0.05), _mat(Color(0.3, 0.3, 0.3)), Vector3(0.02, 0.0, 0.01))
 	_part(parrot, _cyl(0.008, 0.008, 0.05), _mat(Color(0.3, 0.3, 0.3)), Vector3(-0.02, 0.0, 0.01))
 	_attach("LeftShoulder", Vector3(13.0, 9.0, -1.0), parrot)
+
+
+## V33 : Octave Taillefer — lunettes de forge sur le front, grosse moustache, tablier de
+## cuir, marteau à la ceinture, et Clou, son ouistiti, sur l'épaule droite.
+func _accessories_octave() -> void:
+	var leather := _mat(Color(0.36, 0.22, 0.12), 0.85)
+	var brass := _mat(Color(0.75, 0.58, 0.25), 0.35)
+	var glass := _mat(Color(0.35, 0.55, 0.5), 0.15)
+	# Lunettes de forge relevées sur le front
+	var goggles := Node3D.new()
+	for sx in [-1.0, 1.0]:
+		_part(goggles, _cyl(0.05, 0.05, 0.035), brass, Vector3(sx * 0.062, 0, 0), Vector3.ONE, Vector3(90, 0, 0))
+		_part(goggles, _cyl(0.04, 0.04, 0.04), glass, Vector3(sx * 0.062, 0, 0.003), Vector3.ONE, Vector3(90, 0, 0))
+	_part(goggles, _cyl(0.012, 0.012, 0.03), brass, Vector3.ZERO, Vector3.ONE, Vector3(0, 0, 90))
+	_attach("Head", Vector3(0, 29.0, 18.0), goggles, Vector3(-28, 0, 0))
+	# Moustache broussailleuse poivre et sel
+	var stache := Node3D.new()
+	var grey := _mat(Color(0.55, 0.5, 0.46), 1.0)
+	for sx in [-1.0, 1.0]:
+		_part(stache, _sphere(0.055), grey, Vector3(sx * 0.055, 0, 0), Vector3(1.5, 0.55, 0.7), Vector3(0, 0, sx * -18))
+	_attach("Head", Vector3(0, 9.0, 19.0), stache, Vector3(5, 0, 0))
+	# Tablier de cuir (bavette sur la poitrine, pan sur les cuisses)
+	var bib := Node3D.new()
+	_part(bib, _sphere(0.2), leather, Vector3.ZERO, Vector3(0.95, 1.0, 0.12))
+	_attach("Spine02", Vector3(0, 2.0, 13.0), bib)
+	var skirt := Node3D.new()
+	_part(skirt, _sphere(0.22), leather, Vector3.ZERO, Vector3(0.95, 1.25, 0.1))
+	_attach("Hips", Vector3(0, -14.0, 13.0), skirt, Vector3(8, 0, 0))
+	# Marteau à la ceinture
+	var hammer := Node3D.new()
+	_part(hammer, _cyl(0.014, 0.016, 0.3), _mat(Color(0.5, 0.34, 0.2), 0.8), Vector3.ZERO)
+	_part(hammer, _cyl(0.03, 0.03, 0.12), _mat(Color(0.3, 0.3, 0.32), 0.4), Vector3(0, -0.15, 0), Vector3.ONE, Vector3(0, 0, 90))
+	_attach("Hips", Vector3(-17.0, -2.0, 4.0), hammer, Vector3(0, 0, 8))
+	# Clou, le ouistiti, assis sur l'épaule droite (sa tête bouge, comme Gaston)
+	parrot = Node3D.new()
+	var fur := _mat(Color(0.42, 0.3, 0.2), 1.0)
+	var face := _mat(Color(0.85, 0.72, 0.58), 0.9)
+	_part(parrot, _sphere(0.07), fur, Vector3(0, 0.08, 0), Vector3(1.0, 1.25, 0.95))
+	for sx in [-1.0, 1.0]:
+		_part(parrot, _cyl(0.018, 0.016, 0.1), fur, Vector3(sx * 0.05, 0.0, 0.04), Vector3.ONE, Vector3(-70, 0, 0))
+	var head := Node3D.new()
+	head.name = "Tete"
+	head.position = Vector3(0, 0.19, 0.01)
+	parrot.add_child(head)
+	_part(head, _sphere(0.055), fur, Vector3.ZERO)
+	_part(head, _sphere(0.038), face, Vector3(0, -0.005, 0.03), Vector3(1.0, 0.9, 0.6))
+	for sx in [-1.0, 1.0]:
+		_part(head, _sphere(0.022), face, Vector3(sx * 0.055, 0.01, 0), Vector3(0.5, 1.0, 1.0))
+		_part(head, _sphere(0.009), _mat(Color(0.05, 0.04, 0.03), 0.2), Vector3(sx * 0.016, 0.01, 0.058))
+	# Longue queue enroulée
+	for k in range(6):
+		var t: float = float(k) / 5.0
+		_part(parrot, _sphere(0.016), fur, Vector3(-0.02 - t * 0.04, -0.02 - t * 0.2 + sin(t * 3.0) * 0.03, -0.06 - sin(t * 2.5) * 0.06))
+	_attach("RightShoulder", Vector3(-13.0, 9.0, -1.0), parrot)
 
 
 # =================================================================== sol et déplacement

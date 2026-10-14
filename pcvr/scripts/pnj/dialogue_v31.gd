@@ -1,6 +1,6 @@
 extends Node3D
 ## V31 : fenêtre de dialogue, la même pour tous les personnages.
-## PC : panneau en bas d'écran, texte qui s'écrit, choix à la souris ou aux touches 1 à 9,
+## PC : panneau en bas d'écran, texte qui s'écrit, choix à la souris ou aux touches 1 à 9 (et 0),
 ## Espace / E pour finir d'afficher le texte, Échap pour prendre congé.
 ## VR : panneau flottant près du personnage, stick droit pour choisir, gâchette pour répondre,
 ## bouton B pour prendre congé.
@@ -17,7 +17,7 @@ var _layer: CanvasLayer
 var _name: Label
 var _mood: Label
 var _text: Label
-var _box: VBoxContainer
+var _box: GridContainer
 var _buttons: Array = []
 var _typing: float = 0.0
 var _vr_panel: Node3D
@@ -57,6 +57,8 @@ func _build_pc() -> void:
 	panel.offset_right = 470
 	panel.offset_top = -330
 	panel.offset_bottom = -24
+	# V33 : avec beaucoup de choix (boutique), le panneau grandit vers le haut.
+	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	var ps := _style(Color(0.025, 0.08, 0.12, 0.93), Color(0.98, 0.76, 0.32), 16, 2)
 	ps.set_content_margin_all(18)
 	panel.add_theme_stylebox_override("panel", ps)
@@ -81,8 +83,10 @@ func _build_pc() -> void:
 	_text.add_theme_font_size_override("font_size", 18)
 	_text.add_theme_color_override("font_color", Color(0.94, 0.95, 0.92))
 	col.add_child(_text)
-	_box = VBoxContainer.new()
-	_box.add_theme_constant_override("separation", 4)
+	_box = GridContainer.new()
+	_box.columns = 1
+	_box.add_theme_constant_override("h_separation", 8)
+	_box.add_theme_constant_override("v_separation", 4)
 	col.add_child(_box)
 
 
@@ -157,9 +161,13 @@ func show_line(who: String, mood_word: String, text: String, new_choices: Array)
 		for b in _buttons:
 			b.queue_free()
 		_buttons.clear()
+		# V33 : au-delà de 5 choix, deux colonnes.
+		_box.columns = 2 if choices.size() > 5 else 1
 		for i in range(choices.size()):
 			var b := Button.new()
-			b.text = "%d.  %s" % [i + 1, choices[i]["label"]]
+			b.text = "%d.  %s" % [(i + 1) % 10, choices[i]["label"]]
+			b.custom_minimum_size = Vector2(446 if _box.columns == 2 else 900, 0)
+			b.clip_text = true
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.focus_mode = Control.FOCUS_NONE
 			b.add_theme_font_size_override("font_size", 16)
@@ -205,10 +213,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif choices.size() == 1:
 				_pick(0)
 			get_viewport().set_input_as_handled()
-		elif k >= KEY_1 and k <= KEY_9:
-			# Pas besoin d'attendre la fin du texte pour répondre.
+		elif (k >= KEY_1 and k <= KEY_9) or k == KEY_0:
+			# Pas besoin d'attendre la fin du texte pour répondre (0 = dixième choix).
 			_text.visible_characters = -1
-			_pick(k - KEY_1)
+			_pick(9 if k == KEY_0 else k - KEY_1)
 			get_viewport().set_input_as_handled()
 		elif k == KEY_ESCAPE:
 			chosen.emit("au_revoir" if _has_choice("au_revoir") else "fermer")

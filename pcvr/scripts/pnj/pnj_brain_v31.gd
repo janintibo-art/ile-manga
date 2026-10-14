@@ -33,6 +33,8 @@ func reset() -> void:
 		"visites": 0, "premiere": -1.0, "derniere": -1.0,
 		"cadeaux": {}, "dernier_cadeau": "", "nb_cadeaux": 0,
 		"sujets": {}, "faits": {}, "dites": [], "quete": "", "journal": [],
+		# V33 : commerce (achats par objet, pièces dépensées et gagnées, marchandage par visite)
+		"achats": {}, "depense": 0, "ventes": 0, "gain": 0, "marchande": -1, "remise": -1,
 	}
 
 
@@ -167,6 +169,15 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 				if int((ctx.get("peche", {}) as Dictionary).get("total", 0)) < int(v): return false
 			"peche_max":
 				if int((ctx.get("peche", {}) as Dictionary).get("total", 0)) > int(v): return false
+			# V33 : les habitants savent qui le joueur a déjà rencontré.
+			"a_rencontre":
+				if int((ctx.get("rencontres", {}) as Dictionary).get(str(v), 0)) <= 0: return false
+			"pas_rencontre":
+				if int((ctx.get("rencontres", {}) as Dictionary).get(str(v), 0)) > 0: return false
+			"achats_min":
+				if int(memoire.get("depense", 0)) < int(v): return false
+			"a_achete":
+				if int((memoire.get("achats", {}) as Dictionary).get(str(v), 0)) <= 0: return false
 			"a_attrape":
 				if int(((ctx.get("peche", {}) as Dictionary).get("especes", {}) as Dictionary).get(str(v), 0)) <= 0: return false
 	return true
@@ -211,6 +222,8 @@ func _fill(text: String, ctx: Dictionary) -> String:
 	var vars := {
 		"{nb_poissons}": str(int(peche.get("total", 0))), "{record}": record,
 		"{bouton}": "la gâchette" if bool(ctx.get("vr", false)) else "le clic",
+		"{depense}": str(int(memoire.get("depense", 0))), "{objet}": _item_name(str(ctx.get("_objet", "")), ctx),
+		"{prix}": str(int(ctx.get("_prix", 0))), "{pieces}": str(int((ctx.get("objets", {}) as Dictionary).get("piece", 0))),
 		"{nb_especes}": str((peche.get("especes", {}) as Dictionary).size()),
 		"{surnom}": surnom(), "{visites}": str(memoire["visites"]), "{absence}": _absence_text(absent),
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,
@@ -344,8 +357,11 @@ func topics(ctx: Dictionary) -> Array:
 	# V32 : la pêche, si le personnage a quelque chose à en dire.
 	if ((data.get("repliques", {}) as Dictionary).get("peche", []) as Array).size() > 0:
 		t.append({"id": "peche", "label": "Tu sais pêcher ?" if int((memoire["sujets"] as Dictionary).get("peche", 0)) == 0 else "Parlons pêche."})
+	# V33 : un marchand ouvre sa boutique.
+	if data.has("boutique"):
+		t.insert(1, {"id": "boutique", "label": "Montre-moi ta marchandise."})
 	if str(memoire["quete"]) == "demandee":
-		t.append({"id": "quete", "label": "À propos de tes coquillages…"})
+		t.append({"id": "quete", "label": str((data.get("quete", {}) as Dictionary).get("sujet", "À propos de tes coquillages…"))})
 	if int(memoire["visites"]) >= 3:
 		t.append({"id": "souvenir", "label": "Tu te souviens de moi ?"})
 	if not (ctx.get("objets", {}) as Dictionary).is_empty():
@@ -367,6 +383,10 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		return {"texte": _dress(_fill(str(r["t"]), ctx), "reponse"), "geste": "parle", "choix": topics(ctx)}
 	if choice.begins_with("don:"):
 		return _gift(choice.substr(4), ctx)
+	if choice.begins_with("achat:"):
+		return _buy(choice.substr(6), ctx)
+	if choice.begins_with("vente:"):
+		return _sell(choice.substr(6), ctx)
 	var sujets: Dictionary = memoire["sujets"]
 	match choice:
 		"cadeau":
@@ -381,6 +401,12 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 			return {"texte": "Bon. Une autre fois, peut-être.", "geste": "parle", "choix": topics(ctx)}
 		"quete":
 			return _quest_turn_in(ctx)
+		"boutique":
+			return _shop_open(ctx)
+		"marchander":
+			return _haggle(ctx)
+		"vendre_tout":
+			return _sell_all(ctx)
 		"souvenir":
 			var out: Dictionary = say("souvenir", ctx)
 			out["texte"] = str(out["texte"]) + "\n" + _memories_text(ctx)
@@ -435,7 +461,14 @@ func _memories_text(ctx: Dictionary) -> String:
 	if faits.has("coquillage_prefere"):
 		lines.append("Tu préfères les coquillages %s." % ("ronds" if faits["coquillage_prefere"] == "ronds" else ("pointus" if faits["coquillage_prefere"] == "pointus" else "… aucun, hélas")))
 	if str(memoire["quete"]) == "finie":
-		lines.append("Et grâce à toi, ma collection est complète.")
+		lines.append(str((data.get("quete", {}) as Dictionary).get("souvenir", "Et grâce à toi, ma collection est complète.")))
+	if int(memoire.get("depense", 0)) > 0:
+		var n_items: int = 0
+		for k in memoire["achats"]:
+			n_items += int(memoire["achats"][k])
+		lines.append("Tu m'as acheté %d objet%s, pour %d pièces." % [n_items, "s" if n_items > 1 else "", int(memoire["depense"])])
+	if int(memoire.get("ventes", 0)) > 0:
+		lines.append("Et tu m'as vendu %d prise%s." % [int(memoire["ventes"]), "s" if int(memoire["ventes"]) > 1 else ""])
 	if faits.has("canne"):
 		var total: int = int((ctx.get("peche", {}) as Dictionary).get("total", 0))
 		lines.append("Je t'ai confié ma vieille canne" + (" et tu as sorti %d prise%s de l'eau." % [total, "s" if total > 1 else ""] if total > 0 else ", et tu n'as encore rien attrapé avec."))
@@ -479,6 +512,10 @@ func _gift(item: String, ctx: Dictionary) -> Dictionary:
 func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 	var q: Dictionary = data.get("quete", {})
 	if str(memoire["quete"]) != "demandee":
+		if ((data.get("repliques", {}) as Dictionary).get("quete_inconnue", []) as Array).size() > 0:
+			var unk: Dictionary = say("quete_inconnue", ctx)
+			unk["choix"] = topics(ctx)
+			return unk
 		return {"texte": "Mes coquillages ? Quels coquillages ? Ah… je ne t'ai encore rien demandé, il me semble.", "geste": "parle", "choix": topics(ctx)}
 	var have: int = int((ctx.get("objets", {}) as Dictionary).get(str(q.get("objet", "")), 0))
 	if have < int(q.get("nombre", 1)):
@@ -529,3 +566,193 @@ func load_data(d: Dictionary) -> void:
 	if m is Dictionary:
 		for k in m:
 			memoire[k] = m[k]
+
+
+# =================================================================== V33 : boutique
+## Fiche : "boutique": {"vend": {objet: prix de base}, "achete": {objet: prix de base}}.
+## Les prix suivent l'amitié (jusqu'à -30 %), l'humeur (+15 % s'il est contrarié) et le
+## marchandage réussi pendant la visite (-15 %). Fâché pour de bon, il ferme boutique.
+
+func prix(id: String) -> int:
+	var base: float = float(((data.get("boutique", {}) as Dictionary).get("vend", {}) as Dictionary).get(id, 0))
+	var f: float = 1.25 - clampf(affinite, 0.0, 100.0) / 100.0 * 0.4
+	if humeur < -0.1:
+		f += 0.15
+	if int(memoire.get("remise", -1)) == int(memoire["visites"]):
+		f *= 0.85
+	return maxi(1, int(round(base * f)))
+
+
+func prix_rachat(id: String) -> int:
+	var base: float = float(((data.get("boutique", {}) as Dictionary).get("achete", {}) as Dictionary).get(id, 0))
+	if base <= 0.0:
+		return 0
+	var f: float = 0.8 + clampf(affinite, 0.0, 100.0) / 100.0 * 0.4
+	if humeur < -0.1:
+		f -= 0.15
+	return maxi(1, int(round(base * f)))
+
+
+func _shop_closed() -> bool:
+	return humeur_famille() == "colere"
+
+
+## Choix de la boutique, calculés sur l'inventaire (après l'échange en cours, si besoin).
+func _shop_choices(ctx: Dictionary) -> Array:
+	var shop: Dictionary = data.get("boutique", {})
+	var objets: Dictionary = ctx.get("objets", {})
+	var place: Dictionary = ctx.get("place", {})
+	var noms: Dictionary = ctx.get("noms", {})
+	var list: Array = []
+	for id in shop.get("vend", {}):
+		var p: int = prix(str(id))
+		var label: String = "Acheter : %s — %d pièce%s" % [str(noms.get(id, id)), p, "s" if p > 1 else ""]
+		if int(place.get(id, 1)) <= 0 and int(objets.get(id, 0)) > 0:
+			label += " (déjà à toi)"
+		list.append({"id": "achat:" + str(id), "label": label})
+	# Ce qu'il rachète, du plus cher au moins cher (quatre lignes au plus).
+	var sells: Array = []
+	for id in shop.get("achete", {}):
+		if int(objets.get(id, 0)) > 0:
+			sells.append(str(id))
+	sells.sort_custom(func(a, b): return prix_rachat(a) > prix_rachat(b))
+	for i in range(mini(sells.size(), 4)):
+		var id2: String = sells[i]
+		var p2: int = prix_rachat(id2)
+		list.append({"id": "vente:" + id2, "label": "Vendre : %s ×%d — %d pièce%s l'unité" % [str(noms.get(id2, id2)), int(objets[id2]), p2, "s" if p2 > 1 else ""]})
+	if sells.size() > 1:
+		var total: int = 0
+		for id3 in sells:
+			total += prix_rachat(id3) * int(objets[id3])
+		list.append({"id": "vendre_tout", "label": "Tout vendre — %d pièces" % total})
+	if int(memoire.get("marchande", -1)) != int(memoire["visites"]):
+		list.append({"id": "marchander", "label": "Tu ne me ferais pas un prix ?"})
+	list.append({"id": "retour", "label": "Autre chose…"})
+	return list
+
+
+func _shop_reply(intent: String, ctx: Dictionary, after: Dictionary) -> Dictionary:
+	var r: Dictionary = say(intent, ctx)
+	r["choix"] = _shop_choices(after)
+	return r
+
+
+func _with_change(ctx: Dictionary, delta: Dictionary) -> Dictionary:
+	var c: Dictionary = ctx.duplicate(true)
+	var objets: Dictionary = c.get("objets", {})
+	var place: Dictionary = c.get("place", {})
+	for id in delta:
+		objets[id] = int(objets.get(id, 0)) + int(delta[id])
+		if int(objets[id]) <= 0:
+			objets.erase(id)
+		if place.has(id):
+			place[id] = maxi(0, int(place[id]) - int(delta[id]))
+	c["objets"] = objets
+	c["place"] = place
+	return c
+
+
+func _shop_open(ctx: Dictionary) -> Dictionary:
+	var sujets: Dictionary = memoire["sujets"]
+	sujets["boutique"] = int(sujets.get("boutique", 0)) + 1
+	if _shop_closed():
+		var r: Dictionary = say("boutique_fermee", ctx)
+		r["choix"] = topics(ctx)
+		return r
+	return _shop_reply("boutique", ctx, ctx)
+
+
+func _buy(id: String, ctx: Dictionary) -> Dictionary:
+	if _shop_closed():
+		var r0: Dictionary = say("boutique_fermee", ctx)
+		r0["choix"] = topics(ctx)
+		return r0
+	var p: int = prix(id)
+	var c: Dictionary = ctx.duplicate(true)
+	c["_objet"] = id
+	c["_prix"] = p
+	var have: int = int((ctx.get("objets", {}) as Dictionary).get("piece", 0))
+	if int((ctx.get("place", {}) as Dictionary).get(id, 1)) <= 0:
+		var intent: String = "achat_deja" if int((ctx.get("objets", {}) as Dictionary).get(id, 0)) > 0 else "achat_plein"
+		return _shop_reply(intent, c, ctx)
+	if have < p:
+		return _shop_reply("achat_pauvre", c, ctx)
+	var achats: Dictionary = memoire["achats"]
+	achats[id] = int(achats.get(id, 0)) + 1
+	memoire["depense"] = int(memoire.get("depense", 0)) + p
+	_mood(0.08)
+	_bond(2.0 + p * 0.05)
+	_remember("m'a acheté " + _item_name(id, ctx), float(ctx.get("now", 0.0)))
+	# Une réplique propre à l'objet (achat_<objet>) si la fiche en a une.
+	var specific: String = "achat_" + id
+	var intent2: String = specific if ((data.get("repliques", {}) as Dictionary).get(specific, []) as Array).size() > 0 else "achat"
+	var out: Dictionary = _shop_reply(intent2, c, _with_change(ctx, {"piece": -p, id: 1}))
+	out["prendre"] = [["piece", p]]
+	out["donner"] = [[id, 1]]
+	return out
+
+
+func _sell(id: String, ctx: Dictionary) -> Dictionary:
+	var have: int = int((ctx.get("objets", {}) as Dictionary).get(id, 0))
+	var p: int = prix_rachat(id)
+	if have <= 0 or p <= 0 or _shop_closed():
+		return _shop_open(ctx)
+	var c: Dictionary = ctx.duplicate(true)
+	c["_objet"] = id
+	c["_prix"] = p
+	memoire["ventes"] = int(memoire.get("ventes", 0)) + 1
+	memoire["gain"] = int(memoire.get("gain", 0)) + p
+	_bond(0.6)
+	var specific: String = "vente_" + id
+	var intent: String = specific if ((data.get("repliques", {}) as Dictionary).get(specific, []) as Array).size() > 0 else "vente"
+	var out: Dictionary = _shop_reply(intent, c, _with_change(ctx, {"piece": p, id: -1}))
+	out["prendre"] = [[id, 1]]
+	out["donner"] = [["piece", p]]
+	return out
+
+
+func _sell_all(ctx: Dictionary) -> Dictionary:
+	if _shop_closed():
+		return _shop_open(ctx)
+	var objets: Dictionary = ctx.get("objets", {})
+	var take: Array = []
+	var total: int = 0
+	var n: int = 0
+	var delta := {}
+	for id in (data.get("boutique", {}) as Dictionary).get("achete", {}):
+		var k: int = int(objets.get(id, 0))
+		if k > 0:
+			take.append([str(id), k])
+			total += prix_rachat(str(id)) * k
+			n += k
+			delta[id] = -k
+	if n == 0:
+		return _shop_open(ctx)
+	delta["piece"] = total
+	memoire["ventes"] = int(memoire.get("ventes", 0)) + n
+	memoire["gain"] = int(memoire.get("gain", 0)) + total
+	_bond(0.4 * n)
+	var c: Dictionary = ctx.duplicate(true)
+	c["_prix"] = total
+	var out: Dictionary = _shop_reply("vente_lot", c, _with_change(ctx, delta))
+	out["prendre"] = take
+	out["donner"] = [["piece", total]]
+	return out
+
+
+## Marchander : une fois par visite. Les chances montent avec l'amitié et la bonne humeur,
+## baissent s'il est radin ; un échec le vexe un peu.
+func _haggle(ctx: Dictionary) -> Dictionary:
+	if _shop_closed():
+		return _shop_open(ctx)
+	if int(memoire.get("marchande", -1)) == int(memoire["visites"]):
+		return _shop_reply("marchande_deja", ctx, ctx)
+	memoire["marchande"] = int(memoire["visites"])
+	var radin: float = float((data.get("traits", {}) as Dictionary).get("radin", 0.5))
+	var chance: float = clampf(0.3 + affinite / 120.0 + humeur * 0.25 - radin * 0.2, 0.05, 0.9)
+	if rng.randf() < chance:
+		memoire["remise"] = int(memoire["visites"])
+		_mood(-0.03)
+		return _shop_reply("marchande_oui", ctx, ctx)
+	_mood(-0.1)
+	return _shop_reply("marchande_non", ctx, ctx)

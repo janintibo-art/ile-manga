@@ -49,6 +49,13 @@ const ITEMS := {
 		"desc": "Légendaire. Barnabé dit qu'il n'en existe qu'un. Il se trompait."},
 	"vieille_botte": {"name": "Vieille botte", "art": "une vieille botte", "kind": "materiau", "max": 10,
 		"desc": "Gorgée d'eau, avec une algue en prime. Quelqu'un, quelque part, a froid au pied."},
+	# V33 : chez Octave Taillefer (cabane dans l'arbre, côté est de la jungle)
+	"pelle": {"name": "Pelle", "art": "une pelle", "kind": "outil", "equip": true, "max": 1, "damage": 2,
+		"desc": "Fer forgé par Octave. En main, clic (gâchette en VR) pour creuser le sable ou la terre : coquillages, pièces… et parfois un trésor."},
+	"hache": {"name": "Hache", "art": "une hache", "kind": "arme", "max": 1, "damage": 5,
+		"desc": "Lourde et bien équilibrée. Octave jure qu'elle a abattu un fromager. Dégâts : 5."},
+	"epee": {"name": "Épée d'acier", "art": "une épée d'acier", "kind": "arme", "max": 1, "damage": 6,
+		"desc": "Le chef-d'œuvre d'Octave : acier trempé, garde en laiton. Dégâts : 6."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -148,6 +155,25 @@ func add(id: String, n: int = 1) -> int:
 	return n - left
 
 
+## V33 : combien d'objets de ce type peuvent encore entrer (piles entamées + cases vides).
+func space_for(id: String) -> int:
+	if not ITEMS.has(id):
+		return 0
+	var cap: int = int(ITEMS[id]["max"])
+	var room: int = 0
+	var have: int = 0
+	for s in slots:
+		if s["id"] == id:
+			room += cap - int(s["n"])
+			have += int(s["n"])
+		elif s["id"] == "":
+			room += cap
+	# « max » vaut aussi pour le total des objets uniques (une seule pelle, une seule épée…).
+	if cap == 1:
+		return 0 if have >= 1 else mini(room, 1)
+	return room
+
+
 ## V31 : retire n objets d'un type (dons aux personnages, quêtes). Renvoie le nombre retiré.
 func remove(id: String, n: int) -> int:
 	var left: int = n
@@ -198,7 +224,10 @@ func use_slot(i: int) -> void:
 		"arme", "canne":
 			equip_item("" if equipped == id else id)
 		"outil":
-			notify.emit(str(info["desc"]))
+			if bool(info.get("equip", false)):
+				equip_item("" if equipped == id else id)
+			else:
+				notify.emit(str(info["desc"]))
 		_:
 			notify.emit("Cet objet servira plus tard.")
 
@@ -477,6 +506,35 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.05, 0.05, 0.022, 20), _mat("laiton", Color(0.72, 0.56, 0.24), 0.25), Vector3(0, 0.011, 0))
 			_part(m, _cyl(0.042, 0.042, 0.004, 20), _mat("cadran", Color(0.92, 0.88, 0.78), 0.5), Vector3(0, 0.023, 0))
 			_part(m, _box_mesh(Vector3(0.006, 0.003, 0.07)), _mat("aiguille", Color(0.75, 0.1, 0.08), 0.4), Vector3(0, 0.027, 0), Vector3(0, 30, 0))
+		"pelle":
+			# Le long de +Y : poignée en T en bas (dans la main), fer en haut.
+			var handle := _mat("manche", Color(0.5, 0.34, 0.2), 0.75)
+			var iron := _mat("fer", Color(0.3, 0.31, 0.33), 0.55)
+			iron.metallic = 0.4
+			_part(m, _box_mesh(Vector3(0.13, 0.03, 0.03)), handle, Vector3(0, -0.06, 0))
+			_part(m, _cyl(0.016, 0.018, 0.95, 8), handle, Vector3(0, 0.42, 0))
+			_part(m, _cyl(0.024, 0.02, 0.1, 8), iron, Vector3(0, 0.93, 0))
+			_part(m, _box_mesh(Vector3(0.21, 0.24, 0.012)), iron, Vector3(0, 1.08, 0.01), Vector3(-8, 0, 0))
+			_part(m, _box_mesh(Vector3(0.15, 0.06, 0.012)), iron, Vector3(0, 1.215, 0.03), Vector3(-8, 0, 0))
+		"hache":
+			var haft := _mat("manche_hache", Color(0.56, 0.38, 0.22), 0.7)
+			var head := _mat("fer_hache", Color(0.4, 0.42, 0.45), 0.3)
+			head.metallic = 0.8
+			_part(m, _cyl(0.017, 0.021, 0.72, 8), haft, Vector3(0, 0.3, 0))
+			_part(m, _cyl(0.024, 0.024, 0.09, 8), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.0, 0))
+			_part(m, _box_mesh(Vector3(0.05, 0.07, 0.05)), head, Vector3(0, 0.62, 0))
+			_part(m, _box_mesh(Vector3(0.012, 0.13, 0.17)), head, Vector3(0, 0.62, 0.1))
+			_part(m, _box_mesh(Vector3(0.008, 0.17, 0.02)), _mat("fil_hache", Color(0.8, 0.82, 0.85), 0.15), Vector3(0, 0.62, 0.19))
+		"epee":
+			var steel := _mat("acier", Color(0.78, 0.8, 0.83), 0.18)
+			steel.metallic = 0.9
+			var brass := _mat("laiton", Color(0.72, 0.56, 0.24), 0.25)
+			brass.metallic = 0.8
+			_part(m, _cyl(0.015, 0.017, 0.15, 8), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.0, 0))
+			_part(m, _box_mesh(Vector3(0.2, 0.025, 0.04)), brass, Vector3(0, 0.09, 0))
+			_part(m, _box_mesh(Vector3(0.045, 0.7, 0.008)), steel, Vector3(0, 0.45, 0))
+			_part(m, _box_mesh(Vector3(0.032, 0.032, 0.008)), steel, Vector3(0, 0.8, 0), Vector3(0, 0, 45))
+			_part(m, _sphere(0.022), brass, Vector3(0, -0.09, 0))
 		"epee_bois":
 			# Construite le long de +Y : poignée en bas, lame vers le haut.
 			var wood := _mat("lame_bois", Color(0.72, 0.56, 0.36), 0.6)
@@ -794,6 +852,8 @@ func _refresh_pc() -> void:
 			_use_button.text = "Manger"
 		"arme", "canne":
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
+		"outil":
+			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else "Examiner"
 		_:
 			_use_button.text = "Examiner"
 

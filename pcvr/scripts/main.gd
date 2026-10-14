@@ -58,6 +58,12 @@ const ISLAND_DOCK_V29 := [Vector3(0.0, 1.0, -56.5), Vector3(0.0, 1.0, -72.5)]
 var npcs_v31: Array = []
 var dialogue_v31: Node3D
 var fishing_v32: Node3D
+# V33 : le rival de Barnabé (cabane dans l'arbre, boutique) et la pelle.
+var flora_v30: Node3D
+var tree_spot_v33: Dictionary = {}
+var treehouse_v33: Node3D
+var digging_v33: Node3D
+var vr_ladder_v33: Dictionary = {}
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -901,6 +907,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		if fishing_v32 != null:
 			fishing_v32.cancel("")
 			fishing_v32.load_data({})
+		if digging_v33 != null:
+			digging_v33.load_data({})
+		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
 		var data: Dictionary = SaveStore.read_slot(slot)
@@ -922,6 +931,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			var fish_data: Variant = data.get("peche", {})
 			fishing_v32.cancel("")
 			fishing_v32.load_data(fish_data if fish_data is Dictionary else {})
+		if digging_v33 != null:
+			var dig_data: Variant = data.get("fouilles", {})
+			digging_v33.load_data(dig_data if dig_data is Dictionary else {})
+		vr_ladder_v33 = {}
 		for npc in npcs_v31:
 			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
 			npc.load_data(one if one is Dictionary else {})
@@ -967,6 +980,8 @@ func _save_slot(slot: int) -> void:
 	extra["pnj"] = pnj
 	if fishing_v32 != null:
 		extra["peche"] = fishing_v32.serialize()
+	if digging_v33 != null:
+		extra["fouilles"] = digging_v33.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -999,6 +1014,8 @@ func _physics_process(delta: float) -> void:
 	if xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
+		elif not vr_ladder_v33.is_empty():
+			_vr_ladder_tick_v33(delta)
 		elif dialogue_v31 != null and dialogue_v31.opened:
 			dialogue_v31.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
 		else:
@@ -1457,6 +1474,18 @@ func _doors_update_v27() -> void:
 		var boat_text: String = boat_v29.prompt(_player_pos_v27())
 		if boat_text != "":
 			text = boat_text
+	var ladder: String = treehouse_v33.ladder_side(_player_pos_v27()) if playing and treehouse_v33 != null else ""
+	if ladder != "" and not xr_active and hero_v28 != null and hero_v28.state in ["sol", "peche"]:
+		text = "E : monter à l'échelle" if ladder == "bas" else "E : descendre l'échelle"
+	if treehouse_v33 != null:
+		treehouse_v33.show_vr_hint(ladder if xr_active and playing and vr_ladder_v33.is_empty() else "")
+	if xr_active and playing and ladder != "" and vr_ladder_v33.is_empty() and _nearest_npc_v31() == null:
+		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
+			_vr_ladder_start_v33(ladder)
+		trigger_ready_v27 = right_hand.get_float("trigger") <= 0.7
+		if door_prompt_v27 != null:
+			door_prompt_v27.text = ""
+		return
 	var near_npc: Node3D = _nearest_npc_v31() if playing else null
 	if near_npc != null and not xr_active:
 		text = "E : parler à " + str(near_npc.display_name).split(" ")[0]
@@ -1523,6 +1552,11 @@ func _create_gameplay_v28() -> void:
 	fishing_v32.name = "Peche_v32"
 	add_child(fishing_v32)
 	fishing_v32.setup(self)
+	# V33 : creuser avec la pelle.
+	digging_v33 = preload("res://scripts/digging_v33.gd").new()
+	digging_v33.name = "Fouilles_v33"
+	add_child(digging_v33)
+	digging_v33.setup(self)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
 	_spawn_world_v28.call_deferred()
 
@@ -1558,6 +1592,17 @@ func _interact_v28() -> void:
 	if npc != null and (boat_v29 == null or not boat_v29.driving):
 		_talk_v31(npc)
 		return
+	# V33 : l'échelle de la cabane perchée.
+	if treehouse_v33 != null and hero_v28 != null and hero_v28.state in ["sol", "peche"]:
+		match treehouse_v33.ladder_side(p):
+			"bas":
+				hero_v28.climb_ladder(treehouse_v33.ladder_foot + Vector3.UP * 0.05, treehouse_v33.ladder_normal)
+				_show_message_v28("Z pour monter, S pour descendre.")
+				return
+			"haut":
+				hero_v28.climb_ladder(treehouse_v33.ladder_hang, treehouse_v33.ladder_normal)
+				_show_message_v28("S pour descendre, Z pour remonter.")
+				return
 	if boat_v29 != null:
 		if boat_v29.driving:
 			_leave_boat_v29()
@@ -1634,6 +1679,11 @@ func _vr_actions_v28(delta: float) -> void:
 		# Près d'une porte ou d'un habitant, la gâchette garde son usage ; sinon elle pêche.
 		var free_hand: bool = fishing_v32.state != "repos" or (_door_distance_v28() > 2.0 and _nearest_npc_v31() == null)
 		fishing_v32.vr_tick(right_hand.get_float("trigger") if fishing_v32.rod_in_hand() and free_hand else 0.0)
+		# V33 : pelle en main, gâchette = creuser devant soi.
+		var dig_now: bool = right_hand.get_float("trigger") > 0.7
+		if digging_v33 != null and inventory_v28.equipped == "pelle" and free_hand and dig_now and not vr_buttons_v28.get("pelle", false):
+			digging_v33.dig_vr()
+		vr_buttons_v28["pelle"] = dig_now
 	if combat_v28 != null:
 		var armed: bool = inventory_v28 != null and inventory_v28.equipped != ""
 		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
@@ -1679,14 +1729,20 @@ func _create_jungle_v29() -> void:
 	if not cabin_spot_v31.is_empty():
 		# La cabane suit la pente sur ses pilotis : le sol n'est pas retouché.
 		pass
+	# V33 : le grand fromager d'Octave, sur la côte est (de l'autre côté de l'île).
+	tree_spot_v33 = _tree_spot_v33()
 	jungle_v29.finish(OS.has_feature("ile_manga_pc"))
 	# V30 : la forêt tropicale de l'île.
 	var flora: Node3D = preload("res://scripts/jungle_flora_v30.gd").new()
+	flora_v30 = flora
 	flora.name = "Foret_jungle_v30"
 	add_child(flora)
 	if not cabin_spot_v31.is_empty():
 		var lc: Vector3 = cabin_spot_v31["pos"] - jungle_v29.CENTER
 		flora.clearings.append([Vector2(lc.x, lc.z) + Vector2(cabin_spot_v31["facing"].x, cabin_spot_v31["facing"].z) * 2.5, 9.5])
+	if not tree_spot_v33.is_empty():
+		var lt: Vector3 = tree_spot_v33["pos"] - jungle_v29.CENTER
+		flora.clearings.append([Vector2(lt.x, lt.z) + Vector2(tree_spot_v33["facing"].x, tree_spot_v33["facing"].z) * 3.0, 13.0])
 	flora.build(jungle_v29, OS.has_feature("ile_manga_pc"))
 	boat_v29 = preload("res://scripts/boat_v29.gd").new()
 	boat_v29.name = "Bateau_v29"
@@ -1716,6 +1772,45 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		body.position.x = flat.x
 		body.position.z = flat.y
 	last_ok_v29[key] = body.position
+
+
+## V33 (VR) : gâchette au pied ou en haut de l'échelle : on grimpe (ou on descend) en
+## douceur, le long des barreaux, puis on pose le pied sur la plate-forme (ou au sol).
+func _vr_ladder_start_v33(side: String) -> void:
+	var t: Node3D = treehouse_v33
+	var out: Vector3 = t.ladder_normal * 0.5
+	var a: Vector3 = vr_body.global_position
+	var path: Array
+	if side == "bas":
+		var foot: Vector3 = t.ladder_foot
+		path = [a, Vector3(foot.x, a.y, foot.z), Vector3(foot.x, t.ladder_top.y + 0.1, foot.z), t.ladder_top + Vector3.UP * 0.1]
+	else:
+		var hang: Vector3 = t.ladder_top + t.ladder_normal * 1.15
+		path = [a, Vector3(hang.x, a.y + 0.1, hang.z), Vector3(hang.x, t.ladder_foot.y + 0.1, hang.z), t.ladder_foot + Vector3.UP * 0.1]
+	vr_ladder_v33 = {"path": path, "seg": 0, "u": 0.0}
+	if fishing_v32 != null:
+		fishing_v32.cancel("")
+
+
+func _vr_ladder_tick_v33(delta: float) -> void:
+	var path: Array = vr_ladder_v33["path"]
+	var seg: int = int(vr_ladder_v33["seg"])
+	var a: Vector3 = path[seg]
+	var b: Vector3 = path[seg + 1]
+	var speed: float = 1.3 if absf(b.y - a.y) > 0.5 else 1.6
+	vr_ladder_v33["u"] = float(vr_ladder_v33["u"]) + delta * speed / maxf(a.distance_to(b), 0.05)
+	var u: float = minf(float(vr_ladder_v33["u"]), 1.0)
+	vr_body.global_position = a.lerp(b, u)
+	vr_body.velocity = Vector3.ZERO
+	var head: Vector3 = xr_camera.global_position
+	var head_offset := Vector3(head.x - xr_origin.global_position.x, 0.0, head.z - xr_origin.global_position.z)
+	xr_origin.position = Vector3(vr_body.position.x - head_offset.x, vr_body.position.y, vr_body.position.z - head_offset.z)
+	if u >= 1.0:
+		vr_ladder_v33["u"] = 0.0
+		vr_ladder_v33["seg"] = seg + 1
+		if seg + 2 >= path.size():
+			vr_ladder_v33 = {}
+			last_ok_v29.erase(str(vr_body.name))
 
 
 func _board_boat_v29() -> void:
@@ -1858,6 +1953,70 @@ func _create_npcs_v31() -> void:
 		npc.load_data(saved)
 	npcs_v31.append(npc)
 	print("ILE_MANGA_V31: cabane et habitant ", npc.display_name, " à ", npc.global_position)
+	_create_rival_v33()
+
+
+## V33 : le fromager et la cabane perchée d'Octave Taillefer, puis Octave lui-même.
+func _create_rival_v33() -> void:
+	if tree_spot_v33.is_empty() or inventory_v28 == null:
+		return
+	treehouse_v33 = preload("res://scripts/pnj/cabane_arbre_v33.gd").new()
+	add_child(treehouse_v33)
+	var mesh: Mesh = flora_v30.giant_mesh(2, OS.has_feature("ile_manga_pc")) if flora_v30 != null else null
+	treehouse_v33.build(self, tree_spot_v33["pos"], tree_spot_v33["facing"], inventory_v28, mesh)
+	await get_tree().physics_frame
+	var graph := {"comptoir": ["terrasse", "atelier"], "atelier": ["comptoir"], "terrasse": ["comptoir", "cote"],
+		"cote": ["terrasse", "balcon"], "balcon": ["cote"]}
+	var npc: Node3D = preload("res://scripts/pnj/pnj_v31.gd").new()
+	add_child(npc)
+	npc.setup(self, preload("res://scripts/pnj/octave_v33.gd").DATA, treehouse_v33.points.duplicate(), graph, "comptoir")
+	var saved: Variant = pending_pnj_v31.get("octave", {})
+	if saved is Dictionary and not (saved as Dictionary).is_empty():
+		npc.load_data(saved)
+	npcs_v31.append(npc)
+	print("ILE_MANGA_V33: cabane perchée et habitant ", npc.display_name, " à ", npc.global_position)
+
+
+## V33 : un endroit à peu près plat sur la côte est de la jungle (à l'opposé de la baie
+## de Barnabé), loin des pitons et de la gorge ; l'échelle regarde vers la baie.
+func _tree_spot_v33() -> Dictionary:
+	if jungle_v29 == null:
+		return {}
+	var c: Vector3 = jungle_v29.CENTER
+	var best: Dictionary = {}
+	var best_score: float = INF
+	for ti in range(-12, 19):
+		var theta: float = deg_to_rad(ti * 2.0)
+		for ri in range(52, 82, 2):
+			var r: float = jungle_v29._coast_radius(theta) * ri / 100.0
+			var lx: float = cos(theta) * r
+			var lz: float = sin(theta) * r
+			var near_tower: bool = false
+			for tw in jungle_v29.TOWERS:
+				if Vector2(lx - tw[0].x, lz - tw[0].y).length() < float(tw[1]) + 10.0:
+					near_tower = true
+			if near_tower or jungle_v29.gorge_distance(lx, lz) < 14.0:
+				continue
+			var wx: float = c.x + lx
+			var wz: float = c.z + lz
+			var h0: float = jungle_v29.height(wx, wz)
+			if h0 < 2.0:
+				continue
+			var lo: float = INF
+			var hi: float = -INF
+			for a in range(12):
+				for rr in [2.0, 4.0, 6.0]:
+					var h: float = jungle_v29.height(wx + cos(a * PI / 6.0) * rr, wz + sin(a * PI / 6.0) * rr)
+					lo = minf(lo, h)
+					hi = maxf(hi, h)
+			var score: float = (hi - lo) + absf(ti * 2.0 - 10.0) * 0.02
+			if score < best_score:
+				best_score = score
+				var to_bay: Vector3 = jungle_v29.dock_start - Vector3(wx, 0, wz)
+				to_bay.y = 0.0
+				best = {"pos": Vector3(wx, h0, wz), "facing": to_bay.normalized(), "drop": hi - lo}
+	print("ILE_MANGA_V33: fromager d'Octave ", best.get("pos", Vector3.ZERO), " dénivelé ", best.get("drop", 0.0))
+	return best
 
 
 func _nearest_npc_v31() -> Node3D:
@@ -1888,7 +2047,22 @@ func _npc_ctx_v31() -> Dictionary:
 		"noms": noms, "articles": arts,
 		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
 		"vr": xr_active,
+		"rencontres": _encounters_v33(),
+		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
+
+
+## V33 : qui le joueur a déjà rencontré (identifiant -> visites), pour que les habitants
+## parlent les uns des autres.
+func _encounters_v33() -> Dictionary:
+	var out := {}
+	for n in npcs_v31:
+		out[str(n.profile["id"])] = int(n.brain.memoire["visites"])
+	for id in pending_pnj_v31:
+		if not out.has(id) and pending_pnj_v31[id] is Dictionary:
+			var m: Variant = (pending_pnj_v31[id] as Dictionary).get("memoire", {})
+			out[id] = int((m as Dictionary).get("visites", 0)) if m is Dictionary else 0
+	return out
 
 
 func _talk_v31(npc: Node3D) -> void:

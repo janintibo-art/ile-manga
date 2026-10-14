@@ -12,6 +12,7 @@ extends RefCounted
 ##   vie_basse (true/false), quete ("", "demandee", "finie"), sujet_min ([sujet, nombre]),
 ##   V32 : pas_objet, tient (objet en main), dernier_cadeau, peche_min / peche_max (prises),
 ##   a_attrape (espèce déjà pêchée).
+##   V33 : a_rencontre / pas_rencontre (autre habitant), achats_min, a_achete (boutique).
 ## Variables dans les textes : {surnom} {visites} {absence} {arme} {objet_joueur}
 ##   {dernier_cadeau} {nb_cadeaux} {coquillages} {manque} {humeur_mot} {sujet_prefere}
 ##   V32 : {nb_poissons} {record} {nb_especes} {bouton} (« le clic » ou « la gâchette »)
@@ -66,6 +67,10 @@ const DATA := {
 			{"t": "Bonjour bonjour ! Gaston et moi discutions justement de toi. Enfin, surtout Gaston.", "si": {"visites_min": 2}},
 			{"t": "Ah, l'aventurier en personne ! Alors, le vaste monde ?", "si": {"fait": "origine=aventurier", "visites_min": 2}},
 			{"t": "Le voisin du village ! Dis-moi, ils mangent toujours leurs soupes froides là-bas ?", "si": {"fait": "origine=village", "visites_min": 2}},
+			# V33 : le rival, Octave Taillefer
+			{"t": "Une épée d'acier ? C'est Octave qui te l'a vendue. Combien ? … Trop. Toujours trop.", "si": {"tient": "epee", "visites_min": 2}, "geste": "colere"},
+			{"t": "Une pelle d'Octave ! Hmpf. Elle creuse, je suppose. Creuse donc la plage d'ici : à marée basse j'y ai perdu des pièces.", "si": {"tient": "pelle", "visites_min": 2}},
+			{"t": "Tu sens le fer rouillé et le charbon. Tu viens de chez Octave, avoue.", "si": {"a_rencontre": "octave", "visites_min": 2, "pas_fait": "octave"}},
 			{"t": "Ah ! Le pêcheur ! Ma vieille canne te va comme un gant, {surnom}. Ça mord ?", "si": {"tient": "canne_peche", "visites_min": 2}, "geste": "rire"},
 			{"t": "Te voilà, l'ami des poissons ! {nb_poissons} prises, d'après Gaston. Il compte tout, ce volatile.", "si": {"peche_min": 5, "visites_min": 2}, "geste": "salut"},
 		],
@@ -108,6 +113,10 @@ const DATA := {
 			{"t": "Il paraît qu'il y a des ruines sous les racines des grands fromagers. Des escaliers qui ne mènent nulle part. Ou alors très loin.", "si": {"affinite_min": 30}},
 			{"t": "Entre nous… j'ai vu des lumières au sommet du plus grand piton, une nuit. Gaston dit que c'était la lune. Gaston dit beaucoup de choses.", "si": {"affinite_min": 40}},
 			{"t": "Un secret de cartographe : les jarres de ton village se reforment toutes seules. Personne ne sait pourquoi. Moi non plus. Mais je fais semblant.", "si": {"affinite_min": 50}},
+			# V33 : le rival
+			{"t": "De l'autre côté de l'île, à l'est, un vieux grincheux vit perché dans un arbre. Octave Taillefer. Il vend des pelles qui se tordent et des épées qui rouillent. Ne lui dis pas que tu me connais.", "si": {"pas_rencontre": "octave", "affinite_min": 20}},
+			{"t": "Tu es allé chez Octave ?! Il t'a dit que c'était ma faute, le naufrage ? C'est faux. La carte était juste. C'est le rocher qui était mal placé.", "si": {"a_rencontre": "octave"}, "geste": "colere"},
+			{"t": "Octave… regrette ? Vraiment ? Hmm. Il m'a quand même fabriqué la plus belle canne du monde. Ne lui répète pas que j'ai dit ça.", "si": {"fait": "octave=regrets"}, "humeur": 0.1},
 			{"t": "La boussole que je t'ai donnée ne montre pas le nord. Elle montre ce que tu cherches vraiment. En général, c'est le nord.", "si": {"quete": "finie"}},
 		],
 		# ------------------------------------------------------------ blagues
@@ -202,6 +211,12 @@ const DATA := {
 
 	# Questions qu'il pose une fois chacune ; la réponse est retenue et colore la suite.
 	"questions": [
+		{"id": "octave", "si": {"a_rencontre": "octave", "visites_min": 2}, "texte": "Alors… tu l'as vu, Octave. Il parle encore de moi ?",
+			"reponses": [
+				{"label": "Il dit que ta carte était fausse.", "valeur": "carte", "affinite": 1.0, "humeur": -0.25, "t": "FAUSSE ?! Ma carte était un chef-d'œuvre ! Gaston, rappelle-moi de ne plus jamais parler de ce bonhomme."},
+				{"label": "Il a l'air de regretter votre dispute.", "valeur": "regrets", "affinite": 3.0, "humeur": 0.2, "t": "… Il a dit ça ? Vingt-deux ans… Bon. On verra. Peut-être. Un jour. Pas aujourd'hui."},
+				{"label": "Je ne me mêle pas de vos histoires.", "valeur": "neutre", "affinite": 0.5, "humeur": 0.0, "t": "Sage. Très sage. Plus sage que nous deux réunis, ce qui n'est pas difficile."},
+			]},
 		{"id": "origine", "si": {"visites_max": 1}, "texte": "Dis-moi, d'où viens-tu, comme ça ?",
 			"reponses": [
 				{"label": "Du village, sur l'île d'en face.", "valeur": "village", "affinite": 3.0, "humeur": 0.05, "t": "Le village ! Je vois parfois vos lanternes la nuit. Ça me fait de la compagnie."},
