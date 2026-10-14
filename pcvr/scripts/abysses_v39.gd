@@ -9,7 +9,7 @@ extends Node3D
 ## celles qui suivent le chant de la fresque (lune, vague, soleil, serpent… deux fois)
 ## portent le marcheur, les autres s'enfoncent. Sur l'autre rive : la Porte de l'Abîme, ses
 ## deux serpents géants, le coffre des Abysses et la Pierre de l'Œil, qui réveille ce qui
-## dort derrière la porte (le combat final, à l'étape suivante).
+## dort derrière la porte ; la porte s'ouvre alors sur l'antre de Nâga (antre_v40.gd).
 ## Des vipères des abysses rôdent sur les deux rives.
 ## Repère : section « village » du temple (comme le sanctuaire).
 
@@ -48,6 +48,10 @@ var _barrier: MeshInstance3D
 var _barrier_mat: StandardMaterial3D
 var _statue_eyes: Array = []
 var _chest: Node3D
+# V40 : la Porte de l'Abîme s'ouvre sur l'antre de Nâga
+var _door_l: Node3D
+var _door_r: Node3D
+var _barrier_body: StaticBody3D
 var _respawning: bool = false
 var _on_wrong: float = 0.0
 var _clock: float = 0.0
@@ -98,6 +102,12 @@ func apply_state() -> void:
 	var awake: bool = bool(d.state["abime_eveil"])
 	for e in _statue_eyes:
 		(e as StandardMaterial3D).emission_energy_multiplier = 6.0 if awake else 0.6
+	var gate_open: bool = bool(d.state["porte_abime"])
+	if _door_l != null:
+		_door_l.rotation.y = PI * 0.5 if gate_open else 0.0
+		_door_r.rotation.y = -PI * 0.5 if gate_open else 0.0
+		_barrier.visible = not gate_open
+		_barrier_body.collision_layer = 0 if gate_open else 1
 	if _chest != null:
 		(_chest.get_node("Charniere") as Node3D).rotation.x = -1.8 if bool(d.state["coffre_abysses"]) else 0.0
 
@@ -397,7 +407,7 @@ func _build_lake(s: Node3D) -> void:
 	var top: float = BOTTOM_Y + 14.0
 	d._box(s, Vector3(LAKE_X1 - LAKE_X0 + 1.2, 0.5, 40.6), Vector3((LAKE_X0 + LAKE_X1) * 0.5, floor_y - 0.25, -132.3), d._mat("grotte"))
 	d._box(s, Vector3(LAKE_X1 - LAKE_X0 + 1.2, 0.6, 40.6), Vector3((LAKE_X0 + LAKE_X1) * 0.5, top + 0.3, -132.3), d._mat("grotte"))
-	_walls(s, LAKE_X0, LAKE_X1, -152.0, -112.6, floor_y, top - floor_y, "grotte", [["s", SHAFT_C.x, 4.0, BOTTOM_Y, BOTTOM_Y + 5.0]])
+	_walls(s, LAKE_X0, LAKE_X1, -152.0, -112.6, floor_y, top - floor_y, "grotte", [["s", SHAFT_C.x, 4.0, BOTTOM_Y, BOTTOM_Y + 5.0], ["n", -1.0, 6.4, BOTTOM_Y, BOTTOM_Y + 9.0]])
 	# Rives (le sol de la caverne est 3 m plus bas : c'est le fond du lac)
 	d._box(s, Vector3(LAKE_X1 - LAKE_X0, 3.0, 112.6 - 118.0 + 10.8), Vector3((LAKE_X0 + LAKE_X1) * 0.5, BOTTOM_Y - 1.5, -115.3), d._mat("grotte"))
 	d._box(s, Vector3(LAKE_X1 - LAKE_X0, 3.0, 152.0 + LAKE_Z0), Vector3((LAKE_X0 + LAKE_X1) * 0.5, BOTTOM_Y - 1.5, (LAKE_Z0 - 152.0) * 0.5), d._mat("grotte"))
@@ -482,9 +492,16 @@ func _build_far_shore(s: Node3D) -> void:
 	gate.name = "Porte_de_l_Abime"
 	s.add_child(gate)
 	gate.position = Vector3(-1.0, y, -151.7)
-	d._box(gate, Vector3(3.2, 9.0, 0.6), Vector3(-1.6, 4.5, 0), _obsidian(), false)
-	d._box(gate, Vector3(3.2, 9.0, 0.6), Vector3(1.6, 4.5, 0), _obsidian(), false)
-	d._box(gate, Vector3(0.06, 8.6, 0.62), Vector3(0, 4.5, 0.02), d._mat("noir"), false)
+	# Deux battants d'obsidienne sur gonds : ils pivotent vers l'antre (au nord).
+	_door_l = Node3D.new()
+	_door_l.position = Vector3(-3.2, 0, 0)
+	gate.add_child(_door_l)
+	d._box(_door_l, Vector3(3.2, 9.0, 0.6), Vector3(1.6, 4.5, 0), _obsidian(), false)
+	d._box(_door_l, Vector3(0.06, 8.6, 0.62), Vector3(3.2, 4.5, 0.02), d._mat("noir"), false)
+	_door_r = Node3D.new()
+	_door_r.position = Vector3(3.2, 0, 0)
+	gate.add_child(_door_r)
+	d._box(_door_r, Vector3(3.2, 9.0, 0.6), Vector3(-1.6, 4.5, 0), _obsidian(), false)
 	d._box(gate, Vector3(9.0, 1.2, 1.0), Vector3(0, 9.6, 0.1), d._mat("mur"), false)
 	for sx in [-1.0, 1.0]:
 		d._box(gate, Vector3(1.2, 9.0, 1.0), Vector3(sx * 3.9, 4.5, 0.1), d._mat("mur"), false)
@@ -494,7 +511,7 @@ func _build_far_shore(s: Node3D) -> void:
 	eye.emission = Color(0.3, 1.0, 0.5)
 	eye.emission_energy_multiplier = 0.6
 	_statue_eyes.append(eye)
-	_mesh(gate, SphereMesh.new(), eye, Vector3(0, 6.2, 0.33), Vector3.ZERO, Vector3(0.9, 0.5, 0.2))
+	_mesh(gate, SphereMesh.new(), eye, Vector3(0, 9.6, 0.62), Vector3.ZERO, Vector3(0.9, 0.5, 0.2))
 	# La barrière verte devant la porte
 	_barrier = MeshInstance3D.new()
 	var bq := QuadMesh.new()
@@ -517,6 +534,7 @@ func _build_far_shore(s: Node3D) -> void:
 	gcs.position = Vector3(0, 4.5, 1.2)
 	gb.add_child(gcs)
 	gate.add_child(gb)
+	_barrier_body = gb
 	var gl := OmniLight3D.new()
 	gl.light_color = Color(0.3, 1.0, 0.55)
 	gl.light_energy = 2.0
@@ -559,7 +577,11 @@ func _build_far_shore(s: Node3D) -> void:
 		"when": func(): return not bool(d.state["abime_eveil"])})
 	d._interactions.append({"id": "porte_abime", "pos": s.to_global(Vector3(-1.0, y, -149.6)), "radius": 2.6,
 		"text": "E : examiner la Porte de l'Abîme", "vr": "Gâchette : examiner la porte",
-		"call": func(): d._say("La Porte de l'Abîme, en pierre noire. Une lueur verte la protège. Derrière, quelque chose d'immense respire… (Le combat final, à l'étape suivante !)", 6.0)})
+		"call": func(): d._say("La Porte de l'Abîme, en pierre noire. Une lueur verte la protège. Derrière, quelque chose d'immense respire… La Pierre de l'Œil, juste là, attend peut-être l'amulette.", 6.0),
+		"when": func(): return not bool(d.state["abime_eveil"])})
+	d._interactions.append({"id": "ouvrir_abime", "pos": s.to_global(Vector3(-1.0, y, -149.6)), "radius": 2.6,
+		"text": "E : ouvrir la Porte de l'Abîme", "vr": "Gâchette : ouvrir la porte", "call": open_gate,
+		"when": func(): return bool(d.state["abime_eveil"]) and not bool(d.state["porte_abime"])})
 	# Le coffre des Abysses
 	_chest = Node3D.new()
 	_chest.name = "Coffre_abysses"
@@ -589,6 +611,24 @@ func _build_far_shore(s: Node3D) -> void:
 		_crystals(s, p[0], p[1], 3980 + int(p[0].x), 1.8)
 
 
+## V40 : la barrière s'éteint, les battants pivotent vers l'antre.
+func open_gate() -> void:
+	d._busy = true
+	d._say("Tu pousses les battants d'obsidienne. La barrière verte s'éteint dans un grésillement…", 4.0)
+	var fade := create_tween()
+	fade.tween_property(_barrier_mat, "albedo_color:a", 0.0, 1.0)
+	await fade.finished
+	_barrier.visible = false
+	_barrier_body.collision_layer = 0
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(_door_l, "rotation:y", PI * 0.5, 2.5).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(_door_r, "rotation:y", -PI * 0.5, 2.5).set_trans(Tween.TRANS_SINE)
+	await tw.finished
+	d.state["porte_abime"] = true
+	d._busy = false
+	d._say("Un souffle glacé sort de l'antre. Au bout du couloir, une immense caverne inondée… Prépare-toi.", 5.0)
+
+
 func _open_chest() -> void:
 	d.state["coffre_abysses"] = true
 	var hinge: Node3D = _chest.get_node("Charniere")
@@ -616,7 +656,7 @@ func _wake() -> void:
 		main.combat_v28.puff(_barrier.global_position, Color(0.4, 1.0, 0.6))
 	await get_tree().create_timer(0.8).timeout
 	d._busy = false
-	d._say("Un grondement monte des profondeurs. Derrière la Porte de l'Abîme, NÂGA, LE SERPENT DES ABYSSES, ouvre les yeux… Tu reprends l'amulette. (Le combat final, à l'étape suivante !)", 8.0)
+	d._say("Un grondement monte des profondeurs. Derrière la Porte de l'Abîme, NÂGA, LE SERPENT DES ABYSSES, ouvre les yeux… Tu reprends l'amulette. La barrière vacille : la porte peut s'ouvrir.", 8.0)
 
 
 # =================================================================== chaque image : dalles, eau, chutes
@@ -625,7 +665,7 @@ func _process(delta: float) -> void:
 	if d == null or main == null or not main.game_started or not bool(d.inside):
 		return
 	_clock += delta
-	if _barrier_mat != null:
+	if _barrier_mat != null and not bool(d.state["porte_abime"]):
 		var base_a: float = 0.32 if bool(d.state["abime_eveil"]) else 0.16
 		_barrier_mat.albedo_color.a = base_a + sin(_clock * 2.2) * 0.05
 	var s: Node3D = d.sections.get("village")

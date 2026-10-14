@@ -21,7 +21,7 @@ var main: Node
 var inside: bool = false
 var village_trap: Vector3 = Vector3.INF          # surface
 var jungle_trap: Vector3 = Vector3.INF
-var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false}
+var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false}
 var sections: Dictionary = {}                    # "village"/"jungle" -> Node3D (repère local)
 var spawn: Dictionary = {}                       # "village"/"jungle" -> [position, regard]
 var _interactions: Array = []                    # {id, pos, radius, text, vr, call, when}
@@ -65,6 +65,10 @@ var serpents: Node3D
 # V39 : le Puits des Abysses et le Lac Noir
 const AbyssesScript = preload("res://scripts/abysses_v39.gd")
 var abysses: Node3D
+# V40 : l'antre de Nâga, le combat final
+const AntreScript = preload("res://scripts/antre_v40.gd")
+var antre: Node3D
+var _bar_name: String = "Karkinos, le Crabe-Roi"
 
 
 func setup(main_node: Node) -> void:
@@ -83,6 +87,10 @@ func setup(main_node: Node) -> void:
 	abysses.name = "Abysses_v39"
 	add_child(abysses)
 	abysses.setup(self, main)
+	antre = AntreScript.new()
+	antre.name = "Antre_v40"
+	add_child(antre)
+	antre.setup(self, main)
 	_vr_hint = Label3D.new()
 	_vr_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_vr_hint.font_size = 40
@@ -631,6 +639,7 @@ func _build_village_section(at: Vector3, forward: Vector3) -> void:
 	serpents.build_door(s, Vector3(0, y0, -73.3))
 	serpents.build_sanctuary(s)
 	abysses.build(s)
+	antre.build(s)
 
 
 func _brazier(s: Node3D, symbol: String, p: Vector3) -> void:
@@ -1074,7 +1083,7 @@ func _update_bar(hp: int, hp_max: int) -> void:
 		_bar_fill.color = Color(0.85, 0.18, 0.1) if r > 0.5 else Color(1.0, 0.45, 0.05)
 	if _bar_vr != null:
 		var n: int = int(round(r * 20.0))
-		_bar_vr.text = "Karkinos, le Crabe-Roi\n" + "█".repeat(n) + "░".repeat(20 - n)
+		_bar_vr.text = _bar_name + "\n" + "█".repeat(n) + "░".repeat(20 - n)
 
 
 func _in_arena(p: Vector3) -> bool:
@@ -1106,6 +1115,8 @@ func _start_fight() -> void:
 	var hb: StaticBody3D = _herse.get_node("Grille_collision")
 	hb.collision_layer = 1
 	create_tween().tween_property(_herse, "position:y", -3.0, 0.5).set_trans(Tween.TRANS_QUAD)
+	_bar_name = "Karkinos, le Crabe-Roi"
+	_bar_label.text = _bar_name
 	_bar_layer.visible = not main.xr_active
 	if main.xr_active:
 		_bar_vr = Label3D.new()
@@ -1391,6 +1402,8 @@ func _apply_state() -> void:
 		serpents.apply_state()
 	if abysses != null:
 		abysses.apply_state()
+	if antre != null:
+		antre.apply_state()
 	if _passage != null:
 		_passage.position.y = (-3.0 - 3.8) if bool(state["passage"]) else -3.0
 		(_passage.get_node("Passage_collision") as StaticBody3D).collision_layer = 0 if bool(state["passage"]) else 1
@@ -1794,7 +1807,7 @@ func serialize() -> Dictionary:
 
 
 func load_data(d: Dictionary) -> void:
-	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false}
+	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false}
 	for k in state:
 		if d.has(k):
 			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires" or k == "serpents") else bool(d[k])
@@ -1807,4 +1820,6 @@ func load_data(d: Dictionary) -> void:
 	_wall_hp = 3
 	if fight:
 		_reset_fight()
+	if antre != null:
+		antre.on_load()
 	_apply_state()

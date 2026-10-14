@@ -28,7 +28,7 @@ const DATA := {
 		"vend": {"pelle": 12, "hache": 28, "epee": 50},
 		"achete": {"sardine": 1, "maquereau": 2, "dorade": 4, "bar": 5, "poisson_perroquet": 6, "merou": 12, "poisson_lune": 60,
 			"coquillage": 3, "champignon": 1, "vieille_botte": 8,
-			"buche": 2, "noix_coco": 1, "miel": 5, "perle": 10, "bague": 18, "rubis": 30, "piece_or": 12},
+			"buche": 2, "noix_coco": 1, "miel": 5, "perle": 10, "bague": 18, "rubis": 30, "piece_or": 12, "ecaille_naga": 100},
 	},
 	"compagnon": "Clou",
 
@@ -110,6 +110,9 @@ const DATA := {
 			# V37 : Karkinos, le Crabe-Roi
 			{"t": "Un crabe grand comme ma cabane, à l'est de la salle aux colonnes ? Sa carapace, c'est de l'acier. Attends qu'il plante ses pinces dans la roche… et là, cogne.", "si": {"a_trouve": "grille", "pas_trouve": "boss1"}},
 			{"t": "Tu as abattu le Crabe-Roi ?! … Tu me revends sa carapace ? Non ? Dommage. J'en aurais fait des boucliers.", "si": {"a_trouve": "boss1"}, "geste": "rire", "humeur": 0.2},
+			# V40 : Nâga vaincu
+			{"t": "Une écaille de Nâga ?! Cent pièces. Non, ne discute pas : cent pièces, et je t'en forge un bouclier le jour où tu en auras cinq.", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.3},
+			{"t": "Tu as vaincu le Serpent des Abysses… Barnabé va en faire une chanson de quarante couplets. Moi, je dis juste : bien joué, {surnom}.", "si": {"a_trouve": "naga"}, "humeur": 0.2},
 			# V39 : les vipères des abysses
 			{"t": "Des vipères noires, au fond du puits ? Elles se lovent avant de bondir, tout droit, comme une flèche. Ne reste pas en face : un pas de côté, et tu lui coupes la tête au retour.", "si": {"a_trouve": "abysses"}},
 			{"t": "Le grand serpent s'est réveillé ? Alors tu vas avoir besoin d'une bonne lame et de beaucoup de noix de coco. Je fais un prix. Non, je plaisante, je ne fais jamais de prix.", "si": {"a_trouve": "abime"}, "geste": "rire"},

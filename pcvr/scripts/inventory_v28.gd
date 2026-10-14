@@ -77,6 +77,9 @@ const ITEMS := {
 	# V38
 	"amulette_serpent": {"name": "Amulette du Serpent", "art": "l'Amulette du Serpent", "kind": "quete", "max": 1,
 		"desc": "Les trois fragments de jade, soudés autour d'un œil vert. Sous terre, elle éclaire les ténèbres autour de toi. Elle vibre près du sceau des Abysses."},
+	# V40
+	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
+		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -581,6 +584,8 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.04, 0.04, 0.01, 16), _mat("or", Color(0.95, 0.75, 0.2), 0.25), Vector3(0, 0.005, 0))
 		"fragment_amulette":
 			_part(m, _cyl(0.07, 0.07, 0.012, 3), _mat("jade", Color(0.25, 0.62, 0.42), 0.25), Vector3(0, 0.006, 0))
+		"ecaille_naga":
+			_part(m, _sphere(0.07), _mat("ecaille", Color(0.2, 0.5, 0.36), 0.2), Vector3(0, 0.012, 0), Vector3.ZERO, Vector3(1.0, 0.16, 1.25))
 		"amulette_serpent":
 			_part(m, _cyl(0.08, 0.08, 0.016, 24), _mat("jade", Color(0.25, 0.62, 0.42), 0.25), Vector3(0, 0.008, 0))
 			_part(m, _sphere(0.022), _mat("oeil_vert", Color(0.3, 0.95, 0.5), 0.1), Vector3(0, 0.02, 0))

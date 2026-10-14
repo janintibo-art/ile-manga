@@ -130,6 +130,10 @@ const DATA := {
 			{"t": "Deux fragments sur trois ! Le troisième œil de ma carte est sous la jungle, près de la tête de pierre. J'ai dessiné quatre serpents en rond… et une flèche qui tourne. Ou un escargot.", "si": {"a_trouve": "boss1", "pas_trouve": "fragment3"}},
 			# V38
 			{"t": "Quatre serpents qui tournent deux par deux ? Ah, les Anciens et leurs farces… Commence par celui qui est déjà bien placé, et regarde lequel il entraîne.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
+			# V40 : la fin du Temple englouti
+			{"t": "NÂGA ! Vaincu ! Par toi ! Gaston, sors le rhum de cérémonie… Ah, c'est du jus de coco. Gaston, sors le jus de coco de cérémonie !", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.35},
+			{"t": "Sur ma carte, j'ai barré le mot « NON » écrit trois fois et j'ai mis ton nom à la place. En tout petit. Il n'y avait pas beaucoup de place.", "si": {"a_trouve": "naga"}, "humeur": 0.2},
+			{"t": "Pour Nâga, souviens-toi : la tête à terre, tu frappes. Et quand il plonge, les trois Yeux… comme sur la fresque de l'antre, je parie.", "si": {"a_trouve": "abime", "pas_trouve": "naga"}},
 			# V39 : le Puits des Abysses
 			{"t": "Un lac noir, au fond du puits, avec des dalles gravées ? Les Anciens n'avaient qu'une chanson, {surnom} : celle de la fresque. La nuit, la mer, le jour, le serpent. Chante-la en marchant.", "si": {"a_trouve": "abysses", "pas_trouve": "lac"}},
 			{"t": "Nâga… Le Serpent des Abysses. Sur ma carte, il y a juste un grand dessin noir et le mot « NON » écrit trois fois. Je te prépare une soupe. Pour après. S'il y a un après.", "si": {"a_trouve": "abime"}, "geste": "colere", "humeur": -0.1},
