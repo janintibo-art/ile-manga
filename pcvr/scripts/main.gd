@@ -60,6 +60,7 @@ var dialogue_v31: Node3D
 var fishing_v32: Node3D
 # V33 : le rival de Barnabé (cabane dans l'arbre, boutique) et la pelle.
 var flora_v30: Node3D
+var elfes_v41: Node3D
 var tree_spot_v33: Dictionary = {}
 var treehouse_v33: Node3D
 var digging_v33: Node3D
@@ -141,6 +142,9 @@ func _height_at(x: float, z: float) -> float:
 	var h: float = _height_island_v29(x, z)
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
+	# V41 : l'île des elfes
+	if elfes_v41 != null and elfes_v41.ile != null and elfes_v41.ile.contains(x, z):
+		return maxf(h, elfes_v41.ile.height(x, z))
 	return h
 
 
@@ -922,6 +926,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			bucheron_v34.load_data({})
 		if donjon_v35 != null:
 			donjon_v35.load_data({})
+		if elfes_v41 != null:
+			elfes_v41.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -957,6 +963,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		for npc in npcs_v31:
 			var one: Variant = pending_pnj_v31.get(str(npc.profile["id"]), {})
 			npc.load_data(one if one is Dictionary else {})
+		if elfes_v41 != null:
+			var elf_data: Variant = data.get("elfes", {})
+			elfes_v41.load_data(elf_data if elf_data is Dictionary else {})
 		if boat_v29 != null:
 			var boat_data: Variant = data.get("bateau", {})
 			boat_v29.driving = false
@@ -1005,6 +1014,8 @@ func _save_slot(slot: int) -> void:
 		extra["bois"] = bucheron_v34.serialize()
 	if donjon_v35 != null:
 		extra["donjon"] = donjon_v35.serialize()
+	if elfes_v41 != null:
+		extra["elfes"] = elfes_v41.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1833,6 +1844,14 @@ func _create_jungle_v29() -> void:
 	boat_v29.name = "Bateau_v29"
 	add_child(boat_v29)
 	boat_v29.build(self, ISLAND_DOCK_V29, [jungle_v29.dock_start, jungle_v29.dock_end])
+	# V41 : l'île des elfes (relief, forêt, village) et son ponton.
+	elfes_v41 = preload("res://scripts/elfes_v41.gd").new()
+	elfes_v41.name = "Elfes_v41"
+	add_child(elfes_v41)
+	elfes_v41.setup(self)
+	elfes_v41.build_island()
+	var ed: Array = elfes_v41.dock()
+	boat_v29._make_dock("Ponton_elfes", ed[0], ed[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -1847,7 +1866,7 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		last_ok_v29[key] = p
 		return
 	if jungle_v29 != null and Vector2(p.x, p.z).length() > 120.0:
-		if jungle_v29.height(p.x, p.z) > -0.3:
+		if _height_at(p.x, p.z) > -0.3:
 			last_ok_v29[key] = p
 			return
 		if last_ok_v29.has(key):
@@ -2101,6 +2120,9 @@ func _plant_v34() -> void:
 	# V35 d'abord : le cercle de pierres et la tête de pierre réservent leur place.
 	if donjon_v35 != null:
 		donjon_v35.build(trap_jungle_spot_v35)
+	# V41 : la clairière de Lyra, la fleur de lune, la source.
+	if elfes_v41 != null and donjon_v35 != null:
+		elfes_v41.build_quest()
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2283,7 +2305,10 @@ func _npc_ctx_v31() -> Dictionary:
 			"abysses": 1 if donjon_v35 != null and bool(donjon_v35.state["sceau"]) else 0,
 			"lac": 1 if donjon_v35 != null and bool(donjon_v35.state["lac"]) else 0,
 			"abime": 1 if donjon_v35 != null and bool(donjon_v35.state["abime_eveil"]) else 0,
-			"naga": 1 if donjon_v35 != null and bool(donjon_v35.state["naga"]) else 0},
+			"naga": 1 if donjon_v35 != null and bool(donjon_v35.state["naga"]) else 0,
+			"quete_elfe": 1 if elfes_v41 != null and elfes_v41.lyra != null and str(elfes_v41.lyra.brain.memoire["quete"]) != "" else 0,
+			"arbre_sacre": 1 if elfes_v41 != null and bool(elfes_v41.state["arbre"]) else 0,
+			"ile_elfes": 1 if elfes_v41 != null and bool(elfes_v41.state["visite"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

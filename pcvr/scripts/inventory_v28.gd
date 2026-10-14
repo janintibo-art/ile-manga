@@ -77,6 +77,17 @@ const ITEMS := {
 	# V38
 	"amulette_serpent": {"name": "Amulette du Serpent", "art": "l'Amulette du Serpent", "kind": "quete", "max": 1,
 		"desc": "Les trois fragments de jade, soudés autour d'un œil vert. Sous terre, elle éclaire les ténèbres autour de toi. Elle vibre près du sceau des Abysses."},
+	# V41 : la quête de Lyra et l'île des elfes
+	"fiole_vide": {"name": "Fiole de cristal", "art": "une fiole de cristal", "kind": "quete", "max": 1,
+		"desc": "Une fiole elfique, fine comme une bulle. Lyra te l'a confiée pour y puiser l'eau de la source, au bassin de la grande chute (nord-est de l'île du village)."},
+	"eau_source": {"name": "Eau de la source", "art": "l'eau de la source", "kind": "quete", "max": 1,
+		"desc": "L'eau du bassin de la grande chute, dans la fiole de cristal. Elle scintille un peu, comme si elle gardait des étoiles."},
+	"fleur_lune": {"name": "Fleur de lune", "art": "une fleur de lune", "kind": "quete", "max": 3,
+		"desc": "Une fleur blanche aux pétales lumineux, cueillie au sommet d'un piton de la jungle. Elle ne se fane pas."},
+	"graine_or": {"name": "Graine d'or", "art": "une graine d'or", "kind": "quete", "max": 1,
+		"desc": "Une graine dorée, lourde et tiède. Barnabé l'avait trouvée sur une plage il y a vingt ans. Elle vient de l'Arbre-Mère des elfes."},
+	"boussole_elfique": {"name": "Boussole elfique", "art": "la boussole elfique", "kind": "outil", "max": 1,
+		"desc": "Le cadeau de Lyra : son aiguille de cristal pointe vers l'Arbre-Mère, à l'est. Avec elle, le bateau traverse la brume du Bois-Doré."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -584,6 +595,18 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.04, 0.04, 0.01, 16), _mat("or", Color(0.95, 0.75, 0.2), 0.25), Vector3(0, 0.005, 0))
 		"fragment_amulette":
 			_part(m, _cyl(0.07, 0.07, 0.012, 3), _mat("jade", Color(0.25, 0.62, 0.42), 0.25), Vector3(0, 0.006, 0))
+		"fleur_lune":
+			_part(m, _cyl(0.004, 0.005, 0.12, 6), _mat("tige_fleur", Color(0.3, 0.55, 0.3)), Vector3(0, 0.06, 0))
+			for k in range(6):
+				var a: float = TAU * k / 6.0
+				_part(m, _sphere(0.025), _mat("petale_lune", Color(0.92, 0.95, 1.0), 0.3), Vector3(cos(a) * 0.03, 0.125, sin(a) * 0.03), Vector3.ZERO, Vector3(1.0, 0.4, 1.0))
+		"graine_or":
+			_part(m, _sphere(0.03), _mat("or", Color(0.95, 0.75, 0.2), 0.25), Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(0.8, 1.2, 0.8))
+		"fiole_vide", "eau_source":
+			_part(m, _sphere(0.045), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.045, 0))
+			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))
+		"boussole_elfique":
+			_part(m, _cyl(0.045, 0.045, 0.015, 20), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.008, 0))
 		"ecaille_naga":
 			_part(m, _sphere(0.07), _mat("ecaille", Color(0.2, 0.5, 0.36), 0.2), Vector3(0, 0.012, 0), Vector3.ZERO, Vector3(1.0, 0.16, 1.25))
 		"amulette_serpent":

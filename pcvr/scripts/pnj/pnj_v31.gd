@@ -83,6 +83,11 @@ func _build_body() -> void:
 	# V33 : chaque fiche peut donner sa teinte ([r, g, b]) ; par défaut, le hâle de Barnabé.
 	var tint: Array = profile.get("teinte", [0.95, 0.62, 0.42])
 	var tint_c := Color(float(tint[0]), float(tint[1]), float(tint[2]))
+	# V41 : les elfes ont leur propre texture (peau claire, vêtements de forêt).
+	var skin_tex: Texture2D = null
+	var elf: Dictionary = profile.get("elfe", {})
+	if not elf.is_empty() and ResourceLoader.exists(str(elf.get("texture", ""))):
+		skin_tex = load(str(elf["texture"]))
 	for mi in model.find_children("*", "MeshInstance3D", true, false):
 		var m: MeshInstance3D = mi
 		for s in range(m.mesh.get_surface_count()):
@@ -91,6 +96,9 @@ func _build_body() -> void:
 				var tinted: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
 				tinted.albedo_color = Color(tint_c.r, tint_c.g * 0.97, tint_c.b * 0.95)
 				tinted.emission = tint_c
+				if skin_tex != null:
+					tinted.albedo_texture = skin_tex
+					tinted.emission_texture = skin_tex
 				m.set_surface_override_material(s, tinted)
 	# Pieds au sol : décalage mesuré sur la boîte du modèle.
 	floor_offset = 0.0
@@ -171,6 +179,12 @@ func _part(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, scl: Vector3
 	return mi
 
 
+func _box_mesh_np(size: Vector3) -> BoxMesh:
+	var b := BoxMesh.new()
+	b.size = size
+	return b
+
+
 func _sphere(r: float) -> SphereMesh:
 	var s := SphereMesh.new()
 	s.radius = r
@@ -193,6 +207,9 @@ func _accessories() -> void:
 	# V33 : la tenue dépend du personnage.
 	if str(profile.get("id", "")) == "octave":
 		_accessories_octave()
+		return
+	if profile.has("elfe"):
+		_accessories_elfe()
 		return
 	# Chapeau de paille cabossé.
 	var hat := Node3D.new()
@@ -227,6 +244,98 @@ func _accessories() -> void:
 	_part(parrot, _cyl(0.008, 0.008, 0.05), _mat(Color(0.3, 0.3, 0.3)), Vector3(0.02, 0.0, 0.01))
 	_part(parrot, _cyl(0.008, 0.008, 0.05), _mat(Color(0.3, 0.3, 0.3)), Vector3(-0.02, 0.0, 0.01))
 	_attach("LeftShoulder", Vector3(13.0, 9.0, -1.0), parrot)
+
+
+## V41 : silhouette d'elfe — longue chevelure (qui cache la coupe du modèle), oreilles en
+## pointe, diadème, longue robe, cape légère et ceinture. Couleurs données par la fiche.
+func _accessories_elfe() -> void:
+	var elf: Dictionary = profile["elfe"]
+	var c_hair: Array = elf.get("cheveux", [0.96, 0.9, 0.72])
+	var c_robe: Array = elf.get("robe", [0.16, 0.42, 0.32])
+	var c_cape: Array = elf.get("cape", [0.86, 0.9, 0.82])
+	var c_jewel: Array = elf.get("bijou", [0.85, 0.88, 0.9])
+	var hair := _mat(Color(float(c_hair[0]), float(c_hair[1]), float(c_hair[2])), 0.55)
+	var robe := _mat(Color(float(c_robe[0]), float(c_robe[1]), float(c_robe[2])), 0.75)
+	var cape := _mat(Color(float(c_cape[0]), float(c_cape[1]), float(c_cape[2])), 0.85)
+	var jewel := _mat(Color(float(c_jewel[0]), float(c_jewel[1]), float(c_jewel[2])), 0.25)
+	var gem := _mat(Color(0.3, 0.95, 0.6), 0.1)
+	gem.emission_energy_multiplier = 1.5
+	var tint: Array = profile.get("teinte", [1.0, 0.92, 0.86])
+	var skin := _mat(Color(float(tint[0]), float(tint[1]) * 0.94, float(tint[2]) * 0.9), 0.6)
+	# Un nouveau visage par-dessus celui du modèle : grands yeux en amande, sourcils fins,
+	# petit nez, sourire léger, joues rosées.
+	var face := Node3D.new()
+	var R: float = 0.228
+	_part(face, _sphere(R), skin, Vector3.ZERO)
+	var white := _mat(Color(0.98, 0.98, 0.97), 0.3)
+	var iris := _mat(Color(float(elf.get("yeux", [0.25, 0.7, 0.5])[0]), float(elf.get("yeux", [0.25, 0.7, 0.5])[1]), float(elf.get("yeux", [0.25, 0.7, 0.5])[2])), 0.2)
+	var dark := _mat(Color(0.08, 0.06, 0.06), 0.4)
+	dark.emission_energy_multiplier = 0.05
+	var shine := _mat(Color(1, 1, 1), 0.1)
+	shine.emission_energy_multiplier = 1.5
+	var lips := _mat(Color(0.86, 0.45, 0.48), 0.5)
+	var blush := _mat(Color(1.0, 0.7, 0.7), 0.8)
+	blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	blush.albedo_color.a = 0.45
+	var brow_mat := _mat(Color(float(c_hair[0]) * 0.75, float(c_hair[1]) * 0.7, float(c_hair[2]) * 0.6), 0.7)
+	var on_face := func(x: float, y: float, lift: float) -> Vector3:
+		return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
+	for sx in [-1.0, 1.0]:
+		var ex: float = sx * 0.072
+		_part(face, _sphere(0.046), white, on_face.call(ex, 0.005, -0.012), Vector3(1.0, 1.25, 0.4))
+		_part(face, _sphere(0.033), iris, on_face.call(ex, 0.0, -0.004), Vector3(1.0, 1.2, 0.35))
+		_part(face, _sphere(0.017), dark, on_face.call(ex, -0.002, 0.002), Vector3(1.0, 1.2, 0.35))
+		_part(face, _sphere(0.009), shine, on_face.call(ex + sx * -0.012, 0.016, 0.006))
+		_part(face, _box_mesh_np(Vector3(0.1, 0.012, 0.012)), dark, on_face.call(ex, 0.058, -0.002), Vector3.ONE, Vector3(0, sx * -18.0, sx * -8.0))
+		_part(face, _box_mesh_np(Vector3(0.075, 0.01, 0.012)), brow_mat, on_face.call(ex, 0.098, -0.003), Vector3.ONE, Vector3(0, sx * -18.0, sx * 6.0))
+		_part(face, _sphere(0.03), blush, on_face.call(sx * 0.11, -0.05, -0.008), Vector3(1.3, 0.8, 0.3))
+	_part(face, _sphere(0.011), skin, on_face.call(0.0, -0.035, 0.0), Vector3(0.9, 1.0, 1.0))
+	for sx in [-1.0, 1.0]:
+		_part(face, _box_mesh_np(Vector3(0.026, 0.008, 0.01)), lips, on_face.call(sx * 0.011, -0.078, -0.002), Vector3.ONE, Vector3(0, sx * -10.0, sx * 14.0))
+	_attach("Head", Vector3(0, 18.0, 2.5), face)
+	var fringe := Node3D.new()
+	_part(fringe, _sphere(0.2), hair, Vector3.ZERO, Vector3(1.15, 0.4, 0.78))
+	_attach("Head", Vector3(0, 35.0, 10.0), fringe, Vector3(-20, 0, 0))
+	# Chevelure : un volume sur le crâne, un long rideau dans le dos, deux mèches devant.
+	var head_hair := Node3D.new()
+	_part(head_hair, _sphere(0.26), hair, Vector3(0, 0.0, 0.0), Vector3(1.16, 1.06, 0.98))
+	_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.34, -0.1), Vector3(1.05, 2.1, 0.42), Vector3(8, 0, 0))
+	for sx in [-1.0, 1.0]:
+		_part(head_hair, _sphere(0.08), hair, Vector3(sx * 0.2, -0.2, 0.08), Vector3(0.55, 2.3, 0.6), Vector3(0, 0, sx * 6))
+	_attach("Head", Vector3(0, 30.0, -7.0), head_hair)
+	# Oreilles en pointe
+	for sx in [-1.0, 1.0]:
+		var ear := Node3D.new()
+		_part(ear, _cyl(0.0, 0.035, 0.17), skin, Vector3(0, 0.07, 0))
+		_attach("Head", Vector3(sx * 22.5, 19.0, 3.0), ear, Vector3(-12, 0, sx * -62))
+	# Diadème d'argent et sa pierre verte
+	var circlet := Node3D.new()
+	var tm := TorusMesh.new()
+	tm.inner_radius = 0.205
+	tm.outer_radius = 0.222
+	tm.rings = 24
+	tm.ring_segments = 6
+	_part(circlet, tm, jewel, Vector3.ZERO)
+	_part(circlet, _sphere(0.025), gem, Vector3(0, 0.0, 0.215), Vector3(1.0, 1.3, 0.6))
+	_attach("Head", Vector3(0, 26.0, 1.0), circlet, Vector3(-12, 0, 0))
+	# Corsage, longue robe évasée, ceinture
+	var bodice := Node3D.new()
+	_part(bodice, _sphere(0.21), robe, Vector3.ZERO, Vector3(1.0, 1.05, 0.78))
+	_attach("Spine02", Vector3(0, 0.0, 2.0), bodice)
+	var skirt := Node3D.new()
+	_part(skirt, _cyl(0.2, 0.4, 0.8), robe, Vector3(0, -0.4, 0))
+	_part(skirt, _cyl(0.405, 0.42, 0.06), jewel, Vector3(0, -0.78, 0))
+	_attach("Hips", Vector3(0, 4.0, 0.0), skirt)
+	var belt := Node3D.new()
+	var bm := TorusMesh.new()
+	bm.inner_radius = 0.18
+	bm.outer_radius = 0.21
+	_part(belt, bm, jewel, Vector3.ZERO)
+	_attach("Hips", Vector3(0, 6.0, 0.0), belt)
+	# Cape légère sur les épaules
+	var mantle := Node3D.new()
+	_part(mantle, _sphere(0.22), cape, Vector3(0, -0.25, 0), Vector3(1.3, 2.4, 0.14))
+	_attach("Spine02", Vector3(0, 6.0, -13.0), mantle, Vector3(-6, 0, 0))
 
 
 ## V33 : Octave Taillefer — lunettes de forge sur le front, grosse moustache, tablier de

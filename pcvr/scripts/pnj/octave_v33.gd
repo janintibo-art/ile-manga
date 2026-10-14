@@ -110,6 +110,9 @@ const DATA := {
 			# V37 : Karkinos, le Crabe-Roi
 			{"t": "Un crabe grand comme ma cabane, à l'est de la salle aux colonnes ? Sa carapace, c'est de l'acier. Attends qu'il plante ses pinces dans la roche… et là, cogne.", "si": {"a_trouve": "grille", "pas_trouve": "boss1"}},
 			{"t": "Tu as abattu le Crabe-Roi ?! … Tu me revends sa carapace ? Non ? Dommage. J'en aurais fait des boucliers.", "si": {"a_trouve": "boss1"}, "geste": "rire", "humeur": 0.2},
+			# V41 : les elfes
+			{"t": "Une elfe ? Et elle n'aime pas les haches, je parie. Évidemment. Ceux qui n'aiment pas les haches n'ont jamais eu froid.", "si": {"a_rencontre": "lyra"}, "geste": "colere"},
+			{"t": "Le Bois-Doré… Des arbres de soixante mètres ? Ça en ferait, des manches de pelle. Non, je plaisante. À moitié.", "si": {"a_trouve": "ile_elfes"}, "geste": "rire"},
 			# V40 : Nâga vaincu
 			{"t": "Une écaille de Nâga ?! Cent pièces. Non, ne discute pas : cent pièces, et je t'en forge un bouclier le jour où tu en auras cinq.", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.3},
 			{"t": "Tu as vaincu le Serpent des Abysses… Barnabé va en faire une chanson de quarante couplets. Moi, je dis juste : bien joué, {surnom}.", "si": {"a_trouve": "naga"}, "humeur": 0.2},

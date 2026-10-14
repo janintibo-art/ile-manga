@@ -38,6 +38,10 @@ const DATA := {
 	"refuse": ["epee_bois", "canne_peche"],
 	"quete": {"objet": "coquillage", "nombre": 5, "recompense": [["boussole", 1], ["piece", 15]], "affinite": 20.0},
 	"compagnon": "Gaston",
+	# V41 : sujet qui n'apparaît que pendant la quête de Lyra.
+	"sujets_speciaux": [
+		{"id": "graine", "label": "Tu aurais une graine dorée ?", "si": {"a_trouve": "quete_elfe", "pas_fait": "graine_or"}},
+	],
 
 	# Petits mots ajoutés devant ou derrière une réplique, selon l'humeur.
 	"prefixes": {
@@ -130,6 +134,10 @@ const DATA := {
 			{"t": "Deux fragments sur trois ! Le troisième œil de ma carte est sous la jungle, près de la tête de pierre. J'ai dessiné quatre serpents en rond… et une flèche qui tourne. Ou un escargot.", "si": {"a_trouve": "boss1", "pas_trouve": "fragment3"}},
 			# V38
 			{"t": "Quatre serpents qui tournent deux par deux ? Ah, les Anciens et leurs farces… Commence par celui qui est déjà bien placé, et regarde lequel il entraîne.", "si": {"a_trouve": "trappe_jungle", "pas_trouve": "serpents"}},
+			# V41 : Lyra et l'île des elfes
+			{"t": "Une elfe ?! Au milieu de l'île ?! Gaston, tu entends ça ? Les elfes existent ! Bon, Gaston dit qu'il le savait. Gaston dit toujours qu'il le savait.", "si": {"a_rencontre": "lyra"}, "geste": "rire", "humeur": 0.2},
+			{"t": "Sur ma carte des Anciens, à l'est, entre le village et ici, il y a une tache de brume et un œil doré. Je croyais que c'était du café renversé.", "si": {"pas_trouve": "arbre_sacre"}},
+			{"t": "Tu es allé chez les elfes ! Raconte ! Est-ce qu'ils ont des coquillages ? Non ? Quel peuple étrange.", "si": {"a_trouve": "ile_elfes"}, "geste": "rire"},
 			# V40 : la fin du Temple englouti
 			{"t": "NÂGA ! Vaincu ! Par toi ! Gaston, sors le rhum de cérémonie… Ah, c'est du jus de coco. Gaston, sors le jus de coco de cérémonie !", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.35},
 			{"t": "Sur ma carte, j'ai barré le mot « NON » écrit trois fois et j'ai mis ton nom à la place. En tout petit. Il n'y avait pas beaucoup de place.", "si": {"a_trouve": "naga"}, "humeur": 0.2},
@@ -172,6 +180,10 @@ const DATA := {
 			{"t": "Tu as remonté une vieille botte ? Montre ! … C'est la mienne ! Je la cherche depuis le naufrage. Rapporte-la-moi, je t'en prie.", "si": {"a_attrape": "vieille_botte"}, "geste": "rire"},
 			{"t": "On raconte qu'un poisson-lune doré rôde au large, là où l'eau est la plus profonde. Personne ne l'a jamais sorti. Sauf peut-être toi, un jour ?", "si": {"fait": "canne", "affinite_min": 30}},
 			{"t": "TU AS PÊCHÉ LE POISSON-LUNE DORÉ ?! Gaston, tombe de ton perchoir, c'est le moment ! Tu es une légende, {surnom} !", "si": {"a_attrape": "poisson_lune"}, "geste": "rire", "humeur": 0.3},
+		],
+		# V41 : la graine d'or pour Lyra
+		"graine": [
+			{"t": "Une graine dorée ?… Attends. ATTENDS. Gaston, la boîte à trésors ! Voilà : je l'ai ramassée sur la plage il y a vingt ans, elle brillait dans le sable. J'ai toujours su qu'elle était spéciale. Prends-la, pour ton elfe. Et dis-lui que Barnabé Coquillard la salue. Bien bas.", "si": {}, "action": "donne", "donne": [["graine_or", 1]], "pose": "graine_or", "geste": "rire", "humeur": 0.15},
 		],
 		"blague": [
 			{"t": "Pourquoi les poissons détestent l'ordinateur ? Parce qu'ils ont peur du net ! Ha ! Gaston ne rit jamais à celle-là.", "si": {}, "geste": "rire"},

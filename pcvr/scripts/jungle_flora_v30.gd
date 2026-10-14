@@ -24,6 +24,10 @@ var _trunks: StaticBody3D
 var counts: Dictionary = {}
 ## V31 : clairières à laisser libres ([centre local Vector2, rayon]) — la cabane de Barnabé.
 var clearings: Array = []
+## V41 : la même forêt sert à l'île des elfes, avec des géants bien plus grands.
+var giant_scale: float = 1.0
+var mist_color: Color = Color(0.82, 0.9, 0.84)
+var mist_density: float = 0.035
 
 
 func build(jungle_node: Node3D, high_quality: bool) -> void:
@@ -51,6 +55,34 @@ func build(jungle_node: Node3D, high_quality: bool) -> void:
 	if pc:
 		_make_mist()
 	print("ILE_MANGA_V30: jungle plantée ", counts, " en ", Time.get_ticks_msec() - t0, " ms")
+
+
+## V41 : la forêt de l'île des elfes — géants immenses à écorce pâle, sous-bois de fougères,
+## herbes hautes ; ni palmiers ni bananiers. Brume dorée légère.
+func build_elfes(island: Node3D, high_quality: bool) -> void:
+	var t0: int = Time.get_ticks_msec()
+	jungle = island
+	pc = high_quality
+	_rng.seed = 4141
+	giant_scale = 1.7
+	mist_color = Color(1.0, 0.93, 0.78)
+	mist_density = 0.018
+	_trunks = StaticBody3D.new()
+	_trunks.name = "Elfes_troncs_v41"
+	_trunks.collision_layer = 1
+	_trunks.collision_mask = 0
+	add_child(_trunks)
+	_place_giants(30)
+	_place_species("canopee", 650 if pc else 420, 4.6, 0.58, 1.6, 0.86, 0.0)
+	_place_species("arbuste", 1100 if pc else 650, 2.6, 0.7, 1.3, 0.9, 0.0)
+	_place_species("fougere_arbre", 180 if pc else 110, 3.0, 0.55, 1.6, 0.86, 0.0)
+	_place_species("fougere", 4500 if pc else 2400, 1.1, 0.85, 1.2, 0.95, 0.0)
+	_place_species("herbe", 13000 if pc else 6500, 0.7, 0.9, 0.9, 0.97, 0.0)
+	_place_species("pousse", 1400 if pc else 700, 1.2, 0.8, 1.2, 0.95, 0.0)
+	_flush()
+	if pc:
+		_make_mist()
+	print("ILE_MANGA_V41: Bois-Doré planté ", counts, " en ", Time.get_ticks_msec() - t0, " ms")
 
 
 # =================================================================== matériaux
@@ -588,16 +620,16 @@ func _place_giants(target: int) -> void:
 		var p: Vector3 = s["pos"]
 		var far_enough: bool = true
 		for q in placed:
-			if Vector2(p.x - q.x, p.z - q.z).length() < 19.0:
+			if Vector2(p.x - q.x, p.z - q.z).length() < 19.0 + 9.0 * (giant_scale - 1.0):
 				far_enough = false
 				break
 		if not far_enough:
 			continue
 		placed.append(p)
 		var v: int = placed.size() % 4
-		var xf := _yaw_xf(p, _rng.randf_range(0.9, 1.1), 0.3)
+		var xf := _yaw_xf(p, _rng.randf_range(0.9, 1.1) * giant_scale, 0.3 * giant_scale)
 		_add("geant#%d" % v, xf)
-		_cylinder(p, 1.45, 24.0)
+		_cylinder(p, 1.45 * giant_scale, 24.0 * giant_scale)
 
 
 func _place_palms(target: int) -> void:
@@ -771,8 +803,8 @@ func _make_mist() -> void:
 	fog.size = Vector3(300.0, 26.0, 300.0)
 	fog.position = jungle.CENTER + Vector3(0, 9.0, 0)
 	var m := FogMaterial.new()
-	m.density = 0.035
-	m.albedo = Color(0.82, 0.9, 0.84)
+	m.density = mist_density
+	m.albedo = mist_color
 	m.height_falloff = 0.08
 	m.edge_fade = 0.4
 	fog.material = m

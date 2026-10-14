@@ -244,10 +244,37 @@ func _fill(text: String, ctx: Dictionary) -> String:
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,
 		"{dernier_cadeau}": _item_name(str(memoire["dernier_cadeau"]), ctx), "{nb_cadeaux}": str(memoire["nb_cadeaux"]),
 		"{coquillages}": str(shells), "{manque}": str(int(q.get("nombre", 0))), "{humeur_mot}": humeur_mot(), "{sujet_prefere}": fav,
+		"{manque_liste}": _missing_text(ctx),
 	}
 	for k in vars:
 		text = text.replace(k, str(vars[k]))
 	return text
+
+
+## V41 : quête à plusieurs objets ("objets": {id: nombre}) : ce qu'il manque encore, en toutes lettres.
+func _missing(ctx: Dictionary) -> Dictionary:
+	var q: Dictionary = data.get("quete", {})
+	var need: Dictionary = q.get("objets", {str(q.get("objet", "")): int(q.get("nombre", 1))})
+	var have: Dictionary = ctx.get("objets", {})
+	var out := {}
+	for id in need:
+		var m: int = int(need[id]) - int(have.get(id, 0))
+		if m > 0:
+			out[id] = m
+	return out
+
+
+func _missing_text(ctx: Dictionary) -> String:
+	var miss: Dictionary = _missing(ctx)
+	var parts: Array = []
+	for id in miss:
+		var art: String = str((ctx.get("articles", {}) as Dictionary).get(id, _item_name(str(id), ctx)))
+		parts.append(art if int(miss[id]) == 1 else "%d × %s" % [int(miss[id]), _item_name(str(id), ctx)])
+	if parts.is_empty():
+		return "rien du tout"
+	if parts.size() == 1:
+		return str(parts[0])
+	return ", ".join(parts.slice(0, parts.size() - 1)) + " et " + str(parts[-1])
 
 
 # =================================================================== choix d'une réplique
@@ -377,6 +404,10 @@ func topics(ctx: Dictionary) -> Array:
 		t.insert(1, {"id": "boutique", "label": "Montre-moi ta marchandise."})
 	if str(memoire["quete"]) == "demandee":
 		t.append({"id": "quete", "label": str((data.get("quete", {}) as Dictionary).get("sujet", "À propos de tes coquillages…"))})
+	# V41 : sujets particuliers qui n'apparaissent que dans certaines circonstances.
+	for sp in data.get("sujets_speciaux", []):
+		if _ok((sp as Dictionary).get("si", {}), ctx):
+			t.insert(mini(2, t.size()), {"id": str(sp["id"]), "label": str(sp["label"])})
 	if int(memoire["visites"]) >= 3:
 		t.append({"id": "souvenir", "label": "Tu te souviens de moi ?"})
 	if not (ctx.get("objets", {}) as Dictionary).is_empty():
@@ -443,7 +474,10 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		_bond(0.6)
 	if str(reply.get("action", "")) == "quete_demande" and str(memoire["quete"]) == "":
 		memoire["quete"] = "demandee"
-		_remember("m'a demandé des coquillages", now)
+		_remember(str((data.get("quete", {}) as Dictionary).get("note", "m'a demandé des coquillages")), now)
+		# V41 : le personnage peut confier un objet en lançant la quête (une fiole…).
+		if reply.has("donne"):
+			reply["donner"] = reply.get("donne", [])
 	# V32 : « donne » — le personnage offre un objet. Avec "pose", une seule fois (le fait est retenu).
 	if str(reply.get("action", "")) == "donne":
 		var pose: String = str(reply.get("pose", ""))
@@ -532,16 +566,21 @@ func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 			unk["choix"] = topics(ctx)
 			return unk
 		return {"texte": "Mes coquillages ? Quels coquillages ? Ah… je ne t'ai encore rien demandé, il me semble.", "geste": "parle", "choix": topics(ctx)}
-	var have: int = int((ctx.get("objets", {}) as Dictionary).get(str(q.get("objet", "")), 0))
-	if have < int(q.get("nombre", 1)):
+	if not _missing(ctx).is_empty():
 		var r: Dictionary = say("quete_manque", ctx)
 		r["choix"] = topics(ctx)
 		return r
 	memoire["quete"] = "finie"
 	_bond(float(q.get("affinite", 10.0)))
-	_remember("collection complétée", float(ctx.get("now", 0.0)))
+	_remember(str(q.get("note_fin", "collection complétée")), float(ctx.get("now", 0.0)))
 	var out: Dictionary = say("quete_fin", ctx)
-	out["prendre"] = [[str(q["objet"]), int(q["nombre"])]]
+	if q.has("objets"):
+		var take: Array = []
+		for id in q["objets"]:
+			take.append([str(id), int(q["objets"][id])])
+		out["prendre"] = take
+	else:
+		out["prendre"] = [[str(q["objet"]), int(q["nombre"])]]
 	out["donner"] = q.get("recompense", [])
 	out["choix"] = topics(ctx)
 	return out
