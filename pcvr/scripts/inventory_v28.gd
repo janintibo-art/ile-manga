@@ -100,6 +100,15 @@ const ITEMS := {
 		"desc": "Une petite lanterne d'argent et de verre, confiée par Faelar. Les esprits-lucioles du Bois-Doré peuvent s'y abriter. Ramène-les à la porte de l'Arbre-Mère."},
 	"poussiere_fee": {"name": "Poussière de fée", "art": "de la poussière de fée", "kind": "quete", "max": 10,
 		"desc": "Une bourse de poussière qui scintille de toutes les couleurs, trouvée dans le coffre du Jardin des Fées. Lumi dit qu'il en faudra beaucoup pour passer les ronces."},
+	# V44 : le Village des Fées
+	"goutte_rosee": {"name": "Goutte de rosée de lune", "art": "une goutte de rosée de lune", "kind": "quete", "max": 10,
+		"desc": "Une goutte de rosée qui ne s'évapore jamais et brille comme une petite lune. La fée Brindille en cherche cinq."},
+	"baguette_fee": {"name": "Baguette de Pimprenelle", "art": "la baguette de Pimprenelle", "kind": "quete", "max": 1,
+		"desc": "Une baguette de fée en bois de sureau, terminée par une étoile de cristal. Pimprenelle l'a perdue dans la Grotte des Champignons Sauteurs."},
+	"eclat_cristal": {"name": "Éclat de cristal", "art": "un éclat de cristal", "kind": "tresor", "max": 30,
+		"desc": "Un éclat rose et tiède, laissé par une araignée de cristal. Le lutin Grommelot en collectionne ; Mélisse en rachète."},
+	"nectar_fee": {"name": "Nectar de fée", "art": "un nectar de fée", "kind": "nourriture", "max": 10, "heal": 8,
+		"desc": "Le nectar doré de Mélisse, cueilli au cœur des fleurs géantes. Rend quatre cœurs."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -619,6 +628,16 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))
 		"boussole_elfique":
 			_part(m, _cyl(0.045, 0.045, 0.015, 20), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.008, 0))
+		"goutte_rosee":
+			_part(m, _sphere(0.035), _mat("rosee", Color(0.75, 0.95, 1.0), 0.05), Vector3(0, 0.035, 0), Vector3.ZERO, Vector3(1.0, 1.2, 1.0))
+		"baguette_fee":
+			_part(m, _cyl(0.006, 0.009, 0.32, 8), _mat("sureau", Color(0.75, 0.6, 0.4), 0.7), Vector3(0, 0.16, 0))
+			_part(m, _sphere(0.03), _mat("etoile_fee", Color(1.0, 0.9, 0.6), 0.1), Vector3(0, 0.34, 0))
+		"eclat_cristal":
+			_part(m, _cyl(0.0, 0.03, 0.08, 6), _mat("cristal_rose", Color(0.9, 0.55, 0.9), 0.1), Vector3(0, 0.04, 0))
+		"nectar_fee":
+			_part(m, _sphere(0.04), _mat("verre_nectar", Color(1.0, 0.8, 0.3), 0.1), Vector3(0, 0.04, 0))
+			_part(m, _cyl(0.012, 0.012, 0.04, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.09, 0))
 		"lanterne_fee":
 			_part(m, _cyl(0.035, 0.04, 0.012, 12), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.006, 0))
 			_part(m, _sphere(0.035), _mat("verre_fee", Color(0.85, 1.0, 0.7), 0.1), Vector3(0, 0.045, 0), Vector3.ZERO, Vector3(1.0, 1.2, 1.0))

@@ -7,6 +7,9 @@ extends CharacterBody3D
 ##    avec sa lance après l'avoir levée ;
 ##  - V39 : la vipère des abysses : longue, noire, striée de vert ; elle se love, relève la
 ##    tête… puis bondit droit devant (1/2 cœur). On l'évite en s'écartant de sa trajectoire.
+##  - V44 : le feu follet (Royaume des Racines) : une flamme bleue qui flotte, ricane, se met
+##    à briller très fort… puis fonce droit sur le joueur (1/2 cœur) ;
+##  - V44 : l'araignée de cristal : rapide, huit pattes de verre, mord quand elle se dresse.
 ## Comportement : il veille près de son poste, repère le joueur à quelques mètres, le
 ## poursuit sans trop s'éloigner, prépare son coup (le signal pour esquiver ou parer), frappe,
 ## souffle un instant. Touché, il recule et clignote ; à zéro, il s'effondre et laisse du butin.
@@ -20,6 +23,11 @@ const SPECS := {
 		"rayon": 0.38, "haut": 1.0, "nom": "Gardien de corail"},
 	"vipere": {"pv": 12, "vitesse": 2.7, "degats": 1, "portee": 2.1, "armer": 0.6, "repos": 1.4, "vue": 9.0, "laisse": 12.0,
 		"rayon": 0.6, "haut": 0.3, "nom": "Vipère des abysses"},
+	# V44 : les créatures du Royaume des Racines
+	"follet": {"pv": 6, "vitesse": 2.4, "degats": 1, "portee": 2.4, "armer": 0.75, "repos": 1.7, "vue": 10.0, "laisse": 14.0,
+		"rayon": 0.4, "haut": 1.3, "nom": "Feu follet"},
+	"araignee": {"pv": 10, "vitesse": 2.9, "degats": 1, "portee": 1.2, "armer": 0.5, "repos": 1.1, "vue": 9.0, "laisse": 12.0,
+		"rayon": 0.55, "haut": 0.35, "nom": "Araignée de cristal"},
 }
 
 signal died(monster: Node3D)
@@ -58,7 +66,12 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 	collision_layer = 1
 	collision_mask = 1
 	var cs := CollisionShape3D.new()
-	if kind == "crabe":
+	if kind == "follet":
+		var sph := SphereShape3D.new()
+		sph.radius = 0.32
+		cs.shape = sph
+		cs.position.y = 1.3
+	elif kind == "crabe" or kind == "araignee":
 		var box := BoxShape3D.new()
 		box.size = Vector3(0.9, 0.5, 0.7)
 		cs.shape = box
@@ -79,6 +92,10 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 	add_child(_visual)
 	if kind == "crabe":
 		_build_crab()
+	elif kind == "follet":
+		_build_wisp()
+	elif kind == "araignee":
+		_build_spider()
 	elif kind == "vipere":
 		_build_viper()
 	else:
@@ -184,6 +201,86 @@ func _build_viper() -> void:
 	_mesh(head, _cyl(0.004, 0.008, 0.12), tongue, Vector3(0, 0.0, 0.36), Vector3.ONE, Vector3(PI * 0.5, 0, 0))
 
 
+## V44 : feu follet : un cœur de flamme bleue, un halo, deux yeux rieurs, des étincelles.
+var _wisp_light: OmniLight3D
+var _wisp_core: StandardMaterial3D
+func _build_wisp() -> void:
+	var body := Node3D.new()
+	body.name = "Flamme"
+	body.position = Vector3(0, 1.3, 0)
+	_visual.add_child(body)
+	_wisp_core = _mat(Color(0.45, 0.85, 1.0), 0.2, 3.0)
+	_mesh(body, _sphere(0.16), _wisp_core, Vector3.ZERO, Vector3(1.0, 1.25, 1.0))
+	_mesh(body, _cyl(0.0, 0.12, 0.3), _wisp_core, Vector3(0, 0.22, -0.02), Vector3.ONE, Vector3(-0.3, 0, 0))
+	var eye := _mat(Color(0.02, 0.05, 0.12), 0.3)
+	for sx in [-1.0, 1.0]:
+		_mesh(body, _sphere(0.03), eye, Vector3(sx * 0.06, 0.03, 0.14), Vector3(1.0, 1.3, 0.6))
+	var halo := MeshInstance3D.new()
+	var q := QuadMesh.new()
+	q.size = Vector2(0.9, 0.9)
+	var hm := StandardMaterial3D.new()
+	hm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	hm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	hm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	hm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	hm.albedo_color = Color(0.4, 0.8, 1.0, 0.55)
+	hm.albedo_texture = manager.main._soft_dot_v24()
+	q.material = hm
+	halo.mesh = q
+	body.add_child(halo)
+	_wisp_light = OmniLight3D.new()
+	_wisp_light.light_color = Color(0.45, 0.85, 1.0)
+	_wisp_light.light_energy = 1.2
+	_wisp_light.omni_range = 5.0
+	body.add_child(_wisp_light)
+	var sp := CPUParticles3D.new()
+	sp.amount = 14
+	sp.lifetime = 0.9
+	sp.local_coords = false
+	sp.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+	sp.emission_sphere_radius = 0.12
+	sp.gravity = Vector3(0, 0.8, 0)
+	sp.initial_velocity_min = 0.1
+	sp.initial_velocity_max = 0.4
+	var pq := QuadMesh.new()
+	pq.size = Vector2(0.06, 0.06)
+	var pm := hm.duplicate() as StandardMaterial3D
+	pm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	pm.albedo_color = Color(0.6, 0.9, 1.0, 0.9)
+	pq.material = pm
+	sp.mesh = pq
+	body.add_child(sp)
+
+
+## V44 : araignée de cristal : abdomen et tête en verre rose, huit pattes à genoux hauts.
+func _build_spider() -> void:
+	var glass := _mat(Color(0.85, 0.5, 0.9), 0.15, 0.9)
+	glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	glass.albedo_color.a = 0.85
+	var dark := _mat(Color(0.25, 0.12, 0.3), 0.3)
+	var eye := _mat(Color(1.0, 0.3, 0.5), 0.2, 3.0)
+	var abd := SphereMesh.new()
+	abd.radius = 0.24
+	abd.height = 0.48
+	abd.radial_segments = 6
+	abd.rings = 4
+	_mesh(_visual, abd, glass, Vector3(0, 0.36, -0.22), Vector3(1.0, 0.85, 1.25))
+	_mesh(_visual, _sphere(0.13), glass, Vector3(0, 0.33, 0.14), Vector3(1.0, 0.8, 1.0))
+	for k in range(4):
+		_mesh(_visual, _sphere(0.025), eye, Vector3((k % 2 - 0.5) * 0.08, 0.4 + (k / 2) * 0.04, 0.25))
+	for k in range(4):
+		_mesh(_visual, _cyl(0.0, 0.05, 0.16), glass, Vector3((k - 1.5) * 0.08, 0.6, -0.25), Vector3.ONE, Vector3(0, 0, (k - 1.5) * 0.3))
+	for sx in [-1.0, 1.0]:
+		for k in range(4):
+			var leg := Node3D.new()
+			leg.position = Vector3(sx * 0.1, 0.34, 0.12 - k * 0.1)
+			leg.rotation.y = sx * (0.3 - k * 0.35)
+			_visual.add_child(leg)
+			_mesh(leg, _cyl(0.018, 0.022, 0.32), dark, Vector3(sx * 0.15, 0.08, 0), Vector3.ONE, Vector3(0, 0, sx * -1.1))
+			_mesh(leg, _cyl(0.008, 0.018, 0.42), glass, Vector3(sx * 0.36, -0.1, 0), Vector3.ONE, Vector3(0, 0, sx * 0.55))
+			_legs.append([leg, sx, k])
+
+
 ## Gardien de corail : le corps du héros, couleur pierre bleutée, coraux et lance, yeux luisants.
 func _build_guardian() -> void:
 	var packed: PackedScene = load("res://assets/models/characters/hero.glb")
@@ -281,7 +378,7 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	var away: Vector3 = global_position - from_pos
 	away.y = 0.0
 	away = away.normalized() if away.length() > 0.01 else -facing
-	_knock = away * (3.2 if kind == "crabe" else (2.6 if kind == "vipere" else 1.6))
+	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet"] else (2.6 if kind == "vipere" else 1.6))
 	var cb: Node = manager.main.combat_v28
 	if cb != null:
 		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind == "gardien" else 0.9)
@@ -289,7 +386,7 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 			cb.damage_number_color(at, damage, Color(1.0, 0.55, 0.2), " !")
 		else:
 			cb.damage_number(at, damage)
-		cb.puff(global_position + Vector3.UP * hit_height, Color(0.8, 0.5, 0.4) if kind == "crabe" else (Color(0.3, 0.6, 0.4) if kind == "vipere" else Color(0.7, 0.75, 0.78)))
+		cb.puff(global_position + Vector3.UP * hit_height, Color(0.8, 0.5, 0.4) if kind == "crabe" else (Color(0.3, 0.6, 0.4) if kind == "vipere" else (Color(0.5, 0.85, 1.0) if kind == "follet" else (Color(0.9, 0.6, 0.95) if kind == "araignee" else Color(0.7, 0.75, 0.78)))))
 	if hp <= 0:
 		_die()
 		return
@@ -325,9 +422,13 @@ func _physics_process(delta: float) -> void:
 	_apply_flash()
 	if state == "mort":
 		timer += delta
-		if kind == "crabe":
+		if kind == "crabe" or kind == "araignee":
 			_visual.rotation.z = minf(timer * 6.0, PI)
 			_visual.position.y = sin(minf(timer * 6.0, PI)) * 0.4
+		elif kind == "follet":
+			_visual.scale = Vector3.ONE * clampf(1.0 - timer * 1.5, 0.01, 1.0)
+			if _wisp_light != null:
+				_wisp_light.light_energy = maxf(1.2 - timer * 2.0, 0.0)
 		elif kind == "vipere":
 			_visual.rotation.z = minf(timer * 5.0, PI * 0.9)
 		if timer > 1.6:
@@ -373,13 +474,13 @@ func _physics_process(delta: float) -> void:
 			if timer <= 0.0:
 				state = "frappe"
 				timer = 0.18
-				if kind == "vipere":
+				if kind == "vipere" or kind == "follet":
 					# Le bond : droit devant, sans corriger sa trajectoire.
 					timer = 0.32
-					_knock = facing * 7.5
+					_knock = facing * (7.5 if kind == "vipere" else 6.5)
 				else:
 					_strike(dist, dir_p)
-		"frappe" when kind == "vipere":
+		"frappe" when kind == "vipere" or kind == "follet":
 			if timer > 0.1 and dist < 1.25 and not has_meta("mordu"):
 				set_meta("mordu", true)
 				manager.hurt_player(int(spec["degats"]), global_position)
@@ -403,7 +504,10 @@ func _physics_process(delta: float) -> void:
 		_knock = _knock.move_toward(Vector3.ZERO, delta * 14.0)
 	velocity.x = move.x
 	velocity.z = move.z
-	velocity.y = 0.0 if is_on_floor() else maxf(velocity.y - 18.0 * delta, -20.0)
+	if kind == "follet":
+		velocity.y = (home.y - global_position.y) * 4.0
+	else:
+		velocity.y = 0.0 if is_on_floor() else maxf(velocity.y - 18.0 * delta, -20.0)
 	move_and_slide()
 	rotation.y = atan2(facing.x, facing.z)
 	_animate(delta, move.length())
@@ -413,7 +517,7 @@ func _strike(dist: float, dir_p: Vector3) -> void:
 	if dist <= float(spec["portee"]) + 0.35 and facing.dot(dir_p) > 0.35:
 		manager.hurt_player(int(spec["degats"]), global_position)
 	if manager.main.combat_v28 != null:
-		manager.main.combat_v28.puff(global_position + facing * float(spec["portee"]) * 0.8 + Vector3.UP * (0.4 if kind == "crabe" else 1.2), Color(0.85, 0.85, 0.8))
+		manager.main.combat_v28.puff(global_position + facing * float(spec["portee"]) * 0.8 + Vector3.UP * (0.4 if kind in ["crabe", "araignee"] else 1.2), Color(0.85, 0.85, 0.8))
 
 
 func _animate(delta: float, speed: float) -> void:
@@ -431,7 +535,19 @@ func _animate(delta: float, speed: float) -> void:
 			seg.position.z = lerpf(z0, z0 * 0.6 - 0.1, coil)
 			seg.position.y = 0.12 + (maxf(0.0, 5.0 - k) * 0.075 * coil)
 		return
-	if kind == "crabe":
+	if kind == "follet":
+		var fl: Node3D = _visual.get_node("Flamme")
+		var charge: float = 0.0
+		if state == "armer":
+			charge = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		fl.position = Vector3(sin(_clock * 7.0) * 0.03 * charge * 3.0, 1.3 + sin(_clock * 2.4) * 0.12, 0)
+		fl.scale = Vector3.ONE * (1.0 + charge * 0.5 + sin(_clock * 11.0) * 0.04)
+		if _wisp_light != null:
+			_wisp_light.light_energy = 1.2 + charge * 2.5 + sin(_clock * 17.0) * 0.15
+		if _wisp_core != null and _flash <= 0.0:
+			_wisp_core.emission_energy_multiplier = 3.0 + charge * 4.0
+		return
+	if kind == "crabe" or kind == "araignee":
 		var walk: float = clampf(speed / 2.3, 0.0, 1.0)
 		for l in _legs:
 			var leg: Node3D = l[0]

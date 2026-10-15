@@ -24,7 +24,8 @@ const HALL := [-10.0, 10.0, -43.0, -21.0]         # x0, x1, z0, z1 de la Salle d
 var main: Node
 var el: Node3D
 var d: Node
-var state := {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false}
+var state := {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false}
+var royaume: Node3D                 # V44 : grotte, clochettes, Village des Fées
 var G: Vector3
 var s: Node3D
 var spirit_spots: Array = []
@@ -254,7 +255,7 @@ func _room(x0: float, x1: float, z0: float, z1: float, h: float, openings: Array
 	var cx: float = (x0 + x1) * 0.5
 	var cz: float = (z0 + z1) * 0.5
 	# Lueur douce sous le plafond (mousses lumineuses), pour qu'on voie les racines
-	var n_l: int = maxi(1, int((x1 - x0) * (z1 - z0) / 110.0))
+	var n_l: int = clampi(int((x1 - x0) * (z1 - z0) / 110.0), 1, 6)
 	for k in range(n_l):
 		var f: float = (k + 0.5) / n_l
 		var lp := Vector3(lerpf(x0 + 1.0, x1 - 1.0, 0.5 + 0.3 * sin(k * 2.3)), h - 0.6, lerpf(z0, z1, f))
@@ -588,8 +589,15 @@ func _build_dungeon() -> void:
 	_build_corridor()
 	_build_prisms()
 	_build_garden()
+	royaume = preload("res://scripts/royaume_v44.gd").new()
+	royaume.name = "Royaume_v44"
+	add_child(royaume)
+	royaume.setup(self)
+	royaume.build_rooms()
 	_flush_roots()
 	_build_lumi()
+	royaume.spawn_fairies()
+	d.spawn["racines"] = [spawn_pos, s.to_global(Vector3(0, 0, -1)) - s.to_global(Vector3.ZERO)]
 
 
 ## Le Cœur de l'Arbre : la racine maîtresse descend du plafond, un escalier de racines
@@ -831,7 +839,7 @@ func _open_bud(instant: bool) -> void:
 ## Le Jardin des Fées : un étang qui luit, un cercle de fées, le coffre ; au nord, le mur de
 ## ronces noires (la suite de l'aventure).
 func _build_garden() -> void:
-	_room(-8, 8, -60, -43, 8.0, [["s", 0.0, 3.2, 4.2], ["n", 0.0, 3.2, 4.2]])
+	_room(-8, 8, -60, -43, 8.0, [["s", 0.0, 3.2, 4.2], ["n", 0.0, 3.2, 4.2], ["w", -51.5, 3.0, 3.6], ["e", -51.5, 3.0, 3.6]])
 	# Étang lumineux et nénuphars
 	_mesh(s, _cyl(2.25, 2.25, 0.04, 28), _glow(Color(0.35, 0.85, 0.85), 1.4, 0.85), Vector3(-4.6, 0.03, -49.0))
 	var rim := TorusMesh.new()
@@ -929,7 +937,8 @@ func _open_chest() -> void:
 
 
 func _thorns() -> void:
-	d._say("Un mur de ronces noires, dures comme du fer, qui frémissent quand tu approches. Lumi se cache derrière ton épaule : « Le domaine de la Reine des Ronces… Il nous faudra bien plus de poussière de fée pour passer. » (La suite au prochain chapitre !)", 8.0)
+	var n: int = main.inventory_v28.count("poussiere_fee")
+	d._say("Un mur de ronces noires, dures comme du fer, qui frémissent quand tu approches. Lumi se cache derrière ton épaule : « Le domaine de la Reine des Ronces… Il nous faudra cinq pincées de poussière de fée pour passer. » (Tu en as %d. La suite au prochain chapitre !)" % n, 8.0)
 
 
 # =================================================================== Lumi, la petite fée
@@ -1031,9 +1040,15 @@ func talk_lumi() -> void:
 	elif not bool(state["coffre"]):
 		lines = ["La Fleur-Porte s'est ouverte ! Le Jardin des Fées est juste derrière.",
 			"Il y a un coffre sur le dais de mousse… Moi je n'ai pas le droit d'y toucher. Toi, si !"]
+	elif not bool(state["clochettes"]):
+		lines = ["Mon village est à l'est, derrière la Salle des Clochettes ! Écoute la mélodie au pupitre, puis rejoue-la sur les clochettes.",
+			"À l'ouest, c'est la Grotte des Champignons Sauteurs. Les gros champignons roses font rebondir. Hiiii !",
+			"Attention aux feux follets : quand ils brillent très fort, ils foncent. Écarte-toi !",
+			"Les araignées de cristal laissent des éclats. Grommelot les adore. Chut, c'est un secret."]
 	else:
-		lines = ["Les ronces au nord… c'est le domaine de la Reine des Ronces. Brrr.",
-			"Avec assez de poussière de fée, on pourra peut-être passer. Un jour !",
+		lines = ["Les ronces au nord du jardin… c'est le domaine de la Reine des Ronces. Il nous faudra cinq pincées de poussière de fée pour passer.",
+			"Les fées du village ont toutes un service à te demander. En échange, elles donnent de la poussière de fée !",
+			"Brindille a perdu ses gouttes de rosée partout. Il y en a même tout en haut de la grotte !",
 			"Merci d'avoir ramené les esprits-lucioles. L'Arbre-Mère chante depuis que tu es là."]
 	lumi_say(str(lines[_lumi_line % lines.size()]))
 	_lumi_line += 1
@@ -1071,6 +1086,8 @@ func apply_state() -> void:
 			_bud_body.set_deferred("disabled", false)
 	if _chest_lid != null:
 		_chest_lid.rotation.x = -1.9 if bool(state["coffre"]) else 0.0
+	if royaume != null:
+		royaume.apply_state()
 	if _beam_root != null:
 		trace_beam()
 
@@ -1106,7 +1123,7 @@ func _process(delta: float) -> void:
 	_clock += delta
 	var p: Vector3 = main._player_pos_v27()
 	var lp: Vector3 = s.to_local(p)
-	var now: bool = absf(lp.x) < 14.0 and lp.z > -62.0 and lp.z < 8.0 and lp.y > -6.0 and lp.y < 12.0
+	var now: bool = lp.x > -38.0 and lp.x < 52.0 and lp.z > -102.0 and lp.z < 8.0 and lp.y > -6.0 and lp.y < 20.0
 	if now != in_zone:
 		in_zone = now
 		if now:
@@ -1162,10 +1179,10 @@ func serialize() -> Dictionary:
 
 
 func load_data(dd: Dictionary) -> void:
-	state = {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false}
+	state = {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false}
 	for k in state:
 		if dd.has(k):
-			state[k] = int(dd[k]) if k == "esprits" else bool(dd[k])
+			state[k] = int(dd[k]) if k in ["esprits", "rosee"] else bool(dd[k])
 	_lumi_greeted = false
 	_lumi_line = 0
 	apply_state()

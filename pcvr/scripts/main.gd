@@ -2321,9 +2321,22 @@ func _npc_ctx_v31() -> Dictionary:
 			"esprits": elfes_v41.feerique.spirits_count() if elfes_v41 != null and elfes_v41.feerique != null else 0,
 			"porte_racines": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["porte"]) else 0,
 			"royaume": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["visite"]) else 0,
-			"prismes": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["prismes"]) else 0},
+			"prismes": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["prismes"]) else 0,
+			"clochettes": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["clochettes"]) else 0,
+			"village_fees": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["village"]) else 0,
+			"baguette": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["baguette"]) else 0,
+			"baguette_rendue": 1 if _fee_quest_v44("pimprenelle") == "finie" else 0,
+			"rosee_rendue": 1 if _fee_quest_v44("brindille") == "finie" else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
+
+
+## V44 : où en est la quête d'une fée du Royaume des Racines ("", "demandee", "finie").
+func _fee_quest_v44(id: String) -> String:
+	if elfes_v41 == null or elfes_v41.feerique == null or elfes_v41.feerique.royaume == null:
+		return ""
+	var fe: Node3D = elfes_v41.feerique.royaume.fairy(id)
+	return str(fe.brain.memoire.get("quete", "")) if fe != null else ""
 
 
 ## V33 : qui le joueur a déjà rencontré (identifiant -> visites), pour que les habitants

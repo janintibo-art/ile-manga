@@ -19,6 +19,12 @@ const SPAWNS := [
 	["vipere", -7.0, -43.0, -140.0], ["vipere", 5.0, -43.0, -143.5], ["vipere", 1.5, -43.0, -147.5],
 ]
 
+## V44 : le Royaume des Racines, sous l'Arbre-Mère (repère du donjon féerique).
+const FEE_SPAWNS := [
+	["araignee", -21.0, 0.0, -42.5], ["araignee", -31.0, 0.0, -44.0], ["araignee", -20.0, 0.0, -61.0], ["araignee", -32.0, 0.0, -63.0],
+	["follet", 11.5, 0.0, -51.5], ["follet", 21.0, 0.0, -47.0], ["follet", 28.5, 0.0, -48.0],
+]
+
 var main: Node
 var donjon: Node
 var active: bool = false
@@ -62,6 +68,14 @@ func spawn_all() -> void:
 		m.set_meta("salle", "gardiens" if str(e[0]) == "gardien" else "")
 		m.died.connect(_on_died)
 		monsters.append(m)
+	var f: Node = main.elfes_v41.feerique if main.get("elfes_v41") != null and main.elfes_v41.feerique != null else null
+	if f != null and f.s != null:
+		for e in FEE_SPAWNS:
+			var m2: CharacterBody3D = MonsterScript.new()
+			add_child(m2)
+			m2.setup(self, str(e[0]), f.s.to_global(Vector3(float(e[1]), float(e[2]) + 0.05, float(e[3]))))
+			m2.died.connect(_on_died)
+			monsters.append(m2)
 
 
 ## V37 : un monstre de plus (les crabes appelés par le Crabe-Roi).
@@ -99,6 +113,10 @@ func alert(m: Node3D) -> void:
 	_alerted[m.kind] = true
 	if m.kind == "crabe":
 		donjon._say("Un crabe de roche ! Quand il lève les pinces, recule ou pare (F)… puis frappe-le.", 5.0)
+	elif m.kind == "follet":
+		donjon._say("Un feu follet ! Quand il se met à briller très fort, il va foncer droit sur toi : écarte-toi, puis frappe-le.", 6.0)
+	elif m.kind == "araignee":
+		donjon._say("Une araignée de cristal ! Elle se dresse avant de mordre : recule ou pare (F). Ses éclats intéressent sûrement quelqu'un…", 6.0)
 	elif m.kind == "vipere":
 		donjon._say("Une vipère des abysses ! Quand elle se love et dresse la tête, elle va bondir droit devant : écarte-toi, ou pare (F).", 6.0)
 	else:
@@ -181,6 +199,13 @@ func _on_died(m: Node3D) -> void:
 			gains.append(["piece", _rng.randi_range(1, 3)])
 		if _rng.randf() < 0.1:
 			gains.append(["perle", 1])
+	elif m.kind == "follet":
+		gains.append(["piece", _rng.randi_range(1, 4)])
+	elif m.kind == "araignee":
+		if _rng.randf() < 0.75:
+			gains.append(["eclat_cristal", 1])
+		if _rng.randf() < 0.5:
+			gains.append(["piece", _rng.randi_range(1, 3)])
 	elif m.kind == "vipere":
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.15:
