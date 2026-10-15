@@ -61,6 +61,7 @@ var fishing_v32: Node3D
 # V33 : le rival de Barnabé (cabane dans l'arbre, boutique) et la pelle.
 var flora_v30: Node3D
 var elfes_v41: Node3D
+var nains_v46: Node3D
 var tree_spot_v33: Dictionary = {}
 var treehouse_v33: Node3D
 var digging_v33: Node3D
@@ -145,6 +146,9 @@ func _height_at(x: float, z: float) -> float:
 	# V41 : l'île des elfes
 	if elfes_v41 != null and elfes_v41.ile != null and elfes_v41.ile.contains(x, z):
 		return maxf(h, elfes_v41.ile.height(x, z))
+	# V46 : l'île des nains
+	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(x, z):
+		return maxf(h, nains_v46.ile.height(x, z))
 	return h
 
 
@@ -928,6 +932,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			donjon_v35.load_data({})
 		if elfes_v41 != null:
 			elfes_v41.load_data({})
+		if nains_v46 != null:
+			nains_v46.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -966,6 +972,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		if elfes_v41 != null:
 			var elf_data: Variant = data.get("elfes", {})
 			elfes_v41.load_data(elf_data if elf_data is Dictionary else {})
+		if nains_v46 != null:
+			var dwarf_data: Variant = data.get("nains", {})
+			nains_v46.load_data(dwarf_data if dwarf_data is Dictionary else {})
 		if boat_v29 != null:
 			var boat_data: Variant = data.get("bateau", {})
 			boat_v29.driving = false
@@ -1016,6 +1025,8 @@ func _save_slot(slot: int) -> void:
 		extra["donjon"] = donjon_v35.serialize()
 	if elfes_v41 != null:
 		extra["elfes"] = elfes_v41.serialize()
+	if nains_v46 != null:
+		extra["nains"] = nains_v46.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1852,6 +1863,14 @@ func _create_jungle_v29() -> void:
 	elfes_v41.build_island()
 	var ed: Array = elfes_v41.dock()
 	boat_v29._make_dock("Ponton_elfes", ed[0], ed[1])
+	# V46 : l'île volcanique des nains, cachée derrière les Récifs de Feu.
+	nains_v46 = preload("res://scripts/nains_v46.gd").new()
+	nains_v46.name = "Nains_v46"
+	add_child(nains_v46)
+	nains_v46.setup(self)
+	nains_v46.build_island()
+	var nd: Array = nains_v46.dock()
+	boat_v29._make_dock("Ponton_nains", nd[0], nd[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2123,6 +2142,8 @@ func _plant_v34() -> void:
 	# V41 : la clairière de Lyra, la fleur de lune, la source.
 	if elfes_v41 != null and donjon_v35 != null:
 		elfes_v41.build_quest()
+	if nains_v46 != null and donjon_v35 != null:
+		nains_v46.build_quest()
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2326,7 +2347,11 @@ func _npc_ctx_v31() -> Dictionary:
 			"village_fees": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["village"]) else 0,
 			"baguette": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["baguette"]) else 0,
 			"baguette_rendue": 1 if _fee_quest_v44("pimprenelle") == "finie" else 0,
-			"rosee_rendue": 1 if _fee_quest_v44("brindille") == "finie" else 0},
+			"rosee_rendue": 1 if _fee_quest_v44("brindille") == "finie" else 0,
+			"ronces": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["ronces"]) else 0,
+			"reine": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["reine"]) else 0,
+			"carte_naine": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["carte"]) else 0,
+			"ile_nains": 1 if nains_v46 != null and bool(nains_v46.state["visite"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

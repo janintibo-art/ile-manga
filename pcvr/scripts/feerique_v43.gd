@@ -24,7 +24,7 @@ const HALL := [-10.0, 10.0, -43.0, -21.0]         # x0, x1, z0, z1 de la Salle d
 var main: Node
 var el: Node3D
 var d: Node
-var state := {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false}
+var state := {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false, "ronces": false, "reine": false, "carte": false}
 var royaume: Node3D                 # V44 : grotte, clochettes, Village des Fées
 var G: Vector3
 var s: Node3D
@@ -39,6 +39,10 @@ var _body: StaticBody3D
 var _mats: Dictionary = {}
 var _root_xf: Array = []           # V45 : courbes des racines [a, ctrl, b, r0, r1, segments]
 var gfx                            # V45 : rendu réaliste (feerique_gfx_v45.gd)
+var _last_cs: CollisionShape3D
+var thorns_node: Node3D            # V46 : le mur de ronces (il se fane avec la poussière de fée)
+var thorns_cs: CollisionShape3D
+var ronces: Node3D                 # V46 : le Trône des Ronces et sa Reine (ronces_v46.gd)
 var _crystals: Array = []
 var _beam_root: Node3D
 var _beam_mat: StandardMaterial3D
@@ -248,6 +252,7 @@ func _box(parent: Node3D, size: Vector3, pos: Vector3, mat: Material, solid: boo
 		cs.shape = bs
 		_body.add_child(cs)
 		cs.global_transform = mi.global_transform
+		_last_cs = cs
 	return mi
 
 
@@ -657,6 +662,11 @@ func _build_dungeon() -> void:
 	add_child(royaume)
 	royaume.setup(self)
 	royaume.build_rooms()
+	ronces = preload("res://scripts/ronces_v46.gd").new()
+	ronces.name = "Trone_des_Ronces_v46"
+	add_child(ronces)
+	ronces.setup(self)
+	ronces.build()
 	_flush_roots()
 	_build_lumi()
 	royaume.spawn_fairies()
@@ -959,9 +969,10 @@ func _build_garden() -> void:
 		"text": "E : ouvrir le coffre des fées", "vr": "Gâchette : ouvrir le coffre", "call": _open_chest,
 		"when": func(): return not bool(state["coffre"])})
 	# Le mur de ronces noires, et derrière, un passage sombre qui s'enfonce (la suite)
-	_room(-1.6, 1.6, -66, -60, 4.2, [["s", 0.0, 3.2, 4.2]])
+	_room(-1.8, 1.8, -74, -60, 4.6, [["s", 0.0, 3.2, 4.2], ["n", 0.0, 3.2, 4.2]])
 	_light(s, Vector3(0, 1.5, -64.5), Color(0.8, 0.25, 0.45), 1.2, 6.0)
 	var thorns := Node3D.new()
+	thorns_node = thorns
 	thorns.name = "Ronces"
 	s.add_child(thorns)
 	var rng := RandomNumberGenerator.new()
@@ -984,15 +995,32 @@ func _build_garden() -> void:
 				sp.rotation = Vector3(rng.randf_range(0.6, 1.4), rng.randf() * TAU, 0)
 			prev = q
 	_box(s, Vector3(3.2, 4.2, 0.6), Vector3(0, 2.1, -60.3), _mat("ronce"), true).visible = false
+	thorns_cs = _last_cs
 	_light(s, Vector3(0, 2.0, -58.8), Color(0.75, 0.3, 0.55), 0.8, 5.0)
 	d._interactions.append({"id": "ronces", "pos": s.to_global(Vector3(0, 0, -58.6)), "radius": 1.8,
-		"text": "E : examiner les ronces", "vr": "Gâchette : examiner les ronces", "call": _thorns})
+		"text": "E : examiner les ronces", "vr": "Gâchette : examiner les ronces", "call": _thorns,
+		"when": func(): return not bool(state["ronces"])})
 	_mushroom(Vector3(6.0, 0, -45.5), 1.9, 1.2, Color(0.95, 0.55, 0.9), true)
 	_mushroom(Vector3(5.8, 0, -57.5), 2.4, 1.4, Color(0.55, 0.85, 1.0), true)
 	_mushroom(Vector3(-6.2, 0, -57.6), 1.4, 0.9, Color(0.7, 1.0, 0.75), true)
 	_crystal_cluster(Vector3(7.0, 0, -51.0), Color(1.0, 0.6, 0.85), 7, 4341, 1.2)
 	_sparkles(s, Vector3(0, 3.0, -51.5), Vector3(7, 3, 8), 80, 0.12)
 	_light(s, _chest_pos + Vector3(0, 2.2, 1.2), Color(1.0, 0.8, 0.95), 1.6, 7.0)
+
+
+func _wither_thorns(instant: bool) -> void:
+	if thorns_node == null:
+		return
+	if instant:
+		thorns_node.visible = false
+	else:
+		var tw := create_tween()
+		tw.tween_property(thorns_node, "scale", Vector3(1.0, 0.02, 1.0), 2.5).set_trans(Tween.TRANS_SINE)
+		tw.tween_callback(func(): thorns_node.visible = false)
+		if main.combat_v28 != null:
+			for k in range(3):
+				main.combat_v28.puff(s.to_global(Vector3(-0.8 + k * 0.8, 1.0 + k * 0.6, -60.2)), Color(1.0, 0.75, 0.95))
+	thorns_cs.set_deferred("disabled", true)
 
 
 func _open_chest() -> void:
@@ -1007,6 +1035,13 @@ func _open_chest() -> void:
 
 func _thorns() -> void:
 	var n: int = main.inventory_v28.count("poussiere_fee")
+	if n >= 5:
+		main.inventory_v28.remove("poussiere_fee", 5)
+		state["ronces"] = true
+		d._say("Tu ouvres les cinq bourses et souffles la poussière de fée sur les ronces. Elle scintille… et les ronces noires se fanent, se recroquevillent, tombent en poussière. Le passage vers le Trône des Ronces est ouvert.", 8.0)
+		lumi_say("Tu as réussi ! Mais attention… la Reine des Ronces nous attend au bout de ce couloir. Je reste près de toi.", 7.0)
+		_wither_thorns(false)
+		return
 	d._say("Un mur de ronces noires, dures comme du fer, qui frémissent quand tu approches. Lumi se cache derrière ton épaule : « Le domaine de la Reine des Ronces… Il nous faudra cinq pincées de poussière de fée pour passer. » (Tu en as %d. La suite au prochain chapitre !)" % n, 8.0)
 
 
@@ -1114,6 +1149,15 @@ func talk_lumi() -> void:
 			"À l'ouest, c'est la Grotte des Champignons Sauteurs. Les gros champignons roses font rebondir. Hiiii !",
 			"Attention aux feux follets : quand ils brillent très fort, ils foncent. Écarte-toi !",
 			"Les araignées de cristal laissent des éclats. Grommelot les adore. Chut, c'est un secret."]
+	elif bool(state["reine"]):
+		lines = ["Églantine est redevenue notre reine ! Le royaume refleurit, grâce à toi.",
+			"La carte d'Églantine montre la passe entre les Récifs de Feu, à l'ouest. Les nains de la Montagne de Feu vivent là-bas.",
+			"Les nains sont bourrus, mais ce sont les meilleurs forgerons du monde. Grommelot dit que c'est faux. Grommelot est jaloux."]
+	elif bool(state["ronces"]):
+		lines = ["La Reine des Ronces vole hors de portée. Quand elle se pose, épuisée, c'est le moment de frapper !",
+			"Les cercles rouges au sol : des ronces vont jaillir ! Sors du cercle, vite !",
+			"Quand elle s'entoure d'un bouclier d'épines, réveille les trois roses de lumière. Leur lumière la brûle !",
+			"Avant, elle s'appelait Églantine. C'était notre reine… Les ronces lui ont pris son cœur."]
 	else:
 		lines = ["Les ronces au nord du jardin… c'est le domaine de la Reine des Ronces. Il nous faudra cinq pincées de poussière de fée pour passer.",
 			"Les fées du village ont toutes un service à te demander. En échange, elles donnent de la poussière de fée !",
@@ -1157,6 +1201,15 @@ func apply_state() -> void:
 		_chest_lid.rotation.x = -1.9 if bool(state["coffre"]) else 0.0
 	if royaume != null:
 		royaume.apply_state()
+	if thorns_node != null:
+		if bool(state["ronces"]):
+			_wither_thorns(true)
+		else:
+			thorns_node.visible = true
+			thorns_node.scale = Vector3.ONE
+			thorns_cs.set_deferred("disabled", false)
+	if ronces != null:
+		ronces.apply_state()
 	if _beam_root != null:
 		trace_beam()
 
@@ -1192,7 +1245,7 @@ func _process(delta: float) -> void:
 	_clock += delta
 	var p: Vector3 = main._player_pos_v27()
 	var lp: Vector3 = s.to_local(p)
-	var now: bool = lp.x > -38.0 and lp.x < 52.0 and lp.z > -102.0 and lp.z < 8.0 and lp.y > -6.0 and lp.y < 20.0
+	var now: bool = lp.x > -38.0 and lp.x < 52.0 and lp.z > -104.0 and lp.z < 8.0 and lp.y > -6.0 and lp.y < 20.0
 	if now != in_zone:
 		in_zone = now
 		if now:
@@ -1248,7 +1301,7 @@ func serialize() -> Dictionary:
 
 
 func load_data(dd: Dictionary) -> void:
-	state = {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false}
+	state = {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false, "ronces": false, "reine": false, "carte": false}
 	for k in state:
 		if dd.has(k):
 			state[k] = int(dd[k]) if k in ["esprits", "rosee"] else bool(dd[k])

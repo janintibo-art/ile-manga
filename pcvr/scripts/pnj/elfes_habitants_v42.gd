@@ -275,6 +275,7 @@ const NAMED := [
 				{"id": "porte", "label": "Que cache l'Arbre-Mère ?", "si": {"pas_fait": "lanterne_fee"}},
 				{"id": "esprits", "label": "Les esprits-lucioles…", "si": {"fait": "lanterne_fee", "pas_trouve": "porte_racines"}},
 				{"id": "royaume", "label": "J'ai ouvert la porte de l'Arbre-Mère !", "si": {"a_trouve": "porte_racines"}},
+				{"id": "nains", "label": "Églantine m'a confié une carte…", "si": {"a_trouve": "carte_naine"}},
 			],
 			"repliques": {
 				"porte": [
@@ -287,7 +288,12 @@ const NAMED := [
 				],
 				"royaume": [
 					{"t": "Le Royaume des Racines… Cela faisait trois cents ans que personne n'y était descendu. Les fées sont joueuses : méfie-toi de leurs énigmes, et ne perds pas le soleil de vue.", "si": {"pas_trouve": "prismes"}},
-					{"t": "La Fleur-Porte s'est ouverte pour toi ! Plus loin, dit-on, vit la Reine des Ronces. Elle n'aime ni les humains, ni les elfes, ni personne. Sois prudent.", "si": {"a_trouve": "prismes"}},
+					{"t": "La Fleur-Porte s'est ouverte pour toi ! Plus loin, dit-on, vit la Reine des Ronces. Elle n'aime ni les humains, ni les elfes, ni personne. Sois prudent.", "si": {"a_trouve": "prismes", "pas_trouve": "reine"}},
+					{"t": "La Reine des Ronces… c'était Églantine ? La Reine des Fées elle-même, prisonnière de ses épines depuis cent ans ! Et c'est un petit humain qui l'a délivrée. Il faudra que j'écrive une nouvelle chanson. Une longue.", "si": {"a_trouve": "reine"}, "geste": "rire"},
+				],
+				"nains": [
+					{"t": "La carte des Récifs de Feu ! Les nains de la Montagne de Feu… Ils forgeaient les plus belles lames du monde. Mon grand-père leur a vendu du bois de lune, il y a huit siècles. Il est revenu avec une hache et sans sa barbe. Va vers le couchant, au-delà de la jungle. Et frappe fort : les nains sont un peu sourds, à force de taper sur leurs enclumes.", "si": {}, "geste": "rire"},
+					{"t": "Les nains n'aiment ni la magie, ni les elfes, ni l'eau. Mais ils aiment l'or, la bière et les belles histoires. Raconte-leur Nâga. En exagérant un peu.", "si": {}},
 				],
 				"accueil": [
 					{"t": "Approche, jeune humain. Assieds-toi. Je suis Faelar. J'ai vu pousser cet arbre-là, et celui-là, et… ah, non, celui-là était déjà grand.", "si": {"visites_max": 1}, "geste": "salut"},

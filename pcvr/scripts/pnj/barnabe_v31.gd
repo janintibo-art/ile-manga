@@ -117,6 +117,8 @@ const DATA := {
 		# ------------------------------------------------------------ rumeurs et secrets
 		"rumeur": [
 			{"t": "Des rumeurs ? Je ne parle pas aux inconnus de choses importantes. Reviens quand on sera amis.", "si": {"affinite_max": 29}},
+			{"t": "Les Récifs de Feu, à l'ouest ! J'y suis passé, jeune. Enfin, à côté. De la fumée partout, des rochers noirs qui crachent des étincelles… On a fait demi-tour. Un nain nous a fait un geste depuis la plage. Pas un geste gentil.", "si": {"a_trouve": "carte_naine", "pas_trouve": "ile_nains"}, "geste": "rire"},
+			{"t": "Tu as mis le pied sur l'île des nains ?! Moi, en soixante ans de mer, jamais. Rapporte-moi un caillou de leur volcan, que je le montre à Octave.", "si": {"a_trouve": "ile_nains"}, "geste": "rire"},
 			{"t": "On dit que l'île flottante au-dessus de ton village a été posée là par un enfant géant qui jouait aux dés.", "si": {"affinite_min": 30}},
 			{"t": "Il paraît qu'il y a des ruines sous les racines des grands fromagers. Des escaliers qui ne mènent nulle part. Ou alors très loin.", "si": {"affinite_min": 30}},
 			{"t": "Entre nous… j'ai vu des lumières au sommet du plus grand piton, une nuit. Gaston dit que c'était la lune. Gaston dit beaucoup de choses.", "si": {"affinite_min": 40}},

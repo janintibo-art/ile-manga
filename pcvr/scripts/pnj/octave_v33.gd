@@ -98,6 +98,7 @@ const DATA := {
 		# ------------------------------------------------------------ rumeurs
 		"rumeur": [
 			{"t": "Des rumeurs ? Je n'en vends pas. Ça ne rapporte rien.", "si": {"affinite_max": 24}},
+			{"t": "Une carte des Récifs de Feu ? Les nains ! Ils paient en or, eux. Si tu entres dans Forgefer, parle-leur de moi : Octave Taillefer, négociant honnête. Enfin… négociant.", "si": {"a_trouve": "carte_naine"}},
 			{"t": "Il paraît que de l'autre côté de l'île vit un vieux fou qui parle aux coquillages. Barnabé, qu'il s'appelle. Ne crois rien de ce qu'il dit sur moi.", "si": {"pas_rencontre": "barnabe", "affinite_min": 10}},
 			{"t": "Barnabé t'a parlé de moi ? Laisse-moi deviner : « c'est Octave qui tenait la barre ». Il ne changera jamais de disque.", "si": {"a_rencontre": "barnabe"}},
 			{"t": "On dit qu'un poisson-lune doré nage au large. Si tu le pêches, je te l'achète une fortune. Barnabé n'aura jamais assez de coquillages pour le payer, lui.", "si": {"affinite_min": 25}},

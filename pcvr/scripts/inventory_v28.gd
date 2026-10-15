@@ -109,6 +109,9 @@ const ITEMS := {
 		"desc": "Un éclat rose et tiède, laissé par une araignée de cristal. Le lutin Grommelot en collectionne ; Mélisse en rachète."},
 	"nectar_fee": {"name": "Nectar de fée", "art": "un nectar de fée", "kind": "nourriture", "max": 10, "heal": 8,
 		"desc": "Le nectar doré de Mélisse, cueilli au cœur des fleurs géantes. Rend quatre cœurs."},
+	# V46 : la carte de l'île des nains
+	"carte_naine": {"name": "Carte des Récifs de Feu", "art": "la carte des Récifs de Feu", "kind": "quete", "max": 1,
+		"desc": "Un vieux parchemin offert par Églantine, la Reine des Ronces délivrée. Il montre la passe à travers les récifs et les cendres, à l'ouest, jusqu'à l'île volcanique des nains."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -635,6 +638,11 @@ func make_model(id: String) -> Node3D:
 			_part(m, _sphere(0.03), _mat("etoile_fee", Color(1.0, 0.9, 0.6), 0.1), Vector3(0, 0.34, 0))
 		"eclat_cristal":
 			_part(m, _cyl(0.0, 0.03, 0.08, 6), _mat("cristal_rose", Color(0.9, 0.55, 0.9), 0.1), Vector3(0, 0.04, 0))
+		"carte_naine":
+			_part(m, _box_mesh(Vector3(0.2, 0.006, 0.14)), _mat("parchemin", Color(0.86, 0.76, 0.56), 0.9), Vector3(0, 0.003, 0))
+			_part(m, _cyl(0.012, 0.012, 0.15, 8), _mat("parchemin", Color(0.86, 0.76, 0.56), 0.9), Vector3(-0.1, 0.012, 0), Vector3(90, 0, 0))
+			_part(m, _cyl(0.012, 0.012, 0.15, 8), _mat("parchemin", Color(0.86, 0.76, 0.56), 0.9), Vector3(0.1, 0.012, 0), Vector3(90, 0, 0))
+			_part(m, _sphere(0.015), _mat("cire_rouge", Color(0.7, 0.1, 0.08), 0.4), Vector3(0.04, 0.01, 0.03), Vector3.ZERO, Vector3(1, 0.4, 1))
 		"nectar_fee":
 			_part(m, _sphere(0.04), _mat("verre_nectar", Color(1.0, 0.8, 0.3), 0.1), Vector3(0, 0.04, 0))
 			_part(m, _cyl(0.012, 0.012, 0.04, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.09, 0))
