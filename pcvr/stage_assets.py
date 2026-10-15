@@ -101,6 +101,8 @@ selected = [
     "textures/items/potion_seve.png",
     "textures/items/tisane_lune.png",
     "textures/items/pain_miel.png",
+    "textures/items/lanterne_fee.png",
+    "textures/items/poussiere_fee.png",
     "textures/temple/temple_wall.png",
     "textures/temple/temple_wall_n.png",
     "textures/temple/temple_floor.png",

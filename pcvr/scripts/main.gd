@@ -2317,7 +2317,11 @@ func _npc_ctx_v31() -> Dictionary:
 			"quete_elfe": 1 if elfes_v41 != null and elfes_v41.lyra != null and str(elfes_v41.lyra.brain.memoire["quete"]) != "" else 0,
 			"arbre_sacre": 1 if elfes_v41 != null and bool(elfes_v41.state["arbre"]) else 0,
 			"ile_elfes": 1 if elfes_v41 != null and bool(elfes_v41.state["visite"]) else 0,
-			"bague_caelan": 1 if elfes_v41 != null and elfes_v41.village != null and elfes_v41.village.quest_state("caelan") == "finie" else 0},
+			"bague_caelan": 1 if elfes_v41 != null and elfes_v41.village != null and elfes_v41.village.quest_state("caelan") == "finie" else 0,
+			"esprits": elfes_v41.feerique.spirits_count() if elfes_v41 != null and elfes_v41.feerique != null else 0,
+			"porte_racines": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["porte"]) else 0,
+			"royaume": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["visite"]) else 0,
+			"prismes": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["prismes"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

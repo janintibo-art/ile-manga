@@ -44,6 +44,7 @@ var _mist_clock: float = 0.0
 var _mats: Dictionary = {}
 var _body: StaticBody3D
 var village: Node3D                           # V42 : la vie du village (habitants, marché…)
+var feerique: Node3D                          # V43 : la porte de l'Arbre-Mère et le Royaume des Racines
 
 
 func setup(main_node: Node) -> void:
@@ -74,6 +75,9 @@ func build_island() -> void:
 		var t: float = float(k) / 13.0
 		var pt: Vector2 = Vector2(d0.x, d0.z).lerp(g, t)
 		flora.clearings.append([pt, 4.5])
+	# V43 : une petite clairière autour de chaque cercle de champignons des esprits-lucioles.
+	for sp in preload("res://scripts/feerique_v43.gd").spots_for(ile):
+		flora.clearings.append([Vector2(sp.x - ile.CENTER.x, sp.z - ile.CENTER.z), 5.0])
 	flora.build_elfes(ile, pc)
 	_build_village()
 	_build_mist()
@@ -549,6 +553,11 @@ func build_quest() -> void:
 	village.name = "Village_elfe_v42"
 	add_child(village)
 	village.build(self)
+	feerique = preload("res://scripts/feerique_v43.gd").new()
+	feerique.name = "Royaume_des_Racines_v43"
+	add_child(feerique)
+	feerique.setup(self)
+	feerique.build()
 	print("ILE_MANGA_V41: clairière de Lyra à ", glade, ", fleur de lune à ", _flower_pos, ", île des elfes à ", ile.CENTER)
 
 
@@ -816,7 +825,10 @@ func _heal() -> void:
 # =================================================================== sauvegarde
 
 func serialize() -> Dictionary:
-	return state.duplicate()
+	var out: Dictionary = state.duplicate()
+	if feerique != null:
+		out["feerique"] = feerique.serialize()
+	return out
 
 
 func load_data(d: Dictionary) -> void:
@@ -826,6 +838,9 @@ func load_data(d: Dictionary) -> void:
 			state[k] = bool(d[k])
 	if _flower != null:
 		_flower.visible = not bool(state["fleur"])
+	if feerique != null:
+		var fd: Variant = d.get("feerique", {})
+		feerique.load_data(fd if fd is Dictionary else {})
 	_apply_tree()
 	if lyra != null:
 		_move_lyra(not bool(state["arbre"]))

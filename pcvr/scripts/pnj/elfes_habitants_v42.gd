@@ -246,6 +246,8 @@ const NAMED := [
 					{"t": "Le grand serpent des abysses… Faelar dit que tu l'as vaincu. Si c'est vrai, je retire ce que j'ai dit sur toi. Une partie.", "si": {"a_trouve": "naga"}},
 					{"t": "Caelan joue de la harpe sous les fenêtres d'Ilyria. Toutes les nuits. Je suis garde : je dois tout entendre. TOUT.", "si": {}, "geste": "colere"},
 					{"t": "Nimiel veut devenir archère. Elle a tiré sur la porte de Sylwen. La porte n'a pas survécu.", "si": {}, "geste": "rire"},
+					{"t": "Des lumières dansent dans la forêt. Des esprits, dit Faelar. Je ne tire pas sur les esprits.", "si": {"pas_trouve": "porte_racines"}},
+					{"t": "La porte de l'Arbre-Mère est ouverte… Trois siècles que je la garde fermée, et un humain l'ouvre en une semaine. Bon. Bravo.", "si": {"a_trouve": "porte_racines"}},
 				],
 				"quete_manque": [{"t": "Encore {manque} bâtons. Droits, hein.", "si": {}}],
 				"quete_fin": [{"t": "Bon bois. Droit, sec, solide. Voilà vingt pièces. Et… merci, {surnom}.", "si": {}, "geste": "salut", "humeur": 0.2}],
@@ -268,7 +270,25 @@ const NAMED := [
 			"aime": {"perle": 2.0, "coquillage": 1.0, "miel": 1.0, "ecaille_naga": 3.0, "fragment_amulette": 2.0},
 			"deteste": {},
 			"refuse": ["epee", "hache"],
+			# V43 : la légende de la porte de l'Arbre-Mère
+			"sujets_speciaux": [
+				{"id": "porte", "label": "Que cache l'Arbre-Mère ?", "si": {"pas_fait": "lanterne_fee"}},
+				{"id": "esprits", "label": "Les esprits-lucioles…", "si": {"fait": "lanterne_fee", "pas_trouve": "porte_racines"}},
+				{"id": "royaume", "label": "J'ai ouvert la porte de l'Arbre-Mère !", "si": {"a_trouve": "porte_racines"}},
+			],
 			"repliques": {
+				"porte": [
+					{"t": "Ah… Tu as vu la porte sculptée dans son tronc. Sous l'Arbre-Mère dort le Royaume des Racines, le pays des fées. Jadis, cinq esprits-lucioles gardaient sa porte ; un soir d'orage, ils se sont envolés dans la forêt, et la porte s'est refermée. Prends cette lanterne de fée. Les esprits dansent au-dessus des cercles de champignons blancs, tout autour du village. Ramène-les chez eux, et la porte s'ouvrira.", "si": {}, "action": "donne", "donne": [["lanterne_fee", 1]], "pose": "lanterne_fee", "geste": "salut", "humeur": 0.1},
+				],
+				"esprits": [
+					{"t": "Cinq esprits, cinq cercles de champignons blancs, dans la forêt autour du village. Ils ne se laissent attraper que par la lanterne. Et par la patience.", "si": {}},
+					{"t": "Cherche les petites lumières qui dansent sous les grands arbres, loin de la place. Le jour, elles brillent aussi, si l'on sait regarder.", "si": {}},
+					{"t": "Quand ta lanterne en abritera cinq, va devant la porte de l'Arbre-Mère, côté couchant. Ils sauront quoi faire.", "si": {}},
+				],
+				"royaume": [
+					{"t": "Le Royaume des Racines… Cela faisait trois cents ans que personne n'y était descendu. Les fées sont joueuses : méfie-toi de leurs énigmes, et ne perds pas le soleil de vue.", "si": {"pas_trouve": "prismes"}},
+					{"t": "La Fleur-Porte s'est ouverte pour toi ! Plus loin, dit-on, vit la Reine des Ronces. Elle n'aime ni les humains, ni les elfes, ni personne. Sois prudent.", "si": {"a_trouve": "prismes"}},
+				],
 				"accueil": [
 					{"t": "Approche, jeune humain. Assieds-toi. Je suis Faelar. J'ai vu pousser cet arbre-là, et celui-là, et… ah, non, celui-là était déjà grand.", "si": {"visites_max": 1}, "geste": "salut"},
 					{"t": "Ah, {surnom}. Tu veux une histoire ? J'en ai trois mille. Celle-ci est courte. Enfin, pour un elfe.", "si": {"visites_min": 2}},
@@ -345,6 +365,8 @@ const NAMED := [
 					{"t": "Caelan est amoureux d'Ilyria ! Tout le monde le sait ! Sauf Ilyria. Enfin, elle fait semblant.", "si": {}, "geste": "rire"},
 					{"t": "Faelar s'est endormi au milieu d'une histoire. Encore. On lui a mis une fleur sur le nez.", "si": {}, "geste": "rire"},
 					{"t": "Thalion a peur des grenouilles. C'est vrai ! Je l'ai vu !", "si": {}, "geste": "rire"},
+					{"t": "J'ai vu une petite lumière danser au-dessus d'un cercle de champignons blancs, dans la forêt ! Faelar dit que c'est un esprit-luciole. Je n'ai pas eu le droit de la suivre.", "si": {"pas_trouve": "porte_racines"}},
+					{"t": "Tu es descendu dans l'Arbre-Mère ?! Il y a des fées ? Des VRAIES ? Emmène-moi la prochaine fois ! S'il te plaît !", "si": {"a_trouve": "royaume"}, "geste": "rire"},
 				],
 				"blague": [
 					{"t": "Pourquoi les grenouilles sont toujours contentes ? Parce qu'elles mangent ce qui les embête ! Hi hi hi !", "si": {}, "geste": "rire"},
@@ -491,6 +513,7 @@ const PASSANT_LINES := {
 		{"t": "Thalion t'a à l'œil. Ne lui en veux pas : il a tout le monde à l'œil.", "si": {}},
 		{"t": "Il paraît que tu as soigné l'Arbre sacré, sur ton île. Merci, humain.", "si": {"a_trouve": "arbre_sacre"}},
 		{"t": "Nimiel a encore fait une bêtise. Je ne sais pas laquelle, mais c'est sûr.", "si": {}, "geste": "rire"},
+		{"t": "La porte de l'Arbre-Mère s'est ouverte ! Tout le village ne parle que de ça.", "si": {"a_trouve": "porte_racines"}},
 	],
 	"interpelle": [
 		{"t": "Bonjour !", "si": {}},

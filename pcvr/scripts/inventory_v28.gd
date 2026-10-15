@@ -95,6 +95,11 @@ const ITEMS := {
 		"desc": "Une tisane parfumée aux fleurs de nuit, encore tiède. Rend un cœur et demi."},
 	"pain_miel": {"name": "Pain de miel", "art": "un pain de miel", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "Le pain doré de Sylwen, la boulangère du Bois-Doré. Il sent le miel et le soleil. Rend deux cœurs."},
+	# V43 : le Royaume des Racines
+	"lanterne_fee": {"name": "Lanterne de fée", "art": "la lanterne de fée", "kind": "quete", "max": 1,
+		"desc": "Une petite lanterne d'argent et de verre, confiée par Faelar. Les esprits-lucioles du Bois-Doré peuvent s'y abriter. Ramène-les à la porte de l'Arbre-Mère."},
+	"poussiere_fee": {"name": "Poussière de fée", "art": "de la poussière de fée", "kind": "quete", "max": 10,
+		"desc": "Une bourse de poussière qui scintille de toutes les couleurs, trouvée dans le coffre du Jardin des Fées. Lumi dit qu'il en faudra beaucoup pour passer les ronces."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -614,6 +619,13 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))
 		"boussole_elfique":
 			_part(m, _cyl(0.045, 0.045, 0.015, 20), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.008, 0))
+		"lanterne_fee":
+			_part(m, _cyl(0.035, 0.04, 0.012, 12), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.006, 0))
+			_part(m, _sphere(0.035), _mat("verre_fee", Color(0.85, 1.0, 0.7), 0.1), Vector3(0, 0.045, 0), Vector3.ZERO, Vector3(1.0, 1.2, 1.0))
+			_part(m, _cyl(0.0, 0.04, 0.03, 12), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.095, 0))
+		"poussiere_fee":
+			_part(m, _sphere(0.04), _mat("bourse", Color(0.55, 0.35, 0.6), 0.9), Vector3(0, 0.035, 0), Vector3.ZERO, Vector3(1.0, 0.9, 1.0))
+			_part(m, _sphere(0.012), _mat("paillette", Color(1.0, 0.85, 0.95), 0.1), Vector3(0, 0.075, 0))
 		"potion_seve":
 			_part(m, _sphere(0.045), _mat("verre_seve", Color(0.3, 0.75, 0.4), 0.1), Vector3(0, 0.045, 0))
 			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))

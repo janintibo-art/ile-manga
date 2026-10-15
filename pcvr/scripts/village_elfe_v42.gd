@@ -77,7 +77,7 @@ func _make_ground_points() -> void:
 	for k in range(12):
 		_link(ground_graph, "r%d" % k, "r%d" % ((k + 1) % 12))
 	# Sous l'Arbre-Mère (trois allées qui traversent la couronne de bancs)
-	for pair in [["i0", 43.5, 1], ["i1", 163.5, 5], ["i2", 283.5, 9]]:
+	for pair in [["i0", 43.5, 1], ["i1", 223.5, 7], ["i2", 283.5, 9]]:
 		ground[pair[0]] = _at(pair[1], 5.6)
 		_link(ground_graph, pair[0], "r%d" % pair[2])
 	# La Fontaine de lune (centre à 13,5 m au sud de l'Arbre)
