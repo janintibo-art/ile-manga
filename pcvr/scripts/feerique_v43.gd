@@ -37,7 +37,8 @@ var _leaves: Array = []
 var _niches: Array = []
 var _body: StaticBody3D
 var _mats: Dictionary = {}
-var _root_xf: Array = []
+var _root_xf: Array = []           # V45 : courbes des racines [a, ctrl, b, r0, r1, segments]
+var gfx                            # V45 : rendu réaliste (feerique_gfx_v45.gd)
 var _crystals: Array = []
 var _beam_root: Node3D
 var _beam_mat: StandardMaterial3D
@@ -58,6 +59,7 @@ var _clock: float = 0.0
 
 func setup(elfes: Node3D) -> void:
 	el = elfes
+	gfx = preload("res://scripts/feerique_gfx_v45.gd").new()
 	main = el.main
 	d = main.donjon_v35
 	G = el.ile.glade_world()
@@ -250,6 +252,8 @@ func _box(parent: Node3D, size: Vector3, pos: Vector3, mat: Material, solid: boo
 
 
 ## Salle : sol, plafond et quatre murs, avec des ouvertures [côté, centre, largeur, hauteur].
+## V45 : les boîtes ne servent plus qu'aux collisions (et de fond) ; ce qu'on voit, ce sont
+## des parois de roche irrégulières, un sol moussu bosselé et un plafond hérissé.
 func _room(x0: float, x1: float, z0: float, z1: float, h: float, openings: Array) -> void:
 	var t: float = 0.6
 	var cx: float = (x0 + x1) * 0.5
@@ -258,38 +262,63 @@ func _room(x0: float, x1: float, z0: float, z1: float, h: float, openings: Array
 	var n_l: int = clampi(int((x1 - x0) * (z1 - z0) / 110.0), 1, 6)
 	for k in range(n_l):
 		var f: float = (k + 0.5) / n_l
-		var lp := Vector3(lerpf(x0 + 1.0, x1 - 1.0, 0.5 + 0.3 * sin(k * 2.3)), h - 0.6, lerpf(z0, z1, f))
-		_light(s, lp, Color(0.75, 0.6, 1.0) if k % 2 == 0 else Color(0.55, 0.85, 1.0), 1.1, maxf(h * 1.6, 9.0))
-	_box(s, Vector3(x1 - x0 + 2 * t, 0.5, z1 - z0 + 2 * t), Vector3(cx, -0.25, cz), _mat("mousse"))
-	_box(s, Vector3(x1 - x0 + 2 * t, 0.6, z1 - z0 + 2 * t), Vector3(cx, h + 0.3, cz), _mat("terre"))
+		var lp := Vector3(lerpf(x0 + 1.0, x1 - 1.0, 0.5 + 0.3 * sin(k * 2.3)), h - 0.6 - minf(h * 0.12, 1.4), lerpf(z0, z1, f))
+		var l: OmniLight3D = _light(s, lp, Color(0.75, 0.6, 1.0) if k % 2 == 0 else Color(0.55, 0.85, 1.0), 1.2, maxf(h * 1.6, 9.0))
+		if k == 0 and el.pc:
+			l.shadow_enabled = true
+	_box(s, Vector3(x1 - x0 + 2 * t, 0.5, z1 - z0 + 2 * t), Vector3(cx, -0.25, cz), gfx.rock("sol")).visible = false
+	_box(s, Vector3(x1 - x0 + 2 * t, 0.6, z1 - z0 + 2 * t), Vector3(cx, h + 0.3, cz), gfx.rock("plafond")).visible = false
+	var cell: float = clampf(maxf(x1 - x0, z1 - z0) / 40.0, 0.35, 0.6)
+	# Sol : mousse et roche, à peine bosselé (on ne flotte pas au-dessus)
+	_mesh(s, gfx.rock_face(Vector3(cx, 0.0, cz), Vector3.RIGHT, Vector3.BACK, x1 - x0 + 0.6, z1 - z0 + 0.6, Vector3.DOWN, 0.1, cell, [false, false, false, false], false, Vector3.UP), gfx.rock("sol"), Vector3.ZERO)
+	# Plafond : roche qui pend, en crêtes
+	_mesh(s, gfx.rock_face(Vector3(cx, h, cz), Vector3.RIGHT, Vector3.BACK, x1 - x0 + 0.6, z1 - z0 + 0.6, Vector3.DOWN, minf(h * 0.14, 1.6), cell, [false, false, false, false], true), gfx.rock("plafond"), Vector3.ZERO)
 	for side in ["n", "s", "e", "w"]:
 		var along_x: bool = side in ["n", "s"]
 		var a0: float = x0 - t if along_x else z0
 		var a1: float = x1 + t if along_x else z1
 		var fixed: float = (z0 - t * 0.5) if side == "n" else ((z1 + t * 0.5) if side == "s" else ((x1 + t * 0.5) if side == "e" else (x0 - t * 0.5)))
+		var inward: Vector3 = Vector3(0, 0, 1) if side == "n" else (Vector3(0, 0, -1) if side == "s" else (Vector3(-1, 0, 0) if side == "e" else Vector3(1, 0, 0)))
 		var gaps: Array = []
 		for o in openings:
 			if str(o[0]) == side:
 				gaps.append([float(o[1]) - float(o[2]) * 0.5, float(o[1]) + float(o[2]) * 0.5, float(o[3])])
 		gaps.sort_custom(func(p, q): return p[0] < q[0])
+		# Des blocs de roche autour des ouvertures : plus de porte « découpée au carré »
+		for g2 in gaps:
+			for e in [0, 1]:
+				var u2: float = float(g2[e])
+				var out: float = -1.0 if e == 0 else 1.0
+				for k2 in range(3):
+					var hy: float = float(g2[2]) * (0.15 + 0.35 * k2)
+					var bp: Vector3 = (Vector3(u2 + out * 0.15, hy, fixed) if along_x else Vector3(fixed, hy, u2 + out * 0.15)) + inward * 0.45
+					var sz: float = 1.2 + 0.35 * ((k2 + e) % 2)
+					_mesh(s, Rocks.shape(4700 + k2 + e * 3, Vector3(sz, sz * 1.2, sz), 0.7, 0.22), gfx.rock("mur"), bp, Vector3(0, k2 * 1.3, 0))
+			for k3 in range(3):
+				var lu: float = lerpf(float(g2[0]), float(g2[1]), (k3 + 0.5) / 3.0)
+				var lpos: Vector3 = (Vector3(lu, float(g2[2]) + 0.2, fixed) if along_x else Vector3(fixed, float(g2[2]) + 0.2, lu)) + inward * 0.4
+				_mesh(s, Rocks.shape(4710 + k3, Vector3(1.5, 0.8, 1.1), 0.7, 0.22), gfx.rock("mur"), lpos, Vector3(0, k3 * 2.1, 0))
 		var cur: float = a0
+		var after_gap: bool = false
 		for g in gaps:
 			if g[0] > cur:
-				_wall(along_x, fixed, cur, g[0], 0.0, h, t)
+				_wall(along_x, fixed, cur, g[0], 0.0, h, t, inward, [after_gap, true, false, false])
 			if float(g[2]) < h:
-				_wall(along_x, fixed, g[0], g[1], float(g[2]), h - float(g[2]), t)
+				_wall(along_x, fixed, g[0], g[1], float(g[2]), h - float(g[2]), t, inward, [true, true, true, false])
 			cur = g[1]
+			after_gap = true
 		if cur < a1:
-			_wall(along_x, fixed, cur, a1, 0.0, h, t)
-	# Racines qui tapissent les murs (une seule MultiMesh plus tard)
+			_wall(along_x, fixed, cur, a1, 0.0, h, t, inward, [after_gap, false, false, false])
+	# Racines qui tapissent les murs (un seul maillage plus tard)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(absf(x0 * 13.0 + z0 * 7.0)) + 4300
+	var pebbles: Array = []
 	for side in ["n", "s", "e", "w"]:
 		var along: bool = side in ["n", "s"]
 		var lo: float = x0 if along else z0
 		var hi: float = x1 if along else z1
 		var w: float = (z0 + 0.15) if side == "n" else ((z1 - 0.15) if side == "s" else ((x1 - 0.15) if side == "e" else (x0 + 0.15)))
-		var inward: Vector3 = Vector3(0, 0, 1) if side == "n" else (Vector3(0, 0, -1) if side == "s" else (Vector3(-1, 0, 0) if side == "e" else Vector3(1, 0, 0)))
+		var inward2: Vector3 = Vector3(0, 0, 1) if side == "n" else (Vector3(0, 0, -1) if side == "s" else (Vector3(-1, 0, 0) if side == "e" else Vector3(1, 0, 0)))
 		var u: float = lo + rng.randf_range(0.3, 0.9)
 		while u < hi - 0.3:
 			var blocked: bool = false
@@ -300,73 +329,107 @@ func _room(x0: float, x1: float, z0: float, z1: float, h: float, openings: Array
 				var base: Vector3 = Vector3(u, 0.0, w) if along else Vector3(w, 0.0, u)
 				var lean: Vector3 = (Vector3(rng.randf_range(-2.2, 2.2), 0, 0) if along else Vector3(0, 0, rng.randf_range(-2.2, 2.2)))
 				var top: Vector3 = base + lean + Vector3.UP * h
-				var bulge: Vector3 = inward * rng.randf_range(0.15, 0.55) + Vector3.UP * rng.randf_range(-0.5, 0.5)
-				_root(base + inward * 0.3 - Vector3.UP * 0.1, top, bulge * 1.6, rng.randf_range(0.16, 0.42), rng.randf_range(0.07, 0.18))
+				var bulge: Vector3 = inward2 * rng.randf_range(0.6, 1.3) + Vector3.UP * rng.randf_range(-0.8, 0.8)
+				_root(base + inward2 * 0.45 - Vector3.UP * 0.1, top + inward2 * 0.3, bulge * 1.6, rng.randf_range(0.16, 0.42), rng.randf_range(0.07, 0.18))
+				# Une racine sur deux s'étale aussi au sol
+				if rng.randf() < 0.5:
+					var spread: Vector3 = base + inward2 * rng.randf_range(1.2, 2.4) + (Vector3(rng.randf_range(-1, 1), 0, 0) if along else Vector3(0, 0, rng.randf_range(-1, 1)))
+					_root(base + inward2 * 0.45 + Vector3.UP * 0.4, spread - Vector3.UP * 0.12, Vector3.UP * 0.35, rng.randf_range(0.12, 0.25), 0.04, 6)
+			for k in range(2):
+				pebbles.append(Vector3(u + rng.randf_range(-0.6, 0.6), 0.0, w) if along else Vector3(w, 0.0, u + rng.randf_range(-0.6, 0.6)))
+				pebbles[-1] += inward2 * rng.randf_range(0.4, 1.4)
 			u += rng.randf_range(1.3, 2.4)
+	# Cailloux le long des parois
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = Rocks.shape(4560, Vector3(0.5, 0.32, 0.42), 0.85, 0.2)
+	mm.instance_count = pebbles.size()
+	for k in range(pebbles.size()):
+		var sc: float = rng.randf_range(0.35, 1.3)
+		mm.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sc, sc * rng.randf_range(0.6, 1.0), sc)), pebbles[k] + Vector3.UP * 0.05))
+		mm.set_instance_color(k, Color(1, 1, 1) * rng.randf_range(0.75, 1.05))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	mmi.material_override = gfx.rock("mur")
+	s.add_child(mmi)
 
 
-func _wall(along_x: bool, fixed: float, a: float, b: float, y0: float, h: float, t: float) -> void:
+func _wall(along_x: bool, fixed: float, a: float, b: float, y0: float, h: float, t: float, inward: Vector3 = Vector3.ZERO, taper: Array = [false, false, false, false]) -> void:
 	var mid: float = (a + b) * 0.5
 	if along_x:
-		_box(s, Vector3(b - a, h, t), Vector3(mid, y0 + h * 0.5, fixed), _mat("terre"))
+		_box(s, Vector3(b - a, h, t), Vector3(mid, y0 + h * 0.5, fixed), gfx.rock("mur"))
 	else:
-		_box(s, Vector3(t, h, b - a), Vector3(fixed, y0 + h * 0.5, mid), _mat("terre"))
+		_box(s, Vector3(t, h, b - a), Vector3(fixed, y0 + h * 0.5, mid), gfx.rock("mur"))
+	if inward == Vector3.ZERO:
+		return
+	# La paroi rocheuse, posée sur la face intérieure du mur
+	var face_c: Vector3 = (Vector3(mid, y0 + h * 0.5, fixed) if along_x else Vector3(fixed, y0 + h * 0.5, mid)) + inward * (t * 0.5 + 0.01)
+	var u_axis: Vector3 = Vector3.RIGHT if along_x else Vector3.BACK
+	var cell: float = clampf(h / 22.0, 0.35, 0.6)
+	var amp: float = clampf(h * 0.12, 0.6, 1.6)
+	_mesh(s, gfx.rock_face(face_c, u_axis, Vector3.UP, b - a, h, inward, amp, cell, taper), gfx.rock("mur"), Vector3.ZERO)
 
 
-## Une racine courbe (courbe de Bézier) en tronçons de cylindre : on mémorise les tronçons
-## pour les dessiner tous d'un coup (MultiMesh).
+## Une racine courbe (courbe de Bézier) : on mémorise la courbe, et toutes les racines
+## deviennent un seul maillage de tubes (V45 : continus, écorce en relief).
 func _root(a: Vector3, b: Vector3, bulge: Vector3, r0: float, r1: float, segs: int = 8) -> void:
-	var ctrl: Vector3 = (a + b) * 0.5 + bulge
-	var prev: Vector3 = a
-	for k in range(1, segs + 1):
-		var t: float = float(k) / segs
-		var q: Vector3 = a.lerp(ctrl, t).lerp(ctrl.lerp(b, t), t)
-		var seg: Vector3 = q - prev
-		var r: float = lerpf(r0, r1, t)
-		var yax: Vector3 = seg.normalized()
-		var xax: Vector3 = yax.cross(Vector3.FORWARD if absf(yax.z) < 0.9 else Vector3.RIGHT).normalized()
-		var zax: Vector3 = xax.cross(yax)
-		_root_xf.append(Transform3D(Basis(xax * r, yax * (seg.length() + r * 0.6), zax * r), (prev + q) * 0.5))
-		prev = q
+	_root_xf.append([a, (a + b) * 0.5 + bulge, b, r0, r1, segs])
+
+
+## Eau sombre et luisante (étangs, bassins) : reflets, et une lueur qui vient du fond.
+func _water_mat() -> StandardMaterial3D:
+	if _mats.has("eau_fee"):
+		return _mats["eau_fee"]
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.08, 0.22, 0.26, 0.82)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.roughness = 0.03
+	m.metallic = 0.4
+	m.metallic_specular = 1.0
+	m.normal_enabled = true
+	m.normal_texture = load("res://assets/textures/water/water_n.png")
+	m.normal_scale = 0.6
+	m.uv1_scale = Vector3(1.5, 1.5, 1.5)
+	m.emission_enabled = true
+	m.emission = Color(0.25, 0.75, 0.8)
+	m.emission_energy_multiplier = 0.55
+	_mats["eau_fee"] = m
+	return m
 
 
 func _flush_roots() -> void:
-	var mm := MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.mesh = _cyl(1.0, 1.0, 1.0, 8)
-	mm.instance_count = _root_xf.size()
-	for i in range(_root_xf.size()):
-		mm.set_instance_transform(i, _root_xf[i])
-	var mmi := MultiMeshInstance3D.new()
-	mmi.name = "Racines"
-	mmi.multimesh = mm
-	mmi.material_override = _mat("ecorce")
-	s.add_child(mmi)
+	if _root_xf.is_empty():
+		return
+	var mi := MeshInstance3D.new()
+	mi.name = "Racines"
+	mi.mesh = gfx.roots_mesh(_root_xf)
+	mi.material_override = gfx.bark()
+	s.add_child(mi)
 	_root_xf.clear()
 
 
-## Champignon géant lumineux : pied clair, chapeau, lamelles qui brillent dessous.
+## Champignon géant lumineux (V45 : chapeau bombé à bord recourbé, taches, lamelles
+## lumineuses dessous, pied fibreux avec un anneau).
 func _mushroom(pos: Vector3, h: float, r: float, c: Color, with_light: bool) -> void:
 	var lean := Vector3(sin(pos.x * 3.1) * 0.08, 0, cos(pos.z * 2.7) * 0.08)
-	_mesh(s, _cyl(r * 0.22, r * 0.3, h, 10), _mat("pied"), pos + Vector3.UP * h * 0.5, lean)
+	_mesh(s, gfx.stem_mesh(r * 0.24, h), gfx.stem_mat(), pos, lean)
 	var cap_p: Vector3 = pos + Vector3.UP * h + Vector3(lean.z, 0, -lean.x) * h * 0.5
-	_mesh(s, _sphere(r, 16), _glow(c, 0.9), cap_p, Vector3.ZERO, Vector3(1.0, 0.42, 1.0))
-	_mesh(s, _cyl(r * 0.25, r * 0.95, r * 0.18, 16), _glow(c.lightened(0.3), 3.0), cap_p - Vector3.UP * r * 0.12)
-	for k in range(5):
-		var a: float = k * 1.3 + pos.x
-		_mesh(s, _sphere(r * 0.09, 6), _mat("pied"), cap_p + Vector3(cos(a) * r * 0.55, r * 0.36, sin(a) * r * 0.55), Vector3.ZERO, Vector3(1, 0.5, 1))
+	var cap := _mesh(s, gfx.cap_mesh(r, 0.4 + fposmod(pos.x * 0.37, 0.2)), gfx.cap_mat(c, int(absf(pos.x * 7.0 + pos.z * 3.0)) % 2 == 0, 1.0), cap_p, Vector3(lean.x * 0.6, pos.z, lean.z * 0.6))
+	cap.rotation.y = pos.z
 	if with_light:
 		_light(s, cap_p - Vector3.UP * r * 0.4, c, 2.0, 8.0 + r * 3.0)
 
 
-## Grappe de cristaux qui luit.
+## Grappe de cristaux qui luit (V45 : prismes hexagonaux à pointe).
 func _crystal_cluster(pos: Vector3, c: Color, n: int, seed_v: int, size: float = 1.0) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	for k in range(n):
-		var h: float = rng.randf_range(0.4, 1.3) * size
-		var m := _mesh(s, _cyl(0.0, rng.randf_range(0.08, 0.18) * size, h, 6), _glow(c, 1.8, 0.85), pos + Vector3(rng.randf_range(-0.4, 0.4) * size, h * 0.45, rng.randf_range(-0.4, 0.4) * size))
-		m.rotation = Vector3(rng.randf_range(-0.5, 0.5), rng.randf() * TAU, rng.randf_range(-0.5, 0.5))
+		var h: float = rng.randf_range(0.5, 1.5) * size
+		var m := _mesh(s, gfx.crystal_mesh(rng.randf_range(0.07, 0.17) * size, h), gfx.crystal_mat(c), pos + Vector3(rng.randf_range(-0.45, 0.45) * size, -0.05, rng.randf_range(-0.45, 0.45) * size))
+		m.rotation = Vector3(rng.randf_range(-0.55, 0.55), rng.randf() * TAU, rng.randf_range(-0.55, 0.55))
+	_mesh(s, Rocks.shape(seed_v, Vector3(0.9, 0.35, 0.8) * size, 0.8, 0.2), gfx.rock("mur"), pos + Vector3.UP * 0.05)
 
 
 # =================================================================== les esprits-lucioles
@@ -604,8 +667,8 @@ func _build_dungeon() -> void:
 ## remonte vers la porte.
 func _build_heart() -> void:
 	_room(-6, 6, -5, 6, 8.0, [["n", 0.0, 3.0, 3.6]])
-	# Racine maîtresse, veinée d'or
-	_mesh(s, _cyl(1.6, 0.9, 8.2, 16), _mat("ecorce"), Vector3(0, 4.1, -0.6))
+	# Racine maîtresse : un faisceau de grosses racines torsadées qui descend du plafond
+	# et s'étale au sol, avec des mousses lumineuses dans les creux.
 	var cs := CollisionShape3D.new()
 	var cyl := CylinderShape3D.new()
 	cyl.radius = 1.05
@@ -613,17 +676,23 @@ func _build_heart() -> void:
 	cs.shape = cyl
 	_body.add_child(cs)
 	cs.global_position = s.to_global(Vector3(0, 4.0, -0.6))
-	for k in range(6):
-		var a: float = TAU * k / 6.0
-		_root(Vector3(cos(a) * 1.0, 0.0, -0.6 + sin(a) * 1.0), Vector3(cos(a) * 2.6, -0.1, -0.6 + sin(a) * 2.6), Vector3(0, 0.8, 0), 0.35, 0.12, 6)
-		for v in range(2):
-			var y0: float = 1.0 + v * 3.0 + k * 0.3
-			_mesh(s, _cyl(0.015, 0.015, 1.6, 5), _glow(Color(1.0, 0.82, 0.45), 1.2), Vector3(cos(a) * (1.06 + y0 * 0.06), y0 + 1.1, -0.6 + sin(a) * (1.06 + y0 * 0.06)), Vector3(0, 0, 0.25 * (1 if v == 0 else -1)).rotated(Vector3.UP, a))
+	var c0 := Vector3(0, 0, -0.6)
+	for k in range(5):
+		var a: float = TAU * k / 5.0
+		var off := Vector3(cos(a), 0, sin(a))
+		var off2 := Vector3(cos(a + 1.2), 0, sin(a + 1.2))
+		_root(c0 + off2 * 0.9 + Vector3.UP * 8.3, c0 + off * 0.55 + Vector3.UP * 1.2, off * 0.3 + Vector3.UP * 0.5, 0.72, 0.6, 12)
+		_root(c0 + off * 0.55 + Vector3.UP * 1.4, c0 + off * 2.9 - Vector3.UP * 0.15, off * 0.4 + Vector3.UP * 0.9, 0.62, 0.14, 8)
+	_root(c0 + Vector3.UP * 8.3, c0 + Vector3.UP * 0.2, Vector3(0.2, 0, 0.1), 0.85, 0.75, 10)
+	for k in range(14):
+		var a3: float = k * 2.4
+		var y3: float = 0.8 + fposmod(k * 1.37, 6.0)
+		_mesh(s, _sphere(0.09, 8), _glow(Color(0.6, 1.0, 0.75) if k % 2 == 0 else Color(1.0, 0.85, 0.5), 2.0), c0 + Vector3(cos(a3) * 1.15, y3, sin(a3) * 1.15), Vector3.ZERO, Vector3(1.4, 0.6, 1.4))
 	# Escalier de racines (décor) qui monte vers la lumière, au sud
 	for k in range(9):
 		var a2: float = PI * 0.15 + k * 0.17
 		var p := Vector3(cos(a2) * 4.6, 0.4 + k * 0.7, 2.0 + sin(a2) * 3.0)
-		_mesh(s, _boxm(Vector3(1.4, 0.18, 0.7)), _mat("ecorce"), p, Vector3(0, -a2, 0))
+		_mesh(s, Rocks.shape(4600 + k, Vector3(1.4, 0.22, 0.75), 0.7, 0.12), gfx.rock("mur"), p, Vector3(0, -a2, 0))
 	var shaft := SpotLight3D.new()
 	shaft.light_color = Color(1.0, 0.9, 0.6)
 	shaft.light_energy = 2.2
@@ -841,7 +910,7 @@ func _open_bud(instant: bool) -> void:
 func _build_garden() -> void:
 	_room(-8, 8, -60, -43, 8.0, [["s", 0.0, 3.2, 4.2], ["n", 0.0, 3.2, 4.2], ["w", -51.5, 3.0, 3.6], ["e", -51.5, 3.0, 3.6]])
 	# Étang lumineux et nénuphars
-	_mesh(s, _cyl(2.25, 2.25, 0.04, 28), _glow(Color(0.35, 0.85, 0.85), 1.4, 0.85), Vector3(-4.6, 0.03, -49.0))
+	_mesh(s, _cyl(2.25, 2.25, 0.04, 28), _water_mat(), Vector3(-4.6, 0.03, -49.0))
 	var rim := TorusMesh.new()
 	rim.inner_radius = 2.2
 	rim.outer_radius = 2.6

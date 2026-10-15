@@ -80,15 +80,11 @@ func _cyl_body(pos: Vector3, radius: float, height: float) -> void:
 
 ## Un champignon géant « solide » : pied et chapeau sur lesquels on peut marcher.
 func _solid_mushroom(x: float, z: float, top: float, r: float, c: Color, bouncy: bool) -> MeshInstance3D:
-	var stem_r: float = maxf(r * 0.28, 0.25)
-	f._mesh(s, f._cyl(stem_r * 0.85, stem_r, top - 0.15, 12), f._mat("pied"), Vector3(x, (top - 0.15) * 0.5, z))
+	var stem_r: float = maxf(r * 0.24, 0.22)
+	f._mesh(s, f.gfx.stem_mesh(stem_r, top - 0.3, not bouncy), f.gfx.stem_mat(), Vector3(x, 0, z))
 	_cyl_body(Vector3(x, 0, z), stem_r, top - 0.3)
-	var cap: MeshInstance3D = f._mesh(s, f._sphere(r, 20), f._glow(c, 1.1 if bouncy else 0.7), Vector3(x, top - 0.2, z), Vector3.ZERO, Vector3(1.0, 0.36, 1.0))
-	f._mesh(s, f._cyl(r * 0.3, r * 0.95, r * 0.14, 20), f._glow(c.lightened(0.35), 3.0), Vector3(x, top - 0.3, z))
-	for k in range(7):
-		var a: float = k * 0.9 + x
-		var rr: float = r * (0.3 + 0.08 * (k % 4))
-		f._mesh(s, f._sphere(r * 0.08, 6), f._mat("pied"), Vector3(x + cos(a) * rr, top - 0.02, z + sin(a) * rr), Vector3.ZERO, Vector3(1, 0.45, 1))
+	var cap: MeshInstance3D = f._mesh(s, f.gfx.cap_mesh(r, 0.34), f.gfx.cap_mat(c, true, 1.3 if bouncy else 0.8), Vector3(x, top - r * 0.38, z))
+	cap.rotation.y = x
 	_cyl_body(Vector3(x, top - 0.4, z), r * 0.95, 0.4)
 	f._light(s, Vector3(x, top - 0.8, z), c, 1.6, 6.0 + r * 2.0)
 	return cap
@@ -106,8 +102,9 @@ func _build_west() -> void:
 		f._sparkles(s, Vector3(float(b[0]), float(b[2]) + 0.4, float(b[1])), Vector3(0.8, 0.3, 0.8), 10, 0.1)
 	_solid_mushroom(float(PLATFORM[0]), float(PLATFORM[1]), float(PLATFORM[2]), float(PLATFORM[3]), Color(0.45, 0.8, 1.0), false)
 	# La corniche, tout en haut contre le mur ouest
-	f._box(s, Vector3(5.5, 0.8, 9.0), Vector3(-33.25, LEDGE_TOP - 0.4, -57.5), f._mat("terre"))
-	f._mesh(s, f._boxm(Vector3(5.5, 0.06, 9.0)), f._mat("mousse"), Vector3(-33.25, LEDGE_TOP + 0.01, -57.5))
+	f._box(s, Vector3(5.5, 0.8, 9.0), Vector3(-33.25, LEDGE_TOP - 0.4, -57.5), f.gfx.rock("mur"))
+	f._mesh(s, f.gfx.rock_face(Vector3(-33.25, LEDGE_TOP + 0.01, -57.5), Vector3.RIGHT, Vector3.BACK, 5.5, 9.0, Vector3.DOWN, 0.06, 0.4, [true, true, true, true], false, Vector3.UP), f.gfx.rock("sol"), Vector3.ZERO)
+	f._mesh(s, f.gfx.rock_face(Vector3(-30.49, LEDGE_TOP - 0.4, -57.5), Vector3.BACK, Vector3.UP, 9.0, 0.8, Vector3.RIGHT, 0.25, 0.3, [true, true, false, false]), f.gfx.rock("mur"), Vector3.ZERO)
 	for k in range(5):
 		f._root(Vector3(-30.4, LEDGE_TOP - 0.2, -61.5 + k * 2.0), Vector3(-30.0, 0.0, -61.0 + k * 2.1), Vector3(0.8, -1.0, 0), 0.22, 0.12, 8)
 	f._mesh(s, f._cyl(0.3, 0.3, 0.12, 12), f._mat("ecorce"), Vector3(-34.0, LEDGE_TOP + 0.06, -58.6))
@@ -251,7 +248,7 @@ void fragment() {
 	fall.position = Vector3(31.0, 9.0, -99.3)
 	s.add_child(fall)
 	var pool_c := Vector3(31.0, 0, -96.0)
-	f._mesh(s, f._cyl(3.6, 3.6, 0.04, 32), f._glow(Color(0.4, 0.9, 1.0), 1.6, 0.85), pool_c + Vector3.UP * 0.05)
+	f._mesh(s, f._cyl(3.6, 3.6, 0.04, 32), f._water_mat(), pool_c + Vector3.UP * 0.05)
 	var rim := TorusMesh.new()
 	rim.inner_radius = 3.55
 	rim.outer_radius = 4.0
@@ -297,18 +294,14 @@ func _house(at: Vector3, cap_c: Color, i: int) -> void:
 	var h: float = 5.0 + (i % 3) * 0.8
 	var r: float = 3.2 + (i % 2) * 0.6
 	var stem_r: float = 1.35
-	f._mesh(s, f._cyl(stem_r * 0.9, stem_r * 1.12, h, 18), f._mat("pied"), at + Vector3.UP * h * 0.5)
+	f._mesh(s, f.gfx.stem_mesh(stem_r * 1.05, h, false), f.gfx.stem_mat(), at)
 	_cyl_body(at, stem_r * 1.1, h)
-	f._mesh(s, f._sphere(r, 24), f._glow(cap_c, 0.75), at + Vector3.UP * (h + 0.3), Vector3.ZERO, Vector3(1.0, 0.5, 1.0))
-	f._mesh(s, f._cyl(r * 0.25, r * 0.97, r * 0.16, 24), f._glow(cap_c.lightened(0.4), 2.2), at + Vector3.UP * (h - 0.1))
-	for k in range(9):
-		var a: float = k * 0.77 + i
-		var rr: float = r * (0.3 + 0.07 * (k % 5))
-		f._mesh(s, f._sphere(r * 0.09, 8), f._mat("pied"), at + Vector3(cos(a) * rr, h + 0.3 + r * 0.42, sin(a) * rr), Vector3.ZERO, Vector3(1, 0.4, 1))
+	var capm: MeshInstance3D = f._mesh(s, f.gfx.cap_mesh(r, 0.5), f.gfx.cap_mat(cap_c, i % 2 == 0, 0.8), at + Vector3.UP * (h + 0.15))
+	capm.rotation.y = i * 1.3
 	# Porte ronde et fenêtres, tournées vers la place
 	var to_c: Vector3 = ((VILLAGE_C - at) * Vector3(1, 0, 1)).normalized()
 	var side := Vector3(-to_c.z, 0, to_c.x)
-	var door_p: Vector3 = at + to_c * (stem_r * 1.05)
+	var door_p: Vector3 = at + to_c * (stem_r * 1.2)
 	var door := Node3D.new()
 	s.add_child(door)
 	door.position = door_p
@@ -645,8 +638,8 @@ func _bounce(k: int) -> void:
 	_bounce_cool = 0.6
 	var cap: MeshInstance3D = _bouncer_caps[k]
 	var tw := create_tween()
-	tw.tween_property(cap, "scale", Vector3(1.25, 0.2, 1.25), 0.08)
-	tw.tween_property(cap, "scale", Vector3(1.0, 0.36, 1.0), 0.5).set_trans(Tween.TRANS_ELASTIC)
+	tw.tween_property(cap, "scale", Vector3(1.25, 0.5, 1.25), 0.08)
+	tw.tween_property(cap, "scale", Vector3.ONE, 0.5).set_trans(Tween.TRANS_ELASTIC)
 	if _boing_player != null:
 		_boing_player.global_position = cap.global_position
 		_boing_player.play()

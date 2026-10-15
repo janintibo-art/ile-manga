@@ -105,6 +105,9 @@ func _build() -> void:
 		_build_lutin()
 	else:
 		_build_fairy()
+		# V45 : un peu plus grandes, pour qu'on les voie bien (environ 80 cm, ailes comprises)
+		_body.scale = Vector3.ONE * 1.3
+		_body.position = Vector3.ZERO
 	bubble = Label3D.new()
 	bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	bubble.font_size = 36
