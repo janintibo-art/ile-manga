@@ -88,6 +88,13 @@ const ITEMS := {
 		"desc": "Une graine dorée, lourde et tiède. Barnabé l'avait trouvée sur une plage il y a vingt ans. Elle vient de l'Arbre-Mère des elfes."},
 	"boussole_elfique": {"name": "Boussole elfique", "art": "la boussole elfique", "kind": "outil", "max": 1,
 		"desc": "Le cadeau de Lyra : son aiguille de cristal pointe vers l'Arbre-Mère, à l'est. Avec elle, le bateau traverse la brume du Bois-Doré."},
+	# V42 : le marché du Bois-Doré
+	"potion_seve": {"name": "Potion de sève", "art": "une potion de sève", "kind": "nourriture", "max": 10, "heal": 6,
+		"desc": "La potion d'Aëlwen, l'herboriste du Bois-Doré : de la sève dorée et des herbes de lune. Rend trois cœurs."},
+	"tisane_lune": {"name": "Tisane de lune", "art": "une tisane de lune", "kind": "nourriture", "max": 10, "heal": 3,
+		"desc": "Une tisane parfumée aux fleurs de nuit, encore tiède. Rend un cœur et demi."},
+	"pain_miel": {"name": "Pain de miel", "art": "un pain de miel", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le pain doré de Sylwen, la boulangère du Bois-Doré. Il sent le miel et le soleil. Rend deux cœurs."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -607,6 +614,16 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))
 		"boussole_elfique":
 			_part(m, _cyl(0.045, 0.045, 0.015, 20), _mat("argent", Color(0.82, 0.84, 0.88), 0.2), Vector3(0, 0.008, 0))
+		"potion_seve":
+			_part(m, _sphere(0.045), _mat("verre_seve", Color(0.3, 0.75, 0.4), 0.1), Vector3(0, 0.045, 0))
+			_part(m, _cyl(0.012, 0.012, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.1, 0))
+			_part(m, _cyl(0.014, 0.014, 0.02, 8), _mat("bouchon", Color(0.5, 0.34, 0.2), 0.8), Vector3(0, 0.13, 0))
+		"tisane_lune":
+			_part(m, _cyl(0.045, 0.035, 0.06, 14), _mat("porcelaine", Color(0.9, 0.88, 0.95), 0.25), Vector3(0, 0.03, 0))
+			_part(m, _cyl(0.04, 0.04, 0.004, 14), _mat("tisane", Color(0.62, 0.52, 0.8), 0.1), Vector3(0, 0.058, 0))
+		"pain_miel":
+			_part(m, _sphere(0.08), _mat("croute", Color(0.78, 0.5, 0.22), 0.7), Vector3(0, 0.04, 0), Vector3.ZERO, Vector3(1.3, 0.55, 1.0))
+			_part(m, _sphere(0.025), _mat("miel_goutte", Color(0.98, 0.75, 0.2), 0.2), Vector3(0, 0.085, 0))
 		"ecaille_naga":
 			_part(m, _sphere(0.07), _mat("ecaille", Color(0.2, 0.5, 0.36), 0.2), Vector3(0, 0.012, 0), Vector3.ZERO, Vector3(1.0, 0.16, 1.25))
 		"amulette_serpent":

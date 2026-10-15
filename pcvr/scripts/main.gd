@@ -2262,10 +2262,18 @@ func _nearest_npc_v31() -> Node3D:
 	var p: Vector3 = _player_pos_v27()
 	var best: Node3D = null
 	var best_d: float = 2.8
+	# V42 : au milieu de la foule elfe, on parle de préférence à celui qu'on regarde.
+	var look: Vector3 = hero_v28.facing if hero_v28 != null else Vector3.ZERO
 	for npc in npcs_v31:
-		var d: float = Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z).length()
-		if d < best_d and absf(npc.global_position.y - p.y) < 2.5:
-			best_d = d
+		var off := Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z)
+		var d: float = off.length()
+		if d >= 2.8 or absf(npc.global_position.y - p.y) >= 2.5:
+			continue
+		var score: float = d
+		if d > 0.05:
+			score -= 0.9 * maxf(Vector2(look.x, look.z).dot(off / d), 0.0)
+		if score < best_d:
+			best_d = score
 			best = npc
 	return best
 
@@ -2308,7 +2316,8 @@ func _npc_ctx_v31() -> Dictionary:
 			"naga": 1 if donjon_v35 != null and bool(donjon_v35.state["naga"]) else 0,
 			"quete_elfe": 1 if elfes_v41 != null and elfes_v41.lyra != null and str(elfes_v41.lyra.brain.memoire["quete"]) != "" else 0,
 			"arbre_sacre": 1 if elfes_v41 != null and bool(elfes_v41.state["arbre"]) else 0,
-			"ile_elfes": 1 if elfes_v41 != null and bool(elfes_v41.state["visite"]) else 0},
+			"ile_elfes": 1 if elfes_v41 != null and bool(elfes_v41.state["visite"]) else 0,
+			"bague_caelan": 1 if elfes_v41 != null and elfes_v41.village != null and elfes_v41.village.quest_state("caelan") == "finie" else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

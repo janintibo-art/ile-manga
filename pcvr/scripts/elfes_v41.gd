@@ -10,7 +10,7 @@ extends Node3D
 ##    ponton de l'île des elfes : un sentier de lanternes mène au village, au pied de
 ##    l'Arbre-Mère, entouré de cinq arbres géants qui portent chacun une plate-forme et une
 ##    maison ronde, reliées par des passerelles ; on y monte par des rampes qui tournent
-##    autour des troncs. (Les habitants du village viendront à l'étape suivante.)
+##    autour des troncs. (V42 : les habitants, le marché et la vie du village : village_elfe_v42.gd.)
 
 const IleScript = preload("res://scripts/ile_elfes_v41.gd")
 const FloraScript = preload("res://scripts/jungle_flora_v30.gd")
@@ -43,6 +43,7 @@ var _fog: FogVolume
 var _mist_clock: float = 0.0
 var _mats: Dictionary = {}
 var _body: StaticBody3D
+var village: Node3D                           # V42 : la vie du village (habitants, marché…)
 
 
 func setup(main_node: Node) -> void:
@@ -544,6 +545,10 @@ func build_quest() -> void:
 		_spawn_lyra()
 	_build_flower()
 	_build_spring()
+	village = preload("res://scripts/village_elfe_v42.gd").new()
+	village.name = "Village_elfe_v42"
+	add_child(village)
+	village.build(self)
 	print("ILE_MANGA_V41: clairière de Lyra à ", glade, ", fleur de lune à ", _flower_pos, ", île des elfes à ", ile.CENTER)
 
 

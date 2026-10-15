@@ -93,6 +93,9 @@ const DATA := {
 			{"t": "Tu as vaincu le Serpent des Abysses ?! Les anciens de mon peuple en parleront pendant cent ans. Enfin… cent ans, ce n'est pas si long.", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.1},
 			{"t": "Octave, le forgeron dans l'arbre… Il gronde comme un orage, mais il caresse l'écorce de son fromager quand il croit que personne ne le voit.", "si": {"a_rencontre": "octave"}},
 			{"t": "Barnabé dit que sa carte des Anciens montre « un œil doré à l'est ». C'est l'Arbre-Mère. Il a de bons yeux, pour un humain.", "si": {"a_rencontre": "barnabe"}},
+			{"t": "Tu as rencontré Aëlwen ? Elle m'a soignée quand j'étais petite. Ses potions sont amères, mais elles marchent.", "si": {"a_rencontre": "aelwen"}},
+			{"t": "Nimiel te suit partout, hein ? Elle veut tout savoir sur les humains. Tout.", "si": {"a_rencontre": "nimiel"}, "geste": "rire"},
+			{"t": "Au village, il y a Sylwen et son pain de miel, Aëlwen et ses potions, Faelar et ses histoires… Va les voir, ils t'attendent tous.", "si": {"a_trouve": "arbre_sacre"}},
 		],
 		"blague": [
 			{"t": "Pourquoi les elfes ne jouent-ils jamais à cache-cache avec les arbres ? … Parce que les arbres trichent : ils ne bougent jamais.", "si": {}, "geste": "rire"},

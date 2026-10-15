@@ -37,6 +37,13 @@ var current_anim: String = ""
 # Cible de combat
 var hit_radius: float = 0.35
 var hit_height: float = 1.0
+# V42 : les villageois du Bois-Doré dorment (ni animation ni pensée) quand on est loin.
+var sleep_far: float = 0.0
+var staff_node: Node3D
+var _asleep: bool = false
+var face_at: Dictionary = {}          # point -> où regarder quand il s'y repose
+var chat_hold: float = 0.0            # bavardage en cours : il reste sur place
+static var _npc_bodies: Array[RID] = []
 
 
 func setup(main_node: Node, profile_data: Dictionary, spots: Dictionary, graph: Dictionary, start: String) -> void:
@@ -104,6 +111,10 @@ func _build_body() -> void:
 	floor_offset = 0.0
 	if skel != null:
 		_accessories()
+	# V42 : la taille (une enfant elfe : 0,72).
+	var size_k: float = float(profile.get("elfe", {}).get("taille", 1.0))
+	if absf(size_k - 1.0) > 0.01:
+		model.scale = Vector3.ONE * size_k
 	_body = AnimatableBody3D.new()
 	_body.name = "Corps_collision"
 	_body.collision_layer = 1
@@ -117,6 +128,7 @@ func _build_body() -> void:
 	cs.position.y = 0.85
 	_body.add_child(cs)
 	add_child(_body)
+	_npc_bodies.append(_body.get_rid())
 	bubble = Label3D.new()
 	bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	bubble.font_size = 38
@@ -124,7 +136,7 @@ func _build_body() -> void:
 	bubble.outline_size = 12
 	bubble.width = 620
 	bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	bubble.position = Vector3(0, 2.35, 0)
+	bubble.position = Vector3(0, 2.35 - (1.0 - size_k) * 1.8, 0)
 	bubble.no_depth_test = true
 	bubble.visible = false
 	add_child(bubble)
@@ -133,7 +145,7 @@ func _build_body() -> void:
 	vr_label.font_size = 40
 	vr_label.pixel_size = 0.0024
 	vr_label.outline_size = 10
-	vr_label.position = Vector3(0, 2.0, 0)
+	vr_label.position = Vector3(0, 2.0 - (1.0 - size_k) * 1.8, 0)
 	vr_label.no_depth_test = true
 	vr_label.text = "Gâchette droite : parler à " + display_name.split(" ")[0]
 	vr_label.visible = false
@@ -296,12 +308,44 @@ func _accessories_elfe() -> void:
 	var fringe := Node3D.new()
 	_part(fringe, _sphere(0.2), hair, Vector3.ZERO, Vector3(1.15, 0.4, 0.78))
 	_attach("Head", Vector3(0, 35.0, 10.0), fringe, Vector3(-20, 0, 0))
-	# Chevelure : un volume sur le crâne, un long rideau dans le dos, deux mèches devant.
+	# Chevelure : un volume sur le crâne, puis la coiffure (V42 : long, tresse, chignon, queue, court).
 	var head_hair := Node3D.new()
 	_part(head_hair, _sphere(0.26), hair, Vector3(0, 0.0, 0.0), Vector3(1.16, 1.06, 0.98))
-	_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.34, -0.1), Vector3(1.05, 2.1, 0.42), Vector3(8, 0, 0))
-	for sx in [-1.0, 1.0]:
-		_part(head_hair, _sphere(0.08), hair, Vector3(sx * 0.2, -0.2, 0.08), Vector3(0.55, 2.3, 0.6), Vector3(0, 0, sx * 6))
+	var style: String = str(elf.get("coiffure", "long"))
+	match style:
+		"tresse":
+			# Une longue natte dans le dos, nouée d'un ruban, et deux petites mèches.
+			for k in range(9):
+				var f: float = float(k) / 8.0
+				var r: float = lerpf(0.075, 0.045, f)
+				_part(head_hair, _sphere(r), hair, Vector3(sin(f * 7.0) * 0.012, -0.12 - f * 0.62, -0.25 - f * 0.05), Vector3(1.0, 1.25, 0.9), Vector3(0, 0, 18.0 if k % 2 == 0 else -18.0))
+			_part(head_hair, _cyl(0.035, 0.045, 0.06), jewel, Vector3(0, -0.8, -0.3))
+			_part(head_hair, _sphere(0.05), hair, Vector3(0, -0.88, -0.3), Vector3(0.9, 1.4, 0.7))
+			for sx in [-1.0, 1.0]:
+				_part(head_hair, _sphere(0.06), hair, Vector3(sx * 0.21, -0.12, 0.08), Vector3(0.55, 1.6, 0.6), Vector3(0, 0, sx * 6))
+		"chignon":
+			# Un chignon haut piqué d'une épingle, la nuque dégagée.
+			_part(head_hair, _sphere(0.12), hair, Vector3(0, 0.16, -0.17), Vector3(1.0, 0.9, 0.9))
+			_part(head_hair, _cyl(0.008, 0.008, 0.3), jewel, Vector3(0, 0.18, -0.17), Vector3.ONE, Vector3(0, 0, 70))
+			_part(head_hair, _sphere(0.02), gem, Vector3(0.15, 0.24, -0.17))
+			for sx in [-1.0, 1.0]:
+				_part(head_hair, _sphere(0.05), hair, Vector3(sx * 0.215, -0.1, 0.09), Vector3(0.5, 1.5, 0.6), Vector3(0, 0, sx * 4))
+		"queue":
+			# Queue de cheval haute, tenue par un anneau.
+			_part(head_hair, _cyl(0.05, 0.05, 0.05), jewel, Vector3(0, 0.08, -0.26), Vector3.ONE, Vector3(-60, 0, 0))
+			for k in range(6):
+				var f2: float = float(k) / 5.0
+				_part(head_hair, _sphere(lerpf(0.08, 0.04, f2)), hair, Vector3(0, 0.02 - f2 * 0.5, -0.32 - sin(f2 * 1.6) * 0.06), Vector3(1.0, 1.7, 0.85), Vector3(-10, 0, 0))
+		"court":
+			# Cheveux courts : un casque de mèches, la nuque couverte.
+			_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.1, -0.12), Vector3(1.15, 0.85, 0.8))
+			for sx in [-1.0, 1.0]:
+				_part(head_hair, _sphere(0.07), hair, Vector3(sx * 0.21, -0.06, 0.04), Vector3(0.45, 1.0, 0.8))
+		_:
+			# Long rideau dans le dos et deux longues mèches devant.
+			_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.34, -0.1), Vector3(1.05, 2.1, 0.42), Vector3(8, 0, 0))
+			for sx in [-1.0, 1.0]:
+				_part(head_hair, _sphere(0.08), hair, Vector3(sx * 0.2, -0.2, 0.08), Vector3(0.55, 2.3, 0.6), Vector3(0, 0, sx * 6))
 	_attach("Head", Vector3(0, 30.0, -7.0), head_hair)
 	# Oreilles en pointe
 	for sx in [-1.0, 1.0]:
@@ -323,8 +367,13 @@ func _accessories_elfe() -> void:
 	_part(bodice, _sphere(0.21), robe, Vector3.ZERO, Vector3(1.0, 1.05, 0.78))
 	_attach("Spine02", Vector3(0, 0.0, 2.0), bodice)
 	var skirt := Node3D.new()
-	_part(skirt, _cyl(0.2, 0.4, 0.8), robe, Vector3(0, -0.4, 0))
-	_part(skirt, _cyl(0.405, 0.42, 0.06), jewel, Vector3(0, -0.78, 0))
+	if str(elf.get("silhouette", "robe")) == "tunique":
+		# V42 : tunique courte à mi-cuisse, galon brodé (les jambes restent libres).
+		_part(skirt, _cyl(0.2, 0.3, 0.36), robe, Vector3(0, -0.17, 0))
+		_part(skirt, _cyl(0.302, 0.31, 0.04), jewel, Vector3(0, -0.34, 0))
+	else:
+		_part(skirt, _cyl(0.2, 0.4, 0.8), robe, Vector3(0, -0.4, 0))
+		_part(skirt, _cyl(0.405, 0.42, 0.06), jewel, Vector3(0, -0.78, 0))
 	_attach("Hips", Vector3(0, 4.0, 0.0), skirt)
 	var belt := Node3D.new()
 	var bm := TorusMesh.new()
@@ -336,6 +385,49 @@ func _accessories_elfe() -> void:
 	var mantle := Node3D.new()
 	_part(mantle, _sphere(0.22), cape, Vector3(0, -0.25, 0), Vector3(1.3, 2.4, 0.14))
 	_attach("Spine02", Vector3(0, 6.0, -13.0), mantle, Vector3(-6, 0, 0))
+	# V42 : l'arc et le carquois dans le dos (Thalion), le bâton de l'Ancien (Faelar).
+	if bool(elf.get("arc", false)):
+		var wood := _mat(Color(0.5, 0.34, 0.2), 0.6)
+		var bow := Node3D.new()
+		var n_seg: int = 10
+		for k in range(n_seg):
+			var a0: float = lerpf(-1.05, 1.05, float(k) / n_seg)
+			var a1: float = lerpf(-1.05, 1.05, float(k + 1) / n_seg)
+			# L'arc est porté à plat contre le dos : sa courbe se voit de derrière.
+			var p0 := Vector3((1.0 - cos(a0)) * 0.3, sin(a0) * 0.62, 0.0)
+			var p1 := Vector3((1.0 - cos(a1)) * 0.3, sin(a1) * 0.62, 0.0)
+			var mid: Vector3 = (p0 + p1) * 0.5
+			var seg: Vector3 = p1 - p0
+			_part(bow, _cyl(0.016, 0.018, seg.length() + 0.01), wood, mid, Vector3.ONE, Vector3(0, 0, -rad_to_deg(atan2(seg.x, seg.y))))
+		var tip_y: float = sin(1.05) * 0.62
+		var tip_x: float = (1.0 - cos(1.05)) * 0.3
+		_part(bow, _cyl(0.003, 0.003, tip_y * 2.0), _mat(Color(0.9, 0.88, 0.8), 0.9), Vector3(tip_x, 0, 0))
+		_attach("Spine02", Vector3(-2.0, 2.0, -21.0), bow, Vector3(0, 0, 28))
+		var quiver := Node3D.new()
+		_part(quiver, _cyl(0.06, 0.05, 0.5), _mat(Color(0.4, 0.26, 0.15), 0.85), Vector3.ZERO)
+		_part(quiver, _cyl(0.062, 0.062, 0.03), jewel, Vector3(0, 0.2, 0))
+		for k in range(5):
+			var ox: float = (k - 2) * 0.022
+			_part(quiver, _cyl(0.004, 0.004, 0.18), wood, Vector3(ox, 0.32, (k % 2) * 0.02 - 0.01))
+			_part(quiver, _box_mesh_np(Vector3(0.002, 0.06, 0.03)), _mat(Color(0.95, 0.95, 0.92), 0.9), Vector3(ox, 0.38, (k % 2) * 0.02 - 0.01))
+		_attach("Spine02", Vector3(-6.0, 4.0, -18.0), quiver, Vector3(0, 0, -25))
+	if bool(elf.get("baton", false)):
+		var staff := Node3D.new()
+		var oak := _mat(Color(0.42, 0.3, 0.2), 0.85)
+		_part(staff, _cyl(0.02, 0.026, 1.75), oak, Vector3(0, 0.0, 0))
+		_part(staff, _sphere(0.05), oak, Vector3(0, 0.88, 0), Vector3(1.2, 0.8, 1.2))
+		var orb := _mat(Color(0.75, 1.0, 0.85), 0.1)
+		orb.emission_energy_multiplier = 2.0
+		_part(staff, _sphere(0.045), orb, Vector3(0, 0.96, 0))
+		for k in range(4):
+			var aa: float = TAU * k / 4.0
+			_part(staff, _cyl(0.006, 0.01, 0.16), oak, Vector3(cos(aa) * 0.04, 0.96, sin(aa) * 0.04), Vector3.ONE, Vector3(sin(aa) * 25.0, 0, -cos(aa) * 25.0))
+		# Planté à côté de lui, à portée de la main droite (tenu à la main, il traverserait
+		# le corps dans les poses bras croisés).
+		staff_node = staff
+		model.add_child(staff)
+		staff.position = Vector3(-0.42, 0.86, 0.16)
+		staff.rotation_degrees = Vector3(4, 0, 5)
 
 
 ## V33 : Octave Taillefer — lunettes de forge sur le front, grosse moustache, tablier de
@@ -397,9 +489,17 @@ func _accessories_octave() -> void:
 func _snap_to_floor() -> void:
 	var p: Vector3 = global_position
 	var space := get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 2.0, p + Vector3.DOWN * 3.0, 1, [_body.get_rid()])
+	# V42 : les rayons ignorent tous les habitants (on ne grimpe pas sur la tête d'un voisin).
+	var q := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 2.0, p + Vector3.DOWN * 3.0, 1, _npc_bodies)
 	var hit := space.intersect_ray(q)
-	var y: float = hit.position.y if not hit.is_empty() else main._height_at(p.x, p.z)
+	var y: float
+	if not hit.is_empty():
+		y = hit.position.y
+	else:
+		# V42 : entre deux planches d'une passerelle, le rayon passe dans la fente : on garde
+		# la hauteur (on ne tombe au sol que si l'on était déjà presque au sol).
+		var g: float = main._height_at(p.x, p.z)
+		y = g if p.y - floor_offset - g < 1.5 else p.y - floor_offset
 	global_position = Vector3(p.x, y + floor_offset, p.z)
 	_body.global_transform = Transform3D(Basis(Vector3.UP, rotation.y), global_position)
 
@@ -449,6 +549,19 @@ func _route_to(goal: String) -> Array:
 # =================================================================== comportement
 
 func _process(delta: float) -> void:
+	if sleep_far > 0.0:
+		var far: bool = global_position.distance_to(main._player_pos_v27()) > sleep_far
+		if far != _asleep:
+			_asleep = far
+			model.visible = not far
+			if anim != null:
+				if far:
+					if anim.is_playing():
+						anim.pause()
+				else:
+					current_anim = ""          # l'animation repart au réveil (_idle_anim ou _walk)
+		if far:
+			return
 	brain.tick(delta)
 	_parrot_tick(delta)
 	if bubble_clock > 0.0:
@@ -466,9 +579,14 @@ func _process(delta: float) -> void:
 	# Interpellation quand on arrive dans les parages.
 	var near: bool = dist < 10.0 and absf(to_player.y) < 6.0
 	if near and not player_was_near and called_clock <= 0.0 and state != "parle":
-		var line: String = brain.call_out(main._npc_ctx_v31())
-		if line != "":
-			say_bubble(line, 4.5)
+		# V42 : au village elfe, un seul habitant à la fois interpelle le joueur.
+		var now: int = Time.get_ticks_msec()
+		if sleep_far <= 0.0 or now - int(main.get_meta("pnj_appel_v42", -100000)) > 2500:
+			var line: String = brain.call_out(main._npc_ctx_v31())
+			if line != "":
+				say_bubble(line, 4.5)
+				if sleep_far > 0.0:
+					main.set_meta("pnj_appel_v42", now)
 		called_clock = 75.0
 	player_was_near = near
 	match state:
@@ -479,12 +597,15 @@ func _process(delta: float) -> void:
 		"marche":
 			_walk(delta, dist)
 		_:
+			chat_hold = maxf(chat_hold - delta, 0.0)
 			if dist < 4.0:
 				_face(to_player, delta, 3.0)
+			elif face_at.has(at_point) and chat_hold <= 0.0:
+				_face(face_at[at_point] - global_position, delta, 2.0)
 			if gesture_clock <= 0.0:
 				_idle_anim()
 			idle_clock -= delta
-			if idle_clock <= 0.0 and dist > 3.0:
+			if idle_clock <= 0.0 and dist > 3.0 and chat_hold <= 0.0:
 				_pick_destination()
 
 
