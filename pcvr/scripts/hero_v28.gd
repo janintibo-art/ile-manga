@@ -823,7 +823,7 @@ func _deliver_hit() -> void:
 	var reach: float = 1.9 if weapon != "" else 1.35
 	var dmg: int = weapon_damage if weapon != "" else 1
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
-	var finisher: bool = weapon in ["epee", "hache"] and combo_index % SLASHES.size() == 2
+	var finisher: bool = weapon in ["epee", "hache", "epee_naine"] and combo_index % SLASHES.size() == 2
 	if finisher:
 		dmg = int(round(dmg * 1.5))
 	if main.combat_v28 != null:

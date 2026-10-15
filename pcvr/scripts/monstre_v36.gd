@@ -28,6 +28,11 @@ const SPECS := {
 		"rayon": 0.4, "haut": 1.3, "nom": "Feu follet"},
 	"araignee": {"pv": 10, "vitesse": 2.9, "degats": 1, "portee": 1.2, "armer": 0.5, "repos": 1.1, "vue": 9.0, "laisse": 12.0,
 		"rayon": 0.55, "haut": 0.35, "nom": "Araignée de cristal"},
+	# V47 : les créatures de la Montagne de Feu
+	"golem": {"pv": 34, "vitesse": 1.2, "degats": 2, "portee": 2.2, "armer": 1.0, "repos": 2.0, "vue": 12.0, "laisse": 9.0,
+		"rayon": 0.7, "haut": 1.2, "nom": "Golem des hauteurs"},
+	"magma": {"pv": 14, "vitesse": 2.0, "degats": 2, "portee": 2.2, "armer": 0.7, "repos": 1.5, "vue": 10.0, "laisse": 10.0,
+		"rayon": 0.5, "haut": 0.6, "nom": "Élémentaire de magma"},
 }
 
 signal died(monster: Node3D)
@@ -52,6 +57,9 @@ var _flash_mats: Array = []
 var _clock: float = 0.0
 var _knock: Vector3 = Vector3.ZERO
 var _segments: Array = []               # V39 : anneaux du corps de la vipère (de la tête à la queue)
+var _arms: Array = []                   # V47 : bras du golem
+var _magma_core: StandardMaterial3D
+var _magma_light: OmniLight3D
 
 
 func setup(m: Node, k: String, at: Vector3) -> void:
@@ -76,6 +84,17 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		box.size = Vector3(0.9, 0.5, 0.7)
 		cs.shape = box
 		cs.position.y = 0.3
+	elif kind == "golem":
+		var gc := CapsuleShape3D.new()
+		gc.radius = 0.62
+		gc.height = 2.5
+		cs.shape = gc
+		cs.position.y = 1.25
+	elif kind == "magma":
+		var ms := SphereShape3D.new()
+		ms.radius = 0.45
+		cs.shape = ms
+		cs.position.y = 0.5
 	elif kind == "vipere":
 		var vb := BoxShape3D.new()
 		vb.size = Vector3(0.5, 0.36, 1.3)
@@ -98,6 +117,10 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		_build_spider()
 	elif kind == "vipere":
 		_build_viper()
+	elif kind == "golem":
+		_build_golem()
+	elif kind == "magma":
+		_build_magma()
 	else:
 		_build_guardian()
 	add_to_group("cibles_v28")
@@ -281,6 +304,144 @@ func _build_spider() -> void:
 			_legs.append([leg, sx, k])
 
 
+## V47 : golem des hauteurs — un amas de blocs de basalte, une rune bleue sur le torse, des
+## yeux bleus ; il lève ses deux poings au-dessus de la tête avant d'écraser le sol.
+func _build_golem() -> void:
+	var rock: StandardMaterial3D = _mat(Color(0.62, 0.58, 0.56), 0.95)
+	rock.albedo_texture = load("res://assets/textures/jungle/jungle_rock.png")
+	rock.uv1_triplanar = true
+	rock.uv1_scale = Vector3(0.8, 0.8, 0.8)
+	var moss := _mat(Color(0.25, 0.22, 0.18), 0.95)
+	var rune := _mat(Color(0.35, 0.8, 1.0), 0.2, 3.0)
+	var Rk = load("res://scripts/rocks_v26.gd")
+	_mesh(_visual, Rk.shape(4800, Vector3(1.4, 1.3, 1.0), 0.7, 0.18), rock, Vector3(0, 1.75, 0))
+	_mesh(_visual, Rk.shape(4801, Vector3(1.0, 0.7, 0.8), 0.7, 0.18), rock, Vector3(0, 1.05, 0.02))
+	_mesh(_visual, Rk.shape(4802, Vector3(0.6, 0.55, 0.55), 0.7, 0.15), rock, Vector3(0, 2.62, 0.08))
+	_mesh(_visual, _sphere(0.25), moss, Vector3(0.3, 2.35, -0.3), Vector3(1.4, 0.4, 1.0))
+	for sx in [-1.0, 1.0]:
+		_mesh(_visual, _sphere(0.055), rune, Vector3(sx * 0.13, 2.66, 0.33), Vector3(1.3, 0.8, 0.5))
+	_mesh(_visual, _cyl(0.05, 0.05, 0.5), rune, Vector3(0, 1.85, 0.52), Vector3.ONE, Vector3(0, 0, 0))
+	_mesh(_visual, _cyl(0.04, 0.04, 0.35), rune, Vector3(0, 1.95, 0.52), Vector3.ONE, Vector3(0, 0, PI * 0.5))
+	# Des fissures de lave entre les blocs, devant et derrière
+	var crack := _mat(Color(1.0, 0.42, 0.1), 0.4, 2.5)
+	for k in range(6):
+		var fz: float = 0.5 if k < 3 else -0.5
+		_mesh(_visual, _box_mesh_g(Vector3(0.05, 0.4 + 0.15 * (k % 3), 0.04)), crack, Vector3(-0.35 + (k % 3) * 0.35, 1.5 + (k % 2) * 0.35, fz), Vector3.ONE, Vector3(0, 0, 0.4 * ((k % 3) - 1)))
+	for sx in [-1.0, 1.0]:
+		var leg := Node3D.new()
+		leg.position = Vector3(sx * 0.32, 0.8, 0)
+		_visual.add_child(leg)
+		_mesh(leg, Rk.shape(4803, Vector3(0.45, 0.85, 0.5), 0.8, 0.15), rock, Vector3(0, -0.38, 0))
+		_legs.append([leg, sx, 0])
+		var arm := Node3D.new()
+		arm.position = Vector3(sx * 0.82, 2.1, 0)
+		_visual.add_child(arm)
+		_mesh(arm, Rk.shape(4805, Vector3(0.42, 0.9, 0.42), 0.8, 0.15), rock, Vector3(sx * 0.05, -0.45, 0))
+		_mesh(arm, Rk.shape(4806, Vector3(0.6, 0.55, 0.6), 0.75, 0.18), rock, Vector3(sx * 0.06, -1.05, 0.05))
+		_arms.append([arm, sx])
+	var l := OmniLight3D.new()
+	l.light_color = Color(0.35, 0.8, 1.0)
+	l.light_energy = 0.8
+	l.omni_range = 4.0
+	l.position = Vector3(0, 2.0, 0.8)
+	_visual.add_child(l)
+
+
+static var _magma_sh: Shader
+
+
+static func _magma_shader() -> Shader:
+	if _magma_sh != null:
+		return _magma_sh
+	_magma_sh = Shader.new()
+	_magma_sh.code = """shader_type spatial;
+varying vec3 lp;
+float h3(vec3 p) { return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+float n3(vec3 p) {
+	vec3 i = floor(p); vec3 f = fract(p); f = f * f * (3.0 - 2.0 * f);
+	return mix(mix(mix(h3(i), h3(i + vec3(1,0,0)), f.x), mix(h3(i + vec3(0,1,0)), h3(i + vec3(1,1,0)), f.x), f.y),
+		mix(mix(h3(i + vec3(0,0,1)), h3(i + vec3(1,0,1)), f.x), mix(h3(i + vec3(0,1,1)), h3(i + vec3(1,1,1)), f.x), f.y), f.z);
+}
+void vertex() { lp = VERTEX; }
+void fragment() {
+	float t = TIME * 0.6;
+	vec3 q = lp * 7.0 + vec3(0.0, -t, t * 0.4);
+	float a = n3(q) * 0.65 + n3(q * 2.1 + 3.0) * 0.35;
+	float crust = smoothstep(0.42, 0.6, a);
+	vec3 hot = mix(vec3(1.0, 0.75, 0.2), vec3(0.9, 0.22, 0.02), smoothstep(0.2, 0.45, a));
+	ALBEDO = mix(hot * 0.25, vec3(0.05, 0.035, 0.03), crust);
+	EMISSION = hot * (1.0 - crust) * 1.6;
+	ROUGHNESS = mix(0.35, 0.9, crust);
+}
+"""
+	return _magma_sh
+
+
+func _box_mesh_g(size: Vector3) -> BoxMesh:
+	var b := BoxMesh.new()
+	b.size = size
+	return b
+
+
+## V47 : élémentaire de magma — une boule de lave qui bouillonne, une croûte noire qui
+## flotte autour, deux yeux blancs ; il se gonfle, puis bondit sur sa proie.
+func _build_magma() -> void:
+	_magma_core = _mat(Color(0.55, 0.1, 0.01), 0.35, 0.9)
+	_magma_core.emission = Color(1.0, 0.32, 0.03)
+	_magma_core.emission_enabled = true
+	# La surface qui bouillonne : un shader de lave (croûte sombre, veines incandescentes)
+	var lava_sm := ShaderMaterial.new()
+	lava_sm.shader = _magma_shader()
+	var crust := _mat(Color(0.12, 0.08, 0.07), 0.8)
+	var body := Node3D.new()
+	body.name = "Flamme"
+	body.position = Vector3(0, 0.55, 0)
+	_visual.add_child(body)
+	_mesh(body, _sphere(0.42), lava_sm, Vector3.ZERO, Vector3(1.0, 0.9, 1.0))
+	# Plaques de croûte noire, irrégulières, sauf sur le visage
+	var rngp := RandomNumberGenerator.new()
+	rngp.seed = 4810 + get_instance_id() % 97
+	for k in range(13):
+		var yk: float = 1.0 - (k + 0.5) / 13.0 * 2.0 + rngp.randf_range(-0.08, 0.08)
+		var rk: float = sqrt(maxf(1.0 - yk * yk, 0.0))
+		var a: float = k * 2.39996 + rngp.randf_range(-0.3, 0.3)
+		var dirk := Vector3(cos(a) * rk, yk, sin(a) * rk).normalized()
+		if dirk.z > 0.55 and absf(dirk.y) < 0.6:
+			continue
+		var sz: float = rngp.randf_range(0.1, 0.19)
+		var plate := _mesh(body, _sphere(sz), crust, dirk * 0.38)
+		plate.transform = Transform3D(Basis.looking_at(dirk, Vector3.UP if absf(dirk.y) < 0.95 else Vector3.RIGHT) * Basis.from_euler(Vector3(0, 0, rngp.randf() * TAU)) * Basis.from_scale(Vector3(1.0, rngp.randf_range(0.6, 1.0), 0.35)), dirk * 0.38)
+	var eye := _mat(Color(1.0, 1.0, 0.85), 0.2, 4.0)
+	for sx in [-1.0, 1.0]:
+		_mesh(body, _sphere(0.06), eye, Vector3(sx * 0.13, 0.1, 0.38), Vector3(1.0, 0.6, 0.5))
+	_magma_light = OmniLight3D.new()
+	_magma_light.light_color = Color(1.0, 0.5, 0.15)
+	_magma_light.light_energy = 1.6
+	_magma_light.omni_range = 5.0
+	body.add_child(_magma_light)
+	var sp := CPUParticles3D.new()
+	sp.amount = 16
+	sp.lifetime = 0.8
+	sp.local_coords = false
+	sp.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+	sp.emission_sphere_radius = 0.35
+	sp.gravity = Vector3(0, 1.5, 0)
+	sp.initial_velocity_min = 0.2
+	sp.initial_velocity_max = 0.6
+	var pq := QuadMesh.new()
+	pq.size = Vector2(0.09, 0.09)
+	var pm := StandardMaterial3D.new()
+	pm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	pm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	pm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	pm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	pm.albedo_color = Color(1.0, 0.6, 0.2, 0.9)
+	pm.albedo_texture = manager.main._soft_dot_v24()
+	pq.material = pm
+	sp.mesh = pq
+	body.add_child(sp)
+
+
 ## Gardien de corail : le corps du héros, couleur pierre bleutée, coraux et lance, yeux luisants.
 func _build_guardian() -> void:
 	var packed: PackedScene = load("res://assets/models/characters/hero.glb")
@@ -378,10 +539,10 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	var away: Vector3 = global_position - from_pos
 	away.y = 0.0
 	away = away.normalized() if away.length() > 0.01 else -facing
-	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet"] else (2.6 if kind == "vipere" else 1.6))
+	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet", "magma"] else (2.6 if kind == "vipere" else (0.5 if kind == "golem" else 1.6)))
 	var cb: Node = manager.main.combat_v28
 	if cb != null:
-		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind == "gardien" else 0.9)
+		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind == "gardien" else (3.0 if kind == "golem" else 0.9))
 		if bool(cb.get("critical")):
 			cb.damage_number_color(at, damage, Color(1.0, 0.55, 0.2), " !")
 		else:
@@ -389,6 +550,9 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 		cb.puff(global_position + Vector3.UP * hit_height, Color(0.8, 0.5, 0.4) if kind == "crabe" else (Color(0.3, 0.6, 0.4) if kind == "vipere" else (Color(0.5, 0.85, 1.0) if kind == "follet" else (Color(0.9, 0.6, 0.95) if kind == "araignee" else Color(0.7, 0.75, 0.78)))))
 	if hp <= 0:
 		_die()
+		return
+	# V47 : le golem est trop lourd : un coup n'interrompt pas son attaque.
+	if kind == "golem" and state in ["armer", "frappe"]:
 		return
 	# Un coup interrompt la préparation de l'attaque (on peut « couper » l'élan).
 	state = "recul"
@@ -431,6 +595,16 @@ func _physics_process(delta: float) -> void:
 				_wisp_light.light_energy = maxf(1.2 - timer * 2.0, 0.0)
 		elif kind == "vipere":
 			_visual.rotation.z = minf(timer * 5.0, PI * 0.9)
+		elif kind == "golem":
+			# Les blocs s'affaissent et s'enfoncent
+			_visual.rotation.x = minf(timer * 1.2, 0.5)
+			_visual.position.y = -minf(timer * 0.8, 1.4)
+			for a in _arms:
+				(a[0] as Node3D).rotation.z = float(a[1]) * minf(timer * 2.0, 1.3)
+		elif kind == "magma":
+			_visual.scale = Vector3.ONE * clampf(1.0 - timer * 1.2, 0.01, 1.0)
+			if _magma_light != null:
+				_magma_light.light_energy = maxf(1.6 - timer * 2.0, 0.0)
 		if timer > 1.6:
 			_visual.scale = Vector3.ONE * clampf(1.0 - (timer - 1.6) / 0.8, 0.01, 1.0)
 		if timer > 2.4:
@@ -474,14 +648,14 @@ func _physics_process(delta: float) -> void:
 			if timer <= 0.0:
 				state = "frappe"
 				timer = 0.18
-				if kind == "vipere" or kind == "follet":
+				if kind == "vipere" or kind == "follet" or kind == "magma":
 					# Le bond : droit devant, sans corriger sa trajectoire.
 					timer = 0.32
 					_knock = facing * (7.5 if kind == "vipere" else 6.5)
 				else:
 					_strike(dist, dir_p)
-		"frappe" when kind == "vipere" or kind == "follet":
-			if timer > 0.1 and dist < 1.25 and not has_meta("mordu"):
+		"frappe" when kind == "vipere" or kind == "follet" or kind == "magma":
+			if timer > 0.1 and dist < (1.45 if kind == "magma" else 1.25) and not has_meta("mordu"):
 				set_meta("mordu", true)
 				manager.hurt_player(int(spec["degats"]), global_position)
 			if timer <= 0.0:
@@ -517,10 +691,38 @@ func _strike(dist: float, dir_p: Vector3) -> void:
 	if dist <= float(spec["portee"]) + 0.35 and facing.dot(dir_p) > 0.35:
 		manager.hurt_player(int(spec["degats"]), global_position)
 	if manager.main.combat_v28 != null:
-		manager.main.combat_v28.puff(global_position + facing * float(spec["portee"]) * 0.8 + Vector3.UP * (0.4 if kind in ["crabe", "araignee"] else 1.2), Color(0.85, 0.85, 0.8))
+		manager.main.combat_v28.puff(global_position + facing * float(spec["portee"]) * 0.8 + Vector3.UP * (0.4 if kind in ["crabe", "araignee"] else (0.2 if kind == "golem" else 1.2)), Color(0.5, 0.45, 0.42) if kind == "golem" else Color(0.85, 0.85, 0.8))
 
 
 func _animate(delta: float, speed: float) -> void:
+	if kind == "golem":
+		var walk_g: float = clampf(speed / 1.2, 0.0, 1.0)
+		for l in _legs:
+			(l[0] as Node3D).rotation.x = sin(_clock * 5.0 + (0.0 if float(l[1]) > 0 else PI)) * 0.35 * walk_g
+		var lift: float = 0.0
+		if state == "armer":
+			lift = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		var slam: bool = state == "frappe"
+		for a in _arms:
+			var arm: Node3D = a[0]
+			var goal: float = -2.8 * lift if not slam else -0.3
+			if state in ["chasse", "veille"]:
+				goal = sin(_clock * 5.0 + (PI if float(a[1]) > 0 else 0.0)) * 0.3 * walk_g
+			arm.rotation.x = lerpf(arm.rotation.x, goal, clampf(delta * (18.0 if slam else 6.0), 0.0, 1.0))
+		_visual.position.y = absf(sin(_clock * 5.0)) * 0.04 * walk_g
+		return
+	if kind == "magma":
+		var fl2: Node3D = _visual.get_node("Flamme")
+		var charge2: float = 0.0
+		if state == "armer":
+			charge2 = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		fl2.scale = Vector3.ONE * (1.0 + charge2 * 0.35 + sin(_clock * 9.0) * 0.04)
+		fl2.position.y = 0.55 + absf(sin(_clock * 6.0)) * 0.12 * clampf(speed / 2.0, 0.0, 1.0)
+		if _magma_light != null:
+			_magma_light.light_energy = 1.6 + charge2 * 2.0 + sin(_clock * 13.0) * 0.2
+		if _magma_core != null and _flash <= 0.0:
+			_magma_core.emission_energy_multiplier = 2.4 + charge2 * 3.0
+		return
 	if kind == "vipere":
 		var slither: float = clampf(speed / 2.7, 0.0, 1.0)
 		var coil: float = 0.0

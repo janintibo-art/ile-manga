@@ -1747,6 +1747,13 @@ func _respawn_v28() -> void:
 		monstres_v36.respawn_player()
 		_show_message_v28("Vous vous êtes évanoui… et réveillé au pied de l'échelle.")
 		return
+	# V47 : sur l'île des nains, on se réveille sur la terrasse de Forgefer.
+	var pp: Vector3 = _player_pos_v27()
+	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(pp.x, pp.z):
+		var rp: Array = nains_v46.respawn_point()
+		place_player_v35(rp[0], rp[1])
+		_show_message_v28("Vous vous êtes évanoui… Dagna vous a traîné jusqu'à la terrasse de Forgefer.")
+		return
 	pc_root.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
 	_sync_physics_after_load_v11()
 	_show_message_v28("Vous vous êtes évanoui… Vous voici de retour au village.")
@@ -2351,7 +2358,11 @@ func _npc_ctx_v31() -> Dictionary:
 			"ronces": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["ronces"]) else 0,
 			"reine": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["reine"]) else 0,
 			"carte_naine": 1 if elfes_v41 != null and elfes_v41.feerique != null and bool(elfes_v41.feerique.state["carte"]) else 0,
-			"ile_nains": 1 if nains_v46 != null and bool(nains_v46.state["visite"]) else 0},
+			"ile_nains": 1 if nains_v46 != null and bool(nains_v46.state["visite"]) else 0,
+			"porte_forgefer": 1 if nains_v46 != null and bool(nains_v46.state["ouverte"]) else 0,
+			"ville_naine": 1 if nains_v46 != null and bool(nains_v46.state["ville"]) else 0,
+			"nains_aides": nains_v46.helped_count() if nains_v46 != null else 0,
+			"nains_aides_3": 1 if nains_v46 != null and nains_v46.helped_count() >= 3 else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 

@@ -92,7 +92,7 @@ func _build_body() -> void:
 	var tint_c := Color(float(tint[0]), float(tint[1]), float(tint[2]))
 	# V41 : les elfes ont leur propre texture (peau claire, vêtements de forêt).
 	var skin_tex: Texture2D = null
-	var elf: Dictionary = profile.get("elfe", {})
+	var elf: Dictionary = profile.get("elfe", profile.get("nain", {}))
 	if not elf.is_empty() and ResourceLoader.exists(str(elf.get("texture", ""))):
 		skin_tex = load(str(elf["texture"]))
 	for mi in model.find_children("*", "MeshInstance3D", true, false):
@@ -112,7 +112,7 @@ func _build_body() -> void:
 	if skel != null:
 		_accessories()
 	# V42 : la taille (une enfant elfe : 0,72).
-	var size_k: float = float(profile.get("elfe", {}).get("taille", 1.0))
+	var size_k: float = float(profile.get("elfe", profile.get("nain", {})).get("taille", 1.0))
 	if absf(size_k - 1.0) > 0.01:
 		model.scale = Vector3.ONE * size_k
 	_body = AnimatableBody3D.new()
@@ -222,6 +222,9 @@ func _accessories() -> void:
 		return
 	if profile.has("elfe"):
 		_accessories_elfe()
+		return
+	if profile.has("nain"):
+		_accessories_nain()
 		return
 	# Chapeau de paille cabossé.
 	var hat := Node3D.new()
@@ -430,6 +433,185 @@ func _accessories_elfe() -> void:
 		staff.rotation_degrees = Vector3(4, 0, 5)
 
 
+## V47 : silhouette de nain — petit et large (taille ~0,78), visage rougeaud au gros nez,
+## sourcils broussailleux, immense barbe (tressée ou en fourche), coiffe (casque à nasal,
+## capuche, bonnet, couronne, ou crâne chauve), torse épais, tunique, ceinturon à boucle,
+## tablier de cuir pour les artisans et un outil à la main ou à la ceinture.
+## Fiche "nain" : texture, barbe [r,g,b], style_barbe (tresse, fourche, large), coiffe,
+## tunique [r,g,b], cape [r,g,b] ou absente, metal [r,g,b], tablier (bool), outil, taille.
+func _accessories_nain() -> void:
+	var dw: Dictionary = profile["nain"]
+	var c_beard: Array = dw.get("barbe", [0.55, 0.28, 0.12])
+	var c_tunic: Array = dw.get("tunique", [0.4, 0.2, 0.12])
+	var c_metal: Array = dw.get("metal", [0.6, 0.6, 0.64])
+	var beard := _mat(Color(float(c_beard[0]), float(c_beard[1]), float(c_beard[2])), 0.95)
+	var tunic := _mat(Color(float(c_tunic[0]), float(c_tunic[1]), float(c_tunic[2])), 0.9)
+	var metal := _mat(Color(float(c_metal[0]), float(c_metal[1]), float(c_metal[2])), 0.3)
+	metal.metallic = 0.7
+	var leather := _mat(Color(0.32, 0.2, 0.11), 0.85)
+	var gold := _mat(Color(0.92, 0.72, 0.28), 0.25)
+	gold.metallic = 0.8
+	var tint: Array = profile.get("teinte", [0.98, 0.72, 0.58])
+	var skin := _mat(Color(float(tint[0]), float(tint[1]) * 0.92, float(tint[2]) * 0.88), 0.6)
+	var nose_m := _mat(Color(float(tint[0]), float(tint[1]) * 0.78, float(tint[2]) * 0.72), 0.55)
+	# Le visage, par-dessus celui du modèle : petits yeux enfoncés, gros nez, sourcils épais.
+	var face := Node3D.new()
+	var R: float = 0.228
+	_part(face, _sphere(R), skin, Vector3.ZERO)
+	var white := _mat(Color(0.97, 0.96, 0.94), 0.3)
+	var dark := _mat(Color(0.06, 0.05, 0.04), 0.4)
+	dark.emission_energy_multiplier = 0.05
+	var shine := _mat(Color(1, 1, 1), 0.1)
+	shine.emission_energy_multiplier = 1.5
+	var iris := _mat(Color(0.28, 0.4, 0.55), 0.3)
+	var on_face := func(x: float, y: float, lift: float) -> Vector3:
+		return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
+	for sx in [-1.0, 1.0]:
+		var ex: float = sx * 0.07
+		_part(face, _sphere(0.034), white, on_face.call(ex, 0.02, -0.012), Vector3(1.1, 0.9, 0.4))
+		_part(face, _sphere(0.024), iris, on_face.call(ex, 0.018, -0.005), Vector3(1.0, 1.0, 0.35))
+		_part(face, _sphere(0.012), dark, on_face.call(ex, 0.018, 0.0), Vector3(1.0, 1.0, 0.35))
+		_part(face, _sphere(0.007), shine, on_face.call(ex - sx * 0.008, 0.028, 0.004))
+		# Sourcils broussailleux
+		_part(face, _sphere(0.04), beard, on_face.call(ex, 0.07, 0.0), Vector3(1.5, 0.55, 0.6), Vector3(0, 0, sx * -12.0))
+		# Joues rouges
+		var blush := _mat(Color(0.95, 0.45, 0.4), 0.8)
+		blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		blush.albedo_color.a = 0.5
+		_part(face, _sphere(0.035), blush, on_face.call(sx * 0.11, -0.03, -0.01), Vector3(1.2, 0.8, 0.3))
+		# Oreilles rondes
+		_part(face, _sphere(0.045), skin, Vector3(sx * 0.225, 0.0, -0.01), Vector3(0.45, 0.85, 0.7))
+	_part(face, _sphere(0.048), nose_m, on_face.call(0.0, -0.025, 0.025), Vector3(0.85, 1.0, 0.9))
+	_attach("Head", Vector3(0, 18.0, 2.5), face)
+	# La barbe : un plastron de poils, puis le style
+	var bd := Node3D.new()
+	_part(bd, _sphere(0.2), beard, Vector3(0, -0.02, 0.0), Vector3(1.25, 0.75, 0.62))
+	for sx in [-1.0, 1.0]:
+		_part(bd, _sphere(0.07), beard, Vector3(sx * 0.07, 0.06, 0.12), Vector3(1.4, 0.6, 0.6), Vector3(0, 0, sx * -15.0))
+	var bstyle: String = str(dw.get("style_barbe", "large"))
+	match bstyle:
+		"tresse":
+			for sx in [-1.0, 1.0]:
+				for k in range(6):
+					var f: float = float(k) / 5.0
+					_part(bd, _sphere(lerpf(0.06, 0.035, f)), beard, Vector3(sx * 0.07, -0.16 - f * 0.4, 0.07 - f * 0.03), Vector3(1.0, 1.3, 0.9), Vector3(0, 0, 15.0 if k % 2 == 0 else -15.0))
+				_part(bd, _cyl(0.03, 0.03, 0.05), gold, Vector3(sx * 0.07, -0.6, 0.04))
+		"fourche":
+			for sx in [-1.0, 1.0]:
+				_part(bd, _sphere(0.1), beard, Vector3(sx * 0.08, -0.28, 0.05), Vector3(0.9, 2.2, 0.7), Vector3(0, 0, sx * 10.0))
+		_:
+			_part(bd, _sphere(0.18), beard, Vector3(0, -0.26, 0.04), Vector3(1.25, 1.6, 0.6))
+			_part(bd, _sphere(0.1), beard, Vector3(0, -0.48, 0.05), Vector3(1.2, 1.2, 0.6))
+	_attach("Head", Vector3(0, 2.0, 12.0), bd, Vector3(10, 0, 0))
+	# La coiffe (elle cache la crête du modèle)
+	var hat := Node3D.new()
+	var coiffe: String = str(dw.get("coiffe", "casque"))
+	match coiffe:
+		"casque":
+			_part(hat, _sphere(0.25), metal, Vector3(0, 0.0, 0), Vector3(1.05, 0.85, 1.05))
+			_part(hat, _cyl(0.262, 0.262, 0.05), gold, Vector3(0, -0.05, 0))
+			_part(hat, _box_mesh_np(Vector3(0.03, 0.17, 0.03)), metal, Vector3(0, -0.13, 0.25))
+			_part(hat, _cyl(0.0, 0.03, 0.12), gold, Vector3(0, 0.24, 0))
+		"capuche":
+			_part(hat, _sphere(0.27), tunic, Vector3(0, -0.02, -0.03), Vector3(1.05, 1.0, 1.08))
+			_part(hat, _cyl(0.0, 0.12, 0.3), tunic, Vector3(0, 0.08, -0.3), Vector3.ONE, Vector3(-70, 0, 0))
+		"bonnet":
+			var wool := _mat(Color(0.75, 0.2, 0.15), 0.95)
+			_part(hat, _sphere(0.255), wool, Vector3(0, 0.0, -0.01), Vector3(1.03, 0.85, 1.03))
+			_part(hat, _cyl(0.265, 0.265, 0.07), _mat(Color(0.9, 0.86, 0.75), 0.95), Vector3(0, -0.06, 0))
+			_part(hat, _sphere(0.06), _mat(Color(0.9, 0.86, 0.75), 0.95), Vector3(0, 0.22, -0.05))
+		"couronne":
+			var hair := _mat(Color(float(c_beard[0]), float(c_beard[1]), float(c_beard[2])), 0.9)
+			_part(hat, _sphere(0.25), hair, Vector3(0, -0.02, -0.02), Vector3(1.04, 0.85, 1.04))
+			_part(hat, _cyl(0.24, 0.23, 0.1), gold, Vector3(0, 0.03, 0))
+			for k in range(8):
+				var a: float = TAU * k / 8.0
+				_part(hat, _cyl(0.0, 0.035, 0.11), gold, Vector3(cos(a) * 0.235, 0.13, sin(a) * 0.235))
+				if k % 2 == 0:
+					_part(hat, _sphere(0.022), _mat(Color(0.85, 0.1, 0.12), 0.1), Vector3(cos(a) * 0.245, 0.04, sin(a) * 0.245))
+		_:
+			# Chauve : un crâne lisse, une couronne de cheveux autour
+			_part(hat, _sphere(0.25), skin, Vector3(0, 0.02, -0.01), Vector3(1.04, 1.0, 1.08))
+			_part(hat, _sphere(0.25), beard, Vector3(0, -0.1, -0.06), Vector3(1.06, 0.5, 0.97))
+	_attach("Head", Vector3(0, 30.0, -1.0), hat)
+	# Un torse épais : tunique bombée, épaulettes, ceinturon et sa grosse boucle
+	var chest := Node3D.new()
+	_part(chest, _sphere(0.25), tunic, Vector3(0, 0, 0.02), Vector3(1.15, 1.05, 0.95))
+	for sx in [-1.0, 1.0]:
+		_part(chest, _sphere(0.11), metal if coiffe == "casque" else tunic, Vector3(sx * 0.24, 0.12, 0.0), Vector3(1.1, 0.75, 1.0))
+	_attach("Spine02", Vector3(0, 0.0, 2.0), chest)
+	var belly := Node3D.new()
+	_part(belly, _sphere(0.25), tunic, Vector3.ZERO, Vector3(1.12, 0.95, 1.05))
+	_attach("Spine", Vector3(0, 0.0, 3.0), belly)
+	var skirt := Node3D.new()
+	_part(skirt, _cyl(0.26, 0.31, 0.3), tunic, Vector3(0, -0.12, 0))
+	var bm := TorusMesh.new()
+	bm.inner_radius = 0.25
+	bm.outer_radius = 0.3
+	_part(skirt, bm, leather, Vector3(0, 0.04, 0.0))
+	_part(skirt, _box_mesh_np(Vector3(0.13, 0.11, 0.04)), gold, Vector3(0, 0.04, 0.3))
+	_attach("Hips", Vector3(0, 2.0, 0.0), skirt)
+	if dw.has("cape"):
+		var cc: Array = dw["cape"]
+		var cape := _mat(Color(float(cc[0]), float(cc[1]), float(cc[2])), 0.9)
+		var mantle := Node3D.new()
+		_part(mantle, _sphere(0.25), cape, Vector3(0, -0.3, 0), Vector3(1.35, 2.3, 0.14))
+		_part(mantle, _sphere(0.08), gold, Vector3(0, 0.08, 0.2), Vector3(1.0, 1.0, 0.4))
+		_attach("Spine02", Vector3(0, 8.0, -16.0), mantle, Vector3(-6, 0, 0))
+	if bool(dw.get("tablier", false)):
+		var bib := Node3D.new()
+		_part(bib, _sphere(0.22), leather, Vector3.ZERO, Vector3(1.0, 1.0, 0.12))
+		_attach("Spine02", Vector3(0, 0.0, 22.0), bib)
+		var apron := Node3D.new()
+		_part(apron, _sphere(0.24), leather, Vector3.ZERO, Vector3(1.0, 1.3, 0.1))
+		_attach("Hips", Vector3(0, -16.0, 20.0), apron, Vector3(6, 0, 0))
+	# L'outil du métier
+	var tool := Node3D.new()
+	var wood := _mat(Color(0.45, 0.3, 0.18), 0.8)
+	var iron := _mat(Color(0.32, 0.32, 0.35), 0.35)
+	iron.metallic = 0.6
+	match str(dw.get("outil", "")):
+		"marteau":
+			_part(tool, _cyl(0.016, 0.018, 0.38), wood, Vector3.ZERO)
+			_part(tool, _box_mesh_np(Vector3(0.16, 0.08, 0.08)), iron, Vector3(0, -0.2, 0))
+			_attach("Hips", Vector3(-19.0, -2.0, 4.0), tool, Vector3(0, 0, 8))
+		"pioche":
+			_part(tool, _cyl(0.018, 0.02, 0.9), wood, Vector3.ZERO)
+			_part(tool, _cyl(0.0, 0.025, 0.5), iron, Vector3(0.12, 0.42, 0), Vector3.ONE, Vector3(0, 0, -80))
+			_part(tool, _cyl(0.0, 0.025, 0.3), iron, Vector3(-0.08, 0.43, 0), Vector3.ONE, Vector3(0, 0, 80))
+			_attach("Spine02", Vector3(4.0, 2.0, -20.0), tool, Vector3(0, 0, 35))
+		"hache":
+			_part(tool, _cyl(0.02, 0.022, 1.1), wood, Vector3.ZERO)
+			_part(tool, _box_mesh_np(Vector3(0.3, 0.26, 0.03)), metal, Vector3(0.14, 0.42, 0))
+			_part(tool, _box_mesh_np(Vector3(0.3, 0.26, 0.03)), metal, Vector3(-0.14, 0.42, 0))
+			_attach("Spine02", Vector3(0.0, 2.0, -22.0), tool, Vector3(0, 0, 30))
+		"louche":
+			_part(tool, _cyl(0.01, 0.012, 0.4), wood, Vector3.ZERO)
+			_part(tool, _sphere(0.06), iron, Vector3(0, -0.22, 0.02), Vector3(1.0, 0.6, 1.0))
+			_attach("Hips", Vector3(-19.0, -2.0, 4.0), tool, Vector3(0, 0, 8))
+		"baton":
+			var staff := Node3D.new()
+			_part(staff, _cyl(0.022, 0.028, 1.4), wood, Vector3.ZERO)
+			var rune := _mat(Color(0.35, 0.8, 1.0), 0.2)
+			rune.emission_energy_multiplier = 2.0
+			_part(staff, _box_mesh_np(Vector3(0.1, 0.12, 0.1)), iron, Vector3(0, 0.72, 0))
+			_part(staff, _sphere(0.035), rune, Vector3(0, 0.72, 0.05))
+			staff_node = staff
+			model.add_child(staff)
+			staff.position = Vector3(-0.42, 0.7, 0.16)
+			staff.rotation_degrees = Vector3(4, 0, 5)
+		"lance":
+			_part(tool, _cyl(0.02, 0.022, 1.9), wood, Vector3.ZERO)
+			_part(tool, _cyl(0.0, 0.045, 0.3), metal, Vector3(0, 1.08, 0))
+			_attach("Spine02", Vector3(0.0, 4.0, -20.0), tool, Vector3(0, 0, 20))
+		"bouclier":
+			var shield := Node3D.new()
+			_part(shield, _cyl(0.3, 0.3, 0.05), wood, Vector3.ZERO, Vector3.ONE, Vector3(90, 0, 0))
+			_part(shield, _cyl(0.31, 0.31, 0.03), metal, Vector3(0, 0, -0.01), Vector3.ONE, Vector3(90, 0, 0))
+			_part(shield, _sphere(0.07), gold, Vector3(0, 0, 0.03), Vector3(1, 1, 0.5))
+			_attach("Spine02", Vector3(0.0, 0.0, -22.0), shield)
+
+
 ## V33 : Octave Taillefer — lunettes de forge sur le front, grosse moustache, tablier de
 ## cuir, marteau à la ceinture, et Clou, son ouistiti, sur l'épaule droite.
 func _accessories_octave() -> void:
@@ -499,7 +681,9 @@ func _snap_to_floor() -> void:
 		# V42 : entre deux planches d'une passerelle, le rayon passe dans la fente : on garde
 		# la hauteur (on ne tombe au sol que si l'on était déjà presque au sol).
 		var g: float = main._height_at(p.x, p.z)
-		y = g if p.y - floor_offset - g < 1.5 else p.y - floor_offset
+		# V47 : sous terre (cité des nains), le relief de l'île au-dessus ne compte pas.
+		var above: float = p.y - floor_offset - g
+		y = g if above < 1.5 and above > -3.0 else p.y - floor_offset
 	global_position = Vector3(p.x, y + floor_offset, p.z)
 	_body.global_transform = Transform3D(Basis(Vector3.UP, rotation.y), global_position)
 

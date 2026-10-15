@@ -117,6 +117,10 @@ func alert(m: Node3D) -> void:
 		donjon._say("Un feu follet ! Quand il se met à briller très fort, il va foncer droit sur toi : écarte-toi, puis frappe-le.", 6.0)
 	elif m.kind == "araignee":
 		donjon._say("Une araignée de cristal ! Elle se dresse avant de mordre : recule ou pare (F). Ses éclats intéressent sûrement quelqu'un…", 6.0)
+	elif m.kind == "golem":
+		donjon._say("Un golem des hauteurs ! Quand il lève ses deux poings au-dessus de la tête, il va écraser le sol devant lui : recule ou roule (Ctrl)… puis frappe-le. Tes coups ne l'arrêtent pas.", 7.0)
+	elif m.kind == "magma":
+		donjon._say("Un élémentaire de magma ! Quand il gonfle et rougeoie, il va bondir sur toi : écarte-toi, puis frappe-le pendant qu'il refroidit.", 6.0)
 	elif m.kind == "vipere":
 		donjon._say("Une vipère des abysses ! Quand elle se love et dresse la tête, elle va bondir droit devant : écarte-toi, ou pare (F).", 6.0)
 	else:
@@ -173,6 +177,12 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V47 : évanoui sur la Montagne de Feu : on se réveille sur la terrasse de Forgefer.
+	if main.get("nains_v46") != null and main.nains_v46 != null and not donjon.is_inside(p) and main.nains_v46.ile.contains(p.x, p.z):
+		var rp: Array = main.nains_v46.respawn_point()
+		main.place_player_v35(rp[0], rp[1])
+		_heal_player()
+		return
 	var best: String = "village"
 	var best_d: float = INF
 	for id in donjon.spawn:
@@ -181,6 +191,10 @@ func respawn_player() -> void:
 			best_d = d
 			best = id
 	main.place_player_v35(donjon.spawn[best][0], donjon.spawn[best][1])
+	_heal_player()
+
+
+func _heal_player() -> void:
 	var hero: Node = main.hero_v28
 	if hero != null:
 		hero.hp = hero.HP_MAX
@@ -206,6 +220,17 @@ func _on_died(m: Node3D) -> void:
 			gains.append(["eclat_cristal", 1])
 		if _rng.randf() < 0.5:
 			gains.append(["piece", _rng.randi_range(1, 3)])
+	elif m.kind == "golem":
+		gains.append(["rune_golem", 1])
+		gains.append(["piece", _rng.randi_range(3, 7)])
+		if _rng.randf() < 0.4:
+			gains.append(["minerai_fer", 1])
+	elif m.kind == "magma":
+		if _rng.randf() < 0.75:
+			gains.append(["coeur_magma", 1])
+		gains.append(["piece", _rng.randi_range(2, 5)])
+		if _rng.randf() < 0.3:
+			gains.append(["obsidienne", 1])
 	elif m.kind == "vipere":
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.15:
@@ -235,11 +260,13 @@ func _process(delta: float) -> void:
 	if inside and not _was_inside:
 		spawn_all()
 	_was_inside = inside
-	active = inside and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
+	# V47 : dehors aussi, sur les hauteurs de la Montagne de Feu (golems, élémentaires).
+	var outdoor: bool = not inside and main.get("nains_v46") != null and main.nains_v46 != null and main.nains_v46.hostile_zone(main._player_pos_v27())
+	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))
 	if main.xr_active and main.hero_v28 != null:
 		main.hero_v28.hurt_cooldown = maxf(float(main.hero_v28.hurt_cooldown) - delta, 0.0)
-		_vr_hearts(inside)
+		_vr_hearts(inside or outdoor)
 
 
 func _vr_hearts(inside: bool) -> void:

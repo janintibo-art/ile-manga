@@ -112,6 +112,27 @@ const ITEMS := {
 	# V46 : la carte de l'île des nains
 	"carte_naine": {"name": "Carte des Récifs de Feu", "art": "la carte des Récifs de Feu", "kind": "quete", "max": 1,
 		"desc": "Un vieux parchemin offert par Églantine, la Reine des Ronces délivrée. Il montre la passe à travers les récifs et les cendres, à l'ouest, jusqu'à l'île volcanique des nains."},
+	# V47 : l'île des nains
+	"minerai_fer": {"name": "Minerai de fer", "art": "du minerai de fer", "kind": "materiau", "max": 30,
+		"desc": "Une pierre lourde veinée de rouille, ramassée sur les pentes du volcan. Borin le forgeron en fait de l'acier."},
+	"obsidienne": {"name": "Éclat d'obsidienne", "art": "un éclat d'obsidienne", "kind": "materiau", "max": 30,
+		"desc": "Du verre de volcan, noir et tranchant, qu'on trouve près du cratère. Nori le runiste y grave ses runes."},
+	"champignon_braise": {"name": "Champignon de braise", "art": "un champignon de braise", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Un champignon rouge et tiède qui pousse dans la cendre, près des fumerolles. Dagna en met dans son ragoût. Rend un cœur."},
+	"plume_corbeau": {"name": "Plume de corbeau", "art": "une plume de corbeau", "kind": "materiau", "max": 30,
+		"desc": "Une longue plume noire aux reflets bleus, perdue par un corbeau des cendres. Hilda en fait des flèches… et des chapeaux."},
+	"coeur_magma": {"name": "Cœur de magma", "art": "un cœur de magma", "kind": "tresor", "max": 20,
+		"desc": "Le noyau encore chaud d'un élémentaire de magma. Grimli le mineur s'en sert pour éclairer ses galeries."},
+	"rune_golem": {"name": "Rune de golem", "art": "une rune de golem", "kind": "tresor", "max": 20,
+		"desc": "La pierre gravée qui animait un golem des hauteurs. Bramm, le garde de la porte, en demande la preuve de ta valeur."},
+	"epee_naine": {"name": "Épée naine", "art": "une épée naine", "kind": "arme", "max": 1, "damage": 9,
+		"desc": "Forgée par Borin Barbe-de-Fer dans l'acier du volcan : lame courte et large, garde d'or, un rubis au pommeau. Dégâts : 9, et le troisième coup d'un enchaînement frappe moitié plus fort."},
+	"ragout_nain": {"name": "Ragoût de Dagna", "art": "un ragoût de Dagna", "kind": "nourriture", "max": 10, "heal": 8,
+		"desc": "Un bol fumant de ragoût aux champignons de braise. Ça brûle la langue et ça rend quatre cœurs."},
+	"fromage_chevre": {"name": "Fromage de chèvre", "art": "un fromage de chèvre", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le fromage des chèvres des cendres de Hilda. Il sent fort. Rend deux cœurs."},
+	"biere_naine": {"name": "Bière de Forgefer", "art": "une bière de Forgefer", "kind": "nourriture", "max": 10, "heal": 3,
+		"desc": "Une chope de bière brune et mousseuse brassée sous la montagne. Rend un cœur et demi… et donne chaud aux oreilles."},
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
@@ -406,6 +427,11 @@ func _respawn_world() -> void:
 		if hit.is_empty() or str(hit.collider.name) != "Sol_collision_v11":
 			continue
 		spawn_pickup(e["uid"], e["id"], int(e["n"]), hit.position)
+	# V47 : minerai, obsidienne, champignons de braise et plumes de l'île des nains.
+	if main.get("nains_v46") != null and main.nains_v46 != null:
+		for e2 in main.nains_v46.pickup_plan():
+			if not taken.has(str(e2["uid"])):
+				spawn_pickup(str(e2["uid"]), str(e2["id"]), 1, e2["pos"])
 	# L'épée d'entraînement repose sur l'établi de la forge.
 	if not taken.has("epee_forge") and main.houses_v27 != null:
 		var bench: Node3D = main.houses_v27.find_child("Etabli_v27", true, false) as Node3D
@@ -638,6 +664,55 @@ func make_model(id: String) -> Node3D:
 			_part(m, _sphere(0.03), _mat("etoile_fee", Color(1.0, 0.9, 0.6), 0.1), Vector3(0, 0.34, 0))
 		"eclat_cristal":
 			_part(m, _cyl(0.0, 0.03, 0.08, 6), _mat("cristal_rose", Color(0.9, 0.55, 0.9), 0.1), Vector3(0, 0.04, 0))
+		"minerai_fer":
+			_part(m, _sphere(0.05), _mat("roche_fer", Color(0.42, 0.38, 0.36), 0.9), Vector3(0, 0.04, 0), Vector3.ZERO, Vector3(1.2, 0.8, 1.0))
+			for k in 4:
+				_part(m, _sphere(0.014), _mat("rouille", Color(0.72, 0.36, 0.2), 0.6), Vector3(cos(k * 1.6) * 0.04, 0.06, sin(k * 1.6) * 0.035))
+		"obsidienne":
+			var obs := _mat("obsidienne", Color(0.08, 0.07, 0.11), 0.05)
+			obs.metallic = 0.3
+			_part(m, _cyl(0.0, 0.035, 0.11, 5), obs, Vector3(0, 0.055, 0), Vector3(8, 20, 5))
+		"champignon_braise":
+			_part(m, _cyl(0.012, 0.016, 0.06, 8), _mat("pied_braise", Color(0.35, 0.25, 0.22), 0.8), Vector3(0, 0.03, 0))
+			var cap := _mat("braise_champi", Color(0.95, 0.35, 0.12), 0.5)
+			cap.emission_enabled = true
+			cap.emission = Color(1.0, 0.4, 0.1)
+			cap.emission_energy_multiplier = 0.8
+			_part(m, _sphere(0.045), cap, Vector3(0, 0.065, 0), Vector3.ZERO, Vector3(1.0, 0.55, 1.0))
+		"plume_corbeau":
+			_part(m, _box_mesh(Vector3(0.04, 0.004, 0.22)), _mat("plume", Color(0.06, 0.06, 0.09), 0.4), Vector3(0, 0.004, 0), Vector3(0, 25, 0))
+		"coeur_magma":
+			var lava := _mat("magma", Color(1.0, 0.45, 0.1), 0.4)
+			lava.emission_enabled = true
+			lava.emission = Color(1.0, 0.45, 0.1)
+			lava.emission_energy_multiplier = 2.0
+			_part(m, _sphere(0.045), lava, Vector3(0, 0.045, 0))
+		"rune_golem":
+			_part(m, _box_mesh(Vector3(0.1, 0.03, 0.13)), _mat("pierre_golem", Color(0.55, 0.53, 0.5), 0.9), Vector3(0, 0.015, 0))
+			var rn := _mat("rune_bleue", Color(0.35, 0.8, 1.0), 0.3)
+			rn.emission_enabled = true
+			rn.emission = Color(0.35, 0.8, 1.0)
+			rn.emission_energy_multiplier = 2.0
+			_part(m, _box_mesh(Vector3(0.012, 0.004, 0.09)), rn, Vector3(0, 0.032, 0))
+		"epee_naine":
+			var steel2 := _mat("acier_nain", Color(0.72, 0.74, 0.78), 0.15)
+			steel2.metallic = 0.9
+			var gold := _mat("or_nain", Color(0.9, 0.7, 0.25), 0.25)
+			gold.metallic = 0.9
+			_part(m, _cyl(0.018, 0.02, 0.14, 8), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.0, 0))
+			_part(m, _box_mesh(Vector3(0.24, 0.035, 0.05)), gold, Vector3(0, 0.09, 0))
+			_part(m, _box_mesh(Vector3(0.075, 0.55, 0.012)), steel2, Vector3(0, 0.38, 0))
+			_part(m, _box_mesh(Vector3(0.053, 0.053, 0.012)), steel2, Vector3(0, 0.655, 0), Vector3(0, 0, 45))
+			_part(m, _sphere(0.028), _mat("rubis_pommeau", Color(0.85, 0.1, 0.1), 0.1), Vector3(0, -0.09, 0))
+			_tip(m, 0.67)
+		"ragout_nain":
+			_part(m, _cyl(0.07, 0.05, 0.05, 14), _mat("bol", Color(0.4, 0.27, 0.17), 0.8), Vector3(0, 0.025, 0))
+			_part(m, _cyl(0.064, 0.064, 0.01, 14), _mat("ragout", Color(0.6, 0.3, 0.15), 0.6), Vector3(0, 0.048, 0))
+		"fromage_chevre":
+			_part(m, _cyl(0.06, 0.065, 0.05, 16), _mat("fromage", Color(0.95, 0.92, 0.8), 0.8), Vector3(0, 0.025, 0))
+		"biere_naine":
+			_part(m, _cyl(0.04, 0.04, 0.1, 12), _mat("chope", Color(0.5, 0.33, 0.18), 0.7), Vector3(0, 0.05, 0))
+			_part(m, _cyl(0.042, 0.042, 0.02, 12), _mat("mousse", Color(0.98, 0.96, 0.9), 0.9), Vector3(0, 0.105, 0))
 		"carte_naine":
 			_part(m, _box_mesh(Vector3(0.2, 0.006, 0.14)), _mat("parchemin", Color(0.86, 0.76, 0.56), 0.9), Vector3(0, 0.003, 0))
 			_part(m, _cyl(0.012, 0.012, 0.15, 8), _mat("parchemin", Color(0.86, 0.76, 0.56), 0.9), Vector3(-0.1, 0.012, 0), Vector3(90, 0, 0))

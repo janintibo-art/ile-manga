@@ -24,6 +24,8 @@ var dock_start: Vector3
 var dock_end: Vector3
 var terrace: Vector3                             # centre de la terrasse (monde)
 var crater_floor: float = 0.0
+var trail: Array = []                            # V47 : le Sentier des Golems, de la terrasse au cratère (monde)
+var trail_end: Vector3                           # V47 : le belvédère au bord du cratère
 var _noise := FastNoiseLite.new()
 var _detail := FastNoiseLite.new()
 var _coast := FastNoiseLite.new()
@@ -46,6 +48,7 @@ func build(high_quality: bool) -> void:
 	crater_floor = height(CENTER.x + PEAK.x, CENTER.z + PEAK.y)
 	_find_dock()
 	_carve_road()
+	_carve_trail()
 	_build_mesh(high_quality)
 	_build_collision()
 	print("ILE_MANGA_V46: île des nains ", count, "x", count, " en ", Time.get_ticks_msec() - t0, " ms, terrasse à ", terrace)
@@ -154,6 +157,42 @@ func _carve_road() -> void:
 		var p2: Vector2 = a.lerp(b, t)
 		var lin: float = lerpf(h_start, terrace.y, smoothstep(0.0, 1.0, t))
 		_flatten(p2.x, p2.y, 2.0, 4.5, lerpf(lin, float(prof[k]), 0.45))
+
+
+## V47 : le Sentier des Golems — une corniche qui monte en spirale autour du volcan, du
+## bord de la terrasse jusqu'à un belvédère au bord du cratère (pente douce, ~12 %).
+const TRAIL_TURNS: float = 1.25
+const TRAIL_START_R: float = 60.5
+const TRAIL_END_R: float = CRATER_R + 6.5
+
+
+func trail_point(t: float) -> Vector3:
+	var a: float = BAY_ANGLE + 0.32 + t * TAU * TRAIL_TURNS
+	var r: float = lerpf(TRAIL_START_R, TRAIL_END_R, t)
+	return Vector3(CENTER.x + PEAK.x + cos(a) * r, 0.0, CENTER.z + PEAK.y + sin(a) * r)
+
+
+func _carve_trail() -> void:
+	var end_p: Vector3 = trail_point(1.0)
+	var h_end: float = height(end_p.x, end_p.z)
+	var n: int = 260
+	trail.clear()
+	for k in range(n + 1):
+		var t: float = float(k) / n
+		var p: Vector3 = trail_point(t)
+		var target: float = lerpf(terrace.y, h_end, t)
+		_flatten(p.x, p.z, 2.6, 8.5, target)
+		p.y = target
+		trail.append(p)
+	# Le belvédère, au bord du cratère
+	_flatten(end_p.x, end_p.z, 5.0, 9.0, h_end)
+	trail_end = Vector3(end_p.x, h_end, end_p.z)
+
+
+## Un point du sentier (t de 0 à 1), à la hauteur du sol.
+func trail_at(t: float) -> Vector3:
+	var i: int = clampi(int(round(t * (trail.size() - 1))), 0, trail.size() - 1)
+	return trail[i]
 
 
 # =================================================================== lecture du relief
