@@ -1,0 +1,18 @@
+Sons d'Île Manga (V49) — tous libres de droits (domaine public / CC0 1.0)
+
+Enregistrements CC0 (Freesound, via github.com/DNAABR/ambient-sounds-library) :
+  ambiance/oiseaux_foret.ogg  « Daytime forest » par Sadiquecat (CC0)
+  ambiance/brise.ogg          « breeze.wav » par keweldog (CC0)
+  emetteurs/ruisseau.ogg      « Small brook, stream, water sound » par SamsterBirdies (CC0)
+  emetteurs/riviere.ogg       « WATRFlow_Outdoor, River Ellen » par JW_Audio (CC0)
+
+Recueil CC0 (github.com/lavenderdotpet/CC0-Public-Domain-Sounds) :
+  emetteurs/lave_bulles.ogg   d'après 30-cc0-sfx-loops/water_boiling.ogg (ralenti)
+  ponctuels/enclume_1..4.ogg  d'après 100-CC0-wood-metal-SFX (metal_hit_01, metal_hit_03, hammer_02, metal_hit_05)
+
+Sons synthétisés pour le jeu (pcvr/tools/generate_sons_v49.py), versés au domaine public :
+  ambiance/ressac, large, vent_volcan, jungle_insectes, grotte, feerique, halle_forge
+  emetteurs/feu, lave, fumerolle, cascade
+  ponctuels/oiseau_jungle_1..4, mouette_1..3, goutte_1..4, carillon_1..3
+
+Les enregistrements ont été découpés, bouclés (fondu enchaîné), filtrés et normalisés.

@@ -159,6 +159,15 @@ def main() -> int:
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source / rel, dest)
         print(f"Asset Godot: {rel} ({dest.stat().st_size // 1024 // 1024} Mo)")
+    # V49 : tous les sons (ambiances, émetteurs, sons ponctuels)
+    sons = source / "sons"
+    if sons.is_dir():
+        for f in sorted(sons.rglob("*.ogg")):
+            rel = f.relative_to(source)
+            dest = target / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+        print(f"Sons Godot: {len(list(sons.rglob('*.ogg')))} fichiers")
     print("Modèles et textures préparés pour Godot.")
     return 0
 

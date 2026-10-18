@@ -117,6 +117,7 @@ func _ready() -> void:
 	_create_game_menu_v8()
 	_create_gameplay_v28()
 	_bake_shore_v48()
+	_create_ambiance_v49()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -2476,6 +2477,16 @@ func _close_dialogue_v31() -> void:
 	if talking_npc_v31 != null:
 		talking_npc_v31.end_talk()
 	talking_npc_v31 = null
+
+
+## V49 : les ambiances sonores (nappes, émetteurs, sons ponctuels).
+var ambiance_v49: Node
+
+func _create_ambiance_v49() -> void:
+	ambiance_v49 = preload("res://scripts/ambiance_v49.gd").new()
+	ambiance_v49.name = "Ambiance_v49"
+	add_child(ambiance_v49)
+	ambiance_v49.setup(self)
 
 
 ## V48 : le modèle du héros déclare un matériau transparent (alpha « blend ») alors que sa
