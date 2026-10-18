@@ -25,3 +25,11 @@ github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
   « 100 CC0 wood/metal SFX », « 75 CC0 breaking/falling/hit SFX »,
   « 40 CC0 water splash/slime SFX », « 25 CC0 mud SFX », « Micro Pack - Organic Wooshes »
 Découpés, transposés, filtrés et normalisés par pcvr/tools/generate_bruitages_v50.py.
+
+Musique (V51) — musique/*.ogg : compositions originales pour Île Manga, versées au domaine
+public (CC0 1.0). Partitions dans pcvr/tools/compose_musique_v51.py, jouées par l'orchestre
+virtuel pcvr/tools/orchestre_v51.py avec les instruments enregistrés de la banque
+« Versilian Studios Chamber Orchestra 2 – Community Edition » (VSCO-2 CE, Versilian Studios,
+github.com/sgossner/VSCO-2-CE), CC0 1.0 :
+  theme_ile (menu), village, jungle, elfes, nains (et Forgefer), large, souterrain,
+  racines (Royaume des Racines), combat ; jingles victoire et decouverte.

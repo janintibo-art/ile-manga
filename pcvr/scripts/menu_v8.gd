@@ -141,7 +141,11 @@ func _show_view(which: String) -> void:
 			options.append("Partie %d : %s" % [i, info])
 		options.append("Retour")
 	elif view == "settings":
-		options = ["Graphismes : PC/VR automatiques", "Retour"]
+		# V51 : volumes de la musique, des bruitages et des ambiances
+		var mu: Node = _music()
+		if mu != null:
+			options = [mu.volume_label("musique"), mu.volume_label("bruitages"), mu.volume_label("ambiances")]
+		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
 func _redraw() -> void:
@@ -219,7 +223,15 @@ func _activate(index: int) -> void:
 			"Quitter":
 				get_tree().quit()
 	elif view == "settings":
-		_show_view("home")
+		var mu: Node = _music()
+		var keys := ["musique", "bruitages", "ambiances"]
+		if mu != null and index < 3:
+			mu.cycle_volume(keys[index])
+			_show_view("settings")
+			selection = index
+			_redraw()
+		elif action == "Retour":
+			_show_view("home")
 	elif index == 6:
 		_show_view("home")
 	elif view == "new":
@@ -235,6 +247,11 @@ func _activate(index: int) -> void:
 		active_slot = index + 1
 		save_requested.emit(active_slot)
 		_show_view("home")
+
+func _music() -> Node:
+	var p: Node = get_parent()
+	return p.get("music_v51") if p != null else null
+
 
 func _load_or_create(slot: int, new_game: bool) -> void:
 	active_slot = slot

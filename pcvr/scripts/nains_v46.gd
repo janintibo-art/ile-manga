@@ -657,6 +657,7 @@ func open_gate(instant: bool) -> void:
 	door_light.visible = true
 	if not instant and main.get("sfx_v50") != null:
 		main.sfx_v50.play("grille", gate_front + Vector3.UP * 3.0, 4.0)
+		main.jingle("decouverte")
 	if not instant:
 		main.donjon_v35._say("BRAMM : « OUVREZ LA GRANDE PORTE ! » Un grondement, des chaînes qui grincent… et les deux battants de fer s'ouvrent lentement sur la lueur des forges de Forgefer.", 7.0)
 

@@ -372,6 +372,7 @@ func reset_session() -> void:
 
 
 func _on_defeated() -> void:
+	main.jingle("victoire")
 	var s0: int = _session
 	f.state["reine"] = true
 	d.state["victoires"] = int(d.state["victoires"]) + 1

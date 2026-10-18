@@ -639,6 +639,7 @@ func _open_chest() -> void:
 	d.state["coffre_abysses"] = true
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("coffre")
+		main.jingle("decouverte")
 	var hinge: Node3D = _chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 80)

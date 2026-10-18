@@ -1166,6 +1166,7 @@ func summon_crabs(n: int) -> void:
 
 
 func _on_boss_defeated() -> void:
+	main.jingle("victoire")
 	state["boss1"] = true
 	state["victoires"] = int(state["victoires"]) + 1
 	_say("Karkinos s'effondre dans un fracas de carapace ! La herse se relève… et un coffre remonte du puits.", 6.0)
@@ -1194,6 +1195,7 @@ func _open_boss_chest() -> void:
 	state["coffre_boss1"] = true
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("coffre")
+		main.jingle("decouverte")
 	var hinge: Node3D = _boss_chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 60)
@@ -1652,6 +1654,7 @@ func _open_chest() -> void:
 	state["coffre"] = true
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("coffre")
+		main.jingle("decouverte")
 	var chest: Node3D = (sections["village"] as Node3D).get_node("Coffre_gardien")
 	var hinge: Node3D = chest.get_node("Charniere")
 	var tw := create_tween()

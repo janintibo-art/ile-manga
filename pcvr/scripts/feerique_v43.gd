@@ -1033,6 +1033,7 @@ func _open_chest() -> void:
 	state["coffre"] = true
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("coffre")
+		main.jingle("decouverte")
 	create_tween().tween_property(_chest_lid, "rotation:x", -1.9, 0.9).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 60)
 	var b: int = main.inventory_v28.add("poussiere_fee", 1)

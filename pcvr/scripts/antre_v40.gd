@@ -344,6 +344,7 @@ func _reset_fight() -> void:
 
 
 func _on_defeated() -> void:
+	main.jingle("victoire")
 	d.state["naga"] = true
 	d.state["victoires"] = int(d.state["victoires"]) + 1
 	activate_eyes(false)
@@ -377,6 +378,7 @@ func _open_chest() -> void:
 	d.state["coffre_naga"] = true
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("coffre")
+		main.jingle("decouverte")
 	var hinge: Node3D = _chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 200)

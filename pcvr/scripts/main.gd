@@ -119,6 +119,7 @@ func _ready() -> void:
 	_bake_shore_v48()
 	_create_ambiance_v49()
 	_create_sfx_v50()
+	_create_music_v51()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -2492,6 +2493,7 @@ func _close_dialogue_v31() -> void:
 ## V49 : les ambiances sonores (nappes, émetteurs, sons ponctuels).
 var ambiance_v49: Node
 ## V50 : les bruitages d'action (sfx_v50.gd).
+var music_v51: Node                       # V51 : la musique (musique_v51.gd)
 var sfx_v50: Node
 
 func _create_sfx_v50() -> void:
@@ -2499,6 +2501,19 @@ func _create_sfx_v50() -> void:
 	sfx_v50.name = "Bruitages_v50"
 	add_child(sfx_v50)
 	sfx_v50.setup(self)
+
+
+func _create_music_v51() -> void:
+	music_v51 = preload("res://scripts/musique_v51.gd").new()
+	music_v51.name = "Musique_v51"
+	add_child(music_v51)
+	music_v51.setup(self)
+
+
+## V51 : un jingle (« victoire », « decouverte ») par-dessus la musique.
+func jingle(name: String) -> void:
+	if music_v51 != null:
+		music_v51.jingle(name)
 
 
 ## Joue un bruitage (at : position dans le monde ; null : son d'interface).
