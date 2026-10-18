@@ -120,6 +120,7 @@ func _ready() -> void:
 	_create_ambiance_v49()
 	_create_sfx_v50()
 	_create_music_v51()
+	_create_v52()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -1779,6 +1780,10 @@ func _respawn_v28() -> void:
 		return
 	pc_root.position = Vector3(2.0, maxf(0.0, _height_at(2.0, 8.0)), 8.0)
 	_sync_physics_after_load_v11()
+	# V52 : la barque laissée sur l'autre rive revient au ponton du village.
+	if boat_v29 != null and boat_v29.return_home():
+		_show_message_v28("Vous vous êtes évanoui… Vous voici de retour au village. Un pêcheur a ramené votre barque au ponton.")
+		return
 	_show_message_v28("Vous vous êtes évanoui… Vous voici de retour au village.")
 
 
@@ -2493,6 +2498,8 @@ func _close_dialogue_v31() -> void:
 ## V49 : les ambiances sonores (nappes, émetteurs, sons ponctuels).
 var ambiance_v49: Node
 ## V50 : les bruitages d'action (sfx_v50.gd).
+var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
+var foret_v52: Node                       # V52 : lumière sous les arbres
 var music_v51: Node                       # V51 : la musique (musique_v51.gd)
 var sfx_v50: Node
 
@@ -2501,6 +2508,17 @@ func _create_sfx_v50() -> void:
 	sfx_v50.name = "Bruitages_v50"
 	add_child(sfx_v50)
 	sfx_v50.setup(self)
+
+
+func _create_v52() -> void:
+	grotte_v52 = preload("res://scripts/grotte_cascade_v52.gd").new()
+	grotte_v52.name = "Grotte_cascade_v52"
+	add_child(grotte_v52)
+	grotte_v52.build(self)
+	foret_v52 = preload("res://scripts/lumiere_foret_v52.gd").new()
+	foret_v52.name = "Lumiere_foret_v52"
+	add_child(foret_v52)
+	foret_v52.setup(self)
 
 
 func _create_music_v51() -> void:

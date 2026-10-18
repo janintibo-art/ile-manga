@@ -15,6 +15,31 @@ uniform float shore_size = 1600.0;
 uniform bool has_shore = false;
 varying vec3 water_position;
 
+// V52 : la barque (boat_v29.gd) — l'eau ne se dessine pas à l'intérieur de la coque.
+uniform mat4 boat_inv = mat4(1.0);
+uniform bool boat_on = false;
+
+bool in_boat(vec3 w) {
+	vec3 b = (boat_inv * vec4(w, 1.0)).xyz;
+	const float L = 4.6;
+	const float B = 1.6;
+	const float D = 0.72;
+	if (abs(b.z) > L * 0.5 || b.y > D + 0.45) {
+		return false;
+	}
+	float s = (L * 0.5 - b.z) / L;
+	float wd = s < 0.42 ? B * 0.5 * (0.64 + 0.36 * sin(1.5708 * s / 0.42)) : B * 0.5 * pow(max(cos(1.5708 * (s - 0.42) / 0.58), 0.0), 0.75);
+	float keel = 0.28 * pow(max(s - 0.72, 0.0) / 0.28, 2.0) + 0.05 * pow(max(0.15 - s, 0.0) / 0.15, 2.0);
+	if (b.y < keel) {
+		return false;
+	}
+	float top = D + 0.2 * s * s * s;
+	float t = clamp((b.y - keel) / max(top - keel, 0.01), 0.0, 1.0);
+	float a = acos(1.0 - t) / 1.5708;
+	float lat = wd * pow(sin(a * 1.5708), 0.7);
+	return abs(b.x) < lat + 0.02;
+}
+
 void vertex() {
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	float swell = sin(world.x * 0.098 + TIME * 0.8) * 0.12 + cos(world.z * 0.15 + TIME * 0.61) * 0.07;
@@ -23,6 +48,9 @@ void vertex() {
 }
 
 void fragment() {
+	if (boat_on && in_boat(water_position)) {
+		discard;
+	}
 	vec2 uv1 = water_position.xz * 0.045 + vec2(TIME * 0.012, TIME * 0.007);
 	vec2 uv2 = water_position.xz * 0.11 + vec2(-TIME * 0.018, TIME * 0.013);
 	vec3 n1 = texture(ripple_n, uv1).xyz * 2.0 - 1.0;

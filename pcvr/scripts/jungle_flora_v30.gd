@@ -794,6 +794,46 @@ func _emit(species: String, variant: int, list: Array, detailed: bool, begin: fl
 	add_child(inst)
 
 
+# =================================================================== canopée (V52)
+
+const COVER_CELL: float = 4.0
+var _cover: Dictionary = {}          # Vector2i -> couverture des feuillages au-dessus (0..)
+var _cover_built: bool = false
+
+## V52 : densité du feuillage au-dessus du point (0 : ciel ouvert, 1 et plus : sous-bois
+## fermé). Calculée une fois d'après les arbres plantés (houppiers des géants et des arbres
+## de canopée, palmiers et fougères arborescentes pour une petite part).
+func canopy_at(wx: float, wz: float) -> float:
+	if not _cover_built:
+		_build_cover()
+	var c := Vector2i(floori(wx / COVER_CELL), floori(wz / COVER_CELL))
+	return float(_cover.get(c, 0.0))
+
+
+func _build_cover() -> void:
+	_cover_built = true
+	var spec := {"geant": [12.0, 1.0], "canopee": [5.0, 0.8], "palmier": [3.2, 0.35], "fougere_arbre": [2.2, 0.25]}
+	for key in _batches:
+		var species: String = (key as String).split("|")[0].split("#")[0]
+		if not spec.has(species):
+			continue
+		for xf in _batches[key]:
+			var t: Transform3D = xf
+			var r: float = float(spec[species][0]) * t.basis.get_scale().x
+			var w: float = float(spec[species][1])
+			var o: Vector3 = t.origin
+			var c0 := Vector2i(floori((o.x - r) / COVER_CELL), floori((o.z - r) / COVER_CELL))
+			var c1 := Vector2i(floori((o.x + r) / COVER_CELL), floori((o.z + r) / COVER_CELL))
+			for cx in range(c0.x, c1.x + 1):
+				for cz in range(c0.y, c1.y + 1):
+					var dx: float = (cx + 0.5) * COVER_CELL - o.x
+					var dz: float = (cz + 0.5) * COVER_CELL - o.z
+					var d2: float = (dx * dx + dz * dz) / (r * r)
+					if d2 < 1.0:
+						var k := Vector2i(cx, cz)
+						_cover[k] = float(_cover.get(k, 0.0)) + w * (1.0 - d2)
+
+
 # =================================================================== brume
 
 func _make_mist() -> void:
@@ -803,7 +843,7 @@ func _make_mist() -> void:
 	fog.size = Vector3(300.0, 26.0, 300.0)
 	fog.position = jungle.CENTER + Vector3(0, 9.0, 0)
 	var m := FogMaterial.new()
-	m.density = mist_density
+	m.density = mist_density * 0.45         # V52 : moins épaisse, la forêt reste lisible
 	m.albedo = mist_color
 	m.height_falloff = 0.08
 	m.edge_fade = 0.4

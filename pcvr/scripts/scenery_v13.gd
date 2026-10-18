@@ -18,6 +18,9 @@ const BOWL_OUTER: float = 2.4    # le creux déborde du bassin : le bord de l'ea
 
 
 static var _pools: Array[Vector2] = []
+## V52 : pour chaque site, le bloc central (maillage + collision) et son repère, afin
+## qu'une grotte puisse y être creusée (grotte_cascade_v52.gd).
+var sites_info: Array = []
 
 
 ## Vrai si (x, z) est assez près d'un bassin pour que le relief y soit modifié (test rapide).
@@ -98,7 +101,7 @@ func _make_site(center: Vector2, height: float, seed_value: int, ground: Callabl
 	rock_mat.set_shader_parameter("wet_zone", Vector4(c3.x + f.x * FRONT, lip_y - 4.0, c3.z + f.z * FRONT, 8.0))
 
 	# Bloc central, face avant presque verticale : la chute part de son rebord.
-	_rock(body, rock_mat, seed_value, c3 + Vector3.UP * (top_h * 0.5 - 1.6), Vector3(13.0, top_h + 3.2, FRONT * 2.0), yaw, 0.6, 0.12, 0.8, pc)
+	var central: Array = _rock(body, rock_mat, seed_value, c3 + Vector3.UP * (top_h * 0.5 - 1.6), Vector3(13.0, top_h + 3.2, FRONT * 2.0), yaw, 0.6, 0.12, 0.8, pc)
 	# Deux épaulements qui encadrent la lèvre (effet de gorge).
 	for side in [-1.0, 1.0]:
 		var pos: Vector3 = c3 + r * side * 6.2 + f * 1.2 + Vector3.UP * (top_h * 0.55)
@@ -126,9 +129,11 @@ func _make_site(center: Vector2, height: float, seed_value: int, ground: Callabl
 	var water_y: float = float(ground.call(pool.x, pool.y)) + 1.3
 	_make_pool(Vector3(pool.x, water_y, pool.y), pc)
 	_make_fall(c3, f, r, lip_y, water_y, pc)
+	sites_info.append({"c3": c3, "f": f, "r": r, "yaw": yaw, "water_y": water_y, "lip_y": lip_y,
+		"mesh": central[0], "shape": central[1], "body": body, "rock_mat": rock_mat})
 
 
-func _rock(body: StaticBody3D, mat: Material, seed_value: int, pos: Vector3, size: Vector3, yaw: float, boxiness: float, bump: float, flatten: float, pc: bool) -> void:
+func _rock(body: StaticBody3D, mat: Material, seed_value: int, pos: Vector3, size: Vector3, yaw: float, boxiness: float, bump: float, flatten: float, pc: bool) -> Array:
 	var mesh: ArrayMesh = Rocks.shape(seed_value, size, boxiness, bump, flatten, 56 if pc else 36)
 	var item := MeshInstance3D.new()
 	item.name = "Roche_falaise_v26"
@@ -137,7 +142,9 @@ func _rock(body: StaticBody3D, mat: Material, seed_value: int, pos: Vector3, siz
 	item.rotation.y = yaw
 	item.position = pos
 	add_child(item)
-	body.add_child(Rocks.collision_for(mesh, Transform3D(Basis(Vector3.UP, yaw), pos)))
+	var cs: CollisionShape3D = Rocks.collision_for(mesh, Transform3D(Basis(Vector3.UP, yaw), pos))
+	body.add_child(cs)
+	return [item, cs]
 
 
 # Nappe d'eau : déversoir sur le plateau, puis chute parabolique jusqu'au bassin.

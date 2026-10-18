@@ -463,6 +463,29 @@ func _float_motion(delta: float, turn: float) -> void:
 	hull.rotation = Vector3(pitch, yaw, roll)
 
 
+## V52 : la mer ne se dessine pas à l'intérieur de la coque (shaders water*.gdshader).
+func _process(_delta: float) -> void:
+	if hull == null or main == null:
+		return
+	var m: ShaderMaterial = main.get("ocean_material")
+	if m != null:
+		m.set_shader_parameter("boat_inv", Projection(hull.global_transform.affine_inverse()))
+		m.set_shader_parameter("boat_on", true)
+
+
+## V52 : la barque revient s'amarrer au ponton du village (après un évanouissement loin
+## d'elle). Vrai si elle a été déplacée.
+func return_home() -> bool:
+	if hull == null or docks.is_empty():
+		return false
+	driving = false
+	var d: Dictionary = docks[0]
+	if Vector2(hull.global_position.x - d["end"].x, hull.global_position.z - d["end"].z).length() < 12.0:
+		return false
+	moor(0)
+	return true
+
+
 func _physics_process(delta: float) -> void:
 	# À l'amarre : la barque continue de bouger doucement sur l'eau.
 	if not driving and hull != null:

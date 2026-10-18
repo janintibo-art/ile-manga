@@ -21,7 +21,7 @@ var main: Node
 var inside: bool = false
 var village_trap: Vector3 = Vector3.INF          # surface
 var jungle_trap: Vector3 = Vector3.INF
-var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false}
+var state := {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false, "grotte_cascade": false}
 var sections: Dictionary = {}                    # "village"/"jungle" -> Node3D (repère local)
 var spawn: Dictionary = {}                       # "village"/"jungle" -> [position, regard]
 var _interactions: Array = []                    # {id, pos, radius, text, vr, call, when}
@@ -1834,7 +1834,7 @@ func serialize() -> Dictionary:
 
 
 func load_data(d: Dictionary) -> void:
-	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false}
+	state = {"trappe_village": 0, "trappe_jungle": 0, "braseros": false, "mur": false, "niche": false, "coffre": false, "visite": false, "passage": false, "grille": false, "eboulement": false, "victoires": 0, "boss1": false, "coffre_boss1": false, "serpents": 45, "enigme_serpents": false, "fragment3": false, "porte_serpent": false, "coffre_sanctuaire": false, "sceau": false, "abysses_bas": false, "lac": false, "coffre_abysses": false, "abime_eveil": false, "porte_abime": false, "naga": false, "coffre_naga": false, "grotte_cascade": false}
 	for k in state:
 		if d.has(k):
 			state[k] = int(d[k]) if (k.begins_with("trappe") or k == "victoires" or k == "serpents") else bool(d[k])
