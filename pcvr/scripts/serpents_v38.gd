@@ -457,6 +457,8 @@ func _use_door() -> void:
 		return
 	d._busy = true
 	main.inventory_v28.remove("fragment_amulette", 3)
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("pierre_glisse")
 	d._say("Tu poses les trois fragments dans les empreintes… Ils s'y enfoncent d'eux-mêmes.", 4.0)
 	for k in range(_slots.size()):
 		await get_tree().create_timer(0.45).timeout
@@ -661,6 +663,8 @@ func _open_offering() -> void:
 		d._say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	d.state["coffre_sanctuaire"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	var hinge: Node3D = _sanct_chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 50)

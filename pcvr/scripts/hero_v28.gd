@@ -486,6 +486,8 @@ func _landed() -> void:
 			return
 	if drop > 0.6:
 		_play("v28/land", 0.06)
+		if main.has_method("sfx"):
+			main.sfx("atterrissage", body.global_position, -6.0 + minf(drop, 6.0))
 
 
 # =================================================================== rebords et escalade
@@ -792,6 +794,8 @@ func _start_attack_step() -> void:
 		action_length = anim.get_animation(name).length
 		hits_pending = [SLASH_HIT + (0.05 if combo_index % 3 == 2 else 0.0)]
 		_play(name, 0.06, 1.0, 0.0)
+		if main.has_method("sfx"):
+			main.sfx("fendre_lourd" if combo_index % 3 == 2 else "fendre_air", body.global_position + Vector3.UP * 1.2)
 	else:
 		var seg: Array = PUNCH_SEGMENTS[combo_index % PUNCH_SEGMENTS.size()]
 		action_length = (float(seg[1]) - float(seg[0])) / PUNCH_SPEED
@@ -950,9 +954,13 @@ func heal(amount: int) -> bool:
 func hurt(amount: int, from_pos: Vector3) -> void:
 	if state == "ko" or hurt_cooldown > 0.0:
 		return
+	var parried: bool = false
 	if blocking and from_pos != Vector3.ZERO and facing.dot((from_pos - body.global_position).normalized()) > 0.3:
 		amount = int(amount * 0.5)
 		_spend(1.5)
+		parried = true
+	if main.has_method("sfx"):
+		main.sfx("parade" if parried else "joueur_blesse", body.global_position + Vector3.UP * 1.2)
 	hurt_cooldown = 0.6
 	hp = maxi(hp - amount, 0)
 	health_changed.emit(hp, HP_MAX)

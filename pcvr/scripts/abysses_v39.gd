@@ -614,6 +614,8 @@ func _build_far_shore(s: Node3D) -> void:
 ## V40 : la barrière s'éteint, les battants pivotent vers l'antre.
 func open_gate() -> void:
 	d._busy = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("pierre_glisse")
 	d._say("Tu pousses les battants d'obsidienne. La barrière verte s'éteint dans un grésillement…", 4.0)
 	var fade := create_tween()
 	fade.tween_property(_barrier_mat, "albedo_color:a", 0.0, 1.0)
@@ -635,6 +637,8 @@ func _open_chest() -> void:
 		d._say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	d.state["coffre_abysses"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	var hinge: Node3D = _chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 80)

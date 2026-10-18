@@ -141,6 +141,8 @@ func _check(spot: Vector3) -> bool:
 
 func _dig_after(spot: Vector3, wait: float) -> void:
 	await get_tree().create_timer(wait).timeout
+	if main.has_method("sfx"):
+		main.sfx("pelle", spot)
 	var g: Dictionary = ground_at(spot)
 	if g.is_empty():
 		return
@@ -481,6 +483,8 @@ func _give(gains: Array) -> String:
 
 ## Le coffre sort du trou, s'ouvre en brillant, puis redescend.
 func _chest(at: Vector3, big: bool) -> void:
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.play("coffre", at)
 	var k: float = 1.6 if big else 1.0
 	var root := Node3D.new()
 	root.name = "Coffre_trouve"

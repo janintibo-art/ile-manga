@@ -213,6 +213,10 @@ func interact(player_pos: Vector3) -> bool:
 	for d in doors:
 		if d["house"] == doors[i]["house"]:
 			d["target"] = OPEN_ANGLE if opening else 0.0
+	# V50 : grincement de la porte
+	var m: Node = get_parent()
+	if m != null and m.has_method("sfx"):
+		m.sfx("porte_ouvre" if opening else "porte_ferme", player_pos + Vector3.UP * 1.2)
 	return true
 
 

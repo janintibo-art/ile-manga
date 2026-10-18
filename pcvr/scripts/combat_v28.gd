@@ -206,7 +206,9 @@ func strike(origin: Vector3, facing: Vector3, reach: float, damage: int) -> int:
 			continue
 		if d > 0.25 and facing.dot(off.normalized()) < 0.35:
 			continue
+		var snd: String = impact_sound(target)
 		target.take_hit(damage, origin)
+		_impact(snd, c)
 		hits += 1
 	return hits
 
@@ -223,9 +225,38 @@ func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3)
 		if point.y < base.y - 0.1 or point.y > top_y:
 			continue
 		if Vector2(point.x - base.x, point.z - base.z).length() <= float(target.hit_radius) + radius:
+			var snd: String = impact_sound(target)
 			target.take_hit(damage, from_pos)
+			_impact(snd, point)
 			hits += 1
 	return hits
+
+
+## V50 : le bruit d'un coup selon ce qu'on frappe (chair, carapace, pierre, bois, jarre).
+func impact_sound(target: Node) -> String:
+	var file: String = str(target.get_script().resource_path.get_file()) if target.get_script() != null else ""
+	if file == "arbre_v34.gd":
+		return ""                 # l'arbre a son propre bruit (la hache)
+	var k: String = str(target.get("kind")) if target.get("kind") != null else ""
+	match k:
+		"jarre":
+			return "jarre_casse"
+		"mannequin":
+			return "touche_bois"
+		"golem":
+			return "touche_pierre"
+		"crabe", "gardien", "araignee":
+			return "touche_carapace"
+	if file == "boss_crabe_v37.gd":
+		return "touche_carapace"
+	if file == "naga_v40.gd":
+		return "touche_lourd"
+	return "touche_chair"
+
+
+func _impact(snd: String, at: Vector3) -> void:
+	if snd != "" and main != null and main.has_method("sfx"):
+		main.sfx(snd, at, 2.0 if critical else 0.0)
 
 
 ## Mains VR : vitesse de chaque main ; au-delà de 2,2 m/s, la main frappe ce qu'elle traverse.

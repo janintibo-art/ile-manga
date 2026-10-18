@@ -70,6 +70,8 @@ var _progress_fill: ColorRect
 var _vr_label: Label3D
 
 
+var _reel_clock: float = 0.0
+
 func setup(main_node: Node) -> void:
 	main = main_node
 	_rng.randomize()
@@ -348,6 +350,8 @@ func _pose(name: String) -> void:
 
 func _cast() -> void:
 	var start: Vector3 = _player_pos()
+	if main.has_method("sfx"):
+		main.sfx("lancer", start + Vector3.UP * 1.5)
 	var aim: Vector3 = _aim()
 	var dist: float = lerpf(CAST_MIN, CAST_MAX, power)
 	# On cherche l'eau dans la direction visée, du plus loin au plus près.
@@ -435,6 +439,8 @@ func _choose_fish() -> void:
 
 
 func _hook() -> void:
+	if main.has_method("sfx"):
+		main.sfx("ferrage", _player_pos() + Vector3.UP * 1.3)
 	state = "combat"
 	tension = 0.45
 	progress = 0.0
@@ -458,6 +464,12 @@ func _fight_tick(delta: float) -> void:
 	tension = clampf(tension, 0.0, 1.0)
 	var in_green: bool = tension > 0.2 and tension < 0.75
 	if reel:
+		# V50 : le cliquetis du moulinet
+		_reel_clock -= delta
+		if _reel_clock <= 0.0:
+			_reel_clock = 0.16
+			if main.has_method("sfx"):
+				main.sfx("moulinet", _player_pos() + Vector3.UP * 1.2)
 		progress += delta * (0.2 - force * 0.1) * (1.0 if in_green else 0.35)
 	else:
 		progress -= delta * 0.03 * force
@@ -481,6 +493,8 @@ func _fight_tick(delta: float) -> void:
 
 
 func _landed() -> void:
+	if main.has_method("sfx"):
+		main.sfx("gros_plouf", _player_pos() + Vector3.UP * 0.5)
 	var got: int = main.inventory_v28.add(fish_id, 1)
 	var info: Dictionary = main.inventory_v28.ITEMS[fish_id]
 	stats["total"] = int(stats["total"]) + 1
@@ -529,6 +543,8 @@ func _float_bobber() -> void:
 
 
 func _splash(at: Vector3) -> void:
+	if main.has_method("sfx"):
+		main.sfx("plouf", at)
 	if main.combat_v28 != null:
 		main.combat_v28.puff(at + Vector3.UP * 0.05, Color(0.85, 0.92, 1.0))
 

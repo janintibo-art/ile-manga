@@ -377,6 +377,20 @@ void fragment() {
 	return _magma_sh
 
 
+## V50 : le cri de chaque espèce (menace avant l'attaque, mort).
+const SOUNDS := {
+	"crabe": ["crabe_menace", "crabe_mort"], "araignee": ["insecte_menace", "insecte_mort"],
+	"vipere": ["serpent_menace", "monstre_mort"], "follet": ["follet_menace", "follet_mort"],
+	"golem": ["golem_menace", "golem_mort"], "magma": ["magma_menace", "magma_mort"],
+}
+
+func _sound(what: String) -> void:
+	if manager == null or manager.main == null or not manager.main.has_method("sfx"):
+		return
+	var pair: Array = SOUNDS.get(kind, ["monstre_menace", "monstre_mort"])
+	manager.main.sfx(str(pair[0] if what == "menace" else pair[1]), global_position + Vector3.UP * hit_height)
+
+
 func _box_mesh_g(size: Vector3) -> BoxMesh:
 	var b := BoxMesh.new()
 	b.size = size
@@ -562,6 +576,7 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 
 
 func _die() -> void:
+	_sound("mort")
 	state = "mort"
 	timer = 0.0
 	collision_layer = 0
@@ -637,6 +652,7 @@ func _physics_process(delta: float) -> void:
 				state = "veille"
 			elif dist <= float(spec["portee"]):
 				state = "armer"
+				_sound("menace")
 				timer = float(spec["armer"])
 				if kind == "gardien":
 					_play("v28/slash3", 0.1, 0.55)

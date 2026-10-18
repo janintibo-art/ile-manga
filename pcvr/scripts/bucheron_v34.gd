@@ -281,6 +281,8 @@ func hit(i: int, damage: int, from_pos: Vector3) -> void:
 			_say("Cet arbre porte une entaille : il s'abat… avec une hache.", at)
 		return
 	t["hp"] = int(t["hp"]) - 1
+	if main.has_method("sfx"):
+		main.sfx("hache", at)
 	if main.combat_v28 != null:
 		main.combat_v28.puff(at - away * 0.25, Color(0.86, 0.72, 0.5))
 		main.combat_v28.float_text(at + Vector3.UP * 0.9, "Toc !" if int(t["hp"]) > 0 else "Craaac !", Color(1.0, 0.85, 0.55))
@@ -293,6 +295,8 @@ func hit(i: int, damage: int, from_pos: Vector3) -> void:
 	t["fall_dir"] = away
 	(t["body"] as StaticBody3D).collision_layer = 0
 	main._show_message_v28("Attention, ça tombe !")
+	if main.has_method("sfx"):
+		main.sfx("arbre_tombe", at + Vector3.UP * 2.0)
 
 
 func _loot(t: Dictionary) -> void:

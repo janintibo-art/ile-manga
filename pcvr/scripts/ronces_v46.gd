@@ -273,6 +273,8 @@ func _process(delta: float) -> void:
 
 func _start_fight() -> void:
 	fight = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("boss_cri")
 	boss = ReineScript.new()
 	d.add_child(boss)
 	boss.setup(self, center_w)

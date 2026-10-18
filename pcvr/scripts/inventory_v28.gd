@@ -341,9 +341,11 @@ func use_slot(i: int) -> void:
 	match str(info["kind"]):
 		"nourriture":
 			if use_food.is_valid() and use_food.call(int(info.get("heal", 1))):
+				_sfx("manger")
 				remove_from_slot(i, 1)
 				notify.emit(str(info["name"]) + " mangé(e).")
 			else:
+				_sfx("ui_erreur")
 				notify.emit("Vos cœurs sont déjà pleins.")
 		"arme", "canne":
 			equip_item("" if equipped == id else id)
@@ -357,6 +359,8 @@ func use_slot(i: int) -> void:
 
 
 func equip_item(id: String) -> void:
+	if id != "" and id != equipped and opened:
+		_sfx("equiper")
 	equipped = id
 	equipped_changed.emit(id)
 	if id != "":
@@ -372,6 +376,26 @@ func drop_slot(i: int) -> void:
 	remove_from_slot(i, 1)
 	drop_counter += 1
 	spawn_pickup("jete_%d" % drop_counter, id, 1, where)
+	_sfx("jeter")
+
+
+## V50 : bruitages (via main.sfx).
+func _sfx(name: String, at: Variant = null) -> void:
+	if main != null and main.has_method("sfx"):
+		main.sfx(name, at)
+
+
+## Le bruit d'un objet ramassé : pièces, gemmes, pierres, bois, ou un bruit d'objet ordinaire.
+static func pickup_sound(id: String) -> String:
+	if id in ["piece", "piece_or"]:
+		return "ramasse_pieces"
+	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee"]:
+		return "ramasse_gemme"
+	if id in ["caillou", "minerai_fer", "fragment_amulette"]:
+		return "ramasse_pierre"
+	if id in ["baton", "buche"]:
+		return "ramasse_bois"
+	return "ramasse"
 
 
 func serialize() -> Dictionary:
@@ -864,8 +888,10 @@ func collect(i: int) -> bool:
 	var p: Dictionary = pickups[i]
 	var got: int = add(p["id"], int(p["n"]))
 	if got <= 0:
+		_sfx("ui_erreur")
 		notify.emit("Inventaire plein.")
 		return false
+	_sfx(pickup_sound(str(p["id"])), p["pos"])
 	var name: String = str(ITEMS[p["id"]]["name"])
 	notify.emit("+ " + name + ("" if got == 1 else " ×%d" % got))
 	if got < int(p["n"]):
@@ -1041,6 +1067,8 @@ func toggle() -> void:
 
 
 func open() -> void:
+	if not opened:
+		_sfx("ui_ouvrir")
 	opened = true
 	_vr_sel = clampi(_vr_sel, 0, SLOT_COUNT - 1)
 	_vr_trigger_ready = false
@@ -1055,6 +1083,8 @@ func open() -> void:
 
 
 func close() -> void:
+	if opened:
+		_sfx("ui_fermer")
 	opened = false
 	if _layer != null:
 		_layer.visible = false

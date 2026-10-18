@@ -1105,6 +1105,8 @@ func _boss_tick() -> void:
 
 func _start_fight() -> void:
 	fight = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("boss_cri")
 	var s: Node3D = sections["village"]
 	var face: Vector3 = s.to_global(Vector3(-1, 0, 0)) - s.to_global(Vector3.ZERO)
 	boss = BossScript.new()
@@ -1190,6 +1192,8 @@ func _open_boss_chest() -> void:
 		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	state["coffre_boss1"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	var hinge: Node3D = _boss_chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 60)
@@ -1481,6 +1485,8 @@ func reveal_trap(id: String) -> void:
 
 func _open_trap(id: String) -> void:
 	var t: Dictionary = _traps[id]
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("pierre_glisse")
 	var slab: Node3D = t["slab"]
 	var tw := create_tween()
 	tw.tween_property(slab, "position", Vector3(1.1, 0.0, 0.0), 1.2).set_trans(Tween.TRANS_QUAD)
@@ -1556,6 +1562,8 @@ func open_grille() -> void:
 	if bool(state["grille"]):
 		return
 	state["grille"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("grille")
 	_say("Les deux gardiens sont tombés. Dans un cliquetis de chaînes, la grille se lève !", 5.0)
 	var gb: StaticBody3D = _grille.get_node("Grille_collision")
 	var tw := create_tween()
@@ -1629,6 +1637,8 @@ func _search_urn() -> void:
 		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	state["niche"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("pierre_glisse")
 	_apply_state()
 	var got: int = main.inventory_v28.add("piece", 15)
 	_say("Dans l'urne : %d pièces, et un parchemin roulé : « Trois gardiens veillent sur l'Œil du Serpent. Qui réunira l'amulette ouvrira la porte. »" % got, 7.0)
@@ -1640,6 +1650,8 @@ func _open_chest() -> void:
 		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	state["coffre"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	var chest: Node3D = (sections["village"] as Node3D).get_node("Coffre_gardien")
 	var hinge: Node3D = chest.get_node("Charniere")
 	var tw := create_tween()

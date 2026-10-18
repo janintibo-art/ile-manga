@@ -904,6 +904,8 @@ func _solve() -> void:
 
 
 func _open_bud(instant: bool) -> void:
+	if not instant and main.get("sfx_v50") != null:
+		main.sfx_v50.here("ui_quete")
 	for k in range(_petals.size()):
 		var hinge: Node3D = _petals[k]
 		if instant:
@@ -1029,6 +1031,8 @@ func _open_chest() -> void:
 		d._say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	state["coffre"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	create_tween().tween_property(_chest_lid, "rotation:x", -1.9, 0.9).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 60)
 	var b: int = main.inventory_v28.add("poussiere_fee", 1)

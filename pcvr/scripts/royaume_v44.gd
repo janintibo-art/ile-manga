@@ -526,6 +526,8 @@ func _solve() -> void:
 
 
 func _open_gate(instant: bool) -> void:
+	if not instant and f.main.get("sfx_v50") != null:
+		f.main.sfx_v50.here("grille")
 	for i in range(_gate.size()):
 		var half: Node3D = _gate[i]
 		var side: float = -1.0 if i == 0 else 1.0

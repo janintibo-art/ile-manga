@@ -362,6 +362,8 @@ func can_board(p: Vector3) -> bool:
 
 
 func board() -> void:
+	if main.has_method("sfx"):
+		main.sfx("gros_plouf", hull.global_position, -6.0)
 	driving = true
 	speed = 0.0
 	if main.xr_active:
@@ -392,6 +394,8 @@ func leave() -> bool:
 	var spot: Variant = landing_spot()
 	if spot == null:
 		return false
+	if main.has_method("sfx"):
+		main.sfx("pas_bois", hull.global_position + Vector3.UP * 0.5)
 	driving = false
 	speed = 0.0
 	# Arrivé au bout d'un ponton : la barque s'y amarre proprement.

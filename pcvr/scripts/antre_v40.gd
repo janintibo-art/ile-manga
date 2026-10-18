@@ -298,6 +298,8 @@ func _fall_in() -> void:
 
 func _start_fight() -> void:
 	fight = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("boss_cri")
 	boss = NagaScript.new()
 	d.add_child(boss)
 	boss.setup(self, center_w, center_w.y - 0.6)
@@ -373,6 +375,8 @@ func _open_chest() -> void:
 		say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return
 	d.state["coffre_naga"] = true
+	if main.get("sfx_v50") != null:
+		main.sfx_v50.here("coffre")
 	var hinge: Node3D = _chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 200)

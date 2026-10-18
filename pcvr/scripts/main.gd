@@ -118,6 +118,7 @@ func _ready() -> void:
 	_create_gameplay_v28()
 	_bake_shore_v48()
 	_create_ambiance_v49()
+	_create_sfx_v50()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -2424,6 +2425,7 @@ func _talk_v31(npc: Node3D) -> void:
 		if to_npc.length() > 0.05:
 			hero_v28.facing = to_npc.normalized()
 	dialogue_v31.open(npc)
+	sfx("ui_dialogue")
 	_brain_reply_v48(npc, func(): return npc.brain.start(_npc_ctx_v31()))
 
 
@@ -2448,6 +2450,7 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		var names: Array = []
 		for g in gives:
 			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())
+		sfx("ui_erreur")
 		r = {"texte": "« Attends… ton sac est plein. Fais un peu de place pour %s, puis reviens me voir. »" % " et ".join(names),
 			"geste": "parle", "choix": npc.brain.topics(_npc_ctx_v31())}
 		_show_message_v28("Sac plein : rien n'a été échangé.")
@@ -2455,6 +2458,13 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
+	# V50 : un objet reçu d'un personnage (récompense, achat) : petit carillon ; sinon un clic.
+	if not (r.get("donner", []) as Array).is_empty():
+		sfx("ui_quete")
+	elif not (r.get("prendre", []) as Array).is_empty():
+		sfx("ramasse_pieces")
+	else:
+		sfx("ui_choix")
 	for p in r.get("prendre", []):
 		inventory_v28.remove(str(p[0]), int(p[1]))
 	for g in r.get("donner", []):
@@ -2481,6 +2491,20 @@ func _close_dialogue_v31() -> void:
 
 ## V49 : les ambiances sonores (nappes, émetteurs, sons ponctuels).
 var ambiance_v49: Node
+## V50 : les bruitages d'action (sfx_v50.gd).
+var sfx_v50: Node
+
+func _create_sfx_v50() -> void:
+	sfx_v50 = preload("res://scripts/sfx_v50.gd").new()
+	sfx_v50.name = "Bruitages_v50"
+	add_child(sfx_v50)
+	sfx_v50.setup(self)
+
+
+## Joue un bruitage (at : position dans le monde ; null : son d'interface).
+func sfx(name: String, at: Variant = null, db: float = 0.0) -> void:
+	if sfx_v50 != null:
+		sfx_v50.play(name, at, db)
 
 func _create_ambiance_v49() -> void:
 	ambiance_v49 = preload("res://scripts/ambiance_v49.gd").new()

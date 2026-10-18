@@ -16,3 +16,12 @@ Sons synthétisés pour le jeu (pcvr/tools/generate_sons_v49.py), versés au dom
   ponctuels/oiseau_jungle_1..4, mouette_1..3, goutte_1..4, carillon_1..3
 
 Les enregistrements ont été découpés, bouclés (fondu enchaîné), filtrés et normalisés.
+
+Bruitages d'action (V50) — sfx/*.ogg (pas, épée, coups, monstres, objets, coffres, portes,
+outils, pêche, barque, interface), tous CC0 1.0 / domaine public, d'après le recueil
+github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, RPG Audio, Interface Sounds
+  « 80 CC0 RPG SFX », « 80 CC0 creature SFX » (1 et 2), « 100 CC0 SFX »,
+  « 100 CC0 wood/metal SFX », « 75 CC0 breaking/falling/hit SFX »,
+  « 40 CC0 water splash/slime SFX », « 25 CC0 mud SFX », « Micro Pack - Organic Wooshes »
+Découpés, transposés, filtrés et normalisés par pcvr/tools/generate_bruitages_v50.py.
