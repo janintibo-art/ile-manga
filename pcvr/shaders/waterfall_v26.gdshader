@@ -37,7 +37,7 @@ void fragment() {
 	float churn = smoothstep(0.7, 1.0, UV.y);
 	float white = clamp(smoothstep(0.3, 0.7, s) * (0.55 + 0.45 * UV.y) + churn * 0.85, 0.0, 1.0);
 	vec3 col = mix(water_color, vec3(0.95, 0.97, 0.98), white);
-	float edges = smoothstep(0.0, 0.14, UV.x) * smoothstep(1.0, 0.86, UV.x);
+	float edges = smoothstep(0.0, 0.14, UV.x) * (1.0 - smoothstep(0.86, 1.0, UV.x));
 	float lip = smoothstep(0.0, 0.04, UV.y);
 	ALBEDO = col;
 	ALPHA = clamp((0.62 + 0.4 * s + white * 0.4) * edges * lip, 0.0, 0.97);

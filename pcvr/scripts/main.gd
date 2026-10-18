@@ -116,6 +116,7 @@ func _ready() -> void:
 	_update_status()
 	_create_game_menu_v8()
 	_create_gameplay_v28()
+	_bake_shore_v48()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -781,6 +782,7 @@ func _create_players() -> void:
 	pc_camera.look_at(pc_root.global_position + Vector3(0, 1.2, 0))
 	pc_camera.current = true
 	pc_hero = _add_glb("res://assets/models/characters/hero.glb", "Heros_PC", pc_root.position, 1.0, 0.0)
+	_opaque_materials_v48(pc_hero)
 	hero_mesh_floor_offset_v11 = _hero_foot_offset_v11()
 
 	var hud := CanvasLayer.new()
@@ -905,6 +907,7 @@ func _create_game_menu_v8() -> void:
 		menu_panorama.current = true
 
 func _start_save_slot(slot: int, new_game: bool) -> void:
+	_reset_session_v48()
 	game_started = true
 	var origin: Node3D = xr_origin if xr_active else pc_root
 	if new_game:
@@ -991,6 +994,22 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		_sync_physics_after_load_v11()
 	last_ok_v29.clear()
 	autosave_clock = 0.0
+
+
+## V48 : avant de charger une partie (ou d'en commencer une), on referme tout ce qui venait
+## de la précédente : inventaire, dialogue, pêche, monstres du souterrain.
+func _reset_session_v48() -> void:
+	if dialogue_v31 != null and dialogue_v31.opened:
+		_close_dialogue_v31()
+	if talking_npc_v31 != null:
+		talking_npc_v31.end_talk()
+	talking_npc_v31 = null
+	if inventory_v28 != null and inventory_v28.opened:
+		inventory_v28.close()
+	if fishing_v32 != null:
+		fishing_v32.cancel("")
+	if monstres_v36 != null:
+		monstres_v36.reset_session()
 
 
 func _delete_slot(slot: int) -> void:
@@ -1598,7 +1617,8 @@ func _create_gameplay_v28() -> void:
 	inventory_v28.notify.connect(_show_message_v28)
 	inventory_v28.equipped_changed.connect(_on_equip_v28)
 	inventory_v28.use_food = func(half_hearts: int) -> bool:
-		return hero_v28.heal(half_hearts) if hero_v28 != null and not xr_active else true
+		# V48 : même soin en VR qu'au PC (avant, la VR consommait l'aliment sans soigner).
+		return hero_v28.heal(half_hearts) if hero_v28 != null else false
 	inventory_v28.drop_point = _drop_point_v28
 	combat_v28.build(self, inventory_v28)
 	hero_v28 = preload("res://scripts/hero_v28.gd").new()
@@ -2403,7 +2423,7 @@ func _talk_v31(npc: Node3D) -> void:
 		if to_npc.length() > 0.05:
 			hero_v28.facing = to_npc.normalized()
 	dialogue_v31.open(npc)
-	_apply_reply_v31(npc, npc.brain.start(_npc_ctx_v31()))
+	_brain_reply_v48(npc, func(): return npc.brain.start(_npc_ctx_v31()))
 
 
 func _on_dialogue_choice_v31(id: String) -> void:
@@ -2411,7 +2431,26 @@ func _on_dialogue_choice_v31(id: String) -> void:
 	if npc == null or id == "fermer":
 		_close_dialogue_v31()
 		return
-	_apply_reply_v31(npc, npc.brain.choose(id, _npc_ctx_v31()))
+	_brain_reply_v48(npc, func(): return npc.brain.choose(id, _npc_ctx_v31()))
+
+
+## V48 : un échange avec un personnage est tout ou rien. Si ce qu'il donne ne tient pas
+## dans le sac (récompense de quête, objet confié, vente, achat), on annule tout : sa mémoire
+## revient à l'état d'avant (quête, fait « donné », gains), rien n'est pris ni donné, et il
+## demande de revenir avec de la place.
+func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
+	var snap: Dictionary = npc.brain.serialize()
+	var r: Dictionary = call.call()
+	var gives: Array = r.get("donner", [])
+	if not gives.is_empty() and inventory_v28 != null and not inventory_v28.can_accept(gives, r.get("prendre", [])):
+		npc.brain.load_data(snap)
+		var names: Array = []
+		for g in gives:
+			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())
+		r = {"texte": "« Attends… ton sac est plein. Fais un peu de place pour %s, puis reviens me voir. »" % " et ".join(names),
+			"geste": "parle", "choix": npc.brain.topics(_npc_ctx_v31())}
+		_show_message_v28("Sac plein : rien n'a été échangé.")
+	_apply_reply_v31(npc, r)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2437,3 +2476,69 @@ func _close_dialogue_v31() -> void:
 	if talking_npc_v31 != null:
 		talking_npc_v31.end_talk()
 	talking_npc_v31 = null
+
+
+## V48 : le modèle du héros déclare un matériau transparent (alpha « blend ») alors que sa
+## texture est opaque : on le rend opaque (tri, ombres et reflets corrects).
+static func _opaque_materials_v48(root: Node) -> void:
+	if root == null:
+		return
+	for mi in root.find_children("*", "MeshInstance3D", true, false):
+		var m: MeshInstance3D = mi
+		if m.mesh == null:
+			continue
+		for s in range(m.mesh.get_surface_count()):
+			var src: Material = m.get_surface_override_material(s)
+			if src == null:
+				src = m.mesh.surface_get_material(s)
+			if src is StandardMaterial3D and (src as StandardMaterial3D).transparency != BaseMaterial3D.TRANSPARENCY_DISABLED:
+				var op: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
+				op.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
+				m.set_surface_override_material(s, op)
+
+
+## V48 : carte des fonds pour l'océan VR (lagon clair et écume le long de chaque rivage).
+## 512 × 512 pixels sur 1600 m ; on ne mesure le relief que dans le carré de chaque île
+## (le reste est le grand large). Valeur = (hauteur + 12) / 14, entre 0 et 1.
+const SHORE_RES_V48: int = 512
+const SHORE_ORIGIN_V48 := Vector2(-800.0, -800.0)
+const SHORE_SIZE_V48: float = 1600.0
+var shore_image_v48: Image
+
+func _bake_shore_v48() -> void:
+	if ocean_material == null or ocean_material.shader == null or not str(ocean_material.shader.resource_path).ends_with("water.gdshader"):
+		return
+	var t0: int = Time.get_ticks_msec()
+	var img := Image.create(SHORE_RES_V48, SHORE_RES_V48, false, Image.FORMAT_RF)
+	img.fill(Color(0, 0, 0))
+	var boxes: Array = [[Vector2(0.0, 4.0), 140.0]]
+	if jungle_v29 != null:
+		boxes.append([Vector2(jungle_v29.CENTER.x, jungle_v29.CENTER.z), 225.0])
+	if elfes_v41 != null and elfes_v41.ile != null:
+		boxes.append([Vector2(elfes_v41.ile.CENTER.x, elfes_v41.ile.CENTER.z), 145.0])
+	if nains_v46 != null and nains_v46.ile != null:
+		boxes.append([Vector2(nains_v46.ile.CENTER.x, nains_v46.ile.CENTER.z), 145.0])
+	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
+	var samples: int = 0
+	for b in boxes:
+		var c: Vector2 = b[0]
+		var half: float = b[1]
+		var x0: int = clampi(int((c.x - half - SHORE_ORIGIN_V48.x) / px), 0, SHORE_RES_V48 - 1)
+		var x1: int = clampi(int((c.x + half - SHORE_ORIGIN_V48.x) / px) + 1, 0, SHORE_RES_V48 - 1)
+		var z0: int = clampi(int((c.y - half - SHORE_ORIGIN_V48.y) / px), 0, SHORE_RES_V48 - 1)
+		var z1: int = clampi(int((c.y + half - SHORE_ORIGIN_V48.y) / px) + 1, 0, SHORE_RES_V48 - 1)
+		for zi in range(z0, z1 + 1):
+			for xi in range(x0, x1 + 1):
+				var wx: float = SHORE_ORIGIN_V48.x + (xi + 0.5) * px
+				var wz: float = SHORE_ORIGIN_V48.y + (zi + 0.5) * px
+				var h: float = _height_at(wx, wz)
+				var v: float = clampf((h + 12.0) / 14.0, 0.0, 1.0)
+				if v > img.get_pixel(xi, zi).r:
+					img.set_pixel(xi, zi, Color(v, 0, 0))
+				samples += 1
+	shore_image_v48 = img
+	ocean_material.set_shader_parameter("shore_map", ImageTexture.create_from_image(img))
+	ocean_material.set_shader_parameter("shore_origin", SHORE_ORIGIN_V48)
+	ocean_material.set_shader_parameter("shore_size", SHORE_SIZE_V48)
+	ocean_material.set_shader_parameter("has_shore", true)
+	print("ILE_MANGA_V48: carte des rivages ", samples, " mesures en ", Time.get_ticks_msec() - t0, " ms")

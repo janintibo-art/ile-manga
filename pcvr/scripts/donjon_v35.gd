@@ -1185,6 +1185,10 @@ func _on_boss_defeated() -> void:
 
 
 func _open_boss_chest() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 60], ["rubis", 1], ["fragment_amulette", 1]]):
+		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	state["coffre_boss1"] = true
 	var hinge: Node3D = _boss_chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)
@@ -1620,6 +1624,10 @@ func _light(i: int) -> void:
 
 
 func _search_urn() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 15]]):
+		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	state["niche"] = true
 	_apply_state()
 	var got: int = main.inventory_v28.add("piece", 15)
@@ -1627,6 +1635,10 @@ func _search_urn() -> void:
 
 
 func _open_chest() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 30], ["fragment_amulette", 1]]):
+		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	state["coffre"] = true
 	var chest: Node3D = (sections["village"] as Node3D).get_node("Coffre_gardien")
 	var hinge: Node3D = chest.get_node("Charniere")

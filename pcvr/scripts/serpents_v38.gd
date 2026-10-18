@@ -656,6 +656,10 @@ func _offering_chest(s: Node3D, p: Vector3) -> void:
 
 
 func _open_offering() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 50], ["piece_or", 3], ["rubis", 1]]):
+		d._say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	d.state["coffre_sanctuaire"] = true
 	var hinge: Node3D = _sanct_chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)

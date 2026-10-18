@@ -1,4 +1,6 @@
 // Océan VR (opaque, léger pour le casque). V24 : vaguelettes en relief, couleur selon la distance au rivage.
+// V48 : le lagon et l'écume suivent le vrai rivage des quatre îles (carte des fonds calculée au
+// démarrage : hauteur du terrain, 3 m par pixel), et non plus un cercle autour de l'île du village.
 shader_type spatial;
 render_mode cull_back, diffuse_burley, specular_schlick_ggx;
 
@@ -7,6 +9,10 @@ uniform sampler2D ripple_n : hint_normal, filter_linear_mipmap_anisotropic, repe
 uniform float wave_strength : hint_range(0.0, 1.5) = 0.75;
 uniform vec3 shallow_color : source_color = vec3(0.13, 0.55, 0.56);
 uniform vec3 deep_color : source_color = vec3(0.015, 0.12, 0.22);
+uniform sampler2D shore_map : filter_linear, repeat_disable;
+uniform vec2 shore_origin = vec2(-800.0, -800.0);
+uniform float shore_size = 1600.0;
+uniform bool has_shore = false;
 varying vec3 water_position;
 
 void vertex() {
@@ -24,12 +30,24 @@ void fragment() {
 	NORMAL_MAP = normalize(vec3(n1.xy + n2.xy, n1.z * n2.z)) * 0.5 + 0.5;
 
 	// Lagon clair près de l'île, bleu profond au large.
-	float radius = length(water_position.xz);
-	float lagoon = 1.0 - smoothstep(64.0, 105.0, radius);
+	float lagoon;
+	float foam;
+	if (has_shore) {
+		// Hauteur du fond sous l'eau (de -12 m à +2 m), lue dans la carte des rivages.
+		vec2 suv = (water_position.xz - shore_origin) / shore_size;
+		float ground = texture(shore_map, suv).r * 14.0 - 12.0;
+		float wob = sin(water_position.x * 0.21 + TIME * 0.7) * 0.12 + cos(water_position.z * 0.17 - TIME * 0.5) * 0.12;
+		lagoon = smoothstep(-7.5, -1.2, ground) * 0.9;
+		float edge = abs(ground + 0.3 + wob);
+		foam = (1.0 - smoothstep(0.1, 2.4, edge)) * mix(0.55, 1.0, smoothstep(0.3, 0.8, n1.x * 0.5 + 0.5)) * 0.9;
+	} else {
+		float radius = length(water_position.xz);
+		lagoon = 1.0 - smoothstep(64.0, 105.0, radius);
+		float coast = 63.5 + sin(water_position.x * 0.10) * 2.3 + cos(water_position.z * 0.13) * 1.7;
+		foam = (1.0 - smoothstep(0.4, 2.6, abs(radius - coast))) * smoothstep(0.3, 0.8, n1.x * 0.5 + 0.5) * 0.8;
+	}
 	vec3 col = mix(deep_color, shallow_color, lagoon);
 	col *= mix(0.92, 1.06, texture(water_tex, uv1 * 2.0).r);
-	float coast = 63.5 + sin(water_position.x * 0.10) * 2.3 + cos(water_position.z * 0.13) * 1.7;
-	float foam = (1.0 - smoothstep(0.4, 2.6, abs(radius - coast))) * smoothstep(0.3, 0.8, n1.x * 0.5 + 0.5) * 0.8;
 	ALBEDO = mix(col, vec3(0.9, 0.95, 0.96), foam);
 	ROUGHNESS = mix(0.06, 0.6, foam);
 	METALLIC = 0.0;

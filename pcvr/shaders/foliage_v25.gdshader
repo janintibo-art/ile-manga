@@ -36,7 +36,7 @@ void fragment() {
 		// Seuls les pétales (pixels clairs et peu saturés) prennent la couleur de la fleur.
 		float hi = max(albedo.r, max(albedo.g, albedo.b));
 		float sat = hi - min(albedo.r, min(albedo.g, albedo.b));
-		float petal = smoothstep(0.14, 0.05, sat) * smoothstep(0.55, 0.75, hi);
+		float petal = (1.0 - smoothstep(0.05, 0.14, sat)) * smoothstep(0.55, 0.75, hi);
 		albedo = mix(albedo, albedo * tone, petal);
 	} else {
 		albedo *= tone;

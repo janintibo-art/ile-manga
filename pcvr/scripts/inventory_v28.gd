@@ -235,6 +235,50 @@ func add(id: String, n: int = 1) -> int:
 	return n - left
 
 
+## V48 : l'échange tient-il dans le sac ? On simule : d'abord ce qui sort (takes), puis ce
+## qui entre (gives), exactement comme add(). Rien n'est modifié.
+func can_accept(gives: Array, takes: Array = []) -> bool:
+	var sim: Array = []
+	for s in slots:
+		sim.append({"id": str(s["id"]), "n": int(s["n"])})
+	for t in takes:
+		var left: int = int(t[1])
+		for s in sim:
+			if left <= 0:
+				break
+			if s["id"] == str(t[0]):
+				var k: int = mini(int(s["n"]), left)
+				s["n"] = int(s["n"]) - k
+				left -= k
+				if int(s["n"]) <= 0:
+					s["id"] = ""
+					s["n"] = 0
+	for g in gives:
+		var id: String = str(g[0])
+		var left2: int = int(g[1])
+		if not ITEMS.has(id) or left2 <= 0:
+			continue
+		var cap: int = int(ITEMS[id]["max"])
+		for s in sim:
+			if left2 <= 0:
+				break
+			if s["id"] == id and int(s["n"]) < cap:
+				var put: int = mini(cap - int(s["n"]), left2)
+				s["n"] = int(s["n"]) + put
+				left2 -= put
+		for s in sim:
+			if left2 <= 0:
+				break
+			if s["id"] == "":
+				var put2: int = mini(cap, left2)
+				s["id"] = id
+				s["n"] = put2
+				left2 -= put2
+		if left2 > 0:
+			return false
+	return true
+
+
 ## V33 : combien d'objets de ce type peuvent encore entrer (piles entamées + cases vides).
 func space_for(id: String) -> int:
 	if not ITEMS.has(id):

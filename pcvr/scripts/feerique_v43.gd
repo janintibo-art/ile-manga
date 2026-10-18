@@ -1024,6 +1024,10 @@ func _wither_thorns(instant: bool) -> void:
 
 
 func _open_chest() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 60], ["poussiere_fee", 1]]):
+		d._say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	state["coffre"] = true
 	create_tween().tween_property(_chest_lid, "rotation:x", -1.9, 0.9).set_trans(Tween.TRANS_BACK)
 	var a: int = main.inventory_v28.add("piece", 60)
@@ -1301,6 +1305,8 @@ func serialize() -> Dictionary:
 
 
 func load_data(dd: Dictionary) -> void:
+	if ronces != null:
+		ronces.reset_session()
 	state = {"esprits": 0, "porte": false, "visite": false, "prismes": false, "coffre": false, "rosee": 0, "baguette": false, "clochettes": false, "village": false, "ronces": false, "reine": false, "carte": false}
 	for k in state:
 		if dd.has(k):

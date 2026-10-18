@@ -368,6 +368,10 @@ func _on_defeated() -> void:
 
 
 func _open_chest() -> void:
+	# V48 : on n'ouvre que si tout le contenu tient dans le sac (rien ne se perd).
+	if not main.inventory_v28.can_accept([["piece", 200], ["piece_or", 5], ["rubis", 3], ["ecaille_naga", 1]]):
+		say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
+		return
 	d.state["coffre_naga"] = true
 	var hinge: Node3D = _chest.get_node("Charniere")
 	create_tween().tween_property(hinge, "rotation:x", -1.8, 0.8).set_trans(Tween.TRANS_BACK)

@@ -78,6 +78,21 @@ func spawn_all() -> void:
 			monsters.append(m2)
 
 
+## V48 : chargement d'une partie : les monstres de la session précédente disparaissent ;
+## ils reviendront comme à une nouvelle descente.
+func reset_session() -> void:
+	for m in monstres_list_copy():
+		if is_instance_valid(m):
+			m.queue_free()
+	monsters.clear()
+	_was_inside = false
+	active = false
+
+
+func monstres_list_copy() -> Array:
+	return monsters.duplicate()
+
+
 ## V37 : un monstre de plus (les crabes appelés par le Crabe-Roi).
 func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	var m: CharacterBody3D = MonsterScript.new()

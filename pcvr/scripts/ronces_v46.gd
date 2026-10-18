@@ -35,6 +35,7 @@ var _eglantine: Node3D
 var _bar_vr: Label3D
 var _thorn_mat: StandardMaterial3D
 var _clock: float = 0.0
+var _session: int = 0                  # V48 : change à chaque chargement (annule les suites de combat en cours)
 
 
 func setup(feerique: Node3D) -> void:
@@ -352,12 +353,31 @@ func light_rose(i: int) -> void:
 		(rr["beam"] as MeshInstance3D).visible = false
 
 
+## V48 : chargement d'une partie : on arrête net le combat en cours (boss, roses, herse, barre).
+func reset_session() -> void:
+	_session += 1
+	if boss != null and is_instance_valid(boss):
+		boss.queue_free()
+	boss = null
+	fight = false
+	d._bar_vr = null
+	_bar_vr = null
+	if d._bar_layer != null:
+		d._bar_layer.visible = false
+	if _gate != null:
+		_gate.scale = Vector3.ONE
+	activate_roses(false)
+
+
 func _on_defeated() -> void:
+	var s0: int = _session
 	f.state["reine"] = true
 	d.state["victoires"] = int(d.state["victoires"]) + 1
 	activate_roses(false)
 	say("La Reine des Ronces pousse un cri… Les épines tombent de sa robe comme des feuilles mortes. Une lumière rose l'enveloppe…", 6.0)
 	await get_tree().create_timer(3.0).timeout
+	if s0 != _session:
+		return
 	fight = false
 	d._bar_layer.visible = false
 	d._bar_vr = null
@@ -365,6 +385,8 @@ func _on_defeated() -> void:
 		boss.purify()
 	_bloom(false)
 	await get_tree().create_timer(3.5).timeout
+	if s0 != _session:
+		return
 	if boss != null and is_instance_valid(boss):
 		boss.queue_free()
 		boss = null
@@ -425,6 +447,10 @@ func _dress_eglantine() -> void:
 
 func _talk_eglantine() -> void:
 	if not bool(f.state["carte"]):
+		# V48 : tout ou rien (avant, les pièces pouvaient être données plusieurs fois).
+		if not main.inventory_v28.can_accept([["piece", 150], ["carte_naine", 1], ["nectar_fee", 3]]):
+			say("« Tes bras sont chargés, humain… Fais un peu de place dans ton sac : j'ai une carte, des pièces et du nectar pour toi. »", 6.0)
+			return
 		f.state["carte"] = true
 		var a: int = main.inventory_v28.add("piece", 150)
 		var c: int = main.inventory_v28.add("carte_naine", 1)

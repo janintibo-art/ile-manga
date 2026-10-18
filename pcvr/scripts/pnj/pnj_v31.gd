@@ -102,6 +102,7 @@ func _build_body() -> void:
 			if src is StandardMaterial3D:
 				var tinted: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
 				tinted.albedo_color = Color(tint_c.r, tint_c.g * 0.97, tint_c.b * 0.95)
+				tinted.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
 				tinted.emission = tint_c
 				if skin_tex != null:
 					tinted.albedo_texture = skin_tex
