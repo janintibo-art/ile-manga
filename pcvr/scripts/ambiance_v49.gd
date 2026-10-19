@@ -18,11 +18,12 @@ const BEDS := {
 	"oiseaux": "ambiance/oiseaux_foret", "jungle": "ambiance/jungle_insectes",
 	"volcan": "ambiance/vent_volcan", "grotte": "ambiance/grotte", "feerique": "ambiance/feerique",
 	"halle": "ambiance/halle_forge", "vent_vol": "ambiance/vent_altitude",
+	"sous_marin": "ambiance/sous_marin", "atlantide": "ambiance/atlantide",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
 	"ressac": -9.0, "large": -10.0, "brise": -15.0, "oiseaux": -13.0, "jungle": -15.0,
-	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0,
+	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0, "sous_marin": -6.0, "atlantide": -10.0,
 }
 
 var main: Node
@@ -244,6 +245,18 @@ func _choose_zone(running: bool) -> void:
 		else:
 			zone = "souterrain"
 			targets["grotte"] = 1.0
+		sea = 0.0
+		return
+	# V55 : sous l'eau (le large étouffé), ou sous le dôme de l'Atlantide
+	var ocean: Node = main.get("mer_v55")
+	if ocean != null and str(ocean.zone) != "":
+		zone = str(ocean.zone)
+		if zone == "sous_marin":
+			targets["sous_marin"] = 1.0
+			targets["large"] = 0.15
+		else:
+			targets["atlantide"] = 1.0
+			targets["sous_marin"] = 0.3
 		sea = 0.0
 		return
 	# V54 : en vol sur Ventaile, ou là-haut sur l'île flottante

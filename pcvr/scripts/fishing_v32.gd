@@ -227,6 +227,10 @@ func _can_fish() -> bool:
 		return false
 	if main.boat_v29 != null and main.boat_v29.driving:
 		return false
+	# V55 : pas de pêche en nageant
+	var sea: Node = main.get("mer_v55")
+	if sea != null and bool(sea.swimming):
+		return false
 	# V54 : pas de pêche à 150 m au-dessus de l'océan (ni sur le dos de Ventaile)
 	var sky: Node = main.get("ciel_v54")
 	if sky != null and (bool(sky.riding) or sky.on_sky(_player_pos())):

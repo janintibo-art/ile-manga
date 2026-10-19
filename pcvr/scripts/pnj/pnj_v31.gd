@@ -311,6 +311,8 @@ func _accessories() -> void:
 		return
 	if profile.has("elfe"):
 		_accessories_elfe()
+		if profile.has("atlante"):
+			_accessories_atlante()
 		return
 	if profile.has("nain"):
 		_accessories_nain()
@@ -520,6 +522,60 @@ func _accessories_elfe() -> void:
 		model.add_child(staff)
 		staff.position = Vector3(-0.42, 0.86, 0.16)
 		staff.rotation_degrees = Vector3(4, 0, 5)
+
+
+## V55 : les Atlantes — par-dessus la silhouette elfique : couronne de nacre et de perles
+## (la reine), collier de coquillages, nageoires translucides derrière les oreilles, trident.
+func _accessories_atlante() -> void:
+	var at: Dictionary = profile["atlante"]
+	var nacre := _mat(Color(0.93, 0.95, 0.97), 0.2)
+	var gold := _mat(Color(0.95, 0.78, 0.38), 0.3)
+	gold.metallic = 0.8
+	var pearl := _mat(Color(0.97, 0.98, 1.0), 0.1)
+	pearl.emission_energy_multiplier = 0.9
+	if bool(at.get("couronne", false)):
+		var crown := Node3D.new()
+		var tm := TorusMesh.new()
+		tm.inner_radius = 0.21
+		tm.outer_radius = 0.235
+		tm.rings = 24
+		tm.ring_segments = 6
+		_part(crown, tm, gold, Vector3.ZERO)
+		for k in range(7):
+			var a: float = PI * (0.15 + 0.7 * k / 6.0)
+			var h: float = 0.16 if k == 3 else (0.11 if k % 2 == 1 else 0.08)
+			var pos := Vector3(cos(a) * 0.222, h * 0.5, sin(a) * 0.222)
+			_part(crown, _cyl(0.0, 0.03, h), nacre, pos, Vector3.ONE, Vector3(0, 0, 0))
+			_part(crown, _sphere(0.022), pearl, pos + Vector3(0, h * 0.5 + 0.01, 0))
+		_attach("Head", Vector3(0, 30.0, 0.0), crown, Vector3(-10, 0, 0))
+	if bool(at.get("collier", false)):
+		var neck := Node3D.new()
+		for k2 in range(9):
+			var a2: float = PI * (0.15 + 0.7 * k2 / 8.0)
+			var shell_c := Color(0.96, 0.82, 0.72) if k2 % 2 == 0 else Color(0.85, 0.95, 0.97)
+			_part(neck, _sphere(0.026), _mat(shell_c, 0.3), Vector3(cos(a2) * 0.15, -sin(a2 * 2.0) * 0.015, sin(a2) * 0.13), Vector3(1.0, 0.6, 1.0))
+		_attach("neck", Vector3(0, -2.0, 1.0), neck)
+	if bool(at.get("nageoires", false)):
+		var fin_m := _mat(Color(0.45, 0.85, 0.9), 0.3)
+		fin_m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		fin_m.albedo_color.a = 0.75
+		fin_m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		for sx in [-1.0, 1.0]:
+			var fin := Node3D.new()
+			for k3 in range(3):
+				_part(fin, _box_mesh_np(Vector3(0.01, 0.1 - k3 * 0.02, 0.14 - k3 * 0.03)), fin_m, Vector3(0, 0.03 + k3 * 0.03, -0.04 - k3 * 0.02), Vector3.ONE, Vector3(-25.0 - k3 * 12.0, 0, 0))
+			_attach("Head", Vector3(sx * 23.5, 17.0, -3.0), fin, Vector3(0, sx * 15.0, sx * -10.0))
+	if bool(at.get("trident", false)):
+		var tri := Node3D.new()
+		_part(tri, _cyl(0.022, 0.026, 2.0), gold, Vector3.ZERO)
+		_part(tri, _box_mesh_np(Vector3(0.32, 0.04, 0.04)), gold, Vector3(0, 1.0, 0))
+		for t in [-1.0, 0.0, 1.0]:
+			_part(tri, _cyl(0.012, 0.016, 0.28), gold, Vector3(t * 0.14, 1.15, 0))
+			_part(tri, _cyl(0.0, 0.03, 0.1), gold, Vector3(t * 0.14, 1.33, 0))
+		staff_node = tri
+		model.add_child(tri)
+		tri.position = Vector3(-0.42, 1.0, 0.16)
+		tri.rotation_degrees = Vector3(4, 0, 5)
 
 
 ## V47 : silhouette de nain — petit et large (taille ~0,78), visage rougeaud au gros nez,

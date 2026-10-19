@@ -922,8 +922,8 @@ func _open_chest(id: String) -> void:
 			gives = [["cristal_couchant", 1], ["piece", 40], ["piece_or", 1]]
 			text = "Dans le coffre de la salle d'armes : quarante pièces, une pièce d'or… et le Cristal du Couchant, froid et bleu comme le soir. Le Sceau des Vents l'attend."
 		"tresor":
-			gives = [["epee_nuees", 1], ["couronne_nuees", 1], ["piece", 200], ["piece_or", 3], ["rubis", 2]]
-			text = "Le trésor des Rois-Ciel ! Deux cents pièces, trois pièces d'or, deux rubis, la Couronne des Nuées… et l'Épée des Nuées, dont la lame crépite d'éclairs."
+			gives = [["epee_nuees", 1], ["couronne_nuees", 1], ["masque_plongee", 1], ["piece", 200], ["piece_or", 3], ["rubis", 2]]
+			text = "Le trésor des Rois-Ciel ! Deux cents pièces, trois pièces d'or, deux rubis, la Couronne des Nuées, l'Épée des Nuées dont la lame crépite d'éclairs… et un étrange masque de plongée aux verres de cristal. Avec lui, on respire sous l'eau ! Tout en bas, sous la mer, au sud-ouest du village, une lumière brille…"
 	if not main.inventory_v28.can_accept(gives):
 		_say("Ton sac est plein ! Fais de la place avant d'ouvrir le coffre : son contenu t'attendra.", 4.5)
 		return

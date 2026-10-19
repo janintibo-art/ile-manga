@@ -228,6 +228,38 @@ func _build_animations() -> void:
 	poses.add_animation("creuser", _clip(1.25, false, [[0.0, arms_in, Vector3.ZERO], [0.25, dig_up, Vector3(0, -2, 0)], [0.55, dig_in, Vector3(0, -14, 4)],
 		[0.85, dig_lift, Vector3(0, -4, 0)], [1.25, arms_in, Vector3.ZERO]]))
 	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
+	# V55 : la nage — sur place (bras qui godillent, jambes qui pédalent), la brasse à la
+	# surface (le corps est couché par mer_v55.gd), le crawl sous l'eau (bras en moulinet,
+	# battements de jambes). Rotations dans le repère du corps : la tête regarde devant.
+	var sw_tread_a := {"LeftArm": Vector3(-20, 0, 62), "RightArm": Vector3(-35, 0, -55), "LeftForeArm": Vector3(-30, 0, 0), "RightForeArm": Vector3(-45, 0, 0),
+		"LeftUpLeg": Vector3(-38, 0, 4), "LeftLeg": Vector3(58, 0, 0), "RightUpLeg": Vector3(-8, 0, -4), "RightLeg": Vector3(22, 0, 0), "Spine02": Vector3(6, 0, 0), "Head": Vector3(-6, 0, 0)}
+	var sw_tread_b := {"LeftArm": Vector3(-35, 0, 55), "RightArm": Vector3(-20, 0, -62), "LeftForeArm": Vector3(-45, 0, 0), "RightForeArm": Vector3(-30, 0, 0),
+		"LeftUpLeg": Vector3(-8, 0, 4), "LeftLeg": Vector3(22, 0, 0), "RightUpLeg": Vector3(-38, 0, -4), "RightLeg": Vector3(58, 0, 0), "Spine02": Vector3(6, 0, 0), "Head": Vector3(-4, 3, 0)}
+	poses.add_animation("nage_surplace", _clip(1.8, true, [[0.0, sw_tread_a, Vector3.ZERO], [0.9, sw_tread_b, Vector3(0, 2, 0)], [1.8, sw_tread_a, Vector3.ZERO]]))
+	var sw_glide := {"LeftArm": Vector3(-170, 0, 8), "RightArm": Vector3(-170, 0, -8), "LeftForeArm": Vector3(0, 0, 0), "RightForeArm": Vector3(0, 0, 0),
+		"LeftUpLeg": Vector3(0, 0, 3), "RightUpLeg": Vector3(0, 0, -3), "LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0), "Spine02": Vector3(-10, 0, 0), "Head": Vector3(-48, 0, 0)}
+	var sw_pull := {"LeftArm": Vector3(-110, 0, 62), "RightArm": Vector3(-110, 0, -62), "LeftForeArm": Vector3(-25, 0, 0), "RightForeArm": Vector3(-25, 0, 0),
+		"LeftUpLeg": Vector3(-55, 0, 22), "RightUpLeg": Vector3(-55, 0, -22), "LeftLeg": Vector3(100, 0, 0), "RightLeg": Vector3(100, 0, 0), "LeftFoot": Vector3(-20, 0, 0), "RightFoot": Vector3(-20, 0, 0),
+		"Spine02": Vector3(-16, 0, 0), "Head": Vector3(-55, 0, 0)}
+	var sw_tuck := {"LeftArm": Vector3(-40, 0, 32), "RightArm": Vector3(-40, 0, -32), "LeftForeArm": Vector3(-125, 0, 0), "RightForeArm": Vector3(-125, 0, 0),
+		"LeftUpLeg": Vector3(-25, 0, 35), "RightUpLeg": Vector3(-25, 0, -35), "LeftLeg": Vector3(45, 0, 0), "RightLeg": Vector3(45, 0, 0), "Spine02": Vector3(-12, 0, 0), "Head": Vector3(-50, 0, 0)}
+	var sw_reach := {"LeftArm": Vector3(-150, 0, 10), "RightArm": Vector3(-150, 0, -10), "LeftForeArm": Vector3(-35, 0, 0), "RightForeArm": Vector3(-35, 0, 0),
+		"LeftUpLeg": Vector3(-4, 0, 8), "RightUpLeg": Vector3(-4, 0, -8), "LeftLeg": Vector3(8, 0, 0), "RightLeg": Vector3(8, 0, 0), "LeftFoot": Vector3(35, 0, 0), "RightFoot": Vector3(35, 0, 0),
+		"Spine02": Vector3(-8, 0, 0), "Head": Vector3(-46, 0, 0)}
+	poses.add_animation("nage_brasse", _clip(1.25, true, [[0.0, sw_glide, Vector3.ZERO], [0.38, sw_pull, Vector3(0, 0, 3)], [0.66, sw_tuck, Vector3(0, 0, 4)], [0.92, sw_reach, Vector3.ZERO], [1.25, sw_glide, Vector3.ZERO]]))
+	var sw_crawl_a := {"LeftArm": Vector3(-175, 0, 10), "RightArm": Vector3(18, 0, -12), "LeftForeArm": Vector3(0, 0, 0), "RightForeArm": Vector3(-20, 0, 0),
+		"LeftUpLeg": Vector3(-16, 0, 2), "RightUpLeg": Vector3(12, 0, -2), "LeftLeg": Vector3(18, 0, 0), "RightLeg": Vector3(4, 0, 0), "LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0),
+		"Spine02": Vector3(-6, 10, 0), "Head": Vector3(-38, 0, 0)}
+	var sw_crawl_b := {"LeftArm": Vector3(-100, 0, 22), "RightArm": Vector3(-60, 0, -42), "LeftForeArm": Vector3(-40, 0, 0), "RightForeArm": Vector3(-75, 0, 0),
+		"LeftUpLeg": Vector3(12, 0, 2), "RightUpLeg": Vector3(-16, 0, -2), "LeftLeg": Vector3(4, 0, 0), "RightLeg": Vector3(18, 0, 0), "LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0),
+		"Spine02": Vector3(-6, 0, 0), "Head": Vector3(-40, 0, 0)}
+	var sw_crawl_c := {"LeftArm": Vector3(18, 0, 12), "RightArm": Vector3(-175, 0, -10), "LeftForeArm": Vector3(-20, 0, 0), "RightForeArm": Vector3(0, 0, 0),
+		"LeftUpLeg": Vector3(-16, 0, 2), "RightUpLeg": Vector3(12, 0, -2), "LeftLeg": Vector3(18, 0, 0), "RightLeg": Vector3(4, 0, 0), "LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0),
+		"Spine02": Vector3(-6, -10, 0), "Head": Vector3(-38, 0, 0)}
+	var sw_crawl_d := {"LeftArm": Vector3(-60, 0, 42), "RightArm": Vector3(-100, 0, -22), "LeftForeArm": Vector3(-75, 0, 0), "RightForeArm": Vector3(-40, 0, 0),
+		"LeftUpLeg": Vector3(12, 0, 2), "RightUpLeg": Vector3(-16, 0, -2), "LeftLeg": Vector3(4, 0, 0), "RightLeg": Vector3(18, 0, 0), "LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0),
+		"Spine02": Vector3(-6, 0, 0), "Head": Vector3(-40, 0, 0)}
+	poses.add_animation("nage_crawl", _clip(1.3, true, [[0.0, sw_crawl_a, Vector3.ZERO], [0.325, sw_crawl_b, Vector3.ZERO], [0.65, sw_crawl_c, Vector3.ZERO], [0.975, sw_crawl_d, Vector3.ZERO], [1.3, sw_crawl_a, Vector3.ZERO]]))
 	anim.add_animation_library("v28", poses)
 
 
@@ -368,6 +400,12 @@ func physics(delta: float) -> void:
 			_mantle_tick(delta)
 		"ko":
 			_ko_tick(delta)
+		"nage":
+			# V55 : dans l'eau (voir mer_v55.gd)
+			if main.get("mer_v55") != null and main.mer_v55 != null:
+				main.mer_v55.swim_pc(self, delta, dir)
+			else:
+				state = "sol"
 		_:
 			_ground_tick(delta, dir, axis)
 	_regen(delta)
@@ -377,6 +415,10 @@ func physics(delta: float) -> void:
 
 
 func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
+	# V55 : plus pied ? on nage.
+	if state in ["sol", "air"] and main.get("mer_v55") != null and main.mer_v55 != null and main.mer_v55.should_swim(body.global_position):
+		main.mer_v55.start_swim_pc(self)
+		return
 	var on_floor: bool = body.is_on_floor()
 	coyote = COYOTE if on_floor else maxf(coyote - delta, 0.0)
 	blocking = Input.is_key_pressed(KEY_F) and _can_act() and state in ["sol", "air"] and on_floor
@@ -775,6 +817,10 @@ func attack() -> void:
 		if state == "sol" and not blocking and main.digging_v33 != null:
 			main.digging_v33.dig_hero()
 		return
+	if state == "nage":
+		if main.get("mer_v55") != null and main.mer_v55 != null:
+			main.mer_v55.swim_attack(self)
+		return
 	if state == "attaque":
 		combo_queued = true
 		return
@@ -827,7 +873,7 @@ func _deliver_hit() -> void:
 	var reach: float = 1.9 if weapon != "" else 1.35
 	var dmg: int = weapon_damage if weapon != "" else 1
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
-	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees"] and combo_index % SLASHES.size() == 2
+	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees"] and combo_index % SLASHES.size() == 2
 	if finisher:
 		dmg = int(round(dmg * 1.5))
 	if main.combat_v28 != null:
@@ -1060,6 +1106,9 @@ func update_hud() -> void:
 
 func _update_visual(delta: float) -> void:
 	if hero == null:
+		return
+	if state == "nage" and main.get("mer_v55") != null and main.mer_v55 != null:
+		main.mer_v55.swim_visual(self, delta)
 		return
 	hero.position = root.position + Vector3.UP * main.hero_mesh_floor_offset_v11
 	var target_yaw: float = atan2(facing.x, facing.z)

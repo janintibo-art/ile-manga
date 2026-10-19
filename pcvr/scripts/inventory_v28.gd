@@ -149,6 +149,19 @@ const ITEMS := {
 		"desc": "La couronne des Rois-Ciel : or blanc, saphirs et perles de nuage. La preuve que tu as vaincu Sire Orage. Elle vaut une fortune… mais qui oserait la vendre ?"},
 	"epee_nuees": {"name": "Épée des Nuées", "art": "l'Épée des Nuées", "kind": "arme", "max": 1, "damage": 12,
 		"desc": "L'épée des Rois-Ciel, trouvée dans le trésor de la Tour des Tempêtes. Sa lame crépite de petits éclairs bleus. Dégâts : 12, et le troisième coup d'un enchaînement frappe moitié plus fort."},
+	# V55 : la mer et l'Atlantide
+	"masque_plongee": {"name": "Masque de plongée", "art": "le masque de plongée", "kind": "outil", "max": 1,
+		"desc": "Le masque des Rois-Ciel, trouvé dans le trésor de Sire Orage : verres de cristal cerclés de laiton. Tant que tu l'as dans ton sac, tu respires sous l'eau. Les Rois-Ciel s'en servaient pour rendre visite… à une cité engloutie ?"},
+	"palmes_atlante": {"name": "Palmes atlantes", "art": "les palmes atlantes", "kind": "outil", "max": 1,
+		"desc": "Taillées par Coralin dans du corail et des dents de requin, nervurées de nacre. Tant que tu les as dans ton sac, tu nages une fois et demie plus vite."},
+	"perle_lumiere": {"name": "Perle de Lumière", "art": "une Perle de Lumière", "kind": "quete", "max": 3,
+		"desc": "Une perle grosse comme une prune, qui luit d'une lumière bleue. Le Grand Cristal de l'Atlantide s'en nourrit. La reine Néréa en attend trois."},
+	"trident_marees": {"name": "Trident des Marées", "art": "le Trident des Marées", "kind": "arme", "max": 1, "damage": 14,
+		"desc": "Le trident des rois de l'Atlantide, offert par la reine Néréa. Or, nacre et une pierre de mer qui luit. Dégâts : 14, et le troisième coup d'un enchaînement frappe moitié plus fort. Sous l'eau, il frappe loin."},
+	"dent_requin": {"name": "Dent de requin", "art": "une dent de requin", "kind": "tresor", "max": 10,
+		"desc": "Une dent triangulaire, coupante comme un rasoir, perdue par un requin du Jardin de corail. Coralin, l'artisan de l'Atlantide, en fait des palmes."},
+	"galette_algue": {"name": "Galette d'algues", "art": "une galette d'algues", "kind": "nourriture", "max": 20, "heal": 4,
+		"desc": "La spécialité de Marée : des algues du dôme, séchées sous le cristal et pressées. Ça a un goût de mer. Beaucoup. Rend deux cœurs."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -809,6 +822,43 @@ func make_model(id: String) -> Node3D:
 			cc.emission_energy_multiplier = 1.8
 			_part(m, _cyl(0.0, 0.04, 0.09, 6), cc, Vector3(0, 0.045, 0))
 			_part(m, _cyl(0.04, 0.0, 0.05, 6), cc, Vector3(0, 0.115, 0))
+		"masque_plongee":
+			var rub := _mat("caoutchouc", Color(0.08, 0.09, 0.1), 0.6)
+			var brass := _mat("laiton", Color(0.78, 0.6, 0.28), 0.3)
+			brass.metallic = 0.9
+			_part(m, _box_mesh(Vector3(0.2, 0.08, 0.05)), rub, Vector3(0, 0.04, 0))
+			for sx in [-1.0, 1.0]:
+				_part(m, _cyl(0.042, 0.042, 0.03, 16), brass, Vector3(sx * 0.05, 0.045, 0.02), Vector3(90, 0, 0))
+				_part(m, _cyl(0.034, 0.034, 0.032, 16), _mat("verre_masque", Color(0.55, 0.85, 1.0), 0.05), Vector3(sx * 0.05, 0.045, 0.024), Vector3(90, 0, 0))
+		"palmes_atlante":
+			for sx in [-1.0, 1.0]:
+				_part(m, _box_mesh(Vector3(0.11, 0.02, 0.36)), _mat("palme", Color(0.2, 0.55, 0.6), 0.5), Vector3(sx * 0.07, 0.01, 0.05))
+				_part(m, _box_mesh(Vector3(0.09, 0.06, 0.12)), _mat("chausson", Color(0.1, 0.25, 0.3), 0.7), Vector3(sx * 0.07, 0.04, -0.09))
+		"perle_lumiere":
+			var pl := _mat("perle_lumiere", Color(0.95, 0.97, 1.0), 0.1)
+			pl.emission_enabled = true
+			pl.emission = Color(0.6, 0.95, 1.0)
+			pl.emission_energy_multiplier = 1.8
+			_part(m, _sphere(0.05), pl, Vector3(0, 0.05, 0))
+		"trident_marees":
+			var gold5 := _mat("or_atlante", Color(0.94, 0.76, 0.36), 0.25)
+			gold5.metallic = 0.92
+			var gem5 := _mat("pierre_mer", Color(0.35, 0.9, 1.0), 0.1)
+			gem5.emission_enabled = true
+			gem5.emission = Color(0.35, 0.9, 1.0)
+			gem5.emission_energy_multiplier = 1.6
+			_part(m, _cyl(0.016, 0.018, 1.1, 8), gold5, Vector3(0, 0.35, 0))
+			_part(m, _box_mesh(Vector3(0.22, 0.03, 0.03)), gold5, Vector3(0, 0.9, 0))
+			for t5 in [-1.0, 0.0, 1.0]:
+				var hh5: float = 0.24 if t5 == 0.0 else 0.18
+				_part(m, _cyl(0.01, 0.013, hh5, 6), gold5, Vector3(t5 * 0.1, 0.9 + hh5 * 0.5, 0))
+				_part(m, _cyl(0.0, 0.026, 0.07, 6), gold5, Vector3(t5 * 0.1, 0.9 + hh5 + 0.035, 0))
+			_part(m, _sphere(0.03), gem5, Vector3(0, 0.84, 0))
+			_tip(m, 1.18)
+		"dent_requin":
+			_part(m, _cyl(0.0, 0.03, 0.06, 3), _mat("dent", Color(0.95, 0.93, 0.86), 0.4), Vector3(0, 0.03, 0))
+		"galette_algue":
+			_part(m, _cyl(0.06, 0.06, 0.02, 14), _mat("galette_algue", Color(0.3, 0.38, 0.16), 0.9), Vector3(0, 0.01, 0))
 		"plume_ventaile":
 			_part(m, _box_mesh(Vector3(0.06, 0.004, 0.32)), _mat("plume_or", Color(0.55, 0.4, 0.2), 0.6), Vector3(0, 0.004, 0), Vector3(0, 25, 0))
 		"selle_aigle":

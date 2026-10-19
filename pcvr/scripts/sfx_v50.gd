@@ -19,6 +19,9 @@ const DB := {
 	"pelle": -6.0, "lancer": -10.0, "plouf": -6.0, "gros_plouf": -5.0, "moulinet": -14.0, "ferrage": -8.0, "rame": -14.0,
 	"ui_ouvrir": -12.0, "ui_fermer": -12.0, "ui_choix": -14.0, "ui_clic": -14.0, "ui_dialogue": -12.0, "ui_erreur": -10.0,
 	"ui_quete": -8.0, "boss_cri": 0.0,
+	"plongeon": -4.0, "nage": -8.0, "nage_sous": -9.0, "bulles": -10.0, "respiration": -6.0, "suffoque": -4.0,
+	"requin_menace": -3.0, "requin_morsure": -2.0, "requin_mort": -3.0, "meduse_pique": -5.0, "dauphin": -6.0,
+	"perle": -4.0, "cristal_eveil": 0.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 
@@ -123,6 +126,11 @@ func _process(delta: float) -> void:
 	if sky != null and bool(sky.riding):
 		_last_pos = Vector3.INF
 		return
+	# V55 : en nageant, pas de pas (les brasses s'entendent, voir mer_v55.gd)
+	var sea: Node = main.get("mer_v55")
+	if sea != null and bool(sea.swimming):
+		_last_pos = Vector3.INF
+		return
 	var boat: Node = main.get("boat_v29")
 	if boat != null and bool(boat.driving):
 		_last_pos = Vector3.INF
@@ -174,6 +182,10 @@ func _surface(body: CharacterBody3D) -> String:
 		return "pierre"
 	if name.begins_with("Ciel_sol"):
 		return "herbe"
+	# V55 : sous le dôme de l'Atlantide, tout est marbre et mosaïque
+	var sea2: Node = main.get("mer_v55")
+	if sea2 != null and sea2.atl != null and sea2.atl.in_dome(pos + Vector3.UP * 0.9):
+		return "pierre"
 	if name.begins_with("Donjon") or name.begins_with("Nains_collision") or name.begins_with("Falaise") or name.begins_with("Village_collision") or name.begins_with("Royaume"):
 		return "pierre"
 	var h: float = main._height_at(pos.x, pos.z)

@@ -120,6 +120,9 @@ const DATA := {
 			{"t": "Les Récifs de Feu, à l'ouest ! J'y suis passé, jeune. Enfin, à côté. De la fumée partout, des rochers noirs qui crachent des étincelles… On a fait demi-tour. Un nain nous a fait un geste depuis la plage. Pas un geste gentil.", "si": {"a_trouve": "carte_naine", "pas_trouve": "ile_nains"}, "geste": "rire"},
 			{"t": "Tu as mis le pied sur l'île des nains ?! Moi, en soixante ans de mer, jamais. Rapporte-moi un caillou de leur volcan, que je le montre à Octave.", "si": {"a_trouve": "ile_nains"}, "geste": "rire"},
 			{"t": "On dit que l'île flottante au-dessus de ton village a été posée là par un enfant géant qui jouait aux dés.", "si": {"affinite_min": 30}},
+			# V55 : la cité engloutie
+			{"t": "Tu vois cette pointe dorée qui dépasse de l'eau, au sud-ouest, quand la mer est calme ? Elle s'allume la nuit. Mon grand-père disait qu'il y avait une ville en dessous. Une ville entière ! Sous l'eau ! … Il buvait beaucoup, mon grand-père.", "si": {"pas_trouve": "atlantide"}, "geste": "rire"},
+			{"t": "Tu as plongé jusqu'à la ville engloutie ?! Mon grand-père avait raison ! Il faut que je redessine toutes mes cartes. Toutes !", "si": {"a_trouve": "atlantide"}, "geste": "rire"},
 			{"t": "Il paraît qu'il y a des ruines sous les racines des grands fromagers. Des escaliers qui ne mènent nulle part. Ou alors très loin.", "si": {"affinite_min": 30}},
 			{"t": "Entre nous… j'ai vu des lumières au sommet du plus grand piton, une nuit. Gaston dit que c'était la lune. Gaston dit beaucoup de choses.", "si": {"affinite_min": 40}},
 			{"t": "Un secret de cartographe : les jarres de ton village se reforment toutes seules. Personne ne sait pourquoi. Moi non plus. Mais je fais semblant.", "si": {"affinite_min": 50}},

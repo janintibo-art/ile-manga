@@ -123,6 +123,7 @@ func _ready() -> void:
 	_create_v52()
 	_create_decor_v53()
 	_create_v54()
+	_create_v55()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -146,6 +147,15 @@ func _configure_quality() -> void:
 
 
 func _height_at(x: float, z: float) -> float:
+	var land: float = _height_land_v55(x, z)
+	# V55 : le fond de la mer (au large, la pente des îles s'arrête sur lui)
+	if mer_v55 != null:
+		return maxf(land, mer_v55.seabed(x, z))
+	return land
+
+
+## Le relief des îles seules (sans le fond de la mer).
+func _height_land_v55(x: float, z: float) -> float:
 	# V29 : la jungle a son propre relief ; ailleurs, celui de l'île du village.
 	var h: float = _height_island_v29(x, z)
 	if jungle_v29 != null and jungle_v29.contains(x, z):
@@ -940,6 +950,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			nains_v46.load_data({})
 		if ciel_v54 != null:
 			ciel_v54.load_data({})
+		if mer_v55 != null:
+			mer_v55.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -999,6 +1011,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and ciel_v54 != null:
 		var sky_data: Variant = SaveStore.read_slot(slot).get("ciel", {})
 		ciel_v54.load_data(sky_data if sky_data is Dictionary else {})
+	# V55 : la mer et l'Atlantide (après le ciel : le masque est dans le trésor de Sire Orage)
+	if not new_game and mer_v55 != null:
+		var sea_data: Variant = SaveStore.read_slot(slot).get("mer", {})
+		mer_v55.load_data(sea_data if sea_data is Dictionary else {})
 	last_ok_v29.clear()
 	autosave_clock = 0.0
 
@@ -1055,6 +1071,8 @@ func _save_slot(slot: int) -> void:
 		extra["nains"] = nains_v46.serialize()
 	if ciel_v54 != null:
 		extra["ciel"] = ciel_v54.serialize()
+	if mer_v55 != null:
+		extra["mer"] = mer_v55.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1095,7 +1113,9 @@ func _physics_process(delta: float) -> void:
 		elif dialogue_v31 != null and dialogue_v31.opened:
 			dialogue_v31.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
 		else:
-			_move_xr(delta)
+			# V55 : dans l'eau, on nage (voir mer_v55.gd) ; sinon on marche
+			if mer_v55 == null or not mer_v55.vr_swim_tick(delta):
+				_move_xr(delta)
 			_vr_actions_v28(delta)
 	else:
 		_move_desktop(delta)
@@ -1810,6 +1830,13 @@ func _respawn_v28() -> void:
 		place_player_v35(rs[0], rs[1])
 		_show_message_v28("Vous vous êtes évanoui… et réveillé sur l'Aire des Vents, au bord de l'île flottante.")
 		return
+	# V55 : près de l'Atlantide, les Atlantes vous ramènent sous le dôme.
+	if mer_v55 != null:
+		var ra: Array = mer_v55.respawn_for(pp)
+		if not ra.is_empty():
+			place_player_v35(ra[0], ra[1])
+			_show_message_v28("Vous vous êtes évanoui… Des Atlantes vous ont ramené sous le dôme, devant le palais.")
+			return
 	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(pp.x, pp.z):
 		var rp: Array = nains_v46.respawn_point()
 		place_player_v35(rp[0], rp[1])
@@ -1965,6 +1992,10 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
+		return
+	# V55 : dans la mer, on nage où l'on veut (dans les limites du monde)
+	if mer_v55 != null and mer_v55.water_ok(p):
+		last_ok_v29[key] = p
 		return
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
@@ -2231,6 +2262,8 @@ func _plant_v34() -> void:
 		nains_v46.build_quest()
 	if ciel_v54 != null and donjon_v35 != null:
 		ciel_v54.build_quest()
+	if mer_v55 != null and donjon_v35 != null:
+		mer_v55.build_quest()
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2445,7 +2478,13 @@ func _npc_ctx_v31() -> Dictionary:
 			"nains_aides_3": 1 if nains_v46 != null and nains_v46.helped_count() >= 3 else 0,
 			"ventaile": 1 if ciel_v54 != null and ciel_v54.tamed() else 0,
 			"citadelle": 1 if ciel_v54 != null and bool(ciel_v54.state["visite_ciel"]) else 0,
-			"orage": 1 if ciel_v54 != null and bool(ciel_v54.state["boss"]) else 0},
+			"orage": 1 if ciel_v54 != null and bool(ciel_v54.state["boss"]) else 0,
+			"masque": 1 if mer_v55 != null and mer_v55.has_mask() else 0,
+			"atlantide": 1 if mer_v55 != null and bool(mer_v55.state["visite"]) else 0,
+			"perles_1": 1 if mer_v55 != null and mer_v55.pearls_found() >= 1 else 0,
+			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
+			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
+			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 
@@ -2555,6 +2594,7 @@ var ambiance_v49: Node
 ## V50 : les bruitages d'action (sfx_v50.gd).
 var decor_v53: Node3D                      # V53 : finitions du village
 var ciel_v54: Node3D                       # V54 : Ventaile, l'île flottante, la Citadelle des Nuées
+var mer_v55: Node3D                        # V55 : la nage, le fond marin, l'Atlantide
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
 var music_v51: Node                       # V51 : la musique (musique_v51.gd)
@@ -2568,6 +2608,16 @@ func _create_sfx_v50() -> void:
 
 
 ## V54 : le ciel (ciel_v54.gd) : l'aigle géant, l'île flottante et son château.
+## V55 : la mer (mer_v55.gd) : nager et plonger, le fond marin, la vie sous-marine, l'Atlantide.
+func _create_v55() -> void:
+	mer_v55 = preload("res://scripts/mer_v55.gd").new()
+	mer_v55.name = "Mer_v55"
+	add_child(mer_v55)
+	mer_v55.setup(self)
+	mer_v55.build()
+	print("ILE_MANGA_V55: la mer, le fond marin et l'Atlantide (%s)" % str(mer_v55.atl.C))
+
+
 func _create_v54() -> void:
 	ciel_v54 = preload("res://scripts/ciel_v54.gd").new()
 	ciel_v54.name = "Ciel_v54"

@@ -18,11 +18,12 @@ const ZONE_TRACK := {
 	"menu": "theme_ile", "village": "village", "jungle": "jungle", "elfes": "elfes", "nains": "nains",
 	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "racines": "racines",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
+	"sous_marin": "atlantide", "atlantide": "atlantide",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0,
+	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)

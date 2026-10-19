@@ -202,6 +202,13 @@ func respawn_player() -> void:
 		main.place_player_v35(rs[0], rs[1])
 		_heal_player()
 		return
+	# V55 : évanoui près de l'Atlantide : on se réveille sous le dôme.
+	if main.get("mer_v55") != null and main.mer_v55 != null:
+		var ra: Array = main.mer_v55.respawn_for(p)
+		if not ra.is_empty():
+			main.place_player_v35(ra[0], ra[1])
+			_heal_player()
+			return
 	# V47 : évanoui sur la Montagne de Feu : on se réveille sur la terrasse de Forgefer.
 	if main.get("nains_v46") != null and main.nains_v46 != null and not donjon.is_inside(p) and main.nains_v46.ile.contains(p.x, p.z):
 		var rp: Array = main.nains_v46.respawn_point()
