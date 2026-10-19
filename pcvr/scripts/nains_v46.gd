@@ -1107,7 +1107,11 @@ func _spawn_hostiles() -> void:
 		var q := Vector3(e.x + cos(a) * 3.2, 0, e.z + sin(a) * 3.2)
 		q.y = _ground(q.x, q.z)
 		spots.append(["magma", q])
+	# V54 : Sire Orage vaincu, les golems des hauteurs se sont rendormis (restent les élémentaires)
+	var calm: bool = main.get("ciel_v54") != null and main.ciel_v54 != null and bool(main.ciel_v54.state.get("boss", false))
 	for sp in spots:
+		if calm and str(sp[0]) == "golem":
+			continue
 		var at: Vector3 = sp[1]
 		at.y = _ground(at.x, at.z) + 0.1
 		var m: Node3D = mo.spawn_extra(str(sp[0]), at)

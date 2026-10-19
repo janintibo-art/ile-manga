@@ -10,6 +10,10 @@ extends CharacterBody3D
 ##  - V44 : le feu follet (Royaume des Racines) : une flamme bleue qui flotte, ricane, se met
 ##    à briller très fort… puis fonce droit sur le joueur (1/2 cœur) ;
 ##  - V44 : l'araignée de cristal : rapide, huit pattes de verre, mord quand elle se dresse.
+##  - V54 : l'armure animée (Citadelle des Nuées) : une armure de chevalier vide, épée et écu,
+##    une lueur bleue dans le heaume ; elle lève l'épée avant de frapper (1 cœur) ;
+##  - V54 : la gargouille : une statue de pierre ailée qui plane, ricane, puis pique droit sur
+##    le joueur (1/2 cœur).
 ## Comportement : il veille près de son poste, repère le joueur à quelques mètres, le
 ## poursuit sans trop s'éloigner, prépare son coup (le signal pour esquiver ou parer), frappe,
 ## souffle un instant. Touché, il recule et clignote ; à zéro, il s'effondre et laisse du butin.
@@ -33,6 +37,11 @@ const SPECS := {
 		"rayon": 0.7, "haut": 1.2, "nom": "Golem des hauteurs"},
 	"magma": {"pv": 14, "vitesse": 2.0, "degats": 2, "portee": 2.2, "armer": 0.7, "repos": 1.5, "vue": 10.0, "laisse": 10.0,
 		"rayon": 0.5, "haut": 0.6, "nom": "Élémentaire de magma"},
+	# V54 : les gardiens de la Citadelle des Nuées
+	"armure": {"pv": 30, "vitesse": 1.7, "degats": 2, "portee": 2.0, "armer": 0.8, "repos": 1.5, "vue": 12.0, "laisse": 14.0,
+		"rayon": 0.42, "haut": 1.0, "nom": "Armure animée"},
+	"gargouille": {"pv": 12, "vitesse": 2.6, "degats": 1, "portee": 2.6, "armer": 0.8, "repos": 1.7, "vue": 13.0, "laisse": 16.0,
+		"rayon": 0.55, "haut": 1.6, "nom": "Gargouille"},
 }
 
 signal died(monster: Node3D)
@@ -74,11 +83,11 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 	collision_layer = 1
 	collision_mask = 1
 	var cs := CollisionShape3D.new()
-	if kind == "follet":
+	if kind == "follet" or kind == "gargouille":
 		var sph := SphereShape3D.new()
-		sph.radius = 0.32
+		sph.radius = 0.32 if kind == "follet" else 0.5
 		cs.shape = sph
-		cs.position.y = 1.3
+		cs.position.y = 1.3 if kind == "follet" else 1.6
 	elif kind == "crabe" or kind == "araignee":
 		var box := BoxShape3D.new()
 		box.size = Vector3(0.9, 0.5, 0.7)
@@ -121,6 +130,10 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		_build_golem()
 	elif kind == "magma":
 		_build_magma()
+	elif kind == "gargouille":
+		_build_gargoyle()
+	elif kind == "armure":
+		_build_armor()
 	else:
 		_build_guardian()
 	add_to_group("cibles_v28")
@@ -382,6 +395,7 @@ const SOUNDS := {
 	"crabe": ["crabe_menace", "crabe_mort"], "araignee": ["insecte_menace", "insecte_mort"],
 	"vipere": ["serpent_menace", "monstre_mort"], "follet": ["follet_menace", "follet_mort"],
 	"golem": ["golem_menace", "golem_mort"], "magma": ["magma_menace", "magma_mort"],
+	"armure": ["armure_menace", "armure_mort"], "gargouille": ["gargouille_menace", "gargouille_mort"],
 }
 
 func _sound(what: String) -> void:
@@ -511,6 +525,116 @@ func _build_guardian() -> void:
 	_play("v28/idle")
 
 
+## V54 : armure animée — la silhouette du héros en acier poli, heaume à cimier bleu, une lueur
+## bleue derrière la visière, épée longue et écu à l'aigle d'argent.
+func _build_armor() -> void:
+	var packed: PackedScene = load("res://assets/models/characters/hero.glb")
+	var model: Node3D = packed.instantiate()
+	model.scale = Vector3.ONE * 1.08
+	_visual.add_child(model)
+	_anim = model.find_child("AnimationPlayer", true, false)
+	var found := model.find_children("*", "Skeleton3D", true, false)
+	var skel: Skeleton3D = found[0] if found.size() > 0 else null
+	if _anim != null and skel != null:
+		var lib = HeroLib.new()
+		lib.hero = model
+		lib.anim = _anim
+		lib.skel = skel
+		lib._build_animations()
+		lib.free()
+	var steel := StandardMaterial3D.new()
+	steel.albedo_color = Color(0.62, 0.64, 0.68)
+	steel.metallic = 0.85
+	steel.roughness = 0.32
+	steel.albedo_texture = load("res://assets/textures/terrain/rock.jpg")
+	steel.uv1_scale = Vector3(4, 4, 4)
+	_flash_mats.append(steel)
+	for mi in model.find_children("*", "MeshInstance3D", true, false):
+		var m: MeshInstance3D = mi
+		for k in range(m.mesh.get_surface_count()):
+			m.set_surface_override_material(k, steel)
+	var blue := _mat(Color(0.15, 0.25, 0.6), 0.8)
+	var glow := _mat(Color(0.5, 0.8, 1.0), 0.2, 4.0)
+	var dark := _mat(Color(0.05, 0.05, 0.06), 0.6)
+	if skel != null:
+		# Heaume : calotte, visière fendue, cimier
+		var helm := Node3D.new()
+		_mesh(helm, _sphere(0.17), steel, Vector3(0, 0.02, 0), Vector3(1.0, 1.15, 1.05))
+		_mesh(helm, _box_mesh_g(Vector3(0.22, 0.03, 0.04)), dark, Vector3(0, 0.02, 0.17))
+		for sx in [-0.05, 0.05]:
+			_mesh(helm, _sphere(0.018), glow, Vector3(sx, 0.02, 0.16))
+		_mesh(helm, _box_mesh_g(Vector3(0.03, 0.12, 0.3)), blue, Vector3(0, 0.2, -0.02))
+		_attach(skel, "Head", Vector3(0, 12, 2), helm)
+		# Épaulières
+		for side in [["LeftShoulder", -1.0], ["RightShoulder", 1.0]]:
+			var pad := Node3D.new()
+			_mesh(pad, _sphere(0.11), steel, Vector3.ZERO, Vector3(1.3, 0.7, 1.2))
+			_attach(skel, str(side[0]), Vector3(float(side[1]) * 10.0, 6, 0), pad)
+		# L'épée longue
+		_spear = Node3D.new()
+		_mesh(_spear, _box_mesh_g(Vector3(0.07, 1.25, 0.018)), steel, Vector3(0, 0.78, 0))
+		_mesh(_spear, _box_mesh_g(Vector3(0.36, 0.05, 0.06)), dark, Vector3(0, 0.14, 0))
+		_mesh(_spear, _cyl(0.025, 0.025, 0.25), blue, Vector3(0, 0.0, 0))
+		var att := BoneAttachment3D.new()
+		att.bone_name = "RightHand"
+		skel.add_child(att)
+		var hold := Node3D.new()
+		hold.position = Vector3(0, 8.5, 2.5)
+		hold.rotation_degrees = Vector3(90, 0, 0)
+		hold.scale = Vector3.ONE * 100.0
+		att.add_child(hold)
+		hold.add_child(_spear)
+		# L'écu, à l'aigle d'argent sur fond bleu
+		var shield := Node3D.new()
+		_mesh(shield, _box_mesh_g(Vector3(0.42, 0.55, 0.05)), blue, Vector3.ZERO)
+		_mesh(shield, _box_mesh_g(Vector3(0.46, 0.04, 0.06)), steel, Vector3(0, 0.27, 0))
+		_mesh(shield, _sphere(0.08), steel, Vector3(0, 0.02, 0.04), Vector3(1.6, 1.0, 0.4))
+		_attach(skel, "LeftForeArm", Vector3(0, 12, 6), shield)
+	_play("v28/idle")
+
+
+## V54 : gargouille — statue de pierre grise : corps trapu, cornes, ailes de chauve-souris,
+## yeux qui rougeoient ; elle plane à hauteur d'homme.
+func _build_gargoyle() -> void:
+	var body := Node3D.new()
+	body.name = "Corps"
+	body.position = Vector3(0, 1.75, 0)
+	_visual.add_child(body)
+	var stone := _mat(Color(0.55, 0.55, 0.53), 0.95)
+	stone.albedo_texture = load("res://assets/textures/chateau/pierre_chateau.png")
+	stone.uv1_scale = Vector3(1.5, 1.5, 1.5)
+	_flash_mats.append(stone)
+	var eye := _mat(Color(1.0, 0.35, 0.1), 0.2, 4.0)
+	var Rk = load("res://scripts/rocks_v26.gd")
+	_mesh(body, Rk.shape(5520, Vector3(0.62, 0.55, 0.75), 0.75, 0.12), stone, Vector3(0, 0, 0))
+	_mesh(body, Rk.shape(5521, Vector3(0.42, 0.38, 0.42), 0.8, 0.1), stone, Vector3(0, 0.3, 0.38))
+	for sx in [-1.0, 1.0]:
+		_mesh(body, _cyl(0.0, 0.05, 0.28), stone, Vector3(sx * 0.13, 0.55, 0.32), Vector3.ONE, Vector3(-0.5, 0, sx * -0.5))
+		_mesh(body, _sphere(0.035), eye, Vector3(sx * 0.08, 0.33, 0.58))
+		# bras griffus
+		_mesh(body, _cyl(0.04, 0.07, 0.4), stone, Vector3(sx * 0.25, -0.2, 0.25), Vector3.ONE, Vector3(0.6, 0, sx * 0.2))
+		# ailes membraneuses
+		var wing := Node3D.new()
+		wing.position = Vector3(sx * 0.22, 0.18, -0.1)
+		body.add_child(wing)
+		var wm := _mat(Color(0.42, 0.42, 0.41), 0.95)
+		wm.cull_mode = BaseMaterial3D.CULL_DISABLED
+		_flash_mats.append(wm)
+		var prism := PrismMesh.new()
+		prism.size = Vector3(1.1, 0.9, 0.04)
+		var pmi := _mesh(wing, prism, wm, Vector3(sx * 0.55, 0.1, -0.15), Vector3.ONE, Vector3(0, 0, sx * -1.2))
+		pmi.rotation.y = sx * 0.3
+		_mesh(wing, _cyl(0.025, 0.04, 1.1), stone, Vector3(sx * 0.5, 0.35, -0.1), Vector3.ONE, Vector3(0, 0, sx * -1.1))
+		_arms.append([wing, sx])
+	_mesh(body, _cyl(0.0, 0.06, 0.7), stone, Vector3(0, -0.15, -0.55), Vector3.ONE, Vector3(-1.2, 0, 0))
+	var l := OmniLight3D.new()
+	l.light_color = Color(1.0, 0.4, 0.15)
+	l.light_energy = 0.6
+	l.omni_range = 3.0
+	l.position = Vector3(0, 0.33, 0.7)
+	body.add_child(l)
+
+
 func _coral_tuft(mat: Material) -> Node3D:
 	var n := Node3D.new()
 	for k in range(4):
@@ -553,10 +677,10 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	var away: Vector3 = global_position - from_pos
 	away.y = 0.0
 	away = away.normalized() if away.length() > 0.01 else -facing
-	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet", "magma"] else (2.6 if kind == "vipere" else (0.5 if kind == "golem" else 1.6)))
+	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet", "magma", "gargouille"] else (2.6 if kind == "vipere" else (0.5 if kind == "golem" else (1.0 if kind == "armure" else 1.6))))
 	var cb: Node = manager.main.combat_v28
 	if cb != null:
-		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind == "gardien" else (3.0 if kind == "golem" else 0.9))
+		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind in ["gardien", "armure", "gargouille"] else (3.0 if kind == "golem" else 0.9))
 		if bool(cb.get("critical")):
 			cb.damage_number_color(at, damage, Color(1.0, 0.55, 0.2), " !")
 		else:
@@ -570,8 +694,8 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 		return
 	# Un coup interrompt la préparation de l'attaque (on peut « couper » l'élan).
 	state = "recul"
-	timer = 0.22 if kind == "gardien" else 0.3
-	if kind == "gardien":
+	timer = 0.22 if kind in ["gardien", "armure"] else 0.3
+	if kind == "gardien" or kind == "armure":
 		_play("v28/hurt", 0.05)
 
 
@@ -581,7 +705,7 @@ func _die() -> void:
 	timer = 0.0
 	collision_layer = 0
 	collision_mask = 0
-	if kind == "gardien":
+	if kind == "gardien" or kind == "armure":
 		_play("Knock_Down", 0.1)
 	died.emit(self)
 
@@ -604,6 +728,11 @@ func _physics_process(delta: float) -> void:
 		if kind == "crabe" or kind == "araignee":
 			_visual.rotation.z = minf(timer * 6.0, PI)
 			_visual.position.y = sin(minf(timer * 6.0, PI)) * 0.4
+		elif kind == "gargouille":
+			# Elle retombe, pierre inerte, et se brise
+			var g: Node3D = _visual.get_node("Corps")
+			g.position.y = maxf(0.35, 1.75 - timer * timer * 4.0)
+			g.rotation.z = minf(timer * 2.5, 1.4)
 		elif kind == "follet":
 			_visual.scale = Vector3.ONE * clampf(1.0 - timer * 1.5, 0.01, 1.0)
 			if _wisp_light != null:
@@ -654,7 +783,7 @@ func _physics_process(delta: float) -> void:
 				state = "armer"
 				_sound("menace")
 				timer = float(spec["armer"])
-				if kind == "gardien":
+				if kind == "gardien" or kind == "armure":
 					_play("v28/slash3", 0.1, 0.55)
 			else:
 				move = dir_p * float(spec["vitesse"])
@@ -664,14 +793,14 @@ func _physics_process(delta: float) -> void:
 			if timer <= 0.0:
 				state = "frappe"
 				timer = 0.18
-				if kind == "vipere" or kind == "follet" or kind == "magma":
+				if kind == "vipere" or kind == "follet" or kind == "magma" or kind == "gargouille":
 					# Le bond : droit devant, sans corriger sa trajectoire.
 					timer = 0.32
-					_knock = facing * (7.5 if kind == "vipere" else 6.5)
+					_knock = facing * (7.5 if kind == "vipere" else (8.0 if kind == "gargouille" else 6.5))
 				else:
 					_strike(dist, dir_p)
-		"frappe" when kind == "vipere" or kind == "follet" or kind == "magma":
-			if timer > 0.1 and dist < (1.45 if kind == "magma" else 1.25) and not has_meta("mordu"):
+		"frappe" when kind == "vipere" or kind == "follet" or kind == "magma" or kind == "gargouille":
+			if timer > 0.1 and dist < (1.45 if kind in ["magma", "gargouille"] else 1.25) and not has_meta("mordu"):
 				set_meta("mordu", true)
 				manager.hurt_player(int(spec["degats"]), global_position)
 			if timer <= 0.0:
@@ -694,7 +823,7 @@ func _physics_process(delta: float) -> void:
 		_knock = _knock.move_toward(Vector3.ZERO, delta * 14.0)
 	velocity.x = move.x
 	velocity.z = move.z
-	if kind == "follet":
+	if kind == "follet" or kind == "gargouille":
 		velocity.y = (home.y - global_position.y) * 4.0
 	else:
 		velocity.y = 0.0 if is_on_floor() else maxf(velocity.y - 18.0 * delta, -20.0)
@@ -711,6 +840,19 @@ func _strike(dist: float, dir_p: Vector3) -> void:
 
 
 func _animate(delta: float, speed: float) -> void:
+	if kind == "gargouille":
+		var g: Node3D = _visual.get_node("Corps")
+		var charge3: float = 0.0
+		if state == "armer":
+			charge3 = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		var dive: bool = state == "frappe"
+		g.position.y = lerpf(g.position.y, (1.0 if dive else 1.75 + sin(_clock * 2.2) * 0.18 + charge3 * 0.4), clampf(delta * 6.0, 0.0, 1.0))
+		g.rotation.x = lerpf(g.rotation.x, (0.6 if dive else -0.25 * charge3), clampf(delta * 8.0, 0.0, 1.0))
+		var beat: float = sin(_clock * (14.0 if dive or charge3 > 0.0 else 7.0))
+		for w in _arms:
+			var wing: Node3D = w[0]
+			wing.rotation.z = float(w[1]) * (0.35 + beat * 0.55 * (0.4 if dive else 1.0))
+		return
 	if kind == "golem":
 		var walk_g: float = clampf(speed / 1.2, 0.0, 1.0)
 		for l in _legs:

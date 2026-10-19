@@ -336,6 +336,8 @@ const DEHORS := [
 				"rumeur": [
 					{"t": "Croâ dit qu'il a vu une porte de pierre, tout en haut, au bord du cratère. Croâ dit aussi qu'il est un aigle. Alors…", "si": {}, "geste": "rire"},
 					{"t": "Borin et Grimli se disputent depuis cent ans pour savoir qui a la plus belle barbe. C'est moi.", "si": {}, "geste": "rire"},
+					{"t": "Au bord du cratère, il y a un aigle. Un VRAI aigle, grand comme une maison. Les golems l'ont enchaîné. Il crie la nuit… Mes chèvres n'en dorment plus.", "si": {"pas_trouve": "ventaile"}},
+					{"t": "Tu VOLES sur l'aigle du cratère ?! Mes chèvres te regardent passer la bouche ouverte. Moi aussi.", "si": {"a_trouve": "ventaile"}, "geste": "rire"},
 				],
 				"quete_manque": [{"t": "Encore {manque} plumes, {surnom}.", "si": {}}],
 				"quete_fin": [{"t": "De belles plumes noires ! Croâ va être jaloux. Tiens : trois fromages et vingt pièces. Le fromage, ça se mange vite. Il est… vivant.", "si": {}, "geste": "rire", "humeur": 0.3}],
@@ -367,6 +369,7 @@ const DEDANS := [
 			"sujets_speciaux": [
 				{"id": "merci_roi", "label": "Vos sujets ont eu besoin d'aide…", "si": {"a_trouve": "nains_aides_3", "pas_fait": "cadeau_roi"}},
 				{"id": "coeur", "label": "Le cœur de la montagne ?", "si": {"sujet_min": ["lui", 1]}},
+				{"id": "ciel", "label": "Ce château dans le ciel, au sud ?", "si": {"fait": "cadeau_roi"}},
 			],
 			"repliques": {
 				"accueil": [
@@ -390,9 +393,16 @@ const DEDANS := [
 				"rumeur": [
 					{"t": "Ulfa croit que je ne vois pas qu'elle met de l'eau dans ma bière. Je vois. Je fais semblant. C'est ça, être roi.", "si": {}, "geste": "rire"},
 					{"t": "Nori lit les runes. Il dit que la montagne a peur. Une montagne qui a peur… Hmm.", "si": {}},
+					{"t": "Les nuits claires, on voit un château dans le ciel, loin au sud, au-dessus de l'océan. Un roi devrait s'en inquiéter. Je m'en inquiète. Royalement.", "si": {"pas_trouve": "citadelle"}},
 				],
 				"merci_roi": [
 					{"t": "Mes sujets m'ont tout dit : tu as aidé ma garde, ma forge, mes cuisines, mes mines. Un roi récompense. Tiens : trois pièces d'or de la Forge Royale. Et le titre d'ami de Forgefer. Le titre est gratuit. L'or, non.", "si": {}, "action": "donne", "donne": [["piece_or", 3]], "pose": "cadeau_roi", "geste": "salut", "humeur": 0.2},
+				],
+				"ciel": [
+					{"t": "Ah. Tu l'as vu, toi aussi, les nuits claires : un château, tout là-haut, sur une île qui flotte au-dessus de l'océan. La Citadelle des Nuées, la forteresse des Rois-Ciel. Nori dit que c'est de là-haut que la foudre a réveillé nos golems… Personne n'y monte. Sauf les grands aigles. Il en reste un : Ventaile. Les golems l'ont enchaînée au bord du cratère, au-dessus du sentier. Libère-la, nourris-la — du poisson, elle adore le poisson — et pose-lui ceci sur le dos : la selle des derniers chevaucheurs d'aigles de Forgefer.", "si": {"pas_fait": "selle_donnee"}, "action": "donne", "donne": [["selle_aigle", 1]], "pose": "selle_donnee", "geste": "salut"},
+					{"t": "Ventaile niche au bord du cratère, au-dessus du Sentier des Golems. Brise la rune de sa chaîne, donne-lui trois poissons, et la selle fera le reste. Ensuite… le ciel, le grand. Le ciel.", "si": {"fait": "selle_donnee", "pas_trouve": "ventaile"}},
+					{"t": "Tu chevauches Ventaile ! Mon arrière-grand-père racontait que les Rois-Ciel venaient boire notre bière sur des aigles. Je n'y croyais pas. … Ramène-moi une plume de leur château.", "si": {"a_trouve": "ventaile", "pas_trouve": "orage"}, "geste": "rire"},
+					{"t": "Sire Orage est tombé, et sur la montagne les golems se sont figés d'un coup, comme des statues. Mon peuple dort enfin. Tu es un grand parmi les grands, le grand.", "si": {"a_trouve": "orage"}, "geste": "salut"},
 				],
 				"coeur": [
 					{"t": "Le Cœur de la Montagne… Une pierre de feu, grosse comme un tonneau, qui bat au fond du volcan. Elle tient la lave endormie. Depuis que les golems se sont réveillés, son battement est faible. Nori t'en dira plus. Un jour, peut-être, nous aurons besoin de toi, le grand.", "si": {}},
@@ -489,6 +499,7 @@ const DEDANS := [
 				"rumeur": [
 					{"t": "Les runes parlent d'un grand venu de la mer, qui vaincra le feu par le feu. Je ne dis pas que c'est toi. Je ne dis pas que ce n'est pas toi.", "si": {}},
 					{"t": "Ulfa croit que je bois de l'eau. C'est de l'eau de lune. Elle ne saurait pas la différence.", "si": {}},
+					{"t": "La foudre qui a réveillé les golems ne venait pas de la montagne. Elle venait du ciel, du sud. D'un château qui flotte… Les runes disent : « Le feu garde le feu, mais l'orage garde le ciel. »", "si": {"pas_trouve": "orage"}},
 				],
 				"quete_manque": [{"t": "Il me manque {manque} éclats d'obsidienne. Les runes attendent.", "si": {}}],
 				"quete_fin": [{"t": "De l'obsidienne pure ! Regarde comme elle boit la lumière. Tiens, deux pièces d'or de mon coffre. Et une rune gravée dans ta mémoire : « Le feu garde le feu. » Tu comprendras un jour.", "si": {}, "geste": "salut", "humeur": 0.3}],

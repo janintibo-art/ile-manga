@@ -227,6 +227,10 @@ func _can_fish() -> bool:
 		return false
 	if main.boat_v29 != null and main.boat_v29.driving:
 		return false
+	# V54 : pas de pêche à 150 m au-dessus de l'océan (ni sur le dos de Ventaile)
+	var sky: Node = main.get("ciel_v54")
+	if sky != null and (bool(sky.riding) or sky.on_sky(_player_pos())):
+		return false
 	if not main.xr_active and main.hero_v28 != null and not main.hero_v28.state in ["sol", "peche"]:
 		return false
 	return true

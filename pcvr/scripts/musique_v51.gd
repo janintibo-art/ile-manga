@@ -17,11 +17,12 @@ const SETTINGS := "user://reglages_son.cfg"
 const ZONE_TRACK := {
 	"menu": "theme_ile", "village": "village", "jungle": "jungle", "elfes": "elfes", "nains": "nains",
 	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "racines": "racines",
+	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0,
+	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
@@ -266,5 +267,9 @@ func _boss_fight() -> bool:
 			return true
 	var el: Node = main.get("elfes_v41")
 	if el != null and el.feerique != null and el.feerique.ronces != null and bool(el.feerique.ronces.fight):
+		return true
+	# V54 : Sire Orage, au sommet de la Tour des Tempêtes
+	var sky: Node = main.get("ciel_v54")
+	if sky != null and bool(sky.fight):
 		return true
 	return false

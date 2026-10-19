@@ -118,6 +118,11 @@ func _process(delta: float) -> void:
 	if main == null or not bool(main.game_started):
 		_last_pos = Vector3.INF
 		return
+	# V54 : en vol sur Ventaile, pas de pas (les ailes s'entendent, voir ciel_v54.gd)
+	var sky: Node = main.get("ciel_v54")
+	if sky != null and bool(sky.riding):
+		_last_pos = Vector3.INF
+		return
 	var boat: Node = main.get("boat_v29")
 	if boat != null and bool(boat.driving):
 		_last_pos = Vector3.INF
@@ -164,6 +169,11 @@ func _surface(body: CharacterBody3D) -> String:
 		return "pierre"
 	if name.contains("Ponton") or name.begins_with("Interieur_") or name.begins_with("Elfes_collision") or name.contains("Tronc"):
 		return "bois"
+	# V54 : la Citadelle (pierre), le nid (pierre), la prairie de l'île flottante (herbe)
+	if name.begins_with("Ciel_chateau") or name.begins_with("Nid_collision"):
+		return "pierre"
+	if name.begins_with("Ciel_sol"):
+		return "herbe"
 	if name.begins_with("Donjon") or name.begins_with("Nains_collision") or name.begins_with("Falaise") or name.begins_with("Village_collision") or name.begins_with("Royaume"):
 		return "pierre"
 	var h: float = main._height_at(pos.x, pos.z)

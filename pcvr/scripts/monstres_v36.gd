@@ -136,6 +136,10 @@ func alert(m: Node3D) -> void:
 		donjon._say("Un golem des hauteurs ! Quand il lève ses deux poings au-dessus de la tête, il va écraser le sol devant lui : recule ou roule (Ctrl)… puis frappe-le. Tes coups ne l'arrêtent pas.", 7.0)
 	elif m.kind == "magma":
 		donjon._say("Un élémentaire de magma ! Quand il gonfle et rougeoie, il va bondir sur toi : écarte-toi, puis frappe-le pendant qu'il refroidit.", 6.0)
+	elif m.kind == "armure":
+		donjon._say("Une armure animée ! Elle est vide… et elle se bat. Quand elle lève l'épée, pare (F) ou roule (Ctrl), puis frappe-la.", 6.0)
+	elif m.kind == "gargouille":
+		donjon._say("Une gargouille ! Quand elle bat des ailes très vite et se cabre, elle va piquer droit sur toi : écarte-toi, puis frappe-la.", 6.0)
 	elif m.kind == "vipere":
 		donjon._say("Une vipère des abysses ! Quand elle se love et dresse la tête, elle va bondir droit devant : écarte-toi, ou pare (F).", 6.0)
 	else:
@@ -192,6 +196,12 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V54 : évanoui sur l'île flottante : on se réveille sur l'Aire des Vents.
+	if main.get("ciel_v54") != null and main.ciel_v54 != null and main.ciel_v54.on_sky(p):
+		var rs: Array = main.ciel_v54.respawn_point()
+		main.place_player_v35(rs[0], rs[1])
+		_heal_player()
+		return
 	# V47 : évanoui sur la Montagne de Feu : on se réveille sur la terrasse de Forgefer.
 	if main.get("nains_v46") != null and main.nains_v46 != null and not donjon.is_inside(p) and main.nains_v46.ile.contains(p.x, p.z):
 		var rp: Array = main.nains_v46.respawn_point()
@@ -246,6 +256,14 @@ func _on_died(m: Node3D) -> void:
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.3:
 			gains.append(["obsidienne", 1])
+	elif m.kind == "armure":
+		gains.append(["piece", _rng.randi_range(4, 9)])
+		if _rng.randf() < 0.3:
+			gains.append(["piece_or", 1])
+	elif m.kind == "gargouille":
+		gains.append(["piece", _rng.randi_range(2, 5)])
+		if _rng.randf() < 0.2:
+			gains.append(["rubis", 1])
 	elif m.kind == "vipere":
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.15:
@@ -277,6 +295,9 @@ func _process(delta: float) -> void:
 	_was_inside = inside
 	# V47 : dehors aussi, sur les hauteurs de la Montagne de Feu (golems, élémentaires).
 	var outdoor: bool = not inside and main.get("nains_v46") != null and main.nains_v46 != null and main.nains_v46.hostile_zone(main._player_pos_v27())
+	# V54 : dans la Citadelle des Nuées
+	if not inside and main.get("ciel_v54") != null and main.ciel_v54 != null and main.ciel_v54.hostile_zone(main._player_pos_v27()):
+		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))
 	if main.xr_active and main.hero_v28 != null:

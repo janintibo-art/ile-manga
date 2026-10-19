@@ -122,6 +122,7 @@ func _ready() -> void:
 	_create_music_v51()
 	_create_v52()
 	_create_decor_v53()
+	_create_v54()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -863,7 +864,7 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu  •  F11 : plein écran  •  F1 : aide"
+		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu  •  G : appeler l'aigle  •  F11 : plein écran  •  F1 : aide"
 		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
 		message_clock_v28 = 6.0
 		xr_restart_button.visible = false
@@ -937,6 +938,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			elfes_v41.load_data({})
 		if nains_v46 != null:
 			nains_v46.load_data({})
+		if ciel_v54 != null:
+			ciel_v54.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -992,6 +995,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		hero_v28.facing = -origin.global_basis.z
 	if boat_v29 == null or not boat_v29.driving:
 		_sync_physics_after_load_v11()
+	# V54 : Ventaile et la Citadelle (en dernier : on peut reprendre un vol en cours)
+	if not new_game and ciel_v54 != null:
+		var sky_data: Variant = SaveStore.read_slot(slot).get("ciel", {})
+		ciel_v54.load_data(sky_data if sky_data is Dictionary else {})
 	last_ok_v29.clear()
 	autosave_clock = 0.0
 
@@ -1046,6 +1053,8 @@ func _save_slot(slot: int) -> void:
 		extra["elfes"] = elfes_v41.serialize()
 	if nains_v46 != null:
 		extra["nains"] = nains_v46.serialize()
+	if ciel_v54 != null:
+		extra["ciel"] = ciel_v54.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1075,7 +1084,10 @@ func _physics_process(delta: float) -> void:
 	if autosave_clock >= 90.0:
 		_save_slot(0)
 		autosave_clock = 0.0
-	if xr_active:
+	if ciel_v54 != null and ciel_v54.riding:
+		# V54 : en vol sur Ventaile
+		ciel_v54.ride_tick(delta)
+	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
 		elif not vr_ladder_v33.is_empty():
@@ -1268,6 +1280,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_interact_v28()
 		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
 			inventory_v28.toggle()
+		elif event.keycode == KEY_G and game_started and ciel_v54 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
+			ciel_v54.call_eagle()
 		elif event.keycode == KEY_F1 and info != null:
 			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
 		elif event.keycode == KEY_F5 and game_started:
@@ -1532,6 +1546,13 @@ func _doors_update_v27() -> void:
 	if houses_v27 == null:
 		return
 	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened)
+	# V54 : en vol, pas d'invites (E sert à se poser)
+	if ciel_v54 != null and ciel_v54.riding:
+		if door_prompt_v27 != null:
+			door_prompt_v27.text = "E : se poser" if not xr_active else ""
+		if donjon_v35 != null:
+			donjon_v35.show_vr_hint(_player_pos_v27(), false)
+		return
 	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
 	# V28 : l'objet à ramasser passe avant la porte s'il est plus proche.
 	if playing and inventory_v28 != null and not xr_active:
@@ -1622,6 +1643,13 @@ func _create_gameplay_v28() -> void:
 		# V48 : même soin en VR qu'au PC (avant, la VR consommait l'aliment sans soigner).
 		return hero_v28.heal(half_hearts) if hero_v28 != null else false
 	inventory_v28.drop_point = _drop_point_v28
+	# V54 : la plume de Ventaile appelle l'aigle
+	inventory_v28.use_tool = func(item_id: String) -> bool:
+		if item_id == "plume_ventaile" and ciel_v54 != null:
+			inventory_v28.close()
+			ciel_v54.call_eagle()
+			return true
+		return false
 	combat_v28.build(self, inventory_v28)
 	hero_v28 = preload("res://scripts/hero_v28.gd").new()
 	hero_v28.name = "Heros_v28"
@@ -1695,6 +1723,10 @@ func _door_distance_v28() -> float:
 
 ## E : bateau (monter / débarquer), sinon ramasser l'objet le plus proche, sinon la porte.
 func _interact_v28() -> void:
+	# V54 : en vol, E demande à Ventaile de se poser
+	if ciel_v54 != null and ciel_v54.riding:
+		ciel_v54.request_landing()
+		return
 	var p: Vector3 = _player_pos_v27()
 	var npc: Node3D = _nearest_npc_v31()
 	if npc != null and (boat_v29 == null or not boat_v29.driving):
@@ -1772,6 +1804,12 @@ func _respawn_v28() -> void:
 		return
 	# V47 : sur l'île des nains, on se réveille sur la terrasse de Forgefer.
 	var pp: Vector3 = _player_pos_v27()
+	# V54 : sur l'île flottante, on se réveille sur l'Aire des Vents.
+	if ciel_v54 != null and ciel_v54.on_sky(pp):
+		var rs: Array = ciel_v54.respawn_point()
+		place_player_v35(rs[0], rs[1])
+		_show_message_v28("Vous vous êtes évanoui… et réveillé sur l'Aire des Vents, au bord de l'île flottante.")
+		return
 	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(pp.x, pp.z):
 		var rp: Array = nains_v46.respawn_point()
 		place_player_v35(rp[0], rp[1])
@@ -1791,6 +1829,11 @@ func _respawn_v28() -> void:
 func _vr_actions_v28(delta: float) -> void:
 	var a_now: bool = right_hand.is_button_pressed("ax_button")
 	var y_now: bool = left_hand.is_button_pressed("by_button")
+	# V54 : bouton X (main gauche) : appeler Ventaile
+	var x_now: bool = left_hand.is_button_pressed("ax_button")
+	if x_now and not vr_buttons_v28.get("x", false) and ciel_v54 != null:
+		ciel_v54.call_eagle()
+	vr_buttons_v28["x"] = x_now
 	var a_edge: bool = a_now and not vr_buttons_v28.get("a", false)
 	var y_edge: bool = y_now and not vr_buttons_v28.get("y", false)
 	vr_buttons_v28["a"] = a_now
@@ -1915,6 +1958,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	if _in_dungeon_v35(p):
 		return
 	var key: String = str(body.name)
+	# V54 : sur l'île flottante, on ne s'avance pas au-delà du bord
+	if ciel_v54 != null and ciel_v54.on_sky(p):
+		if ciel_v54.walkable_at(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
 		return
@@ -2178,6 +2229,8 @@ func _plant_v34() -> void:
 		elfes_v41.build_quest()
 	if nains_v46 != null and donjon_v35 != null:
 		nains_v46.build_quest()
+	if ciel_v54 != null and donjon_v35 != null:
+		ciel_v54.build_quest()
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2389,7 +2442,10 @@ func _npc_ctx_v31() -> Dictionary:
 			"porte_forgefer": 1 if nains_v46 != null and bool(nains_v46.state["ouverte"]) else 0,
 			"ville_naine": 1 if nains_v46 != null and bool(nains_v46.state["ville"]) else 0,
 			"nains_aides": nains_v46.helped_count() if nains_v46 != null else 0,
-			"nains_aides_3": 1 if nains_v46 != null and nains_v46.helped_count() >= 3 else 0},
+			"nains_aides_3": 1 if nains_v46 != null and nains_v46.helped_count() >= 3 else 0,
+			"ventaile": 1 if ciel_v54 != null and ciel_v54.tamed() else 0,
+			"citadelle": 1 if ciel_v54 != null and bool(ciel_v54.state["visite_ciel"]) else 0,
+			"orage": 1 if ciel_v54 != null and bool(ciel_v54.state["boss"]) else 0},
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 
@@ -2498,6 +2554,7 @@ func _close_dialogue_v31() -> void:
 var ambiance_v49: Node
 ## V50 : les bruitages d'action (sfx_v50.gd).
 var decor_v53: Node3D                      # V53 : finitions du village
+var ciel_v54: Node3D                       # V54 : Ventaile, l'île flottante, la Citadelle des Nuées
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
 var music_v51: Node                       # V51 : la musique (musique_v51.gd)
@@ -2508,6 +2565,15 @@ func _create_sfx_v50() -> void:
 	sfx_v50.name = "Bruitages_v50"
 	add_child(sfx_v50)
 	sfx_v50.setup(self)
+
+
+## V54 : le ciel (ciel_v54.gd) : l'aigle géant, l'île flottante et son château.
+func _create_v54() -> void:
+	ciel_v54 = preload("res://scripts/ciel_v54.gd").new()
+	ciel_v54.name = "Ciel_v54"
+	add_child(ciel_v54)
+	ciel_v54.setup(self)
+	ciel_v54.build()
 
 
 func _create_decor_v53() -> void:

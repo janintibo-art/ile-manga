@@ -136,6 +136,19 @@ const ITEMS := {
 	# V40
 	"ecaille_naga": {"name": "Écaille de Nâga", "art": "une écaille de Nâga", "kind": "tresor", "max": 5,
 		"desc": "Une écaille du Serpent des Abysses, verte et dure comme du jade, large comme une main. La preuve de ta victoire. Octave en donnerait une fortune."},
+	# V54 : le ciel
+	"selle_aigle": {"name": "Selle naine", "art": "la selle naine", "kind": "quete", "max": 1,
+		"desc": "Une selle de cuir et de bronze, forgée à Forgefer pour les chevaucheurs d'aigles d'autrefois. Le roi Thorgal te l'a confiée : Ventaile, la dernière des grands aigles, niche au bord du cratère."},
+	"plume_ventaile": {"name": "Plume de Ventaile", "art": "la plume de Ventaile", "kind": "outil", "max": 1,
+		"desc": "Une grande plume dorée. Utilise-la (ou G au PC, bouton X en VR) pour appeler Ventaile : elle arrive et se pose près de toi. Puis E (gâchette) pour monter sur son dos."},
+	"cristal_levant": {"name": "Cristal du Levant", "art": "le Cristal du Levant", "kind": "quete", "max": 1,
+		"desc": "Un cristal doré, tiède comme le soleil du matin, gagné en sonnant le beffroi de la Citadelle. Il s'emboîte dans le Sceau des Vents."},
+	"cristal_couchant": {"name": "Cristal du Couchant", "art": "le Cristal du Couchant", "kind": "quete", "max": 1,
+		"desc": "Un cristal bleu, froid comme le soir, gardé par les armures de la salle d'armes. Il s'emboîte dans le Sceau des Vents."},
+	"couronne_nuees": {"name": "Couronne des Nuées", "art": "la Couronne des Nuées", "kind": "tresor", "max": 1,
+		"desc": "La couronne des Rois-Ciel : or blanc, saphirs et perles de nuage. La preuve que tu as vaincu Sire Orage. Elle vaut une fortune… mais qui oserait la vendre ?"},
+	"epee_nuees": {"name": "Épée des Nuées", "art": "l'Épée des Nuées", "kind": "arme", "max": 1, "damage": 12,
+		"desc": "L'épée des Rois-Ciel, trouvée dans le trésor de la Tour des Tempêtes. Sa lame crépite de petits éclairs bleus. Dégâts : 12, et le troisième coup d'un enchaînement frappe moitié plus fort."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
 }
@@ -157,6 +170,7 @@ var _clock: float = 0.0
 ## Fournis par main.gd
 var use_food: Callable                  # (demi-cœurs) -> bool : soigne, false si déjà plein
 var drop_point: Callable                # () -> Vector3 : où poser un objet jeté
+var use_tool: Callable                  # V54 : (objet) -> bool : un outil qui agit (la plume de Ventaile)
 
 # Fenêtre PC
 var _layer: CanvasLayer
@@ -350,6 +364,8 @@ func use_slot(i: int) -> void:
 		"arme", "canne":
 			equip_item("" if equipped == id else id)
 		"outil":
+			if use_tool.is_valid() and bool(use_tool.call(id)):
+				return
 			if bool(info.get("equip", false)):
 				equip_item("" if equipped == id else id)
 			else:
@@ -762,6 +778,42 @@ func make_model(id: String) -> Node3D:
 			rn.emission = Color(0.35, 0.8, 1.0)
 			rn.emission_energy_multiplier = 2.0
 			_part(m, _box_mesh(Vector3(0.012, 0.004, 0.09)), rn, Vector3(0, 0.032, 0))
+		"epee_nuees":
+			var steel3 := _mat("acier_nuees", Color(0.82, 0.86, 0.94), 0.12)
+			steel3.metallic = 0.95
+			var gold3 := _mat("or_nuees", Color(0.95, 0.78, 0.35), 0.2)
+			gold3.metallic = 0.9
+			var bolt := _mat("eclair_nuees", Color(0.55, 0.8, 1.0), 0.1)
+			bolt.emission_enabled = true
+			bolt.emission = Color(0.45, 0.75, 1.0)
+			bolt.emission_energy_multiplier = 2.5
+			_part(m, _cyl(0.016, 0.018, 0.17, 8), _mat("cuir_bleu", Color(0.12, 0.16, 0.38), 0.85), Vector3(0, 0.0, 0))
+			_part(m, _box_mesh(Vector3(0.26, 0.03, 0.045)), gold3, Vector3(0, 0.1, 0))
+			_part(m, _box_mesh(Vector3(0.05, 0.86, 0.008)), steel3, Vector3(0, 0.55, 0))
+			_part(m, _box_mesh(Vector3(0.012, 0.8, 0.01)), bolt, Vector3(0, 0.55, 0))
+			_part(m, _box_mesh(Vector3(0.036, 0.036, 0.008)), steel3, Vector3(0, 0.98, 0), Vector3(0, 0, 45))
+			_part(m, _sphere(0.025), _mat("saphir", Color(0.2, 0.5, 0.85), 0.1), Vector3(0, -0.1, 0))
+			_tip(m, 0.98)
+		"couronne_nuees":
+			var gold4 := _mat("or_blanc", Color(0.95, 0.88, 0.62), 0.2)
+			gold4.metallic = 0.9
+			_part(m, _cyl(0.09, 0.09, 0.06, 20), gold4, Vector3(0, 0.03, 0))
+			for k in range(5):
+				var a4: float = TAU * k / 5.0
+				_part(m, _cyl(0.0, 0.018, 0.06, 6), gold4, Vector3(cos(a4) * 0.085, 0.09, sin(a4) * 0.085))
+				_part(m, _sphere(0.012), _mat("perle_nuage", Color(0.95, 0.96, 1.0), 0.1), Vector3(cos(a4) * 0.085, 0.125, sin(a4) * 0.085))
+		"cristal_levant", "cristal_couchant":
+			var cc := _mat(id, Color(1.0, 0.75, 0.35) if id == "cristal_levant" else Color(0.45, 0.65, 1.0), 0.1)
+			cc.emission_enabled = true
+			cc.emission = cc.albedo_color
+			cc.emission_energy_multiplier = 1.8
+			_part(m, _cyl(0.0, 0.04, 0.09, 6), cc, Vector3(0, 0.045, 0))
+			_part(m, _cyl(0.04, 0.0, 0.05, 6), cc, Vector3(0, 0.115, 0))
+		"plume_ventaile":
+			_part(m, _box_mesh(Vector3(0.06, 0.004, 0.32)), _mat("plume_or", Color(0.55, 0.4, 0.2), 0.6), Vector3(0, 0.004, 0), Vector3(0, 25, 0))
+		"selle_aigle":
+			_part(m, _box_mesh(Vector3(0.42, 0.08, 0.5)), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.04, 0))
+			_part(m, _sphere(0.06), _mat("cuir_fonce", Color(0.22, 0.13, 0.07), 0.8), Vector3(0, 0.1, -0.2))
 		"epee_naine":
 			var steel2 := _mat("acier_nain", Color(0.72, 0.74, 0.78), 0.15)
 			steel2.metallic = 0.9

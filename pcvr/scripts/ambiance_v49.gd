@@ -17,12 +17,12 @@ const BEDS := {
 	"ressac": "ambiance/ressac", "large": "ambiance/large", "brise": "ambiance/brise",
 	"oiseaux": "ambiance/oiseaux_foret", "jungle": "ambiance/jungle_insectes",
 	"volcan": "ambiance/vent_volcan", "grotte": "ambiance/grotte", "feerique": "ambiance/feerique",
-	"halle": "ambiance/halle_forge",
+	"halle": "ambiance/halle_forge", "vent_vol": "ambiance/vent_altitude",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
 	"ressac": -9.0, "large": -10.0, "brise": -15.0, "oiseaux": -13.0, "jungle": -15.0,
-	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0,
+	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0,
 }
 
 var main: Node
@@ -245,6 +245,28 @@ func _choose_zone(running: bool) -> void:
 			zone = "souterrain"
 			targets["grotte"] = 1.0
 		sea = 0.0
+		return
+	# V54 : en vol sur Ventaile, ou là-haut sur l'île flottante
+	var sky: Node = main.get("ciel_v54")
+	if sky != null and bool(sky.riding):
+		zone = "vol"
+		sea = 0.0
+		var spd: float = clampf(float(sky.aigle.speed) / 30.0, 0.0, 1.0)
+		targets["vent_vol"] = 0.45 + 0.55 * spd
+		targets["large"] = 0.25
+		return
+	if sky != null and sky.on_sky(p):
+		var room: String = sky._room(p)
+		sea = 0.0
+		if room in ["salle", "bibliotheque", "armurerie"]:
+			zone = "chateau"
+			targets["grotte"] = 0.3
+			targets["brise"] = 0.25
+		else:
+			zone = "ciel"
+			targets["vent_vol"] = 0.3
+			targets["brise"] = 0.9
+			targets["oiseaux"] = 0.25
 		return
 	sea = _sea_closeness(p)
 	var boat: Node = main.get("boat_v29")

@@ -32,7 +32,7 @@ func setup(main_node: Node) -> void:
 
 
 func _holder() -> Node3D:
-	if main.inventory_v28 == null or not (main.inventory_v28.equipped in ["epee", "hache", "epee_bois", "epee_naine"]):
+	if main.inventory_v28 == null or not (main.inventory_v28.equipped in ["epee", "hache", "epee_bois", "epee_naine", "epee_nuees"]):
 		return null
 	if main.xr_active:
 		return main.right_hand.get_node_or_null("Arme_VR_v28") as Node3D
@@ -66,7 +66,7 @@ func _draw() -> void:
 	_mesh.clear_surfaces()
 	if _points.size() < 2:
 		return
-	var steel: bool = main.inventory_v28.equipped in ["epee", "epee_naine"]
+	var steel: bool = main.inventory_v28.equipped in ["epee", "epee_naine", "epee_nuees"]
 	var col: Color = Color(0.75, 0.9, 1.0) if steel else Color(1.0, 0.85, 0.6)
 	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	for p in _points:
