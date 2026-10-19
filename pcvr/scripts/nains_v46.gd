@@ -13,6 +13,7 @@ const Habitants = preload("res://scripts/pnj/nains_habitants_v47.gd")
 const PnjScript = preload("res://scripts/pnj/pnj_v31.gd")
 const ForgeferScript = preload("res://scripts/forgefer_v47.gd")
 const FauneScript = preload("res://scripts/faune_nains_v47.gd")
+const Decor = preload("res://scripts/decor_v53.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const ASH_R: float = 185.0
 
@@ -128,9 +129,15 @@ func _mat(key: String) -> Material:
 			m.uv1_scale = Vector3(0.18, 0.18, 0.18)
 			m.albedo_color = Color(0.55, 0.52, 0.5)
 		"fer":
-			m.albedo_color = Color(0.28, 0.27, 0.28)
-			m.metallic = 0.85
-			m.roughness = 0.45
+			# V53 : fer martelé (grain), plus un aplat lisse
+			m.albedo_texture = load("res://assets/textures/terrain/rock.jpg")
+			m.normal_enabled = true
+			m.normal_texture = load("res://assets/textures/terrain/rock_n.png")
+			m.uv1_triplanar = true
+			m.uv1_scale = Vector3(1.4, 1.4, 1.4)
+			m.albedo_color = Color(0.34, 0.32, 0.32)
+			m.metallic = 0.7
+			m.roughness = 0.5
 		"bronze":
 			m.albedo_color = Color(0.62, 0.42, 0.22)
 			m.metallic = 0.85
@@ -153,10 +160,11 @@ func _mat(key: String) -> Material:
 			m.emission = Color(1.0, 0.4, 0.08)
 			m.emission_energy_multiplier = 3.0
 		"rune":
-			m.albedo_color = Color(1.0, 0.55, 0.2)
+			# V53 : runes gravées qui rougeoient doucement (plus des aplats blancs saturés)
+			m.albedo_color = Color(0.55, 0.3, 0.12)
 			m.emission_enabled = true
-			m.emission = Color(1.0, 0.5, 0.15)
-			m.emission_energy_multiplier = 2.2
+			m.emission = Color(1.0, 0.42, 0.1)
+			m.emission_energy_multiplier = 0.9
 	_mats[key] = m
 	return m
 
@@ -445,11 +453,12 @@ func _build_forgefer() -> void:
 	_solid(facade, Vector3(22.0, 18.0, 3.0), Vector3(0, 9.0, -1.8), stone)
 	_solid(facade, Vector3(26.0, 3.0, 4.5), Vector3(0, 18.5, -1.4), stone)
 	# La façade est taillée dans une falaise de basalte : de gros blocs l'enchâssent dans la montagne
-	var cliff: Material = Rocks.material(Color(0.22, 0.2, 0.21), 0.0, 0.25)
+	# V53 : basalte plus escarpé (bosses marquées, grain plus fin) : moins « pâte à modeler »
+	var cliff: Material = Rocks.material(Color(0.3, 0.27, 0.27), 0.05, 0.14)
 	for sx in [-1.0, 1.0]:
-		_mesh(facade, Rocks.shape(4710 + int(sx), Vector3(12.0, 24.0, 14.0), 0.7, 0.25), cliff, Vector3(sx * 16.5, 8.0, -6.0), Vector3(0, sx * 0.4, 0))
-		_mesh(facade, Rocks.shape(4713 + int(sx), Vector3(9.0, 14.0, 10.0), 0.7, 0.25), cliff, Vector3(sx * 23.0, 3.0, -2.0), Vector3(0, sx * 1.1, 0))
-	_mesh(facade, Rocks.shape(4716, Vector3(34.0, 14.0, 16.0), 0.7, 0.25), cliff, Vector3(0, 24.0, -8.0))
+		_mesh(facade, Rocks.shape(4710 + int(sx), Vector3(12.0, 24.0, 14.0), 0.58, 0.42, 2.0, 40), cliff, Vector3(sx * 16.5, 8.0, -6.0), Vector3(0, sx * 0.4, 0))
+		_mesh(facade, Rocks.shape(4713 + int(sx), Vector3(9.0, 14.0, 10.0), 0.58, 0.42, 2.0, 32), cliff, Vector3(sx * 23.0, 3.0, -2.0), Vector3(0, sx * 1.1, 0))
+	_mesh(facade, Rocks.shape(4716, Vector3(34.0, 14.0, 16.0), 0.55, 0.45, 2.0, 44), cliff, Vector3(0, 24.0, -8.0))
 	# Encadrement en arc, marches, linteau gravé de runes
 	for k in range(3):
 		_solid(facade, Vector3(10.0 - k * 1.2, 0.35, 1.2), Vector3(0, 0.17 + k * 0.35, 0.9 - k * 0.6), _mat("dalle"))
@@ -457,8 +466,16 @@ func _build_forgefer() -> void:
 		_solid(facade, Vector3(1.6, 10.0, 1.6), Vector3(sx * 4.2, 5.0, -0.1), stone)
 		_mesh(facade, _box_mesh(Vector3(0.12, 7.0, 0.05)), _mat("rune"), Vector3(sx * 4.2, 5.0, 0.72))
 	_solid(facade, Vector3(10.0, 1.6, 1.6), Vector3(0, 10.6, -0.1), stone)
+	# V53 : la frise du linteau : des runes gravées dans la pierre (et non des losanges blancs)
+	var glyphs := ["glyph_soleil", "glyph_lune", "glyph_vague", "glyph_serpent"]
 	for k in range(7):
-		_mesh(facade, _box_mesh(Vector3(0.6, 0.6, 0.05)), _mat("rune"), Vector3(-3.0 + k, 10.6, 0.72), Vector3(0, 0, 0.785 if k % 2 == 0 else 0.0))
+		var gm := StandardMaterial3D.new()
+		gm.albedo_texture = load("res://assets/textures/temple/%s.png" % glyphs[k % 4])
+		gm.albedo_color = Color(0.62, 0.55, 0.5)       # plaques de pierre gravées
+		gm.roughness = 0.9
+		var q := QuadMesh.new()
+		q.size = Vector2(0.85, 0.85)
+		_mesh(facade, q, gm, Vector3(-3.0 + k, 10.6, 0.71))
 	# Les deux battants de la porte (fer et bronze, rivets)
 	doors.clear()
 	for sx in [-1.0, 1.0]:
@@ -509,12 +526,11 @@ func _build_forgefer() -> void:
 		var p := Vector3(rng.randf_range(-14, 14), 0, rng.randf_range(4, 13))
 		if absf(p.x) < 4.0 or p.distance_to(Vector3(7.0, 0, 9.5)) < 3.5 or p.distance_to(Vector3(12.5, 0, 2.5)) < 4.5:
 			continue
+		# V53 : tonneaux galbés cerclés de fer, caisses à cadre renforcé
 		if k % 2 == 0:
-			_mesh(root, _cyl(0.45, 0.45, 1.1, 14), _mat("bois"), p + Vector3.UP * 0.55)
-			for y in [0.2, 0.9]:
-				_mesh(root, _cyl(0.47, 0.47, 0.06, 14), _mat("fer"), p + Vector3.UP * y)
+			Decor.barrel(root, p, 0.45, 1.1, rng.randf() * TAU)
 		else:
-			_mesh(root, _box_mesh(Vector3(0.9, 0.9, 0.9)), _mat("bois"), p + Vector3.UP * 0.45, Vector3(0, rng.randf() * 1.5, 0))
+			Decor.crate(root, Vector3(0.9, 0.9, 0.9), p, rng.randf() * 1.5)
 	# Un sentier de dalles et des lanternes de fer du ponton à la terrasse
 	var a := Vector3(ile.dock_start.x, 0, ile.dock_start.z)
 	var b: Vector3 = Vector3(T.x, 0, T.z) + to_sea * (ile.TERRACE_SIZE - 1.0)
@@ -568,9 +584,8 @@ func _statue(parent: Node3D, at: Vector3) -> void:
 
 
 func _brazier(parent: Node3D, at: Vector3) -> void:
-	_mesh(parent, _cyl(0.15, 0.25, 1.1, 8), _mat("fer"), at + Vector3.UP * 0.55)
-	_mesh(parent, _cyl(0.5, 0.3, 0.4, 12), _mat("fer"), at + Vector3.UP * 1.25)
-	_mesh(parent, _sphere(0.32, 10), _mat("braise"), at + Vector3.UP * 1.38, Vector3.ZERO, Vector3(1, 0.4, 1))
+	# V53 : vasque de fer forgé sur trépied, charbons et braises
+	Decor.brazier(parent, at, _mat("braise"))
 	_pending_fires.append([parent, at + Vector3.UP * 1.5, 0.22, 20])
 	_light(parent, at + Vector3.UP * 1.9, Color(1.0, 0.55, 0.25), 1.6, 9.0)
 
@@ -1024,7 +1039,7 @@ func _kitchen(parent: Node3D, at: Vector3) -> void:
 	sm.position = Vector3(0, 1.2, 0)
 	_light(k, Vector3(0, 0.9, 0.6), Color(1.0, 0.55, 0.25), 1.4, 7.0)
 	# Table, bancs, bols
-	_mesh(k, _box_mesh(Vector3(2.4, 0.12, 0.9)), _mat("bois"), Vector3(-2.6, 0.85, 0.4))
+	_mesh(k, _box_mesh(Vector3(2.4, 0.12, 0.9)), Decor.planks(Color(0.75, 0.6, 0.45)), Vector3(-2.6, 0.85, 0.4))
 	for px in [-3.6, -1.6]:
 		_mesh(k, _box_mesh(Vector3(0.12, 0.8, 0.7)), _mat("bois"), Vector3(px, 0.4, 0.4))
 	for bz in [-0.35, 1.15]:
@@ -1032,7 +1047,7 @@ func _kitchen(parent: Node3D, at: Vector3) -> void:
 	for j in range(4):
 		_mesh(k, _cyl(0.1, 0.07, 0.07, 10), _mat("bois"), Vector3(-3.4 + j * 0.55, 0.95, 0.4))
 	# Sacs et tonneau de bière
-	_mesh(k, _cyl(0.4, 0.4, 0.9, 12), _mat("bois"), Vector3(1.8, 0.45, -0.9))
+	Decor.barrel(k, Vector3(1.8, 0.0, -0.9), 0.4, 0.9)
 	_mesh(k, _sphere(0.35, 10), _cloth_mat(Color(0.75, 0.66, 0.5)), Vector3(2.2, 0.3, 0.6), Vector3.ZERO, Vector3(1, 0.9, 0.8))
 
 

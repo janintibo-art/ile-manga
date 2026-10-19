@@ -121,6 +121,7 @@ func _ready() -> void:
 	_create_sfx_v50()
 	_create_music_v51()
 	_create_v52()
+	_create_decor_v53()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -320,8 +321,8 @@ func _create_lighting() -> void:
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
 	env.fog_light_color = Color(0.66, 0.77, 0.9)
-	env.fog_density = 0.0016
-	env.fog_aerial_perspective = 0.75
+	env.fog_density = 0.0011                 # V53 : les îles lointaines ne sont plus délavées
+	env.fog_aerial_perspective = 0.6
 	env.fog_sky_affect = 0.15
 	# Occlusion ambiante et lumière rebondie de près : PC et VR (RTX 4070).
 	env.ssao_enabled = true
@@ -575,64 +576,11 @@ func _create_scenery_v6() -> void:
 
 	# V26 : galets et pierres sculptés (bruit 3D), teintés par instance.
 	_scatter_v6("Galets_plage_v6", Rocks.pebble(89111), Color(0.95, 0.9, 0.82), 280 if high_quality else 130, 2, 89111)
-	_scatter_v6("Pierres_village_v6", Rocks.flat_stone(92231), Color(0.85, 0.8, 0.7), 240 if high_quality else 110, 3, 92231)
+	# V53 : quelques pierres arrondies, à moitié enterrées (plus de « crêpes » sur la pelouse).
+	_scatter_v6("Pierres_village_v6", Rocks.pebble(92231), Color(0.72, 0.7, 0.64), 70 if high_quality else 40, 3, 92231)
 
-	# Sentier entre feu central et maisons : pierres affleurantes, sans collision.
-	var slab := CylinderMesh.new()
-	slab.top_radius = 0.53
-	slab.bottom_radius = 0.59
-	slab.height = 0.07
-	var path_material := _material(Color(0.73, 0.67, 0.54))
-	for j in range(18):
-		var t := float(j) / 17.0
-		var px := lerpf(0.0, 9.0, t)
-		var pz := 4.0 + 0.4 * sin(t * PI)
-		var step_stone := MeshInstance3D.new()
-		step_stone.name = "Sentier_village_v6"
-		step_stone.mesh = slab
-		step_stone.material_override = path_material
-		step_stone.position = Vector3(px, _height_at(px, pz) + 0.04, pz)
-		step_stone.scale = Vector3(1.0, 1.0, 0.65)
-		step_stone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(step_stone)
+	# V53 : sentiers dallés et lanternes de village (remplacent Sentier_village_v6 et Lanterne_chaude_v6) : voir decor_v53.gd.
 
-	# Lanternes au village : lumière chaude réservée à quelques points.
-	var wood := _material(Color(0.28, 0.20, 0.13))
-	var amber := StandardMaterial3D.new()
-	amber.albedo_color = Color(1.0, 0.78, 0.39)
-	amber.emission_enabled = true
-	amber.emission = Color(1.0, 0.52, 0.16)
-	amber.emission_energy_multiplier = 1.8
-	for coord in [Vector2(4.0, 8.0), Vector2(-6.0, 7.0), Vector2(6.0, -1.0), Vector2(-4.0, -3.0)]:
-		var h := _height_at(coord.x, coord.y)
-		var pole := MeshInstance3D.new()
-		pole.name = "Lanterne_poteau_v6"
-		var rod := CylinderMesh.new()
-		rod.top_radius = 0.08
-		rod.bottom_radius = 0.12
-		rod.height = 2.1
-		pole.mesh = rod
-		pole.material_override = wood
-		pole.position = Vector3(coord.x, h + 1.05, coord.y)
-		add_child(pole)
-		_add_obstacle_cylinder_v11("Lanterne_collision_v23", pole.position, 0.16, 2.1)
-		var bulb := MeshInstance3D.new()
-		bulb.name = "Lanterne_chaude_v6"
-		var orb := SphereMesh.new()
-		orb.radius = 0.20
-		orb.height = 0.40
-		bulb.mesh = orb
-		bulb.material_override = amber
-		bulb.position = Vector3(coord.x, h + 2.22, coord.y)
-		add_child(bulb)
-		if high_quality:
-			var light := OmniLight3D.new()
-			light.light_color = Color(1.0, 0.72, 0.42)
-			light.light_energy = 0.30
-			light.omni_range = 5.0
-			light.shadow_enabled = false
-			light.position = bulb.position
-			add_child(light)
 
 # Décors V7 séparés du gameplay pour ne pas toucher à OpenXR/aux contrôles.
 # Details uniquement visuels. Aucun changement des collisions ni des commandes VR.
@@ -692,13 +640,7 @@ func _create_village() -> void:
 	camp_light_v24.position = Vector3(0, camp_y + 1.1, 4)
 	add_child(camp_light_v24)
 	_create_fire_v24(Vector3(0, camp_y + 0.55, 4))
-	var sign := Label3D.new()
-	sign.text = "Bienvenue sur Île Manga"
-	sign.font_size = 48
-	sign.pixel_size = 0.003
-	sign.modulate = Color(0.98, 0.95, 0.78)
-	sign.position = Vector3(-2, camp_y + 2.2, 4)
-	add_child(sign)
+	# V53 : le panneau d'accueil est un vrai panneau de bois (decor_v53.gd).
 
 
 func _add_glb(resource_file: String, model_name: String, world_pos: Vector3, scale_factor: float, angle: float) -> Node3D:
@@ -814,6 +756,58 @@ func _create_players() -> void:
 	xr_restart_button.position = Vector2(20, 108)
 	xr_restart_button.pressed.connect(_restart_xr)
 	hud.add_child(xr_restart_button)
+	_hud_v53(hud)
+
+
+## V53 : les messages s'affichent dans un cadre centré en haut de l'écran, avec retour à la
+## ligne ; l'aide des touches s'efface après 15 s de jeu (F1 pour la revoir).
+var message_panel_v53: PanelContainer
+var info_clock_v53: float = 15.0
+
+func _hud_v53(hud: CanvasLayer) -> void:
+	message_panel_v53 = PanelContainer.new()
+	message_panel_v53.name = "Cadre_message_v53"
+	var st := StyleBoxFlat.new()
+	st.bg_color = Color(0.025, 0.08, 0.12, 0.82)
+	st.border_color = Color(0.98, 0.76, 0.32, 0.9)
+	st.set_border_width_all(2)
+	st.set_corner_radius_all(12)
+	st.content_margin_left = 22
+	st.content_margin_right = 22
+	st.content_margin_top = 10
+	st.content_margin_bottom = 12
+	message_panel_v53.add_theme_stylebox_override("panel", st)
+	message_panel_v53.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	message_panel_v53.offset_left = -460
+	message_panel_v53.offset_right = 460
+	message_panel_v53.offset_top = 64
+	message_panel_v53.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	message_panel_v53.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	message_panel_v53.visible = false
+	hud.add_child(message_panel_v53)
+	message.get_parent().remove_child(message)
+	message.position = Vector2.ZERO
+	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	message.custom_minimum_size = Vector2(876, 0)
+	message.add_theme_font_size_override("font_size", 19)
+	message.add_theme_color_override("font_color", Color(0.97, 0.95, 0.88))
+	message_panel_v53.add_child(message)
+	info.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+	info.add_theme_constant_override("outline_size", 4)
+
+
+func _hud_tick_v53(delta: float) -> void:
+	if message_panel_v53 != null:
+		var covered: bool = (inventory_v28 != null and inventory_v28.opened) or (game_menu != null and game_menu.opened and game_started)
+		message_panel_v53.visible = message.visible and message.text != "" and not covered
+	if info == null or xr_active:
+		return
+	var playing: bool = game_started and game_menu != null and not game_menu.opened
+	if playing and info_clock_v53 > 0.0:
+		info_clock_v53 -= delta
+	var target: float = 1.0 if (not playing or info_clock_v53 > 0.0) else 0.0
+	info.modulate.a = move_toward(info.modulate.a, target, delta * 1.5)
 
 
 func _make_hand(controller: XRController3D, color: Color) -> void:
@@ -869,8 +863,10 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  clic droit : caméra  •  Échap : quitter"
+		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu  •  F11 : plein écran  •  F1 : aide"
 		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
+		message_clock_v28 = 6.0
+		xr_restart_button.visible = false
 		print("ILE_MANGA_NATIVE_STATUS: ", message.text)
 		return
 	if xr_active:
@@ -1095,6 +1091,7 @@ func _physics_process(delta: float) -> void:
 		message_clock_v28 -= delta
 		if message_clock_v28 <= 0.0 and message != null:
 			message.text = ""
+	_hud_tick_v53(delta)
 
 
 func _move_xr(delta: float) -> void:
@@ -1271,6 +1268,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_interact_v28()
 		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
 			inventory_v28.toggle()
+		elif event.keycode == KEY_F1 and info != null:
+			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
 		elif event.keycode == KEY_F5 and game_started:
 			_save_slot(game_menu.active_slot)
 		elif event.keycode == KEY_F9 and game_started:
@@ -1508,21 +1507,20 @@ func _particles_v24(label: String, at: Vector3, amount: int, lifetime: float, si
 
 
 func _create_fire_v24(at: Vector3) -> void:
+	# V53 : flammes orangées moins nombreuses (l'addition des particules ne sature plus en
+	# une boule blanche quand il n'y a pas de modèle de feu dessous).
 	var flames := Gradient.new()
-	flames.set_color(0, Color(1.0, 0.85, 0.45, 0.0))
-	flames.add_point(0.12, Color(1.0, 0.72, 0.28, 0.95))
-	flames.add_point(0.5, Color(0.95, 0.32, 0.06, 0.7))
-	flames.set_color(flames.get_point_count() - 1, Color(0.4, 0.06, 0.02, 0.0))
-	_particles_v24("Flammes_v24", at, 64, 0.85, 0.55, flames, true, Vector2(0.6, 1.4), 0.28)
+	flames.set_color(0, Color(1.0, 0.7, 0.3, 0.0))
+	flames.add_point(0.12, Color(1.0, 0.55, 0.16, 0.32))
+	flames.add_point(0.5, Color(0.9, 0.26, 0.05, 0.24))
+	flames.set_color(flames.get_point_count() - 1, Color(0.35, 0.05, 0.02, 0.0))
+	_particles_v24("Flammes_v24", at, 40, 0.8, 0.42, flames, true, Vector2(0.6, 1.3), 0.22)
 	var embers := Gradient.new()
 	embers.set_color(0, Color(1.0, 0.7, 0.3, 1.0))
 	embers.set_color(1, Color(1.0, 0.3, 0.05, 0.0))
 	_particles_v24("Braises_v24", at + Vector3.UP * 0.3, 24, 2.2, 0.05, embers, true, Vector2(1.0, 2.2), 0.3)
-	var smoke := Gradient.new()
-	smoke.set_color(0, Color(0.35, 0.33, 0.32, 0.0))
-	smoke.add_point(0.2, Color(0.32, 0.31, 0.3, 0.32))
-	smoke.set_color(smoke.get_point_count() - 1, Color(0.5, 0.5, 0.52, 0.0))
-	_particles_v24("Fumee_v24", at + Vector3.UP * 1.0, 26, 4.5, 1.4, smoke, false, Vector2(0.5, 0.9), 0.25)
+	# V53 : volutes claires qui montent et s'élargissent (plus de boule grise).
+	preload("res://scripts/decor_v53.gd").smoke(self, at + Vector3.UP * 1.3)
 
 
 # V27 : position du joueur (tête en VR, corps au PC) pour les portes.
@@ -1680,7 +1678,8 @@ func _spawn_world_v28() -> void:
 func _show_message_v28(text: String) -> void:
 	if message != null:
 		message.text = text
-		message_clock_v28 = 3.0
+		# V53 : le temps de lire (environ 20 lettres par seconde), entre 3 et 12 s
+		message_clock_v28 = clampf(1.5 + text.length() * 0.05, 3.0, 12.0)
 
 
 func _door_distance_v28() -> float:
@@ -2498,6 +2497,7 @@ func _close_dialogue_v31() -> void:
 ## V49 : les ambiances sonores (nappes, émetteurs, sons ponctuels).
 var ambiance_v49: Node
 ## V50 : les bruitages d'action (sfx_v50.gd).
+var decor_v53: Node3D                      # V53 : finitions du village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
 var music_v51: Node                       # V51 : la musique (musique_v51.gd)
@@ -2508,6 +2508,13 @@ func _create_sfx_v50() -> void:
 	sfx_v50.name = "Bruitages_v50"
 	add_child(sfx_v50)
 	sfx_v50.setup(self)
+
+
+func _create_decor_v53() -> void:
+	decor_v53 = preload("res://scripts/decor_v53.gd").new()
+	decor_v53.name = "Decor_village_v53"
+	add_child(decor_v53)
+	decor_v53.build(self, OS.has_feature("ile_manga_pc"))
 
 
 func _create_v52() -> void:

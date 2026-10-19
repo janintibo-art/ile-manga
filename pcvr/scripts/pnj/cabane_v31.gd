@@ -59,6 +59,13 @@ func build(main: Node, at: Vector3, facing: Vector3, inventory: Node, sea_dir: V
 	fire_world.y = main._height_at(fire_world.x, fire_world.z)
 	_fire_ring(fire_world)
 	main._create_fire_v24(fire_world + Vector3.UP * 0.15)
+	var glow := OmniLight3D.new()
+	glow.name = "Lueur_feu_Barnabe_v53"
+	glow.light_color = Color(1.0, 0.55, 0.25)
+	glow.light_energy = 1.2
+	glow.omni_range = 6.0
+	get_parent().add_child(glow)
+	glow.global_position = fire_world + Vector3.UP * 0.7
 	main._add_obstacle_cylinder_v11("Feu_Barnabe_collision", fire_world + Vector3.UP * 0.3, 0.75, 0.6)
 	points = {
 		"porche": to_global(Vector3(-0.6, FLOOR_Y, D * 0.5 + 0.7)),
@@ -209,6 +216,7 @@ func _roof() -> void:
 	for sz in [-1.0, 1.0]:
 		var center := Vector3(0, (ridge_y + eave_y) * 0.5, zc + sz * half_span * 0.5)
 		_box(Vector3(W + 1.0, 0.06, slope_len), center, _dark, false, Vector3(ang * sz, 0, 0))
+		_cam_block(Vector3(W + 1.0, 0.35, slope_len), center + Vector3.UP * 0.12, Vector3(ang * sz, 0, 0))
 		# Couches de palmes séchées, du bas vers le faîte, qui se recouvrent.
 		var rows: int = 6
 		for r in range(rows):
@@ -366,12 +374,19 @@ func _sign() -> void:
 	_box(Vector3(1.3, 0.55, 0.05), post_pos + Vector3(0, 1.45, 0.06), _wood, false)
 	var lbl := Label3D.new()
 	lbl.text = "CHEZ BARNABÉ\nCoquillages & sagesse"
+	# V53 : le texte tient dans la planche (1,3 m), sur les deux faces
 	lbl.font_size = 64
-	lbl.pixel_size = 0.0028
+	lbl.pixel_size = 0.0016
+	lbl.shaded = true
+	lbl.double_sided = false
 	lbl.modulate = Color(0.25, 0.14, 0.07)
 	lbl.outline_size = 0
 	lbl.position = post_pos + Vector3(0, 1.45, 0.095)
 	add_child(lbl)
+	var back := lbl.duplicate() as Label3D
+	back.position = post_pos + Vector3(0, 1.45, 0.025)
+	back.rotation.y = PI
+	add_child(back)
 
 
 func _fire_ring(at: Vector3) -> void:
@@ -400,3 +415,19 @@ func _fire_ring(at: Vector3) -> void:
 		wood_log.rotation = Vector3(PI * 0.5, TAU * i / 3.0, 0.25)
 		wood_log.position = Vector3(0, 0.1, 0)
 		root.add_child(wood_log)
+
+
+## V53 : un bloc qui arrête seulement la caméra (calque 9), pour les toits.
+func _cam_block(size: Vector3, pos: Vector3, rot: Vector3 = Vector3.ZERO) -> void:
+	var body := StaticBody3D.new()
+	body.name = "Toit_camera_v53"
+	body.collision_layer = 256
+	body.collision_mask = 0
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = size
+	cs.shape = bs
+	body.add_child(cs)
+	body.position = pos
+	body.rotation = rot
+	add_child(body)

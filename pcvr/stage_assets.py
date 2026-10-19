@@ -24,6 +24,8 @@ selected = [
     "models/props/Table_de_mixage.glb",
     "models/props/Distributeur_8_6.glb",
     "models/props/Corde.glb",
+    "textures/pnj/habitant_sobre.png",
+    "textures/ui/ile_manga_logo.png",
     "textures/terrain/grass.jpg",
     "textures/terrain/sand.jpg",
     "textures/terrain/stone.jpg",

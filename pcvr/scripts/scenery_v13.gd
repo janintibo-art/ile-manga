@@ -127,8 +127,15 @@ func _make_site(center: Vector2, height: float, seed_value: int, ground: Callabl
 	var pool := pool_center(center)
 	# Le fond du bassin est exactement 1,3 m sous le niveau de l'eau (voir carve).
 	var water_y: float = float(ground.call(pool.x, pool.y)) + 1.3
+	# V53 : l'eau ne sort plus de la paroi un mètre sous le sommet : un torrent court sur le
+	# plateau et se jette par-dessus le rebord.
+	var top_front: float = _top_at(central[0], c3 + f * (FRONT - 0.9))
+	if top_front > -INF:
+		lip_y = top_front - 0.06
 	_make_pool(Vector3(pool.x, water_y, pool.y), pc)
 	_make_fall(c3, f, r, lip_y, water_y, pc)
+	_make_stream(central[0], c3, f, r, lip_y, pc, seed_value)
+	_pool_rocks(body, rock_mat, Vector3(pool.x, water_y, pool.y), f, seed_value, pc)
 	sites_info.append({"c3": c3, "f": f, "r": r, "yaw": yaw, "water_y": water_y, "lip_y": lip_y,
 		"mesh": central[0], "shape": central[1], "body": body, "rock_mat": rock_mat})
 
@@ -145,6 +152,110 @@ func _rock(body: StaticBody3D, mat: Material, seed_value: int, pos: Vector3, siz
 	var cs: CollisionShape3D = Rocks.collision_for(mesh, Transform3D(Basis(Vector3.UP, yaw), pos))
 	body.add_child(cs)
 	return [item, cs]
+
+
+## V53 : hauteur du dessus du bloc central à la verticale du point p (rayon vers le bas).
+func _top_at(item: MeshInstance3D, p: Vector3) -> float:
+	var xf: Transform3D = item.transform
+	var faces: PackedVector3Array = item.mesh.get_faces()
+	var o := Vector3(p.x, p.y + 400.0, p.z)
+	var best: float = -INF
+	for i in range(0, faces.size(), 3):
+		var hit: Variant = Geometry3D.ray_intersects_triangle(o, Vector3.DOWN, xf * faces[i], xf * faces[i + 1], xf * faces[i + 2])
+		if hit != null:
+			best = maxf(best, (hit as Vector3).y)
+	return best
+
+
+## V53 : le torrent du plateau — il naît au pied d'un amas de rochers et court jusqu'au rebord.
+func _make_stream(item: MeshInstance3D, c3: Vector3, f: Vector3, r: Vector3, lip_y: float, pc: bool, seed_value: int) -> void:
+	var rows: int = 14
+	var cols: int = 4
+	var z0: float = FRONT - 0.2
+	var z1: float = FRONT - 6.6
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var grid: Array = []
+	var last_y: float = lip_y + 0.12
+	for j in range(rows + 1):
+		var t: float = float(j) / float(rows)          # 0 : source, 1 : rebord
+		var z: float = lerpf(z1, z0, t)
+		var width: float = lerpf(2.2, 4.2, pow(t, 1.4))
+		var wiggle: float = sin(t * 5.0 + float(seed_value)) * 0.35 * (1.0 - t)
+		var mid: Vector3 = c3 + f * z + r * wiggle
+		var y: float = _top_at(item, mid)
+		y = (maxf(y, last_y - 0.25) if y > -INF else last_y) + 0.05
+		if j == rows:
+			y = lip_y + 0.12
+		last_y = y
+		var row: Array = []
+		for i in range(cols + 1):
+			var a: float = float(i) / float(cols)
+			var p: Vector3 = mid + r * ((a - 0.5) * width)
+			p.y = y
+			row.append([p, Vector2(a, t)])
+		grid.append(row)
+	for j in range(rows):
+		for i in range(cols):
+			for idx in [[j, i], [j, i + 1], [j + 1, i], [j, i + 1], [j + 1, i + 1], [j + 1, i]]:
+				var v: Array = grid[idx[0]][idx[1]]
+				st.set_normal(Vector3.UP)
+				st.set_uv(v[1])
+				st.add_vertex(v[0])
+	var stream := MeshInstance3D.new()
+	stream.name = "Torrent_plateau_v53_%d" % seed_value
+	stream.mesh = st.commit()
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/waterfall_v26.gdshader")
+	mat.set_shader_parameter("fall_length", z0 - z1)
+	mat.set_shader_parameter("flow_speed", 1.2)
+	stream.material_override = mat
+	stream.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(stream)
+	# La source : un amas de rochers moussus d'où l'eau jaillit.
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 5300
+	var src: Vector3 = (grid[0][cols / 2][0] as Vector3)
+	var mat_r: Material = Rocks.material(Color(0.66, 0.65, 0.6), 0.6, 0.15)
+	for k in range(5 if pc else 3):
+		var s: float = rng.randf_range(0.9, 1.7)
+		var mi := MeshInstance3D.new()
+		mi.name = "Source_rocher_v53"
+		mi.mesh = Rocks.shape(seed_value + 5310 + k, Vector3(s * 1.4, s, s * 1.2), 0.7, 0.24, 0.6, 20 if pc else 14)
+		mi.material_override = mat_r
+		mi.position = src - f * rng.randf_range(0.3, 1.2) + r * rng.randf_range(-1.6, 1.6) + Vector3.UP * (s * 0.25)
+		mi.rotation.y = rng.randf() * TAU
+		add_child(mi)
+	# Des galets sur les berges du torrent.
+	for k in range(10 if pc else 5):
+		var t2: float = rng.randf_range(0.1, 0.85)
+		var row2: Array = grid[int(t2 * rows)]
+		var side: float = -1.0 if k % 2 == 0 else 1.0
+		var edge: Vector3 = (row2[0][0] if side < 0.0 else row2[cols][0]) as Vector3
+		var mi2 := MeshInstance3D.new()
+		mi2.mesh = Rocks.pebble(seed_value + 5330 + k)
+		mi2.position = edge + r * side * rng.randf_range(0.0, 0.25) + Vector3.UP * 0.02
+		mi2.scale = Vector3.ONE * rng.randf_range(0.6, 1.3)
+		mi2.rotation.y = rng.randf() * TAU
+		add_child(mi2)
+
+
+## V53 : rochers à demi immergés sur le pourtour du bassin (le bord n'est plus un cercle net).
+## Le côté de la chute reste libre (on passe derrière le rideau d'eau).
+func _pool_rocks(body: StaticBody3D, mat: Material, pool: Vector3, f: Vector3, seed_value: int, pc: bool) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 5400
+	var back := Vector2(-f.x, -f.z).normalized()
+	var n: int = 13 if pc else 9
+	for k in range(n):
+		var a: float = TAU * (float(k) + rng.randf_range(-0.3, 0.3)) / float(n)
+		var dir := Vector2(cos(a), sin(a))
+		if dir.dot(back) > 0.35:
+			continue
+		var rad: float = POOL_RADIUS + rng.randf_range(-0.6, 0.3)
+		var s: float = rng.randf_range(0.6, 1.25)
+		var pos := Vector3(pool.x + dir.x * rad, pool.y - s * 0.22, pool.z + dir.y * rad)
+		_rock(body, mat, seed_value + 5410 + k, pos, Vector3(s * 1.4, s, s * 1.15), rng.randf() * TAU, 0.75, 0.25, 0.5, pc)
 
 
 # Nappe d'eau : déversoir sur le plateau, puis chute parabolique jusqu'au bassin.

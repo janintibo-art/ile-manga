@@ -1085,7 +1085,8 @@ func _update_camera() -> void:
 		pivot = mid
 		wanted = mid + side * (2.6 + dist * 0.4) - fwd * 1.2 + Vector3.UP * 0.35
 	var space := body.get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(pivot, wanted, 1, [body.get_rid()])
+	# V53 : calque 9 (256) = toits et auvents qui arrêtent la caméra sans gêner le joueur.
+	var q := PhysicsRayQueryParameters3D.create(pivot, wanted, 1 | 256, [body.get_rid()])
 	var hit := space.intersect_ray(q)
 	var place: Vector3 = wanted
 	if not hit.is_empty():

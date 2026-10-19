@@ -55,7 +55,15 @@ void fragment() {
 	vec2 uv2 = water_position.xz * 0.11 + vec2(-TIME * 0.018, TIME * 0.013);
 	vec3 n1 = texture(ripple_n, uv1).xyz * 2.0 - 1.0;
 	vec3 n2 = texture(ripple_n, uv2).xyz * 2.0 - 1.0;
-	NORMAL_MAP = normalize(vec3(n1.xy + n2.xy, n1.z * n2.z)) * 0.5 + 0.5;
+	// V53 : au loin, les petites vaguelettes s'effacent au profit d'une houle large : la
+	// texture ne se répète plus en moiré jusqu'à l'horizon.
+	float view_dist = length(CAMERA_POSITION_WORLD - water_position);
+	float far = smoothstep(45.0, 320.0, view_dist);
+	vec3 n3 = texture(ripple_n, water_position.xz * 0.0095 + vec2(TIME * 0.004, -TIME * 0.003)).xyz * 2.0 - 1.0;
+	vec3 ripple = normalize(vec3(n1.xy + n2.xy, n1.z * n2.z));
+	ripple = normalize(mix(ripple, vec3(n3.xy * 0.7, 1.0), far * 0.75));
+	ripple.xy *= mix(1.0, 0.35, far);
+	NORMAL_MAP = ripple * 0.5 + 0.5;
 
 	// Lagon clair près de l'île, bleu profond au large.
 	float lagoon;
@@ -75,7 +83,7 @@ void fragment() {
 		foam = (1.0 - smoothstep(0.4, 2.6, abs(radius - coast))) * smoothstep(0.3, 0.8, n1.x * 0.5 + 0.5) * 0.8;
 	}
 	vec3 col = mix(deep_color, shallow_color, lagoon);
-	col *= mix(0.92, 1.06, texture(water_tex, uv1 * 2.0).r);
+	col *= mix(1.0, mix(0.92, 1.06, texture(water_tex, uv1 * 2.0).r), 1.0 - far);
 	ALBEDO = mix(col, vec3(0.9, 0.95, 0.96), foam);
 	ROUGHNESS = mix(0.06, 0.6, foam);
 	METALLIC = 0.0;

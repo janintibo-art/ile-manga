@@ -305,17 +305,30 @@ func _torch(parent: Node3D, pos: Vector3, facing: Vector3, energy: float = 1.6) 
 	parent.add_child(root)
 	root.position = pos
 	root.rotation.y = atan2(facing.x, facing.z)
-	var bracket := MeshInstance3D.new()
-	var c := CylinderMesh.new()
-	c.top_radius = 0.06
-	c.bottom_radius = 0.035
-	c.height = 0.45
-	bracket.mesh = c
-	bracket.material_override = _mat("bois")
-	bracket.position = Vector3(0, 0, 0.12)
-	bracket.rotation.x = 0.35
-	root.add_child(bracket)
-	_fire(root, Vector3(0, 0.3, 0.2), 0.12, 18)
+	# V53 : support de fer scellé au mur, manche de bois, tête de tissu goudronné et une
+	# flamme toujours visible (les particules seules disparaissaient de loin).
+	var D = preload("res://scripts/decor_v53.gd")
+	var fe: Material = D.forged_iron()
+	D.box(root, Vector3(0.16, 0.26, 0.03), Vector3(0, -0.02, 0.0), fe)
+	D.box(root, Vector3(0.04, 0.04, 0.2), Vector3(0, -0.06, 0.1), fe)
+	D.cyl(root, 0.055, 0.055, 0.04, Vector3(0, -0.04, 0.2), fe, 10)
+	var handle: MeshInstance3D = D.cyl(root, 0.045, 0.03, 0.5, Vector3(0, 0.06, 0.2), _mat("bois"), 8)
+	handle.rotation.x = 0.3
+	var tar := StandardMaterial3D.new()
+	tar.albedo_color = Color(0.12, 0.08, 0.05)
+	tar.roughness = 0.9
+	var head: MeshInstance3D = D.cyl(root, 0.06, 0.05, 0.14, Vector3(0, 0.3, 0.27), tar, 8)
+	head.rotation.x = 0.3
+	var core := MeshInstance3D.new()
+	var cs := SphereMesh.new()
+	cs.radius = 0.055
+	cs.height = 0.2
+	core.mesh = cs
+	core.material_override = D.flame_core()
+	core.position = Vector3(0, 0.43, 0.3)
+	core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(core)
+	_fire(root, Vector3(0, 0.42, 0.3), 0.08, 18)
 	var light := OmniLight3D.new()
 	light.light_color = Color(1.0, 0.62, 0.3)
 	light.light_energy = energy
@@ -482,17 +495,43 @@ func _build_village_section(at: Vector3, forward: Vector3) -> void:
 	_wall_node.position = Vector3(-1.9, 0, -18)
 	var cracked: MeshInstance3D = _box(_wall_node, Vector3(0.5, 2.8, 2.0), Vector3(0, 1.4, 0), _mat("mur"), false)
 	cracked.name = "Pierre"
+	# V53 : de vraies fissures, brisées et ramifiées (et non des barres noires droites).
 	var crack_m := StandardMaterial3D.new()
-	crack_m.albedo_color = Color(0.08, 0.06, 0.05)
-	for k in range(5):
-		var line := MeshInstance3D.new()
-		var lb := BoxMesh.new()
-		lb.size = Vector3(0.02, 0.5 + k * 0.1, 0.03)
-		line.mesh = lb
-		line.material_override = crack_m
-		line.position = Vector3(0.26, 0.8 + k * 0.35, -0.5 + k * 0.25)
-		line.rotation.x = (k % 2 - 0.5) * 0.9
-		_wall_node.add_child(line)
+	crack_m.albedo_color = Color(0.11, 0.09, 0.08)
+	crack_m.roughness = 1.0
+	var crng := RandomNumberGenerator.new()
+	crng.seed = 3518
+	for k in range(4):
+		var p := Vector2(-0.6 + k * 0.38, 2.3 - (k % 2) * 0.4)        # (z, y) sur la face du mur
+		var ang: float = PI * 0.5 + crng.randf_range(-0.4, 0.4)
+		var width: float = 0.03
+		for seg in range(9):
+			var ln: float = crng.randf_range(0.1, 0.2)
+			ang += crng.randf_range(-0.7, 0.7)
+			ang = clampf(ang, PI * 0.15, PI * 0.85)
+			var d := Vector2(cos(ang), -sin(ang)) * ln
+			var mid: Vector2 = p + d * 0.5
+			var line := MeshInstance3D.new()
+			var lb := BoxMesh.new()
+			lb.size = Vector3(0.015, ln + 0.01, width)
+			line.mesh = lb
+			line.material_override = crack_m
+			line.position = Vector3(0.255, mid.y, mid.x)
+			line.rotation.x = atan2(d.x, -d.y) * -1.0
+			_wall_node.add_child(line)
+			p += d
+			width = maxf(0.008, width * 0.85)
+			if seg == 3 and k % 2 == 0:
+				# une ramification
+				var bd := Vector2(cos(ang + 0.9), -sin(ang + 0.9)) * 0.18
+				var br := MeshInstance3D.new()
+				var bb := BoxMesh.new()
+				bb.size = Vector3(0.015, 0.18, width * 0.7)
+				br.mesh = bb
+				br.material_override = crack_m
+				br.position = Vector3(0.255, p.y + bd.y * 0.5, p.x + bd.x * 0.5)
+				br.rotation.x = atan2(bd.x, -bd.y) * -1.0
+				_wall_node.add_child(br)
 	var wall_body := StaticBody3D.new()
 	wall_body.name = "Mur_fissure_collision"
 	wall_body.collision_layer = 1

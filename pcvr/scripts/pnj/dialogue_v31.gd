@@ -26,6 +26,9 @@ var _vr_neutral: bool = true
 var _vr_trigger_ready: bool = false
 var _vr_b_ready: bool = false
 var _npc: Node3D
+var _portrait_vp: SubViewport           # V53 : portrait du personnage (PC)
+var _portrait_cam: Camera3D
+const COL_W: int = 736
 
 
 func setup(use_xr: bool) -> void:
@@ -55,7 +58,8 @@ func _build_pc() -> void:
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	panel.offset_left = -470
 	panel.offset_right = 470
-	panel.offset_top = -330
+	# V53 : la fenêtre prend la hauteur de son contenu (plus de grand vide sous le texte).
+	panel.offset_top = -60
 	panel.offset_bottom = -24
 	# V33 : avec beaucoup de choix (boutique), le panneau grandit vers le haut.
 	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
@@ -63,9 +67,33 @@ func _build_pc() -> void:
 	ps.set_content_margin_all(18)
 	panel.add_theme_stylebox_override("panel", ps)
 	_layer.add_child(panel)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 16)
+	panel.add_child(row)
+	# V53 : portrait vivant du personnage (une petite caméra filme son visage).
+	var frame := PanelContainer.new()
+	var fs := _style(Color(0.0, 0.0, 0.0, 0.0), Color(0.98, 0.76, 0.32), 12, 2)
+	fs.set_content_margin_all(3)
+	frame.add_theme_stylebox_override("panel", fs)
+	frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	row.add_child(frame)
+	var svc := SubViewportContainer.new()
+	svc.stretch = true
+	svc.custom_minimum_size = Vector2(148, 148)
+	frame.add_child(svc)
+	_portrait_vp = SubViewport.new()
+	_portrait_vp.size = Vector2i(148, 148)
+	_portrait_vp.msaa_3d = Viewport.MSAA_4X
+	_portrait_vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	svc.add_child(_portrait_vp)
+	_portrait_cam = Camera3D.new()
+	_portrait_cam.fov = 32.0
+	_portrait_cam.near = 0.05
+	_portrait_cam.far = 60.0
+	_portrait_vp.add_child(_portrait_cam)
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 8)
-	panel.add_child(col)
+	row.add_child(col)
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 14)
 	col.add_child(head)
@@ -79,7 +107,7 @@ func _build_pc() -> void:
 	head.add_child(_mood)
 	_text = Label.new()
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_text.custom_minimum_size = Vector2(900, 96)
+	_text.custom_minimum_size = Vector2(COL_W, 0)
 	_text.add_theme_font_size_override("font_size", 18)
 	_text.add_theme_color_override("font_color", Color(0.94, 0.95, 0.92))
 	col.add_child(_text)
@@ -125,6 +153,8 @@ func open(npc: Node3D) -> void:
 	_vr_b_ready = false
 	if _layer != null:
 		_layer.visible = true
+		_portrait_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		_aim_portrait()
 	if _vr_panel != null:
 		_vr_panel.visible = true
 
@@ -133,6 +163,7 @@ func close() -> void:
 	opened = false
 	if _layer != null:
 		_layer.visible = false
+		_portrait_vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	if _vr_panel != null:
 		_vr_panel.visible = false
 
@@ -166,7 +197,7 @@ func show_line(who: String, mood_word: String, text: String, new_choices: Array)
 		for i in range(choices.size()):
 			var b := Button.new()
 			b.text = "%d.  %s" % [(i + 1) % 10, choices[i]["label"]]
-			b.custom_minimum_size = Vector2(446 if _box.columns == 2 else 900, 0)
+			b.custom_minimum_size = Vector2(COL_W / 2 - 4 if _box.columns == 2 else COL_W, 0)
 			b.clip_text = true
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.focus_mode = Control.FOCUS_NONE
@@ -190,9 +221,29 @@ func _pick(i: int) -> void:
 	chosen.emit(str(choices[i]["id"]))
 
 
+## V53 : la caméra du portrait se place face au visage du personnage.
+func _aim_portrait() -> void:
+	if _npc == null or _portrait_cam == null or not is_instance_valid(_npc):
+		return
+	var model: Node3D = _npc.get("model")
+	var k: float = model.scale.y if model != null else 0.7
+	var face: Vector3 = _npc.global_position + Vector3.UP * (1.42 * k)
+	if model == null and _npc.get("hit_height") != null:
+		face = _npc.global_position + Vector3.UP * (float(_npc.get("hit_height")) * 0.8)
+	# le personnage se tourne vers le joueur pendant la conversation : on filme de ce côté
+	var cam: Camera3D = get_viewport().get_camera_3d()
+	var fwd: Vector3 = (cam.global_position - _npc.global_position) if cam != null else _npc.global_basis.z
+	fwd.y = 0.0
+	fwd = fwd.normalized() if fwd.length() > 0.01 else Vector3.BACK
+	var side: Vector3 = fwd.cross(Vector3.UP).normalized()
+	_portrait_cam.global_position = face + fwd * (1.05 * k) + side * (0.18 * k) + Vector3.UP * (0.04 * k)
+	_portrait_cam.look_at(face, Vector3.UP)
+
+
 func _process(delta: float) -> void:
 	if not opened or _layer == null:
 		return
+	_aim_portrait()
 	if _text.visible_characters >= 0 and _text.visible_characters < _text.get_total_character_count():
 		_typing += delta * TYPE_SPEED
 		_text.visible_characters = int(_typing)

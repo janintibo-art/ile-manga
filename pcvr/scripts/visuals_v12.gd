@@ -1,4 +1,5 @@
 extends Node3D
+const Decor = preload("res://scripts/decor_v53.gd")
 const Flora = preload("res://scripts/flora_v25.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const Falls = preload("res://scripts/scenery_v13.gd")
@@ -107,6 +108,7 @@ func _create_village_planters(height_fn: Callable, high_quality: bool) -> void:
 	pot_mesh.top_radius = 0.35
 	pot_mesh.bottom_radius = 0.26
 	pot_mesh.height = 0.42
+	pot_mesh.radial_segments = 16
 	var bush_mesh := SphereMesh.new()
 	bush_mesh.radius = 0.42
 	bush_mesh.height = 0.7
@@ -126,9 +128,11 @@ func _create_village_planters(height_fn: Callable, high_quality: bool) -> void:
 		var pot := MeshInstance3D.new()
 		pot.name = "Jardiniere_V12"
 		pot.mesh = pot_mesh
-		pot.material_override = wood
+		pot.material_override = Decor.terracotta()     # V53 : pot de terre cuite à rebord
 		pot.position = Vector3(pos.x, y + 0.21, pos.y)
 		add_child(pot)
+		Decor.cyl(self, 0.38, 0.37, 0.07, Vector3(pos.x, y + 0.42, pos.y), Decor.terracotta(), 16)
+		Decor.cyl(self, 0.33, 0.33, 0.02, Vector3(pos.x, y + 0.44, pos.y), Decor.soil(), 16)
 		# V23 : jardinière et sa plante forment un obstacle solide.
 		var body := StaticBody3D.new()
 		body.name = "Jardiniere_collision_v23"

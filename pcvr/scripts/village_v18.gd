@@ -1,12 +1,14 @@
 extends Node3D
 const Flora = preload("res://scripts/flora_v25.gd")
+const Decor = preload("res://scripts/decor_v53.gd")
 ## V18: village ornamental improvements. V23 : jardinières, bornes et caisses solides.
 
 func build(ground: Callable, pc_quality: bool) -> void:
-	var timber := StandardMaterial3D.new()
-	timber.albedo_color = Color(0.41, 0.26, 0.16)
-	var stone := StandardMaterial3D.new()
-	stone.albedo_color = Color(0.64, 0.59, 0.49)
+	# V53 : vraies matières (planches, pierre taillée, terre) au lieu d'aplats de couleur.
+	var timber: Material = Decor.planks(Color(0.78, 0.62, 0.48))
+	var post_wood: Material = Decor.wood(Color(0.55, 0.42, 0.32))
+	var stone: Material = Decor.stone(Color(0.8, 0.77, 0.7))
+	var soil: Material = Decor.soil()
 	var leaves := StandardMaterial3D.new()
 	leaves.albedo_color = Color(0.24, 0.55, 0.31)
 	var light := StandardMaterial3D.new()
@@ -21,7 +23,12 @@ func build(ground: Callable, pc_quality: bool) -> void:
 		var y: float = float(ground.call(pt.x, pt.y))
 		_add_box("Jardiniere_v18", Vector3(pt.x, y + 0.25, pt.y), Vector3(1.6, 0.45, 0.62), timber)
 		_solid_v23(Vector3(pt.x, y + 0.5, pt.y), Vector3(1.6, 1.0, 0.62))
-		_add_box("Terre_v18", Vector3(pt.x, y + 0.49, pt.y), Vector3(1.42, 0.10, 0.50), stone)
+		_add_box("Terre_v18", Vector3(pt.x, y + 0.46, pt.y), Vector3(1.48, 0.06, 0.52), soil)
+		for cx in [-0.78, 0.78]:
+			for cz in [-0.29, 0.29]:
+				_add_box("Jardiniere_coin_v53", Vector3(pt.x + cx, y + 0.27, pt.y + cz), Vector3(0.08, 0.52, 0.08), post_wood)
+		_add_box("Jardiniere_rebord_v53", Vector3(pt.x, y + 0.47, pt.y - 0.31), Vector3(1.66, 0.05, 0.06), post_wood)
+		_add_box("Jardiniere_rebord_v53", Vector3(pt.x, y + 0.47, pt.y + 0.31), Vector3(1.66, 0.05, 0.06), post_wood)
 		for j in range(5 if pc_quality else 3):
 			var x: float = pt.x - 0.56 + float(j) * (1.12 / float(4 if pc_quality else 2))
 			var bloom := MeshInstance3D.new()
@@ -37,12 +44,17 @@ func build(ground: Callable, pc_quality: bool) -> void:
 		var y: float = float(ground.call(pt.x, pt.y))
 		_add_box("Borne_pierre_v18", Vector3(pt.x, y + 0.39, pt.y), Vector3(0.62, 0.78, 0.62), stone)
 		_solid_v23(Vector3(pt.x, y + 0.6, pt.y), Vector3(0.62, 1.2, 0.62))
-		_add_orb("Lueur_v18", Vector3(pt.x, y + 0.95, pt.y), 0.22, light)
+		# V53 : une petite lanterne de fer posée sur la borne (au lieu d'une boule lumineuse)
+		_add_box("Borne_chapeau_v53", Vector3(pt.x, y + 0.8, pt.y), Vector3(0.7, 0.06, 0.7), stone)
+		Decor.lantern(self, Vector3(pt.x, y + 1.33, pt.y), 1.0)
 	# Small grouped props behind the houses, without collision or shadows.
 	for pt in [Vector2(15.0, 12.2), Vector2(-15.1, 14.8)]:
 		var y: float = float(ground.call(pt.x, pt.y))
 		for j in range(2 if pc_quality else 1):
-			_add_box("Caisse_marche_v18", Vector3(pt.x + float(j) * 0.62, y + 0.3, pt.y), Vector3(0.55, 0.6, 0.55), timber)
+			var cx2: float = pt.x + float(j) * 0.62
+			_add_box("Caisse_marche_v18", Vector3(cx2, y + 0.3, pt.y), Vector3(0.55, 0.6, 0.55), timber)
+			for by in [0.04, 0.56]:
+				_add_box("Caisse_cerclage_v53", Vector3(cx2, y + by, pt.y), Vector3(0.57, 0.05, 0.57), post_wood)
 			_solid_v23(Vector3(pt.x + float(j) * 0.62, y + 0.3, pt.y), Vector3(0.55, 0.6, 0.55))
 	print("ILE_MANGA_V18: village amenage, decor sans collision")
 
@@ -66,7 +78,7 @@ func _add_box(label: String, at: Vector3, size: Vector3, material: Material) -> 
 	item.mesh = mesh
 	item.material_override = material
 	item.position = at
-	item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	add_child(item)
 
 func _add_orb(label: String, at: Vector3, radius: float, material: Material) -> void:

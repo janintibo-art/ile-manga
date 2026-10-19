@@ -1,5 +1,6 @@
 extends Node3D
 const Flora = preload("res://scripts/flora_v25.gd")
+const Decor = preload("res://scripts/decor_v53.gd")
 ## V7 : détails graphiques non interactifs. Les pièces sont instanciées en lots.
 
 func _material(color: Color, glow: bool = false) -> StandardMaterial3D:
@@ -57,26 +58,22 @@ func build(height_fn: Callable, pc_quality: bool) -> void:
 					continue
 				posts.append(_placed(x, z, height_fn, Vector3(0.13, 1.2, 0.13), 0.0, 0.6))
 				if i < 8:
-					rails.append(_placed(x + 0.625, z, height_fn, Vector3(1.32, 0.10, 0.10), 0.0, 0.75))
+					rails.append(_placed(x + 0.625, z, height_fn, Vector3(1.32, 0.10, 0.07), rng.randf_range(-0.02, 0.02), 0.82))
+					rails.append(_placed(x + 0.625, z, height_fn, Vector3(1.32, 0.09, 0.07), rng.randf_range(-0.02, 0.02), 0.42))
 	# V23 : piquets, lisses et balises solides, en un seul corps statique.
 	_solidify_v23("Clotures_collision_v23", posts + rails)
-	var post_mesh := BoxMesh.new()
-	_batch("Clotures_piquets_v7", post_mesh, posts, _material(Color(0.43, 0.29, 0.19)), visible_distance)
+	# V53 : piquets de bois fendu (sept pans) et lisses en bois brut texturé.
+	var post_mesh := CylinderMesh.new()
+	post_mesh.top_radius = 0.42
+	post_mesh.bottom_radius = 0.5
+	post_mesh.height = 1.0
+	post_mesh.radial_segments = 7
+	post_mesh.rings = 1
+	_batch("Clotures_piquets_v7", post_mesh, posts, Decor.wood(Color(0.62, 0.52, 0.42)), visible_distance)
 	var rail_mesh := BoxMesh.new()
-	_batch("Clotures_lisses_v7", rail_mesh, rails, _material(Color(0.55, 0.36, 0.21)), visible_distance)
+	_batch("Clotures_lisses_v7", rail_mesh, rails, Decor.wood(Color(0.7, 0.58, 0.46)), visible_distance)
 
-	# Sentier secondaire vers la petite maison, avec pierres irrégulières.
-	var stones: Array[Transform3D] = []
-	for i in range(37):
-		var t := float(i) / 36.0
-		var x: float = lerpf(0.0, -11.0, t) + sin(t * TAU) * 0.8
-		var z: float = lerpf(4.0, 9.0, t)
-		stones.append(_placed(x, z, height_fn, Vector3(rng.randf_range(0.42, 0.76), 0.08, rng.randf_range(0.40, 0.70)), rng.randf_range(-0.5, 0.5), 0.04))
-	var slab := CylinderMesh.new()
-	slab.top_radius = 0.6
-	slab.bottom_radius = 0.65
-	slab.height = 1.0
-	_batch("Sentier_secondaire_v7", slab, stones, _material(Color(0.73, 0.66, 0.53)), visible_distance)
+	# V53 : le sentier vers la petite maison est dallé par decor_v53.gd.
 
 	# Massifs de fleurs groupés près des sentiers : rouges / mauves / dorées.
 	var palette := [Color(0.97, 0.39, 0.48), Color(0.75, 0.52, 0.94), Color(1.0, 0.85, 0.31)]

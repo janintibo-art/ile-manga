@@ -65,10 +65,96 @@ func setup(main_node: Node, profile_data: Dictionary, spots: Dictionary, graph: 
 
 # =================================================================== corps
 
+const SOBER_TEX := "res://assets/textures/pnj/habitant_sobre.png"
+const Studs = preload("res://scripts/pnj/masque_clous_v53.gd")
+static var _sober_cache: Dictionary = {}
+
+## V53 : copie du maillage du héros où les sommets posés sur du métal (pointes des
+## épaules, clous des bracelets, chaînes) sont ramenés au niveau du vêtement voisin.
+## La tête (visage, cheveux) et les semelles ne sont pas touchées. Calculé une fois.
+static func _sober_mesh(src: Mesh) -> Mesh:
+	if src == null or not (src is ArrayMesh):
+		return src
+	if _sober_cache.has(src):
+		return _sober_cache[src]
+	var out := ArrayMesh.new()
+	for sidx in range(src.get_surface_count()):
+		var arr: Array = src.surface_get_arrays(sidx)
+		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		var uv: PackedVector2Array = arr[Mesh.ARRAY_TEX_UV]
+		var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+		if uv.size() != v.size() or idx.is_empty():
+			out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+			out.surface_set_material(out.get_surface_count() - 1, src.surface_get_material(sidx))
+			continue
+		# sommets soudés par position (les coutures d'UV dupliquent les sommets)
+		var key_of: Dictionary = {}
+		var weld := PackedInt32Array()
+		weld.resize(v.size())
+		for i in range(v.size()):
+			var k := Vector3i(roundi(v[i].x * 4000.0), roundi(v[i].y * 4000.0), roundi(v[i].z * 4000.0))
+			if not key_of.has(k):
+				key_of[k] = i
+			weld[i] = key_of[k]
+		var metal: Dictionary = {}
+		for i in range(v.size()):
+			if v[i].y > 0.18 and v[i].y < 1.42 and Studs.is_metal(uv[i]):
+				metal[weld[i]] = true
+		var nb: Dictionary = {}
+		for t in range(0, idx.size(), 3):
+			var a: int = weld[idx[t]]
+			var b: int = weld[idx[t + 1]]
+			var c: int = weld[idx[t + 2]]
+			for pair in [[a, b], [b, c], [c, a]]:
+				if metal.has(pair[0]):
+					if not nb.has(pair[0]):
+						nb[pair[0]] = {}
+					nb[pair[0]][pair[1]] = true
+				if metal.has(pair[1]):
+					if not nb.has(pair[1]):
+						nb[pair[1]] = {}
+					nb[pair[1]][pair[0]] = true
+		# position cible : moyenne des voisins « tissu », propagée vers le cœur des pointes
+		var pos: Dictionary = {}
+		var settled: Dictionary = {}
+		for _pass in range(8):
+			var changed := false
+			for m in metal:
+				if settled.has(m):
+					continue
+				var acc := Vector3.ZERO
+				var n: int = 0
+				for o in nb.get(m, {}):
+					if not metal.has(o):
+						acc += v[o]
+						n += 1
+					elif settled.has(o):
+						acc += pos[o]
+						n += 1
+				if n > 0:
+					pos[m] = acc / float(n)
+					settled[m] = true
+					changed = true
+			if not changed:
+				break
+		for i in range(v.size()):
+			var w: int = weld[i]
+			if settled.has(w):
+				v[i] = pos[w]
+		arr[Mesh.ARRAY_VERTEX] = v
+		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+		out.surface_set_material(out.get_surface_count() - 1, src.surface_get_material(sidx))
+	_sober_cache[src] = out
+	return out
+
+
 func _build_body() -> void:
 	var packed: PackedScene = load("res://assets/models/characters/hero.glb")
 	model = packed.instantiate()
 	add_child(model)
+	# V53 : les habitants n'ont pas les pointes et les clous de la tenue du héros.
+	for mi0 in model.find_children("*", "MeshInstance3D", true, false):
+		(mi0 as MeshInstance3D).mesh = _sober_mesh((mi0 as MeshInstance3D).mesh)
 	model.rotation.y = 0.0
 	anim = model.find_child("AnimationPlayer", true, false)
 	var found := model.find_children("*", "Skeleton3D", true, false)
@@ -95,6 +181,8 @@ func _build_body() -> void:
 	var elf: Dictionary = profile.get("elfe", profile.get("nain", {}))
 	if not elf.is_empty() and ResourceLoader.exists(str(elf.get("texture", ""))):
 		skin_tex = load(str(elf["texture"]))
+	elif ResourceLoader.exists(SOBER_TEX):
+		skin_tex = load(SOBER_TEX)       # V53 : tenue sans clous ni chaînes
 	for mi in model.find_children("*", "MeshInstance3D", true, false):
 		var m: MeshInstance3D = mi
 		for s in range(m.mesh.get_surface_count()):

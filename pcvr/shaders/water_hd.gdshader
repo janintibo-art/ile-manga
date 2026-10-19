@@ -80,7 +80,11 @@ void fragment() {
 	vec3 n2 = texture(ripple_n, uv2).xyz * 2.0 - 1.0;
 	vec3 ripple = normalize(vec3(n1.xy + n2.xy, n1.z * n2.z));
 	float view_dist = length(CAMERA_POSITION_WORLD - wpos);
-	ripple.xy *= mix(1.0, 0.25, smoothstep(40.0, 400.0, view_dist));
+	// V53 : au loin, houle large plutôt que vaguelettes répétées (pas de moiré à l'horizon).
+	float far = smoothstep(45.0, 320.0, view_dist);
+	vec3 n3 = texture(ripple_n, wpos.xz * 0.0095 + vec2(TIME * 0.004, -TIME * 0.003)).xyz * 2.0 - 1.0;
+	ripple = normalize(mix(ripple, vec3(n3.xy * 0.7, 1.0), far * 0.75));
+	ripple.xy *= mix(1.0, 0.3, far);
 	NORMAL_MAP = ripple * 0.5 + 0.5;
 	NORMAL_MAP_DEPTH = 1.0;
 

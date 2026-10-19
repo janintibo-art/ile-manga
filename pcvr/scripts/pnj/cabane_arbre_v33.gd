@@ -341,6 +341,7 @@ func _roof() -> void:
 	var xc: float = (ROOM_X0 + X1) * 0.5
 	var w: float = X1 - ROOM_X0 + 0.9
 	_box(Vector3(w, 0.06, slope_len), Vector3(xc, (hi + lo) * 0.5, (front_z + back_z) * 0.5), _dark, false, Vector3(-ang, 0, 0))
+	_cam_block(Vector3(w, 0.35, slope_len), Vector3(xc, (hi + lo) * 0.5 + 0.12, (front_z + back_z) * 0.5), Vector3(-ang, 0, 0))
 	var rows: int = 7
 	for r in range(rows):
 		var u: float = (float(r) + 0.5) / rows
@@ -493,3 +494,19 @@ func _sign(foot_g: float) -> void:
 	lbl2.outline_modulate = Color(0.2, 0.1, 0.05)
 	lbl2.position = Vector3(3.05, deck_y + WALL_H - 0.12, ROOM_Z1 + 0.08)
 	add_child(lbl2)
+
+
+## V53 : un bloc qui arrête seulement la caméra (calque 9), pour les toits.
+func _cam_block(size: Vector3, pos: Vector3, rot: Vector3 = Vector3.ZERO) -> void:
+	var body := StaticBody3D.new()
+	body.name = "Toit_camera_v53"
+	body.collision_layer = 256
+	body.collision_mask = 0
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = size
+	cs.shape = bs
+	body.add_child(cs)
+	body.position = pos
+	body.rotation = rot
+	add_child(body)

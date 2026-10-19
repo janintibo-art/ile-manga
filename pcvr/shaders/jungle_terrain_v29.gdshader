@@ -74,7 +74,9 @@ void fragment() {
 	float rock_w = smoothstep(0.52, 0.62, slope + (patch - 0.5) * 0.06);
 
 	vec3 sand = untiled(sand_tex, uv * 1.25, mixer).rgb * vec3(0.98, 0.93, 0.82);
-	vec3 soil = untiled(soil_tex, uv * 0.8, mixer).rgb;
+	// V53 : feuilles mortes à leur vraie taille (une dizaine de cm), deux échelles mêlées
+	// pour que le motif ne se répète pas.
+	vec3 soil = mix(untiled(soil_tex, uv * 1.85, mixer).rgb, untiled(soil_tex, uv * 0.73 + vec2(0.37, 0.61), 1.0 - mixer).rgb, 0.32);
 	vec3 moss = untiled(moss_tex, uv * 0.9, mixer).rgb * mix(vec3(0.85, 0.9, 0.8), vec3(1.05, 1.0, 0.9), macro);
 	if (extra_detail) {
 		moss = mix(moss, texture(moss_tex, uv * 3.1).rgb, 0.25 * (1.0 - smoothstep(8.0, 35.0, dist)));
@@ -95,7 +97,7 @@ void fragment() {
 	albedo *= mix(1.0, 0.72, 1.0 - smoothstep(water_level - 2.0, water_level, wp.y));
 
 	vec3 nm_sand = untiled_normal(sand_n, uv * 1.25, mixer);
-	vec3 nm_ground = normalize(mix(untiled_normal(soil_n, uv * 0.8, mixer), untiled_normal(moss_n, uv * 0.9, mixer), moss_w));
+	vec3 nm_ground = normalize(mix(untiled_normal(soil_n, uv * 1.85, mixer), untiled_normal(moss_n, uv * 0.9, mixer), moss_w));
 	vec3 nm_rock = normalize(triplanar_n(rock_n, wp, tri, 0.09));
 	vec3 nm = normalize(mix(mix(nm_ground, nm_sand, beach), nm_rock, rock_w));
 	nm.xy *= mix(1.0, 0.35, smoothstep(25.0, 90.0, dist)) * mix(1.0, 0.4, wet);

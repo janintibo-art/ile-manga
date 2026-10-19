@@ -76,11 +76,12 @@ func _make_pc_panel() -> void:
 	top_line.add_theme_color_override("font_color", Color(0.74, 0.92, 1.0))
 	top_line.add_theme_font_size_override("font_size", 15)
 	inner.add_child(top_line)
-	var logo_file := load("res://assets/ui/ile_manga_icon.png") as Texture2D
+	# V53 : l'illustration du titre seule (l'icône du jeu contient de faux boutons)
+	var logo_file := load("res://assets/textures/ui/ile_manga_logo.png") as Texture2D
 	if logo_file != null:
 		var logo := TextureRect.new()
 		logo.texture = logo_file
-		logo.custom_minimum_size = Vector2(0, 94)
+		logo.custom_minimum_size = Vector2(0, 150)
 		logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		inner.add_child(logo)
@@ -159,7 +160,8 @@ func _redraw() -> void:
 	else:
 		for n in list_box.get_children():
 			n.queue_free()
-		heading.text = "✦ ÎLE MANGA ✦  ·  " + view.to_upper()
+		heading.text = {"home": "✦  ÎLE MANGA  ✦", "new": "✦  NOUVELLE PARTIE  ✦", "load": "✦  CHARGER UNE PARTIE  ✦",
+			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦"}.get(view, "✦  ÎLE MANGA  ✦")
 		frame.modulate.a = 0.84
 		for i in range(options.size()):
 			var choice: String = options[i]

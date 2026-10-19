@@ -1040,6 +1040,17 @@ func _build_pc_window() -> void:
 	_drop_button.custom_minimum_size = Vector2(100, 40)
 	_drop_button.pressed.connect(func(): drop_slot(selected))
 	buttons.add_child(_drop_button)
+	# V53 : boutons aux couleurs de la fenêtre (fond bleu nuit, liseré doré).
+	for btn in [_use_button, _drop_button]:
+		var gold := Color(0.98, 0.76, 0.32)
+		(btn as Button).add_theme_stylebox_override("normal", _style(Color(0.06, 0.17, 0.24, 0.95), Color(0.75, 0.6, 0.3), 9, 1))
+		(btn as Button).add_theme_stylebox_override("hover", _style(Color(0.1, 0.25, 0.33, 0.98), gold, 9, 2))
+		(btn as Button).add_theme_stylebox_override("pressed", _style(Color(0.16, 0.3, 0.36, 1.0), gold, 9, 2))
+		(btn as Button).add_theme_stylebox_override("disabled", _style(Color(0.05, 0.1, 0.14, 0.7), Color(0.3, 0.32, 0.34), 9, 1))
+		(btn as Button).add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		(btn as Button).add_theme_color_override("font_color", Color(1.0, 0.9, 0.7))
+		(btn as Button).add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.8))
+		(btn as Button).add_theme_font_size_override("font_size", 16)
 	var help := Label.new()
 	help.text = "Clic : choisir  •  double-clic : utiliser  •  I / Tab / Échap : fermer"
 	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

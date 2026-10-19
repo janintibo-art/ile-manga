@@ -178,7 +178,9 @@ func _tube(st: SurfaceTool, path: Array, radii: Array, flex: Array, sides: int, 
 			var b: Array = rings[i][s + 1]
 			var c: Array = rings[i + 1][s]
 			var d: Array = rings[i + 1][s + 1]
-			for q in [a, c, b, b, c, d]:
+			# V53 : ordre des sommets corrigé (la face visible regarde vers l'extérieur) :
+			# les troncs étaient vus « à l'envers » et l'éclairage les noircissait.
+			for q in [a, b, c, b, d, c]:
 				_v(st, q[0], q[1], q[2], q[3], 0.6, col)
 
 
