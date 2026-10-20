@@ -177,6 +177,10 @@ func _decide(dt: float) -> void:
 	var az: Node = main.get("azur_v56")
 	if az != null and bool(az.get("django_heard")):
 		want_zone = ""
+	# V57 : à la teuf de la plage, c'est la sono qui joue
+	var tf: Node = main.get("teuf_v57")
+	if tf != null and bool(tf.get("heard")):
+		want_zone = ""
 	# --- combat
 	var fighting: bool = running and _fighting()
 	if fighting:

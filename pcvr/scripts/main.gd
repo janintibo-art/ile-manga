@@ -704,7 +704,8 @@ func _create_structures() -> void:
 	_add_glb("res://assets/models/buildings/Ile_flottante.glb", "Ile_celeste", Vector3(20, 18, -15), 12, 0.0)
 	# Quartier de la plage DJ : éléments originaux Babylon.js réintroduits.
 	_solid_model_v23(_add_glb("res://assets/models/props/Mur_de_son.glb", "Mur_de_son", Vector3(0, _height_at(0, 60) + 3.75, 60), 6, PI))
-	_solid_model_v23(_add_glb("res://assets/models/props/Table_de_mixage.glb", "Table_de_mixage", Vector3(9, _height_at(9, 60) + 0.988, 60), 2.5, PI))
+	# V57 : platines tournées vers la foule (le DJ se tient côté mer, face au public)
+	_solid_model_v23(_add_glb("res://assets/models/props/Table_de_mixage.glb", "Table_de_mixage", Vector3(9, _height_at(9, 60) + 0.988, 60), 2.5, 0.0))
 	_solid_model_v23(_add_glb("res://assets/models/props/Distributeur_8_6.glb", "Distributeur_8_6", Vector3(-9, _height_at(-9, 60) + 1.712, 60), 1.8, PI))
 	var rope := _add_glb("res://assets/models/props/Corde.glb", "Corde", Vector3(16, 10, -9), 6.0, 0.0)
 	if rope != null:
@@ -2702,6 +2703,7 @@ var mer_v55: Node3D                        # V55 : la nage, le fond marin, l'Atl
 var temps_v56: Node                        # V56 : l'heure, le jour et la nuit
 var azur_v56: Node3D                       # V56 : Port-Azur, la grande île touristique
 var journal_v56: Node                      # V56 : le carnet de quêtes, les bonus, la réputation
+var teuf_v57: Node3D                       # V57 : la teuf de la plage (DJ, teufeurs, sono)
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
@@ -2728,6 +2730,13 @@ func _spawn_azur_v56() -> void:
 			break
 	if azur_v56 != null and azur_v56.port != null:
 		azur_v56.spawn_npcs()
+	# V57 : la teuf de la plage, sur l'île du village : DJ Mistral et les teufeurs
+	if teuf_v57 == null:
+		teuf_v57 = preload("res://scripts/teuf_v57.gd").new()
+		teuf_v57.name = "Teuf_plage_v57"
+		add_child(teuf_v57)
+		teuf_v57.setup(self)
+		teuf_v57.spawn_people()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
