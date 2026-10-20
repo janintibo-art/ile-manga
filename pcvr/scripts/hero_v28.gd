@@ -19,9 +19,10 @@ const ROLL_SPEED: float = 6.2
 const ROLL_TIME: float = 0.62
 const COYOTE: float = 0.14
 const JUMP_BUFFER: float = 0.16
-const STAMINA_MAX: float = 10.0
-const HP_MAX: int = 10                  # 5 cœurs, par demi-cœurs
-const HEARTS: int = 5
+var STAMINA_MAX: float = 10.0          # V56 : + endurance gagnée en aidant les gens
+var HP_MAX: int = 10                    # 5 cœurs, par demi-cœurs (V56 : + cœurs gagnés)
+var HEARTS: int = 5
+var bonus_force: int = 0                # V56 : + force (quêtes de Port-Azur)
 const LEDGE_MIN: float = 0.45           # en dessous, la marche automatique suffit
 const LEDGE_MAX: float = 2.15           # rebord le plus haut qu'on attrape depuis le sol
 const SAFE_FALL: float = 5.0            # chute sans dégâts (m)
@@ -871,9 +872,9 @@ func _deliver_hit() -> void:
 	if not strike.is_valid():
 		return
 	var reach: float = 1.9 if weapon != "" else 1.35
-	var dmg: int = weapon_damage if weapon != "" else 1
+	var dmg: int = (weapon_damage if weapon != "" else 1) + bonus_force
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
-	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees"] and combo_index % SLASHES.size() == 2
+	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire"] and combo_index % SLASHES.size() == 2
 	if finisher:
 		dmg = int(round(dmg * 1.5))
 	if main.combat_v28 != null:
@@ -1030,6 +1031,29 @@ func _ko_tick(delta: float) -> void:
 		state = "sol"
 		health_changed.emit(hp, HP_MAX)
 		fainted.emit()
+
+
+## V56 : nombre de cœurs (demi-cœurs) ; on refait la rangée de cœurs du haut de l'écran.
+func set_max_hearts(hp_max: int) -> void:
+	var gained: int = hp_max - HP_MAX
+	HP_MAX = hp_max
+	HEARTS = hp_max / 2
+	if gained > 0:
+		hp = mini(hp + gained, HP_MAX)
+	hp = mini(hp, HP_MAX)
+	if _hud_box != null:
+		for h in _hearts:
+			(h as Node).queue_free()
+		_hearts.clear()
+		_hud_box.offset_left = -20.0 - HEARTS * 42.0
+		for i in range(HEARTS):
+			var heart := TextureRect.new()
+			heart.custom_minimum_size = Vector2(40, 40)
+			heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			_hud_box.add_child(heart)
+			_hearts.append(heart)
+	health_changed.emit(hp, HP_MAX)
 
 
 func set_health(value: int) -> void:

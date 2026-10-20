@@ -124,6 +124,7 @@ func _ready() -> void:
 	_create_decor_v53()
 	_create_v54()
 	_create_v55()
+	_create_v56()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -166,6 +167,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V46 : l'île des nains
 	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(x, z):
 		return maxf(h, nains_v46.ile.height(x, z))
+	# V56 : Port-Azur
+	if azur_v56 != null and azur_v56.ile != null and azur_v56.ile.contains(x, z):
+		return maxf(h, azur_v56.ile.height(x, z))
 	return h
 
 
@@ -952,6 +956,12 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			ciel_v54.load_data({})
 		if mer_v55 != null:
 			mer_v55.load_data({})
+		if temps_v56 != null:
+			temps_v56.load_data({})
+		if azur_v56 != null:
+			azur_v56.load_data({})
+		if journal_v56 != null:
+			journal_v56.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -1015,6 +1025,19 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and mer_v55 != null:
 		var sea_data: Variant = SaveStore.read_slot(slot).get("mer", {})
 		mer_v55.load_data(sea_data if sea_data is Dictionary else {})
+	# V56 : l'heure du jeu
+	if not new_game and temps_v56 != null:
+		var time_data: Variant = SaveStore.read_slot(slot).get("temps", {})
+		temps_v56.load_data(time_data if time_data is Dictionary else {})
+	# V56 : Port-Azur, le bateau de ligne, le carnet de quêtes (bonus, réputation, titres)
+	if not new_game and azur_v56 != null:
+		var azur_data: Variant = SaveStore.read_slot(slot).get("azur", {})
+		azur_v56.load_data(azur_data if azur_data is Dictionary else {})
+	if not new_game and journal_v56 != null:
+		var jdata: Variant = SaveStore.read_slot(slot).get("journal", {})
+		journal_v56.load_data(jdata if jdata is Dictionary else {})
+	if journal_v56 != null:
+		journal_v56.respawn_pickups()
 	last_ok_v29.clear()
 	autosave_clock = 0.0
 
@@ -1073,6 +1096,12 @@ func _save_slot(slot: int) -> void:
 		extra["ciel"] = ciel_v54.serialize()
 	if mer_v55 != null:
 		extra["mer"] = mer_v55.serialize()
+	if temps_v56 != null:
+		extra["temps"] = temps_v56.serialize()
+	if azur_v56 != null:
+		extra["azur"] = azur_v56.serialize()
+	if journal_v56 != null:
+		extra["journal"] = journal_v56.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1105,6 +1134,10 @@ func _physics_process(delta: float) -> void:
 	if ciel_v54 != null and ciel_v54.riding:
 		# V54 : en vol sur Ventaile
 		ciel_v54.ride_tick(delta)
+	elif azur_v56 != null and azur_v56.ferry != null and azur_v56.ferry.riding:
+		# V56 : passager de L'Hirondelle (le bateau nous porte, voir ferry_v56.gd)
+		if xr_active and inventory_v28 != null and inventory_v28.opened:
+			inventory_v28.vr_tick(0.0, 0.0, 0.0)
 	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
@@ -1298,8 +1331,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_tree().quit()
 		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
 			_interact_v28()
+		elif inventory_v28 != null and inventory_v28.opened and inventory_v28.carnet != null and inventory_v28.carnet.handle_key(event.keycode):
+			pass
 		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
-			inventory_v28.toggle()
+			inventory_v28.toggle(0)
+		elif (event.keycode == KEY_J or event.keycode == KEY_M or event.keycode == KEY_P) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
+			# V56 : J les quêtes, M la carte, P les personnages
+			inventory_v28.toggle({KEY_J: 1, KEY_M: 2, KEY_P: 3}[event.keycode])
 		elif event.keycode == KEY_G and game_started and ciel_v54 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			ciel_v54.call_eagle()
 		elif event.keycode == KEY_F1 and info != null:
@@ -1721,6 +1759,8 @@ func _spawn_world_v28() -> void:
 	inventory_v28.spawn_world()
 	print("ILE_MANGA_V28: ", inventory_v28.pickups.size(), " objets à ramasser")
 	_create_npcs_v31()
+	# V56 : les habitants de Port-Azur (après Barnabé et Octave)
+	_spawn_azur_v56()
 
 
 func _show_message_v28(text: String) -> void:
@@ -1749,9 +1789,22 @@ func _interact_v28() -> void:
 		return
 	var p: Vector3 = _player_pos_v27()
 	var npc: Node3D = _nearest_npc_v31()
+	# V56 : dans la foule de Port-Azur, un objet juste à nos pieds passe avant la conversation
+	if npc != null and inventory_v28 != null:
+		var pk: int = inventory_v28.nearest_pickup(p)
+		if pk >= 0:
+			var pd: float = inventory_v28.pickup_distance(pk, p)
+			if pd < 1.4 and pd < Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z).length():
+				npc = null
 	if npc != null and (boat_v29 == null or not boat_v29.driving):
 		_talk_v31(npc)
 		return
+	# V56 : la cloche qui appelle L'Hirondelle
+	if azur_v56 != null and azur_v56.ferry != null:
+		var bell: String = azur_v56.ferry.bell_near(p)
+		if bell != "":
+			azur_v56.ferry.ring_bell(bell)
+			return
 	# V35 : trappes, braseros, coffre, fresque… du Temple englouti.
 	if donjon_v35 != null and donjon_v35.interact(p):
 		return
@@ -1837,6 +1890,12 @@ func _respawn_v28() -> void:
 			place_player_v35(ra[0], ra[1])
 			_show_message_v28("Vous vous êtes évanoui… Des Atlantes vous ont ramené sous le dôme, devant le palais.")
 			return
+	# V56 : à Port-Azur, on se réveille sur la place de la Mairie
+	if azur_v56 != null and azur_v56.ile != null and azur_v56.ile.contains(pp.x, pp.z):
+		var rz: Array = azur_v56.respawn_point()
+		place_player_v35(rz[0], rz[1])
+		_show_message_v28("Vous vous êtes évanoui… Le docteur Roux vous a soigné. Vous voici sur la place de Port-Azur.")
+		return
 	if nains_v46 != null and nains_v46.ile != null and nains_v46.ile.contains(pp.x, pp.z):
 		var rp: Array = nains_v46.respawn_point()
 		place_player_v35(rp[0], rp[1])
@@ -1872,6 +1931,13 @@ func _vr_actions_v28(delta: float) -> void:
 		return
 	if a_edge:
 		vr_jump_v28()
+	# V56 : gâchette près de la cloche du quai : appeler L'Hirondelle
+	var trig_now: bool = right_hand.get_float("trigger") > 0.7
+	if azur_v56 != null and azur_v56.ferry != null and trig_now and not vr_buttons_v28.get("cloche", false) and _nearest_npc_v31() == null:
+		var bell_side: String = azur_v56.ferry.bell_near(_player_pos_v27())
+		if bell_side != "":
+			azur_v56.ferry.ring_bell(bell_side)
+	vr_buttons_v28["cloche"] = trig_now
 	if fishing_v32 != null:
 		# Près d'une porte ou d'un habitant, la gâchette garde son usage ; sinon elle pêche.
 		var free_hand: bool = fishing_v32.state != "repos" or (_door_distance_v28() > 2.0 and _nearest_npc_v31() == null)
@@ -1885,7 +1951,7 @@ func _vr_actions_v28(delta: float) -> void:
 		var armed: bool = inventory_v28 != null and inventory_v28.equipped != ""
 		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
 		if armed:
-			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1))
+			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + (int(journal_v56.bonus["force"]) if journal_v56 != null else 0)
 			var blade: Vector3 = -right_hand.global_basis.z
 			var mid: Vector3 = right_hand.global_position + blade * 0.45
 			var tip: Vector3 = right_hand.global_position + blade * 0.75
@@ -1975,6 +2041,14 @@ func _create_jungle_v29() -> void:
 	nains_v46.build_island()
 	var nd: Array = nains_v46.dock()
 	boat_v29._make_dock("Ponton_nains", nd[0], nd[1])
+	# V56 : Port-Azur (le relief d'abord ; la ville, ses habitants et le bateau de ligne
+	# sont construits après l'heure du jour, voir _create_v56) ; ponton de L'Hirondelle au village.
+	azur_v56 = preload("res://scripts/azur_v56.gd").new()
+	azur_v56.name = "Port_Azur_v56"
+	add_child(azur_v56)
+	azur_v56.setup(self)
+	azur_v56.build_island()
+	boat_v29._make_dock("Ponton_ferry", FERRY_PIER_V56[0], FERRY_PIER_V56[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2484,7 +2558,11 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_1": 1 if mer_v55 != null and mer_v55.pearls_found() >= 1 else 0,
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
-			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0},
+			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0},
+		"heure": temps_v56.hour if temps_v56 != null else 12.0,
+		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
+		"rep": journal_v56.reputation if journal_v56 != null else 0,
 		"place": {"pelle": inventory_v28.space_for("pelle"), "hache": inventory_v28.space_for("hache"), "epee": inventory_v28.space_for("epee")},
 	}
 
@@ -2534,6 +2612,10 @@ func _on_dialogue_choice_v31(id: String) -> void:
 	if npc == null or id == "fermer":
 		_close_dialogue_v31()
 		return
+	# V56 : les quêtes et services du carnet
+	if id.begins_with("q56:") and journal_v56 != null:
+		_brain_reply_v48(npc, func(): return journal_v56.choose(npc, id))
+		return
 	_brain_reply_v48(npc, func(): return npc.brain.choose(id, _npc_ctx_v31()))
 
 
@@ -2543,10 +2625,16 @@ func _on_dialogue_choice_v31(id: String) -> void:
 ## demande de revenir avec de la place.
 func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	var snap: Dictionary = npc.brain.serialize()
+	var jsnap: Dictionary = journal_v56.serialize() if journal_v56 != null else {}
 	var r: Dictionary = call.call()
 	var gives: Array = r.get("donner", [])
 	if not gives.is_empty() and inventory_v28 != null and not inventory_v28.can_accept(gives, r.get("prendre", [])):
 		npc.brain.load_data(snap)
+		if journal_v56 != null:
+			journal_v56.load_data(jsnap)
+		r.erase("_fin56")
+		r.erase("_ferry")
+		r.erase("_dormir")
 		var names: Array = []
 		for g in gives:
 			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())
@@ -2555,6 +2643,11 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 			"geste": "parle", "choix": npc.brain.topics(_npc_ctx_v31())}
 		_show_message_v28("Sac plein : rien n'a été échangé.")
 	_apply_reply_v31(npc, r)
+	# V56 : quête accomplie (récompenses, bonus), départ du bateau, nuit à l'hôtel
+	if journal_v56 != null:
+		journal_v56.commit_reply(r, npc)
+	if azur_v56 != null:
+		azur_v56.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2576,6 +2669,17 @@ func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
 				inventory_v28.equip_item("canne_peche")
 	npc.gesture(str(r.get("geste", "parle")))
 	var choices: Array = r.get("choix", [])
+	# V56 : après une réplique du carnet, on revient aux sujets habituels
+	if choices.is_empty() and not bool(r.get("fin", false)) and str(r.get("texte", "")) != "":
+		choices = npc.brain.topics(_npc_ctx_v31())
+	# V56 : les sujets du carnet (quêtes, services) en tête de la liste
+	if journal_v56 != null and not bool(r.get("fin", false)):
+		var has_bye: bool = false
+		for c in choices:
+			if str(c.get("id", "")) == "au_revoir":
+				has_bye = true
+		if has_bye:
+			choices = journal_v56.topics_for(npc) + choices
 	if bool(r.get("fin", false)) or choices.is_empty():
 		choices = [{"id": "fermer", "label": "(Partir)"}]
 	dialogue_v31.show_line(npc.display_name, npc.brain.humeur_mot(), str(r.get("texte", "…")), choices)
@@ -2595,6 +2699,10 @@ var ambiance_v49: Node
 var decor_v53: Node3D                      # V53 : finitions du village
 var ciel_v54: Node3D                       # V54 : Ventaile, l'île flottante, la Citadelle des Nuées
 var mer_v55: Node3D                        # V55 : la nage, le fond marin, l'Atlantide
+var temps_v56: Node                        # V56 : l'heure, le jour et la nuit
+var azur_v56: Node3D                       # V56 : Port-Azur, la grande île touristique
+var journal_v56: Node                      # V56 : le carnet de quêtes, les bonus, la réputation
+const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
 var music_v51: Node                       # V51 : la musique (musique_v51.gd)
@@ -2605,6 +2713,53 @@ func _create_sfx_v50() -> void:
 	sfx_v50.name = "Bruitages_v50"
 	add_child(sfx_v50)
 	sfx_v50.setup(self)
+
+
+## V56 : les quarante-deux habitants de Port-Azur arrivent une fois Barnabé et Octave en place
+## (ils gardent leur rang en tête de la liste des habitants).
+func _spawn_azur_v56() -> void:
+	for i in 40:
+		await get_tree().physics_frame
+		var ready: int = 0
+		for n in npcs_v31:
+			if is_instance_valid(n) and str(n.profile.get("id", "")) in ["barnabe", "octave"]:
+				ready += 1
+		if ready >= 2:
+			break
+	if azur_v56 != null and azur_v56.port != null:
+		azur_v56.spawn_npcs()
+
+
+## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
+func _on_slept_v56() -> void:
+	if hero_v28 != null:
+		hero_v28.set_health(hero_v28.HP_MAX)
+	_show_message_v28("Une bonne nuit de sommeil… Tous vos cœurs sont revenus.")
+	if game_menu != null:
+		_save_slot(game_menu.active_slot)
+
+
+## V56 : l'heure qui passe (temps_v56.gd).
+func _create_v56() -> void:
+	temps_v56 = preload("res://scripts/temps_v56.gd").new()
+	temps_v56.name = "Temps_v56"
+	add_child(temps_v56)
+	temps_v56.setup(self)
+	journal_v56 = preload("res://scripts/journal_v56.gd").new()
+	journal_v56.name = "Journal_v56"
+	add_child(journal_v56)
+	journal_v56.setup(self)
+	if azur_v56 != null:
+		azur_v56.build_town()
+		azur_v56.build_ferry(FERRY_PIER_V56)
+		azur_v56.register_services(journal_v56)
+		journal_v56.lieux = azur_v56.port.objets.duplicate()
+		journal_v56.lieux["fontaine"] = azur_v56.port.fountain
+		journal_v56.lieux["phare_porte"] = azur_v56.port.spots["phare_porte"]["pos"]
+		# la barque peut accoster au ponton des plaisanciers
+		if boat_v29 != null:
+			var ad: Array = azur_v56.dock()
+			boat_v29._make_dock("Ponton_azur", ad[0], ad[1])
 
 
 ## V54 : le ciel (ciel_v54.gd) : l'aigle géant, l'île flottante et son château.
@@ -2709,6 +2864,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(elfes_v41.ile.CENTER.x, elfes_v41.ile.CENTER.z), 145.0])
 	if nains_v46 != null and nains_v46.ile != null:
 		boxes.append([Vector2(nains_v46.ile.CENTER.x, nains_v46.ile.CENTER.z), 145.0])
+	if azur_v56 != null and azur_v56.ile != null:
+		boxes.append([Vector2(azur_v56.ile.CENTER.x, azur_v56.ile.CENTER.z), 205.0])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

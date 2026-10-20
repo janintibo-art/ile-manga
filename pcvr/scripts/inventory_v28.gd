@@ -164,6 +164,45 @@ const ITEMS := {
 		"desc": "La spécialité de Marée : des algues du dôme, séchées sous le cristal et pressées. Ça a un goût de mer. Beaucoup. Rend deux cœurs."},
 	"boussole": {"name": "Boussole de Barnabé", "art": "une boussole", "kind": "outil", "max": 1,
 		"desc": "La vieille boussole de marine de Barnabé. Elle montre ce que tu cherches vraiment. En général, le nord."},
+	# V56 : Port-Azur
+	"croissant": {"name": "Croissant", "art": "un croissant", "kind": "nourriture", "max": 20, "heal": 3,
+		"desc": "Un croissant doré du Pain Doré, encore tiède, qui laisse des miettes partout. Rend un cœur et demi."},
+	"baguette": {"name": "Baguette", "art": "une baguette", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Une baguette croustillante de Margaux. On en mange la moitié avant d'arriver à la maison. Rend deux cœurs."},
+	"glace": {"name": "Glace de Bruno", "art": "une glace", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Vanille, fraise et coco : la spéciale Bruno. Elle fond plus vite qu'on ne la mange. Rend un cœur."},
+	"punch_coco": {"name": "Punch coco", "art": "un punch coco", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Lait de coco, jus de mangue et une ombrelle en papier. La recette de Toni (ou de Kiki, selon à qui on demande). Rend deux cœurs."},
+	"bouillabaisse": {"name": "Bouillabaisse de Paulo", "art": "une bouillabaisse", "kind": "nourriture", "max": 5, "heal": 20,
+		"desc": "Dix poissons, du safran et le secret de la nonna de Paulo. Rend tous les cœurs."},
+	"carte_postale": {"name": "Carte postale", "art": "une carte postale", "kind": "quete", "max": 10,
+		"desc": "Une carte postale de Port-Azur : le phare, la baie, et au dos, l'écriture ronde de Nadine."},
+	"partition": {"name": "Page de partition", "art": "une page de partition", "kind": "quete", "max": 3,
+		"desc": "Une page de « La Valse d'Azur », la chanson de Django. Les notes sont un peu délavées par les embruns."},
+	"cerf_volant": {"name": "Cerf-volant", "art": "un cerf-volant", "kind": "quete", "max": 1,
+		"desc": "Rouge, jaune, bleu et vert, avec une longue queue à nœuds. Celui du petit Théo."},
+	"alliance": {"name": "Alliance d'Hugo", "art": "une alliance", "kind": "quete", "max": 1,
+		"desc": "Un anneau d'or fin avec un petit diamant, gravé à l'intérieur : « H & L, pour toujours »."},
+	"cochonnet": {"name": "Cochonnet", "art": "un cochonnet", "kind": "quete", "max": 1,
+		"desc": "La petite boule de buis de Raymond et Marcel. Sans elle, pas de pétanque sur la place."},
+	"rouage": {"name": "Rouage de bronze", "art": "un rouage", "kind": "quete", "max": 1,
+		"desc": "Un rouage neuf forgé par Hector pour l'horloge de la mairie. Il brille comme une pièce d'or."},
+	"lentille_phare": {"name": "Éclat de lentille", "art": "un éclat de lentille", "kind": "quete", "max": 1,
+		"desc": "Un anneau de verre taillé de la grande lentille du phare. Il concentre la lumière comme une loupe géante."},
+	"etoile_mer": {"name": "Étoile de mer", "art": "une étoile de mer", "kind": "tresor", "max": 10,
+		"desc": "Une étoile de mer orange du fond de la baie de Port-Azur. Elle chatouille un peu."},
+	"cle_ville": {"name": "Clé de Port-Azur", "art": "la clé de la ville", "kind": "tresor", "max": 1,
+		"desc": "La clé d'or de la ville, remise par le maire au citoyen d'honneur. Elle n'ouvre aucune porte, mais tous les cœurs."},
+	"appareil_photo": {"name": "Appareil photo", "art": "un appareil photo", "kind": "quete", "max": 1,
+		"desc": "Le vieil appareil photo de Gérard Dupuis. Trois cents photos de couchers de soleil à l'intérieur."},
+	"corail_rouge": {"name": "Corail rouge", "art": "un corail rouge", "kind": "materiau", "max": 5,
+		"desc": "Une branche de corail rouge du fond de la baie. Broyé, il donne un pigment éclatant."},
+	"panier_pain": {"name": "Panier de pain", "art": "un panier de pain", "kind": "quete", "max": 1,
+		"desc": "Le panier de livraison de Margaux, rempli de baguettes et de croissants. Interdit de se servir."},
+	"lettre_azur": {"name": "Lettre de Port-Azur", "art": "une lettre", "kind": "tresor", "max": 10,
+		"desc": "Une enveloppe cachetée de cire rouge, achetée à la poste. Parfaite pour une déclaration."},
+	"sabre_corsaire": {"name": "Sabre corsaire", "art": "un sabre corsaire", "kind": "arme", "max": 1, "damage": 10,
+		"desc": "Forgé par Hector à l'Enclume Bleue : lame courbe en acier bleui, garde en coquille de laiton. Dégâts : 10, et le troisième coup d'un enchaînement frappe moitié plus fort."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
 
@@ -203,6 +242,7 @@ var _vr_sel: int = 0
 var _vr_neutral: bool = true
 var _vr_trigger_ready: bool = false
 var _vr_labels: Array = []
+var carnet: Node                        # V56 : carnet_v56.gd
 
 
 func setup(main_node: Node, use_xr: bool) -> void:
@@ -213,10 +253,12 @@ func setup(main_node: Node, use_xr: bool) -> void:
 		var path: String = "res://assets/textures/items/%s.png" % id
 		if ResourceLoader.exists(path):
 			_icons[id] = load(path)
-	if xr_mode:
-		_build_vr_panel()
-	else:
-		_build_pc_window()
+	# V56 : le carnet de voyage (inventaire, quêtes, carte, personnages, héros)
+	carnet = preload("res://scripts/carnet_v56.gd").new()
+	carnet.name = "Carnet_v56"
+	add_child(carnet)
+	carnet.build(main, self, xr_mode)
+	_layer = carnet.layer
 
 
 func _clear_slots() -> void:
@@ -922,6 +964,84 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.05, 0.62, 0.018)), wood, Vector3(0, 0.42, 0))
 			_part(m, _box_mesh(Vector3(0.035, 0.035, 0.018)), wood, Vector3(0, 0.735, 0), Vector3(0, 0, 45))
 			_part(m, _sphere(0.022), dark, Vector3(0, -0.09, 0))
+		# V56 : Port-Azur
+		"croissant":
+			var dough := _mat("croissant", Color(0.82, 0.55, 0.22), 0.6)
+			for k in range(5):
+				var a: float = PI * (0.1 + 0.8 * k / 4.0)
+				var r: float = 0.045 - absf(k - 2) * 0.008
+				_part(m, _sphere(r), dough, Vector3(cos(a) * 0.07, 0.035, sin(a) * 0.05), Vector3(0, -rad_to_deg(a), 0), Vector3(1.3, 0.8, 1.0))
+		"baguette":
+			_part(m, _cyl(0.035, 0.035, 0.6, 10), _mat("croute", Color(0.82, 0.55, 0.24), 0.65), Vector3(0, 0.035, 0), Vector3(0, 0, 90))
+		"glace":
+			_part(m, _cyl(0.04, 0.0, 0.13, 10), _mat("cornet", Color(0.82, 0.6, 0.32), 0.7), Vector3(0, 0.065, 0), Vector3(180, 0, 0))
+			_part(m, _sphere(0.045), _mat("glace_rose", Color(0.98, 0.72, 0.78), 0.4), Vector3(0, 0.15, 0))
+			_part(m, _sphere(0.035), _mat("glace_vanille", Color(0.98, 0.95, 0.82), 0.4), Vector3(0, 0.205, 0))
+		"punch_coco":
+			_part(m, _sphere(0.07), _mat("coque_coco", Color(0.42, 0.28, 0.16), 0.9), Vector3(0, 0.05, 0), Vector3.ZERO, Vector3(1, 0.8, 1))
+			_part(m, _cyl(0.058, 0.058, 0.01, 14), _mat("punch", Color(0.98, 0.65, 0.3), 0.3), Vector3(0, 0.1, 0))
+			_part(m, _cyl(0.005, 0.005, 0.16, 6), _mat("paille", Color(0.9, 0.2, 0.3), 0.5), Vector3(0.02, 0.15, 0), Vector3(0, 0, 18))
+		"bouillabaisse":
+			_part(m, _cyl(0.1, 0.06, 0.06, 18), _mat("faience", Color(0.95, 0.95, 0.92), 0.25), Vector3(0, 0.03, 0))
+			_part(m, _cyl(0.095, 0.095, 0.004, 18), _mat("soupe", Color(0.85, 0.45, 0.15), 0.3), Vector3(0, 0.058, 0))
+		"carte_postale", "lettre_azur":
+			_part(m, _box_mesh(Vector3(0.15, 0.004, 0.1)), _mat("carton", Color(0.95, 0.92, 0.84), 0.8), Vector3(0, 0.003, 0))
+			_part(m, _box_mesh(Vector3(0.07, 0.005, 0.06)), _mat("photo_bleue", Color(0.35, 0.6, 0.85), 0.5) if id == "carte_postale" else _mat("cire", Color(0.7, 0.1, 0.12), 0.4), Vector3(-0.03 if id == "carte_postale" else 0.0, 0.004, 0))
+		"partition":
+			_part(m, _box_mesh(Vector3(0.21, 0.003, 0.29)), _mat("papier", Color(0.96, 0.93, 0.84), 0.85), Vector3(0, 0.002, 0), Vector3(0, 12, 0))
+		"cerf_volant":
+			_part(m, _box_mesh(Vector3(0.38, 0.008, 0.38)), _mat("toile_cv", Color(0.9, 0.3, 0.2), 0.7), Vector3(0, 0.02, 0), Vector3(0, 45, 0), Vector3(1.0, 1.0, 1.4))
+			_part(m, _cyl(0.004, 0.004, 0.6, 4), _mat("ficelle", Color(0.8, 0.75, 0.6)), Vector3(0, 0.01, 0.4), Vector3(90, 0, 0))
+		"alliance":
+			var tm := TorusMesh.new()
+			tm.inner_radius = 0.009
+			tm.outer_radius = 0.013
+			_part(m, tm, _mat("or", Color(0.95, 0.78, 0.35), 0.2), Vector3(0, 0.003, 0))
+		"cochonnet":
+			_part(m, _sphere(0.017), _mat("buis", Color(0.85, 0.6, 0.3), 0.5), Vector3(0, 0.017, 0))
+		"rouage":
+			_part(m, _cyl(0.06, 0.06, 0.012, 16), _mat("bronze", Color(0.78, 0.55, 0.25), 0.3), Vector3(0, 0.006, 0))
+			for k in range(12):
+				var a2: float = TAU * k / 12.0
+				_part(m, _box_mesh(Vector3(0.014, 0.012, 0.02)), _mat("bronze", Color(0.78, 0.55, 0.25), 0.3), Vector3(cos(a2) * 0.065, 0.006, sin(a2) * 0.065), Vector3(0, -rad_to_deg(a2), 0))
+		"lentille_phare":
+			_part(m, _cyl(0.1, 0.1, 0.03, 20), _mat("verre_lentille", Color(0.75, 0.9, 0.95), 0.05), Vector3(0, 0.015, 0))
+			_part(m, _cyl(0.105, 0.105, 0.01, 20), _mat("laiton", Color(0.72, 0.56, 0.24), 0.25), Vector3(0, 0.031, 0))
+		"etoile_mer":
+			for k in range(5):
+				var a3: float = TAU * k / 5.0
+				_part(m, _sphere(0.03), _mat("etoile", Color(0.92, 0.45, 0.2), 0.7), Vector3(cos(a3) * 0.04, 0.01, sin(a3) * 0.04), Vector3(0, -rad_to_deg(a3), 0), Vector3(2.2, 0.35, 0.8))
+		"cle_ville":
+			_part(m, _box_mesh(Vector3(0.2, 0.012, 0.018)), _mat("or", Color(0.95, 0.78, 0.35), 0.2), Vector3(0.05, 0.01, 0))
+			var tk := TorusMesh.new()
+			tk.inner_radius = 0.025
+			tk.outer_radius = 0.038
+			_part(m, tk, _mat("or", Color(0.95, 0.78, 0.35), 0.2), Vector3(-0.08, 0.01, 0))
+			_part(m, _box_mesh(Vector3(0.012, 0.012, 0.04)), _mat("or", Color(0.95, 0.78, 0.35), 0.2), Vector3(0.13, 0.01, 0.02))
+		"appareil_photo":
+			_part(m, _box_mesh(Vector3(0.14, 0.09, 0.06)), _mat("cuir_noir", Color(0.12, 0.11, 0.1), 0.6), Vector3(0, 0.045, 0))
+			_part(m, _cyl(0.03, 0.03, 0.05, 14), _mat("chrome", Color(0.75, 0.75, 0.78), 0.2), Vector3(0, 0.045, 0.045), Vector3(90, 0, 0))
+		"corail_rouge":
+			for k in range(4):
+				_part(m, _cyl(0.008, 0.014, 0.12, 6), _mat("corail", Color(0.85, 0.2, 0.18), 0.6), Vector3(0, 0.05, 0), Vector3(0, k * 90, -25 + k * 15))
+		"panier_pain":
+			_part(m, _cyl(0.13, 0.1, 0.12, 14), _mat("osier", Color(0.68, 0.5, 0.28), 0.9), Vector3(0, 0.06, 0))
+			for k in range(3):
+				_part(m, _cyl(0.025, 0.025, 0.36, 8), _mat("croute", Color(0.82, 0.55, 0.24), 0.65), Vector3(-0.04 + k * 0.04, 0.16, 0), Vector3(70, 0, 0))
+		"sabre_corsaire":
+			# Le long de +Y : poignée en bas, lame courbe vers le haut.
+			var steel := _mat("acier_bleui", Color(0.62, 0.66, 0.74), 0.25)
+			steel.metallic = 0.85
+			var brass := _mat("laiton", Color(0.78, 0.6, 0.26), 0.3)
+			brass.metallic = 0.8
+			_part(m, _cyl(0.016, 0.018, 0.15, 8), _mat("poignee", Color(0.25, 0.14, 0.08), 0.8), Vector3(0, 0.0, 0))
+			_part(m, _sphere(0.06), brass, Vector3(0, 0.1, 0.01), Vector3.ZERO, Vector3(1.2, 0.35, 1.0))
+			for k in range(8):
+				var t: float = float(k) / 8.0
+				var y0: float = 0.14 + t * 0.66
+				var bend: float = t * t * 0.09
+				_part(m, _box_mesh(Vector3(0.045 - t * 0.012, 0.09, 0.008)), steel, Vector3(bend, y0, 0), Vector3(0, 0, -t * 14.0))
+			_tip(m, 0.82)
 	for c in m.get_children():
 		if c is MeshInstance3D:
 			(c as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
@@ -1045,6 +1165,97 @@ func _style(bg: Color, border: Color, radius: int = 12, width: int = 2) -> Style
 	s.set_corner_radius_all(radius)
 	s.set_content_margin_all(8)
 	return s
+
+
+## V56 : le sac, dans la première page du carnet.
+func _build_inventory_page(col: Control) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 30)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	col.add_child(row)
+	var grid := GridContainer.new()
+	grid.columns = 6
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 10)
+	row.add_child(grid)
+	for i in range(SLOT_COUNT):
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(108, 108)
+		b.expand_icon = true
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.focus_mode = Control.FOCUS_NONE
+		b.pressed.connect(_select.bind(i))
+		b.gui_input.connect(_slot_input.bind(i))
+		grid.add_child(b)
+		var c := Label.new()
+		c.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+		c.offset_left = -44
+		c.offset_top = -28
+		c.offset_right = -6
+		c.offset_bottom = -2
+		c.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		c.add_theme_font_size_override("font_size", 19)
+		c.add_theme_color_override("font_outline_color", Color.BLACK)
+		c.add_theme_constant_override("outline_size", 5)
+		b.add_child(c)
+		_buttons.append(b)
+		_counts.append(c)
+	var side := VBoxContainer.new()
+	side.custom_minimum_size = Vector2(420, 0)
+	side.add_theme_constant_override("separation", 12)
+	row.add_child(side)
+	_equip_label = Label.new()
+	_equip_label.add_theme_font_size_override("font_size", 20)
+	_equip_label.add_theme_color_override("font_color", Color(0.74, 0.92, 1.0))
+	side.add_child(_equip_label)
+	side.add_child(HSeparator.new())
+	_detail_icon = TextureRect.new()
+	_detail_icon.custom_minimum_size = Vector2(150, 150)
+	_detail_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_detail_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	side.add_child(_detail_icon)
+	_detail_name = Label.new()
+	_detail_name.add_theme_font_size_override("font_size", 27)
+	_detail_name.add_theme_color_override("font_color", Color(1.0, 0.9, 0.7))
+	side.add_child(_detail_name)
+	_detail_kind = Label.new()
+	_detail_kind.add_theme_font_size_override("font_size", 17)
+	_detail_kind.add_theme_color_override("font_color", Color(0.98, 0.76, 0.32))
+	side.add_child(_detail_kind)
+	_detail_desc = Label.new()
+	_detail_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_desc.custom_minimum_size = Vector2(420, 110)
+	_detail_desc.add_theme_font_size_override("font_size", 18)
+	side.add_child(_detail_desc)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 12)
+	side.add_child(buttons)
+	_use_button = Button.new()
+	_use_button.custom_minimum_size = Vector2(170, 48)
+	_use_button.pressed.connect(func(): use_slot(selected))
+	buttons.add_child(_use_button)
+	_drop_button = Button.new()
+	_drop_button.text = "Jeter"
+	_drop_button.custom_minimum_size = Vector2(120, 48)
+	_drop_button.pressed.connect(func(): drop_slot(selected))
+	buttons.add_child(_drop_button)
+	for btn in [_use_button, _drop_button]:
+		var gold := Color(0.98, 0.76, 0.32)
+		(btn as Button).add_theme_stylebox_override("normal", _style(Color(0.06, 0.17, 0.24, 0.95), Color(0.75, 0.6, 0.3), 9, 1))
+		(btn as Button).add_theme_stylebox_override("hover", _style(Color(0.1, 0.25, 0.33, 0.98), gold, 9, 2))
+		(btn as Button).add_theme_stylebox_override("pressed", _style(Color(0.16, 0.3, 0.36, 1.0), gold, 9, 2))
+		(btn as Button).add_theme_stylebox_override("disabled", _style(Color(0.05, 0.1, 0.14, 0.7), Color(0.3, 0.32, 0.34), 9, 1))
+		(btn as Button).add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		(btn as Button).add_theme_color_override("font_color", Color(1.0, 0.9, 0.7))
+		(btn as Button).add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.8))
+		(btn as Button).add_theme_font_size_override("font_size", 19)
+	var help := Label.new()
+	help.text = "Clic : choisir  •  double-clic : utiliser" if not xr_mode else "Visez un objet et appuyez sur la gâchette, puis « Utiliser » ou « Jeter »"
+	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	help.add_theme_font_size_override("font_size", 16)
+	help.add_theme_color_override("font_color", Color(0.7, 0.8, 0.88))
+	col.add_child(help)
+	_refresh_pc()
 
 
 func _build_pc_window() -> void:
@@ -1172,14 +1383,14 @@ func _select(i: int) -> void:
 	_refresh()
 
 
-func toggle() -> void:
-	if opened:
+func toggle(tab: int = 0) -> void:
+	if opened and (carnet == null or carnet.current == tab):
 		close()
 	else:
-		open()
+		open(tab)
 
 
-func open() -> void:
+func open(tab: int = 0) -> void:
 	if not opened:
 		_sfx("ui_ouvrir")
 	opened = true
@@ -1187,11 +1398,8 @@ func open() -> void:
 	_vr_trigger_ready = false
 	if selected < 0 or slots[selected]["id"] == "":
 		selected = _first_filled()
-	if _layer != null:
-		_layer.visible = true
-	if _vr_panel != null:
-		_place_vr_panel()
-		_vr_panel.visible = true
+	if carnet != null:
+		carnet.show_menu(tab)
 	_refresh()
 
 
@@ -1199,10 +1407,8 @@ func close() -> void:
 	if opened:
 		_sfx("ui_fermer")
 	opened = false
-	if _layer != null:
-		_layer.visible = false
-	if _vr_panel != null:
-		_vr_panel.visible = false
+	if carnet != null:
+		carnet.hide_menu()
 
 
 func _first_filled() -> int:
@@ -1213,10 +1419,12 @@ func _first_filled() -> int:
 
 
 func _refresh() -> void:
-	if _layer != null:
+	if not _buttons.is_empty():
 		_refresh_pc()
 	if _vr_panel != null:
 		_refresh_vr()
+	if carnet != null and opened and carnet.current != 0:
+		carnet.refresh()
 
 
 func _refresh_pc() -> void:
@@ -1332,6 +1540,9 @@ func _refresh_vr() -> void:
 
 ## Appelé chaque image physique en VR quand le panneau est ouvert.
 func vr_tick(stick_y: float, trigger: float, grip: float) -> void:
+	# V56 : le carnet se manie au laser (carnet_v56.gd)
+	if carnet != null:
+		return
 	var list: Array = _filled_indices()
 	if absf(stick_y) < 0.3:
 		_vr_neutral = true

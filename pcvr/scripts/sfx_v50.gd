@@ -22,6 +22,7 @@ const DB := {
 	"plongeon": -4.0, "nage": -8.0, "nage_sous": -9.0, "bulles": -10.0, "respiration": -6.0, "suffoque": -4.0,
 	"requin_menace": -3.0, "requin_morsure": -2.0, "requin_mort": -3.0, "meduse_pique": -5.0, "dauphin": -6.0,
 	"perle": -4.0, "cristal_eveil": 0.0,
+	"cloche": -3.0, "cloche_bateau": -5.0, "corne_brume": -2.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

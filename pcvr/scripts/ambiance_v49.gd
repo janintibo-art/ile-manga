@@ -19,11 +19,14 @@ const BEDS := {
 	"volcan": "ambiance/vent_volcan", "grotte": "ambiance/grotte", "feerique": "ambiance/feerique",
 	"halle": "ambiance/halle_forge", "vent_vol": "ambiance/vent_altitude",
 	"sous_marin": "ambiance/sous_marin", "atlantide": "ambiance/atlantide",
+	"ville_azur": "ambiance/ville_azur", "port_azur": "ambiance/port_azur", "taverne": "ambiance/taverne",
+	"plage": "ambiance/plage", "cigales": "ambiance/cigales", "grillons": "ambiance/grillons",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
 	"ressac": -9.0, "large": -10.0, "brise": -15.0, "oiseaux": -13.0, "jungle": -15.0,
 	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0, "sous_marin": -6.0, "atlantide": -10.0,
+	"ville_azur": -12.0, "port_azur": -11.0, "taverne": -9.0, "plage": -13.0, "cigales": -17.0, "grillons": -16.0,
 }
 
 var main: Node
@@ -284,7 +287,16 @@ func _choose_zone(running: bool) -> void:
 	sea = _sea_closeness(p)
 	var boat: Node = main.get("boat_v29")
 	var on_boat: bool = boat != null and bool(boat.driving)
-	var island: String = _island_at(p)
+	# V56 : Port-Azur (ville, port, taverne, plage, collines), à bord de L'Hirondelle : le large
+	var az: Node = main.get("azur_v56")
+	var on_ferry: bool = az != null and az.ferry != null and bool(az.ferry.riding)
+	var az_zone: String = az.zone_at(p) if az != null and az.get("ile") != null and az.ile != null and not on_ferry else ""
+	if az_zone != "" and not on_boat:
+		zone = az_zone
+		_azur_beds(az_zone, p)
+		_night_beds()
+		return
+	var island: String = "" if on_ferry else _island_at(p)
 	if on_boat or island == "":
 		zone = "large"
 		targets["large"] = 1.0
@@ -308,6 +320,62 @@ func _choose_zone(running: bool) -> void:
 			var alt: float = clampf(p.y / 60.0, 0.0, 1.0)
 			targets["volcan"] = 0.55 + 0.45 * alt
 			targets["ressac"] = (0.2 + 0.6 * sea) * (1.0 - 0.6 * alt)
+	_night_beds()
+
+
+## V56 : les nappes de Port-Azur.
+func _azur_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	match z:
+		"azur_taverne":
+			sea = 0.0
+			targets["taverne"] = 1.0 if not day or _evening() else 0.55
+			targets["ressac"] = 0.08
+		"azur_hotel":
+			sea = 0.0
+			targets["ville_azur"] = 0.25
+			targets["ressac"] = 0.08
+		"azur_port":
+			targets["port_azur"] = 1.0
+			targets["ville_azur"] = 0.35 if day else 0.15
+			targets["ressac"] = 0.2 + 0.3 * sea
+		"azur_ville":
+			targets["ville_azur"] = 1.0 if day else 0.35
+			targets["port_azur"] = 0.2 * sea
+			targets["cigales"] = 0.3
+			targets["ressac"] = 0.1 + 0.3 * sea
+		"azur_plage":
+			targets["plage"] = 1.0 if day else 0.0
+			targets["ressac"] = 0.5 + 0.5 * sea
+			targets["brise"] = 0.45
+			targets["cigales"] = 0.25
+		_:
+			targets["cigales"] = 1.0
+			targets["brise"] = 0.6
+			targets["oiseaux"] = 0.3
+			targets["ressac"] = 0.15 + 0.6 * sea
+	if p.y > 30.0:
+		targets["brise"] = 0.9
+
+
+func _is_night() -> bool:
+	var t: Node = main.get("temps_v56")
+	return t != null and bool(t.is_night())
+
+
+func _evening() -> bool:
+	var t: Node = main.get("temps_v56")
+	return t != null and float(t.hour) >= 18.0
+
+
+## V56 : la nuit, les cigales se taisent, les oiseaux se calment, les grillons chantent.
+func _night_beds() -> void:
+	if not _is_night():
+		return
+	if float(targets.get("cigales", 0.0)) > 0.0 or zone in ["village", "jungle", "elfes", "nains", "azur_ville", "azur_collines", "azur_plage", "azur_port"]:
+		targets["grillons"] = maxf(float(targets.get("cigales", 0.0)), 0.7)
+	targets["cigales"] = 0.0
+	targets["oiseaux"] = float(targets.get("oiseaux", 0.0)) * 0.5
 
 
 func _island_at(p: Vector3) -> String:
@@ -387,6 +455,10 @@ func _event() -> void:
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(6.0, 14.0)
 			high = 12.0
+		"azur_port", "azur_plage":
+			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
+			gap = Vector2(7.0, 16.0)
+			high = 14.0
 		"village", "elfes", "nains":
 			if sea > 0.4:
 				list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]

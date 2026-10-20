@@ -226,6 +226,26 @@ def main() -> int:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
         print(f"Sons Godot: {len(list(sons.rglob('*.ogg')))} fichiers")
+    # V56 : Port-Azur (textures de la ville), la carte, les portraits, toutes les icônes d'objets
+    n56 = 0
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items"):
+        d = source / folder
+        if not d.is_dir():
+            continue
+        for f in sorted(list(d.glob("*.png")) + list(d.glob("*.jpg"))):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            n56 += 1
+    print(f"Textures V56: {n56} fichiers")
+    # V56 : les polices du carnet (Lora, et DejaVu Sans pour les symboles ★ ⚓ ♥ ✓)
+    fonts = source / "fonts"
+    if fonts.is_dir():
+        for f in sorted(fonts.iterdir()):
+            if f.suffix in (".ttf", ".otf", ".txt"):
+                dest = target / "fonts" / f.name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(f, dest)
     print("Modèles et textures préparés pour Godot.")
     return 0
 

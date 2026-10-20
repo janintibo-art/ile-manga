@@ -17,6 +17,9 @@ var energie: float = 0.5
 var affinite: float = 0.0
 var memoire: Dictionary = {}
 var _pending_question: Dictionary = {}
+## V56 : réductions accordées au joueur (carnet de quêtes) : par groupe (« azur »), par
+## personnage (son identifiant) et partout (« tout »).
+static var remises: Dictionary = {}
 
 
 func setup(profile: Dictionary) -> void:
@@ -193,6 +196,27 @@ func _ok(cond: Dictionary, ctx: Dictionary) -> bool:
 				if int((ctx.get("trouvailles", {}) as Dictionary).get("arbres", 0)) < int(v): return false
 			"a_attrape":
 				if int(((ctx.get("peche", {}) as Dictionary).get("especes", {}) as Dictionary).get(str(v), 0)) <= 0: return false
+			# V56 : l'heure du jeu et les quêtes du carnet
+			"soir":
+				var hs: float = float(ctx.get("heure", 12.0))
+				if (hs >= 19.0 or hs < 5.0) != bool(v): return false
+			"matin":
+				var hm: float = float(ctx.get("heure", 12.0))
+				if (hm >= 5.0 and hm < 12.0) != bool(v): return false
+			"heure_min":
+				if float(ctx.get("heure", 12.0)) < float(v): return false
+			"heure_max":
+				if float(ctx.get("heure", 12.0)) >= float(v): return false
+			"q56":
+				var kv: PackedStringArray = str(v).split("=")
+				var cur: String = str((ctx.get("q56", {}) as Dictionary).get(kv[0], ""))
+				var want: String = kv[1] if kv.size() > 1 else ""
+				if want == "":
+					if cur != "" and cur != "connue": return false
+				elif cur != want:
+					return false
+			"rep_min":
+				if int(ctx.get("rep", 0)) < int(v): return false
 	return true
 
 
@@ -634,6 +658,9 @@ func prix(id: String) -> int:
 		f += 0.15
 	if int(memoire.get("remise", -1)) == int(memoire["visites"]):
 		f *= 0.85
+	# V56 : réputation à Port-Azur, faveurs d'un commerçant, clé de la ville
+	var off: float = float(remises.get(str(data.get("groupe", "")), 0.0)) + float(remises.get(str(data.get("id", "")), 0.0)) + float(remises.get("tout", 0.0))
+	f *= 1.0 - clampf(off, 0.0, 0.5)
 	return maxi(1, int(round(base * f)))
 
 

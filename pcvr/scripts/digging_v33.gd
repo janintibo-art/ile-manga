@@ -74,7 +74,7 @@ func ground_at(p: Vector3) -> Dictionary:
 	if hit.is_empty() or hit.normal.y < 0.75:
 		return {}
 	var n: String = str(hit.collider.name)
-	if n != "Sol_collision_v11" and n != "Sol_jungle_v29":
+	if n != "Sol_collision_v11" and n != "Sol_jungle_v29" and n != "Sol_azur_v56":
 		return {}
 	if hit.position.y < WATER + 0.12:
 		return {}
@@ -128,7 +128,7 @@ func _check(spot: Vector3) -> bool:
 		_say("Impossible de creuser ici : il faut du sable ou de la terre.")
 		_busy = 0.8
 		return false
-	if _treasure_near(g["pos"]) != -1 or _mouette_near(g["pos"]) or _trap_near(g["pos"]) != "":
+	if _treasure_near(g["pos"]) != -1 or _mouette_near(g["pos"]) or _trap_near(g["pos"]) != "" or _quest_near(g["pos"]):
 		_busy = 1.3
 		return true
 	if holes.has(_key(g["pos"])):
@@ -154,6 +154,9 @@ func _dig_after(spot: Vector3, wait: float) -> void:
 	if not holes.has(key):
 		holes[key] = str(g["terrain"])
 		_make_hole(key, g["pos"], str(g["terrain"]))
+	# V56 : un objet de quête enfoui (l'alliance d'Hugo…)
+	if main.get("journal_v56") != null and main.journal_v56 != null and main.journal_v56.try_dig(g["pos"]):
+		return
 	var trap: String = _trap_near(g["pos"])
 	if trap != "":
 		main.donjon_v35.reveal_trap(trap)
@@ -318,6 +321,16 @@ func active_treasures() -> Array:
 
 
 ## V35 : une trappe du Temple englouti encore enterrée sous ce point ?
+## V56 : un endroit à creuser pour une quête du carnet ?
+func _quest_near(p: Vector3) -> bool:
+	if main.get("journal_v56") == null or main.journal_v56 == null:
+		return false
+	for w in main.journal_v56.dig_spots():
+		if Vector2(p.x, p.z).distance_to(Vector2(w.x, w.z)) < 2.2:
+			return true
+	return false
+
+
 func _trap_near(p: Vector3) -> String:
 	if main.get("donjon_v35") == null:
 		return ""

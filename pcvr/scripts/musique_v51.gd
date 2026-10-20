@@ -19,11 +19,13 @@ const ZONE_TRACK := {
 	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "racines": "racines",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
+	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
+	"azur_hotel": "port_azur", "azur_taverne": "",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0,
+	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
@@ -171,6 +173,10 @@ func _decide(dt: float) -> void:
 	var amb: Node = main.get("ambiance_v49")
 	var z: String = "menu" if not running else (str(amb.zone) if amb != null and str(amb.zone) != "" else "village")
 	var want_zone: String = str(ZONE_TRACK.get(z, ""))
+	# V56 : quand on entend Django jouer, la musique du lieu se tait
+	var az: Node = main.get("azur_v56")
+	if az != null and bool(az.get("django_heard")):
+		want_zone = ""
 	# --- combat
 	var fighting: bool = running and _fighting()
 	if fighting:

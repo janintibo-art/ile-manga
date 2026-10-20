@@ -271,7 +271,7 @@ func hit(i: int, damage: int, from_pos: Vector3) -> void:
 	t["shake"] = 0.05 if not axe else 0.12
 	t["shake_axis"] = Vector3.UP.cross(away).normalized()
 	if not axe:
-		if main.inventory_v28.equipped in ["epee", "epee_bois", "epee_naine", "epee_nuees", "trident_marees"]:
+		if main.inventory_v28.equipped in ["epee", "epee_bois", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire"]:
 			_say("Une épée ne coupe pas un arbre : elle s'émousserait. Prends une hache.", at)
 		elif main.inventory_v28.equipped == "hache":
 			_say("Frappe le tronc avec le fer de la hache !", at)
