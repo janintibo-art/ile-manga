@@ -42,6 +42,13 @@ const SPECS := {
 		"rayon": 0.42, "haut": 1.0, "nom": "Armure animée"},
 	"gargouille": {"pv": 12, "vitesse": 2.6, "degats": 1, "portee": 2.6, "armer": 0.8, "repos": 1.7, "vue": 13.0, "laisse": 16.0,
 		"rayon": 0.55, "haut": 1.6, "nom": "Gargouille"},
+	# V58 : les monstres-plantes d'Yggdrasil
+	"plante": {"pv": 14, "vitesse": 0.0, "degats": 1, "portee": 2.7, "armer": 0.65, "repos": 1.2, "vue": 7.5, "laisse": 1.0,
+		"rayon": 0.6, "haut": 1.1, "nom": "Plante carnivore"},
+	"ronceux": {"pv": 16, "vitesse": 2.0, "degats": 1, "portee": 1.6, "armer": 0.55, "repos": 1.3, "vue": 11.0, "laisse": 16.0,
+		"rayon": 0.55, "haut": 1.0, "nom": "Ronceux"},
+	"plante_mere": {"pv": 80, "vitesse": 0.0, "degats": 2, "portee": 4.6, "armer": 0.95, "repos": 1.5, "vue": 16.0, "laisse": 1.0,
+		"rayon": 1.5, "haut": 2.4, "nom": "Mère-Ronce"},
 }
 
 signal died(monster: Node3D)
@@ -104,6 +111,12 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		ms.radius = 0.45
 		cs.shape = ms
 		cs.position.y = 0.5
+	elif kind == "plante" or kind == "plante_mere":
+		var pc := CapsuleShape3D.new()
+		pc.radius = 0.45 if kind == "plante" else 1.3
+		pc.height = 1.7 if kind == "plante" else 4.2
+		cs.shape = pc
+		cs.position.y = pc.height * 0.5
 	elif kind == "vipere":
 		var vb := BoxShape3D.new()
 		vb.size = Vector3(0.5, 0.36, 1.3)
@@ -134,6 +147,10 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 		_build_gargoyle()
 	elif kind == "armure":
 		_build_armor()
+	elif kind == "plante" or kind == "plante_mere":
+		_build_plant(kind == "plante_mere")
+	elif kind == "ronceux":
+		_build_bramble()
 	else:
 		_build_guardian()
 	add_to_group("cibles_v28")
@@ -181,6 +198,101 @@ func _cyl(a: float, b: float, h: float) -> CylinderMesh:
 	c.height = h
 	c.radial_segments = 8
 	return c
+
+
+## V58 : plante carnivore (ou la Mère-Ronce, en géante) : une longue tige qui sort du sol,
+## une tête en mâchoires dentées, des feuilles en couronne ; elle recule la tête… et mord.
+var _plant_head: Node3D
+var _plant_jaw: Node3D
+func _build_plant(big: bool) -> void:
+	var k: float = 2.6 if big else 1.0
+	var stem := _mat(Color(0.22, 0.42, 0.16), 0.7)
+	var leaf := _mat(Color(0.3, 0.55, 0.2), 0.6)
+	var jaw := _mat(Color(0.75, 0.12, 0.18) if not big else Color(0.45, 0.08, 0.3), 0.45)
+	var spot := _mat(Color(0.95, 0.85, 0.3), 0.5, 0.6)
+	var tooth := _mat(Color(0.96, 0.94, 0.85), 0.4)
+	var inner := _mat(Color(1.0, 0.35, 0.45) if not big else Color(1.0, 0.4, 0.95), 0.4, 1.5)
+	for i in range(6 if not big else 9):
+		var a: float = TAU * i / (6 if not big else 9)
+		var lf := _mesh(_visual, _sphere(0.32 * k), leaf, Vector3(cos(a) * 0.45 * k, 0.08 * k, sin(a) * 0.45 * k), Vector3(1.0, 0.12, 0.45))
+		lf.rotation.y = -a
+	var seg_n: int = 5
+	for i in range(seg_n):
+		var t: float = float(i) / seg_n
+		_mesh(_visual, _cyl(0.07 * k * (1.0 - t * 0.3), 0.09 * k * (1.0 - t * 0.3), 0.32 * k), stem, Vector3(sin(t * 3.0) * 0.06 * k, (0.16 + t * 0.3) * k * 2.0, 0), Vector3.ONE, Vector3(0, 0, sin(t * 4.0) * 0.15))
+	_plant_head = Node3D.new()
+	_plant_head.name = "Tete"
+	_plant_head.position = Vector3(0, 1.15 * k, 0.1 * k)
+	_visual.add_child(_plant_head)
+	_mesh(_plant_head, _sphere(0.3 * k), jaw, Vector3(0, 0.1 * k, 0), Vector3(1.0, 0.45, 1.15))
+	_plant_jaw = Node3D.new()
+	_plant_jaw.name = "Machoire"
+	_plant_jaw.position = Vector3(0, 0, -0.1 * k)
+	_plant_head.add_child(_plant_jaw)
+	_mesh(_plant_jaw, _sphere(0.29 * k), jaw, Vector3(0, -0.08 * k, 0.1 * k), Vector3(1.0, 0.42, 1.12))
+	_mesh(_plant_head, _sphere(0.22 * k), inner, Vector3(0, 0.0, 0.12 * k), Vector3(1.0, 0.25, 1.0))
+	for i in range(9):
+		var x: float = (-0.24 + i * 0.06) * k
+		var z: float = 0.2 * k * sqrt(maxf(0.0, 1.0 - pow(x / (0.3 * k), 2.0)))
+		_mesh(_plant_head, _cyl(0.0, 0.025 * k, 0.09 * k), tooth, Vector3(x, 0.02 * k, z + 0.04 * k), Vector3.ONE, Vector3(PI, 0, 0))
+		_mesh(_plant_jaw, _cyl(0.0, 0.025 * k, 0.09 * k), tooth, Vector3(x, -0.03 * k, z + 0.14 * k))
+	for i in range(5):
+		_mesh(_plant_head, _sphere(0.04 * k), spot, Vector3(randf_range(-0.2, 0.2) * k, 0.2 * k, randf_range(-0.15, 0.2) * k), Vector3(1.0, 0.4, 1.0))
+	if big:
+		# la Mère-Ronce : des tentacules de ronces tout autour, une corolle lumineuse
+		var thorn := _mat(Color(0.25, 0.18, 0.12), 0.8)
+		for i in range(8):
+			var a2: float = TAU * i / 8.0
+			var arm := Node3D.new()
+			arm.position = Vector3(cos(a2) * 1.0, 0.4, sin(a2) * 1.0)
+			arm.rotation.y = -a2
+			_visual.add_child(arm)
+			for s2 in range(6):
+				var seg := _mesh(arm, _cyl(0.07 - s2 * 0.008, 0.09 - s2 * 0.008, 0.6), stem, Vector3(0.3 + s2 * 0.45, 0.3 + sin(s2 * 0.9) * 0.6, 0), Vector3.ONE, Vector3(0, 0, -0.9 + s2 * 0.25))
+				_mesh(arm, _cyl(0.0, 0.03, 0.14), thorn, seg.position + Vector3(0, 0.1, 0.06), Vector3.ONE, Vector3(-0.8, 0, 0))
+			_arms.append([arm, a2])
+		var glow := OmniLight3D.new()
+		glow.light_color = Color(1.0, 0.4, 0.95)
+		glow.light_energy = 2.0
+		glow.omni_range = 9.0
+		glow.position = Vector3(0, 0.1 * k, 0.15 * k)
+		_plant_head.add_child(glow)
+
+
+## V58 : ronceux : un nœud de ronces qui marche, deux bras épineux, des yeux d'ambre.
+func _build_bramble() -> void:
+	var vine := _mat(Color(0.28, 0.24, 0.12), 0.85)
+	var green := _mat(Color(0.25, 0.42, 0.15), 0.7)
+	var thorn := _mat(Color(0.75, 0.7, 0.55), 0.5)
+	var eye := _mat(Color(1.0, 0.75, 0.2), 0.2, 4.0)
+	var body := Node3D.new()
+	body.name = "Corps"
+	body.position = Vector3(0, 0.9, 0)
+	_visual.add_child(body)
+	for i in range(7):
+		var tm := TorusMesh.new()
+		tm.inner_radius = 0.28 + (i % 3) * 0.04
+		tm.outer_radius = tm.inner_radius + 0.1
+		_mesh(body, tm, vine if i % 2 == 0 else green, Vector3(0, -0.2 + i * 0.07, 0), Vector3(1.0, 1.0, 1.0), Vector3(randf_range(-1.2, 1.2), randf() * TAU, randf_range(-1.2, 1.2)))
+	for i in range(18):
+		var d := Vector3(randf_range(-1, 1), randf_range(-0.6, 1), randf_range(-1, 1)).normalized()
+		var th := _mesh(body, _cyl(0.0, 0.035, 0.18), thorn, d * 0.36, Vector3.ONE)
+		th.basis = Basis(Quaternion(Vector3.UP, d))
+	for sx in [-1.0, 1.0]:
+		_mesh(body, _sphere(0.05), eye, Vector3(sx * 0.11, 0.12, 0.33))
+		var arm := Node3D.new()
+		arm.position = Vector3(sx * 0.36, 0.05, 0.05)
+		body.add_child(arm)
+		for s2 in range(4):
+			_mesh(arm, _cyl(0.04, 0.055, 0.3), vine, Vector3(sx * (0.12 + s2 * 0.18), -0.1 - s2 * 0.12, 0.05 * s2), Vector3.ONE, Vector3(0, 0, sx * (0.8 + s2 * 0.15)))
+			_mesh(arm, _cyl(0.0, 0.03, 0.12), thorn, Vector3(sx * (0.14 + s2 * 0.18), -0.04 - s2 * 0.12, 0.08 + 0.05 * s2), Vector3.ONE, Vector3(-1.0, 0, 0))
+		_claws.append(arm)
+	for sx2 in [-1.0, 1.0]:
+		var leg := Node3D.new()
+		leg.position = Vector3(sx2 * 0.15, 0.55, 0)
+		_visual.add_child(leg)
+		_mesh(leg, _cyl(0.05, 0.08, 0.55), vine, Vector3(0, -0.27, 0))
+		_legs.append([leg, sx2, 0])
 
 
 ## Crabe de roche : carapace bosselée couleur de pierre et de rouille, six pattes, deux pinces.
@@ -396,6 +508,7 @@ const SOUNDS := {
 	"vipere": ["serpent_menace", "monstre_mort"], "follet": ["follet_menace", "follet_mort"],
 	"golem": ["golem_menace", "golem_mort"], "magma": ["magma_menace", "magma_mort"],
 	"armure": ["armure_menace", "armure_mort"], "gargouille": ["gargouille_menace", "gargouille_mort"],
+	"plante": ["plante_menace", "plante_mort"], "plante_mere": ["plante_menace", "plante_mort"], "ronceux": ["ronce_menace", "plante_mort"],
 }
 
 func _sound(what: String) -> void:
@@ -677,7 +790,7 @@ func take_hit(damage: int, from_pos: Vector3) -> void:
 	var away: Vector3 = global_position - from_pos
 	away.y = 0.0
 	away = away.normalized() if away.length() > 0.01 else -facing
-	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet", "magma", "gargouille"] else (2.6 if kind == "vipere" else (0.5 if kind == "golem" else (1.0 if kind == "armure" else 1.6))))
+	_knock = away * (3.2 if kind in ["crabe", "araignee", "follet", "magma", "gargouille"] else (2.6 if kind == "vipere" else (0.5 if kind == "golem" else (1.0 if kind == "armure" else (0.0 if kind in ["plante", "plante_mere"] else 1.6)))))
 	var cb: Node = manager.main.combat_v28
 	if cb != null:
 		var at: Vector3 = global_position + Vector3.UP * (2.1 if kind in ["gardien", "armure", "gargouille"] else (3.0 if kind == "golem" else 0.9))
@@ -739,6 +852,10 @@ func _physics_process(delta: float) -> void:
 				_wisp_light.light_energy = maxf(1.2 - timer * 2.0, 0.0)
 		elif kind == "vipere":
 			_visual.rotation.z = minf(timer * 5.0, PI * 0.9)
+		elif kind == "plante" or kind == "plante_mere" or kind == "ronceux":
+			# elle se fane et s'affaisse
+			_visual.rotation.x = minf(timer * 0.9, 1.2)
+			_visual.scale = Vector3.ONE * clampf(1.0 - timer * 0.35, 0.3, 1.0)
 		elif kind == "golem":
 			# Les blocs s'affaissent et s'enfoncent
 			_visual.rotation.x = minf(timer * 1.2, 0.5)
@@ -852,6 +969,37 @@ func _animate(delta: float, speed: float) -> void:
 		for w in _arms:
 			var wing: Node3D = w[0]
 			wing.rotation.z = float(w[1]) * (0.35 + beat * 0.55 * (0.4 if dive else 1.0))
+		return
+	if kind == "plante" or kind == "plante_mere":
+		var back: float = 0.0
+		if state == "armer":
+			back = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		var bite: bool = state == "frappe"
+		var kk: float = 2.6 if kind == "plante_mere" else 1.0
+		if _plant_head != null:
+			var goal_z: float = (0.1 - 0.35 * back + (0.9 if bite else 0.0)) * kk
+			_plant_head.position.z = lerpf(_plant_head.position.z, goal_z, clampf(delta * (20.0 if bite else 6.0), 0.0, 1.0))
+			_plant_head.position.y = 1.15 * kk + sin(_clock * 2.0) * 0.05 * kk - 0.15 * back * kk
+			_plant_head.rotation.x = lerpf(_plant_head.rotation.x, (-0.5 * back) if not bite else 0.35, clampf(delta * 10.0, 0.0, 1.0))
+			_plant_head.rotation.z = sin(_clock * 1.3) * 0.12
+		if _plant_jaw != null:
+			_plant_jaw.rotation.x = lerpf(_plant_jaw.rotation.x, (0.7 * back + 0.1 * sin(_clock * 3.0)) if not bite else -0.05, clampf(delta * 14.0, 0.0, 1.0))
+		for a in _arms:
+			(a[0] as Node3D).rotation.z = sin(_clock * 1.6 + float(a[1]) * 2.0) * 0.25 + 0.3 * back
+		return
+	if kind == "ronceux":
+		var walk_r: float = clampf(speed / 2.0, 0.0, 1.0)
+		var body: Node3D = _visual.get_node("Corps")
+		body.position.y = 0.9 + absf(sin(_clock * 8.0)) * 0.08 * walk_r
+		body.rotation.y = sin(_clock * 3.0) * 0.15
+		for l in _legs:
+			(l[0] as Node3D).rotation.x = sin(_clock * 8.0 + (0.0 if float(l[1]) > 0 else PI)) * 0.5 * walk_r
+		var raise_r: float = 0.0
+		if state == "armer":
+			raise_r = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
+		var swing: bool = state == "frappe"
+		for c in _claws:
+			(c as Node3D).rotation.x = lerpf((c as Node3D).rotation.x, (-1.6 * raise_r) if not swing else 0.9, clampf(delta * 12.0, 0.0, 1.0))
 		return
 	if kind == "golem":
 		var walk_g: float = clampf(speed / 1.2, 0.0, 1.0)

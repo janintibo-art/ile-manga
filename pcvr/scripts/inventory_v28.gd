@@ -203,6 +203,11 @@ const ITEMS := {
 		"desc": "Une enveloppe cachetée de cire rouge, achetée à la poste. Parfaite pour une déclaration."},
 	"sabre_corsaire": {"name": "Sabre corsaire", "art": "un sabre corsaire", "kind": "arme", "max": 1, "damage": 10,
 		"desc": "Forgé par Hector à l'Enclume Bleue : lame courbe en acier bleui, garde en coquille de laiton. Dégâts : 10, et le troisième coup d'un enchaînement frappe moitié plus fort."},
+	# V58 : le royaume des fées
+	"champignon_magique": {"name": "Champignon des fées", "art": "un champignon des fées", "kind": "outil", "max": 3,
+		"desc": "Un champignon au chapeau violet, constellé de points qui brillent comme des étoiles. Lulu dit qu'il emmène au royaume des fées, au-dessus des nuages. « Croquer » pour faire le voyage ; là-haut, le cercle de champignons te ramènera sur la plage."},
+	"graine_yggdrasil": {"name": "Graine d'Yggdrasil", "art": "la graine d'Yggdrasil", "kind": "quete", "max": 1,
+		"desc": "Une graine dorée, grosse comme un œuf, veinée de lumière : la première graine de l'Arbre-Monde depuis cent ans. L'esprit de l'arbre te l'a confiée pour les fées. Elle est tiède, et on dirait qu'elle respire."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
 
@@ -901,6 +906,28 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.0, 0.03, 0.06, 3), _mat("dent", Color(0.95, 0.93, 0.86), 0.4), Vector3(0, 0.03, 0))
 		"galette_algue":
 			_part(m, _cyl(0.06, 0.06, 0.02, 14), _mat("galette_algue", Color(0.3, 0.38, 0.16), 0.9), Vector3(0, 0.01, 0))
+		"champignon_magique":
+			var cap6 := _mat("chapeau_fee", Color(0.42, 0.3, 0.85), 0.4)
+			cap6.emission_enabled = true
+			cap6.emission = Color(0.35, 0.25, 0.9)
+			cap6.emission_energy_multiplier = 0.8
+			var dot6 := _mat("point_fee", Color(0.8, 0.95, 1.0), 0.2)
+			dot6.emission_enabled = true
+			dot6.emission = Color(0.65, 0.95, 1.0)
+			dot6.emission_energy_multiplier = 3.0
+			_part(m, _cyl(0.022, 0.03, 0.1, 10), _mat("pied_fee", Color(0.92, 0.93, 0.98)), Vector3(0, 0.05, 0))
+			_part(m, _sphere(0.075), cap6, Vector3(0, 0.1, 0), Vector3.ZERO, Vector3(1, 0.55, 1))
+			for k6 in range(6):
+				var a6: float = TAU * k6 / 6.0
+				_part(m, _sphere(0.012), dot6, Vector3(cos(a6) * 0.05, 0.13, sin(a6) * 0.05))
+			_part(m, _sphere(0.014), dot6, Vector3(0, 0.142, 0))
+		"graine_yggdrasil":
+			var seed7 := _mat("graine_ygg", Color(0.85, 0.6, 0.25), 0.35)
+			seed7.emission_enabled = true
+			seed7.emission = Color(1.0, 0.75, 0.3)
+			seed7.emission_energy_multiplier = 1.2
+			_part(m, _sphere(0.05), seed7, Vector3(0, 0.06, 0), Vector3.ZERO, Vector3(0.8, 1.2, 0.8))
+			_part(m, _sphere(0.02), _mat("germe_ygg", Color(0.4, 0.7, 0.25), 0.5), Vector3(0.01, 0.12, 0), Vector3(0, 0, -30), Vector3(1.4, 0.4, 0.8))
 		"plume_ventaile":
 			_part(m, _box_mesh(Vector3(0.06, 0.004, 0.32)), _mat("plume_or", Color(0.55, 0.4, 0.2), 0.6), Vector3(0, 0.004, 0), Vector3(0, 25, 0))
 		"selle_aigle":
@@ -1464,7 +1491,7 @@ func _refresh_pc() -> void:
 		"arme", "canne":
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
 		"outil":
-			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else "Examiner"
+			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else ("Croquer" if sid == "champignon_magique" else "Examiner")
 		_:
 			_use_button.text = "Examiner"
 

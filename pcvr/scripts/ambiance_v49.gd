@@ -262,6 +262,21 @@ func _choose_zone(running: bool) -> void:
 			targets["sous_marin"] = 0.3
 		sea = 0.0
 		return
+	# V58 : au royaume des fées (la prairie, ou le bois creux d'Yggdrasil)
+	var fe: Node = main.get("feerie_v58")
+	if fe != null and fe.contains(p):
+		sea = 0.0
+		var frm: String = fe.room(p)
+		if frm != "" and frm != "couronne":
+			zone = "yggdrasil"
+			targets["feerique"] = 1.0
+			targets["grotte"] = 0.3
+		else:
+			zone = "fees"
+			targets["feerique"] = 0.75
+			targets["oiseaux"] = 0.55
+			targets["brise"] = 0.6 if frm == "" else 0.9
+		return
 	# V54 : en vol sur Ventaile, ou là-haut sur l'île flottante
 	var sky: Node = main.get("ciel_v54")
 	if sky != null and bool(sky.riding):
@@ -467,6 +482,10 @@ func _event() -> void:
 			elif zone == "elfes":
 				list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
 				gap = Vector2(8.0, 18.0)
+		"fees", "yggdrasil":
+			list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
+			gap = Vector2(5.0, 12.0)
+			high = 5.0
 		"souterrain", "racines":
 			list = ["ponctuels/goutte_1", "ponctuels/goutte_2", "ponctuels/goutte_3", "ponctuels/goutte_4"]
 			gap = Vector2(1.5, 5.0)

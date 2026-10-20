@@ -125,6 +125,7 @@ func _ready() -> void:
 	_create_v54()
 	_create_v55()
 	_create_v56()
+	_create_v58()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -963,6 +964,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			azur_v56.load_data({})
 		if journal_v56 != null:
 			journal_v56.load_data({})
+		if feerie_v58 != null:
+			feerie_v58.load_data({})
+		if teleport_v58 != null:
+			teleport_v58.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -1037,6 +1042,13 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and journal_v56 != null:
 		var jdata: Variant = SaveStore.read_slot(slot).get("journal", {})
 		journal_v56.load_data(jdata if jdata is Dictionary else {})
+	# V58 : le royaume des fées, la magie de téléportation (après le carnet de quêtes)
+	if not new_game and feerie_v58 != null:
+		var fdata: Variant = SaveStore.read_slot(slot).get("feerie", {})
+		feerie_v58.load_data(fdata if fdata is Dictionary else {})
+	if not new_game and teleport_v58 != null:
+		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
+		teleport_v58.load_data(tdata if tdata is Dictionary else {})
 	if journal_v56 != null:
 		journal_v56.respawn_pickups()
 	last_ok_v29.clear()
@@ -1103,6 +1115,10 @@ func _save_slot(slot: int) -> void:
 		extra["azur"] = azur_v56.serialize()
 	if journal_v56 != null:
 		extra["journal"] = journal_v56.serialize()
+	if feerie_v58 != null:
+		extra["feerie"] = feerie_v58.serialize()
+	if teleport_v58 != null:
+		extra["teleport"] = teleport_v58.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -1341,6 +1357,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			inventory_v28.toggle({KEY_J: 1, KEY_M: 2, KEY_P: 3}[event.keycode])
 		elif event.keycode == KEY_G and game_started and ciel_v54 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			ciel_v54.call_eagle()
+		elif event.keycode == KEY_T and game_started and teleport_v58 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
+			open_teleport_v58()
 		elif event.keycode == KEY_F1 and info != null:
 			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
 		elif event.keycode == KEY_F5 and game_started:
@@ -1708,6 +1726,9 @@ func _create_gameplay_v28() -> void:
 			inventory_v28.close()
 			ciel_v54.call_eagle()
 			return true
+		# V58 : le champignon de Lulu emmène au royaume des fées
+		if item_id == "champignon_magique" and feerie_v58 != null:
+			return feerie_v58.eat_mushroom()
 		return false
 	combat_v28.build(self, inventory_v28)
 	hero_v28 = preload("res://scripts/hero_v28.gd").new()
@@ -1878,6 +1899,12 @@ func _respawn_v28() -> void:
 		return
 	# V47 : sur l'île des nains, on se réveille sur la terrasse de Forgefer.
 	var pp: Vector3 = _player_pos_v27()
+	# V58 : au royaume des fées (ou dans Yggdrasil)
+	if feerie_v58 != null and feerie_v58.contains(pp):
+		var rf: Array = feerie_v58.respawn_point(pp)
+		place_player_v35(rf[0], rf[1])
+		_show_message_v28("Vous vous êtes évanoui… Des fées vous ont soigné avec de la rosée et des chansons.")
+		return
 	# V54 : sur l'île flottante, on se réveille sur l'Aire des Vents.
 	if ciel_v54 != null and ciel_v54.on_sky(pp):
 		var rs: Array = ciel_v54.respawn_point()
@@ -2060,6 +2087,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	if _in_dungeon_v35(p):
 		return
 	var key: String = str(body.name)
+	# V58 : au royaume des fées, on ne s'avance pas au-delà du bord (ni de la Couronne)
+	if feerie_v58 != null and feerie_v58.contains(p):
+		if feerie_v58.walkable_at(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
 	# V54 : sur l'île flottante, on ne s'avance pas au-delà du bord
 	if ciel_v54 != null and ciel_v54.on_sky(p):
 		if ciel_v54.walkable_at(p):
@@ -2339,6 +2374,8 @@ func _plant_v34() -> void:
 		ciel_v54.build_quest()
 	if mer_v55 != null and donjon_v35 != null:
 		mer_v55.build_quest()
+	if feerie_v58 != null and donjon_v35 != null:
+		feerie_v58.build_quest()
 	if bucheron_v34 != null:
 		bucheron_v34.plant()
 	if digging_v33 != null:
@@ -2560,7 +2597,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0},
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2704,6 +2741,8 @@ var temps_v56: Node                        # V56 : l'heure, le jour et la nuit
 var azur_v56: Node3D                       # V56 : Port-Azur, la grande île touristique
 var journal_v56: Node                      # V56 : le carnet de quêtes, les bonus, la réputation
 var teuf_v57: Node3D                       # V57 : la teuf de la plage (DJ, teufeurs, sono)
+var feerie_v58: Node3D                     # V58 : le royaume des fées, Yggdrasil et son donjon
+var teleport_v58: Node                     # V58 : la magie de téléportation
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
@@ -2737,6 +2776,12 @@ func _spawn_azur_v56() -> void:
 		add_child(teuf_v57)
 		teuf_v57.setup(self)
 		teuf_v57.spawn_people()
+		# V58 : Lulu et son champignon qui brille
+		if journal_v56 != null:
+			teuf_v57.register_services(journal_v56)
+	# V58 : les fées du royaume d'Yggdrasil
+	if feerie_v58 != null:
+		feerie_v58.spawn_fairies()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -2769,6 +2814,32 @@ func _create_v56() -> void:
 		if boat_v29 != null:
 			var ad: Array = azur_v56.dock()
 			boat_v29._make_dock("Ponton_azur", ad[0], ad[1])
+
+
+## V58 : le royaume des fées (feerie_v58.gd) : l'île au-dessus des nuages, les fées,
+## Yggdrasil et son donjon ; la magie de téléportation (teleport_v58.gd).
+func _create_v58() -> void:
+	feerie_v58 = preload("res://scripts/feerie_v58.gd").new()
+	feerie_v58.name = "Royaume_des_fees_v58"
+	add_child(feerie_v58)
+	feerie_v58.setup(self)
+	feerie_v58.build()
+	teleport_v58 = preload("res://scripts/teleport_v58.gd").new()
+	teleport_v58.name = "Teleportation_v58"
+	add_child(teleport_v58)
+	teleport_v58.setup(self)
+
+
+## V58 : T (ou le carnet, onglet Carte) : se téléporter dans un lieu déjà visité.
+func open_teleport_v58() -> void:
+	if teleport_v58 == null or inventory_v28 == null:
+		return
+	if not teleport_v58.known():
+		_show_message_v28("Tu ne connais pas encore la magie de téléportation. Les fées, peut-être, un jour…")
+		return
+	inventory_v28.open(2)
+	if inventory_v28.carnet != null:
+		inventory_v28.carnet.show_teleport(true)
 
 
 ## V54 : le ciel (ciel_v54.gd) : l'aigle géant, l'île flottante et son château.

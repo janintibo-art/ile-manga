@@ -140,6 +140,12 @@ func alert(m: Node3D) -> void:
 		donjon._say("Une armure animée ! Elle est vide… et elle se bat. Quand elle lève l'épée, pare (F) ou roule (Ctrl), puis frappe-la.", 6.0)
 	elif m.kind == "gargouille":
 		donjon._say("Une gargouille ! Quand elle bat des ailes très vite et se cabre, elle va piquer droit sur toi : écarte-toi, puis frappe-la.", 6.0)
+	elif m.kind == "plante":
+		donjon._say("Une plante carnivore ! Elle ne bouge pas, mais quand elle recule la tête, elle va mordre loin devant elle : reste hors de portée, puis frappe-la juste après sa morsure.", 7.0)
+	elif m.kind == "ronceux":
+		donjon._say("Un ronceux ! Ce paquet de ronces marche vers toi et lève ses bras épineux avant de frapper : pare (F) ou recule, puis taille-le en pièces.", 6.0)
+	elif m.kind == "plante_mere":
+		donjon._say("La Mère-Ronce, la reine des plantes d'Yggdrasil ! Sa morsure porte très loin. Attends qu'elle frappe dans le vide, puis cours la frapper avant qu'elle ne se redresse.", 8.0)
 	elif m.kind == "vipere":
 		donjon._say("Une vipère des abysses ! Quand elle se love et dresse la tête, elle va bondir droit devant : écarte-toi, ou pare (F).", 6.0)
 	else:
@@ -196,6 +202,12 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V58 : évanoui dans le royaume des fées (ou dans Yggdrasil)
+	if main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.contains(p):
+		var rf: Array = main.feerie_v58.respawn_point(p)
+		main.place_player_v35(rf[0], rf[1])
+		_heal_player()
+		return
 	# V54 : évanoui sur l'île flottante : on se réveille sur l'Aire des Vents.
 	if main.get("ciel_v54") != null and main.ciel_v54 != null and main.ciel_v54.on_sky(p):
 		var rs: Array = main.ciel_v54.respawn_point()
@@ -271,6 +283,13 @@ func _on_died(m: Node3D) -> void:
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.2:
 			gains.append(["rubis", 1])
+	elif m.kind == "plante" or m.kind == "ronceux":
+		gains.append(["piece", _rng.randi_range(1, 4)])
+		if _rng.randf() < 0.2:
+			gains.append(["baies", 1])
+	elif m.kind == "plante_mere":
+		gains.append(["piece", _rng.randi_range(12, 20)])
+		gains.append(["piece_or", 1])
 	elif m.kind == "vipere":
 		gains.append(["piece", _rng.randi_range(2, 5)])
 		if _rng.randf() < 0.15:
@@ -304,6 +323,9 @@ func _process(delta: float) -> void:
 	var outdoor: bool = not inside and main.get("nains_v46") != null and main.nains_v46 != null and main.nains_v46.hostile_zone(main._player_pos_v27())
 	# V54 : dans la Citadelle des Nuées
 	if not inside and main.get("ciel_v54") != null and main.ciel_v54 != null and main.ciel_v54.hostile_zone(main._player_pos_v27()):
+		outdoor = true
+	# V58 : dans Yggdrasil
+	if not inside and main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.hostile_zone(main._player_pos_v27()):
 		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))

@@ -227,8 +227,9 @@ def main() -> int:
             shutil.copy2(f, dest)
         print(f"Sons Godot: {len(list(sons.rglob('*.ogg')))} fichiers")
     # V56 : Port-Azur (textures de la ville), la carte, les portraits, toutes les icônes d'objets
+    # V58 : le royaume des fées et Yggdrasil (textures/fees)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees"):
         d = source / folder
         if not d.is_dir():
             continue

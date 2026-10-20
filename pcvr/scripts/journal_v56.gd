@@ -230,6 +230,17 @@ const QUETES := [
 		],
 		"fin": "Mesdames et messieurs ! Port-Azur reconnaît aujourd'hui l'un des siens ! Voici la clé de la ville. Désormais, tous nos commerçants vous feront un prix, et vous aurez toujours une place à nos terrasses. Et dans nos cœurs. Django, la musique !",
 		"recompense": {"objets": [["cle_ville", 1]], "rep": 20, "bonus": {"coeur": 1}, "titre": "Citoyen d'honneur de Port-Azur", "remise": {"tout": 0.1}}},
+	# V58 : le royaume des fées
+	{"id": "graine_yggdrasil", "titre": "La graine d'Yggdrasil", "donneur": "oriane", "lieu": "Le royaume des fées", "sorte": "Royaume des fées",
+		"resume": "Yggdrasil, l'Arbre-Monde, ne donne plus de graines depuis cent ans : des plantes méchantes ont envahi son tronc. La reine Oriane voudrait la graine qui dort tout en haut de l'arbre.",
+		"offre_label": "Vous avez l'air inquiète, Majesté.",
+		"offre": "Inquiète, oui. Yggdrasil n'a plus donné de graine depuis cent ans. Une ronce est entrée dans son cœur, et toutes les plantes de l'arbre sont devenues méchantes. Sans graine, pas de nouvel Arbre-Monde… et un jour, les îles se faneront. Nous, les fées, sommes trop petites pour ce combat. Toi, peut-être… Si tu acceptes, l'arbre t'ouvrira sa porte. Monte jusqu'à sa couronne, et rapporte-nous la graine.",
+		"etapes": [
+			{"type": "etat", "cle": "graine_ygg", "objectif": "Entrer dans Yggdrasil par la porte aux runes, traverser ses trois salles jusqu'à la Couronne et recevoir la graine"},
+			{"type": "rendre", "pnj": "oriane", "label": "Voici la graine d'Yggdrasil, Majesté.", "prend": [["graine_yggdrasil", 1]], "objectif": "Rapporter la graine à la reine Oriane, dans la clairière des fées"},
+		],
+		"fin": "La graine… Elle respire ! Cent ans que nous l'attendions. Nous la planterons dans la clairière, et dans mille ans, un nouvel Yggdrasil veillera sur les îles. Pour te remercier, je t'offre ce que les fées ont de plus précieux : la magie de voyager. Pense très fort à un lieu que tu as déjà vu… et tu y seras.",
+		"recompense": {"pieces": 60, "titre": "Ami des fées", "flag": "teleportation"}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -250,6 +261,10 @@ const AVENTURES := [
 		"etapes": [["ventaile", "Apprivoiser Ventaile, l'aigle géant"], ["citadelle", "Atteindre l'île flottante et sa citadelle"], ["orage", "Vaincre Sire Orage"]]},
 	{"id": "atlantide", "titre": "Les perles de l'Atlantide", "lieu": "Sous la mer", "debut": "masque",
 		"etapes": [["masque", "Obtenir le masque de plongée"], ["atlantide", "Trouver la cité engloutie"], ["perles_1", "Trouver une première Perle de Lumière"], ["perles_3", "Réunir les trois Perles"], ["cristal", "Rallumer le Grand Cristal"]]},
+	{"id": "yggdrasil", "titre": "Yggdrasil, l'Arbre-Monde", "lieu": "Le royaume des fées", "debut": "royaume_fees",
+		"etapes": [["royaume_fees", "Entrer dans le royaume des fées (le champignon de Lulu)"], ["porte_ygg", "Entrer dans Yggdrasil par la porte aux runes"], ["lucioles", "Rejouer l'air des lucioles"],
+			["seve", "Mener la lumière de la sève jusqu'au cœur de bois"], ["saisons", "Faire fleurir les quatre saisons"], ["mere_ronce", "Vaincre la Mère-Ronce"],
+			["graine_ygg", "Recevoir la graine de l'esprit de l'arbre"], ["teleportation", "Apprendre la magie de téléportation"]]},
 ]
 
 var main: Node
@@ -745,7 +760,7 @@ func listing() -> Dictionary:
 		if not known:
 			continue
 		var e := {"id": qid, "titre": str(q["titre"]), "lieu": str(q["lieu"]), "qui": npc_name(giver), "texte": str(q["resume"]),
-			"recompense": _reward_text(q.get("recompense", {})), "sorte": "Port-Azur"}
+			"recompense": _reward_text(q.get("recompense", {})), "sorte": str(q.get("sorte", "Port-Azur"))}
 		match st:
 			"finie":
 				e["objectif"] = "Accomplie."
@@ -836,6 +851,8 @@ func _reward_text(rec: Dictionary) -> String:
 		parts.append("titre « %s »" % str(rec["titre"]))
 	if rec.has("remise"):
 		parts.append("réduction")
+	if str(rec.get("flag", "")) == "teleportation":
+		parts.append("la magie de téléportation")
 	if int(rec.get("rep", 0)) > 0:
 		parts.append("+%d réputation" % int(rec["rep"]))
 	return ", ".join(parts)
@@ -856,6 +873,8 @@ func place_name(p: Vector3) -> String:
 		return "Port-Azur"
 	if main.get("mer_v55") != null and main.mer_v55 != null and main.mer_v55.atl != null and main.mer_v55.atl.in_dome(p + Vector3.UP):
 		return "L'Atlantide"
+	if main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.contains(p):
+		return "Le royaume des fées"
 	if p.y > 100.0:
 		return "L'île flottante"
 	if main.get("nains_v46") != null and main.nains_v46 != null and main.nains_v46.ile != null and main.nains_v46.ile.contains(p.x, p.z):

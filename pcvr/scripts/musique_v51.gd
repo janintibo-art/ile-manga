@@ -21,11 +21,13 @@ const ZONE_TRACK := {
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
 	"azur_hotel": "port_azur", "azur_taverne": "",
+	"fees": "royaume_fees", "yggdrasil": "royaume_fees",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
+	"royaume_fees": -8.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
@@ -282,5 +284,9 @@ func _boss_fight() -> bool:
 	# V54 : Sire Orage, au sommet de la Tour des Tempêtes
 	var sky: Node = main.get("ciel_v54")
 	if sky != null and bool(sky.fight):
+		return true
+	# V58 : la Mère-Ronce, sur la Couronne d'Yggdrasil
+	var fe: Node = main.get("feerie_v58")
+	if fe != null and bool(fe.fight):
 		return true
 	return false

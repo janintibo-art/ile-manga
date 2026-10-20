@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées"]
 
 var main: Node
 var inv: Node
@@ -49,6 +49,10 @@ var _map
 var _map_mode: String = "archipel"
 var _map_buttons: Dictionary = {}
 var _map_info: Label
+var _tp_button: Button                  # V58 : la magie de téléportation
+var _tp_panel: VBoxContainer
+var _tp_list: HFlowContainer
+var _tp_open: bool = false
 # personnages
 var _p_region: String = "Tous"
 var _p_grid: GridContainer
@@ -269,6 +273,8 @@ func show_menu(tab: int) -> void:
 
 func hide_menu() -> void:
 	opened = false
+	if _tp_open:
+		show_teleport(false)
 	if layer != null:
 		layer.visible = false
 	if viewport != null:
@@ -404,7 +410,7 @@ func _refresh_quests() -> void:
 		l.custom_minimum_size = Vector2(520, 0)
 		_q_list.add_child(l)
 	for e in list:
-		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔"}.get(str(e["sorte"]), "•")
+		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔", "Royaume des fées": "✦"}.get(str(e["sorte"]), "•")
 		var b := _button("%s  %s\n     %s" % [icon, str(e["titre"]), str(e["lieu"])], 16)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(530, 58)
@@ -466,6 +472,11 @@ func _build_map(pg: Control) -> void:
 	var me := _button("⌖  Où suis-je ?", 17)
 	me.pressed.connect(func(): _map.center_on_player())
 	bar.add_child(me)
+	# V58 : se téléporter (cadeau des fées)
+	_tp_button = _button("✦  Se téléporter", 17)
+	_tp_button.pressed.connect(func(): show_teleport(not _tp_open))
+	_tp_button.visible = false
+	bar.add_child(_tp_button)
 	_map_info = _label("", 15, DIM, "Italic")
 	_map_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_map_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -476,9 +487,52 @@ func _build_map(pg: Control) -> void:
 	_map.clip_contents = true
 	col.add_child(_map)
 	_map.setup(main, self)
+	_tp_panel = VBoxContainer.new()
+	_tp_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_tp_panel.add_theme_constant_override("separation", 14)
+	_tp_panel.visible = false
+	col.add_child(_tp_panel)
+	_tp_panel.add_child(_label("✦  La magie de téléportation", 30, GOLD, "BoldItalic"))
+	_tp_panel.add_child(_label("Pense très fort à un lieu que tu as déjà vu… et tu y seras. Choisis ta destination :", 19, DIM, "Italic"))
+	_tp_list = HFlowContainer.new()
+	_tp_list.add_theme_constant_override("h_separation", 14)
+	_tp_list.add_theme_constant_override("v_separation", 14)
+	_tp_panel.add_child(_tp_list)
+	var back := _button("Fermer", 18)
+	back.custom_minimum_size = Vector2(180, 48)
+	back.pressed.connect(func(): show_teleport(false))
+	_tp_panel.add_child(back)
+
+
+## V58 : la liste des lieux où se téléporter (à la place de la carte).
+func show_teleport(on: bool) -> void:
+	var tp: Node = main.get("teleport_v58")
+	_tp_open = on and tp != null and bool(tp.known())
+	if _tp_panel == null:
+		return
+	_tp_panel.visible = _tp_open
+	_map.visible = not _tp_open
+	if not _tp_open:
+		return
+	for c in _tp_list.get_children():
+		c.queue_free()
+	var dests: Array = tp.destinations()
+	if dests.is_empty():
+		_tp_list.add_child(_label("Aucun autre lieu visité pour l'instant.", 19, DIM, "Italic"))
+	for d in dests:
+		var id: String = str(d[0])
+		var b := _button("✦  " + str(d[1]), 21)
+		b.custom_minimum_size = Vector2(340, 64)
+		b.pressed.connect(func():
+			show_teleport(false)
+			tp.go(id))
+		_tp_list.add_child(b)
 
 
 func _refresh_map() -> void:
+	var tp: Node = main.get("teleport_v58")
+	if _tp_button != null:
+		_tp_button.visible = tp != null and bool(tp.known())
 	for m in _map_buttons:
 		var b: Button = _map_buttons[m]
 		var on: bool = m == _map_mode
@@ -561,6 +615,8 @@ func _region_of(n: Node) -> String:
 	var place: String = j.place_name(n.global_position) if j != null else ""
 	if place.begins_with("Port-Azur"):
 		return "Port-Azur"
+	if place.begins_with("Le royaume des fées"):
+		return "Fées"
 	if place.begins_with("L'Atlantide"):
 		return "Atlantide"
 	if place.begins_with("L'île flottante"):
