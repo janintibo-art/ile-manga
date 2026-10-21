@@ -1131,7 +1131,10 @@ func _save_slot(slot: int) -> void:
 		extra["grande"] = grande_v59.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
-	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
+	var save_pos: Vector3 = origin.position
+	if grande_v59 != null and grande_v59.riding():
+		save_pos = grande_v59.ride_safe_pos()
+	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
 
@@ -1167,6 +1170,13 @@ func _physics_process(delta: float) -> void:
 		# V56 : passager de L'Hirondelle (le bateau nous porte, voir ferry_v56.gd)
 		if xr_active and inventory_v28 != null and inventory_v28.opened:
 			inventory_v28.vr_tick(0.0, 0.0, 0.0)
+	elif grande_v59 != null and grande_v59.riding():
+		# V61 : passager du Zéphyr ou du téléphérique de Cliquetis (ils nous portent)
+		if xr_active:
+			var trig_ride: bool = right_hand.get_float("trigger") > 0.8
+			if trig_ride and not bool(vr_buttons_v28.get("ride_v61", false)):
+				grande_v59.ride_interact()
+			vr_buttons_v28["ride_v61"] = trig_ride
 	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
@@ -1642,6 +1652,14 @@ func _doors_update_v27() -> void:
 		if donjon_v35 != null:
 			donjon_v35.show_vr_hint(_player_pos_v27(), false)
 		return
+	# V61 : en dirigeable ou en téléphérique
+	if grande_v59 != null and grande_v59.riding():
+		if door_prompt_v27 != null:
+			var rp: String = grande_v59.ride_prompt()
+			door_prompt_v27.text = rp if not xr_active else rp.replace("E :", "Gâchette :")
+		if donjon_v35 != null:
+			donjon_v35.show_vr_hint(_player_pos_v27(), false)
+		return
 	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
 	# V28 : l'objet à ramasser passe avant la porte s'il est plus proche.
 	if playing and inventory_v28 != null and not xr_active:
@@ -1821,6 +1839,9 @@ func _interact_v28() -> void:
 	if ciel_v54 != null and ciel_v54.riding:
 		ciel_v54.request_landing()
 		return
+	if grande_v59 != null and grande_v59.riding():
+		grande_v59.ride_interact()
+		return
 	var p: Vector3 = _player_pos_v27()
 	var npc: Node3D = _nearest_npc_v31()
 	# V56 : dans la foule de Port-Azur, un objet juste à nos pieds passe avant la conversation
@@ -1934,7 +1955,9 @@ func _respawn_v28() -> void:
 	if grande_v59 != null and grande_v59.contains(pp):
 		var rg: Array = grande_v59.respawn_point(pp)
 		place_player_v35(rg[0], rg[1])
-		if grande_v59.tazira != null and grande_v59.tazira.contains(pp):
+		if grande_v59.cliquetis != null and grande_v59.cliquetis.contains(pp):
+			_show_message_v28("Vous vous êtes évanoui… Le professeur Boum vous a ranimé avec une petite décharge (très petite). Vous voilà sur la promenade de Cliquetis.")
+		elif grande_v59.tazira != null and grande_v59.tazira.contains(pp):
 			_show_message_v28("Vous vous êtes évanoui… Zineb, la patronne du Fondouk, vous a fait boire un thé très sucré. Vous voilà sur la place des Lanternes.")
 		else:
 			_show_message_v28("Vous vous êtes évanoui… Anouk, la guérisseuse de Carène, vous a soigné avec des algues et du miel.")
@@ -2873,6 +2896,9 @@ func _create_v59() -> void:
 		var td: Array = grande_v59.dock_tazira()
 		if td.size() == 2:
 			boat_v29._make_dock("Ponton_tazira", td[0], td[1])
+		var cd: Array = grande_v59.dock_cliquetis()
+		if cd.size() == 2:
+			boat_v29._make_dock("Ponton_cliquetis", cd[0], cd[1])
 
 
 ## V58 : le royaume des fées (feerie_v58.gd) : l'île au-dessus des nuages, les fées,

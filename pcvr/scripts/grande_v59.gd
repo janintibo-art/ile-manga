@@ -12,6 +12,7 @@ const CareneScript = preload("res://scripts/carene_v59.gd")
 const FloreScript = preload("res://scripts/grande_flore_v59.gd")
 const Habitants = preload("res://scripts/pnj/carene_habitants_v59.gd")
 const TaziraScript = preload("res://scripts/tazira_v60.gd")
+const CliquetisScript = preload("res://scripts/cliquetis_v61.gd")
 const PnjAzur = preload("res://scripts/pnj/pnj_azur_v56.gd")
 const WRECK_AT := Vector3(665.0, -4.8, -150.0)
 
@@ -20,6 +21,7 @@ var ile: Node3D
 var epave: Node3D
 var carene: Node3D
 var tazira: Node3D                     # V60 : Tazira, le port des sables, sur la côte sud
+var cliquetis: Node3D                  # V61 : Cliquetis, la cité des ingénieurs fous, au nord
 var flore: Node3D
 var habitants: Array = []
 var by_id: Dictionary = {}
@@ -61,6 +63,10 @@ func build_town() -> void:
 	tazira.name = "Tazira_v60"
 	add_child(tazira)
 	tazira.build(main, ile, pc)
+	cliquetis = CliquetisScript.new()
+	cliquetis.name = "Cliquetis_v61"
+	add_child(cliquetis)
+	cliquetis.build(main, ile, pc)
 	flore = FloreScript.new()
 	flore.name = "Flore_grande_ile_v59"
 	add_child(flore)
@@ -78,6 +84,28 @@ func dock_tazira() -> Array:
 	return tazira.dock() if tazira != null else []
 
 
+func dock_cliquetis() -> Array:
+	return cliquetis.dock() if cliquetis != null else []
+
+
+## V61 : passager du Zéphyr ou du téléphérique de Cliquetis.
+func riding() -> bool:
+	return cliquetis != null and cliquetis.riding()
+
+
+func ride_prompt() -> String:
+	return cliquetis.ride_prompt() if cliquetis != null else ""
+
+
+func ride_interact() -> void:
+	if cliquetis != null:
+		cliquetis.ride_interact()
+
+
+func ride_safe_pos() -> Vector3:
+	return cliquetis.ride_safe_pos() if cliquetis != null else Vector3.ZERO
+
+
 func contains(p: Vector3) -> bool:
 	return ile != null and ile.contains(p.x, p.z) and p.y > -45.0
 
@@ -87,6 +115,8 @@ func on_structure(p: Vector3) -> bool:
 	if epave != null and epave.aboard(p):
 		return true
 	if tazira != null and tazira.on_structure(p):
+		return true
+	if cliquetis != null and cliquetis.on_structure(p):
 		return true
 	return carene != null and carene.on_walkway(p)
 
@@ -104,6 +134,8 @@ func walkable(p: Vector3) -> bool:
 func blocks_boat(p: Vector3) -> bool:
 	if tazira != null and tazira.blocks_boat(p):
 		return true
+	if cliquetis != null and cliquetis.blocks_boat(p):
+		return true
 	return epave != null and epave.blocks_boat(p)
 
 
@@ -115,6 +147,10 @@ func zone_at(p: Vector3) -> String:
 		var tz: String = tazira.zone_at(p)
 		if tz != "":
 			return tz
+	if cliquetis != null:
+		var cz: String = cliquetis.zone_at(p)
+		if cz != "":
+			return cz
 	if epave != null:
 		var l: Vector3 = epave.Lc(p)
 		if absf(l.x) < epave.HL + 2.0 and absf(l.z) < epave.HB + 1.0 and l.y > -2.0 and l.y < epave.D + 50.0:
@@ -138,6 +174,8 @@ func zone_at(p: Vector3) -> String:
 func respawn_point(p: Vector3 = Vector3.INF) -> Array:
 	if tazira != null and p != Vector3.INF and tazira.contains(p):
 		return tazira.respawn_point()
+	if cliquetis != null and p != Vector3.INF and cliquetis.contains(p):
+		return cliquetis.respawn_point()
 	var at: Vector3 = carene.points.get("e1", ile.door_front()) if carene != null else ile.door_front()
 	var to: Vector3 = carene.points.get("e_gang", at + Vector3.FORWARD) if carene != null else at + Vector3.FORWARD
 	return [at + Vector3.UP * 0.3, (to - at).normalized()]
@@ -170,6 +208,8 @@ func release_spot(name: String, who: Node) -> void:
 func spawn_npcs() -> void:
 	if tazira != null:
 		tazira.spawn_npcs()
+	if cliquetis != null:
+		cliquetis.spawn_npcs()
 	if not habitants.is_empty() or carene == null:
 		return
 	for data in Habitants.all_profiles():
@@ -194,6 +234,8 @@ func register_services(journal: Node) -> void:
 	journal.add_service("pierrick", Callable(self, "_inn_topics"), Callable(self, "_inn_choose"))
 	if tazira != null:
 		tazira.register_services(journal)
+	if cliquetis != null:
+		cliquetis.register_services(journal)
 
 
 func _inn_topics(_npc: Node) -> Array:
@@ -215,6 +257,8 @@ func _inn_choose(_npc: Node, _choice: String) -> Dictionary:
 func after_reply(r: Dictionary, _npc: Node) -> void:
 	if tazira != null:
 		tazira.after_reply(r, _npc)
+	if cliquetis != null:
+		cliquetis.after_reply(r, _npc)
 	if r.has("_hamac"):
 		main._close_dialogue_v31()
 		state["nuits"] = int(state["nuits"]) + 1
@@ -256,6 +300,8 @@ func trouvailles() -> Dictionary:
 	var t: Dictionary = {"grande_ile": 1 if bool(state["visite"]) else 0, "porte_sceaux": 1 if bool(state["porte"]) else 0}
 	if tazira != null:
 		t.merge(tazira.trouvailles(), true)
+	if cliquetis != null:
+		t.merge(cliquetis.trouvailles(), true)
 	return t
 
 
@@ -271,6 +317,8 @@ func _process(delta: float) -> void:
 	if oc != null:
 		oc.position.x = snappedf(p.x, 40.0)
 		oc.position.z = snappedf(p.z, 40.0)
+	if cliquetis != null and contains(p):
+		cliquetis.check_visit(p)
 	if not bool(state["visite"]) and contains(p) and tazira != null and tazira.contains(p) and ile.height(p.x, p.z) > -0.2:
 		state["visite"] = true
 	if not bool(state["visite"]) and contains(p) and epave != null and epave.Lc(p).x > -90.0 and ile.height(p.x, p.z) > -0.2:
@@ -333,6 +381,8 @@ func serialize() -> Dictionary:
 	var d: Dictionary = state.duplicate()
 	if tazira != null:
 		d["tazira"] = tazira.serialize()
+	if cliquetis != null:
+		d["cliquetis"] = cliquetis.serialize()
 	return d
 
 
@@ -341,6 +391,9 @@ func load_data(d: Dictionary) -> void:
 	if tazira != null:
 		var td: Variant = d.get("tazira", {})
 		tazira.load_data(td if td is Dictionary else {})
+	if cliquetis != null:
+		var cd: Variant = d.get("cliquetis", {})
+		cliquetis.load_data(cd if cd is Dictionary else {})
 	_claims.clear()
 	for n in habitants:
 		n.slot = -2

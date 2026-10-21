@@ -14,6 +14,7 @@ extends Node3D
 
 const Fond = preload("res://scripts/fond_marin_v55.gd")
 const Tazira = preload("res://scripts/tazira_relief_v60.gd")
+const Cliquetis = preload("res://scripts/cliquetis_relief_v61.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -235,6 +236,7 @@ func _shape(wx: float, wz: float, w: Color) -> float:
 		h = lerpf(Fond.height(wx, wz), h, smoothstep(4.0, 60.0, edge))
 	# V60 : Tazira, le port des sables, sur la côte sud
 	h = Tazira.shape(wx, wz, h)
+	h = Cliquetis.shape(wx, wz, h)
 	return h
 
 

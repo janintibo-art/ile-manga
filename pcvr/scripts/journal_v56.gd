@@ -281,6 +281,38 @@ const QUETES := [
 		],
 		"fin": "Tiens, goûte. … Alors ? Je le savais. Le safran vient de chez Aïcha, le citron confit de chez ma mère, et les dorades… de chez toi. Prends-en un pour la route, et ces quelques pièces. Et reviens vendredi.",
 		"recompense": {"pieces": 15, "objets": [["tajine_poisson", 2]]}},
+	# V61 : Cliquetis, la cité des ingénieurs fous
+	{"id": "engrenage_or", "titre": "L'engrenage d'or", "donneur": "cogne", "lieu": "Cliquetis, la Foire des Inventions", "sorte": "Cliquetis",
+		"resume": "Firmin Cogne a perdu l'engrenage d'or de son moteur perpétuel pendant une démonstration. Il a roulé jusqu'en bas des falaises, vers le port.",
+		"offre_label": "Pourquoi votre moteur s'est-il arrêté ?",
+		"offre": "Parce qu'il lui manque son cœur ! L'engrenage d'or de mon grand-père : quatorze dents, de l'or massif, mon nom gravé dessus. Pendant la démonstration d'hier, il a sauté de son axe, il a roulé sur la place, il a passé la balustrade… et il est tombé de la falaise. Jusqu'au port, je crois. Moi, j'ai le vertige, et le téléphérique me donne le mal de mer. Vous voulez bien aller voir ?",
+		"etapes": [
+			{"type": "ramasser", "objets": {"engrenage_or": 1}, "lieux": ["engrenage_or"], "objectif": "Descendre au port de Cliquetis (téléphérique ou route en lacet) et retrouver l'engrenage d'or, près de la grue"},
+			{"type": "rendre", "pnj": "cogne", "label": "Voici votre engrenage d'or.", "prend": [["engrenage_or", 1]], "objectif": "Rapporter l'engrenage à Firmin Cogne, à son stand de la Foire"},
+		],
+		"fin": "Mon engrenage ! Pas une dent de cassée ! Regardez… je le remets… je tourne la manivelle… IL TOURNE ! Il tourne ! Pour toujours ! Ou au moins jusqu'à la fin de la Foire. Tenez, prenez ça, et ce chapeau : il a un ventilateur. Je ne sais pas pourquoi je l'avais, mais il est à vous.",
+		"recompense": {"pieces": 40, "objets": [["chapeau_ventilateur", 1]]}},
+	{"id": "jury_foire", "titre": "Le jury de la Foire", "donneur": "heloise", "lieu": "Cliquetis, l'Académie des Ingénieurs", "sorte": "Cliquetis",
+		"resume": "Héloïse Manivelle, ingénieure-en-chef, préside le jury de la Foire des Inventions. Il lui faut l'avis d'un visiteur sans parti pris.",
+		"offre_label": "Puis-je aider le jury de la Foire ?",
+		"offre": "Vous tombez à pic ! Je préside le jury de la Foire, et tous les membres du jury ont une invention en compétition. C'est un petit problème. Il me faudrait l'avis de quelqu'un d'impartial : vous. Allez voir le piano mécanique de Prudence, la machine à bulles de Basile et l'automate d'Ambroise. Parlez-leur, regardez bien, puis revenez me dire ce que vous en pensez.",
+		"etapes": [
+			{"type": "parler", "pnj": "prudence", "label": "Le jury m'envoie voir votre piano.", "texte": "Le jury ? Oh ! Écoutez… (Le piano joue une valse. Les touches s'enfoncent toutes seules. À la fin, le piano salue.) Il joue mieux le matin. Il est un peu enrhumé le soir.", "objectif": "Écouter le piano mécanique de Prudence Touche (stand de la Foire, côté ouest)"},
+			{"type": "parler", "pnj": "basile", "label": "Le jury m'envoie voir votre machine.", "texte": "Regardez ! Trois mille bulles par minute ! Et celle-là… celle-là est en forme de cœur. Je ne sais pas comment je fais. Dites au jury qu'on sourit trente-quatre pour cent plus près de ma machine.", "objectif": "Admirer la machine à bulles de Basile Bulle (stand de la Foire, côté ouest)"},
+			{"type": "parler", "pnj": "ambroise", "label": "Le jury m'envoie voir votre automate.", "texte": "Une partie ? Non ? Regardez-le jouer contre lui-même, alors. … Match nul. Il est vexé. Ne dites pas au jury qu'il est vexé.", "objectif": "Voir l'automate joueur d'échecs d'Ambroise Échec (stand de la Foire, au sud)"},
+			{"type": "rendre", "pnj": "heloise", "label": "J'ai vu les trois inventions.", "objectif": "Donner votre avis à Héloïse Manivelle, devant l'Académie"},
+		],
+		"fin": "Un piano enrhumé, des bulles en forme de cœur et un automate vexé. C'est exactement ce que je pensais : ils ont tous gagné. Je vais créer trois prix. Merci, juré ! Vous méritez votre titre. Et prenez cette montre : elle tourne à l'envers, mais elle est d'une précision… à l'envers.",
+		"recompense": {"pieces": 30, "titre": "Juré de la Foire", "objets": [["montre_envers", 1]]}},
+	{"id": "toit_boum", "titre": "Un toit pour le professeur Boum", "donneur": "boum", "lieu": "Cliquetis, l'atelier du professeur Boum", "sorte": "Cliquetis",
+		"resume": "Le professeur Boum a encore perdu le toit de son atelier. Pour le quinzième, il lui faut du minerai de fer.",
+		"offre_label": "Votre atelier n'a plus de toit ?",
+		"offre": "Plus de toit, plus de porte, plus de sourcils ! Mon quinzième toit, je veux le faire en fer. En fer épais. Il me faut trois blocs de minerai de fer. Les bergers du nord en vendent, les nains de la Montagne de Feu aussi, et on en trouve en creusant dans les rochers. Rapportez-m'en trois, et je vous donne… quelque chose. Quelque chose de joli. Qui n'explose pas.",
+		"etapes": [
+			{"type": "objets", "pnj": "boum", "objets": {"minerai_fer": 3}, "label": "Voici trois blocs de minerai de fer.", "texte": "Magnifique ! Du fer bien lourd. Avec ça, mon toit tiendra au moins… une semaine !", "objectif": "Apporter 3 minerais de fer au professeur Boum, devant son atelier (à l'ouest de Cliquetis, près des falaises)"},
+		],
+		"fin": "Voilà ! Le quinzième toit sera le bon. Tenez, ces lunettes : des kaléidoscopes. Le monde entier devient une rosace. C'est inutile, c'est merveilleux, et ça n'explose pas. Enfin, je crois.",
+		"recompense": {"pieces": 25, "objets": [["lunettes_kaleido", 1]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -919,6 +951,8 @@ func place_name(p: Vector3) -> String:
 		var gz: String = str(main.grande_v59.zone_at(p))
 		if gz.begins_with("carene"):
 			return "Carène, le port de l'épave"
+		if gz.begins_with("cliquetis"):
+			return {"cliquetis_port": "Cliquetis, le port", "cliquetis_foire": "Cliquetis, la Foire des Inventions"}.get(gz, "Cliquetis, la cité des ingénieurs")
 		if gz.begins_with("tazira"):
 			return {"tazira_navire": "Tazira, à bord de la Murène Noire", "tazira_murene": "Tazira, La Murène Ivre", "tazira_souk": "Tazira, le souk",
 				"tazira_place": "Tazira, la place des Lanternes", "tazira_port": "Tazira, le port"}.get(gz, "Tazira, le port des sables")

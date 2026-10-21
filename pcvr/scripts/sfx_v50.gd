@@ -24,7 +24,7 @@ const DB := {
 	"perle": -4.0, "cristal_eveil": 0.0,
 	"cloche": -3.0, "cloche_bateau": -5.0, "corne_brume": -2.0,
 	"plante_menace": -4.0, "plante_mort": -5.0, "ronce_menace": -4.0, "teleport": -5.0, "fleur_tourne": -9.0, "racines": -3.0,
-	"porte_ygg": -2.0, "esprit": -4.0, "rune_0": -6.0, "rune_1": -6.0, "rune_2": -6.0, "rune_3": -6.0, "rune_4": -6.0,
+	"porte_ygg": -2.0, "vapeur": -6.0, "tesla": -5.0, "boum": -2.0, "bip": -8.0, "confettis": -6.0, "esprit": -4.0, "rune_0": -6.0, "rune_1": -6.0, "rune_2": -6.0, "rune_3": -6.0, "rune_4": -6.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

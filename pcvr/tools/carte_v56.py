@@ -228,6 +228,37 @@ def archipel(src: Path) -> None:
         for k in range(8):
             bx = -76 + k * 7
             d.ellipse((tz(bx, -5)[0] - 1.5, tz(bx, -5)[1] - 1, tz(bx, -5)[0] + 1.5, tz(bx, -5)[1] + 1), fill=(40, 90, 170, 255))
+    # V61 : Cliquetis, la cité des ingénieurs fous : terrasse de brique, port, route, monorail,
+    # téléphérique, et la ligne du dirigeable « le Zéphyr » (pointillés) entre ses trois escales
+    if W > 1080:
+        def cq(x, z):
+            return (960.0 + x + 540, -315.0 + z + 600)
+        pads = [(890.0, -293.0), (948.0, -16.0), (770.0, -136.0)]
+        for k in range(3):
+            a, b = pads[k], pads[(k + 1) % 3]
+            n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / 8)
+            for i in range(0, n, 2):
+                t0, t1 = i / n, min(1.0, (i + 1) / n)
+                d.line([(a[0] + (b[0] - a[0]) * t0 + 540, a[1] + (b[1] - a[1]) * t0 + 600),
+                        (a[0] + (b[0] - a[0]) * t1 + 540, a[1] + (b[1] - a[1]) * t1 + 600)], fill=(150, 70, 40, 200), width=2)
+        d.polygon([cq(-100, -49), cq(100, -49), cq(100, 48), cq(-100, 48)], fill=(176, 150, 128, 255), outline=(120, 50, 36, 255))
+        d.line([cq(-100, -48), cq(100, -48)], fill=(140, 52, 36, 255), width=3)
+        blds = [(0, 34, 34, 13), (-58, -6, 10, 15), (58, -6, 10, 13), (-84, -24, 11, 12), (80, 20, 13, 14), (-40, 37, 20, 11),
+                (-80, -4, 10, 13), (-64, 38, 11, 9), (18, 36, 10, 10), (34, 37, 13, 10), (52, 37, 11, 10), (-22, 37, 9, 10),
+                (80, -8, 10, 12), (-92, 30, 8, 12), (40, -30, 10, 8), (-56, -30, 11, 8), (92, 6, 8, 9), (-40, 22, 8, 7)]
+        for bx, bz, bw, bd in blds:
+            d.polygon([cq(bx - bw / 2, bz - bd / 2), cq(bx + bw / 2, bz - bd / 2), cq(bx + bw / 2, bz + bd / 2), cq(bx - bw / 2, bz + bd / 2)],
+                      fill=(150, 64, 44, 255), outline=(80, 34, 24, 255))
+        d.ellipse((cq(-4.6, -4.6)[0], cq(-4.6, -4.6)[1], cq(4.6, 4.6)[0], cq(4.6, 4.6)[1]), fill=(200, 150, 70, 255), outline=(90, 60, 30, 255))
+        d.ellipse((cq(-41, -31)[0], cq(-41, -31)[1], cq(41, 31)[0], cq(41, 31)[1]), outline=(70, 70, 76, 255), width=1)
+        d.ellipse((cq(84 - 4.2, -28 - 4.2)[0], cq(84 - 4.2, -28 - 4.2)[1], cq(84 + 4.2, -28 + 4.2)[0], cq(84 + 4.2, -28 + 4.2)[1]), fill=(190, 120, 70, 255))
+        d.polygon([cq(-56, -97), cq(74, -97), cq(74, -84), cq(-56, -84)], fill=(120, 116, 112, 255), outline=(60, 58, 56, 255))
+        d.line([cq(62, -90), cq(132, -72), cq(101, -36)], fill=(120, 110, 100, 255), width=3)
+        d.line([cq(-20, -90), cq(-20, -38.5)], fill=(30, 30, 30, 255), width=1)
+        for k in (0, 1):
+            d.line([cq(53 + 3 * k, -49), cq(53 + 3 * k, -85)], fill=(184, 100, 60, 255), width=1)
+        for px, pz in pads:
+            d.ellipse((px + 540 - 6, pz + 600 - 6, px + 540 + 6, pz + 600 + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

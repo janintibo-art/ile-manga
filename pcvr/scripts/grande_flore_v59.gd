@@ -13,6 +13,7 @@ const Rocks = preload("res://scripts/rocks_v26.gd")
 
 var epave: Node3D
 const TaziraRelief = preload("res://scripts/tazira_relief_v60.gd")
+const CliquetisRelief = preload("res://scripts/cliquetis_relief_v61.gd")
 var region_counts: Dictionary = {}
 
 
@@ -117,6 +118,10 @@ func _island_point(want: String, min_h: float, max_slope: float) -> Vector3:
 		# V60 : pas de cactus dans les rues de Tazira, sur ses quais ni sur la Skala
 		var tz: Vector2 = TaziraRelief.to_town(x, z)
 		if tz.x > -112.0 and tz.x < 150.0 and tz.y > -125.0 and tz.y < 92.0:
+			continue
+		# V61 : ni sapins ni rochers dans Cliquetis, sur son port, sa route ni sous le téléphérique
+		var cq: Vector2 = CliquetisRelief.to_city(x, z)
+		if cq.x > -125.0 and cq.x < 150.0 and cq.y > -150.0 and cq.y < 62.0:
 			continue
 		if Vector2(x - ile.door_pos.x, z - ile.door_pos.z).length() < 26.0:
 			continue

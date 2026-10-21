@@ -22,7 +22,7 @@ const BEDS := {
 	"ville_azur": "ambiance/ville_azur", "port_azur": "ambiance/port_azur", "taverne": "ambiance/taverne",
 	"plage": "ambiance/plage", "cigales": "ambiance/cigales", "grillons": "ambiance/grillons",
 	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
-	"souk": "ambiance/souk", "criee": "ambiance/criee",
+	"souk": "ambiance/souk", "criee": "ambiance/criee", "atelier": "ambiance/atelier",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -30,7 +30,7 @@ const BED_DB := {
 	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0, "sous_marin": -6.0, "atlantide": -10.0,
 	"ville_azur": -12.0, "port_azur": -11.0, "taverne": -9.0, "plage": -13.0, "cigales": -17.0, "grillons": -16.0,
 	"epave": -9.0, "lande": -14.0, "brumes": -13.0, "desert": -14.0,
-	"souk": -11.0, "criee": -10.0,
+	"souk": -11.0, "criee": -10.0, "atelier": -11.0,
 }
 
 var main: Node
@@ -447,6 +447,14 @@ func _grande_beds(z: String, p: Vector3) -> void:
 			targets["ressac"] = 0.5
 			targets["port_azur"] = 0.4
 			targets["brise"] = 0.5
+		"cliquetis", "cliquetis_foire":
+			targets["atelier"] = (1.0 if z == "cliquetis_foire" else 0.75) if day else 0.3
+			targets["lande"] = 0.3
+			targets["ville_azur"] = (0.4 if z == "cliquetis_foire" else 0.15) if day else 0.0
+		"cliquetis_port":
+			targets["port_azur"] = 0.8
+			targets["ressac"] = 0.35 + 0.5 * sea
+			targets["atelier"] = 0.2
 		"grande_massif":
 			targets["vent_vol"] = 0.45 + clampf((p.y - 40.0) / 60.0, 0.0, 0.4)
 			targets["brise"] = 0.5
@@ -558,7 +566,7 @@ func _event() -> void:
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(6.0, 14.0)
 			high = 12.0
-		"azur_port", "azur_plage", "carene", "tazira_port", "tazira_navire":
+		"azur_port", "azur_plage", "carene", "tazira_port", "tazira_navire", "cliquetis_port":
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(7.0, 16.0)
 			high = 14.0

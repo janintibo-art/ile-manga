@@ -226,10 +226,47 @@ const ITEMS := {
 		"desc": "Versé de haut, mousseux, très sucré, à la menthe fraîche du jardin du Fondouk. Rend un cœur."},
 	"dattes": {"name": "Dattes", "art": "une poignée de dattes", "kind": "nourriture", "max": 20, "heal": 2,
 		"desc": "Des dattes de l'oasis, apportées par la caravane de Mbarek : brunes, luisantes, sucrées comme du miel. Rend un cœur."},
+	# V61 : Cliquetis, la cité des ingénieurs fous
+	"engrenage_or": {"name": "Engrenage d'or", "art": "un engrenage d'or", "kind": "quete", "max": 1,
+		"desc": "Un engrenage de quatorze dents, en or massif, gravé « F. Cogne ». Il manque au moteur perpétuel de la Foire."},
+	"cafe_vapeur": {"name": "Café à vapeur", "art": "un café à vapeur", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Le café du Café de la Bielle, passé sous pression dans une chaudière de cuivre. Il réveille un mort, et rend un cœur."},
+	"biscuit_engrenage": {"name": "Biscuit-engrenage", "art": "un biscuit-engrenage", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Un sablé en forme d'engrenage, au beurre et à la cannelle. Les dents croquent. Rend deux cœurs."},
+	"parapluie_helice": {"name": "Parapluie à hélice", "art": "un parapluie à hélice", "kind": "curiosite", "max": 1,
+		"desc": "Un parapluie rouge surmonté d'une hélice. Quand on ouvre le parapluie, l'hélice tourne. Ça ne sert à rien, mais c'est très joli.",
+		"effet": "Vous ouvrez le parapluie. L'hélice se met à tourner, vos cheveux s'envolent… et vous, non."},
+	"chapeau_ventilateur": {"name": "Chapeau-ventilateur", "art": "un chapeau-ventilateur", "kind": "curiosite", "max": 1,
+		"desc": "Un haut-de-forme équipé d'un petit ventilateur à manivelle. Pour avoir les idées fraîches.",
+		"effet": "Vous tournez la manivelle. Une brise délicieuse vous rafraîchit le crâne. Vous avez une idée ! … Non, elle est partie."},
+	"montre_envers": {"name": "Montre qui tourne à l'envers", "art": "une montre qui tourne à l'envers", "kind": "curiosite", "max": 1,
+		"desc": "Une montre de gousset dont les aiguilles tournent dans l'autre sens. Elle est parfaitement juste, mais à l'envers.",
+		"effet": "Vous regardez l'heure. Il est… dans un moment. Ou tout à l'heure. Vous rangez la montre."},
+	"boite_a_rien": {"name": "Boîte à rien", "art": "une boîte à rien", "kind": "curiosite", "max": 1,
+		"desc": "Une jolie boîte de bois marquée « RIEN ». Elle contient exactement ce qui est écrit dessus.",
+		"effet": "Vous ouvrez la boîte. Il n'y a rien dedans. Le fabricant a tenu parole."},
+	"canard_mecanique": {"name": "Canard mécanique", "art": "un canard mécanique", "kind": "curiosite", "max": 1,
+		"desc": "Un canard de laiton à remontoir. Il nage, il cancane, il ne pond pas.",
+		"effet": "Vous remontez le canard. Il fait « coin-coin-clic » et se dandine dans votre main."},
+	"tasse_tourneuse": {"name": "Tasse tourneuse", "art": "une tasse tourneuse", "kind": "curiosite", "max": 1,
+		"desc": "Une tasse de porcelaine qui remue son thé toute seule, grâce à un petit moteur caché dans l'anse.",
+		"effet": "La petite cuillère se met à tourner. Puis plus vite. Puis la tasse tourne aussi. Vous la posez, prudemment."},
+	"lunettes_kaleido": {"name": "Lunettes kaléidoscope", "art": "des lunettes kaléidoscope", "kind": "curiosite", "max": 1,
+		"desc": "Des lunettes dont les verres sont des kaléidoscopes. Le monde entier devient une rosace.",
+		"effet": "Vous chaussez les lunettes. Tout devient des étoiles de couleurs. Vous vous cognez dans un arbre. Vous les enlevez."},
+	"chaussettes_vapeur": {"name": "Chaussettes à vapeur", "art": "des chaussettes à vapeur", "kind": "curiosite", "max": 1,
+		"desc": "Des chaussettes chauffées par une mini-chaudière à la cheville. Idéales pour les hautes terres.",
+		"effet": "Pfffft ! Un petit nuage sort de vos chevilles. Vos orteils vous remercient."},
+	"sifflet_muet": {"name": "Sifflet muet", "art": "un sifflet muet", "kind": "curiosite", "max": 1,
+		"desc": "Un sifflet qui ne fait aucun bruit. L'inventeur assure qu'il est parfait pour appeler les poissons.",
+		"effet": "Vous soufflez de toutes vos forces. Silence absolu. Quelque part, un poisson lève la tête."},
+	"boussole_sud": {"name": "Boussole du sud", "art": "une boussole du sud", "kind": "curiosite", "max": 1,
+		"desc": "Une boussole qui indique le sud. Des deux côtés. Pour ne jamais se perdre en allant au sud.",
+		"effet": "L'aiguille tremble, hésite, puis indique le sud. Les deux bouts de l'aiguille. Vous voilà rassuré."},
 	"tajine_poisson": {"name": "Tajine de poisson", "art": "un tajine de poisson", "kind": "nourriture", "max": 5, "heal": 8,
 		"desc": "Le tajine de Lalla Zohra : dorade, olives, citron confit et safran, cuit trois heures sur la braise. Rend quatre cœurs."},
 }
-const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
+const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
 var main: Node
 var xr_mode: bool = false
@@ -450,6 +487,9 @@ func use_slot(i: int) -> void:
 				equip_item("" if equipped == id else id)
 			else:
 				notify.emit(str(info["desc"]))
+		"curiosite":
+			_sfx("equiper")
+			notify.emit(str(info.get("effet", info["desc"])))
 		_:
 			notify.emit("Cet objet servira plus tard.")
 
@@ -1512,6 +1552,8 @@ func _refresh_pc() -> void:
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
 		"outil":
 			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else ("Croquer" if sid == "champignon_magique" else "Examiner")
+		"curiosite":
+			_use_button.text = "Essayer"
 		_:
 			_use_button.text = "Examiner"
 
