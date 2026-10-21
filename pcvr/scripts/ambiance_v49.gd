@@ -21,12 +21,14 @@ const BEDS := {
 	"sous_marin": "ambiance/sous_marin", "atlantide": "ambiance/atlantide",
 	"ville_azur": "ambiance/ville_azur", "port_azur": "ambiance/port_azur", "taverne": "ambiance/taverne",
 	"plage": "ambiance/plage", "cigales": "ambiance/cigales", "grillons": "ambiance/grillons",
+	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
 	"ressac": -9.0, "large": -10.0, "brise": -15.0, "oiseaux": -13.0, "jungle": -15.0,
 	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0, "sous_marin": -6.0, "atlantide": -10.0,
 	"ville_azur": -12.0, "port_azur": -11.0, "taverne": -9.0, "plage": -13.0, "cigales": -17.0, "grillons": -16.0,
+	"epave": -9.0, "lande": -14.0, "brumes": -13.0, "desert": -14.0,
 }
 
 var main: Node
@@ -311,6 +313,14 @@ func _choose_zone(running: bool) -> void:
 		_azur_beds(az_zone, p)
 		_night_beds()
 		return
+	# V59 : la grande île de l'est : Carène (dans l'épave), les quatre régions, le massif
+	var gr: Node = main.get("grande_v59")
+	var gr_zone: String = gr.zone_at(p) if gr != null and gr.get("ile") != null and gr.ile != null and not on_ferry else ""
+	if gr_zone != "" and not on_boat:
+		zone = gr_zone
+		_grande_beds(gr_zone, p)
+		_night_beds()
+		return
 	var island: String = "" if on_ferry else _island_at(p)
 	if on_boat or island == "":
 		zone = "large"
@@ -371,6 +381,48 @@ func _azur_beds(z: String, p: Vector3) -> void:
 			targets["ressac"] = 0.15 + 0.6 * sea
 	if p.y > 30.0:
 		targets["brise"] = 0.9
+
+
+## V59 : les nappes de la grande île.
+func _grande_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	match z:
+		"carene_taverne":
+			sea = 0.0
+			targets["taverne"] = 1.0 if not day or _evening() else 0.6
+			targets["epave"] = 0.3
+		"carene_cale":
+			sea = 0.2
+			targets["epave"] = 0.9
+			targets["taverne"] = 0.3 if day else 0.0
+		"carene_entrepont":
+			sea = 0.0
+			targets["epave"] = 1.0
+			targets["ressac"] = 0.1
+		"carene":
+			targets["port_azur"] = 0.7
+			targets["epave"] = 0.25
+			targets["ressac"] = 0.3 + 0.5 * sea
+			targets["brise"] = 0.5
+		"grande_nord":
+			targets["lande"] = 1.0
+			targets["vent_vol"] = clampf((p.y - 25.0) / 40.0, 0.0, 0.5)
+			targets["ressac"] = 0.4 * sea
+		"grande_est":
+			targets["brumes"] = 1.0
+			targets["oiseaux"] = 0.25
+			targets["ressac"] = 0.3 * sea
+		"grande_sud":
+			targets["desert"] = 1.0
+			targets["cigales"] = 0.35
+			targets["ressac"] = 0.4 * sea
+		"grande_massif":
+			targets["vent_vol"] = 0.45 + clampf((p.y - 40.0) / 60.0, 0.0, 0.4)
+			targets["brise"] = 0.5
+		_:
+			targets["brise"] = 0.8
+			targets["oiseaux"] = 0.45
+			targets["ressac"] = 0.2 + 0.7 * sea
 
 
 func _is_night() -> bool:
@@ -470,7 +522,7 @@ func _event() -> void:
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(6.0, 14.0)
 			high = 12.0
-		"azur_port", "azur_plage":
+		"azur_port", "azur_plage", "carene":
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(7.0, 16.0)
 			high = 14.0

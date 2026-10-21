@@ -1,6 +1,6 @@
 """V56 : les deux cartes du carnet, peintes à partir du relief réel du jeu.
 
-  archipel.png   (1080 x 1080, 1 px = 1 m) : carte marine ancienne : fonds en bleus étagés
+  archipel.png   (1800 x 1080, 1 px = 1 m ; V59 : jusqu'à la grande île de l'est) : carte marine ancienne : fonds en bleus étagés
                  avec isobathes, hauts-fonds turquoise, côtes cernées d'encre et de lignes de
                  houle, terres en teintes hypsométriques ombrées (sable, prairie, maquis,
                  roche, neiges du volcan), l'île flottante comme un nuage, rose des vents,
@@ -14,7 +14,7 @@ Les données viennent du jeu lui-même : un petit script Godot (/root/suites/bak
 tests) échantillonne le relief et lance des rayons sur la ville, et écrit dans /tmp/carte :
 arch_h.bin, azur_sol.bin, azur_toit.bin, plan.json.
 Lancement (depuis la racine du dépôt) :
-    python3 pcvr/tools/carte_v56.py [/tmp/carte]
+    python3 pcvr/tools/carte_v56.py [/tmp/carte] [archipel | port_azur]
 """
 from pathlib import Path
 import json
@@ -87,9 +87,12 @@ def to_img(arr: np.ndarray) -> Image.Image:
 # =================================================================== l'archipel
 
 def archipel(src: Path) -> None:
-    h = np.fromfile(src / "arch_h.bin", np.float32).reshape(540, 540)
-    h = np.array(Image.fromarray(h).resize((1080, 1080), Image.BICUBIC), np.float32)
-    W = 1080
+    raw = np.fromfile(src / "arch_h.bin", np.float32)
+    # V59 : 900 x 540 échantillons (jusqu'à la grande île de l'est), ou 540 x 540 (avant)
+    cols = 900 if raw.size == 900 * 540 else 540
+    h = raw.reshape(540, cols)
+    W, H = cols * 2, 1080
+    h = np.array(Image.fromarray(h).resize((W, H), Image.BICUBIC), np.float32)
     land = h > 0.05
     # les petits flotteurs (bateaux, pontons) ne sont pas des îles
     lab, nl = ndimage.label(land)
@@ -101,10 +104,10 @@ def archipel(src: Path) -> None:
     sea_d = np.clip(-h, 0, 60)
     # la mer : du turquoise des hauts-fonds au bleu profond
     sea = ramp(sea_d, [(0, (150, 214, 210)), (3, (112, 190, 200)), (10, (70, 150, 184)), (22, (44, 108, 160)), (40, (30, 76, 130)), (60, (22, 56, 104))])
-    tex = noise(W, W, (8, 16, 32, 64), 0.6)
+    tex = noise(W, H, (8, 16, 32, 64), 0.6)
     sea *= (0.94 + 0.1 * tex[..., None])
     # isobathes (5, 10, 20, 30 m)
-    iso = np.zeros((W, W), bool)
+    iso = np.zeros((H, W), bool)
     for lv in (5, 10, 20, 30):
         m = sea_d > lv
         iso |= m ^ ndimage.binary_erosion(m)
@@ -113,7 +116,7 @@ def archipel(src: Path) -> None:
     hl = np.clip(h, 0, 140)
     lands = ramp(hl, [(0, (232, 214, 160)), (0.9, (230, 212, 160)), (1.1, (222, 210, 186)), (1.6, (214, 206, 176)), (4, (160, 182, 110)), (14, (118, 152, 86)), (30, (104, 128, 76)),
                       (55, (140, 120, 90)), (85, (128, 108, 96)), (115, (176, 170, 168)), (140, (242, 240, 236))])
-    lands *= (0.9 + 0.14 * noise(W, W, (4, 8, 16), 0.6)[..., None])
+    lands *= (0.9 + 0.14 * noise(W, H, (4, 8, 16), 0.6)[..., None])
     hs = hillshade(h, 1.0, z=1.6)
     lands *= (0.55 + 0.6 * hs[..., None])
     img = np.where(land[..., None], lands, sea)
@@ -133,15 +136,15 @@ def archipel(src: Path) -> None:
             tz = 170.0 - (bj + 0.5) * 0.5
             wx = 201.82 + math.cos(yaw) * tx + math.sin(yaw) * tz
             wz = 134.55 - math.sin(yaw) * tx + math.cos(yaw) * tz
-            return np.clip((wz + 600).astype(int), 0, W - 1), np.clip((wx + 540).astype(int), 0, W - 1)
+            return np.clip((wz + 600).astype(int), 0, H - 1), np.clip((wx + 540).astype(int), 0, W - 1)
 
         pj, pi = to_px(*np.nonzero((g2 < -0.3) & (r2 > -1.2) & (r2 - g2 > 0.8)))
-        decks = np.zeros((W, W), bool)
+        decks = np.zeros((H, W), bool)
         decks[pj, pi] = True
         img[decks] = np.array([0.62, 0.50, 0.36])
         bj, bi = np.nonzero((r2 - g2 > 2.2) & (r2 > -50) & (g2 > -0.3))
         jj, ii = to_px(bj, bi)
-        roofs = np.zeros((W, W), bool)
+        roofs = np.zeros((H, W), bool)
         roofs[jj, ii] = True
         roofs = ndimage.binary_closing(roofs)
         img[roofs] = np.array([0.74, 0.40, 0.28]) * (0.85 + 0.2 * hs[roofs][:, None])
@@ -152,13 +155,13 @@ def archipel(src: Path) -> None:
     coast = land ^ ndimage.binary_erosion(land, iterations=2)
     img[coast] = np.array([0.24, 0.18, 0.12])
     # papier par-dessus (teinte « carte ancienne »)
-    pap = paper(W, W)
+    pap = paper(W, H)
     img = img * (0.72 + 0.28 * pap / pap.max())
     im = to_img(img).convert("RGBA")
     d = ImageDraw.Draw(im)
     # l'île flottante : un nuage et son ombre
     cx, cz = 40 + 540, 400 + 600
-    shadow = Image.new("RGBA", (W, W), (0, 0, 0, 0))
+    shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ds = ImageDraw.Draw(shadow)
     for k in range(14):
         a = k / 14 * math.tau
@@ -167,7 +170,7 @@ def archipel(src: Path) -> None:
         ds.ellipse((x - 34 + 14, y - 26 + 18, x + 34 + 14, y + 26 + 18), fill=(20, 40, 70, 60))
     shadow = shadow.filter(ImageFilter.GaussianBlur(10))
     im.alpha_composite(shadow)
-    cloud = Image.new("RGBA", (W, W), (0, 0, 0, 0))
+    cloud = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     dc = ImageDraw.Draw(cloud)
     for k in range(16):
         a = k / 16 * math.tau
@@ -179,17 +182,37 @@ def archipel(src: Path) -> None:
     im.alpha_composite(cloud)
     d.ellipse((cx - 26, cz - 16, cx + 26, cz + 16), fill=(128, 156, 96, 255), outline=(60, 50, 40, 255), width=2)
     d.ellipse((cx - 8, cz - 10, cx + 6, cz + 2), fill=(200, 196, 190, 255))
+    # V59 : le Léviathan, échoué dans sa baie (la silhouette de la coque vue du ciel)
+    if W > 1080:
+        hull = []
+        for k in range(41):
+            x = -70.0 + 140.0 * k / 40
+            xn = x / 70.0
+            pb = max(0.0, 1 - xn ** 2.3) if xn >= 0 else 1 - 0.32 * (-xn) ** 4
+            hull.append((x, -17.0 * pb))
+        hull += [(x, -z) for x, z in reversed(hull)]
+        yaw = 0.06
+        pts = [(665.0 + math.cos(yaw) * x + math.sin(yaw) * z + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * z + 600) for x, z in hull]
+        d.polygon(pts, fill=(120, 84, 52, 255), outline=(52, 36, 22, 255))
+        for k in range(1, 6):
+            x = -70.0 + 140.0 * k / 6
+            a = (665.0 + math.cos(yaw) * x - math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x - math.cos(yaw) * 9 + 600)
+            b = (665.0 + math.cos(yaw) * x + math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * 9 + 600)
+            d.line([a, b], fill=(80, 56, 34, 255), width=1)
+        mx, mz = 665.0 + 4 + 540, -150.0 + 600
+        d.ellipse((mx - 3, mz - 3, mx + 3, mz + 3), fill=(52, 36, 22, 255))
     # quadrillage léger
     for g in range(0, W, 120):
-        d.line([(g, 0), (g, W)], fill=(80, 60, 40, 40), width=1)
+        d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)
+    for g in range(0, H, 120):
         d.line([(0, g), (W, g)], fill=(80, 60, 40, 40), width=1)
     # rose des vents
-    _compass(d, 960, 960, 70)
+    _compass(d, W - 120, H - 120, 70)
     # cartouche
     _cartouche(im, (40, 34), "Archipel d'Île Manga", "levé par un voyageur curieux")
     # cadre
-    d.rectangle((6, 6, W - 7, W - 7), outline=(70, 50, 30, 255), width=4)
-    d.rectangle((14, 14, W - 15, W - 15), outline=(70, 50, 30, 180), width=1)
+    d.rectangle((6, 6, W - 7, H - 7), outline=(70, 50, 30, 255), width=4)
+    d.rectangle((14, 14, W - 15, H - 15), outline=(70, 50, 30, 180), width=1)
     OUT.mkdir(parents=True, exist_ok=True)
     im.convert("RGB").save(OUT / "archipel.png", optimize=True)
     print("archipel.png")
@@ -377,5 +400,8 @@ def port_azur(src: Path) -> None:
 
 if __name__ == "__main__":
     src = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/tmp/carte")
-    archipel(src)
-    port_azur(src)
+    only = sys.argv[2] if len(sys.argv) > 2 else ""
+    if only in ("", "archipel"):
+        archipel(src)
+    if only in ("", "port_azur"):
+        port_azur(src)

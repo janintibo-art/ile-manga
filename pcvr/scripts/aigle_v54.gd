@@ -835,7 +835,11 @@ func _tick_flight(delta: float) -> void:
 	var p: Vector3 = global_position
 	# Rester dans le monde : au bord, elle fait demi-tour d'elle-même
 	var flat := Vector2(p.x, p.z)
-	if flat.length() > WORLD_R:
+	# V59 : le ciel s'étend jusqu'au-dessus de la grande île de l'est
+	var east_d: float = flat.distance_to(Vector2(905.0, -150.0))
+	if flat.length() > WORLD_R and east_d > 430.0:
+		if east_d - 430.0 < flat.length() - WORLD_R:
+			flat = flat - Vector2(905.0, -150.0)
 		var home: float = atan2(flat.x, flat.y)        # cap vers le centre
 		var diff: float = angle_difference(yaw, home)
 		turn = clampf(-diff * 2.0, -1.0, 1.0)

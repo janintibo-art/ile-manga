@@ -229,7 +229,7 @@ def main() -> int:
     # V56 : Port-Azur (textures de la ville), la carte, les portraits, toutes les icônes d'objets
     # V58 : le royaume des fées et Yggdrasil (textures/fees)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene"):
         d = source / folder
         if not d.is_dir():
             continue

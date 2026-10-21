@@ -15,6 +15,7 @@ extends Node3D
 ##    Cristal de l'Atlantide, la sauvegarde.
 
 const Fond = preload("res://scripts/fond_marin_v55.gd")
+const GrandeIle = preload("res://scripts/grande_ile_v59.gd")
 const AtlScript = preload("res://scripts/atlantide_v55.gd")
 const VieScript = preload("res://scripts/vie_marine_v55.gd")
 const SEA_Y: float = -0.42
@@ -123,7 +124,8 @@ func pearls_found() -> int:
 
 
 func in_world(p: Vector3) -> bool:
-	return Vector2(p.x - WORLD_MID.x, p.z - WORLD_MID.z).length() < WORLD_R
+	# V59 : la mer s'étend aussi autour de la grande île de l'est
+	return GrandeIle.sea_contains(p.x, p.z, Vector2(WORLD_MID.x, WORLD_MID.z), WORLD_R)
 
 
 ## Ce point est-il dans la mer (de l'eau au-dessus du fond) ?
@@ -261,11 +263,10 @@ func _clamp_swimmer(body: CharacterBody3D) -> void:
 		p.y = lerpf(p.y, top, 0.5)
 		if _vel.y > 0.0:
 			_vel.y = 0.0
-	var off := Vector2(p.x - WORLD_MID.x, p.z - WORLD_MID.z)
-	if off.length() > WORLD_R:
-		off = off.normalized() * WORLD_R
-		p.x = WORLD_MID.x + off.x
-		p.z = WORLD_MID.z + off.y
+	if not in_world(p):
+		var cl: Vector2 = GrandeIle.sea_clamp(p.x, p.z, Vector2(WORLD_MID.x, WORLD_MID.z), WORLD_R)
+		p.x = cl.x
+		p.z = cl.y
 		_vel.x = 0.0
 		_vel.z = 0.0
 	body.global_position = p
@@ -427,11 +428,10 @@ func vr_swim_tick(delta: float) -> bool:
 	if p.y > surf_feet:
 		p.y = lerpf(p.y, surf_feet, 0.5)
 		_vel.y = minf(_vel.y, 0.0)
-	var off := Vector2(p.x - WORLD_MID.x, p.z - WORLD_MID.z)
-	if off.length() > WORLD_R:
-		off = off.normalized() * WORLD_R
-		p.x = WORLD_MID.x + off.x
-		p.z = WORLD_MID.z + off.y
+	if not in_world(p):
+		var cl2: Vector2 = GrandeIle.sea_clamp(p.x, p.z, Vector2(WORLD_MID.x, WORLD_MID.z), WORLD_R)
+		p.x = cl2.x
+		p.z = cl2.y
 	body.global_position = p
 	main.xr_origin.position = Vector3(p.x - head_offset.x, p.y, p.z - head_offset.z)
 	# Rotation par crans (stick droit), comme à pied

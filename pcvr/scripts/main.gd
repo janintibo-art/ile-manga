@@ -126,6 +126,7 @@ func _ready() -> void:
 	_create_v55()
 	_create_v56()
 	_create_v58()
+	_create_v59()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -171,6 +172,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V56 : Port-Azur
 	if azur_v56 != null and azur_v56.ile != null and azur_v56.ile.contains(x, z):
 		return maxf(h, azur_v56.ile.height(x, z))
+	# V59 : la grande île de l'est
+	if grande_v59 != null and grande_v59.ile != null and grande_v59.ile.contains(x, z):
+		return maxf(h, grande_v59.ile.height(x, z))
 	return h
 
 
@@ -966,6 +970,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			journal_v56.load_data({})
 		if feerie_v58 != null:
 			feerie_v58.load_data({})
+		if grande_v59 != null:
+			grande_v59.load_data({})
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		vr_ladder_v33 = {}
@@ -1046,6 +1052,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and feerie_v58 != null:
 		var fdata: Variant = SaveStore.read_slot(slot).get("feerie", {})
 		feerie_v58.load_data(fdata if fdata is Dictionary else {})
+	# V59 : la grande île de l'est
+	if not new_game and grande_v59 != null:
+		var gdata: Variant = SaveStore.read_slot(slot).get("grande", {})
+		grande_v59.load_data(gdata if gdata is Dictionary else {})
 	if not new_game and teleport_v58 != null:
 		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
 		teleport_v58.load_data(tdata if tdata is Dictionary else {})
@@ -1117,6 +1127,8 @@ func _save_slot(slot: int) -> void:
 		extra["journal"] = journal_v56.serialize()
 	if feerie_v58 != null:
 		extra["feerie"] = feerie_v58.serialize()
+	if grande_v59 != null:
+		extra["grande"] = grande_v59.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	var ok: bool = SaveStore.write_slot(slot, origin.position, origin.rotation.y, game_menu.seconds, extra)
@@ -1918,6 +1930,12 @@ func _respawn_v28() -> void:
 			place_player_v35(ra[0], ra[1])
 			_show_message_v28("Vous vous êtes évanoui… Des Atlantes vous ont ramené sous le dôme, devant le palais.")
 			return
+	# V59 : sur la grande île, Anouk vous soigne ; on se réveille sur la plage de Carène
+	if grande_v59 != null and grande_v59.contains(pp):
+		var rg: Array = grande_v59.respawn_point()
+		place_player_v35(rg[0], rg[1])
+		_show_message_v28("Vous vous êtes évanoui… Anouk, la guérisseuse de Carène, vous a soigné avec des algues et du miel.")
+		return
 	# V56 : à Port-Azur, on se réveille sur la place de la Mairie
 	if azur_v56 != null and azur_v56.ile != null and azur_v56.ile.contains(pp.x, pp.z):
 		var rz: Array = azur_v56.respawn_point()
@@ -2077,6 +2095,13 @@ func _create_jungle_v29() -> void:
 	azur_v56.setup(self)
 	azur_v56.build_island()
 	boat_v29._make_dock("Ponton_ferry", FERRY_PIER_V56[0], FERRY_PIER_V56[1])
+	# V59 : la grande île de l'est et l'épave du Léviathan (le relief d'abord ; Carène, ses
+	# habitants et la végétation sont construits après l'heure du jour, voir _create_v59).
+	grande_v59 = preload("res://scripts/grande_v59.gd").new()
+	grande_v59.name = "Grande_ile_v59"
+	add_child(grande_v59)
+	grande_v59.setup(self)
+	grande_v59.build_island()
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2109,6 +2134,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		return
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
+		return
+	# V59 : la grande île : la terre ferme, le Léviathan et les pontons de Carène
+	if grande_v59 != null and grande_v59.contains(p):
+		if grande_v59.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
 		return
 	if jungle_v29 != null and Vector2(p.x, p.z).length() > 120.0:
 		if _height_at(p.x, p.z) > -0.3:
@@ -2597,7 +2630,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2686,6 +2719,8 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		journal_v56.commit_reply(r, npc)
 	if azur_v56 != null:
 		azur_v56.after_reply(r, npc)
+	if grande_v59 != null:
+		grande_v59.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2743,6 +2778,7 @@ var journal_v56: Node                      # V56 : le carnet de quêtes, les bon
 var teuf_v57: Node3D                       # V57 : la teuf de la plage (DJ, teufeurs, sono)
 var feerie_v58: Node3D                     # V58 : le royaume des fées, Yggdrasil et son donjon
 var teleport_v58: Node                     # V58 : la magie de téléportation
+var grande_v59: Node3D                     # V59 : la grande île de l'est, le Léviathan et Carène
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
@@ -2782,6 +2818,9 @@ func _spawn_azur_v56() -> void:
 	# V58 : les fées du royaume d'Yggdrasil
 	if feerie_v58 != null:
 		feerie_v58.spawn_fairies()
+	# V59 : les gens de Carène
+	if grande_v59 != null and grande_v59.carene != null:
+		grande_v59.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -2814,6 +2853,20 @@ func _create_v56() -> void:
 		if boat_v29 != null:
 			var ad: Array = azur_v56.dock()
 			boat_v29._make_dock("Ponton_azur", ad[0], ad[1])
+
+
+## V59 : Carène, ses habitants, la végétation de la grande île (après l'heure du jour) ;
+## le ponton de la barque ; l'auberge de Pierrick.
+func _create_v59() -> void:
+	if grande_v59 == null:
+		return
+	grande_v59.build_town()
+	if journal_v56 != null:
+		grande_v59.register_services(journal_v56)
+	if boat_v29 != null:
+		var gd: Array = grande_v59.dock()
+		if gd.size() == 2:
+			boat_v29._make_dock("Ponton_carene", gd[0], gd[1])
 
 
 ## V58 : le royaume des fées (feerie_v58.gd) : l'île au-dessus des nuages, les fées,
@@ -2926,9 +2979,9 @@ static func _opaque_materials_v48(root: Node) -> void:
 ## V48 : carte des fonds pour l'océan VR (lagon clair et écume le long de chaque rivage).
 ## 512 × 512 pixels sur 1600 m ; on ne mesure le relief que dans le carré de chaque île
 ## (le reste est le grand large). Valeur = (hauteur + 12) / 14, entre 0 et 1.
-const SHORE_RES_V48: int = 512
+const SHORE_RES_V48: int = 704
 const SHORE_ORIGIN_V48 := Vector2(-800.0, -800.0)
-const SHORE_SIZE_V48: float = 1600.0
+const SHORE_SIZE_V48: float = 2200.0
 var shore_image_v48: Image
 
 func _bake_shore_v48() -> void:
@@ -2946,6 +2999,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(nains_v46.ile.CENTER.x, nains_v46.ile.CENTER.z), 145.0])
 	if azur_v56 != null and azur_v56.ile != null:
 		boxes.append([Vector2(azur_v56.ile.CENTER.x, azur_v56.ile.CENTER.z), 205.0])
+	if grande_v59 != null and grande_v59.ile != null:
+		boxes.append([Vector2(grande_v59.ile.GRID.x, grande_v59.ile.GRID.z), grande_v59.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

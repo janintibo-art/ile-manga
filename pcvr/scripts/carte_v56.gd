@@ -9,7 +9,8 @@ extends Control
 const ARCH_TEX := "res://assets/textures/carte/archipel.png"
 const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## Rectangle du monde couvert par la carte de l'archipel (x0, z0, x1, z1)
-const ARCH_RECT := Rect2(-540.0, -600.0, 1080.0, 1080.0)
+## (V59 : la carte s'étend à l'est jusqu'à la grande île)
+const ARCH_RECT := Rect2(-540.0, -600.0, 1800.0, 1080.0)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -28,6 +29,13 @@ const PLACES := [
 	["Épave de la Sirène Noire", Vector2(-300, 330), "masque"],
 	["Fosse aux Méduses", Vector2(-154, 360), "masque"],
 	["Temple oublié", Vector2(-18, -30), "temple"],
+	["Carène", Vector2(690, -128), "grande_ile"],
+	["La grande île de l'est", Vector2(960, 120), "grande_ile"],
+	["Hautes terres", Vector2(950, -360), "grande_ile"],
+	["Forêt des brumes", Vector2(1150, -150), "grande_ile"],
+	["Désert du sud", Vector2(945, 60), "grande_ile"],
+	["Cœur-de-Pierre", Vector2(940, -170), "grande_ile"],
+	["Porte aux Quatre Sceaux", Vector2(862, -138), "porte_sceaux"],
 ]
 
 var main: Node
@@ -58,7 +66,7 @@ func setup(main_node: Node, carnet_node: Node) -> void:
 
 func _tex_size() -> Vector2:
 	var t: Texture2D = _tex.get(mode, null)
-	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(1080, 1080) if mode == "archipel" else Vector2(960, 840))
+	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(1800, 1080) if mode == "archipel" else Vector2(960, 840))
 
 
 func set_mode(m: String) -> void:
@@ -192,6 +200,10 @@ func _quest_targets(id: String) -> Array:
 		"etat":
 			if str(e.get("cle", "")) == "cristal":
 				out.append(Vector3(-220, -30, 260))
+			if str(e.get("cle", "")) == "porte_sceaux":
+				var gr: Node = main.get("grande_v59")
+				if gr != null and gr.get("ile") != null and gr.ile != null:
+					out.append(gr.ile.door_pos)
 	if e.has("apparait"):
 		for w2 in e["apparait"]:
 			if j.lieux.has(str(w2)) and not main.inventory_v28.taken.has("q56_%s_%s" % [id, str(w2)]):

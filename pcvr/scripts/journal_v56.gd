@@ -241,6 +241,26 @@ const QUETES := [
 		],
 		"fin": "La graine… Elle respire ! Cent ans que nous l'attendions. Nous la planterons dans la clairière, et dans mille ans, un nouvel Yggdrasil veillera sur les îles. Pour te remercier, je t'offre ce que les fées ont de plus précieux : la magie de voyager. Pense très fort à un lieu que tu as déjà vu… et tu y seras.",
 		"recompense": {"pieces": 60, "titre": "Ami des fées", "flag": "teleportation"}},
+	# V59 : Carène, le port dans l'épave du Léviathan
+	{"id": "porte_scellee", "titre": "La Porte aux Quatre Sceaux", "donneur": "matthias", "lieu": "Carène, la capitainerie", "sorte": "Carène",
+		"resume": "Matthias, le cartographe de Carène, rêve de dessiner le cœur de l'île. Il voudrait savoir à quoi ressemble la grande porte scellée, au pied du Cœur-de-Pierre.",
+		"offre_label": "Que cherchez-vous sur cette carte ?",
+		"offre": "Le milieu ! Regarde : tout autour, j'ai dessiné les côtes, les landes, les marais, les dunes… et au centre, un grand blanc. Le Cœur-de-Pierre. Au pied de sa face ouest, il y a une porte, la Porte aux Quatre Sceaux. Je n'ai jamais osé y monter seul : on dit que la montagne respire. Toi, tu as l'air de ne pas avoir peur. Va la voir, examine-la bien, et reviens me raconter.",
+		"etapes": [
+			{"type": "etat", "cle": "porte_sceaux", "objectif": "Monter vers le centre de l'île (à l'est de Carène) et examiner la grande porte, au pied du Cœur-de-Pierre"},
+			{"type": "rendre", "pnj": "matthias", "label": "J'ai vu la Porte aux Quatre Sceaux.", "objectif": "Raconter à Matthias ce que j'ai vu (capitainerie de Carène, sur la dunette)"},
+		],
+		"fin": "Quatre creux ronds… vides. Et un cercle qui luit ! Alors Corentin disait vrai : quatre sceaux, un pour chaque peuple de l'île. Tiens, voilà pour ta peine, et ma carte de l'île, recopiée pour toi. Un jour, il faudra aller voir les bergers du nord, les gens des brumes et les caravaniers du sud. Et retrouver notre sceau à nous.",
+		"recompense": {"pieces": 40, "flag": "carte_grande_ile"}},
+	{"id": "calfatage", "titre": "Le bois de Tobias", "donneur": "tobias", "lieu": "Carène, l'entrepont", "sorte": "Carène",
+		"resume": "Tobias, le calfat, doit reboucher une voie d'eau dans la coque du Léviathan. Il lui faut du bon bois.",
+		"offre_label": "Il vous faut du bois ?",
+		"offre": "Il me faut du bois, oui. Une voie d'eau s'est ouverte sous la forge, à bâbord : rien de grave, mais si je ne la bouche pas, Jos finira la semaine les pieds dans l'eau. Quatre bûches. Du bon bois, pas du bois flotté. Une hache, un arbre, et tu reviens.",
+		"etapes": [
+			{"type": "objets", "pnj": "tobias", "objets": {"buche": 4}, "label": "Voici quatre bûches.", "texte": "Ça, c'est du bois. Bien sec, bien droit.", "objectif": "Rapporter 4 bûches à Tobias (une hache et un arbre suffisent), dans l'entrepont du Léviathan"},
+		],
+		"fin": "La voie d'eau est bouchée. Le Léviathan te remercie, et moi aussi. Tiens, des pièces, et la galette que Gwenola m'a donnée ce matin. Je n'ai plus faim, je suis content.",
+		"recompense": {"pieces": 25, "objets": [["galette_sarrasin", 2]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -875,6 +895,12 @@ func place_name(p: Vector3) -> String:
 		return "L'Atlantide"
 	if main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.contains(p):
 		return "Le royaume des fées"
+	if main.get("grande_v59") != null and main.grande_v59 != null and main.grande_v59.contains(p):
+		var gz: String = str(main.grande_v59.zone_at(p))
+		if gz.begins_with("carene"):
+			return "Carène, le port de l'épave"
+		return {"grande_nord": "Les hautes terres du nord", "grande_est": "La forêt des brumes", "grande_sud": "Le désert du sud",
+			"grande_massif": "Le Cœur-de-Pierre"}.get(gz, "La grande île de l'est")
 	if p.y > 100.0:
 		return "L'île flottante"
 	if main.get("nains_v46") != null and main.nains_v46 != null and main.nains_v46.ile != null and main.nains_v46.ile.contains(p.x, p.z):

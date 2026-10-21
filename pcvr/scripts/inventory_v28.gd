@@ -107,7 +107,7 @@ const ITEMS := {
 		"desc": "Une baguette de fée en bois de sureau, terminée par une étoile de cristal. Pimprenelle l'a perdue dans la Grotte des Champignons Sauteurs."},
 	"eclat_cristal": {"name": "Éclat de cristal", "art": "un éclat de cristal", "kind": "tresor", "max": 30,
 		"desc": "Un éclat rose et tiède, laissé par une araignée de cristal. Le lutin Grommelot en collectionne ; Mélisse en rachète."},
-	"nectar_fee": {"name": "Nectar de fée", "art": "un nectar de fée", "kind": "nourriture", "max": 10, "heal": 8,
+	"nectar_fee": {"name": "Nectar de fée", "art": "un nectar de fée", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "Le nectar doré de Mélisse, cueilli au cœur des fleurs géantes. Rend quatre cœurs."},
 	# V46 : la carte de l'île des nains
 	"carte_naine": {"name": "Carte des Récifs de Feu", "art": "la carte des Récifs de Feu", "kind": "quete", "max": 1,
@@ -127,7 +127,7 @@ const ITEMS := {
 		"desc": "La pierre gravée qui animait un golem des hauteurs. Bramm, le garde de la porte, en demande la preuve de ta valeur."},
 	"epee_naine": {"name": "Épée naine", "art": "une épée naine", "kind": "arme", "max": 1, "damage": 9,
 		"desc": "Forgée par Borin Barbe-de-Fer dans l'acier du volcan : lame courte et large, garde d'or, un rubis au pommeau. Dégâts : 9, et le troisième coup d'un enchaînement frappe moitié plus fort."},
-	"ragout_nain": {"name": "Ragoût de Dagna", "art": "un ragoût de Dagna", "kind": "nourriture", "max": 10, "heal": 8,
+	"ragout_nain": {"name": "Ragoût de Dagna", "art": "un ragoût de Dagna", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "Un bol fumant de ragoût aux champignons de braise. Ça brûle la langue et ça rend quatre cœurs."},
 	"fromage_chevre": {"name": "Fromage de chèvre", "art": "un fromage de chèvre", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "Le fromage des chèvres des cendres de Hilda. Il sent fort. Rend deux cœurs."},
@@ -208,6 +208,13 @@ const ITEMS := {
 		"desc": "Un champignon au chapeau violet, constellé de points qui brillent comme des étoiles. Lulu dit qu'il emmène au royaume des fées, au-dessus des nuages. « Croquer » pour faire le voyage ; là-haut, le cercle de champignons te ramènera sur la plage."},
 	"graine_yggdrasil": {"name": "Graine d'Yggdrasil", "art": "la graine d'Yggdrasil", "kind": "quete", "max": 1,
 		"desc": "Une graine dorée, grosse comme un œuf, veinée de lumière : la première graine de l'Arbre-Monde depuis cent ans. L'esprit de l'arbre te l'a confiée pour les fées. Elle est tiède, et on dirait qu'elle respire."},
+	# V59 : Carène, le port dans l'épave
+	"galette_sarrasin": {"name": "Galette de sarrasin", "art": "une galette de sarrasin", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "La galette complète de Mère Gwenola : sarrasin, beurre salé, un œuf au milieu, cuite sur le billig de La Dernière Bordée. Rend deux cœurs."},
+	"grog_bordee": {"name": "Grog de la Bordée", "art": "un grog", "kind": "nourriture", "max": 5, "heal": 3,
+		"desc": "Rhum ambré, eau chaude, miel et citron, servi fumant dans une chope d'étain. Corentin jure qu'il guérit tout. Rend un cœur et demi."},
+	"cidre_carene": {"name": "Cidre de Carène", "art": "une bouteille de cidre", "kind": "nourriture", "max": 5, "heal": 2,
+		"desc": "Un cidre brut des pommiers de la côte ouest, qui pétille comme la mer un jour de vent. Rend un cœur."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
 

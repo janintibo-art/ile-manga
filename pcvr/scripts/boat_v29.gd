@@ -16,6 +16,7 @@ const DECK_Y: float = 1.0              # hauteur du plancher des pontons
 const BOARD_REACH: float = 3.4
 const WORLD_RADIUS: float = 560.0      # la mer navigable, autour du milieu des deux îles
 const WORLD_MID := Vector3(0.0, 0.0, -165.0)
+const GrandeIle = preload("res://scripts/grande_ile_v59.gd")
 
 var main: Node
 var driving: bool = false
@@ -448,7 +449,11 @@ func _blocked(next: Vector3) -> bool:
 			var along: float = rel.dot(d["axis"])
 			if along > -0.5 and along < float(d["length"]) + 0.5 and absf(rel.dot(d["side"])) < 1.45:
 				return true
-	if Vector2(next.x - WORLD_MID.x, next.z - WORLD_MID.z).length() > WORLD_RADIUS:
+	# V59 : la mer de l'est (la grande île) ; la barque ne passe pas à travers le Léviathan
+	if not GrandeIle.sea_contains(next.x, next.z, Vector2(WORLD_MID.x, WORLD_MID.z), WORLD_RADIUS):
+		return true
+	var g59: Node = main.get("grande_v59")
+	if g59 != null and g59.blocks_boat(next + fwd * 2.3):
 		return true
 	return false
 
