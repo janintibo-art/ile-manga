@@ -8,7 +8,7 @@ extends Node
 const PLACES := [
 	["village", "Le village"], ["teuf", "La plage de la teuf"], ["jungle", "L'île de la jungle"], ["elfes", "Le Bois-Doré"],
 	["nains", "Forgefer"], ["ciel", "L'île flottante"], ["azur", "Port-Azur"], ["atlantide", "L'Atlantide"], ["fees", "Le royaume des fées"],
-	["carene", "Carène"], ["porte_sceaux", "La Porte aux Quatre Sceaux"],
+	["carene", "Carène"], ["porte_sceaux", "La Porte aux Quatre Sceaux"], ["tazira", "Tazira"],
 ]
 
 var main: Node
@@ -78,6 +78,9 @@ func spot(id: String) -> Array:
 		"carene":
 			var gr: Node = main.get("grande_v59")
 			return gr.respawn_point() if gr != null and gr.get("carene") != null and gr.carene != null else []
+		"tazira":
+			var gt: Node = main.get("grande_v59")
+			return gt.tazira.respawn_point() if gt != null and gt.get("tazira") != null and gt.tazira != null else []
 		"porte_sceaux":
 			var gp: Node = main.get("grande_v59")
 			if gp == null or gp.get("ile") == null or gp.ile == null:
@@ -119,6 +122,8 @@ func current_place() -> String:
 		var gz: String = str(gr.zone_at(p))
 		if gz.begins_with("carene"):
 			return "carene"
+		if gz.begins_with("tazira"):
+			return "tazira"
 		if p.distance_to(gr.ile.door_pos) < 30.0:
 			return "porte_sceaux"
 		return ""
@@ -151,7 +156,7 @@ func _process(delta: float) -> void:
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
-	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"]]:
+	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true
 

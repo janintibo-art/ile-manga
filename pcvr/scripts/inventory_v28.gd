@@ -215,6 +215,19 @@ const ITEMS := {
 		"desc": "Rhum ambré, eau chaude, miel et citron, servi fumant dans une chope d'étain. Corentin jure qu'il guérit tout. Rend un cœur et demi."},
 	"cidre_carene": {"name": "Cidre de Carène", "art": "une bouteille de cidre", "kind": "nourriture", "max": 5, "heal": 2,
 		"desc": "Un cidre brut des pommiers de la côte ouest, qui pétille comme la mer un jour de vent. Rend un cœur."},
+	# V60 : Tazira, le port des sables
+	"carte_tresor": {"name": "Carte au trésor", "art": "une carte au trésor", "kind": "quete", "max": 1,
+		"desc": "Un vieux parchemin taché de rhum : une côte, des pointillés, une croix rouge. Le capitaine Salazar Croc-de-Sel y tient plus qu'à sa jambe de bois."},
+	"rhum_murene": {"name": "Rhum de la Murène", "art": "une bouteille de rhum", "kind": "nourriture", "max": 5, "heal": 2,
+		"desc": "Le rhum noir de La Murène Ivre. Les pirates disent qu'il réchauffe le cœur ; Anouk dirait autre chose. Rend un cœur."},
+	"sardines_grillees": {"name": "Sardines grillées", "art": "des sardines grillées", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Six sardines de l'aube grillées sur la braise, au cumin et au citron, sur le quai de Tazira. Rend deux cœurs."},
+	"the_menthe": {"name": "Thé à la menthe", "art": "un thé à la menthe", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Versé de haut, mousseux, très sucré, à la menthe fraîche du jardin du Fondouk. Rend un cœur."},
+	"dattes": {"name": "Dattes", "art": "une poignée de dattes", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Des dattes de l'oasis, apportées par la caravane de Mbarek : brunes, luisantes, sucrées comme du miel. Rend un cœur."},
+	"tajine_poisson": {"name": "Tajine de poisson", "art": "un tajine de poisson", "kind": "nourriture", "max": 5, "heal": 8,
+		"desc": "Le tajine de Lalla Zohra : dorade, olives, citron confit et safran, cuit trois heures sur la braise. Rend quatre cœurs."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête"}
 

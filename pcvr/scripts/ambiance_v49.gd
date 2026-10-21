@@ -22,6 +22,7 @@ const BEDS := {
 	"ville_azur": "ambiance/ville_azur", "port_azur": "ambiance/port_azur", "taverne": "ambiance/taverne",
 	"plage": "ambiance/plage", "cigales": "ambiance/cigales", "grillons": "ambiance/grillons",
 	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
+	"souk": "ambiance/souk", "criee": "ambiance/criee",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -29,6 +30,7 @@ const BED_DB := {
 	"volcan": -12.0, "grotte": -12.0, "feerique": -16.0, "halle": -14.0, "vent_vol": -11.0, "sous_marin": -6.0, "atlantide": -10.0,
 	"ville_azur": -12.0, "port_azur": -11.0, "taverne": -9.0, "plage": -13.0, "cigales": -17.0, "grillons": -16.0,
 	"epave": -9.0, "lande": -14.0, "brumes": -13.0, "desert": -14.0,
+	"souk": -11.0, "criee": -10.0,
 }
 
 var main: Node
@@ -416,6 +418,35 @@ func _grande_beds(z: String, p: Vector3) -> void:
 			targets["desert"] = 1.0
 			targets["cigales"] = 0.35
 			targets["ressac"] = 0.4 * sea
+		"tazira_port":
+			var h: float = _hour()
+			var auction: float = 1.0 if h >= 10.3 and h < 14.0 else 0.0
+			targets["criee"] = auction
+			targets["port_azur"] = 0.6 * (1.0 - auction) + 0.15
+			targets["ressac"] = 0.3 + 0.5 * sea
+			targets["souk"] = 0.15 if day else 0.0
+		"tazira_souk":
+			sea = 0.0
+			targets["souk"] = 1.0 if day else 0.25
+			targets["grillons"] = 0.0 if day else 0.4
+		"tazira_place":
+			targets["souk"] = 0.45 if day else 0.2
+			targets["ressac"] = 0.12
+			targets["brise"] = 0.3
+		"tazira_ville":
+			targets["souk"] = 0.25 if day else 0.05
+			targets["desert"] = 0.25
+			targets["cigales"] = 0.35 if day else 0.0
+			targets["ressac"] = 0.1 + 0.3 * sea
+		"tazira_murene":
+			sea = 0.0
+			targets["taverne"] = 1.0 if not day or _evening() else 0.55
+			targets["ressac"] = 0.08
+		"tazira_navire":
+			targets["epave"] = 0.35
+			targets["ressac"] = 0.5
+			targets["port_azur"] = 0.4
+			targets["brise"] = 0.5
 		"grande_massif":
 			targets["vent_vol"] = 0.45 + clampf((p.y - 40.0) / 60.0, 0.0, 0.4)
 			targets["brise"] = 0.5
@@ -428,6 +459,11 @@ func _grande_beds(z: String, p: Vector3) -> void:
 func _is_night() -> bool:
 	var t: Node = main.get("temps_v56")
 	return t != null and bool(t.is_night())
+
+
+func _hour() -> float:
+	var t: Node = main.get("temps_v56")
+	return float(t.hour) if t != null else 12.0
 
 
 func _evening() -> bool:
@@ -522,7 +558,7 @@ func _event() -> void:
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(6.0, 14.0)
 			high = 12.0
-		"azur_port", "azur_plage", "carene":
+		"azur_port", "azur_plage", "carene", "tazira_port", "tazira_navire":
 			list = ["ponctuels/mouette_1", "ponctuels/mouette_2", "ponctuels/mouette_3"]
 			gap = Vector2(7.0, 16.0)
 			high = 14.0

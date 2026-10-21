@@ -13,8 +13,9 @@ extends Node3D
 ## vont dans la couleur des sommets (grande_ile_v59.gdshader).
 
 const Fond = preload("res://scripts/fond_marin_v55.gd")
+const Tazira = preload("res://scripts/tazira_relief_v60.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
-const GRID := Vector3(900.0, 0.0, -150.0)         # le centre de la grille du relief
+const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
 const CELL: float = 1.6
 const CHUNKS: int = 8
@@ -23,7 +24,7 @@ const LAND_R: float = 262.0
 const PLATEAU_R: float = 48.0
 const PLATEAU_Y: float = 104.0
 const DOOR_R: float = 63.0             # la porte scellée, au pied de la falaise ouest
-const MESAS := [[1.62, 168.0, 17.0, 21.0], [1.92, 196.0, 12.0, 15.0], [1.3, 205.0, 10.0, 17.5], [2.2, 150.0, 9.0, 13.0]]
+const MESAS := [[1.62, 150.0, 17.0, 21.0], [2.25, 215.0, 12.0, 15.0], [0.92, 235.0, 10.0, 17.5], [2.2, 150.0, 9.0, 13.0]]
 const PONDS := [[-0.45, 170.0, 13.0], [-0.12, 205.0, 10.0], [0.2, 150.0, 15.0], [0.48, 190.0, 11.0], [0.05, 120.0, 8.0], [-0.3, 228.0, 7.5], [0.62, 228.0, 8.0]]
 
 var count: int = 0
@@ -91,7 +92,7 @@ func _setup_noise() -> void:
 ## La mer navigable (barque) et où l'on nage s'étendent jusqu'ici : un cercle autour de l'île
 ## et un « couloir » qui la relie à la mer de l'archipel (au large de l'île des elfes).
 const EAST_C := Vector2(905.0, -150.0)
-const EAST_R: float = 345.0
+const EAST_R: float = 360.0
 const LANE_A := Vector2(470.0, -160.0)
 const LANE_B := Vector2(640.0, -150.0)
 const LANE_R: float = 130.0
@@ -232,6 +233,8 @@ func _shape(wx: float, wz: float, w: Color) -> float:
 	var edge: float = minf(HALF - absf(wx - GRID.x), HALF - absf(wz - GRID.z))
 	if h < 0.0 and edge < 60.0:
 		h = lerpf(Fond.height(wx, wz), h, smoothstep(4.0, 60.0, edge))
+	# V60 : Tazira, le port des sables, sur la côte sud
+	h = Tazira.shape(wx, wz, h)
 	return h
 
 

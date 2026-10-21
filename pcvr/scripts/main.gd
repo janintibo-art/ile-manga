@@ -1932,9 +1932,12 @@ func _respawn_v28() -> void:
 			return
 	# V59 : sur la grande île, Anouk vous soigne ; on se réveille sur la plage de Carène
 	if grande_v59 != null and grande_v59.contains(pp):
-		var rg: Array = grande_v59.respawn_point()
+		var rg: Array = grande_v59.respawn_point(pp)
 		place_player_v35(rg[0], rg[1])
-		_show_message_v28("Vous vous êtes évanoui… Anouk, la guérisseuse de Carène, vous a soigné avec des algues et du miel.")
+		if grande_v59.tazira != null and grande_v59.tazira.contains(pp):
+			_show_message_v28("Vous vous êtes évanoui… Zineb, la patronne du Fondouk, vous a fait boire un thé très sucré. Vous voilà sur la place des Lanternes.")
+		else:
+			_show_message_v28("Vous vous êtes évanoui… Anouk, la guérisseuse de Carène, vous a soigné avec des algues et du miel.")
 		return
 	# V56 : à Port-Azur, on se réveille sur la place de la Mairie
 	if azur_v56 != null and azur_v56.ile != null and azur_v56.ile.contains(pp.x, pp.z):
@@ -2867,6 +2870,9 @@ func _create_v59() -> void:
 		var gd: Array = grande_v59.dock()
 		if gd.size() == 2:
 			boat_v29._make_dock("Ponton_carene", gd[0], gd[1])
+		var td: Array = grande_v59.dock_tazira()
+		if td.size() == 2:
+			boat_v29._make_dock("Ponton_tazira", td[0], td[1])
 
 
 ## V58 : le royaume des fées (feerie_v58.gd) : l'île au-dessus des nuages, les fées,

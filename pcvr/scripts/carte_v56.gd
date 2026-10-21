@@ -30,10 +30,11 @@ const PLACES := [
 	["Fosse aux Méduses", Vector2(-154, 360), "masque"],
 	["Temple oublié", Vector2(-18, -30), "temple"],
 	["Carène", Vector2(690, -128), "grande_ile"],
-	["La grande île de l'est", Vector2(960, 120), "grande_ile"],
+	["La grande île de l'est", Vector2(1130, 70), "grande_ile"],
+	["Tazira", Vector2(935, 118), "tazira"],
 	["Hautes terres", Vector2(950, -360), "grande_ile"],
 	["Forêt des brumes", Vector2(1150, -150), "grande_ile"],
-	["Désert du sud", Vector2(945, 60), "grande_ile"],
+	["Désert du sud", Vector2(1010, 10), "grande_ile"],
 	["Cœur-de-Pierre", Vector2(940, -170), "grande_ile"],
 	["Porte aux Quatre Sceaux", Vector2(862, -138), "porte_sceaux"],
 ]

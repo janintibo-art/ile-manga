@@ -261,6 +261,26 @@ const QUETES := [
 		],
 		"fin": "La voie d'eau est bouchée. Le Léviathan te remercie, et moi aussi. Tiens, des pièces, et la galette que Gwenola m'a donnée ce matin. Je n'ai plus faim, je suis content.",
 		"recompense": {"pieces": 25, "objets": [["galette_sarrasin", 2]]}},
+	# V60 : Tazira, le port des sables
+	{"id": "carte_croc", "titre": "La carte de Croc-de-Sel", "donneur": "croc", "lieu": "Tazira, le pont de la Murène Noire", "sorte": "Tazira",
+		"resume": "Un chat roux a volé la carte au trésor du Capitaine Croc-de-Sel, le pirate amarré à Tazira. Les chats, ça monte…",
+		"offre_label": "Qu'est-ce que ce chat vous a volé ?",
+		"offre": "Ma carte ! La carte de mon grand-père, le Capitaine Sel ! Je l'avais posée sur un tonneau, sur le quai, le temps d'allumer ma pipe. Un chat roux a sauté dessus, l'a prise dans sa gueule, et hop : une caisse, une autre caisse, un toit. Je ne grimpe pas sur les toits, moi, j'ai le vertige. Retrouve-la, et tu auras ta part. Une petite part. Mais une part.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"carte_tresor": 1}, "lieux": ["carte_tresor"], "objectif": "Retrouver la carte volée par le chat roux : il grimpe sur les toits de Tazira par des caisses, près des maisons du quai, à l'est de la place"},
+			{"type": "rendre", "pnj": "croc", "label": "Voici votre carte, capitaine.", "prend": [["carte_tresor", 1]], "objectif": "Rapporter la carte au Capitaine Croc-de-Sel (sur le pont de la Murène Noire le jour, à La Murène Ivre le soir)"},
+		],
+		"fin": "MA CARTE ! Un peu mâchonnée, un peu sentant la sardine… mais c'est elle ! Regarde : la falaise, les grottes, la croix. Derrière la Skala, j'en étais sûr ! Tiens, ta part, moussaillon. Et une bouteille de Mama Lou. Si un jour tu veux signer sur la Murène, il y a toujours un hamac pour toi.",
+		"recompense": {"pieces": 50, "objets": [["rhum_murene", 2]], "titre": "Ami des pirates"}},
+	{"id": "tajine_zohra", "titre": "Le tajine du vendredi", "donneur": "zohra", "lieu": "Tazira, la criée", "sorte": "Tazira",
+		"resume": "Zohra, la poissonnière, veut faire son grand tajine du vendredi. Il lui faut deux belles dorades, pêchées par quelqu'un d'autre que les hommes de la criée.",
+		"offre_label": "Je peux vous aider pour le tajine ?",
+		"offre": "Tu ferais ça ? Mon tajine du vendredi, c'est toute une affaire : il me faut deux dorades, des belles, des fraîches. Pas celles de Saïd : il leur crie dessus toute la matinée, elles ont la chair stressée. Pêche-les toi-même, ou trouve-les, mais rapporte-m'en deux. Et tu goûteras le meilleur tajine de toute l'île.",
+		"etapes": [
+			{"type": "objets", "pnj": "zohra", "objets": {"dorade": 2}, "label": "Voici deux dorades.", "texte": "Oh, qu'elles sont belles ! L'œil clair, les ouïes rouges… Parfait. Reviens dans trois heures. Non, je plaisante : j'en avais un sur le feu.", "objectif": "Apporter 2 dorades à Zohra, à la criée de Tazira (une canne à pêche, au bout de la jetée par exemple)"},
+		],
+		"fin": "Tiens, goûte. … Alors ? Je le savais. Le safran vient de chez Aïcha, le citron confit de chez ma mère, et les dorades… de chez toi. Prends-en un pour la route, et ces quelques pièces. Et reviens vendredi.",
+		"recompense": {"pieces": 15, "objets": [["tajine_poisson", 2]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -899,6 +919,9 @@ func place_name(p: Vector3) -> String:
 		var gz: String = str(main.grande_v59.zone_at(p))
 		if gz.begins_with("carene"):
 			return "Carène, le port de l'épave"
+		if gz.begins_with("tazira"):
+			return {"tazira_navire": "Tazira, à bord de la Murène Noire", "tazira_murene": "Tazira, La Murène Ivre", "tazira_souk": "Tazira, le souk",
+				"tazira_place": "Tazira, la place des Lanternes", "tazira_port": "Tazira, le port"}.get(gz, "Tazira, le port des sables")
 		return {"grande_nord": "Les hautes terres du nord", "grande_est": "La forêt des brumes", "grande_sud": "Le désert du sud",
 			"grande_massif": "Le Cœur-de-Pierre"}.get(gz, "La grande île de l'est")
 	if p.y > 100.0:

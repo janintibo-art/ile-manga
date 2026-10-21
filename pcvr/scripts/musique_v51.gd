@@ -24,12 +24,13 @@ const ZONE_TRACK := {
 	"fees": "royaume_fees", "yggdrasil": "royaume_fees",
 	"carene": "carene", "carene_cale": "carene", "carene_entrepont": "carene", "carene_taverne": "carene",
 	"grande_ouest": "large", "grande_nord": "large", "grande_est": "large", "grande_sud": "large", "grande_massif": "large",
+	"tazira_port": "tazira", "tazira_ville": "tazira", "tazira_souk": "tazira", "tazira_place": "tazira", "tazira_navire": "tazira", "tazira_murene": "",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
-	"royaume_fees": -8.0, "carene": -9.0,
+	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
@@ -184,6 +185,10 @@ func _decide(dt: float) -> void:
 	# V57 : à la teuf de la plage, c'est la sono qui joue
 	var tf: Node = main.get("teuf_v57")
 	if tf != null and bool(tf.get("heard")):
+		want_zone = ""
+	# V60 : à la fête de Tazira, ce sont les musiciens de la place qui jouent
+	var gr: Node = main.get("grande_v59")
+	if gr != null and gr.get("tazira") != null and gr.tazira != null and bool(gr.tazira.fete_heard):
 		want_zone = ""
 	# --- combat
 	var fighting: bool = running and _fighting()

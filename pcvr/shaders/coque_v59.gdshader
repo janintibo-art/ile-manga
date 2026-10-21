@@ -16,6 +16,9 @@ uniform vec3 tint : source_color = vec3(1.0);
 uniform mat4 hull_inv = mat4(1.0);
 uniform bool hull_paint = false;
 uniform float deck_h = 19.5;
+// V60 : la couleur de la bande des sabords et l'échelle des bandes (navires plus petits)
+uniform vec3 band_color : source_color = vec3(0.74, 0.52, 0.22);
+uniform float band_scale = 1.0;
 
 varying vec3 world_position;
 
@@ -42,6 +45,7 @@ void fragment() {
 	vec3 wood = texture(planks_tex, UV).rgb * tint;
 	if (hull_paint) {
 		vec3 lp = (hull_inv * vec4(wp, 1.0)).xyz;
+		lp.y = deck_h - (deck_h - lp.y) / band_scale;
 		float flake = smoothstep(0.18, 0.45, noise2(UV * vec2(9.0, 3.0)) * 0.7 + noise2(UV * 31.0) * 0.4);
 		// sous la préceinte : brai noir délavé ; la préceinte noire ; la bande ocre des sabords ; le liston noir
 		float low = 1.0 - smoothstep(deck_h - 6.2, deck_h - 6.0, lp.y);
@@ -49,7 +53,7 @@ void fragment() {
 		float ochre = smoothstep(deck_h - 4.6, deck_h - 4.5, lp.y) * (1.0 - smoothstep(deck_h - 1.3, deck_h - 1.2, lp.y));
 		float top = smoothstep(deck_h - 1.2, deck_h - 1.1, lp.y);
 		vec3 tar = vec3(0.09, 0.085, 0.08);
-		vec3 och = vec3(0.74, 0.52, 0.22);
+		vec3 och = band_color;
 		wood = mix(wood, wood * 0.62 + tar * 0.3, low * 0.45 * flake);
 		wood = mix(wood, tar * (0.9 + 0.3 * noise2(UV * 40.0)), (wale + top) * mix(0.5, 0.92, flake));
 		wood = mix(wood, och * (0.8 + 0.35 * noise2(UV * 23.0)), ochre * 0.95 * flake);

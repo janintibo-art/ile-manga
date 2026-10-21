@@ -201,6 +201,33 @@ def archipel(src: Path) -> None:
             d.line([a, b], fill=(80, 56, 34, 255), width=1)
         mx, mz = 665.0 + 4 + 540, -150.0 + 600
         d.ellipse((mx - 3, mz - 3, mx + 3, mz + 3), fill=(52, 36, 22, 255))
+    # V60 : Tazira, le port des sables : remparts, maisons blanches, jetées, la Murène Noire
+    if W > 1080:
+        def tz(x, z):
+            return (940.0 - x + 540, 95.0 - z + 600)
+        d.polygon([tz(-104.6, 14), tz(104.6, 14), tz(104.6, 79.4), tz(-104.6, 79.4)], fill=(214, 180, 128, 255), outline=(120, 80, 44, 255))
+        rr = np.random.default_rng(60)
+        for bx0, bx1, bz0, bz1 in [(-100, -63, 20, 37), (-57, -46, 20, 31), (3, 27, 38, 59), (33, 67, 38, 59), (73, 100, 20, 37), (73, 100, 43, 59),
+                                   (-100, -63, 43, 59), (-57, -17, 47, 59), (-100, -63, 65, 76), (-57, -17, 65, 76), (3, 27, 65, 76), (33, 67, 65, 76),
+                                   (73, 100, 65, 76), (30, 40, 20, 34), (64, 70, 20, 34), (6, 26, 21, 35), (42, 62, 20, 34)]:
+            x = bx0
+            while x < bx1 - 1:
+                w = min(rr.uniform(5, 9), bx1 - x)
+                c = (244, 242, 236, 255) if rr.random() < 0.75 else (226, 196, 150, 255)
+                d.polygon([tz(x, bz0), tz(x + w - 0.8, bz0), tz(x + w - 0.8, bz1), tz(x, bz1)], fill=c, outline=(150, 130, 110, 255))
+                x += w
+        d.line([tz(-14, 46), tz(-14, 77)], fill=(160, 120, 60, 255), width=1)
+        d.line([tz(-2, 46), tz(-2, 77)], fill=(160, 120, 60, 255), width=1)
+        for path in ([(-87, 2), (-87, -96), (-42, -108)], [(112, -72), (60, -108)]):
+            d.line([tz(*q) for q in path], fill=(120, 110, 100, 255), width=4)
+        d.ellipse((tz(-42, -108)[0] - 2, tz(-42, -108)[1] - 2, tz(-42, -108)[0] + 2, tz(-42, -108)[1] + 2), fill=(40, 160, 60, 255))
+        d.ellipse((tz(60, -108)[0] - 2, tz(60, -108)[1] - 2, tz(60, -108)[0] + 2, tz(60, -108)[1] + 2), fill=(200, 40, 30, 255))
+        d.line([tz(-88, 0.3), tz(92, 0.3)], fill=(90, 80, 70, 255), width=2)
+        ship = [tz(63 - 23, -7.6), tz(63 + 20, -10.8), tz(63 + 26, -7.6), tz(63 + 20, -4.4)]
+        d.polygon(ship, fill=(28, 24, 22, 255), outline=(10, 8, 8, 255))
+        for k in range(8):
+            bx = -76 + k * 7
+            d.ellipse((tz(bx, -5)[0] - 1.5, tz(bx, -5)[1] - 1, tz(bx, -5)[0] + 1.5, tz(bx, -5)[1] + 1), fill=(40, 90, 170, 255))
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

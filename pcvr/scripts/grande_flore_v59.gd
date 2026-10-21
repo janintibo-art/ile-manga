@@ -12,6 +12,7 @@ extends "res://scripts/azur_flore_v56.gd"
 const Rocks = preload("res://scripts/rocks_v26.gd")
 
 var epave: Node3D
+const TaziraRelief = preload("res://scripts/tazira_relief_v60.gd")
 var region_counts: Dictionary = {}
 
 
@@ -112,6 +113,10 @@ func _island_point(want: String, min_h: float, max_slope: float) -> Vector3:
 		if epave != null and (epave.footprint(x, z, 16.0) or _near_carene(x, z)):
 			continue
 		if ile.in_pond(x, z):
+			continue
+		# V60 : pas de cactus dans les rues de Tazira, sur ses quais ni sur la Skala
+		var tz: Vector2 = TaziraRelief.to_town(x, z)
+		if tz.x > -112.0 and tz.x < 150.0 and tz.y > -125.0 and tz.y < 92.0:
 			continue
 		if Vector2(x - ile.door_pos.x, z - ile.door_pos.z).length() < 26.0:
 			continue
