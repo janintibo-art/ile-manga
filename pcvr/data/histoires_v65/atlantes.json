@@ -1,0 +1,2002 @@
+{
+ "abyssos": {
+  "genre": "m",
+  "prenom": "Abyssos",
+  "histoire": [
+   {
+    "titre": "le plus petit copiste du palais",
+    "t": "Avant le déluge, j'étais le plus petit copiste du palais. Quatorze ans, les doigts noirs d'encre, et un maître, le vieux Thémis, qui me tapait sur les doigts quand j'arrondissais un chiffre. « L'histoire ne s'arrondit pas, Abyssos. » Je n'ai plus jamais arrondi. Le dôme fait quatre-vingt-douze pas. Ou quatre-vingt-treize. J'y travaille."
+   },
+   {
+    "titre": "le premier jour sous le dôme",
+    "t": "La nuit de la vague, tout le monde courait. Moi, j'ai couru chercher une plume. Au matin, sous la bulle, j'ai demandé à la reine comment s'appelait ce jour. Elle m'a regardé comme si j'étais fou, puis elle a dit : « Le premier, je suppose. » J'ai écrit « Jour 1 ». Je n'ai jamais sauté un seul jour depuis."
+   },
+   {
+    "titre": "la tache en forme de baleine",
+    "t": "La nuit des requins, il y a trois cents ans, j'ai écrit la page que je redoutais : « Les trois Perles sont perdues. » Ma main tremblait tant que l'encre a fait une tache en forme de baleine. Je l'ai gardée. Depuis, je cherche dans mes rouleaux comment les ramener. J'ai trouvé où elles sont. Pas comment aller les chercher. Il fallait quelqu'un comme toi."
+   },
+   {
+    "titre": "mes archives aujourd'hui",
+    "t": "Aujourd'hui, j'ai dix mille rouleaux, une seiche qui me vend son encre contre des chansons, et trois rouleaux sur toi. Marée refuse que j'archive ses recettes, Protée invente l'histoire plus vite que je ne l'écris, et Ondine me pose les questions que j'aurais dû poser il y a mille ans. Je suis débordé. C'est merveilleux."
+   },
+   {
+    "titre": "la seule ligne fausse",
+    "t": "Il y a une ligne fausse dans mes dix mille rouleaux, {surnom}. Jour 3 207 : « Rien à signaler. » Ce jour-là, mon maître Thémis s'est endormi pour toujours, et je n'ai pas pu l'écrire. Je n'ai jamais pu. Mille ans d'histoire exacte, et le seul jour qui comptait vraiment pour moi, je l'ai laissé vide."
+   }
+  ],
+  "reve": [
+   "Qu'un jour, quelqu'un lise mes rouleaux. Tous. Du premier au dernier. Et qu'il vienne me dire : « Il manque une virgule au rouleau six mille. » Je serais l'Atlante le plus heureux du dôme.",
+   "Et compter les pas du dôme deux fois de suite, et trouver deux fois le même nombre. On a le droit de rêver petit."
+  ],
+  "question": {
+   "texte": "Question pour mes rouleaux, {surnom} : là-haut, est-ce qu'on se souvient encore de nous ?",
+   "reponses": [
+    {
+     "label": "Un vieux professeur vous cherche.",
+     "valeur": "professeur",
+     "t": "Un professeur ! Qui nous cherche ! Par les marées… Un collègue. Un archiviste d'en haut. Je vais lui écrire. Dis-moi, comment envoie-t-on un rouleau vers le haut ? On le lâche, et il flotte ?",
+     "rappel": "Ton professeur qui nous cherche… J'ai commencé un rouleau sur lui. Il n'y a que son métier dedans, mais c'est un début."
+    },
+    {
+     "label": "On raconte des légendes.",
+     "valeur": "legendes",
+     "t": "Des légendes… Nous sommes devenus des légendes. C'est flatteur, et c'est triste. Une légende, c'est une archive qu'on a oubliée sous la pluie.",
+     "rappel": "Des légendes, m'as-tu dit. J'en ai rédigé une version exacte, au cas où, là-haut, on voudrait corriger."
+    },
+    {
+     "label": "Non. Plus personne.",
+     "valeur": "personne",
+     "t": "Plus personne. Bien. C'est exactement pour ça qu'on écrit, {surnom} : pour le jour où plus personne ne se souvient. Je vais commander de l'encre en plus.",
+     "rappel": "Plus personne ne se souvient de nous, là-haut. Alors je me souviens deux fois. Ma seiche n'en revient pas."
+    }
+   ]
+  },
+  "liens": {
+   "nerea": {
+    "qui": "notre reine",
+    "nom": "Néréa",
+    "sentiment": 0.9,
+    "avis": "La reine ? Je la sers depuis la première ligne de mon premier rouleau. Elle porte la cité comme le cristal porte le dôme. Et elle ne dort plus. C'est noté, et ça m'inquiète.",
+    "anecdotes": [
+     "Le premier matin sous le dôme, je suis allé lui demander, ma plume à la main : « Majesté, comment s'appelle ce jour ? » Elle m'a regardé comme si j'étais fou. Puis elle a souri, pour la première fois depuis la vague, et elle a dit : « Le premier, je suppose. » C'est le plus beau rouleau que j'aie.",
+     "Les nuits où la reine ne dort pas, je m'installe sous ses fenêtres avec une lampe et un rouleau vide. Parfois, sa lampe s'éteint. Alors j'écris, très exactement : « La lampe de la reine s'est éteinte. » Je n'écris pas qu'elle a dormi : je n'en sais rien. Mais j'espère très fort. Et ça, ça ne s'archive pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté. Vous n'avez pas dormi."
+     ],
+     [
+      "b",
+      "Comment le sais-tu, Abyssos ?"
+     ],
+     [
+      "a",
+      "Ma lampe était allumée, elle aussi."
+     ],
+     [
+      "b",
+      "Alors nous sommes deux à mal archiver nos nuits."
+     ]
+    ]
+   },
+   "coralin": {
+    "qui": "mon cher",
+    "nom": "Coralin",
+    "sentiment": 0.4,
+    "avis": "Coralin ? Mon sujet d'étude préféré. Personne ne se trompe avec autant d'énergie, ni autant de talent. Ses rouleaux sont les plus épais de la bibliothèque.",
+    "anecdotes": [
+     "Jour 212 : naissance du premier enfant du dôme. J'avais quinze ans, il hurlait si fort que ma plume a dérapé, et j'ai écrit « Coralain ». Il me demande de corriger depuis bientôt mille ans. On ne gratte pas un rouleau. Et puis, entre nous, Coralain, ça lui va bien.",
+     "Pour se réconcilier, il m'a offert une plume taillée dans du corail rouge. Elle m'a mordu le doigt au premier mot. J'ai écrit trois rouleaux sur l'incident, avec un dessin. Il m'a accusé d'avoir mordu le premier. C'est faux : je l'ai noté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coralin. Rien de cassé, aujourd'hui ? Mon rouleau a faim."
+     ],
+     [
+      "b",
+      "Rien ! Rien du tout ! … Pourquoi tu sors ta plume ?"
+     ],
+     [
+      "a",
+      "Tu as dit « rien » trois fois. C'est suspect."
+     ],
+     [
+      "b",
+      "Ton rouleau, je vais le tailler en poisson."
+     ]
+    ]
+   },
+   "ondine": {
+    "qui": "ma petite assistante",
+    "nom": "Ondine",
+    "sentiment": 0.9,
+    "avis": "Ondine pose les questions que j'aurais dû poser il y a mille ans. Elle fera une archiviste formidable, le jour où elle apprendra à rester assise.",
+    "anecdotes": [
+     "Un soir, je lisais tout haut l'histoire de la surface, aux étagères, comme d'habitude : personne d'autre ne m'écoute. À la fin, quelqu'un a éternué derrière le rouleau du blé. C'était Ondine, endormie là depuis l'après-midi. Elle a dit : « Encore. » Personne ne m'avait jamais dit « encore ».",
+     "Elle m'a demandé ce que la baleine dit au cristal. J'ai cherché trois jours dans dix mille rouleaux. Rien. J'ai dû avouer que je ne savais pas. Le lendemain, j'ai trouvé un caillou sur ma table, avec écrit dessus : « Abyssos ne sait pas tout. » Je l'ai archivé, évidemment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ondine ! Tu as rangé le rouleau du blé ?"
+     ],
+     [
+      "b",
+      "Oui ! Entre la baleine et Coralin."
+     ],
+     [
+      "a",
+      "Ce n'est pas l'ordre des marées, ça."
+     ],
+     [
+      "b",
+      "C'est l'ordre de ceux que j'aime bien !"
+     ]
+    ]
+   },
+   "maree": {
+    "qui": "cette têtue de",
+    "nom": "Marée",
+    "sentiment": 0.3,
+    "avis": "Marée refuse que j'archive ses recettes. « Les secrets, ça ne s'écrit pas. » Tout s'écrit. Sauf, apparemment, la galette d'algues.",
+    "anecdotes": [
+     "J'ai voulu retrouver sa recette en goûtant une galette par jour et en notant tout. Au bout de quarante jours, j'avais un rouleau entier et un mal de ventre historique. Elle a lu par-dessus mon épaule et elle a dit : « Faux. Tout faux. » Puis elle m'a offert une galette, gratuite. Je l'ai notée aussi.",
+     "Sa grand-mère Salicorne, je l'ai bien connue. J'ai écrit : « Jour 1 : une galette d'algues, affreuse, mangée par tous. » Marée est venue gratter le mot « affreuse » elle-même. Je me suis assis sur le rouleau. Une heure comme ça. À la fin, j'ai ajouté « en pleurant de joie ». Elle a accepté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marée. Juste le sel. Dis-moi juste combien de sel."
+     ],
+     [
+      "b",
+      "Une pincée de non, Abyssos. Et deux cuillères de jamais."
+     ],
+     [
+      "a",
+      "C'est noté."
+     ],
+     [
+      "b",
+      "Note aussi que je t'ai vu racler le plat."
+     ]
+    ]
+   },
+   "atlante_5": {
+    "qui": "ce menteur de",
+    "nom": "Protée",
+    "sentiment": -0.5,
+    "avis": "Protée raconte l'histoire de la cité comme ça lui chante, et chaque fois autrement. Les enfants l'adorent. Moi, je le range dans le rouleau des choses qui ne sont pas arrivées. Il est très épais.",
+    "anecdotes": [
+     "J'ai noté dix-sept versions de sa légende du déluge. Dans l'une, la mer était jalouse de la reine. Dans une autre, c'était un poulpe. Dans la dernière, c'est moi qui sauve tout le monde avec ma plume. Je l'ai archivée comme les autres. Je l'ai relue une fois. Bon. Trois.",
+     "Il me reproche d'écrire des histoires mortes. « Une histoire vraie, c'est une histoire qui a vécu. » Je lui ai demandé une preuve. Il m'a mis un coquillage contre l'oreille et il a dit : « Écoute. » Je n'ai entendu que la mer. Il a dit : « Voilà. Tout est là. » Pour une fois, je n'ai rien noté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Protée. Combien de versions du déluge, cette semaine ?"
+     ],
+     [
+      "b",
+      "Trois, et la meilleure parle de toi, Abyssos."
+     ],
+     [
+      "a",
+      "Je ne suis pas un personnage."
+     ],
+     [
+      "b",
+      "Si. Tu es même le plus drôle."
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "notre garde",
+    "nom": "Triton",
+    "sentiment": 0.6,
+    "avis": "Triton m'apporte un rapport chaque soir depuis trois cents ans. Toujours le même : « Rien à signaler. » C'est le rouleau le plus rassurant de toutes mes archives.",
+    "anecdotes": [
+     "Cent neuf mille rapports : « Rien à signaler. » Tous les soirs, au mot près, d'une écriture parfaite. Et puis un soir, une ligne qui tremble : « Un humain. Un vrai. Bienvenue. » Il avait oublié de signer. C'était toi, {surnom}. Je l'ai encadré.",
+     "Il n'y a eu qu'une autre exception, il y a cent vingt ans : « La Perle de l'avenue a disparu. Navire noir coulé à l'ouest. » L'écriture tremblait, ce soir-là aussi. Je lui ai demandé comment c'était arrivé. Il a dit : « Je n'ai rien vu. » Puis il a regardé ses pieds très longtemps. Je ne l'ai pas noté. C'est rare."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ton rapport, Triton ?"
+     ],
+     [
+      "b",
+      "Rien à signaler, archiviste."
+     ],
+     [
+      "a",
+      "Cent neuf mille et un. Quelle régularité admirable."
+     ],
+     [
+      "b",
+      "C'est ça, le métier. Ne rien voir, et très bien."
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_0": {
+  "genre": "f",
+  "prenom": "Thalassa",
+  "histoire": [
+   {
+    "titre": "mon premier nœud",
+    "t": "Ma mère tissait déjà au bord du canal, et moi je jouais avec ses chutes. À six ans, j'ai tressé ma première ceinture d'algues. Elle s'est défaite le soir même, au beau milieu d'un pont, et toute la cité a ri. Ma mère m'a dit : « Un nœud de plus, la prochaine fois. » Depuis, je fais toujours un nœud de plus."
+   },
+   {
+    "titre": "l'écharpe de Pélagos",
+    "t": "J'ai rencontré Pélagos dans les jardins : il m'a grondée parce que je coupais ses algues sans permission. Le lendemain, je suis revenue avec une écharpe tissée dans ces mêmes algues. Il a rougi jusqu'aux nageoires. Le jour du mariage, il la portait. Elle a un peu verdi, depuis. Lui aussi, quand il est ému."
+   },
+   {
+    "titre": "ce que je tisse la nuit",
+    "t": "Depuis que le cristal pâlit, je tisse la nuit, {surnom}. Une cape si serrée qu'elle garde l'air, comme un petit dôme. Si le grand s'éteint un jour, je veux que ma fille puisse remonter vers le soleil sans manquer de souffle. Ondine n'en sait rien. Pélagos fait semblant de ne pas la voir, sous le lit."
+   }
+  ],
+  "reve": [
+   "Tisser à Ondine une robe couleur de soleil, pour le jour où elle montera là-haut. Il me faudrait du fil jaune. Sous la mer, il n'y a que l'or de la couronne, et la reine y tient. Tu m'en rapporteras ?"
+  ],
+  "liens": {
+   "ondine": {
+    "qui": "ma fille",
+    "nom": "Ondine",
+    "sentiment": 0.95,
+    "avis": "Ondine, c'est ma perle à moi. Trop de questions et pas assez de sommeil. Je ne la changerais pour rien au monde. Tout est tranquille, sous la mer, sauf ma fille.",
+    "anecdotes": [
+     "Quand elle était bébé, je la couchais dans mon panier à algues pendant que je tissais. Un jour, je l'ai retrouvée enroulée dans ma pièce de la semaine, le fil autour des doigts. Elle avait défait trois jours de travail, et elle riait. J'ai gardé le bout de tissage emmêlé : c'est son premier dessin.",
+     "Je lui ai cousu dans l'ourlet un fil doré, le seul que j'aie, gardé de ma propre mère. Je lui ai dit que c'était un rayon de soleil. Elle vérifie tous les soirs qu'il est encore là. Moi aussi, quand elle dort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ondine ! Tu as encore mouillé ta robe dans le canal ?"
+     ],
+     [
+      "b",
+      "Non ! C'est le canal qui m'a mouillée, maman !"
+     ],
+     [
+      "a",
+      "Alors dis au canal de faire attention."
+     ],
+     [
+      "b",
+      "Je lui dis tous les jours. Il n'écoute pas."
+     ]
+    ]
+   },
+   "atlante_1": {
+    "qui": "mon mari",
+    "nom": "Pélagos",
+    "sentiment": 0.9,
+    "avis": "Pélagos parle peu, sauf aux coraux. Mais il est le seul à remarquer quand je change un seul fil de place dans un tissage.",
+    "anecdotes": [
+     "Le lendemain de notre rencontre, je lui ai apporté une écharpe tissée avec les algues qu'il m'avait reproché de couper. Il est resté sans voix si longtemps que j'ai cru l'avoir fâché. Puis il a demandé : « Tu en as coupé combien ? » J'ai dit : « Une sur trois. » Il m'a épousée l'année suivante."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pélagos, tu rentres pour souper ?"
+     ],
+     [
+      "b",
+      "Quand les vasques dormiront."
+     ],
+     [
+      "a",
+      "Elles dorment quand tu dors."
+     ],
+     [
+      "b",
+      "Hmm. Alors je rentre."
+     ]
+    ]
+   },
+   "maree": {
+    "qui": "notre marchande",
+    "nom": "Marée",
+    "sentiment": 0.5,
+    "avis": "Marée me vend les plus longues laminaires du dôme. Elle parle autant qu'elle vend, c'est-à-dire beaucoup. Elle a bon cœur, sous les pièces.",
+    "anecdotes": [
+     "J'ai tissé un tablier à Marée, avec son nom brodé. Depuis, elle glisse une galette dans mon panier chaque matin, sans rien demander. Je ne sais pas comment refuser. Ondine en fait des bateaux pour le canal. Ils flottent très bien, d'ailleurs. Ne le dis surtout pas à Marée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Marée. Les laminaires sont belles, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Longues comme le canal, Thalassa ! Et une galette avec ?"
+     ],
+     [
+      "a",
+      "Ondine sera ravie."
+     ],
+     [
+      "b",
+      "Ah. Elle les mange, au moins ?"
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_1": {
+  "genre": "m",
+  "prenom": "Pélagos",
+  "histoire": [
+   {
+    "titre": "le garçon qui parlait aux coraux",
+    "t": "Petit, je ne parlais à personne. Aux coraux, si. Ils ne répondent pas, mais ils poussent mieux quand on leur parle. Un doigt par siècle, pour le rouge. Mon père gardait déjà les jardins. Il disait que j'étais né les mains dans une vasque. Hmm. C'est presque vrai."
+   },
+   {
+    "titre": "une algue sur trois",
+    "t": "À cent ans, j'ai hérité des jardins et de la règle de mon père : une algue sur trois, pas plus. Le jour où Thalassa a coupé les miennes sans demander, je l'ai grondée. Elle est revenue avec une écharpe. Je ne sais toujours pas comment ça a fini en mariage. Mais je l'ai encore, l'écharpe."
+   },
+   {
+    "titre": "la chanson des vasques",
+    "t": "Le cristal pâlit, et les coraux pâlissent avec lui. Le soir, je m'assois entre les vasques et je leur chante la seule chanson que je connais, celle de mon père. Je chante faux. Ondine m'a entendu, je crois. Elle n'a rien dit. Si les coraux s'éteignent, {surnom}, je ne saurai plus à qui parler."
+   }
+  ],
+  "reve": [
+   "Que le cristal brille assez pour que le corail rouge pousse de deux doigts par siècle au lieu d'un. Hmm. Ça paraît peu. Pour un corail, c'est énorme."
+  ],
+  "liens": {
+   "ondine": {
+    "qui": "ma fille",
+    "nom": "Ondine",
+    "sentiment": 0.95,
+    "avis": "Ondine. Elle parle pour nous deux. Pour nous trois, même, avec sa mère. Moi, ça me repose.",
+    "anecdotes": [
+     "Elle a planté un caillou rond dans son coin de jardin, en disant que c'était une graine d'arbre de la surface. Je l'arrose tous les matins. Elle me demande s'il pousse. Je réponds qu'il réfléchit. C'est vrai pour beaucoup de choses, ici."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ondine. Ton caillou avait soif."
+     ],
+     [
+      "b",
+      "Tu l'as arrosé, papa ? Il a grandi ?"
+     ],
+     [
+      "a",
+      "Hmm. Il réfléchit."
+     ],
+     [
+      "b",
+      "Il réfléchit depuis longtemps !"
+     ]
+    ]
+   },
+   "atlante_0": {
+    "qui": "ma femme",
+    "nom": "Thalassa",
+    "sentiment": 0.9,
+    "avis": "Thalassa. Elle tisse ce que je fais pousser. On se comprend sans parler. Surtout moi.",
+    "anecdotes": [
+     "Depuis quelques nuits, Thalassa tisse quelque chose de très grand, très serré, qu'elle cache sous le lit. Elle croit que je n'ai rien vu. Je n'ai rien dit. Le matin, je pose à côté de son métier les plus longues laminaires que je trouve. Elle ne demande pas d'où elles viennent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Thalassa. Des laminaires, à côté du métier."
+     ],
+     [
+      "b",
+      "Merci. Je me demande bien qui les a posées là."
+     ],
+     [
+      "a",
+      "Hmm. Moi aussi."
+     ]
+    ]
+   },
+   "maree": {
+    "qui": "cette pipelette de",
+    "nom": "Marée",
+    "sentiment": -0.2,
+    "avis": "Marée coupe mes algues. Une sur trois, elle dit. Elle compte comme elle parle : très vite, et pas toujours juste.",
+    "anecdotes": [
+     "Un matin, j'ai recompté derrière elle. Tige par tige. Deux heures. Il y en avait une de trop. Je l'ai gardée dans ma poche toute la semaine pour la lui montrer. Elle a dit : « C'est une petite, elle compte pour une demie. » Hmm. Je l'ai replantée. Les algues, elles, ne marchandent pas.",
+     "La nuit où le cristal a clignoté, ses algues se repliaient. Je me suis assis dans ses rangs, les mains sur la terre. Je me suis endormi là. Au matin, elle m'a donné une galette. Je n'aime pas les galettes. Je l'ai mangée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marée. Une sur trois."
+     ],
+     [
+      "b",
+      "Une sur trois, Pélagos ! Je compte très bien !"
+     ],
+     [
+      "a",
+      "Tu comptes vite."
+     ],
+     [
+      "b",
+      "Vite et bien, c'est mon métier !"
+     ]
+    ]
+   },
+   "atlante_3": {
+    "qui": "mon voisin",
+    "nom": "Glaucos",
+    "sentiment": 0.6,
+    "avis": "Glaucos. Il souffle les vasques de nacre où vivent mes coraux. Il parle doucement. Ça me plaît.",
+    "anecdotes": [
+     "L'an dernier, Glaucos a soufflé douze vasques neuves pour mes coraux. Légères, claires : la lumière du cristal passe à travers. Il n'a rien voulu en échange. Alors chaque soir, on joue aux osselets de coquillage sur le bord d'une vasque. Il triche. Je le laisse gagner. On n'en parle pas. C'est bien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Glaucos. Osselets ?"
+     ],
+     [
+      "b",
+      "Si tu me laisses gagner, oui."
+     ],
+     [
+      "a",
+      "Je ne te laisse jamais gagner."
+     ],
+     [
+      "b",
+      "Je sais. Et moi, je ne triche jamais."
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_2": {
+  "genre": "f",
+  "prenom": "Nausicaa",
+  "histoire": [
+   {
+    "titre": "la voix de ma mère",
+    "t": "Ma mère chantait les marées avant moi. Chaque marée a sa chanson : la haute est large, la basse est douce, l'étale ne chante presque pas. Elle m'a appris aussi la berceuse de l'ancienne île, qu'elle tenait de la mère de la reine. Je la chante encore, pour une seule personne, les nuits où le palais reste allumé."
+   },
+   {
+    "titre": "le soir où la baleine m'a répondu",
+    "t": "J'avais cent ans quand la baleine m'a répondu pour la première fois. Je chantais la marée haute sur le pont nord, et toute la mer a vibré au-dessus du dôme : une note plus grave que le monde. Depuis, je lui chante quand elle passe. Je ne sais pas ce que je lui dis. Elle non plus, je crois. C'est très bien comme ça."
+   },
+   {
+    "titre": "la berceuse de trop",
+    "t": "Il y a cent vingt ans, j'ai chanté la marée haute si doucement, sur les marches de la Porte, que Triton s'est endormi. Je l'ai vu. Il avait l'air si tranquille que je n'ai pas voulu le réveiller. Le lendemain, la Perle de l'avenue avait disparu. Je n'ai jamais rien dit, {surnom}. À lui surtout."
+   }
+  ],
+  "reve": [
+   "Chanter un jour à la surface, au soleil, et entendre la baleine répondre de tout près. Et que Triton soit là. Pas de garde. Juste là."
+  ],
+  "liens": {
+   "nerea": {
+    "qui": "notre reine",
+    "nom": "Néréa",
+    "sentiment": 0.8,
+    "avis": "La reine ne dort plus. Je lui chante, les nuits sans sommeil, la berceuse de sa mère. Elle fait semblant de ne pas pleurer. Je fais semblant de ne pas voir.",
+    "anecdotes": [
+     "Une nuit, je l'ai trouvée seule sur les marches du palais. Je me suis assise à côté d'elle et j'ai chanté la berceuse de l'ancienne île, tout bas. Elle a fermé les yeux et elle a murmuré les paroles avec moi. Elle chante comme une mouette. Je ne le lui dirai jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté, encore debout ?"
+     ],
+     [
+      "b",
+      "Chante-moi la basse, Nausicaa. Celle de ma mère."
+     ],
+     [
+      "a",
+      "Tout bas, alors. Fermez les yeux."
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "notre garde",
+    "nom": "Triton",
+    "sentiment": 0.6,
+    "avis": "Triton est le seul qui m'écoute chanter sans bouger d'un pouce. Il dit que c'est la discipline. Je crois que c'est autre chose.",
+    "anecdotes": [
+     "Pour mes trois cents ans, il m'a offert un coquillage. J'ai mis l'oreille dessus, et tout au fond, j'ai entendu sa voix qui disait « bonsoir ». J'ai fait semblant de n'entendre que la mer. Il avait l'air tellement soulagé. Je l'écoute tous les soirs, avant de dormir.",
+     "Le soir où la baleine est passée au-dessus du palais, j'ai couru jusqu'à la Porte pour le prévenir. Il a fait un pas, puis il est resté. Alors je lui ai chanté la baleine, toute la baleine, pendant une heure, pour qu'il la voie quand même. Il avait les yeux fermés. Il souriait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Triton. Je chante la haute ?"
+     ],
+     [
+      "b",
+      "Comme tu veux. Je suis de garde. Mais la haute, oui."
+     ],
+     [
+      "a",
+      "Tu fermes les yeux quand je chante, tu sais."
+     ],
+     [
+      "b",
+      "C'est pour mieux entendre les requins."
+     ]
+    ]
+   },
+   "atlante_4": {
+    "qui": "ma petite sœur",
+    "nom": "Ianthé",
+    "sentiment": 0.8,
+    "avis": "Ianthé danse comme je chante, en plus vite et en plus mouillé. Elle dit que c'est elle qu'on regarde. C'est moi qu'on écoute.",
+    "anecdotes": [
+     "Quand on était petites, maman chantait les marées et Ianthé dansait sur la margelle du canal. Un jour, elle est tombée dedans en pleine marée haute. Elle a continué à danser dans l'eau, et maman a continué à chanter. Moi, je riais tellement que j'ai raté mon premier couplet."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ianthé ! Tu danses sur ma marée, ce soir ?"
+     ],
+     [
+      "b",
+      "Si tu chantes moins lentement que la dernière fois !"
+     ],
+     [
+      "a",
+      "C'était la basse. Elle est lente."
+     ],
+     [
+      "b",
+      "Moi, je ne suis jamais basse."
+     ]
+    ]
+   },
+   "atlante_5": {
+    "qui": "mon parolier",
+    "nom": "Protée",
+    "sentiment": -0.2,
+    "avis": "Protée m'écrit des chansons. Le problème, c'est qu'il change les paroles chaque fois qu'il les raconte. Je n'en ai jamais chanté une deux fois pareil.",
+    "anecdotes": [
+     "Il m'a dicté la ballade du roi Atlas. Le lendemain, je la chantais sur la place, et au troisième couplet, Protée s'est levé au premier rang : « Non, non, maintenant c'est une reine, et elle a un poulpe ! » Tout le monde a ri. J'ai continué avec le poulpe. Je suis une professionnelle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Protée. Le deuxième couplet, tu l'as encore changé ?"
+     ],
+     [
+      "b",
+      "Trois fois depuis ce matin, ma voix d'or !"
+     ],
+     [
+      "a",
+      "Alors je chanterai le premier. Deux fois."
+     ],
+     [
+      "b",
+      "Excellente version. Je n'y avais pas pensé."
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_3": {
+  "genre": "m",
+  "prenom": "Glaucos",
+  "histoire": [
+   {
+    "titre": "trois cents ans de « oui, maître »",
+    "t": "À cent ans, je suis entré en apprentissage chez Coralin. Trois cents ans à tailler la nacre, à balayer l'atelier, à dire « oui, maître ». J'ai beaucoup appris. Surtout à ne jamais toucher au corail rouge : j'ai encore la marque de la morsure, là, sur le pouce. Pff… Je l'aime bien, cette marque."
+   },
+   {
+    "titre": "la première bulle de nacre",
+    "t": "Un soir, j'ai oublié des coquilles au pied de la tour, sous la chaleur du cristal. Au matin, elles étaient molles comme de la cire. J'ai soufflé dedans avec un roseau creux, et une bulle de nacre est née, ronde, parfaite. J'ai couru la montrer à Coralin. Il a dit : « C'est de la triche. » Je suis parti le soir même."
+   },
+   {
+    "titre": "les lanternes du canal",
+    "t": "Chaque soir depuis trente ans, je souffle une petite lanterne de nacre et je la pose sur le canal, juste devant le pont où danse Ianthé. Elle croit qu'elles viennent du courant. Je n'ai jamais osé lui dire. Je souffle très bien la nacre, {surnom}. Les mots, beaucoup moins. Ils sortent trop tôt, ou pas du tout."
+   }
+  ],
+  "reve": [
+   "Souffler une bulle de nacre assez grande pour que Coralin puisse y entrer. Qu'il voie que c'est solide. Et qu'il dise « pas mal ». Juste « pas mal ». Ce serait déjà énorme."
+  ],
+  "liens": {
+   "coralin": {
+    "qui": "mon ancien maître",
+    "nom": "Coralin",
+    "sentiment": 0.4,
+    "avis": "Coralin, c'est le meilleur tailleur de la cité. Il ne me parle plus vraiment depuis cent ans, mais il me salue. Du menton. C'est déjà ça.",
+    "anecdotes": [
+     "Un jour, Ondine est venue m'acheter un bateau de nacre en chuchotant : « C'est pour Coralin, il faut le plus solide. » Je lui ai donné le plus beau, pour rien. Il ne sait pas que je sais. Je ne sais pas ce qu'il en a fait. J'espère qu'il l'a démonté. Ce serait un compliment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, maître. Le corail mord toujours ?"
+     ],
+     [
+      "b",
+      "Je ne suis plus ton maître, Glaucos."
+     ],
+     [
+      "a",
+      "Pff… Vous dites ça depuis cent ans."
+     ],
+     [
+      "b",
+      "Et toi, tu souffles toujours du vent."
+     ]
+    ]
+   },
+   "atlante_4": {
+    "qui": "la danseuse",
+    "nom": "Ianthé",
+    "sentiment": 0.9,
+    "avis": "Ianthé danse sur le pont sud tous les soirs. Je… je passe par là. Pour la nacre. La lumière y est meilleure. Voilà.",
+    "anecdotes": [
+     "Un soir, une de mes lanternes a dérivé jusqu'à ses pieds pendant qu'elle dansait. Elle l'a ramassée, l'a levée vers le cristal, et elle a dansé avec jusqu'à la fin de la marée. J'étais caché derrière une colonne. J'ai oublié de respirer. Pour un souffleur, c'est grave."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "B… bonsoir, Ianthé."
+     ],
+     [
+      "b",
+      "Glaucos ! Tu as vu ? Encore une lanterne sur le canal !"
+     ],
+     [
+      "a",
+      "Ah ? Le… le courant, sûrement."
+     ],
+     [
+      "b",
+      "Il a bon goût, ce courant."
+     ]
+    ]
+   },
+   "atlante_1": {
+    "qui": "mon ami",
+    "nom": "Pélagos",
+    "sentiment": 0.6,
+    "avis": "Pélagos ne parle presque pas. Moi non plus. On s'entend très bien. Je souffle ses vasques, il me laisse gagner aux osselets.",
+    "anecdotes": [
+     "Il croit que je triche aux osselets. Je ne triche pas : je souffle un tout petit peu sur les coquillages, pour les faire tourner. C'est mon métier, souffler. Il dit que c'est de la triche. Coralin disait pareil. Je commence à croire que c'est une maladie de la cité."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pélagos. Les vasques tiennent ?"
+     ],
+     [
+      "b",
+      "Hmm. Les coraux ont pâli. Pas les vasques."
+     ],
+     [
+      "a",
+      "Je t'en soufflerai d'autres, plus claires."
+     ],
+     [
+      "b",
+      "Hmm. Osselets, ce soir ?"
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_4": {
+  "genre": "f",
+  "prenom": "Ianthé",
+  "histoire": [
+   {
+    "titre": "la petite sœur qui tombait dans le canal",
+    "t": "Je suis la petite sœur de Nausicaa. Maman chantait les marées, ma sœur chantait avec elle, et moi je dansais sur la margelle du canal. Je tombais dedans une fois par marée, au moins. Alors j'ai appris à danser dans l'eau aussi. Ça éclabousse beaucoup. Les gens adorent. Enfin, ceux du premier rang, moins."
+   },
+   {
+    "titre": "mon pont",
+    "t": "À deux cents ans, j'ai pris le pont sud. C'est le meilleur des quatre : on y voit la place, le cristal et un bout de l'avenue de la Porte. Le soir, je danse la marée avec des rubans d'algues, et les enfants me suivent d'un pont à l'autre, tout autour du canal. Il paraît que ça fait le tour du monde. Je n'ai jamais vérifié."
+   },
+   {
+    "titre": "les lanternes à contre-courant",
+    "t": "Tous les soirs, une lanterne de nacre arrive sur le canal, juste devant mon pont. Je fais semblant de croire au courant. Mais le courant tourne dans l'autre sens, {surnom}. Je sais très bien qui souffle les lanternes. J'attends qu'il me le dise lui-même. Ça fait trente ans. Je suis patiente. Enfin, de moins en moins."
+   }
+  ],
+  "reve": [
+   "Danser un jour sur une vraie plage, là-haut, sur le sable chaud, sans margelle et sans canal où tomber. Et voir si on peut éclabousser le soleil."
+  ],
+  "liens": {
+   "maree": {
+    "qui": "cette radine de",
+    "nom": "Marée",
+    "sentiment": 0.2,
+    "avis": "Marée me paie en galettes. En galettes ! J'en ai trente sous mon lit. Mais quand je danse devant son étal, c'est elle qui applaudit le plus fort. Alors bon.",
+    "anecdotes": [
+     "Le jour du record, j'ai dansé sur le pont sud avec mes rubans, et Marée a vendu quatre-vingts galettes. Elle m'en a donné dix. Alors j'ai dansé la danse la plus triste de ma vie devant son étal. Plus personne n'osait acheter. Le lendemain, elle m'a payée en pièces. Trois. C'est un début.",
+     "J'ai remarqué que Marée ne mange jamais ses galettes. Jamais. Alors quand je danse devant l'étal, je fais semblant d'en croquer une et je grimace, tout petit, juste pour elle. Elle rit sans bruit. On a un secret, toutes les deux. Je ne sais pas exactement lequel, mais c'en est un."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marée, si tu me paies en galettes, je danse en marchant."
+     ],
+     [
+      "b",
+      "En marchant vite, alors ! Les clients arrivent !"
+     ],
+     [
+      "a",
+      "Trois pièces et je cours."
+     ],
+     [
+      "b",
+      "Deux pièces et une galette."
+     ]
+    ]
+   },
+   "atlante_2": {
+    "qui": "ma grande sœur",
+    "nom": "Nausicaa",
+    "sentiment": 0.8,
+    "avis": "Nausicaa chante, moi je danse. Elle dit qu'on l'écoute. Moi je dis qu'on me regarde. En vrai, tout le monde fait les deux.",
+    "anecdotes": [
+     "Le jour où je suis tombée dans le canal en pleine marée haute, j'ai continué à danser dans l'eau, et maman a continué à chanter. Nausicaa, elle, riait tellement qu'elle a raté son couplet. C'est la seule fois de sa vie qu'elle a raté un couplet. Je le lui rappelle souvent. Très souvent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu chantes trop lentement, grande sœur."
+     ],
+     [
+      "b",
+      "Et toi, tu danses trop mouillée."
+     ],
+     [
+      "a",
+      "C'est le canal qui m'aime."
+     ]
+    ]
+   },
+   "atlante_3": {
+    "qui": "le souffleur",
+    "nom": "Glaucos",
+    "sentiment": 0.6,
+    "avis": "Glaucos souffle la nacre comme personne et parle comme une huître : bouche fermée. Il passe sur mon pont tous les soirs. Pour la lumière, il dit.",
+    "anecdotes": [
+     "Un soir, une lanterne de nacre est arrivée à mes pieds pendant que je dansais. Je l'ai levée vers le cristal et j'ai dansé avec jusqu'à la fin de la marée. Derrière une colonne, quelqu'un a eu le souffle coupé, très fort. Je n'ai pas eu besoin de me retourner. Il n'y a qu'un souffleur, dans le dôme."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Glaucos ! Encore une lanterne sur le canal, ce soir."
+     ],
+     [
+      "b",
+      "Ah ? Le… le courant, sans doute."
+     ],
+     [
+      "a",
+      "Il tourne dans l'autre sens, le courant."
+     ],
+     [
+      "b",
+      "Ah. Euh. Il a changé d'avis ?"
+     ]
+    ]
+   }
+  }
+ },
+ "atlante_5": {
+  "genre": "m",
+  "prenom": "Protée",
+  "histoire": [
+   {
+    "titre": "ma naissance, version courte",
+    "t": "Je suis né dans un tourbillon, une nuit où la baleine passait au-dessus du dôme. Ou un mardi, dans la maison verte du troisième quartier. Les deux sont vrais ; le premier est plus beau. Ma mère ramassait tout ce que la mer laisse tomber contre le dôme. Moi, j'écoutais ce que ces choses avaient à raconter."
+   },
+   {
+    "titre": "ce que racontent les courants",
+    "t": "Les courants apportent des choses d'en haut : un bout de corde, une plume, une bouteille vide qui sent la pomme. Chaque chose a son histoire, il suffit d'écouter. Un jour, j'ai trouvé une sandale. J'en ai tiré quarante histoires. Abyssos dit que ce n'est qu'une sandale. C'est pour ça qu'il écrit, et que moi je raconte."
+   },
+   {
+    "titre": "la seule histoire que je ne change pas",
+    "t": "Il y a une histoire que je ne change jamais, {surnom}. Quand j'étais petit, mon père est sorti du dôme pour suivre la baleine. Il n'est pas revenu. Alors j'invente toutes les autres, chaque fois autrement, pour que celle-là ne reste pas toute seule. Et dans mes autres histoires, il revient toujours. Chaque fois par un chemin différent."
+   }
+  ],
+  "reve": [
+   "Monter à la surface et raconter l'Atlantide aux gens d'en haut, chaque soir une version différente. Au bout d'un an, ils connaîtront mille Atlantides. La vraie sera dedans, quelque part."
+  ],
+  "liens": {
+   "abyssos": {
+    "qui": "notre archiviste",
+    "nom": "Abyssos",
+    "sentiment": 0.3,
+    "avis": "Abyssos écrit l'histoire morte, moi je raconte l'histoire vivante. Il me traite de menteur, je le traite de rouleau. On s'aime bien, au fond. Très au fond.",
+    "anecdotes": [
+     "Je lui ai raconté une version du déluge où c'est lui qui sauve la cité avec sa plume. Il a fait la grimace. Le lendemain, je l'ai entendu dans les archives, tout seul, qui la relisait à voix haute. Il a même changé un mot, pour l'améliorer. Je le tiens, ce menteur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Abyssos ! J'ai une nouvelle version pour toi !"
+     ],
+     [
+      "b",
+      "Je n'archive pas les versions, Protée. J'archive les faits."
+     ],
+     [
+      "a",
+      "Dans celle-ci, tu as un chapeau."
+     ],
+     [
+      "b",
+      "… Quel genre de chapeau ?"
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "mon héros",
+    "nom": "Triton",
+    "sentiment": 0.6,
+    "avis": "Triton est le héros de mes plus belles histoires. Il déteste ça. C'est justement ce qui en fait un si bon héros.",
+    "anecdotes": [
+     "Les enfants me réclament la pieuvre géante tous les soirs. Trente bras, puis quarante, puis cinquante. Triton est venu me demander d'arrêter, très poli, très droit, son trident à la main. Les enfants ont crié « c'est lui ! » et lui ont fait une haie d'honneur jusqu'à la Porte. Il était tout rouge. Il n'a plus jamais rien demandé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Triton ! Ta pieuvre a soixante bras, ce soir."
+     ],
+     [
+      "b",
+      "Je n'ai pas de pieuvre, Protée."
+     ],
+     [
+      "a",
+      "C'est exactement ce que dirait un héros modeste."
+     ]
+    ]
+   },
+   "atlante_2": {
+    "qui": "ma voix d'or",
+    "nom": "Nausicaa",
+    "sentiment": 0.7,
+    "avis": "Nausicaa chante mes histoires mieux que je ne les raconte. Elle se plaint que je change les paroles. Mais une chanson, c'est comme la mer : jamais deux fois la même.",
+    "anecdotes": [
+     "Elle chantait ma ballade du roi Atlas sur la place, et au troisième couplet, j'ai eu une idée : une reine, et un poulpe. Je me suis levé pour le lui dire. Elle n'a pas raté une note. Elle a mis le poulpe. Toute la cité a applaudi le poulpe. Je n'ai jamais été aussi fier d'une chanteuse."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ma voix d'or ! J'ai changé le refrain."
+     ],
+     [
+      "b",
+      "Encore ? Je l'ai appris hier, Protée !"
+     ],
+     [
+      "a",
+      "Hier, c'était une autre mer."
+     ]
+    ]
+   }
+  }
+ },
+ "coralin": {
+  "genre": "m",
+  "prenom": "Coralin",
+  "histoire": [
+   {
+    "titre": "le premier bébé du dôme",
+    "t": "Je suis le premier enfant né sous le dôme. Jour 212, Abyssos l'a noté, avec une faute à mon nom : « Coralain ». Il ne l'a jamais corrigée. Ma mère disait que j'avais crié si fort que le cristal avait clignoté. Moi je dis que le cristal m'a salué. Ce n'est pas pareil."
+   },
+   {
+    "titre": "le ciseau d'argent de mon père",
+    "t": "Mon père a sculpté la statue du roi Atlas, là-haut, du temps où il y avait du marbre et du soleil. Sous la mer, plus de carrière : il s'est mis au corail, en ronchonnant. Le jour de mes huit ans, il m'a donné son ciseau d'argent. « Le corail rouge mord. Mords plus fort. » C'est tout ce que je sais du métier. Le reste, je l'ai inventé."
+   },
+   {
+    "titre": "l'apprenti qui soufflait",
+    "t": "J'ai eu un apprenti, une fois. Glaucos. Doué, patient, trois cents ans sans un mot plus haut que l'autre. Puis un matin, il a ramolli de la nacre sous le cristal et il a soufflé dedans, comme une bulle. Une lampe en trois minutes ! J'ai dit : « C'est de la triche. » Il a rangé ses outils, poliment. Ça fait cent ans. L'atelier est trop calme."
+   },
+   {
+    "titre": "mon atelier et mon requin",
+    "t": "Aujourd'hui, j'ai l'atelier à l'est de la place, des lampes plein les étagères, et un requin qui me nargue au récif avec le ciseau d'argent de mon père dans la gueule. Je l'appelle Monsieur Dents. Triton m'écoute râler, Marée me vend ses galettes, Ondine me vole mes chutes. Une vie riche. Pas en pièces, hélas."
+   },
+   {
+    "titre": "pourquoi tout finit en poisson",
+    "t": "Tu veux savoir pourquoi mes sculptures finissent en poisson, {surnom} ? Je commence toujours par le visage de mon père. Et je n'y arrive jamais. Alors, avant que ça se voie, j'ajoute des nageoires. Le soir, je leur dis bonne nuit. À lui, en fait. Ondine m'a entendu, un soir. Elle croit que je parle aux poissons. Laisse-la croire."
+   }
+  ],
+  "reve": [
+   "Reprendre le ciseau d'argent à ce requin. Je ne lui veux pas de mal. Enfin, un peu. Une toute petite morsure de corail rouge, pour l'honneur.",
+   "Et sculpter un visage. Un seul, qui ressemble à quelqu'un. Après, je ferai des poissons toute ma vie. Exprès, cette fois."
+  ],
+  "question": {
+   "texte": "Sois franc, {surnom}. Ma dernière sculpture, là : c'est un poisson ou un oursin ?",
+   "reponses": [
+    {
+     "label": "Un poisson, clairement.",
+     "valeur": "poisson",
+     "t": "Clairement ! Tu entends, le poisson ? Quelqu'un te reconnaît ! … Il est ému. Moi aussi. Un peu.",
+     "rappel": "Toi qui as reconnu mon poisson, viens voir la suivante. Je crois que c'est un poisson aussi. Peut-être."
+    },
+    {
+     "label": "Un oursin, non ?",
+     "valeur": "oursin",
+     "t": "Un oursin ! Hmpf. Bon. Je vais lui ajouter des piquants, comme ça tu auras raison. C'est le client qui décide. Même quand il ne paie pas.",
+     "rappel": "Je lui ai mis des piquants, à ton oursin. Il a l'air plus heureux. Moi aussi, c'est fou."
+    },
+    {
+     "label": "On dirait Triton.",
+     "valeur": "triton",
+     "t": "Triton ?! … Attends. Recule. … Par les marées, c'est vrai. Les sourcils. Ne lui dis rien, il voudrait que je la pose à la Porte.",
+     "rappel": "Depuis que tu as vu Triton dans ma sculpture, je ne vois plus que lui. Je l'ai tournée contre le mur."
+    }
+   ]
+  },
+  "liens": {
+   "nerea": {
+    "qui": "notre reine",
+    "nom": "Néréa",
+    "sentiment": 0.5,
+    "avis": "La reine ? Une grande dame. Avec une petite mémoire pour les dettes : le trône de nacre, j'attends toujours d'être payé. Six cents ans.",
+    "anecdotes": [
+     "J'ai taillé son trône de nacre en neuf ans. Le jour de la livraison, elle s'est assise, elle a fermé les yeux, et elle a dit : « Il a la forme d'une vague. » C'est tout. Pas de bourse, pas une pièce. Une vague ! J'ai écrit sur ma facture : « payé en compliments ». Elle reste ouverte.",
+     "Le nez de la statue du roi Atlas, c'est moi. L'ancien était cassé depuis le déluge. J'ai voulu refaire celui du roi d'après la fresque, et… il est sorti à ma façon. La reine l'a regardé longtemps, puis elle a dit : « Mon arrière-grand-père aurait ri. » Je le prends comme un compliment. Gratuit, encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Vous avez vu le nez du roi Atlas ? Je l'ai poli ce matin."
+     ],
+     [
+      "b",
+      "Il brille, Coralin. Comme le tien."
+     ],
+     [
+      "a",
+      "C'est un hasard total."
+     ],
+     [
+      "b",
+      "Bien sûr. Comme ta facture."
+     ]
+    ]
+   },
+   "abyssos": {
+    "qui": "ce rat d'archives",
+    "nom": "Abyssos",
+    "sentiment": -0.3,
+    "avis": "Abyssos ? Il archive chacune de mes erreurs depuis bientôt mille ans. Mes réussites, jamais. « Ce n'est pas de l'histoire », qu'il dit.",
+    "anecdotes": [
+     "Le jour de ma naissance, il a écrit mon nom « Coralain ». J'ai demandé cent fois qu'il corrige. Il répond qu'on ne gratte pas un rouleau : « L'erreur fait partie de l'histoire. » Donc, officiellement, le premier enfant du dôme s'appelle Coralain. Et c'est encore moi qui finis dans le rouleau des erreurs.",
+     "Pour faire la paix, je lui ai offert une plume taillée dans du corail rouge. Elle l'a mordu au premier mot. Il a écrit trois rouleaux sur l'incident, avec un dessin de son doigt. Le corail rouge mord, je l'ai toujours dit ! Il a classé ça dans mes erreurs. Pas dans ses imprudences."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu archives quoi, aujourd'hui ? Mes erreurs ?"
+     ],
+     [
+      "b",
+      "Rouleau quatre cent douze, Coralin. On approche de la fin."
+     ],
+     [
+      "a",
+      "De mes erreurs ?"
+     ],
+     [
+      "b",
+      "Du rouleau."
+     ]
+    ]
+   },
+   "maree": {
+    "qui": "ma presque fiancée",
+    "nom": "Marée",
+    "sentiment": 0.6,
+    "avis": "Marée ? La meilleure commerçante du dôme. On a failli se marier, il y a quatre cents ans. On a buté sur le prix de la bague. Trois pièces d'écart.",
+    "anecdotes": [
+     "Il y a quatre cents ans, je lui ai taillé une bague en corail rose. Je lui ai fait un prix d'ami : douze pièces. Elle a proposé neuf, prix de fiancée. On a marchandé une semaine entière. À la fin, on ne se parlait plus. La bague est dans mon tiroir. Prix : toujours douze.",
+     "Chaque semaine, je lui échange une lampe de nacre contre un sac de galettes. Je mange les galettes, elle revend les lampes, soi-disant. Ondine, qui compte tout, m'a dit qu'il y en a trente-sept chez elle. Allumées. Je n'ai rien dit. J'ai fait la suivante un peu plus belle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marée. Un sac de galettes, comme d'habitude."
+     ],
+     [
+      "b",
+      "Contre une lampe, comme d'habitude. Elle est plus petite que la dernière."
+     ],
+     [
+      "a",
+      "Tes galettes aussi."
+     ],
+     [
+      "b",
+      "Alors on est quittes. Comme d'habitude."
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "ce brave",
+    "nom": "Triton",
+    "sentiment": 0.8,
+    "avis": "Triton ! Le seul client qui ne s'est jamais plaint de mon travail. Trois cents ans avec le même trident, pas une réclamation. Un saint.",
+    "anecdotes": [
+     "Son trident, je l'ai taillé la nuit des requins, en une heure, dans le premier corail rouge qui me tombait sous la main. Je lui ai dit : « Attention, il mord. » Il l'a tenu trois cents ans sans le lâcher. Il a des cals comme des coquillages. Il dit que c'est le métier.",
+     "Le jour où tu es arrivé, Triton a couru jusqu'à mon atelier en criant : « Un humain ! Un vrai ! » Puis il a compris qu'il avait laissé la Porte. La première fois en trois cents ans. Il est reparti si vite qu'il a renversé trois de mes lampes. Je les lui ai facturées. Prix d'ami : le double."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Triton ! Il mord toujours, ton trident ?"
+     ],
+     [
+      "b",
+      "Tous les matins. On s'est habitués l'un à l'autre."
+     ],
+     [
+      "a",
+      "Trois cents ans sans réclamation. Tu es mon client préféré."
+     ],
+     [
+      "b",
+      "Je suis surtout ton seul client qui ne marchande pas."
+     ]
+    ]
+   },
+   "ondine": {
+    "qui": "ma petite voleuse",
+    "nom": "Ondine",
+    "sentiment": 0.7,
+    "avis": "Ondine me vole mes chutes de nacre et me pose quarante questions à l'heure. Je fais semblant de râler. C'est ma meilleure cliente : elle ne paie jamais, mais elle revient toujours.",
+    "anecdotes": [
+     "Elle m'a demandé ce qu'était une pomme. Je n'en ai jamais vu, moi non plus ! Alors j'ai dit : « un oursin rouge qui pousse dans les arbres ». Elle l'a répété à toute la cité. Maintenant, si quelqu'un prouve que j'ai tort, c'est mon honneur qui coule. N'apporte pas de pomme ici, d'accord ?",
+     "Un soir, je l'ai trouvée cachée derrière mon établi. Elle m'avait entendu dire bonne nuit aux sculptures. Je m'attendais à ce que toute la cité se moque de moi. Le lendemain, il y avait une petite algue posée sur chaque sculpture, comme une couverture. Je les ai laissées."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ondine ! Repose cette chute de nacre."
+     ],
+     [
+      "b",
+      "Quelle chute ? Celle-là ? Elle était par terre, donc à personne !"
+     ],
+     [
+      "a",
+      "Par terre, chez moi, c'est encore à moi."
+     ],
+     [
+      "b",
+      "Alors je te l'achète. Contre une question !"
+     ]
+    ]
+   },
+   "atlante_3": {
+    "qui": "mon ancien apprenti",
+    "nom": "Glaucos",
+    "sentiment": -0.4,
+    "avis": "Glaucos était mon apprenti, le meilleur. Puis il s'est mis à souffler la nacre comme une bulle de savon. De la nacre gonflée ! Il appelle ça un art. Moi, j'appelle ça de l'air.",
+    "anecdotes": [
+     "Il y a cent ans, Glaucos a ramolli des coquilles sous la chaleur du cristal et il a soufflé dedans avec un roseau. Une lampe ronde, en trois minutes. Moi, il me faut trois semaines pour en tailler une. J'ai dit : « C'est de la triche. » Il a rangé ses outils, très poliment, et il est parti le soir même. Il a gardé le tablier.",
+     "Les bateaux de nacre que les enfants font flotter sur le canal, c'est lui. Légers, rapides, ils ne coulent jamais. Les miens, taillés dans la masse, coulaient au troisième pont. Un jour, j'en ai fait acheter un en cachette, par Ondine, pour comprendre comment il fait. Je ne comprends toujours pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Glaucos. Toujours à souffler du vent ?"
+     ],
+     [
+      "b",
+      "Bonjour, maître. Vous avez l'air en forme."
+     ],
+     [
+      "a",
+      "Je ne suis plus ton maître."
+     ],
+     [
+      "b",
+      "Vous dites ça depuis cent ans. Je ne vous crois toujours pas."
+     ]
+    ]
+   }
+  }
+ },
+ "maree": {
+  "genre": "f",
+  "prenom": "Marée",
+  "histoire": [
+   {
+    "titre": "ma grand-mère Salicorne",
+    "t": "Ma grand-mère s'appelait Salicorne. C'est elle qui a pressé la première galette d'algues, la première nuit sous le dôme, quand il n'y avait plus de blé. Elle racontait le goût du pain et du maquereau grillé en fermant les yeux. Moi, je suis née bien après, dans l'odeur des algues qui sèchent. Le pain, je ne le connais que par ses histoires."
+   },
+   {
+    "titre": "le jour des neuf cents ans de grand-mère",
+    "t": "J'ai grandi derrière son étal, à compter les pièces avant de savoir compter les poissons. Le jour de ses neuf cents ans, grand-mère m'a pris les mains et m'a passé la recette, geste par geste. « Pas un mot écrit. Ça se transmet par les doigts. » Le soir même, Abyssos est venu demander s'il pouvait l'archiver. Il attend encore, le pauvre."
+   },
+   {
+    "titre": "la bague à douze pièces",
+    "t": "Il y a quatre cents ans, Coralin m'a taillé une bague en corail rose. Douze pièces, prix d'ami. J'en proposais neuf, prix de fiancée. Une semaine de marchandage ! Après, on ne s'est plus parlé pendant dix ans. Maintenant, on se reparle. On marchande toujours. Je crois que c'est notre façon à nous d'être mariés."
+   },
+   {
+    "titre": "mon étal aujourd'hui",
+    "t": "Aujourd'hui, j'ai l'étal, les jardins au bord du dôme, et Pélagos qui me surveille quand je coupe les algues, comme si je lui volais ses enfants. Thalassa me prend les longues laminaires, Ianthé danse devant ma boutique pour attirer le client. Et vous, vous m'apportez du poisson de la surface ! Les affaires n'ont jamais aussi bien marché."
+   },
+   {
+    "titre": "ce que je pense vraiment de mes galettes",
+    "t": "Je vais vous dire un secret, {surnom}, et vous le gardez sous la langue. Je déteste les galettes d'algues. Toutes. Je n'en ai jamais fini une seule. Mais grand-mère les a inventées pour que tout le monde vive, la première nuit, et tant que j'en presse, c'est un peu elle qui nourrit la cité. Alors je souris, et je vends."
+   }
+  ],
+  "reve": [
+   "Goûter un maquereau grillé, là-haut, sur une plage, avec le soleil dans le dos. Grand-mère en parlait comme d'un trésor. Et ne plus jamais voir une galette. Enfin, en vendre encore un peu, quand même.",
+   "Ouvrir un deuxième étal à la surface : « Galettes de l'Atlantide, recette de mille ans ». Les gens d'en haut aiment ce qui est vieux, non ? Alors ils vont adorer."
+  ],
+  "question": {
+   "texte": "Dites-moi, et soyez honnête, hein : vous les aimez, mes galettes ?",
+   "reponses": [
+    {
+     "label": "Délicieuses !",
+     "valeur": "delicieuses",
+     "t": "Délicieuses ! Oh, vous êtes un amour. Ou un menteur. Les deux font de très bons clients. Tenez, je vous fais le prix des gens polis : le même que les autres.",
+     "rappel": "Vous qui trouvez mes galettes délicieuses… J'en ai une fournée toute chaude. Je vous regarderai la manger, ça me fait plaisir."
+    },
+    {
+     "label": "Elles sont… nourrissantes.",
+     "valeur": "nourrissantes",
+     "t": "Nourrissantes ! Vous avez parlé à Coralin, vous. C'est son mot. Il le dit depuis quatre cents ans, et il m'en achète un sac par semaine. Méfiez-vous des gens qui disent « nourrissant ».",
+     "rappel": "« Nourrissantes », m'aviez-vous dit. Coralin a ri pendant une heure quand je le lui ai raconté. Traître."
+    },
+    {
+     "label": "Je n'ai pas encore goûté.",
+     "valeur": "pas_goute",
+     "t": "Pas encore ! Alors vous êtes le seul être au monde qui n'a pas d'avis. Profitez-en, c'est un état très reposant. Et il coûte six pièces d'en sortir.",
+     "rappel": "Vous n'aviez pas encore goûté mes galettes. Toujours pas ? Gardez votre innocence. Mais achetez-en une, pour la décoration."
+    }
+   ]
+  },
+  "liens": {
+   "nerea": {
+    "qui": "notre reine",
+    "nom": "Néréa",
+    "sentiment": 0.8,
+    "avis": "La reine est la seule personne du dôme qui aime vraiment mes galettes. Je lui en porte une chaque matin. Elle ne paie pas. Pour elle, je ne compte pas. Presque pas.",
+    "anecdotes": [
+     "Chaque matin, je monte au palais avec une galette chaude. La reine la mange les yeux fermés, en silence, jusqu'à la dernière miette. Un matin, je lui ai demandé ce qu'elle y trouvait. Elle a dit : « Le goût de la première nuit. Celle où ta grand-mère nous a sauvés. » Je suis redescendue, et je n'ai rien vendu de la matinée.",
+     "J'avais eu l'idée des « galettes royales », avec le portrait de la reine dessus, deux fois plus chères. Elle a dit non. Alors j'ai fait les « presque royales », avec une dame qui lui ressemble, mais avec un autre nez. Elle est passée devant l'étal, elle a regardé, et elle en a acheté une. Elle l'a payée. C'est la seule fois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Votre galette, Majesté ! Toute chaude !"
+     ],
+     [
+      "b",
+      "Merci, Marée. Elle a le goût de ta grand-mère."
+     ],
+     [
+      "a",
+      "Ne dites pas ça, je vais devoir augmenter le prix."
+     ],
+     [
+      "b",
+      "Tu ne me la fais jamais payer."
+     ]
+    ]
+   },
+   "coralin": {
+    "qui": "mon presque fiancé",
+    "nom": "Coralin",
+    "sentiment": 0.5,
+    "avis": "Coralin ? Un génie du corail, un radin de première et mon presque fiancé depuis quatre cents ans. Il dit que mes galettes sont nourrissantes. Il en achète un sac par semaine.",
+    "anecdotes": [
+     "La bague en corail rose, il me l'a laissée à douze pièces, prix d'ami. Moi, je proposais neuf, prix de fiancée. Une semaine de marchandage ! À la fin, il a dit « onze », j'ai dit « dix », et on s'est regardés. Aucun des deux n'a cédé. La bague est toujours dans son tiroir. Je le sais : je vérifie quand il a le dos tourné.",
+     "Il m'échange une lampe de nacre chaque semaine contre mes galettes. Il croit que je les revends. Je les ai toutes gardées. Trente-sept lampes, allumées, dans ma maison. Le soir, on dirait un petit cristal. Si vous le lui dites, je vous fais payer double à vie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coralin ! Ta lampe de la semaine est un peu petite."
+     ],
+     [
+      "b",
+      "Comme tes galettes, Marée."
+     ],
+     [
+      "a",
+      "Dix pièces, la bague, et on n'en parle plus."
+     ],
+     [
+      "b",
+      "Douze. Et on n'en parle plus."
+     ]
+    ]
+   },
+   "abyssos": {
+    "qui": "notre archiviste",
+    "nom": "Abyssos",
+    "sentiment": -0.2,
+    "avis": "Abyssos veut tout écrire, même mes recettes. Les secrets, ça ne s'écrit pas, ça se transmet. Il est gentil, mais il a une plume à la place du nez.",
+    "anecdotes": [
+     "Il a goûté une de mes galettes par jour pendant quarante jours, en prenant des notes, pour trouver la recette. Le quarante et unième, il est venu me lire son rouleau, tout fier. J'ai dit : « Faux. Tout faux. » Il était si déçu que je lui ai offert une galette. Gratuite ! Il l'a notée aussi, bien sûr.",
+     "Il a écrit dans ses rouleaux que la première galette de grand-mère était « affreuse ». Affreuse ! Je suis allée aux archives pour gratter le mot moi-même. Il s'est assis sur le rouleau. On est restés comme ça une heure. À la fin, il a ajouté « mangée en pleurant de joie ». J'ai accepté le marché."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Abyssos. Si tu sors ta plume, je range mes galettes."
+     ],
+     [
+      "b",
+      "Je ne note rien ! Je… respire. Avec une plume."
+     ],
+     [
+      "a",
+      "Tu respires drôlement fort près de ma pâte."
+     ],
+     [
+      "b",
+      "C'est l'odeur. Elle est très documentée."
+     ]
+    ]
+   },
+   "atlante_1": {
+    "qui": "ce grognon de",
+    "nom": "Pélagos",
+    "sentiment": 0.3,
+    "avis": "Pélagos garde les jardins comme un requin garde son récif. Chaque fois que je coupe une algue, il soupire. Mais quand le cristal pâlit, c'est lui qui veille mes cultures.",
+    "anecdotes": [
+     "Pélagos a planté une pancarte dans mes jardins : « Une sur trois. Pas plus. » Je coupe une sur trois, je le jure ! Mais je compte à ma façon. Un matin, il a recompté derrière moi, tige par tige, pendant deux heures. Il en a trouvé une de trop. Il l'a gardée dans sa poche toute la semaine, pour me la montrer.",
+     "La nuit où le cristal a clignoté, toutes mes algues se sont repliées d'un coup. J'ai cru que j'allais tout perdre. Au matin, j'ai trouvé Pélagos endormi au milieu de mes rangs, les mains posées sur la terre, comme pour la réchauffer. Il a dit qu'il était là par hasard. Je lui ai donné une galette. Il a soupiré, et il l'a mangée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Pélagos ! Une sur trois, promis !"
+     ],
+     [
+      "b",
+      "Hmm. Tu comptes comment, cette fois ?"
+     ],
+     [
+      "a",
+      "Une, trois, trois, trois…"
+     ],
+     [
+      "b",
+      "Voilà. C'est exactement ça que je dis."
+     ]
+    ]
+   },
+   "atlante_0": {
+    "qui": "ma cliente préférée",
+    "nom": "Thalassa",
+    "sentiment": 0.6,
+    "avis": "Thalassa me prend toutes les longues laminaires pour ses tissages. Elle paie rubis sur l'ongle, sans jamais marchander. C'est presque vexant.",
+    "anecdotes": [
+     "Thalassa m'a tissé un tablier pour l'étal, avec mon nom brodé dessus. Je voulais la payer, elle a refusé, deux fois. Alors je glisse une galette dans son panier chaque matin. Elle ne les mange pas, je crois. Ondine en fait des bateaux pour le canal. Il paraît qu'ils flottent très bien. Je ne sais pas si je dois être fière.",
+     "Quand Ondine était toute petite, Thalassa la posait dans un panier sous mon étal pendant qu'elle choisissait ses algues. La petite tendait les bras à chaque client en criant « galette ! ». J'ai vendu deux fois plus, cette saison-là. J'ai proposé de la louer. Thalassa n'a pas trouvé ça drôle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Thalassa ! Les laminaires sont arrivées, longues comme le canal !"
+     ],
+     [
+      "b",
+      "Je les prends toutes, Marée. Ondine grandit encore."
+     ],
+     [
+      "a",
+      "Pour toi, prix de voisine."
+     ],
+     [
+      "b",
+      "C'est le même que l'autre, non ?"
+     ]
+    ]
+   },
+   "atlante_4": {
+    "qui": "ma danseuse",
+    "nom": "Ianthé",
+    "sentiment": 0.6,
+    "avis": "Ianthé danse devant mon étal et le client arrive tout seul. Je la paie en galettes. Elle dit qu'elle préférerait des pièces. Tout le monde dit ça.",
+    "anecdotes": [
+     "Le jour où Ianthé a dansé sur le pont sud avec ses rubans d'algues, j'ai vendu quatre-vingts galettes. Un record ! Pour la remercier, je lui en ai donné dix. Elle m'a regardée, puis elle a dansé une danse très lente, très triste, devant l'étal. Je n'ai plus rien vendu de la journée. Le lendemain, je l'ai payée en pièces. Trois.",
+     "Ianthé m'a demandé un jour pourquoi je ne goûtais jamais mes propres galettes. J'ai dit que je n'avais pas faim. Elle a souri, comme si elle savait. Depuis, quand elle danse devant l'étal, elle fait semblant d'en croquer une et elle grimace, tout petit, juste pour moi. On rit, toutes les deux, sans rien dire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ianthé ! Une petite danse ? Je te paie en galettes !"
+     ],
+     [
+      "b",
+      "Encore ? J'en ai trente sous mon lit, Marée."
+     ],
+     [
+      "a",
+      "Alors trente et une."
+     ],
+     [
+      "b",
+      "D'accord. Mais je danse lentement."
+     ]
+    ]
+   }
+  }
+ },
+ "nerea": {
+  "genre": "f",
+  "prenom": "Néréa",
+  "histoire": [
+   {
+    "titre": "mon île, quand elle avait un ciel",
+    "t": "Je suis née sur une île de soleil, {surnom}, avec des champs de blé qui descendaient jusqu'à la mer. Mon arrière-grand-père, le roi Atlas, me portait sur ses épaules pour regarder passer les baleines. C'est lui, la statue de la place. Sur la statue, il a l'air sévère. Dans la vie, il riait tout le temps."
+   },
+   {
+    "titre": "la nuit où la mer s'est levée",
+    "t": "J'avais dix-neuf ans, et j'étais reine depuis un seul printemps. Cette nuit-là, la mer s'est dressée plus haut que la tour. J'ai posé les mains sur le Grand Cristal et je lui ai demandé une seule chose : « Garde-les. » Au matin, nous étions sous la mer, dans une bulle d'air. Et mes cheveux étaient blancs comme l'écume."
+   },
+   {
+    "titre": "la nuit des requins",
+    "t": "Il y a trois cents ans, un courant noir a frappé le dôme, et les requins sont venus avec lui. La tour a tremblé, les trois Perles sont tombées de la couronne du cristal, et la mer les a emportées. Cette nuit-là, Coralin a taillé un trident en une heure, et je l'ai mis dans les mains d'un jeune homme qui tremblait moins que moi. C'était Triton."
+   },
+   {
+    "titre": "ce que je regarde, la nuit",
+    "t": "Je ne dors plus beaucoup. Je regarde le cristal pâlir, et Nausicaa me chante la berceuse de ma mère. Abyssos guette ma lampe sous mes fenêtres ; il croit que je ne le vois pas. Le matin, Marée m'apporte une galette chaude. Elle a le goût de la première nuit. C'est étrange, ce qui peut consoler une reine."
+   },
+   {
+    "titre": "ce que nous attendons vraiment",
+    "t": "Je dis à mon peuple que nous attendons que la mer nous rende notre île. Voici la vérité, {surnom}. Il y a cinq cents ans, une nuit, le cristal brillait si fort qu'il aurait pu soulever le dôme jusqu'au soleil. Je l'ai senti sous mes mains. J'ai eu peur de là-haut, de ce que le monde était devenu sans nous. Et j'ai dit non. Pour tout le monde."
+   }
+  ],
+  "reve": [
+   "Entendre une baleine me répondre. Une seule fois. Mon arrière-grand-père leur parlait comme à de vieilles amies ; moi, je n'ai jamais obtenu que leur dos.",
+   "Et être là, juste à côté, le jour où Ondine verra le soleil. Je voudrais voir son visage. Je crois que j'y retrouverais le mien, à son âge."
+  ],
+  "question": {
+   "texte": "Dis-moi franchement, {surnom}. Si la mer nous rendait notre île demain, les gens d'en haut nous accueilleraient-ils ?",
+   "reponses": [
+    {
+     "label": "Oui, à bras ouverts.",
+     "valeur": "bras_ouverts",
+     "t": "À bras ouverts… Tu le dis avec tant de certitude. C'est peut-être moi qui ai oublié comment on ouvre les bras. Mille ans sous un dôme, cela raidit les épaules.",
+     "rappel": "Tu m'as dit qu'on nous accueillerait à bras ouverts. Je me le répète, les nuits où le cristal se tait."
+    },
+    {
+     "label": "Ça dépend des îles.",
+     "valeur": "depend",
+     "t": "Une réponse de reine. Les gens des montagnes, des forêts, des ports… chacun son rivage, j'imagine. Nous aussi, nous avons nos grincheux. Coralin en vaut trois.",
+     "rappel": "« Ça dépend des îles », m'as-tu dit. J'ai fait la liste de nos grincheux, au cas où. Coralin y figure deux fois."
+    },
+    {
+     "label": "Ils auraient peur, je crois.",
+     "valeur": "peur",
+     "t": "Merci de ne pas me mentir. La peur, je la connais bien : on ne la chasse pas, on apprend à marcher à côté d'elle. Alors c'est à nous d'être doux, le jour venu.",
+     "rappel": "Tu m'as dit qu'ils auraient peur de nous. Alors je m'entraîne à être douce. Je commence par Coralin. C'est un long travail."
+    }
+   ]
+  },
+  "liens": {
+   "abyssos": {
+    "qui": "mon vieil archiviste",
+    "nom": "Abyssos",
+    "sentiment": 0.8,
+    "avis": "Abyssos était le plus petit copiste du palais, la nuit de la vague. Mille ans plus tard, il écrit encore tout ce que je dis. Même mes soupirs.",
+    "anecdotes": [
+     "Le premier matin sous le dôme, tout le monde pleurait. Abyssos, lui, avait quatorze ans et une plume. Il est venu me demander, très sérieux : « Majesté, comment s'appelle ce jour ? » Je n'en savais rien. J'ai dit : « Le premier, je suppose. » Il a écrit « Jour 1 ». Il n'en a jamais sauté un seul depuis.",
+     "Il croit que je ne le vois pas, la nuit, sous mes fenêtres, avec sa lampe de nacre et un rouleau vide. Il attend que ma lampe s'éteigne pour enfin écrire quelque chose de gai. Certaines nuits, je la souffle exprès, même si je ne dors pas. Il repart tout content."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Abyssos, tu as encore passé la nuit sous mes fenêtres."
+     ],
+     [
+      "b",
+      "Moi, Majesté ? J'archivais… les étoiles de mer."
+     ],
+     [
+      "a",
+      "Il n'y en a aucune, sous mes fenêtres."
+     ],
+     [
+      "b",
+      "Justement. Je l'ai noté."
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "mon brave",
+    "nom": "Triton",
+    "sentiment": 0.7,
+    "avis": "Triton est le plus fidèle de mes sujets et le plus mauvais conteur. Il raconte aux enfants que j'ai mille ans. J'en ai un peu plus.",
+    "anecdotes": [
+     "La nuit des requins, je lui ai mis le trident dans les mains en disant : « Garde la Porte jusqu'à ce que je revienne. » J'ai été prise par mille choses, et je ne suis jamais revenue. Il y est toujours, trois cents ans plus tard. Je n'ose plus lui dire que c'était une façon de parler.",
+     "Pour ses deux cents ans de garde, j'ai voulu lui offrir un jour de repos. Il l'a passé debout devant la Porte, sans son trident, « pour voir comment c'est, de l'autre côté ». Le soir, il est venu me remercier : il avait passé une journée excellente. Il ne s'était rien passé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Triton. Rien à signaler ?"
+     ],
+     [
+      "b",
+      "Rien, Majesté ! Absolument rien ! Comme d'habitude !"
+     ],
+     [
+      "a",
+      "Tu as l'air ravi."
+     ],
+     [
+      "b",
+      "Rien, c'est quand tout va bien, Majesté."
+     ]
+    ]
+   },
+   "ondine": {
+    "qui": "la petite",
+    "nom": "Ondine",
+    "sentiment": 0.9,
+    "avis": "Ondine est la seule de mes sujets à me demander si je me suis déjà écorché les genoux. Oui. En tombant d'un figuier, il y a mille ans.",
+    "anecdotes": [
+     "Un matin, Ondine s'est glissée dans la salle du trône pour me demander de quelle couleur était le soleil. « Jaune. » « Jaune comme quoi ? » Il n'y a rien de jaune sous la mer. J'ai fini par poser ma couronne sur sa tête. Elle a couru se regarder dans le canal. Depuis, elle appelle ma couronne « le petit soleil ».",
+     "Elle m'a offert un dessin : moi, sur mon trône, avec des cheveux qui touchent le plafond. « C'est parce que tu as mille ans », m'a-t-elle expliqué. J'ai demandé qui lui avait dit ça. Elle a plaqué ses deux mains sur sa bouche. Je n'ai pas cherché longtemps : il n'y a qu'un garde, à la Porte."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, petite étoile. Combien de questions, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Juste une ! … Bon, onze. Le soleil, il fait du bruit ?"
+     ],
+     [
+      "a",
+      "Non. Il chauffe en silence."
+     ],
+     [
+      "b",
+      "Comme toi, alors !"
+     ]
+    ]
+   },
+   "coralin": {
+    "qui": "notre artisan",
+    "nom": "Coralin",
+    "sentiment": 0.6,
+    "avis": "Coralin a des mains d'or et un caractère d'oursin. Il prétend que je lui dois encore le trône de nacre. C'est peut-être vrai. Je n'ai pas l'intention de vérifier.",
+    "anecdotes": [
+     "Coralin est le premier enfant né sous le dôme. Il a crié si fort que le cristal a clignoté, et toute la cité a ri, pour la première fois depuis la vague. Je ne le lui ai jamais dit, il deviendrait insupportable : c'est ce jour-là que j'ai cru que nous pourrions vivre ici.",
+     "Il y a quelques siècles, il a voulu refaire le nez de la statue du roi Atlas, ébréché par le déluge. Il a sculpté un nez neuf, très beau. Le sien. Depuis, de profil, mon arrière-grand-père ressemble à Coralin, et Coralin passe devant la statue la tête haute."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coralin, ton requin t'a rendu ton ciseau ?"
+     ],
+     [
+      "b",
+      "Non, Majesté. Et votre trésor ne m'a toujours pas payé le trône."
+     ],
+     [
+      "a",
+      "Le trône a six cents ans, Coralin."
+     ],
+     [
+      "b",
+      "Les dettes ne rouillent pas, sous la mer."
+     ]
+    ]
+   },
+   "maree": {
+    "qui": "notre marchande",
+    "nom": "Marée",
+    "sentiment": 0.7,
+    "avis": "Marée parle plus vite que le courant et compte plus vite encore. Ses galettes, moi, je les aime vraiment. Je crois que je suis la seule.",
+    "anecdotes": [
+     "La première nuit sous le dôme, il ne restait plus de blé, plus rien. Salicorne, la grand-mère de Marée, a pressé des algues entre deux pierres chaudes et m'a tendu la première galette. Elle était affreuse. J'ai pleuré en la mangeant, et c'était le meilleur repas de ma vie. Marée fait exactement la même.",
+     "Marée m'a proposé de vendre des « galettes royales », avec mon portrait dessus, deux fois plus chères. J'ai refusé. Le lendemain, elle vendait des « galettes presque royales », avec une dame qui me ressemblait beaucoup, sauf le nez. Je suis passée, j'en ai acheté une. Je l'ai payée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marée, la galette de ce matin était parfaite."
+     ],
+     [
+      "b",
+      "Comme toujours, Majesté ! Ce sera six pièces. Je plaisante. Cinq."
+     ],
+     [
+      "a",
+      "Tu ne plaisantes jamais avec les prix."
+     ],
+     [
+      "b",
+      "Jamais. C'est pour ça que c'est drôle."
+     ]
+    ]
+   },
+   "atlante_2": {
+    "qui": "ma chanteuse",
+    "nom": "Nausicaa",
+    "sentiment": 0.8,
+    "avis": "Nausicaa chante les marées pour la cité, et pour moi les nuits où je ne dors pas. Sa voix fait trembler le cristal, dans le bon sens.",
+    "anecdotes": [
+     "Une nuit, je me suis assise seule sur les marches du palais. Nausicaa s'est assise à côté de moi sans rien dire, puis elle a chanté une berceuse de l'ancienne île, que je croyais être la dernière à connaître. Sa mère la tenait de la mienne. Je n'ai pas pleuré. Pas devant une sujette.",
+     "Quand la baleine passe au-dessus du dôme, Nausicaa lui répond. Moi, j'ai essayé longtemps, avec le trident de mon arrière-grand-père, et rien. Un jour, je lui ai demandé son secret. « Il ne faut pas lui parler, Majesté. Il faut lui chanter. » J'ai une voix de mouette."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu chanteras la marée, ce soir, Nausicaa ?"
+     ],
+     [
+      "b",
+      "La haute, Majesté. Et la basse pour vous, si vous ne dormez pas."
+     ],
+     [
+      "a",
+      "Je ne dormirai pas."
+     ],
+     [
+      "b",
+      "Alors je chanterai tout doucement."
+     ]
+    ]
+   }
+  }
+ },
+ "ondine": {
+  "genre": "f",
+  "prenom": "Ondine",
+  "histoire": [
+   {
+    "titre": "ma fenêtre au bord du canal",
+    "t": "J'habite une maison ronde avec un toit vert, au bord du canal. Maman tisse les algues, papa garde les jardins, et moi je garde la fenêtre ! C'est la meilleure fenêtre du dôme : on voit passer les tortues. J'en ai compté quarante-trois. Enfin, c'était peut-être la même, quarante-trois fois."
+   },
+   {
+    "titre": "la sieste dans les archives",
+    "t": "Quand j'étais petite, plus petite, je me suis cachée dans les archives d'Abyssos pour jouer, et je me suis endormie entre deux rouleaux. Je me suis réveillée pendant qu'il lisait tout haut l'histoire de la surface, aux étagères. Le blé, le soleil, les oiseaux… Depuis ce jour-là, je veux tout savoir. C'est sa faute."
+   },
+   {
+    "titre": "la nuit où le cristal a clignoté",
+    "t": "Une nuit, le cristal a clignoté et tout le dôme est devenu noir. Juste un instant ! Mais j'ai entendu la mer contre le dôme, comme quelqu'un qui frappe pour entrer. Maman m'a serrée si fort que j'avais son collier marqué sur la joue. Depuis, avant de dormir, je compte jusqu'à dix, pour vérifier que la lumière reste."
+   },
+   {
+    "titre": "toi, et toutes tes histoires",
+    "t": "Et maintenant, il y a toi ! J'ai rempli un rouleau entier avec tes histoires de là-haut. Abyssos dit que mon arbre ressemble à un poulpe en colère, mais il n'en a jamais vu non plus, alors bon. Et Triton m'apprend à retenir mon souffle, pour sortir un jour. Je tiens jusqu'à quarante. Lui, il dit trois cents. Il triche, je crois."
+   },
+   {
+    "titre": "les trois brasses dehors",
+    "t": "Je vais te dire un secret, mais tu jures, d'accord ? Une fois, je suis sortie du dôme toute seule, par la membrane, derrière les jardins de papa. Trois brasses. J'ai vu la lumière d'en haut, toute verte, qui bougeait, et j'ai eu tellement peur que je suis rentrée en pleurant. Moi qui veux voir le soleil… Même Triton ne sait pas. Il garde la Porte, pas les jardins."
+   }
+  ],
+  "reve": [
+   "Monter voir le soleil ! Et toucher un nuage, pour savoir s'il est mouillé. Et croquer une pomme. Et grimper dans un arbre. Et redescendre tout raconter à maman. Dans cet ordre-là.",
+   "Après, je serai archiviste de la surface. Abyssos s'occupera du dessous, moi du dessus, et on partagera l'encre."
+  ],
+  "question": {
+   "texte": "Dis… quand je monterai voir le soleil, tu crois que j'aurai peur ?",
+   "reponses": [
+    {
+     "label": "Un peu. Et c'est normal.",
+     "valeur": "un_peu",
+     "t": "Un peu… D'accord. Un peu, je peux. C'est beaucoup que je ne peux pas. Tu me tiendras la main, pour le un peu ?",
+     "rappel": "Tu m'as dit que j'aurais un peu peur et que c'est normal. Alors je m'entraîne : j'ai un peu peur tous les jours, maintenant."
+    },
+    {
+     "label": "Toi ? Jamais.",
+     "valeur": "jamais",
+     "t": "Jamais ! Tu l'as dit ! Je vais le répéter à tout le monde ! Même au cristal. Comme ça, c'est officiel.",
+     "rappel": "Toi, tu as dit que je n'aurais jamais peur. Je l'ai dit au cristal, et Abyssos l'a noté. C'est officiel."
+    },
+    {
+     "label": "Moi, j'ai eu peur de la mer.",
+     "valeur": "toi_aussi",
+     "t": "Toi ? Peur de la mer ? Mais tu es venu jusqu'ici ! … Alors on peut avoir peur et y aller quand même ? Oh. Ça change tout, ça.",
+     "rappel": "Toi aussi, tu as eu peur de la mer, et tu es venu quand même. J'y pense chaque fois que je regarde en haut."
+    }
+   ]
+  },
+  "liens": {
+   "nerea": {
+    "qui": "la reine",
+    "nom": "Néréa",
+    "sentiment": 0.8,
+    "avis": "La reine, elle est très belle et très vieille, mille ans je crois ! Elle répond à toutes mes questions, même les bêtes. Surtout les bêtes.",
+    "anecdotes": [
+     "Je lui ai demandé de quelle couleur était le soleil. Elle a dit jaune. J'ai demandé jaune comme quoi, parce qu'ici il n'y a rien de jaune. Alors elle a enlevé sa couronne et elle me l'a posée sur la tête ! J'ai couru jusqu'au canal pour me regarder dans l'eau. J'avais un soleil sur la tête. Elle l'a reprise après. Dommage.",
+     "La reine ne dort pas, la nuit. Je le sais parce que moi non plus, des fois. Une nuit, je l'ai vue sur les marches du palais, toute seule, à regarder le cristal. Je me suis assise à côté d'elle sans rien dire. Au bout d'un moment, elle a dit : « Tu devrais dormir. » J'ai dit : « Toi aussi. » On est restées quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Le soleil, il fait du bruit ?"
+     ],
+     [
+      "b",
+      "Non, petite étoile. Il chauffe en silence."
+     ],
+     [
+      "a",
+      "Comme le cristal ?"
+     ],
+     [
+      "b",
+      "Comme le cristal, quand il va bien."
+     ]
+    ]
+   },
+   "coralin": {
+    "qui": "mon copain",
+    "nom": "Coralin",
+    "sentiment": 0.9,
+    "avis": "Coralin fait semblant d'être grognon, mais il range ses chutes de nacre dans une boîte marquée « PAS POUR ONDINE ». C'est forcément pour moi, sinon pourquoi il écrirait mon nom ?",
+    "anecdotes": [
+     "Coralin m'a dit qu'une pomme, c'est un oursin rouge qui pousse dans les arbres. J'ai fait un dessin : un arbre plein d'oursins. Abyssos l'a rangé dans le rouleau des erreurs de Coralin. Coralin était furieux. Moi, j'étais fière : c'est mon premier dessin dans les archives !",
+     "Un soir, je me suis cachée derrière son établi. Je l'ai entendu dire bonne nuit à toutes ses sculptures, une par une, même au poisson-oursin. Sa voix était toute douce, pas du tout grognon. Le lendemain, j'ai posé une petite algue sur chacune, comme une couverture. Il n'a rien dit. Il les a laissées."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coralin ! C'est un poisson ou un oursin, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Un poisson. Non. Un oursin. Ne bouge pas, je réfléchis."
+     ],
+     [
+      "a",
+      "On dirait un peu Triton."
+     ],
+     [
+      "b",
+      "Chut ! Il pourrait t'entendre."
+     ]
+    ]
+   },
+   "triton": {
+    "qui": "mon ami",
+    "nom": "Triton",
+    "sentiment": 0.9,
+    "avis": "Triton garde la Porte depuis trois cents ans, et il dit qu'il ne s'ennuie jamais. Moi je crois qu'il s'ennuie un peu. C'est pour ça que je vais le voir tous les jours.",
+    "anecdotes": [
+     "C'est Triton qui m'a dit que la reine avait mille ans. Il m'a fait jurer de ne pas le répéter. J'ai juré. Puis je l'ai dit à maman, à papa, à Coralin et à toi. Mais à personne d'autre ! Ne le dis pas à Triton, d'accord ? Il est très gentil quand il n'est pas fâché.",
+     "Triton m'apprend à retenir mon souffle, pour sortir un jour. On s'assoit devant la Porte et on compte ensemble. Moi, j'arrive à quarante. Lui, il dit qu'il tient jusqu'à trois cents. Mais vers cent, il devient tout bleu et il fait semblant de tousser à cause du sable."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Triton ! On compte ? Un, deux…"
+     ],
+     [
+      "b",
+      "Halte ! … Ah, c'est toi. Trois, quatre…"
+     ],
+     [
+      "a",
+      "Tu as vu la baleine, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Je suis de garde, Ondine. Cinq, six…"
+     ]
+    ]
+   },
+   "abyssos": {
+    "qui": "le vieil",
+    "nom": "Abyssos",
+    "sentiment": 0.8,
+    "avis": "Abyssos sait tout sur tout, sauf ce qu'il y a là-haut. Alors on fait équipe : moi je te pose les questions, et lui il écrit les réponses.",
+    "anecdotes": [
+     "Quand j'étais petite, je me suis endormie dans ses archives. Je me suis réveillée pendant qu'il lisait tout haut l'histoire de la surface, aux étagères, parce que personne d'autre ne l'écoute. J'ai écouté jusqu'au bout sans bouger. Il ne l'a su que quand j'ai éternué, pile sur le mot « blé ».",
+     "Abyssos dit que la baleine parle au cristal. Je lui ai demandé ce qu'elle lui dit. Il a cherché pendant trois jours dans tous ses rouleaux, et puis il m'a avoué qu'il ne savait pas. C'est la première fois qu'Abyssos ne sait pas quelque chose ! Je l'ai écrit sur un caillou, pour qu'il s'en souvienne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Abyssos ! J'ai une question pour tes rouleaux !"
+     ],
+     [
+      "b",
+      "Une seule ? Voilà qui mérite d'être noté."
+     ],
+     [
+      "a",
+      "Bon, trois. Les nuages, ils sont mouillés ?"
+     ],
+     [
+      "b",
+      "Les rouleaux disent oui. Demande quand même au voyageur."
+     ]
+    ]
+   },
+   "atlante_0": {
+    "qui": "ma maman",
+    "nom": "Thalassa",
+    "sentiment": 0.95,
+    "avis": "Maman tisse les algues : les robes, les rideaux, les couvertures. Elle dit que je suis le seul fil qu'elle n'arrive pas à tenir droit. C'est un compliment, je crois.",
+    "anecdotes": [
+     "Maman m'a tissé une robe avec des algues de toutes les couleurs du canal. Elle a mis un fil doré, tout petit, caché dans l'ourlet. Elle dit que c'est un rayon de soleil, pour que j'en aie un sur moi en attendant de voir le vrai. Je vérifie tous les soirs qu'il est encore là.",
+     "La nuit où le cristal s'est éteint un instant, maman m'a serrée si fort que j'avais les marques de son collier de coquillages sur la joue. Le lendemain, elle a dit que ce n'était rien. Mais depuis, elle tisse la nuit, sans s'arrêter. Maman tisse quand elle a peur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maman ! J'ai vu une tortue ! La quarante-quatrième !"
+     ],
+     [
+      "b",
+      "Ou la même, pour la quarante-quatrième fois, ma perle."
+     ],
+     [
+      "a",
+      "Elle avait l'air différente !"
+     ],
+     [
+      "b",
+      "Alors c'est qu'elle a changé de robe."
+     ]
+    ]
+   },
+   "atlante_1": {
+    "qui": "mon papa",
+    "nom": "Pélagos",
+    "sentiment": 0.9,
+    "avis": "Papa garde les jardins. Il parle plus aux coraux qu'aux gens, mais quand il m'explique comment poussent les algues, il dit au moins cent mots d'affilée.",
+    "anecdotes": [
+     "Papa m'a donné un coin de jardin à moi, grand comme une main. J'y ai planté un petit caillou rond en disant que c'était une graine d'arbre de la surface. Il ne pousse pas. Papa l'arrose quand même tous les matins, très sérieusement. Il dit qu'on ne sait jamais.",
+     "Quand le cristal pâlit, les jardins pâlissent aussi. Papa ne dit rien, mais le soir il s'assoit entre les vasques et il leur chante quelque chose de grave, tout bas. Je l'ai entendu. Il chante très faux. Les coraux s'en fichent, je crois. Ils ont l'air contents."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Papa ! Mon caillou a poussé ?"
+     ],
+     [
+      "b",
+      "Pas encore. Mais il a l'air de réfléchir."
+     ],
+     [
+      "a",
+      "Il réfléchit à quoi ?"
+     ],
+     [
+      "b",
+      "À devenir un arbre. Ça prend du temps."
+     ]
+    ]
+   }
+  }
+ },
+ "triton": {
+  "genre": "m",
+  "prenom": "Triton",
+  "histoire": [
+   {
+    "titre": "le petit garde à l'arête de poisson",
+    "t": "Je suis né dans le quartier des ponts, fils d'un ramasseur de coquillages. Mon père sortait du dôme en retenant son souffle et revenait les bras pleins. Moi, à cinq ans, je montais déjà la garde devant notre porte, avec une arête de poisson en guise de lance. Contre qui ? Personne. Déjà."
+   },
+   {
+    "titre": "le trident de la nuit des requins",
+    "t": "La nuit des requins, j'avais deux cents ans et je ne savais rien faire. La reine a traversé la place avec un trident que Coralin venait de tailler, et elle me l'a donné, à moi, parce que j'étais le plus près. « Garde la Porte jusqu'à ce que je revienne. » J'y suis toujours. Elle est très occupée, la reine."
+   },
+   {
+    "titre": "la première année",
+    "t": "La première année, les requins fonçaient sur le dôme toutes les nuits. Personne ne sait se battre, chez nous. Alors j'ai appris tout seul, dehors : attendre, attendre encore, et frapper au dernier moment. J'y ai laissé un bout de nageoire et toute ma peur. Depuis, ils tournent autour. Ils n'entrent pas. Bêtes, mais pas tant que ça."
+   },
+   {
+    "titre": "ma Porte, aujourd'hui",
+    "t": "Ma journée commence au premier reflet du cristal. J'astique le trident, je compte les requins, je salue l'obélisque. Le soir, je porte mon rapport à Abyssos, et Nausicaa vient chanter la marée haute sur les marches. Ondine compte avec moi, Coralin passe me raconter ses malheurs. Et maintenant, il y a toi. Ma Porte sert enfin à quelque chose."
+   },
+   {
+    "titre": "la seule nuit où je n'ai pas veillé",
+    "t": "Je dis toujours que personne n'est jamais venu. C'est presque vrai. Il y a cent vingt ans, une nuit sans requins, Nausicaa chantait si doucement que j'ai fermé les yeux. Une minute. Quand je les ai rouverts, la Perle ne brillait plus au pied de l'obélisque, et une coque noire filait vers l'ouest. Je ne l'ai jamais dit. À personne. Pas même à elle."
+   }
+  ],
+  "reve": [
+   "Voir la baleine. Une fois. Je ne quitterai pas mon poste, hein ! Mais si elle pouvait passer juste au-dessus de la Porte, ce serait très aimable de sa part.",
+   "Et la nuit, faire un signal avec la pointe de l'obélisque à l'autre phare, celui d'en haut. Juste pour voir s'il répond."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi qui viens de dehors… tu l'as déjà vue, la baleine ?",
+   "reponses": [
+    {
+     "label": "Oui. Elle est immense.",
+     "valeur": "oui",
+     "t": "Immense ! Plus grande que la Porte ? Plus grande que l'obélisque ?! … Non, ne réponds pas. Je préfère imaginer. Quand on est de garde, l'imagination, c'est tout ce qu'on a.",
+     "rappel": "Toi, tu as vu la baleine. Immense. Je te regarde parfois en me disant : ces yeux-là l'ont vue."
+    },
+    {
+     "label": "Non, jamais.",
+     "valeur": "non",
+     "t": "Jamais ? Ha ! Alors on est deux. Ça me rassure. Je commençais à croire qu'elle me fuyait exprès.",
+     "rappel": "Toi non plus, tu n'as jamais vu la baleine. On fonde un club ? Deux membres, c'est déjà une garde."
+    },
+    {
+     "label": "Je l'ai entendue chanter.",
+     "valeur": "entendue",
+     "t": "Entendue… Moi aussi, je crois, une nuit. Ou c'était Nausicaa. Ou mon estomac. Le métier rend méfiant.",
+     "rappel": "Tu l'as entendue chanter, la baleine. Depuis, j'écoute mieux. Nausicaa dit que je fais une drôle de tête."
+    }
+   ]
+  },
+  "liens": {
+   "nerea": {
+    "qui": "ma reine",
+    "nom": "Néréa",
+    "sentiment": 0.9,
+    "avis": "La reine m'a confié la Porte. Je ne l'ai jamais quittée. Enfin… presque jamais. Pour elle, je monterais la garde mille ans de plus.",
+    "anecdotes": [
+     "La nuit des requins, elle m'a tendu le trident et elle a dit : « Garde la Porte jusqu'à ce que je revienne. » Elle n'est pas encore revenue. Elle est très occupée. Mais un jour elle viendra, et je pourrai lui dire : « Rien à signaler, Majesté. Trois cents ans. » J'ai répété la phrase.",
+     "J'ai raconté à Ondine que la reine avait mille ans. C'était pour rire ! Enfin, pour expliquer les cheveux. Le lendemain, la reine m'a souri en passant, un long sourire, et elle a dit : « Bonjour, Triton. Moi, j'ai un peu plus. » Je n'ai pas fermé l'œil pendant trois nuits."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Rien à signaler !"
+     ],
+     [
+      "b",
+      "Merci, Triton. Repose-toi un peu, veux-tu ?"
+     ],
+     [
+      "a",
+      "Me reposer ? À mon poste ? Majesté, quelle idée !"
+     ],
+     [
+      "b",
+      "C'était une idée de reine. Elles se perdent souvent."
+     ]
+    ]
+   },
+   "coralin": {
+    "qui": "mon ami",
+    "nom": "Coralin",
+    "sentiment": 0.7,
+    "avis": "Coralin m'a taillé ce trident en une heure, la nuit des requins. Il mord un peu. Coralin aussi. Mais ce sont deux bons outils.",
+    "anecdotes": [
+     "Le jour où tu es arrivé, j'ai couru l'annoncer à Coralin. La place, deux ponts, son atelier… et là, j'ai compris : j'avais laissé la Porte. Première fois en trois cents ans. Je suis reparti si vite que j'ai renversé trois de ses lampes. Il me les a facturées. Au prix d'ami : le double.",
+     "Pour mes deux cents ans de garde, Coralin m'a sculpté un portrait. Je l'ai posé à côté de la Porte, bien en vue. Tout le monde croit que c'est un oursin. Moi, je sais que c'est moi. On a la même expression, quand il ne se passe rien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coralin ! Le trident mord encore."
+     ],
+     [
+      "b",
+      "C'est qu'il t'aime bien. Il ne mord que les gens qu'il aime."
+     ],
+     [
+      "a",
+      "Comme toi avec tes factures."
+     ],
+     [
+      "b",
+      "Exactement. Tu me dois toujours trois lampes."
+     ]
+    ]
+   },
+   "ondine": {
+    "qui": "ma petite recrue",
+    "nom": "Ondine",
+    "sentiment": 0.9,
+    "avis": "Ondine vient me voir tous les jours. Elle pose plus de questions qu'un requin a de dents, et elle les pose mieux. Elle ferait une excellente garde.",
+    "anecdotes": [
+     "Je lui apprends à retenir son souffle, pour le jour où elle sortira. On compte ensemble devant la Porte. Elle en est à quarante. Je lui ai dit que moi, je tenais trois cents. C'est… un objectif. Hier, à cent douze, j'ai fait semblant d'avoir du sable dans la gorge.",
+     "Elle m'a demandé si quelqu'un était déjà sorti du dôme sans passer par la Porte. J'ai dit : « Jamais, pas sous ma garde. » Elle m'a regardé longtemps, avec ses grands yeux, comme si elle savait quelque chose. Puis elle a dit : « D'accord. » Je n'aime pas quand elle dit « d'accord » comme ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Halte ! Qui va là ? … Ah, ma recrue. Repos."
+     ],
+     [
+      "b",
+      "On compte ? Un, deux, trois…"
+     ],
+     [
+      "a",
+      "Quatre, cinq… Ne parle pas en comptant, tu perds ton air."
+     ],
+     [
+      "b",
+      "Toi aussi, tu parles !"
+     ]
+    ]
+   },
+   "abyssos": {
+    "qui": "l'archiviste",
+    "nom": "Abyssos",
+    "sentiment": 0.5,
+    "avis": "Abyssos reçoit mon rapport chaque soir. Il le lit en entier, alors qu'il tient en trois mots. Un homme sérieux. Un peu bavard, pour un homme sérieux.",
+    "anecdotes": [
+     "Un soir, j'ai écrit : « Rien à signaler, sauf un poisson-lune très gros. » Abyssos est arrivé à la Porte à minuit, essoufflé, avec trois rouleaux vierges. Le poisson-lune était parti. Il m'a fait le décrire pendant deux heures. Depuis, j'écris seulement « Rien à signaler ». C'est plus reposant pour tout le monde.",
+     "Le soir où la Perle de l'avenue a disparu, il m'a demandé comment c'était arrivé. J'ai dit que je n'avais rien vu. C'était vrai, d'une certaine façon. Il m'a regardé avec ses yeux de rouleau, et il n'a rien écrit. Je crois que c'est la seule fois où Abyssos n'a rien écrit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rapport du soir, archiviste."
+     ],
+     [
+      "b",
+      "Laisse-moi deviner… Rien à signaler ?"
+     ],
+     [
+      "a",
+      "Rien à signaler. Et ne me demande pas de détails."
+     ],
+     [
+      "b",
+      "Il n'y a jamais de détails dans « rien ». C'est ce qui me désole."
+     ]
+    ]
+   },
+   "atlante_2": {
+    "qui": "notre chanteuse",
+    "nom": "Nausicaa",
+    "sentiment": 0.9,
+    "avis": "Nausicaa chante la marée haute sur les marches de la Porte, tous les soirs. C'est le meilleur moment de ma garde. Ne le lui dis pas. Je suis en service.",
+    "anecdotes": [
+     "Elle m'a promis de me prévenir quand la baleine passerait. Une nuit, elle a couru jusqu'à moi : « Triton ! Elle est au-dessus du palais ! » J'ai fait un pas. Puis je me suis souvenu que j'étais de garde, et je suis resté. Elle m'a chanté la baleine pendant une heure. C'était presque mieux. Presque.",
+     "Pour ses trois cents ans, je lui ai offert un coquillage dans lequel j'avais murmuré « bonsoir » pendant une semaine, pour qu'il le garde. Elle l'a mis contre son oreille et elle a dit : « J'entends la mer. » J'ai dit : « Ah. Oui. La mer. » Je n'ai pas osé expliquer."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Nausicaa. La marée est haute ?"
+     ],
+     [
+      "b",
+      "Elle monte, Triton. Tu veux que je la chante plus bas ?"
+     ],
+     [
+      "a",
+      "Non ! Enfin… comme tu veux. Je suis de garde."
+     ],
+     [
+      "b",
+      "Je sais. Alors je chante pour la Porte."
+     ]
+    ]
+   },
+   "atlante_5": {
+    "qui": "ce bavard de",
+    "nom": "Protée",
+    "sentiment": -0.3,
+    "avis": "Protée raconte aux enfants que j'ai vaincu une pieuvre géante devant la Porte. C'est faux. Il ne se passe jamais rien, ici. C'est tout l'intérêt de mon travail.",
+    "anecdotes": [
+     "Dans son histoire, je combats une pieuvre de trente bras pendant trois jours et trois nuits. Les enfants viennent me demander de montrer ma cicatrice. J'en ai une, mais c'est un requin, la première année. Une seule, très ordinaire. Ils sont déçus. Je déteste décevoir les enfants. Merci, Protée.",
+     "Je lui ai demandé d'arrêter. Il a promis. Le lendemain, la pieuvre avait cinquante bras, et je la battais d'une seule main, l'autre tenant ma tasse d'algues chaudes. « Tu vois, je t'ai rendu plus modeste », m'a-t-il dit. Je ne vois pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Protée. Combien de bras, aujourd'hui, ta pieuvre ?"
+     ],
+     [
+      "b",
+      "Soixante, mon héros ! Et tu chantais en même temps."
+     ],
+     [
+      "a",
+      "Je ne chante pas. Je ne me bats pas. Je garde."
+     ],
+     [
+      "b",
+      "C'est bien pour ça qu'il faut que quelqu'un raconte."
+     ]
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,2696 @@
+{
+ "aelwen": {
+  "genre": "f",
+  "prenom": "Aëlwen",
+  "histoire": [
+   {
+    "titre": "ma grand-mère et ses bocaux",
+    "t": "Je suis née dans l'herboristerie, entre deux étagères de bocaux. Ma grand-mère Nanwë soignait le Bois-Doré bien avant moi. À trois ans, je reconnaissais la mousse qui ferme les plaies. À quatre, j'ai goûté celle qui fait éternuer. Je n'ai pas arrêté de la journée."
+   },
+   {
+    "titre": "les baies bleues, ou mon premier cas",
+    "t": "Mon apprentissage a duré deux cents ans. Un jour, pour prouver à grand-mère que les baies bleues étaient sans danger, j'en ai mangé une poignée. Deux jours à discuter avec des lucioles. Elles avaient beaucoup d'opinions. Grand-mère a tout noté dans son carnet, sous « Aëlwen, cas numéro un »."
+   },
+   {
+    "titre": "le printemps où grand-mère s'est endormie",
+    "t": "Il y a trois cents ans, grand-mère s'est endormie sous l'Arbre-Mère, comme s'endorment les très vieux elfes, pour devenir une de ses feuilles. Le lendemain, j'étais l'herboriste du Bois-Doré. La première à frapper à ma porte, c'était une petite Lyra, la bouche toute bleue. Les baies, évidemment."
+   },
+   {
+    "titre": "mon herboristerie aujourd'hui",
+    "t": "Aujourd'hui, je recolle les genoux de Nimiel, je force Faelar à boire ses tisanes et j'écoute Caelan soupirer, une main sur le cœur, l'autre sur mon comptoir. Ilyria me laisse des fleurs, en douce. Je fais semblant de ne pas savoir qui. Et je compte mes pièces, oui. Les potions ne poussent pas toutes seules."
+   },
+   {
+    "titre": "le quatrième cœur",
+    "t": "Je vais te dire un secret, {surnom}. Ma potion de sève, je ne sais pas tout ce qu'il y a dedans. Grand-mère s'est endormie avant de me donner le dernier ingrédient. La sienne rendait quatre cœurs. La mienne en rend trois. Depuis trois cents ans, je cherche le quatrième. Voilà pourquoi je dis : « ne me demande pas »."
+   }
+  ],
+  "reve": [
+   "Retrouver le quatrième cœur de la potion de grand-mère. Je goûte une racine nouvelle chaque printemps. Un jour, ce sera la bonne.",
+   "Et puis fermer la boutique une semaine entière, et que quelqu'un me prépare une tisane, à moi. Une seule. Bien chaude."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}, toi qui cours d'île en île : tu dors bien, la nuit ?",
+   "reponses": [
+    {
+     "label": "Comme une souche.",
+     "valeur": "souche",
+     "t": "Comme une souche ! Par les racines de l'Arbre-Mère, je t'envie. Moi, je dors comme une décoction : un œil ouvert, à surveiller si je bous.",
+     "rappel": "Toi qui dors comme une souche, garde ce don. Et ne le dis pas à Faelar : il en ferait un concours."
+    },
+    {
+     "label": "Mal. Je pense à trop de choses.",
+     "valeur": "mal",
+     "t": "Je m'en doutais : tu as les yeux de quelqu'un qui compte les étoiles. Tisane de lune, trois gouttes de miel, et tu poses tes pensées à côté du lit. Elles t'attendront.",
+     "rappel": "Tu m'avais dit que tu dormais mal. Tu as essayé ma tisane de lune ? Non ? Les feuilles l'ont dit : tu es têtu."
+    },
+    {
+     "label": "Je n'ai pas le temps de dormir.",
+     "valeur": "pas_le_temps",
+     "t": "Pas le temps ! Comme moi, alors. Ce n'est pas un compliment, {surnom}. Assieds-toi. Voilà. Trois respirations. Tu vois, ce n'était pas si long.",
+     "rappel": "Toi qui n'as « pas le temps de dormir », tu as une mine de champignon sec. Assieds-toi. Trois respirations."
+    }
+   ]
+  },
+  "liens": {
+   "lyra": {
+    "qui": "la petite",
+    "nom": "Lyra",
+    "sentiment": 0.8,
+    "avis": "Lyra ? Je l'ai soignée de sa première fièvre à son premier chagrin. Elle est partie veiller un arbre de l'autre côté de la brume, et elle est revenue en parlant d'un « humain gentil ». Je me demande qui.",
+    "anecdotes": [
+     "À quarante ans, Lyra a voulu regarder par-dessus la brume, et elle est tombée de la plus haute passerelle. Cheville à l'envers. Je l'ai bandée avec des feuilles de sauge et je lui ai fait boire ma potion. Elle a fait une telle grimace qu'au Bois-Doré, on dit encore « faire la grimace de Lyra ». Je le prends comme un compliment.",
+     "Quand Lyra est partie veiller l'Arbre sacré pour de bon, je lui ai donné un sachet d'herbes : la moitié pour l'Arbre, l'autre moitié pour elle, les soirs de chagrin. Elle a tout donné à l'Arbre. Évidemment. Je fais semblant d'être fâchée depuis. Ça me permet de lui faire boire une tisane chaque fois qu'elle passe."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lyra ! Tu as encore dormi dans les branches ? Tu as de la mousse dans les cheveux."
+     ],
+     [
+      "b",
+      "Juste une nuit, Aëlwen. Un oiseau chantait faux, c'était charmant."
+     ],
+     [
+      "a",
+      "Charmant aujourd'hui, enrhumée demain. Passe à la boutique."
+     ]
+    ]
+   },
+   "caelan": {
+    "qui": "ce soupirant de",
+    "nom": "Caelan",
+    "sentiment": 0.2,
+    "avis": "Caelan vient soigner son cœur brisé deux fois par semaine depuis cent ans. Il n'est pas brisé, son cœur. Il est juste trop grand pour sa poitrine. Il m'épuise.",
+    "anecdotes": [
+     "Un soir, Caelan est entré dans la boutique en se tenant la poitrine : « Aëlwen, je meurs. » Je l'ai ausculté une heure. Ilyria lui avait dit bonjour. Juste bonjour. Je lui ai donné une camomille et la facture. Il a voulu payer en chanson. J'ai refusé la chanson.",
+     "À la dernière fête de l'Aube, il y a cent ans, Caelan s'est coupé le doigt sur une corde cassée. Il saignait, il souriait, et il ne voulait pas que je lui retire le fil d'or qu'on venait de nouer à sa harpe. J'ai fait le pansement par-dessus. Depuis, je sais qui lui a donné ce fil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Caelan. Tu as encore mal au cœur, ou je peux fermer ?"
+     ],
+     [
+      "b",
+      "Ferme, Aëlwen. Ce soir, mon cœur va bien. Elle m'a regardé."
+     ],
+     [
+      "a",
+      "Elle regardait la lune, derrière toi."
+     ],
+     [
+      "b",
+      "Alors la lune a de la chance."
+     ]
+    ]
+   },
+   "nimiel": {
+    "qui": "cette petite casse-cou de",
+    "nom": "Nimiel",
+    "sentiment": 0.6,
+    "avis": "Nimiel ? Quarante-deux ans, et déjà plus de bandages que Faelar en neuf siècles. Elle grimpe, elle tombe, elle rit. Je la gronde, et je garde toujours sa mousse préférée de côté.",
+    "anecdotes": [
+     "Nimiel s'est présentée un matin avec une bosse sur le front, ronde comme une prune. « Je suis tombée de la troisième passerelle. Mais sans les mains ! » J'ai mis trois jours à comprendre que c'était une fierté. Je l'ai soignée, et je n'ai rien dit à Miriel. Rien de grave.",
+     "Pour la soigner sans qu'elle gigote, je lui donne un bocal à trier : graines rouges d'un côté, graines noires de l'autre. Elle a fini par me demander si elle pourrait être herboriste. Puis archère. Puis exploratrice. Le bocal est toujours à moitié trié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Montre-moi tes genoux, Nimiel."
+     ],
+     [
+      "b",
+      "Ils vont très bien ! Ils sont juste… un peu verts."
+     ],
+     [
+      "a",
+      "Verts ? Tu es encore tombée dans la mousse de la fontaine."
+     ],
+     [
+      "b",
+      "Non ! … Un peu."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "notre vieux",
+    "nom": "Faelar",
+    "sentiment": 0.7,
+    "avis": "Faelar a neuf cent quatre-vingt-sept ans, et il refuse de boire une tisane si elle n'a pas d'histoire. Alors je lui en invente. Il le sait. Il les boit quand même.",
+    "anecdotes": [
+     "Faelar a toussé pendant trois siècles. Il disait que c'était « une vieille amie qui ponctue mes histoires ». Je lui ai fait cent tisanes. Il en versait la moitié dans le pot de sa fougère. La fougère n'a jamais toussé, elle. Elle fait maintenant deux mètres.",
+     "Quand Faelar dort trois jours d'affilée, c'est moi qu'on vient chercher. Je prends son pouls, je regarde ses paupières, je glisse une feuille de menthe sous son nez. La dernière fois, il a ouvert un œil et il a dit : « Où en étais-je ? » Il était au milieu d'une histoire. Il l'a finie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar ! Ta tisane refroidit."
+     ],
+     [
+      "b",
+      "Raconte-moi d'abord d'où vient la menthe, Aëlwen."
+     ],
+     [
+      "a",
+      "D'un jardin où les vieux elfes boivent leur tisane chaude."
+     ],
+     [
+      "b",
+      "Jolie histoire. Un peu courte."
+     ]
+    ]
+   },
+   "ilyria": {
+    "qui": "mon amie",
+    "nom": "Ilyria",
+    "sentiment": 0.6,
+    "avis": "Ilyria voit tout depuis sa plate-forme, et elle croit que je ne vois rien. Les fleurs anonymes sur mon comptoir, c'est elle. Le fil d'or autour des bouquets la trahit.",
+    "anecdotes": [
+     "Tous les printemps, je trouve un bouquet sur mon comptoir, noué d'un fil doré. Personne au village ne file cet or-là, sauf une. Je ne lui ai jamais dit merci. Elle n'a jamais avoué. Un matin, j'ai laissé une tasse de tisane à côté, avec un mot : « Pour le vent. » La tasse était vide à midi.",
+     "Ilyria est venue un jour pour une piqûre d'araignée dorée, la seule de sa vie. Elle cachait sa main, vexée : « Elles sont gentilles, d'habitude. » Elle avait tiré trop fort sur le fil, le matin où Caelan avait joué jusqu'à l'aube. Je ne lui ai rien dit. J'ai pensé très fort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ilyria, tu n'aurais pas vu qui a laissé des fleurs sur mon comptoir ?"
+     ],
+     [
+      "b",
+      "Moi ? Je ne vois rien d'ici. À peine toute la place."
+     ],
+     [
+      "a",
+      "Le fil d'or autour, c'est le vent qui l'a noué, alors."
+     ],
+     [
+      "b",
+      "Le vent tisse très bien, ces temps-ci."
+     ]
+    ]
+   },
+   "elfe_1": {
+    "qui": "ma cueilleuse",
+    "nom": "Miriel",
+    "sentiment": 0.5,
+    "avis": "Miriel me cueille les fleurs de lune. Elle les vend cher, je les paie juste. Nous ne sommes jamais d'accord sur la différence. C'est une bonne mère, et une dure marchande.",
+    "anecdotes": [
+     "Miriel m'a apporté un jour une fleur de lune cueillie en plein midi. « Elle était ouverte, je te jure ! » Une fleur de lune cueillie au soleil ne soigne rien. On s'est disputées une heure sur le prix. Puis on l'a mise dans un verre d'eau, et on a pris le thé à côté.",
+     "Chaque fois que Nimiel tombe, Miriel arrive à la boutique avant elle, en courant. Elle connaît par cœur le chemin de mon tabouret. Je lui donne une tisane, à elle aussi : la mère a souvent plus besoin d'être soignée que la petite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Miriel ! Tes fleurs de lune de cette nuit ?"
+     ],
+     [
+      "b",
+      "Cueillies sous la lune, comptées, parfaites. Au prix habituel ?"
+     ],
+     [
+      "a",
+      "Au prix habituel moins un."
+     ],
+     [
+      "b",
+      "Tu marchanderais la lune elle-même, Aëlwen."
+     ]
+    ]
+   },
+   "elfe_8": {
+    "qui": "mon apicultrice",
+    "nom": "Gilwen",
+    "sentiment": 0.6,
+    "avis": "Gilwen me fournit le miel des potions. Elle parle à ses abeilles plus qu'aux elfes, et elles lui répondent mieux. Elle trouve que je marchande trop. C'est vrai.",
+    "anecdotes": [
+     "Une nuit d'orage, Gilwen est arrivée couverte de piqûres, trois cents au moins, en chantonnant. Ses abeilles avaient eu peur du tonnerre. J'ai passé la nuit à lui mettre du baume. Elle n'a pas arrêté de les excuser : « Elles ne voulaient pas, Aëlwen. » Moi, je crois qu'elles voulaient un peu.",
+     "Je lui ai proposé un jour d'échanger son miel contre des potions. Elle a refusé : ses abeilles n'aiment pas l'odeur de la sève. Depuis, je la paie en pièces, et elle les compte une par une, à voix haute, devant moi. Comme moi. Nous nous respectons beaucoup."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gilwen ! Ton miel de ce mois-ci, il est un peu clair, non ?"
+     ],
+     [
+      "b",
+      "Il est parfait. Mes filles ont butiné les tilleuls."
+     ],
+     [
+      "a",
+      "Alors un peu moins cher, pour les tilleuls."
+     ],
+     [
+      "b",
+      "Mes filles t'entendent, Aëlwen."
+     ]
+    ]
+   }
+  }
+ },
+ "caelan": {
+  "genre": "m",
+  "prenom": "Caelan",
+  "histoire": [
+   {
+    "titre": "le fils du faiseur de cordes",
+    "t": "Mon père tressait les cordes des arcs, ma mère chantait pour qu'elles tiennent. Moi, à trois ans, j'ai pincé une corde d'arc et j'ai pleuré, parce qu'elle faisait un « la » tout triste. Mon père a compris avant moi : il m'a taillé une petite harpe dans une branche tombée. Cinq cordes, et beaucoup d'ambition."
+   },
+   {
+    "titre": "ma harpe en bois de lune",
+    "t": "Ma vraie harpe, je l'ai sculptée à cent ans dans du bois de lune, celui qui ne pousse qu'au nord de l'île. Il m'a fallu vingt ans pour trouver sa voix. Depuis trois siècles, je joue aux fêtes, aux naissances, aux départs. Celebrë chantait, moi je jouais, et le Bois-Doré dansait. Écoute le vent : il s'en souvient."
+   },
+   {
+    "titre": "la corde cassée de la fête de l'Aube",
+    "t": "Il y a cent ans, à la fête de l'Aube, en pleine ballade, ma corde de sol a cassé. Une elfe aux yeux bleus est montée sur l'estrade et l'a remplacée par un fil d'or, sans un mot. Puis elle est redescendue. J'ai oublié la suite de la ballade. J'ai oublié Celebrë qui chantait. J'ai oublié mon nom, je crois."
+   },
+   {
+    "titre": "mes nuits sous Fil-d'Aube",
+    "t": "Depuis, je joue toutes les nuits sous Fil-d'Aube, l'arbre-maison d'Ilyria. Thalion grogne, Aëlwen soupire, Lirael baisse sa lanterne pour que ce soit plus joli. Haldir porte mes lettres, et je cours toujours les reprendre avant qu'il frappe. Quarante et un couplets, et pas encore le courage. La vie est belle, et terriblement lente."
+   },
+   {
+    "titre": "pourquoi je n'ose pas",
+    "t": "Tu veux savoir pourquoi je n'ose pas, {surnom} ? Ce n'est pas le « non » qui me fait peur. C'est le « oui ». Toutes mes chansons sont des chansons d'attente. Si elle dit oui, qu'est-ce que je jouerai, le lendemain ? Je n'ai jamais appris à écrire une chanson heureuse."
+   }
+  ],
+  "reve": [
+   "Écrire une chanson heureuse. Une seule. Courte, même : trois couplets. Et la jouer un matin, pas sous une fenêtre, mais dans la même pièce qu'elle."
+  ],
+  "question": {
+   "texte": "Toi qui as vu tant d'îles… Si tu aimais quelqu'un depuis cent ans, comment tu le lui dirais ?",
+   "reponses": [
+    {
+     "label": "Je le dirais, tout simplement.",
+     "valeur": "simplement",
+     "t": "Tout simplement… Tu dis ça comme si c'était simple. Chez les humains, peut-être : vous vivez vite, vous parlez vite. Je devrais prendre des leçons.",
+     "rappel": "Toi qui le dirais « tout simplement »… J'ai essayé, hier. J'ai dit « bonjour ». C'est un début, non ?"
+    },
+    {
+     "label": "Avec une chanson, comme toi.",
+     "valeur": "chanson",
+     "t": "Ah ! Un frère de cordes ! Tu vois, c'est la seule façon. Le seul problème, c'est qu'au bout de cent ans, la chanson devient un peu longue.",
+     "rappel": "Mon frère de cordes ! Tu avais dit : avec une chanson. J'ai écrit le quarante-deuxième couplet. Pour nous deux."
+    },
+    {
+     "label": "J'attendrais un signe.",
+     "valeur": "signe",
+     "t": "Un signe ! Oui ! Mais lequel ? Elle a souri ce matin. Elle a soupiré hier. Elle a fermé sa fenêtre avant-hier. Ce sont des signes, tout ça. Mais de quoi ?",
+     "rappel": "Tu m'avais conseillé d'attendre un signe. J'en ai noté cent dix-sept depuis. Aucun n'est clair."
+    }
+   ]
+  },
+  "liens": {
+   "ilyria": {
+    "qui": "la belle",
+    "nom": "Ilyria",
+    "sentiment": 1.0,
+    "avis": "Ilyria ? Elle tisse la lumière du matin et elle rit comme un ruisseau. Elle ne sait pas que je l'aime. Enfin… je crois qu'elle ne sait pas. Elle ne sait pas, hein ?",
+    "anecdotes": [
+     "La nuit où j'ai joué la « Ballade de l'Aube » en entier sous sa fenêtre, trois heures, ses volets sont restés fermés. Au matin, j'ai trouvé un ruban bleu noué à ma harpe. Je ne l'ai jamais enlevé. Je ne lui ai jamais demandé si c'était elle. Si ce n'est pas elle, je ne veux pas le savoir.",
+     "J'ai essayé une fois de lui parler en face, à la fontaine. J'avais préparé un discours de quatre pages. J'ai dit : « Belle journée. » Elle a dit : « Très. » Et je suis parti en courant. Haldir dit que c'est la plus longue conversation que nous ayons eue en un siècle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ilyria… belle lumière, aujourd'hui, non ?"
+     ],
+     [
+      "b",
+      "La même qu'hier, Caelan. Tu disais déjà ça hier."
+     ],
+     [
+      "a",
+      "Elle était belle hier aussi."
+     ],
+     [
+      "b",
+      "… Va jouer, va."
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "ce rabat-joie de",
+    "nom": "Thalion",
+    "sentiment": -0.2,
+    "avis": "Thalion ? Il garde une porte fermée depuis trois siècles et il trouve que c'est ma harpe qui fait du bruit. Un peu de musique ne lui ferait pas de mal. Et il chante faux, ce qui n'aide pas.",
+    "anecdotes": [
+     "Une nuit, Thalion m'a confisqué ma harpe. « Raison de sécurité. » Je suis donc allé chanter sous la fenêtre d'Ilyria. Sans harpe. Il me l'a rendue au bout d'un couplet. Il a dit que la harpe, au moins, jouait juste. C'est le plus beau compliment qu'il m'ait jamais fait. À elle.",
+     "Un matin, très tôt, j'ai trouvé Thalion assis seul sur le banc de la harpe, en train de pincer une corde. Une seule. Toujours la même. Il a sursauté et il a dit : « Vérification. » Depuis, je laisse toujours la harpe accordée sur cette note. Il ne le sait pas. Il ne doit pas le savoir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonne garde, Thalion ! Je te joue quelque chose ?"
+     ],
+     [
+      "b",
+      "Non. Merci."
+     ],
+     [
+      "a",
+      "Un petit air, pour rester éveillé ?"
+     ],
+     [
+      "b",
+      "Je ne dors jamais. À cause de toi, justement."
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "notre herboriste",
+    "nom": "Aëlwen",
+    "sentiment": 0.7,
+    "avis": "Aëlwen soigne mon cœur deux fois par semaine. Elle dit qu'il n'a rien. Elle se trompe : il a Ilyria. Elle me fait payer quand même, et elle a bien raison.",
+    "anecdotes": [
+     "Je suis allé voir Aëlwen pour un « mal de cœur incurable ». Elle m'a écouté une heure, puis elle m'a tendu un sachet : « Camomille. Et une phrase, une seule, à dire à Ilyria. » J'ai bu la camomille. La phrase, je la garde. Elle est dans ma poche, pliée en huit.",
+     "Pour un de ses anniversaires, je lui ai composé une chanson sur les plantes qui soignent. Douze couplets, un par racine. Elle a dit que c'était la première fois qu'une chanson lui donnait mal à la tête. Puis elle l'a fredonnée toute la semaine en remplissant ses bocaux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen ! Mon cœur…"
+     ],
+     [
+      "b",
+      "N'a rien, Caelan. Comme mardi. Comme il y a cent ans."
+     ],
+     [
+      "a",
+      "Alors pourquoi il bat si fort quand elle passe ?"
+     ],
+     [
+      "b",
+      "Parce qu'il est en bonne santé. Suivant !"
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "ma bonne amie",
+    "nom": "Sylwen",
+    "sentiment": 0.8,
+    "avis": "Sylwen est le meilleur public du Bois-Doré. Elle écoute en pétrissant, elle rit au bon moment, et quand elle dit « joli », c'est un triomphe. Son pain, lui, est une chanson.",
+    "anecdotes": [
+     "J'ai écrit une chanson sur son pain : « Ô croûte dorée, ô mie de lune… ». Sylwen l'a écoutée sans arrêter de pétrir, puis elle a dit « joli ». En deux cents ans, je ne l'avais entendue dire « joli » qu'à une brioche. Ce soir-là, j'ai dormi comme un roi.",
+     "Quand je joue toute la nuit, Sylwen me laisse un pain au miel sur le banc de la harpe, avant l'aube. Il est toujours encore chaud. Je n'ai jamais compris comment elle savait à quelle heure je m'arrêterais. Elle dit que c'est le four qui sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen ! J'ai un nouveau couplet sur ta brioche."
+     ],
+     [
+      "b",
+      "Chante-le pendant que je pétris, ça lui fera du bien."
+     ],
+     [
+      "a",
+      "« Ô brioche, ô douce… »"
+     ],
+     [
+      "b",
+      "Joli. Tu vois, elle lève déjà."
+     ]
+    ]
+   },
+   "elfe_6": {
+    "qui": "mon messager",
+    "nom": "Haldir",
+    "sentiment": 0.8,
+    "avis": "Haldir est le meilleur messager du Bois-Doré, et le plus patient. Il porte mes lettres à Ilyria. Et il me les rapporte, quand je le rattrape. Je le rattrape toujours.",
+    "anecdotes": [
+     "J'ai confié à Haldir deux cent quatre-vingts lettres pour Ilyria. Deux cent quatre-vingts fois, j'ai couru derrière lui pour la reprendre avant qu'il frappe. Une fois, il était déjà sur la dernière passerelle. J'ai sauté. Taeron a dû réparer la rambarde, et j'ai gardé la lettre.",
+     "Un jour, Haldir est revenu d'une course en disant : « Elle a souri. » J'ai su après qu'il n'avait rien livré du tout. Il voulait juste me faire plaisir. Je lui ai pardonné : ce sourire, je l'ai imaginé toute la semaine, et ce fut une très bonne semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Haldir ! Une lettre pour Fil-d'Aube. Cours !"
+     ],
+     [
+      "b",
+      "Encore ? Tu vas me courir après, comme d'habitude ?"
+     ],
+     [
+      "a",
+      "Non. Pas cette fois. … Attends, attends, rends-la-moi !"
+     ]
+    ]
+   },
+   "elfe_5": {
+    "qui": "ma vieille partenaire",
+    "nom": "Celebrë",
+    "sentiment": 0.4,
+    "avis": "Celebrë a la plus belle voix du Bois-Doré, et elle le sait. Nous avons chanté ensemble deux siècles. Elle ne m'a jamais pardonné la dernière fête de l'Aube.",
+    "anecdotes": [
+     "À la fête de l'Aube, quand ma corde a cassé et qu'Ilyria l'a remplacée, je suis descendu de l'estrade pour lui courir après. En pleine ballade. Celebrë a dû chanter seule pendant une heure, en inventant les paroles. On dit que c'était sa plus belle heure. Elle dit que c'était la pire.",
+     "Celebrë change mes rimes sans me demander. Dans mes chansons pour Ilyria, elle remplace « Ilyria » par « la lune », pour que ce soit « moins gênant pour tout le monde ». Le pire, c'est que ça rime mieux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Celebrë ! On reprend la « Ballade de l'Aube » ensemble, pour la fête ?"
+     ],
+     [
+      "b",
+      "Si tu restes sur l'estrade jusqu'au bout, cette fois."
+     ],
+     [
+      "a",
+      "Promis. Sauf si une corde casse."
+     ],
+     [
+      "b",
+      "Je les vérifierai moi-même. Toutes."
+     ]
+    ]
+   },
+   "elfe_3": {
+    "qui": "ma complice",
+    "nom": "Lirael",
+    "sentiment": 0.7,
+    "avis": "Lirael veille les lanternes pendant que je veille une fenêtre. À cette heure-là, nous sommes les deux seuls réveillés du Bois-Doré. Elle baisse la lumière quand je joue. C'est une amie.",
+    "anecdotes": [
+     "Une nuit, Lirael a éteint toutes les lanternes autour de Fil-d'Aube sauf une, bleue, juste sous la fenêtre d'Ilyria. « C'est plus joli comme ça. » Thalion est venu voir pourquoi il faisait noir. Il a écouté deux minutes, puis il est reparti sans rien dire. Même lui, je crois.",
+     "Vers trois heures du matin, Lirael pose une tasse de tisane sur le banc de la harpe en faisant sa tournée. Elle écoute un couplet et elle repart. Une fois, elle a dit : « Le trente-sixième est le meilleur. » Je l'ai réécrit dix fois depuis, pour qu'il soit encore meilleur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lirael. Tu baisses la lanterne bleue, ce soir ?"
+     ],
+     [
+      "b",
+      "Déjà baissée, Caelan. Joue doucement."
+     ],
+     [
+      "a",
+      "Je joue toujours doucement."
+     ],
+     [
+      "b",
+      "Pas le douzième couplet."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_0": {
+  "genre": "m",
+  "prenom": "Elandor",
+  "histoire": [
+   {
+    "titre": "mes premiers pas, qui durent encore",
+    "t": "Je suis né il y a trois siècles, au pied de l'Arbre-Mère. J'ai marché à deux ans, et je n'ai jamais vraiment arrêté. Ma mère disait que j'étais le seul enfant capable de se perdre dans une pièce ronde. Elle exagérait. Un peu. La pièce avait des coins."
+   },
+   {
+    "titre": "le petit tour qui a duré neuf jours",
+    "t": "Un matin, je suis parti faire un petit tour. J'ai suivi un héron doré, puis un ruisseau, puis le bord de la brume. Quand je suis rentré, tout le village pleurait : neuf jours avaient passé. Orophin avait fouillé l'île entière. Moi, j'avais cru partir une matinée. J'ai rapporté une plume à Nimiel."
+   },
+   {
+    "titre": "Miriel, et ma petite feuille",
+    "t": "Je vais te confier quelque chose. Il y a cent ans, la veille de la fête de l'Aube, j'ai marché sur les violettes de Miriel. Elle m'a grondé une heure. Je n'ai rien écouté : je regardais les pétales dans ses cheveux. Nous nous sommes mariés à l'aube. Puis Nimiel est arrivée. Depuis, je marche moins loin. Pas moins lentement."
+   }
+  ],
+  "reve": [
+   "Faire le tour complet de l'île avec Nimiel, un jour, sans se presser. Elle courra devant, je marcherai derrière, et on se retrouvera au même endroit. C'est comme ça qu'on voyage, en famille."
+  ],
+  "liens": {
+   "nimiel": {
+    "qui": "ma petite feuille",
+    "nom": "Nimiel",
+    "sentiment": 1.0,
+    "avis": "Ma petite Nimiel court partout, tombe partout, rit partout. Elle a pris mes pieds et la voix de sa mère. Je suis le père le plus fier et le plus essoufflé du Bois-Doré.",
+    "anecdotes": [
+     "Quand Nimiel était toute petite, je la portais sur mes épaules pendant mes promenades. Elle tirait sur mes oreilles pour me diriger : gauche, droite, en haut. Un jour, elle a tiré « en haut » devant un arbre. J'ai essayé. Aëlwen m'a soigné le genou. Nimiel a trouvé ça formidable."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel ! Doucement, sur la passerelle."
+     ],
+     [
+      "b",
+      "Papa ! Je vais doucement ! Très, très vite, mais doucement !"
+     ],
+     [
+      "a",
+      "Ça, c'est bien ma fille."
+     ]
+    ]
+   },
+   "elfe_1": {
+    "qui": "ma femme",
+    "nom": "Miriel",
+    "sentiment": 0.9,
+    "avis": "Miriel sait où pousse chaque fleur de l'île. Moi, je sais où passe chaque sentier. À nous deux, on ne se perd jamais. Enfin, moi si. Mais elle me retrouve toujours.",
+    "anecdotes": [
+     "La veille de la dernière fête de l'Aube, une elfe est sortie d'un buisson avec un panier et m'a grondé une heure parce que j'avais marché sur ses violettes. Le lendemain, elle m'a demandé de danser avec elle. Pour que je me fasse pardonner, a-t-elle dit. Je danse très mal. Elle m'a épousé quand même.",
+     "Quand je suis rentré de mes neuf jours, Miriel ne m'a pas parlé pendant une semaine. Le huitième jour, elle m'a tendu un panier vide et elle a dit : « La prochaine fois, tu m'emmènes. » Depuis, on se promène à deux. Elle cueille, je marche. Et on rentre toujours le soir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Miriel, je vais faire un petit tour."
+     ],
+     [
+      "b",
+      "Un petit tour, ou neuf jours ?"
+     ],
+     [
+      "a",
+      "Un petit tour. Tu viens avec moi ?"
+     ],
+     [
+      "b",
+      "Je prends mon panier."
+     ]
+    ]
+   },
+   "elfe_4": {
+    "qui": "mon ami l'éclaireur",
+    "nom": "Orophin",
+    "sentiment": 0.5,
+    "avis": "Orophin m'a retrouvé alors que je n'étais pas perdu. Il ne me l'a toujours pas pardonné. C'est un bon ami : il me suit des yeux dès que je prends un sentier.",
+    "anecdotes": [
+     "Orophin m'a retrouvé le neuvième jour, assis sur une pierre au bord de la brume, en train de regarder un escargot traverser le sentier. Il était couvert d'épines, il n'avait pas dormi. Il a dit : « Tu étais perdu ? » J'ai dit : « Non, je regardais l'escargot. » Il ne m'a plus parlé pendant un mois. L'escargot allait très bien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Orophin. Je pars vers le nord."
+     ],
+     [
+      "b",
+      "Le nord, jusqu'où ? Et jusqu'à quand ?"
+     ],
+     [
+      "a",
+      "Jusqu'à ce soir. Promis."
+     ],
+     [
+      "b",
+      "Je note l'heure, Elandor."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_1": {
+  "genre": "f",
+  "prenom": "Miriel",
+  "histoire": [
+   {
+    "titre": "mon enfance dans les prés de lune",
+    "t": "Je suis née il y a trois siècles, dans une maison couverte de chèvrefeuille. Ma mère était cueilleuse, sa mère aussi. À cinq ans, je savais quelle fleur s'ouvre à l'aube, laquelle à midi, laquelle seulement sous la lune. Je ne savais pas compter jusqu'à dix, mais je savais compter les pétales."
+   },
+   {
+    "titre": "le promeneur qui a marché sur mes violettes",
+    "t": "La veille de la dernière fête de l'Aube, un grand elfe distrait a marché sur mes violettes. Je l'ai grondé une heure. Il souriait. Le lendemain, je l'ai invité à danser, pour qu'il comprenne ce que c'est, d'être piétiné. Il dansait très mal. Je l'ai épousé à l'aube. Elandor marche toujours sur mes violettes."
+   },
+   {
+    "titre": "ce qu'une mère fait semblant de ne pas voir",
+    "t": "Entre nous, depuis que Nimiel est née, je ne cueille plus que d'une main : l'autre la rattrape. Je sais qu'elle grimpe sans les mains, qu'elle cache une grenouille, et qu'elle sort la nuit avec quelque chose de long sous le bras. Je fais semblant de ne rien savoir. Une mère, ça fait beaucoup semblant."
+   }
+  ],
+  "reve": [
+   "Trouver la rose d'aube, la fleur des vieilles chansons. Les anciens disent qu'elle n'existe pas. Je la trouverai quand même, et je la mettrai dans les cheveux de Nimiel, le jour de la fête."
+  ],
+  "liens": {
+   "nimiel": {
+    "qui": "ma fille",
+    "nom": "Nimiel",
+    "sentiment": 1.0,
+    "avis": "Ma Nimiel est la plus curieuse des elfes et la plus écorchée. Elle me ressemble, paraît-il. Moi, pourtant, je ne me souviens pas d'avoir tiré sur une porte.",
+    "anecdotes": [
+     "Nimiel m'a offert un jour un pissenlit tout fripé, cueilli « exprès pour toi, Maman ». Elle avait passé la nuit dehors à chercher une fleur de lune, et elle s'était endormie dans un buisson. Je l'ai grondée trois minutes. Le pissenlit, je le garderai cent ans."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel ! Qu'est-ce que tu caches dans ton dos ?"
+     ],
+     [
+      "b",
+      "Rien ! Une fleur ! Pour toi !"
+     ],
+     [
+      "a",
+      "Une fleur qui fait croa ?"
+     ],
+     [
+      "b",
+      "… C'est une fleur très rare."
+     ]
+    ]
+   },
+   "elfe_0": {
+    "qui": "mon mari",
+    "nom": "Elandor",
+    "sentiment": 0.9,
+    "avis": "Elandor est le plus doux des maris et le plus lent des marcheurs. Il me fait attendre partout. Mais quand il arrive, il a toujours quelque chose à me montrer.",
+    "anecdotes": [
+     "Quand Elandor est rentré de ses neuf jours, je ne lui ai pas adressé la parole pendant une semaine. Il me laissait chaque matin une fleur sur le seuil, une différente, cherchée très loin. La septième, je ne l'avais jamais vue de ma vie. Je lui ai pardonné, à cause de la fleur. Enfin, surtout."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Elandor ! Tu as encore marché sur mes violettes."
+     ],
+     [
+      "b",
+      "Depuis cent ans, c'est notre façon de nous dire bonjour."
+     ],
+     [
+      "a",
+      "Alors bonjour. Et enlève tes pieds."
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "notre herboriste",
+    "nom": "Aëlwen",
+    "sentiment": 0.1,
+    "avis": "Aëlwen est une bonne guérisseuse et une terrible marchande. Elle soigne les genoux de ma fille presque gratuitement, et elle me paie les fleurs de lune comme des pissenlits.",
+    "anecdotes": [
+     "Un jour, j'ai apporté à Aëlwen une fleur de lune qui s'était ouverte en plein midi. Elle a dit qu'elle ne valait rien. J'ai dit qu'elle valait le double, puisqu'elle était rare. On s'est disputées une heure. Puis on l'a mise dans un verre d'eau entre nous deux, et on a bu une tisane."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen, mes fleurs de lune. Au prix juste."
+     ],
+     [
+      "b",
+      "Le prix juste, c'est le mien, Miriel."
+     ],
+     [
+      "a",
+      "Alors je les garde pour mes cheveux."
+     ],
+     [
+      "b",
+      "… Le prix juste, plus un."
+     ]
+    ]
+   },
+   "elfe_8": {
+    "qui": "cette bourdonneuse de",
+    "nom": "Gilwen",
+    "sentiment": -0.3,
+    "avis": "Gilwen dit que je vole les fleurs de ses abeilles. Les fleurs ne sont à personne. Ses abeilles, en revanche, me suivent partout pour reprendre leur butin.",
+    "anecdotes": [
+     "Un printemps, j'ai cueilli tout le pré de trèfle pour les couronnes de la fête de l'Aube. Le lendemain, Gilwen est venue me voir avec cent abeilles furieuses autour de la tête : « Elles te cherchent. » J'ai dû reposer la moitié des couronnes dans le pré. La moitié du village a dansé tête nue."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gilwen. Tes abeilles sont encore sur mes roses."
+     ],
+     [
+      "b",
+      "Tes roses sont sur le chemin de mes abeilles, Miriel."
+     ],
+     [
+      "a",
+      "Mes roses étaient là avant."
+     ],
+     [
+      "b",
+      "Mes abeilles aussi. Depuis mille ans."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_2": {
+  "genre": "m",
+  "prenom": "Taeron",
+  "histoire": [
+   {
+    "titre": "les copeaux de mon enfance",
+    "t": "Je suis né il y a trois siècles, dans l'atelier de mon père, sur un lit de copeaux. Il posait les planches des passerelles, et moi je les comptais. À dix ans, je savais à l'oreille quelle planche allait craquer. Mon père m'a dit : « Alors tu ne t'ennuieras jamais. » Il avait raison."
+   },
+   {
+    "titre": "mes passerelles et mes disputes",
+    "t": "J'ai repris l'atelier à cent ans. Depuis, je pose les planches, Ilyria tisse les voiles, et nous nous disputons pour savoir qui tient quoi. J'ai refait la passerelle de Fil-d'Aube quatre fois. Sa voile n'a jamais bougé. Ce n'est pas une preuve. Mais elle le dit comme si c'en était une."
+   },
+   {
+    "titre": "la planche des quarante pains",
+    "t": "Je te confie une chose. La planche du jour des quarante pains, je l'ai gardée chez moi. Je dis à tout le monde qu'elle était parfaite. Ce n'est pas tout à fait vrai : la veille, j'y avais vu une petite fente, que je comptais réparer le lendemain. Sylwen n'est jamais remontée. C'est ma faute. Je ne le lui ai jamais dit."
+   }
+  ],
+  "reve": [
+   "Construire une passerelle si douce que Sylwen y remonte un jour, avec un plateau. Je l'ai déjà dessinée : rampe large, planches neuves, pas une fente. Elle s'appellera « Une-seule-fois »."
+  ],
+  "liens": {
+   "ilyria": {
+    "qui": "la tisserande",
+    "nom": "Ilyria",
+    "sentiment": 0.2,
+    "avis": "Ilyria tisse les voiles de mes passerelles et laisse des fils partout. Je trébuche dessus. Elle dit que ce sont mes planches qui bougent. Mes planches ne bougent pas.",
+    "anecdotes": [
+     "Ilyria m'a dit un jour que mes planches grinçaient en « si bémol ». J'ai passé un mois à les raboter. Elles grinçaient toujours. Caelan est passé, il a écouté, et il a dit : « C'est le fil d'Ilyria qui vibre, en si bémol. » Ilyria a ri pendant un mois. Sans Caelan, je raboterais encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ilyria. Tes fils, sur ma rambarde."
+     ],
+     [
+      "b",
+      "Ta rambarde, sous mes fils, Taeron."
+     ],
+     [
+      "a",
+      "Un jour, je trébuche et je tombe."
+     ],
+     [
+      "b",
+      "Mes fils te rattraperont. Comme d'habitude."
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "notre boulangère",
+    "nom": "Sylwen",
+    "sentiment": 0.0,
+    "avis": "Sylwen raconte à tout le monde que ma planche a craqué, le jour des quarante pains. Elle ne m'en veut même pas : elle en rit. C'est pire. J'aimerais qu'elle m'en veuille un peu.",
+    "anecdotes": [
+     "Le jour des quarante pains, je suis arrivé en courant sur la place. Il pleuvait des pains de miel. Les enfants dansaient, Faelar en tenait un dans chaque main. Et Sylwen, toute blanche, s'accrochait à la rambarde. Je l'ai aidée à redescendre, planche par planche. Elle n'a pas dit un mot. En bas, elle m'a donné un pain."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen. J'ai refait toutes les planches du nord."
+     ],
+     [
+      "b",
+      "Toutes ? Même celle qui ne craquait pas ?"
+     ],
+     [
+      "a",
+      "Surtout celle-là."
+     ]
+    ]
+   },
+   "elfe_3": {
+    "qui": "ma voisine d'en haut",
+    "nom": "Lirael",
+    "sentiment": 0.7,
+    "avis": "Lirael vit sur la plate-forme d'à côté. Elle accroche ses lanternes à mes rambardes et elle me prévient quand une planche gémit dans le noir. La meilleure voisine du ciel.",
+    "anecdotes": [
+     "Une nuit d'orage, la passerelle de l'est s'est mise à balancer. Lirael est sortie avec sa lanterne et l'a tenue au-dessus de moi pendant que je réparais, trois heures, sous la pluie. Elle n'a pas tremblé une fois. Moi, si. Elle n'en a jamais parlé à personne. Je lui ai fait une rambarde à crochets, rien que pour ses lanternes."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lirael ! Une planche gémit, vers l'est ?"
+     ],
+     [
+      "b",
+      "Depuis minuit, Taeron. Je t'ai laissé une lanterne à côté."
+     ],
+     [
+      "a",
+      "Tu es la meilleure voisine du ciel."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_3": {
+  "genre": "f",
+  "prenom": "Lirael",
+  "histoire": [
+   {
+    "titre": "née la nuit où les lumières sont parties",
+    "t": "Mon frère Rúmil et moi, nous sommes nés il y a trois siècles, la nuit de l'orage, la nuit où les esprits-lucioles se sont envolés. Notre mère disait que le Bois avait perdu ses lumières et gagné deux enfants. C'est peut-être pour ça que nous courons après la lumière, lui et moi, depuis toujours."
+   },
+   {
+    "titre": "ma tournée des lanternes",
+    "t": "Chaque soir, j'allume les lanternes du sentier, du ponton jusqu'à la place, puis celles des passerelles. Deux cent quarante lanternes. Rúmil m'apporte la lumière qu'il pêche à l'aube, et je la verse dedans. Puis je veille jusqu'au matin. Je connais toutes les nuits du Bois-Doré. Aucune ne ressemble à une autre."
+   },
+   {
+    "titre": "la lanterne bleue sous Fil-d'Aube",
+    "t": "Je te confie un secret. Chaque nuit, quand Caelan commence à jouer, je baisse les lanternes autour de Fil-d'Aube, et j'en laisse une seule, bleue, sous la fenêtre d'Ilyria. Je fais ça depuis cent ans. Ilyria ne sait pas que c'est moi. J'aime bien aider les histoires qui n'osent pas finir."
+   }
+  ],
+  "reve": [
+   "Voir revenir les vraies lumières du Bois, celles qui sont parties la nuit où je suis née. Il paraît qu'elles reviennent. Si c'est vrai, je voudrais les voir danser au-dessus de mes lanternes. Toutes ensemble."
+  ],
+  "liens": {
+   "elfe_9": {
+    "qui": "mon frère jumeau",
+    "nom": "Rúmil",
+    "sentiment": 0.8,
+    "avis": "Rúmil est né trois minutes avant moi, et il me le rappelle chaque matin. Il pêche la lumière, je la garde. Sans lui, mes lanternes seraient vides. Sans moi, il dormirait.",
+    "anecdotes": [
+     "Un matin gris, Rúmil est rentré sans un seul rayon. Ce soir-là, mes lanternes auraient dû rester éteintes. Il est reparti, et il a pêché les reflets de la fontaine toute la journée, un par un, avec une cuillère. Le soir, j'avais de quoi allumer la moitié du sentier. C'était la plus belle moitié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rúmil ! Tu es en retard. Mes lanternes ont faim."
+     ],
+     [
+      "b",
+      "Trois minutes, Lirael. Comme à notre naissance."
+     ],
+     [
+      "a",
+      "Justement. Tu me les dois depuis trois siècles."
+     ]
+    ]
+   },
+   "elfe_2": {
+    "qui": "mon voisin",
+    "nom": "Taeron",
+    "sentiment": 0.6,
+    "avis": "Taeron entend ses planches comme j'entends mes flammes. Nous veillons chacun sur nos choses, là-haut. Il m'a fait des crochets pour mes lanternes. Il n'en fait pour personne d'autre.",
+    "anecdotes": [
+     "La nuit où la passerelle de l'est s'est mise à balancer, j'ai tenu ma lanterne au-dessus de Taeron trois heures sous la pluie. Il réparait en marmonnant le nom de ses planches, comme on parle à des enfants. Au matin, il m'a demandé de ne rien dire : il ne voulait pas qu'on sache qu'il avait eu peur. Moi aussi, j'avais eu peur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Taeron ! Ta planche du milieu soupire, ce soir."
+     ],
+     [
+      "b",
+      "Elle a le droit. Elle a deux cents ans."
+     ],
+     [
+      "a",
+      "Alors je lui laisse une lanterne. Pour la nuit."
+     ]
+    ]
+   },
+   "caelan": {
+    "qui": "mon musicien de minuit",
+    "nom": "Caelan",
+    "sentiment": 0.6,
+    "avis": "Caelan joue toutes les nuits, et moi je veille toutes les nuits. À cette heure-là, nous sommes les deux seuls réveillés. Il joue mieux quand la lanterne est bleue.",
+    "anecdotes": [
+     "Vers trois heures, je pose une tasse de tisane sur le banc de la harpe, j'écoute un couplet, et je repars faire ma tournée. Une nuit, je lui ai dit que le trente-sixième était le meilleur. Il l'a réécrit dix fois depuis. Il est moins bien, maintenant. Je ne le lui dirai pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Caelan. Ta tisane. Tu joues le trente-sixième, ce soir ?"
+     ],
+     [
+      "b",
+      "La nouvelle version ! Tu vas voir, elle est bien meilleure."
+     ],
+     [
+      "a",
+      "Joue l'ancienne. Pour moi."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_4": {
+  "genre": "m",
+  "prenom": "Orophin",
+  "histoire": [
+   {
+    "titre": "rapport sur mon enfance",
+    "t": "Rapport : né il y a trois siècles, au bord de la forêt. Premier souvenir : une trace de cerf dans la boue. Deuxième souvenir : ma mère qui me cherche, parce que j'avais suivi la trace. Je l'ai toujours trouvée, la trace. Moi, on ne m'a jamais trouvé. Je revenais tout seul."
+   },
+   {
+    "titre": "deux siècles à l'ombre de Thalion",
+    "t": "À cent ans, Thalion m'a pris comme éclaireur. Il m'a appris à marcher sans bruit, à lire la mousse, à compter mes pas dans la brume. Depuis deux siècles, je lui fais mon rapport chaque soir. Il dit « bon ». Une seule fois, il a dit « bon travail ». C'était le jour où j'ai ramené Elandor."
+   },
+   {
+    "titre": "la petite lumière et le silence de Thalion",
+    "t": "Je ne dis ça qu'à toi. Une nuit, au-dessus d'un cercle de champignons blancs, j'ai vu une petite lumière danser. Quand j'en ai parlé à Thalion, il est devenu tout pâle et il m'a interdit de tirer. Il n'a jamais dit pourquoi. Il cache quelque chose, depuis longtemps. Je pourrais chercher. Je ne cherche pas. Pour une fois."
+   }
+  ],
+  "reve": [
+   "Marcher jusqu'au bout de la brume, là où elle s'arrête, et voir ce qu'il y a derrière. Pas pour partir. Juste pour pouvoir faire mon rapport : « Rapport : le monde est grand. »"
+  ],
+  "liens": {
+   "thalion": {
+    "qui": "mon maître",
+    "nom": "Thalion",
+    "sentiment": 0.2,
+    "avis": "Thalion m'a tout appris. Deux siècles plus tard, il vérifie encore mes flèches une par une. Je le respecte plus que personne. Il m'exaspère plus que personne, aussi.",
+    "anecdotes": [
+     "Un soir, je lui ai fait mon rapport : « Forêt calme. » Il a dit : « Trop calme ? » J'ai dit : « Non, juste calme. » Il est allé vérifier lui-même. Il est revenu à l'aube, couvert de rosée, et il a dit : « Calme. » Puis il a vérifié mes flèches. Toutes. Encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rapport : rien à signaler, Thalion."
+     ],
+     [
+      "b",
+      "Rien du tout ?"
+     ],
+     [
+      "a",
+      "Rien. Tu peux vérifier. Je sais que tu vas vérifier."
+     ],
+     [
+      "b",
+      "Je vais vérifier."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "le vieux",
+    "nom": "Faelar",
+    "sentiment": 0.6,
+    "avis": "Faelar raconte des choses que personne n'a vues. Moi, je vais voir. La plupart du temps, il n'y a rien. Mais parfois, il y a quelque chose, et c'est pour ça que j'y retourne.",
+    "anecdotes": [
+     "Faelar m'a parlé d'un cercle de champignons blancs où dansent les esprits. J'ai ri. Puis j'y suis allé sept nuits de suite. La huitième, il y avait une petite lumière. Je suis rentré en courant et je l'ai secoué : il dormait depuis deux jours. Il a ouvert un œil, il a dit « je sais », et il s'est rendormi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar. Ton hibou d'argent, au nord. Rien."
+     ],
+     [
+      "b",
+      "Tu as regardé dans les branches hautes ?"
+     ],
+     [
+      "a",
+      "… J'y retourne."
+     ]
+    ]
+   },
+   "elfe_0": {
+    "qui": "notre promeneur",
+    "nom": "Elandor",
+    "sentiment": -0.1,
+    "avis": "Elandor ne se perd jamais, d'après lui. D'après moi, il s'est perdu neuf jours, et je l'ai cherché sans dormir. Il regardait un escargot. Je l'aime bien. De loin. Avec une corde.",
+    "anecdotes": [
+     "Le neuvième jour, je l'ai trouvé assis sur une pierre, au bord de la brume, à regarder un escargot traverser le sentier. Il m'a dit : « Chut, il arrive bientôt. » J'ai attendu avec lui. L'escargot est arrivé. Puis nous sommes rentrés. Je n'ai jamais avoué que j'étais content, moi aussi, de le voir arriver."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Elandor. Où vas-tu ?"
+     ],
+     [
+      "b",
+      "Nulle part en particulier, Orophin."
+     ],
+     [
+      "a",
+      "C'est exactement ce qui m'inquiète."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_5": {
+  "genre": "f",
+  "prenom": "Celebrë",
+  "histoire": [
+   {
+    "titre": "la berceuse qui faisait danser ma sœur",
+    "t": "Je suis née il y a trois siècles, quelques années avant ma sœur Nessa. Notre mère chantait, notre père battait la mesure sur les marmites. Moi, j'ai chanté avant de parler. Ma première chanson était une berceuse pour Nessa. Elle s'est mise à danser au lieu de dormir. Ça n'a jamais changé."
+   },
+   {
+    "titre": "la fête où Caelan m'a laissée seule",
+    "t": "Il y a cent ans, à la fête de l'Aube, je chantais la « Ballade » avec Caelan. Une corde a cassé, Ilyria est montée la remplacer, et Caelan est parti lui courir après. En plein couplet ! J'ai chanté seule une heure entière, en inventant les paroles. On dit que c'était ma plus belle heure. C'était surtout la plus longue."
+   },
+   {
+    "titre": "la chanson que je n'ai jamais rechantée",
+    "t": "Je vais te dire une chose que personne ne sait. Cette heure-là, seule sur l'estrade, j'ai inventé une chanson. Elle est à moi, toute à moi, sans une seule rime de Caelan. Je ne l'ai jamais rechantée. J'ai peur qu'elle soit moins belle la deuxième fois. Peut-être à la prochaine fête. Peut-être."
+   }
+  ],
+  "reve": [
+   "Chanter ma chanson à moi, à la prochaine fête de l'Aube, du premier mot au dernier. Et que Caelan m'accompagne sans partir. Ou qu'il parte, tiens. Cette fois, je saurai quoi faire."
+  ],
+  "liens": {
+   "caelan": {
+    "qui": "mon ancien partenaire",
+    "nom": "Caelan",
+    "sentiment": 0.1,
+    "avis": "Caelan est un grand musicien et un partenaire épouvantable. Deux siècles de duos, et il me plante en plein couplet pour une paire d'yeux bleus. Je lui pardonnerai. Dans un siècle.",
+    "anecdotes": [
+     "Caelan écrit toutes ses chansons pour Ilyria, et c'est moi qui dois les chanter aux fêtes. Quatre cents fois « Ilyria » en une soirée. J'ai fini par remplacer son nom par « la lune ». Caelan a boudé une semaine. Ilyria m'a remerciée d'un clin d'œil. Et la lune n'a rien dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Caelan. Tu restes sur l'estrade jusqu'à la fin, cette fois ?"
+     ],
+     [
+      "b",
+      "Promis, Celebrë. Sauf si une corde casse."
+     ],
+     [
+      "a",
+      "J'ai apporté des cordes de rechange. Douze."
+     ]
+    ]
+   },
+   "elfe_7": {
+    "qui": "ma petite sœur",
+    "nom": "Nessa",
+    "sentiment": 0.9,
+    "avis": "Nessa danse sur tout ce que je chante. Même les chansons tristes. Surtout les chansons tristes : elle dit que c'est pour les consoler.",
+    "anecdotes": [
+     "Pendant l'heure où j'ai chanté seule à la fête de l'Aube, Nessa n'a pas arrêté de danser devant l'estrade, pour que personne ne regarde mes mains qui tremblaient. Une heure entière, sur des paroles que j'inventais au fur et à mesure. Elle ne s'est pas trompée d'un seul pas. Je ne sais toujours pas comment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nessa ! Je chante, tu danses ?"
+     ],
+     [
+      "b",
+      "Toujours. Même si c'est la berceuse."
+     ],
+     [
+      "a",
+      "Surtout si c'est la berceuse."
+     ]
+    ]
+   },
+   "elfe_9": {
+    "qui": "notre pêcheur de lumière",
+    "nom": "Rúmil",
+    "sentiment": 0.7,
+    "avis": "Rúmil dit que la lumière vient mieux quand on chante. Alors tous les matins, à l'aube, je chante pour ses filets. Il ne dit jamais merci. Il me laisse le premier rayon.",
+    "anecdotes": [
+     "Un matin, j'avais la voix cassée. Rúmil a tendu ses filets quand même. Rien. Pas un rayon. Il a attendu une heure, puis il m'a regardée : « Siffle, alors. » J'ai sifflé. Trois rayons sont venus. Depuis, il prétend que la lumière préfère le sifflet. Il ment, et il le sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rúmil ! Prêt pour l'aube ?"
+     ],
+     [
+      "b",
+      "Les filets sont tendus. Chante, Celebrë."
+     ],
+     [
+      "a",
+      "Et tu me laisses le premier rayon ?"
+     ],
+     [
+      "b",
+      "Comme toujours."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_6": {
+  "genre": "m",
+  "prenom": "Haldir",
+  "histoire": [
+   {
+    "titre": "l'enfant qui courait trop vite",
+    "t": "Je suis né il y a trois siècles, et j'ai couru avant de savoir marcher. Ma mère disait que je n'avais pas des pieds, mais des ailes mal rangées. À dix ans, je faisais le tour de la place plus vite qu'une feuille ne tombe. On m'a confié les messages. On ne me les a jamais repris."
+   },
+   {
+    "titre": "messager du Bois-Doré",
+    "t": "Depuis, je porte tout : les invitations aux fêtes, les plaintes de Taeron, les tisanes d'Aëlwen, et les lettres de Caelan, qu'il me reprend avant que je frappe. Quand ton bateau a traversé la brume, c'est moi qui ai couru prévenir Thalion. Je n'avais jamais porté une aussi grande nouvelle."
+   },
+   {
+    "titre": "le message que je n'ai jamais livré",
+    "t": "Je te dis un secret. Moi aussi, j'ai un message que je n'ai jamais livré. Pour Nessa. Depuis la dernière fête de l'Aube. Je le porte sur moi tous les jours. Chaque fois, j'arrive devant elle en courant, et je repars en courant. Je ne vaux pas mieux que Caelan. Ne le lui dis pas."
+   }
+  ],
+  "reve": [
+   "Livrer enfin ma lettre à Nessa. Peut-être à la prochaine fête de l'Aube, entre deux danses. Et ne pas lui marcher sur les pieds, cette fois. Ou alors pas plus de dix fois."
+  ],
+  "liens": {
+   "caelan": {
+    "qui": "mon meilleur client",
+    "nom": "Caelan",
+    "sentiment": 0.5,
+    "avis": "Caelan me confie une lettre pour Ilyria chaque semaine, et chaque semaine il me court après pour la reprendre. Je cours vite. Lui court plus vite. L'amour, sans doute.",
+    "anecdotes": [
+     "Un jour, pour lui faire plaisir, je suis revenu en disant : « Elle a souri. » Je n'avais rien livré. Il a rayonné toute la semaine. Ilyria aussi, d'ailleurs, sans savoir pourquoi : il souriait tellement qu'elle a fini par lui sourire. Alors ce n'était pas tout à fait un mensonge."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Une lettre, Caelan ? Je pars tout de suite."
+     ],
+     [
+      "b",
+      "Non ! Enfin, si. Enfin… cours lentement."
+     ],
+     [
+      "a",
+      "Je ne sais pas courir lentement."
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "le garde",
+    "nom": "Thalion",
+    "sentiment": -0.4,
+    "avis": "Thalion me demande où je vais dix fois par jour. Je suis messager : je vais partout. Il le sait. Il demande quand même. Un jour, je lui répondrai la vérité, juste pour voir sa tête.",
+    "anecdotes": [
+     "Un matin, il m'a demandé trois fois où j'allais. Trois fois, j'ai dit « nulle part ». À la troisième, il m'a suivi. Je suis allé au bout du ponton regarder la brume, comme tous les matins. Il est resté derrière moi une heure, sans un bruit. Puis il est parti. Je crois qu'il regardait la brume, lui aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Thalion. Non, je ne te dirai pas."
+     ],
+     [
+      "b",
+      "Je n'ai rien demandé."
+     ],
+     [
+      "a",
+      "Tu allais le faire."
+     ],
+     [
+      "b",
+      "… Où vas-tu ?"
+     ]
+    ]
+   },
+   "elfe_7": {
+    "qui": "ma partenaire de danse",
+    "nom": "Nessa",
+    "sentiment": 0.9,
+    "avis": "Nessa danse comme le vent dans les feuilles d'or. J'ai été son partenaire à la dernière fête de l'Aube. Je lui ai marché dix-sept fois sur les pieds. Elle me sourit encore.",
+    "anecdotes": [
+     "À la fête de l'Aube, Nessa dansait avec un ruban d'Ilyria. Au petit matin, le ruban était noué autour de trois arbres, de la fontaine et de moi. Il a fallu une matinée pour me démêler. Nessa riait. Moi, je ne voulais pas qu'on me démêle trop vite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nessa ! Un message pour toi. Enfin… presque."
+     ],
+     [
+      "b",
+      "Presque ? De qui ?"
+     ],
+     [
+      "a",
+      "Je… je reviens. Je dois courir."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_7": {
+  "genre": "f",
+  "prenom": "Nessa",
+  "histoire": [
+   {
+    "titre": "les berceuses sur lesquelles je dansais",
+    "t": "Ma sœur Celebrë me chantait une berceuse pour m'endormir. Moi, je dansais. Ma mère a essayé toutes les berceuses du Bois-Doré : je dansais sur toutes. Elle a fini par dire : « Bon. Danse, alors. » Je n'ai pas arrêté depuis trois siècles. Je dors très bien, d'ailleurs. Après."
+   },
+   {
+    "titre": "la nuit où ma sœur a chanté seule",
+    "t": "À la dernière fête de l'Aube, Caelan a quitté l'estrade en pleine ballade. Celebrë est restée seule, les mains tremblantes. Alors j'ai dansé devant elle, une heure, pour que tout le monde me regarde, moi, et pas ses mains. C'est la plus belle danse de ma vie. Je ne l'ai jamais refaite."
+   },
+   {
+    "titre": "la lettre que je fais semblant de ne pas voir",
+    "t": "Je te confie un secret. Haldir porte une lettre dans sa tunique depuis cent ans. Il arrive vers moi en courant, il dit « un message pour toi », et il repart. Je sais que c'est pour moi. Je fais semblant de ne pas savoir. Je veux qu'il ose. Ilyria dit que ce mal-là est contagieux, au Bois-Doré."
+   }
+  ],
+  "reve": [
+   "Danser à la prochaine fête de l'Aube jusqu'au lever du soleil, avec le plus long ruban d'Ilyria. Et qu'à l'aube, quelqu'un me tende enfin une lettre, au lieu de repartir en courant."
+  ],
+  "liens": {
+   "elfe_5": {
+    "qui": "ma grande sœur",
+    "nom": "Celebrë",
+    "sentiment": 0.8,
+    "avis": "Celebrë chante tout ce que je danse, et je danse tout ce qu'elle chante. Elle a un caractère de chanteuse, c'est-à-dire bien trempé. Mais sa voix me berce encore.",
+    "anecdotes": [
+     "Un matin, Celebrë avait la voix cassée et elle pleurait de rage. Je lui ai dit : « Chante avec tes pieds. » Elle a battu la mesure sur le plancher, j'ai dansé, et tout le village s'est arrêté pour regarder. On appelle encore ça « la danse muette ». Elle prétend que c'était son idée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Celebrë ! Une nouvelle chanson ?"
+     ],
+     [
+      "b",
+      "Peut-être. Tu danserais sur une chanson à moi ?"
+     ],
+     [
+      "a",
+      "Je danse sur toutes tes chansons. Même celles que tu caches."
+     ]
+    ]
+   },
+   "ilyria": {
+    "qui": "ma tisserande",
+    "nom": "Ilyria",
+    "sentiment": 0.8,
+    "avis": "Ilyria me tisse des rubans, de plus en plus longs. Je les emmêle partout. Elle fait semblant de se fâcher, puis elle m'en tisse un plus long. C'est notre jeu.",
+    "anecdotes": [
+     "J'invente mes pas sous la plate-forme d'Ilyria. Le bruit de son métier me donne le rythme : clac, glisse, clac. Un jour, elle s'est arrêtée de tisser pour me regarder, et je suis tombée, parce qu'il n'y avait plus de musique. Elle a ri. Maintenant, elle tisse plus lentement quand je danse."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ilyria ! Ton ruban d'or, je l'ai emmêlé. Un peu."
+     ],
+     [
+      "b",
+      "Autour de quoi, cette fois ?"
+     ],
+     [
+      "a",
+      "D'une passerelle. Et d'Haldir."
+     ],
+     [
+      "b",
+      "Encore lui ? Je finirai par croire que tu le fais exprès."
+     ]
+    ]
+   },
+   "elfe_6": {
+    "qui": "mon partenaire de danse",
+    "nom": "Haldir",
+    "sentiment": 0.6,
+    "avis": "Haldir court plus vite que tout le Bois-Doré, sauf quand il vient vers moi. Il m'a marché dix-sept fois sur les pieds à la dernière fête. J'ai compté. Je compte toujours.",
+    "anecdotes": [
+     "À la dernière fête de l'Aube, mon ruban s'est noué autour d'Haldir. Il est resté immobile une matinée entière pendant qu'on le démêlait, sans se plaindre. Le messager le plus rapide du village, sans bouger d'un pas. Je crois que c'est le plus beau compliment qu'on m'ait jamais fait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Haldir ! Tu as un message pour moi ?"
+     ],
+     [
+      "b",
+      "Oui ! Non. Je… je dois courir."
+     ],
+     [
+      "a",
+      "Toujours dans l'autre sens, hein."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_8": {
+  "genre": "f",
+  "prenom": "Gilwen",
+  "histoire": [
+   {
+    "titre": "la ruche au-dessus de mon berceau",
+    "t": "Je suis née il y a trois siècles, et mon berceau était posé sous une ruche. Ma mère disait que les abeilles m'avaient chanté ma première berceuse. Je n'ai jamais été piquée, enfant. Pas une fois. Les abeilles me prenaient pour une des leurs. Je crois que je les prends pour des miennes, aussi."
+   },
+   {
+    "titre": "mes filles et les autres",
+    "t": "Aujourd'hui, j'ai trente ruches au pied des arbres-maisons. Mes filles, je les appelle. Elles butinent les tilleuls, le trèfle et les roses de Miriel, ce qui fâche Miriel. Je porte le miel à Sylwen chaque matin, et à Aëlwen, qui marchande. Les abeilles sauvages, tout en haut de l'Arbre-Mère, je n'y vais jamais."
+   },
+   {
+    "titre": "les abeilles que je n'ai jamais vues",
+    "t": "Tout le monde sait que j'ai le vertige. Ce que personne ne sait, c'est pourquoi j'en veux à Thalion. Pas parce qu'il secoue les abeilles d'en haut. Parce qu'il peut monter les voir, et pas moi. Je les entends chanter, les jours de vent. Je ne les ai jamais vues. Pas une seule fois."
+   }
+  ],
+  "reve": [
+   "Voir de mes yeux les abeilles d'en haut, celles qui butinent l'Arbre-Mère. Thalion a proposé de m'y porter. Plutôt manger une ruche. Enfin… plutôt y réfléchir."
+  ],
+  "liens": {
+   "sylwen": {
+    "qui": "ma meilleure cliente",
+    "nom": "Sylwen",
+    "sentiment": 0.8,
+    "avis": "Sylwen dit bonjour à mes abeilles, maintenant. De loin, mais elle le dit. Elles l'aiment bien. Son pain a le goût de leur travail : c'est le plus beau des remerciements.",
+    "anecdotes": [
+     "Pour les deux cents ans de la boulangerie de Sylwen, j'ai donné à mes filles un cadre en forme de cœur. Elles ont mis un mois à le remplir. Sylwen a pleuré en le voyant, puis elle a dit qu'elle ne le mangerait jamais. Mes filles étaient un peu vexées. Je leur ai expliqué. Elles ont compris."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen ! Le miel du jour. Tilleul et trèfle."
+     ],
+     [
+      "b",
+      "Bonjour, les abeilles ! … Elles m'ont entendue ?"
+     ],
+     [
+      "a",
+      "Elles bourdonnent. Ça veut dire oui."
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "ce brigand de",
+    "nom": "Thalion",
+    "sentiment": -0.4,
+    "avis": "Thalion grimpe chez les abeilles d'en haut comme un ours, sans dire bonjour, et il redescend avec leur miel. Lui, il appelle ça s'entraîner. Mes abeilles appellent ça autrement.",
+    "anecdotes": [
+     "Je lui ai conseillé de chanter aux abeilles avant de prendre le miel. Il a chanté. Une fois. Elles l'ont piqué deux fois plus. Je lui ai expliqué que ce n'était pas la chanson, c'était la justesse. Il ne m'a plus adressé la parole pendant un mois. Mes filles ont bourdonné de rire toute la semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Thalion ! Tu es encore monté sans dire bonjour."
+     ],
+     [
+      "b",
+      "J'ai dit bonjour."
+     ],
+     [
+      "a",
+      "À voix basse, et faux. Elles ont entendu."
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "notre herboriste",
+    "nom": "Aëlwen",
+    "sentiment": 0.3,
+    "avis": "Aëlwen achète mon miel pour ses potions, et elle marchande chaque goutte. Mais la nuit de mes trois cents piqûres, elle m'a soignée jusqu'au matin sans compter. Elle est comme ça.",
+    "anecdotes": [
+     "La nuit d'orage où mes ruches se sont affolées, je suis rentrée couverte de piqûres. Aëlwen a mis du baume sur chacune, en comptant à voix haute. Trois cent quatre. Le lendemain, elle m'a envoyé la facture : « Baume, trois cent quatre. Offert. » Je l'ai encadrée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen ! Mon miel. Au prix du miel, cette fois."
+     ],
+     [
+      "b",
+      "Au prix du miel un peu clair, Gilwen."
+     ],
+     [
+      "a",
+      "Mes filles t'entendent."
+     ]
+    ]
+   },
+   "elfe_1": {
+    "qui": "cette voleuse de",
+    "nom": "Miriel",
+    "sentiment": -0.3,
+    "avis": "Miriel cueille les fleurs de mes abeilles avant qu'elles aient fini de les butiner. Elle dit que les fleurs ne sont à personne. Elles sont à ceux qui les nourrissent.",
+    "anecdotes": [
+     "Le printemps où Miriel a cueilli tout le pré de trèfle pour les couronnes de la fête, mes filles ont tourné en rond une journée entière, perdues. Je suis allée la voir avec cent abeilles autour de la tête. Elle a reposé la moitié des couronnes dans le pré. C'est la seule fois que des abeilles ont dansé à la fête de l'Aube."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Miriel. Tu as cueilli le pré de lavande ?"
+     ],
+     [
+      "b",
+      "Juste une brassée, Gilwen."
+     ],
+     [
+      "a",
+      "Mes filles comptent leurs brassées, elles aussi."
+     ]
+    ]
+   }
+  }
+ },
+ "elfe_9": {
+  "genre": "m",
+  "prenom": "Rúmil",
+  "histoire": [
+   {
+    "titre": "né trois minutes avant ma sœur",
+    "t": "Je suis né il y a trois siècles, la nuit de l'orage, trois minutes avant ma sœur Lirael. Je le lui rappelle tous les matins. Cette nuit-là, les lumières de la forêt sont parties. Mon grand-père pêchait la lumière à l'aube, avec des filets de cristal. Il disait qu'il faudrait bien quelqu'un pour en rapporter."
+   },
+   {
+    "titre": "mon premier rayon",
+    "t": "Mon grand-père s'est endormi sous l'Arbre-Mère avant de m'apprendre. C'est Faelar qui m'a montré la vieille façon : tendre le filet au-dessus de la fontaine, attendre le premier rayon, et surtout ne pas parler. Ne pas parler, avec Faelar à côté, c'était le plus dur. Il m'a fallu cent ans. Lirael a mis ce rayon dans sa première lanterne."
+   },
+   {
+    "titre": "pourquoi je me lève avant le soleil",
+    "t": "Je te confie quelque chose. Je n'aime pas l'aube. Je me lève avant le soleil depuis trois siècles, et je rêve de dormir jusqu'à midi, une seule fois. Mais si je ne pêche pas, les lanternes de Lirael restent noires. Alors je me lève. Ne le dis pas à Lirael. Elle se croirait obligée de me remplacer."
+   }
+  ],
+  "reve": [
+   "Dormir jusqu'à midi. Une seule fois. Et le soir, voir quand même les lanternes de Lirael allumées, parce que les petites lumières de la forêt seraient revenues les remplir toutes seules."
+  ],
+  "liens": {
+   "elfe_3": {
+    "qui": "ma sœur jumelle",
+    "nom": "Lirael",
+    "sentiment": 0.9,
+    "avis": "Lirael veille la nuit, je pêche à l'aube. On se croise au lever du jour : elle va dormir, je pars travailler. Trois siècles qu'on se dit bonjour et bonsoir en même temps.",
+    "anecdotes": [
+     "Un matin gris, je suis rentré sans un rayon. J'ai passé la journée à pêcher les reflets de la fontaine, avec une cuillère, un par un. Le soir, Lirael a pu allumer la moitié du sentier. Elle a dit que c'était la plus belle moitié. Elle disait ça pour me consoler. Mais je l'ai crue."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lirael ! Bonne nuit."
+     ],
+     [
+      "b",
+      "Bonjour, Rúmil."
+     ],
+     [
+      "a",
+      "Trois siècles, et toujours pas réveillés en même temps."
+     ],
+     [
+      "b",
+      "Trois siècles et trois minutes. Je sais."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "mon vieux maître",
+    "nom": "Faelar",
+    "sentiment": 0.8,
+    "avis": "Faelar m'a appris à pêcher la lumière en parlant sans arrêt à côté de moi. Je crois que c'était exprès : si l'on peut pêcher à côté de Faelar, on peut pêcher n'importe où.",
+    "anecdotes": [
+     "Au cercle des contes, je répare mes filets pendant que Faelar raconte. Un jour, il s'est trompé de nom dans une histoire vieille de six siècles. J'ai toussé, juste une fois. Il s'est arrêté, il m'a regardé, et il a corrigé. Depuis, chaque fois qu'il hésite, il se tourne vers moi. Je n'ai même pas besoin de lever les yeux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Faelar. Trois rayons ce matin."
+     ],
+     [
+      "b",
+      "Et tu n'as pas dit un mot, cette fois ?"
+     ],
+     [
+      "a",
+      "Pas un seul. Tu n'étais pas là."
+     ]
+    ]
+   },
+   "elfe_5": {
+    "qui": "notre chanteuse",
+    "nom": "Celebrë",
+    "sentiment": 0.7,
+    "avis": "Celebrë chante à l'aube pour mes filets : la lumière vient mieux quand on chante. Je ne le lui dis pas assez. Je lui laisse le premier rayon, c'est ma façon de le dire.",
+    "anecdotes": [
+     "Le matin où Celebrë avait perdu sa voix, rien ne venait dans mes filets. Je lui ai dit de siffler. Elle a sifflé, et trois rayons sont venus. Depuis, je lui répète que la lumière préfère le sifflet, pour la taquiner. Ce n'est pas vrai. La lumière préfère sa voix. Moi aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Celebrë. L'aube arrive. Tu chantes ?"
+     ],
+     [
+      "b",
+      "Si tu me laisses le premier rayon."
+     ],
+     [
+      "a",
+      "Il est déjà à toi."
+     ]
+    ]
+   }
+  }
+ },
+ "faelar": {
+  "genre": "m",
+  "prenom": "Faelar",
+  "histoire": [
+   {
+    "titre": "mon enfance sur la passerelle de lianes",
+    "t": "Je suis né il y a neuf cent quatre-vingt-sept printemps, dans une maison qui n'existe plus, sur une branche qui est tombée depuis. À l'époque, le village n'avait qu'une passerelle, en lianes. Ma mère me portait dessus en chantant, pour que je n'aie pas peur. J'avais peur quand même. J'ai encore un peu peur, d'ailleurs."
+   },
+   {
+    "titre": "comment je suis devenu conteur",
+    "t": "J'ai voulu être archer, mais je racontais des histoires aux cerfs au lieu de les viser. La vieille Ithilwen, la conteuse d'alors, m'a pris par l'oreille : « Puisque tu fais fuir le gibier en parlant, viens donc faire rester les enfants. » J'ai appris trois mille histoires avec elle. J'en ai oublié deux. Je ne sais plus lesquelles."
+   },
+   {
+    "titre": "le soir d'orage, il y a trois cents ans",
+    "t": "Il y a trois cents ans, un soir d'orage, je racontais au cercle devant trois enfants. L'éclair est tombé au milieu de ma plus belle phrase. Le lendemain, les esprits-lucioles étaient partis et la porte de l'Arbre-Mère s'était refermée. Je raconte cette histoire depuis, mais il lui manque une fin. J'attends qu'on me l'apporte."
+   },
+   {
+    "titre": "mon cercle des contes aujourd'hui",
+    "t": "Aujourd'hui, je raconte au cercle, sous les guirlandes. Nimiel est toujours au premier rang, Orophin part vérifier mes histoires dans la forêt, Rúmil m'écoute en réparant ses filets. Et quand le vent souffle de l'ouest, j'entends Barnabé chanter sur sa plage. Je m'endors parfois au milieu. On me met une fleur sur le nez."
+   },
+   {
+    "titre": "pourquoi je les raconte toutes à Nimiel",
+    "t": "Je te confie une chose, {surnom}. Quand je m'endors au milieu d'une histoire, ce n'est pas la fatigue. C'est l'Arbre-Mère qui m'appelle. Un jour, je dormirai pour de bon, et je serai une de ses feuilles. Je n'ai pas peur. J'ai peur de ne pas finir l'histoire. Alors je les raconte toutes à Nimiel, une par une. Elle croit que c'est pour l'amuser."
+   }
+  ],
+  "reve": [
+   "Voir Caelan et Ilyria se marier. J'ai parié sur après le millénaire, mais je serais ravi de perdre. Je compte les printemps, et il m'en reste quelques-uns.",
+   "Et raconter une dernière histoire, très longue, sans m'endormir avant la fin."
+  ],
+  "question": {
+   "texte": "Dis-moi, jeune humain : chez toi, quelle histoire te racontait-on pour t'endormir ?",
+   "reponses": [
+    {
+     "label": "Des histoires de pirates.",
+     "valeur": "pirates",
+     "t": "Des pirates ! Des humains qui volent l'or des autres sur la mer… Chez nous, on vole surtout la dernière part de pain de Sylwen. C'est moins glorieux, mais ça finit mieux.",
+     "rappel": "Toi, l'enfant des histoires de pirates ! J'en ai retrouvé une dans ma mémoire : un pirate qui avait peur de l'eau. Assieds-toi."
+    },
+    {
+     "label": "Des histoires de dragons.",
+     "valeur": "dragons",
+     "t": "Des dragons ! J'en ai connu un. Enfin, mon grand-père a connu un nain qui en avait vu un. À mon âge, c'est presque pareil.",
+     "rappel": "Tu aimais les dragons. J'ai retrouvé celle du dragon qui collectionnait les cuillères. Elle est longue. Assieds-toi."
+    },
+    {
+     "label": "Personne ne m'en racontait.",
+     "valeur": "personne",
+     "t": "Personne ? … Alors tu as beaucoup de retard, {surnom}. Assieds-toi. Je commence par le commencement, et nous verrons bien où nous en serons dans cent ans.",
+     "rappel": "Toi à qui personne ne racontait d'histoires… je t'en garde une chaque fois. Tu as du retard à rattraper."
+    }
+   ]
+  },
+  "liens": {
+   "lyra": {
+    "qui": "la jeune",
+    "nom": "Lyra",
+    "sentiment": 0.9,
+    "avis": "Lyra m'a demandé l'histoire des graines de l'Arbre-Mère plus souvent que n'importe qui. Un jour, elle est partie en garder une. Elle a de la suite dans les idées, cette petite.",
+    "anecdotes": [
+     "Quand Lyra était petite, je me suis endormi juste avant la fin de l'histoire de l'arbre des humains. J'ai dormi tout un printemps. Elle n'a pas attendu la fin : à cent ans, elle a demandé au conseil d'aller garder cet arbre elle-même. Elle croit que je me suis endormi exprès. Je ne dirai jamais si c'est vrai.",
+     "Le soir où Lyra est partie veiller l'arbre pour de bon, je lui ai donné ma vieille couverture et un seul conseil : « Parle aux humains. » Il lui a fallu deux siècles pour le suivre. La couverture, elle dort encore dessous. Moi, j'ai froid aux pieds depuis. C'est un froid qui fait plaisir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lyra ! Tu veux l'histoire de la première graine ?"
+     ],
+     [
+      "b",
+      "Encore ? … Oui. Toujours oui."
+     ],
+     [
+      "a",
+      "Il était une fois une étoile très fatiguée…"
+     ],
+     [
+      "b",
+      "Les arbres entendent tout, tu sais. Eux aussi, ils l'aiment."
+     ]
+    ]
+   },
+   "barnabe": {
+    "qui": "ce brave",
+    "nom": "Barnabé",
+    "sentiment": 0.6,
+    "avis": "Barnabé ? Un humain qui chante sur sa plage des exploits qu'il n'a pas vus, sur des airs qu'il n'a pas appris. J'adore ça. Je l'écoute de loin. C'est la bonne distance, pour Barnabé.",
+    "anecdotes": [
+     "Quand le vent souffle de l'ouest, il nous apporte la voix de Barnabé, qui chante face à la mer. Sa chanson sur le vainqueur de Nâga, je la connais par cœur. Au dernier couplet, le héros fait trois mètres et soulève le serpent d'une seule main. J'aime beaucoup ce couplet. Il est faux, mais il est beau.",
+     "Tous les soirs, Barnabé agite son chapeau vers notre brume, depuis sa plage. Thalion dit qu'on ne répond pas aux humains. Un soir, j'ai pris une lanterne et je l'ai fait clignoter trois fois, du haut de la plus haute plate-forme. Barnabé a sauté sur place et il a dansé. Son perroquet a dû lui dire que c'était une luciole. Ne le dis pas à Thalion."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé Coquillard ! Ta chanson a un couplet de trop."
+     ],
+     [
+      "b",
+      "Par la barbe de Neptune ! Lequel, maître Faelar ? Gaston les a tous comptés !"
+     ],
+     [
+      "a",
+      "Le dernier. Le héros ne fait pas trois mètres."
+     ],
+     [
+      "b",
+      "Pas encore ! Laissez-lui le temps de grandir."
+     ]
+    ]
+   },
+   "nimiel": {
+    "qui": "ma petite auditrice",
+    "nom": "Nimiel",
+    "sentiment": 0.9,
+    "avis": "Nimiel est mon meilleur public : une question toutes les trois phrases, et elle se souvient de tout. Dans neuf cents ans, c'est elle qui racontera. Je lui laisse mes histoires.",
+    "anecdotes": [
+     "Je me suis endormi un jour au milieu de l'histoire du hibou qui avait perdu sa nuit. À mon réveil, il y avait une fleur sur mon nez, et Nimiel avait fini l'histoire à ma place, devant tout le cercle. Sa fin était meilleure que la mienne. Je la raconte comme ça, maintenant.",
+     "Nimiel m'a demandé un jour ce qu'il y avait au fond des coquillages qui chantent. J'ai dit : « La mer, qui se souvient d'avoir été une grande histoire. » Elle a réfléchi, puis elle a dit : « Donc c'est toi, en coquillage. » Je n'ai jamais reçu de plus beau compliment en neuf siècles."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel ! Où en étions-nous, hier ?"
+     ],
+     [
+      "b",
+      "Au hibou ! Et tu t'es endormi au moment du loup !"
+     ],
+     [
+      "a",
+      "Il n'y avait pas de loup dans cette histoire."
+     ],
+     [
+      "b",
+      "Maintenant, si. Je l'ai ajouté."
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "notre herboriste",
+    "nom": "Aëlwen",
+    "sentiment": 0.8,
+    "avis": "Aëlwen me soigne depuis trois siècles, et je la soigne en retour : je lui raconte des histoires pendant qu'elle travaille. Elle dit que ça l'agace. Elle n'a jamais fermé sa porte.",
+    "anecdotes": [
+     "J'ai toussé pendant des siècles. Aëlwen m'a donné cent tisanes, et j'en versais une sur deux dans le pot de ma fougère. Le jour où elle l'a découvert, la fougère faisait deux mètres. Aëlwen a regardé la fougère, puis moi. Et elle m'a fait payer une consultation. Pour la fougère.",
+     "Sa grand-mère, Nanwë, était la meilleure herboriste que j'aie connue. Quand elle s'est endormie sous l'Arbre-Mère, Aëlwen a ouvert la boutique dès le lendemain, les yeux rouges. Je suis allé m'asseoir dans un coin et j'ai raconté des bêtises toute la journée. Elle n'a pas ri. Mais elle n'a pas fermé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen, j'ai une histoire sur la menthe."
+     ],
+     [
+      "b",
+      "Tu as surtout une tisane à boire, Faelar."
+     ],
+     [
+      "a",
+      "L'une n'empêche pas l'autre."
+     ],
+     [
+      "b",
+      "Bois d'abord. Raconte après."
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "notre boulangère",
+    "nom": "Sylwen",
+    "sentiment": 0.8,
+    "avis": "Sylwen nourrit le Bois-Doré depuis deux siècles. Quand elle était petite, je racontais des banquets aux enfants pour qu'ils oublient la faim. Elle, elle a préféré faire du pain. Elle avait raison.",
+    "anecdotes": [
+     "Pendant l'hiver gris, il y a trois cent cinquante ans, il n'y avait presque plus rien à manger. Je racontais des festins aux enfants pour les consoler. La petite Sylwen a levé la main : « C'est pire, Faelar. Maintenant j'ai encore plus faim. » Le lendemain, elle avait les mains dans la farine de sa mère. Elle ne les en a jamais retirées.",
+     "Sylwen me garde la croûte du premier pain de chaque fournée. En échange, je raconte une histoire à son four pendant qu'il cuit : d'après elle, il lève mieux quand on lui parle. Il a déjà entendu deux mille de mes histoires. C'est mon auditeur le plus chaud."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen ! Ton four a l'air de bonne humeur."
+     ],
+     [
+      "b",
+      "Il a aimé ton histoire d'hier, Faelar. Celle du hérisson."
+     ],
+     [
+      "a",
+      "C'était une histoire de renard."
+     ],
+     [
+      "b",
+      "Alors ne lui dis pas, il était tout ému."
+     ]
+    ]
+   },
+   "elfe_4": {
+    "qui": "mon éclaireur",
+    "nom": "Orophin",
+    "sentiment": 0.7,
+    "avis": "Orophin vérifie mes histoires. Je dis « il y a un cerf blanc derrière la colline », il y va, il revient : « Pas de cerf, Faelar. » Puis il y retourne, au cas où. C'est un bon garçon.",
+    "anecdotes": [
+     "Je racontais qu'un cercle de champignons blancs, dans la forêt, attirait les esprits-lucioles. Orophin a ri. Puis il est allé voir, sept nuits de suite, sans rien dire à personne. La huitième, il est revenu tout pâle : « Il y avait une petite lumière. » Depuis, il ne rit plus de mes histoires. Il prend des notes.",
+     "Orophin m'a rapporté un jour une pierre gravée trouvée près de la brume : un serpent qui se mord la queue. « Les Anciens ? » m'a-t-il demandé. J'ai dit oui, d'un air savant. En vérité, je n'en savais rien. Je l'ai posée sur mon étagère et j'ai inventé une histoire autour. Elle est très bonne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Orophin ! Il y a un hibou d'argent sur la colline du nord."
+     ],
+     [
+      "b",
+      "Il y a surtout de la brume, Faelar. J'en reviens."
+     ],
+     [
+      "a",
+      "Alors il était caché dedans."
+     ],
+     [
+      "b",
+      "… J'y retourne. Au cas où."
+     ]
+    ]
+   },
+   "elfe_9": {
+    "qui": "mon pêcheur de lumière",
+    "nom": "Rúmil",
+    "sentiment": 0.7,
+    "avis": "Rúmil pêche la lumière à l'aube, comme son grand-père, comme je l'ai vu faire il y a neuf siècles. C'est un métier qui se perd. Lui ne se perd pas : il écoute.",
+    "anecdotes": [
+     "Rúmil vient au cercle des contes avec ses filets à réparer. Il ne lève jamais les yeux, il ne pose jamais de question, et il se souvient de tout, mot pour mot. Un jour, je me suis trompé de nom dans une histoire vieille de six siècles. Il a juste toussé. J'ai corrigé.",
+     "Je lui ai appris la vieille façon de pêcher la lumière : on tend le filet de cristal au-dessus de la fontaine, on attend que le premier rayon s'y prenne, et surtout, on ne parle pas. Il a mis cent ans à réussir. Il dit que c'est parce que je parlais tout le temps, à côté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rúmil ! Bonne pêche, ce matin ?"
+     ],
+     [
+      "b",
+      "Trois rayons, Faelar. Et un reflet."
+     ],
+     [
+      "a",
+      "Un reflet ? De quoi ?"
+     ],
+     [
+      "b",
+      "Chut. Tu fais fuir la lumière."
+     ]
+    ]
+   }
+  }
+ },
+ "ilyria": {
+  "genre": "f",
+  "prenom": "Ilyria",
+  "histoire": [
+   {
+    "titre": "ma première araignée dorée",
+    "t": "Je suis née sur Fil-d'Aube, l'arbre-maison où je vis encore. Ma mère y tissait déjà. À cinq ans, une araignée dorée est descendue sur ma main et n'en est plus repartie. Ma mère a dit : « Elle t'a choisie. » Nous l'avons appelée Brodeuse. Ses arrière-arrière-petites-filles filent encore pour moi."
+   },
+   {
+    "titre": "ma première grande voile",
+    "t": "Ma première grande voile de passerelle, je l'ai tissée il y a deux siècles, entre Fil-d'Aube et l'Arbre-Mère. Taeron venait de reprendre l'atelier de son père : il a posé les planches, moi les fils. Il a dit que ma voile tiendrait un an. Elle n'a pas bougé depuis. Il a refait ses planches quatre fois. Je le lui rappelle souvent."
+   },
+   {
+    "titre": "le fil d'or de la fête de l'Aube",
+    "t": "Il y a cent ans, à la fête de l'Aube, une corde de la harpe de Caelan a cassé en pleine ballade. J'avais un fil d'or dans ma poche, je ne sais plus pourquoi. Je suis montée, j'ai noué, je suis redescendue. Il m'a regardée comme si j'avais décroché la lune. Il joue sous ma fenêtre toutes les nuits depuis. J'aurais dû garder mon fil."
+   },
+   {
+    "titre": "ma plate-forme, d'où je vois tout",
+    "t": "Aujourd'hui, je tisse les capes, les voiles et les rubans des fêtes. Nessa use un ruban par saison, Aëlwen fait semblant de ne pas voir mes fleurs, Thalion surveille la place, et moi je surveille Thalion. D'ici, je vois tout le village. Tout. Même un musicien qui répète une phrase, tout seul, devant la fontaine."
+   },
+   {
+    "titre": "la cape dans le coffre",
+    "t": "Je te confie un secret, {surnom}. Il y a quatre-vingt-dix ans, j'ai tissé une cape pour Caelan. Couleur de nuit, avec des notes brodées en fil d'or. Elle attend dans un coffre, sous mon métier. Je la lui donnerai le jour où il osera. Pas avant. Je suis plus têtue que lui. Et les nuits où la harpe se tait, je ne dors pas."
+   }
+  ],
+  "reve": [
+   "Que Caelan ose avant la fête de l'Aube. Il reste dix ans. Pour un elfe, c'est demain. Pour Caelan, c'est un peu juste.",
+   "Et tisser un jour une passerelle si longue qu'elle irait jusqu'à ton île. Taeron dit que c'est impossible. Raison de plus."
+  ],
+  "question": {
+   "texte": "Toi qui passes partout, dis-moi franchement : Caelan osera-t-il un jour ?",
+   "reponses": [
+    {
+     "label": "Oui, bientôt.",
+     "valeur": "bientot",
+     "t": "Bientôt… Tu parles comme un humain. Chez nous, « bientôt », c'est dans cinquante ans. Enfin. Si tu le dis. Je vais quand même repasser ma robe.",
+     "rappel": "Tu m'avais dit « bientôt ». J'ai repassé ma robe. Deux fois. Toujours rien. Je t'en veux un peu."
+    },
+    {
+     "label": "Pas s'il continue à chanter.",
+     "valeur": "pas_comme_ca",
+     "t": "Ha ! Toi, au moins, tu as des yeux. Quarante et un couplets, et pas un seul mot en face. Je pourrais attendre mille ans. … Il faudra peut-être que je l'aide un peu.",
+     "rappel": "Tu avais raison : il chante encore. J'ai repensé à ce que tu m'as dit. Je réfléchis à l'aider. Un peu."
+    },
+    {
+     "label": "Et toi, tu oserais ?",
+     "valeur": "et_toi",
+     "t": "Moi ? … Tu es malin, {surnom}. Trop malin pour un humain. Je n'ai pas entendu la question. Tiens, regarde ce fil, il est passionnant.",
+     "rappel": "Toi qui m'as demandé si j'oserais… J'y pense chaque nuit. Ne le dis à personne. Surtout pas aux araignées."
+    }
+   ]
+  },
+  "liens": {
+   "caelan": {
+    "qui": "notre musicien",
+    "nom": "Caelan",
+    "sentiment": 0.8,
+    "avis": "Caelan ? Il joue sous ma fenêtre depuis cent ans, il croit que je ne sais pas, et il n'a jamais dit un mot en face. C'est le plus doux des idiots. Mon idiot, peut-être. Un jour.",
+    "anecdotes": [
+     "La nuit où il a joué la « Ballade de l'Aube » en entier sous ma fenêtre, trois heures, je n'ai pas ouvert les volets. Avant l'aube, pendant qu'il dormait sur son banc, je suis descendue nouer un ruban bleu à sa harpe. Il ne l'a jamais enlevé. Il ne m'a jamais demandé. Je ne lui dirai rien non plus.",
+     "Un jour, à la fontaine, il m'a dit : « Belle journée. » J'ai dit : « Très. » Il est parti en courant. J'ai attendu là une heure, au cas où il reviendrait finir sa phrase. Il est revenu le lendemain, et il a dit : « Belle journée. » Ça avance.",
+     "Sylwen jure que je me suis endormie au douzième couplet de la chanson qu'il m'a chantée l'été dernier. Je ne dormais pas. J'avais fermé les yeux pour mieux écouter. Mais si je l'avoue, il en écrira quarante de plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Caelan. Tu as bien dormi ? Ah non, c'est vrai, tu jouais."
+     ],
+     [
+      "b",
+      "Tu… tu as entendu ?"
+     ],
+     [
+      "a",
+      "Toute la place a entendu. Le trente-sixième couplet était joli."
+     ],
+     [
+      "b",
+      "Joli ? Elle a dit joli…"
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "mon amie",
+    "nom": "Aëlwen",
+    "sentiment": 0.9,
+    "avis": "Aëlwen soigne tout le monde, et personne ne la soigne, elle. Alors je lui laisse des fleurs, sans signer. Elle croit que je ne sais pas qu'elle sait. Nous sommes très bien comme ça.",
+    "anecdotes": [
+     "Chaque printemps, je pose un bouquet sur le comptoir d'Aëlwen, noué d'un fil d'or. Je ne signe jamais. Un matin, elle avait laissé une tasse de tisane à côté, avec un mot : « Pour le vent. » Je l'ai bue sur place. Le vent a beaucoup apprécié.",
+     "Une araignée dorée m'a piquée, une seule fois dans ma vie. J'étais tellement vexée que je suis allée chez Aëlwen en cachant ma main. Elle m'a soignée sans poser de question, puis elle a dit : « Il a joué jusqu'à l'aube, hein ? » Elle voit tout, elle aussi. Depuis son comptoir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen, tu as des cernes. Tu as dormi ?"
+     ],
+     [
+      "b",
+      "Une décoction a tourné. Et toi, tu as dormi ?"
+     ],
+     [
+      "a",
+      "La harpe s'est tue à quatre heures."
+     ],
+     [
+      "b",
+      "Alors nous n'avons dormi ni l'une ni l'autre."
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "ce grincheux de",
+    "nom": "Thalion",
+    "sentiment": 0.2,
+    "avis": "Thalion surveille la place d'en bas, moi d'en haut. Il croit être le seul à tout voir. Il ne voit pas la moitié de ce que je vois. Et il ne rate jamais une pomme, hélas.",
+    "anecdotes": [
+     "Un matin, Thalion a touché une pomme à cent pas, et il s'est retourné pour voir si quelqu'un regardait. J'ai crié de ma plate-forme : « Quelle chance ! » Depuis, chaque fois qu'il touche quelque chose, il lève les yeux vers Fil-d'Aube. Je dis « chance » à chaque fois. Ça dure depuis quatre-vingts ans.",
+     "Une nuit, j'ai vu Thalion seul devant la porte de l'Arbre-Mère, la main posée sur le bois, sans bouger, une heure entière. Le lendemain, il m'a demandé ce que j'avais vu. J'ai dit : « Rien. » Il a dit : « Bien. » Nous ne nous sommes jamais rien dit de plus gentil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Belle flèche, Thalion. Quelle chance."
+     ],
+     [
+      "b",
+      "Ce n'était pas de la chance."
+     ],
+     [
+      "a",
+      "Tu me le dis tous les matins depuis quatre-vingts ans."
+     ],
+     [
+      "b",
+      "Et c'est vrai tous les matins."
+     ]
+    ]
+   },
+   "elfe_2": {
+    "qui": "mon collègue des passerelles",
+    "nom": "Taeron",
+    "sentiment": 0.3,
+    "avis": "Taeron pose les planches, je tisse les voiles. Il dit que ses planches tiennent la passerelle. Je dis que mes fils tiennent ses planches. Nous avons raison tous les deux, sauf lui.",
+    "anecdotes": [
+     "Il y a deux siècles, Taeron m'a dit que ma voile entre Fil-d'Aube et l'Arbre-Mère tiendrait un an. Il a changé ses planches quatre fois depuis. Ma voile n'a pas bougé. Chaque fois qu'il change une planche, je lui monte une tasse de tisane, et je ne dis rien. Il déteste ça.",
+     "Un jour d'orage, une rafale a arraché la moitié de la passerelle du nord. Taeron tenait les planches, je tenais les fils, et nous nous sommes disputés pendant toute la réparation. À l'aube, elle était plus solide qu'avant. Nous ne travaillons bien que fâchés."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Taeron, ta nouvelle planche grince."
+     ],
+     [
+      "b",
+      "Elle ne grince pas, elle chante. C'est ton fil qui frotte."
+     ],
+     [
+      "a",
+      "Mon fil ne frotte jamais."
+     ],
+     [
+      "b",
+      "Alors c'est le vent. Comme d'habitude."
+     ]
+    ]
+   },
+   "elfe_7": {
+    "qui": "ma danseuse préférée",
+    "nom": "Nessa",
+    "sentiment": 0.7,
+    "avis": "Nessa danse si vite qu'elle use un ruban par saison. Je lui en tisse de nouveaux, plus longs à chaque fois. Le dernier fait trente pas. Elle l'a déjà emmêlé dans une passerelle.",
+    "anecdotes": [
+     "Pour la dernière fête de l'Aube, j'ai tissé à Nessa un ruban couleur de soleil levant. Elle a dansé toute la nuit avec, et à l'aube il était noué autour de trois arbres, de la fontaine et d'Haldir. Il a fallu une matinée pour démêler Haldir. Il n'avait pas l'air pressé.",
+     "Nessa vient danser sous mon métier à tisser quand elle invente un pas. Elle dit que le bruit de la navette lui donne le rythme : clac, glisse, clac. Sa plus belle danse s'appelle « Le Métier ». Je fais semblant d'être flattée. Je le suis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nessa ! Tu as encore emmêlé ton ruban ?"
+     ],
+     [
+      "b",
+      "Juste un peu. Autour de la passerelle. Et d'un oiseau."
+     ],
+     [
+      "a",
+      "L'oiseau va bien ?"
+     ],
+     [
+      "b",
+      "Il danse mieux qu'Haldir, maintenant."
+     ]
+    ]
+   }
+  }
+ },
+ "nimiel": {
+  "genre": "f",
+  "prenom": "Nimiel",
+  "histoire": [
+   {
+    "titre": "le jour où je suis née",
+    "t": "Maman dit que je suis née un matin de pluie, et que j'ai crié si fort que les grenouilles de la fontaine se sont tues. Papa dit que j'ai ouvert les yeux et que j'ai tout de suite regardé en haut, vers les passerelles. Moi, je ne m'en souviens pas, j'étais trop petite. Mais je crois Papa."
+   },
+   {
+    "titre": "comment j'ai trouvé Bouton",
+    "t": "Ma grenouille s'appelle Bouton ! Je l'ai trouvée sous la fontaine, dans ma cachette secrète. Oups. Elle était toute seule et elle avait froid. Je l'ai mise dans ma poche, puis dans le pétrin de Sylwen, parce que c'était chaud. Sylwen a crié. Bouton aussi. Enfin, il a fait « croa »."
+   },
+   {
+    "titre": "la porte de Sylwen",
+    "t": "L'année dernière, j'ai emprunté le vieil arc de Thalion. Juste pour voir ! J'ai visé une pomme sur le banc. J'ai touché la porte de Sylwen. Trois fois. La porte est tombée. Thalion a dit « plus jamais ». Sylwen a dit « ce n'est qu'une porte ». Maman n'a rien dit du tout, et c'était le pire."
+   },
+   {
+    "titre": "ma vie à quarante-deux ans",
+    "t": "Maintenant, je grimpe aux passerelles, j'écoute les histoires de Faelar, je mange le pain de Sylwen et je pose plein de questions. Aëlwen soigne mes genoux. Lyra m'a raconté la mer et les coquillages. Et toi, tu es arrivé avec tes oreilles rondes ! C'est la meilleure année de toute ma vie. Enfin, des quarante-deux."
+   },
+   {
+    "titre": "mon arc secret",
+    "t": "C'est un secret, d'accord ? Juré-craché ? J'ai un arc. Un vrai ! Je l'ai fait toute seule, avec une branche tombée de l'Arbre-Mère, comme celui de Thalion. Je m'entraîne la nuit, derrière la fontaine, sur une citrouille. Je la touche une fois sur trois ! À la fête de l'Aube, je montrerai à Thalion. Ne le dis pas à Maman."
+   }
+  ],
+  "reve": [
+   "Devenir archère ! Ou herboriste. Ou exploratrice ! Non, les trois ! Et aller voir la vraie mer, celle des coquillages qui chantent. Avec toi !",
+   "Et que Thalion me dise « bravo ». Une seule fois. Même tout bas."
+  ],
+  "question": {
+   "texte": "Dis, quand tu étais petit… enfin, plus petit… tu faisais des bêtises, toi ?",
+   "reponses": [
+    {
+     "label": "Des tas !",
+     "valeur": "des_tas",
+     "t": "Je le savais ! Tu as une tête à bêtises ! Raconte ! Non, attends, Aëlwen écoute. Plus tard. Mais je le savais !",
+     "rappel": "Toi qui faisais des tas de bêtises… tu m'en racontes une ? Une seule ? Je ne le dirai pas à Maman !"
+    },
+    {
+     "label": "Jamais, j'étais très sage.",
+     "valeur": "sage",
+     "t": "Jamais ?! Même pas une petite ? Même pas une grenouille ? … Tu mens. Les feuilles l'ont dit. Bon, d'accord, je te crois. Un peu.",
+     "rappel": "Toi qui étais très sage… Je ne te crois toujours pas. Bouton non plus."
+    },
+    {
+     "label": "J'en fais encore.",
+     "valeur": "encore",
+     "t": "ENCORE ?! Mais tu es grand ! Alors on a le droit, même grand ? Il faut que je le dise à Thalion. Non. Il faut surtout que je ne le dise pas à Thalion.",
+     "rappel": "Toi qui fais encore des bêtises, on en fait une ensemble ? Une petite. Une gentille."
+    }
+   ]
+  },
+  "liens": {
+   "lyra": {
+    "qui": "ma grande amie",
+    "nom": "Lyra",
+    "sentiment": 0.9,
+    "avis": "Lyra, c'est la plus courageuse du Bois-Doré ! Elle est allée de l'autre côté de la brume, toute seule ! Elle m'a tout raconté. Enfin, presque. Elle garde le reste pour plus tard.",
+    "anecdotes": [
+     "Un printemps, je me suis cachée sous la cape de Lyra, au fond de sa barque, pour aller voir les humains. J'ai éternué en pleine brume. Atchoum ! Lyra a fait demi-tour. J'ai boudé un jour entier, c'est mon record. La prochaine fois, je prendrai un mouchoir.",
+     "Lyra m'a rapporté un coquillage de la plage des humains. Elle a dit qu'on y entendait la mer. J'ai dormi avec, contre l'oreille, pendant un mois ! Il fait « fouuuh ». Elle m'a aussi parlé de Barnabé, alors maintenant je sais : les humains parlent tous à un perroquet. Toi, tu caches le tien où ?",
+     "Lyra m'a appris à marcher sans faire craquer les feuilles, comme quand elle veillait son arbre. Il faut poser le talon tout doucement et penser à quelque chose de léger. Moi, je pense à des plumes. Ça marche ! Sauf avec Thalion. Il m'entend toujours. Il dit que je pense trop fort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lyra ! Raconte encore la mer ! S'il te plaît !"
+     ],
+     [
+      "b",
+      "Encore ? Bon. Elle est très grande, et elle ne se tait jamais."
+     ],
+     [
+      "a",
+      "Comme moi !"
+     ],
+     [
+      "b",
+      "Exactement comme toi."
+     ]
+    ]
+   },
+   "elfe_1": {
+    "qui": "ma maman",
+    "nom": "Miriel",
+    "sentiment": 0.8,
+    "avis": "Maman cueille les fleurs de tout le village. Elle sent toujours la violette, et elle sait toujours quand j'ai fait une bêtise. Même quand je ne l'ai pas encore faite.",
+    "anecdotes": [
+     "Pour l'anniversaire de Maman, j'ai voulu lui cueillir une fleur de lune toute seule. Je suis sortie la nuit. Je me suis endormie dans un buisson. Papa m'a retrouvée au matin avec un pissenlit dans la main. Maman l'a mis dans un vase. Il y est encore. Tout sec, mais encore.",
+     "Maman dit que l'Arbre-Mère veille sur nous la nuit. Une fois, je lui ai demandé : « Et qui veille sur l'Arbre-Mère ? » Elle a réfléchi très longtemps. Puis elle a dit : « Toi, quand tu seras grande. » Depuis, je dis bonne nuit à l'Arbre tous les soirs. Et à Maman aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maman ! J'ai été très sage, aujourd'hui !"
+     ],
+     [
+      "b",
+      "Ah oui ? Alors pourquoi tes genoux sont tout verts ?"
+     ],
+     [
+      "a",
+      "C'est… la mode. Les genoux verts."
+     ],
+     [
+      "b",
+      "Ma petite pousse. Va te laver."
+     ]
+    ]
+   },
+   "elfe_0": {
+    "qui": "mon papa",
+    "nom": "Elandor",
+    "sentiment": 0.9,
+    "avis": "Papa marche partout, tout doucement. Il connaît tous les sentiers de l'île, même ceux qui n'existent pas. Il dit que les arbres ne sont jamais pressés. Moi, je suis pressée pour deux.",
+    "anecdotes": [
+     "Papa m'emmène en promenade le matin, jusqu'au bord de la brume. Il marche si lentement que j'ai le temps de courir devant, de revenir, de repartir, de grimper à un arbre et de redescendre. Il dit que je fais deux promenades pendant qu'il en fait une. C'est vrai !",
+     "Une fois, Papa est parti faire « un petit tour » et il est revenu neuf jours après. Orophin l'avait cherché partout. Papa ne comprenait pas pourquoi tout le monde pleurait. Il m'avait rapporté une plume de héron doré. Je l'ai toujours. Maman, elle, ne lui a pas parlé pendant une semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Papa ! On va se promener ? Vite, vite !"
+     ],
+     [
+      "b",
+      "Doucement, ma feuille. Le sentier ne va pas s'envoler."
+     ],
+     [
+      "a",
+      "Mais moi si, si on traîne !"
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "mon futur maître d'arc",
+    "nom": "Thalion",
+    "sentiment": 0.5,
+    "avis": "Thalion, c'est le meilleur archer du monde ! Mais il ne veut pas m'apprendre. Il dit « plus tard », « jamais » ou « demande à la porte de Sylwen ». Et il a peur des grenouilles. Si, si !",
+    "anecdotes": [
+     "Un jour, j'ai posé Bouton sur le rebord de la tour de garde. Bouton a sauté dans le bol de soupe de Thalion. Thalion a crié si fort que les oiseaux sont partis. Il dit qu'il n'a pas eu peur, qu'il a été « surpris ». Moi, je l'ai vu sauter en arrière. Il avait peur. Un peu.",
+     "Thalion m'a surprise une fois à viser une pomme avec un bâton et une ficelle. J'ai cru qu'il allait me gronder. Il m'a regardée longtemps, puis il a dit : « Ton coude est trop haut. » Et il est parti. Je n'ai pas compris tout de suite. C'était une leçon ! Une vraie !"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Thalion ! Aujourd'hui, tu m'apprends l'arc ?"
+     ],
+     [
+      "b",
+      "Non. Toujours non."
+     ],
+     [
+      "a",
+      "Demain, alors ?"
+     ],
+     [
+      "b",
+      "Baisse ton coude, d'abord. … Je n'ai rien dit."
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "ma boulangère préférée",
+    "nom": "Sylwen",
+    "sentiment": 0.9,
+    "avis": "Sylwen fait le meilleur pain du monde, et elle ne dit jamais rien à Maman. Enfin, presque jamais. Elle m'a pardonné la porte et la grenouille. Je l'aime fort.",
+    "anecdotes": [
+     "Quand j'ai cassé la porte de Sylwen avec mes flèches, je suis allée m'excuser avec un dessin. Sylwen a regardé le trou dans le bois, puis le dessin, puis le trou. Elle a dit : « Comme ça, le four aura de l'air. » Et elle m'a donné un pain au miel. Je crois qu'elle est un peu magique.",
+     "Sylwen me laisse façonner un petit pain, le samedi. Le mien a toujours une drôle de forme. Une fois, il ressemblait à Bouton. Sylwen l'a cuit quand même, et elle l'a mis sur l'étal avec une étiquette : « Pain-grenouille, pas à vendre. » Tout le monde est venu le voir !"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen ! Ça sent le pain au miel jusqu'à la fontaine !"
+     ],
+     [
+      "b",
+      "Alors tu as un bon nez. Et ta grenouille ?"
+     ],
+     [
+      "a",
+      "Bouton n'est PAS dans ton pétrin. Pas aujourd'hui."
+     ],
+     [
+      "b",
+      "Pas aujourd'hui… Bon. Tiens, un quignon."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "mon conteur préféré",
+    "nom": "Faelar",
+    "sentiment": 0.9,
+    "avis": "Faelar connaît trois mille histoires ! Il s'endort au milieu, mais ce n'est pas grave : je connais la fin. Enfin, j'en invente une. Il dit que les miennes sont meilleures.",
+    "anecdotes": [
+     "Quand Faelar s'endort au cercle des contes, je lui mets une fleur sur le nez. Les autres croient que c'est pour rire. En vrai, c'est pour voir s'il respire : si la fleur bouge, il dort. Elle bouge toujours. Mais je vérifie quand même.",
+     "Faelar m'a dit que les esprits-lucioles dansaient au-dessus des cercles de champignons blancs. J'en ai vu un ! Je voulais le suivre, mais Faelar m'a retenue par la manche avec sa canne. Il a dit : « Pas toi. Pas encore. » Je l'ai boudé deux jours. Puis il m'a raconté une histoire, et j'ai oublié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar ! Raconte celle du hibou !"
+     ],
+     [
+      "b",
+      "Encore ? Tu la connais mieux que moi."
+     ],
+     [
+      "a",
+      "Oui, mais toi, tu fais les voix !"
+     ],
+     [
+      "b",
+      "Bon. Il était une fois un hibou qui avait perdu sa nuit…"
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "ma guérisseuse",
+    "nom": "Aëlwen",
+    "sentiment": 0.5,
+    "avis": "Aëlwen soigne mes genoux. Ses potions sont dégoûtantes, mais elle a toujours un bonbon au miel dans sa poche. Je lui cache mes passerelles. Elle le sait. Elle sait TOUT.",
+    "anecdotes": [
+     "J'ai grimpé jusqu'à la troisième passerelle sans les mains, et je suis tombée dans un buisson de mûres. Aëlwen m'a mis de la mousse partout et elle a demandé : « Combien de mains ? » J'ai dit : « Zéro. » Elle a soupiré si fort que ses bocaux ont tremblé.",
+     "Aëlwen me fait trier ses graines pendant qu'elle me soigne : les rouges d'un côté, les noires de l'autre. Comme ça, je ne bouge pas. Un jour, j'ai trouvé une graine bleue dans le tas. Elle me l'a donnée : « Plante-la, tu verras ce qu'elle devient. » Elle est dans un pot, sur ma fenêtre. Elle ne pousse pas encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen ! Regarde, je n'ai même pas une égratignure !"
+     ],
+     [
+      "b",
+      "Fais voir tes mains. Et tes coudes. Et derrière tes oreilles."
+     ],
+     [
+      "a",
+      "… Bon, juste une petite."
+     ],
+     [
+      "b",
+      "Assieds-toi. Mousse, puis bonbon."
+     ]
+    ]
+   }
+  }
+ },
+ "sylwen": {
+  "genre": "f",
+  "prenom": "Sylwen",
+  "histoire": [
+   {
+    "titre": "le four de ma mère",
+    "t": "Je suis née à côté d'un four. Le four de ma mère, celui qui boude aujourd'hui. Elle s'appelait Lindë, elle faisait le pain du Bois-Doré, et elle me posait sur le pétrin quand j'étais petite, comme une boule de pâte de plus. Il paraît que je levais très bien."
+   },
+   {
+    "titre": "l'hiver gris",
+    "t": "Il y a trois cent cinquante ans, il y a eu l'hiver gris : l'Arbre-Mère n'avait pas fleuri, les abeilles dormaient, on avait faim. Faelar racontait des banquets aux enfants pour les consoler. C'était pire ! Le lendemain, je suis allée pétrir avec ma mère. Je me suis juré que plus personne n'aurait faim ici."
+   },
+   {
+    "titre": "une fois, une seule fois, sur la passerelle",
+    "t": "Une fois, une seule fois, j'ai voulu livrer quarante pains de miel sur les plates-formes. Au milieu de la passerelle, une planche a craqué. Taeron jure que non. Quarante pains sont tombés sur la place, comme une pluie dorée, et le village a fait la fête. Moi, je ne suis jamais remontée."
+   },
+   {
+    "titre": "mon four et mes gens",
+    "t": "Je fais le pain du village depuis deux cents ans, depuis que ma mère s'est endormie sous l'Arbre-Mère. Gilwen m'apporte son miel, Thalion le miel sauvage d'en haut, Nimiel des grenouilles. Caelan me chante des chansons sur ma brioche. Le four boude un jour sur trois. Ça me suffit, {surnom}. Prends un pain."
+   },
+   {
+    "titre": "pourquoi je dis que c'est le four",
+    "t": "Je te dis un secret, {surnom}. Le four ne boude pas. C'est moi qui rate, parfois. Mais c'était le four de ma mère. Quand je lui parle, quand je dis « il boude », c'est un peu à elle que je parle. Alors je continuerai de dire que c'est le four. Et tant pis pour mon honneur de boulangère."
+   }
+  ],
+  "reve": [
+   "Un pain assez grand pour tout le village, à la fête de l'Aube ! Un seul pain, au milieu de la place, et chacun en prend un morceau. Il faudra un four plus grand. Le mien va bouder.",
+   "Et monter un jour sur une passerelle avec un plateau. Un seul. Sans rien faire tomber. Peut-être."
+  ],
+  "question": {
+   "texte": "Dis-moi tout : sur ta plage, qu'est-ce que tu manges, le matin ?",
+   "reponses": [
+    {
+     "label": "Une noix de coco.",
+     "valeur": "coco",
+     "t": "Une noix de coco ! J'en ai mis dans une brioche, une fois. Le four a adoré. Moi aussi. Apporte-m'en une, je te ferai la même.",
+     "rappel": "Toi, le mangeur de noix de coco ! J'ai refait ma brioche à la coco. Le four n'a pas boudé une seconde."
+    },
+    {
+     "label": "Du poisson grillé.",
+     "valeur": "poisson",
+     "t": "Du poisson ? Le matin ? … Les humains sont courageux. Bon, je ne juge pas. Mais prends un pain avec. Pour accompagner. Pour me faire plaisir.",
+     "rappel": "Toi qui manges du poisson le matin, je t'ai gardé un pain salé. Rien que pour toi. Ne le dis pas au four."
+    },
+    {
+     "label": "Rien. Je n'ai pas faim le matin.",
+     "valeur": "rien",
+     "t": "RIEN ?! Par les racines de l'Arbre-Mère ! Assieds-toi. Tout de suite. Au Bois-Doré, personne ne repart le ventre vide. Tiens. Et tiens. Et celui-là aussi.",
+     "rappel": "Toi qui ne manges rien le matin… Tu as mangé, aujourd'hui ? Ne mens pas, j'ai l'œil."
+    }
+   ]
+  },
+  "liens": {
+   "lyra": {
+    "qui": "notre voyageuse",
+    "nom": "Lyra",
+    "sentiment": 0.8,
+    "avis": "Lyra est partie loin, de l'autre côté de la brume, et elle est revenue maigre comme une brindille. Je l'ai remplumée en une semaine. Elle dit que mon pain lui a manqué plus que tout. Je la crois.",
+    "anecdotes": [
+     "Pendant que Lyra veillait son arbre, je mettais chaque semaine un petit pain de côté pour elle, au cas où elle rentrerait. Elle ne rentrait pas, alors je le donnais à Thalion. Il n'a jamais su pourquoi il avait droit à un pain de plus. Le jour où elle est revenue, je lui ai donné toute la fournée.",
+     "Pour son grand départ, j'ai fait à Lyra un pain de voyage au miel, de quoi tenir un mois. Il a tenu deux jours : un perroquet vert venait lui en voler un morceau chaque matin, en disant bonjour ! Un perroquet poli, au moins. Depuis, je fais les pains de voyage en double : un pour le voyageur, un pour les perroquets.",
+     "Un soir où mon four boudait, Lyra lui a chanté une berceuse d'écorce. Le pain a levé. C'est le hasard, évidemment. Mais depuis, quand le four fait la tête, je vais chercher Lyra. Par hasard aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lyra ! Tu as mangé ? Tu as encore l'air d'une brindille."
+     ],
+     [
+      "b",
+      "Deux pains ce matin, Sylwen. Tu parles comme ma mère."
+     ],
+     [
+      "a",
+      "Ta mère a raison. Prends-en un troisième."
+     ]
+    ]
+   },
+   "nimiel": {
+    "qui": "ma petite chipie",
+    "nom": "Nimiel",
+    "sentiment": 0.7,
+    "avis": "Nimiel m'a cassé une porte, caché une grenouille dans le pétrin et chipé trois brioches. C'est la plus adorable des catastrophes. Je ne dis jamais rien à sa mère. Presque jamais.",
+    "anecdotes": [
+     "Un matin, mon pétrin a fait « croa ». J'ai plongé les mains dans la pâte et j'en ai sorti une grenouille toute farinée, l'air très content. Nimiel était derrière la fenêtre. Elle a dit : « Il avait froid. » La pâte, je l'ai jetée. La grenouille, je l'ai rendue. Et je n'ai rien dit à Miriel. Cette fois.",
+     "Quand Nimiel a tiré dans ma porte, elle est venue s'excuser avec un dessin : moi, le four et un soleil. Le dessin est accroché au-dessus du pétrin. La porte, Taeron l'a refaite. Je préfère le dessin. Il ne grince pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel ! Viens ici. Montre-moi tes poches."
+     ],
+     [
+      "b",
+      "Il n'y a rien dans mes poches ! … Enfin, rien qui fait croa."
+     ],
+     [
+      "a",
+      "Bon. Tiens, une brioche. Et pas de grenouille dans le pétrin."
+     ],
+     [
+      "b",
+      "Promis ! Dans le pétrin, non."
+     ]
+    ]
+   },
+   "thalion": {
+    "qui": "notre garde",
+    "nom": "Thalion",
+    "sentiment": 0.8,
+    "avis": "Thalion surveille tout le monde et oublie de manger. Alors moi, je le surveille, lui. Tous les matins, un pain au miel au pied de sa tour. Il fait semblant de ne pas savoir d'où il vient.",
+    "anecdotes": [
+     "Thalion va me chercher le miel sauvage tout en haut de l'Arbre-Mère, là où les abeilles sont les plus dorées. Pour lui, c'est un exercice, comme le tir. Il redescend couvert de piqûres, la mâchoire serrée, et il me tend le rayon sans un mot. Je lui donne le premier pain. Il le mange en me tournant le dos.",
+     "Un hiver, Thalion n'est pas descendu de sa tour pendant quatre jours, à cause d'un bruit dans la brume. Je lui ai monté la soupe moi-même, par l'échelle. Moi, sur une échelle ! Il a regardé la soupe, il m'a regardée, et il a dit : « Tu es montée. » C'est la plus longue phrase qu'il m'ait jamais dite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Thalion ! Tu as mangé ton pain ?"
+     ],
+     [
+      "b",
+      "Quel pain ?"
+     ],
+     [
+      "a",
+      "Celui qui a disparu du pied de ta tour."
+     ],
+     [
+      "b",
+      "… Il était bon. Merci."
+     ]
+    ]
+   },
+   "caelan": {
+    "qui": "notre musicien",
+    "nom": "Caelan",
+    "sentiment": 0.6,
+    "avis": "Caelan chante comme un rossignol et parle à Ilyria comme une bûche. Quarante couplets pour elle, et pas un mot en face. Je l'aime bien. Il mange mes brioches en rythme.",
+    "anecdotes": [
+     "Caelan a composé une chanson sur mon pain : « Ô croûte dorée… ». Il l'a chantée devant mon four, et j'ai dit « joli ». Il est parti en dansant. Je ne lui ai jamais dit que, ce jour-là, le four avait parfaitement levé, pour la première fois de la semaine. Je crois que mon four aime les chansons.",
+     "L'été dernier, Caelan a chanté quarante couplets pour Ilyria, sur la place. Elle s'est endormie au douzième. Enfin, elle a fermé les yeux. Moi, j'ai tout écouté en pétrissant, et ma pâte a levé deux fois plus haut que d'habitude. Je lui ai demandé de revenir chanter le samedi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Caelan ! Tu as encore joué toute la nuit ?"
+     ],
+     [
+      "b",
+      "Jusqu'à l'aube, Sylwen. Elle a laissé sa fenêtre entrouverte."
+     ],
+     [
+      "a",
+      "Alors prends deux pains : un pour aujourd'hui, un pour le courage."
+     ]
+    ]
+   },
+   "elfe_8": {
+    "qui": "ma chère",
+    "nom": "Gilwen",
+    "sentiment": 0.9,
+    "avis": "Gilwen m'apporte son miel tous les matins, en fredonnant. Ses abeilles l'adorent, et moi aussi. Sans elle, mon pain serait du pain. Avec elle, c'est du soleil.",
+    "anecdotes": [
+     "Gilwen m'a appris que les abeilles n'aiment pas les gens pressés. Un matin, j'ai couru vers ses ruches pour lui demander du miel en urgence, et trois abeilles m'ont piquée au nez. Gilwen m'a dit : « Elles ont senti que tu n'avais pas dit bonjour. » Depuis, je leur dis bonjour. Même de loin.",
+     "Pour les deux cents ans de ma boulangerie, Gilwen m'a apporté un rayon de miel en forme de cœur. Ses abeilles l'avaient bâti comme ça, toutes seules, dans un cadre qu'elle avait taillé exprès. Je n'ai jamais osé le manger. Il est toujours sur mon étagère. Le four le regarde."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gilwen ! Ton miel de tilleul arrive à point."
+     ],
+     [
+      "b",
+      "Mes filles ont travaillé toute la semaine pour toi."
+     ],
+     [
+      "a",
+      "Dis-leur merci. De loin, hein."
+     ],
+     [
+      "b",
+      "Elles t'ont entendue. Elles bourdonnent de plaisir."
+     ]
+    ]
+   },
+   "elfe_2": {
+    "qui": "notre charpentier",
+    "nom": "Taeron",
+    "sentiment": 0.3,
+    "avis": "Taeron construit les passerelles et répare tout, même ma porte. Mais il jure que la planche n'a pas craqué, le jour des quarante pains. Elle a craqué. J'y étais. Il y était aussi.",
+    "anecdotes": [
+     "Le jour où quarante pains de miel sont tombés de la passerelle, Taeron est arrivé en courant, il a regardé la planche et il a dit : « Elle n'a rien. » Puis il l'a démontée, il l'a emportée chez lui, et il ne l'a jamais remise. Moi, je dis que c'est une preuve. Lui dit que c'est un souvenir.",
+     "Quand Nimiel a cassé ma porte, Taeron m'en a fait une nouvelle en une journée, avec un petit trou rond au milieu, exprès : « Pour la prochaine flèche. » Je l'ai trouvé très drôle. Je ne le lui ai pas dit. Il aurait cru qu'on était réconciliés."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Taeron ! Ta passerelle du nord est solide, au moins ?"
+     ],
+     [
+      "b",
+      "Toutes mes passerelles sont solides, Sylwen. Toutes."
+     ],
+     [
+      "a",
+      "Sauf une. Une fois. Une seule fois."
+     ],
+     [
+      "b",
+      "Ce jour-là, tu as dansé dessus."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "notre vieux",
+    "nom": "Faelar",
+    "sentiment": 0.8,
+    "avis": "Faelar m'a appris qu'une histoire ne remplit pas le ventre. Il ne l'a pas fait exprès. C'est pour ça que je suis boulangère. Je lui garde la première croûte de chaque fournée.",
+    "anecdotes": [
+     "Pendant l'hiver gris, Faelar nous racontait des banquets pour nous faire oublier la faim. Des tartes, des rôtis, des brioches grandes comme des maisons. J'ai levé la main et j'ai dit : « C'est pire. » Il a ri : « Alors fais-en, toi. » Je l'ai pris au mot. Il ne s'en est jamais remis.",
+     "Faelar vient raconter une histoire à mon four chaque matin, pendant que le pain cuit. Je jure que le four lève mieux. Faelar jure qu'il ne vient pas pour la croûte. L'un de nous deux ment, et ce n'est pas le four."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar ! Une histoire pour mon four, ce matin ?"
+     ],
+     [
+      "b",
+      "Celle du renard qui voulait devenir pain."
+     ],
+     [
+      "a",
+      "Il n'existe pas, ce renard."
+     ],
+     [
+      "b",
+      "Il existera quand tu m'auras donné la croûte."
+     ]
+    ]
+   }
+  }
+ },
+ "thalion": {
+  "genre": "m",
+  "prenom": "Thalion",
+  "histoire": [
+   {
+    "titre": "né dans la tour de garde",
+    "t": "Je suis né dans la tour de garde. Mon père gardait l'entrée du village, son père aussi. Mon premier jouet était une flèche sans pointe. Mon premier mot était « halte ». Ma mère dit que c'était « maman ». Elle se trompe."
+   },
+   {
+    "titre": "l'arc taillé dans la branche tombée",
+    "t": "À deux cents ans, une tempête a cassé une branche de l'Arbre-Mère. On ne coupe jamais l'Arbre. Mais ce qui tombe, on peut le garder. J'ai passé un an à tailler mon arc dans cette branche. Mon père l'a essayé. Il a dit : « Il est meilleur que le mien. » Il me l'a rendu. Je suis devenu garde le lendemain."
+   },
+   {
+    "titre": "la nuit où la porte s'est fermée",
+    "t": "Il y a trois cents ans, un soir d'orage, la porte de l'Arbre-Mère s'est refermée. Les esprits-lucioles se sont envolés dans la forêt. J'étais de garde, cette nuit-là. Depuis, je garde une porte fermée. Trois siècles. Faelar dit que c'est inutile. Faelar ne monte pas la garde."
+   },
+   {
+    "titre": "ma tour, ma place, mes gens",
+    "t": "Aujourd'hui, je garde l'entrée. Orophin court la forêt pour moi. Sylwen me laisse du pain. Caelan joue. Toute la nuit. Gilwen me reproche ses abeilles, Haldir ne me dit jamais où il va, et Ilyria dit « chance » quand je touche une pomme. Je les ai tous à l'œil. C'est pour les garder. Ils ne le savent pas."
+   },
+   {
+    "titre": "la flèche que j'ai tirée",
+    "t": "Personne ne le sait. La nuit de l'orage, j'ai vu des lumières filer vers la forêt. J'ai cru à des intrus. J'ai tiré. Je n'ai rien touché, je crois. Mais elles ne sont jamais revenues, et la porte s'est fermée. Depuis, je ne tire plus sur ce que je ne comprends pas. Et je ne dors presque plus. … Ne le répète pas, {surnom}."
+   }
+  ],
+  "reve": [
+   "Une nuit calme. Vraiment calme. Pas le calme d'avant l'orage : le vrai. Dormir jusqu'au matin sans me lever pour vérifier la porte. Une nuit. … Bon. Deux."
+  ],
+  "question": {
+   "texte": "Une question. Réponds franchement. Quand tu marches seul, la nuit, tu te retournes souvent ?",
+   "reponses": [
+    {
+     "label": "Jamais.",
+     "valeur": "jamais",
+     "t": "Jamais. Hm. Courageux, ou imprudent. Je n'ai pas encore décidé. En attendant, je me retournerai pour toi.",
+     "rappel": "Toi qui ne te retournes jamais… Je l'ai fait pour toi, hier soir. Rien à signaler. Bon."
+    },
+    {
+     "label": "Tout le temps.",
+     "valeur": "souvent",
+     "t": "Bien. C'est ce qu'il faut faire. Tu ferais un garde passable. Pour un humain. … Ne le prends pas mal, c'est un compliment.",
+     "rappel": "Tu te retournes toujours, la nuit, hein ? Bien. Continue. Moi aussi."
+    },
+    {
+     "label": "Seulement quand j'entends une harpe.",
+     "valeur": "harpe",
+     "t": "… Ha. Ha. Très drôle. Tu as passé trop de temps avec Caelan. Va-t'en. … Non, reste. C'était drôle. Un peu.",
+     "rappel": "Toi et ta harpe… Caelan a joué jusqu'à quatre heures. J'ai pensé à toi. Je me suis retourné."
+    }
+   ]
+  },
+  "liens": {
+   "nimiel": {
+    "qui": "la petite",
+    "nom": "Nimiel",
+    "sentiment": 0.3,
+    "avis": "Nimiel ? Trop petite, trop rapide, trop de questions. Elle a l'œil, pourtant. Je ne lui apprendrai pas l'arc. Pas encore. Ne lui répète pas « pas encore ».",
+    "anecdotes": [
+     "Nimiel a emprunté mon vieil arc, sans demander. Trois flèches dans la porte de Sylwen. Je l'ai grondée. Puis je suis allé regarder la porte de près. Trois flèches dans un cercle grand comme une pomme. À son âge. Je n'ai rien dit. À personne.",
+     "Sa grenouille a sauté dans ma soupe. J'ai reculé. Un pas. Un seul. Depuis, tout le village dit que j'ai peur des grenouilles. Je n'ai pas peur des grenouilles. J'ai peur de ce que Nimiel fait avec.",
+     "Quelqu'un tire sur une citrouille, la nuit, derrière la fontaine. Une flèche sur trois dans le mille. Je fais ma ronde plus loin, pour ne pas déranger. Le coude est encore trop haut. Je ne sais pas qui c'est. Officiellement."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel. Descends de cette rambarde."
+     ],
+     [
+      "b",
+      "Je tiens toute seule, regarde ! Sans les mains !"
+     ],
+     [
+      "a",
+      "Justement. Descends."
+     ],
+     [
+      "b",
+      "Si je descends, tu m'apprends l'arc ?"
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "notre boulangère",
+    "nom": "Sylwen",
+    "sentiment": 0.7,
+    "avis": "Sylwen. Elle me laisse un pain tous les matins au pied de ma tour. Je ne la vois jamais le poser. Moi, qui vois tout. Je ne lui demande rien. Je le mange.",
+    "anecdotes": [
+     "Je lui rapporte le miel sauvage d'en haut de l'Arbre-Mère. Les abeilles n'aiment pas ça. Moi non plus. Mais quand je redescends, elle a déjà mis le premier pain de côté. Le meilleur. Elle croit que je ne remarque pas qu'elle me donne le meilleur. Je remarque tout.",
+     "Pendant des années, j'ai trouvé un pain de plus au pied de ma tour, chaque semaine, le même jour. J'ai cru à une erreur. Le jour où Lyra est rentrée, le pain de plus a cessé. J'ai compris. Je ne l'ai pas dit à Sylwen. Il était bon, ce pain qui attendait quelqu'un d'autre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen. Ton four fume."
+     ],
+     [
+      "b",
+      "Il boude, Thalion. Il a ses humeurs."
+     ],
+     [
+      "a",
+      "Comme moi."
+     ],
+     [
+      "b",
+      "Toi, tu boudes moins depuis que tu manges le matin."
+     ]
+    ]
+   },
+   "caelan": {
+    "qui": "ce bruyant de",
+    "nom": "Caelan",
+    "sentiment": -0.3,
+    "avis": "Caelan joue sous Fil-d'Aube toutes les nuits depuis cent ans. Toujours la même chanson. Un garde entend tout. Certaines nuits, j'aimerais être un peu sourd.",
+    "anecdotes": [
+     "Une nuit, je lui ai confisqué sa harpe. Raison de sécurité. Il est allé chanter sous la fenêtre d'Ilyria. Sans harpe. Je lui ai rendu la harpe au bout d'un couplet. La harpe, au moins, joue juste.",
+     "Il dit que je chante faux. J'ai chanté une fois, à la fête de l'Aube, il y a cent ans, parce qu'on me l'avait demandé. Personne ne me l'a redemandé. C'est très bien comme ça. Mais je ne vois pas pourquoi il le rappelle à tout le monde, à chaque fête."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Caelan. La harpe. Après minuit, non."
+     ],
+     [
+      "b",
+      "L'amour n'a pas d'heure, Thalion."
+     ],
+     [
+      "a",
+      "La garde, si."
+     ],
+     [
+      "b",
+      "Alors chante avec moi. Ah non, c'est vrai…"
+     ]
+    ]
+   },
+   "ilyria": {
+    "qui": "la tisserande",
+    "nom": "Ilyria",
+    "sentiment": -0.1,
+    "avis": "Ilyria voit tout depuis sa plate-forme, et elle croit que ça fait d'elle une garde. Non. Et ce n'était pas de la chance, la pomme. Ce n'est jamais de la chance.",
+    "anecdotes": [
+     "Pomme à cent pas, en plein cœur. Elle a crié « chance ! » depuis Fil-d'Aube. Le lendemain, deux pommes à cent pas. « Chance ! » Le surlendemain, trois. Elle a dit : « Trois fois de la chance. » J'ai arrêté de compter les pommes. Elle n'a jamais arrêté de compter les chances.",
+     "Une nuit, j'étais devant la porte de l'Arbre-Mère. Une heure. Seul. Le lendemain, Ilyria m'a regardé d'une drôle de façon. Je lui ai demandé ce qu'elle avait vu. Elle a dit : « Rien. » Elle a menti. Pour moi. Depuis, je lui pardonne les pommes. Presque."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ilyria. Tu as encore laissé un fil sur ma flèche."
+     ],
+     [
+      "b",
+      "Pour qu'elle porte bonheur. Avec ta chance, tu en as besoin."
+     ],
+     [
+      "a",
+      "Ce n'est pas de la chance."
+     ],
+     [
+      "b",
+      "Bien sûr, Thalion. Bien sûr."
+     ]
+    ]
+   },
+   "elfe_4": {
+    "qui": "mon éclaireur",
+    "nom": "Orophin",
+    "sentiment": 0.5,
+    "avis": "Orophin est mon éclaireur depuis deux siècles. Bon pisteur. Bon œil. Trop pressé. Je vérifie encore ses flèches. Il déteste ça. C'est pour ça que je le fais.",
+    "anecdotes": [
+     "Quand Elandor a disparu neuf jours, Orophin a fouillé l'île sans dormir. Il est revenu avec lui, épuisé, furieux, couvert d'épines. J'ai dit : « Bon travail. » Il m'a regardé comme si je lui avais offert une couronne. Je devrais le dire plus souvent. Je ne le ferai pas.",
+     "Orophin m'a rapporté qu'il voyait des petites lumières au-dessus des champignons blancs. Il voulait tirer pour voir de quoi il s'agissait. J'ai dit non. Très fort. Il n'a pas compris pourquoi. Je ne lui ai pas expliqué. On ne tire pas sur les esprits."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rapport."
+     ],
+     [
+      "b",
+      "Forêt calme. Brume calme. Tout est calme, Thalion."
+     ],
+     [
+      "a",
+      "Trop calme ?"
+     ],
+     [
+      "b",
+      "Juste calme. Ça existe aussi."
+     ]
+    ]
+   },
+   "elfe_8": {
+    "qui": "l'apicultrice",
+    "nom": "Gilwen",
+    "sentiment": 0.0,
+    "avis": "Gilwen dit que je vole ses abeilles. Les abeilles d'en haut ne sont à personne. Elle dit que je ne leur dis pas bonjour en chantant. Je ne chante pas. Tout le monde sait pourquoi.",
+    "anecdotes": [
+     "Gilwen m'a dit : « Si tu leur chantais quelque chose avant de prendre le miel, elles ne te piqueraient pas. » J'ai essayé. Une fois. Elles m'ont piqué deux fois plus. Gilwen a dit que ce n'était pas une question de chanson, mais de justesse. Je ne lui parle plus de chansons.",
+     "Le jour où les abeilles d'en haut ont essaimé, Gilwen ne pouvait pas monter : elle a le vertige. Je suis monté avec son panier. J'ai ramené l'essaim. Quarante piqûres. Elle a dit merci, puis elle a dit que je les avais secouées. Elle a raison. Mais je les ai ramenées."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gilwen. Je monte chercher le miel."
+     ],
+     [
+      "b",
+      "Dis bonjour à mes filles, cette fois. Gentiment."
+     ],
+     [
+      "a",
+      "Bonjour."
+     ],
+     [
+      "b",
+      "Pas à moi, Thalion. À elles."
+     ]
+    ]
+   },
+   "elfe_6": {
+    "qui": "le messager",
+    "nom": "Haldir",
+    "sentiment": 0.0,
+    "avis": "Haldir passe devant ma tour dix fois par jour, en courant, et il ne dit jamais où il va. Je demande. C'est mon travail. Il ne répond pas. C'est le sien, paraît-il.",
+    "anecdotes": [
+     "Un matin, je lui ai demandé trois fois où il allait. Trois fois, il a dit « nulle part ». À la troisième, je l'ai suivi. Il est allé nulle part, en effet : au bout du ponton, regarder la brume, une heure entière. Je suis rentré. On ne s'en est jamais reparlé.",
+     "Quand ton bateau a traversé la brume pour la première fois, c'est Haldir qui est arrivé le premier à ma tour : « Un humain ! Avec la boussole de Lyra ! » Il n'avait pas couru aussi vite depuis cent ans. Pour une fois, il m'a dit où il allait. Il allait te voir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Haldir. Où vas-tu ?"
+     ],
+     [
+      "b",
+      "Nulle part, Thalion."
+     ],
+     [
+      "a",
+      "Tu y vas souvent."
+     ],
+     [
+      "b",
+      "C'est un bel endroit."
+     ]
+    ]
+   }
+  }
+ }
+}

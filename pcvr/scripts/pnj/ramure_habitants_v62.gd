@@ -219,7 +219,7 @@ static func _all() -> Array:
 				"humeur": [L("Super ! J'ai mangé un gâteau de lune. Chut.", {}, "rire")],
 				"lui": [L("Plus tard je serai coureuse, comme Bondi. Ou boulangère. Ou les deux : je livrerai le pain en courant !", {})],
 				"ile": [L("Gland dit qu'il y a un dragon sous la grande mare. Myrtille dit que c'est un gros poisson. Moi je dis que c'est un dragon-poisson.", {})],
-				"rumeur": [L("Hulotte voit dans le noir ! Elle m'a dit que j'avais du gâteau sur le museau. Dans le noir !", {}, "rire")],
+				"rumeur": [L("Hulotte voit dans le noir ! Il m'a dit que j'avais du gâteau sur le museau. Dans le noir !", {}, "rire")],
 				"interpelle": [L("Hé ! Les petites oreilles !", {"visites_max": 0}), L("{surnom} ! Tu joues ?", {"visites_min": 1})],
 			}},
 		# ================================================================ les ours : la forge et la nacelle
@@ -249,7 +249,7 @@ static func _all() -> Array:
 				"humeur": [L("Hrmm. Bien.", {}), L("Ce soir, je tape sur le grand tambour. Boum. Ça, j'aime.", {"soir": true}, "rire")],
 				"lui": [L("La nacelle, c'est mon grand-père qui l'a tressée. L'osier a été changé quatre fois. La corde, six fois. Mais c'est toujours la nacelle de mon grand-père.", {}), L("D'en haut, à la cime, on voit la mer à l'est et la montagne à l'ouest. Monte au coucher du soleil. Ne le dis à personne : il y a trop de monde, après.", {"sujet_min": ["lui", 1]})],
 				"ile": [L("Il y a un dirigeable qui vient se poser au nord du village, le Zéphyr. Les ingénieurs de Cliquetis. Ils ont voulu me vendre une nacelle à vapeur. Hrmm. Non.", {})],
-				"rumeur": [L("Hulotte monte à la cime toutes les nuits pour regarder les étoiles. Elle ne prend jamais la nacelle. Elle vole. Enfin, elle dit qu'elle vole.", {})],
+				"rumeur": [L("Hulotte monte à la cime toutes les nuits pour regarder les étoiles. Il ne prend jamais la nacelle. Il vole. Enfin, il dit qu'il vole.", {})],
 				"interpelle": [L("Hrmm !", {"visites_max": 0}), L("Hrmm, {surnom} !", {"visites_min": 1})],
 			}},
 		{"id": "tilleul", "nom": "Grand-Père Tilleul", "titre": "conteur", "maison": "porte_nord_2",

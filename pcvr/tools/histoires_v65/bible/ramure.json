@@ -1,0 +1,1172 @@
+{
+ "merelune": {
+  "genre": "f",
+  "prenom": "Mère-Lune",
+  "plan": [
+   "le clan qui dormait dans la brume — née au sol, chez les loups pisteurs qui vivaient sans maison dans les fougères de la forêt des brumes ; elle lisait une trace avant de savoir parler. Les enfants croient qu'elle est la louve de la légende qui a sauvé la lune : elle ne dit ni oui ni non. (Voix : lente, douce, « petit », proverbes de pisteuse.)",
+   "la trace de la lune — à dix-huit ans, elle suit le reflet de la lune de mare en mare, vers l'est, pendant une lune entière, jusqu'aux falaises au-dessus de la mer, « le bord du monde » ; la lune lui dit : « rentre chez toi, Ramure a besoin de toi ». Elle ne connaissait Ramure que de nom : elle comprend que chez soi, c'est là où l'on vous attend.",
+   "la nuit où les loups sont arrivés — il y a soixante-dix ans, elle mène son clan au pied du Chêne-Mère, alors seul arbre habité ; les lapins tremblent ; pour éviter la dispute, elle propose une course autour de l'arbre, la première Grande Course : un lapin gagne, et les loups deviennent les gardiens du Guet. Le soir même, un jeune ours, Tilleul, lui raconte une histoire ; elle s'endort avant la fin.",
+   "mes enfants qui ne sont pas les miens — jamais eu d'enfants, mais tout Ramure l'appelle Mère ; elle a pris Brume comme élève, tricoté le foulard rouge de Croc-Gris, et chaque printemps elle remet les lanternes de lune sur les ponts ; cette année, ses pattes ne vont plus jusqu'au bord des mares. Le soir, sur sa mousse au Cercle, elle regarde danser Lilas.",
+   "(confidence) ce que la lune m'a dit d'autre — la lune ne lui a pas seulement dit de rentrer : elle lui a confié un secret au fond de la grande mare (le sceau des brumes ; elle ne dit pas où tant que la lune n'a pas parlé au joueur). Elle a peur de partir avec la brume avant de l'avoir transmis : elle pensait à Brume, mais Brume lit les traces sans entendre la lune."
+  ],
+  "reve": "danser une dernière fois au Cercle, pour de vrai et pas seulement dans sa tête, avec Tilleul qui marche aussi mal qu'elle ; et voir les lanternes bleues sur tous les ponts sans avoir eu à les poser elle-même",
+  "question": "« As-tu une maison où l'on t'attend ? » (oui / plusieurs / pas_encore) — chez soi, c'est là où l'on vous attend ; à pas_encore, elle répond doucement que Ramure, alors, attendra le joueur ; elle s'en souvient en l'accueillant.",
+  "liens": {
+   "tilleul": {
+    "qui": "mon vieil ami",
+    "nom": "Tilleul",
+    "sentiment": 0.8,
+    "fond": "Le jeune ours qui lui a raconté une histoire le soir de son arrivée, il y a soixante-dix ans ; elle s'est endormie au milieu, et depuis personne n'entend la fin de ses histoires. Chaque soir, ils comparent leurs douleurs de pattes. Elle connaît la fin de « la lune qui ne voulait plus se coucher » (la mère de Tilleul la racontait au Cercle) et ne la lui redit pas : « Tu la retrouveras. » Anecdotes : la première histoire ; la Nuit de la Fausse Alerte, elle est restée assise pendant que Bourru descendait Tilleul. Bavardage : « Tu as encore oublié la fin. » / « Je ne l'ai pas oubliée. Je la garde. »"
+   },
+   "brume": {
+    "qui": "mon élève",
+    "nom": "Brume",
+    "sentiment": 0.9,
+    "fond": "À huit ans, Brume a suivi seule ses traces dans la brume jusqu'à sa porte ; Mère-Lune l'a prise comme élève le soir même : « une trace, c'est une phrase ». Brume piste aujourd'hui là où les vieilles pattes ne vont plus et lui rapporte les traces rondes de la grande mare ; Mère-Lune écoute et ne dit rien. Elle se demande si Brume entendra un jour la lune. Anecdotes : le premier soir, une petite louve trempée sur le seuil ; l'examen du gâteau de lune caché, déjà à moitié mangé par Bedaine. Bavardage : « Qu'as-tu lu ce matin ? » / « Des pas ronds. Encore. » / « Écoute aussi, petite. Pas seulement avec le nez. »"
+   },
+   "crocgris": {
+    "qui": "notre gardien",
+    "nom": "Croc-Gris",
+    "sentiment": 0.7,
+    "fond": "Petit-fils d'un loup de son clan ; elle lui a tricoté son foulard rouge le jour où il est devenu garde, il y a trente ans. Trop sérieux : elle le taquine pour le faire sourire. Elle sait que ses yeux baissent et ne dit rien (il croit que personne ne sait). Anecdotes : le foulard, qu'il porte encore ; la Nuit de la Fausse Alerte, elle seule est restée assise : « Ce n'est que Hulotte. » Bavardage : « Rien à signaler, Mère-Lune. » / « Signale-moi un sourire, alors. »"
+   },
+   "pivoine": {
+    "qui": "notre herboriste",
+    "nom": "Pivoine",
+    "sentiment": 0.8,
+    "fond": "Pivoine lui monte chaque soir une tisane de brume et frotte ses vieilles pattes d'un baume ; elle la gronde quand elle descend seule vers les mares. C'est Pivoine qui coud les oreilles de renard que Mère-Lune offre au voyageur qui l'aide pour les lanternes. La vieille Garance, grand-mère de Pivoine, était son amie. Anecdotes : le baume qui sent si fort que Croc-Gris a éternué depuis la vigie ; Pivoine qui la surprend au bord d'une mare à l'aube. Bavardage : « Ta tisane, Mère-Lune. Et pas de mares ce soir. » / « Oui, docteur. »"
+   },
+   "lilas": {
+    "qui": "notre danseuse",
+    "nom": "Lilas",
+    "sentiment": 0.8,
+    "fond": "Lilas danse chaque nuit, devant sa mousse, la danse de la louve qui a sauvé la lune. À sa première nuit, à seize ans, elle a trébuché au moment de sortir la lune de la mare, et Mère-Lune lui a soufflé : « On ne la soulève pas, on la berce. » Les enfants croient que Mère-Lune est la louve de la danse ; elle ne dit ni oui ni non. Anecdotes : la première nuit ; Bruyère, la mère de Lilas, dansait déjà pour elle. Bavardage : « Tu as bercé la lune, ce soir. » / « Vous dansiez avec moi. Je l'ai vu. »"
+   },
+   "trefle": {
+    "qui": "notre boulangère",
+    "nom": "Trèfle",
+    "sentiment": 0.7,
+    "fond": "Mère-Lune est la seule encore en vie à avoir goûté le gâteau de lune de Luzerne, la grand-mère de Trèfle ; chaque soir, elle goûte celui de Trèfle et dit « presque ». Elle sait que la recette est réinventée et le garde pour elle. Anecdotes : le soir où elle a failli dire « c'est ça » et a toussé à la place ; Trèfle lui a apporté sept gâteaux différents le même soir. Bavardage : « Alors ? » / « Presque, ma fille. Presque. »"
+   },
+   "bedaine": {
+    "qui": "ce filou de",
+    "nom": "Bedaine",
+    "sentiment": 0.3,
+    "fond": "L'hiver du grand froid, il y a quinze ans, elle lui a prêté sa vieille cape de pisteuse ; au printemps, il l'avait troquée contre trois pots de miel. Il a mis un an et onze trocs à la récupérer, et la lui a rendue avec une plume en plus. Elle fait semblant d'être encore fâchée ; « un jour, il troquera le Chêne-Mère contre une noisette ». Anecdotes : la cape ; la plume, qu'elle a gardée. Bavardage : « Bonsoir, Mère-Lune ! Votre cape va bien ? » / « Toujours sur mon dos, Bedaine. Et elle y reste. »"
+   }
+  }
+ },
+ "tilleul": {
+  "genre": "m",
+  "prenom": "Tilleul",
+  "plan": [
+   "le temps où il n'y avait qu'un arbre — né sur le Chêne-Mère quand c'était le seul arbre habité ; son père Frêne a tressé la nacelle d'osier ; petit, Tilleul y montait pour écouter les vieux raconter à la cime ; plus tard, il l'a gardée lui-même, si bavard que les passagers préféraient l'escalier, jusqu'à ce que son fils Bourru la reprenne. Puis les ponts ont poussé d'arbre en arbre : d'où le nom de Ramure. (Voix : bavard, digressions, « assieds-toi », « il était deux fois », s'assoupit.)",
+   "la nuit où les loups sont arrivés — à dix-huit ans, il voit la jeune Mère-Lune arriver avec son clan ; les lapins tremblent ; il assiste à la première Grande Course autour du Chêne-Mère. Le soir, il raconte à Mère-Lune sa toute première histoire ; elle s'endort au milieu. Il décide d'être conteur : « pour qu'on s'endorme heureux ».",
+   "la veillée des trois conteurs — jeune ours, il marche trois jours le long de la côte jusqu'à Tazira ; une nuit entière d'histoires avec Ba Sidi, le conteur de la place, et un jeune marin de Carène qui racontait mieux qu'il ne pêchait, Corentin. Ba Sidi en dit mille, Corentin mille, Tilleul une seule… deux fois. Personne n'a gagné. (Il mélange un peu les détails : rester vague sur la date.)",
+   "mes petits du Cercle — veuf : sa femme Mélisse est « partie avec la brume » (c'est ainsi qu'on dit mourir, à Ramure) il y a dix hivers ; il vit avec son fils Bourru dans l'arbre du nord, sa fille Ursule juste à côté. Chaque soir, il raconte aux petits l'histoire de la lune qui ne voulait plus se coucher ; ils s'endorment avant la fin. Sauf Gland.",
+   "(confidence) la fin que j'ai oubliée — il a oublié la fin de sa plus belle histoire, la lune qui ne voulait plus se coucher, que lui racontait sa mère ; il commence d'autres histoires pour que personne ne s'en aperçoive. Il soupçonne Mère-Lune de la connaître : elle fait toujours semblant de dormir au bon moment."
+  ],
+  "reve": "réunir une dernière fois les trois conteurs de la grande île, Ba Sidi, Corentin et lui, au Cercle de la Lune, maintenant que le Zéphyr relie les villes ; une nuit entière d'histoires, et que pour une fois quelqu'un entende la fin",
+  "question": "« Tu préfères les histoires vraies ou les histoires inventées ? » (vraies / inventees / les_deux) — il finit toujours par dire que les meilleures se sont passées deux fois.",
+  "liens": {
+   "ursule": {
+    "qui": "ma fille",
+    "nom": "Ursule",
+    "sentiment": 0.9,
+    "fond": "Sa fille aînée, la forgeronne : « j'ai pris tous les mots de la famille, il ne lui en est pas resté ». Elle lui garde un tabouret près de l'enclume ; il raconte aux clients pendant qu'elle martèle, et les clients restent pour les deux. Elle lui a forgé une canne avec une lune au pommeau. Anecdotes : ourse, elle tapait sur les marmites pendant ses histoires (il a su qu'elle serait forgeronne) ; l'hiver où elle était chez les nains, il lui écrivait chaque semaine, elle a répondu une fois : « Froid. Bien. Ursule. » (il garde la lettre sur lui). Bavardage : il se lance, elle coupe d'un « Hm. »"
+   },
+   "bourru": {
+    "qui": "mon fils",
+    "nom": "Bourru",
+    "sentiment": 0.8,
+    "fond": "Son fils, gardien de la nacelle que Frêne, le père de Tilleul, a tressée ; Tilleul l'a gardée des années en bavardant avec les passagers, puis Bourru l'a reprise à quinze ans (« avec lui, ça monte en silence ») ; ils vivent ensemble dans l'arbre du nord. Bourru dit trois mots par jour, Tilleul trois mille : « à nous deux, ça fait une moyenne ». Le soir, Bourru écoute toutes ses histoires sans rien dire. Anecdotes : quand Tilleul monte dans la nacelle, il raconte l'histoire de la nacelle aux passagers, qui redemandent un tour, et Bourru soupire ; la Nuit de la Fausse Alerte, Bourru l'a descendu dans ses bras. Bavardage : « Hrmm. » / « Tu as raison, mon fils, je disais justement… »"
+   },
+   "merelune": {
+    "qui": "ma vieille amie",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Il l'a vue arriver avec son clan il y a soixante-dix ans ; le soir même, il lui a raconté sa première histoire et elle s'est endormie au milieu. Les deux anciens de Ramure : chaque soir au Cercle, ils comparent leurs douleurs de pattes. Il soupçonne qu'elle connaît la fin de « la lune qui ne voulait plus se coucher » (sa mère la racontait autrefois au Cercle) : elle fait semblant de dormir au bon moment. Anecdotes : la nuit de son arrivée, plus belle que la lune, dit-il ; la Nuit de la Fausse Alerte, elle est restée assise : « Ce n'est que Hulotte. » Bavardage : « Tu dors ? » / « Je t'écoute, Tilleul. Continue. »"
+   },
+   "gland": {
+    "qui": "notre petit écureuil",
+    "nom": "Gland",
+    "sentiment": 0.7,
+    "fond": "Le seul enfant qui ne s'endort jamais avant la fin ; il demande « et après ? », et Tilleul, qui a oublié la fin (secret de sa confidence), doit commencer une autre histoire. Gland paie chaque histoire d'une noisette, et la reprend en partant. Anecdotes : le soir où Gland a posé quarante-sept questions sur le dragon de la grande mare ; le soir où c'est Tilleul qui s'est endormi avant Gland. Bavardage : « Et après ? » / « Après… il était deux fois. »"
+   },
+   "corentin": {
+    "qui": "mon vieux confrère",
+    "nom": "Corentin",
+    "sentiment": 0.8,
+    "fond": "Un des trois conteurs de la grande île, avec Ba Sidi. Tilleul l'a connu jeune marin de Carène, qui racontait mieux qu'il ne pêchait, lors d'une veillée de conteurs il y a très longtemps (à Tazira, croit-il ; il mélange un peu, rester vague). Corentin racontait le naufrage du Léviathan en tanguant comme un bateau. Ils ne se sont pas revus depuis ; Tilleul rêve de l'inviter par le Zéphyr. Corentin connaît la fin de toutes ses histoires, ce qui rend Tilleul un peu jaloux. Anecdotes : la veillée ; le Léviathan raconté en tanguant. (Lien avec le lot Carène : rester sur ces faits.)"
+   },
+   "basidi": {
+    "qui": "mon ami",
+    "nom": "Ba Sidi",
+    "sentiment": 0.8,
+    "fond": "Le conteur de la place de Tazira, l'un des trois conteurs de la grande île, avec Corentin. Tilleul l'a rencontré il y a très longtemps, après trois jours de marche le long de la côte, lors d'une veillée dans son cercle : Ba Sidi a dit mille histoires, Corentin mille, Tilleul une seule… deux fois. Personne n'a gagné. Ba Sidi lui a appris qu'à la fin on donne ce qu'on veut ; Tilleul a payé en miel. Ils ne se sont pas revus. Anecdotes : la veillée et le thé ; le pot de miel. (Lien avec le lot Tazira : rester sur ces faits.)"
+   }
+  }
+ },
+ "ursule": {
+  "genre": "f",
+  "prenom": "Ursule",
+  "plan": [
+   "la fille du conteur — fille de Tilleul : « mon père a pris tous les mots de la famille ». Ourse, elle tapait sur les marmites pendant ses histoires ; le vieux Charbon, forgeron des ours, l'a prise en apprentie à dix ans. (Voix : phrases de trois mots, « Hm. », humour sec, le miel.)",
+   "un hiver chez les nains — à vingt ans, elle part à Forgefer, sous la Montagne de Feu : un hiver dans la forge de Borin Barbe-de-Fer, à balayer et à regarder. Ils l'ont trouvée trop poilue, elle les a trouvés trop bavards. Borin a refusé de lui apprendre les runes ; elle est revenue avec la trempe, et une brûlure en forme d'étoile sur la patte.",
+   "la brume dans le bac — il y a cinq ans, Pivoine lui vend sa première fiole de brume ; Ursule y trempe une clochette : l'argent chante plus clair. Depuis, elle trempe l'argent et les lames dans un bac de brume froide, un secret que même Borin ne connaît pas. Elle a repris de Charbon la tradition : une clochette d'argent pour chaque oreille qui naît à Ramure.",
+   "la forge aujourd'hui — haches, pelles, clous pour les ponts de Pomme-de-Pin, cloches pour les lanternes ; les clochettes de Myrtille, de Mochi et de Gland pendent au Chêne-Mère ; son père s'assoit sur le tabouret qu'elle lui garde et raconte aux clients pendant qu'elle martèle ; Grisou vient bavarder à l'heure de fermer.",
+   "(confidence) les ponts que je ne traverse pas — elle a le vertige : elle n'a jamais traversé un pont de corde de sa vie. Elle forge tous les clous des ponts et prend l'escalier, même si ça lui prend une demi-heure. À l'aube, quand personne ne regarde, son frère Bourru la monte dans la nacelle sans un mot. Pomme-de-Pin croit qu'Ursule méprise ses ponts."
+  ],
+  "reve": "forger une cloche assez grande pour qu'on l'entende de toute la forêt des brumes, les soirs de fête ; et qu'un jour Borin vienne l'écouter et grogne : « pas mal… pour une poilue »",
+  "question": "« Tu as peur de quoi, toi ? » (du_noir / du_vide / de_rien) — réponses très courtes ; à du_vide, elle se tait, puis : « Hm. Moi aussi. » (seule fois où elle l'avoue à demi).",
+  "liens": {
+   "tilleul": {
+    "qui": "mon père",
+    "nom": "Tilleul",
+    "sentiment": 0.8,
+    "fond": "Son père, le conteur ; « tu veux parler, parle à Tilleul ». Elle lui garde un tabouret près de l'enclume ; il raconte, elle martèle, les clients restent pour les deux. Elle lui a forgé une canne avec une lune au pommeau. Anecdotes : petite, elle tapait sur les marmites pendant ses histoires ; à Forgefer, il lui écrivait chaque semaine, elle a répondu une fois : « Froid. Bien. Ursule. », et il garde la lettre sur lui. Bavardage : « Hm. Assieds-toi, père. » / « Je m'assois, je m'assois. Il était une fois… »"
+   },
+   "bourru": {
+    "qui": "mon frère",
+    "nom": "Bourru",
+    "sentiment": 0.6,
+    "fond": "Son petit frère ; elle grogne parce qu'il oublie de remonter la nacelle (trois lapins ont attendu en bas toute une matinée). Le jour où la corde a cassé, il y a dix ans, il a retenu la nacelle à mains nues pendant qu'elle bloquait la poulie avec une barre de fer : ils ne se le sont jamais dit, mais ils en sont fiers. Il est le seul à connaître son vertige : à l'aube, il la monte dans la nacelle sans un mot (secret de sa confidence). Anecdotes : la barre de fer ; les trois lapins. Bavardage : deux ours qui se parlent par grognements : « Hm. » / « Hrmm. » / « Bien. »"
+   },
+   "pommedepin": {
+    "qui": "la charpentière",
+    "nom": "Pomme-de-Pin",
+    "sentiment": 0.2,
+    "fond": "Elle forge les clous de tous ses ponts ; elles se disputent pour les haches (Pomme-de-Pin les déteste : on ne coupe pas un arbre vivant ; Ursule répond qu'il faut du bois pour la forge). Ursule trouve ses ponts trop dansants et elle trop bruyante, mais respecte son travail. Elle n'a jamais traversé un de ses ponts (vertige secret) ; Pomme-de-Pin croit à du mépris. Anecdotes : le jour où la corde a cassé, Ursule forgeait les crochets de la sixième corde pendant que Pomme-de-Pin la tressait, sans un mot ; Pomme-de-Pin a caché une hache d'Ursule dans un nid de guêpes. Bavardage : « Tes ponts bougent trop. » / « C'est fait pour ! »"
+   },
+   "pivoine": {
+    "qui": "l'herboriste",
+    "nom": "Pivoine",
+    "sentiment": 0.3,
+    "fond": "Elle lui achète les fioles de brume pour tremper l'argent et les lames ; depuis cinq ans, ses clochettes chantent plus clair. Pivoine parle trop, Ursule pas assez ; un jour, Ursule a dit de sa tisane que c'était « de l'eau chaude », Pivoine ne l'a pas oublié. C'est Pivoine qui a soigné les pattes brûlées de Bourru. Anecdotes : la première fiole et la clochette qui chante ; l'eau chaude. Bavardage : « Une fiole. » / « Bonjour, s'il te plaît, merci : trois mots de plus, Ursule. » / « Hm. Deux fioles. »"
+   },
+   "grisou": {
+    "qui": "ce moulin à paroles de",
+    "nom": "Grisou",
+    "sentiment": -0.3,
+    "fond": "Il vient à la forge chaque soir à l'heure de fermer et parle sans arrêt. Il lui a demandé des ressorts pour ses chaussures, comme à Cliquetis ; elle a refusé et l'a dit à Pépin (« triche ») ; depuis, il demande « des fers plus légers, juste au cas où ». Elle le trouve épuisant ; elle lui a quand même forgé en douce des clous de semelle plus fins, sans le dire. Anecdotes : les ressorts ; le soir où il a parlé si longtemps que le feu de la forge s'est éteint. Bavardage : « Juste des fers un tout petit peu plus légers ? » / « Non. » / « Et demain ? »"
+   },
+   "borin": {
+    "qui": "ce vieux grognon de",
+    "nom": "Borin",
+    "sentiment": 0.6,
+    "fond": "Jeune, elle a passé un hiver à Forgefer, dans la forge de Borin Barbe-de-Fer, à balayer et à regarder ; les nains l'ont trouvée trop poilue, elle les a trouvés trop bavards. Il a refusé de lui apprendre les runes. Quand elle ne peut plus améliorer une lame, elle envoie le voyageur chez lui : « Dis-lui qu'Ursule t'envoie. Il grognera. C'est bon signe. » Elle ne lui a jamais confié le secret de la trempe à la brume. Anecdotes : il l'appelait « la grande poilue » ; le jour où elle a soulevé son enclume pour balayer dessous et où il a cessé de parler une minute entière. (Lien avec le lot des nains : rester sur ces faits.)"
+   }
+  }
+ },
+ "bourru": {
+  "genre": "m",
+  "prenom": "Bourru",
+  "plan": [
+   "la nacelle de grand-père Frêne — petit-fils de Frêne, qui a tressé la nacelle d'osier ; après Frêne, c'est son père Tilleul qui l'a gardée, en bavardant si longtemps avec les passagers qu'ils préféraient l'escalier ; ourson, Bourru faisait la sieste dans la nacelle, à la cime. (Voix : « Hrmm. », trois mots, pince-sans-rire.)",
+   "comment j'ai eu la corde — à quinze ans, Bourru prend la corde à son père : avec lui, la nacelle monte en silence, et les passagers reviennent. Il connaît l'histoire de chaque osier changé (quatre fois) et de chaque corde (six fois). C'est toujours la nacelle de son grand-père.",
+   "le jour où la corde a cassé — il y a dix ans, la cinquième corde casse à mi-hauteur avec Hulotte et le sac du courrier dedans ; Bourru retient la nacelle à mains nues jusqu'à ce qu'Ursule bloque la poulie avec une barre de fer. Pattes brûlées, soignées par Pivoine. Pomme-de-Pin et sa grand-mère tressent la sixième corde en une nuit. Hulotte n'est jamais remontée dedans.",
+   "le grand tambour — il vit avec son vieux père dans l'arbre du nord (il écoute toutes ses histoires, le soir, sans rien dire) ; il oublie parfois de remonter la nacelle ; il a refusé la nacelle à vapeur des ingénieurs du Zéphyr ; la nuit, il tape sur le grand tambour du Cercle, lentement ; Pépin tape trop vite, ils se disputent le tempo après chaque fête.",
+   "(confidence) pourquoi je tape lentement — il ralentit le tambour pour que la danse de Lilas dure plus longtemps ; il l'aime depuis des années et ne lui a jamais rien dit d'autre que « Hrmm »."
+  ],
+  "reve": "Hrmm. Monter Lilas à la cime au coucher du soleil, dans la nacelle, sans personne d'autre. Et trouver un mot à lui dire, en haut. Un seul suffirait.",
+  "question": "« Tu as le vertige ? » (oui / non / un_peu) — réactions de trois mots ; à oui, il promet de tirer la corde doucement, et s'en souvient à chaque montée.",
+  "liens": {
+   "tilleul": {
+    "qui": "mon père",
+    "nom": "Tilleul",
+    "sentiment": 0.9,
+    "fond": "Son père ; ils vivent ensemble dans l'arbre du nord ; la nacelle, c'est le père de Tilleul, Frêne, qui l'a tressée ; Tilleul l'a gardée en bavardant avec les passagers, et Bourru la lui a reprise à quinze ans. Bourru dit trois mots par jour, Tilleul trois mille. Le soir, Bourru écoute toutes ses histoires, sans dormir, sans rien dire. Anecdotes : dans la nacelle, Tilleul raconte l'histoire de la nacelle et les passagers redemandent un tour ; la Nuit de la Fausse Alerte, Bourru l'a descendu dans ses bras (« Hrmm. Léger. »). Bavardage : « Hrmm. Couché, père. » / « Une dernière histoire, mon fils. Une petite. »"
+   },
+   "ursule": {
+    "qui": "ma sœur",
+    "nom": "Ursule",
+    "sentiment": 0.8,
+    "fond": "Sa grande sœur, la forgeronne ; elle grogne quand il oublie de remonter la nacelle (trois lapins ont attendu toute une matinée). Le jour où la corde a cassé, il y a dix ans, il retenait la nacelle à mains nues et c'est elle qui a bloqué la poulie avec une barre de fer : ils ne se le sont jamais dit. Lui seul connaît son vertige : à l'aube, il la monte sans un mot, et ne le dira jamais. Anecdotes : la barre de fer ; les trois lapins qui ont « bien fait de prendre l'escalier ». Bavardage : « Hrmm. » / « Hm. » / « Demain, l'aube ? » / « Hm. »"
+   },
+   "lilas": {
+    "qui": "la danseuse",
+    "nom": "Lilas",
+    "sentiment": 0.9,
+    "fond": "Il tape le grand tambour pour sa danse chaque nuit, lentement, pour que la danse dure plus longtemps : il l'aime en silence et ne lui a jamais dit que « Hrmm » (sa confidence). Elle danse plus lentement pour qu'il suive (la sienne). Aucun des deux ne le sait. Anecdotes : le soir où il était enrhumé et où elle n'a pas trouvé le pas ; il lui a dit un jour « Hrmm. La cime. Coucher du soleil. », elle n'a pas compris que c'était une invitation. Bavardage : « Hrmm. Belle danse. » / « Beau tambour. » / « … Hrmm. »"
+   },
+   "pepin": {
+    "qui": "l'autre tambour",
+    "nom": "Pépin",
+    "sentiment": 0.3,
+    "fond": "Les deux tambours du Cercle : Pépin trop vite, Bourru trop lent ; ensemble, c'est le bon rythme, dit Lilas. Après chaque fête, ils se disputent le tempo. Anecdotes : Pépin a chronométré ses coups avec son chronomètre de Cliquetis (« un boum toutes les deux secondes, Bourru ! ») ; le soir où Pépin, enroué, a laissé Bourru jouer seul et où tout le monde a dansé au ralenti. Bavardage : « Trop vite. » / « Trop lent ! » / « Hrmm. Demain pareil. »"
+   },
+   "hulotte": {
+    "qui": "notre astronome",
+    "nom": "Hulotte",
+    "sentiment": 0.3,
+    "fond": "Il y a dix ans, la cinquième corde a cassé alors qu'elle était dans la nacelle avec le sac du courrier ; il l'a retenue à mains nues. Depuis, elle n'est jamais remontée dedans : elle « vole » (elle prend l'escalier, très lentement). Ça le vexe en silence : sa nacelle est sûre, maintenant. Anecdotes : la corde ; chaque soir il lui propose la nacelle, elle refuse poliment et monte à pied, et il la regarde monter jusqu'en haut, au cas où. Bavardage : « Hrmm. La nacelle ? » / « Merci, Bourru. Je vole. » / « Hrmm. »"
+   }
+  }
+ },
+ "lilas": {
+  "genre": "f",
+  "prenom": "Lilas",
+  "plan": [
+   "fille de la danseuse — sa mère Bruyère a dansé pour la lune au Cercle pendant trente ans ; Lilas a appris les pas debout sur les sabots de sa mère. Les biches sont rares à Ramure. (Voix : douce, timide, « Oh… », images légères.)",
+   "ma première nuit au Cercle — à seize ans, les genoux de Bruyère ne veulent plus ; Lilas danse seule pour la première fois et trébuche au moment où l'on sort la lune de la mare ; Mère-Lune lui souffle : « On ne la soulève pas, on la berce. » Depuis, c'est elle la danseuse. Bruyère vit au calme chez les biches de la forêt profonde ; Lilas lui rend visite à chaque saison.",
+   "les pas de chèvre de Tazira — Roux revient de Tazira avec des rythmes et des pas ; Lilas apprend « la danse de chèvre » en riant, et découvre qu'ailleurs aussi on danse, sous une lune qui maigrit. Ça la trouble et ça l'attire.",
+   "mes nuits, mes amis — elle partage la maison de l'arbre des mares avec son amie Grelot, qui danse derrière elle au Cercle ; Pépin tape trop fort, Bourru trop lentement, ensemble c'est le bon rythme ; Roux joue de la flûte ; Mère-Lune la regarde depuis sa mousse.",
+   "(confidence) le tambour que j'écoute — elle danse sur le grand tambour de Bourru, pas sur celui de Pépin ; le soir où Bourru était enrhumé, elle n'a pas trouvé le pas. Elle danse plus lentement exprès pour qu'il puisse suivre. Elle croit qu'il la trouve sotte."
+  ],
+  "reve": "danser une nuit sur la place de Tazira, pour voir si la lune de là-bas, celle qui maigrit, la regarde aussi ; puis revenir, parce que la nôtre est toujours ronde",
+  "question": "« Tu danses, toi ? » (oui / jamais / en_cachette) — à en_cachette, elle rit : tout le monde commence en cachette ; à jamais, elle invite le joueur au Cercle le soir même.",
+  "liens": {
+   "bourru": {
+    "qui": "ce grand ours de",
+    "nom": "Bourru",
+    "sentiment": 0.9,
+    "fond": "Le gardien de la nacelle, qui tape le grand tambour chaque nuit pour sa danse ; elle danse sur son tambour à lui, pas sur celui de Pépin, et plus lentement exprès pour qu'il suive (sa confidence). Il l'aime en silence (la sienne). Aucun des deux ne le sait. Anecdotes : le soir où il était enrhumé et où elle a perdu le pas ; un jour il lui a dit « Hrmm. La cime. Coucher du soleil. » et elle se demande encore ce que ça voulait dire. Bavardage : « Hrmm. Belle danse. » / « Beau tambour. » / « … Hrmm. »"
+   },
+   "merelune": {
+    "qui": "notre doyenne",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Elle danse chaque nuit devant sa mousse la danse de la louve qui a sauvé la lune. À sa première nuit, à seize ans, elle a trébuché au moment de sortir la lune de la mare ; Mère-Lune lui a soufflé : « On ne la soulève pas, on la berce. » Depuis, elle danse pour elle. Elle se demande si Mère-Lune est la louve de la danse et n'ose pas demander. Anecdotes : la première nuit ; Mère-Lune qui bouge les pattes sous sa couverture, en rythme. Bavardage : « Tu as bercé la lune, ce soir. » / « Vous dansiez avec moi. Je l'ai vu. »"
+   },
+   "roux": {
+    "qui": "le joueur de flûte",
+    "nom": "Roux",
+    "sentiment": 0.6,
+    "fond": "Il joue de la flûte pendant qu'elle danse ; il lui a montré les pas de Tazira, une « danse de chèvre » qu'elle a apprise en riant ; depuis, elle rêve de la place de Tazira. Il est le seul à qui elle demande conseil, et le seul qui la fasse rire pendant la danse. Anecdotes : la danse de chèvre (tout le village l'a essayée, même Mère-Lune, de la patte) ; la note de l'écureuil sur laquelle elle tourne. Bavardage : « Une danse de chèvre, ce soir ? » / « Seulement si tu joues la note de l'écureuil. »"
+   },
+   "grelot": {
+    "qui": "ma meilleure amie",
+    "nom": "Grelot",
+    "sentiment": 0.9,
+    "fond": "Elles partagent la maison de l'arbre des mares ; Grelot danse derrière elle chaque nuit, lui garde les plus belles pommes et la taquine sur Bourru (« hrmm »), ce qui la fait rougir jusqu'aux oreilles. Lilas entend les pièces que Grelot compte la nuit sous la couverture et ne dit rien. Anecdotes : les pots de miel cassés en dansant dans la cuisine ; les « pommes bénies par la danseuse ». Bavardage : « Ce soir, tu danses pour qui ? » / « Pour la lune, Grelot. » / « Hrmm. La lune. »"
+   },
+   "pepin": {
+    "qui": "ce tapageur de",
+    "nom": "Pépin",
+    "sentiment": 0.3,
+    "fond": "Il tape trop fort et trop vite ; elle lui demande chaque soir de ralentir ; il promet, puis s'emballe au moment où l'on sort la lune de la mare. Avec Bourru, trop lent, ça fait le bon rythme, « un mystère ». Anecdotes : le soir où il a tapé si fort que la peau du tambour a crevé, et où Lilas a fini la danse sur le seul grand tambour (le plus beau soir, dit-elle, sans dire pourquoi) ; le soir où il a voulu danser avec elle et lui a marché sur les sabots. Bavardage : « Plus doucement, ce soir ? » / « Promis ! Boum… boum-boum-BOUM ! »"
+   }
+  }
+ },
+ "grelot": {
+  "genre": "f",
+  "prenom": "Grelot",
+  "plan": [
+   "la nièce du maître du troc — élevée chez son oncle Bedaine, au milieu des objets empilés du troc ; petite, elle suivait partout le tintement du grelot de sa tante Sésame, d'où son nom. (Voix : bavarde, blagues, bon sens de marchande, « Sucrée ».)",
+   "pourquoi je vends — à dix ans, son premier troc : un panier de pommes contre une chèvre ; la chèvre a mangé le reste des pommes. Depuis, elle vend contre des pièces : « les pièces, ça tient dans une poche, et une chèvre, non ». Son oncle ne s'en est jamais remis.",
+   "le départ de tante Sésame — il y a dix ans, Sésame, la sœur de Bedaine, part pour le plus long troc de sa vie (« ce grelot contre le tour du monde ») avec le grelot de la famille au bout de la queue ; elle envoie parfois une carte d'un endroit impossible, que Plumette apporte.",
+   "mon étal et ma colocataire — pommes, baies, miel de la forêt (Pomme-de-Pin grimpe le chercher, Grelot le lui paie en pièces) ; elle vit avec Lilas dans l'arbre des mares et danse derrière elle au Cercle ; elle se moque des trois carottes de Bondi.",
+   "(confidence) le grelot dans ma poche — il y a deux ans, Plumette lui a apporté un paquet sans lettre : le grelot de tante Sésame. Grelot ne l'a pas dit à Bedaine, de peur que ça veuille dire que Sésame ne reviendra pas ; elle le garde dans sa poche, bourré de mousse pour qu'il ne sonne pas."
+  ],
+  "reve": "une vraie boutique avec un toit, des fruits de toute l'île (dattes de Tazira, pommes à cidre de Carène) et une caisse de pièces qui sonnent ; et que l'oncle Bedaine y achète quelque chose, une fois, avec une pièce",
+  "question": "« Pièces ou troc, tu préfères quoi ? » (pieces / troc / ca_depend) — pieces : elle exulte ; troc : « tu parles comme mon oncle » ; ca_depend : « une vraie marchande ».",
+  "liens": {
+   "bondi": {
+    "qui": "le champion",
+    "nom": "Bondi",
+    "sentiment": 0.3,
+    "fond": "Elle se moque de ses trois carottes ; il dit que ses pommes alourdissent. La tarte aux pommes à la carotte râpée, vendue la veille d'une course : il a gagné quand même et soupçonne depuis toutes ses tartes, ce qui l'amuse beaucoup. Au fond, elle le trouve mignon de vanité. Anecdotes : la tarte ; Bondi qui compte ses carottes devant son étal. Bavardage : « Une pomme, champion ? » / « Une pomme, ça alourdit. » / « Comme une quatrième carotte. »"
+   },
+   "bedaine": {
+    "qui": "mon oncle",
+    "nom": "Bedaine",
+    "sentiment": 0.6,
+    "fond": "Son oncle, qui l'a élevée au milieu des trocs et qui ne se remet pas de la voir vendre contre des pièces (depuis l'affaire de la chèvre, quand elle avait dix ans). Elle l'adore et le trouve impossible. Elle lui cache que le grelot de tante Sésame est revenu (sa confidence). Anecdotes : la chèvre ; chaque année au Grand Troc, elle tend des pièces et il fait semblant de s'évanouir. Bavardage : « Une pomme contre un caillou ? » / « Contre deux pièces, mon oncle. » / « Quelle honte. Donne. »"
+   },
+   "lilas": {
+    "qui": "ma meilleure amie",
+    "nom": "Lilas",
+    "sentiment": 0.9,
+    "fond": "Elles partagent la maison de l'arbre des mares ; Grelot danse derrière elle au Cercle chaque nuit et lui garde les plus belles pommes. Grelot a deviné que Lilas aime Bourru et la taquine (« hrmm ») ; Lilas ne dit rien des pièces que Grelot compte la nuit sous la couverture. Anecdotes : le matin où Lilas a dansé dans la cuisine et cassé deux pots de miel ; Grelot a vendu « des pommes bénies par la danseuse », Lilas a ri une semaine. Bavardage : « Ce soir, tu danses pour qui ? » / « Pour la lune, Grelot. » / « Hrmm. La lune. »"
+   },
+   "pommedepin": {
+    "qui": "ma fournisseuse de miel",
+    "nom": "Pomme-de-Pin",
+    "sentiment": 0.7,
+    "fond": "Pomme-de-Pin grimpe chercher le miel sauvage tout en haut des grands arbres (trois piqûres et un sourire) ; Grelot le lui achète et le paie en pièces ; Pomme-de-Pin ne sait pas quoi faire des pièces et les accroche sous ses ponts, où elles tintent au vent. Anecdotes : les pièces sous le pont de l'ouest (Bedaine en a fait une crise) ; une piqûre sur le nez soignée avec le miel même. Bavardage : « Trois pièces pour ton miel ! » / « Super ! Ça fera un joli bruit sous le pont du sud ! »"
+   },
+   "plumette": {
+    "qui": "la postière",
+    "nom": "Plumette",
+    "sentiment": 0.7,
+    "fond": "Plumette lui apporte les cartes de tante Sésame, venues d'endroits impossibles. Il y a deux ans, elle lui a apporté un paquet sans lettre, que Grelot a ouvert devant elle : le grelot de Sésame ; Grelot lui a fait promettre de ne rien dire à Bedaine, et Plumette tient parole (« une postière ne dit rien »). Le paquet n'est évoqué qu'à demi-mot hors des confidences. Anecdotes : la carte qui sentait le sable ; Plumette passe exprès par le marché pour lancer « rien pour toi aujourd'hui ». Bavardage : « Une carte ? » / « Hou. Pas aujourd'hui. » / « Demain, alors. »"
+   }
+  }
+ },
+ "bedaine": {
+  "genre": "m",
+  "prenom": "Bedaine",
+  "plan": [
+   "le petit-fils de la feuille magique — son grand-père a troqué une feuille « magique » contre la maison de l'arbre des mares, où Bedaine vit toujours ; il a grandi au milieu des trocs. (Voix : « Hé hé hé ! », « mon ami », proverbes de marchand, intarissable.)",
+   "ma première chaîne — à douze ans, il part d'un caillou ; huit trocs plus tard, la chaîne finit en canne à pêche, troquée au jeune Moustache, qui pêche encore avec. Bedaine a compris : au bout, il y a toujours quelque chose de beau.",
+   "le tour de l'île en trois trocs — jeune, il troque à Cliquetis une boussole qui indique le sud, à Carène une longue-vue qui voit le passé, à Tazira un tapis qui ne vole pas (il l'a encore). À Tazira, il rencontre Mbarek le caravanier : une journée et trois théières pour leur premier marché. Depuis, chaque année : miel et poisson séché des mares contre dattes.",
+   "le maître du Grand Troc — chaque fin d'été, au Cercle, il mène la grande chaîne du Grand Troc : tout le village troque en rond, et la chaîne ne doit pas casser. L'an dernier, elle a cassé pour la première fois en vingt ans, entre Caramel et Trèfle (la sardine contre le pain de carotte). Sa nièce Grelot vend contre des pièces ; Roux le renard le nargue.",
+   "(confidence) la chaîne que je n'ai pas finie — sa sœur Sésame est partie il y a dix ans avec le grelot de la famille, « contre le tour du monde ». Il rit pour ne pas le dire : il a peur qu'un jour quelqu'un lui troque ce grelot sans elle. (Il ignore que Grelot l'a déjà dans sa poche.)"
+  ],
+  "reve": "une chaîne de troc qui ferait le tour de toute la grande île, Ramure, Cliquetis, Tazira, Carène, et reviendrait avec quelque chose de si beau qu'on ne pourrait plus le troquer ; et peut-être, au bout, sa sœur",
+  "question": "« Qu'est-ce que tu ne troquerais jamais ? » (un_souvenir / un_ami / tout_se_troque) — tout_se_troque : « Hé hé ! Un vrai tanuki ! » puis, plus bas, « pas tout, mon ami, pas tout ».",
+  "liens": {
+   "merelune": {
+    "qui": "notre doyenne",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Il la vénère et ne s'est jamais pardonné l'affaire de la cape : l'hiver du grand froid, elle lui a prêté sa vieille cape de pisteuse, il l'a troquée au printemps contre trois pots de miel ; il a mis un an et onze trocs à la récupérer et l'a rendue avec une plume en plus. Elle fait semblant d'être encore fâchée. Anecdotes : les onze trocs (le pire : un tambour contre une chèvre) ; la plume. Bavardage : « Bonsoir, Mère-Lune ! Votre cape va bien ? » / « Toujours sur mon dos, Bedaine. Et elle y reste. »"
+   },
+   "roux": {
+    "qui": "ce renard de",
+    "nom": "Roux",
+    "sentiment": 0.2,
+    "fond": "Un renard qui vend contre des pièces sur le Marché aux trocs : une insulte à la tradition, et un rival à sa mesure (renards et tanukis se disputent le titre du plus rusé depuis toujours). Le Troc des Sept Jours : la fausse « plume de phénix » a fait l'aller-retour entre eux sept jours de suite, jusqu'à ce que la petite Mochi l'achète pour un gâteau de lune ; aucun des deux n'a gagné. Anecdotes : les sept jours ; « deux flûtes contre une ». Bavardage : « Combien, ta plume ? » / « Pas de pièces avec moi, renard. » / « Alors pas de plume, tanuki. »"
+   },
+   "grelot": {
+    "qui": "ma nièce",
+    "nom": "Grelot",
+    "sentiment": 0.6,
+    "fond": "Il l'a élevée au milieu des trocs ; à dix ans, elle a troqué ses pommes contre une chèvre, qui a mangé le reste des pommes, et elle s'est mise à vendre contre des pièces : « une tanuki ! ma nièce me fait honte ! mais ses pommes sont bonnes ». Chaque année au Grand Troc, elle essaie de payer en pièces. Sésame, sa sœur partie avec le grelot de la famille, était la tante adorée de Grelot (Grelot cache le grelot revenu : ne pas le révéler hors de sa confidence). Anecdotes : la chèvre ; il lui laisse un caillou-qui-chante au lieu de payer. Bavardage : « Une pomme contre un caillou ? » / « Contre deux pièces, mon oncle. » / « Quelle honte. Donne. »"
+   },
+   "brume": {
+    "qui": "notre pisteuse",
+    "nom": "Brume",
+    "sentiment": 0.6,
+    "fond": "« Beaucoup de traces, c'est Bedaine qui fait ses courses », dit Brume. Elle adore les boussoles : elle voulait la boussole qui indique le sud qu'il avait rapportée de Cliquetis, mais il l'avait déjà troquée à Carène ; elle ne lui a pas tout à fait pardonné. À l'examen du gâteau caché, quand elle avait dix ans, les traces de Bedaine étaient arrivées avant elle (et la moitié du gâteau avait disparu). Il admire son nez. Anecdotes : la boussole ; le gâteau. Bavardage : « Tu es passé par la boulangerie, la mare, et deux fois le marché. » / « Hé hé ! La deuxième fois, c'était pour troquer. »"
+   },
+   "pommedepin": {
+    "qui": "ma meilleure cliente",
+    "nom": "Pomme-de-Pin",
+    "sentiment": 0.7,
+    "fond": "Elle adore les cailloux-qui-chantent et il en trouve ; c'est par elle que commence la chaîne du Grand Troc qu'il apprend au voyageur (caillou, gland d'or, plume de lune, fiole de brume, clochette). Le jour de l'inauguration du pont de l'ouest, le pont a tant dansé que Bedaine a eu le mal de mer ; il le traverse depuis en fermant les yeux. Anecdotes : le mal de mer ; il a essayé de lui troquer « un pont contre deux ponts ». Bavardage : « Un caillou-qui-chante pour ma charpentière ! » / « Coucou ! Il chante juste ? » / « Il chante troc. »"
+   },
+   "mbarek": {
+    "qui": "mon ami du désert",
+    "nom": "Mbarek",
+    "sentiment": 0.8,
+    "fond": "Le caravanier de Tazira, « l'homme bleu ». Bedaine l'a rencontré jeune, pendant son tour de l'île en trois trocs : leur premier marché a pris une journée et trois théières. Depuis, chaque année, Bedaine descend à Tazira (autrefois à pied, par la côte, maintenant parfois par le Zéphyr) : miel de la forêt et poisson séché des mares de Ramure contre les dattes de l'oasis. Mbarek parle peu et ne rit jamais aux blagues de Bedaine ; Bedaine compte ça comme de l'amitié. Anecdotes : les trois théières ; il a essayé de lui troquer le tapis qui ne vole pas. (Lien avec le lot Tazira : rester sur ces faits.)"
+   }
+  }
+ },
+ "roux": {
+  "genre": "m",
+  "prenom": "Roux",
+  "plan": [
+   "le renardeau qui suivait les mauvaises odeurs — apprenti, avec Pivoine, chez la vieille Garance, herboriste des Simples ; Pivoine reconnaissait cent herbes, lui reconnaissait toutes les tartes. Garance l'a envoyé cueillir dehors : il n'est jamais vraiment rentré. (Voix : blagueur, léger, « l'étranger », « c'est une technique de renard ».)",
+   "la flûte à huit trous — il taille sa flûte dans un bambou du Cercle ; Gland, tout petit, l'a mordillée en faisant ses dents et a percé un huitième trou ; depuis, elle joue une note de plus, que Roux appelle « la note de l'écureuil ».",
+   "trois jours jusqu'à Tazira — il suit la côte jusqu'à Tazira ; là-bas, des tambours toute la nuit sur une place pleine de sable ; il revient avec du sable dans la queue, des rythmes qu'il apprend à Pépin et des pas qu'il montre à Lilas.",
+   "plumes, cordes et babioles — il vend ses trouvailles au Marché contre des pièces, ce qui agace Bedaine (le Troc des Sept Jours : une « plume de phénix », en vrai une plume de faisan peinte, a fait l'aller-retour entre eux sept jours de suite, jusqu'à ce que Mochi l'achète pour un gâteau de lune) ; le soir, la flûte au Cercle.",
+   "(confidence) trois demandes, trois non — il a demandé Pivoine en mariage trois fois : dans une devinette, avec une fleur dans une fiole, puis avec la chanson de la lune ; trois fois elle a dit non, croyant qu'il plaisantait. Il ne sait pas comment être sérieux pour la quatrième."
+  ],
+  "reve": "jouer la chanson de la lune une seule fois sans faire le pitre, devant Pivoine, et qu'elle comprenne ; après, il dormira sous un arbre pendant un an",
+  "question": "« Tu as déjà dit une chose vraie en faisant semblant de plaisanter ? » (oui / jamais / tout_le_temps) — il rit, puis un peu moins ; à oui, il chuchote « moi aussi ».",
+  "liens": {
+   "pivoine": {
+    "qui": "mon herboriste préférée",
+    "nom": "Pivoine",
+    "sentiment": 1.0,
+    "fond": "Apprentis ensemble chez la vieille Garance ; il lui apporte ses cueillettes, en retard, avec des feuilles dans la queue, et elle dit qu'il dormait sous un arbre. Il l'a demandée en mariage trois fois : une devinette, une fleur dans une fiole, la chanson de la lune ; trois fois « non, idiot », en riant. Il ne sait pas qu'elle savait que c'était sérieux. Anecdotes : la devinette (la réponse était « moi ») ; la fleur dans la fiole. Bavardage : « Tu as cueilli ? » / « J'ai rêvé que je cueillais. C'est presque pareil. » / « Presque. »"
+   },
+   "bedaine": {
+    "qui": "mon vieux rival",
+    "nom": "Bedaine",
+    "sentiment": 0.4,
+    "fond": "Le renard qui vend contre des pièces et le tanuki qui troque : la vieille rivalité des deux plus rusés de la forêt. Le Troc des Sept Jours : Roux a vendu à Bedaine une « plume de phénix » (une plume de faisan peinte) ; Bedaine la lui a retroquée déguisée ; elle a fait l'aller-retour sept jours, jusqu'à ce que Mochi l'achète pour un gâteau de lune. Anecdotes : le Troc des Sept Jours ; Bedaine a voulu lui troquer sa flûte contre « deux flûtes » (une flûte et un sifflet muet). Bavardage : « Combien, ta plume ? » / « Pas de pièces avec moi, renard. » / « Alors pas de plume, tanuki. »"
+   },
+   "lilas": {
+    "qui": "notre danseuse",
+    "nom": "Lilas",
+    "sentiment": 0.7,
+    "fond": "Il joue de la flûte pendant qu'elle danse ; revenu de Tazira, il lui a montré les pas qu'on danse là-bas sur la place ; elle a dit « une danse de chèvre » et l'a apprise quand même. Il devine des choses au tempo de Bourru et ne dit rien ; c'est à lui qu'elle demande conseil. Anecdotes : la danse de chèvre au Cercle, que tout le village a essayée ; la huitième note de sa flûte, sur laquelle elle tourne. Bavardage : « Une danse de chèvre, ce soir ? » / « Seulement si tu joues la note de l'écureuil. »"
+   },
+   "pepin": {
+    "qui": "mon copain",
+    "nom": "Pépin",
+    "sentiment": 0.6,
+    "fond": "Roux lui a appris les rythmes de Tazira ; depuis, le petit tambour de Pépin fait « boum, boum-boum ». Pépin a convaincu Roux de courir une Grande Course, une fois : on l'a retrouvé endormi sous la sixième arche. Anecdotes : la sixième arche ; Pépin a chronométré une sieste de Roux (trois heures douze). Bavardage : « Une course, Roux ? » / « Une sieste, Pépin ? » / « Je chronomètre ! »"
+   },
+   "hulotte": {
+    "qui": "notre astronome",
+    "nom": "Hulotte",
+    "sentiment": 0.5,
+    "fond": "Il raconte partout que l'étoile tombée dans la grande mare était « une luciole qui avait trop bu de tisane de lune » ; Hulotte n'a pas trouvé ça drôle. Un soir, il est monté jouer de la flûte à la cime pour l'aider à compter, et elle a perdu le compte (quatre mille deux cent douze ou treize, c'est depuis ce soir-là). Anecdotes : la luciole ; la flûte à la cime. Bavardage : « Combien d'étoiles, ce soir ? » / « Une de moins quand tu joues, Roux. »"
+   }
+  }
+ },
+ "pivoine": {
+  "genre": "f",
+  "prenom": "Pivoine",
+  "plan": [
+   "le nez de la famille — petite-fille de la vieille Garance, herboriste des Simples ; à cinq ans, elle nommait cent herbes les yeux fermés ; Roux, apprenti avec elle, confondait la sauge et l'ortie. (Voix : vive, taquine, tout passe par le nez, « je sens que… ».)",
+   "l'échoppe des Simples — à vingt ans, Garance « part avec la brume » (on dit ainsi mourir, à Ramure) et lui laisse l'échoppe, au milieu du Chêne-Mère, avec trois cents bocaux et pas une étiquette.",
+   "la fiole pour les cœurs gros — il y a cinq ans, quand Cerfeuil, le mari de Trèfle, part avec la brume, Trèfle ne dort plus ; Pivoine cueille la brume du matin sur la grande mare et l'enferme dans une fiole avec une plume de lune de Plumette ; Trèfle dort enfin. La fiole de brume est née. Ursule en achète pour tremper l'argent ; Pivoine ne pose pas de questions aux ours.",
+   "mon échoppe et mes clients — tisane de brume pour dormir, de lune pour rêver ; la tisane du soir de Mère-Lune ; les oreilles de renard qu'elle coud pour le voyageur ; Roux qui rentre avec des feuilles dans la queue ; les tartes de Trèfle, qu'elle sent à cent pas.",
+   "(confidence) le quatrième oui — elle savait que les trois demandes de Roux étaient sérieuses, et que la chanson de la lune était pour elle ; elle a dit non de peur qu'il cesse d'être drôle si elle disait oui. La prochaine fois, elle dira oui, même s'il plaisante."
+  ],
+  "reve": "trouver l'herbe qui guérit la peur ; on dit qu'elle pousse au bord des mares les nuits sans lune. À Ramure, il n'y a jamais de nuit sans lune : c'est peut-être pour ça qu'on a si peu peur",
+  "question": "« Tu dors bien, la nuit ? » (comme_un_loir / mal / jamais_assez) — à chaque réponse, une ordonnance de tisane, sur le ton de la taquinerie ; elle s'en souvient en voyant la mine du joueur.",
+  "liens": {
+   "ursule": {
+    "qui": "la forgeronne",
+    "nom": "Ursule",
+    "sentiment": 0.2,
+    "fond": "Ursule lui achète les fioles de brume « pour tremper l'argent » ; Pivoine ne pose pas de questions aux ours. Une ourse qui dit trois mots quand elle en dit dix ; et qui a dit un jour de sa tisane que c'était « de l'eau chaude » : pas oublié. Mais Pivoine a soigné les pattes de Bourru, et elle sait qu'Ursule a pleuré ce jour-là. Anecdotes : l'eau chaude ; la première fiole, que Pivoine a entendue chanter dans une clochette. Bavardage : « Une fiole. » / « Bonjour, s'il te plaît, merci : trois mots de plus, Ursule. » / « Hm. Deux fioles. »"
+   },
+   "merelune": {
+    "qui": "notre doyenne",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Chaque soir, elle lui monte une tisane de brume et lui frotte les pattes d'un baume ; elle la gronde quand elle descend seule aux mares. Pivoine coud les oreilles de renard que Mère-Lune offre au voyageur des lanternes. Mère-Lune était l'amie de sa grand-mère Garance et lui parle d'elle. Anecdotes : le baume si fort que Croc-Gris a éternué depuis la vigie ; l'aube où elle l'a trouvée au bord d'une mare, en train de chercher des champignons de lune. Bavardage : « Ta tisane, Mère-Lune. Et pas de mares ce soir. » / « Oui, docteur. »"
+   },
+   "trefle": {
+    "qui": "mon amie",
+    "nom": "Trèfle",
+    "sentiment": 0.8,
+    "fond": "Son amie la boulangère : c'est pour elle, il y a cinq ans, qu'elle a inventé la fiole de brume, quand Cerfeuil est parti et que Trèfle ne dormait plus. Pivoine sent ses tartes à cent pas ; Trèfle interdit ses champignons dans la boulangerie. Anecdotes : la première fiole ; le gâteau de lune, auquel il manque une herbe, Pivoine en est sûre, mais laquelle ? Bavardage : « Ça sent la tarte aux pommes. » / « Elle sort à peine du four ! » / « Mon nez sort plus vite. »"
+   },
+   "roux": {
+    "qui": "ce grand dadais de",
+    "nom": "Roux",
+    "sentiment": 0.8,
+    "fond": "Apprentis ensemble chez la vieille Garance : elle reconnaissait cent herbes, lui toutes les tartes. Il lui apporte ses cueillettes en retard, des feuilles plein la queue ; elle dit qu'il dort sous les arbres, il dit qu'il « cueille en dormant ». Il l'a demandée en mariage trois fois (une devinette, une fleur dans une fiole, la chanson de la lune) ; trois fois elle a dit non en faisant semblant de croire à une blague. Les confidences des deux sont pour leurs chapitres 5. Anecdotes : la devinette ; la fleur dans la fiole. Bavardage : « Tu as cueilli ? » / « J'ai rêvé que je cueillais. C'est presque pareil. » / « Presque. »"
+   },
+   "plumette": {
+    "qui": "la postière",
+    "nom": "Plumette",
+    "sentiment": 0.6,
+    "fond": "Plumette lui donne les plumes de lune tombées la nuit, sans lesquelles la brume s'envolerait des fioles (la première, il y a cinq ans, pour la fiole de Trèfle). En échange, Pivoine lui prépare une tisane de brume, parce qu'une chouette qui travaille le jour dort mal. Pivoine essaie de lui faire dire les secrets du courrier ; « une postière ne dit rien ». Anecdotes : la plume envolée de l'échoppe, poursuivie jusqu'à la cime ; Plumette endormie au guichet après une tisane trop forte. Bavardage : « Une plume, Plumette ? » / « Hou. Une tisane, Pivoine ? » / « Marché conclu. »"
+   }
+  }
+ },
+ "trefle": {
+  "genre": "f",
+  "prenom": "Trèfle",
+  "plan": [
+   "les fours de ma grand-mère — née au-dessus de la boulangerie des lapins ; sa grand-mère Luzerne faisait le gâteau de lune ; elle a élevé à moitié son petit frère Bondi, de quatorze ans plus jeune ; leurs parents, retirés, cultivent le potager des lapins. (Voix : joyeuse, pressée, farineuse, « bonjour bonjour ! », « Mochi ! Pose ça ! ».)",
+   "la recette perdue — Luzerne n'a jamais écrit la recette du gâteau de lune ; quand elle « part avec la brume » (mourir, à Ramure), Trèfle a dix-huit ans ; il lui faut deux cent douze essais pour retrouver farine de châtaigne, miel et rond de pâte de haricot.",
+   "l'hiver de Cerfeuil — son mari Cerfeuil, boulanger qui brûlait toutes les miches mais goûtait mieux que personne, part avec la brume quand Mochi a un an, il y a cinq ans ; Pivoine lui fait la première fiole de brume pour dormir ; Pépin, le meilleur ami de Cerfeuil, vient depuis chaque matin porter les sacs de farine, comme il le lui avait promis.",
+   "farineuse jusqu'aux oreilles — levée à cinq heures ; Mochi vole les gâteaux ; Pépin s'entraîne au tambour derrière la boulangerie et le pain lève en rythme ; la brouille avec Caramel depuis que la chaîne du Grand Troc a cassé entre elles.",
+   "(confidence) le « presque » de Mère-Lune — le gâteau de lune n'est pas vraiment la recette de sa grand-mère : c'est son deux cent douzième essai. Mère-Lune, la seule à avoir goûté l'original, dit « presque » à chaque bouchée. Tout le village croit à la recette de Luzerne ; Trèfle cherche encore le « presque »."
+  ],
+  "reve": "trouver enfin ce qui manque au gâteau de lune et voir Mère-Lune finir sa part sans dire « presque » ; et que Mochi apprenne à pétrir avant de livrer le pain en courant",
+  "question": "« Tu te lèves tôt, toi ? » (avant_le_soleil / avec_le_soleil / apres_tout_le_monde) — fierté de lapine, ou taquinerie sur les lève-tard ; elle garde du pain chaud aux lève-tôt.",
+  "liens": {
+   "merelune": {
+    "qui": "notre doyenne",
+    "nom": "Mère-Lune",
+    "sentiment": 0.8,
+    "fond": "La seule à avoir goûté le gâteau de lune de sa grand-mère Luzerne ; chaque soir, Trèfle lui en apporte une part et attend le verdict : « presque ». Elle ne sait pas si Mère-Lune a deviné que la recette est réinventée (sa confidence). Anecdotes : le soir où Mère-Lune a toussé au lieu de répondre ; les sept gâteaux différents du même soir (« presque » sept fois). Bavardage : « Alors ? » / « Presque, ma fille. Presque. »"
+   },
+   "bondi": {
+    "qui": "mon petit frère",
+    "nom": "Bondi",
+    "sentiment": 0.7,
+    "fond": "Son petit frère, quatorze ans plus jeune, qu'elle a élevé à moitié ; fière de lui, un peu agacée par sa vanité (« trois carottes, pas une de plus, mais quatre tartines »). Anecdotes : le petit Bondi qui courait autour du four et renversait la farine ; le gâteau en forme de coupe, le soir de sa première victoire, dont il a mangé l'anse. Bavardage : « Trois carottes, Trèfle. » / « Et trois tartines, je sais. » / « … Quatre. »"
+   },
+   "caramel": {
+    "qui": "la poissonnière",
+    "nom": "Caramel",
+    "sentiment": 0.1,
+    "fond": "La vieille querelle des lapins et des chats : pain de carotte contre sardine. Au dernier Grand Troc, la chaîne a cassé entre elles, la première en vingt ans ; Trèfle trouve qu'elle n'a pas tous les torts, mais n'en dira rien. Leurs filles sont inséparables : il faut bien se dire bonjour. Trèfle a remarqué qu'un gâteau de lune disparaît parfois quand Caramel passe. Anecdotes : la chaîne cassée ; le gâteau disparu. Bavardage : « Ça sent la sardine. » / « Mrrr. Ça sent la carotte. » / « Merci. » / « Ce n'était pas un compliment. »"
+   },
+   "mochi": {
+    "qui": "ma fille",
+    "nom": "Mochi",
+    "sentiment": 1.0,
+    "fond": "Sa fille ; « Mochi ! Pose ce gâteau ! » Trèfle fait semblant de ne pas compter les gâteaux volés. Elle lui parle peu de Cerfeuil, de peur de pleurer, et ignore que Mochi parle à la brume chaque soir. Anecdotes : le gâteau caché dans les oreilles tombantes ; le pain en forme de lapin. Bavardage : « Mochi ! Pose ce gâteau ! » / « Quel gâteau ? » / « Celui dans ta bouche. »"
+   },
+   "pepin": {
+    "qui": "mon vieil ami",
+    "nom": "Pépin",
+    "sentiment": 0.8,
+    "fond": "Le meilleur ami de Cerfeuil, et le parrain de Mochi ; depuis que Cerfeuil est parti avec la brume, il y a cinq ans, il « court jusqu'à la boulangerie » chaque matin pour porter les sacs de farine, comme il le lui avait promis. Il s'entraîne au tambour derrière la boulangerie (Bondi se plaignait) : le pain lève en rythme. Anecdotes : le matin où il est arrivé avec un sac sur chaque épaule et de la farine jusqu'aux oreilles ; il chronomètre la cuisson. Bavardage : « Je passais en courant ! » / « Avec deux sacs de farine ? » / « C'est l'entraînement ! »"
+   },
+   "pivoine": {
+    "qui": "mon amie",
+    "nom": "Pivoine",
+    "sentiment": 0.8,
+    "fond": "Quand Cerfeuil est parti avec la brume, Trèfle ne dormait plus ; Pivoine a inventé pour elle la fiole de brume (de la brume du matin et une plume de lune) et elle a dormi. Depuis, amies ; Pivoine sent ses tartes à cent pas et passe pile à la sortie du four ; Trèfle interdit ses champignons dans la boulangerie. Anecdotes : la première fiole ; Pivoine a goûté le gâteau de lune et deviné qu'il manquait une herbe, sans savoir laquelle. Bavardage : « Ça sent la tarte aux pommes. » / « Elle sort à peine du four ! » / « Mon nez sort plus vite. »"
+   }
+  }
+ },
+ "mochi": {
+  "genre": "f",
+  "prenom": "Mochi",
+  "plan": [
+   "la plus petite de la boulangerie — six ans, des oreilles tombantes comme maman, et sa clochette d'argent au Chêne-Mère (Ursule y a gravé une petite lune) ; elle connaît le goût de tous les gâteaux, surtout ceux qui ne sont pas pour elle. (Voix : enfant, phrases qui courent, « Chut ! », s'émerveille des petites oreilles du joueur.)",
+   "mon papa Cerfeuil — elle ne s'en souvient pas ; elle sait qu'il brûlait le pain et qu'il riait fort ; elle a sa cuillère en bois ; il est « parti avec la brume », et le soir elle dit bonjour à la brume.",
+   "la fois où j'ai couru la Grande Course — l'an dernier, elle s'est glissée au départ et a passé la première arche avant que son parrain Pépin la rattrape ; tonton Bondi s'est retourné pour lui faire coucou et a failli perdre. Il a gagné quand même. Elle aussi, dit-elle.",
+   "mes copains — Gland dit qu'il y a un dragon sous la grande mare, Myrtille un gros poisson, elle un dragon-poisson ; Hulotte a vu du gâteau sur son museau dans le noir ; c'est elle qui a fini le Troc des Sept Jours en achetant la « plume de phénix » de Roux contre un gâteau de lune (elle la porte dans les cheveux).",
+   "(confidence) ce que je dis à la brume — chaque soir, elle raconte sa journée à la brume, pour que la brume la répète à son papa ; elle ne l'a jamais dit à maman, parce que quand maman pleure, le pain est trop salé."
+  ],
+  "reve": "être coureuse ET boulangère : livrer le pain en courant, plus vite que tonton Bondi, et qu'il soit encore chaud en arrivant tout en haut du Guet, chez Croc-Gris",
+  "question": "« C'est vrai que là d'où tu viens, les gens ont pas de queue ? » (vrai / j_en_ai_une_cachee / c_est_un_secret) — fous rires ; elle promet de garder le secret (et le répète à tout le monde).",
+  "liens": {
+   "bondi": {
+    "qui": "mon tonton",
+    "nom": "Bondi",
+    "sentiment": 1.0,
+    "fond": "Son tonton, le champion ; elle veut être coureuse comme lui. L'an dernier, elle a passé la première arche de la Grande Course avant que son parrain Pépin la rattrape, et tonton s'est retourné pour lui faire coucou. Il lui apprend le départ comme une flèche, dans le potager de papi et mamie. Anecdotes : la première arche ; elle lui a volé une carotte, la quatrième, « pour qu'il gagne pas trop ». Bavardage : « Tonton, on fait la course ? » / « Hop ! Jusqu'à la boulangerie. Tu pars avant. »"
+   },
+   "myrtille": {
+    "qui": "ma copine",
+    "nom": "Myrtille",
+    "sentiment": 0.8,
+    "fond": "Inséparables, même si leurs mamans sont fâchées (sardine contre pain de carotte). Sous la grande mare, Mochi dit un dragon-poisson, Myrtille le Roi des mares avec une couronne. Mochi lui donne ses sardines (beurk), Myrtille mange tout le gâteau. Anecdotes : le gâteau de lune pour appâter le Roi (un canard l'a mangé) ; les oreilles qui brillent la nuit. Bavardage : « C'est un dragon-poisson ! » / « C'est le Roi ! Il a une couronne ! » / « Un dragon-poisson avec une couronne, alors ! »"
+   },
+   "gland": {
+    "qui": "mon copain",
+    "nom": "Gland",
+    "sentiment": 0.3,
+    "fond": "Copains qui se disputent tout le temps : il dit qu'il y a un dragon sous la grande mare, elle dit un dragon-poisson, il dit que c'est « n'importe quoi » ; elle le dénonce à Pomme-de-Pin quand il fait des « alertes » à la tyrolienne. Elle l'aide à chercher ses noisettes (et en mange). Anecdotes : la noisette retrouvée dans un gâteau de lune ; le jour où il lui a appris à grimper et où elle est restée assise sur la première branche. Bavardage : « Un dragon ! » / « Un dragon-poisson ! » / « N'importe quoi ! »"
+   },
+   "pepin": {
+    "qui": "mon parrain",
+    "nom": "Pépin",
+    "sentiment": 0.9,
+    "fond": "Son parrain, le meilleur ami de son papa Cerfeuil ; il vient chaque matin porter la farine et lui laisse taper sur son tambour. L'an dernier, il l'a rattrapée sous la première arche de la Grande Course. Il lui raconte comment son papa brûlait le pain. Anecdotes : le chronomètre (« deux minutes pour un gâteau, Mochi, nouveau record ! ») ; la première arche. Bavardage : « Parrain ! Je peux taper ? » / « Un boum. Un seul. » / « BOUM ! »"
+   },
+   "trefle": {
+    "qui": "ma maman",
+    "nom": "Trèfle",
+    "sentiment": 1.0,
+    "fond": "Sa maman, la boulangère : « Mochi ! Pose ce gâteau ! » Elle vole les gâteaux de lune, Trèfle fait semblant de ne pas compter. Mochi lui cache qu'elle parle à la brume pour son papa (sa confidence) ; Trèfle lui cache que la recette du gâteau n'est pas celle de grand-mère. Anecdotes : le gâteau caché dans les oreilles tombantes ; Mochi a « aidé » à pétrir et le pain avait la forme d'un lapin. Bavardage : « Mochi ! Pose ce gâteau ! » / « Quel gâteau ? » / « Celui dans ta bouche. »"
+   },
+   "hulotte": {
+    "qui": "monsieur",
+    "nom": "Hulotte",
+    "sentiment": 0.8,
+    "fond": "Hulotte voit dans le noir : un soir, depuis la cime, elle lui a dit qu'elle avait du gâteau sur le museau. Mochi monte la voir au crépuscule (par l'escalier, très lentement, avec elle) et lui demande si son papa est dans les étoiles ; Hulotte répond qu'elle n'a pas fini de compter. Anecdotes : le gâteau sur le museau ; Mochi a donné un nom à l'étoile quatre mille deux cent treize : « Cerfeuil ». Bavardage : « Madame Hulotte ! Vous voyez mon museau ? » / « Hou… Propre, ce soir. C'est rare. »"
+   }
+  }
+ },
+ "bondi": {
+  "genre": "m",
+  "prenom": "Bondi",
+  "plan": [
+   "le petit frère de la boulangère — dernier-né, quatorze ans après Trèfle, élevé dans l'odeur du pain ; chaque matin, il aide encore ses parents au potager des lapins et choisit ses trois carottes. (Voix : vantard mais gentil, phrases-flèches, « Hop ! », « Hop hop ! ».)",
+   "ma première course — à onze ans, sa première Grande Course : il tombe au virage des racines, avant le Guet, et se tord la cheville ; Pépin le porte jusqu'à l'arrivée et ils finissent derniers ensemble. Bondi croit que Pépin était tombé, lui aussi.",
+   "trois coupes — champion à seize ans, la coupe en bois de chêne-mère ; il y a deux ans, Éclair menait jusqu'au virage des racines et a glissé sur une racine mouillée ; Bondi a sauté par-dessus elle sans s'arrêter, et a gagné.",
+   "tout le temps à l'entraînement — trois carottes, pas une de plus ; départ comme une flèche ; Grisou qui dit « cette fois » à chaque fois ; Éclair qui s'entraîne la nuit (il l'a vue) ; sa nièce Mochi qui veut faire comme lui ; Grelot qui se moque de ses carottes.",
+   "(confidence) la coupe tournée contre le mur — il a honte de ne pas s'être arrêté pour Éclair ; la coupe de cette année-là, il l'a tournée contre le mur de sa chambre. Et il a peur de perdre : pas la course, mais de ne plus savoir qui il est s'il n'est plus le champion."
+  ],
+  "reve": "faire le tour de toute la grande île en courant, Cliquetis, Tazira, Carène, et retour, et arriver avant le Zéphyr ; bon, avant le Zéphyr par vent contraire",
+  "question": "« Tu cours vite, toi ? » (tres_vite / pas_trop / je_prefere_marcher) — à tres_vite : « On verra ça sous les arches » ; il s'en souvient quand le joueur se présente au départ.",
+  "liens": {
+   "grisou": {
+    "qui": "mon rival",
+    "nom": "Grisou",
+    "sentiment": 0.3,
+    "fond": "Le loup qui finit deuxième derrière lui depuis trois ans et qui annonce « cette fois » à chaque fois. Bondi le trouve sympathique et pas vraiment dangereux (il se trompe peut-être : un loup ne lâche jamais). Grisou l'espionne depuis la vigie du Guet. Anecdotes : Grisou qui copie les trois carottes et finit avec mal au ventre ; il y a deux ans, Grisou a crié « ça va ? » à Éclair tombée, et Bondi, non (ça le travaille). Bavardage : « Cette fois, je te bats. » / « Tu dis ça chaque fois. » / « Et chaque fois, c'est plus vrai ! »"
+   },
+   "trefle": {
+    "qui": "ma grande sœur",
+    "nom": "Trèfle",
+    "sentiment": 0.9,
+    "fond": "Sa sœur aînée, de quatorze ans plus âgée, qui l'a élevé à moitié dans l'odeur du pain ; elle lui fait son pain de carotte et le trouve un peu vaniteux (« trois carottes, pas une de plus, mais quatre tartines »). Anecdotes : petit, il courait autour du four pour « aider » et renversait la farine ; le soir de sa première coupe, elle a fait un gâteau en forme de coupe, il a mangé l'anse avant tout le monde. Bavardage : « Trois carottes, Trèfle. » / « Et trois tartines, je sais. » / « … Quatre. »"
+   },
+   "mochi": {
+    "qui": "ma nièce",
+    "nom": "Mochi",
+    "sentiment": 0.8,
+    "fond": "Sa nièce, qui veut devenir coureuse « comme tonton Bondi ». L'an dernier, elle s'est glissée au départ de la Grande Course et a passé la première arche ; il s'est retourné pour lui faire coucou et a failli perdre. Il lui apprend le « départ comme une flèche » dans le potager. Anecdotes : la première arche ; le potager. Bavardage : « Tonton, on fait la course ? » / « Hop ! Jusqu'à la boulangerie. Tu pars avant. »"
+   },
+   "pepin": {
+    "qui": "mon voisin",
+    "nom": "Pépin",
+    "sentiment": 0.5,
+    "fond": "Voisins dans l'arbre du sud ; Bondi s'est plaint du tambour avant les courses, alors Pépin s'entraîne derrière la boulangerie. À sa première course, à onze ans, Bondi est tombé au virage des racines ; Pépin l'a porté jusqu'à l'arrivée et ils ont fini derniers ensemble. Bondi croit que Pépin était tombé aussi (Pépin menait : son secret, à ne pas révéler). Bondi le taquine : « le coureur qui n'a jamais gagné ». Anecdotes : la première course ; le chronomètre. Bavardage : « Mon record tient toujours, Pépin ? » / « Tout en haut du tableau, champion. Il s'ennuie un peu. »"
+   },
+   "eclair": {
+    "qui": "la coureuse",
+    "nom": "Éclair",
+    "sentiment": 0.2,
+    "fond": "Il y a deux ans, elle menait la course jusqu'au virage des racines et a glissé sur une racine mouillée ; il a sauté par-dessus sans s'arrêter et a gagné. Il fait le fier (« c'est la course »), mais il a honte (sa confidence : la coupe tournée contre le mur). Il l'a vue s'entraîner la nuit et croit qu'elle ne l'a pas vu (elle l'a vu). Elle ne lui a jamais pardonné. Anecdotes : la racine ; ses traces d'entraînement qu'il a vues à la lueur des lanternes. Bavardage : « Tu t'entraînes, Éclair ? » / « … » / « Moi aussi. Tout le temps. »"
+   },
+   "grelot": {
+    "qui": "la marchande de fruits",
+    "nom": "Grelot",
+    "sentiment": -0.1,
+    "fond": "Elle se moque de ses trois carottes (« ça fait juste des carottes de moins ») ; il dit que ses pommes alourdissent. Un jour, elle a glissé de la carotte râpée dans une tarte aux pommes de sa fabrication, qu'elle lui a vendue la veille d'une course : il a gagné quand même, mais il soupçonne encore toutes ses tartes. Anecdotes : la tarte ; il compte ses carottes devant son étal pour la narguer. Bavardage : « Une pomme, champion ? » / « Une pomme, ça alourdit. » / « Comme une quatrième carotte. »"
+   }
+  }
+ },
+ "pepin": {
+  "genre": "m",
+  "prenom": "Pépin",
+  "plan": [
+   "le lapin qui courait derrière — né dans l'arbre du sud ; toujours deuxième, ou pire, mais toujours content ; meilleur ami d'enfance de Cerfeuil, qui épousera Trèfle. (Voix : enthousiaste, bavard, interpelle tout le monde, « Boum, boum-boum ! ».)",
+   "dix courses, zéro coupe — il court la Grande Course dix ans sans jamais gagner, puis l'organise : il peint le tableau des records, et il a commandé à Cliquetis un chronomètre (la lettre qui fait « tic-tac » dont parle Plumette) ; depuis, il chronomètre tout, même la cuisson du pain.",
+   "la promesse à Cerfeuil — il y a cinq ans, Cerfeuil part avec la brume (mourir, à Ramure) ; Pépin lui avait promis de veiller sur Trèfle et sur Mochi, sa filleule ; depuis, chaque matin, il « court jusqu'à la boulangerie » porter les sacs de farine.",
+   "le tambour du Cercle — chaque nuit il tient le petit tambour ; Roux lui a appris les rythmes de Tazira ; il s'entraîne derrière la boulangerie parce que Bondi, son voisin de l'arbre du sud, se plaint du bruit avant les courses ; il se dispute le tempo avec Bourru ; Lilas le trouve trop fort.",
+   "(confidence) la course que j'ai gagnée — il y a huit ans, à sa dixième et dernière course, il était en tête au virage des racines quand le petit Bondi, onze ans, est tombé ; il s'est arrêté et l'a porté jusqu'à l'arrivée. Bondi ne sait pas qu'il menait ; personne ne le sait."
+  ],
+  "reve": "qu'un jour quelqu'un batte Bondi : pas pour que Bondi perde, mais pour peindre un nouveau nom tout en haut du tableau, et voir Bondi courir derrière quelqu'un ; il court mieux quand il poursuit",
+  "question": "« Tu as déjà gagné quelque chose ? » (oui / jamais / pas_encore) — à jamais : « Bienvenue au club ! » ; il s'en souvient le jour où le joueur gagne la Grande Course.",
+  "liens": {
+   "bourru": {
+    "qui": "mon collègue",
+    "nom": "Bourru",
+    "sentiment": 0.3,
+    "fond": "L'autre tambour du Cercle : le grand, le lent. Pépin trouve qu'il endort la fête, Bourru trouve que Pépin l'essouffle ; Lilas dit qu'ensemble c'est exactement le bon rythme, « un mystère ». Ils se disputent le tempo après chaque fête. Anecdotes : le chronomètre (« un boum toutes les deux secondes, Bourru ! » ; Bourru a répondu « Hrmm » au bout de quatre) ; le soir où Pépin était enroué et où tout le monde a dansé au ralenti. Bavardage : « Trop lent ! » / « Trop vite. » / « Demain, on essaie au milieu ? » / « Hrmm. Non. »"
+   },
+   "grisou": {
+    "qui": "ce brave",
+    "nom": "Grisou",
+    "sentiment": 0.6,
+    "fond": "« Grisou dit qu'il va battre Bondi. Il le dit à chaque fois. » Pépin aime son espoir têtu, lui qui n'a jamais gagné non plus ; il a refusé ses chaussures à ressorts (« triche »). Anecdotes : « Grisou, presque premier » peint au bas du tableau des records ; la course autour de l'île calculée au chronomètre (trois semaines). Bavardage : « Une course de trois jours, Pépin ? » / « Une course de dix arches, Grisou. Comme toujours. »"
+   },
+   "bondi": {
+    "qui": "notre champion",
+    "nom": "Bondi",
+    "sentiment": 0.8,
+    "fond": "Son voisin de l'arbre du sud, tout en haut du tableau des records depuis trois ans. Il y a huit ans, à sa dixième course, Pépin menait au virage des racines quand le petit Bondi est tombé ; il l'a porté jusqu'à l'arrivée (sa confidence : Bondi croit qu'ils étaient tombés tous les deux). Il est fier de lui comme d'un petit frère. Anecdotes : le tambour déménagé derrière la boulangerie à cause de lui ; le chronomètre de Cliquetis. Bavardage : « Mon record tient toujours, Pépin ? » / « Tout en haut du tableau, champion. Il s'ennuie un peu. »"
+   },
+   "mochi": {
+    "qui": "ma filleule",
+    "nom": "Mochi",
+    "sentiment": 0.9,
+    "fond": "Sa filleule, la fille de son meilleur ami Cerfeuil ; il lui parle de son papa (qui brûlait le pain et riait fort). Il la laisse taper sur son tambour et l'a rattrapée l'an dernier sous la première arche de la Grande Course. Anecdotes : le chronomètre et le record du gâteau mangé en deux minutes ; la première arche. Bavardage : « Parrain ! Je peux taper ? » / « Un boum. Un seul. » / « BOUM ! »"
+   },
+   "trefle": {
+    "qui": "ma vieille amie",
+    "nom": "Trèfle",
+    "sentiment": 0.9,
+    "fond": "La femme de son meilleur ami Cerfeuil ; il a promis à Cerfeuil de veiller sur elle et sur Mochi, et depuis cinq ans il « court jusqu'à la boulangerie » chaque matin porter la farine. Il s'entraîne au tambour derrière la boulangerie ; elle dit que le pain lève en rythme. Anecdotes : les deux sacs de farine et la farine jusqu'aux oreilles ; la cuisson chronométrée (« vingt-deux minutes, Trèfle, record battu ! »). Bavardage : « Je passais en courant ! » / « Avec deux sacs de farine ? » / « C'est l'entraînement ! »"
+   },
+   "roux": {
+    "qui": "mon copain",
+    "nom": "Roux",
+    "sentiment": 0.7,
+    "fond": "Le renard qui lui a appris les rythmes de Tazira (« boum, boum-boum ») ; à la fête, la flûte et le petit tambour s'entendent bien. Pépin l'a fait courir une seule Grande Course : endormi sous la sixième arche. Anecdotes : la sixième arche ; la sieste chronométrée, trois heures douze, record du village. Bavardage : « Une course, Roux ? » / « Une sieste, Pépin ? » / « Je chronomètre ! »"
+   },
+   "lilas": {
+    "qui": "notre danseuse",
+    "nom": "Lilas",
+    "sentiment": 0.5,
+    "fond": "Elle lui demande chaque soir de taper moins fort ; il promet, puis s'emballe au moment où l'on sort la lune de la mare. Il ne comprend pas pourquoi elle a dit que le soir où son tambour a crevé était le plus beau soir de l'année (elle a dansé sur le seul tambour de Bourru). Anecdotes : le tambour crevé ; le soir où il a voulu danser avec elle et lui a marché sur les sabots. Bavardage : « Plus doucement, ce soir ? » / « Promis ! Boum… boum-boum-BOUM ! »"
+   }
+  }
+ },
+ "grisou": {
+  "genre": "m",
+  "prenom": "Grisou",
+  "plan": [
+   "le neveu du garde — fils de la sœur de Croc-Gris, élevé au pied de l'arbre du Guet ; son oncle voulait en faire un garde, mais Grisou ne tient pas en place ; la dernière victoire d'un loup à la Grande Course, c'est celle de Croc-Gris, à vingt ans. (Voix : intarissable, fanfaron plein d'espoir, « je le sens dans mes pattes », se reprend : « enfin… deuxième ».)",
+   "deuxième, deuxième, deuxième — trois fois deuxième derrière Bondi ; un loup, c'est l'endurance : la course est trop courte, il faudrait qu'elle fasse le tour de l'île.",
+   "les chaussures à ressorts — il entend parler des chaussures à ressorts de Cliquetis et supplie Ursule de lui forger des ressorts ; elle refuse et le répète à Pépin, qui dit « triche » ; Grisou boude une semaine. Depuis, chaque soir à la forge, il demande « des fers plus légers, juste au cas où ».",
+   "le Guet l'après-midi — il remplace son oncle à la vigie de midi à quatre heures et regarde surtout la Clairière des Jeux ; il y a deux ans, en dépassant Éclair tombée au virage des racines, il lui a crié « ça va ? » sans s'arrêter ; depuis, elle le regarde « comme une brochette ».",
+   "(confidence) ce que je vois du Guet — il sait que les yeux de son oncle baissent : un jour, Croc-Gris a salué un tronc en le prenant pour Bourru. Alors, à la vigie, il surveille la forêt deux fois plus fort que la Clairière, pour lui, et ne le dit jamais."
+  ],
+  "reve": "une Grande Course qui fasse le tour de toute l'île : là, un loup gagne. Il poserait la coupe sur la vigie, tout près de son oncle, pour qu'il la voie bien",
+  "question": "« On peut gagner en arrivant deuxième ? » (oui / non / ca_depend) — il discute chaque réponse avec passion, et s'en souvient après chaque course.",
+  "liens": {
+   "ursule": {
+    "qui": "notre forgeronne",
+    "nom": "Ursule",
+    "sentiment": 0.5,
+    "fond": "Il passe à la forge chaque soir, à l'heure de fermer, pour bavarder (elle ne répond presque pas, il trouve ça reposant). Elle a refusé de lui forger des ressorts comme à Cliquetis et l'a dit à Pépin : « triche ». Depuis, il demande « des fers plus légers, juste au cas où ». Il trouve que ses chaussures sont plus légères depuis quelque temps et croit que c'est l'entraînement (ce sont les clous plus fins qu'Ursule a forgés en douce). Anecdotes : les ressorts ; la semaine où il a boudé. Bavardage : « Juste des fers un tout petit peu plus légers ? » / « Non. » / « Et demain ? »"
+   },
+   "crocgris": {
+    "qui": "mon oncle",
+    "nom": "Croc-Gris",
+    "sentiment": 0.8,
+    "fond": "Son oncle, le garde ; il voulait faire de Grisou un garde, Grisou veut une coupe. Croc-Gris a gagné la Grande Course à vingt ans, la dernière victoire d'un loup : Grisou veut la deuxième. Il le remplace au Guet l'après-midi. Il sait que les yeux de son oncle baissent et surveille la forêt deux fois plus fort pour lui, sans le dire (sa confidence). Anecdotes : l'alerte pour Bondi qui courait trop vite ; la tyrolienne. Bavardage : « Tu as surveillé la forêt ? » / « Toute la forêt, tonton ! Surtout la partie avec les arches. »"
+   },
+   "bondi": {
+    "qui": "le champion",
+    "nom": "Bondi",
+    "sentiment": 0.1,
+    "fond": "Trois fois deuxième derrière Bondi ; « cette fois, je te bats », dit Grisou à chaque fois. Il le surveille depuis la vigie du Guet l'après-midi. Il l'admire, et ça l'agace. Anecdotes : le jour où Grisou a copié les trois carottes et a eu mal au ventre pendant toute la course ; la course d'il y a deux ans, où Bondi a sauté par-dessus Éclair tombée et où Grisou, lui, a crié « ça va ? ». Bavardage : « Cette fois, je te bats. » / « Tu dis ça chaque fois. » / « Et chaque fois, c'est plus vrai ! »"
+   },
+   "eclair": {
+    "qui": "la coureuse",
+    "nom": "Éclair",
+    "sentiment": -0.2,
+    "fond": "Elle ne dit jamais rien et le regarde « comme une brochette » ; ça l'inquiète. Il y a deux ans, en la dépassant après sa chute au virage des racines, il lui a crié « ça va ? » sans s'arrêter ; il ne s'en souvient presque pas. Il ignore qu'elle l'aime bien (confidence d'Éclair : ne pas la révéler). Anecdotes : le regard ; le jour où elle lui a laissé une brochette sur son banc sans un mot, et où il a cru à un piège. Bavardage : « Salut, Éclair ! Tu cours ? Moi je cours. Belle journée, hein ? » / « … Oui. » / « Super conversation. »"
+   },
+   "pepin": {
+    "qui": "l'organisateur",
+    "nom": "Pépin",
+    "sentiment": 0.6,
+    "fond": "Pépin a dit « triche » pour les chaussures à ressorts ; Grisou lui donne raison… mais quand même. Pépin aime son espoir têtu. Anecdotes : Pépin a peint « Grisou, presque premier » au bas du tableau des records pour le consoler ; Grisou a demandé une course qui fasse le tour de l'île, Pépin a calculé avec son chronomètre : trois semaines. Bavardage : « Une course de trois jours, Pépin ? » / « Une course de dix arches, Grisou. Comme toujours. »"
+   }
+  }
+ },
+ "crocgris": {
+  "genre": "m",
+  "prenom": "Croc-Gris",
+  "plan": [
+   "petit-fils du clan — son grand-père faisait partie du clan qui a suivi Mère-Lune jusqu'à Ramure ; à vingt ans, il gagne la Grande Course, la dernière victoire d'un loup ; à vingt-cinq ans, il devient garde, et Mère-Lune lui tricote le foulard rouge qu'il porte encore. (Voix : sec, bref, « Halte. », « Rien à signaler. », tendresse cachée.)",
+   "trente ans de vigie — trente ans en haut du Guet ; la tyrolienne, tendue pour descendre vite en cas d'alerte, sert surtout aux enfants ; « toute la forêt sait que je la vois ».",
+   "la Nuit de la Fausse Alerte — il y a deux ans, il voit un « monstre au long cou » grimper le Chêne-Mère en pleine nuit et sonne l'alerte ; tout Ramure descend en chemise de nuit, par l'escalier et la tyrolienne. C'était Hulotte, sa lanterne et sa longue lunette. Il soutient que c'était un exercice.",
+   "la vigie et le neveu — son neveu Grisou le remplace l'après-midi (et regarde la Clairière des Jeux) ; Brume lui rapporte les traces, dont les traces rondes de la grande mare ; brochette de Caramel à midi ; le soir, les tambours du Cercle.",
+   "(confidence) mes yeux — depuis deux ans, ses yeux baissent : au-delà de la grande mare, tout est brume. « Rien à signaler », c'est aussi parce qu'il ne voit plus. Brume lui dit ce qu'elle sent sans qu'il demande. Il croit que personne ne sait, à part cette chouette de Hulotte, qui lui a proposé des lunettes (refusées)."
+  ],
+  "reve": "voir une fois, une seule, quelque chose de vrai à signaler, et pouvoir le dire à Mère-Lune. Ou alors des lunettes. Non. Pas de lunettes.",
+  "question": "« Si tu voyais quelque chose d'étrange dans la forêt, tu ferais quoi ? » (j_alerte / je_vais_voir / je_me_cache) — verdict de garde ; à je_vais_voir : « mauvaise réponse ; bonne réponse pour Brume ».",
+  "liens": {
+   "merelune": {
+    "qui": "notre doyenne",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Son grand-père faisait partie du clan qui l'a suivie jusqu'à Ramure ; « les loups l'ont suivie, on la suit encore ». Elle lui a tricoté son foulard rouge le jour où il est devenu garde. Elle le taquine pour le faire sourire ; il fait de son mieux. Il ignore qu'elle a deviné pour ses yeux. Anecdotes : le foulard ; la Nuit de la Fausse Alerte, elle seule est restée assise et a dit « Ce n'est que Hulotte », il ne s'en est pas remis. Bavardage : « Rien à signaler, Mère-Lune. » / « Signale-moi un sourire, alors. » / « … Hm. Signalé. »"
+   },
+   "grisou": {
+    "qui": "mon neveu",
+    "nom": "Grisou",
+    "sentiment": 0.3,
+    "fond": "Le fils de sa sœur ; il voulait en faire un garde, mais Grisou ne tient pas en place. Il le remplace à la vigie l'après-midi et regarde surtout la Clairière des Jeux. Croc-Gris a gagné la Grande Course à vingt ans, dernière victoire d'un loup ; Grisou veut la sienne. Croc-Gris ignore que Grisou sait pour ses yeux et surveille la forêt pour lui. Anecdotes : la tyrolienne (« surtout les enfants, et Grisou ») ; le jour où Grisou a crié « alerte ! » pour un lapin qui courait trop vite (Bondi). Bavardage : « Tu as surveillé la forêt ? » / « Toute la forêt, tonton ! Surtout la partie avec les arches. »"
+   },
+   "brume": {
+    "qui": "notre pisteuse",
+    "nom": "Brume",
+    "sentiment": 0.7,
+    "fond": "Elle piste au sol, il veille en haut ; chaque matin, elle lui rapporte les traces de la nuit, dont les traces rondes de la grande mare. Depuis que ses yeux baissent, elle lui dit ce qu'elle sent sans qu'il ait à demander ; il croit qu'elle ne sait rien. Anecdotes : elle lui a décrit le Zéphyr avant qu'il le voie (« un bourdon gros comme le Chêne-Mère ») ; la Nuit de la Fausse Alerte, Brume avait flairé Hulotte, mais l'alerte sonnait déjà. Bavardage : « Rapport. » / « Des pas ronds, la mare. Rien d'autre. » / « Rien à signaler, donc. »"
+   },
+   "hulotte": {
+    "qui": "cette chouette de",
+    "nom": "Hulotte",
+    "sentiment": -0.3,
+    "fond": "La Nuit de la Fausse Alerte, il y a deux ans : il a vu un « monstre au long cou » grimper le Chêne-Mère et sonné l'alerte ; c'était Hulotte avec sa lanterne et sa longue lunette. Il soutient que c'était un exercice. Elle a deviné que ses yeux baissent et lui a proposé une paire de lunettes : il l'a très mal pris. Anecdotes : la Fausse Alerte ; les lunettes posées « par hasard » sur la rambarde du Guet, qu'il a rangées sans y toucher. Bavardage : « Halte. … Ah. C'est vous. » / « Toujours moi, Croc-Gris. Pas de monstre ce soir. »"
+   },
+   "gland": {
+    "qui": "ce petit écureuil de",
+    "nom": "Gland",
+    "sentiment": 0.0,
+    "fond": "Gland descend la tyrolienne du Guet tous les jours en criant « alerte ! », depuis la Nuit de la Fausse Alerte où il l'a prise en pyjama pour la première fois. Croc-Gris grogne que c'est pour les vraies alertes ; il a quand même raccourci la poignée pour que Gland l'attrape sans sauter. Anecdotes : la Fausse Alerte ; la poignée raccourcie (il dit que c'est « pour la sécurité »). Bavardage : « Alerte ! Alerte ! » / « Quelle alerte ? » / « L'alerte du goûter ! »"
+   }
+  }
+ },
+ "brume": {
+  "genre": "f",
+  "prenom": "Brume",
+  "plan": [
+   "la petite qui suivait les traces — à huit ans, elle suit seule les traces de Mère-Lune dans la brume jusqu'à sa porte ; Mère-Lune la prend comme élève le soir même. (Voix : posée, attentive, lit les gens à leurs traces, « Tu es passé par… ».)",
+   "les leçons de Mère-Lune — « une trace, c'est une phrase ; plusieurs, une histoire » ; premier examen, à dix ans : retrouver un gâteau de lune caché dans la forêt ; elle le trouve, mais les traces de Bedaine y étaient déjà, et la moitié du gâteau aussi.",
+   "jusqu'au Cœur-de-Pierre — elle piste jusqu'au pied du Cœur-de-Pierre ; les traces des quatre peuples y vont toutes, puis plus rien depuis longtemps ; elle comprend que le monde est plus grand que Ramure.",
+   "ma maison du Guet — elle partage la maison de l'arbre du Guet avec Éclair (des soirées entières sans un mot, et c'est parfait) ; elle surveille l'aire du Zéphyr et les ingénieurs qui trouvent que les ponts bougent trop ; chaque matin, elle lit la vase de la grande mare pour Moustache, et les traces de la nuit pour Croc-Gris, qui n'y voit plus loin.",
+   "(confidence) la lune ne me parle pas — Mère-Lune dit que la lune parle aux pisteurs ; à Brume, elle n'a jamais rien dit. Elle a peur de ne pas être digne de succéder à Mère-Lune : elle lit les traces, mais n'entend pas la lune."
+  ],
+  "reve": "suivre une trace jusqu'au bout, une fois : les traces rondes de la grande mare, jusqu'à ce qui les a faites. Et entendre la lune lui dire quelque chose. N'importe quoi. Même « rentre chez toi ».",
+  "question": "« Tu sais retrouver ton chemin dans le brouillard ? » (oui / non / je_suis_les_lanternes) — elle approuve les lanternes ; elle se souvient de la réponse en lisant les bottes du joueur.",
+  "liens": {
+   "merelune": {
+    "qui": "mon maître",
+    "nom": "Mère-Lune",
+    "sentiment": 0.9,
+    "fond": "Celle qui lui a tout appris : à huit ans, Brume a suivi ses traces dans la brume jusqu'à sa porte, et Mère-Lune l'a prise comme élève le soir même. « Une trace, c'est une phrase. » Brume piste maintenant là où Mère-Lune ne va plus et lui rapporte tout, dont les traces rondes de la grande mare ; Mère-Lune écoute et ne dit rien, et Brume sent qu'elle sait quelque chose. Anecdotes : le premier soir ; l'examen du gâteau caché (Bedaine était passé avant). Bavardage : « Qu'as-tu lu ce matin ? » / « Des pas ronds. Encore. » / « Écoute aussi, petite. Pas seulement avec le nez. »"
+   },
+   "crocgris": {
+    "qui": "notre garde",
+    "nom": "Croc-Gris",
+    "sentiment": 0.6,
+    "fond": "Il veille en haut, elle piste au sol ; chaque matin, elle lui fait son rapport. Elle a compris que ses yeux baissent et lui décrit ce qu'elle sent sans qu'il ait à demander ; elle ne le dira à personne. Il est bourru, elle l'aime bien. Anecdotes : le Zéphyr décrit avant qu'il le voie ; la Nuit de la Fausse Alerte, elle avait senti l'odeur de Hulotte, mais l'alerte sonnait déjà. Bavardage : « Rapport. » / « Des pas ronds, la mare. Rien d'autre. » / « Rien à signaler, donc. »"
+   },
+   "eclair": {
+    "qui": "mon amie",
+    "nom": "Éclair",
+    "sentiment": 0.8,
+    "fond": "Elles partagent la maison de l'arbre du Guet ; des soirées entières sans un mot, et c'est parfait. Brume lit chaque matin les traces d'entraînement d'Éclair et ne dit rien à personne ; elle a pisté pour elle le meilleur appui du virage des racines, là où Éclair est tombée. Anecdotes : le soir des trois mots ; le virage. Bavardage : « … » / « … Oui. » / « Bien. »"
+   },
+   "moustache": {
+    "qui": "le pêcheur",
+    "nom": "Moustache",
+    "sentiment": 0.5,
+    "fond": "Chaque matin, elle lit pour lui la vase du bord de la grande mare ; il demande « Il est passé ? ». Elle ne croit pas au Roi, mais elle lit honnêtement, et elle aime sa patience : un pêcheur et une pisteuse, c'est le même métier, dit-elle, on attend que le monde écrive. Les traces rondes : pas un poisson, dit-elle ; « le Roi a des pieds quand il veut », dit-il. Anecdotes : les traces rondes ; les traces de chat qui étaient les siennes. Bavardage : « Il est passé ? » / « Toi, oui. Lui, je ne sais pas. »"
+   },
+   "bedaine": {
+    "qui": "ce gros tanuki de",
+    "nom": "Bedaine",
+    "sentiment": 0.3,
+    "fond": "Ses traces sont partout (« beaucoup de traces, c'est Bedaine qui fait ses courses »). Elle lui en veut pour la boussole qui indique le sud, rapportée de Cliquetis et troquée à Carène avant qu'elle ait pu la lui demander ; et pour le gâteau de lune de son examen, à dix ans, à moitié mangé quand elle l'a trouvé. Mais il la fait rire. Anecdotes : la boussole ; le gâteau. Bavardage : « Tu es passé par la boulangerie, la mare, et deux fois le marché. » / « Hé hé ! La deuxième fois, c'était pour troquer. »"
+   },
+   "hulotte": {
+    "qui": "l'astronome",
+    "nom": "Hulotte",
+    "sentiment": 0.3,
+    "fond": "Il y a quarante nuits, Hulotte a vu une étoile tomber dans la grande mare ; depuis, Brume trouve des traces rondes, comme des pas de pierre, qui entrent dans l'eau et ne ressortent pas. Elles comparent leurs notes chaque soir au crépuscule ; Brume croit aux traces, pas au ciel ; Hulotte fait des calculs. Aucune des deux ne sait ce que c'est : ne pas résoudre le mystère. Anecdotes : la carte des traces que Brume a dessinée et que Hulotte a couverte de chiffres ; la Nuit de la Fausse Alerte, Brume avait flairé Hulotte. Bavardage : « Des traces, cette nuit ? » / « Trois. Rondes. Et ton étoile ? » / « Toujours dans la mare. »"
+   }
+  }
+ },
+ "eclair": {
+  "genre": "f",
+  "prenom": "Éclair",
+  "plan": [
+   "la dernière de la pêcherie — fille cadette de Moustache, quinze ans après sa sœur Caramel ; petite, sur le ponton, elle ne tenait pas en place et faisait fuir les poissons. (Voix : presque muette, un mot, des points de suspension, intense.)",
+   "le héron — à douze ans, elle court après un héron qui a volé la pêche de son père et fait le tour de la grande mare plus vite que lui ; Moustache gronde : « Un chat, ça attend. » Elle choisit de courir ; à dix-sept ans, elle quitte la pêcherie pour l'arbre du Guet, près du dernier virage.",
+   "la racine du dernier virage — il y a deux ans, elle mène la Grande Course jusqu'au virage des racines, avant le Guet, et glisse sur une racine mouillée ; Bondi saute par-dessus sans s'arrêter ; Grisou, en passant, lui crie « ça va ? ». Elle finit troisième.",
+   "la nuit, quand tout le monde danse — elle s'entraîne la nuit, en cachette (tout le monde le sait) ; elle vit avec Brume, sans parler ; sa sœur Caramel lui garde une brochette avant chaque course ; sa nièce Myrtille veut courir comme elle.",
+   "(confidence) pourquoi je regarde Grisou — elle ne le regarde pas comme une brochette : il est le seul à avoir demandé « ça va ? » ; il parle, il perd, il rit, il recommence. Elle l'aime bien. Plus que bien. Elle ne dira rien. Comme d'habitude."
+  ],
+  "reve": "passer Bondi au virage des racines, avant le Guet. Une fois. Après, elle pourra peut-être parler.",
+  "question": "« Tu cours pour gagner ou pour courir ? » (gagner / courir / fuir) — réactions d'un mot ou deux ; à fuir, un long silence, puis « … Moi aussi, avant ».",
+  "liens": {
+   "grisou": {
+    "qui": "ce bavard de",
+    "nom": "Grisou",
+    "sentiment": 0.5,
+    "fond": "Il parle tout le temps, il perd, il rit, il recommence. Il y a deux ans, quand elle est tombée au virage des racines, il est le seul à lui avoir crié « ça va ? » en passant. Elle le regarde, il croit qu'elle le regarde « comme une brochette » ; elle l'aime bien, plus que bien (sa confidence, à garder pour le chapitre 5). En public, elle dit : « Il parle beaucoup. Il court moins. » Anecdotes : le « ça va ? » ; la brochette laissée sur son banc, qu'il n'a pas osé manger. Bavardage : « Salut, Éclair ! Tu cours ? Moi je cours. » / « … Oui. » / « Super conversation. »"
+   },
+   "bondi": {
+    "qui": "ce lapin de",
+    "nom": "Bondi",
+    "sentiment": -0.4,
+    "fond": "Il y a deux ans, elle menait jusqu'au virage des racines ; elle a glissé, et il a sauté par-dessus elle sans un regard. Elle ne lui a jamais pardonné, et elle passera devant lui à ce virage, un jour. Elle s'entraîne la nuit ; il croit qu'elle ne sait pas qu'il l'a vue. Anecdotes : la racine ; le matin où elle a laissé ses traces exprès sur son chemin d'entraînement. Bavardage : « Tu t'entraînes, Éclair ? » / « … » / « Moi aussi. Tout le temps. »"
+   },
+   "moustache": {
+    "qui": "mon père",
+    "nom": "Moustache",
+    "sentiment": 0.3,
+    "fond": "Sa cadette, qui faisait fuir les poissons. À douze ans, elle a couru après le héron qui avait volé sa pêche et fait le tour de la grande mare plus vite que lui ; il a grondé « un chat, ça attend ». Elle croit l'avoir déçu ; il est fier et ne sait pas le dire. Il regarde chaque course depuis le ponton : une fois, il s'est levé pour l'acclamer et a perdu une perche (elle l'a appris par Caramel). Anecdotes : le héron ; la perche. Bavardage : « Chut. Tu fais fuir le Roi. » / « … Je passais. » / « Passe plus lentement. »"
+   },
+   "caramel": {
+    "qui": "ma sœur",
+    "nom": "Caramel",
+    "sentiment": 0.7,
+    "fond": "Quinze ans d'écart ; Caramel l'a à moitié élevée sur le ponton et lui garde la plus grosse brochette avant chaque course (Éclair déteste le pain de carotte). Caramel a deviné pour Grisou et la taquine. Anecdotes : la brochette porte-bonheur ; Caramel l'a défendue devant leur père quand elle a quitté la pêcherie pour l'arbre du Guet. Bavardage : « Mrrr. Ta brochette. » / « … Merci. » / « Et dis bonjour à Grisou. » / « … »"
+   },
+   "myrtille": {
+    "qui": "ma nièce",
+    "nom": "Myrtille",
+    "sentiment": 0.8,
+    "fond": "Myrtille veut courir comme sa tata ; le jour où elle est restée coincée au deuxième plancher, Éclair est montée en trois bonds la chercher et ne l'a pas dit à Caramel. Éclair lui apprend à « attendre le virage ». Anecdotes : le deuxième plancher ; Myrtille qui chronomètre ses tours en comptant sur ses doigts. Bavardage : « Tata ! Je t'ai vue courir cette nuit ! » / « … Chut. »"
+   },
+   "brume": {
+    "qui": "mon amie",
+    "nom": "Brume",
+    "sentiment": 0.9,
+    "fond": "Elles partagent la maison de l'arbre du Guet ; elles peuvent passer une soirée entière sans un mot, et c'est parfait. Brume sait où Éclair s'entraîne la nuit (ses traces) et ne le dit à personne ; elle lui a pisté le meilleur appui du virage des racines. Anecdotes : le soir où elles ont dit trois mots en tout ; le virage pisté. Bavardage : « … » / « … Oui. » / « Bien. »"
+   }
+  }
+ },
+ "moustache": {
+  "genre": "m",
+  "prenom": "Moustache",
+  "plan": [
+   "le chaton du ponton — né à la pêcherie des chats ; son père lui a appris une seule chose : « regarde le bouchon » ; quarante ans sur le même ponton de la grande mare, avec la canne que le jeune Bedaine lui a troquée au bout de sa première chaîne. (Voix : « Chut. », peu de mots, sagesse de pêcheur, mi-sérieux mi-blagueur.)",
+   "le matin où j'ai vu le Roi — il y a trente ans, un matin de brume épaisse, il voit un poisson doré gros comme un lapin qui le regarde et rit ; seule la petite Caramel le croit, jusqu'à ses douze ans.",
+   "le chaton qui courait — le jour où sa cadette Éclair court après le héron, il comprend qu'elle ne sera jamais pêcheuse ; il gronde « un chat, ça attend » et le regrette encore. Il regarde chaque Grande Course depuis le ponton ; une fois, il s'est levé pour l'acclamer et a perdu une perche.",
+   "ma pêcherie — il vit avec sa fille Caramel et sa petite-fille Myrtille ; il pêche, Caramel vend ; Brume lit pour lui la vase du bord ; les enfants parlent d'un dragon et le Roi grandit à chaque fois ; Gland fait trembler le ponton.",
+   "(confidence) le Roi, je l'ai tenu — il y a dix ans, il a eu le Roi des mares au bout de sa ligne : doré, rieur, avec une sorte de couronne. Il a ouvert la patte. S'il l'attrapait, qu'est-ce qu'il attendrait ? Il ne l'a dit à personne (Myrtille a dessiné la couronne toute seule)."
+  ],
+  "reve": "que Myrtille voie le Roi des mares une fois, de ses yeux : pas l'attraper, le voir ; et qu'Éclair vienne s'asseoir une matinée entière sur le ponton, sans courir",
+  "question": "« Tu sais attendre, toi ? » (oui / non / ca_depend) — « Chut. » d'approbation, ou leçon de bouchon ; il s'en souvient quand le joueur s'assoit sur le ponton.",
+  "liens": {
+   "eclair": {
+    "qui": "ma petite dernière",
+    "nom": "Éclair",
+    "sentiment": 0.6,
+    "fond": "Sa cadette, qui faisait fuir les poissons. Le jour où elle a couru après le héron autour de la grande mare, il a grondé « un chat, ça attend » ; il le regrette encore. Il la regarde courir depuis le ponton à chaque Grande Course ; une fois, il s'est levé pour l'acclamer et a perdu une perche. Il est fier, il ne sait pas le dire ; elle croit l'avoir déçu. Anecdotes : le héron ; la perche. Bavardage : « Chut. Tu fais fuir le Roi. » / « … Je passais. » / « Passe plus lentement. »"
+   },
+   "caramel": {
+    "qui": "ma fille",
+    "nom": "Caramel",
+    "sentiment": 0.8,
+    "fond": "Sa fille aînée ; il pêche, elle vend. Petite, elle était la seule à croire au Roi des mares, jusqu'à ses douze ans ; maintenant, elle dit qu'il ne l'a peut-être jamais vu. Elle le gronde quand il reste dans l'humidité (il a attrapé un rhume, une fois, au lieu du Roi). Anecdotes : la petite Caramel qui gardait une sardine pour le Roi ; il lui apporte le premier poisson de chaque matin. Bavardage : « Chut. Il est là. » / « Mrrr. Le rhume aussi est là, papa. Rentre. »"
+   },
+   "myrtille": {
+    "qui": "ma petite-fille",
+    "nom": "Myrtille",
+    "sentiment": 1.0,
+    "fond": "Ils cherchent le Roi des mares ensemble depuis ses cinq ans ; elle l'a dessiné avec une couronne sans savoir pourquoi, et il a regardé le dessin longtemps (il a vu la couronne il y a dix ans : son secret). Elle ne va jamais dans l'eau ; il croit qu'elle est sage (elle ne sait pas nager : son secret à elle). Anecdotes : le dessin ; elle « cherche mieux » en se penchant si loin qu'il la tient par la queue. Bavardage : « Papy, il est là ? » / « Chut. Il nous écoute. »"
+   },
+   "brume": {
+    "qui": "la pisteuse",
+    "nom": "Brume",
+    "sentiment": 0.6,
+    "fond": "Chaque matin, Brume lit pour lui la vase au bord de la grande mare ; il demande : « Il est passé ? » Elle ne croit pas au Roi, mais elle lit honnêtement. C'est elle qui a trouvé les traces rondes qui entrent dans l'eau et ne ressortent pas : elle dit que ce ne sont pas des traces de poisson, il répond que le Roi a des pieds quand il veut. Anecdotes : les traces rondes ; le matin où elle a trouvé des traces de chat… les siennes, de la veille. Bavardage : « Il est passé ? » / « Toi, oui. Lui, je ne sais pas. »"
+   },
+   "gland": {
+    "qui": "ce petit bavard de",
+    "nom": "Gland",
+    "sentiment": 0.0,
+    "fond": "Gland raconte partout qu'il y a un dragon sous la grande mare : « le Roi grandit chaque fois qu'on en parle », et Gland en parle tout le temps. Il saute sur le ponton et fait fuir les poissons ; il a caché des noisettes dans les caisses de la pêcherie. Gland l'adore et veut l'aider ; Moustache soupire, mais lui a appris à faire un nœud de pêcheur. Anecdotes : la noisette jetée « pour appâter le dragon » ; les noisettes trouvées dans les sardines. Bavardage : « Il est gros comment, le dragon ? » / « Chut. Plus gros chaque fois que tu demandes. »"
+   }
+  }
+ },
+ "caramel": {
+  "genre": "f",
+  "prenom": "Caramel",
+  "plan": [
+   "la fille du pêcheur — fille aînée de Moustache, élevée sur le ponton ; petite, elle croyait au Roi des mares ; à douze ans, elle a arrêté. (Voix : « Mrrr », chatte paresseuse, pince-sans-rire, gourmande, sept étirements.)",
+   "l'étal — elle vend le poisson de son père le matin et invente les brochettes grillées de l'après-midi ; Croc-Gris et Grisou en achètent une chaque jour ; elle ne goûte pas la marchandise. Pas beaucoup.",
+   "Ardoise et la mer — elle épouse Ardoise, un chat gris, pêcheur des mares ; il y a trois ans, il part pêcher en mer sur les barques bleues de Tazira ; il lui demande de venir ; elle reste. Il écrit chaque mois ; Plumette apporte les lettres.",
+   "ma pêcherie — elle élève Myrtille (grise comme son père, qui grimpe sans l'escalier), surveille son vieux père, gâte sa petite sœur Éclair ; elle est brouillée avec Trèfle depuis que la chaîne du Grand Troc a cassé entre elles : sardine contre pain de carotte.",
+   "(confidence) la mer, c'est trop d'eau — elle n'est pas restée pour son père ni pour Myrtille : elle a peur de la mer, qu'elle n'a jamais vue ; elle en a honte ; à Ardoise, elle répond par des recettes de poisson au lieu de dire la vérité."
+  ],
+  "reve": "voir la mer une fois ; de loin d'abord, du haut de la cime, dans la nacelle de Bourru ; et puis un jour, peut-être, Tazira",
+  "question": "« La mer, ça ne te fait pas peur ? » (non / un_peu / oui) — à oui, elle baisse la voix ; elle s'en souvient comme d'une chose qu'ils ont en commun.",
+  "liens": {
+   "eclair": {
+    "qui": "ma petite sœur",
+    "nom": "Éclair",
+    "sentiment": 0.7,
+    "fond": "Quinze ans d'écart : Caramel l'a à moitié élevée sur le ponton. Elle lui garde la plus grosse brochette avant chaque course ; elle l'a défendue devant Moustache quand Éclair a quitté la pêcherie pour l'arbre du Guet. Elle a deviné qu'Éclair aime bien Grisou et la taquine avec. Anecdotes : la brochette porte-bonheur ; Éclair, petite, qui faisait fuir les poissons. Bavardage : « Mrrr. Ta brochette. » / « … Merci. » / « Et dis bonjour à Grisou. » / « … »"
+   },
+   "moustache": {
+    "qui": "mon père",
+    "nom": "Moustache",
+    "sentiment": 0.6,
+    "fond": "Son père ; il pêche, elle vend. Elle a cru au Roi des mares jusqu'à ses douze ans ; aujourd'hui, elle pense qu'il ne l'a peut-être jamais vu, et ça l'inquiète de le voir passer sa vie sur le ponton. Elle le gronde pour l'humidité. Anecdotes : la sardine qu'elle gardait, petite, pour le Roi ; le premier poisson de chaque matin, qu'il lui apporte comme un cadeau. Bavardage : « Chut. Il est là. » / « Mrrr. Le rhume aussi est là, papa. Rentre. »"
+   },
+   "myrtille": {
+    "qui": "ma fille",
+    "nom": "Myrtille",
+    "sentiment": 0.9,
+    "fond": "Sa fille, grise comme son père Ardoise ; elle grimpe au premier plancher sans l'escalier, Caramel le lui interdit (elle prend donc l'escalier, en courant). Caramel ne sait rien du deuxième plancher (Éclair a gardé le secret). Myrtille dessine des poissons pour les lettres à papa. Anecdotes : l'escalier en courant ; les noisettes de Gland dans les caisses de poissons. Bavardage : « Maman, je peux grimper ? » / « Mrrr. Par l'escalier. » / « En courant, alors ! »"
+   },
+   "trefle": {
+    "qui": "cette boulangère de",
+    "nom": "Trèfle",
+    "sentiment": -0.4,
+    "fond": "La vieille querelle des chats et des lapins : la sardine contre le pain de carotte. L'an dernier, au Grand Troc, la chaîne a cassé entre elles : Caramel a refusé le pain de carotte de Trèfle, Trèfle la sardine de Caramel ; première chaîne cassée en vingt ans, Bedaine en soupire encore. Leurs filles, Mochi et Myrtille, sont inséparables, ce qui les oblige à se parler. Anecdotes : la chaîne cassée ; Caramel a goûté un gâteau de lune en cachette et a aimé (elle ne l'avouera jamais). Bavardage : « Mrrr. Ça sent la carotte. » / « Ça sent la sardine. » / « Merci. » / « Ce n'était pas un compliment. »"
+   },
+   "plumette": {
+    "qui": "la postière",
+    "nom": "Plumette",
+    "sentiment": 0.2,
+    "fond": "Chaque mois, Plumette lui apporte une lettre d'Ardoise, depuis Tazira ; Caramel la prend sans un mot et va la lire au bout du ponton. Elle en veut un peu aux lettres, donc un peu à la postière, qui n'y est pour rien. Plumette attend toujours qu'elle ait fini, au cas où il y aurait une réponse. Anecdotes : une lettre sentait tant le sel que Caramel a éternué sept fois ; Plumette ne dit jamais rien du contenu (« une postière ne dit rien »). Bavardage : « Hou ! Une lettre de Tazira. » / « Mrrr. Pose-la là. » / « Je repasse demain pour la réponse. »"
+   }
+  }
+ },
+ "myrtille": {
+  "genre": "f",
+  "prenom": "Myrtille",
+  "plan": [
+   "la pêcherie de papy — sept ans ; elle vit avec maman Caramel et papy Moustache ; papa Ardoise pêche en mer à Tazira et envoie des lettres ; elle est grise comme lui. (Voix : « Mrrrou ! », enfant, compétitive, curieuse, renifle le joueur.)",
+   "la chasse au Roi des mares — depuis ses cinq ans, elle cherche le Roi avec papy ; elle l'a dessiné avec une couronne sans savoir pourquoi ; papy a regardé le dessin longtemps sans rien dire.",
+   "le deuxième plancher — elle grimpe au premier plancher sans l'escalier ; un jour, elle va jusqu'au deuxième et reste coincée ; tata Éclair monte en trois bonds la chercher et ne le répète pas à maman.",
+   "ma bande — Mochi (dragon-poisson) et Gland (dragon) ; elle, c'est le Roi des mares, avec une couronne ; Gland a caché des noisettes dans les caisses de poissons de maman ; la nuit, les oreilles de tout le monde brillent un peu.",
+   "(confidence) je ne sais pas nager — une chatte de la pêcherie qui a peur de l'eau : elle cherche le Roi depuis le ponton, jamais dans la mare ; elle n'ose le dire à personne, même pas à papy."
+  ],
+  "reve": "voir le Roi des mares avant papy et lui demander de ramener papa, ou au moins une lettre ; les poissons, ça passe partout sous la terre, dit papy",
+  "question": "« Tu sais nager ? » (oui / non / un_peu) — à non, elle chuchote « moi non plus » ; elle s'en souvient comme d'un secret partagé.",
+  "liens": {
+   "eclair": {
+    "qui": "ma tata",
+    "nom": "Éclair",
+    "sentiment": 1.0,
+    "fond": "Sa tata, la coureuse : elle veut courir comme elle. Le jour où elle est restée coincée au deuxième plancher, tata est montée en trois bonds et n'a rien dit à maman. Tata lui apprend à « attendre le virage ». Anecdotes : le deuxième plancher ; elle compte les tours de tata sur ses doigts, la nuit. Bavardage : « Tata ! Je t'ai vue courir cette nuit ! » / « … Chut. »"
+   },
+   "moustache": {
+    "qui": "mon papy",
+    "nom": "Moustache",
+    "sentiment": 1.0,
+    "fond": "Son papy ; ils cherchent le Roi des mares ensemble, elle « cherche mieux ». Elle l'a dessiné avec une couronne et papy a regardé le dessin longtemps sans rien dire. Elle cherche toujours depuis le ponton, jamais dans l'eau (elle ne sait pas nager : sa confidence). Anecdotes : le dessin ; papy qui la tient par la queue quand elle se penche trop. Bavardage : « Papy, il est là ? » / « Chut. Il nous écoute. »"
+   },
+   "caramel": {
+    "qui": "ma maman",
+    "nom": "Caramel",
+    "sentiment": 0.8,
+    "fond": "Sa maman, la poissonnière ; elle interdit de grimper sans l'escalier, alors Myrtille prend l'escalier en courant. Elle dessine des poissons pour les lettres à papa Ardoise, en mer à Tazira. Elle trouve que maman devient triste quand une lettre arrive. Anecdotes : l'escalier ; les noisettes de Gland dans les sardines (maman a crié). Bavardage : « Maman, je peux grimper ? » / « Mrrr. Par l'escalier. » / « En courant, alors ! »"
+   },
+   "mochi": {
+    "qui": "ma copine",
+    "nom": "Mochi",
+    "sentiment": 0.8,
+    "fond": "Inséparables, malgré la sardine et le pain de carotte de leurs mamans. Sous la grande mare : Myrtille dit le Roi des mares (avec une couronne), Mochi un dragon-poisson. Mochi lui donne ses sardines, Myrtille mange tout le gâteau de lune. Anecdotes : elles ont essayé d'appâter le Roi avec un gâteau de lune ; la nuit, elles comparent leurs oreilles qui brillent. Bavardage : « C'est le Roi ! Il a une couronne ! » / « C'est un dragon-poisson ! » / « Un dragon-poisson avec une couronne, alors ! »"
+   },
+   "gland": {
+    "qui": "ce frimeur de",
+    "nom": "Gland",
+    "sentiment": 0.1,
+    "fond": "Rivaux : qui grimpe le mieux (lui, c'est un écureuil, elle trouve ça injuste) ; il dit « dragon », elle dit « Roi des mares » ; il a caché des noisettes dans les caisses de poissons de la pêcherie, et Caramel les a trouvées dans les sardines. Gland la trouve géniale et le lui dit trop souvent. Anecdotes : la course d'escalade du Chêne-Mère (il a gagné, elle dit qu'il a triché avec sa queue) ; les noisettes dans les sardines. Bavardage : « Je grimpe plus vite que toi ! » / « T'as une queue d'écureuil, c'est de la triche. »"
+   }
+  }
+ },
+ "gland": {
+  "genre": "m",
+  "prenom": "Gland",
+  "plan": [
+   "la maison de l'arbre de l'ouest — sept ans ; il vit avec sa grande sœur Pomme-de-Pin et Mamie Faîne ; leurs parents, Noyer et Châtaigne, ramassent le bois tombé dans la forêt profonde à la belle saison et rentrent l'hiver. (Voix : ultra-bavard, tout fou, compte ses noisettes, « Coucou ! ».)",
+   "les trois cents noisettes — il a caché trois cents noisettes dans le Chêne-Mère ; il en a retrouvé une ; il en reste deux cent quatre-vingt-dix-neuf ; « comme ça, l'hiver ne les trouvera pas non plus ».",
+   "la Nuit de la Fausse Alerte — il y a deux ans, Croc-Gris sonne l'alerte en pleine nuit (c'était Hulotte) ; Gland descend la tyrolienne en pyjama pour la première fois ; depuis, il fait « une alerte par jour », et Croc-Gris grogne.",
+   "les histoires de grand-père Tilleul — tous les soirs, il écoute Tilleul ; c'est le seul enfant qui ne s'endort jamais avant la fin, et il demande « et après ? » ; sous la grande mare il y a un dragon, et Mochi dit n'importe quoi.",
+   "(confidence) les noisettes que je n'ai pas perdues — il sait où sont toutes ses noisettes ; il fait semblant de les avoir perdues pour que les gens l'aident à chercher et restent un peu avec lui, parce que Pomme-de-Pin travaille et que papa et maman sont loin."
+  ],
+  "reve": "faire un pont jusqu'à la lune : elle est pleine tout le temps, alors elle a le temps d'attendre ; Pomme-de-Pin l'aidera pour le dernier bout",
+  "question": "« T'as un frère ou une sœur ? » (oui / non / plein) — à non, il prête Pomme-de-Pin au joueur, « un jour, pas longtemps ».",
+  "liens": {
+   "tilleul": {
+    "qui": "grand-père",
+    "nom": "Tilleul",
+    "sentiment": 0.8,
+    "fond": "Le conteur ; Gland l'écoute tous les soirs et c'est le seul enfant qui ne s'endort jamais avant la fin ; il demande toujours « et après ? », et Tilleul commence une autre histoire. Gland paie chaque histoire d'une noisette, et la reprend en partant. Anecdotes : ses quarante-sept questions sur le dragon de la grande mare ; le soir où Tilleul s'est endormi avant lui (Gland a fini l'histoire tout seul, avec un dragon). Bavardage : « Grand-père ! La suite ! » / « La suite… Il était deux fois… »"
+   },
+   "crocgris": {
+    "qui": "le garde",
+    "nom": "Croc-Gris",
+    "sentiment": 0.7,
+    "fond": "Le garde du Guet, qui grogne mais qui a raccourci la poignée de la tyrolienne pour que Gland l'attrape sans sauter. Depuis la Nuit de la Fausse Alerte (sa première descente, en pyjama), Gland fait « une alerte par jour ». Il trouve que Croc-Gris a la meilleure maison du village, tout en haut. Anecdotes : la Fausse Alerte ; la poignée raccourcie. Bavardage : « Alerte ! Alerte ! » / « Quelle alerte ? » / « L'alerte du goûter ! »"
+   },
+   "moustache": {
+    "qui": "le pêcheur",
+    "nom": "Moustache",
+    "sentiment": 0.6,
+    "fond": "Le vieux pêcheur du ponton ; Gland est sûr qu'il y a un dragon sous la grande mare, Moustache dit que c'est le Roi des mares et qu'il grandit chaque fois qu'on en parle (Gland en parle donc beaucoup, pour voir). Moustache lui a appris un nœud de pêcheur. Anecdotes : la noisette jetée pour appâter le dragon ; les noisettes cachées dans les caisses de la pêcherie. Bavardage : « Il est gros comment, le dragon ? » / « Chut. Plus gros chaque fois que tu demandes. »"
+   },
+   "myrtille": {
+    "qui": "ma copine",
+    "nom": "Myrtille",
+    "sentiment": 0.7,
+    "fond": "Elle grimpe presque aussi bien qu'un écureuil, et ça, c'est génial ; il le lui dit souvent, elle le prend mal. Il dit « dragon », elle dit « Roi des mares ». Il a caché des noisettes dans les caisses de la pêcherie, « au frais ». Anecdotes : la course d'escalade du Chêne-Mère (il a gagné, elle crie à la triche) ; les noisettes dans les sardines. Bavardage : « Je grimpe plus vite que toi ! » / « T'as une queue d'écureuil, c'est de la triche. »"
+   },
+   "mochi": {
+    "qui": "cette pipelette de",
+    "nom": "Mochi",
+    "sentiment": 0.2,
+    "fond": "Elle parle presque autant que lui, ce qui est agaçant ; elle dit « dragon-poisson », ce qui est n'importe quoi ; elle le dénonce à Pomme-de-Pin pour les alertes de la tyrolienne. Mais elle l'aide à chercher ses noisettes (et en mange). Anecdotes : la noisette dans le gâteau de lune ; la leçon d'escalade ratée (Mochi assise sur la première branche). Bavardage : « Un dragon ! » / « Un dragon-poisson ! » / « N'importe quoi ! »"
+   },
+   "pommedepin": {
+    "qui": "ma grande sœur",
+    "nom": "Pomme-de-Pin",
+    "sentiment": 0.9,
+    "fond": "Sa grande sœur, la charpentière : il veut faire des ponts comme elle, jusqu'à la lune. Elle l'élève avec Mamie Faîne ; papa et maman sont dans la forêt profonde à la belle saison. Elle travaille beaucoup ; il fait semblant d'avoir perdu ses noisettes pour qu'on cherche avec lui (sa confidence). Anecdotes : son premier pont de deux brindilles ; le matin où il l'a mordue à la queue pour la réveiller. Bavardage : « Coucou ! T'as trouvé une noisette ? » / « Deux cent quatre-vingt-dix-neuf de reste ! »"
+   }
+  }
+ },
+ "pommedepin": {
+  "genre": "f",
+  "prenom": "Pomme-de-Pin",
+  "plan": [
+   "la petite-fille de Mamie Faîne — Mamie Faîne a construit presque tous les ponts de Ramure ; Pomme-de-Pin fait ses premiers nœuds à quatre ans. Règles des écureuils : un pont doit danser avec le vent, et on ne coupe jamais un arbre vivant (seulement le bois tombé que rapportent ses parents). (Voix : pleine d'énergie, « Coucou, coucou ! », « c'est fait pour ! ».)",
+   "le jour où la corde a cassé — à seize ans, quand la corde de la nacelle casse et que Bourru la retient à mains nues, elle tresse avec Mamie Faîne la sixième corde en une seule nuit ; son premier vrai travail.",
+   "le pont qui chante — son premier pont à elle, le pont de l'ouest, avec des cailloux-qui-chantent accrochés dessous ; le jour de l'inauguration, il a tant dansé que Bedaine a eu le mal de mer. Quand le Zéphyr s'est mis à se poser, les ingénieurs ont voulu des ponts en métal : « le métal sait danser ? » Ils sont repartis.",
+   "mes ponts et mon petit frère — elle élève Gland avec Mamie Faîne ; elle grimpe chercher le miel sauvage pour Grelot (trois piqûres, un sourire) et les glands d'or des plus vieux chênes, que Plumette adore ; elle achète les clous d'Ursule et déteste ses haches.",
+   "(confidence) Ursule ne traverse pas mes ponts — Ursule forge tous ses clous, mais n'a jamais traversé un seul de ses ponts : elle prend l'escalier. Pomme-de-Pin croit que l'ourse ne lui fait pas confiance, et ça lui fait plus mal qu'une piqûre d'abeille. (Elle ignore le vertige d'Ursule.)"
+  ],
+  "reve": "un pont de Ramure jusqu'au Cœur-de-Pierre, très long, qui danse ; ou, plus difficile encore, un pont qu'Ursule traverserait",
+  "question": "« Tu traverses comment, un pont qui bouge ? » (en_courant / en_regardant_mes_pieds / en_dansant) — elle adore en_dansant ; à en_regardant_mes_pieds, elle promet un pont « plus sage ».",
+  "liens": {
+   "ursule": {
+    "qui": "notre forgeronne",
+    "nom": "Ursule",
+    "sentiment": 0.0,
+    "fond": "Ursule forge les clous de tous ses ponts, mais elle vend des haches (on ne coupe pas un arbre vivant !) et trouve que ses ponts dansent trop. Surtout, elle n'en a jamais traversé un seul : elle prend l'escalier. Pomme-de-Pin le prend pour du mépris et en souffre (sa confidence ; elle ignore le vertige d'Ursule). Anecdotes : le jour où la corde a cassé, elles ont travaillé côte à côte toute la nuit, crochets d'un côté, corde de l'autre, sans un mot ; la hache cachée dans un nid de guêpes (Ursule est revenue piquée et n'a rien dit). Bavardage : « Tes clous sont trop gros ! » / « Tes ponts bougent trop. » / « C'est fait pour ! »"
+   },
+   "bedaine": {
+    "qui": "notre maître du troc",
+    "nom": "Bedaine",
+    "sentiment": 0.8,
+    "fond": "Il lui apporte des cailloux-qui-chantent, elle lui troque des noisettes et des bouts de corde ; c'est avec elle que commence la chaîne qu'il apprend au voyageur. Le jour de l'inauguration du pont de l'ouest, il a eu le mal de mer ; elle en rit encore, il traverse depuis les yeux fermés. Anecdotes : le mal de mer ; « un pont contre deux ponts ». Bavardage : « Un caillou-qui-chante pour ma charpentière ! » / « Coucou ! Il chante juste ? » / « Il chante troc. »"
+   },
+   "grelot": {
+    "qui": "la marchande de fruits",
+    "nom": "Grelot",
+    "sentiment": 0.7,
+    "fond": "Pomme-de-Pin lui rapporte le miel sauvage d'en haut (trois piqûres, un sourire) ; Grelot la paie en pièces, et Pomme-de-Pin les accroche sous ses ponts, où elles tintent au vent : c'est joli. Anecdotes : les pièces sous le pont de l'ouest et la crise de Bedaine ; la piqûre sur le nez. Bavardage : « Trois pièces pour ton miel ! » / « Super ! Ça fera un joli bruit sous le pont du sud ! »"
+   },
+   "plumette": {
+    "qui": "notre postière",
+    "nom": "Plumette",
+    "sentiment": 0.7,
+    "fond": "Les glands d'or sont rares ; elle garde son plus beau pour une grande occasion, et taquine Plumette, qui en rêve pour son guichet ; elle crie « coucou ! » par le guichet en passant. Petite, elle a confié à la Poste une lettre « pour la lune » ; la lune a répondu, d'une écriture de chouette, et Pomme-de-Pin fait semblant de ne pas avoir reconnu. Anecdotes : la lettre à la lune ; le pont qui chante sous la Poste. Bavardage : « Coucou ! Du courrier pour la lune ? » / « Hou ! Pas encore. Elle répond lentement. »"
+   },
+   "gland": {
+    "qui": "mon petit frère",
+    "nom": "Gland",
+    "sentiment": 0.9,
+    "fond": "Son petit frère, qu'elle élève avec Mamie Faîne pendant que leurs parents ramassent le bois tombé dans la forêt profonde. Il veut faire des ponts « jusqu'à la lune » ; il a caché trois cents noisettes dans le Chêne-Mère, et ni lui ni elle ne savent où (c'est ce qu'elle croit : il le sait, c'est sa confidence). Anecdotes : son premier « pont », deux brindilles et une noisette au milieu ; il l'a mordue à la queue pour la réveiller un matin de corde à tresser. Bavardage : « Coucou ! T'as trouvé une noisette ? » / « Deux cent quatre-vingt-dix-neuf de reste ! »"
+   }
+  }
+ },
+ "plumette": {
+  "genre": "f",
+  "prenom": "Plumette",
+  "plan": [
+   "la fille de la postière — fille de Hulotte, qui a porté le courrier de Ramure pendant trente ans ; petite, elle voyageait dans la sacoche de sa mère. (Voix : « Hou ! », curieuse, discrète, « une postière ne dit rien », un peu ensommeillée le jour.)",
+   "comment j'ai eu la sacoche — il y a huit ans, Hulotte distribuait les lettres dans les mauvais arbres à force de regarder le ciel (Tilleul a reçu les comptes de Bedaine pendant un mois) ; Plumette prend la sacoche, sa mère monte compter les étoiles.",
+   "le premier sac du Zéphyr — depuis que le Zéphyr se pose sur l'aire au nord du village, le courrier de Ramure vole jusqu'à Cliquetis ; elle s'entend par petits mots avec la commandante Zélie Hélice, sans l'avoir jamais vue ; arrivent les lettres d'Ardoise pour Caramel, la lettre qui fait tic-tac pour Pépin, des cartes postales de Port-Azur.",
+   "la Poste à la cime — chouette, elle travaille le jour pour que le courrier arrive quand le village est réveillé ; elle rêve d'un gland d'or sur son guichet pour porter chance au courrier ; les plumes de lune pour Pivoine ; les cartes de tante Sésame pour Grelot ; elle connaît toutes les portes et tous les secrets.",
+   "(confidence) jalouse des étoiles — petite, elle attendait la nuit, à la cime, que sa mère la regarde au lieu du ciel ; si elle travaille le jour, c'est un peu pour ne pas partager la nuit avec les étoiles ; elle ne l'a jamais dit à Hulotte."
+  ],
+  "reve": "que le courrier de Ramure fasse le tour de toute l'île ; et monter une fois à bord du Zéphyr pour voir les toits d'où viennent toutes ces lettres, et enfin rencontrer Zélie",
+  "question": "« Tu as quelqu'un à qui écrire ? » (oui / non / plein_de_monde) — à non : « Écris-moi, alors. Je te répondrai. Hou. »",
+  "liens": {
+   "caramel": {
+    "qui": "la poissonnière",
+    "nom": "Caramel",
+    "sentiment": 0.6,
+    "fond": "Chaque mois, elle lui apporte une lettre d'Ardoise, le mari parti pêcher en mer à Tazira ; Caramel la prend sans un mot et va la lire au bout du ponton. Plumette attend toujours la réponse, qui part une fois sur deux (et sent le poisson grillé). Elle devine que Caramel est triste et n'en dit rien : une postière ne dit rien. Anecdotes : la lettre qui sentait le sel (sept éternuements) ; la brochette que Caramel lui a offerte « pour que la réponse vole plus vite ». Bavardage : « Hou ! Une lettre de Tazira. » / « Mrrr. Pose-la là. » / « Je repasse demain pour la réponse. »"
+   },
+   "pivoine": {
+    "qui": "l'herboriste",
+    "nom": "Pivoine",
+    "sentiment": 0.5,
+    "fond": "Elle lui donne les plumes de lune pour ses fioles, Pivoine lui donne des tisanes de brume pour dormir le jour. Pivoine est curieuse comme un renard et essaie toujours de lui tirer les secrets du courrier : « une postière ne dit rien ». Anecdotes : la plume envolée jusqu'à la cime ; la tisane trop forte et la sieste au guichet (trois lettres sont parties en retard). Bavardage : « Une plume, Plumette ? » / « Hou. Une tisane, Pivoine ? » / « Marché conclu. »"
+   },
+   "grelot": {
+    "qui": "la marchande",
+    "nom": "Grelot",
+    "sentiment": 0.6,
+    "fond": "Elle lui apporte les cartes de sa tante Sésame, d'endroits impossibles ; il y a deux ans, un paquet sans lettre (le grelot de Sésame), et Grelot lui a fait promettre de ne rien dire à Bedaine : promesse tenue, et lourde à porter. Hors confidence, n'y faire allusion qu'à demi-mot. Anecdotes : la carte qui sentait le sable ; « rien pour toi aujourd'hui », lancé chaque matin en passant au marché. Bavardage : « Une carte ? » / « Hou. Pas aujourd'hui. » / « Demain, alors. »"
+   },
+   "hulotte": {
+    "qui": "mon père",
+    "nom": "Hulotte",
+    "sentiment": 0.5,
+    "fond": "Hulotte a porté le courrier trente ans ; il y a huit ans, il livrait dans les mauvais arbres à force de regarder le ciel, et Plumette a pris la sacoche pendant que sa mère montait compter les étoiles. Elles partagent la maison de la Poste mais pas les heures : l'une travaille le jour, l'autre la nuit ; elles se croisent au crépuscule pour une tasse de tisane. Plumette est un peu jalouse des étoiles (sa confidence). Anecdotes : Tilleul qui a reçu les comptes de Bedaine pendant un mois ; la tisane du crépuscule. Bavardage : « Bonne nuit, maman. » / « Bonjour, ma chérie. » / « On se dit ça tous les soirs. »"
+   },
+   "pommedepin": {
+    "qui": "la charpentière",
+    "nom": "Pomme-de-Pin",
+    "sentiment": 0.8,
+    "fond": "Pomme-de-Pin trouve parfois, rarement, des glands d'or au sommet des plus vieux chênes ; les chouettes les adorent ; Plumette rêve d'en avoir un sur son guichet pour porter chance au courrier, et Pomme-de-Pin la taquine en les lui montrant de loin. Elle passe saluer à la cime en criant « coucou ! » par le guichet. Anecdotes : à huit ans, Pomme-de-Pin a confié une lettre « pour la lune » à la Poste, et Plumette, qui aidait déjà sa mère au guichet, a répondu de la part de la lune ; le pont qui chante sous la Poste quand le vent apporte du courrier. Bavardage : « Coucou ! Du courrier pour la lune ? » / « Hou ! Pas encore. Elle répond lentement. »"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.8,
+    "fond": "Depuis que le Zéphyr se pose sur l'aire au nord de Ramure, le courrier de Ramure vole par Cliquetis ; la commandante Zélie Hélice, à l'aérodrome, et Plumette se glissent un petit mot dans chaque sac postal. Elles ne se sont jamais vues. Zélie envoie des horaires « théoriques » ; Plumette corrige les adresses (« Ramure n'a pas de rues, Commandante : il a des arbres »). Anecdotes : le sac qui contenait la lettre qui fait tic-tac pour Pépin ; Plumette imagine Zélie avec des lunettes d'aviatrice. (Lien avec le lot Cliquetis : rester sur ces faits.)"
+   }
+  }
+ },
+ "hulotte": {
+  "genre": "m",
+  "prenom": "Hulotte",
+  "plan": [
+   "la petite chouette de la cime — née à la Poste, à la cime du Chêne-Mère ; enfant, elle comptait les lanternes avant de compter les étoiles. (Voix : rêveuse, distraite, chiffres précis, « Hou… », s'excuse de dormir debout le jour. NB : Hulotte est une femme, comme le disent Bourru et Mochi.)",
+   "trente ans de sacoche — postière pendant trente ans ; chaque matin, elle montait le sac par la nacelle ; elle livrait parfois dans les mauvais arbres, le nez en l'air.",
+   "le jour où la corde a cassé — il y a dix ans, elle est dans la nacelle avec le sac quand la corde casse à mi-hauteur ; Bourru la retient à mains nues ; elle n'est jamais remontée dedans ; depuis, elle « vole » : en vrai, l'escalier, très lentement. Deux ans plus tard, elle laisse la sacoche à sa fille Plumette.",
+   "les étoiles et Céleste — trois mille nuits à vérifier que la lune reste pleine ; quatre mille deux cent douze étoiles, ou treize ; elle écrit à Céleste Lunette, l'astronome de Cliquetis, qui dit que notre lune est une illusion ; elle a vu une étoile tomber dans la grande mare il y a quarante nuits ; la Nuit de la Fausse Alerte, le monstre, c'était elle.",
+   "(confidence) ma lunette sans verre — sa longue lunette n'est qu'un tube d'écorce roulée, sans verre ; elle n'a jamais regardé dans une vraie lentille ; elle répond aux calculs de Céleste par des poèmes, et en a honte."
+  ],
+  "reve": "regarder une fois dans la grande lunette de Céleste, à Cliquetis, et voir si de là-bas notre lune est toujours pleine ; elle parie que oui, elle l'espère",
+  "question": "« Tu as déjà compté les étoiles ? » (oui / jamais / j_ai_perdu_le_compte) — à j_ai_perdu_le_compte : « Comme moi, chaque nuit ! »",
+  "liens": {
+   "bourru": {
+    "qui": "le gardien de la nacelle",
+    "nom": "Bourru",
+    "sentiment": 0.5,
+    "fond": "Il y a dix ans, la corde de la nacelle a cassé à mi-hauteur avec elle dedans ; Bourru l'a retenue à mains nues. Elle lui en est reconnaissante, mais elle n'est jamais remontée dedans : elle dit qu'elle vole, elle prend l'escalier. Elle sait qu'il en est vexé et en a un peu honte. Anecdotes : la corde (elle tenait le sac du courrier contre elle et comptait les osiers) ; chaque soir il lui propose la nacelle. Bavardage : « Hrmm. La nacelle ? » / « Merci, Bourru. Je vole. » / « Hrmm. »"
+   },
+   "crocgris": {
+    "qui": "notre garde",
+    "nom": "Croc-Gris",
+    "sentiment": 0.4,
+    "fond": "La Nuit de la Fausse Alerte, c'était elle, le monstre : elle montait l'escalier avec sa lanterne et sa longue lunette, et Croc-Gris a réveillé tout Ramure. Elle en rit encore ; lui, non. Elle a deviné que ses yeux baissent et lui a proposé des lunettes ; il s'est vexé. Elle lui laisse quand même une paire sur la rambarde du Guet. Anecdotes : la Fausse Alerte ; les lunettes. Bavardage : « Halte. … Ah. C'est vous. » / « Toujours moi, Croc-Gris. Pas de monstre ce soir. »"
+   },
+   "mochi": {
+    "qui": "la petite boulangère",
+    "nom": "Mochi",
+    "sentiment": 0.7,
+    "fond": "La petite lapine qui monte l'escalier avec elle au crépuscule, très lentement, en posant mille questions ; Hulotte lui a dit, un soir, qu'elle avait du gâteau sur le museau (« dans le noir ! »). Mochi demande si son papa est dans les étoiles ; Hulotte répond qu'elle n'a pas fini de compter. Anecdotes : le museau ; l'étoile quatre mille deux cent treize, que Mochi a appelée « Cerfeuil » (Hulotte l'a notée ainsi dans son carnet). Bavardage : « Madame Hulotte ! Vous voyez mon museau ? » / « Hou… Propre, ce soir. C'est rare. »"
+   },
+   "roux": {
+    "qui": "ce farceur de",
+    "nom": "Roux",
+    "sentiment": 0.0,
+    "fond": "Il se moque de son étoile tombée dans la grande mare (« une luciole qui avait trop bu de tisane de lune ») ; elle ne trouve pas ça drôle. Le soir où il est monté jouer de la flûte à la cime « pour l'aider », elle a perdu le compte : douze ou treize, depuis. Elle aime sa musique et ne le lui dira pas. Anecdotes : la luciole ; la flûte et le compte perdu. Bavardage : « Combien d'étoiles, ce soir ? » / « Une de moins quand tu joues, Roux. »"
+   },
+   "plumette": {
+    "qui": "ma fille",
+    "nom": "Plumette",
+    "sentiment": 0.9,
+    "fond": "Sa fille, qui a repris la sacoche il y a huit ans quand Hulotte livrait dans les mauvais arbres ; Hulotte est très fière d'elle et le dit à tout le monde, sauf à elle. Elles se croisent au crépuscule pour une tisane : Plumette rentre, Hulotte monte. Elle ne sait pas que Plumette est jalouse des étoiles. Anecdotes : les comptes de Bedaine livrés chez Tilleul ; la petite Plumette qui dormait dans la sacoche. Bavardage : « Bonne nuit, maman. » / « Bonjour, ma chérie. » / « On se dit ça tous les soirs. »"
+   },
+   "brume": {
+    "qui": "notre pisteuse",
+    "nom": "Brume",
+    "sentiment": 0.6,
+    "fond": "Son étoile tombée dans la grande mare il y a quarante nuits, et les traces rondes de Brume depuis : elles comparent leurs notes chaque soir. Hulotte calcule, Brume flaire ; Hulotte trouve que Brume manque un peu de poésie et l'aime bien quand même. Personne ne sait ce que c'est : ne pas résoudre le mystère. Anecdotes : la carte des traces couverte de chiffres ; Brume qui l'a reconnue à l'odeur la Nuit de la Fausse Alerte. Bavardage : « Des traces, cette nuit ? » / « Trois. Rondes. Et ton étoile ? » / « Toujours dans la mare. »"
+   }
+  }
+ }
+}

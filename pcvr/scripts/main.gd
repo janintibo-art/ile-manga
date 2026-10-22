@@ -128,6 +128,7 @@ func _ready() -> void:
 	_create_v58()
 	_create_v59()
 	_create_v63()
+	_create_v65()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -946,6 +947,7 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		pending_pnj_v31 = {}
 		for npc in npcs_v31:
 			npc.brain.reset()
+		Societe_v65.load_data({})
 		if fishing_v32 != null:
 			fishing_v32.cancel("")
 			fishing_v32.load_data({})
@@ -1002,6 +1004,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			hero_v28.set_health(int(data.get("vie", hero_v28.HP_MAX)))
 		var pnj_data: Variant = data.get("pnj", {})
 		pending_pnj_v31 = pnj_data if pnj_data is Dictionary else {}
+		var soc_data: Variant = data.get("societe", {})
+		Societe_v65.load_data(soc_data if soc_data is Dictionary else {})
 		if fishing_v32 != null:
 			var fish_data: Variant = data.get("peche", {})
 			fishing_v32.cancel("")
@@ -1128,6 +1132,7 @@ func _save_slot(slot: int) -> void:
 		if not pnj.has(id):
 			pnj[id] = pending_pnj_v31[id]
 	extra["pnj"] = pnj
+	extra["societe"] = Societe_v65.serialize()
 	if fishing_v32 != null:
 		extra["peche"] = fishing_v32.serialize()
 	if digging_v33 != null:
@@ -2786,10 +2791,12 @@ func _on_dialogue_choice_v31(id: String) -> void:
 func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	var snap: Dictionary = npc.brain.serialize()
 	var jsnap: Dictionary = journal_v56.serialize() if journal_v56 != null else {}
+	var ssnap: Dictionary = Societe_v65.serialize()
 	var r: Dictionary = call.call()
 	var gives: Array = r.get("donner", [])
 	if not gives.is_empty() and inventory_v28 != null and not inventory_v28.can_accept(gives, r.get("prendre", [])):
 		npc.brain.load_data(snap)
+		Societe_v65.load_data(ssnap)
 		if journal_v56 != null:
 			journal_v56.load_data(jsnap)
 		r.erase("_fin56")
@@ -2875,6 +2882,8 @@ var pouvoirs_v63: Node3D                   # V63 : les pouvoirs des quatre sceau
 var sceaux_v63: Node3D                     # V63 : la grande enquête (sites des sceaux, la porte)
 var coeur_v63: Node3D                      # V63 : le donjon du Cœur-de-Pierre
 var grande_v59: Node3D                     # V59 : la grande île de l'est, le Léviathan et Carène
+var bavardages_v65: Node                   # V65 : les habitants qui se connaissent bavardent entre eux
+const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
@@ -2976,6 +2985,15 @@ func _create_v59() -> void:
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
 ## enquête des Quatre Sceaux dans les quatre villages, le donjon sous le Cœur-de-Pierre.
+## V65 : les histoires des habitants (chargées une fois) et leurs bavardages.
+func _create_v65() -> void:
+	Societe_v65.charger()
+	bavardages_v65 = preload("res://scripts/pnj/bavardages_v65.gd").new()
+	bavardages_v65.name = "Bavardages_v65"
+	add_child(bavardages_v65)
+	bavardages_v65.setup(self)
+
+
 func _create_v63() -> void:
 	progression_v63 = preload("res://scripts/progression_v63.gd").new()
 	progression_v63.name = "Progression_v63"

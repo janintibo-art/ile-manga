@@ -1,0 +1,2683 @@
+{
+ "borin": {
+  "genre": "m",
+  "prenom": "Borin",
+  "histoire": [
+   {
+    "titre": "mon premier clou tordu",
+    "t": "Je suis né à côté d'une enclume, {surnom}, comme tous les Barbe-de-Fer. Mon père, Dorin, m'a mis un marteau dans la main avant que j'aie des dents. Mon premier clou était tordu comme une queue de cochon. Il l'a porté à sa ceinture pendant deux cents ans. Il disait que c'était pour se rappeler d'être patient."
+   },
+   {
+    "titre": "les portes de la cité",
+    "t": "Il y a cent ans, le grand tremblement a fendu les vieilles portes de Forgefer. Le vieux roi m'a dit : « Quarante jours. » J'en ai mis trente-neuf. Grimli me montait le minerai sur son dos. Le dernier soir, une étincelle lui a grillé la moitié de la barbe. Il dit qu'elle a repoussé plus belle. Il ment. Les portes, elles, n'ont pas bougé. Ça, c'est du solide."
+   },
+   {
+    "titre": "la rune à l'envers",
+    "t": "Pour le couronnement de Thorgal, j'ai forgé la hache du roi en dix jours. Une merveille. Le jour de la fête, devant toute la cour, Nori s'est approché, a plissé les yeux et a dit : « Ta troisième rune est à l'envers. » Elle l'était. Toute la Grande Halle a ri. Par ma barbe, je l'entends encore rire, cette halle."
+   },
+   {
+    "titre": "ma forge aujourd'hui",
+    "t": "Aujourd'hui, j'ai la forge de la terrasse, Brunna au soufflet, et un apprenti, Fundin, qui a un trou dans la tête. J'en ai même eu un grand, autrefois : Hector, trois ans de charbon avant le marteau. Et à onze heures, je vais goûter le ragoût de Dagna. Pour vérifier le sel. Quelqu'un doit bien le faire."
+   },
+   {
+    "titre": "ce que je n'ai jamais dit à Dagna",
+    "t": "L'hiver de la cendre, Dagna nourrissait cent nains avec une louche fendue. Je lui ai forgé une cuillère. Trois semaines, {surnom}. Trois semaines pour une cuillère, dix jours pour la hache du roi. Elle dit que c'est mon chef-d'œuvre, et moi je dis « Hmpf ». Parce que si je dis autre chose, je vais dire tout le reste."
+   }
+  ],
+  "reve": [
+   "Forger une lame si parfaite que Nori n'y trouve rien à redire. Rien. Pas une rune, pas un poil. Il ouvrira la bouche, et il la refermera. Ce jour-là, je paie la tournée. Toute la tournée.",
+   "Et un jour, battre le fer à côté de ce petit forgeron d'Octave. Pour lui montrer. Gentiment. Avec un grand marteau."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… une lame, tu l'aimes comment ? Légère, lourde, ou autre chose ?",
+   "reponses": [
+    {
+     "label": "Légère et rapide.",
+     "valeur": "legere",
+     "t": "Hmpf. Une lame d'elfe, quoi. Bon. Léger, je sais faire aussi. Je n'aime pas, mais je sais faire. Ne le répète pas à Fundin, il voudrait essayer.",
+     "rappel": "Toi qui aimes les lames légères… j'ai pensé à toi en amincissant un fil, ce matin. D'un cheveu. Un cheveu de nain, c'est déjà beaucoup."
+    },
+    {
+     "label": "Lourde, qu'elle frappe fort !",
+     "valeur": "lourde",
+     "t": "HO HO ! Par le marteau d'Ancêtre-Pierre, voilà un grand qui parle bien ! Une lame doit peser comme un serment. Sinon, c'est une cuillère.",
+     "rappel": "Tu m'as dit que tu aimais les lames lourdes. Je t'ai à l'œil, {surnom}. Tu as un cœur de nain dans un corps trop long."
+    },
+    {
+     "label": "Celle qui ne casse jamais.",
+     "valeur": "solide",
+     "t": "Ça, c'est du solide, comme réponse. Une lame qui ne casse pas, on n'a jamais besoin de la remplacer. Mauvais pour le commerce. Excellent pour toi.",
+     "rappel": "Une lame qui ne casse jamais, m'as-tu dit. Alors montre-moi la tienne : s'il y a une ébréchure, je veux la voir avant toi."
+    }
+   ]
+  },
+  "liens": {
+   "octave": {
+    "qui": "ce petit forgeron d'",
+    "nom": "Octave",
+    "sentiment": -0.2,
+    "avis": "Un grand qui forge dans un arbre. Il tape trop fort à gauche, mais son acier chante juste. Ne lui dis pas que j'ai dit ça. Dis-lui seulement la première moitié.",
+    "anecdotes": [
+     "Le jour où tu es arrivé avec son épée, je l'ai prise, je l'ai pesée, je l'ai fait sonner sur l'enclume. Un bon son. J'ai dit « pas mal, pour un grand », et j'ai passé la nuit à en forger une meilleure. Fundin dormait debout contre le soufflet. Moi, je souriais. C'était une bonne nuit.",
+     "Tu m'as raconté qu'il vit dans une cabane perchée en haut d'un arbre, et qu'il y forge. Une forge dans un arbre ! Avec du bois tout autour ! J'ai ri trois jours. Le quatrième, j'ai pensé : il faut du courage pour ça. Ou pas de cervelle. Je n'ai pas encore décidé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, le grand, toujours à taper trop fort à gauche ?"
+     ],
+     [
+      "b",
+      "Le fer, ça ne ment pas. Et le tien, il coûte combien ?"
+     ],
+     [
+      "a",
+      "Plus cher que le tien. Il est meilleur."
+     ],
+     [
+      "b",
+      "Comptant, j'espère."
+     ]
+    ]
+   },
+   "ursule": {
+    "qui": "cette vieille ourse d'",
+    "nom": "Ursule",
+    "sentiment": 0.5,
+    "avis": "La seule forgeronne qui parle moins que Bramm. De bonnes mains, une meule qui chante. Quand elle m'envoie quelqu'un, c'est qu'il en vaut la peine.",
+    "anecdotes": [
+     "Elle est venue à Forgefer quand elle était jeune, avec un sac de clous mal forgés et pas un mot. Elle est restée une saison à la forge de la terrasse. Le soir, assise près du feu, ses poils fumaient. Bramm se plaignait d'en trouver dans sa bière. Moi je parlais pour deux. Elle écoutait. On s'entendait très bien.",
+     "Quand tu m'as dit « Ursule m'envoie », j'ai grogné. Puis j'ai regardé ta lame : passée à la meule, trempée dans la brume, un fil propre comme une ligne de rune. Elle n'a rien oublié. Elle n'écrit pas de lettres, Ursule. T'envoyer chez moi, c'est sa façon de dire bonjour.",
+     "En partant, elle a laissé sur mon enclume une petite clochette d'argent. Pas un mot, bien sûr. Je l'ai accrochée au-dessus de la porte de la forge. Quand Fundin entre en courant, elle sonne, et il s'arrête net. C'est la seule chose au monde qui arrête Fundin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ursule ! Toujours aussi bavarde ?"
+     ],
+     [
+      "b",
+      "Hm. Toi. Bonjour."
+     ],
+     [
+      "a",
+      "Je le savais. Tu m'as manqué, la grande."
+     ],
+     [
+      "b",
+      "Toi, trop parlé. Comme avant."
+     ]
+    ]
+   },
+   "dagna": {
+    "qui": "notre cuisinière",
+    "nom": "Dagna",
+    "sentiment": 0.8,
+    "avis": "Dagna met trop de champignons dans son ragoût, trop de sel dans ses colères et trop de cœur dans tout le reste. La terrasse tiendrait sans ses portes. Pas sans elle.",
+    "anecdotes": [
+     "Tous les jours à onze heures, je passe goûter le ragoût. Une louche. Pour le sel. Dagna fait semblant de ne pas me voir, et la louche est toujours posée au bord du chaudron, le manche tourné de mon côté. Toujours. Je ne dis rien. Elle non plus. Et je reprends trois fois.",
+     "Un hiver, elle a tordu la cuillère que je lui avais forgée, en touillant un ragoût trop épais. Elle est venue à la forge toute rouge, la cuillère dans les mains comme un oisillon tombé du nid. Je l'ai redressée en trois coups. Elle m'a embrassé sur le front. J'ai raté l'épée suivante."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Il manque du sel, aujourd'hui."
+     ],
+     [
+      "b",
+      "Tu dis ça tous les jours, Borin. Et tu reprends trois fois."
+     ],
+     [
+      "a",
+      "Je vérifie. C'est mon devoir."
+     ],
+     [
+      "b",
+      "Ton devoir a de la sauce dans la barbe."
+     ]
+    ]
+   },
+   "grimli": {
+    "qui": "cette vieille taupe de",
+    "nom": "Grimli",
+    "sentiment": 0.1,
+    "avis": "Grimli trouve du minerai partout et ses galeries nulle part. Sa barbe a grillé il y a cent ans, et il prétend qu'elle a repoussé plus belle que la mienne. Ha.",
+    "anecdotes": [
+     "Le soir où j'ai fini les portes de la cité, Grimli s'est penché pour admirer le travail. Une étincelle a sauté. La moitié de sa barbe est partie en fumée, pfout, d'un coup. Il a dit : « Elle repoussera plus belle. » Cent ans qu'il le répète. Cent ans qu'on se dispute. Hilda dit que c'est elle qui gagne.",
+     "Il m'apporte le minerai des pentes rouges, et à chaque fois il oublie un sac quelque part dans la montagne. Une fois, il a oublié Fundin. Fundin est revenu le lendemain, tout noir, avec le sac et une chauve-souris dans la capuche. J'ai payé Grimli quand même. Le minerai était bon."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta barbe pousse encore de travers, Grimli."
+     ],
+     [
+      "b",
+      "Elle pousse vers le haut, Borin. Vers la gloire."
+     ],
+     [
+      "a",
+      "Vers le haut ? Elle a peur de ma forge, oui."
+     ]
+    ]
+   },
+   "nori": {
+    "qui": "ce vieux je-sais-tout de",
+    "nom": "Nori",
+    "sentiment": 0.2,
+    "avis": "Nori sait tout, il a toujours raison, et il le dit tout bas pour que tout le monde l'entende. Insupportable. Mais quand il grave une rune sur mon acier, l'acier se tient droit.",
+    "anecdotes": [
+     "Au couronnement de Thorgal, Nori a regardé ma hache devant toute la cour et il a dit, tout bas mais assez fort : « La troisième rune est à l'envers. » Elle l'était. Le roi a gardé la hache comme ça. Il dit qu'elle porte bonheur. Nori dit qu'elle porte bonheur à l'envers.",
+     "Quand on grave ensemble une grosse commande, Nori arrive avec sa capuche et son eau de lune, il s'assied près de l'enclume et il se tait toute la nuit. Moi je tape, lui il trace. Au matin, une fois en cent ans, il a dit : « Bien. » J'ai failli pleurer. Je ne l'ai pas fait. Pierre et feu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu viens me dire que ma rune est à l'envers ?"
+     ],
+     [
+      "b",
+      "Non, Borin. Aujourd'hui, c'est ton enclume qui penche."
+     ],
+     [
+      "a",
+      "Par ma barbe… elle penche !"
+     ],
+     [
+      "b",
+      "Les pierres me l'ont dit."
+     ]
+    ]
+   },
+   "nain_2": {
+    "qui": "mon apprenti",
+    "nom": "Fundin",
+    "sentiment": 0.4,
+    "avis": "Fundin a des bras de nain, un cœur de nain et un trou dans la tête. Il rate tout, mais il le rate avec enthousiasme. Hmpf. J'étais pareil. Ne lui dis pas.",
+    "anecdotes": [
+     "Il s'est assis devant ma forge pendant trente jours pour que je le prenne comme apprenti. Il pleuvait de la cendre, il restait. Le trentième jour, je lui ai tendu un balai. Il l'a pris comme si c'était la hache du roi. Douze ans après, il balaie toujours. Moins bien, mais avec fierté.",
+     "La semaine dernière, il a trempé une lame rouge dans le chaudron de Dagna. PSHHH ! Dagna est sortie la cuillère levée. J'ai juré que c'était un accident. C'en était un. Mais le ragoût avait un petit goût de fer, et toute la terrasse a dit qu'il était meilleur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fundin ! Le soufflet, pas ma barbe !"
+     ],
+     [
+      "b",
+      "Pardon, maître ! Elle était trop près !"
+     ],
+     [
+      "a",
+      "Tout est trop près de toi, petit. Hmpf. Recommence."
+     ]
+    ]
+   },
+   "hector": {
+    "qui": "mon grand apprenti",
+    "nom": "Hector",
+    "sentiment": 0.3,
+    "avis": "Hector ? Un grand qui a porté mon charbon trois ans sans se plaindre. Enfin, en se plaignant, mais en le portant. Il forge correctement. Pour un grand. Hmpf.",
+    "anecdotes": [
+     "Il est arrivé à Forgefer avec des bras de grand et une tête de mule. Je lui ai donné des sacs de charbon. Trois ans de sacs. Il revenait chaque matin. Le premier jour de la quatrième année, je lui ai tendu un marteau. Il l'a regardé comme la couronne du roi. Je suis allé chercher une bière, pour ne pas voir sa tête.",
+     "Sa première lame, il me l'a apportée fier comme un coq. Je l'ai regardée, je l'ai pesée, et je l'ai remise au feu. Fondue. Sans un mot. Il n'a rien dit non plus. Le lendemain, il en a forgé une autre, meilleure. C'est comme ça qu'on apprend. C'est comme ça que mon père m'a appris.",
+     "Le jour où il est reparti, son tablier était brûlé de partout, comme une passoire. Je lui ai dit : « Pas mal… pour un grand. » Il a souri jusqu'aux oreilles. Il ne savait pas que c'est mon plus beau compliment. Ne le lui dis pas. Je le dis aussi à Octave, mais moins fort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, le grand, toujours à forger pour les touristes ?"
+     ],
+     [
+      "b",
+      "Toujours, maître Borin. Et toujours un peu moins bien que vous."
+     ],
+     [
+      "a",
+      "Hmpf. Répète ça ?"
+     ],
+     [
+      "b",
+      "Non. Je ne l'ai dit qu'une fois. Profitez-en."
+     ]
+    ]
+   }
+  }
+ },
+ "bramm": {
+  "genre": "m",
+  "prenom": "Bramm",
+  "histoire": [
+   {
+    "titre": "mon père et sa lance",
+    "t": "Mon père gardait la Grande Porte avant moi. J'ai grandi dans la loge de garde, entre sa lance et sa chope. Mon premier mot, c'était « Halte ». Ma mère voulait « maman ». Elle a attendu. Le deuxième, c'était « Qui va là ». Hmpf."
+   },
+   {
+    "titre": "mon premier jour de garde",
+    "t": "Il y a cent quatre-vingts ans, les genoux de mon père ont lâché. Il m'a tendu la lance sans un mot. Le premier visiteur, ce jour-là, c'était une chèvre. Je l'ai fait attendre trois heures, pour le principe. Elle a mangé le bas de ma cape. Je n'ai pas bougé. On ne bouge pas."
+   },
+   {
+    "titre": "le trou dans ma loge",
+    "t": "Il y a cent vingt ans, le sol de ma loge s'est fendu. Une tête est sortie, entre mes bottes. Un casque, une barbe grise : Grimli. « Pardon, je cherchais ma galerie. » La porte n'a pas été forcée. Le sol, oui. Ça ne compte pas. J'ai rebouché le trou moi-même. Avec une pierre de porte, et mon poing."
+   },
+   {
+    "titre": "ma garde aujourd'hui",
+    "t": "Je garde. Le jour, la porte. La nuit, les golems qui descendent. Kalda, ma nièce, me rapporte ce qu'elle voit sur les pentes. Dagna m'apporte un bol à midi. Les chèvres de Hilda me grimpent dessus. Le soir, une bière chez Ulfa. Tout va bien. À peu près."
+   },
+   {
+    "titre": "la barque des grands, il y a soixante ans",
+    "t": "Il y a soixante ans, une barque de grands s'est approchée des Récifs. J'étais sur la plage. J'ai levé la main. Je voulais dire bonjour, {surnom}. Je ne sais pas dire bonjour. Ils ont cru autre chose et ils ont fait demi-tour. Je les ai regardés partir longtemps. Tu es le premier grand qui soit revenu."
+   }
+  ],
+  "reve": [
+   "Que la porte reste fermée encore mille ans. Et que Kalda la garde après moi. Elle sera meilleure que moi. Ne lui dis pas.",
+   "Et une fois… rire. Fort. Sans que personne ne regarde. Hmpf. Oublie ça."
+  ],
+  "question": {
+   "texte": "Toi. Quand tu arrives devant une porte fermée, tu fais quoi ?",
+   "reponses": [
+    {
+     "label": "Je frappe.",
+     "valeur": "frappe",
+     "t": "Bien. On frappe, on attend, on dit qui on est. Comme un nain. Tu as frappé à ma porte, toi. Je m'en souviens. Fort, d'ailleurs. Trop fort.",
+     "rappel": "Toi, tu frappes aux portes. Bien. C'est rare. Les autres creusent dessous. Hmpf."
+    },
+    {
+     "label": "Je cherche un autre chemin.",
+     "valeur": "detour",
+     "t": "Un autre chemin. Comme Grimli. Par-dessous, par-derrière, par le trou. Hmpf. Je vais te surveiller, toi.",
+     "rappel": "Je te surveille. Tu cherches toujours un autre chemin ? Pas par ma loge. Jamais par ma loge."
+    },
+    {
+     "label": "J'attends qu'on m'ouvre.",
+     "valeur": "attend",
+     "t": "Attendre. C'est ce que je fais depuis cent quatre-vingts ans, de l'autre côté. Tu as de la patience. C'est… correct. Très correct.",
+     "rappel": "Tu attends qu'on t'ouvre, toi. Moi, j'attends qu'on frappe. On ferait une bonne porte, tous les deux."
+    }
+   ]
+  },
+  "liens": {
+   "grimli": {
+    "qui": "ce creuseur de",
+    "nom": "Grimli",
+    "sentiment": -0.6,
+    "avis": "Grimli est le seul nain qui soit jamais entré chez moi sans passer par la porte. Par le sol. Ça ne compte pas. Mais je n'oublie pas.",
+    "anecdotes": [
+     "Il y a cent vingt ans, le sol de ma loge s'est soulevé et sa tête est sortie entre mes bottes. Il a dit : « Tiens, Bramm. Tu as déménagé ? » Je n'avais pas déménagé. J'ai rebouché le trou avec une pierre de porte. Elle y est encore. Je monte la garde dessus, tous les jours.",
+     "Chaque année, à la fête de la Forge, il lève sa chope vers moi et il crie : « Sans rancune, Bramm ! » Chaque année, je ne lève pas la mienne. Ça fait cent vingt fêtes. Il ne se lasse pas. Moi non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grimli. Tu passes par la porte, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Toujours, Bramm ! Enfin… presque toujours."
+     ],
+     [
+      "a",
+      "Presque. Hmpf. Je n'oublie pas."
+     ],
+     [
+      "b",
+      "Moi, j'oublie tout. C'est bien pratique."
+     ]
+    ]
+   },
+   "hilda": {
+    "qui": "la chevrière",
+    "nom": "Hilda",
+    "sentiment": 0.3,
+    "avis": "Hilda laisse ses chèvres me grimper dessus. Elle dit qu'elles aiment les rochers. Je ne suis pas un rocher. Enfin… pas seulement.",
+    "anecdotes": [
+     "Un jour de chaleur, une petite chèvre est montée sur mon casque et s'y est endormie. Je n'ai pas bougé de toute la garde. Six heures. Hilda est passée et m'a demandé pourquoi je ne la chassais pas. J'ai dit : « Je garde. Elle dort. Tout va bien. » Elle a ri jusqu'au soir.",
+     "Un matin, Croâ s'est posé sur ma lance avec un bout d'écorce dans le bec. Gravé dessus : « Souris. » Signé Hilda. Je ne sais pas comment elle a appris à un corbeau à porter du courrier pour se moquer de moi. Je n'ai pas souri. Pas devant le corbeau."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta chèvre est encore sur mon épaule."
+     ],
+     [
+      "b",
+      "Elle t'aime bien, Bramm. Tu es stable."
+     ],
+     [
+      "a",
+      "Je suis un garde. Pas une montagne."
+     ],
+     [
+      "b",
+      "Pour elle, c'est pareil."
+     ]
+    ]
+   },
+   "ulfa": {
+    "qui": "la tavernière",
+    "nom": "Ulfa",
+    "sentiment": 0.7,
+    "avis": "Ulfa parle trop, rit trop, sert trop. Mais après la garde, sa bière est la seule chose qui me fasse plier les genoux. C'est bien.",
+    "anecdotes": [
+     "Derrière son comptoir, Ulfa garde une chope cabossée. La mienne. Elle était à mon père. Personne d'autre n'y boit. Une fois, un nain de passage l'a prise. Ulfa la lui a reprise des mains avant la première gorgée. Je n'ai rien dit. J'ai payé sa tournée. À lui.",
+     "Le soir où les golems se sont réveillés, je suis entré à la Chope Ardente sans un mot. Ulfa n'a rien demandé. Elle a posé ma chope, s'est assise en face, et elle s'est tue. Ulfa. Tue. Une heure entière. C'est la chose la plus gentille qu'on m'ait jamais faite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "La même."
+     ],
+     [
+      "b",
+      "La même, Bramm ! Et un sourire avec ?"
+     ],
+     [
+      "a",
+      "Non. Pas ce soir."
+     ],
+     [
+      "b",
+      "Je le mets sur ton ardoise, alors."
+     ]
+    ]
+   },
+   "dagna": {
+    "qui": "la cuisinière",
+    "nom": "Dagna",
+    "sentiment": 0.6,
+    "avis": "Dagna me nourrit à midi, que j'aie faim ou non. Elle compte mes sourires. Elle compte trop. Mais son ragoût tient chaud toute la nuit de garde.",
+    "anecdotes": [
+     "Tous les jours à midi, Dagna traverse la terrasse avec un bol fumant et le pose sur la pierre à côté de moi. Je dis « Hmpf ». Elle dit « De rien ». Cent cinquante ans qu'on se parle comme ça. C'est la plus longue conversation de ma vie.",
+     "L'hiver de la cendre, j'ai quitté mon poste une seule fois : pour aider Dagna à porter son grand chaudron de la cité jusqu'à la terrasse, sous la cendre qui tombait. Il pesait plus lourd que la porte. Elle ne l'a jamais oublié. Moi non plus. C'était la seule fois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hmpf. Encore un bol."
+     ],
+     [
+      "b",
+      "De rien, Bramm. Mange tant que c'est chaud."
+     ],
+     [
+      "a",
+      "C'est trop chaud."
+     ],
+     [
+      "b",
+      "Tu dis ça depuis cent cinquante ans. Mange."
+     ]
+    ]
+   },
+   "nain_3": {
+    "qui": "ma nièce",
+    "nom": "Kalda",
+    "sentiment": 0.8,
+    "avis": "Kalda a les yeux de ma sœur et mes jambes. Elle monte plus haut que tout le monde et redescend plus vite. Un jour, elle gardera la porte.",
+    "anecdotes": [
+     "À quarante ans, elle est montée au bord du cratère pour un pari. Seule. Elle est redescendue avec un éclat d'obsidienne et les sourcils grillés. J'ai crié pendant une heure. Puis je l'ai nommée éclaireuse. Maintenant, elle crie moins que moi. Elle a appris.",
+     "Chaque soir, elle vient au rapport : « Trois golems sur la pente noire. Une chèvre de Hilda trop haut. Rien d'autre. » Puis elle me donne une pierre ramassée là-haut, toujours une jolie. J'en ai une étagère pleine dans ma loge. Personne ne le sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rapport."
+     ],
+     [
+      "b",
+      "Deux golems, une chèvre, et un oncle qui a l'air fatigué."
+     ],
+     [
+      "a",
+      "Je ne suis jamais fatigué."
+     ],
+     [
+      "b",
+      "Alors je t'ai apporté une jolie pierre pour rien."
+     ]
+    ]
+   },
+   "nain_5": {
+    "qui": "ce bavard de",
+    "nom": "Gunnar",
+    "sentiment": -0.4,
+    "avis": "Gunnar garde un tapis rouge, un trône et un roi qui perd sa couronne sur sa tête. Il appelle ça un métier. Il sourit trop pour un garde.",
+    "anecdotes": [
+     "Il est venu me demander de garder la Grande Porte avec moi. Je l'ai regardé une heure sans rien dire. Il a parlé pendant toute l'heure. J'ai dit : « Non. Tu souris trop. » Il est allé garder la halle. Il sourit toujours. Il sourit même pendant la garde. Hmpf.",
+     "À chaque fête de la Forge, la garde de la halle défie la garde de la porte au bras de fer. Gunnar me défie tous les ans. Il perd tous les ans. L'an dernier, il a tenu onze secondes. C'est mieux qu'avant. Je ne le lui ai pas dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta halle tient debout sans toi ?"
+     ],
+     [
+      "b",
+      "Ta porte aussi, Bramm. Elle ne bouge pas toute seule, tu sais."
+     ],
+     [
+      "a",
+      "Parce que je suis là."
+     ],
+     [
+      "b",
+      "À la prochaine fête, je tiens douze secondes."
+     ]
+    ]
+   }
+  }
+ },
+ "dagna": {
+  "genre": "f",
+  "prenom": "Dagna",
+  "histoire": [
+   {
+    "titre": "mon berceau dans un chaudron",
+    "t": "Je suis née dans les cuisines de la Grande Halle, {surnom}. Ma mère cuisinait pour le vieux roi et, faute de berceau, elle me couchait dans un chaudron de cuivre bien propre, près du feu. Mon premier souvenir, c'est une louche au-dessus de ma tête. J'ai cru que c'était la lune."
+   },
+   {
+    "titre": "le jour où j'ai éternué du feu",
+    "t": "À soixante ans, j'ai suivi une chèvre égarée jusqu'aux fumerolles. Dans la cendre chaude, il y avait des petites lueurs rouges. J'en ai croqué une. J'ai éternué une flamme, j'ai pleuré, j'ai ri, et j'ai su que je tenais mon ragoût. Les blancs, je les ai goûtés aussi. Une semaine de dragons. Plus jamais."
+   },
+   {
+    "titre": "l'hiver de la cendre",
+    "t": "Il y a cent cinquante ans, le volcan a toussé tout un hiver. La cendre tombait comme une neige grise, et les forges de la terrasse ne devaient pas s'éteindre. Alors on a sorti le grand chaudron de la cité, Bramm l'a porté sur son dos, et j'ai nourri cent nains avec une louche fendue. Borin m'a forgé une cuillère. Je l'ai encore."
+   },
+   {
+    "titre": "ma terrasse aujourd'hui",
+    "t": "Aujourd'hui, cent nains, cent estomacs. Dwalin, mon filleul, m'apporte le charbon et repart avec deux bols. Sigrun brasse sa bière dans mon ancien four. Bramm a son bol de midi, Borin sa louche de onze heures, et Hilda me vend son fromage, qui est vivant. Je vois tout. Je nourris tout."
+   },
+   {
+    "titre": "la louche au bord du chaudron",
+    "t": "Tu veux un secret ? Borin croit qu'il me vole une louche de ragoût tous les jours. C'est moi qui la pose au bord du chaudron, à onze heures moins cinq, le manche tourné vers sa forge. Depuis cent ans. Le jour où il ne viendra pas, je saurai qu'il est malade. Ou qu'il a enfin compris."
+   }
+  ],
+  "reve": [
+   "Un grand banquet : la terrasse et la cité à la même table, du roi jusqu'au dernier porteur de charbon. Même Bramm. Surtout Bramm. Je veux le voir rire la bouche pleine.",
+   "Et goûter la cuisine des grands, une fois. Pour savoir. Et pour leur dire qu'il manque des champignons."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… qu'est-ce qu'on mange, chez toi, sur ton île ?",
+   "reponses": [
+    {
+     "label": "Du poisson grillé.",
+     "valeur": "poisson",
+     "t": "Du poisson ! Ici, on n'en voit presque jamais, la mer est trop loin de la marmite. Grillé, tu dis ? Avec quoi ? Pas de champignons ? Pauvre petit.",
+     "rappel": "Toi et ton poisson grillé… j'ai essayé une sardine au champignon de braise. Elle a éternué. Moi aussi."
+    },
+    {
+     "label": "Des noix de coco.",
+     "valeur": "coco",
+     "t": "Des noix ? Grosses comme une tête ? Avec de l'eau dedans ? Tu te moques de moi. … Non ? Par le marteau d'Ancêtre-Pierre, ton île est folle.",
+     "rappel": "Je pense encore à tes noix pleines d'eau. Une noix qui se boit ! Je n'en dors plus, {surnom}."
+    },
+    {
+     "label": "Ce que je trouve, quand je trouve.",
+     "valeur": "rien",
+     "t": "Ce que tu trouves ?! Assieds-toi. Non, pas de discussion. Tu ne repars pas d'ici sans deux bols dans le ventre.",
+     "rappel": "Toi qui manges ce que tu trouves : tu as trouvé quelque chose, aujourd'hui ? Non ? Alors MANGE."
+    }
+   ]
+  },
+  "liens": {
+   "borin": {
+    "qui": "ce voleur de louche de",
+    "nom": "Borin",
+    "sentiment": 0.7,
+    "avis": "Borin vole une louche de ragoût tous les jours, dit qu'il manque du sel, et en reprend trois fois. Le meilleur forgeron de la montagne. Et le plus mauvais menteur.",
+    "anecdotes": [
+     "L'hiver de la cendre, ma louche s'est fendue en deux. Trois semaines plus tard, Borin est arrivé avec une grande cuillère de fer, lisse comme un galet, une petite flamme gravée sur le manche. Il a dit « Hmpf » et il est reparti. Trois semaines : je le sais, j'ai compté ses absences au ragoût.",
+     "Le jour où Fundin a trempé une lame rouge dans mon chaudron, j'ai couru à la forge, la cuillère levée. Borin s'est planté devant son apprenti, les bras écartés : « C'était pour le sel. » Le ragoût avait un goût de fer, et tout le monde l'a trouvé meilleur. Depuis, j'y mets un vieux clou, en cachette."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Onze heures, Borin. Tu passais par hasard ?"
+     ],
+     [
+      "b",
+      "Je vérifie le sel. C'est important, le sel."
+     ],
+     [
+      "a",
+      "Et la troisième louche, elle vérifie quoi ?"
+     ],
+     [
+      "b",
+      "Le… le fond. Hmpf."
+     ]
+    ]
+   },
+   "bramm": {
+    "qui": "notre garde",
+    "nom": "Bramm",
+    "sentiment": 0.6,
+    "avis": "Bramm a un cœur grand comme sa porte, et aussi bien fermé. Je lui apporte un bol à midi depuis cent cinquante ans. Il dit « Hmpf ». Ça veut dire merci.",
+    "anecdotes": [
+     "L'hiver de la cendre, il fallait monter mon grand chaudron de la cité jusqu'à la terrasse. Personne n'y arrivait. Bramm a quitté sa porte, pour la seule fois de sa vie. Il l'a soulevé tout seul et il a gravi les marches sans un mot. En haut, il a dit : « Il est trop chaud. » Et il est retourné garder.",
+     "Il paraît qu'il y a cent ans, un tonneau a roulé d'une charrette sur un elfe venu vendre du bois, et que Bramm a souri. Moi, j'étais en cuisine. Je n'ai rien vu. Depuis, je le guette. À chaque bol, je regarde sa barbe. Elle frémit, parfois. Je note tout sur le mur de ma cuisine, à la craie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ton bol, Bramm. Attention, c'est chaud."
+     ],
+     [
+      "b",
+      "Hmpf. Trop chaud."
+     ],
+     [
+      "a",
+      "De rien. Et souris, ça ne coûte rien."
+     ],
+     [
+      "b",
+      "Ça coûte. Hmpf."
+     ]
+    ]
+   },
+   "hilda": {
+    "qui": "mon amie",
+    "nom": "Hilda",
+    "sentiment": 0.8,
+    "avis": "Hilda fait le meilleur fromage du monde et elle parle aux corbeaux. Les corbeaux répondent. Je l'ai entendu. Elle dit que non, mais je l'ai entendu.",
+    "anecdotes": [
+     "Un soir, je l'ai surprise derrière la bergerie, en pleine discussion avec Croâ. Elle disait : « Non, pas ce soir. » Il disait : « Croâ. » Elle a répondu : « Je sais, mais non. » À minuit, le roi a fait demander du fromage. Elle avait refusé d'avance ! Je l'ai entendu, je te dis !",
+     "Son fromage des cendres est vivant. Je ne plaisante pas : un matin, j'en ai laissé un sur la table, et le soir il était à l'autre bout. Hilda a dit : « Il avait froid. » Alors je l'ai mis dans le ragoût, au chaud. Personne n'a rien dit. Bramm en a repris."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hilda ! Ton fromage a encore bougé cette nuit !"
+     ],
+     [
+      "b",
+      "Il cherchait la chaleur, Dagna. Comme tout le monde."
+     ],
+     [
+      "a",
+      "Il l'a trouvée. Dans mon chaudron."
+     ],
+     [
+      "b",
+      "Croâ dit qu'il était délicieux."
+     ]
+    ]
+   },
+   "ulfa": {
+    "qui": "ma vieille rivale",
+    "nom": "Ulfa",
+    "sentiment": 0.4,
+    "avis": "Ulfa sert mon ragoût à la Chope Ardente et jure que c'est sa bière qui le fait passer. Moi je dis que c'est mon ragoût qui fait boire sa bière. On a raison toutes les deux.",
+    "anecdotes": [
+     "Tous les matins, Dwalin descend un chaudron de mon ragoût à la Chope Ardente. Ulfa le revend deux fois plus cher que moi. Je le sais, elle le sait. À chaque fête de la Forge, elle me rend la différence dans une bourse brodée, avec un petit mot : « Pour le sel. » Elle se moque de Borin, évidemment.",
+     "Un jour, Ulfa m'a demandé, en essuyant une chope, l'air de rien, si Sigrun mangeait bien, là-haut, sur la terrasse. J'ai dit oui. Elle a dit : « Qui ça ? Je ne connais pas de Sigrun. » Et elle est partie à la cave. Elle me le demande tous les ans. Et tous les ans, elle ne la connaît pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ulfa ! Mon ragoût fait encore boire tes clients ?"
+     ],
+     [
+      "b",
+      "C'est ma bière qui fait passer ton ragoût, Dagna !"
+     ],
+     [
+      "a",
+      "Alors on est quittes."
+     ],
+     [
+      "b",
+      "On n'est jamais quittes. C'est ça, l'amitié."
+     ]
+    ]
+   },
+   "nain_0": {
+    "qui": "mon filleul",
+    "nom": "Dwalin",
+    "sentiment": 0.9,
+    "avis": "Dwalin porte le charbon de toute la terrasse sur son dos et il ne se plaint jamais. Enfin, il se plaint de son dos. Mais jamais du reste.",
+    "anecdotes": [
+     "Le jour où on lui a donné son nom, Dwalin a attrapé ma louche dans son berceau et ne l'a plus lâchée. Son père a dit : « Il sera cuisinier. » Il porte du charbon. Mais tous les jours, il passe par ma cuisine et tient la louche une minute. Il dit que ça lui repose le dos.",
+     "L'hiver dernier, Dwalin s'est bloqué le dos avec un sac de trop. Je l'ai couché près du chaudron sous trois couvertures et je l'ai nourri à la cuillère pendant trois jours. Le quatrième, il a dit qu'il allait mieux. Le cinquième, il a avoué qu'il allait mieux depuis le deuxième."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Dwalin ! Pose ce sac et viens manger."
+     ],
+     [
+      "b",
+      "Si je pose le sac, marraine, je ne me relève plus."
+     ],
+     [
+      "a",
+      "Alors je te nourrirai couché. Comme l'hiver dernier."
+     ]
+    ]
+   },
+   "nain_6": {
+    "qui": "ma brasseuse",
+    "nom": "Sigrun",
+    "sentiment": 0.8,
+    "avis": "Sigrun brasse dans mon ancien four une bière blonde qui sent le pain chaud. Toute la terrasse la boit. Elle mérite que le monde le sache. Et qu'Ulfa le dise.",
+    "anecdotes": [
+     "Il y a vingt ans, Sigrun est arrivée sur la terrasse avec un sac d'orge, les yeux rouges et pas de toit. Elle venait de quitter la cave d'Ulfa. Je lui ai donné mon ancien four à pain, celui qui ne chauffe plus que d'un côté. Elle y brasse depuis. Côté chaud, la bière. Côté froid, elle dort.",
+     "Chaque printemps, Sigrun remplit le premier tonneau de l'année et le fait descendre à la Chope Ardente, sans nom dessus. Elle croit que personne ne sait. C'est Dwalin qui le porte. Et c'est Dwalin qui me raconte qu'Ulfa le goûte toute seule, porte fermée, avant tout le monde."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sigrun ! Ta bière a fait chanter la terrasse hier soir."
+     ],
+     [
+      "b",
+      "Chanter faux, j'espère ? C'est mieux, faux."
+     ],
+     [
+      "a",
+      "Très faux. Ulfa serait jalouse."
+     ],
+     [
+      "b",
+      "Ulfa ne me connaît pas, Dagna. Elle le dit à tout le monde."
+     ]
+    ]
+   }
+  }
+ },
+ "grimli": {
+  "genre": "m",
+  "prenom": "Grimli",
+  "histoire": [
+   {
+    "titre": "né au fond de la Vieille-Veine",
+    "t": "Je suis né au fond de la Vieille-Veine, la plus vieille mine de la montagne. Mon père y creusait, mon grand-père aussi. Ma mère dit que mon premier cri a fait tomber un caillou du plafond. Pour mes dix ans, on m'a offert une pioche à ma taille. Je l'ai perdue le lendemain. Je ne l'ai jamais retrouvée."
+   },
+   {
+    "titre": "ma première galerie perdue",
+    "t": "À trente ans, j'ai creusé ma première galerie à moi. Belle, droite, avec une petite niche pour la lanterne. Le lendemain, impossible de la retrouver. Cinquante ans plus tard, en agrandissant ma cave, je suis tombé dedans. Elle était derrière chez moi depuis le début. La lanterne y était encore. Éteinte, mais vexée."
+   },
+   {
+    "titre": "le jour où je suis sorti chez Bramm",
+    "t": "Il y a cent vingt ans, je suivais une veine de fer, tout content, et je suis remonté un peu trop. Ma tête est sortie par le sol de la loge de garde, entre les bottes de Bramm. Je lui ai demandé s'il avait déménagé. Il ne me l'a jamais pardonné. Moi, j'ai oublié pourquoi il est fâché. Presque."
+   },
+   {
+    "titre": "Brunna, et ma couchette dans la mine",
+    "t": "J'ai rencontré Brunna en sortant par le plancher de sa cuisine. Elle m'a assommé avec un soufflet, puis elle m'a soigné, puis elle m'a épousé. Aujourd'hui, elle souffle à la forge de Borin, et moi je dors dans la mine. Elle ronfle. Elle dit que non. Les chauves-souris disent que si."
+   },
+   {
+    "titre": "le prénom que j'ai oublié",
+    "t": "Je fais rire tout le monde avec mes galeries perdues. Au début, c'était pour rire. Mais l'autre matin, {surnom}, j'ai regardé Brunna beurrer son pain et, pendant une minute entière, je n'ai plus su son prénom. Une minute. Je ne lui ai rien dit. Je dors dans la mine pour qu'elle ne le voie pas."
+   }
+  ],
+  "reve": [
+   "Faire une carte de toutes mes galeries. Toutes ! Même celles que j'ai oubliées. Surtout celles-là. Et l'accrocher au-dessus du lit, pour Brunna.",
+   "Et retrouver ma première pioche. Elle doit bien être quelque part. Tout est quelque part."
+  ],
+  "question": {
+   "texte": "Tu as peur du noir, {surnom} ? Là-dessous, c'est très, très noir.",
+   "reponses": [
+    {
+     "label": "Non, jamais.",
+     "valeur": "jamais",
+     "t": "Ho ho ! Un vrai mineur ! Le noir, c'est juste de la lumière qui dort. Viens creuser, un jour. Tu ne te perdras pas. Enfin… moins que moi.",
+     "rappel": "Toi qui n'as pas peur du noir : si tu croises une lanterne éteinte dans une galerie, c'est sûrement la mienne. Rallume-la."
+    },
+    {
+     "label": "Un peu, oui.",
+     "valeur": "un_peu",
+     "t": "Un peu, c'est bien. Ça fait marcher doucement. Les mineurs qui n'ont jamais peur, on les retrouve au fond des trous. Moi, par exemple.",
+     "rappel": "Tu m'as avoué que le noir te fait un peu peur. Moi aussi, quand il fait boum… boum. Mais chut."
+    },
+    {
+     "label": "Seulement quand ça gronde.",
+     "valeur": "gronde",
+     "t": "Hein ? Tu l'entends aussi ? Boum… boum… Ah, non, tu parles des éboulements. Oui. Moi aussi. Surtout ceux que je fais moi-même.",
+     "rappel": "Quand ça gronde, tu as peur, m'as-tu dit. Ça gronde de plus en plus, {surnom}. Garde ça pour toi."
+    }
+   ]
+  },
+  "liens": {
+   "borin": {
+    "qui": "ce vantard de",
+    "nom": "Borin",
+    "sentiment": 0.2,
+    "avis": "Borin forge bien, je ne dis pas. Mais il parle de sa barbe comme si c'était les portes de la cité. La mienne a brûlé à cause de lui, et elle a repoussé plus belle. C'est un fait.",
+    "anecdotes": [
+     "Le soir où il a fini les portes, je me suis penché pour regarder. Pfout ! Une étincelle, et la moitié de ma barbe est partie. Borin a ri si fort qu'il a lâché son marteau sur son pied. On a boité tous les deux pendant une semaine, lui du pied, moi du menton. On se dispute depuis. C'est notre façon d'être amis.",
+     "Je lui porte le minerai des pentes rouges depuis deux cents ans. Il le pèse, il le renifle, il dit « Hmpf, ça ira », et il me paie trois pièces de moins que prévu. Le soir, à la Chope, il me paie une bière. Trois pièces, la bière. On n'en parle jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ma barbe a encore poussé, Borin. Tu as vu ?"
+     ],
+     [
+      "b",
+      "J'ai vu. Elle pousse comme tes galeries : n'importe où."
+     ],
+     [
+      "a",
+      "Au moins, elle n'a pas peur des étincelles, elle."
+     ]
+    ]
+   },
+   "bramm": {
+    "qui": "ce vieux grognon de",
+    "nom": "Bramm",
+    "sentiment": 0.0,
+    "avis": "Bramm est fâché contre moi depuis cent vingt ans. Je ne me rappelle plus très bien pourquoi. Une histoire de plancher. Je lui souris quand même. Ça l'énerve, je crois.",
+    "anecdotes": [
+     "Je suivais une veine de fer, en montant, en montant… et ma tête est sortie au milieu de sa loge, entre ses deux bottes. Je lui ai demandé s'il avait déménagé. Il n'a pas répondu. Il a posé une énorme pierre sur le trou et il s'est assis dessus. Je suis redescendu à reculons. Ça m'a pris la journée.",
+     "À chaque fête de la Forge, je lève ma chope vers lui et je crie : « Sans rancune, Bramm ! » Il ne lève jamais la sienne. Mais l'an dernier, Ulfa m'a soufflé qu'il avait bu une gorgée, juste au moment où je criais. Une gorgée. C'est un début."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Bramm ! Sans rancune ?"
+     ],
+     [
+      "b",
+      "Rancune."
+     ],
+     [
+      "a",
+      "Ah. Et demain ?"
+     ],
+     [
+      "b",
+      "Rancune aussi. Passe par la porte."
+     ]
+    ]
+   },
+   "nori": {
+    "qui": "le vieux",
+    "nom": "Nori",
+    "sentiment": 0.6,
+    "avis": "Nori lit les runes et il écoute la montagne. Moi aussi, j'écoute la montagne, mais je ne comprends que les éboulements. Lui comprend le reste. Il me fait un peu peur, et beaucoup de bien.",
+    "anecdotes": [
+     "Quand les golems se sont réveillés, je suis allé le voir. Il a posé sa vieille main sur le mur de sa niche et il a dit : « Quelqu'un les a réveillés, Grimli. Pas quelque chose. Quelqu'un. » Puis il m'a offert de son eau de lune. Elle avait un goût de cailloux froids. J'ai dit que c'était délicieux.",
+     "Je lui ai parlé du cœur qui bat, au fond d'une galerie. Boum… boum… Il n'a pas ri. Il m'a demandé de dessiner le chemin. J'ai dessiné. Il a regardé longtemps, puis il a dit : « Oublie ce chemin, Grimli. Pour une fois, oublie-le exprès. » Je fais de mon mieux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nori ! La montagne a fait boum, cette nuit."
+     ],
+     [
+      "b",
+      "Je sais, Grimli. Elle fait boum depuis mille ans."
+     ],
+     [
+      "a",
+      "Plus fort que d'habitude ?"
+     ],
+     [
+      "b",
+      "Plus doucement. C'est ça qui m'inquiète."
+     ]
+    ]
+   },
+   "nain_1": {
+    "qui": "ma femme",
+    "nom": "Brunna",
+    "sentiment": 0.9,
+    "avis": "Brunna a le souffle d'une forge et le cœur d'une lanterne. Elle ronfle. Mais quand je rentre couvert de poussière, elle ne dit rien : elle tape sur ma barbe et elle me sert la soupe.",
+    "anecdotes": [
+     "J'ai rencontré Brunna en creusant. J'ai percé le plancher de sa cuisine, juste sous sa table. Elle m'a assommé avec un soufflet. Quand je me suis réveillé, j'avais un bandage, une soupe et une fiancée. Je n'ai jamais su dans quel ordre.",
+     "Brunna ronfle comme le soufflet de Borin, avec le même trou. Alors je dors dans la mine, c'est plus calme. Chaque soir, elle pose un panier à l'entrée de la galerie. Elle ne descend jamais. Elle dit que les mines, c'est pour les taupes et les maris."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brunna ! Tu as encore ronflé, ça s'entendait jusqu'à la mine !"
+     ],
+     [
+      "b",
+      "Tu dormais dans la mine, Grimli. Comment tu le sais ?"
+     ],
+     [
+      "a",
+      "… Les chauves-souris me l'ont dit."
+     ],
+     [
+      "b",
+      "Rentre ce soir. Je ferai la soupe."
+     ]
+    ]
+   },
+   "orsik": {
+    "qui": "ce grippe-sou d'",
+    "nom": "Orsik",
+    "sentiment": -0.3,
+    "avis": "Orsik m'achète mes rubis au prix d'un caillou et les revend au prix d'une maison. Il compte tout, sauf ce qu'il doit. Mais il a l'œil, ça, je l'avoue.",
+    "anecdotes": [
+     "Il y a cinquante ans, Orsik a voulu descendre à la mine choisir ses pierres lui-même. Je l'ai guidé. On s'est perdus, évidemment, et il a fait tomber un rubis en route. L'an dernier, je l'ai retrouvé dans une galerie et je le lui ai vendu. Il a reconnu sa propre pierre. Il l'a payée quand même, en pleurant.",
+     "Quand je lui apporte un beau rubis et que je ne sais plus où je l'ai trouvé, Orsik me pose la question trois fois. Trois fois, je dis que je ne sais plus. C'est vrai. Il ne me croit pas. Depuis, il me suit de loin quand je descends. Il se perd toujours avant moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Un rubis tout neuf, Orsik ! Combien ?"
+     ],
+     [
+      "b",
+      "Trois pièces. Il a une tache."
+     ],
+     [
+      "a",
+      "C'est ton reflet, la tache."
+     ],
+     [
+      "b",
+      "Deux pièces, alors."
+     ]
+    ]
+   },
+   "hilda": {
+    "qui": "notre chevrière",
+    "nom": "Hilda",
+    "sentiment": 0.6,
+    "avis": "Hilda dit que c'est elle qui a la plus belle barbe de la montagne. Je ne peux pas la contredire : elle a raison, et ses corbeaux sont d'accord avec elle.",
+    "anecdotes": [
+     "Un hiver, une de ses chèvres s'est perdue dans mes galeries. Trois jours, on l'a cherchée. On l'a retrouvée dans la Grande Halle, couchée sur le trône du roi, en train de mâchonner un coussin. Le roi est arrivé. Il a regardé la chèvre. La chèvre l'a regardé. Il a dit : « Elle a bon goût. »",
+     "Tous les ans, Borin et moi, on demande à Hilda de juger nos barbes. Elle nous met côte à côte, elle tourne autour, elle tire un poil ici, un poil là. Puis elle dit : « C'est moi qui gagne. » Croâ croasse pour applaudir. On recommence l'année suivante. On perd toujours."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hilda ! Cette année, c'est ma barbe qui gagne."
+     ],
+     [
+      "b",
+      "Tu dis ça depuis cent ans, Grimli."
+     ],
+     [
+      "a",
+      "Et cette année, c'est vrai !"
+     ],
+     [
+      "b",
+      "Croâ dit que non."
+     ]
+    ]
+   }
+  }
+ },
+ "hilda": {
+  "genre": "f",
+  "prenom": "Hilda",
+  "histoire": [
+   {
+    "titre": "ma première chèvre, Pétarde",
+    "t": "Je suis née dans la bergerie des Plume-de-Suie, sur la pente est, au-dessus de la terrasse. Chez nous, on garde les chèvres des cendres depuis toujours. Ma première chèvre s'appelait Pétarde. Elle a mangé mon berceau, puis ma première tresse. Ma mère disait que c'était une marque d'affection."
+   },
+   {
+    "titre": "comment Croâ m'a choisie",
+    "t": "À quarante ans, j'ai trouvé un petit corbeau tombé dans la cendre, tout de travers, qui criait plus fort que lui-même. Je l'ai nourri au fromage. Il n'est jamais reparti. C'est lui qui m'a appris à parler aux corbeaux. Enfin, à les écouter. Croâ, c'est lui. Il dit qu'il est un aigle. Il ne l'est pas."
+   },
+   {
+    "titre": "la chèvre sur le trône",
+    "t": "Un hiver, une de mes chèvres s'est perdue dans les galeries de Grimli. Trois jours sans elle. On l'a retrouvée dans la Grande Halle, couchée sur le trône. Thorgal l'a regardée, a dit « Elle a bon goût », et m'a convoquée. Je croyais être punie. Il m'a confié les corbeaux messagers de la cité."
+   },
+   {
+    "titre": "mes bêtes aujourd'hui",
+    "t": "Aujourd'hui, j'ai quarante chèvres, douze corbeaux et des golems qui rendent tout ce petit monde nerveux. Kalda me ramène les chèvres qui montent trop haut. Dagna et Ulfa m'achètent le fromage. Le roi m'envoie des corbeaux à minuit. Et Bramm sert de rocher. Chacun sa place."
+   },
+   {
+    "titre": "ce que les corbeaux n'ont jamais dit",
+    "t": "Un secret, {surnom}. Les corbeaux, je ne les comprends qu'à moitié. L'autre moitié, j'invente. Un jour, pour sauver une chèvre qui avait mangé la cape du roi, j'ai traduit un message de Croâ : « Le roi est le plus beau des nains. » Croâ n'avait rien dit de tel. Thorgal l'a fait graver au-dessus du trône."
+   }
+  ],
+  "reve": [
+   "Voler, une fois, au-dessus du cratère, et voir la montagne d'en haut, comme la voient mes corbeaux. Croâ dit qu'il me portera. Croâ dit beaucoup de choses."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… tu préfères les chèvres ou les corbeaux ?",
+   "reponses": [
+    {
+     "label": "Les chèvres.",
+     "valeur": "chevres",
+     "t": "Bien. Les chèvres, c'est honnête : elles mangent tout et elles ne s'en cachent pas. Ne le répète pas à Croâ, il bouderait trois jours sur le toit.",
+     "rappel": "Toi qui préfères les chèvres : la petite noire t'a reconnu tout à l'heure. Elle a essayé de manger ta manche. C'est bon signe."
+    },
+    {
+     "label": "Les corbeaux.",
+     "valeur": "corbeaux",
+     "t": "Croâ ! Tu as entendu ? Il a entendu. Le voilà qui gonfle ses plumes. Merci, {surnom} : maintenant, il va se croire aigle ET roi.",
+     "rappel": "Croâ n'a pas oublié que tu préfères les corbeaux. Il te garde une plume. Une vieille. Il est un peu radin."
+    },
+    {
+     "label": "Aucun : ils me grimpent dessus.",
+     "valeur": "aucun",
+     "t": "Ha ! Toi aussi ? Bienvenue au club de Bramm. Vous êtes deux. Lui ne sourit jamais ; toi, au moins, tu essaies.",
+     "rappel": "Toi que les bêtes escaladent, je t'ai mis de côté une vieille cape épaisse. Les sabots, ça marque."
+    }
+   ]
+  },
+  "liens": {
+   "bramm": {
+    "qui": "ce grand rocher de",
+    "nom": "Bramm",
+    "sentiment": 0.6,
+    "avis": "Bramm, c'est le meilleur rocher de la montagne : il ne bouge pas, il tient chaud, et les chèvres l'adorent. Lui aussi les aime. Il ne le dira jamais.",
+    "anecdotes": [
+     "Un jour de chaleur, la petite Suie s'est endormie sur son casque. Bramm n'a pas bougé de toute sa garde. Six heures. Je lui ai demandé pourquoi il ne la chassait pas. Il a dit : « Je garde. Elle dort. Tout va bien. » J'ai ri jusqu'au soir. Lui, non. Mais sa barbe a frémi.",
+     "Un matin, j'ai envoyé Croâ lui porter un bout d'écorce. J'avais gravé dessus : « Souris. » Croâ est revenu avec l'écorce coupée en deux, proprement. Sur la moitié qu'il m'a rendue, Bramm avait gravé : « Non. » Je l'ai encore. C'est la seule lettre qu'il m'ait jamais écrite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Bramm. Tu as une chèvre sur l'épaule."
+     ],
+     [
+      "b",
+      "Je sais."
+     ],
+     [
+      "a",
+      "Tu veux que je l'enlève ?"
+     ],
+     [
+      "b",
+      "Non. Elle dort."
+     ]
+    ]
+   },
+   "dagna": {
+    "qui": "mon amie",
+    "nom": "Dagna",
+    "sentiment": 0.7,
+    "avis": "Dagna croit que mes corbeaux me répondent. Elle a raison, mais je ne le lui dirai pas : elle le répéterait à cent nains avant le ragoût.",
+    "anecdotes": [
+     "Dagna est persuadée que mon fromage bouge tout seul. Un soir, pour rire, j'ai glissé Croâ sous le torchon. Le fromage a traversé la table en croassant. Dagna a lâché sa cuillère. Depuis, elle met mon fromage dans le ragoût le plus vite possible. Elle dit que c'est pour le calmer.",
+     "Quand Dagna a trouvé les champignons de braise, elle suivait une chèvre de ma mère, égarée près des fumerolles. Dagna est revenue avec les champignons, la chèvre avec les sourcils roussis. Dagna dit que c'est elle qui a trouvé. La chèvre ne dit rien. Elle mange les restes."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Dagna, ton ragoût fait chanter mes corbeaux."
+     ],
+     [
+      "b",
+      "Ils chantent ou ils se plaignent ?"
+     ],
+     [
+      "a",
+      "Chez un corbeau, c'est pareil."
+     ]
+    ]
+   },
+   "nain_3": {
+    "qui": "la petite",
+    "nom": "Kalda",
+    "sentiment": 0.8,
+    "avis": "Kalda court sur les pentes comme mes chèvres, en plus vite et en moins bête. Sans elle, j'aurais perdu la moitié du troupeau chez les golems.",
+    "anecdotes": [
+     "La chèvre qui est montée trop haut, vers les golems ? C'est Kalda qui l'a vue redescendre. Elle m'a dit : « Elle courait si vite que ses cornes arrivaient avant elle. » Puis, plus bas : « Les golems ne l'ont pas suivie. Ils n'ont même pas tourné la tête. » Ça, ça m'a fait peur.",
+     "Kalda m'a demandé un soir comment on fait comprendre à quelqu'un qu'on l'aime bien sans le dire. J'ai répondu : « Comme les chèvres. On lui grimpe dessus. » Elle a ri. Le lendemain, il y avait une jolie pierre rouge sur l'enclume de Fundin. Il l'a prise pour du minerai et l'a jetée au feu. Les garçons."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Kalda ! Tu as vu ma chèvre noire ?"
+     ],
+     [
+      "b",
+      "Sur le toit de Borin. Elle mange sa cheminée."
+     ],
+     [
+      "a",
+      "Encore ? Elle a du goût, au moins."
+     ]
+    ]
+   },
+   "thorgal": {
+    "qui": "notre roi",
+    "nom": "Thorgal",
+    "sentiment": 0.3,
+    "avis": "Thorgal est un bon roi, mais il croit que mes corbeaux sont faits pour lui porter du fromage à minuit. Mes corbeaux ne sont pas des marmitons. Moi non plus.",
+    "anecdotes": [
+     "Le jour où ma chèvre a dormi sur son trône, il m'a convoquée dans la Grande Halle. Je tremblais. Il m'a dit : « Une bergère dont la chèvre trouve seule le chemin du trône sait guider. » Et il m'a confié ses corbeaux messagers. Je n'ai jamais avoué que la chèvre s'était juste perdue.",
+     "Il m'envoie des corbeaux à minuit avec des messages très importants. « Le roi a faim. » « Le roi demande du fromage. » « Le roi demande si le fromage dort. » Une nuit, j'ai renvoyé Croâ avec un fromage attaché à la patte. Croâ l'a mangé en route. Le roi m'a remerciée pour le corbeau."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté. Vos corbeaux sont fatigués."
+     ],
+     [
+      "b",
+      "Un roi a besoin de nouvelles, Hilda !"
+     ],
+     [
+      "a",
+      "À minuit ? Sur le fromage ?"
+     ],
+     [
+      "b",
+      "Surtout sur le fromage."
+     ]
+    ]
+   },
+   "grimli": {
+    "qui": "ce pauvre",
+    "nom": "Grimli",
+    "sentiment": 0.5,
+    "avis": "Grimli perd ses galeries, ses pioches et ses chaussettes, mais jamais sa bonne humeur. Il a une belle barbe. Pas la plus belle. La plus belle, c'est la mienne.",
+    "anecdotes": [
+     "Chaque année, Grimli et Borin viennent me demander de juger leurs barbes. Je les fais attendre côte à côte, en plein vent, le temps de traire trois chèvres. Puis je tourne autour, je tire un poil ici, un poil là, et je dis : « C'est moi qui gagne. » Croâ applaudit. Ils repartent ensemble, furieux.",
+     "Quand ma chèvre s'est perdue dans ses galeries, Grimli l'a cherchée trois jours sans dormir, avec une lanterne qui clignotait. Il a fini par déboucher dans la Grande Halle. La chèvre y était déjà, sur le trône. Il s'est excusé auprès d'elle. Elle a mangé la mèche de sa lanterne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grimli. Tu as perdu quoi, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Ma pioche, Hilda. Et… je ne sais plus quoi d'autre."
+     ],
+     [
+      "a",
+      "Ta pioche est sur ma chèvre."
+     ],
+     [
+      "b",
+      "Ah ! Et la chèvre, elle est où ?"
+     ]
+    ]
+   }
+  }
+ },
+ "nain_0": {
+  "genre": "m",
+  "prenom": "Dwalin",
+  "histoire": [
+   {
+    "titre": "mon père, son père et son père",
+    "t": "Je suis né sous la montagne, comme mon père, et son père, et son père. Tous porteurs de charbon. Chez nous, on apprend à marcher avec un petit sac sur le dos, pour l'équilibre. Mon petit frère Gunnar, je l'ai porté dans le sac. Il dit qu'il s'en souvient. Il ment : il avait deux ans."
+   },
+   {
+    "titre": "les trois cents marches",
+    "t": "Tous les jours, je monte quarante sacs de la réserve de la cité jusqu'aux forges de la terrasse. Trois cents marches. Un grand a porté avec moi pendant trois ans, une fois : Hector, l'apprenti de Borin. Il soufflait comme un soufflet troué, mais il ne lâchait rien. Le charbon, ça pèse. La terrasse a chaud grâce à nous."
+   },
+   {
+    "titre": "le jour où j'ai raté la garde",
+    "t": "Une confidence, {surnom}. Jeune, je voulais être garde. À l'épreuve, Bramm m'a fait tenir debout devant la Grande Porte une journée entière. Au bout de six heures, je me suis assis sur un sac de charbon. Par habitude. Bramm n'a rien dit. Il m'a juste montré l'escalier. Gunnar ne l'a jamais su."
+   }
+  ],
+  "reve": [
+   "Un jour, porter autre chose que du charbon. Des fleurs, tiens. Ça ne pèse rien, des fleurs. Ou un tonneau de la blonde de Sigrun : ça pèse, mais ça vaut le coup."
+  ],
+  "liens": {
+   "dagna": {
+    "qui": "ma marraine",
+    "nom": "Dagna",
+    "sentiment": 0.9,
+    "avis": "Ma marraine me nourrit deux fois par jour et me gronde trois fois. Je ne sais pas ce que je préfère. Si : le ragoût.",
+    "anecdotes": [
+     "L'hiver dernier, je me suis bloqué le dos avec un sac de trop. Marraine m'a couché près du chaudron sous trois couvertures et m'a nourri à la cuillère. Au bout de deux jours, j'allais mieux. J'ai attendu le cinquième pour le dire. Elle le savait, je crois. Elle a juste dit : « Le ragoût soigne tout. Même les menteurs. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marraine ! Ton charbon est arrivé."
+     ],
+     [
+      "b",
+      "Et toi, tu as mangé ? Non ? Assieds-toi."
+     ],
+     [
+      "a",
+      "Mon dos ne veut pas s'asseoir."
+     ],
+     [
+      "b",
+      "Alors mange debout. Mais MANGE."
+     ]
+    ]
+   },
+   "nain_1": {
+    "qui": "cette râleuse de",
+    "nom": "Brunna",
+    "sentiment": 0.3,
+    "avis": "Brunna dit que mon charbon est mouillé. Il n'est pas mouillé. C'est elle qui souffle trop fort, et ça fait des étincelles partout.",
+    "anecdotes": [
+     "Un matin, Brunna a vidé mon sac par terre en criant : « Mouillé ! » J'ai crié : « Sec ! » Une heure de dispute, sous les yeux de Borin. À la fin, Borin a jeté un morceau au feu. Pfff. Il était mouillé : il avait plu de la cendre humide toute la nuit. Je n'ai jamais avoué. Elle le sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ton charbon, Brunna. Sec. Bien sec."
+     ],
+     [
+      "b",
+      "On verra au feu, Dwalin. Le feu ne ment pas."
+     ],
+     [
+      "a",
+      "Le feu, non. Toi, peut-être."
+     ]
+    ]
+   },
+   "nain_5": {
+    "qui": "mon petit frère",
+    "nom": "Gunnar",
+    "sentiment": 0.6,
+    "avis": "Mon petit frère garde la halle du roi avec un bouclier tout brillant. Moi, je porte du charbon. Il a le beau métier. J'ai le bon dos. Enfin, j'avais.",
+    "anecdotes": [
+     "Quand Gunnar a reçu son bouclier de garde, il est monté sur la terrasse pour me le montrer. Il brillait tellement que Hilda a cru à un deuxième soleil. Je l'ai tenu une minute et je le lui ai rendu tout noir, avec mes dix doigts dessus. Il a frotté toute la nuit. Le lendemain, il me l'a prêté pour la fête de la Forge."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gunnar ! Ton bouclier brille trop. Je vais le noircir."
+     ],
+     [
+      "b",
+      "Essaie, grand frère. J'ai encore mal aux bras de la dernière fois."
+     ],
+     [
+      "a",
+      "Je sais. Je t'entendais frotter d'en bas."
+     ]
+    ]
+   }
+  }
+ },
+ "nain_1": {
+  "genre": "f",
+  "prenom": "Brunna",
+  "histoire": [
+   {
+    "titre": "des poumons de dragon",
+    "t": "Je suis née sous la montagne, comme mon père, et son père… Chez nous, on fabrique les soufflets de forge, en cuir de chèvre et en bois de fer. À dix ans, je soufflais déjà plus fort que mon père. Aujourd'hui, je souffle à la forge de Borin, dans un soufflet troué qu'il refuse de réparer. Il dit que c'est bon pour mes poumons."
+   },
+   {
+    "titre": "le nain sous ma table",
+    "t": "Un soir, le plancher de ma cuisine s'est soulevé et une tête est sortie, juste sous ma table. J'ai pris ce que j'avais sous la main : un soufflet. Bonk. C'était Grimli. Je l'ai soigné, je lui ai fait une soupe. Un an plus tard, on se mariait. Le trou, on l'a gardé. C'est la trappe de la cave."
+   },
+   {
+    "titre": "pourquoi Grimli dort dans la mine",
+    "t": "Tout le monde croit que Grimli dort dans la mine parce que je ronfle. Je ronfle, d'accord. Mais ce n'est pas pour ça. Il oublie des choses, {surnom}. Des vraies choses. Il a peur que je le voie. Alors j'ai brodé nos deux prénoms dans son bonnet, à l'intérieur. Il ne l'a pas encore remarqué."
+   }
+  ],
+  "reve": [
+   "Un soufflet sans trou. Un seul. Et un mari qui dort à la maison, même si je ronfle. Surtout si je ronfle."
+  ],
+  "liens": {
+   "grimli": {
+    "qui": "mon mari",
+    "nom": "Grimli",
+    "sentiment": 0.7,
+    "avis": "Grimli perd tout, sauf son sourire. Il dort dans sa mine et dit que c'est à cause de mes ronflements. Je ronfle, d'accord. Mais pas à ce point-là.",
+    "anecdotes": [
+     "Chaque soir, je pose un panier à l'entrée de sa galerie : du pain, du fromage de Hilda et un petit mot. Le matin, le panier est vide et le mot a disparu. Un jour, j'ai trouvé tous mes mots dans la poche de sa veste, bien pliés. Des centaines. Il ne les jette pas. Il les relit, pour ne pas oublier."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grimli ! Tu as encore dormi dans la mine ?"
+     ],
+     [
+      "b",
+      "Les chauves-souris ronflent moins fort que toi, ma colombe."
+     ],
+     [
+      "a",
+      "Rentre ce soir, ou c'est moi qui descends."
+     ],
+     [
+      "b",
+      "Toi ? Dans une mine ? Je rentre !"
+     ]
+    ]
+   },
+   "nain_0": {
+    "qui": "ce traîne-sac de",
+    "nom": "Dwalin",
+    "sentiment": 0.2,
+    "avis": "Dwalin apporte le charbon tous les matins. Mouillé, une fois sur trois. Il jure que non. Le feu dit que si. Moi, je crois le feu.",
+    "anecdotes": [
+     "Un matin, j'ai vidé son sac par terre en criant : « Mouillé ! » Il criait : « Sec ! » Une heure de dispute, sous les yeux de Borin. À la fin, Borin a jeté un morceau au feu. Pfff. Mouillé. Dwalin n'a jamais avoué. Mais le lendemain, son charbon était sec, et il m'a apporté une part de gâteau de Dagna."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Dwalin ! Ton charbon fume avant de brûler."
+     ],
+     [
+      "b",
+      "C'est qu'il est content de te voir, Brunna."
+     ],
+     [
+      "a",
+      "Il pleure, oui. Il est mouillé."
+     ]
+    ]
+   },
+   "nain_2": {
+    "qui": "le petit",
+    "nom": "Fundin",
+    "sentiment": 0.6,
+    "avis": "Fundin est un bon gamin avec deux mains gauches. Borin crie, il s'excuse, il recommence. Je le nourris en cachette, sinon il oublierait de manger.",
+    "anecdotes": [
+     "Le premier jour où Borin lui a confié les pinces, Fundin a lâché une barre rouge sur son propre pied. Il n'a pas crié. Il a dit « Pardon, maître » et il a continué. Le soir, j'ai vu sa botte, fondue sur le dessus. Je lui en ai cousu une neuve, avec un bout en fer. Il la porte encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fundin, tes bottes ! Recule de l'enclume."
+     ],
+     [
+      "b",
+      "Elles sont en fer, maintenant, Brunna. Grâce à toi !"
+     ],
+     [
+      "a",
+      "Le bout seulement. Le reste fond très bien."
+     ]
+    ]
+   }
+  }
+ },
+ "nain_2": {
+  "genre": "m",
+  "prenom": "Fundin",
+  "histoire": [
+   {
+    "titre": "les étincelles par la fenêtre",
+    "t": "Je suis né sous la montagne, comme mon père, et son père… Mon père fait les lanternes de la cité. Petit, je regardais les forges de la terrasse par la fenêtre de l'atelier. Les étincelles montaient comme des lucioles. Je me disais : un jour, c'est moi qui ferai les étincelles."
+   },
+   {
+    "titre": "trente jours devant la forge",
+    "t": "Je me suis assis devant la forge de Borin et je ne suis plus reparti. Trente jours. Il pleuvait de la cendre, je restais. Le trentième, il m'a tendu un balai. Douze ans plus tard, j'ai le droit de tenir les pinces. Et de taper, parfois. Quand il ne regarde pas. Ou quand il fait semblant de ne pas regarder."
+   },
+   {
+    "titre": "la pointe de lance que je n'ose pas donner",
+    "t": "Un secret, {surnom}. La nuit, quand Borin dort, j'allume la petite forge et je forge une pointe de lance pour Kalda. Elle est un peu tordue. Elle est même beaucoup tordue. Je l'ai refaite sept fois. Je ne la lui ai jamais donnée. J'ai peur qu'elle rie. Ou pire : qu'elle s'en serve."
+   }
+  ],
+  "reve": [
+   "Forger une lame que Borin regarde sans dire « Hmpf ». Même juste un petit « Hm ». Un « Hm », ce serait déjà la gloire."
+  ],
+  "liens": {
+   "borin": {
+    "qui": "mon maître",
+    "nom": "Borin",
+    "sentiment": 0.9,
+    "avis": "Borin est le meilleur forgeron du monde. Il le dit, et c'est vrai. Il crie beaucoup. Mais quand je rate, il me montre. Toujours. Même en criant.",
+    "anecdotes": [
+     "Le jour où j'ai trempé une lame rouge dans le chaudron de Dagna, j'ai cru que j'allais mourir. Dagna arrivait, la cuillère levée. Borin s'est mis devant moi, les bras écartés, et il a dit : « C'était pour le sel. » Personne ne m'avait jamais défendu comme ça. Le soir, il m'a fait balayer deux fois. C'était juste.",
+     "La première fois que j'ai vu une clochette d'argent au-dessus de la porte de la forge, j'ai demandé d'où elle venait. Borin a grogné : « D'une ourse. » Je n'ai pas osé demander laquelle. Maintenant, chaque fois que j'entre en courant, elle sonne, et je m'arrête net. Je crois que c'est fait exprès."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maître ! J'ai fini l'épée !"
+     ],
+     [
+      "b",
+      "Tu as fini de la rater, oui. Hmpf. Montre."
+     ],
+     [
+      "a",
+      "Elle est tordue ?"
+     ],
+     [
+      "b",
+      "Moins que la dernière. Recommence."
+     ]
+    ]
+   },
+   "nain_1": {
+    "qui": "cette bonne",
+    "nom": "Brunna",
+    "sentiment": 0.7,
+    "avis": "Brunna souffle au soufflet de Borin, elle me cache des tartines dans le tablier et elle me gronde quand je me brûle. C'est souvent. Elle gronde souvent.",
+    "anecdotes": [
+     "Quand j'ai lâché une barre rouge sur ma botte, je n'ai pas crié, pour faire le fier. Le soir, Brunna a pris ma botte fondue sans un mot. Le lendemain, elle m'en a rendu une neuve, avec un bout en fer. Elle a dit : « Comme ça, tu peux rater tranquille. » Je rate tranquille depuis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brunna, plus fort ! Le maître dit que le fer a froid !"
+     ],
+     [
+      "b",
+      "Le maître dit, le maître dit… Et toi, tu as mangé ?"
+     ],
+     [
+      "a",
+      "Euh… j'ai oublié."
+     ],
+     [
+      "b",
+      "Tartine. Tablier. Poche de gauche."
+     ]
+    ]
+   },
+   "nain_3": {
+    "qui": "la belle",
+    "nom": "Kalda",
+    "sentiment": 0.9,
+    "avis": "Kalda monte au bord du cratère comme on va chercher du pain. Elle n'a peur de rien. Moi, j'ai peur d'elle. Un peu. Beaucoup.",
+    "anecdotes": [
+     "Un matin, j'ai trouvé une jolie pierre rouge posée sur mon enclume. Je l'ai prise pour du minerai et je l'ai mise au feu. Elle a éclaté. Kalda est passée juste après. Elle a regardé l'enclume vide, elle a regardé le feu, et elle est repartie sans un mot. Hilda dit que je suis un âne. Je ne sais toujours pas pourquoi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Kalda ! Tu… tu montes au cratère, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Comme tous les jours, Fundin. Pourquoi ?"
+     ],
+     [
+      "a",
+      "Pour rien ! Pour… fais attention. Voilà."
+     ],
+     [
+      "b",
+      "Toi aussi. À ton enclume. Et aux pierres."
+     ]
+    ]
+   }
+  }
+ },
+ "nain_3": {
+  "genre": "f",
+  "prenom": "Kalda",
+  "histoire": [
+   {
+    "titre": "entre les jambes de mon oncle",
+    "t": "Je suis née sous la montagne, comme mon père, et son père… mais moi, c'est le dehors que j'aimais. Ma mère est la sœur de Bramm. Petite, je filais par la Grande Porte en passant entre les jambes de mon oncle. Il faisait semblant de ne pas me voir. La seule fois où sa porte a laissé passer quelqu'un sans permission."
+   },
+   {
+    "titre": "le pari du cratère",
+    "t": "À quarante ans, Gunnar m'a parié une chope que je n'irais pas jusqu'au bord du cratère. J'y suis allée. Seule. Je suis revenue avec un éclat d'obsidienne et les sourcils grillés. Mon oncle a crié une heure, puis il m'a nommée éclaireuse des pentes. Gunnar me doit toujours la chope."
+   },
+   {
+    "titre": "la nuit de la foudre",
+    "t": "Je ne l'ai dit à personne, {surnom}. La nuit où la foudre est tombée sur le cratère, j'étais là-haut. Elle venait du sud, du ciel, pas de la montagne. J'ai vu les golems ouvrir les yeux, un par un. Et j'ai couru. Une éclaireuse qui court. Mon oncle croit que j'étais en bas. Je le laisse croire."
+   }
+  ],
+  "reve": [
+   "Voir la mer de l'autre côté du monde. Mon oncle dit qu'il n'y a rien, là-bas. Mon oncle n'a jamais quitté son île."
+  ],
+  "liens": {
+   "bramm": {
+    "qui": "mon oncle",
+    "nom": "Bramm",
+    "sentiment": 0.7,
+    "avis": "Mon oncle est un mur. Un bon mur, solide, qui protège. Mais essaie donc de faire rire un mur. Moi, j'essaie depuis quatre-vingts ans.",
+    "anecdotes": [
+     "Chaque soir, au rapport, je lui donne une jolie pierre ramassée là-haut. Il la prend sans un mot et la glisse dans sa poche. Un jour, je suis entrée dans sa loge pendant qu'il était chez Ulfa. Il y avait une étagère, avec toutes mes pierres, rangées par couleur. Toutes. Je suis ressortie à reculons."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Rapport, oncle Bramm. Les golems sont descendus plus bas."
+     ],
+     [
+      "b",
+      "Combien plus bas ?"
+     ],
+     [
+      "a",
+      "Trois rochers. Et j'ai une pierre pour toi."
+     ],
+     [
+      "b",
+      "Hmpf. … Rouge ?"
+     ]
+    ]
+   },
+   "hilda": {
+    "qui": "ma grande amie",
+    "nom": "Hilda",
+    "sentiment": 0.8,
+    "avis": "Hilda connaît chaque chèvre par son nom et chaque corbeau par son humeur. Sur les pentes, on se croise tous les jours. On se dit tout. Enfin, presque tout.",
+    "anecdotes": [
+     "Un soir, je lui ai demandé comment on fait comprendre à quelqu'un qu'on l'aime bien, sans le dire. Elle a répondu : « Comme les chèvres. On lui grimpe dessus. » J'ai essayé une pierre, à la place. Ça n'a pas marché : il l'a jetée au feu. Hilda a ri jusqu'à la bergerie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hilda ! Ta chèvre noire est sur le toit de Borin."
+     ],
+     [
+      "b",
+      "Encore ? Elle aime la fumée, celle-là."
+     ],
+     [
+      "a",
+      "Elle mange la cheminée, plutôt."
+     ]
+    ]
+   },
+   "nain_2": {
+    "qui": "ce maladroit de",
+    "nom": "Fundin",
+    "sentiment": 0.4,
+    "avis": "Fundin a deux mains gauches et un cœur trop grand pour sa poitrine. Il me suit des yeux quand je passe. Il croit que je ne le vois pas. Je vois tout : c'est mon métier.",
+    "anecdotes": [
+     "Je lui ai laissé une pierre rouge sur son enclume. Une belle, ramassée au bord du cratère. Il l'a prise pour du minerai et il l'a mise au feu. Elle a éclaté. Je suis repartie sans rien dire. Le soir, je l'ai entendu demander à tout le monde ce qu'il avait fait. Personne ne lui a dit. Moi non plus, je ne lui dirai pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fundin. Tu as encore de la suie sur le nez."
+     ],
+     [
+      "b",
+      "Ah ? Où ça ? Ici ?"
+     ],
+     [
+      "a",
+      "Partout. Laisse. Ça te va bien."
+     ]
+    ]
+   },
+   "nain_4": {
+    "qui": "le scribe",
+    "nom": "Ori",
+    "sentiment": 0.5,
+    "avis": "Ori écrit mes rapports. Il me fait répéter chaque golem trois fois et il me demande la couleur du ciel. Personne n'a jamais eu besoin de la couleur du ciel. Lui, si.",
+    "anecdotes": [
+     "Chaque soir, après le rapport à mon oncle, je dicte à Ori ce que j'ai vu. « Trois golems, pente noire. » Il écrit. Puis il demande : « Et le ciel ? » La nuit de la foudre, j'ai dit : « Rien. » Il a levé les yeux de sa page et il m'a regardée longtemps. Il n'a rien écrit. Il sait, je crois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ori. Deux golems, pente noire, rien d'autre."
+     ],
+     [
+      "b",
+      "Et le ciel, Kalda ?"
+     ],
+     [
+      "a",
+      "Gris. Comme d'habitude."
+     ],
+     [
+      "b",
+      "Je note « gris ». Avec un point d'interrogation."
+     ]
+    ]
+   }
+  }
+ },
+ "nain_4": {
+  "genre": "m",
+  "prenom": "Ori",
+  "histoire": [
+   {
+    "titre": "une lettre de moins",
+    "t": "Je suis né sous la montagne, comme mon père, et son père… Mes parents voulaient m'appeler Nori, comme mon grand-oncle. Il a dit non et il m'a retiré une lettre : « Il en gagnera d'autres. » Il m'a appris à écrire sur une plaque d'obsidienne, avec un clou. Mes premières lettres étaient toutes à l'envers."
+   },
+   {
+    "titre": "trois cent douze décrets",
+    "t": "Aujourd'hui, j'écris tout : les décrets du roi, les rapports de Kalda, les registres d'Orsik, les ardoises de la Chope Ardente. Trois cent douze décrets en quatre-vingt-dix ans de règne. Le plus court : « Non. » Le plus long concerne la bière. Je corrige les fautes. Le roi n'aime pas. La cité, si."
+   },
+   {
+    "titre": "ce que je lis pour mon grand-oncle",
+    "t": "Un secret, {surnom}. Les yeux de mon grand-oncle s'en vont. Il lit les runes du bout des doigts quand il croit que personne ne regarde. Alors chaque soir, je lui lis les autres à voix haute, « pour m'entraîner ». Je me trompe exprès sur les plus faciles, pour qu'il me corrige. Il ne doit jamais le savoir."
+   }
+  ],
+  "reve": [
+   "Écrire la grande chronique de Forgefer, des quarante-deux rois jusqu'à aujourd'hui. Avec un chapitre sur toi, si tu restes assez longtemps pour que j'apprenne à écrire ton nom correctement."
+  ],
+  "liens": {
+   "nori": {
+    "qui": "mon grand-oncle",
+    "nom": "Nori",
+    "sentiment": 0.8,
+    "avis": "Mon grand-oncle sait tout, et il le dit doucement. Il a quatre cent douze ans. Il me reste beaucoup à apprendre, et je compte bien qu'il m'en laisse le temps.",
+    "anecdotes": [
+     "Petit, je lui ai demandé ce que disait une très vieille rune, au fond de sa niche. Il a répondu : « Elle dit : demande-le-moi quand tu seras grand. » J'ai cru qu'il se moquait de moi. L'an dernier, je l'ai déchiffrée tout seul. Elle disait vraiment ça. Je n'ai jamais osé lui redemander."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grand-oncle, je vous lis la rune du nord ?"
+     ],
+     [
+      "b",
+      "Pour t'entraîner, Ori ?"
+     ],
+     [
+      "a",
+      "Pour m'entraîner, bien sûr."
+     ],
+     [
+      "b",
+      "Alors entraîne-toi. Je t'écoute."
+     ]
+    ]
+   },
+   "thorgal": {
+    "qui": "notre roi",
+    "nom": "Thorgal",
+    "sentiment": 0.6,
+    "avis": "Le roi dicte des décrets très longs et très royaux. Je les raccourcis. Il proteste, puis il signe. Je crois qu'il est content d'avoir quelqu'un qui ose.",
+    "anecdotes": [
+     "Il m'a dicté un jour : « Par ordre du roi, la bière est un bien royal. » J'ai écrit : « La bière est un bien. » Il a crié : « Où est passé royal ? » J'ai dit : « Ulfa ne l'aurait pas affiché. » Il a réfléchi, il a ri, il a signé. Le décret est toujours au-dessus du comptoir de la Chope."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté, votre décret fait quatre pages."
+     ],
+     [
+      "b",
+      "Un roi a beaucoup à dire, Ori !"
+     ],
+     [
+      "a",
+      "J'ai gardé la première ligne."
+     ],
+     [
+      "b",
+      "… C'était la meilleure, de toute façon."
+     ]
+    ]
+   },
+   "orsik": {
+    "qui": "ce grigou d'",
+    "nom": "Orsik",
+    "sentiment": -0.2,
+    "avis": "Orsik me fait compter ses rubis tous les soirs et me paie en « merci ». J'en ai quatre mille douze, notés dans un carnet. Un jour, je les lui présenterai. Avec les intérêts.",
+    "anecdotes": [
+     "Dans le grand registre d'Orsik, il y a une ligne vide, la veille du sacre du roi, il y a quatre-vingt-dix ans. Je lui ai demandé ce qui allait là. Il a dit : « Une tache. » Il n'y avait pas de tache. Il est devenu tout pâle. Je n'ai plus jamais posé la question. Mais je n'ai jamais rempli la ligne non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Orsik, il manque un rubis. Je note « sorti »."
+     ],
+     [
+      "b",
+      "Volé, Ori. Écris « volé »."
+     ],
+     [
+      "a",
+      "Il revient tous les ans. J'écris « sorti »."
+     ],
+     [
+      "b",
+      "Hmpf. Et merci. Note-le."
+     ]
+    ]
+   },
+   "nain_3": {
+    "qui": "mon amie",
+    "nom": "Kalda",
+    "sentiment": 0.6,
+    "avis": "Kalda est la meilleure éclaireuse de la montagne et la pire pour dicter : elle parle vite, elle oublie le ciel, et elle ment très mal quand je lui pose la question.",
+    "anecdotes": [
+     "Le soir de la foudre, Kalda est venue dicter son rapport, plus pâle que mon papier. Je lui ai demandé : « Et le ciel ? » Elle a dit : « Rien. » Ses sourcils sentaient encore le roussi. Je n'ai rien écrit. J'ai laissé la ligne blanche. Elle la remplira quand elle voudra."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Kalda ! Le ciel, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Bleu, Ori. Tout bleu. Rien à signaler."
+     ],
+     [
+      "a",
+      "Je note « bleu ». Tu as les sourcils intacts."
+     ],
+     [
+      "b",
+      "Très drôle. Écris, scribe."
+     ]
+    ]
+   }
+  }
+ },
+ "nain_5": {
+  "genre": "m",
+  "prenom": "Gunnar",
+  "histoire": [
+   {
+    "titre": "le petit frère du porteur",
+    "t": "Je suis né sous la montagne, comme mon père, et son père… tous porteurs de charbon. Mon grand frère Dwalin m'a porté dans son sac jusqu'à mes deux ans. Je m'en souviens : ça sentait la suie et le pain. Je me suis juré d'avoir un métier où on porte autre chose. J'ai choisi un bouclier."
+   },
+   {
+    "titre": "refusé à la Grande Porte",
+    "t": "Je voulais garder la Grande Porte avec Bramm. Il m'a regardé une heure sans rien dire. J'ai parlé toute l'heure, pour remplir. Il a dit : « Non. Tu souris trop. » Le lendemain, le roi m'a pris pour garder sa halle. Il a dit : « Un garde qui sourit, ça rassure les visiteurs. » J'y suis depuis cinquante ans."
+   },
+   {
+    "titre": "la cape du roi",
+    "t": "Je ne l'ai jamais raconté, {surnom}. Une nuit, après deux jours de garde, je me suis endormi debout, contre mon bouclier. Le roi est passé. Au matin, j'avais sa cape rouge sur les épaules. Il ne m'en a jamais reparlé. Depuis, je ne dors plus jamais pendant la garde. Jamais. Pour lui."
+   }
+  ],
+  "reve": [
+   "Garder la Grande Porte un jour. Une seule journée, pendant que Bramm boit une bière chez Ulfa. Pour voir sa tête au retour.",
+   "Et que Sigrun dise oui. À quoi ? Je ne lui ai pas encore demandé."
+  ],
+  "liens": {
+   "thorgal": {
+    "qui": "mon roi",
+    "nom": "Thorgal",
+    "sentiment": 0.9,
+    "avis": "Le roi perd sa couronne sur sa tête, chante faux et paie ses factures en retard. C'est le meilleur roi du monde. Je donnerais ma vie pour lui. Ou au moins, je resterais réveillé.",
+    "anecdotes": [
+     "Chaque matin, il cherche sa couronne partout : sous le trône, derrière les bannières. Je m'approche et je dis, tout bas : « Majesté… la tête. » Il lève la main. Elle est là. Une fois, il l'a cherchée deux fois de suite, exprès, je crois. J'ai dit « la tête » deux fois. Il a eu l'air très content."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté… la tête."
+     ],
+     [
+      "b",
+      "Ah ! Merci, Gunnar. Que ferais-je sans toi ?"
+     ],
+     [
+      "a",
+      "Vous chercheriez sous le trône, Majesté."
+     ]
+    ]
+   },
+   "bramm": {
+    "qui": "ce vieux mur de",
+    "nom": "Bramm",
+    "sentiment": -0.3,
+    "avis": "Bramm dit que je garde un tapis. Je garde un roi. Lui garde une porte qui ne bouge pas. On verra bien qui a le métier le plus difficile.",
+    "anecdotes": [
+     "Tous les ans, à la fête de la Forge, je défie Bramm au bras de fer. Tous les ans, je perds. Il ne transpire même pas. L'an dernier, j'ai tenu onze secondes. Il n'a rien dit. Mais Kalda m'a raconté qu'en rentrant, il a marmonné : « Onze. » Juste ça. Je m'entraîne pour douze."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bramm ! Douze secondes, cette année."
+     ],
+     [
+      "b",
+      "Hmpf. Dix."
+     ],
+     [
+      "a",
+      "Onze l'an dernier ! J'ai progressé !"
+     ],
+     [
+      "b",
+      "Tu as souri pendant. Ça ne compte pas."
+     ]
+    ]
+   },
+   "nain_0": {
+    "qui": "mon grand frère",
+    "nom": "Dwalin",
+    "sentiment": 0.7,
+    "avis": "Dwalin a porté tout le charbon de la montagne, et moi avec. Il a mal au dos, et je crois que c'est un peu ma faute. Je lui dois bien un bouclier qui brille.",
+    "anecdotes": [
+     "Quand j'ai reçu mon bouclier de garde, je suis monté le montrer à Dwalin sur la terrasse. Il l'a tenu une minute. Il me l'a rendu tout noir de suie, avec ses dix doigts dessus. J'ai frotté toute la nuit. Le lendemain, je le lui ai prêté pour la fête de la Forge. Il l'a rendu sans une trace."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grand frère ! Et ton dos ?"
+     ],
+     [
+      "b",
+      "Toujours là, Gunnar. Malheureusement."
+     ],
+     [
+      "a",
+      "Je te porterais bien, mais j'ai un bouclier."
+     ],
+     [
+      "b",
+      "Moi, je t'ai porté avec un sac de charbon en plus."
+     ]
+    ]
+   },
+   "nain_6": {
+    "qui": "ma brasseuse préférée",
+    "nom": "Sigrun",
+    "sentiment": 0.8,
+    "avis": "Sigrun brasse la meilleure blonde de la terrasse, et elle a un rire qui fait trembler les tonneaux. Je lui achète une chope tous les soirs. D'habitude, je ne bois pas tant que ça.",
+    "anecdotes": [
+     "Tous les soirs après la garde, je monte sur la terrasse acheter une chope de blonde à Sigrun. Je la bois très lentement, pour rester. Hier, elle m'a dit : « Gunnar, ça fait trois ans que tu bois la même chope. » Elle a raison : je la complète avec de l'eau, pour qu'elle dure. Elle a ri. J'ai rougi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sigrun ! Une blonde. La même qu'hier."
+     ],
+     [
+      "b",
+      "Tu n'as pas fini celle d'hier, Gunnar."
+     ],
+     [
+      "a",
+      "Je… je la garde pour la fin."
+     ],
+     [
+      "b",
+      "La fin de quoi ?"
+     ]
+    ]
+   }
+  }
+ },
+ "nain_6": {
+  "genre": "f",
+  "prenom": "Sigrun",
+  "histoire": [
+   {
+    "titre": "l'odeur du malt par le soupirail",
+    "t": "Je suis née sous la montagne, comme mon père, et son père… Mon père taillait la pierre. Notre maison donnait sur le soupirail de la cave d'Ulfa. Toute mon enfance, j'ai respiré l'odeur du malt chaud par la fenêtre. Un jour, j'ai frappé à la porte de la cave et j'ai dit : « Je veux faire ça. »"
+   },
+   {
+    "titre": "quarante ans dans la cave d'Ulfa",
+    "t": "Ulfa m'a prise comme apprentie. Quarante ans à laver ses tonneaux, porter son orge et goûter ses brassins. Elle ne m'a jamais laissée toucher la grande cuve. Un matin, je l'ai nettoyée jusqu'à ce qu'elle brille, et je suis partie. Dagna m'a donné son vieux four, sur la terrasse. J'y brasse depuis vingt ans."
+   },
+   {
+    "titre": "le tonneau sans nom",
+    "t": "Chaque printemps, {surnom}, je remplis le premier tonneau de l'année et je le fais descendre à la Chope Ardente, sans nom dessus. Je ne sais pas si Ulfa le boit ou si elle le vide dans la rigole. Elle dit partout qu'elle ne me connaît pas. Je continue quand même. C'est elle qui m'a tout appris."
+   }
+  ],
+  "reve": [
+   "Que la Chope Ardente serve ma bière, avec mon nom sur le tonneau. Écrit gros. Et qu'Ulfa le lise à voix haute, devant tout le monde."
+  ],
+  "liens": {
+   "ulfa": {
+    "qui": "mon ancienne patronne",
+    "nom": "Ulfa",
+    "sentiment": 0.3,
+    "avis": "Ulfa m'a tout appris, sauf à toucher la grande cuve. Elle dit à tout le monde qu'elle ne me connaît pas. Ça me fait rire. Un peu. Le reste du temps, ça me pique.",
+    "anecdotes": [
+     "Pour mes cent ans, dans la cave, Ulfa m'a offert une chope gravée à mon nom. Puis elle a dit : « Tu toucheras la grande cuve l'an prochain. » Vingt ans plus tard, je n'y avais toujours pas touché, et je suis partie. La chope, je l'ai emportée. Je bois dedans tous les soirs. Je ne le lui ai jamais dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Ulfa."
+     ],
+     [
+      "b",
+      "On se connaît ?"
+     ],
+     [
+      "a",
+      "Quarante ans dans ta cave."
+     ],
+     [
+      "b",
+      "Ça ne me dit rien. … Ta blonde est trop blonde."
+     ]
+    ]
+   },
+   "dagna": {
+    "qui": "ma voisine de four",
+    "nom": "Dagna",
+    "sentiment": 0.8,
+    "avis": "Dagna m'a donné un toit, un four et un bol de ragoût le jour où je n'avais plus rien. Elle vend ma bière sur la terrasse. Je lui dois tout. Elle dit que je lui dois juste des tonneaux.",
+    "anecdotes": [
+     "Le jour où j'ai quitté la cave d'Ulfa, je suis montée sur la terrasse avec un sac d'orge et les yeux rouges. Dagna m'a regardée, elle a dit « Toi, tu as faim », et elle m'a ouvert son vieux four à pain. Il ne chauffe que d'un côté. Côté chaud, je brasse. Côté froid, je dors. On est bien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Dagna ! Un tonneau de blonde pour ton ragoût."
+     ],
+     [
+      "b",
+      "Mets-le au frais. Et toi, assieds-toi et mange."
+     ],
+     [
+      "a",
+      "Je n'ai pas faim."
+     ],
+     [
+      "b",
+      "Tu n'as jamais faim. Mange quand même."
+     ]
+    ]
+   },
+   "nain_5": {
+    "qui": "ce grand nigaud de",
+    "nom": "Gunnar",
+    "sentiment": 0.5,
+    "avis": "Gunnar monte de la halle tous les soirs pour boire une chope. La même chope, depuis trois ans. Il croit que je ne vois pas qu'il la complète avec de l'eau. Il est gentil. Il est nigaud. Il est gentil.",
+    "anecdotes": [
+     "Hier, j'ai dit à Gunnar : « Ça fait trois ans que tu bois la même chope. » Il est devenu rouge jusqu'aux oreilles et il m'a parlé de son bouclier pendant une heure. Il a un très beau bouclier. Je le sais : il me l'a décrit quarante fois. Un jour, je lui demanderai pourquoi il vient. Pas tout de suite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gunnar. Ta chope est encore pleine."
+     ],
+     [
+      "b",
+      "Je… je prends mon temps, Sigrun."
+     ],
+     [
+      "a",
+      "Trois ans, c'est beaucoup de temps."
+     ],
+     [
+      "b",
+      "Il en faut, pour certaines choses."
+     ]
+    ]
+   }
+  }
+ },
+ "nori": {
+  "genre": "m",
+  "prenom": "Nori",
+  "histoire": [
+   {
+    "titre": "le pilier qui murmurait",
+    "t": "J'avais sept ans quand j'ai collé l'oreille contre un pilier de la Grande Halle. Il murmurait. Tout le monde a ri. Ma grand-mère Ragna, la runiste d'alors, n'a pas ri. Elle m'a pris par la main et elle a dit : « Enfin. » Je n'ai compris ce mot que trois cents ans plus tard."
+   },
+   {
+    "titre": "cent ans chez la vieille Ragna",
+    "t": "J'ai appris les runes pendant cent ans, chez ma grand-mère, dans la niche où je vis encore. Trois mille signes, et chacun a trois sens, selon la lumière. Elle me faisait lire à la seule lueur de la lave. Elle disait : « Une rune qu'on lit au soleil ment toujours. » Depuis, je ne sors presque jamais au soleil."
+   },
+   {
+    "titre": "la rune à l'envers sur la hache du roi",
+    "t": "Au couronnement de Thorgal, la troisième rune de la hache forgée par Borin était à l'envers. À l'endroit, elle dit « force ». À l'envers, elle dit « fatigue ». Je l'ai dit. Tout bas. Mais la Grande Halle a l'écho facile. Borin ne me l'a jamais tout à fait pardonné. Et le roi est fatigué, le matin."
+   },
+   {
+    "titre": "les runes qui s'effacent",
+    "t": "Aujourd'hui, les runes de garde s'effacent, la montagne gronde et les golems ne reconnaissent plus personne. Ori, mon petit-neveu, recopie tout ce que je dis. Le roi descend me demander l'avenir. Ulfa me demande pourquoi je bois de l'eau. Je leur réponds la même chose : patience."
+   },
+   {
+    "titre": "ce que mes yeux ne lisent plus",
+    "t": "Je vais te confier une chose, {surnom}. Mes yeux s'en vont. Les runes fines, je les lis du bout des doigts, la nuit, quand personne ne regarde. Ori me lit les autres à voix haute, « pour s'entraîner ». Il croit que je ne sais pas pourquoi il fait ça. Je le sais. Nous ne le disons pas. C'est mieux ainsi."
+   }
+  ],
+  "reve": [
+   "Lire la dernière rune, tout au fond, près du Cœur de la Montagne. Personne ne l'a lue depuis mille ans. Il faudra que j'y descende avant que mes doigts n'oublient."
+  ],
+  "question": {
+   "texte": "Les runes ne disent pas tout, {surnom}. Toi… tu crois que l'avenir est déjà écrit ?",
+   "reponses": [
+    {
+     "label": "Oui, quelque part.",
+     "valeur": "ecrit",
+     "t": "Alors nous sommes deux à le croire. Mais écrit ne veut pas dire lisible. Les runes le disent toujours… un peu de travers.",
+     "rappel": "Toi qui crois l'avenir écrit : ce matin, une rune a bougé à ton passage. Je ne te dirai pas laquelle."
+    },
+    {
+     "label": "Non. On l'écrit en marchant.",
+     "valeur": "marche",
+     "t": "Hmm. Ma grand-mère disait la même chose. Puis elle gravait le chemin avant qu'on le prenne. Tu as peut-être raison. Les pierres hésitent, quand tu passes.",
+     "rappel": "Tu m'as dit qu'on écrit l'avenir en marchant. Alors marche droit, {surnom}. Les pierres prennent des notes."
+    },
+    {
+     "label": "Je préfère ne pas savoir.",
+     "valeur": "savoir_pas",
+     "t": "Sage. Très sage. J'ai passé quatre cents ans à savoir, et je dors moins bien que les chèvres de Hilda.",
+     "rappel": "Tu préfères ne pas savoir. Alors je ne te dirai pas ce que la rune de ce matin disait de toi. Tu vois ? Je t'ai écouté."
+    }
+   ]
+  },
+  "liens": {
+   "borin": {
+    "qui": "ce brave",
+    "nom": "Borin",
+    "sentiment": 0.6,
+    "avis": "Borin tape fort et parle fort. Il croit que je le méprise parce que je corrige ses runes. Je les corrige parce que son acier mérite d'être bien écrit.",
+    "anecdotes": [
+     "Au couronnement, quand j'ai dit que la troisième rune était à l'envers, Borin est devenu rouge jusqu'au crâne. Le lendemain, il est venu à ma niche avec la hache et un burin, et il a dit : « Montre. » Je lui ai montré. Il n'a pas corrigé la hache. Mais il n'a plus jamais gravé une rune à l'envers.",
+     "Quand nous gravons ensemble, il frappe et je trace, toute la nuit, sans parler. Un matin, j'ai dit : « Bien. » Une seule fois en cent ans. Il est sorti très vite de la forge en disant qu'il avait une poussière dans l'œil. Dans une forge, il y a de la poussière. Je l'ai cru. Les runes, non."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu tapes trop fort, Borin. Les pierres se plaignent."
+     ],
+     [
+      "b",
+      "Les pierres ? Elles ont dit quoi, les pierres ?"
+     ],
+     [
+      "a",
+      "« Hmpf. »"
+     ],
+     [
+      "b",
+      "… Elles ont du goût."
+     ]
+    ]
+   },
+   "grimli": {
+    "qui": "ce cher",
+    "nom": "Grimli",
+    "sentiment": 0.5,
+    "avis": "Grimli oublie ses galeries, mais la montagne, elle, se souvient de lui. Il entend des choses que je ne fais que lire. C'est un don. Il croit que c'est de la distraction.",
+    "anecdotes": [
+     "Grimli est venu me dire qu'il avait entendu un cœur battre au fond d'une galerie. Il a dessiné le chemin sur une ardoise. J'ai reconnu les vieux signes de la descente vers le Cœur de la Montagne. Je lui ai demandé d'oublier ce chemin. Puis j'ai effacé l'ardoise. Il n'a rien vu. Il avait déjà oublié.",
+     "Le soir des golems, il est venu boire mon eau de lune. Il a fait une grimace terrible et il a dit « Délicieux ». Depuis, chaque fois qu'il passe, je lui en sers un petit verre, et chaque fois il dit « Délicieux » avec la même grimace. C'est notre rite. Les rites aussi sont des runes."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grimli. Tu as retrouvé ta galerie ?"
+     ],
+     [
+      "b",
+      "Non, mais j'en ai trouvé une autre ! Elle est à qui ?"
+     ],
+     [
+      "a",
+      "À toi. Tu l'as creusée il y a deux cents ans."
+     ],
+     [
+      "b",
+      "Ah ! Alors je l'ai retrouvée !"
+     ]
+    ]
+   },
+   "thorgal": {
+    "qui": "notre roi",
+    "nom": "Thorgal",
+    "sentiment": 0.6,
+    "avis": "Thorgal vient me demander l'avenir comme on demande l'heure. Il ne veut pas savoir : il veut être rassuré. Je fais de mon mieux pour ne pas lui mentir.",
+    "anecdotes": [
+     "Le jour de son couronnement, Thorgal est venu à ma niche, seul, avant la fête. Il m'a demandé : « Est-ce que je serai un bon roi ? » Les runes disaient : « Il perdra sa couronne mille fois et la retrouvera mille et une. » Je les lui ai lues. Il a ri. Il la perd tous les jours. Il la retrouve toujours.",
+     "Depuis que la montagne gronde, il descend chaque nuit me demander : « Alors ? » Je réponds : « Pas aujourd'hui. » Il hoche la tête et il remonte. Une nuit, il n'a rien demandé. Il s'est assis à côté de moi, et nous avons écouté la montagne ensemble jusqu'à l'aube."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté. Les runes ont parlé, cette nuit."
+     ],
+     [
+      "b",
+      "Bien ou mal, Nori ?"
+     ],
+     [
+      "a",
+      "Ni l'un ni l'autre. Elles ont dit « patience »."
+     ],
+     [
+      "b",
+      "Encore ? Elles radotent, tes runes."
+     ]
+    ]
+   },
+   "ulfa": {
+    "qui": "cette pipelette d'",
+    "nom": "Ulfa",
+    "sentiment": 0.3,
+    "avis": "Ulfa parle plus qu'une cascade et elle croit que je bois de l'eau. C'est de l'eau de lune. Elle ne ferait pas la différence. Mais sa taverne est chaude, et son rire aussi.",
+    "anecdotes": [
+     "Chaque soir, Ulfa crie pour toute la taverne : « Et un verre d'EAU pour Nori ! » Je le vide dans ma gourde quand elle a le dos tourné. Ce que je bois, c'est de la rosée recueillie au sommet les nuits de pleine lune, dans un bol d'obsidienne. Elle ne saurait pas la différence.",
+     "Une fois, Ulfa a goûté mon eau de lune en cachette. Je l'ai vue. Elle a fait une tête de chèvre devant un citron, et elle a dit très fort : « C'est de l'EAU ! » Depuis, elle le répète à tout le monde. Elle a tort. Mais elle a raison de le dire : on me laisse tranquille."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta bière fume, Ulfa. Les runes n'aiment pas ça."
+     ],
+     [
+      "b",
+      "Et toi, Nori, toujours à l'eau ? Tu vas rouiller !"
+     ],
+     [
+      "a",
+      "L'eau de lune ne rouille pas."
+     ],
+     [
+      "b",
+      "De l'eau, c'est de l'eau. Même avec la lune dedans."
+     ]
+    ]
+   },
+   "nain_4": {
+    "qui": "mon petit-neveu",
+    "nom": "Ori",
+    "sentiment": 0.9,
+    "avis": "Ori a de bons yeux, une belle écriture et la patience d'une stalactite. Il sera le prochain gardien des runes. Il ne le sait pas encore. Les runes, si.",
+    "anecdotes": [
+     "Quand Ori est né, ses parents voulaient l'appeler Nori, comme moi. J'ai dit non : un seul Nori suffit à la montagne. Je lui ai enlevé une lettre. « Il en gagnera d'autres », j'ai dit. Il en a gagné. Aujourd'hui, il écrit plus de lettres que tout Forgefer réuni.",
+     "Depuis quelque temps, Ori me lit les runes à voix haute, chaque soir, « pour s'entraîner ». Il lit lentement, et il se trompe exprès sur les plus faciles, pour que je le corrige et que je me sente utile. Il ment très mal. Il tient ça de moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lis-moi la rune du nord, Ori. Pour t'entraîner."
+     ],
+     [
+      "b",
+      "« Patience », grand-oncle. Encore."
+     ],
+     [
+      "a",
+      "Bien lu. Tu progresses."
+     ],
+     [
+      "b",
+      "C'est que j'ai un bon maître."
+     ]
+    ]
+   }
+  }
+ },
+ "orsik": {
+  "genre": "m",
+  "prenom": "Orsik",
+  "histoire": [
+   {
+    "titre": "le rubis que j'ai avalé",
+    "t": "Mon père était changeur à la Grande Halle. Il pesait l'or, je pesais mes billes. À quatre ans, j'ai avalé un rubis qui traînait sur son comptoir. Toute la famille a attendu trois jours. On l'a récupéré. Ne demande pas comment. Mon père l'a serti sur ma première boucle de ceinture. Je la porte encore."
+   },
+   {
+    "titre": "les huit rubis de la couronne",
+    "t": "Il y a quatre-vingt-dix ans, Thorgal allait être couronné. Il m'a commandé une couronne : l'or de la Forge Royale, huit rubis, « et pas cher ». J'ai travaillé quarante nuits. Le jour du sacre, elle brillait tant que la moitié de la cour a pleuré. Le roi m'a payé la moitié. L'autre moitié, il me la doit encore."
+   },
+   {
+    "titre": "la nuit où le huitième rubis s'est fendu",
+    "t": "La veille du sacre, en sertissant le huitième rubis, ma pince a dérapé. Un craquement. Trop tard pour en trouver un autre. Alors j'ai taillé un éclat de verre rouge, toute la nuit, à la chandelle. Au matin, la couronne était parfaite. Presque. Personne n'a rien vu. Quatre-vingt-dix ans que personne ne voit rien. Chut."
+   },
+   {
+    "titre": "mon échoppe et mes voleurs",
+    "t": "Aujourd'hui, j'ai mon échoppe dans la Grande Halle, à côté de la Forge Royale. Chaque soir, je compte mes rubis : il en manque un. C'est Ulfa. Je fais semblant de ne pas savoir. Ori tient mes registres, Grimli m'apporte des pierres dont il ne connaît jamais l'origine, et le roi vient admirer ce qu'il ne paie pas."
+   },
+   {
+    "titre": "le rubis que je garde dans ma poche",
+    "t": "Je vais te dire la vérité, {surnom}, parce que tu ne brilles pas assez pour la répéter. Le huitième rubis ne s'est jamais fendu. Il était trop beau. Je n'ai pas pu le donner. Il est là, dans ma poche, depuis quatre-vingt-dix ans. Chaque soir, je le touche. Et chaque soir, j'ai honte. Un peu."
+   }
+  ],
+  "reve": [
+   "Tailler la pierre parfaite. Sans un défaut, sans une bulle. Une seule, dans toute ma vie. Et ne la montrer à personne. Sauf à toi, peut-être. Pour une petite somme."
+  ],
+  "question": {
+   "texte": "Toi qui voyages… qu'est-ce qui brille le plus, sur les autres îles ?",
+   "reponses": [
+    {
+     "label": "La mer, au soleil couchant.",
+     "valeur": "mer",
+     "t": "La mer. Hmm. Ça brille, mais ça ne se sertit pas. Et ça ne se revend pas. Tu es un poète, toi. Les poètes ne paient jamais comptant.",
+     "rappel": "Toi, le poète qui trouve que la mer brille : tu as des pièces, aujourd'hui ? Non ? Je m'en doutais."
+    },
+    {
+     "label": "Les perles, sous la mer.",
+     "valeur": "perles",
+     "t": "Des perles ! Sous la mer ! Combien ? Grosses comment ? Ne réponds pas. Rapporte. Je paie bien. Enfin… je paie.",
+     "rappel": "Tu m'as parlé de perles sous la mer. Je n'en dors plus. Tu en as rapporté ? Une petite ? Une moitié ?"
+    },
+    {
+     "label": "Les yeux de mes amis.",
+     "valeur": "amis",
+     "t": "Hmpf. Ça ne se pèse pas, ça. … Mais c'est joli. Ne le répète pas, on dirait que je suis sentimental. Je ne le suis pas. Pas en public.",
+     "rappel": "Les yeux de tes amis, m'avais-tu dit. J'y ai repensé. Ulfa a les yeux qui brillent quand elle me vole. C'est un début."
+    }
+   ]
+  },
+  "liens": {
+   "ulfa": {
+    "qui": "cette voleuse d'",
+    "nom": "Ulfa",
+    "sentiment": 0.5,
+    "avis": "Ulfa me vole un rubis par soir et me les rend tous à la fête de la Forge. C'est une voleuse. C'est aussi la seule personne de la cité qui me fasse rire. Ce n'est pas facile.",
+    "anecdotes": [
+     "Le premier soir, il y a cent ans, quand j'ai vu qu'il manquait un rubis, j'ai fermé l'échoppe et fouillé toute la halle. Rien. À la fête de la Forge, Ulfa a posé sur mon comptoir une chope pleine : trois cent soixante-cinq rubis. Elle a dit : « Tu avais l'air de t'ennuyer. » Depuis, je ne m'ennuie plus.",
+     "Une année, à la fête, j'ai compté trois cent soixante-six rubis. Un de trop. J'ai cru qu'elle s'était trompée. Elle m'a fait un clin d'œil. Je n'ai jamais su d'où venait le dernier. Je l'ai rangé à part, dans une petite boîte. C'est le seul rubis que je n'aie jamais pesé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Il manque un rubis, ce soir, Ulfa."
+     ],
+     [
+      "b",
+      "Ah bon ? Quelle tristesse. Une bière pour te consoler ?"
+     ],
+     [
+      "a",
+      "À combien ?"
+     ],
+     [
+      "b",
+      "Un rubis."
+     ]
+    ]
+   },
+   "thorgal": {
+    "qui": "notre roi",
+    "nom": "Thorgal",
+    "sentiment": -0.1,
+    "avis": "Thorgal porte la plus belle couronne du monde. Je le sais : c'est moi qui l'ai faite. Il me la doit encore à moitié. Quatre-vingt-dix ans de demi-dette, ça pèse sur une couronne.",
+    "anecdotes": [
+     "Chaque année, je présente au roi la facture de la couronne. Chaque année, il la lit, la plie en quatre, dit : « Un roi n'oublie pas », et la glisse dans sa barbe. Il y en a quatre-vingt-dix, dans cette barbe. Un jour, je la couperai pendant son sommeil. Pour récupérer les factures.",
+     "Un matin, Gunnar a fait remarquer au roi que sa couronne était sur sa tête. En la redressant, le roi a tapoté le huitième rubis, le faux, et il m'a regardé droit dans les yeux. Il n'a rien dit. Moi non plus. Je n'ai pas dormi de la semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté. Votre couronne brille, aujourd'hui."
+     ],
+     [
+      "b",
+      "Grâce à toi, Orsik ! Un roi n'oublie pas."
+     ],
+     [
+      "a",
+      "La facture non plus n'oublie pas, Majesté."
+     ],
+     [
+      "b",
+      "Ah ! Ulfa m'appelle. Royalement."
+     ]
+    ]
+   },
+   "grimli": {
+    "qui": "ce distrait de",
+    "nom": "Grimli",
+    "sentiment": -0.2,
+    "avis": "Grimli trouve des rubis superbes et ne sait jamais où. Un mineur qui ne sait pas où il creuse, c'est un voleur qui s'ignore. Ou un génie. Je n'ai pas encore tranché.",
+    "anecdotes": [
+     "Il y a cinquante ans, j'ai voulu choisir mes pierres moi-même, au fond de la mine. Grimli m'a guidé. Nous nous sommes perdus deux jours, et j'ai laissé tomber un rubis dans le noir. L'an dernier, il est venu me le vendre, tout fier. MON rubis. Avec ma marque. Je l'ai payé quand même. Pour qu'il ne le revende pas à un autre.",
+     "Un jour, je l'ai suivi de loin dans la mine, pour trouver enfin sa fameuse veine. Au bout d'une heure, je ne savais plus où j'étais. C'est lui qui m'a retrouvé, en sifflotant, une lanterne à la main. Il ne m'a jamais demandé ce que je faisais là. C'est presque pire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ce rubis, Grimli. Il vient d'où ?"
+     ],
+     [
+      "b",
+      "De là-dessous, Orsik."
+     ],
+     [
+      "a",
+      "Où, là-dessous ?"
+     ],
+     [
+      "b",
+      "Ah ça… Trois pièces, et je cherche."
+     ]
+    ]
+   },
+   "nain_4": {
+    "qui": "mon scribe",
+    "nom": "Ori",
+    "sentiment": 0.5,
+    "avis": "Ori tient mes registres mieux que moi. Il écrit petit, il ne fait pas de taches et il ne demande pas d'argent. Il demande des « merci ». Je lui en donne. Ça ne coûte rien.",
+    "anecdotes": [
+     "Tous les soirs, Ori compte mes rubis avec moi et les écrit un par un dans le grand registre. Tous les soirs, il en manque un. Ori écrit : « un rubis, sorti ». Pas « volé ». « Sorti. » J'ai demandé pourquoi. Il a dit : « Parce qu'il revient. » Ce petit est plus sage que son grand-oncle.",
+     "Un jour, Ori m'a montré une ligne vide dans mon registre, la veille du sacre du roi, il y a quatre-vingt-dix ans. Il m'a demandé ce qui allait là. J'ai dit : « Une tache. » Il a regardé la page. Il n'y avait pas de tache. Il a refermé le registre sans rien dire. Je l'aime bien, cet Ori. Il me fait peur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ori ! Le registre. Il en manque un."
+     ],
+     [
+      "b",
+      "Je note : « un rubis, sorti ». Comme hier. Et mon merci ?"
+     ],
+     [
+      "a",
+      "Merci. Note-le aussi. Ça fait combien ?"
+     ],
+     [
+      "b",
+      "Quatre mille douze, Orsik."
+     ]
+    ]
+   }
+  }
+ },
+ "thorgal": {
+  "genre": "m",
+  "prenom": "Thorgal",
+  "histoire": [
+   {
+    "titre": "le petit prince derrière le tonneau",
+    "t": "Mon père, Thrain le Lent, quarante et unième roi, voulait m'apprendre à régner. Moi, je voulais me cacher dans la cave de la Chope Ardente, derrière le plus gros tonneau. Une jeune tavernière m'y a trouvé, un soir. Ulfa. Elle ne m'a pas dénoncé. Elle m'a appris à tirer une bière. Un roi n'oublie pas."
+   },
+   {
+    "titre": "mon couronnement",
+    "t": "Il y a quatre-vingt-dix ans, on m'a couronné. Borin avait forgé la hache, Orsik la couronne, Nori lisait les runes. J'ai marché sur ma cape, je suis tombé devant toute la cour, et la couronne a roulé jusqu'au comptoir d'Ulfa. Je me suis relevé et j'ai dit : « Je la testais. » On m'a applaudi. Ça, c'est être roi."
+   },
+   {
+    "titre": "la nuit où la foudre est tombée",
+    "t": "Une nuit d'orage, la foudre est tombée sur le cratère. Elle venait du ciel, du sud. Les golems des hauteurs, nos vieux gardiens, ont ouvert les yeux et ne nous ont plus reconnus. J'ai fait fermer la Grande Porte. Pour la première fois de mon règne, j'ai eu peur pour mon peuple. Un roi ne le dit pas. Je te le dis à toi."
+   },
+   {
+    "titre": "ma cour aujourd'hui",
+    "t": "Aujourd'hui, Gunnar garde mon trône, Ori écrit mes décrets, les corbeaux de Hilda m'apportent les nouvelles, et Ulfa met de l'eau dans ma bière. Je perds ma couronne tous les jours. Elle est sur ma tête. Gunnar me le dit avec beaucoup de délicatesse. C'est un bon garde."
+   },
+   {
+    "titre": "pourquoi je chante jusqu'à l'aube",
+    "t": "Je vais te dire ce que pèse la couronne, {surnom}. Je suis le quarante-deuxième roi de Forgefer, et le Cœur de la Montagne faiblit. La nuit, je me demande si je serai le dernier. Alors je descends à la Chope et je chante jusqu'à l'aube, faux et fort. Tant qu'on m'entend chanter, mon peuple dort."
+   }
+  ],
+  "reve": [
+   "Monter au château du ciel et boire une bière avec les Rois-Ciel, comme au temps de mon arrière-grand-père. Un roi parle mieux à un roi. Surtout autour d'une bière.",
+   "Et que mon peuple dorme une nuit entière sans entendre gronder la montagne. Une seule. Je la passerais éveillé, rien que pour l'écouter dormir."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… si tu étais roi, quelle serait ta première loi ?",
+   "reponses": [
+    {
+     "label": "De la bière pour tout le monde !",
+     "valeur": "biere",
+     "t": "HO HO ! Par le marteau d'Ancêtre-Pierre ! J'ai essayé, la deuxième année. Ulfa a fermé la Chope trois jours. Trois jours sans bière dans tout le royaume. Mais l'intention était royale.",
+     "rappel": "Toi, le roi de la bière pour tous : Ulfa te salue. Elle dit que si tu montes un jour sur un trône, elle déménage."
+    },
+    {
+     "label": "Personne ne dort dehors.",
+     "valeur": "toit",
+     "t": "Hmm. Une loi de grand cœur. Sous la montagne, chacun a un toit, mais pas toujours une place près du feu. Je vais y réfléchir. Royalement. Ori, note ça.",
+     "rappel": "Ori a écrit ta loi : « Personne ne dort loin du feu. » Grimli dort dans sa mine quand même. On ne peut pas tout."
+    },
+    {
+     "label": "Plus personne ne s'incline.",
+     "valeur": "incliner",
+     "t": "Plus personne ne… Hmm. HMM. Et comment je verrais le dessus des têtes, moi ? … Bon. Pour toi, une exception : tu peux ne plus t'incliner. Un peu.",
+     "rappel": "Tu ne t'inclines plus, toi. Je l'ai remarqué. Je n'ai rien dit. C'est ça, être roi."
+    }
+   ]
+  },
+  "liens": {
+   "ulfa": {
+    "qui": "ma tavernière",
+    "nom": "Ulfa",
+    "sentiment": 0.8,
+    "avis": "Ulfa met de l'eau dans ma bière depuis quatre-vingt-dix ans. Je le vois. Je fais semblant. Elle croit que je ne vois rien. C'est la plus vieille amitié de mon royaume.",
+    "anecdotes": [
+     "J'étais petit prince, je fuyais mes leçons derrière le gros tonneau de la Chope Ardente. Ulfa m'a trouvé. Au lieu de me ramener au trône, elle m'a appris à tirer une bière. J'ai renversé le tonneau. Mon père nous a punis tous les deux : une semaine à frotter la cave. On a ri toute la semaine.",
+     "Le soir des funérailles de mon père, je suis descendu à la taverne. Une bière, deux, trois. La quatrième avait un goût de source. J'ai regardé Ulfa. Elle essuyait une chope, très occupée. Je n'ai rien dit. Depuis, elle continue, et moi je continue de ne rien voir. Un roi a besoin de quelqu'un qui veille sur sa chope."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ulfa ! Une bière. Une VRAIE."
+     ],
+     [
+      "b",
+      "Toujours, Majesté. Que des vraies, ici."
+     ],
+     [
+      "a",
+      "Hmm. Celle-ci a un goût de source."
+     ],
+     [
+      "b",
+      "C'est la fraîcheur, Majesté. Royalement fraîche."
+     ]
+    ]
+   },
+   "orsik": {
+    "qui": "mon joaillier",
+    "nom": "Orsik",
+    "sentiment": 0.4,
+    "avis": "Orsik a fait ma couronne, et il me le rappelle chaque année avec une facture. Un des rubis est faux, je le sais. Nous sommes quittes. Mais lui ne le sait pas.",
+    "anecdotes": [
+     "Un des huit rubis de ma couronne est faux. Je l'ai su le jour du sacre : en passant près des rigoles de lave, sept rubis se sont allumés et le huitième est resté tout bête. Je n'ai rien dit. Orsik transpire chaque fois que je touche ma couronne. C'est ma petite vengeance pour les factures.",
+     "Chaque année, Orsik m'apporte la facture de la couronne. Je la lis, je la plie en quatre et je la glisse dans ma barbe. J'en ai quatre-vingt-dix. Ulfa dit que ma barbe crisse quand je marche. C'est le bruit de la dette. Un roi n'oublie pas. Il range."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Orsik ! Ma couronne brille-t-elle toujours ?"
+     ],
+     [
+      "b",
+      "Sept rubis sur huit brillent, Majesté. Euh… huit sur huit."
+     ],
+     [
+      "a",
+      "Sept ou huit, Orsik ?"
+     ],
+     [
+      "b",
+      "Huit. Royalement huit."
+     ]
+    ]
+   },
+   "nori": {
+    "qui": "mon vieux conseiller",
+    "nom": "Nori",
+    "sentiment": 0.7,
+    "avis": "Nori lit l'avenir dans les pierres et me le raconte de travers. Mais il ne m'a jamais menti. Pour un roi, c'est plus rare que les rubis.",
+    "anecdotes": [
+     "Le matin de mon sacre, je suis allé voir Nori, seul, pour lui demander si je serais un bon roi. Il a lu une rune et il a dit : « Tu perdras ta couronne mille fois et tu la retrouveras mille et une. » J'ai cru que c'était une prophétie. C'était un constat. Je perds ma couronne tous les jours.",
+     "Depuis que la montagne gronde, je descends chaque nuit à sa niche. Je demande : « Alors ? » Il répond : « Pas aujourd'hui. » Je remonte. Une nuit, je n'ai rien demandé. Je me suis assis. Il m'a passé son gobelet d'eau de lune. C'était infect. On a écouté la montagne jusqu'au matin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Nori ?"
+     ],
+     [
+      "b",
+      "Pas aujourd'hui, Majesté."
+     ],
+     [
+      "a",
+      "Bien. Et demain ?"
+     ],
+     [
+      "b",
+      "Demain, vous me le redemanderez."
+     ]
+    ]
+   },
+   "hilda": {
+    "qui": "ma chevrière",
+    "nom": "Hilda",
+    "sentiment": 0.6,
+    "avis": "Hilda garde mes corbeaux messagers. Elle dit que je les fais trop voler. Un roi a besoin de nouvelles. Et de fromage. Surtout la nuit.",
+    "anecdotes": [
+     "Un matin, j'ai trouvé une chèvre sur mon trône. Elle mâchonnait mon coussin de velours rouge et me regardait comme si l'intrus, c'était moi. J'ai pensé : voilà une bête qui a le sens du pouvoir. J'ai fait venir sa bergère et je lui ai confié mes corbeaux. Je n'ai jamais regretté. Le coussin, si.",
+     "Au-dessus de mon trône, il y a une phrase gravée : « Le roi est le plus beau des nains. » Hilda m'a dit que Croâ l'avait dite. Je l'ai fait graver le jour même. Nori l'a regardée longtemps et il a murmuré : « Ce n'est pas du corbeau. » Je m'en moque. C'est gravé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hilda ! Un corbeau, vite. Un message urgent."
+     ],
+     [
+      "b",
+      "Pour qui, Majesté ?"
+     ],
+     [
+      "a",
+      "Pour la cuisine. Le roi a faim."
+     ],
+     [
+      "b",
+      "Croâ refuse. Il dit que vous savez marcher."
+     ]
+    ]
+   },
+   "nain_4": {
+    "qui": "mon scribe",
+    "nom": "Ori",
+    "sentiment": 0.3,
+    "avis": "Ori écrit tous mes décrets. Il corrige mes fautes, ajoute des virgules et retire les mots trop royaux. Il a sûrement raison. C'est agaçant, chez un scribe.",
+    "anecdotes": [
+     "J'ai dicté à Ori un décret magnifique : « Par ordre du roi, la bière est un bien royal. » Il a écrit : « La bière est un bien. » J'ai demandé où était passé « royal ». Il a dit : « Ulfa ne l'aurait pas affiché. » Il avait raison. Le décret est toujours au-dessus du comptoir de la Chope.",
+     "Ori tient la chronique des quarante-deux rois. Je lui ai demandé ce qu'il avait écrit sur moi. Il a lu : « Thorgal, quarante-deuxième du nom, perd sa couronne, jamais son peuple. » J'ai fait semblant de tousser. J'ai toussé longtemps. Il a attendu, sans lever les yeux, que j'aie fini."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ori ! Note : « Le roi est d'humeur royale. »"
+     ],
+     [
+      "b",
+      "Je note : « Le roi est de bonne humeur. »"
+     ],
+     [
+      "a",
+      "Ce n'est pas pareil !"
+     ],
+     [
+      "b",
+      "C'est plus court, Majesté."
+     ]
+    ]
+   },
+   "nain_5": {
+    "qui": "mon fidèle garde",
+    "nom": "Gunnar",
+    "sentiment": 0.6,
+    "avis": "Gunnar garde ma halle, mon trône et ma dignité. C'est lui qui me dit, tout bas, que ma couronne est sur ma tête. Personne ne fait ça avec autant de tact.",
+    "anecdotes": [
+     "Chaque matin, je cherche ma couronne. Chaque matin, Gunnar s'approche, se racle la gorge et dit, très bas : « Majesté… la tête. » Je lève la main. Elle est là. Une fois, j'ai fait exprès de la chercher deux fois, pour voir. Il a dit « la tête » deux fois, sans sourire. Un garde parfait.",
+     "Une nuit, j'ai trouvé Gunnar endormi debout dans la halle, appuyé sur son bouclier. Il était de garde depuis deux jours, pour remplacer un malade. J'ai posé ma cape sur ses épaules et je suis allé me coucher. Au matin, il me l'a rendue, pliée, rouge comme un rubis. Un vrai."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gunnar ! Où est ma couronne ?"
+     ],
+     [
+      "b",
+      "Majesté… la tête."
+     ],
+     [
+      "a",
+      "Ah. Toujours au même endroit, alors."
+     ],
+     [
+      "b",
+      "Toujours, Majesté. Comme moi."
+     ]
+    ]
+   }
+  }
+ },
+ "ulfa": {
+  "genre": "f",
+  "prenom": "Ulfa",
+  "histoire": [
+   {
+    "titre": "pourquoi on m'appelle Chope-Pleine",
+    "t": "Je suis née dans la cave de la Chope Ardente, {surnom}, entre deux tonneaux de brune ! Ma mère brassait, ma grand-mère brassait, et le jour où on m'a donné mon nom, j'ai attrapé une chope au lieu du hochet. Voilà pourquoi on m'appelle Chope-Pleine. Le hochet, je l'ai toujours. Il sert de bouchon."
+   },
+   {
+    "titre": "mon premier soir derrière le comptoir",
+    "t": "J'ai repris la taverne il y a deux cents ans, quand ma mère a posé son tablier. Le premier soir, j'ai trop serré une bonde. Le tonneau a explosé ! La bière est montée jusqu'au plafond et elle y est restée collée une semaine. Les clients buvaient la tête en arrière. Salle comble. Par ma barbe, quel triomphe !"
+   },
+   {
+    "titre": "la quatrième chope du roi",
+    "t": "Le soir des funérailles du vieux roi, Thorgal est descendu à la taverne. Une bière, deux, trois. La quatrième, je l'ai remplie d'eau. Il a bu sans rien dire. Ça fait quatre-vingt-dix ans que je mets de l'eau dans sa bière quand il a l'œil triste, et qu'il ne remarque rien. Enfin… je crois."
+   },
+   {
+    "titre": "ma taverne aujourd'hui",
+    "t": "Aujourd'hui, la Chope Ardente est pleine tous les soirs. Le roi chante faux, Bramm boit dans la chope de son père, Nori boit de l'EAU, et je cache un rubis d'Orsik par soir dans le tonneau vide du fond. Le ragoût vient de chez Dagna, le fromage de chez Hilda. Et moi, je fais le bruit !"
+   },
+   {
+    "titre": "le tonneau sans nom",
+    "t": "Un secret, {surnom}, et tu le gardes. Sigrun, ma petite apprentie, je dis à tout le monde que je ne la connais pas. Chaque printemps, elle m'envoie un tonneau sans nom. Je le goûte seule, porte fermée. Il est meilleur que les miens. Voilà. Je suis fière d'elle à en pleurer, et je ne sais pas le lui dire."
+   }
+  ],
+  "reve": [
+   "Après l'hydromel, une bière au miel et au champignon de braise, si bonne que le roi chantera juste. Juste une fois ! Ce serait un miracle, et je le servirais gratuit.",
+   "Et voir Nori finir une chope. Une vraie. J'en tomberais raide, mais je tomberais contente."
+  ],
+  "question": {
+   "texte": "Alors, {surnom}, toi, à la taverne : tu chantes, tu danses, ou tu écoutes ?",
+   "reponses": [
+    {
+     "label": "Je chante, et fort !",
+     "valeur": "chante",
+     "t": "Ha ! Faux, j'espère ? Ici on chante faux, sinon le roi se vexe. Il chante si faux que les tonneaux se fendent. Tu seras dans le ton !",
+     "rappel": "Toi le chanteur ! Le roi demande si tu reviens ce soir. Il dit qu'il a besoin de quelqu'un pour couvrir sa voix."
+    },
+    {
+     "label": "Je danse sur les tables.",
+     "valeur": "danse",
+     "t": "Sur les tables ! Comme le roi après la fête de la Forge ! La grande table en boite encore. Tu danseras sur la petite, elle est plus solide.",
+     "rappel": "Toi qui danses sur les tables : j'ai fait renforcer la petite, avec du fer de Borin. Elle t'attend !"
+    },
+    {
+     "label": "J'écoute, dans un coin.",
+     "valeur": "ecoute",
+     "t": "Ah, quelqu'un qui écoute ! C'est rare et précieux, ici. Assieds-toi près du comptoir, je te raconterai tout ce qui se dit. Je sais tout. Je ne répète rien. Presque rien.",
+     "rappel": "Toi qui aimes écouter : j'ai trois histoires toutes fraîches pour toi. Dont une sur Orsik. Chut !"
+    }
+   ]
+  },
+  "liens": {
+   "thorgal": {
+    "qui": "notre roi",
+    "nom": "Thorgal",
+    "sentiment": 0.8,
+    "avis": "Thorgal chante faux, danse mal et perd sa couronne sur sa tête. C'est le meilleur roi qu'on ait eu. Et il ne voit pas que je mets de l'eau dans sa bière. Enfin… je crois.",
+    "anecdotes": [
+     "Il était petit prince quand je l'ai trouvé caché derrière mon gros tonneau, à fuir ses leçons. Je lui ai appris à tirer une bière. Il a renversé tout le tonneau. Le vieux roi nous a punis tous les deux : une semaine à frotter la cave. On a ri toute la semaine. On en rit encore, en cachette.",
+     "Le soir où il a dansé sur la grande table, après la fête de la Forge, la table a craqué au milieu d'un couplet. Le roi est resté debout sur une moitié, la chope levée, et il a fini sa chanson. Personne n'a osé rire avant la fin. Après, si. La table boite encore. Je ne la change pas : c'est un monument."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! La même que d'habitude ?"
+     ],
+     [
+      "b",
+      "La même, Ulfa. Bien fraîche. Bien… pure."
+     ],
+     [
+      "a",
+      "Pure comme l'eau de source, Majesté !"
+     ],
+     [
+      "b",
+      "C'est ce que je me disais."
+     ]
+    ]
+   },
+   "orsik": {
+    "qui": "ce vieux radin d'",
+    "nom": "Orsik",
+    "sentiment": 0.7,
+    "avis": "Orsik compte ses rubis tous les soirs, et tous les soirs il en manque un. C'est moi. Il le sait. Je sais qu'il le sait. Sans ce jeu-là, il mourrait d'ennui dans sa boutique.",
+    "anecdotes": [
+     "Il y a cent ans, Orsik ne riait jamais. Il comptait. Alors un soir, je lui ai pris un rubis. Un seul. Puis un autre le lendemain. À la fête de la Forge, je lui ai rendu une chope pleine : trois cent soixante-cinq rubis. Il a fait une tête… J'ai cru qu'il allait pleurer. Il a ri. Pour la première fois.",
+     "Une année, j'ai glissé dans la chope un rubis à moi, un petit, trouvé dans un caillou de la cave. Il en a compté trois cent soixante-six. Il m'a regardée longtemps. Il ne l'a jamais revendu, celui-là : il le garde dans une petite boîte. Il croit que je ne sais pas. Je sais tout."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Orsik ! Tu as compté tes rubis ?"
+     ],
+     [
+      "b",
+      "Il en manque un, Ulfa. Comme d'habitude."
+     ],
+     [
+      "a",
+      "Quelle tristesse ! Une bière pour oublier ?"
+     ],
+     [
+      "b",
+      "Je n'oublie jamais. Mais d'accord pour la bière."
+     ]
+    ]
+   },
+   "nori": {
+    "qui": "notre vieux",
+    "nom": "Nori",
+    "sentiment": 0.5,
+    "avis": "Nori boit de l'eau. De l'EAU. Dans ma taverne. Il dit que c'est de l'eau de lune. J'y ai goûté : c'est de l'eau. Mais il écoute bien quand on lui parle. Ça compense.",
+    "anecdotes": [
+     "Un soir, pendant qu'il lisait ses runes au coin du feu, j'ai goûté sa fameuse eau de lune. Pouah ! Des cailloux froids et de la poussière. Il m'a vue. Il n'a rien dit. Il a juste noté quelque chose dans son carnet. Depuis, je me demande ce qu'il a noté. Ça me travaille. Ça me travaille beaucoup.",
+     "Nori est le seul client qui ne me raconte jamais rien. Alors c'est moi qui lui raconte tout, tous les potins de Forgefer, depuis cent ans. L'autre jour, il m'a corrigée : « Non, Ulfa. Il y a soixante ans, tu me l'as raconté autrement. » Il se souvient de tout ce que je dis. De TOUT. C'est effrayant. Et un peu flatteur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Et un verre d'EAU pour Nori !"
+     ],
+     [
+      "b",
+      "D'eau de lune, Ulfa."
+     ],
+     [
+      "a",
+      "De l'eau avec la lune dedans. Ça reste de l'eau !"
+     ],
+     [
+      "b",
+      "Et ta bière, c'est de l'eau avec du bruit dedans."
+     ]
+    ]
+   },
+   "bramm": {
+    "qui": "mon meilleur client",
+    "nom": "Bramm",
+    "sentiment": 0.8,
+    "avis": "Bramm vient boire ici après sa garde, tous les soirs depuis cent quatre-vingts ans. Il ne dit rien, il ne sourit pas. Parfois, si. Ne le répète à personne.",
+    "anecdotes": [
+     "Derrière mon comptoir, je garde une chope cabossée. C'était celle de son père. Bramm est le seul à y boire. Un soir, un nain de passage l'a attrapée. Je la lui ai reprise des mains avant qu'il touche la mousse. Bramm n'a rien dit. Il a payé la tournée du nain. C'est sa façon de dire merci.",
+     "Le soir où les golems se sont réveillés, Bramm est entré sans un mot, gris comme sa porte. Je n'ai rien demandé. J'ai posé sa chope, je me suis assise en face, et je me suis tue. Une heure entière ! Tout le monde a cru que j'étais malade. En partant, il a dit : « Merci. » Deux syllabes. Un record."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bramm ! Ta chope t'attend. La cabossée."
+     ],
+     [
+      "b",
+      "Hmpf. Bien."
+     ],
+     [
+      "a",
+      "Et un sourire, ce soir ?"
+     ],
+     [
+      "b",
+      "Peut-être. Si tu te tais."
+     ]
+    ]
+   },
+   "dagna": {
+    "qui": "ma vieille amie",
+    "nom": "Dagna",
+    "sentiment": 0.6,
+    "avis": "Dagna dit que c'est son ragoût qui fait boire ma bière. C'est ma bière qui fait passer son ragoût ! Mais je le revends deux fois plus cher, alors je ne dis rien. Presque rien.",
+    "anecdotes": [
+     "Chaque matin, Dwalin descend le chaudron de Dagna à la Chope, et je revends son ragoût deux fois plus cher qu'elle. À la fête de la Forge, je lui rends la différence dans une petite bourse brodée, avec un mot : « Pour le sel. » Elle en rit pendant une semaine. Borin, lui, ne trouve pas ça drôle.",
+     "Chaque année, l'air de rien, je demande à Dagna si Sigrun mange bien, là-haut. Elle dit oui. Je dis : « Sigrun ? Connais pas. » Et je file à la cave avant qu'elle voie ma tête. Dagna voit tout, d'habitude. Mais là, elle ne dit rien. C'est pour ça que je l'aime."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Dagna ! Ton ragoût s'est vendu en une heure !"
+     ],
+     [
+      "b",
+      "Grâce à ma cuisine, Ulfa. Pas à ta bière."
+     ],
+     [
+      "a",
+      "Grâce à ma bière, qui fait passer ta cuisine !"
+     ],
+     [
+      "b",
+      "On se dispute ça depuis cent ans. Et je gagne."
+     ]
+    ]
+   },
+   "nain_6": {
+    "qui": "cette brasseuse de",
+    "nom": "Sigrun",
+    "sentiment": 0.2,
+    "avis": "Sigrun ? Connais pas. … Bon. Une ancienne apprentie. Quarante ans dans ma cave, puis partie brasser chez Dagna. Sa bière est blonde. Trop blonde. Je ne l'ai jamais goûtée.",
+    "anecdotes": [
+     "Pendant quarante ans, Sigrun a lavé mes tonneaux, porté mon orge et goûté mes brassins. Elle voulait toucher la grande cuve. Je disais : « L'an prochain. » Un matin, elle est partie sans dire au revoir. Elle avait laissé la grande cuve propre comme un miroir. J'ai pleuré dedans. Ça a fait une bière salée.",
+     "Chaque printemps, Dwalin me descend un tonneau sans nom, sans mot, sans rien. Je dis à tout le monde que je ne sais pas d'où il vient. Je le goûte seule, porte fermée. Il est blond, il sent le pain chaud du four de Dagna. Il est meilleur que le mien. Le premier qui le répète, je lui coupe la mousse à vie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tiens… on se connaît ?"
+     ],
+     [
+      "b",
+      "Quarante ans dans ta cave, Ulfa."
+     ],
+     [
+      "a",
+      "Ça ne me dit rien. Elle est bonne, ta bière ?"
+     ],
+     [
+      "b",
+      "Tu le saurais, si tu la goûtais."
+     ]
+    ]
+   }
+  }
+ }
+}

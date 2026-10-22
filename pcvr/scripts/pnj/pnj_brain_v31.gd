@@ -9,6 +9,10 @@ extends RefCounted
 ##  - une MÉMOIRE : rencontres, absences, cadeaux, sujets abordés, réponses du joueur,
 ##    coups reçus, quête, et les dernières répliques dites (pour ne pas se répéter).
 ## Tout est sauvegardé avec la partie.
+## V65 : chacun a son HISTOIRE (des chapitres racontés au fil des visites, les derniers seulement
+## à un ami), ses LIENS (les gens qu'il connaît, dont il raconte des anecdotes, et qu'il salue en
+## les croisant), un rêve et une question pour le joueur. Les nouvelles circulent (societe_v65.gd) :
+## les proches apprennent ce que le joueur a fait à quelqu'un, et chacun sait qui a parlé de lui.
 
 var data: Dictionary
 var rng := RandomNumberGenerator.new()
@@ -17,6 +21,11 @@ var energie: float = 0.5
 var affinite: float = 0.0
 var memoire: Dictionary = {}
 var _pending_question: Dictionary = {}
+const Societe = preload("res://scripts/pnj/societe_v65.gd")
+## V65 : la fiche d'histoire de ce personnage (histoire, reve, question, liens).
+var v65: Dictionary = {}
+## V65 : il vouvoie le joueur (d'après sa façon de parler dans sa fiche) : les phrases du cerveau aussi.
+var vous: bool = false
 ## V56 : réductions accordées au joueur (carnet de quêtes) : par groupe (« azur »), par
 ## personnage (son identifiant) et partout (« tout »).
 static var remises: Dictionary = {}
@@ -25,6 +34,8 @@ static var remises: Dictionary = {}
 func setup(profile: Dictionary) -> void:
 	data = profile
 	rng.randomize()
+	v65 = Societe.fiche(str(profile.get("id", "")))
+	vous = bool(profile.get("vouvoie", _v65_vouvoie(v65)))
 	reset()
 
 
@@ -38,6 +49,10 @@ func reset() -> void:
 		"sujets": {}, "faits": {}, "dites": [], "quete": "", "journal": [],
 		# V33 : commerce (achats par objet, pièces dépensées et gagnées, marchandage par visite)
 		"achats": {}, "depense": 0, "ventes": 0, "gain": 0, "marchande": -1, "remise": -1,
+		# V65 : chapitres racontés, anecdotes racontées (par personne), échos et nouvelles déjà
+		# commentés, ce qu'il a appris du joueur par les autres, le dernier sujet de conversation.
+		"chapitre": 0, "histoire_refus": -1, "racontes": {}, "echos": [], "ragots_vus": [], "appris": [],
+		"dernier_sujet": "",
 	}
 
 
@@ -66,7 +81,7 @@ func _bond(d: float) -> void:
 func _remember(text: String, now: float) -> void:
 	var j: Array = memoire["journal"]
 	j.append([now, text])
-	while j.size() > 24:
+	while j.size() > 40:
 		j.pop_front()
 
 
@@ -390,9 +405,20 @@ func start(ctx: Dictionary) -> Dictionary:
 		_mood(0.05 + (0.08 if float(memoire["derniere"]) > 0.0 and now - float(memoire["derniere"]) > 1800.0 else 0.0))
 	_bond(0.8)
 	var reply: Dictionary = say("accueil", ctx, false)
+	# V65 : une nouvelle, un écho, un souvenir de la dernière fois.
+	var hook: String = _v65_accroche(ctx)
+	if hook != "":
+		reply["texte"] = hook if str(reply["texte"]) == "…" else str(reply["texte"]) + "\n\n" + hook
 	memoire["derniere"] = now
 	var q: Dictionary = _next_question(ctx)
-	if not q.is_empty() and rng.randf() < 0.75:
+	var chance: float = 0.75
+	if q.is_empty() and hook == "":
+		q = _v65_question(ctx)
+		chance = 0.5
+		if q.is_empty():
+			q = _v65_question_avis(ctx)
+			chance = 0.35
+	if not q.is_empty() and rng.randf() < chance:
 		_pending_question = q
 		reply["texte"] = str(reply["texte"]) + "\n\n" + str(q["texte"])
 		reply["choix"] = []
@@ -416,6 +442,8 @@ func _next_question(ctx: Dictionary) -> Dictionary:
 func topics(ctx: Dictionary) -> Array:
 	var t: Array = [{"id": "humeur", "label": "Comment ça va ?"}]
 	t.append({"id": "lui", "label": "Qui es-tu ?" if int((memoire["sujets"] as Dictionary).get("lui", 0)) == 0 else "Raconte-moi encore ta vie."})
+	# V65 : son histoire, les gens qu'il connaît, son rêve.
+	t.append_array(_v65_topics(ctx))
 	t.append({"id": "ile", "label": "Parle-moi de cette île."})
 	t.append({"id": "rumeur", "label": "Tu as entendu des rumeurs ?"})
 	if float((data.get("traits", {}) as Dictionary).get("humour", 0.0)) > 0.5:
@@ -448,7 +476,10 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		memoire["faits"][str(_pending_question["id"])] = str(r["valeur"])
 		_mood(float(r.get("humeur", 0.0)))
 		_bond(float(r.get("affinite", 0.0)))
-		_remember("réponse « %s » : %s" % [_pending_question["id"], r["valeur"]], now)
+		if _pending_question.has("v65"):
+			_v65_reponse(_pending_question, r, now)
+		else:
+			_remember("réponse « %s » : %s" % [_pending_question["id"], r["valeur"]], now)
 		_pending_question = {}
 		return {"texte": _dress(_fill(str(r["t"]), ctx), "reponse"), "geste": "parle", "choix": topics(ctx)}
 	if choice.begins_with("don:"):
@@ -457,8 +488,33 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		return _buy(choice.substr(6), ctx)
 	if choice.begins_with("vente:"):
 		return _sell(choice.substr(6), ctx)
+	if choice.begins_with("gens:"):
+		return _v65_gens(choice.substr(5), ctx)
 	var sujets: Dictionary = memoire["sujets"]
 	match choice:
+		# V65 : son histoire, les gens qu'il connaît, son rêve
+		"histoire":
+			return _v65_histoire(ctx)
+		"gens":
+			return _v65_gens_menu(ctx, "")
+		"reve":
+			return _v65_reve(ctx)
+		"autre":
+			return {"texte": _pick_line(_tv(["Bien. De quoi d'autre veux-tu parler ?", "D'accord. Autre chose ?", "Bon. Je t'écoute."], ["Bien. De quoi d'autre voulez-vous parler ?", "D'accord. Autre chose ?", "Bon. Je vous écoute."])), "geste": "parle", "choix": topics(ctx)}
+		"rumeur":
+			# V65 : les nouvelles qui circulent (ce que le joueur a fait aux gens d'ici)
+			if rng.randf() < 0.45:
+				var news: String = _v65_ragot(ctx, true)
+				if news != "":
+					sujets["rumeur"] = int(sujets.get("rumeur", 0)) + 1
+					return {"texte": news, "geste": "parle", "choix": topics(ctx)}
+		"lui":
+			# Toute son histoire racontée : de temps en temps, il en reprend un morceau.
+			var hist: Array = v65.get("histoire", [])
+			if not hist.is_empty() and int(memoire.get("chapitre", 0)) >= hist.size() and rng.randf() < 0.4:
+				sujets["lui"] = int(sujets.get("lui", 0)) + 1
+				var c: Dictionary = hist[rng.randi() % hist.size()]
+				return {"texte": _tv("Tu veux l'entendre encore ? ", "Vous voulez l'entendre encore ? ") + _fill(str(c.get("t", "")), ctx), "geste": "parle", "choix": topics(ctx)}
 		"cadeau":
 			var list: Array = []
 			for id in (ctx.get("objets", {}) as Dictionary):
@@ -519,7 +575,7 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 func _memories_text(ctx: Dictionary) -> String:
 	var lines: Array = []
 	var v: int = int(memoire["visites"])
-	lines.append("Tu es venu me voir %d fois." % v)
+	lines.append(_tv("Tu es venu me voir %d fois.", "Vous êtes venu me voir %d fois.") % v)
 	var faits: Dictionary = memoire["faits"]
 	if faits.has("origine"):
 		match str(faits["origine"]):
@@ -527,10 +583,10 @@ func _memories_text(ctx: Dictionary) -> String:
 			"aventurier": lines.append("Tu te dis aventurier. Je te crois. À moitié.")
 			_: lines.append("Tu n'as jamais voulu me dire d'où tu viens. Je m'en souviens, ça.")
 	if int(memoire["nb_cadeaux"]) > 0:
-		lines.append("Tu m'as fait %d cadeau%s, le dernier : %s." % [memoire["nb_cadeaux"], "x" if int(memoire["nb_cadeaux"]) > 1 else "", _item_name(str(memoire["dernier_cadeau"]), ctx)])
+		lines.append(_tv("Tu m'as fait %d cadeau%s, le dernier : %s.", "Vous m'avez fait %d cadeau%s, le dernier : %s.") % [memoire["nb_cadeaux"], "x" if int(memoire["nb_cadeaux"]) > 1 else "", _item_name(str(memoire["dernier_cadeau"]), ctx)])
 	if faits.has("frappe"):
 		var n_hits: int = int(faits["frappe"])
-		lines.append("Et tu m'as frappé %s. Je n'oublie pas." % ("une fois" if n_hits == 1 else "%d fois" % n_hits))
+		lines.append(_tv("Et tu m'as frappé %s. Je n'oublie pas.", "Et vous m'avez frappé %s. Je n'oublie pas.") % ("une fois" if n_hits == 1 else "%d fois" % n_hits))
 	if faits.has("coquillage_prefere"):
 		lines.append("Tu préfères les coquillages %s." % ("ronds" if faits["coquillage_prefere"] == "ronds" else ("pointus" if faits["coquillage_prefere"] == "pointus" else "… aucun, hélas")))
 	if str(memoire["quete"]) == "finie":
@@ -539,12 +595,13 @@ func _memories_text(ctx: Dictionary) -> String:
 		var n_items: int = 0
 		for k in memoire["achats"]:
 			n_items += int(memoire["achats"][k])
-		lines.append("Tu m'as acheté %d objet%s, pour %d pièces." % [n_items, "s" if n_items > 1 else "", int(memoire["depense"])])
+		lines.append(_tv("Tu m'as acheté %d objet%s, pour %d pièces.", "Vous m'avez acheté %d objet%s, pour %d pièces.") % [n_items, "s" if n_items > 1 else "", int(memoire["depense"])])
 	if int(memoire.get("ventes", 0)) > 0:
-		lines.append("Et tu m'as vendu %d prise%s." % [int(memoire["ventes"]), "s" if int(memoire["ventes"]) > 1 else ""])
+		lines.append(_tv("Et tu m'as vendu %d prise%s.", "Et vous m'avez vendu %d prise%s.") % [int(memoire["ventes"]), "s" if int(memoire["ventes"]) > 1 else ""])
 	if faits.has("canne"):
 		var total: int = int((ctx.get("peche", {}) as Dictionary).get("total", 0))
 		lines.append("Je t'ai confié ma vieille canne" + (" et tu as sorti %d prise%s de l'eau." % [total, "s" if total > 1 else ""] if total > 0 else ", et tu n'as encore rien attrapé avec."))
+	lines.append_array(_v65_souvenirs(ctx))
 	return " ".join(lines)
 
 
@@ -569,10 +626,12 @@ func _gift(item: String, ctx: Dictionary) -> Dictionary:
 		intent = "cadeau_aime"
 		_mood(0.12 * float(likes[item]) * fatigue)
 		_bond(3.0 * float(likes[item]) * fatigue)
+		Societe.noter("cadeau", _v65_id(), now, {"objet": item, "aime": true})
 	elif hates.has(item):
 		intent = "cadeau_deteste"
 		_mood(0.15 * float(hates[item]))
 		_bond(2.0 * float(hates[item]))
+		Societe.noter("cadeau", _v65_id(), now, {"objet": item, "aime": false})
 	else:
 		_mood(0.03)
 		_bond(0.5)
@@ -596,6 +655,7 @@ func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 		return r
 	memoire["quete"] = "finie"
 	_bond(float(q.get("affinite", 10.0)))
+	Societe.noter("quete", _v65_id(), float(ctx.get("now", 0.0)))
 	_remember(str(q.get("note_fin", "collection complétée")), float(ctx.get("now", 0.0)))
 	var out: Dictionary = say("quete_fin", ctx)
 	if q.has("objets"):
@@ -612,6 +672,10 @@ func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 
 ## Phrase lancée à distance quand le joueur approche.
 func call_out(ctx: Dictionary) -> String:
+	# V65 : s'il a appris quelque chose sur le joueur, il l'appelle pour lui en parler.
+	var news: String = _v65_peek()
+	if news != "" and rng.randf() < 0.6:
+		return _fill(_pick_line(_tv(CALL65, CALL65_V)[news]), ctx)
 	var e: Dictionary = _pick("interpelle", ctx)
 	return _fill(str(e.get("t", "")), ctx) if not e.is_empty() else ""
 
@@ -626,6 +690,7 @@ func hit(ctx: Dictionary) -> String:
 	humeur = minf(humeur, -0.35)
 	_bond(-10.0 - 10.0 * rancune)
 	_remember("m'a frappé", float(ctx.get("now", 0.0)))
+	Societe.noter("frappe", _v65_id(), float(ctx.get("now", 0.0)))
 	return str(r["texte"])
 
 
@@ -837,3 +902,686 @@ func _haggle(ctx: Dictionary) -> Dictionary:
 		return _shop_reply("marchande_oui", ctx, ctx)
 	_mood(-0.1)
 	return _shop_reply("marchande_non", ctx, ctx)
+
+
+# =================================================================== V65 : histoire, liens, nouvelles
+## Amitié nécessaire pour chaque chapitre (le dernier est une confidence).
+const GATES65 := [0.0, 14.0, 22.0, 32.0, 45.0]
+const GATES65_PASSANT := [0.0, 14.0, 26.0]
+
+## Ce qu'on dit quand on apprend ce que le joueur a fait à quelqu'un. Bandes : pos (on aime cette
+## personne), neg (on ne l'aime pas), neu (on la connaît à peine). {qn} : « ma voisine Rose ».
+const RAGOTS65 := {
+	"cadeau": {
+		"pos": ["Il paraît que tu as offert {objet} à {qn}. {Il} m'en a parlé toute la journée. Merci pour {lui}.",
+			"{Qn} m'a montré ce que tu lui as offert : {objet}. Tu sais faire plaisir, toi.",
+			"Tu as gâté {qn}, à ce qu'on raconte. Ceux qui sont gentils avec les miens sont les bienvenus chez moi."],
+		"neg": ["On m'a dit que tu avais offert {objet} à {qn}. Chacun ses fréquentations.",
+			"{Qn} se pavane avec le cadeau que tu lui as fait. Je ne dis rien. Je n'en pense pas moins."],
+		"neu": ["Tout le monde sait que tu as offert {objet} à {qn}. Ici, les nouvelles vont plus vite que le vent.",
+			"Il paraît que tu fais des cadeaux à {qn}. C'est gentil, ça."],
+	},
+	"cadeau_rate": {
+		"pos": ["Il paraît que tu as offert {objet} à {qn}… {Il} déteste ça ! Ne t'en fais pas, je lui ai dit que c'était l'intention qui comptait.",
+			"{Qn} a reçu {objet} de ta part, à ce qu'on dit. Tu ne pouvais pas tomber plus mal ! La prochaine fois, demande-moi conseil."],
+		"neg": ["Tu as offert {objet} à {qn} ? Tout le monde sait qu'{il} a ça en horreur. J'en ris encore.",
+			"{Objet} pour {qn} ! Ha ! Je n'aurais pas fait mieux."],
+		"neu": ["On raconte que tu as offert {objet} à {qn}. Pas de chance : c'est bien la seule chose qu'{il} ne supporte pas."],
+	},
+	"quete": {
+		"pos": ["Tu as aidé {qn} ! {Il} me l'a raconté. Je ne l'oublierai pas, {surnom}.",
+			"On dit que sans toi, {qn} y serait encore. Merci, du fond du cœur.",
+			"{Qn} ne parle que de toi depuis que tu l'as aidé{e}. Tu as un ami de plus ici. Deux, même."],
+		"neg": ["Alors comme ça, tu as rendu service à {qn}. Bon. Tu as bon cœur. Trop bon, peut-être.",
+			"Il paraît que tu as aidé {qn}. {Il} aurait pu se débrouiller tout{e} seul{e}, mais bon."],
+		"neu": ["J'ai entendu dire que tu avais aidé {qn}. C'est bien. On a besoin de gens comme toi.",
+			"Tout le monde parle de ce que tu as fait pour {qn}."],
+	},
+	"frappe": {
+		"pos": ["Tu as frappé {qn} ?! On m'a tout raconté. Tu as du culot de venir me parler.",
+			"Je sais ce que tu as fait à {qn}. Je ne te le pardonnerai pas de sitôt.",
+			"Alors c'est toi qui as levé la main sur {qn}… Ne recommence jamais. Jamais."],
+		"neg": ["Il paraît que tu as frappé {qn}. Je ne devrais pas rire. J'ai ri quand même.",
+			"Tu as frappé {qn}, à ce qu'on dit. Je ne dis pas que c'était mérité. Je ne dis pas le contraire."],
+		"neu": ["On raconte que tu as frappé {qn}. Ici, on ne règle pas les choses comme ça.",
+			"Tu as frappé {qn} ? Ça ne se fait pas. Tout le monde en parle."],
+	},
+	"confidence": {
+		"pos": ["{Qn} t'a raconté toute sa vie ? Alors {il} t'a à la bonne. Ça ne m'étonne pas.",
+			"Il paraît que {qn} t'a tout confié. {Il} ne fait pas ça avec n'importe qui, tu sais."],
+		"neg": ["{Qn} t'a raconté sa vie, à ce qu'on dit. Tu as eu de la patience."],
+		"neu": ["Il paraît que {qn} t'a raconté toute sa vie. Tu dois savoir écouter, toi."],
+	},
+}
+
+## Quelqu'un a parlé de moi au joueur ({qn}/{il} : celui qui a parlé).
+const ECHOS65 := {
+	"pos": ["{Qn} t'a parlé de moi ? {Il} ne peut pas s'en empêcher.",
+		"Alors {qn} t'a raconté mes histoires ? J'espère qu'{il} n'a pas tout dit.",
+		"Il paraît que {qn} t'a parlé de moi. Tout en bien, j'espère."],
+	"neg": ["Il paraît que {qn} t'a parlé de moi. Ne crois pas tout ce qu'{il} raconte.",
+		"{Qn} t'a raconté des choses sur moi ? Évidemment."],
+	"inconnu": ["Il paraît que {qn} t'a parlé de moi. Je ne savais pas qu'{il} me connaissait si bien.",
+		"On m'a dit que {qn} t'avait parlé de moi. Le monde est petit."],
+}
+
+## Le joueur a donné son avis sur moi à quelqu'un ({qn} : celui qui me l'a répété).
+const AVIS_ECHO65 := {
+	"sympa": ["Il paraît que tu me trouves sympathique ? C'est {qn} qui me l'a dit. Ça me fait plaisir, tiens.",
+		"{Qn} m'a répété ce que tu penses de moi. Du bien ! J'en suis tout{me} retourné{me}."],
+	"bizarre": ["Alors comme ça, tu me trouves bizarre ? {Qn} me l'a répété. Bizarre toi-même.",
+		"Il paraît que je suis « un peu bizarre », d'après toi. C'est {qn} qui me l'a dit. Je vais y réfléchir. Ou pas."],
+}
+
+## Il appelle le joueur qui passe : quelqu'un lui a parlé de lui, ou il a appris une nouvelle.
+const CALL65 := {
+	"echo": ["Hé, toi ! Il paraît qu'on t'a parlé de moi…", "Ah, te voilà ! Viens par ici, on m'a raconté des choses."],
+	"nouvelle": ["Psst ! Approche, j'ai appris quelque chose sur toi.", "Hé ! Tout le monde parle de toi, tu sais ?"],
+	"colere": ["Toi ! Ne crois pas que je ne sais pas ce que tu as fait.", "Tiens, tiens… Viens donc m'expliquer, toi."],
+	"avis": ["Hé, toi ! Il paraît que tu as un avis sur moi ?"],
+}
+
+## Les mêmes phrases pour ceux qui vouvoient le joueur.
+const RAGOTS65_V := {
+	"cadeau": {
+		"pos": ["Il paraît que vous avez offert {objet} à {qn}. {Il} m'en a parlé toute la journée. Merci pour {lui}.",
+			"{Qn} m'a montré ce que vous lui avez offert : {objet}. Vous savez faire plaisir, vous.",
+			"Vous avez gâté {qn}, à ce qu'on raconte. Ceux qui sont gentils avec les miens sont les bienvenus chez moi."],
+		"neg": ["On m'a dit que vous aviez offert {objet} à {qn}. Chacun ses fréquentations.",
+			"{Qn} se pavane avec le cadeau que vous lui avez fait. Je ne dis rien. Je n'en pense pas moins."],
+		"neu": ["Tout le monde sait que vous avez offert {objet} à {qn}. Ici, les nouvelles vont plus vite que le vent.",
+			"Il paraît que vous faites des cadeaux à {qn}. C'est gentil, ça."],
+	},
+	"cadeau_rate": {
+		"pos": ["Il paraît que vous avez offert {objet} à {qn}… {Il} déteste ça ! Ne vous en faites pas, je lui ai dit que c'était l'intention qui comptait.",
+			"{Qn} a reçu {objet} de votre part, à ce qu'on dit. Vous ne pouviez pas tomber plus mal ! La prochaine fois, demandez-moi conseil."],
+		"neg": ["Vous avez offert {objet} à {qn} ? Tout le monde sait qu'{il} a ça en horreur. J'en ris encore.",
+			"{Objet} pour {qn} ! Ha ! Je n'aurais pas fait mieux."],
+		"neu": ["On raconte que vous avez offert {objet} à {qn}. Pas de chance : c'est bien la seule chose qu'{il} ne supporte pas."],
+	},
+	"quete": {
+		"pos": ["Vous avez aidé {qn} ! {Il} me l'a raconté. Je ne l'oublierai pas, {surnom}.",
+			"On dit que sans vous, {qn} y serait encore. Merci, du fond du cœur.",
+			"{Qn} ne parle que de vous depuis que vous l'avez aidé{e}. Vous avez un ami de plus ici. Deux, même."],
+		"neg": ["Alors comme ça, vous avez rendu service à {qn}. Bon. Vous avez bon cœur. Trop bon, peut-être.",
+			"Il paraît que vous avez aidé {qn}. {Il} aurait pu se débrouiller tout{e} seul{e}, mais bon."],
+		"neu": ["J'ai entendu dire que vous aviez aidé {qn}. C'est bien. On a besoin de gens comme vous.",
+			"Tout le monde parle de ce que vous avez fait pour {qn}."],
+	},
+	"frappe": {
+		"pos": ["Vous avez frappé {qn} ?! On m'a tout raconté. Vous avez du culot de venir me parler.",
+			"Je sais ce que vous avez fait à {qn}. Je ne vous le pardonnerai pas de sitôt.",
+			"Alors c'est vous qui avez levé la main sur {qn}… Ne recommencez jamais. Jamais."],
+		"neg": ["Il paraît que vous avez frappé {qn}. Je ne devrais pas rire. J'ai ri quand même.",
+			"Vous avez frappé {qn}, à ce qu'on dit. Je ne dis pas que c'était mérité. Je ne dis pas le contraire."],
+		"neu": ["On raconte que vous avez frappé {qn}. Ici, on ne règle pas les choses comme ça.",
+			"Vous avez frappé {qn} ? Ça ne se fait pas. Tout le monde en parle."],
+	},
+	"confidence": {
+		"pos": ["{Qn} vous a raconté toute sa vie ? Alors {il} vous a à la bonne. Ça ne m'étonne pas.",
+			"Il paraît que {qn} vous a tout confié. {Il} ne fait pas ça avec n'importe qui, vous savez."],
+		"neg": ["{Qn} vous a raconté sa vie, à ce qu'on dit. Vous avez eu de la patience."],
+		"neu": ["Il paraît que {qn} vous a raconté toute sa vie. Vous devez savoir écouter, vous."],
+	},
+}
+
+const ECHOS65_V := {
+	"pos": ["{Qn} vous a parlé de moi ? {Il} ne peut pas s'en empêcher.",
+		"Alors {qn} vous a raconté mes histoires ? J'espère qu'{il} n'a pas tout dit.",
+		"Il paraît que {qn} vous a parlé de moi. Tout en bien, j'espère."],
+	"neg": ["Il paraît que {qn} vous a parlé de moi. Ne croyez pas tout ce qu'{il} raconte.",
+		"{Qn} vous a raconté des choses sur moi ? Évidemment."],
+	"inconnu": ["Il paraît que {qn} vous a parlé de moi. Je ne savais pas qu'{il} me connaissait si bien.",
+		"On m'a dit que {qn} vous avait parlé de moi. Le monde est petit."],
+}
+
+const AVIS_ECHO65_V := {
+	"sympa": ["Il paraît que vous me trouvez sympathique ? C'est {qn} qui me l'a dit. Ça me fait plaisir, tiens.",
+		"{Qn} m'a répété ce que vous pensez de moi. Du bien ! J'en suis tout{me} retourné{me}."],
+	"bizarre": ["Alors comme ça, vous me trouvez bizarre ? {Qn} me l'a répété. Bizarre vous-même.",
+		"Il paraît que je suis « un peu bizarre », d'après vous. C'est {qn} qui me l'a dit. Je vais y réfléchir. Ou pas."],
+}
+
+const CALL65_V := {
+	"echo": ["Hé, vous ! Il paraît qu'on vous a parlé de moi…", "Ah, vous voilà ! Venez par ici, on m'a raconté des choses."],
+	"nouvelle": ["Psst ! Approchez, j'ai appris quelque chose sur vous.", "Hé ! Tout le monde parle de vous, vous savez ?"],
+	"colere": ["Vous ! Ne croyez pas que je ne sais pas ce que vous avez fait.", "Tiens, tiens… Venez donc m'expliquer, vous."],
+	"avis": ["Hé, vous ! Il paraît que vous avez un avis sur moi ?"],
+}
+
+const Q_AVIS65_V := ["Dites-moi, vous avez rencontré {qn}. Comment {le} trouvez-vous ?",
+	"Au fait, vous connaissez {qn}, maintenant. Alors, votre avis ?",
+	"Vous avez fait la connaissance de {qn}, il paraît. Qu'en pensez-vous ?"]
+
+const R_AVIS65_V := {
+	"sympa_pos": ["N'est-ce pas ? {Il} est comme ça, {nom}. Je le lui dirai, ça lui fera plaisir.", "Je le savais ! Vous avez bon goût."],
+	"sympa_neg": ["Sympathique ? Vous ne {le} connaissez pas encore.", "Hmm. Vous êtes bien indulgent. Attendez un peu, vous verrez."],
+	"sympa_neu": ["Ah ? Je le lui dirai, ça lui fera plaisir.", "Tant mieux. Ici, on aime les gens qui s'entendent bien."],
+	"bizarre_pos": ["Bizarre ? Hé ! Je vous interdis. … Bon. Un peu, peut-être. Mais c'est ce qui fait son charme.", "Bizarre, {nom} ? Vous ne {le} connaissez pas comme moi."],
+	"bizarre_neg": ["Ha ! Enfin quelqu'un qui le voit ! Je commençais à me poser des questions.", "Bizarre, oui. C'est le mot. Je n'aurais pas dit mieux."],
+	"bizarre_neu": ["Bizarre… oui, peut-être. Mais qui ne l'est pas, ici ?", "Ah ? Je n'avais pas remarqué. Je regarderai mieux."],
+	"nsp": ["Prenez votre temps. Les gens d'ici, il faut les apprivoiser.", "Vous avez raison de ne pas juger trop vite."],
+}
+
+const Q_AVIS65 := ["Dis-moi, tu as rencontré {qn}. Comment tu {le} trouves ?",
+	"Au fait, tu connais {qn}, maintenant. Alors, ton avis ?",
+	"Tu as fait la connaissance de {qn}, il paraît. Qu'est-ce que tu en penses ?"]
+
+const R_AVIS65 := {
+	"sympa_pos": ["N'est-ce pas ? {Il} est comme ça, {nom}. Je le lui dirai, ça lui fera plaisir.", "Je le savais ! Tu as bon goût, toi."],
+	"sympa_neg": ["Sympathique ? Toi, tu ne {le} connais pas encore.", "Hmm. Tu es bien indulgent. Attends un peu, tu verras."],
+	"sympa_neu": ["Ah ? Je le lui dirai, ça lui fera plaisir.", "Tant mieux. Ici, on aime les gens qui s'entendent bien."],
+	"bizarre_pos": ["Bizarre ? Hé ! Je t'interdis. … Bon. Un peu, peut-être. Mais c'est ce qui fait son charme.", "Bizarre, {nom} ? Tu ne {le} connais pas comme moi."],
+	"bizarre_neg": ["Ha ! Enfin quelqu'un qui le voit ! Je commençais à me poser des questions.", "Bizarre, oui. C'est le mot. Je n'aurais pas dit mieux."],
+	"bizarre_neu": ["Bizarre… oui, peut-être. Mais qui ne l'est pas, ici ?", "Ah ? Je n'avais pas remarqué. Je regarderai mieux."],
+	"nsp": ["Prends ton temps. Les gens d'ici, il faut les apprivoiser.", "Tu as raison de ne pas juger trop vite."],
+}
+
+
+## Vouvoie-t-il le joueur ? (sa fiche emploie « vous » plutôt que « tu »)
+static func _v65_vouvoie(f: Dictionary) -> bool:
+	if f.is_empty():
+		return false
+	var parts: Array = []
+	for c in f.get("histoire", []):
+		parts.append(str(c.get("t", "")))
+	for r in f.get("reve", []):
+		parts.append(str(r))
+	var q: Dictionary = f.get("question", {})
+	parts.append(str(q.get("texte", "")))
+	for r2 in q.get("reponses", []):
+		parts.append(str(r2.get("t", "")) + " " + str(r2.get("rappel", "")))
+	var t: String = " ".join(parts).to_lower()
+	var re := RegEx.new()
+	re.compile("\\b(vous|votre|vos)\\b")
+	var nv: int = re.search_all(t).size()
+	re.compile("\\b(tu|toi|ton|tes)\\b")
+	var nt: int = re.search_all(t).size()
+	return nv > nt and nv >= 2
+
+
+## « tu » ou « vous » selon le personnage.
+func _tv(tu: Variant, vs: Variant) -> Variant:
+	return vs if vous else tu
+
+
+func _v65_id() -> String:
+	return str(data.get("id", ""))
+
+
+func _v65_liens() -> Dictionary:
+	return v65.get("liens", {})
+
+
+func _cap(s: String) -> String:
+	return s.substr(0, 1).to_upper() + s.substr(1) if s != "" else s
+
+
+## « de Rose », « d'Odette ».
+static func _de(name: String) -> String:
+	var c: String = name.substr(0, 1).to_lower()
+	return ("d'" if "aeiouyhéèêàâîïôû".contains(c) and c != "" else "de ") + name
+
+
+## « Fernand, Rose et Lucas ».
+static func _liste(names: Array) -> String:
+	if names.size() <= 1:
+		return "" if names.is_empty() else str(names[0])
+	return ", ".join(names.slice(0, names.size() - 1)) + " et " + str(names[-1])
+
+
+## Contractions et élisions après remplacement des noms (« à le » → « au », « de Odette » → « d'Odette »).
+static func _fr(t: String) -> String:
+	for pair in [[" à le ", " au "], [" à les ", " aux "], [" de le ", " du "], [" de les ", " des "], ["À le ", "Au "]]:
+		t = t.replace(pair[0], pair[1])
+	var re := RegEx.new()
+	re.compile("\\b(d|D|qu|Qu)e ([AEIOUYÉÈÊÀÂÎÏÔÛHaeiouyéèêàâîïôûh])")
+	return re.sub(t, "$1'$2", true)
+
+
+func _pick_line(list: Array) -> String:
+	return str(list[rng.randi() % list.size()]) if not list.is_empty() else ""
+
+
+## Remplit un modèle de phrase sur « qui » : {qn} (comment je le désigne), {nom}, {il}, {e}…
+func _v65_tpl(t: String, qui: String, ctx: Dictionary, extra: Dictionary = {}) -> String:
+	var me: String = _v65_id()
+	var qn: String = Societe.designe(me, qui)
+	var fem: bool = Societe.feminin(qui)
+	var vars := {"{Qn}": _cap(qn), "{qn}": qn, "{nom}": Societe.nom_pour(me, qui),
+		"{Il}": "Elle" if fem else "Il", "{il}": "elle" if fem else "il", "{e}": "e" if fem else "",
+		"{le}": "la" if fem else "le", "{lui}": "elle" if fem else "lui", "{me}": "e" if str(v65.get("genre", "m")) == "f" else ""}
+	if extra.has("objet"):
+		var o: String = _item_name(str(extra["objet"]), ctx)
+		vars["{Objet}"] = _cap(o)
+		vars["{objet}"] = o
+	for k in vars:
+		t = t.replace(k, str(vars[k]))
+	return _fr(_fill(t, ctx))
+
+
+## Sujets V65 proposés au joueur.
+func _v65_topics(_ctx: Dictionary) -> Array:
+	var t: Array = []
+	var hist: Array = v65.get("histoire", [])
+	var ch: int = int(memoire.get("chapitre", 0))
+	if not hist.is_empty() and ch < hist.size() and int(memoire.get("histoire_refus", -1)) != int(memoire["visites"]):
+		t.append({"id": "histoire", "label": "Raconte-moi ton histoire." if ch == 0 else "Et ensuite ? Raconte-moi la suite."})
+	if not _v65_liens().is_empty():
+		t.append({"id": "gens", "label": "Parle-moi des gens que tu connais."})
+	if ch >= 2 and not (v65.get("reve", []) as Array).is_empty() and not (memoire["faits"] as Dictionary).has("reve65"):
+		t.append({"id": "reve", "label": "Et toi, de quoi tu rêves ?"})
+	return t
+
+
+func _v65_gate(i: int) -> float:
+	var hist: Array = v65.get("histoire", [])
+	var g: Array = GATES65_PASSANT if hist.size() <= 3 else GATES65
+	return float(g[clampi(i, 0, g.size() - 1)])
+
+
+## Le chapitre suivant de son histoire — s'il est assez ami avec le joueur pour le raconter.
+func _v65_histoire(ctx: Dictionary) -> Dictionary:
+	var now: float = float(ctx.get("now", 0.0))
+	var hist: Array = v65.get("histoire", [])
+	var ch: int = int(memoire.get("chapitre", 0))
+	if hist.is_empty():
+		return {"texte": "Mon histoire ? Il n'y a pas grand-chose à raconter.", "geste": "parle", "choix": topics(ctx)}
+	if ch >= hist.size():
+		var again: Dictionary = hist[rng.randi() % hist.size()]
+		return {"texte": _fill(_tv("Je t'ai déjà tout raconté, {surnom}. Mais bon, puisque tu insistes : ", "Je vous ai déjà tout raconté, {surnom}. Mais bon, puisque vous insistez : ") + str(again.get("t", "")), ctx), "geste": "parle", "choix": topics(ctx)}
+	if affinite < _v65_gate(ch):
+		memoire["histoire_refus"] = int(memoire["visites"])
+		_remember("je ne lui ai pas encore tout raconté", now)
+		var refus: Array = _tv(["La suite… on ne se connaît pas encore assez, {surnom}. Reviens me voir.",
+			"Ça, je te le raconterai une autre fois. Quand on sera plus amis.",
+			"Hmm. La suite, il faut la mériter. Repasse me voir, on verra.",
+			"Pas aujourd'hui. Il y a des choses qu'on ne raconte pas au premier venu."],
+			["La suite… on ne se connaît pas encore assez, {surnom}. Revenez me voir.",
+			"Ça, je vous le raconterai une autre fois. Quand on se connaîtra mieux.",
+			"Hmm. La suite, il faut la mériter. Repassez me voir, on verra.",
+			"Pas aujourd'hui. Il y a des choses qu'on ne raconte pas au premier venu."])
+		if ch == hist.size() - 1 and hist.size() > 3:
+			refus = ["Le reste, c'est un secret. Je ne le confie qu'à un ami. Un vrai, {surnom}.",
+				_tv("Il reste une chose que je n'ai jamais dite à personne. Un jour, peut-être. Quand j'aurai confiance en toi.",
+				"Il reste une chose que je n'ai jamais dite à personne. Un jour, peut-être. Quand j'aurai confiance en vous.")]
+		return {"texte": _fill(_pick_line(refus), ctx), "geste": "parle", "choix": topics(ctx)}
+	var c: Dictionary = hist[ch]
+	var text: String = _fill(str(c.get("t", "")), ctx)
+	if ch > 0 and ch < hist.size() - 1 and rng.randf() < 0.4:
+		text = _pick_line(["Où en étais-je ? Ah oui.", _tv("La suite ? Bon, écoute.", "La suite ? Bon, écoutez."), "Je reprends.", "Alors, la suite…"]) + " " + text
+	memoire["chapitre"] = ch + 1
+	memoire["dernier_sujet"] = "histoire:%d" % ch
+	var sujets: Dictionary = memoire["sujets"]
+	sujets["histoire"] = int(sujets.get("histoire", 0)) + 1
+	_bond(1.5)
+	_mood(0.03)
+	_remember("je lui ai raconté " + str(c.get("titre", "un bout de ma vie")), now)
+	if ch + 1 == hist.size():
+		Societe.noter("confidence", _v65_id(), now)
+	return {"texte": text, "geste": "parle", "choix": topics(ctx)}
+
+
+## La liste des gens qu'il connaît (ceux que le joueur a déjà rencontrés d'abord).
+func _v65_gens_menu(ctx: Dictionary, lead: String) -> Dictionary:
+	var liens: Dictionary = _v65_liens()
+	var rencontres: Dictionary = ctx.get("rencontres", {})
+	var met: Array = []
+	var other: Array = []
+	for id in liens:
+		if int(rencontres.get(str(id), 0)) > 0:
+			met.append(str(id))
+		else:
+			other.append(str(id))
+	var list: Array = []
+	for id2 in met + other:
+		var l: Dictionary = liens[id2]
+		var nm: String = str(l.get("nom", Societe.prenom(id2)))
+		var told: int = int((memoire["racontes"] as Dictionary).get(id2, 0))
+		list.append({"id": "gens:" + id2, "label": ("Parle-moi %s." if told == 0 else "Parle-moi encore %s.") % _de(nm)})
+	list.append({"id": "autre", "label": "Autre chose…"})
+	var text: String = lead if lead != "" else _pick_line(_tv(["Les gens d'ici ? J'en connais quelques-uns. Lequel t'intéresse ?",
+		"Tu veux que je te parle de qui ?", "Ah, les gens… Demande, je te dirai ce que je sais."],
+		["Les gens d'ici ? J'en connais quelques-uns. Lequel vous intéresse ?",
+		"Vous voulez que je vous parle de qui ?", "Ah, les gens… Demandez, je vous dirai ce que je sais."]))
+	return {"texte": text, "geste": "parle", "choix": list}
+
+
+## Ce qu'il pense de quelqu'un, puis ses anecdotes sur lui, une par fois.
+func _v65_gens(id: String, ctx: Dictionary) -> Dictionary:
+	var now: float = float(ctx.get("now", 0.0))
+	var l: Dictionary = _v65_liens().get(id, {})
+	if l.is_empty():
+		return _v65_gens_menu(ctx, "")
+	var rac: Dictionary = memoire["racontes"]
+	var n: int = int(rac.get(id, 0))
+	var anec: Array = l.get("anecdotes", [])
+	var nm: String = str(l.get("nom", Societe.prenom(id)))
+	var text: String
+	if n == 0:
+		text = str(l.get("avis", ""))
+		if not anec.is_empty():
+			text += "\n\n" + str(anec[0])
+		_bond(0.8)
+		_remember("je lui ai parlé " + _de(nm), now)
+	elif n < anec.size():
+		text = str(anec[n])
+		if rng.randf() < 0.4:
+			text = _pick_line([_tv("Une autre histoire sur %s ? Écoute ça.", "Une autre histoire sur %s ? Écoutez ça.") % nm, _tv("Ah, %s… Tiens, encore une :", "Ah, %s… Tenez, encore une :") % nm, "Encore %s ? D'accord." % nm]) + " " + text
+	else:
+		text = _tv("Je t'ai raconté tout ce que je sais sur %s. %s", "Je vous ai raconté tout ce que je sais sur %s. %s") % [nm, str(l.get("avis", ""))]
+	rac[id] = n + 1
+	Societe.dire(_v65_id(), id)
+	memoire["dernier_sujet"] = "gens:" + id
+	var sujets: Dictionary = memoire["sujets"]
+	sujets["gens"] = int(sujets.get("gens", 0)) + 1
+	var out: Dictionary = _v65_gens_menu(ctx, "")
+	out["texte"] = _fill(text, ctx)
+	out["geste"] = "rire" if float(l.get("sentiment", 0.0)) > 0.5 and rng.randf() < 0.25 else "parle"
+	return out
+
+
+func _v65_reve(ctx: Dictionary) -> Dictionary:
+	var rv: Array = v65.get("reve", [])
+	var faits: Dictionary = memoire["faits"]
+	if rv.is_empty():
+		return {"texte": "Mon rêve ? Je n'y ai jamais vraiment pensé.", "geste": "parle", "choix": topics(ctx)}
+	faits["reve65"] = true
+	memoire["dernier_sujet"] = "reve"
+	_bond(0.8)
+	_remember("je lui ai confié mon rêve", float(ctx.get("now", 0.0)))
+	var parts: Array = []
+	for s in rv:
+		parts.append(_fill(str(s), ctx))
+	return {"texte": " ".join(parts), "geste": "parle", "choix": topics(ctx)}
+
+
+## La question de sa fiche (à partir de la deuxième visite, une seule fois).
+func _v65_question(ctx: Dictionary) -> Dictionary:
+	var q: Dictionary = v65.get("question", {})
+	if q.is_empty() or (memoire["faits"] as Dictionary).has("q65") or int(memoire["visites"]) < 2:
+		return {}
+	var reps: Array = []
+	for r in q.get("reponses", []):
+		reps.append({"label": str(r.get("label", "")), "valeur": str(r.get("valeur", "")), "t": str(r.get("t", "")), "humeur": 0.04, "affinite": 1.5})
+	if reps.is_empty():
+		return {}
+	return {"id": "q65", "texte": _fill(str(q.get("texte", "")), ctx), "reponses": reps, "v65": "question"}
+
+
+## « Tu as rencontré ma sœur. Comment tu la trouves ? » — sur quelqu'un qu'il connaît et que le
+## joueur a déjà rencontré. La réponse fera le tour : la personne concernée le saura.
+func _v65_question_avis(ctx: Dictionary) -> Dictionary:
+	if int(memoire["visites"]) < 3:
+		return {}
+	var rencontres: Dictionary = ctx.get("rencontres", {})
+	var faits: Dictionary = memoire["faits"]
+	var cands: Array = []
+	for id in _v65_liens():
+		if int(rencontres.get(str(id), 0)) > 0 and not faits.has("avis_" + str(id)):
+			cands.append(str(id))
+	if cands.is_empty():
+		return {}
+	var x: String = cands[rng.randi() % cands.size()]
+	var s: float = Societe.sentiment(_v65_id(), x)
+	var band: String = "pos" if s > 0.25 else ("neg" if s < -0.25 else "neu")
+	var R: Dictionary = _tv(R_AVIS65, R_AVIS65_V)
+	var reps: Array = [
+		{"label": "Très sympathique.", "valeur": "sympa", "t": _v65_tpl(_pick_line(R["sympa_" + band]), x, ctx),
+			"humeur": 0.08 if band == "pos" else 0.0, "affinite": 2.0 if band == "pos" else (-0.5 if band == "neg" else 0.5)},
+		{"label": "Un peu bizarre.", "valeur": "bizarre", "t": _v65_tpl(_pick_line(R["bizarre_" + band]), x, ctx),
+			"humeur": -0.06 if band == "pos" else 0.04, "affinite": -1.0 if band == "pos" else (2.0 if band == "neg" else 0.0)},
+		{"label": "Je ne sais pas encore.", "valeur": "nsp", "t": _v65_tpl(_pick_line(R["nsp"]), x, ctx), "humeur": 0.0, "affinite": 0.3},
+	]
+	return {"id": "avis_" + x, "texte": _v65_tpl(_pick_line(_tv(Q_AVIS65, Q_AVIS65_V)), x, ctx), "reponses": reps, "v65": "avis", "sujet": x}
+
+
+func _v65_reponse(q: Dictionary, r: Dictionary, now: float) -> void:
+	if str(q.get("v65", "")) == "avis":
+		var x: String = str(q.get("sujet", ""))
+		_remember("son avis sur %s : %s" % [Societe.nom_pour(_v65_id(), x), str(r.get("label", "")).to_lower()], now)
+		if str(r.get("valeur", "")) != "nsp":
+			Societe.noter("avis", x, now, {"de": _v65_id(), "valeur": str(r.get("valeur", ""))})
+	else:
+		_remember("sa réponse à ma question : " + str(r.get("label", "")), now)
+
+
+## Ajoutée au salut : quelqu'un a parlé de moi au joueur, une nouvelle sur un proche, ou un
+## souvenir de la dernière fois.
+func _v65_accroche(ctx: Dictionary) -> String:
+	if v65.is_empty():
+		return ""
+	var me: String = _v65_id()
+	var heard: Dictionary = Societe.entendu.get(me, {})
+	var echos: Array = memoire["echos"]
+	for a in heard:
+		if str(a) != me and not echos.has(str(a)):
+			echos.append(str(a))
+			if rng.randf() < 0.85:
+				return _v65_echo(str(a), ctx)
+	var line: String = _v65_ragot(ctx, false)
+	if line != "":
+		return line
+	if int(memoire["visites"]) >= 2 and rng.randf() < 0.35:
+		return _v65_rappel(ctx)
+	return ""
+
+
+## Ce qu'il a à dire au joueur, sans rien consommer : « echo », « avis », « colere », « nouvelle » ou "".
+func _v65_peek() -> String:
+	if v65.is_empty():
+		return ""
+	var me: String = _v65_id()
+	var echos: Array = memoire["echos"]
+	for a in Societe.entendu.get(me, {}):
+		if str(a) != me and not echos.has(str(a)):
+			return "echo"
+	var vus: Array = memoire["ragots_vus"]
+	var evs: Array = Societe.evenements
+	for i in range(evs.size() - 1, maxi(-1, evs.size() - 25), -1):
+		var e: Dictionary = evs[i]
+		if vus.has(int(e.get("n", 0))) or vus.has(float(int(e.get("n", 0)))):
+			continue
+		var qui: String = str(e.get("qui", ""))
+		if str(e.get("quoi", "")) == "avis":
+			if qui == me and str(e.get("de", "")) != me:
+				return "avis"
+			continue
+		if qui == me or not _v65_liens().has(qui):
+			continue
+		if str(e.get("quoi", "")) == "frappe" and Societe.sentiment(me, qui) > 0.25:
+			return "colere"
+		return "nouvelle"
+	return ""
+
+
+## Retire « Fernand ? » au début d'un avis (quand on vient de nommer la personne).
+func _v65_avis_court(l: Dictionary) -> String:
+	var av: String = str(l.get("avis", ""))
+	var words: PackedStringArray = str(l.get("nom", "")).split(" ", false)
+	var i: int = av.find("?")
+	if i > 0 and i < 45 and not words.is_empty() and av.substr(0, i).to_lower().contains(words[-1].to_lower()):
+		return av.substr(i + 1).strip_edges()
+	return av
+
+
+func _v65_echo(a: String, ctx: Dictionary) -> String:
+	var l: Dictionary = _v65_liens().get(a, {})
+	_bond(0.5)
+	_remember(Societe.prenom(a) + " lui a parlé de moi", float(ctx.get("now", 0.0)))
+	if l.is_empty():
+		return _v65_tpl(_pick_line(_tv(ECHOS65, ECHOS65_V)["inconnu"]), a, ctx)
+	var s: float = float(l.get("sentiment", 0.0))
+	var t: String = _v65_tpl(_pick_line(_tv(ECHOS65, ECHOS65_V)["neg" if s < -0.2 else "pos"]), a, ctx)
+	return t + " " + _fill(_v65_avis_court(l), ctx)
+
+
+## Une nouvelle qu'il n'a pas encore commentée : sur un proche (ou, rarement, sur quelqu'un du
+## village), ou l'avis du joueur sur lui-même. Elle change son humeur et son amitié.
+func _v65_ragot(ctx: Dictionary, rumeur: bool) -> String:
+	var me: String = _v65_id()
+	var vus: Array = memoire["ragots_vus"]
+	var evs: Array = Societe.evenements
+	for i in range(evs.size() - 1, maxi(-1, evs.size() - 25), -1):
+		var e: Dictionary = evs[i]
+		var n: int = int(e.get("n", 0))
+		if vus.has(n) or vus.has(float(n)):
+			continue
+		var qui: String = str(e.get("qui", ""))
+		var quoi: String = str(e.get("quoi", ""))
+		if quoi == "avis":
+			var de: String = str(e.get("de", ""))
+			if qui == me and de != me:
+				vus.append(n)
+				return _v65_avis_echo(e, ctx)
+			continue
+		if qui == me or qui == "":
+			vus.append(n)
+			continue
+		var known: bool = _v65_liens().has(qui)
+		if not known and not (Societe.groupe(qui) == Societe.groupe(me) and rng.randf() < (0.5 if rumeur else 0.2)):
+			continue
+		vus.append(n)
+		while vus.size() > 40:
+			vus.pop_front()
+		var s: float = Societe.sentiment(me, qui) if known else 0.0
+		var band: String = "pos" if s > 0.25 else ("neg" if s < -0.25 else "neu")
+		var key: String = quoi
+		if quoi == "cadeau" and not bool(e.get("aime", true)):
+			key = "cadeau_rate"
+		if not RAGOTS65.has(key):
+			continue
+		match key:
+			"cadeau":
+				if band == "pos":
+					_bond(1.5)
+					_mood(0.04)
+			"quete":
+				_bond(3.0 if band == "pos" else 1.0)
+				if band == "pos":
+					_mood(0.08)
+			"frappe":
+				if band == "pos":
+					_bond(-6.0)
+					_mood(-0.25)
+				elif band == "neu":
+					_bond(-1.0)
+			"confidence":
+				if band == "pos":
+					_bond(1.0)
+		var appris: Array = memoire["appris"]
+		appris.append([key, qui, str(e.get("objet", ""))])
+		while appris.size() > 12:
+			appris.pop_front()
+		_remember("j'ai appris : %s (%s)" % [key, Societe.prenom(qui)], float(ctx.get("now", 0.0)))
+		return _v65_tpl(_pick_line((_tv(RAGOTS65, RAGOTS65_V)[key] as Dictionary)[band]), qui, ctx, {"objet": str(e.get("objet", ""))})
+	return ""
+
+
+func _v65_avis_echo(e: Dictionary, ctx: Dictionary) -> String:
+	var de: String = str(e.get("de", ""))
+	var v: String = str(e.get("valeur", "sympa"))
+	if not AVIS_ECHO65.has(v):
+		return ""
+	if v == "sympa":
+		_bond(3.0)
+		_mood(0.1)
+	else:
+		_bond(-2.0)
+		_mood(-0.08 if float((data.get("traits", {}) as Dictionary).get("humour", 0.5)) < 0.6 else 0.02)
+	(memoire["faits"] as Dictionary)["avis_moi"] = v
+	_remember("il paraît qu'il me trouve " + ("sympathique" if v == "sympa" else "bizarre"), float(ctx.get("now", 0.0)))
+	return _v65_tpl(_pick_line(_tv(AVIS_ECHO65, AVIS_ECHO65_V)[v]), de, ctx)
+
+
+## « La dernière fois, je t'ai raconté… » ; ou la réponse que le joueur a faite à sa question.
+func _v65_rappel(ctx: Dictionary) -> String:
+	var me: String = _v65_id()
+	var ds: String = str(memoire.get("dernier_sujet", ""))
+	memoire["dernier_sujet"] = ""
+	var hist: Array = v65.get("histoire", [])
+	if ds.begins_with("histoire:"):
+		var i: int = int(ds.substr(9))
+		if i < hist.size():
+			var t: String = _tv("La dernière fois, je t'ai raconté %s.", "La dernière fois, je vous ai raconté %s.") % str((hist[i] as Dictionary).get("titre", "un bout de ma vie"))
+			var ch: int = int(memoire.get("chapitre", 0))
+			if ch < hist.size() and affinite >= _v65_gate(ch):
+				t += _tv(" Tu veux la suite ?", " Vous voulez la suite ?")
+			return _fill(t, ctx)
+	elif ds.begins_with("gens:"):
+		var x: String = ds.substr(5)
+		var t2: String = _tv("La dernière fois, je t'ai parlé %s.", "La dernière fois, je vous ai parlé %s.") % _de(Societe.nom_pour(me, x))
+		if int((ctx.get("rencontres", {}) as Dictionary).get(x, 0)) > 0:
+			t2 += _tv(" Tu as eu l'occasion de lui parler, depuis ?", " Vous avez eu l'occasion de lui parler, depuis ?")
+		else:
+			t2 += _tv(" Si tu {le} croises, dis-lui bonjour de ma part.", " Si vous {le} croisez, dites-lui bonjour de ma part.")
+		return _v65_tpl(t2, x, ctx)
+	elif ds == "reve":
+		return _tv("Je repense à ce que je t'ai confié l'autre jour, mon rêve… Tu n'en as parlé à personne, j'espère ?", "Je repense à ce que je vous ai confié l'autre jour, mon rêve… Vous n'en avez parlé à personne, j'espère ?")
+	var rp: String = _v65_rappel_question()
+	if rp != "" and rng.randf() < 0.6:
+		return _fill(rp, ctx)
+	return ""
+
+
+func _v65_rappel_question() -> String:
+	var faits: Dictionary = memoire["faits"]
+	if not faits.has("q65"):
+		return ""
+	for r in (v65.get("question", {}) as Dictionary).get("reponses", []):
+		if str(r.get("valeur", "")) == str(faits["q65"]):
+			return str(r.get("rappel", ""))
+	return ""
+
+
+## Ce dont il se souvient (sujet « Tu te souviens de moi ? »).
+func _v65_souvenirs(ctx: Dictionary) -> Array:
+	var me: String = _v65_id()
+	var out: Array = []
+	if v65.is_empty():
+		return out
+	var hist: Array = v65.get("histoire", [])
+	var ch: int = int(memoire.get("chapitre", 0))
+	if ch > 0:
+		if ch >= hist.size():
+			out.append(_tv("Je t'ai raconté toute ma vie. Ça, je ne l'oublie pas.", "Je vous ai raconté toute ma vie. Ça, je ne l'oublie pas."))
+		elif ch == 1:
+			out.append(_tv("Je t'ai raconté le début de mon histoire.", "Je vous ai raconté le début de mon histoire."))
+		else:
+			out.append(_tv("Je t'ai raconté %d chapitres de ma vie.", "Je vous ai raconté %d chapitres de ma vie.") % ch)
+	var names: Array = []
+	for x in memoire.get("racontes", {}):
+		if names.size() < 4:
+			names.append(_de(Societe.nom_pour(me, str(x))))
+	if not names.is_empty():
+		out.append(_tv("Je t'ai parlé %s.", "Je vous ai parlé %s.") % _liste(names))
+	var rp: String = _v65_rappel_question()
+	if rp != "":
+		out.append(_fill(rp, ctx))
+	var faits: Dictionary = memoire["faits"]
+	for k in faits:
+		if str(k).begins_with("avis_") and str(k) != "avis_moi" and str(faits[k]) != "nsp":
+			var x2: String = str(k).substr(5)
+			out.append(_tv("Tu m'as dit que tu trouvais %s %s.", "Vous m'avez dit que vous trouviez %s %s.") % [Societe.nom_pour(me, x2), "très sympathique" if str(faits[k]) == "sympa" else "un peu bizarre"])
+			break
+	var deeds: Array = []
+	var whos: Array = []
+	var appris: Array = (memoire.get("appris", []) as Array).duplicate()
+	appris.reverse()
+	for a in appris:
+		if whos.has(str(a[1])):
+			continue
+		whos.append(str(a[1]))
+		var who: String = Societe.designe(me, str(a[1]))
+		match str(a[0]):
+			"quete":
+				deeds.append(_tv("que tu as aidé ", "que vous avez aidé ") + who)
+			"frappe":
+				deeds.append(_tv("que tu as frappé ", "que vous avez frappé ") + who)
+			"cadeau":
+				deeds.append(_tv("que tu as fait un cadeau à ", "que vous avez fait un cadeau à ") + who)
+		if deeds.size() >= 2:
+			break
+	if not deeds.is_empty():
+		out.append(_fr("Et je sais " + " et ".join(deeds) + "."))
+	return out

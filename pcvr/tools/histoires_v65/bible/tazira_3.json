@@ -1,0 +1,284 @@
+{
+ "hamid": {
+  "genre": "m",
+  "prenom": "Hamid",
+  "plan": [
+   "l'oud de mon père — fils d'un pêcheur-chanteur qui chantait en mer et jouait de l'oud au retour ; Hamid a hérité des deux, et de la voix.",
+   "la Bahja — sa barque, « la joie », achetée avec ses premières économies ; il chante pour faire venir le poisson, et la flotte entière l'entend.",
+   "le duel de voix — l'été dernier, duel avec Saïd sur la place ; une lanterne de Nourredine décrochée ; match nul décrété par Moulay Brahim ; Hamid est sûr d'avoir gagné.",
+   "ma vie aujourd'hui — son neveu Youssef sur la Bahja ; le trio de la fête avec Lhoucine et Omar ; un verre chez Mama Lou, dont il verse le rhum dans le pot du palmier.",
+   "(confidence) son père lui a laissé une chanson inachevée, sa dernière ; Hamid n'en connaît pas la fin. En mer, il chante toujours le début, en espérant que la mer lui rende la suite."
+  ],
+  "reve": "Trouver la fin de la chanson de son père et la chanter une fois sur la place, si fort que les pêcheurs de Carène l'entendent. Et battre Saïd, pour de bon.",
+  "question": "Tu chantes, toi ? (oui / faux / jamais) — « faux » est sa réponse préférée (« Comme moi ! Viens ce soir ! ») ; « jamais » : il te promet de te faire chanter avant la fin de la fête.",
+  "liens": {
+   "youssef": {
+    "qui": "mon neveu",
+    "nom": "Youssef",
+    "sentiment": 0.8,
+    "fond": "Youssef (20 ans) est le fils de la sœur de Hamid. À 14 ans, il a supplié son oncle de le prendre sur sa barque, la Bahja. Hamid chante pour faire venir le poisson ; Youssef dit qu'il les fait fuir. Youssef voit des baleines partout ; Hamid fait semblant de ne pas le croire. Il l'appelle « tête de mule » et l'aime comme un fils. Anecdotes : le premier jour, Youssef a été malade par-dessus bord et a juré que c'était pour nourrir les poissons ; Hamid garde dans sa poche un dessin de baleine fait par Youssef enfant. Bavardage : « Tu as vu ta baleine ? » / « Et toi, tu as chanté juste ? »."
+   },
+   "lhoucine": {
+    "qui": "mon compagnon de musique",
+    "nom": "Lhoucine",
+    "sentiment": 0.7,
+    "fond": "Avec Omar, ils forment le trio de la fête du soir : Hamid à l'oud de son père et au chant, Lhoucine au guembri, Omar au bendir. Lhoucine tient la basse ; Hamid chante trop fort. Anecdotes : la nuit jusqu'à l'aube, l'été dernier, où Hamid est parti en mer directement depuis la place, l'oud en bandoulière ; Lhoucine lui a appris une chanson du désert, lente, que Hamid chante deux fois trop vite. Bavardage : « Plus fort ? » / « Plus lent. »."
+   },
+   "omar": {
+    "qui": "notre tambour",
+    "nom": "Omar",
+    "sentiment": 0.6,
+    "fond": "Membres du trio de la fête. L'après-midi, Omar tape le rythme à la table du grill de Mustapha, et Hamid y passe après la pêche : ils répètent avec les assiettes. Anecdotes : Omar a tapé si fort que les sardines ont sauté de l'assiette de Hamid ; Hamid lui commande des rythmes « pour faire venir la dorade ». Bavardage : « Un rythme pour la dorade ! » / « Il n'y a pas de rythme pour la dorade. Boum. »."
+   },
+   "said": {
+    "qui": "cette grande gueule de",
+    "nom": "Saïd",
+    "sentiment": -0.2,
+    "fond": "Les deux plus grosses voix de Tazira : Saïd crie à la criée et chante à la fête, Hamid chante en mer et à la fête. L'été dernier, duel de voix sur la place : une lanterne de Nourredine s'est décrochée, et Moulay Brahim a déclaré match nul pour avoir la paix. Rivalité de coqs, estime au fond. Anecdotes : le duel (il est sûr d'avoir gagné) ; Saïd crie le prix des sardines plus bas quand Hamid passe, pour l'humilier. Bavardage : « Tu as encore de la voix ? » / « Plus que toi. » / « On verra ce soir. »."
+   },
+   "mamalou": {
+    "qui": "la patronne",
+    "nom": "Mama Lou",
+    "sentiment": 0.4,
+    "fond": "Après la fête, Hamid boit un verre à La Murène Ivre. Il trouve le rhum de Mama Lou beaucoup trop fort et ne le lui dira jamais (il paraît qu'elle a coulé trois navires). Il le verse discrètement dans le pot du palmier ; Mama Lou le sait. Anecdotes : le verre d'eau ; elle l'a fait chanter debout sur une table pour calmer une bagarre, et ça a marché. Bavardage : « Bonsoir, Mama Lou ! » / « Ton verre est servi. Et le palmier a soif. »."
+   }
+  }
+ },
+ "hamza": {
+  "genre": "m",
+  "prenom": "Hamza",
+  "plan": [
+   "le petit-fils du caïd — fils et petit-fils de chefs de la garde ; enfant, il volait les vers de pêche de Si Larbi et grimpait sur les canons dont on le chassait.",
+   "la tour et les six gardes — chef de la garde à trente ans : sept canons de bronze, une tour, six gardes ; il allume lui-même le phare rouge chaque soir, et salue Si Larbi trois fois.",
+   "par la ruse, une fois — l'histoire qu'on ne raconte pas : il y a soixante ans, le Capitaine Sel est entré au port déguisé en marchand de sel, et c'est le grand-père de Hamza, le caïd Allal, qui a ouvert la passe.",
+   "ma garde aujourd'hui — un galion pirate au quai, des pirates trop polis, des lumières dans les grottes, le capitaine surpris une nuit au pied de la Skala ; la peintre sur ses créneaux chaque matin ; les enfants sur ses canons.",
+   "(confidence) le caïd Allal ne s'est jamais pardonné, et Hamza ne dort plus depuis que la Murène est là, de peur que l'histoire recommence. Et il sait que ce qu'il éprouve pour Selma l'empêche de bien veiller."
+  ],
+  "reve": "Que les canons de la Skala ne tirent jamais. Et un jour, poser son sabre et regarder la mer sans la surveiller. À côté de quelqu'un qui peint, peut-être.",
+  "question": "Halte. Si tu voyais des lumières dans les grottes, la nuit, tu ferais quoi ? (j_irais_voir / je_previendrais / rien) — il approuve celui qui prévient la garde, gronde l'imprudent, et se méfie de l'indifférent.",
+  "liens": {
+   "selma": {
+    "qui": "la peintre",
+    "nom": "Selma",
+    "sentiment": 0.5,
+    "fond": "Chaque matin depuis quatre mois, Selma peint sur la Skala, à trois pas de Hamza qui monte la garde ; il grogne, puis déplace le parasol pour qu'elle ait de l'ombre. Elle a peint le galion au crépuscule, et le capitaine lui a payé trois pièces d'or pour ne jamais montrer le tableau. Hamza devine qu'il montre quelque chose et voudrait le voir ; Selma tient parole. Agacement, curiosité, une tendresse qu'il ne s'avoue pas. Anecdotes : elle a peint un canon avec une fleur dans la gueule, il a fait semblant d'être outré ; il lui a demandé trois fois le tableau du galion, la troisième avec un thé. Bavardage : « Ne touchez pas aux canons. » / « Je les peins, caïd. Avec les yeux. »."
+   },
+   "larbi": {
+    "qui": "le vieux",
+    "nom": "Si Larbi",
+    "sentiment": 0.6,
+    "fond": "Larbi allume le phare vert au bout de la jetée, Hamza le phare rouge sur la Skala. Chaque soir, quand les deux brûlent, ils se saluent en masquant trois fois leur lumière. Larbi a connu Hamza enfant, et son grand-père, le caïd Allal. Il admire sa patience. Anecdotes : le soir oublié ; Larbi lui a appris à allumer une mèche sans fumée. Bavardage : « Rien de neuf, Si Larbi ? » / « La mer. Comme hier. »."
+   },
+   "abdellah": {
+    "qui": "le dinandier",
+    "nom": "Abdellah",
+    "sentiment": 0.6,
+    "fond": "Une fois par an, Abdellah astique les sept canons de bronze de la Skala. Ils n'ont jamais tiré ; Abdellah espère que ça durera. Hamza le surveille pendant tout le travail, et ils boivent un thé sur les créneaux à la fin. Anecdotes : Abdellah a trouvé un nid de mouettes dans la gueule du troisième canon, Hamza a interdit qu'on le dérange, et ce canon-là n'a pas été astiqué cette année ; Abdellah tape sur les canons pour « les entendre », Hamza grince. Bavardage : « Pas de marteau sur mes canons. » / « Tac. Pardon. »."
+   },
+   "yasmine": {
+    "qui": "cette petite peste de",
+    "nom": "Yasmine",
+    "sentiment": 0.3,
+    "fond": "Yasmine et Amine montent jouer sur les canons de la Skala ; Hamza les chasse (« les canons ne sont pas des chevaux »). Rosa a dit que Yasmine ferait un bon capitaine de la garde, et Hamza, sans l'avouer, le pense aussi. Grognon, secrètement attendri. Anecdotes : elle a fait toute la ronde des créneaux derrière lui en l'imitant, il ne l'a vue qu'à la fin ; pour qu'elle descende, il lui a confié « le mot de passe de la garde » (faux). Bavardage : « Descends de ce canon. » / « C'est mon cheval ! » / « C'est mon canon. »."
+   },
+   "croc": {
+    "qui": "le pirate",
+    "nom": "Croc-de-Sel",
+    "sentiment": -0.6,
+    "fond": "Hamza surveille les pirates depuis leur arrivée : des pirates polis préparent quelque chose. Croc le salue chaque matin avec une politesse exagérée, ce qui l'exaspère. Une nuit, Hamza a surpris Croc au pied de la Skala avec une lanterne (il suivait l'énigme de Fatima) ; Croc a juré qu'il « admirait les canons ». Anecdotes : la nuit de la lanterne ; Croc a voulu lui offrir du rhum, Hamza l'a versé dans la mer devant lui. Bavardage : « Encore toi. » / « Toujours moi, caïd ! Vos canons sont superbes. » / « Ne les regarde pas. »."
+   },
+   "rosa": {
+    "qui": "cette canonnière de",
+    "nom": "Rosa",
+    "sentiment": -0.2,
+    "fond": "Rosa a seize canons, Hamza sept, qui n'ont jamais tiré. Elle le taquine et lui propose de « réveiller » ses canons ; il se vexe. Mais il lui a demandé, en secret, comment elle règle la hausse de Bertha, et elle lui a répondu en détail. Anecdotes : le coup à blanc (il en a encore les oreilles qui sifflent) ; la leçon de hausse, qu'il a notée dans son carnet. Bavardage : « Pas de coup à blanc, aujourd'hui. » / « Bertha fait ce qu'elle veut, caïd. »."
+   }
+  }
+ },
+ "hassan": {
+  "genre": "m",
+  "prenom": "Hassan",
+  "plan": [
+   "le fils du porteur d'eau — fils du guerrab du souk, avec ses gobelets de cuivre et sa clochette ; il a grandi en servant à boire aux autres.",
+   "cent théières renversées — dix ans pour apprendre à verser de haut ; cent théières, toutes sorties de l'atelier de son beau-frère Abdellah ; Rabia, sa femme, a compté.",
+   "la nuit du chergui — quarante caravaniers bloqués au Fondouk ; Zineb et lui servent le thé toute la nuit, côte à côte, malgré la guerre du quatrième verre.",
+   "ma terrasse aujourd'hui — le thé de Moulay Brahim et leurs dames truquées ; Zineb et ses panneaux ; Mama Lou et son rhum ; le cuisinier pirate qui veut saler son thé.",
+   "(confidence) il n'aime pas le thé, trop sucré pour lui depuis toujours ; il y trempe les lèvres pour la politesse. Ce qu'il aime, c'est le moment où la mousse monte et où les gens se taisent pour regarder."
+  ],
+  "reve": "Servir le thé, au même moment, aux pêcheurs, aux pirates, aux caravaniers et à la garde, tous assis sur la même terrasse. Sans rhum dedans.",
+  "question": "Un thé ? Tu le prends comment ? (bien_sucre / sans_sucre / avec_rhum) — joie, stupeur polie, ou scandale (« Sacrilège ! Je te le sers quand même. »).",
+  "liens": {
+   "abdellah": {
+    "qui": "mon beau-frère",
+    "nom": "Abdellah",
+    "sentiment": 0.6,
+    "fond": "Leurs femmes sont sœurs : Hnia (chez Abdellah) compte les coups de marteau, Rabia (chez Hassan) a compté les théières renversées. Les cent théières que Hassan a renversées en apprenant à verser de haut sortaient toutes de l'atelier d'Abdellah. Anecdotes : il garde la toute première théière cabossée et ne sert que lui dedans ; les deux sœurs font leurs comptes ensemble le vendredi. Bavardage : Hassan lui offre un thé ; Abdellah critique la théière, qui est la sienne."
+   },
+   "brahim": {
+    "qui": "mon plus vieux client",
+    "nom": "Moulay Brahim",
+    "sentiment": 0.8,
+    "fond": "Chaque après-midi, sur la terrasse du Fondouk, Hassan apporte son thé à Moulay Brahim et ils jouent aux dames sur une planche gravée. Brahim triche (un pion dans la manche) ; Hassan le sait et le laisse faire depuis vingt ans. Anecdotes : le pion dans la manche ; le thé de réconciliation qu'il a servi entre deux pêcheurs fâchés, sur ordre de l'amin. Bavardage : « Votre thé, Moulay Brahim. Et votre pion. » / « Quel pion ? »."
+   },
+   "zineb": {
+    "qui": "la patronne",
+    "nom": "Zineb",
+    "sentiment": 0.3,
+    "fond": "Hassan sert son thé sur la terrasse du Fondouk ; Zineb vend aussi du thé dans son auberge. Ils se disputent les verres, et surtout le quatrième (« le quatrième, il faut le payer », dit Zineb ; Hassan l'offre). Ils ne peuvent pas se passer l'un de l'autre. Anecdotes : les panneaux ; la nuit du chergui, et elle qui a dit merci, une fois. Bavardage : « Un thé, Zineb ? Offert. » / « Offert sur ma terrasse ! »."
+   },
+   "jacquot": {
+    "qui": "ce cuisinier de",
+    "nom": "Jacquot",
+    "sentiment": -0.3,
+    "fond": "Jacquot a goûté le thé de Hassan et a dit : « Pas assez salé. » Hassan ne s'en est pas remis. Jacquot, lui, ne voit pas l'offense : il sale tout, même le café. Anecdotes : la phrase fatale, devant toute la terrasse ; il cache la salière quand Jacquot approche. Bavardage : « Ton verre. Sans sel. » / « Ho ho ! Je l'ai apporté ! »."
+   },
+   "mamalou": {
+    "qui": "la patronne de la taverne",
+    "nom": "Mama Lou",
+    "sentiment": -0.4,
+    "fond": "Hassan dit que c'est le thé qui fait la paix à Tazira ; Mama Lou dit que c'est le rhum. Les pirates mettent du rhum dans le thé de Hassan (sacrilège) ; Mama Lou déteste le thé à la menthe. Un soir de grosse dispute entre pêcheurs et pirates, ils ont dû servir ensemble, thé d'un côté, rhum de l'autre, et ça a marché. Anecdotes : la soirée commune (il refuse d'admettre que le rhum a aidé) ; le grog. Bavardage : « Un verre de thé, Lou ? Ça soigne. » / « Moi, je ne suis pas malade. »."
+   }
+  }
+ },
+ "jacquot": {
+  "genre": "m",
+  "prenom": "Jacquot",
+  "plan": [
+   "sous les tables d'une gargote — fils d'une cantinière de port du nord ; il a grandi sous les tables, à goûter les sauces du bout du doigt.",
+   "comment j'ai perdu deux doigts — il change de version à chaque fois (requin, homard, soupe) ; la seule vérité : c'était dans une cuisine, et la soupe était très bonne.",
+   "trente ans de pirates — maître-coq sur quatre navires, dont la Murène Noire depuis dix ans ; personne n'est mort de sa cuisine ; le biscuit dur comme du bois.",
+   "Tazira aujourd'hui — le tajine « appris » de Zohra, la fausse recette de Mustapha, le thé pas assez salé de Hassan, les quarante kilos de sardines de Saïd, la danse de la baleine, son commis Tibo, et Aïcha.",
+   "(confidence) il sait qu'il cuisine mal : il a perdu le goût dans un hiver de glace, il y a vingt ans ; il sale tout parce qu'il ne sent presque plus rien. Seules les épices d'Aïcha lui arrivent encore à la langue. C'est pour ça qu'il veut rester."
+  ],
+  "reve": "Une petite gargote sur le quai de Tazira, avec des tables bleues, le cumin à volonté, et Aïcha qui passerait le soir goûter la sauce. Ho ho.",
+  "question": "Ho ho ! Toi, tu manges de tout ? (tout / difficile / pas_de_poisson) — enthousiasme, défi culinaire, ou plan secret pour te faire aimer le poisson (« au miel ! »).",
+  "liens": {
+   "tibo": {
+    "qui": "mon commis",
+    "nom": "Tibo",
+    "sentiment": 0.8,
+    "fond": "Tibo épluche les patates pour Jacquot depuis un an. Jacquot lui garde toujours la meilleure part et lui raconte comment il a perdu ses deux doigts, avec une version différente chaque fois. Tibo trouve sa cuisine immangeable et la mange quand même. Anecdotes : la version du requin, celle du homard, celle de la soupe ; Tibo a rapporté une sardine pêchée lui-même, Jacquot l'a cuisinée « comme pour un amiral » et l'a ratée. Bavardage : « Ho ho ! Les patates, commis ! » / « Épluchées ! Il en manque deux, comme vos doigts ! »."
+   },
+   "zohra": {
+    "qui": "mon professeur de tajine",
+    "nom": "Zohra",
+    "sentiment": 0.9,
+    "fond": "Zohra a « appris » le tajine à Jacquot : elle l'a regardé faire, et elle a pleuré (il avait mis du rhum et du sucre). Jacquot croit que c'étaient des larmes de joie. Les pirates commandent trois marmites de tajine par semaine à Zohra. Anecdotes : la leçon, dont il est très fier ; chaque semaine il lui apporte une « amélioration » à goûter. Bavardage : « Ho ho ! J'ai ajouté de la cannelle et du hareng ! » / « Va-t'en. » / « Tu as pleuré, la dernière fois ! »."
+   },
+   "mustapha": {
+    "qui": "mon collègue",
+    "nom": "Mustapha",
+    "sentiment": 0.6,
+    "fond": "Jacquot a demandé sa recette à Mustapha ; Mustapha lui en a donné une fausse (« trois heures de cuisson, avec du miel et de la cannelle »). Jacquot l'applique scrupuleusement ; ses sardines sont immangeables. Mustapha a un peu honte, et rit quand même. Anecdotes : il trouve que ses sardines « manquent encore de miel » et revient demander conseil ; il a offert à Mustapha une sardine à la recette, et Mustapha l'a mangée sans broncher. Bavardage : « Trois heures, c'est bien ça ? » / « Quatre, pour toi. »."
+   },
+   "hassan": {
+    "qui": "le marchand de thé",
+    "nom": "Hassan",
+    "sentiment": 0.4,
+    "fond": "Jacquot a goûté le thé de Hassan et a dit : « Pas assez salé. » Hassan ne s'en est pas remis. Jacquot, lui, ne voit pas l'offense : il sale tout, même le café. Anecdotes : il revient chaque jour reprendre un verre « pour vérifier », son sachet de sel à la main ; il a proposé à Hassan d'échanger leurs recettes. Bavardage : « Ho ho ! Un thé ! Une pincée de sel ? » / « Jamais. » / « Une demi-pincée ? »."
+   },
+   "aicha": {
+    "qui": "ma belle",
+    "nom": "Aïcha",
+    "sentiment": 0.9,
+    "fond": "Jacquot adore les épices d'Aïcha… et Aïcha. Il passe chaque jour à son étal, renifle tout, achète du cumin au kilo et parle de sa future gargote sur le quai, « avec le cumin à volonté ». Aïcha le trouve ridicule et touchant : elle n'a pas dit non, elle n'a pas dit oui. Anecdotes : il lui a apporté un bouquet… de persil et de coriandre ; il a voulu deviner le trente-troisième ingrédient du ras-el-hanout et a dit « du poisson ». Bavardage : « Ho ho ! Le trente-troisième, c'est l'amour ? » / « C'est un secret. Et ce n'est pas toi. »."
+   },
+   "lhoucine": {
+    "qui": "le musicien",
+    "nom": "Lhoucine",
+    "sentiment": 0.8,
+    "fond": "Jacquot danse tous les soirs à la fête, très mal, « comme une baleine ». Lhoucine lui a composé un air exprès, lent et lourd : « la danse de la baleine ». Toute la place l'adore. Anecdotes : le premier soir de la danse de la baleine, la place entière a dansé comme lui ; il a marché sur le guembri. Bavardage : « Ho ho ! Ma baleine, ce soir ? » / « Rien que pour toi. »."
+   },
+   "said": {
+    "qui": "le crieur",
+    "nom": "Saïd",
+    "sentiment": 0.6,
+    "fond": "La première semaine, Jacquot a éternué pendant la criée (il venait de renifler le poivre d'Aïcha) : Saïd l'a pris pour une enchère, et Jacquot est reparti avec quarante kilos de sardines. L'équipage en a mangé toute la semaine. Depuis, Jacquot achète tout le poisson dont personne ne veut, à « prix d'éternuement ». Anecdotes : l'éternuement ; la semaine des sardines (au petit-déjeuner, en soupe, en gâteau). Bavardage : « Atchoum ! » / « Adjugé ! » / « Non, non, j'ai vraiment éternué ! »."
+   }
+  }
+ },
+ "karim": {
+  "genre": "m",
+  "prenom": "Karim",
+  "plan": [
+   "les pieds de mon quartier — fils de cordonnier ; de la fenêtre, il devinait la pointure de tous les passants.",
+   "ma première babouche — une jaune pour son père, trop petite d'une pointure ; son père l'a portée un an sans rien dire, en boitant un peu.",
+   "le pari des pointures — il a parié de deviner la pointure de tout le souk ; il ne s'est trompé qu'une fois : Mbarek, des pieds de caravanier « larges comme des dunes ».",
+   "mon échoppe aujourd'hui — les babouches de noce de Rachid, en secret ; les babouches cachées du mousse Tibo ; Amine, son livreur payé en dattes ; le marteau d'Abdellah à côté ; son rêve de chausser le capitaine pirate.",
+   "(confidence) il ne porte jamais de babouches : il a les pieds plats et marche mieux pieds nus ; toute la journée, il cache ses pieds sous l'étal."
+  ],
+  "reve": "Chausser le capitaine Croc-de-Sel ! Lui retirer ses bottes de trente ans, lui mettre des babouches noires brodées, et l'entendre dire : « Ah. »",
+  "question": "Allez, dis-moi ta pointure. (petite / grande / je_ne_sais_pas) — il te devine, se trompe avec panache, ou s'indigne qu'on ignore sa propre pointure.",
+  "liens": {
+   "rachid": {
+    "qui": "mon voisin",
+    "nom": "Rachid",
+    "sentiment": 0.8,
+    "fond": "Échoppes voisines au souk ; les deux plus grands blagueurs de Tazira. Karim fabrique en secret les babouches de noce de Rachid (commandées par Samira) ; Rachid essaie de deviner. Anecdotes : la vente au triple ; Rachid marchande même son propre thé. Bavardage : « Tu as une nouvelle paire cachée, Karim ? » / « Moi ? Jamais. Retourne à tes tapis. »."
+   },
+   "samira": {
+    "qui": "ma cliente secrète",
+    "nom": "Samira",
+    "sentiment": 0.6,
+    "fond": "Samira a commandé à Karim les babouches de noce de Rachid, brodées de fil d'or sur un tissu à elle. C'est un secret entre eux deux… que tout le souk connaît, sauf Rachid. Anecdotes : il cache les babouches de noce dans un panier de babouches jaunes ordinaires ; Samira est venue mesurer les pieds de Rachid pendant sa sieste. Bavardage : « Le fil d'or est arrivé. » / « Chut ! Il écoute. »."
+   },
+   "tibo": {
+    "qui": "mon client secret",
+    "nom": "Tibo",
+    "sentiment": 0.7,
+    "fond": "Tibo a acheté en cachette une paire de babouches jaunes chez Karim : sur la Murène, les pieds au chaud, c'est pour les terriens. Il les cache dans son hamac et ne les porte que pendant les quarts de nuit. Karim lui a fait un prix « de pirate ». Anecdotes : la pièce de la cale ; il compte sur Tibo pour lui donner la pointure du capitaine. Bavardage : « Alors, ces pieds ? Au chaud ? » / « Chut ! Oui ! »."
+   },
+   "abdellah": {
+    "qui": "mon voisin bruyant",
+    "nom": "Abdellah",
+    "sentiment": 0.3,
+    "fond": "Leurs échoppes se touchent au souk. Le tac-tac d'Abdellah empêche Karim de deviner les pointures ; les blagues de Karim font rater des coups de marteau à Abdellah. Anecdotes : il a glissé une babouche sous le marteau d'Abdellah pour voir ; Abdellah a fait un plateau en forme de babouche. Bavardage : « Abdellah ! Ta pointure ! » / « Tac. » / « Quarante-trois ! Je le savais ! »."
+   },
+   "amine": {
+    "qui": "mon petit livreur",
+    "nom": "Amine",
+    "sentiment": 0.7,
+    "fond": "Amine livre les babouches de Karim dans tout Tazira contre une poignée de dattes. Il court vite et se trompe souvent de maison. Anecdotes : Amine a livré des babouches rouges de femme à Moulay Brahim, qui les a portées toute une journée sans s'en apercevoir ; il sait pour les babouches de noce de Rachid, et n'a rien dit… presque. Bavardage : « Une livraison, Amine ? » / « Combien de dattes ? »."
+   }
+  }
+ },
+ "khadija": {
+  "genre": "f",
+  "prenom": "Khadija",
+  "plan": [
+   "la fille du quai — fille de pêcheur ; à quinze ans, elle s'assoit à côté de Lalla Fatima, qui lui apprend le premier nœud.",
+   "épouser un homme qui ne parle pas — elle épouse Driss : un « oui » le jour du mariage, et rien d'autre de la journée ; trente ans de silences et de coquillages.",
+   "le grand filet vert — le jour du remorquage de la Murène, l'ancre jetée trop tôt sur l'ordre de Mâchefer déchire le filet vert ; trois semaines de réparation ; la note part chaque semaine.",
+   "mes filets aujourd'hui — bleus pour la sardine, orange pour la dorade ; Fatima à côté, qu'elle surveille ; le perroquet des pirates qui répète tout ; le pot de coquillages qui déborde.",
+   "(confidence) un soir, cachée derrière les filets, elle a entendu Driss dire à la Mabrouka : « Ce matin, Khadija avait le foulard bleu. Elle était belle. » Elle ne lui dira jamais qu'elle sait, pour qu'il continue."
+  ],
+  "reve": "Un filet sans un seul trou, un jour, rien qu'un. Et que Driss lui dise une fois en face ce qu'il raconte à sa barque.",
+  "question": "Assieds-toi. Tu sais faire un nœud, au moins ? (oui / un_peu / non) — fierté, petite leçon, ou désespoir rieur (« Fatima, viens voir ça ! »).",
+  "liens": {
+   "driss": {
+    "qui": "mon mari",
+    "nom": "Driss",
+    "sentiment": 0.7,
+    "fond": "Mariés depuis trente ans. Driss parle peu ; Khadija parle pour deux et ramende les filets de son mari en premier. Elle dit qu'il parle plus à sa barque, la Mabrouka, qu'à elle. Agacée et attendrie. Anecdotes : elle a compté : trente ans, onze cents coquillages, dans un grand pot de Halima ; un soir, elle l'a entendu raconter toute sa journée… à la Mabrouka. Bavardage : « Tu as encore parlé à ta barque ? » / « Hm. Elle écoute. »."
+   },
+   "fatima": {
+    "qui": "la doyenne",
+    "nom": "Lalla Fatima",
+    "sentiment": 0.9,
+    "fond": "Khadija avait quinze ans quand Fatima lui a appris le premier nœud. Elles ramendent côte à côte sur le quai depuis trente-cinq ans ; Khadija fait mille nœuds par jour, Fatima deux mille, presque aveugle, « avec les mains ». Admiration, et de l'inquiétude pour sa santé. Anecdotes : le concours de nœuds de l'an dernier, perdu contre une femme de quatre-vingts ans aux yeux fermés ; Fatima qui reconnaît chaque pêcheur à son pas. Bavardage : Khadija la supplie de se reposer ; Fatima : « Quand je serai vieille. »."
+   },
+   "machefer": {
+    "qui": "ce pirate de",
+    "nom": "Mâchefer",
+    "sentiment": -0.5,
+    "fond": "Le jour où la Murène Noire a été remorquée dans le port, c'est Mâchefer qui a fait jeter l'ancre trop tôt : elle a déchiré le grand filet vert de Khadija. Khadija lui envoie chaque semaine, par Tibo, la note de la réparation. Il n'a jamais payé. Anecdotes : l'ancre dans le filet vert ; le pas en arrière. Bavardage : « Ta note, pirate. » / « Hm. » / « Hm n'est pas une pièce. »."
+   },
+   "gaspard_muet": {
+    "qui": "ce muet de",
+    "nom": "Gaspard",
+    "sentiment": -0.2,
+    "fond": "L'Amiral répète tout ce qu'on dit sur le quai. Un matin, il a crié devant toute la criée une phrase de Khadija : « DRISS PARLE À SA BARQUE ! DRISS RONFLE ! ». Depuis, Khadija baisse la voix quand Gaspard passe, et lui en veut un peu. Anecdotes : toute la criée qui rit ; la bobine de fil bleu, qu'elle a acceptée, et qui ramende très bien. Bavardage : « Ton oiseau, il a les oreilles ouvertes ? » / l'Amiral « CHUT ! CHUT ! COUAC ! »."
+   }
+  }
+ }
+}

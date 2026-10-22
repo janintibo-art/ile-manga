@@ -47,6 +47,7 @@ var face_at: Dictionary = {}          # point -> où regarder quand il s'y repos
 var v64: Dictionary = {}
 var _tete64: Dictionary = {}
 var chat_hold: float = 0.0            # bavardage en cours : il reste sur place
+var chat_partner: Node3D               # V65 : celui avec qui il bavarde (il se tourne vers lui)
 static var _npc_bodies: Array[RID] = []
 
 
@@ -1078,7 +1079,9 @@ func _process(delta: float) -> void:
 			_walk(delta, dist)
 		_:
 			chat_hold = maxf(chat_hold - delta, 0.0)
-			if dist < 4.0:
+			if chat_hold > 0.0 and is_instance_valid(chat_partner):
+				_face(chat_partner.global_position - global_position, delta, 3.0)
+			elif dist < 4.0:
 				_face(to_player, delta, 3.0)
 			elif face_at.has(at_point) and chat_hold <= 0.0:
 				_face(face_at[at_point] - global_position, delta, 2.0)
@@ -1155,6 +1158,21 @@ func say_bubble(text: String, seconds: float) -> void:
 	bubble.visible = true
 	bubble.modulate.a = 1.0
 	bubble_clock = seconds
+
+
+## V65 : bavardage avec un habitant qu'il connaît : il reste sur place et se tourne vers lui.
+func chat_with(other: Node3D, seconds: float) -> void:
+	chat_partner = other
+	chat_hold = maxf(chat_hold, seconds)
+
+
+## V65 : une réplique de bavardage (bulle et main qui parle, s'il est debout).
+func chat_say(text: String, seconds: float) -> void:
+	say_bubble(text, seconds)
+	var p: Variant = get("pose")
+	if state == "repos" and not ("_dj_fist" in self) and (p == null or str(p) in ["debout", "comptoir", "bras_croises", "boire", "jouer", "petanque"]):
+		_play("Talk_with_Right_Hand_Open", 0.3, 0.9)
+		gesture_clock = minf(seconds, 3.0)
 
 
 func begin_talk() -> void:

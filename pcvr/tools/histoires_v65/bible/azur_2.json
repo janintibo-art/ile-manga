@@ -1,0 +1,668 @@
+{
+ "hortense": {
+  "genre": "f",
+  "prenom": "Hortense",
+  "plan": [
+   "mon enfance dans l'horloge — fille et petite-fille des gardiens de l'horloge de la place ; petite, elle faisait la sieste contre le mécanisme, bercée par le tic-tac.",
+   "Jules et la promesse — à vingt ans, fiancée à Jules, matelot ; il s'engage sur le trois-mâts la Belle-Étoile ; elle promet d'entendre la cloche sonner son retour ; la même année, son père lui confie la clé de l'horloge.",
+   "la Belle-Étoile revenue sans lui — l'année suivante, le trois-mâts rentre sans Jules : « emporté par une vague », dit le petit mousse, Léon, quatorze ans, en larmes sur le quai. On ne retrouve rien. Elle continue d'écouter.",
+   "l'horloge arrêtée — il y a sept ans, un rouage casse, le jour anniversaire du départ de Jules ; elle monte quand même l'huiler deux fois par jour ; Hector n'a « jamais le temps », le maire promet ; Django joue sur les bancs le matin, elle bat la mesure ; un brin de lavande sur son banc chaque matin (elle soupçonne Marcel) ; Rita et son « étranger ».",
+   "(confidence) je sais qu'il ne reviendra pas — elle l'a su dès la première année ; si elle cesse d'écouter, plus personne ne se souviendra de Jules ; la cloche, c'est pour qu'on se souvienne."
+  ],
+  "reve": "que la cloche sonne midi juste devant toute la place, et qu'un seul passant lève la tête en se demandant pour qui elle sonne",
+  "question": "« Vous êtes en avance, à l'heure ou en retard, d'habitude ? » (en_avance / a_l_heure / en_retard) — elle approuve, sourit ou soupire ; elle s'en souviendra à chacune de vos rencontres",
+  "liens": {
+   "leon": {
+    "qui": "le capitaine",
+    "nom": "Léon",
+    "sentiment": 0.6,
+    "fond": "À quatorze ans, Léon était mousse sur la Belle-Étoile, le trois-mâts où Jules, le fiancé d'Hortense, s'était engagé. C'est lui qui, au retour, lui a dit que Jules avait été « emporté par une vague ». Chaque soir, quand L'Hirondelle accoste, Hortense regarde descendre les passagers ; Léon lui fait un petit signe de tête. (Confidence de Léon seulement : il garde une clochette de laiton que Jules avait achetée pour elle.) Anecdotes : le petit mousse en larmes sur le quai, il y a cinquante-deux ans ; les tisanes qu'il lui rapporte du village. Bavardage : douce politesse."
+   },
+   "django": {
+    "qui": "le jeune guitariste",
+    "nom": "Django",
+    "sentiment": 0.6,
+    "fond": "Chaque matin, Django joue sur les bancs de la place pendant qu'Hortense y est assise. Elle bat la mesure du pied, avec une précision d'horloge ; il dit qu'elle est son métronome. Depuis que l'horloge est arrêtée, c'est elle qui lui annonce l'heure de la sieste. Anecdotes : le pied qui bat la mesure ; elle corrige son tempo. Bavardage : sévère et tendre."
+   },
+   "marcel": {
+    "qui": "l'ancien facteur",
+    "nom": "Marcel",
+    "sentiment": 0.4,
+    "fond": "Pendant ses trente ans de tournée, Marcel est passé chaque jour chez Hortense, même sans lettre, pour lui dire « Rien aujourd'hui, Hortense ». Depuis que l'horloge est arrêtée, quelqu'un pose chaque matin un brin de lavande sur son banc ; Hortense est sûre que c'est Marcel. Il jure que non ; elle ne le croit pas. (C'est Rose, en secret.) Anecdotes : le facteur sans lettre ; la lavande qu'elle lui « rend » en la posant sur son terrain. Bavardage : malicieuse, émue."
+   },
+   "rita": {
+    "qui": "ma voisine la voyante",
+    "nom": "Rita",
+    "sentiment": -0.1,
+    "fond": "Voisines rue Haute. Rita a dit à Hortense que l'horloge sonnerait de nouveau grâce à un étranger. Hortense répond qu'elle ne croit pas à ces bêtises, mais elle regarde chaque étranger qui passe sur la place. (Confidence de Rita : elle avait vraiment rêvé de cet étranger.) Anecdotes : les bêtises de sa voisine ; elle regarde quand même les étrangers. Bavardage : sceptique."
+   },
+   "aristide": {
+    "qui": "le maire",
+    "nom": "Aristide",
+    "sentiment": -0.2,
+    "fond": "L'horloge de la place est arrêtée depuis sept ans. À chaque fête du port, Aristide promet qu'elle sera réparée « avant la fin de l'année » ; Hortense compte : il en est à quatorze promesses. Il dit que c'est Hector qui n'a jamais le temps ; elle répond qu'un maire, ça trouve le temps. Anecdotes : le carnet des promesses ; le maire qui évite de regarder le cadran. Bavardage : sec."
+   },
+   "hector": {
+    "qui": "l'armurier",
+    "nom": "Hector",
+    "sentiment": 0.1,
+    "fond": "Il faut à l'horloge un rouage neuf, que seul Hector peut forger. Depuis sept ans, Hortense le lui demande, et il répond qu'il n'a pas le temps. Il passe pourtant devant l'horloge chaque jour et lève les yeux vers le cadran. (Confidence d'Hector : il a peur de rater le rouage.) Exaspérée. Anecdotes : les demandes répétées ; il lève les yeux vers le cadran chaque jour. Bavardage : « Toujours pas le temps ? » / « Hm. »"
+   },
+   "rose": {
+    "qui": "la fleuriste",
+    "nom": "Rose",
+    "sentiment": 0.5,
+    "fond": "Depuis que l'horloge est arrêtée, Hortense trouve chaque matin un brin de lavande sur son banc de la place ; elle est persuadée que c'est Marcel. Elle a demandé à Rose, qui vend la lavande, qui en achetait ; Rose a répondu qu'elle en vendait à tout le monde. (Confidence de Rose : c'est elle qui la pose.) Anecdotes : l'enquête sur la lavande ; les brins qu'elle garde dans un livre. Bavardage : « Vous vendez beaucoup de lavande ? » / « À tout le monde. »"
+   }
+  }
+ },
+ "hugo": {
+  "genre": "m",
+  "prenom": "Hugo",
+  "plan": [
+   "mon enfance de garçon timide — fils de maraîchers sur le continent ; il rougissait quand on lui demandait l'heure.",
+   "les trois cent soixante-cinq bouquets — employé de bureau, il achète chaque matin un bouquet chez la fleuriste d'en face, Léa, « pour sa mère » ; au bout d'un an, il lui offre le trois cent soixante-cinquième.",
+   "dix jours de mariage — voyage de noces à Port-Azur parce que Léa voulait voir la mer ; chambre sept ; au dixième jour, l'alliance glisse dans les vagues devant le Coco Loco.",
+   "les jours sans Léa — la rose de Rose refusée, Inès et l'alliance « exactement pareille », Kiki et sa louche à punch, les dîners muets chez Paulo ; puis l'alliance retrouvée dans le sable.",
+   "(confidence) l'alliance trop grande — Léa s'était trompée de taille ; il n'a pas osé le lui dire et l'avait calée avec un fil de coton ; le fil a lâché dans les vagues."
+  ],
+  "reve": "revenir chaque année à Port-Azur, chambre sept ; et un jour, avec un enfant qui demandera pourquoi papa vérifie toujours son doigt",
+  "question": "« Vous croyez aux signes, vous ? » (oui / non / parfois) — il se confie un peu selon la réponse ; il s'en souviendra en reparlant de Léa",
+  "liens": {
+   "kiki": {
+    "qui": "le barman de la paillote",
+    "nom": "Kiki",
+    "sentiment": 0.5,
+    "fond": "Hugo a perdu son alliance en jouant dans les vagues devant le Coco Loco. Le soir même, Kiki lui a prêté sa grande louche à punch pour creuser ; Hugo a creusé jusqu'à minuit sans rien trouver. Kiki lui servait chaque soir un punch « consolation ». Anecdotes : le punch consolation ; Kiki qui avait affiché « alliance perdue, récompense : un punch » sur la paillote. Bavardage : reconnaissant."
+   },
+   "lea": {
+    "qui": "ma femme",
+    "nom": "Léa",
+    "sentiment": 0.95,
+    "fond": "Jeunes mariés, chambre sept du Grand Hôtel. Hugo a acheté un bouquet par jour chez Léa pendant un an avant d'oser lui offrir le trois cent soixante-cinquième. Léa voulait voir la mer ; au dixième jour du voyage de noces, Hugo a perdu son alliance dans les vagues devant le Coco Loco. Elle ne lui a plus parlé jusqu'à ce qu'elle soit retrouvée. (Confidences : l'alliance était trop grande ; Léa a eu peur d'un signe.) Anecdotes : les bouquets « pour sa mère » ; Léa qui regarde la mer le premier matin. Bavardage : « Tu me pardonnes ? » / « Le onzième jour, oui. »"
+   },
+   "ines": {
+    "qui": "la bijoutière",
+    "nom": "Inès",
+    "sentiment": 0.6,
+    "fond": "Hugo est venu demander à Inès de refaire une alliance « exactement pareille », mais « une demi-taille plus petite, sans que ça se voie ». Inès a compris que l'alliance était trop grande et qu'il avait fait une bêtise. Elle a refusé de tromper Léa et lui a conseillé de chercher encore. Anecdotes : la demande ; le refus d'Inès. Bavardage : « Une demi-taille ? » / « Chut ! »"
+   },
+   "rose": {
+    "qui": "la fleuriste",
+    "nom": "Rose",
+    "sentiment": 0.6,
+    "fond": "Hugo a acheté à Rose une rose rouge pour s'excuser auprès de Léa ; Léa ne l'a pas prise. Hugo l'a rapportée à Rose, qui l'a mise dans un vase « en attendant ». Quand l'alliance a été retrouvée, Rose a offert à Léa un bouquet de lavande et de bougainvillier. Anecdotes : la rose rapportée ; le bouquet des retrouvailles. Bavardage : « Une rose ? » / « Deux, cette fois ! »"
+   },
+   "paulo": {
+    "qui": "le chef",
+    "nom": "Paulo",
+    "sentiment": 0.6,
+    "fond": "Hugo et Léa dînent chez Paulo tous les soirs. Pendant la brouille, Hugo regardait son doigt et Léa regardait la mer ; Paulo leur a servi une seule part de tiramisu avec deux cuillères, sans succès. Le soir des retrouvailles, il a chanté à leur table. Anecdotes : le tiramisu à deux cuillères ; la chanson des retrouvailles. Bavardage : « Une table pour deux ? » / « Pour deux ! »"
+   }
+  }
+ },
+ "ines": {
+  "genre": "f",
+  "prenom": "Inès",
+  "plan": [
+   "les pierres de ma mère — fille d'une tailleuse de pierres ; sa mère disait « une pierre dit toujours la vérité, il suffit de savoir la regarder » ; elle a taillé son premier grenat à neuf ans.",
+   "la bijouterie de la place — arrivée à Port-Azur il y a dix ans, elle ouvre sa bijouterie ; les touristes achètent des colliers de coquillages, les habitants des alliances : des souvenirs aux uns, des promesses aux autres.",
+   "la fausse perle bleue — un vieux marin lui vend un jour une perle bleue « qui brille toute seule » ; c'était du verre peint. Depuis, elle déteste le faux et cherche la vraie, la perle de lumière dont on parle.",
+   "ma vie aujourd'hui — bijouterie, déjeuner chez Paulo, promenade le soir ; Victor et ses coquillages « authentiques » ; le jeune marié et l'alliance « exactement pareille » ; Rosalie qui compte ses daurades du vendredi.",
+   "(confidence) les deux daurades — chaque vendredi, depuis deux ans, Hector vient dîner chez elle, en chemise propre ; elle garde le secret parce qu'à Port-Azur une histoire racontée n'appartient plus à ceux qui la vivent."
+  ],
+  "reve": "voir une vraie perle de lumière, bleue, qui brille toute seule ; la sertir dans une monture forgée par Hector et ne jamais la vendre",
+  "question": "« Vous préférez les perles ou les pierres ? » (perles / pierres / coquillages) — elle lit le caractère du joueur dans son choix ; elle s'en souviendra en lui montrant sa vitrine",
+  "liens": {
+   "victor": {
+    "qui": "le marchand de souvenirs",
+    "nom": "Victor",
+    "sentiment": -0.3,
+    "fond": "Inès dit que les coquillages « authentiques » de Victor sont authentiquement peints. Victor lui a proposé d'en monter en colliers ; elle a refusé. Il lui apporte parfois un vrai coquillage rare trouvé sur la plage, pour la faire changer d'avis ; elle l'achète au prix juste, sans un sourire. Elle déteste le faux (sa fausse perle). Anecdotes : le coquillage rare acheté sans sourire ; la peinture encore fraîche sur un « authentique ». Bavardage : glacial."
+   },
+   "hugo": {
+    "qui": "le jeune marié",
+    "nom": "Hugo",
+    "sentiment": 0.5,
+    "fond": "Hugo est venu demander à Inès de refaire une alliance « exactement pareille », mais « une demi-taille plus petite, sans que ça se voie ». Inès a compris que l'alliance était trop grande et qu'il avait fait une bêtise. Elle a refusé de tromper Léa et lui a conseillé de chercher encore. Anecdotes : la demi-taille ; elle lui a prêté sa loupe pour fouiller le sable. Bavardage : pince-sans-rire."
+   },
+   "hector": {
+    "qui": "l'armurier",
+    "nom": "Hector",
+    "sentiment": 0.9,
+    "fond": "En public, ils se saluent à peine : l'armurier et la bijoutière, deux artisans qui parlent métal et pierres. Hector lui forge de petites griffes de sertissage ; elle lui achète l'obsidienne qu'on lui rapporte. En secret, depuis deux ans, Hector dîne chez Inès chaque vendredi, en chemise propre : c'est pour lui la deuxième daurade que Rosalie remarque. (Cœur de la confidence d'Inès ; ne pas le révéler avant.) Anecdotes publiques : les griffes de sertissage d'une finesse « de nain » ; Hector qui a réparé son étau sans rien demander. Bavardage : très neutre en public (« Bonjour. » / « Bonjour. »), un sous-entendu sur vendredi."
+   },
+   "rosalie": {
+    "qui": "la poissonnière",
+    "nom": "Rosalie",
+    "sentiment": 0.1,
+    "fond": "Inès achète deux daurades chez Rosalie chaque vendredi. Rosalie en a déduit qu'Inès a un amoureux secret et le dit à tout le monde ; elle essaie de deviner qui avec des questions-pièges. Inès répond qu'elle a très faim le vendredi. Agacée. Anecdotes : les questions-pièges ; « très faim le vendredi ». Bavardage : « Deux daurades, comme d'habitude ? » / « Très faim. »"
+   }
+  }
+ },
+ "kevin": {
+  "genre": "m",
+  "prenom": "Kevin",
+  "plan": [
+   "fils de la poissonnière — fils de Rosalie ; il plonge depuis qu'il sait marcher, pour remonter des oursins pour l'étal ; sa petite sœur Clara dansait sur les caisses.",
+   "comment je suis devenu maître-nageur — à dix-huit ans, il sort un touriste coincé sous un pédalo ; le maire lui donne le sifflet et la chaise du poste de secours.",
+   "le défi avec Bernard — il y a sept ans, Bernard arrive et prétend courir plus vite que Kevin ne nage ; la course le long de la plage est annulée par le drapeau rouge ; jamais départagés.",
+   "ma plage aujourd'hui — le poste de secours toute la journée, cinq cents pompes ; le soir à la paillote avec Kiki et Yannick ; les clients de Yannick qu'il repêche ; le défi des étoiles de mer ; sa mère qui le gronde ; son voisin le brigadier.",
+   "(confidence) en dessous de dix mètres — à seize ans, il a voulu descendre à quinze mètres pour impressionner ; il est remonté trop vite, la tête qui tournait ; depuis, il a peur en dessous de dix mètres : son défi est à six mètres exprès."
+  ],
+  "reve": "voir Clara danser sur une vraie scène, au premier rang, en tongs ; et battre Bernard une fois, officiellement",
+  "question": "« Tu sais nager ? Vraiment ? » (comme_un_poisson / un_peu / non) — il te félicite, te conseille ou te propose une leçon ; il s'en souviendra sur la plage",
+  "liens": {
+   "kiki": {
+    "qui": "mon barman",
+    "nom": "Kiki",
+    "sentiment": 0.7,
+    "fond": "Le poste de secours de Kevin est à côté de la paillote. Kiki compte les sauvetages de Kevin : trois cette semaine, dont deux touristes qui ne se noyaient pas. Le soir, Kevin boit au Coco Loco avec Yannick ; Kiki lui sert un « punch du héros » sans rhum. Anecdotes : Kiki qui a crié « au secours » pour un crabe ; les glaçons qu'il lui garde après la journée. Bavardage : sportif et rieur."
+   },
+   "bernard": {
+    "qui": "mon rival",
+    "nom": "Bernard",
+    "sentiment": 0.2,
+    "fond": "Bernard dit qu'il court plus vite que Kevin ne nage ; Kevin dit que c'est ridicule. Il y a sept ans, ils ont organisé une course le long de la plage, Bernard sur le sable, Kevin dans l'eau : le drapeau rouge a tout annulé. Ils ne se sont jamais départagés et en parlent chaque jour. Anecdotes : la course annulée ; Bernard qui court le long de la plage pendant que Kevin nage, « par hasard ». Bavardage : « Quand tu veux, l'ancien. » / « Quand le drapeau voudra. »"
+   },
+   "yannick": {
+    "qui": "ce loueur de",
+    "nom": "Yannick",
+    "sentiment": 0.2,
+    "fond": "Yannick loue ses pédalos à des gens qui ne savent pas nager, et c'est Kevin qui va les rechercher : un client sur dix, d'après ses comptes. Yannick fait la réclame du défi des étoiles de mer de Kevin à tous ses clients. Le soir, ils boivent un punch ensemble à la paillote. Anecdotes : le jour où il a repêché trois clients de Yannick avant midi ; le pédalo « Gérard » ramené à la nage. Bavardage : « Il sait nager, celui-là ? » / « Il a une bouée ! »"
+   },
+   "lefort": {
+    "qui": "le brigadier",
+    "nom": "Lefort",
+    "sentiment": 0.6,
+    "fond": "Voisins rue du Phare. Lefort aurait voulu être maître-nageur mais ne sait pas nager. L'été dernier, un enfant est tombé du quai : Lefort a dû appeler Kevin, qui l'a sorti de l'eau. (Secret partagé, que ni l'un ni l'autre ne raconte avant la confidence de Lefort : depuis le printemps, Kevin lui apprend à nager à six heures du matin, dans la crique derrière le phare.) Anecdotes : l'enfant du quai ; Lefort qui le regarde nager depuis la promenade, mains dans le dos. Bavardage : « Bien dormi, brigadier ? » / « Très bien. Ne dites rien. »"
+   },
+   "rosalie": {
+    "qui": "ma mère",
+    "nom": "Rosalie",
+    "sentiment": 0.8,
+    "fond": "Kevin est le fils de Rosalie. Enfant, il plongeait pour remonter des oursins pour l'étal. Elle est fière de son fils maître-nageur et le gronde de faire cinq cents pompes au lieu de l'aider à six heures. Il déteste l'odeur du poisson et vient pourtant déjeuner chez elle le dimanche. Sa sœur Clara, quinze ans, veut être danseuse. Anecdotes : les oursins de son enfance ; sa mère qui crie « Kevin ! » depuis l'étal pendant un sauvetage. Bavardage : « Tu as mangé ? » / « Pas du poisson ! »"
+   }
+  }
+ },
+ "kiki": {
+  "genre": "m",
+  "prenom": "Kiki",
+  "plan": [
+   "mon enfance sous les cocotiers — né dans la jungle de l'île du village ; il grimpe aux cocotiers avant de marcher ; son grand-père lui apprend à ouvrir une noix d'un seul coup de machette.",
+   "le bateau des noix de coco — à dix-neuf ans, il monte sur le bateau de la jungle de son cousin Mano et débarque à Port-Azur avec un sac et une machette ; il a le mal du pays ; il « pique » la recette de glace coco de Bruno.",
+   "le Coco Loco — il y a huit ans, il construit la paillote de ses mains avec des palmes ; premier soir : trois clients et un crabe.",
+   "ma paillote aujourd'hui — trois cents noix de coco par semaine ; Kevin et ses sauvetages, Théo et ses châteaux, Hugo qui a creusé avec sa louche ; Rose, sa voisine, et ses bougainvilliers sur son toit ; le soir, un verre chez Toni.",
+   "(confidence) le bateau de Mano — si le bateau de la jungle ne passe plus chez Toni, c'est que Mano dépose tout à la paillote ; Kiki n'a pas eu le cœur de dire non à son cousin, et il n'ose pas le dire à Toni."
+  ],
+  "reve": "une paillote sur chaque île, même chez les nains (surtout chez les nains, ils ont soif) ; et rentrer un jour dans la jungle servir un punch à son grand-père",
+  "question": "« Tu es plutôt punch, jus de coco ou eau fraîche ? » (punch / jus_de_coco / eau) — il te prépare en pensée ton verre et s'en souviendra à chaque passage à la paillote",
+  "liens": {
+   "toni": {
+    "qui": "mon copain",
+    "nom": "Toni",
+    "sentiment": 0.6,
+    "fond": "Toni et Kiki font tous les deux du punch coco. Le bateau de la jungle ne livre plus de noix de coco au Perroquet ; Toni soupçonne Kiki de les avoir toutes achetées. Kiki vient pourtant boire chaque soir au bar de Toni après la fermeture de la paillote. (Confidence de Kiki seulement : le bateau est celui de son cousin Mano, qui dépose tout à la paillote.) Anecdotes : il a appris à Toni à ouvrir une noix d'un coup (Toni s'est entaillé le pouce). Ne pas parler du bateau. Bavardage : jovial, un peu gêné."
+   },
+   "bruno": {
+    "qui": "mon frère de glaçons",
+    "nom": "Bruno",
+    "sentiment": 0.8,
+    "fond": "Kiki a « piqué » à Bruno sa recette de glace coco (que Bruno tenait de sa grand-mère) et en vend à la paillote ; ils disent qu'ils sont quittes. Ils échangent des glaçons contre des noix de coco. (Confidence de Bruno seulement : il avait laissé la recette sur le comptoir exprès, parce que Kiki avait le mal du pays.) Anecdotes : le jour du « vol » (Kiki fier comme un pirate) ; la glace coco qu'il a appelée « Bruno-Loco ». Bavardage : « Quittes ? » / « Quittes. »"
+   },
+   "kevin": {
+    "qui": "mon voisin de plage",
+    "nom": "Kevin",
+    "sentiment": 0.7,
+    "fond": "Le poste de secours de Kevin est à côté de la paillote. Kiki compte les sauvetages de Kevin : trois cette semaine, dont deux touristes qui ne se noyaient pas. Le soir, Kevin boit au Coco Loco avec Yannick ; Kiki lui sert un « punch du héros » sans rhum. Anecdotes : les deux touristes « sauvés » qui ne se noyaient pas ; Kevin qui fait des pompes sur le comptoir. Bavardage : « Combien aujourd'hui ? » / « Trois. Dont un vrai. »"
+   },
+   "theo": {
+    "qui": "mon petit architecte",
+    "nom": "Théo",
+    "sentiment": 0.8,
+    "fond": "Théo construit ses châteaux de sable devant la paillote. Kiki lui donne des demi-noix de coco pour les tours et des pailles pour les drapeaux. Kiki dit qu'un jour Théo construira une ville. Anecdotes : le château à quatre tours et un fossé « creusé par la mer » ; Théo qui a fait payer l'entrée du château en coquillages. Bavardage : « Combien de tours aujourd'hui ? » / « Cinq ! »"
+   },
+   "hugo": {
+    "qui": "le jeune marié",
+    "nom": "Hugo",
+    "sentiment": 0.6,
+    "fond": "Hugo a perdu son alliance en jouant dans les vagues devant le Coco Loco. Le soir même, Kiki lui a prêté sa grande louche à punch pour creuser ; Hugo a creusé jusqu'à minuit sans rien trouver. Kiki lui servait chaque soir un punch « consolation ». Anecdotes : la louche ; Hugo qui creusait à la lanterne en parlant tout seul. Bavardage : « Une louche ? » / « Plus jamais. »"
+   },
+   "rose": {
+    "qui": "ma voisine",
+    "nom": "Rose",
+    "sentiment": 0.6,
+    "fond": "Ils habitent côte à côte près de la gare maritime. Les bougainvilliers de Rose ont envahi le toit de Kiki ; lui joue du ukulélé en rentrant à minuit, sous la fenêtre de Rose. Elle lui laisse des fleurs pour décorer la paillote ; il lui laisse des noix de coco vides, qu'elle utilise comme pots. Anecdotes : le bougainvillier qui a poussé jusque dans sa cheminée ; la sérénade de minuit qu'il croyait appréciée. Bavardage : « Une petite chanson ? » / « Pas ce soir. »"
+   }
+  }
+ },
+ "lea": {
+  "genre": "f",
+  "prenom": "Léa",
+  "plan": [
+   "mon enfance dans les fleurs — élevée au-dessus de la boutique de fleurs de sa tante, sur le continent ; elle connaît le nom de cent fleurs et n'avait jamais vu la mer.",
+   "le garçon aux bouquets — un garçon timide achète un bouquet chaque matin « pour sa mère » ; elle apprend que sa mère a le rhume des foins ; le trois cent soixante-cinquième bouquet est pour elle.",
+   "voir la mer — voyage de noces à Port-Azur, chambre sept ; au dixième jour, Hugo perd l'alliance dans les vagues ; elle pleure sur le balcon.",
+   "les jours tristes et le onzième jour — la rose achetée chez Rose, refusée ; la tisane d'Amélie au jardin de l'hôtel ; le plateau de thé d'Edmond ; le chocolat de Sylvie par-dessus la rambarde ; Pauline qui raconte tout ; puis l'alliance retrouvée.",
+   "(confidence) la peur d'un signe — ce n'est pas l'alliance qui l'a fait pleurer : c'est d'avoir eu peur, une seconde, que ce soit un signe ; elle s'en veut d'avoir douté."
+  ],
+  "reve": "rapporter une bouture du bougainvillier de Rose et faire fleurir sa boutique aux couleurs de Port-Azur ; revenir chaque année",
+  "question": "« Vous croyez qu'on peut tout pardonner ? » (oui / non / ca_depend) — elle répond avec son histoire en tête ; elle s'en souviendra en parlant d'Hugo",
+  "liens": {
+   "sylvie": {
+    "qui": "ma voisine de balcon",
+    "nom": "Sylvie",
+    "sentiment": 0.6,
+    "fond": "À l'hôtel, les balcons des Dupuis et des jeunes mariés se touchent. Le soir où Léa pleurait, Sylvie lui a passé un carré de chocolat par-dessus la rambarde et lui a raconté que Gérard était arrivé en retard à leur propre mariage, parce qu'il photographiait l'église. Léa a ri entre deux sanglots. Anecdotes : le chocolat ; Sylvie qui lui a dit « les maris, ça se perd et ça se retrouve ». Bavardage : reconnaissant."
+   },
+   "hugo": {
+    "qui": "mon mari",
+    "nom": "Hugo",
+    "sentiment": 0.8,
+    "fond": "Jeunes mariés, chambre sept du Grand Hôtel. Hugo a acheté un bouquet par jour chez Léa pendant un an avant d'oser lui offrir le trois cent soixante-cinquième. Léa voulait voir la mer ; au dixième jour du voyage de noces, Hugo a perdu son alliance dans les vagues devant le Coco Loco. Elle ne lui a plus parlé jusqu'à ce qu'elle soit retrouvée. (Confidences : l'alliance était trop grande ; Léa a eu peur d'un signe.) Anecdotes : le rhume des foins de la mère d'Hugo ; le dixième jour. Bavardage : tendre, encore un peu piquée."
+   },
+   "rose": {
+    "qui": "ma collègue",
+    "nom": "Rose",
+    "sentiment": 0.6,
+    "fond": "Léa est fleuriste sur le continent ; Rose est fleuriste à Port-Azur. Léa a refusé la rose que Hugo avait achetée chez Rose ; plus tard, elle est venue s'en excuser, et elles ont parlé fleurs pendant deux heures. Léa n'a vu que des bougainvilliers ici : ce sont ceux que Rose a plantés il y a vingt ans. Anecdotes : la rose refusée ; les deux heures de conversation. Bavardage : « Vos bougainvilliers ! » / « Ils n'écoutent personne. »"
+   },
+   "amelie": {
+    "qui": "l'herboriste",
+    "nom": "Amélie",
+    "sentiment": 0.6,
+    "fond": "Le soir, Amélie cueille des herbes dans le jardin de l'hôtel, où Léa venait pleurer. Amélie lui a préparé sa tisane « pour chagrin d'amour » (tilleul, mélisse, une pointe de lavande de Rose). Léa dit que ça n'a rien guéri, mais que ça sentait bon. Anecdotes : la tisane ; Amélie qui l'a fait rire avec la baie de la jungle goûtée le matin. Bavardage : « Une tisane ? » / « Plus besoin ! »"
+   },
+   "edmond": {
+    "qui": "le réceptionniste",
+    "nom": "Edmond",
+    "sentiment": 0.5,
+    "fond": "Quand Léa pleurait sur le balcon de la chambre sept, Edmond lui a fait monter un plateau de thé avec un mot : « La direction compatit. » Il n'en a parlé à personne, contrairement à Pauline. Léa l'appelle « le monsieur à la moustache qui compatit ». Anecdotes : le plateau ; le mot. Bavardage : « La direction compatit ? » / « Toujours, madame. »"
+   },
+   "pauline": {
+    "qui": "cette bavarde de",
+    "nom": "Pauline",
+    "sentiment": -0.2,
+    "fond": "Pauline fait la chambre sept. Elle a raconté à la moitié de la ville que Léa ne voulait plus voir Hugo tant qu'il n'aurait pas retrouvé l'alliance. Léa l'a appris par Rosalie et lui en veut. Pauline, sincèrement désolée, a plié les serviettes de la sept en forme de cœur pendant une semaine. Anecdotes : la rumeur revenue par Rosalie ; les serviettes en cœur. Bavardage : « Pas un mot. » / « Promis ! »"
+   }
+  }
+ },
+ "lefort": {
+  "genre": "m",
+  "prenom": "Honoré",
+  "plan": [
+   "mon enfance de fils de gendarme — né sur le continent, fils de gendarme ; il rêvait d'être maître-nageur à la piscine municipale, mais il coulait.",
+   "Port-Azur et le képi — garde municipal à Port-Azur depuis vingt-deux ans ; trois arrestations : un voleur de poules, un voleur de poules, et le même voleur de poules.",
+   "le jour où je n'ai pas pu plonger — l'été dernier, un enfant tombe du quai ; il doit appeler Kevin, qui le sort de l'eau ; il rentre chez lui et ne dort pas de la nuit.",
+   "ma ronde aujourd'hui — la place, le quai, la promenade ; l'arrêt au kiosque de Bruno (trois glaces par jour, secret d'État) ; le dos soigné en cachette chez Amélie ; Rosalie qui raconte ses arrêts au glacier ; Bernard qui court sur le quai ; l'affaire des croissants de Margaux.",
+   "(confidence) les leçons de six heures — depuis le printemps, Kevin lui apprend à nager à l'aube, dans la crique derrière le phare ; il a fait trois brasses ; personne ne doit le savoir."
+  ],
+  "reve": "nager un jour, devant tout le monde, de la plage jusqu'au ponton de Yannick ; et résoudre une vraie affaire, avec un vrai coupable qui ne soit pas un chien",
+  "question": "« Vous avez déjà enfreint la loi ? Même un tout petit peu ? » (jamais / un_peu / je_ne_dirai_rien) — il vous félicite, vous sermonne ou vous soupçonne ; il s'en souviendra pendant ses rondes",
+  "liens": {
+   "kevin": {
+    "qui": "le maître-nageur",
+    "nom": "Kevin",
+    "sentiment": 0.3,
+    "fond": "Voisins rue du Phare. Lefort aurait voulu être maître-nageur mais ne sait pas nager. L'été dernier, un enfant est tombé du quai : Lefort a dû appeler Kevin, qui l'a sorti de l'eau. (Secret partagé, que ni l'un ni l'autre ne raconte avant la confidence de Lefort : depuis le printemps, Kevin lui apprend à nager à six heures du matin, dans la crique derrière le phare.) Envie et reconnaissance mêlées. Anecdotes : l'enfant du quai ; le sifflet que Kevin lui a prêté une fois. Bavardage : raide."
+   },
+   "amelie": {
+    "qui": "notre bon",
+    "nom": "docteur Roux",
+    "sentiment": 0.7,
+    "fond": "Depuis l'été des méduses, il y a huit ans (Lefort piqué au mollet en surveillant la plage), il est le patient le plus fidèle d'Amélie. Il vient en cachette pour son mal de dos, par la porte de derrière, et continue de patrouiller. Il l'appelle « docteur » avec un grand respect. (La vérité sur ce titre est la confidence d'Amélie.) Anecdotes : la piqûre de méduse, en service ; la porte de derrière. Bavardage : « Une affaire de dos, docteur. » / « Penchez-vous. »"
+   },
+   "bruno": {
+    "qui": "le glacier",
+    "nom": "Bruno",
+    "sentiment": 0.4,
+    "fond": "Voisins rue du Phare. Lefort mange trois glaces par jour au kiosque de Bruno (« secret d'État ») et s'y arrête à chaque ronde. Dans l'affaire des croissants, Bruno était témoin, et Lefort a quand même « surveillé le glacier », qui ferme tard. Bruno lui garde un cornet vanille quand il sait qu'il passera. Anecdotes : la « surveillance » du glacier, un cornet à la main ; la glace qui fondait pendant un interrogatoire. Bavardage : « Rien à signaler ? » / « Vanille, brigadier. »"
+   },
+   "margaux": {
+    "qui": "la boulangère",
+    "nom": "Margaux",
+    "sentiment": 0.6,
+    "fond": "Pendant des semaines, il manquait une demi-douzaine de croissants chaque nuit à la boulangerie ; Margaux se plaignait, Lefort « ne trouvait rien ». Le coupable était un petit chien blanc. Depuis l'affaire classée, Margaux laisse un croissant par jour au chien, et Lefort passe vérifier « que la loi est respectée » en en prenant un aussi. Anecdotes : sa planque devant la boulangerie (endormi à deux heures) ; le croissant « de contrôle ». Bavardage : « Tout est en ordre ? » / « Sauf vous. »"
+   },
+   "rosalie": {
+    "qui": "cette pipelette de",
+    "nom": "Rosalie",
+    "sentiment": -0.2,
+    "fond": "Rosalie raconte à tout le monde que le brigadier s'arrête toujours devant le glacier pendant ses rondes. Lefort trouve que c'est une atteinte à l'autorité. Il achète pourtant ses sardines chez elle, et elle lui met toujours la plus belle, en riant. Anecdotes : il a changé l'itinéraire de sa ronde pour éviter l'étal ; elle a crié « Le glacier, c'est à gauche ! ». Bavardage : « Madame. » / « Brigadier ! Vanille ou fraise ? »"
+   },
+   "bernard": {
+    "qui": "ce joggeur de",
+    "nom": "Bernard",
+    "sentiment": 0.2,
+    "fond": "Lefort a voulu verbaliser Bernard pour « course sur le quai » ; Bernard lui a fait remarquer que le règlement interdit les vélos, pas les coureurs. Depuis, Lefort a écrit « Coureurs : au pas » sur une ardoise, que Bernard double en saluant. Anecdotes : la tentative de procès-verbal ; Lefort qui a essayé de le rattraper. Bavardage : « Au pas ! » / « Hop hop hop ! »"
+   }
+  }
+ },
+ "leon": {
+  "genre": "m",
+  "prenom": "Léon",
+  "plan": [
+   "mon premier bateau, la Belle-Étoile — à quatorze ans, mousse sur ce trois-mâts ; un matelot de Port-Azur, Jules (le fiancé d'Hortense), lui apprend les nœuds, les étoiles, et lui parle d'Hortense toutes les nuits de quart.",
+   "la vague du sud — loin au sud, une nuit de tempête, une vague emporte Jules ; à quatorze ans, c'est Léon qui, au retour, annonce la nouvelle à Hortense sur le quai. Il n'a jamais oublié son visage.",
+   "comment L'Hirondelle est devenue à moi — après une vingtaine d'années au long cours, il rachète L'Hirondelle (dix ans d'âge alors) il y a trente ans ; la navette, son lit tous les soirs ; six couches de peinture, des rois, des mariés, la chèvre malade ; son premier mois, le jeune Félix qui redescend avant le départ.",
+   "ma traversée aujourd'hui — village-Port-Azur, cinq pièces l'aller ; la nuit il navigue au phare d'Anselme (deux appels de lanterne, deux éclats en réponse) ; Nina qui sonne la cloche du départ ; Lola, sa « passagère sans retour » ; Hortense qui regarde descendre les passagers chaque soir.",
+   "(confidence) la clochette de Jules — dans son coffre, depuis cinquante-deux ans, une petite clochette de laiton que Jules avait achetée pour Hortense dans un port du sud ; il ne la lui a jamais donnée : ce serait lui dire que c'est fini, et elle écoute encore."
+  ],
+  "reve": "faire une dernière traversée au long cours vers le sud, jeter une fleur là où la vague a pris Jules ; puis laisser un jour la barre de L'Hirondelle à Nina, quand elle sera grande",
+  "question": "« Tu préfères la mer d'huile ou la houle ? » (huile / houle / terre) — il se moque gentiment des terriens et se souvient du goût du joueur quand il parle du temps de la traversée",
+  "liens": {
+   "anselme": {
+    "qui": "mon vieux copain du phare",
+    "nom": "Anselme",
+    "sentiment": 0.8,
+    "fond": "La nuit, Léon navigue au phare d'Anselme. À chaque traversée de nuit, il fait deux appels de lanterne ; Anselme répond par deux éclats. Ils se connaissent depuis cinquante ans et ne se sont presque jamais parlé de près. Le soir de la tempête où la lentille s'est fêlée, Léon est rentré au jugé. Anecdotes : la nuit de brouillard où le phare l'a sauvé ; la bouteille qu'il laisse au pied de la porte à chaque fin d'année. Bavardage : chaleureux, deux phrases."
+   },
+   "hortense": {
+    "qui": "la gardienne de l'horloge",
+    "nom": "Hortense",
+    "sentiment": 0.8,
+    "fond": "À quatorze ans, Léon était mousse sur la Belle-Étoile, le trois-mâts où Jules, le fiancé d'Hortense, s'était engagé. C'est lui qui, au retour, lui a dit que Jules avait été « emporté par une vague ». Chaque soir, quand L'Hirondelle accoste, Hortense regarde descendre les passagers ; Léon lui fait un petit signe de tête. (Confidence de Léon seulement : il garde une clochette de laiton que Jules avait achetée pour elle.) Avis tendre et coupable. Anecdotes : Jules qui lui apprenait les étoiles en parlant d'Hortense ; le signe de tête de chaque soir. Bavardage : « Personne, ce soir. » / « Demain, alors. »"
+   },
+   "lola": {
+    "qui": "ma petite passagère",
+    "nom": "Lola",
+    "sentiment": 0.7,
+    "fond": "Il y a cinq ans, Lola, dix-huit ans, a pris L'Hirondelle au village « pour la journée ». Elle n'est jamais rentrée. Léon garde son billet retour, jamais poinçonné, glissé dans le cadre de sa boussole. Il lui rapporte des nouvelles de sa mère, au village, et lui porte ses lettres. Anecdotes : le billet ; Lola qui chantait à la proue le premier jour. Bavardage : « Toujours pas de retour ? » / « Garde-le encore. »"
+   },
+   "nina": {
+    "qui": "ma future capitaine",
+    "nom": "Nina",
+    "sentiment": 0.8,
+    "fond": "Nina veut être capitaine « comme Léon ». Chaque fois qu'elle vient au quai, Léon la laisse sonner la cloche de L'Hirondelle pour le départ. Il lui a appris le nœud de huit ; elle l'a appris à tout le monde, y compris au chien. Anecdotes : la cloche sonnée trop tôt (trois passagers restés à quai) ; Nina qui inspecte le bateau avec une casquette trop grande. Bavardage : « Paré à larguer, capitaine Nina ? » / « Paré ! »"
+   },
+   "felix": {
+    "qui": "le cartographe",
+    "nom": "Félix",
+    "sentiment": 0.6,
+    "fond": "Il y a trente ans, Félix est monté sur L'Hirondelle avec un billet pour l'école de cartographie du continent, puis il est redescendu avant le départ. Léon, capitaine depuis un mois, lui a rendu l'argent sans un mot et ne l'a jamais raconté. Aujourd'hui, Léon lui rapporte chaque soir ce que les passagers disent des autres îles ; Félix en corrige ses cartes. Ne pas raconter le billet (confidence de Félix). Anecdotes : les descriptions de passagers que Félix note, chèvre malade comprise ; Félix qui reste sur le quai quand le bateau part. Bavardage : « Des nouvelles des îles ? »"
+   }
+  }
+ },
+ "lola": {
+  "genre": "f",
+  "prenom": "Lola",
+  "plan": [
+   "mon enfance au village — née au village de l'autre île ; depuis la plage, elle regardait passer L'Hirondelle et comptait les fumées de Port-Azur.",
+   "l'aller simple — il y a cinq ans, à dix-huit ans, elle prend L'Hirondelle « pour la journée » ; Léon garde son billet retour ; elle ne rentre jamais ; Toni l'embauche le soir même.",
+   "le punch renversé — son premier soir, elle renverse un punch sur un grand docker, Lucas, qui dit « c'est rien, ça sent bon » ; elle ne s'en est jamais remise.",
+   "ma vie aujourd'hui — le Perroquet midi et soir, la plage l'après-midi (serviette rouge) ; l'ardoise du menu qu'elle écrit ; Lucas qui perd aux cartes ; Django, son voisin, qui ralentit la musique quand Lucas entre ; Nadine qui a deviné.",
+   "(confidence) La Mouette — chaque semaine, elle écrit à Lucas sans oser lui parler, et signe « La Mouette » ; elle se demande s'il croit que c'est une vraie mouette ; elle n'ose pas parce qu'elle a peur qu'il réponde non."
+  ],
+  "reve": "que Lucas réponde un jour à La Mouette ; et ouvrir une petite terrasse au village, pour montrer à sa mère qu'elle a bien fait de partir",
+  "question": "« Toi, tu oses dire les choses en face ? » (toujours / jamais / par_lettre) — elle t'admire, te comprend, ou rougit ; elle s'en souviendra en servant ta table",
+  "liens": {
+   "leon": {
+    "qui": "mon capitaine",
+    "nom": "Léon",
+    "sentiment": 0.8,
+    "fond": "Il y a cinq ans, Lola, dix-huit ans, a pris L'Hirondelle au village « pour la journée ». Elle n'est jamais rentrée. Léon garde son billet retour, jamais poinçonné, glissé dans le cadre de sa boussole. Il lui rapporte des nouvelles de sa mère, au village, et lui porte ses lettres. Anecdotes : le jour où elle est descendue sur le quai et a dit « je reste » ; le punch qu'elle lui offre à chaque anniversaire de son arrivée. Bavardage : affectueux."
+   },
+   "lucas": {
+    "qui": "ce grand docker de",
+    "nom": "Lucas",
+    "sentiment": 0.9,
+    "fond": "Ils habitent à dix mètres l'un de l'autre, rue Haute. Le premier soir de Lola au Perroquet, elle a renversé un punch sur Lucas ; il a dit « c'est rien, ça sent bon ». Depuis, il joue aux cartes là-bas chaque soir et perd en la regardant. Chaque semaine, Lola lui écrit une lettre sans oser lui parler ; lui n'ose pas répondre. (Confidences : elle signe « La Mouette » ; il a reconnu son écriture.) Anecdotes : il perd aux cartes avec trois as en main parce qu'il la regarde ; il porte trois caisses à la fois quand elle passe. Bavardage : timide, faussement détaché."
+   },
+   "nadine": {
+    "qui": "la postière",
+    "nom": "Nadine",
+    "sentiment": 0.3,
+    "fond": "Lola poste chaque vendredi une lettre « À L. » ; Nadine a deviné pour qui et a laissé échapper « c'est Lucas, non ? ». Lola lui a fait jurer le silence. Nadine tient sa promesse… à moitié : elle en parle aux voyageurs. Agacée et attendrie. Anecdotes : le timbre que Nadine a choisi « avec un cœur, par hasard ». Bavardage : « Pas un mot. » / « Promis… »"
+   },
+   "toni": {
+    "qui": "mon patron",
+    "nom": "Toni",
+    "sentiment": 0.7,
+    "fond": "Toni a embauché Lola le soir même de son arrivée, il y a cinq ans, parce qu'elle avait aidé à porter des caisses sans qu'on le lui demande. C'est elle qui écrit le menu sur l'ardoise. Toni la traite comme une nièce et la taquine au sujet de Lucas. Anecdotes : le perroquet en bois qu'elle déguise pour les fêtes ; Toni qui fait semblant de ne pas voir le punch qu'elle garde pour Lucas. Bavardage : service rapide, piques affectueuses."
+   },
+   "django": {
+    "qui": "notre musicien",
+    "nom": "Django",
+    "sentiment": 0.6,
+    "fond": "Django habite rue Haute, entre Lola et Lucas. Quand Lucas entre au Perroquet, Django ralentit la musique et joue un air doux ; Lola lui a demandé d'arrêter, il continue. Elle lui apporte son verre d'eau entre deux chansons. Anecdotes : la valse ralentie juste quand elle servait Lucas, qu'elle a dû servir au ralenti ; elle compte les chansons qu'il déteste. Bavardage : « Arrête ça. » / « Quoi ? Je joue. »"
+   }
+  }
+ },
+ "lucas": {
+  "genre": "m",
+  "prenom": "Lucas",
+  "plan": [
+   "mon enfance sur les sacs de farine — fils de docker ; petit, il dormait sur les sacs de farine pendant que son père déchargeait les bateaux, et comptait les mouettes.",
+   "les caisses qui ont un nom — docker à seize ans ; pour passer le temps, il donne un nom à chaque caisse ; la numéro douze s'appelle Gertrude, et sa barque aussi (qu'il a mis des années à déclarer à Odette).",
+   "le punch renversé — le premier soir de Lola au Perroquet, il y a cinq ans, elle lui renverse un punch sur la chemise ; il dit « c'est rien, ça sent bon » ; depuis, il joue aux cartes là-bas tous les soirs et perd contre Victor.",
+   "ma vie aujourd'hui — le quai de sept à dix-neuf heures, déjeuner chez Paulo, cartes au Perroquet ; le petit chien blanc qui dormait derrière ses caisses (secret partagé avec Nina) ; la lettre que Nadine glisse dans sa boîte chaque semaine.",
+   "(confidence) l'écriture de l'ardoise — il a reconnu l'écriture de Lola, celle du menu sur l'ardoise, sur les lettres signées « La Mouette » ; il les garde dans une caisse qu'il a appelée « Lola » ; il a écrit quarante réponses, jamais envoyées."
+  ],
+  "reve": "oser poser une lettre sur le plateau de Lola, une seule ; et une petite maison avec un ponton pour Gertrude",
+  "question": "« Tu donnes des noms aux choses, toi ? » (oui / non / mon_bateau) — il se sent moins seul, ou un peu bête, ou ravi ; il s'en souviendra en te présentant une caisse",
+  "liens": {
+   "odette": {
+    "qui": "la capitaine",
+    "nom": "Odette",
+    "sentiment": 0.5,
+    "fond": "Lucas décharge les bateaux sous l'œil d'Odette. Il donne des noms aux caisses (la douze s'appelle Gertrude) et croit qu'elle ne le sait pas ; elle le sait. Sa barque s'appelle Gertrude aussi ; il a mis des années à la déclarer au registre. Elle le trouve honnête et solide ; il la trouve impressionnante. Anecdotes : le jour où elle a crié « Lucas ! » et où il a lâché une caisse de citrons dans le port ; ils les ont repêchés ensemble. Bavardage : peu de mots."
+   },
+   "lola": {
+    "qui": "la serveuse",
+    "nom": "Lola",
+    "sentiment": 0.9,
+    "fond": "Ils habitent à dix mètres l'un de l'autre, rue Haute. Le premier soir de Lola au Perroquet, elle a renversé un punch sur Lucas ; il a dit « c'est rien, ça sent bon ». Depuis, il joue aux cartes là-bas chaque soir et perd en la regardant. Chaque semaine, Lola lui écrit une lettre sans oser lui parler ; lui n'ose pas répondre. (Confidences : elle signe « La Mouette » ; il a reconnu son écriture.) Anecdotes : le punch renversé ; le soir où l'ardoise disait « Plat du jour : pour Lucas, offert ». Bavardage : très court, gêné (« Salut. » / « Salut. »)."
+   },
+   "victor": {
+    "qui": "mon partenaire de cartes",
+    "nom": "Victor",
+    "sentiment": 0.3,
+    "fond": "Chaque soir au Perroquet, Lucas et Victor jouent aux cartes à la même table. Victor gagne presque toujours, parce que Lucas regarde Lola au lieu de son jeu. Victor le sait, en profite, et rembourse parfois Lucas en coquillages peints. Anecdotes : Victor qui « triche pour l'entraîner » ; la seule partie gagnée, un soir où Lola avait congé. Bavardage : « Tu as encore gagné. » / « Tu as encore regardé ailleurs. »"
+   },
+   "nina": {
+    "qui": "la petite",
+    "nom": "Nina",
+    "sentiment": 0.7,
+    "fond": "Le petit chien blanc qui volait les croissants dormait derrière les caisses de Lucas, au bout du quai. Lucas a vu un museau et n'a rien dit ; Nina l'a trouvé et l'a appelé Brioche. Lucas lui a installé une caisse avec une vieille couverture. Il est le seul à croire au « dauphin » de Nina : il était là. Anecdotes : la caisse-niche, baptisée « Brioche » elle aussi ; Nina qui veut connaître le nom de toutes les caisses. Bavardage : complices, à voix basse."
+   },
+   "nadine": {
+    "qui": "la postière",
+    "nom": "Nadine",
+    "sentiment": 0.3,
+    "fond": "Chaque semaine, Nadine trouve dans la boîte jaune une lettre adressée « À L., le grand du quai », de l'écriture de Lola. Elle la glisse dans la boîte de Lucas, rue Haute, en faisant semblant de ne rien savoir. Lucas rougit dès qu'il la voit avec sa sacoche. Il la soupçonne de tout savoir. Anecdotes : Nadine qui sourit trop en lui tendant l'enveloppe. Bavardage : court, gêné."
+   }
+  }
+ },
+ "marcel": {
+  "genre": "m",
+  "prenom": "Marcel",
+  "plan": [
+   "mon enfance sur la colline — né sur la colline, il descendait à pied à l'école, une heure aller, une heure retour ; il marchait déjà.",
+   "trente ans de tournée — facteur de Port-Azur trente ans ; il connaissait chaque boîte, chaque chien ; il passait chez Hortense même sans lettre ; pour sa dernière année, il a formé Nadine.",
+   "le boulanger d'en face — il y a quarante ans, une partie de pétanque contre le boulanger Raymond, et une dispute qui ne s'est jamais arrêtée ; il y a dix-huit ans, c'est lui qui mesure la partie de l'élection.",
+   "ma vie aujourd'hui — retraité, voisin de Raymond ; la pétanque matin et après-midi au terrain deux ; le cochonnet perdu sous le banc ; Bernard qui court (« trente ans de tournée valent quarante marathons ») ; Hortense qui croit que c'est lui qui pose la lavande sur son banc.",
+   "(confidence) la mesure de l'élection — il a mal mesuré exprès : la boule de Raymond était plus près ; pas pour l'embêter, pour le garder : maire, Raymond n'aurait plus eu le temps de jouer."
+  ],
+  "reve": "une partie, une seule, où Raymond et lui seraient d'accord sur le point ; et porter une dernière lettre à Hortense, une bonne nouvelle",
+  "question": "« Entre nous : c'est qui, le champion de Port-Azur ? » (marcel / raymond / les_deux) — il triomphe, s'indigne ou fait semblant de bouder ; il s'en souviendra à chaque partie",
+  "liens": {
+   "nadine": {
+    "qui": "mon apprentie",
+    "nom": "Nadine",
+    "sentiment": 0.5,
+    "fond": "Marcel a été le facteur de Port-Azur pendant trente ans. Il y a douze ans, pour sa dernière année, il a appris la tournée à Nadine : chaque chien, chaque marche, chaque boîte qui coince. Il vérifie encore, depuis le terrain de pétanque, qu'elle passe à l'heure. Anecdotes : la sacoche qu'il lui a léguée ; elle a raccourci la tournée de dix minutes, il ne s'en remet pas. Bavardage : grognon et fier."
+   },
+   "raymond": {
+    "qui": "ce menteur de",
+    "nom": "Raymond",
+    "sentiment": 0.5,
+    "fond": "Voisins de villa. Ils jouent à la pétanque ensemble depuis quarante ans et se disputent depuis quarante ans ; chacun se dit champion de Port-Azur. Il y a dix-huit ans, à l'élection, Raymond et Aristide étaient à égalité : on a départagé à la pétanque, Marcel a mesuré, Aristide a gagné d'un centimètre. Raymond crie au vol depuis. Le cochonnet perdu sous le banc de la fontaine les a fait bouder. (Confidences croisées : Marcel a mal mesuré exprès ; Raymond le sait et en a été soulagé.) Anecdotes : la partie de la mesure (« un centimètre ») ; le cochonnet sous le banc. Bavardage : « Tu as tiré comme un manche. » / « Tu as mesuré comme un facteur. »"
+   },
+   "aristide": {
+    "qui": "notre maire",
+    "nom": "Aristide",
+    "sentiment": 0.4,
+    "fond": "C'est Marcel qui a mesuré la partie de pétanque de l'élection, il y a dix-huit ans, et donné la victoire à Aristide d'un centimètre. Marcel dit à tout le monde que « le maire a gagné à la pétanque ». Chaque année, Aristide l'invite à la tribune de la fête du port ; Marcel vient avec son mètre. Anecdotes : la mesure, racontée avec un clin d'œil ; le mètre à la tribune. Bavardage : « Un centimètre, monsieur le maire. » / « Un beau centimètre ! »"
+   },
+   "hortense": {
+    "qui": "ma vieille amie",
+    "nom": "Hortense",
+    "sentiment": 0.6,
+    "fond": "Pendant ses trente ans de tournée, Marcel est passé chaque jour chez Hortense, même sans lettre, pour lui dire « Rien aujourd'hui, Hortense ». Depuis que l'horloge est arrêtée, quelqu'un pose chaque matin un brin de lavande sur son banc ; Hortense est sûre que c'est Marcel. Il jure que non ; elle ne le croit pas. (C'est Rose, en secret.) Anecdotes : « Rien aujourd'hui, Hortense » ; il jure sur sa sacoche qu'il n'y est pour rien. Bavardage : « C'est pas moi ! » / « Bien sûr. »"
+   },
+   "bernard": {
+    "qui": "le joggeur",
+    "nom": "Bernard",
+    "sentiment": 0.3,
+    "fond": "Bernard joue à la pétanque l'après-midi, après sa course. Marcel lui répète que ses trente ans de tournée de facteur « valent bien quarante marathons », faits avec une sacoche. Ils ont calculé une fois : Marcel aurait marché trois fois le tour de l'archipel. Anecdotes : le calcul ; Bernard qui court chercher les boules. Bavardage : « Trois fois l'archipel ! » / « Sans chrono ! »"
+   }
+  }
+ },
+ "margaux": {
+  "genre": "f",
+  "prenom": "Margaux",
+  "plan": [
+   "mon enfance loin de la mer — née dans une ville du continent sans mer ; elle faisait des gâteaux pour ses trois frères, qui les mangeaient avant qu'ils refroidissent.",
+   "la semaine de vacances — il y a douze ans, elle arrive pour une semaine ; Raymond vend Au Pain Doré après quarante ans de fournil ; elle rachète la boulangerie avec toutes ses économies.",
+   "Nina dans le panier à pain — Nina naît à Port-Azur il y a sept ans et demi ; Margaux pétrit avec le bébé endormi dans un panier à pain ; Raymond devient « papi Raymond ». Elle élève Nina seule et ne parle jamais du père.",
+   "ma boulangerie aujourd'hui — levée à quatre heures ; Fanny, l'apprentie, qui arrive de la teuf avec du sable dans les cheveux ; Raymond qui livre (en ce moment avec une entorse) ; Paulo et sa blague des croissants ; le Lord et ses six croissants ; le chien voleur et le brigadier ; une goutte de miel des elfes dans la pâte.",
+   "(confidence) la vraie semaine de vacances — c'était son voyage de noces : elle a pris le bateau le matin de son propre mariage, sans se marier, et elle est partie seule ; Nina ne le sait pas."
+  ],
+  "reve": "un pain que tout l'archipel connaîtrait, le « pain d'Azur » au miel ; et voir Nina capitaine (ou glacière), même si c'est loin",
+  "question": "« Vous êtes plutôt croissant ou pain au chocolat ? » (croissant / chocolat / baguette) — elle approuve, taquine ou s'étonne ; elle s'en souviendra à chaque passage à la boulangerie",
+  "liens": {
+   "lefort": {
+    "qui": "le brigadier",
+    "nom": "Lefort",
+    "sentiment": 0.2,
+    "fond": "Pendant des semaines, il manquait une demi-douzaine de croissants chaque nuit à la boulangerie ; Margaux se plaignait, Lefort « ne trouvait rien ». Le coupable était un petit chien blanc. Depuis l'affaire classée, Margaux laisse un croissant par jour au chien, et Lefort passe vérifier « que la loi est respectée » en en prenant un aussi. Agacée puis amusée. Anecdotes : la planque ratée ; le croissant de contrôle quotidien. Bavardage : pique de boulangère."
+   },
+   "raymond": {
+    "qui": "mon livreur",
+    "nom": "Raymond",
+    "sentiment": 0.8,
+    "fond": "Raymond a été le boulanger d'Au Pain Doré pendant quarante ans. Il y a douze ans, Margaux, venue « pour une semaine », a vu la pancarte « à vendre » et racheté la boulangerie. Raymond critique son pain (« trop de miel ») et en mange deux fois par jour. Chaque matin avant la pétanque, il livre son pain chez Paulo, chez Gisèle et à l'hôtel ; en ce moment, il a une entorse attrapée à la pétanque. Anecdotes : ses conseils de fournil ; l'entorse racontée trois fois, chaque fois autrement. Bavardage : affectueux."
+   },
+   "nina": {
+    "qui": "ma fille",
+    "nom": "Nina",
+    "sentiment": 0.9,
+    "fond": "Nina, sept ans et demi, est la fille de Margaux, née à Port-Azur. Bébé, elle dormait dans un panier à pain. Elle pose « trop de questions » ; Margaux répond à une sur trois. Margaux l'élève seule et ne parle jamais du père. Nina a fait le vœu d'avoir un chien. (Confidence de Nina : c'est elle qui a ouvert la porte au chien voleur la première nuit.) Anecdotes : le panier à pain ; les questions de Nina (« pourquoi le pain gonfle ? pourquoi la mer est salée ? »). Bavardage : « Tu as fait tes devoirs ? » / « Pourquoi ? »"
+   },
+   "paulo": {
+    "qui": "ce farceur de",
+    "nom": "Paulo",
+    "sentiment": 0.5,
+    "fond": "Margaux fournit le pain de Chez Paulo et les croissants que Paulo revend. Il raconte à tous ses clients que Margaux lui vole ses croissants, puis que c'est lui qui vole les siens, puis que c'était une blague. Pendant l'affaire du voleur, la blague a beaucoup moins fait rire Margaux. Anecdotes : la blague répétée pendant l'affaire des croissants ; Paulo qui chante devant sa vitrine. Bavardage : « Voleur ! » / « C'est une blague ! »"
+   },
+   "pemberton": {
+    "qui": "mon client anglais",
+    "nom": "Lord Pemberton",
+    "sentiment": 0.6,
+    "fond": "Chaque matin, le Lord commande six croissants. Il en mange un et donne les cinq autres aux mouettes, sur la jetée. Margaux trouve ça fou et un peu beau ; elle lui garde les plus dorés. (La raison, sa femme Margaret, est la confidence du Lord.) Anecdotes : les six croissants ; les mouettes qui attendent le Lord devant la boulangerie. Bavardage : « Six, milord ? » / « Six, my dear ! »"
+   },
+   "fanny": {
+    "qui": "mon apprentie",
+    "nom": "Fanny",
+    "sentiment": 0.7,
+    "fond": "Fanny est l'apprentie de Margaux au Pain Doré. Le soir, elle prend le bateau pour aller danser à la teuf de la plage, sur l'île du village, et revient pour le pétrin de quatre heures, du sable dans les cheveux. Elle pétrit en dansant ; Margaux s'inquiète qu'elle ne dorme jamais et l'adore. Anecdotes : le matin où Fanny s'est endormie debout contre le four tiède ; la fournée de croissants façonnés « en rythme », tous de travers. Bavardage : « Tu as dormi ? » / « Un peu ! » (Lien vers la teuf : garder Fanny dans son caractère connu, pleine d'énergie, aux grands gestes.)"
+   }
+  }
+ },
+ "moreau": {
+  "genre": "m",
+  "prenom": "Lucien",
+  "plan": [
+   "le coquillage qui chantait — enfant, sur le continent, il croit entendre une cité dans un coquillage ; son grand-père lui lit un vieux texte sur une reine aux cheveux d'écume.",
+   "Moreau et son Atlantide — quarante ans d'université ; à chaque conférence, on se moque : « Moreau et son Atlantide » ; il n'a jamais renoncé.",
+   "les livres de quart du phare — arrivé à Port-Azur au début de la saison « en vacances », il consulte à la mairie les vieux livres de quart : Anselme y note depuis des années « lueur bleue, à l'ouest » ; il achète toutes les cartes des fonds de Félix.",
+   "ma vie aujourd'hui — trois cafés muets chez Gisèle, le salon de l'hôtel, le banc du belvédère au coucher du soleil ; Pauline qui a trouvé son dessin ; les lettres de l'université que Nadine apporte ; il ne sait pas nager.",
+   "(confidence) les lettres de l'université — on l'a mis à la retraite ; les lettres lui demandent de vider son bureau ; « en vacances, officiellement » est un mensonge qu'il se raconte ; il a dépensé ses économies en cartes et en nuits d'hôtel."
+  ],
+  "reve": "voir le Grand Cristal de ses yeux, même à travers un hublot ; et lire devant toute l'université une conférence intitulée « Moreau avait raison »",
+  "question": "« Vous croyez aux légendes ? » (oui / non / certaines) — il s'enflamme, argumente ou approuve la prudence ; il s'en souviendra en parlant de l'Atlantide",
+  "liens": {
+   "anselme": {
+    "qui": "le gardien du phare",
+    "nom": "Anselme",
+    "sentiment": 0.3,
+    "fond": "Moreau a lu dans les vieux livres de quart du phare, rangés à la mairie, qu'Anselme note depuis des années « lueur bleue, à l'ouest ». Anselme n'en avait jamais parlé à personne et ne l'a pas apprécié. Moreau dit que c'est le cristal de l'Atlantide ; Anselme répond qu'il ne trouvera que des oursins. Moreau monte parfois au phare avec deux tasses de café ; Anselme le laisse entrer, sans le dire. Anecdotes : le livre de quart (des années de « lueur bleue ») ; la nuit où Anselme l'a laissé regarder par la lanterne. Bavardage : enthousiaste contre laconique."
+   },
+   "nadine": {
+    "qui": "la postière",
+    "nom": "Nadine",
+    "sentiment": 0.4,
+    "fond": "Le professeur reçoit des lettres de son université, que Nadine porte à l'hôtel. Il les ouvre en tremblant, souvent sans les finir. Il lui a demandé un jour si elle pouvait « les perdre un peu ». Elle a refusé, et lui apporte depuis un caramel avec chaque enveloppe. (Le contenu des lettres est la confidence de Moreau ; Nadine ne le connaît pas.) Anecdotes : les caramels ; Nadine qui lui a demandé de lui écrire depuis l'Atlantide. Bavardage : distrait, inquiet."
+   },
+   "edmond": {
+    "qui": "le réceptionniste",
+    "nom": "Edmond",
+    "sentiment": 0.4,
+    "fond": "Moreau a exigé une chambre orientée au sud-ouest, « vers l'Atlantide ». Il étale ses cartes des fonds marins sur le tapis du salon de onze à seize heures ; Edmond les contourne sans un mot. C'est Edmond qui lui remet le courrier de l'université, sur un plateau d'argent. Anecdotes : le plateau d'argent ; Edmond qui a rangé ses cartes par ordre de profondeur. Bavardage : distrait."
+   },
+   "pauline": {
+    "qui": "la femme de chambre",
+    "nom": "Pauline",
+    "sentiment": 0.2,
+    "fond": "En faisant le lit de Moreau, Pauline a trouvé sous l'oreiller un dessin : une cité sous la mer avec un grand cristal au milieu. Elle l'a raconté à tout le monde. Moreau, mortifié, cache désormais le dessin dans sa chaussette ; elle l'a trouvé aussi. Mortifié. Anecdotes : l'oreiller ; la chaussette. Bavardage : outré mais poli."
+   },
+   "felix": {
+    "qui": "mon libraire",
+    "nom": "Félix",
+    "sentiment": 0.8,
+    "fond": "Félix a vendu à Moreau toutes ses cartes des fonds marins. Ils passent des heures penchés dessus à La Rose des Vents, à chercher l'Atlantide au sud-ouest du village. Moreau ne sait pas nager, Félix a le mal de mer : « les deux plus grands explorateurs qui ne sont jamais partis », dit Félix. Anecdotes : la croix tracée au crayon au sud-ouest ; la nuit passée dans la librairie. Bavardage : « Au sud-ouest ! » / « Toujours au sud-ouest. »"
+   },
+   "gisele": {
+    "qui": "la patronne du café",
+    "nom": "Gisèle",
+    "sentiment": 0.5,
+    "fond": "Chaque matin, de huit à onze heures, Moreau boit trois cafés au Café de la Place sans dire un mot, plongé dans ses livres. Gisèle a compté : en deux mois, il lui a dit « merci » une fois. Le seul jour où il a parlé, il a parlé une heure entière d'un cristal ; elle a fermé la terrasse en retard. Anecdotes : le « merci » ; le jour du cristal. Bavardage : « Trois cafés. » / « Bonjour d'abord. »"
+   }
+  }
+ },
+ "nadine": {
+  "genre": "f",
+  "prenom": "Nadine",
+  "plan": [
+   "mon enfance de collectionneuse de timbres — née à Port-Azur, fille d'un employé de la gare maritime ; elle décollait les timbres à la vapeur de la bouilloire et rêvait des pays dessus.",
+   "la tournée avec Marcel — il y a douze ans, elle devient postière ; Marcel, à sa dernière année de facteur, lui apprend la tournée : chaque chien, chaque marche, chaque boîte qui coince.",
+   "le mois sans bateau — un hiver, le courrier du continent n'arrive pas pendant un mois ; elle écrit elle-même des cartes à tous les vieux du port pour qu'ils aient quelque chose dans leur boîte.",
+   "ma poste aujourd'hui — lettres, colis, télégrammes ; Victor et la guerre des cartes postales ; les lettres de l'université qui font trembler le professeur Moreau ; les lettres « À L. » de Lola qu'elle glisse dans la boîte de Lucas ; ses cartes pour Barnabé, Lyra, Ulfa et la reine sous la mer.",
+   "(confidence) la boîte jaune — elle lit tous les vœux glissés dans la boîte jaune et essaie en secret d'exaucer les petits ; l'un, de l'écriture de Victor, demande « voir neiger une fois » ; elle cherche comment."
+  ],
+  "reve": "un sac de facteur qui irait partout : le village, les elfes, les nains, sous la mer ; et recevoir un jour une lettre qui ne soit pas d'elle-même",
+  "question": "« Vous écrivez encore des lettres, vous ? » (souvent / jamais / des_cartes) — elle s'enthousiasme, proteste ou approuve ; elle s'en souviendra en triant le courrier",
+  "liens": {
+   "lucas": {
+    "qui": "le grand docker",
+    "nom": "Lucas",
+    "sentiment": 0.6,
+    "fond": "Chaque semaine, Nadine trouve dans la boîte jaune une lettre adressée « À L., le grand du quai », de l'écriture de Lola. Elle la glisse dans la boîte de Lucas, rue Haute, en faisant semblant de ne rien savoir. Lucas rougit dès qu'il la voit avec sa sacoche. Anecdotes : l'adresse « le grand du quai » ; Lucas qui attend devant chez lui le vendredi, « par hasard ». Bavardage : « Rien pour vous… Ah si, tiens. »"
+   },
+   "lola": {
+    "qui": "la serveuse du Perroquet",
+    "nom": "Lola",
+    "sentiment": 0.6,
+    "fond": "Lola poste chaque vendredi une lettre « À L. » ; Nadine a deviné pour qui et a laissé échapper « c'est Lucas, non ? ». Lola lui a fait jurer le silence. Nadine tient sa promesse… à moitié : elle en parle aux voyageurs. Anecdotes : les enveloppes qui sentent le punch ; Lola qui poste en se cachant derrière la colonne. Bavardage : malicieux."
+   },
+   "victor": {
+    "qui": "mon concurrent",
+    "nom": "Victor",
+    "sentiment": 0.2,
+    "fond": "La poste vend des cartes postales, comme la boutique de Victor : il crie à la « concurrence déloyale ». Il passe pourtant à la poste tous les jours pour acheter un timbre, un seul, et bavarder. Nadine a compris qu'il a le béguin ; elle le taquine sans dire ni oui ni non. Amusée. Anecdotes : ses trois cents timbres jamais utilisés ; la guerre des prix (un sou de moins chacun). Ne pas révéler le vœu de la boîte jaune. Bavardage : malicieux."
+   },
+   "marcel": {
+    "qui": "mon ancien chef de tournée",
+    "nom": "Marcel",
+    "sentiment": 0.8,
+    "fond": "Marcel a été le facteur de Port-Azur pendant trente ans. Il y a douze ans, pour sa dernière année, il a appris la tournée à Nadine : chaque chien, chaque marche, chaque boîte qui coince. Il vérifie encore, depuis le terrain de pétanque, qu'elle passe à l'heure. Anecdotes : le chien de la villa qu'il lui a appris à amadouer avec un sucre ; les conseils criés depuis le terrain. Bavardage : « En retard, l'apprentie ! » / « En avance, le retraité ! »"
+   },
+   "moreau": {
+    "qui": "le professeur",
+    "nom": "Moreau",
+    "sentiment": 0.5,
+    "fond": "Le professeur reçoit des lettres de son université, que Nadine porte à l'hôtel. Il les ouvre en tremblant, souvent sans les finir. Il lui a demandé un jour si elle pouvait « les perdre un peu ». Elle a refusé, et lui apporte depuis un caramel avec chaque enveloppe. (Le contenu des lettres est la confidence de Moreau ; Nadine ne le connaît pas.) Anecdotes : la demande de « perdre un peu » les lettres ; les caramels. Bavardage : « Une lettre, professeur. » / « Déjà ? »"
+   }
+  }
+ }
+}

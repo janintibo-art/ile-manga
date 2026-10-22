@@ -699,6 +699,10 @@ func commit_reply(r: Dictionary, npc: Node) -> void:
 		flags[str(rec["flag"])] = true
 	if npc != null:
 		npc.brain._bond(12.0)
+		# V65 : la nouvelle fait le tour des proches
+		var npid: Variant = (npc.get("profile") as Dictionary).get("id", "") if npc.get("profile") is Dictionary else ""
+		if str(npid) != "":
+			preload("res://scripts/pnj/societe_v65.gd").noter("quete", str(npid), _now(), {"titre": str(q.get("titre", ""))})
 	apply_bonuses()
 	main._show_message_v28("Quête accomplie : %s%s" % [str(q["titre"]), ("  (" + ", ".join(msgs) + ")") if not msgs.is_empty() else ""])
 	# V63 : de l'expérience pour chaque quête accomplie

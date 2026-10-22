@@ -1,0 +1,302 @@
+{
+ "selma": {
+  "genre": "f",
+  "prenom": "Selma",
+  "plan": [
+   "les terrasses de Port-Azur — fille d'un hôtelier de Port-Azur ; elle peignait la mer depuis la terrasse de la famille, toujours la même mer.",
+   "pourquoi je suis venue — on lui a dit que la lumière de Tazira était la plus belle de l'archipel ; elle est venue pour une semaine, il y a quatre mois.",
+   "le tableau que je ne dois pas montrer — le galion au crépuscule, peint depuis la Skala ; trois pièces d'or du capitaine pour qu'elle ne le montre jamais ; plus tard, elle a vu qu'elle avait peint, sans le savoir, de petites lumières dans les grottes.",
+   "Tazira aujourd'hui — sa chambre au Fondouk payée en tableaux ; l'ocre de Halima ; les ombres des lanternes de Nourredine ; chaque matin sur la Skala, le caïd et son parasol.",
+   "(confidence) elle a peint le caïd Hamza dix fois sans qu'il le sache ; les dix tableaux sont sous son lit. C'est pour lui qu'elle ne repart plus."
+  ],
+  "reve": "Voir les pierres peintes du désert, les chasseurs et la grande porte ronde, et les peindre avant que le sable les recouvre. Avec quelqu'un pour tenir le parasol.",
+  "question": "Dis-moi : de quelle couleur est Tazira, pour toi ? (bleu / blanc / ocre) — elle te répond en peintre, et se souvient de ta couleur comme d'un portrait.",
+  "liens": {
+   "hamza": {
+    "qui": "le caïd",
+    "nom": "Hamza",
+    "sentiment": 0.6,
+    "fond": "Chaque matin depuis quatre mois, Selma peint sur la Skala, à trois pas de Hamza qui monte la garde ; il grogne, puis déplace le parasol pour qu'elle ait de l'ombre. Elle a peint le galion au crépuscule, et le capitaine lui a payé trois pièces d'or pour ne jamais montrer le tableau. Hamza devine qu'il montre quelque chose et voudrait le voir ; Selma tient parole. Beau quand il regarde la mer, insupportable quand il parle. Anecdotes : le parasol déplacé en silence ; il a posé pour elle sans le savoir. Bavardage : « Bonjour, caïd. Toujours là ? » / « C'est mon bastion. » / « C'est ma lumière. »."
+   },
+   "halima": {
+    "qui": "mon amie potière",
+    "nom": "Halima",
+    "sentiment": 0.8,
+    "fond": "Selma est venue acheter des bols et est restée trois heures à regarder Halima tourner. Halima lui a appris à faire de l'ocre avec la terre de l'oued ; Selma a peint des oiseaux sur une série de cruches, vendues en un jour. Anecdotes : la crêpe ; les cruches aux oiseaux. Bavardage : « Il me faut encore de ton ocre. » / « Il te faut surtout des gants. »."
+   },
+   "zineb": {
+    "qui": "mon hôtesse",
+    "nom": "Zineb",
+    "sentiment": 0.8,
+    "fond": "Selma loge au Fondouk depuis quatre mois, dans une chambre sur la terrasse, et paie en partie en tableaux : les murs de la cour sont couverts de barques bleues. Zineb fait semblant de râler. Anecdotes : le refus de vendre ; Zineb monte un thé et reste une heure à regarder. Bavardage : « Je vous paie en barques, cette semaine ? » / « Fais-moi plutôt un chameau. »."
+   },
+   "nourredine": {
+    "qui": "le lanternier",
+    "nom": "Nourredine",
+    "sentiment": 0.7,
+    "fond": "La nuit, Selma vient dans l'atelier de Nourredine peindre les motifs que ses lanternes posent sur les murs. Il lui a percé une lanterne spéciale, avec une fente, pour peindre la nuit sans gêner personne. Anecdotes : il ne voulait pas d'elle dans l'atelier, puis il lui a gardé un tabouret ; la lanterne à fente. Bavardage : « Je peux rester un peu ? » / « Le tabouret est là. Comme hier. »."
+   }
+  }
+ },
+ "tibo": {
+  "genre": "m",
+  "prenom": "Tibo",
+  "plan": [
+   "le fils du boulanger — fils d'un boulanger d'un petit port du nord ; levé à trois heures pour pétrir, il regardait les navires partir par la lucarne.",
+   "comment j'ai embarqué — il y a un an, il laisse un mot à sa mère et monte sur la Murène Noire ; il voulait voir le monde ; il a surtout vu le pont, de très près, avec une brosse.",
+   "le jour où j'ai découvert Tazira — l'arrivée remorquée par dix barques ; les sardines de Mustapha, la place, la halqa ; ici, personne ne lui crie dessus, sauf le second.",
+   "ma vie aujourd'hui — les patates de Jacquot ; la pêche avec Ahmed ; ses babouches cachées ; Amine et Yasmine ; la grosse voix du djinn chez Ba Sidi ; l'hameçon mystérieux trouvé dans son hamac.",
+   "(confidence) il sait où dort le chat roux, et il a vu des papiers sous lui ; il ne l'a pas dit au capitaine. Si la carte est retrouvée, la Murène repartira, et il ne veut pas quitter Tazira."
+  ],
+  "reve": "Rester à Tazira, avoir une barque bleue avec Ahmed, et raconter le soir dans le cercle de Ba Sidi. Et écrire à sa mère qu'il est heureux.",
+  "question": "Toi, tu as déjà eu envie de rester quelque part pour toujours ? (oui / non / je_cherche) — complicité, étonnement, ou « Tu trouveras. Moi, j'ai trouvé. Chut. ».",
+  "liens": {
+   "croc": {
+    "qui": "mon capitaine",
+    "nom": "Croc-de-Sel",
+    "sentiment": 0.5,
+    "fond": "Tibo est mousse sur la Murène Noire depuis un an : il récure le pont, épluche les patates et court après le chat roux pour le capitaine. Croc le traite rudement mais lui laisse regarder dans sa longue-vue. Tibo sait (par Amine) où dort le chat, et ne l'a pas dit (voir sa confidence). Anecdotes : le bonnet de nuit ; la longue-vue, où il a vu Tazira pour la première fois. Bavardage : « Capitaine, je peux regarder ? » / « Cinq secondes. Et pas vers les toits, ça me donne le vertige. »."
+   },
+   "machefer": {
+    "qui": "le second",
+    "nom": "Mâchefer",
+    "sentiment": -0.1,
+    "fond": "Mâchefer crie sur Tibo du matin au soir : c'est le seul à bord sur qui il crie. Mais quand il a su que Tibo apprenait à pêcher, il lui a forgé en cachette un hameçon dans un vieux clou et l'a posé dans son hamac. Tibo ne sait pas de qui il vient. Il a peur de lui et l'admire un peu. Anecdotes : l'imitation ; l'hameçon mystérieux, qu'il attribue au chat roux ou à un djinn. Bavardage : « Bonjour, second ! » / « Hm. Le pont. » / « Déjà fait ! » / « Refais-le. »."
+   },
+   "jacquot": {
+    "qui": "le cuisinier",
+    "nom": "Jacquot",
+    "sentiment": 0.9,
+    "fond": "Tibo épluche les patates pour Jacquot depuis un an. Jacquot lui garde toujours la meilleure part et lui raconte comment il a perdu ses deux doigts, avec une version différente chaque fois. Tibo trouve sa cuisine immangeable et la mange quand même. Anecdotes : les versions des doigts ; le biscuit dur comme du bois, trempé dans le ragoût. Bavardage : « Qu'est-ce qu'on mange, ce soir ? » / « Une surprise ! » / « Encore ? »."
+   },
+   "karim": {
+    "qui": "le marchand de babouches",
+    "nom": "Karim",
+    "sentiment": 0.8,
+    "fond": "Tibo a acheté en cachette une paire de babouches jaunes chez Karim : sur la Murène, les pieds au chaud, c'est pour les terriens. Il les cache dans son hamac et ne les porte que pendant les quarts de nuit. Karim lui a fait un prix « de pirate ». Anecdotes : il a payé en deux fois, la deuxième avec une pièce trouvée dans la cale ; il a failli être découvert quand le capitaine a marché sur une babouche dans le noir. Bavardage : « Chut, Karim ! » / « Je n'ai rien dit ! Jaunes, trente-sept. » / « CHUT ! »."
+   },
+   "ahmed": {
+    "qui": "mon maître pêcheur",
+    "nom": "Ahmed",
+    "sentiment": 0.9,
+    "fond": "Sur la Murène, personne ne sait pêcher. Tibo est allé demander à Ahmed comment on fait ; Ahmed lui apprend l'après-midi sur le quai. Tibo a pris sa première sardine la semaine dernière et l'a fait griller chez Mustapha. Anecdotes : la première sardine, qu'il a voulu garder vivante dans un seau ; Ahmed lui a montré l'œil peint de la Zahra, et Tibo en a dessiné un sur son hamac. Bavardage : « Ça mord, Ahmed ? » / « Ça mord si tu te tais. »."
+   },
+   "amine": {
+    "qui": "mon copain",
+    "nom": "Amine",
+    "sentiment": 0.8,
+    "fond": "Tibo est le seul vrai pirate qui joue avec Amine (et Yasmine). Amine lui a confié où dort le chat roux : sur un toit près du Fondouk, où il monte par des caisses. Ils sont montés le voir dormir… sur des papiers. Tibo a juré de garder le secret, et l'a gardé, même pour son capitaine. Anecdotes : Amine lui a appris les osselets, lui a appris à Amine à jurer comme un pirate sans gros mots (« mille sabords ! ») ; la montée sur les caisses. Bavardage : « Chut, le chat ! » / « Quel chat ? » / « Exactement. »."
+   },
+   "basidi": {
+    "qui": "le conteur",
+    "nom": "Ba Sidi",
+    "sentiment": 0.8,
+    "fond": "Chaque soir, Tibo s'assied au premier rang de la halqa. Ba Sidi l'a nommé « gardien du djinn » : quand le djinn apparaît dans le conte, c'est Tibo qui fait la grosse voix. Tibo rêve de raconter un jour dans le cercle. Anecdotes : la grosse voix a fait sursauter Mâchefer, qui passait ; Ba Sidi lui a raconté l'histoire du pirate qui cacha un trésor dans les grottes, et il n'a pas dormi de la nuit. Bavardage : « Ce soir, le djinn ? » / « Prépare ta voix. »."
+   }
+  }
+ },
+ "yasmine": {
+  "genre": "f",
+  "prenom": "Yasmine",
+  "plan": [
+   "la fille de la poissonnière — fille de Zohra ; son père, Abdelkader, marin sur un caboteur du sud, rentre deux fois par an avec des cadeaux de loin.",
+   "pourquoi je ne mange pas de poisson — à cinq ans, une dorade l'a regardée dans les yeux sur l'étal ; elle a juré ; exceptions : le tajine de sa mère et les sardines de Mustapha, « des oiseaux de mer ».",
+   "la dorade de la fontaine — elle libère une dorade de l'étal dans la fontaine de la place et l'appelle Capitaine ; sa mère la gronde, puis la laisse là trois jours.",
+   "ma vie aujourd'hui — capitaine de la place des Lanternes ; Amine son matelot ; les nœuds de Rosa ; les canons de la Skala dont le caïd la chasse ; son oncle Ahmed et la Zahra.",
+   "(confidence) elle a peur qu'un jour son père ne revienne pas. C'est pour ça qu'elle veut être capitaine : pour aller le chercher elle-même."
+  ],
+  "reve": "Être capitaine d'un vrai navire, avec un chapeau, aller chercher papa, et ramener tout l'équipage à la fête de Tazira.",
+  "question": "Halte ! Tu veux être dans mon équipage ? (oui / non / capitaine) — « capitaine » : « Il n'y a qu'une capitaine ici ! » ; « non » : elle te déclare ennemi des sept mers, pour rire.",
+  "liens": {
+   "zohra": {
+    "qui": "ma mère",
+    "nom": "Zohra",
+    "sentiment": 0.8,
+    "fond": "Yasmine (9 ans) est la fille de Zohra et d'Abdelkader, marin sur un caboteur du sud qui ne rentre que deux fois par an. Yasmine ne mange pas de poisson (sauf le tajine de sa mère et les sardines de Mustapha) et veut être capitaine d'un vrai navire. Sa mère crie fort, mais c'est la meilleure. Anecdotes : la dorade de la fontaine, baptisée « Capitaine » ; sa mère qui danse à la fête et fait rire tout le monde. Bavardage : Yasmine annonce qu'elle a capturé un pirate (Amine) ; Zohra demande s'il a mangé."
+   },
+   "ahmed": {
+    "qui": "mon oncle",
+    "nom": "Ahmed",
+    "sentiment": 0.7,
+    "fond": "Ahmed emmène Yasmine jouer à la capitaine dans la Zahra amarrée au quai. Il lui a promis une vraie sortie en mer « quand elle mangera une sardine crue sans grimacer ». Son oncle est son premier matelot. Anecdotes : « la Terreur » à la craie ; il lui a appris le vert à gauche, le rouge à droite. Bavardage : elle exige la sortie promise ; il rappelle la sardine crue."
+   },
+   "mustapha": {
+    "qui": "mon grilleur",
+    "nom": "Mustapha",
+    "sentiment": 0.9,
+    "fond": "Yasmine ne mange pas de poisson, sauf le tajine de sa mère et les sardines de Mustapha. Il lui grille toujours des « sardines spéciales », qui sont exactement les mêmes. Anecdotes : les « oiseaux de mer » ; la garde du grill contre les mouettes. Bavardage : « Mustapha ! Mes oiseaux de mer ! » / « Tout chauds, capitaine. »."
+   },
+   "amine": {
+    "qui": "mon matelot",
+    "nom": "Amine",
+    "sentiment": 0.7,
+    "fond": "Les deux enfants jouent aux pirates sur la place des Lanternes. Yasmine est toujours la capitaine ; Amine perd toujours l'abordage. Amine voudrait être capitaine une fois. Ils sont inséparables. Anecdotes : le naufrage dans la fontaine ; Amine sait où dort le chat roux mais ne le dit qu'à Tibo, et elle trouve ça injuste. Bavardage : « À l'abordage, matelot ! » / « Encore ? Je suis déjà mouillé ! »."
+   },
+   "hamza": {
+    "qui": "ce grincheux de",
+    "nom": "Hamza",
+    "sentiment": -0.3,
+    "fond": "Yasmine et Amine montent jouer sur les canons de la Skala ; Hamza les chasse (« les canons ne sont pas des chevaux »). Rosa a dit que Yasmine ferait un bon capitaine de la garde, et Hamza, sans l'avouer, le pense aussi. Anecdotes : la ronde imitée ; le faux mot de passe, qu'elle répète à tout le monde. Bavardage : « Mot de passe : sardine-tonnerre ! » / « … Passe. Mais ne touche à rien. »."
+   },
+   "rosa": {
+    "qui": "la pirate",
+    "nom": "Rosa",
+    "sentiment": 0.9,
+    "fond": "Rosa apprend les nœuds marins aux enfants du port ; Yasmine est la plus douée : elle fait le nœud de chaise presque les yeux fermés. Rosa dit qu'elle fera un bon pirate, ou pire, un bon capitaine de la garde. Anecdotes : Amine attaché ; les cheveux rouges de Rosa, qu'elle voudrait avoir. Bavardage : « Rosa ! Montre-moi Bertha ! » / « Quand tu sauras le nœud de cabestan. »."
+   }
+  }
+ },
+ "youssef": {
+  "genre": "m",
+  "prenom": "Youssef",
+  "plan": [
+   "le fils de la sœur de Hamid — enfant du quartier du port ; à quatorze ans, il supplie son oncle de le prendre sur la Bahja.",
+   "ma première baleine — à sa première sortie, il crie « baleine ! » à l'horizon ; tout le monde rit ; depuis, il en voit partout.",
+   "le retour à la barre — le matin où Hamid avait mal au dos, il ramène seul la Bahja dans la passe sans rien toucher ; Hamid chante tout le retour.",
+   "ma vie aujourd'hui — la pêche avec Hamid ; la jetée avec Si Larbi ; Gaspard qui voit les baleines aussi ; ses économies pour la Baleine chez Ali ; et Halima.",
+   "(confidence) la première baleine, il ne l'a pas vue : il l'a inventée pour qu'on le remarque. Depuis, il en a vu une vraie, avec Gaspard, et personne ne le croit. C'est sa punition, dit-il."
+  ],
+  "reve": "Sa barque, la Baleine, et Halima à la proue le jour du baptême. Et qu'une vraie baleine passe devant la Skala ce jour-là, devant tout le monde.",
+  "question": "Tu as déjà vu une baleine ? (oui / non / en_reve) — « oui » : joie fraternelle ; « non » : il te promet la prochaine ; « en rêve » : « Ça compte. Ça compte plus, même. ».",
+  "liens": {
+   "hamid": {
+    "qui": "mon oncle",
+    "nom": "Hamid",
+    "sentiment": 0.6,
+    "fond": "Youssef (20 ans) est le fils de la sœur de Hamid. À 14 ans, il a supplié son oncle de le prendre sur sa barque, la Bahja. Hamid chante pour faire venir le poisson ; Youssef dit qu'il les fait fuir. Youssef voit des baleines partout ; Hamid fait semblant de ne pas le croire. Il lui doit tout et ne le dit jamais. Anecdotes : un matin où Hamid avait mal au dos, il lui a laissé la barre pour rentrer, et a chanté tout le retour ; le chant qui a fait plonger toutes les mouettes d'un coup. Bavardage : chamailleries sur la baleine et la voix."
+   },
+   "larbi": {
+    "qui": "le vieux",
+    "nom": "Si Larbi",
+    "sentiment": 0.5,
+    "fond": "L'après-midi, Youssef pêche à la ligne au bout de la jetée, à côté de Si Larbi. Larbi lui apprend la patience ; Youssef lui raconte ses baleines. Ni l'un ni l'autre n'attrape grand-chose. Larbi est le seul qui ne se moque pas de ses baleines. Anecdotes : la baleine grande comme la Skala ; la dorade relâchée. Bavardage : « Vous avez vu le jet, là-bas ? » / « J'ai vu ta ligne. Elle bouge. »."
+   },
+   "ali": {
+    "qui": "le charpentier",
+    "nom": "Ali",
+    "sentiment": 0.8,
+    "fond": "Youssef met de côté chaque pièce pour faire construire par Ali sa propre barque, la Baleine. Ali commencera la coque quand la moitié sera payée ; Youssef en est au quart. Ali a déjà taillé, en avance, la planche du nom. Anecdotes : le comptage hebdomadaire ; il a vu la planche du nom par la fenêtre du chantier et a fait semblant de rien. Bavardage : « Elle avance, ma Baleine ? » / « Ta bourse d'abord. »."
+   },
+   "gaspard_muet": {
+    "qui": "mon ami",
+    "nom": "Gaspard",
+    "sentiment": 0.9,
+    "fond": "Youssef voit des baleines partout ; personne ne le croit. Gaspard, la vigie, les voit aussi : l'Amiral crie « IL VOIT LA BALEINE ! ». Mais personne ne croit un muet et un perroquet. Ils forment à eux deux le club des gens qu'on ne croit pas. Anecdotes : le dessin sur l'ardoise, qu'il a recopié sur la proue de la Bahja à la craie ; Gaspard lui fait signe depuis la vigie. Bavardage : « Tu l'as vue, ce matin ? » / l'Amiral « BALEINE ! IL L'A VUE ! »."
+   },
+   "halima": {
+    "qui": "la belle",
+    "nom": "Halima",
+    "sentiment": 0.9,
+    "fond": "Youssef est amoureux de Halima. Il passe devant son étal en revenant de la jetée et lui raconte ses baleines. Elle le trouve doux et un peu menteur ; elle lui a tourné une cruche avec une baleine en relief. Il veut l'emmener en mer sur sa future barque, la Baleine. Anecdotes : la cruche ; les bols cassés. Bavardage : « Bonjour, Halima ! » / « Attention en te retournant. »."
+   },
+   "ahmed": {
+    "qui": "mon voisin de quai",
+    "nom": "Ahmed",
+    "sentiment": 0.4,
+    "fond": "Barques voisines au quai. Ahmed se moque gentiment des baleines de Youssef ; Youssef dit que la Zahra louche. Ils font la course chaque matin jusqu'à la passe. Anecdotes : le tonneau ; l'œil qui louche. Bavardage : « La course, Ahmed ? » / « Si ta baleine ne te retarde pas. »."
+   }
+  }
+ },
+ "zineb": {
+  "genre": "f",
+  "prenom": "Zineb",
+  "plan": [
+   "les murs qui parlent toutes les langues — née au Fondouk, trois cents ans de famille ; enfant, elle apprenait un mot dans la langue de chaque marchand.",
+   "le Fondouk devenu le mien — à la mort de sa mère, elle reprend l'auberge avec son mari ; veuve depuis dix ans, elle la tient seule, sa sœur Rqia et sa nièce Halima pas loin.",
+   "la nuit du chergui — quarante caravaniers bloqués, des chameaux plein la cour ; elle sert toute la nuit avec Hassan, malgré la guerre du quatrième verre.",
+   "le Fondouk aujourd'hui — Mbarek dans sa chambre à l'est depuis quinze ans ; Selma et ses tableaux sur tous les murs ; le pirate au perroquet qui veut une chambre « pas trop stable » ; Halima qu'elle voudrait marier.",
+   "(confidence) chaque fois que Mbarek dit qu'il part demain, elle garde sa chambre libre et prie pour un vent de sable. Elle n'a jamais osé lui demander de rester."
+  ],
+  "reve": "Que le Fondouk vive trois cents ans de plus. Et voir le désert une nuit, une seule, avec quelqu'un qui connaît le nom des étoiles.",
+  "question": "Une chambre ? Tu dors plutôt côté mer, ou côté désert ? (mer / desert / n_importe_ou) — elle te place en conséquence, et s'en souvient à chaque retour.",
+  "liens": {
+   "mbarek": {
+    "qui": "mon pensionnaire",
+    "nom": "Mbarek",
+    "sentiment": 0.8,
+    "fond": "Depuis quinze ans, Mbarek loge au Fondouk, toujours la même chambre, fenêtre à l'est. Même quand trois caravanes remplissent la cour, Zineb (veuve depuis dix ans) lui garde sa chambre. Il regarde les étoiles jusqu'à minuit ; elle lui monte un thé à minuit. Aucun des deux n'a jamais dit ce qu'il ressent. Anecdotes : la rose des sables ; le jour où il a tenu seul la grande porte contre le chergui. Bavardage : « Ton thé de minuit. » / « … Merci. » / « Tu pars toujours demain ? »."
+   },
+   "selma": {
+    "qui": "ma pensionnaire",
+    "nom": "Selma",
+    "sentiment": 0.6,
+    "fond": "Selma loge au Fondouk depuis quatre mois, dans une chambre sur la terrasse, et paie en partie en tableaux : les murs de la cour sont couverts de barques bleues. Zineb fait semblant de râler. Anecdotes : un caravanier a voulu acheter un tableau de Selma pour le prix d'une semaine de chambre, Zineb a refusé : « il est à moi » ; Selma peint à la bougie et laisse des taches bleues sur les draps. Bavardage : « Encore du bleu sur mes draps ! » / « C'est le ciel, Zineb. Il déteint. »."
+   },
+   "hassan": {
+    "qui": "le marchand de thé",
+    "nom": "Hassan",
+    "sentiment": 0.3,
+    "fond": "Hassan sert son thé sur la terrasse du Fondouk ; Zineb vend aussi du thé dans son auberge. Ils se disputent les verres, et surtout le quatrième (« le quatrième, il faut le payer », dit Zineb ; Hassan l'offre). Ils ne peuvent pas se passer l'un de l'autre. Anecdotes : elle a accroché un panneau « Le quatrième verre se paie », il a accroché à côté « Ici, on offre » ; la nuit du chergui où ils ont servi ensemble quarante caravaniers coincés. Bavardage : « Tu as encore offert le quatrième ? » / « Et le cinquième. »."
+   },
+   "gaspard_muet": {
+    "qui": "mon drôle de client",
+    "nom": "Gaspard",
+    "sentiment": 0.5,
+    "fond": "Une nuit où la pompe de la Murène grinçait trop fort, Gaspard est venu au Fondouk ; c'est l'Amiral qui a demandé « UNE CHAMBRE PAS TROP STABLE ! ». Zineb lui a donné la chambre au-dessus de l'écurie des chameaux. Il revient une nuit par semaine. Anecdotes : la première nuit ; l'Amiral a réveillé tout le Fondouk à l'aube en criant « RHUM ! ». Bavardage : « La même chambre ? » / l'Amiral « PAS TROP STABLE ! »."
+   },
+   "halima": {
+    "qui": "ma nièce",
+    "nom": "Halima",
+    "sentiment": 0.7,
+    "fond": "Zineb est la sœur de Rqia, la mère de Halima, qui cuit les poteries au four familial. Tous les plats à tajine du Fondouk sortent de chez Halima. Zineb voudrait la marier ; Halima voudrait que sa tante arrête. Anecdotes : elle lui présente chaque caravanier poli ; Halima a cassé exprès un plat devant le plus insistant. Bavardage : « Il y a un caravanier charmant à l'étage. » / « Il y en a toujours un, khalti. »."
+   }
+  }
+ },
+ "zohra": {
+  "genre": "f",
+  "prenom": "Zohra",
+  "plan": [
+   "la grand-mère Zahra — sa grand-mère vendait le poisson sous les mêmes arcades : « Un poisson se juge à l'œil, un homme aussi. »",
+   "mon étal — à dix-huit ans, elle reprend l'étal, le premier de la criée ; elle épouse Abdelkader, marin, qu'elle a jugé à l'œil.",
+   "le tajine du vendredi — la recette de sa mère, le safran d'Aïcha, le citron confit, le grand plat de Halima ; célèbre jusqu'à Carène.",
+   "ma vie aujourd'hui — Yasmine qui refuse le poisson ; son petit frère Ahmed et ses sardines ; Saïd et ses dorades stressées ; le cuisinier pirate et ses « améliorations » ; trois marmites par semaine pour la Murène ; Samira qui lui confie des secrets.",
+   "(confidence) les nuits de tempête, elle ne dort pas, à cause d'Abdelkader en mer. Elle fait le tajine du vendredi pour qu'il y ait toujours un plat qui l'attende, même quand il n'est pas là."
+  ],
+  "reve": "Que son mari rentre pour de bon, qu'Ahmed lui rapporte enfin de vraies dorades, et que Yasmine mange une sardine sans dire que c'est un oiseau.",
+  "question": "Tu manges du poisson, toi, au moins ? (oui / non / sardines_seulement) — joie, indignation, ou « comme ma fille » (et elle te réserve une part de tajine).",
+  "liens": {
+   "ahmed": {
+    "qui": "mon petit frère",
+    "nom": "Ahmed",
+    "sentiment": 0.7,
+    "fond": "Frère et sœur, petits-enfants de Zahra, la poissonnière des arcades (« un poisson se juge à l'œil, un homme aussi »). La barque d'Ahmed porte son nom, et l'œil peint sur la proue, c'est pour elle. Ahmed pêche la sardine ; Zohra ne veut pas de ses dorades pour le tajine du vendredi : elles passent par la criée de Saïd. Elle le trouve rêveur mais bon pêcheur. Anecdotes : l'œil qui louche ; Ahmed qui rapporte des coquillages à Yasmine au lieu de poisson. Bavardage : « Toujours pas de dorade, petit frère ? » / « Je pêche ce que la mer donne. »."
+   },
+   "yasmine": {
+    "qui": "ma fille",
+    "nom": "Yasmine",
+    "sentiment": 0.9,
+    "fond": "Yasmine (9 ans) est la fille de Zohra et d'Abdelkader, marin sur un caboteur du sud qui ne rentre que deux fois par an. Yasmine ne mange pas de poisson (sauf le tajine de sa mère et les sardines de Mustapha) et veut être capitaine d'un vrai navire. Fière et inquiète : elle n'aime pas voir partir les navires. Anecdotes : Yasmine a libéré une dorade vivante de l'étal dans la fontaine de la place ; le chapeau de capitaine que Zohra lui a cousu dans un vieux tablier. Bavardage : « Tu as mangé ? » / « Pas de poisson. Juste le tajine. Deux fois. »."
+   },
+   "said": {
+    "qui": "ce braillard de",
+    "nom": "Saïd",
+    "sentiment": -0.3,
+    "fond": "Zohra tient le premier étal de la criée, juste sous l'estrade de Saïd. Elle refuse ses dorades pour son tajine du vendredi : « elles ont entendu trop de cris, elles ont la chair stressée ». Saïd le prend très mal, et crie encore plus fort. Anecdotes : la dorade chuchotée ; elle se bouche les oreilles avec de la mie de pain quand il monte sur l'estrade. Bavardage : « Moins fort, Saïd ! » / « C'est ma voix normale ! » / « C'est bien le problème. »."
+   },
+   "halima": {
+    "qui": "mon amie",
+    "nom": "Halima",
+    "sentiment": 0.7,
+    "fond": "Halima tourne les plats à tajine de Zohra, cuits au four de sa mère Rqia. Le grand plat du vendredi est une pièce unique, avec un poisson gravé sur le couvercle, un œil bien rond pour la grand-mère Zahra. Zohra ne le prête à personne. Anecdotes : le plat rattrapé ; Halima goûte chaque tajine en disant « c'est le plat qui fait le goût ». Bavardage : « Toujours pas de dorades ? » / « Ne m'en parle pas, Halima. »."
+   },
+   "aicha": {
+    "qui": "ma marchande d'épices",
+    "nom": "Lalla Aïcha",
+    "sentiment": 0.6,
+    "fond": "Le safran du tajine du vendredi vient de chez Aïcha, et de nulle part ailleurs. Elles se chamaillent sur le prix chaque semaine, puis Aïcha ajoute une pincée « pour Yasmine ». Anecdotes : la brouille du safran ; la pincée en plus. Bavardage : « Trop cher, Aïcha ! » / « Pas pour un tajine célèbre jusqu'à Carène. »."
+   },
+   "jacquot": {
+    "qui": "ce pauvre",
+    "nom": "Jacquot",
+    "sentiment": 0.3,
+    "fond": "Zohra a « appris » le tajine à Jacquot : elle l'a regardé faire, et elle a pleuré (il avait mis du rhum et du sucre). Jacquot croit que c'étaient des larmes de joie. Les pirates commandent trois marmites de tajine par semaine à Zohra. Anecdotes : le rhum dans le tajine ; elle goûte quand même chaque amélioration, par politesse, et s'en repent. Bavardage : « Qu'est-ce que tu as encore mis dedans ? » / « De l'amour ! Et du hareng. »."
+   },
+   "samira": {
+    "qui": "mon amie",
+    "nom": "Samira",
+    "sentiment": 0.6,
+    "fond": "Zohra achète ses tabliers chez Samira et lui apporte du poisson ; elles se racontent tout. C'est par Zohra que tout Tazira sait que le capitaine veut un tapis « qui n'existe pas ». Anecdotes : le tablier aux dorades ; elle ne comprend pas comment tout le monde a su. Bavardage : « Alors, ce tapis qui n'existe pas ? » / « Chut ! Cette fois, chut. »."
+   }
+  }
+ }
+}

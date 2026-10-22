@@ -1,0 +1,1073 @@
+{
+ "adele": {
+  "genre": "f",
+  "prenom": "Adèle",
+  "plan": [
+   "mon frère et les parapluies — enfance maison 7, chez des parents couvreurs ; Achille, quatre ans de moins qu'elle, sautait du toit de l'atelier avec les parapluies de leur mère ; Adèle tenait le parapluie de rechange et comptait les bosses (dix-sept avant ses dix ans).",
+   "la parapluierie de ma mère — à 20 ans, elle reprend la petite boutique de parapluies de leur mère ; elle coud les toiles des parapluies à hélice que Madame Bricolette vend au Bazar ; Achille lui ruinait un parapluie par semaine en « essais ».",
+   "le matin de mes trente ans — il y a huit jours, Achille arrive avec les ailes à vapeur emballées dans du papier à fleurs ; il veut « juste les essayer » avant de les offrir ; décolle de l'aérodrome à 9 h 12 (Tic Tacquet a noté l'heure) ; il ne redescend plus.",
+   "mes journées sur le banc de l'aérodrome — boutique fermée (pancarte « Fermé pour cause de frère ») ; banc de l'aérodrome le matin ; le sandwich de Gaston ; le billet de Céleste sur la nuit d'Achille ; le soir, il descend un peu pour lui parler ; Léonce vient s'asseoir à côté d'elle.",
+   "(confidence) les ailes étaient pour moi — les ailes étaient son cadeau d'anniversaire : elle a toujours rêvé de voler sans jamais oser ; petite, c'est elle qui avait le vertige et qui poussait Achille à sauter à sa place ; elle se sent coupable de le savoir là-haut, et, en secret, elle l'envie."
+  ],
+  "reve": "qu'Achille atterrisse, entier ; puis qu'il lui prête les ailes une seule fois, pour voler juste au-dessus des toits, un parapluie à la main, « au cas où »",
+  "question": "« Vous avez déjà rêvé de voler ? » (souvent / jamais / zephyr : « En Zéphyr, ça compte ? ») — souvent : complice, « il faut un frère pour le faire à votre place » ; jamais : « vous êtes sage, comme moi avant » ; zephyr : « à moitié », il y a un plancher. Rappels associés.",
+  "liens": {
+   "basile": {
+    "qui": "ce brave",
+    "nom": "Basile",
+    "sentiment": 0.3,
+    "fond": "Basile veut envoyer une bulle géante chercher Achille. Adèle est touchée mais terrifiée. Anecdotes : la bulle d'essai, avec un sandwich dedans, a éclaté à douze mètres, et le sandwich est retombé sur la capeline d'Adèle ; Basile a proposé d'y monter lui-même « pour lester ». Bavardage : Basile annonce une bulle plus solide ; Adèle demande « solide comment ? »."
+   },
+   "celeste": {
+    "qui": "mon amie",
+    "nom": "Céleste",
+    "sentiment": 0.8,
+    "fond": "La nuit, Céleste suit Achille dans la grande lunette ; il dort en planant en rond au-dessus de l'observatoire. Chaque matin, un billet sous la porte d'Adèle : « Nuit calme, trois toux, cap nord-est. » Anecdotes : la collection des billets, rangés dans une boîte à chapeau ; la nuit où Achille a fait coucou dans l'oculaire. Bavardage : « Combien de toux, cette nuit ? » / « Deux. Il va mieux. »"
+   },
+   "gaston": {
+    "qui": "le patron du café",
+    "nom": "Gaston",
+    "sentiment": 0.9,
+    "fond": "Chaque matin, Gaston prépare « le sandwich d'Achille » (jambon, cornichon, ficelé avec un petit plomb pour qu'il vole droit), gratuit « jusqu'à l'atterrissage », et un second pour Adèle, qui oublie de manger. Anecdotes : le premier sandwich attrapé (elle est fière) ; Gaston qui a fait siffler la machine à café en l'honneur d'Achille. Bavardage : « Un plomb ou deux, aujourd'hui ? » / « Deux, il y a du vent. »"
+   },
+   "leonce": {
+    "qui": "le petit",
+    "nom": "Léonce",
+    "sentiment": 0.7,
+    "fond": "Léonce la rejoint sur le banc de l'aérodrome en fin de journée ; il veut voler comme Achille. Elle l'a surpris sur le toit de la Bielle avec un parapluie de sa boutique ; pour le dissuader, elle lui raconte les dix-sept bosses d'Achille. Anecdotes : le parapluie confisqué ; la commande de « des ailes pour enfant, taille 9 ans ». Bavardage : « Tu as encore un parapluie ? » / « Non. Un drap. »"
+   },
+   "rosette": {
+    "qui": "cette fouineuse de",
+    "nom": "Rosette",
+    "sentiment": -0.3,
+    "fond": "Chaque matin, la Gazette titre « Achille Plumevent toujours en vol » : Adèle trouve qu'on fait de son frère une plaisanterie. Anecdotes : la presse a raté une lettre : « Achille toujours en vo » ; Rosette a voulu interviewer Achille au porte-voix et lui a demandé s'il avait faim. Bavardage : Rosette demande une déclaration, Adèle répond sèchement. (Adèle ne sait pas que Rosette garde un titre « ACHILLE A ATTERRI » tout prêt.)"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.4,
+    "fond": "Zélie a refusé qu'Achille se pose sur le Zéphyr (il aurait crevé l'enveloppe) ; Adèle lui en veut un peu, mais Zélie lui prête chaque matin les jumelles de l'aérodrome et a dessiné un plan d'atterrissage avec les filets de pêche du port. Anecdotes : le refus crié au porte-voix vers le ciel ; les jumelles ; le grand filet tendu une nuit entre deux mâts, qu'Achille a raté de dix mètres. Bavardage : « Toujours non ? » / « Toujours non. Mais j'ai un filet. »"
+   }
+  }
+ },
+ "ambroise": {
+  "genre": "m",
+  "prenom": "Ambroise",
+  "plan": [
+   "mon enfance de perdant — cadet de sept enfants, il perdait à tous les jeux ; à 12 ans, trois cents parties d'échecs perdues d'affilée contre son grand frère ; il jure de construire un jour « quelqu'un qui ne perd jamais ».",
+   "mon vieux maître Honoré Cogne — apprenti à 16 ans chez Honoré Cogne, grand fabricant d'automates (le grand-père de Firmin) ; trente ans d'atelier ; Honoré commence l'automate joueur d'échecs et meurt il y a vingt-deux ans sans l'avoir fini ; l'atelier et l'automate reviennent à Ambroise, l'engrenage d'or à Firmin.",
+   "les quatre cents engrenages — huit ans pour finir l'automate (cartes perforées) ; premier match public à la Foire il y a quatorze ans : il bat Héloïse en vingt-trois coups ; depuis, jamais perdu une partie d'échecs ; le Rouage d'Honneur de la Foire trois années de suite ; le jeu de pierres des gens des brumes, il n'en parle jamais.",
+   "mes soirées à la table deux — le jour au stand 5 ; le soir à la table 2 de la Bielle, partie d'échecs avec Tic Tacquet, en personne, et il perd au temps presque chaque soir ; juré de la Foire cette année, vexé qu'Héloïse veuille « distribuer des prix comme des biscuits ».",
+   "(confidence) les douze cartes d'Honoré — les douze premières cartes perforées sont de la main d'Honoré ; il ne sait pas ce qu'elles font et n'a jamais osé les retirer ; il soupçonne que c'est Honoré qui gagne, pas lui ; il ne l'a jamais dit à Firmin ; et lui-même n'a jamais battu son automate."
+  ],
+  "reve": "battre son automate une seule fois, lui-même, sans ruse, devant toute la Foire — puis lui offrir la revanche, poliment",
+  "question": "« Vous jouez aux échecs ? » (oui / non / un_peu) — oui : il propose une partie contre lui, pas contre l'automate, « entre humains » ; non : « vous êtes sage » ; un peu : « un peu, c'est le plus dangereux ». Rappels : la partie promise, la sagesse du joueur, ou sa modestie suspecte.",
+  "liens": {
+   "cogne": {
+    "qui": "le petit-fils de mon maître,",
+    "nom": "Firmin",
+    "sentiment": 0.1,
+    "fond": "Honoré Cogne, son maître, était le grand-père de Firmin. À sa mort, l'automate inachevé est revenu à Ambroise, l'engrenage d'or à Firmin. Firmin pense qu'Ambroise a hérité du meilleur ; Ambroise trouve que Firmin gaspille le nom des Cogne avec un moteur impossible. Ils se saluent d'un hochement de tête. Anecdotes : quand l'engrenage a roulé vers la falaise, Ambroise a couru derrière le premier, trop tard, et ne l'a dit à personne ; Honoré lui parlait du petit Firmin « qui avait des doigts d'horloger ». Bavardage : sec et poli."
+   },
+   "heloise": {
+    "qui": "la présidente du jury,",
+    "nom": "Héloïse",
+    "sentiment": 0.2,
+    "fond": "Elle préside le jury ; il la trouve trop indulgente et ne lui pardonne pas de vouloir trois prix au lieu d'un seul Rouage d'Honneur. Pourtant, il y a quatorze ans, au premier match public de l'automate, elle a perdu en vingt-trois coups et a applaudi la première : il ne l'a jamais oublié. Anecdotes : ce premier match ; la réunion du jury où il a fait noter trois fois « imbattable ». Bavardage : « Trois prix, Héloïse ? » / « Trois, Ambroise. Votre automate saura partager. »"
+   },
+   "margot": {
+    "qui": "la petite",
+    "nom": "Margot",
+    "sentiment": 0.7,
+    "fond": "À la dernière Foire, Margot, 8 ans, a tenu 41 coups contre l'automate, la plus longue partie de son histoire ; l'automate a réfléchi onze minutes sur un coup. Elle a perdu et a dit « logique ». Il lui a offert un pion d'ivoire et dit d'elle : « la seule qui l'ait fait réfléchir ». Anecdotes : la partie ; elle a ensuite calculé ses ouvertures sur un carnet. Bavardage : « Prête pour la revanche ? » / « Pas encore. J'ai encore deux calculs. »"
+   },
+   "prudence": {
+    "qui": "cette mauvaise perdante de",
+    "nom": "Prudence",
+    "sentiment": -0.5,
+    "fond": "Trois Foires de suite, l'automate a gagné le Rouage d'Honneur et le piano de Prudence a fini deuxième ; elle dit que l'automate triche, il répond qu'il bluffe. Tous deux sont jurés cette année. Anecdotes : l'an dernier, elle a fait jouer une valse pendant le match de démonstration : l'automate a avancé un pion en rythme, sa seule erreur connue, et a quand même gagné ; elle a demandé qu'on ouvre l'automate « pour voir le nain ». Bavardage : piques polies sur la triche et le bluff."
+   },
+   "tacquet": {
+    "qui": "mon vieil ami",
+    "nom": "Tacquet",
+    "sentiment": 0.8,
+    "fond": "Depuis quarante ans, ils jouent aux échecs chaque soir à la table 2 de la Bielle, en personne ; Tacquet a fabriqué une pendule d'échecs en laiton ; Ambroise réfléchit trop et perd au temps presque chaque soir (Tacquet tient le score dans un carnet). Tacquet refuse de jouer contre l'automate : « il n'a pas de montre ». Anecdotes : la partie de 1 h 40 où Ambroise allait gagner, perdue à la dernière seconde ; le carnet des scores. Bavardage : « Votre coup, Ambroise. Il vous reste huit secondes. »"
+   }
+  }
+ },
+ "basile": {
+  "genre": "m",
+  "prenom": "Basile",
+  "plan": [
+   "la paille et l'eau de vaisselle — enfance au-dessus de la savonnerie de ses parents ; il soufflait des bulles avec une paille dans l'eau de vaisselle ; un jour, une bulle a tenu une minute entière : il l'a suivie jusqu'à la balustrade de la falaise.",
+   "Lise, la souffleuse de verre — à 20 ans, à la Foire, il rencontre Lise, souffleuse de verre : elle soufflait du verre, lui du savon ; elle lui offre une bulle de verre « qui n'éclate jamais », qu'il garde sur sa table de nuit ; mariage, puis Margot.",
+   "l'hiver où tout s'est arrêté — Lise meurt d'une fièvre d'hiver quand Margot a deux ans ; pendant un an il ne souffle plus une bulle ; un matin, Margot, trois ans, souffle dans sa vieille paille et rit ; il construit la machine pour elle.",
+   "ma machine et mon stand — chaudière de cuivre, soufflet à vapeur, deux litres de savon à la minute, trois mille bulles ; stand 2, entre le piano de Prudence et le canon de Capucine ; juré de la Foire ; Margot tient les comptes du savon ; projet de bulle géante (Boum veut essayer, Achille à aller chercher).",
+   "(confidence) comment je fais les bulles en cœur — il a dit au jury qu'il ne savait pas comment il faisait les bulles en forme de cœur ; il le sait : elles viennent quand il pense à Lise, il souffle alors plus doucement sans s'en rendre compte ; il ne veut pas que Margot le sache (elle le sait)."
+  ],
+  "reve": "une bulle assez grande pour y installer Margot et la promener au-dessus de la cité, tout doucement, jusqu'au toit de l'observatoire de Céleste",
+  "question": "« Vous préférez les choses utiles ou les choses jolies ? » (utiles / jolies / les_deux) — utiles : il fait semblant d'être blessé puis souffle une bulle « utile » (elle ne sert à rien) ; jolies : enthousiasme ; les_deux : « comme ma fille et moi ». Rappels associés.",
+  "liens": {
+   "adele": {
+    "qui": "la sœur d'Achille,",
+    "nom": "Adèle",
+    "sentiment": 0.8,
+    "fond": "Il veut lui ramener son frère dans une bulle géante et y croit dur comme fer. Anecdotes : la bulle d'essai avec un sandwich dedans, éclatée à douze mètres, sandwich sur la capeline d'Adèle ; il travaille la nuit à une recette de savon « qui ne pique pas les yeux d'Achille ». Bavardage : enthousiasme de Basile, prudence polie d'Adèle."
+   },
+   "boum": {
+    "qui": "le professeur",
+    "nom": "Boum",
+    "sentiment": 0.4,
+    "fond": "Boum veut être le premier à entrer dans la bulle géante, pour tester « la propulsion par bulle » ; il a proposé un « savon explosif ». Basile l'aime beaucoup mais n'est pas sûr que ce soit une bonne idée. Anecdotes : Boum a fourré la tête dans une bulle de deux mètres et parlé « comme dans un bocal » pendant une minute ; le savon explosif testé dans un dé à coudre. Bavardage : « Alors, cette bulle, Basile ? » / « Pas encore, professeur. Pas avec vous dedans. »"
+   },
+   "capucine": {
+    "qui": "ma voisine de stand",
+    "nom": "Capucine",
+    "sentiment": 0.9,
+    "fond": "Stands 2 et 3. Elle a glissé des confettis dans sa machine : les bulles sont pleines de confettis ; il trouve ça plus joli et fait semblant de ne pas avoir remarqué (« ne lui dites pas ») ; elle croit qu'il n'a rien vu. Anecdotes : le concours de celui qui fait rire le plus d'enfants en une heure (match nul, 212 partout) ; la bulle qui a avalé un confetti en forme d'étoile. Bavardage : Capucine, l'air innocent : « Elles sont jolies, tes bulles, aujourd'hui. »"
+   },
+   "heloise": {
+    "qui": "l'ingénieure-en-chef",
+    "nom": "Héloïse",
+    "sentiment": 0.7,
+    "fond": "Jurés tous les deux cette année ; chaque printemps, elle inspecte la chaudière de cuivre de sa machine. Anecdotes : il lui a soufflé une bulle autour du monocle, elle l'a gardée quatre secondes et a dit « réglementaire » ; la réunion du jury où il a proposé un prix du sourire. Bavardage : « Votre chaudière, Basile ? » / « Elle sourit, Héloïse. »"
+   },
+   "margot": {
+    "qui": "ma fille",
+    "nom": "Margot",
+    "sentiment": 1.0,
+    "fond": "Margot, 8 ans et demi, fait les comptes du savon depuis ses 6 ans et lui rappelle de manger ; elle construit Bidule avec Léonce dans la cave, entre les tonneaux de savon. Lise, la maman, est morte quand Margot avait 2 ans. Anecdotes : Margot a calculé qu'il souffle 31 % des bulles « pour lui-même » ; le soir où elle a mis un réveil dans sa poche pour l'heure du dîner. Bavardage : « Papa, tu as mangé ? » / « Une bulle. » / « Ça ne compte pas. »"
+   },
+   "philibert": {
+    "qui": "mon voisin de banc",
+    "nom": "Philibert",
+    "sentiment": 0.6,
+    "fond": "Chaque soir, même banc de la promenade. Un soir, Basile a dit : « Une bulle, c'est du rien entouré de joli ; ta boîte à rien, c'est du rien entouré de bois. » Philibert l'a boudé une semaine. Basile n'aime toujours pas la boîte à rien, mais pour se faire pardonner il a soufflé une bulle autour d'une boîte à rien : elle a flotté trois secondes. Anecdotes : la phrase malheureuse ; la boîte dans la bulle (« Ça existait déjà ? » / « Non. »). Bavardage : taquineries tendres."
+   },
+   "prudence": {
+    "qui": "ma voisine",
+    "nom": "Prudence",
+    "sentiment": 0.8,
+    "fond": "Stands 1 et 2, côté ouest. La vapeur savonneuse de la machine à bulles dérive l'après-midi jusque dans le piano : c'est pour ça que le piano est « enrhumé » le soir, il éternue des bulles. Basile, coupable, a installé un paravent ; Prudence soupire et l'aime bien. Anecdotes : la valse qui a fini en éternuement devant le jury ; le paravent décoré de bulles peintes. Bavardage : « Il tousse encore ? » / « Il éternue, Basile. Des bulles. »"
+   }
+  }
+ },
+ "boum": {
+  "genre": "m",
+  "prenom": "Augustin",
+  "plan": [
+   "la lampe de ma mère — fils d'une lampiste de Cliquetis ; enfance entre les mèches et les bidons d'huile ; premier « boum » à 7 ans avec la lampe de la cuisine : premiers sourcils perdus.",
+   "comment l'Académie m'a mis dehors — étudiant à l'Académie, renvoyé après avoir fait sauter la salle de chimie (« Comme disait mon vieux maître : Augustin, dehors ! ») ; il construit son atelier tout à l'ouest, près des falaises, loin de tout ; premier toit.",
+   "mes quatorze toits — onze fois l'énergie nouvelle trouvée, onze explosions ; le neuvième toit a atterri sur la terrasse de la Bielle (Gaston en a fait un auvent) ; le « mardi vert » : fumée verte, moutons des bergers teints ; la machine qui pense a explosé la semaine dernière.",
+   "mon élève et ma bonne explosion — Capucine, son apprentie pendant six ans, partie après le septième toit garder « les couleurs sans le danger » : il en est fier ; il prépare « la bonne », la plus grande de toutes ; le quinzième toit sera en fer ; café à la poudre de fer chez Gaston.",
+   "(confidence) la minute où ça a marché — à 19 ans, une seule fois, l'énergie nouvelle a fonctionné une minute entière : la lampe de sa mère s'est allumée sans huile, d'une lumière bleue ; trop ému, il n'a pas noté la formule ; depuis quarante ans il cherche cette minute ; sa mère est morte avant qu'il la retrouve ; quand Céleste a parlé de la lueur bleue du Cœur-de-Pierre, il a pleuré dans son café."
+  ],
+  "reve": "retrouver la minute bleue ; et chauffer gratuitement les bergeries des hautes terres l'hiver, pour se faire pardonner les moutons verts",
+  "question": "« Vous avez déjà fait exploser quelque chose ? » (oui / jamais / accident : « Par accident. ») — oui : ravi, il veut les détails ; jamais : « il n'est jamais trop tard » ; accident : « les meilleurs ! ». Rappels : il appelle le joueur « confrère », ou promet de lui garder une petite explosion.",
+  "liens": {
+   "basile": {
+    "qui": "l'ami",
+    "nom": "Basile",
+    "sentiment": 0.9,
+    "fond": "Il rêve d'entrer dans la bulle géante de Basile ; il a proposé du savon explosif pour la propulsion. Anecdotes : sa tête coincée dans une bulle de deux mètres ; le dé à coudre de savon explosif (plus de dé). Bavardage : Boum impatient, Basile qui gagne du temps."
+   },
+   "capucine": {
+    "qui": "mon élève",
+    "nom": "Capucine",
+    "sentiment": 1.0,
+    "fond": "Son apprentie de 14 à 20 ans (quatre toits) ; après l'explosion du septième toit, elle est partie « garder les couleurs sans le danger » ; il lui a offert en cadeau d'adieu le fût d'un vieux moteur, devenu son premier canon à confettis ; il en est fier comme d'une fille. Elle lui apporte des biscuits-engrenages chaque dimanche. Anecdotes : le septième toit ; la première fois qu'il a été confettisé, il a applaudi. Bavardage : « Toujours tes confettis ? » / « Toujours vos toits, professeur ? »"
+   },
+   "ecrou": {
+    "qui": "la petite des bergers,",
+    "nom": "Écrou",
+    "sentiment": 0.7,
+    "fond": "Les moutons teints en vert par la fumée du « mardi vert » étaient ceux de son grand-père. Boum lui demande de négocier le prix du minerai de fer avec sa famille ; elle refuse tant qu'il n'est pas monté s'excuser lui-même. Il a envoyé un pot de « déverdissant » : les moutons sont devenus bleus. Anecdotes : les moutons bleus ; il a voulu payer le minerai en explosions gratuites. Bavardage : « Votre grand-père a reçu mon pot ? » / « Ses moutons sont bleus, professeur. »"
+   },
+   "electre": {
+    "qui": "ma chère collègue",
+    "nom": "Électre",
+    "sentiment": 0.6,
+    "fond": "Rivalité de l'énergie : explosion et vapeur contre électricité. Il y a trois ans, Héloïse leur a demandé d'éclairer la Grande-Place pour la Foire : la lampe de Boum a explosé (pluie de suie sur le jury), les ampoules d'Électre ont mis le feu aux guirlandes ; Héloïse a remis les lampes à huile. Boum l'admire, « la seule qui fasse plus d'étincelles que moi » ; elle le juge dangereux, surtout pour son fils Léonce qui veut lui ressembler. Anecdotes : le concours ; il lui a offert un paratonnerre en forme de bouquet. Bavardage : piques."
+   },
+   "gaston": {
+    "qui": "mon cafetier",
+    "nom": "Gaston",
+    "sentiment": 0.8,
+    "fond": "Trois cuillères de poudre de fer dans son café, « pour la réflexion » : Gaston garde une boîte de poudre derrière le comptoir rien que pour lui. Le neuvième toit de l'atelier a atterri sur la terrasse de la Bielle sans blesser personne ; Gaston en a fait un auvent. Boum déjeune au comptoir et dîne à la table 3. Anecdotes : l'atterrissage du toit (Gaston servait un café, il n'a pas renversé une goutte) ; le jour où la poudre de fer a collé la cuillère à l'aimant de la machine. Bavardage : « Trois cuillères ? » / « Quatre, j'ai une grosse idée. »"
+   },
+   "leonce": {
+    "qui": "mon jeune admirateur",
+    "nom": "Léonce",
+    "sentiment": 0.8,
+    "fond": "Léonce veut être « comme le professeur Boum » ; Boum lui a offert ses premières lunettes d'aviateur (trop grandes, ficelées derrière la tête). Après la fusée qui a fait toute cette fumée, Boum a dit : « La fumée, c'est le début de tout. » Sa mère, Électre, n'est pas ravie. Anecdotes : les lunettes ; la leçon de recul (« plus loin, encore »). Bavardage : « Professeur ! Ma fusée a fumé ! » / « Bravo ! Combien de sourcils ? »"
+   },
+   "rosette": {
+    "qui": "ma chroniqueuse préférée,",
+    "nom": "Rosette",
+    "sentiment": 0.7,
+    "fond": "Chaque explosion fait la une ; elle tient la rubrique « Le toit de la semaine » ; il lui a confié son exclusivité : « la bonne », la plus grande explosion de toutes. Anecdotes : la seule interview faite pendant une explosion, tous deux sous la table ; la coquille « le professeur oum ». Bavardage : « Une date pour la bonne, professeur ? » / « Bientôt ! Gardez la une ! »"
+   }
+  }
+ },
+ "bricolette": {
+  "genre": "f",
+  "prenom": "Bricolette",
+  "plan": [
+   "la fille du chiffonnier — fille d'un chiffonnier qui ramassait au pied des ateliers ; elle grandit dans une carriole pleine d'objets cassés ; son premier trésor : un ressort qui ne servait à rien et qu'elle a encore.",
+   "l'ouverture du Bazar des Inutilités — à 25 ans, elle ouvre le Bazar dans l'ancienne remise de son père ; principe de la maison : racheter les inventions ratées « parce qu'elles ont essayé » ; premier objet en vitrine : une boussole qui indique le sud.",
+   "la montre qui tournait à l'envers — il y a trente et un ans, elle entre chez l'horloger Tic Tacquet pour lui vendre un réveil muet ; distrait, il fabrique ce jour-là une montre qui tourne à l'envers et la lui donne ; fiancés depuis ; elle la porte au poignet.",
+   "mon Bazar aujourd'hui — parapluies à hélice (toiles cousues par Adèle), boîtes à rien de Philibert, sifflets muets, chapeaux-ventilateurs vendus aux pirates de Tazira ; elle rachète les vieilles bottes « pour rien » et rend la monnaie en objets inutiles ; elle dîne à la table 1 de la Bielle.",
+   "(confidence) la robe qui n'est pas à vendre — elle sait très bien que c'est Tic qui repousse le mariage (sept fois) et elle ne lui en veut pas ; au fond du Bazar, sous un drap, il y a une robe de mariée achetée il y a trente et un ans : le seul objet de la maison qui ne soit pas à vendre ; l'étiquette dit « Utile »."
+  ],
+  "reve": "se marier un jour sans date et sans heure, sans prévenir personne, et que toutes les montres du Bazar sonnent en même temps, même celles qui tournent à l'envers",
+  "question": "« Qu'est-ce que vous gardez, vous, qui ne sert à rien ? » (caillou : « Un caillou. » / lettre : « Une vieille lettre. » / rien : « Rien du tout. ») — caillou et lettre : elle approuve, ce sont les meilleurs trésors ; rien : elle lui offre en pensée une boîte à rien. Rappels associés.",
+  "liens": {
+   "cogne": {
+    "qui": "mon meilleur fournisseur,",
+    "nom": "Firmin",
+    "sentiment": 0.7,
+    "fond": "Elle a racheté ses onze premiers prototypes de moteur perpétuel, tous arrêtés : ils trônent en vitrine sous la pancarte « Presque perpétuels ». Elle lui rend toujours la monnaie en objets inutiles : c'est ainsi qu'il a eu un chapeau-ventilateur sans savoir pourquoi. Anecdotes : la vitrine ; le chapeau-ventilateur. Bavardage : « Un treizième pour ma vitrine ? » / « Jamais ! Le douzième tourne ! »"
+   },
+   "gonzague": {
+    "qui": "mon concurrent",
+    "nom": "Gonzague",
+    "sentiment": 0.3,
+    "fond": "Rivaux collectionneurs. Elle veut son piano (elle a offert deux cents pièces et une montre à l'envers) ; il refuse. Ils se disputent les vieilles bottes tombées de la falaise ; trêve : chaque premier lundi du mois, ils échangent une botte gauche contre une botte droite pour refaire des paires. Anecdotes : l'offre pour le piano ; le lundi des bottes. Bavardage : « Toujours pas à vendre, ce piano ? » / « Toujours pas. Une botte droite ? »"
+   },
+   "philibert": {
+    "qui": "mon petit inventeur",
+    "nom": "Philibert",
+    "sentiment": 0.9,
+    "fond": "Il y a cinq ans, il lui a apporté la boîte à rien en s'excusant ; elle l'a achetée huit pièces, puis lui en commande vingt par mois : c'est la meilleure vente du Bazar. Elle dit qu'elle est parfaite : elle ne peut pas tomber en panne. Il vient l'aider les jours de pluie à écrire les étiquettes « inutile ». Anecdotes : le jour de l'achat (il a voulu la rembourser) ; un client de Carène est revenu se plaindre qu'il y avait quelque chose dedans : une araignée. Bavardage : « Vingt boîtes ce mois-ci ? » / « Vingt et une. Une pour moi. »"
+   },
+   "rosette": {
+    "qui": "ma gazetière",
+    "nom": "Rosette",
+    "sentiment": 0.8,
+    "fond": "Le Bazar a une réclame dans chaque Gazette : « Ici, rien ne sert à rien. » Un jour, la presse a raté une lettre : « rien ne sert à ien » ; les ventes ont triplé. Rosette écrit avec des plumes de corbeau achetées au Bazar. Anecdotes : la coquille ; les plumes. Bavardage : « Une réclame demain ? » / « Mettez-y une faute, ça marche mieux. »"
+   },
+   "tacquet": {
+    "qui": "mon fiancé",
+    "nom": "Tic",
+    "sentiment": 0.95,
+    "fond": "Fiancés depuis trente et un ans. La montre à l'envers est née le jour de leur rencontre (il l'a faite, distrait, quand elle est entrée dans sa boutique) ; elle la porte au poignet. Chaque année, à l'anniversaire, il lui en fabrique une nouvelle, qu'elle vend au Bazar : il fait semblant d'être choqué. Date du mariage fixée et repoussée sept fois (une horloge à réparer, un orage, une seconde d'avance…). Anecdotes : la rencontre ; la septième date. Bavardage : « Tu es en retard, Tic. » / « Je suis en avance, dans l'autre sens. »"
+   }
+  }
+ },
+ "capucine": {
+  "genre": "f",
+  "prenom": "Capucine",
+  "plan": [
+   "la petite dernière d'une famille calme — cadette de cinq enfants de deux bibliothécaires de l'Académie, où l'on chuchotait ; elle faisait éclater des sacs en papier entre les rayons ; on l'a beaucoup grondée en chuchotant.",
+   "six ans chez le professeur Boum — apprentie de Boum à 14 ans ; quatre toits en six ans ; elle balayait la suie et rêvait de couleurs ; il lui a appris à « écouter une chaudière ».",
+   "le jour du septième toit — à 20 ans, l'explosion du septième toit : sourcils perdus et très grande peur ; elle quitte l'atelier pour « garder l'idée d'exploser, enlever le danger, garder les couleurs » ; Boum lui offre en cadeau d'adieu le fût d'un vieux moteur : ce sera son premier canon à confettis.",
+   "mon canon et ma Foire — stand 3, un tir toutes les vingt secondes sur la foule ; réclamation des balayeurs signée « BIP » ; ses confettis dans les engrenages de Firmin ; ceux qu'elle a glissés en cachette dans la machine de Basile ; le nouvel an depuis la tour de l'horloge ; prochain canon à pétales de bruyère des bergers.",
+   "(confidence) pourquoi je crie BOUM — depuis le septième toit, les détonations lui font trembler les mains ; elle met de la cire dans ses oreilles avant chaque tir et crie « BOUM ! » elle-même pour avoir moins peur ; personne ne le sait, surtout pas le professeur."
+  ],
+  "reve": "un feu d'artifice de pétales si grand que le professeur Boum en reste sans voix — et, pour une fois, sans explosion",
+  "question": "« Vous aimez les surprises ? » (adore / deteste / ca_depend) — adore : elle le confettise en pensée ; deteste : elle promet de le prévenir avant de tirer (vingt secondes) ; ca_depend : « les surprises en couleur, alors ». Rappels associés.",
+  "liens": {
+   "basile": {
+    "qui": "mon voisin de stand",
+    "nom": "Basile",
+    "sentiment": 0.8,
+    "fond": "Stands voisins ; elle a mis des confettis dans sa machine en cachette et croit qu'il ne s'en est pas aperçu (il le sait). Anecdotes : le concours de rires d'enfants, 212 partout ; elle lui apporte des biscuits-engrenages quand son savon gèle. Bavardage : complicité, faux airs innocents."
+   },
+   "boum": {
+    "qui": "mon maître, le professeur",
+    "nom": "Boum",
+    "sentiment": 0.9,
+    "fond": "Six ans d'apprentissage, quatre toits ; partie après le septième, avec un vieux fût en cadeau d'adieu ; elle lui porte des biscuits-engrenages le dimanche et s'inquiète de « la bonne ». (Il ignore qu'elle a peur des détonations.) Anecdotes : les six ans à balayer la suie ; il lui a appris à « écouter une chaudière ». Bavardage : affection moqueuse."
+   },
+   "cogne": {
+    "qui": "ce grognon de",
+    "nom": "Firmin",
+    "sentiment": 0.3,
+    "fond": "Rivalité pour la Foire : elle dit que son canon gagnera ; ses confettis se glissent dans tous les engrenages du moteur perpétuel. Firmin la soupçonne d'avoir fait sauter l'engrenage d'or de son axe (un confetti coincé) ; elle jure que non. Anecdotes : elle lui a offert un filtre à confettis, il l'a refusé ; le confetti rose retrouvé dans son chapeau. Bavardage : « Il tourne, ton moteur ? » / « Mieux que ton canon ne vise ! »"
+   },
+   "rivet": {
+    "qui": "le père des balayeurs,",
+    "nom": "Maître Rivet",
+    "sentiment": 0.2,
+    "fond": "Ses balayeurs passent des heures sur ses confettis ; ils ont déposé une réclamation officielle signée « BIP ». Personne ne sait qui l'a tapée : Rivet nie, mais le papier sentait l'huile de la Fabrique. Elle a répondu par une lettre bourrée de confettis. Anecdotes : la réclamation ; un balayeur qui a fait demi-tour en la voyant arriver. Bavardage : « Vos balayeurs m'ont encore écrit ! » / « Hm. Ils écrivent bien. »"
+   },
+   "tacquet": {
+    "qui": "mon horloger préféré,",
+    "nom": "Tic",
+    "sentiment": 0.6,
+    "fond": "Au nouvel an, il la laisse tirer ses confettis depuis la tour de l'horloge. Il y a deux ans, un confetti coincé dans l'échappement a donné à la grande horloge sa seule seconde d'avance : il a grondé l'horloge, et elle. Il lui a offert une montre à l'envers « pour qu'elle comprenne ce qu'est une seconde de travers » ; elle la déteste (impossible à lire). Il la laisse quand même remonter chaque année. Anecdotes : la seconde d'avance ; la montre. Bavardage : « Cette année, je vise loin de l'horloge ! » / « Vise loin de moi aussi. »"
+   }
+  }
+ },
+ "celeste": {
+  "genre": "f",
+  "prenom": "Céleste",
+  "plan": [
+   "l'enfant du fournil — fille de boulangers, debout la nuit avec eux ; elle regardait le ciel par la lucarne du fournil en attendant le pain ; à six ans, elle connaissait plus d'étoiles que de voisins.",
+   "l'observatoire abandonné — à 22 ans, elle reprend l'observatoire de Cliquetis, vide depuis la mort du vieil astronome ; un an à nettoyer la grande lunette ; elle vit la nuit, dort le jour, café entre les deux.",
+   "la nuit de l'île flottante — une nuit très claire, elle voit une île flottante au-dessus des nuages, à l'ouest ; l'Académie rit ; personne ne la croit ; elle garde le dessin punaisé au-dessus de son lit.",
+   "deux cents nuits de lueur bleue — sur le Cœur-de-Pierre, une lueur bleue qui pulse une fois par minute, notée deux cents nuits ; Électre veut savoir ce qui l'alimente ; elle suit Achille pour Adèle ; Margot vient à la lunette de la promenade le soir ; depuis l'observatoire elle voit tout le versant nord et la Bergerie du Vent.",
+   "(confidence) l'étoile qui n'est pas la mienne — l'étoile « Cliquetis », c'est Margot qui l'a vue la première, à la lunette, en disant « celle-là clignote » ; Céleste l'a annoncée seule à l'Académie ; dans son carnet, l'étoile s'appelle « Margot » ; elle ne le lui a jamais dit et elle en a honte."
+  ],
+  "reve": "que quelqu'un l'emmène un jour jusqu'à l'île flottante — en Zéphyr, en bulle ou en ailes à vapeur — pour voir de près ce que personne ne croit ; et rendre son étoile à Margot",
+  "question": "« Vous me croyez, pour l'île flottante, à l'ouest ? » (y_suis_alle : « J'y suis allé ! » / oui / non) — y_suis_alle : bouleversée, elle veut tout savoir ; oui : reconnaissante ; non : « vous viendrez regarder, une nuit claire ». Rappels associés.",
+  "liens": {
+   "adele": {
+    "qui": "mon amie",
+    "nom": "Adèle",
+    "sentiment": 0.7,
+    "fond": "Céleste suit Achille pour elle dans la grande lunette et lui glisse un billet chaque matin (heure, toux, cap) ; elle l'a pris pour une comète qui tousse. Anecdotes : la nuit où Achille, apercevant la lunette, lui a fait coucou dans l'oculaire ; elle a calculé avec Margot qu'il tourne en rond toutes les sept minutes. Bavardage : les nouvelles de la nuit, en chuchotant."
+   },
+   "electre": {
+    "qui": "ma collègue",
+    "nom": "Électre",
+    "sentiment": 0.8,
+    "fond": "Elles ont mesuré ensemble la lueur bleue du Cœur-de-Pierre : une pulsation par minute ; Électre veut savoir ce qui l'alimente. Électre a fabriqué pour Céleste une petite lampe rouge à pile pour lire ses notes sans s'éblouir ; les nuits d'orage, Céleste note depuis l'observatoire les éclairs qui touchent le cerf-volant d'Électre. Anecdotes : la lampe rouge ; la nuit où la foudre a frappé la tour et où Céleste a vu Électre danser. Bavardage : « Toujours une par minute ? » / « Une. Comme un cœur. »"
+   },
+   "gaston": {
+    "qui": "mon cafetier",
+    "nom": "Gaston",
+    "sentiment": 0.7,
+    "fond": "Vers 17 h, avant de monter à l'observatoire, Gaston remplit sa « bouteille de nuit » (un litre de café). Il lui arrive de s'endormir à sa table l'après-midi : Gaston glisse un coussin sous sa tête et coupe le sifflet de la machine. En échange, elle lui apporte le matin « la météo des étoiles ». Anecdotes : le sifflet coupé ; la météo des étoiles affichée près du comptoir. Bavardage : « La bouteille de nuit ? » / « Pleine, Gaston. Et sans sucre. »"
+   },
+   "margot": {
+    "qui": "mon élève",
+    "nom": "Margot",
+    "sentiment": 0.8,
+    "fond": "Margot vient chaque soir à la lunette de la promenade ; Céleste lui laisse dix minutes à l'oculaire et Margot calcule les distances. C'est Margot qui a vu l'étoile « Cliquetis » la première (« celle-là clignote ») ; Céleste l'a annoncée seule et Margot ne sait pas que c'était la même. Anecdotes : les dix minutes chronométrées ; les calculs de Margot plus justes que ceux de l'Académie. Bavardage : « Tes dix minutes, Margot. » / « Neuf minutes cinquante. Je garde dix secondes pour demain. »"
+   },
+   "prudence": {
+    "qui": "la pianiste",
+    "nom": "Prudence",
+    "sentiment": 0.6,
+    "fond": "La nuit où le piano de Prudence a joué une musique qu'elle ne lui avait pas apprise (il y a deux mois, à trois heures du matin), Céleste a noté que la lueur bleue du Cœur-de-Pierre pulsait deux fois par minute au lieu d'une. Elles ont comparé leurs notes à la Bielle ; Prudence a transcrit l'air, Céleste le fredonne en observant ; elles attendent que ça recommence. Anecdotes : la comparaison des notes ; l'air fredonné. Bavardage : « Il a rejoué ? » / « Non. Et chez vous, deux fois ? »"
+   }
+  }
+ },
+ "cogne": {
+  "genre": "m",
+  "prenom": "Firmin",
+  "plan": [
+   "le petit-fils d'Honoré — grand-père Honoré Cogne, fabricant d'automates ; enfance dans l'atelier ; pour ses dix ans, Honoré coule l'engrenage d'or (quatorze dents, or massif, « Firmin Cogne » gravé dessus) : « un jour, il fera tourner quelque chose qui ne s'arrête jamais ».",
+   "l'héritage — à la mort d'Honoré, il y a vingt-deux ans, l'atelier et l'automate inachevé vont à Ambroise, l'apprenti ; Firmin ne garde que l'engrenage ; il se jure de faire tourner quelque chose pour toujours.",
+   "onze prototypes et un moteur — onze prototypes, tous arrêtés, rachetés par Bricolette (vitrine « Presque perpétuels ») ; le douzième, avec l'engrenage d'or, tourne depuis onze ans ; présenté à chaque Foire, jamais primé.",
+   "la démonstration de trop — hier, l'engrenage saute de son axe, roule sur la place, passe la balustrade et tombe au port ; il a le vertige et le téléphérique lui donne le mal de mer ; il soupçonne un confetti de Capucine ; Gonzague a vu quelque chose de doré près de la grue.",
+   "(confidence) le tour de manivelle de trois heures — chaque nuit à trois heures, il vient en chaussons donner un tour de manivelle au moteur, « pour l'aider » ; au fond, il sait ce que tout le monde pense ; mais il l'a promis à Honoré."
+  ],
+  "reve": "voir de près le moulin des bergers qui tourne depuis cent ans et comprendre son secret ; puis faire graver sur son moteur « Honoré et Firmin Cogne »",
+  "question": "« Vous croyez que quelque chose peut durer toujours ? » (oui / non / amitie : « Une amitié, peut-être. ») — oui : il serre la main du joueur ; non : vexé, « le moteur vous prouvera le contraire » ; amitie : ému, « ça n'a pas d'engrenage, ça ». Rappels associés.",
+  "liens": {
+   "ambroise": {
+    "qui": "l'apprenti de mon grand-père,",
+    "nom": "Ambroise",
+    "sentiment": 0.3,
+    "fond": "Ambroise a eu l'atelier et l'automate d'Honoré, Firmin seulement l'engrenage d'or ; il pense qu'Ambroise le méprise. Anecdotes : l'enterrement d'Honoré, où ils ne se sont pas parlé ; à chaque Foire, Ambroise passe devant le moteur sans le regarder (Firmin ignore qu'il a couru derrière l'engrenage). Bavardage : deux phrases courtes, chacun défend son héritage."
+   },
+   "bricolette": {
+    "qui": "cette brave",
+    "nom": "Bricolette",
+    "sentiment": 0.6,
+    "fond": "Elle a racheté ses onze prototypes arrêtés (vitrine « Presque perpétuels », qu'il trouve humiliante et touchante) ; elle lui rend la monnaie en objets inutiles, d'où le chapeau-ventilateur. Anecdotes : la pancarte ; le chapeau. Bavardage : elle veut un treizième, il refuse."
+   },
+   "capucine": {
+    "qui": "cette peste de",
+    "nom": "Capucine",
+    "sentiment": -0.4,
+    "fond": "Ses confettis sont dans tous ses engrenages ; il la soupçonne d'avoir fait sauter l'engrenage d'or. Rivaux pour la Foire. Anecdotes : le filtre à confettis refusé ; il trouve encore des confettis dans sa soupe. Bavardage : piques, il la menace d'un procès, elle le confettise."
+   },
+   "ernest": {
+    "qui": "mon voisin de comptoir",
+    "nom": "Ernest",
+    "sentiment": 0.7,
+    "fond": "Le soir, ils boivent un café côte à côte au comptoir de la Bielle. Firmin a pris le téléphérique une seule fois, il y a des années : vert en quarante secondes ; Ernest dit que c'est le record. Ernest lui conseille la route en lacet avec les porteurs-robots ; Firmin trouve que la route tourne trop. Anecdotes : le record ; la proposition de descendre les yeux bandés. Bavardage : « Une petite cabine, Firmin ? » / « Plutôt mourir. Enfin, plutôt pas. »"
+   },
+   "gonzague": {
+    "qui": "le grutier",
+    "nom": "Gonzague",
+    "sentiment": 0.6,
+    "fond": "Gonzague a vu quelque chose de doré rouler près de la grue ; Firmin n'ose pas descendre (vertige, mal de mer en cabine) et lui crie des questions depuis la balustrade, Gonzague répond « Ho ! ». Dans sa collection, il y a déjà le volant d'un vieux prototype de Firmin, tombé il y a six ans ; Gonzague refuse de le rendre : « ce qui tombe est à la grue ». Anecdotes : les questions criées ; le volant. Bavardage : « Vous l'avez vu, mon engrenage ? » / « Ho ! Quelque chose de doré ! »"
+   },
+   "margot": {
+    "qui": "la petite calculatrice",
+    "nom": "Margot",
+    "sentiment": 0.3,
+    "fond": "Margot pense que le mouvement perpétuel est impossible mais ne le lui dit jamais en face ; elle a additionné « engrenage disparu » et « Gonzague a vu quelque chose de doré ». Firmin la trouve trop sérieuse et la soupçonne de savoir quelque chose. Anecdotes : à la Foire, elle lui a demandé combien de tours par jour, puis est repartie sans rien dire, l'air triste ; elle lui a offert un dessin du moteur avec un cœur dessus. Bavardage : « Tu as fini tes calculs ? » / « Oui. Je ne vous dirai rien. »"
+   }
+  }
+ },
+ "ecrou": {
+  "genre": "f",
+  "prenom": "Écrou",
+  "plan": [
+   "la bergère qui démontait tout — famille de bergers des hautes terres ; à 8 ans, elle démonte le moulin à grain du village et le remonte avec une pièce en trop (il tourne quand même) ; à 9 ans, on l'envoie à Cliquetis chez son oncle Ernest, le frère de sa mère.",
+   "les quatre cent douze marches — elle vit chez l'oncle Ernest (maison 6) de 9 à 16 ans et monte l'escalier de la falaise avec lui chaque jour ; c'est lui qui la surnomme « Écrou » parce qu'elle dévisse tout ; son vrai prénom, elle ne le dit à personne.",
+   "le jour du maire coincé — à 15 ans, le téléphérique tout neuf d'Héloïse s'arrête au milieu avec le maire de Port-Azur dedans ; au bout d'une heure, c'est elle qui grimpe le long du câble et débloque le frein ; Héloïse lui propose l'Académie, elle choisit le port.",
+   "le port et le Petit Piston — mécanicienne du port, elle vit dans l'entrepôt ; elle répare tout ce qui flotte, roule ou siffle ; elle veut réveiller le Petit Piston, le remorqueur endormi depuis trois ans ; Maître Rivet lui réclame un bateau-robot ; le soir, elle pêche à côté de Gonzague.",
+   "(confidence) la clé de mon grand-père — à 7 ans, son grand-père lui a montré la pierre ronde gravée, dans la grotte sous la crête ; elle a voulu la démonter avec son petit tournevis et n'a pas réussi : la seule chose au monde qu'elle n'ait jamais su démonter ; la pierre était tiède ; elle en rêve encore ; depuis, des ronces noires ferment la grotte."
+  ],
+  "reve": "remettre le Petit Piston en marche et l'emmener jusqu'à Carène ; puis remonter un jour chez les siens et réparer le moulin du village, sans pièce en trop cette fois",
+  "question": "« Vous êtes du genre à démonter les choses, vous ? » (oui / non / remonter : « Oui, mais je ne sais pas les remonter. ») — oui : « on est de la même famille » ; non : elle le trouve reposant ; remonter : elle rit, c'est elle à 8 ans. Rappels associés.",
+  "liens": {
+   "boum": {
+    "qui": "le professeur",
+    "nom": "Boum",
+    "sentiment": -0.3,
+    "fond": "Il a teint en vert les moutons de son grand-père ; son « déverdissant » les a rendus bleus. Il voudrait qu'elle négocie le minerai avec sa famille : pas avant qu'il soit monté s'excuser en personne. Anecdotes : la lettre furieuse de son grand-père ; les moutons bleus. Bavardage : le grand-père, les excuses."
+   },
+   "ernest": {
+    "qui": "mon oncle",
+    "nom": "Ernest",
+    "sentiment": 0.95,
+    "fond": "Ernest est le frère de sa mère ; à 9 ans, elle est venue vivre chez lui ; ils montaient ensemble les 412 marches ; c'est lui qui l'a surnommée « Écrou ». À 15 ans, elle a débloqué le frein du téléphérique, avec le maire de Port-Azur coincé dedans. Anecdotes : les marches comptées en chantant ; le jour du maire. Bavardage : « Tu as mangé, mon oncle ? » / « Et toi, ma petite Écrou ? » / « Une sardine de Gonzague. »"
+   },
+   "gonzague": {
+    "qui": "mon voisin de quai",
+    "nom": "Gonzague",
+    "sentiment": 0.8,
+    "fond": "Elle veut réveiller le Petit Piston ; Gonzague dit qu'il préfère dormir (elle ignore pourquoi). Le soir, ils pêchent côte à côte au bout du quai. Anecdotes : elle a retrouvé la manivelle de démarrage du Petit Piston rangée dans la collection de Gonzague ; le matin où le Petit Piston a toussé et où Gonzague est devenu tout pâle. Bavardage : « Il a toussé ce matin ! » / « Laisse-le dormir, petite. »"
+   },
+   "rivet": {
+    "qui": "ce vieux grincheux de",
+    "nom": "Maître Rivet",
+    "sentiment": -0.1,
+    "fond": "Rivet veut un bateau-robot qui se pilote tout seul ; elle refuse : « et moi, je fais quoi ? » ; elle craint que les robots prennent le port. Mais l'hiver dernier, quand la grue de Gonzague a cassé, Rivet est descendu par la route avec un porteur et ils l'ont réparée ensemble, sept heures, presque sans un mot ; elle a dû reconnaître qu'il serre les écrous comme personne. Anecdotes : la grue ; les plans du bateau-robot qu'il lui glisse sous la porte. Bavardage : « Hm. Mon bateau ? » / « Toujours non, Maître Rivet. »"
+   }
+  }
+ },
+ "electre": {
+  "genre": "f",
+  "prenom": "Électre",
+  "plan": [
+   "la fille de l'allumeur de réverbères — fille de l'allumeur de réverbères de Cliquetis ; chaque soir, elle le suivait avec sa perche de lampe en lampe ; elle croyait qu'il allumait la nuit elle-même.",
+   "le premier éclair en bouteille — élève brillante d'Héloïse à l'Académie ; à 20 ans, elle enferme un éclair dans une bouteille ; docteure ; Héloïse obtient pour elle le laboratoire Volta.",
+   "deux courants qui ne passaient pas — elle rencontre Wilfried quand son bras de laiton, aimanté, reste collé une heure à sa bobine ; mariage, naissance de Léonce ; ils se séparent sans dispute quand Léonce a 4 ans ; elle vit au labo, Léonce chez son père, et il déjeune au labo le mercredi.",
+   "mes bobines et mon cerf-volant — un million de volts ; le labo qui prend feu de temps en temps ; les nuits d'orage, la tour avec un cerf-volant et une clé (Héloïse dit que c'est dangereux) ; le concours de l'éclairage raté face à Boum il y a trois ans ; la lueur bleue étudiée avec Céleste.",
+   "(confidence) j'ai peur du noir — petite, une nuit, elle s'est perdue dans les ruelles pendant que son père allumait l'autre bout de la ville ; depuis, elle a peur du noir et dort avec une ampoule allumée ; si elle veut éclairer toute la cité, c'est pour qu'aucun enfant n'ait plus peur ; elle ne l'a jamais dit à Léonce."
+  ],
+  "reve": "éclairer toute la cité sans une goutte d'huile, une nuit, d'un seul coup — et voir la tête du professeur Boum à ce moment-là",
+  "question": "« Vous préférez les orages ou le beau temps ? » (orages / beau_temps / pluie : « La petite pluie. ») — orages : complicité, elle l'invite (en pensée) sur la tour ; beau_temps : « raisonnable, comme Héloïse » ; pluie : elle parle du bras de Wilfried qui gratte. Rappels associés.",
+  "liens": {
+   "boum": {
+    "qui": "ce cher professeur",
+    "nom": "Boum",
+    "sentiment": -0.3,
+    "fond": "Le concours de l'éclairage raté il y a trois ans (sa lampe à lui a explosé, ses ampoules à elle ont brûlé les guirlandes) ; elle le trouve dangereux pour la science et pour Léonce, qui l'idolâtre et porte les lunettes d'aviateur qu'il lui a données. Anecdotes : le concours ; le bouquet-paratonnerre offert par Boum, qu'elle a gardé (il marche). Bavardage : « Vous avez encore votre toit ? » / « Et vous, vos rideaux ? »"
+   },
+   "celeste": {
+    "qui": "mon amie",
+    "nom": "Céleste",
+    "sentiment": 0.8,
+    "fond": "Ensemble elles étudient la lueur bleue (une pulsation par minute) ; Électre lui a fait une lampe rouge à pile ; Céleste surveille ses nuits d'orage depuis l'observatoire. Anecdotes : la lampe rouge ; le calcul de la puissance qu'il faudrait pour une telle lueur (« plus que toute la cité »). Bavardage : la lueur, la question de ce qui l'alimente."
+   },
+   "heloise": {
+    "qui": "ma vieille amie",
+    "nom": "Héloïse",
+    "sentiment": 0.8,
+    "fond": "Héloïse a été son professeur à l'Académie et lui a obtenu le laboratoire Volta. Elle dit que le cerf-volant d'orage est dangereux, et elle a raison. Électre voudrait que Léonce lui ressemble. Anecdotes : le premier éclair en bouteille, montré à Héloïse à minuit ; Héloïse qui monte sur la tour un soir d'orage pour la faire descendre, en robe longue. Bavardage : « Pas de cerf-volant ce soir. » / « Il n'y a même pas d'orage, Héloïse. »"
+   },
+   "leonce": {
+    "qui": "mon fils",
+    "nom": "Léonce",
+    "sentiment": 1.0,
+    "fond": "Léonce vit chez son père et déjeune au labo le mercredi ; il veut être comme Boum, elle voudrait « comme Héloïse ». Elle ne lui a jamais dit qu'elle a peur du noir. Anecdotes : le jour de la fusée qui fumait, elle a couru avec Wilfried et ils ont ri ensemble ; un mercredi, il a touché la petite bobine avec un seul gant : cheveux dressés toute la journée, photo dans la Gazette. Bavardage : « Tu as mis tes gants ? » / « Oui ! Enfin, un. »"
+   },
+   "rosette": {
+    "qui": "la gazetière",
+    "nom": "Rosette",
+    "sentiment": 0.5,
+    "fond": "Rosette passe au labo l'après-midi. L'interview sous un million de volts : son crayon a fondu et ses cheveux sont restés dressés trois jours. Électre lui interdit d'entrer sans bottes en caoutchouc. Rosette a titré « Électre éclaire son labo… et ses rideaux ». Anecdotes : l'interview ; le titre. Bavardage : « Vos bottes, Rosette ! » / « Je les ai ! Une question, une seule ! »"
+   },
+   "wilfried": {
+    "qui": "mon ancien mari",
+    "nom": "Wilfried",
+    "sentiment": 0.4,
+    "fond": "Rencontre : son bras de laiton, aimanté, est resté collé une heure à la bobine du labo. Mariés, Léonce ; séparés sans dispute quand Léonce avait 4 ans (« deux courants qui ne passaient pas »). Ils déjeunent ensemble le dimanche pour Léonce. Elle répare parfois le moteur-cœur de Boulon ; quand il pleut, elle lui envoie une pommade au graphite pour son bras qui gratte. Anecdotes : l'heure collé à la bobine ; la pommade. Bavardage : « Ton bras gratte ? » / « Il pleut, Électre. »"
+   }
+  }
+ },
+ "ernest": {
+  "genre": "m",
+  "prenom": "Ernest",
+  "plan": [
+   "un berger qui avait le vertige — né berger sur les hautes terres, frère de la mère d'Écrou ; il avait le vertige sur les crêtes et les moutons se moquaient de lui ; à 30 ans, il descend à Cliquetis.",
+   "vingt ans d'escalier — gardien de l'escalier de la falaise : quatre cent douze marches montées chaque jour pendant vingt ans, en comptant à voix haute ; les six dernières années, sa nièce Écrou, arrivée à 9 ans, les monte avec lui.",
+   "le téléphérique d'Héloïse — il y a dix ans, Héloïse construit le téléphérique et lui en confie la garde ; peu après, la cabine reste coincée une heure avec le maire de Port-Azur, qui écrit un poème très mauvais ; c'est Écrou, 15 ans, qui grimpe le long du câble pour débloquer le frein.",
+   "mes deux cabines — 6 h-13 h à la gare du haut, 13 h-20 h à celle du bas ; la cabine rouge est la plus jolie ; les porteurs-robots ont le vertige et prennent la route en lacet ; le soir au comptoir de la Bielle avec Firmin ; le piano de Gonzague ; sa nièce au port.",
+   "(confidence) je n'ai jamais pris la cabine — le gardien n'a jamais pris sa propre cabine : vertige ; à 13 h, pour passer d'une gare à l'autre, il descend les 412 marches, et le soir il les remonte ; en dix ans, personne ne l'a remarqué."
+  ],
+  "reve": "faire une fois le trajet en cabine sans fermer les yeux, avec Écrou à côté qui lui tiendrait la main, comme lui tenait la sienne dans l'escalier",
+  "question": "« Vous avez le vertige, vous ? » (oui / non / un_peu) — oui : grande tendresse, « ça ne se soigne pas, ça s'apprivoise » ; non : il l'envie poliment ; un peu : « un peu, c'est déjà courageux ». Rappels associés.",
+  "liens": {
+   "cogne": {
+    "qui": "mon voisin de comptoir",
+    "nom": "Firmin",
+    "sentiment": 0.7,
+    "fond": "Compagnons du soir au comptoir de la Bielle ; le record de Firmin, vert en quarante secondes. Ernest, qui a lui-même le vertige (son secret), le comprend mieux qu'il ne le dit. Anecdotes : le record ; la descente les yeux bandés proposée en plaisantant. Bavardage : la cabine refusée."
+   },
+   "ecrou": {
+    "qui": "ma nièce",
+    "nom": "Écrou",
+    "sentiment": 1.0,
+    "fond": "Sa nièce, venue des hautes terres à 9 ans ; il l'a élevée jusqu'à 16 ans, lui a donné son surnom ; elle a sauvé le téléphérique (et le maire) à 15 ans. Il ne lui a pas dit qu'il ne prenait jamais la cabine. Anecdotes : les marches montées ensemble ; le frein débloqué. Bavardage : il s'inquiète de ses repas, elle le taquine."
+   },
+   "gonzague": {
+    "qui": "mon ami du port,",
+    "nom": "Gonzague",
+    "sentiment": 0.7,
+    "fond": "La gare du bas est près du quai : l'après-midi, ils bavardent entre deux cabines et deux bateaux. Le piano : Gonzague l'a trouvé un matin de brouillard sur le quai, intact, une touche en moins ; Ernest était de garde en haut cette nuit-là et n'a rien vu ; personne ne sait comment il est arrivé là ; chacun a sa théorie (Ernest : un dirigeable ; Gonzague : il est tombé « tout doucement »). Gonzague lui fait passer des sardines grillées. Anecdotes : le matin du piano ; les sardines. Bavardage : « Rien de tombé ? » / « Une botte. Gauche. »"
+   },
+   "heloise": {
+    "qui": "l'ingénieure-en-chef",
+    "nom": "Héloïse",
+    "sentiment": 0.8,
+    "fond": "Il y a dix ans, elle a construit le téléphérique et lui en a confié la garde, après vingt ans d'escalier. Il lui envoie chaque soir un billet : « Rien à signaler, sauf… » (une mouette, un poème, un client vert). Elle lui a offert son képi neuf. Le jour où le maire de Port-Azur est resté coincé, elle est arrivée en courant, monocle de travers. Anecdotes : les billets ; le jour du maire. Bavardage : « Rien à signaler, Ernest ? » / « Sauf une mouette, Héloïse. »"
+   }
+  }
+ },
+ "gaston": {
+  "genre": "m",
+  "prenom": "Gaston",
+  "plan": [
+   "fils de cheminot — fils du chauffeur de la locomotive de la ligne des hautes terres, le train qui montait chercher la laine ; enfance sur le tender, à pelleter le charbon et à chanter.",
+   "mécanicien de la Bielle — à 20 ans, il conduit lui-même la locomotive, surnommée « la Bielle » ; quinze ans de ligne ; il servait le café aux bergers dans la cabine.",
+   "la dernière course — il y a quinze ans, un éboulement coupe la ligne et on ne la répare jamais ; la locomotive doit partir à la ferraille ; Gaston la rachète et la fait hisser en haut de la falaise (une roue s'échappe et tombe au port : elle est dans la collection de Gonzague) ; elle devient la machine à café.",
+   "mon café aujourd'hui — quarante tasses à la minute, et elle siffle ; chambres à ressorts d'Héloïse ; le majordome de Maître Rivet ; le professeur Boum et sa poudre de fer ; le neuvième toit en guise d'auvent ; le sandwich d'Achille chaque matin ; café acheté aux caravaniers de Tazira.",
+   "(confidence) le sifflet de onze heures — chaque soir à la fermeture, il tire un long coup de sifflet « pour dire bonsoir à la ligne », le signal qu'il donnait en arrivant en gare ; les voisins croient à une soupape ; parfois, il pleure un peu en le tirant."
+  ],
+  "reve": "rouvrir la ligne des hautes terres un seul dimanche, avec la machine à café en tête de train et une tasse fumante à chaque fenêtre",
+  "question": "« Café, thé ou chocolat ? » (cafe / the / chocolat) — cafe : ravi, « vous êtes de la maison » ; the : il fait la grimace (surtout pas à la menthe) puis promet d'en trouver ; chocolat : il en prépare un « pour les jours de pluie ». Rappels associés.",
+  "liens": {
+   "adele": {
+    "qui": "notre courageuse",
+    "nom": "Adèle",
+    "sentiment": 0.8,
+    "fond": "Il prépare chaque matin le sandwich d'Achille, lesté d'un petit plomb, gratuit jusqu'à l'atterrissage, et en garde un pour Adèle, qu'il force à manger. Anecdotes : le jour où le sandwich est tombé dans la cheminée de Boum ; le coup de sifflet de la machine en l'honneur d'Achille. Bavardage : le poids du plomb selon le vent."
+   },
+   "boum": {
+    "qui": "le professeur",
+    "nom": "Boum",
+    "sentiment": 0.7,
+    "fond": "Son client le plus bizarre : café à la poudre de fer, boîte spéciale derrière le comptoir ; son neuvième toit est devenu l'auvent de la terrasse. Anecdotes : le toit tombé du ciel pendant qu'il servait ; la cuillère aimantée. Bavardage : le nombre de cuillères selon la taille de l'idée."
+   },
+   "celeste": {
+    "qui": "ma cliente de nuit,",
+    "nom": "Céleste",
+    "sentiment": 0.8,
+    "fond": "Il lui remplit sa bouteille de nuit à 17 h ; quand elle s'endort à sa table, il coupe le sifflet de la machine et glisse un coussin. Elle lui apporte la météo des étoiles, qu'il affiche au comptoir. Anecdotes : le coussin ; le jour où il a oublié de couper le sifflet (elle a renversé sa tasse). Bavardage : la bouteille de nuit."
+   },
+   "rivet": {
+    "qui": "le père de mon majordome,",
+    "nom": "Maître Rivet",
+    "sentiment": 0.6,
+    "fond": "Le majordome-robot de la Bielle vient de la Fabrique ; il est lent parce que Rivet l'a construit pour ne jamais renverser une goutte. Gaston lui a mis un nœud papillon ; Rivet n'aime pas (« un robot n'a pas de cou »). Rivet déjeune au comptoir à midi et vérifie son robot. Anecdotes : le nœud papillon ; Gaston a surpris Rivet en train de remercier le majordome à voix basse. Bavardage : « Il a encore un nœud. » / « Il est élégant, Maître Rivet. »"
+   },
+   "tacquet": {
+    "qui": "mon horloger",
+    "nom": "Tacquet",
+    "sentiment": 0.7,
+    "fond": "Tacquet déjeune au comptoir à midi, montre en main : le sifflet de la machine doit retentir à midi pile ; un jour il avait deux secondes de retard, Tacquet a réglé la soupape lui-même. Depuis sa fenêtre, Tacquet entend aussi le long sifflet de onze heures du soir : il a remarqué qu'il est toujours pile à l'heure (« une soupape, ça ne siffle pas à l'heure ») mais n'a jamais rien demandé. Anecdotes : la soupape réglée ; Tacquet qui lève sa tasse à midi pile. Bavardage : « Midi ? » / « Midi. Et zéro seconde. »"
+   }
+  }
+ },
+ "gonzague": {
+  "genre": "m",
+  "prenom": "Gonzague",
+  "plan": [
+   "le fils du capitaine du Petit Piston — né au port, fils du vieux capitaine du remorqueur, le Petit Piston ; enfance à bord à pousser les barques de laine des bergers et les bateaux de cidre de Carène.",
+   "la grue et ce qui tombe — grutier à 18 ans ; il commence à ramasser tout ce qui tombe de la falaise : la roue de locomotive de Gaston, deux chapeaux-ventilateurs, un volant d'un vieux moteur de Firmin, des vieilles bottes par dizaines.",
+   "le matin du piano — un matin de brouillard, un piano posé sur le quai, intact, une touche en moins ; personne ne sait d'où il vient ; il y a six ans, une nuit, il trouve aussi un robot balayeur cabossé qui chante encore — faux (il ne sait pas à qui il est).",
+   "ma collection et mes quais — la grue le jour, la pêche du soir à côté d'Écrou ; Bricolette veut lui acheter son piano ; Ernest à la gare du bas ; il y a quelques jours, quelque chose de doré a rebondi près de la grue.",
+   "(confidence) pourquoi le Petit Piston dort — son père, le vieux capitaine, est mort il y a trois ans ; le Petit Piston s'est arrêté la même semaine et il ne l'a jamais relancé ; il ne veut pas l'entendre tourner sans lui ; il ne l'a pas dit à Écrou."
+  ],
+  "reve": "un musée de « tout ce qui tombe » sur le quai, avec le piano au milieu et quelqu'un pour en jouer ; et peut-être, un jour, laisser Écrou réveiller le Petit Piston",
+  "question": "« Vous gardez tout, ou vous jetez ? » (garde / jette / ca_depend) — garde : « un collègue ! » ; jette : il lui demande de jeter du haut de la falaise, côté grue ; ca_depend : il approuve, sauf pour les bottes. Rappels associés.",
+  "liens": {
+   "bricolette": {
+    "qui": "ma concurrente",
+    "nom": "Bricolette",
+    "sentiment": 0.3,
+    "fond": "Elle veut son piano et ses bottes ; il refuse le piano ; le premier lundi du mois, échange de bottes dépareillées. Anecdotes : l'offre de deux cents pièces ; la botte qu'elle lui a « empruntée » sur le quai. Bavardage : piano, bottes, méfiance amusée."
+   },
+   "cogne": {
+    "qui": "l'inventeur du moteur,",
+    "nom": "Firmin",
+    "sentiment": 0.6,
+    "fond": "Il crie depuis la balustrade, Gonzague répond d'en bas ; le volant de son vieux prototype est dans la collection (« ce qui tombe est à la grue »). Il a vu quelque chose de doré près de la grue. Anecdotes : la conversation à quatre-vingts mètres de hauteur ; le volant qu'il graisse pourtant chaque mois. Bavardage : « Ho ! » et l'engrenage."
+   },
+   "ecrou": {
+    "qui": "la mécanicienne",
+    "nom": "Écrou",
+    "sentiment": 0.3,
+    "fond": "Il l'aime bien, mais il voudrait qu'elle laisse le Petit Piston tranquille (le remorqueur de son père, mort il y a trois ans) ; pêche du soir côte à côte. Anecdotes : la manivelle cachée dans sa collection ; la toux du moteur, qui lui a serré le cœur. Bavardage : le Petit Piston, la pêche."
+   },
+   "ernest": {
+    "qui": "le gardien du téléphérique,",
+    "nom": "Ernest",
+    "sentiment": 0.7,
+    "fond": "Voisins de la gare du bas ; le mystère du piano (Ernest n'a rien vu de là-haut) ; les théories rivales ; les sardines grillées passées par la fenêtre de la cabine. Anecdotes : le matin du piano ; le jour où Ernest a fait redescendre une cabine vide juste pour lui renvoyer sa casquette envolée. Bavardage : ce qui est tombé aujourd'hui."
+   }
+  }
+ },
+ "heloise": {
+  "genre": "f",
+  "prenom": "Héloïse",
+  "plan": [
+   "la fille de la serrurière — fille d'une serrurière de Cliquetis ; enfant, elle ouvrait toutes les serrures de la rue « pour voir comment c'est dedans » ; sa mère lui a offert son premier monocle.",
+   "apprentie de Maître Rivet — à 15 ans, apprentie de Rivet à la Fabrique ; il lui apprend tout ; il fredonne en soudant une vieille chanson de bergers, toujours faux ; ensemble ils construisent le Zéphyr : elle les plans et le gaz, lui la machine à coudre géante pour l'enveloppe.",
+   "l'affaire du balayeur qui chantait — il y a six ans, inauguration du centième balayeur sur la Grande-Place, moitié elle, moitié Rivet ; elle a glissé dedans un cylindre qui chante la chanson de Rivet ; la foule rit, Rivet part sans un mot ; le lendemain le balayeur a disparu ; ils ne se parlent plus.",
+   "ingénieure-en-chef — le téléphérique (il y a dix ans), le monorail, la moitié des balayeurs, les lits à ressorts de la Bielle, le gaz du Zéphyr (une cuve, une odeur de chou) ; présidente du jury de la Foire ; le soir, banc 3 de la promenade, le même que Rivet, chacun à un bout.",
+   "(confidence) c'était un cadeau — le balayeur qui chantait était un cadeau pour les quarante ans de Fabrique de Rivet : trois mois à reconstituer de mémoire sa chanson ; elle n'a jamais pu le lui dire ; chaque soir, elle s'assoit au bout du banc en espérant qu'il parle le premier."
+  ],
+  "reve": "une machine qui pense — et, en attendant, un banc où l'on se parle",
+  "question": "« Si vous pouviez inventer une seule chose, ce serait quoi ? » (voler : « Une machine pour voler. » / temps : « Une machine à remonter le temps. » / rien : « Rien, tout existe déjà. ») — voler : le Zéphyr, Achille ; temps : un silence (le balayeur) ; rien : « vous avez parlé à Philibert ».",
+  "liens": {
+   "ambroise": {
+    "qui": "notre champion,",
+    "nom": "Ambroise",
+    "sentiment": 0.3,
+    "fond": "Juré fier et susceptible ; elle respecte l'automate, qui l'a battue en vingt-trois coups il y a quatorze ans (elle a applaudi la première). Anecdotes : ce match ; la réunion où il a voulu faire inscrire « imbattable » au procès-verbal. Bavardage : les trois prix."
+   },
+   "basile": {
+    "qui": "notre souffleur de bulles,",
+    "nom": "Basile",
+    "sentiment": 0.6,
+    "fond": "Juré joyeux et inutilisable : il trouve toutes les inventions merveilleuses. Elle inspecte sa chaudière chaque printemps. Anecdotes : la bulle autour du monocle ; il a voté pour tout le monde, y compris lui-même. Bavardage : l'inspection, le sourire."
+   },
+   "electre": {
+    "qui": "mon ancienne élève,",
+    "nom": "Électre",
+    "sentiment": 0.7,
+    "fond": "Sa meilleure élève ; elle lui a obtenu le labo Volta ; elle s'inquiète de ses nuits d'orage sur la tour. Anecdotes : l'éclair en bouteille montré à minuit ; la montée sur la tour pour la faire descendre. Bavardage : la prudence, la foudre."
+   },
+   "ernest": {
+    "qui": "le gardien du téléphérique,",
+    "nom": "Ernest",
+    "sentiment": 0.8,
+    "fond": "Elle lui a confié le téléphérique après ses vingt ans d'escalier ; elle collectionne ses billets du soir « Rien à signaler, sauf… ». Anecdotes : le maire coincé, elle arrivée en courant ; le billet « sauf un poème ». Bavardage : le rapport du jour."
+   },
+   "philibert": {
+    "qui": "notre inventeur",
+    "nom": "Philibert",
+    "sentiment": 0.6,
+    "fond": "Philibert dépose un brevet par semaine ; tous refusés (« déjà inventé ») ; elle les garde dans un tiroir à son nom, 312 brevets, et les lit tous ; elle espère en secret qu'il en trouvera un. Pour le jury, elle lui demande son avis ; il répond toujours « je n'y avais pas pensé ». Anecdotes : le brevet de la roue (avec schéma, très soigné) ; le tiroir qui ne ferme plus. Bavardage : « Un brevet cette semaine ? » / « Un parapluie. Il existait. »"
+   },
+   "rivet": {
+    "qui": "mon ancien maître,",
+    "nom": "Rivet",
+    "sentiment": 0.1,
+    "fond": "Apprentie de Rivet à 15 ans à la Fabrique ; ensemble, le Zéphyr. Il y a six ans, l'affaire du balayeur qui chantait : à l'inauguration du centième balayeur, la machine chante la chanson que Rivet fredonne en soudant ; la foule rit, il part sans un mot ; le balayeur disparaît la nuit même. Ils ne se parlent plus, mais s'assoient chaque soir sur le même banc de la promenade, chacun à un bout. Anecdotes : son apprentissage (il lui faisait refaire chaque soudure) ; l'inauguration. Bavardage : « Le banc est libre ? » / « Hm. Depuis six ans. »"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.7,
+    "fond": "Héloïse a conçu le Zéphyr et fabrique son gaz dans une cuve ; elle refuse d'en donner la recette à Zélie ; ça sent le chou. Zélie l'a piloté dix ans avant de commander l'aérodrome. Anecdotes : Zélie a fouillé ses poubelles pour trouver la recette et n'a trouvé que des trognons ; le premier vol d'essai, toutes les deux dans la nacelle. Bavardage : « Toujours pas la recette ? » / « Toujours pas, Zélie. Respirez par la bouche. »"
+   }
+  }
+ },
+ "leonce": {
+  "genre": "m",
+  "prenom": "Léonce",
+  "plan": [
+   "ma maison avec Boulon — 9 ans ; il vit avec son papa Wilfried et Boulon, maison 9 ; sa maman, Électre, habite au laboratoire Volta ; il déjeune chez elle le mercredi, au milieu des étincelles.",
+   "ma première fusée — à 8 ans, une fusée en tuyau de poêle ; elle n'a pas décollé, mais elle a fait une fumée énorme sur la place ; papa et maman sont arrivés en courant, ensemble.",
+   "Bidule dans la cave — avec Margot, il construit le robot Bidule dans la cave de Basile, entre les tonneaux de savon ; Bidule ne marche pas, mais il a un nom et un chapeau.",
+   "mes héros — le professeur Boum (qui lui a offert ses lunettes d'aviateur), Achille l'homme volant (il attend avec Adèle sur le banc de l'aérodrome), le Colosse qui lui a fait coucou ; un tour en Zéphyr où il a craché par la fenêtre, et la commandante l'a vu.",
+   "(confidence) pourquoi je fais des fusées qui fument — le jour de la grosse fumée, papa et maman sont venus ensemble et ont ri ensemble ; depuis, il fait exprès des fusées qui fument ; Bidule, c'est pour qu'ils rient encore tous les deux."
+  ],
+  "reve": "aller sur la lune en fusée avec Boulon, Margot pour les calculs, et papa et maman dans la même fusée",
+  "question": "« T'as déjà fait une bêtise énorme, toi ? » (oui / non / pas_encore : « Pas encore. ») — oui : il veut tout savoir, admiratif ; non : il est déçu, puis propose d'en faire une ensemble ; pas_encore : « on s'y met quand ? ». Rappels associés (tutoiement).",
+  "liens": {
+   "adele": {
+    "qui": "ma copine",
+    "nom": "Adèle",
+    "sentiment": 0.9,
+    "fond": "Il attend Achille avec elle sur le banc de l'aérodrome ; elle lui raconte comment Achille sautait des toits. Anecdotes : elle l'a attrapé par le col sur le toit de la Bielle, parapluie ouvert ; elle lui a promis qu'Achille lui ferait un tour « quand il saura atterrir ». Bavardage : Léonce compte les huit d'Achille dans le ciel."
+   },
+   "boum": {
+    "qui": "mon héros, le professeur",
+    "nom": "Boum",
+    "sentiment": 1.0,
+    "fond": "Son idole : les lunettes d'aviateur offertes, la phrase « la fumée, c'est le début de tout ». Maman dit « comme Héloïse ». Anecdotes : le jour où Boum l'a laissé appuyer sur le levier d'une toute petite explosion (une pétarade de rien) ; les lunettes ficelées. Bavardage : Léonce raconte sa dernière fumée, Boum s'enthousiasme."
+   },
+   "electre": {
+    "qui": "ma maman",
+    "nom": "Électre",
+    "sentiment": 0.9,
+    "fond": "Sa maman, au labo Volta ; le mercredi midi au milieu des étincelles ; elle veut qu'il devienne « comme Héloïse ». Anecdotes : la fusée qui fumait, papa et maman arrivés en courant ; les cheveux dressés de la photo. Bavardage : les gants, la prudence, la fusée suivante."
+   },
+   "margot": {
+    "qui": "mon associée",
+    "nom": "Margot",
+    "sentiment": 0.9,
+    "fond": "Ils construisent Bidule dans la cave de Basile, entre les tonneaux de savon ; Léonce fait les fusées, Margot les calculs ; elle le commande, il la fait rire. Anecdotes : le jour où Bidule a fait un pas (en tombant) ; Margot a calculé que sa fusée aurait décollé « avec trois kilos de moins de fumée ». Bavardage : « Bidule a bougé ! » / « Il est tombé, Léonce. Ce n'est pas pareil. »"
+   },
+   "wilfried": {
+    "qui": "mon papa",
+    "nom": "Wilfried",
+    "sentiment": 1.0,
+    "fond": "Il vit avec son papa et Boulon ; papa a construit Boulon pour lui, après la séparation, pour qu'il ait quelqu'un le soir. Anecdotes : papa le soulève d'une main avec son bras de laiton ; quand il pleut, papa se gratte le bras et Léonce lui gratte aussi. Bavardage : « Papa ! Boulon a mangé un écrou ! » / « Il a faim, c'est bon signe. »"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.7,
+    "fond": "Pendant son tour en Zéphyr, il a craché par la fenêtre ; la commandante l'a vu depuis le sol (avec ses jumelles) ; punition : faire briller la rambarde de la nacelle. Depuis, il veut être pilote. Anecdotes : le crachat vu aux jumelles ; la rambarde. Bavardage : « Je peux piloter ? » / « Quand tu cracheras moins loin. »"
+   }
+  }
+ },
+ "margot": {
+  "genre": "f",
+  "prenom": "Margot",
+  "plan": [
+   "mes premiers calculs — 8 ans et demi ; à 4 ans, elle comptait déjà les bulles de son papa, Basile ; sa maman, Lise, souffleuse de verre, est morte quand elle avait 2 ans ; elle garde ses billes de verre dans une boîte et les a toutes comptées (127).",
+   "les comptes de la maison — depuis ses 6 ans, elle tient les comptes du savon de son papa et lui rappelle de manger ; elle a calculé qu'il souffle 31 % de ses bulles « pour lui-même ».",
+   "la partie contre l'automate — à la dernière Foire, elle tient 41 coups contre l'automate d'Ambroise, la plus longue partie de son histoire ; elle perd ; elle dit « logique » ; il lui offre un pion d'ivoire.",
+   "mes projets — Bidule avec Léonce dans la cave ; la lunette de Céleste le soir ; le temps du Zéphyr (3 minutes 12) ; l'engrenage d'or plus Gonzague ; le moteur perpétuel est impossible, mais il ne faut pas le dire à monsieur Cogne.",
+   "(confidence) les bulles en forme de cœur — elle compte les bulles en cœur de son papa : il y en a plus les jours de pluie ; elle a compris que c'est quand il pense à maman ; et elle a calculé qu'il lui faudrait quatorze ans pour devenir astronome et ingénieure ; dans quatorze ans, papa sera seul ; elle a refait le calcul onze fois."
+  ],
+  "reve": "devenir astronome et ingénieure-en-chef, découvrir une étoile et lui donner le nom de sa maman ; et construire une machine à bulles automatique pour que papa ait le temps de manger",
+  "question": "« Tu préfères les chiffres ou les lettres ? » (chiffres / lettres / aucun : « Ni l'un ni l'autre. ») — chiffres : « logique » ; lettres : elle concède que Rosette en a besoin ; aucun : elle calcule qu'il reste les dessins. Rappels associés (tutoiement).",
+  "liens": {
+   "ambroise": {
+    "qui": "mon adversaire",
+    "nom": "monsieur Échec",
+    "sentiment": 0.6,
+    "fond": "Elle a tenu 41 coups contre l'automate, perdu, dit « logique » ; il lui a offert un pion d'ivoire qu'elle garde dans sa boîte de billes. Anecdotes : les onze minutes de réflexion de l'automate ; son carnet de calculs d'ouvertures. Bavardage : la revanche, quand les calculs seront finis."
+   },
+   "basile": {
+    "qui": "mon papa",
+    "nom": "Basile",
+    "sentiment": 0.9,
+    "fond": "Elle s'occupe de son papa autant qu'il s'occupe d'elle : comptes du savon, repas oubliés. Anecdotes : les 31 % de bulles « pour lui-même » ; il a laissé Bidule s'installer dans la cave et lui a fait un chapeau en bulle durcie. Elle compte en secret ses bulles en cœur. Bavardage : le dîner oublié."
+   },
+   "celeste": {
+    "qui": "l'astronome",
+    "nom": "Céleste",
+    "sentiment": 1.0,
+    "fond": "Son modèle : dix minutes à l'oculaire chaque soir, des calculs de distances ; Céleste la prend au sérieux. Margot ne sait pas que l'étoile « Cliquetis » est celle qu'elle avait montrée du doigt. Anecdotes : les dix minutes ; Céleste lui a prêté un vrai carnet d'observation, avec son nom sur la couverture. Bavardage : les secondes économisées."
+   },
+   "cogne": {
+    "qui": "ce pauvre",
+    "nom": "monsieur Cogne",
+    "sentiment": 0.6,
+    "fond": "Elle sait que c'est impossible et ne le lui dira jamais ; elle a pourtant aidé à retrouver l'engrenage (l'addition). Anecdotes : la question des tours par jour ; le dessin avec un cœur. Bavardage : elle esquive ses questions."
+   },
+   "leonce": {
+    "qui": "mon associé",
+    "nom": "Léonce",
+    "sentiment": 0.7,
+    "fond": "Bidule dans la cave ; elle calcule, il improvise ; il l'exaspère et la fait rire. Anecdotes : le pas de Bidule (une chute) ; elle a dû expliquer à Basile pourquoi la cave sentait la fumée. Bavardage : la différence entre bouger et tomber."
+   }
+  }
+ },
+ "philibert": {
+  "genre": "m",
+  "prenom": "Philibert",
+  "plan": [
+   "l'enfant qui avait toujours une idée de retard — à 7 ans, il invente la cuillère ; sa grand-mère lui en tend une ; à 9 ans, le cerf-volant ; à 10 ans, la chaussette ; il a toujours eu ses idées « juste après tout le monde ».",
+   "mes trois cent douze brevets — depuis vingt ans, il dépose un brevet par semaine à l'Académie : tous refusés, « déjà inventé » ; le plus célèbre, celui de la roue ; Héloïse les range dans un tiroir à son nom.",
+   "la boîte à rien — il y a cinq ans, une boîte vide qu'il allait jeter ; Bricolette la lui achète huit pièces : c'est sa seule invention vendue, et la meilleure vente du Bazar ; Basile ne l'aime pas.",
+   "mes journées à la Foire — il passe de stand en stand ; le jury lui demande son avis (« je n'y avais pas pensé ») ; le tourne-pages du piano de Prudence est son idée, une plaque de laiton le dit ; son voyage en Zéphyr à Carène, raté (ils avaient inventé le cidre) ; le soir, le banc avec Basile, la promenade avec Prudence.",
+   "(confidence) ce qu'il y a dans ma boîte à rien — sa toute première boîte à rien, chez lui, n'est pas vide : il y a un papier plié avec une idée vraiment nouvelle, écrite une nuit d'insomnie ; il ne l'a jamais relue ni déposée ; il a peur, s'il l'ouvre, de découvrir que quelqu'un l'a eue avant lui."
+  ],
+  "reve": "inventer une chose qui n'existe pas encore, même toute petite, même inutile, et entendre quelqu'un dire en la voyant : « je n'y avais pas pensé »",
+  "question": "« Vous avez déjà eu une idée que personne n'avait eue avant vous ? » (oui / non / je_crois : « Je crois, oui. ») — oui : admiratif et un peu jaloux ; non : soulagé, « bienvenue au club » ; je_crois : « ne vérifiez surtout pas ». Rappels associés.",
+  "liens": {
+   "basile": {
+    "qui": "mon voisin de banc",
+    "nom": "Basile",
+    "sentiment": 0.3,
+    "fond": "Il partage le banc de la promenade avec Basile chaque soir ; il ne s'est pas tout à fait remis de « du rien entouré de bois ». Anecdotes : la semaine de bouderie ; la boîte à rien qui a flotté trois secondes dans une bulle, la seule fois où quelqu'un a fait une chose nouvelle avec sa boîte. Bavardage : Philibert, encore piqué, Basile, conciliant."
+   },
+   "bricolette": {
+    "qui": "ma seule cliente,",
+    "nom": "Bricolette",
+    "sentiment": 0.9,
+    "fond": "Elle a acheté sa boîte à rien et lui en commande vingt par mois ; elle est la seule à croire qu'il est un vrai inventeur. Anecdotes : il a voulu la rembourser le jour même ; les étiquettes « inutile » écrites les jours de pluie. Bavardage : les commandes."
+   },
+   "heloise": {
+    "qui": "l'ingénieure-en-chef",
+    "nom": "Héloïse",
+    "sentiment": 0.5,
+    "fond": "Elle refuse ses brevets avec gentillesse (312) ; il ignore qu'elle les garde tous et les lit. Elle lui demande son avis pour le jury. Anecdotes : le brevet de la roue ; elle lui a dit un jour « au moins, vous inventez dans le bon ordre ». Bavardage : le brevet de la semaine."
+   },
+   "prudence": {
+    "qui": "mon amie",
+    "nom": "Prudence",
+    "sentiment": 0.9,
+    "fond": "Le tourne-pages du piano était son idée, dite un soir à la Bielle ; Prudence l'a construit et a vissé une plaque de laiton « Tourne-pages : idée de Philibert Vis », la seule fois où son nom est sur une invention. Ils se promènent le soir sur la promenade. Anecdotes : la plaque ; un soir, sous sa fenêtre, il a entendu un piano jouer, pas le mécanique : celui-là se trompait et recommençait ; il n'a rien dit. Bavardage : « Il a bien tourné les pages ? » / « Toutes, Philibert. Grâce à vous. »"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.6,
+    "fond": "Il a demandé au Zéphyr de l'emmener là où personne n'a jamais rien inventé ; Gustave, le frère de Zélie, l'a déposé à Carène ; ils avaient inventé le cidre. Zélie lui a fait un billet « Aller simple pour nulle part », qu'il garde dans son chapeau. Anecdotes : le voyage raté ; le billet. Bavardage : « Une destination, Philibert ? » / « Un endroit sans idées. » / « Il n'y en a pas. »"
+   }
+  }
+ },
+ "prudence": {
+  "genre": "f",
+  "prenom": "Prudence",
+  "plan": [
+   "le piano de ma grand-mère — enfance chez sa grand-mère, qui avait un vieux piano droit ; Prudence y jouait des heures, très bien, mais toujours seule, porte fermée.",
+   "l'atelier des boîtes à musique — à 16 ans, apprentie chez la vieille Mme Carillon, fabricante de boîtes à musique, rue des Ressorts ; elle apprend les cylindres et les picots ; Mme Carillon lui lègue ses outils.",
+   "douze mille picots — elle décide d'apprendre à un piano à jouer tout seul ; trois ans, douze mille picots plantés à la main ; le tourne-pages vient d'une idée de Philibert (plaque de laiton) ; le piano salue à la fin.",
+   "ma Foire, mon jury, mon rival — stand 1 ; deuxième trois années de suite derrière l'automate d'Ambroise ; jurée cette année ; le piano enrhumé le soir (la vapeur de savon de Basile) ; la nuit de la musique inconnue (avec Céleste) ; les rythmes de Tazira notés depuis le Zéphyr.",
+   "(confidence) je joue, mais seulement seule — au concert de l'Académie, à 12 ans, ses doigts ont gelé devant la salle : pas une note ; ça ne l'a jamais quittée ; elle joue encore chaque soir, chez elle, fenêtres fermées ; le piano mécanique joue à sa place, picot par picot, exactement comme elle."
+  ],
+  "reve": "qu'un soir, à la Bielle, son piano s'arrête au milieu d'une valse et qu'elle ose finir le morceau elle-même, devant tout le monde",
+  "question": "« Vous chantez, vous ? Devant les gens ? » (oui / jamais / seul : « Seulement quand je suis seul. ») — oui : elle admire ce courage ; jamais : « nous sommes deux » ; seul : elle sourit, bouleversée, sans expliquer. Rappels associés.",
+  "liens": {
+   "ambroise": {
+    "qui": "mon rival",
+    "nom": "Ambroise",
+    "sentiment": -0.3,
+    "fond": "Trois fois deuxième derrière l'automate au Rouage d'Honneur ; elle est persuadée qu'il triche (l'automate ; Ambroise, elle ne sait pas). Anecdotes : la valse jouée pendant le match, le pion avancé en rythme ; sa demande d'ouvrir l'automate devant le jury. Bavardage : « Votre automate a bien dormi ? » / « Il a révisé. Votre piano tousse toujours ? »"
+   },
+   "basile": {
+    "qui": "mon voisin",
+    "nom": "Basile",
+    "sentiment": 0.6,
+    "fond": "Stands voisins ; son savon enrhume le piano le soir (bulles dans le cylindre). Elle soupire, mais le trouve adorable. Anecdotes : l'éternuement en pleine valse ; le paravent peint. Bavardage : le rhume du piano."
+   },
+   "celeste": {
+    "qui": "l'astronome",
+    "nom": "Céleste",
+    "sentiment": 0.6,
+    "fond": "La nuit de la musique inconnue coïncide avec la nuit où la lueur bleue a pulsé deux fois par minute ; elles gardent ce secret à deux. Prudence a transcrit l'air sur un cylindre. Anecdotes : la comparaison à la Bielle ; Céleste a demandé à entendre l'air sous les étoiles, à l'observatoire. Bavardage : guetter le retour du phénomène."
+   },
+   "philibert": {
+    "qui": "mon ami",
+    "nom": "Philibert",
+    "sentiment": 0.7,
+    "fond": "Son idée de tourne-pages et la plaque de laiton ; les promenades du soir ; elle le trouve plus inventeur qu'il ne croit. (Elle ignore qu'il l'a entendue jouer.) Anecdotes : le soir de l'idée, griffonnée sur une serviette de la Bielle ; elle lui fait écouter chaque nouveau morceau en premier. Bavardage : le tourne-pages, la promenade."
+   }
+  }
+ },
+ "rivet": {
+  "genre": "m",
+  "prenom": "Rivet",
+  "plan": [
+   "le fils du forgeron — fils de forgeron ; à 16 ans, un marteau-pilon lui écrase le bras gauche ; il se forge son premier bras de fer, « un bras qui ne discute pas » ; c'est là qu'il commence à aimer les machines plus que les gens.",
+   "la Fabrique — il fonde la Fabrique de robots : balayeurs, porteurs, le majordome du Café de la Bielle ; deux apprentis qui comptent : Héloïse, à 15 ans, puis Wilfried.",
+   "la machine à coudre géante — pour l'enveloppe du Zéphyr, il construit une machine à coudre géante ; il y a quinze ans, elle prend le bras droit de Wilfried ; il l'aide à se fabriquer un bras de laiton et démonte la machine le lendemain, sans un mot.",
+   "le Colosse et mes balayeurs — le Colosse, son chef-d'œuvre, devait garder la cité contre les tempêtes et a peur du tonnerre (il soupçonne de lui avoir donné sa propre peur) ; il cherche un balayeur qui chante ; il ne parle plus à Héloïse ; le soir, le banc de la promenade.",
+   "(confidence) c'est moi qui l'ai jeté — la nuit de l'inauguration, il a poussé le balayeur qui chantait par-dessus la balustrade ; il croyait qu'Héloïse se moquait de lui devant la cité ; il a compris trop tard que c'était sa chanson à lui, celle qu'il fredonnait quand elle était apprentie ; depuis il le cherche, pour l'entendre une fois encore."
+  ],
+  "reve": "retrouver le balayeur qui chante ; et voir le Colosse rester debout sur la promenade un soir d'orage, sans trembler",
+  "question": "« Hm. Vous faites confiance aux machines ? » (oui / non / plus_qu_aux_gens : « Plus qu'aux gens. ») — oui : « Hm. Bien. » ; non : « vous avez raison, elles sont faites par des gens » ; plus_qu_aux_gens : il se tait, puis dit que ce n'est pas une bonne nouvelle. Rappels associés.",
+  "liens": {
+   "capucine": {
+    "qui": "la fille aux confettis,",
+    "nom": "Capucine",
+    "sentiment": -0.4,
+    "fond": "Ses confettis épuisent les balayeurs ; la réclamation signée « BIP » (il nie l'avoir tapée) ; sa réponse pleine de confettis a bloqué la machine à trier de la Fabrique. Anecdotes : la réponse ; le balayeur qui fait demi-tour. Bavardage : sec, « Hm. »"
+   },
+   "ecrou": {
+    "qui": "la mécanicienne",
+    "nom": "Écrou",
+    "sentiment": 0.5,
+    "fond": "Il veut qu'elle lui construise un bateau-robot ; elle refuse. Il la respecte : la réparation de la grue, sept heures côte à côte, l'hiver dernier. Anecdotes : la grue ; les plans glissés sous sa porte, revenus annotés « non » en rouge. Bavardage : « Hm. »"
+   },
+   "gaston": {
+    "qui": "le cafetier",
+    "nom": "Gaston",
+    "sentiment": 0.3,
+    "fond": "Il a construit le majordome de la Bielle, lent mais impeccable ; il désapprouve le nœud papillon ; il y déjeune à midi pour le surveiller. Anecdotes : le nœud papillon ; il a réglé le majordome pour qu'il ne serve plus de café « à la poudre de fer » sans demander. Bavardage : « Hm. Ce nœud. »"
+   },
+   "heloise": {
+    "qui": "mon ancienne apprentie,",
+    "nom": "Héloïse",
+    "sentiment": -0.3,
+    "fond": "La meilleure apprentie qu'il ait eue ; ensemble le Zéphyr. Il croit qu'elle s'est moquée de lui à l'inauguration du balayeur qui chantait (c'était un cadeau, il l'a compris trop tard) ; c'est lui qui a jeté le balayeur (secret). Le même banc chaque soir, sans un mot. Anecdotes : la première soudure parfaite d'Héloïse ; le balayeur qui chantait faux, devant toute la cité. Bavardage : deux répliques sèches, un silence."
+   },
+   "wilfried": {
+    "qui": "mon ancien apprenti",
+    "nom": "Wilfried",
+    "sentiment": 0.6,
+    "fond": "Wilfried, apprenti à 16 ans ; il y a quinze ans, la machine à coudre géante de la Fabrique (pour l'enveloppe du Zéphyr) lui a pris le bras droit ; Rivet, lui-même au bras de fer, l'a aidé à fabriquer son bras de laiton et a démonté la machine le lendemain. Il trouve Boulon inutile (« un robot qui remue la queue »), mais admire le cœur. Anecdotes : la nuit des plans du bras ; le Colosse : Wilfried dit « un robot qui a peur, c'est un robot qui a un cœur ». Bavardage : « Hm. Ton bras ? » / « Il gratte, Maître. Il pleut. »"
+   }
+  }
+ },
+ "rosette": {
+  "genre": "f",
+  "prenom": "Rosette",
+  "plan": [
+   "la fille du typographe — fille du typographe de l'Académie ; elle apprend à lire à l'envers dans les plombs avant de lire à l'endroit ; son premier article, à 8 ans : « Le chat du voisin a mangé un ressort ».",
+   "la naissance de la Gazette — à 22 ans, elle fonde la Gazette des Rouages avec la vieille presse à vapeur de son père, qui rate une lettre sur cent ; les lecteurs jouent à les retrouver.",
+   "mes plus belles unes — le maire de Port-Azur coincé dans le téléphérique (elle a publié son poème) ; le concours de l'éclairage raté ; le neuvième toit de Boum sur la terrasse de la Bielle ; « Achille Plumevent toujours en vol », huit jours de suite.",
+   "mes journées de chroniqueuse — la Foire le matin, la Bielle à midi, l'aérodrome et le labo Volta l'après-midi ; ses « Nouvelles des autres villes » arrivent par le courrier du Zéphyr ; l'exclusivité de « la bonne » explosion de Boum ; le visiteur mystérieux en page quatre.",
+   "(confidence) la brève que j'ai inventée — un matin sans nouvelles, elle a inventé une brève : « À Tazira, un chat vole une carte au trésor » ; trois jours plus tard, le courrier du Zéphyr l'a confirmée ; elle ne sait pas si elle a deviné ou si elle porte chance ; elle n'a plus jamais rien inventé."
+  ],
+  "reve": "une édition spéciale avec en une, en lettres énormes, « ACHILLE A ATTERRI » — les lettres sont déjà composées en plomb et attendent dans un tiroir",
+  "question": "« Pour ma rubrique : quelle est la plus grande nouvelle de votre vie ? » (arrivee : « Mon arrivée sur l'archipel. » / victoire : « J'ai vaincu un monstre. » / secret : « Ça, c'est un secret. ») — elle invente un titre pour chaque réponse ; secret : elle range son crayon, dévorée de curiosité.",
+  "liens": {
+   "adele": {
+    "qui": "la sœur de notre homme volant,",
+    "nom": "Adèle",
+    "sentiment": 0.6,
+    "fond": "Rosette titre chaque jour sur Achille ; elle sait qu'Adèle lui en veut. En secret, elle garde dans un tiroir le titre « ACHILLE A ATTERRI » déjà composé en lettres de plomb. Anecdotes : l'interview au porte-voix (« avez-vous faim ? ») ; la coquille « toujours en vo ». Bavardage : Rosette demande des nouvelles, Adèle répond « lisez votre journal »."
+   },
+   "boum": {
+    "qui": "ma meilleure source,",
+    "nom": "Boum",
+    "sentiment": 0.8,
+    "fond": "Une explosion par semaine : il fait vivre la Gazette ; il lui a promis l'exclusivité de « la bonne ». Anecdotes : l'interview sous la table ; elle a gardé un morceau du onzième toit sur son bureau, en presse-papier. Bavardage : la date de la bonne explosion."
+   },
+   "bricolette": {
+    "qui": "ma meilleure annonceuse,",
+    "nom": "Bricolette",
+    "sentiment": 0.7,
+    "fond": "La réclame du Bazar paraît chaque matin ; la coquille « rien ne sert à ien » a triplé les ventes ; Rosette achète ses plumes de corbeau au Bazar. Anecdotes : la coquille ; l'interview où Bricolette a parlé une heure sans reprendre son souffle. Bavardage : la réclame du lendemain."
+   },
+   "electre": {
+    "qui": "ma docteure préférée,",
+    "nom": "Électre",
+    "sentiment": 0.8,
+    "fond": "Les après-midi au labo ; l'interview au crayon fondu et aux cheveux dressés ; les bottes en caoutchouc obligatoires ; le titre sur les rideaux. Anecdotes : l'interview ; la photo des cheveux de Léonce dans la Gazette. Bavardage : les bottes, la question."
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.7,
+    "fond": "Ses « Nouvelles des autres villes » arrivent par le courrier du Zéphyr : Rosette l'attend chaque après-midi à l'aérodrome. Zélie n'aime pas les titres « Le Zéphyr a trois minutes de retard ». Anecdotes : elle a sauté sur le sac de courrier avant qu'il touche terre ; la brève du chat de Tazira, confirmée par le courrier. Bavardage : « Des nouvelles de Tazira ? » / « Pas avant que vous ayez corrigé le retard d'hier. »"
+   }
+  }
+ },
+ "tacquet": {
+  "genre": "m",
+  "prenom": "Tic",
+  "plan": [
+   "né à midi pile — né à midi pile, d'après sa mère, qui l'a vérifié sur la grande horloge par la fenêtre ; on l'a appelé Tic, et le reste a suivi.",
+   "quarante-deux ans d'horlogerie — apprenti horloger à 16 ans ; gardien et remonteur de la grande horloge de l'Académie depuis trente ans ; trois réveils qui sonnent à la même seconde.",
+   "la montre de la distraction — il y a trente et un ans, Bricolette entre dans sa boutique pour lui vendre un réveil muet ; distrait, il fabrique ce jour-là une montre qui tourne à l'envers et la lui offre ; fiançailles ; chaque année, à l'anniversaire, il lui en fait une nouvelle.",
+   "mes journées réglées — 7 h, l'horloge ; midi, le comptoir de la Bielle, montre en main pour le sifflet ; le soir, échecs avec Ambroise à la table 2 ; au nouvel an, les confettis de Capucine depuis sa tour ; la seule seconde d'avance ; le chronomètre qu'il a envoyé par le Zéphyr à Pépin, à Ramure, pour la Grande Course.",
+   "(confidence) pourquoi je repousse le mariage — c'est lui qui a repoussé la date sept fois, chaque fois avec une bonne excuse ; il a peur qu'une fois heureux pour de bon, le temps passe plus vite ; il sait que c'est ridicule pour un horloger."
+  ],
+  "reve": "arrêter la grande horloge une minute, une seule, le jour de son mariage, pour que le temps les attende",
+  "question": "« Vous êtes plutôt en avance ou en retard ? » (avance / retard / a_l_heure : « Toujours à l'heure. ») — avance : « une qualité, avec modération » ; retard : il soupire et lui offre (en pensée) un réveil ; a_l_heure : enchanté. Rappels associés.",
+  "liens": {
+   "ambroise": {
+    "qui": "mon vieil ami",
+    "nom": "Ambroise",
+    "sentiment": 0.7,
+    "fond": "Quarante ans d'échecs chaque soir à la table 2 de la Bielle ; la pendule d'échecs en laiton de Tacquet ; Ambroise perd presque toujours au temps (score tenu dans un carnet). Tacquet ne joue jamais contre l'automate. Anecdotes : la partie de 1 h 40 perdue à la dernière seconde ; le soir où Ambroise a voulu arrêter la pendule « pour réfléchir », scandale. Bavardage : le temps qui file, la réflexion qui traîne."
+   },
+   "bricolette": {
+    "qui": "ma fiancée",
+    "nom": "Bricolette",
+    "sentiment": 0.95,
+    "fond": "Fiancés depuis trente et un ans ; la montre à l'envers, fabriquée le jour où elle est entrée chez lui ; une nouvelle chaque année, qu'elle vend (il proteste pour la forme). La date du mariage repoussée sept fois (c'est lui, mais il ne le dit pas). Anecdotes : la rencontre et le réveil muet ; elle arrive toujours à l'heure « dans l'autre sens ». Bavardage : tendre, autour de l'heure."
+   },
+   "capucine": {
+    "qui": "cette tornade de",
+    "nom": "Capucine",
+    "sentiment": 0.1,
+    "fond": "Il la laisse tirer du haut de sa tour au nouvel an, à contrecœur ; un de ses confettis a causé la seule seconde d'avance de l'horloge, il y a deux ans. Il lui a offert une montre à l'envers en leçon. Anecdotes : la seconde d'avance ; les confettis retrouvés dans les rouages jusqu'en mai. Bavardage : négociation du prochain nouvel an."
+   },
+   "gaston": {
+    "qui": "le patron de la Bielle,",
+    "nom": "Gaston",
+    "sentiment": 0.8,
+    "fond": "Le sifflet de midi, vérifié montre en main chaque jour ; la soupape qu'il a réglée lui-même. Il entend le sifflet de onze heures du soir et devine que ce n'est pas une soupape, sans rien dire. Anecdotes : les deux secondes de retard ; un café offert pour chaque midi pile. Bavardage : l'heure exacte."
+   }
+  }
+ },
+ "wilfried": {
+  "genre": "m",
+  "prenom": "Wilfried",
+  "plan": [
+   "le fils du ressortier — fils d'un fabricant de ressorts ; enfance à trier les ressorts par taille avec Pistache, le vieux chien de la famille, son meilleur ami.",
+   "apprenti à la Fabrique — à 16 ans, apprenti de Maître Rivet ; balayeurs, porteurs ; Rivet parle peu mais montre bien.",
+   "la machine à coudre géante — il y a quinze ans, en cousant l'enveloppe du Zéphyr, sa manche se prend dans la machine à coudre géante ; il perd le bras droit ; avec l'aide de Rivet, il se fabrique un bras de laiton, plus fort, qui gratte quand il pleut.",
+   "Électre, Léonce et Boulon — il rencontre Électre quand son bras aimanté reste collé à sa bobine ; mariage, Léonce ; séparation sans dispute quand Léonce a 4 ans ; il construit Boulon pour que le petit ait quelqu'un le soir ; stand 4 de la Foire ; Boulon à Tazira, les chats du port.",
+   "(confidence) le cœur de Boulon — le petit moteur-cœur de Boulon bat au rythme qu'il a compté sur la poitrine de Léonce bébé, une nuit de fièvre où il avait eu très peur ; quand Boulon est content, c'est le cœur de son fils qui bat plus vite."
+  ],
+  "reve": "un bras qui sentirait la chaleur d'une main ; et que Boulon attrape enfin un chat de Tazira, juste pour lui dire bonjour",
+  "question": "« Vous préférez les chiens ou les chats ? » (chiens / chats / robots) — chiens : Boulon remue la queue ; chats : « Boulon ne vous en voudra pas… trop » ; robots : il rit, « alors vous préférez Boulon ». Rappels associés.",
+  "liens": {
+   "electre": {
+    "qui": "la maman de Léonce,",
+    "nom": "Électre",
+    "sentiment": 0.4,
+    "fond": "Leur rencontre (le bras collé à la bobine) ; séparés sans dispute quand Léonce avait 4 ans ; déjeuner du dimanche ; elle répare le cœur de Boulon ; la pommade au graphite les jours de pluie. Anecdotes : la bobine ; Boulon qui aboie après les étincelles du labo. Bavardage : tendresse un peu gênée, Léonce au milieu."
+   },
+   "leonce": {
+    "qui": "mon fils",
+    "nom": "Léonce",
+    "sentiment": 1.0,
+    "fond": "Son fils, 9 ans, qui vit avec lui ; Boulon a été construit pour lui ; le cœur de Boulon bat au rythme de Léonce bébé (secret). Anecdotes : il le porte sur le bras de laiton ; la fusée qui fumait, où ils ont ri avec Électre. Bavardage : Boulon, les bêtises du jour."
+   },
+   "rivet": {
+    "qui": "mon vieux maître,",
+    "nom": "Maître Rivet",
+    "sentiment": 0.8,
+    "fond": "Son maître ; l'accident de la machine à coudre géante ; Rivet l'a aidé à faire son bras, et a démonté la machine. Rivet trouve Boulon inutile mais s'arrête toujours pour le caresser quand il croit que personne ne regarde. Anecdotes : le bras ; Rivet caressant Boulon. Bavardage : « Hm. »"
+   },
+   "zelie": {
+    "qui": "la commandante",
+    "nom": "Zélie",
+    "sentiment": 0.7,
+    "fond": "Boulon est allé à Tazira en Zéphyr ; il a couru après les chats du port, n'en a attrapé aucun ; eux l'ont griffé. Zélie sait que l'enveloppe du Zéphyr a coûté un bras à Wilfried et le remercie à chaque vol. Anecdotes : Boulon aboyant après les nuages pendant tout le vol ; le retour de Tazira, nez rayé. Bavardage : « Boulon remonte à bord ? » / « S'il laisse les nuages tranquilles. »"
+   }
+  }
+ },
+ "zelie": {
+  "genre": "f",
+  "prenom": "Zélie",
+  "plan": [
+   "la fille des cerfs-volants — enfance maison 1, au bord du grand champ qui deviendra l'aérodrome ; avec son petit frère Gustave, elle fait voler des cerfs-volants plus grands qu'eux.",
+   "dix ans aux commandes du Zéphyr — le dirigeable d'Héloïse, gonflé d'un gaz secret qui sent le chou ; dix ans de pilotage entre Cliquetis, Tazira et Carène, par tous les temps.",
+   "le jour où j'ai laissé les commandes — il y a trois ans, elle annonce que ses yeux fatiguent ; on la nomme commandante de l'aérodrome ; Gustave prend le manche ; elle reste au sol à s'inquiéter, « c'est pire ».",
+   "mon aérodrome aujourd'hui — vols gratuits (les ingénieurs paient) ; depuis ce printemps, escale à Ramure sur l'aire au nord du village, avec le courrier de Plumette ; Achille refusé ; Adèle sur le banc ; Rosette qui guette les nouvelles ; elle monte encore à bord, de jour, comme passagère.",
+   "(confidence) ce n'était pas mes yeux — une nuit, au-dessus du Cœur-de-Pierre, toutes les boussoles se sont mises à tourner ; trois heures perdue dans le brouillard, une lueur bleue sous la nacelle ; depuis, elle a peur de piloter ; ses yeux vont très bien ; elle déteste les boussoles qui mentent."
+  ],
+  "reve": "reprendre les commandes un jour, de jour et par beau temps, jusqu'à Ramure, et faire coucou à Plumette en vol",
+  "question": "« Vous êtes déjà monté dans le Zéphyr ? » (oui / pas_encore / peur : « J'ai un peu peur. ») — oui : elle demande s'il a eu le mal de l'air ; pas_encore : elle l'y invite, c'est gratuit ; peur : douce, « la peur, je connais ». Rappels associés.",
+  "liens": {
+   "adele": {
+    "qui": "mon amie du banc",
+    "nom": "Adèle",
+    "sentiment": 0.7,
+    "fond": "Elle a dû refuser à Achille d'atterrir sur le Zéphyr (l'enveloppe n'aurait pas tenu) et s'en veut un peu ; Adèle est sur le banc de l'aérodrome tous les matins : Zélie lui prête ses jumelles et lui apporte un café. Anecdotes : le refus au porte-voix ; le filet de pêche tendu entre deux mâts, raté de dix mètres. Bavardage : Zélie promet un nouveau plan, Adèle demande s'il y a un filet."
+   },
+   "heloise": {
+    "qui": "la constructrice de mon Zéphyr,",
+    "nom": "Héloïse",
+    "sentiment": 0.7,
+    "fond": "Elle confie sa vie au gaz d'Héloïse sans en connaître la recette (ça sent le chou). Anecdotes : les trognons trouvés dans les poubelles ; le premier vol d'essai à deux. Bavardage : la recette refusée."
+   },
+   "leonce": {
+    "qui": "mon petit passager",
+    "nom": "Léonce",
+    "sentiment": 0.6,
+    "fond": "Le petit qui a craché par la fenêtre du Zéphyr ; elle l'a vu aux jumelles ; il a fait briller la rambarde ; il veut être pilote. Anecdotes : le crachat ; il pose des questions sur le gaz toutes les cinq minutes. Bavardage : pilote ou pas pilote."
+   },
+   "philibert": {
+    "qui": "ce drôle de",
+    "nom": "Philibert",
+    "sentiment": 0.6,
+    "fond": "Le passager le plus étrange de l'aérodrome : il voulait aller là où personne n'a rien inventé ; Gustave l'a laissé à Carène (le cidre) ; elle lui a fait un billet pour nulle part. Anecdotes : le retour de Carène, tout penaud ; le billet tamponné. Bavardage : les destinations."
+   },
+   "plumette": {
+    "qui": "ma correspondante",
+    "nom": "Plumette",
+    "sentiment": 0.8,
+    "fond": "Depuis ce printemps, le Zéphyr fait escale à Ramure, sur l'aire au nord du village. Zélie était à bord, comme passagère, pour le vol d'inauguration : une chouette est venue voler autour de la nacelle, c'était Plumette, la postière. Depuis, à chaque escale, les sacs de courrier s'échangent et elles s'écrivent des mots sur les bordereaux (Plumette signe « Hou »). Le paquet de Tic Tacquet pour Pépin (un chronomètre pour la Grande Course) faisait tic-tac ; Zélie a failli le jeter dans la citerne, croyant à une bombe de Boum. Zélie envie la seule aviatrice qui vole sans moteur. Bavardage (rares retrouvailles sur l'aire) : « Hou ! Du courrier ? » / « Deux sacs, Plumette. Et un mot pour toi. »"
+   },
+   "rosette": {
+    "qui": "cette pipelette de",
+    "nom": "Rosette",
+    "sentiment": 0.2,
+    "fond": "Elle guette le courrier pour ses nouvelles et publie le moindre retard du Zéphyr ; Zélie la trouve agaçante, mais lit la Gazette tous les matins. Anecdotes : Rosette sur le sac de courrier ; le titre « trois minutes de retard ». Bavardage : les retards, les nouvelles."
+   },
+   "wilfried": {
+    "qui": "mon ami",
+    "nom": "Wilfried",
+    "sentiment": 0.8,
+    "fond": "« Le Zéphyr lui doit un bras » : elle le sait et ne l'oublie pas ; Boulon a aboyé après les nuages jusqu'à Tazira et en est revenu griffé par les chats. Anecdotes : les aboiements ; le nez rayé. Bavardage : Boulon et les nuages."
+   }
+  }
+ }
+}

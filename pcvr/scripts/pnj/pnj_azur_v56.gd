@@ -527,7 +527,16 @@ func _process(delta: float) -> void:
 		"marche":
 			_walk_azur(delta, dist)
 		_:
-			if not _run_loop.is_empty():
+			# V65 : en plein bavardage avec un voisin, il reste là et se tourne vers lui (s'il est debout)
+			if chat_hold > 0.0 and _run_loop.is_empty():
+				chat_hold = maxf(chat_hold - delta, 0.0)
+				if is_instance_valid(chat_partner) and pose in ["debout", "comptoir", "bras_croises", "boire", "jouer", "petanque"]:
+					_face(chat_partner.global_position - global_position, delta, 3.0)
+					if gesture_clock <= 0.0 and current_anim != "v28/idle" and current_anim != "Stand_and_Drink":
+						_play("v28/idle", 0.4)
+				elif gesture_clock <= 0.0:
+					_activity(delta, 99.0, to_player)
+			elif not _run_loop.is_empty():
 				_jog(delta)
 			elif gesture_clock <= 0.0:
 				_activity(delta, dist, to_player)

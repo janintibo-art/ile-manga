@@ -1,0 +1,656 @@
+{
+ "amelie": {
+  "genre": "f",
+  "prenom": "Amélie",
+  "plan": [
+   "mon enfance de fille de pharmacien — née sur le continent au-dessus de la pharmacie de son père ; à six ans elle étiquetait les bocaux et goûtait tout ce qui n'avait pas de tête de mort dessus.",
+   "des études aux plantes de l'archipel — six ans de médecine sur le continent ; un vieux recueil de remèdes de l'archipel, trouvé chez un bouquiniste, la fascine ; il y a quinze ans, elle débarque avec une malle de bocaux et ouvre l'herboristerie.",
+   "l'été des méduses — il y a huit ans, soixante piqûres en une semaine ; elle invente un baume au vinaigre et à l'aloès ; le brigadier Lefort, piqué au mollet en surveillant la plage, devient son patient le plus fidèle (et le plus discret).",
+   "ma vie aujourd'hui — l'herboristerie, le déjeuner sur un banc, le soir les herbes du jardin de l'hôtel ; le dos de Lefort, le cœur de Bernard, la lavande de Rose, les tisanes « chagrin d'amour » pour Léa ; une baie de la jungle goûtée chaque matin.",
+   "(confidence) le « docteur » de la vitrine — elle n'a jamais soutenu sa thèse : elle est partie un mois avant ; le peintre a écrit « Dr » sur la vitrine, elle n'a jamais osé le faire effacer. Personne ne le sait."
+  ],
+  "reve": "aller au Bois-Doré apprendre des elfes les remèdes qu'aucun livre ne contient ; rapporter une fleur de lune vivante et la faire pousser avec Rose",
+  "question": "« Vous vous soignez tout seul, ou vous courez chez le docteur ? » (tout_seul / docteur / jamais_malade) — petit diagnostic amusé dans les trois cas ; elle s'en souviendra à la prochaine écorchure",
+  "liens": {
+   "lefort": {
+    "qui": "mon patient le brigadier",
+    "nom": "Lefort",
+    "sentiment": 0.6,
+    "fond": "Depuis l'été des méduses, il y a huit ans (Lefort piqué au mollet en surveillant la plage), il est le patient le plus fidèle d'Amélie. Il vient en cachette pour son mal de dos, par la porte de derrière, et continue de patrouiller. Il l'appelle « docteur » avec un grand respect. (La vérité sur ce titre est la confidence d'Amélie.) Anecdotes : le brigadier qui refuse d'enlever son képi pendant les massages ; il lui a fait un salut réglementaire en sortant. Bavardage : amusée."
+   },
+   "lea": {
+    "qui": "ma patiente du jardin",
+    "nom": "Léa",
+    "sentiment": 0.6,
+    "fond": "Le soir, Amélie cueille des herbes dans le jardin de l'hôtel, où Léa venait pleurer. Amélie lui a préparé sa tisane « pour chagrin d'amour » (tilleul, mélisse, une pointe de lavande de Rose). Léa dit que ça n'a rien guéri, mais que ça sentait bon. Anecdotes : la jeune femme en larmes au milieu du thym ; la tisane. Bavardage : bienveillant."
+   },
+   "clemence": {
+    "qui": "la peintre de l'hôtel",
+    "nom": "Clémence",
+    "sentiment": 0.2,
+    "fond": "Clémence cherche des pigments naturels. Elle a demandé du corail rouge à Amélie, qui a répondu qu'elle ne vend pas de corail : on ne l'arrache pas. Amélie lui a proposé de l'hibiscus séché pour le rouge ; sur la toile, il est devenu marron. Elles en rient à moitié. Anecdotes : le refus du corail ; l'hibiscus marron. Bavardage : « Toujours pas de corail. » / « Je sais. »"
+   },
+   "bernard": {
+    "qui": "mon patient le plus pressé",
+    "nom": "Bernard",
+    "sentiment": 0.4,
+    "fond": "L'hiver dernier, Amélie a écouté le cœur de Bernard et lui a dit de ralentir. Il lui achète ses potions de sève, évite de passer devant l'herboristerie quand il court, et lui annonce des temps « en baisse » qu'elle ne croit pas. (Le fond de l'affaire est la confidence de Bernard.) Inquiète. Anecdotes : Bernard qui fait un détour pour ne pas passer devant sa vitrine ; le pouls pris au vol. Bavardage : « Plus lentement ! » / « Hop hop… hop. »"
+   },
+   "rose": {
+    "qui": "mon amie",
+    "nom": "Rose",
+    "sentiment": 0.7,
+    "fond": "Rose cultive sur la colline la lavande, le thym et le romarin des tisanes d'Amélie. Elles sont devenues amies l'été sans pluie, en montant ensemble l'eau à la colline dans des seaux. Toutes les deux rêvent de voir une fleur de lune des elfes. Anecdotes : l'été des seaux ; la fleur de lune dessinée d'après un vieux livre. Bavardage : « Ta lavande est prête ? » / « Elle t'attend. »"
+   }
+  }
+ },
+ "anselme": {
+  "genre": "m",
+  "prenom": "Anselme",
+  "plan": [
+   "mon enfance de fils de pêcheur — né Anselme Vasseur ; son père ravaudait « le filet du père Vasseur » sur le quai ; son petit frère Marius riait de tout ; lui comptait les étoiles.",
+   "comment je suis monté au phare — à vingt-deux ans, l'ancien gardien le prend comme aide ; il n'aime pas la mer de près, il l'aime de haut ; quarante ans, trois cent vingt marches deux fois par jour, un livre de quart rempli chaque nuit.",
+   "le matin où Marius est mort — il y a seize ans, depuis la lanterne, il voit son frère s'effondrer sur le quai, à côté de Fernand ; le temps de descendre les trois cent vingt marches, c'était fini. Depuis, la brouille du filet.",
+   "ma vie aujourd'hui — il dort de six à neuf heures, déjeune à la terrasse du Perroquet dos à dos avec Fernand ; Bernard qui tape à sa porte ; la soupe d'Odette le dimanche ; les éclats pour L'Hirondelle de Léon ; la lentille fêlée par la tempête ; la lueur bleue, à l'ouest, notée au livre de quart.",
+   "(confidence) ce n'est pas le filet — il se moque du filet ; il en veut à Fernand d'avoir été près de Marius ce matin-là, à sa place à lui, qui regardait d'en haut."
+  ],
+  "reve": "que le faisceau du phare porte un jour jusqu'à la lueur bleue de l'ouest, pour savoir enfin ce qu'elle est ; et reparler à Fernand sans avoir à le dire",
+  "question": "« Vous avez peur du noir ? » (non / un_peu / oui) — réponses sobres d'un homme qui veille la nuit ; il s'en souviendra quand le jour tombe",
+  "liens": {
+   "fernand": {
+    "qui": "ce pêcheur de",
+    "nom": "Fernand",
+    "sentiment": -0.5,
+    "fond": "Fernand a pêché quinze ans avec Marius, le frère cadet d'Anselme. Il y a seize ans, Marius est mort sur le quai en démêlant avec lui « le filet du père Vasseur ». Fernand l'a gardé (« Marius m'a dit : garde-le ») et le ravaude encore ; Anselme pense que ce filet revenait à la famille. Ils ne se parlent plus et déjeunent dos à dos à la terrasse du Perroquet. Anselme parle peu. Anecdotes : le filet déposé devant sa porte et rapporté sans un mot ; Fernand qui pêche au pied du phare « pour l'embêter ». Ne pas révéler sa confidence. Bavardage : sec (« Le vent tourne. » / « Pas pour tout le monde. »)."
+   },
+   "odette": {
+    "qui": "ma belle-sœur",
+    "nom": "Odette",
+    "sentiment": 0.6,
+    "fond": "Odette était la femme de Marius, le frère cadet d'Anselme. Depuis la mort de Marius, elle monte une soupe au phare le dimanche soir ; ils dînent en silence en regardant la mer. Elle voudrait qu'il se réconcilie avec Fernand ; il change de sujet. C'est elle qui, du port, a vu que la lentille s'était fêlée. Anecdotes : le mariage de Marius et Odette, où il avait allumé le phare en plein jour ; elle le gronde comme un gamin. Bavardage : bref, tendre."
+   },
+   "moreau": {
+    "qui": "ce rêveur de",
+    "nom": "professeur Moreau",
+    "sentiment": -0.3,
+    "fond": "Moreau a lu dans les vieux livres de quart du phare, rangés à la mairie, qu'Anselme note depuis des années « lueur bleue, à l'ouest ». Anselme n'en avait jamais parlé à personne et ne l'a pas apprécié. Moreau dit que c'est le cristal de l'Atlantide ; Anselme répond qu'il ne trouvera que des oursins. Moreau monte parfois au phare avec deux tasses de café ; Anselme le laisse entrer, sans le dire. Anecdotes : le professeur essoufflé à la deux-centième marche ; la nuit où il lui a montré la lueur, sans un mot. Bavardage : « Des oursins. » / « Un cristal ! »"
+   },
+   "leon": {
+    "qui": "le capitaine",
+    "nom": "Léon",
+    "sentiment": 0.7,
+    "fond": "La nuit, Léon navigue au phare d'Anselme. À chaque traversée de nuit, il fait deux appels de lanterne ; Anselme répond par deux éclats. Ils se connaissent depuis cinquante ans et ne se sont presque jamais parlé de près. Le soir de la tempête où la lentille s'est fêlée, Léon est rentré au jugé. Anecdotes : les signaux de chaque nuit ; la nuit de la lentille, Léon passé quand même. Bavardage : « Deux éclats. » / « Deux appels. »"
+   },
+   "bernard": {
+    "qui": "ce coureur de",
+    "nom": "Bernard",
+    "sentiment": -0.3,
+    "fond": "Chaque matin vers huit heures, la course de Bernard finit à la porte du phare : il y tape deux fois « pour valider le chrono ». Anselme vient de se coucher (il dort de six à neuf heures). Il a accroché un panneau « Ici on dort » ; Bernard tape plus doucement. Anecdotes : le seau d'eau lancé à côté, exprès ; le matin où Bernard n'est pas venu et où Anselme s'est inquiété. Bavardage : « Plus doucement. » / « Hop hop hop ! »"
+   }
+  }
+ },
+ "aristide": {
+  "genre": "m",
+  "prenom": "Aristide",
+  "plan": [
+   "mon enfance dans la maison bleue — né dans la maison bleue au-dessus du port ; à dix ans, il « emprunte » une pomme à l'étal de Colette en promettant de la payer « quand je serai maire ».",
+   "pêcheur, puis serveur — à dix-sept ans, mousse sur la barque de Fernand, il tombe à l'eau le deuxième jour en racontant une histoire ; repêché à la gaffe par la ceinture, il démissionne le soir même ; serveur au Café de la Place chez la mère de Gisèle (douze tasses cassées le premier jour).",
+   "l'élection de la boule — il y a dix-huit ans, égalité parfaite avec Raymond, le boulanger ; on départage à la pétanque, Marcel mesure ; il gagne d'un centimètre. Il n'est pas sûr que la mesure était bonne.",
+   "ma ville aujourd'hui — la mairie, la bouillabaisse à midi, la pétanque à dix-sept heures, le café serré chez Gisèle ; réélu à l'unanimité moins la voix de Colette ; l'horloge d'Hortense, promise quatorze fois ; ses airs d'opéra sous la douche et le « phoque enrhumé » de Django.",
+   "(confidence) le maire qui a peur de l'eau — depuis sa chute à dix-sept ans, il n'a jamais remis le pied sur un bateau ; maire d'un port, il inaugure les quais à trois mètres du bord et n'est jamais allé au village d'en face."
+  ],
+  "reve": "chanter un air d'opéra sur la place, une seule fois, avec Django à la guitare, sans que personne ne rie ; et faire sonner l'horloge pendant son discours",
+  "question": "« Alors, franchement : comment trouvez-vous notre petite ville ? » (une_perle / trop_calme / trop_chaud) — il se rengorge, plaide ou promet une mesure municipale ; il s'en souviendra dans ses discours",
+  "liens": {
+   "fernand": {
+    "qui": "mon ancien patron",
+    "nom": "Fernand",
+    "sentiment": 0.7,
+    "fond": "À dix-sept ans, Aristide a été mousse sur la barque de Fernand. Le deuxième jour, il est tombé à l'eau en racontant une histoire ; Fernand l'a repêché à la gaffe par la ceinture. Il a démissionné le soir même pour devenir serveur. Fernand raconte l'histoire à tout le monde ; Aristide aussi, en plus héroïque. (La peur de l'eau qui lui en est restée est la confidence d'Aristide ; Fernand n'en parle pas.) Anecdotes : sa version, avec une « vague de dix mètres » ; il a fait remettre à Fernand la médaille de la ville. Bavardage : grandiloquent et reconnaissant."
+   },
+   "django": {
+    "qui": "notre guitariste",
+    "nom": "Django",
+    "sentiment": 0.2,
+    "fond": "Aristide rêve d'opéra et chante sous la douche (on l'entend du port). Django lui a dit qu'il avait « la voix d'un phoque enrhumé ». Chaque année, Aristide lui demande de l'accompagner à la fête du port ; Django refuse. C'est pourtant Django qu'il appelle pour chaque cérémonie (« Django, la musique ! »). (Confidence de Django : il trouve que le maire ne chante pas si mal.) Vexé mais admiratif. Anecdotes : le discours qu'il a tenté de chanter, et que Django a « accompagné » au tambourin pour couvrir. Bavardage : grandiloquent, piqué."
+   },
+   "marcel": {
+    "qui": "notre ancien facteur",
+    "nom": "Marcel",
+    "sentiment": 0.5,
+    "fond": "C'est Marcel qui a mesuré la partie de pétanque de l'élection, il y a dix-huit ans, et donné la victoire à Aristide d'un centimètre. Marcel dit à tout le monde que « le maire a gagné à la pétanque ». Chaque année, Aristide l'invite à la tribune de la fête du port ; Marcel vient avec son mètre. Anecdotes : la mesure ; Marcel qui mesure ses discours (« trop long de deux minutes »). Bavardage : pompeux."
+   },
+   "raymond": {
+    "qui": "mon ancien rival",
+    "nom": "Raymond",
+    "sentiment": 0.3,
+    "fond": "Il y a dix-huit ans, Raymond, alors boulanger, et Aristide étaient à égalité à l'élection du maire. On a départagé à la pétanque, Marcel a mesuré : Aristide a gagné d'un centimètre. Raymond dit depuis qu'on lui a « volé la mairie » ; Aristide n'est pas tout à fait sûr que la mesure était bonne et le ménage. Raymond vote pour lui à chaque élection. Gêné. Anecdotes : il lui offre chaque année une partie de revanche, qu'il perd volontiers. Bavardage : conciliant."
+   },
+   "colette": {
+    "qui": "ma seule opposante",
+    "nom": "Colette",
+    "sentiment": 0.4,
+    "fond": "Quand Aristide avait dix ans, il a « emprunté » une pomme à l'étal de Colette en promettant de la payer « quand je serai maire ». Il ne l'a jamais payée. Depuis, Colette vote contre lui à chaque élection : il est réélu à l'unanimité moins une voix. Il a tenté de payer la pomme ; elle a refusé, en lui calculant les intérêts. Anecdotes : sa seule voix contre ; la pomme qu'il lui apporte à chaque élection. Bavardage : galant, piqué."
+   },
+   "gisele": {
+    "qui": "ma petite",
+    "nom": "Gisèle",
+    "sentiment": 0.7,
+    "fond": "À dix-sept ans, juste après sa chute de la barque de Fernand, Aristide est devenu serveur au Café de la Place, chez la mère de Gisèle ; il a cassé douze tasses le premier jour. Gisèle, dix ans, lui a appris à porter un plateau. Aujourd'hui il prend son café serré à midi, et elle lui rappelle les douze tasses dès qu'un discours dure trop. Anecdotes : les douze tasses ; la petite fille qui lui montrait le plateau. Bavardage : « Mon serré, Gisèle ! » / « Douze tasses, Aristide. »"
+   },
+   "hortense": {
+    "qui": "notre gardienne de l'horloge",
+    "nom": "Hortense",
+    "sentiment": 0.5,
+    "fond": "L'horloge de la place est arrêtée depuis sept ans. À chaque fête du port, Aristide promet qu'elle sera réparée « avant la fin de l'année » ; Hortense compte : il en est à quatorze promesses. Il dit que c'est Hector qui n'a jamais le temps ; elle répond qu'un maire, ça trouve le temps. Gêné. Anecdotes : la quatorzième promesse ; le discours prononcé sous le cadran arrêté. Bavardage : « Avant la fin de l'année ! » / « Quinze. »"
+   }
+  }
+ },
+ "bernard": {
+  "genre": "m",
+  "prenom": "Bernard",
+  "plan": [
+   "le gamin qui courait après les trains — né dans une ville de gare du continent ; il courait après le train de sept heures pour le doubler avant le pont.",
+   "quarante marathons — professeur de gymnastique ; quarante marathons du continent, une seule victoire : l'autre coureur s'était perdu.",
+   "pourquoi je suis resté — à la retraite, il y a sept ans, il vient courir trois tours de l'île en vacances et ne repart pas ; record fontaine-phare en soixante-dix-huit secondes, la première année ; le défi contre Kevin, annulé par le drapeau rouge.",
+   "ma journée aujourd'hui — trois tours de l'île ; la fin de course en tapant à la porte du phare (Anselme grogne) ; la pétanque l'après-midi avec Marcel ; le brigadier qui veut le verbaliser ; les potions de sève d'Amélie.",
+   "(confidence) le cœur qui ralentit — l'hiver dernier, Amélie a écouté son cœur et lui a dit de ralentir ; il marche dans les côtes quand personne ne le voit ; les soixante-dix-huit secondes, il ne les refera jamais."
+  ],
+  "reve": "un dernier marathon, celui de l'archipel : du village à Port-Azur, avec Kevin qui nage à côté pour enfin les départager",
+  "question": "« Et toi, tu cours ou tu marches ? » (je_cours / je_marche / en_bateau) — il te défie, t'encourage ou se moque ; il s'en souviendra en te croisant en pleine course",
+  "liens": {
+   "anselme": {
+    "qui": "le gardien du phare",
+    "nom": "Anselme",
+    "sentiment": 0.5,
+    "fond": "Chaque matin vers huit heures, la course de Bernard finit à la porte du phare : il y tape deux fois « pour valider le chrono ». Anselme vient de se coucher (il dort de six à neuf heures). Il a accroché un panneau « Ici on dort » ; Bernard tape plus doucement. Anecdotes : le panneau ; les pommes laissées en excuse sur la marche. Bavardage : jovial."
+   },
+   "kevin": {
+    "qui": "mon rival",
+    "nom": "Kevin",
+    "sentiment": 0.2,
+    "fond": "Bernard dit qu'il court plus vite que Kevin ne nage ; Kevin dit que c'est ridicule. Il y a sept ans, ils ont organisé une course le long de la plage, Bernard sur le sable, Kevin dans l'eau : le drapeau rouge a tout annulé. Ils ne se sont jamais départagés et en parlent chaque jour. Anecdotes : le drapeau rouge ; les cinq cents pompes que Kevin fait exprès devant lui. Bavardage : défi permanent."
+   },
+   "lefort": {
+    "qui": "le brigadier",
+    "nom": "Lefort",
+    "sentiment": 0.6,
+    "fond": "Lefort a voulu verbaliser Bernard pour « course sur le quai » ; Bernard lui a fait remarquer que le règlement interdit les vélos, pas les coureurs. Depuis, Lefort a écrit « Coureurs : au pas » sur une ardoise, que Bernard double en saluant. Anecdotes : l'ardoise ; Lefort essoufflé au bout de vingt mètres. Bavardage : taquin."
+   },
+   "marcel": {
+    "qui": "mon copain de pétanque",
+    "nom": "Marcel",
+    "sentiment": 0.5,
+    "fond": "Bernard joue à la pétanque l'après-midi, après sa course. Marcel lui répète que ses trente ans de tournée de facteur « valent bien quarante marathons », faits avec une sacoche. Ils ont calculé une fois : Marcel aurait marché trois fois le tour de l'archipel. Anecdotes : la sacoche ; Marcel qui fait semblant de courir pour se moquer. Bavardage : bon enfant."
+   },
+   "amelie": {
+    "qui": "le docteur",
+    "nom": "Amélie",
+    "sentiment": 0.3,
+    "fond": "L'hiver dernier, Amélie a écouté le cœur de Bernard et lui a dit de ralentir. Il lui achète ses potions de sève, évite de passer devant l'herboristerie quand il court, et lui annonce des temps « en baisse » qu'elle ne croit pas. (Le fond de l'affaire est la confidence de Bernard.) Anecdotes : la potion de sève ; il passe par la ruelle pour l'éviter. Bavardage : fuyant, jovial."
+   }
+  }
+ },
+ "bruno": {
+  "genre": "m",
+  "prenom": "Bruno",
+  "plan": [
+   "la sorbetière de ma grand-mère — élevé par sa grand-mère, qui faisait des sorbets dans une sorbetière à manivelle ; la recette coco vient d'elle.",
+   "comment je suis arrivé avec mon kiosque — il y a quinze ans, il débarque avec une sorbetière et un sac de sel ; Victor vendait des glaces qui fondaient avant la bouche ; en un été, tout le monde vient chez Bruno.",
+   "l'été sans glace — une année, le bateau des pains de glace ne vient pas pendant trois semaines ; il enterre ses bacs dans le sable mouillé de la grotte et sauve la saison ; le brigadier venait déjà en manger trois par jour.",
+   "mon kiosque aujourd'hui — devant la plage, les glaces faites la nuit avec le lait des chèvres de la colline ; Nina qui veut être glacière ; Kiki qui lui a « piqué » la recette coco ; le soir du voleur, l'ombre blanche avec un croissant dans la gueule.",
+   "(confidence) la recette laissée exprès — quand Kiki est arrivé de la jungle, triste du pays, Bruno a laissé la recette coco sur le comptoir exprès ; il fait semblant d'avoir été volé depuis."
+  ],
+  "reve": "inventer le parfum que tout le monde cherche sans le savoir ; ouvrir un deuxième kiosque au pied du phare, que Nina tiendra un jour",
+  "question": "« Ton parfum préféré : vanille, fraise ou coco ? » (vanille / fraise / coco) — il approuve avec emphase et te réserve une boule en pensée ; il s'en souviendra à chaque glace",
+  "liens": {
+   "kiki": {
+    "qui": "mon voleur de recette",
+    "nom": "Kiki",
+    "sentiment": 0.8,
+    "fond": "Kiki a « piqué » à Bruno sa recette de glace coco (que Bruno tenait de sa grand-mère) et en vend à la paillote ; ils disent qu'ils sont quittes. Ils échangent des glaçons contre des noix de coco. (Confidence de Bruno seulement : il avait laissé la recette sur le comptoir exprès, parce que Kiki avait le mal du pays.) Anecdotes : Kiki arrivé de la jungle avec une machette et l'air perdu ; les noix de coco ouvertes d'un seul coup devant son kiosque. Ne pas révéler sa confidence. Bavardage : rieur."
+   },
+   "lefort": {
+    "qui": "le brigadier",
+    "nom": "Lefort",
+    "sentiment": 0.7,
+    "fond": "Voisins rue du Phare. Lefort mange trois glaces par jour au kiosque de Bruno (« secret d'État ») et s'y arrête à chaque ronde. Dans l'affaire des croissants, Bruno était témoin, et Lefort a quand même « surveillé le glacier », qui ferme tard. Bruno lui garde un cornet vanille quand il sait qu'il passera. Anecdotes : les trois glaces du secret d'État ; le brigadier qui l'a interrogé la bouche pleine. Bavardage : bonhomme."
+   },
+   "victor": {
+    "qui": "mon ancien concurrent",
+    "nom": "Victor",
+    "sentiment": 0.6,
+    "fond": "Victor vendait des glaces avant que Bruno n'arrive, il y a quinze ans ; les siennes fondaient avant d'arriver à la bouche. En un été, tout le monde est allé chez Bruno. Bruno lui a proposé de s'associer ; Victor a refusé par fierté et s'est mis aux souvenirs. Il vend maintenant des boules à neige à côté du kiosque à glaces. Anecdotes : la proposition refusée ; Victor qui lui a vendu une boule à neige « pour rafraîchir le kiosque ». Bavardage : « Une glace, Victor ? » / « Jamais. Bon, une. »"
+   },
+   "nina": {
+    "qui": "ma future glacière",
+    "nom": "Nina",
+    "sentiment": 0.8,
+    "fond": "Nina veut être glacière comme Bruno (ou capitaine, ou les deux). Bruno lui a laissé inventer un parfum, « fraise-dauphin » (fraise et une pincée de sel de mer, « pour le dauphin »). Témoin dans l'affaire des croissants, il a parlé de l'ombre blanche au brigadier ; Nina lui en a voulu une journée entière. Anecdotes : l'invention du fraise-dauphin ; la journée de bouderie de Nina. Bavardage : « Une boule, patronne ? » / « Deux ! »"
+   }
+  }
+ },
+ "clemence": {
+  "genre": "f",
+  "prenom": "Clémence",
+  "plan": [
+   "mon enfance chez les notaires — fille de notaire sur le continent ; elle dessinait dans les marges des actes de son père ; une vente de maison illustrée de mouettes lui a coûté un client.",
+   "venue pour une semaine — il y a deux mois, une semaine offerte par sa tante ; le premier matin au belvédère, la lumière sur le port ; elle reste.",
+   "le rose impossible — chaque soir, le port devient rose et elle n'arrive pas à le peindre ; les tubes du continent sont tristes ; elle se met en quête de couleurs naturelles (corail, miel, coco) ; l'herboriste lui refuse le corail.",
+   "ma vie au belvédère — elle peint toute la journée ; Théo vient la regarder ; Félix lui fait colorier ses cartes ; elle paie sa chambre à Edmond en tableaux ; le soir au Perroquet, elle croque Django ; l'appareil de Gérard près du banc.",
+   "(confidence) « la semaine prochaine » — ses parents croient qu'elle rentre la semaine prochaine ; depuis huit semaines, elle leur écrit « la semaine prochaine » ; elle a peur de leur dire qu'elle veut rester peintre."
+  ],
+  "reve": "réussir enfin le rose du port au coucher du soleil ; exposer une toile dans une vraie galerie, et que ses parents viennent la voir",
+  "question": "« Si vous étiez une couleur, vous seriez laquelle ? » (bleu / rouge / or) — elle en tire un petit portrait du joueur ; elle s'en souviendra en peignant",
+  "liens": {
+   "django": {
+    "qui": "mon modèle du soir",
+    "nom": "Django",
+    "sentiment": 0.7,
+    "fond": "Le soir au Perroquet, Clémence croque Django pendant qu'il joue. Son premier portrait le montrait la bouche ouverte, l'air d'avoir mal aux dents ; Django, vexé, joue depuis de profil. Elle veut peindre « la musique » ; il dit qu'on ne peint pas ce qui ne tient pas dans les mains. Anecdotes : le portrait ; le croquis raté où sa guitare ressemble à une poire. Bavardage : enthousiaste."
+   },
+   "gerard": {
+    "qui": "ce photographe de",
+    "nom": "Gérard",
+    "sentiment": 0.1,
+    "fond": "Clémence a vu l'appareil de Gérard près du banc du belvédère et l'a laissé là, « au cas où quelqu'un le chercherait ». Gérard aurait préféré qu'elle le rapporte. Ils se disputent gentiment : pour elle, une photo « vole » un paysage ; pour lui, elle le « garde ». Agacée. Anecdotes : le banc ; Gérard qui photographie son chevalet pendant qu'elle peint. Bavardage : sec, artiste."
+   },
+   "edmond": {
+    "qui": "mon mécène",
+    "nom": "Edmond",
+    "sentiment": 0.8,
+    "fond": "Clémence, venue pour une semaine il y a deux mois, n'a plus de quoi payer sa chambre. Edmond accepte ses tableaux à la place ; le hall du Grand Hôtel en est couvert, accrochés au millimètre. Il dit que c'est « une décision de la direction » ; c'est la sienne. Anecdotes : la « décision de la direction » ; elle a peint sa moustache dans un coin du port. Bavardage : reconnaissante."
+   },
+   "felix": {
+    "qui": "le cartographe",
+    "nom": "Félix",
+    "sentiment": 0.6,
+    "fond": "Au belvédère, à l'heure dorée, Félix vient voir le panorama pendant que Clémence peint. Il lui a demandé de mettre en couleur sa carte de Port-Azur, celle que le maire offre aux visiteurs ; elle a peint la mer en six bleus. Il dit que c'est la première carte qui a l'air mouillée. Anecdotes : la carte ; le libraire qui décrit l'archipel sans l'avoir vu. Bavardage : enthousiaste."
+   },
+   "amelie": {
+    "qui": "l'herboriste",
+    "nom": "Amélie",
+    "sentiment": 0.5,
+    "fond": "Clémence cherche des pigments naturels. Elle a demandé du corail rouge à Amélie, qui a répondu qu'elle ne vend pas de corail : on ne l'arrache pas. Amélie lui a proposé de l'hibiscus séché pour le rouge ; sur la toile, il est devenu marron. Elles en rient à moitié. Anecdotes : l'hibiscus ; l'herboriste qui sait le nom de chaque herbe du belvédère. Bavardage : déçue mais amicale."
+   },
+   "theo": {
+    "qui": "mon petit spectateur",
+    "nom": "Théo",
+    "sentiment": 0.8,
+    "fond": "Théo vient au belvédère regarder Clémence peindre. Elle l'a laissé peindre le ciel d'une petite toile ; il y a mis un cerf-volant. C'est à elle qu'il a dit que son cerf-volant était tombé dans un pin, près du belvédère. Anecdotes : la petite toile au cerf-volant, gardée ; ses questions sur le rose. Bavardage : tendre."
+   }
+  }
+ },
+ "colette": {
+  "genre": "f",
+  "prenom": "Colette",
+  "plan": [
+   "mon enfance chez le marchand de primeurs — née à Port-Azur, fille d'un marchand de primeurs qui pesait les cerises une à une ; elle a appris à compter avec des noyaux.",
+   "Albert et l'épicerie fine — à trente ans, elle épouse Albert, qui fait des confitures ; ils ouvrent l'épicerie ; elle tient les comptes, lui les chaudrons. La première année, le petit Aristide « emprunte » une pomme.",
+   "l'hiver où Albert est parti — il y a neuf ans, le cœur d'Albert s'arrête un dimanche ; elle rouvre le lundi, parce qu'on ne ferme pas une épicerie ; elle laisse sur l'étagère du haut le dernier pot de confiture de figues qu'il a fait.",
+   "ma boutique aujourd'hui — l'épicerie, puis le soir au café une tisane et un roman d'amour (Gisèle seule le savait) ; elle vote contre Aristide tant qu'il n'a pas payé sa pomme ; Rita lui prédit un grand amour chaque année ; un lord anglais veut son pot de figues ; une touriste à qui elle a conseillé son roman préféré.",
+   "(confidence) le pot de figues — elle ne l'a jamais ouvert ; elle se disait qu'elle l'ouvrirait « le jour où quelqu'un le mériterait » ; l'autre jour, elle a failli le descendre pour le Lord, et ça lui a fait peur."
+  ],
+  "reve": "lire un jour ses romans d'amour en terrasse, sans journal devant ; et que le fournisseur de miel arrive à l'heure, une fois",
+  "question": "« Vous comptez votre monnaie, ou vous faites confiance ? » (je_compte / confiance / pas_de_monnaie) — elle approuve les prudents, plaint les naïfs ; elle s'en souviendra au moment de rendre la monnaie",
+  "liens": {
+   "sylvie": {
+    "qui": "la gentille touriste",
+    "nom": "Sylvie",
+    "sentiment": 0.5,
+    "fond": "Sylvie achète des pêches pour Théo chez Colette. Un jour, Colette, qui se croyait seule, lisait derrière son comptoir « L'Écume de ton cœur », de Sylvia Delarive ; elle l'a caché, puis l'a chaudement recommandé à Sylvie. Sylvie est devenue toute rouge. (Confidence de Sylvie : Sylvia Delarive, c'est elle. Colette ne le sait pas.) Anecdotes : la touriste qui rougit pour un roman ; la recommandation. Bavardage : confidence de lectrice."
+   },
+   "rita": {
+    "qui": "la voyante",
+    "nom": "Rita",
+    "sentiment": 0.2,
+    "fond": "Chaque année, Rita prédit à Colette un grand amour, et chaque année Colette paie, elle qui ne paie jamais rien sans marchander. Cette année, Rita a ajouté : « venu d'au-delà des mers ». Colette a haussé les épaules ; depuis, le Lord anglais passe tous les jours à l'épicerie. Anecdotes : la prédiction ; le prix de la séance, seul prix qu'elle ne discute pas. Bavardage : bougon, troublé."
+   },
+   "aristide": {
+    "qui": "mon débiteur",
+    "nom": "Aristide",
+    "sentiment": -0.2,
+    "fond": "Quand Aristide avait dix ans, il a « emprunté » une pomme à l'étal de Colette en promettant de la payer « quand je serai maire ». Il ne l'a jamais payée. Depuis, Colette vote contre lui à chaque élection : il est réélu à l'unanimité moins une voix. Il a tenté de payer la pomme ; elle a refusé, en lui calculant les intérêts. Anecdotes : la pomme ; le calcul des intérêts. Bavardage : « Ma pomme, monsieur le maire ? » / « Avec les intérêts ? »"
+   },
+   "gisele": {
+    "qui": "mon amie du café",
+    "nom": "Gisèle",
+    "sentiment": 0.7,
+    "fond": "Chaque soir à sept heures, Colette prend une tisane au Café de la Place et lit un roman d'amour caché derrière un journal. Gisèle est la seule à le savoir, et le raconte aux voyageurs en leur faisant promettre de se taire. Colette lui laisse un pot de miel à chaque fin d'année. Anecdotes : le journal tenu à l'envers ; le pot de miel. Bavardage : « Ma tisane. » / « Et ton roman ? Chut. »"
+   },
+   "pemberton": {
+    "qui": "ce drôle de",
+    "nom": "Lord Pemberton",
+    "sentiment": 0.2,
+    "fond": "Le Lord passe chaque jour à l'épicerie pour acheter « le plus vieux pot » de la boutique : le pot de confiture de figues de l'étagère du haut, le dernier qu'a fait Albert, le défunt mari de Colette. Elle refuse de le vendre, même contre une pièce d'or. Il achète un fromage ou du miel à la place, et revient le lendemain. Rita avait prédit un amour « venu d'au-delà des mers ». Troublée. Anecdotes : la pièce d'or refusée ; le Lord qui salue le pot en entrant. Bavardage : « Il n'est pas à vendre. » / « Demain, alors ! »"
+   },
+   "hector": {
+    "qui": "l'armurier",
+    "nom": "Hector",
+    "sentiment": -0.3,
+    "fond": "Colette trouve que les lames d'Hector font peur et préfère les confitures. Hector trouve que les prix de Colette font peur. Ils sont aussi regardants l'un que l'autre : elle lui fait payer le papier d'emballage, il lui a fait payer l'affûtage de son couteau à fromage. Ils se saluent d'un « Hm » identique. Anecdotes : le papier d'emballage ; l'épée exposée qui lui fait détourner les yeux. Bavardage : « Hm. » / « Hm. »"
+   }
+  }
+ },
+ "django": {
+  "genre": "m",
+  "prenom": "Django",
+  "plan": [
+   "le chapeau de mon grand-père — enfant, il suit son grand-père guitariste de place en place et compte les pièces dans le chapeau ; première guitare à six ans.",
+   "comment je suis arrivé au Perroquet — il y a quinze ans, à vingt ans, il joue sur la jetée pour les pêcheurs ; Toni l'entend et lui offre une scène, un repas et un salaire ; il accepte et se demande encore si son grand-père serait fier ou triste.",
+   "la Valse d'Azur — pendant un an, au coucher du soleil sur la jetée, il écrit la chanson pour la mer ; le jour où il la finit, le vent emporte les trois pages.",
+   "ma vie aujourd'hui — les bancs de la place le matin (Hortense bat la mesure), la scène du Perroquet le soir ; il habite rue Haute entre Lola et Lucas ; le maire qui chante sous la douche ; Clémence qui l'a dessiné la bouche ouverte.",
+   "(confidence) le phoque enrhumé — le maire ne chante pas si mal ; Django lui dit « phoque enrhumé » pour qu'il reste maire : un bon maire, c'est plus rare qu'un ténor."
+  ],
+  "reve": "jouer la Valse d'Azur sur toutes les places de l'archipel, un chapeau à ses pieds, comme son grand-père, juste une fois, pour savoir",
+  "question": "« Tu préfères quoi : le silence, la musique, ou le bruit des vagues ? » (silence / musique / vagues) — il joue un accord adapté à ta réponse et s'en souviendra le soir au Perroquet",
+  "liens": {
+   "lola": {
+    "qui": "ma voisine",
+    "nom": "Lola",
+    "sentiment": 0.7,
+    "fond": "Django habite rue Haute, entre Lola et Lucas. Quand Lucas entre au Perroquet, Django ralentit la musique et joue un air doux ; Lola lui a demandé d'arrêter, il continue. Elle lui apporte son verre d'eau entre deux chansons. Il la protège. Anecdotes : le soir où elle a chanté le refrain en essuyant les verres ; ce qu'il entend à travers les murs, sans le répéter. Bavardage : complice."
+   },
+   "toni": {
+    "qui": "mon patron",
+    "nom": "Toni",
+    "sentiment": 0.3,
+    "fond": "Toni a entendu Django jouer pour les pêcheurs sur la jetée il y a quinze ans et lui a offert une scène, un repas et un salaire. Django joue chaque soir au Perroquet ; depuis la partition envolée, il ne joue plus que trois chansons, qu'il déteste. Il se demande si son grand-père, qui jouait pour un chapeau, serait fier d'avoir un patron. Reconnaissant mais gêné par le salaire. Anecdotes : le chapeau rempli en cachette (il le sait) ; Toni qui chante faux le refrain pour l'encourager. Bavardage : susceptible."
+   },
+   "aristide": {
+    "qui": "notre maire",
+    "nom": "Aristide",
+    "sentiment": 0.3,
+    "fond": "Aristide rêve d'opéra et chante sous la douche (on l'entend du port). Django lui a dit qu'il avait « la voix d'un phoque enrhumé ». Chaque année, Aristide lui demande de l'accompagner à la fête du port ; Django refuse. C'est pourtant Django qu'il appelle pour chaque cérémonie (« Django, la musique ! »). (Confidence de Django : il trouve que le maire ne chante pas si mal.) Anecdotes : la répétition où toutes les mouettes du port se sont envolées ; il joue plus fort quand le maire chante dans la salle. Bavardage : « Un do, Django ! » / pique de Django."
+   },
+   "hortense": {
+    "qui": "ma première auditrice",
+    "nom": "Hortense",
+    "sentiment": 0.7,
+    "fond": "Chaque matin, Django joue sur les bancs de la place pendant qu'Hortense y est assise. Elle bat la mesure du pied, avec une précision d'horloge ; il dit qu'elle est son métronome. Depuis que l'horloge est arrêtée, c'est elle qui lui annonce l'heure de la sieste. Anecdotes : il lui a demandé l'air qu'on dansait à ses vingt ans ; elle l'a fredonné, il l'a joué, elle est partie avant la fin. Bavardage : « Trop vite ? » / « Trop vite, jeune homme. »"
+   },
+   "clemence": {
+    "qui": "la peintre",
+    "nom": "Clémence",
+    "sentiment": 0.2,
+    "fond": "Le soir au Perroquet, Clémence croque Django pendant qu'il joue. Son premier portrait le montrait la bouche ouverte, l'air d'avoir mal aux dents ; Django, vexé, joue depuis de profil. Elle veut peindre « la musique » ; il dit qu'on ne peint pas ce qui ne tient pas dans les mains. Vexé. Anecdotes : le portrait « mal de dents » ; elle lui a demandé de rejouer une note « pour la couleur ». Bavardage : « Encore ce crayon ? » / « Tournez-vous. »"
+   }
+  }
+ },
+ "edmond": {
+  "genre": "m",
+  "prenom": "Edmond",
+  "plan": [
+   "mon enfance de fils de lingère — fils d'une lingère d'hôtel sur le continent ; il a su plier une serviette en cygne avant de savoir lire.",
+   "le Grand Hôtel des Embruns — à vingt-cinq ans, il répond à une annonce ; trente ans de réception dans l'hôtel aux quarante-deux fenêtres de l'armateur qui avait le mal de mer.",
+   "l'ours savant — une nuit d'orage, une troupe de cirque loge son ours à la chambre trois ; c'est le seul client en trente ans à s'être essuyé les pattes.",
+   "mon hôtel aujourd'hui — la réception de sept heures à vingt-trois heures ; le Lord de la douze et sa demande au sujet de sa moustache ; les mariés de la sept ; Pauline et ses potins ; Clémence qui paie en tableaux ; le professeur et ses cartes sur le tapis.",
+   "(confidence) le fantôme du quatrième — il vit à l'hôtel et dort dans la lingerie du quatrième, sur une pile de draps ; il n'a jamais dormi dans une chambre ; le « fantôme qui ronfle » de Pauline, c'est lui."
+  ],
+  "reve": "une seule nuit dans la chambre un, la suite aux trois fenêtres, avec le petit-déjeuner servi par quelqu'un d'autre ; puis reprendre son poste à sept heures pile",
+  "question": "« Vous dormez la fenêtre ouverte ou fermée ? » (ouverte / fermee / je_ne_dors_pas) — remarques de réceptionniste pince-sans-rire ; il s'en souviendra s'il vous loue une chambre",
+  "liens": {
+   "lea": {
+    "qui": "notre jeune mariée",
+    "nom": "Léa",
+    "sentiment": 0.5,
+    "fond": "Quand Léa pleurait sur le balcon de la chambre sept, Edmond lui a fait monter un plateau de thé avec un mot : « La direction compatit. » Il n'en a parlé à personne, contrairement à Pauline. Léa l'appelle « le monsieur à la moustache qui compatit ». Anecdotes : le plateau ; elle a remercié « la direction », il a rougi. Bavardage : très digne."
+   },
+   "pemberton": {
+    "qui": "notre pensionnaire",
+    "nom": "Lord Pemberton",
+    "sentiment": 0.1,
+    "fond": "Le Lord occupe la chambre douze depuis le début de la saison ; il paie bien, et très cher. Il a proposé à Edmond d'acheter sa moustache « pour la collection », à côté de celle d'un amiral. Edmond a refusé avec dignité et vérifie depuis sa moustache dans le miroir quand le Lord passe. Anecdotes : l'offre pour la moustache ; les colis étranges livrés à la douze. Bavardage : « Milord. » / « My dear Edmond, avez-vous réfléchi ? »"
+   },
+   "pauline": {
+    "qui": "notre femme de chambre",
+    "nom": "Pauline",
+    "sentiment": 0.2,
+    "fond": "Edmond a appris à Pauline les « coins d'hôpital » des draps et lui reproche ses potins. Pauline est convaincue qu'un fantôme ronfle la nuit au quatrième étage, près de la lingerie ; Edmond lui ordonne de cesser ces sottises, très vite. (Confidence d'Edmond : le fantôme, c'est lui.) Anecdotes : la leçon des coins d'hôpital ; Pauline qui a voulu poser une clochette « anti-fantôme ». Bavardage : « Mademoiselle, les potins. » / « Les draps, monsieur ! »"
+   },
+   "clemence": {
+    "qui": "notre artiste",
+    "nom": "Clémence",
+    "sentiment": 0.6,
+    "fond": "Clémence, venue pour une semaine il y a deux mois, n'a plus de quoi payer sa chambre. Edmond accepte ses tableaux à la place ; le hall du Grand Hôtel en est couvert, accrochés au millimètre. Il dit que c'est « une décision de la direction » ; c'est la sienne. Anecdotes : le premier tableau accroché, le niveau à bulle à la main ; les clients qui veulent les acheter. Bavardage : « Un tableau pour la semaine ? » / « Le phare, cette fois. »"
+   },
+   "moreau": {
+    "qui": "le professeur",
+    "nom": "Moreau",
+    "sentiment": 0.3,
+    "fond": "Moreau a exigé une chambre orientée au sud-ouest, « vers l'Atlantide ». Il étale ses cartes des fonds marins sur le tapis du salon de onze à seize heures ; Edmond les contourne sans un mot. C'est Edmond qui lui remet le courrier de l'université, sur un plateau d'argent. Anecdotes : la chambre « vers l'Atlantide » ; les cartes sur le tapis. Bavardage : « Votre courrier, professeur. » / « Posez-le… loin. »"
+   }
+  }
+ },
+ "felix": {
+  "genre": "m",
+  "prenom": "Félix",
+  "plan": [
+   "mon enfance dans la librairie — fils du libraire de La Rose des Vents ; il redessinait à la craie, sur le quai, les côtes des cartes de son père.",
+   "comment je suis devenu cartographe — il apprend seul, avec les cartes de son père et les récits des marins ; sa première carte de Port-Azur, à seize ans, était fausse de trois cents mètres ; il reprend la librairie à la mort de son père.",
+   "le mal de mer — un pédalo, trois mètres du ponton de Yannick, et le voilà vert ; un cartographe qui n'a jamais quitté son île : il dessine l'archipel avec les yeux des autres (Léon, les passagers, les voyageurs).",
+   "ma vie aujourd'hui — la librairie, le belvédère à l'heure dorée avec Clémence ; toutes ses cartes des fonds vendues au professeur Moreau ; Madame Rita et ses prédictions ; l'atlas des Rois-Ciel et l'île qui volait.",
+   "(confidence) le billet rendu — il y a trente ans, il avait un billet pour l'école de cartographie du continent ; il est monté sur L'Hirondelle et redescendu avant que Léon largue les amarres ; ce n'était pas le mal de mer : le bateau n'avait pas bougé. Léon lui a rendu l'argent sans un mot."
+  ],
+  "reve": "voir une seule fois, de ses yeux, une côte qu'il a dessinée ; et finir la carte complète de l'archipel, avec la Citadelle et la cité engloutie",
+  "question": "« Vous venez d'où, au juste ? » (du_village / de_la_mer / secret) — il note la réponse dans un coin de sa carte et s'en souviendra en parlant de voyages",
+  "liens": {
+   "leon": {
+    "qui": "le capitaine",
+    "nom": "Léon",
+    "sentiment": 0.6,
+    "fond": "Il y a trente ans, Félix est monté sur L'Hirondelle avec un billet pour l'école de cartographie du continent, puis il est redescendu avant le départ. Léon, capitaine depuis un mois, lui a rendu l'argent sans un mot et ne l'a jamais raconté. Aujourd'hui, Léon lui rapporte chaque soir ce que les passagers disent des autres îles ; Félix en corrige ses cartes. Anecdotes : le croquis de la côte du village que Léon a corrigé du doigt ; il l'appelle « mes yeux en mer ». Bavardage : curieux, insatiable."
+   },
+   "yannick": {
+    "qui": "le loueur de bateaux",
+    "nom": "Yannick",
+    "sentiment": 0.6,
+    "fond": "Yannick rêve de faire le tour de l'archipel en voilier ; Félix lui dessine la route, île par île. Un jour, Yannick a emmené Félix en pédalo : Félix a eu le mal de mer à trois mètres du ponton. Félix lui a promis d'être son navigateur… depuis le quai. Anecdotes : le pédalo ; Yannick qui lui a offert un seau « pour le grand voyage ». Ne sait pas pour le voilier caché. Bavardage : rêveur."
+   },
+   "moreau": {
+    "qui": "mon ami le",
+    "nom": "professeur Moreau",
+    "sentiment": 0.8,
+    "fond": "Félix a vendu à Moreau toutes ses cartes des fonds marins. Ils passent des heures penchés dessus à La Rose des Vents, à chercher l'Atlantide au sud-ouest du village. Moreau ne sait pas nager, Félix a le mal de mer : « les deux plus grands explorateurs qui ne sont jamais partis », dit Félix. Anecdotes : les cartes vendues une à une ; la formule des deux explorateurs. Bavardage : enthousiaste."
+   },
+   "rita": {
+    "qui": "notre voyante",
+    "nom": "Madame Rita",
+    "sentiment": -0.2,
+    "fond": "Félix dit que Madame Rita ne voit pas l'avenir, mais qu'elle connaît très bien les rumeurs. Rita lui a prédit qu'il traverserait la mer avant ses soixante ans ; il en a cinquante-huit et le mal de mer. Il note ses prédictions dans un carnet ; il en a trouvé trois de justes, ce qui l'agace. Anecdotes : le carnet des prédictions ; les trois justes. Bavardage : « Une prédiction ? » / « Notez-la. »"
+   },
+   "clemence": {
+    "qui": "la peintre",
+    "nom": "Clémence",
+    "sentiment": 0.6,
+    "fond": "Au belvédère, à l'heure dorée, Félix vient voir le panorama pendant que Clémence peint. Il lui a demandé de mettre en couleur sa carte de Port-Azur, celle que le maire offre aux visiteurs ; elle a peint la mer en six bleus. Il dit que c'est la première carte qui a l'air mouillée. Anecdotes : la carte « mouillée » ; il lui décrit des îles qu'il n'a jamais vues. Bavardage : « Six bleus ! » / « Sept, demain. »"
+   }
+  }
+ },
+ "fernand": {
+  "genre": "m",
+  "prenom": "Fernand",
+  "plan": [
+   "mon enfance sur le quai — né dans la maison du quai ; à douze ans, premier mérou (« quarante kilos », disons vingt-cinq) ; son père lui apprend le nœud de chaise avant l'alphabet.",
+   "Marguerite — il épouse Marguerite, qui pêche avec lui ; elle répète « Fernand, un jour la mer te gardera » ; ils rient sur la barque, elle chante faux, les sardines s'en vont.",
+   "mes mousses — il forme des mousses : le petit Aristide à dix-sept ans (tombé à l'eau le deuxième jour, repêché à la gaffe par la ceinture), puis Marius Vasseur, son matelot pendant quinze ans, et « le filet du père Vasseur ».",
+   "ma vie aujourd'hui — Marius est mort sur le quai à côté de lui il y a seize ans ; Anselme ne lui parle plus ; Odette, sa voisine, lui laisse la meilleure place ; sa barque « La Marguerite » ; ses daurades pour Paulo et Rosalie ; l'arête de sardine vendue au Lord.",
+   "(confidence) le jour de la fièvre — il y a trente ans, il avait la fièvre ; Marguerite est sortie relever les filets à sa place, un grain est tombé, la barque est revenue vide. La nouvelle barque porte son nom. Il n'a jamais pardonné à la fièvre."
+  ],
+  "reve": "sortir un vrai mérou de quarante kilos, pesé devant Odette, et le griller sur le quai pour tout le monde, Anselme compris",
+  "question": "« Tu sais faire un nœud de chaise ? » (oui / non / jamais_essaye) — il propose une leçon, se moque ou s'étonne ; il s'en souviendra en ravaudant son filet",
+  "liens": {
+   "odette": {
+    "qui": "ma voisine",
+    "nom": "Odette",
+    "sentiment": 0.8,
+    "fond": "Voisins du quai. Fernand a eu Marius Vasseur, le mari d'Odette, comme matelot pendant quinze ans ; Marius est mort sur le quai à côté de lui, il y a seize ans. Depuis, Odette lui laisse la meilleure place du quai. Il l'invite à l'anisette chaque semaine ; elle refuse chaque semaine et vient le dimanche. Elle connaît tous ses mensonges sur la taille des poissons. Anecdotes : il a déclaré « La Marguerite » au registre en ajoutant l'invitation à l'anisette ; le dimanche où elle a ri pour la première fois depuis Marius. Bavardage : la meilleure place, le mérou « de quarante kilos »."
+   },
+   "anselme": {
+    "qui": "le gardien du phare",
+    "nom": "Anselme",
+    "sentiment": 0.2,
+    "fond": "Fernand a pêché quinze ans avec Marius, le frère cadet d'Anselme. Il y a seize ans, Marius est mort sur le quai en démêlant avec lui « le filet du père Vasseur ». Fernand l'a gardé (« Marius m'a dit : garde-le ») et le ravaude encore ; Anselme pense que ce filet revenait à la famille. Ils ne se parlent plus et déjeunent dos à dos à la terrasse du Perroquet. Fernand voudrait la paix. Anecdotes : le jeune Anselme qui comptait les étoiles pendant que Marius et lui pêchaient ; le filet déposé un soir devant la porte du phare, retrouvé le lendemain devant la sienne. Bavardage : Fernand parle au vent pour qu'Anselme entende."
+   },
+   "pemberton": {
+    "qui": "ce brave",
+    "nom": "Lord Pemberton",
+    "sentiment": 0.3,
+    "fond": "Fernand a vendu au Lord une arête de sardine comme « dent de dragon de mer ». Le Lord l'a mise sous cloche de verre dans sa chambre douze et la montre à tout le monde. Fernand en rit au Perroquet, et s'en sent un peu coupable. (Pour la seule confidence du Lord : il sait que c'est une arête et l'aime quand même.) Anecdotes : la vente (le Lord a voulu payer le double « pour le danger ») ; le Lord qui lui demande s'il a aussi des écailles de sirène. Bavardage : Fernand promet une « plume de poisson volant »."
+   },
+   "paulo": {
+    "qui": "le cuisinier",
+    "nom": "Paulo",
+    "sentiment": 0.6,
+    "fond": "Fernand vend à Paulo ses plus belles daurades, pêchées au large du village ; Paulo les paie bien et prétend les reconnaître « à l'œil ». Le dimanche, Fernand mange la bouillabaisse chez lui et déclare chaque fois qu'« il manque un truc ». Anecdotes : le mérou de vingt-cinq kilos livré sur l'épaule, Paulo qui chante de joie ; l'assiette que Paulo lui garde le soir de la fête du port. Bavardage : « Il manque un truc. » / « Il manque un pêcheur ! »"
+   },
+   "rosalie": {
+    "qui": "la poissonnière",
+    "nom": "Rosalie",
+    "sentiment": 0.6,
+    "fond": "Rosalie achète à Fernand sa pêche du matin, à six heures, quand les barques rentrent. Elle divise par deux toutes ses tailles de poissons. L'affaire des « daurades d'hier » : celles que Paulo a refusées venaient de Fernand, qui les avait gardées une nuit dans son seau ; Rosalie l'a couvert devant Paulo. Anecdotes : elle chante en pesant, lui pose le pouce sur la balance, elle le sait ; il lui doit une fière chandelle pour les daurades. Bavardage : « Combien ? » / « Divise par deux. »"
+   },
+   "aristide": {
+    "qui": "le petit",
+    "nom": "Aristide",
+    "sentiment": 0.5,
+    "fond": "À dix-sept ans, Aristide a été mousse sur la barque de Fernand. Le deuxième jour, il est tombé à l'eau en racontant une histoire ; Fernand l'a repêché à la gaffe par la ceinture. Il a démissionné le soir même pour devenir serveur. Fernand raconte l'histoire à tout le monde ; Aristide aussi, en plus héroïque. (La peur de l'eau qui lui en est restée est la confidence d'Aristide ; Fernand n'en parle pas.) Anecdotes : la gaffe et la ceinture ; le maire qui inaugure le nouveau quai à trois mètres du bord. Bavardage : « Tu viens pêcher, Aristide ? » / « Les affaires de la ville, hélas ! »"
+   }
+  }
+ },
+ "gerard": {
+  "genre": "m",
+  "prenom": "Gérard",
+  "plan": [
+   "mon premier appareil — né sur le continent, bon en calcul ; à dix ans, son père lui offre un petit appareil photo ; ses premières photos sont surtout des pouces.",
+   "comptable et amoureux — comptable dans une maison de transport ; photographe bénévole à une sortie scolaire, il photographie les chaussures de l'institutrice au lieu des élèves : Sylvie ; mariage, puis Théo.",
+   "les vacances à Port-Azur — un mois par an de couchers de soleil ; le premier jour, une heure à tourner en rond en pédalo en photographiant le phare (Kevin va le chercher) ; la bouillabaisse de Paulo et le pantalon trop petit.",
+   "l'appareil perdu — trois cents photos, dont deux nettes ; il oublie l'appareil au belvédère ; la peintre l'a vu et l'a laissé là ; le cerf-volant de Théo sur la colline ; lui n'a pas les jambes pour grimper.",
+   "(confidence) les trois jours sans appareil — les plus beaux de ses vacances : il a vu Théo rire pour de vrai ; il ne le dira jamais à Sylvie, elle aurait trop raison."
+  ],
+  "reve": "une photo nette, une seule, de toute la famille au coucher du soleil, sans pouce ; et exposer un jour ses couchers de soleil à la mairie de sa ville",
+  "question": "« Vous permettez une photo ? Vous êtes plutôt de face ou de profil ? » (de_face / de_profil / pas_de_photo) — il commente votre bon profil ; il s'en souviendra chaque fois qu'il lève son appareil",
+  "liens": {
+   "yannick": {
+    "qui": "le loueur de bateaux",
+    "nom": "Yannick",
+    "sentiment": 0.8,
+    "fond": "Le premier jour de ses vacances, Gérard a loué un pédalo et a tourné en rond pendant une heure en photographiant le phare à chaque tour ; Kevin est allé le chercher. Depuis, ce pédalo s'appelle « Gérard », au registre d'Odette. Gérard ne le sait pas et trouve Yannick très sympathique. Anecdotes : sa « superbe » série de quarante photos du phare, prises du pédalo ; Yannick qui l'appelle « capitaine ». Ne sait pas pour le nom du pédalo. Bavardage : jovial."
+   },
+   "sylvie": {
+    "qui": "ma femme",
+    "nom": "Sylvie",
+    "sentiment": 0.9,
+    "fond": "Mariés depuis neuf ans, en vacances au Grand Hôtel avec leur fils Théo. Ils se sont rencontrés à une sortie scolaire de Sylvie, où Gérard, photographe bénévole, a photographié ses chaussures au lieu des élèves. Sylvie dit qu'il photographie plus qu'il ne regarde. (Confidences : lui a aimé ses jours sans appareil ; elle écrit en secret des romans d'amour.) Anecdotes : la photo des chaussures ; Sylvie qui l'a obligé à regarder un coucher de soleil sans appareil. Bavardage : « Une photo, chérie ? » / « Regarde, plutôt. »"
+   },
+   "theo": {
+    "qui": "mon fils",
+    "nom": "Théo",
+    "sentiment": 0.9,
+    "fond": "Gérard a photographié chaque château de sable de Théo, à travers son appareil. Quand l'appareil a été perdu au belvédère, il a regardé Théo pour de vrai pendant trois jours. Il n'a pas les jambes pour monter chercher le cerf-volant sur la colline, et s'en veut. Anecdotes : le château photographié sous tous les angles ; Théo qui rit sans être pris en photo. Bavardage : « Souris ! » / « Regarde, papa ! »"
+   },
+   "clemence": {
+    "qui": "la peintre",
+    "nom": "Clémence",
+    "sentiment": 0.3,
+    "fond": "Clémence a vu l'appareil de Gérard près du banc du belvédère et l'a laissé là, « au cas où quelqu'un le chercherait ». Gérard aurait préféré qu'elle le rapporte. Ils se disputent gentiment : pour elle, une photo « vole » un paysage ; pour lui, elle le « garde ». Anecdotes : l'appareil laissé sur le banc ; la photo qu'il a prise de son tableau (floue). Bavardage : « Une photo de votre toile ? » / « Jamais. »"
+   },
+   "paulo": {
+    "qui": "le chef",
+    "nom": "Paulo",
+    "sentiment": 0.8,
+    "fond": "Gérard déjeune chez Paulo chaque jour et prend toujours la bouillabaisse ; il dit qu'il va devoir acheter un pantalon plus grand. Il a photographié chaque assiette. Paulo l'adore et lui a interdit de photographier la marmite, « à cause du secret ». Anecdotes : le pantalon ; l'interdiction de photographier la marmite. Bavardage : « Une deuxième assiette ? » / « Mon pantalon dit non ! »"
+   }
+  }
+ },
+ "gisele": {
+  "genre": "f",
+  "prenom": "Gisèle",
+  "plan": [
+   "mon enfance sous la table du coin — fille de la patronne du Café de la Place ; elle faisait ses devoirs sous la table du coin et apprenait les commandes par cœur.",
+   "le serveur aux douze tasses — elle a dix ans quand le jeune Aristide, serveur chez sa mère, casse douze tasses le premier jour ; elle lui apprend à porter un plateau ; plus tard, elle reprend le café de sa mère.",
+   "la nuit de la tempête — un hiver, tout le port se réfugie au café une nuit entière ; elle sert trois cents cafés et décide que le café ne fermera jamais.",
+   "mon café aujourd'hui — les habitudes : le maire, un serré à midi ; Odette, la table face au port ; Colette, une tisane et un roman à sept heures ; le professeur, trois cafés et zéro mot ; Raymond qui boude en terrasse quand il perd.",
+   "(confidence) je déteste le café — elle n'aime pas le café ; depuis toujours, elle boit de la camomille derrière le percolateur ; seule sa mère le savait."
+  ],
+  "reve": "une terrasse qui déborde jusqu'à la fontaine un soir de fête, avec Django, l'horloge qui sonne, et le professeur qui parle",
+  "question": "« Un café ? Vous le prenez comment ? » (serre / allonge / avec_du_lait) — avec du lait, elle s'indigne en riant ; elle s'en souviendra à chaque commande",
+  "liens": {
+   "odette": {
+    "qui": "ma cliente de midi",
+    "nom": "Odette",
+    "sentiment": 0.6,
+    "fond": "Chaque midi, Odette déjeune au Café de la Place, à la table qui donne sur le port ; Gisèle la lui garde et en chasse les touristes. Odette mange en comptant les voiliers. Gisèle lui sert le plat du jour sans qu'elle commande. Anecdotes : Odette partie en courant, la fourchette à la main, pour un voilier mal amarré ; le jour où elle a souri au dessert. Bavardage : complicité de deux femmes occupées."
+   },
+   "raymond": {
+    "qui": "mon boudeur préféré",
+    "nom": "Raymond",
+    "sentiment": 0.6,
+    "fond": "Raymond a livré le pain du Café de la Place pendant quarante ans, du temps de la mère de Gisèle, puis de Gisèle. Quand il perd à la pétanque, il vient bouder à sa terrasse, seul à une table, devant un café qu'il ne boit pas. Gisèle sait toujours qui a gagné à sa façon de s'asseoir. Anecdotes : sa façon de s'asseoir ; trois jours de bouderie après le cochonnet perdu. Bavardage : taquine."
+   },
+   "moreau": {
+    "qui": "ce taiseux de",
+    "nom": "professeur Moreau",
+    "sentiment": 0.3,
+    "fond": "Chaque matin, de huit à onze heures, Moreau boit trois cafés au Café de la Place sans dire un mot, plongé dans ses livres. Gisèle a compté : en deux mois, il lui a dit « merci » une fois. Le seul jour où il a parlé, il a parlé une heure entière d'un cristal ; elle a fermé la terrasse en retard. Un peu vexée. Anecdotes : le merci unique ; les miettes de gomme sur la table. Bavardage : piquant."
+   },
+   "colette": {
+    "qui": "ma cliente de sept heures",
+    "nom": "Colette",
+    "sentiment": 0.7,
+    "fond": "Chaque soir à sept heures, Colette prend une tisane au Café de la Place et lit un roman d'amour caché derrière un journal. Gisèle est la seule à le savoir, et le raconte aux voyageurs en leur faisant promettre de se taire. Colette lui laisse un pot de miel à chaque fin d'année. Anecdotes : le journal ; les soupirs à la dernière page. Bavardage : complice."
+   },
+   "aristide": {
+    "qui": "notre maire",
+    "nom": "Aristide",
+    "sentiment": 0.6,
+    "fond": "À dix-sept ans, juste après sa chute de la barque de Fernand, Aristide est devenu serveur au Café de la Place, chez la mère de Gisèle ; il a cassé douze tasses le premier jour. Gisèle, dix ans, lui a appris à porter un plateau. Aujourd'hui il prend son café serré à midi, et elle lui rappelle les douze tasses dès qu'un discours dure trop. Anecdotes : les tasses ; le maire qui laisse toujours un pourboire « municipal ». Bavardage : taquin."
+   }
+  }
+ },
+ "hector": {
+  "genre": "m",
+  "prenom": "Hector",
+  "plan": [
+   "la tarte de ma grand-mère — élevé par sa grand-mère rue du Phare ; elle faisait la tarte « en tapant fort et en chantant faux », il forge pareil.",
+   "trois ans de charbon chez les nains — à dix-huit ans, il traverse jusqu'à la Montagne de Feu ; Borin le laisse porter le charbon trois ans avant de lui confier un marteau ; il revient avec un tablier brûlé et une phrase : « Pas mal… pour un grand. »",
+   "l'Enclume Bleue — il ouvre l'armurerie rue du Phare il y a vingt ans ; Port-Azur est trop calme pour un armurier ; il vend des épées-souvenirs aux touristes et forge l'enseigne du Perroquet pour Toni.",
+   "ma vie aujourd'hui — la forge, la bière naine au Perroquet le soir ; Colette, qui trouve ses lames effrayantes et lui fait payer le papier ; madame Hortense et son rouage ; le vendredi soir, sa chemise propre (il dîne chez Inès, en secret).",
+   "(confidence) pourquoi je n'ai « jamais le temps » — il a peur : une épée ratée coupe quand même ; un rouage raté, l'horloge ne sonne pas, et Hortense aura attendu sept ans pour rien."
+  ],
+  "reve": "forger une pièce si belle que Borin la pose sur une enclume de Forgefer sans rien dire ; et une petite horloge, à lui, pour la boutique d'Inès",
+  "question": "« Ton épée, tu la tiens à une main ou à deux ? » (une / deux / pas_d_epee) — conseil de métier bourru dans les trois cas ; il s'en souviendra en regardant ta lame",
+  "liens": {
+   "toni": {
+    "qui": "le patron du Perroquet",
+    "nom": "Toni",
+    "sentiment": 0.5,
+    "fond": "Quand Toni a ouvert, il y a vingt ans, Hector a forgé l'enseigne en fer du Perroquet Bleu. Toni l'a payée en bière naine, et la paie encore : Hector boit chaque soir au bar « sur le compte de l'enseigne ». Ils ont calculé que l'enseigne est payée depuis douze ans ; ni l'un ni l'autre ne le dit. Anecdotes : le perroquet en fer de l'enseigne, forgé « en chantant faux » ; Toni qui le défend devant les clients qui le trouvent effrayant. Bavardage : bourru."
+   },
+   "colette": {
+    "qui": "l'épicière",
+    "nom": "Colette",
+    "sentiment": -0.1,
+    "fond": "Colette trouve que les lames d'Hector font peur et préfère les confitures. Hector trouve que les prix de Colette font peur. Ils sont aussi regardants l'un que l'autre : elle lui fait payer le papier d'emballage, il lui a fait payer l'affûtage de son couteau à fromage. Ils se saluent d'un « Hm » identique. Anecdotes : l'affûtage facturé ; ses prix « à faire peur à un nain ». Bavardage : « Hm. » / « Hm. »"
+   },
+   "hortense": {
+    "qui": "madame",
+    "nom": "Hortense",
+    "sentiment": 0.6,
+    "fond": "Il faut à l'horloge un rouage neuf, que seul Hector peut forger. Depuis sept ans, Hortense le lui demande, et il répond qu'il n'a pas le temps. Il passe pourtant devant l'horloge chaque jour et lève les yeux vers le cadran. (Confidence d'Hector : il a peur de rater le rouage.) Respect bourru. Anecdotes : il a dessiné le rouage cent fois sur son établi (sans le dire). Bavardage : « Madame. » / « Le rouage ? »"
+   },
+   "ines": {
+    "qui": "la bijoutière",
+    "nom": "Inès",
+    "sentiment": 0.9,
+    "fond": "En public, ils se saluent à peine : l'armurier et la bijoutière, deux artisans qui parlent métal et pierres. Hector lui forge de petites griffes de sertissage ; elle lui achète l'obsidienne qu'on lui rapporte. En secret, depuis deux ans, Hector dîne chez Inès chaque vendredi, en chemise propre : c'est pour lui la deuxième daurade que Rosalie remarque. (Cœur de la confidence d'Inès ; ne pas le révéler avant.) Anecdotes publiques : la bijoutière qui a vu tout de suite une paille dans sa lame ; l'obsidienne. Bavardage : neutre, une allusion au poisson du vendredi."
+   },
+   "borin": {
+    "qui": "mon ancien maître",
+    "nom": "Borin",
+    "sentiment": 0.4,
+    "fond": "Hector a fait son apprentissage à Forgefer, sur la Montagne de Feu : trois ans à porter le charbon avant que Borin ne lui confie un marteau. Il en est revenu avec un tablier brûlé et une phrase de Borin : « Pas mal… pour un grand. » Il dit, une seule fois, que les nains forgent mieux que lui. Admiration et vieille rancune du charbon. Anecdotes : le premier coup de marteau autorisé ; Borin qui a fondu sa première lame sans un mot. (Lien vers les nains : garder Borin fier et grognon.)"
+   }
+  }
+ }
+}

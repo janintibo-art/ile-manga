@@ -1,0 +1,266 @@
+{
+ "nourredine": {
+  "genre": "m",
+  "prenom": "Nourredine",
+  "plan": [
+   "l'enfant qui perçait des boîtes — fils d'un savetier ; enfant, il perçait des trous dans des boîtes en fer pour regarder la lumière passer ; son père désespérait.",
+   "mon associé malgré moi — apprenti chez un vieux lanternier, il perce la lanterne ratée du jeune Abdellah ; depuis quarante ans, Abdellah forme, il perce, et ils se disputent.",
+   "la nuit où la ville s'est éteinte — un coup de vent souffle toutes les bougies de la fête ; il rallume une à une les lanternes de la place, et la fête repart ; Ba Sidi en a fait un conte.",
+   "mon atelier aujourd'hui — l'étoile à huit branches ; la lanterne de la halqa ; Selma qui peint ses ombres la nuit ; les sept lanternes « empruntées » qui brillent au-dessus des canons de la Murène ; les lumières des grottes, qui ne sont pas les siennes.",
+   "(confidence) il garde au-dessus de son lit la première lanterne ratée d'Abdellah, celle qu'il a percée à vingt ans : c'est la plus belle de sa vie, parce qu'ils l'ont faite avant de se disputer. Abdellah ne doit jamais le savoir."
+  ],
+  "reve": "Percer une lanterne qui poserait tout le ciel du désert sur la place, avec les étoiles qui marchent. Abdellah ferait la forme, évidemment. Il râlerait.",
+  "question": "Tu préfères la lumière du jour, ou celle des lanternes ? (jour / lanternes / etoiles) — content dans les trois cas, mais « étoiles » le rend rêveur (« Celles-là, personne ne les a percées. »).",
+  "liens": {
+   "abdellah": {
+    "qui": "mon vieil associé",
+    "nom": "Abdellah",
+    "sentiment": 0.3,
+    "fond": "Depuis quarante ans, ils font ensemble toutes les lanternes de Tazira : Abdellah forme le cuivre, Nourredine perce les motifs. Et depuis quarante ans, ils se disputent pour savoir qui fait le plus beau métier. L'un ne peut pas travailler sans l'autre. Anecdotes : la lanterne signée des deux côtés ; Abdellah fait semblant d'être sourd quand on complimente les motifs. Bavardage : « Ton cuivre est encore tiède. » / « Tac. Tes étoiles aussi. »."
+   },
+   "basidi": {
+    "qui": "notre conteur",
+    "nom": "Ba Sidi",
+    "sentiment": 0.6,
+    "fond": "Chaque soir, la halqa de Ba Sidi est éclairée par une grande lanterne de Nourredine, percée d'étoiles qui marchent. Ba Sidi dit que les histoires y sont meilleures ; Nourredine les écoute de loin, depuis son atelier. Anecdotes : la lanterne du sultan et de la sardine ; il n'a jamais entendu une histoire de Ba Sidi jusqu'au bout (il travaille). Bavardage : « Elle éclaire bien, ce soir ? » / « Comme mille et une étoiles. »."
+   },
+   "selma": {
+    "qui": "la peintre",
+    "nom": "Selma",
+    "sentiment": 0.6,
+    "fond": "La nuit, Selma vient dans l'atelier de Nourredine peindre les motifs que ses lanternes posent sur les murs. Il lui a percé une lanterne spéciale, avec une fente, pour peindre la nuit sans gêner personne. Anecdotes : grâce à elle, il a découvert que ses lanternes faisaient des couleurs sur la chaux, ce qu'il n'avait jamais remarqué en quarante ans ; la lanterne à fente. Bavardage : « Encore là, à cette heure ? » / « Vos étoiles ne sortent que la nuit. »."
+   },
+   "rosa": {
+    "qui": "cette chapardeuse de",
+    "nom": "Rosa",
+    "sentiment": 0.2,
+    "fond": "Les lanternes que les pirates « empruntent » à la fête, c'est Rosa : elle en accroche une au-dessus de chaque canon. Il y en a déjà sept à bord. Nourredine le sait et ne dit rien : au fond, ça lui plaît que ses lanternes naviguent. Anecdotes : la lanterne nettoyée ; le soir, il compte les sept lumières sur le galion. Bavardage : « Il m'en manque une. » / « Bertha la trouve très belle. »."
+   }
+  }
+ },
+ "omar": {
+  "genre": "m",
+  "prenom": "Omar",
+  "plan": [
+   "le pied qui tapait — il tapait du pied avant de savoir marcher, et déjà dans le ventre de sa mère ; il a usé trois tables d'enfance.",
+   "mon premier bendir — son père lui offre un bendir à dix ans ; la corde sous la peau qui grésille : la voix du tambour.",
+   "le soir du bendir crevé — en pleine fête, la peau crève ; il finit la nuit sur un plateau de cuivre d'Abdellah, et la place danse deux fois plus.",
+   "ma vie aujourd'hui — l'après-midi à la table du grill de Mustapha, le soir avec Lhoucine et Hamid ; le tac-tac d'Abdellah qu'il emprunte ; le perroquet des pirates qui siffle ses rythmes.",
+   "(confidence) il ne sait pas danser : lui qui donne le rythme à toute la ville, il a les pieds qui s'emmêlent dès qu'il se lève. C'est pour ça qu'il ne lâche jamais son tambour."
+  ],
+  "reve": "Que la fête de Tazira s'entende jusqu'à Carène. Et un groupe à quatre : Lhoucine, Hamid, lui… et l'Amiral.",
+  "question": "Boum ! Tu as le rythme, toi ? (oui / non / dans_les_pieds) — il te fait taper sur la table pour vérifier, dans les trois cas.",
+  "liens": {
+   "lhoucine": {
+    "qui": "mon complice",
+    "nom": "Lhoucine",
+    "sentiment": 0.8,
+    "fond": "Ils jouent ensemble depuis l'enfance, à la porte du nord : Omar tapait sur les tables, Lhoucine grattait une boîte de sardines à trois ficelles. Aujourd'hui, Omar donne le pas du chameau, Lhoucine la vague. Anecdotes : la boîte de sardines ; Lhoucine dort le jour, et Omar le réveille en tapant sur sa porte, en rythme. Bavardage : « Boum, ta-ka ! » / « Laisse-moi dormir encore une mesure. »."
+   },
+   "hamid": {
+    "qui": "notre chanteur",
+    "nom": "Hamid",
+    "sentiment": 0.7,
+    "fond": "Membres du trio de la fête. L'après-midi, Omar tape le rythme à la table du grill de Mustapha, et Hamid y passe après la pêche : ils répètent avec les assiettes. Il le trouve génial et beaucoup trop fort. Anecdotes : les sardines qui sautent ; de la place, on entend Hamid chanter en mer avant de voir la flotte. Bavardage : « Ce soir, moins fort ? » / « Ce soir, plus fort ! »."
+   },
+   "mustapha": {
+    "qui": "mon grilleur préféré",
+    "nom": "Mustapha",
+    "sentiment": 0.8,
+    "fond": "Chaque après-midi, Omar s'installe à la table du grill de Mustapha et tape le rythme. Mustapha le paie en sardines : avec le rythme, dit-il, les clients mangent plus vite, et il en vient d'autres. Anecdotes : le jour où Omar était malade, Mustapha a vendu moitié moins ; Mustapha retourne les sardines en rythme sans regarder. Bavardage : « Boum ! Six sardines ! » / « Ta-ka ! Et un morceau de pain ! »."
+   },
+   "gaspard_muet": {
+    "qui": "le pirate silencieux",
+    "nom": "Gaspard",
+    "sentiment": 0.7,
+    "fond": "L'Amiral, le perroquet de Gaspard, siffle les rythmes d'Omar. Omar veut l'engager dans le trio ; Gaspard hausse les épaules, l'Amiral dit oui. Anecdotes : les applaudissements ; il paie l'Amiral une graine de tournesol par rythme réussi. Bavardage : « Boum, ta-ka ? » / l'Amiral « BOUM ! TA-KA ! COUAC ! »."
+   },
+   "abdellah": {
+    "qui": "le batteur de cuivre",
+    "nom": "Abdellah",
+    "sentiment": 0.6,
+    "fond": "Omar tape le rythme sur tout ce qu'il trouve ; quand il passe au souk, il suit le tac-tac du marteau d'Abdellah et en fait une musique. Abdellah, susceptible, dit qu'on lui vole son rythme. Le soir où la peau du bendir d'Omar a crevé, il a fini la fête sur un plateau d'Abdellah. Anecdotes : il a joué une fête entière sur le rythme « tac-tac-tac » d'Abdellah, et a dit à tout le monde d'où il venait ; Abdellah a été vexé, puis flatté. Bavardage : « Tac, tac, BOUM ! » / « C'est mon tac. » / « C'est notre tac ! »."
+   }
+  }
+ },
+ "rachid": {
+  "genre": "m",
+  "prenom": "Rachid",
+  "plan": [
+   "les tapis de ma grand-mère — Lalla Mennana, tisserande des tribus de l'oasis ; enfant, il dormait sur les tapis, et elle lui disait ce que racontait chacun.",
+   "mon premier prix — à douze ans, il vend son premier tapis, au troisième prix ; jamais au premier : c'est une question d'honneur.",
+   "le tapis des étoiles — à sa mort, sa grand-mère lui laisse un tapis qui n'est pas à vendre : la porte de la ville, trois étoiles, la dune en croissant, un soleil ; « l'étoile, la dune, le soleil : c'est la clé ».",
+   "mon échoppe aujourd'hui — Samira, sa fiancée, la noce au printemps ; Karim, son voisin ; Mbarek qui gagne toujours en se taisant ; le pirate qui a payé au premier prix ; Ba Sidi qui lui envoie des curieux.",
+   "(confidence) il ne sait pas lire les tapis comme sa grand-mère : les histoires qu'il raconte aux clients, il les invente. Seul le tapis des étoiles, il ne l'a jamais inventé, et il lui fait un peu peur."
+  ],
+  "reve": "Le jour de la noce, que Samira lui offre un tapis… même s'il aura des babouches. Et vendre un jour un tapis au premier prix, de bon cœur. Non. Jamais.",
+  "question": "Mon frère ! Tu marchandes, toi ? (toujours / jamais / ca_depend) — « jamais » le rend malade (« Comme le pirate ! »), « toujours » le ravit, « ça dépend » l'intrigue.",
+  "liens": {
+   "samira": {
+    "qui": "ma fiancée",
+    "nom": "Samira",
+    "sentiment": 0.9,
+    "fond": "Voisins d'échoppe au souk, fiancés : la noce est au printemps. Ils se disputent pour rire (tapis trop chers, tissus trop courts). Rachid veut un tapis pour la noce ; Samira dit qu'il aura des babouches (Karim les fait en secret). Samira tisse en ce moment l'étrange tapis du capitaine pirate. Anecdotes : il l'a demandée en mariage en essayant de lui vendre un tapis « prix de fiancée » ; elle a marchandé et a dit oui au troisième prix ; il est jaloux du tapis du capitaine, qui lui prend ses soirées. Bavardage : « Ma lumière ! Le tapis de la noce ? » / « Tu auras des babouches. »."
+   },
+   "karim": {
+    "qui": "mon voisin de souk",
+    "nom": "Karim",
+    "sentiment": 0.8,
+    "fond": "Échoppes voisines au souk ; les deux plus grands blagueurs de Tazira. Karim fabrique en secret les babouches de noce de Rachid (commandées par Samira) ; Rachid essaie de deviner. Anecdotes : chaque vendredi, concours : Karim devine les pointures, Rachid devine ce que les clients ont dans la bourse ; il a vendu un jour des babouches de Karim en son absence, au triple du prix, et gardé la différence « pour la noce ». Bavardage : « Ma pointure de noce ? » / « Quarante-deux. Et demi. Pour danser. »."
+   },
+   "basidi": {
+    "qui": "notre vieux conteur",
+    "nom": "Ba Sidi",
+    "sentiment": 0.7,
+    "fond": "Ba Sidi a connu la grand-mère de Rachid, Lalla Mennana, tisserande des tribus de l'oasis, qui a tissé le tapis des étoiles (le chemin vers la dune qui marche). C'est lui qui envoie les curieux du sceau chez Rachid. Ba Sidi trouve que Rachid parle trop de ses prix ; Rachid trouve que Ba Sidi parle trop tout court. Anecdotes : le prix de l'histoire ; Ba Sidi vient s'asseoir sur ses tapis et fait fuir les clients en racontant. Bavardage : « Combien, ton histoire de ce soir ? » / « Ce que tu veux. Comme toujours. »."
+   },
+   "mbarek": {
+    "qui": "mon fournisseur",
+    "nom": "Mbarek",
+    "sentiment": 0.3,
+    "fond": "Mbarek rapporte de l'oasis des tapis tissés par les femmes des tribus ; Rachid les lui achète. Chaque marchandage dure des heures : Rachid parle, Mbarek se tait, et c'est toujours Mbarek qui gagne. Anecdotes : il a parlé quatre heures sans s'arrêter, Mbarek a dit « Non », et il a payé son prix ; il le soupçonne de rire sous son chèche. Bavardage : « Mon frère ! Un prix d'ami ! » / « … » / « Bon. Ton prix. »."
+   },
+   "machefer": {
+    "qui": "ce pirate de",
+    "nom": "Mâchefer",
+    "sentiment": -0.1,
+    "fond": "Mâchefer a acheté un tapis rouge à Rachid au premier prix, sans discuter : « Combien ? Payé. » Rachid, qui n'avait jamais vendu un tapis au premier prix, en a été malade trois jours. Depuis, il essaie de le faire marchander. Anecdotes : les trois jours de fièvre ; l'argent rendu, refusé. Bavardage : « Mon frère ! Un autre tapis ? On négocie ? » / « Hm. Combien ? » / « Aïe. »."
+   }
+  }
+ },
+ "rosa": {
+  "genre": "f",
+  "prenom": "Rosa",
+  "plan": [
+   "la fille du pêcheur du nord — fille d'un pêcheur de sardines sur une île du nord ; elle aidait aux filets et regardait les voiles passer.",
+   "le saut — il y a dix ans, la Murène passe au large ; elle saute de la barque de son père et nage ; Gaspard, en vigie, lui lance un cordage.",
+   "Bertha — elle commence au récurage des canons et devient maîtresse canonnière en cinq ans ; Bertha, son canon préféré, qu'elle fait reluire comme un sou neuf.",
+   "Tazira aujourd'hui — les nœuds pour Yasmine ; la pêche à l'aube avec Driss ; les lanternes de Nourredine au-dessus de ses canons ; les piques avec le caïd ; la danse sur la place.",
+   "(confidence) elle n'a jamais dit au revoir à son père. Driss lui ressemble tant qu'elle sort en mer avec lui pour faire semblant. Elle voudrait rentrer une fois sur son île, et elle a peur qu'il ne la reconnaisse pas."
+  ],
+  "reve": "Rentrer un jour sur son île, avec Bertha toute brillante, tirer un coup à blanc pour saluer son père, et pêcher une sardine avec lui comme avant.",
+  "question": "Tu as déjà quitté quelqu'un sans lui dire au revoir ? (oui / non / je_prefere_pas) — gravité soudaine, soulagement, ou un rire pour changer de sujet.",
+  "liens": {
+   "gaspard_muet": {
+    "qui": "mon frère de bord",
+    "nom": "Gaspard",
+    "sentiment": 0.9,
+    "fond": "Il y a dix ans, quand Rosa a sauté de la barque de son père pour rejoindre la Murène à la nage, c'est Gaspard, en vigie, qui l'a vue et lui a lancé un cordage. Depuis, ils sont comme frère et sœur. Rosa est la seule à avoir entendu la voix de Gaspard : une berceuse, une nuit de tempête. Anecdotes : le cordage ; elle a appris à l'Amiral à crier « BERTHA ! FEU ! », ce qui sème la panique sur le quai. Bavardage (Gaspard répond par l'Amiral) : « Tu vois quoi, là-haut ? » / « UNE ROUSSE ! COUAC ! »."
+   },
+   "yasmine": {
+    "qui": "ma petite élève",
+    "nom": "Yasmine",
+    "sentiment": 0.8,
+    "fond": "Rosa apprend les nœuds marins aux enfants du port ; Yasmine est la plus douée : elle fait le nœud de chaise presque les yeux fermés. Rosa dit qu'elle fera un bon pirate, ou pire, un bon capitaine de la garde. Anecdotes : Yasmine a attaché Amine à la fontaine avec un nœud de chaise parfait, il a fallu Rosa pour le détacher ; Rosa lui a promis de lui montrer Bertha de près. Bavardage : « Nœud de chaise ? » / « Les yeux fermés ! » / « Ouvre-les, tu fais un nœud de vache. »."
+   },
+   "hamza": {
+    "qui": "le caïd",
+    "nom": "Hamza",
+    "sentiment": 0.3,
+    "fond": "Rosa a seize canons, Hamza sept, qui n'ont jamais tiré. Elle le taquine et lui propose de « réveiller » ses canons ; il se vexe. Mais il lui a demandé, en secret, comment elle règle la hausse de Bertha, et elle lui a répondu en détail. Anecdotes : un matin, elle a salué la Skala d'un coup à blanc de Bertha, et Hamza a fait sonner l'alarme ; la leçon secrète de hausse. Bavardage : « Ils dorment toujours, tes canons ? » / « Ils veillent. » / « Ils ronflent. »."
+   },
+   "driss": {
+    "qui": "mon vieux pêcheur",
+    "nom": "Driss",
+    "sentiment": 0.7,
+    "fond": "Rosa était fille de pêcheur. Deux ou trois fois par semaine, à l'aube, elle sort en mer avec Driss sur la Mabrouka ; ils ne se disent pas un mot. Elle dit qu'il ressemble à son père ; il dit qu'elle rame bien. Anecdotes : le matin où elle a pleuré en silence en remontant le filet, il lui a tendu un mouchoir sans la regarder ; il l'a fait rentrer parce que les mouettes rentraient, juste avant l'orage. Bavardage : « Demain, à l'aube ? » / « Hm. » / « C'est oui. »."
+   },
+   "nourredine": {
+    "qui": "le lanternier",
+    "nom": "Nourredine",
+    "sentiment": 0.6,
+    "fond": "Les lanternes que les pirates « empruntent » à la fête, c'est Rosa : elle en accroche une au-dessus de chaque canon. Il y en a déjà sept à bord. Nourredine le sait et ne dit rien : au fond, ça lui plaît que ses lanternes naviguent. Anecdotes : elle lui a rapporté une lanterne noircie par la fumée de Bertha, il l'a nettoyée et la lui a rendue ; Bertha a sa lanterne en étoile. Bavardage : « Belle fête, hier. » / « Il me manque une étoile à huit branches. » / « Elle est en de bonnes mains. »."
+   }
+  }
+ },
+ "said": {
+  "genre": "m",
+  "prenom": "Saïd",
+  "plan": [
+   "le bébé qui criait — il criait si fort, bébé, que les voisins l'ont surnommé « la Voix » avant qu'il sache parler.",
+   "l'estrade de la criée — à dix-sept ans, il remplace le vieux crieur devenu aphone ; on l'entend jusqu'à la Skala, et les jours de vent jusqu'au désert.",
+   "le jour où j'ai perdu ma voix — un matin de grande pêche, plus un son ; Mustapha crie à sa place et vend les sardines crues au prix des grillées ; la pire journée de sa vie, et la plus drôle.",
+   "ma criée aujourd'hui — les prix de l'amin (un peu arrondis), Zohra qui refuse ses dorades, le pirate qui a éternué, le rival Hamid, douze sardines chez Mustapha, et le soir, chanter pour faire trembler les lanternes.",
+   "(confidence) il a peur du silence ; la nuit, il ne dort que fenêtre ouverte sur les bruits du port. Le jour où il a perdu la voix, il a cru qu'il disparaissait."
+  ],
+  "reve": "Crier une fois si fort que Carène l'entende, et que quelqu'un, là-bas, réponde « QUOI ? ». Et battre Hamid, pour de bon cette fois.",
+  "question": "Tu viens pour le poisson ou pour ma belle voix ? (poisson / voix / les_deux) — rires de crieur ; « voix » lui vaut un « SARDIIINES ! » rien que pour toi.",
+  "liens": {
+   "hamid": {
+    "qui": "ce casseur d'oreilles de",
+    "nom": "Hamid",
+    "sentiment": 0.1,
+    "fond": "Les deux plus grosses voix de Tazira : Saïd crie à la criée et chante à la fête, Hamid chante en mer et à la fête. L'été dernier, duel de voix sur la place : une lanterne de Nourredine s'est décrochée, et Moulay Brahim a déclaré match nul pour avoir la paix. Anecdotes : le duel (lui aussi est sûr d'avoir gagné) ; la voix de Hamid arrive à la criée avant la flotte et lui gâche son effet. Bavardage : « Ce soir, la revanche ? » / « Ce soir, la victoire. »."
+   },
+   "zohra": {
+    "qui": "ma cliente impossible",
+    "nom": "Zohra",
+    "sentiment": 0.3,
+    "fond": "Zohra tient le premier étal de la criée, juste sous l'estrade de Saïd. Elle refuse ses dorades pour son tajine du vendredi : « elles ont entendu trop de cris, elles ont la chair stressée ». Saïd le prend très mal, et crie encore plus fort. Vexé, mais il l'aime bien. Anecdotes : il a tenté de vendre des dorades en chuchotant, personne n'a rien entendu, invendues ; il lui garde la plus belle dorade chaque vendredi, qu'elle refuse. Bavardage : « Une dorade calme, Zohra ? Je l'ai criée tout bas. » / « Je l'ai entendue d'ici. »."
+   },
+   "brahim": {
+    "qui": "l'amin",
+    "nom": "Moulay Brahim",
+    "sentiment": 0.6,
+    "fond": "L'amin fixe le prix de la sardine chaque matin ; Saïd le crie sur l'estrade. Saïd arrondit un peu, « pour la musique ». Brahim surveille. Il respecte l'amin et le trouve trop sérieux. Anecdotes : le prix qui rime ; Brahim l'a fait taire d'un seul regard le jour où le capitaine pirate est venu négocier le quai. Bavardage : « Le prix du jour, Moulay Brahim ? » / « Deux. Sans musique. »."
+   },
+   "jacquot": {
+    "qui": "mon meilleur client",
+    "nom": "Jacquot",
+    "sentiment": 0.5,
+    "fond": "La première semaine, Jacquot a éternué pendant la criée (il venait de renifler le poivre d'Aïcha) : Saïd l'a pris pour une enchère, et Jacquot est reparti avec quarante kilos de sardines. L'équipage en a mangé toute la semaine. Depuis, Jacquot achète tout le poisson dont personne ne veut, à « prix d'éternuement ». Anecdotes : l'éternuement ; il se demande ce que Jacquot fait du poisson invendu et préfère ne pas savoir. Bavardage : « Tu as le nez qui gratte, Jacquot ? » / « Ho ho ! Pas aujourd'hui ! Atch… non. »."
+   },
+   "mustapha": {
+    "qui": "mon ami grilleur",
+    "nom": "Mustapha",
+    "sentiment": 0.7,
+    "fond": "Après la criée, Saïd mange à la table du grill de Mustapha. Mustapha dit que les cris de Saïd amènent les clients jusqu'au grill ; Saïd dit que c'est l'odeur des sardines qui lui donne de la voix. Anecdotes : le matin où Saïd avait perdu la voix, Mustapha a crié les prix à sa place et a vendu les sardines crues au prix des grillées ; en échange, Saïd crie « SARDIIINES GRILLÉES ! » gratis pour lui. Bavardage : « Six sardines, Mustapha ! » / « Crie moins fort, mes braises tremblent. »."
+   }
+  }
+ },
+ "samira": {
+  "genre": "f",
+  "prenom": "Samira",
+  "plan": [
+   "les cuves de ma mère — fille d'une teinturière ; enfant, elle avait les mains bleues d'indigo, jaunes de safran, rouges de garance.",
+   "mon premier métier à tisser — à seize ans, son métier à elle ; soie, coton, laine du nord, teintures du désert ; ses tissus « doux comme un nuage ».",
+   "comment Rachid m'a demandée — une demande en mariage marchandée comme un tapis ; elle a dit oui au troisième prix ; la noce est au printemps.",
+   "mon échoppe aujourd'hui — l'étrange tapis du capitaine (une carte de mémoire) ; les babouches secrètes de Karim ; le safran d'Aïcha, qui la sermonne ; Zohra, qui répète tout.",
+   "(confidence) elle a tissé pour elle une copie miniature du tapis du capitaine, cachée dans un coussin ; elle ne sait pas pourquoi. Elle se dit que c'est de la curiosité, et elle a peur que ce soit de la cupidité."
+  ],
+  "reve": "Tisser en secret le tapis de sa propre noce et le dérouler devant Rachid le jour du mariage. Pour une fois, il resterait sans voix.",
+  "question": "Touche ce tissu. Tu préfères quelle couleur, toi ? (bleu / jaune / rouge) — indigo, safran ou garance : elle te raconte d'où vient chacune, et ce qu'elle dit de toi.",
+  "liens": {
+   "rachid": {
+    "qui": "mon fiancé",
+    "nom": "Rachid",
+    "sentiment": 0.8,
+    "fond": "Voisins d'échoppe au souk, fiancés : la noce est au printemps. Ils se disputent pour rire (tapis trop chers, tissus trop courts). Rachid veut un tapis pour la noce ; Samira dit qu'il aura des babouches (Karim les fait en secret). Samira tisse en ce moment l'étrange tapis du capitaine pirate. Elle l'aime parce qu'il ne se tait jamais, sauf devant elle. Anecdotes : la demande marchandée ; elle a mesuré ses tapis : tous un doigt plus courts qu'annoncé. Bavardage : elle lui rappelle la mesure ; il jure que c'est le tapis qui a rétréci."
+   },
+   "karim": {
+    "qui": "mon complice",
+    "nom": "Karim",
+    "sentiment": 0.6,
+    "fond": "Samira a commandé à Karim les babouches de noce de Rachid, brodées de fil d'or sur un tissu à elle. C'est un secret entre eux deux… que tout le souk connaît, sauf Rachid. Anecdotes : la mesure pendant la sieste ; Karim qui a failli tout dire en riant. Bavardage : « Alors, ces… choses ? » / « Presque finies. Il ne se doute de rien. »."
+   },
+   "aicha": {
+    "qui": "ma marchande de safran",
+    "nom": "Lalla Aïcha",
+    "sentiment": 0.5,
+    "fond": "Samira achète du safran chez Aïcha… pour teindre ses tissus en jaune. Pour Aïcha, c'est un crime : le safran se mange. Elle le lui vend quand même, plus cher, et la sermonne à chaque pesée. Anecdotes : le curcuma ; le foulard offert. Bavardage : « Une pesée de safran, Lalla Aïcha. » / « Pour manger ? » / « … Pour teindre. »."
+   },
+   "croc": {
+    "qui": "mon client pirate",
+    "nom": "Croc-de-Sel",
+    "sentiment": 0.1,
+    "fond": "Croc a commandé à Samira un tapis d'après un dessin fait de mémoire : une côte, des grottes, une croix. C'est une copie de sa carte perdue ; il veut l'avoir sous les yeux. Il lui a dit de se taire et de tisser. Samira a compris, et ajoute des détails « pour voir » s'il les corrige. Curiosité. Anecdotes : le chat tissé ; il appelle ça un « tapis de prière pour pirate ». Bavardage : « Encore une falaise à corriger, capitaine ? » / « Tisse et tais-toi. »."
+   },
+   "zohra": {
+    "qui": "cette pipelette de",
+    "nom": "Zohra",
+    "sentiment": 0.5,
+    "fond": "Zohra achète ses tabliers chez Samira et lui apporte du poisson ; elles se racontent tout. C'est par Zohra que tout Tazira sait que le capitaine veut un tapis « qui n'existe pas ». Anecdotes : elle a confié le secret du tapis à Zohra seule, et le soir tout le port le savait ; Zohra lui a commandé un tablier brodé de dorades. Bavardage : « Tu n'as rien répété, Zohra ? » / « Moi ? À personne ! Sauf Halima. »."
+   }
+  }
+ }
+}

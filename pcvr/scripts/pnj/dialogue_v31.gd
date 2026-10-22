@@ -22,6 +22,7 @@ var _buttons: Array = []
 var _typing: float = 0.0
 var _vr_panel: Node3D
 var _vr_text: Label3D
+var _vr_back: MeshInstance3D            # V65 : le fond grandit avec le texte (histoires, anecdotes)
 var _vr_neutral: bool = true
 var _vr_trigger_ready: bool = false
 var _vr_b_ready: bool = false
@@ -133,6 +134,7 @@ func _build_vr() -> void:
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	q.material = m
 	_vr_panel.add_child(back)
+	_vr_back = back
 	_vr_text = Label3D.new()
 	_vr_text.font_size = 32
 	_vr_text.pixel_size = 0.0011
@@ -307,6 +309,14 @@ func _refresh_vr() -> void:
 	lines.append("")
 	lines.append("Stick droit : choisir   Gâchette : répondre   B : partir")
 	_vr_text.text = "\n".join(lines)
+	# V65 : hauteur du fond selon le nombre de lignes (environ 52 caractères par ligne)
+	if _vr_back != null and _vr_back.mesh is QuadMesh:
+		var n: int = 0
+		for l in _vr_text.text.split("\n"):
+			n += maxi(1, int(ceil(float(l.length()) / 52.0)))
+		var h: float = maxf(0.72, n * 0.0445 + 0.1)
+		(_vr_back.mesh as QuadMesh).size = Vector2(1.0, h)
+		_vr_back.position.y = 0.36 - h * 0.5
 
 
 func vr_tick(stick_y: float, trigger: float, b_button: bool) -> void:

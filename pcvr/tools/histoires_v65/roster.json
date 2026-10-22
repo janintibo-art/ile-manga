@@ -1,0 +1,1057 @@
+{
+"abdellah": {
+"groupe": "tazira",
+"nom": "Abdellah",
+"titre": "dinandier (le cuivre)"
+},
+"abyssos": {
+"groupe": "atlantes",
+"nom": "Abyssos",
+"titre": "archiviste de la cité"
+},
+"adele": {
+"groupe": "cliquetis",
+"nom": "Adèle Plumevent",
+"titre": "sœur de l'homme volant"
+},
+"aelwen": {
+"groupe": "elfes",
+"nom": "Aëlwen Feuillargent",
+"titre": "herboriste du Bois-Doré"
+},
+"ahmed": {
+"groupe": "tazira",
+"nom": "Ahmed",
+"titre": "pêcheur"
+},
+"aicha": {
+"groupe": "tazira",
+"nom": "Lalla Aïcha",
+"titre": "marchande d'épices"
+},
+"ali": {
+"groupe": "tazira",
+"nom": "Ali",
+"titre": "charpentier de barques"
+},
+"ambroise": {
+"groupe": "cliquetis",
+"nom": "Ambroise Échec",
+"titre": "inventeur de l'automate joueur d'échecs"
+},
+"amelie": {
+"groupe": "azur",
+"nom": "Dr Amélie Roux",
+"titre": "herboriste"
+},
+"amine": {
+"groupe": "tazira",
+"nom": "Amine",
+"titre": "gamin du port"
+},
+"anouk": {
+"groupe": "carene",
+"nom": "Anouk",
+"titre": "guérisseuse"
+},
+"anselme": {
+"groupe": "azur",
+"nom": "Anselme",
+"titre": "gardien du phare"
+},
+"aristide": {
+"groupe": "azur",
+"nom": "Aristide Bellanger",
+"titre": "maire de Port-Azur"
+},
+"atlante_0": {
+"groupe": "atlantes",
+"nom": "Thalassa",
+"titre": "tisseuse d'algues"
+},
+"atlante_1": {
+"groupe": "atlantes",
+"nom": "Pélagos",
+"titre": "gardien des jardins"
+},
+"atlante_2": {
+"groupe": "atlantes",
+"nom": "Nausicaa",
+"titre": "chanteuse des marées"
+},
+"atlante_3": {
+"groupe": "atlantes",
+"nom": "Glaucos",
+"titre": "souffleur de nacre"
+},
+"atlante_4": {
+"groupe": "atlantes",
+"nom": "Ianthé",
+"titre": "danseuse du canal"
+},
+"atlante_5": {
+"groupe": "atlantes",
+"nom": "Protée",
+"titre": "conteur des courants"
+},
+"barnabe": {
+"groupe": "heros",
+"nom": "Barnabé Coquillard",
+"titre": "ermite de la plage"
+},
+"basidi": {
+"groupe": "tazira",
+"nom": "Ba Sidi",
+"titre": "conteur de la place"
+},
+"basile": {
+"groupe": "cliquetis",
+"nom": "Basile Bulle",
+"titre": "inventeur de la machine à bulles"
+},
+"bastien": {
+"groupe": "teuf",
+"nom": "Bastien",
+"titre": "teufeur"
+},
+"bedaine": {
+"groupe": "ramure",
+"nom": "Bedaine",
+"titre": "maître du Grand Troc"
+},
+"bernard": {
+"groupe": "azur",
+"nom": "Bernard",
+"titre": "joggeur infatigable"
+},
+"bondi": {
+"groupe": "ramure",
+"nom": "Bondi",
+"titre": "champion de la Grande Course"
+},
+"borin": {
+"groupe": "nains",
+"nom": "Borin Barbe-de-Fer",
+"titre": "maître forgeron"
+},
+"boum": {
+"groupe": "cliquetis",
+"nom": "Professeur Augustin Boum",
+"titre": "savant (explosif)"
+},
+"bourru": {
+"groupe": "ramure",
+"nom": "Bourru",
+"titre": "gardien de la nacelle"
+},
+"brahim": {
+"groupe": "tazira",
+"nom": "Moulay Brahim",
+"titre": "amin des pêcheurs de Tazira"
+},
+"bramm": {
+"groupe": "nains",
+"nom": "Bramm Poing-de-Roc",
+"titre": "garde de la Grande Porte"
+},
+"bricolette": {
+"groupe": "cliquetis",
+"nom": "Madame Bricolette",
+"titre": "marchande du Bazar des Inutilités"
+},
+"brume": {
+"groupe": "ramure",
+"nom": "Brume",
+"titre": "pisteuse"
+},
+"bruno": {
+"groupe": "azur",
+"nom": "Bruno",
+"titre": "glacier"
+},
+"caelan": {
+"groupe": "elfes",
+"nom": "Caelan Harpelune",
+"titre": "musicien, joueur de harpe"
+},
+"capucine": {
+"groupe": "cliquetis",
+"nom": "Capucine Pétard",
+"titre": "inventrice du canon à confettis"
+},
+"caramel": {
+"groupe": "ramure",
+"nom": "Caramel",
+"titre": "poissonnière"
+},
+"celeste": {
+"groupe": "cliquetis",
+"nom": "Céleste Lunette",
+"titre": "astronome de l'observatoire"
+},
+"clemence": {
+"groupe": "azur",
+"nom": "Clémence",
+"titre": "peintre"
+},
+"cogne": {
+"groupe": "cliquetis",
+"nom": "Firmin Cogne",
+"titre": "inventeur du moteur perpétuel"
+},
+"colette": {
+"groupe": "azur",
+"nom": "Colette",
+"titre": "épicière"
+},
+"coralin": {
+"groupe": "atlantes",
+"nom": "Coralin",
+"titre": "artisan du corail"
+},
+"corentin": {
+"groupe": "carene",
+"nom": "Vieux Corentin",
+"titre": "conteur"
+},
+"croc": {
+"groupe": "tazira",
+"nom": "Capitaine Croc-de-Sel",
+"titre": "capitaine de la Murène Noire"
+},
+"crocgris": {
+"groupe": "ramure",
+"nom": "Croc-Gris",
+"titre": "garde du Guet"
+},
+"dagna": {
+"groupe": "nains",
+"nom": "Dagna Soufflebraise",
+"titre": "cuisinière de la terrasse"
+},
+"django": {
+"groupe": "azur",
+"nom": "Django",
+"titre": "guitariste"
+},
+"driss": {
+"groupe": "tazira",
+"nom": "Driss",
+"titre": "pêcheur"
+},
+"eclair": {
+"groupe": "ramure",
+"nom": "Éclair",
+"titre": "coureuse"
+},
+"ecrou": {
+"groupe": "cliquetis",
+"nom": "Mademoiselle Écrou",
+"titre": "mécanicienne du port"
+},
+"edmond": {
+"groupe": "azur",
+"nom": "Edmond",
+"titre": "réceptionniste du Grand Hôtel"
+},
+"electre": {
+"groupe": "cliquetis",
+"nom": "Docteure Électre Volta",
+"titre": "électricienne du laboratoire Volta"
+},
+"elfe_0": {
+"groupe": "elfes",
+"nom": "Elandor",
+"titre": "promeneur"
+},
+"elfe_1": {
+"groupe": "elfes",
+"nom": "Miriel",
+"titre": "cueilleuse de fleurs"
+},
+"elfe_2": {
+"groupe": "elfes",
+"nom": "Taeron",
+"titre": "charpentier des passerelles"
+},
+"elfe_3": {
+"groupe": "elfes",
+"nom": "Lirael",
+"titre": "veilleuse des lanternes"
+},
+"elfe_4": {
+"groupe": "elfes",
+"nom": "Orophin",
+"titre": "éclaireur"
+},
+"elfe_5": {
+"groupe": "elfes",
+"nom": "Celebrë",
+"titre": "chanteuse"
+},
+"elfe_6": {
+"groupe": "elfes",
+"nom": "Haldir",
+"titre": "messager"
+},
+"elfe_7": {
+"groupe": "elfes",
+"nom": "Nessa",
+"titre": "danseuse"
+},
+"elfe_8": {
+"groupe": "elfes",
+"nom": "Gilwen",
+"titre": "apicultrice"
+},
+"elfe_9": {
+"groupe": "elfes",
+"nom": "Rúmil",
+"titre": "pêcheur de lumière"
+},
+"ernest": {
+"groupe": "cliquetis",
+"nom": "Ernest Câble",
+"titre": "gardien du téléphérique"
+},
+"ewen": {
+"groupe": "carene",
+"nom": "Ewen",
+"titre": "mousse"
+},
+"faelar": {
+"groupe": "elfes",
+"nom": "Faelar l'Ancien",
+"titre": "conteur du Bois-Doré"
+},
+"fanch": {
+"groupe": "carene",
+"nom": "Fañch",
+"titre": "pêcheur"
+},
+"fanny": {
+"groupe": "teuf",
+"nom": "Fanny",
+"titre": "teufeuse"
+},
+"fatima": {
+"groupe": "tazira",
+"nom": "Lalla Fatima",
+"titre": "doyenne des ramendeuses"
+},
+"felix": {
+"groupe": "azur",
+"nom": "Félix",
+"titre": "libraire et cartographe"
+},
+"fernand": {
+"groupe": "azur",
+"nom": "Pépé Fernand",
+"titre": "vieux pêcheur"
+},
+"gaspard": {
+"groupe": "teuf",
+"nom": "Gaspard",
+"titre": "teufeur"
+},
+"gaspard_muet": {
+"groupe": "tazira",
+"nom": "Gaspard le Muet",
+"titre": "vigie de la Murène Noire"
+},
+"gaston": {
+"groupe": "cliquetis",
+"nom": "Gaston Bielle",
+"titre": "patron du Café de la Bielle"
+},
+"gerard": {
+"groupe": "azur",
+"nom": "Gérard Dupuis",
+"titre": "touriste photographe"
+},
+"gisele": {
+"groupe": "azur",
+"nom": "Gisèle",
+"titre": "patronne du Café de la Place"
+},
+"gland": {
+"groupe": "ramure",
+"nom": "Gland",
+"titre": "petit frère de Pomme-de-Pin"
+},
+"gonzague": {
+"groupe": "cliquetis",
+"nom": "Gonzague",
+"titre": "grutier du port"
+},
+"gregoire": {
+"groupe": "carene",
+"nom": "Grégoire",
+"titre": "guetteur"
+},
+"grelot": {
+"groupe": "ramure",
+"nom": "Grelot",
+"titre": "marchande de fruits"
+},
+"grimli": {
+"groupe": "nains",
+"nom": "Grimli Pic-Rouillé",
+"titre": "mineur"
+},
+"grisou": {
+"groupe": "ramure",
+"nom": "Grisou",
+"titre": "coureur"
+},
+"gwenola": {
+"groupe": "carene",
+"nom": "Mère Gwenola",
+"titre": "patronne de La Dernière Bordée"
+},
+"halima": {
+"groupe": "tazira",
+"nom": "Halima",
+"titre": "potière"
+},
+"hamid": {
+"groupe": "tazira",
+"nom": "Hamid",
+"titre": "pêcheur"
+},
+"hamza": {
+"groupe": "tazira",
+"nom": "Caïd Hamza",
+"titre": "chef de la garde de la Skala"
+},
+"hassan": {
+"groupe": "tazira",
+"nom": "Hassan",
+"titre": "le marchand de thé"
+},
+"hector": {
+"groupe": "azur",
+"nom": "Hector",
+"titre": "armurier et forgeron"
+},
+"heloise": {
+"groupe": "cliquetis",
+"nom": "Héloïse Manivelle",
+"titre": "ingénieure-en-chef de Cliquetis"
+},
+"hilda": {
+"groupe": "nains",
+"nom": "Hilda Plume-de-Suie",
+"titre": "chevrière et dresseuse de corbeaux"
+},
+"hortense": {
+"groupe": "azur",
+"nom": "Hortense",
+"titre": "gardienne de l'horloge"
+},
+"hugo": {
+"groupe": "azur",
+"nom": "Hugo",
+"titre": "jeune marié"
+},
+"hulotte": {
+"groupe": "ramure",
+"nom": "Hulotte",
+"titre": "astronome"
+},
+"ilyria": {
+"groupe": "elfes",
+"nom": "Ilyria Fildaube",
+"titre": "tisserande des passerelles"
+},
+"ines": {
+"groupe": "azur",
+"nom": "Inès",
+"titre": "bijoutière"
+},
+"jacquot": {
+"groupe": "tazira",
+"nom": "Jacquot Trois-Doigts",
+"titre": "cuisinier de la Murène Noire"
+},
+"jos": {
+"groupe": "carene",
+"nom": "Jos Le Floc'h",
+"titre": "forgeron de La Forge du Canon"
+},
+"karim": {
+"groupe": "tazira",
+"nom": "Karim",
+"titre": "marchand de babouches"
+},
+"kevin": {
+"groupe": "azur",
+"nom": "Kevin",
+"titre": "maître-nageur"
+},
+"khadija": {
+"groupe": "tazira",
+"nom": "Khadija",
+"titre": "ramendeuse de filets"
+},
+"kiki": {
+"groupe": "azur",
+"nom": "Kiki",
+"titre": "barman de la paillote"
+},
+"larbi": {
+"groupe": "tazira",
+"nom": "Si Larbi",
+"titre": "vieux pêcheur à la ligne"
+},
+"lea": {
+"groupe": "azur",
+"nom": "Léa",
+"titre": "jeune mariée"
+},
+"lefort": {
+"groupe": "azur",
+"nom": "Brigadier Lefort",
+"titre": "garde municipal"
+},
+"leon": {
+"groupe": "azur",
+"nom": "Capitaine Léon",
+"titre": "capitaine de L'Hirondelle"
+},
+"leonce": {
+"groupe": "cliquetis",
+"nom": "Léonce",
+"titre": "apprenti inventeur"
+},
+"lhoucine": {
+"groupe": "tazira",
+"nom": "Lhoucine",
+"titre": "musicien (le guembri)"
+},
+"lila": {
+"groupe": "teuf",
+"nom": "Lila",
+"titre": "teufeuse"
+},
+"lilas": {
+"groupe": "ramure",
+"nom": "Lilas",
+"titre": "danseuse de la lune"
+},
+"lola": {
+"groupe": "azur",
+"nom": "Lola",
+"titre": "serveuse au Perroquet Bleu"
+},
+"lucas": {
+"groupe": "azur",
+"nom": "Lucas",
+"titre": "docker"
+},
+"lucie": {
+"groupe": "carene",
+"nom": "Lucie",
+"titre": "plongeuse"
+},
+"lulu": {
+"groupe": "teuf",
+"nom": "Lulu",
+"titre": "teufeuse"
+},
+"lyra": {
+"groupe": "heros",
+"nom": "Lyra Sylvanel",
+"titre": "elfe du Bois-Doré"
+},
+"machefer": {
+"groupe": "tazira",
+"nom": "Bastien Mâchefer",
+"titre": "second de la Murène Noire"
+},
+"mamalou": {
+"groupe": "tazira",
+"nom": "Mama Lou",
+"titre": "patronne de La Murène Ivre"
+},
+"marcel": {
+"groupe": "azur",
+"nom": "Marcel",
+"titre": "joueur de pétanque"
+},
+"maree": {
+"groupe": "atlantes",
+"nom": "Marée",
+"titre": "marchande d'algues"
+},
+"margaux": {
+"groupe": "azur",
+"nom": "Margaux",
+"titre": "boulangère"
+},
+"margot": {
+"groupe": "cliquetis",
+"nom": "Margot",
+"titre": "apprentie inventrice"
+},
+"marley": {
+"groupe": "teuf",
+"nom": "Marley",
+"titre": "teufeur"
+},
+"matthias": {
+"groupe": "carene",
+"nom": "Matthias Le Goff",
+"titre": "cartographe"
+},
+"mbarek": {
+"groupe": "tazira",
+"nom": "Mbarek",
+"titre": "marchand de dattes, caravanier"
+},
+"merelune": {
+"groupe": "ramure",
+"nom": "Mère-Lune",
+"titre": "doyenne de Ramure"
+},
+"mistral": {
+"groupe": "teuf",
+"nom": "DJ Mistral",
+"titre": "DJ de la teuf de la plage"
+},
+"mochi": {
+"groupe": "ramure",
+"nom": "Mochi",
+"titre": "fille de la boulangère"
+},
+"momo": {
+"groupe": "teuf",
+"nom": "Momo",
+"titre": "teufeur"
+},
+"moreau": {
+"groupe": "azur",
+"nom": "Professeur Lucien Moreau",
+"titre": "archéologue en vacances"
+},
+"morgane": {
+"groupe": "carene",
+"nom": "Amirale Morgane Kerhervé",
+"titre": "amirale de Carène"
+},
+"moustache": {
+"groupe": "ramure",
+"nom": "Moustache",
+"titre": "pêcheur des mares"
+},
+"mustapha": {
+"groupe": "tazira",
+"nom": "Mustapha",
+"titre": "grilleur de sardines"
+},
+"myrtille": {
+"groupe": "ramure",
+"nom": "Myrtille",
+"titre": "petite chatte de la pêcherie"
+},
+"nadine": {
+"groupe": "azur",
+"nom": "Nadine",
+"titre": "postière"
+},
+"nain_0": {
+"groupe": "nains",
+"nom": "Dwalin",
+"titre": "porteur de charbon"
+},
+"nain_1": {
+"groupe": "nains",
+"nom": "Brunna",
+"titre": "souffleuse de forge"
+},
+"nain_2": {
+"groupe": "nains",
+"nom": "Fundin",
+"titre": "apprenti forgeron"
+},
+"nain_3": {
+"groupe": "nains",
+"nom": "Kalda",
+"titre": "éclaireuse des pentes"
+},
+"nain_4": {
+"groupe": "nains",
+"nom": "Ori",
+"titre": "scribe de la cité"
+},
+"nain_5": {
+"groupe": "nains",
+"nom": "Gunnar",
+"titre": "garde de la halle"
+},
+"nain_6": {
+"groupe": "nains",
+"nom": "Sigrun",
+"titre": "brasseuse"
+},
+"nerea": {
+"groupe": "atlantes",
+"nom": "Néréa",
+"titre": "reine de l'Atlantide"
+},
+"nimiel": {
+"groupe": "elfes",
+"nom": "Nimiel",
+"titre": "petite elfe très curieuse"
+},
+"nina": {
+"groupe": "azur",
+"nom": "Nina",
+"titre": "fille de la boulangère"
+},
+"nolwenn": {
+"groupe": "carene",
+"nom": "Nolwenn",
+"titre": "voilière"
+},
+"nono": {
+"groupe": "teuf",
+"nom": "Nono",
+"titre": "teufeur"
+},
+"nori": {
+"groupe": "nains",
+"nom": "Nori le Runiste",
+"titre": "gardien des runes"
+},
+"nourredine": {
+"groupe": "tazira",
+"nom": "Nourredine",
+"titre": "marchand de lanternes"
+},
+"octave": {
+"groupe": "heros",
+"nom": "Octave Taillefer",
+"titre": "forgeron de la cabane perchée"
+},
+"odette": {
+"groupe": "azur",
+"nom": "Odette Vasseur",
+"titre": "capitaine du port"
+},
+"omar": {
+"groupe": "tazira",
+"nom": "Omar",
+"titre": "joueur de bendir"
+},
+"ondine": {
+"groupe": "atlantes",
+"nom": "Ondine",
+"titre": "petite Atlante très curieuse"
+},
+"orsik": {
+"groupe": "nains",
+"nom": "Orsik Sertissor",
+"titre": "joaillier de la cité"
+},
+"pauline": {
+"groupe": "azur",
+"nom": "Pauline",
+"titre": "femme de chambre"
+},
+"paulo": {
+"groupe": "azur",
+"nom": "Paulo",
+"titre": "chef de Chez Paulo"
+},
+"pemberton": {
+"groupe": "azur",
+"nom": "Lord Archibald Pemberton",
+"titre": "collectionneur excentrique"
+},
+"pepin": {
+"groupe": "ramure",
+"nom": "Pépin",
+"titre": "organisateur de la Grande Course"
+},
+"philibert": {
+"groupe": "cliquetis",
+"nom": "Philibert Vis",
+"titre": "inventeur sans invention"
+},
+"pierrick": {
+"groupe": "carene",
+"nom": "Pierrick",
+"titre": "aubergiste de La Dernière Bordée"
+},
+"pivoine": {
+"groupe": "ramure",
+"nom": "Pivoine",
+"titre": "herboriste des Simples"
+},
+"plumette": {
+"groupe": "ramure",
+"nom": "Plumette",
+"titre": "postière"
+},
+"pommedepin": {
+"groupe": "ramure",
+"nom": "Pomme-de-Pin",
+"titre": "charpentière des ponts"
+},
+"prudence": {
+"groupe": "cliquetis",
+"nom": "Prudence Touche",
+"titre": "inventrice du piano mécanique"
+},
+"rachid": {
+"groupe": "tazira",
+"nom": "Rachid",
+"titre": "marchand de tapis"
+},
+"raymond": {
+"groupe": "azur",
+"nom": "Raymond",
+"titre": "joueur de pétanque"
+},
+"rita": {
+"groupe": "azur",
+"nom": "Madame Rita",
+"titre": "diseuse de bonne aventure"
+},
+"rivet": {
+"groupe": "cliquetis",
+"nom": "Maître Rivet",
+"titre": "constructeur de robots"
+},
+"rosa": {
+"groupe": "tazira",
+"nom": "Rosa la Rouge",
+"titre": "maîtresse canonnière"
+},
+"rosalie": {
+"groupe": "azur",
+"nom": "Rosalie",
+"titre": "poissonnière"
+},
+"rose": {
+"groupe": "azur",
+"nom": "Rose",
+"titre": "fleuriste"
+},
+"rosette": {
+"groupe": "cliquetis",
+"nom": "Rosette Engrenage",
+"titre": "chroniqueuse de la Gazette des Rouages"
+},
+"roux": {
+"groupe": "ramure",
+"nom": "Roux",
+"titre": "cueilleur et joueur de flûte"
+},
+"said": {
+"groupe": "tazira",
+"nom": "Saïd la Voix",
+"titre": "crieur de la criée"
+},
+"salome": {
+"groupe": "carene",
+"nom": "Salomé",
+"titre": "marchande du Marché de la Cale"
+},
+"samira": {
+"groupe": "tazira",
+"nom": "Samira",
+"titre": "marchande de tissus et tisserande"
+},
+"selma": {
+"groupe": "tazira",
+"nom": "Selma",
+"titre": "peintre de passage"
+},
+"sofia": {
+"groupe": "teuf",
+"nom": "Sofia",
+"titre": "teufeuse"
+},
+"sylvie": {
+"groupe": "azur",
+"nom": "Sylvie Dupuis",
+"titre": "touriste"
+},
+"sylwen": {
+"groupe": "elfes",
+"nom": "Sylwen Rayonmiel",
+"titre": "boulangère de miel"
+},
+"tacquet": {
+"groupe": "cliquetis",
+"nom": "Tic Tacquet",
+"titre": "horloger de la grande horloge"
+},
+"tchoum": {
+"groupe": "teuf",
+"nom": "Tchoum",
+"titre": "teufeur"
+},
+"thalion": {
+"groupe": "elfes",
+"nom": "Thalion Ventvif",
+"titre": "archer, garde du Bois-Doré"
+},
+"theo": {
+"groupe": "azur",
+"nom": "Théo Dupuis",
+"titre": "petit garçon en vacances"
+},
+"thorgal": {
+"groupe": "nains",
+"nom": "Thorgal Marteau-d'Or",
+"titre": "roi de Forgefer"
+},
+"tibo": {
+"groupe": "tazira",
+"nom": "Tibo",
+"titre": "mousse de la Murène Noire"
+},
+"tilleul": {
+"groupe": "ramure",
+"nom": "Grand-Père Tilleul",
+"titre": "conteur"
+},
+"titou": {
+"groupe": "teuf",
+"nom": "Titou",
+"titre": "teufeur"
+},
+"tobias": {
+"groupe": "carene",
+"nom": "Tobias",
+"titre": "calfat et charpentier de marine"
+},
+"toni": {
+"groupe": "azur",
+"nom": "Toni",
+"titre": "patron du Perroquet Bleu"
+},
+"trefle": {
+"groupe": "ramure",
+"nom": "Trèfle",
+"titre": "boulangère"
+},
+"triton": {
+"groupe": "atlantes",
+"nom": "Triton",
+"titre": "garde de la Porte des Marées"
+},
+"ulfa": {
+"groupe": "nains",
+"nom": "Ulfa Chope-Pleine",
+"titre": "tavernière de la Chope Ardente"
+},
+"ursule": {
+"groupe": "ramure",
+"nom": "Ursule",
+"titre": "forgeronne"
+},
+"victor": {
+"groupe": "azur",
+"nom": "Victor",
+"titre": "marchand de souvenirs"
+},
+"wilfried": {
+"groupe": "cliquetis",
+"nom": "Wilfried Ressort",
+"titre": "inventeur de Boulon, le chien-robot"
+},
+"yannick": {
+"groupe": "azur",
+"nom": "Yannick",
+"titre": "loueur de bateaux"
+},
+"yasmine": {
+"groupe": "tazira",
+"nom": "Yasmine",
+"titre": "gamine du port"
+},
+"yaya": {
+"groupe": "teuf",
+"nom": "Yaya",
+"titre": "teufeuse"
+},
+"youssef": {
+"groupe": "tazira",
+"nom": "Youssef",
+"titre": "pêcheur"
+},
+"zelie": {
+"groupe": "cliquetis",
+"nom": "Commandante Zélie Hélice",
+"titre": "commandante de l'aérodrome"
+},
+"zineb": {
+"groupe": "tazira",
+"nom": "Zineb",
+"titre": "patronne du Fondouk (l'auberge)"
+},
+"zoe": {
+"groupe": "teuf",
+"nom": "Zoé",
+"titre": "teufeuse"
+},
+"zohra": {
+"groupe": "tazira",
+"nom": "Zohra",
+"titre": "poissonnière"
+},
+"melisse": {
+"groupe": "fees",
+"nom": "Mélisse",
+"titre": "fée des nectars, marchande"
+},
+"brindille": {
+"groupe": "fees",
+"nom": "Brindille",
+"titre": "fée de la rosée"
+},
+"cardamome": {
+"groupe": "fees",
+"nom": "Cardamome",
+"titre": "fée des énigmes"
+},
+"pimprenelle": {
+"groupe": "fees",
+"nom": "Pimprenelle",
+"titre": "fée-magicienne (sans baguette)"
+},
+"grommelot": {
+"groupe": "fees",
+"nom": "Grommelot",
+"titre": "lutin bougon, gardien des racines"
+},
+"oriane": {
+"groupe": "fees",
+"nom": "Reine Oriane",
+"titre": "reine des fées d'Yggdrasil"
+},
+"lumi": {
+"groupe": "fees",
+"nom": "Lumi",
+"titre": "fée des lucioles"
+},
+"perlee": {
+"groupe": "fees",
+"nom": "Perlée",
+"titre": "fée de la rosée"
+},
+"noisette": {
+"groupe": "fees",
+"nom": "Noisette",
+"titre": "fée des graines"
+},
+"zephyr": {
+"groupe": "fees",
+"nom": "Zéphyr",
+"titre": "fée du vent"
+}
+}

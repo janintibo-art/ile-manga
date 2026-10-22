@@ -1,0 +1,296 @@
+{
+ "abdellah": {
+  "genre": "m",
+  "prenom": "Abdellah",
+  "plan": [
+   "mon enfance au bruit du marteau — fils et petit-fils de dinandiers du souk ; à six ans, son premier petit marteau ; son père lui apprend à « écouter » le cuivre : le son dit s'il est prêt.",
+   "la lanterne que j'ai ratée — à vingt ans, il forme sa première lanterne, trop lourde et sans grâce ; le jeune Nourredine, apprenti lanternier, la perce et la rend belle : quarante ans d'association et de disputes commencent.",
+   "le jour où le cuivre s'est tu — vers cinquante ans, son oreille gauche se met à siffler ; il entend de moins en moins (« sourd, mais content ») ; il apprend à sentir le cuivre du bout des doigts, et Hnia, sa femme, compte les coups pour lui.",
+   "mon échoppe aujourd'hui — plateaux, théières (les cent théières renversées par son beau-frère Hassan), lanternes avec Nourredine ; il astique une fois par an les canons de la Skala ; un pirate forgeron, Mâchefer, vient le regarder travailler ; Omar lui vole son tac-tac.",
+   "(confidence) le nom sous le septième canon — au fond, il trouve le métier de Nourredine plus beau : on regarde la lumière, jamais le cuivre ; alors il a gravé son nom en secret sous le septième canon de la Skala, pour qu'un peu de lui dure. Nourredine ne doit jamais le savoir."
+  ],
+  "reve": "Faire une seule lanterne tout seul, du cuivre jusqu'aux trous, et qu'elle soit plus belle que celles de Nourredine. Ou, à défaut, que Nourredine l'avoue une fois, devant témoins.",
+  "question": "Tu entends le cuivre chanter, toi ? (oui / non / pas_fait_attention) — « oui » : ravi mais méfiant, il te fait écouter un plateau ; « non » : il tape plus fort pour toi ; « pas fait attention » : vexé, il te rappelle à chaque visite d'écouter.",
+  "liens": {
+   "hassan": {
+    "qui": "mon beau-frère",
+    "nom": "Hassan",
+    "sentiment": 0.4,
+    "fond": "Leurs femmes sont sœurs : Hnia (chez Abdellah) compte les coups de marteau, Rabia (chez Hassan) a compté les théières renversées. Les cent théières que Hassan a renversées en apprenant à verser de haut sortaient toutes de l'atelier d'Abdellah. Susceptible, un peu jaloux de la bonne humeur de Hassan. Anecdotes : il l'appelle « mon meilleur client » et lui a vendu la cent-unième théière plus cher ; Hassan a cabossé son plus beau plateau en dansant à la fête. Bavardage : « Tac. Encore une théière ? » / « Celle-ci tiendra. » / « Tu disais ça à la quatre-vingt-dixième. »."
+   },
+   "nourredine": {
+    "qui": "mon vieux rival",
+    "nom": "Nourredine",
+    "sentiment": 0.3,
+    "fond": "Depuis quarante ans, ils font ensemble toutes les lanternes de Tazira : Abdellah forme le cuivre, Nourredine perce les motifs. Et depuis quarante ans, ils se disputent pour savoir qui fait le plus beau métier. L'un ne peut pas travailler sans l'autre. Anecdotes : la grande lanterne de la place, qu'ils ont signée chacun d'un côté, si bien qu'on se dispute encore pour savoir de quel côté l'admirer ; un jour il a fait une lanterne sans trous, « pour voir » : elle n'éclairait rien. Bavardage : « Tac. Tes trous sont de travers. » / « Tes bosses aussi. »."
+   },
+   "hamza": {
+    "qui": "le caïd",
+    "nom": "Hamza",
+    "sentiment": 0.5,
+    "fond": "Une fois par an, Abdellah astique les sept canons de bronze de la Skala. Ils n'ont jamais tiré ; Abdellah espère que ça durera. Hamza le surveille pendant tout le travail, et ils boivent un thé sur les créneaux à la fin. Anecdotes : le nid de mouettes ; ils ont bu le thé sur les créneaux et Hamza a souri, une fois. Bavardage : « Tac. Ils brillent, caïd. » / « Qu'ils brillent. Et qu'ils se taisent. »."
+   },
+   "machefer": {
+    "qui": "ce pirate de",
+    "nom": "Mâchefer",
+    "sentiment": 0.2,
+    "fond": "Mâchefer, ancien forgeron, s'arrête chaque jour devant l'échoppe d'Abdellah pour le regarder marteler. Un jour il a pris le marteau pour montrer « un vrai coup de forgeron » et a fendu un plateau. Abdellah, vexé, le lui a fait payer ; depuis, ils prennent le thé ensemble, sans parler. Anecdotes : le plateau fendu, qu'il a accroché au mur de l'échoppe ; Mâchefer qui caresse le cuivre comme un chat. Bavardage : « Tac. Tu ne touches à rien. » / « Hm. Je regarde. »."
+   },
+   "karim": {
+    "qui": "ce rigolo de",
+    "nom": "Karim",
+    "sentiment": 0.3,
+    "fond": "Leurs échoppes se touchent au souk. Le tac-tac d'Abdellah empêche Karim de deviner les pointures ; les blagues de Karim font rater des coups de marteau à Abdellah. Anecdotes : le plateau-babouche ; Karim lui a offert des babouches qui sonnent en marchant. Bavardage : « Tac. Moins de blagues. » / « Moins de tacs ! »."
+   },
+   "omar": {
+    "qui": "le petit tambour",
+    "nom": "Omar",
+    "sentiment": 0.2,
+    "fond": "Omar tape le rythme sur tout ce qu'il trouve ; quand il passe au souk, il suit le tac-tac du marteau d'Abdellah et en fait une musique. Abdellah, susceptible, dit qu'on lui vole son rythme. Le soir où la peau du bendir d'Omar a crevé, il a fini la fête sur un plateau d'Abdellah. Anecdotes : le plateau cabossé par le bendir de secours, qu'il a refusé de reprendre et qu'il garde ; Omar qui tape sur son étal en passant. Bavardage : « Tac. Ne touche pas au plateau. » / « Boum. Juste un petit. »."
+   }
+  }
+ },
+ "ahmed": {
+  "genre": "m",
+  "prenom": "Ahmed",
+  "plan": [
+   "mon père et la passe des deux phares — fils et petit-fils de pêcheurs ; son père lui apprend le vert à gauche, le rouge à droite ; sa grand-mère Zahra vend le poisson sous les arcades et juge tout « à l'œil ».",
+   "la Zahra — à vingt-quatre ans, il fait construire sa barque par Ali : trois couches de bleu, l'œil peint sur la proue (il louche un peu) ; il la baptise du nom de sa grand-mère.",
+   "la nuit où l'œil m'a ramené — rentré tard dans la brume, il s'endort à la barre ; au réveil, la Zahra est dans la passe, toute seule, entre les deux phares ; depuis, il parle de l'œil comme d'un équipier.",
+   "ma vie aujourd'hui — la flotte à l'aube, la criée à dix heures ; sa grande sœur Zohra qui veut des dorades, sa nièce Yasmine capitaine de la Zahra au quai ; la course avec Youssef ; il apprend à pêcher au petit mousse pirate Tibo.",
+   "(confidence) il ne sait pas nager. Toute la flotte le croit bon nageur ; lui n'a jamais quitté le bord de sa barque. C'est pour ça que l'œil de la Zahra compte tant : il veille sur quelqu'un qui ne pourrait pas se sauver seul."
+  ],
+  "reve": "Que la Zahra tombe un jour sur un banc si grand que la mer devienne argentée jusqu'à la Skala, et que toute la ville vienne voir. Et apprendre à nager avant, en secret.",
+  "question": "Toi qui es arrivé par la mer : tu sais nager ? (comme_un_poisson / un_peu / pas_du_tout) — il admire, il encourage, ou il se sent moins seul sans l'avouer (« Il y a plus de gens qu'on croit, tu sais. »).",
+  "liens": {
+   "zohra": {
+    "qui": "ma grande sœur",
+    "nom": "Zohra",
+    "sentiment": 0.7,
+    "fond": "Frère et sœur, petits-enfants de Zahra, la poissonnière des arcades (« un poisson se juge à l'œil, un homme aussi »). La barque d'Ahmed porte son nom, et l'œil peint sur la proue, c'est pour elle. Ahmed pêche la sardine ; Zohra ne veut pas de ses dorades pour le tajine du vendredi : elles passent par la criée de Saïd. Elle le commande depuis l'enfance. Anecdotes : petit, elle lui faisait juger l'œil des poissons et le grondait quand il se trompait ; quand la Zahra est sortie du chantier, elle a dit « l'œil louche », et il louche vraiment un peu. Bavardage : « Tu veux mes sardines ? » / « Je veux des dorades. Pas criées. »."
+   },
+   "yasmine": {
+    "qui": "ma nièce",
+    "nom": "Yasmine",
+    "sentiment": 0.8,
+    "fond": "Ahmed emmène Yasmine jouer à la capitaine dans la Zahra amarrée au quai. Il lui a promis une vraie sortie en mer « quand elle mangera une sardine crue sans grimacer ». Anecdotes : depuis la proue, elle a donné des ordres à toute la flotte, et deux pêcheurs ont obéi pour rire ; elle a rebaptisé la barque « la Terreur » à la craie, et il l'a laissé une semaine. Bavardage : « Capitaine, la Zahra attend vos ordres. » / « Cap sur la Skala, matelot ! »."
+   },
+   "tibo": {
+    "qui": "le petit pirate",
+    "nom": "Tibo",
+    "sentiment": 0.7,
+    "fond": "Sur la Murène, personne ne sait pêcher. Tibo est allé demander à Ahmed comment on fait ; Ahmed lui apprend l'après-midi sur le quai. Tibo a pris sa première sardine la semaine dernière et l'a fait griller chez Mustapha. Anecdotes : la sardine dans le seau ; le mousse qui lui a demandé ce que mangent les pirates en mer. Bavardage : « Prêt, petit pirate ? » / « Prêt ! Je me tais ! Enfin… je commence. »."
+   },
+   "youssef": {
+    "qui": "le jeune",
+    "nom": "Youssef",
+    "sentiment": 0.5,
+    "fond": "Barques voisines au quai. Ahmed se moque gentiment des baleines de Youssef ; Youssef dit que la Zahra louche. Ils font la course chaque matin jusqu'à la passe. Anecdotes : il a perdu une course parce qu'il s'est retourné pour voir la « baleine » de Youssef (c'était un tonneau) ; Youssef lui a demandé conseil pour l'œil à peindre sur la Baleine. Bavardage : « Une baleine, ce matin ? » / « Deux ! » / « Elles louchaient ? »."
+   },
+   "ali": {
+    "qui": "le charpentier",
+    "nom": "Ali",
+    "sentiment": 0.7,
+    "fond": "Ali a construit la Zahra pour Ahmed il y a six ans. Ahmed répète qu'elle est « la plus bleue » de Tazira ; Ali dit qu'elles sont toutes du même bleu, sorti du même pot. C'est Ali qui a peint l'œil sur la proue, celui qui louche un peu. Anecdotes : les trois couches ; l'œil qui louche, dont il défend Ali devant Zohra. Bavardage : « Ali ! Elle a perdu un peu de bleu. » / « Je repeins. Même pot. »."
+   }
+  }
+ },
+ "aicha": {
+  "genre": "f",
+  "prenom": "Aïcha",
+  "plan": [
+   "entre les sacs de ma mère — née dans le souk, elle dormait petite entre les sacs de cumin et de cannelle ; sa mère lui faisait reconnaître les épices les yeux bandés, avec une rose de l'oued pour la récompense.",
+   "mon premier ras-el-hanout — à seize ans, elle compose son propre mélange : trente-deux épices, et un trente-troisième ingrédient secret ; les caravaniers l'achètent et l'emportent jusqu'à Carène.",
+   "l'année où le safran n'est pas venu — une caravane perdue dans le chergui : plus de safran à Tazira ; elle rationne les pincées pour les mariages et le tajine du vendredi de Zohra ; on l'appelle depuis « la gardienne du safran ».",
+   "mon étal aujourd'hui — quarante épices ; Zohra et son safran, Mustapha et son cumin, Samira qui « gâche » le safran à teindre ; le commerce avec Salomé de Carène ; et le cuisinier pirate Jacquot qui lui fait la cour avec du persil.",
+   "(confidence) le trente-troisième ingrédient — ce sont des pétales séchés de la rose de l'oued que cultivait sa mère, morte depuis longtemps ; il en reste pour trois ans. Elle ne sait pas ce qu'elle fera après, et c'est ce qui lui fait peur."
+  ],
+  "reve": "Une boutique à Carène, chez Salomé, une autre à Port-Azur, et que tout l'archipel sente le safran. Et un jour, confier son secret à quelqu'un qui le mérite. Pas au cuisinier.",
+  "question": "Qu'est-ce que tu sens d'abord, en entrant au souk ? (epices / poisson / rien) — ravie ; scandalisée contre les sardines ; ou elle te fait sentir le safran de force (« Un nez, ça s'éduque ! »).",
+  "liens": {
+   "zohra": {
+    "qui": "ma meilleure cliente",
+    "nom": "Zohra",
+    "sentiment": 0.7,
+    "fond": "Le safran du tajine du vendredi vient de chez Aïcha, et de nulle part ailleurs. Elles se chamaillent sur le prix chaque semaine, puis Aïcha ajoute une pincée « pour Yasmine ». Anecdotes : Zohra a un jour essayé le safran d'un caravanier de passage, Aïcha l'a reconnu à l'odeur depuis le souk et ne lui a pas parlé pendant trois jours ; la pincée pour Yasmine. Bavardage : « Ton safran, Zohra, ou un autre ? » / « Le tien, Aïcha ! Toujours le tien ! »."
+   },
+   "samira": {
+    "qui": "cette gaspilleuse de",
+    "nom": "Samira",
+    "sentiment": 0.2,
+    "fond": "Samira achète du safran chez Aïcha… pour teindre ses tissus en jaune. Pour Aïcha, c'est un crime : le safran se mange. Elle le lui vend quand même, plus cher, et la sermonne à chaque pesée. Anecdotes : elle lui a vendu un jour du curcuma en disant « safran pour tissu », Samira a vu la différence et en a ri ; Samira lui a offert un foulard safran, qu'Aïcha porte en disant « quel gâchis ». Bavardage : « Tu vas encore teindre mon safran ? » / « Il est beau sur toi, en foulard. »."
+   },
+   "jacquot": {
+    "qui": "ce gros pirate de",
+    "nom": "Jacquot",
+    "sentiment": 0.3,
+    "fond": "Jacquot adore les épices d'Aïcha… et Aïcha. Il passe chaque jour à son étal, renifle tout, achète du cumin au kilo et parle de sa future gargote sur le quai, « avec le cumin à volonté ». Aïcha le trouve ridicule et touchant : elle n'a pas dit non, elle n'a pas dit oui. Anecdotes : « du poisson » ; il lui a fait sentir une épice des îles lointaines qu'elle ne connaissait pas, et elle a été impressionnée. Bavardage : « Encore toi ? » / « Toujours moi ! Un kilo de cumin et un sourire ! »."
+   },
+   "mustapha": {
+    "qui": "mon grilleur",
+    "nom": "Mustapha",
+    "sentiment": 0.6,
+    "fond": "Le cumin des sardines de Mustapha vient de chez Aïcha. Aïcha déteste la sardine (l'odeur !) mais dit que le cumin de Mustapha est le seul bien employé de Tazira. Anecdotes : elle passe au grill en se bouchant le nez pour vérifier qu'il met assez de cumin ; il lui a fait goûter une sardine les yeux bandés, elle a dit « délicieux », puis s'est fâchée. Bavardage : « Assez de cumin ? » / « Jamais assez, Lalla Aïcha ! »."
+   },
+   "salome": {
+    "qui": "mon amie de Carène",
+    "nom": "Salomé",
+    "sentiment": 0.7,
+    "fond": "(Lien avec Carène.) Elles commercent par les caravanes et le Zéphyr : Aïcha envoie safran, cumin et ras-el-hanout au Marché de la Cale ; Salomé renvoie ce qui flotte et ce qui brille. Deux bavardes, deux marchandes redoutables, elles s'estiment en se traitant de voleuses. Anecdotes (côté Aïcha) : Salomé réclame depuis des années le trente-troisième ingrédient du ras-el-hanout et propose tout en échange ; une caisse de Carène est arrivée un jour avec un crabe vivant dedans, visiblement pas d'accord pour être vendu. Bavardage : « Ton prix est un vol ! » / « C'est pour ça que tu m'aimes. »."
+   }
+  }
+ },
+ "ali": {
+  "genre": "m",
+  "prenom": "Ali",
+  "plan": [
+   "les copeaux de mon père — enfance au chantier ; il tient les clous pour la Mabrouka de Driss et en plante un de travers, toujours là quarante ans plus tard.",
+   "ma première barque — à vingt ans, son père malade, il finit seul sa première barque ; elle flotte de travers une matinée, puis droit ; son père dit seulement : « Repeins-la. »",
+   "le bois de Carène — pas d'arbres au désert ; il achète son bois à Carène, cher ; une année sans bois, il répare toute la flotte avec des planches de vieilles portes bleues de la ville.",
+   "ma vie aujourd'hui — marié à Itto, la sœur de Mbarek ; son fils Amine veut être pirate ; la Zahra d'Ahmed, la Baleine de Youssef à crédit ; il a refusé de réparer le galion (« des barques, pas des montagnes »), mais il entend la pompe grincer la nuit.",
+   "(confidence) il a dit non aux pirates par peur, pas par fierté : il n'a jamais travaillé sur un grand navire et a peur de rater. La nuit, il dessine en secret la coque de la Murène Noire pour deviner où est la voie d'eau."
+  ],
+  "reve": "Construire une fois un vrai grand bateau, avec un mât, qui irait jusqu'à Port-Azur. Et qu'Amine soit à bord, capitaine, puisqu'il ne veut pas être charpentier.",
+  "question": "Tu as déjà construit quelque chose de tes mains ? (une_barque / une_cabane / jamais) — il te juge en charpentier : respect, conseils de toiture, ou il te met un rabot dans les mains.",
+  "liens": {
+   "amine": {
+    "qui": "mon fils",
+    "nom": "Amine",
+    "sentiment": 0.8,
+    "fond": "Amine (9 ans) est le fils unique d'Ali et d'Itto, la sœur de Mbarek. Ali voudrait lui apprendre le métier, comme son père le lui a appris ; Amine veut être pirate, ou « pêcheur de trésors », et file dès qu'on lui tend un rabot. Fierté bourrue, un peu de peine. Anecdotes : la barque-jouet qu'il lui a taillée, repeinte en noir par Amine avec une tête de mort à la craie ; les clous du chantier enterrés sur la plage dans un « coffre au trésor ». Bavardage : « Tu passes au chantier ? » / « Après l'abordage, baba ! »."
+   },
+   "mbarek": {
+    "qui": "mon beau-frère",
+    "nom": "Mbarek",
+    "sentiment": 0.6,
+    "fond": "Ali a épousé Itto, la sœur de Mbarek, il y a douze ans : Mbarek a mis deux saisons à dire oui. Ali manque toujours de bois (pas d'arbres au désert, celui de Carène est cher). Anecdotes : Mbarek a apporté un jour, pour aider, un tronc de palmier entier à dos de chameau, bois mou et filandreux, inutilisable pour une barque ; Ali en a fait un banc devant la maison, « le banc de Mbarek » ; à la noce, Mbarek n'a pas dit un mot, puis a laissé son chèche indigo en cadeau. Bavardage : « Tu m'apportes un arbre, la prochaine fois ? » / « Le désert n'en a pas. Il a des dattes. »."
+   },
+   "youssef": {
+    "qui": "mon client à crédit",
+    "nom": "Youssef",
+    "sentiment": 0.5,
+    "fond": "Youssef met de côté chaque pièce pour faire construire par Ali sa propre barque, la Baleine. Ali commencera la coque quand la moitié sera payée ; Youssef en est au quart. Ali a déjà taillé, en avance, la planche du nom. Anecdotes : Youssef vient chaque semaine compter ses pièces devant lui ; Ali a sculpté en secret une petite baleine sur la planche du nom. Bavardage : « Combien, aujourd'hui ? » / « Trois pièces et une sardine. » / « Garde la sardine. »."
+   },
+   "driss": {
+    "qui": "mon plus vieux client",
+    "nom": "Driss",
+    "sentiment": 0.6,
+    "fond": "La Mabrouka, la barque de Driss, a été construite il y a quarante ans par le père d'Ali ; Ali, enfant, tenait les clous et en a planté un de travers, toujours là. Elle est vieille et prend l'eau ; Driss refuse de la changer ; Ali la répare chaque hiver. Anecdotes : le clou de travers ; la barque neuve refusée. Bavardage : « Cet hiver, je change la quille. » / « Non. » / « Juste la quille, Driss ! »."
+   },
+   "ahmed": {
+    "qui": "le pêcheur",
+    "nom": "Ahmed",
+    "sentiment": 0.6,
+    "fond": "Ali a construit la Zahra pour Ahmed il y a six ans. Ahmed répète qu'elle est « la plus bleue » de Tazira ; Ali dit qu'elles sont toutes du même bleu, sorti du même pot. C'est Ali qui a peint l'œil sur la proue, celui qui louche un peu. Anecdotes : Ahmed a exigé une deuxième couche de bleu, puis une troisième ; Ali jure que l'œil louche exprès, « pour voir les deux récifs à la fois ». Bavardage : « La plus bleue, hein ? » / « La plus bleue. » / « Même pot. »."
+   }
+  }
+ },
+ "amine": {
+  "genre": "m",
+  "prenom": "Amine",
+  "plan": [
+   "ma maison près du chantier — fils d'Ali le charpentier et d'Itto, une fille du désert ; né le jour où la flotte est rentrée pleine, « ça porte chance », dit sa mère.",
+   "mon voyage au désert — avec son oncle Mbarek jusqu'à la première borne des caravanes : du sable partout, même dans le pain ; il a voulu compter les étoiles qui marchent et s'est endormi à quatre.",
+   "la fois où j'ai été capitaine — la seule fois où Yasmine l'a laissé commander, il a « coulé » le navire dans la fontaine ; depuis, il est second (il croyait que c'était mieux que premier).",
+   "ma vie aujourd'hui — l'abordage avec Yasmine, son copain Tibo le mousse, l'Amiral qui l'appelle « tête de mérou », les livraisons de babouches pour Karim, payées en dattes.",
+   "(confidence) il sait où dort le chat roux, et il a vu des papiers sous lui ; il ne l'a dit qu'à Tibo. Si on retrouve la carte, les pirates partiront, et Tibo avec. Alors chut."
+  ],
+  "reve": "Être pêcheur de trésors ! Un bateau noir à voile bleue, Tibo comme second, et Yasmine capitaine d'un autre bateau, pour faire la course. Et gagner, une fois.",
+  "question": "T'as déjà trouvé un trésor ? (oui / non / un_coquillage) — admiration bruyante, déception, ou « un coquillage, c'est un trésor quand même ! ».",
+  "liens": {
+   "ali": {
+    "qui": "mon père",
+    "nom": "Ali",
+    "sentiment": 0.7,
+    "fond": "Amine (9 ans) est le fils unique d'Ali et d'Itto, la sœur de Mbarek. Ali voudrait lui apprendre le métier, comme son père le lui a appris ; Amine veut être pirate, ou « pêcheur de trésors », et file dès qu'on lui tend un rabot. Il admire les mains de son père mais trouve le bois ennuyeux. Anecdotes : vingt jours pour une barque, une heure pour son radeau, qui a coulé ; son père qui siffle faux en rabotant. Bavardage : Amine réclame un vrai galion ; Ali : « une barque, d'abord »."
+   },
+   "mbarek": {
+    "qui": "mon oncle",
+    "nom": "Mbarek",
+    "sentiment": 0.9,
+    "fond": "Mbarek est l'oncle maternel d'Amine. L'an dernier, il l'a emmené au désert jusqu'à la première borne des caravanes : du sable partout, même dans le pain. Amine est le seul à faire rire Mbarek. Son oncle est un héros, « l'homme bleu » ; il montre à tous ses doigts bleuis d'avoir touché le chèche. Anecdotes : le sable dans le pain ; le chameau qui a mangé son chapeau. Bavardage : « Tu m'emmènes encore ? » / « Quand tu sauras te taire une heure. »."
+   },
+   "yasmine": {
+    "qui": "ma copine",
+    "nom": "Yasmine",
+    "sentiment": 0.6,
+    "fond": "Les deux enfants jouent aux pirates sur la place des Lanternes. Yasmine est toujours la capitaine ; Amine perd toujours l'abordage. Amine voudrait être capitaine une fois. Ils sont inséparables. Anecdotes : la seule fois où il a été capitaine, il a « coulé » le navire dans la fontaine ; Yasmine l'a nommé « second », il a cru que c'était mieux que premier. Bavardage : « À moi d'être capitaine ! » / « Demain. » / « Tu dis toujours demain ! »."
+   },
+   "gaspard_muet": {
+    "qui": "le pirate muet",
+    "nom": "Gaspard",
+    "sentiment": 0.8,
+    "fond": "Amine suit Gaspard partout pour voir l'Amiral de près. Le perroquet lui a dit un « gros mot » : « TÊTE DE MÉROU ! ». Amine en est très fier. Gaspard le laisse monter jusqu'au premier barreau du mât, pas plus. Anecdotes : le gros mot, qu'il répète à tout le monde ; le premier barreau du mât. Bavardage : « Il peut me redire le gros mot ? » / l'Amiral « TÊTE DE MÉROU ! »."
+   },
+   "tibo": {
+    "qui": "mon copain pirate",
+    "nom": "Tibo",
+    "sentiment": 0.9,
+    "fond": "Tibo est le seul vrai pirate qui joue avec Amine (et Yasmine). Amine lui a confié où dort le chat roux : sur un toit près du Fondouk, où il monte par des caisses. Ils sont montés le voir dormir… sur des papiers. Tibo a juré de garder le secret, et l'a gardé, même pour son capitaine. Anecdotes : le « mille sabords » ; le chat qui dormait sur les papiers. Bavardage : « Tu as rien dit, hein ? » / « Rien ! Juré, craché, sardiné ! »."
+   },
+   "karim": {
+    "qui": "le marchand de babouches",
+    "nom": "Karim",
+    "sentiment": 0.7,
+    "fond": "Amine livre les babouches de Karim dans tout Tazira contre une poignée de dattes. Il court vite et se trompe souvent de maison. Anecdotes : les babouches rouges de l'amin ; le paiement en dattes. Bavardage : « Karim ! Une livraison ? » / « Pour la bonne maison, cette fois. »."
+   }
+  }
+ },
+ "basidi": {
+  "genre": "m",
+  "prenom": "Sidi",
+  "plan": [
+   "l'enfant au bord du cercle — orphelin du port, il s'asseyait chaque soir au bord de la halqa du conteur Sidi Belaïd, qui l'a pris comme apprenti à douze ans.",
+   "la grande tournée de l'île — à vingt ans, avec son maître : Carène l'hiver de famine (le journal de bord du Léviathan acheté à Yann-le-Borgne, le petit Corentin sous la table), puis Ramure et une nuit de contes avec le jeune ours Tilleul.",
+   "le soir où mon maître s'est tu — Sidi Belaïd est mort au milieu d'un conte, sur la pierre de la place ; Ba Sidi, vingt-cinq ans, a fini l'histoire à sa place, et ne l'a plus quittée depuis soixante ans.",
+   "mon cercle aujourd'hui — mille et une histoires ; Lalla Fatima qui le corrige, Lhoucine qui joue, la lanterne de Nourredine, le petit mousse Tibo au premier rang, et les pirates qui passent « par hasard ».",
+   "(confidence) il n'a jamais raconté la mille et unième histoire : il ne la connaît pas encore, il attend de la vivre. Et un remords : le journal du Léviathan, acheté pour de la semoule à une famille affamée ; il a promis au petit Corentin de le rendre « à celui qui viendra le chercher »."
+  ],
+  "reve": "Que quelqu'un s'assoie un jour sur sa pierre et raconte mieux que lui. Et, avant la fin, entendre encore une histoire de Tilleul et une de Corentin.",
+  "question": "Toi, tu préfères les histoires vraies ou les inventées ? (vraies / inventees / pareil) — « pareil » est pour lui la bonne réponse ; aux deux autres, il répond par un petit conte qui prouve le contraire.",
+  "liens": {
+   "rachid": {
+    "qui": "le marchand de tapis",
+    "nom": "Rachid",
+    "sentiment": 0.6,
+    "fond": "Ba Sidi a connu la grand-mère de Rachid, Lalla Mennana, tisserande des tribus de l'oasis, qui a tissé le tapis des étoiles (le chemin vers la dune qui marche). C'est lui qui envoie les curieux du sceau chez Rachid. Ba Sidi trouve que Rachid parle trop de ses prix ; Rachid trouve que Ba Sidi parle trop tout court. Anecdotes : jeune, il a échangé avec Lalla Mennana un conte de djinn contre l'histoire de la dune qui marche ; Rachid, enfant, s'endormait dans le cercle et se réveillait en demandant le prix de l'histoire. Bavardage : « Ta grand-mère, elle, se taisait en tissant. » / « Elle se rattrapait après, Ba Sidi. »."
+   },
+   "nourredine": {
+    "qui": "mon faiseur d'étoiles",
+    "nom": "Nourredine",
+    "sentiment": 0.7,
+    "fond": "Chaque soir, la halqa de Ba Sidi est éclairée par une grande lanterne de Nourredine, percée d'étoiles qui marchent. Ba Sidi dit que les histoires y sont meilleures ; Nourredine les écoute de loin, depuis son atelier. Anecdotes : le soir où la bougie s'est éteinte au moment du djinn, il a fini dans le noir, la meilleure histoire de sa vie ; Nourredine lui a percé une lanterne qui projette le sultan et la sardine. Bavardage : « Ta lanterne m'a volé la vedette. » / « Elle, au moins, se tait. »."
+   },
+   "fatima": {
+    "qui": "ma plus vieille auditrice",
+    "nom": "Lalla Fatima",
+    "sentiment": 0.7,
+    "fond": "Fatima écoute la halqa chaque soir, et corrige Ba Sidi quand il raconte l'histoire du pirate et du trésor des grottes : « Ce n'est pas comme ça. J'y étais. » Elle n'en dit jamais plus. Ils se connaissent depuis soixante-dix ans. Anecdotes : chaque fois qu'il dit que le pirate avait une barbe noire, Fatima dit « rousse », et toute la halqa se retourne ; jeune, il lui a récité un poème qu'elle a trouvé mauvais. Bavardage : « Ce soir, le pirate et les grottes. » / « Barbe rousse, Sidi. » / « Rousse. »."
+   },
+   "lhoucine": {
+    "qui": "mon musicien",
+    "nom": "Lhoucine",
+    "sentiment": 0.7,
+    "fond": "Le matin, Lhoucine joue du guembri à la halqa, près du cercle de Ba Sidi ; quand le conte arrive au désert, il l'accompagne d'une note grave. Ba Sidi dit que la musique fait les pauses à sa place. Anecdotes : les dormeurs ; Lhoucine enfant battait la mesure sur ses genoux pendant les contes. Bavardage : « Ce matin, le désert. » / « Alors je joue lent. »."
+   },
+   "tibo": {
+    "qui": "mon petit pirate",
+    "nom": "Tibo",
+    "sentiment": 0.7,
+    "fond": "Chaque soir, Tibo s'assied au premier rang de la halqa. Ba Sidi l'a nommé « gardien du djinn » : quand le djinn apparaît dans le conte, c'est Tibo qui fait la grosse voix. Tibo rêve de raconter un jour dans le cercle. Il voit en lui un futur conteur. Anecdotes : le sursaut de Mâchefer ; Tibo a raconté un soir, tout seul, l'histoire du biscuit dur comme du bois, et le cercle a ri. Bavardage : « Assieds-toi, gardien du djinn. » / « OUHOUHOU ! Pardon. C'était pour m'échauffer. »."
+   },
+   "corentin": {
+    "qui": "mon confrère de Carène",
+    "nom": "Corentin",
+    "sentiment": 0.6,
+    "fond": "(Lien avec Carène.) Les trois conteurs de l'île se connaissent. Il y a près de soixante-dix ans, jeune apprenti en tournée avec son maître Sidi Belaïd, Ba Sidi a acheté à Carène, un hiver de famine, le journal de bord du Léviathan à Yann-le-Borgne, le grand-père de Corentin, contre de la semoule et des dattes. Le petit Corentin écoutait sous la table ; Ba Sidi lui a raconté une histoire pour le consoler. Ils ne se sont jamais revus. Ba Sidi garde le journal (les pages du sceau sont blanches). Rivalité amusée : Corentin en connaît mille, Ba Sidi mille et une."
+   },
+   "tilleul": {
+    "qui": "mon vieux confrère des brumes",
+    "nom": "Tilleul",
+    "sentiment": 0.7,
+    "fond": "(Lien avec Ramure.) Pendant la même tournée de jeunesse, Ba Sidi est monté jusqu'à Ramure et a passé une nuit de pleine lune à échanger des contes avec Tilleul, un jeune ours conteur : le sultan, la sardine et le djinn, contre la louve qui sauva la lune. Tilleul lui a appris qu'une histoire peut se passer deux fois. Depuis, quand un voyageur part vers Ramure (les chameaux de Mbarek, le Zéphyr), Ba Sidi lui confie une histoire pour Tilleul. Anecdote : Ba Sidi raconte encore la louve et la lune, à sa façon, avec une sardine dedans."
+   }
+  }
+ }
+}

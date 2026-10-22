@@ -1,0 +1,3121 @@
+{
+ "anouk": {
+  "genre": "f",
+  "prenom": "Anouk",
+  "histoire": [
+   {
+    "titre": "mes marées avec la mère Tréphine",
+    "t": "Mon père pêchait, ma mère ramendait les filets, et moi je suivais la mère Tréphine, la vieille guérisseuse, à chaque marée basse. Elle me faisait goûter les algues une par une : « Celle-ci soigne, celle-là fait vomir, retiens bien laquelle. » J'ai retenu. Surtout celle-là."
+   },
+   {
+    "titre": "le carnet vert de Tréphine",
+    "t": "À quinze ans, Tréphine m'a donné son carnet vert, tout gondolé d'eau de mer. Trois cents recettes, dont la moitié raturées. « Les ratures, c'est ce que j'ai appris », disait-elle. J'ai installé l'infirmerie dans l'entrepont, entre les hamacs : les malades sont déjà couchés, ça fait gagner du temps."
+   },
+   {
+    "titre": "l'hiver des fièvres",
+    "t": "J'avais vingt ans quand la fièvre est montée du bassin, un hiver de brouillard. Tréphine est tombée la première. Après, il n'y avait plus que moi. Dix-sept malades en un mois, des tisanes sur tous les poêles de Carène. Quinze se sont relevés. Je compte encore les deux autres, certains soirs."
+   },
+   {
+    "titre": "mon infirmerie aujourd'hui",
+    "t": "Aujourd'hui, je soigne les genoux d'Ewen, les coups de soleil des pêcheurs et les maux de tête des lendemains de fête. Lucie me rapporte mes algues, Corentin cache ses grogs dans ma réserve, et Pierrick vient me voir pour des maladies qu'il invente. Enfin… presque toutes inventées."
+   },
+   {
+    "titre": "la nuit où Soazig est partie",
+    "t": "Des deux malades de cet hiver-là, l'une était Soazig, la sœur de Gwenola. La mère de Pierrick. J'ai essayé tout le carnet, page après page, jusqu'au matin. En partant, Gwenola m'a serré la main et m'a dit merci. Merci, {surnom}. Je n'avais rien su faire. Si je veux tant aller dans les brumes, c'est pour cette nuit-là."
+   }
+  ],
+  "reve": [
+   "Partir dans la forêt des brumes avec un panier vide, et revenir avec la plante qui fait tomber la fièvre en une nuit. Je reviendrai. Je me le suis promis. Et j'emporte des algues pour la route.",
+   "Et puis une infirmerie avec une fenêtre. Une vraie, ronde, qui donne sur la baie. Les malades guérissent plus vite quand ils voient la mer. Ce n'est dans aucun carnet, mais c'est vrai."
+  ],
+  "question": {
+   "texte": "Dis-moi, quand tu te fais mal, tu le montres tout de suite, ou tu le caches jusqu'à ce que ça devienne vert ?",
+   "reponses": [
+    {
+     "label": "Je le montre tout de suite.",
+     "valeur": "montre",
+     "t": "Bien. Tu es bien le seul. Ewen me montre ses égratignures trois jours après, quand elles ont changé de couleur. Viens quand tu veux, j'ai toujours du miel.",
+     "rappel": "Toi qui montres tes bobos tout de suite, fais voir ces mains… Hmm. Tu vivras, comme d'habitude."
+    },
+    {
+     "label": "Je le cache.",
+     "valeur": "cache",
+     "t": "Comme tout Carène. Ici, on préfère boiter que d'avoir l'air de boiter. Je finirai par te trouver, tu sais. Je trouve toujours.",
+     "rappel": "Tu m'as avoué que tu caches tes blessures. Alors je regarde comment tu marches. Tu marches bien. Pour l'instant."
+    },
+    {
+     "label": "Quelle blessure ? Je ne me blesse jamais.",
+     "valeur": "invincible",
+     "t": "Ha. Celle-là, je l'entends chaque semaine, d'habitude juste avant qu'on me ramène quelqu'un sur une planche. Garde quand même un pot d'algues dans ton sac.",
+     "rappel": "Ah, l'invincible ! Tu as toujours ton pot d'algues ? Les invincibles en ont plus besoin que les autres."
+    }
+   ]
+  },
+  "liens": {
+   "pierrick": {
+    "qui": "mon patient préféré",
+    "nom": "Pierrick",
+    "sentiment": 0.7,
+    "avis": "Pierrick vient me voir chaque semaine avec une maladie nouvelle. Je l'écoute, je lui donne une tisane au gingembre, et il repart guéri. C'est mon plus beau succès.",
+    "anecdotes": [
+     "Un jour, Pierrick est arrivé en se tenant le ventre : il avait lu dans le carnet de Tréphine le nom d'une maladie de baleine, et il était sûr de l'avoir. Je lui ai fait boire de l'eau tiède et je lui ai dit qu'il était sauvé. Il a dit : « De justesse ? » J'ai dit oui. De justesse.",
+     "Quand il avait cinq ans, juste après l'hiver des fièvres, Pierrick venait s'asseoir sur le pas de l'infirmerie sans rien dire, et il me tendait des coquillages. Je ne savais pas quoi en faire, alors je les ai gardés. Le bocal est toujours sur l'étagère, derrière le miel. Il ne s'en souvient pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Pierrick, quelle maladie aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Je crois que j'ai attrapé la fièvre des goélands."
+     ],
+     [
+      "a",
+      "Ça n'existe pas."
+     ],
+     [
+      "b",
+      "Ah. Tant mieux. Je me sens déjà mieux."
+     ]
+    ]
+   },
+   "corentin": {
+    "qui": "ce vieux filou de",
+    "nom": "Corentin",
+    "sentiment": 0.3,
+    "avis": "Corentin a le cœur d'un phoque et l'idée fixe que ma réserve d'algues est la meilleure cachette pour son grog. Il n'a pas tort : personne n'y touche. Sauf moi.",
+    "anecdotes": [
+     "La semaine dernière, j'ai trouvé trois bouteilles sous mes laminaires. J'ai remplacé le grog par de la tisane d'algues, et j'ai attendu. Le soir, à la taverne, Corentin a bu une grande gorgée en cachette, il a fait une grimace terrible, et il a dit très fort : « Ma doue, quel grog ! » Il ne s'en est jamais plaint.",
+     "L'hiver dernier, Corentin toussait à fendre le bastingage. Il a refusé mon sirop de miel jusqu'à ce que je lui raconte une histoire en même temps : une cuillère, une histoire. Il a guéri en neuf histoires. Il dit que la sixième était si mauvaise qu'il a toussé exprès pour en avoir une autre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Corentin, tu n'aurais pas oublié quelque chose dans mes algues ?"
+     ],
+     [
+      "b",
+      "Moi ? Jamais de la vie. Qu'est-ce que tu as trouvé ?"
+     ],
+     [
+      "a",
+      "De la tisane. C'est tout ce qu'il en reste."
+     ],
+     [
+      "b",
+      "Misère… Elle était bonne, au moins ?"
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "ce casse-cou de",
+    "nom": "Ewen",
+    "sentiment": 0.6,
+    "avis": "Ewen ? Je connais ses genoux mieux que lui. Sans lui, il me resterait la moitié de mes bandes, et je m'ennuierais beaucoup.",
+    "anecdotes": [
+     "Ewen est arrivé un matin avec une écharde grosse comme un clou dans le pouce : il avait voulu savoir s'il pouvait grimper à la hune sans les mains. Réponse : non. Je la lui ai retirée, il n'a pas pleuré. Il a seulement demandé s'il pouvait la garder pour la montrer à Lucie.",
+     "Il déteste ma tisane de lune. Alors, les soirs où il ne dort pas, je la lui sers dans une bolée à cidre avec un fond de miel, et je dis que c'est le grog des capitaines. Il la boit d'un trait, il fait « aaah » comme Corentin, et il dort comme une pierre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen, montre-moi ce genou."
+     ],
+     [
+      "b",
+      "Quel genou ? J'ai pas de genou."
+     ],
+     [
+      "a",
+      "Celui qui saigne sur ton pantalon."
+     ],
+     [
+      "b",
+      "Ah, CE genou ! Il est presque guéri, je te jure."
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "mon amie",
+    "nom": "Lucie",
+    "sentiment": 0.8,
+    "avis": "Lucie me rapporte les meilleures algues de la baie, celles du fond, qu'on ne trouve jamais à marée basse. Elle parle peu et elle écoute bien. Ici, les deux sont rares.",
+    "anecdotes": [
+     "Un jour, Lucie est remontée avec une algue rouge longue comme mon bras, que je ne connaissais pas. Elle a dit : « Elle pousse sur les pierres taillées, et nulle part ailleurs. » Je l'ai mise à sécher. Elle sent la pluie, même sèche. Je n'ai toujours pas trouvé à quoi elle sert, mais je la garde.",
+     "Après chaque plongée profonde, Lucie a mal aux oreilles, et elle ne le dit à personne. Alors je lui garde une fiole d'huile tiède au coin du poêle. Elle passe, elle la prend sans un mot, et elle laisse un coquillage à la place. J'en ai un plein tiroir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie. Tes oreilles ?"
+     ],
+     [
+      "b",
+      "Ça va."
+     ],
+     [
+      "a",
+      "Ça va, ou ça va comme d'habitude ?"
+     ],
+     [
+      "b",
+      "Comme d'habitude. Tu as de l'huile ?"
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "la marchande",
+    "nom": "Salomé",
+    "sentiment": -0.3,
+    "avis": "Salomé vend des « baumes du désert » qui guérissent tout. J'en ai goûté un : graisse de chèvre et cannelle. Ça ne guérit rien, mais ça sent bon. Et ça, je n'aime pas.",
+    "anecdotes": [
+     "Le mois dernier, un pêcheur s'est tartiné le dos de baume de Salomé contre un coup de soleil. Il est venu me voir le soir, rouge comme un homard et sentant le gâteau. J'ai soigné le coup de soleil. Le lendemain, Salomé avait écrit sur son étal : « Recommandé par l'infirmerie ». J'ai effacé la craie moi-même.",
+     "Je lui ai demandé cent fois de me rapporter du sud la recette de la crème des caravaniers. Chaque fois, elle me répond qu'elle l'a presque. Il y a deux ans, elle m'a apporté un petit pot « authentique », avec un ruban. C'était de la graisse de chèvre. Encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé, ton baume, c'est encore de la graisse de chèvre ?"
+     ],
+     [
+      "b",
+      "De la graisse de chèvre du désert ! Ça n'a rien à voir !"
+     ],
+     [
+      "a",
+      "Et la chèvre, elle voit la différence ?"
+     ],
+     [
+      "b",
+      "Elle ne s'est jamais plainte."
+     ]
+    ]
+   }
+  }
+ },
+ "corentin": {
+  "genre": "m",
+  "prenom": "Corentin",
+  "histoire": [
+   {
+    "titre": "les soirées de Yann-le-Borgne",
+    "t": "Je suis né dans un logis à côté de la cloche, et j'ai grandi sur les genoux de mon grand-père, Yann-le-Borgne. Un œil en moins, mille histoires en plus. Chaque soir, il racontait le naufrage tel que Loïc, le mousse du Léviathan, l'avait vu. Mot pour mot. Moi, j'ai changé quelques mots. Des meilleurs."
+   },
+   {
+    "titre": "l'hiver de la faim",
+    "t": "J'avais quatorze ans l'hiver où la mer n'a rien donné. Pas un hareng, pas une sardine. Mon grand-père a pris le journal de bord du Léviathan, qui dormait chez nous depuis toujours, et on a marché jusqu'à Tazira. Il l'a vendu à un jeune conteur pour six sacs de farine. On a mangé tout l'hiver. Moi, j'ai pleuré tout le chemin du retour."
+   },
+   {
+    "titre": "le soir où j'ai pris la parole",
+    "t": "Mousse, puis pêcheur, puis charpentier : j'ai tout essayé, et j'étais moyen partout. Le soir où mon grand-père est mort, la taverne est restée muette. La mère de Gwenola m'a mis une bolée dans la main et m'a dit : « Raconte, toi. » J'ai raconté le naufrage. Je n'ai jamais arrêté."
+   },
+   {
+    "titre": "mes journées de vieux bavard",
+    "t": "Le matin, je m'assois près de la cloche et je raconte aux mouettes. L'après-midi, au bastingage, aux pêcheurs qui ravaudent. Le soir, au poêle de la Bordée, à qui veut. Ewen écrit mes lettres, parce que ma main tremble, et il corrige mes histoires au passage. Ce petit gâche tout. Je l'adore."
+   },
+   {
+    "titre": "pourquoi je n'ai jamais repris le livre",
+    "t": "Je vais te dire un secret, {surnom}. Ba Sidi ne m'aurait pas refusé le journal du Léviathan. Je ne suis jamais allé le lui demander. J'ai peur, tu comprends. Peur qu'il raconte le naufrage autrement que mon grand-père. Si le livre dit autre chose, je ne suis plus la dernière page. Je suis une page fausse."
+   }
+  ],
+  "reve": [
+   "Qu'après moi, quelqu'un raconte le naufrage au poêle de la Bordée. Pas mot pour mot, hein. Avec ses mots à lui. Ewen, peut-être. Il ajoute déjà des dragons partout.",
+   "Et revoir une dernière fois ma baleine aux arbres sur le dos. Les jeunes disent que c'était une île. Une île qui m'a fait un clin d'œil, alors."
+  ],
+  "question": {
+   "texte": "Dis-moi, petit, toi qui as vu du pays : tu préfères une histoire vraie, ou une belle histoire ?",
+   "reponses": [
+    {
+     "label": "Une histoire vraie.",
+     "valeur": "vraie",
+     "t": "Hmm. Tu es de ceux qui vérifient. Comme Matthias : il note mes histoires dans un carnet et il compte les baleines. Je t'aime bien quand même. Un peu moins, mais bien.",
+     "rappel": "Toi qui veux des histoires vraies : celle de ce soir, je te jure qu'elle est vraie. Presque entièrement."
+    },
+    {
+     "label": "Une belle histoire.",
+     "valeur": "belle",
+     "t": "Ha ! Assieds-toi plus près, toi. Une belle histoire, c'est une vérité qui s'est faite belle pour sortir. Comme on dit à bord.",
+     "rappel": "Toi qui aimes les belles histoires, j'en ai une toute neuve. Elle n'est pas vraie du tout. Elle est magnifique."
+    },
+    {
+     "label": "Les deux à la fois.",
+     "valeur": "les_deux",
+     "t": "Voilà ! Voilà la bonne réponse ! C'est toujours les deux, petit, toujours. Gwenola ! Une bolée pour ce matelot ! C'est moi qui… enfin, c'est lui qui paie.",
+     "rappel": "Toi qui veux le vrai et le beau en même temps, tu vas être servi. Assieds-toi : c'est toujours les deux."
+    }
+   ]
+  },
+  "liens": {
+   "basidi": {
+    "qui": "mon vieux rival",
+    "nom": "Ba Sidi",
+    "sentiment": 0.7,
+    "avis": "Ba Sidi, le conteur de Tazira. Il a mon livre, il a toujours une histoire d'avance sur moi, et sa barbe est plus longue. Je ne lui pardonnerai jamais. Je l'aime beaucoup.",
+    "anecdotes": [
+     "Le jour où mon grand-père lui a vendu le journal, j'avais quatorze ans et je pleurais sur la place. Ba Sidi, qui était jeune et maigre, m'a donné une datte et m'a dit : « Le papier se vend, petit. L'histoire, elle, reste avec toi. » J'ai mangé la datte. Je l'ai détesté pendant vingt ans. Ensuite, j'ai compris.",
+     "Trente ans plus tard, je suis retourné à Tazira sur une barque chargée de cidre. Le soir, sur la place, on a fait une joute : chacun racontait l'histoire de l'autre. Il a raconté mon naufrage mieux que moi, et moi, son sultan et sa sardine mieux que lui. Les gens ont jeté des pièces aux deux. On a tout bu ensemble."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ba Sidi ! Tu as toujours mon livre, vieux voleur de dattes ?"
+     ],
+     [
+      "b",
+      "Ton livre ? Il dort chez moi depuis soixante-dix ans. Il a pris l'accent."
+     ],
+     [
+      "a",
+      "Alors raconte-moi la fin, que je vérifie si tu triches."
+     ],
+     [
+      "b",
+      "Le thé d'abord, Corentin. Les fins se méritent."
+     ]
+    ]
+   },
+   "tilleul": {
+    "qui": "mon ami l'ours",
+    "nom": "Tilleul",
+    "sentiment": 0.8,
+    "avis": "Tilleul, le conteur de Ramure. Un ours, un vrai, avec des oreilles. Il raconte mieux que moi, mais il s'endort avant la fin. À Carène, personne ne me croit quand je parle de lui.",
+    "anecdotes": [
+     "Il y a quarante ans, j'étais charpentier et je suis parti chercher du bois du côté des brumes. Je me suis perdu trois jours. Un grand ours m'a trouvé sous un arbre, m'a porté jusqu'à son village et m'a raconté, sous la pleine lune, la lune tombée dans la mare. Il s'est endormi au milieu. J'ai dû finir moi-même.",
+     "Depuis que le Zéphyr passe, Tilleul et moi, on s'écrit. Enfin, Ewen écrit pour moi, et une petite chouette de là-bas écrit pour lui. Ses lettres s'arrêtent toujours au milieu d'une histoire. Je réponds : « Et alors ? » Il répond par une autre histoire. Ça fait trois ans que j'attends la fin de la première."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tilleul ! Et alors, cette louve, elle l'a repêchée, la lune ?"
+     ],
+     [
+      "b",
+      "Quelle louve ? Ah… Il était deux fois, une louve…"
+     ],
+     [
+      "a",
+      "Non, non ! Une fois ! La dernière fois, tu as dit une fois !"
+     ],
+     [
+      "b",
+      "Par la lune, Corentin, tu te souviens mieux de mes histoires que moi."
+     ]
+    ]
+   },
+   "gwenola": {
+    "qui": "ma vieille amie",
+    "nom": "Gwenola",
+    "sentiment": 0.8,
+    "avis": "Gwenola, c'est le poêle qui ne s'éteint jamais et la main qui ne me sert jamais plus de trois grogs. Sans elle, mes histoires n'auraient pas de chaise.",
+    "anecdotes": [
+     "Gwenola compte mes grogs avec des haricots secs : un haricot dans sa poche gauche par grog servi. Au troisième, c'est tisane. Un soir, pendant qu'elle riait, j'ai glissé des haricots dans sa poche droite. Elle s'est trompée de poche et m'en a servi cinq. Le lendemain, elle avait cousu la poche droite.",
+     "Le soir de mes soixante-dix ans, toute la taverne m'a réclamé le naufrage. À la fin, Gwenola a éteint les lanternes, toutes sauf la lueur du poêle, et tout le monde a chanté le vieux chant des gabiers, en breton. Faux. Tellement faux. Je n'ai jamais rien entendu de plus beau."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gwenola, ma belle, un petit grog pour la gorge ?"
+     ],
+     [
+      "b",
+      "C'est le troisième, Corentin. Je sais compter."
+     ],
+     [
+      "a",
+      "Le premier ne compte pas, il était pour l'histoire."
+     ],
+     [
+      "b",
+      "Alors celui-là, c'est de la tisane, et il compte pour le sommeil."
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "notre Amirale",
+    "nom": "Morgane",
+    "sentiment": 0.6,
+    "avis": "Morgane, je l'ai fait sauter sur mes genoux, et maintenant elle me fronce les sourcils. Une amirale sans flotte, avec le cœur de toute une flotte. Je ris de son titre, jamais d'elle.",
+    "anecdotes": [
+     "Quand elle avait six ans, Morgane venait m'écouter raconter son aïeule, la capitaine Katell Kerhervé, debout à la barre dans la tempête. Un soir, elle est montée sur une table de la taverne, a empoigné un balai comme une barre et a crié : « À la cape ! » Elle a renversé la soupe de Fañch. Elle ne s'en souvient pas. Moi si.",
+     "Il y a douze ans, quand la Murène Noire est entrée dans la baie, c'est moi qui ai eu l'idée de faire fumer les sabords des vieux canons. Morgane, elle, a eu l'idée de dire que c'était la sienne. Elle avait raison : une idée de vieux conteur, personne ne l'aurait suivie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Amirale ! Toujours pas de bateau ?"
+     ],
+     [
+      "b",
+      "Toujours pas d'histoire neuve, Corentin ?"
+     ],
+     [
+      "a",
+      "Si fait. Celle d'une amirale qui ne riait jamais."
+     ],
+     [
+      "b",
+      "Je connais la fin. Elle fait récurer le pont au conteur."
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "mon petit écrivain",
+    "nom": "Ewen",
+    "sentiment": 0.9,
+    "avis": "Ewen écrit mes lettres et corrige mes histoires. Il ajoute des dragons. Le pire, c'est qu'elles sont meilleures avec ses dragons.",
+    "anecdotes": [
+     "Je lui ai raconté qu'un monstre vivait dans le bassin, sous les pontons. Il l'a cherché tout un après-midi, avec une lanterne et un filet à crevettes. Il est revenu avec une vieille botte, me l'a posée sur les genoux et m'a dit : « Ton monstre a perdu ça. » Je l'ai gardée. C'est mon pot à tabac.",
+     "Quand il écrit mes lettres pour Tilleul, Ewen n'écrit pas ce que je dis. Je dis « une grosse vague », il écrit « une vague haute comme le grand mât, avec un requin dedans ». Tilleul m'a répondu que c'était ma plus belle lettre. Depuis, je dicte et Ewen arrange. On est deux conteurs, maintenant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen ! Tu l'as trouvé, mon monstre, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Non, mais j'ai trouvé une deuxième botte ! Il en a deux, ton monstre !"
+     ],
+     [
+      "a",
+      "Ma doue ! Alors il a deux pieds. C'est pire que je croyais."
+     ]
+    ]
+   },
+   "anouk": {
+    "qui": "notre guérisseuse",
+    "nom": "Anouk",
+    "sentiment": 0.7,
+    "avis": "Anouk soigne tout Carène avec des algues et une patience de bernique. Elle croit que je ne sais pas qu'elle trouve mes grogs. Je le sais. C'est notre petit jeu.",
+    "anecdotes": [
+     "J'ai caché du grog dans ses algues pendant des années. La semaine dernière, elle l'a remplacé par de la tisane. J'ai bu, et j'ai crié « Quel grog ! » pour ne pas lui faire ce plaisir. Le lendemain, j'ai trouvé une vraie bouteille à la place, avec un mot : « Pour ta toux. Une seule. » Elle est comme ça, Anouk.",
+     "Cet hiver, elle m'a soigné la toux à une condition : une histoire par cuillère de sirop. À la sixième cuillère, je ne toussais plus du tout. J'ai toussé exprès pour la septième histoire. Et pour la huitième. Et pour la neuvième. Elle le savait très bien. Elle a quand même sorti la cuillère."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anouk, ma toux est revenue. Une histoire et un grog ?"
+     ],
+     [
+      "b",
+      "Une cuillère de miel et une histoire. Le grog, tu sais où il est."
+     ],
+     [
+      "a",
+      "Moi ? Je n'en ai pas la moindre idée."
+     ],
+     [
+      "b",
+      "Sous les laminaires. Comme toujours."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "notre cartographe",
+    "nom": "Matthias",
+    "sentiment": 0.7,
+    "avis": "Matthias écrit mes histoires dans un carnet pour les vérifier. Comme si une histoire se vérifiait ! Mais c'est le seul qui m'écoute avec un crayon. Ça flatte.",
+    "anecdotes": [
+     "Matthias a un carnet rien que pour mes histoires, le treizième. Il note la date, le lieu, et le nombre de grogs. Un soir, il m'a dit : « Hier, ta baleine avait trois arbres sur le dos. Aujourd'hui, elle en a cinq. » Je lui ai répondu : « Elle a poussé. » Il l'a noté.",
+     "Quand il est revenu de sa grande traversée, avec ses douze carnets et ses ampoules, il est venu me voir avant même d'embrasser sa mère. Il m'a dit : « Corentin, au pied du Cœur-de-Pierre, il y a une porte. Ton histoire est vraie. » C'est la seule fois de ma vie où j'ai été vexé qu'on me croie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias ! Note bien : ce soir, la baleine a six arbres."
+     ],
+     [
+      "b",
+      "Six ? Hier, tu as dit cinq !"
+     ],
+     [
+      "a",
+      "C'est le printemps, petit. Tout pousse."
+     ],
+     [
+      "b",
+      "Je note. Mais je mets un point d'interrogation."
+     ]
+    ]
+   }
+  }
+ },
+ "ewen": {
+  "genre": "m",
+  "prenom": "Ewen",
+  "histoire": [
+   {
+    "titre": "la nuit où je suis né",
+    "t": "Je suis né une nuit de tempête, pile quand la cloche sonnait minuit. Mon père dit que c'est pour ça que je sonne tout le temps. Il pêche au large, ma mère fume les maquereaux, et mon grand-père, c'est Grégoire, le guetteur. Il m'a appris à compter avec les bateaux. Il en passait pas beaucoup, alors j'ai appris lentement."
+   },
+   {
+    "titre": "comment je suis devenu mousse",
+    "t": "À neuf ans, je suis allé voir l'Amirale pour être mousse. Elle a dit : « Sonne la cloche à l'heure pendant un mois, sans te tromper. » Je me suis trompé quatre fois. Elle m'a pris quand même. Elle a dit que les quatre fois, c'était pour vérifier si Carène écoutait. Elle est gentille, l'Amirale. Mais en cachette."
+   },
+   {
+    "titre": "la nuit où la lanterne s'est éteinte",
+    "t": "L'hiver dernier, en pleine tempête, la lanterne du grand mât s'est éteinte, et trois barques étaient encore dehors. J'ai sonné la cloche, et puis j'ai grimpé. Tout en haut. Sans permission. Le vent me tirait les cheveux. Je l'ai rallumée, et les barques sont rentrées. Après, j'ai récuré le pont trois jours. Et l'Amirale m'a donné son chapeau."
+   },
+   {
+    "titre": "mes journées de futur capitaine",
+    "t": "Le matin, je sonne les heures. Après, je porte les messages, j'écris les lettres de Corentin pour l'ours de Ramure, je compte combien de temps Lucie reste sous l'eau, et le soir j'allume la lanterne pour mon grand-père. Et je demande à Tobias comment on remet un bateau à l'eau. Il soupire. Mais il répond un peu, maintenant."
+   },
+   {
+    "titre": "ce que mon grand-père ne voit plus",
+    "t": "Tu le dis à personne, hein ? Mon grand-père me demande toujours ce que je vois à l'horizon. Il dit que c'est pour m'entraîner à être capitaine. C'est pas vrai. Ses yeux sont fatigués, il voit plus la ligne entre la mer et le ciel. Alors je fais semblant de pas savoir, et je lui dis tout. Même les mouettes. Surtout les mouettes."
+   }
+  ],
+  "reve": [
+   "Réparer le Léviathan, le remettre à l'eau, et partir avec tout le monde dedans. Tout le monde ! Fañch et sa barque sur le pont, Gwenola et son poêle, et mon grand-père tout en haut de la hune, comme avant. Je le porterai, s'il faut.",
+   "Et avoir un perroquet. Les vrais capitaines ont un perroquet. Ou un goéland, à la limite. Un goéland poli."
+  ],
+  "question": {
+   "texte": "Hé, dis : si t'avais un bateau, un vrai, tu m'emmènerais dessus ? Comme mousse ? Ou même comme second ?",
+   "reponses": [
+    {
+     "label": "Bien sûr. Comme second !",
+     "valeur": "second",
+     "t": "Comme SECOND ?! Par la quille ! Je vais le dire à tout le monde ! Non, attends, je dis rien à l'Amirale. Mais à tout le monde sauf elle !",
+     "rappel": "Hé, t'as pas oublié ? Je suis ton second ! J'ai déjà répété les ordres : « À la cape ! », « Larguez ! », « Une galette ! »"
+    },
+    {
+     "label": "Comme mousse, pour commencer.",
+     "valeur": "mousse",
+     "t": "Mousse, c'est déjà bien. Je sais sonner, récurer et faire des nœuds. Surtout récurer. Je suis le meilleur récureur de toute l'île, demande à n'importe qui.",
+     "rappel": "Je m'entraîne à récurer pour ton bateau. Comme ça, le jour où tu m'emmènes comme mousse, je suis prêt."
+    },
+    {
+     "label": "Ta place est ici, Ewen.",
+     "valeur": "ici",
+     "t": "… Ouais. C'est ce que tout le monde dit. Sauf que moi, je veux pas partir tout seul, je veux partir avec tout le monde. Tu verras. Un jour, c'est ici qui partira.",
+     "rappel": "Tu m'avais dit que ma place était ici. T'as raison. Mais un jour, ici, ça flottera. Tu verras."
+    }
+   ]
+  },
+  "liens": {
+   "gregoire": {
+    "qui": "mon grand-père",
+    "nom": "Grégoire",
+    "sentiment": 1.0,
+    "avis": "Mon grand-père, c'est le meilleur guetteur du monde. Quarante ans dans la hune ! Il a vu une baleine blanche, un bateau fantôme et une lumière bleue. Moi, je le crois pour tout.",
+    "anecdotes": [
+     "Quand j'étais petit, mon grand-père me montait dans la hune sur son dos. On restait là-haut des heures, et il me faisait compter les vagues jusqu'à mille. Je m'endormais toujours vers trois cents. Il disait que c'était pas grave, qu'il comptait la suite pour moi. Je sais pas s'il comptait vraiment.",
+     "Chaque soir, quand j'ai allumé la lanterne, je redescends et mon grand-père demande : « Elle est droite ? » Je dis oui. Il dit : « Alors les barques rentreront. » Une fois, j'ai dit non, pour voir. Il est monté à la proue avec ses genoux qui grincent. J'ai plus jamais dit non."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tad-kozh ! La lanterne est allumée, bien droite !"
+     ],
+     [
+      "b",
+      "Bien, mousse. Qu'est-ce que tu vois, à l'horizon ?"
+     ],
+     [
+      "a",
+      "Trois mouettes, un nuage en forme de chaussette, et pas de bateau."
+     ],
+     [
+      "b",
+      "C'est bien ce que je voyais aussi."
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "l'Amirale",
+    "nom": "Morgane",
+    "sentiment": 0.6,
+    "avis": "L'Amirale fait peur à tout le monde. À moi aussi, un peu. Mais elle m'a donné son chapeau, et on donne pas son chapeau à quelqu'un qu'on aime pas. Je crois.",
+    "anecdotes": [
+     "Le chapeau que je porte, c'était celui de l'Amirale quand elle était petite. Elle me l'a donné après la nuit de la lanterne, sans rien dire, posé sur mon seau à récurer. Il est trop grand, je mets du papier dedans. Nolwenn dit que dans deux ans, il m'ira. J'ai hâte.",
+     "Une fois, j'ai sonné la cloche à minuit et demi, pour voir si quelqu'un viendrait. Tout le monde est venu, en chemise de nuit. L'Amirale est arrivée la dernière, habillée, avec son manteau et sa boussole, et elle a dit : « Bien. Carène est réveillée. Maintenant, Ewen, explique. » J'ai récuré une semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Amirale ! J'ai sonné neuf heures pile !"
+     ],
+     [
+      "b",
+      "Neuf heures, Ewen. J'ai compté dix coups."
+     ],
+     [
+      "a",
+      "Le dixième, c'était pour l'écho."
+     ],
+     [
+      "b",
+      "Le pont aussi a besoin d'écho. Prends le seau."
+     ]
+    ]
+   },
+   "corentin": {
+    "qui": "le vieux",
+    "nom": "Corentin",
+    "sentiment": 0.9,
+    "avis": "Le vieux Corentin connaît mille histoires. Il dit que j'ajoute des dragons. C'est faux : j'ajoute aussi des requins. Et ses histoires sont meilleures avec.",
+    "anecdotes": [
+     "Corentin m'a dit qu'il y avait un monstre dans le bassin. Je l'ai cherché tout un après-midi avec un filet à crevettes. J'ai trouvé une botte. La semaine d'après, j'en ai trouvé une deuxième ! Corentin dit que le monstre a deux pieds. Moi, je crois que c'est un monstre qui perd ses bottes.",
+     "J'écris ses lettres pour l'ours de Ramure, parce que sa main tremble. Il dit des choses comme « il pleuvait ». Moi, j'écris « il pleuvait des harengs ». L'ours a répondu que c'était la plus belle lettre de sa vie. Corentin a fait semblant d'être fâché, et puis il m'a donné une pièce. Une vraie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Corentin ! J'ai trouvé une deuxième botte au bassin !"
+     ],
+     [
+      "b",
+      "Ma doue ! Alors il a deux pieds, ton monstre."
+     ],
+     [
+      "a",
+      "Ou alors c'est deux monstres avec un pied chacun !"
+     ],
+     [
+      "b",
+      "Celle-là, je te la vole pour ce soir."
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "ma copine",
+    "nom": "Lucie",
+    "sentiment": 0.9,
+    "avis": "Lucie, c'est la meilleure plongeuse de l'île. Elle reste sous l'eau plus longtemps qu'un phoque, j'ai compté. Elle parle pas beaucoup, mais quand elle parle, c'est pour dire des trucs incroyables.",
+    "anecdotes": [
+     "J'ai essayé de compter combien de temps Lucie reste sous l'eau. Je suis arrivé à cent, et après j'ai sauté soixante-dix. Alors j'ai recommencé avec des cailloux : un caillou toutes les dix secondes. Quand elle est remontée, il y avait dix-neuf cailloux. Elle a dit : « Tu en as mis deux à la fois. » C'était vrai.",
+     "Lucie m'a appris à faire la planche dans le bassin. Elle m'a dit : « Regarde le ciel et oublie que tu as un dos. » J'ai oublié mon dos, j'ai flotté, et puis une mouette m'a regardé de travers. J'ai éclaté de rire et j'ai coulé. Lucie aussi a ri. Lucie qui rit, c'est rare. Ça valait la tasse d'eau salée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie ! Aujourd'hui, je compte avec des cailloux, un par un !"
+     ],
+     [
+      "b",
+      "Un par un. Promis ?"
+     ],
+     [
+      "a",
+      "Promis ! Par la quille !"
+     ],
+     [
+      "b",
+      "Alors je descends. Ne t'endors pas."
+     ]
+    ]
+   },
+   "tobias": {
+    "qui": "le calfat",
+    "nom": "Tobias",
+    "sentiment": 0.3,
+    "avis": "Tobias soupire chaque fois que je parle de remettre le Léviathan à l'eau. Il soupire aussi quand j'en parle pas. Mais c'est lui qui sait boucher les trous, alors je reviens.",
+    "anecdotes": [
+     "Je lui ai demandé combien de trous il fallait boucher pour que le Léviathan flotte. Il a ouvert un vieux carnet noir plein de chiffres et il a dit : « Quatre mille trois cent douze. Plus ceux de demain. » J'ai dit : « Bon, ça va, c'est pas tant que ça. » Il a soupiré si fort que la lanterne a bougé.",
+     "La semaine dernière, Tobias m'a laissé tenir le pot de goudron. Il dit que c'était son premier travail à lui aussi, à sept ans. Je m'en suis mis jusqu'aux coudes. Il a rien dit pendant longtemps. Puis il a dit : « Pas mal. » Je crois que c'est le plus beau compliment qu'il a jamais fait à quelqu'un."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tobias ! Combien de trous, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Deux de bouchés. Trois de nouveaux."
+     ],
+     [
+      "a",
+      "Alors on a presque fini !"
+     ],
+     [
+      "b",
+      "Pff… Passe-moi l'étoupe, futur capitaine."
+     ]
+    ]
+   },
+   "pierrick": {
+    "qui": "l'aubergiste",
+    "nom": "Pierrick",
+    "sentiment": 0.3,
+    "avis": "Pierrick est gentil, mais il me dénonce toujours à l'Amirale. Et il sait pas rire quand on fait des nœuds dans ses hamacs.",
+    "anecdotes": [
+     "Une nuit, j'ai fait des nœuds de chaise à tous les hamacs de l'auberge, pour m'entraîner. Au matin, les clients pouvaient plus sortir. Pierrick a mis deux heures à les défaire. Il a dit qu'il allait le dire à sa tante. Gwenola a ri tellement fort qu'il a pas osé le dire à l'Amirale. Pour une fois.",
+     "C'est Pierrick qui a raconté partout que j'étais monté à la grande hune. Je l'ai boudé une semaine. Après, il m'a apporté une glace de Cliquetis, arrivée par le Zéphyr, toute fondue, dans une tasse. Il a dit qu'il en avait acheté deux. Je crois qu'il en avait acheté une, et que c'était la sienne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pierrick ! Tes hamacs sont bien attachés, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Ewen. Si je trouve un seul nœud de chaise, je le dis à l'Amirale."
+     ],
+     [
+      "a",
+      "Et un nœud de cabestan ?"
+     ],
+     [
+      "b",
+      "EWEN !"
+     ]
+    ]
+   },
+   "anouk": {
+    "qui": "la guérisseuse",
+    "nom": "Anouk",
+    "sentiment": 0.5,
+    "avis": "Anouk soigne mes genoux. Elle grogne un peu, mais elle souffle dessus avant de mettre les algues, comme si j'avais cinq ans. J'aime bien. Faut pas le dire.",
+    "anecdotes": [
+     "Une fois, Anouk m'a mis en retenue à l'infirmerie, pour être sûre que je me casse rien pendant une journée. J'ai trié ses algues : les vertes, les brunes, les rouges. J'ai fait une quatrième pile pour celles qui ressemblent à des moustaches. Elle l'a gardée. Elle dit que c'est très scientifique.",
+     "Les soirs où je dors pas, Anouk me donne le grog des capitaines, dans une bolée. C'est le meilleur grog du monde, ça sent le miel et un peu la lune. Lucie dit que c'est de la tisane. Lucie dit n'importe quoi, des fois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anouk ! Regarde, je me suis pas fait mal aujourd'hui !"
+     ],
+     [
+      "b",
+      "Il est midi, Ewen."
+     ],
+     [
+      "a",
+      "Ben oui. C'est un record."
+     ],
+     [
+      "b",
+      "Reviens à six heures, on verra pour le record."
+     ]
+    ]
+   }
+  }
+ },
+ "fanch": {
+  "genre": "m",
+  "prenom": "Fañch",
+  "histoire": [
+   {
+    "titre": "mon premier congre",
+    "t": "Mon père pêchait, son père aussi, et comme ça jusqu'au naufrage. Avant, ils pêchaient sûrement aussi, mais ailleurs. À cinq ans, je tenais la ligne pendant que mon père dormait au fond de la barque. Un jour, j'ai sorti un congre plus grand que moi. Je crois que c'est lui qui m'a ramené à terre."
+   },
+   {
+    "titre": "comment j'ai appris à mentir sur les poissons",
+    "t": "À quinze ans, j'ai embarqué avec Corentin, qui était pêcheur avant d'être bavard. Il m'a appris à vider un maquereau en trois gestes, et à raconter ensuite qu'il pesait trois livres. Les trois gestes, je les ai oubliés. Les trois livres, jamais. C'est comme ça qu'on devient un vrai pêcheur de Carène."
+   },
+   {
+    "titre": "la tempête qui m'a donné une maison",
+    "t": "L'année de mes quarante ans, une tempête a jeté ma barque, la Rozenn, sur les rochers de la pointe. J'ai nagé, elle aussi, à sa façon. On s'est retrouvés tous les deux sur la plage, cassés. Pas de quoi en acheter une autre. Alors je l'ai retournée, et je suis entré dessous. Elle a fait naufrage avant moi, ça crée des liens."
+   },
+   {
+    "titre": "mes jours entre la mer et le feu",
+    "t": "Je me lève à cinq heures, je pêche au ponton, je vends à la cale, je ravaude mes filets sur la plage, et le soir on allume le feu avec les autres. Parfois, au réveil, il y a des coquillages posés sur ma barque. Les gens des brumes, dit Lucie. Je dis merci à voix haute. On ne sait jamais qui écoute."
+   },
+   {
+    "titre": "le jour où le mérou m'a répondu",
+    "t": "Tu te rappelles le gros mérou, celui des deux barques ? Il y a cinquante ans, Gwenola m'a dit : « Je t'épouserai le jour où un poisson te dira oui. » Alors je leur pose la question, à tous. Ce mérou-là, il a ouvert la bouche, et j'ai entendu « oui ». Je l'ai relâché. Je ne suis jamais allé le dire à Gwenola. À mon âge, on a peur de gagner."
+   }
+  ],
+  "reve": [
+   "Repêcher le gros mérou. Pas pour le manger, hein ! Pour qu'il répète sa réponse devant témoins. Je l'emmène à la taverne dans un seau, et Gwenola ne pourra plus dire que j'ai rêvé.",
+   "Et finir mes jours sous ma barque, avec un feu devant et une bolée à la main. Comme maintenant, en fait. Je crois que mon rêve, je suis déjà dedans."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi : tu parles à tes affaires ? À ton épée, à ton sac, à ta barque ?",
+   "reponses": [
+    {
+     "label": "Oui, tout le temps.",
+     "valeur": "oui",
+     "t": "Ha ! Un frère de bord ! Et elles te répondent ? Non ? Les miennes non plus. Presque jamais. Continue, c'est une question de patience.",
+     "rappel": "Alors, ton épée, elle t'a répondu ? Ma barque non plus. Patience, matelot, patience."
+    },
+    {
+     "label": "Non, jamais.",
+     "valeur": "non",
+     "t": "Jamais ? Tu devrais. Une barque à qui on parle prend moins l'eau, tout le monde sait ça. Demande à Tobias. Non, ne lui demande pas, il va soupirer.",
+     "rappel": "Toujours pas parlé à ton épée ? Essaie un soir, tout bas. Elle a sûrement des choses à dire."
+    },
+    {
+     "label": "Seulement quand personne n'écoute.",
+     "valeur": "en_secret",
+     "t": "Comme moi avec Gwenola. Euh, avec les poissons ! Avec les poissons, je voulais dire. Ma doue, qu'il fait chaud, aujourd'hui.",
+     "rappel": "Toi qui parles à tes affaires en cachette, tu sais garder un secret. Moi aussi. On garde les nôtres, tous les deux."
+    }
+   ]
+  },
+  "liens": {
+   "gwenola": {
+    "qui": "ma belle",
+    "nom": "Gwenola",
+    "sentiment": 0.9,
+    "avis": "Gwenola ? La meilleure galette de la côte et la tête la plus dure de Carène. Elle se moque de moi parce que je parle aux poissons. Elle sait très bien pourquoi je leur parle.",
+    "anecdotes": [
+     "On avait vingt ans, c'était la Saint-Jean, le feu sur la plage. Je lui ai demandé de m'épouser, à genoux dans le sable. Elle a ri, et elle a dit : « Le jour où un poisson te dira oui. » Elle croyait que je laisserais tomber. Ça fait cinquante ans que je demande. Les poissons hésitent.",
+     "Quand je rentre avec un maquereau plus beau que les autres, je le garde pour la Bordée. Gwenola le prend sans un mot, le pose sur le billig, et me sert la première galette. Pas la deuxième, pas la troisième : la première. Depuis cinquante ans. Moi, je compte ça comme un demi-oui."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gwenola ! Un maquereau pour toi, le plus beau."
+     ],
+     [
+      "b",
+      "Il t'a dit quelque chose, celui-là ?"
+     ],
+     [
+      "a",
+      "Il a dit « peut-être ». C'est mieux qu'hier."
+     ],
+     [
+      "b",
+      "Hier, c'était une sardine. Les sardines, c'est bête."
+     ]
+    ]
+   },
+   "gregoire": {
+    "qui": "ce vieux grincheux de",
+    "nom": "Grégoire",
+    "sentiment": 0.6,
+    "avis": "Grégoire compte les bateaux qui passent. Il n'en passe jamais. Mais sa lanterne, le soir, c'est elle qui me ramène. Je le taquine, il boude. On s'aime bien comme ça.",
+    "anecdotes": [
+     "Un soir de brouillard, je suis rentré à trois heures du matin en suivant sa lanterne. Grégoire était à la proue, tout seul, raide comme un mât. Je lui ai crié : « T'en as compté combien, de bateaux ? » Il a dit : « Un. Le tien. Il était en retard. » Et il est allé se coucher sans me dire bonsoir.",
+     "Pour son anniversaire, j'ai voulu lui faire croire qu'une flotte arrivait : douze lanternes sur douze bouées, dans la baie. Il a compté jusqu'à douze, tout ému, et il a couru prévenir l'Amirale. Elle n'a pas ri. Grégoire non plus. Moi, beaucoup. Il m'a fait la tête trois mois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salut, Grégoire ! Combien de bateaux, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Aucun. Et ne recommence pas avec tes bouées."
+     ],
+     [
+      "a",
+      "Juste une, une petite. Pour te faire plaisir."
+     ],
+     [
+      "b",
+      "Hm. Rentre avant la nuit, toi."
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "la petite",
+    "nom": "Lucie",
+    "sentiment": 0.8,
+    "avis": "Lucie, je l'ai connue grosse comme une sardine, accrochée au cou de sa mère dans la baie. Elle me repêche tout ce que je fais tomber. Et je fais tout tomber.",
+    "anecdotes": [
+     "J'ai laissé tomber à l'eau le couteau de mon grand-père, celui au manche en os de baleine. Dix brasses de fond. Lucie a plongé trois fois. La troisième, elle est remontée avec le couteau entre les dents, comme une pirate. Elle a dit : « Il y avait un crabe dessus. Il n'était pas d'accord. »",
+     "Une nuit, on a voulu voir qui laisse les coquillages sur ma barque. On s'est cachés derrière les filets, avec une couverture et du cidre. On s'est endormis tous les deux. Au réveil, il y avait des coquillages sur la barque. Et un sur la tête de Lucie, et un sur la mienne. On n'a plus jamais essayé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie ! J'ai fait tomber ma pipe au bout du ponton."
+     ],
+     [
+      "b",
+      "Encore ? C'est la troisième ce mois-ci."
+     ],
+     [
+      "a",
+      "Elle aime la mer, cette pipe. Comme moi."
+     ],
+     [
+      "b",
+      "Je plonge. Mais tu me dois une galette."
+     ]
+    ]
+   },
+   "nolwenn": {
+    "qui": "mon élève",
+    "nom": "Nolwenn",
+    "sentiment": 0.8,
+    "avis": "Nolwenn coud des voiles depuis toujours et n'en avait jamais vu une se gonfler. Alors je lui apprends à barrer, à l'aube, quand Carène dort. Elle a la mer dans la main, cette petite.",
+    "anecdotes": [
+     "Un matin, elle est venue frapper sur ma barque retournée, à cinq heures. Elle a dit : « Apprends-moi à barrer. Et pas un mot à mon père. » Depuis, deux fois par semaine, on sort dans la baie avant le jour. Le premier matin, elle a pleuré quand la voile s'est gonflée. Elle a dit que c'était le vent. C'était pas le vent.",
+     "La semaine dernière, je l'ai laissée seule à la barre jusqu'à la pointe nord, et j'ai fait semblant de dormir. Elle a viré de bord toute seule, proprement, comme une vieille. Au retour, j'ai dit : « Pas mal, pour une voilière. » Elle m'a jeté un seau d'eau. Chez les voilières, ça veut dire merci."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Demain, cinq heures ? Le vent sera de suroît."
+     ],
+     [
+      "b",
+      "Chut, Fañch ! Pas si fort."
+     ],
+     [
+      "a",
+      "Je parlais au poisson, moi."
+     ],
+     [
+      "b",
+      "Alors dis-lui cinq heures. Et qu'il se taise."
+     ]
+    ]
+   },
+   "tobias": {
+    "qui": "notre calfat",
+    "nom": "Tobias",
+    "sentiment": 0.7,
+    "avis": "Tobias recalfate ma barque-maison chaque automne et refuse que je le paie. Il prend un maquereau, il soupire, il repart. Triste comme un jour sans vent, mais un bon gars.",
+    "anecdotes": [
+     "Chaque automne, Tobias monte sur mon toit, enfin sur la quille de ma barque, et il bouche les fentes au goudron chaud. Toute la plage sent le goudron. Je lui tends un maquereau, il dit « pas la peine », il le prend quand même. Ça fait trente ans. Trente maquereaux. Je ne lui dois rien, il ne me doit rien. C'est parfait.",
+     "Ces derniers temps, je vois Tobias passer au bassin la nuit, avec une lanterne sourde et son pot de goudron. Je lui ai demandé ce qu'il fabriquait. Il a dit : « Rien. » Je n'ai pas insisté. Quand un calfat dit « rien » à minuit, c'est qu'il calfate quelque chose qui compte."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tobias ! Mon toit fuit, côté nord."
+     ],
+     [
+      "b",
+      "Ton toit, c'est une quille, Fañch."
+     ],
+     [
+      "a",
+      "Alors ma quille fuit, côté nord."
+     ],
+     [
+      "b",
+      "Pff. J'arrive avec le goudron. Garde le maquereau au frais."
+     ]
+    ]
+   }
+  }
+ },
+ "gregoire": {
+  "genre": "m",
+  "prenom": "Grégoire",
+  "histoire": [
+   {
+    "titre": "le fils du guetteur",
+    "t": "Mon père était guetteur avant moi, et son père aussi. Chez nous, on naît avec un œil sur l'horizon. À huit ans, mon père m'a hissé dans la grande hune et m'a dit : « Regarde. Et ne dis rien tant que tu n'es pas sûr. » J'ai regardé. Je n'ai jamais beaucoup parlé, depuis."
+   },
+   {
+    "titre": "quarante ans dans la grande hune",
+    "t": "Quarante ans là-haut, par tous les temps. J'ai vu passer des baleines, deux trombes, et une barque de Port-Azur perdue dans la nuit, que j'ai ramenée à la lanterne. Tout est noté dans mon carnet, avec l'heure. Les bateaux, je les comptais. Il n'en passait presque jamais. Ce n'est pas une raison pour arrêter de compter."
+   },
+   {
+    "titre": "la nuit de la lumière bleue",
+    "t": "Une nuit d'automne, j'ai vu une lumière bleue au pied du Cœur-de-Pierre, devant la grande porte. Elle battait, lentement, comme un cœur. Je l'ai regardée jusqu'à l'aube. Personne ne m'a cru, sauf l'Amirale. Elle n'a rien dit. Elle a juste doublé la garde de la proue. C'est-à-dire moi, deux fois plus longtemps."
+   },
+   {
+    "titre": "mes genoux et la proue",
+    "t": "Maintenant, mes genoux ne veulent plus grimper. Je guette depuis la proue, avec la longue-vue, et c'est mon petit-fils Ewen qui monte allumer la lanterne. Je compte toujours les bateaux. Cette année : trois. Avec toi. Je t'ai noté dans le carnet. À l'encre, pas au crayon."
+   },
+   {
+    "titre": "ce que mes yeux ne voient plus",
+    "t": "Je vais te dire une chose, {surnom}, et tu la gardes. Mes yeux s'en vont. Le soir, je ne vois plus la ligne entre la mer et le ciel. Alors je demande à Ewen ce qu'il voit, en faisant croire que je l'entraîne. Il me décrit tout. Il est bon, ce petit. Mais la lumière bleue, je l'ai vue avant. Ça, je l'ai vue."
+   }
+  ],
+  "reve": [
+   "Voir entrer un grand navire dans la baie, au lever du soleil. Un vrai, trois mâts, toutes voiles dehors. Je le compterai. Ce sera le plus beau chiffre de mon carnet.",
+   "Et revoir la lumière bleue, une fois. Avec quelqu'un à côté de moi, qui la voit aussi."
+  ],
+  "question": {
+   "texte": "Toi. Tu as déjà vu une lumière que personne d'autre n'a vue ?",
+   "reponses": [
+    {
+     "label": "Oui, une fois.",
+     "valeur": "oui",
+     "t": "Hm. Alors tu sais ce que c'est. On la regarde, on se retourne pour la montrer, et elle est partie. Ne laisse personne te dire que tu as rêvé.",
+     "rappel": "Toi qui as vu une lumière que personne n'a vue : si elle revient, viens me chercher. Je te croirai."
+    },
+    {
+     "label": "Non, jamais.",
+     "valeur": "non",
+     "t": "Tant mieux pour toi. Ça rend méfiant. On se met à regarder la nuit plus que le jour. Garde tes yeux tranquilles.",
+     "rappel": "Toi qui n'as jamais rien vu d'étrange : regarde le Cœur-de-Pierre, une nuit. Une seule. Après, tu me diras."
+    },
+    {
+     "label": "Je ne suis pas sûr.",
+     "valeur": "pas_sur",
+     "t": "C'est la bonne réponse. Les gens trop sûrs d'eux ne regardent pas assez longtemps. Toi, tu doutes. Un bon guetteur doute.",
+     "rappel": "Tu n'étais pas sûr, la dernière fois. C'est bien. Un bon guetteur doute. Et puis il note."
+    }
+   ]
+  },
+  "liens": {
+   "ewen": {
+    "qui": "mon petit-fils",
+    "nom": "Ewen",
+    "sentiment": 1.0,
+    "avis": "Ewen est bavard, maladroit, il sonne la cloche à tort et à travers. C'est le meilleur mousse que Carène ait eu depuis cinquante ans. Ne le lui répète pas.",
+    "anecdotes": [
+     "La nuit de la grande tempête, la lanterne du mât s'est éteinte, et moi, je ne pouvais plus monter. J'ai vu une petite ombre grimper dans les haubans, sous la pluie. J'ai crié son nom, le vent l'a mangé. La lanterne s'est rallumée. Quand il est redescendu, je l'ai serré si fort qu'il a dit « aïe ». Puis je l'ai grondé. Dans cet ordre.",
+     "Chaque soir, Ewen me raconte ce qu'il voit à l'horizon. Hier, il m'a décrit un nuage en forme de chaussette, trois mouettes, et un dauphin qui faisait des cabrioles. Je ne sais pas si le dauphin était vrai. Je l'ai noté quand même. Il en avait tellement envie."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mousse. Qu'est-ce que tu vois, à l'horizon ?"
+     ],
+     [
+      "b",
+      "Une voile ! Non, une mouette. Une mouette qui ressemble à une voile !"
+     ],
+     [
+      "a",
+      "Hm. Note-la quand même. On ne sait jamais."
+     ],
+     [
+      "b",
+      "Je note : une mouette-voile. Par la quille !"
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "l'Amirale",
+    "nom": "Morgane",
+    "sentiment": 0.8,
+    "avis": "L'Amirale m'écoute. C'est rare, quelqu'un qui écoute un guetteur. Sa mère m'écoutait aussi. Les Kerhervé ont mauvais caractère et bonne oreille.",
+    "anecdotes": [
+     "Le matin où j'ai parlé de la lumière bleue, toute la taverne riait déjà. L'Amirale m'a fait monter à la capitainerie, m'a fait tout raconter deux fois, et elle a marqué l'endroit sur sa carte d'une croix. Une croix à l'encre. Elle n'a pas souri une seule fois. Je lui en suis reconnaissant.",
+     "Il y a douze ans, c'est moi qui ai vu la Murène Noire en premier, au point du jour, voiles noires sur la mer grise. J'ai sonné trois coups, le signal des anciens. L'Amirale était sur la dunette avant le troisième. Elle a demandé : « Combien de canons ? » J'ai dit : « Vingt-deux. » Elle a dit : « Bien. Nous en avons quarante. » Ils ne tirent pas, mais quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Amirale. Rien à l'horizon."
+     ],
+     [
+      "b",
+      "Rien du tout, Grégoire ?"
+     ],
+     [
+      "a",
+      "Rien. Mais le Cœur-de-Pierre était rouge, ce soir. Plus rouge qu'hier."
+     ],
+     [
+      "b",
+      "Je l'ai vu aussi. Continue de regarder."
+     ]
+    ]
+   },
+   "fanch": {
+    "qui": "ce farceur de",
+    "nom": "Fañch",
+    "sentiment": 0.1,
+    "avis": "Fañch se moque de mes comptes. Il dit qu'il ne passe jamais de bateau. C'est faux : chaque soir, il en passe un. Le sien. En retard.",
+    "anecdotes": [
+     "Pour mon anniversaire, Fañch a posé douze lanternes sur douze bouées dans la baie. J'ai cru à une flotte. J'ai réveillé l'Amirale. Elle est venue en manteau, a regardé longtemps dans la longue-vue, et a dit : « Ce sont des bouées, Grégoire. » Je n'ai jamais eu si honte. Fañch riait sur la plage. Je l'entends encore.",
+     "Les soirs de brouillard, je garde la lanterne allumée tant que la barque de Fañch n'est pas rentrée. Il le sait. Il ne m'a jamais dit merci. Une fois, il a laissé un homard devant ma porte, sans un mot. J'ai fait semblant de croire que c'était la mer qui l'avait apporté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fañch. Tu es encore rentré après la lanterne."
+     ],
+     [
+      "b",
+      "Elle était si belle, je voulais la regarder de loin !"
+     ],
+     [
+      "a",
+      "Hm. La prochaine fois, je l'éteins."
+     ],
+     [
+      "b",
+      "Tu ne le feras pas. Tu ne l'as jamais fait."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "le cartographe",
+    "nom": "Matthias",
+    "sentiment": -0.2,
+    "avis": "Matthias me pose cent questions et n'écoute aucune réponse. Il a mis ma lumière bleue sur sa carte avec un point d'interrogation. Un point d'interrogation. À côté de mon nom.",
+    "anecdotes": [
+     "Matthias est venu à la proue avec un compas et un rapporteur, pour mesurer l'angle de ma lumière bleue. Je lui ai montré l'endroit. Il a calculé tout l'après-midi. Le soir, sur sa carte, il y avait un petit point bleu, et à côté : « selon Grégoire (?) ». J'ai mis trois semaines à lui reparler.",
+     "Quand il est parti pour sa grande traversée, c'est moi qui l'ai suivi le plus longtemps à la longue-vue, jusqu'à ce qu'il ne soit plus qu'un point sur la lande. Quand il est revenu, deux mois après, je l'ai vu le premier, et j'ai sonné un coup pour lui. Il ne l'a jamais su. Ça ne l'autorise pas à mettre des points d'interrogation."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias. Tu as toujours ton point d'interrogation ?"
+     ],
+     [
+      "b",
+      "Il est tout petit, Grégoire ! C'est de la rigueur !"
+     ],
+     [
+      "a",
+      "Ma lumière n'a pas besoin de rigueur. Elle a besoin qu'on la croie."
+     ],
+     [
+      "b",
+      "Il est au crayon. Je l'effacerai le jour où je la verrai."
+     ]
+    ]
+   }
+  }
+ },
+ "gwenola": {
+  "genre": "f",
+  "prenom": "Gwenola",
+  "histoire": [
+   {
+    "titre": "trois femmes et un poêle",
+    "t": "Je suis née derrière ce comptoir, comme ma mère, et comme sa mère avant elle. La première d'entre nous était la cuisinière du Léviathan. Quand le bateau s'est échoué, elle a rallumé son poêle avant même qu'on sache où on était. « On ne réfléchit pas le ventre vide », qu'elle disait. On le dit encore."
+   },
+   {
+    "titre": "mon premier soir derrière le comptoir",
+    "t": "J'avais trente ans quand les jambes de ma mère ont dit non. Le premier soir où j'ai tenu la taverne seule, j'ai brûlé trois galettes et cassé une bolée. Et puis Corentin a raconté, Fañch a chanté faux, quelqu'un a renversé du cidre sur l'Amirale de l'époque, et tout le monde a ri. J'ai su que j'étais chez moi."
+   },
+   {
+    "titre": "le petit qui est venu vivre ici",
+    "t": "L'hiver des fièvres, ma petite sœur Soazig est partie. Elle laissait un garçon de cinq ans, des cheveux couleur carotte et une valise trop grande. Pierrick. Je l'ai couché dans un hamac au-dessus des tonneaux de cidre. Il n'en est jamais vraiment descendu. Si : pour grandir, et pour se mettre en tête qu'il tient l'auberge."
+   },
+   {
+    "titre": "mes soirées à La Dernière Bordée",
+    "t": "Aujourd'hui, j'ai soixante-dix ans, un billig qui chauffe dès neuf heures, et une taverne pleine tous les soirs. Je compte les grogs de Corentin avec des haricots, je garde la première galette pour Fañch, et je laisse croire à Pierrick qu'il est le patron. Le reste du temps, je chante. Faux. Mais fort."
+   },
+   {
+    "titre": "la nuit où le feu s'est éteint",
+    "t": "Tu vois ce poêle, {surnom} ? Tout Carène croit qu'il n'a jamais refroidi depuis le naufrage. La nuit où Soazig est partie, je suis restée à l'infirmerie jusqu'au matin. Quand je suis rentrée, il était froid. Je l'ai rallumé avant que quiconque se lève, en pleurant dans les braises. Ça fait vingt-cinq ans. Tu es le premier à le savoir."
+   }
+  ],
+  "reve": [
+   "Une fois, une seule, que toute la taverne chante le vieux chant des gabiers juste. Toutes les voix ensemble, pas une fausse note. Ça n'arrivera jamais. C'est pour ça que c'est un beau rêve.",
+   "Et que Pierrick ouvre son auberge sur la terre ferme, avec de vrais lits. Il croit que je me moque de lui. Je lui ai déjà cousu les draps. Ils sont dans le coffre, sous les nappes."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : est-ce que quelqu'un t'attend, quelque part, avec une soupe chaude ?",
+   "reponses": [
+    {
+     "label": "Oui, chez moi.",
+     "valeur": "oui",
+     "t": "Alors tu reviendras toujours quelque part, c'est bien. Mais tant que tu es ici, la soupe, c'est moi. Et ma soupe ne se refuse pas.",
+     "rappel": "Et chez toi, on t'attend toujours avec la soupe ? Mange quand même la mienne. Ça ne compte pas comme une trahison."
+    },
+    {
+     "label": "Non, personne.",
+     "valeur": "personne",
+     "t": "Personne ? Ma doue. Eh bien maintenant, si. Ici, à la Bordée, il y aura toujours une galette pour toi et une chaise près du poêle. Ne discute pas.",
+     "rappel": "Tu m'avais dit que personne ne t'attendait. C'est faux, maintenant : moi, je t'attends. Assieds-toi."
+    },
+    {
+     "label": "Je ne sais pas trop.",
+     "valeur": "sais_pas",
+     "t": "Ça arrive aux voyageurs. On part si loin qu'on ne sait plus qui guette la porte. Écris-leur. Et en attendant, mange.",
+     "rappel": "Alors, tu as écrit ? Non ? Mange d'abord, écris après. Mais écris."
+    }
+   ]
+  },
+  "liens": {
+   "pierrick": {
+    "qui": "mon neveu",
+    "nom": "Pierrick",
+    "sentiment": 0.8,
+    "avis": "Pierrick est persuadé de tenir l'auberge. Je le laisse croire. Il est maladroit, susceptible, et doux comme un agneau. Sa mère serait fière. Moi, je le suis en cachette.",
+    "anecdotes": [
+     "À dix-huit ans, Pierrick a peint « AUBERGE » sur une planche et l'a clouée sous l'enseigne de la taverne. Il avait oublié le dernier E : ça faisait « AUBERG ». Je ne lui ai rien dit. Un matin, le E était là, peint plus petit, un peu de travers. Personne ne sait qui l'a ajouté. Moi, peut-être.",
+     "Pierrick recompte les hamacs chaque soir, à voix haute. Trente-deux. Toujours trente-deux. Une fois, pour rire, j'en ai décroché un. Il a compté trente et un, il est devenu tout blanc, et il a fouillé l'entrepont jusqu'à minuit. Je l'ai raccroché en cachette. Je ne l'ai plus jamais refait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pierrick, tu as rempli les cruches ?"
+     ],
+     [
+      "b",
+      "Ma tante, les cruches, c'est la taverne. Moi, c'est l'auberge."
+     ],
+     [
+      "a",
+      "L'auberge a soif aussi. Les cruches."
+     ],
+     [
+      "b",
+      "… J'y vais. Mais c'est exceptionnel."
+     ]
+    ]
+   },
+   "fanch": {
+    "qui": "ce vieux fou de",
+    "nom": "Fañch",
+    "sentiment": 0.7,
+    "avis": "Fañch parle à ses poissons. Je sais pourquoi il leur parle : c'est ma faute, et je ne m'en excuserai jamais. Il est têtu. Moi aussi.",
+    "anecdotes": [
+     "J'avais vingt ans, c'était la Saint-Jean. Fañch s'est mis à genoux dans le sable devant tout le monde. J'ai paniqué, j'ai ri, et j'ai dit : « Le jour où un poisson te dira oui. » Une bêtise. Il ne l'a jamais oubliée. Depuis, il pose la question aux maquereaux. Et moi, j'écoute à la fenêtre ce qu'ils répondent.",
+     "L'hiver où il a perdu sa barque, Fañch dormait dessous, sur la plage, en plein vent. Je lui ai apporté de la soupe tous les soirs pendant deux mois, en disant que c'étaient des restes. Il n'y avait jamais de restes. Je la faisais exprès pour lui. Il le savait. On n'en a jamais parlé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Fañch, les poissons sont bavards, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Un bar m'a dit « peut-être », Gwenola."
+     ],
+     [
+      "a",
+      "Un bar ? Les bars ne savent pas ce qu'ils disent."
+     ],
+     [
+      "b",
+      "C'est ce que je me dis aussi. Pour ne pas trop espérer."
+     ]
+    ]
+   },
+   "corentin": {
+    "qui": "notre conteur",
+    "nom": "Corentin",
+    "sentiment": 0.6,
+    "avis": "Corentin raconte au coin de mon poêle depuis plus de cinquante ans. Ses histoires changent un peu chaque soir. Ses grogs, eux, je les compte, et les chiffres ne changent pas.",
+    "anecdotes": [
+     "C'est ma mère qui a mis une bolée dans la main de Corentin, le soir où son grand-père est mort, en lui disant : « Raconte, toi. » J'avais quinze ans, j'essuyais les verres. Il a raconté le naufrage avec une voix qui tremblait. À la fin, personne n'a applaudi. On a resservi tout le monde. Ici, c'est ce qu'on fait quand c'est beau.",
+     "Il croit que je ne vois pas les haricots qu'il glisse dans ma poche droite pour tricher sur ses grogs. Je les vois. Une fois, je l'ai laissé faire : je lui ai servi ses cinq grogs, et je lui ai fait payer les cinq. Il a payé en histoires, cinq histoires. Bonne affaire. Mais j'ai quand même cousu ma poche."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Corentin, ta bolée est vide et ta bouche est pleine d'histoires."
+     ],
+     [
+      "b",
+      "C'est que les deux vont ensemble, ma belle."
+     ],
+     [
+      "a",
+      "Une tisane, alors. Pour la gorge du conteur."
+     ],
+     [
+      "b",
+      "Ma doue… Le métier devient dur."
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "ma petite",
+    "nom": "Morgane",
+    "sentiment": 0.7,
+    "avis": "Pour tout le monde, c'est l'Amirale. Pour moi, c'est la gamine qui renversait la soupe de Fañch en jouant au capitaine. Elle porte Carène sur son dos. Il faut bien que quelqu'un la nourrisse.",
+    "anecdotes": [
+     "Les jours de gros souci, l'Amirale oublie de manger. Alors à midi, je lui garde la table du fond, je pose une galette complète devant elle et je reste plantée là, les bras croisés. Elle soupire : « Gwenola, je n'ai pas le temps. » Je ne bouge pas. Elle mange. Toujours.",
+     "Le jour où sa mère lui a passé la boussole des Kerhervé, Morgane est venue à la taverne toute seule, le soir, dans un uniforme trop grand. Elle a demandé un cidre et elle n'a pas parlé. Je me suis assise à côté d'elle jusqu'à la fermeture. On n'a rien dit. Le lendemain, elle était l'Amirale."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Assieds-toi, Morgane. La galette est chaude."
+     ],
+     [
+      "b",
+      "Gwenola, il y a la capitainerie, les comptes, la coque…"
+     ],
+     [
+      "a",
+      "Et il y a la galette. Elle refroidit plus vite que la coque."
+     ],
+     [
+      "b",
+      "… Bon. Cinq minutes."
+     ]
+    ]
+   },
+   "tobias": {
+    "qui": "ce pauvre",
+    "nom": "Tobias",
+    "sentiment": 0.6,
+    "avis": "Tobias bouche les trous du bateau depuis trente ans et n'a jamais le temps de manger. Alors chaque matin, je lui mets une galette dans la poche. Il dit merci comme on dit pardon.",
+    "anecdotes": [
+     "Chaque matin, Tobias passe devant la taverne à sept heures, et chaque matin je lui glisse une galette roulée dans la poche du tablier. Il fait semblant de ne rien voir. Le soir, il me rapporte le papier, plié en quatre, bien propre. Trente ans de papiers pliés. Je les garde dans une boîte. Je ne sais pas pourquoi.",
+     "Un hiver, une voie d'eau s'est ouverte sous la taverne en pleine nuit. Tobias est arrivé en chemise, avec son pot de goudron et une lanterne, et il a travaillé jusqu'au matin, couché dans l'eau froide. Au matin, il a juste dit : « Elle tiendra. » Je lui ai servi un grog. Il l'a bu sans soupirer. C'est le seul jour où je l'ai vu sans soupirer."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tobias ! Ta galette, dans ta poche, comme d'habitude."
+     ],
+     [
+      "b",
+      "Merci, Gwenola. Pardon. Enfin, merci."
+     ],
+     [
+      "a",
+      "Et mange-la, cette fois. Ne bouche pas un trou avec."
+     ],
+     [
+      "b",
+      "C'est arrivé une seule fois…"
+     ]
+    ]
+   },
+   "jos": {
+    "qui": "notre forgeron",
+    "nom": "Jos",
+    "sentiment": 0.7,
+    "avis": "Jos, c'est le seul que je laisse toucher à mon poêle. Il tape fort sur son enclume et il parle fort, mais quand il faut, il a des mains de dentellière.",
+    "anecdotes": [
+     "La porte de mon poêle avait un gond cassé, et il fallait le réparer sans laisser le feu baisser. Jos est venu un soir après la fermeture, avec des gants de cuir et des tenailles, et il a travaillé toute la nuit dans la chaleur, la barbe roussie. Au matin, le gond était neuf et le feu n'avait pas bougé. Il n'a rien voulu en échange. Juste le petit-déjeuner.",
+     "Pour mes soixante-dix ans, Jos m'a forgé une spatule à galettes avec un manche en forme de goéland. Il a dit : « C'est le goéland qui paie enfin sa note. » Une blague sur la blague du goéland, celle que tout Carène raconte. J'ai ri si fort que j'ai raté la première galette de la soirée. Je sers toujours avec."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Jos ! La spatule-goéland tient le coup, tu sais."
+     ],
+     [
+      "b",
+      "Normal. Elle est en bon acier, pas en plumes."
+     ],
+     [
+      "a",
+      "Une galette pour la peine ?"
+     ],
+     [
+      "b",
+      "Deux. Une pour moi, une pour le goéland."
+     ]
+    ]
+   }
+  }
+ },
+ "jos": {
+  "genre": "m",
+  "prenom": "Jos",
+  "histoire": [
+   {
+    "titre": "les canons de mon aïeul",
+    "t": "Mon aïeul, Hervé Le Floc'h, était maître canonnier sur le Léviathan. Quarante canons, et il les appelait tous par un prénom. Moi, j'ai grandi dans l'entrepont, à jouer à cache-cache dans leurs bouches froides. Ma mère criait : « Jos, sors de ce canon ! » C'est la phrase que j'ai le plus entendue de toute mon enfance."
+   },
+   {
+    "titre": "l'année du nain sur son radeau",
+    "t": "J'avais dix-huit ans quand un nain de Forgefer s'est échoué sur la plage, sur un radeau de tonneaux. Maître Hrolf. Il est resté un an, à grogner contre l'eau, le sel et les mouettes. Il m'a appris à écouter le fer : « Il chante quand il est prêt, petit. » Un matin, il est reparti sur son radeau. Il disait qu'il y avait trop d'eau. Il avait raison."
+   },
+   {
+    "titre": "comment j'ai ouvert le canon de bâbord",
+    "t": "Pour forger, il me fallait un foyer. J'ai choisi le plus gros canon de bâbord, Marie-Jeanne, comme l'appelait mon aïeul. Tout un hiver à l'ouvrir, à le remplir de briques, à lui coudre un soufflet, très mal. Le premier jour où il a chauffé, toute la coque a sonné comme une cloche. En dessous, Tobias a cru qu'on coulait."
+   },
+   {
+    "titre": "ma forge aujourd'hui",
+    "t": "Aujourd'hui, je fais des haches, des pelles, des sabres de corsaire pour les caravaniers qui aiment se déguiser, et des aiguilles pour Nolwenn. Tobias se plaint du bruit sous mes pieds. Le soir, je bois un cidre au feu de la plage ou au comptoir de Gwenola. Et je rêve d'un bout de métal que personne ne connaît."
+   },
+   {
+    "titre": "ce qu'il y avait encore dans le canon",
+    "t": "Un secret, {surnom}. Le jour où j'ai ouvert Marie-Jeanne, elle était encore chargée. Deux cents ans de poudre, sèche comme du sable. J'allais allumer mon premier feu dedans. C'est Tobias qui a reniflé, qui m'a arrêté la main, qui a tout noyé dans un seau, et qui n'en a jamais parlé. Alors quand il se plaint du bruit, je tape moins fort. Un peu."
+   }
+  ],
+  "reve": [
+   "Voir les gonds de la Porte aux Quatre Sceaux. Toucher ce métal que personne ne connaît, l'écouter chanter. Et en forger une lame, une seule. Ou une poêle à galettes pour Gwenola. On verra ce qu'il préfère.",
+   "Et aller un jour à Forgefer, frapper à la porte de maître Hrolf, et lui dire que j'ai tenu. Il dira que je tape trop fort. Chez lui, ça veut dire bonjour."
+  ],
+  "question": {
+   "texte": "Dis donc, toi. Ta lame, tu lui as donné un nom ?",
+   "reponses": [
+    {
+     "label": "Oui, bien sûr.",
+     "valeur": "oui",
+     "t": "Ha ! Voilà quelqu'un de bien. Une lame qui a un nom, on la soigne, on l'aiguise, on lui parle. Mon aïeul parlait à ses canons. Moi, à mon enclume.",
+     "rappel": "Et ta lame, elle porte toujours bien son nom ? Apporte-la-moi, je lui ferai une beauté."
+    },
+    {
+     "label": "Non, c'est un outil.",
+     "valeur": "outil",
+     "t": "Un outil… Bon. C'est honnête, un outil. Mais tu verras : un jour elle te sauvera la peau, et ce jour-là, tu lui trouveras un nom. Tout seul.",
+     "rappel": "Toujours pas de nom pour ta lame ? Elle attend, tu sais. Le fer est patient."
+    },
+    {
+     "label": "Pas encore, je cherche.",
+     "valeur": "cherche",
+     "t": "Prends ton temps. Le nom vient quand la lame a une histoire. Mon premier marteau s'appelle « Aïe ». Je te laisse deviner pourquoi.",
+     "rappel": "Alors, tu as trouvé un nom pour ta lame ? Pas « Aïe », hein. Celui-là est pris."
+    }
+   ]
+  },
+  "liens": {
+   "tobias": {
+    "qui": "mon voisin du dessous",
+    "nom": "Tobias",
+    "sentiment": 0.6,
+    "avis": "Tobias se plaint de tout, et surtout de moi. Il dit qu'un jour je passerai à travers le pont. C'est l'homme le plus grognon de Carène, et je lui dois plus qu'il ne le dira jamais.",
+    "anecdotes": [
+     "Tobias a cloué une casserole au plafond de son atelier, juste sous mon enclume. Chaque fois que je tape, elle sonne. Il dit que c'est pour que j'entende ce qu'il entend. Alors j'ai accroché une casserole sous mon enclume aussi, qui sonne en même temps. Maintenant, ça fait de la musique. Il ne trouve pas ça drôle.",
+     "Le mois dernier, une voie d'eau s'est ouverte juste sous ma forge. Tobias a envoyé quelqu'un chercher du bon bois, et en attendant il a bouché avec ce qu'il avait sous la main. J'avais les pieds dans l'eau, lui le nez dans le goudron, et il m'a dit : « Ne bouge pas, ou je te calfate avec. » Je n'ai pas bougé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, voisin ! Bien dormi ?"
+     ],
+     [
+      "b",
+      "Non. Quelqu'un tapait au-dessus de ma tête."
+     ],
+     [
+      "a",
+      "À six heures ? C'était tout doux, à six heures !"
+     ],
+     [
+      "b",
+      "Pas pour moi."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "mon compagnon d'expédition",
+    "nom": "Matthias",
+    "sentiment": 0.6,
+    "avis": "Matthias et moi, on doit aller voir ensemble les gonds de la grande porte. On le décide chaque année, à la taverne, au troisième cidre. On n'y est jamais allés.",
+    "anecdotes": [
+     "Chaque printemps, Matthias et moi, on prépare l'expédition au Cœur-de-Pierre. Il déroule sa carte sur une table de la taverne, je pose ma lime et ma loupe dessus, on trinque. Le lendemain, il a mal à la tête, et moi j'ai du fer sur le feu. On remet à l'année d'après. Ça fait neuf ans.",
+     "Il m'a rapporté de sa grande traversée un caillou noir des hautes terres, en me disant que c'était du minerai. C'était du charbon. Je n'ai rien dit : je l'ai mis dans la forge, et à son feu, je lui ai forgé un compas pour ses cartes. Il ne sait toujours pas que son minerai était du charbon."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias ! Cette année, on y va, à la grande porte ?"
+     ],
+     [
+      "b",
+      "Cette année, c'est sûr. Au troisième cidre, on fixe la date."
+     ],
+     [
+      "a",
+      "Ha ! Comme l'année dernière."
+     ],
+     [
+      "b",
+      "L'année dernière, c'était au deuxième. On progresse."
+     ]
+    ]
+   },
+   "nolwenn": {
+    "qui": "la voilière",
+    "nom": "Nolwenn",
+    "sentiment": 0.7,
+    "avis": "Nolwenn, c'est la seule qui entre dans ma forge sans sursauter quand je frappe. Je lui fais ses aiguilles. Elle a la patience que je n'ai pas, et la tête dure que j'ai.",
+    "anecdotes": [
+     "Mon premier soufflet, je l'avais cousu moi-même : il sifflait comme un phoque enrhumé. Celui d'aujourd'hui, c'est Nolwenn qui l'a fait dans une vieille voile, à quinze ans, son premier travail toute seule. Les points sont un peu de travers. Elle m'a proposé cent fois de le refaire. Je refuse. Il souffle très bien, de travers.",
+     "Elle m'a demandé une aiguille spéciale : longue comme ma main, courbe, solide, pour une toile épaisse. J'ai demandé quelle toile. Elle a dit : « Une toile. » J'ai forgé l'aiguille sans poser d'autre question. Je ne suis pas curieux. Enfin, si. Mais je sais me taire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nolwenn ! Ton aiguille courbe, elle tient ?"
+     ],
+     [
+      "b",
+      "Elle tient. Pas un mot, Jos."
+     ],
+     [
+      "a",
+      "Sur quoi ? Je suis sourd, moi. C'est l'enclume."
+     ],
+     [
+      "b",
+      "Tu es le sourd le plus utile de Carène."
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "notre marchande",
+    "nom": "Salomé",
+    "sentiment": 0.3,
+    "avis": "Salomé revend mes sabres aux caravaniers deux fois le prix que je lui fais. Je le sais, elle sait que je le sais. Mais elle m'apporte du minerai moins cher que personne. On est quittes, je crois.",
+    "anecdotes": [
+     "Un caravanier m'a montré un jour un de mes sabres de corsaire, acheté chez Salomé. Elle lui avait raconté qu'il avait appartenu à un pirate célèbre, « le Capitaine Floc'h ». Il l'avait payé une fortune. Je suis allé la voir, furieux. Elle m'a donné la moitié de la fortune. Je suis reparti moins furieux.",
+     "Quand le fer a manqué, l'hiver dernier, Salomé a fait venir trois sacs de minerai des hautes terres, par je ne sais quel chemin. Elle me les a vendus au prix d'avant. J'ai demandé pourquoi. Elle a dit : « Un forgeron qui ne forge pas, il parle. Et toi, tu parles fort. » Je l'ai trouvée presque gentille."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé ! Combien tu l'as vendu, mon dernier sabre ?"
+     ],
+     [
+      "b",
+      "Un prix honnête, Jos ! Pour un sabre historique."
+     ],
+     [
+      "a",
+      "Historique ? Je l'ai fini mardi !"
+     ],
+     [
+      "b",
+      "Et mardi, c'est déjà de l'histoire."
+     ]
+    ]
+   },
+   "gwenola": {
+    "qui": "la patronne",
+    "nom": "Gwenola",
+    "sentiment": 0.8,
+    "avis": "Mère Gwenola, c'est la seule personne de Carène dont j'ai peur. Elle m'a laissé toucher à son poêle, une fois. C'est le plus grand honneur de ma vie de forgeron.",
+    "anecdotes": [
+     "Gwenola m'a fait venir une nuit pour réparer le gond de son poêle sans laisser le feu baisser. « Pas d'un degré, Jos. » J'ai travaillé jusqu'à l'aube, la barbe qui grésillait. Au matin, elle a posé la main sur la porte, elle a dit « bien », et elle m'a servi le plus gros petit-déjeuner de ma vie : quatre galettes, deux bolées et un sourire.",
+     "Pour ses soixante-dix ans, je lui ai forgé une spatule à galettes avec un manche en goéland, à cause de la blague du goéland qui ne paie pas. Elle a tellement ri qu'elle a raté sa galette. Depuis, chaque fois que je viens, elle me sert avec. Elle dit que le goéland me doit bien ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, la patronne ! Le poêle tient le coup ?"
+     ],
+     [
+      "b",
+      "Il tient depuis deux cents ans, Jos. Et ton gond aussi."
+     ],
+     [
+      "a",
+      "Alors, une galette pour le forgeron du gond ?"
+     ],
+     [
+      "b",
+      "Assieds-toi. Et parle moins fort, il y a des gens qui dînent."
+     ]
+    ]
+   }
+  }
+ },
+ "lucie": {
+  "genre": "f",
+  "prenom": "Lucie",
+  "histoire": [
+   {
+    "titre": "trois générations de plongeuses",
+    "t": "Ma grand-mère Enora plongeait, ma mère Tifenn aussi. Moi, j'ai appris à nager avant de marcher, accrochée au cou de ma mère dans la baie. Chez nous, on dit qu'on a des branchies derrière les oreilles. J'ai vérifié dans un miroir, petite. Rien. Mais je n'ai pas regardé partout."
+   },
+   {
+    "titre": "ce que la mer veut bien donner",
+    "t": "À douze ans, je remontais ma première perle. À quinze, mon premier morceau du Léviathan : une poulie de bronze, toute verte, avec une lettre gravée, un K. Pour Kerhervé, peut-être. Le corail et les perles, je les vends à Salomé. Les morceaux du bateau, je les garde. Ils sont à Carène, pas à moi."
+   },
+   {
+    "titre": "les signes sous la quille",
+    "t": "J'avais dix-neuf ans. Je cherchais une ancre perdue sous la coque, dans le sable. J'ai creusé avec les mains, et j'ai touché de la pierre. Taillée. Couverte de signes, des cercles et des lignes. Trop vieux pour être des naufragés. Le Léviathan ne s'est pas échoué sur des rochers. Il s'est échoué sur quelque chose qu'on avait construit."
+   },
+   {
+    "titre": "mes journées au bout du ponton",
+    "t": "Le matin et l'après-midi, je plonge au bout du ponton. À midi, je mange sur le ponton du bassin, les pieds dans l'eau. Ewen compte mes secondes et se trompe. Matthias veut que je dessine les pierres sous l'eau. Avec un crayon. Le soir, au feu de la plage, je me tais. C'est mon meilleur moment."
+   },
+   {
+    "titre": "la chanson sous la coque",
+    "t": "Corentin dit que la coque chante, les nuits calmes. Il a raison. Mais je ne l'ai jamais dit à personne, {surnom} : sous l'eau, je l'entends mieux que lui. Et ça ne vient pas du bois. Ça vient d'en dessous, des pierres. Ma grand-mère l'entendait aussi. Un jour, elle est descendue voir. Elle n'a plus jamais plongé. Elle n'a jamais dit pourquoi."
+   }
+  ],
+  "reve": [
+   "Descendre les marches de pierre jusqu'au bout. Il fait noir dès dix brasses, je sais. Mais une marche, ça mène toujours quelque part. J'aimerais savoir où.",
+   "Et apprendre à Ewen à plonger pour de vrai. Sans compter. Sous l'eau, on ne compte pas. On écoute."
+  ],
+  "question": {
+   "texte": "Quand tu mets la tête sous l'eau et que tu retiens ton souffle… tu entends quoi, toi ?",
+   "reponses": [
+    {
+     "label": "Mon cœur qui bat.",
+     "valeur": "coeur",
+     "t": "Oui. C'est le premier bruit. Au bout d'un moment, il ralentit. Et alors on entend le reste. Il faut rester assez longtemps.",
+     "rappel": "Toi qui entends ton cœur sous l'eau : reste un peu plus longtemps, la prochaine fois. Après le cœur, il y a le reste."
+    },
+    {
+     "label": "Rien du tout.",
+     "valeur": "rien",
+     "t": "Rien. C'est déjà beaucoup. En surface, il n'y a jamais rien. Il y a toujours quelqu'un qui parle.",
+     "rappel": "Toi qui n'entends rien sous l'eau, tu as de la chance. Le silence, c'est rare. Garde-le."
+    },
+    {
+     "label": "Comme une chanson, très loin.",
+     "valeur": "chanson",
+     "t": "… Ah. Toi aussi. Ne le dis pas trop fort. Les gens rient, ou alors ils ont peur. Les deux sont pénibles.",
+     "rappel": "Toi aussi, tu l'as entendue, la chanson. On est deux. Ça me fait du bien de le savoir."
+    }
+   ]
+  },
+  "liens": {
+   "matthias": {
+    "qui": "ce bavard de",
+    "nom": "Matthias",
+    "sentiment": 0.7,
+    "avis": "Matthias parle trop. Il voudrait que je dessine sous l'eau, avec un crayon. Mais c'est le seul qui ne m'a pas prise pour une folle avec mes pierres. Ça compte.",
+    "anecdotes": [
+     "Le jour où j'ai parlé des signes sous la quille, Matthias a couru jusqu'au ponton avec un carnet, sans chaussures, et m'a posé quarante questions. J'ai dit : « Viens voir. » Il nage mal. Il est venu quand même, une corde autour de la taille. Il a vu. Il est remonté en pleurant. Il dit que c'était l'eau salée.",
+     "Il m'a donné un crayon enduit de cire et une planchette, pour dessiner sous l'eau. J'ai essayé. Mon dessin ressemblait à un poulpe malade. Il l'a encadré. Il est accroché dans la capitainerie, à côté de la grande carte. Quand on lui demande ce que c'est, il répond : « Une découverte. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias. Tu parles encore."
+     ],
+     [
+      "b",
+      "C'est pour tes pierres ! J'ai une nouvelle théorie, écoute…"
+     ],
+     [
+      "a",
+      "Viens plonger. Tu me la raconteras en bulles."
+     ],
+     [
+      "b",
+      "Euh… Je prends la corde."
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "le petit",
+    "nom": "Ewen",
+    "sentiment": 0.7,
+    "avis": "Ewen compte combien de temps je reste sous l'eau, et il se trompe toujours. Il parle plus qu'une mouette. Mais il m'attend toujours au bord. Ça, c'est rare.",
+    "anecdotes": [
+     "Un jour, je suis restée longtemps sous la coque, à regarder les signes. En remontant, j'ai trouvé Ewen tout blanc au bout du ponton, avec une corde et une bouée : il s'était arrêté de compter à trois cents, et il allait sauter. Il ne sait pas plonger. Depuis, je lui fais un signe de la main avant de descendre longtemps.",
+     "Il m'a demandé de lui rapporter quelque chose « de vraiment du fond ». Je lui ai remonté un vieux bouton de cuivre du Léviathan, avec une ancre dessus. Il l'a cousu sur son chapeau, de travers, avec du fil de pêche. Il dit que c'est sa décoration de capitaine. Il la montre à tout le monde."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen. Je descends longtemps. Tu comptes ?"
+     ],
+     [
+      "b",
+      "Un, deux, trois… Vas-y, je suis prêt !"
+     ],
+     [
+      "a",
+      "Et si tu te perds ?"
+     ],
+     [
+      "b",
+      "Je recommence à cent ! Comme d'habitude !"
+     ]
+    ]
+   },
+   "fanch": {
+    "qui": "mon vieux",
+    "nom": "Fañch",
+    "sentiment": 0.8,
+    "avis": "Fañch connaissait ma mère. Il m'a appris à lire les courants avant que je sache lire tout court. Il fait tout tomber à l'eau, je repêche. C'est notre arrangement.",
+    "anecdotes": [
+     "Fañch a laissé tomber le couteau de son grand-père par dix brasses de fond. J'ai plongé trois fois. Au fond, un tourteau gros comme une assiette s'était installé dessus et ne voulait pas le rendre. On a discuté. J'ai gagné. Fañch a pleuré en le reprenant, et il a dit que c'était le sel. À Carène, tout le monde dit ça.",
+     "Une nuit, on a fait le guet derrière ses filets, pour voir qui pose des coquillages sur sa barque. On s'est endormis. Au réveil, il y avait des coquillages partout, un sur ma tête et un sur le nez de Fañch. On ne sait toujours pas qui c'est. Depuis, de temps en temps, je laisse un coquillage en retour."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fañch. Tu as encore fait tomber quelque chose ?"
+     ],
+     [
+      "b",
+      "Ma pipe. Côté ponton. Elle a dû rouler."
+     ],
+     [
+      "a",
+      "Les pipes ne roulent pas, Fañch."
+     ],
+     [
+      "b",
+      "La mienne, si. Elle aime la mer."
+     ]
+    ]
+   },
+   "tobias": {
+    "qui": "le calfat",
+    "nom": "Tobias",
+    "sentiment": 0.6,
+    "avis": "Tobias dit que je suis ses yeux sous la coque. Je lui dis où ça suinte, où le bois est mou. Il m'écoute sans soupirer, c'est rare chez lui. Et sa fille est mon amie.",
+    "anecdotes": [
+     "Chaque mois, je fais le tour de la coque par en dessous, et je dessine pour Tobias les endroits où le bois est mou. Il range les dessins dans son carnet noir, avec les numéros des trous. Il en a des centaines. Les miens sont les seuls avec des poissons dans les coins. Il n'a jamais rien dit. Il les garde quand même.",
+     "Quand je lui ai parlé des signes gravés sous la quille, Tobias a posé son marteau. Il a dit : « Mon grand-père disait que le bateau ne s'était pas échoué. Qu'il s'était posé. » Puis il a repris son marteau, et il n'en a plus jamais parlé. Je n'ai jamais osé lui redemander."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tobias. Tribord, sous la troisième membrure, ça suinte."
+     ],
+     [
+      "b",
+      "Encore ? Je l'ai bouchée la semaine dernière."
+     ],
+     [
+      "a",
+      "Elle s'est débouchée. Elle t'aime bien."
+     ],
+     [
+      "b",
+      "Pff… Tout le monde m'aime bien, ici. C'est épuisant."
+     ]
+    ]
+   },
+   "anouk": {
+    "qui": "mon amie",
+    "nom": "Anouk",
+    "sentiment": 0.7,
+    "avis": "Anouk ne pose pas de questions. Elle tend une fiole d'huile, elle reprend la fiole vide. On se comprend très bien sans parler. C'est la meilleure façon.",
+    "anecdotes": [
+     "Je rapporte à Anouk les algues du fond, celles que la marée ne découvre jamais. Une fois, je lui ai remonté une algue rouge qui ne pousse que sur les pierres taillées. Elle l'a sentie longtemps et elle a dit : « Elle sent la pluie. » Elle cherche encore à quoi elle sert. Moi, je crois qu'elle ne sert à rien. Comme les belles choses.",
+     "Après les plongées profondes, j'ai mal aux oreilles. Je ne le dis à personne. Anouk l'a su quand même, je ne sais pas comment. Depuis, il y a toujours une fiole d'huile tiède au coin de son poêle, pour moi. Je la prends, je laisse un coquillage. Elle doit en avoir un plein tiroir, maintenant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anouk. Des laminaires, du fond."
+     ],
+     [
+      "b",
+      "Merci. Et tes oreilles ?"
+     ],
+     [
+      "a",
+      "Ça va."
+     ],
+     [
+      "b",
+      "L'huile est au coin du poêle. Comme d'habitude."
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "la marchande",
+    "nom": "Salomé",
+    "sentiment": 0.2,
+    "avis": "Salomé m'achète mes perles. Elle me paie le tiers de ce qu'elles valent, et elle me sourit comme si elle me faisait un cadeau. Je n'aime pas marchander. Elle le sait.",
+    "anecdotes": [
+     "J'ai remonté une perle grosse comme un pois, presque rose. Salomé l'a examinée à la loupe pendant dix minutes, en soupirant, en disant qu'elle avait une petite tache. J'ai pris l'argent. Le soir même, elle la vendait à un caravanier comme « la perle de la Dame de Proue ». Avec la tache. Au triple.",
+     "Pourtant, le jour où j'ai cassé mon masque de plongée, Salomé m'en a donné un neuf, le plus beau de son étal. Elle a dit : « Tu me paieras en perles. » Je ne l'ai jamais payée. Elle ne m'a jamais rien redemandé. Je ne sais pas quoi penser d'elle. C'est sûrement ce qu'elle veut."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé. Une perle. Sans tache."
+     ],
+     [
+      "b",
+      "Sans tache ? Ma doue, laisse-moi chercher…"
+     ],
+     [
+      "a",
+      "Tu n'en trouveras pas."
+     ],
+     [
+      "b",
+      "J'en trouve toujours. C'est mon métier."
+     ]
+    ]
+   },
+   "nolwenn": {
+    "qui": "mon amie d'enfance",
+    "nom": "Nolwenn",
+    "sentiment": 0.8,
+    "avis": "Nolwenn et moi, on a grandi ensemble, elle sur la toile, moi dans l'eau. Elle regarde toujours l'horizon. Moi, je regarde en dessous. À nous deux, on voit tout.",
+    "anecdotes": [
+     "Depuis ses dix ans, je lui offre une perle à chaque anniversaire. Elle les coud sur un ruban bleu, une par une. Il y en a quatorze. Elle le porte les jours de fête. Ewen a demandé si c'était un collier de capitaine. Elle a répondu : « Non, c'est un collier d'années. » Il n'a pas compris. Moi si.",
+     "Nolwenn m'a cousu mon sac de plongée dans un bout de vieille voile, avec une couture qui ne laisse rien sortir, même pas un crabe en colère. Ça fait dix ans. Le sac est toujours là. Le crabe aussi, je crois, quelque part au fond. Je ne regarde plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nolwenn. Une perle, pour le ruban."
+     ],
+     [
+      "b",
+      "Ce n'est pas mon anniversaire, Lucie."
+     ],
+     [
+      "a",
+      "Je sais. Celle-là, c'est pour rien."
+     ],
+     [
+      "b",
+      "Pour rien… Ce sont les plus belles."
+     ]
+    ]
+   }
+  }
+ },
+ "matthias": {
+  "genre": "m",
+  "prenom": "Matthias",
+  "histoire": [
+   {
+    "titre": "l'ancêtre qui s'est trompé de route",
+    "t": "Mon ancêtre, Alan Le Goff, était le pilote du Léviathan. C'est lui qui a tracé la route, cette nuit-là. Jusqu'aux rochers. Depuis, chez les Le Goff, on dessine des cartes pour se faire pardonner. Mon père dessinait la baie, mon grand-père les étoiles. Moi, petit, je dessinais les membrures du bateau à la craie, sur le plancher de la capitainerie."
+   },
+   {
+    "titre": "douze carnets et des ampoules",
+    "t": "À vingt-sept ans, j'ai pris un sac, douze carnets neufs et mes plus mauvaises chaussures : les bonnes, je les gardais pour le retour. Erreur. Les hautes terres, où les bergers m'ont donné du fromage et pas un mot ; le désert, où les dunes bougent la nuit ; les brumes. Deux mois. Je suis revenu pieds nus, avec la première vraie carte de l'île."
+   },
+   {
+    "titre": "les quatre jours dans les brumes",
+    "t": "Dans la forêt des brumes, je me suis perdu quatre jours. La boussole tournait toute seule, la mousse effaçait mes pas. Le cinquième matin, j'ai trouvé une ligne de coquillages posés sur la mousse, un tous les dix pas. Je l'ai suivie jusqu'à la lisière. Personne. Juste des coquillages, comme ceux de la barque de Fañch. Ils sont dessinés dans le carnet quatre."
+   },
+   {
+    "titre": "ma carte à moitié blanche",
+    "t": "Aujourd'hui, je travaille à la capitainerie, sous l'œil de l'Amirale, sur une carte de deux mètres. Les côtes sont finies, ou presque : elles bougent. Au milieu, il reste un grand blanc, le Cœur-de-Pierre. Lucie m'apporte ses pierres, Corentin ses histoires, Grégoire ses lumières. Je note tout. Même ce qui ne tient pas debout. Surtout ça."
+   },
+   {
+    "titre": "ce qui est écrit dans le carnet sept",
+    "t": "Le carnet sept dit : « Pied du Cœur-de-Pierre. Brouillard. Rien vu. » C'est faux, {surnom}. Il faisait clair. J'ai vu la porte, de loin, au couchant. Et j'ai entendu la montagne respirer, lentement, profondément. J'ai couru deux jours sans m'arrêter, jusqu'à Carène. Je n'y suis jamais retourné. Tout le monde croit que je n'ai jamais eu le temps."
+   }
+  ],
+  "reve": [
+   "Une carte sans blanc. Toute l'île, de la mer aux brumes, et le Cœur-de-Pierre au milieu, dessiné de l'intérieur. Je la signerai en bas à droite, avec le nom de celui qui m'aura aidé. En plus gros que le mien, peut-être.",
+   "Et apprendre à nager correctement. Pour les pierres de Lucie. Pour la science, évidemment. Surtout pour la science."
+  ],
+  "question": {
+   "texte": "Toi qui voyages : quand tu arrives quelque part, tu regardes d'abord la carte, ou tu te perds exprès ?",
+   "reponses": [
+    {
+     "label": "Je regarde la carte.",
+     "valeur": "carte",
+     "t": "Ha ! Une personne raisonnable ! J'en vois si peu. Si un jour une de mes cartes t'envoie dans un marais, reviens me le dire. Ça arrive. Rarement. Deux fois.",
+     "rappel": "Toi qui lis les cartes avant de partir : j'ai corrigé le marais. Enfin, je crois. Dis-moi si tu tombes dedans."
+    },
+    {
+     "label": "Je me perds exprès.",
+     "valeur": "perdre",
+     "t": "Je le savais ! C'est comme ça qu'on trouve ce qui n'est sur aucune carte. Et après, on me le raconte, et moi je le dessine. Tu es mon meilleur informateur.",
+     "rappel": "Toi qui te perds exprès : tu t'es perdu où, depuis la dernière fois ? Raconte, j'ai mon crayon."
+    },
+    {
+     "label": "Je demande mon chemin.",
+     "valeur": "demander",
+     "t": "Malin. Les gens en savent plus que les cartes. Mais méfie-toi : à Carène, si tu demandes ton chemin à Corentin, tu arrives dans une histoire, pas à destination.",
+     "rappel": "Toi qui demandes ton chemin : demande-moi, alors. Il me reste des coins de carte à te montrer."
+    }
+   ]
+  },
+  "liens": {
+   "lucie": {
+    "qui": "notre plongeuse",
+    "nom": "Lucie",
+    "sentiment": 0.9,
+    "avis": "Lucie voit sous l'eau ce que personne ne voit : des pierres taillées ! Elle parle peu, et quand elle parle, j'oublie ce que j'allais dire. Chez moi, c'est très rare.",
+    "anecdotes": [
+     "Quand Lucie m'a montré les signes sous la quille, j'ai plongé avec une corde autour de la taille, moi qui nage comme une ancre. En bas, elle a pris ma main et l'a posée sur la pierre. Des cercles, des lignes, tout froids. Je suis remonté en pleurant. J'ai dit que c'était le sel. Elle a fait semblant de me croire. Je crois.",
+     "J'ai fabriqué pour Lucie un crayon de cire et une planchette, pour dessiner sous l'eau. Son premier dessin ressemblait à un poulpe malade. Elle me l'a donné en haussant les épaules. Je l'ai encadré, à côté de la grande carte. Ce n'est peut-être pas un dessin de pierre, mais c'est le premier dessin jamais fait sous l'eau. C'est historique."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie ! J'ai une théorie sur tes cercles, ils pourraient être…"
+     ],
+     [
+      "b",
+      "Matthias. Respire."
+     ],
+     [
+      "a",
+      "Je respire ! Je respire en parlant, c'est un talent !"
+     ],
+     [
+      "b",
+      "Sous l'eau, tu ne pourrais pas. C'est là que je te préfère."
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "l'Amirale",
+    "nom": "Morgane",
+    "sentiment": 0.6,
+    "avis": "L'Amirale me laisse travailler sur la grande table de sa capitainerie. Elle veut des cartes de la côte, moi je veux le centre. On se dispute poliment. Elle a toujours le dernier mot. C'est son métier.",
+    "anecdotes": [
+     "Chaque fois que je parle d'ouvrir la Porte aux Quatre Sceaux, l'Amirale pose sa boussole sur ma carte, pile sur le Cœur-de-Pierre, et elle dit : « Les portes fermées le sont souvent pour une raison, Le Goff. » Puis elle s'en va. Je dessine autour de la boussole. Elle la laisse là très longtemps.",
+     "Un soir, j'ai trouvé l'Amirale seule à la capitainerie, penchée sur ma carte, une bougie à la main. Elle suivait du doigt le chemin de ma traversée. Elle ne m'a pas entendu entrer. Elle a dit tout bas : « Il est allé partout, cet idiot. » Je suis ressorti sans bruit. Je crois que c'était un compliment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Amirale ! Vous avez vu ? J'ai redessiné la côte nord !"
+     ],
+     [
+      "b",
+      "Elle a encore bougé, Le Goff ?"
+     ],
+     [
+      "a",
+      "De trois pouces ! Je vous jure !"
+     ],
+     [
+      "b",
+      "Alors la carte est juste. Tant mieux. Ne touchez pas au centre."
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "cette sacrée",
+    "nom": "Salomé",
+    "sentiment": -0.2,
+    "avis": "Salomé m'a proposé de me vendre une clé pour la Porte aux Quatre Sceaux. Une clé ! Pour une porte à sceaux ! Elle m'a déjà vendu une carte ancienne, une fois. Je ne veux pas en parler.",
+    "anecdotes": [
+     "Il y a six ans, Salomé m'a vendu « une carte ancienne du Cœur-de-Pierre, rapportée du désert ». Je l'ai payée trois mois de travail et je l'ai étudiée une semaine entière. C'était une nappe brodée de Tazira. Le Cœur-de-Pierre, c'était une tache de thé. Elle jure qu'elle ne savait pas. Elle sait toujours tout.",
+     "Avant ma traversée, Salomé m'a vendu un sac « increvable ». Il a crevé le deuxième jour, dans les hautes terres. J'ai tout porté dans ma chemise pendant deux mois. Au retour, elle m'a remboursé jusqu'à la dernière pièce, et elle m'a offert un sac neuf. Gratuit. Je n'ai jamais compris pourquoi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé. Non. Je n'achète pas de clé."
+     ],
+     [
+      "b",
+      "Pas une clé ! Une serrure ! Pour aller avec ta porte."
+     ],
+     [
+      "a",
+      "Ma porte a des sceaux, pas de serrure !"
+     ],
+     [
+      "b",
+      "Des seaux ? J'en ai plein ! Des tout neufs !"
+     ]
+    ]
+   },
+   "gregoire": {
+    "qui": "notre guetteur",
+    "nom": "Grégoire",
+    "sentiment": 0.7,
+    "avis": "Grégoire a les meilleurs yeux de Carène et la plus mauvaise humeur. Il m'en veut pour un minuscule point d'interrogation. Mais quand il dit qu'il a vu quelque chose, je le note. Presque à l'encre.",
+    "anecdotes": [
+     "Pour la lumière bleue, je suis monté à la proue avec un compas et un rapporteur, et j'ai calculé l'angle avec Grégoire tout un après-midi. Résultat : pile devant la Porte aux Quatre Sceaux. J'ai mis un point bleu sur la carte, avec « selon Grégoire (?) ». Il ne m'a plus parlé pendant trois semaines. Le point d'interrogation était tout petit.",
+     "Grégoire m'a prêté son carnet de guetteur : quarante ans de notes, les vents, les baleines, les orages, les bateaux. J'y ai trouvé une ligne d'il y a vingt ans : « Lumière sur le Cœur-de-Pierre, une seconde. Sûrement rien. » Sa première lumière. Il l'avait oubliée. Je ne le lui ai pas encore dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grégoire ! Rien de nouveau sur le Cœur-de-Pierre ?"
+     ],
+     [
+      "b",
+      "S'il y avait du nouveau, tu y mettrais un point d'interrogation."
+     ],
+     [
+      "a",
+      "Un tout petit ! Au crayon !"
+     ],
+     [
+      "b",
+      "Hm. Au crayon, c'est déjà mieux."
+     ]
+    ]
+   },
+   "jos": {
+    "qui": "mon complice",
+    "nom": "Jos",
+    "sentiment": 0.7,
+    "avis": "Jos rêve de toucher les gonds de la grande porte, et moi d'entrer derrière. On prépare l'expédition depuis neuf ans. On est très bien préparés. On n'est juste pas encore partis.",
+    "anecdotes": [
+     "Chaque printemps, Jos et moi, on étale ma carte à la taverne et on prépare l'expédition : cordes, lanternes, lime, galettes. On trinque au départ. Le lendemain, j'ai toujours une bonne raison de remettre : le vent, la pluie, une côte à corriger. Jos ne dit rien. Il hoche la tête. C'est un vrai ami.",
+     "Jos m'a forgé un compas pour mes cartes, le plus juste que j'aie jamais eu. Il dit qu'il l'a forgé au feu d'un caillou que je lui avais rapporté des hautes terres. Il sourit chaque fois qu'il le raconte, je ne sais pas pourquoi. La fierté, sûrement."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Jos ! J'ai tracé l'itinéraire jusqu'aux gonds."
+     ],
+     [
+      "b",
+      "Ha ! Alors, on part quand ?"
+     ],
+     [
+      "a",
+      "Dès que… dès que le vent tourne."
+     ],
+     [
+      "b",
+      "Il tourne tous les jours, le vent, Matthias."
+     ]
+    ]
+   },
+   "corentin": {
+    "qui": "le vieux conteur",
+    "nom": "Corentin",
+    "sentiment": 0.7,
+    "avis": "Les histoires de Corentin changent chaque soir : un cauchemar de cartographe. Mais au fond de chacune, il y a un petit morceau de vrai. Je le cherche avec un crayon.",
+    "anecdotes": [
+     "J'ai un carnet rien que pour les histoires de Corentin, le treizième. Je note, je compare. En vingt soirs, sa baleine a eu entre deux et sept arbres sur le dos. Mais elle était toujours au nord-ouest de la pointe. Toujours. Alors j'ai dessiné une petite baleine sur la carte, au nord-ouest. Avec un point d'interrogation, bien sûr.",
+     "En rentrant de ma traversée, j'ai couru voir Corentin avant même ma mère. Je lui ai dit : « Il y a une porte au pied du Cœur-de-Pierre. Ton histoire est vraie. » Il a eu l'air vexé : « Bien sûr qu'elle est vraie, petit. Tu croyais quoi ? » Puis il a bu son grog d'un trait. Je crois qu'il était ému."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Corentin, hier, ta baleine avait cinq arbres."
+     ],
+     [
+      "b",
+      "Et aujourd'hui, six. Tu notes ?"
+     ],
+     [
+      "a",
+      "Je note. Mais elle est toujours au nord-ouest ?"
+     ],
+     [
+      "b",
+      "Toujours, petit. Les baleines ont leurs habitudes."
+     ]
+    ]
+   },
+   "pierrick": {
+    "qui": "mon ami l'aubergiste",
+    "nom": "Pierrick",
+    "sentiment": 0.6,
+    "avis": "Pierrick rêve d'une auberge sur la terre ferme, avec des lits. Je lui ai dessiné les meilleurs terrains de l'île. Il garde ma carte dans son tablier, et il la regarde quand sa tante a le dos tourné.",
+    "anecdotes": [
+     "Pierrick m'a demandé un jour, très sérieusement, quel était l'endroit le plus immobile de l'île. Pas de vent, pas de pente, pas de mer. J'ai cherché trois semaines. Je lui ai dessiné une petite prairie au-dessus de la baie, entre deux chênes, derrière la pointe nord. Il a demandé : « Elle bouge, la prairie ? » J'ai dit non. Il a souri comme un enfant.",
+     "Il m'a demandé les plans de son auberge, avec de vrais lits et une enseigne. J'ai dessiné douze chambres. Il a ajouté au crayon, dans un coin : « Chambre de ma tante, avec un poêle. » Il croit que je ne l'ai pas vu. Je l'ai repassée à l'encre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pierrick ! Ta prairie n'a pas bougé, je suis passé la voir."
+     ],
+     [
+      "b",
+      "Pas d'un pouce ? Même avec le vent ?"
+     ],
+     [
+      "a",
+      "Pas d'un pouce. Elle t'attend."
+     ],
+     [
+      "b",
+      "Chut ! Ma tante est juste derrière !"
+     ]
+    ]
+   }
+  }
+ },
+ "morgane": {
+  "genre": "f",
+  "prenom": "Morgane",
+  "histoire": [
+   {
+    "titre": "une enfance sous la table des cartes",
+    "t": "Je suis née dans la capitainerie, et j'ai dormi mes premières années sous la table des cartes, pendant que ma mère gouvernait au-dessus de ma tête. Le premier mot que j'ai su lire, c'est le nom gravé sur la barre : Katell Kerhervé, la capitaine du naufrage. Toutes les filles de la famille ont appris à lire avec ce nom."
+   },
+   {
+    "titre": "la boussole de Katell",
+    "t": "J'avais vingt-quatre ans quand ma mère m'a donné la boussole de cuivre de Katell en me disant : « La barre ne tourne plus, mais on la tient. » Le lendemain, j'étais amirale d'une ville de deux cents âmes, d'un bateau qui ne flotte pas et de quarante canons qui ne tirent pas. J'ai appris vite. Je n'avais pas le choix."
+   },
+   {
+    "titre": "le matin de la Murène Noire",
+    "t": "Il y a douze ans, la Murène Noire est entrée dans la baie, vingt-deux canons dehors. Croc-de-Sel voulait « visiter nos cales ». J'ai fait fumer tous les sabords du Léviathan au goudron, et je suis allée le voir en barque. Je lui ai dit que nos quarante canons étaient chargés. Il est reparti. Il ne sait toujours pas qu'ils sont froids depuis deux siècles."
+   },
+   {
+    "titre": "gouverner une coque qui prend l'eau",
+    "t": "Aujourd'hui, je gouverne des fuites, des disputes de voisins et le prix du cidre. Tobias me jure que la coque tiendra, Grégoire guette, Matthias rêve d'ouvrir ce qu'il vaudrait mieux laisser fermé, et Ewen sonne la cloche quand il veut. Le soir, sur la dunette, je regarde le Cœur-de-Pierre rougir. Il me rappelle que je ne commande pas tout."
+   },
+   {
+    "titre": "ce que l'Amirale ne sait pas faire",
+    "t": "Écoute, {surnom}, et que ça reste entre nous. Je ne sais pas nager. Une Kerhervé, amirale de Carène, qui coule comme une enclume. Le matin où je suis allée parlementer avec Croc-de-Sel, j'avais sous mon manteau une ceinture de bouchons de cidre, cousue la nuit même. Mes mains tremblaient. Il a cru que c'était la colère."
+   }
+  ],
+  "reve": [
+   "Commander un navire qui flotte. Un seul, une seule fois. Sentir la barre tourner sous mes mains, comme Katell. Ne le répète pas à Corentin.",
+   "Et voir Carène tenir debout sans moi, un jour. C'est le vrai travail d'une amirale : qu'on n'ait plus besoin d'elle. Je n'y suis pas encore."
+  ],
+  "question": {
+   "texte": "Une question, et réponds franchement : tu suis les ordres, toi ?",
+   "reponses": [
+    {
+     "label": "Toujours.",
+     "valeur": "toujours",
+     "t": "Bien. Un peu trop bien, peut-être. Un bon matelot obéit. Un très bon matelot sait reconnaître un mauvais ordre. Réfléchis-y.",
+     "rappel": "Toi qui suis toujours les ordres, en voici un : repose-toi. … Tu vois, ce n'était pas difficile."
+    },
+    {
+     "label": "Jamais.",
+     "valeur": "jamais",
+     "t": "Hm. Comme Ewen. Ça fait de bons capitaines et de mauvais mousses. À Carène, tant que tu respectes le bord, je ne te demande rien d'autre.",
+     "rappel": "Toi qui ne suis jamais les ordres, je ne t'en donnerai pas. Je te demanderai. Ce n'est pas pareil."
+    },
+    {
+     "label": "Ça dépend de qui les donne.",
+     "valeur": "selon_qui",
+     "t": "La meilleure réponse. Un ordre vaut ce que vaut celui qui le donne. J'essaie de valoir quelque chose. Je n'y arrive pas tous les jours.",
+     "rappel": "Tu m'as dit que ça dépendait de qui donne l'ordre. J'espère être de ceux qu'on suit."
+    }
+   ]
+  },
+  "liens": {
+   "croc": {
+    "qui": "ce forban de",
+    "nom": "Croc-de-Sel",
+    "sentiment": -0.3,
+    "avis": "Croc-de-Sel se dit « pirate moderne ». Il a une dent en argent et une bouche en fer-blanc. Un adversaire honnête, à sa manière : il ment toujours de la même façon.",
+    "anecdotes": [
+     "Le matin où la Murène Noire est entrée dans la baie, je suis allée à sa rencontre dans la barque de Fañch, debout à l'arrière. Croc-de-Sel m'a crié de son pont : « Amirale de quoi ? » J'ai montré les sabords qui fumaient : « De ça. » Il a regardé longtemps. Puis il a fait virer. En partant, il m'a saluée du tricorne. Je n'ai pas répondu.",
+     "Trois ans plus tard, on s'est croisés dans le brouillard au large de la pointe sud, lui dans sa chaloupe, moi dans une barque. On s'est disputé la priorité pendant une heure, à pleine voix. Puis il m'a tendu une bouteille de rhum au bout d'une gaffe, et moi une bolée de cidre. Chacun a dit que la boisson de l'autre était infecte. On a tout bu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Croc-de-Sel. Toujours à chercher ce qui n'est pas à toi ?"
+     ],
+     [
+      "b",
+      "Ha ! Amirale ! Toujours à commander un bateau qui ne bouge pas ?"
+     ],
+     [
+      "a",
+      "Il ne bouge pas. Ses canons, si."
+     ],
+     [
+      "b",
+      "Mille sabords… Un jour, je viendrai vérifier."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "mon cartographe",
+    "nom": "Matthias",
+    "sentiment": 0.2,
+    "avis": "Le Goff est le meilleur cartographe que Carène ait eu. C'est aussi le seul qui veuille ouvrir une porte que nos ancêtres ont fermée. Je l'estime. Je le surveille.",
+    "anecdotes": [
+     "Avant sa grande traversée, j'ai interdit à Le Goff d'approcher du Cœur-de-Pierre. Il est revenu deux mois plus tard, pieds nus, en disant qu'il n'avait rien vu là-bas, à cause du brouillard. Ce jour-là, Grégoire notait du soleil sur toute l'île. Je n'ai rien dit. Un homme a le droit d'avoir eu peur.",
+     "Chaque fois qu'il parle de la porte, je pose ma boussole sur sa carte, sur le Cœur-de-Pierre. Il dessine autour. L'autre soir, j'ai regardé de plus près : autour de ma boussole, il avait écrit, tout petit : « Ici, l'Amirale veille. » Je n'ai plus déplacé la boussole depuis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Le Goff. Encore cette porte ?"
+     ],
+     [
+      "b",
+      "Juste les abords, Amirale ! Les abords, c'est de la géographie."
+     ],
+     [
+      "a",
+      "Les abords mènent à la porte. Restez géographe."
+     ],
+     [
+      "b",
+      "Bien, Amirale. Géographe. De très près."
+     ]
+    ]
+   },
+   "corentin": {
+    "qui": "ce vieux moqueur de",
+    "nom": "Corentin",
+    "sentiment": 0.1,
+    "avis": "Corentin rit de mon titre depuis trente ans. Il raconte l'histoire de mon aïeule mieux que moi, et ça m'agace. Il a raison sur beaucoup de choses. Ça aussi, ça m'agace.",
+    "anecdotes": [
+     "Le soir de ma nomination, Corentin a raconté à la taverne l'histoire de « l'amirale qui commandait une baignoire ». Tout le monde a ri, moi aussi, par politesse. Le lendemain, il est venu à la capitainerie et m'a raconté, à moi seule, la nuit où Katell a tenu la barre jusqu'au bout. Pas une seule blague. Je ne l'ai jamais oublié.",
+     "Il raconte partout que l'idée de faire fumer les sabords, face à la Murène Noire, était la sienne. C'est possible : il me l'a soufflée au bastingage, entre deux grogs. Mais c'est moi qui suis montée dans la barque. Une idée, Corentin, ça ne va pas parlementer avec un pirate."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Corentin. Encore une histoire sur moi, ce soir ?"
+     ],
+     [
+      "b",
+      "Une toute petite, Amirale. Avec une baignoire."
+     ],
+     [
+      "a",
+      "Si j'entends le mot baignoire, tu récures le pont avec Ewen."
+     ],
+     [
+      "b",
+      "Ma doue ! Alors ce sera un baquet."
+     ]
+    ]
+   },
+   "gregoire": {
+    "qui": "mon guetteur",
+    "nom": "Grégoire",
+    "sentiment": 0.7,
+    "avis": "Grégoire a servi ma mère, puis moi. Il ne dit jamais rien qu'il n'ait vu. Alors quand il dit qu'il a vu une lumière dans le Cœur-de-Pierre, je ne dors pas de la nuit.",
+    "anecdotes": [
+     "Le matin de la lumière bleue, toute la taverne riait de Grégoire. Je l'ai fait monter à la capitainerie, je lui ai fait tout raconter deux fois, et j'ai marqué l'endroit d'une croix à l'encre sur la grande carte. Je n'ai pas souri. Je n'en avais aucune envie. Depuis, chaque soir, je regarde dans cette direction.",
+     "Pour son anniversaire, Fañch lui a fait le coup des douze lanternes sur douze bouées. Grégoire est venu me réveiller, bouleversé : « Une flotte, Amirale ! » J'ai regardé, et j'ai dit : « Ce sont des bouées. » Il s'est tu. Le lendemain, j'ai condamné Fañch à repeindre toutes les bouées de la baie. Grégoire ne l'a jamais su."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grégoire. Le rapport du soir."
+     ],
+     [
+      "b",
+      "Rien sur la mer. Le Cœur-de-Pierre, rouge, comme hier."
+     ],
+     [
+      "a",
+      "Plus rouge qu'hier ?"
+     ],
+     [
+      "b",
+      "Un peu. Je l'ai noté, Amirale."
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "mon mousse",
+    "nom": "Ewen",
+    "sentiment": 0.7,
+    "avis": "Ewen sonne la cloche à contretemps, grimpe là où c'est interdit, et pose plus de questions qu'il n'existe de réponses. Il a l'étoffe d'un capitaine. C'est bien ce qui m'inquiète.",
+    "anecdotes": [
+     "La nuit de la tempête, la lanterne du grand mât s'est éteinte. Avant que j'aie fini de donner un ordre, Ewen était dans les haubans. Il l'a rallumée, trois barques sont rentrées. Je l'ai puni : trois jours de pont, le règlement est le règlement. Le troisième soir, j'ai posé mon chapeau d'enfant sur son seau. Le règlement ne dit rien sur les chapeaux.",
+     "Il m'a demandé un jour : « Amirale, si je répare le Léviathan, je pourrai être capitaine ? » J'ai répondu : « Si tu le répares, tu seras amiral. » Il a réfléchi, et il a dit : « Non. Capitaine, c'est mieux : on est sur le bateau. » Il a raison. Je ne le lui ai pas dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen. Combien de coups pour neuf heures ?"
+     ],
+     [
+      "b",
+      "Neuf, Amirale ! Plus un pour l'écho !"
+     ],
+     [
+      "a",
+      "L'écho n'est pas inscrit au rôle. Neuf."
+     ],
+     [
+      "b",
+      "Bien, Amirale ! Neuf ! Et demi, des fois ?"
+     ]
+    ]
+   },
+   "tobias": {
+    "qui": "mon calfat",
+    "nom": "Tobias",
+    "sentiment": 0.6,
+    "avis": "Tobias me dit que la coque tiendra encore cent ans. Il me le dit depuis trente ans. Je sais ce que ça veut dire : il y passera sa vie. Personne n'est plus fidèle à ce bateau.",
+    "anecdotes": [
+     "Ma première année d'amirale, une voie d'eau s'est ouverte sous la poupe, en pleine nuit. J'étais terrifiée. Tobias est remonté de la cale, noir de goudron, il m'a regardée et il a dit : « Elle tiendra cent ans, Amirale. » Je l'ai cru. Je sais maintenant qu'il l'a dit pour moi. Alors je fais semblant de le croire encore. Pour lui.",
+     "Chaque printemps, Tobias me remet son rapport sur la coque : un carnet noir, des centaines de numéros de trous, et à la dernière page, toujours le même mot : « Tiendra. » Un printemps, il a oublié le mot. J'ai passé la nuit à relire le carnet. Le lendemain, il est revenu l'écrire, en s'excusant. Il avait juste oublié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tobias. La coque ?"
+     ],
+     [
+      "b",
+      "Elle tiendra cent ans, Amirale."
+     ],
+     [
+      "a",
+      "Tu le disais déjà quand j'avais vingt-quatre ans."
+     ],
+     [
+      "b",
+      "Et elle a tenu, non ?"
+     ]
+    ]
+   },
+   "gwenola": {
+    "qui": "notre",
+    "nom": "Mère Gwenola",
+    "sentiment": 0.7,
+    "avis": "Mère Gwenola est la seule personne de Carène qui m'appelle encore par mon prénom. Elle me fait manger de force. Si elle disparaissait, Carène s'éteindrait avec son poêle.",
+    "anecdotes": [
+     "Le soir où ma mère m'a passé la boussole, je suis allée à la Bordée toute seule, dans un uniforme trop grand. Je ne savais quoi dire à personne. Gwenola m'a servi un cidre et s'est assise à côté de moi jusqu'à la fermeture, sans un mot. Je n'ai jamais reçu de meilleur conseil.",
+     "Les jours de crise, j'oublie de manger. Gwenola le sait toujours, je ne sais pas comment. À midi pile, une galette complète apparaît devant moi, et Gwenola reste plantée là, les bras croisés. J'ai essayé de lui donner un ordre, une fois. Elle a ri. Puis elle a attendu que je mange."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gwenola, je n'ai vraiment pas le temps aujourd'hui."
+     ],
+     [
+      "b",
+      "Assieds-toi, ma petite. La galette non plus n'a pas le temps."
+     ],
+     [
+      "a",
+      "Ne m'appelle pas « ma petite » devant tout le monde."
+     ],
+     [
+      "b",
+      "Alors mange vite, et personne ne m'entendra."
+     ]
+    ]
+   }
+  }
+ },
+ "nolwenn": {
+  "genre": "f",
+  "prenom": "Nolwenn",
+  "histoire": [
+   {
+    "titre": "entre le goudron et la toile",
+    "t": "Mon père, Tobias, bouche les trous du bateau. Ma mère, Annaig, en cousait les voiles. J'ai grandi entre les deux, avec du goudron sur une joue et du fil sur l'autre. Ma mère disait que j'étais une voile bien calfatée. Je n'ai jamais su si c'était un compliment. Je crois que oui."
+   },
+   {
+    "titre": "le dernier hiver de ma mère",
+    "t": "Ma mère m'a appris à coudre avant de m'apprendre à lire : le point de voilier, le point de ralingue, la paumelle au creux de la main. L'hiver de mes quinze ans, elle a cousu sa dernière toile, et elle me l'a laissée à finir. Je l'ai finie. C'est l'auvent bleu, sur la place, devant la taverne. Je le recouds chaque printemps."
+   },
+   {
+    "titre": "le fil qui brille dans le noir",
+    "t": "Une nuit d'été, je cousais sur la plage, à la lueur du feu mourant. Quelqu'un s'est assis de l'autre côté, sans bruit. Dans la brume, je n'ai vu que deux yeux et une longue oreille. Au matin, sur ma toile, il y avait une bobine de fil d'argent. Il brille dans le noir. Je ne m'en suis servie qu'une fois. Pour quelque chose d'important."
+   },
+   {
+    "titre": "mes auvents et la grande voile",
+    "t": "Aujourd'hui, je donne une deuxième vie aux vieilles voiles : auvents rouges et bleus, rideaux de logis, sacs, hamacs pour Pierrick. Jos me forge mes aiguilles, Lucie m'offre une perle à chaque anniversaire, et Salomé revend mes chutes au triple. Et chaque jour, je regarde la grande voile d'origine partir en lambeaux sous la vergue."
+   },
+   {
+    "titre": "la voile sous mon lit",
+    "t": "Je vais te dire mon secret, {surnom}. Elle est déjà cousue, ma voile. Pliée sous mon lit, avec le fil d'argent dans l'ourlet. Trois ans de nuits. Fañch m'apprend à barrer, à l'aube. Il ne me manque qu'une barque, et le courage de le dire à mon père. Lui qui passe sa vie à garder ce bateau, comment lui dire que je veux partir ?"
+   }
+  ],
+  "reve": [
+   "Voir ma voile se gonfler. La mienne. Sortir de la baie, passer la pointe, et ne plus voir Carène que comme une petite tache brune sur la côte. Et puis revenir. Je crois que je reviendrai. Je crois.",
+   "Et quand la grande voile du Léviathan tombera enfin, un jour de beau temps, être là pour la plier. Personne n'a le droit d'y toucher. Mais quelqu'un devra bien la ramasser."
+  ],
+  "question": {
+   "texte": "Si tu pouvais partir demain matin, n'importe où, sans rien dire à personne… tu partirais ?",
+   "reponses": [
+    {
+     "label": "Oui, sans hésiter.",
+     "valeur": "oui",
+     "t": "Sans hésiter… Tu as de la chance. Moi, j'hésite depuis trois ans. Peut-être qu'on hésite moins quand on est déjà parti une fois.",
+     "rappel": "Toi qui partirais sans hésiter, dis-moi : on se sent comment, le premier matin, quand la côte disparaît ?"
+    },
+    {
+     "label": "Non, je dirais au revoir d'abord.",
+     "valeur": "au_revoir",
+     "t": "Oui. C'est ça, le plus dur. Pas partir : dire au revoir. Tu as raison. Il faudra bien que je le dise, un jour.",
+     "rappel": "Tu m'as dit qu'il faut dire au revoir avant de partir. J'y pense souvent. Je n'ai pas encore trouvé les mots."
+    },
+    {
+     "label": "Je suis déjà parti, tu sais.",
+     "valeur": "deja_parti",
+     "t": "C'est vrai. Tu es venu par la mer. Alors tu sais. Ça fait mal, de partir ? Non, ne réponds pas. Je verrai bien.",
+     "rappel": "Toi qui es déjà parti une fois, tu ne regrettes pas ? Non… Ça se voit, que tu ne regrettes pas."
+    }
+   ]
+  },
+  "liens": {
+   "tobias": {
+    "qui": "mon père",
+    "nom": "Tobias",
+    "sentiment": 0.7,
+    "avis": "Mon père bouche les trous de ce bateau, comme son père avant lui. Il soupire, il grogne, il ne dit jamais « je t'aime ». Il le dit avec les galettes qu'il me garde. Je l'aime. C'est bien le problème.",
+    "anecdotes": [
+     "Petite, mon père me laissait tenir le pot de goudron. Une fois, j'ai trempé ma tresse dedans. Il a passé la soirée à me la nettoyer au beurre, sans un mot, avec des gestes très doux. Ma mère riait. Lui, non. Ce soir-là, j'ai compris que mon père était quelqu'un qui a peur qu'on se fasse mal.",
+     "Quand Ewen parle de remettre le Léviathan à l'eau, mon père soupire. Un jour, je lui ai demandé pourquoi. Il a regardé la baie longtemps, et il a dit : « Les bateaux qui partent ne reviennent pas toujours. » Il ne parlait pas d'Ewen. Je crois qu'il parlait de moi. Je ne sais pas comment il sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Papa. Tu as mangé ?"
+     ],
+     [
+      "b",
+      "La galette de Gwenola. Et toi ?"
+     ],
+     [
+      "a",
+      "Pas encore. J'ai une couture à finir."
+     ],
+     [
+      "b",
+      "Tu couds trop tard, Nolwenn. Je vois ta lampe, la nuit."
+     ]
+    ]
+   },
+   "fanch": {
+    "qui": "mon vieux complice",
+    "nom": "Fañch",
+    "sentiment": 0.9,
+    "avis": "Fañch m'apprend à barrer, à l'aube, en secret. Il fait des blagues terribles et il sent le maquereau. C'est le seul qui ne m'a jamais demandé pourquoi je voulais partir.",
+    "anecdotes": [
+     "Le premier matin où Fañch m'a emmenée dans la baie, il a hissé une petite voile que j'avais cousue pour lui, des années plus tôt. Quand elle s'est gonflée, j'ai pleuré. Je lui ai dit que c'était le vent dans les yeux. Il a dit : « Bien sûr. » Et il a regardé ailleurs pendant tout le bord. Je ne l'en remercierai jamais assez.",
+     "La semaine dernière, Fañch a fait semblant de dormir au fond de la barque pour me laisser barrer seule jusqu'à la pointe nord. J'ai viré de bord toute seule, proprement. Au retour, il a dit : « Pas mal, pour une voilière. » Je lui ai jeté un seau d'eau. Il a ri comme un phoque. Il avait mérité les deux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fañch… demain, cinq heures ?"
+     ],
+     [
+      "b",
+      "Cinq heures. Et le vent sera de suroît, ma belle."
+     ],
+     [
+      "a",
+      "Moins fort ! Mon père passe par là."
+     ],
+     [
+      "b",
+      "Je parlais au maquereau, moi."
+     ]
+    ]
+   },
+   "jos": {
+    "qui": "le forgeron",
+    "nom": "Jos",
+    "sentiment": 0.6,
+    "avis": "Jos parle fort, tape fort, rit fort. Mais il forge les meilleures aiguilles de l'île, et il sait se taire quand on le lui demande. Ça, à Carène, c'est rare.",
+    "anecdotes": [
+     "À quinze ans, j'ai cousu un soufflet pour la forge de Jos, mon premier travail toute seule. Les points étaient de travers. Je lui ai proposé cent fois de le refaire. Il refuse toujours : il dit qu'il souffle mieux de travers. Je crois surtout qu'il ne veut pas me faire de peine. Avec Jos, on ne sait jamais.",
+     "J'ai demandé à Jos une aiguille courbe, longue comme la main, pour une toile épaisse. Il a demandé quelle toile. J'ai dit : « Une toile. » Il n'a rien demandé d'autre. Trois jours plus tard, l'aiguille était sur mon établi, dans un chiffon, avec un mot : « Pour la toile. » Il y avait gravé une petite étoile."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Jos. L'aiguille courbe s'est un peu tordue."
+     ],
+     [
+      "b",
+      "Tordue ? Sur quoi tu couds, sur une coque ?"
+     ],
+     [
+      "a",
+      "Sur une toile. Juste une toile."
+     ],
+     [
+      "b",
+      "Ha ! Apporte-la, je la redresse. Sans questions."
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "cette pie de",
+    "nom": "Salomé",
+    "sentiment": -0.3,
+    "avis": "Salomé récupère mes chutes de toile, en fait des « sacs de marin authentiques » et les revend au triple. Elle vendrait le vent si on pouvait le mettre en sac. Elle a essayé.",
+    "anecdotes": [
+     "J'ai vu un jour sur l'étal de Salomé un sac de toile rouge, avec une étiquette : « Fragment de la grande voile du Léviathan ». C'était une chute de mon auvent de la place. J'ai failli renverser l'étal. Elle m'a dit : « Mais Nolwenn, c'est presque vrai ! Toute la toile de Carène vient du Léviathan ! » Le pire, c'est qu'elle avait raison.",
+     "L'année dernière, elle a vendu à un caravanier « un bout de vent de Carène » : un bocal vide, fermé par un rond de ma toile. Il l'a payé. Il est revenu le lendemain en acheter un deuxième, pour sa sœur. Depuis, c'est moi qui couds les couvercles des bocaux de Salomé. Elle me paie bien. Je n'en suis pas fière."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé. Mes chutes ne sont pas des reliques."
+     ],
+     [
+      "b",
+      "Ce sont les reliques de demain, Nolwenn ! J'ai de l'avance !"
+     ],
+     [
+      "a",
+      "Tu as surtout trois fois mon prix."
+     ],
+     [
+      "b",
+      "Je te paie les couvercles, non ? On est associées."
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "ma plus vieille amie",
+    "nom": "Lucie",
+    "sentiment": 0.8,
+    "avis": "Lucie et moi, on se connaît depuis qu'on sait marcher. Enfin, elle, depuis qu'elle sait nager. Elle ne parle pas beaucoup. Avec elle, je n'ai pas besoin de parler non plus.",
+    "anecdotes": [
+     "Pour mes dix ans, Lucie m'a offert une perle, la première qu'elle avait trouvée toute seule. Je l'ai cousue sur un ruban bleu. Depuis, elle m'en offre une chaque année : il y en a quatorze. Je le porte aux fêtes. Le jour où je partirai, je le porterai aussi. Comme ça, Lucie viendra un peu avec moi.",
+     "Un soir, sur le ponton, j'ai failli tout dire à Lucie, pour la voile. J'ai ouvert la bouche. Elle m'a regardée et elle a dit : « Pas maintenant. Quand tu seras sûre. » Puis elle a plongé. Elle sait toujours quand quelqu'un porte un secret. Elle ne demande jamais lequel."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie. Tu as cinq minutes ?"
+     ],
+     [
+      "b",
+      "J'en ai dix. Sous l'eau, ça en fait trois."
+     ],
+     [
+      "a",
+      "Alors reste en surface. Pour une fois."
+     ],
+     [
+      "b",
+      "Pour toi, d'accord. Assieds-toi."
+     ]
+    ]
+   }
+  }
+ },
+ "pierrick": {
+  "genre": "m",
+  "prenom": "Pierrick",
+  "histoire": [
+   {
+    "titre": "le petit garçon des tonneaux",
+    "t": "Je suis arrivé à la Bordée à cinq ans, avec une valise trop grande, et on m'a donné un hamac au-dessus des tonneaux de cidre. Ma mère, Soazig, venait de partir, l'hiver des fièvres. Ma tante Gwenola m'a donné une galette, une cuillère en bois et un tablier qui me tombait aux chevilles. Le tablier, je l'ai encore. Il m'arrive aux genoux, maintenant."
+   },
+   {
+    "titre": "le jour où j'ai fondé l'auberge",
+    "t": "À dix-huit ans, j'ai décidé que la taverne et l'auberge, c'étaient deux choses différentes. J'ai peint « AUBERGE » sur une planche et je l'ai clouée sous l'enseigne. J'avais oublié un E. Le lendemain, quelqu'un l'avait ajouté, de travers. Je n'ai jamais su qui. Depuis, je m'occupe des hamacs, et ma tante de tout le reste. C'est très différent."
+   },
+   {
+    "titre": "le premier vrai voyageur",
+    "t": "Mon premier vrai voyageur, c'était un ingénieur de Cliquetis, descendu du Zéphyr. Il est tombé trois fois de son hamac dans la nuit. Au matin, il avait écrit à la craie sur la cloison : « Charmant. Mais un lit, c'est trop demander ? » J'ai gardé la craie. C'est ce jour-là que j'ai su : un jour, j'aurai des lits. Des vrais. Avec des pieds."
+   },
+   {
+    "titre": "mes hamacs et mes rivaux",
+    "t": "Aujourd'hui, j'ai trente-deux hamacs, je les recompte tous les soirs, et ils ont moins de cinquante ans. Ewen y fait des nœuds, Salomé loue des sacs d'algues dans la cale pour me voler mes clients, et Matthias m'a dessiné une prairie qui ne bouge pas, pour plus tard. Ma tante fait semblant de ne rien savoir. Elle sait tout."
+   },
+   {
+    "titre": "pourquoi je dors sous le comptoir",
+    "t": "Ne le répète pas, {surnom}. Je ne dors jamais dans un hamac. Ça me donne le mal de mer. Un aubergiste à hamacs, dans un bateau échoué, qui a le mal de mer ! Je dors par terre, sous le comptoir, sur une couverture. Seule Anouk le sait, avec ses tisanes au gingembre. Voilà pourquoi je veux une auberge sur la terre ferme."
+   }
+  ],
+  "reve": [
+   "Une auberge sur la terre ferme, dans la prairie que Matthias m'a dessinée, entre deux chênes. Douze chambres, douze lits, des vrais, avec des pieds. Et une enseigne sans faute d'orthographe. Je l'ai déjà vérifiée trois fois.",
+   "Et une chambre pour ma tante, avec un poêle. Elle dira non. Je la construirai quand même."
+  ],
+  "question": {
+   "texte": "Alors, dis-moi franchement : le hamac, la dernière fois… tu as bien dormi ?",
+   "reponses": [
+    {
+     "label": "Comme un bébé.",
+     "valeur": "tres_bien",
+     "t": "Vraiment ? Ah, ça me fait plaisir ! Ils ont moins de cinquante ans, tu sais. Enfin, la plupart. Je te garde celui du fond, c'est le plus doux.",
+     "rappel": "Le hamac du fond t'attend, toi qui dors comme un bébé. Je l'ai secoué ce matin. Doucement."
+    },
+    {
+     "label": "Je suis tombé deux fois.",
+     "valeur": "tombe",
+     "t": "Deux fois ? Seulement ? C'est un très bon score ! L'ingénieur de Cliquetis, c'était trois. Un jour, il y aura des lits. Promis.",
+     "rappel": "Toi qui es tombé deux fois de mon hamac : bonne nouvelle, j'ai mis un coussin dessous. Un petit."
+    },
+    {
+     "label": "J'ai fini par dormir par terre.",
+     "valeur": "par_terre",
+     "t": "Par terre ? Toi aussi ? … Je veux dire : par terre ! Quelle drôle d'idée ! Personne ne fait ça. Personne. Surtout pas sous le comptoir.",
+     "rappel": "Tu dors toujours par terre, toi ? Moi non plus, hein. Évidemment. Enfin… le plancher sous le comptoir est très bien. Paraît-il."
+    }
+   ]
+  },
+  "liens": {
+   "gwenola": {
+    "qui": "ma tante",
+    "nom": "Gwenola",
+    "sentiment": 0.6,
+    "avis": "Ma tante Gwenola tient la taverne, et moi l'auberge. Elle trouve que c'est pareil. Elle me laisse croire que je suis le patron, je fais semblant de la croire. On est très heureux comme ça.",
+    "anecdotes": [
+     "Un soir, j'ai recompté les hamacs : trente et un. J'ai fouillé l'entrepont jusqu'à minuit, interrogé les clients, soupçonné Ewen. Le lendemain, il y en avait de nouveau trente-deux. Ma tante a dit : « Tu as dû mal compter. » J'avais bien compté. Je sais que c'était elle. Elle sait que je sais. On n'en parle pas.",
+     "Pour mes vingt ans, ma tante m'a offert une clé de fer toute neuve, avec une étiquette : « Auberge ». Il n'y a pas une seule porte à l'auberge, ce sont des hamacs. J'ai demandé ce qu'elle ouvrait. Elle a dit : « Ta future porte. Sur la terre ferme. » Je la porte à mon cou depuis dix ans."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ma tante, l'auberge a besoin de draps neufs."
+     ],
+     [
+      "b",
+      "L'auberge ? Tu veux dire les hamacs."
+     ],
+     [
+      "a",
+      "Les hamacs de l'AUBERGE, ma tante."
+     ],
+     [
+      "b",
+      "Bien, monsieur le patron. Les vieux, à côté du coffre. Pas dans le coffre."
+     ]
+    ]
+   },
+   "anouk": {
+    "qui": "ma guérisseuse",
+    "nom": "Anouk",
+    "sentiment": 0.8,
+    "avis": "Anouk me soigne de tout, même de ce que je n'ai pas, et elle ne se moque jamais. Et elle garde un secret pour moi depuis des années, sans jamais me le faire payer en tisane.",
+    "anecdotes": [
+     "J'ai lu un jour dans le carnet de Tréphine le nom d'une maladie de baleine, et j'étais sûr de l'avoir. Anouk m'a fait boire de l'eau tiède en me tenant la main, très sérieuse, et m'a dit que j'étais sauvé. De justesse. Je l'ai remerciée toute la semaine. Je sais maintenant que c'était de l'eau. Ça a marché quand même.",
+     "Un matin, Anouk m'a trouvé endormi sous le comptoir, tout vert. Elle n'a rien dit à personne. Le soir même, il y avait une boîte de tisane au gingembre sur l'étagère, avec écrit dessus : « Pour le patron ». Depuis, elle la remplit chaque mois, sans que je demande. Ma tante croit que c'est pour les clients."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anouk ! J'ai une drôle de douleur, là, à gauche."
+     ],
+     [
+      "b",
+      "Là ? C'est ta poche, Pierrick. Il y a une cuillère dedans."
+     ],
+     [
+      "a",
+      "Ah. Et c'est grave ?"
+     ],
+     [
+      "b",
+      "Pour la cuillère, peut-être. Toi, tu vivras."
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "ce galopin de",
+    "nom": "Ewen",
+    "sentiment": -0.3,
+    "avis": "Ewen fait des nœuds dans mes hamacs, sonne la cloche sous mes fenêtres et grimpe partout. Quelqu'un doit bien le dire à l'Amirale. C'est souvent moi. Il ne m'en veut jamais longtemps, c'est agaçant.",
+    "anecdotes": [
+     "Une nuit, Ewen a fait un nœud de chaise à chaque hamac de l'auberge. Au matin, mes clients ne pouvaient plus en sortir. Un caravanier a appelé au secours pendant une heure. J'ai mis deux heures à tout défaire, et ma tante a ri si fort qu'elle en a eu le hoquet. Elle m'a défendu de le dire à l'Amirale, entre deux hoquets.",
+     "C'est moi qui ai dit à l'Amirale qu'Ewen était monté à la grande hune. Il m'a boudé une semaine. Alors je lui ai apporté une glace de Cliquetis, arrivée par le Zéphyr, fondue dans une tasse. J'ai dit que j'en avais acheté deux. C'était la mienne. Il l'a bue d'un trait. Le lendemain, il y avait un nœud de chaise à mon tablier."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen. Pas un nœud aujourd'hui. Pas un seul."
+     ],
+     [
+      "b",
+      "Promis ! Juste une petite boucle."
+     ],
+     [
+      "a",
+      "Une boucle, c'est un nœud !"
+     ],
+     [
+      "b",
+      "Non, c'est une boucle. Demande à Fañch."
+     ]
+    ]
+   },
+   "salome": {
+    "qui": "ma concurrente",
+    "nom": "Salomé",
+    "sentiment": -0.3,
+    "avis": "Les soirs où le Zéphyr arrive plein, Salomé loue des sacs d'algues dans la cale, « pour dormir au frais ». Elle me vole mes clients. Avec des algues. C'est une déclaration de guerre.",
+    "anecdotes": [
+     "Un soir où le Zéphyr débarquait douze voyageurs, Salomé s'est postée à la brèche avec une pancarte : « Couchage d'algues, deux pièces, sans risque de chute ». Elle en a eu huit, moi quatre. Le lendemain, ses huit clients sont venus me supplier pour un hamac, couverts de puces de mer. Je leur ai fait payer le double. Je ne suis pas fier. Un peu.",
+     "Pourtant, l'hiver dernier, quand six hamacs ont lâché d'un coup, c'est Salomé qui m'a trouvé de la corde de chanvre des hautes terres, la meilleure, introuvable. Elle me l'a vendue au prix coûtant. J'ai demandé pourquoi. Elle a dit : « Sans toi, contre qui je me battrais ? » Je ne sais toujours pas si c'était gentil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salomé. Tes sacs d'algues, ce soir, tu les ranges."
+     ],
+     [
+      "b",
+      "Le Zéphyr arrive plein, Pierrick ! Il y a de la place pour deux !"
+     ],
+     [
+      "a",
+      "J'ai trente-deux hamacs. Trente-deux !"
+     ],
+     [
+      "b",
+      "Et zéro lit. Moi non plus, remarque. On est quittes."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "mon ami",
+    "nom": "Matthias",
+    "sentiment": 0.7,
+    "avis": "Matthias est le seul à prendre mon auberge au sérieux. Il m'a dessiné le terrain, les plans, et même l'enseigne. Il parle beaucoup, mais c'est toujours pour dire des choses gentilles.",
+    "anecdotes": [
+     "J'ai demandé à Matthias quel était l'endroit le plus immobile de l'île. Il a cherché trois semaines, avec ses compas. Il m'a dessiné une prairie au-dessus de la baie, derrière la pointe nord, entre deux chênes. J'ai demandé si elle bougeait. Il a dit non. Je garde la carte dans mon tablier. Je la regarde quand ma tante a le dos tourné.",
+     "Matthias m'a dessiné les plans de mon auberge : douze chambres. Dans un coin, j'ai ajouté au crayon une petite chambre pour ma tante, avec un poêle. Quelques jours plus tard, elle était repassée à l'encre, avec une fenêtre en plus. Il n'a rien dit. Moi non plus. C'est un vrai ami."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias ! Tu es repassé voir ma prairie ?"
+     ],
+     [
+      "b",
+      "Hier ! Elle n'a pas bougé d'un pouce."
+     ],
+     [
+      "a",
+      "Pas d'un pouce… Et les chênes ?"
+     ],
+     [
+      "b",
+      "Toujours deux. Je les ai comptés, comme Grégoire."
+     ]
+    ]
+   }
+  }
+ },
+ "salome": {
+  "genre": "f",
+  "prenom": "Salomé",
+  "histoire": [
+   {
+    "titre": "la cale de ma grand-mère",
+    "t": "Ma grand-mère Yvonne tenait déjà l'étal, au fond de la cale. Elle disait : « Une cale vide, c'est un cœur vide. » Pourtant, l'hiver de la faim, elle a tout vidé pour nourrir Carène : la farine, le sel, les pommes, même ses boutons de nacre. Elle disait que c'était la meilleure affaire de sa vie. J'ai mis vingt ans à comprendre le calcul."
+   },
+   {
+    "titre": "mon premier crabe vendu",
+    "t": "À douze ans, j'ai vendu mon premier article : un crabe. Il ne voulait pas être vendu, il a pincé le client, et le client l'a payé quand même, par principe. Ce jour-là, j'ai compris qu'on ne vend pas un objet, on vend une histoire. Le crabe, c'était « un crabe de garde ». Le client était ravi."
+   },
+   {
+    "titre": "trois heures et quatre théières à Tazira",
+    "t": "La première fois que j'ai pris le Zéphyr pour Tazira, j'avais une malle de cidre et une seule idée : du safran pas cher. Lalla Aïcha m'a reçue au souk. On a marchandé trois heures et quatre théières. À la fin, j'avais son safran, elle avait mon cidre, et on avait perdu de l'argent toutes les deux. Le plus beau jour de ma vie de marchande."
+   },
+   {
+    "titre": "mon étal face à la brèche",
+    "t": "Aujourd'hui, mon étal est pile en face de la brèche de la plage : on entre, on tombe dessus, c'est fait exprès. Je vends tout ce qui flotte, tout ce qui brille, et deux ou trois choses qui ne font ni l'un ni l'autre. Lucie m'apporte ses perles, Jos ses sabres, Nolwenn ses chutes de toile. Et Matthias ne veut toujours pas de ma clé."
+   },
+   {
+    "titre": "ce que je ne vends pas",
+    "t": "Je vais te dire une chose, {surnom}, mais si tu la répètes, je te vends un seau percé. Le goéland ne l'a jamais payé, son seau. La moitié de ce que je « vends », je le donne : aux vieux, aux veuves, aux pêcheurs qui ont eu une mauvaise semaine. Si ça se savait, plus personne ne me paierait rien. Ma grand-mère faisait pareil."
+   }
+  ],
+  "reve": [
+   "Un étal à Tazira, juste à côté de celui d'Aïcha, pour qu'on se vole nos clients face à face. Ce serait magnifique. On fermerait le soir toutes les deux avec moins d'argent et plus d'histoires.",
+   "Et trouver le trente-troisième ingrédient d'Aïcha. Pas pour le vendre ! Juste pour voir sa tête."
+  ],
+  "question": {
+   "texte": "Toi, sois honnête : tu marchandes ?",
+   "reponses": [
+    {
+     "label": "Toujours !",
+     "valeur": "toujours",
+     "t": "Ha ! Un vrai ! Enfin un adversaire ! Les gens de Carène paient le prix affiché, c'est d'un ennui… Viens à l'étal, on va s'amuser.",
+     "rappel": "Toi qui marchandes toujours, approche ! J'ai monté mes prix exprès pour toi. Tu vas pouvoir les descendre."
+    },
+    {
+     "label": "Jamais. Je paie le prix.",
+     "valeur": "jamais",
+     "t": "Jamais ? Ma doue, mais c'est merveilleux ! Mon client préféré ! … Non, je plaisante. Marchande un peu, quand même. Sinon, je m'en veux.",
+     "rappel": "Toi qui ne marchandes jamais, je t'ai fait un prix. Sans rien dire. Ne le répète pas, j'ai une réputation."
+    },
+    {
+     "label": "Seulement avec toi.",
+     "valeur": "avec_toi",
+     "t": "Rien qu'avec moi ? C'est un compliment ou une menace ? Les deux, j'espère. J'adore les deux.",
+     "rappel": "Tu ne marchandes qu'avec moi, hein ? Alors viens, je me suis entraînée. Tu ne gagneras pas."
+    }
+   ]
+  },
+  "liens": {
+   "aicha": {
+    "qui": "ma chère rivale",
+    "nom": "Aïcha",
+    "sentiment": 0.9,
+    "avis": "Lalla Aïcha, la marchande d'épices de Tazira. Une voleuse magnifique. Quarante épices sur son étal, et elle me bat à chaque marchandage. Je l'adore.",
+    "anecdotes": [
+     "Notre premier marchandage a duré trois heures et quatre théières. Elle voulait mon cidre, je voulais son safran, et aucune ne voulait céder. À la fin, on a échangé une jarre de safran contre un tonneau de cidre et une chanson de marin, chantée par moi, en breton, devant tout le souk. Elle dit que c'est la chanson qui a fait pencher la balance.",
+     "Je cherche depuis des années le trente-troisième ingrédient de son ras-el-hanout. Je lui ai envoyé par le Zéphyr une liste de cinquante suppositions. Elle a répondu « non » à chacune, au crayon. Sauf à la quarante-septième, « la patience », où elle a écrit : « Presque. » Depuis, je ne dors plus.",
+     "Mère Gwenola s'était fait vendre par des caravaniers du sable rouge en guise de piment. J'ai apporté le sac à Aïcha. Elle a goûté, elle a craché, elle a juré en trois langues, et elle m'a donné un vrai sac de piment, gratuit, « pour l'honneur des épices ». Gwenola en a mis dans la soupe. Fañch en pleure encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aïcha ! Ton safran a encore augmenté ?"
+     ],
+     [
+      "b",
+      "Ton cidre aussi, Salomé. Le thé d'abord, on se fâchera après."
+     ],
+     [
+      "a",
+      "Et ton trente-troisième ingrédient, c'est la cannelle ?"
+     ],
+     [
+      "b",
+      "Non. Tu chauffes, mais non."
+     ]
+    ]
+   },
+   "matthias": {
+    "qui": "mon client préféré",
+    "nom": "Matthias",
+    "sentiment": 0.4,
+    "avis": "Matthias veut ouvrir une porte que personne n'a ouverte en deux cents ans. Je lui ai proposé une clé. Il n'a pas ri. Les rêveurs ne rient jamais de leurs rêves. C'est touchant.",
+    "anecdotes": [
+     "Il y a six ans, je lui ai vendu une carte ancienne rapportée du désert. Je jure que je croyais que c'était une carte. Bon, un peu moins une fois qu'il est parti avec. C'était une nappe brodée, et le Cœur-de-Pierre, une tache de thé. Il m'en veut encore. Mais la nappe, il l'a gardée : elle est sur sa table de nuit.",
+     "Avant sa grande traversée, je lui ai vendu un sac « increvable ». Il a crevé au bout de deux jours. Quand Matthias est revenu, pieds nus, maigre, ses douze carnets serrés dans sa chemise, je l'ai remboursé et je lui ai donné un sac neuf. Il a demandé pourquoi. J'ai dit : « Publicité. » Ce n'était pas la publicité."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Matthias ! Toujours pas de clé ? Je t'ai fait un prix."
+     ],
+     [
+      "b",
+      "Je n'achète plus rien chez toi. Depuis la nappe."
+     ],
+     [
+      "a",
+      "Elle était authentique ! Authentiquement une nappe."
+     ],
+     [
+      "b",
+      "Tu vois ? C'est exactement pour ça."
+     ]
+    ]
+   },
+   "nolwenn": {
+    "qui": "ma fournisseuse",
+    "nom": "Nolwenn",
+    "sentiment": 0.3,
+    "avis": "Nolwenn coud comme une fée et vend comme une huître. J'aide ses chutes de toile à trouver preneur, et elle me regarde comme si je les volais. Les artistes sont susceptibles.",
+    "anecdotes": [
+     "J'avais mis sur l'étal un petit sac de toile rouge : « Fragment de la grande voile du Léviathan ». Nolwenn a failli tout renverser. Je lui ai expliqué que toute la toile de Carène vient du Léviathan, donc c'était presque vrai. Elle a répété « presque » d'un ton terrible. J'ai changé l'étiquette : « Presque un fragment ». Ça se vend encore mieux.",
+     "Les bocaux de « vent de Carène » que je vends aux caravaniers, c'est Nolwenn qui en coud les couvercles de toile. Elle fait semblant de détester ça. Mais elle brode un petit bateau sur chaque couvercle, et ça, je ne le lui ai jamais demandé. C'est le bateau qui fait vendre. Elle le sait. Elle ne veut pas que je le dise."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nolwenn ! Il me faut vingt couvercles pour le Zéphyr de demain !"
+     ],
+     [
+      "b",
+      "Vingt ? Tu vends vraiment autant de vent ?"
+     ],
+     [
+      "a",
+      "Le vent de Carène est très demandé ! Il est frais !"
+     ],
+     [
+      "b",
+      "Je les fais. Mais sans bateau brodé, cette fois."
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "ma plongeuse préférée",
+    "nom": "Lucie",
+    "sentiment": 0.6,
+    "avis": "Lucie me rapporte les plus belles perles de l'île et ne marchande jamais. Elle me regarde avec ses grands yeux tranquilles, et j'ai l'impression que c'est moi qui me fais avoir. C'est très désagréable.",
+    "anecdotes": [
+     "Lucie m'a apporté une perle presque rose, avec une petite tache. Je l'ai payée au prix d'une perle tachée. Le soir, je l'ai vendue au triple à un caravanier, comme « perle de la Dame de Proue ». Le lendemain, Lucie est passée devant l'étal, a lu l'étiquette, et m'a juste dit : « Bonne journée, Salomé. » Je n'en ai pas dormi.",
+     "Le jour où son masque de plongée s'est fendu, je lui ai donné le plus beau de l'étal, en disant qu'elle me paierait en perles. Elle ne l'a jamais fait, et je ne lui ai jamais rien demandé. Une plongeuse sans masque, c'est une marchande sans perles. C'est du commerce. Voilà. Du commerce."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie ! Une perle aujourd'hui ? Je te fais un bon prix."
+     ],
+     [
+      "b",
+      "Le même que la dernière fois ?"
+     ],
+     [
+      "a",
+      "Mieux ! Enfin… à peu près pareil."
+     ],
+     [
+      "b",
+      "Alors je la garde pour Nolwenn."
+     ]
+    ]
+   },
+   "anouk": {
+    "qui": "cette rabat-joie de",
+    "nom": "Anouk",
+    "sentiment": 0.2,
+    "avis": "Anouk soigne tout le monde avec des algues, même les jambes cassées. Elle trouve mes baumes du désert inefficaces. Moi, je les trouve bien parfumés. On n'a pas les mêmes critères.",
+    "anecdotes": [
+     "J'avais écrit « Recommandé par l'infirmerie » à côté du baume du désert, parce qu'Anouk avait soigné un client qui en avait mis. C'est une forme de recommandation, non ? Le lendemain matin, la craie était effacée, et à la place, de la main d'Anouk : « Non. » Elle a une très jolie écriture, Anouk.",
+     "Elle me réclame depuis des années la recette de la crème des caravaniers. J'ai demandé à Aïcha, qui a demandé à un caravanier, qui a ri : graisse de chèvre et cannelle. C'est exactement ce que j'ai apporté à Anouk, dans un joli pot. Elle ne m'a pas crue. Personne ne me croit jamais quand je dis la vérité."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anouk ! Un nouveau baume, au miel des prairies, cette fois !"
+     ],
+     [
+      "b",
+      "Et quoi d'autre, dedans ?"
+     ],
+     [
+      "a",
+      "Un peu de graisse de chèvre. Très peu. Presque rien."
+     ],
+     [
+      "b",
+      "Salomé…"
+     ]
+    ]
+   },
+   "pierrick": {
+    "qui": "mon rival",
+    "nom": "Pierrick",
+    "sentiment": 0.4,
+    "avis": "Pierrick croit que je lui vole ses clients avec mes sacs d'algues. C'est vrai. Mais il faut bien que quelqu'un l'oblige à se battre, sinon il passerait ses journées à dormir dans ses hamacs.",
+    "anecdotes": [
+     "Le soir où le Zéphyr a débarqué douze voyageurs, j'ai proposé à la brèche des couchages d'algues, « sans risque de chute ». J'en ai eu huit, Pierrick quatre. Le lendemain, mes huit avaient des puces de mer et sont tous partis chez lui. Il leur a fait payer le double. J'étais fière de lui. Je ne le lui ai pas dit.",
+     "L'hiver dernier, six de ses hamacs ont lâché la même nuit. Il est venu à l'étal, tout pâle, sans oser demander. Je lui ai trouvé la meilleure corde de chanvre des hautes terres, au prix coûtant. Il a demandé pourquoi. J'ai dit : « Sans toi, contre qui je me battrais ? » C'était vrai."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pierrick ! Le Zéphyr arrive plein ce soir. Que la meilleure gagne !"
+     ],
+     [
+      "b",
+      "Le meilleur, Salomé. Le meilleur. Et c'est moi."
+     ],
+     [
+      "a",
+      "Tu as de la chance que les algues ne sachent pas parler."
+     ],
+     [
+      "b",
+      "Elles grattent. Ça suffit comme argument."
+     ]
+    ]
+   },
+   "jos": {
+    "qui": "mon forgeron préféré",
+    "nom": "Jos",
+    "sentiment": 0.6,
+    "avis": "Jos forge les plus beaux sabres de corsaire de l'île et les vend au prix du poisson. Alors je les revends au prix qu'ils méritent. Il crie un peu. C'est un artiste : il ne connaît pas sa valeur.",
+    "anecdotes": [
+     "J'ai vendu un sabre de Jos à un caravanier en racontant qu'il avait appartenu au terrible Capitaine Floc'h. Le caravanier l'a payé une fortune. Jos l'a appris, il est arrivé à l'étal en tablier, tout rouge, en criant. Je lui ai donné la moitié. Il est reparti beaucoup moins rouge. Le Capitaine Floc'h est très demandé, depuis.",
+     "L'hiver où le fer a manqué, j'ai fait venir trois sacs de minerai des hautes terres par un berger qui me devait un service, et je les ai vendus à Jos au prix d'avant. Il était méfiant, il a cherché l'arnaque. Il n'y en avait pas. Un forgeron qui ne forge pas, il parle. Et quand Jos parle, toute la cale l'entend."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Jos ! Le Capitaine Floc'h a encore besoin de sabres !"
+     ],
+     [
+      "b",
+      "Le Capitaine Floc'h, c'est moi, Salomé. Et je ne suis pas capitaine."
+     ],
+     [
+      "a",
+      "Plus maintenant. Mais quelle carrière !"
+     ],
+     [
+      "b",
+      "Ha ! Tu me rendras la moitié, comme d'habitude."
+     ]
+    ]
+   }
+  }
+ },
+ "tobias": {
+  "genre": "m",
+  "prenom": "Tobias",
+  "histoire": [
+   {
+    "titre": "le pot de goudron de mes sept ans",
+    "t": "Mon père était calfat, mon grand-père aussi, et le sien avant lui, depuis le naufrage. À sept ans, on m'a donné mon premier travail : tenir le pot de goudron. Je me suis brûlé trois doigts le premier jour. Mon père a dit : « Bien. Maintenant, tu sais ce qui est chaud. » C'était toute sa leçon. C'était une bonne leçon."
+   },
+   {
+    "titre": "le carnet noir des trous",
+    "t": "Chez nous, on tient un carnet noir depuis deux cents ans. Chaque trou du Léviathan y a son numéro, sa date et le nom de celui qui l'a bouché. Le premier, c'est mon aïeul, le lendemain du naufrage. J'en suis au quatre mille trois cent douze. Je les connais tous. Certains, c'est comme de vieux voisins : désagréables, mais fidèles."
+   },
+   {
+    "titre": "la nuit où j'ai promis cent ans",
+    "t": "Il y a trente ans, une voie d'eau s'est ouverte sous la poupe, en pleine nuit. J'ai bouché jusqu'à l'aube. En remontant, j'ai trouvé la nouvelle Amirale, toute jeune, blanche comme un linge. J'ai dit : « Elle tiendra cent ans, Amirale. » Je n'en savais rien. Je le répète depuis, chaque printemps. Il faut bien que quelqu'un le dise."
+   },
+   {
+    "titre": "ma vie entre les fuites",
+    "t": "Aujourd'hui, je bouche les trous, je mange la galette que Gwenola me glisse dans la poche, et j'écoute Jos taper au-dessus de ma tête. Lucie me dit où ça suinte, sous la coque. Ewen me demande comment on remet un bateau à l'eau. Et ma fille, Nolwenn, coud à sa fenêtre jusqu'à minuit. Je vois sa lampe. Je ne dis rien."
+   },
+   {
+    "titre": "la barque au fond du bassin",
+    "t": "Un secret, {surnom}. Au fond du bassin, il y a une vieille barque que tout le monde croit pourrie. Je la calfate la nuit, depuis deux ans, planche par planche. Pour Nolwenn. Je sais qu'elle veut partir, je l'ai toujours su. Le jour où elle partira, je veux qu'elle parte dans un bateau qui ne prend pas l'eau. C'est tout ce que je sais faire, moi."
+   }
+  ],
+  "reve": [
+   "Une nuit entière sans fuite. Une seule. Me coucher, dormir jusqu'au matin, et trouver la coque sèche au réveil. Je ne saurais pas quoi faire de ma journée. Je soupirerais, sûrement. Par habitude.",
+   "Et voir la vieille barque du bassin passer la pointe, un jour, sous une voile cousue main. De loin. Si je pleure, je dirai que c'est le goudron."
+  ],
+  "question": {
+   "texte": "Une question. Toi, quand quelque chose est cassé, tu répares, ou tu jettes ?",
+   "reponses": [
+    {
+     "label": "Je répare.",
+     "valeur": "repare",
+     "t": "Bien. Ça prend plus de temps, ça rate souvent. Mais ce qu'on a réparé, on le connaît par cœur. Et on ne le jette plus jamais.",
+     "rappel": "Toi qui répares : si tu as une heure, il y a une fuite sous la forge. Non, je plaisante. Presque."
+    },
+    {
+     "label": "Je jette, et j'en prends un neuf.",
+     "valeur": "jette",
+     "t": "Pff. Si on avait fait ça, il n'y aurait plus de Carène. Juste une plage. Enfin. Chacun son métier. Le mien, c'est de ne rien jeter.",
+     "rappel": "Tu jettes ce qui est cassé, toi. Ne jette pas le Léviathan, au moins. Il a encore deux ou trois bons siècles."
+    },
+    {
+     "label": "Je trouve quelqu'un pour réparer.",
+     "valeur": "fais_reparer",
+     "t": "Honnête. C'est ce que tout Carène fait, avec moi. Ça ne me dérange pas. Apporte-moi du bois, c'est tout ce que je demande.",
+     "rappel": "Toi qui fais réparer par les autres : tu n'aurais pas du bois, par hasard ? Du bon. Pas du flotté."
+    }
+   ]
+  },
+  "liens": {
+   "nolwenn": {
+    "qui": "ma fille",
+    "nom": "Nolwenn",
+    "sentiment": 1.0,
+    "avis": "Ma fille. Elle a les mains de sa mère et la tête dure de son père. Elle coud des voiles pour des bateaux qui ne partent pas. Je sais à quoi elle pense quand elle regarde la mer. Je fais semblant de ne pas savoir.",
+    "anecdotes": [
+     "Petite, Nolwenn a trempé sa tresse dans mon pot de goudron. J'ai passé la soirée à la lui nettoyer au beurre, mèche par mèche. Sa mère riait. Moi, je ne pouvais pas : j'avais trop eu peur que le goudron soit chaud. Il ne l'était pas. Depuis, il y a un couvercle sur tous mes pots. Vingt ans de couvercles.",
+     "La nuit, la lampe de Nolwenn reste allumée jusqu'à minuit. Elle coud quelque chose de grand, je l'entends tirer la toile. Un jour, j'ai trouvé sur le pont un bout de fil d'argent qui brillait dans le noir. Je l'ai mis dans ma poche, sans rien demander. Les secrets, c'est comme les voies d'eau : si on appuie dessus, ça s'agrandit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nolwenn. Tu as mangé ?"
+     ],
+     [
+      "b",
+      "Pas encore, papa. Une couture à finir."
+     ],
+     [
+      "a",
+      "Tu couds trop tard. Je vois ta lampe."
+     ],
+     [
+      "b",
+      "Et toi, tu rentres trop tard. Je vois ta lanterne au bassin."
+     ]
+    ]
+   },
+   "jos": {
+    "qui": "ce sourd de",
+    "nom": "Jos",
+    "sentiment": -0.3,
+    "avis": "Jos tape sur son enclume au-dessus de ma tête du matin au soir. Un jour, il passera à travers le pont et il atterrira dans mon goudron. Il l'aura mérité. Je l'aiderai à sortir. Mais il l'aura mérité.",
+    "anecdotes": [
+     "J'ai cloué une casserole au plafond de mon atelier, juste sous son enclume, pour qu'il entende ce que j'entends. Il en a accroché une sous la sienne. Maintenant, les deux sonnent ensemble, et Ewen appelle ça « la musique de l'entrepont ». Les clients de l'auberge croient que c'est une cloche. Je n'en dors plus.",
+     "Il y a longtemps, j'ai empêché Jos de faire une très grosse bêtise avec son canon. On s'est promis de ne jamais en parler. Alors je n'en parle pas. Mais quand il tape trop fort, je tousse, bien fort, dans l'escalier. Il comprend. Il tape moins fort. Pendant une heure."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Jos. Six heures du matin."
+     ],
+     [
+      "b",
+      "Le fer n'attend pas, voisin !"
+     ],
+     [
+      "a",
+      "Le goudron non plus. Et pourtant, il se tait."
+     ],
+     [
+      "b",
+      "Ha ! Je tape moins fort. Pour toi. Un peu."
+     ]
+    ]
+   },
+   "gwenola": {
+    "qui": "la brave",
+    "nom": "Gwenola",
+    "sentiment": 0.7,
+    "avis": "Gwenola me met une galette dans la poche tous les matins depuis trente ans. Je ne lui ai jamais rien demandé. Je ne lui ai jamais vraiment dit merci. Elle sait. À la Bordée, ils savent tout.",
+    "anecdotes": [
+     "Un matin, une fuite s'est ouverte sous la cale, et je n'avais rien pour bourrer en attendant l'étoupe. J'ai pris ce que j'avais dans la poche : la galette de Gwenola. Elle a tenu deux heures, bien beurrée. Gwenola l'a su, je ne sais pas comment. Elle me le rappelle tous les matins. Ça fait douze ans.",
+     "La nuit où l'eau est entrée sous la taverne, j'ai travaillé couché dans l'eau froide jusqu'au matin. Quand j'ai eu fini, Gwenola m'attendait avec un grog et une couverture. Elle n'a rien dit. Elle m'a juste remis le col droit, comme une mère. Je n'ai pas soupiré. Je n'ai pas pu : j'avais la gorge serrée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gwenola. Merci pour la galette."
+     ],
+     [
+      "b",
+      "Tu l'as mangée, cette fois, ou tu as bouché une fuite avec ?"
+     ],
+     [
+      "a",
+      "Je l'ai mangée. À moitié."
+     ],
+     [
+      "b",
+      "Et l'autre moitié ?"
+     ]
+    ]
+   },
+   "morgane": {
+    "qui": "l'Amirale",
+    "nom": "Morgane",
+    "sentiment": 0.3,
+    "avis": "L'Amirale me demande chaque printemps combien de temps la coque tiendra, et chaque fois que je demande du bois, elle répond « budget ». On ne bouche pas les trous avec des budgets.",
+    "anecdotes": [
+     "Il y a trente ans, après une nuit à boucher une voie d'eau sous la poupe, j'ai trouvé l'Amirale, toute jeune, blanche comme la toile de Nolwenn. J'ai dit : « Elle tiendra cent ans. » Elle m'a cru. Depuis, je ne peux plus rien dire d'autre. Si un jour je dis quatre-vingt-dix-neuf, elle ne dormira plus.",
+     "Cette année, je lui ai demandé du chêne des hautes terres. Elle m'a répondu : « Les bergers le vendent au poids de l'or, Tobias. » J'ai répondu : « Alors la coque tiendra au poids de l'or, Amirale. » Elle a fini par payer. La moitié. J'ai bouché la moitié des trous. Elle n'a pas trouvé ça drôle. Moi non plus, remarque."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Amirale. Il me faut du chêne."
+     ],
+     [
+      "b",
+      "Et sans chêne, la coque tiendra combien de temps ?"
+     ],
+     [
+      "a",
+      "Cent ans. Mais moi, je n'en tiendrai pas dix."
+     ],
+     [
+      "b",
+      "Bien. Le chêne. La moitié."
+     ]
+    ]
+   },
+   "ewen": {
+    "qui": "ce gamin de",
+    "nom": "Ewen",
+    "sentiment": 0.0,
+    "avis": "Ewen veut remettre le Léviathan à l'eau et partir avec tout le monde. Tout le monde rit. Moi, je soupire. Parce que je sais combien il y a de trous. Et parce qu'il y a des gens qui partent pour de vrai.",
+    "anecdotes": [
+     "Ewen m'a demandé combien de trous il fallait boucher pour faire flotter le Léviathan. J'ai ouvert le carnet noir : quatre mille trois cent douze, plus ceux de demain. Il a dit : « Ça va, c'est pas tant que ça. » J'ai soupiré. Le soir, j'ai fait le calcul pour de vrai. À deux, en travaillant bien, soixante ans. Il en a douze. Ça pourrait se faire.",
+     "Je lui ai laissé tenir le pot de goudron, une fois, comme mon père me l'avait laissé tenir. Il s'en est mis jusqu'aux coudes, mais il n'a pas lâché le pot. J'ai dit « pas mal ». Il est parti en courant le répéter à tout Carène. Depuis, tout le monde me regarde comme si j'avais fait un discours."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ewen. Ne touche pas au goudron sans moi."
+     ],
+     [
+      "b",
+      "Promis ! Mais demain, je peux tenir le pot ?"
+     ],
+     [
+      "a",
+      "Pff. Si tu es là à sept heures."
+     ],
+     [
+      "b",
+      "Six heures ! Je serai là à six heures !"
+     ]
+    ]
+   },
+   "lucie": {
+    "qui": "la plongeuse",
+    "nom": "Lucie",
+    "sentiment": 0.7,
+    "avis": "Lucie fait le tour de la coque par en dessous et me dit où ça suinte. Elle ne se trompe jamais, et elle ne parle pas pour rien. Si tout Carène était comme elle, j'aurais moins mal à la tête.",
+    "anecdotes": [
+     "Chaque mois, Lucie me dessine la coque vue d'en dessous, avec les endroits où le bois est mou. Elle ajoute toujours des poissons dans les coins, je ne sais pas pourquoi. Je range ses dessins dans le carnet noir, avec les numéros des trous. Les poissons, je ne les ai jamais effacés. Le carnet est moins triste avec.",
+     "Quand Lucie m'a parlé des signes gravés sous la quille, j'ai repensé à mon grand-père. Il disait que le Léviathan ne s'était pas échoué : qu'il s'était posé, comme si quelque chose l'attendait. Je le lui ai dit. Puis je l'ai regretté, et je me suis remis au travail. Il y a des choses qu'un calfat ne doit pas savoir. Il dormirait encore moins."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lucie. Alors, ça suinte où, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Tribord, la troisième membrure. Et un crabe s'y est installé."
+     ],
+     [
+      "a",
+      "Un crabe ? Il paie un loyer ?"
+     ],
+     [
+      "b",
+      "Non. Mais il bouche un peu le trou."
+     ]
+    ]
+   },
+   "fanch": {
+    "qui": "ce vieux phoque de",
+    "nom": "Fañch",
+    "sentiment": 0.6,
+    "avis": "Fañch vit sous une barque retournée et me fait monter dessus chaque automne pour boucher son toit. Il me paie en maquereaux. Je dis que ce n'est pas la peine, je les prends quand même. Il rit de tout. Ça repose.",
+    "anecdotes": [
+     "Chaque automne, je recalfate le toit de Fañch, enfin la quille de sa barque. Il me tend un maquereau, je dis « pas la peine », je le prends. Un automne, il m'a tendu un homard. J'ai eu peur : j'ai cru qu'il était malade. Il avait juste pêché trop de homards. Je l'ai mangé quand même, en me méfiant.",
+     "Ces temps-ci, Fañch me voit passer au bassin la nuit, avec ma lanterne. Il m'a demandé ce que je fabriquais. J'ai dit : « Rien. » Il n'a pas insisté. Le lendemain, il y avait devant l'atelier un pot de goudron neuf, avec un mot : « Pour rien. » Je ne sais pas ce qu'il sait. Avec Fañch, on ne sait jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fañch. Ton toit tiendra jusqu'au printemps."
+     ],
+     [
+      "b",
+      "Merci, Tobias ! Tiens, un maquereau."
+     ],
+     [
+      "a",
+      "Pas la peine."
+     ],
+     [
+      "b",
+      "Je sais. Prends-le quand même."
+     ]
+    ]
+   }
+  }
+ }
+}

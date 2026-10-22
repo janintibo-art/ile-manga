@@ -1,0 +1,2564 @@
+{
+ "bastien": {
+  "genre": "m",
+  "prenom": "Bastien",
+  "histoire": [
+   {
+    "titre": "mon enfance au fond de la barque",
+    "t": "Mon père était pêcheur, mon grand-père aussi, et son père avant lui, sur cette même plage. À quatre ans, je dormais au fond de la barque, entre les casiers. Je connaissais le nom des poissons avant celui des lettres. Aujourd'hui encore, je lis mieux la mer qu'un livre. Hé oui."
+   },
+   {
+    "titre": "le soir où je suis venu me plaindre",
+    "t": "Il y a six ans, un drôle de type a monté des enceintes au bout de la plage. Le lendemain, plus un maquereau dans la baie. Je suis venu, très fâché, lui demander de baisser. Mistral m'a tendu une noix de coco : « Un morceau, et je baisse. » J'ai dansé jusqu'au matin. Il n'a jamais baissé. Les maquereaux sont revenus quand même."
+   },
+   {
+    "titre": "la voile à la pieuvre",
+    "t": "Il y a trois ans, j'ai laissé Lulu peindre la voile de ma barque. J'imaginais un joli poisson. Elle a peint une pieuvre violette, énorme, avec des yeux qui te suivent quand tu rames. Depuis, les poissons me fuient, j'en suis sûr. Elle dit que la pieuvre me protège. De quoi ? je demande. De rien, elle dit, la preuve que ça marche."
+   },
+   {
+    "titre": "mes deux vies, le matin et le soir",
+    "t": "Aujourd'hui, je pêche de cinq heures à midi, je dors l'après-midi, et le soir je danse. Je fabrique les bouchons d'oreilles moi-même, avec de la cire de bougie, et je les donne aux nouveaux. Règle numéro un, toujours. J'ai trente-deux ans et je n'ai toujours pas trouvé de règle numéro trois. Comme on dit ici : deux, c'est déjà bien."
+   },
+   {
+    "titre": "la fois où on m'a renversé",
+    "t": "Tu connais l'histoire de Fanny qui a renversé deux verres et un Bastien ? Le Bastien, c'est moi. Son bras est parti, et je me suis retrouvé assis dans la mer. Elle a ri, j'ai ri. Depuis ce soir-là, je porte ses paniers de croissants du ponton jusqu'à la piste. Je ne lui ai jamais dit pourquoi. Le Bastien ne s'est jamais vraiment relevé, {surnom}."
+   }
+  ],
+  "reve": [
+   "Pêcher le poisson-lune doré dont tout le monde parle. Je le relâcherais, hein. Mais j'aurais la tête de quelqu'un qui l'a pêché, et ça me suffirait.",
+   "Et un soir, oser dire une phrase à quelqu'un… sans un panier de croissants dans les bras pour me cacher derrière."
+  ],
+  "question": {
+   "texte": "Demain, pêche à cinq heures. Tu viens ? Je demande à tout le monde, personne ne vient jamais.",
+   "reponses": [
+    {
+     "label": "J'y serai !",
+     "valeur": "oui",
+     "t": "Sans blague ? Peuchère, enfin quelqu'un ! Cinq heures, au ponton, avec un pull. Les maquereaux vont être contents. Moi aussi.",
+     "rappel": "Toi qui m'as dit oui pour la pêche : cinq heures, le ponton, n'oublie pas. Je t'attends toujours. Les maquereaux aussi."
+    },
+    {
+     "label": "Cinq heures ? Jamais.",
+     "valeur": "jamais",
+     "t": "Hé oui, comme tout le monde. Tu dors pendant que le poisson se lève. C'est la vie, je ne t'en veux pas. Un peu, quand même.",
+     "rappel": "Je sais, je sais, cinq heures, ce n'est jamais pour toi. Je ne te demande plus. Je te le dis juste, au cas où."
+    },
+    {
+     "label": "Si on danse jusque-là, d'accord.",
+     "valeur": "danse",
+     "t": "Ah, la technique de Momo ! On ne se couche pas, on part direct. Ça marche une fois. La deuxième, tu dors au fond de la barque.",
+     "rappel": "Toi qui voulais danser jusqu'à cinq heures et pêcher après… La barque a un coin pour dormir, je te préviens."
+    }
+   ]
+  },
+  "liens": {
+   "fanny": {
+    "qui": "notre petite boulangère",
+    "nom": "Fanny",
+    "sentiment": 0.9,
+    "avis": "Fanny ? Elle déborde, elle rit, elle renverse tout. Une tornade qui sent le croissant. C'est une bonne copine. Une très bonne copine. Hé oui.",
+    "anecdotes": [
+     "Le premier soir où Fanny est venue, elle dansait juste à côté de moi. Son bras est parti, ma casquette a volé dans la mer, et moi derrière. Je suis ressorti trempé. Elle a ri si fort que Mistral a baissé le son pour l'écouter. Ma casquette, c'est Momo qui l'a repêchée. Il ne me l'a jamais vraiment rendue.",
+     "Tous les soirs, quand L'Hirondelle accoste, je suis au ponton pour porter les paniers de Fanny jusqu'à la piste. Un soir, elle m'a donné le croissant le plus doré de la fournée. Je ne l'ai pas mangé tout de suite. Je l'ai regardé longtemps, assis sur ma barque. Il était tout écrasé le lendemain. C'est bête."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Donne, je porte le panier."
+     ],
+     [
+      "b",
+      "Merci, Bastien ! T'es le meilleur porteur de l'île, toi."
+     ],
+     [
+      "a",
+      "Le meilleur porteur. Hé oui. C'est déjà ça."
+     ]
+    ]
+   },
+   "momo": {
+    "qui": "ce chapardeur de",
+    "nom": "Momo",
+    "sentiment": 0.2,
+    "avis": "Momo est gentil comme tout, mais tout ce qui traîne finit sur lui : ma casquette, mon seau, ma barque. Il ne vole pas, il dit. Il emprunte pour toujours.",
+    "anecdotes": [
+     "Ma casquette rouge, je l'ai cherchée trois jours. Elle était sur la tête de Momo, qui dansait avec. Il m'a dit : « Je l'ai trouvée dans l'eau, frérot, c'est un cadeau de la mer. » Elle était dans l'eau parce que Fanny l'y avait envoyée. Ça n'en fait pas un cadeau de la mer, Momo.",
+     "Un matin, ma barque avait disparu. Momo l'avait prise pour aller chercher son dauphin. Il est revenu à midi, à la nage, en poussant la barque devant lui : il avait perdu les deux rames. Pas de dauphin. Il m'a fait un collier de coquillages pour s'excuser. Je le porte. Ne le lui dis surtout pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo, tu n'aurais pas vu mon seau ?"
+     ],
+     [
+      "b",
+      "Ton seau ? Le bleu ? Jamais vu, frérot."
+     ],
+     [
+      "a",
+      "Tu es assis dessus, Momo."
+     ]
+    ]
+   },
+   "sofia": {
+    "qui": "ma coéquipière",
+    "nom": "Sofia",
+    "sentiment": 0.7,
+    "avis": "Sofia plonge, je rame. Elle a peur des profondeurs depuis la pointe dorée, mais elle replonge quand même. C'est la plus courageuse de nous tous. Même si elle refuse la pêche de cinq heures.",
+    "anecdotes": [
+     "Un matin de mer plate, j'ai emmené Sofia vers la pointe dorée, au sud-ouest. Elle a plongé. Elle est remontée trop vite, toute blanche, sans un mot. Je l'ai hissée dans la barque et je lui ai mis ma casquette, pour le soleil. Elle a vu la pieuvre de ma voile et elle a éclaté de rire. Je crois que c'était la peur qui sortait.",
+     "Je demande à Sofia tous les soirs si elle vient à la pêche de cinq heures. Elle dit non. Mais quand je rentre, à midi, il y a souvent un beau coquillage posé sur le banc de ma barque. Je fais semblant de ne pas savoir d'où il vient. Elle fait semblant de me croire. C'est sa façon de venir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sofia ! Demain, cinq heures ?"
+     ],
+     [
+      "b",
+      "Non, Bastien. Mais regarde ton banc, à midi."
+     ],
+     [
+      "a",
+      "C'est presque pareil. Hé oui."
+     ]
+    ]
+   },
+   "lulu": {
+    "qui": "notre rêveuse",
+    "nom": "Lulu",
+    "sentiment": -0.2,
+    "avis": "Lulu, avec ses champignons et ses fées… Moi je crois ce que je vois, et je vois une pieuvre violette sur ma voile qui fait fuir les poissons. Elle est gentille. Elle raconte n'importe quoi.",
+    "anecdotes": [
+     "Je lui avais demandé un poisson, sur ma voile. Un petit, discret. Elle a peint une pieuvre violette de trois mètres, avec des yeux qui te suivent quand tu rames. Ce mois-là, j'ai pêché deux sardines. Elle dit que les poissons ont juste besoin de s'habituer. Ça fait trois ans qu'ils s'habituent.",
+     "Lulu m'a tendu un de ses champignons qui brillent, devant tout le monde. « Une bouchée et tu voles. » Je l'ai mis dans ma poche pour lui faire plaisir. Le lendemain, il brillait encore dans ma boîte à hameçons. Je l'ai jeté à la mer. Les poissons sont venus tourner autour, tout lumineux. Je n'en ai parlé à personne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Lulu, tu reviens d'où, ce soir ?"
+     ],
+     [
+      "b",
+      "D'au-dessus des nuages, Bastien. Comme hier."
+     ],
+     [
+      "a",
+      "Bien sûr. Et moi, je pêche des baleines."
+     ]
+    ]
+   },
+   "tchoum": {
+    "qui": "notre régleur de son",
+    "nom": "Tchoum",
+    "sentiment": 0.5,
+    "avis": "Tchoum, c'est un mystère avec une barbe. Il entend un crabe dans un caisson avant que le crabe le sache. Enfin… presque. Cette fois-là, c'est moi qui l'ai entendu.",
+    "anecdotes": [
+     "Raoul, le gros caisson, grésillait. Mistral disait que c'était la mer, Tchoum cherchait depuis une heure. Je passais, j'ai dit : « C'est un crabe. » Un pêcheur connaît le bruit d'un crabe dans une boîte. Tchoum a ouvert : un crabe. Depuis, il ne me regarde plus tout à fait pareil. Un peu de travers.",
+     "Un soir, j'ai parlé de pêche à Tchoum pendant deux heures. Les marées, les appâts, la lune. Il a dit trois mots, dont « Bon. » À la fin, il m'a tendu la main. Je crois que c'était la plus belle conversation de ma vie. Lui, je crois qu'il en est encore fatigué."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tchoum ! Des bouchons, pour la nuit ?"
+     ],
+     [
+      "b",
+      "… Non. Le son est propre."
+     ],
+     [
+      "a",
+      "Je les laisse là. Au cas où il serait propre et fort."
+     ]
+    ]
+   },
+   "octave": {
+    "qui": "mon client",
+    "nom": "Octave",
+    "sentiment": 0.4,
+    "avis": "Octave m'achète du poisson toutes les semaines. Il discute chaque sardine comme si c'était un lingot. Mais il paie, toujours comptant. Comme on dit ici : un client, c'est un client.",
+    "anecdotes": [
+     "Chaque semaine, je monte mon panier de poisson jusqu'au fromager d'Octave. On discute le prix de chaque sardine. Je dis « Peuchère », il dit « Comptant », et on finit toujours au prix de la semaine d'avant. Une fois, j'ai proposé moins cher, pour voir. Il a refusé. Il a dit que c'était louche.",
+     "Un matin, j'ai pêché un mérou plus lourd que Clou. Je l'ai hissé jusqu'au fromager avec une corde. Octave l'a regardé, il l'a soupesé, et il l'a payé sans marchander. Sans marchander ! Je l'ai raconté à toute la teuf, deux fois. Mistral en a fait un morceau, « Le Mérou d'Octave ». Octave ne l'a jamais écouté. Il l'entend quand même, de là-haut."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Octave ! Un mérou comme l'autre fois, ça te dit ?"
+     ],
+     [
+      "b",
+      "Au prix de l'autre fois ? Non. L'autre fois, c'était une erreur."
+     ],
+     [
+      "a",
+      "Une belle erreur. Je la raconte encore à la teuf. Hé oui."
+     ]
+    ]
+   }
+  }
+ },
+ "fanny": {
+  "genre": "f",
+  "prenom": "Fanny",
+  "histoire": [
+   {
+    "titre": "mon enfance derrière le port",
+    "t": "J'ai grandi à Port-Azur, dans la ruelle derrière le port, avec mes trois frères. Chez nous, on parlait fort, on mangeait vite et on dansait dans la cuisine en faisant la vaisselle. Ma mère dit que j'ai cassé plus d'assiettes en dansant qu'en les lavant. Elle exagère. Un peu."
+   },
+   {
+    "titre": "comment je suis entrée chez Margaux",
+    "t": "À seize ans, j'ai poussé la porte du Pain Doré pour acheter une baguette. J'ai fait un grand geste en parlant et j'ai renversé tout un panier de croissants. Margaux m'a regardée, elle a dit : « Tu as de l'énergie, toi. Tu sais pétrir ? » Le lendemain, à quatre heures du matin, j'étais là, en tablier."
+   },
+   {
+    "titre": "mon premier soir à la teuf",
+    "t": "C'est Yaya qui m'a amenée, il y a deux ans. Elle m'a vue danser derrière le comptoir en rendant la monnaie, et elle m'a dit : « Ce soir, plage du village. » J'ai pris L'Hirondelle, j'ai entendu le kick depuis le pont, et j'ai su. Ce soir-là, j'ai renversé deux verres et un Bastien. Il m'a pardonné tout de suite. Trop vite, même."
+   },
+   {
+    "titre": "ma vie à cent quarante-cinq",
+    "t": "Maintenant, je me lève à quatre heures, je pétris jusqu'à midi, je dors un peu, et le soir je prends le bateau avec les invendus de Margaux. Je danse, je reprends la dernière Hirondelle, je dors trois heures. Je pétris en rythme, à cent quarante-cinq. Margaux dit que mes croissants ont du swing. Je crois que c'est un compliment."
+   },
+   {
+    "titre": "la recette que je cache à Margaux",
+    "t": "Je vais te dire un secret, {surnom}. J'invente une recette, la nuit, dans un carnet : un petit pain à la noix de coco, pour les danseurs du matin. Je rêve de l'ouvrir ici, ma boulangerie, au bout de la plage. Mais j'ai peur que Margaux le prenne mal. Elle m'a tout appris. On ne quitte pas quelqu'un qui vous a tout appris. Si ?"
+   }
+  ],
+  "reve": [
+   "Une toute petite boulangerie au bout de la plage, ouverte au lever du soleil, pour les danseurs qui ont faim. Je l'appellerais « Le Croissant de Lune ». Et Margaux viendrait goûter. Et elle serait fière. Voilà."
+  ],
+  "question": {
+   "texte": "Dis, toi, tu es plutôt du matin ou du soir ?",
+   "reponses": [
+    {
+     "label": "Du matin !",
+     "valeur": "matin",
+     "t": "Comme Margaux ! Les gens du matin, je les admire et je ne les comprends pas. Le meilleur pain, c'est à quatre heures, d'accord. Mais la meilleure musique, c'est à minuit.",
+     "rappel": "Toi, la personne du matin ! Passe au Pain Doré à six heures, je te garde le premier croissant. Tout chaud."
+    },
+    {
+     "label": "Du soir, évidemment.",
+     "valeur": "soir",
+     "t": "Ah, une vraie ! Les gens du soir, c'est ma famille. On se reconnaît aux cernes. Viens danser, on se reposera quand la mer sera sèche.",
+     "rappel": "Hé, la personne du soir ! Tu as les cernes de la teuf, je reconnais. Ça te va bien."
+    },
+    {
+     "label": "Des deux, comme toi.",
+     "valeur": "deux",
+     "t": "Comme moi ? Alors bon courage, et dors dans le bateau. C'est le seul moment calme de la journée. Le capitaine Léon klaxonne tout doucement quand je dors.",
+     "rappel": "Toi qui es du matin et du soir, comme moi… tu dors quand, au juste ? Pas sur L'Hirondelle, hein. C'est ma place."
+    }
+   ]
+  },
+  "liens": {
+   "margaux": {
+    "qui": "ma patronne",
+    "nom": "Margaux",
+    "sentiment": 0.85,
+    "avis": "Margaux m'a appris le pain, la patience et le lever à quatre heures. Elle râle quand je danse dans le fournil, mais c'est elle qui fredonne la première.",
+    "anecdotes": [
+     "Un matin, après une grosse nuit de teuf, je me suis endormie la tête sur le pétrin. Margaux ne m'a pas réveillée. Elle a fait la fournée toute seule et elle a posé un croissant à côté de ma joue. Quand j'ai ouvert les yeux, elle a juste dit : « La musique était bonne ? »",
+     "Margaux me donne ses invendus du soir pour la teuf, pour ne pas gâcher, elle dit. Un soir, il y avait douze croissants encore tout chauds dans le panier, avec un mot : « Invendus. » On ne fait jamais de fournée le soir. Margaux ne sait pas mentir. Je ne lui ai rien dit. Je l'ai serrée très fort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Patronne ! J'ai fini le pétrin, je peux filer au bateau ?"
+     ],
+     [
+      "b",
+      "File. Et ne renverse personne, ce soir."
+     ],
+     [
+      "a",
+      "Juste un Bastien, alors. Un petit."
+     ]
+    ]
+   },
+   "bastien": {
+    "qui": "mon porteur de croissants",
+    "nom": "Bastien",
+    "sentiment": 0.6,
+    "avis": "Bastien, c'est le meilleur porteur de paniers de l'île, et le seul garçon que j'ai fait tomber à l'eau. Il est gentil. Il rougit beaucoup. Il prend trop de soleil, je crois.",
+    "anecdotes": [
+     "Mon premier soir, j'ai fait un grand geste et Bastien s'est retrouvé assis dans la mer, sa casquette partie au large. Je me suis excusée dix fois en riant. Il disait « C'est rien, c'est rien », avec de l'eau jusqu'à la taille. Il n'a pas bougé pendant un long moment. Je crois qu'il était sonné.",
+     "Tous les soirs, au ponton, Bastien m'attend pour porter mes paniers. Il dit qu'il vérifie les marées. À sept heures du soir. Tous les soirs. Les mains vides. Un jour, je lui ai donné le croissant le plus doré de la fournée. Il l'a tenu comme un trésor. Il ne l'a pas mangé devant moi. Drôle de garçon."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bastien ! Tu es encore tout rouge, mets ta casquette !"
+     ],
+     [
+      "b",
+      "C'est… le soleil. Il tape fort, le soir."
+     ],
+     [
+      "a",
+      "Le soir ? Bastien, il fait nuit."
+     ]
+    ]
+   },
+   "yaya": {
+    "qui": "ma copine",
+    "nom": "Yaya",
+    "sentiment": 0.85,
+    "avis": "Yaya m'a amenée ici : je lui dois tout ce qui m'est arrivé de bien depuis deux ans. Elle danse comme un crabe heureux, et je lui garde toujours le croissant le plus chaud.",
+    "anecdotes": [
+     "Yaya venait chaque semaine à la boulangerie. Moi, je dansais derrière le comptoir et la monnaie volait partout. Un jour, elle a posé ses pièces, elle a fait le pas du crabe jusqu'à la porte et elle m'a dit : « Ce soir, plage du village. Pas de discussion. » Je n'ai pas discuté.",
+     "Yaya a voulu m'apprendre à danser « plus petit », les coudes collés au corps, pour que je ne renverse plus personne. Une semaine de cours. Le soir de l'examen, j'ai tenu deux morceaux. Au troisième, mon bras est parti et Yaya a atterri dans les bras de Tchoum. Elle n'a jamais dit si l'examen était raté. Elle avait l'air contente."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yaya ! Je t'ai gardé le plus chaud !"
+     ],
+     [
+      "b",
+      "Ma boulangère préférée ! Il est encore tiède, en plus !"
+     ],
+     [
+      "a",
+      "Je l'ai tenu contre moi pendant toute la traversée."
+     ]
+    ]
+   },
+   "marley": {
+    "qui": "ce cher",
+    "nom": "Marley",
+    "sentiment": 0.25,
+    "avis": "Marley, je l'aime bien, hein. Mais il veut mettre de la banane dans tout ce que je fais. Dans les croissants, dans la brioche, dans la baguette. Dans la baguette, {surnom} !",
+    "anecdotes": [
+     "Un soir, Marley a glissé une banane dans mon panier, « pour que ta patronne goûte ». Pendant la traversée, je me suis assise dessus sans la voir. La fournée du lendemain avait un petit goût de banane, va savoir comment. Margaux m'a regardée longtemps. J'ai dit que c'était un essai. On en a vendu. Je ne l'ai jamais avoué à Marley.",
+     "Marley n'a jamais pris le bateau. Jamais. Alors il me confie des messages pour Port-Azur : « Dis bonjour au port de ma part. » « Dis au phare qu'il clignote bien. » Je les dis, sur le pont, à voix haute. Le capitaine Léon me regarde bizarrement. Mais je les dis. Ça, je ne peux pas lui refuser."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marley, non. Je sais ce que tu vas dire. Non."
+     ],
+     [
+      "b",
+      "Une petite tarte banane-coco, juste une ?"
+     ],
+     [
+      "a",
+      "Bon. Une. Petite. Et tu ne le dis à personne."
+     ]
+    ]
+   }
+  }
+ },
+ "gaspard": {
+  "genre": "m",
+  "prenom": "Gaspard",
+  "histoire": [
+   {
+    "titre": "le gamin qui grimpait partout",
+    "t": "Petit, au village, je grimpais partout : les palmiers, le toit du lavoir, une fois le mât d'un bateau qui partait. On m'a redescendu au large. Ma mère disait que j'aurais dû naître singe. J'ai pris ça comme un compliment. Ce qu'elle ne savait pas, c'est que je grimpais les yeux fermés. Tranquille."
+   },
+   {
+    "titre": "ce que Barnabé m'a appris",
+    "t": "À quinze ans, j'ai frappé à la cabane de Barnabé. Je voulais savoir comment il avait construit ça tout seul, après son naufrage. Il m'a appris les nœuds marins, à lire le vent avant de poser un toit, et que les planches ont un sens, comme les cartes. Il parlait à Gaston pendant tout le cours. Gaston, lui, savait déjà tout."
+   },
+   {
+    "titre": "le jour où je suis tombé de soleil",
+    "t": "Il y a quatre étés, j'ai dansé à midi, en plein soleil, sans boire, pendant cinq heures. Je me suis réveillé dans les bras de Nono, qui me portait jusqu'à la source du village avec ses genoux qui grinçaient. Il m'a versé de l'eau sur la tête en chantant faux. Depuis, je bois. Et je dis à tout le monde de boire. Je sais, ça agace Sofia."
+   },
+   {
+    "titre": "mes cabanes aujourd'hui",
+    "t": "Maintenant, je construis des cabanes pour qui en veut. Celle de Marley, au-dessus de ses bananiers. L'estrade de Mistral. Ma petite cabane d'essai près de la plage, celle qui penche, où Zoé dort en ce moment. Le soir, je hoche la tête à côté de Tchoum. On ne parle pas. On est bien. Bon."
+   },
+   {
+    "titre": "pourquoi je construis dans les arbres",
+    "t": "Je te dis un truc, mais tu le gardes. J'ai le vertige. Depuis toujours. Petit, je grimpais les yeux fermés pour ne pas voir le vide. Je construis dans les arbres parce que je me dis qu'à force, ça passera. Ça fait quinze ans. Ça n'est pas passé. Mais les cabanes, elles, tiennent debout. C'est déjà ça, {surnom}."
+   }
+  ],
+  "reve": [
+   "Une cabane tout en haut du plus grand arbre de la jungle. Plus haute que celle d'Octave. J'y monterais une seule fois, pour voir sa tête d'en haut. Après, je redescends vite.",
+   "Et une source d'eau fraîche juste à côté de la piste. Comme ça, plus personne n'aurait d'excuse."
+  ],
+  "question": {
+   "texte": "Hé. Tu as bu de l'eau, aujourd'hui ? Vraiment bu, hein. Pas une gorgée.",
+   "reponses": [
+    {
+     "label": "Oui, des litres.",
+     "valeur": "oui",
+     "t": "Bien. Très bien. L'eau de la source du village, j'espère ? C'est la meilleure, tout le monde le sait. Tu peux danser, alors.",
+     "rappel": "Toi qui bois des litres, je te fais confiance. Mais bois quand même. Juste pour me faire plaisir."
+    },
+    {
+     "label": "Euh… pas trop.",
+     "valeur": "non",
+     "t": "Pas trop ? Tiens, ma gourde. Bois. Encore un peu. Là. Maintenant tu peux danser. Pas avant, {surnom}.",
+     "rappel": "La dernière fois, tu n'avais pas assez bu. Alors, aujourd'hui ? Montre-moi ta gourde."
+    },
+    {
+     "label": "Tu me l'as déjà demandé.",
+     "valeur": "deja",
+     "t": "Ah oui ? … Bon. Alors c'est que c'est important. Je hoche la tête depuis une heure, je ne sais plus à qui j'ai demandé. Bois quand même.",
+     "rappel": "Je sais, je sais, je te l'ai déjà demandé. Je te le redemande. Tu as bu ?"
+    }
+   ]
+  },
+  "liens": {
+   "barnabe": {
+    "qui": "mon vieux maître",
+    "nom": "Barnabé",
+    "sentiment": 0.9,
+    "avis": "Barnabé m'a tout appris des cabanes. Il parle beaucoup, il se trompe parfois sur les rochers, mais ses nœuds ne lâchent jamais. Jamais.",
+    "anecdotes": [
+     "Pour mon premier cours, Barnabé a déplié une de ses cartes sur le sable et il a dit : « Une cabane, c'est une carte qu'on habite. » Je n'ai rien compris. Il a passé la journée à me montrer un seul nœud. Ce nœud tient toujours le toit de ma cabane d'essai. C'est la seule chose qui ne penche pas.",
+     "Depuis que Barnabé passe à la teuf avec Gaston sur l'épaule, le perroquet imite le kick. Une nuit, en rentrant par la jungle, j'ai entendu « Boum. Boum. » dans le noir, pile à cent quarante-cinq. J'ai cru que Mistral avait mis une enceinte dans les arbres. C'était Gaston, tout seul, sur une branche. J'ai couru jusqu'à chez moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salut, Barnabé. Tu as bu de l'eau ?"
+     ],
+     [
+      "b",
+      "Du jus de coco, moussaillon ! C'est de l'eau avec de l'ambition."
+     ],
+     [
+      "a",
+      "Ça compte. À moitié."
+     ]
+    ]
+   },
+   "octave": {
+    "qui": "le forgeron",
+    "nom": "Octave",
+    "sentiment": 0.1,
+    "avis": "Octave dit que ses cabanes sont mieux que les miennes. Le pire, c'est qu'il a raison : il était charpentier sur un vrai trois-mâts. Mais il ne me le dit jamais gentiment.",
+    "anecdotes": [
+     "Un jour, Octave est descendu de son échelle pour voir ma cabane d'essai. Il en a fait le tour, il a tapé sur un poteau, il a dit : « Ça penche. » Puis il m'a montré un assemblage à tenon, en deux minutes, sans un mot de plus. Et il m'a demandé deux pièces pour la leçon. Je les ai payées. Elle valait plus. Ne le lui dis pas.",
+     "J'ai demandé à Octave si je pouvais construire une petite cabane dans son fromager, en dessous de la sienne. Il a dit : « Pour m'espionner avec Barnabé ? » J'ai dit que je voulais juste la vue. Il a dit : « La vue, c'est payant. » Je construis ailleurs, du coup. Plus bas. Avec moins de vue.",
+     "Un soir, pendant un gros morceau de Mistral, ma cabane d'essai s'est écroulée. Le lendemain, Clou est arrivé avec un sac de clous, de la part d'Octave. Onze clous. Le sac en annonçait vingt. Je l'ai reconstruite avec. Elle penche toujours, mais elle tient : c'est là que dort Zoé. Je n'ai jamais osé demander où étaient passés les neuf autres."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Octave. Elle est belle, votre cabane."
+     ],
+     [
+      "b",
+      "Je sais. La tienne penche toujours ?"
+     ],
+     [
+      "a",
+      "Un peu. Moins qu'avant. Grâce à votre tenon."
+     ],
+     [
+      "b",
+      "Deux pièces. Je te l'ai fait pas cher."
+     ]
+    ]
+   },
+   "marley": {
+    "qui": "mon voisin de jungle",
+    "nom": "Marley",
+    "sentiment": 0.85,
+    "avis": "Marley, c'est mon voisin et mon meilleur pote. Il paie mes cabanes en bananes et il dit que tout le monde est de la famille. Avec lui, c'est vrai.",
+    "anecdotes": [
+     "J'ai construit la cabane de Marley au-dessus de ses bananiers, près de chez Barnabé. Il m'a payé en régimes : un par planche. Quatre-vingt-trois planches. J'ai mangé des bananes pendant trois mois. Confiture, beignets, pain, bananes grillées. Je ne peux plus en voir une. Je ne le lui ai jamais dit.",
+     "Le lendemain de la grande tempête, la bananeraie de Marley était couchée par terre. Il était assis devant et il souriait quand même, c'était pire que s'il pleurait. Je suis venu avec des cordes. On a relevé chaque pied, un par un, pendant deux jours. Il parlait à chaque bananier comme à un cousin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marley, tu as bu de l'eau ?"
+     ],
+     [
+      "b",
+      "J'ai bu une noix de coco, mon frère. C'est pareil, en mieux."
+     ],
+     [
+      "a",
+      "C'est pas pareil. Mais c'est bien."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "notre DJ",
+    "nom": "Mistral",
+    "sentiment": 0.6,
+    "avis": "Mistral, c'est le cœur de la teuf. Il oublie de boire, il oublie de dormir, il oubliait même que ses platines étaient trop hautes. Moi, je n'oublie pas. C'est pour ça que je suis là.",
+    "anecdotes": [
+     "Mistral mixait sur la pointe des pieds, ses platines étaient trop hautes pour lui. J'avais mal aux mollets rien qu'à le regarder. J'ai pris une corde, je lui ai mesuré les bras pendant qu'il jouait, et le lendemain il avait une estrade. Elle grince un peu sur le temps faible. Je lui dis que c'est voulu. Ça l'est presque.",
+     "Je pose une gourde d'eau de source sur la table de Mistral toutes les heures. Il fait semblant de ne pas la voir. Alors je reste là, je le regarde, je hoche la tête. Un soir, ça a duré quatre minutes. Il a bu d'un coup, en riant, et il m'a joué un morceau qu'il a appelé « Gourde ». Pas drôle. Je l'ai dansé quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral. L'heure de la gourde."
+     ],
+     [
+      "b",
+      "Déjà ? Le temps file quand on mixe !"
+     ],
+     [
+      "a",
+      "L'eau aussi, elle file. Bois."
+     ]
+    ]
+   },
+   "tchoum": {
+    "qui": "mon frère hocheur",
+    "nom": "Tchoum",
+    "sentiment": 0.75,
+    "avis": "Tchoum et moi, on hoche la tête côte à côte depuis cinq ans. On ne parle presque pas. On n'en a pas besoin. C'est mon ami le plus calme, et le plus fidèle.",
+    "anecdotes": [
+     "Une nuit, on a hoché la tête neuf heures de suite, Tchoum et moi, sans un mot. Le lendemain, impossible de tourner le cou. On se saluait en pivotant tout le corps. Mistral riait tellement qu'il a raté un enchaînement. C'est la seule fois que je l'ai vu rater.",
+     "Tchoum avait un coup de soleil sur le crâne, tout rouge. Il ne se plaignait pas, il ne se plaint jamais. J'ai fait tricoter un bonnet vert à Port-Azur et je le lui ai posé sur la tête. Il a dit : « Ouais. » Il le porte tous les jours depuis. Même quand il fait chaud. Surtout quand il fait chaud."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bien, le kick, ce soir."
+     ],
+     [
+      "b",
+      "… Ouais. Propre."
+     ],
+     [
+      "a",
+      "Tu as bu ?"
+     ],
+     [
+      "b",
+      "… Ta gourde. Ouais."
+     ]
+    ]
+   },
+   "nono": {
+    "qui": "mon sauveur",
+    "nom": "Nono",
+    "sentiment": 0.4,
+    "avis": "Nono m'a porté jusqu'à la source le jour où je suis tombé de soleil. Je lui dois tout. Mais s'il me raconte encore une fois la fête dans la mine, je retombe. Exprès.",
+    "anecdotes": [
+     "Il y a quatre étés, je me suis effondré sur la piste en plein midi. Nono m'a soulevé, à son âge, et il m'a porté jusqu'à la source en chantant une vieille chanson de marin. Ses genoux grinçaient à chaque pas. Après, il m'a dit : « Tu pèses le poids d'un tonneau de nain. » Je ne sais toujours pas si c'est un compliment.",
+     "Nono m'a raconté la fête dans la mine des nains au moins quarante fois. Dans la première version, il y avait de l'écho. Dans la dixième, un dragon. Dans la dernière, les nains le portaient en triomphe. Je lui ai dit qu'on la connaissait par cœur. Il m'a répondu : « Et pourtant, tu restes jusqu'à la fin. » C'est vrai. Je reste."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nono, bois un peu, il fait chaud."
+     ],
+     [
+      "b",
+      "Petit, je buvais déjà de l'eau quand ta source n'était qu'une flaque !"
+     ],
+     [
+      "a",
+      "Alors bois-en encore. Pour la flaque."
+     ]
+    ]
+   },
+   "zoe": {
+    "qui": "ma locataire",
+    "nom": "Zoé",
+    "sentiment": 0.4,
+    "avis": "Zoé dort dans ma cabane d'essai depuis trois semaines. Elle a mis des coquillages partout et elle laisse la porte ouverte aux crabes. Mais elle dit que c'est la plus belle cabane du monde. Ça compte.",
+    "anecdotes": [
+     "Zoé ne devait rester qu'un week-end. Elle n'avait plus de chambre. Je lui ai prêté ma cabane d'essai pour deux nuits, celle qui penche. Trois semaines plus tard, il y a des guirlandes de coquillages, un hamac et une pancarte « Chez Zoé ». Je frappe avant d'entrer dans ma propre cabane, maintenant.",
+     "Zoé laisse toujours la porte ouverte. Un matin, il y avait trois crabes dans son hamac. Elle les a baptisés Kick, Basse et Mistral, et elle leur parle. Moi je dis qu'une cabane, ça se ferme. Elle dit qu'une cabane, ça s'ouvre. On n'est pas d'accord. J'ai quand même donné un bout de banane à Basse. Il avait l'air d'avoir faim."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zoé, la porte. Ferme la porte."
+     ],
+     [
+      "b",
+      "Mais Kick et Basse vont s'ennuyer, Gaspard !"
+     ],
+     [
+      "a",
+      "Les crabes ont une plage entière, Zoé."
+     ]
+    ]
+   }
+  }
+ },
+ "lila": {
+  "genre": "f",
+  "prenom": "Lila",
+  "histoire": [
+   {
+    "titre": "mon enfance dans la rue de Yaya",
+    "t": "Je suis née ici, au village, dans la maison au toit vert, juste à côté de chez Yaya. On était les deux seules filles de la rue, alors on est devenues sœurs, en quelque sorte. Elle dansait, moi je la regardais. Déjà petite, je regardais les gens plus que je ne leur parlais. Je faisais des cadres avec mes doigts."
+   },
+   {
+    "titre": "l'appareil de mon grand-père",
+    "t": "À douze ans, j'ai trouvé au grenier l'appareil photo de mon grand-père, un vieux, avec un soufflet en cuir. Il ne marchait plus. J'ai mis deux ans à le réparer, avec des pièces achetées à Port-Azur et beaucoup de patience. Ma première photo, c'était le phare d'Azur, la nuit, vu de la plage. Une petite tache floue. Je l'ai encore."
+   },
+   {
+    "titre": "la nuit où j'ai découvert les traînées",
+    "t": "Il y a quatre ans, Yaya m'a traînée à la teuf. J'ai posé l'appareil sur le sable, laissé l'obturateur ouvert longtemps, et quelqu'un est passé devant avec un bâton lumineux. Sur la photo, il y avait un ruban de lumière, comme un serpent qui danse. Depuis cette nuit-là, je n'ai plus jamais fait une photo de jour."
+   },
+   {
+    "titre": "mes nuits de photographe",
+    "t": "Aujourd'hui, je photographie la teuf toutes les nuits. Nono qui devient une vague, Lulu qui ressemble à une fée, Titou qui n'est jamais net. J'achète des bâtons lumineux par cartons à Port-Azur. Je n'en ai jamais assez : on me les emprunte, on les lance, on les perd dans la mer. Surtout Titou. Surtout lui."
+   },
+   {
+    "titre": "pourquoi je photographie tout le monde",
+    "t": "Je n'ai aucune photo de ma mère. Elle est partie quand j'avais quatre ans, et son visage s'efface un peu chaque année. Il me reste son rire, et encore. Alors je photographie tout le monde, tout le temps. Pour que personne, ici, ne s'efface. Ne le dis pas aux autres, {surnom}. Ils poseraient trop sérieusement."
+   }
+  ],
+  "reve": [
+   "Une exposition à Port-Azur, dans le hall du Grand Hôtel : toute la teuf en rubans de lumière, sur les murs. Et les gens de la plage qui viennent se voir, et qui se trouvent beaux.",
+   "Et une photo de toute l'île vue d'en haut, la nuit, avec le mur de son qui clignote. Il me faudrait un oiseau géant. Il paraît que ça existe."
+  ],
+  "question": {
+   "texte": "Je peux te prendre en photo ? Rien qu'une. Promis, je ne la montre à personne.",
+   "reponses": [
+    {
+     "label": "Oui, vas-y !",
+     "valeur": "oui",
+     "t": "Ne bouge plus… plus… Voilà ! Ta main a laissé une traînée bleue, on dirait une aile. Tu es très photogénique, la nuit.",
+     "rappel": "J'ai développé ta photo. Tu as une aile bleue à la place du bras. Elle est dans ma boîte des gens importants."
+    },
+    {
+     "label": "Je préfère pas.",
+     "valeur": "non",
+     "t": "D'accord. Je respecte. Je te photographie dans ma tête, alors. C'est flou, mais ça ne s'efface pas.",
+     "rappel": "Toi qui n'aimes pas les photos : je n'en ai pris aucune de toi. Enfin, juste une, dans ma tête. Elle est réussie."
+    },
+    {
+     "label": "Seulement si je bouge.",
+     "valeur": "flou",
+     "t": "Comme Titou ! Ceux qui bougent sont les plus beaux en pose longue : ils deviennent des fantômes de lumière. Saute, tourne… Voilà, tu as disparu. Magnifique.",
+     "rappel": "Mon fantôme préféré ! Ta photo floue est accrochée à côté de celles de Titou. Vous faites la paire."
+    }
+   ]
+  },
+  "liens": {
+   "yaya": {
+    "qui": "ma sœur de cœur",
+    "nom": "Yaya",
+    "sentiment": 0.9,
+    "avis": "Yaya, c'est ma sœur, sauf pour le sang. Elle danse, je photographie : on fait ça depuis qu'on a six ans, dans la même rue. Elle a raison pour le chat, d'ailleurs.",
+    "anecdotes": [
+     "Yaya jurait que le chat de la petite maison dansait mieux que nous. Personne ne la croyait. Alors je me suis cachée derrière la fontaine pendant tout un cours. J'ai la photo : le chat, une patte levée, pile sur le pas du crabe. Elle est encadrée chez Yaya, au-dessus de son lit.",
+     "Quand on avait dix ans, Yaya montait des spectacles dans la rue, avec des draps comme rideaux. Moi, j'étais le public, la lumière et la caisse. Un jour, le seul spectateur payant a été un pêcheur qui passait. Il nous a donné un poisson. On l'a fait griller sur la plage, très fières. Notre premier cachet."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yaya, bouge pas, la lune est juste derrière toi."
+     ],
+     [
+      "b",
+      "Je bouge pas ! Mais fais vite, j'ai une crampe de crabe !"
+     ],
+     [
+      "a",
+      "Voilà. Tu es une danseuse de lune."
+     ]
+    ]
+   },
+   "titou": {
+    "qui": "ce flou ambulant de",
+    "nom": "Titou",
+    "sentiment": 0.0,
+    "avis": "Titou est adorable, drôle, généreux… et je n'ai pas une seule photo nette de lui en trois ans. Pas une. En plus, c'est lui qui m'a perdu mes derniers bâtons lumineux.",
+    "anecdotes": [
+     "Le mois dernier, Titou m'a emprunté mes six derniers bâtons lumineux pour jongler. « Regarde, Lila, un arc-en-ciel ! » Le quatrième est parti dans la mer, le cinquième dans les cheveux de Nono, le sixième je ne sais pas. Depuis, je n'en ai plus, et je dis aux nouveaux de danser avec les mains.",
+     "J'ai essayé de photographier Titou trois cent douze fois. Sur toutes, c'est une traînée rose avec des lunettes noires. Un jour, il a promis de rester immobile une seule seconde. Il a tenu. Et il a éternué. J'ai soupiré si fort que l'appareil a bougé aussi. Il me réclame toutes ses photos : il les appelle « mes portraits de fantôme »."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Titou. Une photo. Tu ne bouges pas. D'accord ?"
+     ],
+     [
+      "b",
+      "Promis ! Pas un cil. Pas un… attends, un crabe !"
+     ],
+     [
+      "a",
+      "Et voilà. Encore un fantôme."
+     ]
+    ]
+   },
+   "lulu": {
+    "qui": "mon amie peintre",
+    "nom": "Lulu",
+    "sentiment": 0.8,
+    "avis": "Lulu voit des couleurs qui n'existent pas encore. Moi je les attrape, elle les met sur les voiles. On est faites pour travailler ensemble. Si elle se décide un jour à commencer la fresque.",
+    "anecdotes": [
+     "Un matin, Lulu est revenue de chez ses fées avec du pollen doré sur les joues. Je l'ai photographiée en pose longue. Sur la photo, autour de sa tête, il y a de petites lumières qui ne viennent d'aucun bâton. Bastien dit que c'est un défaut de l'appareil. Mon appareil n'a pas de défaut. Bastien, si.",
+     "Pour la fresque du mur de son, Lulu m'a demandé toutes mes photos de la teuf. Elle les a étalées sur le sable une nuit entière, à la lumière d'un champignon. Au matin, elle a dit : « C'est trop beau, je ne peux pas commencer. » Le mur est toujours blanc. Mais elle m'a rendu mes photos mieux rangées que je ne les avais jamais rangées."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lulu, ce soir tu brilles. Je peux ?"
+     ],
+     [
+      "b",
+      "Vas-y. C'est le pollen, il adore les photos."
+     ],
+     [
+      "a",
+      "Alors dis-lui de ne pas bouger."
+     ]
+    ]
+   },
+   "nono": {
+    "qui": "mon modèle préféré",
+    "nom": "Nono",
+    "sentiment": 0.8,
+    "avis": "Les jeunes disent que Nono danse comme un phoque. Sur mes photos, il danse comme une vague. Il faut juste le regarder assez longtemps, c'est tout.",
+    "anecdotes": [
+     "J'ai photographié Nono avec l'obturateur ouvert pendant tout un morceau. Sur la photo, son bonnet orange a laissé une grande courbe, comme une vague qui roule. Je la lui ai donnée. Il l'a regardée longtemps et il a dit : « Tu vois. Un phoque très élégant. » Il la garde pliée dans son bonnet.",
+     "Quand je change de pellicule, Nono me raconte les fêtes d'autrefois. Le bal sur le bateau de son père, les lanternes de la mine des nains. Il me décrit toujours les lumières, jamais la musique. Je crois qu'il me les raconte pour que je les photographie un jour. Je note tout dans un carnet."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nono, refais ta vague, j'ai raté le début !"
+     ],
+     [
+      "b",
+      "Ma vague ? C'est un phoque élégant, ma belle. Mais d'accord."
+     ],
+     [
+      "a",
+      "Parfait. Un phoque-vague. Ne t'arrête surtout pas."
+     ]
+    ]
+   }
+  }
+ },
+ "lulu": {
+  "genre": "f",
+  "prenom": "Lulu",
+  "histoire": [
+   {
+    "titre": "les voiles de ma maman",
+    "t": "Ma maman réparait les voiles des bateaux, sur le continent, dans un grand hangar qui sentait la toile et le sel. Moi, je dessinais sur les chutes, avec du charbon et du jus de mûre. Des poissons qui volent, des lunes qui nagent. Les marins disaient : « Elle a de drôles d'idées, la petite. » C'était gentil, je crois."
+   },
+   {
+    "titre": "comment je suis venue chez papi Nono",
+    "t": "Il y a trois ans, papi Nono m'a écrit : « Il y a une plage ici où la musique ne s'arrête jamais. Viens. » J'ai pris trois bateaux. Il m'attendait sur le ponton avec son bonnet orange, en dansant tout seul. Le soir même, je m'endormais contre les enceintes. Je n'avais jamais aussi bien dormi de ma vie."
+   },
+   {
+    "titre": "la nuit du cercle de champignons",
+    "t": "Une nuit où la musique était très belle, je dormais contre une enceinte. J'ai ouvert un œil : une grande dame avec des ailes plantait des champignons près du mur de son. Je lui ai dit « super costume » et je me suis rendormie. Le lendemain, le cercle brillait. J'en ai croqué un, le monde a tourné… et je me suis réveillée au-dessus des nuages. La dame au costume, c'était la reine Oriane."
+   },
+   {
+    "titre": "ma bulle qui fait boum-boum",
+    "t": "Maintenant, je peins les voiles des pêcheurs : une pieuvre pour Bastien, des étoiles pour d'autres. L'après-midi, je fais la sieste contre Germaine, l'enceinte qui ronronne. La nuit, je cueille les champignons des fées dans le cercle, derrière la dune. Et la fresque du mur de son… elle avance. Dans ma tête. Elle est très belle, dans ma tête."
+   },
+   {
+    "titre": "ce que la reine m'a demandé",
+    "t": "La deuxième fois que je suis montée là-haut, la reine Oriane m'a dit que l'arbre était malade. Elle m'a demandé si j'aurais le courage d'entrer dedans, dans le grand tronc. J'ai dit non. J'ai eu tellement peur, {surnom}. Depuis, je donne mes champignons à ceux qui ont l'air plus courageux que moi. Je les regarde partir. J'ai un peu honte."
+   }
+  ],
+  "reve": [
+   "Entendre les clochettes des fées du Bois-Doré, celles qui jouent en rythme. Les garder dans ma tête, et les fredonner à Mistral pour qu'il en fasse un morceau.",
+   "Et finir la fresque du mur. Un jour où je serai assez courageuse pour qu'elle soit moins belle que dans mes rêves."
+  ],
+  "question": {
+   "texte": "Tu crois aux fées, toi ? Pour de vrai, avec le cœur ?",
+   "reponses": [
+    {
+     "label": "Oui, j'y crois.",
+     "valeur": "oui",
+     "t": "Oh… je le savais. Tu as les yeux de quelqu'un qui a déjà vu briller quelque chose. Les fées aiment bien les gens comme toi.",
+     "rappel": "Toi qui crois aux fées… elles le savent, tu sais. La dernière fois, là-haut, j'ai parlé de toi. Elles ont souri."
+    },
+    {
+     "label": "Non, pas vraiment.",
+     "valeur": "non",
+     "t": "Ce n'est pas grave. Bastien non plus. Les fées ne t'en veulent pas, elles croient en toi quand même. Elles sont comme ça.",
+     "rappel": "Toi qui ne crois pas aux fées… tu as vu les petites lumières dans la dune, la nuit ? Non ? Regarde mieux."
+    },
+    {
+     "label": "Je voudrais bien.",
+     "valeur": "voudrais",
+     "t": "Vouloir, c'est déjà la moitié du chemin. L'autre moitié, c'est un champignon. Demande-moi quand ton cœur sera prêt.",
+     "rappel": "Tu voulais bien croire aux fées. Alors, ton cœur est prêt ? Le cercle brille fort, ces nuits-ci."
+    }
+   ]
+  },
+  "liens": {
+   "oriane": {
+    "qui": "la reine",
+    "nom": "Oriane",
+    "sentiment": 0.9,
+    "avis": "La reine Oriane est douce comme la lune, et un peu triste comme elle. Elle veille sur l'arbre qui boit dans toutes nos îles. Elle m'appelle « petite peintre ».",
+    "anecdotes": [
+     "La première fois, je n'avais rien à offrir à la reine. Alors je lui ai peint une fleur de lune sur le dos de la main, avec du jus de mûre. Elle l'a regardée longtemps. Personne ne lui avait jamais rien peint, elle a dit. Depuis, je lui apporte de vraies fleurs de lune. Mais on m'a raconté qu'elle n'a pas lavé sa main pendant deux jours.",
+     "Oriane m'a dit que la musique de Mistral monte jusqu'à son royaume quand le vent souffle du bon côté. Une nuit, là-haut, j'ai vu la reine taper du pied. Tout doucement, sous sa robe, pile sur le kick. Elle a vu que je l'avais vue. Elle a mis un doigt sur ses lèvres. Je ne l'ai dit à personne. Sauf à toi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Je vous ai apporté des fleurs de lune."
+     ],
+     [
+      "b",
+      "Petite peintre… Elles brillent presque autant que toi."
+     ],
+     [
+      "a",
+      "Et Mistral vous passe le bonjour. Enfin, le kick."
+     ]
+    ]
+   },
+   "nono": {
+    "qui": "mon papi",
+    "nom": "Nono",
+    "sentiment": 0.95,
+    "avis": "Papi Nono a dansé sur toutes les plages de l'archipel. Personne ne croit ses histoires, comme personne ne croit les miennes. Moi je crois toutes les siennes. Même celles qui changent.",
+    "anecdotes": [
+     "Quand j'étais petite, papi Nono passait une fois par an au hangar de maman, avec des cadeaux bizarres : un caillou des nains qui sentait le soufre, un coquillage qui faisait de la musique. Il me faisait danser sur ses pieds, entre les rouleaux de toile. Il sentait la mer et le voyage. Il sent toujours pareil.",
+     "Quand je suis revenue de chez les fées la première fois, avec du pollen doré sur les joues, papi ne m'a pas demandé si c'était vrai. Il m'a demandé : « Et la musique, là-haut, elle est comment ? » C'est la plus belle question qu'on m'ait jamais posée. Je lui ai rapporté un pétale qui brille. Il le garde dans son bonnet."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Papi, raconte-moi la mine. La vraie version."
+     ],
+     [
+      "b",
+      "Toutes mes versions sont vraies, ma puce. Surtout les meilleures."
+     ],
+     [
+      "a",
+      "Alors raconte la meilleure."
+     ]
+    ]
+   },
+   "lila": {
+    "qui": "mon amie",
+    "nom": "Lila",
+    "sentiment": 0.85,
+    "avis": "Lila attrape la lumière avec sa boîte magique. Sur ses photos, on voit ce qu'on ne voit pas à l'œil nu. Elle a photographié mon pollen de fée. Bastien dit que c'est un défaut. Bastien dit beaucoup de choses.",
+    "anecdotes": [
+     "Lila m'a prêté toutes ses photos de la teuf pour la fresque. Je les ai étalées sur le sable une nuit entière, à la lumière d'un champignon. Il y avait papi en vague, Titou en fantôme, Yaya en lune. C'était tellement beau que j'ai eu peur de l'abîmer en le peignant. Au matin, je lui ai rendu ses photos, bien rangées.",
+     "J'ai peint le sac de l'appareil de Lila pendant qu'elle dormait : des yeux partout, pour que son appareil voie encore mieux. Elle a crié en se réveillant. Puis elle a ri. Puis elle a dit que les yeux la regardaient. Puis elle a gardé le sac. Elle l'emporte toutes les nuits. Il voit beaucoup, maintenant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lila, tu as photographié la lune, ce soir ?"
+     ],
+     [
+      "b",
+      "Trois fois. Elle ne bouge pas, elle. Pas comme Titou."
+     ],
+     [
+      "a",
+      "Elle bouge un peu. Elle danse lentement."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "notre DJ",
+    "nom": "Mistral",
+    "sentiment": 0.85,
+    "avis": "Mistral joue pour nous, pour la mer et pour les fées, même s'il ne le savait pas au début. Il attend ma fresque depuis deux ans sans jamais me presser. C'est le plus patient des vents.",
+    "anecdotes": [
+     "Mon premier soir, j'ai marché dans la mer et mes pieds se sont allumés en bleu. J'ai crié. Mistral est descendu de ses platines pour m'expliquer : « C'est le plancton. » J'ai dit : « Oui, et il danse. » Il a ri, il a dit : « Exactement. » Depuis, le plancton danse officiellement. C'est Mistral qui l'a dit.",
+     "Un soir, en revenant de là-haut, j'ai demandé à Mistral de jouer plus doucement, parce que les fées dormaient. Il n'a posé aucune question. Il a joué le set le plus doux du monde, toute la nuit. Tchoum s'est endormi debout. Les fées ont bien dormi, la reine me l'a dit. Je ne l'oublierai jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral, le vent tourne vers les nuages, ce soir."
+     ],
+     [
+      "b",
+      "Alors je monte la basse, Lulu. Pour là-haut."
+     ],
+     [
+      "a",
+      "Doucement quand même. Elles ont de toutes petites oreilles."
+     ]
+    ]
+   },
+   "bastien": {
+    "qui": "mon ami pêcheur",
+    "nom": "Bastien",
+    "sentiment": 0.3,
+    "avis": "Bastien ne croit pas aux fées. Il dit « bien sûr » comme on ferme une porte, et ça me fait un peu de peine. Mais il n'a jamais effacé ma pieuvre. Alors au fond, il y croit un peu.",
+    "anecdotes": [
+     "Bastien voulait un petit poisson sur sa voile. J'ai peint une grande pieuvre violette, qui protège. Il a crié. Il dit que les poissons ont peur d'elle. Mais il n'a jamais repeint la voile. Et le jour où Sofia est remontée toute blanche de la pointe dorée, c'est ma pieuvre qui l'a fait rire. Elle protège, je disais.",
+     "J'ai donné un champignon des fées à Bastien, devant tout le monde. Il l'a mis dans sa poche en levant les yeux au ciel. Quelques jours après, j'ai vu des poissons qui brillaient un peu, autour de sa barque. Je ne lui ai rien demandé. Il ne m'a rien dit. Mais il ne dit plus « bien sûr » tout à fait pareil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bastien ! Ta pieuvre te dit bonsoir."
+     ],
+     [
+      "b",
+      "Ta pieuvre fait fuir mes sardines, Lulu."
+     ],
+     [
+      "a",
+      "Elle les envoie danser ailleurs. C'est pas pareil."
+     ]
+    ]
+   },
+   "tchoum": {
+    "qui": "le gardien des enceintes",
+    "nom": "Tchoum",
+    "sentiment": 0.7,
+    "avis": "Tchoum connaît toutes les enceintes par leur prénom, et il sait qu'elles ont des sentiments. Il fait semblant de ne pas y croire. Germaine, elle, m'a tout dit.",
+    "anecdotes": [
+     "J'ai laissé une petite main bleue sur Gertrude, un matin. Un peu exprès : elle avait l'air triste. Tchoum a frotté une heure en soupirant. Le lendemain, la main était toujours là. Il avait arrêté de frotter. Je crois que lui aussi trouve que Gertrude est plus contente comme ça.",
+     "J'ai collé mon oreille contre Jojo, le petit tout en bas, et j'ai dit à Tchoum : « Il est triste, il est seul. » Tchoum n'a rien répondu. Le soir, Jojo était en haut, à côté de Raoul. Il sonnait plus fort, plus content. Tchoum ne m'a jamais dit que c'était pour moi. Il n'a pas besoin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tchoum, Germaine ronronne fort, aujourd'hui."
+     ],
+     [
+      "b",
+      "… Elle chauffe."
+     ],
+     [
+      "a",
+      "Elle est heureuse. C'est pareil, pour une enceinte."
+     ]
+    ]
+   },
+   "marley": {
+    "qui": "mon ami",
+    "nom": "Marley",
+    "sentiment": 0.7,
+    "avis": "Marley veut tellement aller chez les fées. Il demande gentiment, très gentiment, tous les jours. Mais son ventre tourne déjà sur une balançoire. Je ne veux pas qu'il ait peur, là-haut.",
+    "anecdotes": [
+     "Pour avoir un champignon des fées, Marley m'a offert un bouquet de fleurs de bananier, rouges et violettes. C'était magnifique. Je les ai mises dans mes cheveux et j'ai dansé avec toute la nuit. Au matin, je lui ai dit « bientôt ». Il a souri comme si j'avais dit oui. Marley sourit toujours comme si on avait dit oui.",
+     "Pour voir si Marley supporterait le voyage, je l'ai fait asseoir sur la balançoire de Gaspard. Au troisième balancement, il était vert comme une banane pas mûre. Là-haut, au début, le monde tourne bien plus fort. Il ne m'a pas dit pourquoi il tient tant à ce voyage-là. Je lui garde un champignon. Pour le jour où il sera prêt."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marley, j'ai vu une banane qui brillait, dans le cercle."
+     ],
+     [
+      "b",
+      "Une banane des fées ?! C'est un signe, ça !"
+     ],
+     [
+      "a",
+      "C'était la lune dessus. Mais c'est un signe quand même."
+     ]
+    ]
+   }
+  }
+ },
+ "marley": {
+  "genre": "m",
+  "prenom": "Marley",
+  "histoire": [
+   {
+    "titre": "ma grand-mère et ses bananes rouges",
+    "t": "Je suis né au village, bien, bien, mais j'ai grandi dans la jungle avec ma grand-mère. Elle cultivait des bananes rouges, petites, sucrées comme du miel. Elle disait : « Un bananier, c'est une famille : un pied, plein d'enfants, et tout le monde se tient chaud. » Quand elle est partie, elle m'a laissé un seul plant. Je l'ai gardé dans un seau."
+   },
+   {
+    "titre": "le coin de terre près de chez Barnabé",
+    "t": "Pour planter mon bananier, il me fallait de la terre et du soleil. Barnabé m'a montré un coin près de sa cabane, sur une de ses cartes, avec une croix. Il m'a dit : « Contre des régimes, matelot. » Six ans plus tard, j'ai quarante bananiers, et il prend un régime par semaine, pour Gaston. Gaston mange plus que lui."
+   },
+   {
+    "titre": "la grande tempête",
+    "t": "Il y a trois ans, la tempête a couché toute ma bananeraie. J'ai souri quand même, parce que je souris toujours, mais dedans, ça faisait mal. Gaspard est arrivé avec des cordes, sans rien dire. On a relevé chaque pied, un par un, pendant deux jours. Il n'en est mort que trois. J'en ai replanté trois nouveaux, et je les ai appelés Gaspard."
+   },
+   {
+    "titre": "le soleil, le son, les amis",
+    "t": "Aujourd'hui, le matin, je soigne mes bananiers, je leur parle comme Barnabé. Le jour, je tiens le stand du marché avec Momo. Et le soir, je danse, avec des bananes pour tout le monde. Fanny ne veut toujours pas de croissants-bananes. Mais je ne perds pas espoir. La famille, ça finit toujours par goûter. Quoi d'autre ?"
+   },
+   {
+    "titre": "pourquoi je n'ai jamais quitté l'île",
+    "t": "Je dis que je fais tout à pied, que j'aime marcher. La vérité, {surnom}, c'est que j'ai peur des bateaux. Une peur bleue. Même la barque de Bastien, même amarrée, je ne monte pas. Je n'ai jamais vu Port-Azur de près. C'est pour ça que je veux tant aller chez les fées de Lulu : c'est le seul voyage qui se fait sans bateau."
+   }
+  ],
+  "reve": [
+   "Aller au royaume des fées de Lulu, là-haut, au-dessus des nuages. Sans bateau, juste une bouchée. Et planter un bananier là-bas, pour que les fées aient du dessert."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi qui viens de la mer… le bateau, ça fait quoi ? Ça fait peur ?",
+   "reponses": [
+    {
+     "label": "Pas du tout, c'est génial.",
+     "valeur": "genial",
+     "t": "Génial… Bien, bien. Tu as du courage, toi. Moi, rien qu'à regarder L'Hirondelle, mes genoux font des vagues.",
+     "rappel": "Toi qui adores le bateau… tu me raconteras Port-Azur ? Avec des détails. Je veux tout savoir, sans y aller."
+    },
+    {
+     "label": "Un peu, la première fois.",
+     "valeur": "un_peu",
+     "t": "Ah ! La famille ! Un peu, la première fois… et après, ça passe ? Bien, bien. Peut-être qu'un jour j'essaierai. Un jour de mer très plate.",
+     "rappel": "Toi qui avais un peu peur la première fois : tu viendrais avec moi sur L'Hirondelle ? Un jour. Pas aujourd'hui."
+    },
+    {
+     "label": "Je préfère nager.",
+     "valeur": "nager",
+     "t": "Nager ! Alors là, c'est encore plus fou que les bateaux. Moi, je reste les pieds dans le sable. Le sable, ça ne coule pas.",
+     "rappel": "Toi qui préfères nager : je te garde une serviette au bord de la piste. Et une banane, pour après."
+    }
+   ]
+  },
+  "liens": {
+   "barnabe": {
+    "qui": "mon voisin",
+    "nom": "Barnabé",
+    "sentiment": 0.85,
+    "avis": "Barnabé m'a donné un coin de terre contre quelques régimes. La nuit, il parle à mes bananiers, il les appelle ses confidents. Moi, je n'écoute jamais. Enfin… presque jamais.",
+    "anecdotes": [
+     "Une nuit, je suis venu voir mes bananiers et j'ai entendu Barnabé leur lire une carte à voix haute. « Ici, un récif. Ici, un rocher mal placé. » Il leur expliquait que ce n'était pas sa faute. Les bananiers écoutaient. Je suis reparti sur la pointe des pieds. Le lendemain, ils avaient tous pris un régime.",
+     "Chaque samedi, je pose un régime devant la cabane de Barnabé. Gaston le compte à voix haute : « Un ! Deux ! Trois ! Naufrage ! » Il ne sait compter que jusqu'à trois ; après, il dit « Naufrage ». Barnabé dit « Gaston, note ça ! » et Gaston mange une banane. Le loyer est payé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Le régime de la semaine, Barnabé !"
+     ],
+     [
+      "b",
+      "Par la barbe de Neptune, il est magnifique ! Gaston, note ça !"
+     ],
+     [
+      "a",
+      "Et dis bonsoir aux bananiers de ma part."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon frère",
+    "nom": "Gaspard",
+    "sentiment": 0.85,
+    "avis": "Gaspard, c'est mon voisin de jungle et mon frère de cœur. Il m'a construit ma cabane, il a relevé mes bananiers, et il me dit de boire de l'eau. Bien, bien. Je bois du coco.",
+    "anecdotes": [
+     "Gaspard m'a construit une cabane au-dessus de ma bananeraie, quatre-vingt-trois planches. Je l'ai payé en régimes, un par planche. Il a dit merci à chaque régime. Après, pendant trois mois, il a fait une drôle de tête chaque fois qu'il voyait une banane. Je crois qu'il a beaucoup aimé.",
+     "Le lendemain de la tempête, j'étais assis devant mes bananiers couchés, et je souriais, parce que c'est ce que je fais. Gaspard est arrivé avec des cordes. Il a dit : « Tu souris trop, ça m'inquiète. » On a relevé tout le monde en deux jours. À la fin, j'ai pleuré un peu. Il m'a tendu sa gourde, évidemment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gaspard, mon frère ! Une noix de coco ?"
+     ],
+     [
+      "b",
+      "C'est de l'eau, au moins ?"
+     ],
+     [
+      "a",
+      "C'est de l'eau qui a grandi dans un arbre. La meilleure."
+     ]
+    ]
+   },
+   "fanny": {
+    "qui": "notre boulangère",
+    "nom": "Fanny",
+    "sentiment": 0.8,
+    "avis": "Fanny, c'est la famille qui arrive par le bateau tous les soirs. Elle sent le croissant chaud. Un jour, elle dira oui aux croissants-bananes. Je le sens. Bien, bien.",
+    "anecdotes": [
+     "J'ai glissé une banane dans le panier de Fanny, un soir, pour que sa patronne goûte. Elle ne m'a jamais dit ce qu'elle était devenue. Mais une semaine plus tard, elle m'a lâché, l'air de rien : « Les croissants-bananes, toujours non. Mais un petit pain banane… peut-être. » Peut-être ! J'ai dansé jusqu'au matin.",
+     "Je n'ai jamais pris le bateau, alors je confie mes messages à Fanny pour l'autre île. « Dis bonjour au port. » « Dis au phare qu'il clignote bien. » Elle revient le lendemain et elle me dit, très sérieuse : « Le phare te remercie. » Je sais qu'elle invente. Mais elle le dit avec tellement de sérieux que ça me fait du bien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fanny ! Petit pain banane, ce soir ?"
+     ],
+     [
+      "b",
+      "Non. Peut-être. Demain. Non."
+     ],
+     [
+      "a",
+      "C'est presque un oui, ça. Bien, bien."
+     ]
+    ]
+   },
+   "momo": {
+    "qui": "mon associé",
+    "nom": "Momo",
+    "sentiment": 0.8,
+    "avis": "Momo, c'est mon associé au marché et mon cousin de cœur. Il compte les pièces, moi je compte les sourires. À la fin de la journée, j'ai toujours gagné plus que lui.",
+    "anecdotes": [
+     "Au stand, Momo fait les comptes sur une planche avec un bout de charbon. Un soir, il m'a montré : « Colliers vendus : neuf. Bananes données : quarante-deux. » Il avait l'air très triste. Je lui ai donné une banane. Il a ri. Et il a écrit : « quarante-trois ».",
+     "Je voulais un collier en peau de banane. Momo a dit que ça ne tiendrait pas, mais il me l'a fait. Le premier soir, c'était le plus beau collier de la teuf. Le troisième jour, il était tout noir et les mouches dansaient avec moi. Momo riait tellement qu'il est tombé du stand. C'est la nature, je lui ai dit. Je l'ai gardé deux jours de plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo, mon frère ! On a vendu combien, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Trois colliers. Et toi, tu as donné combien de bananes ?"
+     ],
+     [
+      "a",
+      "Tout le reste. Mais on a des amis partout, maintenant."
+     ]
+    ]
+   },
+   "lulu": {
+    "qui": "notre amie des fées",
+    "nom": "Lulu",
+    "sentiment": 0.4,
+    "avis": "Lulu a des champignons qui emmènent au pays des fées. Je lui demande tous les jours, gentiment, très gentiment. Elle répond toujours : « Bientôt. » C'est long, bientôt.",
+    "anecdotes": [
+     "Pour avoir un champignon des fées, j'ai offert à Lulu un bouquet de fleurs de bananier, rouges et violettes. Elle a dit que c'était la plus jolie demande de toute l'île. Elle les a mises dans ses cheveux. Puis elle a dit : « Bientôt, Marley. » C'était il y a deux mois. Les fleurs sont fanées. Moi pas.",
+     "Lulu m'a fait asseoir sur la balançoire de Gaspard, « pour voir ». Elle a dit : « Là-haut, le monde tourne un peu, au début. » Au troisième balancement, j'étais tout vert. Elle a dit doucement : « On va attendre que ton ventre soit prêt. » Je crois qu'elle a peur pour moi. C'est gentil. C'est long aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lulu, je te le demande très gentiment, aujourd'hui."
+     ],
+     [
+      "b",
+      "Je sais, Marley. Ton ventre, il va mieux ?"
+     ],
+     [
+      "a",
+      "Il va très bien ! Enfin, il tourne un peu quand j'y pense."
+     ]
+    ]
+   }
+  }
+ },
+ "mistral": {
+  "genre": "m",
+  "prenom": "Mistral",
+  "histoire": [
+   {
+    "titre": "mon enfance entre deux noix de coco",
+    "t": "Je suis né ici, au village, entre les filets de mon père et les chansons de ma mère. À six ans, je tapais sur deux noix de coco et une conque, au bout de la plage, du matin au soir. C'est Nono qui m'a appelé Mistral : il disait que je passais sur le sable comme le vent qui renverse les parasols. Le nom est resté. Les parasols aussi, renversés."
+   },
+   {
+    "titre": "comment j'ai trouvé mes premières enceintes",
+    "t": "À vingt ans, je suis parti porter des valises au Grand Hôtel de Port-Azur. Un jour, ils ont refait la salle de bal et jeté quatre vieilles enceintes sur le quai. Je les ai ramenées sur la barque de Barnabé, lui à la barre. Dix-sept traversées pour le mur entier, plus quarante équerres d'Octave, payées comptant. Gaston criait « Naufrage ! » à chaque départ. On n'a jamais coulé."
+   },
+   {
+    "titre": "la nuit de la grande tempête",
+    "t": "Il y a trois ans, une tempête est tombée sur la baie en pleine teuf. Personne n'est parti. On a fait une chaîne, de la piste jusqu'en haut de la dune, et les vingt-quatre enceintes sont passées de main en main, Tchoum en tête, qui leur parlait pour les rassurer. Au matin, le sable avait tout recouvert, sauf nous. On a rebranché, et on a dansé."
+   },
+   {
+    "titre": "ma famille de la plage",
+    "t": "Aujourd'hui, je mixe nuit et jour, ou presque : quand je dors deux heures, Tchoum tient la table et personne ne voit la différence. Il y a Zoé qui pleure au lever du soleil, Lulu qui dit que les fées écoutent, Momo qui saute, Nono qui grince. Je compose pour eux. « Marée Basse », c'est leur cœur à tous, cent quarante-cinq fois par minute."
+   },
+   {
+    "titre": "ce que mon oreille gauche n'entend plus",
+    "t": "Approche, {surnom}, côté droit. Je n'entends presque plus rien de l'oreille gauche. Des années collé aux enceintes, avant que Bastien invente ses bouchons. Si Tchoum règle le son, c'est parce qu'il entend ce que je n'entends plus. Il le sait, lui seul. Les autres, je ne veux pas qu'ils s'inquiètent : un DJ à moitié sourd, ça fait rire, ou ça fait peur."
+   }
+  ],
+  "reve": [
+   "Une teuf sous l'eau, à l'Atlantide. Les poissons sur la piste, la bulle qui vibre, et peut-être la reine qui bat la mesure. Il me manque juste des enceintes qui savent nager.",
+   "Et un soir, jouer avec Django, le guitariste du Perroquet Bleu. Une valse-techno. Port-Azur ne s'en remettrait jamais."
+  ],
+  "question": {
+   "texte": "Dis-moi un truc, {surnom} : toi, tu danses avec quoi ? Les pieds, les bras… ou dans ta tête ?",
+   "reponses": [
+    {
+     "label": "Avec les pieds !",
+     "valeur": "pieds",
+     "t": "Un vrai ! Les pieds, c'est la base : le kick monte par le sable et ressort par les genoux. Mets-toi devant Raoul, le gros caisson, tu vas comprendre.",
+     "rappel": "Toi qui danses avec les pieds, j'ai monté un peu la basse ce soir. Juste pour tes chevilles."
+    },
+    {
+     "label": "Avec les bras.",
+     "valeur": "bras",
+     "t": "Les bras en l'air, c'est pour les morceaux qui montent. Je t'en garde un, tu le reconnaîtras : tu auras les bras levés avant de comprendre pourquoi.",
+     "rappel": "Hé, les bras en l'air ! Le prochain morceau qui monte, il est pour toi. Prépare tes épaules."
+    },
+    {
+     "label": "Dans ma tête, surtout.",
+     "valeur": "tete",
+     "t": "Ah, les meilleurs. Ceux qui dansent dedans entendent tout, même le silence entre deux kicks. Reste près du son : un jour, ça va sortir.",
+     "rappel": "Toi qui danses dans ta tête… alors, ça sort un peu, maintenant ? Je t'ai vu taper du pied, l'autre soir."
+    }
+   ]
+  },
+  "liens": {
+   "tchoum": {
+    "qui": "mon ingénieur du son",
+    "nom": "Tchoum",
+    "sentiment": 0.95,
+    "avis": "Tchoum, c'est la moitié de ce mur. Il dit trois mots par jour et les trois sont justes. Sans lui, la teuf, ce serait du bruit avec du sable dedans.",
+    "anecdotes": [
+     "La toute première teuf, il y a six ans, il n'y avait personne. Juste moi, quatre enceintes et la mer. Vers trois heures, un type chauve avec une grande barbe s'est assis dans le sable. Il a écouté une heure, il s'est levé, il a réparé l'enceinte qui crachotait avec une arête de poisson, et il s'est rassis. Il n'est jamais reparti.",
+     "Un soir, Tchoum cherchait depuis une heure pourquoi Raoul grésillait. Moi : « C'est la mer. » Bastien, en passant : « C'est un crabe. » Tchoum a ouvert le caisson : un crabe, installé comme chez lui. Tchoum ne pardonne toujours pas à Bastien d'avoir eu raison avant lui. Et moi, depuis, je vérifie. En faisant semblant de ne pas vérifier.",
+     "Quand je dors, deux heures par nuit, c'est Tchoum qui tient la table. Il ne change rien, il ne touche à rien, il hoche la tête. Un matin, j'ai trouvé un petit mot sous la platine : « Basse +1. » C'est la plus longue lettre qu'il m'ait jamais écrite. Je l'ai gardée dans ma casquette."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tchoum, la basse, elle est comment ce soir ?"
+     ],
+     [
+      "b",
+      "Propre."
+     ],
+     [
+      "a",
+      "Juste propre ? Ou très propre ?"
+     ],
+     [
+      "b",
+      "… Mistral. Mixe."
+     ]
+    ]
+   },
+   "lulu": {
+    "qui": "notre peintre",
+    "nom": "Lulu",
+    "sentiment": 0.8,
+    "avis": "Lulu a promis de peindre le mur de son il y a deux ans. Le mur est toujours blanc, et c'est ma fresque préférée. Elle voit des choses que moi, je n'entends pas.",
+    "anecdotes": [
+     "La première nuit de Lulu, elle a marché dans la mer et ses pieds se sont allumés en bleu. Elle a crié « La mer danse ! ». Je suis descendu lui expliquer le plancton. Elle a hoché la tête très sérieusement et elle a dit : « Oui. Le plancton danse. » On avait raison tous les deux, alors c'est devenu officiel.",
+     "Un soir, Lulu est revenue de chez ses fées avec du pollen doré sur les joues. Elle est montée sur l'estrade et m'a chuchoté : « Plus doucement, elles dorment. » J'ai joué le set le plus calme de ma vie, toute la nuit. Tchoum s'est endormi debout. Le lendemain, Lulu m'a dit merci de la part de la reine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lulu ! Il souffle d'où, le vent, ce soir ?"
+     ],
+     [
+      "b",
+      "De la mer vers les nuages. Elles t'entendent."
+     ],
+     [
+      "a",
+      "Alors je soigne la basse. C'est pour des oreilles royales."
+     ]
+    ]
+   },
+   "sofia": {
+    "qui": "notre plongeuse",
+    "nom": "Sofia",
+    "sentiment": 0.7,
+    "avis": "Sofia, c'est mon billet pour l'Atlantide. Enfin, le jour où elle osera. Elle a entendu les baleines chanter, et ça s'entend dans sa façon de danser.",
+    "anecdotes": [
+     "Sofia m'a fredonné un chant de baleine qu'elle avait entendu en plongée. Ça montait, ça descendait, ça faisait des ronds. J'ai passé trois nuits à le refaire sur les platines. Elle a écouté jusqu'au bout et elle a dit « presque ». Depuis, je cherche le reste du « presque ». Tchoum dit à tout le monde que ça va être énorme.",
+     "Pour préparer la teuf sous l'eau, j'ai enfermé Jojo, la plus petite enceinte, dans un tonneau bien bouché, et je l'ai mis à l'eau pour voir. Le tonneau a coulé à pic, Jojo avec. Sofia a plongé me le rechercher sans un mot. J'ai dit : « Tu vois, c'est faisable ! » Elle m'a regardé longtemps. Tchoum, lui, ne m'a pas adressé un regard pendant trois jours."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Sofia, cette semaine, l'Atlantide ?"
+     ],
+     [
+      "b",
+      "Cette semaine, je danse. L'Atlantide attendra."
+     ],
+     [
+      "a",
+      "Elle attend depuis mille ans, elle n'est plus à une semaine près."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon charpentier",
+    "nom": "Gaspard",
+    "sentiment": 0.7,
+    "avis": "Gaspard m'a construit l'estrade, là, sous mes pieds. Il hoche la tête, il boit de l'eau, il te dit de boire de l'eau. Le gars le plus tranquille de la plage, et le plus têtu.",
+    "anecdotes": [
+     "Les platines étaient trop hautes pour moi, je mixais sur la pointe des pieds. Gaspard a pris une corde, il m'a mesuré les bras pendant que je jouais, sans rien dire, et le lendemain il y avait une estrade. Pile à la bonne hauteur. Elle grince sur le temps faible. Il jure que c'est exprès.",
+     "Toutes les heures, Gaspard pose une gourde d'eau de source sur ma table. Si je ne bois pas, il reste là, il me regarde, il hoche la tête. Une fois, j'ai tenu quatre minutes. J'ai bu d'un coup, en riant, et je lui ai improvisé un morceau. Je l'ai appelé « Gourde ». Il ne l'a jamais trouvé drôle. Il le danse quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gaspard, l'estrade a grincé deux fois de suite."
+     ],
+     [
+      "b",
+      "Elle a soif. Comme toi. Tiens, bois."
+     ],
+     [
+      "a",
+      "C'est l'estrade qui a soif, et c'est moi qui bois ?"
+     ],
+     [
+      "b",
+      "Elle, elle peut attendre."
+     ]
+    ]
+   },
+   "zoe": {
+    "qui": "la petite nouvelle",
+    "nom": "Zoé",
+    "sentiment": 0.6,
+    "avis": "Zoé, c'est la touriste qui reste. Arrivée pour un week-end, elle n'a plus jamais regardé l'heure du bateau. Pour un DJ, il n'y a pas de plus beau compliment.",
+    "anecdotes": [
+     "Le premier matin de Zoé, j'ai passé le morceau tout doux du lever de soleil. Elle s'est assise dans le sable et elle a pleuré, sans bruit, en souriant. J'ai laissé tourner le morceau deux fois, ce que je ne fais jamais. Le bateau du dimanche est passé à huit heures. Elle lui a fait coucou.",
+     "Mon morceau du lever de soleil n'a pas de nom. Chaque matin, Zoé m'en propose un : « Bonjour la mer », « Les jambes en compote », « Zoé reste ». Elle en est à vingt et un. Je n'en ai choisi aucun. Je crois que j'aime trop qu'elle cherche."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Zoé, le nom du jour ?"
+     ],
+     [
+      "b",
+      "« Encore un peu ». Comme moi, ici."
+     ],
+     [
+      "a",
+      "Pas mal. Je le mets de côté avec les vingt autres."
+     ]
+    ]
+   },
+   "nono": {
+    "qui": "mon vieux",
+    "nom": "Nono",
+    "sentiment": 0.75,
+    "avis": "Nono m'a donné mon nom quand j'avais six ans. Il râle que ma musique va trop vite, puis il danse jusqu'au matin. Un vrai mystère, avec des genoux qui grincent.",
+    "anecdotes": [
+     "Quand j'étais petit, Nono s'asseyait à côté de moi pendant que je tapais sur mes noix de coco. Il comptait avec ses pieds : « Un, deux, et le trois, tu le sens dans le ventre. » C'est de lui que vient l'histoire des coquillages, celle que Bastien raconte partout. Nono ne ment jamais. Il arrondit.",
+     "Nono m'a demandé un slow, un soir. « Un vrai, comme sur le bateau de mon père. » Je lui ai fait un slow à cent quarante-cinq battements par minute. Il a dit que c'était une honte pour l'humanité, il l'a dansé jusqu'au bout, et il me le redemande tous les samedis. Pour protester, il dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nono ! Ça va, les genoux ?"
+     ],
+     [
+      "b",
+      "Ils grincent en rythme, petit. C'est déjà ça."
+     ],
+     [
+      "a",
+      "Alors je les mets dans le prochain morceau."
+     ]
+    ]
+   },
+   "barnabe": {
+    "qui": "notre ermite",
+    "nom": "Barnabé",
+    "sentiment": 0.85,
+    "avis": "Barnabé m'a prêté sa barque pour monter ce mur, et il ne m'a jamais demandé un sou. Juste qu'on dise bonjour à Gaston. Alors on dit bonjour à Gaston.",
+    "anecdotes": [
+     "Avant de me prêter sa barque, Barnabé a tenu à dessiner la carte du trajet. Port-Azur, la plage : une ligne droite, je lui ai dit. Il a mis deux jours. Il y avait des récifs, deux monstres, une baleine, et une petite croix à l'endroit où, d'après lui, « un rocher pourrait être mal placé ». On a suivi la carte dix-sept fois. Pas un rocher.",
+     "L'autre soir, Barnabé est descendu jusqu'à la piste avec Gaston sur l'épaule. Il a fait trois pas de danse, pile sur le kick, et il est reparti sans un mot. Depuis, Gaston fait « Boum. Boum. » dans toute la jungle, à cent quarante-cinq. J'ai un fan à plumes, et il a le rythme."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Tu restes pour un morceau ?"
+     ],
+     [
+      "b",
+      "Un seul, matelot. Gaston, note l'heure !"
+     ],
+     [
+      "a",
+      "Et le tempo, Gaston, tu le notes aussi ?"
+     ]
+    ]
+   }
+  }
+ },
+ "momo": {
+  "genre": "m",
+  "prenom": "Momo",
+  "histoire": [
+   {
+    "titre": "sept frères et sœurs et mille coquillages",
+    "t": "Je suis né au village, frérot, dans une maison avec sept frères et sœurs et un lit pour deux. On dormait en tas, on mangeait en tas, on riait en tas. Le seul truc à moi tout seul, c'était ma collection de coquillages, sous le lit. Je les comptais le soir. Il y en avait mille deux cents. Si, si."
+   },
+   {
+    "titre": "mon premier collier",
+    "t": "À douze ans, j'ai percé un coquillage avec une épine d'oursin et je l'ai enfilé sur un fil de pêche. Je l'ai offert à ma mère. Elle l'a porté au marché, une dame de Port-Azur l'a voulu, elle a payé deux pièces. Deux pièces ! Le lendemain, j'avais un stand. Une planche sur deux cailloux, mais un stand."
+   },
+   {
+    "titre": "l'année où j'ai vendu pour deux",
+    "t": "L'année de mes dix-neuf ans, ma mère est tombée malade. Pas grave, mais longtemps. Les remèdes de l'herboriste de Port-Azur coûtaient cher. J'ai fait des colliers jour et nuit, j'ai pris le bateau tous les matins pour les vendre sur le port. Elle a guéri au printemps. Ce jour-là, j'ai décidé de sourire pour toute la famille. Tout le temps."
+   },
+   {
+    "titre": "mon équilibre parfait",
+    "t": "Aujourd'hui, le jour, je vends mes colliers au marché du village, sur un stand avec Marley et ses bananes. La nuit, je danse et je saute, chaque soir un peu plus haut que la veille. Je fais un concours avec Titou, je fais rire Zoé, j'emprunte des trucs à Bastien. Et Sofia me rapporte des coquillages du fond. La belle vie, frérot."
+   },
+   {
+    "titre": "le collier en forme de cœur",
+    "t": "Tu gardes ça pour toi, hein, {surnom}. J'ai fait un collier pour Zoé, avec un coquillage en forme de cœur. Je le cherchais depuis quatre ans, ce coquillage. Elle a dit « Oh, un crabe ! » en riant. J'ai dit oui, un crabe. Maintenant elle le porte tous les jours, et moi je ne sais plus comment lui dire que ce n'était pas un crabe."
+   }
+  ],
+  "reve": [
+   "Redanser avec le dauphin. Mais en vrai, cette fois : qu'il me regarde, qu'il fasse un pas, et que tout le monde le voie. Surtout Bastien.",
+   "Et faire un collier pour chaque personne de l'île. Même pour Barnabé. Même pour Gaston."
+  ],
+  "question": {
+   "texte": "Frérot, sois honnête : tu crois que j'ai dansé avec un dauphin ?",
+   "reponses": [
+    {
+     "label": "Bien sûr que oui !",
+     "valeur": "oui",
+     "t": "Ahhh ! Enfin quelqu'un ! Viens là, je te fais un collier gratuit. Bon, à moitié prix. Bon, gratuit. Tu le mérites.",
+     "rappel": "Toi qui me crois pour le dauphin ! Tu es de la famille, maintenant. Tu l'as toujours, ton collier ?"
+    },
+    {
+     "label": "Je ne crois pas, non.",
+     "valeur": "non",
+     "t": "Hé ! Toi aussi ? Bon, demande à Zoé. Et si elle dit « presque », c'est un oui. Chez nous, presque, c'est oui.",
+     "rappel": "Toi qui ne me crois pas… le dauphin est repassé hier. Bon, je n'étais pas là. Mais il est repassé, c'est sûr."
+    },
+    {
+     "label": "Presque.",
+     "valeur": "presque",
+     "t": "Presque ! Comme Zoé ! Vous vous êtes donné le mot ? Bon. Presque, avec un dauphin, c'est déjà énorme. Il sautait, frérot. Il sautait.",
+     "rappel": "Mon ami du « presque » ! Je te dirai quand le dauphin repasse. Et ce coup-ci, ce sera « tout à fait »."
+    }
+   ]
+  },
+  "liens": {
+   "bastien": {
+    "qui": "mon pote",
+    "nom": "Bastien",
+    "sentiment": 0.8,
+    "avis": "Bastien, c'est un grand frère qui râle. Il me prête tout, même quand il ne le sait pas encore. Sa casquette me va mieux qu'à lui, mais je la lui rends. Des fois.",
+    "anecdotes": [
+     "La casquette de Bastien, je l'ai repêchée dans l'eau, le soir où Fanny l'a envoyé à la mer. Je l'ai mise pour qu'elle sèche. Elle a séché sur ma tête pendant trois jours. Il l'a retrouvée et il m'a fait un sermon d'une heure. Je l'ai écouté avec la casquette sur la tête. Il n'a pas osé la reprendre pendant le sermon.",
+     "J'ai emprunté la barque de Bastien pour retrouver mon dauphin. J'ai ramé loin, très loin. Pas de dauphin. Et j'ai laissé tomber les deux rames en faisant de grands signes à une mouette. Je suis rentré à la nage en poussant la barque. Je lui ai fait un collier pour m'excuser. Il dit qu'il ne le porte pas. Il le porte."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bastien, frérot ! Je te rends ta casquette !"
+     ],
+     [
+      "b",
+      "Momo… c'est mon seau, ça."
+     ],
+     [
+      "a",
+      "Ah. Alors la casquette, je te la rends demain."
+     ]
+    ]
+   },
+   "zoe": {
+    "qui": "mon témoin",
+    "nom": "Zoé",
+    "sentiment": 0.9,
+    "avis": "Zoé, c'est mon témoin pour le dauphin, et la meilleure danseuse arrivée sur cette plage depuis… depuis jamais. Elle me dit de sauter, alors je saute. Elle a toujours raison.",
+    "anecdotes": [
+     "Le soir du dauphin, Zoé était sur la plage. Je dansais dans l'eau, le dauphin a sauté, je me suis retourné vers elle en criant. Elle a levé les deux pouces. Le lendemain, elle disait « presque » à tout le monde. Mais sur le moment, frérot, elle a levé les deux pouces. Je m'en souviens très bien.",
+     "Zoé m'aide à percer mes coquillages, l'après-midi. Elle tient l'épine d'oursin, je tiens le coquillage. Un jour, elle en a percé un si joli que je l'ai mis au milieu d'un collier, et je l'ai vendu. Zoé a boudé une heure : elle voulait le garder. Alors je lui en ai fait un autre. Rien que pour elle. Avec un crabe."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zoé ! Regarde, plus haut qu'hier !"
+     ],
+     [
+      "b",
+      "J'ai pas vu, Momo ! Encore une fois !"
+     ],
+     [
+      "a",
+      "Elle dit ça pour que je saute encore. Et ça marche !"
+     ]
+    ]
+   },
+   "titou": {
+    "qui": "mon rival",
+    "nom": "Titou",
+    "sentiment": 0.4,
+    "avis": "Titou dit qu'une pirouette compte double. C'est pas dans les règles ! Il n'y a pas de règles, mais c'est pas dans les règles. À part ça, c'est mon frère de saut.",
+    "anecdotes": [
+     "Avec Titou, on marque nos sauts sur le palmier, avec des coquillages enfoncés dans l'écorce. Un soir, j'ai sauté si haut que j'ai attrapé une noix de coco. Elle m'est tombée sur la tête juste après. Titou a dit que ça ne comptait pas. Le coquillage est toujours là-haut, tout en haut. Légende.",
+     "Titou fait le dauphin dans son spectacle sur la place, pour se moquer de moi. Il saute, il fait « kik-kik », il finit dans un seau d'eau. Les enfants hurlent de rire. Je suis allé voir, prêt à râler. J'ai ri tellement que j'ai offert un collier à chaque enfant. Il m'a coûté quinze colliers, son dauphin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Titou ! Ta pirouette, elle compte pas double."
+     ],
+     [
+      "b",
+      "Elle compte triple, Momo. J'avais mes lunettes."
+     ],
+     [
+      "a",
+      "Les lunettes, c'est pas un saut, frérot !"
+     ]
+    ]
+   },
+   "sofia": {
+    "qui": "ma pêcheuse de trésors",
+    "nom": "Sofia",
+    "sentiment": 0.8,
+    "avis": "Sofia descend là où je ne peux pas aller et elle remonte avec les plus beaux coquillages de l'île. Mes meilleurs colliers, c'est grâce à elle. Et elle ne veut jamais être payée.",
+    "anecdotes": [
+     "Sofia m'a rapporté un coquillage nacré grand comme ma main, trouvé très profond. J'en ai fait le plus beau collier de ma vie. Un monsieur très chic de Port-Azur l'a acheté six pièces. J'ai donné les six pièces à Sofia. Elle les a jetées dans la mer, en riant, « pour les poissons ». J'ai crié son nom pendant un bon moment.",
+     "Un soir, Sofia m'a demandé un collier qu'on ne vendrait pas. Avec une seule perle, trouvée près de la pointe dorée, au sud-ouest. Elle n'a pas voulu dire pourquoi cette perle-là comptait. Je ne lui ai posé qu'une question : « Fil bleu ou fil doré ? » Bleu. Je pose une seule question par jour, à Sofia. C'est notre règle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sofia ! Tu m'as rapporté quoi, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Un coquillage qui chante, Momo. Colle ton oreille."
+     ],
+     [
+      "a",
+      "Il chante « Marée Basse » ! Il chante « Marée Basse » !"
+     ]
+    ]
+   },
+   "marley": {
+    "qui": "mon associé",
+    "nom": "Marley",
+    "sentiment": 0.75,
+    "avis": "Marley, c'est mon associé au stand du marché. Moi, je vends les colliers ; lui, il donne les bananes. Il dit que tout le monde est de la famille. La famille, elle ne paie jamais.",
+    "anecdotes": [
+     "Au marché, Marley et moi, on a un stand pour deux : colliers à gauche, bananes à droite. Un jour, une dame m'a acheté trois colliers. Marley lui a offert un régime entier, « parce qu'elle avait l'air de la famille ». Elle est repartie avec plus de bananes que de colliers. J'ai fait les comptes : ce jour-là, on a perdu de l'argent.",
+     "Marley m'a demandé un collier en peau de banane. J'ai dit que ça ne tiendrait pas. Il a insisté, je l'ai fait. Il l'a porté fièrement toute une soirée. Le surlendemain, il était tout noir et les mouches le suivaient sur la piste. Il a dit : « C'est la nature, mon frère. » Je suis tombé du stand de rire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marley, aujourd'hui, on vend. On ne donne rien. D'accord ?"
+     ],
+     [
+      "b",
+      "D'accord, mon frère. Juste une banane à la petite, là."
+     ],
+     [
+      "a",
+      "… Et une au monsieur. Et une à moi, alors."
+     ]
+    ]
+   },
+   "barnabe": {
+    "qui": "notre légende",
+    "nom": "Barnabé",
+    "sentiment": 0.8,
+    "avis": "Barnabé, c'est une légende, frérot. Il a fait trois pas de danse à la teuf et il jure qu'il mesurait la piste. Il recompte ses coquillages quand je passe. Je le comprends : on fait un peu le même métier.",
+    "anecdotes": [
+     "J'ai offert un collier à Barnabé, trente coquillages. Il est devenu tout pâle : au milieu, il y avait une porcelaine tigrée qu'il avait perdue dans une marée, il y a six ans. Elle s'appelle Hortense. Il me l'a rachetée contre un régime de bananes. Des bananes de Marley, en plus. Tout reste dans la famille.",
+     "Le soir où Barnabé est passé à la teuf, il a fait trois pas, pile sur le kick, Gaston sur l'épaule. Trois ! Tout le monde a crié. Il dit que c'était de la cartographie, qu'il mesurait la piste. Frérot, j'ai vu ses épaules. C'était de la danse. Légende."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Tu reviens mesurer la piste, ce soir ?"
+     ],
+     [
+      "b",
+      "Cartographie, garnement. Rien que de la cartographie."
+     ],
+     [
+      "a",
+      "Avec les épaules, la cartographie ? Légende."
+     ]
+    ]
+   }
+  }
+ },
+ "nono": {
+  "genre": "m",
+  "prenom": "Nono",
+  "histoire": [
+   {
+    "titre": "mon enfance sur un bateau de bal",
+    "t": "Je suis né sur un bateau, jeune. Un vieux bateau à roues où l'on donnait des bals, de port en port. Ma mère vendait les billets, mon père jouait de l'accordéon. J'ai appris à danser avant de savoir marcher : sur un pont qui tangue, ça forme le pied. C'est pour ça que je ne tombe jamais. Presque jamais."
+   },
+   {
+    "titre": "le danseur qui arrivait avant la musique",
+    "t": "À vingt ans, j'ai décidé de faire toutes les fêtes de l'archipel. Le bal du phare à Port-Azur, les feux sur les plages, les mariages, les baptêmes de bateaux. On m'appelait « le danseur qui arrive avant la musique ». J'ai usé quarante paires de souliers. Je les ai toutes gardées. Enfin, trente-huit. Les nains en ont gardé deux."
+   },
+   {
+    "titre": "la fête dans la mine des nains",
+    "t": "Un jour, des nains m'ont invité à une fête au fond d'une mine. Pourquoi moi ? Je ne l'ai jamais su. On a dansé entre les rails, à la lumière des lanternes, et chaque pas revenait trois fois en écho. Un vieux nain m'a dit : « Tu danses comme un éboulement. » Le plus beau compliment de ma vie. Ça, c'est la vraie version. Celle d'aujourd'hui."
+   },
+   {
+    "titre": "mes vieux genoux et ma petite-fille",
+    "t": "Maintenant, j'ai des genoux qui grincent et une maison bleue près de la source du village. Ma petite-fille Lulu vit avec moi depuis trois ans. Le soir, on descend à la teuf ensemble, elle me tient le bras jusqu'à la piste, et là, je le lâche. Les jeunes disent que je danse comme un phoque. Lila a la photo : c'est une vague."
+   },
+   {
+    "titre": "toutes les fêtes que j'ai ratées",
+    "t": "J'ai fait toutes les fêtes de l'archipel, jeune. Toutes. Sauf celles de ma fille. Ses anniversaires, son premier bal, son mariage : j'étais toujours ailleurs, à danser pour des inconnus. Aujourd'hui, elle m'écrit deux lettres par an. Lulu, c'est ma deuxième chance, {surnom}. Je ne rate plus une seule de ses fêtes. Même ses siestes contre les enceintes."
+   }
+  ],
+  "reve": [
+   "Danser au mariage de Lulu, un jour. Être invité, arriver à l'heure, et danser avec ma fille sans regarder ailleurs. Juste une valse. Même à cent quarante-cinq."
+  ],
+  "question": {
+   "texte": "Dis-moi, jeune : ta toute première fête, c'était où ?",
+   "reponses": [
+    {
+     "label": "Au village où j'ai grandi.",
+     "valeur": "village",
+     "t": "Ah ! Les fêtes de village, les meilleures. Une guirlande, un violon qui grince, des vieux qui dansent mal. J'étais un de ces vieux, sûrement. Peut-être même à la tienne.",
+     "rappel": "Toi et ta fête de village… j'y repensais. Il y avait un vieux en bonnet qui dansait, non ? Non ? Dommage."
+    },
+    {
+     "label": "Celle-ci, ici.",
+     "valeur": "ici",
+     "t": "Ici ? Ta première ? Alors souviens-toi bien de cette nuit, jeune. Les premières, on les raconte toute sa vie. Et on les arrange un peu, chaque fois.",
+     "rappel": "Ta première fête, c'était ici. Tu la racontes comment, maintenant ? Déjà un peu arrangée ? Bien. C'est comme ça qu'on fait."
+    },
+    {
+     "label": "Je ne m'en souviens pas.",
+     "valeur": "oubli",
+     "t": "Alors c'était une bonne fête. Les meilleures, on les oublie. Moi, je me souviens de toutes les miennes : c'est que je les ai un peu inventées.",
+     "rappel": "Toi qui as oublié ta première fête… je t'en ai inventé une. Il y avait des nains. Tu as beaucoup dansé."
+    }
+   ]
+  },
+  "liens": {
+   "lulu": {
+    "qui": "ma petite-fille",
+    "nom": "Lulu",
+    "sentiment": 0.95,
+    "avis": "Lulu, c'est ma petite-fille, mon soleil et ma deuxième chance. Elle voit des fées. Moi, j'ai vu des nains danser dans une mine. Dans la famille, on voit des choses.",
+    "anecdotes": [
+     "Quand Lulu était petite, je passais une fois par an chez sa mère, au hangar à voiles. Je la faisais danser sur mes pieds entre les rouleaux de toile. Elle riait : « Encore, papi, le bateau qui tangue ! » Aujourd'hui, c'est elle qui me tient le bras pour descendre à la piste. Les rôles tournent. C'est ça, la danse.",
+     "La première fois que Lulu est revenue de chez ses fées, elle avait du pollen doré sur les joues et des yeux grands comme des soucoupes. Je ne lui ai pas demandé si c'était vrai. Je lui ai demandé comment était la musique. Elle m'a rapporté un pétale qui brille. Je le garde dans mon bonnet, avec mes trésors."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ma puce, tu as mangé, ce soir ?"
+     ],
+     [
+      "b",
+      "Une banane de Marley et un croissant de Fanny, papi."
+     ],
+     [
+      "a",
+      "Bien. Alors tu peux danser jusqu'au matin."
+     ]
+    ]
+   },
+   "titou": {
+    "qui": "ce petit clown de",
+    "nom": "Titou",
+    "sentiment": 0.2,
+    "avis": "Titou compte les versions de mes histoires et il imite ma danse sur la place, devant tous les enfants. « Le phoque élégant. » Insolent. Et il oublie le mouvement de l'épaule, en plus.",
+    "anecdotes": [
+     "On m'a dit que Titou faisait « le phoque élégant » sur la place du village. J'y suis allé, très digne, avec mon bonnet. Les enfants frappaient des mains comme des nageoires. Il avait oublié tout le mouvement de l'épaule. Je suis revenu le lendemain lui montrer. Je suis resté une heure. Les enfants m'ont applaudi. Ça ne veut pas dire que je lui pardonne.",
+     "Titou dit qu'il en est à dix-sept versions de ma fête dans la mine. Il les note dans un carnet. Un soir, il m'a lu la version sept, celle avec le dragon. Je ne me souvenais pas de l'avoir racontée. Elle était très bien. Je l'ai resservie le lendemain à Gaspard, en l'arrangeant un peu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Titou, l'épaule. On roule l'épaule, comme ça."
+     ],
+     [
+      "b",
+      "Comme ça, Nono ? Le phoque élégant, version deux ?"
+     ],
+     [
+      "a",
+      "Insolent. Mais oui, comme ça."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon petit hocheur",
+    "nom": "Gaspard",
+    "sentiment": 0.7,
+    "avis": "Gaspard est un bon garçon qui boit de l'eau et le répète à tout le monde. Il a raison : je l'ai porté jusqu'à la source le jour où il n'en buvait pas. Il me doit une chanson.",
+    "anecdotes": [
+     "Il y a quatre étés, Gaspard est tombé comme une planche, en plein midi, sur la piste. Je l'ai soulevé, à mon âge, et je l'ai porté jusqu'à la source en chantant « La Belle Mouette », pour garder le rythme. Mes genoux chantaient avec moi. Je lui ai versé l'eau sur la tête. Il a ouvert un œil et il a dit : « Tu chantes faux. »",
+     "Je raconte ma fête de la mine à Gaspard ; il soupire, il dit qu'il la connaît par cœur. Mais il ne s'en va jamais avant la fin. Il hoche la tête. Même quand j'ajoute des choses. Surtout quand j'ajoute des choses. Gaspard aime les histoires plus qu'il ne le dit. Comme l'eau."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gaspard, je t'ai raconté la fois où…"
+     ],
+     [
+      "b",
+      "La mine. Oui, Nono. Quarante fois."
+     ],
+     [
+      "a",
+      "Non, petit. La fois où je t'ai porté. Tu pesais un tonneau."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "le petit",
+    "nom": "Mistral",
+    "sentiment": 0.4,
+    "avis": "Je l'ai connu haut comme trois noix de coco, et c'est moi qui lui ai donné son nom. Sa musique va beaucoup trop vite… et pourtant, mon cœur la suit. Je ne sais pas qui a tort.",
+    "anecdotes": [
+     "Il avait six ans, il courait sur la plage en renversant les parasols, et il tapait sur deux noix de coco et une conque. Je lui ai appris à compter avec les pieds. Je l'ai appelé Mistral, parce qu'il passait comme le vent. Aujourd'hui, il fait danser tout le village. Je raconte qu'il a appris sur des coquillages. C'est vrai. À peu près.",
+     "J'ai demandé un slow à Mistral. Un vrai, comme sur le bateau de mon père. Il m'a fait un slow à cent quarante-cinq battements par minute. Je lui ai dit que c'était une honte pour l'humanité. Je l'ai dansé jusqu'au bout. Et je le lui redemande tous les samedis, parce qu'il faut bien protester."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Moins vite, petit. Mes genoux ont soixante-quinze ans."
+     ],
+     [
+      "b",
+      "Tes genoux, Nono, ils ont battu la mesure tout le morceau."
+     ],
+     [
+      "a",
+      "Par politesse. Rien d'autre."
+     ]
+    ]
+   },
+   "lila": {
+    "qui": "ma photographe préférée",
+    "nom": "Lila",
+    "sentiment": 0.85,
+    "avis": "Lila est la seule à voir que je danse comme une vague. Les autres voient un phoque. Elle a des yeux d'artiste et la patience d'une grand-mère. À son âge !",
+    "anecdotes": [
+     "Lila a photographié ma danse, l'appareil ouvert pendant tout un morceau. Sur la photo, mon bonnet orange fait une grande courbe, comme une vague qui roule. Je l'ai pliée en quatre et je la garde dans mon bonnet. Quand un jeune me dit que je danse comme un phoque, je la sors. Il se tait.",
+     "Quand Lila change de pellicule, je lui raconte les fêtes d'autrefois. Le bal sur le bateau de mon père, les lanternes de la mine. Elle note tout dans un carnet. Un jour, elle m'a dit qu'elle rêvait de photographier une fête dans une mine. Je lui ai promis de lui trouver des nains. À mon âge, il faut promettre vite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lila, ma belle, tu veux ma vague, ce soir ?"
+     ],
+     [
+      "b",
+      "Toujours, Nono. Mais lentement, mon appareil est fatigué."
+     ],
+     [
+      "a",
+      "Moi aussi, je suis lent. On va bien s'entendre."
+     ]
+    ]
+   }
+  }
+ },
+ "sofia": {
+  "genre": "f",
+  "prenom": "Sofia",
+  "histoire": [
+   {
+    "titre": "ma grand-mère pêcheuse de perles",
+    "t": "Ma grand-mère plongeait pour les perles, au large du village, avec une pierre attachée à la cheville pour descendre plus vite. Elle remontait les mains pleines d'huîtres, et elle chantait sous l'eau, je te jure. Elle m'a appris à retenir mon souffle avant de m'apprendre à lire. Trois minutes, à dix ans."
+   },
+   {
+    "titre": "comment je suis devenue plongeuse",
+    "t": "À seize ans, j'ai pris la pierre de ma grand-mère et je suis descendue seule. J'ai rapporté des coquillages nacrés, des oursins, une fois une vieille cuillère d'argent. Maintenant, je plonge pour les colliers de Momo, pour les curieux, pour moi. Sous l'eau, il n'y a pas d'heure. C'est pour ça que je la perds, ici aussi."
+   },
+   {
+    "titre": "le matin près de la pointe dorée",
+    "t": "Un matin de mer plate, Bastien m'a emmenée vers la pointe dorée qui sort de l'eau, au sud-ouest. J'ai plongé. En bas, il y avait des lumières, des toits, des escaliers. Et puis j'ai eu peur, une peur énorme, et je suis remontée beaucoup trop vite. Bastien m'a tirée dans sa barque. Je n'y suis jamais retournée."
+   },
+   {
+    "titre": "danser comme on nage",
+    "t": "Aujourd'hui, je plonge le matin et je danse la nuit. Danser, c'est comme nager : on se laisse porter, on ne lutte pas contre le courant. Zoé apprend à plonger avec moi ; elle avale la moitié de la baie et elle rit. Mistral me demande chaque semaine quand j'irai à l'Atlantide. Je lui réponds : quand j'aurai assez dansé."
+   },
+   {
+    "titre": "le chant que j'ai entendu en bas",
+    "t": "Je ne l'ai dit à personne, {surnom}. Ce matin-là, près des toits engloutis, j'ai entendu chanter. Pas une baleine. Une voix. Une femme qui chantait comme ma grand-mère sous l'eau. C'est ça qui m'a fait peur. Pas le noir, pas la profondeur : que quelqu'un, en bas, chante la chanson de ma grand-mère."
+   }
+  ],
+  "reve": [
+   "Retourner à la pointe dorée, descendre jusqu'aux toits, et cette fois ne pas remonter trop vite. Écouter la chanson jusqu'au bout. Et peut-être chanter avec."
+  ],
+  "question": {
+   "texte": "Dis-moi… tu as peur de l'eau profonde, toi ? Là où on ne voit plus le fond ?",
+   "reponses": [
+    {
+     "label": "Non, j'adore ça.",
+     "valeur": "non",
+     "t": "Alors on se ressemble moins que je croyais. Ou plus. Un jour, tu me raconteras ce que tu vois, en bas. Je t'écouterai comme on écoute une chanson.",
+     "rappel": "Toi qui n'as pas peur du fond… tu me raconteras ce qu'il y a en bas ? Prends ton temps. Je ne suis pas pressée."
+    },
+    {
+     "label": "Un peu, oui.",
+     "valeur": "un_peu",
+     "t": "Moi aussi. Un peu, beaucoup. Ce n'est pas grave, la peur. Il faut juste respirer plus lentement qu'elle. Elle se fatigue avant toi.",
+     "rappel": "Toi qui as un peu peur du fond, comme moi : respire plus lentement qu'elle. Ça marche aussi pour danser."
+    },
+    {
+     "label": "Je ne sais pas nager.",
+     "valeur": "nager",
+     "t": "Vraiment ? Alors viens demain matin, au bout de la plage. On commence par flotter. Flotter, c'est comme danser couché. Tu vas voir, la mer te tient.",
+     "rappel": "Toi qui ne savais pas nager… tu as essayé de flotter ? La mer te tient, je te l'avais dit."
+    }
+   ]
+  },
+  "liens": {
+   "bastien": {
+    "qui": "mon ami pêcheur",
+    "nom": "Bastien",
+    "sentiment": 0.6,
+    "avis": "Bastien m'a tirée de l'eau le jour de la plus grande peur de ma vie. Je lui dois ça. Mais je ne viendrai pas à la pêche de cinq heures. Jamais. Il le sait.",
+    "anecdotes": [
+     "Quand je suis remontée de la pointe dorée, blanche comme un linge, Bastien m'a hissée dans sa barque sans poser une seule question. Il m'a mis sa casquette sur la tête, pour le soleil. Et j'ai vu la pieuvre violette de Lulu, sur sa voile, qui me regardait avec ses grands yeux. J'ai éclaté de rire. Ce rire m'a sauvée.",
+     "Bastien m'invite à la pêche de cinq heures tous les soirs. Je dis non tous les soirs. Mais quand il est en mer, je plonge parfois près de sa barque et je laisse un beau coquillage sur son banc. Il fait semblant de ne pas savoir qui c'est. Je fais semblant de le croire. On est très forts, tous les deux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bastien, ce matin, tu as trouvé quelque chose sur ton banc ?"
+     ],
+     [
+      "b",
+      "Un coquillage. Je ne sais pas du tout d'où il vient."
+     ],
+     [
+      "a",
+      "La mer est généreuse, alors."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "notre DJ",
+    "nom": "Mistral",
+    "sentiment": 0.3,
+    "avis": "Mistral est merveilleux, mais il parle de l'Atlantide comme d'une plage d'à côté. « Tu y vas cette semaine ? » Il ne sait pas ce qu'il y a en bas. Moi, je sais un peu.",
+    "anecdotes": [
+     "Un soir, j'ai fredonné à Mistral un chant de baleine entendu en plongée, pour lui faire plaisir. Il a passé trois nuits à le refaire avec ses machines. Quand il me l'a fait écouter, c'était presque ça. J'ai dit « presque ». Il a eu l'air si déçu que j'ai failli dire « exactement ». Il cherche toujours.",
+     "Pour sa teuf sous l'eau, Mistral a enfermé une petite enceinte dans un tonneau et l'a jetée à la mer, « pour tester ». Le tonneau a coulé à pic. J'ai plongé six mètres pour aller chercher Jojo, comme dit Tchoum. Mistral m'a dit : « Tu vois, c'est faisable ! » Non, Mistral. Ce n'est pas faisable."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral, ton chant de baleine… c'est presque ça."
+     ],
+     [
+      "b",
+      "Presque ! Il manque quoi, Sofia ? Dis-moi !"
+     ],
+     [
+      "a",
+      "Il manque la mer. Elle ne rentre pas dans tes enceintes."
+     ]
+    ]
+   },
+   "momo": {
+    "qui": "mon bijoutier préféré",
+    "nom": "Momo",
+    "sentiment": 0.7,
+    "avis": "Momo transforme mes coquillages en colliers et mes journées en éclats de rire. Il saute trop haut, il parle trop fort, et il ne me pose qu'une question par jour. Pour Momo, c'est très poli.",
+    "anecdotes": [
+     "J'ai rapporté à Momo un coquillage nacré grand comme une main, trouvé très profond. Il en a fait son plus beau collier, il l'a vendu, et il a voulu me donner les six pièces. J'ai refusé. Il a insisté. Je les ai jetées dans la mer, pour les poissons. Il a crié « Sofiaaa ! » pendant un bon moment. Ça valait six pièces.",
+     "J'ai demandé à Momo un collier avec une seule perle, trouvée près de la pointe dorée. Je ne lui ai pas dit pourquoi elle comptait. Il ne m'a posé qu'une question : « Fil bleu ou fil doré ? » J'ai dit bleu. Je le porte toujours, sous mon foulard. Il ne m'a jamais redemandé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo, tiens, pour tes colliers. Il vient de très loin."
+     ],
+     [
+      "b",
+      "Wouah ! Il est magnifique ! Cette fois, je te le paie !"
+     ],
+     [
+      "a",
+      "Non. Fais-en un beau, c'est tout."
+     ]
+    ]
+   },
+   "zoe": {
+    "qui": "mon élève de nage",
+    "nom": "Zoé",
+    "sentiment": 0.6,
+    "avis": "Zoé nage comme elle danse : partout à la fois, avec beaucoup d'éclaboussures et un grand sourire. Elle veut aller à l'Atlantide avec moi. Ça me fait peur, et ça me fait du bien.",
+    "anecdotes": [
+     "La première plongée de Zoé, elle a bu la moitié de la baie. Elle est remontée en toussant, et elle a crié : « C'est comme danser, mais on ne peut pas crier ! » J'ai ri, vraiment ri, pour la première fois depuis longtemps dans l'eau. Depuis, quand je descends, je pense à sa phrase. J'ai un peu moins peur.",
+     "Zoé m'a demandé si on pouvait aller voir l'Atlantide ensemble. J'ai arrêté de nager. J'ai dit « un jour », d'une toute petite voix. Elle n'a pas insisté : elle a fait la planche à côté de moi en chantonnant. Le soir, je lui ai donné un coquillage nacré. C'était pour dire : un jour, oui."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zoé, aujourd'hui, on apprend à remonter doucement."
+     ],
+     [
+      "b",
+      "Doucement ? Mais je ne suis jamais douce, moi !"
+     ],
+     [
+      "a",
+      "Sous l'eau, tu apprendras. La mer est patiente."
+     ]
+    ]
+   }
+  }
+ },
+ "tchoum": {
+  "genre": "m",
+  "prenom": "Tchoum",
+  "histoire": [
+   {
+    "titre": "mon enfance chez les luthiers",
+    "t": "Mes parents fabriquaient des violons. Sur le continent. Dans l'atelier, on ne parlait pas : on écoutait le bois. Un violon qui sonne faux, mon père l'entendait à la cinquième planche. Moi, à la première. Il m'a dit : « Toi, tu as l'oreille. » C'est tout ce qu'il m'a dit. C'était beaucoup."
+   },
+   {
+    "titre": "le soir où j'ai entendu le caisson",
+    "t": "Je passais au large, sur un bateau de pêche. Pour aller je ne sais plus où. J'ai entendu une enceinte qui crachotait, depuis la mer. Ça m'a gêné. J'ai demandé qu'on me dépose. J'ai réparé l'enceinte. Avec une arête de poisson. Et je suis resté. Ça fait six ans. Le bateau, je ne sais toujours pas où il allait."
+   },
+   {
+    "titre": "la nuit où j'ai baptisé les enceintes",
+    "t": "La nuit de la tempête, les enceintes passaient de main en main jusqu'à la dune. Elles avaient peur. Si. Alors je leur ai parlé. Pour parler à quelqu'un, il faut un prénom. Gertrude, la plus vieille. Raoul, le gros caisson. Germaine, qui chauffe. Jojo, le petit. Vingt-quatre prénoms en une nuit. Je n'avais jamais autant parlé."
+   },
+   {
+    "titre": "mes journées devant la table",
+    "t": "Le jour, je vérifie. Les câbles, le sable dans les boutons, les crabes dans Raoul. La nuit, je hoche la tête à côté de Gaspard. Quand Mistral dort, je tiens la table. Je ne change rien. Un bon son, ça ne se change pas. Ça se garde. Comme un ami. … C'est long, ce que je viens de dire."
+   },
+   {
+    "titre": "le prénom de la vingt-quatrième",
+    "t": "La vingt-quatrième enceinte. Celle de droite, tout en haut. La plus claire. Celle qui chante juste même quand le vent tourne. Je l'ai appelée Yaya. … Yaya ne le sait pas. Elle me demande son prénom chaque semaine. Je dis : « Plus tard. » Tu ne dis rien, {surnom}. Hein."
+   }
+  ],
+  "reve": [
+   "Une vingt-cinquième enceinte. À gauche. Pour équilibrer. … Je l'appellerais Mistral.",
+   "Et un jour, dire un truc à quelqu'un. Un vrai truc. Plus long que trois mots. … Un jour."
+  ],
+  "question": {
+   "texte": "… Le kick. Tu l'entends ? Il est propre ?",
+   "reponses": [
+    {
+     "label": "Très propre.",
+     "valeur": "propre",
+     "t": "… (Il hoche la tête un peu plus fort.) Bien. Tu as l'oreille.",
+     "rappel": "(Il te montre ton oreille, puis le mur de son, et lève le pouce.) … Toujours propre. Tu avais dit."
+    },
+    {
+     "label": "Un peu fort, non ?",
+     "valeur": "fort",
+     "t": "… Fort. (Il regarde Bastien, au loin, très longtemps.) Il t'a donné des bouchons, lui. Hein.",
+     "rappel": "… Toi, tu trouvais ça fort. J'ai baissé Raoul d'un cran. Pour toi. Ne le dis pas."
+    },
+    {
+     "label": "C'est quoi, le kick ?",
+     "valeur": "quoi",
+     "t": "… (Il pose ta main à plat sur le sable.) Ça. Boum. Le cœur du morceau. Maintenant tu sais.",
+     "rappel": "(Il pose la main sur le sable et te regarde.) … Boum. Tu sais, maintenant."
+    }
+   ]
+  },
+  "liens": {
+   "mistral": {
+    "qui": "mon DJ",
+    "nom": "Mistral",
+    "sentiment": 0.9,
+    "avis": "Mistral. … Le meilleur. Il compose, je règle. Il parle, je hoche. Ça marche comme ça depuis six ans. Ça marchera encore.",
+    "anecdotes": [
+     "Le premier soir, il était tout seul. Quatre enceintes. Une qui crachotait. Il mixait quand même, avec un grand sourire, pour la mer. Je me suis dit : lui, il a besoin de quelqu'un. J'ai sorti une arête de poisson de ma poche. J'ai réparé. Il m'a dit merci quarante fois. Moi, une.",
+     "Il dit toujours : « C'est la mer. » Quand ça grésille. Une fois, c'était un crabe, dans Raoul. … Bon. La plupart du temps, c'est vrai, c'est la mer. Mais je vérifie. Lui, il ne vérifie jamais. Il me fait confiance. C'est lourd, la confiance. C'est bien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Basse plus un."
+     ],
+     [
+      "b",
+      "Encore ? Tu vas réveiller les nains, Tchoum !"
+     ],
+     [
+      "a",
+      "… Ils ont demandé plus fort."
+     ]
+    ]
+   },
+   "yaya": {
+    "qui": "la prof de danse",
+    "nom": "Yaya",
+    "sentiment": 0.9,
+    "avis": "Yaya. … Elle danse bien. Très bien. Elle rit fort. Plus fort que Raoul. … C'est tout. C'est déjà beaucoup.",
+    "anecdotes": [
+     "Yaya a voulu m'apprendre le pas du crabe. J'ai essayé. Sans arrêter de hocher la tête. Elle a ri pendant une heure, assise dans le sable. Je l'ai relevée. J'ai dit : « Encore ? » Je n'ai jamais réussi le pas. J'ai réussi le rire. C'est mieux.",
+     "Un soir, Fanny a fait un grand geste. Yaya est arrivée dans mes bras. Comme ça. D'un coup. J'ai dit : « … Ça va ? » Elle a dit oui. Je ne l'ai pas lâchée tout de suite. Trois secondes. Peut-être quatre. Toute la piste a vu. Personne n'en parle. … Tant mieux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "… Salut, Yaya."
+     ],
+     [
+      "b",
+      "Tchoum ! Tu m'as dit bonjour en premier ! Je le note !"
+     ],
+     [
+      "a",
+      "… Ouais."
+     ]
+    ]
+   },
+   "lulu": {
+    "qui": "cette rêveuse de",
+    "nom": "Lulu",
+    "sentiment": 0.2,
+    "avis": "Lulu dort contre Germaine, l'après-midi. Germaine n'aime pas ça. … Moi non plus. Mais Lulu dit que Germaine ronronne. C'est vrai. Elle ronronne.",
+    "anecdotes": [
+     "Un matin, Gertrude avait une main bleue dessus. Une main de peinture, toute petite. Lulu a dit que c'était un câlin, parce que Gertrude avait l'air triste. J'ai frotté une heure. … Et puis je l'ai laissée. Gertrude a l'air contente comme ça. Je crois.",
+     "Lulu dit que les enceintes ont des sentiments. Tout le monde rit. Pas moi. Un soir, elle a collé l'oreille contre Jojo : « Il est triste, il est seul en bas. » Je l'ai monté à côté de Raoul. Il sonne mieux. … Ne lui dis pas que c'est pour elle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pas contre Germaine. Elle chauffe."
+     ],
+     [
+      "b",
+      "Elle ronronne, Tchoum. Elle m'aime bien."
+     ],
+     [
+      "a",
+      "… Dix minutes. Pas plus."
+     ]
+    ]
+   },
+   "bastien": {
+    "qui": "ce bavard de",
+    "nom": "Bastien",
+    "sentiment": -0.3,
+    "avis": "Bastien distribue des bouchons d'oreilles. Devant MON son. Comme si c'était trop fort. … Et il avait raison pour le crabe. C'est pire.",
+    "anecdotes": [
+     "Raoul grésillait. Mistral disait « la mer ». Moi, je cherchais depuis une heure. Bastien est passé, il a écouté deux secondes : « C'est un crabe. » J'ai ouvert. Un crabe. Deux secondes. … Je ne lui ai pas encore pardonné. Ça viendra. Pas tout de suite.",
+     "Bastien m'a parlé de pêche. Deux heures. Les marées, les appâts, les maquereaux. J'ai dit trois mots : « Ouais. » « Ah. » « Bon. » Il a dit que c'était la meilleure conversation de sa vie. … Il est gentil. Il est fatigant. C'est fatigant, quelqu'un de gentil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "… Pas de bouchons. Le son est propre."
+     ],
+     [
+      "b",
+      "Les bouchons, c'est pas contre toi, Tchoum. C'est pour les oreilles."
+     ],
+     [
+      "a",
+      "… Mes oreilles vont très bien."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon frère hocheur",
+    "nom": "Gaspard",
+    "sentiment": 0.75,
+    "avis": "Gaspard. On hoche ensemble. Il ne parle pas trop, moi non plus. On se comprend. … Et il m'apporte de l'eau. Je ne bois que la sienne.",
+    "anecdotes": [
+     "Une nuit, Gaspard et moi, on a hoché la tête neuf heures. Côte à côte. Sans un mot. Le lendemain, on avait le cou bloqué tous les deux. On se disait bonjour en tournant tout le corps. Mistral a dit qu'on ressemblait à deux phares. Il a raté un enchaînement à force de rire. … Une bonne nuit.",
+     "J'avais pris un coup de soleil sur le crâne. Gaspard n'a rien dit. Le lendemain, il m'a posé ce bonnet sur la tête. Vert. Tricoté à Port-Azur. Il a dit : « Pour le soleil. » J'ai dit : « Ouais. » On ne s'est rien dit d'autre. On s'est tout dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "… Bien, le kick."
+     ],
+     [
+      "b",
+      "Ouais. Propre. Tu as bu ?"
+     ],
+     [
+      "a",
+      "… Ta gourde. Ouais."
+     ]
+    ]
+   }
+  }
+ },
+ "titou": {
+  "genre": "m",
+  "prenom": "Titou",
+  "histoire": [
+   {
+    "titre": "l'enfant sérieux que j'étais",
+    "t": "Je suis né sur le continent, dans une famille très sérieuse : mon père comptait les pièces à la banque, ma mère comptait les points de croix. Chez nous, rire à table, c'était impoli. Alors je riais sous la table. Avec le chien. Le chien, lui, me trouvait très drôle. Mon premier public !"
+   },
+   {
+    "titre": "comment j'ai suivi le cirque",
+    "t": "À quatorze ans, un cirque est passé en ville : le Cirque des Deux Lunes. J'ai vu un clown tomber douze fois de suite, et tout le monde riait, même mon père, une seconde. Le soir même, j'ai fait mon sac. J'ai porté des seaux, nourri les chèvres, et j'ai appris à jongler avec des pommes de terre. Les chèvres, elles, mangeaient les balles."
+   },
+   {
+    "titre": "la fin du Cirque des Deux Lunes",
+    "t": "Il y a trois ans, le bateau du cirque a fait escale à Port-Azur et n'est jamais reparti : plus d'argent, plus de chapiteau, le directeur a tout vendu. Tout le monde est rentré chez soi. Moi, je n'avais plus de chez-moi. J'ai pris L'Hirondelle au hasard, j'ai entendu le kick depuis le pont, et je me suis dit : tiens, une piste !"
+   },
+   {
+    "titre": "mon spectacle sur la place",
+    "t": "Aujourd'hui, l'après-midi, je fais le clown sur la place du village pour les enfants. Je jongle avec des noix de coco, je tombe exprès, j'invente des pas : le crabe amoureux, le poulpe timide. Et le soir, la teuf, c'est mon spectacle à moi. Personne ne me regarde, tout le monde danse. C'est ça qui est bien. Yo !"
+   },
+   {
+    "titre": "pourquoi je porte des lunettes la nuit",
+    "t": "Les lunettes de soleil, la nuit… je dis que c'est le style. En vrai, sans elles, je suis timide. Si tu regardes un clown dans les yeux, tu vois qu'il a peur de ne pas faire rire. Avec les lunettes, personne ne voit rien. Toi, tu peux voir, {surnom}. Mais vite, hein. Voilà. Je les remets."
+   }
+  ],
+  "reve": [
+   "Un vrai chapiteau sur la place du village, rouge et jaune, avec des gradins pour tous les enfants de l'île. Et le chat de Yaya au premier rang. Il paiera en ronrons."
+  ],
+  "question": {
+   "texte": "Dis, l'artiste, tu sais jongler, toi ?",
+   "reponses": [
+    {
+     "label": "Oui, un peu.",
+     "valeur": "oui",
+     "t": "Génial ! Tiens, trois noix de coco. Non, deux. On commence par deux. Si tu en fais tomber une, tu fais une révérence : c'est la règle du clown.",
+     "rappel": "Hé, toi qui jongles ! J'ai gardé les deux noix de coco pour toi. On passe à trois quand tu veux."
+    },
+    {
+     "label": "Pas du tout.",
+     "valeur": "non",
+     "t": "Parfait ! Les meilleurs clowns commencent par tout faire tomber. Tu as déjà le talent, il te manque juste la chute. Regarde, comme ça : boum !",
+     "rappel": "Toi qui ne sais pas jongler : tu as travaillé ta chute ? Je veux une belle chute, avec un petit cri."
+    },
+    {
+     "label": "Avec mes problèmes, oui.",
+     "valeur": "problemes",
+     "t": "Ha ! Celle-là, je la mets dans mon spectacle. Les enfants ne la comprendront pas, mais les parents, si. Le meilleur public, c'est quand tout le monde rit pour des raisons différentes.",
+     "rappel": "J'ai fait ta blague sur la place, celle des problèmes. Les parents ont ri. Un enfant m'a demandé ce que c'était, un problème. Belle journée."
+    }
+   ]
+  },
+  "liens": {
+   "yaya": {
+    "qui": "ma rivale de la place",
+    "nom": "Yaya",
+    "sentiment": 0.4,
+    "avis": "Yaya et moi, on se partage la place du village, l'après-midi : elle danse, je fais le clown. Les enfants viennent chez moi, le chat reste chez elle. Je l'admire. Ne lui dis pas.",
+    "anecdotes": [
+     "Yaya donnait son cours à cinq heures, et moi mon spectacle aussi, de l'autre côté de la fontaine. Un jour, j'ai fait le pas du crabe à l'envers en tombant, et tous les enfants sont venus de mon côté. Yaya est restée avec le chat. Le lendemain, elle avait avancé son cours à quatre heures. J'ai avancé mon spectacle aussi.",
+     "J'ai inventé le crabe amoureux un matin, tout seul sur la plage. Le soir, Yaya l'a vu. Deux jours après, il était dans son cours, sous le nom de « crabe sentimental ». Je réclame mon nom sur son affiche. Elle m'a proposé une toute petite ligne, en bas. J'ai dit : « Merci, maîtresse. » Elle n'a pas su si c'était méchant. Moi non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yaya, le crabe amoureux, c'est moi qui l'ai inventé."
+     ],
+     [
+      "b",
+      "Le crabe sentimental, Titou. Rien à voir, il a plus de cœur."
+     ],
+     [
+      "a",
+      "Il a mes pattes, ton crabe sentimental !"
+     ]
+    ]
+   },
+   "lila": {
+    "qui": "ma photographe",
+    "nom": "Lila",
+    "sentiment": 0.8,
+    "avis": "Lila fait des photos magiques. Sur toutes les miennes, je suis un fantôme rose avec des lunettes. Elle dit que c'est ma faute. Moi, je dis que c'est mon style.",
+    "anecdotes": [
+     "J'ai emprunté les six derniers bâtons lumineux de Lila pour lui jongler un arc-en-ciel. C'était magnifique pendant trois secondes. Après, un est parti dans la mer et un autre dans les cheveux de Nono. Lila n'a rien dit. Elle a juste noté quelque chose dans son carnet. Je crois que je lui dois six bâtons. Et des excuses.",
+     "Lila m'a demandé de rester immobile une seule seconde pour une photo. J'ai fait un effort énorme, j'ai retenu mon souffle, j'ai fermé les yeux derrière mes lunettes… et j'ai éternué. Elle a soupiré si fort que la photo a bougé aussi. Je l'ai fait encadrer. C'est mon portrait préféré."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lila ! Je t'ai rapporté un bâton lumineux. Un seul."
+     ],
+     [
+      "b",
+      "Un seul ? Il en manque cinq, Titou."
+     ],
+     [
+      "a",
+      "C'est un début. Je jongle avec ta patience."
+     ]
+    ]
+   },
+   "nono": {
+    "qui": "notre doyen",
+    "nom": "Nono",
+    "sentiment": 0.6,
+    "avis": "Nono, c'est la mémoire de toutes les fêtes de l'archipel. Ses histoires changent à chaque fois, et c'est pour ça qu'elles sont bien. Je les collectionne, comme des balles de jonglage.",
+    "anecdotes": [
+     "Je compte les versions de la fête de Nono dans la mine des nains. J'en suis à dix-sept. Dans la sept, il y avait un dragon. Dans la douze, le roi des nains dansait sur une table. Dans la dernière, Nono jouait du tambour sur une enclume. Je préfère la douze. Lui aussi, je crois. Il la raconte avec les yeux qui brillent.",
+     "J'ai mis la danse de Nono dans mon spectacle : « le phoque élégant ». Les enfants l'adorent, ils frappent des mains comme des nageoires. Un jour, Nono est venu voir, très digne, avec son bonnet. Il a dit que j'oubliais le mouvement de l'épaule. Le lendemain, il est revenu me le montrer. Il est resté une heure. Il a eu plus d'applaudissements que moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nono, raconte la mine ! La version avec le dragon !"
+     ],
+     [
+      "b",
+      "Il n'y a jamais eu de dragon, petit. Il y avait un très grand nain."
+     ],
+     [
+      "a",
+      "Version dix-huit, notée !"
+     ]
+    ]
+   },
+   "momo": {
+    "qui": "mon rival de saut",
+    "nom": "Momo",
+    "sentiment": 0.7,
+    "avis": "Momo saute plus haut que moi. D'un doigt. Il le dit à tout le monde. Mais moi, je fais une pirouette en l'air, et une pirouette, ça compte double.",
+    "anecdotes": [
+     "Momo et moi, on fait un concours de saut tous les soirs, devant le mur de son. On marque la hauteur sur un palmier, avec un coquillage. Le palmier en est couvert. Un soir, Momo a sauté si haut qu'il a attrapé une noix de coco. Elle lui est retombée sur la tête. Il a dit : « Légende. » J'ai dit que ça ne comptait pas. Mais c'était une légende.",
+     "Momo jure qu'il a dansé avec un dauphin. Alors j'ai fait le dauphin dans mon spectacle : je saute, je fais « kik-kik », je retombe dans un seau d'eau. Momo est venu voir, prêt à râler. Il a ri si fort qu'il a offert un collier à chaque enfant. Quinze colliers. C'est mon plus beau cachet, et c'est lui qui l'a payé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo ! Ce soir, je fais deux pirouettes !"
+     ],
+     [
+      "b",
+      "Et moi je saute un doigt plus haut, frérot ! Comme hier !"
+     ],
+     [
+      "a",
+      "Il grandit tous les soirs, ton doigt, je trouve."
+     ]
+    ]
+   }
+  }
+ },
+ "yaya": {
+  "genre": "f",
+  "prenom": "Yaya",
+  "histoire": [
+   {
+    "titre": "la petite fille qui imitait les crabes",
+    "t": "Petite, au village, je passais mes journées sur la plage à regarder les crabes. Ils marchent de côté, ils lèvent une pince, ils s'arrêtent, ils repartent. Je les imitais pendant des heures. Ma grand-mère disait : « Cette enfant a un crabe dans les jambes. » Le pas du crabe, je l'ai inventé à six ans. Si si."
+   },
+   {
+    "titre": "mon école de danse sans élèves",
+    "t": "À dix-huit ans, j'ai voulu ouvrir une école de danse sur la place du village. J'ai fait une affiche, j'ai balayé les pavés, j'ai attendu. Personne n'est venu, sauf le chat de la petite maison. Il s'est assis, il a regardé, il est revenu le lendemain. Alors j'ai continué, pour lui. Il est toujours là. Fidèle au poste."
+   },
+   {
+    "titre": "le concours de valse de Port-Azur",
+    "t": "Il y a quatre ans, je me suis inscrite au grand concours de valse de Port-Azur. Devant tout le monde, j'ai glissé et je suis tombée. Les gens ont ri. En rentrant, le soir, j'ai entendu le kick au bout de la plage. Je suis allée voir. Personne ne regardait personne, tout le monde dansait. J'ai dansé jusqu'au matin. La semaine d'après, j'y traînais Lila."
+   },
+   {
+    "titre": "mes élèves aujourd'hui",
+    "t": "Aujourd'hui, je donne mon cours sur la place tous les jours à quatre heures. J'ai le chat, toujours, et maintenant Zoé, qui apprend vite. Les enfants préfèrent le spectacle de Titou, de l'autre côté de la fontaine, mais je ne lâche rien. Et une fois par semaine, je prends le bateau pour les croissants de Fanny. Joyeuse, je te dis !"
+   },
+   {
+    "titre": "pourquoi je demande toujours le même prénom",
+    "t": "Chaque semaine, je demande à Tchoum le prénom de la vingt-quatrième enceinte. Il répond « Plus tard ». Je vais te dire un secret, {surnom} : je m'en fiche, des enceintes. C'est pour l'entendre parler. Il a une belle voix, Tchoum, quand il la sort. Deux mots par semaine. C'est mon trésor. Ne le lui répète surtout pas."
+   }
+  ],
+  "reve": [
+   "Une vraie école de danse, avec un parquet, un miroir et une pancarte. Des élèves à deux pattes et à quatre pattes. Et pour la fête d'ouverture, un mur de son réglé par… enfin, par quelqu'un qui règle bien."
+  ],
+  "question": {
+   "texte": "Hé ! Tu sais danser, toi ? Sois honnête, je suis prof, je vois tout.",
+   "reponses": [
+    {
+     "label": "Oui, plutôt bien.",
+     "valeur": "oui",
+     "t": "Ah oui ? Alors montre-moi le pas du crabe. … Hmm. Pas mal ! Encore un peu raide des genoux. Un cours, et tu passes devant le chat.",
+     "rappel": "Mon élève qui danse « plutôt bien » ! Le chat t'attend sur la place. Il veut voir ton crabe."
+    },
+    {
+     "label": "Comme un pied.",
+     "valeur": "pied",
+     "t": "Parfait, on commence avec deux pieds, c'est déjà mieux qu'un. Le chat aussi dansait mal, au début. Maintenant, c'est mon meilleur élève. Si si.",
+     "rappel": "Toi qui dansais comme un pied… je t'ai vu, l'autre soir. Deux pieds, au moins. On progresse !"
+    },
+    {
+     "label": "Je danse quand personne ne regarde.",
+     "valeur": "cache",
+     "t": "Moi aussi, longtemps. Ici, c'est facile : la nuit, personne ne regarde personne, tout le monde regarde la mer. Viens danser au fond, près de Tchoum. Il ferme les yeux.",
+     "rappel": "Toi qui danses quand personne ne regarde : je ne regarde pas. Promis. Enfin, juste un peu, en prof."
+    }
+   ]
+  },
+  "liens": {
+   "tchoum": {
+    "qui": "ce grand silencieux de",
+    "nom": "Tchoum",
+    "sentiment": 0.8,
+    "avis": "Tchoum ne parle presque pas, mais quand il parle, tout le monde se tait pour écouter. Il connaît chaque enceinte par son prénom. Sauf une, qu'il refuse de me dire.",
+    "anecdotes": [
+     "J'ai voulu apprendre le pas du crabe à Tchoum. Il a essayé, très sérieux, sans arrêter de hocher la tête. Un crabe qui dit oui à tout ! J'ai ri tellement que je suis tombée dans le sable. Il m'a tendu la main pour me relever, et il a dit : « Encore ? » C'était adorable.",
+     "Le soir où Fanny m'a envoyée valser d'un grand geste, j'ai atterri dans les bras de Tchoum. Il ne m'a pas lâchée tout de suite. Il a juste dit : « … Ça va ? », et il est devenu tout rouge sous son bonnet. Toute la piste a vu. Personne n'en a jamais reparlé. Moi, j'y repense."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tchoum ! Le prénom de la vingt-quatrième, ce soir ?"
+     ],
+     [
+      "b",
+      "… Plus tard."
+     ],
+     [
+      "a",
+      "Tu dis ça depuis des mois, Tchoum !"
+     ],
+     [
+      "b",
+      "… Bientôt plus tard."
+     ]
+    ]
+   },
+   "titou": {
+    "qui": "ce voleur de public",
+    "nom": "Titou",
+    "sentiment": 0.2,
+    "avis": "Titou me pique mes élèves, mes idées et mon côté de la fontaine. Il est drôle, c'est le pire. Son crabe amoureux, je l'ai gardé dans mon cours, sous un meilleur nom.",
+    "anecdotes": [
+     "Je donnais mon cours à cinq heures, Titou son spectacle aussi, de l'autre côté de la fontaine. Il a fait mon pas du crabe à l'envers, en tombant, et tous les enfants sont partis chez lui. Le chat est resté. J'ai avancé mon cours à quatre heures. Les enfants sont revenus. Le lendemain, Titou avait avancé son spectacle à quatre heures.",
+     "Titou a inventé le crabe amoureux, je le reconnais. Mais il le dansait mal : trop de bras, pas assez de hanches. Je l'ai corrigé, je l'ai appelé « crabe sentimental » et je l'enseigne. Il réclame son nom sur mon affiche. Je lui ai proposé une toute petite ligne en bas. Il a dit : « Merci, maîtresse. » Je n'ai pas su si c'était méchant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Titou, tu es encore de mon côté de la fontaine."
+     ],
+     [
+      "b",
+      "La fontaine est ronde, Yaya. Elle n'a pas de côté."
+     ],
+     [
+      "a",
+      "Alors ton spectacle n'a pas de public."
+     ]
+    ]
+   },
+   "lila": {
+    "qui": "ma sœur de cœur",
+    "nom": "Lila",
+    "sentiment": 0.85,
+    "avis": "Lila, c'est ma sœur, ma voisine depuis toujours et mon seul public quand j'avais dix ans. Elle a même prouvé que le chat danse. Elle a toujours raison, c'est agaçant.",
+    "anecdotes": [
+     "Personne ne me croyait pour le chat. Lila s'est cachée derrière la fontaine pendant tout un cours et l'a photographié en plein pas du crabe, une patte levée. J'ai accroché la photo au-dessus de mon lit. Quand je doute, je la regarde. Le chat, lui, ne doute jamais.",
+     "Petites, je montais des spectacles dans la rue avec des draps, et Lila tenait la caisse. Notre premier cachet, c'était un poisson, donné par un pêcheur qui passait. Un poisson pour deux. On l'a grillé sur la plage comme un festin de reines. Je crois que c'était le père de Bastien. Il faudra que je lui demande."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lila, ta photo du chat, je l'ai encore regardée hier soir."
+     ],
+     [
+      "b",
+      "Tu doutais encore ?"
+     ],
+     [
+      "a",
+      "Non. Je voulais juste le voir danser."
+     ]
+    ]
+   },
+   "fanny": {
+    "qui": "ma boulangère préférée",
+    "nom": "Fanny",
+    "sentiment": 0.8,
+    "avis": "Fanny, c'est un feu d'artifice avec un tablier. Je l'ai trouvée en train de danser derrière son comptoir et je l'ai ramenée ici. Ma meilleure idée. Après le pas du crabe.",
+    "anecdotes": [
+     "Je prenais le bateau chaque semaine pour les croissants de Port-Azur. La petite apprentie dansait derrière le comptoir en rendant la monnaie, et la monnaie volait partout. Je lui ai fait le pas du crabe jusqu'à la porte et je lui ai dit : « Ce soir, plage du village. » Elle est venue. Elle ne repart plus que pour dormir.",
+     "J'ai donné une semaine de cours à Fanny pour qu'elle danse « plus petit », les coudes au corps. Elle a tenu deux morceaux. Au troisième, son bras est parti, et moi avec. J'ai atterri dans les bras de Tchoum. Je n'ai jamais dit à Fanny que c'était ma meilleure soirée de l'année. Elle se demande encore si elle a réussi l'examen."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Fanny ! Les coudes, les coudes !"
+     ],
+     [
+      "b",
+      "Je les tiens, Yaya ! Je les tiens… Oups. Pardon, Momo !"
+     ],
+     [
+      "a",
+      "C'était presque bien."
+     ]
+    ]
+   },
+   "zoe": {
+    "qui": "ma deuxième élève",
+    "nom": "Zoé",
+    "sentiment": 0.8,
+    "avis": "Zoé, c'est ma deuxième élève sérieuse, après le chat. Elle apprend vite, elle tombe en riant, et elle revient le lendemain. C'est tout ce qu'on demande à une danseuse.",
+    "anecdotes": [
+     "Le premier soir, Zoé était au bord de la piste, toute raide, son sac de week-end à la main. Je lui ai pris le sac, je l'ai posé dans le sable, et je lui ai montré le pas du crabe. Elle l'a fait de travers, elle a ri, elle a recommencé. Elle a oublié son sac jusqu'au matin. Un vrai crabe s'y était installé.",
+     "Zoé vient à mon cours sur la place tous les jours à quatre heures. Elle s'installe à côté du chat et elle fait tout ce qu'il fait. Il s'étire, elle s'étire. Il bâille, elle bâille. Hier, il a fait le pas du crabe et elle a suivi. Je ne sais plus très bien qui apprend à qui."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zoé, le genou plié ! Comme le chat !"
+     ],
+     [
+      "b",
+      "Le chat a quatre genoux, Yaya, c'est de la triche !"
+     ],
+     [
+      "a",
+      "Pas d'excuses. Plie."
+     ]
+    ]
+   }
+  }
+ },
+ "zoe": {
+  "genre": "f",
+  "prenom": "Zoé",
+  "histoire": [
+   {
+    "titre": "ma vie d'avant, en ville",
+    "t": "Avant, j'habitais une grande ville du continent, au cinquième étage, avec vue sur un mur. Je triais des papiers dans un bureau. Je commençais plein de choses : le piano, la poterie, l'espagnol. Je n'en finissais aucune. Ma mère disait : « Zoé, tu es une girouette. » Elle n'avait pas tort."
+   },
+   {
+    "titre": "le week-end à Port-Azur",
+    "t": "Il y a trois semaines, je me suis offert un week-end au Grand Hôtel de Port-Azur. Le samedi soir, sur la plage, j'ai entendu un kick qui venait d'en face, de l'autre île. J'ai pris le dernier bateau pour aller voir « juste une heure », avec mon petit sac. Ma valise est toujours à l'hôtel, je crois. Je n'ai pas osé demander."
+   },
+   {
+    "titre": "le lever de soleil qui m'a gardée",
+    "t": "Le dimanche matin, Mistral a passé un morceau tout doux, et tout le monde s'est tourné vers la mer. Le soleil est sorti de l'eau, rose, énorme. J'ai pleuré sans savoir pourquoi. Mon bateau de retour est passé à huit heures, juste devant moi. Je lui ai fait coucou. Trop bien. C'était il y a trois semaines."
+   },
+   {
+    "titre": "ma nouvelle vie au village",
+    "t": "Maintenant, je dors dans la cabane d'essai de Gaspard, celle qui penche, avec trois crabes. L'après-midi, je vais au cours de Yaya. Je nage avec Sofia, j'aide Momo à percer ses coquillages. Je danse jusqu'au lever du soleil, et chaque matin je propose un nom au morceau de Mistral. Le village m'a adoptée, je crois. Moi aussi, je l'ai adopté."
+   },
+   {
+    "titre": "le billet que je garde dans ma poche",
+    "t": "Je ne l'ai dit à personne, {surnom}. J'ai encore mon billet de retour dans ma poche. Chaque matin, je le touche. J'ai peur que ce soit comme le piano et la poterie : qu'un jour je me lasse, et que je reparte. Je ne veux pas. Pour la première fois de ma vie, je ne veux pas. Alors je garde le billet. Pour vérifier que je ne m'en sers pas."
+   }
+  ],
+  "reve": [
+   "Rester. Juste ça. Et un jour, perdre mon billet de retour sans faire exprès, et ne même pas le chercher.",
+   "Et voir le lever du soleil depuis l'eau, avec Sofia. Mistral dit que son morceau sonne encore mieux de là-bas."
+  ],
+  "question": {
+   "texte": "Si tu devais rester quelque part pour toujours, tu choisirais où ?",
+   "reponses": [
+    {
+     "label": "Ici, sur cette plage.",
+     "valeur": "ici",
+     "t": "Moi aussi ! Bon, ça fait trois semaines, mais je le sens. Viens, il y a de la place dans la cabane de Gaspard. Enfin, demande aux crabes.",
+     "rappel": "Toi qui resterais ici pour toujours… tu as vu, tu es toujours là. Moi aussi. On tient le coup !"
+    },
+    {
+     "label": "Nulle part, je voyage.",
+     "valeur": "nulle_part",
+     "t": "Ah… Tu es comme moi avant. Mais attention, la teuf, ça attrape. Un week-end, et hop. Dans trois semaines, tu dors avec des crabes.",
+     "rappel": "Hé, toi qui ne t'arrêtes jamais ! Tu repasses quand même. C'est comme ça que ça commence, je te préviens."
+    },
+    {
+     "label": "Je n'ai pas encore trouvé.",
+     "valeur": "cherche",
+     "t": "C'est bien, de chercher. Moi, j'ai trouvé par hasard, en suivant un bruit de basse. Écoute bien les bruits, toi. Le bon endroit fait toujours un petit boum.",
+     "rappel": "Alors, tu l'as entendu, le petit boum ? Le bon endroit, je veux dire. Moi, je l'entends toutes les nuits."
+    }
+   ]
+  },
+  "liens": {
+   "momo": {
+    "qui": "mon pote",
+    "nom": "Momo",
+    "sentiment": 0.85,
+    "avis": "Momo saute plus haut que tout le monde, sourit plus fort que tout le monde, et raconte qu'il a dansé avec un dauphin. C'est presque vrai. J'y étais.",
+    "anecdotes": [
+     "Le dauphin, j'y étais. Momo dansait dans l'eau jusqu'à la taille, les bras en l'air, et un dauphin est passé à dix mètres. Il a sauté une fois, il est reparti. Momo s'est retourné en criant : « Tu as vu ? Il danse avec moi ! » J'ai levé les deux pouces. Le dauphin, lui, ne s'est pas prononcé.",
+     "Momo m'a fait un collier avec un coquillage en forme de cœur. Il me l'a donné sans rien dire, ce qui est très rare chez Momo. J'ai dit « Oh, un crabe ! » pour rire. Il a dit : « Oui, voilà, un crabe. » Il est devenu tout rouge sous son bandana. Je le porte tous les jours. C'est un très joli crabe."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo ! Saute plus haut, je te regarde !"
+     ],
+     [
+      "b",
+      "Si tu me regardes, je saute jusqu'à la lune !"
+     ],
+     [
+      "a",
+      "Pas trop haut. Il faut redescendre, après."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "notre DJ",
+    "nom": "Mistral",
+    "sentiment": 0.9,
+    "avis": "Mistral, c'est la raison pour laquelle je suis encore là. Un seul morceau, au lever du soleil, et j'ai raté mon bateau. Je ne lui pardonnerai jamais. Je l'adore.",
+    "anecdotes": [
+     "Mon premier matin ici, Mistral a passé le morceau tout doux, celui du lever du soleil. Je me suis assise dans le sable et j'ai pleuré comme une gamine. Il m'a regardée depuis ses platines et il a laissé le morceau tourner deux fois. Il ne fait jamais ça. Il a dit après que c'était un accident.",
+     "Le morceau du lever de soleil n'a pas de nom. Alors chaque matin, je lui en propose un. « Bonjour la mer ». « Zoé reste ». « Les jambes en compote ». J'en suis à vingt et un. Il dit « pas mal » à chaque fois. Je crois qu'il ne choisira jamais. Et je crois que ça me va."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral ! Le nom du jour : « Encore une heure » !"
+     ],
+     [
+      "b",
+      "Pas mal, Zoé. Pas mal du tout."
+     ],
+     [
+      "a",
+      "Tu dis ça tous les matins !"
+     ]
+    ]
+   },
+   "yaya": {
+    "qui": "ma prof de danse",
+    "nom": "Yaya",
+    "sentiment": 0.85,
+    "avis": "Yaya m'a appris le pas du crabe le premier soir, mon sac encore à la main. Depuis, je vais à son cours tous les jours, à côté du chat. Il est meilleur que moi, mais je progresse.",
+    "anecdotes": [
+     "Le premier soir, j'étais au bord de la piste avec mon sac de week-end, toute raide. Yaya m'a pris le sac, l'a posé dans le sable, et m'a dit : « Regarde mes pieds. » Pas du crabe. J'ai raté, j'ai ri, j'ai recommencé. Au matin, j'avais complètement oublié le sac. Il y avait un crabe dedans. Un vrai.",
+     "Au cours de Yaya, je copie le chat. Il est vraiment doué, je t'assure : il lève la patte pile sur le temps. Un jour, Yaya m'a dit : « Zoé, regarde le chat, pas moi. » J'ai regardé le chat. Le chat m'a regardée. On a fait le pas du crabe ensemble. Yaya a applaudi. Le chat est parti, vexé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yaya ! J'ai fait le crabe toute seule ce matin, sur la plage !"
+     ],
+     [
+      "b",
+      "Devant qui ?"
+     ],
+     [
+      "a",
+      "Devant trois vrais crabes. Ils ont applaudi. Enfin, je crois."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon propriétaire",
+    "nom": "Gaspard",
+    "sentiment": 0.8,
+    "avis": "Gaspard m'a prêté sa cabane d'essai pour deux nuits, et ça fait trois semaines. Il frappe avant d'entrer chez lui. C'est le garçon le plus gentil de l'île, et le plus obsédé par l'eau.",
+    "anecdotes": [
+     "Le premier soir où j'ai dormi dans sa cabane, Gaspard a laissé une gourde d'eau sur le seuil, avec un mot : « Bois. » Le deuxième soir, une gourde et un mot : « Bois encore. » Ça fait trois semaines. J'ai toute une collection de petits mots. Je les ai accrochés au mur, entre les coquillages.",
+     "Gaspard dit qu'une cabane, ça se ferme. Moi, je laisse la porte ouverte pour la brise, et j'ai trois crabes qui vivent dans mon hamac : Kick, Basse et Mistral. Gaspard soupire très fort quand il les voit. Mais l'autre jour, je l'ai surpris en train de donner un bout de banane à Basse. Il a dit qu'il passait par là."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gaspard ! Kick et Basse te disent bonjour !"
+     ],
+     [
+      "b",
+      "Les crabes ne disent pas bonjour, Zoé."
+     ],
+     [
+      "a",
+      "Ceux-là, si. Tu ne les écoutes pas, c'est tout."
+     ]
+    ]
+   },
+   "sofia": {
+    "qui": "mon amie plongeuse",
+    "nom": "Sofia",
+    "sentiment": 0.75,
+    "avis": "Sofia m'apprend à plonger. Elle est calme comme l'eau d'un matin, et elle dit que danser, c'est comme nager. J'ai essayé l'inverse : nager comme je danse. Ça éclabousse.",
+    "anecdotes": [
+     "Ma première plongée avec Sofia, j'ai bu la moitié de la baie. Je suis remontée en toussant et en riant : « C'est comme danser, mais on ne peut pas crier ! » Sofia a ri aussi, un vrai rire, pas son petit sourire tranquille. Elle a dit que personne n'avait jamais aussi bien décrit la plongée.",
+     "J'ai demandé à Sofia si on pouvait aller voir l'Atlantide ensemble, toutes les deux. Elle a arrêté de nager d'un coup. Elle a dit « un jour », avec une petite voix. Je n'ai pas insisté. Le soir, elle m'a offert un coquillage nacré, trouvé très profond. Je crois que c'était un « un jour » sérieux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sofia, demain matin, on regarde le lever du soleil depuis l'eau ?"
+     ],
+     [
+      "b",
+      "Si tu promets de ne pas boire la baie."
+     ],
+     [
+      "a",
+      "Juste une gorgée. Pour goûter le soleil."
+     ]
+    ]
+   }
+  }
+ }
+}

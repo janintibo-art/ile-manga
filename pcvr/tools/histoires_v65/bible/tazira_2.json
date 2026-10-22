@@ -1,0 +1,308 @@
+{
+ "brahim": {
+  "genre": "m",
+  "prenom": "Brahim",
+  "plan": [
+   "le petit qui pleurait devant les crabes — fils et petit-fils d'amin ; Lalla Fatima ne le laisse pas oublier qu'il hurlait quand un crabe lui pinçait le doigt.",
+   "comment je suis devenu amin — pêcheur à quinze ans, barque contre barque avec Driss ; amin à trente-cinq ans, à la mort de son père ; son premier prix de la sardine contesté par tout le port.",
+   "l'année sans sardine — il y a vingt-cinq ans, les bancs disparaissent trois mois ; il met le prix à zéro, partage les réserves, et la caravane du jeune Mbarek fait crédit de dattes à toute la ville.",
+   "le port aujourd'hui — les pirates à quai depuis trois semaines, acceptés parce qu'ils paient ; les dames truquées avec Hassan ; Saïd qui arrondit les prix ; la musique qui doit s'arrêter à minuit ; les mouettes du grill.",
+   "(confidence) il n'a pas de fils, et il voudrait qu'Ahmed lui succède comme amin ; mais il ne le lui a jamais dit : le dire, ce serait avouer qu'il est vieux."
+  ],
+  "reve": "Une dernière saison si bonne que la sardine se vendrait toute seule, sans une dispute. Et danser une fois encore à la fête, avant que ses genoux ne décident pour lui.",
+  "question": "Dis-moi franchement : les pirates, tu leur fais confiance ? (oui / non / ca_depend) — il s'inquiète de ta naïveté, approuve ta prudence, ou trouve la réponse « digne d'un amin ».",
+  "liens": {
+   "fatima": {
+    "qui": "la doyenne",
+    "nom": "Lalla Fatima",
+    "sentiment": 0.8,
+    "fond": "Fatima a connu Moulay Brahim tout petit : il pleurait quand il voyait un crabe. Elle a ramendé les filets de son père, l'ancien amin, puis les siens. Elle est la seule à l'appeler encore « le petit » ; il est le seul qu'elle laisse porter ses pelotes. Respect, et un peu d'agacement d'être traité en enfant devant ses pêcheurs. Anecdotes : en plein conseil des pêcheurs, elle lui a demandé s'il avait encore peur des crabes ; il porte à son trousseau un nœud qu'elle lui a fait quand il avait huit ans. Bavardage : « Lalla Fatima, le thé ? » / « Après mes nœuds, petit. »."
+   },
+   "hassan": {
+    "qui": "mon vieil ami",
+    "nom": "Hassan",
+    "sentiment": 0.8,
+    "fond": "Chaque après-midi, sur la terrasse du Fondouk, Hassan apporte son thé à Moulay Brahim et ils jouent aux dames sur une planche gravée. Brahim triche (un pion dans la manche) ; Hassan le sait et le laisse faire depuis vingt ans. Anecdotes : le jour où il a voulu verser le thé de haut lui-même et a arrosé le turban de Mbarek ; la partie de dames qui dure depuis le printemps. Bavardage : « Ton thé est trop sucré. » / « Votre pion a bougé tout seul, Moulay Brahim. »."
+   },
+   "driss": {
+    "qui": "mon vieux compagnon de mer",
+    "nom": "Driss",
+    "sentiment": 0.7,
+    "fond": "Ils ont pêché barque contre barque pendant vingt ans. Driss n'a jamais fait naufrage : il rentre quand les mouettes rentrent. Brahim lui demande conseil avant chaque sortie risquée ; Driss répond en un mot. Anecdotes : la seule fois où il n'a pas écouté Driss, il est rentré sans voile ; au conseil des pêcheurs, Driss a réglé une dispute de trois heures par un seul mot : « Non. ». Bavardage : « Ça sort demain, Driss ? » / « Mouettes. » / « Ça veut dire oui ? » / « Hm. »."
+   },
+   "said": {
+    "qui": "notre crieur",
+    "nom": "Saïd",
+    "sentiment": 0.5,
+    "fond": "L'amin fixe le prix de la sardine chaque matin ; Saïd le crie sur l'estrade. Saïd arrondit un peu, « pour la musique ». Brahim surveille. Anecdotes : le matin où Saïd a crié un prix inventé parce qu'il rimait mieux ; un jour, enroué, Brahim l'a laissé parler à sa place au conseil, et Saïd a parlé deux heures. Bavardage : « Deux pièces, Saïd. Pas « deux et demie qui chante ». » / « Ça chantait, pourtant. »."
+   },
+   "lhoucine": {
+    "qui": "ce noctambule de",
+    "nom": "Lhoucine",
+    "sentiment": 0.3,
+    "fond": "L'été dernier, Lhoucine a joué jusqu'au lever du soleil ; les pêcheurs sont partis en mer directement depuis la fête, ont dormi dans leurs barques et sont rentrés sans une sardine. Moulay Brahim a décrété que la musique s'arrête à minuit. Lhoucine obéit… à peu près. Anecdotes : la matinée sans sardines, la criée vide, Saïd sans rien à crier ; ses genoux qui dansent tout seuls quand Lhoucine joue. Bavardage : « Minuit, Lhoucine. » / « Il n'est que onze heures et soixante minutes. »."
+   },
+   "mustapha": {
+    "qui": "notre grilleur",
+    "nom": "Mustapha",
+    "sentiment": 0.6,
+    "fond": "Moulay Brahim compte les mouettes : plus nombreuses cette année, sans doute parce que Mustapha grille plus. Mustapha appelle les sardines volées « l'impôt des mouettes » ; l'amin répond que c'est lui qui fixe les impôts. Anecdotes : il a voulu chasser les mouettes du grill avec son bâton d'amin, et une mouette lui a emporté son turban ; Mustapha lui grille toujours la sardine bien noire, comme son père l'aimait. Bavardage : « Combien de mouettes, aujourd'hui ? » / « Une sardine sur dix, Moulay Brahim. Comme d'habitude. »."
+   }
+  }
+ },
+ "croc": {
+  "genre": "m",
+  "prenom": "Croc-de-Sel",
+  "plan": [
+   "les histoires de mon grand-père — enfant dans un port du nord, élevé par le vieux Capitaine Sel, ruiné, qui lui racontait chaque soir Tazira, les grottes, et « le souvenir » laissé là-bas ; Sel est mort quand il avait douze ans.",
+   "comment je suis devenu capitaine — mousse, puis canonnier ; un mois chez Lou la Terrible, jeté par-dessus bord pour insolence ; à trente-cinq ans il rachète un vieux galion et le baptise Murène Noire, en souvenir de la Murène de son grand-père.",
+   "la nuit où le chat m'a tout pris — la carte posée sur un tonneau le temps d'allumer sa pipe ; le chat roux, les caisses, le toit ; et lui, qui a le vertige, resté en bas à hurler.",
+   "Tazira aujourd'hui — trois semaines à quai ; l'équipage qui fouille les grottes à l'aveugle ; Mâchefer qui compte les jours jusqu'à la fin de l'été ; le rhum de Mama Lou ; le tapis de Samira ; les énigmes de la vieille Fatima ; le caïd qui le guette.",
+   "(confidence) avant de mourir, Sel lui a dit : « Ce n'est pas de l'or, petit. » Croc ne sait pas ce qu'il y a dans le coffre, et il a peur que ce ne soit rien, et de devoir l'avouer à son équipage. Il n'a jamais répété cette phrase à personne."
+  ],
+  "reve": "Ouvrir le coffre de son grand-père et comprendre enfin ce qu'il valait. Et puis… jeter l'ancre quelque part. Ici, peut-être. Si tu le répètes, je te sale.",
+  "question": "Dis-moi, terrien : les chats, tu les aimes ? (oui / non / ca_depend) — « oui » : fureur théâtrale, il te soupçonne d'être complice ; « non » : fraternité immédiate ; « ça dépend » : « Du chat ? Celui-là est un démon. ».",
+  "liens": {
+   "machefer": {
+    "qui": "mon second",
+    "nom": "Mâchefer",
+    "sentiment": 0.3,
+    "fond": "Mâchefer est le second de la Murène Noire ; il a vu mourir trois capitaines et garde le quatrième à l'œil. Sans carte, pas de trésor ; sans trésor, pas de paye. Il a donné à Croc jusqu'à la fin de l'été pour trouver le coffre ; sinon, l'équipage votera. Croc fait semblant de ne pas avoir peur. Il a besoin de lui, et il le craint un peu. Anecdotes : Mâchefer grince des dents chaque fois que Croc fait les cent pas sur le pont ; le jour où Mâchefer a tordu une barre de fer d'une seule main « pour rien », en le regardant. Bavardage : « Tout va bien, Mâchefer ? » / « Hm. Fin de l'été. » / « Je sais compter. »."
+   },
+   "mamalou": {
+    "qui": "ma vieille amie",
+    "nom": "Mama Lou",
+    "sentiment": 0.7,
+    "fond": "Il y a vingt-cinq ans, Croc, jeune canonnier insolent, a servi un mois sur le navire de Lou la Terrible ; elle l'a jeté par-dessus bord pour une insolence, il est revenu à la nage. Il ignorait qu'elle tenait taverne à Tazira et l'a retrouvée en entrant à La Murène Ivre. Elle a connu son grand-père, le Capitaine Sel, et en sait plus qu'elle ne le dit. Anecdotes : le plongeon ; elle lui sert son rhum dans un vieux verre à part, gravé d'un « S ». Bavardage : « Tu sais où est le coffre, Lou ? » / « Je sais où est la porte. Bois. »."
+   },
+   "tibo": {
+    "qui": "mon mousse",
+    "nom": "Tibo",
+    "sentiment": 0.4,
+    "fond": "Tibo est mousse sur la Murène Noire depuis un an : il récure le pont, épluche les patates et court après le chat roux pour le capitaine. Croc le traite rudement mais lui laisse regarder dans sa longue-vue. Tibo sait (par Amine) où dort le chat, et ne l'a pas dit (voir sa confidence). Anecdotes : il l'a envoyé sur le toit du Fondouk chercher le chat, Tibo est revenu avec un bonnet de nuit pris sur une corde à linge ; Tibo lui a demandé si son grand-père était gentil, et Croc n'a pas su répondre. Bavardage : « Le chat, moussaillon ? » / « Pas vu, capitaine ! » / « Cherche mieux. »."
+   },
+   "fatima": {
+    "qui": "cette vieille rusée de",
+    "nom": "Fatima",
+    "sentiment": -0.1,
+    "fond": "Croc interroge les vieux sur les grottes de la côte. Fatima est la seule qui se souvienne vraiment du passage de son grand-père il y a soixante ans : avec les femmes du port, elle a vendu du sable pour du sel aux pirates. Elle ne lui répond que par énigmes (« sous les pieds de celui qui garde ») ; il trouve qu'elle se moque de lui. Elle dit qu'il a les yeux de Sel, mais pas son culot. Anecdotes : l'énigme, qui l'a mené une nuit au pied de la Skala (et nez à nez avec Hamza) ; elle lui a vendu, à lui aussi, un sac de « sel ». Bavardage : « Les grottes, la vieille ? » / « Sous les pieds de celui qui garde, petit. »."
+   },
+   "hamza": {
+    "qui": "ce chien de garde de",
+    "nom": "Hamza",
+    "sentiment": -0.3,
+    "fond": "Hamza surveille les pirates depuis leur arrivée : des pirates polis préparent quelque chose. Croc le salue chaque matin avec une politesse exagérée, ce qui l'exaspère. Une nuit, Hamza a surpris Croc au pied de la Skala avec une lanterne (il suivait l'énigme de Fatima) ; Croc a juré qu'il « admirait les canons ». Anecdotes : la nuit de la lanterne ; ses grands saluts du tricorne à chaque passage. Bavardage : « Bien le bonjour, caïd ! » / « Passe ton chemin. » / « Je passe, je passe… lentement. »."
+   },
+   "samira": {
+    "qui": "ma tisserande",
+    "nom": "Samira",
+    "sentiment": 0.3,
+    "fond": "Croc a commandé à Samira un tapis d'après un dessin fait de mémoire : une côte, des grottes, une croix. C'est une copie de sa carte perdue ; il veut l'avoir sous les yeux. Il lui a dit de se taire et de tisser. Samira a compris, et ajoute des détails « pour voir » s'il les corrige. Méfiance et besoin. Anecdotes : chaque jour il vient vérifier et corrige la forme d'une falaise du bout de son sabre ; elle a tissé un chat roux dans un coin, il a hurlé. Bavardage : « Il avance, mon tapis ? » / « Votre carte avance. » / « Mon TAPIS. »."
+   },
+   "morgane": {
+    "qui": "ma vieille ennemie",
+    "nom": "Morgane",
+    "sentiment": -0.2,
+    "fond": "(Lien avec Carène.) Vieux adversaires en mer : depuis des années, chaque fois que la Murène Noire longe la côte ouest, l'Amirale Morgane Kerhervé lui interdit d'approcher du Léviathan et de Carène. Croc ne l'avouera jamais, mais c'est la seule qui l'ait fait virer de bord. Version de Croc, qui enjolive : un soir il a voulu « emprunter » la cloche du Léviathan, elle l'attendait sur le pont avec une lanterne ; et c'est à cause d'elle, dit-il, que personne à Carène ne veut boucher la voie d'eau de la Murène. Bavardage : piques entre capitaines, « l'amirale sans navire » contre « le capitaine sans carte »."
+   }
+  }
+ },
+ "driss": {
+  "genre": "m",
+  "prenom": "Driss",
+  "plan": [
+   "le gamin qui regardait les mouettes — enfant taiseux du quai, fils d'un porteur de caisses ; il passait ses journées à regarder partir les barques.",
+   "les mouettes de Si Larbi — à dix-huit ans, aide sur la barque de Si Larbi, qui lui apprend le seul secret : rentrer quand les mouettes rentrent ; puis la Mabrouka, construite par le père d'Ali.",
+   "le jour où j'ai dit non — une seule fois, il a refusé de sortir malgré tout le monde ; ceux qui sont sortis, Moulay Brahim compris, sont rentrés sans voile ; depuis, on l'écoute quand il dit « Hm ».",
+   "ma vie aujourd'hui — Khadija, sa femme, qui parle pour deux ; la Mabrouka qu'il refuse de changer ; Rosa, la rouquine des pirates, qui rame avec lui à l'aube sans un mot.",
+   "(confidence) il parle à sa barque parce qu'il n'ose pas dire les choses tendres à Khadija ; tout ce que la Mabrouka a entendu, c'était pour elle. Les coquillages aussi."
+  ],
+  "reve": "Une petite barque à deux places, pour sortir avec Khadija un jour sans pêche, juste pour regarder la mer. Il ne lui a pas encore demandé.",
+  "question": "Tu parles beaucoup, toi ? (oui / non / ca_depend) — un « hm » approbateur pour « non » ; pour « oui », il te tend une sardine pour que tu te taises ; « ça dépend » : « De la mer. ».",
+  "liens": {
+   "khadija": {
+    "qui": "ma femme",
+    "nom": "Khadija",
+    "sentiment": 0.8,
+    "fond": "Mariés depuis trente ans. Driss parle peu ; Khadija parle pour deux et ramende les filets de son mari en premier. Elle dit qu'il parle plus à sa barque, la Mabrouka, qu'à elle. Peu de mots, beaucoup de tendresse. Anecdotes : chaque retour, il pose sur sa chaise le plus joli coquillage pris dans le filet, sans un mot ; le jour du mariage, il a dit « oui » et rien d'autre de la journée. Bavardage très court : « Hm. » / « Hm quoi ? » / « Hm, je suis content. »."
+   },
+   "brahim": {
+    "qui": "notre amin",
+    "nom": "Moulay Brahim",
+    "sentiment": 0.6,
+    "fond": "Ils ont pêché barque contre barque pendant vingt ans. Driss n'a jamais fait naufrage : il rentre quand les mouettes rentrent. Brahim lui demande conseil avant chaque sortie risquée ; Driss répond en un mot. Anecdotes : la voile perdue (Driss l'avait dit) ; le jeune Brahim qui avait peur des crabes, Driss ne l'a dit qu'à sa barque. Bavardage : « Moulay Brahim. » / « Driss. Ça sort, demain ? » / « Hm. »."
+   },
+   "rosa": {
+    "qui": "la rouquine",
+    "nom": "Rosa",
+    "sentiment": 0.5,
+    "fond": "Rosa était fille de pêcheur. Deux ou trois fois par semaine, à l'aube, elle sort en mer avec Driss sur la Mabrouka ; ils ne se disent pas un mot. Elle dit qu'il ressemble à son père ; il dit qu'elle rame bien. Anecdotes : le mouchoir ; elle rame comme une femme du port. Bavardage : « Hm. Aube. » / « J'y serai, Driss. »."
+   },
+   "larbi": {
+    "qui": "mon vieux maître",
+    "nom": "Si Larbi",
+    "sentiment": 0.6,
+    "fond": "Driss a commencé, à dix-huit ans, comme aide sur la barque de Si Larbi. C'est Larbi qui lui a appris le seul secret : rentrer quand les mouettes rentrent. Quand Larbi a pris sa retraite, Driss a hérité de sa place dans la passe, la plus sûre. Anecdotes : le premier jour, Larbi ne lui a dit qu'une phrase, « regarde les mouettes » ; il lui rapporte encore la première sardine de chaque saison. Bavardage : « Mouettes ? » / « Rentrées. » / « Bien. »."
+   },
+   "ali": {
+    "qui": "le charpentier",
+    "nom": "Ali",
+    "sentiment": 0.5,
+    "fond": "La Mabrouka, la barque de Driss, a été construite il y a quarante ans par le père d'Ali ; Ali, enfant, tenait les clous et en a planté un de travers, toujours là. Elle est vieille et prend l'eau ; Driss refuse de la changer ; Ali la répare chaque hiver. Anecdotes : Ali lui a proposé une barque neuve, presque donnée, Driss a dit « Non. » ; il montre encore le clou de travers. Bavardage : « Elle tient ? » / « Elle tient. » / « Hm. »."
+   }
+  }
+ },
+ "fatima": {
+  "genre": "f",
+  "prenom": "Fatima",
+  "plan": [
+   "les mains de ma mère — fille et petite-fille de ramendeuses ; à cinq ans, elle s'entraînait à faire des nœuds sur ses propres doigts.",
+   "le garçon parti sur un navire marchand — Larbi, le voisin qui ne l'a jamais battue aux nœuds, part mousse à dix-sept ans ; elle ramende en l'attendant.",
+   "la nuit du sable et du sel — il y a soixante ans, le Capitaine Sel entre au port par la ruse, en marchand de sel ; avec les femmes du port, elle lui vend des sacs de sable ; elle donne un bol de harira à une petite mousse affamée (Lou) ; les pirates repartent plus pauvres.",
+   "mes nœuds aujourd'hui — quatre-vingts ans, presque aveugle, deux mille nœuds par jour ; Khadija, son élève ; Larbi et son phare vert ; le petit Brahim devenu amin ; la halqa de Ba Sidi qu'elle corrige ; Lou revenue ; le petit-fils de Sel qui la questionne.",
+   "(confidence) cette nuit-là, Sel lui a demandé de partir avec lui ; elle a dit non, elle attendait Larbi. Il a caché un coffre dans les grottes « pour le jour où tu changeras d'avis ». Elle n'y est jamais allée, et Larbi n'en a jamais rien su."
+  ],
+  "reve": "Ramender un dernier filet, le plus grand de Tazira, avec Khadija, et l'offrir à toute la flotte. Et que Larbi lui dise un jour pourquoi il est rentré si tôt.",
+  "question": "Approche… Tu as quelqu'un qui t'attend, quelque part ? (oui / non / je_ne_sais_pas) — tendresse (« Alors ne le fais pas trop attendre »), compassion, ou malice (« Moi je savais, à ton âge »).",
+  "liens": {
+   "larbi": {
+    "qui": "mon mari",
+    "nom": "Larbi",
+    "sentiment": 0.9,
+    "fond": "Mariés depuis cinquante-huit ans. Larbi, parti mousse sur un navire marchand à 17 ans, est rentré un an plus tôt que prévu ; ils se sont mariés l'année suivante. Chaque soir il allume le phare vert ; Fatima, qui ne voit plus loin, le sait à l'odeur de la mèche. Chacun garde la moitié d'un même secret (voir leurs confidences : la nuit du Capitaine Sel). Anecdotes : il ne prend plus rien au bout de la jetée, alors elle achète du poisson chez Zohra pour qu'il rentre fier ; le coquillage de Port-Azur qu'il lui a rapporté, qu'elle porte encore au cou. Bavardage : « Tu as pris quelque chose ? » / « Le soleil. »."
+   },
+   "khadija": {
+    "qui": "mon élève",
+    "nom": "Khadija",
+    "sentiment": 0.8,
+    "fond": "Khadija avait quinze ans quand Fatima lui a appris le premier nœud. Elles ramendent côte à côte sur le quai depuis trente-cinq ans ; Khadija fait mille nœuds par jour, Fatima deux mille, presque aveugle, « avec les mains ». Anecdotes : la petite Khadija faisait des nœuds si serrés qu'il fallait un couteau pour les défaire ; aujourd'hui c'est Khadija qui enfile ses aiguilles. Bavardage : « Ton nœud est lâche. » / « Vous ne le voyez même pas ! » / « Je l'entends. »."
+   },
+   "brahim": {
+    "qui": "le petit",
+    "nom": "Brahim",
+    "sentiment": 0.6,
+    "fond": "Fatima a connu Moulay Brahim tout petit : il pleurait quand il voyait un crabe. Elle a ramendé les filets de son père, l'ancien amin, puis les siens. Elle est la seule à l'appeler encore « le petit » ; il est le seul qu'elle laisse porter ses pelotes. Anecdotes : le crabe qui lui pinçait le doigt, et ses hurlements ; aujourd'hui il fixe le prix de la sardine et tout le monde tremble, sauf elle. Bavardage : « Alors, petit, et ces crabes ? » / « Lalla Fatima… devant mes pêcheurs ! »."
+   },
+   "basidi": {
+    "qui": "ce vieux bavard de",
+    "nom": "Ba Sidi",
+    "sentiment": 0.6,
+    "fond": "Fatima écoute la halqa chaque soir, et corrige Ba Sidi quand il raconte l'histoire du pirate et du trésor des grottes : « Ce n'est pas comme ça. J'y étais. » Elle n'en dit jamais plus. Ils se connaissent depuis soixante-dix ans. Anecdotes : la barbe rousse ; le poème raté, qu'elle sait encore par cœur. Bavardage : « Tu vas encore te tromper de barbe ? » / « Je me trompe exprès, pour t'entendre. »."
+   },
+   "croc": {
+    "qui": "ce capitaine pirate",
+    "nom": "Croc-de-Sel",
+    "sentiment": 0.4,
+    "fond": "Croc interroge les vieux sur les grottes de la côte. Fatima est la seule qui se souvienne vraiment du passage de son grand-père il y a soixante ans : avec les femmes du port, elle a vendu du sable pour du sel aux pirates. Elle ne lui répond que par énigmes (« sous les pieds de celui qui garde ») ; il trouve qu'elle se moque de lui. Elle dit qu'il a les yeux de Sel, mais pas son culot. Tendresse amusée : elle voit Sel en lui. Anecdotes : le deuxième sac de sable, soixante ans après le premier ; il a reculé devant un crabe sur le quai, comme le petit Brahim. Bavardage : « Approche, petit-fils de Sel. » / « Capitaine ! Capitaine Croc-de-Sel ! »."
+   },
+   "mamalou": {
+    "qui": "la petite",
+    "nom": "Lou",
+    "sentiment": 0.7,
+    "fond": "Il y a soixante ans, Lou avait quinze ans et était mousse sur la Murène du Capitaine Sel quand il est passé par Tazira. Fatima, vingt ans, a vendu aux pirates du sable pour du sel… et a donné à la petite mousse affamée un bol de harira. Quand Lou est revenue prendre sa retraite à Tazira, il y a vingt ans, Fatima l'a reconnue à son pas. Elles sont les deux seules à se souvenir vraiment de cette nuit-là. Anecdotes : la petite Lou, maigre comme un hareng ; elle reconnaît son pas entre mille. Bavardage : « Assieds-toi, petite. » / « J'ai soixante-quinze ans, Fatima. » / « Petite. »."
+   }
+  }
+ },
+ "gaspard_muet": {
+  "genre": "m",
+  "prenom": "Gaspard",
+  "plan": [
+   "l'île au phare du nord — (raconté par gestes et par l'Amiral) fils d'un gardien de phare sur une île du nord ; il bégayait, on se moquait ; il s'est mis à se taire et à regarder la mer.",
+   "comment l'Amiral m'a trouvé — embarqué à quinze ans comme vigie (les meilleurs yeux du port) ; dans un port du sud, un perroquet rouge et bleu s'est posé sur son épaule et n'en est plus reparti ; il a appris ses mots la nuit, à la vigie.",
+   "la nageuse aux cheveux rouges — il y a dix ans, de la vigie, il voit une fille nager vers la Murène ; il lui lance un cordage : c'est Rosa.",
+   "Tazira aujourd'hui — la vigie ; la pêche silencieuse avec Si Larbi ; les baleines de Youssef ; Omar qui veut engager l'Amiral ; la chambre au-dessus des chameaux chez Zineb ; de là-haut, il a vu où le chat roux a caché la carte, l'Amiral le crie, mais qui écoute un perroquet ?",
+   "(confidence, écrite à la craie sur son ardoise puis effacée) il a une voix ; il ne bégaie presque plus, mais il la garde pour quelque chose d'important. Seule Rosa l'a entendue : une berceuse de son île, une nuit de tempête."
+  ],
+  "reve": "(l'Amiral, puis l'ardoise) Voir une baleine de tout près avec Youssef, et ce jour-là, dire tout haut son premier mot depuis vingt ans.",
+  "question": "(Gaspard écrit sur son ardoise ; l'Amiral lit) « TU SAIS GARDER UN SECRET ? » (oui / non / ca_depend) — « oui » : il te montre du doigt le toit près du Fondouk ; « non » : l'Amiral crie « BAVARD ! COUAC ! » ; « ça dépend » : un haussement d'épaules complice.",
+  "liens": {
+   "rosa": {
+    "qui": "ma sœur de bord",
+    "nom": "Rosa",
+    "sentiment": 0.9,
+    "fond": "Il y a dix ans, quand Rosa a sauté de la barque de son père pour rejoindre la Murène à la nage, c'est Gaspard, en vigie, qui l'a vue et lui a lancé un cordage. Depuis, ils sont comme frère et sœur. Rosa est la seule à avoir entendu la voix de Gaspard : une berceuse, une nuit de tempête. Par gestes, ardoise et Amiral. Anecdotes : la nageuse aux cheveux rouges vue de la vigie ; Rosa le défend quand on se moque de son silence. Bavardage : l'Amiral « ROSA ! BERTHA ! FEU ! » / « Pas sur le quai, l'Amiral ! »."
+   },
+   "larbi": {
+    "qui": "mon voisin de pêche",
+    "nom": "Si Larbi",
+    "sentiment": 0.8,
+    "fond": "En début d'après-midi, Gaspard descend de sa vigie pour pêcher au bout de la jetée, à côté de Si Larbi. Deux hommes silencieux ; l'Amiral fait la conversation. Ni l'un ni l'autre n'attrape rien, et c'est très reposant. Par gestes et par l'Amiral. Anecdotes : l'Amiral crie « ÇA MORD ! » à chaque mouette ; Gaspard a dessiné pour Larbi, sur son ardoise, la côte qu'il voit de la vigie. Bavardage : l'Amiral « ÇA MORD PAS ! » / « Chut, l'Amiral. »."
+   },
+   "youssef": {
+    "qui": "le jeune pêcheur",
+    "nom": "Youssef",
+    "sentiment": 0.8,
+    "fond": "Youssef voit des baleines partout ; personne ne le croit. Gaspard, la vigie, les voit aussi : l'Amiral crie « IL VOIT LA BALEINE ! ». Mais personne ne croit un muet et un perroquet. Ils forment à eux deux le club des gens qu'on ne croit pas. Anecdotes : le matin où ils ont vu ensemble le même jet d'eau devant la Skala, Gaspard a dessiné la baleine sur son ardoise pour Youssef ; l'Amiral a appris « BALEINE ! » de Youssef. Bavardage : l'Amiral « BALEINE ! BALEINE ! » / « Je te l'avais dit ! »."
+   },
+   "omar": {
+    "qui": "le tambour",
+    "nom": "Omar",
+    "sentiment": 0.6,
+    "fond": "L'Amiral, le perroquet de Gaspard, siffle les rythmes d'Omar. Omar veut l'engager dans le trio ; Gaspard hausse les épaules, l'Amiral dit oui. Anecdotes : un soir de fête, l'Amiral a sifflé « boum ta-ka boum » pile en rythme, et la place a applaudi l'oiseau ; là-haut, Gaspard tape doucement le rythme sur la rambarde de la vigie. Bavardage : l'Amiral « BOUM ! TA-KA ! » / « Engagé ! »."
+   },
+   "khadija": {
+    "qui": "la ramendeuse",
+    "nom": "Khadija",
+    "sentiment": 0.5,
+    "fond": "L'Amiral répète tout ce qu'on dit sur le quai. Un matin, il a crié devant toute la criée une phrase de Khadija : « DRISS PARLE À SA BARQUE ! DRISS RONFLE ! ». Depuis, Khadija baisse la voix quand Gaspard passe, et lui en veut un peu. Il est désolé. Anecdotes : en excuse, il lui a offert une bobine de fil bleu ; il couvre l'Amiral d'un mouchoir quand elle parle. Bavardage : l'Amiral « BONJOUR KHADIJA ! » / « Toi, chut. »."
+   },
+   "amine": {
+    "qui": "le gamin",
+    "nom": "Amine",
+    "sentiment": 0.6,
+    "fond": "Amine suit Gaspard partout pour voir l'Amiral de près. Le perroquet lui a dit un « gros mot » : « TÊTE DE MÉROU ! ». Amine en est très fier. Gaspard le laisse monter jusqu'au premier barreau du mât, pas plus. Anecdotes : le « tête de mérou » ; Amine lui a demandé par gestes où était le chat roux, Gaspard a montré le toit près du Fondouk, et ils ont ri : ils le savaient tous les deux. Bavardage : l'Amiral « TÊTE DE MÉROU ! » / « Bonjour à toi aussi, l'Amiral ! »."
+   },
+   "zineb": {
+    "qui": "l'aubergiste",
+    "nom": "Zineb",
+    "sentiment": 0.7,
+    "fond": "Une nuit où la pompe de la Murène grinçait trop fort, Gaspard est venu au Fondouk ; c'est l'Amiral qui a demandé « UNE CHAMBRE PAS TROP STABLE ! ». Zineb lui a donné la chambre au-dessus de l'écurie des chameaux. Il revient une nuit par semaine. Anecdotes : les chameaux qui ronflent comme la mer ; Zineb lui laisse une datte sur l'oreiller (il adore les dattes). Bavardage : l'Amiral « LA CHAMBRE ! LA CHAMBRE ! » / « Elle t'attend. »."
+   }
+  }
+ },
+ "halima": {
+  "genre": "f",
+  "prenom": "Halima",
+  "plan": [
+   "le four de ma mère — fille de Rqia la potière ; enfant, elle modelait des chameaux en terre de l'oued et les glissait en cachette dans le four.",
+   "mon premier tour — à quinze ans, sa mère lui laisse le tour ; ses premiers bols penchent ; son premier grand plat à tajine est pour sa tante Zineb, au Fondouk.",
+   "la fournée de l'Aïd — un plat mal séché éclate dans le four et casse toute la fournée de la fête ; elle refait tout en trois nuits, avec sa mère et Zohra qui tient la lampe.",
+   "mon étal aujourd'hui — plats à tajine (le grand plat de Zohra), cruches de La Murène Ivre que les pirates cassent, cruches aux oiseaux peintes par Selma, et Youssef qui renverse des bols en lui souriant.",
+   "(confidence) elle aime Youssef plus qu'elle ne le montre ; elle garde dans une boîte chaque morceau des bols qu'il a cassés, pour en faire une mosaïque sur la proue de la Baleine, le jour où elle existera."
+  ],
+  "reve": "Un tajine assez grand pour toute la place des Lanternes, un soir de fête, et que tout Tazira mange dans le même plat. Le plat, c'est elle qui le ferait.",
+  "question": "Tu es du genre à casser les choses, ou à les réparer ? (casser / reparer / les_deux) — rire, approbation, ou « Alors fais attention en te retournant ».",
+  "liens": {
+   "zohra": {
+    "qui": "mon amie",
+    "nom": "Zohra",
+    "sentiment": 0.8,
+    "fond": "Halima tourne les plats à tajine de Zohra, cuits au four de sa mère Rqia. Le grand plat du vendredi est une pièce unique, avec un poisson gravé sur le couvercle, un œil bien rond pour la grand-mère Zahra. Zohra ne le prête à personne. Anecdotes : Zohra a fait tomber le grand plat et l'a rattrapé dans son tablier en criant plus fort que Saïd ; c'est Halima qui a eu l'idée de l'œil. Bavardage : « Le plat tient ? » / « Mieux que mes nerfs. »."
+   },
+   "selma": {
+    "qui": "mon amie peintre",
+    "nom": "Selma",
+    "sentiment": 0.7,
+    "fond": "Selma est venue acheter des bols et est restée trois heures à regarder Halima tourner. Halima lui a appris à faire de l'ocre avec la terre de l'oued ; Selma a peint des oiseaux sur une série de cruches, vendues en un jour. Anecdotes : l'ocre de l'oued (Selma a eu les mains rouges une semaine) ; Selma a voulu tourner un bol, il est devenu une assiette, puis une crêpe. Bavardage : « Tu as cassé quelque chose ? » / « Juste un bol. Il voulait être une crêpe. »."
+   },
+   "mamalou": {
+    "qui": "ma meilleure cliente",
+    "nom": "Mama Lou",
+    "sentiment": 0.5,
+    "fond": "Toutes les cruches de La Murène Ivre viennent de chez Halima. Les pirates en cassent trois par semaine ; Halima les fait payer double, et Mama Lou paie sans discuter, puis refait payer aux pirates. Anecdotes : la cruche incassable, qui sert maintenant à caler la porte ; Mama Lou l'appelle « fillette ». Bavardage : « Combien de cassées, cette semaine ? » / « Trois. Et un pirate. »."
+   },
+   "youssef": {
+    "qui": "ce rêveur de",
+    "nom": "Youssef",
+    "sentiment": 0.5,
+    "fond": "Youssef est amoureux de Halima. Il passe devant son étal en revenant de la jetée et lui raconte ses baleines. Elle le trouve doux et un peu menteur ; elle lui a tourné une cruche avec une baleine en relief. Il veut l'emmener en mer sur sa future barque, la Baleine. Anecdotes : la cruche à la baleine (il ne s'en sert pas, il la regarde) ; il a fait tomber trois bols en se retournant pour lui sourire, et a payé en sardines. Bavardage : « Tu as vu ta baleine ? » / « Ce matin ! Elle t'a saluée. » / « Bien sûr. »."
+   },
+   "zineb": {
+    "qui": "ma tante",
+    "nom": "Zineb",
+    "sentiment": 0.7,
+    "fond": "Zineb est la sœur de Rqia, la mère de Halima, qui cuit les poteries au four familial. Tous les plats à tajine du Fondouk sortent de chez Halima. Zineb voudrait la marier ; Halima voudrait que sa tante arrête. Anecdotes : le plat cassé exprès ; sa tante l'a gardée tout un été au Fondouk quand sa mère était malade. Bavardage : « Ne me présente personne aujourd'hui, khalti. » / « Personne. Juste un petit caravanier. »."
+   }
+  }
+ }
+}

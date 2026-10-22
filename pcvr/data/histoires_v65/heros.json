@@ -1,0 +1,735 @@
+{
+ "barnabe": {
+  "genre": "m",
+  "prenom": "Barnabé",
+  "histoire": [
+   {
+    "titre": "le port de mon grand-père",
+    "t": "Je suis né à Pointe-Grise, un port du royaume si petit qu'il tenait sur un timbre. Mon grand-père, vieux marin, me racontait les îles du sud et une ville sous la mer ; ma grand-mère me confisquait mes chaussettes avant la plage. À huit ans, j'ai dessiné ma première carte : son jardin, avec le chemin de chaque escargot. Elle l'a gardée toute sa vie."
+   },
+   {
+    "titre": "la carte aussi grande que le royaume",
+    "t": "À vingt ans, je suis devenu cartographe du roi. Il voulait la carte la plus précise du monde : j'y ai mis chaque arbre, chaque mare, chaque vache. Onze ans de travail. On l'a rangée pliée dans une grange, et le roi m'a demandé une version de poche. Pendant ces onze ans, Mireille a épousé le gardien du phare. Lui, au moins, il rentrait le soir. Je n'en dirai pas plus."
+   },
+   {
+    "titre": "la nuit où la Mouette a touché",
+    "t": "Le roi m'a envoyé dessiner les mers du sud, celles de mon grand-père, à bord de la Mouette Têtue. Octave y était charpentier : on jouait aux cartes chaque soir, il trichait, je mesurais sa barbe. Puis une nuit sans lune, le rocher. Je me suis réveillé sur un radeau de cartes roulées, une botte en moins, et un perroquet m'a dit « Naufrage » du haut d'un arbre. Sapristi, quelle nuit."
+   },
+   {
+    "titre": "vingt-deux ans sur cette plage",
+    "t": "J'ai bâti ma cabane avec les planches de la Mouette que la mer me rendait une à une ; la dernière est arrivée il y a neuf ans. J'ai quatre mille trois cent douze coquillages, tous baptisés. Marley cultive ses bananes dans mon coin, Mistral a monté son mur de son grâce à ma barque, et le jeune Gaspard vient apprendre les cabanes. Pour un ermite, je reçois beaucoup trop."
+   },
+   {
+    "titre": "le petit point sur mon brouillon",
+    "t": "Je ne l'ai jamais dit à personne, {surnom}. Pas même à Gaston. La veille du naufrage, sur mon brouillon, il y avait un tout petit point noir, juste sur notre route. J'ai cru à une miette de biscuit. Je ne l'ai pas recopié. Vingt-deux ans que je crie que ma carte était juste. Elle l'était. À une miette près."
+   }
+  ],
+  "reve": [
+   "La grande carte de l'archipel, {surnom} ! Le Bois-Doré, la ville engloutie, l'île des nains, l'île qui flotte… Et cette fois, elle tiendra dans une poche. Avec ton nom dessus. En tout petit, mais dessus.",
+   "Et puis… un soir, monter à l'échelle d'Octave avec deux noix de coco et un jeu de cartes. Comme sur la Mouette. Il tricherait, je ferais semblant de ne rien voir. Ne le répète pas à Gaston."
+  ],
+  "question": {
+   "texte": "Toi qui as vu du pays, dis-moi franchement : une carte, ça peut se tromper ?",
+   "reponses": [
+    {
+     "label": "Jamais, si le cartographe est bon.",
+     "valeur": "jamais",
+     "t": "VOILÀ ! Gaston, note ça : une carte ne se trompe jamais. Ce sont les rochers qui se promènent. Tu as l'étoffe d'un cartographe, {surnom}.",
+     "rappel": "Toi qui dis qu'une bonne carte ne se trompe jamais… tu es mon seul allié sur cette île. Avec Gaston, les jours où il est d'accord."
+    },
+    {
+     "label": "Ça arrive à tout le monde.",
+     "valeur": "parfois",
+     "t": "À tout le monde… Hmm. Oui. Peut-être. Même aux meilleurs. Même… Non. Changeons de sujet. Gaston, change de sujet.",
+     "rappel": "Tu m'as dit qu'une carte, ça peut se tromper. J'y ai repensé toute la nuit. Gaston aussi. Il ronflait, mais il y pensait."
+    },
+    {
+     "label": "Je ne lis pas les cartes, je me perds.",
+     "valeur": "perdu",
+     "t": "Tu te perds ? Mais c'est merveilleux ! Les grands découvreurs se perdent tout le temps. Moi, je me suis perdu vingt-deux ans, et regarde tout ce que j'ai trouvé.",
+     "rappel": "Ah, mon petit égaré ! Tu t'es encore perdu, depuis ? Raconte-moi où, je le note sur un coquillage."
+    }
+   ]
+  },
+  "liens": {
+   "octave": {
+    "qui": "mon vieux rival",
+    "nom": "Octave",
+    "sentiment": 0.3,
+    "avis": "Octave ? Le meilleur charpentier du royaume et le pire timonier de l'océan. Vingt-deux ans qu'il me boude. Ou que je le boude. On ne sait plus très bien.",
+    "anecdotes": [
+     "Sur la Mouette, pendant trois jours de calme plat, Octave m'a taillé une canne dans un bambou. Il a gravé une petite mouette sur le manche, et mes initiales. À l'envers : « C. B. ». Je ne le lui ai jamais fait remarquer. C'est ma canne préférée.",
+     "Avant le naufrage, Octave a ressemelé mes bottes avec le cuir de sa propre ceinture. Il a tenu son pantalon avec une corde jusqu'à la fin du voyage. Je ne l'ai jamais remercié. La gauche est au fond de l'eau, mais la droite tient toujours.",
+     "Les soirs de brume, je fais un plus gros feu, pour qu'on voie bien ma fumée depuis son fromager. Pourquoi ? Pour qu'il sache que je suis toujours là. Ça doit l'agacer prodigieusement. C'est une raison suffisante."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ohé, Octave ! Ta barbe a poussé : douze pouces, au moins."
+     ],
+     [
+      "b",
+      "Tu mesures encore les gens, Coquillard ? Mesure ta langue."
+     ],
+     [
+      "a",
+      "Gaston, note : Octave m'a parlé. Huit mots de plus que l'an dernier."
+     ],
+     [
+      "b",
+      "Neuf. Et c'était le dernier."
+     ]
+    ]
+   },
+   "lyra": {
+    "qui": "mademoiselle",
+    "nom": "Lyra",
+    "sentiment": 0.9,
+    "avis": "Mademoiselle Lyra ? Une vraie elfe, {surnom} ! Trois cent douze ans et pas une ride. Moi, j'en ai une par marée, et elle me trouve charmant quand même.",
+    "anecdotes": [
+     "Je suis allé la saluer dans sa clairière, avec ma botte et Gaston. Je me suis incliné bien bas. Trop bas : je suis tombé dans les fougères. Elle m'a relevé d'une main, comme une plume. Et Gaston n'a pas dit un mot de toute la visite. Une première en vingt-deux ans !",
+     "Je lui ai montré ma carte des Anciens. Elle a posé le doigt sur la tache que je prenais pour du café et elle a dit : « C'est chez moi. » Depuis, j'ai repassé la tache à la feuille d'or. Enfin, au jus de mangue. C'est ce que j'avais.",
+     "Vingt ans, cette graine dorée a dormi dans ma boîte à trésors, entre une dent de requin et un bouton de nacre. Les soirs tristes, je la tenais au creux de la main : elle était tiède, comme un petit soleil. Je ne savais pas que je la gardais pour quelqu'un."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mademoiselle Lyra ! Je vous salue bien bas !"
+     ],
+     [
+      "b",
+      "Pas trop bas, Barnabé. Les fougères s'en souviennent encore."
+     ],
+     [
+      "a",
+      "Gaston, tu entends ? Une elfe qui se souvient de moi !"
+     ],
+     [
+      "b",
+      "Les elfes n'oublient rien. Surtout pas les gens gentils."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "le vieil elfe",
+    "nom": "Faelar",
+    "sentiment": 0.6,
+    "avis": "Faelar ? Le plus vieil elfe du monde, et il connaît ma chanson par cœur ! Il trouve que le héros est plus petit que dans les couplets. C'est de la poésie, voyons !",
+    "anecdotes": [
+     "Tous les soirs, j'agite mon chapeau vers la brume. Personne ne répond, jamais. Sauf une fois : une lanterne a clignoté trois fois, tout en haut des arbres. Gaston dit que c'était une luciole. Moi, je suis sûr que c'était Faelar. Les vieux se comprennent.",
+     "Ma chanson sur le vainqueur de Nâga, je l'ai chantée face à la brume tous les soirs d'un mois entier. Quarante couplets, à pleins poumons. Comment elle a traversé, mystère : le vent, ou Gaston qui la siffle à tous les oiseaux. Le fait est qu'un elfe de neuf cent quatre-vingt-sept ans la connaît. Je suis publié !"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maître Faelar ! Vous connaissez vraiment ma chanson ?"
+     ],
+     [
+      "b",
+      "Les quarante couplets, Barnabé. Le héros y mesure trois mètres."
+     ],
+     [
+      "a",
+      "C'est de la poésie ! La poésie, ça grandit les gens."
+     ],
+     [
+      "b",
+      "Alors chante-la encore. À mon âge, on aime ce qui grandit."
+     ]
+    ]
+   },
+   "marley": {
+    "qui": "mon voisin",
+    "nom": "Marley",
+    "sentiment": 0.7,
+    "avis": "Marley ? Il cultive ses bananes dans mon coin et me paie en régimes. Le meilleur locataire du monde. Il ne fait du bruit que pour les bananiers.",
+    "anecdotes": [
+     "Marley fait écouter de la musique à mes bananiers, sur une petite boîte qui fait boum. Moi, je leur chante des chansons de marins. On a fini par s'arranger : lui les jours pairs, moi les jours impairs. Les régimes n'ont jamais été si gros. Gaston penche pour la boum.",
+     "Marley jure qu'il n'écoute jamais ce que je confie à mes bananiers. Mais la semaine dernière, il m'a demandé, l'air de rien : « Et Mireille, ça va mieux ? » Par la barbe de Neptune ! J'ai changé de bananier."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marley ! Combien de régimes, cette semaine ?"
+     ],
+     [
+      "b",
+      "Trois pour toi, deux pour moi, un pour Gaston. La famille, quoi !"
+     ],
+     [
+      "a",
+      "Et tu as encore fait boum-boum à mes bananiers ?"
+     ],
+     [
+      "b",
+      "Juste un petit son, Barnabé. Regarde, ils dansent."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "mon apprenti",
+    "nom": "Gaspard",
+    "sentiment": 0.8,
+    "avis": "Gaspard ? Mon meilleur élève. Mon seul élève, d'accord, mais le meilleur. Il hoche la tête quand je parle : soit il écoute, soit c'est la musique.",
+    "anecdotes": [
+     "Pour sa première cabane, Gaspard a commencé par le toit. Un très beau toit, posé dans l'herbe, sans rien dessous. Je lui ai expliqué qu'on commence par le plancher. Il a hoché la tête pendant une heure. Depuis, il commence par le plancher. Et il hoche toujours.",
+     "Il est allé demander des clous à Octave. Il est revenu en disant que les cabanes d'Octave sont mieux. J'ai boudé trois jours. Le quatrième, je lui ai appris le nœud de cabestan, qu'Octave ne connaît pas. Nous aussi, on a nos armes."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gaspard ! Tu as commencé par le plancher, cette fois ?"
+     ],
+     [
+      "b",
+      "Tranquille, Barnabé. Plancher, murs, toit. Et une bouteille d'eau."
+     ],
+     [
+      "a",
+      "Et Octave, il en dit quoi, de ta cabane ?"
+     ],
+     [
+      "b",
+      "Que les siennes sont mieux. Hé oui. Il dit ça de tout."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "mon ami le DJ",
+    "nom": "Mistral",
+    "sentiment": 0.6,
+    "avis": "Mistral ? Le seul homme de l'île qui fasse plus de bruit que moi. Je l'admire, et je dors avec du coton dans les oreilles.",
+    "anecdotes": [
+     "Pour monter son mur de son, Mistral m'a emprunté ma barque. Dix-sept traversées, une enceinte à chaque fois, et moi à la barre avec ma carte. Pas un rocher, pas une égratignure. Je le fais remarquer à qui veut l'entendre. Surtout de l'autre côté de l'île.",
+     "Gaston a appris son kick. « Boum. Boum. Boum. » À cinq heures du matin, juste au-dessus de mon oreiller. Mistral dit que c'est un remix. Moi, je dis que c'est une malédiction. Mais je tape du pied quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral ! Ma barque te salue. Elle a encore mal au dos."
+     ],
+     [
+      "b",
+      "Barnabé ! Dix-sept traversées, pas un rocher. Une légende, hé oui !"
+     ],
+     [
+      "a",
+      "Répète-le plus fort, qu'on l'entende jusqu'au fromager d'Octave."
+     ],
+     [
+      "b",
+      "Plus fort ? Ça, je sais faire !"
+     ]
+    ]
+   },
+   "momo": {
+    "qui": "ce garnement de",
+    "nom": "Momo",
+    "sentiment": 0.2,
+    "avis": "Momo ? Un garçon adorable qui perce des trous dans des coquillages. DES TROUS, {surnom}. Je l'aime bien, mais je recompte ma collection après chacune de ses visites.",
+    "anecdotes": [
+     "Un jour, Momo m'a offert un collier : trente coquillages enfilés sur une ficelle. Au milieu, j'ai reconnu Hortense, ma porcelaine tigrée, emportée par une marée il y a six ans. Percée ! Je l'ai rachetée contre un régime de bananes. Elle va bien. Elle a juste un petit trou.",
+     "Je suis passé à la teuf, un soir, avec Gaston sur l'épaule. J'ai fait trois pas, uniquement pour mesurer la piste. Momo raconte partout que je dansais. C'était de la cartographie. Rythmée, je l'admets."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Momo. Combien de trous, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Douze, Barnabé ! Et un collier pour Gaston, frérot !"
+     ],
+     [
+      "a",
+      "Gaston ne porte pas de bijoux. … Il est de quelle couleur ?"
+     ],
+     [
+      "b",
+      "Vert, comme lui ! Il va adorer !"
+     ]
+    ]
+   }
+  }
+ },
+ "lyra": {
+  "genre": "f",
+  "prenom": "Lyra",
+  "histoire": [
+   {
+    "titre": "mon enfance sur les passerelles",
+    "t": "Je suis née au Bois-Doré, dans une maison ronde posée sur la troisième plate-forme. Ma mère chantait pour faire pousser les feuilles. Moi, je grimpais. À quarante ans, j'ai voulu voir par-dessus la brume, et je suis tombée de la plus haute passerelle. Aëlwen m'a soignée. Mais juste avant de tomber, j'avais vu une voile, au loin."
+   },
+   {
+    "titre": "l'histoire que Faelar n'a jamais finie",
+    "t": "Quand j'étais petite, Faelar nous racontait les graines de l'Arbre-Mère, semées sur toutes les îles. Un soir, il s'est endormi juste avant la fin : celle de l'arbre des humains. Il a dormi tout un printemps. Je n'ai pas pu attendre. À cent ans, j'ai demandé au conseil d'en devenir la gardienne. Personne d'autre ne voulait traverser la brume."
+   },
+   {
+    "titre": "la première feuille grise",
+    "t": "Pendant deux siècles, j'ai traversé la brume chaque printemps pour veiller l'Arbre sacré, sans jamais me montrer aux humains. Puis un matin, j'ai trouvé une feuille grise à ses pieds. Puis dix. Puis cent. J'ai dit à ma mère que je ne rentrerais pas tant qu'il ne respirerait pas. Elle m'a donné sa cape et n'a rien dit. Chez nous, c'est comme pleurer."
+   },
+   {
+    "titre": "mes deux îles",
+    "t": "Aujourd'hui, j'ai deux îles. Celle de l'Arbre-Mère, où Sylwen me garde toujours un pain de miel et où Nimiel me guette avec cent questions. Et celle-ci, où un vieil homme salue la brume avec son chapeau, et où un forgeron grogne contre les arbres en les caressant. Ma mère dit que j'ai le cœur coupé en deux. Je crois qu'il a seulement poussé."
+   },
+   {
+    "titre": "la graine que j'ai laissée tomber",
+    "t": "Personne ne le sait, {surnom}. Il y a vingt ans, c'est moi qui portais la graine d'or, la seule de l'Arbre-Mère en trois siècles. De ma barque, j'ai vu sur une plage un humain qui dansait avec un perroquet. J'ai ri, je me suis penchée… et la graine est tombée à l'eau. Barnabé a ramassé ma faute sans le savoir. Je n'ai jamais osé le lui dire."
+   }
+  ],
+  "reve": [
+   "Passer une nuit entière à la fête de la plage, devant le grand mur de son, sans me cacher derrière un fromager. Danser jusqu'à ce que le soleil se lève. Mon peuple en parlerait pendant mille ans.",
+   "Et un jour, planter une graine de l'Arbre-Mère sur chaque île de l'archipel, pour que les enfants des humains grimpent dedans. Les arbres apprennent vite à aimer ceux qui grimpent."
+  ],
+  "question": {
+   "texte": "Les humains vivent si peu de temps… Dis-moi : si tu avais trois cents ans devant toi, qu'en ferais-tu ?",
+   "reponses": [
+    {
+     "label": "Je visiterais toutes les îles.",
+     "valeur": "voyager",
+     "t": "Toutes ? Il en faudrait peut-être quatre cents… Mais j'aime ta réponse. Tu as des pieds d'humain et un cœur d'oiseau migrateur.",
+     "rappel": "Toi qui voulais visiter toutes les îles, tu as bien avancé, on dirait. Tu me raconteras celles que je ne connais pas ?"
+    },
+    {
+     "label": "Je planterais une forêt.",
+     "valeur": "foret",
+     "t": "Une forêt… Oh, {surnom}. C'est la plus belle chose qu'un humain m'ait jamais dite. Les arbres t'ont entendu, je te le promets. Ils entendent tout.",
+     "rappel": "Tu m'as dit que tu planterais une forêt. Je t'ai gardé une graine. Commence par un arbre : la forêt viendra après."
+    },
+    {
+     "label": "Je dormirais. Beaucoup.",
+     "valeur": "dormir",
+     "t": "Ha ha ! Tu parles comme Faelar. Il a déjà dormi trois ans d'affilée, tu sais. Il dit que c'est le meilleur moyen de ne pas vieillir trop vite.",
+     "rappel": "Tu disais que tu dormirais trois cents ans… Tu as l'air bien réveillé, aujourd'hui. Faelar serait déçu."
+    }
+   ]
+  },
+  "liens": {
+   "barnabe": {
+    "qui": "mon ami",
+    "nom": "Barnabé",
+    "sentiment": 0.9,
+    "avis": "Barnabé parle à la mer comme à une vieille amie. Les humains le disent fou ; les arbres le disent gentil. Moi, je crois les arbres.",
+    "anecdotes": [
+     "Il est venu me saluer dans la clairière, Gaston sur l'épaule et une seule botte au pied. Il m'a demandé si les elfes mangeaient des coquillages. J'ai répondu que nous mangions surtout des fleurs. Le lendemain, il m'a apporté un bouquet. De coquillages. Je l'ai gardé.",
+     "Chaque soir, il agite son chapeau vers la brume. Chez nous, personne ne répond. Un soir, moi, j'ai répondu : trois éclats de lanterne, depuis la plus haute plate-forme. Il a dansé sur sa plage jusqu'à minuit. Il ne sait pas que c'était moi.",
+     "Il m'a dessiné une carte du Bois-Doré sans jamais y être allé. Tout est faux : les arbres, les passerelles, le nombre de lunes. Sauf l'Arbre-Mère, exactement à sa place. Je l'ai accrochée chez moi, au-dessus de mon lit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Tu as encore salué la brume, hier soir."
+     ],
+     [
+      "b",
+      "Tous les soirs, mademoiselle ! Un jour, quelqu'un répondra."
+     ],
+     [
+      "a",
+      "Qui sait ? Quelqu'un a peut-être déjà répondu."
+     ],
+     [
+      "b",
+      "Gaston dit que c'était une luciole. Gaston est jaloux."
+     ]
+    ]
+   },
+   "octave": {
+    "qui": "le forgeron",
+    "nom": "Octave",
+    "sentiment": 0.6,
+    "avis": "Octave gronde comme un orage d'été : beaucoup de bruit, et après, tout est plus vert. Son fromager l'aime. Les arbres se trompent rarement.",
+    "anecdotes": [
+     "Pendant des années, je l'ai observé sans qu'il le sache. Chaque matin, avant d'allumer sa forge, il pose sa grosse main sur l'écorce de son fromager et lui dit : « Tiens bon, ma vieille. » Puis il grogne très fort, pour que personne ne croie qu'il est gentil.",
+     "Quand je suis montée à son échelle, il a caché sa hache derrière son dos, comme un enfant cache un gâteau. Il m'a offert une tisane, puis il m'en a dit le prix, puis il a dit que c'était une blague. Je ne suis toujours pas sûre que c'en était une.",
+     "Il m'a taillé un peigne dans une branche tombée de son fromager. Il a répété trois fois : « Tombée. Pas coupée. » Je le porte tous les jours. Au Bois-Doré, on me demande quel elfe l'a sculpté. Je réponds : un ours."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Octave. Ton fromager te salue."
+     ],
+     [
+      "b",
+      "Mon fromager ne parle pas. … Il a dit quoi ?"
+     ],
+     [
+      "a",
+      "Que tu es moins grognon le matin."
+     ],
+     [
+      "b",
+      "Il ment. Comme tous les arbres. Et tous les clients."
+     ]
+    ]
+   },
+   "aelwen": {
+    "qui": "notre herboriste",
+    "nom": "Aëlwen",
+    "sentiment": 0.9,
+    "avis": "Aëlwen m'a soignée cent fois depuis ma naissance. Ses potions sont amères et ses mains sont douces : il faut prendre les deux ensemble.",
+    "anecdotes": [
+     "Quand je suis tombée de la passerelle, à quarante ans, Aëlwen m'a bandé la cheville avec des feuilles de sauge et m'a fait boire sa potion. J'ai grimacé une semaine. Au Bois-Doré, on appelle encore ça « la grimace de Lyra ». Aëlwen le prend comme un compliment.",
+     "Avant mon départ, elle m'a donné un sachet d'herbes : « La moitié pour l'Arbre, l'autre pour toi, les soirs où tu pleureras. » J'ai tout donné à l'Arbre. Elle le sait. Elle fait semblant d'être fâchée depuis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aëlwen ! Je n'ai mal nulle part, je te le promets."
+     ],
+     [
+      "b",
+      "C'est ce que tu disais à quarante ans, avec la cheville à l'envers."
+     ],
+     [
+      "a",
+      "Et ta potion avait un goût d'écorce brûlée."
+     ],
+     [
+      "b",
+      "C'est pour ça qu'elle marche. Tiens-toi droite, et bois ta tisane."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "le vieux",
+    "nom": "Faelar",
+    "sentiment": 0.8,
+    "avis": "Faelar a vu pousser presque tous les arbres du Bois-Doré. Personne ne raconte mieux que lui. Quand il ne s'endort pas au milieu.",
+    "anecdotes": [
+     "Deux siècles après, Faelar a enfin fini l'histoire de l'arbre des humains. La fin, c'était : « Et une petite elfe est allée voir. » Puis il m'a regardée en souriant. Il ne s'était pas endormi par hasard, ce soir-là.",
+     "Le soir où je suis partie veiller l'Arbre, il m'a donné sa vieille couverture et un seul conseil : « Parle aux humains. Ils vivent moins longtemps que nous, mais ils vont plus loin. » La couverture sentait la mousse et le vieux livre. Je dors encore dessous.",
+     "Quand il raconte l'histoire de la graine d'or perdue, Faelar dit toujours : « La mer l'a prise. » Puis il me regarde, une seconde de trop. Je crois qu'il sait. Il ne m'a jamais rien demandé. C'est sa façon d'être gentil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar, tu t'étais endormi exprès, ce soir-là. Avoue."
+     ],
+     [
+      "b",
+      "Moi ? À mon âge, on s'endort quand on peut, petite feuille."
+     ],
+     [
+      "a",
+      "Tu souriais en dormant. Je t'ai vu."
+     ],
+     [
+      "b",
+      "Je rêvais d'une elfe qui traversait la brume. Joli rêve."
+     ]
+    ]
+   },
+   "nimiel": {
+    "qui": "la petite",
+    "nom": "Nimiel",
+    "sentiment": 0.7,
+    "avis": "Nimiel veut tout savoir sur les humains. Tout. Elle me ressemble, il y a trois siècles. En beaucoup plus bruyant.",
+    "anecdotes": [
+     "Un printemps, Nimiel s'est cachée sous ma cape, au fond de ma barque, pour aller voir les humains. Elle a éternué en pleine brume. J'ai dû faire demi-tour. Elle a boudé un jour entier, ce qui est son record. Le lendemain, elle préparait déjà sa prochaine cachette.",
+     "Je lui ai rapporté un coquillage de la plage des humains, en lui disant qu'on y entendait la mer. Elle a dormi avec, contre l'oreille, pendant un mois. Depuis, elle en réclame à tout le monde. C'est un peu ma faute.",
+     "Elle m'a posé cent dix-sept questions sur les humains en une seule soirée. J'ai répondu en lui décrivant Barnabé. Depuis, elle est persuadée que tous les humains parlent à un perroquet. Je n'ai pas eu le cœur de la détromper."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Nimiel, pourquoi y a-t-il une grenouille dans ma poche ?"
+     ],
+     [
+      "b",
+      "C'est pour l'humain ! Tu lui donneras ? S'il te plaît !"
+     ],
+     [
+      "a",
+      "Les humains préfèrent les coquillages, je crois."
+     ],
+     [
+      "b",
+      "Alors on échange ! Une grenouille contre trois coquillages !"
+     ]
+    ]
+   },
+   "sylwen": {
+    "qui": "notre boulangère",
+    "nom": "Sylwen",
+    "sentiment": 0.8,
+    "avis": "Sylwen nourrit tout le Bois-Doré et se vexe si on ne reprend pas. Je reprends toujours. C'est une question de diplomatie.",
+    "anecdotes": [
+     "Pour mon départ, Sylwen m'a fait un pain de voyage au miel de l'Arbre-Mère, « qui tient un mois ». Il a tenu deux jours : un perroquet vert venait m'en voler un morceau chaque matin en criant « Bonjourrr ». J'ai appris plus tard qu'il s'appelait Gaston.",
+     "Un soir où son four boudait, je lui ai chanté une berceuse d'écorce. Le pain a levé. Sylwen jure que c'est le hasard. Pourtant, depuis, elle vient me chercher chaque fois que son four fait la tête."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sylwen ! Ton pain de miel a traversé la brume, tu sais."
+     ],
+     [
+      "b",
+      "Et tu l'as mangé, au moins ? Tu es toute maigre !"
+     ],
+     [
+      "a",
+      "Un perroquet en a mangé la moitié."
+     ],
+     [
+      "b",
+      "Un perroquet ! La prochaine fois, je t'en fais deux. Un pour lui."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "le musicien",
+    "nom": "Mistral",
+    "sentiment": 0.3,
+    "avis": "Mistral fait trembler la baie toutes les nuits. Je devrais m'en plaindre. Mais ses battements ressemblent à ceux de l'Arbre-Mère, quand on colle l'oreille à l'écorce.",
+    "anecdotes": [
+     "La première nuit, j'ai cru que l'île avait un cœur malade. Puis j'ai compris que c'était de la musique. Je me suis cachée derrière un fromager pour écouter, et mes pieds se sont mis à bouger tout seuls. Les elfes ne dansent pas sur ce genre de musique. Officiellement.",
+     "Un soir, j'ai laissé une couronne de feuilles dorées sur ses grandes caisses noires, pour le remercier. Il l'a portée jusqu'à l'aube. Il raconte qu'il a une admiratrice secrète. Ce n'est pas faux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral… Ce soir, tu pourrais jouer un peu moins fort ?"
+     ],
+     [
+      "b",
+      "Moins fort ? Peuchère, les nains vont encore se plaindre !"
+     ],
+     [
+      "a",
+      "Alors joue « Marée Basse ». Les arbres l'aiment bien."
+     ],
+     [
+      "b",
+      "Les arbres, hein ? Et l'elfe qui danse derrière, elle l'aime aussi ?"
+     ]
+    ]
+   }
+  }
+ },
+ "octave": {
+  "genre": "m",
+  "prenom": "Octave",
+  "histoire": [
+   {
+    "titre": "l'hiver chez les bûcherons",
+    "t": "Je suis né à Haute-Souche, au nord du royaume, où l'hiver dure six mois et la neige monte jusqu'aux fenêtres. Mon père abattait les sapins, ma mère comptait les bûches. Chez nous, pas de hache, pas de feu. À sept ans, j'ai forgé mon premier clou. Tordu. Mon père l'a planté quand même au-dessus de la porte."
+   },
+   {
+    "titre": "comment j'ai bâti la Mouette Têtue",
+    "t": "À quinze ans, je suis descendu au port avec un baluchon et un marteau. J'ai appris le fer chez un forgeron, le bois chez un charpentier, et l'argent tout seul. C'est moi qui ai posé la quille de la Mouette Têtue. Trois ans de chantier. Le jour du départ, l'armateur m'a dit : « Tu l'as construite, tu la répares. » J'ai embarqué. Je n'aurais pas dû."
+   },
+   {
+    "titre": "la nuit du rocher",
+    "t": "Une nuit sans lune, la carte disait « mer libre ». J'étais à la barre. Le rocher est arrivé d'un coup, comme un mauvais payeur. La Mouette s'est ouverte comme une noix. J'ai nagé jusqu'au matin, mon marteau à la ceinture. Sur la plage, il y avait ce grand fromager. J'ai dormi deux ans sur une de ses branches avant de bâtir la cabane."
+   },
+   {
+    "titre": "ma forge dans le fromager",
+    "t": "Aujourd'hui, je me lève avant Clou, ce qui n'est pas difficile : il dort sur la caisse. Je bats le fer jusqu'à midi, je vends l'après-midi, je compte le soir. Clou, je l'ai appelé comme mon premier clou : tordu, mais il tient. Les clients montent, se plaignent des prix, achètent quand même. Ça me suffit. Presque."
+   },
+   {
+    "titre": "la carte sous mon enclume",
+    "t": "Je ne le dirai qu'une fois, {surnom}. Le lendemain du naufrage, la mer a posé un étui de cuir au pied de mon fromager. Dedans : la carte de la barre. Elle est sous mon enclume depuis vingt-deux ans. Je ne l'ai jamais déroulée. Si le rocher est dessus, c'est moi le fautif. S'il n'y est pas, c'est lui. Je ne sais pas ce qui me ferait le plus de peine."
+   }
+  ],
+  "reve": [
+   "Forger une épée si belle que même Borin Barbe-de-Fer la regarderait sans rien dire. Une seule fois. Je me contenterais de son silence. Il ne coûte rien, lui.",
+   "Et dérouler la carte. Un jour. Avec Barnabé à côté de moi. On saurait enfin. Ou on se disputerait encore vingt-deux ans. Ce serait déjà quelque chose."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi. Une vieille dette, ça s'efface avec le temps, ou ça se paie ?",
+   "reponses": [
+    {
+     "label": "Ça se paie. Toujours.",
+     "valeur": "se_paie",
+     "t": "Enfin quelqu'un de sérieux. Comptant, toujours comptant. Les dettes, c'est comme le fer : ça ne disparaît pas parce qu'on regarde ailleurs.",
+     "rappel": "Toi qui dis qu'une dette, ça se paie toujours : tu me dois encore une visite par semaine. Je note."
+    },
+    {
+     "label": "Le temps finit par tout effacer.",
+     "valeur": "temps",
+     "t": "Le temps ? Vingt-deux ans que j'attends qu'il efface, et rien. Il doit être en grève. Ou il attend qu'on le paie, lui aussi.",
+     "rappel": "Tu disais que le temps efface tout. J'ai regardé ce matin : toujours rien d'effacé. Je te tiens au courant."
+    },
+    {
+     "label": "Une dette, ça se pardonne.",
+     "valeur": "pardon",
+     "t": "Pardonner… C'est bien un mot de client, ça. Ça ne coûte rien à dire. … J'y penserai. Ne le répète pas.",
+     "rappel": "Toi qui disais qu'une dette, ça se pardonne… J'y réfléchis. Lentement. Ne me presse pas : le fer non plus n'aime pas ça."
+    }
+   ]
+  },
+  "liens": {
+   "barnabe": {
+    "qui": "ce vieux fou de",
+    "nom": "Barnabé",
+    "sentiment": 0.1,
+    "avis": "Barnabé ? Le meilleur cartographe du royaume, d'après lui. Le pire, d'après le rocher. On a été amis, avant. Avant, c'est loin.",
+    "anecdotes": [
+     "Sur la Mouette, Barnabé mesurait tout : le mât, la soupe du cuisinier, ma barbe. Onze pouces. Il l'a écrit sur sa carte, au large d'un îlot : « barbe d'Octave, onze pouces ». La seule chose juste sur cette carte. Je dis ça, je dis rien.",
+     "Le matin après le rocher, j'étais assis sur le sable, trempé, mon marteau sur les genoux. Un radeau de cartes roulées est passé au large, Barnabé dessus, qui criait : « La carte était juste ! » J'ai crié : « Rame ! » Ce sont les derniers mots aimables qu'on s'est dits.",
+     "Tous les soirs, je monte sur ma plus haute branche et je regarde de l'autre côté de l'île. Je vérifie que la fumée de sa cabane monte. Si elle monte, je redescends. Je ne sais pas pourquoi je fais ça. Clou non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coquillard. Tu as perdu ton chemin ?"
+     ],
+     [
+      "b",
+      "Un cartographe ne se perd jamais, Taillefer. Il explore."
+     ],
+     [
+      "a",
+      "C'est ce que disait ta carte. Juste avant le rocher."
+     ],
+     [
+      "b",
+      "Le rocher était MAL PLACÉ !"
+     ]
+    ]
+   },
+   "lyra": {
+    "qui": "l'elfe",
+    "nom": "Lyra",
+    "sentiment": 0.5,
+    "avis": "L'elfe ? Elle parle aux arbres et elle n'aime pas les haches. Mais elle monte mon échelle sans faire grincer la troisième marche. Ça, je respecte.",
+    "anecdotes": [
+     "La première fois qu'elle est montée chez moi, j'ai caché ma hache derrière mon dos. Elle a souri, elle a posé la main sur mon fromager et elle a dit : « Il est content de toi. » Content ! Un arbre ! Je lui ai dit que je ne faisais pas de prix aux elfes. Elle a ri. Clou aussi, ce traître.",
+     "Elle m'a demandé de planter un arbre pour chaque arbre que j'abats. J'ai dit non. Trois fois. Maintenant, j'ai une pépinière derrière la forge : vingt-six petits fromagers. Ne le répète à personne. Surtout pas à Barnabé.",
+     "Je lui ai taillé un peigne dans une branche de mon fromager. Tombée, pas coupée. Gratuit. C'est la seule chose gratuite que j'aie faite en vingt-deux ans. Elle le porte dans les cheveux. Ça me fait plaisir. Un peu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "L'elfe. Je n'ai pas de hache sur moi, regarde."
+     ],
+     [
+      "b",
+      "Elle est derrière ton dos, Octave."
+     ],
+     [
+      "a",
+      "C'est un manche. Avec un tout petit peu de fer au bout."
+     ],
+     [
+      "b",
+      "Ton fromager rit, tu sais."
+     ]
+    ]
+   },
+   "gaspard": {
+    "qui": "le petit",
+    "nom": "Gaspard",
+    "sentiment": 0.4,
+    "avis": "Le petit Gaspard construit des cabanes comme Barnabé dessine des cartes : avec du cœur, et de travers. Mais il écoute. C'est rare.",
+    "anecdotes": [
+     "Gaspard est monté à mon échelle demander des clous. Il a vu mes assemblages, tenons et mortaises, pas un seul clou justement. Il est resté bouche ouverte une heure. Il a même arrêté de hocher la tête. Ça, c'est un compliment.",
+     "Sa cabane du bord de plage s'est effondrée pendant un gros morceau de Mistral. Je l'ai su par Clou, qui est rentré couvert de sable. Je lui ai envoyé un sac de vingt clous, par Clou. Il en a reçu onze. Clou prend sa commission."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, petit ? Ta cabane tient debout ?"
+     ],
+     [
+      "b",
+      "Elle penche un peu. C'est le style, Octave."
+     ],
+     [
+      "a",
+      "Le style. C'est ce que disait Barnabé de sa carte."
+     ],
+     [
+      "b",
+      "Tranquille. Tu veux de l'eau ? J'ai toujours de l'eau."
+     ]
+    ]
+   },
+   "borin": {
+    "qui": "ce nain de",
+    "nom": "Borin",
+    "sentiment": -0.3,
+    "avis": "Borin Barbe-de-Fer ? Un nain qui croit que le bon fer pousse sous sa montagne. Le bon fer, c'est le bras qui le fait. Il forge bien. Je ne le lui dirai jamais.",
+    "anecdotes": [
+     "Il y a douze ans, j'ai chargé une barque de pelles et de haches et j'ai ramé jusqu'aux Récifs de Feu. Le garde de la plage ne m'a pas laissé entrer. Borin est descendu, a frappé une de mes haches sur un rocher et a dit : « Pas mal, pour un grand. » Il m'a tout acheté, en or. Pour le refondre.",
+     "En remontant vers sa cité, je l'ai vu glisser une de mes haches dans sa ceinture au lieu de la jeter au tas. Une seule, la meilleure. Il dit sûrement qu'elle sert à montrer aux apprentis ce qu'il ne faut pas faire. Moi, je reconnais un client qui a du goût."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tiens, Barbe-de-Fer. Toujours à refondre le travail des autres ?"
+     ],
+     [
+      "b",
+      "Pierre et feu ! Ton acier fond très bien, le grand. C'est un compliment."
+     ],
+     [
+      "a",
+      "Mon acier ne fond pas. Il se laisse faire, par politesse."
+     ],
+     [
+      "b",
+      "Par ma barbe… il a de la repartie, pour un grand."
+     ]
+    ]
+   },
+   "mistral": {
+    "qui": "le DJ",
+    "nom": "Mistral",
+    "sentiment": 0.0,
+    "avis": "Mistral ? Le seul client de l'île qui paie comptant sans marchander. Dommage qu'il fasse autant de bruit avec ce qu'il m'achète.",
+    "anecdotes": [
+     "Pour son mur de son, il m'a commandé quarante équerres de fer. Il a payé comptant, sans discuter, en tapant du pied. Je me suis méfié toute la semaine. Rien. Un client honnête. Ça existe, apparemment.",
+     "Depuis, les nuits de teuf, le kick traverse l'île jusqu'à mon fromager. Clou danse sur le toit. Une nuit, il a dansé avec la caisse dans les bras. J'ai ramassé mes pièces dans les fougères jusqu'à l'aube. En rythme, en plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mistral. Mes équerres tiennent ?"
+     ],
+     [
+      "b",
+      "Comme le roc, Octave ! Ton fer chante sous les basses."
+     ],
+     [
+      "a",
+      "Il chante trop fort. Clou ne dort plus."
+     ],
+     [
+      "b",
+      "Clou a du rythme. Amène-le à la teuf, peuchère !"
+     ]
+    ]
+   },
+   "bastien": {
+    "qui": "mon fournisseur",
+    "nom": "Bastien",
+    "sentiment": 0.5,
+    "avis": "Bastien ? Un pêcheur qui se lève tôt et ne marchande pas trop. On s'entend bien : il pêche, je paie. Pas cher.",
+    "anecdotes": [
+     "Chaque semaine, Bastien me monte son panier de poisson. On discute le prix de chaque sardine. Il dit « Peuchère », je dis « Comptant », et on finit toujours au prix de la semaine d'avant. C'est notre façon de se dire bonjour.",
+     "Un matin, il m'a monté un mérou plus lourd que Clou. Je l'ai payé sans marchander. Une première. Il paraît qu'il le raconte encore à la teuf. Qu'il en profite : ça ne se reproduira pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bastien. Combien, la sardine, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Le même prix que la semaine dernière, l'ami."
+     ],
+     [
+      "a",
+      "Trop cher. Comme la semaine dernière."
+     ],
+     [
+      "b",
+      "C'est la vie, Octave. Hé oui."
+     ]
+    ]
+   }
+  }
+ }
+}

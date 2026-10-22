@@ -1,0 +1,1897 @@
+{
+ "melisse": {
+  "genre": "f",
+  "prenom": "Mélisse",
+  "histoire": [
+   {
+    "titre": "la fleur où je suis née",
+    "t": "Je suis née au cœur d'une fleur géante, au bord de la cascade de lumière. Le premier jour, j'ai bu tout son nectar. Le deuxième, j'en ai revendu la moitié à un bourdon contre trois grains de pollen. Il ne m'a jamais payée, d'ailleurs. Pétales et rosée… on n'oublie pas son premier client."
+   },
+   {
+    "titre": "mes premiers flacons",
+    "t": "Mes premiers flacons étaient tout tordus : je faisais fondre les éclats de cristal trop près de la cascade, et ils coulaient comme du miel. À la fête des Cousines, quand les fées du ciel descendaient chez nous, j'ai tout vendu quand même. Mon premier acheteur, c'était Zéphyr. Il a bu le flacon d'un trait et il a dit « encore »."
+   },
+   {
+    "titre": "l'hiver où les ronces ont mangé le nord",
+    "t": "Mes plus beaux champs de fleurs étaient au nord, jusqu'à la mer. L'hiver où les ronces sont venues, il y a cent ans, je les ai perdus en une nuit. Le matin, il ne restait que des épines noires et une odeur de sucre brûlé. Depuis, mes fleurs poussent dans trois pots devant ma porte. Alors oui, mon nectar est cher. Les fleurs aussi."
+   },
+   {
+    "titre": "ma boutique aujourd'hui",
+    "t": "Aujourd'hui, j'ai ma boutique dans mon champignon. Zéphyr me paie en plumes, Cardamome en devinettes, Pimprenelle en conseils sur le sucre, et Grommelot ne me paie rien du tout, puisqu'il ne m'achète rien. Heureusement qu'il y a des grands comme toi, {surnom}, avec de vraies pièces dans les poches."
+   },
+   {
+    "titre": "le pot sous mon lit",
+    "t": "Tu gardes un secret ? Chaque pièce que je gagne va dans un pot, sous mon lit. Je ne m'achète jamais rien, pas même un ruban. Quand il y en aura assez, j'achèterai des graines de fleurs géantes et je replanterai le nord, fleur par fleur, jusqu'à la mer. On me croit radine. Je suis seulement patiente."
+   }
+  ],
+  "reve": [
+   "Une boutique au bout des jardins du nord, tout au bord de la mer, avec mes flacons alignés au soleil. Et des clients qui paient sans discuter. Surtout ça."
+  ],
+  "question": {
+   "texte": "Dis-moi, grand client : toi, tu marchandes, ou tu paies le prix qu'on te demande ?",
+   "reponses": [
+    {
+     "label": "Je paie le prix, toujours.",
+     "valeur": "paie",
+     "t": "Par les racines ! Un client honnête ! Tu es une espèce rare, tu sais. Je vais te garder précieusement. Et peut-être augmenter un tout petit peu mes prix.",
+     "rappel": "Toi qui paies sans discuter… je n'ai pas augmenté mes prix pour toi. Enfin, presque pas."
+    },
+    {
+     "label": "Je marchande, c'est un jeu.",
+     "valeur": "marchande",
+     "t": "Ah ! Un adversaire ! Très bien. Mais je te préviens : j'ai marchandé avec un bourdon le jour de ma naissance, et j'ai gagné.",
+     "rappel": "Alors, mon marchandeur ? Prêt à perdre, aujourd'hui ? Mes prix sont durs comme du cristal."
+    },
+    {
+     "label": "Je n'ai jamais un sou.",
+     "valeur": "fauche",
+     "t": "Oh… Pétales et rosée. Bon. Une goutte de nectar ne se refuse pas à un voyageur sans le sou. Une. Toute petite. Ne le dis à personne, j'ai une réputation.",
+     "rappel": "Toujours sans un sou, {surnom} ? Ta goutte gratuite t'attend. Une seule, hein. J'ai une réputation."
+    }
+   ]
+  },
+  "liens": {
+   "grommelot": {
+    "qui": "ce vieux grognon de",
+    "nom": "Grommelot",
+    "sentiment": -0.3,
+    "avis": "Grommelot ? Un nœud de racine avec une barbe. Il me traite de moucheron à paillettes et il me souffle mes éclats de cristal sous le nez.",
+    "anecdotes": [
+     "La première fois que je suis entrée chez lui pour vendre mon nectar, j'ai secoué mes ailes un peu trop fort. Il a balayé des paillettes pendant une semaine. Il en avait encore dans la barbe au printemps. C'est depuis ce jour-là qu'il m'appelle « moucheron à paillettes ». Avoue que c'est un peu mérité.",
+     "Un matin, une araignée de cristal s'est cassée contre une racine, juste devant chez lui. Un tas d'éclats ! Je suis arrivée en volant, Grommelot en courant. Il s'est assis dessus. J'ai proposé six pièces l'éclat, il a dit « pas à vendre ». Tout est parti dans sa cheminée. Pour la chaleur, paraît-il. Elle brille comme une vitrine, sa chaleur.",
+     "Pour son anniversaire, je lui ai offert un flacon de mon meilleur nectar. Il l'a versé sur ses racines devant moi, en me regardant dans les yeux. Au printemps, cette racine-là a fait une fleur. Une fleur à nectar. Il fait semblant de ne pas la voir. Moi, je la cueille."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Grommelot ! Un petit nectar pour adoucir l'humeur ?"
+     ],
+     [
+      "b",
+      "Hmpf. Garde ton sirop, moucheron."
+     ],
+     [
+      "a",
+      "Six pièces l'éclat de cristal. Dernière offre."
+     ],
+     [
+      "b",
+      "Pas à vendre. Jamais. Bah."
+     ]
+    ]
+   },
+   "pimprenelle": {
+    "qui": "ma voisine",
+    "nom": "Pimprenelle",
+    "sentiment": 0.6,
+    "avis": "Pimprenelle ? Une tornade avec des ailes. Elle dit du mal de mon sucre dans mon dos, mais c'est la seule qui m'aide à remplir mes flacons sans rien demander.",
+    "anecdotes": [
+     "Une fois, Pimprenelle a voulu rendre mon nectar pétillant d'un coup de baguette. Pendant une semaine, mes flacons ont eu le hoquet : ils faisaient des bulles en chantant. Les clients ont adoré, j'ai tout vendu le double. Elle me réclame encore sa part. Je lui ai donné un ruban. C'est une part.",
+     "Pimprenelle raconte à tout le village que je mets trop de sucre dans mon nectar. Elle croit que je ne le sais pas. Mais chaque soir, elle passe « par hasard » quand je rince mes flacons, et elle lèche les fonds. Je l'ai vue. Je garde mes pétales pour le bon moment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pimprenelle ! Tu ne trouves pas mon nectar trop sucré, hein ?"
+     ],
+     [
+      "b",
+      "Trop sucré ? Moi ? Jamais ! Il est parfait ! Parfait !"
+     ],
+     [
+      "a",
+      "Tant mieux. J'ai une pleine corbeille de pétales, au cas où."
+     ]
+    ]
+   },
+   "brindille": {
+    "qui": "ma petite fournisseuse",
+    "nom": "Brindille",
+    "sentiment": 0.5,
+    "avis": "Brindille ? Ma fournisseuse de rosée de lune, et la fée la plus mouillée du royaume. Elle perd ses gouttes, elle pleure, elle en refait. C'est presque un commerce.",
+    "anecdotes": [
+     "Ma tisane de lune, c'est sa rosée. Un jour, Brindille a pleuré au-dessus de ma marmite parce qu'elle avait raté une énigme de Cardamome. Cette tisane-là a été la meilleure de ma vie. Je l'ai appelée « Tisane des Larmes » et je l'ai vendue très cher. Brindille l'a payée en pétale sucré. C'est le juste prix d'une larme.",
+     "Quand elle a perdu toutes ses gouttes, j'ai dit en riant que c'était sans fin. Elle a eu l'air si triste que le soir, j'ai posé devant sa porte un flacon vide, avec une étiquette : « Pour les prochaines. » Elle l'a gardé sur sa fenêtre, toujours vide. Elle dit qu'il porte bonheur comme ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brindille ! Tu as de la rosée de lune pour moi, ce matin ?"
+     ],
+     [
+      "b",
+      "Oh… un peu. J'en ai perdu en route."
+     ],
+     [
+      "a",
+      "Surtout, ne pleure pas au-dessus de la marmite !"
+     ],
+     [
+      "b",
+      "Je ne pleure pas… Presque pas."
+     ]
+    ]
+   },
+   "cardamome": {
+    "qui": "cette mauvaise payeuse de",
+    "nom": "Cardamome",
+    "sentiment": 0.2,
+    "avis": "Cardamome ? Charmante, savante, et elle paie mon nectar avec des énigmes. Et ses énigmes plantent mes clients devant mon étal pendant des heures.",
+    "anecdotes": [
+     "Un jour, Cardamome m'a acheté trois flacons et m'a payée avec une énigme. « Elle vaut le double », qu'elle a dit. Je cherche la réponse depuis dix ans. Tant que je n'ai pas trouvé, je considère qu'elle me doit trois flacons. Elle considère que je lui dois de la reconnaissance.",
+     "Elle pose ses énigmes devant MA boutique. Les clients s'arrêtent, réfléchissent, se grattent la tête… et repartent sans rien acheter, la tête pleine. Une fois, un bourdon est resté une journée entière à chercher. Il n'a rien acheté non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Cardamome. Tu me dois toujours trois flacons."
+     ],
+     [
+      "b",
+      "Je t'ai payée ! Avec une énigme de premier choix."
+     ],
+     [
+      "a",
+      "Une énigme, ça ne se met pas dans un pot."
+     ],
+     [
+      "b",
+      "Si : dans ta tête. C'est un très joli pot."
+     ]
+    ]
+   },
+   "zephyr": {
+    "qui": "mon client volant",
+    "nom": "Zéphyr",
+    "sentiment": 0.3,
+    "avis": "Zéphyr ? Mon tout premier client, et le pire payeur du ciel. Il monte mes caisses de nectar là-haut, chez les fées des nuages, et il me paie en plumes.",
+    "anecdotes": [
+     "Zéphyr me paie en plumes du grand oiseau Ventaile. Il dit que c'est très rare. Moi, j'ai un tiroir plein de plumes rares et pas une pièce. J'ai essayé d'en revendre à Grommelot pour sa cheminée. Il a dit que ça brûlait mal.",
+     "Un jour, Zéphyr a voulu battre son record en portant six caisses d'un coup. Au-dessus de la mer, une caisse a glissé. Il paraît qu'il a plu du nectar sur une plage de l'archipel pendant une minute. Les gens d'en bas en parlent encore. Moi, je parle surtout de ma caisse."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyr ! Tu me dois deux plumes et une caisse."
+     ],
+     [
+      "b",
+      "Une plume et demie. L'autre moitié s'est envolée."
+     ],
+     [
+      "a",
+      "Une plume qui s'envole, c'est encore ta dette."
+     ],
+     [
+      "b",
+      "Fffiou ! Je repasse demain, promis !"
+     ]
+    ]
+   }
+  }
+ },
+ "brindille": {
+  "genre": "f",
+  "prenom": "Brindille",
+  "histoire": [
+   {
+    "titre": "la goutte que nous étions",
+    "t": "Avant, j'étais une moitié de goutte. Ma sœur Perlée et moi, nous étions une seule goutte de rosée, sur une feuille d'Yggdrasil, tout là-haut. Un coup de vent nous a coupées en deux. Perlée est restée sur la feuille. Moi, je suis tombée à travers les nuages… jusque dans les racines de l'Arbre-Mère."
+   },
+   {
+    "titre": "ce que la reine Églantine m'a appris",
+    "t": "Quand je suis arrivée, j'étais si petite que je roulais partout. C'est la reine Églantine qui m'a ramassée, dans le creux de sa main. Elle m'a appris à cueillir la rosée de lune sur les racines. Elle disait : « Une goutte qui tombe, c'est une goutte qui arrose. » Je me le répète chaque fois que je tombe."
+   },
+   {
+    "titre": "l'hiver où notre reine est partie",
+    "t": "Il y a cent ans, les ronces ont poussé au nord, et elles ont pris notre reine Églantine. J'ai pleuré tout un mois. Et un matin, j'ai vu que mes larmes ne séchaient pas : elles brillaient, toutes rondes, comme la rosée de lune. Depuis, quand je perds mes gouttes… j'en refais. Ce n'est pas très pratique."
+   },
+   {
+    "titre": "mes matins aujourd'hui",
+    "t": "Chaque matin, je cueille la rosée sur les racines et j'arrose les fleurs du village, une par une. Grommelot fait semblant de ne pas me voir passer. Mélisse me prend ma rosée de lune pour sa tisane. Et Zéphyr m'apporte les lettres de Perlée… toujours pleines de conseils. Je les lis deux fois. La deuxième, je pleure un peu."
+   },
+   {
+    "titre": "les gouttes que je ne perds pas",
+    "t": "Je vais te dire un secret, {surnom}. Je ne perds pas toutes mes gouttes. Pendant cent ans, chaque soir, j'en ai posé une au bord des ronces du nord. Pour Églantine. Au cas où elle aurait soif, là-dedans. Je n'ai jamais su si elle les buvait. Ne le dis pas à Perlée : elle compterait."
+   }
+  ],
+  "reve": [
+   "Je voudrais monter une fois, rien qu'une fois, sur la feuille d'Yggdrasil où nous étions une seule goutte, Perlée et moi. Et m'asseoir à côté d'elle. Sans rien perdre."
+  ],
+  "question": {
+   "texte": "Est-ce que… tu pleures, toi, quelquefois ? Les humains, je veux dire. Est-ce que ça vous arrive ?",
+   "reponses": [
+    {
+     "label": "Oui, ça m'arrive.",
+     "valeur": "oui",
+     "t": "Oh… Alors tu me comprends un peu. Tes larmes, elles ne font pas de rosée ? Dommage. Elles devraient. Ce serait juste.",
+     "rappel": "Toi aussi, tu pleures, quelquefois. Je l'ai gardé pour moi. Si un jour ça t'arrive ici, viens. Je connais les bons coins."
+    },
+    {
+     "label": "Jamais.",
+     "valeur": "jamais",
+     "t": "Jamais ? Même pas un tout petit peu ? … Tu as de la chance. Ou alors tu les gardes toutes dedans. Ce n'est pas bon, tu sais. Ça fait des orages.",
+     "rappel": "Tu m'as dit que tu ne pleurais jamais. J'y pense souvent. Alors je pleure un peu pour toi. Ça ne me coûte rien."
+    },
+    {
+     "label": "Seulement en cachette.",
+     "valeur": "cachette",
+     "t": "Moi aussi, j'essaie. Mais mes larmes brillent, alors tout le monde les voit. Toi, au moins, tu as des larmes discrètes. C'est une chance.",
+     "rappel": "Toi qui pleures en cachette… si tu veux, ma maison est une bonne cachette. Personne ne vient. Sauf Grommelot, mais il ne regarde pas."
+    }
+   ]
+  },
+  "liens": {
+   "grommelot": {
+    "qui": "mon ami",
+    "nom": "Grommelot",
+    "sentiment": 0.8,
+    "avis": "Grommelot fait semblant d'être méchant. Il grogne, il bougonne… mais c'est le plus gentil de tout le royaume. Il ne faut pas lui dire. Il serait vexé.",
+    "anecdotes": [
+     "L'hiver dernier, j'avais si froid que mes gouttes gelaient. Grommelot a jeté une couverture devant ma porte en grognant : « Trop de couvertures chez moi. Encombrant. » C'était la sienne. Il n'en avait pas d'autre. Tout l'hiver, je l'ai entendu éternuer derrière sa porte.",
+     "Quand je perds des gouttes dans les racines, je les retrouve le lendemain devant ma porte, dans une coquille de noix. Pas de mot, rien. Une fois, je l'ai guetté derrière ma fenêtre. Il a posé la coquille, il a regardé à gauche, à droite, et il a dit « Hmpf » tout seul. Pour personne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Grommelot… Merci pour la coquille de noix."
+     ],
+     [
+      "b",
+      "Quelle coquille ? Connais pas. Hmpf."
+     ],
+     [
+      "a",
+      "Elle était pleine de mes gouttes."
+     ],
+     [
+      "b",
+      "Bah. Les racines rangent toutes seules."
+     ]
+    ]
+   },
+   "perlee": {
+    "qui": "ma sœur",
+    "nom": "Perlée",
+    "sentiment": 0.4,
+    "avis": "Perlée, c'est mon autre moitié. Elle n'a jamais perdu une goutte de sa vie. Je l'aime de tout mon cœur. Mais c'est difficile, d'être la moitié qui perd.",
+    "anecdotes": [
+     "Une fois, Perlée est descendue me voir, d'un battement de cils. En une matinée, elle a rangé toute ma maison et mis une étiquette sur chacune de mes gouttes : deux cent douze. Le soir, quand elle est repartie, j'ai pleuré. Les étiquettes ont fondu. Je n'ai jamais osé le lui dire.",
+     "Dans chaque lettre, Perlée me demande combien de gouttes j'ai perdues cette semaine. Je réponds toujours « aucune ». Mais mes lettres arrivent mouillées, alors elle sait. Elle ne dit rien. La lettre d'après, elle me redemande. C'est sa façon de m'aimer."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Perlée ! Tu es descendue ?"
+     ],
+     [
+      "b",
+      "Juste un moment. Combien en as-tu perdu, cette semaine ?"
+     ],
+     [
+      "a",
+      "Presque aucune…"
+     ],
+     [
+      "b",
+      "Presque. Je vois. Montre-moi tes mains."
+     ]
+    ]
+   },
+   "cardamome": {
+    "qui": "notre savante",
+    "nom": "Cardamome",
+    "sentiment": 0.3,
+    "avis": "Cardamome pose des énigmes à tout le monde, et moi, je ne trouve jamais. Elle dit que ce n'est pas grave. Mais maintenant, elle me les choisit faciles. Je le vois bien.",
+    "anecdotes": [
+     "Une seule fois, j'ai trouvé. Cardamome m'a demandé : « Je tombe sans me faire mal, je brille sans feu, et je pleure sans chagrin. » J'étais en train de pleurer, justement. J'ai dit : « Une goutte… comme moi ? » C'était ça ! Elle l'a écrit dans son grand livre. C'était gentil. Un peu humiliant aussi.",
+     "Depuis quelque temps, ses énigmes sont toutes faciles quand c'est à moi qu'elle les pose. L'autre jour : « Je suis bleu, je suis en haut, et il y a des nuages dedans. » J'ai répondu « le ciel », bien sûr. Elle a applaudi beaucoup trop fort."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Cardamome… tu as une énigme pour moi ? Une vraie ?"
+     ],
+     [
+      "b",
+      "Une vraie de vraie. Qu'est-ce qui est petit et ne perd jamais courage ?"
+     ],
+     [
+      "a",
+      "Je ne sais pas…"
+     ],
+     [
+      "b",
+      "Toi, Brindille. C'était toi."
+     ]
+    ]
+   },
+   "melisse": {
+    "qui": "la marchande",
+    "nom": "Mélisse",
+    "sentiment": 0.4,
+    "avis": "Mélisse rit de moi quand je perds mes gouttes. Elle dit que c'est sans fin. Mais elle a toujours un flacon pour moi, et je crois qu'au fond, elle n'est pas si moqueuse.",
+    "anecdotes": [
+     "Un jour, j'ai pleuré au-dessus de sa marmite de tisane de lune. Elle n'a rien dit ; elle a tout mis en flacons, avec une étiquette : « Tisane des Larmes ». Elle l'a vendue très cher. Moi, je n'ai pas eu une pièce. Juste un pétale sucré. Elle dit que c'est le juste prix d'une larme.",
+     "Le soir où j'ai perdu toutes mes gouttes, Mélisse a ri. Et puis, à la nuit, j'ai trouvé devant ma porte un flacon vide, avec écrit : « Pour les prochaines. » Je l'ai mis sur ma fenêtre. Je n'ai jamais rien mis dedans. Il porte bonheur comme ça, vide."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Mélisse… J'ai un peu de rosée de lune."
+     ],
+     [
+      "b",
+      "Un peu ? Tu en as perdu combien, en route ?"
+     ],
+     [
+      "a",
+      "Ne ris pas. S'il te plaît."
+     ],
+     [
+      "b",
+      "Je ne ris pas ! Tiens, un pétale sucré. Pour la route."
+     ]
+    ]
+   },
+   "pimprenelle": {
+    "qui": "mon amie",
+    "nom": "Pimprenelle",
+    "sentiment": 0.6,
+    "avis": "Pimprenelle parle tout le temps, très fort, très vite. À côté d'elle, j'ai l'impression d'être un tout petit silence. Mais elle me prend la main quand j'ai peur.",
+    "anecdotes": [
+     "Une fois, Pimprenelle a voulu rappeler toutes mes gouttes perdues avec un sort. Elle a crié « Gouttes, venez ! ». Ce sont toutes les grenouilles du jardin qui sont venues. Elle a dit que c'était presque pareil, que les grenouilles aussi, c'est mouillé. J'en ai trouvé dans ma baignoire pendant une semaine.",
+     "Avant les araignées de cristal, Pimprenelle m'emmenait sauter sur les champignons de la grotte. J'avais peur. Elle m'a tenu la main et on a sauté ensemble, tout en haut. J'ai tellement ri que j'ai pleuré, et mes larmes rebondissaient sur les champignons. C'est mon plus joli souvenir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pimprenelle… tu n'aurais pas un sort pour mes gouttes ?"
+     ],
+     [
+      "b",
+      "Si ! Un nouveau ! Presque pas de grenouilles, cette fois !"
+     ],
+     [
+      "a",
+      "Presque pas ?"
+     ],
+     [
+      "b",
+      "Deux. Trois, maximum !"
+     ]
+    ]
+   }
+  }
+ },
+ "cardamome": {
+  "genre": "f",
+  "prenom": "Cardamome",
+  "histoire": [
+   {
+    "titre": "la fleur qui ne voulait pas s'ouvrir",
+    "t": "Je suis née dans un bouton de fleur qui refusait de s'ouvrir. Les autres fées sortent en poussant ; moi, j'ai dû deviner comment sortir. J'ai essayé « s'il te plaît », puis « merci », puis « bonjour ». C'est « au revoir » qui a marché. Depuis, j'aime les portes qui demandent qu'on réfléchisse."
+   },
+   {
+    "titre": "comment j'ai hérité de mille énigmes",
+    "t": "Avant moi, c'était la vieille Angélique qui gardait la mémoire du royaume. Elle perdait la tête, alors elle cachait chaque histoire dans une énigme pour ne pas l'oublier. Quand elle s'est endormie pour de bon, j'ai hérité de mille énigmes et d'aucune réponse. J'ai mis cent ans à retrouver les histoires dedans."
+   },
+   {
+    "titre": "l'énigme de Faelar",
+    "t": "Il y a trois cents ans, avant que la porte de l'Arbre-Mère se ferme, un elfe déjà vieux et très bavard descendait nous échanger des histoires contre des énigmes. Faelar. Un soir, il m'en a laissé une que je n'ai jamais résolue. Puis la porte s'est fermée. Trois siècles à chercher, {surnom}. Imagine ma vexation."
+   },
+   {
+    "titre": "ma vie aujourd'hui",
+    "t": "Aujourd'hui, j'accorde les clochettes de cristal, j'écris tout dans mon grand livre et je pose des énigmes à qui passe. Brindille ne trouve jamais, Pimprenelle répond avant la fin, Mélisse me réclame trois flacons. Et Grommelot grogne. Je note aussi les grognements. Une mémoire, ça ne trie pas."
+   },
+   {
+    "titre": "ce que Grommelot avait dit",
+    "t": "Une confidence, puisque tu es un ami. L'automne avant les ronces, Grommelot avait prévenu : « Au nord, ça pousse noir. » Je l'ai noté dans mon livre… en devinette, pour rire. Tout le monde a ri. Puis l'hiver est venu, et les ronces ont pris notre reine. Depuis, j'écris tout ce qu'il dit, sans rien changer. Même les « hmpf ». Je lui dois bien ça."
+   }
+  ],
+  "reve": [
+   "Trouver enfin la réponse de Faelar. Et puis, le jour même, lui poser une énigme qu'il cherchera pendant trois cents ans. Par les racines, ce sera délicieux."
+  ],
+  "question": {
+   "texte": "Tiens, tiens… Toi qui réfléchis : tu préfères connaître la réponse, ou garder le mystère ?",
+   "reponses": [
+    {
+     "label": "La réponse, toujours.",
+     "valeur": "reponse",
+     "t": "Ah ! Un chercheur. Tu ouvres toutes les boîtes, toi, hein ? Méfie-toi : certaines réponses sont bien plus petites que leur question.",
+     "rappel": "Toi qui veux toujours la réponse… j'en ai une pour toi aujourd'hui. Mais il faudra d'abord trouver la question."
+    },
+    {
+     "label": "Le mystère.",
+     "valeur": "mystere",
+     "t": "Le mystère ! Tu me plais, toi. Ceux qui aiment le mystère sont les seuls qui écoutent jusqu'au bout. Les autres sautent à la fin.",
+     "rappel": "Toi l'amateur de mystères, je t'ai gardé une énigme sans réponse. Ne la résous pas trop vite."
+    },
+    {
+     "label": "Ça dépend du mystère.",
+     "valeur": "depend",
+     "t": "Réponse de fée ! Prudente, maligne, et qui ne dit rien. Je vais l'écrire dans mon grand livre, avec ton nom à côté.",
+     "rappel": "Ta réponse est dans mon grand livre : « Ça dépend du mystère. » Page cent douze. Entre deux « hmpf »."
+    }
+   ]
+  },
+  "liens": {
+   "grommelot": {
+    "qui": "ce cher vieux",
+    "nom": "Grommelot",
+    "sentiment": 0.5,
+    "avis": "Grommelot ? Une énigme que je n'ai pas fini de résoudre. Il grogne, d'accord. Mais il voit loin, plus loin que nous toutes. Je l'ai appris trop tard.",
+    "anecdotes": [
+     "Je lui ai posé une énigme sur lui-même : « Je grogne le matin, je grogne le soir, et je garde ce que personne ne regarde. » Il a réfléchi longtemps, très sérieux, et il a dit : « Un ours. » J'ai ri trois jours. Il ne m'a plus adressé la parole de la saison. Ce n'était pas une grosse perte, il parle peu.",
+     "J'écris tout ce que dit Grommelot dans mon grand livre. Tout. Un jour, il est venu voir. Il a feuilleté une page pleine de « hmpf », avec la date et l'heure à côté de chacun. Il est resté longtemps devant. Puis il a dit : « Il en manque un. Le plus fort. » Je l'ai rajouté."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grommelot ! Une énigme : qu'est-ce qui grogne le matin et…"
+     ],
+     [
+      "b",
+      "Non. Hmpf."
+     ],
+     [
+      "a",
+      "« Non, hmpf » ? Presque la bonne réponse. Je note."
+     ],
+     [
+      "b",
+      "Hmpf. Note ça aussi."
+     ]
+    ]
+   },
+   "brindille": {
+    "qui": "ma petite",
+    "nom": "Brindille",
+    "sentiment": 0.7,
+    "avis": "Brindille ne trouve jamais mes énigmes. Elle croit que c'est grave. Ce n'est pas grave : elle a un cœur qui comprend tout avant sa tête. C'est bien plus rare.",
+    "anecdotes": [
+     "Un jour, je lui ai demandé : « Je tombe sans me faire mal, je brille sans feu, et je pleure sans chagrin. » Elle pleurait, justement. Elle a dit : « Une goutte… comme moi ? » C'était juste ! J'ai écrit dans mon grand livre : « la seule énigme résolue par Brindille ». Elle a pleuré encore. De joie, cette fois, je crois.",
+     "J'ai essayé de lui poser des énigmes plus faciles. « Je suis bleu, je suis en haut, et il y a des nuages dedans. » Elle a trouvé ! J'ai applaudi. Trop fort, apparemment : elle a compris. Depuis, elle me demande des « vraies ». Je n'ose plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brindille ! Une énigme toute neuve ?"
+     ],
+     [
+      "b",
+      "Une vraie, cette fois ? Pas une facile ?"
+     ],
+     [
+      "a",
+      "Une vraie de vraie. Promis sur les racines."
+     ],
+     [
+      "b",
+      "Oh… alors je vais rater. Vas-y quand même."
+     ]
+    ]
+   },
+   "melisse": {
+    "qui": "notre marchande",
+    "nom": "Mélisse",
+    "sentiment": 0.5,
+    "avis": "Mélisse vend son nectar trop cher, et il est délicieux. Les deux sont vrais : c'est son énigme à elle. Je l'aime bien. Elle me réclame trois flacons depuis dix ans.",
+    "anecdotes": [
+     "Je lui ai acheté trois flacons et je l'ai payée avec une énigme. Une très bonne, qui valait le double. Elle cherche la réponse depuis dix ans. Le jour où elle trouvera, elle comprendra que c'est elle qui me doit de la monnaie. Je ne suis pas pressée.",
+     "Elle prétend que mes énigmes font fuir ses clients. C'est faux : ils restent devant sa boutique des heures entières à réfléchir. Une fois, un bourdon est resté toute une journée. Il n'a rien acheté, d'accord. Mais il est reparti plus intelligent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mélisse ! Toujours pas trouvé ma réponse ?"
+     ],
+     [
+      "b",
+      "Toujours pas. Et tu me dois toujours trois flacons."
+     ],
+     [
+      "a",
+      "Trouve d'abord. Tu verras qui doit quoi à qui."
+     ]
+    ]
+   },
+   "faelar": {
+    "qui": "mon vieil ami",
+    "nom": "Faelar",
+    "sentiment": 0.8,
+    "avis": "Faelar ? Le plus bavard des elfes, et le seul qui m'ait jamais battue. Il m'a laissé une énigme il y a trois cents ans, et il a eu le culot de vieillir avec la réponse.",
+    "anecdotes": [
+     "Autrefois, avant que la porte de l'Arbre-Mère se ferme, Faelar descendait dans les racines. Il échangeait une histoire contre une énigme. Ses histoires étaient si longues que je lui posais trois énigmes pendant qu'il racontait, et il les trouvait sans s'arrêter de parler. C'était agaçant. C'était merveilleux.",
+     "Quand la porte s'est rouverte, je suis montée le voir au village des elfes. Trois cents ans d'attente ! Je lui ai demandé la réponse. Il a réfléchi longtemps, la main sur le menton… et il s'est endormi. J'ai attendu jusqu'au soir. Il s'est réveillé et il a dit : « Ah, Cardamome ! Une énigme ? »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Faelar ! Cette fois, tu me donnes la réponse ?"
+     ],
+     [
+      "b",
+      "Ah, Cardamome… Assieds-toi. C'est une longue histoire."
+     ],
+     [
+      "a",
+      "Trois cents ans que tu me dis ça."
+     ],
+     [
+      "b",
+      "Et trois cents ans que tu écoutes. Elle marche bien, mon énigme."
+     ]
+    ]
+   },
+   "pimprenelle": {
+    "qui": "cette tornade de",
+    "nom": "Pimprenelle",
+    "sentiment": 0.5,
+    "avis": "Pimprenelle répond à mes énigmes avant que j'aie fini de les poser. Toujours faux, toujours avec un enthousiasme admirable. C'est un don, à sa façon.",
+    "anecdotes": [
+     "Je commence : « Plus j'ai de gardiens… » Pimprenelle crie : « Une grenouille ! » J'essaie une autre : « Je cours sans jambes… » « Une grenouille ! » À la dixième, j'ai changé la réponse exprès pour que ce soit une grenouille. Elle a dit : « Trop facile. » Je ne lui ai pas parlé de la journée.",
+     "Les clochettes de cristal, je les avais accordées pendant un an. Pimprenelle a voulu les faire jouer toutes seules, d'un coup de baguette. Elles ont joué toute la nuit, de plus en plus vite. Personne n'a dormi. Il m'a fallu un mois pour les réaccorder. Elle appelle ça de la musique moderne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pimprenelle, une énigme : qu'est-ce qui…"
+     ],
+     [
+      "b",
+      "Une grenouille !"
+     ],
+     [
+      "a",
+      "Je n'avais pas fini."
+     ],
+     [
+      "b",
+      "Une grenouille quand même !"
+     ]
+    ]
+   }
+  }
+ },
+ "pimprenelle": {
+  "genre": "f",
+  "prenom": "Pimprenelle",
+  "histoire": [
+   {
+    "titre": "l'étincelle dont je suis née",
+    "t": "Je suis née d'une étincelle ! Une vraie ! Elle est tombée de la cascade de lumière dans un bouton de rose, et pif, la rose a éclaté, et paf, j'étais là, toute rose aussi. Depuis, je ne tiens pas en place. Tu vois ? Là, je bouge. Encore. Je suis faite comme ça."
+   },
+   {
+    "titre": "la baguette de la grande reine",
+    "t": "À la dernière fête des Cousines, il y a cent ans, les fées du ciel sont descendues chez nous. J'ai allumé toutes les lanternes du jardin d'un claquement de doigts, toutes à la fois ! La reine Oriane s'est penchée et m'a tendu une brindille d'Yggdrasil. Elle a dit : « Une branche choisit sa fée. » La branche a sauté dans ma main. Ma baguette !"
+   },
+   {
+    "titre": "le jour où je l'ai perdue",
+    "t": "Les champignons sauteurs, c'est nous qui les avions fait pousser, pour jouer. Un matin, j'y suis retournée en cachette, malgré les araignées de cristal. J'ai sauté trop haut, ma baguette m'a échappé, elle est restée sur la corniche tout en haut… et une araignée s'est assise à côté. Je suis partie en courant. Depuis, je n'aime plus les champignons."
+   },
+   {
+    "titre": "mon carnet de sorts",
+    "t": "Mes journées ? J'aide Mélisse à remplir ses flacons, je raconte des histoires à Brindille pour qu'elle ne pleure pas, et j'invente des sorts dans un carnet. Il y en a trois cent quatre ! Le numéro un, c'est la grenouille pour Grommelot. Il a quarante-deux variantes. Grommelot les a toutes essayées. Pas volontairement."
+   },
+   {
+    "titre": "ce que je n'ai jamais dit à la reine",
+    "t": "Je n'ai jamais dit à la reine Oriane que je l'avais perdue, sa branche. Et le pire, {surnom}… c'est que sans elle, je ne sais même pas si j'ai vraiment un don. Peut-être que c'était la baguette, la magicienne. Pas moi. Ne le répète à personne. Même pas à moi."
+   }
+  ],
+  "reve": [
+   "Devenir la plus grande magicienne des deux royaumes, en haut ET en bas ! Et un jour, allumer toutes les étoiles d'un claquement de doigts. Enfin, celles qui voudront bien."
+  ],
+  "question": {
+   "texte": "Dis, si tu avais une baguette magique, toi, qu'est-ce que tu ferais en premier ? Vite, vite, réponds !",
+   "reponses": [
+    {
+     "label": "Je changerais quelqu'un en grenouille.",
+     "valeur": "grenouille",
+     "t": "OUI ! Je le savais ! Tu as une âme de magicienne ! Je te prête Grommelot quand tu veux. Il a l'habitude.",
+     "rappel": "Mon apprenti grenouilleur ! Grommelot te salue. Enfin, il grogne dans ta direction."
+    },
+    {
+     "label": "Je volerais, pour une fois.",
+     "valeur": "voler",
+     "t": "Voler ? Mais c'est le plus facile ! Il suffit d'avoir des ailes. Ah. Tu n'en as pas. Bon, je note dans mon carnet : sort numéro trois cent cinq.",
+     "rappel": "Ton sort pour voler avance ! Pour l'instant, il fait léviter les cuillères. C'est un début."
+    },
+    {
+     "label": "Je la rendrais à sa fée.",
+     "valeur": "rendre",
+     "t": "Oh… C'est la réponse la plus gentille qu'on m'ait jamais faite. Je ne sais pas pourquoi, j'ai les yeux qui piquent. C'est la poussière. De fée.",
+     "rappel": "Toi qui rendrais la baguette à sa fée… je t'ai mis dans mon carnet, à la page des gens bien. Il n'y a que toi et Brindille."
+    }
+   ]
+  },
+  "liens": {
+   "grommelot": {
+    "qui": "ma grenouille préférée",
+    "nom": "Grommelot",
+    "sentiment": 0.7,
+    "avis": "Grommelot ? Mon cobaye préféré ! Il dit qu'il déteste être une grenouille. Moi je dis qu'il n'a jamais eu l'air aussi heureux que sur un nénuphar.",
+    "anecdotes": [
+     "La première fois que je l'ai changé en grenouille, il a attrapé une mite avec sa langue, du premier coup. Il avait l'air si fier ! Quand il est redevenu lutin, il a dit : « Hmpf, dégoûtant. » Mais je l'ai vu, après, regarder passer les mites. Avec envie.",
+     "Grommelot dit qu'il collectionne les éclats de cristal pour sa cheminée. Un soir, je suis passée devant sa fenêtre : il était assis par terre devant le feu, à regarder les couleurs danser dans ses éclats. Il souriait. Grommelot. Souriait. Je l'ai raconté à tout le monde, et il ne me l'a pas pardonné."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grommelot ! Tu veux être une grenouille, ce matin ?"
+     ],
+     [
+      "b",
+      "Non. Hmpf."
+     ],
+     [
+      "a",
+      "Cinq minutes ? Juste cinq ?"
+     ],
+     [
+      "b",
+      "… Trois. Et pas de nénuphar. Hmpf."
+     ]
+    ]
+   },
+   "melisse": {
+    "qui": "ma voisine",
+    "nom": "Mélisse",
+    "sentiment": 0.5,
+    "avis": "Mélisse est la meilleure marchande du monde, et elle met beaucoup trop de sucre dans son nectar. Mais chut : si elle l'apprend, elle me jette des pétales.",
+    "anecdotes": [
+     "Un jour, j'ai voulu rendre le nectar de Mélisse pétillant, pour l'aider. Ses flacons ont eu le hoquet pendant une semaine : ils faisaient des bulles en chantant ! Elle a tout vendu le double. Et ma part ? Un ruban. UN ruban. Je l'ai gardé quand même, il est joli.",
+     "Le soir, quand Mélisse rince ses flacons, je passe vérifier le sucre au fond. C'est un travail sérieux. Il y en a toujours trop. Je vérifie quand même tous les soirs, au cas où ça changerait. Elle ne s'en est jamais rendu compte."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mélisse ! Ton nectar est parfait, aujourd'hui ! Parfait !"
+     ],
+     [
+      "b",
+      "Pas trop sucré, tu es sûre ?"
+     ],
+     [
+      "a",
+      "Moi ? Trop sucré ? Je n'ai jamais dit ça ! Jamais !"
+     ],
+     [
+      "b",
+      "Tant mieux. J'ai une corbeille de pétales, au cas où."
+     ]
+    ]
+   },
+   "oriane": {
+    "qui": "la grande reine",
+    "nom": "Oriane",
+    "sentiment": 0.6,
+    "avis": "La reine Oriane ? La plus belle fée que j'aie jamais vue, et c'est elle qui m'a donné ma baguette. Je l'admire tellement que j'ai peur de la décevoir.",
+    "anecdotes": [
+     "À la fête des Cousines, j'ai allumé toutes les lanternes d'un coup, et je tremblais de partout. La reine s'est penchée vers moi ; elle sentait la pluie d'été. Elle m'a tendu une brindille d'Yggdrasil, qui a sauté toute seule dans ma main. J'ai crié si fort que les lanternes se sont éteintes. Toutes. Elle a ri.",
+     "Le jour où j'ai perdu ma baguette, j'ai eu une seule idée : cacher mes mains derrière mon dos chaque fois que Zéphyr passait. Il porte tout à la reine, ce bavard. Même les secrets. Surtout les secrets. J'ai eu mal aux bras pendant des semaines."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Vous êtes descendue ! Pif ! Paf ! Bienvenue !"
+     ],
+     [
+      "b",
+      "Bonjour, Pimprenelle. Tu allumes toujours les lanternes d'un claquement de doigts ?"
+     ],
+     [
+      "a",
+      "Toujours ! Enfin… presque toujours."
+     ],
+     [
+      "b",
+      "Presque, c'est déjà de la magie."
+     ]
+    ]
+   },
+   "brindille": {
+    "qui": "ma copine",
+    "nom": "Brindille",
+    "sentiment": 0.7,
+    "avis": "Brindille, c'est mon contraire : elle est toute calme, toute bleue, toute triste. Moi, je suis tout le reste. À nous deux, on fait une fée normale.",
+    "anecdotes": [
+     "Une fois, j'ai voulu rappeler toutes les gouttes perdues de Brindille avec un sort. « Gouttes, venez ! » Ce sont toutes les grenouilles du jardin qui sont venues. Bon. Les grenouilles aussi, c'est mouillé, c'est presque pareil. Brindille en a retrouvé dans sa baignoire pendant une semaine.",
+     "Avant les araignées, j'emmenais Brindille sauter sur les champignons de la grotte. Elle avait peur, alors je lui tenais la main. Tout en haut, elle a tellement ri qu'elle a pleuré, et ses larmes rebondissaient sur les champignons, ploc, ploc ! Je n'ai jamais rien vu d'aussi joli. Même pas mes étincelles."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brindille ! J'ai un nouveau sort pour tes gouttes !"
+     ],
+     [
+      "b",
+      "Pas les grenouilles, Pimprenelle… s'il te plaît."
+     ],
+     [
+      "a",
+      "Presque pas de grenouilles ! Deux. Trois, maximum !"
+     ]
+    ]
+   },
+   "cardamome": {
+    "qui": "la fée des énigmes",
+    "nom": "Cardamome",
+    "sentiment": 0.6,
+    "avis": "Cardamome sait tout, se souvient de tout, et pose des énigmes beaucoup trop longues. Moi, je réponds avant la fin. Ça gagne du temps. Pas la bonne réponse, mais du temps.",
+    "anecdotes": [
+     "Cardamome commence toujours ses énigmes par « Plus j'ai… » ou « Je cours sans… ». Alors je crie « Une grenouille ! » avant la fin. Une fois, ELLE a changé la réponse pour que ce soit une grenouille. J'ai dit que c'était trop facile. Elle ne m'a pas parlé de la journée.",
+     "J'ai voulu aider Cardamome en faisant jouer ses clochettes de cristal toutes seules. Elles ont joué toute la nuit, de plus en plus vite. Une musique incroyable ! Cardamome a mis un mois à les réaccorder. Elle dit que c'était du bruit. Moi je dis que c'était en avance sur son temps."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Cardamome ! Une énigme ? Vite, vite !"
+     ],
+     [
+      "b",
+      "Qu'est-ce qui parle tout le temps et n'écoute jamais la fin…"
+     ],
+     [
+      "a",
+      "Une grenouille !"
+     ],
+     [
+      "b",
+      "Presque. C'était toi."
+     ]
+    ]
+   }
+  }
+ },
+ "grommelot": {
+  "genre": "m",
+  "prenom": "Grommelot",
+  "histoire": [
+   {
+    "titre": "le nœud d'où je suis sorti",
+    "t": "Je suis sorti d'un nœud de racine. Pas d'une fleur. Pas d'une goutte. Pas d'une étincelle. D'un nœud. Le premier jour, j'ai grogné. Ça m'est resté. Les fées naissent en chantant. Moi, je suis né en bougonnant. C'est plus honnête. Hmpf."
+   },
+   {
+    "titre": "comment je suis devenu gardien",
+    "t": "Personne ne m'a nommé gardien. J'ai vu une racine fendue, je l'ai bouchée avec de l'argile. Puis une autre. Puis j'ai chassé une taupe. Ça fait quatre cents ans. Je connais chaque racine à son craquement. Celle de l'est grince quand il va pleuvoir. Celle du sud, quand Pimprenelle arrive."
+   },
+   {
+    "titre": "l'hiver où personne n'a écouté",
+    "t": "Il y a cent ans, un automne, j'ai trouvé une pousse noire au nord, dans la vieille racine. Elle sentait le fer. J'ai prévenu la reine Églantine. J'ai prévenu tout le monde. On m'a dit : « Tu grognes toujours, Grommelot. » Oui. Cette fois-là, j'avais raison de grogner. L'hiver venu, les ronces étaient partout. Et la reine, dedans."
+   },
+   {
+    "titre": "ma cheminée aujourd'hui",
+    "t": "Aujourd'hui, je garde les racines, je chasse les feux follets et j'entretiens ma cheminée. Avec des éclats de cristal. Pour la chaleur. Le moucheron à paillettes veut me les acheter, la voleuse du ciel creuse des trous, la magicienne me change en grenouille. Brindille, elle, dit bonjour. Voilà mes gens. Bah."
+   },
+   {
+    "titre": "pourquoi j'aime les éclats",
+    "t": "Les éclats de cristal… Quand le feu passe dedans, ça fait des couleurs. Rouge, bleu, doré. Comme les jardins du nord, avant les ronces. Le soir, je m'assois devant et je les regarde. Je ne l'ai jamais dit. Ils sont jolis. Voilà. C'est dit. Si tu le répètes, je dirai que tu mens. Hmpf."
+   }
+  ],
+  "reve": [
+   "Hmpf. Un rêve. … Que les racines tiennent encore quatre cents ans. Et qu'un jour, quelqu'un dise merci. Pas à moi. Aux racines. Bon. À moi aussi, un peu."
+  ],
+  "question": {
+   "texte": "Hmpf. Toi. Tu marches sur des racines toute la journée. Tu leur as déjà dit merci ?",
+   "reponses": [
+    {
+     "label": "Oui, ça m'arrive.",
+     "valeur": "oui",
+     "t": "… Vraiment ? Hmpf. Je ne te crois pas. … Si, un peu. Les racines non plus ne te croient pas. Mais elles ont entendu.",
+     "rappel": "Toi qui dis merci aux racines. J'ai vérifié. Celle de l'est grince moins. Hmpf."
+    },
+    {
+     "label": "Non, je n'y ai jamais pensé.",
+     "valeur": "jamais",
+     "t": "Évidemment. Personne n'y pense. Elles tiennent tout, et personne n'y pense. Va. Marche. Elles ont l'habitude.",
+     "rappel": "Toujours pas dit merci aux racines, hein ? Hmpf. Elles t'ont tenu debout quand même. Elles sont comme ça."
+    },
+    {
+     "label": "Merci, Grommelot.",
+     "valeur": "merci",
+     "t": "… Quoi ? … Hmpf. Hmpf hmpf. Je n'ai rien demandé, moi. … Bon. De rien. Ne recommence pas. Enfin, si tu veux. Bah.",
+     "rappel": "Tu m'as dit merci, une fois. Je l'ai noté. Dans ma tête. Ne recommence pas trop souvent, ça fait drôle."
+    }
+   ]
+  },
+  "liens": {
+   "melisse": {
+    "qui": "ce moucheron à paillettes de",
+    "nom": "Mélisse",
+    "sentiment": -0.6,
+    "avis": "Mélisse ? Moucheron à paillettes. Elle sent le sucre, elle parle trop et elle fait fondre des éclats de cristal pour faire des bouteilles. Des bouteilles. Hmpf.",
+    "anecdotes": [
+     "La première fois qu'elle est entrée chez moi, elle a secoué ses ailes. Des paillettes partout. Sur la table, dans la soupe, dans ma barbe. J'en ai trouvé jusqu'au printemps. D'où son nom. Elle l'a mérité. Chaque paillette.",
+     "Un matin, une araignée de cristal s'est cassée contre ma racine. Un tas d'éclats, devant chez moi. Elle est arrivée en volant, avec sa bourse. Je me suis assis dessus. Elle a dit six pièces l'éclat. J'ai dit non. Il y en avait un bleu. Elle l'aurait fondu. Fondu ! Un éclat bleu comme ça.",
+     "Elle m'a offert du nectar pour mon anniversaire. J'ai versé le flacon sur mes racines. Devant elle. Au printemps, la racine a fait une fleur. Une fleur à nectar. Même les racines me trahissent. Hmpf."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hmpf. Le moucheron."
+     ],
+     [
+      "b",
+      "Bonjour quand même, Grommelot ! Six pièces l'éclat ?"
+     ],
+     [
+      "a",
+      "Non. Va vendre ton sirop ailleurs."
+     ],
+     [
+      "b",
+      "Ta fleur à nectar a bien poussé, dis donc."
+     ]
+    ]
+   },
+   "brindille": {
+    "qui": "la petite",
+    "nom": "Brindille",
+    "sentiment": 0.7,
+    "avis": "Brindille est gentille. Voilà. Ne le répète pas. Elle pleure trop, elle perd tout, mais elle dit bonjour. Tous les jours. Même à moi.",
+    "anecdotes": [
+     "L'hiver dernier, elle grelottait. Ses dents claquaient. Ça s'entendait jusque chez moi. Je ne pouvais pas dormir. Alors je lui ai jeté une couverture. Une que j'avais en trop. … C'était la mienne. Atchoum. Ne le répète pas.",
+     "Elle perd ses gouttes dans mes racines. Ça mouille. Ça fait moisir. Alors je les ramasse et je les remets devant sa porte, dans une coquille de noix. Pour mes racines, pas pour elle. Une fois, elle me guettait derrière sa fenêtre. J'ai fait semblant de passer par là. Hmpf."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hmpf. Tu as froid ?"
+     ],
+     [
+      "b",
+      "Non… un peu. Bonjour, Grommelot."
+     ],
+     [
+      "a",
+      "Bah. Je demandais pour rien."
+     ]
+    ]
+   },
+   "pimprenelle": {
+    "qui": "cette jeteuse de sorts de",
+    "nom": "Pimprenelle",
+    "sentiment": -0.3,
+    "avis": "Pimprenelle. Une étincelle qui parle. Elle me change en grenouille quand je grogne. Je grogne tout le temps. Fais le calcul. Hmpf.",
+    "anecdotes": [
+     "En grenouille, une fois, j'ai attrapé une mite. Avec la langue. Du premier coup. … C'était pas mal, comme sensation. Ne le dis pas à Pimprenelle. Elle me changerait tous les jours. Et je dirais non. Probablement.",
+     "Un soir, elle a regardé par ma fenêtre pendant que je regardais mes éclats. Le lendemain, tout le village savait que je « souriais ». Je ne souriais pas. J'avais une crampe. À la bouche. Ça arrive."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Range ton doigt. Pas de grenouille aujourd'hui."
+     ],
+     [
+      "b",
+      "Juste cinq minutes, Grommelot ! Cinq petites !"
+     ],
+     [
+      "a",
+      "Deux. Et pas devant tout le monde. Hmpf."
+     ]
+    ]
+   },
+   "cardamome": {
+    "qui": "cette fouineuse de",
+    "nom": "Cardamome",
+    "sentiment": 0.1,
+    "avis": "Cardamome. Elle pose des devinettes sur moi. Elle écrit tout ce que je dis dans un livre. Tout. Agaçant. … Au moins, quelqu'un écoute. Hmpf.",
+    "anecdotes": [
+     "Elle m'a posé une devinette. « Je grogne le matin, je grogne le soir… » J'ai réfléchi. J'ai dit : « Un ours. » Elle a ri trois jours. Trois. J'avais raison, en plus. Un ours, ça grogne. Hmpf.",
+     "J'ai regardé son livre, une fois. Une page entière de « hmpf ». Avec la date. Et l'heure. Personne n'a jamais écouté aussi bien. Je lui ai dit qu'il en manquait un. Le plus fort. Elle l'a rajouté. Sans rire. Ça m'a fait drôle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu écris encore ?"
+     ],
+     [
+      "b",
+      "Toujours. Dis quelque chose, Grommelot, n'importe quoi."
+     ],
+     [
+      "a",
+      "Hmpf. Voilà."
+     ],
+     [
+      "b",
+      "Merci. Celui-là est très beau."
+     ]
+    ]
+   },
+   "noisette": {
+    "qui": "cette voleuse de",
+    "nom": "Noisette",
+    "sentiment": -0.6,
+    "avis": "Noisette. Une fée des nuages qui descend creuser dans MES racines avec une petite pelle. Pour une graine. Une voleuse avec des ailes. Hmpf hmpf.",
+    "anecdotes": [
+     "Un matin, j'entends gratter sous la vieille racine. Une fée. Du ciel. Avec une pelle. Elle avait fait un trou grand comme… comme elle. Elle a dit : « Juste une graine ! » Je l'ai chassée au balai jusqu'au jardin. Elle riait. Elle avait la graine. Hmpf.",
+     "Depuis, elle m'envoie des graines. Pour s'excuser. Zéphyr me les jette devant la porte. Je les mets dans le feu. Elles font « pop ». … C'est assez joli, « pop ». Ne le lui dis pas. Elle en enverrait plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Toi. Pose cette pelle."
+     ],
+     [
+      "b",
+      "Coucou, Grommelot ! Mes graines ont fait pop ?"
+     ],
+     [
+      "a",
+      "… Un peu. Hmpf. Pose la pelle."
+     ]
+    ]
+   }
+  }
+ },
+ "oriane": {
+  "genre": "f",
+  "prenom": "Oriane",
+  "histoire": [
+   {
+    "titre": "le matin où je suis née",
+    "t": "Je suis née dans la première fleur d'Yggdrasil, un matin où il n'y avait encore que l'Arbre, les nuages, et la mer tout en bas. La fleur s'est ouverte, et j'étais là, les ailes encore mouillées. Le premier bruit que j'ai entendu, c'était le vent dans les feuilles. Je l'écoute toujours."
+   },
+   {
+    "titre": "comment je suis devenue reine",
+    "t": "Personne ne m'a couronnée. L'Arbre m'a seulement laissée l'écouter. Puis les fées sont venues, une par une : des gouttes, des graines, des souffles. Elles me demandaient quoi faire, et je répétais ce que disait l'Arbre. Un jour, quelqu'un m'a appelée « Majesté ». J'ai regardé derrière moi. Il n'y avait personne."
+   },
+   {
+    "titre": "l'hiver des ronces",
+    "t": "Il y a cent ans, Yggdrasil a cessé de donner ses graines. Le même hiver, Églantine, la reine des fées des racines, mon amie, m'a écrit : « Quelque chose pousse sous mon trône. Viens. » Quand je suis descendue, les ronces fermaient déjà le nord. Je l'ai appelée pendant trois nuits. Les ronces ont répondu. Pas elle."
+   },
+   {
+    "titre": "mon royaume aujourd'hui",
+    "t": "Aujourd'hui, Perlée arrose, Noisette compte ses graines, Lumi allume nos soirs et Zéphyr porte nos lettres plus vite que le vent, à l'en croire. Tout en bas, sur une plage, une humaine appelée Lulu veille sur nos champignons. Grâce à elle, des voyageurs comme toi montent jusqu'ici. Cela faisait si longtemps."
+   },
+   {
+    "titre": "ce que je n'ai jamais dit à Zéphyr",
+    "t": "Une confidence, puisque tu es des nôtres. La lettre d'Églantine est arrivée avec trois jours de retard : Zéphyr faisait la course avec Ventaile. Il croit que je l'ignore. Je le sais depuis cent ans. Je ne lui en veux pas. Ce que je ne me pardonne pas, c'est de ne pas être descendue avant, sans lettre. Juste pour la voir."
+   }
+  ],
+  "reve": [
+   "Voir germer un nouvel Yggdrasil, et l'entendre murmurer pour la première fois. Et puis, un soir, redescendre dans les racines, m'asseoir près d'Églantine, et parler de tout, sauf des ronces."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quand tu rêves, la nuit, est-ce que tu t'en souviens au réveil ?",
+   "reponses": [
+    {
+     "label": "Toujours, dans les moindres détails.",
+     "valeur": "toujours",
+     "t": "Alors tu es de ceux qui rêvent fort. C'est ainsi qu'on trouve le chemin des nuages, tu sais. Le champignon n'est qu'une porte ; le rêve, c'est la clé.",
+     "rappel": "Toi qui te souviens de tous tes rêves… raconte-m'en un, un jour. Ici, les rêves sont des nouvelles."
+    },
+    {
+     "label": "Jamais. Je dors comme une pierre.",
+     "valeur": "jamais",
+     "t": "Comme une pierre… Zéphyr serait vexé, il déteste les cailloux. Peu importe : les rêves oubliés tombent dans les nuages. Nous en gardons peut-être quelques-uns pour toi.",
+     "rappel": "Toi qui oublies tes rêves… Perlée en a trouvé un dans l'étang, ce matin. Il avait ta forme. Je l'ai gardé."
+    },
+    {
+     "label": "Je rêve les yeux ouverts.",
+     "valeur": "yeux_ouverts",
+     "t": "Les meilleurs rêveurs. Lulu est comme toi : elle rêve les yeux ouverts, en dansant. Ses rêves montent jusqu'ici. Les tiens aussi, peut-être.",
+     "rappel": "Toi qui rêves les yeux ouverts, viens t'asseoir au bord de l'étang. Yggdrasil y pousse à l'envers. C'est un bon endroit pour rêver."
+    }
+   ]
+  },
+  "liens": {
+   "lulu": {
+    "qui": "cette rêveuse de",
+    "nom": "Lulu",
+    "sentiment": 0.8,
+    "avis": "Lulu ? La seule humaine dont j'entende les rêves d'ici. Ils font boum-boum. Je lui ai confié nos champignons qui brillent : elle sait qui mérite de monter.",
+    "anecdotes": [
+     "Une nuit, je suis descendue moi-même planter le cercle de champignons, près du mur de son. Tout le monde dansait. Lulu, elle, dormait contre une enceinte. Elle a ouvert un œil, m'a regardée, et elle a dit : « Coucou… super costume. » Puis elle s'est rendormie. Le lendemain, les champignons brillaient, et elle n'était même pas surprise.",
+     "Certaines nuits, les rêves de Lulu montent si fort que toutes les feuilles d'Yggdrasil tremblent en rythme. Les gouttes de Perlée tombent, Zéphyr se plaint, Noisette danse. Depuis, ici, quand l'Arbre se met à battre la mesure, on dit simplement : « Lulu dort. »",
+     "Lulu voulait peindre les fées sur une voile, mais au réveil, elle oublie toujours nos couleurs. Alors je lui fais porter un pétale par Zéphyr, chaque mois, une couleur à la fois. Sa fresque n'est pas finie. Elle dit qu'elle a le temps. Je crois qu'elle a raison."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Lulu. Nos champignons brillent bien ?"
+     ],
+     [
+      "b",
+      "Coucou… Ils font boum-boum, comme moi. C'est magique."
+     ],
+     [
+      "a",
+      "Tes rêves aussi font boum-boum. On les entend d'en haut."
+     ],
+     [
+      "b",
+      "Oups… C'est le kick. Je dors dessus."
+     ]
+    ]
+   },
+   "noisette": {
+    "qui": "ma petite",
+    "nom": "Noisette",
+    "sentiment": 0.8,
+    "avis": "Noisette est née dans une noisette que le vent avait montée jusqu'à moi. Depuis, elle cherche son arbre et elle sème des graines partout. Même dans ma couronne.",
+    "anecdotes": [
+     "Un matin, j'ai trouvé une noisette sur les marches de mon trône. Zéphyr jurait qu'il ne l'avait pas fait exprès. La coque s'est fendue, et une toute petite fée a passé la tête dehors pour demander : « Il y a des graines, ici ? » Ce fut son premier mot. Ce n'était pas le dernier.",
+     "Un soir, je me suis endormie sur mon trône. Noisette en a profité pour planter une graine dans ma couronne, « pour voir ». Au matin, une petite pousse se dressait entre deux fleurons. Les fées n'osaient rien me dire. Je l'ai gardée : elle a deux feuilles, maintenant. Noisette vient l'arroser en cachette. Très mal cachée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Noisette, qu'as-tu encore dans les poches ?"
+     ],
+     [
+      "b",
+      "Rien, Majesté ! Enfin… des graines. Un peu. Beaucoup."
+     ],
+     [
+      "a",
+      "Et plus une seule dans ma couronne, entendu ?"
+     ],
+     [
+      "b",
+      "Entendu ! … Une toute petite, alors ?"
+     ]
+    ]
+   },
+   "zephyr": {
+    "qui": "mon messager",
+    "nom": "Zéphyr",
+    "sentiment": 0.7,
+    "avis": "Zéphyr porte nos lettres entre les îles, plus vite que personne. Il est vantard, susceptible, et toujours en retard d'une excuse. Je ne changerais de messager pour rien au monde.",
+    "anecdotes": [
+     "Le jour de sa naissance, Zéphyr a soufflé tous les pétales de la salle du trône. J'en avais encore dans les cheveux le lendemain. J'ai compris qu'un vent pareil, il fallait l'occuper. Je lui ai confié une lettre. Il ne s'est plus jamais arrêté.",
+     "Zéphyr refuse de voyager d'un battement de cils, comme nous : il dit que c'est de la triche. Un jour, je suis partie en même temps que lui pour l'île des elfes. Je l'ai attendu en buvant une tisane. Il est arrivé deux heures après, essoufflé, en disant qu'il avait pris un raccourci."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyr. Tu as livré mes lettres ?"
+     ],
+     [
+      "b",
+      "Toutes, Majesté ! Un record ! Fffiou !"
+     ],
+     [
+      "a",
+      "Et combien de détours ?"
+     ],
+     [
+      "b",
+      "Aucun. Enfin, un. Un tout petit."
+     ]
+    ]
+   },
+   "perlee": {
+    "qui": "ma douce",
+    "nom": "Perlée",
+    "sentiment": 0.8,
+    "avis": "Perlée est le calme du royaume. Elle connaît chaque fleur par son nom et chaque goutte par son prénom. Quand je suis inquiète, je vais m'asseoir au bord de son étang.",
+    "anecdotes": [
+     "Un soir, pour la taquiner, j'ai planté une fleur de plus dans la clairière, en secret. Le lendemain, avant même le lever du jour, Perlée est venue me trouver : « Quatre mille trois cent deux, Majesté. Hier, c'était quatre mille trois cent un. » Elle a appelé la fleur « Oriane ». Elle lui donne toujours la première goutte.",
+     "Je vais souvent regarder Yggdrasil la tête en bas, dans l'étang de Perlée. Un jour, elle m'a dit de sa petite voix : « Les anciennes disent qu'il pousse aussi de l'autre côté. » J'ai répondu : « Peut-être jusque chez ta sœur. » Elle n'a rien dit. Elle a regardé l'eau très longtemps."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Perlée. Ma fleur a bu ?"
+     ],
+     [
+      "b",
+      "La première goutte, Majesté. Comme chaque matin."
+     ],
+     [
+      "a",
+      "Et toi, qui t'arrose ?"
+     ],
+     [
+      "b",
+      "Doucement, Majesté… Une fée de la rosée ne boit pas. Elle donne."
+     ]
+    ]
+   },
+   "lumi": {
+    "qui": "ma petite lanterne",
+    "nom": "Lumi",
+    "sentiment": 0.7,
+    "avis": "Lumi, c'est le rire du royaume. Elle parle plus que toutes les autres réunies, elle ne brille pas, et pourtant c'est elle qui éclaire nos soirs.",
+    "anecdotes": [
+     "Toute petite, Lumi passait ses journées à essayer de s'allumer, comme les lucioles qui l'avaient vue naître. Un soir, elle est venue pleurer sur mes genoux. Je lui ai dit : « Tu n'as pas besoin de briller, Lumi. Tu fais briller les autres. » Le lendemain, je lui confiais les lucioles.",
+     "La nuit de la grande tempête, Zéphyr s'était perdu dans les nuages. Lumi a envoyé toutes ses lucioles dessiner un chemin dans le ciel. De ma fenêtre, je l'ai vu : elles avaient écrit, en lettres de lumière, « PAR ICI, BÊTA ». Zéphyr est rentré. Il n'a jamais dit merci."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lumi, que dessines-tu dans le ciel, ce soir ?"
+     ],
+     [
+      "b",
+      "Une couronne, Majesté ! Pour toi !"
+     ],
+     [
+      "a",
+      "La dernière fois, cela ressemblait à un champignon."
+     ],
+     [
+      "b",
+      "C'était une couronne de profil !"
+     ]
+    ]
+   },
+   "pimprenelle": {
+    "qui": "la petite magicienne",
+    "nom": "Pimprenelle",
+    "sentiment": 0.5,
+    "avis": "Pimprenelle ? Une étincelle de fée, en bas, dans les racines. Je lui ai donné une branche d'Yggdrasil il y a cent ans. Elle la mérite. Elle ne le sait pas encore.",
+    "anecdotes": [
+     "À la dernière fête des Cousines, une petite fée toute rose a allumé toutes les lanternes du jardin d'un claquement de doigts. Elle tremblait encore. Je lui ai tendu une brindille d'Yggdrasil ; la brindille a sauté dans sa main. Pimprenelle a crié si fort que les lanternes se sont éteintes. J'ai ri comme je n'avais pas ri depuis longtemps.",
+     "Zéphyr m'a appris qu'elle avait perdu sa baguette et qu'elle cache ses mains quand il passe. Je n'ai rien dit. Une branche d'Yggdrasil ne se perd jamais vraiment : elle attend qu'on vienne la chercher. Ce n'est pas toujours la fée qui y va."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pimprenelle ! Tu allumes toujours les lanternes d'un claquement de doigts ?"
+     ],
+     [
+      "b",
+      "Toujours, Majesté ! Enfin… presque toujours."
+     ],
+     [
+      "a",
+      "Presque, c'est déjà de la magie."
+     ]
+    ]
+   }
+  }
+ },
+ "lumi": {
+  "genre": "f",
+  "prenom": "Lumi",
+  "histoire": [
+   {
+    "titre": "ma naissance chez les lucioles",
+    "t": "Je suis née un soir, dans la première salle de l'Arbre, au milieu des lucioles qui chantaient leur air en lumière. Elles ont cru que j'étais une des leurs. Une très grosse ! Pendant un an, j'ai essayé de m'allumer, comme elles. J'ai poussé, poussé… Rien. Pas une étincelle. Je brille pas plus que toi, tu vois !"
+   },
+   {
+    "titre": "comment les lucioles m'ont adoptée",
+    "t": "C'est la reine qui m'a dit que j'avais pas besoin de briller, que je pouvais faire briller les autres. Le lendemain, elle m'a confié les lucioles ! Maintenant, le soir, je les envoie dessiner des chemins dans l'air pour les fées qui rentrent tard. Des flèches, des spirales, des cœurs. Une fois, un champignon. C'était pas exprès."
+   },
+   {
+    "titre": "la nuit de la grande tempête",
+    "t": "La nuit de la grande tempête, Zéphyr s'est perdu dans les nuages. Il dit que non. Il était perdu. J'ai envoyé toutes mes lucioles, toutes, même les petites, écrire un chemin dans le ciel : « PAR ICI, BÊTA ». Il est rentré trempé. Il a dit qu'il faisait un détour. Mes lucioles, elles, savent ce qu'elles ont vu."
+   },
+   {
+    "titre": "ma vie avec mes lucioles",
+    "t": "Le matin, je prête dix lucioles à Perlée pour sa tournée. Le soir, trois à Noisette pour trier ses graines. La nuit, je les nourris au miel. Zéphyr dit qu'elles m'aiment seulement pour le miel. Il est jaloux. Ah, et il y a une autre Lumi, en bas, dans les racines des elfes ! On s'écrit. Zéphyr nous confond tout le temps."
+   },
+   {
+    "titre": "pourquoi j'ai toujours cent lucioles",
+    "t": "Je vais te dire un secret, mais tu le dis à personne, hein ? J'ai peur du noir. Une fée des lucioles qui a peur du noir ! C'est pour ça que j'en ai toujours cent autour de moi. Les autres croient que c'est pour faire joli. C'est un peu pour faire joli. Surtout pour pas être toute seule dans le noir."
+   }
+  ],
+  "reve": [
+   "Un jour, je voudrais m'allumer, rien qu'une fois ! Juste une petite seconde, comme une vraie luciole. Et que Zéphyr me voie, et qu'il dise « waouh ». Il dira jamais « waouh ». Mais on a le droit de rêver !"
+  ],
+  "question": {
+   "texte": "Dis, toi qui brilles pas du tout : tu as peur du noir, quelquefois ? Tu peux me le dire, hein !",
+   "reponses": [
+    {
+     "label": "Oui, un peu.",
+     "valeur": "oui",
+     "t": "C'est vrai ?! Oh, je suis trop contente ! Enfin, pas contente que tu aies peur : contente de pas être toute seule. Tiens, je te prête une luciole. En pensée.",
+     "rappel": "Toi qui as un peu peur du noir… j'ai demandé à une luciole de te suivre, ce soir. Si tu vois une petite lumière, c'est elle."
+    },
+    {
+     "label": "Non, jamais.",
+     "valeur": "non",
+     "t": "Jamais ? Waouh. Ça, c'est du courage. Ou alors t'as jamais vu un vrai noir. Le noir sous les nuages, c'est très noir, tu sais.",
+     "rappel": "Toi qui as jamais peur du noir, tu me raconteras comment tu fais ? Lentement. Avec des lucioles autour, quand même."
+    },
+    {
+     "label": "Ça dépend du noir.",
+     "valeur": "depend",
+     "t": "Ah oui, c'est vrai ! Il y a des noirs gentils, comme celui où on dort, et des noirs méchants, comme sous les ronces. Toi, tu réfléchis bien.",
+     "rappel": "Tu m'avais dit que ça dépendait du noir. J'y pense tout le temps. Ce soir, c'est un noir gentil. Je crois."
+    }
+   ]
+  },
+  "liens": {
+   "oriane": {
+    "qui": "notre reine",
+    "nom": "Oriane",
+    "sentiment": 0.9,
+    "avis": "La reine ? C'est la plus gentille du monde ! C'est elle qui m'a dit que j'avais pas besoin de briller. Et elle rit à toutes mes blagues. Enfin, à la moitié.",
+    "anecdotes": [
+     "Quand j'étais toute petite, j'ai pleuré sur les genoux de la reine parce que j'arrivais pas à m'allumer. Elle m'a dit : « Tu fais briller les autres, Lumi. » Le lendemain, elle m'a donné les lucioles. Toutes ! J'en ai lâché la moitié de surprise. Elles sont revenues.",
+     "Chaque soir, je dessine un truc dans le ciel pour la reine. Une fois, j'ai fait une couronne. Elle a dit : « Oh, un champignon ! » C'était PAS un champignon. Depuis, elle dit « champignon » chaque fois que je dessine une couronne, et elle rit. Moi aussi, en vrai."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Ce soir, je te dessine une couronne !"
+     ],
+     [
+      "b",
+      "Une couronne, ou un champignon ?"
+     ],
+     [
+      "a",
+      "Une couronne ! De face, cette fois !"
+     ]
+    ]
+   },
+   "zephyr": {
+    "qui": "ce frimeur de",
+    "nom": "Zéphyr",
+    "sentiment": 0.2,
+    "avis": "Zéphyr ? Il dit qu'il vole plus vite que le vent. Le vent dit le contraire. Il frime tout le temps, mais quand il se perd, c'est mes lucioles qui le ramènent.",
+    "anecdotes": [
+     "La nuit de la grande tempête, mes lucioles ont écrit « PAR ICI, BÊTA » dans le ciel pour ramener Zéphyr. Il est rentré trempé et il a dit qu'il « faisait un détour ». Depuis, quand il part, je lui demande s'il a prévu un détour. Il fait « Fffiou » et il s'en va, vexé.",
+     "Un jour, on a fait la course autour de l'Arbre. Il a gagné, d'accord. Mais il est passé en plein dans mon nuage de lucioles, et il en a gardé dans les cheveux pendant trois jours. Il brillait de partout ! Il était furieux. Moi, je l'ai trouvé beaucoup plus joli comme ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyr ! Tu t'es perdu, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Jamais. Je fais des détours."
+     ],
+     [
+      "a",
+      "Mes lucioles t'ont vu tourner en rond."
+     ],
+     [
+      "b",
+      "C'étaient des cercles. Exprès. Fffiou !"
+     ]
+    ]
+   },
+   "noisette": {
+    "qui": "ma meilleure amie",
+    "nom": "Noisette",
+    "sentiment": 0.7,
+    "avis": "Noisette, c'est ma meilleure amie ! Elle a des graines partout, elle pose mille questions, et elle rit aussi fort que moi. À nous deux, on fait du bruit pour quatre.",
+    "anecdotes": [
+     "Le soir, je prête trois lucioles à Noisette pour trier ses graines. Elle leur a donné des noms : Pépin, Gland et Cacahuète. Cacahuète est la plus brillante, mais elle mange le miel des deux autres. Noisette dit que c'est normal, c'est une cacahuète.",
+     "Une fois, j'ai planté une luciole dans un pot, pour avoir un arbre à lucioles. J'arrosais tous les matins. Noisette m'a expliqué, très gentiment, que les lucioles, c'est pas des graines. La luciole était partie depuis longtemps. Le pot, je l'ai gardé. On sait jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Noisette ! Pépin, Gland et Cacahuète sont prêts !"
+     ],
+     [
+      "b",
+      "Super ! J'ai deux cents graines à trier ce soir !"
+     ],
+     [
+      "a",
+      "Deux cents ? Ils vont vouloir du miel, hein."
+     ],
+     [
+      "b",
+      "Je paie en graines de tournesol !"
+     ]
+    ]
+   },
+   "perlee": {
+    "qui": "cette lève-tôt de",
+    "nom": "Perlée",
+    "sentiment": 0.6,
+    "avis": "Perlée se lève avant tout le monde pour poser ses gouttes. Elle parle tout doucement. Moi, j'essaie de parler doucement avec elle. J'y arrive presque jamais.",
+    "anecdotes": [
+     "Avant l'aube, je prête dix lucioles à Perlée pour qu'elle voie ses fleurs. Elle remercie chaque luciole par son nom, une par une. Ça prend un temps fou. Mes lucioles adorent ça. Elles reviennent toutes fières, et elles me regardent comme si moi, je les remerciais jamais.",
+     "J'ai demandé à Perlée de donner mon nom à une goutte. Elle a dit que chaque goutte avait déjà le sien. Le lendemain, sur une fleur, il y avait une goutte posée juste sous une luciole. Elle brillait. Perlée a dit tout doucement : « Celle-ci s'appelle Lumi. » J'ai crié tellement fort que la goutte est tombée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Perlée ! Mes lucioles t'ont attendue, ce matin !"
+     ],
+     [
+      "b",
+      "Doucement, Lumi… Les fleurs dorment encore."
+     ],
+     [
+      "a",
+      "Pardon ! Je chuchote. Tu vois ? JE CHUCHOTE."
+     ]
+    ]
+   }
+  }
+ },
+ "perlee": {
+  "genre": "f",
+  "prenom": "Perlée",
+  "histoire": [
+   {
+    "titre": "la goutte que nous étions",
+    "t": "Nous étions une seule goutte, ma sœur Brindille et moi, sur une feuille de la plus haute branche d'Yggdrasil. Un matin, un coup de vent nous a partagées. Je suis restée sur la feuille. Elle a roulé, et elle est tombée à travers les nuages. Je l'ai regardée tomber jusqu'à ce qu'elle ne soit plus qu'un point. Puis plus rien."
+   },
+   {
+    "titre": "les quatre mille trois cent deux fleurs",
+    "t": "Pour ne pas penser à ma moitié perdue, j'ai appris le nom de chaque fleur du royaume. Puis j'ai donné un nom à chaque goutte que je pose. Il y a quatre mille trois cent deux fleurs, et chaque matin, je fais le tour dans le même ordre. Si une goutte tombe, je le sais. Je n'en ai jamais perdu une."
+   },
+   {
+    "titre": "la lettre mouillée",
+    "t": "Pendant longtemps, je n'ai pas su où ma moitié était tombée. Un jour, Zéphyr est revenu de l'île des elfes avec une lettre toute mouillée. Elle disait : « Je crois que je suis ta moitié. Je perds toujours tout. » J'ai su tout de suite que c'était Brindille. Personne d'autre n'écrit avec des larmes."
+   },
+   {
+    "titre": "mes matins aujourd'hui",
+    "t": "Chaque matin, Lumi me prête dix lucioles, et je fais ma tournée. Je donne la première goutte à la fleur de la reine. J'arrose les pots de Noisette, et son cactus, une goutte par mois. Puis Zéphyr fait trois fois le tour de l'Arbre, mes gouttes tombent, et je recommence. Doucement. Il faut toujours recommencer doucement."
+   },
+   {
+    "titre": "les larmes que je n'ai pas",
+    "t": "Je vais te confier une chose que personne ne sait. Je n'ai jamais pleuré. Pas une fois. Même le matin où Brindille est tombée. Je crois qu'en se partageant, notre goutte lui a donné toutes les larmes. À moi, il est resté le calme. Parfois, j'échangerais volontiers. Ne le dis pas à ma sœur."
+   }
+  ],
+  "reve": [
+   "Je voudrais qu'un jour, Brindille et moi, nous nous posions sur la même feuille, comme avant. Une seule goutte, le temps d'un matin. Elle pleurerait, sûrement. Je crois que moi aussi, cette fois."
+  ],
+  "question": {
+   "texte": "Toi, tu as quelqu'un qui est un peu ta moitié ? Un frère, une sœur, quelqu'un de loin ?",
+   "reponses": [
+    {
+     "label": "Oui, quelque part.",
+     "valeur": "oui",
+     "t": "Alors tu sais ce que c'est, de regarder l'horizon le matin. Pense à lui écrire. Une lettre, c'est une goutte qui traverse les nuages.",
+     "rappel": "As-tu écrit à ta moitié, là-bas ? Zéphyr peut porter les lettres. Il les secoue un peu, mais elles arrivent."
+    },
+    {
+     "label": "Non, personne.",
+     "valeur": "personne",
+     "t": "Personne… Alors chaque fleur que tu croises peut être un peu ta moitié. C'est ce que je me disais, avant de retrouver Brindille. Ça aide. Un peu.",
+     "rappel": "Toi qui n'as pas de moitié… j'ai donné ton nom à une goutte. Elle est sur une fleur, près de l'étang."
+    },
+    {
+     "label": "Mes amis, ce sont mes moitiés.",
+     "valeur": "amis",
+     "t": "Plusieurs moitiés… Cela fait beaucoup de moitiés. Mais c'est joli. Une goutte peut se partager en cent, tu sais. Elle reste de la rosée.",
+     "rappel": "Toi qui as des amis pour moitiés… combien en as-tu, maintenant ? Moi, je compte. C'est mon métier."
+    }
+   ]
+  },
+  "liens": {
+   "brindille": {
+    "qui": "ma sœur",
+    "nom": "Brindille",
+    "sentiment": 0.8,
+    "avis": "Brindille, c'est ma moitié. Elle perd tout, elle pleure de tout, et elle a plus de cœur que tout le royaume. Je m'inquiète pour elle chaque matin. C'est ma façon de compter.",
+    "anecdotes": [
+     "Je suis descendue la voir, une fois, d'un battement de cils. Sa maison était un désordre de gouttes. En une matinée, j'ai tout rangé et mis une étiquette à chacune : deux cent douze. Plus tard, Zéphyr m'a rapporté que toutes les étiquettes avaient fondu dans la nuit. Elle a dû pleurer. Je ne sais pas si c'était de joie.",
+     "Ses lettres arrivent toujours mouillées. Je les fais sécher au soleil avant de les lire, et je garde l'eau dans un flacon. J'en ai cent quarante, alignés sur ma fenêtre. Chaque fois qu'elle écrit « je n'ai rien perdu », la lettre est plus mouillée que les autres."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Brindille. Combien en as-tu perdu, cette semaine ?"
+     ],
+     [
+      "b",
+      "Presque aucune…"
+     ],
+     [
+      "a",
+      "Presque, c'est combien ?"
+     ],
+     [
+      "b",
+      "Ne me gronde pas, Perlée… Tu m'as manqué."
+     ]
+    ]
+   },
+   "oriane": {
+    "qui": "notre reine",
+    "nom": "Oriane",
+    "sentiment": 0.8,
+    "avis": "La reine Oriane écoute l'Arbre, et moi, j'écoute la reine. Elle vient souvent s'asseoir au bord de mon étang. Elle croit que je ne vois pas quand elle est inquiète. Je vois.",
+    "anecdotes": [
+     "Un soir, la reine a planté une fleur en secret, pour voir si je m'en apercevrais. Je l'ai trouvée avant l'aube. Je suis allée lui dire : « Quatre mille trois cent deux, Majesté. Hier, c'était quatre mille trois cent un. » Elle a ri. J'ai appelé la fleur Oriane. Elle reçoit la première goutte de chaque matin.",
+     "Je lui ai dit, un jour, ce que disent les anciennes : qu'Yggdrasil pousse aussi de l'autre côté, sous les nuages. Elle a répondu : « Peut-être jusque chez ta sœur. » Depuis, chaque matin, je pose une goutte de plus au pied de l'Arbre. Au cas où ses racines descendraient jusqu'en bas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Majesté. Votre fleur a bu."
+     ],
+     [
+      "b",
+      "Merci, Perlée. Et toi, qui t'arrose ?"
+     ],
+     [
+      "a",
+      "Une fée de la rosée ne boit pas, Majesté. Elle donne."
+     ]
+    ]
+   },
+   "noisette": {
+    "qui": "la petite",
+    "nom": "Noisette",
+    "sentiment": 0.6,
+    "avis": "Noisette pose plus de questions que je n'ai de gouttes. Elle croit que personne ne connaît le trésor de graines qu'elle garde dans sa poche. Tout le monde le connaît. Personne ne dit rien.",
+    "anecdotes": [
+     "Noisette s'endort souvent près de l'étang, la main sur sa poche. Une nuit, une graine a roulé dehors, jusqu'au bord de l'eau. Je l'ai remise dans sa poche sans un bruit. Le lendemain, elle a recompté : mille cent onze. Elle était soulagée. Elle n'a jamais su pourquoi cette graine-là était mouillée.",
+     "Elle m'a confié sa graine de cactus des nains, en me suppliant de l'arroser. Un cactus ne veut presque pas d'eau. Alors je lui donne une goutte par mois. Pas une de plus. Au printemps, il a fait une fleur jaune. Noisette a pleuré de joie. Moi, je l'ai regardée pleurer."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Noisette. Ton cactus a bu sa goutte du mois."
+     ],
+     [
+      "b",
+      "Il a dit merci ?"
+     ],
+     [
+      "a",
+      "Les cactus ne disent rien. Ils piquent."
+     ],
+     [
+      "b",
+      "C'est leur façon de dire merci !"
+     ]
+    ]
+   },
+   "zephyr": {
+    "qui": "ce courant d'air de",
+    "nom": "Zéphyr",
+    "sentiment": -0.4,
+    "avis": "Zéphyr fait trois fois le tour de l'Arbre avant le petit-déjeuner. Trois fois toutes mes gouttes par terre. Il appelle ça du sport. J'appelle ça du travail en plus.",
+    "anecdotes": [
+     "Chaque matin, quand j'ai fini de poser mes gouttes, Zéphyr passe en sifflant. Fffiou. Des centaines de gouttes par terre. Je recommence, dans le même ordre, doucement. Un jour, je lui ai demandé de faire son tour plus tard. Il a répondu : « Plus tard, c'est pour les escargots. »",
+     "Zéphyr porte mes lettres à Brindille. J'ai besoin de lui, et il le sait. Une fois, il a lu ma lettre à voix haute pendant le voyage, « pour s'entraîner à lire vite ». Toutes les mouettes de l'archipel connaissent mes conseils à ma sœur. Je ne lui ai pas parlé d'une saison. Il ne s'en est pas aperçu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyr. Mes fleurs, ce matin. Encore."
+     ],
+     [
+      "b",
+      "Pas moi ! Un courant d'air !"
+     ],
+     [
+      "a",
+      "Un courant d'air qui fait « fffiou » ?"
+     ],
+     [
+      "b",
+      "… Bon. Un petit moi. Tout petit."
+     ]
+    ]
+   },
+   "lumi": {
+    "qui": "notre petite lanterne",
+    "nom": "Lumi",
+    "sentiment": 0.5,
+    "avis": "Lumi parle fort, rit fort, vole fort. Mais chaque matin, avant l'aube, ses lucioles éclairent mes fleurs. Sans elle, je poserais mes gouttes à tâtons.",
+    "anecdotes": [
+     "Avant l'aube, Lumi m'envoie dix lucioles pour éclairer ma tournée. Je remercie chacune par son nom. Elle trouve que c'est long. Mais ses lucioles retournent la voir en brillant plus fort. Elle dit qu'elles se vantent. Je crois qu'elles sont simplement contentes.",
+     "Lumi voulait une goutte à son nom. Chaque goutte a déjà le sien. Alors j'en ai posé une sous une luciole, sur une fleur de l'étang. Elle brillait. J'ai dit : « Celle-ci s'appelle Lumi. » Elle a crié de joie si fort que la goutte est tombée. J'en ai posé une autre. Doucement."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Doucement, Lumi… Les fleurs dorment encore."
+     ],
+     [
+      "b",
+      "Pardon ! Je chuchote ! Tu vois ? JE CHUCHOTE !"
+     ],
+     [
+      "a",
+      "Je vois. Et toutes les fleurs aussi, maintenant."
+     ]
+    ]
+   }
+  }
+ },
+ "noisette": {
+  "genre": "f",
+  "prenom": "Noisette",
+  "histoire": [
+   {
+    "titre": "la noisette où je suis née",
+    "t": "Je suis née dans une noisette ! Zéphyr l'avait ramassée sur une île, en bas, et il l'a laissée tomber sur les marches du trône. La coque s'est ouverte, et j'ai demandé : « Il y a des graines, ici ? » C'est mon premier souvenir. Le problème, c'est que Zéphyr ne se rappelle plus quelle île. Alors je ne sais pas d'où je viens."
+   },
+   {
+    "titre": "ma collection de graines",
+    "t": "Alors je collectionne les graines. Toutes ! Zéphyr m'en rapporte de chaque île : de la jungle, des elfes, une graine de cactus des nains… J'en ai mille cent onze. Je les compare à ma coque, au cas où. Un jour, je trouverai la graine qui ressemble à ma noisette, et je saurai de quel arbre je suis tombée."
+   },
+   {
+    "titre": "le trou chez Grommelot",
+    "t": "Un jour, je suis descendue d'un battement de cils au royaume des racines, sous l'île des elfes. Je voulais une graine de l'Arbre-Mère. J'ai creusé sous une vieille racine, un tout petit trou. Enfin, assez grand pour moi. Un lutin barbu est sorti avec un balai en criant « Voleuse ! ». J'ai eu ma graine. Et je me suis cognée à trois racines en m'enfuyant."
+   },
+   {
+    "titre": "mes journées aujourd'hui",
+    "t": "Aujourd'hui, je trie mes graines le soir avec les lucioles de Lumi, Perlée arrose mes pots, et la reine me laisse planter un peu partout. Même là où il ne faut pas : il y a un brin qui pousse dans sa couronne. Et dans ma poche, j'ai mon trésor. Personne ne le sait. Ne regarde pas ma poche. Arrête de regarder ma poche !"
+   },
+   {
+    "titre": "la noisette que j'ai laissée",
+    "t": "Je vais te dire un secret. Dans le trou que j'ai creusé chez Grommelot, j'ai laissé quelque chose : ma plus belle noisette, celle qui ressemble le plus à ma coque. Il ne le sait pas. Un jour, un noisetier poussera au milieu de ses racines, et il grognera très fort. Ce sera ma façon de dire pardon. Et peut-être que ce sera mon arbre, à moi."
+   }
+  ],
+  "reve": [
+   "Voir germer la graine d'Yggdrasil, la toute première pousse, avec ses deux petites feuilles ! Et puis trouver mon arbre à moi, celui de ma noisette. Je lui dirais : « Coucou, c'est moi. Tu m'avais perdue ? »"
+  ],
+  "question": {
+   "texte": "Tu sais d'où tu viens, toi ? De quelle île, de quel arbre ? Moi, je ne sais pas, alors je demande à tout le monde !",
+   "reponses": [
+    {
+     "label": "D'une île loin d'ici.",
+     "valeur": "loin",
+     "t": "Loin, loin ? Plus loin que les nains ? Il y a des graines, là-bas ? Tu m'en rapporteras une, la prochaine fois ? Une seule ! Deux !",
+     "rappel": "Toi qui viens d'une île lointaine… tu n'aurais pas une graine de chez toi au fond d'une poche ? Cherche bien."
+    },
+    {
+     "label": "Je ne sais plus très bien.",
+     "valeur": "sais_pas",
+     "t": "Comme moi ! On est pareils ! Tu sais quoi ? On cherchera ensemble. Toi ton île, moi mon arbre. Je commence par toi, tu as l'air plus facile.",
+     "rappel": "Toi qui ne sais plus d'où tu viens… j'ai trouvé une graine qui te ressemble. Enfin, un peu. Elle a l'air perdue, elle aussi."
+    },
+    {
+     "label": "De la mer, je crois.",
+     "valeur": "mer",
+     "t": "De la mer ?! Il y a des graines dans la mer ? Des graines d'algues ? Oh, il me faut une graine d'algue. Il me la faut absolument.",
+     "rappel": "Toi qui viens de la mer… tu n'aurais pas croisé une graine d'algue ? Je lui ai déjà fait une place."
+    }
+   ]
+  },
+  "liens": {
+   "oriane": {
+    "qui": "ma reine",
+    "nom": "Oriane",
+    "sentiment": 0.9,
+    "avis": "La reine ? C'est elle qui m'a ramassée sur les marches du trône. Elle me laisse planter partout. Presque partout. Elle sent la pluie d'été, et elle sait toujours ce que pense l'Arbre.",
+    "anecdotes": [
+     "Quand ma noisette s'est ouverte, sur les marches du trône, la reine s'est penchée. J'ai demandé : « Il y a des graines, ici ? » Elle a ri, et elle m'a montré Yggdrasil tout entier. Elle a dit : « Ici, il y a la plus belle de toutes. Elle dort. » Depuis, je veux la voir.",
+     "Un soir, la reine s'est endormie sur son trône. J'ai planté une graine dans sa couronne, pour voir. Au matin, il y avait une petite pousse entre deux fleurons ! Personne n'osait le lui dire. Elle l'a gardée. Elle a deux feuilles, maintenant. C'est moi qui l'arrose, en cachette."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Le brin de ta couronne a une troisième feuille ?"
+     ],
+     [
+      "b",
+      "Pas encore, Noisette. Patience."
+     ],
+     [
+      "a",
+      "Je vais l'arroser ! Un tout petit peu !"
+     ],
+     [
+      "b",
+      "Pas pendant que je parle à mes fées, s'il te plaît."
+     ]
+    ]
+   },
+   "perlee": {
+    "qui": "mon amie",
+    "nom": "Perlée",
+    "sentiment": 0.7,
+    "avis": "Perlée parle à ses gouttes de rosée. Elles ne répondent pas. Enfin, je crois. Elle est toute calme, et elle arrose mes pots sans jamais se tromper.",
+    "anecdotes": [
+     "Un matin, je me suis cachée derrière une fleur pour écouter Perlée parler à ses gouttes. Elle leur racontait la météo ! « Toi, tu auras du soleil. Toi, un peu de vent. Pardon, c'est Zéphyr. » J'ai pas pu m'empêcher de rire. Elle a fait semblant de ne pas m'entendre.",
+     "Je lui ai confié ma graine de cactus des nains. Perlée lui donne une goutte par mois. Pas une de plus, même quand je supplie. Au printemps, il a fait une fleur jaune ! J'ai pleuré de joie. Perlée m'a regardée avec un drôle d'air. Comme si elle voulait pleurer aussi, mais qu'elle ne savait pas comment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Perlée ! Il a bu, mon cactus ?"
+     ],
+     [
+      "b",
+      "Une goutte. Pas une de plus."
+     ],
+     [
+      "a",
+      "Même pas une demie en plus ?"
+     ],
+     [
+      "b",
+      "Les cactus n'aiment pas les demies, Noisette."
+     ]
+    ]
+   },
+   "grommelot": {
+    "qui": "ce vieux ronchon de",
+    "nom": "Grommelot",
+    "sentiment": 0.4,
+    "avis": "Grommelot ? Le lutin qui garde les racines, en bas. Il m'a chassée au balai et il ne m'a pas pardonné mon trou. Moi, je l'aime bien quand même : il grogne comme une graine qui germe.",
+    "anecdotes": [
+     "J'étais en train de creuser sous une vieille racine, toute contente, quand Grommelot est sorti avec un balai. Il criait : « Voleuse ! Voleuse de racines ! » Je n'avais pris qu'une graine ! Une toute petite ! Il m'a poursuivie jusqu'au jardin. Je riais tellement que je volais de travers.",
+     "Depuis, je lui envoie des graines par Zéphyr, pour m'excuser. Zéphyr dit que Grommelot les jette dans son feu et qu'elles font « pop ». Au moins, il les garde au chaud ! La dernière fois, je lui ai envoyé des graines de maïs, exprès. Ça fait des pops beaucoup plus jolis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Coucou, Grommelot ! Tu as reçu mes graines de maïs ?"
+     ],
+     [
+      "b",
+      "Brûlées. Toutes. Hmpf."
+     ],
+     [
+      "a",
+      "Elles ont fait pop ?"
+     ],
+     [
+      "b",
+      "… Un peu. Pose cette pelle."
+     ]
+    ]
+   },
+   "lumi": {
+    "qui": "ma meilleure amie",
+    "nom": "Lumi",
+    "sentiment": 0.7,
+    "avis": "Lumi, c'est ma meilleure amie ! Elle me prête ses lucioles le soir, elle rit à toutes mes blagues, et elle croit encore un peu que les lucioles poussent dans des pots.",
+    "anecdotes": [
+     "Le soir, Lumi me prête trois lucioles pour trier mes graines. Je les ai appelées Pépin, Gland et Cacahuète. Cacahuète brille le plus, mais elle vole le miel des deux autres. C'est normal, c'est une cacahuète. Les cacahuètes, c'est gourmand.",
+     "Un jour, Lumi a planté une luciole dans un pot, pour faire pousser un arbre à lucioles. Elle l'arrosait tous les matins. Je lui ai expliqué, très doucement, que les lucioles, ce ne sont pas des graines. Elle a dit : « T'es sûre ? » Elle a gardé le pot. Moi aussi, je l'arrose, des fois. On ne sait jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lumi ! Tu me prêtes Cacahuète, ce soir ?"
+     ],
+     [
+      "b",
+      "D'accord, mais elle a déjà mangé tout le miel !"
+     ],
+     [
+      "a",
+      "C'est normal, c'est une cacahuète !"
+     ]
+    ]
+   },
+   "zephyr": {
+    "qui": "mon parrain",
+    "nom": "Zéphyr",
+    "sentiment": 0.6,
+    "avis": "Zéphyr, c'est lui qui m'a montée ici, dans ma noisette. Alors c'est un peu mon parrain. Un parrain qui ne se souvient pas où il m'a trouvée, mais un parrain quand même.",
+    "anecdotes": [
+     "Chaque semaine, je demande à Zéphyr de quelle île vient ma noisette. Il réfléchit, il se gratte la tête, et il dit : « Une île avec des arbres. » ELLES ONT TOUTES DES ARBRES ! Une fois, il a dit : « Une île avec des arbres et du vent. » J'ai cru que ça avançait. Non.",
+     "Zéphyr m'a rapporté la graine de cactus des nains. Il est arrivé tout fier… avec un morceau de cactus planté dans le derrière. Il a dit que c'était pour le transport. Je lui ai retiré les épines une par une. Il a fait « fffiou » à chaque épine. Il y en avait trente-deux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyr ! Tu te souviens de mon île, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Une île avec des arbres."
+     ],
+     [
+      "a",
+      "ELLES ONT TOUTES DES ARBRES !"
+     ],
+     [
+      "b",
+      "Alors c'était une de celles-là. Fffiou !"
+     ]
+    ]
+   }
+  }
+ },
+ "zephyr": {
+  "genre": "m",
+  "prenom": "Zéphyr",
+  "histoire": [
+   {
+    "titre": "mon premier souffle",
+    "t": "Je suis né d'un coup de vent, tout en haut d'Yggdrasil, le jour le plus venteux du siècle. Mon premier mot, c'était « Fffiou ». Le deuxième, « plus vite ». J'ai soufflé tous les pétales de la salle du trône avant même de savoir voler droit. La reine en a retrouvé dans ses cheveux le lendemain."
+   },
+   {
+    "titre": "comment je suis devenu messager",
+    "t": "La reine a vite compris qu'un vent comme moi, il fallait l'occuper. Elle m'a donné une lettre. Depuis, je porte les messages entre les îles. Les fées voyagent d'un battement de cils, hop, ailleurs. Moi, je sais le faire. Mais je ne le fais pas. Où est le plaisir, si on ne voit pas le paysage ? Et le paysage, c'est moi qui le décoiffe."
+   },
+   {
+    "titre": "ma course contre Ventaile",
+    "t": "Sur l'île céleste vit Ventaile, un grand oiseau. Le seul qui vole presque aussi vite que moi. Un jour, je l'ai défié : trois tours de l'île. J'ai perdu d'une plume. Une seule ! Je l'ai gardée, cette plume. J'en ai d'autres, maintenant : je fais la revanche tous les ans. Et je perds tous les ans. D'une plume."
+   },
+   {
+    "titre": "mes tournées aujourd'hui",
+    "t": "Aujourd'hui, je porte les lettres de Perlée à sa sœur, les caisses de nectar de Mélisse, les graines pour Noisette et les pétales de la reine pour une humaine de la plage. Et tu savais qu'il y a un gros ballon qui porte mon nom, sur la grande île de l'est ? Un ballon qui fume ! Et lent, en plus. Je suis vexé depuis qu'il existe."
+   },
+   {
+    "titre": "les trois jours de retard",
+    "t": "Un secret, puisque tu as l'air de savoir te taire. Il y a cent ans, j'ai porté la lettre d'Églantine à la reine. En route, j'ai croisé Ventaile, et j'ai voulu ma revanche. Trois jours de course. Quand la lettre est arrivée, les ronces fermaient déjà tout. Depuis, je vole vite. Je rattrape trois jours. Je n'y arrive pas."
+   }
+  ],
+  "reve": [
+   "Battre Ventaile. Une fois. D'une plume, ça m'ira. Et puis porter une lettre si vite qu'elle arrive avant d'être écrite. La reine dit que c'est impossible. La reine n'a jamais fait la course avec moi."
+  ],
+  "question": {
+   "texte": "Dis, le terrestre ! Toi, tu arrives plutôt en avance, pile à l'heure, ou en retard ?",
+   "reponses": [
+    {
+     "label": "En avance, toujours.",
+     "valeur": "avance",
+     "t": "En avance ! Fffiou ! Enfin quelqu'un de sérieux. Tu marches lentement, mais tu pars tôt. C'est une technique. Je respecte.",
+     "rappel": "Toi qui arrives toujours en avance… tu ne voudrais pas me prêter ton secret ? Pour une lettre. Juste une."
+    },
+    {
+     "label": "Pile à l'heure.",
+     "valeur": "heure",
+     "t": "Pile ? Comme un cadran solaire ? Ça doit être reposant, d'être toi. Moi, je suis en avance ou en retard. Jamais au milieu.",
+     "rappel": "Ah, toi qui es toujours pile à l'heure ! Tu tombes bien, c'est l'heure. Je crois. Je n'ai jamais su lire les heures."
+    },
+    {
+     "label": "En retard, souvent.",
+     "valeur": "retard",
+     "t": "En retard… Ah. Ce n'est rien, un retard. En général. Fais juste attention aux retards qui comptent, d'accord ? Fffiou. Bon, je file.",
+     "rappel": "Toi qui es souvent en retard… je ne te fais pas la morale. Moi aussi, une fois. Une seule. Ça m'a suffi."
+    }
+   ]
+  },
+  "liens": {
+   "oriane": {
+    "qui": "ma reine",
+    "nom": "Oriane",
+    "sentiment": 0.8,
+    "avis": "La reine ? La seule à qui j'obéis. Enfin, presque toujours. Elle est patiente avec moi. Trop patiente. Des fois, je me demande ce qu'elle sait.",
+    "anecdotes": [
+     "Le jour de ma naissance, j'ai soufflé tous les pétales de la salle du trône. La reine en avait plein les cheveux. Elle n'a pas crié. Elle m'a tendu une lettre et elle a dit : « Puisque tu ne sais pas rester en place, va donc ailleurs. » Je ne suis jamais revenu à l'heure depuis. Mais je suis toujours revenu.",
+     "Une fois, la reine est partie pour l'île des elfes en même temps que moi. Elle, d'un battement de cils. Moi, en volant, comme un vrai. Quand je suis arrivé, elle buvait une tisane en souriant. J'ai dit que j'avais pris un raccourci. Elle a dit : « Bien sûr. » Je déteste quand elle dit « bien sûr »."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Majesté ! Toutes les lettres livrées ! Un record !"
+     ],
+     [
+      "b",
+      "Toutes ? Et combien de détours ?"
+     ],
+     [
+      "a",
+      "Aucun ! Enfin, un. Un tout petit."
+     ],
+     [
+      "b",
+      "Bien sûr."
+     ]
+    ]
+   },
+   "lumi": {
+    "qui": "cette allumée de",
+    "nom": "Lumi",
+    "sentiment": 0.3,
+    "avis": "Lumi croit que ses lucioles l'aiment. Elles aiment surtout le miel qu'elle leur donne. Elle parle tout le temps, elle frime avec ses dessins dans le ciel. Bon. Elle dessine bien.",
+    "anecdotes": [
+     "La nuit de la tempête, je n'étais pas perdu. Je faisais un détour. Un long détour. Dans le noir. Sous la pluie. Bon. Lumi a écrit « PAR ICI, BÊTA » dans le ciel avec ses lucioles. Ça m'a un peu aidé. Le « bêta », par contre, ce n'était pas nécessaire.",
+     "Il y a une autre Lumi, en bas, chez les fées des racines. Un jour, je me suis trompé : j'ai donné à celle d'ici une lettre pour celle d'en bas. Elle a répondu ! Maintenant, les deux Lumi s'écrivent toutes les semaines, et c'est moi qui porte. Deux fois plus de travail. Pour une erreur. Une seule."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lumi. Tes lucioles m'ont encore suivi."
+     ],
+     [
+      "b",
+      "Elles t'aiment bien ! Et elles avaient peur que tu te perdes !"
+     ],
+     [
+      "a",
+      "Je ne me perds JAMAIS. Je fais des détours."
+     ],
+     [
+      "b",
+      "En rond, je sais. Exprès."
+     ]
+    ]
+   },
+   "perlee": {
+    "qui": "cette lambine de",
+    "nom": "Perlée",
+    "sentiment": 0.2,
+    "avis": "Perlée met une heure par fleur. Une heure ! Moi, en une heure, je fais le tour de l'archipel. Elle m'en veut pour ses gouttes. C'est le vent, les gouttes. Pas moi. Enfin, un peu moi.",
+    "anecdotes": [
+     "Chaque matin, je fais trois tours de l'Arbre avant le petit-déjeuner. C'est mon sport. Et chaque matin, Perlée me regarde avec ses yeux tout calmes, au milieu de ses gouttes par terre. Elle ne crie jamais. C'est pire. Une fois, je n'ai fait que deux tours. Elle m'a dit merci. J'ai eu honte toute la journée.",
+     "Je porte ses lettres à sa sœur, en bas. À l'aller, elles sont lourdes de conseils ; au retour, celles de Brindille sont lourdes de larmes. Une fois, pour m'entraîner à lire vite, j'ai lu la sienne à voix haute en volant. Toutes les mouettes l'ont entendue. Elle ne m'a pas parlé d'une saison. Je ne m'en suis pas aperçu tout de suite."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salut, Perlée ! Belle matinée pour un tour de l'Arbre !"
+     ],
+     [
+      "b",
+      "Zéphyr. Non. Pas ce matin."
+     ],
+     [
+      "a",
+      "Un petit ? Un tout petit tour ?"
+     ],
+     [
+      "b",
+      "Doucement. Ou pas du tout."
+     ]
+    ]
+   },
+   "melisse": {
+    "qui": "ma marchande préférée",
+    "nom": "Mélisse",
+    "sentiment": 0.6,
+    "avis": "Mélisse fait le meilleur nectar de l'archipel. Et c'est la marchande la plus radine du monde. Je la paie en plumes de Ventaile, c'est très rare, et elle râle. Je ne comprends pas.",
+    "anecdotes": [
+     "C'est moi qui ai acheté son tout premier flacon, à la fête des Cousines. Il était tordu, il coulait un peu, et le nectar était le meilleur que j'aie jamais bu. J'ai dit « encore ». Elle a doublé le prix. C'était le début d'une longue amitié. Et d'une longue dette.",
+     "Une fois, j'ai voulu battre mon record en portant six caisses de nectar d'un coup. Au-dessus de la mer, une caisse a glissé. Il a plu du nectar sur une plage pendant une minute. Les gens d'en bas ont dû croire à un miracle. Mélisse, elle, a cru à une caisse perdue. Elle me la compte encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mélisse ! Trois flacons, vite, je suis pressé !"
+     ],
+     [
+      "b",
+      "Tu es toujours pressé. Et tu me dois deux plumes."
+     ],
+     [
+      "a",
+      "Une et demie ! L'autre moitié s'est envolée !"
+     ],
+     [
+      "b",
+      "Une plume qui s'envole, c'est encore ta dette."
+     ]
+    ]
+   },
+   "noisette": {
+    "qui": "ma filleule",
+    "nom": "Noisette",
+    "sentiment": 0.6,
+    "avis": "Noisette, c'est un peu ma faute : c'est moi qui ai monté sa noisette jusqu'ici. Je l'avais ramassée sur une île. Laquelle ? Une île. Avec des arbres. Elle me le demande toutes les semaines.",
+    "anecdotes": [
+     "Je l'avais ramassée en passant, sa noisette, parce qu'elle brillait un peu. Je l'ai laissée tomber sur les marches du trône. Le lendemain, une petite fée en sortait en réclamant des graines. Depuis, chaque semaine, elle me demande de quelle île. Je réfléchis vraiment, tu sais. Je vois des arbres. Beaucoup d'arbres.",
+     "Je lui ai rapporté une graine de cactus de chez les nains, de la Montagne de Feu. Pour le transport, j'ai pris le cactus avec. Mauvaise idée. Je me suis assis dessus en atterrissant. Noisette m'a retiré trente-deux épines. J'ai fait « fffiou » à chaque fois. C'était très courageux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Noisette ! Une graine des elfes, toute fraîche !"
+     ],
+     [
+      "b",
+      "Merci, parrain ! Et mon île, tu t'en souviens ?"
+     ],
+     [
+      "a",
+      "Une île avec des arbres. Et du vent. Je crois."
+     ],
+     [
+      "b",
+      "C'est TOUJOURS une île avec du vent, quand tu passes !"
+     ]
+    ]
+   }
+  }
+ }
+}
