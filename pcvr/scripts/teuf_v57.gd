@@ -243,6 +243,40 @@ func spawn_people() -> void:
 		dancers.append(npc)
 		if bool(data.get("dj", false)):
 			dj = npc
+			_fit_riser_to(npc)
+
+
+## V64 : DJ Mistral a maintenant son propre corps (sa taille, ses bras) : on mesure ses mains
+## dans la posture du DJ et on refait l'estrade pour qu'elles tombent sur les platines.
+func _fit_riser_to(npc: Node3D) -> void:
+	var skel: Skeleton3D = npc.get("skel")
+	var anim: AnimationPlayer = npc.get("anim")
+	if skel == null or anim == null or not anim.has_animation("teuf/dj"):
+		return
+	var lh: int = skel.find_bone("LeftHand")
+	var rh: int = skel.find_bone("RightHand")
+	if lh < 0 or rh < 0:
+		return
+	anim.play("teuf/dj")
+	var L: float = anim.get_animation("teuf/dj").length
+	var sum: float = 0.0
+	for k in 8:
+		anim.seek(L * float(k) / 8.0, true)
+		var a: Vector3 = skel.global_transform * skel.get_bone_global_pose(lh).origin
+		var b: Vector3 = skel.global_transform * skel.get_bone_global_pose(rh).origin
+		sum += (a.y + b.y) * 0.5 - npc.global_position.y
+	var hands: float = sum / 8.0
+	var feet_ground: float = main._height_at(TABLE.x, DJ_Z)
+	var top: float = maxf(deck_y + 0.04 - hands, feet_ground + 0.2)
+	if absf(top - riser_top) > 0.02:
+		riser_top = top
+		var old: Node = get_node_or_null("Estrade_DJ_v57")
+		if old != null:
+			remove_child(old)
+			old.queue_free()
+		_build_riser(feet_ground)
+		npc.global_position.y = riser_top
+	npc.call("_start_dance", true)
 
 
 func _process(delta: float) -> void:

@@ -228,6 +228,9 @@ func _aim_portrait() -> void:
 	var model: Node3D = _npc.get("model")
 	var k: float = model.scale.y if model != null else 0.7
 	var face: Vector3 = _npc.global_position + Vector3.UP * (1.42 * k)
+	# V64 : les habitants ont leur vraie taille : on vise leurs yeux
+	if _npc.has_method("face_height"):
+		face = _npc.global_position + Vector3.UP * float(_npc.call("face_height"))
 	if model == null and _npc.get("hit_height") != null:
 		face = _npc.global_position + Vector3.UP * (float(_npc.get("hit_height")) * 0.8)
 	# le personnage se tourne vers le joueur pendant la conversation : on filme de ce côté

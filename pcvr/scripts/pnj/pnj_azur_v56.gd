@@ -34,6 +34,8 @@ func setup_azur(manager: Node, data: Dictionary) -> void:
 	_rng2.seed = hash(str(data.get("id", "x")))
 	sleep_far = 70.0
 	var size_k: float = float((data.get("azur", {}) as Dictionary).get("taille", 1.0))
+	if not v64.is_empty():
+		size_k = body_height() / 1.7
 	if bubble != null:
 		bubble.position.y = 2.35 - (1.0 - size_k) * 1.8
 	if vr_label != null:
@@ -83,7 +85,7 @@ func _build_extra_poses() -> void:
 
 
 func _make_prop(kind: String) -> void:
-	if skel == null or kind == "":
+	if skel == null or kind == "" or (kind == "tablier" and not v64.is_empty()):
 		return
 	var holder := Node3D.new()
 	match kind:
@@ -174,6 +176,11 @@ func _accessories() -> void:
 		super._accessories()
 		return
 	var az: Dictionary = profile["azur"]
+	if not v64.is_empty():
+		# V64 : visage, cheveux, barbe et vêtements viennent du vrai corps ; restent lunettes et chapeau.
+		if bool(az.get("lunettes", false)):
+			_glasses64(_mat(Color(0.12, 0.1, 0.08), 0.4))
+		return
 	var c_hair: Array = az.get("cheveux", [0.3, 0.2, 0.12])
 	var hair := _mat(Color(float(c_hair[0]), float(c_hair[1]), float(c_hair[2])), 0.6)
 	var tint: Array = profile.get("teinte", [1.0, 0.85, 0.72])
@@ -269,32 +276,7 @@ func _accessories() -> void:
 		_:
 			_part(hh, _sphere(0.2), hair, Vector3(0, -0.08, -0.1), Vector3(1.15, 0.8, 0.8))
 	_attach("Head", Vector3(0, 30.0, -7.0), hh)
-	# le chapeau
-	var hat_kind: String = str(az.get("chapeau", ""))
-	if hat_kind != "":
-		var hat := Node3D.new()
-		var hc: Array = az.get("chapeau_c", [0.9, 0.78, 0.48])
-		var hm := _mat(Color(float(hc[0]), float(hc[1]), float(hc[2])), 0.85)
-		match hat_kind:
-			"paille":
-				_part(hat, _cyl(0.36, 0.38, 0.025), hm, Vector3.ZERO)
-				_part(hat, _cyl(0.17, 0.2, 0.15), hm, Vector3(0, 0.08, 0))
-				_part(hat, _cyl(0.202, 0.202, 0.04), _mat(Color(0.2, 0.25, 0.55)), Vector3(0, 0.03, 0))
-			"capeline":
-				_part(hat, _cyl(0.42, 0.44, 0.02), hm, Vector3.ZERO)
-				_part(hat, _cyl(0.17, 0.19, 0.13), hm, Vector3(0, 0.07, 0))
-				_part(hat, _cyl(0.192, 0.192, 0.04), _mat(Color(0.85, 0.3, 0.4)), Vector3(0, 0.03, 0))
-			"casquette", "kepi", "marin":
-				_part(hat, _cyl(0.2, 0.22, 0.12 if hat_kind != "kepi" else 0.18), hm, Vector3(0, 0.05, 0))
-				_part(hat, _box_mesh_np(Vector3(0.24, 0.015, 0.14)), _mat(Color(0.06, 0.06, 0.07)), Vector3(0, -0.005, 0.2))
-				if hat_kind == "marin":
-					_part(hat, _cyl(0.23, 0.23, 0.03), _mat(Color(0.95, 0.95, 0.95)), Vector3(0, 0.12, 0))
-			"beret":
-				_part(hat, _sphere(0.24), hm, Vector3(0.03, 0.04, 0), Vector3(1.0, 0.32, 1.0))
-			"cuisinier":
-				_part(hat, _cyl(0.21, 0.2, 0.12), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.05, 0))
-				_part(hat, _sphere(0.25), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.24, 0), Vector3(1.0, 0.7, 1.0))
-		_attach("Head", Vector3(0, 39.0, 1.0), hat, Vector3(-6, 0, 0))
+	_azur_hat(az)
 	# le haut (gilet, chemisier) et la robe
 	if az.has("haut"):
 		var tc: Array = az["haut"]
@@ -324,6 +306,35 @@ func _accessories() -> void:
 	var size_k: float = float(az.get("taille", 1.0))
 	if absf(size_k - 1.0) > 0.01:
 		model.scale = Vector3.ONE * size_k
+
+
+func _azur_hat(az: Dictionary) -> void:
+	# le chapeau
+	var hat_kind: String = str(az.get("chapeau", ""))
+	if hat_kind != "":
+		var hat := Node3D.new()
+		var hc: Array = az.get("chapeau_c", [0.9, 0.78, 0.48])
+		var hm := _mat(Color(float(hc[0]), float(hc[1]), float(hc[2])), 0.85)
+		match hat_kind:
+			"paille":
+				_part(hat, _cyl(0.36, 0.38, 0.025), hm, Vector3.ZERO)
+				_part(hat, _cyl(0.17, 0.2, 0.15), hm, Vector3(0, 0.08, 0))
+				_part(hat, _cyl(0.202, 0.202, 0.04), _mat(Color(0.2, 0.25, 0.55)), Vector3(0, 0.03, 0))
+			"capeline":
+				_part(hat, _cyl(0.42, 0.44, 0.02), hm, Vector3.ZERO)
+				_part(hat, _cyl(0.17, 0.19, 0.13), hm, Vector3(0, 0.07, 0))
+				_part(hat, _cyl(0.192, 0.192, 0.04), _mat(Color(0.85, 0.3, 0.4)), Vector3(0, 0.03, 0))
+			"casquette", "kepi", "marin":
+				_part(hat, _cyl(0.2, 0.22, 0.12 if hat_kind != "kepi" else 0.18), hm, Vector3(0, 0.05, 0))
+				_part(hat, _box_mesh_np(Vector3(0.24, 0.015, 0.14)), _mat(Color(0.06, 0.06, 0.07)), Vector3(0, -0.005, 0.2))
+				if hat_kind == "marin":
+					_part(hat, _cyl(0.23, 0.23, 0.03), _mat(Color(0.95, 0.95, 0.95)), Vector3(0, 0.12, 0))
+			"beret":
+				_part(hat, _sphere(0.24), hm, Vector3(0.03, 0.04, 0), Vector3(1.0, 0.32, 1.0))
+			"cuisinier":
+				_part(hat, _cyl(0.21, 0.2, 0.12), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.05, 0))
+				_part(hat, _sphere(0.25), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.24, 0), Vector3(1.0, 0.7, 1.0))
+		_attach("Head", Vector3(0, 39.0, 1.0), hat, Vector3(-6, 0, 0))
 
 
 # =================================================================== l'emploi du temps

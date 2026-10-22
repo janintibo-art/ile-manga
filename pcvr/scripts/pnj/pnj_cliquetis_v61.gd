@@ -63,7 +63,7 @@ func _cq_accessories(t: Dictionary) -> void:
 	copper.metallic = 0.75
 	var glass := _mat(Color(0.55, 0.8, 0.85), 0.05)
 	glass.metallic_specular = 1.0
-	if t.has("haut_de_forme"):
+	if t.has("haut_de_forme") and v64.is_empty():
 		var c: Array = t["haut_de_forme"]
 		var hm := _mat(Color(float(c[0]), float(c[1]), float(c[2])), 0.6)
 		var hat := Node3D.new()
@@ -76,7 +76,7 @@ func _cq_accessories(t: Dictionary) -> void:
 			g.outer_radius = 0.07
 			_part(hat, g, brass, Vector3(0.2, 0.47, -0.07), Vector3.ONE, Vector3(0, 0, 90))
 		_attach("Head", Vector3(0, 18.0, 2.5), hat)
-	if t.has("casque_aviateur"):
+	if t.has("casque_aviateur") and v64.is_empty():
 		var c2: Array = t["casque_aviateur"]
 		var cm := _mat(Color(float(c2[0]), float(c2[1]), float(c2[2])), 0.7)
 		var ca := Node3D.new()
@@ -95,7 +95,17 @@ func _cq_accessories(t: Dictionary) -> void:
 			_part(lu, _cyl(0.07, 0.07, 0.07), brass, Vector3(sx2 * 0.09, 0.32, 0.21), Vector3.ONE, Vector3(70, 0, 0))
 			_part(lu, _cyl(0.055, 0.055, 0.075), glass, Vector3(sx2 * 0.09, 0.325, 0.215), Vector3.ONE, Vector3(70, 0, 0))
 		_attach("Head", Vector3(0, 18.0, 2.5), lu)
-	if t.has("monocle"):
+	if t.has("monocle") and not v64.is_empty():
+		var ey: Array = _tete64.get("yeux", [0.0, 0.04, 0.07])
+		var dx: float = float(_tete64.get("yeux_dx", 0.031))
+		var mo2 := Node3D.new()
+		var tm0 := TorusMesh.new()
+		tm0.inner_radius = 0.017
+		tm0.outer_radius = 0.02
+		_part(mo2, tm0, brass, Vector3(dx, 0, 0), Vector3.ONE, Vector3(90, 0, 0))
+		_part(mo2, _box_mesh_np(Vector3(0.0015, 0.12, 0.0015)), brass, Vector3(dx + 0.02, -0.06, -0.01))
+		_attach("Head", Vector3(0, float(ey[1]) * 100.0, (float(ey[2]) + 0.014) * 100.0), mo2, Vector3.ZERO, true)
+	elif t.has("monocle"):
 		var mo := Node3D.new()
 		var tm := TorusMesh.new()
 		tm.inner_radius = 0.035
@@ -103,7 +113,7 @@ func _cq_accessories(t: Dictionary) -> void:
 		_part(mo, tm, brass, Vector3(0.072, 0.006, 0.24), Vector3.ONE, Vector3(90, 0, 0))
 		_part(mo, _box_mesh_np(Vector3(0.006, 0.2, 0.006)), brass, Vector3(0.11, -0.1, 0.2))
 		_attach("Head", Vector3(0, 18.0, 2.5), mo)
-	if t.has("blouse"):
+	if t.has("blouse") and v64.is_empty():
 		var c3: Array = t["blouse"]
 		var bm := _mat(Color(float(c3[0]), float(c3[1]), float(c3[2])), 0.9)
 		var bl := Node3D.new()

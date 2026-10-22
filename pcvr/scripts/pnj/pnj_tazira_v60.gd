@@ -117,7 +117,7 @@ func _tz_accessories(t: Dictionary) -> void:
 	if skel == null or t.is_empty():
 		return
 	var R: float = 0.228
-	if t.has("turban"):
+	if t.has("turban") and v64.is_empty():
 		var c: Array = t["turban"]
 		var m := _mat(Color(float(c[0]), float(c[1]), float(c[2])), 0.9)
 		var tb := Node3D.new()
@@ -128,19 +128,19 @@ func _tz_accessories(t: Dictionary) -> void:
 			_part(tb, tm, m, Vector3(0, 0.1 + k * 0.07, -0.01), Vector3(1.0, 1.5, 1.0), Vector3(-8 + k * 6, k * 30, 0))
 		_part(tb, _sphere(R * 0.7), m, Vector3(0, 0.22, -0.01), Vector3(1.0, 0.6, 1.0))
 		_attach("Head", Vector3(0, 18.0, 2.5), tb)
-	if t.has("fez"):
+	if t.has("fez") and v64.is_empty():
 		var fz := Node3D.new()
 		_part(fz, _cyl(0.15, 0.18, 0.2), _mat(Color(0.62, 0.08, 0.1), 0.7), Vector3(0, 0.43, -0.07))
 		_part(fz, _cyl(0.006, 0.006, 0.14), _mat(Color(0.08, 0.06, 0.05)), Vector3(0.07, 0.55, -0.09), Vector3.ONE, Vector3(0, 0, -40))
 		_attach("Head", Vector3(0, 18.0, 2.5), fz)
-	if t.has("foulard_tete"):
+	if t.has("foulard_tete") and v64.is_empty():
 		var c2: Array = t["foulard_tete"]
 		var m2 := _mat(Color(float(c2[0]), float(c2[1]), float(c2[2])), 0.9)
 		var ft := Node3D.new()
 		_part(ft, _sphere(0.29), m2, Vector3(0, 0.12, -0.1), Vector3(1.24, 1.08, 1.02))
 		_part(ft, _sphere(R * 1.1), m2, Vector3(0, -0.22, -0.14), Vector3(1.2, 1.0, 0.6))
 		_attach("Head", Vector3(0, 18.0, 2.5), ft)
-	if t.has("tricorne"):
+	if t.has("tricorne") and v64.is_empty():
 		var c3: Array = t["tricorne"]
 		var m3 := _mat(Color(float(c3[0]), float(c3[1]), float(c3[2])), 0.8)
 		var tr := Node3D.new()
@@ -150,7 +150,7 @@ func _tz_accessories(t: Dictionary) -> void:
 			_part(tr, _box_mesh_np(Vector3(0.46, 0.15, 0.03)), m3, Vector3(sin(a) * 0.25, 0.42, cos(a) * 0.25 - 0.08), Vector3.ONE, Vector3(-14, rad_to_deg(a), 0))
 		_part(tr, _box_mesh_np(Vector3(0.38, 0.025, 0.02)), _mat(Color(0.85, 0.68, 0.25), 0.3), Vector3(0, 0.49, 0.175))
 		_attach("Head", Vector3(0, 18.0, 2.5), tr)
-	if t.has("bandana"):
+	if t.has("bandana") and v64.is_empty():
 		var c4: Array = t["bandana"]
 		var bd := Node3D.new()
 		var m4 := _mat(Color(float(c4[0]), float(c4[1]), float(c4[2])), 0.85)
@@ -158,7 +158,22 @@ func _tz_accessories(t: Dictionary) -> void:
 		_part(bd, _sphere(0.06), m4, Vector3(0.07, 0.08, -0.4))
 		_part(bd, _box_mesh_np(Vector3(0.06, 0.18, 0.014)), m4, Vector3(0.09, -0.04, -0.41), Vector3.ONE, Vector3(0, 0, 12))
 		_attach("Head", Vector3(0, 18.0, 2.5), bd)
-	if t.has("cache_oeil"):
+	if t.has("cache_oeil") and not v64.is_empty():
+		# V64 : bandeau sur l'œil droit, cordon autour de la tête
+		var ey: Array = _tete64.get("yeux", [0.0, 0.04, 0.07])
+		var dx: float = float(_tete64.get("yeux_dx", 0.031))
+		var blk := _mat(Color(0.03, 0.03, 0.03), 0.6)
+		var patch := Node3D.new()
+		_part(patch, _sphere(0.0175), blk, Vector3(-dx, 0, 0.002), Vector3(1.12, 1.0, 0.3))
+		var band := TorusMesh.new()
+		var hw: float = float(_tete64.get("cote", 0.075)) + 0.004
+		band.inner_radius = 1.0
+		band.outer_radius = 1.04
+		var zc: float = (float(_tete64.get("avant", 0.1)) + float(_tete64.get("arriere", -0.09))) * 0.5
+		var hd: float = (float(_tete64.get("avant", 0.1)) - float(_tete64.get("arriere", -0.09))) * 0.5 + 0.004
+		_part(patch, band, blk, Vector3(0, 0.004, zc - float(ey[2]) - 0.006), Vector3(hw, hw * 0.7, hd), Vector3(-12, 0, -16))
+		_attach("Head", Vector3(0, float(ey[1]) * 100.0, (float(ey[2]) + 0.012) * 100.0), patch, Vector3.ZERO, true)
+	elif t.has("cache_oeil"):
 		var eye := Node3D.new()
 		var black := _mat(Color(0.03, 0.03, 0.03), 0.6)
 		_part(eye, _sphere(0.042), black, Vector3(-0.072, 0.006, R - 0.006), Vector3(1.1, 1.0, 0.3))

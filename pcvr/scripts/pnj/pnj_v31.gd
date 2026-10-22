@@ -7,6 +7,7 @@ extends Node3D
 
 const Brain = preload("res://scripts/pnj/pnj_brain_v31.gd")
 const HeroLib = preload("res://scripts/hero_v28.gd")
+const Corps64 = preload("res://scripts/pnj/corps_v64.gd")
 const WALK: float = 0.9
 const TALK_REACH: float = 2.8
 
@@ -42,6 +43,9 @@ var sleep_far: float = 0.0
 var staff_node: Node3D
 var _asleep: bool = false
 var face_at: Dictionary = {}          # point -> où regarder quand il s'y repose
+# V64 : le vrai corps (visage, silhouette, cheveux, tenue) ; vide = ancien corps du héros
+var v64: Dictionary = {}
+var _tete64: Dictionary = {}
 var chat_hold: float = 0.0            # bavardage en cours : il reste sur place
 static var _npc_bodies: Array[RID] = []
 
@@ -152,9 +156,6 @@ func _build_body() -> void:
 	var packed: PackedScene = load("res://assets/models/characters/hero.glb")
 	model = packed.instantiate()
 	add_child(model)
-	# V53 : les habitants n'ont pas les pointes et les clous de la tenue du héros.
-	for mi0 in model.find_children("*", "MeshInstance3D", true, false):
-		(mi0 as MeshInstance3D).mesh = _sober_mesh((mi0 as MeshInstance3D).mesh)
 	model.rotation.y = 0.0
 	anim = model.find_child("AnimationPlayer", true, false)
 	var found := model.find_children("*", "Skeleton3D", true, false)
@@ -171,31 +172,28 @@ func _build_body() -> void:
 			var a: Animation = anim.get_animation(clip)
 			if a != null:
 				a.loop_mode = Animation.LOOP_LINEAR
-	# Teint hâlé de naufragé : le modèle tire ses couleurs de son émission (texture
-	# multipliée par la couleur d'émission), c'est donc elle qu'on réchauffe.
-	# V33 : chaque fiche peut donner sa teinte ([r, g, b]) ; par défaut, le hâle de Barnabé.
-	var tint: Array = profile.get("teinte", [0.95, 0.62, 0.42])
-	var tint_c := Color(float(tint[0]), float(tint[1]), float(tint[2]))
-	# V41 : les elfes ont leur propre texture (peau claire, vêtements de forêt).
-	var skin_tex: Texture2D = null
-	var elf: Dictionary = profile.get("elfe", profile.get("nain", {}))
-	if not elf.is_empty() and ResourceLoader.exists(str(elf.get("texture", ""))):
-		skin_tex = load(str(elf["texture"]))
-	elif ResourceLoader.exists(SOBER_TEX):
-		skin_tex = load(SOBER_TEX)       # V53 : tenue sans clous ni chaînes
-	for mi in model.find_children("*", "MeshInstance3D", true, false):
-		var m: MeshInstance3D = mi
-		for s in range(m.mesh.get_surface_count()):
-			var src: Material = m.mesh.surface_get_material(s)
-			if src is StandardMaterial3D:
-				var tinted: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
-				tinted.albedo_color = Color(tint_c.r, tint_c.g * 0.97, tint_c.b * 0.95)
-				tinted.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
-				tinted.emission = tint_c
-				if skin_tex != null:
-					tinted.albedo_texture = skin_tex
-					tinted.emission_texture = skin_tex
-				m.set_surface_override_material(s, tinted)
+	# V64 : un vrai corps, propre à chaque habitant ; sinon (fiche inconnue), l'ancien.
+	# Le squelette et l'apparence tout de suite ; les maillages quand le joueur approche
+	# (visage_v64 s'en charge, un habitant par image), libérés quand il s'éloigne.
+	if skel != null and Corps64.has_body(str(profile.get("id", ""))):
+		v64 = Corps64.prepare(skel, anim, str(profile.get("id", "")))
+	if not v64.is_empty():
+		_tete64 = (v64["look"] as Dictionary).get("tete", {})
+		# l'ancien corps (celui du héros) ne sert plus : ni dessiné, ni déformé à chaque image
+		for mi64 in model.find_children("*", "MeshInstance3D", true, false):
+			mi64.get_parent().remove_child(mi64)
+			mi64.queue_free()
+		var vis: Node = load("res://scripts/pnj/visage_v64.gd").new()
+		vis.name = "Visage64"
+		add_child(vis)
+		vis.call("setup", self, v64)
+		if main == null:
+			body64_build()
+	else:
+		# V53 : les habitants n'ont pas les pointes et les clous de la tenue du héros.
+		for mi0 in model.find_children("*", "MeshInstance3D", true, false):
+			(mi0 as MeshInstance3D).mesh = _sober_mesh((mi0 as MeshInstance3D).mesh)
+		_tint_old_body()
 	# Pieds au sol : décalage mesuré sur la boîte du modèle.
 	floor_offset = 0.0
 	if skel != null:
@@ -204,6 +202,10 @@ func _build_body() -> void:
 	var size_k: float = float(profile.get("elfe", profile.get("nain", {})).get("taille", 1.0))
 	if absf(size_k - 1.0) > 0.01:
 		model.scale = Vector3.ONE * size_k
+	if not v64.is_empty():
+		# V64 : la taille vient du corps lui-même (enfants et nains : échelle de la fiche)
+		model.scale = Vector3.ONE * float(v64.get("scale", 1.0))
+		size_k = body_height() / 1.7
 	_body = AnimatableBody3D.new()
 	_body.name = "Corps_collision"
 	_body.collision_layer = 1
@@ -241,9 +243,72 @@ func _build_body() -> void:
 	add_child(vr_label)
 
 
+
+
+## V64 : maillages du corps (peau, visage, yeux, vêtements, cheveux), sur le squelette déjà prêt.
+func body64_build() -> void:
+	if v64.is_empty() or v64.has("peau"):
+		return
+	var p: Dictionary = Corps64.build_full(model, skel, anim, str(profile.get("id", "")))
+	for k in p:
+		if k != "positions" and k != "normals":
+			v64[k] = p[k]
+
+
+## V64 : le joueur est loin : on rend la mémoire des maillages (ils reviendront).
+func body64_free() -> void:
+	if not v64.is_empty():
+		Corps64.free_meshes(v64)
+
+
+## Hauteur des yeux (m, depuis les pieds) : la caméra du portrait des dialogues les vise.
+func face_height() -> float:
+	if v64.is_empty():
+		return 1.42 * (model.scale.y if model != null else 1.0)
+	var ey: Array = _tete64.get("yeux", [0.0, 0.04, 0.07])
+	var h: float = float((v64["look"] as Dictionary).get("hauteur", 1.7))
+	return (h - float(_tete64.get("haut", 0.12)) + float(ey[1])) * float(v64.get("scale", 1.0))
+
+
+## V64 : hauteur réelle du personnage (sommet du crâne), en mètres.
+func body_height() -> float:
+	if v64.is_empty():
+		return 1.7 * (model.scale.y if model != null else 1.0)
+	return float((v64["look"] as Dictionary).get("hauteur", 1.7)) * float(v64.get("scale", 1.0))
+
+
+## Ancien corps (avant V64) : le modèle du héros, teinté d'après la fiche.
+func _tint_old_body() -> void:
+	# Teint hâlé de naufragé : le modèle tire ses couleurs de son émission (texture
+	# multipliée par la couleur d'émission), c'est donc elle qu'on réchauffe.
+	# V33 : chaque fiche peut donner sa teinte ([r, g, b]) ; par défaut, le hâle de Barnabé.
+	var tint: Array = profile.get("teinte", [0.95, 0.62, 0.42])
+	var tint_c := Color(float(tint[0]), float(tint[1]), float(tint[2]))
+	# V41 : les elfes ont leur propre texture (peau claire, vêtements de forêt).
+	var skin_tex: Texture2D = null
+	var elf: Dictionary = profile.get("elfe", profile.get("nain", {}))
+	if not elf.is_empty() and ResourceLoader.exists(str(elf.get("texture", ""))):
+		skin_tex = load(str(elf["texture"]))
+	elif ResourceLoader.exists(SOBER_TEX):
+		skin_tex = load(SOBER_TEX)       # V53 : tenue sans clous ni chaînes
+	for mi in model.find_children("*", "MeshInstance3D", true, false):
+		var m: MeshInstance3D = mi
+		for s in range(m.mesh.get_surface_count()):
+			var src: Material = m.mesh.surface_get_material(s)
+			if src is StandardMaterial3D:
+				var tinted: StandardMaterial3D = (src as StandardMaterial3D).duplicate()
+				tinted.albedo_color = Color(tint_c.r, tint_c.g * 0.97, tint_c.b * 0.95)
+				tinted.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
+				tinted.emission = tint_c
+				if skin_tex != null:
+					tinted.albedo_texture = skin_tex
+					tinted.emission_texture = skin_tex
+				m.set_surface_override_material(s, tinted)
+
+
 ## Accroche un objet à un os ; offset et orientation donnés dans le repère du personnage
 ## au repos (cm, X gauche, Y haut, Z avant), objet fabriqué en mètres.
-func _attach(bone_name: String, offset_cm: Vector3, node: Node3D, rot_deg: Vector3 = Vector3.ZERO) -> void:
+func _attach(bone_name: String, offset_cm: Vector3, node: Node3D, rot_deg: Vector3 = Vector3.ZERO, raw: bool = false) -> void:
 	var b: int = skel.find_bone(bone_name)
 	if b < 0:
 		return
@@ -252,9 +317,81 @@ func _attach(bone_name: String, offset_cm: Vector3, node: Node3D, rot_deg: Vecto
 	skel.add_child(att)
 	var rest: Basis = skel.get_bone_global_rest(b).basis.orthonormalized()
 	var holder := Node3D.new()
-	holder.transform = Transform3D(rest.inverse() * Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(Vector3.ONE * 100.0), rest.inverse() * offset_cm)
+	var scl := Vector3.ONE
+	if not v64.is_empty() and not raw:
+		var m: Array = _map64(bone_name, offset_cm)
+		offset_cm = m[0]
+		scl = m[1]
+	holder.transform = Transform3D(rest.inverse() * Basis.from_scale(scl) * Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(Vector3.ONE * 100.0), rest.inverse() * offset_cm)
 	att.add_child(holder)
 	holder.add_child(node)
+
+
+## V64 : lunettes posées sur le vrai nez (repères des yeux), branches jusqu'aux oreilles.
+func _glasses64(frame: Material, lens: Material = null, rim_r: float = 0.019, dark: bool = false) -> void:
+	var t: Dictionary = _tete64
+	var ey: Array = t.get("yeux", [0.0, 0.04, 0.07])
+	var dx: float = float(t.get("yeux_dx", 0.031))
+	var g := Node3D.new()
+	var z: float = float(ey[2]) + 0.021
+	for sx in [-1.0, 1.0]:
+		var tm := TorusMesh.new()
+		tm.inner_radius = rim_r * 0.86
+		tm.outer_radius = rim_r
+		tm.rings = 20
+		tm.ring_segments = 4
+		_part(g, tm, frame, Vector3(sx * dx, 0, 0), Vector3(1.0, 0.82 if dark else 0.9, 1.0), Vector3(90, 0, 0))
+		if lens != null:
+			_part(g, _cyl(rim_r * 0.9, rim_r * 0.9, 0.002), lens, Vector3(sx * dx, 0, 0), Vector3(1.0, 1.0, 0.85 if dark else 0.9), Vector3(90, 0, 0))
+		var side_x: float = float(t.get("cote", 0.075)) - 0.002
+		var arm_len: float = absf(float(t.get("arriere", -0.09)) * 0.35 - z)
+		var ax: float = sx * (side_x - 0.003)
+		_part(g, _box_mesh_np(Vector3(0.0025, 0.0025, arm_len)), frame, Vector3(ax, 0.004, -arm_len * 0.5), Vector3.ONE, Vector3(0, sx * -4.0, 0))
+		_part(g, _box_mesh_np(Vector3(absf(ax - sx * dx) - rim_r + 0.002, 0.003, 0.003)), frame, Vector3((ax + sx * (dx + rim_r)) * 0.5, 0.004, 0))
+	_part(g, _box_mesh_np(Vector3(2.0 * dx - 2.0 * rim_r + 0.004, 0.003, 0.003)), frame, Vector3(0, 0.006, 0.002))
+	_attach("Head", Vector3(0.0, float(ey[1]) * 100.0 - 0.2, z * 100.0), g, Vector3.ZERO, true)
+
+
+## V64 : les accessoires ont été dessinés pour la grosse tête et le petit buste du héros ;
+## on les recale sur la tête et le buste réels (repères mesurés sur chaque personnage).
+const H_CHIN := -3.0
+const H_EYES := 18.0
+const H_SEAT := 41.0
+const H_EYE_X := 7.2
+const H_SIDE := 24.0
+const H_BACK := -22.0
+const H_FRONT := 25.3
+
+
+static func _pw(x: float, xs: Array, ys: Array) -> float:
+	if x <= xs[0]:
+		return ys[0] + (x - xs[0]) * (ys[1] - ys[0]) / (xs[1] - xs[0])
+	for i in range(1, xs.size()):
+		if x <= xs[i]:
+			return ys[i - 1] + (x - xs[i - 1]) * (ys[i] - ys[i - 1]) / (xs[i] - xs[i - 1])
+	var n: int = xs.size()
+	return ys[n - 1] + (x - xs[n - 1]) * (ys[n - 1] - ys[n - 2]) / (xs[n - 1] - xs[n - 2])
+
+
+func _map64(bone_name: String, o: Vector3) -> Array:
+	var t: Dictionary = _tete64
+	if bone_name == "Head" and not t.is_empty():
+		var ey: Array = t.get("yeux", [0.0, 0.04, 0.07])
+		var ys := [float(t.get("menton", -0.07)) * 100.0, float(ey[1]) * 100.0, float(t.get("haut", 0.14)) * 100.0 - 2.5]
+		var xs := [0.0, float(t.get("yeux_dx", 0.03)) * 100.0, float(t.get("cote", 0.075)) * 100.0 + 1.0]
+		var zb: float = float(t.get("arriere", -0.09)) * 100.0 - 1.0
+		var zf: float = float(t.get("avant", 0.1)) * 100.0 + 0.3
+		var zs := [zb, (zb + zf) * 0.5, zf]
+		var p := Vector3(signf(o.x) * _pw(absf(o.x), [0.0, H_EYE_X, H_SIDE], xs), _pw(o.y, [H_CHIN, H_EYES, H_SEAT], ys), _pw(o.z, [H_BACK, 2.5, H_FRONT], zs))
+		var s := Vector3(xs[2] / H_SIDE, (ys[2] - ys[0]) / (H_SEAT - H_CHIN), (zf - zb) / (H_FRONT - H_BACK))
+		return [p, s]
+	if bone_name == "neck":
+		return [Vector3(o.x * 0.75, o.y * 0.6 - 2.0, o.z * 0.75), Vector3(0.72, 0.8, 0.72)]
+	var sc: Array = v64.get("scales", [Vector3.ONE, Vector3.ONE])
+	var st: Vector3 = sc[1]
+	if bone_name in ["Hips", "Spine02", "Spine01", "Spine", "LeftShoulder", "RightShoulder"]:
+		return [Vector3(o.x * 1.05 * st.x, o.y * 1.3 * st.y, o.z * 1.1 * st.z), Vector3.ONE]
+	return [o, Vector3.ONE]
 
 
 ## Accessoires : un peu d'émission, comme le modèle du personnage, pour garder les
@@ -323,13 +460,17 @@ func _accessories() -> void:
 	_part(hat, _cyl(0.36, 0.38, 0.025), straw, Vector3.ZERO)
 	_part(hat, _cyl(0.17, 0.21, 0.17), straw, Vector3(0, 0.09, 0))
 	_part(hat, _cyl(0.212, 0.212, 0.04), _mat(Color(0.55, 0.12, 0.1)), Vector3(0, 0.035, 0))
-	_attach("Head", Vector3(0, 41.0, 1.0), hat, Vector3(-8, 0, 6))
-	# Longue barbe grise.
-	var beard := Node3D.new()
-	var white := _mat(Color(0.95, 0.93, 0.86), 1.0)
-	_part(beard, _sphere(0.11), white, Vector3(0, -0.02, 0), Vector3(1.5, 0.7, 0.55))
-	_part(beard, _sphere(0.1), white, Vector3(0, -0.15, 0.01), Vector3(1.05, 1.75, 0.45))
-	_attach("Head", Vector3(0, -3.0, 15.0), beard, Vector3(6, 0, 0))
+	if v64.is_empty():
+		_attach("Head", Vector3(0, 41.0, 1.0), hat, Vector3(-8, 0, 6))
+	else:
+		hat.free()
+	if v64.is_empty():
+		# Longue barbe grise.
+		var beard := Node3D.new()
+		var white := _mat(Color(0.95, 0.93, 0.86), 1.0)
+		_part(beard, _sphere(0.11), white, Vector3(0, -0.02, 0), Vector3(1.5, 0.7, 0.55))
+		_part(beard, _sphere(0.1), white, Vector3(0, -0.15, 0.01), Vector3(1.05, 1.75, 0.45))
+		_attach("Head", Vector3(0, -3.0, 15.0), beard, Vector3(6, 0, 0))
 	# Gaston, le perroquet, sur l'épaule gauche.
 	parrot = Node3D.new()
 	var red := _mat(Color(0.82, 0.12, 0.08), 0.6)
@@ -368,84 +509,85 @@ func _accessories_elfe() -> void:
 	gem.emission_energy_multiplier = 1.5
 	var tint: Array = profile.get("teinte", [1.0, 0.92, 0.86])
 	var skin := _mat(Color(float(tint[0]), float(tint[1]) * 0.94, float(tint[2]) * 0.9), 0.6)
-	# Un nouveau visage par-dessus celui du modèle : grands yeux en amande, sourcils fins,
-	# petit nez, sourire léger, joues rosées.
-	var face := Node3D.new()
-	var R: float = 0.228
-	_part(face, _sphere(R), skin, Vector3.ZERO)
-	var white := _mat(Color(0.98, 0.98, 0.97), 0.3)
-	var iris := _mat(Color(float(elf.get("yeux", [0.25, 0.7, 0.5])[0]), float(elf.get("yeux", [0.25, 0.7, 0.5])[1]), float(elf.get("yeux", [0.25, 0.7, 0.5])[2])), 0.2)
-	var dark := _mat(Color(0.08, 0.06, 0.06), 0.4)
-	dark.emission_energy_multiplier = 0.05
-	var shine := _mat(Color(1, 1, 1), 0.1)
-	shine.emission_energy_multiplier = 1.5
-	var lips := _mat(Color(0.86, 0.45, 0.48), 0.5)
-	var blush := _mat(Color(1.0, 0.7, 0.7), 0.8)
-	blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	blush.albedo_color.a = 0.45
-	var brow_mat := _mat(Color(float(c_hair[0]) * 0.75, float(c_hair[1]) * 0.7, float(c_hair[2]) * 0.6), 0.7)
-	var on_face := func(x: float, y: float, lift: float) -> Vector3:
-		return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
-	for sx in [-1.0, 1.0]:
-		var ex: float = sx * 0.072
-		_part(face, _sphere(0.046), white, on_face.call(ex, 0.005, -0.012), Vector3(1.0, 1.25, 0.4))
-		_part(face, _sphere(0.033), iris, on_face.call(ex, 0.0, -0.004), Vector3(1.0, 1.2, 0.35))
-		_part(face, _sphere(0.017), dark, on_face.call(ex, -0.002, 0.002), Vector3(1.0, 1.2, 0.35))
-		_part(face, _sphere(0.009), shine, on_face.call(ex + sx * -0.012, 0.016, 0.006))
-		_part(face, _box_mesh_np(Vector3(0.1, 0.012, 0.012)), dark, on_face.call(ex, 0.058, -0.002), Vector3.ONE, Vector3(0, sx * -18.0, sx * -8.0))
-		_part(face, _box_mesh_np(Vector3(0.075, 0.01, 0.012)), brow_mat, on_face.call(ex, 0.098, -0.003), Vector3.ONE, Vector3(0, sx * -18.0, sx * 6.0))
-		_part(face, _sphere(0.03), blush, on_face.call(sx * 0.11, -0.05, -0.008), Vector3(1.3, 0.8, 0.3))
-	_part(face, _sphere(0.011), skin, on_face.call(0.0, -0.035, 0.0), Vector3(0.9, 1.0, 1.0))
-	for sx in [-1.0, 1.0]:
-		_part(face, _box_mesh_np(Vector3(0.026, 0.008, 0.01)), lips, on_face.call(sx * 0.011, -0.078, -0.002), Vector3.ONE, Vector3(0, sx * -10.0, sx * 14.0))
-	_attach("Head", Vector3(0, 18.0, 2.5), face)
-	var fringe := Node3D.new()
-	_part(fringe, _sphere(0.2), hair, Vector3.ZERO, Vector3(1.15, 0.4, 0.78))
-	_attach("Head", Vector3(0, 35.0, 10.0), fringe, Vector3(-20, 0, 0))
-	# Chevelure : un volume sur le crâne, puis la coiffure (V42 : long, tresse, chignon, queue, court).
-	var head_hair := Node3D.new()
-	_part(head_hair, _sphere(0.26), hair, Vector3(0, 0.0, 0.0), Vector3(1.16, 1.06, 0.98))
-	var style: String = str(elf.get("coiffure", "long"))
-	match style:
-		"tresse":
-			# Une longue natte dans le dos, nouée d'un ruban, et deux petites mèches.
-			for k in range(9):
-				var f: float = float(k) / 8.0
-				var r: float = lerpf(0.075, 0.045, f)
-				_part(head_hair, _sphere(r), hair, Vector3(sin(f * 7.0) * 0.012, -0.12 - f * 0.62, -0.25 - f * 0.05), Vector3(1.0, 1.25, 0.9), Vector3(0, 0, 18.0 if k % 2 == 0 else -18.0))
-			_part(head_hair, _cyl(0.035, 0.045, 0.06), jewel, Vector3(0, -0.8, -0.3))
-			_part(head_hair, _sphere(0.05), hair, Vector3(0, -0.88, -0.3), Vector3(0.9, 1.4, 0.7))
-			for sx in [-1.0, 1.0]:
-				_part(head_hair, _sphere(0.06), hair, Vector3(sx * 0.21, -0.12, 0.08), Vector3(0.55, 1.6, 0.6), Vector3(0, 0, sx * 6))
-		"chignon":
-			# Un chignon haut piqué d'une épingle, la nuque dégagée.
-			_part(head_hair, _sphere(0.12), hair, Vector3(0, 0.16, -0.17), Vector3(1.0, 0.9, 0.9))
-			_part(head_hair, _cyl(0.008, 0.008, 0.3), jewel, Vector3(0, 0.18, -0.17), Vector3.ONE, Vector3(0, 0, 70))
-			_part(head_hair, _sphere(0.02), gem, Vector3(0.15, 0.24, -0.17))
-			for sx in [-1.0, 1.0]:
-				_part(head_hair, _sphere(0.05), hair, Vector3(sx * 0.215, -0.1, 0.09), Vector3(0.5, 1.5, 0.6), Vector3(0, 0, sx * 4))
-		"queue":
-			# Queue de cheval haute, tenue par un anneau.
-			_part(head_hair, _cyl(0.05, 0.05, 0.05), jewel, Vector3(0, 0.08, -0.26), Vector3.ONE, Vector3(-60, 0, 0))
-			for k in range(6):
-				var f2: float = float(k) / 5.0
-				_part(head_hair, _sphere(lerpf(0.08, 0.04, f2)), hair, Vector3(0, 0.02 - f2 * 0.5, -0.32 - sin(f2 * 1.6) * 0.06), Vector3(1.0, 1.7, 0.85), Vector3(-10, 0, 0))
-		"court":
-			# Cheveux courts : un casque de mèches, la nuque couverte.
-			_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.1, -0.12), Vector3(1.15, 0.85, 0.8))
-			for sx in [-1.0, 1.0]:
-				_part(head_hair, _sphere(0.07), hair, Vector3(sx * 0.21, -0.06, 0.04), Vector3(0.45, 1.0, 0.8))
-		_:
-			# Long rideau dans le dos et deux longues mèches devant.
-			_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.34, -0.1), Vector3(1.05, 2.1, 0.42), Vector3(8, 0, 0))
-			for sx in [-1.0, 1.0]:
-				_part(head_hair, _sphere(0.08), hair, Vector3(sx * 0.2, -0.2, 0.08), Vector3(0.55, 2.3, 0.6), Vector3(0, 0, sx * 6))
-	_attach("Head", Vector3(0, 30.0, -7.0), head_hair)
-	# Oreilles en pointe
-	for sx in [-1.0, 1.0]:
-		var ear := Node3D.new()
-		_part(ear, _cyl(0.0, 0.035, 0.17), skin, Vector3(0, 0.07, 0))
-		_attach("Head", Vector3(sx * 22.5, 19.0, 3.0), ear, Vector3(-12, 0, sx * -62))
+	if v64.is_empty():
+		# Un nouveau visage par-dessus celui du modèle : grands yeux en amande, sourcils fins,
+		# petit nez, sourire léger, joues rosées.
+		var face := Node3D.new()
+		var R: float = 0.228
+		_part(face, _sphere(R), skin, Vector3.ZERO)
+		var white := _mat(Color(0.98, 0.98, 0.97), 0.3)
+		var iris := _mat(Color(float(elf.get("yeux", [0.25, 0.7, 0.5])[0]), float(elf.get("yeux", [0.25, 0.7, 0.5])[1]), float(elf.get("yeux", [0.25, 0.7, 0.5])[2])), 0.2)
+		var dark := _mat(Color(0.08, 0.06, 0.06), 0.4)
+		dark.emission_energy_multiplier = 0.05
+		var shine := _mat(Color(1, 1, 1), 0.1)
+		shine.emission_energy_multiplier = 1.5
+		var lips := _mat(Color(0.86, 0.45, 0.48), 0.5)
+		var blush := _mat(Color(1.0, 0.7, 0.7), 0.8)
+		blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		blush.albedo_color.a = 0.45
+		var brow_mat := _mat(Color(float(c_hair[0]) * 0.75, float(c_hair[1]) * 0.7, float(c_hair[2]) * 0.6), 0.7)
+		var on_face := func(x: float, y: float, lift: float) -> Vector3:
+			return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
+		for sx in [-1.0, 1.0]:
+			var ex: float = sx * 0.072
+			_part(face, _sphere(0.046), white, on_face.call(ex, 0.005, -0.012), Vector3(1.0, 1.25, 0.4))
+			_part(face, _sphere(0.033), iris, on_face.call(ex, 0.0, -0.004), Vector3(1.0, 1.2, 0.35))
+			_part(face, _sphere(0.017), dark, on_face.call(ex, -0.002, 0.002), Vector3(1.0, 1.2, 0.35))
+			_part(face, _sphere(0.009), shine, on_face.call(ex + sx * -0.012, 0.016, 0.006))
+			_part(face, _box_mesh_np(Vector3(0.1, 0.012, 0.012)), dark, on_face.call(ex, 0.058, -0.002), Vector3.ONE, Vector3(0, sx * -18.0, sx * -8.0))
+			_part(face, _box_mesh_np(Vector3(0.075, 0.01, 0.012)), brow_mat, on_face.call(ex, 0.098, -0.003), Vector3.ONE, Vector3(0, sx * -18.0, sx * 6.0))
+			_part(face, _sphere(0.03), blush, on_face.call(sx * 0.11, -0.05, -0.008), Vector3(1.3, 0.8, 0.3))
+		_part(face, _sphere(0.011), skin, on_face.call(0.0, -0.035, 0.0), Vector3(0.9, 1.0, 1.0))
+		for sx in [-1.0, 1.0]:
+			_part(face, _box_mesh_np(Vector3(0.026, 0.008, 0.01)), lips, on_face.call(sx * 0.011, -0.078, -0.002), Vector3.ONE, Vector3(0, sx * -10.0, sx * 14.0))
+		_attach("Head", Vector3(0, 18.0, 2.5), face)
+		var fringe := Node3D.new()
+		_part(fringe, _sphere(0.2), hair, Vector3.ZERO, Vector3(1.15, 0.4, 0.78))
+		_attach("Head", Vector3(0, 35.0, 10.0), fringe, Vector3(-20, 0, 0))
+		# Chevelure : un volume sur le crâne, puis la coiffure (V42 : long, tresse, chignon, queue, court).
+		var head_hair := Node3D.new()
+		_part(head_hair, _sphere(0.26), hair, Vector3(0, 0.0, 0.0), Vector3(1.16, 1.06, 0.98))
+		var style: String = str(elf.get("coiffure", "long"))
+		match style:
+			"tresse":
+				# Une longue natte dans le dos, nouée d'un ruban, et deux petites mèches.
+				for k in range(9):
+					var f: float = float(k) / 8.0
+					var r: float = lerpf(0.075, 0.045, f)
+					_part(head_hair, _sphere(r), hair, Vector3(sin(f * 7.0) * 0.012, -0.12 - f * 0.62, -0.25 - f * 0.05), Vector3(1.0, 1.25, 0.9), Vector3(0, 0, 18.0 if k % 2 == 0 else -18.0))
+				_part(head_hair, _cyl(0.035, 0.045, 0.06), jewel, Vector3(0, -0.8, -0.3))
+				_part(head_hair, _sphere(0.05), hair, Vector3(0, -0.88, -0.3), Vector3(0.9, 1.4, 0.7))
+				for sx in [-1.0, 1.0]:
+					_part(head_hair, _sphere(0.06), hair, Vector3(sx * 0.21, -0.12, 0.08), Vector3(0.55, 1.6, 0.6), Vector3(0, 0, sx * 6))
+			"chignon":
+				# Un chignon haut piqué d'une épingle, la nuque dégagée.
+				_part(head_hair, _sphere(0.12), hair, Vector3(0, 0.16, -0.17), Vector3(1.0, 0.9, 0.9))
+				_part(head_hair, _cyl(0.008, 0.008, 0.3), jewel, Vector3(0, 0.18, -0.17), Vector3.ONE, Vector3(0, 0, 70))
+				_part(head_hair, _sphere(0.02), gem, Vector3(0.15, 0.24, -0.17))
+				for sx in [-1.0, 1.0]:
+					_part(head_hair, _sphere(0.05), hair, Vector3(sx * 0.215, -0.1, 0.09), Vector3(0.5, 1.5, 0.6), Vector3(0, 0, sx * 4))
+			"queue":
+				# Queue de cheval haute, tenue par un anneau.
+				_part(head_hair, _cyl(0.05, 0.05, 0.05), jewel, Vector3(0, 0.08, -0.26), Vector3.ONE, Vector3(-60, 0, 0))
+				for k in range(6):
+					var f2: float = float(k) / 5.0
+					_part(head_hair, _sphere(lerpf(0.08, 0.04, f2)), hair, Vector3(0, 0.02 - f2 * 0.5, -0.32 - sin(f2 * 1.6) * 0.06), Vector3(1.0, 1.7, 0.85), Vector3(-10, 0, 0))
+			"court":
+				# Cheveux courts : un casque de mèches, la nuque couverte.
+				_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.1, -0.12), Vector3(1.15, 0.85, 0.8))
+				for sx in [-1.0, 1.0]:
+					_part(head_hair, _sphere(0.07), hair, Vector3(sx * 0.21, -0.06, 0.04), Vector3(0.45, 1.0, 0.8))
+			_:
+				# Long rideau dans le dos et deux longues mèches devant.
+				_part(head_hair, _sphere(0.2), hair, Vector3(0, -0.34, -0.1), Vector3(1.05, 2.1, 0.42), Vector3(8, 0, 0))
+				for sx in [-1.0, 1.0]:
+					_part(head_hair, _sphere(0.08), hair, Vector3(sx * 0.2, -0.2, 0.08), Vector3(0.55, 2.3, 0.6), Vector3(0, 0, sx * 6))
+		_attach("Head", Vector3(0, 30.0, -7.0), head_hair)
+		# Oreilles en pointe
+		for sx in [-1.0, 1.0]:
+			var ear := Node3D.new()
+			_part(ear, _cyl(0.0, 0.035, 0.17), skin, Vector3(0, 0.07, 0))
+			_attach("Head", Vector3(sx * 22.5, 19.0, 3.0), ear, Vector3(-12, 0, sx * -62))
 	# Diadème d'argent et sa pierre verte
 	var circlet := Node3D.new()
 	var tm := TorusMesh.new()
@@ -456,29 +598,30 @@ func _accessories_elfe() -> void:
 	_part(circlet, tm, jewel, Vector3.ZERO)
 	_part(circlet, _sphere(0.025), gem, Vector3(0, 0.0, 0.215), Vector3(1.0, 1.3, 0.6))
 	_attach("Head", Vector3(0, 26.0, 1.0), circlet, Vector3(-12, 0, 0))
-	# Corsage, longue robe évasée, ceinture
-	var bodice := Node3D.new()
-	_part(bodice, _sphere(0.21), robe, Vector3.ZERO, Vector3(1.0, 1.05, 0.78))
-	_attach("Spine02", Vector3(0, 0.0, 2.0), bodice)
-	var skirt := Node3D.new()
-	if str(elf.get("silhouette", "robe")) == "tunique":
-		# V42 : tunique courte à mi-cuisse, galon brodé (les jambes restent libres).
-		_part(skirt, _cyl(0.2, 0.3, 0.36), robe, Vector3(0, -0.17, 0))
-		_part(skirt, _cyl(0.302, 0.31, 0.04), jewel, Vector3(0, -0.34, 0))
-	else:
-		_part(skirt, _cyl(0.2, 0.4, 0.8), robe, Vector3(0, -0.4, 0))
-		_part(skirt, _cyl(0.405, 0.42, 0.06), jewel, Vector3(0, -0.78, 0))
-	_attach("Hips", Vector3(0, 4.0, 0.0), skirt)
-	var belt := Node3D.new()
-	var bm := TorusMesh.new()
-	bm.inner_radius = 0.18
-	bm.outer_radius = 0.21
-	_part(belt, bm, jewel, Vector3.ZERO)
-	_attach("Hips", Vector3(0, 6.0, 0.0), belt)
-	# Cape légère sur les épaules
-	var mantle := Node3D.new()
-	_part(mantle, _sphere(0.22), cape, Vector3(0, -0.25, 0), Vector3(1.3, 2.4, 0.14))
-	_attach("Spine02", Vector3(0, 6.0, -13.0), mantle, Vector3(-6, 0, 0))
+	if v64.is_empty():
+		# Corsage, longue robe évasée, ceinture
+		var bodice := Node3D.new()
+		_part(bodice, _sphere(0.21), robe, Vector3.ZERO, Vector3(1.0, 1.05, 0.78))
+		_attach("Spine02", Vector3(0, 0.0, 2.0), bodice)
+		var skirt := Node3D.new()
+		if str(elf.get("silhouette", "robe")) == "tunique":
+			# V42 : tunique courte à mi-cuisse, galon brodé (les jambes restent libres).
+			_part(skirt, _cyl(0.2, 0.3, 0.36), robe, Vector3(0, -0.17, 0))
+			_part(skirt, _cyl(0.302, 0.31, 0.04), jewel, Vector3(0, -0.34, 0))
+		else:
+			_part(skirt, _cyl(0.2, 0.4, 0.8), robe, Vector3(0, -0.4, 0))
+			_part(skirt, _cyl(0.405, 0.42, 0.06), jewel, Vector3(0, -0.78, 0))
+		_attach("Hips", Vector3(0, 4.0, 0.0), skirt)
+		var belt := Node3D.new()
+		var bm := TorusMesh.new()
+		bm.inner_radius = 0.18
+		bm.outer_radius = 0.21
+		_part(belt, bm, jewel, Vector3.ZERO)
+		_attach("Hips", Vector3(0, 6.0, 0.0), belt)
+		# Cape légère sur les épaules
+		var mantle := Node3D.new()
+		_part(mantle, _sphere(0.22), cape, Vector3(0, -0.25, 0), Vector3(1.3, 2.4, 0.14))
+		_attach("Spine02", Vector3(0, 6.0, -13.0), mantle, Vector3(-6, 0, 0))
 	# V42 : l'arc et le carquois dans le dos (Thalion), le bâton de l'Ancien (Faelar).
 	if bool(elf.get("arc", false)):
 		var wood := _mat(Color(0.5, 0.34, 0.2), 0.6)
@@ -599,55 +742,56 @@ func _accessories_nain() -> void:
 	var tint: Array = profile.get("teinte", [0.98, 0.72, 0.58])
 	var skin := _mat(Color(float(tint[0]), float(tint[1]) * 0.92, float(tint[2]) * 0.88), 0.6)
 	var nose_m := _mat(Color(float(tint[0]), float(tint[1]) * 0.78, float(tint[2]) * 0.72), 0.55)
-	# Le visage, par-dessus celui du modèle : petits yeux enfoncés, gros nez, sourcils épais.
-	var face := Node3D.new()
-	var R: float = 0.228
-	_part(face, _sphere(R), skin, Vector3.ZERO)
-	var white := _mat(Color(0.97, 0.96, 0.94), 0.3)
-	var dark := _mat(Color(0.06, 0.05, 0.04), 0.4)
-	dark.emission_energy_multiplier = 0.05
-	var shine := _mat(Color(1, 1, 1), 0.1)
-	shine.emission_energy_multiplier = 1.5
-	var iris := _mat(Color(0.28, 0.4, 0.55), 0.3)
-	var on_face := func(x: float, y: float, lift: float) -> Vector3:
-		return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
-	for sx in [-1.0, 1.0]:
-		var ex: float = sx * 0.07
-		_part(face, _sphere(0.034), white, on_face.call(ex, 0.02, -0.012), Vector3(1.1, 0.9, 0.4))
-		_part(face, _sphere(0.024), iris, on_face.call(ex, 0.018, -0.005), Vector3(1.0, 1.0, 0.35))
-		_part(face, _sphere(0.012), dark, on_face.call(ex, 0.018, 0.0), Vector3(1.0, 1.0, 0.35))
-		_part(face, _sphere(0.007), shine, on_face.call(ex - sx * 0.008, 0.028, 0.004))
-		# Sourcils broussailleux
-		_part(face, _sphere(0.04), beard, on_face.call(ex, 0.07, 0.0), Vector3(1.5, 0.55, 0.6), Vector3(0, 0, sx * -12.0))
-		# Joues rouges
-		var blush := _mat(Color(0.95, 0.45, 0.4), 0.8)
-		blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		blush.albedo_color.a = 0.5
-		_part(face, _sphere(0.035), blush, on_face.call(sx * 0.11, -0.03, -0.01), Vector3(1.2, 0.8, 0.3))
-		# Oreilles rondes
-		_part(face, _sphere(0.045), skin, Vector3(sx * 0.225, 0.0, -0.01), Vector3(0.45, 0.85, 0.7))
-	_part(face, _sphere(0.048), nose_m, on_face.call(0.0, -0.025, 0.025), Vector3(0.85, 1.0, 0.9))
-	_attach("Head", Vector3(0, 18.0, 2.5), face)
-	# La barbe : un plastron de poils, puis le style
-	var bd := Node3D.new()
-	_part(bd, _sphere(0.2), beard, Vector3(0, -0.02, 0.0), Vector3(1.25, 0.75, 0.62))
-	for sx in [-1.0, 1.0]:
-		_part(bd, _sphere(0.07), beard, Vector3(sx * 0.07, 0.06, 0.12), Vector3(1.4, 0.6, 0.6), Vector3(0, 0, sx * -15.0))
-	var bstyle: String = str(dw.get("style_barbe", "large"))
-	match bstyle:
-		"tresse":
-			for sx in [-1.0, 1.0]:
-				for k in range(6):
-					var f: float = float(k) / 5.0
-					_part(bd, _sphere(lerpf(0.06, 0.035, f)), beard, Vector3(sx * 0.07, -0.16 - f * 0.4, 0.07 - f * 0.03), Vector3(1.0, 1.3, 0.9), Vector3(0, 0, 15.0 if k % 2 == 0 else -15.0))
-				_part(bd, _cyl(0.03, 0.03, 0.05), gold, Vector3(sx * 0.07, -0.6, 0.04))
-		"fourche":
-			for sx in [-1.0, 1.0]:
-				_part(bd, _sphere(0.1), beard, Vector3(sx * 0.08, -0.28, 0.05), Vector3(0.9, 2.2, 0.7), Vector3(0, 0, sx * 10.0))
-		_:
-			_part(bd, _sphere(0.18), beard, Vector3(0, -0.26, 0.04), Vector3(1.25, 1.6, 0.6))
-			_part(bd, _sphere(0.1), beard, Vector3(0, -0.48, 0.05), Vector3(1.2, 1.2, 0.6))
-	_attach("Head", Vector3(0, 2.0, 12.0), bd, Vector3(10, 0, 0))
+	if v64.is_empty():
+		# Le visage, par-dessus celui du modèle : petits yeux enfoncés, gros nez, sourcils épais.
+		var face := Node3D.new()
+		var R: float = 0.228
+		_part(face, _sphere(R), skin, Vector3.ZERO)
+		var white := _mat(Color(0.97, 0.96, 0.94), 0.3)
+		var dark := _mat(Color(0.06, 0.05, 0.04), 0.4)
+		dark.emission_energy_multiplier = 0.05
+		var shine := _mat(Color(1, 1, 1), 0.1)
+		shine.emission_energy_multiplier = 1.5
+		var iris := _mat(Color(0.28, 0.4, 0.55), 0.3)
+		var on_face := func(x: float, y: float, lift: float) -> Vector3:
+			return Vector3(x, y, sqrt(maxf(R * R - x * x - y * y, 0.0)) + lift)
+		for sx in [-1.0, 1.0]:
+			var ex: float = sx * 0.07
+			_part(face, _sphere(0.034), white, on_face.call(ex, 0.02, -0.012), Vector3(1.1, 0.9, 0.4))
+			_part(face, _sphere(0.024), iris, on_face.call(ex, 0.018, -0.005), Vector3(1.0, 1.0, 0.35))
+			_part(face, _sphere(0.012), dark, on_face.call(ex, 0.018, 0.0), Vector3(1.0, 1.0, 0.35))
+			_part(face, _sphere(0.007), shine, on_face.call(ex - sx * 0.008, 0.028, 0.004))
+			# Sourcils broussailleux
+			_part(face, _sphere(0.04), beard, on_face.call(ex, 0.07, 0.0), Vector3(1.5, 0.55, 0.6), Vector3(0, 0, sx * -12.0))
+			# Joues rouges
+			var blush := _mat(Color(0.95, 0.45, 0.4), 0.8)
+			blush.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			blush.albedo_color.a = 0.5
+			_part(face, _sphere(0.035), blush, on_face.call(sx * 0.11, -0.03, -0.01), Vector3(1.2, 0.8, 0.3))
+			# Oreilles rondes
+			_part(face, _sphere(0.045), skin, Vector3(sx * 0.225, 0.0, -0.01), Vector3(0.45, 0.85, 0.7))
+		_part(face, _sphere(0.048), nose_m, on_face.call(0.0, -0.025, 0.025), Vector3(0.85, 1.0, 0.9))
+		_attach("Head", Vector3(0, 18.0, 2.5), face)
+		# La barbe : un plastron de poils, puis le style
+		var bd := Node3D.new()
+		_part(bd, _sphere(0.2), beard, Vector3(0, -0.02, 0.0), Vector3(1.25, 0.75, 0.62))
+		for sx in [-1.0, 1.0]:
+			_part(bd, _sphere(0.07), beard, Vector3(sx * 0.07, 0.06, 0.12), Vector3(1.4, 0.6, 0.6), Vector3(0, 0, sx * -15.0))
+		var bstyle: String = str(dw.get("style_barbe", "large"))
+		match bstyle:
+			"tresse":
+				for sx in [-1.0, 1.0]:
+					for k in range(6):
+						var f: float = float(k) / 5.0
+						_part(bd, _sphere(lerpf(0.06, 0.035, f)), beard, Vector3(sx * 0.07, -0.16 - f * 0.4, 0.07 - f * 0.03), Vector3(1.0, 1.3, 0.9), Vector3(0, 0, 15.0 if k % 2 == 0 else -15.0))
+					_part(bd, _cyl(0.03, 0.03, 0.05), gold, Vector3(sx * 0.07, -0.6, 0.04))
+			"fourche":
+				for sx in [-1.0, 1.0]:
+					_part(bd, _sphere(0.1), beard, Vector3(sx * 0.08, -0.28, 0.05), Vector3(0.9, 2.2, 0.7), Vector3(0, 0, sx * 10.0))
+			_:
+				_part(bd, _sphere(0.18), beard, Vector3(0, -0.26, 0.04), Vector3(1.25, 1.6, 0.6))
+				_part(bd, _sphere(0.1), beard, Vector3(0, -0.48, 0.05), Vector3(1.2, 1.2, 0.6))
+		_attach("Head", Vector3(0, 2.0, 12.0), bd, Vector3(10, 0, 0))
 	# La coiffe (elle cache la crête du modèle)
 	var hat := Node3D.new()
 	var coiffe: String = str(dw.get("coiffe", "casque"))
@@ -667,7 +811,8 @@ func _accessories_nain() -> void:
 			_part(hat, _sphere(0.06), _mat(Color(0.9, 0.86, 0.75), 0.95), Vector3(0, 0.22, -0.05))
 		"couronne":
 			var hair := _mat(Color(float(c_beard[0]), float(c_beard[1]), float(c_beard[2])), 0.9)
-			_part(hat, _sphere(0.25), hair, Vector3(0, -0.02, -0.02), Vector3(1.04, 0.85, 1.04))
+			if v64.is_empty():
+				_part(hat, _sphere(0.25), hair, Vector3(0, -0.02, -0.02), Vector3(1.04, 0.85, 1.04))
 			_part(hat, _cyl(0.24, 0.23, 0.1), gold, Vector3(0, 0.03, 0))
 			for k in range(8):
 				var a: float = TAU * k / 8.0
@@ -676,40 +821,45 @@ func _accessories_nain() -> void:
 					_part(hat, _sphere(0.022), _mat(Color(0.85, 0.1, 0.12), 0.1), Vector3(cos(a) * 0.245, 0.04, sin(a) * 0.245))
 		_:
 			# Chauve : un crâne lisse, une couronne de cheveux autour
-			_part(hat, _sphere(0.25), skin, Vector3(0, 0.02, -0.01), Vector3(1.04, 1.0, 1.08))
-			_part(hat, _sphere(0.25), beard, Vector3(0, -0.1, -0.06), Vector3(1.06, 0.5, 0.97))
-	_attach("Head", Vector3(0, 30.0, -1.0), hat)
-	# Un torse épais : tunique bombée, épaulettes, ceinturon et sa grosse boucle
-	var chest := Node3D.new()
-	_part(chest, _sphere(0.25), tunic, Vector3(0, 0, 0.02), Vector3(1.15, 1.05, 0.95))
-	for sx in [-1.0, 1.0]:
-		_part(chest, _sphere(0.11), metal if coiffe == "casque" else tunic, Vector3(sx * 0.24, 0.12, 0.0), Vector3(1.1, 0.75, 1.0))
-	_attach("Spine02", Vector3(0, 0.0, 2.0), chest)
-	var belly := Node3D.new()
-	_part(belly, _sphere(0.25), tunic, Vector3.ZERO, Vector3(1.12, 0.95, 1.05))
-	_attach("Spine", Vector3(0, 0.0, 3.0), belly)
-	var skirt := Node3D.new()
-	_part(skirt, _cyl(0.26, 0.31, 0.3), tunic, Vector3(0, -0.12, 0))
-	var bm := TorusMesh.new()
-	bm.inner_radius = 0.25
-	bm.outer_radius = 0.3
-	_part(skirt, bm, leather, Vector3(0, 0.04, 0.0))
-	_part(skirt, _box_mesh_np(Vector3(0.13, 0.11, 0.04)), gold, Vector3(0, 0.04, 0.3))
-	_attach("Hips", Vector3(0, 2.0, 0.0), skirt)
-	if dw.has("cape"):
-		var cc: Array = dw["cape"]
-		var cape := _mat(Color(float(cc[0]), float(cc[1]), float(cc[2])), 0.9)
-		var mantle := Node3D.new()
-		_part(mantle, _sphere(0.25), cape, Vector3(0, -0.3, 0), Vector3(1.35, 2.3, 0.14))
-		_part(mantle, _sphere(0.08), gold, Vector3(0, 0.08, 0.2), Vector3(1.0, 1.0, 0.4))
-		_attach("Spine02", Vector3(0, 8.0, -16.0), mantle, Vector3(-6, 0, 0))
-	if bool(dw.get("tablier", false)):
-		var bib := Node3D.new()
-		_part(bib, _sphere(0.22), leather, Vector3.ZERO, Vector3(1.0, 1.0, 0.12))
-		_attach("Spine02", Vector3(0, 0.0, 22.0), bib)
-		var apron := Node3D.new()
-		_part(apron, _sphere(0.24), leather, Vector3.ZERO, Vector3(1.0, 1.3, 0.1))
-		_attach("Hips", Vector3(0, -16.0, 20.0), apron, Vector3(6, 0, 0))
+			if v64.is_empty():
+				_part(hat, _sphere(0.25), skin, Vector3(0, 0.02, -0.01), Vector3(1.04, 1.0, 1.08))
+				_part(hat, _sphere(0.25), beard, Vector3(0, -0.1, -0.06), Vector3(1.06, 0.5, 0.97))
+	if v64.is_empty() or coiffe == "couronne":
+		_attach("Head", Vector3(0, 30.0, -1.0), hat)
+	else:
+		hat.free()
+	if v64.is_empty():
+		# Un torse épais : tunique bombée, épaulettes, ceinturon et sa grosse boucle
+		var chest := Node3D.new()
+		_part(chest, _sphere(0.25), tunic, Vector3(0, 0, 0.02), Vector3(1.15, 1.05, 0.95))
+		for sx in [-1.0, 1.0]:
+			_part(chest, _sphere(0.11), metal if coiffe == "casque" else tunic, Vector3(sx * 0.24, 0.12, 0.0), Vector3(1.1, 0.75, 1.0))
+		_attach("Spine02", Vector3(0, 0.0, 2.0), chest)
+		var belly := Node3D.new()
+		_part(belly, _sphere(0.25), tunic, Vector3.ZERO, Vector3(1.12, 0.95, 1.05))
+		_attach("Spine", Vector3(0, 0.0, 3.0), belly)
+		var skirt := Node3D.new()
+		_part(skirt, _cyl(0.26, 0.31, 0.3), tunic, Vector3(0, -0.12, 0))
+		var bm := TorusMesh.new()
+		bm.inner_radius = 0.25
+		bm.outer_radius = 0.3
+		_part(skirt, bm, leather, Vector3(0, 0.04, 0.0))
+		_part(skirt, _box_mesh_np(Vector3(0.13, 0.11, 0.04)), gold, Vector3(0, 0.04, 0.3))
+		_attach("Hips", Vector3(0, 2.0, 0.0), skirt)
+		if dw.has("cape"):
+			var cc: Array = dw["cape"]
+			var cape := _mat(Color(float(cc[0]), float(cc[1]), float(cc[2])), 0.9)
+			var mantle := Node3D.new()
+			_part(mantle, _sphere(0.25), cape, Vector3(0, -0.3, 0), Vector3(1.35, 2.3, 0.14))
+			_part(mantle, _sphere(0.08), gold, Vector3(0, 0.08, 0.2), Vector3(1.0, 1.0, 0.4))
+			_attach("Spine02", Vector3(0, 8.0, -16.0), mantle, Vector3(-6, 0, 0))
+		if bool(dw.get("tablier", false)):
+			var bib := Node3D.new()
+			_part(bib, _sphere(0.22), leather, Vector3.ZERO, Vector3(1.0, 1.0, 0.12))
+			_attach("Spine02", Vector3(0, 0.0, 22.0), bib)
+			var apron := Node3D.new()
+			_part(apron, _sphere(0.24), leather, Vector3.ZERO, Vector3(1.0, 1.3, 0.1))
+			_attach("Hips", Vector3(0, -16.0, 20.0), apron, Vector3(6, 0, 0))
 	# L'outil du métier
 	var tool := Node3D.new()
 	var wood := _mat(Color(0.45, 0.3, 0.18), 0.8)
@@ -770,19 +920,20 @@ func _accessories_octave() -> void:
 		_part(goggles, _cyl(0.04, 0.04, 0.04), glass, Vector3(sx * 0.062, 0, 0.003), Vector3.ONE, Vector3(90, 0, 0))
 	_part(goggles, _cyl(0.012, 0.012, 0.03), brass, Vector3.ZERO, Vector3.ONE, Vector3(0, 0, 90))
 	_attach("Head", Vector3(0, 29.0, 18.0), goggles, Vector3(-28, 0, 0))
-	# Moustache broussailleuse poivre et sel
-	var stache := Node3D.new()
-	var grey := _mat(Color(0.55, 0.5, 0.46), 1.0)
-	for sx in [-1.0, 1.0]:
-		_part(stache, _sphere(0.055), grey, Vector3(sx * 0.055, 0, 0), Vector3(1.5, 0.55, 0.7), Vector3(0, 0, sx * -18))
-	_attach("Head", Vector3(0, 9.0, 19.0), stache, Vector3(5, 0, 0))
-	# Tablier de cuir (bavette sur la poitrine, pan sur les cuisses)
-	var bib := Node3D.new()
-	_part(bib, _sphere(0.2), leather, Vector3.ZERO, Vector3(0.95, 1.0, 0.12))
-	_attach("Spine02", Vector3(0, 2.0, 13.0), bib)
-	var skirt := Node3D.new()
-	_part(skirt, _sphere(0.22), leather, Vector3.ZERO, Vector3(0.95, 1.25, 0.1))
-	_attach("Hips", Vector3(0, -14.0, 13.0), skirt, Vector3(8, 0, 0))
+	if v64.is_empty():
+		# Moustache broussailleuse poivre et sel
+		var stache := Node3D.new()
+		var grey := _mat(Color(0.55, 0.5, 0.46), 1.0)
+		for sx in [-1.0, 1.0]:
+			_part(stache, _sphere(0.055), grey, Vector3(sx * 0.055, 0, 0), Vector3(1.5, 0.55, 0.7), Vector3(0, 0, sx * -18))
+		_attach("Head", Vector3(0, 9.0, 19.0), stache, Vector3(5, 0, 0))
+		# Tablier de cuir (bavette sur la poitrine, pan sur les cuisses)
+		var bib := Node3D.new()
+		_part(bib, _sphere(0.2), leather, Vector3.ZERO, Vector3(0.95, 1.0, 0.12))
+		_attach("Spine02", Vector3(0, 2.0, 13.0), bib)
+		var skirt := Node3D.new()
+		_part(skirt, _sphere(0.22), leather, Vector3.ZERO, Vector3(0.95, 1.25, 0.1))
+		_attach("Hips", Vector3(0, -14.0, 13.0), skirt, Vector3(8, 0, 0))
 	# Marteau à la ceinture
 	var hammer := Node3D.new()
 	_part(hammer, _cyl(0.014, 0.016, 0.3), _mat(Color(0.5, 0.34, 0.2), 0.8), Vector3.ZERO)

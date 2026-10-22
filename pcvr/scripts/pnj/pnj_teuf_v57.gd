@@ -178,7 +178,15 @@ func _teuf_accessories(t: Dictionary) -> void:
 	if skel == null or t.is_empty():
 		return
 	var R: float = 0.228
-	if t.has("lunettes_soleil"):
+	if t.has("lunettes_soleil") and not v64.is_empty():
+		var bk := _mat(Color(0.03, 0.03, 0.05), 0.15)
+		bk.metallic = 0.6
+		bk.emission_energy_multiplier = 0.0
+		var lens := _mat(Color(0.02, 0.02, 0.03), 0.05)
+		lens.metallic = 0.8
+		lens.emission_energy_multiplier = 0.0
+		_glasses64(bk, lens, 0.024, true)
+	elif t.has("lunettes_soleil"):
 		var g := Node3D.new()
 		var black := _mat(Color(0.03, 0.03, 0.05), 0.15)
 		black.metallic = 0.6
@@ -189,7 +197,7 @@ func _teuf_accessories(t: Dictionary) -> void:
 		for sx2 in [-1.0, 1.0]:
 			_part(g, _box_mesh_np(Vector3(0.012, 0.012, 0.2)), black, Vector3(sx2 * 0.2, 0.02, R * 0.45))
 		_attach("Head", Vector3(0, 18.0, 2.5), g)
-	if t.has("bandana"):
+	if t.has("bandana") and v64.is_empty():
 		var c: Array = t["bandana"]
 		var bd := Node3D.new()
 		var tm := TorusMesh.new()
@@ -198,7 +206,7 @@ func _teuf_accessories(t: Dictionary) -> void:
 		_part(bd, tm, _mat(Color(float(c[0]), float(c[1]), float(c[2])), 0.8), Vector3(0, 0.1, 0), Vector3(1.0, 1.6, 1.0), Vector3(-12, 0, 0))
 		_part(bd, _sphere(0.04), _mat(Color(float(c[0]), float(c[1]), float(c[2])), 0.8), Vector3(0, 0.08, -R - 0.02))
 		_attach("Head", Vector3(0, 18.0, 2.5), bd)
-	if t.has("bonnet"):
+	if t.has("bonnet") and v64.is_empty():
 		var c2: Array = t["bonnet"]
 		var bn := Node3D.new()
 		var m2 := _mat(Color(float(c2[0]), float(c2[1]), float(c2[2])), 0.95)
@@ -209,7 +217,7 @@ func _teuf_accessories(t: Dictionary) -> void:
 		_part(bn, rim, m2, Vector3(0, 0.06, 0), Vector3(1.0, 1.4, 1.0), Vector3(-6, 0, 0))
 		_part(bn, _sphere(0.06), _mat(Color(0.95, 0.95, 0.9), 0.95), Vector3(0, 0.28, -0.02))
 		_attach("Head", Vector3(0, 18.0, 2.5), bn)
-	if t.has("dreads"):
+	if t.has("dreads") and v64.is_empty():
 		var c3: Array = t["dreads"]
 		var dr := Node3D.new()
 		var m3 := _mat(Color(float(c3[0]), float(c3[1]), float(c3[2])), 0.9)
