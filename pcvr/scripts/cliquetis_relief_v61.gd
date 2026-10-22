@@ -15,7 +15,8 @@ const PORT_Y: float = 1.4
 const ROAD := [Vector3(62.0, 1.4, -90.0), Vector3(132.0, 16.0, -72.0), Vector3(101.0, 30.0, -36.0)]
 const ROAD_W: float = 3.6
 ## Les aires du dirigeable (monde) : [centre, rayon, hauteur]
-const PADS := [[Vector3(890.0, 30.0, -293.0), 13.0], [Vector3(948.0, 8.5, -16.0), 13.0], [Vector3(770.0, 8.3, -136.0), 13.0]]
+## Les aires du Zéphyr, dans l'ordre de la ligne : Cliquetis, Ramure (V62), Tazira, Carène.
+const PADS := [[Vector3(890.0, 30.0, -293.0), 13.0], [Vector3(1130.0, 10.0, -240.0), 13.0], [Vector3(948.0, 8.5, -16.0), 13.0], [Vector3(770.0, 8.3, -136.0), 13.0]]
 
 
 static func to_world(x: float, z: float, y: float = 0.0) -> Vector3:

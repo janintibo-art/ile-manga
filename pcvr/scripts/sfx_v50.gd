@@ -25,6 +25,15 @@ const DB := {
 	"cloche": -3.0, "cloche_bateau": -5.0, "corne_brume": -2.0,
 	"plante_menace": -4.0, "plante_mort": -5.0, "ronce_menace": -4.0, "teleport": -5.0, "fleur_tourne": -9.0, "racines": -3.0,
 	"porte_ygg": -2.0, "vapeur": -6.0, "tesla": -5.0, "boum": -2.0, "bip": -8.0, "confettis": -6.0, "esprit": -4.0, "rune_0": -6.0, "rune_1": -6.0, "rune_2": -6.0, "rune_3": -6.0, "rune_4": -6.0,
+	"tambour": -4.0, "clochette": -8.0, "ascenseur": -8.0, "tyrolienne": -6.0, "course_depart": -4.0, "course_arrivee": -3.0,
+	# V63 : le héros, les pouvoirs des sceaux, la grande enquête, le Cœur-de-Pierre
+	"niveau": -10.0, "double_saut": -10.0, "charge_pret": -8.0, "coup_charge": -5.0, "tournoyante": -6.0, "parade_parfaite": -4.0,
+	"esquive": -9.0, "armure_bloque": -6.0, "forge": -4.0, "bourrasque": -4.0, "flamme_lance": -5.0, "flamme_impact": -4.0,
+	"rouage": -5.0, "lueur": -6.0, "sceau_eveil": -3.0, "sceau_pose": -2.0, "porte_coeur": 0.0, "feu_ronces": -3.0,
+	"mecanisme": -4.0, "eau_vanne": -4.0, "geyser": -4.0, "vague": -3.0, "lame": -6.0, "dard": -5.0, "dalle_clic": -4.0,
+	"piston": -3.0, "ombre_mains": -5.0, "onde_choc": -1.0, "rune_brisee": -2.0, "boss_coeur_cri": 0.0,
+	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
+	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

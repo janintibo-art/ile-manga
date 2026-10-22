@@ -229,13 +229,13 @@ def archipel(src: Path) -> None:
             bx = -76 + k * 7
             d.ellipse((tz(bx, -5)[0] - 1.5, tz(bx, -5)[1] - 1, tz(bx, -5)[0] + 1.5, tz(bx, -5)[1] + 1), fill=(40, 90, 170, 255))
     # V61 : Cliquetis, la cité des ingénieurs fous : terrasse de brique, port, route, monorail,
-    # téléphérique, et la ligne du dirigeable « le Zéphyr » (pointillés) entre ses trois escales
+    # téléphérique, et la ligne du dirigeable « le Zéphyr » (pointillés) entre ses escales
     if W > 1080:
         def cq(x, z):
             return (960.0 + x + 540, -315.0 + z + 600)
-        pads = [(890.0, -293.0), (948.0, -16.0), (770.0, -136.0)]
-        for k in range(3):
-            a, b = pads[k], pads[(k + 1) % 3]
+        pads = [(890.0, -293.0), (1130.0, -240.0), (948.0, -16.0), (770.0, -136.0)]
+        for k in range(4):
+            a, b = pads[k], pads[(k + 1) % 4]
             n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / 8)
             for i in range(0, n, 2):
                 t0, t1 = i / n, min(1.0, (i + 1) / n)
@@ -257,6 +257,34 @@ def archipel(src: Path) -> None:
         d.line([cq(-20, -90), cq(-20, -38.5)], fill=(30, 30, 30, 255), width=1)
         for k in (0, 1):
             d.line([cq(53 + 3 * k, -49), cq(53 + 3 * k, -85)], fill=(184, 100, 60, 255), width=1)
+        # V62 : Ramure, le village des oreilles : six arbres géants (couronnes), leurs
+        # plates-formes et les ponts de corde, le Cercle de la Lune, la Clairière des Jeux, la
+        # boucle de la Grande Course (pointillés rouges), le ponton
+        def rm(x, z):
+            return (1110.0 + x + 540, -140.0 + z + 600)
+        trees = {"mere": (4, -8, 54), "ouest": (-22, -42, 40), "guet": (34, 8, 42), "sud": (14, 42, 42), "mares": (-22, 50, 38), "nord": (16, -64, 40)}
+        course = [(16, -32), (0, -50), (-30, -62), (-30, -20), (-4, 4), (-2, 46), (24, 60), (40, 24), (48, -6), (30, -18)]
+        for k in range(len(course)):
+            a, b = course[k], course[(k + 1) % len(course)]
+            n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / 3)
+            for i in range(0, n, 2):
+                t0, t1 = i / n, min(1.0, (i + 1) / n)
+                d.line([rm(a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0), rm(a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1)], fill=(190, 60, 40, 220), width=1)
+        for tid, (tx, tz, th) in trees.items():
+            r = th * 0.34
+            d.ellipse((rm(tx - r, tz - r)[0], rm(tx - r, tz - r)[1], rm(tx + r, tz + r)[0], rm(tx + r, tz + r)[1]), fill=(46, 84, 50, 170), outline=(30, 58, 34, 255))
+        for a, b in [("mere", "ouest"), ("mere", "guet"), ("guet", "sud"), ("sud", "mares"), ("ouest", "nord")]:
+            d.line([rm(trees[a][0], trees[a][1]), rm(trees[b][0], trees[b][1])], fill=(150, 112, 70, 255), width=2)
+        for tid, (tx, tz, th) in trees.items():
+            d.ellipse((rm(tx - 11, tz - 11)[0], rm(tx - 11, tz - 11)[1], rm(tx + 11, tz + 11)[0], rm(tx + 11, tz + 11)[1]), outline=(150, 112, 70, 255), width=2)
+            d.ellipse((rm(tx - 4, tz - 4)[0], rm(tx - 4, tz - 4)[1], rm(tx + 4, tz + 4)[0], rm(tx + 4, tz + 4)[1]), fill=(92, 64, 40, 255))
+        d.ellipse((rm(-2, 10)[0], rm(-2, 10)[1], rm(18, 30)[0], rm(18, 30)[1]), fill=(170, 150, 110, 255), outline=(120, 90, 60, 255))
+        d.ellipse((rm(6, 18)[0], rm(6, 18)[1], rm(10, 22)[0], rm(10, 22)[1]), fill=(230, 140, 50, 255))
+        d.ellipse((rm(7, -41)[0], rm(7, -41)[1], rm(25, -23)[0], rm(25, -23)[1]), outline=(170, 150, 110, 255), width=2)
+        for hx, hz, hr in [(-8, -34, 3), (-12, 38, 2.4), (50, 40, 3)]:
+            d.ellipse((rm(hx - hr, hz - hr)[0], rm(hx - hr, hz - hr)[1], rm(hx + hr, hz + hr)[0], rm(hx + hr, hz + hr)[1]), fill=(120, 84, 50, 255))
+        d.line([rm(46, 6), rm(60, 4), rm(76, 3), rm(88, 2)], fill=(150, 130, 100, 255), width=2)
+        d.line([rm(88, 2), rm(103, 2)], fill=(110, 80, 50, 255), width=3)
         for px, pz in pads:
             d.ellipse((px + 540 - 6, pz + 600 - 6, px + 540 + 6, pz + 600 + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
     # quadrillage léger

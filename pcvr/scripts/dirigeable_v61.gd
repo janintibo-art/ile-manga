@@ -1,7 +1,7 @@
 extends Node3D
 ## V61 : le Zéphyr, le dirigeable de ligne des ingénieurs de Cliquetis. Il fait le tour de la
-## grande île sans s'arrêter de tourner : Cliquetis (au nord) -> Tazira (au sud) -> Carène
-## (à l'ouest) -> Cliquetis… À chaque escale, il descend se poser sur son aire, la nacelle au
+## grande île sans s'arrêter de tourner : Cliquetis (au nord) -> Ramure (à l'est, V62) -> Tazira
+## (au sud) -> Carène (à l'ouest) -> Cliquetis… À chaque escale, il descend se poser sur son aire, la nacelle au
 ## ras du sol, attend une quarantaine de secondes, puis remonte, passe au-dessus du
 ## Cœur-de-Pierre à 165 m et va se poser plus loin.
 ## On monte à bord à l'escale (E devant la porte de la nacelle) ; assis sur la banquette, on
@@ -16,7 +16,7 @@ const CRUISE_Y: float = 168.0
 const SPEED: float = 15.0
 const CLIMB: float = 6.5
 const WAIT: float = 40.0
-const STOPS := [["cliquetis", "Cliquetis"], ["tazira", "Tazira"], ["carene", "Carène"]]
+const STOPS := [["cliquetis", "Cliquetis"], ["ramure", "Ramure"], ["tazira", "Tazira"], ["carene", "Carène"]]
 
 var main: Node
 var pads: Array = []                   # Vector3 : le sol de chaque aire (centre)
@@ -487,9 +487,16 @@ func _carry_player() -> void:
 
 
 func serialize() -> Dictionary:
-	return {"escale": stop_i}
+	return {"escale": stop_i, "escale_nom": str(STOPS[stop_i][0])}
 
 
 func load_data(d: Dictionary) -> void:
 	riding = false
-	_dock(clampi(int(d.get("escale", 0)), 0, pads.size() - 1))
+	var i: int = int(d.get("escale", 0))
+	if d.has("escale_nom"):
+		for k in range(STOPS.size()):
+			if str(STOPS[k][0]) == str(d["escale_nom"]):
+				i = k
+	elif i >= 1 and STOPS.size() == 4:
+		i += 1      # une partie d'avant la V62 : Cliquetis, Tazira, Carène
+	_dock(clampi(i, 0, pads.size() - 1))

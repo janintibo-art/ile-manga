@@ -228,8 +228,9 @@ def main() -> int:
         print(f"Sons Godot: {len(list(sons.rglob('*.ogg')))} fichiers")
     # V56 : Port-Azur (textures de la ville), la carte, les portraits, toutes les icônes d'objets
     # V58 : le royaume des fées et Yggdrasil (textures/fees)
+    # V63 : la grande enquête et le donjon du Cœur-de-Pierre (textures/coeur)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur"):
         d = source / folder
         if not d.is_dir():
             continue

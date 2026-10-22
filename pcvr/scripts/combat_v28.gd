@@ -213,6 +213,27 @@ func strike(origin: Vector3, facing: Vector3, reach: float, damage: int) -> int:
 	return hits
 
 
+## V63 : l'attaque tournoyante : toutes les cibles autour (sans regarder la direction).
+func strike_around(origin: Vector3, reach: float, damage: int) -> int:
+	var hits: int = 0
+	for t in get_tree().get_nodes_in_group("cibles_v28"):
+		var target: Node3D = t as Node3D
+		if not target.is_hittable():
+			continue
+		var c: Vector3 = target.global_position + Vector3.UP * float(target.hit_height)
+		var off: Vector3 = c - origin
+		if absf(off.y) > 1.6:
+			continue
+		off.y = 0.0
+		if off.length() - float(target.hit_radius) > reach:
+			continue
+		var snd: String = impact_sound(target)
+		target.take_hit(damage, origin)
+		_impact(snd, c)
+		hits += 1
+	return hits
+
+
 ## Coup en VR : un point (poing ou lame) qui passe vite à travers une cible.
 func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3) -> int:
 	var hits: int = 0
@@ -271,8 +292,32 @@ func vr_tick(delta: float, points: Dictionary, head: Vector3) -> void:
 		_vr_cool[key] = maxf(float(_vr_cool.get(key, 0.0)) - delta, 0.0)
 		var speed: float = local_p.distance_to(prev) / maxf(delta, 0.001)
 		if speed > 2.2 and float(_vr_cool[key]) <= 0.0:
-			if strike_point(p, float(points[key][1]), int(points[key][2]), head) > 0:
+			# V63 : coup très rapide (Coup chargé), riposte après une parade parfaite
+			var dmg: int = int(points[key][2])
+			var hero: Node = main.get("hero_v28") if main != null else null
+			var mult: float = 1.0
+			if hero != null and hero.has_method("vr_heavy_mult"):
+				mult = float(hero.vr_heavy_mult(speed)) if _would_hit(p, float(points[key][1])) else 1.0
+				if float(hero.get("_counter_t")) > 0.0 and _would_hit(p, float(points[key][1])):
+					hero.set("_counter_t", 0.0)
+					mult *= 2.0
+			critical = mult > 1.0
+			if strike_point(p, float(points[key][1]), int(round(dmg * mult)), head) > 0:
 				_vr_cool[key] = 0.35
+			critical = false
+
+
+func _would_hit(point: Vector3, radius: float) -> bool:
+	for t in get_tree().get_nodes_in_group("cibles_v28"):
+		var target: Node3D = t as Node3D
+		if not target.is_hittable():
+			continue
+		var base: Vector3 = target.global_position
+		if point.y < base.y - 0.1 or point.y > base.y + float(target.hit_height) * 2.0 + 0.2:
+			continue
+		if Vector2(point.x - base.x, point.z - base.z).length() <= float(target.hit_radius) + radius:
+			return true
+	return false
 
 
 # =================================================================== effets

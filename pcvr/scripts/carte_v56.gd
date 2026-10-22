@@ -33,11 +33,15 @@ const PLACES := [
 	["La grande île de l'est", Vector2(1130, 70), "grande_ile"],
 	["Tazira", Vector2(935, 118), "tazira"],
 	["Cliquetis", Vector2(960, -342), "cliquetis"],
+	["Ramure", Vector2(1112, -152), "ramure"],
 	["Hautes terres", Vector2(1080, -300), "grande_ile"],
-	["Forêt des brumes", Vector2(1150, -150), "grande_ile"],
+	["Forêt des brumes", Vector2(1150, -60), "grande_ile"],
 	["Désert du sud", Vector2(1010, 10), "grande_ile"],
 	["Cœur-de-Pierre", Vector2(940, -170), "grande_ile"],
 	["Porte aux Quatre Sceaux", Vector2(862, -138), "porte_sceaux"],
+	# V63 : la grande enquête
+	["Tombeau de la Dune qui Marche", Vector2(1032, -70), "tombeau_dune"],
+	["Bergerie du Vent", Vector2(1021, -242), "bergerie_vent"],
 ]
 
 var main: Node
@@ -202,10 +206,24 @@ func _quest_targets(id: String) -> Array:
 		"etat":
 			if str(e.get("cle", "")) == "cristal":
 				out.append(Vector3(-220, -30, 260))
-			if str(e.get("cle", "")) == "porte_sceaux":
+			if str(e.get("cle", "")) in ["porte_sceaux", "porte_ouverte"]:
 				var gr: Node = main.get("grande_v59")
 				if gr != null and gr.get("ile") != null and gr.ile != null:
 					out.append(gr.ile.door_pos)
+			# V63 : les sites des quatre sceaux
+			var sc: Node = main.get("sceaux_v63")
+			if sc != null:
+				match str(e.get("cle", "")):
+					"sceau_sables":
+						out.append(sc.tomb_door_xf.origin)
+					"sceau_airain":
+						out.append(Vector3(sc.BERG.x, 0, sc.BERG.y))
+					"sceau_brumes":
+						if sc.pond_c != Vector3.INF:
+							out.append(sc.pond_c)
+					"sceau_embruns":
+						if sc.proue_at != Vector3.INF:
+							out.append(sc.proue_at)
 	if e.has("apparait"):
 		for w2 in e["apparait"]:
 			if j.lieux.has(str(w2)) and not main.inventory_v28.taken.has("q56_%s_%s" % [id, str(w2)]):

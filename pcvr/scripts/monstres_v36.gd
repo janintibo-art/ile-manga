@@ -7,6 +7,7 @@ extends Node3D
 ## des cœurs s'affichent au poignet gauche sous terre, et l'écran rougit quand on est touché.
 
 const MonsterScript = preload("res://scripts/monstre_v36.gd")
+const Monster63 = preload("res://scripts/monstre_v63.gd")
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -95,7 +96,8 @@ func monstres_list_copy() -> Array:
 
 ## V37 : un monstre de plus (les crabes appelés par le Crabe-Roi).
 func spawn_extra(kind: String, at: Vector3) -> Node3D:
-	var m: CharacterBody3D = MonsterScript.new()
+	# V63 : les créatures de la grande enquête et du Cœur-de-Pierre (monstre_v63.gd)
+	var m: CharacterBody3D = Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -126,6 +128,12 @@ func alert(m: Node3D) -> void:
 	if _alerted.has(m.kind):
 		return
 	_alerted[m.kind] = true
+	# V63 : les créatures du Cœur-de-Pierre ont leur propre conseil
+	if m.has_method("alert_text"):
+		var t: String = str(m.alert_text())
+		if t != "":
+			donjon._say(t, 7.0)
+		return
 	if m.kind == "crabe":
 		donjon._say("Un crabe de roche ! Quand il lève les pinces, recule ou pare (F)… puis frappe-le.", 5.0)
 	elif m.kind == "follet":
@@ -202,6 +210,12 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V63 : sous le Cœur-de-Pierre, ou dans un sanctuaire des sceaux
+	if main.get("coeur_v63") != null and main.coeur_v63 != null and main.coeur_v63.region_contains(p):
+		main.coeur_v63.respawn()
+		return
+	if main.get("sceaux_v63") != null and main.sceaux_v63 != null and main.sceaux_v63.respawn_here(p):
+		return
 	# V58 : évanoui dans le royaume des fées (ou dans Yggdrasil)
 	if main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.contains(p):
 		var rf: Array = main.feerie_v58.respawn_point(p)
@@ -251,8 +265,13 @@ func _heal_player() -> void:
 func _on_died(m: Node3D) -> void:
 	kills += 1
 	donjon.state["victoires"] = int(donjon.state.get("victoires", 0)) + 1
+	# V63 : de l'expérience pour chaque monstre vaincu
+	if main.get("progression_v63") != null and main.progression_v63 != null:
+		main.progression_v63.on_kill(str(m.kind), m.global_position + Vector3.UP * 1.2)
 	var gains: Array = []
-	if m.kind == "crabe":
+	if m.has_method("loot"):
+		gains = m.loot(_rng)
+	elif m.kind == "crabe":
 		if _rng.randf() < 0.45:
 			gains.append(["piece", _rng.randi_range(1, 3)])
 		if _rng.randf() < 0.1:
@@ -327,6 +346,9 @@ func _process(delta: float) -> void:
 	# V58 : dans Yggdrasil
 	if not inside and main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.hostile_zone(main._player_pos_v27()):
 		outdoor = true
+	# V63 : les combats de la grande enquête (au bord de la grande mare de Ramure…)
+	if not inside and main.get("sceaux_v63") != null and main.sceaux_v63 != null and main.sceaux_v63.hostile_zone(main._player_pos_v27()):
+		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))
 	if main.xr_active and main.hero_v28 != null:
@@ -349,7 +371,8 @@ func _vr_hearts(inside: bool) -> void:
 	if inside:
 		var hp: int = int(main.hero_v28.hp)
 		var text: String = ""
-		for k in range(5):
+		# V63 : autant de cœurs que le héros en a gagné
+		for k in range(int(main.hero_v28.HP_MAX) / 2):
 			text += "♥" if hp >= (k + 1) * 2 else ("♡" if hp <= k * 2 else "❥")
 		_hearts.text = text
 

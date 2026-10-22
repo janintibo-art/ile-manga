@@ -23,6 +23,24 @@ var STAMINA_MAX: float = 10.0          # V56 : + endurance gagnée en aidant les
 var HP_MAX: int = 10                    # 5 cœurs, par demi-cœurs (V56 : + cœurs gagnés)
 var HEARTS: int = 5
 var bonus_force: int = 0                # V56 : + force (quêtes de Port-Azur)
+# V63 : la progression (progression_v63.gd) : talents, agilité, forge
+var talents: Dictionary = {}
+var agilite: int = 0
+var forge_bonus: int = 0                # lame affûtée, trempée, runique
+var armor_chance: float = 0.0           # armure : chance d'amortir un demi-cœur
+var block_t: float = 0.0                # depuis quand la garde est levée (parade parfaite)
+var _double_used: bool = false
+var _lmb_down: bool = false
+var _hold_t: float = 0.0
+var _charge_t: float = 0.0
+var _charge_fx: Node3D
+var _heavy: String = ""                 # "" / "charge" / "tourne" : le coup en cours
+var _spin_t: float = -1.0
+var _counter_t: float = 0.0             # riposte après une parade parfaite
+var _souffle_cd: float = 0.0
+var _vr_charge_cd: float = 0.0
+var sol_mult: float = 1.0               # V63 : sables mouvants, mains d'ombre (ralentissent)
+var sink: float = 0.0                   # V63 : le héros s'enfonce dans le sable (m)
 const LEDGE_MIN: float = 0.45           # en dessous, la marche automatique suffit
 const LEDGE_MAX: float = 2.15           # rebord le plus haut qu'on attrape depuis le sol
 const SAFE_FALL: float = 5.0            # chute sans dégâts (m)
@@ -346,8 +364,14 @@ func _unhandled_input(event: InputEvent) -> void:
 					_let_go()
 				else:
 					_start_roll()
+	elif event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		# V63 : on relâche le clic : le coup chargé (ou l'attaque tournoyante) part
+		_lmb_down = false
+		_release_charge()
 	elif event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			_lmb_down = true
+			_hold_t = 0.0
 			attack()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			cam_distance = clampf(cam_distance - 0.1, 0.45, 1.6)
@@ -422,19 +446,32 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 		return
 	var on_floor: bool = body.is_on_floor()
 	coyote = COYOTE if on_floor else maxf(coyote - delta, 0.0)
+	var was_blocking: bool = blocking
 	blocking = Input.is_key_pressed(KEY_F) and _can_act() and state in ["sol", "air"] and on_floor
+	# V63 : la parade parfaite compte depuis quand la garde est levée
+	block_t = block_t + delta if was_blocking and blocking else 0.0
+	_counter_t = maxf(_counter_t - delta, 0.0)
+	_souffle_cd = maxf(_souffle_cd - delta, 0.0)
+	if not _can_act():
+		_lmb_down = false
 	var sprint: bool = Input.is_key_pressed(KEY_SHIFT) and _can_act() and dir.length() > 0.1 and not stamina_lock and not blocking
-	var speed: float = RUN_SPEED if sprint else WALK_SPEED
+	var speed: float = (RUN_SPEED * (1.1 if talents.has("pas_du_vent") else 1.0) if sprint else WALK_SPEED) * (1.0 + 0.04 * agilite) * sol_mult
 	var move: Vector3 = dir * speed
 	if state == "roulade":
 		action_time += delta
 		var k: float = 1.0 - smoothstep(0.55, 1.0, action_time / ROLL_TIME)
-		move = roll_dir * ROLL_SPEED * k
+		move = roll_dir * ROLL_SPEED * k * (1.0 + 0.04 * agilite) * (1.12 if talents.has("roulade_esquive") else 1.0)
 		if action_time >= ROLL_TIME:
 			state = "sol"
 	elif state == "attaque":
 		move = dir * 0.6
 		_attack_tick(delta)
+	elif state == "charge":
+		# V63 : la lame se charge tant que le clic est tenu
+		move = dir * 1.3
+		if dir.length() > 0.1:
+			facing = facing.lerp(dir, clampf(delta * 6.0, 0.0, 1.0)).normalized()
+		_charge_tick(delta)
 	elif state == "action":
 		move = Vector3.ZERO
 		action_time += delta
@@ -448,9 +485,16 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 	elif blocking:
 		move = dir * 1.2
 	if sprint and state == "sol" and on_floor:
-		_spend(1.6 * delta)
+		_spend(1.6 * delta * (0.5 if talents.has("pas_du_vent") else 1.0))
 	if dir.length() > 0.1 and state in ["sol", "air"] and not blocking:
 		facing = dir
+	# V63 : clic tenu après un coup d'arme : la lame se charge
+	if _lmb_down:
+		_hold_t += delta
+		if state == "sol" and on_floor and not blocking and talents.has("coup_charge") and _weapon_blade() and _hold_t > 0.3 and stamina >= 2.0 and not stamina_lock:
+			_start_charge()
+	if on_floor and state != "air":
+		_double_used = false
 	# Saut (ou rebord à saisir / mur à attraper).
 	if jump_buffer > 0.0 and state in ["sol", "air"] and not blocking:
 		var aim: Vector3 = facing if dir.length() < 0.1 else dir
@@ -470,6 +514,17 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 		elif _try_grab_wall(dir if dir.length() > 0.1 else facing):
 			jump_buffer = 0.0
 			return
+		elif state == "air" and talents.has("double_saut") and not _double_used:
+			# V63 : le double saut, en plein vol
+			_double_used = true
+			jump_buffer = 0.0
+			body.velocity.y = JUMP_SPEED * 0.95
+			fall_top = body.position.y
+			_play("v28/jump", 0.05, 1.0, 0.0)
+			if main.has_method("sfx"):
+				main.sfx("double_saut", body.global_position + Vector3.UP * 0.5)
+			if main.combat_v28 != null:
+				main.combat_v28.puff(body.global_position + Vector3.UP * 0.1, Color(0.85, 0.9, 1.0))
 	# En l'air en avançant vers un rebord à portée de mains : on l'agrippe.
 	if state == "air" and dir.length() > 0.1 and body.velocity.y < 2.0:
 		if _try_mantle(body, dir):
@@ -628,6 +683,9 @@ func _climbable(hit: Dictionary) -> bool:
 	if hit.is_empty() or absf(hit.normal.y) > 0.7:
 		return false
 	var col: Object = hit.collider
+	# V63 : les murs taillés du Cœur-de-Pierre sont lisses : on n'y grimpe pas
+	if col is Node and (col as Node).has_meta("lisse"):
+		return false
 	if col is CollisionObject3D:
 		var owner_id: int = (col as CollisionObject3D).shape_find_owner(int(hit.shape))
 		if owner_id >= 0 and (col as CollisionObject3D).shape_owner_get_shape_count(owner_id) > 0:
@@ -798,7 +856,7 @@ func _let_go() -> void:
 func _start_roll() -> void:
 	if state != "sol" or not body.is_on_floor() or stamina_lock or stamina < 1.0:
 		return
-	_spend(1.5)
+	_spend(1.0 if talents.has("roulade_esquive") else 1.5)
 	state = "roulade"
 	action_time = 0.0
 	var axis: Vector2 = _axis()
@@ -857,6 +915,13 @@ func _attack_tick(delta: float) -> void:
 	while hits_pending.size() > 0 and attack_clock >= float(hits_pending[0]):
 		hits_pending.pop_front()
 		_deliver_hit()
+	if _heavy != "":
+		# V63 : coup chargé ou attaque tournoyante : pas d'enchaînement
+		if attack_clock >= action_length:
+			state = "sol"
+			combo_index = 0
+			_heavy = ""
+		return
 	var steps: int = SLASHES.size() if weapon != "" else PUNCH_SEGMENTS.size()
 	# Enchaîner : on peut relancer dès la fin du coup.
 	if combo_queued and hits_pending.is_empty() and attack_clock >= action_length * 0.75 and combo_index + 1 < steps:
@@ -872,16 +937,214 @@ func _deliver_hit() -> void:
 	if not strike.is_valid():
 		return
 	var reach: float = 1.9 if weapon != "" else 1.35
-	var dmg: int = (weapon_damage if weapon != "" else 1) + bonus_force
+	var dmg: int = (weapon_damage + (forge_bonus if _weapon_blade() else 0) if weapon != "" else 1) + bonus_force
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
-	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire"] and combo_index % SLASHES.size() == 2
+	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire", "lame_coeur"] and combo_index % SLASHES.size() == 2 and _heavy == ""
 	if finisher:
+		dmg = int(round(dmg * (2.0 if talents.has("coup_de_grace") else 1.5)))
+	# V63 : coup critique (Coup de grâce), riposte après une parade parfaite, coups chargés
+	var crit: bool = finisher
+	if not crit and talents.has("coup_de_grace") and randf() < 0.125:
+		crit = true
 		dmg = int(round(dmg * 1.5))
+	if _counter_t > 0.0:
+		_counter_t = 0.0
+		crit = true
+		dmg *= 2
+	if _heavy == "charge":
+		dmg = int(round(dmg * 2.5))
+		reach += 0.6
+		crit = true
+	elif _heavy == "tourne":
+		dmg = dmg * 2
+		crit = true
 	if main.combat_v28 != null:
-		main.combat_v28.critical = finisher
-	strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, dmg)
+		main.combat_v28.critical = crit
+	if _heavy == "tourne" and main.combat_v28 != null and main.combat_v28.has_method("strike_around"):
+		main.combat_v28.strike_around(body.global_position + Vector3.UP * 1.1, reach + 0.5, dmg)
+	else:
+		strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, dmg)
 	if main.combat_v28 != null:
 		main.combat_v28.critical = false
+
+
+## V63 : une vraie lame (pas un outil, pas les poings) : elle se charge et profite de la forge.
+func _weapon_blade() -> bool:
+	if weapon == "" or main == null or main.get("inventory_v28") == null or main.inventory_v28 == null:
+		return false
+	return str(main.inventory_v28.ITEMS.get(weapon, {}).get("kind", "")) == "arme"
+
+
+# =================================================================== V63 : coup chargé, tournoyante
+
+func _start_charge() -> void:
+	state = "charge"
+	_charge_t = 0.0
+	_play("v28/block", 0.15)
+	if _charge_fx == null and hero != null:
+		_charge_fx = Node3D.new()
+		_charge_fx.name = "Charge_v63"
+		var parts := CPUParticles3D.new()
+		parts.name = "Etincelles"
+		parts.amount = 24
+		parts.lifetime = 0.5
+		parts.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+		parts.emission_sphere_radius = 0.35
+		parts.gravity = Vector3(0, 1.0, 0)
+		parts.initial_velocity_min = 0.1
+		parts.initial_velocity_max = 0.5
+		var q := QuadMesh.new()
+		q.size = Vector2(0.05, 0.05)
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		m.vertex_color_use_as_albedo = true
+		q.material = m
+		parts.mesh = q
+		_charge_fx.add_child(parts)
+		var l := OmniLight3D.new()
+		l.name = "Lueur"
+		l.omni_range = 2.5
+		l.light_energy = 0.0
+		_charge_fx.add_child(l)
+		main.add_child(_charge_fx)
+	if _charge_fx != null:
+		_charge_fx.visible = true
+
+
+func _charge_tick(delta: float) -> void:
+	var before: float = _charge_t
+	_charge_t += delta
+	if _charge_fx != null:
+		_charge_fx.global_position = body.global_position + Vector3.UP * 1.1 + facing * 0.45
+		var spin_ready: bool = talents.has("tournoyante") and _charge_t >= 1.4
+		var col: Color = Color(0.5, 0.8, 1.0) if spin_ready else Color(1.0, 0.78, 0.35)
+		var parts: CPUParticles3D = _charge_fx.get_node("Etincelles")
+		parts.color = col
+		parts.emitting = _charge_t > 0.15
+		var l: OmniLight3D = _charge_fx.get_node("Lueur")
+		l.light_color = col
+		l.light_energy = clampf(_charge_t / 0.7, 0.0, 1.0) * (1.6 if spin_ready else 1.0)
+	if before < 0.7 and _charge_t >= 0.7 and main.has_method("sfx"):
+		main.sfx("charge_pret", body.global_position + Vector3.UP)
+	if talents.has("tournoyante") and before < 1.4 and _charge_t >= 1.4 and main.has_method("sfx"):
+		main.sfx("charge_pret", body.global_position + Vector3.UP, 3.0)
+	if not _lmb_down:
+		_release_charge()
+
+
+func _release_charge() -> void:
+	if state != "charge":
+		return
+	if _charge_fx != null:
+		_charge_fx.visible = false
+		(_charge_fx.get_node("Etincelles") as CPUParticles3D).emitting = false
+	if talents.has("tournoyante") and _charge_t >= 1.4 and stamina >= 2.0:
+		spin_attack()
+	elif _charge_t >= 0.7:
+		_charged_slash()
+	else:
+		state = "sol"
+
+
+func _charged_slash() -> void:
+	_spend(2.0)
+	state = "attaque"
+	_heavy = "charge"
+	combo_index = 2
+	attack_clock = 0.0
+	_face_nearest_target()
+	var name: String = "v28/slash3"
+	action_length = anim.get_animation(name).length * 1.1
+	hits_pending = [SLASH_HIT + 0.08]
+	_play(name, 0.05, 0.9, 0.0)
+	if main.has_method("sfx"):
+		main.sfx("coup_charge", body.global_position + Vector3.UP * 1.2)
+
+
+## L'attaque tournoyante (aussi en VR : clic du stick droit) : un tour complet, deux coups.
+func spin_attack() -> void:
+	_spend(3.0)
+	state = "attaque"
+	_heavy = "tourne"
+	combo_index = 1
+	attack_clock = 0.0
+	var name: String = "v28/slash2"
+	action_length = 0.62
+	hits_pending = [0.16, 0.38]
+	_spin_t = 0.0
+	_play(name, 0.05, 1.3, 0.0)
+	if main.has_method("sfx"):
+		main.sfx("tournoyante", body.global_position + Vector3.UP * 1.2)
+	if main.combat_v28 != null:
+		for k in range(6):
+			var a: float = TAU * k / 6.0
+			main.combat_v28.puff(body.global_position + Vector3(cos(a), 0.9, sin(a)) * Vector3(1.4, 1.0, 1.4), Color(0.6, 0.85, 1.0))
+
+
+## V63 (VR) : esquive (clic du stick gauche) : un bond court dans la direction du stick,
+## invulnérable pendant un instant.
+func vr_dodge() -> void:
+	if main == null or not main.xr_active or stamina < 1.0 or stamina_lock:
+		return
+	var vb: CharacterBody3D = main.vr_body
+	if vb == null or not vb.is_on_floor():
+		return
+	_spend(1.0)
+	var stick: Vector2 = main.left_hand.get_vector2("primary")
+	var fwd: Vector3 = -main.xr_camera.global_basis.z
+	fwd.y = 0.0
+	fwd = fwd.normalized()
+	var right: Vector3 = main.xr_camera.global_basis.x
+	right.y = 0.0
+	right = right.normalized()
+	var d: Vector3 = (right * stick.x + fwd * stick.y)
+	if d.length() < 0.2:
+		d = -fwd
+	d = d.normalized()
+	hurt_cooldown = maxf(hurt_cooldown, 0.45)
+	var tw := create_tween()
+	for k in range(6):
+		tw.tween_callback(func(): main._move_xr_body_v23(d * 0.42))
+		tw.tween_interval(0.03)
+	if main.has_method("sfx"):
+		main.sfx("esquive", vb.global_position + Vector3.UP)
+
+
+## V63 (VR) : attaque tournoyante : tout autour de soi, en un geste (clic du stick droit).
+func vr_spin() -> void:
+	if main == null or not main.xr_active or stamina < 3.0 or stamina_lock:
+		return
+	_spend(3.0)
+	var vb: CharacterBody3D = main.vr_body
+	var dmg: int = (int(main.inventory_v28.ITEMS[main.inventory_v28.equipped].get("damage", 1)) + forge_bonus if main.inventory_v28.equipped != "" else 1) + bonus_force
+	if main.combat_v28 != null:
+		main.combat_v28.critical = true
+		main.combat_v28.strike_around(vb.global_position + Vector3.UP * 1.1, 2.6, dmg * 2)
+		main.combat_v28.critical = false
+		for k in range(6):
+			var a: float = TAU * k / 6.0
+			main.combat_v28.puff(vb.global_position + Vector3(cos(a) * 1.4, 0.9, sin(a) * 1.4), Color(0.6, 0.85, 1.0))
+	if main.has_method("sfx"):
+		main.sfx("tournoyante", vb.global_position + Vector3.UP * 1.2)
+
+
+## V63 (VR) : à chaque image : la riposte et le second souffle s'écoulent.
+func vr_tick(delta: float) -> void:
+	_counter_t = maxf(_counter_t - delta, 0.0)
+	_souffle_cd = maxf(_souffle_cd - delta, 0.0)
+	_vr_charge_cd = maxf(_vr_charge_cd - delta, 0.0)
+
+
+## V63 (VR) : coup très rapide avec le talent Coup chargé : dégâts multipliés (une fois par
+## seconde au plus). Renvoie le multiplicateur.
+func vr_heavy_mult(speed: float) -> float:
+	if not talents.has("coup_charge") or speed < 5.0 or _vr_charge_cd > 0.0:
+		return 1.0
+	_vr_charge_cd = 1.0
+	return 2.5
 
 
 func _face_nearest_target() -> void:
@@ -985,7 +1248,7 @@ func _spend(amount: float) -> void:
 func _regen(delta: float) -> void:
 	var resting: bool = state in ["sol", "action"] and body.is_on_floor() and not (Input.is_key_pressed(KEY_SHIFT) and _axis().length() > 0.1)
 	if resting:
-		stamina = minf(stamina + 2.6 * delta, STAMINA_MAX)
+		stamina = minf(stamina + 2.6 * (1.0 + 0.08 * agilite) * delta, STAMINA_MAX)
 	if stamina_lock and stamina >= STAMINA_MAX * 0.35:
 		stamina_lock = false
 
@@ -1001,25 +1264,99 @@ func heal(amount: int) -> bool:
 func hurt(amount: int, from_pos: Vector3) -> void:
 	if state == "ko" or hurt_cooldown > 0.0:
 		return
+	var me: Vector3 = _me()
+	# V63 : la roulade d'esquive : les coups passent à travers
+	if state == "roulade" and talents.has("roulade_esquive") and action_time < ROLL_TIME * 0.8:
+		hurt_cooldown = 0.25
+		if main.combat_v28 != null:
+			main.combat_v28.float_text(me + Vector3.UP * 2.0, "Esquive !", Color(0.75, 0.95, 1.0))
+		if main.has_method("sfx"):
+			main.sfx("esquive", me + Vector3.UP)
+		return
 	var parried: bool = false
-	if blocking and from_pos != Vector3.ZERO and facing.dot((from_pos - body.global_position).normalized()) > 0.3:
+	if blocking and from_pos != Vector3.ZERO and facing.dot((from_pos - me).normalized()) > 0.3:
+		# V63 : la parade parfaite : la garde levée au dernier moment
+		if talents.has("parade_parfaite") and block_t < 0.3:
+			_perfect_parry(from_pos)
+			return
 		amount = int(amount * 0.5)
 		_spend(1.5)
 		parried = true
+	# V63 : l'armure amortit (une chance sur…), la Peau de pierre retire un demi-cœur aux gros coups
+	if amount > 0 and armor_chance > 0.0 and randf() < armor_chance:
+		amount -= 1
+	if amount >= 2 and talents.has("peau_de_pierre"):
+		amount -= 1
+	if amount <= 0:
+		hurt_cooldown = 0.5
+		if main.has_method("sfx"):
+			main.sfx("parade" if parried else "armure_bloque", me + Vector3.UP * 1.2)
+		if main.combat_v28 != null and not parried:
+			main.combat_v28.float_text(me + Vector3.UP * 2.0, "L'armure tient !", Color(0.85, 0.9, 1.0))
+		return
 	if main.has_method("sfx"):
-		main.sfx("parade" if parried else "joueur_blesse", body.global_position + Vector3.UP * 1.2)
+		main.sfx("parade" if parried else "joueur_blesse", me + Vector3.UP * 1.2)
 	hurt_cooldown = 0.6
+	# V63 : le second souffle
+	if hp - amount <= 0 and talents.has("second_souffle") and _souffle_cd <= 0.0 and hp > 1:
+		_souffle_cd = 600.0
+		amount = hp - 1
+		if main.combat_v28 != null:
+			main.combat_v28.float_text(me + Vector3.UP * 2.2, "Second souffle !", Color(1.0, 0.85, 0.5))
 	hp = maxi(hp - amount, 0)
 	health_changed.emit(hp, HP_MAX)
+	if state == "charge" and _charge_fx != null:
+		_charge_fx.visible = false
+	_heavy = ""
 	if hp <= 0:
 		state = "ko"
 		ko_time = 0.0
 		_play("Knock_Down", 0.1)
-	elif state in ["sol", "attaque"]:
+	elif state in ["sol", "attaque", "charge"]:
 		state = "action"
 		action_time = 0.0
 		action_length = 0.4
 		_play("v28/hurt", 0.05, 1.0, 0.0)
+
+
+## V63 : où est le joueur (le corps VR en VR, le héros au PC).
+func _me() -> Vector3:
+	if main != null and main.xr_active and main.get("vr_body") != null and main.vr_body != null:
+		return main.vr_body.global_position
+	return body.global_position
+
+
+## V63 : parade parfaite : aucun dégât, l'ennemi le plus proche du coup est sonné, la
+## riposte frappe double.
+func _perfect_parry(from_pos: Vector3) -> void:
+	hurt_cooldown = 0.45
+	_counter_t = 1.4
+	var me: Vector3 = _me()
+	if main.has_method("sfx"):
+		main.sfx("parade_parfaite", me + Vector3.UP * 1.2)
+	if main.combat_v28 != null:
+		main.combat_v28.float_text(me + Vector3.UP * 2.1, "Parade parfaite !", Color(1.0, 0.95, 0.55))
+		main.combat_v28.puff(me + Vector3.UP * 1.1 + facing * 0.6, Color(1.0, 0.95, 0.7))
+	var best: Node = null
+	var best_d: float = 3.5
+	for m in get_tree().get_nodes_in_group("monstres_v36"):
+		var n3: Node3D = m as Node3D
+		if n3 == null or not is_instance_valid(n3) or str(n3.get("state")) == "mort":
+			continue
+		var d: float = n3.global_position.distance_to(from_pos)
+		if d < best_d:
+			best_d = d
+			best = n3
+	if best != null:
+		if best.has_method("stun"):
+			best.stun(1.6)
+		else:
+			best.set("state", "recul")
+			best.set("timer", 1.4)
+		var away: Vector3 = (best as Node3D).global_position - me
+		away.y = 0.0
+		if away.length() > 0.01 and best.get("_knock") != null:
+			best.set("_knock", away.normalized() * 4.0)
 
 
 func _ko_tick(delta: float) -> void:
@@ -1134,9 +1471,17 @@ func _update_visual(delta: float) -> void:
 	if state == "nage" and main.get("mer_v55") != null and main.mer_v55 != null:
 		main.mer_v55.swim_visual(self, delta)
 		return
-	hero.position = root.position + Vector3.UP * main.hero_mesh_floor_offset_v11
+	hero.position = root.position + Vector3.UP * (main.hero_mesh_floor_offset_v11 - sink)
 	var target_yaw: float = atan2(facing.x, facing.z)
 	var k: float = 1.0 if state in ["escalade", "hisser"] else clampf(delta * 14.0, 0.0, 1.0)
+	# V63 : l'attaque tournoyante : un tour complet sur soi-même
+	if _spin_t >= 0.0:
+		_spin_t += delta
+		if _spin_t >= 0.5 or state != "attaque":
+			_spin_t = -1.0
+		else:
+			hero.rotation.y = target_yaw + TAU * smoothstep(0.0, 0.5, _spin_t)
+			return
 	hero.rotation.y = lerp_angle(hero.rotation.y, target_yaw, k)
 
 

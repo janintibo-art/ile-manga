@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure"]
 
 var main: Node
 var inv: Node
@@ -243,7 +243,7 @@ func _build_ui() -> void:
 	_build_map(_pages[2])
 	_build_people(_pages[3])
 	_build_hero(_pages[4])
-	var help := _label("I / Tab : sac   •   J : quêtes   •   M : carte   •   P : personnages   •   1-5 : onglets   •   Échap : fermer" if not xr else "Visez avec la main droite, gâchette pour cliquer, stick pour faire défiler   •   Y : fermer", 15, DIM)
+	var help := _label("I / Tab : sac   •   J : quêtes   •   M : carte   •   P : personnages   •   H : héros   •   1-5 : onglets   •   Échap : fermer" if not xr else "Visez avec la main droite, gâchette pour cliquer, stick pour faire défiler   •   Y : fermer", 15, DIM)
 	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	col.add_child(help)
 
@@ -621,6 +621,8 @@ func _region_of(n: Node) -> String:
 		return "Tazira"
 	if place.begins_with("Cliquetis"):
 		return "Cliquetis"
+	if place.begins_with("Ramure"):
+		return "Ramure"
 	if place.begins_with("Carène") or place.begins_with("La grande île") or place.begins_with("Les hautes") or place.begins_with("La forêt des brumes") or place.begins_with("Le désert") or place.begins_with("Le Cœur"):
 		return "Carène"
 	if place.begins_with("L'Atlantide"):
@@ -654,6 +656,8 @@ func _met_list() -> Array:
 				reg = "Tazira"
 			if str(n.profile.get("groupe", "")) == "cliquetis":
 				reg = "Cliquetis"
+			if str(n.profile.get("groupe", "")) == "ramure":
+				reg = "Ramure"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])
 	return out
@@ -771,15 +775,35 @@ func _where_now(n: Node) -> String:
 
 # =================================================================== héros
 
+var _hero_pg: Control
+var _hero_v63: bool = false
+
+
 func _build_hero(pg: Control) -> void:
+	_hero_pg = pg
 	_h_text = _rich(19)
 	pg.add_child(_h_text)
 
 
 func _refresh_hero() -> void:
+	# V63 : la page du héros de la progression (niveau, talents, équipement, sceaux)
+	var pr: Node = main.get("progression_v63")
+	if pr != null:
+		if not _hero_v63:
+			_hero_v63 = true
+			_h_text.queue_free()
+			_h_text = null
+			pr.build_page(_hero_pg, self)
+		pr.refresh_page()
+		return
+	_h_text.text = _hero_stats_text(true)
+
+
+## Le texte des bonus, de la réputation, des titres et des statistiques.
+func _hero_stats_text(title: bool = false) -> String:
 	var j: Node = main.get("journal_v56")
 	var hero: Node = main.get("hero_v28")
-	var s: String = "[font_size=30][color=#ffd27a][b]Le héros[/b][/color][/font_size]\n\n"
+	var s: String = "[font_size=30][color=#ffd27a][b]Le héros[/b][/color][/font_size]\n\n" if title else "[font_size=24][color=#ffd27a][b]Bonus des quêtes[/b][/color][/font_size]\n"
 	if j != null:
 		var bo: Dictionary = j.bonus
 		var hp_max: int = 10 + 2 * int(bo["coeur"])
@@ -812,7 +836,7 @@ func _refresh_hero() -> void:
 	if main.game_menu != null:
 		var secs: int = int(main.game_menu.seconds)
 		s += "Temps de jeu : %d h %02d min\n" % [secs / 3600, (secs / 60) % 60]
-	_h_text.text = s
+	return s
 
 
 # =================================================================== VR : panneau et laser

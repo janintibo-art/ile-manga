@@ -15,6 +15,7 @@ extends Node3D
 const Fond = preload("res://scripts/fond_marin_v55.gd")
 const Tazira = preload("res://scripts/tazira_relief_v60.gd")
 const Cliquetis = preload("res://scripts/cliquetis_relief_v61.gd")
+const Ramure = preload("res://scripts/ramure_relief_v62.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -237,6 +238,8 @@ func _shape(wx: float, wz: float, w: Color) -> float:
 	# V60 : Tazira, le port des sables, sur la côte sud
 	h = Tazira.shape(wx, wz, h)
 	h = Cliquetis.shape(wx, wz, h)
+	# V62 : Ramure, le village des oreilles (le Cercle de la Lune, la Clairière des Jeux)
+	h = Ramure.shape(wx, wz, h)
 	return h
 
 
@@ -592,6 +595,9 @@ func _build_mist(high_quality: bool) -> void:
 		var z: float = CENTER.z + sin(a) * r
 		if not contains(x, z) or region_at(x, z).b < 0.5:
 			continue
+		# V62 : pas de nappes posées au milieu de Ramure (le village a sa brume du matin)
+		if Ramure.in_village(x, z):
+			continue
 		var h: float = height(x, z)
 		if h < 0.5 or h > 40.0:
 			continue
@@ -621,6 +627,8 @@ func _build_mist(high_quality: bool) -> void:
 			var r2: float = 175.0 + (k % 3) * 25.0
 			var x2: float = CENTER.x + cos(a2) * r2
 			var z2: float = CENTER.z + sin(a2) * r2
+			if Ramure.in_village(x2, z2):
+				continue
 			var fv := FogVolume.new()
 			fv.name = "Brouillard_brumes_%d" % k
 			fv.size = Vector3(90.0, 14.0, 90.0)
@@ -632,6 +640,10 @@ func _build_mist(high_quality: bool) -> void:
 # =================================================================== la porte scellée
 
 var door_glow: StandardMaterial3D
+var door_gate: Node3D                   # V63 : la porte (repère : +Z vers l'ouest)
+var door_mobile: Node3D                 # V63 : vantaux, cercle et creux (ils s'enfoncent)
+var door_leaves: Array = []
+var door_sockets: Array = []            # V63 : centre des quatre creux (repère de la porte)
 
 
 func _build_door() -> void:
@@ -666,11 +678,37 @@ func _build_door() -> void:
 		[Vector3(4.2, 22.0, 5.0), Vector3(9.4, 11.0 - 1.5, 0.0), stone],      # pilier droit
 		[Vector3(24.0, 4.0, 5.6), Vector3(0.0, 20.5, 0.0), stone],            # linteau
 		[Vector3(27.0, 2.0, 6.4), Vector3(0.0, 23.2, 0.0), dark],             # corniche
-		[Vector3(7.2, 18.4, 1.2), Vector3(-3.65, 9.2 - 1.0, -0.6), dark],     # vantail gauche
-		[Vector3(7.2, 18.4, 1.2), Vector3(3.65, 9.2 - 1.0, -0.6), dark],      # vantail droit
 		[Vector3(26.0, 1.2, 12.0), Vector3(0.0, -0.9, 4.0), stone],           # parvis
 		[Vector3(22.0, 0.6, 3.0), Vector3(0.0, -0.1, 8.8), stone],            # marche
 	]
+	# V63 : les deux vantaux, le grand cercle et les quatre creux sont à part : quand les quatre
+	# sceaux sont posés, la porte s'enfonce dans le sol (voir sceaux_v63.gd)
+	door_gate = gate
+	door_mobile = Node3D.new()
+	door_mobile.name = "Porte_mobile_v63"
+	gate.add_child(door_mobile)
+	door_leaves.clear()
+	for s in [-1.0, 1.0]:
+		var leaf := Node3D.new()
+		leaf.name = "Vantail_%s" % ("gauche" if s < 0.0 else "droit")
+		leaf.position = Vector3(s * 3.65, 9.2 - 1.0, -0.6)
+		door_mobile.add_child(leaf)
+		var lmi := MeshInstance3D.new()
+		var lbm := BoxMesh.new()
+		lbm.size = Vector3(7.2, 18.4, 1.2)
+		lmi.mesh = lbm
+		lmi.material_override = dark
+		leaf.add_child(lmi)
+		var lb := StaticBody3D.new()
+		lb.collision_layer = 1
+		lb.collision_mask = 0
+		var lcs := CollisionShape3D.new()
+		var lbs := BoxShape3D.new()
+		lbs.size = Vector3(7.2, 18.4, 1.2)
+		lcs.shape = lbs
+		lb.add_child(lcs)
+		leaf.add_child(lb)
+		door_leaves.append(leaf)
 	for p in parts:
 		var mi := MeshInstance3D.new()
 		var bm := BoxMesh.new()
@@ -696,7 +734,7 @@ func _build_door() -> void:
 	rmi.material_override = door_glow
 	rmi.position = Vector3(0.0, 9.2, 0.02)
 	rmi.rotation.x = PI * 0.5
-	gate.add_child(rmi)
+	door_mobile.add_child(rmi)
 	var seal_names := ["ouest", "nord", "est", "sud"]
 	for k in range(4):
 		var a: float = PI * 0.5 + k * PI * 0.5
@@ -711,7 +749,8 @@ func _build_door() -> void:
 		socket.position = Vector3(cos(a) * 5.2, 9.2 + sin(a) * 5.2, 0.1)
 		socket.rotation.x = PI * 0.5
 		socket.name = "Sceau_vide_" + seal_names[k]
-		gate.add_child(socket)
+		door_mobile.add_child(socket)
+		door_sockets.append(socket.position)
 		var hole := MeshInstance3D.new()
 		var hm := CylinderMesh.new()
 		hm.top_radius = 0.6
@@ -722,7 +761,7 @@ func _build_door() -> void:
 		hole.material_override = door_glow
 		hole.position = socket.position + Vector3(0, 0, 0.22)
 		hole.rotation.x = PI * 0.5
-		gate.add_child(hole)
+		door_mobile.add_child(hole)
 	# la fente entre les deux vantaux, qui luit faiblement
 	var slit := MeshInstance3D.new()
 	var sm := BoxMesh.new()
@@ -730,7 +769,7 @@ func _build_door() -> void:
 	slit.mesh = sm
 	slit.material_override = door_glow
 	slit.position = Vector3(0.0, 8.2, 0.02)
-	gate.add_child(slit)
+	door_mobile.add_child(slit)
 	var light := OmniLight3D.new()
 	light.light_color = Color(0.5, 0.85, 0.9)
 	light.light_energy = 0.6

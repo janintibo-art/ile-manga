@@ -127,6 +127,7 @@ func _ready() -> void:
 	_create_v56()
 	_create_v58()
 	_create_v59()
+	_create_v63()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -974,6 +975,12 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			grande_v59.load_data({})
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
+		if sceaux_v63 != null:
+			sceaux_v63.load_data({})
+		if coeur_v63 != null:
+			coeur_v63.load_data({})
+		if progression_v63 != null:
+			progression_v63.load_data({})
 		vr_ladder_v33 = {}
 		_save_slot(slot)
 	else:
@@ -981,6 +988,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		var a: Array = data.get("position", [])
 		if a.size() == 3:
 			origin.position = Vector3(float(a[0]), float(a[1]), float(a[2]))
+			# V63 : partie sauvée sous le Cœur-de-Pierre : le donjon doit être là avant d'y poser le pied
+			if coeur_v63 != null and coeur_v63.region_contains(origin.position):
+				coeur_v63.ensure_built()
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
@@ -1059,6 +1069,21 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and teleport_v58 != null:
 		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
 		teleport_v58.load_data(tdata if tdata is Dictionary else {})
+	# V63 : la grande enquête, le donjon, puis la progression (après le carnet : elle ajoute ses
+	# points aux bonus des quêtes)
+	if not new_game:
+		var saved63: Dictionary = SaveStore.read_slot(slot)
+		if sceaux_v63 != null:
+			var sd63: Variant = saved63.get("sceaux", {})
+			sceaux_v63.load_data(sd63 if sd63 is Dictionary else {})
+		if coeur_v63 != null:
+			var cd63: Variant = saved63.get("coeur", {})
+			coeur_v63.load_data(cd63 if cd63 is Dictionary else {})
+		if progression_v63 != null:
+			var pd63: Variant = saved63.get("progression", {})
+			progression_v63.load_data(pd63 if pd63 is Dictionary else {})
+	if pouvoirs_v63 != null:
+		pouvoirs_v63.reset()
 	if journal_v56 != null:
 		journal_v56.respawn_pickups()
 	last_ok_v29.clear()
@@ -1131,6 +1156,13 @@ func _save_slot(slot: int) -> void:
 		extra["grande"] = grande_v59.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
+	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
+	if progression_v63 != null:
+		extra["progression"] = progression_v63.serialize()
+	if sceaux_v63 != null:
+		extra["sceaux"] = sceaux_v63.serialize()
+	if coeur_v63 != null:
+		extra["coeur"] = coeur_v63.serialize()
 	var save_pos: Vector3 = origin.position
 	if grande_v59 != null and grande_v59.riding():
 		save_pos = grande_v59.ride_safe_pos()
@@ -1171,7 +1203,8 @@ func _physics_process(delta: float) -> void:
 		if xr_active and inventory_v28 != null and inventory_v28.opened:
 			inventory_v28.vr_tick(0.0, 0.0, 0.0)
 	elif grande_v59 != null and grande_v59.riding():
-		# V61 : passager du Zéphyr ou du téléphérique de Cliquetis (ils nous portent)
+		# V61 : passager du Zéphyr ou du téléphérique de Cliquetis (ils nous portent) ; V62 : la
+		# nacelle et la tyrolienne de Ramure
 		if xr_active:
 			var trig_ride: bool = right_hand.get_float("trigger") > 0.8
 			if trig_ride and not bool(vr_buttons_v28.get("ride_v61", false)):
@@ -1381,6 +1414,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			ciel_v54.call_eagle()
 		elif event.keycode == KEY_T and game_started and teleport_v58 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			open_teleport_v58()
+		elif event.keycode == KEY_H and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
+			# V63 : H, le carnet ouvert sur la page du héros (niveau, talents, équipement, sceaux)
+			inventory_v28.toggle(4)
+		elif progression_v63 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and progression_v63.handle_key(event.keycode):
+			# V63 : 1 à 4 choisissent le pouvoir d'un sceau, X le lance
+			pass
 		elif event.keycode == KEY_F1 and info != null:
 			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
 		elif event.keycode == KEY_F5 and game_started:
@@ -1922,9 +1961,18 @@ func _on_equip_v28(item_id: String) -> void:
 		right_hand.get_node("Manette_visible").visible = false
 	else:
 		right_hand.get_node("Manette_visible").visible = true
+	# V63 : la lame trempée ou runique (forge) brille dans la main
+	if progression_v63 != null:
+		progression_v63.on_equip(item_id)
 
 
 func _respawn_v28() -> void:
+	# V63 : évanoui sous le Cœur-de-Pierre (ou dans un sanctuaire des sceaux)
+	if coeur_v63 != null and coeur_v63.region_contains(_player_pos_v27()):
+		coeur_v63.respawn()
+		return
+	if sceaux_v63 != null and sceaux_v63.respawn_here(_player_pos_v27()):
+		return
 	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
 	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
 		monstres_v36.respawn_player()
@@ -1955,7 +2003,9 @@ func _respawn_v28() -> void:
 	if grande_v59 != null and grande_v59.contains(pp):
 		var rg: Array = grande_v59.respawn_point(pp)
 		place_player_v35(rg[0], rg[1])
-		if grande_v59.cliquetis != null and grande_v59.cliquetis.contains(pp):
+		if grande_v59.ramure != null and grande_v59.ramure.contains(pp):
+			_show_message_v28("Vous vous êtes évanoui… Pivoine, la renarde herboriste, vous a fait respirer une fiole de brume. Vous voilà au Cercle de la Lune.")
+		elif grande_v59.cliquetis != null and grande_v59.cliquetis.contains(pp):
 			_show_message_v28("Vous vous êtes évanoui… Le professeur Boum vous a ranimé avec une petite décharge (très petite). Vous voilà sur la promenade de Cliquetis.")
 		elif grande_v59.tazira != null and grande_v59.tazira.contains(pp):
 			_show_message_v28("Vous vous êtes évanoui… Zineb, la patronne du Fondouk, vous a fait boire un thé très sucré. Vous voilà sur la place des Lanternes.")
@@ -2003,6 +2053,9 @@ func _vr_actions_v28(delta: float) -> void:
 		return
 	if a_edge:
 		vr_jump_v28()
+	# V63 : pouvoirs des sceaux (B), garde (grip gauche), esquive et tournoyante (clics des sticks)
+	if progression_v63 != null:
+		progression_v63.vr_tick(delta)
 	# V56 : gâchette près de la cloche du quai : appeler L'Hirondelle
 	var trig_now: bool = right_hand.get_float("trigger") > 0.7
 	if azur_v56 != null and azur_v56.ferry != null and trig_now and not vr_buttons_v28.get("cloche", false) and _nearest_npc_v31() == null:
@@ -2024,6 +2077,9 @@ func _vr_actions_v28(delta: float) -> void:
 		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
 		if armed:
 			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + (int(journal_v56.bonus["force"]) if journal_v56 != null else 0)
+			# V63 : la force gagnée en montant de niveau, la lame de la forge
+			if progression_v63 != null and hero_v28 != null:
+				dmg = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + int(hero_v28.bonus_force) + (int(hero_v28.forge_bonus) if str(inventory_v28.ITEMS[inventory_v28.equipped].get("kind", "")) == "arme" else 0)
 			var blade: Vector3 = -right_hand.global_basis.z
 			var mid: Vector3 = right_hand.global_position + blade * 0.45
 			var tip: Vector3 = right_hand.global_position + blade * 0.75
@@ -2050,6 +2106,13 @@ func vr_jump_v28() -> void:
 			return
 	if vr_body.is_on_floor():
 		vr_body.velocity.y = JUMP_SPEED_V28
+		if hero_v28 != null:
+			hero_v28._double_used = false
+	elif hero_v28 != null and hero_v28.talents.has("double_saut") and not hero_v28._double_used:
+		# V63 : le double saut, en plein vol
+		hero_v28._double_used = true
+		vr_body.velocity.y = JUMP_SPEED_V28 * 0.95
+		sfx("double_saut", vr_body.global_position + Vector3.UP * 0.5)
 
 
 # =================================================================== V29 : île-jungle et bateau
@@ -2747,6 +2810,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		azur_v56.after_reply(r, npc)
 	if grande_v59 != null:
 		grande_v59.after_reply(r, npc)
+	# V63 : la forge d'Ursule et de Borin
+	if progression_v63 != null:
+		progression_v63.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2804,6 +2870,10 @@ var journal_v56: Node                      # V56 : le carnet de quêtes, les bon
 var teuf_v57: Node3D                       # V57 : la teuf de la plage (DJ, teufeurs, sono)
 var feerie_v58: Node3D                     # V58 : le royaume des fées, Yggdrasil et son donjon
 var teleport_v58: Node                     # V58 : la magie de téléportation
+var progression_v63: Node                  # V63 : niveaux, talents, forge, sceaux du héros
+var pouvoirs_v63: Node3D                   # V63 : les pouvoirs des quatre sceaux
+var sceaux_v63: Node3D                     # V63 : la grande enquête (sites des sceaux, la porte)
+var coeur_v63: Node3D                      # V63 : le donjon du Cœur-de-Pierre
 var grande_v59: Node3D                     # V59 : la grande île de l'est, le Léviathan et Carène
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -2899,6 +2969,38 @@ func _create_v59() -> void:
 		var cd: Array = grande_v59.dock_cliquetis()
 		if cd.size() == 2:
 			boat_v29._make_dock("Ponton_cliquetis", cd[0], cd[1])
+		var rd: Array = grande_v59.dock_ramure()
+		if rd.size() == 2:
+			boat_v29._make_dock("Ponton_ramure", rd[0], rd[1])
+
+
+## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
+## enquête des Quatre Sceaux dans les quatre villages, le donjon sous le Cœur-de-Pierre.
+func _create_v63() -> void:
+	progression_v63 = preload("res://scripts/progression_v63.gd").new()
+	progression_v63.name = "Progression_v63"
+	add_child(progression_v63)
+	progression_v63.setup(self)
+	pouvoirs_v63 = preload("res://scripts/pouvoirs_v63.gd").new()
+	pouvoirs_v63.name = "Pouvoirs_v63"
+	add_child(pouvoirs_v63)
+	pouvoirs_v63.setup(self)
+	if journal_v56 != null:
+		progression_v63.register_services(journal_v56)
+	if hud_v28 != null and not xr_active:
+		progression_v63.make_hud(hud_v28)
+	if grande_v59 != null and grande_v59.ile != null:
+		sceaux_v63 = preload("res://scripts/sceaux_v63.gd").new()
+		sceaux_v63.name = "Sceaux_v63"
+		add_child(sceaux_v63)
+		sceaux_v63.setup(self)
+		sceaux_v63.build()
+		coeur_v63 = preload("res://scripts/coeur_v63.gd").new()
+		coeur_v63.name = "Coeur_de_pierre_v63"
+		add_child(coeur_v63)
+		coeur_v63.setup(self)
+	progression_v63.apply()
+	print("ILE_MANGA_V63: progression, pouvoirs des sceaux, grande enquête, Cœur-de-Pierre")
 
 
 ## V58 : le royaume des fées (feerie_v58.gd) : l'île au-dessus des nuages, les fées,

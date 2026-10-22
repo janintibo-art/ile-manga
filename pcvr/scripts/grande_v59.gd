@@ -13,6 +13,7 @@ const FloreScript = preload("res://scripts/grande_flore_v59.gd")
 const Habitants = preload("res://scripts/pnj/carene_habitants_v59.gd")
 const TaziraScript = preload("res://scripts/tazira_v60.gd")
 const CliquetisScript = preload("res://scripts/cliquetis_v61.gd")
+const RamureScript = preload("res://scripts/ramure_v62.gd")
 const PnjAzur = preload("res://scripts/pnj/pnj_azur_v56.gd")
 const WRECK_AT := Vector3(665.0, -4.8, -150.0)
 
@@ -22,6 +23,7 @@ var epave: Node3D
 var carene: Node3D
 var tazira: Node3D                     # V60 : Tazira, le port des sables, sur la côte sud
 var cliquetis: Node3D                  # V61 : Cliquetis, la cité des ingénieurs fous, au nord
+var ramure: Node3D                     # V62 : Ramure, le village des oreilles, dans la forêt de l'est
 var flore: Node3D
 var habitants: Array = []
 var by_id: Dictionary = {}
@@ -67,6 +69,15 @@ func build_town() -> void:
 	cliquetis.name = "Cliquetis_v61"
 	add_child(cliquetis)
 	cliquetis.build(main, ile, pc)
+	ramure = RamureScript.new()
+	ramure.name = "Ramure_v62"
+	add_child(ramure)
+	ramure.build(main, ile, pc)
+	# le Zéphyr passe au-dessus des arbres géants de Ramure
+	if cliquetis != null and cliquetis.get("zephyr") != null and cliquetis.zephyr != null:
+		var rm: Node3D = ramure
+		var il: Node3D = ile
+		cliquetis.zephyr.height_fn = func(x: float, z: float) -> float: return maxf(il.height(x, z), rm.obstacle_height(x, z))
 	flore = FloreScript.new()
 	flore.name = "Flore_grande_ile_v59"
 	add_child(flore)
@@ -88,21 +99,32 @@ func dock_cliquetis() -> Array:
 	return cliquetis.dock() if cliquetis != null else []
 
 
-## V61 : passager du Zéphyr ou du téléphérique de Cliquetis.
+func dock_ramure() -> Array:
+	return ramure.dock() if ramure != null else []
+
+
+## V61 : passager du Zéphyr ou du téléphérique de Cliquetis ; V62 : de la nacelle ou de la
+## tyrolienne de Ramure.
 func riding() -> bool:
-	return cliquetis != null and cliquetis.riding()
+	return (cliquetis != null and cliquetis.riding()) or (ramure != null and ramure.riding())
 
 
 func ride_prompt() -> String:
+	if ramure != null and ramure.riding():
+		return ramure.ride_prompt()
 	return cliquetis.ride_prompt() if cliquetis != null else ""
 
 
 func ride_interact() -> void:
-	if cliquetis != null:
+	if ramure != null and ramure.riding():
+		ramure.ride_interact()
+	elif cliquetis != null:
 		cliquetis.ride_interact()
 
 
 func ride_safe_pos() -> Vector3:
+	if ramure != null and ramure.riding():
+		return ramure.ride_safe_pos()
 	return cliquetis.ride_safe_pos() if cliquetis != null else Vector3.ZERO
 
 
@@ -117,6 +139,8 @@ func on_structure(p: Vector3) -> bool:
 	if tazira != null and tazira.on_structure(p):
 		return true
 	if cliquetis != null and cliquetis.on_structure(p):
+		return true
+	if ramure != null and ramure.on_structure(p):
 		return true
 	return carene != null and carene.on_walkway(p)
 
@@ -151,6 +175,10 @@ func zone_at(p: Vector3) -> String:
 		var cz: String = cliquetis.zone_at(p)
 		if cz != "":
 			return cz
+	if ramure != null:
+		var rz: String = ramure.zone_at(p)
+		if rz != "":
+			return rz
 	if epave != null:
 		var l: Vector3 = epave.Lc(p)
 		if absf(l.x) < epave.HL + 2.0 and absf(l.z) < epave.HB + 1.0 and l.y > -2.0 and l.y < epave.D + 50.0:
@@ -176,6 +204,8 @@ func respawn_point(p: Vector3 = Vector3.INF) -> Array:
 		return tazira.respawn_point()
 	if cliquetis != null and p != Vector3.INF and cliquetis.contains(p):
 		return cliquetis.respawn_point()
+	if ramure != null and p != Vector3.INF and ramure.contains(p):
+		return ramure.respawn_point()
 	var at: Vector3 = carene.points.get("e1", ile.door_front()) if carene != null else ile.door_front()
 	var to: Vector3 = carene.points.get("e_gang", at + Vector3.FORWARD) if carene != null else at + Vector3.FORWARD
 	return [at + Vector3.UP * 0.3, (to - at).normalized()]
@@ -210,6 +240,8 @@ func spawn_npcs() -> void:
 		tazira.spawn_npcs()
 	if cliquetis != null:
 		cliquetis.spawn_npcs()
+	if ramure != null:
+		ramure.spawn_npcs()
 	if not habitants.is_empty() or carene == null:
 		return
 	for data in Habitants.all_profiles():
@@ -236,6 +268,8 @@ func register_services(journal: Node) -> void:
 		tazira.register_services(journal)
 	if cliquetis != null:
 		cliquetis.register_services(journal)
+	if ramure != null:
+		ramure.register_services(journal)
 
 
 func _inn_topics(_npc: Node) -> Array:
@@ -259,6 +293,8 @@ func after_reply(r: Dictionary, _npc: Node) -> void:
 		tazira.after_reply(r, _npc)
 	if cliquetis != null:
 		cliquetis.after_reply(r, _npc)
+	if ramure != null:
+		ramure.after_reply(r, _npc)
 	if r.has("_hamac"):
 		main._close_dialogue_v31()
 		state["nuits"] = int(state["nuits"]) + 1
@@ -273,7 +309,7 @@ func _register_interactions() -> void:
 		return
 	var I: Array = d._interactions
 	I.append({"id": "porte_sceaux", "pos": ile.door_front(), "radius": 6.0, "text": "E : examiner la Porte aux Quatre Sceaux", "vr": "Gâchette : examiner la porte",
-		"call": _examine_door})
+		"call": _examine_door, "when": func(): return main.get("sceaux_v63") == null or main.sceaux_v63 == null or not main.sceaux_v63.door_open()})
 	if carene != null:
 		I.append({"id": "carene_cloche", "pos": carene.bell_pos - Vector3.UP * 1.6, "radius": 1.8, "text": "E : sonner la cloche du bord", "vr": "Gâchette : sonner la cloche",
 			"call": _ring_bell})
@@ -282,6 +318,10 @@ func _register_interactions() -> void:
 func _examine_door() -> void:
 	var first: bool = not bool(state["porte"])
 	state["porte"] = true
+	# V63 : la grande enquête : poser les sceaux trouvés
+	var sc: Node = main.get("sceaux_v63")
+	if sc != null and sc.door_interact(first):
+		return
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("grille")
 	var t: String = "Une porte de pierre haute comme cinq hommes, sans poignée ni serrure. Sur ses deux vantaux, un grand cercle gravé luit faiblement ; autour, quatre creux ronds, vides : les quatre sceaux. Un souffle tiède passe par la fente du milieu, comme si la montagne respirait."
@@ -302,6 +342,15 @@ func trouvailles() -> Dictionary:
 		t.merge(tazira.trouvailles(), true)
 	if cliquetis != null:
 		t.merge(cliquetis.trouvailles(), true)
+	if ramure != null:
+		t.merge(ramure.trouvailles(), true)
+	# V63 : la grande enquête des sceaux, le donjon du Cœur-de-Pierre
+	var sc: Node = main.get("sceaux_v63") if main != null else null
+	if sc != null:
+		t.merge(sc.trouvailles(), true)
+	var co: Node = main.get("coeur_v63") if main != null else null
+	if co != null:
+		t.merge(co.trouvailles(), true)
 	return t
 
 
@@ -319,6 +368,8 @@ func _process(delta: float) -> void:
 		oc.position.z = snappedf(p.z, 40.0)
 	if cliquetis != null and contains(p):
 		cliquetis.check_visit(p)
+	if ramure != null and contains(p):
+		ramure.check_visit(p)
 	if not bool(state["visite"]) and contains(p) and tazira != null and tazira.contains(p) and ile.height(p.x, p.z) > -0.2:
 		state["visite"] = true
 	if not bool(state["visite"]) and contains(p) and epave != null and epave.Lc(p).x > -90.0 and ile.height(p.x, p.z) > -0.2:
@@ -383,6 +434,8 @@ func serialize() -> Dictionary:
 		d["tazira"] = tazira.serialize()
 	if cliquetis != null:
 		d["cliquetis"] = cliquetis.serialize()
+	if ramure != null:
+		d["ramure"] = ramure.serialize()
 	return d
 
 
@@ -394,6 +447,9 @@ func load_data(d: Dictionary) -> void:
 	if cliquetis != null:
 		var cd: Variant = d.get("cliquetis", {})
 		cliquetis.load_data(cd if cd is Dictionary else {})
+	if ramure != null:
+		var rd: Variant = d.get("ramure", {})
+		ramure.load_data(rd if rd is Dictionary else {})
 	_claims.clear()
 	for n in habitants:
 		n.slot = -2

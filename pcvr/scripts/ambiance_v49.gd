@@ -23,6 +23,7 @@ const BEDS := {
 	"plage": "ambiance/plage", "cigales": "ambiance/cigales", "grillons": "ambiance/grillons",
 	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
 	"souk": "ambiance/souk", "criee": "ambiance/criee", "atelier": "ambiance/atelier",
+	"ramure": "ambiance/ramure",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -31,6 +32,7 @@ const BED_DB := {
 	"ville_azur": -12.0, "port_azur": -11.0, "taverne": -9.0, "plage": -13.0, "cigales": -17.0, "grillons": -16.0,
 	"epave": -9.0, "lande": -14.0, "brumes": -13.0, "desert": -14.0,
 	"souk": -11.0, "criee": -10.0, "atelier": -11.0,
+	"ramure": -12.0,
 }
 
 var main: Node
@@ -241,7 +243,13 @@ func _choose_zone(running: bool) -> void:
 	if under:
 		var el: Node = main.get("elfes_v41")
 		var n: Node = main.get("nains_v46")
-		if el != null and el.feerique != null and bool(el.feerique.in_zone):
+		var co: Node = main.get("coeur_v63")
+		# V63 : sous le Cœur-de-Pierre, la grotte et le grondement du feu
+		if co != null and co.region_contains(p):
+			zone = "coeur"
+			targets["grotte"] = 1.0
+			targets["halle"] = 0.15
+		elif el != null and el.feerique != null and bool(el.feerique.in_zone):
 			zone = "racines"
 			targets["feerique"] = 1.0
 			targets["grotte"] = 0.35
@@ -451,6 +459,15 @@ func _grande_beds(z: String, p: Vector3) -> void:
 			targets["atelier"] = (1.0 if z == "cliquetis_foire" else 0.75) if day else 0.3
 			targets["lande"] = 0.3
 			targets["ville_azur"] = (0.4 if z == "cliquetis_foire" else 0.15) if day else 0.0
+		"ramure", "ramure_cercle", "ramure_arbres":
+			targets["ramure"] = 1.0 if day else 0.55
+			targets["brumes"] = 0.35 if z != "ramure_arbres" else 0.2
+			targets["grillons"] = 0.0 if day else 0.45
+			targets["brise"] = 0.45 if z == "ramure_arbres" else 0.1
+		"ramure_ponton":
+			targets["ramure"] = 0.3
+			targets["ressac"] = 0.5 + 0.4 * sea
+			targets["brise"] = 0.5
 		"cliquetis_port":
 			targets["port_azur"] = 0.8
 			targets["ressac"] = 0.35 + 0.5 * sea
@@ -582,7 +599,7 @@ func _event() -> void:
 			list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
 			gap = Vector2(5.0, 12.0)
 			high = 5.0
-		"souterrain", "racines":
+		"souterrain", "racines", "coeur":
 			list = ["ponctuels/goutte_1", "ponctuels/goutte_2", "ponctuels/goutte_3", "ponctuels/goutte_4"]
 			gap = Vector2(1.5, 5.0)
 			high = 3.0
@@ -598,7 +615,7 @@ func _event() -> void:
 	var r: float = _rng.randf_range(6.0, 22.0)
 	sp.global_position = lp + Vector3(cos(a) * r, _rng.randf_range(1.0, high), sin(a) * r)
 	sp.stream = _stream(str(list[_rng.randi() % list.size()]))
-	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines"] else "Ambiance"
+	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines", "coeur"] else "Ambiance"
 	sp.pitch_scale = _rng.randf_range(0.9, 1.1)
-	sp.volume_db = -6.0 if zone in ["souterrain", "racines"] else -3.0
+	sp.volume_db = -6.0 if zone in ["souterrain", "racines", "coeur"] else -3.0
 	sp.play()

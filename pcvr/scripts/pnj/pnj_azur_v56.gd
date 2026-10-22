@@ -203,10 +203,11 @@ func _accessories() -> void:
 		_part(face, _sphere(0.008), shine, on_face.call(ex + sx * -0.012, 0.014, 0.006))
 		_part(face, _box_mesh_np(Vector3(0.1, 0.012, 0.012)), dark, on_face.call(ex, 0.055, -0.002), Vector3.ONE, Vector3(0, sx * -18.0, sx * -8.0))
 		_part(face, _box_mesh_np(Vector3(0.08, 0.014 if not old else 0.02, 0.012)), brow_mat, on_face.call(ex, 0.098, -0.003), Vector3.ONE, Vector3(0, sx * -18.0, sx * 6.0))
-		# oreilles rondes
-		var ear := Node3D.new()
-		_part(ear, _sphere(0.04), skin, Vector3.ZERO, Vector3(0.45, 1.0, 0.8))
-		_attach("Head", Vector3(sx * 22.0, 18.0, 3.0), ear)
+		# oreilles rondes (V62 : pas pour les gens de Ramure, qui ont des oreilles d'animal)
+		if not profile.has("kemo"):
+			var ear := Node3D.new()
+			_part(ear, _sphere(0.04), skin, Vector3.ZERO, Vector3(0.45, 1.0, 0.8))
+			_attach("Head", Vector3(sx * 22.0, 18.0, 3.0), ear)
 	_part(face, _sphere(0.016), skin, on_face.call(0.0, -0.032, 0.004), Vector3(0.9, 1.1, 1.3))
 	for sx2 in [-1.0, 1.0]:
 		_part(face, _box_mesh_np(Vector3(0.028, 0.008, 0.01)), lips, on_face.call(sx2 * 0.012, -0.08, -0.002), Vector3.ONE, Vector3(0, sx2 * -10.0, sx2 * 14.0))

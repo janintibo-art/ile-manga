@@ -313,6 +313,80 @@ const QUETES := [
 		],
 		"fin": "Voilà ! Le quinzième toit sera le bon. Tenez, ces lunettes : des kaléidoscopes. Le monde entier devient une rosace. C'est inutile, c'est merveilleux, et ça n'explose pas. Enfin, je crois.",
 		"recompense": {"pieces": 25, "objets": [["lunettes_kaleido", 1]]}},
+	# V62 : Ramure, le village des oreilles
+	{"id": "lanternes_lune", "titre": "Les lanternes de lune", "donneur": "merelune", "lieu": "Ramure, le Chêne-Mère", "sorte": "Ramure",
+		"resume": "Mère-Lune, la doyenne de Ramure, change chaque printemps les lanternes de lune des ponts. Ses vieilles pattes ne vont plus jusqu'au bord des mares, où poussent les champignons qui luisent.",
+		"offre_label": "Que sont ces lanternes bleues, sur les ponts ?",
+		"offre": "Des lanternes de lune, petit. Dedans, il y a un champignon des mares qui luit la nuit, doux et bleu, comme un morceau de lune. Chaque printemps, je les remplace. Cette année, mes pattes ne descendent plus jusqu'à l'eau… Il en pousse cinq, au bord des cinq mares de la forêt, autour du village. Tu me les rapporterais ? Cueille-les délicatement : ils sont timides.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"champignon_lune": 5}, "lieux": ["champi_lune_1", "champi_lune_2", "champi_lune_3", "champi_lune_4", "champi_lune_5"], "objectif": "Cueillir les cinq champignons de lune, au bord des mares de la forêt autour de Ramure (la grande mare à l'ouest du Cercle, la mare de la Clairière des Jeux, celles de l'ouest, du sud et du nord)"},
+			{"type": "rendre", "pnj": "merelune", "label": "Voici vos cinq champignons de lune.", "prend": [["champignon_lune", 5]], "objectif": "Rapporter les champignons à Mère-Lune (devant sa maison, au milieu du Chêne-Mère, ou au Cercle de la Lune la nuit)"},
+		],
+		"fin": "Cinq… et tous intacts. Regarde comme ils brillent, même en plein jour. Cette nuit, les ponts de Ramure seront bleus comme autrefois. Tu as le cœur doux, petit, et les mains aussi. Tiens : des oreilles de renard, cousues par Pivoine. Mets-les, et tout Ramure saura que tu es des nôtres.",
+		"recompense": {"pieces": 30, "titre": "Ami de la Lune", "objets": [["oreilles_renard", 1]]}},
+	{"id": "grande_course", "titre": "La Grande Course", "donneur": "pepin", "lieu": "Ramure, la Clairière des Jeux", "sorte": "Ramure",
+		"resume": "Pépin, le lapin qui organise la Grande Course de Ramure, cherche quelqu'un capable de battre Bondi, le champion depuis trois ans.",
+		"offre_label": "Je peux courir la Grande Course ?",
+		"offre": "Tu veux courir ? Vraiment ? Formidable ! La règle est simple : tu pars de l'arche, là, tu passes sous les dix arches de lanternes, dans l'ordre, tout autour du village, et tu reviens ici. Bondi, Grisou et Éclair courent avec toi. Arrive le premier, et ton nom ira tout en haut du tableau des records. Personne n'a battu Bondi depuis trois ans. Personne n'a vraiment essayé, remarque.",
+		"etapes": [
+			{"type": "etat", "cle": "course_ramure", "objectif": "Gagner la Grande Course : prendre le départ sous l'arche de la Clairière des Jeux (E), passer sous les dix arches dans l'ordre et revenir le premier"},
+			{"type": "rendre", "pnj": "pepin", "label": "J'ai gagné la Grande Course !", "objectif": "Annoncer la victoire à Pépin, à la Clairière des Jeux"},
+		],
+		"fin": "TU AS GAGNÉ ! Devant Bondi ! Bondi a les oreilles toutes plates, regarde-le ! Je vais peindre ton nom tout en haut du tableau, en lettres de lanterne. Tiens, la coupe de la Grande Course : elle est en bois de chêne-mère, et elle n'a jamais quitté Bondi depuis trois ans. Elle va bien s'amuser avec toi.",
+		"recompense": {"pieces": 35, "titre": "Pattes de Vent", "objets": [["coupe_course", 1]]}},
+	{"id": "grand_troc", "titre": "Le Grand Troc", "donneur": "bedaine", "lieu": "Ramure, le Marché aux trocs", "sorte": "Ramure",
+		"resume": "Bedaine, le tanuki du Marché aux trocs, veut t'apprendre le Grand Troc : un caillou qui, d'échange en échange, devient un trésor.",
+		"offre_label": "C'est quoi, le Grand Troc ?",
+		"offre": "Ho ho ! Le Grand Troc, c'est une chaîne, mon ami. Je te donne ce caillou-qui-chante : écoute, quand le vent passe dedans, il siffle. Tu vas le troquer contre quelque chose de mieux, puis ce quelque chose contre quelque chose de mieux encore… Pomme-de-Pin, la charpentière, adore les cailloux-qui-chantent. Commence par elle. Et à la fin, reviens me voir : je veux savoir ce que mon caillou est devenu !",
+		"donne": [["caillou_chantant", 1]],
+		"etapes": [
+			{"type": "objets", "pnj": "pommedepin", "objets": {"caillou_chantant": 1}, "label": "Bedaine vous troque ce caillou-qui-chante.", "texte": "Un caillou-qui-chante ! Écoute-le siffler ! Je l'accroche sous le pont de l'ouest dès ce soir. Tiens, mon plus beau gland d'or, trouvé à la cime du Chêne-Mère. Plumette, la postière, en raffole.", "donne": [["gland_dore", 1]], "objectif": "Troquer le caillou-qui-chante avec Pomme-de-Pin, la charpentière des ponts (sur l'arbre de l'ouest le matin, près de la grande mare l'après-midi)"},
+			{"type": "objets", "pnj": "plumette", "objets": {"gland_dore": 1}, "label": "Un gland d'or contre une plume ?", "texte": "Hou ! Un gland d'or ! Je le mettrai sur mon guichet, il portera chance au courrier. Voilà une plume de lune : elle tombe de nos ailes les nuits de pleine lune. C'est-à-dire toutes les nuits, ici. Pivoine en cherche pour ses fioles.", "donne": [["plume_lune", 1]], "objectif": "Troquer le gland d'or avec Plumette, à la Poste, tout en haut du Chêne-Mère"},
+			{"type": "objets", "pnj": "pivoine", "objets": {"plume_lune": 1}, "label": "Une plume de lune pour vos fioles ?", "texte": "Une plume de lune ! Avec ça, ma brume ne s'envolera plus. Tiens, une fiole de brume : de la brume du matin, en bouteille. Ursule dit qu'elle en a besoin pour tremper l'argent. Je ne pose pas de questions aux ours.", "donne": [["fiole_brume", 1]], "objectif": "Troquer la plume de lune avec Pivoine, l'herboriste, à l'échoppe des Simples (au milieu du Chêne-Mère)"},
+			{"type": "objets", "pnj": "ursule", "objets": {"fiole_brume": 1}, "label": "Une fiole de brume, pour la forge ?", "texte": "… De la brume. Bien. On trempe l'argent dedans : il chante plus clair. Tiens. Une clochette d'argent. Je l'avais faite pour rien. Maintenant elle est pour toi.", "donne": [["clochette_argent", 1]], "objectif": "Troquer la fiole de brume avec Ursule, la forgeronne (la forge des ours, au sud-est du village)"},
+			{"type": "rendre", "pnj": "bedaine", "label": "Votre caillou est devenu une clochette d'argent !", "prend": [["clochette_argent", 1]], "objectif": "Rapporter la clochette d'argent à Bedaine, au Marché aux trocs (en bas du Chêne-Mère)"},
+		],
+		"fin": "Une clochette d'argent ! Écoute… ting ! Tu vois ? Un caillou au début, une clochette à la fin, et en chemin, quatre amis contents. Voilà le Grand Troc. Tu es un vrai tanuki, maintenant. Tiens, mon grelot de tanuki : on l'accroche à la ceinture, et tous les marchands de Ramure te feront un clin d'œil.",
+		"recompense": {"pieces": 30, "titre": "Roi du troc", "objets": [["grelot_tanuki", 1]]}},
+	# V63 : la grande enquête des Quatre Sceaux, à travers les quatre villages de la grande île
+	{"id": "quatre_sceaux", "titre": "La grande enquête des Quatre Sceaux", "donneur": "matthias", "lieu": "Carène, la capitainerie", "sorte": "Carène", "si": {"apres": "porte_scellee"},
+		"resume": "Matthias rêve d'ouvrir la Porte aux Quatre Sceaux. Il faut retrouver les quatre sceaux, un par peuple de la grande île : les embruns de Carène, les sables de Tazira, l'airain des bergers du nord, les brumes de Ramure. Chaque sceau mène au suivant.",
+		"offre_label": "Et si on retrouvait les quatre sceaux ?",
+		"offre": "Les quatre sceaux ? Tu veux… vraiment ? Ha ! Je savais que tu étais de ceux qui finissent les cartes ! Écoute : personne ici ne sait où ils sont. Mais le Vieux Corentin connaît toutes les vieilles histoires de Carène. Va le voir : sur le pont près de la cloche le jour, à La Dernière Bordée le soir. Moi, je garde un coin de carte bien propre pour le Cœur-de-Pierre.",
+		"etapes": [
+			{"type": "parler", "pnj": "corentin", "label": "Matthias m'envoie : que savez-vous des quatre sceaux ?",
+				"texte": "Les quatre sceaux… Assieds-toi, petit. Il y a deux cents ans, la montagne s'est réveillée : le Cœur-de-Pierre battait si fort que la mer tremblait jusqu'ici. Les quatre peuples sont descendus sous la montagne et ont endormi ce qui battait là-dessous. Puis ils ont fermé la porte, et chacun est reparti avec un sceau. Le nôtre, le Sceau des Embruns, le dernier capitaine du Léviathan l'a caché quelque part à bord. Où ? Il l'a écrit dans son journal de bord… que mon grand-père a vendu, un hiver de famine, à un conteur de Tazira. Ba Sidi, qu'il s'appelait. Il doit être bien vieux, s'il vit encore.",
+				"objectif": "Écouter le Vieux Corentin, le conteur de Carène (sur le pont du Léviathan, ou à La Dernière Bordée le soir)"},
+			{"type": "parler", "pnj": "basidi", "label": "Corentin, de Carène, cherche le journal de bord du Léviathan.",
+				"texte": "Corentin ? Le petit-fils de Yann-le-Borgne ? Ha ! Oui, j'ai le journal. Le voici… Mais regarde : les pages qui parlent du sceau sont blanches. De l'encre de lune, disaient les marins : elle ne se lit qu'au clair d'une lune que l'on porte avec soi. Je n'ai jamais compris. Garde-le, il te parlera peut-être un jour. Et puisque tu cours après les sceaux : le nôtre, celui du désert, dort sous la dune qui marche. Rachid, le marchand de tapis, a un tapis ancien qui en montre le chemin. Il te le dira… s'il arrête de parler de ses prix.",
+				"donne": [["journal_bord", 1]],
+				"objectif": "Retrouver Ba Sidi, le conteur de Tazira (sur la place des Lanternes), qui a le journal de bord du Léviathan"},
+			{"type": "parler", "pnj": "rachid", "label": "Ba Sidi dit que vous avez un tapis ancien qui montre le chemin du sceau.",
+				"texte": "Le tapis des étoiles ? Il n'est pas à vendre. Bon. À toi, je le montre. Regarde : la porte de la ville, en bas. Puis trois étoiles, l'une après l'autre, qui marchent vers le nord-est, vers les dunes. Ce sont les vieilles bornes des caravanes : la nuit, elles s'allument encore toutes seules, va savoir pourquoi. Après la troisième, la dune en croissant : la dune qui marche. Et sous la dune, un soleil. Sur la bordure, trois signes, toujours dans le même ordre : l'étoile, la dune, le soleil. Ma grand-mère disait : « c'est la clé ». Moi, je dis : c'est joli.",
+				"objectif": "Écouter Rachid, le marchand de tapis du souk de Tazira, parler du tapis des étoiles"},
+			{"type": "etat", "cle": "sceau_sables",
+				"objectif": "Sortir de Tazira par la porte du nord, suivre les trois bornes des caravanes vers le nord-est (elles s'allument la nuit), ouvrir le tombeau de la Dune qui Marche (l'étoile, la dune, le soleil) et prendre le Sceau des Sables"},
+			{"type": "parler", "pnj": "celeste", "label": "Dans le tombeau du désert, une fresque montre une bergerie sous la montagne.",
+				"texte": "Une bergerie sous la montagne ? Montrez-moi… Des moutons, une roue dentée, une crête. Mais je la connais ! Avec ma grande lunette, je vois tout le versant nord du Cœur-de-Pierre. Au sud-est de la cité, au pied de la montagne, il y a une grotte : la Bergerie du Vent, disent les bergers. Ils n'y vont plus depuis que des ronces noires en ferment l'entrée. Des ronces qui ne brûlent pas, paraît-il… Enfin, qui ne brûlent pas avec un briquet ordinaire.",
+				"objectif": "Montrer la fresque du tombeau à Céleste Lunette, l'astronome de Cliquetis (à son observatoire)"},
+			{"type": "etat", "cle": "sceau_airain",
+				"objectif": "Trouver la Bergerie du Vent, au pied du Cœur-de-Pierre au sud-est de Cliquetis, brûler ses ronces avec la Flamme (touche 2 puis X ; en VR, B), et prendre le Sceau d'Airain"},
+			{"type": "parler", "pnj": "merelune", "label": "Dans la Bergerie du Vent, j'ai vu une lune au-dessus d'une mare et d'une vanne.",
+				"texte": "… Alors la lune t'a parlé, à toi aussi. Écoute bien. Quand les anciens ont rapporté le sceau des brumes, ils l'ont couché au fond de la grande mare, sur une pierre ronde, et ils ont fermé la vieille vanne pour que l'eau le garde. La vanne, c'est un mécanisme de bronze, au bord ouest de la mare, que plus personne ne sait faire tourner. Si le sceau d'airain t'obéit, il la fera tourner. Quand l'eau sera basse, attends la lune : le sceau ne se montre qu'à elle.",
+				"objectif": "Raconter la fresque de la Bergerie à Mère-Lune, la doyenne de Ramure"},
+			{"type": "etat", "cle": "sceau_brumes",
+				"objectif": "Faire tourner la vieille vanne de la grande mare de Ramure avec le Rouage (touche 3 puis X ; en VR, B), puis, la nuit, prendre le Sceau des Brumes sur la pierre ronde, au fond de la mare"},
+			{"type": "etat", "cle": "journal_lu",
+				"objectif": "Lire les pages blanches du journal de bord à la Lueur de lune (touche 4 puis X ; en VR, B), le journal dans le sac"},
+			{"type": "etat", "cle": "sceau_embruns",
+				"objectif": "Montrer les trois sceaux à la Dame de Proue, la figure de proue du Léviathan (tout à l'avant du pont, près de la longue-vue)"},
+			{"type": "etat", "cle": "porte_ouverte",
+				"objectif": "Poser les quatre sceaux dans la Porte aux Quatre Sceaux, au pied du Cœur-de-Pierre"},
+			{"type": "rendre", "pnj": "matthias", "label": "La Porte aux Quatre Sceaux est ouverte !",
+				"objectif": "Annoncer à Matthias que la Porte aux Quatre Sceaux est ouverte (capitainerie de Carène)"},
+		],
+		"fin": "Ouverte ?! OUVERTE ! Deux cents ans fermée, et c'est toi… Attends, je note. « Porte aux Quatre Sceaux : ouverte. Par… » Je mettrai « par le voyageur ». Tiens : tout ce que j'avais économisé pour l'expédition que je n'ai jamais osé faire. Et maintenant, descends. Dessine-moi ce qu'il y a là-dessous. Mais reviens. Les cartographes ont besoin qu'on revienne.",
+		"recompense": {"pieces": 120, "titre": "Gardien des Sceaux", "objets": [["galette_sarrasin", 3]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -337,6 +411,11 @@ const AVENTURES := [
 		"etapes": [["royaume_fees", "Entrer dans le royaume des fées (le champignon de Lulu)"], ["porte_ygg", "Entrer dans Yggdrasil par la porte aux runes"], ["lucioles", "Rejouer l'air des lucioles"],
 			["seve", "Mener la lumière de la sève jusqu'au cœur de bois"], ["saisons", "Faire fleurir les quatre saisons"], ["mere_ronce", "Vaincre la Mère-Ronce"],
 			["graine_ygg", "Recevoir la graine de l'esprit de l'arbre"], ["teleportation", "Apprendre la magie de téléportation"]]},
+	{"id": "coeur_pierre", "titre": "Le Cœur-de-Pierre", "lieu": "Sous la grande île de l'est", "debut": "porte_ouverte",
+		"etapes": [["porte_ouverte", "Ouvrir la Porte aux Quatre Sceaux"], ["entree_coeur", "Descendre sous le Cœur-de-Pierre, dans la Rose des Sceaux"],
+			["aile_marees", "Rallumer le cristal de l'Aile des Marées (à l'ouest)"], ["aile_sables", "Rallumer le cristal de l'Aile des Sables (au sud)"],
+			["aile_rouages", "Rallumer le cristal de l'Aile des Rouages (au nord)"], ["aile_lune", "Rallumer le cristal de l'Aile de la Lune (à l'est)"],
+			["coeur_ouvert", "Ouvrir la salle du Cœur"], ["gardien_coeur", "Apaiser le Gardien du Cœur"]]},
 ]
 
 var main: Node
@@ -622,6 +701,10 @@ func commit_reply(r: Dictionary, npc: Node) -> void:
 		npc.brain._bond(12.0)
 	apply_bonuses()
 	main._show_message_v28("Quête accomplie : %s%s" % [str(q["titre"]), ("  (" + ", ".join(msgs) + ")") if not msgs.is_empty() else ""])
+	# V63 : de l'expérience pour chaque quête accomplie
+	var pr: Node = main.get("progression_v63")
+	if pr != null:
+		pr.on_quest(qid, (q.get("etapes", []) as Array).size())
 	if main.has_method("jingle"):
 		main.jingle("victoire")
 	changed.emit()
@@ -786,12 +869,16 @@ func apply_bonuses() -> void:
 	if main == null:
 		return
 	var hero: Node = main.get("hero_v28")
+	# V63 : les points de caractéristique de la progression s'ajoutent aux bonus des quêtes
+	var pr: Node = main.get("progression_v63")
 	if hero != null:
-		var hp_max: int = 10 + 2 * int(bonus["coeur"])
+		var hp_max: int = 10 + 2 * (int(bonus["coeur"]) + (int(pr.extra("coeur")) if pr != null else 0))
 		if int(hero.HP_MAX) != hp_max:
 			hero.set_max_hearts(hp_max)
-		hero.STAMINA_MAX = 10.0 + 3.0 * float(bonus["endurance"])
-		hero.bonus_force = int(bonus["force"])
+		hero.STAMINA_MAX = 10.0 + 3.0 * float(bonus["endurance"]) + (float(pr.extra("endurance")) if pr != null else 0.0)
+		hero.bonus_force = int(bonus["force"]) + (int(pr.extra("force")) if pr != null else 0)
+		if pr != null:
+			pr.apply_hero()
 	var mer: Node = main.get("mer_v55")
 	if mer != null:
 		mer.AIR_MAX = 18.0 + 7.0 * float(bonus["souffle"])
@@ -951,6 +1038,8 @@ func place_name(p: Vector3) -> String:
 		var gz: String = str(main.grande_v59.zone_at(p))
 		if gz.begins_with("carene"):
 			return "Carène, le port de l'épave"
+		if gz.begins_with("ramure"):
+			return {"ramure_cercle": "Ramure, le Cercle de la Lune", "ramure_arbres": "Ramure, dans les arbres", "ramure_ponton": "Ramure, le ponton"}.get(gz, "Ramure, le village des oreilles")
 		if gz.begins_with("cliquetis"):
 			return {"cliquetis_port": "Cliquetis, le port", "cliquetis_foire": "Cliquetis, la Foire des Inventions"}.get(gz, "Cliquetis, la cité des ingénieurs")
 		if gz.begins_with("tazira"):

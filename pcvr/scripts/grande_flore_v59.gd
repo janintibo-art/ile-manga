@@ -14,6 +14,8 @@ const Rocks = preload("res://scripts/rocks_v26.gd")
 var epave: Node3D
 const TaziraRelief = preload("res://scripts/tazira_relief_v60.gd")
 const CliquetisRelief = preload("res://scripts/cliquetis_relief_v61.gd")
+const RamureRelief = preload("res://scripts/ramure_relief_v62.gd")
+const SceauxScript = preload("res://scripts/sceaux_v63.gd")
 var region_counts: Dictionary = {}
 
 
@@ -123,11 +125,28 @@ func _island_point(want: String, min_h: float, max_slope: float) -> Vector3:
 		var cq: Vector2 = CliquetisRelief.to_city(x, z)
 		if cq.x > -125.0 and cq.x < 150.0 and cq.y > -150.0 and cq.y < 62.0:
 			continue
+		# V62 : Ramure plante ses propres arbres (loin des plates-formes, des ponts et des allées)
+		if RamureRelief.in_village(x, z):
+			continue
 		if Vector2(x - ile.door_pos.x, z - ile.door_pos.z).length() < 26.0:
+			continue
+		# V63 : rien ne pousse sur la Dune qui Marche, au pied des bornes, devant la Bergerie
+		# du Vent ni autour de la vieille vanne de la grande mare
+		if _near_v63(x, z):
 			continue
 		if _ok_spot(w, max_slope, min_h):
 			return w
 	return Vector3.INF
+
+
+func _near_v63(x: float, z: float) -> bool:
+	var q := Vector2(x, z)
+	if q.distance_to(SceauxScript.DUNE_C) < 34.0 or q.distance_to(SceauxScript.BERG) < 16.0 or q.distance_to(Vector2(1070.0, -121.2)) < 8.0:
+		return true
+	for b in SceauxScript.BORNES:
+		if q.distance_to(b) < 4.5:
+			return true
+	return false
 
 
 func _near_carene(x: float, z: float) -> bool:

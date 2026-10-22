@@ -265,6 +265,49 @@ const ITEMS := {
 		"effet": "L'aiguille tremble, hésite, puis indique le sud. Les deux bouts de l'aiguille. Vous voilà rassuré."},
 	"tajine_poisson": {"name": "Tajine de poisson", "art": "un tajine de poisson", "kind": "nourriture", "max": 5, "heal": 8,
 		"desc": "Le tajine de Lalla Zohra : dorade, olives, citron confit et safran, cuit trois heures sur la braise. Rend quatre cœurs."},
+	# V62 : Ramure, le village des oreilles
+	"champignon_lune": {"name": "Champignon de lune", "art": "un champignon de lune", "kind": "quete", "max": 5,
+		"desc": "Un petit champignon des mares de Ramure, au chapeau bleu pâle, qui luit doucement la nuit. Mère-Lune en garnit les lanternes des ponts."},
+	"caillou_chantant": {"name": "Caillou-qui-chante", "art": "un caillou-qui-chante", "kind": "quete", "max": 1,
+		"desc": "Un galet percé de petits trous. Quand le vent passe dedans, il siffle une note claire. Le début du Grand Troc de Bedaine."},
+	"gland_dore": {"name": "Gland d'or", "art": "un gland d'or", "kind": "quete", "max": 1,
+		"desc": "Un gland doré, tout brillant, trouvé à la cime du Chêne-Mère. Les chouettes de Ramure en raffolent."},
+	"plume_lune": {"name": "Plume de lune", "art": "une plume de lune", "kind": "quete", "max": 3,
+		"desc": "Une plume de chouette argentée, tombée une nuit de pleine lune. À Ramure, toutes les nuits sont de pleine lune."},
+	"fiole_brume": {"name": "Fiole de brume", "art": "une fiole de brume", "kind": "quete", "max": 1,
+		"desc": "De la brume du matin, cueillie sur la grande mare et mise en bouteille par Pivoine. Elle tourne doucement derrière le verre."},
+	"clochette_argent": {"name": "Clochette d'argent", "art": "une clochette d'argent", "kind": "quete", "max": 1,
+		"desc": "Une petite clochette forgée par Ursule et trempée dans la brume. Elle sonne plus clair que toutes les cloches de l'île."},
+	"oreilles_renard": {"name": "Oreilles de renard", "art": "des oreilles de renard", "kind": "curiosite", "sorte": "Curiosité de Ramure", "max": 1,
+		"desc": "Un serre-tête avec deux oreilles de renard en feutre roux, au bout noir. Cadeau de Mère-Lune : à Ramure, on vous prend pour un des leurs.",
+		"effet": "Vous mettez les oreilles de renard. Vous avez l'impression d'entendre un peu mieux. Quelque part, un lapin rit."},
+	"coupe_course": {"name": "Coupe de la Grande Course", "art": "la coupe de la Grande Course", "kind": "curiosite", "sorte": "Curiosité de Ramure", "max": 1,
+		"desc": "Une coupe sculptée dans le bois du Chêne-Mère, gravée d'un lapin qui court. Bondi l'a gardée trois ans. Maintenant, elle est à vous.",
+		"effet": "Vous levez la coupe bien haut. On croit entendre, au loin, toute la Clairière des Jeux applaudir."},
+	"grelot_tanuki": {"name": "Grelot de tanuki", "art": "un grelot de tanuki", "kind": "curiosite", "sorte": "Curiosité de Ramure", "max": 1,
+		"desc": "Un grelot de cuivre au bout d'un cordon rouge, que les tanukis accrochent à leur ceinture. Signe d'un vrai maître du troc.",
+		"effet": "Vous secouez le grelot : ding-ding ! Vous avez soudain très envie d'échanger quelque chose contre autre chose."},
+	"pain_carotte": {"name": "Pain de carotte", "art": "un pain de carotte", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le pain de Trèfle, la boulangère de Ramure : moelleux, doré, aux carottes du potager des lapins. Rend deux cœurs."},
+	"gateau_lune": {"name": "Gâteau de lune", "art": "un gâteau de lune", "kind": "nourriture", "max": 10, "heal": 6,
+		"desc": "Un gâteau rond à la châtaigne et au miel, une lune dessinée dessus. À Ramure, on le mange tous les soirs de fête. Rend trois cœurs."},
+	"tisane_brume": {"name": "Tisane de brume", "art": "une tisane de brume", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "La tisane de Pivoine, à la sauge et à la reine-des-prés. On dit qu'elle fait dormir comme un loir. Rend un cœur."},
+	"brochette_poisson": {"name": "Brochette de poisson", "art": "une brochette de poisson", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Des perches des mares grillées sur une baguette de bambou par Caramel, la poissonnière. Croustillantes. Rend deux cœurs."},
+	# V63 : la grande enquête des Quatre Sceaux
+	"journal_bord": {"name": "Journal de bord du Léviathan", "art": "le journal de bord du Léviathan", "kind": "quete", "sorte": "Objet de quête : les Quatre Sceaux", "max": 1,
+		"desc": "Le journal du dernier capitaine du Léviathan, relié d'un cuir qui sent encore le sel. Des pages entières sont blanches… De l'encre de lune, disait Ba Sidi : elle ne se lit qu'au clair d'une lune que l'on porte avec soi."},
+	"sceau_sables": {"name": "Sceau des Sables", "art": "le Sceau des Sables", "kind": "quete", "sorte": "L'un des quatre sceaux", "max": 1,
+		"desc": "Un disque d'or rouge, chaud comme une pierre au soleil, gravé d'un soleil levant au-dessus d'une dune. Le sceau du désert. Il a éveillé en toi la Flamme."},
+	"sceau_airain": {"name": "Sceau d'Airain", "art": "le Sceau d'Airain", "kind": "quete", "sorte": "L'un des quatre sceaux", "max": 1,
+		"desc": "Un disque de bronze aux bords dentés, qui tourne tout seul quand on le pose à plat. Le sceau des hautes terres. Il a éveillé en toi le Rouage."},
+	"sceau_brumes": {"name": "Sceau des Brumes", "art": "le Sceau des Brumes", "kind": "quete", "sorte": "L'un des quatre sceaux", "max": 1,
+		"desc": "Un disque d'argent pâle où dort un croissant de lune ; une brume légère s'en échappe toujours. Le sceau de Ramure. Il a éveillé en toi la Lueur de lune."},
+	"lame_coeur": {"name": "Lame du Cœur", "art": "la Lame du Cœur", "kind": "arme", "max": 1, "damage": 9,
+		"desc": "Une épée taillée dans un éclat du cristal du Cœur-de-Pierre, offerte par le Gardien apaisé. Elle est tiède, et bat doucement, comme un cœur. Dégâts : 9."},
+	"sceau_embruns": {"name": "Sceau des Embruns", "art": "le Sceau des Embruns", "kind": "quete", "sorte": "L'un des quatre sceaux", "max": 1,
+		"desc": "Un disque de nacre bleu-vert, frais comme une vague, gravé d'une rose des vents. Le sceau de Carène. Il a éveillé en toi la Bourrasque."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -750,6 +793,40 @@ func make_model(id: String) -> Node3D:
 	var m := Node3D.new()
 	m.name = "Modele_" + id
 	match id:
+		"sceau_sables", "sceau_airain", "sceau_brumes", "sceau_embruns":
+			# V63 : un sceau : disque épais de métal, emblème lumineux au milieu
+			var base_c: Color = {"sceau_sables": Color(0.85, 0.5, 0.2), "sceau_airain": Color(0.72, 0.52, 0.26), "sceau_brumes": Color(0.78, 0.8, 0.86), "sceau_embruns": Color(0.5, 0.78, 0.78)}[id]
+			var glow_c: Color = {"sceau_sables": Color(1.0, 0.6, 0.2), "sceau_airain": Color(1.0, 0.8, 0.35), "sceau_brumes": Color(0.7, 0.8, 1.0), "sceau_embruns": Color(0.35, 0.95, 0.9)}[id]
+			var metal := _mat(id + "_metal", base_c, 0.32)
+			metal.metallic = 0.9
+			var glow := _mat(id + "_glow", glow_c, 0.3)
+			glow.emission_enabled = true
+			glow.emission = glow_c
+			glow.emission_energy_multiplier = 2.2
+			_part(m, _cyl(0.1, 0.1, 0.028, 24), metal, Vector3(0, 0.014, 0))
+			_part(m, _cyl(0.07, 0.07, 0.032, 24), glow, Vector3(0, 0.014, 0))
+			if id == "sceau_airain":
+				for k in range(12):
+					var a2: float = TAU * k / 12.0
+					_part(m, _box_mesh(Vector3(0.03, 0.024, 0.025)), metal, Vector3(cos(a2) * 0.108, 0.014, sin(a2) * 0.108), Vector3(0, -rad_to_deg(a2), 0))
+		"lame_coeur":
+			# V63 : la lame de cristal du Cœur : garde d'or, lame rouge et or qui luit
+			var cristal := _mat("lame_coeur_cristal", Color(1.0, 0.45, 0.2), 0.08)
+			cristal.metallic = 0.3
+			cristal.emission_enabled = true
+			cristal.emission = Color(1.0, 0.42, 0.12)
+			cristal.emission_energy_multiplier = 1.8
+			var or_m := _mat("lame_coeur_or", Color(1.0, 0.78, 0.35), 0.25)
+			or_m.metallic = 1.0
+			_part(m, _cyl(0.018, 0.022, 0.2, 8), _mat("lame_coeur_cuir", Color(0.25, 0.12, 0.08), 0.8), Vector3(0, 0.1, 0))
+			_part(m, _box_mesh(Vector3(0.22, 0.035, 0.05)), or_m, Vector3(0, 0.21, 0))
+			_part(m, _box_mesh(Vector3(0.05, 0.74, 0.016)), cristal, Vector3(0, 0.6, 0))
+			_part(m, _cyl(0.0, 0.025, 0.1, 4), cristal, Vector3(0, 1.0, 0), Vector3(0, 45, 0), Vector3(1, 1, 0.32))
+			_part(m, _sphere(0.03), or_m, Vector3(0, -0.01, 0))
+		"journal_bord":
+			_part(m, _box_mesh(Vector3(0.2, 0.04, 0.27)), _mat("cuir_journal", Color(0.36, 0.2, 0.12), 0.7), Vector3(0, 0.02, 0))
+			_part(m, _box_mesh(Vector3(0.188, 0.032, 0.258)), _mat("pages_journal", Color(0.92, 0.88, 0.76), 0.9), Vector3(0.008, 0.02, 0))
+			_part(m, _box_mesh(Vector3(0.21, 0.012, 0.03)), _mat("fermoir_journal", Color(0.72, 0.56, 0.3), 0.35), Vector3(0, 0.02, 0.06))
 		"pomme":
 			_part(m, _sphere(0.075), _mat("pomme", Color(0.72, 0.08, 0.07), 0.45), Vector3(0, 0.07, 0), Vector3.ZERO, Vector3(1, 0.9, 1))
 			_part(m, _cyl(0.006, 0.008, 0.05, 6), _mat("tige", Color(0.3, 0.2, 0.1)), Vector3(0, 0.15, 0), Vector3(0, 0, 12))
@@ -757,6 +834,16 @@ func make_model(id: String) -> Node3D:
 		"champignon":
 			_part(m, _cyl(0.025, 0.032, 0.1, 10), _mat("pied", Color(0.9, 0.86, 0.78)), Vector3(0, 0.05, 0))
 			_part(m, _sphere(0.075), _mat("chapeau", Color(0.55, 0.26, 0.12), 0.6), Vector3(0, 0.1, 0), Vector3.ZERO, Vector3(1, 0.55, 1))
+		"champignon_lune":
+			# V62 : le champignon des mares de Ramure, qui luit (bleu pâle)
+			var lune := _mat("chapeau_lune", Color(0.62, 0.78, 0.95), 0.4)
+			lune.emission_enabled = true
+			lune.emission = Color(0.45, 0.7, 1.0)
+			lune.emission_energy_multiplier = 1.6
+			_part(m, _cyl(0.02, 0.026, 0.12, 10), _mat("pied_lune", Color(0.88, 0.9, 0.95)), Vector3(0, 0.06, 0))
+			_part(m, _sphere(0.065), lune, Vector3(0, 0.12, 0), Vector3.ZERO, Vector3(1, 0.5, 1))
+			_part(m, _cyl(0.012, 0.016, 0.07, 8), _mat("pied_lune", Color(0.88, 0.9, 0.95)), Vector3(0.06, 0.035, 0.02))
+			_part(m, _sphere(0.035), lune, Vector3(0.06, 0.07, 0.02), Vector3.ZERO, Vector3(1, 0.5, 1))
 		"baies":
 			for k in range(7):
 				var a: float = k * 0.9
@@ -1543,7 +1630,7 @@ func _refresh_pc() -> void:
 	var info: Dictionary = ITEMS[sid]
 	_detail_icon.texture = _icons.get(sid)
 	_detail_name.text = str(info["name"]) + ("" if int(slots[selected]["n"]) <= 1 else "  ×" + str(slots[selected]["n"]))
-	_detail_kind.text = str(KIND_LABEL.get(info["kind"], ""))
+	_detail_kind.text = str(info.get("sorte", KIND_LABEL.get(info["kind"], "")))
 	_detail_desc.text = str(info["desc"])
 	match str(info["kind"]):
 		"nourriture":

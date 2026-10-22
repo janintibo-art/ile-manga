@@ -26,12 +26,15 @@ const ZONE_TRACK := {
 	"grande_ouest": "large", "grande_nord": "large", "grande_est": "large", "grande_sud": "large", "grande_massif": "large",
 	"tazira_port": "tazira", "tazira_ville": "tazira", "tazira_souk": "tazira", "tazira_place": "tazira", "tazira_navire": "tazira", "tazira_murene": "",
 	"cliquetis": "cliquetis", "cliquetis_foire": "cliquetis", "cliquetis_port": "cliquetis",
+	"ramure": "ramure", "ramure_cercle": "ramure", "ramure_arbres": "ramure", "ramure_ponton": "ramure",
+	"coeur": "coeur",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
-	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0,
+	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
+	"coeur": -8.0, "niveau": -6.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
@@ -67,7 +70,7 @@ func setup(main_node: Node) -> void:
 		AudioServer.set_bus_name(bus, "Musique")
 		AudioServer.set_bus_send(bus, "Master")
 	for name in TRACK_DB:
-		if name in ["victoire", "decouverte"]:
+		if name in ["victoire", "decouverte", "niveau"]:
 			continue
 		var p := AudioStreamPlayer.new()
 		p.name = "Musique_" + str(name)
@@ -191,6 +194,9 @@ func _decide(dt: float) -> void:
 	var gr: Node = main.get("grande_v59")
 	if gr != null and gr.get("tazira") != null and gr.tazira != null and bool(gr.tazira.fete_heard):
 		want_zone = ""
+	# V62 : à la fête de la lune de Ramure, ce sont les tambours et la flûte du Cercle
+	if gr != null and gr.get("ramure") != null and gr.ramure != null and bool(gr.ramure.fete_heard):
+		want_zone = ""
 	# --- combat
 	var fighting: bool = running and _fighting()
 	if fighting:
@@ -296,5 +302,9 @@ func _boss_fight() -> bool:
 	# V58 : la Mère-Ronce, sur la Couronne d'Yggdrasil
 	var fe: Node = main.get("feerie_v58")
 	if fe != null and bool(fe.fight):
+		return true
+	# V63 : les gardiens du Cœur-de-Pierre
+	var co: Node = main.get("coeur_v63")
+	if co != null and bool(co.fight):
 		return true
 	return false
