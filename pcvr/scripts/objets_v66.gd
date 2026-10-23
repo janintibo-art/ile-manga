@@ -36,6 +36,10 @@ const CASSES := [
 	["donjon", "jarre", 342.1, -70.0, -245.88, 6.23], ["donjon", "jarre", -19.6, -70.0, -56.96, 1.08], ["donjon", "jarre", -18.91, -73.0, -220.66, 4.19], ["donjon", "pot", 327.41, -70.0, -251.31, 3.18],
 	["donjon", "jarre", -27.74, -113.0, -144.51, 5.58], ["donjon", "jarre", 340.61, -70.0, -204.19, 2.82], ["donjon", "jarre", -46.84, -70.0, -284.1, 2.9], ["donjon", "pot", -149.13, -14.28, 198.55, 5.12],
 	["donjon", "jarre", -28.76, -113.0, -205.3, 4.69], ["donjon", "jarre", -57.73, -70.0, -283.56, 3.0],
+	# V67 : Arcanelle (devant le Chaudron Fumant et L'Alambic, le ponton, le jardin, la crypte)
+	["arcanelle", "tonneau", -260.4, 5.66, -438.8, 0.4], ["arcanelle", "tonneau", -247.6, 5.08, -438.8, 2.1], ["arcanelle", "caisse", -246.4, 5.17, -443.0, 0.2],
+	["arcanelle", "caisse", -245.6, 4.7, -430.6, 1.1], ["arcanelle", "caisse", -226.0, 3.22, -413.5, 0.8], ["arcanelle", "panier", -294.0, 6.0, -430.0, 2.6],
+	["arcanelle", "panier", -304.0, 6.0, -436.0, 4.0], ["arcanelle", "pot", -331.0, 10.0, -459.0, 1.7],
 ]
 
 ## [région, x, y, z, angle] : les coffres cachés (posés au sol, l'avant tourné vers l'intérieur de l'île).
@@ -50,6 +54,8 @@ const COFFRES := [
 	["grande", 828.93, 3.54, 40.15, 2.61], ["grande", 661.29, 1.87, -43.64, 1.94], ["grande", 1048.49, 30.0, -273.31, -0.72],
 	["grande", 1050.06, 2.63, 55.64, -2.65], ["grande", 755.01, 7.73, -266.49, 1.01], ["grande", 1120.19, 9.84, -252.59, -1.05],
 	["grande", 1180.85, 1.94, -180.17, -1.45], ["grande", 782.66, 8.55, -41.65, 2.17], ["grande", 728.19, 2.16, -195.72, 1.36],
+	# V67 : Arcanelle (le Bois Tors, les falaises du nord, l'îlot du Lac Miroir)
+	["arcanelle", -370.0, 5.12, -440.0, 1.2], ["arcanelle", -310.0, 12.42, -556.0, 0.3], ["arcanelle", -267.2, 9.95, -534.0, -1.0],
 ]
 ## Ce qu'un coffre contient selon le pays : [pièces min, max], objets possibles.
 const COFFRE_BUTIN := {
@@ -57,17 +63,18 @@ const COFFRE_BUTIN := {
 	"jungle": [[12, 22], ["noix_coco", "miel", "coquillage", "baies"]],
 	"elfes": [[14, 24], ["pain_miel", "tisane_lune", "poussiere_fee", "baies"]],
 	"nains": [[16, 28], ["biere_naine", "minerai_fer", "fromage_chevre", "champignon_braise"]],
+	"arcanelle": [[16, 28], ["potion_mana", "elixir_etoile", "tarte_potiron", "hydromel"]],
 	"azur": [[15, 26], ["croissant", "punch_coco", "coquillage", "biere_naine"]],
 	"grande": [[20, 35], ["cidre_carene", "dattes", "rhum_murene", "galette_sarrasin", "pain_carotte"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [
 	["village", Vector3(0, 0, 10), 160.0], ["jungle", Vector3(0, 0, -330), 175.0], ["elfes", Vector3(330, 0, -165), 150.0],
 	["nains", Vector3(-330, 0, -160), 150.0], ["azur", Vector3(300, 0, 200), 215.0], ["grande", Vector3(940, 0, -150), 390.0],
-	["celeste", Vector3(40, 0, 400), 130.0], ["fees", Vector3(-470, 0, 520), 170.0],
+	["celeste", Vector3(40, 0, 400), 130.0], ["fees", Vector3(-470, 0, 520), 170.0], ["arcanelle", Vector3(-300, 0, -480), 135.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -75,10 +82,12 @@ const MANGER := {
 	"nains": ["champignon_braise", "fromage_chevre"], "azur": ["croissant", "baguette", "pomme"], "carene": ["galette_sarrasin", "sardine", "pomme"],
 	"tazira": ["dattes", "sardine"], "cliquetis": ["biscuit_engrenage", "pomme"], "ramure": ["pain_carotte", "baies", "pomme"],
 	"grande": ["pomme", "baies"], "fees": ["baies", "champignon"], "celeste": ["pomme"], "ciel": ["pomme"], "donjon": ["champignon"],
+	"arcanelle": ["tarte_potiron", "champignon", "baies"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
 	"tazira": "rhum_murene", "cliquetis": "cafe_vapeur", "ramure": "tisane_brume", "grande": "cidre_carene", "fees": "nectar_fee",
+	"arcanelle": "hydromel",
 }
 
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]
@@ -86,6 +95,7 @@ const BOISSONS := {
 	"biere_naine": [0.35, ""], "cidre_carene": [0.25, ""], "rhum_murene": [0.5, ""], "grog_bordee": [0.4, ""],
 	"punch_coco": [0.0, ""], "the_menthe": [-0.35, "the"], "cafe_vapeur": [-0.5, "cafe"], "nectar_fee": [0.0, "nectar"],
 	"tisane_lune": [-0.2, "tisane"], "tisane_brume": [-0.2, "tisane"], "potion_seve": [0.0, ""], "noix_coco": [0.0, "coco"],
+	"hydromel": [0.3, ""], "potion_mana": [0.0, "magie"], "elixir_etoile": [0.0, "etoile"],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -99,6 +109,7 @@ const COMPTOIRS := {
 	"mamalou": ["rhum_murene", 4, "Un verre de rhum de la Murène"],
 	"gaston": ["cafe_vapeur", 2, "Un café à vapeur au comptoir"],
 	"zineb": ["the_menthe", 2, "Un thé à la menthe sur la terrasse"],
+	"berthe": ["hydromel", 3, "Une chope d'hydromel au comptoir"],
 }
 
 const PLAINTES := {
@@ -977,6 +988,14 @@ func drink(id: String, at_counter: bool = false) -> void:
 			msg += " Brûlant, sucré, parfumé."
 		"nectar":
 			msg += " Il pétille sur la langue comme une poignée d'étoiles."
+		"magie", "etoile":
+			# V67 : les potions de Gustave Fiole rendent la magie (sorts_v67)
+			var so: Node = main.get("sorts_v67")
+			if so != null:
+				so.add_mana(6.0 if fx == "magie" else 99.0)
+				msg += " Une chaleur bleue court jusqu'au bout des doigts : ta magie revient (%d / %d)." % [int(so.mana), int(so.mana_max())]
+			if fx == "etoile" and hero != null and hero.has_method("heal"):
+				hero.heal(4)
 	main._show_message_v28(msg)
 
 

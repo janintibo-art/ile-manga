@@ -43,6 +43,7 @@ var zone: String = ""
 var sea: float = 0.0                # 0 : loin de la mer, 1 : au bord de l'eau
 var _tick: float = 0.0
 var _event_clock: float = 3.0
+var _last_zone_v67: String = ""
 var _shots: Array = []              # lecteurs 3D pour les sons ponctuels
 var _shot_i: int = 0
 var _anvils: Array = []             # {player, clock}
@@ -207,6 +208,10 @@ func _process(delta: float) -> void:
 		_tick = 0.25
 		_choose_zone(running)
 		_cull_emitters()
+		# V67 : en changeant de lieu (une grotte, une île), ses bruits viennent sans attendre
+		if zone != _last_zone_v67:
+			_last_zone_v67 = zone
+			_event_clock = minf(_event_clock, 1.5)
 	# Fondu des nappes vers leur volume cible
 	for k in beds:
 		var b: Dictionary = beds[k]
@@ -323,6 +328,14 @@ func _choose_zone(running: bool) -> void:
 		_azur_beds(az_zone, p)
 		_night_beds()
 		return
+	# V67 : Arcanelle, l'île des sorciers
+	var arc: Node = main.get("arcanelle_v67")
+	var arc_zone: String = arc.zone_at(p) if arc != null and arc.get("ile") != null and arc.ile != null and not on_ferry else ""
+	if arc_zone != "" and not on_boat:
+		zone = arc_zone
+		_arcanelle_beds(arc_zone, p)
+		_night_beds()
+		return
 	# V59 : la grande île de l'est : Carène (dans l'épave), les quatre régions, le massif
 	var gr: Node = main.get("grande_v59")
 	var gr_zone: String = gr.zone_at(p) if gr != null and gr.get("ile") != null and gr.ile != null and not on_ferry else ""
@@ -356,6 +369,45 @@ func _choose_zone(running: bool) -> void:
 			targets["volcan"] = 0.55 + 0.45 * alt
 			targets["ressac"] = (0.2 + 0.6 * sea) * (1.0 - 0.6 * alt)
 	_night_beds()
+
+
+## V67 : les nappes d'Arcanelle : la lande et le vent, un peu de féerie, la taverne, la crypte.
+func _arcanelle_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	match z:
+		"arcanelle_chaudron":
+			sea = 0.0
+			targets["taverne"] = 1.0 if not day or _evening() else 0.6
+		"arcanelle_bibliotheque", "arcanelle_salle":
+			sea = 0.0
+			targets["grotte"] = 0.15
+			targets["brise"] = 0.1
+		"arcanelle_crypte":
+			sea = 0.0
+			targets["grotte"] = 0.85
+			targets["feerique"] = 0.12
+		"arcanelle_bourg":
+			targets["ville_azur"] = 0.3 if day else 0.1
+			targets["feerique"] = 0.15
+			targets["brise"] = 0.4
+			targets["ressac"] = 0.25 * sea + 0.05
+		"arcanelle_bois":
+			targets["feerique"] = 0.45
+			targets["oiseaux"] = 0.3 if day else 0.0
+			targets["brise"] = 0.2
+		"arcanelle_falaises":
+			targets["vent_vol"] = 0.55
+			targets["brise"] = 0.8
+			targets["ressac"] = 0.2 + 0.6 * sea
+		"arcanelle_rivage":
+			targets["ressac"] = 0.4 + 0.6 * sea
+			targets["brise"] = 0.6
+		_:
+			targets["lande"] = 0.8
+			targets["feerique"] = 0.2
+			targets["brise"] = 0.5
+			targets["ressac"] = 0.3 * sea
+			targets["vent_vol"] = clampf((p.y - 14.0) / 20.0, 0.0, 0.35)
 
 
 ## V56 : les nappes de Port-Azur.

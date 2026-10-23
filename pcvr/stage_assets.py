@@ -304,6 +304,26 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n66 += 1
     print(f"Objets V66: {n66} fichiers")
+    # V67 : Arcanelle, l'île des sorciers (sols, murs, toits, vitraux, runes) : importés
+    # compressés avec mipmaps, comme les objets V66.
+    # Les sols (le shader du terrain lit le bleu des cartes de reliefs) : sans perte.
+    n67 = 0
+    tex67 = source / "textures" / "arcanelle"
+    sols67 = {"galets", "tourbe", "lande", "bruyere", "schiste"}
+    if tex67.is_dir():
+        for f in sorted(tex67.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if f.stem.removesuffix("_n") in sols67:
+                if "compress/mode=0" not in old or "compress/normal_map=0" not in old or "mipmaps/generate=true" not in old:
+                    imp.write_text(IMPORT_V64.replace("compress/mode=2", "compress/mode=0").format(nm=0, hq="false"))
+            elif "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n67 += 1
+    print(f"Arcanelle V67: {n67} fichiers")
     # V56 : les polices du carnet (Lora, et DejaVu Sans pour les symboles ★ ⚓ ♥ ✓)
     fonts = source / "fonts"
     if fonts.is_dir():

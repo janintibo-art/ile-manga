@@ -7,7 +7,7 @@ clemence colette dagna eclair ecrou electre elfe_1 elfe_3 elfe_5 elfe_7 elfe_8 f
 heloise hilda hortense ilyria ines khadija lea lila lilas lola lucie lulu lyra mamalou maree margaux margot merelune mochi
 morgane myrtille nadine nain_1 nain_3 nain_6 nerea nimiel nina nolwenn odette ondine pauline pivoine plumette pommedepin
 prudence rita rosa rosalie rose rosette salome samira selma sofia sylvie sylwen trefle ulfa ursule yasmine yaya zelie
-zineb zoe zohra eclair'''.split())
+zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -361,6 +361,32 @@ def outfit(D, p):
         if na.get('cape'):
             add('cape', na['cape'], 'laine')
         return T
+    # --------------------------------------------------------- Arcanelle : robes de sorciers
+    arc = p.get('arc')
+    if vil == 'arcanelle' and arc:
+        robe = col(arc.get('robe', haut))
+        tissu = 'laine' if old else 'lin'
+        if female:
+            add('corsage_long', robe, tissu)
+            add('jupe_longue', robe, tissu)
+            add('ceinture_ample', [0.78, 0.62, 0.3] if arc.get('etoiles') else darker(robe, 0.5), 'cuir')
+        elif az.get('tablier') or child:
+            add('tunique_haut', robe, tissu)
+            add('tunique_bas', robe, tissu)
+            add('pantalon', darker(robe, 0.45), 'toile')
+            add('ceinture_ample', [0.3, 0.2, 0.12], 'cuir')
+        else:
+            add('djellaba_haut', robe, tissu)
+            add('djellaba_bas', robe, tissu)
+            add('pantalon', darker(robe, 0.45), 'toile')
+        add('chaussures' if child else 'bottes', [0.24, 0.16, 0.1], 'cuir')
+        if az.get('tablier'):
+            add('tablier', az['tablier'], 'coton')
+        if az.get('foulard'):
+            add('col', az['foulard'], 'soie')
+        if arc.get('cape') and not child:
+            add('cape', arc['cape'], 'laine')
+        return T
     # --------------------------------------------------------- enfants
     if child:
         if female and az.get('robe'):
@@ -503,7 +529,8 @@ def assets(D):
 
 HAT_CUT = {'ch_paille': 0.035, 'ch_capeline': 0.035, 'ch_casquette': 0.045, 'ch_kepi': 0.05, 'ch_marin': 0.05, 'ch_beret': 0.03,
            'ch_cuisinier': 0.05, 'ch_tricorne': 0.045, 'ch_haut_de_forme': 0.05, 'ch_fez': 0.02, 'ch_bonnet': 0.065,
-           'ch_bandana': 0.045, 'ch_foulard_tete': 0.3, 'ch_capuche': 0.3, 'ch_casque': 0.075, 'ch_turban': 0.07, 'ch_casque_aviateur': 0.3}
+           'ch_bandana': 0.045, 'ch_foulard_tete': 0.3, 'ch_capuche': 0.3, 'ch_casque': 0.075, 'ch_turban': 0.07, 'ch_casque_aviateur': 0.3,
+           'ch_sorcier': 0.045}
 
 
 def hats_for(D, p):
@@ -535,6 +562,9 @@ def hats_for(D, p):
         out.append({'v': 'ch_bonnet', 'c': col(te['bonnet']), 'tissu': 'laine'})
     if 'bandana' in te:
         out.append({'v': 'ch_bandana', 'c': col(te['bandana']), 'tissu': 'coton'})
+    arc = p.get('arc', {})
+    if 'chapeau' in arc:
+        out.append({'v': 'ch_sorcier', 'c': col(arc['chapeau']), 'tissu': 'laine'})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

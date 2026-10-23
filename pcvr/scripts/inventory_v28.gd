@@ -312,6 +312,31 @@ const ITEMS := {
 	"petite_cle": {"name": "Petite clé", "art": "une petite clé", "kind": "curiosite", "sorte": "Clé de coffre", "max": 20,
 		"desc": "Une petite clé de fer à l'anneau en trèfle. Elle ouvre un coffre fermé à clé (une seule fois : elle reste dans la serrure).",
 		"effet": "Une petite clé : approche-toi d'un coffre fermé à clé et ouvre-le, elle fera le reste."},
+	# V67 : Arcanelle, l'île des sorciers
+	"grimoire": {"name": "Grimoire d'apprenti", "art": "un grimoire", "kind": "curiosite", "sorte": "Curiosité d'Arcanelle", "max": 1,
+		"desc": "Un gros livre de cuir violet, une étoile d'or sur la couverture. Ses pages étaient blanches : chaque sort appris d'un maître d'Arcanelle s'y est écrit tout seul, à l'encre violette.",
+		"effet": "Tu ouvres le grimoire. L'encre violette frémit, et les sorts que tu connais brillent un instant sur la page."},
+	"eclat_lune": {"name": "Éclat de lune", "art": "un éclat de lune", "kind": "quete", "sorte": "Objet de quête : Arcanelle", "max": 3,
+		"desc": "Un morceau de lumière tombé du ciel une nuit claire, pâle et tiède. Aurélien Lumen en a besoin pour enseigner le sort de lumière."},
+	"flocon_givre": {"name": "Flocon de givre éternel", "art": "un flocon de givre éternel", "kind": "quete", "sorte": "Objet de quête : Arcanelle", "max": 3,
+		"desc": "Un flocon tombé sur les falaises du nord d'Arcanelle. Il ne fond pas, même au creux de la main. Borée Givrelin en fait la clé du sort de gel."},
+	"plume_vent": {"name": "Plume du vent", "art": "une plume du vent", "kind": "quete", "sorte": "Objet de quête : Arcanelle", "max": 3,
+		"desc": "Une longue plume blanche aux reflets bleus, perdue par le vent quand il tourne trop vite. Elle ne pèse presque rien. Zéphyrine Plume en a besoin pour enseigner la lévitation."},
+	"livre_envole": {"name": "Livre envolé", "art": "un livre envolé", "kind": "quete", "sorte": "Objet de quête : Arcanelle", "max": 4,
+		"desc": "Un des livres de la bibliothèque d'Arcanelle, envolé pendant la grande tempête. Ses pages battent encore un peu, comme des ailes. Théophraste les attend."},
+	"potion_mana": {"name": "Potion de magie", "art": "une potion de magie", "kind": "nourriture", "max": 10, "heal": 0,
+		"desc": "La fierté de Gustave Fiole, à L'Alambic : de la rosée de lune, trois gouttes de miel et une pensée gentille. Elle rend six points de magie."},
+	"elixir_etoile": {"name": "Élixir d'étoile", "art": "un élixir d'étoile", "kind": "nourriture", "max": 5, "heal": 4,
+		"desc": "Un élixir doré qui pétille comme un ciel d'été. Il rend toute la magie, et deux cœurs. Gustave ne dit pas ce qu'il y met."},
+	"baton_sorcier": {"name": "Bâton d'Arcanelle", "art": "le bâton d'Arcanelle", "kind": "arme", "max": 1, "damage": 6,
+		"desc": "Le bâton des sorciers d'Arcanelle, remis au Cercle des Pierres-Lunes : du bois du Bois Tors et un cristal violet. En main, chaque sort coûte un point de magie de moins. Dégâts : 6."},
+	"hydromel": {"name": "Hydromel", "art": "une chope d'hydromel", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "L'hydromel de Berthe, au Chaudron Fumant : du miel des ruches de Mère Sauge, doux et doré. Rend un cœur."},
+	"tarte_potiron": {"name": "Tarte au potiron", "art": "une part de tarte au potiron", "kind": "nourriture", "max": 10, "heal": 6,
+		"desc": "La tarte de Berthe Chaudron, qui « ensorcelle tout le monde ». Fondante, épicée, encore tiède. Rend trois cœurs."},
+	"chouette_plume": {"name": "Plume de chouette", "art": "une plume de chouette", "kind": "curiosite", "sorte": "Curiosité d'Arcanelle", "max": 1,
+		"desc": "Une plume brune et douce, laissée sur le toit de Mère Sauge par la chouette du Bois Tors que tu as soignée.",
+		"effet": "Tu fais tourner la plume entre tes doigts. Quelque part dans le Bois Tors, une chouette hulule."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -583,7 +608,7 @@ func _sfx(name: String, at: Variant = null) -> void:
 static func pickup_sound(id: String) -> String:
 	if id in ["piece", "piece_or"]:
 		return "ramasse_pieces"
-	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee"]:
+	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee", "eclat_lune", "flocon_givre"]:
 		return "ramasse_gemme"
 	if id in ["caillou", "minerai_fer", "fragment_amulette", "petite_cle"]:
 		return "ramasse_pierre"
@@ -1222,6 +1247,63 @@ func make_model(id: String) -> Node3D:
 		"appareil_photo":
 			_part(m, _box_mesh(Vector3(0.14, 0.09, 0.06)), _mat("cuir_noir", Color(0.12, 0.11, 0.1), 0.6), Vector3(0, 0.045, 0))
 			_part(m, _cyl(0.03, 0.03, 0.05, 14), _mat("chrome", Color(0.75, 0.75, 0.78), 0.2), Vector3(0, 0.045, 0.045), Vector3(90, 0, 0))
+		# V67 : Arcanelle
+		"grimoire":
+			_part(m, _box_mesh(Vector3(0.2, 0.06, 0.26)), _mat("cuir_grimoire", Color(0.34, 0.16, 0.46), 0.6), Vector3(0, 0.03, 0))
+			_part(m, _box_mesh(Vector3(0.188, 0.05, 0.25)), _mat("pages_journal", Color(0.92, 0.88, 0.76), 0.9), Vector3(0.01, 0.03, 0))
+			var etoile := _mat("etoile_or", Color(0.95, 0.78, 0.3), 0.3)
+			etoile.metallic = 0.8
+			_part(m, _cyl(0.04, 0.04, 0.005, 5), etoile, Vector3(0, 0.062, 0))
+		"eclat_lune":
+			var lune := _mat("eclat_lune", Color(0.8, 0.88, 1.0), 0.1)
+			lune.emission_enabled = true
+			lune.emission = Color(0.65, 0.78, 1.0)
+			lune.emission_energy_multiplier = 2.2
+			_part(m, _cyl(0.0, 0.05, 0.12, 5), lune, Vector3(0, 0.1, 0))
+			_part(m, _cyl(0.05, 0.0, 0.06, 5), lune, Vector3(0, 0.03, 0))
+		"flocon_givre":
+			var givre := _mat("givre", Color(0.85, 0.95, 1.0), 0.05)
+			givre.emission_enabled = true
+			givre.emission = Color(0.55, 0.8, 1.0)
+			givre.emission_energy_multiplier = 1.2
+			for k in range(3):
+				_part(m, _box_mesh(Vector3(0.16, 0.012, 0.018)), givre, Vector3(0, 0.08, 0), Vector3(0, k * 60, 0))
+			_part(m, _sphere(0.02), givre, Vector3(0, 0.08, 0))
+		"plume_vent":
+			_part(m, _sphere(0.06), _mat("plume_vent", Color(0.94, 0.97, 1.0), 0.6), Vector3(0, 0.012, 0), Vector3(0, 30, 0), Vector3(0.6, 0.12, 2.6))
+			_part(m, _cyl(0.003, 0.003, 0.3, 4), _mat("tige_plume", Color(0.85, 0.82, 0.7), 0.5), Vector3(0, 0.014, 0), Vector3(90, 30, 0))
+		"livre_envole":
+			_part(m, _box_mesh(Vector3(0.18, 0.04, 0.24)), _mat("cuir_livre", Color(0.55, 0.14, 0.12), 0.6), Vector3(0, 0.03, 0), Vector3(0, 0, 0))
+			_part(m, _box_mesh(Vector3(0.17, 0.03, 0.23)), _mat("pages_journal", Color(0.92, 0.88, 0.76), 0.9), Vector3(0.008, 0.035, 0))
+			_part(m, _box_mesh(Vector3(0.16, 0.004, 0.22)), _mat("pages_journal", Color(0.92, 0.88, 0.76), 0.9), Vector3(0.0, 0.07, 0.0), Vector3(0, 0, 18))
+		"potion_mana", "elixir_etoile":
+			var liq := _mat("liq_" + id, Color(0.35, 0.5, 1.0) if id == "potion_mana" else Color(1.0, 0.82, 0.3), 0.1)
+			liq.emission_enabled = true
+			liq.emission = Color(0.3, 0.45, 1.0) if id == "potion_mana" else Color(1.0, 0.75, 0.25)
+			liq.emission_energy_multiplier = 1.4
+			_part(m, _sphere(0.048), liq, Vector3(0, 0.048, 0))
+			_part(m, _cyl(0.013, 0.013, 0.05, 8), _mat("verre", Color(0.75, 0.88, 0.95), 0.1), Vector3(0, 0.105, 0))
+			_part(m, _cyl(0.015, 0.015, 0.02, 8), _mat("bouchon", Color(0.5, 0.34, 0.2), 0.8), Vector3(0, 0.135, 0))
+		"baton_sorcier":
+			# Le long de +Y : la poignée en bas, le cristal en haut.
+			var bois := _mat("bois_tordu", Color(0.4, 0.27, 0.16), 0.85)
+			_part(m, _cyl(0.02, 0.026, 1.15, 8), bois, Vector3(0, 0.45, 0))
+			_part(m, _sphere(0.04), bois, Vector3(0, 1.03, 0), Vector3.ZERO, Vector3(1.2, 0.8, 1.2))
+			var cris := _mat("cristal_baton", Color(0.72, 0.55, 1.0), 0.1)
+			cris.emission_enabled = true
+			cris.emission = Color(0.65, 0.45, 1.0)
+			cris.emission_energy_multiplier = 2.0
+			_part(m, _cyl(0.0, 0.045, 0.14, 6), cris, Vector3(0, 1.15, 0))
+			_part(m, _cyl(0.045, 0.0, 0.07, 6), cris, Vector3(0, 1.045, 0))
+			_tip(m, 1.2)
+		"hydromel":
+			_part(m, _cyl(0.05, 0.045, 0.12, 14), _mat("chope_bois", Color(0.5, 0.34, 0.2), 0.8), Vector3(0, 0.06, 0))
+			_part(m, _cyl(0.046, 0.046, 0.004, 14), _mat("hydromel", Color(0.95, 0.68, 0.2), 0.2), Vector3(0, 0.118, 0))
+		"tarte_potiron":
+			_part(m, _cyl(0.1, 0.09, 0.03, 18), _mat("pate", Color(0.78, 0.55, 0.28), 0.7), Vector3(0, 0.015, 0))
+			_part(m, _cyl(0.088, 0.088, 0.004, 18), _mat("potiron", Color(0.92, 0.5, 0.16), 0.5), Vector3(0, 0.031, 0))
+		"chouette_plume":
+			_part(m, _sphere(0.05), _mat("plume_chouette", Color(0.55, 0.42, 0.3), 0.7), Vector3(0, 0.01, 0), Vector3(0, 20, 0), Vector3(0.6, 0.12, 2.2))
 		"corail_rouge":
 			for k in range(4):
 				_part(m, _cyl(0.008, 0.014, 0.12, 6), _mat("corail", Color(0.85, 0.2, 0.18), 0.6), Vector3(0, 0.05, 0), Vector3(0, k * 90, -25 + k * 15))

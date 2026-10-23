@@ -378,8 +378,9 @@ func roof_gable(xf: Transform3D, w: float, d: float, pitch_deg: float, over: flo
 		tri(gable_key, xf * Vector3(gx, 0, -d * 0.5), xf * Vector3(gx, 0, d * 0.5), xf * Vector3(gx, rise - 0.05, 0), n2, Vector2(0, 1), Vector2(d / 3.0, 1), Vector2(d / 6.0, 1.0 - rise / 3.0))
 		# rive de toit (bout des tuiles)
 		quad4(key, xf * Vector3(sx * hw, 0, -hd), xf * Vector3(sx * hw, 0, hd), xf * Vector3(sx * hw, rise, 0), xf * Vector3(sx * hw, rise, 0), n2, Vector2(0, 0.2), Vector2(1, 0.2), Vector2(0.5, 0), Vector2(0.5, 0))
-	# faîtage : une rangée de tuiles rondes
-	cyl(Transform3D(xf.basis * Basis(Vector3.BACK, PI / 2.0), xf * Vector3(-hw, rise - 0.02, 0)), 0.11, 0.11, w + over * 1.2, key, 8, false, 0.6)
+	# faîtage : une rangée de tuiles rondes, d'une rive à l'autre (V67 : elle partait vers
+	# l'extérieur du pignon et dépassait du toit de toute sa longueur)
+	cyl(Transform3D(xf.basis * Basis(Vector3.BACK, -PI / 2.0), xf * Vector3(-hw, rise - 0.02, 0)), 0.11, 0.11, w + over * 1.2, key, 8, false, 0.6)
 	return rise
 
 

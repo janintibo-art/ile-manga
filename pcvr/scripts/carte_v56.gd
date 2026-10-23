@@ -42,6 +42,8 @@ const PLACES := [
 	# V63 : la grande enquête
 	["Tombeau de la Dune qui Marche", Vector2(1032, -70), "tombeau_dune"],
 	["Bergerie du Vent", Vector2(1021, -242), "bergerie_vent"],
+	# V67 : l'île des sorciers
+	["Arcanelle", Vector2(-300, -545), "arcanelle"],
 ]
 
 var main: Node

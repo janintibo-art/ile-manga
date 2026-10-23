@@ -205,6 +205,19 @@ def build_hats(body):
     rows = lathe(H, ey + 0.06, prof, tilt=-0.08)
     rows += disc_cap(rows[-1], 0.0)[1:]
     hats['ch_fez'] = mesh_from([rows])
+    # chapeau de sorcier : bord large et souple, grand cône dont la pointe retombe vers l'arrière
+    prof = [(0.095, -0.016), (0.075, -0.006), (0.04, 0.0), (0.004, 0.004), (0.004, 0.03), (-0.012, 0.07), (-0.03, 0.115),
+            (-0.047, 0.16), (-0.06, 0.2), (-0.07, 0.235), (-0.077, 0.262)]
+    rows = lathe(H, ey + 0.05, prof, brim_fn=lambda a, k: (0.0, -0.01 * (1.0 + 0.6 * np.cos(a)) * (1 - k / 2) if k < 2 else 0.0),
+                 tilt=-0.1)
+    rows += disc_cap(rows[-1], 0.0, 2)[1:]
+    base = ey + 0.05
+    bent = []
+    for r in rows:
+        dy = float(r[:, 1].mean()) - base
+        u = max(0.0, (dy - 0.11) / 0.16)
+        bent.append(r + np.array([0.0, -0.025 * u * u, -0.07 * u * u]))
+    hats['ch_sorcier'] = mesh_from([bent])
     # coiffes souples (coques) -----------------------------------------
     hats['ch_bonnet'] = mesh_from([close_top(head_shell(H, -180, 180, 5, 88, 48, 14, lambda t, p: 0.012 + 0.006 * smooth(25, 5, p),
                                               extra=lambda t, p, q: np.array([0, 0.004, 0]) * (p < 20)))])

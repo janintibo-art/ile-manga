@@ -28,13 +28,15 @@ const ZONE_TRACK := {
 	"cliquetis": "cliquetis", "cliquetis_foire": "cliquetis", "cliquetis_port": "cliquetis",
 	"ramure": "ramure", "ramure_cercle": "ramure", "ramure_arbres": "ramure", "ramure_ponton": "ramure",
 	"coeur": "coeur",
+	"arcanelle": "arcanelle", "arcanelle_bourg": "arcanelle", "arcanelle_bois": "arcanelle", "arcanelle_falaises": "arcanelle",
+	"arcanelle_rivage": "arcanelle", "arcanelle_salle": "arcanelle", "arcanelle_bibliotheque": "arcanelle", "arcanelle_chaudron": "", "arcanelle_crypte": "",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
-	"coeur": -8.0, "niveau": -6.0,
+	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0,
 }
 const LOOPED := ["theme_ile", "combat"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)

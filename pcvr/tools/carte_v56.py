@@ -287,6 +287,43 @@ def archipel(src: Path) -> None:
         d.line([rm(88, 2), rm(103, 2)], fill=(110, 80, 50, 255), width=3)
         for px, pz in pads:
             d.ellipse((px + 540 - 6, pz + 600 - 6, px + 540 + 6, pz + 600 + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
+    # V67 : Arcanelle, l'île des sorciers : le Lac Miroir et son îlot, les chemins dallés,
+    # l'Académie (la tour et son enceinte), la bibliothèque, l'observatoire, le Cercle des
+    # Pierres-Lunes, l'Aire des Duels et ses braseros, le bourg et le ponton, la Tour Penchée
+    def ar(x, z):
+        return (-300.0 + x + 540, -480.0 + z + 600)
+
+    def disc(x, z, r, **kw):
+        a, b = ar(x - r, z - r), ar(x + r, z + r)
+        d.ellipse((a[0], a[1], b[0], b[1]), **kw)
+    disc(26, -50, 15, fill=(92, 150, 190, 255), outline=(40, 70, 110, 255))
+    disc(31, -55.5, 3, fill=(200, 210, 220, 255), outline=(90, 100, 120, 255))
+    for lane in ([(79, 72), (70, 62), (46, 46), (28, 30), (22, 22), (14, 12)], [(14, 12), (26, 2), (14, -6), (2, -6)],
+                 [(-18, -24), (-24, -34), (-32, -42)], [(-26, -6), (-40, -2), (-54, -4)], [(30, 48), (18, 48), (8, 46)],
+                 [(-8, 40), (-22, 32), (-31, 26)], [(-4, 55), (-8, 64), (-14, 74), (-18, 79)], [(60, 26), (60, 18), (58, 10)],
+                 [(48, -8), (40, -22), (33, -34)], [(-40, 30), (-48, 40), (-56, 48)], [(14, -6), (10, -20), (4, -30)]):
+        d.line([ar(*q) for q in lane], fill=(196, 190, 176, 255), width=2)
+    d.polygon([ar(22, 24), ar(72, 24), ar(72, 64), ar(22, 64)], fill=(150, 140, 126, 160), outline=(90, 80, 70, 255))
+    rr = np.random.default_rng(67)
+    for hx, hz in [(46, 35), (58, 44), (30, 40), (34, 56), (62, 56), (66, 34), (40, 60), (28, 30)]:
+        c = [(122, 70, 120, 255), (70, 100, 150, 255), (150, 70, 60, 255), (80, 120, 90, 255)][int(rr.integers(4))]
+        d.polygon([ar(hx - 3.5, hz - 3), ar(hx + 3.5, hz - 3), ar(hx + 3.5, hz + 3), ar(hx - 3.5, hz + 3)], fill=c, outline=(50, 40, 40, 255))
+    disc(-10, -10, 16.4, outline=(110, 100, 120, 255), width=2)
+    disc(-14, -20, 5, fill=(110, 96, 150, 255), outline=(50, 40, 70, 255))
+    disc(-14, -20, 1.6, fill=(230, 200, 90, 255))
+    disc(-6, -4, 1.5, fill=(150, 210, 240, 255))
+    d.polygon([ar(6, 7), ar(17, 7), ar(17, 17), ar(6, 17)], fill=(122, 92, 70, 255), outline=(60, 40, 30, 255))
+    disc(-34, -46, 5, fill=(70, 90, 150, 255), outline=(40, 50, 90, 255))
+    for k in range(9):
+        a = k * 2 * math.pi / 9
+        disc(-64 + 8 * math.cos(a), -4 + 8 * math.sin(a), 1.2, fill=(210, 214, 228, 255), outline=(80, 80, 100, 255))
+    disc(58, 0, 12, outline=(150, 120, 90, 255), width=2)
+    for ang in (270, 335, 35, 145, 190):
+        a = math.radians(ang)
+        disc(58 + 11 * math.cos(a), 0 + 11 * math.sin(a), 1.4, fill=(230, 120, 40, 255))
+    disc(-36, 24, 3, fill=(70, 66, 74, 255))
+    disc(-20, 84, 3.4, fill=(130, 120, 110, 255), outline=(60, 50, 40, 255))
+    d.line([ar(79, 72), ar(91, 84)], fill=(110, 80, 50, 255), width=3)
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)
@@ -295,7 +332,8 @@ def archipel(src: Path) -> None:
     # rose des vents
     _compass(d, W - 120, H - 120, 70)
     # cartouche
-    _cartouche(im, (40, 34), "Archipel d'Île Manga", "levé par un voyageur curieux")
+    # V67 : le cartouche quitte le coin nord-ouest, où émerge Arcanelle
+    _cartouche(im, (660, 34) if W > 1080 else (40, 34), "Archipel d'Île Manga", "levé par un voyageur curieux")
     # cadre
     d.rectangle((6, 6, W - 7, H - 7), outline=(70, 50, 30, 255), width=4)
     d.rectangle((14, 14, W - 15, H - 15), outline=(70, 50, 30, 180), width=1)

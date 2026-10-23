@@ -130,6 +130,7 @@ func _ready() -> void:
 	_create_v63()
 	_create_v65()
 	_create_v66()
+	_create_v67()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -164,6 +165,9 @@ func _height_at(x: float, z: float) -> float:
 func _height_land_v55(x: float, z: float) -> float:
 	# V29 : la jungle a son propre relief ; ailleurs, celui de l'île du village.
 	var h: float = _height_island_v29(x, z)
+	# V67 : Arcanelle, l'île des sorciers (son carré touche le bord du cercle de la jungle)
+	if arcanelle_v67 != null and arcanelle_v67.ile != null and arcanelle_v67.ile.contains(x, z):
+		h = maxf(h, arcanelle_v67.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -978,6 +982,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			feerie_v58.load_data({})
 		if grande_v59 != null:
 			grande_v59.load_data({})
+		if arcanelle_v67 != null and arcanelle_v67.bourg != null:
+			arcanelle_v67.load_data({})
+		if sorts_v67 != null:
+			sorts_v67.load_data({})
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		if sceaux_v63 != null:
@@ -1076,6 +1084,13 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and grande_v59 != null:
 		var gdata: Variant = SaveStore.read_slot(slot).get("grande", {})
 		grande_v59.load_data(gdata if gdata is Dictionary else {})
+	# V67 : Arcanelle (leçons, braseros, runes, chouette, cérémonie) et les sorts appris
+	if not new_game and arcanelle_v67 != null and arcanelle_v67.bourg != null:
+		var adata67: Variant = SaveStore.read_slot(slot).get("arcanelle", {})
+		arcanelle_v67.load_data(adata67 if adata67 is Dictionary else {})
+	if not new_game and sorts_v67 != null:
+		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
+		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
 	if not new_game and teleport_v58 != null:
 		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
 		teleport_v58.load_data(tdata if tdata is Dictionary else {})
@@ -1167,6 +1182,10 @@ func _save_slot(slot: int) -> void:
 		extra["feerie"] = feerie_v58.serialize()
 	if grande_v59 != null:
 		extra["grande"] = grande_v59.serialize()
+	if arcanelle_v67 != null and arcanelle_v67.bourg != null:
+		extra["arcanelle"] = arcanelle_v67.serialize()
+	if sorts_v67 != null:
+		extra["sorts"] = sorts_v67.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -1372,7 +1391,10 @@ func _move_player(origin: Node3D, offset: Vector3) -> void:
 	body.velocity.x = offset.x / dt
 	body.velocity.z = offset.z / dt
 	# V28 : au sol on reste collé, sauf au moment d'un saut (vitesse vers le haut).
-	if body.is_on_floor() and body.velocity.y <= 0.0:
+	# V67 : pendant le sort de lévitation, on monte, on plane, puis on redescend doucement.
+	if sorts_v67 != null and sorts_v67.levitating():
+		body.velocity.y = sorts_v67.lev_vy(body.velocity.y, dt, body.is_on_floor())
+	elif body.is_on_floor() and body.velocity.y <= 0.0:
 		body.velocity.y = -0.05
 	else:
 		body.velocity.y = maxf(body.velocity.y - GRAVITY_V11 * dt, -24.0)
@@ -1432,6 +1454,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			inventory_v28.toggle(4)
 		elif progression_v63 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and progression_v63.handle_key(event.keycode):
 			# V63 : 1 à 4 choisissent le pouvoir d'un sceau, X le lance
+			pass
+		elif sorts_v67 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and sorts_v67.handle_key(event.keycode):
+			# V67 : 5 à 0 choisissent un sort d'Arcanelle, V le lance, B passe au suivant
 			pass
 		elif event.keycode == KEY_F1 and info != null:
 			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
@@ -1596,7 +1621,9 @@ func _move_xr_body_v23(stick_offset: Vector3) -> void:
 		vr_body.velocity = Vector3.ZERO
 	vr_body.velocity.x = wanted.x / dt
 	vr_body.velocity.z = wanted.z / dt
-	if vr_body.is_on_floor() and vr_body.velocity.y <= 0.0:
+	if sorts_v67 != null and sorts_v67.levitating():
+		vr_body.velocity.y = sorts_v67.lev_vy(vr_body.velocity.y, dt, vr_body.is_on_floor())
+	elif vr_body.is_on_floor() and vr_body.velocity.y <= 0.0:
 		vr_body.velocity.y = -0.05
 	else:
 		vr_body.velocity.y = maxf(vr_body.velocity.y - GRAVITY_V11 * dt, -24.0)
@@ -2012,6 +2039,12 @@ func _respawn_v28() -> void:
 			place_player_v35(ra[0], ra[1])
 			_show_message_v28("Vous vous êtes évanoui… Des Atlantes vous ont ramené sous le dôme, devant le palais.")
 			return
+	# V67 : à Arcanelle, Mère Sauge vous soigne ; on se réveille près de la fontaine du Fondateur
+	if arcanelle_v67 != null and arcanelle_v67.bourg != null and arcanelle_v67.contains(pp):
+		var rc: Array = arcanelle_v67.respawn_point()
+		place_player_v35(rc[0], rc[1])
+		_show_message_v28("Vous vous êtes évanoui… Mère Sauge vous a fait boire une tisane qui sentait le thym. Vous voilà sur la place du Chaudron, à Arcanelle.")
+		return
 	# V59 : sur la grande île, Anouk vous soigne ; on se réveille sur la plage de Carène
 	if grande_v59 != null and grande_v59.contains(pp):
 		var rg: Array = grande_v59.respawn_point(pp)
@@ -2069,6 +2102,9 @@ func _vr_actions_v28(delta: float) -> void:
 	# V63 : pouvoirs des sceaux (B), garde (grip gauche), esquive et tournoyante (clics des sticks)
 	if progression_v63 != null:
 		progression_v63.vr_tick(delta)
+	# V67 : les sorts d'Arcanelle (gâchette gauche : lancer ; maintenue : sort suivant)
+	if sorts_v67 != null:
+		sorts_v67.vr_tick(delta)
 	# V56 : gâchette près de la cloche du quai : appeler L'Hirondelle
 	var trig_now: bool = right_hand.get_float("trigger") > 0.7
 	if azur_v56 != null and azur_v56.ferry != null and trig_now and not vr_buttons_v28.get("cloche", false) and _nearest_npc_v31() == null:
@@ -2204,6 +2240,15 @@ func _create_jungle_v29() -> void:
 	add_child(grande_v59)
 	grande_v59.setup(self)
 	grande_v59.build_island()
+	# V67 : Arcanelle, l'île des sorciers, au nord-ouest (le relief d'abord ; l'Académie, le
+	# bourg, la communauté et les sorts sont construits après l'heure du jour, voir _create_v67).
+	arcanelle_v67 = preload("res://scripts/arcanelle_v67.gd").new()
+	arcanelle_v67.name = "Arcanelle_v67"
+	add_child(arcanelle_v67)
+	arcanelle_v67.setup(self)
+	arcanelle_v67.build_island()
+	var arc_d: Array = arcanelle_v67.dock()
+	boat_v29._make_dock("Ponton_arcanelle", arc_d[0], arc_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2236,6 +2281,12 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		return
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
+		return
+	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
+	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
+		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
 		return
 	# V59 : la grande île : la terre ferme, le Léviathan et les pontons de Carène
 	if grande_v59 != null and grande_v59.contains(p):
@@ -2732,7 +2783,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2810,6 +2861,8 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		r.erase("_fin56")
 		r.erase("_ferry")
 		r.erase("_dormir")
+		r.erase("_sort67")
+		r.erase("_chaudron_lit")
 		var names: Array = []
 		for g in gives:
 			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())
@@ -2831,6 +2884,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V66 : un verre au comptoir
 	if objets_v66 != null:
 		objets_v66.after_reply(r, npc)
+	# V67 : Arcanelle (la chambre du Chaudron Fumant, un sort appris d'un maître)
+	if arcanelle_v67 != null:
+		arcanelle_v67.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2895,6 +2951,8 @@ var coeur_v63: Node3D                      # V63 : le donjon du Cœur-de-Pierre
 var grande_v59: Node3D                     # V59 : la grande île de l'est, le Léviathan et Carène
 var bavardages_v65: Node                   # V65 : les habitants qui se connaissent bavardent entre eux
 var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
+var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
+var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -2938,6 +2996,9 @@ func _spawn_azur_v56() -> void:
 	# V59 : les gens de Carène
 	if grande_v59 != null and grande_v59.carene != null:
 		grande_v59.spawn_npcs()
+	# V67 : la communauté des sorciers d'Arcanelle
+	if arcanelle_v67 != null and arcanelle_v67.bourg != null:
+		arcanelle_v67.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3002,6 +3063,23 @@ func _create_v66() -> void:
 	objets_v66.name = "Objets_v66"
 	add_child(objets_v66)
 	objets_v66.setup(self)
+
+
+## V67 : Arcanelle (l'Académie, le bourg, la communauté des sorciers, la végétation), les sorts
+## (sorts_v67.gd) et leur écran ; le ponton est posé avec le relief (au démarrage).
+func _create_v67() -> void:
+	sorts_v67 = preload("res://scripts/sorts_v67.gd").new()
+	sorts_v67.name = "Sorts_v67"
+	add_child(sorts_v67)
+	sorts_v67.setup(self)
+	if hud_v28 != null and not xr_active:
+		sorts_v67.make_hud(hud_v28)
+	if arcanelle_v67 == null:
+		return
+	arcanelle_v67.build_town()
+	if journal_v56 != null:
+		arcanelle_v67.register_services(journal_v56)
+	arcanelle_v67.register_targets(sorts_v67, pouvoirs_v63)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3174,6 +3252,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(azur_v56.ile.CENTER.x, azur_v56.ile.CENTER.z), 205.0])
 	if grande_v59 != null and grande_v59.ile != null:
 		boxes.append([Vector2(grande_v59.ile.GRID.x, grande_v59.ile.GRID.z), grande_v59.ile.HALF])
+	if arcanelle_v67 != null and arcanelle_v67.ile != null:
+		boxes.append([Vector2(arcanelle_v67.ile.CENTER.x, arcanelle_v67.ile.CENTER.z), arcanelle_v67.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

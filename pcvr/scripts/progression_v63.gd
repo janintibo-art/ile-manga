@@ -1146,6 +1146,10 @@ func refresh_page() -> void:
 		else:
 			r += "[color=#3a4a55]●[/color] [color=#9aa7b0]%s — %s[/color]\n" % ["???" if not _heard_of_seals() else str(s2["nom"]), "à trouver" if _heard_of_seals() else "inconnu"]
 	r += "[color=#9aa7b0][i]PC : 1 à 4 pour choisir un pouvoir, X pour le lancer. VR : B pour lancer, B maintenu pour changer.[/i][/color]\n\n"
+	# V67 : les sorts appris à Arcanelle
+	var so: Node = main.get("sorts_v67") if main != null else null
+	if so != null and so.any_known():
+		r += so.page_text() + "\n"
 	if c.has_method("_hero_stats_text"):
 		r += c._hero_stats_text()
 	_p_right.text = r

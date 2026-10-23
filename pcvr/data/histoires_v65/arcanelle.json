@@ -1,0 +1,3018 @@
+{
+ "agathe": {
+  "genre": "f",
+  "prenom": "Agathe",
+  "histoire": [
+   {
+    "titre": "née dans une roulotte",
+    "t": "Je suis née dans cette roulotte, ou plutôt dans sa grand-mère : les roues ont été changées quatre fois, la porte trois, mais c'est la même. Ma grand-mère lisait le marc de café, ma mère les lignes de la main. Moi, à six ans, je lisais déjà dans les yeux des gens. C'est le plus facile. Les gens ont des yeux très bavards."
+   },
+   {
+    "titre": "trois fois le tour de l'archipel",
+    "t": "Avec ma jument Prune, j'ai fait trois fois le tour de l'archipel. La place de Port-Azur, le souk de Tazira, les quais de Carène, partout. J'ai prédit des mariages, des tempêtes, et un nombre incroyable de voyages. Les gens adorent qu'on leur prédise un voyage. Surtout ceux qui partent le lendemain."
+   },
+   {
+    "titre": "la roue cassée du Bois Tors",
+    "t": "Il y a dix ans, en traversant le Bois Tors, une roue s'est cassée sur une racine. Prune s'est arrêtée net et n'a plus voulu bouger. Les vieux chênes se sont penchés pour voir. Les champignons se sont allumés autour de nous. J'ai compris le message. Je n'ai jamais réparé la roue. Elle est toujours là, posée contre un chêne."
+   },
+   {
+    "titre": "ma table et mes habitués",
+    "t": "Aujourd'hui, tout Arcanelle vient s'asseoir à ma table, même ceux qui n'y croient pas. Aurélien vient demander si les étoiles bougeront. Sauge m'apporte du thé. Mathurin grogne devant sa botte. Pyra passe vite. Et un soir, une chouette à l'aile blessée s'est posée près de ma roulotte, sans laisser personne approcher. La boule, ce soir-là, n'a rien voulu dire."
+   },
+   {
+    "titre": "la seule chose que la boule m'ait montrée",
+    "t": "Tu veux un secret, {surnom} ? La boule ne me montre presque rien. De la brume. Je lis les gens, pas le verre. Sauf une fois. Un mois avant ton arrivée, elle m'a montré, très net, une silhouette qui sortait de la mer avec de la brume sur les épaules. Alors quand je t'ai dit « je t'attendais »… pour une fois, ce n'était pas une formule."
+   }
+  ],
+  "reve": [
+   "Remettre une roue à ma roulotte, un jour, et refaire le tour de l'archipel. Une dernière fois. Et revenir ici, bien sûr. La boule dit que je reviendrai. Pour une fois, je la crois.",
+   "Et lire, rien qu'une fois, mon propre avenir dans la boule. Elle refuse. Elle dit que je tricherais."
+  ],
+  "question": {
+   "texte": "Dis-moi : tu veux connaître ton avenir, ou tu préfères la surprise ?",
+   "reponses": [
+    {
+     "label": "Dis-moi tout !",
+     "valeur": "tout",
+     "t": "Tout ? Ha ! Personne ne veut tout. Bon : tu vas manger, dormir, marcher, et rencontrer des gens étonnants. Tu vois ? Je ne me trompe jamais.",
+     "rappel": "Alors, tu as mangé, dormi, marché ? Rencontré des gens étonnants ? Je te l'avais prédit. Je suis très forte."
+    },
+    {
+     "label": "Je préfère la surprise.",
+     "valeur": "surprise",
+     "t": "La surprise ! La plus sage des réponses. La boule est vexée, mais moi, je t'approuve. L'avenir, c'est comme un cadeau : on ne secoue pas le paquet.",
+     "rappel": "Toi qui préfères la surprise : la boule a vu quelque chose pour toi, cette nuit. Je ne dirai rien. Tu as choisi."
+    },
+    {
+     "label": "Seulement les bonnes nouvelles.",
+     "valeur": "bonnes",
+     "t": "Seulement les bonnes ! Voilà quelqu'un qui me comprend. Je ne dis que celles-là, de toute façon. Les autres, je les laisse dans la boule.",
+     "rappel": "Une bonne nouvelle, rien que pour toi : la boule dit que tu reviendras me voir. Tu vois ? Elle a raison."
+    }
+   ]
+  },
+  "liens": {
+   "sauge": {
+    "qui": "ma fournisseuse de thé",
+    "nom": "Sauge",
+    "sentiment": 0.7,
+    "avis": "Sauge me fournit le thé que je lis. Elle ne croit pas tout à fait à ma boule, et je ne crois pas tout à fait à ses tisanes. On se respecte énormément. C'est la femme la plus généreuse de l'île.",
+    "anecdotes": [
+     "J'ai lu sa tasse, une fois, très sérieusement. J'ai vu « une longue vie et beaucoup de tisane ». Elle a ri si fort qu'elle a renversé la tasse sur ma nappe brodée. J'ai regardé la tache et j'ai dit : « Ça confirme. » Elle m'apporte sa verveine depuis. La tache est toujours là. Je ne la lave pas. C'est une prédiction.",
+     "Sauge m'a laissé un pot d'onguent pour la chouette blessée, au cas où elle se laisserait approcher. Je l'ai posé sur ma table, à côté de la boule. La boule et l'onguent attendaient la même chose, je crois. Sauge m'a demandé ce que ça voulait dire. Je lui ai répondu que je n'en savais rien. C'était la vérité."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sauge, ta tasse m'a parlé de toi, cette nuit."
+     ],
+     [
+      "b",
+      "Qu'est-ce qu'elle a dit, cette bavarde ?"
+     ],
+     [
+      "a",
+      "Que tu me devais un pot de miel."
+     ]
+    ]
+   },
+   "ysolde": {
+    "qui": "la gardienne",
+    "nom": "Ysolde",
+    "sentiment": 0.3,
+    "avis": "Ysolde regarde le passé avec ses pierres, moi l'avenir avec ma boule. On se croise au milieu, dans le présent, et on ne sait pas trop quoi se dire. Elle me trouve bavarde. Je la trouve trop seule.",
+    "anecdotes": [
+     "J'ai voulu poser ma boule sur l'autel du Cercle, rien qu'une minute, pour voir ce que ça donnerait : l'avenir sur le passé. Ysolde a dit non avant que j'aie fini ma phrase. La boule m'avait prévenue. J'y suis allée quand même : je voulais voir sa tête quand elle dirait non. Ça valait le voyage.",
+     "Un soir de brume, je lui ai dit que sa mère était fière d'elle. Ce n'était pas la boule. J'ai connu Aube, quand je suis arrivée : elle venait boire mon thé et ne parlait que de sa fille. Ysolde ne m'a jamais demandé d'où je savais ça. Je ne le lui dirai pas tant qu'elle ne demandera pas. Il faut vouloir savoir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Ysolde. Ta journée de demain sera calme."
+     ],
+     [
+      "b",
+      "Les pierres disent qu'hier l'était aussi."
+     ],
+     [
+      "a",
+      "Tu vois ? Tout va bien, des deux côtés."
+     ]
+    ]
+   },
+   "mathurin": {
+    "qui": "ce vieux grognon de",
+    "nom": "Mathurin",
+    "sentiment": 0.5,
+    "avis": "Mathurin me boude pour une histoire de botte. Je maintiens ma prédiction. Il grogne, il ronchonne, et il revient s'asseoir à ma table tous les mois. Au fond, il adore qu'on lui prédise des choses.",
+    "anecdotes": [
+     "Une botte de pêcheur, pointure quarante-huit : la plus grosse prise de la saison, je maintiens. Je l'ai rapportée à ma roulotte, remplie de terre, et j'y ai planté du thym, avec une étiquette : « Prédiction réalisée ». Mathurin passe devant en grognant. Le thym pousse magnifiquement. Il en prend un brin, des fois, quand il croit que je ne vois pas.",
+     "Je lui avais annoncé une traversée avec une belle inconnue aux yeux d'or. Il s'est rasé, il a mis une chemise propre. C'était une chèvre, pour le jardin de Sauge. Avec des yeux d'or magnifiques, je maintiens. Je n'ai jamais dit que c'était une femme. Il ne m'a pas parlé pendant une semaine. La chèvre, elle, l'adore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mathurin ! Ton thym pousse bien."
+     ],
+     [
+      "b",
+      "C'est pas mon thym. C'est ma botte."
+     ],
+     [
+      "a",
+      "Elle est à moi, maintenant. Tu me l'as offerte."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "notre astronome",
+    "nom": "Aurélien",
+    "sentiment": 0.6,
+    "avis": "Aurélien regarde si loin qu'il en oublie ce qu'il a sous le nez. C'est le client le plus facile à rassurer de l'archipel, et le plus gentil. Il croit tout ce que je dis sur les étoiles. Alors je fais attention.",
+    "anecdotes": [
+     "Une fois par mois, il s'assoit à ma table et me demande, très sérieux, si les étoiles bougeront demain. Je regarde la boule et je dis oui. Une seule fois, pour rire, j'ai dit non. Il n'a pas dormi de la journée. Il est revenu le soir, tout pâle, pour vérifier. Je ne recommencerai jamais. On ne plaisante pas avec les étoiles d'un astronome.",
+     "Je lui avais prédit une grande découverte. Le lendemain, il a cherché ses lunettes dans toute l'île. Elles étaient sur son nez. Je lui ai dit : pour un homme qui regarde si loin, voir ce qu'il a sous le nez, c'est une très grande découverte. Il a réfléchi longtemps. Puis il m'a remerciée. C'est un homme honnête."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aurélien, tes lunettes."
+     ],
+     [
+      "b",
+      "Sur mon nez ! Je vérifie tous les matins, maintenant."
+     ],
+     [
+      "a",
+      "Une grande découverte, chaque jour."
+     ]
+    ]
+   },
+   "pyra": {
+    "qui": "notre maîtresse du feu",
+    "nom": "Pyra",
+    "sentiment": 0.4,
+    "avis": "Pyra passe devant ma roulotte au pas de charge en criant « Je ne veux pas savoir ! ». Elle a raison et tort à la fois. C'est presque une amitié, ce cri-là.",
+    "anecdotes": [
+     "Elle a bu son thé d'un trait, posé la tasse, et quand j'ai ouvert la bouche, elle a mis le feu aux feuilles. Pfft. Plus rien. « Voilà, plus d'avenir », qu'elle m'a dit. J'ai souri. Je les avais déjà lues, évidemment. Je ne lui dirai rien. Mais je souris chaque fois que je la vois passer. Ça l'énerve beaucoup.",
+     "Un soir, je l'ai vue devant ma porte, la main sur la poignée. Elle est restée là un long moment, à regarder ma lampe. Puis elle a dit tout haut, pour elle-même : « Et si c'est lui ? » Et elle est repartie à grands pas. Je n'ai jamais su de qui elle parlait. Enfin. Je m'en doute un peu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pyra ! Ta tasse de l'autre jour…"
+     ],
+     [
+      "b",
+      "Je ne veux pas savoir."
+     ],
+     [
+      "a",
+      "Je ne dirai rien, ma belle."
+     ]
+    ]
+   }
+  }
+ },
+ "archimage": {
+  "genre": "f",
+  "prenom": "Séraphine",
+  "histoire": [
+   {
+    "titre": "le bateau des cartographes",
+    "t": "Je suis née à bord de La Rose des Vents, le bateau de mes parents. Ils dessinaient des cartes : chaque île, chaque écueil, chaque baie de l'archipel. Moi, à sept ans, je tenais la lanterne pendant qu'ils traçaient. Un soir de tempête, la lanterne s'est éteinte. Je l'ai rallumée avec ma main. Mon père n'a rien dit. Il a seulement noté la date dans la marge de sa carte."
+   },
+   {
+    "titre": "la lumière dans la brume",
+    "t": "Mes parents cherchaient une île que personne n'avait jamais dessinée. Un matin, au large du nord-ouest, j'ai vu une lumière dans la brume, une seule, qui tournait sur elle-même. Eux ne voyaient rien. J'ai pris la petite barque et j'ai ramé vers elle. C'était le Grand Cristal. Il y a quarante ans de cela, et je n'ai jamais refait le chemin dans l'autre sens."
+   },
+   {
+    "titre": "le soir où j'ai reçu le bâton",
+    "t": "Pendant vingt ans, j'ai enseigné la lumière. Puis le vieux Gaudence, l'archimage d'alors, m'a conduite au Cercle et m'a tendu son bâton. Aube Lunevoile a chanté la chanson qui réveille les pierres. Sa fille Ysolde tenait la lanterne, seize ans, sans cligner des yeux. J'ai pleuré comme une apprentie. Le lendemain, j'ai confié ma classe de lumière à Aurélien."
+   },
+   {
+    "titre": "mes journées entre la cour et le Cercle",
+    "t": "Le matin, je salue le Grand Cristal. Il tourne un peu plus vite quand il est content, et il est souvent content. Puis j'enseigne dans la cour, je déjeune chez Berthe, je console un apprenti, j'en gronde un autre, et j'essaie, pour la centième fois, de faire asseoir Pyra et Borée à la même table. Le soir, je monte au Cercle. Ysolde m'y attend sans m'attendre."
+   },
+   {
+    "titre": "la carte que je n'ai jamais dessinée",
+    "t": "Je vais te confier une chose, {surnom}. J'ai écrit à mes parents que j'avais trouvé du travail « sur une île du nord ». Jamais laquelle. Mon père a cherché Arcanelle jusqu'à son dernier jour, pour la mettre sur sa carte. Il est mort en croyant que c'était une légende. J'ai protégé l'île. Mais certains soirs, je me demande si je ne lui ai pas volé son plus beau trait de plume."
+   }
+  ],
+  "reve": [
+   "Voir un jour un apprenti réussir un sort que je n'ai jamais su lancer. Je parie sur Oscar : à force de tout rater de travers, il finira bien par inventer quelque chose.",
+   "Et puis, le plus tard possible, poser mon bâton au Cercle, m'asseoir chez Berthe près de la fenêtre et n'avoir plus rien à enseigner. Juste une soupe, et le Cristal qui tourne au loin."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quand Arcanelle est sortie de la brume, devant ton bateau, qu'est-ce que tu as ressenti ?",
+   "reponses": [
+    {
+     "label": "De la peur.",
+     "valeur": "peur",
+     "t": "De la peur ? C'est honnête. Moi aussi, la première fois, j'ai eu peur. La peur, c'est la politesse qu'on fait à l'inconnu. Ensuite, on entre.",
+     "rappel": "Toi qui as eu peur en voyant Arcanelle : as-tu encore peur d'elle ? Elle, en tout cas, s'est habituée à toi. Je le vois."
+    },
+    {
+     "label": "De la joie !",
+     "valeur": "joie",
+     "t": "De la joie ! Alors le Cristal avait raison de frémir. Ceux qui arrivent en riant restent souvent plus longtemps qu'ils ne l'avaient prévu.",
+     "rappel": "Tu m'as dit qu'Arcanelle t'avait mis en joie, en sortant de la brume. Garde cette joie près de toi : c'est la meilleure des lanternes."
+    },
+    {
+     "label": "Rien, j'avais le mal de mer.",
+     "valeur": "mal_de_mer",
+     "t": "Ha ! Le plus grand mystère de l'archipel, gâché par un mal de mer. Ne t'en fais pas : Mathurin a vu bien des futurs sorciers tout verts descendre de sa barque.",
+     "rappel": "Toi et ton mal de mer ! Tu as repris des couleurs, depuis. Arcanelle te réussit mieux que les vagues."
+    }
+   ]
+  },
+  "liens": {
+   "lumen": {
+    "qui": "mon ancien élève",
+    "nom": "Aurélien",
+    "sentiment": 0.8,
+    "avis": "Aurélien a été mon élève avant d'être mon maître de la lumière. Il ne dort pas assez, il parle trop vite, et il voit dans le ciel des choses que je n'ai jamais su y voir.",
+    "anecdotes": [
+     "Il avait douze ans. Une nuit, à trois heures, on a frappé à ma porte de la Tour : Aurélien, pieds nus, une toute petite lumière tremblante entre les mains. Sa première. Il voulait savoir si elle brillait plus fort que les étoiles. Je lui ai dit que oui. C'était faux, et c'était la plus belle lumière que j'aie jamais vue.",
+     "Le soir de sa première leçon de maître, il a voulu bien faire. La Tour d'Astrelune s'est mise à briller comme un soleil d'or, en pleine nuit. Tout le bourg a cru que c'était l'aube : Berthe a ouvert l'auberge et servi des œufs aux sorciers en chemise de nuit. Aurélien s'est excusé pendant une semaine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aurélien, tu as dormi ?"
+     ],
+     [
+      "b",
+      "Trois heures, Maîtresse ! Enfin… deux."
+     ],
+     [
+      "a",
+      "Va te coucher. Les étoiles t'attendront."
+     ],
+     [
+      "b",
+      "Elles disent toutes ça."
+     ]
+    ]
+   },
+   "theophraste": {
+    "qui": "mon vieil ami",
+    "nom": "Théophraste",
+    "sentiment": 0.8,
+    "avis": "Nous sommes arrivés le même automne, il y a quarante ans. Il me vouvoie depuis le premier jour. Je le tutoie depuis le premier jour. Aucun de nous deux n'a jamais cédé.",
+    "anecdotes": [
+     "Le premier hiver, il a voulu m'impressionner : m'envoyer une tasse de thé à la menthe à travers la cour, par télékinésie. Le thé est arrivé. La tasse est restée sur son bureau. J'ai ri si fort que le Grand Cristal a tourné dans l'autre sens. Il ne me l'a jamais pardonné. Depuis, il m'apporte mon thé à pied.",
+     "Il avait peur des échelles. Alors chaque année, pour son anniversaire, je laisse une échelle devant la bibliothèque, avec un ruban. Quarante échelles. Il les donne toutes à Mathurin, qui en a fait des planches pour le ponton. Quand je marche sur le ponton, je compte les années."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Théophraste ! Ton échelle est arrivée ?"
+     ],
+     [
+      "b",
+      "Chut, Séraphine. Nous sommes dans une bibliothèque."
+     ],
+     [
+      "a",
+      "Nous sommes dans la rue."
+     ],
+     [
+      "b",
+      "Chut quand même."
+     ]
+    ]
+   },
+   "ysolde": {
+    "qui": "la fille de mon amie",
+    "nom": "Ysolde",
+    "sentiment": 0.8,
+    "avis": "Ysolde est la fille d'Aube, ma plus vieille amie, qui gardait le Cercle avant elle. Elle a les yeux de sa mère et son silence. Je la trouve trop seule. Elle trouve que je parle trop.",
+    "anecdotes": [
+     "Tous les soirs, je monte au Cercle avec deux tasses de thé à la menthe. Ysolde boit la sienne sans un mot. Aube détestait la menthe. Je me demande parfois si sa fille aussi, et si elle la boit pour me faire plaisir. Je n'ose pas demander. On boit, on écoute les pierres. C'est notre façon de parler d'Aube.",
+     "Quand elle était petite, Aube la couchait dans un panier au pied de la plus petite pierre. Une nuit, le panier était vide. Tout le Cercle l'a cherchée. Je l'ai trouvée endormie sur l'autel, les bras en croix, qui souriait. Aube a dit : « Les pierres l'ont choisie. » Ysolde dit qu'elle avait juste froid aux pieds."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Ysolde. Thé ?"
+     ],
+     [
+      "b",
+      "Merci. … Les pierres sont calmes."
+     ],
+     [
+      "a",
+      "Et toi ?"
+     ],
+     [
+      "b",
+      "Moi aussi. Presque."
+     ]
+    ]
+   },
+   "pyra": {
+    "qui": "notre maîtresse du feu",
+    "nom": "Pyra",
+    "sentiment": 0.7,
+    "avis": "Pyra brûle de tout : de colère, de joie, de fierté. C'est une excellente maîtresse et une très mauvaise perdante. Je l'ai amenée à l'Académie à huit ans, par l'oreille.",
+    "anecdotes": [
+     "À la dernière Fête du Cristal, j'ai assis Pyra et Borée côte à côte, chez Berthe, avec une cruche d'eau entre eux. Au dessert, la cruche avait gelé du côté de Borée et bouillait du côté de Pyra. J'ai bu au milieu et j'ai dit : « Tiède. Parfait. » Ils n'ont pas ri. Berthe garde la cruche fêlée sur son étagère.",
+     "J'ai voulu leur faire donner une leçon commune, le feu et le gel, pour montrer la vapeur aux apprentis. Il y a eu tant de vapeur que la cour a disparu pendant une heure. Quand elle est revenue, Pyra et Borée étaient chacun à un bout, et Oscar était introuvable. Il était allé se coucher : il croyait que c'était la nuit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pyra, Borée dîne chez Berthe, ce soir."
+     ],
+     [
+      "b",
+      "Alors je dînerai à la fontaine."
+     ],
+     [
+      "a",
+      "Tu as dit ça l'an dernier."
+     ],
+     [
+      "b",
+      "Et je l'ai fait. Toute l'année."
+     ]
+    ]
+   },
+   "boree": {
+    "qui": "notre doyen",
+    "nom": "Borée",
+    "sentiment": 0.6,
+    "avis": "Borée était déjà là quand je suis arrivée. Il est têtu comme un glacier, et aussi lent à fondre. Je l'aime beaucoup. Je le lui dis peu : il gèle.",
+    "anecdotes": [
+     "Le jour de mon arrivée, je marchais vers l'Académie dans la boue. Un homme à la barbe déjà blanche m'a regardée, a soufflé, et la flaque devant moi a gelé pour que je ne me mouille pas les pieds. J'ai glissé, je suis tombée, et j'ai ri, assise par terre. Il a dit : « Hm. Elle rit. » C'était Borée. Il me l'a souvent rappelé.",
+     "Chaque printemps, je lui demande s'il est prêt à pardonner à Pyra. Chaque printemps, il regarde le lac et me répond : « Il n'a pas fini d'y penser. » Douze printemps. Un jour, je lui ai demandé si le lac pensait vite. Il m'a regardée comme si j'étais une apprentie de première année."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Borée, Pyra demandait de vos nouvelles."
+     ],
+     [
+      "b",
+      "Elle ment. Et vous aussi, Séraphine."
+     ],
+     [
+      "a",
+      "Un peu. Pour la bonne cause."
+     ],
+     [
+      "b",
+      "Hm. Le lac n'a pas fini d'y penser."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "mon apprenti",
+    "nom": "Oscar",
+    "sentiment": 0.8,
+    "avis": "Oscar rate tout, mais il rate avec une imagination que je n'ai jamais vue en quarante ans. Rater de façon originale, c'est déjà un talent. Il reste à savoir lequel.",
+    "anecdotes": [
+     "Son premier jour, je lui ai demandé une petite lumière. Il a fait une lumière noire. À midi, toute la cour est devenue nuit, avec des étoiles. Les apprentis ont crié, Aurélien a applaudi, et moi, j'ai noté la formule. On ne sait jamais. Personne n'a jamais réussi à refaire une lumière noire. Pas même Oscar.",
+     "Je tiens un carnet que j'appelle « Les sorts d'Oscar ». Trois cents pages. La chaise volante, le pigeon Gérard, la pluie de boutons, la soupe qui chante. Il croit que j'y note ce qu'il a cassé. C'est la liste des sorts que personne d'autre n'a inventés. Je le lui donnerai le jour où il aura son bâton."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Oscar ! Qu'as-tu raté, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "La lévitation, Archimage. La chaise a volé. Pas moi."
+     ],
+     [
+      "a",
+      "Une chaise volante ! Je note."
+     ],
+     [
+      "b",
+      "Encore ? Ça fait combien de pages ?"
+     ]
+    ]
+   },
+   "pip": {
+    "qui": "notre petit",
+    "nom": "Pip",
+    "sentiment": 0.8,
+    "avis": "Pip est le plus jeune de mes apprentis et le plus bavard de l'île, Zéphyrine comprise. Il pose cent questions par jour. Je lui ai accordé le droit à une seule.",
+    "anecdotes": [
+     "Une question par jour, c'est notre accord. Pip les choisit avec un sérieux de notaire. « Est-ce que le Cristal fait des rêves ? » « Est-ce que les étoiles ont des pieds ? » « Est-ce que vous avez été petite ? » À celle-là, j'ai mis trois jours à répondre. Il m'a dit qu'il en avait deux cents d'avance.",
+     "Un soir, il a frappé à la Tour pour savoir si le Grand Cristal dormait. Je l'ai emmené sur le banc de la cour pour le surveiller avec lui. Au bout d'un quart d'heure, Pip dormait contre mon épaule ; le Cristal tournait toujours. Je l'ai porté au dortoir. Le lendemain, je lui ai dit qu'il avait gagné : lui, au moins, il avait dormi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Pip. Ta question du jour ?"
+     ],
+     [
+      "b",
+      "Est-ce que les étoiles ont des pieds ?"
+     ],
+     [
+      "a",
+      "Demande à Aurélien. Ça comptera pour demain."
+     ],
+     [
+      "b",
+      "C'est pas juste !"
+     ]
+    ]
+   }
+  }
+ },
+ "berthe": {
+  "genre": "f",
+  "prenom": "Berthe",
+  "histoire": [
+   {
+    "titre": "l'auberge de ma grand-mère",
+    "t": "Je suis née au Chaudron Fumant, dans la chambre au-dessus de la cuisine. Ma grand-mère Adélaïde tenait l'auberge, et c'est elle qui a allumé le grand chaudron du fond, le jour de l'ouverture. J'ai appris à compter avec les louches, à lire avec les ardoises des clients, et à me taire avec les secrets des sorciers. Surtout à me taire. Enfin, presque."
+   },
+   {
+    "titre": "ma première tarte au potiron",
+    "t": "À douze ans, j'ai fait ma première tarte au potiron toute seule. Brûlée dessous, crue dessus. Grand-mère en a mangé deux parts, sans rien dire, puis elle m'a montré : la pâte, le four, la muscade. Juste une pincée. Aujourd'hui encore, quand je la fais, je compte à voix basse comme elle. Une pincée. Pas deux. Pyra, ne commence pas."
+   },
+   {
+    "titre": "la nuit où la tempête est descendue",
+    "t": "La nuit de la grande tempête, le vent s'est engouffré par la cheminée, et la flamme du chaudron s'est couchée, toute bleue, toute petite. Pyra était là. Elle voulait la rallumer par magie. Pas chez moi ! On a pris les deux soufflets et on a soufflé, à genoux, toute la nuit, en chantant pour se donner du courage. À l'aube, il brûlait encore."
+   },
+   {
+    "titre": "mon auberge aujourd'hui",
+    "t": "Aujourd'hui, tout Arcanelle passe chez moi. Séraphine déjeune à la table une, Aurélien prend son petit-déjeuner à midi, Mathurin a sa table et sa part de tarte, Sauge critique ma soupe et en reprend. Pyra et Borée dînent aux deux bouts de la salle, le plus loin possible l'un de l'autre. Et moi, je cours, je sers, j'écoute. Je sais tout. Je ne dis presque rien."
+   },
+   {
+    "titre": "le soir où le Cristal n'a pas frémi",
+    "t": "Je vais te dire un secret, mon chou. J'avais dix ans quand Pyra est partie à l'Académie. L'année d'après, j'y suis allée toute seule, la nuit, en chemise. Je me suis plantée devant le Grand Cristal et j'ai attendu qu'il frémisse. Il n'a pas bougé. J'ai pleuré jusqu'à la maison. Grand-mère m'a posé les mains sur le chaudron et m'a dit : « Lui, il a frémi. »"
+   }
+  ],
+  "reve": [
+   "Une auberge avec une chambre pour chaque habitant de l'île, au cas où. Et une grande table, une seule, où Pyra et Borée seraient bien obligés de s'asseoir ensemble. Avec la même soupe. Ha !",
+   "Et que ma tarte au potiron traverse la brume jusqu'à Port-Azur. Qu'on en parle là-bas. Qu'on vienne exprès. Comme Mathurin."
+  ],
+  "question": {
+   "texte": "Dis-moi, mon chou : tu as le mal du pays, des fois ?",
+   "reponses": [
+    {
+     "label": "Oui, un peu.",
+     "valeur": "un_peu",
+     "t": "Un peu ? Oh, viens là. Assieds-toi près du chaudron. Le mal du pays, ça se soigne à la soupe chaude et à la conversation. Je m'occupe des deux.",
+     "rappel": "Ça va mieux, ton mal du pays ? Je t'ai gardé la place près du chaudron. C'est la plus chaude de l'île."
+    },
+    {
+     "label": "Non, le monde est ma maison.",
+     "valeur": "le_monde",
+     "t": "Le monde entier ? C'est grand, comme maison ! Il en faut, des balais. Bon, alors considère que tu as une chambre ici. Une de plus.",
+     "rappel": "Toi qui as le monde pour maison : n'oublie pas que tu as aussi une chambre ici, sous les toits. Avec la lucarne."
+    },
+    {
+     "label": "Je ne sais plus d'où je viens.",
+     "valeur": "ne_sait_plus",
+     "t": "Ah… Ça arrive, quand on voyage beaucoup. Écoute, mon chou : d'ici, tu viens. Au moins un peu. Tu as poussé ma porte, ça compte.",
+     "rappel": "Tu m'avais dit que tu ne savais plus d'où tu venais. Moi, je sais : du Chaudron Fumant. Un peu. Assieds-toi."
+    }
+   ]
+  },
+  "liens": {
+   "pyra": {
+    "qui": "ma vieille copine",
+    "nom": "Pyra",
+    "sentiment": 0.8,
+    "avis": "Pyra, je l'ai connue au berceau, avec trois cents chandelles allumées autour. Elle crie fort, elle brûle mes torchons, et elle a dit un jour que ma tarte avait trop de muscade. Je l'aime quand même. Presque autant que ma tarte.",
+    "anecdotes": [
+     "Elle a osé dire que ma tarte au potiron avait trop de muscade. Une semaine de pain sec ! Je lui servais une tranche de pain sur une belle assiette, avec un grand sourire. Le huitième jour, elle est revenue dire qu'il n'y en avait pas assez, de muscade. Je lui ai resservi de la tarte. On n'en a jamais reparlé. Jamais.",
+     "La nuit de la grande tempête, elle voulait rallumer mon chaudron d'un claquement de doigts. Je lui ai tapé sur la main : pas de magie dans mon auberge, même pour sauver le chaudron. Surtout pour sauver le chaudron. On a soufflé toute la nuit avec les soufflets, à genoux, en chantant faux. La plus belle nuit de notre amitié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pyra, tes bottes ! Tu fumes sur mon plancher."
+     ],
+     [
+      "b",
+      "C'est la journée qui sort, Berthe."
+     ],
+     [
+      "a",
+      "Qu'elle sorte dehors, alors."
+     ]
+    ]
+   },
+   "sauge": {
+    "qui": "ma meilleure ennemie",
+    "nom": "Mère Sauge",
+    "sentiment": 0.7,
+    "avis": "Sauge et moi, on se dispute sur le sel et le miel depuis vingt ans, et on a raison toutes les deux. Elle reprend toujours de ma soupe. Je bois toujours sa tisane jusqu'au fond. Ça s'appelle l'amitié, mon chou.",
+    "anecdotes": [
+     "L'hiver où j'ai eu la fièvre, Sauge m'a apporté de la tisane trois fois par jour, avec bien trop de miel. J'ai tout bu. En même temps, elle tenait mon auberge : soupe sans sel, pleine d'herbes. Les clients ont demandé quand je revenais. Je suis revenue au bout de trois jours. Guérie. Je dis que c'est mon sel. Elle dit que c'est son miel.",
+     "Un soir, elle est arrivée avec un pot de miel « pour adoucir ta soupe ». Moi, je lui avais préparé un sachet de sel « pour réveiller ta tisane ». On a fait l'échange devant toute l'auberge. Mathurin a applaudi. Depuis, le pot de miel trône sur mon comptoir, plein, et je sais que mon sel est sur son étagère. Plein aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Une deuxième assiette, Sauge ?"
+     ],
+     [
+      "b",
+      "Pour vérifier, seulement."
+     ],
+     [
+      "a",
+      "Bien sûr, mon chou. Pour vérifier."
+     ]
+    ]
+   },
+   "gustave": {
+    "qui": "ce bavard de",
+    "nom": "Gustave",
+    "sentiment": 0.3,
+    "avis": "Gustave m'achète mon miel, me vend ses potions et paie son ardoise en fioles. J'ai une étagère entière de fioles que je n'ose pas ouvrir. Il chante en rentrant chez lui. Faux. Très faux.",
+    "anecdotes": [
+     "Sa potion pour faire lever la pâte : « trois gouttes », qu'il avait écrit. Moi, j'ai lu « trois cuillères ». Il écrit comme un chat qui marche dans l'encre ! La pâte est montée jusqu'au plafond de ma cuisine. J'ai servi une tarte haute comme un tabouret à la Fête du Cristal. Tout le monde en a repris. Je ne le lui dirai pas.",
+     "Il paie son ardoise en potions. « Pour la toux », « pour le moral », « pour les sabots de chèvre ». Je n'ai pas de chèvre ! J'en ai toute une étagère, derrière le comptoir. Une fois, j'en ai ouvert une par erreur : mes casseroles ont chanté toute la soirée. Juste. Plus juste que lui, en tout cas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gustave, ta potion d'hier a fait chanter mes casseroles."
+     ],
+     [
+      "b",
+      "Elles chantaient juste, au moins ?"
+     ],
+     [
+      "a",
+      "Plus juste que toi en rentrant, mon chou."
+     ]
+    ]
+   },
+   "mathurin": {
+    "qui": "mon vieux",
+    "nom": "Mathurin",
+    "sentiment": 0.8,
+    "avis": "Mathurin, ça fait trente ans qu'il « repart demain ». Il raconte ses serpents de mer, il me rapporte le premier poisson du jour, et il finit toujours la tarte. Un brave homme. Le meilleur.",
+    "anecdotes": [
+     "Le jour où il est arrivé, il a déchargé ses barriques, je lui ai servi une part de tarte, et il a raté la marée. Le lendemain, la brume était trop épaisse : encore une part. Le surlendemain aussi. Ça fait trente ans qu'il rate la marée. Il dit que c'est ma tarte qui fait venir la brume. Je ne dis pas non.",
+     "L'enseigne du Chaudron, c'est lui qui l'a sculptée, dans la planche d'une vieille barque. Il a fait le chaudron un peu petit et la fumée immense, toute en volutes. Il dit qu'il était inspiré. Je crois qu'il avait bu. Mais je ne la changerais pour rien au monde. Elle grince quand il y a du vent, comme lui."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mathurin ! Ta part est sous le torchon."
+     ],
+     [
+      "b",
+      "La dernière, Berthe ?"
+     ],
+     [
+      "a",
+      "Toujours la dernière. Depuis trente ans."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "mon client de midi",
+    "nom": "Aurélien",
+    "sentiment": 0.7,
+    "avis": "Aurélien prend son petit-déjeuner à midi et me dit bonne nuit en repartant. Il parle des étoiles la bouche pleine. C'est un garçon adorable. Il a besoin de dormir et de manger, dans un ordre ou dans l'autre.",
+    "anecdotes": [
+     "Le soir de sa première leçon de maître, la Tour d'Astrelune s'est mise à briller en or, au milieu de la nuit. J'ai cru que c'était l'aube ! J'ai ouvert l'auberge, fait chauffer le lait, cuit des œufs. Des sorciers en chemise de nuit sont arrivés en se frottant les yeux. Aurélien est venu s'excuser, rouge comme une tomate. Il a pris des œufs.",
+     "Après la grande tempête, le dôme de son Observatoire était percé. Il a dormi un mois dans ma chambre sous les toits, celle avec la lucarne. Il ne dormait pas, en fait : il passait ses nuits la tête dehors. Depuis, il répète partout que c'est la chambre de l'île où l'on rêve le mieux. Alors je la loue plus cher. Merci, Aurélien."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Aurélien ! Ton petit-déjeuner ?"
+     ],
+     [
+      "b",
+      "S'il vous plaît, Berthe ! Il est midi, c'est l'heure."
+     ],
+     [
+      "a",
+      "Et après, bonne nuit, je sais."
+     ]
+    ]
+   },
+   "boree": {
+    "qui": "mon client du fond",
+    "nom": "Borée",
+    "sentiment": 0.6,
+    "avis": "Borée mange à la table du fond, loin de la porte et loin de Pyra. Il ne parle pas, il ne souffle jamais sur sa cuillère, il remercie toujours. Un client parfait. Un peu frais, mais parfait.",
+    "anecdotes": [
+     "Borée me demande ma soupe douce, celle qui ne brûle pas. Pyra me demande ma soupe forte, celle qui a du caractère. C'est la même soupe, mon chou. La même marmite. Je souffle un peu sur l'une, je poivre l'autre au-dessus du comptoir, et voilà. Ne leur dis jamais. Ils se battraient pour savoir qui a copié l'autre.",
+     "Après la Fête du Cristal, j'ai gardé la cruche, celle qui a gelé d'un côté et bouilli de l'autre entre Borée et Pyra. Elle a une fêlure qui fait tout le tour, pile au milieu. Je l'ai mise sur l'étagère du fond. Borée s'assoit toujours dos à elle : j'ai tourné sa chaise exprès. Il ne m'a jamais remerciée. Il a compris."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Borée, ta soupe douce, comme d'habitude ?"
+     ],
+     [
+      "b",
+      "S'il vous plaît, Berthe. Pas comme la sienne."
+     ],
+     [
+      "a",
+      "Oh non. Rien à voir, mon chou."
+     ]
+    ]
+   }
+  }
+ },
+ "boree": {
+  "genre": "m",
+  "prenom": "Borée",
+  "histoire": [
+   {
+    "titre": "le pays blanc",
+    "t": "Je suis né là où les cartes s'arrêtent, dans le pays blanc. Ma mère taillait des maisons dans la glace, mon père parlait aux tempêtes. L'hiver durait neuf mois ; les trois autres, on attendait l'hiver. Enfant, je dormais sur une peau d'ours, et je savais faire geler une larme avant qu'elle tombe. Là-bas, on ne pleure pas. Ça gèle les joues."
+   },
+   {
+    "titre": "le glaçon qui m'a porté",
+    "t": "À vingt ans, j'ai voulu voir où allait la glace quand elle partait. Je suis monté sur un grand glaçon, au printemps, et je l'ai laissé dériver vers le sud. Quarante jours. Il a fondu le soir même où il a touché la plage d'Arcanelle. J'ai pris cela pour un signe. C'était il y a soixante ans. Je n'ai pas eu d'autre glaçon depuis."
+   },
+   {
+    "titre": "le premier hiver du lac",
+    "t": "Le premier hiver, j'ai voulu geler le Lac Miroir. J'ai ordonné. Il n'a pas voulu. Pendant trois mois, je suis venu m'asseoir au bord, chaque matin, sans rien demander. Un matin de février, il a gelé tout seul, d'une rive à l'autre. J'ai compris ce jour-là : le gel n'obéit pas. Il accepte. Le vieux Gaudence a ri. Il était content de moi."
+   },
+   {
+    "titre": "mes journées au bord de l'eau",
+    "t": "Je passe mes journées au bord du lac. J'apprends aux jeunes à ne pas craindre le froid, et à ne pas courir sur la glace. Le midi, je mange sur mon banc. Le soir, chez Berthe, ma soupe douce, à la table du fond. Une fois l'an, Mathurin m'emmène en mer. Le dimanche, Sauge me porte une tisane. Je la laisse refroidir. Beaucoup."
+   },
+   {
+    "titre": "les trois jours",
+    "t": "Je vais vous dire une chose que je n'ai dite à personne. L'hiver du bain, quand le lac a fondu, il m'a fallu trois jours pour le refaire geler. Trois jours. Autrefois, une nuit suffisait. J'ai eu peur, ces trois jours-là. Pas pour le lac : pour moi. J'ai cru que le froid me quittait. Je n'en veux pas à Pyra pour le bain. Je lui en veux de m'avoir fait voir ça."
+   }
+  ],
+  "reve": [
+   "Retourner une fois dans le pays blanc. Pas pour y rester : pour voir si la glace se souvient de moi. Je crois que oui. La glace a une très bonne mémoire.",
+   "Et voir le lac geler, une dernière fois, d'une rive à l'autre, en une seule nuit. Comme avant. Hm. On verra."
+  ],
+  "question": {
+   "texte": "Dites-moi. Vous savez attendre, vous ?",
+   "reponses": [
+    {
+     "label": "Très bien.",
+     "valeur": "tres_bien",
+     "t": "Hm. On dit ça souvent. On verra. Asseyez-vous au bord du lac une heure, sans parler. Ensuite, vous me redirez.",
+     "rappel": "Vous qui savez attendre : le lac vous a vu passer, ce matin. Il n'a rien dit. C'est bon signe."
+    },
+    {
+     "label": "Pas du tout.",
+     "valeur": "pas_du_tout",
+     "t": "Au moins, vous êtes honnête. C'est un début. Le gel commence toujours par une impatience qui se calme.",
+     "rappel": "Toujours dans la hâte ? Vous m'avez pourtant écouté jusqu'au bout, aujourd'hui. Vous progressez."
+    },
+    {
+     "label": "Ça dépend de quoi.",
+     "valeur": "ca_depend",
+     "t": "Ça dépend de quoi. Hm. C'est la réponse d'un vieux, ça. Ou d'un sage. Vous êtes trop jeune pour être vieux.",
+     "rappel": "Vous m'aviez dit que ça dépendait de quoi. J'y ai pensé tout un hiver. Vous aviez raison."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.3,
+    "avis": "Séraphine est une bonne archimage. Elle rit quand elle tombe ; c'est rare. Mais elle veut à tout prix que je pardonne. Le pardon, c'est comme le gel : ça ne se commande pas.",
+    "anecdotes": [
+     "Le jour de son arrivée, il y a quarante ans, elle marchait dans la boue. J'ai gelé la flaque devant elle, pour ses chaussures. Elle a glissé, elle est tombée, et elle a ri, assise par terre. J'ai su ce jour-là qu'elle ferait une bonne archimage. Il a fallu vingt ans pour que les autres le sachent aussi.",
+     "À la dernière Fête du Cristal, elle m'a assis à côté de Pyra, avec une cruche d'eau entre nous. La cruche a gelé de mon côté. Du sien, elle bouillait. Séraphine a bu au milieu, elle a dit : « Tiède. Parfait. » Elle se moquait de nous. Je l'ai vu. Je n'ai rien dit. Le lac non plus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Séraphine. Ne me parlez pas de Pyra."
+     ],
+     [
+      "b",
+      "Je venais vous parler du temps."
+     ],
+     [
+      "a",
+      "Hm. Le temps n'a pas fini d'y penser non plus."
+     ]
+    ]
+   },
+   "pyra": {
+    "qui": "cette bouilloire de",
+    "nom": "Pyra",
+    "sentiment": -0.6,
+    "avis": "Elle a fait bouillir mon lac pour y prendre un bain. Avec un bonnet. Elle est bruyante, brûlante, impatiente. Elle enseigne bien, je le reconnais. Je ne le lui dirai pas.",
+    "anecdotes": [
+     "Je me suis réveillé à minuit : le lac fumait comme une marmite. Elle était au milieu, dans l'eau chaude jusqu'au menton, avec un bonnet de laine, et tous les poissons serrés autour d'elle. Elle m'a fait coucou. Coucou. Je suis resté sur la rive en chemise de nuit. Il a fallu trois jours pour refaire geler le lac.",
+     "Chaque année, pour son anniversaire, il neige au-dessus de sa maison. Seulement de sa maison. Un petit nuage, toute la journée. Elle croit que c'est moi. Je n'ai rien à dire là-dessus. La météo est une chose capricieuse. Hm."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir. Ne vous approchez pas du lac."
+     ],
+     [
+      "b",
+      "J'ai pris mon bain ce matin, merci."
+     ],
+     [
+      "a",
+      "Hm. Le lac aussi, figurez-vous."
+     ]
+    ]
+   },
+   "zephyrine": {
+    "qui": "notre maîtresse de l'air",
+    "nom": "Zéphyrine",
+    "sentiment": 0.0,
+    "avis": "Zéphyrine est gentille, bavarde, et toujours en l'air, au sens propre. Nous ne serons jamais d'accord sur le vent. C'est reposant, d'une certaine façon. On sait toujours où l'on en est.",
+    "anecdotes": [
+     "Elle m'a emmené sur les falaises du nord pour « écouter ensemble ». Une heure dans le vent. Elle a fredonné avec lui pour me prouver qu'il chantait. Elle chantait faux. Lui aussi. Ça ne prouvait rien. Nous sommes redescendus chacun convaincu. Elle m'a tenu le bras dans la descente. Ça, je l'ai noté.",
+     "Ses plumes du vent tombent parfois sur mon lac. Je les garde, prises dans la glace, bien droites. Elle vient les réclamer. Il faut qu'elle dise « s'il vous plaît ». Elle le dit en chantant. Ça compte quand même. Je les dégèle une à une. Cela prend l'après-midi. Elle parle tout du long."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Il siffle, aujourd'hui."
+     ],
+     [
+      "b",
+      "Il chante ! Écoute : hou-hou-hiii !"
+     ],
+     [
+      "a",
+      "Voilà. Il siffle."
+     ]
+    ]
+   },
+   "sauge": {
+    "qui": "ma vieille amie",
+    "nom": "Sauge",
+    "sentiment": 0.9,
+    "avis": "Sauge est la seule personne de l'île qui me connaisse depuis presque aussi longtemps que le lac. Elle me soigne les engelures. Elle le dit à tout le monde. Elle a raison.",
+    "anecdotes": [
+     "Sauge m'apporte une tisane au thym tous les dimanches, sur mon banc. Bien chaude, avec trop de miel. Je la laisse refroidir, puis je la gèle, et je la croque comme un sucre d'orge. Elle trouve ça barbare. Ça fait quarante ans qu'elle me l'apporte chaude quand même.",
+     "Le maître du gel a des engelures. Oui. Aux orteils, l'hiver. Sauge me les soigne avec un onguent à la lavande, et elle le raconte à tout le monde, même aux apprentis. Elle dit que ça les rassure, qu'un maître ait froid. « Ça ne se soigne pas avec de la fierté », dit-elle. Elle a raison. Comme souvent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Votre tisane, Sauge. Froide, s'il vous plaît."
+     ],
+     [
+      "b",
+      "Je sais, mon vieux glaçon. Trois cuillères de miel ?"
+     ],
+     [
+      "a",
+      "Deux. Je fais attention."
+     ]
+    ]
+   },
+   "mathurin": {
+    "qui": "le passeur",
+    "nom": "Mathurin",
+    "sentiment": 0.6,
+    "avis": "Mathurin et moi, nous sommes deux vieux au bord de l'eau. Lui, la mer ; moi, le lac. Il parle trop, il boit un peu. Mais il comprend l'eau. C'est rare.",
+    "anecdotes": [
+     "Une fois l'an, Mathurin m'emmène faire le tour de l'île en barque. Je ne dis pas un mot de tout le tour. Lui non plus, pour une fois. La mer ne gèle pas, elle ne demande rien. C'est reposant. À la fin, je dis : « Hm. Merci. » Il dit : « De rien. » Le lendemain, je lui fais de la glace pour ses poissons. Toute une caisse.",
+     "Chaque hiver, quelqu'un dépose un fagot de bois tordu devant ma porte, avant l'aube. Ce ne peut être que Mathurin : c'est le seul qui se lève avant moi. Je l'ai remercié. Il a eu l'air surpris, il a dit « de rien », puis il est parti très vite. Il est modeste. C'est une qualité."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mathurin. Merci pour le bois."
+     ],
+     [
+      "b",
+      "Euh… De rien, Borée. De rien."
+     ],
+     [
+      "a",
+      "Vous êtes trop modeste."
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "notre aubergiste",
+    "nom": "Berthe",
+    "sentiment": 0.6,
+    "avis": "Berthe fait la seule soupe de l'île qui ne brûle pas la langue. Elle me garde la table du fond, loin de la porte. Et loin de certaines personnes. C'est une femme de tact.",
+    "anecdotes": [
+     "Berthe me sert sa soupe douce, celle qu'on peut manger sans souffler. Celle de Pyra, paraît-il, est pleine de piment et brûlante comme un volcan. Je n'y goûterais pour rien au monde. Berthe dit que les deux n'ont rien à voir. Elle sourit en le disant. Elle sourit beaucoup, Berthe.",
+     "Sur l'étagère du fond, Berthe garde une cruche fêlée, avec une fêlure qui fait tout le tour, juste au milieu. Elle dit que c'est un souvenir de la Fête du Cristal. Je sais de quoi. Je ne regarde pas l'étagère. Je m'assois dos à elle. Berthe a tourné ma chaise exprès dans ce sens."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Berthe. La table du fond."
+     ],
+     [
+      "b",
+      "Toujours la plus loin de la porte, mon chou."
+     ],
+     [
+      "a",
+      "Et de qui vous savez."
+     ]
+    ]
+   }
+  }
+ },
+ "gustave": {
+  "genre": "m",
+  "prenom": "Gustave",
+  "histoire": [
+   {
+    "titre": "la confiserie de ma mère",
+    "t": "Ma mère tenait la confiserie du bourg, la maison au volet bleu. J'ai grandi entre les bocaux de berlingots et les chaudrons de caramel. Je mélangeais tout : la menthe avec le cassis, la réglisse avec le miel. Ma mère disait que j'avais des doigts de chimiste et une tête de courant d'air. Elle avait raison sur les deux tableaux."
+   },
+   {
+    "titre": "le caramel qui pétillait trop",
+    "t": "À quinze ans, j'ai voulu inventer un caramel qui pétille. Il a pétillé. Puis il a sifflé. Puis il a emporté la fenêtre de la cuisine et une bonne partie du plafond. Ma mère, couverte de sucre, m'a regardé longtemps, et m'a conseillé de faire payer mes explosions, à l'avenir. Dix ans plus tard, j'ouvrais L'Alambic dans sa confiserie. Les étagères sentent encore le caramel."
+   },
+   {
+    "titre": "la pensée gentille",
+    "t": "Ma potion de magie, j'ai mis trois ans à la trouver. De la rosée de lune et trois gouttes de miel : parfois elle était divine, parfois elle goûtait le chou. Un jour de grande colère : chou. Un jour où je pensais à ma mère : miel. J'ai compris que c'est la pensée qui fait la potion. Depuis, je remue en pensant à quelqu'un de gentil. Je ne vous dirai pas à qui."
+   },
+   {
+    "titre": "ma boutique et ma cave",
+    "t": "Aujourd'hui, L'Alambic tourne bien. Je vends mes potions aux maîtres fatigués et mes sirops aux apprentis. J'achète les herbes de Mère Sauge, le miel de Berthe, et Mirabelle occupe ma cave. Le soir, je vais goûter les potions du jour au Chaudron, avec un hydromel pour rincer. Je rentre en chantant. Faux, paraît-il. Je ne m'entends pas."
+   },
+   {
+    "titre": "pourquoi je suis toujours à la page cent douze",
+    "t": "Je vais vous confier un secret, {surnom}. Le traité des mélanges explosifs, je l'ai fini il y a cinq ans. Deux fois. Mais Théophraste ne sort jamais de sa bibliothèque, sauf pour venir me le réclamer, une fois par mois. Il râle, il boit un sirop de menthe, il repart. Si je le lui rends, il ne viendra plus. Alors je suis toujours à la page cent douze."
+   }
+  ],
+  "reve": [
+   "Inventer la potion parfaite : celle qui donne de la magie, guérit le rhume et goûte la tarte au potiron de Berthe. Trois gouttes, et hop, on est heureux. J'y travaille. Ça explose encore un peu.",
+   "Et voir Mirabelle ouvrir sa propre boutique, juste en face de la mienne. On se ferait concurrence. On s'emprunterait la cave."
+  ],
+  "question": {
+   "texte": "Dites-moi, vous avez déjà goûté une potion sans savoir ce qu'elle faisait ?",
+   "reponses": [
+    {
+     "label": "Oui, j'aime l'aventure !",
+     "valeur": "aventure",
+     "t": "Ha ! Un vrai cœur d'alchimiste ! J'ai justement une fiole bleue dont j'ignore tout. Nous la découvrirons ensemble. De loin, de préférence.",
+     "rappel": "Vous et votre goût de l'aventure ! La fiole bleue a fait pousser des moustaches à ma bouilloire. Je vous la garde ?"
+    },
+    {
+     "label": "Jamais de la vie.",
+     "valeur": "jamais",
+     "t": "Sage. Très sage. Je vous respecte, et je vous envie un peu : vous avez encore tous vos sourcils. Gardez-les.",
+     "rappel": "Toujours aucune potion inconnue ? Bravo. Vos sourcils vous remercient. Les miens, eux, repoussent."
+    },
+    {
+     "label": "Une fois. J'ai eu des bulles.",
+     "valeur": "bulles",
+     "t": "Des bulles ! Mirabelle est passée par là, je reconnais sa patte. C'est une artiste, cette petite. Vous avez éternué des bulles combien de temps ?",
+     "rappel": "Encore des bulles, ces jours-ci ? Non ? Dommage, c'était très joli, paraît-il. Mirabelle en est fière."
+    }
+   ]
+  },
+  "liens": {
+   "theophraste": {
+    "qui": "mon créancier",
+    "nom": "Théophraste",
+    "sentiment": 0.5,
+    "avis": "Théophraste me réclame son livre depuis six ans. Il est grincheux, pointilleux, il me regarde comme une tache d'encre. Et il est fidèle : une fois par mois, sans faute. On n'a pas tant d'amis fidèles.",
+    "anecdotes": [
+     "Une fois par mois, Théophraste traverse le bourg, entre à L'Alambic et dit : « Monsieur Fiole. Le traité. » Je lui sers un sirop de menthe et je lui dis que j'en suis à la page cent douze. Il me répond que le traité en a cent quatorze. Il boit son sirop jusqu'à la dernière goutte. Puis il repart. C'est notre petit rituel.",
+     "Le traité cale un pied de mon grand alambic, et alors ? Il est au cœur de mon travail, ce livre ! Théophraste l'a vu, la dernière fois. Il est devenu tout blanc et il est sorti sans finir son sirop. C'est la première fois qu'il ne finissait pas son sirop. Je me suis senti un peu coupable. Un peu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Théophraste ! Toujours en forme ?"
+     ],
+     [
+      "b",
+      "Toujours sans mon livre, Monsieur Fiole."
+     ],
+     [
+      "a",
+      "C'est donc ça, cet air si léger !"
+     ]
+    ]
+   },
+   "mirabelle": {
+    "qui": "ma petite locataire",
+    "nom": "Mirabelle",
+    "sentiment": 0.7,
+    "avis": "Mirabelle a plus de talent dans le petit doigt que moi à son âge dans les deux mains. Elle rate ses potions, oui. Elle les rate en couleurs. Et elle a fait de ma cave un champ de bataille.",
+    "anecdotes": [
+     "Une nuit, une fumée violette est montée de la cave par les lattes du plancher. Toute la boutique a senti la violette et le sucre brûlé pendant un mois. Les clients venaient en foule pour savoir ce que c'était. J'ai vendu deux fois plus que d'habitude. Mirabelle m'a demandé un pourcentage. Je le lui ai donné. Elle ira loin.",
+     "J'ai écrit « LABORATOIRE INTERDIT » en grosses lettres sur la porte de la cave. Puis, en dessous, plus petit : « sauf Mirabelle ». Elle a souligné son nom deux fois, en rose. Depuis, avant de descendre, elle frappe trois coups au plafond, pour que je sache qu'il va y avoir du bruit. C'est une professionnelle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mirabelle ! Ma cave sent la framboise brûlée."
+     ],
+     [
+      "b",
+      "C'est une nouvelle potion, Monsieur Gustave !"
+     ],
+     [
+      "a",
+      "Elle fait quoi ?"
+     ],
+     [
+      "b",
+      "Elle sent la framboise brûlée."
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "notre aubergiste",
+    "nom": "Berthe",
+    "sentiment": 0.6,
+    "avis": "Berthe me vend son miel, je lui vends mes potions, et nous trouvons tous les deux que l'autre fait une excellente affaire. Elle me garde mon tabouret au comptoir. Elle tient aussi mon ardoise. Une longue ardoise.",
+    "anecdotes": [
+     "Je lui ai vendu une potion pour que sa pâte lève plus vite. J'avais écrit « trois gouttes » sur l'étiquette. Elle a lu « trois cuillères ». La pâte a levé jusqu'au plafond de la cuisine, et elle a servi une tarte haute comme un tabouret. Elle dit que c'est ma faute. Moi, je dis que ma potion marche très bien.",
+     "Le miel des ruches de Berthe, derrière le Chaudron, c'est lui qui fait ma potion de magie. Trois gouttes par fiole. Sans lui, mes potions goûteraient la ferraille. Quand elle augmente son prix, je fais semblant de pleurer. Elle fait semblant de me croire. Puis on trinque."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Berthe ! Deux pots de miel, et un hydromel."
+     ],
+     [
+      "b",
+      "Et l'ardoise, Gustave ?"
+     ],
+     [
+      "a",
+      "Je te la paie en fioles !"
+     ]
+    ]
+   },
+   "sauge": {
+    "qui": "notre herboriste",
+    "nom": "Mère Sauge",
+    "sentiment": 0.7,
+    "avis": "Mère Sauge me vend ses herbes, mais elle les trie avant : ce qui soigne d'un côté, ce qui fait boum de l'autre. Je n'ai droit qu'au deuxième tas. C'est vexant, et assez juste.",
+    "anecdotes": [
+     "Elle ne me vend plus de camomille. Une fois, une seule, ma potion pour dormir a soufflé la porte de L'Alambic. Tout le bourg s'est réveillé à deux heures du matin. Mère Sauge est arrivée en bonnet de nuit, a regardé la porte par terre, et m'a dit : « La camomille, c'est pour dormir, mon petit. » Depuis, c'est de la mélisse.",
+     "Je lui ai vendu une tisane en fiole, toute prête, d'un bleu magnifique. Elle m'a dit qu'elle l'avait trouvée « intéressante ». Cet été-là, ses tomates étaient bleues. Énormes et bleues. Elle m'en a offert un panier, sans un mot. Je n'ai rien demandé. Elles étaient délicieuses. J'y pense, pour la boutique."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mère Sauge ! Vous avez de la mélisse pour moi ?"
+     ],
+     [
+      "b",
+      "Pour une tisane ou pour un boum, mon petit ?"
+     ],
+     [
+      "a",
+      "Pour… une tisane qui ferait un petit boum ?"
+     ]
+    ]
+   }
+  }
+ },
+ "lin": {
+  "genre": "f",
+  "prenom": "Lin",
+  "histoire": [
+   {
+    "titre": "l'atelier des automates",
+    "t": "Je viens de Cliquetis. Chez nous, on fabrique des automates : des oiseaux qui chantent, des souris qui balaient, un monsieur qui salue. Toute mon enfance a fait tic-tac. Le soir, je lisais dans l'atelier, entre les rouages. Mes parents me disaient : « Lis le manuel. » Je lisais les contes. J'ai lu le manuel aussi. Une fois."
+   },
+   {
+    "titre": "le livre de la Foire",
+    "t": "À dix ans, j'ai trouvé un livre de sorcier à la Foire des Inventions, sur un étal de vieux papiers. La première page parlait d'Arcanelle. J'ai lu tout le livre dans la nuit. Le matin, mes parents m'ont trouvée assise sur mon lit, la valise faite. Ils ont pleuré un peu. Moi aussi. Mais pas longtemps. Ils m'ont envoyée chez l'archimage."
+   },
+   {
+    "titre": "trois mille livres",
+    "t": "Le premier jour, j'ai poussé la porte de la bibliothèque. Trois mille livres. Je suis restée sur le seuil jusqu'à ce que Théophraste dise « Chut », alors que je n'avais rien dit. Il m'a donné une table, au fond, près de la fenêtre. J'y suis encore. Ça fait deux ans. Je n'ai pas fini. Je ne veux pas finir."
+   },
+   {
+    "titre": "entre les livres et les pierres",
+    "t": "Le matin, cours dans la cour. L'après-midi, la bibliothèque, ou le Cercle : Ysolde m'apprend le nom des pierres. Le soir, je relis. Au dortoir, je lis sous la couverture. Mirabelle me surveille. Pip parle en dormant. Oscar ronfle en mesure. Je lance mes sorts lentement. Ils marchent. Lentement, mais ils marchent."
+   },
+   {
+    "titre": "l'oiseau qui fait tic-tac",
+    "t": "Je ne dors pas bien dans le silence, {surnom}. À Cliquetis, tout fait tic-tac, toute la nuit. Ici, rien. Mon père m'a donné un petit oiseau mécanique, quand je suis partie. Je le remonte chaque soir, sous mon oreiller. Il fait tic-tac jusqu'au matin. Personne ne le sait. Mirabelle croit que c'est une de ses potions qui fait du bruit."
+   }
+  ],
+  "reve": [
+   "Lire tous les livres de la bibliothèque. Les trois mille. Même ceux qui se sont envolés. Surtout ceux-là, peut-être.",
+   "Et écrire le trois mille unième. Un livre sur Arcanelle, avec un chapitre pour chaque pierre du Cercle. Ysolde ne voudra pas. Je demanderai quand même."
+  ],
+  "question": {
+   "texte": "Tu relis les livres, toi ? Ou tu les lis une seule fois ?",
+   "reponses": [
+    {
+     "label": "Je relis mes préférés.",
+     "valeur": "je_relis",
+     "t": "Moi aussi. La deuxième fois, on voit ce qu'on n'avait pas vu. La troisième, on voit ce qu'on voulait voir. … Pardon. C'est un peu long.",
+     "rappel": "Tu as relu un de tes préférés, depuis ? Moi, j'ai relu le chapitre douze. Encore. Il est toujours bien."
+    },
+    {
+     "label": "Une fois suffit.",
+     "valeur": "une_fois",
+     "t": "Une fois. … D'accord. Comme les voyageurs, alors. On passe, on regarde, on repart. C'est bien aussi. Je crois.",
+     "rappel": "Toi qui lis une seule fois : je t'ai trouvé un livre très court. Une fois suffira. Promis."
+    },
+    {
+     "label": "Je ne finis jamais les livres.",
+     "valeur": "jamais_fini",
+     "t": "Jamais ? … Comme ça, ils ne s'arrêtent jamais. Je n'y avais pas pensé. C'est peut-être plus sage que moi.",
+     "rappel": "J'ai essayé de ne pas finir un livre, comme toi. J'ai tenu jusqu'à l'avant-dernière page. C'est très difficile."
+    }
+   ]
+  },
+  "liens": {
+   "theophraste": {
+    "qui": "notre bibliothécaire",
+    "nom": "Théophraste",
+    "sentiment": 0.8,
+    "avis": "Théophraste aime les livres plus que les gens. Moi aussi, un peu. On se comprend sans parler. Sa bibliothèque, c'est le meilleur endroit de l'île. Et c'est grâce à lui.",
+    "anecdotes": [
+     "Il cache un sablier derrière la pile d'encyclopédies, pour savoir combien de temps je mets à lire. Je le vois dans ses lunettes, en reflet. Alors maintenant, je lis plus lentement, pour qu'il garde son record. Il a l'air inquiet. Il m'a proposé une lampe. Je l'ai prise. Ça lui faisait plaisir.",
+     "Un soir, je me suis endormie sur le traité de lumière. Je me suis réveillée sous une couverture qui n'était pas là avant, avec un ruban à ma page. La bibliothèque était vide. J'ai plié la couverture et je l'ai rangée à sa place, dans la réserve, troisième étagère. Je sais d'où elle venait. On n'en a jamais parlé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Maître Filandre. Je rapporte le tome trois."
+     ],
+     [
+      "b",
+      "Déjà ? … Je veux dire : quelle bonne nouvelle."
+     ],
+     [
+      "a",
+      "Je l'ai lu lentement."
+     ]
+    ]
+   },
+   "mirabelle": {
+    "qui": "ma voisine de lit",
+    "nom": "Mirabelle",
+    "sentiment": 0.6,
+    "avis": "Mirabelle fait bouillir des choses sous son lit. Ça sent la framboise, ou la chaussette. Elle parle pour deux, ce qui m'arrange. C'est mon amie. Je crois que je suis la sienne.",
+    "anecdotes": [
+     "Une nuit, ma lumière s'est éteinte sous la couverture : je m'étais endormie. Mirabelle a soulevé ma couverture en criant mon nom. Elle croyait que j'étais entrée dans le livre. J'étais à la page vingt. Je lui ai dit « Chut ». Elle avait l'air déçue. Un peu soulagée. Surtout déçue.",
+     "Elle a fait une potion pour que je lise plus vite. Je n'en voulais pas. Elle l'a bue elle-même. Toute la journée, les lettres ont dansé en rond devant ses yeux, dans tous les livres. Elle n'a pas lu un mot. Je lui ai dit qu'elle avait lu une valse. Elle a beaucoup ri. Moi aussi. C'est rare."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mirabelle. Ton lit fume."
+     ],
+     [
+      "b",
+      "C'est une potion pour dormir !"
+     ],
+     [
+      "a",
+      "Alors elle ne marche pas."
+     ]
+    ]
+   },
+   "ysolde": {
+    "qui": "la gardienne",
+    "nom": "Ysolde",
+    "sentiment": 0.8,
+    "avis": "Ysolde parle peu, comme moi. Avec elle, on peut se taire longtemps sans que ce soit gênant. Elle m'apprend le nom des pierres. Lentement. Les pierres doivent être d'accord.",
+    "anecdotes": [
+     "Elle m'a appris trois noms : Doyenne, Nacre et Petite-Ourse. Un nom par pleine lune, pas plus, parce que les pierres doivent être d'accord. Je les écris dans mon carnet, à l'encre de citron, qui ne se lit qu'à la flamme. Ysolde ne voulait pas que je les écrive. C'est notre compromis.",
+     "Je lis des histoires aux pierres, à voix basse, assise contre Nacre. Une fois, j'ai sauté une page sans le faire exprès. De l'autre côté du Cercle, Ysolde a dit : « Tu as sauté une page. » Elle n'avait pas le livre. Je suis revenue en arrière. Les pierres préfèrent les histoires dans l'ordre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Ysolde. Je peux leur lire le chapitre huit ?"
+     ],
+     [
+      "b",
+      "Il finit bien ?"
+     ],
+     [
+      "a",
+      "Presque."
+     ],
+     [
+      "b",
+      "Elles aiment le presque."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "mon maître de lumière",
+    "nom": "Aurélien",
+    "sentiment": 0.6,
+    "avis": "Maître Lumen enseigne la lumière avec les mains et les yeux fermés. Moi, avec les livres. On ne fait pas pareil. Ça marche des deux côtés. Il parle beaucoup. Au milieu, il dit des choses belles.",
+    "anecdotes": [
+     "En classe, il nous a dit : « Fermez les yeux, pensez au matin, ouvrez la main. » J'ai levé la main. J'ai dit : « Page deux cent trois. Il faut respirer avant. » Il s'est arrêté. Il a respiré. Toute la classe a respiré. Oscar a fait une lumière presque ronde. Maître Lumen dit que c'est grâce à moi.",
+     "Il m'a invitée à l'Observatoire pour voir passer une comète. J'ai apporté un livre, au cas où. Il a parlé toute la nuit : des étoiles, de son grand-père, des lucioles. Je n'ai pas lu une seule page. La comète est passée à trois heures. C'était bien. Je n'ai pas eu besoin du livre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Maître Lumen. Vous avez respiré ?"
+     ],
+     [
+      "b",
+      "Page deux cent trois ! Oui, Mademoiselle, deux fois !"
+     ],
+     [
+      "a",
+      "Trois, c'est mieux."
+     ]
+    ]
+   }
+  }
+ },
+ "lumen": {
+  "genre": "m",
+  "prenom": "Aurélien",
+  "histoire": [
+   {
+    "titre": "l'Observatoire de mon grand-père",
+    "t": "Je suis né sous le dôme de l'Observatoire, que mon grand-père Évariste avait bâti pierre par pierre. Mon berceau était à côté de la grande lunette. Il paraît que je dormais le jour et que je pleurais la nuit pour qu'on me montre la lune. Rien n'a changé. Sauf que je ne pleure plus. Presque plus. Quand il y a des nuages, un peu."
+   },
+   {
+    "titre": "ma première lumière",
+    "t": "J'avais douze ans, j'étais l'élève de Séraphine, et je n'arrivais à rien. Une nuit, sur le toit du dortoir, en regardant les étoiles, j'ai ouvert la main et une petite lumière est sortie. Toute petite. J'ai couru pieds nus jusqu'à la Tour réveiller Séraphine, à trois heures du matin. Elle m'a dit qu'elle brillait plus fort que les étoiles. J'ai fait semblant de la croire."
+   },
+   {
+    "titre": "la nuit où la Tour est devenue d'or",
+    "t": "Le lendemain du soir où Séraphine est devenue archimage, elle m'a confié sa classe de lumière. Pour ma première leçon de maître, j'ai voulu bien faire. Très bien faire. Toute la Tour d'Astrelune s'est mise à briller comme un soleil, en pleine nuit. Le bourg s'est réveillé, Berthe a servi le petit-déjeuner à minuit. Je me suis excusé auprès de chaque habitant. Ça m'a pris une semaine."
+   },
+   {
+    "titre": "ma vie à l'envers",
+    "t": "Aujourd'hui, je vis à l'envers. La nuit, je suis à ma lunette ; le matin, je dors ; à midi, je prends mon petit-déjeuner chez Berthe ; l'après-midi, je lis à la bibliothèque, ou je vais rêver devant la porte de la Crypte. Je note les étoiles, les comètes, et parfois les lucioles. Les lucioles, c'est une erreur fréquente. Chez moi, du moins."
+   },
+   {
+    "titre": "la porte de la Crypte",
+    "t": "Vous voulez un secret ? Je ne suis jamais entré dans la Crypte aux Runes. Jamais. Chaque après-midi, je vais jusqu'à la porte, je regarde le noir, et je repars. Le noir sans étoiles, je ne le supporte pas. Le maître de la lumière a peur du noir. Voilà. C'est peut-être pour ça que je suis devenu maître de la lumière. Ne le répétez pas à Oscar."
+   }
+  ],
+  "reve": [
+   "Découvrir une étoile. Une vraie, cette fois, pas une luciole. Je l'appellerai « Évariste », comme mon grand-père. Il la regarderait de là-haut. Enfin, d'à côté.",
+   "Et entrer une fois dans la Crypte, avec une seule lumière dans la main. Juste une fois. Pour voir ce que voit le noir."
+  ],
+  "question": {
+   "texte": "Dites-moi : vous êtes plutôt du matin, du soir… ou de la nuit ?",
+   "reponses": [
+    {
+     "label": "Du matin.",
+     "valeur": "matin",
+     "t": "Du matin ! Oh, alors nous ne nous croiserons qu'à midi. C'est très bien, midi. Racontez-moi le matin, un jour. Je ne l'ai jamais vu que de loin.",
+     "rappel": "Vous qui êtes du matin : comment était l'aube, aujourd'hui ? Rose ? Je l'ai ratée, comme toujours. Racontez-moi."
+    },
+    {
+     "label": "Du soir.",
+     "valeur": "soir",
+     "t": "Du soir ! Le meilleur moment : la première étoile. Vous savez laquelle c'est ? Ce n'est pas une étoile, c'est une planète. Ne le dites à personne, elle est susceptible.",
+     "rappel": "Vous qui êtes du soir : vous avez vu la première étoile, hier ? C'était bien une planète. Elle vous a fait un clin d'œil, je l'ai vu."
+    },
+    {
+     "label": "De la nuit.",
+     "valeur": "nuit",
+     "t": "De la nuit ! Enfin quelqu'un ! Montez à l'Observatoire quand vous voulez. Je vous montrerai les anneaux de… enfin, vous verrez. C'est magnifique.",
+     "rappel": "Ah, vous, de la nuit ! Ce soir, ciel clair. Montez à l'Observatoire, j'aurai du thé et un tabouret."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.9,
+    "avis": "Séraphine m'a tout appris, sauf à dormir la nuit. C'est la plus grande sorcière que je connaisse, et la plus douce. Je l'appelle encore « Maîtresse ». Elle fait semblant que ça l'agace.",
+    "anecdotes": [
+     "J'avais douze ans, j'ai couru pieds nus jusqu'à la Tour pour lui montrer ma première lumière, à trois heures du matin. Elle a ouvert la porte en bonnet de nuit. Elle a regardé ma lumière très sérieusement et elle a dit : « Plus forte que les étoiles. » C'était faux. Elle le savait, je le savais. Elle a fait du thé quand même.",
+     "Quand elle m'a confié sa classe, elle m'a aussi donné sa vieille lanterne, celle du bateau de ses parents. Elle n'a ni mèche ni huile : on y met sa propre lumière. Je ne l'ai jamais allumée. J'attends d'avoir quelque chose d'assez important à éclairer."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maîtresse ! Ciel parfait cette nuit, venez voir !"
+     ],
+     [
+      "b",
+      "Si je viens, tu iras dormir après ?"
+     ],
+     [
+      "a",
+      "… Juré. Presque."
+     ]
+    ]
+   },
+   "zephyrine": {
+    "qui": "ma voisine du ciel",
+    "nom": "Zéphyrine",
+    "sentiment": 0.6,
+    "avis": "Zéphyrine est la seule personne de l'île qui parle plus vite que moi. Nous sommes ceux d'en haut. Elle me rend visite sur mon toit, en lévitant, avec du gâteau. La meilleure des voisines. La plus bruyante, aussi.",
+    "anecdotes": [
+     "Une nuit, une forme blanche est passée devant ma grande lunette, avec une longue queue tressée. Une comète ! J'ai tout noté : l'heure, la trajectoire, la couleur. Puis on a frappé à ma fenêtre. C'était Zéphyrine, avec sa tresse. J'ai été un peu déçu. Elle, très flattée. J'ai gardé la page. C'est ma plus belle observation.",
+     "Je lui ai demandé de me faire léviter, pour voir les étoiles de plus près. À trois mètres du toit, j'ai découvert que j'avais le vertige. Je me suis agrippé à son bras en criant que les étoiles étaient très bien de loin. Elle m'a redescendu sans rire. Elle a ri après. Longtemps."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyrine ! Il y aura du vent, cette nuit ?"
+     ],
+     [
+      "b",
+      "Un petit, du sud. Il chante !"
+     ],
+     [
+      "a",
+      "Alors je fermerai la lunette à moitié."
+     ]
+    ]
+   },
+   "theophraste": {
+    "qui": "notre bibliothécaire",
+    "nom": "Théophraste",
+    "sentiment": 0.7,
+    "avis": "Théophraste est un trésor caché sous une moustache. Il me reproche mes retards, à raison. Je lui rapporte toujours ses livres. Toujours ! Un peu plus tard que prévu, c'est tout.",
+    "anecdotes": [
+     "J'ai rendu l'Atlas des étoiles fixes au bout de onze ans. Avec quelques corrections dans les marges, à l'encre : trois étoiles avaient bougé ! C'était une découverte ! Théophraste n'a pas vu les choses ainsi. Il a acheté un nouvel atlas. J'y ai mis des corrections aussi, mais au crayon. Il dit que c'est un progrès.",
+     "L'après-midi, je vais lire à la bibliothèque. Je m'endors parfois, c'est vrai : je vis à l'envers. Plusieurs fois, je me suis réveillé avec un coussin posé sur le visage. Théophraste m'a expliqué qu'ils tombent du plafond. Je ne savais pas. On apprend tous les jours, dans une bibliothèque."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Théophraste ! J'ai rapporté un livre !"
+     ],
+     [
+      "b",
+      "Lequel, Monsieur Lumen ?"
+     ],
+     [
+      "a",
+      "… Je l'ai laissé à l'Observatoire. Mais j'y ai pensé !"
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "notre aubergiste",
+    "nom": "Berthe",
+    "sentiment": 0.8,
+    "avis": "Berthe me sert mon petit-déjeuner à midi sans jamais faire de remarque. Enfin, une ou deux. Sa chambre sous les toits est la meilleure de l'île pour rêver. Je le dis à tout le monde. Elle a augmenté le prix.",
+    "anecdotes": [
+     "Après la grande tempête, le dôme de mon Observatoire était percé. Berthe m'a prêté sa chambre sous les toits, avec la lucarne. Un mois. La lucarne donne pile sur l'étoile du Nord. Je passais mes nuits la tête dehors, le bonnet sur les oreilles. Elle me montait du lait chaud à minuit. Le plus beau mois de ma vie, avec tous les autres.",
+     "Le soir de ma première leçon, quand la Tour s'est mise à briller en pleine nuit, Berthe a cru que c'était l'aube. Elle a ouvert l'auberge et servi des œufs aux sorciers en chemise de nuit. Je suis venu m'excuser. Elle m'a servi des œufs aussi. J'ai dit merci, et bonne nuit. Elle a dit : « Bonjour, plutôt. » Elle avait raison."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Berthe ! Votre lucarne, cette nuit : étoiles filantes !"
+     ],
+     [
+      "b",
+      "Elle est louée, mon chou."
+     ],
+     [
+      "a",
+      "Alors prévenez le client. Il faudra faire un vœu !"
+     ]
+    ]
+   },
+   "lin": {
+    "qui": "ma meilleure élève",
+    "nom": "Lin",
+    "sentiment": 0.8,
+    "avis": "Mademoiselle Lin a lu les quatre cents pages du chapitre sur la lumière. Moi, jamais. Elle lance ses sorts lentement, mais ses lumières ne tremblent pas. Ne le dites pas aux autres : c'est ma meilleure élève.",
+    "anecdotes": [
+     "En classe, je disais : « Fermez les yeux, pensez au matin, ouvrez la main. » Elle a levé la main : « Page deux cent trois. Il faut respirer avant. » J'ai respiré. Toute la classe a respiré. Et Oscar a fait une lumière presque ronde ! Depuis, je commence chaque leçon en respirant. Merci, page deux cent trois.",
+     "Une nuit, par curiosité, j'ai mesuré sa petite lumière : elle a tenu neuf heures, sans trembler. La mienne en tient quatre. Je ne le lui ai pas dit. Je l'ai noté dans mon carnet, entre deux comètes. C'est une sorte de comète, elle aussi : on ne la voit pas venir, et puis elle éclaire tout."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mademoiselle Lin ! Votre lumière brille encore ?"
+     ],
+     [
+      "b",
+      "Depuis hier soir. Elle est dans ma poche."
+     ],
+     [
+      "a",
+      "Dans votre poche ! Magnifique !"
+     ]
+    ]
+   },
+   "agathe": {
+    "qui": "notre voyante",
+    "nom": "Agathe",
+    "sentiment": 0.6,
+    "avis": "Madame Agathe lit l'avenir comme je lis le ciel : en plissant les yeux et en espérant. Elle a toujours une réponse, et elle est toujours gentille. Elle me rassure. J'ai besoin d'être rassuré.",
+    "anecdotes": [
+     "Une fois par mois, je vais lui demander si les étoiles bougeront demain. Je sais qu'elles bougent : je les mesure ! Mais je préfère l'entendre dire par quelqu'un d'autre. Elle regarde sa boule, très sérieuse, et elle dit : « Oui, Aurélien. Toutes. » Alors je dors bien. C'est idiot. C'est délicieux.",
+     "Elle m'avait annoncé une grande découverte. Le lendemain, j'ai fouillé l'Observatoire, la bibliothèque, le Chaudron, à la recherche de mes lunettes. Je les avais sur le nez. Agathe a dit : « Pour un homme qui regarde si loin, voir ce qu'il a sous le nez, c'est une très grande découverte. » J'y pense souvent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Madame Agathe ! Les étoiles bougeront-elles demain ?"
+     ],
+     [
+      "b",
+      "Oui, Aurélien. Toutes, et dans le bon sens."
+     ],
+     [
+      "a",
+      "Ah ! Merci. Je dormirai bien."
+     ]
+    ]
+   },
+   "ysolde": {
+    "qui": "la gardienne du Cercle",
+    "nom": "Ysolde",
+    "sentiment": 0.4,
+    "avis": "Ysolde me fait un peu peur, je l'avoue. Elle apparaît toujours derrière vous. Mais elle aime ses pierres comme j'aime mes étoiles, et ça, je le comprends. Je lui dis merci à chaque éclat.",
+    "anecdotes": [
+     "Les pierres du Cercle attirent les éclats de lune, et j'en ramasse là-bas pour mes leçons. La première fois, Ysolde est apparue derrière moi sans un bruit. J'ai lâché l'éclat, mes lunettes et un peu de ma dignité. Maintenant, je dis merci à voix haute à chaque pierre, avant de ramasser. Neuf mercis. Elle hoche la tête au neuvième.",
+     "J'ai mesuré la lueur des Pierres-Lunes toute une nuit, avec mes instruments. Elle monte d'un dixième quand Mademoiselle Lin vient leur lire une histoire. Exactement un dixième ! Je suis allé l'annoncer à Ysolde, très fier. Elle m'a répondu : « Je sais. » Elle sait toujours. C'est assez vexant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Ysolde ! Les pierres brillent bien, ce soir."
+     ],
+     [
+      "b",
+      "Lin est passée."
+     ],
+     [
+      "a",
+      "Ah ! Voilà qui explique tout."
+     ]
+    ]
+   }
+  }
+ },
+ "mathurin": {
+  "genre": "m",
+  "prenom": "Mathurin",
+  "histoire": [
+   {
+    "titre": "le fils du pêcheur",
+    "t": "Je viens du village, en face, sur l'autre île, d'une maison qui sentait le goudron et la soupe de poisson. Mon père pêchait, ma mère réparait les filets en chantant. On m'a mis une rame dans les mains avant une cuillère. À six ans, je ramais jusqu'au récif pour attraper des crabes. J'en ramenais deux. Et un coup de soleil."
+   },
+   {
+    "titre": "les barriques et la brume",
+    "t": "Il y a trente ans, on m'a payé pour livrer six barriques à Arcanelle. Une île que personne ne trouve. Je l'ai trouvée, en suivant un bout de lumière dans la brume. J'ai déchargé, Berthe m'a servi sa tarte au potiron, et j'ai raté la marée. Le lendemain, la brume. Le surlendemain, la tarte. Ça fait trente ans que je repars demain."
+   },
+   {
+    "titre": "mon premier serpent de mer",
+    "t": "Mon premier serpent de mer, je l'ai vu à jeun. Je le jure sur ma barque. Il y a vingt ans, un soir de calme plat, une longue chose sombre a fait trois bosses à côté de moi, puis elle a plongé. J'ai raconté ça au Chaudron. Tout le monde a ri. Alors j'ai bu un hydromel, pour me remettre. Depuis, j'en vois tous les soirs. On ne me croit plus. C'est reposant."
+   },
+   {
+    "titre": "mon ponton et mes habitudes",
+    "t": "Aujourd'hui, je pêche au bout du ponton, je fais passer les rares visiteurs, et je connais chaque courant de l'île par son petit nom. Le midi, un hydromel chez Berthe ; le soir, ma table et ma part de tarte. Une fois l'an, j'emmène Borée faire le tour de l'île. Le ponton, je l'ai rallongé avec les échelles de Théophraste. Ne demande pas."
+   },
+   {
+    "titre": "ce que le passeur ne sait pas faire",
+    "t": "Approche, matelot. Plus près. Je ne sais pas nager. Pas une brasse. Une vie entière sur l'eau, trente ans de passages dans la brume, et je coule comme une enclume. C'est pour ça que je connais tous les courants par cœur : je n'ai pas le droit de me tromper. Berthe ne le sait pas. Si elle le savait, elle ne me laisserait plus partir. Même demain."
+   }
+  ],
+  "reve": [
+   "Attraper le serpent de mer. Pas pour le garder : pour l'amener au Chaudron, le poser sur le comptoir, et voir la tête de Pyra. Ensuite, je le relâche. Il a l'air gentil.",
+   "Et retourner au village, juste une journée, pour voir si ma vieille maison sent toujours le goudron. Et revenir le soir. Pour la tarte."
+  ],
+  "question": {
+   "texte": "Dis-moi, matelot : tu crois aux serpents de mer, toi ?",
+   "reponses": [
+    {
+     "label": "Oui, j'en ai vu !",
+     "valeur": "oui",
+     "t": "Ha ! Enfin quelqu'un ! Il avait combien de bosses, le tien ? Trois ? Comme le mien ! On se comprend, toi et moi. Va le dire à Pyra.",
+     "rappel": "Toi qui as vu un serpent de mer : j'en ai revu un hier soir. Trois bosses. Je t'ai gardé une place sur le ponton."
+    },
+    {
+     "label": "Non, ce sont des troncs.",
+     "valeur": "des_troncs",
+     "t": "Des troncs ! Tu parles comme Pyra. Un tronc, ça ne plonge pas, matelot. Ça ne te regarde pas avec un œil vert. Enfin. Tu verras.",
+     "rappel": "Alors, toujours des troncs ? Le mien a plongé hier soir. Les troncs ne plongent pas, je te le rappelle."
+    },
+    {
+     "label": "Seulement après l'hydromel.",
+     "valeur": "hydromel",
+     "t": "Ha ! Tu me plais, toi. C'est l'hydromel qui ouvre les yeux, voilà ce que je dis. Les autres boivent pour oublier. Moi, pour voir.",
+     "rappel": "Toi qui ne vois les serpents qu'après l'hydromel : ce soir, je t'en offre un au Chaudron. On regardera la mer ensemble."
+    }
+   ]
+  },
+  "liens": {
+   "pyra": {
+    "qui": "cette moqueuse de",
+    "nom": "Pyra",
+    "sentiment": 0.1,
+    "avis": "La Flammèche se moque de mes serpents, me pique mon rhum et m'emprunte ma barque sans demander. Une sacrée femme. Un sacré caractère. Je ne voudrais pas être un serpent de mer en face d'elle.",
+    "anecdotes": [
+     "Un soir, j'ai vu dans la baie un serpent de mer avec des yeux de braise. Deux yeux rouges, qui flottaient au ras de l'eau. Pyra prétend que c'était elle, dans ma barque, avec du feu dans les mains. Une barque, à minuit ? Elle ne sait même pas ramer ! … Bon. Ma barque était mouillée, le lendemain. Je préfère le serpent.",
+     "Il n'arrive qu'une bouteille de rhum de la Murène par mois, chez Berthe. Une seule. On l'a pariée, Pyra et moi : si je voyais un serpent avant minuit, elle était à moi. À minuit moins le quart, j'en ai vu trois. Elle a dit que c'étaient des algues. On n'a jamais tranché. On a bu la bouteille à deux, pour ne pas se fâcher."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ho, la Flammèche ! Tu as encore pris ma barque ?"
+     ],
+     [
+      "b",
+      "Moi ? Je ne sais pas ramer."
+     ],
+     [
+      "a",
+      "Justement. Elle a tourné en rond toute la nuit."
+     ]
+    ]
+   },
+   "boree": {
+    "qui": "le vieux",
+    "nom": "Borée",
+    "sentiment": 0.7,
+    "avis": "Borée et moi, on est deux vieux au bord de l'eau. Lui son lac, moi ma mer. Il ne parle pas, je parle pour deux. On s'entend très bien. Il me remercie pour du bois que je ne lui ai jamais donné.",
+    "anecdotes": [
+     "Une fois l'an, j'emmène Borée faire le tour de l'île en barque. Il s'assoit à l'avant, droit comme un mât, et il ne dit pas un mot. Moi non plus, pour une fois. On écoute la mer. À la fin, il dit : « Hm. Merci. » Et le lendemain, je trouve une caisse de glace devant ma porte, pour mes poissons. Toute une caisse.",
+     "Chaque hiver, Borée vient me remercier pour le fagot de bois tordu qu'il trouve devant sa porte. Je ne lui ai jamais apporté de bois, moi ! La première fois, j'ai dit « de rien », par politesse. Maintenant, c'est trop tard pour dire la vérité. Je me demande bien qui c'est. Quelqu'un qui se lève tôt. Et qui a chaud aux mains."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ho, Borée ! Ça mord, au lac ?"
+     ],
+     [
+      "b",
+      "Les poissons dorment. Comme il se doit."
+     ],
+     [
+      "a",
+      "Les miens aussi. Mais eux, c'est la flemme."
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "ma chère",
+    "nom": "Berthe",
+    "sentiment": 0.9,
+    "avis": "Berthe, c'est la raison pour laquelle je rate la marée depuis trente ans. Sa tarte, je veux dire. Sa tarte. C'est la meilleure femme de l'île. La meilleure tarte. Enfin, tu m'as compris.",
+    "anecdotes": [
+     "Je devais repartir le lendemain de mon arrivée. La brume était trop épaisse. Berthe m'a resservi de la tarte. Le lendemain aussi : la brume, la tarte. Au bout d'un mois, j'ai compris : c'est la tarte qui fait venir la brume. Elle ne me croit pas. Mais elle continue à en faire. Alors je reste. Il faut bien que quelqu'un la mange.",
+     "J'ai sculpté l'enseigne du Chaudron dans une planche de ma vieille barque. J'ai fait le chaudron un peu petit, et la fumée… j'étais inspiré. Elle prend toute la planche. Berthe dit que j'avais bu. Un peu. Elle n'a jamais voulu la changer. Quand le vent souffle, l'enseigne grince. Berthe dit qu'elle grince comme moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Berthe ! Le premier maquereau du jour !"
+     ],
+     [
+      "b",
+      "Encore un ! Je vais finir par avoir des écailles, mon chou."
+     ],
+     [
+      "a",
+      "Ça t'irait bien."
+     ]
+    ]
+   },
+   "agathe": {
+    "qui": "la voyante",
+    "nom": "Agathe",
+    "sentiment": 0.1,
+    "avis": "Agathe et sa boule… Elle m'a promis la prise du siècle, j'ai remonté une botte. Elle a réponse à tout, cette femme. C'est ça qui m'énerve. Et qui me fait rire, aussi.",
+    "anecdotes": [
+     "La botte, c'était une botte de pêcheur, pointure quarante-huit, pleine de vase. Agathe est venue la voir au ponton. Elle l'a prise, elle l'a emportée à sa roulotte, et elle y a planté du thym. Maintenant, elle trône devant sa porte, avec une étiquette : « Prédiction réalisée ». Je passe devant en grognant. Le thym pousse bien.",
+     "La boule m'avait annoncé une traversée avec une belle inconnue aux yeux d'or. Je me suis rasé, j'ai mis ma chemise propre. C'était une chèvre. Une chèvre pour le jardin de Mère Sauge, avec des yeux jaunes magnifiques, je ne dis pas. Agathe dit qu'elle n'avait jamais parlé d'une femme. C'est vrai. Je déteste quand c'est vrai."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, la voyante ? Ça mord, demain ?"
+     ],
+     [
+      "b",
+      "Une grosse prise, Mathurin."
+     ],
+     [
+      "a",
+      "Pointure combien ?"
+     ]
+    ]
+   }
+  }
+ },
+ "mirabelle": {
+  "genre": "f",
+  "prenom": "Mirabelle",
+  "histoire": [
+   {
+    "titre": "le bateau des feux d'artifice",
+    "t": "Mes parents sont artificiers. Ils vont d'île en île sur leur bateau, La Fusée, pour tirer des feux d'artifice aux fêtes. J'ai grandi entre les tonneaux de poudre et les rouleaux de papier de couleur. Je savais faire un bouquet rouge avant de savoir faire mes lacets. D'ailleurs, je sais toujours pas trop faire mes lacets. Mais le bouquet rouge, oui."
+   },
+   {
+    "titre": "la voile rose",
+    "t": "Un soir, j'ai mélangé de la poudre bleue, du sirop de framboise et une plume de mouette. Ça a fait pfff, et toute la grande voile de La Fusée est devenue rose. Rose pour toujours ! Papa a dit que c'était de la magie, pas de la chimie. Maman a dit : « On l'emmène à l'archimage avant qu'elle repeigne la mer. » Voilà comment je suis arrivée."
+   },
+   {
+    "titre": "ma première pièce",
+    "t": "Ma première année, je ratais tout et je pleurais dans la cave de Gustave. Un jour, une potion ratée a fait éternuer des bulles à Oscar. Il a ri, il en a redemandé, et il m'a donné une pièce ! Ma première pièce. Ce jour-là, j'ai compris : une potion ratée, c'est pas une potion fichue. C'est une potion qui fait autre chose. J'ai ouvert mon étal le lendemain."
+   },
+   {
+    "titre": "mon étal et mon dortoir",
+    "t": "Maintenant, j'ai mon étal sur la place, l'après-midi : potions ratées, pas chères, toutes uniques. Zéphyrine est ma meilleure cliente. Le soir, je range mes fioles sous mon lit, au dortoir, entre Lin qui lit et Pip qui parle en dormant. Gustave me prête sa cave. Enfin, je la prends, et il dit oui après. C'est presque pareil."
+   },
+   {
+    "titre": "la potion que je rate toujours",
+    "t": "Je vais te dire un secret, {surnom}. Mes parents passent une fois par an, pour la Fête du Cristal. Ils tirent un feu d'artifice au-dessus du bourg, rien que pour moi, et ils repartent le lendemain. Il y a une potion que j'essaie de réussir depuis deux ans : une potion pour que les bateaux restent. Toutes mes potions ratées, c'est elle que je rate."
+   }
+  ],
+  "reve": [
+   "Une grande boutique de potions ratées, avec une enseigne qui clignote et des fioles jusqu'au plafond. Les gens viendraient de tout l'archipel pour rater des choses avec moi !",
+   "Et un jour, voir l'orbe du Fondateur s'allumer pour moi. Même un peu. Même en vert."
+  ],
+  "question": {
+   "texte": "Si tu pouvais avoir n'importe quelle potion, une seule, tu prendrais laquelle ?",
+   "reponses": [
+    {
+     "label": "Une potion pour voler.",
+     "valeur": "voler",
+     "t": "Voler ! Zéphyrine dirait que t'as pas besoin de potion. Moi je dis que c'est plus rigolo avec. Je vais essayer. Ça risque de faire flotter tes chaussettes.",
+     "rappel": "J'ai essayé ta potion pour voler ! Mes chaussettes ont flotté. Pas moi. C'est un début, non ?"
+    },
+    {
+     "label": "Pour parler aux animaux.",
+     "valeur": "animaux",
+     "t": "Aux animaux ! Je demanderais à Gérard s'il veut redevenir chapeau. Je suis sûre qu'il dit non. Je vais y réfléchir. J'ai déjà le nom : la potion Gérard.",
+     "rappel": "La potion Gérard avance ! Pour l'instant, elle fait juste roucouler. Mais ça compte : roucouler, c'est parler pigeon."
+    },
+    {
+     "label": "Pour ne plus avoir peur.",
+     "valeur": "plus_peur",
+     "t": "Ne plus avoir peur… C'est une belle potion, ça. Je sais pas la faire. Je crois que personne sait. Mais si je la trouve, c'est toi qui la goûteras en premier.",
+     "rappel": "Je cherche toujours ta potion pour plus avoir peur. Pour l'instant, j'ai trouvé un truc qui donne le hoquet. Ça fait oublier, un peu."
+    }
+   ]
+  },
+  "liens": {
+   "zephyrine": {
+    "qui": "ma meilleure cliente",
+    "nom": "Zéphyrine",
+    "sentiment": 0.8,
+    "avis": "Zéphyrine, c'est ma meilleure cliente ! Elle m'achète une potion ratée chaque semaine et elle la boit devant tout le monde. Personne d'autre ose. C'est la plus courageuse de l'île.",
+    "anecdotes": [
+     "Je lui ai fait une potion de légèreté. Elle l'a bue devant toute sa classe. Elle a pas flotté du tout, mais ses cheveux se sont dressés tout droits, comme une grande plume blanche, toute la journée ! Elle a fait cours comme ça. Elle a dit que les apprentis avaient jamais été aussi attentifs. Je l'ai noté dans mon cahier : succès.",
+     "Elle m'a acheté la potion voix de canard. Elle est allée parler au vent sur les falaises, en canard, pendant une heure. Elle dit que le vent a ri et qu'il a fait un petit tourbillon. C'est la première fois qu'une de mes potions fait rire le vent. Je l'ai écrit dans mon cahier, à la page des grands succès. Elle est toute seule sur la page."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyrine ! J'ai une nouvelle potion ratée pour toi !"
+     ],
+     [
+      "b",
+      "Oh ! Elle fait quoi ?"
+     ],
+     [
+      "a",
+      "Elle fait des nœuds dans les cheveux. Tout seuls."
+     ],
+     [
+      "b",
+      "J'en prends deux !"
+     ]
+    ]
+   },
+   "gustave": {
+    "qui": "mon voisin du dessus",
+    "nom": "Gustave",
+    "sentiment": 0.9,
+    "avis": "Monsieur Gustave, c'est le meilleur alchimiste du monde, et il le dit lui-même. Il me prête sa cave. Il crie un peu quand ça fume, mais il crie en souriant. Il dit à tout le monde que je suis douée.",
+    "anecdotes": [
+     "Une nuit, ma potion a fait une fumée violette qui est montée par le plancher dans toute la boutique. Pendant un mois, L'Alambic a senti la violette et le sucre brûlé. Les gens venaient exprès pour sentir ! Monsieur Gustave a vendu deux fois plus. Je lui ai demandé un pourcentage. Il me l'a donné. Je suis une femme d'affaires.",
+     "Sur la porte de sa cave, il a écrit en gros « LABORATOIRE INTERDIT ». Et en dessous, en petit : « sauf Mirabelle ». J'ai souligné mon nom deux fois, en rose. Maintenant, avant de descendre, je frappe trois coups au plafond, pour qu'il sache qu'il va y avoir du bruit. C'est notre code."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Monsieur Gustave ! J'ai besoin de la cave, juste un peu."
+     ],
+     [
+      "b",
+      "Un peu comme la dernière fois ?"
+     ],
+     [
+      "a",
+      "Moins violet. Promis."
+     ]
+    ]
+   },
+   "pip": {
+    "qui": "le petit",
+    "nom": "Pip",
+    "sentiment": 0.5,
+    "avis": "Pip, il touche à tout. Il lit pas les étiquettes, ou il en lit que la moitié. Mais il est rigolo, et il croit à mes potions. Enfin, il y croyait avant les oreilles vertes.",
+    "anecdotes": [
+     "J'avais écrit « pas pour Pip » sur l'étiquette, exprès. Bon, le « pas » était un peu petit : il restait plus beaucoup de place. Il l'a bue quand même. Il a eu les oreilles vertes toute une journée ! Toute la classe l'a appelé Pip-Grenouille. Il dit que c'est ma faute. Moi je dis qu'il faut lire jusqu'au bout.",
+     "Le lendemain, Pip est revenu à mon étal avec trois pièces pour avoir les cheveux verts aussi, « pour aller avec les oreilles ». J'ai refusé. On fait pas n'importe quoi avec les potions ratées : je suis une professionnelle. Il est reparti tout triste. Je lui ai donné un jus de mûre. Gratuit. Celui-là, il marche jamais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pip ! Tes oreilles sont redevenues normales ?"
+     ],
+     [
+      "b",
+      "Presque. La gauche est encore un peu menthe."
+     ],
+     [
+      "a",
+      "C'est très joli, la menthe."
+     ]
+    ]
+   },
+   "lin": {
+    "qui": "ma voisine de lit",
+    "nom": "Lin",
+    "sentiment": 0.8,
+    "avis": "Lin lit tout le temps, même en marchant, même en mangeant sa soupe. Je la surveille, au cas où un livre l'avalerait. C'est ma meilleure amie, même si elle parle pas beaucoup. Elle écoute très bien.",
+    "anecdotes": [
+     "Une nuit, la petite lumière sous la couverture de Lin s'est éteinte d'un coup. J'ai cru qu'elle était partie dans le livre ! J'ai sauté de mon lit et j'ai soulevé sa couverture en criant son nom. Elle dormait, le nez sur la page vingt. Elle a ouvert un œil et elle a dit « Chut ». J'étais un peu déçue, quand même.",
+     "J'ai fait une potion pour qu'elle lise encore plus vite. Elle en voulait pas. Alors je l'ai bue, moi. Toute la journée, les lettres ont dansé devant mes yeux, dans tous les livres, en rond. J'ai pas lu un mot. Lin dit que j'ai lu une valse. Elle rit pas souvent, Lin. Ce jour-là, si."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lin ! T'es toujours là ? Pas dans le livre ?"
+     ],
+     [
+      "b",
+      "Pas encore. Chapitre treize."
+     ],
+     [
+      "a",
+      "Préviens-moi avant de partir."
+     ]
+    ]
+   }
+  }
+ },
+ "oscar": {
+  "genre": "m",
+  "prenom": "Oscar",
+  "histoire": [
+   {
+    "titre": "mon enfance à Carène",
+    "t": "Je viens de Carène, sur la grande île de l'est. Mon père fait des galettes, ma mère du cidre. Moi, je touchais une bouteille et elle pétillait jusqu'au plafond. Je touchais une galette et elle se pliait toute seule en cocotte. Au début, mes parents trouvaient ça drôle. Après la quatrième cave inondée de cidre, un peu moins."
+   },
+   {
+    "titre": "mon premier jour à l'Académie",
+    "t": "Le jour de mon arrivée, l'archimage m'a demandé une petite lumière. J'ai fait une lumière noire. À midi, toute la cour est devenue nuit, avec des étoiles. Tout le monde a crié. Elle, elle a dit : « Intéressant. » Personne ne m'avait jamais dit « intéressant ». J'ai décidé de rester. Ça fait trois ans."
+   },
+   {
+    "titre": "la semaine du drap",
+    "t": "L'an dernier, j'ai sauté du toit du dortoir avec un drap pour léviter. Le drap a lévité. Moi, non. J'ai atterri dans le massif de lavande, le drap sur la tête. Une semaine au lit chez Mère Sauge, avec des compresses qui sentaient le thym. Elle m'a appris à tricoter pour que je bouge pas. J'ai encore la cicatrice au genou. Je la montre, des fois."
+   },
+   {
+    "titre": "ma troisième première année",
+    "t": "Aujourd'hui, je suis en troisième première année. C'est un record. Le matin, cours dans la cour ; l'après-midi, je lis à la bibliothèque avec une clochette à ma chaise, ou je brûle des mannequins à l'Aire. Pip me suit partout, Gérard me surveille depuis le toit. Et le soir, je fais un vœu à la fontaine du Fondateur. Toujours le même."
+   },
+   {
+    "titre": "les sorts que je réussis la nuit",
+    "t": "Je vais te dire un truc, {surnom}. Je réussis des sorts. Si. La nuit, tout seul dans la cour, quand tout le monde dort : une petite lumière parfaite, ronde, qui tient. Mais dès que quelqu'un me regarde, mes mains tremblent et tout part de travers. Je sais pas pourquoi. J'en ai parlé à personne. Même pas à Pip. Surtout pas à Pip."
+   }
+  ],
+  "reve": [
+   "Qu'un jour, sur l'Aire, devant tous les apprentis, ma boule de feu parte bien droit, bien ronde, et touche Bertrand. Seulement Bertrand. Et entendre un bruit de mains. Un seul, ça m'irait.",
+   "Et puis rendre Gérard à son chapeau. Ou le chapeau à Gérard. Je sais plus trop dans quel sens."
+  ],
+  "question": {
+   "texte": "Dis… toi aussi, tu rates des choses, des fois ?",
+   "reponses": [
+    {
+     "label": "Tout le temps.",
+     "valeur": "tout_le_temps",
+     "t": "Ah ! Enfin quelqu'un ! On devrait fonder un club. On se réunirait… enfin, on raterait la réunion, mais on serait ensemble.",
+     "rappel": "Salut, collègue du club des ratés ! Toujours à rater des trucs ? Moi oui. Ça me rassure qu'on soit deux."
+    },
+    {
+     "label": "Presque jamais.",
+     "valeur": "presque_jamais",
+     "t": "Presque jamais ? Waouh. Tu veux bien me regarder lancer un sort ? Non, attends, recule. Recule encore. Voilà.",
+     "rappel": "Toi qui ne rates presque jamais : tu veux bien me regarder m'entraîner ? Enfin, de loin. Derrière un mur."
+    },
+    {
+     "label": "Je rate exprès, pour rire.",
+     "valeur": "expres",
+     "t": "Exprès ? C'est génial ! Moi je rate sans faire exprès, mais si on me demande, maintenant, je dirai que c'est exprès. Merci !",
+     "rappel": "J'ai dit à Pyra que j'avais brûlé Bertrand exprès, pour rire, comme toi. Elle a pas ri."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.9,
+    "avis": "L'archimage, c'est la seule qui soupire jamais quand je rate. Elle dit « intéressant ». Je crois qu'elle est gentille. Ou qu'elle collectionne les catastrophes.",
+    "anecdotes": [
+     "Mon premier jour, j'ai fait une lumière noire. Toute la cour est devenue nuit, à midi. Aurélien a applaudi, les autres ont crié, et l'archimage a sorti un crayon pour noter ma formule. Depuis, j'ai jamais réussi à la refaire. Personne. Elle dit que c'est un sort unique. Moi je dis que c'est un sort perdu.",
+     "Chaque fois que je rate un sort devant elle, l'archimage sort un petit carnet de sa manche et elle écrit dedans. Je crois que c'est la liste de tout ce que j'ai cassé. Il doit faire trois cents pages, maintenant. Un jour, elle va me le présenter. J'espère qu'elle me laissera payer en plusieurs fois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Archimage ! Je vous ai apporté une pomme."
+     ],
+     [
+      "b",
+      "Merci, Oscar. Pourquoi est-elle bleue ?"
+     ],
+     [
+      "a",
+      "Je voulais la faire briller."
+     ],
+     [
+      "b",
+      "Elle brille. En bleu. Je note."
+     ]
+    ]
+   },
+   "pyra": {
+    "qui": "ma maîtresse du feu",
+    "nom": "Pyra",
+    "sentiment": 0.8,
+    "avis": "Pyra, c'est la meilleure. Elle crie, elle fume des oreilles, mais elle m'a jamais renvoyé de l'Aire. Elle applaudit jamais. Personne. Un jour, elle m'applaudira. J'en suis sûr. Presque.",
+    "anecdotes": [
+     "Pyra a donné des noms aux trois mannequins de l'Aire : Bertrand, Hubert et Germaine. Bertrand, je l'ai brûlé onze fois. Je lui dis pardon chaque matin en arrivant. Hubert, six. Germaine, une seule, mais elle était à l'autre bout de l'Aire, derrière moi. Pyra dit que c'est le record de l'île. Elle l'a pas dit gentiment.",
+     "Une fois, j'ai allumé le premier brasero du premier coup. Du premier coup ! Pyra a levé les deux mains. J'ai arrêté de respirer. Tout le monde a arrêté de respirer. Elle s'est gratté le nez. Mais elle les avait levées, les mains. Je l'ai vu. Pip l'a vu aussi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maîtresse Pyra ! J'ai pas brûlé Bertrand aujourd'hui !"
+     ],
+     [
+      "b",
+      "Il est midi, Oscar."
+     ],
+     [
+      "a",
+      "C'est un début !"
+     ]
+    ]
+   },
+   "theophraste": {
+    "qui": "le bibliothécaire",
+    "nom": "Théophraste",
+    "sentiment": 0.3,
+    "avis": "Maître Filandre m'aime pas trop. Depuis l'histoire de l'étagère, il me surveille comme un livre qui pourrait s'envoler. Mais il me laisse revenir tous les jours. Alors peut-être un peu.",
+    "anecdotes": [
+     "J'ai voulu attirer un dictionnaire par télékinésie, juste un. Toute l'étagère de la lettre B est venue. J'ai été enseveli sous les blasons, la botanique et les biographies. Maître Filandre m'a sorti de là un livre après l'autre, sans un mot, en les remettant en ordre. Ça a pris deux heures. Moi, je bougeais pas.",
+     "Il a accroché une clochette à ma chaise, à la bibliothèque, pour savoir quand je bouge. Alors je tiens la clochette d'une main pour qu'elle sonne pas. Du coup, je peux plus tourner les pages. Je lis toujours la même. Je la connais par cœur : c'est la page quarante-deux de l'herbier. Les orties."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Maître Filandre ! Je viens juste lire."
+     ],
+     [
+      "b",
+      "Lire. Pas appeler. Pas faire voler."
+     ],
+     [
+      "a",
+      "Juste lire. Avec les yeux."
+     ],
+     [
+      "b",
+      "Et la clochette."
+     ]
+    ]
+   },
+   "sauge": {
+    "qui": "notre herboriste",
+    "nom": "Mère Sauge",
+    "sentiment": 0.9,
+    "avis": "Mère Sauge m'a soigné plus de bosses que j'ai de cheveux. Elle dit jamais « encore toi ? ». Elle dit « Montre. » C'est la personne la plus gentille de l'île. Avec Pip. Et Gérard.",
+    "anecdotes": [
+     "Pendant ma semaine au lit chez elle, après le drap, Mère Sauge m'a appris à tricoter pour que je bouge pas. J'ai fait une écharpe. Il y avait plus de trous que de laine. Elle la porte quand même, tous les hivers. Elle dit que les trous laissent respirer la peau. Je crois qu'elle le dit pour moi.",
+     "Elle a un pot d'onguent à l'arnica avec mon nom écrit dessus. Juste pour moi : « Oscar ». Elle le remplit chaque semaine. Une fois, il est resté plein huit jours. Pas une bosse ! Je suis allé le lui montrer, tout fier. En repartant, je me suis cogné à sa barrière. Elle a ouvert le pot. On a ri tous les deux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Mère Sauge ! Vous portez l'écharpe !"
+     ],
+     [
+      "b",
+      "Il fait frais, mon petit."
+     ],
+     [
+      "a",
+      "Elle a pas trop de trous ?"
+     ],
+     [
+      "b",
+      "Juste ce qu'il faut."
+     ]
+    ]
+   },
+   "pip": {
+    "qui": "le petit",
+    "nom": "Pip",
+    "sentiment": 0.7,
+    "avis": "Pip, c'est le petit du dortoir. Il me suit partout et il pose des questions sans arrêt. Il me trouve génial. C'est le seul. Alors je fais attention à pas trop le décevoir.",
+    "anecdotes": [
+     "Je voulais un lapin dans mon chapeau, comme les magiciens de foire. J'ai eu un pigeon. Il s'est envolé avec la plume du chapeau encore sur la tête, et avant que j'aie pu dire « reviens », Pip avait crié « Gérard ! ». Depuis, il s'appelle Gérard et il dort sur le toit du dortoir, la plume dressée comme un panache.",
+     "Pip veut sauter du dortoir avec un drap. Je lui ai montré ma cicatrice au genou, pour lui faire peur. Il a dit : « Trop bien ! » C'était pas du tout le but. Depuis, je surveille les draps. Il en a un avec des étoiles, il le cache sous son oreiller. Je le sais. Il sait que je le sais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pip, pose ce drap."
+     ],
+     [
+      "b",
+      "C'est pour dormir ! … Un peu."
+     ],
+     [
+      "a",
+      "Moi aussi, je disais ça."
+     ]
+    ]
+   },
+   "zephyrine": {
+    "qui": "ma maîtresse de l'air",
+    "nom": "Zéphyrine",
+    "sentiment": 0.6,
+    "avis": "Zéphyrine est très gentille, mais depuis l'histoire du drap, elle me regarde comme si j'allais m'envoler par la fenêtre. Ce qui pourrait arriver, remarque. Pas exprès.",
+    "anecdotes": [
+     "En cours de lévitation, j'ai voulu soulever une plume. C'est la chaise de Zéphyrine qui est montée, avec elle dessus. Elle a dit « Oh ! Merci ! » et elle a fait tout le cours de là-haut, au plafond. À la fin, je savais plus comment la faire redescendre. Elle est descendue toute seule. Elle a dit que c'était le plus beau cours de l'année.",
+     "Quand j'étais au lit chez Mère Sauge, Zéphyrine venait chaque jour. Elle me racontait le vent qu'il faisait dehors, d'où il venait, ce qu'il avait vu. Elle avait l'air triste, je sais pas pourquoi. Elle disait : « J'aurais dû être là. » Je lui ai dit que c'était pas sa faute, que c'était le drap."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maîtresse Zéphyrine ! Je peux refaire voler votre chaise ?"
+     ],
+     [
+      "b",
+      "Si je suis dessus, oui !"
+     ],
+     [
+      "a",
+      "C'est le seul sort que je rate qu'à moitié."
+     ]
+    ]
+   }
+  }
+ },
+ "pip": {
+  "genre": "m",
+  "prenom": "Pip",
+  "histoire": [
+   {
+    "titre": "les sardines de Port-Azur",
+    "t": "Papa et Maman pêchent la sardine à Port-Azur. Moi, je dormais dans le bateau, entre les filets, avec les mouettes qui faisaient pipi sur mon chapeau. Papa dit que je savais compter les sardines avant de savoir parler. C'est faux. Je savais parler avant. Mais je comptais en même temps, alors ça s'entendait pas."
+   },
+   {
+    "titre": "le hareng qui volait",
+    "t": "Un matin, j'ai regardé un hareng très fort, et il s'est envolé ! Il a fait trois fois le tour du port, avec toutes les mouettes derrière. Les gens criaient « Un poisson volant ! ». Maman a lâché son panier. Le soir, mes parents ont écrit une lettre à l'archimage. Le hareng, personne l'a jamais rattrapé. Il doit encore tourner au-dessus du port."
+   },
+   {
+    "titre": "la première fois que j'ai vu la tour",
+    "t": "Mathurin m'a amené dans sa barque, l'an dernier. Il y avait de la brume partout, et j'avais pas peur. Bon, un peu. Et d'un coup, la tour est sortie du brouillard, toute droite, avec le Grand Cristal qui brillait au-dessus. J'ai crié « Waouh ! » si fort que Mathurin a lâché une rame. On a dû la repêcher avec mon chapeau."
+   },
+   {
+    "titre": "ma vie au dortoir",
+    "t": "Au dortoir, j'ai le lit près de la fenêtre. Oscar ronfle, Lin lit, Mirabelle fait bouillir des trucs, et Gérard nous regarde depuis le toit. Le matin, cours dans la cour ; l'après-midi, je regarde les duels de Pyra ; le soir, je joue sur la place. J'ai droit à une question par jour à l'archimage. J'en ai deux cents de côté."
+   },
+   {
+    "titre": "le secret du hareng",
+    "t": "Je vais te dire un secret, {surnom}, mais tu le dis à personne. Le hareng… Je crois qu'il y avait une mouette. Une grosse, juste au-dessus. Peut-être que c'est elle qui l'a soulevé, pas moi. Si je suis pas vraiment magique, ils vont me renvoyer à Port-Azur. Alors je m'entraîne à l'étincelle tous les soirs. Elle part toujours. Mais elle vient."
+   }
+  ],
+  "reve": [
+   "Léviter jusqu'au toit du dortoir et dire bonjour à Gérard en face ! Et après, aller à Port-Azur en volant pour montrer à Papa et Maman. Sans barque !",
+   "Ou être cuisinier. Un cuisinier qui fait voler les crêpes. Toutes seules. C'est presque pareil."
+  ],
+  "question": {
+   "texte": "Dis, {surnom}… Tu crois que je serai un grand sorcier, plus tard ?",
+   "reponses": [
+    {
+     "label": "Oui, bien sûr !",
+     "valeur": "oui",
+     "t": "C'est vrai ? Tu le crois vraiment ? Je vais le dire à Oscar ! Et à Gérard ! Et à tout le monde !",
+     "rappel": "Tu crois que je serai un grand sorcier, tu me l'as dit ! J'y pense chaque fois que mon étincelle part."
+    },
+    {
+     "label": "Si tu travailles beaucoup.",
+     "valeur": "si_tu_travailles",
+     "t": "Tu parles comme l'archimage ! Bon. D'accord. Je travaillerai beaucoup. Mais pas le dimanche.",
+     "rappel": "Je travaille beaucoup, comme tu as dit ! Bon, sauf le dimanche. Et le samedi, des fois."
+    },
+    {
+     "label": "Toi, tu seras cuisinier.",
+     "valeur": "cuisinier",
+     "t": "Cuisinier ? … Bon, c'est pas mal non plus. Je ferai des crêpes qui volent. Tu en voudras ?",
+     "rappel": "Toi qui me vois cuisinier : je m'entraîne aux crêpes volantes. La première est au plafond. Elle y est encore."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.9,
+    "avis": "L'archimage, elle sait tout. Enfin, presque : elle sait pas si le Cristal dort. Moi je crois qu'il fait semblant, comme moi. Elle me laisse poser une question par jour. C'est pas assez.",
+    "anecdotes": [
+     "J'ai droit à une question par jour. Une seule ! Alors je les écris dans un carnet pour pas les perdre. J'en ai deux cents d'avance. Un jour, je lui ai demandé si elle avait été petite. Elle a réfléchi trois jours. Après, elle a dit : « Oui. Pas longtemps. » Je comprends pas, mais c'est une bonne réponse.",
+     "Un soir, je suis allé frapper à la Tour pour savoir si le Cristal dormait. Elle m'a emmené sur le banc de la cour pour le surveiller avec moi. Je me suis réveillé dans mon lit. Elle m'a dit que j'avais gagné, parce que moi au moins j'avais réussi à dormir. Le Cristal, lui, il sait pas. Le pauvre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Archimage ! J'ai ma question du jour !"
+     ],
+     [
+      "b",
+      "Je t'écoute, Pip."
+     ],
+     [
+      "a",
+      "Est-ce que les nuages, ça pèse lourd ?"
+     ],
+     [
+      "b",
+      "Demande à Zéphyrine. Ça comptera pour demain."
+     ]
+    ]
+   },
+   "zephyrine": {
+    "qui": "ma maîtresse préférée",
+    "nom": "Zéphyrine",
+    "sentiment": 0.9,
+    "avis": "Zéphyrine, elle vole ! Pour de vrai, sans drap ! Elle dit que je dois pas sauter du dortoir. Mais elle, elle saute de partout. C'est pas juste. Je l'aime bien quand même. Beaucoup.",
+    "anecdotes": [
+     "Un matin, très tôt, j'étais sur le toit du dortoir avec mon drap attaché aux poignets. Zéphyrine est montée sans échelle, comme ça, hop, et elle s'est assise à côté de moi. On a parlé des nuages pendant une heure. Après, on est redescendus par l'escalier. J'ai oublié de sauter. Je crois qu'elle a fait exprès.",
+     "Elle m'a fabriqué un cerf-volant avec un vieux drap du dortoir. Elle a dit : « Comme ça, le drap vole, et toi tu tiens la ficelle. » Il vole super haut ! Plus haut que Gérard. Moi, je vole pas encore. Mais je tiens très bien la ficelle. C'est elle qui le dit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Zéphyrine ! Regarde comme je saute haut !"
+     ],
+     [
+      "b",
+      "Très haut ! Et tes pieds, ils reviennent ?"
+     ],
+     [
+      "a",
+      "Toujours. C'est ça, le problème."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "mon copain",
+    "nom": "Oscar",
+    "sentiment": 0.9,
+    "avis": "Oscar, c'est mon meilleur copain du dortoir. Il rate tous ses sorts, mais il les rate super bien. Une fois, il a fait pleuvoir des boutons. Personne sait faire ça ! Il ronfle, par contre.",
+    "anecdotes": [
+     "Oscar voulait faire sortir un lapin de son chapeau, comme les magiciens de foire. Le chapeau est devenu un pigeon ! Il s'est envolé sur le toit du dortoir avec la plume du chapeau encore sur la tête. C'est moi qui l'ai appelé Gérard. Il a une tête de Gérard. Il veut pas redevenir chapeau. Moi je dis qu'il est bien comme ça.",
+     "Oscar m'a montré la cicatrice qu'il a au genou, de quand il a sauté du dortoir avec un drap, l'an dernier. Il voulait me faire peur. J'ai dit : « Trop bien ! » Il a soupiré très fort. Il dit que lui, il avait le mauvais drap. Moi, j'ai un drap beaucoup mieux, avec des étoiles dessus."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Oscar ! Gérard m'a regardé, ce matin !"
+     ],
+     [
+      "b",
+      "Il t'a dit quelque chose ?"
+     ],
+     [
+      "a",
+      "Rou-rou. Je crois qu'il veut redevenir chapeau."
+     ],
+     [
+      "b",
+      "Il dit ça à tout le monde. Il ment."
+     ]
+    ]
+   },
+   "mirabelle": {
+    "qui": "cette chipie de",
+    "nom": "Mirabelle",
+    "sentiment": 0.3,
+    "avis": "Mirabelle, elle m'a donné des oreilles vertes ! Bon, elle me les a pas données, je les ai bues. Mais quand même. Elle est rigolote. Je goûte plus jamais ses potions. Sauf celle au jus de mûre.",
+    "anecdotes": [
+     "Sur l'étiquette, c'était écrit « pas pour Pip ». Mais le « pas » était tout petit, tout serré dans un coin. Moi j'ai lu « pour Pip », alors je l'ai bue ! J'ai eu les oreilles vertes toute une journée. Toute la classe m'a appelé Pip-Grenouille. Même Lin. Lin, elle dit jamais rien, d'habitude.",
+     "Le lendemain, je suis retourné la voir pour avoir les cheveux verts aussi, pour aller avec les oreilles. Elle a dit non. Elle a dit qu'elle était une professionnelle. Une professionnelle des potions ratées ! Ça existe pas, ça. Elle m'a donné un jus de mûre à la place. Il était bon."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mirabelle ! Elle fait quoi, la rose ?"
+     ],
+     [
+      "b",
+      "Pas pour toi, Pip."
+     ],
+     [
+      "a",
+      "T'as écrit le « pas » en gros, cette fois ?"
+     ],
+     [
+      "b",
+      "En énorme."
+     ]
+    ]
+   },
+   "ysolde": {
+    "qui": "la gardienne",
+    "nom": "Ysolde",
+    "sentiment": 0.2,
+    "avis": "Ysolde, elle fait un peu peur. Elle est toujours derrière toi, même quand elle était devant. Je crois qu'elle dort jamais. Mais elle a gardé ma couverture pour la petite pierre. Alors elle est gentille, peut-être.",
+    "anecdotes": [
+     "J'ai touché une Pierre-Lune. Juste un doigt, pour savoir si elle était froide. Ysolde était derrière moi. Elle était pas là avant ! Elle a juste dit : « Je sais. » J'ai couru jusqu'au dortoir sans m'arrêter. Mon chapeau est resté là-bas. Elle me l'a rapporté le lendemain. J'ai vérifié que c'était pas un pigeon.",
+     "Ysolde a dit que les pierres aiment pas être seules dans le noir. Alors je leur ai apporté ma couverture à carreaux, celle de mon lit. Elle l'a mise sur la plus petite pierre. Maintenant, moi j'ai un peu froid la nuit, mais la petite pierre non. C'est mieux comme ça. Elle est plus vieille que moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Madame Ysolde ! La petite pierre a toujours ma couverture ?"
+     ],
+     [
+      "b",
+      "Elle la garde."
+     ],
+     [
+      "a",
+      "Elle a raison. C'est une bonne couverture."
+     ]
+    ]
+   }
+  }
+ },
+ "pyra": {
+  "genre": "f",
+  "prenom": "Pyra",
+  "histoire": [
+   {
+    "titre": "la maison des chandelles",
+    "t": "Ma mère faisait des chandelles, dans la petite maison au bout du bourg. La nuit où je suis née, la foudre est descendue par la cheminée et toutes les chandelles de la boutique se sont allumées d'un coup. Trois cents. Ma mère dit que je suis arrivée avec mon éclairage. Berthe, la voisine, avait deux ans. Elle dit qu'elle s'en souvient. Elle ment."
+   },
+   {
+    "titre": "l'éternuement de la Fête du Cristal",
+    "t": "À huit ans, à la Fête du Cristal, j'ai éternué. Toutes les bougies de la cour se sont allumées, plus deux chapeaux et un bout de la barbe du vieux Gaudence. Séraphine m'a prise par l'oreille, gentiment mais fermement, et m'a dit : « Toi, tu viens à l'Académie demain. » Je suis venue. Je n'ai plus jamais éternué comme ça. Enfin, presque plus."
+   },
+   {
+    "titre": "l'hiver du bain chaud",
+    "t": "Il y a douze hivers, je suis rentrée des falaises du nord gelée jusqu'aux os. J'ai vu le Lac Miroir, tout plat, tout blanc, et je me suis dit : le plus grand bain du monde. J'ai chauffé. Un peu trop. À minuit, le lac fumait et moi j'étais dedans, avec mon bonnet. Borée est arrivé en chemise de nuit. Depuis, il ne m'adresse plus la parole. Enfin, si : « Madame. »"
+   },
+   {
+    "titre": "mon Aire et mes braseros",
+    "t": "Aujourd'hui, l'Aire des Duels est à moi. Cinq braseros, trois mannequins de paille, des apprentis aux sourcils roussis, et Oscar. Le midi, je mange chez Berthe ; le soir, j'y bois un rhum de la Murène, quand Mathurin m'en a laissé. Je crie beaucoup. J'apprends aux jeunes à éteindre ce qu'ils allument. C'est le plus dur. Personne ne veut apprendre ça."
+   },
+   {
+    "titre": "les fagots devant la porte de Borée",
+    "t": "Écoute, {surnom}, et tu ne le répètes pas. Le lendemain du bain, je suis allée m'excuser. Borée était assis au bord du lac, il lui parlait tout bas, comme à un ami malade. Je n'ai pas osé. Depuis, chaque hiver, je dépose un fagot de bois tordu devant sa porte, avant l'aube. Il croit que c'est Mathurin. Le maître du gel a froid aux pieds, la nuit. Je le sais."
+   }
+  ],
+  "reve": [
+   "Un duel, un vrai, devant toute l'île : moi contre Borée. Le feu contre la glace. Et à la fin, de la vapeur partout, et personne qui saurait qui a gagné. Ce serait parfait.",
+   "Et qu'un jour Oscar allume les cinq braseros d'affilée. Si ça arrive, je… non. Je ne dirai pas ce que je ferai. Mais ce sera bruyant."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi : tu as déjà eu une vraie brûlure ?",
+   "reponses": [
+    {
+     "label": "Oui, souvent.",
+     "valeur": "souvent",
+     "t": "Souvent ! Ha ! Ceux qui se brûlent souvent, c'est ceux qui s'approchent. J'aime les gens qui s'approchent. Montre tes mains… Pas mal.",
+     "rappel": "Toi qui te brûles souvent : va voir Mère Sauge avant moi, la prochaine fois. Elle a un onguent qui sent le miel."
+    },
+    {
+     "label": "Jamais.",
+     "valeur": "jamais",
+     "t": "Jamais ? Soit tu fais très attention, soit tu n'as jamais rien essayé. On va vite savoir lequel des deux. Approche du brasero.",
+     "rappel": "Ah, toi qui n'as jamais eu de brûlure ! Toujours sans une marque ? Viens à l'Aire, on va arranger ça. Gentiment."
+    },
+    {
+     "label": "Seulement le cœur.",
+     "valeur": "le_coeur",
+     "t": "Le cœur ? … Hm. Ça, c'est le seul feu que je ne sais pas éteindre. Va voir Mère Sauge. Ou Berthe : elle a de la tarte. La tarte, ça marche aussi.",
+     "rappel": "Et ce cœur brûlé, ça va mieux ? … Tu n'es pas obligé de répondre. Je demande, c'est tout."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.6,
+    "avis": "Séraphine m'a amenée à l'Académie par l'oreille, et elle me la tire encore de temps en temps. C'est la plus sage d'entre nous. Mais qu'elle arrête de vouloir me réconcilier avec ce glaçon.",
+    "anecdotes": [
+     "À la dernière Fête du Cristal, elle nous a assis côte à côte, Borée et moi, avec une cruche d'eau au milieu. Je n'ai rien fait exprès ! La cruche a bouilli de mon côté, gelé du sien. Séraphine a bu au milieu en disant : « Tiède. Parfait. » Elle croit qu'on n'a pas vu qu'elle se moquait. On a vu.",
+     "Elle a voulu une leçon commune : le feu et le gel, pour montrer la vapeur aux apprentis. J'ai fait ma part. Lui la sienne. Un peu trop, tous les deux. La cour a disparu sous la vapeur pendant une heure. Oscar est allé se coucher, il croyait que c'était la nuit. Séraphine n'a plus jamais proposé de leçon commune."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Séraphine ! Ne me parle pas de Borée."
+     ],
+     [
+      "b",
+      "Je n'ai rien dit."
+     ],
+     [
+      "a",
+      "Tu l'as pensé. Ça fume derrière tes yeux."
+     ]
+    ]
+   },
+   "boree": {
+    "qui": "ce glaçon de",
+    "nom": "Borée",
+    "sentiment": -0.5,
+    "avis": "Borée me boude depuis douze hivers pour un bain. Un bain ! Il est vieux, il est raide, il est lent. Et il fait la plus belle glace de l'archipel. Ça m'énerve encore plus.",
+    "anecdotes": [
+     "La nuit du bain, quand Borée est arrivé au bord du lac, en chemise de nuit et bonnet de laine, j'étais au milieu, dans l'eau chaude jusqu'au menton, et tous les poissons s'étaient serrés autour de moi pour se réchauffer. Je lui ai fait coucou. Il paraît qu'il ne fallait pas faire coucou.",
+     "Chaque année, le jour de mon anniversaire, il neige. Seulement au-dessus de ma maison. Un petit nuage gris, juste sur mon toit, toute la journée. Je sais que c'est lui. Il dit que c'est la météo. La météo ne connaît pas mon anniversaire, Borée !"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tiens. Le glaçon."
+     ],
+     [
+      "b",
+      "Madame la bouilloire."
+     ],
+     [
+      "a",
+      "Ton lac va bien ?"
+     ],
+     [
+      "b",
+      "Il se souvient de vous."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "mon pire apprenti",
+    "nom": "Oscar",
+    "sentiment": 0.2,
+    "avis": "Oscar a brûlé tous mes mannequins. Tous. Même celui qui était derrière lui. C'est le pire apprenti que j'aie jamais eu, et le seul qui revienne chaque jour en souriant. Ça, je ne sais pas quoi en faire.",
+    "anecdotes": [
+     "J'ai donné des noms à mes trois mannequins : Bertrand, Hubert et Germaine. Oscar a brûlé Bertrand onze fois, Hubert six. Germaine, une seule fois, mais elle était derrière lui, à l'autre bout de l'Aire. Je ne sais toujours pas comment. Lui non plus. Je la rembourre de paille fraîche en le regardant fixement.",
+     "Une fois, il a allumé le premier brasero du premier coup. Proprement. J'ai levé les mains pour… pour rien. Je me suis gratté le nez. Il en parle encore, paraît-il. Je n'applaudis jamais, {surnom}. Le jour où Oscar réussira vraiment, il n'aura pas besoin de mes mains pour le savoir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Recule, Oscar. Encore."
+     ],
+     [
+      "b",
+      "Je suis contre le mur, Maîtresse Pyra."
+     ],
+     [
+      "a",
+      "Alors passe derrière le mur."
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "ma vieille copine",
+    "nom": "Berthe",
+    "sentiment": 0.9,
+    "avis": "Berthe et moi, on a grandi porte à porte, dans le bourg. Elle fait la meilleure tarte de l'archipel. Ne critique jamais sa tarte devant elle. J'ai essayé une fois.",
+    "anecdotes": [
+     "Une fois, j'ai dit que sa tarte au potiron avait trop de muscade. Une semaine de pain sec ! Elle me servait une tranche de pain sur une assiette, avec un grand sourire. Le huitième jour, je suis revenue dire qu'il n'y avait pas assez de muscade. Elle m'a resservi de la tarte. On n'en a jamais reparlé.",
+     "La nuit de la grande tempête, le vent est descendu par la cheminée du Chaudron et a failli éteindre le chaudron de sa grand-mère. J'ai voulu le rallumer d'un claquement de doigts. Berthe m'a tapé sur la main : « Pas de magie dans mon auberge. » Alors on a soufflé avec les soufflets, à deux, jusqu'à l'aube. Il ne s'est pas éteint."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Berthe ! Une part de tarte, et pas un mot sur la muscade."
+     ],
+     [
+      "b",
+      "Il y en a juste ce qu'il faut, ma belle."
+     ],
+     [
+      "a",
+      "C'est ce que je disais."
+     ]
+    ]
+   },
+   "mathurin": {
+    "qui": "notre passeur",
+    "nom": "Mathurin",
+    "sentiment": 0.2,
+    "avis": "Mathurin rame comme personne et raconte comme personne. Surtout ses serpents de mer, qui sortent toujours après l'hydromel. Il me pique mon rhum. On s'aime bien. On ne se le dit pas.",
+    "anecdotes": [
+     "Un soir, je revenais des falaises en barque, deux flammes dans les mains pour me réchauffer. J'avais emprunté la barque de Mathurin. Le lendemain, il racontait à toute l'auberge qu'il avait vu un serpent de mer aux yeux de braise dans la baie. Je lui ai dit que c'était moi. Il ne me croit pas. Il préfère le serpent.",
+     "Chez Berthe, il n'arrive qu'une bouteille de rhum de la Murène par mois. Mathurin la veut, moi aussi. Un soir, on l'a pariée : s'il voyait un serpent avant minuit, elle était à lui. À minuit moins le quart, il en a vu trois. C'étaient des algues. On l'a bue ensemble, pour ne pas se fâcher."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Alors, Mathurin, combien de serpents ce soir ?"
+     ],
+     [
+      "b",
+      "Un. Avec des yeux de braise."
+     ],
+     [
+      "a",
+      "Ah, celui-là. Il te salue."
+     ]
+    ]
+   },
+   "sauge": {
+    "qui": "notre herboriste",
+    "nom": "Mère Sauge",
+    "sentiment": 0.7,
+    "avis": "Mère Sauge soigne mes brûlures depuis que j'ai huit ans. Elle ne me fait jamais la morale. Elle me regarde. C'est pire. Et son onguent au miel sent bon, je l'avoue.",
+    "anecdotes": [
+     "Pour mes trente ans, j'ai voulu allumer les cinq braseros d'un seul geste. Ils se sont allumés. Mes sourcils aussi. Mère Sauge me les a redessinés au charbon pour la fête, un plus haut que l'autre. J'ai eu l'air étonnée toute la soirée. Même quand on m'a offert mon cadeau. Surtout quand Borée est entré.",
+     "Quand je me brûle vraiment, je cache ma main derrière mon dos et je dis : « Ce n'est rien. » Mère Sauge dit que je sens le roussi depuis la barrière du jardin. Elle me prend la main, elle souffle dessus, très doucement, comme sur une soupe. Après, ça va. Je ne sais pas si c'est le sort ou le souffle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Mère Sauge. Rien de brûlé, regarde."
+     ],
+     [
+      "b",
+      "Montre l'autre main, ma fille."
+     ],
+     [
+      "a",
+      "… Un peu roussie."
+     ]
+    ]
+   },
+   "agathe": {
+    "qui": "la voyante",
+    "nom": "Agathe",
+    "sentiment": -0.2,
+    "avis": "Agathe a lu mon thé, une fois. Je ne veux pas savoir ce qu'elle a vu. Elle meurt d'envie de me le dire. Elle sourit en me regardant. Je déteste ce sourire.",
+    "anecdotes": [
+     "J'ai bu mon thé, j'ai posé la tasse, et quand Agathe a ouvert la bouche, j'ai mis le feu aux feuilles. Pfft. Plus d'avenir. Elle a regardé les cendres, et elle a souri. Elle avait déjà tout lu, évidemment. C'est pire qu'un avenir, un sourire comme ça.",
+     "Une fois, j'ai failli demander. J'étais devant sa roulotte, la main sur la poignée. Et j'ai pensé : et si c'est Borée ? Si elle a vu Borée dans ma tasse ? Je crois que je l'ai dit tout haut. J'ai fait demi-tour. Je ne saurai jamais. C'est très bien comme ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Je ne veux pas savoir, Agathe."
+     ],
+     [
+      "b",
+      "Je n'ai rien dit, ma belle."
+     ],
+     [
+      "a",
+      "Tu l'as pensé très fort."
+     ]
+    ]
+   }
+  }
+ },
+ "sauge": {
+  "genre": "f",
+  "prenom": "Sauge",
+  "histoire": [
+   {
+    "titre": "la ferme des onze enfants",
+    "t": "Je suis née sur la lande, dans une ferme de schiste, l'aînée de onze enfants. Avec onze petits, il y a toujours un genou écorché, un rhume, une dent qui pousse. À huit ans, je soignais déjà tout le monde avec ce que je trouvais dans les talus. Les chèvres aussi venaient me voir. Elles faisaient la queue devant la porte, je te jure."
+   },
+   {
+    "titre": "la vieille Bourrache",
+    "t": "À quatorze ans, je suis montée à l'Académie. La maîtresse du soin, c'était la vieille Bourrache, qui sentait le camphre et grondait les plantes qui poussaient de travers. Elle m'a appris qu'on ne soigne pas avec les mains, mais avec les oreilles : il faut écouter avant de toucher. J'ai mis dix ans à comprendre. Je ne suis pas sûre d'avoir fini."
+   },
+   {
+    "titre": "Firmin et ses ruches",
+    "t": "Firmin était apiculteur. Il est venu me demander un remède contre les piqûres. Je lui ai dit d'arrêter de faire peur aux abeilles. Il est revenu le lendemain, et le jour d'après. Il m'a fabriqué les ruches de paille du jardin, une par année de mariage. Il y en a trente. Quand il est parti, je suis allée le dire aux abeilles, comme on fait. Elles ont bourdonné tout bas."
+   },
+   {
+    "titre": "mon jardin et mes petits",
+    "t": "Aujourd'hui, j'ai le Jardin des simples, la serre, les ruches, et tous les petits de l'Académie, qui m'appellent Mère alors que je n'ai jamais eu d'enfant. J'en ai eu des centaines, en fait. Pyra vient pour ses mains, Borée pour ses orteils, Oscar pour son front. Le dimanche, je porte une tisane à Borée. Et le soir, je raconte tout aux abeilles."
+   },
+   {
+    "titre": "ce que mes mains n'ont pas pu faire",
+    "t": "Je vais te dire une chose que je ne dis pas aux apprentis, mon petit. Quand Firmin est tombé malade, j'ai tout essayé. Toutes mes herbes, tous mes sorts. Mes mains ne servaient à rien. Alors j'ai juste tenu la sienne, toute la nuit. Le soin ne guérit pas tout. Parfois, soigner, c'est rester. Je ne sais pas comment l'apprendre aux jeunes. Je n'ai pas le cœur."
+   }
+  ],
+  "reve": [
+   "Un jardin si grand qu'il y pousserait une herbe pour chaque chagrin. Il me manque encore quelques graines. Les plus difficiles à trouver.",
+   "Et que Berthe goûte un jour ma tisane sans faire la grimace. Ce jour-là, j'ouvrirai mon meilleur pot de miel de lavande. Le dernier que Firmin a récolté."
+  ],
+  "question": {
+   "texte": "Dis-moi, mon petit : tu dors bien, la nuit ?",
+   "reponses": [
+    {
+     "label": "Comme un loir.",
+     "valeur": "comme_un_loir",
+     "t": "Comme un loir ! Ça se voit, tu as le teint frais. Garde ça précieusement, ça ne dure pas toute la vie. Moi, je dors comme une vieille chouette.",
+     "rappel": "Toi qui dors comme un loir : tu as bien dormi, cette nuit ? Oui ? Je le savais, tu as l'œil clair."
+    },
+    {
+     "label": "Mal, je fais des cauchemars.",
+     "valeur": "cauchemars",
+     "t": "Des cauchemars ? Oh, mon petit. Tiens, prends ce sachet de lavande, mets-le sous ton oreiller. Et si ça ne passe pas, viens me voir. Les cauchemars, ça se raconte.",
+     "rappel": "Tu as gardé la lavande sous ton oreiller ? Et les mauvais rêves ? Viens t'asseoir sur le banc, si tu veux en parler."
+    },
+    {
+     "label": "Peu, j'ai trop à faire.",
+     "valeur": "trop_a_faire",
+     "t": "Trop à faire ! Les jeunes croient toujours ça. Le monde attendra une heure, mon petit. Il a l'habitude. Une tisane de tilleul ce soir, et au lit.",
+     "rappel": "Tu as pris ta tisane de tilleul ? Tu as encore des yeux de hibou. Le monde peut attendre, je te l'ai dit."
+    }
+   ]
+  },
+  "liens": {
+   "pyra": {
+    "qui": "notre maîtresse du feu",
+    "nom": "Pyra",
+    "sentiment": 0.7,
+    "avis": "Pyra est une bonne fille, brûlante dehors et tendre dedans. Elle ne vient me voir que quand ça fait vraiment mal, la main derrière le dos. Je la soigne depuis qu'elle a huit ans.",
+    "anecdotes": [
+     "Pour ses trente ans, elle a voulu allumer les cinq braseros d'un seul coup. Ils se sont allumés ; ses sourcils aussi. Je les lui ai redessinés au charbon pour la fête. J'avais la main qui tremblait, j'en ai fait un plus haut que l'autre. Elle a eu l'air étonnée toute la soirée. Surtout quand Borée est entré.",
+     "Elle arrive au jardin en disant « Ce n'est rien », la main cachée dans le dos. Elle sent le roussi depuis la barrière. Je lui prends la main, je souffle dessus doucement, comme sur une soupe trop chaude, et je mets mon onguent au miel. Elle ne dit pas merci. Elle revient le lendemain avec un panier de bûches pour mon poêle."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pyra ! Montre-moi tes mains."
+     ],
+     [
+      "b",
+      "Elles vont très bien, Mère Sauge."
+     ],
+     [
+      "a",
+      "Alors pourquoi tu les caches, ma fille ?"
+     ]
+    ]
+   },
+   "boree": {
+    "qui": "mon vieux glaçon",
+    "nom": "Borée",
+    "sentiment": 0.9,
+    "avis": "Borée, c'est mon plus vieil ami. Il parle peu, il gèle beaucoup, il boude longtemps. Mais il n'a jamais oublié un dimanche. C'est un homme fidèle, comme son lac.",
+    "anecdotes": [
+     "Tous les dimanches, je lui porte une tisane au thym sur son banc, bien chaude, avec du miel. Il attend qu'elle refroidisse, puis il la gèle et il la croque comme un sucre d'orge. Quarante ans que je la lui fais chaude, quarante ans qu'il la croque. On ne changera ni l'un ni l'autre. C'est ça, l'amitié.",
+     "Le maître du gel a des engelures aux orteils, l'hiver. Je le dis à tout le monde, et surtout aux apprentis : ça les rassure, qu'un maître ait froid aux pieds. Borée fait la tête, puis il me tend son pied, sans un mot. Je mets l'onguent à la lavande. Il dit « Hm ». Ça veut dire merci."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta tisane, mon vieux glaçon. Chaude, comme toujours."
+     ],
+     [
+      "b",
+      "Merci, Sauge. Je la laisserai réfléchir."
+     ],
+     [
+      "a",
+      "Tu la laisseras geler, oui."
+     ]
+    ]
+   },
+   "berthe": {
+    "qui": "cette saleuse de",
+    "nom": "Berthe",
+    "sentiment": 0.6,
+    "avis": "Vingt ans que je dis à Berthe qu'elle sale trop. Vingt ans qu'elle ne m'écoute pas. Elle a le cœur sur la main et la main sur la salière. On se dispute tous les jours. Je ne pourrais pas m'en passer.",
+    "anecdotes": [
+     "Je reprends toujours deux assiettes de sa soupe. Pour vérifier si c'est toujours trop salé. C'est toujours trop salé. Des fois, j'en reprends une troisième, pour être sûre. Berthe ne dit rien. Elle sourit en remplissant. Elle sourit beaucoup trop, cette femme.",
+     "L'hiver où Berthe a eu la fièvre, j'ai tenu le Chaudron trois jours. Une soupe sans sel, très saine, pleine de bonnes herbes. Mathurin m'a demandé si j'étais malade aussi. Pyra a demandé quand Berthe revenait. Le troisième soir, il ne restait plus que Borée. Lui, il a aimé."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Berthe, ta soupe… encore salée ?"
+     ],
+     [
+      "b",
+      "Juste ce qu'il faut. Et ta tisane, encore sucrée ?"
+     ],
+     [
+      "a",
+      "Juste ce qu'il faut."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "mon petit",
+    "nom": "Oscar",
+    "sentiment": 0.8,
+    "avis": "Oscar a la tête la plus cabossée et le cœur le plus doux de l'Académie. Il dit pardon aux portes qu'il se cogne. Je l'aime beaucoup, ce petit. Je lui ai réservé un pot d'onguent.",
+    "anecdotes": [
+     "Après l'histoire du drap, il a passé une semaine au lit chez moi. Pour qu'il ne bouge pas, je lui ai appris à tricoter. Il m'a fait une écharpe, avec plus de trous que de laine. Je la porte tous les hivers. Je lui ai dit que les trous laissent respirer la peau. C'est vrai, d'ailleurs. Un peu.",
+     "J'ai un pot d'onguent à l'arnica avec son nom écrit dessus : « Oscar ». Je le remplis chaque semaine. Une fois, il est resté plein huit jours. Oscar est venu me le montrer, tout fier. En repartant, il s'est cogné à ma barrière. J'ai ouvert le pot. On a ri tous les deux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Oscar ! Montre ton front."
+     ],
+     [
+      "b",
+      "Juste une petite, Mère Sauge."
+     ],
+     [
+      "a",
+      "Elle a des petites sœurs, ta petite."
+     ]
+    ]
+   },
+   "agathe": {
+    "qui": "notre voyante",
+    "nom": "Agathe",
+    "sentiment": 0.5,
+    "avis": "Agathe lit l'avenir dans le thé. Je lui fournis le thé. Je ne sais pas si elle voit vraiment, mais elle dit toujours aux gens ce dont ils ont besoin. C'est déjà une forme de soin.",
+    "anecdotes": [
+     "Elle a regardé longtemps le fond de ma tasse, très sérieuse, les sourcils froncés. Puis elle a dit : « Une longue vie et beaucoup de tisane. » J'ai ri si fort que j'ai renversé la tasse sur sa nappe. Elle a regardé la tache et elle a dit : « Ça confirme. » Depuis, je lui porte ma verveine.",
+     "Je lui ai laissé un pot d'onguent pour la chouette blessée du Bois Tors, au cas où elle se laisserait approcher. Agathe l'a posé sur sa table, à côté de la boule. Elle m'a dit que la boule et l'onguent attendaient la même chose. Je ne sais pas ce que ça voulait dire. Elle non plus, je crois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Agathe ! Encore du thé à lire ?"
+     ],
+     [
+      "b",
+      "Le tien, toujours. Il a de l'avenir."
+     ],
+     [
+      "a",
+      "Beaucoup de tisane, je sais."
+     ]
+    ]
+   },
+   "gustave": {
+    "qui": "notre alchimiste",
+    "nom": "Gustave",
+    "sentiment": 0.3,
+    "avis": "Gustave m'achète mes herbes pour les mettre dans ses fioles. Il est gentil, et il fait exploser ma camomille. Je trie ce que je lui vends : ce qui soigne d'un côté, ce qui fait boum de l'autre.",
+    "anecdotes": [
+     "Je ne lui vends plus de camomille. La dernière fois, il en a fait une potion « pour dormir » qui a soufflé la porte de L'Alambic. Tout le bourg s'est réveillé. La camomille, c'est fait pour dormir, mon petit, pas pour réveiller le bourg. Maintenant, je lui vends de la mélisse. Elle explose moins. Un peu moins.",
+     "Il m'a vendu une « tisane en fiole », toute prête, bleue. Je l'ai goûtée, puis je l'ai versée sur mes tomates. Elles sont devenues bleues. Énormes, bleues, et délicieuses. Je lui en ai offert un panier, sans un mot d'explication. Il n'a rien demandé. Il serait capable d'en vendre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gustave, mon petit. Tu manges assez ?"
+     ],
+     [
+      "b",
+      "Je goûte beaucoup, Mère Sauge."
+     ],
+     [
+      "a",
+      "Ce n'est pas pareil."
+     ]
+    ]
+   }
+  }
+ },
+ "theophraste": {
+  "genre": "m",
+  "prenom": "Théophraste",
+  "histoire": [
+   {
+    "titre": "l'atelier du relieur",
+    "t": "Mon père était relieur, dans une petite ville du sud dont le nom ne vous dirait rien. J'ai grandi dans l'odeur de la colle et du cuir. À six ans, je suis tombé d'une échelle de son atelier, un dictionnaire dans les bras. Je me suis cassé le bras ; le dictionnaire, rien. J'ai compris ce jour-là lequel de nous deux était le plus solide. Et j'ai eu peur des échelles."
+   },
+   {
+    "titre": "l'automne de mon arrivée",
+    "t": "Il y a quarante ans, je suis arrivé ici comme aide du vieil Anatole, le bibliothécaire. Le même automne qu'une jeune femme qui faisait de la lumière avec les mains : Séraphine. Anatole m'a montré les étagères, très hautes, et l'échelle. J'ai blêmi. Il a souri : « Alors il faudra que les livres descendent. » J'ai appris la télékinésie en un hiver."
+   },
+   {
+    "titre": "la nuit de la grande tempête",
+    "t": "Il y a cinq ans, la grande tempête a frappé la bibliothèque de plein fouet. Le vent est entré par la fenêtre du haut et il a pris quatre livres, comme on cueille des fruits. Je les ai vus partir dans la nuit, les pages ouvertes comme des ailes. J'ai appelé de toutes mes forces. Le vent appelait plus fort. Je n'avais jamais perdu un livre. Pas un."
+   },
+   {
+    "titre": "mes journées derrière le bureau",
+    "t": "Je passe mes journées derrière mon bureau, de huit heures à sept heures du soir. Je range, je rattrape, je dis « chut ». Mademoiselle Lin lit à la table du fond, le jeune Oscar tient sa clochette, Monsieur Lumen ronfle sur l'atlas. Le soir, je dîne chez Berthe, à la table quatre. Et je relis. Je n'ai jamais fini de relire."
+   },
+   {
+    "titre": "la fenêtre que j'avais laissée ouverte",
+    "t": "Je vais vous avouer une chose. La nuit de la tempête, le vent n'a pas forcé la fenêtre. Je l'avais laissée ouverte. Je lisais à la lueur des éclairs, c'était magnifique, et je me suis endormi sur la page. J'ai dit à tout le monde que le loquet avait cédé. Séraphine le sait, je crois. Elle n'a rien dit. Elle sait se taire, quand il le faut."
+   }
+  ],
+  "reve": [
+   "Un catalogue complet. Chaque livre de la bibliothèque à sa place, sur sa fiche, et pas un qui manque. Trois mille. Je dis bien : trois mille.",
+   "Et lire, enfin, sans avoir rien à rattraper. Un après-midi entier. Je ne sais pas si cela existe."
+  ],
+  "question": {
+   "texte": "Dites-moi franchement. Vous cornez les pages, vous ?",
+   "reponses": [
+    {
+     "label": "Jamais !",
+     "valeur": "jamais",
+     "t": "Jamais ? … Bien. Très bien. Vous pourrez emprunter le petit livre bleu, sur l'étagère de gauche. Personne ne l'emprunte. Il sera ravi.",
+     "rappel": "Ah, la personne qui ne corne jamais. Bonjour. Les livres vous saluent. Si, si : ils ne bruissent pas pour tout le monde."
+    },
+    {
+     "label": "Parfois…",
+     "valeur": "parfois",
+     "t": "Parfois. Hm. Au moins, vous l'avouez. Prenez un marque-page. Prenez-en dix. Gardez-en un sur vous, toujours.",
+     "rappel": "Vous avez toujours le marque-page que je vous ai donné ? Montrez. … Bien. Je vous ai à l'œil."
+    },
+    {
+     "label": "Je ne lis pas.",
+     "valeur": "je_ne_lis_pas",
+     "t": "Vous ne lisez pas. … Je vais m'asseoir un instant. Bon. Ce n'est pas grave. Il n'est jamais trop tard. Commencez par un livre court. Avec des images.",
+     "rappel": "Vous avez commencé un livre ? Même un petit ? Je vous en ai mis un de côté. Avec des images, et une couverture solide."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "ma vieille amie",
+    "nom": "Séraphine",
+    "sentiment": 0.8,
+    "avis": "Séraphine et moi sommes arrivés le même automne, il y a quarante ans. Elle me tutoie depuis le premier jour ; je la vouvoie depuis le premier jour. C'est une question de principe. Elle rit de mes principes. Elle a tort.",
+    "anecdotes": [
+     "Le premier hiver, j'ai voulu lui envoyer une tasse de thé à la menthe à travers la cour, par télékinésie. Une démonstration élégante. Le thé est arrivé. La tasse, non : elle est restée sur mon bureau. Séraphine a été arrosée, et elle a ri si fort que le Grand Cristal a tourné dans l'autre sens. Depuis, je lui porte son thé à pied.",
+     "Chaque année, pour mon anniversaire, Séraphine dépose une échelle devant la bibliothèque, avec un ruban. Quarante échelles en quarante ans. Je les donne toutes à Mathurin, qui en fait des planches pour le ponton. Elle dit qu'elle marche sur mes anniversaires. Je dis que c'est le plus utile de ses cadeaux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Séraphine. Pas d'échelle cette année, je vous prie."
+     ],
+     [
+      "b",
+      "Trop tard, Théophraste. Elle a déjà son ruban."
+     ],
+     [
+      "a",
+      "Chut. Merci."
+     ]
+    ]
+   },
+   "lin": {
+    "qui": "ma meilleure lectrice",
+    "nom": "Lin",
+    "sentiment": 0.9,
+    "avis": "Mademoiselle Lin respecte les livres comme peu d'adultes : elle ne corne rien, ne mouille rien, ne parle pas. Elle lit. Elle lit même beaucoup trop vite. C'est tout ce que je demande, et un peu plus.",
+    "anecdotes": [
+     "Je cache mon sablier derrière la pile d'encyclopédies, pour la chronométrer. Quatre cents pages en un après-midi. J'ai refait le compte trois fois. Depuis quelques semaines, elle lit plus lentement. Beaucoup plus lentement. Je m'inquiète. Elle a peut-être mal aux yeux. Je lui ai proposé une lampe.",
+     "Un soir, je l'ai trouvée endormie sur le traité de lumière, les lunettes de travers. Je n'ai pas voulu la réveiller. J'ai fait venir une couverture de la réserve, doucement, par télékinésie, et j'ai glissé un ruban à sa page. Elle n'a jamais demandé d'où venait la couverture. Elle l'a pliée et rangée à sa place. À sa place exacte."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mademoiselle Lin. Le chapitre treize ?"
+     ],
+     [
+      "b",
+      "Page quarante. Je prends mon temps."
+     ],
+     [
+      "a",
+      "… Bien sûr. Moi aussi."
+     ]
+    ]
+   },
+   "gustave": {
+    "qui": "ce mauvais emprunteur de",
+    "nom": "Gustave",
+    "sentiment": -0.3,
+    "avis": "Six ans que mon traité des mélanges explosifs dort chez Monsieur Fiole. Je ne sais pas ce qui m'inquiète le plus : qu'il ne le rende pas, ou qu'il le lise.",
+    "anecdotes": [
+     "Une fois par mois, je traverse le bourg pour réclamer mon traité. Monsieur Fiole me reçoit à son comptoir, m'offre un sirop de menthe et me jure qu'il en est à la page cent douze. Il en est à la page cent douze depuis cinq ans. Le traité en compte cent quatorze. Je bois le sirop. Il est bon, je l'admets.",
+     "La dernière fois, j'ai enfin aperçu mon traité. Il était sous un pied de son grand alambic. Pour le caler. Monsieur Fiole m'a expliqué que c'était « pour l'avoir toujours sous la main ». Je suis sorti sans finir mon sirop. J'ai marché jusqu'au lac. Borée m'a regardé et m'a dit : « Hm. » C'était exactement ça."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Monsieur Fiole. Le traité."
+     ],
+     [
+      "b",
+      "Page cent douze, Théophraste ! Presque fini !"
+     ],
+     [
+      "a",
+      "Il en a cent quatorze."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "notre astronome",
+    "nom": "Lumen",
+    "sentiment": 0.1,
+    "avis": "Monsieur Lumen est un homme charmant, savant, lumineux, et le pire emprunteur de l'île après Monsieur Fiole. Il rend les livres. Toujours. Avec des années de retard et des notes dans les marges.",
+    "anecdotes": [
+     "Il m'a emprunté l'Atlas des étoiles fixes. Il me l'a rendu onze ans plus tard, avec des corrections à l'encre dans les marges : trois étoiles déplacées. Il m'a annoncé, ravi, qu'elles avaient bougé. Des étoiles fixes ! À l'encre ! J'ai dû acheter un nouvel atlas. Il y a écrit des corrections aussi. Au crayon, cette fois. Il fait des progrès.",
+     "L'après-midi, il vient lire à la table du fond. Au bout d'un quart d'heure, il dort, le nez sur l'atlas, et il ronfle. Dans une bibliothèque ! Alors je fais venir un coussin, tout doucement, et je le pose sur son visage. Il se réveille en demandant d'où il vient. Je lui dis qu'il est tombé du plafond. Il me croit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Monsieur Lumen. L'atlas."
+     ],
+     [
+      "b",
+      "Demain, sans faute, cher ami !"
+     ],
+     [
+      "a",
+      "Vous avez dit cela il y a deux hivers."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "le jeune",
+    "nom": "Oscar",
+    "sentiment": -0.2,
+    "avis": "Le jeune Oscar a fait tomber toute la lettre B sur sa tête. J'ai mis deux heures à la ranger. Il vient lire tous les jours. Il lit toujours la même page. Je le surveille. Je surveille surtout ses mains.",
+    "anecdotes": [
+     "Il a voulu attirer un dictionnaire par télékinésie. Sans permission. Toute l'étagère de la lettre B a suivi : blasons, botanique, biographies. Il a disparu dessous. Je l'ai déterré livre par livre, en rangeant chaque volume à sa place. Deux heures. Il n'a pas bougé un orteil. C'est la seule fois où il a été parfaitement immobile.",
+     "J'ai accroché une clochette à sa chaise, pour savoir quand il bouge. Depuis, il la tient d'une main pour qu'elle ne sonne pas, et il ne tourne plus les pages. Il lit la page quarante-deux de l'herbier depuis trois mois. Il doit la connaître par cœur. C'est une bonne page. Les orties."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Monsieur Bévue. Les mains sur la table."
+     ],
+     [
+      "b",
+      "Elles y sont, Maître Filandre ! Toutes les deux !"
+     ],
+     [
+      "a",
+      "Alors qui tient la clochette ?"
+     ],
+     [
+      "b",
+      "… Mon genou."
+     ]
+    ]
+   }
+  }
+ },
+ "ysolde": {
+  "genre": "f",
+  "prenom": "Ysolde",
+  "histoire": [
+   {
+    "titre": "le panier au pied des pierres",
+    "t": "Je suis née au Cercle, une nuit de pleine lune. Ma mère, Aube, était gardienne, comme ma grand-mère avant elle. Elle me couchait dans un panier au pied de la plus petite pierre. J'ai appris le nom des neuf pierres avant de savoir le mien. Je les récitais dans l'ordre, pour m'endormir. Je le fais encore, certaines nuits."
+   },
+   {
+    "titre": "la nuit où ma mère a chanté",
+    "t": "J'avais seize ans quand le vieux Gaudence a remis son bâton à Séraphine. Ma mère a chanté la chanson qui réveille les pierres. Je tenais la lanterne. Les pierres se sont allumées l'une après l'autre, comme des yeux qui s'ouvrent. Je n'ai pas cligné des yeux. Je ne voulais rien perdre. C'est la seule fois que je l'ai entendue chantée."
+   },
+   {
+    "titre": "le premier hiver seule",
+    "t": "Ma mère est partie il y a six hivers. Ce soir-là, je suis allée au Cercle, comme chaque soir. Je me suis assise contre la plus petite pierre et j'ai attendu le matin. Les pierres ont brillé toute la nuit, plus fort que d'habitude. Séraphine est arrivée à l'aube avec deux tasses de thé. Elle n'a rien dit. Moi non plus. Depuis, elle revient chaque soir."
+   },
+   {
+    "titre": "ce que je garde",
+    "t": "Je garde le Cercle de l'aube jusqu'au milieu de la nuit. Je sais qui passe, qui touche, qui ramasse. Lin vient lire aux pierres. Aurélien ramasse les éclats en disant merci. Pip a donné sa couverture à la plus petite. Agathe rôde avec sa boule. Séraphine monte le soir. Ce n'est pas un travail. C'est une façon d'être là."
+   },
+   {
+    "titre": "la chanson que je ne veux pas chanter",
+    "t": "Je connais la chanson qui réveille les pierres. Je la chanterai une fois, pour le prochain archimage. Ce sera le jour où Séraphine posera son bâton. Chaque nuit, je la répète en silence pour ne pas l'oublier, {surnom}. Et chaque nuit, je souhaite ne jamais avoir à la chanter. Les deux sont vrais. Les pierres le savent."
+   }
+  ],
+  "reve": [
+   "Que les pierres choisissent elles-mêmes qui les gardera, après moi. Je n'ai pas de fille. J'espère qu'elles ont une idée. Je crois qu'elles en ont une. Elle lit beaucoup.",
+   "Et entendre la chanson une seconde fois. Chantée par quelqu'un d'autre, pour une fois."
+  ],
+  "question": {
+   "texte": "Est-ce que tu te souviens de ton premier souvenir ?",
+   "reponses": [
+    {
+     "label": "Oui, très bien.",
+     "valeur": "tres_bien",
+     "t": "Garde-le. Les souvenirs qu'on garde depuis le début sont les plus solides. Les pierres aussi ont un premier souvenir. Elles ne le disent à personne.",
+     "rappel": "Ton premier souvenir… Tu me l'as dit, une fois. Les pierres l'ont entendu. Elles le gardent avec les leurs."
+    },
+    {
+     "label": "Non, il s'est effacé.",
+     "valeur": "efface",
+     "t": "Il ne s'est pas effacé. Il dort. Viens t'asseoir au Cercle une nuit claire. Les pierres réveillent parfois ce qui dort. Pas toujours.",
+     "rappel": "Tu as pris le temps de t'asseoir au Cercle ? Ton premier souvenir dort toujours ? Laisse-le. Il se réveillera quand il voudra."
+    },
+    {
+     "label": "Je crois que c'est la mer.",
+     "valeur": "la_mer",
+     "t": "La mer. C'est un beau premier souvenir. Elle ne s'arrête jamais, la mer, comme les pierres ne bougent jamais. Maintenant, tu as les deux.",
+     "rappel": "Ta mer, ton premier souvenir : c'est elle qui a choisi le chemin jusqu'ici. Les pierres disent que c'était voulu."
+    }
+   ]
+  },
+  "liens": {
+   "archimage": {
+    "qui": "notre archimage",
+    "nom": "Séraphine",
+    "sentiment": 0.6,
+    "avis": "Séraphine était l'amie de ma mère. Elle monte au Cercle chaque soir. Elle croit que c'est pour écouter les pierres. C'est pour me surveiller : ma mère le lui a demandé. Je fais semblant de ne pas le savoir.",
+    "anecdotes": [
+     "Chaque soir, elle monte avec deux tasses de thé à la menthe. Je n'aime pas la menthe. Ma mère ne l'aimait pas non plus. Je la bois quand même, jusqu'au fond, et on écoute les pierres. Je crois que c'est notre façon de parler de ma mère. Si je disais que je n'aime pas la menthe, il faudrait parler d'autre chose.",
+     "Petite, je me suis échappée de mon panier, une nuit. Tout le Cercle m'a cherchée. Séraphine m'a trouvée endormie sur l'autel, les bras en croix. Ma mère a dit que les pierres m'avaient choisie. Séraphine raconte ça à tout le monde. Moi, je dis que j'avais froid aux pieds. L'autel est tiède, la nuit. C'est un fait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu es en avance, Séraphine."
+     ],
+     [
+      "b",
+      "Les pierres m'ont appelée."
+     ],
+     [
+      "a",
+      "Non. C'est le thé qui refroidissait."
+     ]
+    ]
+   },
+   "lin": {
+    "qui": "la petite lectrice",
+    "nom": "Lin",
+    "sentiment": 0.8,
+    "avis": "Lin écoute avant de parler, et elle parle bas. C'est rare, chez les jeunes. Les pierres l'aiment bien. Moi aussi. Je lui apprends leurs noms, un par un.",
+    "anecdotes": [
+     "Je lui ai appris trois noms : Doyenne, Nacre, Petite-Ourse. Un par pleine lune, pas plus. Je lui ai demandé de ne pas les écrire. Elle les écrit à l'encre de citron, qui ne se lit qu'à la flamme. Je n'ai rien dit. Les pierres non plus. C'est une enfant qui trouve des solutions. Ça me plaît.",
+     "Elle lit assise contre Nacre, très bas. Une fois, elle a sauté une page, sans le vouloir. Je l'ai entendu de l'autre côté du Cercle : l'histoire ne tenait plus debout. Je le lui ai dit. Elle a rougi et elle est revenue en arrière. Les pierres ont brillé un peu plus, après. Elles aiment qu'on fasse les choses dans l'ordre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lin. Nacre t'attendait."
+     ],
+     [
+      "b",
+      "Je lui ai apporté un conte de Cliquetis."
+     ],
+     [
+      "a",
+      "Avec des automates ? Elle va être surprise."
+     ]
+    ]
+   },
+   "agathe": {
+    "qui": "la voyante",
+    "nom": "Agathe",
+    "sentiment": 0.0,
+    "avis": "Agathe regarde demain. Les pierres regardent hier. Nous ne regardons pas dans le même sens, elle et moi. Elle parle trop. Mais une fois, elle a dit une chose que je n'oublie pas.",
+    "anecdotes": [
+     "Un soir, Agathe est arrivée au Cercle avec sa boule sous le bras. Elle voulait la poser sur l'autel, « pour voir ce que ça donne ». J'ai dit non avant qu'elle finisse sa phrase. Elle a souri : « La boule m'avait prévenue que tu dirais non. » Alors pourquoi être venue ? Elle n'a pas répondu. Elle est repartie contente.",
+     "Un soir de brume, en passant, Agathe m'a dit : « Ta mère est fière de toi. » Je ne lui avais jamais parlé de ma mère. Je ne sais pas si c'était la boule, ou Séraphine, ou rien du tout. Je ne lui ai pas demandé. J'ai eu peur de la réponse. Je pense à cette phrase plus souvent que je ne le voudrais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Agathe. Pas de boule près des pierres."
+     ],
+     [
+      "b",
+      "Je sais, ma belle. La boule me l'a dit."
+     ],
+     [
+      "a",
+      "Alors pourquoi l'as-tu apportée ?"
+     ]
+    ]
+   },
+   "pip": {
+    "qui": "le petit",
+    "nom": "Pip",
+    "sentiment": 0.4,
+    "avis": "Pip a peur de moi. C'est bien : il ne touche plus aux pierres. Il m'a apporté sa couverture, pour la plus petite. Je n'ai pas su quoi dire. Je l'ai posée sur elle. Elle y est encore.",
+    "anecdotes": [
+     "Il a posé un doigt sur une pierre, pour savoir si elle était froide. J'étais derrière lui. J'ai dit : « Je sais. » Rien d'autre. Il est parti si vite que son chapeau est resté par terre. Je le lui ai rapporté le lendemain, au dortoir. Il l'a retourné dans tous les sens avant de le prendre. Il vérifiait que ce n'était pas un pigeon.",
+     "Le lendemain, il est revenu avec la couverture de son lit, roulée sous le bras. Pour les pierres, a-t-il dit, parce qu'elles n'aiment pas être seules dans le noir. Je la lui avais dite, cette phrase. Il l'avait gardée. J'ai posé la couverture sur la plus petite. Je n'en ai parlé à personne. Elle a l'air de bien dormir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonsoir, Pip."
+     ],
+     [
+      "b",
+      "J'ai rien touché ! … Bonsoir, madame Ysolde."
+     ],
+     [
+      "a",
+      "Je sais. La petite pierre a bien dormi."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "l'astronome",
+    "nom": "Aurélien",
+    "sentiment": 0.1,
+    "avis": "Aurélien ramasse les éclats de lune que les pierres attirent. Il dit merci, au moins. Il mesure tout, il compte tout, il parle beaucoup. Les pierres le tolèrent. Moi aussi. À peu près.",
+    "anecdotes": [
+     "Depuis la fois où il m'a trouvée derrière lui, il dit merci à chaque pierre, à voix haute, avant de ramasser un éclat. Neuf mercis. Il oublie souvent la plus petite et en dit deux à la Doyenne. Je hoche la tête au dernier, pour qu'il parte. Il ne s'en est jamais aperçu. Les pierres, si.",
+     "Il a passé une nuit à mesurer la lueur des pierres avec ses instruments. À l'aube, il est venu m'annoncer, tout fier, qu'elles brillent d'un dixième de plus quand Lin leur lit une histoire. J'ai dit : « Je sais. » Il a eu l'air déçu. Je ne voulais pas le décevoir. Mais je le savais."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aurélien. Combien d'éclats, ce soir ?"
+     ],
+     [
+      "b",
+      "Deux, chère Ysolde ! Et neuf mercis."
+     ],
+     [
+      "a",
+      "Huit. Tu as oublié la petite."
+     ]
+    ]
+   }
+  }
+ },
+ "zephyrine": {
+  "genre": "f",
+  "prenom": "Zéphyrine",
+  "histoire": [
+   {
+    "titre": "le moulin sur le caillou",
+    "t": "Je suis née dans un moulin à vent, sur un caillou de l'archipel si petit qu'il n'a même pas de nom. Mon père faisait de la farine, le vent faisait tourner les ailes, et moi je tournais avec. Je connaissais tous les vents par leur nom avant de connaître mes cousins. C'est pour ça que je n'aime pas les cailloux : je suis née sur un, et il ne bougeait jamais !"
+   },
+   {
+    "titre": "la lettre portée par le vent",
+    "t": "À douze ans, une lettre est arrivée au moulin. Pas par bateau : par le vent, toute seule, collée contre la fenêtre. Il y avait juste écrit : « Arcanelle. Viens. » Pas de signature ! Je suis partie le lendemain avec mon parapluie et une miche de pain. Le parapluie est encore dans ma chambre. La miche, je l'ai mangée en route, avec les mouettes."
+   },
+   {
+    "titre": "la tour des vents",
+    "t": "La Tour Penchée, autrefois, c'était la tour des vents, toute droite. On m'y a confié ma classe à vingt-cinq ans. Il y avait un banc à chaque étage, un pour chaque vent, et la cloche, tout en haut, qui sonnait quand ils arrivaient. J'y faisais parfois cours la tête en bas, pour que les apprentis voient le monde autrement. Ils le voyaient. Ils avaient le tournis."
+   },
+   {
+    "titre": "ma vie au pied de la tour",
+    "t": "Maintenant, j'enseigne au pied de la tour, puisqu'elle penche. Je déjeune sur le banc du jardin de Mère Sauge, l'après-midi je vais écouter le vent sur les falaises, et le soir je bavarde à la fontaine. Je surveille Pip et ses draps. Je me dispute avec Borée. Je rends visite à Aurélien sur son toit. Et le vent me suit partout, comme un chien fou."
+   },
+   {
+    "titre": "la nuit où le vent a dit non",
+    "t": "La nuit de la grande tempête, j'étais tout en haut de la tour. J'ai demandé au vent de se calmer, poliment, comme toujours. Pour la première fois de ma vie, il a dit non. La tour a penché, l'escalier est tombé, et je suis sortie par la fenêtre en flottant. Depuis, je lévite partout, {surnom}. Partout. Sauf là-haut. Je n'y suis jamais remontée."
+   }
+  ],
+  "reve": [
+   "Une grande fête des vents : tous les cerfs-volants de l'archipel dans le ciel d'Arcanelle, en même temps ! Même Borée en tiendrait un. Il dirait que le vent siffle. Il chanterait.",
+   "Et puis, un jour, remonter là-haut. Toute seule. Juste pour dire au vent que je ne lui en veux plus."
+  ],
+  "question": {
+   "texte": "Dis-moi, toi : tu as déjà rêvé que tu volais ?",
+   "reponses": [
+    {
+     "label": "Toutes les nuits !",
+     "valeur": "toutes_les_nuits",
+     "t": "Toutes les nuits ! Oh, je le savais ! Tu as une tête de nuage, c'est un compliment. Ceux qui volent en rêve lévitent plus vite, c'est connu. Enfin, c'est moi qui le dis.",
+     "rappel": "Alors, cette nuit, tu as volé ? Moi oui, au-dessus de la mer. Je t'ai cherché. Il y avait beaucoup de monde."
+    },
+    {
+     "label": "Jamais.",
+     "valeur": "jamais",
+     "t": "Jamais ? Oh, quel dommage ! Ce soir, avant de dormir, pense à une plume. Juste une. Elle fera le reste, tu verras.",
+     "rappel": "Tu as pensé à une plume avant de dormir ? Non ? Essaie ce soir ! Une seule. Les plumes sont patientes."
+    },
+    {
+     "label": "Plutôt que je tombais…",
+     "valeur": "tomber",
+     "t": "Que tu tombais ? C'est normal, ça ! C'est le début. On tombe, on tombe, et une nuit on oublie de toucher le sol. Ça m'est arrivé à neuf ans.",
+     "rappel": "Tu tombes encore, en rêve ? Bientôt, tu oublieras le sol, promis. Moi, je l'oublie tous les jours."
+    }
+   ]
+  },
+  "liens": {
+   "boree": {
+    "qui": "ce vieux siffleur de",
+    "nom": "Borée",
+    "sentiment": 0.3,
+    "avis": "Borée est têtu comme un caillou, et tu sais ce que je pense des cailloux ! On n'est jamais d'accord sur le vent du nord. Et pourtant je l'aime bien, ce vieux glaçon. Un peu. Beaucoup, les jours sans vent.",
+    "anecdotes": [
+     "Je l'ai emmené sur les falaises du nord pour écouter le vent avec moi, une heure entière. J'ai chanté avec lui, pour qu'il entende la mélodie. Borée a dit : « Vous chantez faux. Lui aussi. » Ça prouve bien qu'il chante, non ? Dans la descente, il m'a pris le bras. Il dit que c'est moi. C'est lui.",
+     "Quand mes plumes du vent tombent sur son lac, Borée les fait geler dedans, bien droites, comme des petits drapeaux. Pour les récupérer, je dois dire « s'il vous plaît ». Alors je le chante, en ré. Il les dégèle une par une, tout l'après-midi, et je lui raconte ma semaine. Je crois qu'il les attrape exprès."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Borée ! Tu entends ? Il chante en ré !"
+     ],
+     [
+      "b",
+      "Il siffle en rien du tout."
+     ],
+     [
+      "a",
+      "Alors tu l'entends !"
+     ]
+    ]
+   },
+   "pip": {
+    "qui": "mon petit sauteur",
+    "nom": "Pip",
+    "sentiment": 0.8,
+    "avis": "Pip, c'est un courant d'air avec des jambes. Il a décidé de voler avant de savoir léviter, avec un drap. Ça me fait une peur bleue. Je l'adore, et j'aimerais qu'il garde les pieds par terre encore un peu.",
+    "anecdotes": [
+     "Un matin, à l'aube, je l'ai vu sur le toit du dortoir, un drap attaché aux poignets. Je suis montée en lévitant, sans bruit, et je me suis assise à côté de lui. On a parlé des nuages pendant une heure : lesquels sont lourds, lesquels sont vides. Puis on est descendus par l'escalier. Il a oublié de sauter. Moi, je n'ai pas oublié d'avoir peur.",
+     "Je lui ai fabriqué un cerf-volant avec un vieux drap du dortoir. Je lui ai dit : « Comme ça, le drap vole, et toi tu tiens la ficelle. » Il le fait voler tous les soirs sur la place, plus haut que le toit, plus haut que Gérard. Pip le regarde avec des yeux grands comme des soucoupes. Tant qu'il tient la ficelle, je respire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pip ! Ce drap, c'est pour dormir."
+     ],
+     [
+      "b",
+      "Ou pour voler ! Les deux !"
+     ],
+     [
+      "a",
+      "Dormir d'abord. Voler après. Bien après !"
+     ]
+    ]
+   },
+   "mirabelle": {
+    "qui": "notre petite alchimiste",
+    "nom": "Mirabelle",
+    "sentiment": 0.7,
+    "avis": "Mirabelle rate ses potions avec un talent fou. Elle a l'œil qui pétille et les doigts tachés de toutes les couleurs. Je lui achète une potion ratée chaque semaine. Pour encourager l'art !",
+    "anecdotes": [
+     "Elle m'a fait une potion de légèreté. Je l'ai bue devant toute ma classe, pour lui faire honneur. Je n'ai pas flotté du tout. Par contre, mes cheveux se sont dressés tout droits sur ma tête, comme une plume, toute la journée. J'ai fait cours comme ça. Les apprentis n'ont jamais été aussi attentifs.",
+     "Je lui ai acheté la potion qui change la voix en canard. J'ai parlé au vent en canard pendant une heure, sur les falaises. Il a ri, si, si : il a fait un petit tourbillon. Mirabelle dit que c'est la première fois qu'une de ses potions fait rire le vent. Elle l'a noté dans son cahier."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mirabelle ! Une potion ratée, la plus légère !"
+     ],
+     [
+      "b",
+      "Celle-ci fait flotter… les chaussettes."
+     ],
+     [
+      "a",
+      "Parfait ! J'en ai deux."
+     ]
+    ]
+   },
+   "lumen": {
+    "qui": "mon voisin du ciel",
+    "nom": "Aurélien",
+    "sentiment": 0.7,
+    "avis": "Aurélien et moi, on est ceux d'en haut : lui sur son toit avec ses étoiles, moi dans les airs avec mes vents. Il parle autant que moi. Quand on se voit, personne n'écoute personne, et on est ravis.",
+    "anecdotes": [
+     "Une nuit, je suis passée en lévitant devant sa grande lunette, avec ma cape blanche. Il a noté en vitesse « comète inconnue, queue tressée ». Je suis allée frapper à sa fenêtre. Il a regardé ma tresse. Il a été un peu déçu. Moi, j'étais flattée. Il a gardé la page. Je suis la seule comète de l'île.",
+     "Il voulait voir les étoiles « d'un peu plus près ». Je l'ai fait léviter au-dessus de l'Observatoire. À trois mètres, il s'est agrippé à mon bras en criant : « Elles sont très bien de loin ! » Le maître de la lumière a le vertige. Je ne l'ai dit à personne. Sauf à toi. Et au vent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Aurélien ! Je passe ce soir, ne me prends pas pour une comète !"
+     ],
+     [
+      "b",
+      "Je ne promets rien, chère amie. Vous brillez."
+     ],
+     [
+      "a",
+      "Flatteur ! J'apporterai du gâteau."
+     ]
+    ]
+   },
+   "oscar": {
+    "qui": "mon apprenti",
+    "nom": "Oscar",
+    "sentiment": 0.6,
+    "avis": "Oscar a fait léviter ma chaise avec moi dessus. C'est raté, et c'est le plus beau raté que j'aie vu. Depuis l'histoire du drap, je le surveille de près. Je m'en veux encore.",
+    "anecdotes": [
+     "L'an dernier, Oscar a sauté du dortoir avec un drap. J'étais sur les falaises, je n'ai rien vu. Quand je suis arrivée, il était assis dans le massif de lavande, le drap sur la tête comme un petit fantôme, et il disait : « Ça a presque marché. » Une semaine au lit chez Mère Sauge. J'y suis allée tous les jours. J'aurais dû être là.",
+     "Dans la Salle des Cours, il devait soulever une plume. C'est ma chaise qui a décollé, avec moi dessus ! Je suis montée jusqu'au plafond. J'ai dit « Oh, merci ! » et j'ai fini la leçon de là-haut. Il ne savait plus comment me faire descendre. Je suis descendue toute seule. Le plus beau cours de l'année."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Oscar ! Pas de drap, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Non, Maîtresse Zéphyrine. Juste un mouchoir."
+     ],
+     [
+      "a",
+      "Un mouchoir ! Ça vole très mal, un mouchoir."
+     ]
+    ]
+   }
+  }
+ }
+}

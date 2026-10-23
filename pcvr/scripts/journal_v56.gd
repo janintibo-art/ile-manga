@@ -387,6 +387,100 @@ const QUETES := [
 		],
 		"fin": "Ouverte ?! OUVERTE ! Deux cents ans fermée, et c'est toi… Attends, je note. « Porte aux Quatre Sceaux : ouverte. Par… » Je mettrai « par le voyageur ». Tiens : tout ce que j'avais économisé pour l'expédition que je n'ai jamais osé faire. Et maintenant, descends. Dessine-moi ce qu'il y a là-dessous. Mais reviens. Les cartographes ont besoin qu'on revienne.",
 		"recompense": {"pieces": 120, "titre": "Gardien des Sceaux", "objets": [["galette_sarrasin", 3]]}},
+	# V67 : Arcanelle, l'île des sorciers : on y apprend six sorts, un par maître
+	{"id": "arc_academie", "titre": "L'apprenti d'Arcanelle", "donneur": "archimage", "lieu": "Arcanelle, l'Académie", "sorte": "Arcanelle",
+		"resume": "L'archimage Séraphine Astrelune veut bien me prendre comme apprenti. Il me faut un grimoire, et faire la connaissance des apprentis.",
+		"offre_label": "Je voudrais apprendre la magie.",
+		"offre": "Apprendre la magie ? … Le Cristal a frémi. Bon signe. Écoute : tout apprenti commence par un grimoire. Va voir Théophraste, à la bibliothèque : il t'en donnera un, tout neuf, aux pages blanches. Puis présente-toi à Pip : c'est le plus jeune des apprentis, et le plus bavard ; il te montrera tout. Reviens me voir ensuite, dans la cour du Grand Cristal.",
+		"etapes": [
+			{"type": "parler", "pnj": "theophraste", "label": "L'archimage m'envoie chercher un grimoire.", "texte": "Un grimoire ? … (Théophraste disparaît entre deux rayonnages et revient avec un gros livre de cuir violet.) Voilà. Les pages sont blanches : c'est vous qui les écrirez. Chaque sort que vous apprendrez s'y inscrira tout seul. Ne le cornez pas.", "donne": [["grimoire", 1]], "objectif": "Demander un grimoire à Théophraste Filandre, à la bibliothèque (le grand bâtiment d'ardoise, sur la montée de l'Académie)"},
+			{"type": "parler", "pnj": "pip", "label": "Bonjour ! Je suis le nouvel apprenti.", "texte": "Un nouveau ! Génial ! Viens, je te montre : là, le dortoir, Oscar ronfle ; là-bas, l'Aire des Duels, Pyra crie ; en bas, le Chaudron Fumant, Berthe fait des tartes ; et là-haut, l'Observatoire, Lumen dort le jour. Six maîtres, six sorts ! Moi j'en ai zéro. Mais bientôt un !", "objectif": "Faire la connaissance de Pip, le plus jeune des apprentis (dans la cour de l'Académie le matin, sur la place du bourg le soir)"},
+			{"type": "rendre", "pnj": "archimage", "label": "J'ai mon grimoire, et Pip m'a tout montré.", "objectif": "Retourner voir l'archimage, dans la cour du Grand Cristal"},
+		],
+		"fin": "Bien. Te voilà apprenti d'Arcanelle. Écoute : six maîtres, six sorts. Aurélien Lumen t'apprendra la lumière, Pyra le feu, Borée le gel, Zéphyrine la lévitation, Théophraste la télékinésie, et Mère Sauge le soin. Chacun te demandera quelque chose : la magie ne se donne pas, elle s'échange. Quand ton grimoire aura ses six sorts, reviens me voir.",
+		"recompense": {"pieces": 10, "titre": "Apprenti d'Arcanelle", "flag": "apprenti_arc"}},
+	{"id": "arc_lumiere", "titre": "Fiat lux", "donneur": "lumen", "lieu": "Arcanelle, l'Observatoire", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Aurélien Lumen m'apprendra le sort de lumière si je lui rapporte trois éclats de lune tombés sur l'île. Ensuite, il faudra réveiller les runes de la Crypte.",
+		"offre_label": "Vous m'apprendriez la lumière ?",
+		"offre": "La lumière ! Le premier des sorts ! Écoutez : pour l'apprendre, il faut d'abord tenir un peu de vraie lumière dans la main. Les éclats de lune : il en est tombé trois cette saison. Un près de l'autel du Cercle des Pierres-Lunes, un dans le Bois Tors, un sur la grève de l'ouest. Rapportez-les-moi, et je vous apprendrai à faire naître la vôtre.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"eclat_lune": 3}, "lieux": ["eclat_lune_1", "eclat_lune_2", "eclat_lune_3"], "objectif": "Ramasser les trois éclats de lune : près de l'autel du Cercle des Pierres-Lunes (à l'ouest de l'Académie), dans le Bois Tors (au sud-ouest) et sur la grève de l'ouest"},
+			{"type": "objets", "pnj": "lumen", "objets": {"eclat_lune": 3}, "sort": "lumiere", "label": "Voici les trois éclats de lune.", "texte": "Regardez-les briller dans vos mains… Maintenant, fermez les yeux. Pensez au matin, à la première lueur sur la mer. Ouvrez la main. … Voilà ! Une petite lumière, à vous. Elle vous suivra. Allez donc l'essayer dans la Crypte aux Runes : les trois runes du fond ne se montrent qu'à elle.", "objectif": "Apporter les trois éclats de lune à Aurélien Lumen (près de l'Observatoire, au nord-ouest de l'Académie ; à la bibliothèque l'après-midi)"},
+			{"type": "etat", "cle": "lecon_lumiere", "objectif": "Réveiller les trois runes de la Crypte aux Runes avec le sort de lumière (touche 5 puis V ; en VR, gâchette gauche) : la crypte est au-dessus du jardin, sur le chemin du Bois Tors"},
+			{"type": "rendre", "pnj": "lumen", "label": "Les trois runes de la crypte brillent !", "objectif": "Le dire à Aurélien Lumen"},
+		],
+		"fin": "Les trois runes ! « Fiat lux » : « que la lumière soit ». C'est la devise de l'Académie, et désormais c'est un peu la vôtre. Gardez ces pièces. Et revenez voir les étoiles avec moi, une nuit : c'est encore plus beau avec quelqu'un qui sait faire de la lumière.",
+		"recompense": {"pieces": 25}},
+	{"id": "arc_feu", "titre": "Le cœur des braseros", "donneur": "pyra", "lieu": "Arcanelle, l'Aire des Duels", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Pyra Flammèche m'apprendra la boule de feu si je lui rapporte trois bûches de bois tordu. Ensuite, il faudra allumer les cinq braseros de l'Aire des Duels d'affilée.",
+		"offre_label": "Apprenez-moi le feu !",
+		"offre": "Le feu ! Enfin quelqu'un qui demande le feu et pas la lumière ! Bon. Règle numéro un : le feu se nourrit. Va me chercher trois bûches de bois tordu, dans le Bois Tors, au sud-ouest. Le bois tordu brûle longtemps et sans fumée. Rapporte-les, et je t'apprends.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"buche": 3}, "lieux": ["buche_arc_1", "buche_arc_2", "buche_arc_3"], "objectif": "Ramasser trois bûches de bois tordu dans le Bois Tors (au sud-ouest de l'île)"},
+			{"type": "objets", "pnj": "pyra", "objets": {"buche": 3}, "sort": "feu", "label": "Voici trois bûches de bois tordu.", "texte": "Parfait. (Pyra pose une bûche dans sa main nue et souffle dessus : elle s'enflamme.) À toi. Tends la main. Sens la chaleur. Ne la retiens pas : pousse-la devant toi. … HA ! Une boule de feu ! Une petite, mais une vraie ! Maintenant, les cinq braseros de l'Aire. Tous les cinq, d'affilée : chacun s'éteint au bout d'une minute et demie.", "objectif": "Apporter trois bûches à Pyra Flammèche (à l'Aire des Duels, à l'est de l'Académie)"},
+			{"type": "etat", "cle": "lecon_feu", "objectif": "Allumer les cinq braseros de l'Aire des Duels d'affilée avec la boule de feu (touche 6 puis V ; en VR, gâchette gauche), avant que le premier ne s'éteigne"},
+			{"type": "rendre", "pnj": "pyra", "label": "Les cinq braseros brûlent !", "objectif": "Le dire à Pyra Flammèche"},
+		],
+		"fin": "J'ai vu ! Cinq braseros, et pas un sourcil roussi ! Tu es plus doué qu'Oscar. Bon, ce n'est pas difficile. Tiens, des pièces, et un conseil : le feu, on ne le lance jamais vers quelqu'un qu'on aime. Sauf Borée. Borée, ça ne compte pas.",
+		"recompense": {"pieces": 25}},
+	{"id": "arc_gel", "titre": "Le chemin de glace", "donneur": "boree", "lieu": "Arcanelle, le Lac Miroir", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Borée Givrelin m'apprendra le gel si je lui rapporte trois flocons de givre éternel des falaises du nord. Ensuite, il faudra traverser le Lac Miroir jusqu'au Cristal de Givre.",
+		"offre_label": "Pouvez-vous m'apprendre le gel ?",
+		"offre": "Le gel. Hm. Il faut de la patience. Vous en avez ? On va voir. Sur les falaises du nord, là où le vent ne s'arrête jamais, tombent des flocons qui ne fondent pas : le givre éternel. Rapportez-m'en trois. Sans courir. Le givre n'aime pas qu'on coure.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"flocon_givre": 3}, "lieux": ["flocon_1", "flocon_2", "flocon_3"], "objectif": "Ramasser trois flocons de givre éternel sur les falaises du nord de l'île"},
+			{"type": "objets", "pnj": "boree", "objets": {"flocon_givre": 3}, "sort": "gel", "label": "Voici trois flocons de givre éternel.", "texte": "Ils n'ont pas fondu. Vous avez marché doucement. Bien. Tenez la paume ouverte. Soufflez dessus, lentement, comme sur une soupe trop chaude. … Voilà. Le froid vous écoute. Maintenant, le lac. Sur l'îlot dort le Cristal de Givre. Demandez au lac de durcir sous vos pas, et allez le toucher.", "objectif": "Apporter les trois flocons à Borée Givrelin (au bord du Lac Miroir, au nord-est de l'Académie)"},
+			{"type": "etat", "cle": "lecon_gel", "objectif": "Traverser le Lac Miroir sur un chemin de glace (sort de gel, touche 7 puis V, tourné vers l'îlot ; en VR, gâchette gauche) et toucher le Cristal de Givre (E)"},
+			{"type": "rendre", "pnj": "boree", "label": "J'ai touché le Cristal de Givre.", "objectif": "Le dire à Borée Givrelin"},
+		],
+		"fin": "Le cristal a brillé. Je l'ai vu d'ici. Il ne brille pas pour tout le monde. Tenez. Des pièces. Et quand vous aurez chaud, l'été, pensez au lac. Il pensera à vous.",
+		"recompense": {"pieces": 25}},
+	{"id": "arc_levitation", "titre": "La cloche de la Tour Penchée", "donneur": "zephyrine", "lieu": "Arcanelle, la Tour Penchée", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Zéphyrine Plume m'apprendra la lévitation si je lui rapporte trois plumes du vent. Ensuite, il faudra faire sonner la cloche au sommet de la Tour Penchée.",
+		"offre_label": "Je voudrais voler !",
+		"offre": "Voler ? Presque ! Léviter. C'est mieux : on ne se cogne pas aux mouettes. Pour apprendre, il faut d'abord sentir le vent dans la main. Le vent perd des plumes quand il tourne trop vite : rapporte-m'en trois. Elles se posent là où il souffle le plus fort : sur la colline de l'ouest, au bord des falaises du nord, et sur la falaise de l'est, au-dessus de la mer.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"plume_vent": 3}, "lieux": ["plume_vent_1", "plume_vent_2", "plume_vent_3"], "objectif": "Ramasser trois plumes du vent : sur la colline de l'ouest, au bord des falaises du nord, et sur la falaise de l'est"},
+			{"type": "objets", "pnj": "zephyrine", "objets": {"plume_vent": 3}, "sort": "levitation", "label": "Voici trois plumes du vent.", "texte": "Oh, elles sont belles ! Tiens-les contre toi. Ferme les yeux. Ne pense pas à monter : pense à ne plus peser. … Tu vois ? Tes pieds ! Ils ne touchent plus rien ! Maintenant, la Tour Penchée : sa cloche n'a pas sonné depuis la grande tempête, l'escalier s'est effondré. Mais toi, tu n'as plus besoin d'escalier.", "objectif": "Apporter les trois plumes à Zéphyrine Plume (au pied de la Tour Penchée, au sud de l'île)"},
+			{"type": "etat", "cle": "lecon_levitation", "objectif": "Monter au sommet de la Tour Penchée en lévitant (touche 8 puis V ; en VR, gâchette gauche) et faire sonner la cloche (E)"},
+			{"type": "rendre", "pnj": "zephyrine", "label": "La cloche de la Tour Penchée a sonné !", "objectif": "Le dire à Zéphyrine Plume"},
+		],
+		"fin": "Je l'ai entendue ! Toute l'île l'a entendue ! Même Borée a levé la tête ! Tiens, des pièces pour toi. Et reviens léviter avec moi au coucher du soleil : d'en haut, la mer devient toute rose.",
+		"recompense": {"pieces": 25}},
+	{"id": "arc_telekinesie", "titre": "Les livres envolés", "donneur": "theophraste", "lieu": "Arcanelle, la bibliothèque", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Théophraste Filandre m'apprend la télékinésie. Quatre de ses livres se sont envolés pendant la grande tempête et sont coincés là où personne ne peut monter : il faut les faire redescendre.",
+		"offre_label": "Vos livres envolés… je peux aider ?",
+		"offre": "Mes livres… Quatre. Pendant la grande tempête, ils se sont envolés par la fenêtre. Un est sur le toit de la bibliothèque. Un autre sur la plus haute des Pierres-Lunes. Le troisième sur le rebord d'une fenêtre de la Tour Penchée. Le dernier dans un grand chêne tordu du Bois Tors. Personne ne peut y monter. Mais on peut les appeler. Je vais vous apprendre.",
+		"etapes": [
+			{"type": "parler", "pnj": "theophraste", "sort": "telekinesie", "label": "Je suis prêt à apprendre.", "texte": "Regardez ce livre, sur l'étagère. Ne tendez pas le bras : tendez l'envie. Voulez-le. Doucement. … Il vient ! Il vient ! Attrapez-le ! Parfait. Visez, et appelez : le livre volera jusqu'à vous. Maintenant, allez me chercher les quatre fugitifs.", "objectif": "Apprendre la télékinésie avec Théophraste Filandre, à la bibliothèque"},
+			{"type": "ramasser", "objets": {"livre_envole": 4}, "lieux": ["livre_toit", "livre_menhir", "livre_tour", "livre_arbre"], "objectif": "Faire redescendre les quatre livres envolés par télékinésie (touche 9 puis V, en visant le livre ; en VR, gâchette gauche) : sur le toit de la bibliothèque, sur la plus haute Pierre-Lune du Cercle, à une fenêtre de la Tour Penchée et dans un grand chêne du Bois Tors"},
+			{"type": "rendre", "pnj": "theophraste", "label": "Voici vos quatre livres envolés.", "prend": [["livre_envole", 4]], "objectif": "Rapporter les quatre livres à Théophraste Filandre"},
+		],
+		"fin": "Tous les quatre ! Le traité des nuages, l'herbier des ombres, la grammaire des corbeaux et… « Recettes de Berthe, tome deux ». Je l'avais oublié, celui-là. Merci. Vraiment. Tenez, des pièces. Et vous pourrez emprunter n'importe quel livre, quand vous voudrez. Sans le corner.",
+		"recompense": {"pieces": 30}},
+	{"id": "arc_soin", "titre": "L'aile de la chouette", "donneur": "sauge", "lieu": "Arcanelle, le Jardin des simples", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Mère Sauge m'apprendra le sort de soin si je lui rapporte trois champignons du Bois Tors. Ensuite, il faudra soigner la chouette blessée qui vit près de la roulotte d'Agathe.",
+		"offre_label": "Vous pourriez m'apprendre à soigner ?",
+		"offre": "Soigner ? Oh, mon petit, c'est la plus belle des magies. Mais il faut d'abord apprendre à connaître ce qui soigne. Va me cueillir trois champignons dans le Bois Tors : les bruns au pied blanc, pas les autres. Les autres font chanter faux.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"champignon": 3}, "lieux": ["champi_arc_1", "champi_arc_2", "champi_arc_3"], "objectif": "Cueillir trois champignons des bois dans le Bois Tors (au sud-ouest de l'île)"},
+			{"type": "objets", "pnj": "sauge", "objets": {"champignon": 3}, "sort": "soin", "label": "Voici trois champignons du Bois Tors.", "texte": "Les bons ! Tu as l'œil. Donne-moi tes mains. Elles sont chaudes, c'est bien. Pense à quelqu'un que tu aimes, très fort, et pose ta main sur ton cœur. … Tu sens ? C'est ça, le soin. Maintenant, va voir la chouette blessée, près de la roulotte d'Agathe, dans le Bois Tors. Elle ne se laisse approcher par personne. Toi, peut-être.", "objectif": "Apporter les trois champignons à Mère Sauge (au jardin des simples, au sud de l'Académie)"},
+			{"type": "etat", "cle": "lecon_soin", "objectif": "Soigner la chouette blessée du Bois Tors avec le sort de soin (touche 0 puis V, tout près d'elle ; en VR, gâchette gauche)"},
+			{"type": "rendre", "pnj": "sauge", "label": "La chouette s'est envolée !", "objectif": "Le dire à Mère Sauge"},
+		],
+		"fin": "Elle s'est envolée ? Oh, mon petit… Tu as les mains douces et le cœur aussi. Tiens, des pièces, et une plume qu'elle a laissée sur mon toit ce matin : elle était venue te remercier, je crois.",
+		"recompense": {"pieces": 25, "objets": [["chouette_plume", 1]]}},
+	{"id": "arc_diplome", "titre": "Le Cercle des Pierres-Lunes", "donneur": "archimage", "lieu": "Arcanelle, le Cercle des Pierres-Lunes", "sorte": "Arcanelle", "si": {"apres": "arc_academie"},
+		"resume": "Quand j'aurai appris les six sorts des maîtres d'Arcanelle, l'archimage me conduira au Cercle des Pierres-Lunes pour la cérémonie.",
+		"offre_label": "Et après les six sorts ?",
+		"offre": "Après les six sorts ? La cérémonie, au Cercle des Pierres-Lunes. Tu poseras la main sur l'autel, et les neuf pierres décideront. Elles n'ont jamais dit non. Mais apprends d'abord les six sorts : la lumière, le feu, le gel, la lévitation, la télékinésie et le soin.",
+		"etapes": [
+			{"type": "etat", "cle": "six_sorts", "objectif": "Apprendre les six sorts des maîtres d'Arcanelle : la lumière, le feu, le gel, la lévitation, la télékinésie et le soin"},
+			{"type": "etat", "cle": "ceremonie", "objectif": "Aller au Cercle des Pierres-Lunes (à l'ouest de l'Académie) et poser la main sur l'autel (E)"},
+			{"type": "rendre", "pnj": "archimage", "label": "Les Pierres-Lunes ont chanté.", "objectif": "Retourner voir l'archimage"},
+		],
+		"fin": "Elles ont chanté pour toi. Je les ai entendues jusqu'ici. Alors c'est dit : tu es sorcier d'Arcanelle. Tiens, ton bâton : du bois du Bois Tors et un cristal du Cercle. En main, il rend tes sorts plus légers. Et ta magie est plus grande désormais. Va, sorcier. Le monde a besoin de lumière, de feu, de glace, de vent, de patience et de soin. Surtout de soin.",
+		"recompense": {"pieces": 60, "titre": "Sorcier d'Arcanelle", "objets": [["baton_sorcier", 1]], "flag": "diplome_arc"}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -599,7 +693,13 @@ func choose(npc: Node, choice: String) -> Dictionary:
 				r["donner"] = q["donne"]
 			return r
 		"etape":
-			return _do_step(npc, qid)
+			# V67 : une étape d'un maître d'Arcanelle apprend un sort (main le transmet à sorts_v67)
+			var before: int = step_of(qid)
+			var e0: Dictionary = _step(qid)
+			var res: Dictionary = _do_step(npc, qid)
+			if e0.has("sort") and (step_of(qid) != before or res.has("_fin56")):
+				res["_sort67"] = str(e0["sort"])
+			return res
 	return {}
 
 
@@ -1040,6 +1140,11 @@ func place_name(p: Vector3) -> String:
 		return "L'Atlantide"
 	if main.get("feerie_v58") != null and main.feerie_v58 != null and main.feerie_v58.contains(p):
 		return "Le royaume des fées"
+	if main.get("arcanelle_v67") != null and main.arcanelle_v67 != null and main.arcanelle_v67.contains(p):
+		var az: String = str(main.arcanelle_v67.zone_at(p))
+		return {"arcanelle_bourg": "Arcanelle, le bourg", "arcanelle_chaudron": "Arcanelle, Le Chaudron Fumant", "arcanelle_bibliotheque": "Arcanelle, la bibliothèque",
+			"arcanelle_salle": "Arcanelle, la Salle des Cours", "arcanelle_crypte": "Arcanelle, la Crypte aux Runes", "arcanelle_bois": "Arcanelle, le Bois Tors",
+			"arcanelle_falaises": "Arcanelle, les falaises du nord", "arcanelle_rivage": "Arcanelle, le rivage"}.get(az, "Arcanelle, l'île des sorciers")
 	if main.get("grande_v59") != null and main.grande_v59 != null and main.grande_v59.contains(p):
 		var gz: String = str(main.grande_v59.zone_at(p))
 		if gz.begins_with("carene"):

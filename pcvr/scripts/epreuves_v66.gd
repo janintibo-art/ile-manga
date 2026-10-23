@@ -91,6 +91,16 @@ const LISTE := {
 	"aile_lune": ["L'aile de la Lune", "grande", 100],
 	"coeur_ouvert": ["Le cœur de la montagne", "grande", 60],
 	"gardien_coeur": ["Le Gardien du Cœur", "grande", 300],
+	# --- V67 : Arcanelle, l'île des sorciers
+	"arcanelle": ["Arcanelle", "arcanelle", 20],
+	"sort_lumiere": ["Le sort de lumière", "arcanelle", 35],
+	"sort_feu": ["Le sort de feu", "arcanelle", 35],
+	"sort_gel": ["Le sort de gel", "arcanelle", 35],
+	"sort_levitation": ["Le sort de lévitation", "arcanelle", 35],
+	"sort_telekinesie": ["Le sort de télékinésie", "arcanelle", 35],
+	"sort_soin": ["Le sort de soin", "arcanelle", 35],
+	"cloche_tour": ["La cloche de la Tour Penchée", "arcanelle", 20],
+	"ceremonie": ["La cérémonie des Pierres-Lunes", "arcanelle", 80],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -103,12 +113,14 @@ const COMPTEURS := {
 	"requins": ["Les requins repoussés", "mer", 15, 6],
 }
 ## Trouvailles qui ne rapportent rien par elles-mêmes (une quête le fait déjà, ou rien à gagner).
-const SANS_XP := ["monstres", "nains_aides", "bague_caelan", "baguette_rendue", "rosee_rendue", "palmes", "teleportation"]
+const SANS_XP := ["monstres", "nains_aides", "bague_caelan", "baguette_rendue", "rosee_rendue", "palmes", "teleportation",
+	"lecon_lumiere", "lecon_feu", "lecon_gel", "lecon_levitation", "lecon_telekinesie", "lecon_soin", "six_sorts"]
 ## Une trouvaille inconnue de la liste (une nouveauté) : un petit quelque chose.
 const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
-	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"]]
+	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
+	["arcanelle", "Arcanelle, l'île des sorciers"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -120,7 +132,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

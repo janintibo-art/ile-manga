@@ -1053,5 +1053,85 @@
 "groupe": "fees",
 "nom": "Zéphyr",
 "titre": "fée du vent"
+},
+"archimage": {
+"groupe": "arcanelle",
+"nom": "Séraphine Astrelune",
+"titre": "archimage d'Arcanelle"
+},
+"lumen": {
+"groupe": "arcanelle",
+"nom": "Aurélien Lumen",
+"titre": "maître de la lumière, astronome"
+},
+"pyra": {
+"groupe": "arcanelle",
+"nom": "Pyra Flammèche",
+"titre": "maîtresse du feu"
+},
+"boree": {
+"groupe": "arcanelle",
+"nom": "Borée Givrelin",
+"titre": "maître du gel"
+},
+"zephyrine": {
+"groupe": "arcanelle",
+"nom": "Zéphyrine Plume",
+"titre": "maîtresse de l'air et de la lévitation"
+},
+"theophraste": {
+"groupe": "arcanelle",
+"nom": "Théophraste Filandre",
+"titre": "bibliothécaire, maître de la télékinésie"
+},
+"sauge": {
+"groupe": "arcanelle",
+"nom": "Mère Sauge",
+"titre": "herboriste, maîtresse du soin"
+},
+"gustave": {
+"groupe": "arcanelle",
+"nom": "Gustave Fiole",
+"titre": "alchimiste de L'Alambic"
+},
+"berthe": {
+"groupe": "arcanelle",
+"nom": "Berthe Chaudron",
+"titre": "aubergiste du Chaudron Fumant"
+},
+"pip": {
+"groupe": "arcanelle",
+"nom": "Pip Grelot",
+"titre": "jeune apprenti"
+},
+"mirabelle": {
+"groupe": "arcanelle",
+"nom": "Mirabelle Pétard",
+"titre": "apprentie alchimiste"
+},
+"oscar": {
+"groupe": "arcanelle",
+"nom": "Oscar Bévue",
+"titre": "apprenti maladroit"
+},
+"lin": {
+"groupe": "arcanelle",
+"nom": "Lin Feuillette",
+"titre": "apprentie studieuse"
+},
+"ysolde": {
+"groupe": "arcanelle",
+"nom": "Ysolde Lunevoile",
+"titre": "gardienne du Cercle des Pierres-Lunes"
+},
+"mathurin": {
+"groupe": "arcanelle",
+"nom": "Mathurin Rame",
+"titre": "passeur et pêcheur"
+},
+"agathe": {
+"groupe": "arcanelle",
+"nom": "Agathe Brumaire",
+"titre": "voyante du Bois Tors"
 }
 }
