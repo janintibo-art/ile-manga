@@ -290,6 +290,20 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if normal else 2, hq="true" if hq else "false"))
             n64 += 1
     print(f"Habitants V64: {n64} fichiers")
+    # V66 : les objets qu'on casse et les coffres (bois, osier, terre cuite, fer) : importés
+    # compressés avec mipmaps, comme les habitants (vus de près en VR, et de loin sans moiré).
+    n66 = 0
+    tex66 = source / "textures" / "objets"
+    if tex66.is_dir():
+        for f in sorted(tex66.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            if not imp.is_file() or "mipmaps/generate=true" not in imp.read_text():
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n66 += 1
+    print(f"Objets V66: {n66} fichiers")
     # V56 : les polices du carnet (Lora, et DejaVu Sans pour les symboles ★ ⚓ ♥ ✓)
     fonts = source / "fonts"
     if fonts.is_dir():

@@ -129,6 +129,7 @@ func _ready() -> void:
 	_create_v59()
 	_create_v63()
 	_create_v65()
+	_create_v66()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -948,6 +949,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		for npc in npcs_v31:
 			npc.brain.reset()
 		Societe_v65.load_data({})
+		if objets_v66 != null:
+			objets_v66.load_data({})
 		if fishing_v32 != null:
 			fishing_v32.cancel("")
 			fishing_v32.load_data({})
@@ -1006,6 +1009,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		pending_pnj_v31 = pnj_data if pnj_data is Dictionary else {}
 		var soc_data: Variant = data.get("societe", {})
 		Societe_v65.load_data(soc_data if soc_data is Dictionary else {})
+		if objets_v66 != null:
+			var ob_data: Variant = data.get("objets", {})
+			objets_v66.load_data(ob_data if ob_data is Dictionary else {})
 		if fishing_v32 != null:
 			var fish_data: Variant = data.get("peche", {})
 			fishing_v32.cancel("")
@@ -1133,6 +1139,8 @@ func _save_slot(slot: int) -> void:
 			pnj[id] = pending_pnj_v31[id]
 	extra["pnj"] = pnj
 	extra["societe"] = Societe_v65.serialize()
+	if objets_v66 != null:
+		extra["objets"] = objets_v66.serialize()
 	if fishing_v32 != null:
 		extra["peche"] = fishing_v32.serialize()
 	if digging_v33 != null:
@@ -2084,7 +2092,7 @@ func _vr_actions_v28(delta: float) -> void:
 			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + (int(journal_v56.bonus["force"]) if journal_v56 != null else 0)
 			# V63 : la force gagnée en montant de niveau, la lame de la forge
 			if progression_v63 != null and hero_v28 != null:
-				dmg = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + int(hero_v28.bonus_force) + (int(hero_v28.forge_bonus) if str(inventory_v28.ITEMS[inventory_v28.equipped].get("kind", "")) == "arme" else 0)
+				dmg = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + int(hero_v28.bonus_force) + int(hero_v28.temp_force) + (int(hero_v28.forge_bonus) if str(inventory_v28.ITEMS[inventory_v28.equipped].get("kind", "")) == "arme" else 0)
 			var blade: Vector3 = -right_hand.global_basis.z
 			var mid: Vector3 = right_hand.global_position + blade * 0.45
 			var tip: Vector3 = right_hand.global_position + blade * 0.75
@@ -2820,6 +2828,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V63 : la forge d'Ursule et de Borin
 	if progression_v63 != null:
 		progression_v63.after_reply(r, npc)
+	# V66 : un verre au comptoir
+	if objets_v66 != null:
+		objets_v66.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2883,6 +2894,7 @@ var sceaux_v63: Node3D                     # V63 : la grande enquête (sites des
 var coeur_v63: Node3D                      # V63 : le donjon du Cœur-de-Pierre
 var grande_v59: Node3D                     # V59 : la grande île de l'est, le Léviathan et Carène
 var bavardages_v65: Node                   # V65 : les habitants qui se connaissent bavardent entre eux
+var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -2981,6 +2993,15 @@ func _create_v59() -> void:
 		var rd: Array = grande_v59.dock_ramure()
 		if rd.size() == 2:
 			boat_v29._make_dock("Ponton_ramure", rd[0], rd[1])
+
+
+## V66 : objets à casser, coffres cachés, boissons (après tout le reste : villes et souterrains
+## sont là, le carnet aussi pour les services des tavernes).
+func _create_v66() -> void:
+	objets_v66 = preload("res://scripts/objets_v66.gd").new()
+	objets_v66.name = "Objets_v66"
+	add_child(objets_v66)
+	objets_v66.setup(self)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande

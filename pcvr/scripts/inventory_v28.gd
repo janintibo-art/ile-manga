@@ -308,6 +308,10 @@ const ITEMS := {
 		"desc": "Une épée taillée dans un éclat du cristal du Cœur-de-Pierre, offerte par le Gardien apaisé. Elle est tiède, et bat doucement, comme un cœur. Dégâts : 9."},
 	"sceau_embruns": {"name": "Sceau des Embruns", "art": "le Sceau des Embruns", "kind": "quete", "sorte": "L'un des quatre sceaux", "max": 1,
 		"desc": "Un disque de nacre bleu-vert, frais comme une vague, gravé d'une rose des vents. Le sceau de Carène. Il a éveillé en toi la Bourrasque."},
+	# V66 : les coffres fermés à clé
+	"petite_cle": {"name": "Petite clé", "art": "une petite clé", "kind": "curiosite", "sorte": "Clé de coffre", "max": 20,
+		"desc": "Une petite clé de fer à l'anneau en trèfle. Elle ouvre un coffre fermé à clé (une seule fois : elle reste dans la serrure).",
+		"effet": "Une petite clé : approche-toi d'un coffre fermé à clé et ouvre-le, elle fera le reste."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -328,6 +332,7 @@ var _clock: float = 0.0
 var use_food: Callable                  # (demi-cœurs) -> bool : soigne, false si déjà plein
 var drop_point: Callable                # () -> Vector3 : où poser un objet jeté
 var use_tool: Callable                  # V54 : (objet) -> bool : un outil qui agit (la plume de Ventaile)
+var on_drink: Callable                  # V66 : (objet, soigné) -> bool : vrai si c'est une boisson (bue pour de bon)
 
 # Fenêtre PC
 var _layer: CanvasLayer
@@ -506,6 +511,12 @@ func remove_from_slot(i: int, n: int = 1) -> void:
 	_refresh()
 
 
+## V66 : une boisson (objets_v66.BOISSONS) ?
+func is_drink(id: String) -> bool:
+	var ob: Variant = main.get("objets_v66") if main != null else null
+	return ob != null and (ob.BOISSONS as Dictionary).has(id)
+
+
 ## Utiliser (manger) ou équiper / ranger l'arme selon l'objet.
 func use_slot(i: int) -> void:
 	if i < 0 or i >= slots.size() or slots[i]["id"] == "":
@@ -514,10 +525,14 @@ func use_slot(i: int) -> void:
 	var info: Dictionary = ITEMS[id]
 	match str(info["kind"]):
 		"nourriture":
-			if use_food.is_valid() and use_food.call(int(info.get("heal", 1))):
-				_sfx("manger")
+			var healed: bool = use_food.is_valid() and bool(use_food.call(int(info.get("heal", 1))))
+			# V66 : une boisson se boit même les cœurs pleins (objets_v66 : glouglou, effets)
+			var drank: bool = on_drink.is_valid() and bool(on_drink.call(id, healed))
+			if healed or drank:
 				remove_from_slot(i, 1)
-				notify.emit(str(info["name"]) + " mangé(e).")
+				if not drank:
+					_sfx("manger")
+					notify.emit(str(info["name"]) + " mangé(e).")
 			else:
 				_sfx("ui_erreur")
 				notify.emit("Vos cœurs sont déjà pleins.")
@@ -570,7 +585,7 @@ static func pickup_sound(id: String) -> String:
 		return "ramasse_pieces"
 	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee"]:
 		return "ramasse_gemme"
-	if id in ["caillou", "minerai_fer", "fragment_amulette"]:
+	if id in ["caillou", "minerai_fer", "fragment_amulette", "petite_cle"]:
 		return "ramasse_pierre"
 	if id in ["baton", "buche"]:
 		return "ramasse_bois"
@@ -1185,6 +1200,18 @@ func make_model(id: String) -> Node3D:
 			for k in range(5):
 				var a3: float = TAU * k / 5.0
 				_part(m, _sphere(0.03), _mat("etoile", Color(0.92, 0.45, 0.2), 0.7), Vector3(cos(a3) * 0.04, 0.01, sin(a3) * 0.04), Vector3(0, -rad_to_deg(a3), 0), Vector3(2.2, 0.35, 0.8))
+		"petite_cle":
+			var fer := _mat("fer_cle", Color(0.42, 0.4, 0.38), 0.45)
+			fer.metallic = 0.8
+			_part(m, _box_mesh(Vector3(0.11, 0.01, 0.012)), fer, Vector3(0.035, 0.008, 0))
+			for k in range(3):
+				var tk2 := TorusMesh.new()
+				tk2.inner_radius = 0.008
+				tk2.outer_radius = 0.016
+				var a: float = TAU * k / 3.0
+				_part(m, tk2, fer, Vector3(-0.035 + cos(a) * 0.014, 0.008, sin(a) * 0.014))
+			_part(m, _box_mesh(Vector3(0.008, 0.01, 0.022)), fer, Vector3(0.08, 0.008, 0.012))
+			_part(m, _box_mesh(Vector3(0.008, 0.01, 0.016)), fer, Vector3(0.068, 0.008, 0.009))
 		"cle_ville":
 			_part(m, _box_mesh(Vector3(0.2, 0.012, 0.018)), _mat("or", Color(0.95, 0.78, 0.35), 0.2), Vector3(0.05, 0.01, 0))
 			var tk := TorusMesh.new()
@@ -1634,7 +1661,7 @@ func _refresh_pc() -> void:
 	_detail_desc.text = str(info["desc"])
 	match str(info["kind"]):
 		"nourriture":
-			_use_button.text = "Manger"
+			_use_button.text = "Boire" if is_drink(sid) else "Manger"
 		"arme", "canne":
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
 		"outil":

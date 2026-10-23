@@ -728,8 +728,8 @@ func _cat_house() -> Vector3:
 	kit.col_box(land, Vector3(1.3, 0.2, 1.2))
 	# des caisses de poisson vides au pied de l'escalier (le chat y saute)
 	for k in range(4):
-		kit.crate(T(x1 + 2.2 + (k % 2) * 0.8, z0 + 1.2 + (k / 2) * 0.8), 0.2 * k, 0.75)
-	kit.crate(T(x1 + 2.6, z0 + 1.6, 0.75), 0.4, 0.7)
+		kit.crate(T(x1 + 2.2 + (k % 2) * 0.8, z0 + 1.2 + (k / 2) * 0.8), 0.2 * k, 0.75, true)
+	kit.crate(T(x1 + 2.6, z0 + 1.6, 0.75), 0.4, 0.7, true)
 	return W(x0 + 2.5, z0 + d - 2.5, y0 + h + 0.15)
 
 

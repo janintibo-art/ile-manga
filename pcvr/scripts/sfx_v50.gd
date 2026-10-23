@@ -34,6 +34,8 @@ const DB := {
 	"piston": -3.0, "ombre_mains": -5.0, "onde_choc": -1.0, "rune_brisee": -2.0, "boss_coeur_cri": 0.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,
+	# V66 : objets à casser, coffres fermés à clé, boire
+	"caisse_casse": -3.0, "tonneau_casse": -3.0, "panier_casse": -6.0, "coffre_verrou": -6.0, "boire": -7.0, "rot": -8.0, "hoquet": -9.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

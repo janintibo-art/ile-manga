@@ -23,6 +23,11 @@ var STAMINA_MAX: float = 10.0          # V56 : + endurance gagnée en aidant les
 var HP_MAX: int = 10                    # 5 cœurs, par demi-cœurs (V56 : + cœurs gagnés)
 var HEARTS: int = 5
 var bonus_force: int = 0                # V56 : + force (quêtes de Port-Azur)
+# V66 : un verre (objets_v66.gd) : +1 de force un moment ; un verre de trop fait tanguer
+var temp_force: int = 0
+var tipsy: float = 0.0                  # 0 sobre … 1 bien pompette (PC seulement)
+var _tipsy_t: float = 0.0
+var _drink_att: Node3D
 # V63 : la progression (progression_v63.gd) : talents, agilité, forge
 var talents: Dictionary = {}
 var agilite: int = 0
@@ -180,6 +185,29 @@ func _build_animations() -> void:
 	bite["RightForeArm"] = Vector3(-135, 0, 0)
 	bite["Head"] = Vector3(8, 0, 0)
 	poses.add_animation("eat", _clip(1.1, false, [[0.0, arms_in, Vector3.ZERO], [0.3, bite, Vector3.ZERO], [0.8, bite, Vector3.ZERO], [1.1, arms_in, Vector3.ZERO]]))
+	# V66 : boire : le coude se lève devant, la chope monte à la bouche, la tête bascule en
+	# arrière (angles cherchés pour que la main arrive devant la bouche du héros)
+	var lift := arms_in.duplicate()
+	lift["RightArm"] = Vector3(-50, 32, -6)
+	lift["RightForeArm"] = Vector3(-60, 22, -3)
+	var gulp := arms_in.duplicate()
+	gulp["RightArm"] = Vector3(-87.5, 60.6, -20)
+	gulp["RightForeArm"] = Vector3(-34.4, 36.9, -5)
+	gulp["Head"] = Vector3(-18, 0, 0)
+	gulp["neck"] = Vector3(-8, 0, 0)
+	gulp["Spine02"] = Vector3(-4, 0, 0)
+	var gulp_b := gulp.duplicate()
+	gulp_b["Head"] = Vector3(-24, 0, 0)
+	gulp_b["RightArm"] = Vector3(-92, 60.6, -20)
+	poses.add_animation("boire", _clip(2.0, false, [[0.0, arms_in, Vector3.ZERO], [0.38, lift, Vector3.ZERO], [0.62, gulp, Vector3.ZERO], [1.0, gulp_b, Vector3(0, 0.5, 0)],
+		[1.4, gulp, Vector3.ZERO], [2.0, arms_in, Vector3.ZERO]]))
+	# V66 : le hoquet : un petit sursaut des épaules
+	var hic := arms_in.duplicate()
+	hic["Spine02"] = Vector3(-6, 0, 0)
+	hic["LeftShoulder"] = Vector3(0, 0, -8)
+	hic["RightShoulder"] = Vector3(0, 0, 8)
+	hic["Head"] = Vector3(-8, 0, 0)
+	poses.add_animation("hoquet", _clip(0.35, false, [[0.0, arms_in, Vector3.ZERO], [0.08, hic, Vector3(0, 2.5, 0)], [0.35, arms_in, Vector3.ZERO]]))
 	# Touché : recul du buste.
 	var flinch := {"Spine02": Vector3(-18, 0, 0), "Head": Vector3(-20, 0, 0), "LeftArm": Vector3(-30, 0, 35), "RightArm": Vector3(-30, 0, -35)}
 	poses.add_animation("hurt", _clip(0.4, false, [[0.0, arms_in, Vector3.ZERO], [0.12, flinch, Vector3(0, -3, -6)], [0.4, arms_in, Vector3.ZERO]]))
@@ -457,6 +485,11 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 	var sprint: bool = Input.is_key_pressed(KEY_SHIFT) and _can_act() and dir.length() > 0.1 and not stamina_lock and not blocking
 	var speed: float = (RUN_SPEED * (1.1 if talents.has("pas_du_vent") else 1.0) if sprint else WALK_SPEED) * (1.0 + 0.04 * agilite) * sol_mult
 	var move: Vector3 = dir * speed
+	# V66 : un verre de trop : la marche zigzague
+	if tipsy > 0.01 and dir.length() > 0.1 and state == "sol":
+		_tipsy_t += delta
+		var side: Vector3 = dir.cross(Vector3.UP).normalized()
+		move += side * sin(_tipsy_t * 2.1) * speed * 0.34 * tipsy + dir * sin(_tipsy_t * 3.7) * speed * 0.1 * tipsy
 	if state == "roulade":
 		action_time += delta
 		var k: float = 1.0 - smoothstep(0.55, 1.0, action_time / ROLL_TIME)
@@ -564,6 +597,9 @@ func _pick_locomotion(move: Vector3, on_floor: bool) -> void:
 		_play("v28/block", 0.12)
 		return
 	var v: float = Vector2(move.x, move.z).length()
+	# V66 : le hoquet va jusqu'au bout (s'il ne bouge pas)
+	if v <= 0.3 and current_anim == "v28/hoquet" and anim.is_playing():
+		return
 	if v > 2.2:
 		_play("Running", 0.2, v / 2.6)
 	elif v > 0.3:
@@ -937,7 +973,7 @@ func _deliver_hit() -> void:
 	if not strike.is_valid():
 		return
 	var reach: float = 1.9 if weapon != "" else 1.35
-	var dmg: int = (weapon_damage + (forge_bonus if _weapon_blade() else 0) if weapon != "" else 1) + bonus_force
+	var dmg: int = (weapon_damage + (forge_bonus if _weapon_blade() else 0) if weapon != "" else 1) + bonus_force + temp_force
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
 	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire", "lame_coeur"] and combo_index % SLASHES.size() == 2 and _heavy == ""
 	if finisher:
@@ -1119,7 +1155,7 @@ func vr_spin() -> void:
 		return
 	_spend(3.0)
 	var vb: CharacterBody3D = main.vr_body
-	var dmg: int = (int(main.inventory_v28.ITEMS[main.inventory_v28.equipped].get("damage", 1)) + forge_bonus if main.inventory_v28.equipped != "" else 1) + bonus_force
+	var dmg: int = (int(main.inventory_v28.ITEMS[main.inventory_v28.equipped].get("damage", 1)) + forge_bonus if main.inventory_v28.equipped != "" else 1) + bonus_force + temp_force
 	if main.combat_v28 != null:
 		main.combat_v28.critical = true
 		main.combat_v28.strike_around(vb.global_position + Vector3.UP * 1.1, 2.6, dmg * 2)
@@ -1198,6 +1234,43 @@ func fishing_pose(name: String, blend: float = 0.12) -> void:
 		return
 	state = "peche"
 	_play("v28/" + name, blend, 1.0, 0.0 if name in ["peche_armer", "peche_lancer"] else -1.0)
+
+
+## V66 : boire (la boisson en main le temps de la gorgée ; l'arme se range un instant).
+func play_drink(prop: Node3D) -> bool:
+	if state != "sol" or anim == null or skel == null or not anim.has_animation("v28/boire"):
+		return false
+	play_action("boire")
+	if _drink_att != null and is_instance_valid(_drink_att):
+		_drink_att.queue_free()
+	if prop != null:
+		var att := BoneAttachment3D.new()
+		att.name = "Boisson_main_v66"
+		att.bone_name = "RightHand"
+		skel.add_child(att)
+		var hold := Node3D.new()
+		# la chope entre la main et la bouche, penchée vers le visage (repère de l'os de la main)
+		hold.basis = Basis(Quaternion(Vector3.UP, Vector3(0.41, 0.02, -0.91).normalized()))
+		hold.position = Vector3(2.2, 2.7, -0.4)
+		hold.scale = Vector3.ONE * 100.0      # le squelette est en centimètres
+		att.add_child(hold)
+		hold.add_child(prop)
+		_drink_att = att
+	if sword_holder != null:
+		sword_holder.visible = false
+	get_tree().create_timer(action_length).timeout.connect(func():
+		if _drink_att != null and is_instance_valid(_drink_att):
+			_drink_att.queue_free()
+		_drink_att = null
+		if sword_holder != null and is_instance_valid(sword_holder):
+			sword_holder.visible = true)
+	return true
+
+
+## V66 : un hoquet (seulement debout et sans rien faire d'autre).
+func hiccup() -> void:
+	if state == "sol" and anim != null and anim.has_animation("v28/hoquet") and body.is_on_floor() and current_anim == "v28/idle":
+		_play("v28/hoquet", 0.05, 1.0, 0.0)
 
 
 func play_action(name: String, look_at_point: Variant = null) -> void:
@@ -1516,3 +1589,7 @@ func _update_camera() -> void:
 		look = pivot + Vector3.DOWN * 0.55
 	if place.distance_to(look) > 0.1:
 		camera.look_at(look, Vector3.UP)
+		# V66 : un verre de trop : l'horizon tangue
+		if tipsy > 0.01:
+			var tt: float = Time.get_ticks_msec() * 0.001
+			camera.rotate_object_local(Vector3(0, 0, 1), (sin(tt * 0.9) * 0.07 + sin(tt * 2.3) * 0.02) * tipsy)

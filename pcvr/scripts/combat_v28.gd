@@ -256,8 +256,8 @@ func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3)
 ## V50 : le bruit d'un coup selon ce qu'on frappe (chair, carapace, pierre, bois, jarre).
 func impact_sound(target: Node) -> String:
 	var file: String = str(target.get_script().resource_path.get_file()) if target.get_script() != null else ""
-	if file == "arbre_v34.gd":
-		return ""                 # l'arbre a son propre bruit (la hache)
+	if file == "arbre_v34.gd" or file == "cassable_v66.gd":
+		return ""                 # l'arbre a son propre bruit (la hache) ; V66 : les objets à casser aussi
 	var k: String = str(target.get("kind")) if target.get("kind") != null else ""
 	match k:
 		"jarre":

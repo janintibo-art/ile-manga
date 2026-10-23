@@ -367,7 +367,7 @@ func _gun_deck() -> void:
 	for k in range(5):
 		kit.box(cx * Transform3D(Basis(Vector3(1, 0, 0), 0.25), Vector3(-1.0 + k * 0.4, 1.35, -0.6)), Vector3(0.3, 2.7, 0.04), "pont", 1.0)
 	for bpos in [Vector3(2.1, 0, 0.6), Vector3(2.4, 0, -0.3)]:
-		kit.barrel(cx * bpos)
+		kit.barrel(cx * bpos, true)
 		kit.disc(cx * Transform3D(Basis(), bpos + Vector3(0, 0.91, 0)), 0.3, "goudron", 12)
 	kit.cyl(cx * Transform3D(Basis(), Vector3(-2.2, 0, -0.2)), 0.45, 0.5, 0.6, "fer", 14)
 	kit.disc(cx * Transform3D(Basis(), Vector3(-2.2, 0.6, -0.2)), 0.42, "goudron", 14)
@@ -447,7 +447,7 @@ func _main_deck() -> void:
 	# la place devant la taverne : tables-tonneaux et bancs
 	for tp in [[-33.0, -3.0], [-33.0, 4.0], [-27.0, 4.6]]:
 		var tw: Vector3 = L(tp[0], E.D, tp[1])
-		kit.barrel(tw)
+		kit.barrel(tw, true)
 		kit.disc(Transform3D(E.xf.basis, tw + E.xf.basis.y * 0.92), 0.5, "bois", 12)
 	_bench(-30.0, "D", -13.4, 0.0)
 	_bench(-30.0, "D", 13.4, 180.0)

@@ -14,8 +14,14 @@ extends Node
 ##    PC : 1 à 4 pour choisir, X pour lancer. VR : B pour lancer, B maintenu pour changer.
 ##  - Le carnet, onglet Héros (H, ou 5 carnet ouvert) : niveau, points, talents, équipement,
 ##    sceaux. Sur l'écran : le niveau et la barre d'expérience sous les cœurs, le pouvoir choisi.
+## V66 : l'évolution passe par les épreuves (epreuves_v66.gd) : énigmes, boss, portes, lieux,
+## quêtes du carnet, quêtes des habitants, coffres cachés. Chacune annonce « Épreuve réussie »
+## et ce qu'elle rapporte. Le rythme est lent (courbe plus raide, monstres qui rapportent de
+## moins en moins quand on en abat beaucoup de la même espèce) ; la page Héros fait le compte.
 
 signal changed
+
+const Ep = preload("res://scripts/epreuves_v66.gd")
 
 const MAX_LEVEL: int = 30
 const STAT_MAX: int = 6
@@ -81,23 +87,15 @@ const FORGE_ARMURE := [
 	{"nom": "Écailles de bronze", "chance": 0.55, "pnj": "borin", "prix": [["piece", 140], ["minerai_fer", 3], ["coeur_magma", 1]], "texte": "Borin rive des écailles de bronze sur ta cotte, comme la peau d'un dragon. « Les nains en portaient au temps des Grandes Mines. »"},
 	{"nom": "Armure runique", "chance": 0.7, "pnj": "borin", "prix": [["piece", 220], ["rune_golem", 2], ["obsidienne", 1], ["piece_or", 1]], "texte": "Toute la forge se tait. Borin et Nori le Runiste gravent l'armure pendant une nuit entière. Au matin, les runes battent doucement, comme un cœur. « La plus belle que j'aie faite. »"},
 ]
-## Expérience des monstres (les autres : 10).
+## Expérience des monstres (les autres : 6). V66 : moins qu'avant, et chaque monstre de la même
+## espèce rapporte 10 % de moins que le précédent (au moins 1) : on évolue par les épreuves.
 const KILL_XP := {
-	"crabe": 8, "araignee": 10, "follet": 9, "vipere": 12, "plante": 12, "ronceux": 14, "gargouille": 16, "magma": 18,
-	"gardien": 24, "armure": 30, "golem": 35, "plante_mere": 160,
-	"scorpion": 14, "ondin": 16, "automate": 24, "spectre": 18,
-	"garde_maree": 140, "scorpion_roi": 140, "colosse": 150, "loup_brumes": 150, "gardien_coeur": 500,
+	"crabe": 5, "araignee": 6, "follet": 5, "vipere": 7, "plante": 7, "ronceux": 8, "gargouille": 10, "magma": 11,
+	"gardien": 14, "armure": 18, "golem": 21, "plante_mere": 60,
+	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
+	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 }
-## Les grandes découvertes rapportent plus (les autres : 25).
-const BIG_FINDS := {
-	"boss1": 150, "naga": 200, "orage": 180, "mere_ronce": 150, "cristal": 150, "graine_ygg": 120, "reine": 100,
-	"ronces": 120, "abime": 100, "citadelle": 80, "atlantide": 80, "ville_naine": 80, "porte_forgefer": 60,
-	"sceau_sables": 120, "sceau_airain": 120, "sceau_brumes": 120, "sceau_embruns": 120, "porte_ouverte": 150,
-	"aile_marees": 120, "aile_sables": 120, "aile_rouages": 120, "aile_lune": 120, "gardien_coeur": 300,
-}
-## Compteurs (une trouvaille qui grandit) : un peu d'expérience à chaque pas ; pas les monstres
-## (ils rapportent déjà en tombant).
-const COUNT_SKIP := ["monstres"]
+const KILL_DECAY: float = 0.9
 
 var main: Node
 var xp: int = 0
@@ -110,6 +108,12 @@ var forge := {"arme": 0, "armure": 0}
 var seals: Dictionary = {}
 var power: String = ""
 var kills: int = 0
+var kills_kind: Dictionary = {}           # V66 : monstres abattus par espèce
+var quetes_pnj: Dictionary = {}           # V66 : quêtes des habitants déjà comptées
+var coffres: int = 0                      # V66 : coffres ouverts
+var _pnj_retro: bool = false
+var _queue: Array = []                    # V66 : messages en attente [texte, son]
+var _queue_wait: float = 0.0
 var xp_log: Dictionary = {"monstres": 0, "quetes": 0, "decouvertes": 0}
 var _seen: Dictionary = {}
 var _seen_ready: bool = false
@@ -149,7 +153,7 @@ func setup(main_node: Node) -> void:
 
 ## Expérience à gagner pour passer du niveau l au niveau l + 1.
 func need(l: int) -> int:
-	return 80 + 45 * (l - 1)
+	return 120 + 90 * (l - 1)
 
 
 func xp_into_level() -> int:
@@ -185,7 +189,7 @@ func _level_up_fx() -> void:
 	if main == null:
 		return
 	if not _retro:
-		main._show_message_v28("Niveau %d ! +1 point de caractéristique, +1 point de talent. (Carnet, onglet Héros : touche H)" % level)
+		say("Niveau %d ! +1 point de caractéristique, +1 point de talent. (Carnet, onglet Héros : touche H)" % level)
 		if main.has_method("jingle"):
 			main.jingle("niveau")
 		if main.has_method("sfx"):
@@ -246,49 +250,145 @@ func _aura(p: Vector3) -> void:
 
 func on_kill(kind: String, at: Vector3) -> void:
 	kills += 1
-	gain(int(KILL_XP.get(kind, 10)), "monstres", at)
+	var n: int = int(kills_kind.get(kind, 0))
+	kills_kind[kind] = n + 1
+	gain(maxi(1, int(round(float(KILL_XP.get(kind, 6)) * pow(KILL_DECAY, n)))), "monstres", at)
 
 
 ## Une quête du carnet accomplie : un peu d'expérience par étape.
 func on_quest(qid: String, steps: int) -> void:
-	var n: int = 40 + 20 * maxi(steps, 1)
-	if qid == "quatre_sceaux":
-		n = 400
-	gain(n, "quetes")
+	gain(quest_xp(qid, steps), "quetes")
 
 
-## Les trouvailles du jeu : chaque nouvelle découverte rapporte. Au premier passage sur une
-## partie d'avant la V63, on compte tout ce qui a déjà été fait (expérience rétroactive).
+## V66 : ce que rapporte une quête du carnet (le carnet l'annonce avec la récompense).
+static func quest_xp(qid: String, steps: int) -> int:
+	return 250 if qid == "quatre_sceaux" else 30 + 15 * maxi(steps, 1)
+
+
+## V66 : un coffre caché ouvert.
+func on_chest(at: Vector3) -> void:
+	coffres += 1
+	gain(Ep.XP_COFFRE, "decouvertes", at)
+
+
+## Les trouvailles du jeu : chaque épreuve réussie rapporte (epreuves_v66.gd), une seule fois.
+## Au premier passage sur une partie d'avant la V63, on compte tout ce qui a déjà été fait
+## (expérience rétroactive) ; de même pour les quêtes des habitants d'avant la V66.
 func _poll_finds() -> void:
 	if main == null or not main.has_method("_npc_ctx_v31"):
 		return
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
 	var total: int = 0
+	var names: Array = []
 	for k in tr:
 		var v: int = int(tr[k])
 		var prev: int = int(_seen.get(k, 0))
 		if v <= prev:
 			continue
+		var key: String = str(k)
 		var n: int = 0
-		if prev == 0:
-			n += int(BIG_FINDS.get(k, 25))
-		if not (str(k) in COUNT_SKIP):
-			n += (v - maxi(prev, 1)) * 3
-		else:
+		if key in Ep.SANS_XP:
 			n = 0
-		_seen[k] = v
+		elif Ep.COMPTEURS.has(key):
+			var c: Array = Ep.COMPTEURS[key]
+			n = (int(c[2]) if prev == 0 else 0) + (v - maxi(prev, 1)) * int(c[3])
+			if prev == 0:
+				names.append(str(c[0]))
+		elif Ep.LISTE.has(key):
+			n = int(Ep.LISTE[key][2]) if prev == 0 else 0
+			if n > 0:
+				names.append(str(Ep.LISTE[key][0]))
+		else:
+			n = Ep.XP_INCONNUE if prev == 0 else 0
+		_seen[key] = v
 		total += n
-	if total > 0:
-		if not _seen_ready:
+	# les quêtes des habitants (Barnabé, Lyra, les elfes, les nains, les fées…)
+	var q_total: int = 0
+	var q_names: Array = []
+	for st in _npc_quests():
+		var id: String = str(st[0])
+		if quetes_pnj.has(id):
+			continue
+		quetes_pnj[id] = true
+		q_total += int((Ep.QUETES_PNJ.get(id, ["", 50]) as Array)[1])
+		q_names.append(str(st[1]))
+	# partie d'avant la V66 : ses quêtes d'habitants déjà faites comptent, en une fois
+	if _pnj_retro and _seen_ready and q_total > 0:
+		say("Les quêtes que tu as déjà faites pour les habitants comptent aussi : +%d XP." % q_total)
+		gain(q_total, "quetes")
+		q_total = 0
+		q_names = []
+	_pnj_retro = false
+	if not _seen_ready:
+		# partie d'avant la V63 (ou premier passage) : tout ce qui est déjà fait, sans fanfare
+		if total + q_total > 0:
 			_retro = true
 			var before: int = level
 			gain(total, "decouvertes")
+			gain(q_total, "quetes")
 			_retro = false
 			if level > before:
-				main._show_message_v28("Tout ce que tu as déjà accompli compte : te voilà niveau %d ! Ouvre le carnet (H) pour répartir tes points." % level)
+				say("Tout ce que tu as déjà accompli compte : te voilà niveau %d ! Ouvre le carnet (H) pour répartir tes points." % level)
+	elif total + q_total > 0:
+		names.append_array(q_names)
+		var at: Vector3 = main._player_pos_v27() + Vector3.UP * 1.4
+		if not names.is_empty():
+			_announce(names, total + q_total)
+		gain(total, "decouvertes", at)
+		if total > 0:
+			gain(q_total, "quetes")
 		else:
-			gain(total, "decouvertes", main._player_pos_v27() + Vector3.UP * 1.4)
+			gain(q_total, "quetes", at)
 	_seen_ready = true
+
+
+## Les quêtes d'habitants accomplies : [[id, « La quête de Barnabé »]].
+func _npc_quests() -> Array:
+	var out: Array = []
+	var seen := {}
+	for n in main.get("npcs_v31") if main.get("npcs_v31") != null else []:
+		if not is_instance_valid(n) or n.get("brain") == null:
+			continue
+		var id: String = str((n.get("profile") as Dictionary).get("id", ""))
+		seen[id] = true
+		if str(n.brain.memoire.get("quete", "")) == "finie":
+			out.append([id, "La quête de " + str(n.display_name).split(" ")[0]])
+	var pend: Variant = main.get("pending_pnj_v31")
+	if pend is Dictionary:
+		for id2 in pend:
+			if seen.has(str(id2)) or not (pend[id2] is Dictionary):
+				continue
+			var m: Variant = (pend[id2] as Dictionary).get("memoire", {})
+			if m is Dictionary and str((m as Dictionary).get("quete", "")) == "finie":
+				out.append([str(id2), "La quête de " + str(id2).capitalize()])
+	return out
+
+
+## « Épreuve réussie : … » au milieu de l'écran (et au poignet en VR, par le message).
+func _announce(names: Array, total: int) -> void:
+	var t: String = ("Épreuve réussie : " + str(names[0])) if names.size() == 1 else ("Épreuves réussies : " + ", ".join(names))
+	say("%s  (+%d XP)" % [t, total], "ui_quete")
+
+
+## V66 : nos messages attendent que celui du jeu ait été lu (l'histoire d'abord, le décompte
+## ensuite) ; au plus 6 s d'attente.
+func say(text: String, sound: String = "") -> void:
+	_queue.append([text, sound])
+
+
+func _flush_queue(delta: float) -> void:
+	if _queue.is_empty() or main == null:
+		_queue_wait = 0.0
+		return
+	_queue_wait += delta
+	if float(main.get("message_clock_v28")) > 0.0 and _queue_wait < 6.0:
+		return
+	var it: Array = _queue.pop_front()
+	main._show_message_v28(str(it[0]))
+	main.message_clock_v28 = maxf(float(main.message_clock_v28), 4.5)
+	if str(it[1]) != "" and main.has_method("sfx"):
+		main.sfx(str(it[1]))
+	_queue_wait = 0.0
 
 
 # =================================================================== caractéristiques et talents
@@ -856,6 +956,7 @@ func _process(delta: float) -> void:
 		_hud.visible = not main.xr_active
 		if _pow_box != null and power != "":
 			_pow_box.queue_redraw()
+	_flush_queue(delta)
 	_poll -= delta
 	if _poll <= 0.0:
 		_poll = 2.0
@@ -1021,7 +1122,8 @@ func refresh_page() -> void:
 		_p_detail.text = "[font_size=22][b]%s[/b][/font_size]   (niveau %d)\n%s\n%s" % [str(t["nom"]), int(t["niveau"]), str(t["desc"]), state]
 		_p_learn.visible = why2 == ""
 	# colonne de droite
-	var r: String = "[font_size=24][color=#ffd27a][b]Équipement[/b][/color][/font_size]\n"
+	# V66 : les épreuves d'abord (c'est par elles que le héros grandit)
+	var r: String = _trials_text() + "[font_size=24][color=#ffd27a][b]Équipement[/b][/color][/font_size]\n"
 	var ta: int = int(forge["arme"])
 	var tb: int = int(forge["armure"])
 	r += "[b]Lame :[/b] %s%s\n" % [str(FORGE_ARME[ta]["nom"]), ("  (+%d aux dégâts)" % int(FORGE_ARME[ta]["bonus"])) if ta > 0 else ""]
@@ -1049,6 +1151,58 @@ func refresh_page() -> void:
 	_p_right.text = r
 
 
+## V66 : les épreuves réussies, région par région (seulement celles où l'on a commencé).
+func trials_counts() -> Dictionary:
+	var out := {}
+	for e in Ep.REGIONS:
+		out[str(e[0])] = [0, 0]
+	for k in Ep.LISTE:
+		_count(out, str(Ep.LISTE[k][1]), int(_seen.get(k, 0)) > 0)
+	for k2 in Ep.COMPTEURS:
+		_count(out, str(Ep.COMPTEURS[k2][1]), int(_seen.get(k2, 0)) > 0)
+	for id in Ep.QUETES_PNJ:
+		_count(out, str(Ep.QUETES_PNJ[id][0]), quetes_pnj.has(id))
+	var j: Node = main.get("journal_v56") if main != null else null
+	if j != null:
+		for q in j.QUETES:
+			var rg: String = Ep.carnet_region(str(q.get("lieu", "")))
+			if rg != "":
+				_count(out, rg, j.state(str(q["id"])) == "finie")
+	var ob: Node = main.get("objets_v66") if main != null else null
+	if ob != null:
+		var cc: Dictionary = ob.chest_counts()
+		for rg2 in cc:
+			var a: Array = out.get(rg2, [0, 0])
+			out[rg2] = [int(a[0]) + int(cc[rg2][0]), int(a[1]) + int(cc[rg2][1])]
+	return out
+
+
+func _count(out: Dictionary, rg: String, done: bool) -> void:
+	var a: Array = out.get(rg, [0, 0])
+	out[rg] = [int(a[0]) + (1 if done else 0), int(a[1]) + 1]
+
+
+func _trials_text() -> String:
+	var t: String = "[font_size=24][color=#ffd27a][b]Les épreuves[/b][/color][/font_size]\n"
+	t += "[color=#9aa7b0][i]Énigmes, gardiens, portes, quêtes, coffres cachés : c'est en les réussissant que le héros grandit.[/i][/color]\n"
+	var cnt: Dictionary = trials_counts()
+	var any: bool = false
+	var sum: int = 0
+	for e in Ep.REGIONS:
+		var a: Array = cnt.get(str(e[0]), [0, 0])
+		sum += int(a[0])
+		if int(a[0]) <= 0:
+			continue
+		any = true
+		var full: bool = int(a[0]) >= int(a[1])
+		t += "[color=#%s]●[/color] %s : %d / %d%s\n" % ["ffd27a" if full else "8fd0ff", str(e[1]), int(a[0]), int(a[1]), "  ✓" if full else ""]
+	if not any:
+		t += "Aucune pour l'instant. La première t'attend peut-être sous le village…\n"
+	else:
+		t += "[color=#9aa7b0]%d épreuve%s réussie%s, %d coffre%s ouvert%s.[/color]\n" % [sum, "s" if sum > 1 else "", "s" if sum > 1 else "", coffres, "s" if coffres > 1 else "", "s" if coffres > 1 else ""]
+	return t + "\n"
+
+
 func _heard_of_seals() -> bool:
 	var j: Node = main.get("journal_v56")
 	return j != null and str(j.state("porte_scellee")) == "finie"
@@ -1059,7 +1213,8 @@ func _heard_of_seals() -> bool:
 func serialize() -> Dictionary:
 	return {"xp": xp, "niveau": level, "points": stat_points, "points_talent": talent_points, "stats": stats.duplicate(),
 		"talents": talents.keys(), "forge": forge.duplicate(), "sceaux": seals.keys(), "pouvoir": power, "victoires": kills,
-		"vu": _seen.duplicate(), "journal_xp": xp_log.duplicate()}
+		"vu": _seen.duplicate(), "journal_xp": xp_log.duplicate(),
+		"especes": kills_kind.duplicate(), "quetes_pnj": quetes_pnj.keys(), "coffres": coffres}
 
 
 func load_data(d: Dictionary) -> void:
@@ -1088,6 +1243,19 @@ func load_data(d: Dictionary) -> void:
 	if power != "" and not power_owned(power):
 		power = ""
 	kills = int(d.get("victoires", 0))
+	# V66 : monstres par espèce, quêtes des habitants comptées, coffres
+	kills_kind = {}
+	var ek: Variant = d.get("especes", {})
+	if ek is Dictionary:
+		for k2 in ek:
+			kills_kind[str(k2)] = int(ek[k2])
+	quetes_pnj = {}
+	for q in d.get("quetes_pnj", []):
+		quetes_pnj[str(q)] = true
+	# partie d'avant la V66 : ses quêtes d'habitants déjà faites comptent, en une fois
+	_pnj_retro = not d.has("quetes_pnj") and not d.is_empty()
+	coffres = int(d.get("coffres", 0))
+	_queue = []
 	_seen = {}
 	var vu: Variant = d.get("vu", null)
 	if vu is Dictionary:

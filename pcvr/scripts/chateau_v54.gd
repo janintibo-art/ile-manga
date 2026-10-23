@@ -10,6 +10,7 @@ extends Node3D
 ## Repère : origine au sol de la cour, au centre ; +Z vers le sud (la porte), -Z vers le donjon.
 
 const Decor = preload("res://scripts/decor_v53.gd")
+const Cassable = preload("res://scripts/cassable_v66.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const T := "res://assets/textures/"
 const HALF: float = 24.0
@@ -430,9 +431,10 @@ func _build_courtyard() -> void:
 			var off := Vector3(e, 0, 0) if rot == 0.0 else Vector3(0, 0, e)
 			box(Vector3(0.3, 0.45, 0.5), p + off + Vector3.UP * 0.22, "pierre_sombre", true, rot)
 	for p2 in [Vector3(-11.5, 0, 15.0), Vector3(-11.0, 0, 17.0), Vector3(11.0, 0, 15.5)]:
-		Decor.barrel(self, p2, 0.42, 1.05, _rng.randf() * TAU)
-	Decor.crate(self, Vector3(1.0, 0.9, 1.0), Vector3(12.0, 0.45, 17.0), 0.3)
-	Decor.crate(self, Vector3(0.8, 0.7, 0.8), Vector3(12.2, 1.25, 17.1), 0.8)
+		Cassable.spawn(self, "tonneau", p2, _rng.randf() * TAU, Vector3(0.42 / 0.34, 1.05 / 0.9, 0.42 / 0.34))
+	# V66 : on peut les casser (et la petite caisse posée sur la grande tombe quand celle-ci cède)
+	Cassable.spawn(self, "caisse", Vector3(12.0, 0.0, 17.0), 0.3, Vector3(1.0, 0.9, 1.0))
+	Cassable.spawn(self, "caisse", Vector3(12.2, 0.9, 17.1), 0.8, Vector3(0.8, 0.7, 0.8))
 	# Bannières sur les remparts (côté cour) et torches
 	var inner_f: float = inner - 0.02
 	for x in [-14.0, -6.0, 6.0, 14.0]:

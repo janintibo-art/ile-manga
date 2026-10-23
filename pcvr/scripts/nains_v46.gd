@@ -14,6 +14,7 @@ const PnjScript = preload("res://scripts/pnj/pnj_v31.gd")
 const ForgeferScript = preload("res://scripts/forgefer_v47.gd")
 const FauneScript = preload("res://scripts/faune_nains_v47.gd")
 const Decor = preload("res://scripts/decor_v53.gd")
+const Cassable = preload("res://scripts/cassable_v66.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const ASH_R: float = 185.0
 
@@ -522,15 +523,30 @@ func _build_forgefer() -> void:
 	# Tonneaux et caisses
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 4660
+	# V66 : ils sont solides (on peut les casser) : aucun sur le chemin du ponton à la grande porte
+	var g_loc: Vector3 = root.to_local(gate_front)
+	var d_loc: Vector3 = root.to_local(ile.dock_start)
+	var e_loc: Vector3 = root.to_local(Vector3(T.x, T.y, T.z) + to_sea * (ile.TERRACE_SIZE - 1.0))
 	for k in range(10):
 		var p := Vector3(rng.randf_range(-14, 14), 0, rng.randf_range(4, 13))
 		if absf(p.x) < 4.0 or p.distance_to(Vector3(7.0, 0, 9.5)) < 3.5 or p.distance_to(Vector3(12.5, 0, 2.5)) < 4.5:
 			continue
-		# V53 : tonneaux galbés cerclés de fer, caisses à cadre renforcé
+		var p2 := Vector2(p.x, p.z)
+		var on_path: bool = false
+		for seg in [[d_loc, g_loc], [e_loc, g_loc], [d_loc, e_loc]]:
+			var sa := Vector2(seg[0].x, seg[0].z)
+			var sb := Vector2(seg[1].x, seg[1].z)
+			var l2: float = sa.distance_squared_to(sb)
+			var tt: float = clampf((p2 - sa).dot(sb - sa) / l2, 0.0, 1.0) if l2 > 0.001 else 0.0
+			on_path = on_path or p2.distance_to(sa + (sb - sa) * tt) < 2.0
+		if on_path:
+			rng.randf()                  # (le hasard des suivants reste le même)
+			continue
+		# V53 : tonneaux galbés cerclés de fer, caisses à cadre renforcé (V66 : on peut les casser)
 		if k % 2 == 0:
-			Decor.barrel(root, p, 0.45, 1.1, rng.randf() * TAU)
+			Cassable.spawn(root, "tonneau", p, rng.randf() * TAU, Vector3(0.45 / 0.34, 1.1 / 0.9, 0.45 / 0.34), "nains")
 		else:
-			Decor.crate(root, Vector3(0.9, 0.9, 0.9), p, rng.randf() * 1.5)
+			Cassable.spawn(root, "caisse", p, rng.randf() * 1.5, 0.9, "nains")
 	# Un sentier de dalles et des lanternes de fer du ponton à la terrasse
 	var a := Vector3(ile.dock_start.x, 0, ile.dock_start.z)
 	var b: Vector3 = Vector3(T.x, 0, T.z) + to_sea * (ile.TERRACE_SIZE - 1.0)

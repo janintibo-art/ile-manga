@@ -8,6 +8,7 @@ extends RefCounted
 ## regardent -Z dans le repère du bâtiment.
 
 const A := "res://assets/textures/azur/"
+const Cassable = preload("res://scripts/cassable_v66.gd")
 
 const ENDUITS := {
 	"ocre": Color(0.94, 0.76, 0.52), "rose": Color(0.93, 0.68, 0.62), "jaune": Color(0.97, 0.86, 0.58),
@@ -622,7 +623,12 @@ func bollard(pos: Vector3) -> void:
 	col_cyl(pos, 0.2, 0.5)
 
 
-func crate(pos: Vector3, yaw: float, s: float = 0.7) -> void:
+## V66 : caisses et tonneaux se cassent (cassable_v66.gd) ; fixe = true pour ceux qui servent
+## de table, de siège ou d'appui (ils restent dans la géométrie regroupée de la ville).
+func crate(pos: Vector3, yaw: float, s: float = 0.7, fixe: bool = false) -> void:
+	if not fixe and root != null:
+		Cassable.spawn(root, "caisse", pos, yaw, s)
+		return
 	var xf := Transform3D(Basis(Vector3.UP, yaw), pos + Vector3.UP * s * 0.5)
 	box(xf, Vector3(s, s, s), "bois", 0.7)
 	for k in [-1.0, 1.0]:
@@ -630,7 +636,11 @@ func crate(pos: Vector3, yaw: float, s: float = 0.7) -> void:
 	col_box(xf, Vector3(s, s, s))
 
 
-func barrel(pos: Vector3) -> void:
+func barrel(pos: Vector3, fixe: bool = false) -> void:
+	if not fixe and root != null:
+		# (angle tiré de la position : le hasard de la ville reste le même qu'avant)
+		Cassable.spawn(root, "tonneau", pos, fposmod(pos.x * 12.9898 + pos.z * 78.233, TAU), 1.0)
+		return
 	var xf := Transform3D(Basis(), pos)
 	cyl(xf, 0.3, 0.34, 0.45, "bois", 12)
 	cyl(xf * Transform3D(Basis(), Vector3(0, 0.45, 0)), 0.34, 0.3, 0.45, "bois", 12)

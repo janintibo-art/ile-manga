@@ -704,9 +704,11 @@ func commit_reply(r: Dictionary, npc: Node) -> void:
 		if str(npid) != "":
 			preload("res://scripts/pnj/societe_v65.gd").noter("quete", str(npid), _now(), {"titre": str(q.get("titre", ""))})
 	apply_bonuses()
-	main._show_message_v28("Quête accomplie : %s%s" % [str(q["titre"]), ("  (" + ", ".join(msgs) + ")") if not msgs.is_empty() else ""])
-	# V63 : de l'expérience pour chaque quête accomplie
+	# V63 : de l'expérience pour chaque quête accomplie (V66 : le message le dit)
 	var pr: Node = main.get("progression_v63")
+	if pr != null:
+		msgs.push_front("+%d XP" % int(pr.quest_xp(qid, (q.get("etapes", []) as Array).size())))
+	main._show_message_v28("Quête accomplie : %s%s" % [str(q["titre"]), ("  (" + ", ".join(msgs) + ")") if not msgs.is_empty() else ""])
 	if pr != null:
 		pr.on_quest(qid, (q.get("etapes", []) as Array).size())
 	if main.has_method("jingle"):

@@ -879,7 +879,7 @@ func _props() -> void:
 		kit.barrel(T(b[0], b[1]))
 	# filet de pêche drapé sur les caisses de Gaston
 	kit.quad(TF(46.0, 3.9, 0.0, 0.6) * Transform3D(Basis(Vector3.RIGHT, 1.2), Vector3.ZERO), 2.6, 1.6, "filet", Vector2.ZERO, Vector2(2.0, 1.2), true)
-	kit.crate(T(46.0, 3.4), ile.TOWN_YAW, 0.55)
+	kit.crate(T(46.0, 3.4), ile.TOWN_YAW, 0.55, true)
 	_spot("quai_gaston", 46.0, 3.0, 46.0, -6.0, "assis", 0.55)
 	_spot("quai_lucas_a", -44.0, 5.6, -46.0, 4.0, "debout")
 	_spot("quai_lucas_b", 49.6, 5.4, 51.0, 3.8, "debout")
