@@ -10,8 +10,9 @@ const ARCH_TEX := "res://assets/textures/carte/archipel.png"
 const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## Rectangle du monde couvert par la carte de l'archipel (x0, z0, x1, z1)
 ## (V59 : la carte s'étend à l'est jusqu'à la grande île)
-## (V68 : au nord jusqu'à la Balafre ; V69 : à l'ouest jusqu'à l'Île des Trois Soleils)
-const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 1440.0)
+## (V68 : au nord jusqu'à la Balafre ; V69 : à l'ouest jusqu'à l'Île des Trois Soleils ;
+## V70 : au sud jusqu'à l'Île de Braise)
+const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 1960.0)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -57,6 +58,14 @@ const PLACES := [
 	["Aztlán", Vector2(-1085, -2), "soleils_azteque"],
 	["Mont Fumant", Vector2(-1198, -212), "soleils"],
 	["Autel des Trois Soleils", Vector2(-918, -222), "soleils"],
+	# V70 : l'Île de Braise
+	["Pandémonia", Vector2(-810, 540), "pandemonia"],
+	["Port de Cendre", Vector2(-619, 349), "pandemonia"],
+	["Grand Brasier", Vector2(-1040, 770), "braise"],
+	["Ruines de l'Ancien Pandémonium", Vector2(-1106, 410), "braise"],
+	["Bois de Cendre", Vector2(-694, 796), "braise"],
+	["Champ de lave", Vector2(-932, 814), "braise"],
+	["Sources de soufre", Vector2(-891, 765), "braise"],
 ]
 
 var main: Node
@@ -239,6 +248,28 @@ func _quest_targets(id: String) -> Array:
 					"sceau_embruns":
 						if sc.proue_at != Vector3.INF:
 							out.append(sc.proue_at)
+			# V70 : l'Île de Braise (la porte des Neuf Cercles, le Cœur-Brasier, Pépin, l'arène, les lanternes, les repaires)
+			var br: Node = main.get("braise_v70")
+			if br != null and br.get("city") != null and br.city != null:
+				match str(e.get("cle", "")):
+					"cercles", "porte_cercles", "titan_givre", "coeur_vif":
+						out.append(br.city.lieux.porte_cercles)
+					"pepin_trouve":
+						if br.dehors != null:
+							out.append(br.dehors.pepin_hide)
+					"tournoi":
+						out.append(br.city.basse.arena["c"])
+					"sept_lanternes":
+						for k in br.city.lanterns:
+							if not bool((br.state.get("lanternes", {}) as Dictionary).get(k, false)):
+								out.append(br.city.lanterns[k]["pos"])
+					"fete_lanternes":
+						if br.fete != null:
+							out.append(br.fete.ctr)
+					"chiens_champ":
+						out.append(br.lairs[0]["c"] if not br.lairs.is_empty() else br.ile.W(-60.0, 214.0))
+					"gargouilles_ruines":
+						out.append(br.lairs[1]["c"] if br.lairs.size() > 1 else br.ile.W(-236.0, -190.0))
 			# V69 : l'Île des Trois Soleils (le Sphinx, Miou, les trois temples, les jaguars, l'autel)
 			var so: Node = main.get("soleils_v69")
 			if so != null and so.get("egypte") != null and so.egypte != null:

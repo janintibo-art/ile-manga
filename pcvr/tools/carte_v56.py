@@ -93,9 +93,10 @@ def archipel(src: Path) -> None:
     # V59 : 900 x 540 échantillons (jusqu'à la grande île de l'est), ou 540 x 540 (avant)
     # V68 : 900 x 720 (jusqu'à l'Île de la Balafre, au nord) : la carte commence à z = -960
     # V69 : 1290 x 720 (à l'ouest, jusqu'à l'Île des Trois Soleils) : la carte commence à x = -1320
-    rows = 720 if raw.size in (900 * 720, 1290 * 720) else 540
-    cols = 1290 if raw.size == 1290 * 720 else (900 if raw.size in (900 * 540, 900 * 720) else 540)
-    OZ = 960 if rows == 720 else 600
+    # V70 : 1290 x 980 (au sud, jusqu'à l'Île de Braise) : la carte va jusqu'à z = 1000
+    rows = 980 if raw.size == 1290 * 980 else (720 if raw.size in (900 * 720, 1290 * 720) else 540)
+    cols = 1290 if raw.size in (1290 * 720, 1290 * 980) else (900 if raw.size in (900 * 540, 900 * 720) else 540)
+    OZ = 960 if rows in (720, 980) else 600
     OX = 1320 if cols == 1290 else 540
     h = raw.reshape(rows, cols)
     W, H = cols * 2, rows * 2
@@ -123,6 +124,13 @@ def archipel(src: Path) -> None:
     hl = np.clip(h, 0, 140)
     lands = ramp(hl, [(0, (232, 214, 160)), (0.9, (230, 212, 160)), (1.1, (222, 210, 186)), (1.6, (214, 206, 176)), (4, (160, 182, 110)), (14, (118, 152, 86)), (30, (104, 128, 76)),
                       (55, (140, 120, 90)), (85, (128, 108, 96)), (115, (176, 170, 168)), (140, (242, 240, 236))])
+    # V70 : l'Île de Braise, terre volcanique : sable noir, cendres, mousses rousses, basalte
+    if rows == 980:
+        yy, xx = np.mgrid[0:H, 0:W]
+        brz = np.hypot(xx - (-870.0 + OX), yy - (600.0 + OZ)) < 410.0
+        lb = ramp(hl, [(0, (96, 90, 86)), (1.2, (92, 86, 82)), (3, (120, 98, 78)), (12, (128, 96, 72)), (30, (112, 84, 66)),
+                       (60, (92, 74, 64)), (100, (76, 64, 60)), (140, (70, 58, 54))])
+        lands[brz] = lb[brz]
     lands *= (0.9 + 0.14 * noise(W, H, (4, 8, 16), 0.6)[..., None])
     hs = hillshade(h, 1.0, z=1.6)
     lands *= (0.55 + 0.6 * hs[..., None])
@@ -431,6 +439,53 @@ def archipel(src: Path) -> None:
             a2 = math.radians(90 + k * 120)
             cx3, cz3 = ax_ + math.cos(a2) * 5.2, az_ + math.sin(a2) * 5.2
             d.ellipse((cx3 - 2, cz3 - 2, cx3 + 2, cz3 + 2), fill=col)
+
+    # V70 : l'Île de Braise : les coulées de lave, le champ de lave, le cratère ; Pandémonia (son
+    # rempart, la Haute-Ville, le Cercle de Feu, la Citadelle, les maisons) ; l'arène ; le port ;
+    # les sources de soufre ; les Ruines
+    bj = src / "braise.json"
+    if OX > 540 and rows == 980 and bj.exists():
+        Bd = json.loads(bj.read_text())
+
+        def bw(x, z):
+            return (x + OX, z + OZ)
+
+        lava = (226, 90, 30, 255)
+        for line, hw in Bd.get("coulees", []):
+            if len(line) > 1:
+                d.line([bw(q[0], q[1]) for q in line], fill=lava, width=max(3, int(hw * 2)))
+        fx, fz, fr = Bd["champ"]
+        cx, cz = bw(fx, fz)
+        d.ellipse((cx - fr * 0.55, cz - fr * 0.4, cx + fr * 0.55, cz + fr * 0.4), fill=(150, 60, 34, 255), outline=(90, 40, 24, 255))
+        vx, vz = bw(*Bd["volcan"])
+        d.ellipse((vx - 26, vz - 26, vx + 26, vz + 26), fill=(80, 54, 46, 255), outline=(50, 34, 28, 255), width=2)
+        d.ellipse((vx - 14, vz - 14, vx + 14, vz + 14), fill=lava)
+        for line in Bd.get("chemins", []):
+            if len(line) > 1:
+                d.line([bw(q[0], q[1]) for q in line], fill=(150, 120, 96, 255), width=2)
+        mx, mz = bw(*Bd["cite"])
+        R = float(Bd["mur_r"])
+        d.ellipse((mx - R, mz - R, mx + R, mz + R), fill=(120, 96, 92, 255), outline=(50, 36, 34, 255), width=4)
+        R2 = float(Bd["haute_r"])
+        d.ellipse((mx - R2, mz - R2, mx + R2, mz + R2), fill=(138, 112, 104, 255), outline=(70, 50, 46, 255), width=2)
+        for q in Bd.get("maisons", []):
+            x, z = bw(q[0], q[1])
+            d.rectangle((x - 2, z - 2, x + 2, z + 2), fill=(160, 64, 52, 255), outline=(70, 34, 28, 255))
+        l0, l1 = Bd["lave_r"]
+        d.ellipse((mx - l1, mz - l1, mx + l1, mz + l1), fill=lava)
+        d.ellipse((mx - l0, mz - l0, mx + l0, mz + l0), fill=(96, 80, 82, 255), outline=(50, 36, 34, 255), width=2)
+        d.ellipse((mx - 18, mz - 18, mx + 18, mz + 18), fill=(60, 48, 52, 255), outline=(220, 170, 60, 255), width=3)
+        ax, az = bw(*Bd["arene"])
+        d.ellipse((ax - 22, az - 22, ax + 22, az + 22), fill=(214, 190, 140, 255), outline=(70, 50, 40, 255), width=3)
+        px, pz = bw(*Bd["port"])
+        d.ellipse((px - 6, pz - 6, px + 6, pz + 6), fill=(220, 60, 30, 255), outline=(60, 30, 20, 255))
+        for sp in Bd.get("sources", []):
+            sx, sz = bw(sp[0], sp[1])
+            d.ellipse((sx - 5, sz - 5, sx + 5, sz + 5), fill=(220, 200, 80, 255), outline=(110, 90, 30, 255))
+        rx, rz = bw(*Bd["ruines"])
+        for k in range(5):
+            a3 = math.radians(k * 72)
+            d.rectangle((rx + math.cos(a3) * 14 - 3, rz + math.sin(a3) * 14 - 3, rx + math.cos(a3) * 14 + 3, rz + math.sin(a3) * 14 + 3), fill=(120, 110, 104, 255), outline=(60, 50, 44, 255))
 
     # quadrillage léger
     for g in range(0, W, 120):

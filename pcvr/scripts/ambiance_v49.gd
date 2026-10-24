@@ -27,6 +27,9 @@ const BEDS := {
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
+	"pandemonia_jour": "ambiance/pandemonia_jour", "pandemonia_nuit": "ambiance/pandemonia_nuit", "champ_lave": "ambiance/champ_lave",
+	"port_braise": "ambiance/port_braise", "neuf_cercles": "ambiance/neuf_cercles", "cocyte": "ambiance/cocyte", "arene": "ambiance/arene",
+	"thermes_soufre": "ambiance/thermes_soufre",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -38,6 +41,8 @@ const BED_DB := {
 	"ramure": -12.0,
 	"port_pirate": -13.0, "taverne_pirate": -11.0, "marais": -12.0,
 	"nil": -12.0, "jungle_maya": -13.0, "lac_aztlan": -12.0, "donjon_pyramide": -12.0, "donjon_xibalba": -12.0, "donjon_soleils": -12.0,
+	"pandemonia_jour": -12.0, "pandemonia_nuit": -12.0, "champ_lave": -11.0, "port_braise": -11.0, "neuf_cercles": -11.0, "cocyte": -10.0,
+	"arene": -11.0, "thermes_soufre": -12.0,
 }
 
 var main: Node
@@ -256,8 +261,19 @@ func _choose_zone(running: bool) -> void:
 		var co: Node = main.get("coeur_v63")
 		var so: Node = main.get("soleils_v69")
 		var sz: String = so.zone_at(p) if so != null and so.get("ile") != null and so.ile != null else ""
+		var br: Node = main.get("braise_v70")
+		var bd: Node = br.dungeon if br != null and br.get("dungeon") != null else null
+		# V70 : dans les Neuf Cercles (le Cocyte : le vent glacé)
+		if bd != null and bd.contains(p):
+			zone = "braise_cercles"
+			if str(bd.room) == "cocyte":
+				targets["cocyte"] = 1.0
+			else:
+				targets["neuf_cercles"] = 1.0
+				targets["volcan"] = 0.3 if str(bd.room) in ["phlegethon", "malebolge", "tourmente"] else 0.0
+			targets["grotte"] = 0.2
 		# V69 : dans un des trois grands donjons de l'Île des Trois Soleils
-		if sz.begins_with("soleils_d_"):
+		elif sz.begins_with("soleils_d_"):
 			zone = sz
 			targets[{"soleils_d_egypte": "donjon_pyramide", "soleils_d_maya": "donjon_xibalba", "soleils_d_azteque": "donjon_soleils"}.get(sz, "grotte")] = 1.0
 			targets["grotte"] = 0.25
@@ -338,6 +354,14 @@ func _choose_zone(running: bool) -> void:
 	if az_zone != "" and not on_boat:
 		zone = az_zone
 		_azur_beds(az_zone, p)
+		_night_beds()
+		return
+	# V70 : l'Île de Braise (Pandémonia, son port, l'arène, les thermes ; le volcan, la lave)
+	var brs: Node = main.get("braise_v70")
+	var br_zone: String = brs.zone_at(p) if brs != null and brs.get("city") != null and brs.city != null and not on_ferry else ""
+	if br_zone != "" and not on_boat:
+		zone = br_zone
+		_braise_beds(br_zone, p)
 		_night_beds()
 		return
 	# V69 : l'Île des Trois Soleils (le fleuve des Égyptiens, la jungle des Mayas, le lac des Aztèques)
@@ -436,6 +460,56 @@ func _arcanelle_beds(z: String, p: Vector3) -> void:
 			targets["brise"] = 0.5
 			targets["ressac"] = 0.3 * sea
 			targets["vent_vol"] = clampf((p.y - 14.0) / 20.0, 0.0, 0.35)
+
+
+## V70 : les nappes de l'Île de Braise.
+func _braise_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	match z:
+		"braise_taverne":
+			targets["taverne"] = 1.0
+		"braise_arene":
+			targets["arene"] = 1.0
+		"braise_thermes":
+			targets["thermes_soufre"] = 1.0
+			targets["pandemonia_jour" if day else "pandemonia_nuit"] = 0.25
+		"braise_port":
+			targets["port_braise"] = 1.0
+			targets["ressac"] = 0.3 + 0.4 * sea
+		"braise_fete":
+			targets["pandemonia_nuit"] = 1.0
+			targets["arene"] = 0.35
+		"braise_trone", "braise_cathedrale", "braise_bibliotheque", "braise_academie":
+			targets["grotte"] = 0.35
+			targets["pandemonia_jour" if day else "pandemonia_nuit"] = 0.35
+		"braise_palais", "braise_haute", "braise_basse", "braise_place", "braise_cercle":
+			targets["pandemonia_jour" if day else "pandemonia_nuit"] = 1.0
+			targets["champ_lave"] = 0.25 if z == "braise_cercle" else 0.0
+		"braise_champ", "braise_cratere":
+			targets["champ_lave"] = 1.0
+			targets["vent_vol"] = clampf((p.y - 40.0) / 80.0, 0.0, 0.4)
+		"braise_volcan":
+			targets["volcan"] = 0.8
+			targets["champ_lave"] = 0.3
+			targets["vent_vol"] = clampf((p.y - 30.0) / 60.0, 0.0, 0.4)
+		"braise_sources":
+			targets["thermes_soufre"] = 0.7
+			targets["volcan"] = 0.3
+		"braise_bois":
+			targets["grillons"] = 0.2 if day else 0.6
+			targets["volcan"] = 0.25
+			targets["brise"] = 0.3
+		"braise_ruines":
+			targets["brise"] = 0.8
+			targets["vent_vol"] = 0.2
+			targets["ressac"] = 0.3 * sea
+		"braise_rivage":
+			targets["ressac"] = 0.5 + 0.5 * sea
+			targets["brise"] = 0.4
+		_:
+			targets["lande"] = 0.6
+			targets["volcan"] = 0.3
+			targets["ressac"] = 0.3 * sea
 
 
 ## V69 : les nappes de l'Île des Trois Soleils.

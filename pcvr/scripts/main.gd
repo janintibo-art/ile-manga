@@ -133,6 +133,7 @@ func _ready() -> void:
 	_create_v67()
 	_create_v68()
 	_create_v69()
+	_create_v70()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -176,6 +177,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V69 : l'Île des Trois Soleils (loin à l'ouest : son carré ne touche aucune autre île)
 	if soleils_v69 != null and soleils_v69.ile != null and soleils_v69.ile.contains(x, z):
 		return maxf(h, soleils_v69.ile.height(x, z))
+	# V70 : l'Île de Braise (au sud-ouest, sous l'île des fées ; son carré ne touche aucune autre île)
+	if braise_v70 != null and braise_v70.ile != null and braise_v70.ile.contains(x, z):
+		return maxf(h, braise_v70.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -996,6 +1000,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			pirates_v68.load_data({})
 		if soleils_v69 != null and soleils_v69.egypte != null:
 			soleils_v69.load_data({})
+		if braise_v70 != null and braise_v70.city != null:
+			braise_v70.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1019,6 +1025,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			# V69 : partie sauvée dans un des trois grands donjons de l'Île des Trois Soleils
 			if soleils_v69 != null and soleils_v69.egypte != null:
 				soleils_v69.ensure_dungeon_at(origin.position)
+			# V70 : partie sauvée dans les Neuf Cercles (sous la Cathédrale-Forge de Pandémonia)
+			if braise_v70 != null and braise_v70.city != null:
+				braise_v70.ensure_dungeon_at(origin.position)
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
@@ -1111,6 +1120,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and soleils_v69 != null and soleils_v69.egypte != null:
 		var sdata69: Variant = SaveStore.read_slot(slot).get("soleils", {})
 		soleils_v69.load_data(sdata69 if sdata69 is Dictionary else {})
+	# V70 : l'Île de Braise (le Cœur-Brasier, les Neuf Cercles, le tournoi, les lanternes, la fête)
+	if not new_game and braise_v70 != null and braise_v70.city != null:
+		var bdata70: Variant = SaveStore.read_slot(slot).get("braise", {})
+		braise_v70.load_data(bdata70 if bdata70 is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1213,6 +1226,8 @@ func _save_slot(slot: int) -> void:
 		extra["balafre"] = pirates_v68.serialize()
 	if soleils_v69 != null and soleils_v69.egypte != null:
 		extra["soleils"] = soleils_v69.serialize()
+	if braise_v70 != null and braise_v70.city != null:
+		extra["braise"] = braise_v70.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -2044,6 +2059,10 @@ func _respawn_v28() -> void:
 	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.owns_point(_player_pos_v27()):
 		soleils_v69.on_faint(_player_pos_v27())
 		return
+	# V70 : sur l'Île de Braise (les Neuf Cercles : au dernier point de reprise ; l'arène ; dehors : la Grand-Place)
+	if braise_v70 != null and braise_v70.city != null and braise_v70.owns_point(_player_pos_v27()):
+		braise_v70.on_faint(_player_pos_v27())
+		return
 	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
 	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
 		monstres_v36.respawn_player()
@@ -2302,6 +2321,16 @@ func _create_jungle_v29() -> void:
 	soleils_v69.build_island()
 	var sol_d: Array = soleils_v69.dock()
 	boat_v29._make_dock("Ponton_soleils", sol_d[0], sol_d[1])
+	# V70 : l'Île de Braise, l'île volcanique du sud-ouest, et Pandémonia, la cité des démons
+	# gentils (le relief d'abord ; la cité, la végétation, la lave, les habitants, le donjon,
+	# l'arène et la fête après l'heure du jour, voir _create_v70).
+	braise_v70 = preload("res://scripts/braise_v70.gd").new()
+	braise_v70.name = "Braise_v70"
+	add_child(braise_v70)
+	braise_v70.setup(self)
+	braise_v70.build_island()
+	var br_d: Array = braise_v70.dock()
+	boat_v29._make_dock("Ponton_braise", br_d[0], br_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2338,6 +2367,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V70 : l'Île de Braise : la terre ferme, les ponts, les quais (la lave : on y entre, elle brûle)
+	if braise_v70 != null and braise_v70.contains(p):
+		if braise_v70.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -2855,7 +2892,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2975,6 +3012,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V69 : les Trois Soleils (le Sphinx, les offrandes, les services des villages)
 	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.has_method("after_reply"):
 		soleils_v69.after_reply(r, npc)
+	# V70 : Pandémonia (le tournoi, la fête)
+	if braise_v70 != null and braise_v70.city != null:
+		braise_v70.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -3063,6 +3103,7 @@ var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorcier
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
+var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia (la cité des démons), les Neuf Cercles
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -3115,6 +3156,9 @@ func _spawn_azur_v56() -> void:
 	# V69 : les gens de Per-Hâpy, de Yaxché et d'Aztlán
 	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.has_method("spawn_npcs"):
 		soleils_v69.spawn_npcs()
+	# V70 : les démons de Pandémonia
+	if braise_v70 != null and braise_v70.city != null:
+		braise_v70.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3216,6 +3260,16 @@ func _create_v69() -> void:
 	soleils_v69.build_town()
 	if journal_v56 != null and soleils_v69.has_method("register_services"):
 		soleils_v69.register_services(journal_v56)
+
+
+## V70 : l'Île de Braise (Pandémonia, ses grands lieux, son port, le dehors, la végétation, la
+## lave, le donjon des Neuf Cercles, l'arène, la fête) ; le ponton est posé avec le relief.
+func _create_v70() -> void:
+	if braise_v70 == null:
+		return
+	braise_v70.build_town()
+	if journal_v56 != null:
+		braise_v70.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3394,6 +3448,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(pirates_v68.ile.CENTER.x, pirates_v68.ile.CENTER.z), pirates_v68.ile.HALF])
 	if soleils_v69 != null and soleils_v69.ile != null:
 		boxes.append([Vector2(soleils_v69.ile.CENTER.x, soleils_v69.ile.CENTER.z), soleils_v69.ile.HALF])
+	if braise_v70 != null and braise_v70.ile != null:
+		boxes.append([Vector2(braise_v70.ile.CENTER.x, braise_v70.ile.CENTER.z), braise_v70.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

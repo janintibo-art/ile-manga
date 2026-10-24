@@ -47,6 +47,15 @@ const DB := {
 	"ammit_cri": 0.0, "apophis_cri": 0.0, "camazotz_cri": 0.0, "cipactli_cri": 0.0, "chat": -8.0, "balle": -4.0, "conque": -2.0,
 	"sistre": -5.0, "battement": -3.0, "pluie_feu": -3.0, "sable_effondre": -3.0, "verser": -6.0, "statue_parle": -2.0,
 	"tambour_azteque": -4.0, "flute_maya": -5.0,
+	# V70 : l'Île de Braise, Pandémonia, l'Arène, la Fête des Lanternes et les Neuf Cercles
+	"lave_bulles": -6.0, "lave_gerbe": -3.0, "feu_souffle": -4.0, "demon_rire": -5.0, "diablotin_cri": -5.0, "diablotin_mort": -5.0,
+	"chien_enfer_aboi": -3.0, "chien_enfer_grogne": -4.0, "chien_enfer_mort": -4.0, "gargouille_cri": -3.0, "gargouille_mort": -3.0,
+	"ailes_pierre": -5.0, "ombre_murmure": -6.0, "furie_cri": -4.0, "cerbere_aboi": 0.0, "cerbere_ronfle": -2.0, "charon_rame": -6.0,
+	"obole": -6.0, "glace_craque": -4.0, "souffle_givre": -3.0, "titan_rugit": 0.0, "titan_pas": -2.0, "chaines": -5.0,
+	"grande_porte": -2.0, "cloche_cathedrale": -3.0, "arene_foule": -4.0, "arene_gong": -2.0, "artifice_depart": -5.0,
+	"artifice_eclat": -3.0, "lanterne_allume": -6.0, "forge_marteau": -5.0, "geryon_ailes": -3.0, "contrat_signe": -5.0,
+	"bain_soufre": -6.0, "automate_pas": -5.0, "gorgoth_cri": -1.0, "spectre_givre_cri": -4.0,
+	"cocyte_vent_coup": -4.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

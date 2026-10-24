@@ -1841,6 +1841,15 @@ func update_inside(force: bool = false) -> void:
 		env.volumetric_fog_density = 0.025
 		env.volumetric_fog_albedo = Color(0.6, 0.55, 0.5)
 		env.tonemap_exposure = 1.25
+		# V70 : les Neuf Cercles sont taillés dans la pierre noire des volcans : une lueur de braise
+		# partout (sinon on n'y voit rien), un brouillard plus léger
+		var brz: Node = main.get("braise_v70")
+		if brz != null and brz.get("dungeon") != null and brz.dungeon != null and brz.dungeon.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.62, 0.46, 0.38)
+			env.ambient_light_energy = 1.5
+			env.fog_light_color = Color(0.06, 0.035, 0.03)
+			env.fog_density = 0.012
+			env.tonemap_exposure = 1.45
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

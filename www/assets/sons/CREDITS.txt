@@ -82,3 +82,43 @@ Percussion », même auteur, CC0 : grand tambour à main, tambours à fente, mar
   musique/yaxche.ogg (« Yaxché », la cité maya dans la jungle),
   musique/aztlan.ogg (« Aztlán », la cité aztèque sur le lac de la Lune),
   musique/trois_soleils_donjon.ogg (« Les Trois Soleils », les trois grands souterrains).
+
+L'Île de Braise, Pandémonia et Les Neuf Cercles (V70) — tous CC0 1.0 / domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v70.py : synthétisés (voix de démons, de
+diablotins et de Gorgoth, aboiements et ronflements, chuchotements, bulles et gerbes de lave, flammes,
+glace qui se fend (cascade de filtres passe-tout), vent glacé, gonds de fer, cloche de bronze, fusées
+et paillettes, plume sur parchemin, servomoteurs, foule, charrette, braseros, goéland de braise…) et
+mêlés à des enregistrements retravaillés (découpés, transposés, ralentis, filtrés, réverbérés) :
+  du recueil github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, RPG Audio, Voiceover Pack ;
+  « 80 CC0 RPG SFX », « 80 CC0 creature SFX » (1 et 2), beast_or_animal, « 100 CC0 wood/metal SFX »,
+  « 100 CC0 SFX » 2, « 75 CC0 breaking/falling/hit SFX », « 40 CC0 water splash/slime SFX »,
+  « 30 CC0 SFX loops », « BB Retail Therapy Sample Pack », « bb - Bottle Plops » et « bb - Books,
+  Paper, Writing » (Ben Burnes, CC0), les rires et les cris de « Free Retro Arcade Sounds » (The Motion
+  Monkey, CC0), la lave de Warfork (Team Forbidden, CC0) ;
+  de la banque VSCO-2 CE (Versilian Studios, CC0) : grosse caisse étouffée, gong, violon solo, cor ;
+  de la « Versilian Community Sample Library » (VCSL, Versilian Studios, github.com/sgossner/VCSL,
+  CC0 1.0) : enclumes, gong, cloches tubulaires, carillons à main, verres frottés, claquements de mains.
+  sfx/lave_bulles_1..3, lave_gerbe_1..2, feu_souffle_1..2, demon_rire_1..3, diablotin_cri_1..3,
+      diablotin_mort_1..2, chien_enfer_aboi_1..3, chien_enfer_grogne_1..2, chien_enfer_mort_1..2,
+      gargouille_cri_1..2, gargouille_mort_3, ailes_pierre_1..2, ombre_murmure_1..3, furie_cri_1..2,
+      cerbere_aboi_1..2, cerbere_ronfle_1..2, charon_rame_1..3, obole_1..2, glace_craque_1..3,
+      souffle_givre_1..2, titan_rugit_1..2, titan_pas_1..3, chaines_1..3, grande_porte_1..2,
+      cloche_cathedrale_1..2, arene_foule_1..3, arene_gong_1..2, artifice_depart_1..3,
+      artifice_eclat_1..3, lanterne_allume_1..2, forge_marteau_1..3, geryon_ailes_1..2,
+      contrat_signe_1..2, bain_soufre_1..2, automate_pas_1..3, automate_mort_2..3, gorgoth_cri_1..3,
+      spectre_givre_cri_1..2, cocyte_vent_coup_1..3
+  ambiance/pandemonia_jour, pandemonia_nuit, champ_lave, port_braise, neuf_cercles, cocyte, arene,
+      thermes_soufre
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v70.py, jouées avec
+les outils de la V51 et la banque VSCO-2 CE (plus quelques échantillons de « VSCO 1 Percussion »,
+même auteur, CC0), et des instruments de la VCSL (CC0) : le grand orgue et sa pédale, le petit orgue
+Renaissance, le clavecin, l'harmonica chromatique (joué à trois anches, en « musette »), le
+psaltérion à archet, les verres frottés, les cloches tubulaires, les carillons à main, le tambourin,
+les claquements de mains, le tom, la caisse claire à cordes, la grosse caisse, le tambour sur cadre ;
+le chœur est synthétisé :
+  musique/pandemonia.ogg (« La Valse de Pandémonia », le thème de la cité),
+  musique/braise.ogg (« L'Île de Braise », dehors sur l'île volcanique),
+  musique/neuf_cercles.ogg (« Les Neuf Cercles », le grand donjon),
+  musique/arene.ogg (« Le Tournoi des Cornes », l'Arène),
+  musique/fete_lanternes.ogg (« La Nuit des Lanternes », la fête sur la Grand-Place).

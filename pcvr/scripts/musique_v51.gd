@@ -38,6 +38,11 @@ const ZONE_TRACK := {
 	"soleils_azteque": "aztlan", "soleils_chinampas": "aztlan", "soleils_lac": "aztlan",
 	"soleils_volcan": "jungle", "soleils_rivage": "large", "soleils_autel": "", "soleils_prairie": "",
 	"soleils_d_egypte": "trois_soleils_donjon", "soleils_d_maya": "trois_soleils_donjon", "soleils_d_azteque": "trois_soleils_donjon",
+	"braise_palais": "pandemonia", "braise_trone": "pandemonia", "braise_haute": "pandemonia", "braise_cercle": "pandemonia", "braise_basse": "pandemonia",
+	"braise_place": "pandemonia", "braise_cathedrale": "pandemonia", "braise_bibliotheque": "pandemonia", "braise_academie": "pandemonia",
+	"braise_thermes": "pandemonia", "braise_port": "pandemonia", "braise_taverne": "", "braise_arene": "arene", "braise_fete": "fete_lanternes",
+	"braise_cercles": "neuf_cercles", "braise_cratere": "braise", "braise_volcan": "braise", "braise_sources": "braise", "braise_champ": "braise",
+	"braise_ruines": "braise", "braise_bois": "braise", "braise_rivage": "large", "braise_landes": "braise",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
@@ -46,6 +51,7 @@ const TRACK_DB := {
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
+	"pandemonia": -9.0, "braise": -9.0, "neuf_cercles": -8.0, "arene": -8.0, "fete_lanternes": -7.0,
 }
 const LOOPED := ["theme_ile", "combat", "gigue_crane"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)

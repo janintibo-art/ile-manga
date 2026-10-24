@@ -125,6 +125,26 @@ const LISTE := {
 	"cinq_soleils": ["La Plume de Quetzalcóatl", "soleils", 60],
 	"jaguars_volcan": ["Les jaguars du Mont Fumant", "soleils", 40],
 	"trois_soleils": ["L'Autel des Trois Soleils", "soleils", 120],
+	# --- V70 : l'Île de Braise, Pandémonia la cité des démons gentils, et les Neuf Cercles
+	"braise": ["L'Île de Braise", "braise", 20],
+	"pandemonia": ["Pandémonia, la cité des démons", "braise", 20],
+	"coeur_vif": ["Le Cœur du Volcan rallumé", "braise", 60],
+	"porte_cercles": ["La porte des Neuf Cercles", "braise", 20],
+	"miroirs_limbes": ["Les miroirs des Limbes", "braise", 30],
+	"minos": ["Les questions du juge Minos", "braise", 30],
+	"cerbere": ["Cerbère endormi", "braise", 80],
+	"poids_avares": ["Les poids des Avares", "braise", 30],
+	"porte_dite": ["La porte de Dité", "braise", 40],
+	"cercles": ["La Flamme Éternelle", "braise", 60],
+	"titan_givre": ["Le Titan de Givre", "braise", 200],
+	"chiens_champ": ["Les chiens du Champ de Lave", "braise", 40],
+	"gargouilles_ruines": ["Les gargouilles des ruines", "braise", 40],
+	"pepin_trouve": ["Pépin retrouvé", "braise", 15],
+	"fusees_pretes": ["Les fusées de la fête", "braise", 20],
+	"arene_manche_1": ["Une manche de l'Arène gagnée", "braise", 25],
+	"tournoi": ["Champion de l'Arène", "braise", 120],
+	"sept_lanternes": ["Les sept lanternes allumées", "braise", 30],
+	"fete_lanternes": ["La Fête des Lanternes", "braise", 60],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -144,7 +164,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -156,7 +176,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

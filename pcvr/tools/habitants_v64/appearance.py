@@ -9,7 +9,8 @@ morgane myrtille nadine nain_1 nain_3 nain_6 nerea nimiel nina nolwenn odette on
 prudence rita rosa rosalie rose rosette salome samira selma sofia sylvie sylwen trefle ulfa ursule yasmine yaya zelie
 zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe
 anne_rose scarlett coquille mama_grog coralie gwen
-neferet merit tiyi nebet ixkanul ixsak ixchab citlali xochitl nenetl'''.split())
+neferet merit tiyi nebet ixkanul ixsak ixchab citlali xochitl nenetl
+ignatia ferronde sulfura ortie hurla lumina calcine ombreline zebuline vesperine moloka brindille_braise brasille grisette flammeche'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -75,6 +76,8 @@ def decide(pid, p):
         species = 'elfe'
     elif 'kemo' in p:
         species = 'kemo'
+    elif 'demon' in p:
+        species = 'demon'
     female = pid in FEMALE
     taille = float(az.get('taille', el.get('taille', na.get('taille', 1.0))))
     old = bool(az.get('vieux', False)) or pid in OLD_EXTRA
@@ -127,6 +130,9 @@ def decide(pid, p):
         rc = [0.3 + r.normal(0, 0.05), 0.08, 0.62 + r.normal(0, 0.05)]
     elif p.get('village') in ('maya', 'azteque'):
         rc = [0.12 + r.normal(0, 0.04), 0.58 + r.normal(0, 0.06), 0.3 + r.normal(0, 0.05)]
+    # V70 : les démons de Pandémonia (la peau rouge, violette ou cendrée vient de la teinte)
+    if species == 'demon':
+        rc = [0.25 + r.normal(0, 0.08), 0.1 + r.normal(0, 0.05), 0.65 + r.normal(0, 0.08)]
     rc = [max(0.0, x) for x in rc]
     m['african'], m['asian'], m['caucasian'] = rc
     m['breastsize'] = clamp01(0.4 + r.normal(0, 0.15)) if female else 0.5
@@ -195,6 +201,16 @@ def decide(pid, p):
         if ke.get('espece') == 'ours':
             m['weight'] = max(m['weight'], 0.75)
             m['muscle'] = max(m['muscle'], 0.7)
+    if species == 'demon':
+        # des oreilles pointues, des sourcils qui remontent (l'air malicieux), des pommettes hautes
+        for sd in ('l', 'r'):
+            mods['ears/%s-ear-shape|pointed,triangle' % sd] = -0.9
+            mods['ears/%s-ear-scale-vert|decr,incr' % sd] = 0.5
+            mods['ears/%s-ear-trans|down,up' % sd] = 0.25
+            mods['ears/%s-ear-rot|backward,forward' % sd] = -0.3
+            mods['cheek/%s-cheek-bones|decr,incr' % sd] = 0.35
+            mods['eyes/%s-eye-corner1|down,up' % sd] = 0.3
+        mods['eyebrows/eyebrows-angle|down,up'] = 0.45
     for k in ('muscle', 'weight', 'height', 'proportions'):
         m[k] = clamp01(m[k])
     # ------------------------------------------------------------ teint, visage
@@ -203,6 +219,8 @@ def decide(pid, p):
         skin = [0.74, 0.82, 0.86]
     elif species == 'elfe':
         skin = [min(0.95, teinte[0] * 0.9), min(0.85, teinte[1] * 0.84), min(0.8, teinte[2] * 0.82)]
+    elif species == 'demon':
+        skin = [teinte[0] * 0.9, teinte[1] * 0.86, teinte[2] * 0.86]
     else:
         skin = [teinte[0] * 0.88, teinte[1] * 0.79, teinte[2] * 0.76]
     skin = [x * (1 + r.normal(0, 0.025)) for x in skin]
@@ -233,8 +251,12 @@ def decide(pid, p):
         if r.random() < 0.5 or p.get('village') == 'teuf':
             look['fard_force'] = 0.2 + r.random() * 0.3
             look['fard'] = [[0.45, 0.32, 0.42], [0.35, 0.3, 0.25], [0.32, 0.38, 0.5], [0.5, 0.36, 0.3]][int(r.integers(4))]
+    if species == 'demon':
+        lips = [skin[0] * 0.62, skin[1] * 0.42, skin[2] * 0.5]
     look['levres'] = lips
     look['rose'] = 0.15 + r.random() * 0.3 + (0.15 if female else 0.0)
+    if species == 'demon':
+        look['rose'] = 0.05
     eyes = az.get('yeux', el.get('yeux', None))
     if eyes is None:
         eyes = [[0.3, 0.2, 0.1], [0.25, 0.4, 0.55], [0.3, 0.45, 0.3], [0.2, 0.14, 0.08]][int(r.integers(4))]
@@ -298,6 +320,7 @@ TROUSERS = {
     'egypte': [[0.95, 0.93, 0.86], [0.92, 0.9, 0.82]],
     'maya': [[0.92, 0.9, 0.84], [0.7, 0.2, 0.15], [0.2, 0.3, 0.6]],
     'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
+    'pandemonia': [[0.12, 0.1, 0.1], [0.25, 0.08, 0.08], [0.18, 0.14, 0.2], [0.3, 0.24, 0.2]],
 }
 SHOES = [[0.32, 0.2, 0.12], [0.12, 0.1, 0.09], [0.45, 0.32, 0.2], [0.55, 0.42, 0.3]]
 
@@ -398,6 +421,88 @@ def outfit(D, p):
             add('col', az['foulard'], 'soie')
         if arc.get('cape') and not child:
             add('cape', arc['cape'], 'laine')
+        return T
+    # --------------------------------------------------------- V70 : les démons de Pandémonia
+    dem = p.get('demon')
+    if vil == 'pandemonia' and isinstance(dem, dict):
+        tenue = str(dem.get('tenue', 'artisan'))
+        noir = [0.1, 0.08, 0.09]
+        bordeaux = [0.35, 0.06, 0.08]
+        bottes = [0.12, 0.08, 0.07]
+        if child:
+            add('tshirt' if not female else 'corsage', haut, 'coton')
+            add('short' if not female else 'jupe', darker(haut, 0.5), 'coton')
+            add('chaussures', [0.25, 0.12, 0.08], 'cuir')
+            return T
+        if tenue == 'noble':
+            if female:
+                add('corsage_long', haut, 'soie')
+                add('jupe_longue', darker(haut, 0.7), 'soie')
+                add('ceinture_ample', [0.85, 0.62, 0.25], 'soie')
+            else:
+                add('chemise_longue', [0.9, 0.86, 0.8], 'soie', boutons=1.0)
+                add('veste', haut, 'laine')
+                add('pantalon', noir, 'laine')
+            add('bottes', bottes, 'cuir')
+            if not dem.get('ailes'):
+                add('cape', bordeaux if lum(haut) > 0.2 else [0.45, 0.08, 0.1], 'laine')
+        elif tenue in ('savant', 'pretre'):
+            add('djellaba_haut', haut, 'laine')
+            add('djellaba_bas', haut, 'laine')
+            add('pantalon', noir, 'toile')
+            add('chaussures', bottes, 'cuir')
+            if tenue == 'pretre':
+                add('ceinture_ample', [0.85, 0.55, 0.15], 'laine')
+            elif not dem.get('ailes'):
+                add('cape', darker(haut, 0.6), 'laine')
+        elif tenue == 'garde':
+            add('tunique_haut', haut, 'laine')
+            add('tunique_bas', haut, 'laine')
+            add('collant', noir, 'coton')
+            add('bottes_hautes', bottes, 'cuir')
+            add('ceinture_ample', [0.25, 0.15, 0.08], 'cuir')
+            add('cape', bordeaux, 'laine')
+        elif tenue == 'gladiateur':
+            if female:
+                add('corsage', haut, 'coton')
+                add('pantalon', [0.3, 0.2, 0.12], 'toile')
+            else:
+                add('tunique_haut', haut, 'cuir')
+                add('tunique_bas', [0.3, 0.2, 0.12], 'cuir')
+                add('pantalon', [0.18, 0.12, 0.1], 'toile')
+            add('bottes_hautes', bottes, 'cuir')
+            add('ceinture_ample', [0.6, 0.45, 0.2], 'cuir')
+        elif tenue == 'marin':
+            add('chemise_longue' if not female else 'corsage_long', haut, 'lin', boutons=1.0)
+            add('gilet', [0.15, 0.12, 0.1], 'cuir')
+            add('pantalon', trous, 'toile', poches=1.0)
+            add('bottes', bottes, 'cuir')
+            add('ceinture_ample', [0.55, 0.1, 0.08], 'laine')
+        elif tenue == 'cuisinier':
+            add('chemise_courte', haut, 'coton', boutons=1.0)
+            add('pantalon', [0.2, 0.18, 0.18], 'toile', poches=1.0)
+            add('chaussures', bottes, 'cuir')
+            add('tablier', [0.95, 0.94, 0.9] if lum(haut) < 0.8 else [0.6, 0.15, 0.1], 'coton')
+        elif tenue == 'marchand':
+            if female:
+                add('corsage_long', haut, 'coton')
+                add('jupe_longue', darker(haut, 0.55), 'coton')
+            else:
+                add('chemise_longue', haut, 'coton', boutons=1.0)
+                add('gilet', darker(haut, 0.5), 'laine')
+                add('pantalon', trous, 'toile', poches=1.0)
+            add('chaussures', bottes, 'cuir')
+        else:  # artisan
+            if female:
+                add('corsage', haut, 'coton')
+                add('pantalon', trous, 'toile', poches=1.0)
+            else:
+                add('chemise_courte', haut, 'coton', boutons=1.0)
+                add('pantalon', trous, 'toile', poches=1.0)
+            add('bottes', bottes, 'cuir')
+            add('tablier', [0.3, 0.18, 0.1], 'cuir')
+        if az.get('foulard'):
+            add('col', az['foulard'], 'soie')
         return T
     # --------------------------------------------------------- V69 : les Trois Soleils (Égyptiens, Mayas, Aztèques)
     sol = p.get('sol')

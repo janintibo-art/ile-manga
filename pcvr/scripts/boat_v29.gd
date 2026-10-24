@@ -463,6 +463,10 @@ func _blocked(next: Vector3) -> bool:
 	var s69: Node = main.get("soleils_v69")
 	if s69 != null and s69.egypte != null and s69.blocks_boat(next + fwd * 2.3):
 		return true
+	# V70 : les navires du Port de Cendre
+	var b70: Node = main.get("braise_v70")
+	if b70 != null and b70.city != null and b70.blocks_boat(next + fwd * 2.3):
+		return true
 	return false
 
 

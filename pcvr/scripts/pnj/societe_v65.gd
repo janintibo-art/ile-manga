@@ -10,7 +10,7 @@ extends RefCounted
 ## Tout est partagé par les cerveaux (variables statiques) et sauvegardé avec la partie (« societe »).
 
 const DOSSIER := "res://data/histoires_v65/"
-const GROUPES := ["heros", "azur", "teuf", "carene", "tazira", "cliquetis", "ramure", "elfes", "nains", "atlantes", "fees", "arcanelle", "balafre", "soleils"]
+const GROUPES := ["heros", "azur", "teuf", "carene", "tazira", "cliquetis", "ramure", "elfes", "nains", "atlantes", "fees", "arcanelle", "balafre", "soleils", "braise"]
 const MAX_EVENEMENTS := 80
 
 static var _fiches: Dictionary = {}

@@ -1383,5 +1383,155 @@
 "groupe": "soleils",
 "nom": "Pilli",
 "titre": "le fils de Xóchitl"
+},
+"ignatia": {
+"groupe": "braise",
+"nom": "Ignatia",
+"titre": "Archiduchesse de Pandémonia"
+},
+"asmodin": {
+"groupe": "braise",
+"nom": "Asmodin",
+"titre": "majordome du palais"
+},
+"pyrus": {
+"groupe": "braise",
+"nom": "Pyrus",
+"titre": "capitaine de la Garde"
+},
+"cendrin": {
+"groupe": "braise",
+"nom": "Frère Cendrin",
+"titre": "gardien du Cœur-Brasier"
+},
+"ferronde": {
+"groupe": "braise",
+"nom": "Ferronde",
+"titre": "maîtresse de la Grande Forge"
+},
+"malachar": {
+"groupe": "braise",
+"nom": "Professeur Malachar",
+"titre": "directeur de l'Académie Infernale"
+},
+"sulfura": {
+"groupe": "braise",
+"nom": "Mademoiselle Sulfura",
+"titre": "professeure de flammes"
+},
+"pepin_braise": {
+"groupe": "braise",
+"nom": "Pépin",
+"titre": "élève diablotin, le fils de Zébuline"
+},
+"ortie": {
+"groupe": "braise",
+"nom": "Ortie",
+"titre": "élève diablotine, la fille de Ferronde"
+},
+"ombreline": {
+"groupe": "braise",
+"nom": "Ombreline",
+"titre": "bibliothécaire des Âmes"
+},
+"gorgoth": {
+"groupe": "braise",
+"nom": "Gorgoth le Cornu",
+"titre": "champion de l'Arène des Cornes"
+},
+"hurla": {
+"groupe": "braise",
+"nom": "Madame Hurla",
+"titre": "crieuse publique et maîtresse de l'arène"
+},
+"lumina": {
+"groupe": "braise",
+"nom": "Lumina",
+"titre": "la lanternière"
+},
+"ebene": {
+"groupe": "braise",
+"nom": "Grand-père Ébène",
+"titre": "le conteur"
+},
+"calcine": {
+"groupe": "braise",
+"nom": "Calcine",
+"titre": "violoniste de la Grand-Place"
+},
+"nox": {
+"groupe": "braise",
+"nom": "Nox",
+"titre": "allumeur de réverbères"
+},
+"zebuline": {
+"groupe": "braise",
+"nom": "Zébuline",
+"titre": "marchande d'épices, la mère de Pépin"
+},
+"kraxx": {
+"groupe": "braise",
+"nom": "Kraxx",
+"titre": "armurier du Grand Marché"
+},
+"vesperine": {
+"groupe": "braise",
+"nom": "Vespérine",
+"titre": "apothicaire du Grand Marché"
+},
+"bobor": {
+"groupe": "braise",
+"nom": "Bobor",
+"titre": "boulanger du Four Éternel"
+},
+"charbonnel": {
+"groupe": "braise",
+"nom": "Capitaine Charbonnel",
+"titre": "maître du Port de Cendre"
+},
+"moloka": {
+"groupe": "braise",
+"nom": "Moloka",
+"titre": "poissonnière du port"
+},
+"grumbald": {
+"groupe": "braise",
+"nom": "Grumbald",
+"titre": "tavernier du Diable Repu"
+},
+"brindille_braise": {
+"groupe": "braise",
+"nom": "Brindille",
+"titre": "factrice ailée"
+},
+"brasille": {
+"groupe": "braise",
+"nom": "Mère Brasille",
+"titre": "jardinière des Jardins de Cendre"
+},
+"bulle": {
+"groupe": "braise",
+"nom": "Bulle",
+"titre": "maître des Thermes de Soufre"
+},
+"tiburce": {
+"groupe": "braise",
+"nom": "Tiburce",
+"titre": "polisseur de cornes"
+},
+"zigomar": {
+"groupe": "braise",
+"nom": "Zigomar",
+"titre": "inventeur et artificier"
+},
+"grisette": {
+"groupe": "braise",
+"nom": "Grisette",
+"titre": "couturière"
+},
+"flammeche": {
+"groupe": "braise",
+"nom": "Flammèche",
+"titre": "gardienne du chenil des chiots d'enfer"
 }
 }
