@@ -459,6 +459,10 @@ func _blocked(next: Vector3) -> bool:
 	var p68: Node = main.get("pirates_v68")
 	if p68 != null and p68.blocks_boat(next + fwd * 2.3):
 		return true
+	# V69 : le pont de l'Iterou et le débarcadère de Per-Hâpy
+	var s69: Node = main.get("soleils_v69")
+	if s69 != null and s69.egypte != null and s69.blocks_boat(next + fwd * 2.3):
+		return true
 	return false
 
 

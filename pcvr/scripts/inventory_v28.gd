@@ -374,6 +374,53 @@ const ITEMS := {
 		"desc": "Le ragoût de Mama Grog : poisson, bananes plantain, haricots rouges, piment et une louche de rhum. On ne demande pas ce qu'il y a d'autre dedans. Rend trois cœurs."},
 	"remontant_doc": {"name": "Remontant du Doc", "art": "un remontant", "kind": "nourriture", "max": 5, "heal": 8,
 		"desc": "Le flacon brun du Doc Saignée : rhum, miel, herbe à fièvre et un secret. Une gorgée, et l'on se relève de presque n'importe quelle bagarre. Rend quatre cœurs."},
+	# V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses trois grands donjons
+	"oeil_horus": {"name": "Œil d'Horus", "art": "l'Œil d'Horus", "kind": "quete", "sorte": "Relique des Trois Soleils", "max": 1,
+		"desc": "Un œil d'or et de lapis-lazuli, l'œil que le dieu Horus perdit en combattant Seth et que Thot guérit : le signe de la lumière qui revient toujours. Rapporté du fond de la Pyramide de Rê. Sa place est sur l'Autel des Trois Soleils."},
+	"masque_jade": {"name": "Masque de Jade", "art": "le Masque de Jade", "kind": "quete", "sorte": "Relique des Trois Soleils", "max": 1,
+		"desc": "Un visage de roi fait de centaines de petits carrés de jade, les yeux de nacre et d'obsidienne. Le masque des rois de Yaxché, gardé au fond de Xibalba. Sa place est sur l'Autel des Trois Soleils."},
+	"plume_quetzal": {"name": "Plume de Quetzalcóatl", "art": "la Plume de Quetzalcóatl", "kind": "quete", "sorte": "Relique des Trois Soleils", "max": 1,
+		"desc": "Une plume longue comme un bras, d'un vert qui change en bleu et en or : une plume du Serpent à plumes, le dieu du vent et du savoir. Rapportée de sous le Grand Temple d'Aztlán. Sa place est sur l'Autel des Trois Soleils."},
+	"fragment_osiris": {"name": "Morceau d'Osiris", "art": "un morceau d'Osiris", "kind": "quete", "sorte": "Objet de quête : la Pyramide de Rê", "max": 4,
+		"desc": "Une amulette de pierre verte en forme de visage, tiède sous les doigts : un morceau du corps d'Osiris, que Seth avait dispersé. Il en faut quatre pour le sarcophage d'Osiris."},
+	"plume_ara": {"name": "Plume d'ara rouge", "art": "une plume d'ara rouge", "kind": "materiau", "max": 10,
+		"desc": "Une longue plume rouge vif, d'un ara de la jungle de Yaxché. Ix Sak, la tisseuse de plumes, en vend. On dit qu'en Xibalba, une plume rouge brille comme une flamme qui ne brûle pas."},
+	"viande_cerf": {"name": "Cuissot de cerf", "art": "un cuissot de cerf", "kind": "quete", "sorte": "Offrande", "max": 3,
+		"desc": "Un cuissot de cerf enveloppé dans une feuille de bananier, de la chasse de Balam. Pas pour toi : pour une offrande. Les Jumeaux du Popol Vuh savaient à qui la donner."},
+	"os_jaguar": {"name": "Os de jaguar", "art": "des os de jaguar", "kind": "materiau", "max": 20,
+		"desc": "Deux gros os, rongés et luisants. Les jaguars des collines s'en disputent ; jette-les à un jaguar, et il oubliera de te mordre."},
+	"copal": {"name": "Copal", "art": "un morceau de copal", "kind": "quete", "sorte": "Offrande", "max": 6,
+		"desc": "Une résine d'arbre jaune pâle, qui brûle avec une fumée blanche et parfumée : l'encens des Aztèques, l'offrande au soleil Huitzilopochtli. Tochtli en vend au marché d'Aztlán."},
+	"jarre_pluie": {"name": "Jarre de Tlaloc", "art": "une jarre de Tlaloc", "kind": "quete", "sorte": "Offrande", "max": 1,
+		"desc": "Une jarre bleue au visage de Tlaloc, le dieu de la pluie : de grands yeux ronds, des crocs, une moustache. Coyotl, le potier d'Aztlán, l'a façonnée et remplie d'eau du lac pour l'offrande."},
+	"conque": {"name": "Conque d'Ehécatl", "art": "la conque d'Ehécatl", "kind": "quete", "sorte": "Objet de quête : les Cinq Soleils", "max": 1,
+		"desc": "Un grand coquillage rose et blanc, coupé en spirale : la conque du dieu du vent, Ehécatl. Quand on souffle dedans, on entend la mer, et le vent se lève."},
+	"moustique": {"name": "Xan le moustique", "art": "Xan le moustique", "kind": "quete", "sorte": "Objet de quête : Xibalba", "max": 1,
+		"desc": "Un moustique dans une petite calebasse fermée par un bouchon de feuille. Kinich jure qu'il s'appelle Xan, comme celui des Jumeaux, et qu'il pique les menteurs."},
+	"glyphe_jaguar": {"name": "Glyphe du Jaguar", "art": "le Glyphe du Jaguar", "kind": "quete", "sorte": "Objet de quête : les Cinq Soleils", "max": 1,
+		"desc": "Une tablette de pierre gravée d'une tête de jaguar et de quatre points : 4 Jaguar, le Soleil des Jaguars, le premier des cinq soleils."},
+	"glyphe_vent": {"name": "Glyphe du Vent", "art": "le Glyphe du Vent", "kind": "quete", "sorte": "Objet de quête : les Cinq Soleils", "max": 1,
+		"desc": "Une tablette de pierre gravée du masque d'Ehécatl, le bec de vent, et de quatre points : 4 Vent, le Soleil du Vent."},
+	"glyphe_feu": {"name": "Glyphe de la Pluie de feu", "art": "le Glyphe de la Pluie de feu", "kind": "quete", "sorte": "Objet de quête : les Cinq Soleils", "max": 1,
+		"desc": "Une tablette de pierre gravée de flammes qui tombent du ciel et de quatre points : 4 Pluie, le Soleil de Pluie de feu."},
+	"glyphe_eau": {"name": "Glyphe de l'Eau", "art": "le Glyphe de l'Eau", "kind": "quete", "sorte": "Objet de quête : les Cinq Soleils", "max": 1,
+		"desc": "Une tablette de pierre gravée de vagues et de quatre points : 4 Eau, le Soleil de l'Eau, celui du grand déluge."},
+	"scarabee": {"name": "Scarabée de faïence", "art": "un scarabée de faïence", "kind": "curiosite", "sorte": "Curiosité de Per-Hâpy", "max": 5,
+		"desc": "Une amulette de faïence bleue en forme de scarabée, le dessous gravé de petits signes. Le scarabée, c'est Khépri, le soleil du matin qui renaît. Ptahmose les taille ; on dit qu'ils portent chance.",
+		"effet": "Tu frottes le scarabée entre tes doigts. Il est tiède, comme un matin d'été."},
+	"papyrus_thot": {"name": "Papyrus de Thot", "art": "un papyrus de Thot", "kind": "curiosite", "sorte": "Curiosité de Per-Hâpy", "max": 1,
+		"desc": "Une copie, faite par Amenemhat le scribe, du papyrus qui dort dans la pyramide : Thot, le dieu à tête d'ibis, montre un cartouche royal. Trois signes, l'un sous l'autre : un ibis, un œil, un soleil.",
+		"effet": "Tu déroules le papyrus. Thot montre le cartouche du doigt : l'ibis, l'œil d'Horus, le soleil. De haut en bas."},
+	"pain_egypte": {"name": "Pain de Per-Hâpy", "art": "un pain de Per-Hâpy", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Un pain rond et plat, cuit contre la paroi du four de Mérit, avec un peu de sable dedans (tout le monde a du sable dans son pain, à Per-Hâpy). Rend deux cœurs."},
+	"galette_mais": {"name": "Galettes de maïs", "art": "des galettes de maïs", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Trois galettes de maïs encore chaudes, cuites sur la plaque de terre d'Ix Chab, pliées autour d'un peu de haricots et de piment. Rend deux cœurs."},
+	"cacao": {"name": "Cacao mousseux", "art": "un bol de cacao", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Du cacao battu jusqu'à mousser, avec un peu de piment et de vanille : la boisson des rois mayas, amère et réveillante. Rend un cœur."},
+	"biere_heqet": {"name": "Bière d'orge", "art": "une jarre de bière d'orge", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "La bière épaisse et douce de Mérit, faite avec du pain d'orge et des dattes. Les Égyptiens la buvaient comme du pain liquide. Rend un cœur."},
+	"cempasuchil": {"name": "Bouquet de cempasúchil", "art": "un bouquet de cempasúchil", "kind": "quete", "sorte": "Objet de quête : Aztlán", "max": 5,
+		"desc": "Des fleurs d'œillet d'Inde, orange comme le soleil couchant, cueillies sur les chinampas. Leur parfum, dit-on, guide les âmes. Xóchitl en a besoin."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -645,9 +692,9 @@ func _sfx(name: String, at: Variant = null) -> void:
 static func pickup_sound(id: String) -> String:
 	if id in ["piece", "piece_or"]:
 		return "ramasse_pieces"
-	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee", "eclat_lune", "flocon_givre"]:
+	if id in ["rubis", "perle", "eclat_cristal", "obsidienne", "coeur_magma", "rune_golem", "poussiere_fee", "goutte_rosee", "eclat_lune", "flocon_givre", "oeil_horus", "masque_jade", "scarabee"]:
 		return "ramasse_gemme"
-	if id in ["caillou", "minerai_fer", "fragment_amulette", "petite_cle"]:
+	if id in ["caillou", "minerai_fer", "fragment_amulette", "petite_cle", "fragment_osiris", "glyphe_jaguar", "glyphe_vent", "glyphe_feu", "glyphe_eau"]:
 		return "ramasse_pierre"
 	if id in ["baton", "buche"]:
 		return "ramasse_bois"
@@ -1333,6 +1380,31 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.0, 0.045, 0.14, 6), cris, Vector3(0, 1.15, 0))
 			_part(m, _cyl(0.045, 0.0, 0.07, 6), cris, Vector3(0, 1.045, 0))
 			_tip(m, 1.2)
+		"oeil_horus":
+			# V69 : un œil d'or (une amande) et sa pupille de lapis
+			var gold := _mat("oeil_or", Color(1.0, 0.78, 0.32), 0.25)
+			gold.metallic = 0.9
+			_part(m, _sphere(0.06), gold, Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(1.6, 0.35, 0.9))
+			_part(m, _cyl(0.026, 0.026, 0.02, 14), _mat("lapis", Color(0.12, 0.2, 0.62), 0.3), Vector3(0, 0.05, 0))
+		"masque_jade":
+			_part(m, _sphere(0.09), _mat("jade", Color(0.2, 0.55, 0.38), 0.22), Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(1.0, 0.35, 1.25))
+			for sx in [-0.035, 0.035]:
+				_part(m, _box_mesh(Vector3(0.03, 0.006, 0.014)), _mat("nacre", Color(0.95, 0.94, 0.9), 0.2), Vector3(sx, 0.062, 0.02))
+		"plume_quetzal":
+			var qz := _mat("quetzal", Color(0.1, 0.62, 0.38), 0.3)
+			qz.metallic_specular = 0.9
+			_part(m, _sphere(0.05), qz, Vector3(0, 0.01, 0), Vector3(0, 15, 0), Vector3(0.5, 0.1, 4.5))
+		"cempasuchil":
+			# V69 : un bouquet d'œillets d'Inde orange sur leurs tiges
+			var tige := _mat("tige_cempa", Color(0.25, 0.45, 0.18), 0.8)
+			var fleur := _mat("fleur_cempa", Color(1.0, 0.55, 0.08), 0.7)
+			for k in range(5):
+				var a: float = TAU * k / 5.0
+				_part(m, _cyl(0.006, 0.008, 0.28, 5), tige, Vector3(cos(a) * 0.03, 0.14, sin(a) * 0.03), Vector3(cos(a) * 12.0, 0, sin(a) * 12.0))
+				_part(m, _sphere(0.045), fleur, Vector3(cos(a) * 0.06, 0.3, sin(a) * 0.06), Vector3.ZERO, Vector3(1, 0.7, 1))
+			_part(m, _sphere(0.05), fleur, Vector3(0, 0.33, 0), Vector3.ZERO, Vector3(1, 0.7, 1))
+		"fragment_osiris", "glyphe_jaguar", "glyphe_vent", "glyphe_feu", "glyphe_eau":
+			_part(m, _box_mesh(Vector3(0.12, 0.03, 0.12)), _mat("pierre_verte" if id == "fragment_osiris" else "pierre_glyphe", Color(0.3, 0.55, 0.4) if id == "fragment_osiris" else Color(0.62, 0.6, 0.56), 0.6), Vector3(0, 0.015, 0))
 		"hydromel":
 			_part(m, _cyl(0.05, 0.045, 0.12, 14), _mat("chope_bois", Color(0.5, 0.34, 0.2), 0.8), Vector3(0, 0.06, 0))
 			_part(m, _cyl(0.046, 0.046, 0.004, 14), _mat("hydromel", Color(0.95, 0.68, 0.2), 0.2), Vector3(0, 0.118, 0))

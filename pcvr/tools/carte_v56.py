@@ -1,6 +1,7 @@
 """V56 : les deux cartes du carnet, peintes à partir du relief réel du jeu.
 
-  archipel.png   (1800 x 1080, 1 px = 1 m ; V59 : jusqu'à la grande île de l'est) : carte marine ancienne : fonds en bleus étagés
+  archipel.png   (1800 x 1080, 1 px = 1 m ; V59 : jusqu'à la grande île de l'est ; V68 : 1800 x 1440, jusqu'à la
+                 Balafre au nord ; V69 : 2580 x 1440, jusqu'à l'Île des Trois Soleils à l'ouest) : carte marine ancienne : fonds en bleus étagés
                  avec isobathes, hauts-fonds turquoise, côtes cernées d'encre et de lignes de
                  houle, terres en teintes hypsométriques ombrées (sable, prairie, maquis,
                  roche, neiges du volcan), l'île flottante comme un nuage, rose des vents,
@@ -12,7 +13,8 @@
 
 Les données viennent du jeu lui-même : un petit script Godot (/root/suites/bake56.gd dans les
 tests) échantillonne le relief et lance des rayons sur la ville, et écrit dans /tmp/carte :
-arch_h.bin, azur_sol.bin, azur_toit.bin, plan.json.
+arch_h.bin, azur_sol.bin, azur_toit.bin, plan.json (V69 : bake69.gd ajoute soleils.json, les
+chemins, les maisons et les monuments de l'Île des Trois Soleils).
 Lancement (depuis la racine du dépôt) :
     python3 pcvr/tools/carte_v56.py [/tmp/carte] [archipel | port_azur]
 """
@@ -90,9 +92,11 @@ def archipel(src: Path) -> None:
     raw = np.fromfile(src / "arch_h.bin", np.float32)
     # V59 : 900 x 540 échantillons (jusqu'à la grande île de l'est), ou 540 x 540 (avant)
     # V68 : 900 x 720 (jusqu'à l'Île de la Balafre, au nord) : la carte commence à z = -960
-    rows = 720 if raw.size == 900 * 720 else 540
-    cols = 900 if raw.size in (900 * 540, 900 * 720) else 540
+    # V69 : 1290 x 720 (à l'ouest, jusqu'à l'Île des Trois Soleils) : la carte commence à x = -1320
+    rows = 720 if raw.size in (900 * 720, 1290 * 720) else 540
+    cols = 1290 if raw.size == 1290 * 720 else (900 if raw.size in (900 * 540, 900 * 720) else 540)
     OZ = 960 if rows == 720 else 600
+    OX = 1320 if cols == 1290 else 540
     h = raw.reshape(rows, cols)
     W, H = cols * 2, rows * 2
     h = np.array(Image.fromarray(h).resize((W, H), Image.BICUBIC), np.float32)
@@ -139,7 +143,7 @@ def archipel(src: Path) -> None:
             tz = 170.0 - (bj + 0.5) * 0.5
             wx = 201.82 + math.cos(yaw) * tx + math.sin(yaw) * tz
             wz = 134.55 - math.sin(yaw) * tx + math.cos(yaw) * tz
-            return np.clip((wz + OZ).astype(int), 0, H - 1), np.clip((wx + 540).astype(int), 0, W - 1)
+            return np.clip((wz + OZ).astype(int), 0, H - 1), np.clip((wx + OX).astype(int), 0, W - 1)
 
         pj, pi = to_px(*np.nonzero((g2 < -0.3) & (r2 > -1.2) & (r2 - g2 > 0.8)))
         decks = np.zeros((H, W), bool)
@@ -163,7 +167,7 @@ def archipel(src: Path) -> None:
     im = to_img(img).convert("RGBA")
     d = ImageDraw.Draw(im)
     # l'île flottante : un nuage et son ombre
-    cx, cz = 40 + 540, 400 + OZ
+    cx, cz = 40 + OX, 400 + OZ
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ds = ImageDraw.Draw(shadow)
     for k in range(14):
@@ -195,19 +199,19 @@ def archipel(src: Path) -> None:
             hull.append((x, -17.0 * pb))
         hull += [(x, -z) for x, z in reversed(hull)]
         yaw = 0.06
-        pts = [(665.0 + math.cos(yaw) * x + math.sin(yaw) * z + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * z + OZ) for x, z in hull]
+        pts = [(665.0 + math.cos(yaw) * x + math.sin(yaw) * z + OX, -150.0 - math.sin(yaw) * x + math.cos(yaw) * z + OZ) for x, z in hull]
         d.polygon(pts, fill=(120, 84, 52, 255), outline=(52, 36, 22, 255))
         for k in range(1, 6):
             x = -70.0 + 140.0 * k / 6
-            a = (665.0 + math.cos(yaw) * x - math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x - math.cos(yaw) * 9 + OZ)
-            b = (665.0 + math.cos(yaw) * x + math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * 9 + OZ)
+            a = (665.0 + math.cos(yaw) * x - math.sin(yaw) * 9 + OX, -150.0 - math.sin(yaw) * x - math.cos(yaw) * 9 + OZ)
+            b = (665.0 + math.cos(yaw) * x + math.sin(yaw) * 9 + OX, -150.0 - math.sin(yaw) * x + math.cos(yaw) * 9 + OZ)
             d.line([a, b], fill=(80, 56, 34, 255), width=1)
-        mx, mz = 665.0 + 4 + 540, -150.0 + OZ
+        mx, mz = 665.0 + 4 + OX, -150.0 + OZ
         d.ellipse((mx - 3, mz - 3, mx + 3, mz + 3), fill=(52, 36, 22, 255))
     # V60 : Tazira, le port des sables : remparts, maisons blanches, jetées, la Murène Noire
     if W > 1080:
         def tz(x, z):
-            return (940.0 - x + 540, 95.0 - z + OZ)
+            return (940.0 - x + OX, 95.0 - z + OZ)
         d.polygon([tz(-104.6, 14), tz(104.6, 14), tz(104.6, 79.4), tz(-104.6, 79.4)], fill=(214, 180, 128, 255), outline=(120, 80, 44, 255))
         rr = np.random.default_rng(60)
         for bx0, bx1, bz0, bz1 in [(-100, -63, 20, 37), (-57, -46, 20, 31), (3, 27, 38, 59), (33, 67, 38, 59), (73, 100, 20, 37), (73, 100, 43, 59),
@@ -235,15 +239,15 @@ def archipel(src: Path) -> None:
     # téléphérique, et la ligne du dirigeable « le Zéphyr » (pointillés) entre ses escales
     if W > 1080:
         def cq(x, z):
-            return (960.0 + x + 540, -315.0 + z + OZ)
+            return (960.0 + x + OX, -315.0 + z + OZ)
         pads = [(890.0, -293.0), (1130.0, -240.0), (948.0, -16.0), (770.0, -136.0)]
         for k in range(4):
             a, b = pads[k], pads[(k + 1) % 4]
             n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / 8)
             for i in range(0, n, 2):
                 t0, t1 = i / n, min(1.0, (i + 1) / n)
-                d.line([(a[0] + (b[0] - a[0]) * t0 + 540, a[1] + (b[1] - a[1]) * t0 + OZ),
-                        (a[0] + (b[0] - a[0]) * t1 + 540, a[1] + (b[1] - a[1]) * t1 + OZ)], fill=(150, 70, 40, 200), width=2)
+                d.line([(a[0] + (b[0] - a[0]) * t0 + OX, a[1] + (b[1] - a[1]) * t0 + OZ),
+                        (a[0] + (b[0] - a[0]) * t1 + OX, a[1] + (b[1] - a[1]) * t1 + OZ)], fill=(150, 70, 40, 200), width=2)
         d.polygon([cq(-100, -49), cq(100, -49), cq(100, 48), cq(-100, 48)], fill=(176, 150, 128, 255), outline=(120, 50, 36, 255))
         d.line([cq(-100, -48), cq(100, -48)], fill=(140, 52, 36, 255), width=3)
         blds = [(0, 34, 34, 13), (-58, -6, 10, 15), (58, -6, 10, 13), (-84, -24, 11, 12), (80, 20, 13, 14), (-40, 37, 20, 11),
@@ -264,7 +268,7 @@ def archipel(src: Path) -> None:
         # plates-formes et les ponts de corde, le Cercle de la Lune, la Clairière des Jeux, la
         # boucle de la Grande Course (pointillés rouges), le ponton
         def rm(x, z):
-            return (1110.0 + x + 540, -140.0 + z + OZ)
+            return (1110.0 + x + OX, -140.0 + z + OZ)
         trees = {"mere": (4, -8, 54), "ouest": (-22, -42, 40), "guet": (34, 8, 42), "sud": (14, 42, 42), "mares": (-22, 50, 38), "nord": (16, -64, 40)}
         course = [(16, -32), (0, -50), (-30, -62), (-30, -20), (-4, 4), (-2, 46), (24, 60), (40, 24), (48, -6), (30, -18)]
         for k in range(len(course)):
@@ -289,12 +293,12 @@ def archipel(src: Path) -> None:
         d.line([rm(46, 6), rm(60, 4), rm(76, 3), rm(88, 2)], fill=(150, 130, 100, 255), width=2)
         d.line([rm(88, 2), rm(103, 2)], fill=(110, 80, 50, 255), width=3)
         for px, pz in pads:
-            d.ellipse((px + 540 - 6, pz + OZ - 6, px + 540 + 6, pz + OZ + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
+            d.ellipse((px + OX - 6, pz + OZ - 6, px + OX + 6, pz + OZ + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
     # V67 : Arcanelle, l'île des sorciers : le Lac Miroir et son îlot, les chemins dallés,
     # l'Académie (la tour et son enceinte), la bibliothèque, l'observatoire, le Cercle des
     # Pierres-Lunes, l'Aire des Duels et ses braseros, le bourg et le ponton, la Tour Penchée
     def ar(x, z):
-        return (-300.0 + x + 540, -480.0 + z + OZ)
+        return (-300.0 + x + OX, -480.0 + z + OZ)
 
     def disc(x, z, r, **kw):
         a, b = ar(x - r, z - r), ar(x + r, z + r)
@@ -331,7 +335,7 @@ def archipel(src: Path) -> None:
     # pontons, les maisons, les deux navires), le Fort Maudit, le cimetière, le Rocher du Crâne
     if H > 1080:
         def bl(x, z):
-            return (400.0 + x + 540, -700.0 + z + OZ)
+            return (400.0 + x + OX, -700.0 + z + OZ)
 
         def bdisc(x, z, r, **kw):
             a, b = bl(x - r, z - r), bl(x + r, z + r)
@@ -365,6 +369,69 @@ def archipel(src: Path) -> None:
         for ex in (-1.6, 1.6):
             bdisc(39 + ex, -69, 1.0, fill=(30, 26, 22, 255))
         d.polygon([bl(38, -66.4), bl(40, -66.4), bl(39, -65.2)], fill=(30, 26, 22, 255))
+    # V69 : l'Île des Trois Soleils : le Lac de la Lune et Aztlán, ses chaussées, les chinampas ;
+    # le Cénote ; les chemins ; les maisons des trois villages ; la Pyramide de Rê et le Sphinx ;
+    # le Temple de Kukulkan, le jeu de balle, l'observatoire ; le Grand Temple ; le cratère du
+    # Mont Fumant ; l'Autel des Trois Soleils
+    sj = src / "soleils.json"
+    if OX > 540 and sj.exists():
+        S = json.loads(sj.read_text())
+
+        def sw(x, z):
+            return (x + OX, z + OZ)
+
+        # l'eau douce du lac et du cénote (le relief en garde le fond, plus bas que la surface)
+        ys, xs = np.mgrid[0:H, 0:W]
+        lx = xs - OX + 960.0
+        lz = ys - OZ + 150.0
+        lake = (np.hypot((lx + 125.0) / 98.0, (lz - 112.0) / 78.0) < 1.0) & (h < 5.75)
+        cen = (np.hypot(lx + 84.0, lz + 222.0) < 13.0) & (h < 5.8)
+        arr = np.asarray(im).astype(np.float32) / 255.0
+        lake_c = np.array([96, 168, 170], np.float32) / 255.0
+        cen_c = np.array([40, 130, 110], np.float32) / 255.0
+        arr[lake, :3] = arr[lake, :3] * 0.25 + lake_c * 0.75
+        arr[cen, :3] = arr[cen, :3] * 0.2 + cen_c * 0.8
+        edge = (lake ^ ndimage.binary_erosion(lake)) | (cen ^ ndimage.binary_erosion(cen))
+        arr[edge, :3] = arr[edge, :3] * 0.5
+        im = Image.fromarray((np.clip(arr, 0, 1) * 255).astype(np.uint8), "RGBA")
+        d = ImageDraw.Draw(im)
+        for line in S.get("chemins", []):
+            if len(line) > 1:
+                d.line([sw(q[0], q[1]) for q in line], fill=(170, 140, 100, 255), width=2)
+        for q in S.get("maisons", []):
+            x, z = sw(q[0], q[1])
+            d.rectangle((x - 2, z - 2, x + 2, z + 2), fill=(196, 160, 112, 255), outline=(90, 64, 40, 255))
+        # la Pyramide de Rê : un carré, ses arêtes, la pointe d'or ; le Sphinx
+        px, pz = sw(*S["pyramide"])
+        d.polygon([(px - 32, pz - 32), (px + 32, pz - 32), (px + 32, pz + 32), (px - 32, pz + 32)], fill=(222, 200, 150, 255), outline=(110, 84, 50, 255))
+        d.polygon([(px - 32, pz - 32), (px + 32, pz - 32), (px, pz)], fill=(236, 216, 168, 255), outline=(110, 84, 50, 255))
+        d.polygon([(px - 32, pz - 32), (px - 32, pz + 32), (px, pz)], fill=(200, 176, 128, 255), outline=(110, 84, 50, 255))
+        d.ellipse((px - 3, pz - 3, px + 3, pz + 3), fill=(220, 170, 40, 255))
+        sx, sz = sw(*S["sphinx"])
+        d.rectangle((sx - 3, sz - 9, sx + 3, sz + 9), fill=(214, 186, 130, 255), outline=(110, 84, 50, 255))
+        # le Temple de Kukulkan (neuf gradins) et le Grand Temple d'Aztlán (quatre)
+        for key, base, steps in (("kukulkan", 44.0, 5), ("temple_az", 28.0, 4)):
+            kx, kz = sw(*S[key])
+            for k in range(steps):
+                r = base * 0.5 * (1.0 - k / (steps + 0.6))
+                d.rectangle((kx - r, kz - r, kx + r, kz + r), fill=(196, 188, 170, 255) if k % 2 == 0 else (176, 168, 150, 255), outline=(96, 84, 70, 255))
+        bx, bz = sw(*S["balle"])
+        d.rectangle((bx - 17, bz - 7, bx + 17, bz + 7), fill=(226, 220, 204, 255), outline=(96, 84, 70, 255))
+        d.line([(bx - 15, bz), (bx + 15, bz)], fill=(150, 140, 120, 255), width=1)
+        ox_, oz_ = sw(*S["observatoire"])
+        d.ellipse((ox_ - 5, oz_ - 5, ox_ + 5, oz_ + 5), fill=(220, 214, 200, 255), outline=(96, 84, 70, 255))
+        # le cratère qui fume
+        vx, vz = sw(*S["volcan"])
+        d.ellipse((vx - 11, vz - 11, vx + 11, vz + 11), fill=(90, 60, 50, 255), outline=(60, 40, 30, 255))
+        d.ellipse((vx - 5, vz - 5, vx + 5, vz + 5), fill=(190, 70, 30, 255))
+        # l'Autel des Trois Soleils : trois petits soleils autour d'un cercle
+        ax_, az_ = sw(*S["autel"])
+        d.ellipse((ax_ - 8, az_ - 8, ax_ + 8, az_ + 8), fill=(214, 206, 186, 255), outline=(110, 84, 50, 255), width=2)
+        for k, col in enumerate(((230, 180, 50, 255), (60, 150, 100, 255), (60, 170, 160, 255))):
+            a2 = math.radians(90 + k * 120)
+            cx3, cz3 = ax_ + math.cos(a2) * 5.2, az_ + math.sin(a2) * 5.2
+            d.ellipse((cx3 - 2, cz3 - 2, cx3 + 2, cz3 + 2), fill=col)
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

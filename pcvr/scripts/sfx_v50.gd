@@ -42,6 +42,11 @@ const DB := {
 	# V68 : l'Île de la Balafre (bagarres, dés, perroquets, crocodiles, squelettes)
 	"coup_poing": -4.0, "ko": -5.0, "foule_bagarre": -9.0, "des_roule": -7.0, "perroquet": -8.0,
 	"croco_menace": -3.0, "croco_mort": -4.0, "squelette_menace": -5.0, "squelette_mort": -4.0, "os_choc": -1.0,
+	# V69 : l'Île des Trois Soleils et ses donjons
+	"momie_menace": -4.0, "momie_mort": -4.0, "jaguar_menace": -3.0, "jaguar_mort": -4.0, "chauve_souris_cri": -6.0,
+	"ammit_cri": 0.0, "apophis_cri": 0.0, "camazotz_cri": 0.0, "cipactli_cri": 0.0, "chat": -8.0, "balle": -4.0, "conque": -2.0,
+	"sistre": -5.0, "battement": -3.0, "pluie_feu": -3.0, "sable_effondre": -3.0, "verser": -6.0, "statue_parle": -2.0,
+	"tambour_azteque": -4.0, "flute_maya": -5.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

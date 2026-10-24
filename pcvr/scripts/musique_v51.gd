@@ -33,6 +33,11 @@ const ZONE_TRACK := {
 	"balafre_port": "balafre", "balafre_navire": "balafre", "balafre_rivage": "balafre", "balafre_plage": "balafre", "balafre_fort": "balafre",
 	"balafre_jungle": "jungle", "balafre_marais": "jungle", "balafre_ravin": "jungle", "balafre_cimetiere": "",
 	"balafre_crane_fendu": "gigue_crane", "balafre_dent_requin": "",
+	"soleils_egypte": "per_hapy", "soleils_temple_re": "per_hapy", "soleils_fleuve": "per_hapy", "soleils_pyramide": "per_hapy",
+	"soleils_maya": "yaxche", "soleils_cenote": "yaxche", "soleils_jungle": "yaxche",
+	"soleils_azteque": "aztlan", "soleils_chinampas": "aztlan", "soleils_lac": "aztlan",
+	"soleils_volcan": "jungle", "soleils_rivage": "large", "soleils_autel": "", "soleils_prairie": "",
+	"soleils_d_egypte": "trois_soleils_donjon", "soleils_d_maya": "trois_soleils_donjon", "soleils_d_azteque": "trois_soleils_donjon",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
@@ -40,6 +45,7 @@ const TRACK_DB := {
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
+	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
 }
 const LOOPED := ["theme_ile", "combat", "gigue_crane"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)

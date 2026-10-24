@@ -9,6 +9,7 @@ extends Node3D
 const MonsterScript = preload("res://scripts/monstre_v36.gd")
 const Monster63 = preload("res://scripts/monstre_v63.gd")
 const Monster68 = preload("res://scripts/monstre_v68.gd")
+const Monster69 = preload("res://scripts/monstre_v69.gd")
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -99,7 +100,8 @@ func monstres_list_copy() -> Array:
 func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V63 : les créatures de la grande enquête et du Cœur-de-Pierre (monstre_v63.gd)
 	# V68 : les monstres de l'Île de la Balafre (crocodiles, squelettes, le Capitaine Sans-Chair)
-	var m: CharacterBody3D = Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())
+	# V69 : les monstres de l'Île des Trois Soleils et de ses donjons (momies, jaguars, chauves-souris, Ammit, Apophis, Camazotz, Cipactli)
+	var m: CharacterBody3D = Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()))
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -202,7 +204,8 @@ func _red_flash() -> void:
 ## VR : à bout de forces, on se réveille à l'entrée du temple.
 func _vr_faint() -> void:
 	var pp: Vector3 = main._player_pos_v27()
-	if not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
+	var sol69: bool = main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(pp)
+	if not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)) and not sol69:
 		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
 	respawn_player()
@@ -214,6 +217,11 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V69 : sur l'Île des Trois Soleils, ou dans un de ses trois grands donjons
+	if main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(p):
+		main.soleils_v69.on_faint(p)
+		_heal_player()
+		return
 	# V68 : sur l'Île de la Balafre (une bagarre perdue, ou les monstres de l'intérieur)
 	if main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(p):
 		main.pirates_v68.on_faint()
@@ -357,6 +365,9 @@ func _process(delta: float) -> void:
 		outdoor = true
 	# V63 : les combats de la grande enquête (au bord de la grande mare de Ramure…)
 	if not inside and main.get("sceaux_v63") != null and main.sceaux_v63 != null and main.sceaux_v63.hostile_zone(main._player_pos_v27()):
+		outdoor = true
+	# V69 : les repaires de l'Île des Trois Soleils (les donjons sont sous terre : « inside »)
+	if not inside and main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.hostile_zone(main._player_pos_v27()):
 		outdoor = true
 	# V68 : l'intérieur de l'Île de la Balafre (les repaires des monstres), et les bagarres
 	if not inside and main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.hostile_zone(main._player_pos_v27()):

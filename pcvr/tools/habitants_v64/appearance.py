@@ -8,7 +8,8 @@ heloise hilda hortense ilyria ines khadija lea lila lilas lola lucie lulu lyra m
 morgane myrtille nadine nain_1 nain_3 nain_6 nerea nimiel nina nolwenn odette ondine pauline pivoine plumette pommedepin
 prudence rita rosa rosalie rose rosette salome samira selma sofia sylvie sylwen trefle ulfa ursule yasmine yaya zelie
 zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe
-anne_rose scarlett coquille mama_grog coralie gwen'''.split())
+anne_rose scarlett coquille mama_grog coralie gwen
+neferet merit tiyi nebet ixkanul ixsak ixchab citlali xochitl nenetl'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -121,6 +122,12 @@ def decide(pid, p):
     rc = [max(0.0, x + r.normal(0, 0.06)) for x in rc]
     if r.random() < 0.12 and p.get('village') not in ('tazira',):
         rc[1] += 0.4
+    # V69 : les peuples des Trois Soleils (Égyptiens ; Mayas et Aztèques, aux traits amérindiens)
+    if p.get('village') == 'egypte':
+        rc = [0.3 + r.normal(0, 0.05), 0.08, 0.62 + r.normal(0, 0.05)]
+    elif p.get('village') in ('maya', 'azteque'):
+        rc = [0.12 + r.normal(0, 0.04), 0.58 + r.normal(0, 0.06), 0.3 + r.normal(0, 0.05)]
+    rc = [max(0.0, x) for x in rc]
     m['african'], m['asian'], m['caucasian'] = rc
     m['breastsize'] = clamp01(0.4 + r.normal(0, 0.15)) if female else 0.5
     m['breastfirmness'] = 0.3 if old else 0.5 + r.normal(0, 0.1)
@@ -288,6 +295,9 @@ TROUSERS = {
     'ramure': [[0.4, 0.32, 0.22], [0.32, 0.36, 0.24], [0.5, 0.44, 0.34], [0.28, 0.24, 0.2]],
     'teuf': [[0.22, 0.3, 0.48], [0.15, 0.15, 0.16], [0.75, 0.7, 0.6], [0.3, 0.4, 0.3]],
     'balafre': [[0.2, 0.17, 0.15], [0.38, 0.3, 0.22], [0.15, 0.16, 0.22], [0.55, 0.48, 0.38], [0.3, 0.12, 0.1]],
+    'egypte': [[0.95, 0.93, 0.86], [0.92, 0.9, 0.82]],
+    'maya': [[0.92, 0.9, 0.84], [0.7, 0.2, 0.15], [0.2, 0.3, 0.6]],
+    'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
 }
 SHOES = [[0.32, 0.2, 0.12], [0.12, 0.1, 0.09], [0.45, 0.32, 0.2], [0.55, 0.42, 0.3]]
 
@@ -388,6 +398,64 @@ def outfit(D, p):
             add('col', az['foulard'], 'soie')
         if arc.get('cape') and not child:
             add('cape', arc['cape'], 'laine')
+        return T
+    # --------------------------------------------------------- V69 : les Trois Soleils (Égyptiens, Mayas, Aztèques)
+    sol = p.get('sol')
+    if vil in ('egypte', 'maya', 'azteque') and isinstance(sol, dict):
+        tenue = str(sol.get('tenue', 'peuple'))
+        lin = [0.95, 0.93, 0.86]
+        sandales = [0.62, 0.48, 0.3]
+        if vil == 'egypte':
+            if female or (child and female):
+                add('corsage_long', lin, 'lin')
+                add('jupe_longue', lin, 'lin')
+                if tenue == 'pretre':
+                    add('cape', [0.97, 0.95, 0.9], 'lin')
+                    add('ceinture_ample', [0.85, 0.65, 0.2], 'soie')
+                else:
+                    add('ceinture_ample', [0.75, 0.3, 0.22] if r.random() < 0.5 else [0.25, 0.45, 0.6], 'lin')
+            else:
+                if tenue in ('scribe', 'pretre'):
+                    add('tunique_haut', lin, 'lin')
+                    add('jupe_longue' if tenue == 'pretre' else 'jupe', lin, 'lin')
+                else:
+                    add('debardeur', lin, 'lin')
+                    add('jupe', [0.92, 0.9, 0.82], 'lin')
+                add('ceinture_ample', [0.9, 0.88, 0.8] if tenue != 'scribe' else [0.25, 0.4, 0.62], 'lin')
+            add('chaussures', sandales, 'cuir')
+            return T
+        haut = col(az.get('haut', lin))
+        if vil == 'maya':
+            if female:
+                add('tunique_haut', haut, 'coton', motif=5, c2=[0.75, 0.15, 0.12], echelle=0.045)
+                add('jupe_longue', [0.2, 0.28, 0.55] if r.random() < 0.6 else [0.55, 0.15, 0.12], 'coton')
+            else:
+                if tenue in ('pretre', 'joueur', 'chasseur'):
+                    add('debardeur', haut, 'coton')
+                else:
+                    add('tunique_haut', haut, 'coton', motif=5, c2=[0.2, 0.3, 0.6], echelle=0.05)
+                add('jupe', [0.9, 0.88, 0.8] if tenue != 'chasseur' else [0.45, 0.32, 0.2], 'coton')
+                add('ceinture_ample', [0.75, 0.15, 0.1] if tenue != 'joueur' else [0.45, 0.3, 0.2], 'cuir' if tenue == 'joueur' else 'coton')
+                if tenue == 'pretre':
+                    add('cape', [0.12, 0.45, 0.32], 'coton')
+                elif tenue == 'chasseur':
+                    add('cape', [0.5, 0.36, 0.2], 'cuir')
+            add('chaussures', sandales, 'cuir')
+            return T
+        # les Aztèques
+        if female:
+            add('tunique_haut', haut, 'coton', motif=5, c2=[0.25, 0.5, 0.55], echelle=0.05)
+            add('jupe_longue', [0.94, 0.92, 0.86], 'coton')
+        elif tenue == 'guerrier':
+            add('collant', [0.85, 0.65, 0.2], 'coton', motif=4, c2=[0.15, 0.1, 0.06], echelle=0.05)
+            add('debardeur', [0.85, 0.65, 0.2], 'coton', motif=4, c2=[0.15, 0.1, 0.06], echelle=0.05)
+            add('ceinture_ample', [0.75, 0.12, 0.1], 'cuir')
+        else:
+            add('tunique_haut' if tenue != 'pretre' else 'debardeur', [0.94, 0.92, 0.86] if tenue != 'pretre' else [0.1, 0.1, 0.12], 'coton')
+            add('jupe', [0.9, 0.88, 0.82], 'coton')
+            add('ceinture_ample', [0.75, 0.15, 0.1], 'coton')
+            add('cape', haut if tenue != 'pretre' else [0.1, 0.1, 0.12], 'coton')
+        add('chaussures', sandales, 'cuir')
         return T
     # --------------------------------------------------------- V68 : la Balafre : les pirates et les gens du port
     pir = p.get('pirate')

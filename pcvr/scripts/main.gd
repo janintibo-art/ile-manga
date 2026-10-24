@@ -132,6 +132,7 @@ func _ready() -> void:
 	_create_v66()
 	_create_v67()
 	_create_v68()
+	_create_v69()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -172,6 +173,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V68 : l'Île de la Balafre (son carré touche les coins de la jungle et de la grande île)
 	if pirates_v68 != null and pirates_v68.ile != null and pirates_v68.ile.contains(x, z):
 		h = maxf(h, pirates_v68.ile.height(x, z))
+	# V69 : l'Île des Trois Soleils (loin à l'ouest : son carré ne touche aucune autre île)
+	if soleils_v69 != null and soleils_v69.ile != null and soleils_v69.ile.contains(x, z):
+		return maxf(h, soleils_v69.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -990,6 +994,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			arcanelle_v67.load_data({})
 		if pirates_v68 != null and pirates_v68.port != null:
 			pirates_v68.load_data({})
+		if soleils_v69 != null and soleils_v69.egypte != null:
+			soleils_v69.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1010,6 +1016,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			# V63 : partie sauvée sous le Cœur-de-Pierre : le donjon doit être là avant d'y poser le pied
 			if coeur_v63 != null and coeur_v63.region_contains(origin.position):
 				coeur_v63.ensure_built()
+			# V69 : partie sauvée dans un des trois grands donjons de l'Île des Trois Soleils
+			if soleils_v69 != null and soleils_v69.egypte != null:
+				soleils_v69.ensure_dungeon_at(origin.position)
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
@@ -1098,6 +1107,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and pirates_v68 != null and pirates_v68.port != null:
 		var bdata68: Variant = SaveStore.read_slot(slot).get("balafre", {})
 		pirates_v68.load_data(bdata68 if bdata68 is Dictionary else {})
+	# V69 : l'Île des Trois Soleils (le Sphinx, les donjons, les reliques, l'autel)
+	if not new_game and soleils_v69 != null and soleils_v69.egypte != null:
+		var sdata69: Variant = SaveStore.read_slot(slot).get("soleils", {})
+		soleils_v69.load_data(sdata69 if sdata69 is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1198,6 +1211,8 @@ func _save_slot(slot: int) -> void:
 		extra["sorts"] = sorts_v67.serialize()
 	if pirates_v68 != null and pirates_v68.port != null:
 		extra["balafre"] = pirates_v68.serialize()
+	if soleils_v69 != null and soleils_v69.egypte != null:
+		extra["soleils"] = soleils_v69.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -2025,6 +2040,10 @@ func _respawn_v28() -> void:
 		return
 	if sceaux_v63 != null and sceaux_v63.respawn_here(_player_pos_v27()):
 		return
+	# V69 : sur l'Île des Trois Soleils (dans un donjon : à son dernier point de reprise ; dehors : au village le plus proche)
+	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.owns_point(_player_pos_v27()):
+		soleils_v69.on_faint(_player_pos_v27())
+		return
 	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
 	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
 		monstres_v36.respawn_player()
@@ -2274,6 +2293,15 @@ func _create_jungle_v29() -> void:
 	pirates_v68.build_island()
 	var pir_d: Array = pirates_v68.dock()
 	boat_v29._make_dock("Ponton_balafre", pir_d[0], pir_d[1])
+	# V69 : l'Île des Trois Soleils, la grande île verte de l'ouest (le relief d'abord ; les trois
+	# villages, la végétation, les habitants et les donjons après l'heure du jour, voir _create_v69).
+	soleils_v69 = preload("res://scripts/soleils_v69.gd").new()
+	soleils_v69.name = "Soleils_v69"
+	add_child(soleils_v69)
+	soleils_v69.setup(self)
+	soleils_v69.build_island()
+	var sol_d: Array = soleils_v69.dock()
+	boat_v29._make_dock("Ponton_soleils", sol_d[0], sol_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2310,6 +2338,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V69 : l'Île des Trois Soleils : la terre ferme, les ponts, les pontons (pas dans le lac)
+	if soleils_v69 != null and soleils_v69.contains(p):
+		if soleils_v69.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -2819,7 +2855,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2868,6 +2904,13 @@ func _talk_v31(npc: Node3D) -> void:
 
 
 func _on_dialogue_choice_v31(id: String) -> void:
+	# V69 : une question posée par une statue (le Sphinx, Anubis…) : la réponse va à qui l'a posée
+	if talking_npc_v31 == null and riddle_v69.is_valid():
+		if id == "fermer":
+			_close_dialogue_v31()
+			return
+		riddle_v69.call(id)
+		return
 	var npc: Node3D = talking_npc_v31
 	if npc == null or id == "fermer":
 		_close_dialogue_v31()
@@ -2929,6 +2972,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V68 : la Balafre (la bagarre, la tournée, les dés, le hamac de Mama Grog, le Doc, le tatouage)
 	if pirates_v68 != null and pirates_v68.port != null:
 		pirates_v68.after_reply(r, npc)
+	# V69 : les Trois Soleils (le Sphinx, les offrandes, les services des villages)
+	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.has_method("after_reply"):
+		soleils_v69.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2966,7 +3012,27 @@ func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
 	dialogue_v31.show_line(npc.display_name, npc.brain.humeur_mot(), str(r.get("texte", "…")), choices)
 
 
+## V69 : une question posée par une statue ou une inscription (le Sphinx, Anubis, les Seigneurs de
+## Xibalba…) : le dialogue s'ouvre sur « speaker » (un repère posé sur la statue), les choix vont
+## à cb(id). Le même dialogue sert pour toute la suite des questions.
+var riddle_v69: Callable = Callable()
+
+func ask_v69(speaker: Node3D, who: String, mood: String, text: String, choices: Array, cb: Callable) -> void:
+	if dialogue_v31 == null:
+		return
+	if talking_npc_v31 != null:
+		_close_dialogue_v31()
+	if not dialogue_v31.opened:
+		if inventory_v28 != null and inventory_v28.opened:
+			inventory_v28.close()
+		dialogue_v31.open(speaker)
+		sfx("ui_dialogue")
+	riddle_v69 = cb
+	dialogue_v31.show_line(who, mood, text, choices)
+
+
 func _close_dialogue_v31() -> void:
+	riddle_v69 = Callable()
 	if dialogue_v31 != null:
 		dialogue_v31.close()
 	if talking_npc_v31 != null:
@@ -2996,6 +3062,7 @@ var objets_v66: Node                       # V66 : objets à casser, coffres cac
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
+var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -3045,6 +3112,9 @@ func _spawn_azur_v56() -> void:
 	# V68 : les pirates et les gens de Port-Coutelas
 	if pirates_v68 != null and pirates_v68.port != null:
 		pirates_v68.spawn_npcs()
+	# V69 : les gens de Per-Hâpy, de Yaxché et d'Aztlán
+	if soleils_v69 != null and soleils_v69.egypte != null and soleils_v69.has_method("spawn_npcs"):
+		soleils_v69.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3136,6 +3206,16 @@ func _create_v68() -> void:
 	pirates_v68.build_town()
 	if journal_v56 != null:
 		pirates_v68.register_services(journal_v56)
+
+
+## V69 : l'Île des Trois Soleils (Per-Hâpy, Yaxché, Aztlán, la végétation, les donjons) ; le
+## ponton est posé avec le relief (au démarrage).
+func _create_v69() -> void:
+	if soleils_v69 == null:
+		return
+	soleils_v69.build_town()
+	if journal_v56 != null and soleils_v69.has_method("register_services"):
+		soleils_v69.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3287,8 +3367,8 @@ static func _opaque_materials_v48(root: Node) -> void:
 ## 512 × 512 pixels sur 1600 m ; on ne mesure le relief que dans le carré de chaque île
 ## (le reste est le grand large). Valeur = (hauteur + 12) / 14, entre 0 et 1.
 const SHORE_RES_V48: int = 768
-const SHORE_ORIGIN_V48 := Vector2(-800.0, -1000.0)
-const SHORE_SIZE_V48: float = 2400.0
+const SHORE_ORIGIN_V48 := Vector2(-1400.0, -1000.0)   # V69 : la carte s'étend jusqu'à l'Île des Trois Soleils
+const SHORE_SIZE_V48: float = 3000.0
 var shore_image_v48: Image
 
 func _bake_shore_v48() -> void:
@@ -3312,6 +3392,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(arcanelle_v67.ile.CENTER.x, arcanelle_v67.ile.CENTER.z), arcanelle_v67.ile.HALF])
 	if pirates_v68 != null and pirates_v68.ile != null:
 		boxes.append([Vector2(pirates_v68.ile.CENTER.x, pirates_v68.ile.CENTER.z), pirates_v68.ile.HALF])
+	if soleils_v69 != null and soleils_v69.ile != null:
+		boxes.append([Vector2(soleils_v69.ile.CENTER.x, soleils_v69.ile.CENTER.z), soleils_v69.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

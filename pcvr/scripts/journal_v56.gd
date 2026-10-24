@@ -555,6 +555,98 @@ const QUETES := [
 		],
 		"fin": "Tu… tu l'as trouvé. Le trésor du capitaine. (Le vieux Silas pleure et rit à la fois.) Cent ans que j'en parle, et personne ne m'a cru. Tiens, prends ça : son tricorne. Il me l'avait laissé, le jour où il est parti en mer pour ne jamais revenir. Il te va mieux qu'à moi. Va, héritier de Barbe-Sanglante. Et raconte-la bien, cette histoire. C'est tout ce qui reste, à la fin : les histoires.",
 		"recompense": {"pieces": 100, "rep": 10, "titre": "Héritier de Barbe-Sanglante", "objets": [["tricorne_or", 1]], "flag": "tresor_balafre"}},
+	# V69 : l'Île des Trois Soleils (Per-Hâpy, Yaxché, Aztlán) et ses trois grands donjons
+	{"id": "eg_pyramide", "titre": "La nuit de Rê", "donneur": "neferet", "lieu": "Trois Soleils, Per-Hâpy", "sorte": "Trois Soleils",
+		"resume": "Chaque nuit, Rê traverse le monde d'en dessous dans sa barque, et Apophis, le serpent du chaos, veut l'avaler. Depuis que la Pyramide de Rê est scellée, Néferet n'entend plus Rê chanter à l'aube.",
+		"offre_label": "Vous avez l'air inquiète, prêtresse.",
+		"offre": "Inquiète… Chaque matin, je salue Rê qui renaît. Depuis des lunes, il se lève pâle, comme s'il avait mal dormi. Je crois qu'Apophis le harcèle, la nuit, au fond de la Douat. La Pyramide de Rê, de l'autre côté du fleuve, garde le chemin de la nuit ; mais sa porte est scellée, et le Sphinx n'ouvre qu'à ceux qui savent répondre. Va le voir. Réfléchis avant de parler. Et si tu descends… protège la barque du soleil.",
+		"etapes": [
+			{"type": "etat", "cle": "sphinx", "objectif": "Répondre aux trois questions du Sphinx (sur le plateau de Rê, de l'autre côté du fleuve, au sud de Per-Hâpy)"},
+			{"type": "etat", "cle": "pyramide", "objectif": "Descendre dans la Pyramide de Rê, traverser le voyage de la nuit et vaincre Apophis au fond de la Douat"},
+			{"type": "rendre", "pnj": "neferet", "label": "Apophis est vaincu. Rê est sauvé.", "objectif": "Le dire à Néferet, la prêtresse de Rê (au temple de Per-Hâpy)"},
+		],
+		"fin": "Je le savais. Ce matin, Rê s'est levé rouge et or, comme un jeune homme. (Elle pose la main sur ton front.) Que sa lumière te suive partout où tu iras. Tiens : du pain de Mérit, et de quoi remplir ta bourse. Et l'Œil d'Horus, garde-le bien : sur les hautes terres, au milieu de l'île, une niche l'attend.",
+		"recompense": {"pieces": 60, "rep": 6, "objets": [["pain_egypte", 3]]}},
+	{"id": "eg_chat", "titre": "Miou a disparu", "donneur": "nebet", "lieu": "Trois Soleils, Per-Hâpy", "sorte": "Trois Soleils",
+		"resume": "Miou, le chat roux à l'oreille tordue de la petite Nebet, a disparu depuis trois jours. Khéty dit que les chats aiment le frais des tombeaux, sur le plateau de Rê.",
+		"offre_label": "Ton chat… je peux le chercher ?",
+		"offre": "C'est vrai ? Tu veux bien ? Il s'appelle Miou. Il est roux, avec une oreille tordue, comme ça. (Elle tord son oreille.) Khéty dit que les chats aiment aller chez les morts, sur le plateau, près des tombes carrées. Mais maman ne veut pas que j'y aille toute seule. Tu le ramènes ? Promis ?",
+		"etapes": [
+			{"type": "etat", "cle": "chat_trouve", "objectif": "Chercher Miou sur le plateau de Rê, près des mastabas (les tombes carrées), et le prendre dans tes bras (E)"},
+			{"type": "rendre", "pnj": "nebet", "label": "Regarde qui est là, Nebet !", "objectif": "Ramener Miou à Nebet, à Per-Hâpy"},
+		],
+		"fin": "MIOU ! (Le chat saute de tes bras dans les siens et ronronne comme un moulin.) Tu sens le tombeau, vilain chat ! … Merci, merci ! Tiens, c'est mon scarabée porte-bonheur. Ptahmosé l'a fait pour moi. Il te portera bonheur à toi aussi, maintenant.",
+		"recompense": {"pieces": 10, "rep": 4, "objets": [["scarabee", 1]]}},
+	{"id": "eg_crocodiles", "titre": "Le voleur de filets", "donneur": "kheti", "lieu": "Trois Soleils, le fleuve Iterou", "sorte": "Trois Soleils",
+		"resume": "Les crocodiles de l'embouchure de l'Iterou volent les filets de Khéty, le pêcheur. Il veut qu'on lui rapporte deux de leurs dents, pour qu'ils comprennent.",
+		"offre_label": "Ces crocodiles… je peux t'aider ?",
+		"offre": "M'aider ? Avec les crocodiles ? Ha ! … Tu es sérieux. Bon. À l'embouchure, à l'est, trois gros crocodiles se couchent sur les bancs de sable. Ils mangent mes poissons dans mes filets, et parfois les filets avec. Rapporte-moi deux de leurs dents : je les pendrai à ma barque. Les autres comprendront.",
+		"etapes": [
+			{"type": "objets", "pnj": "kheti", "objets": {"dent_croco": 2}, "label": "Voici deux dents de crocodile.", "texte": "(Khéty les soupèse, et siffle.) Elles sont plus longues que mes doigts ! Je les pends à la proue, tout de suite. Sobek, le dieu crocodile, ne m'en voudra pas : c'étaient des voleurs.", "objectif": "Rapporter deux dents de crocodile à Khéty (les crocodiles se couchent à l'embouchure de l'Iterou, à l'est de Per-Hâpy)"},
+		],
+		"fin": "Tiens, des pièces, et deux jarres de la bière de Mérit. Et si un jour tu veux pêcher, ma barque est la tienne.",
+		"recompense": {"pieces": 25, "rep": 3, "objets": [["biere_heqet", 2]]}},
+	{"id": "ma_xibalba", "titre": "La descente des Jumeaux", "donneur": "ixkanul", "lieu": "Trois Soleils, Yaxché", "sorte": "Trois Soleils",
+		"resume": "Sous le Temple de Kukulkan s'ouvre le chemin de Xibalba, le royaume des Seigneurs de la mort. Ix Kanul, la grande prêtresse, voudrait qu'on y descende comme les Jumeaux du Popol Vuh, et qu'on en rapporte le Masque de Jade des rois de Yaxché.",
+		"offre_label": "Le chemin de Xibalba… on peut y descendre ?",
+		"offre": "On peut. On ne devrait pas. Mais le Masque de Jade de nos rois est là-dessous, depuis que les Seigneurs l'ont pris, et sans lui Kinich Ahau, notre soleil, se lève sans visage. La porte du temple ne s'ouvre qu'à la date où les dieux ont créé le monde. Ah Kin, l'astronome, la connaît ; la grande stèle de la place aussi. Ensuite… souviens-toi des Jumeaux. Ils ont rusé à chaque épreuve.",
+		"etapes": [
+			{"type": "etat", "cle": "calendrier", "objectif": "Au sommet du Temple de Kukulkan, mettre les deux roues du calendrier sur la date de la création du monde (la grande stèle de la place la montre ; Ah Kin, l'astronome, la connaît)"},
+			{"type": "etat", "cle": "xibalba", "objectif": "Descendre dans Xibalba, déjouer les Seigneurs de la mort et rapporter le Masque de Jade"},
+			{"type": "rendre", "pnj": "ixkanul", "label": "J'ai le Masque de Jade.", "objectif": "Le dire à Ix Kanul, la grande prêtresse (au temple, ou au Cénote le matin)"},
+		],
+		"fin": "Tu l'as… tu es remonté de Xibalba. (Ix Kanul s'agenouille.) Les Jumeaux ont trompé les Seigneurs et sont devenus le Soleil et la Lune. Toi, tu es devenu une histoire. Garde le masque : sa place est sur l'Autel des Trois Soleils, sur les hautes terres. Tiens, du cacao des fêtes.",
+		"recompense": {"pieces": 60, "rep": 6, "objets": [["cacao", 3]]}},
+	{"id": "ma_moustique", "titre": "Xan le moustique", "donneur": "kinich", "lieu": "Trois Soleils, Yaxché", "sorte": "Trois Soleils",
+		"resume": "Kinich, le garçon au moustique, veut bien prêter Xan, son moustique, à qui descendra dans Xibalba. Mais il a faim.",
+		"offre_label": "Ton moustique… tu me le prêterais ?",
+		"offre": "Xan ? Pour descendre dans Xibalba ? Comme les Jumeaux ?! … D'accord ! Mais j'ai faim. J'ai trop faim pour prêter un moustique. Ix Chab fait les meilleures galettes de maïs de la place. Tu m'en apportes une ?",
+		"etapes": [
+			{"type": "objets", "pnj": "kinich", "objets": {"galette_mais": 1}, "label": "Tiens, une galette d'Ix Chab.", "texte": "(Il mord dedans, la bouche pleine.) Merchi ! Tiens, voilà Xan. Ne le lâche que pour les choses importantes. Et ça aussi : Peek' a déterré des os énormes. Pour les jaguars, comme dans l'histoire !", "objectif": "Apporter une galette de maïs à Kinich (Ix Chab en vend sur la place de Yaxché)"},
+		],
+		"fin": "Xan, tu obéis bien, d'accord ? Et tu reviens ! (Il tapote la calebasse.) Au revoir, Xan…",
+		"recompense": {"pieces": 0, "rep": 3, "objets": [["moustique", 1], ["os_jaguar", 2]]}},
+	{"id": "az_temple", "titre": "Les Cinq Soleils", "donneur": "cuauhtli", "lieu": "Trois Soleils, Aztlán", "sorte": "Trois Soleils",
+		"resume": "Cuauhtli, le grand prêtre d'Aztlán, cherche quelqu'un pour offrir la pluie à Tlaloc et le feu à Huitzilopochtli, au sommet du Grand Temple, et descendre sous le temple, dans la salle des Cinq Soleils.",
+		"offre_label": "Que faut-il faire, au sommet du Grand Temple ?",
+		"offre": "Deux offrandes. À Tlaloc, une jarre d'eau de pluie : Coyotl, le potier, en façonne. À Huitzilopochtli, du copal qui brûle : Tochtli en vend au marché. Alors la dalle ronde s'ouvrira entre les deux sanctuaires, et tu descendras chez les Cinq Soleils. Au plus profond dort la Plume du Serpent à plumes… et Cipactli, qui la garde.",
+		"etapes": [
+			{"type": "etat", "cle": "offrandes", "objectif": "Au sommet du Grand Temple, offrir une jarre de pluie à Tlaloc (sanctuaire bleu) et du copal à Huitzilopochtli (sanctuaire rouge)"},
+			{"type": "etat", "cle": "cinq_soleils", "objectif": "Descendre sous le Grand Temple, rallumer la Pierre du Soleil, mettre le Cinquième Soleil en mouvement, vaincre Cipactli"},
+			{"type": "rendre", "pnj": "cuauhtli", "label": "Le Cinquième Soleil tourne, et Cipactli dort pour de bon.", "objectif": "Le dire à Cuauhtli, le grand prêtre (au pied du Grand Temple)"},
+		],
+		"fin": "(L'Aigle te regarde longtemps.) Les anciens disent que le Cinquième Soleil s'arrêtera un jour. Pas aujourd'hui. Pas grâce à toi. Garde la Plume : sa place est sur l'Autel des Trois Soleils, sur les hautes terres. Et prends ceci, pour la route.",
+		"recompense": {"pieces": 60, "rep": 6, "objets": [["copal", 2]]}},
+	{"id": "az_jarre", "titre": "Une jarre pour Tlaloc", "donneur": "coyotl", "lieu": "Trois Soleils, Aztlán", "sorte": "Trois Soleils",
+		"resume": "Coyotl, le potier d'Aztlán, façonne les jarres de pluie de Tlaloc ; mais il n'en donne une que si le grand prêtre l'envoie demander.",
+		"offre_label": "Tu me ferais une jarre de pluie ?",
+		"offre": "Une jarre de Tlaloc ? Ce n'est pas un pot à soupe, ami. On ne la donne pas à n'importe qui : il faut que Cuauhtli, le grand prêtre, t'envoie. Va le voir, au pied du Grand Temple. S'il dit oui, je t'en fais une.",
+		"etapes": [
+			{"type": "parler", "pnj": "cuauhtli", "label": "Coyotl demande si c'est vous qui m'envoyez.", "texte": "Coyotl et ses manières ! Oui. Dis-lui que Cuauhtli l'Aigle t'envoie, et que Tlaloc a soif.", "objectif": "Demander à Cuauhtli, le grand prêtre (au pied du Grand Temple), de t'envoyer chez Coyotl"},
+			{"type": "rendre", "pnj": "coyotl", "label": "Cuauhtli m'envoie : Tlaloc a soif.", "objectif": "Retourner voir Coyotl, le potier (à son atelier, ou au marché à midi)"},
+		],
+		"fin": "« Tlaloc a soif » ? Alors c'est sérieux. (Il sort de son four une jarre bleue aux grands yeux ronds, la plonge dans le lac et la bouche d'une feuille.) Voilà. Pleine d'eau du lac, et ne la renverse pas en route.",
+		"recompense": {"pieces": 0, "rep": 3, "objets": [["jarre_pluie", 1]]}},
+	{"id": "az_cempasuchil", "titre": "Les fleurs des morts", "donneur": "xochitl", "lieu": "Trois Soleils, les chinampas", "sorte": "Trois Soleils",
+		"resume": "Xóchitl, la jardinière des chinampas, a besoin de cinq bouquets de cempasúchil, les fleurs orange qui guident les âmes des morts, pour les autels du temple.",
+		"offre_label": "Je peux cueillir tes fleurs ?",
+		"offre": "Tu ferais ça ? Les cempasúchil poussent sur les chinampas du sud, au bord des canaux : des touffes orange, comme des petits soleils. Il m'en faut cinq bouquets. Ne marche pas sur les haricots !",
+		"etapes": [
+			{"type": "ramasser", "objets": {"cempasuchil": 5}, "lieux": ["cempasuchil_0", "cempasuchil_1", "cempasuchil_2", "cempasuchil_3", "cempasuchil_4"], "objectif": "Cueillir cinq bouquets de cempasúchil sur les chinampas, au sud et à l'ouest du lac d'Aztlán"},
+			{"type": "objets", "pnj": "xochitl", "objets": {"cempasuchil": 5}, "label": "Voici tes cinq bouquets.", "texte": "Qu'elles sentent bon ! Les âmes trouveront le chemin, cette année. (Elle en glisse une derrière ton oreille.) Celle-là, c'est pour toi.", "objectif": "Apporter les cinq bouquets à Xóchitl (sur les chinampas, ou au marché)"},
+		],
+		"fin": "Tiens, des pièces, et du copal pour le temple : on dit que les dieux aiment l'odeur des fleurs et du copal ensemble.",
+		"recompense": {"pieces": 30, "rep": 4, "objets": [["copal", 1]]}},
+	{"id": "az_jaguars", "titre": "Les jaguars du Mont Fumant", "donneur": "mixtli", "lieu": "Trois Soleils, le Mont Fumant", "sorte": "Trois Soleils",
+		"resume": "Deux vrais jaguars rôdent sur les pentes du Mont Fumant, à l'ouest. Ils ont tué un dindon de Xóchitl. Mixtli, le guerrier-jaguar, veut qu'on les affronte.",
+		"offre_label": "Les jaguars du volcan… je viens avec toi.",
+		"offre": "Avec moi ? Non : à ta place. Un guerrier-jaguar contre des jaguars, Cuauhtli trouve ça trop drôle, il ne me laisse pas partir. Les pentes du Mont Fumant, à l'ouest, sous les pins. Quand un jaguar se tapit, il va bondir : écarte-toi, puis frappe.",
+		"etapes": [
+			{"type": "etat", "cle": "jaguars_volcan", "objectif": "Vaincre les jaguars des pentes du Mont Fumant (à l'ouest de l'île, sous les pins)"},
+			{"type": "rendre", "pnj": "mixtli", "label": "Les jaguars du volcan ne tueront plus de dindons.", "objectif": "Le dire à Mixtli, le guerrier-jaguar (sur la place d'Aztlán)"},
+		],
+		"fin": "(Mixtli te tape sur l'épaule, fort.) Toi, tu as un cœur de jaguar. Tiens : des os de leurs repas. Dans Xibalba, chez les Mayas, ça sert, paraît-il. Et des pièces.",
+		"recompense": {"pieces": 40, "rep": 5, "objets": [["os_jaguar", 2]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -584,6 +676,11 @@ const AVENTURES := [
 			["aile_marees", "Rallumer le cristal de l'Aile des Marées (à l'ouest)"], ["aile_sables", "Rallumer le cristal de l'Aile des Sables (au sud)"],
 			["aile_rouages", "Rallumer le cristal de l'Aile des Rouages (au nord)"], ["aile_lune", "Rallumer le cristal de l'Aile de la Lune (à l'est)"],
 			["coeur_ouvert", "Ouvrir la salle du Cœur"], ["gardien_coeur", "Apaiser le Gardien du Cœur"]]},
+	{"id": "trois_soleils", "titre": "Les Trois Soleils", "lieu": "L'Île des Trois Soleils", "debut": "soleils",
+		"etapes": [["soleils", "Accoster sur l'Île des Trois Soleils"], ["sphinx", "Répondre aux trois questions du Sphinx"], ["pyramide", "Rapporter l'Œil d'Horus de la Pyramide de Rê"],
+			["calendrier", "Ouvrir le Temple de Kukulkan à la date de la création"], ["xibalba", "Rapporter le Masque de Jade de Xibalba"],
+			["offrandes", "Faire les offrandes du Grand Temple d'Aztlán"], ["cinq_soleils", "Rapporter la Plume de Quetzalcóatl des Cinq Soleils"],
+			["trois_soleils", "Poser les trois reliques sur l'Autel des Trois Soleils"]]},
 ]
 
 var main: Node
@@ -1219,6 +1316,8 @@ func place_name(p: Vector3) -> String:
 		return {"arcanelle_bourg": "Arcanelle, le bourg", "arcanelle_chaudron": "Arcanelle, Le Chaudron Fumant", "arcanelle_bibliotheque": "Arcanelle, la bibliothèque",
 			"arcanelle_salle": "Arcanelle, la Salle des Cours", "arcanelle_crypte": "Arcanelle, la Crypte aux Runes", "arcanelle_bois": "Arcanelle, le Bois Tors",
 			"arcanelle_falaises": "Arcanelle, les falaises du nord", "arcanelle_rivage": "Arcanelle, le rivage"}.get(az, "Arcanelle, l'île des sorciers")
+	if main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(p):
+		return str(main.soleils_v69.place_name(p))
 	if main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(p):
 		var bz: String = str(main.pirates_v68.zone_at(p))
 		return {"balafre_port": "La Balafre, Port-Coutelas", "balafre_crane_fendu": "La Balafre, le Crâne Fendu", "balafre_dent_requin": "La Balafre, la Dent du Requin",

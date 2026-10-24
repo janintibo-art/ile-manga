@@ -33,6 +33,17 @@ void fragment() {
 	} else if (motif == 3) {
 		float s = step(0.5, fract((rest.x + rest.z * 0.6) / echelle));
 		c = mix(couleur, couleur2, s);
+	} else if (motif == 5) {
+		// V69 : les tissages des Mayas et des Aztèques : des bandes de losanges (un losange creux,
+		// un point au milieu) entre deux filets, sur le fond uni
+		float band = fract(rest.y / echelle * 0.25);
+		float u = (rest.x + rest.z * 0.7) / echelle;
+		float bv = clamp((band - 0.55) / 0.4, 0.0, 1.0);
+		float inb = step(0.55, band) * step(band, 0.95);
+		float d = abs(fract(u * 0.5) - 0.5) * 2.0 + abs(bv - 0.5) * 2.0;
+		float pat = inb * (step(d, 0.95) * (1.0 - step(d, 0.55)) + step(d, 0.2));
+		float ln = step(abs(band - 0.5), 0.02) + step(0.975, band);
+		c = mix(couleur, couleur2, clamp(pat + ln, 0.0, 1.0));
 	} else if (motif == 4) {
 		vec2 q = vec2(rest.x + rest.z * 0.7, rest.y) / echelle;
 		float d = length(fract(q) - 0.5);

@@ -1263,5 +1263,125 @@
 "groupe": "balafre",
 "nom": "le Vieux Silas",
 "titre": "vieux pirate et conteur"
+},
+"neferet": {
+"groupe": "soleils",
+"nom": "Néferet",
+"titre": "prêtresse de Rê"
+},
+"amenemhat": {
+"groupe": "soleils",
+"nom": "Amenemhat",
+"titre": "maître scribe de la Maison de Vie"
+},
+"kheti": {
+"groupe": "soleils",
+"nom": "Khéty",
+"titre": "pêcheur du fleuve"
+},
+"merit": {
+"groupe": "soleils",
+"nom": "Mérit",
+"titre": "boulangère et brasseuse"
+},
+"ptahmose": {
+"groupe": "soleils",
+"nom": "Ptahmosé",
+"titre": "potier"
+},
+"hapou": {
+"groupe": "soleils",
+"nom": "Hapou",
+"titre": "paysan"
+},
+"tiyi": {
+"groupe": "soleils",
+"nom": "Tiyi",
+"titre": "tisserande"
+},
+"nebet": {
+"groupe": "soleils",
+"nom": "Nebet",
+"titre": "la fille de Tiyi"
+},
+"ixkanul": {
+"groupe": "soleils",
+"nom": "Ix Kanul",
+"titre": "grande prêtresse de Kukulkan"
+},
+"ahkin": {
+"groupe": "soleils",
+"nom": "Ah Kin Pech",
+"titre": "astronome"
+},
+"balam": {
+"groupe": "soleils",
+"nom": "Balam",
+"titre": "chasseur"
+},
+"ixsak": {
+"groupe": "soleils",
+"nom": "Ix Sak",
+"titre": "tisserande"
+},
+"chak": {
+"groupe": "soleils",
+"nom": "Chak",
+"titre": "joueur de balle"
+},
+"yumkab": {
+"groupe": "soleils",
+"nom": "Yum Kab",
+"titre": "apiculteur"
+},
+"ixchab": {
+"groupe": "soleils",
+"nom": "Ix Chab",
+"titre": "marchande de cacao et de tortillas"
+},
+"kinich": {
+"groupe": "soleils",
+"nom": "Kinich",
+"titre": "le garçon au moustique"
+},
+"cuauhtli": {
+"groupe": "soleils",
+"nom": "Cuauhtli",
+"titre": "grand prêtre du Grand Temple"
+},
+"citlali": {
+"groupe": "soleils",
+"nom": "Citlali",
+"titre": "maîtresse du calmecac"
+},
+"mixtli": {
+"groupe": "soleils",
+"nom": "Mixtli",
+"titre": "guerrier-jaguar"
+},
+"xochitl": {
+"groupe": "soleils",
+"nom": "Xóchitl",
+"titre": "jardinière des chinampas"
+},
+"tochtli": {
+"groupe": "soleils",
+"nom": "Tochtli",
+"titre": "marchand du tianguis"
+},
+"coyotl": {
+"groupe": "soleils",
+"nom": "Coyotl",
+"titre": "potier"
+},
+"nenetl": {
+"groupe": "soleils",
+"nom": "Nenetl",
+"titre": "musicienne"
+},
+"pilli": {
+"groupe": "soleils",
+"nom": "Pilli",
+"titre": "le fils de Xóchitl"
 }
 }

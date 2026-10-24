@@ -53,3 +53,32 @@ avec les outils de la V51 et la banque VSCO-2 CE (plus quelques échantillons de
 Percussion », même auteur, CC0) :
   musique/balafre.ogg (« La Balafre », le thème de l'île),
   musique/gigue_crane.ogg (« La Gigue du Crâne », Tom le Violoneux au Crâne Fendu).
+
+L'Île des Trois Soleils : Per-Hâpy, Yaxché, Aztlán et leurs souterrains (V69) — tous CC0 1.0 /
+domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v69.py : synthétisés (voix de bêtes et de
+monstres, ronronnement, chauves-souris, ailes de cuir, conque, sistre, cœur, flûte d'argile, peaux de
+tambour, sable, pierre qui parle, oiseaux, singes hurleurs, âne, chadouf, vent, eau, feu…) et mêlés à
+des enregistrements retravaillés (découpés, transposés, ralentis, débruités, filtrés, réverbérés) :
+  du recueil github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, RPG Audio, Voiceover Pack, Voiceover Fighter ;
+  « 80 CC0 RPG SFX », « 80 CC0 creature SFX » (1 et 2), beast_or_animal, « 100 CC0 wood/metal SFX »,
+  « 75 CC0 breaking/falling/hit SFX », « 40 CC0 water splash/slime SFX », « 25 CC0 bang SFX »,
+  « BB Retail Therapy Sample Pack » et « Micro Pack - Cat Meows » (Ben Burnes, CC0), les rires de
+  « Free Retro Arcade Sounds » (The Motion Monkey, CC0) ;
+  de la banque VSCO-2 CE (Versilian Studios, CC0) : le grand tambour à main « EthnicLargeHand » et
+  la conga de « VSCO 1 Percussion » (le huehuetl) ;
+  de l'enregistrement « WATRFlow_Outdoor, River Ellen » par JW_Audio (Freesound, CC0, via
+  github.com/DNAABR/ambient-sounds-library) (le fleuve Iterou).
+  sfx/momie_menace_1, momie_mort_1, jaguar_menace_1..2, jaguar_mort_1, chauve_souris_cri_1..3,
+      ammit_cri_1, apophis_cri_1, camazotz_cri_1, cipactli_cri_1, chat_1..2, balle_1..2, conque_1,
+      sistre_1, battement_1, pluie_feu_1..2, sable_effondre_1, verser_1, statue_parle_1,
+      tambour_azteque_1..2, flute_maya_1
+  ambiance/nil, jungle_maya, lac_aztlan, donjon_pyramide, donjon_xibalba, donjon_soleils
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v69.py, jouées
+avec les outils de la V51 et la banque VSCO-2 CE (plus quelques échantillons de « VSCO 1
+Percussion », même auteur, CC0 : grand tambour à main, tambours à fente, maracas, gong) :
+  musique/per_hapy.ogg (« Per-Hâpy », le village égyptien au bord du fleuve Iterou),
+  musique/yaxche.ogg (« Yaxché », la cité maya dans la jungle),
+  musique/aztlan.ogg (« Aztlán », la cité aztèque sur le lac de la Lune),
+  musique/trois_soleils_donjon.ogg (« Les Trois Soleils », les trois grands souterrains).

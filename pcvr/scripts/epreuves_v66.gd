@@ -111,6 +111,20 @@ const LISTE := {
 	"vieille_dent": ["Vieille-Dent", "balafre", 120],
 	"capitaine_os": ["Le Capitaine Sans-Chair", "balafre", 200],
 	"tresor_crane": ["Le trésor de Barbe-Sanglante", "balafre", 80],
+	# --- V69 : l'Île des Trois Soleils et ses trois grands donjons
+	"soleils": ["L'Île des Trois Soleils", "soleils", 20],
+	"sphinx": ["Les trois questions du Sphinx", "soleils", 40],
+	"chat_trouve": ["Miou retrouvé", "soleils", 15],
+	"apophis": ["Apophis, le serpent du chaos", "soleils", 150],
+	"pyramide": ["L'Œil d'Horus", "soleils", 60],
+	"calendrier": ["La date de la création du monde", "soleils", 30],
+	"camazotz": ["Camazotz, la chauve-souris de la mort", "soleils", 150],
+	"xibalba": ["Le Masque de Jade", "soleils", 60],
+	"offrandes": ["Les offrandes du Grand Temple", "soleils", 20],
+	"cipactli": ["Cipactli, le monstre de la Terre", "soleils", 150],
+	"cinq_soleils": ["La Plume de Quetzalcóatl", "soleils", 60],
+	"jaguars_volcan": ["Les jaguars du Mont Fumant", "soleils", 40],
+	"trois_soleils": ["L'Autel des Trois Soleils", "soleils", 120],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -130,7 +144,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -142,7 +156,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

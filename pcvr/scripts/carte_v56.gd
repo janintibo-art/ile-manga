@@ -10,7 +10,8 @@ const ARCH_TEX := "res://assets/textures/carte/archipel.png"
 const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## Rectangle du monde couvert par la carte de l'archipel (x0, z0, x1, z1)
 ## (V59 : la carte s'étend à l'est jusqu'à la grande île)
-const ARCH_RECT := Rect2(-540.0, -960.0, 1800.0, 1440.0)
+## (V68 : au nord jusqu'à la Balafre ; V69 : à l'ouest jusqu'à l'Île des Trois Soleils)
+const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 1440.0)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -48,6 +49,14 @@ const PLACES := [
 	["Port-Coutelas", Vector2(410, -610), "balafre"],
 	["Rocher du Crâne", Vector2(440, -768), "tresor_crane"],
 	["Fort Maudit", Vector2(550, -642), "balafre"],
+	# V69 : l'Île des Trois Soleils
+	["Per-Hâpy", Vector2(-764, -175), "soleils_egypte"],
+	["Pyramide de Rê", Vector2(-760, 40), "soleils_egypte"],
+	["Yaxché", Vector2(-965, -268), "soleils_maya"],
+	["Cénote sacré", Vector2(-1044, -392), "soleils_maya"],
+	["Aztlán", Vector2(-1085, -2), "soleils_azteque"],
+	["Mont Fumant", Vector2(-1198, -212), "soleils"],
+	["Autel des Trois Soleils", Vector2(-918, -222), "soleils"],
 ]
 
 var main: Node
@@ -78,7 +87,7 @@ func setup(main_node: Node, carnet_node: Node) -> void:
 
 func _tex_size() -> Vector2:
 	var t: Texture2D = _tex.get(mode, null)
-	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(1800, 1440) if mode == "archipel" else Vector2(960, 840))
+	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(2580, 1440) if mode == "archipel" else Vector2(960, 840))
 
 
 func set_mode(m: String) -> void:
@@ -230,6 +239,24 @@ func _quest_targets(id: String) -> Array:
 					"sceau_embruns":
 						if sc.proue_at != Vector3.INF:
 							out.append(sc.proue_at)
+			# V69 : l'Île des Trois Soleils (le Sphinx, Miou, les trois temples, les jaguars, l'autel)
+			var so: Node = main.get("soleils_v69")
+			if so != null and so.get("egypte") != null and so.egypte != null:
+				match str(e.get("cle", "")):
+					"sphinx":
+						out.append(so.egypte.sphinx_talk)
+					"chat_trouve":
+						out.append(so.egypte.objets["mastaba_chat"])
+					"pyramide", "apophis":
+						out.append(so.egypte.pyramid_door)
+					"calendrier", "xibalba", "camazotz":
+						out.append(so.maya.temple_door)
+					"offrandes", "cinq_soleils", "cipactli":
+						out.append(so.azteque.temple_gate)
+					"jaguars_volcan":
+						out.append(so.ile.W(-190.0, -90.0))
+					"trois_soleils":
+						out.append(so.ile.pads_world["autel"])
 			# V68 : la Balafre (le perchoir de Rhubarbe, Vieille-Dent, le Cirque du Crâne, le trésor)
 			var pv: Node = main.get("pirates_v68")
 			if pv != null and pv.get("port") != null and pv.port != null:
