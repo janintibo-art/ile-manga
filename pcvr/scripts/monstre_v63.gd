@@ -141,6 +141,25 @@ func is_boss() -> bool:
 	return bool(spec.get("boss", false))
 
 
+## V68 : les créatures de l'Île de la Balafre (monstre_v68.gd) suivent les mêmes règles :
+## ces petites méthodes leur permettent de se glisser dans la mécanique des créatures V63.
+func _v63() -> bool:
+	return SPECS63.has(kind)
+
+
+func _leaper() -> bool:
+	return kind in LEAPERS
+
+
+func _sound_pair() -> Array:
+	return SOUNDS63.get(kind, ["monstre_menace", "monstre_mort"])
+
+
+func _armer_anim() -> void:
+	if kind in ["automate", "colosse"]:
+		_play("v28/slash3", 0.1, 0.55 if kind == "automate" else 0.45)
+
+
 # =================================================================== réactions aux pouvoirs
 
 func on_power(p: String, _from: Vector3) -> void:
@@ -180,7 +199,7 @@ func _hint(t: String) -> void:
 func stun(t: float) -> void:
 	if state == "mort":
 		return
-	if not SPECS63.has(kind):
+	if not _v63():
 		state = "recul"
 		timer = t
 		return
@@ -217,7 +236,7 @@ func set_moonlit(on: bool) -> void:
 
 
 func take_hit(damage: int, from_pos: Vector3) -> void:
-	if not SPECS63.has(kind):
+	if not _v63():
 		super.take_hit(damage, from_pos)
 		return
 	if state == "mort":
@@ -289,7 +308,7 @@ func _puff_color() -> Color:
 
 
 func _die63() -> void:
-	var pair: Array = SOUNDS63.get(kind, ["monstre_menace", "monstre_mort"])
+	var pair: Array = _sound_pair()
 	if manager.main.has_method("sfx"):
 		manager.main.sfx(str(pair[1]), global_position + Vector3.UP * hit_height)
 	state = "mort"
@@ -308,7 +327,7 @@ func _die63() -> void:
 func _sound63(what: String) -> void:
 	if manager == null or manager.main == null or not manager.main.has_method("sfx"):
 		return
-	var pair: Array = SOUNDS63.get(kind, ["monstre_menace", "monstre_mort"])
+	var pair: Array = _sound_pair()
 	manager.main.sfx(str(pair[0] if what == "menace" else pair[1]), global_position + Vector3.UP * hit_height)
 
 
@@ -372,7 +391,7 @@ func alert_text() -> String:
 # =================================================================== comportement
 
 func _physics_process(delta: float) -> void:
-	if not SPECS63.has(kind):
+	if not _v63():
 		super._physics_process(delta)
 		return
 	if manager == null:
@@ -399,7 +418,7 @@ func _physics_process(delta: float) -> void:
 	var from_home: float = Vector2(global_position.x - home.x, global_position.z - home.z).length()
 	var move := Vector3.ZERO
 	timer -= delta
-	var leap: bool = kind in LEAPERS
+	var leap: bool = _leaper()
 	match state:
 		"etourdi":
 			if timer <= 0.0:
@@ -431,8 +450,7 @@ func _physics_process(delta: float) -> void:
 				state = "armer"
 				_sound63("menace")
 				timer = float(spec["armer"])
-				if kind in ["automate", "colosse"]:
-					_play("v28/slash3", 0.1, 0.55 if kind == "automate" else 0.45)
+				_armer_anim()
 			else:
 				move = dir_p * float(spec["vitesse"])
 				if from_home > float(spec["laisse"]):

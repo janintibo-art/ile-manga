@@ -101,6 +101,16 @@ const LISTE := {
 	"sort_soin": ["Le sort de soin", "arcanelle", 35],
 	"cloche_tour": ["La cloche de la Tour Penchée", "arcanelle", 20],
 	"ceremonie": ["La cérémonie des Pierres-Lunes", "arcanelle", 80],
+	# --- V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
+	"balafre": ["L'Île de la Balafre", "balafre", 20],
+	"bagarre_gagnee": ["Une bagarre gagnée", "balafre", 25],
+	"champion_1": ["Un champion du port au tapis", "balafre", 25],
+	"champions_3": ["Les trois champions au tapis", "balafre", 60],
+	"perroquet_trouve": ["Rhubarbe retrouvé", "balafre", 20],
+	"tatouage": ["Le tatouage de Coralie", "balafre", 10],
+	"vieille_dent": ["Vieille-Dent", "balafre", 120],
+	"capitaine_os": ["Le Capitaine Sans-Chair", "balafre", 200],
+	"tresor_crane": ["Le trésor de Barbe-Sanglante", "balafre", 80],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -120,7 +130,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -132,7 +142,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

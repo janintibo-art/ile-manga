@@ -9,7 +9,7 @@ const PLACES := [
 	["village", "Le village"], ["teuf", "La plage de la teuf"], ["jungle", "L'île de la jungle"], ["elfes", "Le Bois-Doré"],
 	["nains", "Forgefer"], ["ciel", "L'île flottante"], ["azur", "Port-Azur"], ["atlantide", "L'Atlantide"], ["fees", "Le royaume des fées"],
 	["carene", "Carène"], ["porte_sceaux", "La Porte aux Quatre Sceaux"], ["tazira", "Tazira"], ["cliquetis", "Cliquetis"],
-	["ramure", "Ramure"], ["arcanelle", "Arcanelle"],
+	["ramure", "Ramure"], ["arcanelle", "Arcanelle"], ["balafre", "Port-Coutelas"],
 ]
 
 var main: Node
@@ -88,6 +88,9 @@ func spot(id: String) -> Array:
 		"tazira":
 			var gt: Node = main.get("grande_v59")
 			return gt.tazira.respawn_point() if gt != null and gt.get("tazira") != null and gt.tazira != null else []
+		"balafre":
+			var pv: Node = main.get("pirates_v68")
+			return pv.respawn_point() if pv != null and pv.get("port") != null and pv.port != null else []
 		"arcanelle":
 			var ar: Node = main.get("arcanelle_v67")
 			return ar.respawn_point() if ar != null and ar.get("bourg") != null and ar.bourg != null else []
@@ -127,6 +130,9 @@ func current_place() -> String:
 	var az: Node = main.get("azur_v56")
 	if az != null and az.get("ile") != null and az.ile != null and az.contains(p):
 		return "azur"
+	var pv2: Node = main.get("pirates_v68")
+	if pv2 != null and pv2.get("port") != null and pv2.port != null and pv2.contains(p) and p.y > -10.0 and pv2.ile.height(p.x, p.z) > -0.42:
+		return "balafre"
 	var ar2: Node = main.get("arcanelle_v67")
 	if ar2 != null and ar2.get("bourg") != null and ar2.bourg != null and ar2.contains(p) and p.y > -10.0 and ar2.ile.height(p.x, p.z) > -0.42:
 		return "arcanelle"
@@ -173,7 +179,7 @@ func _process(delta: float) -> void:
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
-	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"]]:
+	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true
 

@@ -8,6 +8,7 @@ extends Node3D
 
 const MonsterScript = preload("res://scripts/monstre_v36.gd")
 const Monster63 = preload("res://scripts/monstre_v63.gd")
+const Monster68 = preload("res://scripts/monstre_v68.gd")
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -97,7 +98,8 @@ func monstres_list_copy() -> Array:
 ## V37 : un monstre de plus (les crabes appelés par le Crabe-Roi).
 func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V63 : les créatures de la grande enquête et du Cœur-de-Pierre (monstre_v63.gd)
-	var m: CharacterBody3D = Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()
+	# V68 : les monstres de l'Île de la Balafre (crocodiles, squelettes, le Capitaine Sans-Chair)
+	var m: CharacterBody3D = Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -199,7 +201,9 @@ func _red_flash() -> void:
 
 ## VR : à bout de forces, on se réveille à l'entrée du temple.
 func _vr_faint() -> void:
-	donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
+	var pp: Vector3 = main._player_pos_v27()
+	if not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
+		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
 	respawn_player()
 	await get_tree().create_timer(0.4).timeout
@@ -210,6 +214,11 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V68 : sur l'Île de la Balafre (une bagarre perdue, ou les monstres de l'intérieur)
+	if main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(p):
+		main.pirates_v68.on_faint()
+		_heal_player()
+		return
 	# V63 : sous le Cœur-de-Pierre, ou dans un sanctuaire des sceaux
 	if main.get("coeur_v63") != null and main.coeur_v63 != null and main.coeur_v63.region_contains(p):
 		main.coeur_v63.respawn()
@@ -348,6 +357,9 @@ func _process(delta: float) -> void:
 		outdoor = true
 	# V63 : les combats de la grande enquête (au bord de la grande mare de Ramure…)
 	if not inside and main.get("sceaux_v63") != null and main.sceaux_v63 != null and main.sceaux_v63.hostile_zone(main._player_pos_v27()):
+		outdoor = true
+	# V68 : l'intérieur de l'Île de la Balafre (les repaires des monstres), et les bagarres
+	if not inside and main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.hostile_zone(main._player_pos_v27()):
 		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))

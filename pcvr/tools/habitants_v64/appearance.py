@@ -7,7 +7,8 @@ clemence colette dagna eclair ecrou electre elfe_1 elfe_3 elfe_5 elfe_7 elfe_8 f
 heloise hilda hortense ilyria ines khadija lea lila lilas lola lucie lulu lyra mamalou maree margaux margot merelune mochi
 morgane myrtille nadine nain_1 nain_3 nain_6 nerea nimiel nina nolwenn odette ondine pauline pivoine plumette pommedepin
 prudence rita rosa rosalie rose rosette salome samira selma sofia sylvie sylwen trefle ulfa ursule yasmine yaya zelie
-zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe'''.split())
+zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe
+anne_rose scarlett coquille mama_grog coralie gwen'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -286,6 +287,7 @@ TROUSERS = {
     'cliquetis': [[0.22, 0.2, 0.2], [0.35, 0.28, 0.2], [0.18, 0.2, 0.26], [0.42, 0.38, 0.32]],
     'ramure': [[0.4, 0.32, 0.22], [0.32, 0.36, 0.24], [0.5, 0.44, 0.34], [0.28, 0.24, 0.2]],
     'teuf': [[0.22, 0.3, 0.48], [0.15, 0.15, 0.16], [0.75, 0.7, 0.6], [0.3, 0.4, 0.3]],
+    'balafre': [[0.2, 0.17, 0.15], [0.38, 0.3, 0.22], [0.15, 0.16, 0.22], [0.55, 0.48, 0.38], [0.3, 0.12, 0.1]],
 }
 SHOES = [[0.32, 0.2, 0.12], [0.12, 0.1, 0.09], [0.45, 0.32, 0.2], [0.55, 0.42, 0.3]]
 
@@ -386,6 +388,59 @@ def outfit(D, p):
             add('col', az['foulard'], 'soie')
         if arc.get('cape') and not child:
             add('cape', arc['cape'], 'laine')
+        return T
+    # --------------------------------------------------------- V68 : la Balafre : les pirates et les gens du port
+    pir = p.get('pirate')
+    if vil == 'balafre' and isinstance(pir, dict):
+        role = str(pir.get('role', ''))
+        shirt = [0.9, 0.86, 0.76] if r.random() < 0.55 else col(haut)
+        sash = [[0.62, 0.1, 0.08], [0.12, 0.1, 0.1], [0.75, 0.55, 0.15], [0.15, 0.3, 0.5]][int(r.integers(4))]
+        boots = [0.16, 0.11, 0.08]
+        if role in ('capitaine', 'gouverneur', 'cartographe', 'conteur', 'receleur', 'croupier'):
+            if female:
+                add('corsage_long', [0.92, 0.88, 0.8], 'lin', boutons=1.0)
+                add('veste', haut, 'laine')
+                add('pantalon', trous, 'toile')
+            else:
+                add('chemise_longue', [0.92, 0.9, 0.84] if role != 'conteur' else [0.7, 0.66, 0.58], 'lin', boutons=1.0)
+                add('veste', haut, 'laine')
+                add('pantalon', trous, 'toile', poches=1.0)
+            if role in ('capitaine', 'conteur'):
+                add('ceinture_ample', sash, 'laine')
+            add('bottes', boots, 'cuir')
+        elif role in ('tavernière', 'tatoueuse') or (female and role in ('charpentière',)):
+            add('corsage_long', col(haut), 'coton')
+            if role == 'tavernière':
+                add('jupe_longue', [0.3, 0.16, 0.12], 'laine')
+            else:
+                add('pantalon', trous, 'toile', poches=1.0)
+            add('ceinture_ample', sash, 'cuir')
+            add('bottes', boots, 'cuir')
+        elif female:
+            add('corsage_long', shirt, 'lin', boutons=1.0)
+            add('gilet', [0.22, 0.14, 0.1] if r.random() < 0.6 else darker(col(haut), 0.6), 'cuir')
+            add('pantalon', trous, 'toile', poches=1.0)
+            add('ceinture_ample', sash, 'laine')
+            add('bottes', boots, 'cuir')
+        else:
+            if role in ('forgeron',):
+                add('debardeur', [0.42, 0.36, 0.3], 'coton')
+            elif r.random() < 0.3 and role in ('matelot', 'gabier', 'vigie', 'mousse', 'canonnier', 'timonier'):
+                add('tshirt', [0.92, 0.9, 0.86], 'coton', motif=1, c2=[0.15, 0.2, 0.38], echelle=0.035)
+            else:
+                add('chemise_longue' if r.random() < 0.6 else 'chemise_courte', shirt, 'lin', boutons=1.0)
+            if role not in ('forgeron', 'chirurgien', 'mousse', 'musicien') and r.random() < 0.7:
+                add('gilet', [0.24, 0.15, 0.1] if r.random() < 0.6 else darker(col(haut), 0.55), 'cuir')
+            elif role == 'musicien':
+                add('gilet', [0.45, 0.12, 0.1], 'laine')
+            add('pantacourt' if role in ('mousse', 'matelot', 'gabier') and r.random() < 0.6 else 'pantalon', trous, 'toile', poches=1.0)
+            if role not in ('chirurgien', 'forgeron'):
+                add('ceinture_ample', sash, 'laine')
+            add('bottes', boots, 'cuir')
+        if az.get('tablier'):
+            add('tablier', az['tablier'], 'cuir' if role in ('forgeron', 'chirurgien') else 'coton')
+        if az.get('foulard'):
+            add('col', az['foulard'], 'soie')
         return T
     # --------------------------------------------------------- enfants
     if child:

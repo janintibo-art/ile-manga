@@ -10,7 +10,7 @@ const ARCH_TEX := "res://assets/textures/carte/archipel.png"
 const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## Rectangle du monde couvert par la carte de l'archipel (x0, z0, x1, z1)
 ## (V59 : la carte s'étend à l'est jusqu'à la grande île)
-const ARCH_RECT := Rect2(-540.0, -600.0, 1800.0, 1080.0)
+const ARCH_RECT := Rect2(-540.0, -960.0, 1800.0, 1440.0)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -44,6 +44,10 @@ const PLACES := [
 	["Bergerie du Vent", Vector2(1021, -242), "bergerie_vent"],
 	# V67 : l'île des sorciers
 	["Arcanelle", Vector2(-300, -545), "arcanelle"],
+	# V68 : l'île des pirates
+	["Port-Coutelas", Vector2(410, -610), "balafre"],
+	["Rocher du Crâne", Vector2(440, -768), "tresor_crane"],
+	["Fort Maudit", Vector2(550, -642), "balafre"],
 ]
 
 var main: Node
@@ -74,7 +78,7 @@ func setup(main_node: Node, carnet_node: Node) -> void:
 
 func _tex_size() -> Vector2:
 	var t: Texture2D = _tex.get(mode, null)
-	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(1800, 1080) if mode == "archipel" else Vector2(960, 840))
+	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(1800, 1440) if mode == "archipel" else Vector2(960, 840))
 
 
 func set_mode(m: String) -> void:
@@ -226,6 +230,23 @@ func _quest_targets(id: String) -> Array:
 					"sceau_embruns":
 						if sc.proue_at != Vector3.INF:
 							out.append(sc.proue_at)
+			# V68 : la Balafre (le perchoir de Rhubarbe, Vieille-Dent, le Cirque du Crâne, le trésor)
+			var pv: Node = main.get("pirates_v68")
+			if pv != null and pv.get("port") != null and pv.port != null:
+				match str(e.get("cle", "")):
+					"perroquet_trouve":
+						out.append(pv.port.perch_pos)
+					"vieille_dent":
+						out.append(pv.ile.W(pv.VIEILLE_DENT.x, pv.VIEILLE_DENT.y))
+					"capitaine_os":
+						out.append(pv.port.cirque_center)
+					"tresor_crane":
+						out.append(pv.port.treasure_pos)
+					"champions_3":
+						for cid in pv.CHAMPIONS:
+							var cn: Node = _npc(str(cid))
+							if cn != null and not bool((pv.state["champions"] as Dictionary).get(cid, false)):
+								out.append(cn.global_position)
 	if e.has("apparait"):
 		for w2 in e["apparait"]:
 			if j.lieux.has(str(w2)) and not main.inventory_v28.taken.has("q56_%s_%s" % [id, str(w2)]):

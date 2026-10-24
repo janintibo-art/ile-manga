@@ -30,15 +30,18 @@ const ZONE_TRACK := {
 	"coeur": "coeur",
 	"arcanelle": "arcanelle", "arcanelle_bourg": "arcanelle", "arcanelle_bois": "arcanelle", "arcanelle_falaises": "arcanelle",
 	"arcanelle_rivage": "arcanelle", "arcanelle_salle": "arcanelle", "arcanelle_bibliotheque": "arcanelle", "arcanelle_chaudron": "", "arcanelle_crypte": "",
+	"balafre_port": "balafre", "balafre_navire": "balafre", "balafre_rivage": "balafre", "balafre_plage": "balafre", "balafre_fort": "balafre",
+	"balafre_jungle": "jungle", "balafre_marais": "jungle", "balafre_ravin": "jungle", "balafre_cimetiere": "",
+	"balafre_crane_fendu": "gigue_crane", "balafre_dent_requin": "",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
 	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
-	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0,
+	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 }
-const LOOPED := ["theme_ile", "combat"]
+const LOOPED := ["theme_ile", "combat", "gigue_crane"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
 const END_FADE := 4.0                # un morceau joué une fois s'éteint sur ses 4 dernières secondes
 const COMBAT_RANGE := 20.0
@@ -188,6 +191,12 @@ func _decide(dt: float) -> void:
 	var az: Node = main.get("azur_v56")
 	if az != null and bool(az.get("django_heard")):
 		want_zone = ""
+	# V68 : au Crâne Fendu, la gigue ne joue que quand Tom le Violoneux est sur scène
+	if want_zone == "gigue_crane":
+		var pv: Node = main.get("pirates_v68")
+		var tom: Node = (pv.by_id as Dictionary).get("tom", null) if pv != null and pv.get("by_id") != null else null
+		if tom == null or str(tom.get("target_spot")) != "grog_scene" or bool(tom.get("hidden_home")):
+			want_zone = ""
 	# V57 : à la teuf de la plage, c'est la sono qui joue
 	var tf: Node = main.get("teuf_v57")
 	if tf != null and bool(tf.get("heard")):
@@ -276,6 +285,10 @@ func _start(name: String) -> void:
 
 ## Des monstres attaquent le joueur tout près ?
 func _fighting() -> bool:
+	# V68 : une bagarre à Port-Coutelas
+	var pv: Node = main.get("pirates_v68")
+	if pv != null and pv.get("bagarre") != null and pv.bagarre != null and bool(pv.bagarre.active):
+		return true
 	var ms: Node = main.get("monstres_v36")
 	if ms == null:
 		return false

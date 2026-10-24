@@ -8,6 +8,7 @@ func _initialize() -> void:
 		"cliquetis": "res://scripts/pnj/cliquetis_habitants_v61.gd", "tazira": "res://scripts/pnj/tazira_habitants_v60.gd",
 		"ramure": "res://scripts/pnj/ramure_habitants_v62.gd", "teuf": "res://scripts/pnj/teufeurs_v57.gd",
 		"arcanelle": "res://scripts/pnj/arcanelle_habitants_v67.gd",
+		"balafre": "res://scripts/pnj/pirates_habitants_v68.gd",
 	}
 	for k in mods:
 		var m = load(mods[k])

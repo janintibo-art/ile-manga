@@ -324,6 +324,25 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n67 += 1
     print(f"Arcanelle V67: {n67} fichiers")
+    # V68 : l'Île de la Balafre, l'île des pirates (sols, bois, toiles, voiles, pavillons,
+    # enseignes) : même règle que pour Arcanelle (les sols sans perte).
+    n68 = 0
+    tex68 = source / "textures" / "pirates"
+    sols68 = {"sable", "terre", "sousbois", "basalte", "vase"}
+    if tex68.is_dir():
+        for f in sorted(tex68.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if f.stem.removesuffix("_n") in sols68:
+                if "compress/mode=0" not in old or "compress/normal_map=0" not in old or "mipmaps/generate=true" not in old:
+                    imp.write_text(IMPORT_V64.replace("compress/mode=2", "compress/mode=0").format(nm=0, hq="false"))
+            elif "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n68 += 1
+    print(f"Balafre V68: {n68} fichiers")
     # V56 : les polices du carnet (Lora, et DejaVu Sans pour les symboles ★ ⚓ ♥ ✓)
     fonts = source / "fonts"
     if fonts.is_dir():

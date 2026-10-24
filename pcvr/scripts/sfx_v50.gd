@@ -39,6 +39,9 @@ const DB := {
 	# V67 : Arcanelle, l'île des sorciers, et ses six sorts
 	"sort_lumiere": -7.0, "sort_gel": -6.0, "sort_levitation": -8.0, "sort_telekinesie": -7.0, "sort_soin": -7.0,
 	"brasero": -4.0, "rune_arc": -5.0,
+	# V68 : l'Île de la Balafre (bagarres, dés, perroquets, crocodiles, squelettes)
+	"coup_poing": -4.0, "ko": -5.0, "foule_bagarre": -9.0, "des_roule": -7.0, "perroquet": -8.0,
+	"croco_menace": -3.0, "croco_mort": -4.0, "squelette_menace": -5.0, "squelette_mort": -4.0, "os_choc": -1.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

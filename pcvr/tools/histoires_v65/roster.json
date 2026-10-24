@@ -1133,5 +1133,135 @@
 "groupe": "arcanelle",
 "nom": "Agathe Brumaire",
 "titre": "voyante du Bois Tors"
+},
+"anne_rose": {
+"groupe": "balafre",
+"nom": "Anne-Rose Corbeau",
+"titre": "capitaine du Requin Borgne, dite la Balafrée"
+},
+"gros_louis": {
+"groupe": "balafre",
+"nom": "Gros-Louis",
+"titre": "second du Requin Borgne"
+},
+"fil_de_fer": {
+"groupe": "balafre",
+"nom": "Fil-de-Fer",
+"titre": "vigie du Requin Borgne"
+},
+"mange_clous": {
+"groupe": "balafre",
+"nom": "Mange-Clous",
+"titre": "cuisinier du Requin Borgne"
+},
+"petit_pierre": {
+"groupe": "balafre",
+"nom": "Petit-Pierre",
+"titre": "mousse du Requin Borgne"
+},
+"lestrange": {
+"groupe": "balafre",
+"nom": "Gontran Lestrange",
+"titre": "capitaine de la Veuve Écarlate, dit Jambe-de-Bois"
+},
+"scarlett": {
+"groupe": "balafre",
+"nom": "Scarlett la Rouquine",
+"titre": "lanceuse de couteaux de la Veuve Écarlate"
+},
+"tonneau": {
+"groupe": "balafre",
+"nom": "Tonneau",
+"titre": "matelot de la Veuve Écarlate"
+},
+"le_muet": {
+"groupe": "balafre",
+"nom": "le Muet",
+"titre": "gabier de la Veuve Écarlate"
+},
+"sans_dents": {
+"groupe": "balafre",
+"nom": "Sans-Dents",
+"titre": "vieux matelot de la Veuve Écarlate"
+},
+"malaterre": {
+"groupe": "balafre",
+"nom": "Ignace Malaterre",
+"titre": "capitaine de la Morue Enragée, dit Bouche-d'Or"
+},
+"crochet": {
+"groupe": "balafre",
+"nom": "Crochet",
+"titre": "maître d'équipage de la Morue Enragée"
+},
+"belle_humeur": {
+"groupe": "balafre",
+"nom": "Belle-Humeur",
+"titre": "canonnier de la Morue Enragée"
+},
+"coquille": {
+"groupe": "balafre",
+"nom": "Coquille",
+"titre": "timonière de la Morue Enragée"
+},
+"mama_grog": {
+"groupe": "balafre",
+"nom": "Mama Grog",
+"titre": "tenancière du Crâne Fendu"
+},
+"sylvain": {
+"groupe": "balafre",
+"nom": "Sylvain Doigts-d'Argent",
+"titre": "croupier de la Dent du Requin"
+},
+"isaac": {
+"groupe": "balafre",
+"nom": "Isaac Cinq-Doigts",
+"titre": "receleur"
+},
+"brutus": {
+"groupe": "balafre",
+"nom": "Brutus",
+"titre": "forgeron et armurier"
+},
+"doc": {
+"groupe": "balafre",
+"nom": "Fulbert Saignée",
+"titre": "chirurgien-barbier, dit Doc"
+},
+"philemon": {
+"groupe": "balafre",
+"nom": "Philémon Lunette",
+"titre": "cartographe"
+},
+"coralie": {
+"groupe": "balafre",
+"nom": "Coralie l'Encre",
+"titre": "tatoueuse"
+},
+"joe": {
+"groupe": "balafre",
+"nom": "Perroquet-Joe",
+"titre": "marchand de perroquets"
+},
+"tom": {
+"groupe": "balafre",
+"nom": "Tom le Violoneux",
+"titre": "musicien du Crâne Fendu"
+},
+"gwen": {
+"groupe": "balafre",
+"nom": "Gwen Calfat",
+"titre": "charpentière de marine"
+},
+"gouverneur": {
+"groupe": "balafre",
+"nom": "Gouverneur Lagrange",
+"titre": "gouverneur de Port-Coutelas (élu par lui-même)"
+},
+"silas": {
+"groupe": "balafre",
+"nom": "le Vieux Silas",
+"titre": "vieux pirate et conteur"
 }
 }

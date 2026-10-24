@@ -131,6 +131,7 @@ func _ready() -> void:
 	_create_v65()
 	_create_v66()
 	_create_v67()
+	_create_v68()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -168,6 +169,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V67 : Arcanelle, l'île des sorciers (son carré touche le bord du cercle de la jungle)
 	if arcanelle_v67 != null and arcanelle_v67.ile != null and arcanelle_v67.ile.contains(x, z):
 		h = maxf(h, arcanelle_v67.ile.height(x, z))
+	# V68 : l'Île de la Balafre (son carré touche les coins de la jungle et de la grande île)
+	if pirates_v68 != null and pirates_v68.ile != null and pirates_v68.ile.contains(x, z):
+		h = maxf(h, pirates_v68.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -984,6 +988,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			grande_v59.load_data({})
 		if arcanelle_v67 != null and arcanelle_v67.bourg != null:
 			arcanelle_v67.load_data({})
+		if pirates_v68 != null and pirates_v68.port != null:
+			pirates_v68.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1088,6 +1094,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and arcanelle_v67 != null and arcanelle_v67.bourg != null:
 		var adata67: Variant = SaveStore.read_slot(slot).get("arcanelle", {})
 		arcanelle_v67.load_data(adata67 if adata67 is Dictionary else {})
+	# V68 : l'Île de la Balafre (champions, perroquet, Vieille-Dent, le Capitaine, le trésor, le tatouage)
+	if not new_game and pirates_v68 != null and pirates_v68.port != null:
+		var bdata68: Variant = SaveStore.read_slot(slot).get("balafre", {})
+		pirates_v68.load_data(bdata68 if bdata68 is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1186,6 +1196,8 @@ func _save_slot(slot: int) -> void:
 		extra["arcanelle"] = arcanelle_v67.serialize()
 	if sorts_v67 != null:
 		extra["sorts"] = sorts_v67.serialize()
+	if pirates_v68 != null and pirates_v68.port != null:
+		extra["balafre"] = pirates_v68.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -2039,6 +2051,10 @@ func _respawn_v28() -> void:
 			place_player_v35(ra[0], ra[1])
 			_show_message_v28("Vous vous êtes évanoui… Des Atlantes vous ont ramené sous le dôme, devant le palais.")
 			return
+	# V68 : sur l'Île de la Balafre (une bagarre perdue : sur le quai ; les monstres : chez le Doc)
+	if pirates_v68 != null and pirates_v68.port != null and pirates_v68.contains(pp):
+		pirates_v68.on_faint()
+		return
 	# V67 : à Arcanelle, Mère Sauge vous soigne ; on se réveille près de la fontaine du Fondateur
 	if arcanelle_v67 != null and arcanelle_v67.bourg != null and arcanelle_v67.contains(pp):
 		var rc: Array = arcanelle_v67.respawn_point()
@@ -2249,6 +2265,15 @@ func _create_jungle_v29() -> void:
 	arcanelle_v67.build_island()
 	var arc_d: Array = arcanelle_v67.dock()
 	boat_v29._make_dock("Ponton_arcanelle", arc_d[0], arc_d[1])
+	# V68 : l'Île de la Balafre, l'île des pirates, au nord (le relief d'abord ; Port-Coutelas,
+	# ses navires, ses pirates et la jungle sont construits après l'heure du jour, voir _create_v68).
+	pirates_v68 = preload("res://scripts/pirates_v68.gd").new()
+	pirates_v68.name = "Pirates_v68"
+	add_child(pirates_v68)
+	pirates_v68.setup(self)
+	pirates_v68.build_island()
+	var pir_d: Array = pirates_v68.dock()
+	boat_v29._make_dock("Ponton_balafre", pir_d[0], pir_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2285,6 +2310,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V68 : l'Île de la Balafre : la terre ferme, les navires, les pontons de Port-Coutelas
+	if pirates_v68 != null and pirates_v68.contains(p):
+		if pirates_v68.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -2704,6 +2737,9 @@ func _nearest_npc_v31() -> Node3D:
 	# V42 : au milieu de la foule elfe, on parle de préférence à celui qu'on regarde.
 	var look: Vector3 = hero_v28.facing if hero_v28 != null else Vector3.ZERO
 	for npc in npcs_v31:
+		# V68 : pas à un habitant rentré chez lui, ni en pleine bagarre (ni étendu par terre)
+		if not npc.visible or (npc.has_method("can_talk") and not npc.can_talk()):
+			continue
 		var off := Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z)
 		var d: float = off.length()
 		if d >= 2.8 or absf(npc.global_position.y - p.y) >= 2.5:
@@ -2783,7 +2819,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -2863,6 +2899,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		r.erase("_dormir")
 		r.erase("_sort67")
 		r.erase("_chaudron_lit")
+		r.erase("_hamac68")
+		r.erase("_soins68")
+		r.erase("_tatouage68")
 		var names: Array = []
 		for g in gives:
 			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())
@@ -2887,6 +2926,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V67 : Arcanelle (la chambre du Chaudron Fumant, un sort appris d'un maître)
 	if arcanelle_v67 != null:
 		arcanelle_v67.after_reply(r, npc)
+	# V68 : la Balafre (la bagarre, la tournée, les dés, le hamac de Mama Grog, le Doc, le tatouage)
+	if pirates_v68 != null and pirates_v68.port != null:
+		pirates_v68.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -2953,6 +2995,7 @@ var bavardages_v65: Node                   # V65 : les habitants qui se connaiss
 var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
+var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -2999,6 +3042,9 @@ func _spawn_azur_v56() -> void:
 	# V67 : la communauté des sorciers d'Arcanelle
 	if arcanelle_v67 != null and arcanelle_v67.bourg != null:
 		arcanelle_v67.spawn_npcs()
+	# V68 : les pirates et les gens de Port-Coutelas
+	if pirates_v68 != null and pirates_v68.port != null:
+		pirates_v68.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3080,6 +3126,16 @@ func _create_v67() -> void:
 	if journal_v56 != null:
 		arcanelle_v67.register_services(journal_v56)
 	arcanelle_v67.register_targets(sorts_v67, pouvoirs_v63)
+
+
+## V68 : l'Île de la Balafre (Port-Coutelas, ses navires, ses tripots, la jungle) ; le ponton est
+## posé avec le relief (au démarrage).
+func _create_v68() -> void:
+	if pirates_v68 == null:
+		return
+	pirates_v68.build_town()
+	if journal_v56 != null:
+		pirates_v68.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3230,9 +3286,9 @@ static func _opaque_materials_v48(root: Node) -> void:
 ## V48 : carte des fonds pour l'océan VR (lagon clair et écume le long de chaque rivage).
 ## 512 × 512 pixels sur 1600 m ; on ne mesure le relief que dans le carré de chaque île
 ## (le reste est le grand large). Valeur = (hauteur + 12) / 14, entre 0 et 1.
-const SHORE_RES_V48: int = 704
-const SHORE_ORIGIN_V48 := Vector2(-800.0, -800.0)
-const SHORE_SIZE_V48: float = 2200.0
+const SHORE_RES_V48: int = 768
+const SHORE_ORIGIN_V48 := Vector2(-800.0, -1000.0)
+const SHORE_SIZE_V48: float = 2400.0
 var shore_image_v48: Image
 
 func _bake_shore_v48() -> void:
@@ -3254,6 +3310,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(grande_v59.ile.GRID.x, grande_v59.ile.GRID.z), grande_v59.ile.HALF])
 	if arcanelle_v67 != null and arcanelle_v67.ile != null:
 		boxes.append([Vector2(arcanelle_v67.ile.CENTER.x, arcanelle_v67.ile.CENTER.z), arcanelle_v67.ile.HALF])
+	if pirates_v68 != null and pirates_v68.ile != null:
+		boxes.append([Vector2(pirates_v68.ile.CENTER.x, pirates_v68.ile.CENTER.z), pirates_v68.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

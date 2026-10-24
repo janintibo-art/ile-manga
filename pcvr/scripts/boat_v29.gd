@@ -455,6 +455,10 @@ func _blocked(next: Vector3) -> bool:
 	var g59: Node = main.get("grande_v59")
 	if g59 != null and g59.blocks_boat(next + fwd * 2.3):
 		return true
+	# V68 : les navires et les pontons de Port-Coutelas
+	var p68: Node = main.get("pirates_v68")
+	if p68 != null and p68.blocks_boat(next + fwd * 2.3):
+		return true
 	return false
 
 

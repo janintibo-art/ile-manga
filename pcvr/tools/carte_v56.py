@@ -89,9 +89,12 @@ def to_img(arr: np.ndarray) -> Image.Image:
 def archipel(src: Path) -> None:
     raw = np.fromfile(src / "arch_h.bin", np.float32)
     # V59 : 900 x 540 échantillons (jusqu'à la grande île de l'est), ou 540 x 540 (avant)
-    cols = 900 if raw.size == 900 * 540 else 540
-    h = raw.reshape(540, cols)
-    W, H = cols * 2, 1080
+    # V68 : 900 x 720 (jusqu'à l'Île de la Balafre, au nord) : la carte commence à z = -960
+    rows = 720 if raw.size == 900 * 720 else 540
+    cols = 900 if raw.size in (900 * 540, 900 * 720) else 540
+    OZ = 960 if rows == 720 else 600
+    h = raw.reshape(rows, cols)
+    W, H = cols * 2, rows * 2
     h = np.array(Image.fromarray(h).resize((W, H), Image.BICUBIC), np.float32)
     land = h > 0.05
     # les petits flotteurs (bateaux, pontons) ne sont pas des îles
@@ -136,7 +139,7 @@ def archipel(src: Path) -> None:
             tz = 170.0 - (bj + 0.5) * 0.5
             wx = 201.82 + math.cos(yaw) * tx + math.sin(yaw) * tz
             wz = 134.55 - math.sin(yaw) * tx + math.cos(yaw) * tz
-            return np.clip((wz + 600).astype(int), 0, H - 1), np.clip((wx + 540).astype(int), 0, W - 1)
+            return np.clip((wz + OZ).astype(int), 0, H - 1), np.clip((wx + 540).astype(int), 0, W - 1)
 
         pj, pi = to_px(*np.nonzero((g2 < -0.3) & (r2 > -1.2) & (r2 - g2 > 0.8)))
         decks = np.zeros((H, W), bool)
@@ -160,7 +163,7 @@ def archipel(src: Path) -> None:
     im = to_img(img).convert("RGBA")
     d = ImageDraw.Draw(im)
     # l'île flottante : un nuage et son ombre
-    cx, cz = 40 + 540, 400 + 600
+    cx, cz = 40 + 540, 400 + OZ
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ds = ImageDraw.Draw(shadow)
     for k in range(14):
@@ -192,19 +195,19 @@ def archipel(src: Path) -> None:
             hull.append((x, -17.0 * pb))
         hull += [(x, -z) for x, z in reversed(hull)]
         yaw = 0.06
-        pts = [(665.0 + math.cos(yaw) * x + math.sin(yaw) * z + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * z + 600) for x, z in hull]
+        pts = [(665.0 + math.cos(yaw) * x + math.sin(yaw) * z + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * z + OZ) for x, z in hull]
         d.polygon(pts, fill=(120, 84, 52, 255), outline=(52, 36, 22, 255))
         for k in range(1, 6):
             x = -70.0 + 140.0 * k / 6
-            a = (665.0 + math.cos(yaw) * x - math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x - math.cos(yaw) * 9 + 600)
-            b = (665.0 + math.cos(yaw) * x + math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * 9 + 600)
+            a = (665.0 + math.cos(yaw) * x - math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x - math.cos(yaw) * 9 + OZ)
+            b = (665.0 + math.cos(yaw) * x + math.sin(yaw) * 9 + 540, -150.0 - math.sin(yaw) * x + math.cos(yaw) * 9 + OZ)
             d.line([a, b], fill=(80, 56, 34, 255), width=1)
-        mx, mz = 665.0 + 4 + 540, -150.0 + 600
+        mx, mz = 665.0 + 4 + 540, -150.0 + OZ
         d.ellipse((mx - 3, mz - 3, mx + 3, mz + 3), fill=(52, 36, 22, 255))
     # V60 : Tazira, le port des sables : remparts, maisons blanches, jetées, la Murène Noire
     if W > 1080:
         def tz(x, z):
-            return (940.0 - x + 540, 95.0 - z + 600)
+            return (940.0 - x + 540, 95.0 - z + OZ)
         d.polygon([tz(-104.6, 14), tz(104.6, 14), tz(104.6, 79.4), tz(-104.6, 79.4)], fill=(214, 180, 128, 255), outline=(120, 80, 44, 255))
         rr = np.random.default_rng(60)
         for bx0, bx1, bz0, bz1 in [(-100, -63, 20, 37), (-57, -46, 20, 31), (3, 27, 38, 59), (33, 67, 38, 59), (73, 100, 20, 37), (73, 100, 43, 59),
@@ -232,15 +235,15 @@ def archipel(src: Path) -> None:
     # téléphérique, et la ligne du dirigeable « le Zéphyr » (pointillés) entre ses escales
     if W > 1080:
         def cq(x, z):
-            return (960.0 + x + 540, -315.0 + z + 600)
+            return (960.0 + x + 540, -315.0 + z + OZ)
         pads = [(890.0, -293.0), (1130.0, -240.0), (948.0, -16.0), (770.0, -136.0)]
         for k in range(4):
             a, b = pads[k], pads[(k + 1) % 4]
             n = int(math.hypot(b[0] - a[0], b[1] - a[1]) / 8)
             for i in range(0, n, 2):
                 t0, t1 = i / n, min(1.0, (i + 1) / n)
-                d.line([(a[0] + (b[0] - a[0]) * t0 + 540, a[1] + (b[1] - a[1]) * t0 + 600),
-                        (a[0] + (b[0] - a[0]) * t1 + 540, a[1] + (b[1] - a[1]) * t1 + 600)], fill=(150, 70, 40, 200), width=2)
+                d.line([(a[0] + (b[0] - a[0]) * t0 + 540, a[1] + (b[1] - a[1]) * t0 + OZ),
+                        (a[0] + (b[0] - a[0]) * t1 + 540, a[1] + (b[1] - a[1]) * t1 + OZ)], fill=(150, 70, 40, 200), width=2)
         d.polygon([cq(-100, -49), cq(100, -49), cq(100, 48), cq(-100, 48)], fill=(176, 150, 128, 255), outline=(120, 50, 36, 255))
         d.line([cq(-100, -48), cq(100, -48)], fill=(140, 52, 36, 255), width=3)
         blds = [(0, 34, 34, 13), (-58, -6, 10, 15), (58, -6, 10, 13), (-84, -24, 11, 12), (80, 20, 13, 14), (-40, 37, 20, 11),
@@ -261,7 +264,7 @@ def archipel(src: Path) -> None:
         # plates-formes et les ponts de corde, le Cercle de la Lune, la Clairière des Jeux, la
         # boucle de la Grande Course (pointillés rouges), le ponton
         def rm(x, z):
-            return (1110.0 + x + 540, -140.0 + z + 600)
+            return (1110.0 + x + 540, -140.0 + z + OZ)
         trees = {"mere": (4, -8, 54), "ouest": (-22, -42, 40), "guet": (34, 8, 42), "sud": (14, 42, 42), "mares": (-22, 50, 38), "nord": (16, -64, 40)}
         course = [(16, -32), (0, -50), (-30, -62), (-30, -20), (-4, 4), (-2, 46), (24, 60), (40, 24), (48, -6), (30, -18)]
         for k in range(len(course)):
@@ -286,12 +289,12 @@ def archipel(src: Path) -> None:
         d.line([rm(46, 6), rm(60, 4), rm(76, 3), rm(88, 2)], fill=(150, 130, 100, 255), width=2)
         d.line([rm(88, 2), rm(103, 2)], fill=(110, 80, 50, 255), width=3)
         for px, pz in pads:
-            d.ellipse((px + 540 - 6, pz + 600 - 6, px + 540 + 6, pz + 600 + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
+            d.ellipse((px + 540 - 6, pz + OZ - 6, px + 540 + 6, pz + OZ + 6), fill=(60, 56, 54, 255), outline=(200, 160, 80, 255), width=2)
     # V67 : Arcanelle, l'île des sorciers : le Lac Miroir et son îlot, les chemins dallés,
     # l'Académie (la tour et son enceinte), la bibliothèque, l'observatoire, le Cercle des
     # Pierres-Lunes, l'Aire des Duels et ses braseros, le bourg et le ponton, la Tour Penchée
     def ar(x, z):
-        return (-300.0 + x + 540, -480.0 + z + 600)
+        return (-300.0 + x + 540, -480.0 + z + OZ)
 
     def disc(x, z, r, **kw):
         a, b = ar(x - r, z - r), ar(x + r, z + r)
@@ -324,6 +327,44 @@ def archipel(src: Path) -> None:
     disc(-36, 24, 3, fill=(70, 66, 74, 255))
     disc(-20, 84, 3.4, fill=(130, 120, 110, 255), outline=(60, 50, 40, 255))
     d.line([ar(79, 72), ar(91, 84)], fill=(110, 80, 50, 255), width=3)
+    # V68 : l'Île de la Balafre : le Marais des Noyés, les sentiers, Port-Coutelas (le quai, les
+    # pontons, les maisons, les deux navires), le Fort Maudit, le cimetière, le Rocher du Crâne
+    if H > 1080:
+        def bl(x, z):
+            return (400.0 + x + 540, -700.0 + z + OZ)
+
+        def bdisc(x, z, r, **kw):
+            a, b = bl(x - r, z - r), bl(x + r, z + r)
+            d.ellipse((a[0], a[1], b[0], b[1]), **kw)
+        rb = np.random.default_rng(68)
+        for _ in range(140):
+            a = rb.uniform(0, 2 * math.pi)
+            rr2 = 50 * math.sqrt(rb.uniform(0, 1))
+            x, z = -135 + math.cos(a) * rr2, -10 + math.sin(a) * rr2 * 0.85
+            d.line([bl(x - 1.6, z), bl(x + 1.6, z)], fill=(70, 96, 70, 200), width=1)
+        for lane in ([(0, 40), (3, 22), (-3, 4), (-10, -16), (-20, -36)], [(-20, -36), (-48, -30), (-74, -24), (-96, -18)],
+                     [(-20, -36), (-28, -48), (-36, -57)], [(-74, -24), (-88, -52), (-100, -84), (-110, -112), (-116, -128)],
+                     [(-3, 4), (22, -4), (44, -16), (64, -30), (84, -48), (94, -52)], [(72, 70), (96, 68), (116, 64), (134, 60)],
+                     [(-62, 48), (-72, 38), (-80, 29)]):
+            d.line([bl(*q) for q in lane], fill=(170, 140, 100, 255), width=2)
+        d.line([bl(-48, 92.5), bl(62, 92.5)], fill=(90, 84, 76, 255), width=4)
+        for px2, z0, z1 in ((-25, 92.6, 128), (22, 92.6, 126), (55, 93, 112)):
+            d.line([bl(px2, z0), bl(px2, z1)], fill=(120, 90, 60, 255), width=3)
+        for hx, hz in [(-60, 60), (-44, 68), (-30, 56), (-16, 60), (-2, 52), (12, 56), (30, 60), (44, 66), (58, 56), (-52, 80), (22, 80), (40, 78), (-24, 30)]:
+            c = [(120, 90, 60, 255), (90, 70, 50, 255), (140, 60, 50, 255)][int(rb.integers(3))]
+            d.polygon([bl(hx - 3, hz - 2.5), bl(hx + 3, hz - 2.5), bl(hx + 3, hz + 2.5), bl(hx - 3, hz + 2.5)], fill=c, outline=(50, 36, 26, 255))
+        for sx, sz, sl, sc in ((-13.5, 121, 12, (30, 30, 34, 255)), (32, 116, 9, (150, 40, 36, 255)), (4, 160, 7, (70, 90, 120, 255))):
+            d.polygon([bl(sx - 1.6, sz - sl / 2), bl(sx + 1.6, sz - sl / 2), bl(sx + 1.6, sz + sl / 2), bl(sx, sz + sl / 2 + 2), bl(sx - 1.6, sz + sl / 2)], fill=sc)
+        d.polygon([bl(138, 46), bl(162, 46), bl(162, 70), bl(138, 70)], fill=(150, 146, 136, 255), outline=(60, 56, 50, 255))
+        d.polygon([bl(146, 54), bl(154, 54), bl(154, 62), bl(146, 62)], fill=(110, 106, 100, 255))
+        for k in range(7):
+            cx2, cz2 = -94 + (k % 4) * 4, 17 + (k // 4) * 5
+            d.line([bl(cx2, cz2 - 1.5), bl(cx2, cz2 + 1.5)], fill=(80, 70, 60, 255), width=1)
+            d.line([bl(cx2 - 1, cz2 - 0.5), bl(cx2 + 1, cz2 - 0.5)], fill=(80, 70, 60, 255), width=1)
+        bdisc(39, -68, 4.5, fill=(226, 220, 200, 255), outline=(60, 50, 40, 255))
+        for ex in (-1.6, 1.6):
+            bdisc(39 + ex, -69, 1.0, fill=(30, 26, 22, 255))
+        d.polygon([bl(38, -66.4), bl(40, -66.4), bl(39, -65.2)], fill=(30, 26, 22, 255))
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)
@@ -333,7 +374,8 @@ def archipel(src: Path) -> None:
     _compass(d, W - 120, H - 120, 70)
     # cartouche
     # V67 : le cartouche quitte le coin nord-ouest, où émerge Arcanelle
-    _cartouche(im, (660, 34) if W > 1080 else (40, 34), "Archipel d'Île Manga", "levé par un voyageur curieux")
+    # V68 : la carte monte jusqu'à la Balafre ; le coin nord-ouest est libre de nouveau
+    _cartouche(im, (40, 34) if H > 1080 else ((660, 34) if W > 1080 else (40, 34)), "Archipel d'Île Manga", "levé par un voyageur curieux")
     # cadre
     d.rectangle((6, 6, W - 7, H - 7), outline=(70, 50, 30, 255), width=4)
     d.rectangle((14, 14, W - 15, H - 15), outline=(70, 50, 30, 180), width=1)

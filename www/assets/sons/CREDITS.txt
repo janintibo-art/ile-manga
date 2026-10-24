@@ -33,3 +33,23 @@ virtuel pcvr/tools/orchestre_v51.py avec les instruments enregistrés de la banq
 github.com/sgossner/VSCO-2-CE), CC0 1.0 :
   theme_ile (menu), village, jungle, elfes, nains (et Forgefer), large, souterrain,
   racines (Royaume des Racines), combat ; jingles victoire et decouverte.
+
+L'Île de la Balafre et Port-Coutelas (V68) — tous CC0 1.0 / domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v68.py : synthétisés (voix de foule,
+perroquet, sifflets, os, dés qui rebondissent, ouaouarons, vase, vent, houle…) et mêlés à des
+enregistrements retravaillés (découpés, transposés, ralentis, filtrés, réverbérés) du recueil
+github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, RPG Audio, Casino Audio, Voiceover Pack ;
+  « 80 CC0 RPG SFX », « 80 CC0 creature SFX » (1 et 2), « 100 CC0 SFX » (1 et 2),
+  « 100 CC0 wood/metal SFX », « 75 CC0 breaking/falling/hit SFX », « 40 CC0 water splash/slime
+  SFX », « 25 CC0 mud SFX », beast_or_animal, « BB Retail Therapy Sample Pack » et
+  « bb - Bottle Plops » (Ben Burnes, CC0), les voix de Warfork (Team Forbidden, CC0) et de
+  « Free Retro Arcade Sounds » (The Motion Monkey, CC0).
+  sfx/coup_poing_1..3, ko_1..2, foule_bagarre_1..3, des_roule_1..2, perroquet_1..3,
+      croco_menace_1, croco_mort_1, squelette_menace_1, squelette_mort_1, os_choc_1..3
+  ambiance/port_pirate, taverne_pirate, marais
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v68.py, jouées
+avec les outils de la V51 et la banque VSCO-2 CE (plus quelques échantillons de « VSCO 1
+Percussion », même auteur, CC0) :
+  musique/balafre.ogg (« La Balafre », le thème de l'île),
+  musique/gigue_crane.ogg (« La Gigue du Crâne », Tom le Violoneux au Crâne Fendu).

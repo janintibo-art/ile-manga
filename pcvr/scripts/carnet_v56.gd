@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre"]
 
 var main: Node
 var inv: Node
@@ -410,7 +410,7 @@ func _refresh_quests() -> void:
 		l.custom_minimum_size = Vector2(520, 0)
 		_q_list.add_child(l)
 	for e in list:
-		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔", "Royaume des fées": "✦", "Arcanelle": "✧"}.get(str(e["sorte"]), "•")
+		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔", "Royaume des fées": "✦", "Arcanelle": "✧", "Balafre": "☠"}.get(str(e["sorte"]), "•")
 		var b := _button("%s  %s\n     %s" % [icon, str(e["titre"]), str(e["lieu"])], 16)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(530, 58)
@@ -625,6 +625,8 @@ func _region_of(n: Node) -> String:
 		return "Ramure"
 	if place.begins_with("Arcanelle"):
 		return "Arcanelle"
+	if place.begins_with("La Balafre") or place.begins_with("L'Île de la Balafre"):
+		return "Balafre"
 	if place.begins_with("Carène") or place.begins_with("La grande île") or place.begins_with("Les hautes") or place.begins_with("La forêt des brumes") or place.begins_with("Le désert") or place.begins_with("Le Cœur"):
 		return "Carène"
 	if place.begins_with("L'Atlantide"):
@@ -662,6 +664,8 @@ func _met_list() -> Array:
 				reg = "Ramure"
 			if str(n.profile.get("groupe", "")) == "arcanelle":
 				reg = "Arcanelle"
+			if str(n.profile.get("groupe", "")) == "balafre":
+				reg = "Balafre"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])
 	return out

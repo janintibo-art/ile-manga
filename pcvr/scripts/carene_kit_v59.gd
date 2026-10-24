@@ -89,6 +89,10 @@ func mat(key: String) -> Material:
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load("res://assets/textures/carte/archipel.png")
 			m.roughness = 0.8
+			# V68 : la carte monte jusqu'à la Balafre ; les cartes murales gardent l'ancien cadrage
+			if m.albedo_texture != null and m.albedo_texture.get_height() > 1100:
+				m.uv1_scale = Vector3(1.0, 0.75, 1.0)
+				m.uv1_offset = Vector3(0.0, 0.25, 0.0)
 		"corde":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.5, 0.42, 0.3)

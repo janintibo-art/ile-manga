@@ -1,0 +1,136 @@
+// V68 : sol de l'Île de la Balafre (d'après le sol de la jungle V29) — sable doré, terre rouge
+// et feuilles mortes, sous-bois, basalte sombre sur les pentes ; en plus, la vase du Marais des
+// Noyés (cercle « marsh ») et la terre battue du port (rectangle « town »), sans sable ni mousse.
+shader_type spatial;
+render_mode cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform sampler2D sand_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D soil_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D moss_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D rock_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D sand_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D soil_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D moss_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D rock_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D mud_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D mud_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec4 marsh = vec4(0.0, 0.0, 1.0, 2.0);     // centre x, z, rayon plein, rayon de fondu
+uniform vec4 town = vec4(0.0, 0.0, 1.0, 1.0);      // centre x, z, demi-largeur, demi-profondeur
+uniform bool extra_detail = false;
+uniform float water_level = -0.42;
+
+varying vec3 world_position;
+varying vec3 world_normal;
+
+float hash2(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise2(vec2 p) {
+	vec2 a = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	return mix(mix(hash2(a), hash2(a + vec2(1.0, 0.0)), f.x),
+		mix(hash2(a + vec2(0.0, 1.0)), hash2(a + vec2(1.0, 1.0)), f.x), f.y);
+}
+
+vec2 rot_uv(vec2 uv) {
+	return mat2(vec2(0.857, 0.515), vec2(-0.515, 0.857)) * uv * 0.71 + vec2(0.37, 0.61);
+}
+
+vec4 untiled(sampler2D t, vec2 uv, float mixer) {
+	return mix(texture(t, uv), texture(t, rot_uv(uv)), mixer);
+}
+
+vec3 untiled_normal(sampler2D t, vec2 uv, float mixer) {
+	vec3 a = texture(t, uv).xyz * 2.0 - 1.0;
+	vec3 b = texture(t, rot_uv(uv)).xyz * 2.0 - 1.0;
+	return normalize(mix(a, b, mixer));
+}
+
+vec3 triplanar(sampler2D t, vec3 p, vec3 w, float s) {
+	return texture(t, p.zy * s).rgb * w.x + texture(t, p.xz * s).rgb * w.y + texture(t, p.xy * s).rgb * w.z;
+}
+
+vec3 triplanar_n(sampler2D t, vec3 p, vec3 w, float s) {
+	return (texture(t, p.zy * s).xyz * w.x + texture(t, p.xz * s).xyz * w.y + texture(t, p.xy * s).xyz * w.z) * 2.0 - 1.0;
+}
+
+void vertex() {
+	world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	world_normal = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+}
+
+void fragment() {
+	vec3 wp = world_position;
+	vec3 n = normalize(world_normal);
+	float slope = 1.0 - clamp(n.y, 0.0, 1.0);
+	float dist = length(CAMERA_POSITION_WORLD - wp);
+	vec2 uv = wp.xz * 0.18;
+	float mixer = smoothstep(0.25, 0.75, noise2(wp.xz * 0.045));
+	float macro = noise2(wp.xz * 0.02);
+	float patch = noise2(wp.xz * 0.09 + 13.0);
+
+	// Plage : jusqu'à ~1,5 m au-dessus de l'eau, bord irrégulier.
+	float beach = 1.0 - smoothstep(0.9, 2.1, wp.y + (macro - 0.5) * 1.4);
+	// Sous-bois : feuilles mortes là où la mousse ne prend pas.
+	// V68 : la jungle de la Balafre est plus verte que celle de l'île du village
+	float moss_w = smoothstep(0.16, 0.5, patch * 0.7 + macro * 0.5 - slope * 0.22 + 0.06);
+	// Calcaire sur les pentes raides ; la mousse reprend sur les replats des rochers.
+	float rock_w = smoothstep(0.52, 0.62, slope + (patch - 0.5) * 0.06);
+
+	vec3 sand = untiled(sand_tex, uv * 1.25, mixer).rgb * vec3(0.98, 0.93, 0.82);
+	// V53 : feuilles mortes à leur vraie taille (une dizaine de cm), deux échelles mêlées
+	// pour que le motif ne se répète pas.
+	vec3 soil = mix(untiled(soil_tex, uv * 1.85, mixer).rgb, untiled(soil_tex, uv * 0.73 + vec2(0.37, 0.61), 1.0 - mixer).rgb, 0.32);
+	// la terre rouge, un peu éteinte (de loin, elle ne doit pas tourner à la brique)
+	soil = mix(soil, vec3(dot(soil, vec3(0.3, 0.59, 0.11))), 0.22) * vec3(0.9, 0.88, 0.88);
+	vec3 moss = untiled(moss_tex, uv * 0.9, mixer).rgb * mix(vec3(0.85, 0.9, 0.8), vec3(1.05, 1.0, 0.9), macro);
+	if (extra_detail) {
+		moss = mix(moss, texture(moss_tex, uv * 3.1).rgb, 0.25 * (1.0 - smoothstep(8.0, 35.0, dist)));
+		soil = mix(soil, texture(soil_tex, uv * 2.3).rgb, 0.2 * (1.0 - smoothstep(8.0, 30.0, dist)));
+	}
+	vec3 tri = pow(abs(n), vec3(4.0));
+	tri /= (tri.x + tri.y + tri.z);
+	vec3 rock = triplanar(rock_tex, wp, tri, 0.09);
+	// Les parois ruissellent : plus sombres vers le bas.
+	rock *= mix(0.8, 1.05, smoothstep(0.0, 30.0, wp.y));
+
+	// le marais : la vase luisante, des touffes d'herbe sur les mottes
+	float md = length(wp.xz - marsh.xy) * (1.0 + (macro - 0.5) * 0.3);
+	float mud_w = 1.0 - smoothstep(marsh.z, marsh.w, md);
+	// le port : terre battue (pas de sable, pas de mousse)
+	vec2 td = abs(wp.xz - town.xy) - town.zw;
+	float town_w = 1.0 - smoothstep(0.0, 9.0, length(max(td, vec2(0.0))) + (patch - 0.5) * 4.0);
+	beach *= (1.0 - mud_w) * (1.0 - town_w * 0.9);
+	moss_w *= mix(1.0, 0.25, town_w);
+	vec3 mud = untiled(mud_tex, uv * 1.1, mixer).rgb * mix(vec3(0.9), vec3(1.05), macro);
+	vec3 ground = mix(soil, moss, moss_w);
+	// la terre battue du port : des plaques de sable apporté du rivage, des taches plus sombres
+	ground = mix(ground, sand * vec3(0.9, 0.86, 0.8), town_w * smoothstep(0.55, 0.72, patch) * 0.55);
+	ground *= mix(1.0, mix(0.82, 1.06, macro), town_w);
+	ground = mix(ground, mix(mud, moss * 0.8, smoothstep(0.5, 1.4, wp.y) * 0.6), mud_w);
+	vec3 albedo = mix(ground, sand, beach);
+	albedo = mix(albedo, rock, rock_w);
+
+	float wet = (1.0 - smoothstep(water_level + 0.05, water_level + 0.9 + (patch - 0.5) * 0.4, wp.y)) * beach;
+	albedo *= mix(1.0, 0.6, wet);
+	albedo *= mix(1.0, 0.72, 1.0 - smoothstep(water_level - 2.0, water_level, wp.y));
+
+	vec3 nm_sand = untiled_normal(sand_n, uv * 1.25, mixer);
+	vec3 nm_ground = normalize(mix(untiled_normal(soil_n, uv * 1.85, mixer), untiled_normal(moss_n, uv * 0.9, mixer), moss_w));
+	nm_ground = normalize(mix(nm_ground, untiled_normal(mud_n, uv * 1.1, mixer), mud_w));
+	vec3 nm_rock = normalize(triplanar_n(rock_n, wp, tri, 0.09));
+	vec3 nm = normalize(mix(mix(nm_ground, nm_sand, beach), nm_rock, rock_w));
+	nm.xy *= mix(1.0, 0.35, smoothstep(25.0, 90.0, dist)) * mix(1.0, 0.4, wet);
+	vec3 t_axis = normalize(vec3(1.0, 0.0, 0.0) - n * n.x);
+	vec3 b_axis = normalize(cross(n, t_axis));
+	vec3 detailed = normalize(t_axis * nm.x + b_axis * nm.y + n * nm.z);
+	NORMAL = normalize((VIEW_MATRIX * vec4(detailed, 0.0)).xyz);
+
+	ALBEDO = albedo;
+	ROUGHNESS = mix(mix(0.9, 0.96, moss_w), 0.7, rock_w);
+	ROUGHNESS = mix(ROUGHNESS, 0.3, wet);
+	ROUGHNESS = mix(ROUGHNESS, 0.42, mud_w * (1.0 - smoothstep(0.3, 1.0, wp.y)));
+	SPECULAR = mix(0.4, 0.55, max(wet, rock_w * 0.5));
+}

@@ -24,6 +24,7 @@ const BEDS := {
 	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
 	"souk": "ambiance/souk", "criee": "ambiance/criee", "atelier": "ambiance/atelier",
 	"ramure": "ambiance/ramure",
+	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -33,6 +34,7 @@ const BED_DB := {
 	"epave": -9.0, "lande": -14.0, "brumes": -13.0, "desert": -14.0,
 	"souk": -11.0, "criee": -10.0, "atelier": -11.0,
 	"ramure": -12.0,
+	"port_pirate": -13.0, "taverne_pirate": -11.0, "marais": -12.0,
 }
 
 var main: Node
@@ -328,6 +330,14 @@ func _choose_zone(running: bool) -> void:
 		_azur_beds(az_zone, p)
 		_night_beds()
 		return
+	# V68 : l'Île de la Balafre (Port-Coutelas, ses tavernes, le marais, le ravin, le fort)
+	var pir: Node = main.get("pirates_v68")
+	var pir_zone: String = pir.zone_at(p) if pir != null and pir.get("ile") != null and pir.ile != null and not on_ferry else ""
+	if pir_zone != "" and not on_boat:
+		zone = pir_zone
+		_balafre_beds(pir_zone, p)
+		_night_beds()
+		return
 	# V67 : Arcanelle, l'île des sorciers
 	var arc: Node = main.get("arcanelle_v67")
 	var arc_zone: String = arc.zone_at(p) if arc != null and arc.get("ile") != null and arc.ile != null and not on_ferry else ""
@@ -408,6 +418,59 @@ func _arcanelle_beds(z: String, p: Vector3) -> void:
 			targets["brise"] = 0.5
 			targets["ressac"] = 0.3 * sea
 			targets["vent_vol"] = clampf((p.y - 14.0) / 20.0, 0.0, 0.35)
+
+
+## V68 : les nappes de la Balafre : le port des pirates, les tavernes, le marais, la jungle.
+func _balafre_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	match z:
+		"balafre_crane_fendu":
+			sea = 0.0
+			targets["taverne_pirate"] = 1.0 if not day or _evening() else 0.55
+		"balafre_dent_requin":
+			sea = 0.0
+			targets["taverne_pirate"] = 0.7 if not day or _evening() else 0.35
+			targets["taverne"] = 0.15
+		"balafre_navire":
+			targets["epave"] = 0.35
+			targets["port_pirate"] = 0.5 if day else 0.25
+			targets["ressac"] = 0.3 + 0.3 * sea
+			targets["brise"] = 0.5
+		"balafre_port":
+			targets["port_pirate"] = 0.9 if day else 0.4
+			targets["ressac"] = 0.25 + 0.5 * sea
+			targets["brise"] = 0.35
+			targets["grillons"] = 0.0 if day else 0.3
+		"balafre_marais":
+			targets["marais"] = 1.0
+			targets["jungle"] = 0.3 if day else 0.15
+			targets["grillons"] = 0.0 if day else 0.35
+		"balafre_ravin":
+			targets["brise"] = 0.5
+			targets["vent_vol"] = clampf((p.y - 8.0) / 30.0, 0.05, 0.35)
+			targets["grotte"] = 0.12
+		"balafre_fort":
+			targets["brise"] = 0.7
+			targets["vent_vol"] = 0.2
+			targets["ressac"] = 0.2 + 0.4 * sea
+			targets["grotte"] = 0.0 if day else 0.12
+		"balafre_cimetiere":
+			targets["brise"] = 0.4
+			targets["grillons"] = 0.0 if day else 0.5
+			targets["grotte"] = 0.0 if day else 0.15
+		"balafre_plage":
+			targets["plage"] = 0.7
+			targets["ressac"] = 0.5 + 0.5 * sea
+			targets["brise"] = 0.5
+		"balafre_rivage":
+			targets["ressac"] = 0.4 + 0.6 * sea
+			targets["brise"] = 0.6
+		_:
+			targets["jungle"] = 1.0 - 0.4 * sea
+			targets["oiseaux"] = 0.45 if day else 0.0
+			targets["grillons"] = 0.0 if day else 0.4
+			targets["brise"] = 0.25
+			targets["ressac"] = 0.3 * sea
 
 
 ## V56 : les nappes de Port-Azur.

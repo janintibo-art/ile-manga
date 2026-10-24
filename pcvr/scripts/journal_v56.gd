@@ -481,6 +481,80 @@ const QUETES := [
 		],
 		"fin": "Elles ont chanté pour toi. Je les ai entendues jusqu'ici. Alors c'est dit : tu es sorcier d'Arcanelle. Tiens, ton bâton : du bois du Bois Tors et un cristal du Cercle. En main, il rend tes sorts plus légers. Et ta magie est plus grande désormais. Va, sorcier. Le monde a besoin de lumière, de feu, de glace, de vent, de patience et de soin. Surtout de soin.",
 		"recompense": {"pieces": 60, "titre": "Sorcier d'Arcanelle", "objets": [["baton_sorcier", 1]], "flag": "diplome_arc"}},
+	# V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
+	{"id": "bal_perroquet", "titre": "Rhubarbe s'est envolé", "donneur": "anne_rose", "lieu": "La Balafre, le Requin Borgne", "sorte": "Balafre",
+		"resume": "Rhubarbe, le perroquet rouge de la capitaine Anne-Rose Corbeau, s'est envolé vers le vieux camp abandonné, au nord-ouest de l'île. Perroquet-Joe saura comment l'attirer.",
+		"offre_label": "Ton perroquet… je peux le chercher ?",
+		"offre": "Tu ferais ça ? … Rhubarbe. Rouge comme un coucher de soleil, mal élevé comme un mousse. Il s'est envolé il y a trois jours vers la jungle du nord. Joe l'a entendu jurer du côté du vieux camp abandonné. Les araignées y ont fait leur nid, fais attention. Va d'abord voir Joe, sur la place : il sait parler aux oiseaux mieux qu'aux hommes.",
+		"etapes": [
+			{"type": "parler", "pnj": "joe", "label": "Comment attirer le perroquet de la capitaine ?", "texte": "Rhubarbe ? Ha ! Il ne descend pour personne. Sauf pour ça. (Il te tend un petit sachet.) Des graines de tournesol grillées au sel. Montre-les-lui, et ne le regarde pas dans les yeux : il déteste ça. Et s'il te traite de tête de méduse, c'est qu'il t'aime bien.", "donne": [["graines", 1]], "objectif": "Demander conseil à Perroquet-Joe (son étal est sur la place de Port-Coutelas, près du puits)"},
+			{"type": "etat", "cle": "perroquet_trouve", "objectif": "Retrouver Rhubarbe au vieux camp abandonné (au nord-ouest, par le sentier du camp), et l'appeler au pied de son perchoir avec les graines (E)"},
+			{"type": "rendre", "pnj": "anne_rose", "label": "Voici Rhubarbe, capitaine.", "objectif": "Ramener Rhubarbe à la capitaine Anne-Rose Corbeau (à la barre du Requin Borgne, le jour ; au Crâne Fendu à midi)"},
+		],
+		"fin": "RHUBARBE ! (L'oiseau saute sur son épaule et lui mordille l'oreille : « Mille sabords ! ») … Bon. Tu n'as rien vu. Une capitaine ne pleure pas. Tiens, des pièces, et une de ses plumes : celle-là, il l'a perdue en me mordant le jour où je l'ai trouvé. Tu es l'ami du Requin Borgne, maintenant.",
+		"recompense": {"pieces": 40, "rep": 5, "objets": [["plume_perroquet", 1]]}},
+	{"id": "bal_dette", "titre": "La dette de Jambe-de-Bois", "donneur": "mama_grog", "lieu": "La Balafre, le Crâne Fendu", "sorte": "Balafre",
+		"resume": "Gontran Lestrange, dit Jambe-de-Bois, le capitaine de la Veuve Écarlate, doit quarante pièces à Mama Grog depuis trois lunes. Elle veut sa bourse.",
+		"offre_label": "Quelqu'un te doit de l'argent ?",
+		"offre": "Quelqu'un ? TOUT LE MONDE me doit de l'argent, mon chou. Mais un seul me doit quarante pièces depuis trois lunes : Gontran Lestrange, Jambe-de-Bois, le capitaine de la Veuve Écarlate. Va lui réclamer ma bourse. Poliment, d'abord. Et s'il fait le malin… ici, on règle ça à la loyale, avec les poings. Mais ne le casse pas trop : il boit beaucoup.",
+		"etapes": [
+			{"type": "parler", "pnj": "lestrange", "label": "Mama Grog réclame ses quarante pièces.", "texte": "Ses quarante pièces ?! Elle les aura quand la mer sera sèche ! … Quoi ? Tu insistes ? Écoute-moi bien, terrien : soit tu paies ma dette toi-même, soit tu me la prends à la loyale, aux poings. Personne n'a jamais mis Gontran Lestrange au tapis. Personne.", "objectif": "Réclamer la dette à Gontran Lestrange, dit Jambe-de-Bois (sur la Veuve Écarlate, le jour ; à la Dent du Requin, le soir)"},
+			{"type": "rendre", "pnj": "mama_grog", "label": "Voici la bourse de Jambe-de-Bois.", "prend": [["bourse_lestrange", 1]], "objectif": "Obtenir la bourse de Jambe-de-Bois (payer sa dette, ou le battre en duel à la loyale), puis l'apporter à Mama Grog, au Crâne Fendu"},
+		],
+		"fin": "Ma bourse ! Quarante pièces, le compte est bon. (Elle mord une pièce.) Et elles sont vraies, en plus. Toi, mon chou, tu es le bienvenu au Crâne Fendu. Tiens : ta part, et deux grogs de ma réserve personnelle. Ne dis à personne que j'ai une réserve personnelle.",
+		"recompense": {"pieces": 25, "rep": 4, "objets": [["grog_bordee", 2]]}},
+	{"id": "bal_crocs", "titre": "Le poing de fer", "donneur": "brutus", "lieu": "La Balafre, la forge", "sorte": "Balafre",
+		"resume": "Brutus, le forgeron de Port-Coutelas, me forgera un poing de fer si je lui rapporte trois dents de crocodile du Marais des Noyés.",
+		"offre_label": "Ce poing de fer, tu me le forges ?",
+		"offre": "Un poing de fer ? Pour toi ? … Hm. Il me faut trois dents de crocodile. Pas des dents de chien, pas des dents de requin : du crocodile du Marais des Noyés, à l'ouest. Elles sont dures comme l'acier. Je les sertis dans le métal, et tes poings frapperont comme des marteaux. Mais les crocodiles, eux, mordent comme des enclumes. Fais attention à l'eau.",
+		"etapes": [
+			{"type": "objets", "pnj": "brutus", "objets": {"dent_croco": 3}, "label": "Voici trois dents de crocodile.", "texte": "(Brutus prend les dents, les frappe sur l'enclume : elles sonnent comme du fer.) Bonnes dents. (Il chauffe, tape, trempe, tape encore. La forge rugit. Une heure plus tard…) Voilà. Un poing de fer. Dans une bagarre, tes coups compteront plus. Mais aux poings seulement : une lame, c'est pour les lâches.", "objectif": "Rapporter trois dents de crocodile à Brutus, à la forge (on les prend aux crocodiles du Marais des Noyés, à l'ouest de l'île)"},
+		],
+		"fin": "Et ne viens pas te plaindre si tu casses une mâchoire. Ou deux. Les mâchoires, ça se répare. Le Doc est là pour ça.",
+		"recompense": {"pieces": 10, "objets": [["poing_fer", 1]]}},
+	{"id": "bal_fievre", "titre": "La fièvre des marais", "donneur": "doc", "lieu": "La Balafre, chez le Doc", "sorte": "Balafre",
+		"resume": "La fièvre des marais a couché la moitié de l'équipage de la Veuve Écarlate. Le Doc a besoin de trois touffes d'herbe à fièvre, qui poussent au bord de l'eau du Marais des Noyés.",
+		"offre_label": "Je peux t'aider pour la fièvre ?",
+		"offre": "Tu ferais ça ? Bien. L'herbe à fièvre pousse au bord de l'eau, dans le Marais des Noyés : des touffes argentées, qui brillent un peu quand le soleil est bas. Il m'en faut trois. Et regarde l'eau, pas les touffes : c'est de l'eau que sortent les crocodiles.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"herbe_fievre": 3}, "lieux": ["herbe_fievre_1", "herbe_fievre_2", "herbe_fievre_3"], "objectif": "Cueillir trois touffes d'herbe à fièvre au bord de l'eau du Marais des Noyés (à l'ouest de l'île)"},
+			{"type": "objets", "pnj": "doc", "objets": {"herbe_fievre": 3}, "label": "Voici trois touffes d'herbe à fièvre.", "texte": "Parfaites ! Argentées jusqu'à la racine. (Il les pile dans un mortier avec du miel et une goutte de rhum.) Une cuillère chacun, matin et soir, et dans trois jours ils se battront de nouveau comme des chiffonniers. Ce qui n'est pas forcément une bonne nouvelle pour moi.", "objectif": "Apporter les trois touffes au Doc (Fulbert Saignée, devant sa porte, près de la forge)"},
+		],
+		"fin": "Tiens. Des pièces, et trois flacons de mon remontant : rhum, miel, herbe à fièvre et un secret. Une gorgée, et tu te relèves de n'importe quelle bagarre. Enfin, de presque n'importe laquelle.",
+		"recompense": {"pieces": 30, "rep": 4, "objets": [["remontant_doc", 3]]}},
+	{"id": "bal_roi", "titre": "Le Roi de la Bagarre", "donneur": "tom", "lieu": "La Balafre, le Crâne Fendu", "sorte": "Balafre",
+		"resume": "Tom le Violoneux chantera la gloire de celui qui mettra au tapis les trois champions du port, aux poings : Gros-Louis du Requin Borgne, le Muet de la Veuve Écarlate et Belle-Humeur de la Morue Enragée.",
+		"offre_label": "Ta Chanson du Roi de la Bagarre… il lui manque un couplet ?",
+		"offre": "Le dernier couplet ! Il n'existe pas encore : il faut d'abord un Roi. Le Roi de la Bagarre, c'est celui qui met au tapis les trois champions du port. Gros-Louis, du Requin Borgne. Le Muet, de la Veuve Écarlate. Belle-Humeur, de la Morue Enragée. Aux poings, sans lame : sinon ça ne compte pas. Un duel à la loyale, ou une bonne bagarre, comme tu veux. Et après… je chante !",
+		"etapes": [
+			{"type": "etat", "cle": "champions_3", "objectif": "Mettre au tapis les trois champions du port, aux poings et sans lame : Gros-Louis (Requin Borgne), le Muet (Veuve Écarlate), Belle-Humeur (Morue Enragée) — on peut leur proposer un duel à la loyale"},
+			{"type": "rendre", "pnj": "tom", "label": "Les trois champions sont tombés.", "objectif": "Le dire à Tom le Violoneux (au Crâne Fendu, le soir)"},
+		],
+		"fin": "TOUS LES TROIS ?! (Tom saute sur la table et joue à en casser ses cordes.) ♪ Et puis vint un étranger, aux poings durs comme l'airain, il a mis les trois au tapis : vive le Roi, le roi des poings ! ♪ … Tiens, la ceinture du Roi : elle appartenait au dernier champion, il y a quarante ans. Personne ne l'a portée depuis.",
+		"recompense": {"pieces": 50, "rep": 8, "titre": "Roi de la Bagarre", "objets": [["ceinture_champion", 1]], "bonus": {"force": 1}}},
+	{"id": "bal_vieille_dent", "titre": "La main de Crochet", "donneur": "crochet", "lieu": "La Balafre, le Marais des Noyés", "sorte": "Balafre",
+		"resume": "Vieille-Dent, le crocodile géant du Marais des Noyés, a pris la main de Crochet il y a des années. Crochet veut qu'on le venge.",
+		"offre_label": "Vieille-Dent… tu veux qu'on t'en débarrasse ?",
+		"offre": "… Tu as entendu parler de Vieille-Dent. Bien. Il dort au fond du marais, sous les palétuviers morts, à l'ouest. Le plus gros crocodile que la mer ait jamais vomi. Il a gardé ma main. Je ne te demande pas de me la rapporter. Je te demande qu'il ne mange plus jamais personne. Si tu fais ça… je te devrai quelque chose. Je n'aime pas devoir quelque chose.",
+		"etapes": [
+			{"type": "etat", "cle": "vieille_dent", "objectif": "Vaincre Vieille-Dent, le crocodile géant, au fond du Marais des Noyés (à l'ouest de l'île, sous les palétuviers morts)"},
+			{"type": "rendre", "pnj": "crochet", "label": "Vieille-Dent ne mangera plus personne.", "objectif": "Le dire à Crochet (sur le quai le matin, à la forge l'après-midi, à la Dent du Requin le soir)"},
+		],
+		"fin": "(Crochet reste longtemps silencieux. Puis il pose son crochet sur ton épaule, très doucement.) … Merci. Tiens. Deux pièces d'or. Je les gardais pour le jour où je l'aurais tué moi-même. Ce jour ne viendra plus. Et c'est très bien comme ça.",
+		"recompense": {"pieces": 35, "rep": 6, "objets": [["piece_or", 2]]}},
+	{"id": "bal_carte", "titre": "La carte de Barbe-Sanglante", "donneur": "silas", "lieu": "La Balafre, le Rocher du Crâne", "sorte": "Balafre",
+		"resume": "Le Vieux Silas jure que la carte du trésor de Barbe-Sanglante existe, déchirée en trois morceaux : un dans le donjon du Fort Maudit, un dans le mausolée du cimetière, et le troisième dans la manche de Sylvain, le croupier. Philémon Lunette saura la recomposer.",
+		"offre_label": "Le trésor de Barbe-Sanglante… raconte-moi.",
+		"offre": "Approche… Barbe-Sanglante a déchiré sa carte en trois, pour que ses hommes ne se trahissent pas. Un morceau dort dans le donjon du Fort Maudit, à l'est, gardé par ses vieux matelots, ceux qui ne sont plus que des os. Un autre dans le mausolée du cimetière, sur la colline de l'ouest. Le troisième… Sylvain, à la Dent du Requin, le garde dans sa manche : il ne le mise que contre celui qui le bat trois fois d'affilée. Réunis les trois, porte-les à Philémon, le cartographe. Et que la mer te garde.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"carte_morceau": 2}, "lieux": ["carte_fort", "carte_mausolee"], "objectif": "Trouver deux morceaux de la carte : dans le donjon du Fort Maudit (sur la pointe est) et dans le mausolée du cimetière (sur la colline de l'ouest) — gare aux squelettes, surtout la nuit"},
+			{"type": "objets", "pnj": "philemon", "objets": {"carte_morceau": 3}, "donne": [["carte_barbe", 1]], "label": "Voici les trois morceaux de la carte.", "texte": "Les trois ! (Philémon les étale, les tourne, les retourne, et les recoud avec un fil de soie.) Regardez : le Pic, la Balafre… et là, au bout, un crâne, et une croix rouge. Le Rocher du Crâne ! Mais lisez la marge : « Mon second veille. » Le Capitaine Sans-Chair… Prenez garde, jeune homme.", "objectif": "Gagner le troisième morceau contre Sylvain (trois victoires d'affilée à la grande table de la Dent du Requin), puis porter les trois morceaux à Philémon Lunette, le cartographe (devant sa tour)"},
+			{"type": "etat", "cle": "capitaine_os", "objectif": "Aller au Cirque du Crâne, au bout de la Balafre, avec la carte : vaincre le Capitaine Sans-Chair qui garde le trésor"},
+			{"type": "etat", "cle": "tresor_crane", "objectif": "Entrer dans le Rocher du Crâne par sa bouche et ouvrir le coffre de Barbe-Sanglante (E)"},
+			{"type": "rendre", "pnj": "silas", "label": "J'ai trouvé le trésor de Barbe-Sanglante.", "objectif": "Raconter tout au Vieux Silas (près des feux de la grève le matin, au Crâne Fendu le soir)"},
+		],
+		"fin": "Tu… tu l'as trouvé. Le trésor du capitaine. (Le vieux Silas pleure et rit à la fois.) Cent ans que j'en parle, et personne ne m'a cru. Tiens, prends ça : son tricorne. Il me l'avait laissé, le jour où il est parti en mer pour ne jamais revenir. Il te va mieux qu'à moi. Va, héritier de Barbe-Sanglante. Et raconte-la bien, cette histoire. C'est tout ce qui reste, à la fin : les histoires.",
+		"recompense": {"pieces": 100, "rep": 10, "titre": "Héritier de Barbe-Sanglante", "objets": [["tricorne_or", 1]], "flag": "tresor_balafre"}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -1145,6 +1219,12 @@ func place_name(p: Vector3) -> String:
 		return {"arcanelle_bourg": "Arcanelle, le bourg", "arcanelle_chaudron": "Arcanelle, Le Chaudron Fumant", "arcanelle_bibliotheque": "Arcanelle, la bibliothèque",
 			"arcanelle_salle": "Arcanelle, la Salle des Cours", "arcanelle_crypte": "Arcanelle, la Crypte aux Runes", "arcanelle_bois": "Arcanelle, le Bois Tors",
 			"arcanelle_falaises": "Arcanelle, les falaises du nord", "arcanelle_rivage": "Arcanelle, le rivage"}.get(az, "Arcanelle, l'île des sorciers")
+	if main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(p):
+		var bz: String = str(main.pirates_v68.zone_at(p))
+		return {"balafre_port": "La Balafre, Port-Coutelas", "balafre_crane_fendu": "La Balafre, le Crâne Fendu", "balafre_dent_requin": "La Balafre, la Dent du Requin",
+			"balafre_navire": "La Balafre, à bord d'un navire", "balafre_marais": "La Balafre, le Marais des Noyés", "balafre_ravin": "La Balafre, le ravin du Crâne",
+			"balafre_fort": "La Balafre, le Fort Maudit", "balafre_cimetiere": "La Balafre, le cimetière", "balafre_plage": "La Balafre, la Plage des Os",
+			"balafre_rivage": "La Balafre, le rivage"}.get(bz, "L'Île de la Balafre")
 	if main.get("grande_v59") != null and main.grande_v59 != null and main.grande_v59.contains(p):
 		var gz: String = str(main.grande_v59.zone_at(p))
 		if gz.begins_with("carene"):
