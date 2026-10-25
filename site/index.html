@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les Mondes de Travers</title>
+<meta name="description" content="Les Mondes de Travers : jeu d'aventure fantastique gratuit en monde ouvert, sur PC Windows et en réalité virtuelle (Quest 3). Des îles, des villes, des donjons et des centaines d'habitants.">
+<meta property="og:title" content="Les Mondes de Travers">
+<meta property="og:description" content="Un horizon, mille histoires. Jeu d'aventure gratuit pour PC Windows et casque VR.">
+<meta property="og:image" content="img/affiche.jpg">
+<link rel="icon" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icone_192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nuit:#0d1724; --nuit2:#13233a; --bois:#5a3a22; --or:#f4a62a; --or2:#ffd27a;
+  --ciel:#5fd0ff; --texte:#eef3f8; --doux:#a9b8c8; --carte:#172a42; --bord:#2a4466;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--nuit);color:var(--texte);font-family:Nunito,system-ui,sans-serif;font-size:17px;line-height:1.6}
+img{max-width:100%;display:block}
+a{color:var(--ciel)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* ---------- en-tête ---------- */
+.hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero .fond{position:absolute;inset:0;background:url(img/affiche.jpg) center/cover no-repeat;transform:scale(1.03)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,23,36,0) 35%,rgba(13,23,36,.75) 72%,var(--nuit) 100%)}
+.hero .contenu{position:relative;z-index:1;width:100%;padding:0 16px 56px;text-align:center}
+.devise{font-family:Cinzel,serif;font-weight:600;letter-spacing:.18em;color:var(--or2);font-size:clamp(14px,2.2vw,19px);text-transform:uppercase;margin:0 0 10px;text-shadow:0 2px 8px #000}
+.hero h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.accroche{max-width:720px;margin:0 auto 26px;font-size:clamp(16px,2vw,20px);text-shadow:0 2px 10px #000}
+.boutons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:800;text-decoration:none;font-size:17px;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.or{background:linear-gradient(180deg,var(--or2),var(--or));color:#3a2108;box-shadow:0 6px 0 #a45f10,0 10px 24px rgba(0,0,0,.4)}
+.btn.ciel{background:linear-gradient(180deg,#8fe2ff,var(--ciel));color:#06324a;box-shadow:0 6px 0 #1f7fa8,0 10px 24px rgba(0,0,0,.4)}
+.btn.lien{border-color:var(--bord);color:var(--texte);background:rgba(13,23,36,.6)}
+.btn small{display:block;font-weight:600;font-size:12px;opacity:.8}
+.version{margin-top:16px;color:var(--doux);font-size:14px;min-height:1.4em}
+
+/* ---------- sections ---------- */
+section{padding:72px 0}
+h2{font-family:Cinzel,serif;font-weight:800;font-size:clamp(26px,4vw,38px);margin:0 0 8px;color:var(--or2);letter-spacing:.03em}
+.sous{color:var(--doux);margin:0 0 36px;max-width:700px}
+.grille{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.carte{background:var(--carte);border:1px solid var(--bord);border-radius:16px;padding:20px}
+.carte h3{margin:0 0 6px;font-size:18px;color:var(--texte)}
+.carte p{margin:0;color:var(--doux);font-size:15.5px}
+.carte .ic{font-size:26px;margin-bottom:6px}
+
+/* ---------- galerie ---------- */
+.galerie{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.galerie figure{margin:0;position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--bord);background:#000;cursor:zoom-in}
+.galerie img{aspect-ratio:16/9;object-fit:cover;width:100%;transition:transform .4s}
+.galerie figure:hover img{transform:scale(1.04)}
+.galerie figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.8));font-weight:700;font-size:15px}
+.note{color:var(--doux);font-size:14px;margin-top:14px}
+.zoom{position:fixed;inset:0;background:rgba(5,10,18,.94);display:none;align-items:center;justify-content:center;z-index:10;padding:16px}
+.zoom.on{display:flex}
+.zoom img{max-height:88vh;border-radius:10px}
+
+/* ---------- mondes ---------- */
+.mondes{columns:2 300px;column-gap:28px}
+.monde{break-inside:avoid;margin:0 0 18px;padding-left:16px;border-left:3px solid var(--or)}
+.monde b{color:var(--or2)}
+.monde span{color:var(--doux);display:block;font-size:15.5px}
+
+/* ---------- commandes ---------- */
+.deux{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15.5px}
+dt{font-weight:800;color:var(--or2);white-space:nowrap}
+dd{margin:0;color:var(--doux)}
+kbd{background:#0b1320;border:1px solid var(--bord);border-bottom-width:3px;border-radius:6px;padding:0 6px;font-family:inherit;font-size:14px;color:var(--texte)}
+
+footer{border-top:1px solid var(--bord);padding:30px 0 40px;color:var(--doux);font-size:14px;text-align:center}
+footer img{width:56px;margin:0 auto 10px}
+@media (max-width:760px){
+  .hero{display:block;min-height:0}
+  .hero .fond{position:relative;inset:auto;transform:none;aspect-ratio:2/1;width:100%}
+  .hero::after{display:none}
+  .hero .contenu{padding:22px 16px 40px}
+}
+@media (max-width:600px){section{padding:52px 0}.btn{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="fond" role="img" aria-label="Un héros aux cheveux rouges et son compagnon contemplent un archipel d'îles volantes et de cités"></div>
+  <div class="contenu">
+    <h1>Les Mondes de Travers</h1>
+    <p class="devise">Un horizon, mille histoires</p>
+    <p class="accroche">Une aventure fantastique en monde ouvert, gratuite, à jouer sur PC ou en réalité virtuelle. Prends la mer, monte sur le dos d'un aigle géant, plonge jusqu'à l'Atlantide et descends dans des donjons oubliés.</p>
+    <div class="boutons">
+      <a class="btn or" id="dl-pc" href="https://github.com/janintibo-art/ile-manga/releases/latest">⬇ Version PC<small>Windows, clavier et souris</small></a>
+      <a class="btn ciel" id="dl-vr" href="https://github.com/janintibo-art/ile-manga/releases/latest">⬇ Version VR<small>Quest 3 par Link, SteamVR</small></a>
+    </div>
+    <p class="version" id="version">Dernière version sur la page Releases du dépôt.</p>
+  </div>
+</header>
+
+<main>
+<section id="jeu">
+  <div class="wrap">
+    <h2>L'aventure</h2>
+    <p class="sous">Tout commence sur une petite île de pêcheurs. Puis l'horizon s'ouvre : chaque île est un monde à part, avec ses habitants, ses quêtes, ses secrets et ses monstres.</p>
+    <div class="grille">
+      <div class="carte"><div class="ic">🗺️</div><h3>Un archipel à explorer</h3><p>Plus d'une dizaine d'îles très différentes, rejointes en barque, en ferry, en dirigeable ou à dos d'aigle.</p></div>
+      <div class="carte"><div class="ic">💬</div><h3>Des centaines d'habitants</h3><p>Ils ont un métier, une maison, des humeurs et une mémoire : ils se souviennent de toi, de tes cadeaux et de tes bêtises.</p></div>
+      <div class="carte"><div class="ic">⚔️</div><h3>Donjons et combats</h3><p>Énigmes, pièges, gardiens et boss : temples, pyramides, cercles infernaux et un donjon de cinq étages.</p></div>
+      <div class="carte"><div class="ic">📜</div><h3>Quêtes et progression</h3><p>Un carnet de voyage, des dizaines de quêtes, des niveaux, des talents, une forge, une guilde d'aventuriers et des compagnons.</p></div>
+      <div class="carte"><div class="ic">🌊</div><h3>Mer, ciel et profondeurs</h3><p>Nage, plonge avec un masque, vole librement, pêche, creuse, coupe du bois. Le jour et la nuit changent la vie des villes.</p></div>
+      <div class="carte"><div class="ic">🥽</div><h3>Aussi en réalité virtuelle</h3><p>La même aventure en casque (Quest 3 par Link ou SteamVR), avec des coups d'épée à la main. Les sauvegardes sont communes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="images" style="background:var(--nuit2)">
+  <div class="wrap">
+    <h2>Images du jeu</h2>
+    <p class="sous">Quelques vues prises directement dans le jeu.</p>
+    <div class="galerie" id="galerie">
+      <figure><img loading="lazy" src="img/montjoie.jpg" alt="La Grand-Place de Montjoie, sa fontaine et ses étals"><figcaption>Montjoie, la ville des aventuriers</figcaption></figure>
+      <figure><img loading="lazy" src="img/ile_flottante.jpg" alt="Une île flottante surmontée d'un château, d'où tombent des cascades"><figcaption>L'île flottante et sa citadelle</figcaption></figure>
+      <figure><img loading="lazy" src="img/ramure.jpg" alt="Un village de cabanes perchées dans des arbres géants"><figcaption>Ramure, le village dans les arbres</figcaption></figure>
+      <figure><img loading="lazy" src="img/pyramide.jpg" alt="Une grande pyramide et un sphinx dans les dunes"><figcaption>L'Île des Trois Soleils</figcaption></figure>
+      <figure><img loading="lazy" src="img/yggdrasil.jpg" alt="Un arbre immense au milieu d'une prairie de champignons"><figcaption>Le royaume des fées et Yggdrasil</figcaption></figure>
+      <figure><img loading="lazy" src="img/corail.jpg" alt="Un fond marin couvert de coraux"><figcaption>Le jardin de corail, sous la mer</figcaption></figure>
+      <figure><img loading="lazy" src="img/aztlan.jpg" alt="Une cité aztèque sur l'eau, au pied d'un volcan"><figcaption>Aztlán et ses chinampas</figcaption></figure>
+      <figure><img loading="lazy" src="img/montjoie_nuit.jpg" alt="Une ville fortifiée illuminée la nuit"><figcaption>Montjoie, la nuit</figcaption></figure>
+      <figure><img loading="lazy" src="img/balafre.jpg" alt="Une taverne de pirates éclairée aux lanternes"><figcaption>La Balafre, l'île des pirates</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="mondes">
+  <div class="wrap">
+    <h2>Les mondes</h2>
+    <p class="sous">Un aperçu de ce qui t'attend, sans trop en dévoiler.</p>
+    <div class="mondes">
+      <p class="monde"><b>L'île du village</b><span>Le point de départ : un hameau, une plage, une barque, et un temple oublié sous terre.</span></p>
+      <p class="monde"><b>Le Bois-Doré</b><span>Un village d'elfes dans une forêt d'arbres géants, un arbre sacré à sauver.</span></p>
+      <p class="monde"><b>La Montagne de Feu</b><span>Forgefer, la cité des nains, ses forges et ses golems.</span></p>
+      <p class="monde"><b>L'île flottante</b><span>Accessible seulement à dos d'aigle : une citadelle, des gargouilles et un boss.</span></p>
+      <p class="monde"><b>L'Atlantide</b><span>Une cité sous un dôme, au fond de l'océan, entre requins, méduses et baleines.</span></p>
+      <p class="monde"><b>Le royaume des fées</b><span>Des lucioles, des esprits, une reine, et l'arbre-monde Yggdrasil.</span></p>
+      <p class="monde"><b>Port-Azur</b><span>Une ville portuaire pleine de vie, sa mairie, son ferry et ses commerçants.</span></p>
+      <p class="monde"><b>La grande île de l'est</b><span>Carène, Tazira, Cliquetis la ville des inventeurs, Ramure dans les arbres.</span></p>
+      <p class="monde"><b>Arcanelle</b><span>Le bourg des magiciens : académie, duels, observatoire et lac miroir.</span></p>
+      <p class="monde"><b>La Balafre</b><span>Le repaire des pirates, ses tavernes, ses bagarres et son marais.</span></p>
+      <p class="monde"><b>L'Île des Trois Soleils</b><span>Pyramides, cités mayas et aztèques, et trois grands donjons.</span></p>
+      <p class="monde"><b>L'Île de Braise</b><span>Pandémonia, la cité des démons (gentils), son arène et ses Neuf Cercles.</span></p>
+      <p class="monde"><b>L'Île de Montjoie</b><span>La ville des aventuriers, sa Guilde, ses compagnons et le Donjon des Mille Marches.</span></p>
+    </div>
+  </div>
+</section>
+
+<section id="jouer" style="background:var(--nuit2)">
+  <div class="wrap">
+    <h2>Jouer</h2>
+    <p class="sous">Télécharge l'EXE de ton choix sur la page <a href="https://github.com/janintibo-art/ile-manga/releases/latest">Releases</a> et lance-le : rien à installer. Windows peut afficher un avertissement la première fois (« Informations complémentaires », puis « Exécuter quand même »).</p>
+    <div class="deux">
+      <div class="carte">
+        <h3>🖥️ Version PC</h3>
+        <dl>
+          <dt><kbd>Z</kbd><kbd>Q</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>marcher (ou flèches)</dd>
+          <dt><kbd>Maj</kbd></dt><dd>courir</dd>
+          <dt><kbd>Espace</kbd></dt><dd>sauter, grimper</dd>
+          <dt><kbd>Ctrl</kbd></dt><dd>roulade</dd>
+          <dt>Clic gauche</dt><dd>frapper</dd>
+          <dt><kbd>F</kbd></dt><dd>parer</dd>
+          <dt>Clic droit</dt><dd>tourner la caméra</dd>
+          <dt><kbd>E</kbd></dt><dd>parler, ouvrir, ramasser</dd>
+          <dt><kbd>I</kbd></dt><dd>carnet et inventaire</dd>
+          <dt><kbd>G</kbd></dt><dd>appeler l'aigle</dd>
+          <dt><kbd>Échap</kbd></dt><dd>menu et sauvegardes</dd>
+        </dl>
+      </div>
+      <div class="carte">
+        <h3>🥽 Version VR</h3>
+        <dl>
+          <dt>Stick gauche</dt><dd>marcher</dd>
+          <dt>Stick droit</dt><dd>tourner</dd>
+          <dt><kbd>A</kbd></dt><dd>sauter, se hisser</dd>
+          <dt><kbd>Y</kbd></dt><dd>inventaire</dd>
+          <dt><kbd>X</kbd></dt><dd>appeler l'aigle</dd>
+          <dt>Gâchette</dt><dd>interagir</dd>
+          <dt>Geste</dt><dd>frapper à l'épée</dd>
+          <dt><kbd>≡</kbd></dt><dd>menu</dd>
+        </dl>
+        <p class="note">Casque relié au PC par Quest Link, Air Link ou SteamVR.</p>
+      </div>
+      <div class="carte">
+        <h3>⚙️ Configuration conseillée</h3>
+        <dl>
+          <dt>Système</dt><dd>Windows 10 ou 11, 64 bits</dd>
+          <dt>Carte graphique</dt><dd>RTX 3060 minimum, RTX 4070 ou mieux conseillée</dd>
+          <dt>Mémoire</dt><dd>16 Go</dd>
+          <dt>Sauvegardes</dt><dd>6 emplacements et une sauvegarde automatique, communs au PC et à la VR</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="img/icone_192.png" alt="">
+    <p>Les Mondes de Travers — jeu gratuit, fait avec Godot.</p>
+    <p><a href="https://github.com/janintibo-art/ile-manga">Code source sur GitHub</a> · <a href="https://github.com/janintibo-art/ile-manga/releases">Toutes les versions</a></p>
+  </div>
+</footer>
+
+<div class="zoom" id="zoom" role="dialog" aria-label="Image agrandie"><img alt=""></div>
+
+<script>
+// Les liens de téléchargement pointent directement sur les EXE de la dernière Release.
+(function(){
+  var repo = "janintibo-art/ile-manga";
+  fetch("https://api.github.com/repos/" + repo + "/releases/latest")
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(rel){
+      if (!rel) return;
+      var pc = null, vr = null, size = function(a){ return Math.round(a.size / 1e6) + " Mo"; };
+      (rel.assets || []).forEach(function(a){
+        if (/_PC_v\d+\.exe$/i.test(a.name)) pc = a;
+        if (/_VR_v\d+\.exe$/i.test(a.name)) vr = a;
+      });
+      if (pc) document.getElementById("dl-pc").href = pc.browser_download_url;
+      if (vr) document.getElementById("dl-vr").href = vr.browser_download_url;
+      var d = rel.published_at ? new Date(rel.published_at).toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"}) : "";
+      document.getElementById("version").textContent = (rel.name || rel.tag_name) + (d ? " — publiée le " + d : "") + (pc ? " — PC " + size(pc) : "") + (vr ? ", VR " + size(vr) : "");
+    })
+    .catch(function(){});
+  var z = document.getElementById("zoom");
+  document.getElementById("galerie").addEventListener("click", function(e){
+    var img = e.target.closest("figure") && e.target.closest("figure").querySelector("img");
+    if (!img) return;
+    z.querySelector("img").src = img.src; z.querySelector("img").alt = img.alt; z.classList.add("on");
+  });
+  z.addEventListener("click", function(){ z.classList.remove("on"); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") z.classList.remove("on"); });
+})();
+</script>
+</body>
+</html>

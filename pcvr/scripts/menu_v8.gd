@@ -67,23 +67,23 @@ func _make_pc_panel() -> void:
 	inner.add_theme_constant_override("separation", 13)
 	card.add_child(inner)
 	heading = Label.new()
-	heading.text = "✦  ÎLE MANGA  ✦"
+	heading.text = "✦  LES MONDES DE TRAVERS  ✦"
 	heading.add_theme_color_override("font_color", Color(1.0, 0.82, 0.47))
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	heading.add_theme_font_size_override("font_size", 34)
+	heading.add_theme_font_size_override("font_size", 28)
 	inner.add_child(heading)
 	var top_line := Label.new()
-	top_line.text = "✦  LES ÎLES DE L'AVENTURE  ✦"
+	top_line.text = "✦  UN HORIZON, MILLE HISTOIRES  ✦"
 	top_line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	top_line.add_theme_color_override("font_color", Color(0.74, 0.92, 1.0))
 	top_line.add_theme_font_size_override("font_size", 15)
 	inner.add_child(top_line)
 	# V53 : l'illustration du titre seule (l'icône du jeu contient de faux boutons)
-	var logo_file := load("res://assets/textures/ui/ile_manga_logo.png") as Texture2D
+	var logo_file := load("res://assets/textures/ui/les_mondes_de_travers_logo.png") as Texture2D
 	if logo_file != null:
 		var logo := TextureRect.new()
 		logo.texture = logo_file
-		logo.custom_minimum_size = Vector2(0, 150)
+		logo.custom_minimum_size = Vector2(0, 170)
 		logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		inner.add_child(logo)
@@ -140,7 +140,7 @@ func _show_view(which: String) -> void:
 			var data: Dictionary = Saves.read_slot(i)
 			var info: String = "vide"
 			if not data.is_empty():
-				info = "%s  •  %s  •  %d min" % [str(data.get("zone", "Île Manga")), str(data.get("saved_at", "date inconnue")), int(float(data.get("play_seconds", 0.0)) / 60.0)]
+				info = "%s  •  %s  •  %d min" % [str(data.get("zone", "Les Mondes de Travers")), str(data.get("saved_at", "date inconnue")), int(float(data.get("play_seconds", 0.0)) / 60.0)]
 			options.append("Partie %d : %s" % [i, info])
 		options.append("Retour")
 	elif view == "settings":
@@ -155,15 +155,15 @@ func _redraw() -> void:
 	if not opened:
 		return
 	if xr_mode:
-		var lines: PackedStringArray = PackedStringArray(["ÎLE MANGA  •  " + _version_v21(), "", "6 emplacements de sauvegarde", ""])
+		var lines: PackedStringArray = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", "6 emplacements de sauvegarde", ""])
 		for i in range(options.size()):
 			lines.append(("➤ " if i == selection else "   ") + options[i])
 		vr_text.text = "\n".join(lines)
 	else:
 		for n in list_box.get_children():
 			n.queue_free()
-		heading.text = {"home": "✦  ÎLE MANGA  ✦", "new": "✦  NOUVELLE PARTIE  ✦", "load": "✦  CHARGER UNE PARTIE  ✦",
-			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦", "confirm": "✦  ÊTES-VOUS SÛR ?  ✦"}.get(view, "✦  ÎLE MANGA  ✦")
+		heading.text = {"home": "✦  LES MONDES DE TRAVERS  ✦", "new": "✦  NOUVELLE PARTIE  ✦", "load": "✦  CHARGER UNE PARTIE  ✦",
+			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦", "confirm": "✦  ÊTES-VOUS SÛR ?  ✦"}.get(view, "✦  LES MONDES DE TRAVERS  ✦")
 		frame.modulate.a = 0.84
 		for i in range(options.size()):
 			var choice: String = options[i]
@@ -287,13 +287,13 @@ func _ask_confirm(what: String, slot: int) -> void:
 	options.clear()
 	match what:
 		"new":
-			options.append("Oui, recommencer à zéro (la partie %d sera remplacée)" % slot)
+			options.append("Oui, recommencer la partie %d" % slot)
 		"delete":
-			options.append("Oui, effacer la partie %d pour toujours" % slot)
+			options.append("Oui, effacer la partie %d" % slot)
 		"save":
-			options.append("Oui, écrire par-dessus la partie %d" % slot)
+			options.append("Oui, écraser la partie %d" % slot)
 		"quit":
-			options.append("Oui, quitter le jeu" + (" (la dernière sauvegarde automatique sera gardée)" if playing else ""))
+			options.append("Oui, quitter le jeu")
 	options.append("Non, revenir")
 	_redraw()
 

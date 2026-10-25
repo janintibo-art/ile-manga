@@ -1,8 +1,9 @@
-; Île Manga — édition PC VR native OpenXR (Meta Link et SteamVR)
+; Les Mondes de Travers — édition PC VR native OpenXR (Meta Link et SteamVR)
 config_version=5
 
 [application]
-config/name="Ile Manga VR V59"
+config/name="Les Mondes de Travers VR V73"
+config/icon="res://assets/textures/ui/les_mondes_de_travers_icon.png"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"
 run/main_scene="res://scenes/main.tscn"

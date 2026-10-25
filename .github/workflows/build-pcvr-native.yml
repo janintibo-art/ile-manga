@@ -9,6 +9,10 @@ on:
       - ".github/workflows/build-pcvr-native.yml"
   workflow_dispatch:
 
+env:
+  NOM: Les_Mondes_de_Travers
+  TITRE: Les Mondes de Travers
+
 jobs:
   windows-vr-et-pc:
     runs-on: ubuntu-latest
@@ -21,7 +25,7 @@ jobs:
 
       - name: Lire le numero de version dans project.godot
         run: |
-          V=$(grep -oP 'config/name="Ile Manga VR V\K[0-9]+' pcvr/project.godot)
+          V=$(grep -oP 'config/name="[^"]* VR V\K[0-9]+' pcvr/project.godot)
           test -n "$V"
           echo "V=$V" >> "$GITHUB_ENV"
           sed -i -E "s/(file_version|product_version)=\"[0-9.]+\"/\1=\"$V.0.0.0\"/; s/_v[0-9]+\.exe/_v$V.exe/" pcvr/export_presets.cfg
@@ -53,7 +57,7 @@ jobs:
           assert 'SLOT_COUNT: int = 6' in c
           assert 'autosave.json' in c
           assert 'right_hand.get_float("trigger")' in b
-          assert 'application/icon="res://assets/ui/ile_manga_icon.ico"' in Path('pcvr/export_presets.cfg').read_text()
+          assert 'application/icon="res://assets/textures/ui/les_mondes_de_travers_icon.ico"' in Path('pcvr/export_presets.cfg').read_text()
           print('Menu, six sauvegardes, autosave et icone : fichiers OK')
           PYTEST
 
@@ -72,8 +76,8 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_vr.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_vr.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/jeu_vr.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/jeu_vr.log; then exit 1; fi
 
       - name: Verifier l'inversion du joystick et la separation PC
         run: |
@@ -103,7 +107,7 @@ jobs:
         working-directory: pcvr
         run: |
           mkdir -p ../dist
-          godot --headless --export-release "Windows VR" ../dist/Ile_Manga_VR_v${{ env.V }}.exe
+          godot --headless --export-release "Windows VR" ../dist/${{ env.NOM }}_VR_v${{ env.V }}.exe
 
       - name: Tester la preparation PC (independante du numero de version)
         run: python3 -m py_compile pcvr/set_pc_export.py
@@ -120,12 +124,12 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/ile_manga_pc.log
-          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/ile_manga_pc.log; then exit 1; fi
+          godot --headless --path pcvr --quit-after 5 2>&1 | tee /tmp/jeu_pc.log
+          if grep -E 'SCRIPT ERROR|Parse Error|Cannot load source code' /tmp/jeu_pc.log; then exit 1; fi
 
       - name: Exporter exe PC normal (clavier / souris)
         working-directory: pcvr
-        run: godot --headless --export-release "Windows PC" ../dist/Ile_Manga_PC_v${{ env.V }}.exe
+        run: godot --headless --export-release "Windows PC" ../dist/${{ env.NOM }}_PC_v${{ env.V }}.exe
 
       - name: Verifier les shaders haute definition PC et VR
         run: |
@@ -136,26 +140,52 @@ jobs:
       - name: Verifier exactement deux EXE Windows
         shell: bash
         run: |
-          test -s dist/Ile_Manga_VR_v${{ env.V }}.exe
-          test -s dist/Ile_Manga_PC_v${{ env.V }}.exe
+          test -s dist/${{ env.NOM }}_VR_v${{ env.V }}.exe
+          test -s dist/${{ env.NOM }}_PC_v${{ env.V }}.exe
           test "$(find dist -maxdepth 1 -type f -name '*.exe' | wc -l)" -eq 2
           file dist/*.exe
           du -h dist/*.exe
 
-      # Les EXE vont dans une Release (onglet Releases du dépôt) et non plus dans les
-      # artefacts d'Actions : les fichiers de Release ne comptent pas dans le quota de stockage.
+      # Les deux EXE sont téléchargeables de deux façons : dans les artefacts de cette exécution
+      # (onglet Actions, gardés 7 jours pour ne pas remplir le quota) et dans la Release de la version.
+      - name: Archiver l'EXE VR dans les artefacts d'Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NOM }}_VR_v${{ env.V }}
+          path: dist/${{ env.NOM }}_VR_v${{ env.V }}.exe
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Archiver l'EXE PC dans les artefacts d'Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NOM }}_PC_v${{ env.V }}
+          path: dist/${{ env.NOM }}_PC_v${{ env.V }}.exe
+          retention-days: 7
+          if-no-files-found: error
+
+      # Une Release par version (v73, v74…), marquée « Latest » : c'est elle que le site et le
+      # bouton Releases proposent en premier.
       - name: Publier les deux EXE dans la Release V${{ env.V }}
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="v${{ env.V }}"
+          VR="dist/${{ env.NOM }}_VR_v${{ env.V }}.exe"
+          PC="dist/${{ env.NOM }}_PC_v${{ env.V }}.exe"
+          NOTES="**${{ env.TITRE }} V${{ env.V }}** — $(git log -1 --pretty=%s)
+
+          - \`${{ env.NOM }}_VR_v${{ env.V }}.exe\` : version casque (Quest 3 par Link / Air Link, ou SteamVR).
+          - \`${{ env.NOM }}_PC_v${{ env.V }}.exe\` : version écran, clavier et souris.
+
+          Les sauvegardes sont communes aux deux versions et aux versions précédentes."
           if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
-            gh release upload "$TAG" dist/Ile_Manga_VR_v${{ env.V }}.exe dist/Ile_Manga_PC_v${{ env.V }}.exe --clobber --repo "${{ github.repository }}"
+            gh release upload "$TAG" "$VR" "$PC" --clobber --repo "${{ github.repository }}"
+            gh release edit "$TAG" --title "${{ env.TITRE }} V${{ env.V }}" --notes "$NOTES" --latest --repo "${{ github.repository }}"
           else
-            gh release create "$TAG" dist/Ile_Manga_VR_v${{ env.V }}.exe dist/Ile_Manga_PC_v${{ env.V }}.exe \
+            gh release create "$TAG" "$VR" "$PC" \
               --repo "${{ github.repository }}" --target "${{ github.sha }}" \
-              --title "Île Manga V${{ env.V }}" \
-              --notes "Ile_Manga_VR_v${{ env.V }}.exe : version casque (Quest 3 par Link / Air Link). Ile_Manga_PC_v${{ env.V }}.exe : version écran, clavier et souris."
+              --title "${{ env.TITRE }} V${{ env.V }}" --notes "$NOTES" --latest
           fi
           echo "Release : https://github.com/${{ github.repository }}/releases/tag/$TAG"

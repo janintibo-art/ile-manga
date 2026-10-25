@@ -779,7 +779,7 @@ func _create_players() -> void:
 	add_child(hud)
 	hud_v28 = hud
 	info = Label.new()
-	info.text = "ÎLE MANGA VR " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu"
+	info.text = "LES MONDES DE TRAVERS VR " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu"
 	info.add_theme_font_size_override("font_size", 15)
 	info.position = Vector2(20, 20)
 	hud.add_child(info)
@@ -907,7 +907,7 @@ func _init_native_xr() -> void:
 
 func _update_status() -> void:
 	if OS.has_feature("ile_manga_pc"):
-		info.text = "ÎLE MANGA PC " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu  •  G : appeler l'aigle  •  F11 : plein écran  •  F1 : aide"
+		info.text = "LES MONDES DE TRAVERS PC " + _version_v21() + "  |  ZQSD : marcher  •  Maj : courir  •  Espace : sauter / grimper  •  Ctrl : roulade  •  clic droit : caméra\nClic gauche : frapper  •  F : parer  •  E : ouvrir / ramasser  •  I : inventaire  •  molette : zoom  •  Échap : menu  •  G : appeler l'aigle  •  F11 : plein écran  •  F1 : aide"
 		message.text = "Mode PC classique — F11 plein écran • F6 netteté ultra (GPU) • aucun casque requis."
 		message_clock_v28 = 6.0
 		xr_restart_button.visible = false

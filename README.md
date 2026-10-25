@@ -1,14 +1,22 @@
-# Île Manga — Windows PC + Quest 3
+# Les Mondes de Travers
 
-Jeu d'exploration d'une île manga, fait avec **Godot 4.7.2**. GitHub Actions compile **deux jeux Windows** :
+![Les Mondes de Travers](site/img/affiche.jpg)
 
-- `Ile_Manga_VR_vN.exe` : Quest 3 via Meta Quest Link ou SteamVR, en OpenXR natif.
-- `Ile_Manga_PC_vN.exe` : écran Windows normal, clavier et souris, sans casque.
+**Un horizon, mille histoires.** Jeu d'aventure fantastique gratuit en monde ouvert, fait avec **Godot 4.7.2** :
+un archipel d'îles très différentes (elfes, nains, île flottante, Atlantide, pirates, pyramides, démons, ville
+des aventuriers…), des centaines d'habitants, des quêtes, des donjons et des boss. À jouer sur PC ou en VR.
+
+🌐 **Site du jeu : https://janintibo-art.github.io/ile-manga/**
+
+GitHub Actions compile **deux jeux Windows** :
+
+- `Les_Mondes_de_Travers_VR_vN.exe` : Quest 3 via Meta Quest Link ou SteamVR, en OpenXR natif.
+- `Les_Mondes_de_Travers_PC_vN.exe` : écran Windows normal, clavier et souris, sans casque.
 
 ## Télécharger
 
-**Actions > Build Windows EXE VR et PC > dernière exécution verte > Artifacts.**
-Chaque artefact est un ZIP contenant un EXE.
+- **[Dernière version (Releases)](https://github.com/janintibo-art/ile-manga/releases/latest)** : les deux EXE, une Release par version.
+- Ou **Actions > Build Windows EXE VR et PC > dernière exécution verte > Artifacts** (gardés 7 jours).
 
 ## Commandes
 
@@ -29,12 +37,13 @@ Le menu permet de sauvegarder et de charger une autre partie à tout moment.
 - `pcvr/scripts/main.gd` : construction du monde, joueurs, physique, sauvegardes.
 - `pcvr/scripts/*_vNN.gd` : chaque série de décors ajoutée par version.
 - `www/assets/` : source unique des modèles GLB et des textures, copiés dans Godot par `pcvr/stage_assets.py` au moment de la compilation.
-- `.github/workflows/build-pcvr-native.yml` : contrôles et export des deux EXE.
+- `.github/workflows/build-pcvr-native.yml` : contrôles et export des deux EXE (artefacts + Release).
+- `site/` et `.github/workflows/deploy-pages.yml` : le site web du jeu (GitHub Pages).
 
 ## Nouvelle version
 
 Le numéro de version se change **à un seul endroit** : `config/name` dans `pcvr/project.godot`
-(par exemple `"Ile Manga VR V23"`). Le workflow en déduit le nom des EXE, des artefacts
-et les numéros de version Windows.
+(par exemple `"Les Mondes de Travers VR V73"`). Le workflow en déduit le nom des EXE, des artefacts,
+de la Release et les numéros de version Windows.
 
 Guide détaillé (Quest Link, SteamVR, dépannage) : [docs/PC_VR_NATIVE.md](docs/PC_VR_NATIVE.md).

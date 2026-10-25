@@ -51,7 +51,7 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 		"slot": slot,
 		"saved_at": Time.get_datetime_string_from_system(),
 		"play_seconds": maxf(seconds, 0.0),
-		"zone": "Ile Manga",
+		"zone": "Les Mondes de Travers",
 		"position": [position.x, position.y, position.z],
 		"yaw": facing
 	}
