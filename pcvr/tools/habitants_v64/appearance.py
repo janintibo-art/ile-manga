@@ -10,7 +10,8 @@ prudence rita rosa rosalie rose rosette salome samira selma sofia sylvie sylwen 
 zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysolde agathe
 anne_rose scarlett coquille mama_grog coralie gwen
 neferet merit tiyi nebet ixkanul ixsak ixchab citlali xochitl nenetl
-ignatia ferronde sulfura ortie hurla lumina calcine ombreline zebuline vesperine moloka brindille_braise brasille grisette flammeche'''.split())
+ignatia ferronde sulfura ortie hurla lumina calcine ombreline zebuline vesperine moloka brindille_braise brasille grisette flammeche
+eglantine rissole petronille violette lison aurore brunehaut olga honorine noisette_mj colombe melusine philomene babette germaine'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -321,6 +322,7 @@ TROUSERS = {
     'maya': [[0.92, 0.9, 0.84], [0.7, 0.2, 0.15], [0.2, 0.3, 0.6]],
     'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
     'pandemonia': [[0.12, 0.1, 0.1], [0.25, 0.08, 0.08], [0.18, 0.14, 0.2], [0.3, 0.24, 0.2]],
+    'montjoie': [[0.3, 0.24, 0.18], [0.42, 0.34, 0.24], [0.2, 0.22, 0.28], [0.5, 0.44, 0.32], [0.26, 0.3, 0.2]],
 }
 SHOES = [[0.32, 0.2, 0.12], [0.12, 0.1, 0.09], [0.45, 0.32, 0.2], [0.55, 0.42, 0.3]]
 
@@ -421,6 +423,106 @@ def outfit(D, p):
             add('col', az['foulard'], 'soie')
         if arc.get('cape') and not child:
             add('cape', arc['cape'], 'laine')
+        return T
+    # --------------------------------------------------------- V71 : les gens de Montjoie
+    mj = p.get('mj')
+    if vil == 'montjoie' and isinstance(mj, dict):
+        tenue = str(mj.get('tenue', 'artisan'))
+        bottes = [0.26, 0.17, 0.1]
+        cuir = [0.36, 0.22, 0.12]
+        if child or tenue == 'enfant':
+            add('tunique_haut' if not female else 'corsage', haut, 'coton')
+            add('short' if not female else 'jupe', trous if not female else darker(haut, 0.6), 'toile')
+            add('chaussures', [0.3, 0.18, 0.1], 'cuir')
+            if az.get('tablier'):
+                add('tablier', az['tablier'] if isinstance(az['tablier'], list) else [0.85, 0.82, 0.74], 'coton')
+            return T
+        if tenue == 'noble':
+            if female:
+                add('corsage_long', haut, 'soie')
+                add('jupe_longue', col(az.get('robe', darker(haut, 0.75))), 'soie')
+                add('ceinture_ample', [0.85, 0.66, 0.3], 'soie')
+            else:
+                add('chemise_longue', [0.94, 0.92, 0.86], 'soie', boutons=1.0)
+                add('veste', haut, 'laine')
+                add('pantalon', darker(haut, 0.45), 'laine')
+                add('cape', [0.45, 0.1, 0.14] if lum(haut) > 0.25 else [0.2, 0.18, 0.4], 'laine')
+            add('bottes', bottes, 'cuir')
+        elif tenue in ('aventurier', 'archere'):
+            add('chemise_longue' if not female else 'corsage', [0.85, 0.8, 0.7] if tenue == 'aventurier' else haut, 'lin', boutons=1.0)
+            add('gilet', cuir if tenue == 'aventurier' else darker(haut, 0.6), 'cuir')
+            add('pantalon', trous, 'toile', poches=1.0)
+            add('bottes_hautes', bottes, 'cuir')
+            add('ceinture_ample', [0.3, 0.19, 0.1], 'cuir')
+            if tenue == 'aventurier' and not old:
+                add('cape', darker(haut, 0.7), 'laine')
+        elif tenue == 'chevalier':
+            add('tunique_haut', haut, 'laine')
+            add('tunique_bas', haut, 'laine')
+            add('collant', [0.55, 0.56, 0.6], 'laine')
+            add('bottes_hautes', [0.42, 0.42, 0.46], 'cuir')
+            add('ceinture_ample', [0.85, 0.66, 0.3], 'cuir')
+            add('cape', [0.7, 0.1, 0.12], 'laine')
+        elif tenue == 'garde':
+            add('tunique_haut', haut, 'laine')
+            add('tunique_bas', haut, 'laine')
+            add('collant', [0.2, 0.2, 0.24], 'coton')
+            add('bottes_hautes', bottes, 'cuir')
+            add('ceinture_ample', [0.3, 0.19, 0.1], 'cuir')
+        elif tenue in ('pretresse', 'mage', 'savant'):
+            robe = col(az.get('robe', haut))
+            add('djellaba_haut' if not female else 'corsage_long', robe, 'laine' if old else 'lin')
+            add('djellaba_bas' if not female else 'jupe_longue', robe, 'laine' if old else 'lin')
+            add('pantalon', darker(robe, 0.45), 'toile')
+            add('chaussures', [0.32, 0.22, 0.14], 'cuir')
+            add('ceinture_ample', [0.9, 0.78, 0.4] if tenue == 'pretresse' else darker(robe, 0.5), 'cuir')
+            if tenue == 'mage':
+                add('cape', darker(robe, 0.55), 'laine')
+        elif tenue == 'cuisinier':
+            add('chemise_courte' if not female else 'corsage', haut, 'coton', boutons=1.0)
+            add('pantalon' if not female else 'jupe_longue', trous if not female else darker(haut, 0.6), 'toile')
+            add('chaussures', [0.3, 0.2, 0.12], 'cuir')
+            add('tablier', [0.95, 0.94, 0.9], 'coton')
+        elif tenue == 'forgeron':
+            add('chemise_courte', haut, 'lin', boutons=1.0)
+            add('pantalon', trous, 'toile', poches=1.0)
+            add('bottes', bottes, 'cuir')
+            add('tablier', [0.3, 0.18, 0.1], 'cuir')
+            add('bavette', [0.3, 0.18, 0.1], 'cuir')
+        elif tenue == 'marin':
+            add('chemise_longue' if not female else 'corsage_long', haut, 'lin', boutons=1.0)
+            add('gilet', [0.16, 0.18, 0.3], 'laine')
+            add('pantalon', [0.2, 0.22, 0.32], 'toile', poches=1.0)
+            add('bottes', bottes, 'cuir')
+        elif tenue == 'barde':
+            add('chemise_longue', [0.94, 0.9, 0.8], 'soie', boutons=1.0)
+            add('veste', haut, 'laine')
+            add('collant', darker(haut, 0.5), 'coton')
+            add('bottes_hautes', bottes, 'cuir')
+            add('cape', [0.75, 0.55, 0.2], 'soie')
+        elif tenue in ('paysan', 'marchand'):
+            if female:
+                add('corsage_long', haut, 'coton')
+                add('jupe_longue', darker(haut, 0.6), 'coton')
+            else:
+                add('chemise_longue', haut, 'lin', boutons=1.0)
+                add('gilet', darker(haut, 0.5), 'laine')
+                add('pantalon', trous, 'toile', poches=1.0)
+            add('bottes' if tenue == 'paysan' else 'chaussures', bottes, 'cuir')
+            if tenue == 'paysan' or az.get('tablier'):
+                add('tablier', az['tablier'] if isinstance(az.get('tablier'), list) else [0.62, 0.55, 0.42], 'toile')
+        else:  # artisan
+            if female:
+                add('corsage', haut, 'coton')
+                add('jupe_longue', darker(haut, 0.6), 'coton')
+            else:
+                add('chemise_courte', haut, 'coton', boutons=1.0)
+                add('pantalon', trous, 'toile', poches=1.0)
+            add('chaussures', bottes, 'cuir')
+            if az.get('tablier'):
+                add('tablier', az['tablier'] if isinstance(az['tablier'], list) else [0.5, 0.42, 0.32], 'coton')
+        if az.get('foulard'):
+            add('col', az['foulard'], 'soie')
         return T
     # --------------------------------------------------------- V70 : les démons de Pandémonia
     dem = p.get('demon')
@@ -793,6 +895,19 @@ def hats_for(D, p):
     arc = p.get('arc', {})
     if 'chapeau' in arc:
         out.append({'v': 'ch_sorcier', 'c': col(arc['chapeau']), 'tissu': 'laine'})
+    # V71 : les chapeaux de Montjoie (le feutre à plume est ajouté par le jeu, pnj_montjoie_v71)
+    mjc = str(p.get('mj', {}).get('chapeau', ''))
+    mjr = rng_for(D['id'], 'chapeau71')
+    if mjc == 'mage':
+        out.append({'v': 'ch_sorcier', 'c': [[0.22, 0.12, 0.38], [0.1, 0.12, 0.3], [0.35, 0.1, 0.16]][int(mjr.integers(3))], 'tissu': 'laine'})
+    elif mjc == 'bonnet':
+        out.append({'v': 'ch_bonnet', 'c': [0.2, 0.25, 0.42] if str(p.get('mj', {}).get('tenue', '')) == 'marin' else [[0.6, 0.55, 0.42], [0.5, 0.18, 0.12], [0.3, 0.36, 0.22]][int(mjr.integers(3))], 'tissu': 'laine'})
+    elif mjc == 'casque':
+        out.append({'v': 'ch_casque', 'c': [0.58, 0.59, 0.62], 'tissu': 'metal'})
+    elif mjc == 'chaperon':
+        out.append({'v': 'ch_capuche', 'c': [[0.55, 0.14, 0.1], [0.18, 0.3, 0.16], [0.45, 0.32, 0.12]][int(mjr.integers(3))], 'tissu': 'laine'})
+    elif mjc == 'toque':
+        out.append({'v': 'ch_cuisinier', 'c': [0.97, 0.97, 0.96], 'tissu': 'coton'})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

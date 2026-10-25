@@ -487,6 +487,59 @@ def archipel(src: Path) -> None:
             a3 = math.radians(k * 72)
             d.rectangle((rx + math.cos(a3) * 14 - 3, rz + math.sin(a3) * 14 - 3, rx + math.cos(a3) * 14 + 3, rz + math.sin(a3) * 14 + 3), fill=(120, 110, 104, 255), outline=(60, 50, 44, 255))
 
+    # V71 : l'Île de Montjoie : la ville fortifiée sur la Butte (le rempart, les terrasses, le
+    # Château, les maisons), le Lac des Grenouilles, les Champs du Sud, le Bois des Lutins, le port,
+    # le moulin, la tour en ruine du donjon (bake71.gd écrit montjoie.json)
+    mjf = src / "montjoie.json"
+    if OX > 540 and rows == 980 and mjf.exists():
+        Md = json.loads(mjf.read_text())
+
+        def mw(x, z):
+            return (x + OX, z + OZ)
+
+        cx, cz, fw, fh = Md["champs"]
+        x0, z0 = mw(cx, cz)
+        d.rectangle((x0, z0, x0 + fw, z0 + fh), fill=(176, 150, 96, 255), outline=(110, 86, 50, 255), width=2)
+        for k in range(int(fh // 6)):
+            d.line([(x0 + 2, z0 + 3 + k * 6), (x0 + fw - 2, z0 + 3 + k * 6)], fill=(140, 116, 70, 255), width=1)
+        fx, fz, fr = Md["foret"]
+        rngm = np.random.default_rng(7171)
+        for k in range(260):
+            a = rngm.uniform(0, math.tau)
+            r = math.sqrt(rngm.uniform()) * fr
+            tx, tz = mw(fx + math.cos(a) * r, fz + math.sin(a) * r)
+            d.ellipse((tx - 4, tz - 4, tx + 4, tz + 4), fill=(62, 104, 52, 255), outline=(40, 70, 34, 255))
+        lx, lz, ax, az = Md["lac"]
+        lx, lz = mw(lx, lz)
+        d.ellipse((lx - ax, lz - az, lx + ax, lz + az), fill=(96, 150, 170, 255), outline=(50, 80, 96, 255), width=2)
+        for line in Md.get("chemins", []):
+            if len(line) > 1:
+                d.line([mw(q[0], q[1]) for q in line], fill=(160, 128, 90, 255), width=2)
+        vx, vz = mw(*Md["ville"])
+        rc, rh, rm, rw = Md["rayons"]
+        d.ellipse((vx - rw - 4, vz - rw - 4, vx + rw + 4, vz + rw + 4), fill=(150, 140, 126, 255), outline=(70, 60, 50, 255), width=5)
+        d.ellipse((vx - rm, vz - rm, vx + rm, vz + rm), fill=(162, 152, 136, 255), outline=(90, 80, 66, 255), width=2)
+        d.ellipse((vx - rh, vz - rh, vx + rh, vz + rh), fill=(174, 164, 148, 255), outline=(90, 80, 66, 255), width=2)
+        for q in Md.get("maisons", []):
+            x, z = mw(q[0], q[1])
+            d.rectangle((x - 2, z - 2, x + 2, z + 2), fill=(196, 92, 58, 255), outline=(100, 50, 30, 255))
+        d.ellipse((vx - rc, vz - rc, vx + rc, vz + rc), fill=(190, 184, 170, 255), outline=(70, 60, 50, 255), width=3)
+        d.rectangle((vx - 8, vz - 8, vx + 8, vz + 8), fill=(120, 100, 150, 255), outline=(60, 50, 70, 255))
+        gx, gz = mw(*Md["guilde"])
+        d.ellipse((gx - 5, gz - 5, gx + 5, gz + 5), fill=(70, 130, 70, 255), outline=(220, 180, 70, 255), width=2)
+        px, pz, pr = Md["port"]
+        px, pz = mw(px, pz)
+        d.arc((px - pr, pz - pr, px + pr, pz + pr), 0, 360, fill=(110, 100, 90, 255), width=3)
+        mx, mz = mw(*Md["moulin"])
+        d.ellipse((mx - 4, mz - 4, mx + 4, mz + 4), fill=(230, 226, 214, 255), outline=(90, 80, 70, 255))
+        d.line([(mx - 7, mz - 7), (mx + 7, mz + 7)], fill=(90, 70, 50, 255), width=2)
+        d.line([(mx - 7, mz + 7), (mx + 7, mz - 7)], fill=(90, 70, 50, 255), width=2)
+        dx, dz = mw(*Md["donjon"])
+        d.ellipse((dx - 7, dz - 7, dx + 7, dz + 7), fill=(100, 96, 90, 255), outline=(40, 36, 34, 255), width=2)
+        d.ellipse((dx - 3, dz - 3, dx + 3, dz + 3), fill=(30, 26, 26, 255))
+        kx, kz = mw(*Md["camp"])
+        d.polygon([(kx, kz - 7), (kx - 6, kz + 5), (kx + 6, kz + 5)], fill=(150, 70, 50, 255), outline=(70, 34, 24, 255))
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

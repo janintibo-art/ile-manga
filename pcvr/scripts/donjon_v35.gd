@@ -1850,6 +1850,14 @@ func update_inside(force: bool = false) -> void:
 			env.fog_light_color = Color(0.06, 0.035, 0.03)
 			env.fog_density = 0.012
 			env.tonemap_exposure = 1.45
+		# V71 : le Donjon des Mille Marches : de la pierre humide, des torches ; une pénombre où l'on voit
+		var mjd: Node = main.get("montjoie_v71")
+		if mjd != null and mjd.get("dungeon") != null and mjd.dungeon != null and mjd.dungeon.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.5, 0.48, 0.42)
+			env.ambient_light_energy = 1.1
+			env.fog_light_color = Color(0.03, 0.035, 0.03)
+			env.fog_density = 0.014
+			env.tonemap_exposure = 1.35
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

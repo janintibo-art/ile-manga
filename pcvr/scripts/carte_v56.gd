@@ -66,6 +66,14 @@ const PLACES := [
 	["Bois de Cendre", Vector2(-694, 796), "braise"],
 	["Champ de lave", Vector2(-932, 814), "braise"],
 	["Sources de soufre", Vector2(-891, 765), "braise"],
+	# V71 : l'Île de Montjoie
+	["Montjoie", Vector2(790, 590), "montjoie_ville"],
+	["Port des Mouettes", Vector2(568, 408), "montjoie"],
+	["Lac des Grenouilles", Vector2(1028, 698), "montjoie"],
+	["Bois des Lutins", Vector2(968, 424), "montjoie"],
+	["Les Crocs", Vector2(560, 790), "montjoie"],
+	["Champs du Sud", Vector2(774, 850), "montjoie"],
+	["Donjon des Mille Marches", Vector2(622, 736), "montjoie"],
 ]
 
 var main: Node
@@ -248,6 +256,21 @@ func _quest_targets(id: String) -> Array:
 					"sceau_embruns":
 						if sc.proue_at != Vector3.INF:
 							out.append(sc.proue_at)
+			# V71 : l'Île de Montjoie (le donjon, le camp des gobelins, le lac, la Chaumière, la Guilde)
+			var mj: Node = main.get("montjoie_v71")
+			if mj != null and mj.get("city") != null and mj.city != null:
+				match str(e.get("cle", "")):
+					"roi_gelatineux", "donjon_5", "mille_marches":
+						if mj.dehors != null:
+							out.append(mj.dehors.dungeon_door)
+					"chef_gobelin":
+						out.append(mj.ile.W(206.0, -236.0))
+					"grenouilles_lac":
+						out.append(mj.ile.W(238.0, 78.0))
+					"chaumiere":
+						out.append(mj.city.lieux.chaumiere_door)
+					"inscription", "rang_d", "compagnon":
+						out.append(mj.city.lieux.guild_counter)
 			# V70 : l'Île de Braise (la porte des Neuf Cercles, le Cœur-Brasier, Pépin, l'arène, les lanternes, les repaires)
 			var br: Node = main.get("braise_v70")
 			if br != null and br.get("city") != null and br.city != null:

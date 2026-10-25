@@ -145,6 +145,23 @@ const LISTE := {
 	"tournoi": ["Champion de l'Arène", "braise", 120],
 	"sept_lanternes": ["Les sept lanternes allumées", "braise", 30],
 	"fete_lanternes": ["La Fête des Lanternes", "braise", 60],
+	# --- V71 : l'Île de Montjoie, la Guilde des Aventuriers et le Donjon des Mille Marches
+	"montjoie": ["L'Île de Montjoie", "montjoie", 20],
+	"montjoie_ville": ["Montjoie, la ville sur la Butte", "montjoie", 20],
+	"inscription": ["Inscrit à la Guilde des Aventuriers", "montjoie", 20],
+	"compagnon": ["Un compagnon d'aventure", "montjoie", 30],
+	"rang_d": ["Aventurier de rang D", "montjoie", 60],
+	"rang_s": ["Aventurier de rang S, légende de la Guilde", "montjoie", 250],
+	"slimes_pres": ["Les slimes des prés", "montjoie", 20],
+	"grenouilles_lac": ["Les grenouilles du lac", "montjoie", 40],
+	"chef_gobelin": ["Le chef gobelin", "montjoie", 60],
+	"alerte_navets": ["La grande alerte aux navets", "montjoie", 20],
+	"navets_5": ["Cinq navets en une alerte", "montjoie", 30],
+	"avale_grenouille": ["Avalé par une grenouille (et recraché)", "montjoie", 15],
+	"chaumiere": ["Une maison à soi : la Chaumière des Glycines", "montjoie", 60],
+	"donjon_5": ["Le cinquième étage des Mille Marches", "montjoie", 80],
+	"roi_gelatineux": ["Le Roi Gélatineux", "montjoie", 200],
+	"mille_marches": ["Le Donjon des Mille Marches", "montjoie", 60],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -164,7 +181,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -176,7 +193,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

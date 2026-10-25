@@ -56,6 +56,14 @@ const DB := {
 	"artifice_eclat": -3.0, "lanterne_allume": -6.0, "forge_marteau": -5.0, "geryon_ailes": -3.0, "contrat_signe": -5.0,
 	"bain_soufre": -6.0, "automate_pas": -5.0, "gorgoth_cri": -1.0, "spectre_givre_cri": -4.0,
 	"cocyte_vent_coup": -4.0,
+	# V71 : l'Île de Montjoie (slimes, grenouilles géantes, gobelins, navets fuyards, mimiques) et les compagnons
+	"slime_saut": -8.0, "slime_mort": -5.0, "slime_roi_cri": 0.0, "slime_divise": -2.0, "grenouille_coasse": -3.0,
+	"grenouille_langue": -4.0, "grenouille_avale": -2.0, "grenouille_recrache": -2.0, "gobelin_cri": -4.0, "gobelin_mort": -4.0,
+	"gobelin_chef_cri": -2.0, "navet_cri": -6.0, "navet_attrape": -5.0, "mimique_morsure": -3.0, "mimique_reveil": -3.0,
+	"eclair": -1.0, "eclair_rate": -3.0, "charge_chevalier": -3.0, "chute_armure": -3.0,
+	"alerte_cloche": -8.0, "guilde_tampon": -2.0, "rang_monte": -3.0, "cristal_mesure": -4.0, "soin": -4.0, "benediction": -4.0,
+	"pas_armure": -6.0, "rocher_roule": -2.0, "piege_dalle": -3.0, "fleche_piege": -3.0, "levier": -4.0, "cristal_retour": -3.0,
+	"porte_donjon": -3.0, "moulin": -6.0, "coffre_pieces": -4.0, "lit_dodo": -5.0, "luth": -5.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

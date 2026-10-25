@@ -30,6 +30,9 @@ const BEDS := {
 	"pandemonia_jour": "ambiance/pandemonia_jour", "pandemonia_nuit": "ambiance/pandemonia_nuit", "champ_lave": "ambiance/champ_lave",
 	"port_braise": "ambiance/port_braise", "neuf_cercles": "ambiance/neuf_cercles", "cocyte": "ambiance/cocyte", "arene": "ambiance/arene",
 	"thermes_soufre": "ambiance/thermes_soufre",
+	"montjoie_jour": "ambiance/montjoie_jour", "montjoie_nuit": "ambiance/montjoie_nuit", "guilde": "ambiance/guilde",
+	"campagne": "ambiance/campagne", "lac_grenouilles": "ambiance/lac_grenouilles", "foret_lutins": "ambiance/foret_lutins",
+	"donjon_caves": "ambiance/donjon_caves", "donjon_lac": "ambiance/donjon_lac",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -43,6 +46,8 @@ const BED_DB := {
 	"nil": -12.0, "jungle_maya": -13.0, "lac_aztlan": -12.0, "donjon_pyramide": -12.0, "donjon_xibalba": -12.0, "donjon_soleils": -12.0,
 	"pandemonia_jour": -12.0, "pandemonia_nuit": -12.0, "champ_lave": -11.0, "port_braise": -11.0, "neuf_cercles": -11.0, "cocyte": -10.0,
 	"arene": -11.0, "thermes_soufre": -12.0,
+	"montjoie_jour": -12.0, "montjoie_nuit": -12.0, "guilde": -10.0, "campagne": -12.0, "lac_grenouilles": -12.0, "foret_lutins": -12.0,
+	"donjon_caves": -11.0, "donjon_lac": -11.0,
 }
 
 var main: Node
@@ -263,8 +268,15 @@ func _choose_zone(running: bool) -> void:
 		var sz: String = so.zone_at(p) if so != null and so.get("ile") != null and so.ile != null else ""
 		var br: Node = main.get("braise_v70")
 		var bd: Node = br.dungeon if br != null and br.get("dungeon") != null else null
+		var mjn: Node = main.get("montjoie_v71")
+		var md: Node = mjn.dungeon if mjn != null and mjn.get("dungeon") != null else null
+		# V71 : dans le Donjon des Mille Marches (le Lac Souterrain : l'eau qui goutte)
+		if md != null and md.contains(p):
+			zone = "mj_donjon"
+			targets[str(md.ambience()) if md.has_method("ambience") else "donjon_caves"] = 1.0
+			targets["grotte"] = 0.2
 		# V70 : dans les Neuf Cercles (le Cocyte : le vent glacé)
-		if bd != null and bd.contains(p):
+		elif bd != null and bd.contains(p):
 			zone = "braise_cercles"
 			if str(bd.room) == "cocyte":
 				targets["cocyte"] = 1.0
@@ -354,6 +366,14 @@ func _choose_zone(running: bool) -> void:
 	if az_zone != "" and not on_boat:
 		zone = az_zone
 		_azur_beds(az_zone, p)
+		_night_beds()
+		return
+	# V71 : l'Île de Montjoie (la ville sur la Butte, la Guilde, la campagne, le lac, le bois)
+	var mjs: Node = main.get("montjoie_v71")
+	var mj_zone: String = mjs.zone_at(p) if mjs != null and mjs.get("city") != null and mjs.city != null and not on_ferry else ""
+	if mj_zone != "" and not on_boat:
+		zone = mj_zone
+		_montjoie_beds(mj_zone, p)
 		_night_beds()
 		return
 	# V70 : l'Île de Braise (Pandémonia, son port, l'arène, les thermes ; le volcan, la lave)
@@ -460,6 +480,46 @@ func _arcanelle_beds(z: String, p: Vector3) -> void:
 			targets["brise"] = 0.5
 			targets["ressac"] = 0.3 * sea
 			targets["vent_vol"] = clampf((p.y - 14.0) / 20.0, 0.0, 0.35)
+
+
+## V71 : les nappes de l'Île de Montjoie.
+func _montjoie_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	var ville: String = "montjoie_jour" if day else "montjoie_nuit"
+	match z:
+		"mj_guilde":
+			targets["guilde"] = 1.0
+		"mj_auberge":
+			targets["taverne"] = 1.0
+		"mj_trone", "mj_temple", "mj_chaumiere":
+			targets["halle"] = 0.5
+			targets[ville] = 0.3
+		"mj_chateau", "mj_haute", "mj_moyenne", "mj_basse", "mj_place":
+			targets[ville] = 1.0
+			targets["brise"] = clampf((p.y - 20.0) / 30.0, 0.0, 0.4)
+		"mj_alerte":
+			targets["campagne"] = 1.0
+			targets[ville] = 0.4
+		"mj_port":
+			targets["port_azur"] = 0.6
+			targets["ressac"] = 0.4 + 0.4 * sea
+		"mj_lac":
+			targets["lac_grenouilles"] = 1.0
+			targets["campagne"] = 0.3
+		"mj_foret":
+			targets["foret_lutins"] = 1.0
+			targets["grillons"] = 0.0 if day else 0.5
+		"mj_crocs", "mj_ruine":
+			targets["brise"] = 0.8
+			targets["vent_vol"] = clampf((p.y - 15.0) / 40.0, 0.0, 0.5)
+			targets["campagne"] = 0.3
+		"mj_rivage":
+			targets["ressac"] = 0.5 + 0.5 * sea
+			targets["brise"] = 0.4
+		_:
+			targets["campagne"] = 1.0 if day else 0.3
+			targets["grillons"] = 0.0 if day else 0.7
+			targets["ressac"] = 0.25 * sea
 
 
 ## V70 : les nappes de l'Île de Braise.

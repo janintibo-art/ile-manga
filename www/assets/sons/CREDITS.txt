@@ -122,3 +122,46 @@ le chœur est synthétisé :
   musique/neuf_cercles.ogg (« Les Neuf Cercles », le grand donjon),
   musique/arene.ogg (« Le Tournoi des Cornes », l'Arène),
   musique/fete_lanternes.ogg (« La Nuit des Lanternes », la fête sur la Grand-Place).
+
+L'Île de Montjoie, la ville des aventuriers, et le Donjon des Mille Marches (V71) — tous CC0 1.0 /
+domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v71.py : synthétisés (gelée qui rebondit et
+qui gargouille, cris du Roi Gélatineux, coassements de grenouilles géantes, voix de gobelins et de
+navets, cloche à main, tampon, boule de cristal, foudre et tonnerre, grésillements, clochettes,
+armure qui cliquette et casque qui tournoie, rocher qui roule, pièges, mécanismes, moulin, pièces,
+ronflement, alouettes, vaches, abeille, pic-vert, cheval sur les pavés, foule, feu de l'âtre…), le
+luth du barde (cordes pincées de Karplus-Strong en chœurs doubles) et le chœur synthétisés, mêlés à
+des enregistrements retravaillés (découpés, transposés, ralentis, filtrés, réverbérés) :
+  du recueil github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, RPG Audio, Voiceover Pack ;
+  « 80 CC0 RPG SFX », « 80 CC0 creature SFX » (1 et 2), « 100 CC0 SFX », « 100 CC0 wood/metal SFX »,
+  « 75 CC0 breaking/falling/hit SFX », « 40 CC0 water splash/slime SFX », « 30 CC0 SFX loops »,
+  « BB Retail Therapy Sample Pack », « bb - Bottle Plops », « bb - Slide Whistle », « bb - Smol
+  Mechanisms » et « bb - Books, Paper, Writing » (Ben Burnes, CC0), les rires de « Free Retro Arcade
+  Sounds » (The Motion Monkey, CC0) ;
+  des enregistrements « nature-forest-day » par Sadiquecat, « wind-breeze » par keweldog et
+  « water-stream » par SamsterBirdies (Freesound, CC0, via github.com/DNAABR/ambient-sounds-library) ;
+  de la banque VSCO-2 CE (Versilian Studios, CC0) : trompette, cor, timbales, cymbale, glockenspiel ;
+  de la « Versilian Community Sample Library » (VCSL, Versilian Studios, github.com/sgossner/VCSL,
+  CC0 1.0) : enclumes, verres frottés.
+  sfx/slime_saut_1..3, slime_mort_1..3, slime_roi_cri_1..2, slime_divise_1..2, grenouille_coasse_1..3,
+      grenouille_langue_1..2, grenouille_avale_1..2, grenouille_recrache_1..2, gobelin_cri_1..3,
+      gobelin_mort_1..2, gobelin_chef_cri_1..2, navet_cri_1..3, navet_attrape_1..2, mimique_morsure_1..2,
+      mimique_reveil_1..2, alerte_cloche_1..2, guilde_tampon_1..3, rang_monte_1..2, cristal_mesure_1..2,
+      eclair_1..2, eclair_rate_1..3, soin_1..2, benediction_1..2, charge_chevalier_1..2,
+      chute_armure_1..2, pas_armure_1..3, rocher_roule_1, piege_dalle_1..2, fleche_piege_1..3,
+      levier_1..2, cristal_retour_1..2, porte_donjon_1..2, moulin_1..2, coffre_pieces_1..2,
+      lit_dodo_1..2, luth_1..3
+  ambiance/montjoie_jour, montjoie_nuit, guilde, campagne, lac_grenouilles, foret_lutins,
+      donjon_caves, donjon_lac
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v71.py, jouées avec
+les outils de la V51 et la banque VSCO-2 CE (plus quelques échantillons de « VSCO 1 Percussion »,
+même auteur, CC0), et des instruments de la VCSL (CC0) : le clavecin, l'harmonica chromatique (joué
+à trois anches, en « musette »), les verres frottés, le tambourin, les claquements de mains, le tom,
+la caisse claire à cordes, la grosse caisse, le tambour sur cadre ; le luth, la « basse gluante »,
+l'accordéon et le chœur sont synthétisés :
+  musique/montjoie.ogg (« Montjoie », le thème de la ville),
+  musique/guilde.ogg (« La Gigue de la Guilde », la taverne de la Guilde des Aventuriers),
+  musique/campagne.ogg (« Les Champs de Montjoie », dehors, dans les champs et les bois),
+  musique/donjon_mille_marches.ogg (« Le Donjon des Mille Marches »),
+  musique/roi_gelatineux.ogg (« Le Roi Gélatineux », le combat contre le boss du donjon).

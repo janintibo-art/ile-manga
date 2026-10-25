@@ -134,6 +134,7 @@ func _ready() -> void:
 	_create_v68()
 	_create_v69()
 	_create_v70()
+	_create_v71()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -180,6 +181,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V70 : l'Île de Braise (au sud-ouest, sous l'île des fées ; son carré ne touche aucune autre île)
 	if braise_v70 != null and braise_v70.ile != null and braise_v70.ile.contains(x, z):
 		return maxf(h, braise_v70.ile.height(x, z))
+	# V71 : l'Île de Montjoie (à l'est de la grande île ; son carré ne touche aucune autre île)
+	if montjoie_v71 != null and montjoie_v71.ile != null and montjoie_v71.ile.contains(x, z):
+		return maxf(h, montjoie_v71.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1002,6 +1006,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			soleils_v69.load_data({})
 		if braise_v70 != null and braise_v70.city != null:
 			braise_v70.load_data({})
+		if montjoie_v71 != null and montjoie_v71.city != null:
+			montjoie_v71.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1028,6 +1034,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			# V70 : partie sauvée dans les Neuf Cercles (sous la Cathédrale-Forge de Pandémonia)
 			if braise_v70 != null and braise_v70.city != null:
 				braise_v70.ensure_dungeon_at(origin.position)
+			# V71 : partie sauvée dans le Donjon des Mille Marches (sous la tour en ruine des Crocs)
+			if montjoie_v71 != null and montjoie_v71.city != null:
+				montjoie_v71.ensure_dungeon_at(origin.position)
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
@@ -1124,6 +1133,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and braise_v70 != null and braise_v70.city != null:
 		var bdata70: Variant = SaveStore.read_slot(slot).get("braise", {})
 		braise_v70.load_data(bdata70 if bdata70 is Dictionary else {})
+	# V71 : l'Île de Montjoie (la Guilde, les compagnons, la Chaumière, le Donjon des Mille Marches)
+	if not new_game and montjoie_v71 != null and montjoie_v71.city != null:
+		var mdata71: Variant = SaveStore.read_slot(slot).get("montjoie", {})
+		montjoie_v71.load_data(mdata71 if mdata71 is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1228,6 +1241,8 @@ func _save_slot(slot: int) -> void:
 		extra["soleils"] = soleils_v69.serialize()
 	if braise_v70 != null and braise_v70.city != null:
 		extra["braise"] = braise_v70.serialize()
+	if montjoie_v71 != null and montjoie_v71.city != null:
+		extra["montjoie"] = montjoie_v71.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -2063,6 +2078,10 @@ func _respawn_v28() -> void:
 	if braise_v70 != null and braise_v70.city != null and braise_v70.owns_point(_player_pos_v27()):
 		braise_v70.on_faint(_player_pos_v27())
 		return
+	# V71 : sur l'Île de Montjoie (le donjon : au dernier point de reprise ; dehors : la Grand-Place, ou son lit)
+	if montjoie_v71 != null and montjoie_v71.city != null and montjoie_v71.owns_point(_player_pos_v27()):
+		montjoie_v71.on_faint(_player_pos_v27())
+		return
 	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
 	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
 		monstres_v36.respawn_player()
@@ -2331,6 +2350,16 @@ func _create_jungle_v29() -> void:
 	braise_v70.build_island()
 	var br_d: Array = braise_v70.dock()
 	boat_v29._make_dock("Ponton_braise", br_d[0], br_d[1])
+	# V71 : l'Île de Montjoie, à l'est de la grande île : la ville fortifiée sur la Butte, sa
+	# Guilde des Aventuriers et son donjon (le relief d'abord ; la ville, la végétation, les
+	# habitants, la Guilde, le donjon après l'heure du jour, voir _create_v71).
+	montjoie_v71 = preload("res://scripts/montjoie_v71.gd").new()
+	montjoie_v71.name = "Montjoie_v71"
+	add_child(montjoie_v71)
+	montjoie_v71.setup(self)
+	montjoie_v71.build_island()
+	var mj_d: Array = montjoie_v71.dock()
+	boat_v29._make_dock("Ponton_montjoie", mj_d[0], mj_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2367,6 +2396,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V71 : l'Île de Montjoie : la terre ferme, les pontons, les quais (pas dans le lac)
+	if montjoie_v71 != null and montjoie_v71.contains(p):
+		if montjoie_v71.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -2892,7 +2929,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3015,6 +3052,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V70 : Pandémonia (le tournoi, la fête)
 	if braise_v70 != null and braise_v70.city != null:
 		braise_v70.after_reply(r, npc)
+	# V71 : Montjoie (la Guilde, les compagnons, la Chaumière)
+	if montjoie_v71 != null and montjoie_v71.city != null:
+		montjoie_v71.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -3104,6 +3144,7 @@ var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
 var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia (la cité des démons), les Neuf Cercles
+var montjoie_v71: Node3D                   # V71 : l'Île de Montjoie, la ville des aventuriers, le Donjon des Mille Marches
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -3159,6 +3200,9 @@ func _spawn_azur_v56() -> void:
 	# V70 : les démons de Pandémonia
 	if braise_v70 != null and braise_v70.city != null:
 		braise_v70.spawn_npcs()
+	# V71 : les habitants de Montjoie
+	if montjoie_v71 != null and montjoie_v71.city != null:
+		montjoie_v71.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3270,6 +3314,17 @@ func _create_v70() -> void:
 	braise_v70.build_town()
 	if journal_v56 != null:
 		braise_v70.register_services(journal_v56)
+
+
+## V71 : l'Île de Montjoie (la ville sur la Butte, ses grands lieux, le dehors, la végétation, la
+## Guilde, les compagnons, les événements, le Donjon des Mille Marches) ; le ponton est posé avec
+## le relief.
+func _create_v71() -> void:
+	if montjoie_v71 == null:
+		return
+	montjoie_v71.build_town()
+	if journal_v56 != null:
+		montjoie_v71.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3450,6 +3505,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(soleils_v69.ile.CENTER.x, soleils_v69.ile.CENTER.z), soleils_v69.ile.HALF])
 	if braise_v70 != null and braise_v70.ile != null:
 		boxes.append([Vector2(braise_v70.ile.CENTER.x, braise_v70.ile.CENTER.z), braise_v70.ile.HALF])
+	if montjoie_v71 != null and montjoie_v71.ile != null:
+		boxes.append([Vector2(montjoie_v71.ile.CENTER.x, montjoie_v71.ile.CENTER.z), montjoie_v71.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

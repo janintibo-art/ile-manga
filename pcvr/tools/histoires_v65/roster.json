@@ -1533,5 +1533,170 @@
 "groupe": "braise",
 "nom": "Flammèche",
 "titre": "gardienne du chenil des chiots d'enfer"
+},
+"eglantine": {
+"groupe": "montjoie",
+"nom": "Églantine",
+"titre": "réceptionniste de la Guilde"
+},
+"hugues": {
+"groupe": "montjoie",
+"nom": "Maître Hugues",
+"titre": "maître de la Guilde, dit « Barbe-de-Fer »"
+},
+"rissole": {
+"groupe": "montjoie",
+"nom": "Mamie Rissole",
+"titre": "cuisinière de la taverne de la Guilde"
+},
+"petronille": {
+"groupe": "montjoie",
+"nom": "Sœur Pétronille",
+"titre": "prêtresse du Temple de l'Aube"
+},
+"violette": {
+"groupe": "montjoie",
+"nom": "Violette",
+"titre": "mage de la foudre"
+},
+"tancrede": {
+"groupe": "montjoie",
+"nom": "Sire Tancrède",
+"titre": "chevalier, Sire Tancrède de Tournevent"
+},
+"hilaire": {
+"groupe": "montjoie",
+"nom": "Hilaire",
+"titre": "aventurier de rang F (depuis douze ans)"
+},
+"lison": {
+"groupe": "montjoie",
+"nom": "Lison",
+"titre": "archère"
+},
+"rodrigue": {
+"groupe": "montjoie",
+"nom": "Rodrigue",
+"titre": "épéiste (ton rival autoproclamé)"
+},
+"bertrand": {
+"groupe": "montjoie",
+"nom": "Bertrand",
+"titre": "barde de la Guilde"
+},
+"barthelemy": {
+"groupe": "montjoie",
+"nom": "Baron Barthélemy",
+"titre": "Baron de Montjoie, seigneur de la ville"
+},
+"aurore": {
+"groupe": "montjoie",
+"nom": "Aurore",
+"titre": "intendante du château"
+},
+"clotaire": {
+"groupe": "montjoie",
+"nom": "Père Clotaire",
+"titre": "prêtre du Temple de l'Aube"
+},
+"brunehaut": {
+"groupe": "montjoie",
+"nom": "Brunehaut",
+"titre": "forgeronne"
+},
+"titouan": {
+"groupe": "montjoie",
+"nom": "Titouan",
+"titre": "apprenti forgeron, le fils de Brunehaut"
+},
+"olga": {
+"groupe": "montjoie",
+"nom": "Madame Olga",
+"titre": "marchande de magie"
+},
+"aubin": {
+"groupe": "montjoie",
+"nom": "Aubin",
+"titre": "apothicaire"
+},
+"honorine": {
+"groupe": "montjoie",
+"nom": "Honorine",
+"titre": "boulangère"
+},
+"noisette_mj": {
+"groupe": "montjoie",
+"nom": "Noisette",
+"titre": "la fille d'Honorine"
+},
+"ulric": {
+"groupe": "montjoie",
+"nom": "Ulric",
+"titre": "aubergiste de « La Grenouille Repue »"
+},
+"colombe": {
+"groupe": "montjoie",
+"nom": "Colombe",
+"titre": "couturière"
+},
+"ferdinand": {
+"groupe": "montjoie",
+"nom": "Capitaine Ferdinand",
+"titre": "capitaine de la garde"
+},
+"gilles": {
+"groupe": "montjoie",
+"nom": "Gilles",
+"titre": "garde de la Porte Nord"
+},
+"melusine": {
+"groupe": "montjoie",
+"nom": "Mélusine",
+"titre": "crieuse publique"
+},
+"prosper": {
+"groupe": "montjoie",
+"nom": "Monsieur Prosper",
+"titre": "marchand de maisons"
+},
+"philomene": {
+"groupe": "montjoie",
+"nom": "Grand-mère Philomène",
+"titre": "conteuse"
+},
+"babette": {
+"groupe": "montjoie",
+"nom": "Babette",
+"titre": "marchande de fruits et légumes du marché"
+},
+"gaubert": {
+"groupe": "montjoie",
+"nom": "Père Gaubert",
+"titre": "fermier des Champs du Sud"
+},
+"germaine": {
+"groupe": "montjoie",
+"nom": "Germaine",
+"titre": "fermière, la femme de Père Gaubert"
+},
+"clovis": {
+"groupe": "montjoie",
+"nom": "Clovis",
+"titre": "meunier"
+},
+"yvon": {
+"groupe": "montjoie",
+"nom": "Yvon",
+"titre": "pêcheur du lac"
+},
+"isidore": {
+"groupe": "montjoie",
+"nom": "Capitaine Isidore",
+"titre": "maître du Port des Mouettes"
+},
+"odon": {
+"groupe": "montjoie",
+"nom": "Odon",
+"titre": "gardien du Donjon des Mille Marches"
 }
 }

@@ -43,6 +43,11 @@ const ZONE_TRACK := {
 	"braise_thermes": "pandemonia", "braise_port": "pandemonia", "braise_taverne": "", "braise_arene": "arene", "braise_fete": "fete_lanternes",
 	"braise_cercles": "neuf_cercles", "braise_cratere": "braise", "braise_volcan": "braise", "braise_sources": "braise", "braise_champ": "braise",
 	"braise_ruines": "braise", "braise_bois": "braise", "braise_rivage": "large", "braise_landes": "braise",
+	"mj_chateau": "montjoie", "mj_trone": "montjoie", "mj_haute": "montjoie", "mj_temple": "", "mj_chaumiere": "montjoie",
+	"mj_moyenne": "montjoie", "mj_place": "montjoie", "mj_guilde": "guilde", "mj_auberge": "", "mj_basse": "montjoie",
+	"mj_port": "montjoie", "mj_lac": "campagne", "mj_foret": "campagne", "mj_ruine": "campagne", "mj_crocs": "campagne",
+	"mj_champs": "campagne", "mj_alerte": "campagne", "mj_rivage": "large", "mj_campagne": "campagne",
+	"mj_donjon": "donjon_mille_marches", "mj_donjon_roi": "roi_gelatineux",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
@@ -52,8 +57,9 @@ const TRACK_DB := {
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
 	"pandemonia": -9.0, "braise": -9.0, "neuf_cercles": -8.0, "arene": -8.0, "fete_lanternes": -7.0,
+	"montjoie": -9.0, "guilde": -9.0, "campagne": -9.0, "donjon_mille_marches": -8.0, "roi_gelatineux": -7.0,
 }
-const LOOPED := ["theme_ile", "combat", "gigue_crane"]
+const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
 const END_FADE := 4.0                # un morceau joué une fois s'éteint sur ses 4 dernières secondes
 const COMBAT_RANGE := 20.0
@@ -233,6 +239,12 @@ func _decide(dt: float) -> void:
 		_combat_hold = COMBAT_HOLD
 	var was_combat: bool = combat
 	combat = boss or (combat and _combat_hold > 0.0) or (fighting and _combat_t >= 1.0)
+	# V71 : le Roi Gélatineux a sa propre musique (au fond du Donjon des Mille Marches)
+	if boss:
+		var mjm: Node = main.get("montjoie_v71")
+		if mjm != null and mjm.get("dungeon") != null and mjm.dungeon != null and mjm.dungeon.contains(main._player_pos_v27()):
+			_switch("roi_gelatineux")
+			return
 	if combat:
 		_switch("combat")
 		return
@@ -313,6 +325,10 @@ func _fighting() -> bool:
 
 ## Un combat de boss est-il en cours (Karkinos, Nâga, la Reine des Ronces) ?
 func _boss_fight() -> bool:
+	# V71 : le Roi Gélatineux, au fond du Donjon des Mille Marches
+	var mjv: Node = main.get("montjoie_v71")
+	if mjv != null and mjv.get("dungeon") != null and mjv.dungeon != null and bool(mjv.dungeon.get("fight")):
+		return true
 	var d: Node = main.get("donjon_v35")
 	if d != null:
 		if bool(d.fight):

@@ -766,6 +766,119 @@ const QUETES := [
 		],
 		"fin": "Tiens, un gâteau de miel de Bobor, que je gardais pour moi. Je te le donne : tu as fait le plus dur, moi je n'ai fait que planter.",
 		"recompense": {"pieces": 25, "rep": 4, "objets": [["gateau_miel", 1]]}},
+	{"id": "mj_inscription", "titre": "L'inscription à la Guilde", "donneur": "eglantine", "lieu": "Île de Montjoie, la Guilde des Aventuriers", "sorte": "Île de Montjoie",
+		"resume": "Pour accepter des contrats, recruter des compagnons et monter de rang, il faut être inscrit à la Guilde des Aventuriers de Montjoie. Églantine, la réceptionniste, demande dix pièces et une petite lecture à la boule de cristal.",
+		"offre_label": "Je voudrais m'inscrire à la Guilde !",
+		"offre": "Une inscription ! (Elle sort un formulaire, deux tampons et une loupe.) C'est très simple : dix pièces de frais, une signature ici, ici et là, et une petite lecture de vos aptitudes à la boule de cristal. Elle ne mord presque pas. Elle sent un peu la pomme, c'est normal. Vous avez les dix pièces ?",
+		"etapes": [
+			{"type": "objets", "pnj": "eglantine", "objets": {"piece": 10}, "label": "Voici mes dix pièces. Je pose la main sur la boule ?", "texte": "Posez la main, bien à plat… (La boule s'allume, hésite, fait « bzzz », puis affiche des lettres dorées.) Voyons : Force, correcte. Agilité, enthousiaste. Magie, « peut-être plus tard ». Chance, « hmm ». Appétit : EXCEPTIONNEL. Talent caché : « sait se relever ». (Elle tamponne trois fois.) Félicitations ! Voici votre Carte d'aventurier. Rang F. Comme tout le monde. Même Maître Hugues, au début. Surtout Maître Hugues.", "donne": [["carte_aventurier", 1]], "objectif": "Payer dix pièces à Églantine et poser la main sur la boule de cristal (au comptoir de la Guilde des Aventuriers, sur la Grand-Place de la Ville-Moyenne)"},
+		],
+		"fin": "Bienvenue dans la Guilde ! Le tableau des quêtes est juste derrière vous : quatre contrats nouveaux chaque jour. Rapportez-les-moi, je tamponne, vous montez de rang. Et maintenant que vous êtes inscrit, les aventuriers de la taverne voudront peut-être faire équipe avec vous. Parlez à Sœur Pétronille, à Violette et à Sire Tancrède. Ils ont tous les trois… un petit souci.",
+		"recompense": {"pieces": 0, "rep": 3}},
+	{"id": "mj_donjon", "titre": "Le Roi Gélatineux", "donneur": "hugues", "lieu": "Île de Montjoie, le Donjon des Mille Marches", "sorte": "Île de Montjoie",
+		"si": {"apres": "mj_inscription", "rang": "D"},
+		"resume": "Du slime remonte dans les puits de la Basse-Ville et dans la fontaine de la Grand-Place. Maître Hugues sait d'où il vient : du fond du Donjon des Mille Marches, au pied des Crocs, où règne le Roi Gélatineux. Il faut descendre les cinq étages, vaincre le Roi et rapporter son Cœur de gelée royale.",
+		"offre_label": "Maître Hugues, la fontaine fait des bulles vertes…",
+		"offre": "Tu l'as vu aussi, gamin ? Le slime remonte. Dans les puits, dans la fontaine, et ce matin dans la soupe de Rissole. Elle est furieuse. Ça vient d'en bas, du Donjon des Mille Marches, au pied des Crocs. Cinq étages. Tout au fond, il y a le Roi Gélatineux, avec sa petite couronne. Tant qu'il est là, la gelée montera. Tu es rang D, maintenant : tu es prêt. Descends, vaincs-le, et rapporte-moi son Cœur de gelée royale. Et quand il se coupe en petits morceaux… surtout, ne panique pas. Je sais de quoi je parle.",
+		"etapes": [
+			{"type": "etat", "cle": "roi_gelatineux", "objectif": "Descendre les cinq étages du Donjon des Mille Marches (l'entrée est sous la tour en ruine, au pied des Crocs, au sud-ouest de l'île ; Odon tient la grille) et vaincre le Roi Gélatineux dans la Salle du Trône Gélatineux"},
+			{"type": "objets", "pnj": "hugues", "objets": {"coeur_gelee": 1}, "label": "Voici le Cœur de gelée royale, Maître.", "texte": "(Il le prend dans ses deux grosses mains. Le cœur tremble comme un flan.) Le Cœur de gelée royale… Par ma barbe. Par mes trois tresses. Par la tourte de Rissole. (Il pleure, évidemment.) Gamin, tu viens de faire ce que je n'ai jamais fait. J'ai paniqué au troisième étage. Toi, tu es allé au fond, et tu es revenu. Odon va devoir racheter de l'encre rouge.", "objectif": "Rapporter le Cœur de gelée royale à Maître Hugues (dans son bureau, au fond de la Guilde, ou à une table de la taverne le soir)"},
+		],
+		"fin": "OYEZ, OYEZ ! (C'est Mélusine, qui a tout entendu depuis la porte.) … Bon. Tout Montjoie va le savoir dans trois minutes. Tant mieux ! Tu es le Héros de Montjoie, et je veux que Bertrand en fasse une chanson. Sans exagérer. Enfin, un peu. Tiens, la prime de la Guilde. Et viens dîner : Rissole a fait une tourte. Elle ne fera plus de bulles.",
+		"recompense": {"pieces": 150, "rep": 10, "titre": "Héros de Montjoie"}},
+	{"id": "mj_petronille", "titre": "Le chapelet perdu", "donneur": "petronille", "lieu": "Île de Montjoie, le Lac des Grenouilles", "sorte": "Île de Montjoie",
+		"si": {"apres": "mj_inscription"},
+		"resume": "Sœur Pétronille, la prêtresse du Temple de l'Aube, priait au bord du Lac des Grenouilles quand la plus grosse grenouille géante du lac a avalé son chapelet du soleil. Sans lui, elle n'ose plus partir à l'aventure.",
+		"offre_label": "Ma sœur, vous avez l'air bouleversée…",
+		"offre": "Bouleversée ? Je suis… je suis… (Elle trébuche sur rien.) Pardon. Mon chapelet du soleil ! Père Clotaire me l'a offert pour mes quinze ans. Je priais au bord du lac pour Monsieur Yvon, et une grenouille énorme, ÉNORME, a sorti sa langue et… slurp. Elle l'a avalé. Monsieur Yvon l'appelle la Duchesse. Les grenouilles recrachent ce qu'elles avalent quand on les bat, paraît-il. Vous voudriez bien… ? Moi, je prierai. De loin. De très loin.",
+		"etapes": [
+			{"type": "objets", "pnj": "petronille", "objets": {"chapelet_soleil": 1}, "label": "Voici votre chapelet du soleil, ma sœur. La Duchesse l'a rendu.", "texte": "Mon chapelet ! (Elle le serre contre elle, puis s'écarte.) Il est… un peu gluant. Ce n'est rien ! Ce n'est rien du tout ! Ô Aube, merci. Et merci à vous. Vous êtes allé chercher quelque chose dans une grenouille, pour moi. Personne n'avait jamais fait ça.", "objectif": "Chasser les grenouilles géantes du Lac des Grenouilles (à l'est de la ville, par la Porte de l'Est) : la plus grosse, la Duchesse, rendra le chapelet du soleil ; puis le rapporter à Sœur Pétronille (au Temple de l'Aube, dans la Haute-Ville, ou à la Guilde l'après-midi)"},
+		],
+		"fin": "Je… je voudrais vous demander une chose. (Elle prend une grande inspiration.) Est-ce que je pourrais venir avec vous ? Dans vos aventures ? Je soigne très bien. Je tombe aussi, mais je soigne très bien. Si vous voulez de moi, dites-le-moi quand vous voulez. Je serai au temple, ou à la Guilde. Je prierai pour que vous disiez oui.",
+		"recompense": {"pieces": 20, "rep": 4}},
+	{"id": "mj_violette", "titre": "Les cristaux d'orage", "donneur": "violette", "lieu": "Île de Montjoie, les Crocs", "sorte": "Île de Montjoie",
+		"si": {"apres": "mj_inscription"},
+		"resume": "Violette, la jeune mage de la Guilde, ne sait lancer que des éclairs, et ils la touchent souvent elle-même. D'après un vieux livre, trois cristaux d'orage, qui poussent au sommet des Crocs, canaliseraient sa foudre « vers l'avant ».",
+		"offre_label": "Violette, vos cheveux… ils se dressent tout seuls.",
+		"offre": "Oh. Oui. (Bzzt.) … Ça arrive. J'ai lu quelque chose. Dans un livre que Madame Olga m'a prêté. Au hasard. Les cristaux d'orage, au sommet des Crocs, boivent la foudre et la renvoient droit devant. Pas vers le chapeau. Pas vers les cheveux. Droit devant. Il m'en faudrait trois. Mais si je monte là-haut toute seule, l'orage et moi, on va se disputer les éclairs. Vous voudriez bien… ?",
+		"etapes": [
+			{"type": "ramasser", "objets": {"cristal_orage": 3}, "lieux": ["cristal_orage_1", "cristal_orage_2", "cristal_orage_3"], "objectif": "Grimper au sommet des Crocs (les collines rocheuses du sud-ouest, au-dessus de l'entrée du donjon) et ramasser trois cristaux d'orage"},
+			{"type": "objets", "pnj": "violette", "objets": {"cristal_orage": 3}, "label": "Voici trois cristaux d'orage, Violette.", "texte": "(Elle les prend un par un. Ils grésillent, ils chantent, et pour une fois, ses cheveux restent à plat.) Bzzzz… Vous entendez ? Ils chantent. Je vais les monter sur mon bâton. (Une petite étincelle part droit devant, et touche… le mur. Pas elle.) Oh. OH. Vous avez vu ? Vers l'avant !", "objectif": "Apporter les trois cristaux à Violette (à une table de la Guilde, ou au belvédère de la Haute-Ville l'après-midi)"},
+		],
+		"fin": "Je n'ose pas vous le demander. Je vous le demande quand même. Est-ce que je peux venir avec vous ? Je lirai pendant les voyages, je ne parlerai presque pas, et je foudroierai les monstres. Surtout les monstres. Presque toujours les monstres. Si vous voulez, dites-le-moi. Je serai à la Guilde.",
+		"recompense": {"pieces": 25, "rep": 4}},
+	{"id": "mj_tancrede", "titre": "Un vrai exploit", "donneur": "tancrede", "lieu": "Île de Montjoie, le Bois des Lutins", "sorte": "Île de Montjoie",
+		"si": {"apres": "mj_inscription"},
+		"resume": "Sire Tancrède de Tournevent raconte des exploits magnifiques. Tous imaginaires. Il voudrait enfin en vivre un vrai, avec un témoin : vaincre le chef des gobelins du Bois des Lutins et rapporter sa bannière.",
+		"offre_label": "Sire Tancrède, racontez-moi votre plus grand exploit.",
+		"offre": "Mon plus grand exploit ? (Il bombe le torse, puis le dégonfle.) Ami… je vais vous avouer une chose. Ils sont tous dans le brouillard. Tous. Il me faut un VRAI exploit. Avec un témoin. Et du soleil. Au fond du Bois des Lutins, les gobelins ont un camp, et un chef, et une bannière décorée avec les plumes des casques de la garde. Vainquez-le avec moi, ou devant moi, ou même un peu à ma place, et rapportez la bannière. MOI, SIRE TANCRÈDE DE TOURNEVENT, je jure de vous suivre ensuite jusqu'au bout du monde !",
+		"etapes": [
+			{"type": "etat", "cle": "chef_gobelin", "objectif": "Vaincre le chef des gobelins dans son camp, au fond du Bois des Lutins (au nord-est de l'île, après la Porte de l'Est)"},
+			{"type": "objets", "pnj": "tancrede", "objets": {"banniere_gobelin": 1}, "label": "Voici la bannière du chef gobelin, Sire Tancrède.", "texte": "La bannière ! LA BANNIÈRE ! (Il la brandit, se prend les pieds dans sa cape, tombe, et la brandit toujours, allongé.) Un vrai exploit ! Avec un témoin ! Avec du soleil ! Bertrand ! BERTRAND ! Il faut une chanson ! Et pas un seul nuage dedans !", "objectif": "Rapporter la bannière à Sire Tancrède (à la Guilde, dans la cour du château le matin, ou sur les remparts l'après-midi)"},
+		],
+		"fin": "Ami, frère d'armes, compagnon de légende : j'ai une dette envers vous. Laissez-moi la payer avec mon épée. Quand vous voudrez, dites seulement « viens avec moi », et MOI, SIRE TANCRÈDE DE TOURNEVENT, je chargerai à vos côtés ! Une fois sur trois, je tomberai. Mais les deux autres fois… ah, les deux autres fois !",
+		"recompense": {"pieces": 40, "rep": 5}},
+	{"id": "mj_grenouilles", "titre": "Les grenouilles du lac", "donneur": "yvon", "lieu": "Île de Montjoie, le Lac des Grenouilles", "sorte": "Île de Montjoie",
+		"resume": "Yvon, le pêcheur du lac, a peur des grenouilles géantes depuis quarante ans. Elles sont de plus en plus nombreuses : elles volent ses poissons, ses appâts et, une fois, sa barque. Il voudrait qu'on en chasse quelques-unes.",
+		"offre_label": "Vous tremblez, Yvon…",
+		"offre": "Je tremble depuis quarante ans, l'ami. Mais là, c'est trop. Elles sont partout ! Sur le ponton, dans les roseaux, dans ma barque ! Hier, l'une d'elles a avalé mon déjeuner. Avec la boîte. Chasse-les un peu, tu veux ? Pas toutes, hein. Juste assez pour que je puisse pêcher sans crier. Et si l'une d'elles t'avale… ne te débats pas. Ça dure trois secondes. Quatre si tu te débats.",
+		"etapes": [
+			{"type": "etat", "cle": "grenouilles_lac", "objectif": "Chasser les grenouilles géantes du Lac des Grenouilles (à l'est de Montjoie, par la Porte de l'Est ; attention à leur langue, elles avalent)"},
+			{"type": "rendre", "pnj": "yvon", "label": "Le lac est plus calme, Yvon.", "objectif": "Le dire à Yvon (sur son ponton de pêche, au bord du lac)"},
+		],
+		"fin": "Plus calme… (Il regarde le lac longtemps.) C'est vrai. On entend les canards. Je n'avais pas entendu les canards depuis des années. Tiens, l'ami : des cuisses de grenouille pour Ulric, il te les cuisinera. Et ma reconnaissance éternelle. Elle est très grande, ma reconnaissance. Comme mes peurs.",
+		"recompense": {"pieces": 35, "rep": 5, "objets": [["cuisse_grenouille", 2]]}},
+	{"id": "mj_navets", "titre": "La récolte qui court", "donneur": "gaubert", "lieu": "Île de Montjoie, les Champs du Sud", "sorte": "Île de Montjoie",
+		"resume": "Chaque printemps, les navets de Père Gaubert se réveillent et se sauvent à travers les Champs du Sud. Avec ses genoux, il n'en rattrape plus un seul. Il voudrait cinq navets dorés, attrapés pendant une Grande Alerte des Navets.",
+		"offre_label": "Vos navets… ils bougent, Père Gaubert ?",
+		"offre": "Ils bougent, mon gars. Ils dorment, mais ils bougent. Bientôt, Mélusine sonnera sa cloche, et ils vont tous se sauver d'un coup ! La Grande Alerte des Navets ! Moi, avec mes genoux, je n'en attrape plus un seul. Germaine, oui, avec son filet, mais elle les garde pour embêter Babette. Quand la cloche sonnera, cours aux champs et attrape-m'en cinq. Un petit coup, pas plus ! Ils deviennent dorés quand on les attrape. Doucement avec mes petits.",
+		"etapes": [
+			{"type": "objets", "pnj": "gaubert", "objets": {"navet_dore": 5}, "label": "Voici cinq navets dorés, Père Gaubert. Doucement, promis.", "texte": "Cinq ! Cinq beaux dorés ! (Il les caresse un par un, comme des petits chats.) Tu les as attrapés doucement, je le vois. Ils n'ont pas une bosse. Ils ont juste l'air un peu vexés. Ça leur passera. Ça leur passe toujours.", "objectif": "Pendant une Grande Alerte des Navets (quand Mélusine sonne sa cloche, le jour), courir aux Champs du Sud (au sud de la ville, par la Porte Sud), attraper cinq navets fuyards d'un petit coup, puis les apporter à Père Gaubert (dans ses champs, près de la ferme)"},
+		],
+		"fin": "Merci, mon gars. Tiens, quelques pièces, et un sac de graines. Plante-les où tu veux. Mais si un jour ils se sauvent… ce ne sera pas ma faute. Ce sera la terre de Montjoie.",
+		"recompense": {"pieces": 25, "rep": 4, "objets": [["graines", 3]]}},
+	{"id": "mj_chapeau", "titre": "Le chapeau du Baron", "donneur": "barthelemy", "lieu": "Île de Montjoie, le Château", "sorte": "Île de Montjoie",
+		"resume": "Le Baron Barthélemy a perdu son plus beau chapeau, le chapeau à plume : le vent l'a emporté par-dessus la muraille du château. On l'a vu passer sur les toits de la Ville-Moyenne… puis plus rien.",
+		"offre_label": "Monsieur le Baron, vous êtes tout décoiffé !",
+		"offre": "Décoiffé ! C'est le mot ! Mon chapeau à plume ! Le plus beau ! Celui des grandes occasions, des petites occasions, et des jours sans occasion ! Le vent l'a emporté depuis le rempart. Il a sauté de toit en toit, au-dessus de la Ville-Moyenne, puis il s'est envolé vers le sud. Aurore dit qu'il reviendra tout seul. Il ne revient jamais tout seul. Vous voudriez bien le chercher, jeune personne ? Il a une plume verte. Il est très distingué. Vous le reconnaîtrez.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"chapeau_baron": 1}, "lieux": ["chapeau_baron"], "objectif": "Retrouver le chapeau à plume du Baron (le vent l'a emporté vers le sud : cherchez au sommet du moulin de Clovis, aux Champs du Sud)"},
+			{"type": "objets", "pnj": "barthelemy", "objets": {"chapeau_baron": 1}, "label": "Voici votre chapeau à plume, Monsieur le Baron.", "texte": "MON CHAPEAU ! (Il le pose sur sa tête, l'enlève, l'embrasse, le remet.) Sur le moulin ! Il voulait voir la campagne, le coquin. Il a un peu de farine sur la plume. Ça lui donne l'air sage. Merci, merci, merci ! Aurore ! AURORE ! Mon chapeau est revenu ! Tout seul ! … Avec de l'aide.", "objectif": "Rapporter le chapeau au Baron Barthélemy (au château, au sommet de la Butte : salle du trône le matin, jardin ou rempart l'après-midi)"},
+		],
+		"fin": "Pour vous, jeune personne, une petite bourse. Et une invitation permanente au château. Venez quand vous voulez. Aurore vous fera visiter les placards à chapeaux. Il y en a quarante-deux. Prévoyez la journée.",
+		"recompense": {"pieces": 30, "rep": 4}},
+	{"id": "mj_maison", "titre": "Une maison à soi", "donneur": "prosper", "lieu": "Île de Montjoie, la Haute-Ville", "sorte": "Île de Montjoie",
+		"resume": "Monsieur Prosper, le marchand de maisons de la Haute-Ville, vend la Chaumière des Glycines : un lit, une cheminée, une étagère à trophées et une façade couverte de glycines. Trois cents pièces. Il exagère tout. Sauf les glycines.",
+		"offre_label": "Parlez-moi de la Chaumière des Glycines.",
+		"offre": "LA CHAUMIÈRE DES GLYCINES ! Un palais ! Un rêve ! Un lit si doux qu'on s'y réveille reposé, quelle que soit la nuit qu'on a passée ! Une étagère où vos trophées des autres îles brilleront comme des étoiles ! Une cheminée ! Un toit ! Presque entier ! Et si vous vous évanouissez sur l'île, c'est chez vous qu'on vous ramènera, pas entre deux bancs du temple ! Trois cents pièces. Pas une de moins. Croyez-moi : c'est une affaire exceptionnelle. Et en plus… c'est vrai.",
+		"etapes": [
+			{"type": "objets", "pnj": "prosper", "objets": {"piece": 300}, "label": "Voici trois cents pièces. Je l'achète.", "texte": "(Il compte les pièces une par une. Sa moustache tremble.) Trois cents… Exceptionnel. (Il sort de sa poche un vieux parchemin, noué d'un ruban violet.) Le titre de propriété. Et la clé : elle était à ma grand-mère. La maison est à vous. Elle vous attend. Une maison, c'est un endroit qui vous attend.", "donne": [["titre_propriete", 1]], "objectif": "Payer trois cents pièces à Monsieur Prosper (à son agence de la Haute-Ville, ou dans le jardin de la Chaumière des Glycines à midi)"},
+		],
+		"fin": "Allez-y. Poussez la porte. Le lit est fait. L'étagère est vide, mais plus pour longtemps. Et le soir, quand je passerai devant… ne faites pas attention à moi. Je regarderai juste si la fenêtre est allumée.",
+		"recompense": {"pieces": 0, "rep": 6, "titre": "Propriétaire à Montjoie"}},
+	{"id": "mj_grimoire", "titre": "Les pages envolées", "donneur": "olga", "lieu": "Île de Montjoie, la boutique de magie", "sorte": "Île de Montjoie",
+		"resume": "Madame Olga a ouvert sa fenêtre pour faire sortir un sortilège de courant d'air. Le sortilège est sorti, avec trois pages de son grimoire. Elles se sont éparpillées dans toute la ville.",
+		"offre_label": "Madame Olga, votre grimoire a l'air bien mince…",
+		"offre": "Mince ! Il est maigre comme un balai, mon pauvre grimoire ! J'ai ouvert la fenêtre pour faire sortir un petit sortilège de courant d'air, et il est parti avec trois pages ! Les plus importantes ! Enfin, je crois : je ne me souviens plus de ce qu'il y avait dessus. C'est pour ça qu'elles sont importantes. Elles se sont envolées au-dessus de la ville. Retrouve-les-moi, mon chou. Elles brillent un peu. Elles sont sûrement magiques.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"page_grimoire": 3}, "lieux": ["page_grimoire_1", "page_grimoire_2", "page_grimoire_3"], "objectif": "Retrouver trois pages de grimoire envolées dans Montjoie (elles brillent un peu : sur la Grand-Place, dans la Haute-Ville, dans la Basse-Ville…)"},
+			{"type": "objets", "pnj": "olga", "objets": {"page_grimoire": 3}, "label": "Voici vos trois pages, Madame Olga.", "texte": "Mes pages ! (Elle les recoud dans le grimoire avec une aiguille qui coud toute seule… presque.) Voyons… « Comment changer une bulle en papillon. » « Comment retrouver ses lunettes. » « Soupe aux orties. » Oh ! La soupe ! Je la cherchais depuis des années !", "objectif": "Rapporter les trois pages à Madame Olga (à sa boutique de magie, sur la Grand-Place)"},
+		],
+		"fin": "Tiens, mon chou : deux potions de mana, pour ta peine. Elles sont sûrement magiques. Celles-là, j'en suis presque sûre.",
+		"recompense": {"pieces": 30, "rep": 4, "objets": [["potion_mana", 2]]}},
+	{"id": "mj_pain", "titre": "La tournée du pain", "donneur": "honorine", "lieu": "Île de Montjoie, la boulangerie", "sorte": "Île de Montjoie",
+		"resume": "Honorine est seule au four ce matin. Il reste trois pains à livrer : un à Mamie Rissole, à la taverne de la Guilde ; un à Aurore, au château ; un à Gilles, à la Porte Nord. Si elle quitte le four, tout brûle.",
+		"offre_label": "Je peux vous aider, Honorine ?",
+		"offre": "Oh, oui, mon petit ! Je suis toute seule, Noisette est partie suivre un aventurier, et il me reste trois pains à livrer ! Un pour Mamie Rissole, à la taverne de la Guilde. Un pour Aurore, au château, tout en haut : sans son pain, le Baron met son chapeau de deuil. Et un pour Gilles, à la Porte Nord. S'il dort, pose-le sous son nez : il se réveillera. Tiens, voilà les trois. Ne les mange pas en route ! Enfin… pas tout.",
+		"donne": [["pain_montjoie", 3]],
+		"etapes": [
+			{"type": "objets", "pnj": "rissole", "objets": {"pain_montjoie": 1}, "label": "Le pain d'Honorine, pour la taverne.", "texte": "Ah ! Le pain d'Honorine ! (Elle le renifle, ravie.) Il sent le matin. Merci, mon poussin. Assieds-toi, tu as fait tout ce chemin… Non ? Tu as encore deux pains ? Alors prends au moins une part pour la route. Mange !", "objectif": "Porter un pain à Mamie Rissole (à la taverne, au fond de la Guilde des Aventuriers)"},
+			{"type": "objets", "pnj": "aurore", "objets": {"pain_montjoie": 1}, "label": "Le pain du château, de la part d'Honorine.", "texte": "Le pain ! (Elle soupire de soulagement.) Le Baron avait déjà sorti son chapeau de deuil. Je vais le lui porter tout de suite. Merci. Vous avez sauvé la matinée du château. Ce n'est pas rien : elle est souvent en danger.", "objectif": "Porter un pain à Aurore (au château, au sommet de la Butte : prenez les rampes en lacets jusqu'en haut)"},
+			{"type": "objets", "pnj": "gilles", "objets": {"pain_montjoie": 1}, "label": "Gilles ? Le pain d'Honorine…", "texte": "Zzz… (Il renifle, sans ouvrir les yeux.) … Honorine ? (Il ouvre un œil.) Oh ! C'est vous ! Merci ! Je ne dormais pas, hein. Je sentais. C'est le meilleur pain de l'île. Dites-lui merci. Dites-lui que je ne dormais pas.", "objectif": "Porter un pain à Gilles (le garde de la Porte Nord, dans la Basse-Ville, du côté du port)"},
+			{"type": "rendre", "pnj": "honorine", "label": "Les trois pains sont livrés, Honorine !", "objectif": "Revenir voir Honorine (à la boulangerie, dans la Ville-Moyenne)"},
+		],
+		"fin": "Tous les trois ! Et chauds encore, je parie. Tu es un amour, mon petit. Tiens, des pièces, et un pain au miel tout chaud. Celui-là, tu as le droit de le manger en route.",
+		"recompense": {"pieces": 15, "rep": 3, "objets": [["pain_miel", 1]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -804,6 +917,10 @@ const AVENTURES := [
 		"etapes": [["braise", "Accoster sur l'Île de Braise"], ["pandemonia", "Entrer dans Pandémonia, la cité aux mille lanternes"], ["porte_cercles", "Ouvrir la porte des Neuf Cercles"],
 			["titan_givre", "Vaincre le Titan de Givre au fond du Cocyte"], ["coeur_vif", "Rallumer le Cœur-Brasier"], ["tournoi", "Gagner le Tournoi des Cornes"],
 			["fete_lanternes", "Danser à la Nuit des Lanternes"]]},
+	{"id": "montjoie", "titre": "Montjoie, la ville des aventuriers", "lieu": "L'Île de Montjoie", "debut": "montjoie",
+		"etapes": [["montjoie", "Accoster sur l'Île de Montjoie"], ["inscription", "S'inscrire à la Guilde des Aventuriers"], ["compagnon", "Recruter un premier compagnon"],
+			["rang_d", "Atteindre le rang D de la Guilde"], ["donjon_5", "Descendre au cinquième étage du Donjon des Mille Marches"], ["roi_gelatineux", "Vaincre le Roi Gélatineux"],
+			["chaumiere", "Acheter la Chaumière des Glycines"]]},
 ]
 
 var main: Node
@@ -901,6 +1018,11 @@ func _can_offer(q: Dictionary) -> bool:
 	var si: Dictionary = q.get("si", {})
 	if si.has("apres") and state(str(si["apres"])) != "finie":
 		return false
+	# V71 : un rang minimum à la Guilde des Aventuriers de Montjoie (« rang D au moins »)
+	if si.has("rang"):
+		var mj: Variant = main.get("montjoie_v71") if main != null else null
+		if mj == null or mj.get("guilde") == null or not mj.guilde.rang_au_moins(str(si["rang"])):
+			return false
 	return true
 
 
@@ -1439,6 +1561,8 @@ func place_name(p: Vector3) -> String:
 		return {"arcanelle_bourg": "Arcanelle, le bourg", "arcanelle_chaudron": "Arcanelle, Le Chaudron Fumant", "arcanelle_bibliotheque": "Arcanelle, la bibliothèque",
 			"arcanelle_salle": "Arcanelle, la Salle des Cours", "arcanelle_crypte": "Arcanelle, la Crypte aux Runes", "arcanelle_bois": "Arcanelle, le Bois Tors",
 			"arcanelle_falaises": "Arcanelle, les falaises du nord", "arcanelle_rivage": "Arcanelle, le rivage"}.get(az, "Arcanelle, l'île des sorciers")
+	if main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(p):
+		return str(main.montjoie_v71.place_name(p))
 	if main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(p):
 		return str(main.braise_v70.place_name(p))
 	if main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(p):

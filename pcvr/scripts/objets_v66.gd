@@ -65,6 +65,9 @@ const COFFRES := [
 	# V70 : l'Île de Braise (le Bois des Cendres, les Ruines, les landes du sud, les pentes du volcan, la côte ouest)
 	["braise", -674.0, 5.6, 812.0, -2.4], ["braise", -1096.0, 22.0, 424.0, 0.91], ["braise", -880.0, 8.1, 850.0, 3.1],
 	["braise", -1020.0, 28.26, 660.0, 1.95], ["braise", -770.0, 5.48, 850.0, -2.76], ["braise", -1130.0, 9.47, 640.0, 1.72],
+	# V71 : l'Île de Montjoie (le Bois des Lutins, les Crocs, la rive est du lac, la plage du sud, les prés du nord-ouest, l'ouest des champs)
+	["montjoie", 950.0, 6.17, 415.0, -0.66], ["montjoie", 1022.0, 3.79, 440.0, -0.91], ["montjoie", 564.0, 13.47, 780.0, 2.19],
+	["montjoie", 1095.0, 2.9, 712.0, -1.86], ["montjoie", 1004.0, 1.42, 882.0, -2.46], ["montjoie", 528.0, 7.35, 500.0, 1.14],
 ]
 ## Ce qu'un coffre contient selon le pays : [pièces min, max], objets possibles.
 const COFFRE_BUTIN := {
@@ -76,11 +79,12 @@ const COFFRE_BUTIN := {
 	"balafre": [[18, 32], ["rhum_balafre", "ragout_pirate", "noix_coco", "dent_croco"]],
 	"soleils": [[18, 32], ["pain_egypte", "galette_mais", "cacao", "dattes", "biere_heqet", "plume_ara"]],
 	"braise": [[20, 36], ["brioche_braise", "piment_infernal", "grog_soufre", "cafe_brasier", "lave_glacee"]],
+	"montjoie": [[18, 32], ["pain_montjoie", "tourte_montjoie", "cidre_montjoie", "jus_pomme", "gelee_slime"]],
 	"azur": [[15, 26], ["croissant", "punch_coco", "coquillage", "biere_naine"]],
 	"grande": [[20, 35], ["cidre_carene", "dattes", "rhum_murene", "galette_sarrasin", "pain_carotte"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [
@@ -89,6 +93,7 @@ const ILES := [
 	["celeste", Vector3(40, 0, 400), 130.0], ["fees", Vector3(-470, 0, 520), 170.0], ["arcanelle", Vector3(-300, 0, -480), 135.0],
 	["balafre", Vector3(400, 0, -700), 240.0], ["soleils", Vector3(-960, 0, -150), 345.0],
 	["braise", Vector3(-870, 0, 600), 395.0],
+	["montjoie", Vector3(790, 0, 620), 380.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -100,6 +105,7 @@ const MANGER := {
 	"balafre": ["noix_coco", "sardine", "ragout_pirate"],
 	"soleils": ["dattes", "galette_mais", "pain_egypte"],
 	"braise": ["brioche_braise", "piment_infernal"],
+	"montjoie": ["pain_montjoie", "pomme", "tourte_montjoie"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
@@ -108,6 +114,7 @@ const BOIRE := {
 	"balafre": "rhum_balafre",
 	"soleils": "biere_heqet",
 	"braise": "grog_soufre",
+	"montjoie": "cidre_montjoie",
 }
 
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]
@@ -119,6 +126,7 @@ const BOISSONS := {
 	"rhum_balafre": [0.55, ""], "remontant_doc": [0.15, ""],
 	"biere_heqet": [0.3, ""], "cacao": [-0.4, "cafe"],
 	"grog_soufre": [0.0, ""], "cafe_brasier": [-0.5, "cafe"], "lave_glacee": [0.0, ""],
+	"cidre_montjoie": [0.0, ""], "jus_pomme": [0.0, ""],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -138,6 +146,8 @@ const COMPTOIRS := {
 	"ixchab": ["cacao", 3, "Un bol de cacao mousseux, chez Ix Chab"],
 	"grumbald": ["grog_soufre", 3, "Un grog de soufre au Diable Repu"],
 	"bulle": ["cafe_brasier", 2, "Un café du Brasier, au bord des bains"],
+	"ulric": ["cidre_montjoie", 3, "Un cidre de Montjoie à la Grenouille Repue"],
+	"rissole": ["jus_pomme", 2, "Un jus de pomme au bar de la Guilde"],
 }
 
 const PLAINTES := {

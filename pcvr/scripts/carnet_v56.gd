@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise", "Montjoie"]
 
 var main: Node
 var inv: Node
@@ -410,7 +410,7 @@ func _refresh_quests() -> void:
 		l.custom_minimum_size = Vector2(520, 0)
 		_q_list.add_child(l)
 	for e in list:
-		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔", "Royaume des fées": "✦", "Arcanelle": "✧", "Balafre": "☠", "Trois Soleils": "☀", "Île de Braise": "✹"}.get(str(e["sorte"]), "•")
+		var icon: String = {"Port-Azur": "★", "Habitants": "●", "Aventure": "⚔", "Royaume des fées": "✦", "Arcanelle": "✧", "Balafre": "☠", "Trois Soleils": "☀", "Île de Braise": "✹", "Île de Montjoie": "⚑"}.get(str(e["sorte"]), "•")
 		var b := _button("%s  %s\n     %s" % [icon, str(e["titre"]), str(e["lieu"])], 16)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(530, 58)
@@ -631,6 +631,8 @@ func _region_of(n: Node) -> String:
 		return "Trois Soleils"
 	if place.begins_with("Île de Braise") or place.begins_with("L'Île de Braise"):
 		return "Braise"
+	if place.begins_with("Île de Montjoie") or place.begins_with("L'Île de Montjoie"):
+		return "Montjoie"
 	if place.begins_with("Carène") or place.begins_with("La grande île") or place.begins_with("Les hautes") or place.begins_with("La forêt des brumes") or place.begins_with("Le désert") or place.begins_with("Le Cœur"):
 		return "Carène"
 	if place.begins_with("L'Atlantide"):
@@ -674,6 +676,8 @@ func _met_list() -> Array:
 				reg = "Trois Soleils"
 			if str(n.profile.get("groupe", "")) == "braise":
 				reg = "Braise"
+			if str(n.profile.get("groupe", "")) == "montjoie":
+				reg = "Montjoie"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])
 	return out
