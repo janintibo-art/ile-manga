@@ -431,7 +431,11 @@ func _axis() -> Vector2:
 		axis.x -= 1.0
 	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
 		axis.x += 1.0
-	return axis.normalized() if axis.length() > 0.0 else axis
+	axis = axis.normalized() if axis.length() > 0.0 else axis
+	# V74 : le stick gauche de la manette (analogique)
+	if main.has_method("pad_move_v74"):
+		axis = (axis + main.pad_move_v74()).limit_length(1.0)
+	return axis
 
 
 # =================================================================== boucle

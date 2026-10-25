@@ -20,6 +20,11 @@ static func _parse(path: String) -> Dictionary:
 		return {}
 	return value
 
+## V74 : la version du jeu qui a écrit la sauvegarde (« V74 »), lue dans le nom du projet.
+static func _game_version() -> String:
+	var n: String = str(ProjectSettings.get_setting("application/config/name", ""))
+	return n.get_slice(" ", n.get_slice_count(" ") - 1)
+
 static func read_slot(slot: int) -> Dictionary:
 	if slot < 0 or slot > SLOT_COUNT:
 		return {}
@@ -47,7 +52,7 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 		return false
 	var data: Dictionary = {
 		"format": 1,
-		"jeu": "V72",
+		"jeu": _game_version(),
 		"slot": slot,
 		"saved_at": Time.get_datetime_string_from_system(),
 		"play_seconds": maxf(seconds, 0.0),
@@ -71,11 +76,19 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(tmp))
 		return false
 	var g_path: String = ProjectSettings.globalize_path(path)
-	if FileAccess.file_exists(path):
+	var had_old: bool = FileAccess.file_exists(path)
+	if had_old:
 		if FileAccess.file_exists(path + ".bak"):
 			DirAccess.remove_absolute(g_path + ".bak")
-		DirAccess.rename_absolute(g_path, g_path + ".bak")
+		# V74 : si l'ancienne partie ne peut pas devenir la copie de secours, on n'y touche pas
+		if DirAccess.rename_absolute(g_path, g_path + ".bak") != OK:
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(tmp))
+			return false
 	if DirAccess.rename_absolute(ProjectSettings.globalize_path(tmp), g_path) != OK:
+		# la nouvelle n'a pas pu prendre sa place : on remet l'ancienne
+		if had_old:
+			DirAccess.rename_absolute(g_path + ".bak", g_path)
+		_cache.erase(path)
 		return false
 	_cache.erase(path)
 	return true

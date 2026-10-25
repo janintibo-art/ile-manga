@@ -26,6 +26,7 @@ var options: Array[String] = []
 var view: String = "home"
 ## V72 : une confirmation avant d'écraser, d'effacer ou de quitter : [action, emplacement]
 var _confirm: Array = []
+var _logo: TextureRect                   # V74 : le logo rapetisse si l'écran est bas
 var seconds: float = 0.0
 var active_slot: int = 1
 
@@ -82,6 +83,7 @@ func _make_pc_panel() -> void:
 	var logo_file := load("res://assets/textures/ui/les_mondes_de_travers_logo.png") as Texture2D
 	if logo_file != null:
 		var logo := TextureRect.new()
+		_logo = logo
 		logo.texture = logo_file
 		logo.custom_minimum_size = Vector2(0, 170)
 		logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -195,6 +197,7 @@ func _redraw() -> void:
 			warn.text = "Charger remplace la partie en cours : pense à sauvegarder avant."
 			warn.add_theme_color_override("font_color", Color(1.0, 0.78, 0.45))
 			list_box.add_child(warn)
+		_fit_logo()
 		if (view == "load" or view == "save") and playing:
 			var note := Label.new()
 			note.text = "La sauvegarde automatique est mise à jour régulièrement."
@@ -277,6 +280,25 @@ func _activate(index: int) -> void:
 			active_slot = index + 1
 			save_requested.emit(active_slot)
 			_show_view("home")
+
+
+## V74 : en 1280 × 720 avec six sauvegardes, le panneau dépassait de l'écran : le logo prend
+## seulement la place qui reste (et disparaît s'il en reste trop peu).
+func _fit_logo() -> void:
+	if _logo == null or frame == null:
+		return
+	var vh: float = frame.get_viewport().get_visible_rect().size.y
+	var labels: int = 0
+	if view in ["load", "save", "new", "delete"]:
+		labels += 1
+	if view == "load" and playing:
+		labels += 1
+	if (view == "load" or view == "save") and playing:
+		labels += 1
+	var used: float = 48.0 + 2.0 * 24.0 + 40.0 + 22.0 + 3.0 * 13.0 + options.size() * 53.0 + labels * 30.0 + 24.0
+	var h: float = clampf(vh - used, 0.0, 170.0)
+	_logo.visible = h >= 60.0
+	_logo.custom_minimum_size.y = h if _logo.visible else 0.0
 
 
 ## V72 : « Êtes-vous sûr ? » avant d'écraser une partie, de l'effacer ou de quitter.

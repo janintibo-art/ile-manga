@@ -23,6 +23,10 @@ GitHub Actions compile **deux jeux Windows** :
 **PC** : ZQSD (ou WASD / flèches) pour marcher, clic droit maintenu pour tourner la caméra,
 Échap ou F9 pour le menu, F5 pour sauvegarder, F11 pour le plein écran, F6 pour la netteté ultra.
 
+**Manette (PC)** : Xbox, PlayStation, Switch Pro… Stick gauche : marcher, stick droit : caméra, A : sauter, B : roulade,
+X : frapper, Y : parler / ouvrir, LB : parer, RB : courir, LT : pouvoir, RT : sort, croix : aigle / téléportation / pouvoir / sort,
+Start : menu, Select : carnet. Dans les menus : curseur doré (croix ou stick), A pour choisir, B pour revenir.
+
 **VR** : joystick gauche pour marcher, joystick droit pour tourner par crans,
 bouton ≡ de la manette gauche pour le menu. Dans le menu : joystick droit pour choisir, gâchette droite pour valider.
 

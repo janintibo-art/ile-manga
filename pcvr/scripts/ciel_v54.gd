@@ -767,6 +767,10 @@ func ride_tick(delta: float) -> void:
 				turn -= 1.0
 			if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
 				turn += 1.0
+			if main.has_method("pad_move_v74"):
+				var pad: Vector2 = main.pad_move_v74()
+				thr = clampf(thr - pad.y, -1.0, 1.0)
+				turn = clampf(turn + pad.x, -1.0, 1.0)
 			if Input.is_key_pressed(KEY_SPACE):
 				lift += 1.0
 			if Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT):

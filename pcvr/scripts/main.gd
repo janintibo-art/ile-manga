@@ -135,6 +135,7 @@ func _ready() -> void:
 	_create_v69()
 	_create_v70()
 	_create_v71()
+	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
 
@@ -1387,8 +1388,7 @@ func _move_desktop(delta: float) -> void:
 		axis.x -= 1.0
 	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
 		axis.x += 1.0
-	if axis.length() > 0.0:
-		axis = axis.normalized()
+	axis = (axis + pad_move_v74()).limit_length(1.0)
 	var direction: Vector3 = pc_root.global_basis.x * axis.x + pc_root.global_basis.z * axis.y
 	_move_player(pc_root, direction * WALK_SPEED * delta)
 	if pc_hero != null:
@@ -2588,6 +2588,9 @@ func _drive_boat_pc_v29(delta: float) -> void:
 			steer -= 1.0
 		if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
 			steer += 1.0
+		var pad: Vector2 = pad_move_v74()
+		throttle = clampf(throttle - pad.y, -1.0, 1.0)
+		steer = clampf(steer + pad.x, -1.0, 1.0)
 	var before: float = boat_v29.yaw
 	boat_v29.drive(delta, throttle, steer)
 	# La caméra tourne avec la barque (le clic droit reste libre).
@@ -3181,6 +3184,7 @@ var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
 var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia (la cité des démons), les Neuf Cercles
+var manette_v74: Node                      # V74 : la manette sur PC (Xbox, PlayStation…)
 var montjoie_v71: Node3D                   # V71 : l'Île de Montjoie, la ville des aventuriers, le Donjon des Mille Marches
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
@@ -3417,6 +3421,18 @@ func _create_v58() -> void:
 
 
 ## V58 : T (ou le carnet, onglet Carte) : se téléporter dans un lieu déjà visité.
+## V74 : le stick gauche de la manette (zéro sans manette, en VR ou dans un menu).
+func pad_move_v74() -> Vector2:
+	return manette_v74.move() if manette_v74 != null else Vector2.ZERO
+
+
+func _create_manette_v74() -> void:
+	manette_v74 = preload("res://scripts/manette_v74.gd").new()
+	manette_v74.name = "Manette_v74"
+	add_child(manette_v74)
+	manette_v74.setup(self)
+
+
 func open_teleport_v58() -> void:
 	if teleport_v58 == null or inventory_v28 == null:
 		return

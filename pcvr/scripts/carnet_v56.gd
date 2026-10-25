@@ -243,7 +243,7 @@ func _build_ui() -> void:
 	_build_map(_pages[2])
 	_build_people(_pages[3])
 	_build_hero(_pages[4])
-	var help := _label("I / Tab : sac   •   J : quêtes   •   M : carte   •   P : personnages   •   H : héros   •   1-5 : onglets   •   Échap : fermer" if not xr else "Visez avec la main droite, gâchette pour cliquer, stick pour faire défiler   •   Y : fermer", 15, DIM)
+	var help := _label("I / Tab : sac   •   J : quêtes   •   M : carte   •   P : personnages   •   H : héros   •   1-5 : onglets   •   Échap : fermer\nManette : croix ou stick pour viser   •   A : choisir   •   B : fermer   •   LB / RB : onglets   •   stick droit : défiler" if not xr else "Visez avec la main droite, gâchette pour cliquer, stick pour faire défiler   •   Y : fermer", 15, DIM)
 	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	col.add_child(help)
 
