@@ -16,7 +16,7 @@ const RM = preload("res://scripts/ile_montjoie_v71.gd")
 const ALERT_TIME: float = 120.0
 const NAVETS: int = 20
 ## Les reliques (et les souvenirs) qui se posent sur l'étagère de la Chaumière.
-const TROPHEES := ["coeur_gelee", "flamme_eternelle", "oeil_horus", "masque_jade", "plume_quetzal", "graine_ygg", "cristal_orage",
+const TROPHEES := ["coeur_gelee", "flamme_eternelle", "oeil_horus", "masque_jade", "plume_quetzal", "graine_yggdrasil", "cristal_orage",
 	"banniere_gobelin", "carte_aventurier", "navet_dore"]
 
 var main: Node
@@ -43,7 +43,7 @@ func setup(main_node: Node, manager: Node) -> void:
 
 
 func _fresh() -> Dictionary:
-	return {"alertes": 0, "navets": 0, "record": 0, "avale": 0, "nuits_chaumiere": 0}
+	return {"alertes": 0, "navets": 0, "record": 0, "avale": 0, "nuits_chaumiere": 0, "trophees": []}
 
 
 func serialize() -> Dictionary:
@@ -55,6 +55,8 @@ func load_data(d: Dictionary) -> void:
 	for k in state:
 		if d.has(k):
 			state[k] = d[k]
+	if typeof(state["trophees"]) != TYPE_ARRAY:
+		state["trophees"] = []
 	_end_alert(true)
 	_gate_open = false
 	_shelf_key = ""
@@ -113,15 +115,24 @@ func _sleep() -> void:
 
 
 ## L'étagère à trophées : une icône par relique qu'on possède (mise à jour de temps en temps).
-func _apply_shelf() -> void:
-	if mj.city == null or not owns_house():
-		return
+## V72 : une relique reste sur l'étagère même après avoir été rendue à son destinataire.
+func _note_trophies() -> void:
 	var inv: Node = main.get("inventory_v28")
 	if inv == null:
 		return
+	var got: Array = state["trophees"]
+	for id in TROPHEES:
+		if not got.has(str(id)) and inv.count(str(id)) > 0:
+			got.append(str(id))
+
+
+func _apply_shelf() -> void:
+	_note_trophies()
+	if mj.city == null or not owns_house():
+		return
 	var have: Array = []
 	for id in TROPHEES:
-		if inv.count(str(id)) > 0:
+		if (state["trophees"] as Array).has(str(id)):
 			have.append(str(id))
 	var key: String = ",".join(have)
 	if key == _shelf_key:
@@ -136,6 +147,7 @@ func _apply_shelf() -> void:
 	for i in range(have.size()):
 		var path: String = "res://assets/textures/items/%s.png" % have[i]
 		if not ResourceLoader.exists(path):
+			_shelf_gem(have[i], xf * Transform3D(Basis(), Vector3(-1.0 + (i % 5) * 0.5, 1.37 + (i / 5) * 0.7, 0.22)))
 			continue
 		var s := Sprite3D.new()
 		s.texture = load(path)
@@ -147,6 +159,42 @@ func _apply_shelf() -> void:
 		_shelf_root.add_child(s)
 		s.global_transform = xf * Transform3D(Basis(), Vector3(-1.0 + col * 0.5, 1.37 + row * 0.7, 0.22))
 
+
+## V72 : les reliques sans image : un petit objet qui luit, avec son nom sur une étiquette.
+const GEM_COLORS := {"coeur_gelee": Color(0.4, 0.9, 0.35), "flamme_eternelle": Color(1.0, 0.45, 0.1), "oeil_horus": Color(0.2, 0.45, 1.0),
+	"masque_jade": Color(0.2, 0.75, 0.45), "plume_quetzal": Color(0.25, 0.85, 0.6), "graine_yggdrasil": Color(0.85, 0.75, 0.3),
+	"cristal_orage": Color(0.55, 0.6, 1.0), "banniere_gobelin": Color(0.75, 0.2, 0.15), "carte_aventurier": Color(0.9, 0.8, 0.55),
+	"navet_dore": Color(1.0, 0.82, 0.25)}
+
+func _shelf_gem(id: String, xf: Transform3D) -> void:
+	var c: Color = GEM_COLORS.get(id, Color(0.9, 0.85, 0.6))
+	var holder := Node3D.new()
+	_shelf_root.add_child(holder)
+	holder.global_transform = xf
+	var mi := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 0.08
+	sm.height = 0.16
+	mi.mesh = sm
+	var m := StandardMaterial3D.new()
+	m.albedo_color = c
+	m.roughness = 0.25
+	m.metallic = 0.3
+	m.emission_enabled = true
+	m.emission = c
+	m.emission_energy_multiplier = 0.6
+	mi.material_override = m
+	mi.position = Vector3(0, 0.1, 0)
+	holder.add_child(mi)
+	var lb := Label3D.new()
+	var inv: Node = main.get("inventory_v28")
+	lb.text = str(inv.ITEMS.get(id, {}).get("name", id)) if inv != null else id
+	lb.pixel_size = 0.0009
+	lb.font_size = 32
+	lb.outline_size = 6
+	lb.modulate = Color(1.0, 0.95, 0.8)
+	lb.position = Vector3(0, -0.04, 0.06)
+	holder.add_child(lb)
 
 # =================================================================== la grande alerte aux navets
 

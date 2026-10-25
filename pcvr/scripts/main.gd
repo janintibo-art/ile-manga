@@ -1160,6 +1160,11 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 		pouvoirs_v63.reset()
 	if journal_v56 != null:
 		journal_v56.respawn_pickups()
+	# V72 : la vie sauvée, rendue une fois les cœurs maximum connus (le chargement soignait le héros)
+	if not new_game and hero_v28 != null:
+		var vie72: Variant = SaveStore.read_slot(slot).get("vie", null)
+		if vie72 != null:
+			hero_v28.set_health(clampi(int(vie72), 1, int(hero_v28.HP_MAX)))
 	last_ok_v29.clear()
 	autosave_clock = 0.0
 
@@ -1252,9 +1257,26 @@ func _save_slot(slot: int) -> void:
 		extra["sceaux"] = sceaux_v63.serialize()
 	if coeur_v63 != null:
 		extra["coeur"] = coeur_v63.serialize()
+	# V72 : une île dont la ville n'est pas (encore) construite garde ce que disait la sauvegarde
+	# précédente, au lieu de disparaître du fichier
+	var prev: Dictionary = {}
+	for k in ["azur", "grande", "arcanelle", "balafre", "soleils", "braise", "montjoie", "feerie", "journal", "progression", "sceaux", "coeur"]:
+		if not extra.has(k):
+			if prev.is_empty():
+				prev = SaveStore.read_slot(slot)
+				if prev.is_empty() and game_menu != null and game_menu.active_slot != slot:
+					prev = SaveStore.read_slot(game_menu.active_slot)
+			if prev.has(k):
+				extra[k] = prev[k]
 	var save_pos: Vector3 = origin.position
 	if grande_v59 != null and grande_v59.riding():
 		save_pos = grande_v59.ride_safe_pos()
+	# V72 : à bord de L'Hirondelle, on se réveillera sur le quai d'arrivée (pas en pleine mer)
+	if azur_v56 != null and azur_v56.get("ferry") != null and azur_v56.ferry != null and bool(azur_v56.ferry.riding) and teleport_v58 != null:
+		var side: String = str(azur_v56.ferry.dest) if str(azur_v56.ferry.at) == "" else str(azur_v56.ferry.at)
+		var sp: Array = teleport_v58.spot("azur" if side == "azur" else "village")
+		if sp.size() == 2:
+			save_pos = sp[0]
 	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -2201,7 +2223,7 @@ func _vr_actions_v28(delta: float) -> void:
 			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + (int(journal_v56.bonus["force"]) if journal_v56 != null else 0)
 			# V63 : la force gagnée en montant de niveau, la lame de la forge
 			if progression_v63 != null and hero_v28 != null:
-				dmg = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + int(hero_v28.bonus_force) + int(hero_v28.temp_force) + (int(hero_v28.forge_bonus) if str(inventory_v28.ITEMS[inventory_v28.equipped].get("kind", "")) == "arme" else 0)
+				dmg = hero_v28.damage_for(str(inventory_v28.equipped))
 			var blade: Vector3 = -right_hand.global_basis.z
 			var mid: Vector3 = right_hand.global_position + blade * 0.45
 			var tip: Vector3 = right_hand.global_position + blade * 0.75
@@ -2863,6 +2885,24 @@ func _nearest_npc_v31() -> Node3D:
 	return best
 
 
+## V72 : ce qu'on peut offrir en cadeau : ni les objets de quête, ni les outils, ni les armes, ni
+## les pièces, ni ce qu'on tient en main (offrir un objet de quête bloquait sa quête pour toujours).
+func _giftable_v72() -> Array:
+	var out: Array = []
+	if inventory_v28 == null:
+		return out
+	var c: Dictionary = inventory_v28.counts()
+	for id in c:
+		var it: Dictionary = inventory_v28.ITEMS.get(str(id), {})
+		if it.is_empty() or int(c[id]) <= 0 or str(id) in ["piece", "piece_or"] or str(id) == str(inventory_v28.equipped):
+			continue
+		if str(it.get("kind", "")) in ["quete", "outil", "arme", "canne"]:
+			continue
+		out.append(str(id))
+	out.sort()
+	return out
+
+
 ## État du jeu que le personnage peut « voir » : objets portés, arme, vie, temps.
 func _npc_ctx_v31() -> Dictionary:
 	var noms := {}
@@ -2874,7 +2914,8 @@ func _npc_ctx_v31() -> Dictionary:
 		"now": game_menu.seconds if game_menu != null else 0.0,
 		"objets": inventory_v28.counts() if inventory_v28 != null else {},
 		"arme": inventory_v28.equipped if inventory_v28 != null else "",
-		"vie": hero_v28.hp if hero_v28 != null and not xr_active else 10,
+		"vie": hero_v28.hp if hero_v28 != null else 10,
+		"offrables": _giftable_v72(),
 		"vie_max": hero_v28.HP_MAX if hero_v28 != null else 10,
 		"noms": noms, "articles": arts,
 		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
@@ -3011,14 +3052,10 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 		Societe_v65.load_data(ssnap)
 		if journal_v56 != null:
 			journal_v56.load_data(jsnap)
-		r.erase("_fin56")
-		r.erase("_ferry")
-		r.erase("_dormir")
-		r.erase("_sort67")
-		r.erase("_chaudron_lit")
-		r.erase("_hamac68")
-		r.erase("_soins68")
-		r.erase("_tatouage68")
+		# V72 : toutes les actions spéciales de la réplique sont annulées (pas seulement une liste tenue à la main)
+		for k in r.keys():
+			if str(k).begins_with("_"):
+				r.erase(k)
 		var names: Array = []
 		for g in gives:
 			names.append(str(inventory_v28.ITEMS.get(str(g[0]), {"name": str(g[0])})["name"]).to_lower())

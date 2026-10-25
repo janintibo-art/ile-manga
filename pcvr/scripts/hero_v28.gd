@@ -973,7 +973,7 @@ func _deliver_hit() -> void:
 	if not strike.is_valid():
 		return
 	var reach: float = 1.9 if weapon != "" else 1.35
-	var dmg: int = (weapon_damage + (forge_bonus if _weapon_blade() else 0) if weapon != "" else 1) + bonus_force + temp_force
+	var dmg: int = damage_for(weapon)
 	# V34 : épée et hache — le troisième coup d'un enchaînement frappe moitié plus fort.
 	var finisher: bool = weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire", "lame_coeur"] and combo_index % SLASHES.size() == 2 and _heavy == ""
 	if finisher:
@@ -1005,6 +1005,19 @@ func _deliver_hit() -> void:
 
 
 ## V63 : une vraie lame (pas un outil, pas les poings) : elle se charge et profite de la forge.
+## V72 : une seule formule de dégâts pour tous les coups (PC, VR, tournoyante).
+func damage_for(item: String) -> int:
+	if item == "":
+		return 1 + bonus_force + temp_force
+	var base: int = weapon_damage if item == weapon else 1
+	var blade: bool = false
+	if main != null and main.get("inventory_v28") != null and main.inventory_v28 != null:
+		var it: Dictionary = main.inventory_v28.ITEMS.get(item, {})
+		base = int(it.get("damage", base))
+		blade = str(it.get("kind", "")) == "arme"
+	return base + (forge_bonus if blade else 0) + bonus_force + temp_force
+
+
 func _weapon_blade() -> bool:
 	if weapon == "" or main == null or main.get("inventory_v28") == null or main.inventory_v28 == null:
 		return false
@@ -1155,7 +1168,7 @@ func vr_spin() -> void:
 		return
 	_spend(3.0)
 	var vb: CharacterBody3D = main.vr_body
-	var dmg: int = (int(main.inventory_v28.ITEMS[main.inventory_v28.equipped].get("damage", 1)) + forge_bonus if main.inventory_v28.equipped != "" else 1) + bonus_force + temp_force
+	var dmg: int = damage_for(str(main.inventory_v28.equipped))
 	if main.combat_v28 != null:
 		main.combat_v28.critical = true
 		main.combat_v28.strike_around(vb.global_position + Vector3.UP * 1.1, 2.6, dmg * 2)

@@ -211,10 +211,16 @@ func _vr_faint() -> void:
 	var sol69: bool = main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(pp)
 	var br70: bool = main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(pp)
 	var mj71: bool = main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(pp)
-	if not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)) and not sol69 and not br70 and not mj71:
+	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71
+	if temple and not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
 		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
-	respawn_player()
+	# V72 : hors du temple, on se réveille au même endroit que sur PC (Carène, Arcanelle, Port-Azur…)
+	if temple or not main.has_method("_respawn_v28"):
+		respawn_player()
+	else:
+		main._respawn_v28()
+		_heal_player()
 	await get_tree().create_timer(0.4).timeout
 	await donjon._fade_to(0.0, 0.8)
 
@@ -363,9 +369,17 @@ func _on_died(m: Node3D) -> void:
 		donjon.open_grille()
 
 
+var _prune_t: float = 0.0
+
+
 func _process(delta: float) -> void:
 	if main == null or donjon == null:
 		return
+	# V72 : on oublie les monstres disparus (sinon la liste grossit pendant des heures de jeu)
+	_prune_t -= delta
+	if _prune_t <= 0.0:
+		_prune_t = 5.0
+		monsters = monsters.filter(func(m): return is_instance_valid(m))
 	var inside: bool = bool(donjon.inside)
 	# Nouvelle descente : les monstres sont de retour.
 	if inside and not _was_inside:

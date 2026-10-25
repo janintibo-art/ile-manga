@@ -413,6 +413,9 @@ func _lairs_tick() -> void:
 		var before: int = mons.size()
 		mons = mons.filter(func(m): return is_instance_valid(m) and str(m.get("state")) != "mort")
 		L["monsters"] = mons
+		# V72 : une quête acceptée après l'apparition du monstre compte quand même (le chapelet)
+		for mq in mons:
+			_quest_loot(str(mq.get("kind")), mq)
 		if before > 0 and mons.is_empty() and d < float(L["r"]) + 60.0:
 			state["repaires"][str(L["id"])] = true
 			if str(L["id"]) == "camp" and guilde != null and guilde.has_method("on_camp_cleared"):
@@ -453,6 +456,8 @@ func _quest_loot(kind: String, m: Node) -> void:
 		extra.append(["chapelet_soleil", 1])
 	if not extra.is_empty():
 		m.set_meta("butin_extra", extra)
+	elif m.has_meta("butin_extra"):
+		m.remove_meta("butin_extra")
 
 
 # =================================================================== la vie de l'île

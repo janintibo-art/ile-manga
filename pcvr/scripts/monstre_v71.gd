@@ -32,7 +32,7 @@ const SPECS71 := {
 	"grenouille_geante": {"pv": 24, "vitesse": 2.1, "degats": 1, "portee": 2.6, "armer": 0.65, "repos": 1.6, "vue": 13.0, "laisse": 22.0,
 		"rayon": 0.75, "haut": 0.45, "nom": "Grenouille géante", "bond": 8.0, "langue": 6.0, "avale": 0.33},
 	"grenouille_reine": {"pv": 75, "vitesse": 2.0, "degats": 2, "portee": 3.6, "armer": 0.75, "repos": 1.6, "vue": 18.0, "laisse": 30.0,
-		"rayon": 1.15, "haut": 0.6, "nom": "la Grenouille Reine", "bond": 9.0, "langue": 8.5, "avale": 0.45, "chef": true},
+		"rayon": 1.15, "haut": 0.6, "nom": "la Duchesse, Grenouille Reine du lac", "bond": 9.0, "langue": 8.5, "avale": 0.45, "chef": true},
 	"gobelin": {"pv": 10, "vitesse": 3.0, "degats": 1, "portee": 1.9, "armer": 0.45, "repos": 1.1, "vue": 12.0, "laisse": 20.0,
 		"rayon": 0.32, "haut": 0.55, "nom": "Gobelin"},
 	"gobelin_chef": {"pv": 60, "vitesse": 2.3, "degats": 2, "portee": 2.7, "armer": 0.8, "repos": 1.4, "vue": 16.0, "laisse": 26.0,

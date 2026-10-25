@@ -29,12 +29,15 @@ const SPECS63 := {
 		"rayon": 1.0, "haut": 2.2, "nom": "le Colosse à vapeur", "boss": true},
 	"loup_brumes": {"pv": 70, "vitesse": 4.0, "degats": 2, "portee": 3.4, "armer": 0.6, "repos": 1.4, "vue": 24.0, "laisse": 40.0,
 		"rayon": 0.9, "haut": 0.9, "nom": "le Grand Loup des Brumes", "boss": true, "bond": 12.0},
+	# V72 : le loup gris des bois de Montjoie (en chair et en os, lui)
+	"loup": {"pv": 14, "vitesse": 3.6, "degats": 1, "portee": 1.9, "armer": 0.5, "repos": 1.2, "vue": 14.0, "laisse": 24.0,
+		"rayon": 0.45, "haut": 0.45, "nom": "Loup gris", "bond": 7.0},
 }
-const LEAPERS := ["spectre", "ondin", "loup_brumes"]
+const LEAPERS := ["spectre", "ondin", "loup_brumes", "loup"]
 const SOUNDS63 := {
 	"scorpion": ["scorpion_menace", "scorpion_mort"], "scorpion_roi": ["scorpion_menace", "boss_coeur_cri"],
 	"automate": ["automate_menace", "automate_mort"], "colosse": ["automate_menace", "boss_coeur_cri"],
-	"spectre": ["spectre_menace", "spectre_mort"], "loup_brumes": ["loup_menace", "spectre_mort"],
+	"spectre": ["spectre_menace", "spectre_mort"], "loup_brumes": ["loup_menace", "spectre_mort"], "loup": ["loup_menace", "loup_menace"],
 	"ondin": ["ondin_menace", "ondin_mort"], "garde_maree": ["crabe_menace", "boss_coeur_cri"], "gardien_coeur": ["boss_coeur_cri", "boss_coeur_cri"],
 }
 
@@ -92,13 +95,13 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 			sph.radius = 0.4 if k == "spectre" else 0.45
 			cs.shape = sph
 			cs.position.y = 1.2 if k == "spectre" else 0.5
-		"loup_brumes":
+		"loup_brumes", "loup":
 			var cap := CapsuleShape3D.new()
-			cap.radius = 0.6
-			cap.height = 2.4
+			cap.radius = 0.6 if k == "loup_brumes" else 0.3
+			cap.height = 2.4 if k == "loup_brumes" else 1.2
 			cs.shape = cap
 			cs.rotation.x = PI * 0.5
-			cs.position.y = 0.9
+			cs.position.y = 0.9 if k == "loup_brumes" else 0.45
 		"colosse":
 			var cap2 := CapsuleShape3D.new()
 			cap2.radius = 0.85
@@ -131,6 +134,8 @@ func setup(m: Node, k: String, at: Vector3) -> void:
 			_build_garde()
 		"loup_brumes":
 			_build_loup()
+		"loup":
+			_build_loup(false)
 	add_to_group("cibles_v28")
 	add_to_group("monstres_v36")
 	global_position = at
@@ -351,6 +356,8 @@ func loot(rng: RandomNumberGenerator) -> Array:
 			g.append(["piece", rng.randi_range(2, 5)])
 			if rng.randf() < 0.2:
 				g.append(["perle", 1])
+		"loup":
+			g.append(["piece", rng.randi_range(2, 5)])
 		_:
 			g.append(["piece", rng.randi_range(25, 40)])
 			g.append(["piece_or", 1])
@@ -626,7 +633,7 @@ func _animate63(delta: float, speed: float) -> void:
 			if state == "armer":
 				c2 = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
 			_visual.scale = Vector3(1.0 + c2 * 0.25, 1.0 - c2 * 0.2 + sin(_clock * 6.0) * 0.04, 1.0 + c2 * 0.25)
-		"loup_brumes":
+		"loup_brumes", "loup":
 			for l in _legs:
 				var leg3: Node3D = l[0]
 				var ph3: float = (0.0 if int(l[2]) % 2 == 0 else PI) + (0.0 if float(l[1]) > 0.0 else PI * 0.5)
@@ -636,7 +643,7 @@ func _animate63(delta: float, speed: float) -> void:
 			var crouch: float = 0.0
 			if state == "armer":
 				crouch = 1.0 - clampf(timer / float(spec["armer"]), 0.0, 1.0)
-			_body_node.position.y = 0.0 - crouch * 0.25
+			_body_node.position.y = 0.0 - crouch * (0.25 if kind == "loup_brumes" else 0.12)
 	if _stars != null and _stars.visible:
 		_stars.rotation.y += delta * 4.0
 
@@ -1080,10 +1087,17 @@ func _build_garde() -> void:
 
 
 ## Le Grand Loup des Brumes : un loup immense fait de brume, deux yeux d'argent.
-func _build_loup() -> void:
+func _build_loup(ghost: bool = true) -> void:
 	_body_node = Node3D.new()
 	_visual.add_child(_body_node)
-	var fur := _ghost_mat(Color(0.55, 0.62, 0.85), 0.14)
+	if not ghost:
+		# V72 : le loup gris ordinaire, moitié moins grand, en vraie fourrure
+		_body_node.scale = Vector3.ONE * 0.5
+	var fur: Material
+	if ghost:
+		fur = _ghost_mat(Color(0.55, 0.62, 0.85), 0.14)
+	else:
+		fur = _mat(Color(0.36, 0.34, 0.33), 0.92)
 	_mesh(_body_node, _sphere(0.55), fur, Vector3(0, 1.05, -0.2), Vector3(0.9, 0.85, 1.7))
 	_mesh(_body_node, _sphere(0.55), fur, Vector3(0, 1.15, 0.55), Vector3(1.0, 1.0, 1.0))
 	var neck := Node3D.new()
@@ -1093,7 +1107,7 @@ func _build_loup() -> void:
 	_mesh(neck, _cyl(0.08, 0.2, 0.45), fur, Vector3(0, 0.08, 0.6), Vector3(1.0, 0.8, 1.0), Vector3(PI * 0.5, 0, 0))
 	for sx in [-1.0, 1.0]:
 		_mesh(neck, _cyl(0.0, 0.09, 0.26), fur, Vector3(sx * 0.15, 0.48, 0.15), Vector3.ONE, Vector3(-0.2, 0, sx * -0.25))
-	_eyes_mat = _mat(Color(0.85, 0.92, 1.0), 0.2, 7.0)
+	_eyes_mat = _mat(Color(0.85, 0.92, 1.0), 0.2, 7.0) if ghost else _mat(Color(1.0, 0.75, 0.25), 0.2, 3.0)
 	for sx2 in [-1.0, 1.0]:
 		_mesh(neck, _sphere(0.04), _eyes_mat, Vector3(sx2 * 0.12, 0.24, 0.48), Vector3(1.3, 0.7, 0.6))
 	for i in range(4):
@@ -1114,6 +1128,8 @@ func _build_loup() -> void:
 		_tail.append([j, 0.0])
 		parent = j
 		pos = Vector3(0, -0.05, -0.28)
+	if not ghost:
+		return
 	var l := OmniLight3D.new()
 	l.light_color = Color(0.7, 0.8, 1.0)
 	l.light_energy = 0.6

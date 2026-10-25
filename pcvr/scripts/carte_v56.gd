@@ -21,9 +21,9 @@ const AZUR_Z1: float = 170.0
 
 const PLACES := [
 	["Île du village", Vector2(0, 4), ""],
-	["Île de la jungle", Vector2(0, -330), "vu_jungle"],
-	["Bois-Doré", Vector2(330, -165), "vu_elfes"],
-	["Montagne de Feu", Vector2(-330, -160), "vu_nains"],
+	["Île de la jungle", Vector2(0, -330), ""],
+	["Bois-Doré", Vector2(330, -165), "ile_elfes"],
+	["Montagne de Feu", Vector2(-330, -160), "ile_nains"],
 	["Port-Azur", Vector2(300, 200), ""],
 	["Île flottante", Vector2(40, 400), "ventaile"],
 	["Atlantide", Vector2(-220, 260), "atlantide"],

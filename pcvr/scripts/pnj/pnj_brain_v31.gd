@@ -484,6 +484,8 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		return {"texte": _dress(_fill(str(r["t"]), ctx), "reponse"), "geste": "parle", "choix": topics(ctx)}
 	if choice.begins_with("don:"):
 		return _gift(choice.substr(4), ctx)
+	if choice.begins_with("cadeau_page:"):
+		return _gift_page(int(choice.substr(12)), ctx)
 	if choice.begins_with("achat:"):
 		return _buy(choice.substr(6), ctx)
 	if choice.begins_with("vente:"):
@@ -516,13 +518,7 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 				var c: Dictionary = hist[rng.randi() % hist.size()]
 				return {"texte": _tv("Tu veux l'entendre encore ? ", "Vous voulez l'entendre encore ? ") + _fill(str(c.get("t", "")), ctx), "geste": "parle", "choix": topics(ctx)}
 		"cadeau":
-			var list: Array = []
-			for id in (ctx.get("objets", {}) as Dictionary):
-				list.append({"id": "don:" + str(id), "label": "Offrir : " + str((ctx.get("noms", {}) as Dictionary).get(id, id))})
-				if list.size() >= 6:
-					break
-			list.append({"id": "retour", "label": "Non, rien finalement."})
-			return {"texte": "Oh ? Qu'as-tu donc pour moi ?", "geste": "parle", "choix": list}
+			return _gift_page(0, ctx)
 		"retour":
 			return {"texte": "Bon. Une autre fois, peut-être.", "geste": "parle", "choix": topics(ctx)}
 		"quete":
@@ -605,8 +601,30 @@ func _memories_text(ctx: Dictionary) -> String:
 	return " ".join(lines)
 
 
+## V72 : la liste des cadeaux, six par page (seulement ce qu'on peut offrir : pas les objets de
+## quête, les outils, les armes, ni ce qu'on tient en main).
+func _gift_page(page: int, ctx: Dictionary) -> Dictionary:
+	var ids: Array = ctx.get("offrables", (ctx.get("objets", {}) as Dictionary).keys())
+	var per: int = 6
+	var n_pages: int = maxi(1, ceili(float(ids.size()) / per))
+	page = clampi(page, 0, n_pages - 1)
+	var list: Array = []
+	for i in range(page * per, mini(ids.size(), (page + 1) * per)):
+		var id: String = str(ids[i])
+		list.append({"id": "don:" + id, "label": "Offrir : " + str((ctx.get("noms", {}) as Dictionary).get(id, id))})
+	if page + 1 < n_pages:
+		list.append({"id": "cadeau_page:%d" % (page + 1), "label": "D'autres choses… (%d/%d)" % [page + 2, n_pages]})
+	list.append({"id": "retour", "label": "Non, rien finalement."})
+	if ids.is_empty():
+		return {"texte": "Oh ? Tu n'as rien que tu puisses offrir, on dirait. Ce n'est pas grave : ta visite me suffit.", "geste": "parle", "choix": [{"id": "retour", "label": "Une autre fois."}]}
+	return {"texte": "Oh ? Qu'as-tu donc pour moi ?" if page == 0 else "Et quoi d'autre ?", "geste": "parle", "choix": list}
+
+
 func _gift(item: String, ctx: Dictionary) -> Dictionary:
 	var now: float = float(ctx.get("now", 0.0))
+	# V72 : un objet qu'on ne peut pas offrir (objet de quête, outil…) n'est jamais pris
+	if ctx.has("offrables") and not (ctx["offrables"] as Array).has(item):
+		return {"texte": "Garde-le, voyons : on dirait que tu en as besoin.", "geste": "parle", "choix": topics(ctx)}
 	if (data.get("refuse", []) as Array).has(item):
 		var specific: bool = (data.get("repliques", {}) as Dictionary).has("cadeau_refus_" + item)
 		var r: Dictionary = say("cadeau_refus_" + item if specific else "cadeau_refus", ctx)

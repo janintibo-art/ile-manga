@@ -24,6 +24,8 @@ var neutral: bool = true
 var trigger_ready: bool = true
 var options: Array[String] = []
 var view: String = "home"
+## V72 : une confirmation avant d'écraser, d'effacer ou de quitter : [action, emplacement]
+var _confirm: Array = []
 var seconds: float = 0.0
 var active_slot: int = 1
 
@@ -161,7 +163,7 @@ func _redraw() -> void:
 		for n in list_box.get_children():
 			n.queue_free()
 		heading.text = {"home": "✦  ÎLE MANGA  ✦", "new": "✦  NOUVELLE PARTIE  ✦", "load": "✦  CHARGER UNE PARTIE  ✦",
-			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦"}.get(view, "✦  ÎLE MANGA  ✦")
+			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦", "confirm": "✦  ÊTES-VOUS SÛR ?  ✦"}.get(view, "✦  ÎLE MANGA  ✦")
 		frame.modulate.a = 0.84
 		for i in range(options.size()):
 			var choice: String = options[i]
@@ -223,7 +225,7 @@ func _activate(index: int) -> void:
 			"Paramètres":
 				_show_view("settings")
 			"Quitter":
-				get_tree().quit()
+				_ask_confirm("quit", 0)
 	elif view == "settings":
 		var mu: Node = _music()
 		var keys := ["musique", "bruitages", "ambiances"]
@@ -234,21 +236,66 @@ func _activate(index: int) -> void:
 			_redraw()
 		elif action == "Retour":
 			_show_view("home")
+	elif view == "confirm":
+		var what: String = str(_confirm[0]) if not _confirm.is_empty() else ""
+		var slot: int = int(_confirm[1]) if not _confirm.is_empty() else 0
+		_confirm = []
+		if index != 0:
+			_show_view("home")
+			return
+		match what:
+			"new":
+				_load_or_create(slot, true)
+			"delete":
+				delete_requested.emit(slot)
+				_show_view("delete")
+			"save":
+				active_slot = slot
+				save_requested.emit(active_slot)
+				_show_view("home")
+			"quit":
+				get_tree().quit()
 	elif index == 6:
 		_show_view("home")
 	elif view == "new":
-		_load_or_create(index + 1, true)
+		if not Saves.read_slot(index + 1).is_empty():
+			_ask_confirm("new", index + 1)
+		else:
+			_load_or_create(index + 1, true)
 	elif view == "load":
 		if not Saves.read_slot(index + 1).is_empty():
 			_load_or_create(index + 1, false)
 	elif view == "delete":
 		if not Saves.read_slot(index + 1).is_empty():
-			delete_requested.emit(index + 1)
-		_show_view("delete")
+			_ask_confirm("delete", index + 1)
+		else:
+			_show_view("delete")
 	elif view == "save":
-		active_slot = index + 1
-		save_requested.emit(active_slot)
-		_show_view("home")
+		if index + 1 != active_slot and not Saves.read_slot(index + 1).is_empty():
+			_ask_confirm("save", index + 1)
+		else:
+			active_slot = index + 1
+			save_requested.emit(active_slot)
+			_show_view("home")
+
+
+## V72 : « Êtes-vous sûr ? » avant d'écraser une partie, de l'effacer ou de quitter.
+func _ask_confirm(what: String, slot: int) -> void:
+	_confirm = [what, slot]
+	view = "confirm"
+	selection = 1
+	options.clear()
+	match what:
+		"new":
+			options.append("Oui, recommencer à zéro (la partie %d sera remplacée)" % slot)
+		"delete":
+			options.append("Oui, effacer la partie %d pour toujours" % slot)
+		"save":
+			options.append("Oui, écrire par-dessus la partie %d" % slot)
+		"quit":
+			options.append("Oui, quitter le jeu" + (" (la dernière sauvegarde automatique sera gardée)" if playing else ""))
+	options.append("Non, revenir")
+	_redraw()
 
 func _music() -> Node:
 	var p: Node = get_parent()
@@ -290,7 +337,8 @@ func _process(delta: float) -> void:
 	if absf(stick.y) < 0.25:
 		neutral = true
 	elif neutral and absf(stick.y) > 0.65:
-		selection = posmod(selection + (1 if stick.y > 0.0 else -1), options.size())
+		# V72 : le joystick vers le haut remonte dans la liste (comme le dialogue et le carnet)
+		selection = posmod(selection + (1 if stick.y < 0.0 else -1), options.size())
 		neutral = false
 		_redraw()
 	var pressed: bool = right_hand.get_float("trigger") > 0.65

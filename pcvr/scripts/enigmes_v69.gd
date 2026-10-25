@@ -318,7 +318,7 @@ func _open_chest(n: String, c: Node3D, contents: Array, text: String) -> void:
 		var got: int = inv.add(str(g[0]), int(g[1]))
 		if got > 0:
 			parts.append("%d × %s" % [got, str(inv.ITEMS[str(g[0])]["name"])] if got > 1 else str(inv.ITEMS[str(g[0])]["name"]))
-		elif got < int(g[1]):
+		if got < int(g[1]):
 			inv.spawn_pickup(key + "_" + n + "_" + str(g[0]), str(g[0]), int(g[1]) - got, c.global_position + Vector3(0, 0.3, 1.2))
 	var t: String = text
 	if not parts.is_empty():

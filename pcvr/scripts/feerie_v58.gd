@@ -361,6 +361,11 @@ func _can_travel() -> bool:
 	if az != null and az.get("ferry") != null and az.ferry != null and bool(az.ferry.riding):
 		main._show_message_v28("Pas à bord de L'Hirondelle ! Attends d'être à quai.")
 		return false
+	# V72 : ni en dirigeable, ni en télécabine, ni en tyrolienne (on était remis à sa place aussitôt)
+	var gr: Node = main.get("grande_v59")
+	if gr != null and gr.has_method("riding") and bool(gr.riding()):
+		main._show_message_v28("Pas pendant le trajet ! Attends d'être arrivé.")
+		return false
 	return true
 
 

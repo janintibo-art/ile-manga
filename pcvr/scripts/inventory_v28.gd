@@ -786,10 +786,15 @@ func serialize() -> Dictionary:
 	for s in slots:
 		list.append([s["id"], int(s["n"])])
 	var loose: Array = []
+	var kept: Array = []
 	for p in pickups:
-		if str(p["uid"]).begins_with("jete_"):
+		var uid: String = str(p["uid"])
+		if uid.begins_with("jete_"):
 			loose.append([p["id"], int(p["n"]), p["pos"].x, p["pos"].y, p["pos"].z])
-	return {"cases": list, "main": equipped, "ramasses": taken.keys(), "poses": loose}
+		elif not _regen_uids.has(uid) and not uid.begins_with("q56_") and not taken.has(uid):
+			# V72 : une récompense posée au sol (sac plein) : elle n'est recréée par personne, on la garde
+			kept.append([uid, p["id"], int(p["n"]), p["pos"].x, p["pos"].y, p["pos"].z])
+	return {"cases": list, "main": equipped, "ramasses": taken.keys(), "poses": loose, "poses_uid": kept}
 
 
 func load_data(d: Dictionary) -> void:
@@ -807,6 +812,9 @@ func load_data(d: Dictionary) -> void:
 		if e2 is Array and e2.size() == 5 and ITEMS.has(str(e2[0])):
 			drop_counter += 1
 			spawn_pickup("jete_%d" % drop_counter, str(e2[0]), int(e2[1]), Vector3(float(e2[2]), float(e2[3]), float(e2[4])))
+	for e3 in d.get("poses_uid", []):
+		if e3 is Array and e3.size() == 6 and ITEMS.has(str(e3[1])) and not taken.has(str(e3[0])):
+			spawn_pickup(str(e3[0]), str(e3[1]), int(e3[2]), Vector3(float(e3[3]), float(e3[4]), float(e3[5])))
 	var eq: String = str(d.get("main", ""))
 	equip_item(eq if count(eq) > 0 else "")
 	changed.emit()
@@ -859,15 +867,22 @@ func spawn_world() -> void:
 	_respawn_world()
 
 
+## V72 : les objets que le monde recrée tout seul à chaque chargement (le plan de l'île, l'île des
+## nains, l'épée de la forge) ; les autres objets posés au sol sont gardés dans la sauvegarde.
+var _regen_uids: Dictionary = {}
+
 func _respawn_world() -> void:
 	for p in pickups:
 		if is_instance_valid(p["node"]):
 			p["node"].queue_free()
 	pickups.clear()
+	_regen_uids.clear()
+	_regen_uids["epee_forge"] = true
 	if main == null or not main.is_inside_tree():
 		return
 	var space: PhysicsDirectSpaceState3D = main.get_world_3d().direct_space_state
 	for e in _world_plan():
+		_regen_uids[str(e["uid"])] = true
 		if taken.has(e["uid"]):
 			continue
 		var x: float = e["x"]
@@ -881,6 +896,7 @@ func _respawn_world() -> void:
 	# V47 : minerai, obsidienne, champignons de braise et plumes de l'île des nains.
 	if main.get("nains_v46") != null and main.nains_v46 != null:
 		for e2 in main.nains_v46.pickup_plan():
+			_regen_uids[str(e2["uid"])] = true
 			if not taken.has(str(e2["uid"])):
 				spawn_pickup(str(e2["uid"]), str(e2["id"]), 1, e2["pos"])
 	# L'épée d'entraînement repose sur l'établi de la forge.
@@ -891,6 +907,10 @@ func _respawn_world() -> void:
 
 
 func spawn_pickup(uid: String, id: String, n: int, pos: Vector3, yaw: float = INF) -> void:
+	# V72 : jamais deux fois le même objet (un échange annulé, une sauvegarde rechargée)
+	for p0 in pickups:
+		if str(p0["uid"]) == uid and is_instance_valid(p0["node"]):
+			return
 	var node := Node3D.new()
 	node.name = "Objet_" + uid
 	add_child(node)

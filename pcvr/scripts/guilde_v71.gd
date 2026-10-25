@@ -37,7 +37,7 @@ const CONTRATS := [
 	["mimiques_2", 2, "chasse", "mimique", 2, 45, 24, "Chasser deux mimiques (les vrais coffres vous remercient)"],
 	["etage_4", 2, "etage", "", 4, 50, 30, "Descendre jusqu'au 4e étage du Donjon des Mille Marches"],
 	["slimes_15", 3, "chasse", "slime,slime_bleu,slime_rose", 15, 45, 25, "Grand nettoyage : chasser quinze slimes"],
-	["reine_1", 3, "chasse", "grenouille_reine", 1, 60, 35, "Chasser la Grenouille-Reine du lac (elle a mangé une barque)"],
+	["reine_1", 3, "chasse", "grenouille_reine", 1, 60, 35, "Chasser la Duchesse, la Grenouille Reine du lac (elle a mangé une barque)"],
 	["chef_1", 3, "chasse", "gobelin_chef", 1, 60, 35, "Vaincre le chef gobelin (encore lui ? oui, encore lui)"],
 	["etage_5", 3, "etage", "", 5, 80, 45, "Atteindre la salle du trône, au 5e étage du donjon"],
 	["gelee_8", 4, "objets", "gelee_slime", 8, 70, 40, "Rapporter huit pots de gelée (Madame Olga prépare un bain)"],

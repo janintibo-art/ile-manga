@@ -1307,7 +1307,9 @@ func _royal_reward() -> void:
 	if _known("coeur_gelee") and inv.count("coeur_gelee") <= 0:
 		if inv.add("coeur_gelee", 1) <= 0:
 			inv.spawn_pickup(key + "_relique", "coeur_gelee", 1, W(Vector3(12, -47.5, 290.0)))
-	inv.add("piece", 200)
+	var got_p: int = inv.add("piece", 200)
+	if got_p < 200:
+		inv.spawn_pickup(key + "_bourse_roi", "piece", 200 - got_p, W(Vector3(12, -47.5, 290.5)))
 	var title: String = "Vainqueur du Roi Gélatineux"
 	var j: Node = main.get("journal_v56")
 	if j != null:

@@ -164,6 +164,7 @@ var ivresse: float = 0.0
 var verres: int = 0
 var broken_total: int = 0
 var _force_t: float = 0.0
+var _force_on: bool = false
 var _hic_t: float = 6.0
 var _debris: Array = []
 var _uid: int = 0
@@ -1002,8 +1003,9 @@ func drink(id: String, at_counter: bool = false) -> void:
 	if deg > 0.0:
 		ivresse = minf(ivresse + deg, 2.2)
 		_force_t = FORCE_TEMPS
-		if hero != null:
-			hero.set("temp_force", 1)
+		if hero != null and not _force_on:
+			hero.set("temp_force", int(hero.get("temp_force")) + 1)
+			_force_on = true
 		if ivresse >= 1.5:
 			msg += " Tout tourne… Tu ferais mieux de t'arrêter là !"
 		elif ivresse >= 0.8:
@@ -1043,8 +1045,9 @@ func _tick_drink(delta: float) -> void:
 		ivresse = maxf(ivresse - DEGRISE * delta, 0.0)
 	if _force_t > 0.0:
 		_force_t -= delta
-		if _force_t <= 0.0 and hero != null:
-			hero.set("temp_force", 0)
+		if _force_t <= 0.0 and hero != null and _force_on:
+			hero.set("temp_force", maxi(int(hero.get("temp_force")) - 1, 0))
+			_force_on = false
 	if hero != null:
 		var t: float = 0.0 if main.xr_active else clampf((ivresse - 0.35) / 1.2, 0.0, 1.0)
 		hero.set("tipsy", t)
@@ -1150,8 +1153,10 @@ func load_data(d: Dictionary) -> void:
 	_force_t = 0.0
 	var hero: Node = main.get("hero_v28") if main != null else null
 	if hero != null:
-		hero.set("temp_force", 0)
+		if _force_on:
+			hero.set("temp_force", maxi(int(hero.get("temp_force")) - 1, 0))
 		hero.set("tipsy", 0.0)
+	_force_on = false
 	for ch in chests:
 		_show(ch, opened.has(ch["id"]))
 		_chest_text(ch)

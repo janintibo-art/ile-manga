@@ -139,11 +139,11 @@ const QUETES := [
 		"fin": "Le corail ! Le miel ! La noix de coco ! Je vais broyer, mélanger, et… regardez ce rouge ! Tenez, c'est tout ce que j'ai, mais je vous offre aussi mon admiration éternelle.",
 		"recompense": {"pieces": 30, "rep": 8, "titre": "Mécène des arts"}},
 	{"id": "bouillabaisse", "titre": "La bouillabaisse de Paulo", "donneur": "paulo", "lieu": "Port-Azur, Chez Paulo",
-		"resume": "Paulo veut des poissons pêchés du jour : deux daurades et deux maquereaux.",
+		"resume": "Paulo veut des poissons pêchés du jour : deux dorades et deux maquereaux.",
 		"offre_label": "Un souci en cuisine ?",
-		"offre": "Un drame ! Il me faut du poisson frais du jour pour ma bouillabaisse du dimanche. Deux daurades, deux maquereaux. Pêchés par toi, je te fais confiance.",
+		"offre": "Un drame ! Il me faut du poisson frais du jour pour ma bouillabaisse du dimanche. Deux dorades, deux maquereaux. Pêchés par toi, je te fais confiance.",
 		"etapes": [
-			{"type": "objets", "pnj": "paulo", "objets": {"dorade": 2, "maquereau": 2}, "label": "Voici vos poissons.", "objectif": "Pêcher et apporter à Paulo deux daurades et deux maquereaux"},
+			{"type": "objets", "pnj": "paulo", "objets": {"dorade": 2, "maquereau": 2}, "label": "Voici vos poissons.", "objectif": "Pêcher et apporter à Paulo deux dorades et deux maquereaux"},
 		],
 		"fin": "Magnifique ! Ils sentent encore la mer ! Tiens, trois bols de ma bouillabaisse, et pour toi, chez Paulo, ce sera toujours prix d'ami.",
 		"recompense": {"objets": [["bouillabaisse", 3]], "rep": 8, "remise": {"paulo": 0.15}}},
@@ -948,6 +948,11 @@ func quest(id: String) -> Dictionary:
 	return _by_id.get(id, {})
 
 
+## V72 : une quête de Port-Azur (pour la réputation et le titre de citoyen).
+func is_azur(q: Dictionary) -> bool:
+	return str(q.get("lieu", "")).begins_with("Port-Azur")
+
+
 func state(id: String) -> String:
 	return str((states.get(id, {}) as Dictionary).get("etat", ""))
 
@@ -1138,9 +1143,18 @@ func _do_step(npc: Node, qid: String) -> Dictionary:
 			if t == "objets":
 				need = e.get("objets", {})
 			else:
-				for k in e.get("objets", []):
-					if main.inventory_v28.count(str(k)) > 0:
-						need = {str(k): 1}
+				# V72 : on donne d'abord le moins précieux (jamais un outil, s'il y a autre chose)
+				var opts: Array = (e.get("objets", []) as Array).duplicate()
+				opts.reverse()
+				for pass_i in range(2):
+					for k in opts:
+						var kind: String = str(main.inventory_v28.ITEMS.get(str(k), {}).get("kind", ""))
+						if pass_i == 0 and kind in ["outil", "quete"]:
+							continue
+						if main.inventory_v28.count(str(k)) > 0:
+							need = {str(k): 1}
+							break
+					if not need.is_empty():
 						break
 				if need.is_empty():
 					return {"texte": "Je ne vois rien de tel dans ton sac. Une plume de Ventaile, une écaille de naga, une dent de requin… c'est tout ce qui m'intéresse.", "geste": "parle"}
@@ -1200,7 +1214,9 @@ func commit_reply(r: Dictionary, npc: Node) -> void:
 	var q: Dictionary = quest(qid)
 	var rec: Dictionary = q.get("recompense", {})
 	states[qid] = {"etat": "finie", "etape": (q.get("etapes", []) as Array).size(), "debut": float((states.get(qid, {}) as Dictionary).get("debut", 0.0)), "fin": _now()}
-	reputation += int(rec.get("rep", 0))
+	# V72 : la réputation, c'est celle de Port-Azur : seules ses quêtes la font monter
+	if is_azur(q):
+		reputation += int(rec.get("rep", 0))
 	var b: Dictionary = rec.get("bonus", {})
 	var msgs: Array = []
 	for k in b:
@@ -1315,7 +1331,7 @@ func _process(delta: float) -> void:
 			"quetes":
 				var n: int = 0
 				for q2 in QUETES:
-					if str(q2["id"]) != qid and state(str(q2["id"])) == "finie":
+					if str(q2["id"]) != qid and is_azur(q2) and state(str(q2["id"])) == "finie":
 						n += 1
 				if n >= int(e["n"]):
 					_advance(qid)
