@@ -167,7 +167,7 @@ func _arrive() -> void:
 		var sp: Dictionary = azur.spot(target_spot)
 		if not sp.is_empty():
 			global_position = sp["pos"]
-			var f: Vector3 = sp["face"] - global_position
+			var f: Vector3 = _spot_face(sp)
 			f.y = 0.0
 			if f.length() > 0.01:
 				rotation.y = atan2(f.x, f.z)

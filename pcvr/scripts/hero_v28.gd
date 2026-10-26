@@ -45,6 +45,9 @@ var _counter_t: float = 0.0             # riposte après une parade parfaite
 var _souffle_cd: float = 0.0
 var _vr_charge_cd: float = 0.0
 var sol_mult: float = 1.0               # V63 : sables mouvants, mains d'ombre (ralentissent)
+var jump_mult: float = 1.0              # V75 : le Bolet-Ressort (on saute trois fois plus haut)
+var speed_mult: float = 1.0             # V75 : l'Arc-en-ciel (on court plus vite)
+var fall_bonus: float = 0.0             # V75 : avec le Bolet-Ressort, on retombe sans se faire mal
 var sink: float = 0.0                   # V63 : le héros s'enfonce dans le sable (m)
 const LEDGE_MIN: float = 0.45           # en dessous, la marche automatique suffit
 const LEDGE_MAX: float = 2.15           # rebord le plus haut qu'on attrape depuis le sol
@@ -487,7 +490,7 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 	if not _can_act():
 		_lmb_down = false
 	var sprint: bool = Input.is_key_pressed(KEY_SHIFT) and _can_act() and dir.length() > 0.1 and not stamina_lock and not blocking
-	var speed: float = (RUN_SPEED * (1.1 if talents.has("pas_du_vent") else 1.0) if sprint else WALK_SPEED) * (1.0 + 0.04 * agilite) * sol_mult
+	var speed: float = (RUN_SPEED * (1.1 if talents.has("pas_du_vent") else 1.0) if sprint else WALK_SPEED) * (1.0 + 0.04 * agilite) * sol_mult * speed_mult
 	var move: Vector3 = dir * speed
 	# V66 : un verre de trop : la marche zigzague
 	if tipsy > 0.01 and dir.length() > 0.1 and state == "sol":
@@ -542,7 +545,7 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 			jump_buffer = 0.0
 			return
 		if coyote > 0.0:
-			body.velocity.y = JUMP_SPEED
+			body.velocity.y = JUMP_SPEED * jump_mult
 			coyote = 0.0
 			jump_buffer = 0.0
 			state = "air"
@@ -555,7 +558,7 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 			# V63 : le double saut, en plein vol
 			_double_used = true
 			jump_buffer = 0.0
-			body.velocity.y = JUMP_SPEED * 0.95
+			body.velocity.y = JUMP_SPEED * 0.95 * jump_mult
 			fall_top = body.position.y
 			_play("v28/jump", 0.05, 1.0, 0.0)
 			if main.has_method("sfx"):
@@ -616,9 +619,9 @@ func _landed() -> void:
 	state = "sol"
 	var drop: float = fall_top - body.position.y
 	fall_top = body.position.y
-	if drop > SAFE_FALL:
+	if drop > SAFE_FALL + fall_bonus:
 		# En demi-cœurs : 8 m = 2, 11 m = 4 (deux cœurs), 20 m = 8.
-		var dmg: int = 1 + int((drop - SAFE_FALL) / 2.0)
+		var dmg: int = 1 + int((drop - SAFE_FALL - fall_bonus) / 2.0)
 		hurt(dmg, Vector3.ZERO)
 		if hp <= 0:
 			return

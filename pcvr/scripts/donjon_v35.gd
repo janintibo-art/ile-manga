@@ -1858,6 +1858,14 @@ func update_inside(force: bool = false) -> void:
 			env.fog_light_color = Color(0.03, 0.035, 0.03)
 			env.fog_density = 0.014
 			env.tonemap_exposure = 1.35
+		# V75 : l'Usine Grise : des néons de bureau, du béton gris ; une lumière froide, presque claire
+		var bod: Node = main.get("boucan_v75")
+		if bod != null and bod.get("dungeon") != null and bod.dungeon != null and bod.dungeon.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.55, 0.6, 0.66)
+			env.ambient_light_energy = 1.2
+			env.fog_light_color = Color(0.04, 0.045, 0.05)
+			env.fog_density = 0.01
+			env.tonemap_exposure = 1.3
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

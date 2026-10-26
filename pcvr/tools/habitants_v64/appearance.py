@@ -11,7 +11,8 @@ zineb zoe zohra eclair archimage pyra zephyrine sauge berthe mirabelle lin ysold
 anne_rose scarlett coquille mama_grog coralie gwen
 neferet merit tiyi nebet ixkanul ixsak ixchab citlali xochitl nenetl
 ignatia ferronde sulfura ortie hurla lumina calcine ombreline zebuline vesperine moloka brindille_braise brasille grisette flammeche
-eglantine rissole petronille violette lison aurore brunehaut olga honorine noisette_mj colombe melusine philomene babette germaine'''.split())
+eglantine rissole petronille violette lison aurore brunehaut olga honorine noisette_mj colombe melusine philomene babette germaine
+rouille mouette barricade trocante pastille velours rustine pigment sirene chaussette bardane patchouli cerise morille prune'''.split())
 
 OLD_EXTRA = {'faelar', 'thorgal', 'nori', 'merelune'}
 
@@ -97,6 +98,11 @@ def decide(pid, p):
         m['age'] = 0.46 + r.random() * 0.16
         if any(w in titre for w in ('apprenti', 'jeune', 'mousse', 'gamin')):
             m['age'] = 0.38 + r.random() * 0.08
+        # V75 : les plus jeunes de Port-Boucan (Gédéon a 19 ans ; Pigment, Mouette, Bardane, la vingtaine)
+        if pid == 'gedeon':
+            m['age'] = 0.4
+        elif pid in ('pigment', 'mouette', 'bardane', 'rouille'):
+            m['age'] = 0.44 + r.random() * 0.04
     if species == 'nain':
         m['age'] = 0.62 + r.random() * 0.2 if not old else 0.86 + r.random() * 0.08
         if 'apprenti' in titre:
@@ -282,6 +288,8 @@ def decide(pid, p):
         beard, style = 'longue', 'chauve_couronne'
     if pid == 'octave':
         beard, style = 'moustache', 'court'
+    if pid == 'lisse':
+        style = 'plaque'          # V75 : Monsieur Lisse, les cheveux plaqués en arrière
     if style == 'chauve' and species != 'nain' and not female and (old or r.random() < 0.5):
         style = 'chauve_couronne'
     look['crane'] = 1.0
@@ -289,6 +297,10 @@ def decide(pid, p):
         look['crane'] = 0.0 if r.random() < 0.5 else 0.25
     if style == 'chauve_couronne':
         look['crane'] = 0.35
+    # V75 : la crête : les côtés rasés (un duvet ras, plus discret quand la crête est teinte en vif)
+    if style in ('crete', 'crete_courte'):
+        sat = max(hair) - min(hair)
+        look['crane'] = 0.16 if sat > 0.35 else 0.4
     # barbe rasée / ombre
     if female or child:
         look['barbe'] = [0.0, 0.0, 0.0]
@@ -323,6 +335,8 @@ TROUSERS = {
     'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
     'pandemonia': [[0.12, 0.1, 0.1], [0.25, 0.08, 0.08], [0.18, 0.14, 0.2], [0.3, 0.24, 0.2]],
     'montjoie': [[0.3, 0.24, 0.18], [0.42, 0.34, 0.24], [0.2, 0.22, 0.28], [0.5, 0.44, 0.32], [0.26, 0.3, 0.2]],
+    # V75 : Port-Boucan : jean noir, jean brut, kaki, gris anthracite, jean délavé
+    'boucan': [[0.07, 0.07, 0.08], [0.12, 0.16, 0.28], [0.26, 0.29, 0.18], [0.2, 0.2, 0.22], [0.3, 0.38, 0.52]],
 }
 SHOES = [[0.32, 0.2, 0.12], [0.12, 0.1, 0.09], [0.45, 0.32, 0.2], [0.55, 0.42, 0.3]]
 
@@ -423,6 +437,148 @@ def outfit(D, p):
             add('col', az['foulard'], 'soie')
         if arc.get('cape') and not child:
             add('cape', arc['cape'], 'laine')
+        return T
+    # --------------------------------------------------------- V75 : les punks de Port-Boucan
+    pk = p.get('punk')
+    if vil == 'boucan' and isinstance(pk, dict):
+        tenue = str(pk.get('tenue', 'sweat'))
+        clous, patchs = bool(pk.get('clous', False)), bool(pk.get('patchs', False))
+        noir = [0.06, 0.06, 0.065]
+        denim = [0.2, 0.3, 0.5] if r.random() < 0.5 else [0.26, 0.36, 0.55]
+        kaki = [0.27, 0.3, 0.18]
+        rangers = [0.06, 0.05, 0.05] if r.random() < 0.7 else [0.28, 0.06, 0.07]     # noires ou bordeaux
+        tartan = {'motif': 6, 'c2': [0.08, 0.08, 0.1], 'echelle': 0.06}
+        tee_pal = [[0.92, 0.9, 0.86], [0.12, 0.12, 0.13], [0.62, 0.62, 0.6], [0.7, 0.1, 0.1], [0.85, 0.72, 0.15]]
+
+        def deco(base_c, sur_veste=True):
+            """patchs cousus et clous : motif 7 (patchs), 8 (patchs + clous), 9 (clous)."""
+            c2 = [0.85, 0.82, 0.3] if lum(base_c) < 0.3 else [0.12, 0.12, 0.12]
+            if patchs and clous:
+                return {'motif': 8, 'c2': c2, 'echelle': 0.11}
+            if patchs:
+                return {'motif': 7, 'c2': c2, 'echelle': 0.11 if sur_veste else 0.13}
+            if clous:
+                return {'motif': 9}
+            return {}
+
+        def tee(c=None, stripes=False):
+            c = col(c) if c is not None else tee_pal[int(r.integers(len(tee_pal)))]
+            kw = {'motif': 1, 'c2': [0.92, 0.9, 0.86] if lum(c) < 0.5 else [0.1, 0.1, 0.12], 'echelle': 0.03} if stripes else {}
+            add('tshirt' if r.random() < 0.8 else 'debardeur', c, 'coton', **kw)
+
+        def bas_punk(allow_tartan=True):
+            q = r.random()
+            if allow_tartan and q < 0.22:
+                add('pantalon', [0.62, 0.07, 0.08], 'laine', **tartan)
+            elif q < 0.6:
+                add('pantalon', noir if r.random() < 0.6 else denim, 'jean', poches=1.0)
+            else:
+                add('pantalon', trous, 'jean' if lum(trous) < 0.2 or trous[2] > trous[0] + 0.1 else 'toile', poches=1.0)
+        if child or tenue == 'enfant':
+            tee(haut, stripes=(r.random() < 0.4))
+            if female:
+                add('jupe', [0.62, 0.07, 0.08], 'laine', **tartan)
+                add('collant', noir, 'coton', motif=1, c2=[0.6, 0.12, 0.45], echelle=0.04)
+                add('bottes', rangers, 'cuir')
+            else:
+                add('bermuda', denim, 'jean', poches=1.0)
+                add('chaussures', [0.92, 0.92, 0.9], 'cuir')
+            return T
+        if tenue == 'perfecto':
+            tee()
+            veste = col(haut) if lum(haut) < 0.2 else noir
+            add('veste', veste, 'cuir', **deco(veste))
+            bas_punk()
+            add('bottes', rangers, 'cuir')
+            add('ceinture_ample', [0.08, 0.07, 0.07], 'cuir', motif=9)
+        elif tenue == 'veste_jean':
+            tee(stripes=(r.random() < 0.3))
+            vj = col(haut) if (haut[2] > haut[0] + 0.1) else denim
+            add('veste', vj, 'jean', boutons=1.0, poches=1.0, **deco(vj))
+            if female and r.random() < 0.5:
+                add('jupe', noir if r.random() < 0.5 else [0.62, 0.07, 0.08], 'laine' if r.random() < 0.5 else 'cuir',
+                    **(tartan if r.random() < 0.5 else {}))
+                add('collant', noir, 'coton', motif=1 if r.random() < 0.4 else 0, c2=[0.55, 0.1, 0.12], echelle=0.04)
+            else:
+                add('pantalon', noir, 'jean', poches=1.0)
+            add('bottes', rangers, 'cuir')
+        elif tenue == 'sweat':
+            add('pull', haut, 'coton', **deco(haut, sur_veste=False))
+            bas_punk()
+            add('chaussures', [0.12, 0.12, 0.12] if r.random() < 0.5 else [0.9, 0.9, 0.88], 'cuir')
+        elif tenue == 'bleu_travail':
+            tee([0.92, 0.9, 0.86] if r.random() < 0.5 else [0.15, 0.15, 0.16])
+            add('veste', haut, 'toile', boutons=1.0, poches=1.0, **deco(haut))
+            add('pantalon', darker(haut, 0.85), 'toile', poches=1.0)
+            add('bottes', [0.12, 0.09, 0.07], 'cuir')
+        elif tenue == 'salopette':
+            tee(stripes=(r.random() < 0.5))
+            sal = col(haut) if lum(haut) > 0.15 else denim
+            tis = 'jean' if sal[2] > sal[0] else 'toile'
+            add('pantalon', sal, tis, poches=1.0, **({'motif': 7, 'c2': [0.12, 0.12, 0.12], 'echelle': 0.12} if patchs else {}))
+            add('bavette', sal, tis)
+            add('bottes', rangers, 'cuir')
+        elif tenue == 'tablier':
+            if female:
+                tee(haut)
+                add('pantalon', noir, 'jean', poches=1.0)
+            else:
+                add('chemise_courte', haut, 'coton', boutons=1.0)
+                bas_punk()
+            add('bottes' if not female else 'chaussures', rangers, 'cuir')
+            tab = col(az.get('tablier', [0.92, 0.9, 0.85]))
+            bar = 'bar' in titre
+            add('tablier_court' if bar else 'tablier', tab, 'cuir' if lum(tab) < 0.25 else 'coton',
+                **({'motif': 7, 'c2': [0.12, 0.12, 0.12], 'echelle': 0.12} if patchs and bar else {}))
+            if not bar:
+                add('bavette', tab, 'cuir' if lum(tab) < 0.25 else 'coton')
+        elif tenue == 'robe_recup':
+            robe = col(az.get('robe', darker(haut, 0.6)))
+            add('corsage_long' if old or r.random() < 0.5 else 'corsage', haut, 'coton',
+                **({'motif': 6, 'c2': darker(haut, 0.4), 'echelle': 0.05} if r.random() < 0.3 else {}))
+            add('jupe_longue' if old else 'jupe', robe, 'laine', **({'motif': 7, 'c2': darker(haut, 0.8), 'echelle': 0.11} if patchs else {}))
+            add('collant', noir, 'coton', motif=1, c2=[0.7, 0.12, 0.2], echelle=0.035)
+            add('bottes', rangers, 'cuir')
+            if clous:
+                add('ceinture_ample', [0.07, 0.06, 0.06], 'cuir', motif=9)
+        elif tenue == 'chale':
+            robe = col(az.get('robe', darker(haut, 0.6)))
+            add('corsage_long', haut, 'coton')
+            add('jupe_longue', robe, 'lin', **({'motif': 7, 'c2': darker(haut, 0.7), 'echelle': 0.13} if patchs else {}))
+            add('chaussures', [0.22, 0.15, 0.1], 'cuir')
+            fl = col(az.get('foulard', [0.55, 0.35, 0.6]))
+            add('chale', fl, 'laine', motif=6, c2=darker(fl, 0.55), echelle=0.07)
+            return T
+        elif tenue == 'costume':
+            gris = col(haut)
+            add('chemise_longue', [0.95, 0.95, 0.94] if pid != 'gedeon' else [0.86, 0.88, 0.92], 'coton', boutons=1.0)
+            add('veste', gris, 'laine', boutons=1.0, motif=3, c2=darker(gris, 0.85), echelle=0.012)
+            add('pantalon', gris, 'laine', motif=3, c2=darker(gris, 0.85), echelle=0.012)
+            add('chaussures', [0.05, 0.045, 0.045], 'cuir')
+            add('cravate', [0.5, 0.08, 0.12] if pid == 'lisse' else [0.18, 0.22, 0.42], 'soie',
+                **({'motif': 3, 'c2': [0.7, 0.6, 0.3], 'echelle': 0.012} if pid == 'lisse' else {}))
+        elif tenue == 'tailleur':
+            jupe = col(az.get('robe', haut))
+            add('corsage_long', [0.95, 0.94, 0.92], 'soie')
+            add('veste', jupe, 'laine', boutons=1.0)
+            add('jupe', jupe, 'laine')
+            add('collant', [0.18, 0.15, 0.14], 'soie')
+            add('chaussures', [0.05, 0.045, 0.045], 'cuir')
+        elif tenue == 'marin':
+            add('pull', [0.93, 0.92, 0.88], 'coton', motif=1, c2=[0.12, 0.16, 0.36], echelle=0.032)
+            add('pantalon', [0.14, 0.17, 0.3], 'toile', poches=1.0)
+            add('bottes', [0.1, 0.1, 0.1], 'cuir')
+        elif tenue == 'sportif':
+            add('debardeur' if female else 'tshirt', haut, 'coton')
+            add('pantalon', kaki, 'toile', poches=1.0, **({'motif': 7, 'c2': [0.12, 0.12, 0.12], 'echelle': 0.12} if patchs else {}))
+            add('bottes', [0.32, 0.22, 0.14], 'cuir')
+            add('ceinture_ample', [0.85, 0.35, 0.1], 'coton')
+        else:
+            tee(haut)
+            bas_punk()
+            add('bottes', rangers, 'cuir')
+        if az.get('foulard'):
+            add('col', az['foulard'], 'soie')
         return T
     # --------------------------------------------------------- V71 : les gens de Montjoie
     mj = p.get('mj')
@@ -849,7 +1005,8 @@ def assets(D):
     h = D['hair']
     hair = {'court': 'court_f' if D['female'] else 'court', 'long': 'long' if r.random() < 0.5 else 'long_b', 'carre': 'carre',
             'chignon': 'chignon', 'queue': 'queue', 'boucles': 'boucles', 'tresse': 'tresse', 'chauve': '',
-            'chauve_couronne': 'chauve_couronne', 'dreads': 'dreads', 'nain_long': 'nain_long', 'nain_tresses': 'nain_tresses'}.get(h, 'court')
+            'chauve_couronne': 'chauve_couronne', 'dreads': 'dreads', 'nain_long': 'nain_long', 'nain_tresses': 'nain_tresses',
+            'crete': 'crete', 'crete_courte': 'crete_courte', 'plaque': 'plaque'}.get(h, 'court')
     beard = {'moustache': 'barbe_moustache', 'courte': 'barbe_courte', 'longue': 'barbe_longue',
              'nain_large': 'barbe_nain_large', 'nain_tresse': 'barbe_nain_tresse', 'nain_fourche': 'barbe_nain_fourche'}.get(D['beard'], '')
     return hair, beard
@@ -860,7 +1017,7 @@ def assets(D):
 HAT_CUT = {'ch_paille': 0.035, 'ch_capeline': 0.035, 'ch_casquette': 0.045, 'ch_kepi': 0.05, 'ch_marin': 0.05, 'ch_beret': 0.03,
            'ch_cuisinier': 0.05, 'ch_tricorne': 0.045, 'ch_haut_de_forme': 0.05, 'ch_fez': 0.02, 'ch_bonnet': 0.065,
            'ch_bandana': 0.045, 'ch_foulard_tete': 0.3, 'ch_capuche': 0.3, 'ch_casque': 0.075, 'ch_turban': 0.07, 'ch_casque_aviateur': 0.3,
-           'ch_sorcier': 0.045}
+           'ch_sorcier': 0.045, 'ch_bandana_noeud': 0.045, 'ch_casque_skate': 0.08}
 
 
 def hats_for(D, p):
@@ -908,6 +1065,20 @@ def hats_for(D, p):
         out.append({'v': 'ch_capuche', 'c': [[0.55, 0.14, 0.1], [0.18, 0.3, 0.16], [0.45, 0.32, 0.12]][int(mjr.integers(3))], 'tissu': 'laine'})
     elif mjc == 'toque':
         out.append({'v': 'ch_cuisinier', 'c': [0.97, 0.97, 0.96], 'tissu': 'coton'})
+    # V75 : les couvre-chefs de Port-Boucan (jamais sur une crête : la crête se montre)
+    bk = p.get('punk', {}) if p.get('village') == 'boucan' else {}
+    bkc = str(bk.get('chapeau', '')) if isinstance(bk, dict) else ''
+    bkr = rng_for(D['id'], 'chapeau75')
+    if bkc and D['hair'] not in ('crete', 'crete_courte'):
+        if bkc == 'bandana':
+            c = [[0.68, 0.08, 0.1], [0.08, 0.08, 0.1], [0.15, 0.25, 0.55], [0.3, 0.34, 0.2]][int(bkr.integers(4))]
+            out.append({'v': 'ch_bandana_noeud', 'c': c, 'tissu': 'coton', 'motif': 4, 'c2': [0.93, 0.92, 0.88], 'echelle': 0.022})
+        elif bkc == 'bonnet':
+            out.append({'v': 'ch_bonnet', 'c': [[0.08, 0.08, 0.09], [0.55, 0.1, 0.1], [0.72, 0.55, 0.15], [0.25, 0.3, 0.2]][int(bkr.integers(4))], 'tissu': 'laine'})
+        elif bkc == 'casquette':
+            out.append({'v': 'ch_casquette', 'c': [[0.08, 0.08, 0.09], [0.6, 0.1, 0.1], [0.2, 0.3, 0.2]][int(bkr.integers(3))], 'tissu': 'coton'})
+        elif bkc == 'casque_skate':
+            out.append({'v': 'ch_casque_skate', 'c': [0.82, 0.16, 0.12], 'tissu': 'cuir', 'motif': 7, 'c2': [0.1, 0.1, 0.12], 'echelle': 0.05})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

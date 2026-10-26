@@ -172,3 +172,31 @@ def tube_ring(body, hull, y, radius_tube, clear, nk=40, sides=8):
     m = ClothMesh()
     m.grid(rows, wrap=True, hem_from_bottom=False)
     return m
+
+
+def tie(body, y_top, y_bot, w_top=0.011, w_bot=0.027, clear=0.013, nx=7, step=0.02):
+    """V75 : cravate : bande qui épouse l'avant du buste, plus large en bas, terminée en pointe ;
+    un petit nœud (plus épais) sous le col."""
+    ys = list(np.arange(y_top, y_bot - 1e-6, -step)) + [y_bot - 0.025]
+    rows = []
+    for k, y in enumerate(ys):
+        t = min(1.0, (y_top - y) / max(y_top - y_bot, 1e-6))
+        hw = w_top + (w_bot - w_top) * t
+        knot = k <= 1
+        row = []
+        for j, x in enumerate(np.linspace(-hw, hw, nx)):
+            yy = y
+            if k == len(ys) - 1:
+                yy = y + 0.025 * abs(x) / hw          # la pointe
+            p = np.array([body.HJ['Hips'][0] + x, yy, body.HJ['Hips'][2] + 0.3])
+            c = clear + (0.006 if knot else 0.0)
+            for _ in range(40):
+                d = body.dist(p)[0]
+                if d < c:
+                    break
+                p[2] -= max(d - c, 0.002)
+            row.append(p.copy())
+        rows.append(np.array(row))
+    m = ClothMesh()
+    m.grid(rows, wrap=False)
+    return m

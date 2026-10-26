@@ -227,7 +227,58 @@ def build_hats(body):
     hats['ch_casque'] = mesh_from([close_top(head_shell(H, -180, 180, 18, 88, 48, 12, 0.016))])
     hats['ch_turban'] = turban(H)
     hats['ch_casque_aviateur'] = aviator(H)
+    # V75 : Port-Boucan : le bandana noué derrière la tête (deux pans qui pendent) et le casque de skate
+    hats['ch_bandana_noeud'] = bandana_knot(H)
+    hats['ch_casque_skate'] = skate_helmet(H)
     return hats
+
+
+def blob(c, rx, ry, rz, n=12, m=7):
+    """petite boule (nœud) : anneaux du haut vers le bas."""
+    rows = []
+    for j in range(m + 1):
+        ph = np.pi / 2 - np.pi * j / m
+        ring = []
+        for i in range(n):
+            a = 2 * np.pi * i / n
+            ring.append(c + np.array([np.cos(ph) * np.sin(a) * rx, np.sin(ph) * ry, np.cos(ph) * np.cos(a) * rz]))
+        rows.append(np.array(ring))
+    return rows
+
+
+def bandana_knot(H):
+    """V75 : bandana noué : une coque du front (bas sur le front) à la nuque, un nœud derrière et deux pans."""
+    off = lambda t, p: 0.007 + 0.003 * smooth(60, 160, abs(t))
+    # plus bas derrière que devant : la coque descend jusqu'à phi -12° à l'arrière
+    ext = lambda t, p, q: np.array([0.0, -0.022, -0.004]) * smooth(90, 170, abs(t)) * smooth(40, 15, p)
+    m = mesh_from([close_top(head_shell(H, -180, 180, 15, 88, 48, 12, off, extra=ext))])
+    back = H.surface(np.array([0.0, np.sin(np.radians(8)), -np.cos(np.radians(8))]))
+    n = H.body.grad(back)[0]
+    k = back + n * 0.018 + np.array([0.0, -0.02, 0.0])
+    m.grid(blob(k, 0.019, 0.015, 0.013), wrap=True, hem_from_bottom=False)
+    # deux pans : bandes plates qui retombent en s'écartant un peu
+    for sx in (-1.0, 1.0):
+        rows = []
+        for j in range(6):
+            t = j / 5
+            ctr = k + np.array([sx * (0.008 + 0.022 * t), -0.012 - 0.075 * t, -0.006 - 0.01 * t])
+            w = 0.016 * (1 - 0.35 * t)
+            rows.append(np.array([ctr + np.array([-w, 0, 0]), ctr, ctr + np.array([w, 0, 0])]))
+        m.grid(rows, wrap=False, hem_from_bottom=False)
+    return m
+
+
+def skate_helmet(H):
+    """V75 : casque de skate : coque épaisse et bombée, du front aux oreilles, avec un bord replié vers la tête."""
+    off = lambda t, p: 0.026 + 0.004 * smooth(30, 80, p)
+    ext = lambda t, p, q: np.array([0.0, 0.006, 0.0]) * smooth(60, 20, abs(t)) * smooth(30, 12, p)
+    rows = close_top(head_shell(H, -180, 180, 12, 88, 48, 13, off, extra=ext))
+    last = rows[-1]
+    inward = last - np.array([H.hc[0], last[:, 1].mean(), H.hc[2]])
+    inward[:, 1] = 0.0
+    inward /= np.linalg.norm(inward, axis=1, keepdims=True) + 1e-9
+    rows = list(rows) + [last - inward * 0.012 + np.array([0, -0.003, 0]), last - inward * 0.024]
+    return mesh_from([rows])
 
 
 def append(m, rows, wrap=True):

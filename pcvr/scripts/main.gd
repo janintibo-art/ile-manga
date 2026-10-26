@@ -135,6 +135,7 @@ func _ready() -> void:
 	_create_v69()
 	_create_v70()
 	_create_v71()
+	_create_v75()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -185,6 +186,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V71 : l'Île de Montjoie (à l'est de la grande île ; son carré ne touche aucune autre île)
 	if montjoie_v71 != null and montjoie_v71.ile != null and montjoie_v71.ile.contains(x, z):
 		return maxf(h, montjoie_v71.ile.height(x, z))
+	# V75 : l'Île du Boucan (au sud, sous l'île céleste ; son carré ne touche aucune autre île)
+	if boucan_v75 != null and boucan_v75.ile != null and boucan_v75.ile.contains(x, z):
+		return maxf(h, boucan_v75.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1009,6 +1013,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			braise_v70.load_data({})
 		if montjoie_v71 != null and montjoie_v71.city != null:
 			montjoie_v71.load_data({})
+		if boucan_v75 != null and boucan_v75.city != null:
+			boucan_v75.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1038,6 +1044,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			# V71 : partie sauvée dans le Donjon des Mille Marches (sous la tour en ruine des Crocs)
 			if montjoie_v71 != null and montjoie_v71.city != null:
 				montjoie_v71.ensure_dungeon_at(origin.position)
+			# V75 : partie sauvée dans l'Usine Grise (sous l'usine de Lisse & Fils)
+			if boucan_v75 != null and boucan_v75.city != null:
+				boucan_v75.ensure_dungeon_at(origin.position)
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).
@@ -1138,6 +1147,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and montjoie_v71 != null and montjoie_v71.city != null:
 		var mdata71: Variant = SaveStore.read_slot(slot).get("montjoie", {})
 		montjoie_v71.load_data(mdata71 if mdata71 is Dictionary else {})
+	# V75 : l'Île du Boucan (les concerts, les graffitis, les champignons, Sardine, l'Usine Grise)
+	if not new_game and boucan_v75 != null and boucan_v75.city != null:
+		var bdata75: Variant = SaveStore.read_slot(slot).get("boucan", {})
+		boucan_v75.load_data(bdata75 if bdata75 is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1249,6 +1262,8 @@ func _save_slot(slot: int) -> void:
 		extra["braise"] = braise_v70.serialize()
 	if montjoie_v71 != null and montjoie_v71.city != null:
 		extra["montjoie"] = montjoie_v71.serialize()
+	if boucan_v75 != null and boucan_v75.city != null:
+		extra["boucan"] = boucan_v75.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -1917,6 +1932,16 @@ func _create_gameplay_v28() -> void:
 		# V58 : le champignon de Lulu emmène au royaume des fées
 		if item_id == "champignon_magique" and feerie_v58 != null:
 			return feerie_v58.eat_mushroom()
+		# V75 : les champignons féeriques de l'Île du Boucan
+		if item_id.begins_with("champi_") and boucan_v75 != null and boucan_v75.city != null:
+			return boucan_v75.eat_mushroom(item_id)
+		# V75 : un os à mâcher pour Sardine (s'il est là)
+		if item_id == "os_sardine" and boucan_v75 != null and boucan_v75.chien != null and boucan_v75.chien.has_method("is_active") and boucan_v75.chien.is_active():
+			inventory_v28.remove("os_sardine", 1)
+			inventory_v28.close()
+			_show_message_v28("Tu tends l'os à Sardine. Il le prend tout doucement, s'allonge à tes pieds et le mâchouille en grognant de bonheur. Sa queue balaie le sol : flap, flap, flap.")
+			sfx("aboiement_petit", _player_pos_v27())
+			return true
 		return false
 	combat_v28.build(self, inventory_v28)
 	hero_v28 = preload("res://scripts/hero_v28.gd").new()
@@ -2103,6 +2128,10 @@ func _respawn_v28() -> void:
 	# V71 : sur l'Île de Montjoie (le donjon : au dernier point de reprise ; dehors : la Grand-Place, ou son lit)
 	if montjoie_v71 != null and montjoie_v71.city != null and montjoie_v71.owns_point(_player_pos_v27()):
 		montjoie_v71.on_faint(_player_pos_v27())
+		return
+	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
+	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
+		boucan_v75.on_faint(_player_pos_v27())
 		return
 	# V36 : évanoui dans le temple : on se réveille au pied de l'échelle la plus proche.
 	if monstres_v36 != null and _in_dungeon_v35(_player_pos_v27()):
@@ -2382,6 +2411,15 @@ func _create_jungle_v29() -> void:
 	montjoie_v71.build_island()
 	var mj_d: Array = montjoie_v71.dock()
 	boat_v29._make_dock("Ponton_montjoie", mj_d[0], mj_d[1])
+	# V75 : l'Île du Boucan, au sud : Port-Boucan, la ville libre des punks dans la friche du vieux
+	# port, et l'Usine Grise (le relief d'abord ; le reste après l'heure du jour, voir _create_v75).
+	boucan_v75 = preload("res://scripts/boucan_v75.gd").new()
+	boucan_v75.name = "Boucan_v75"
+	add_child(boucan_v75)
+	boucan_v75.setup(self)
+	boucan_v75.build_island()
+	var bo_d: Array = boucan_v75.dock()
+	boat_v29._make_dock("Ponton_boucan", bo_d[0], bo_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2418,6 +2456,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V75 : l'Île du Boucan : la terre ferme, les quais, le pont du cargo (pas dans le bassin)
+	if boucan_v75 != null and boucan_v75.contains(p):
+		if boucan_v75.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -2973,7 +3019,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3095,6 +3141,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V71 : Montjoie (la Guilde, les compagnons, la Chaumière)
 	if montjoie_v71 != null and montjoie_v71.city != null:
 		montjoie_v71.after_reply(r, npc)
+	# V75 : Port-Boucan (Sardine, la Gratuiterie…)
+	if boucan_v75 != null and boucan_v75.city != null:
+		boucan_v75.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -3186,6 +3235,7 @@ var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Ég
 var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia (la cité des démons), les Neuf Cercles
 var manette_v74: Node                      # V74 : la manette sur PC (Xbox, PlayStation…)
 var montjoie_v71: Node3D                   # V71 : l'Île de Montjoie, la ville des aventuriers, le Donjon des Mille Marches
+var boucan_v75: Node3D                     # V75 : l'Île du Boucan, Port-Boucan (la ville libre des punks), l'Usine Grise
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -3244,6 +3294,9 @@ func _spawn_azur_v56() -> void:
 	# V71 : les habitants de Montjoie
 	if montjoie_v71 != null and montjoie_v71.city != null:
 		montjoie_v71.spawn_npcs()
+	# V75 : les habitants de Port-Boucan
+	if boucan_v75 != null and boucan_v75.city != null:
+		boucan_v75.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3366,6 +3419,17 @@ func _create_v71() -> void:
 	montjoie_v71.build_town()
 	if journal_v56 != null:
 		montjoie_v71.register_services(journal_v56)
+
+
+## V75 : l'Île du Boucan (Port-Boucan, ses grands lieux, le dehors, la végétation, les animaux,
+## Sardine, les concerts et la vie de la ville, les champignons féeriques, l'Usine Grise) ; le
+## ponton est posé avec le relief.
+func _create_v75() -> void:
+	if boucan_v75 == null:
+		return
+	boucan_v75.build_town()
+	if journal_v56 != null:
+		boucan_v75.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
@@ -3560,6 +3624,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(braise_v70.ile.CENTER.x, braise_v70.ile.CENTER.z), braise_v70.ile.HALF])
 	if montjoie_v71 != null and montjoie_v71.ile != null:
 		boxes.append([Vector2(montjoie_v71.ile.CENTER.x, montjoie_v71.ile.CENTER.z), montjoie_v71.ile.HALF])
+	if boucan_v75 != null and boucan_v75.ile != null:
+		boxes.append([Vector2(boucan_v75.ile.CENTER.x, boucan_v75.ile.CENTER.z), boucan_v75.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

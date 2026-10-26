@@ -273,6 +273,58 @@ def style_dreads(body, seed=9, n=46, length=0.3):
     return cap
 
 
+def style_crete(body, seed=31, n=650, height=0.125, half_w=0.03, short=False):
+    """V75 : la crête (iroquoise) : une bande étroite au milieu du crâne, du front à la nuque, dont les
+    mèches raides se dressent en éventail (plus hautes au sommet, plus courtes au front et à la nuque) ;
+    les côtés sont rasés (le duvet est peint sur le crâne : look['crane']).
+    short=True : la crête courte (brosse dressée de 3 à 5 cm sur une bande plus large)."""
+    rng = np.random.default_rng(seed)
+
+    def reg(x, y, z, ax, th):
+        return body.scalp_weight(x, y, z, ax, th) * smooth(half_w, half_w * 0.6, ax) * smooth(-0.07, -0.04, y)
+    roots, normals = body.sample_region(n, reg, seed=seed)
+    mesh = CardMesh()
+    side = np.array([1.0, 0.0, 0.0])
+    for i, (r, n0) in enumerate(zip(roots, normals)):
+        x, y, z, ax, th = body.local(r)
+        # direction : la normale du crâne ramenée dans le plan médian, un peu redressée vers le haut
+        d = n0.copy()
+        d[0] *= 0.12
+        d = d / np.linalg.norm(d)
+        d = d * 0.75 + UP * 0.25 + np.array([0.0, 0.0, -0.08])
+        d /= np.linalg.norm(d)
+        # longueur : maximale sur le haut du crâne, plus courte au front et vers la nuque
+        top = smooth(-0.06, 0.06, y)
+        front = smooth(0.0, 35.0, th)
+        if short:
+            ln = (0.03 + 0.018 * top) * (0.8 + 0.4 * rng.random())
+        else:
+            ln = height * (0.35 + 0.65 * top) * (0.55 + 0.45 * front) * (1.0 - 0.4 * smooth(125.0, 175.0, th)) * (0.8 + 0.35 * rng.random())
+        segs = 4 if short else 7
+        jit = rng.normal(0, 0.05, 3)
+        jit[0] *= 0.4
+        pts = [r - n0 * 0.002]
+        dd = d + jit
+        dd /= np.linalg.norm(dd)
+        for s in range(segs):
+            t = (s + 1) / segs
+            # la pointe se resserre vers le plan médian (les mèches gominées se rejoignent en lame)
+            pull = np.array([-(pts[-1][0] - body.c[0]) * (1.2 if not short else 0.6), 0.0, 0.0])
+            step = dd + pull * t
+            step /= np.linalg.norm(step)
+            pts.append(pts[-1] + step * ln / segs)
+        pts = np.array(pts)
+        # cartes tournées au hasard autour de la mèche (la crête se lit de face comme de profil)
+        a = rng.uniform(-1.2, 1.2)
+        fwd = np.array([0.0, 0.0, 1.0])
+        o = side * np.cos(a) + fwd * np.sin(a)
+        Lr, Rr, T = ribbon(body, pts, (0.012 + 0.01 * rng.random()) if not short else (0.01 + 0.006 * rng.random()),
+                           0.88 if not short else 0.7, outward=lambda p, o=o: o)
+        col = int(rng.choice([0, 1, 6], p=[0.45, 0.4, 0.15])) if not short else int(rng.choice([1, 7, 0], p=[0.45, 0.35, 0.2]))
+        mesh.add_ribbon(body, Lr, Rr, T, col, rng, shade=0.85 + 0.3 * top)
+    return mesh
+
+
 # =================================================================== barbes
 
 def beard_regions(body):

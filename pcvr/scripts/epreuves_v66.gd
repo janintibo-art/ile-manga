@@ -162,6 +162,22 @@ const LISTE := {
 	"donjon_5": ["Le cinquième étage des Mille Marches", "montjoie", 80],
 	"roi_gelatineux": ["Le Roi Gélatineux", "montjoie", 200],
 	"mille_marches": ["Le Donjon des Mille Marches", "montjoie", 60],
+	# V75 : l'Île du Boucan
+	"boucan": ["L'Île du Boucan", "boucan", 20],
+	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
+	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
+	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
+	"champignons_5": ["Les cinq champignons féeriques", "boucan", 40],
+	"sardine_trouvee": ["Sardine, le chien au bandana rouge", "boucan", 30],
+	"grand_boucan": ["Le Grand Boucan", "boucan", 60],
+	"graffitis_3": ["Trois graffitis sur les murs du Boucan", "boucan", 30],
+	"descente_repoussee": ["La Descente des Déménageurs repoussée", "boucan", 60],
+	"champignard_roi": ["Le Roi des Champignards", "boucan", 60],
+	"robots_usine": ["Les robots de la cour de l'usine", "boucan", 30],
+	"usine_5": ["Le cinquième étage de l'Usine Grise", "boucan", 80],
+	"grande_pelleteuse": ["La Grande Pelleteuse", "boucan", 200],
+	"usine_grise": ["L'Usine Grise", "boucan", 60],
+	"gedeon_batteur": ["Un batteur pour les Rats de Cale", "boucan", 60],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -181,7 +197,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -193,7 +209,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

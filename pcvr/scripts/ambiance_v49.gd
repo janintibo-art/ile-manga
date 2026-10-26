@@ -33,6 +33,8 @@ const BEDS := {
 	"montjoie_jour": "ambiance/montjoie_jour", "montjoie_nuit": "ambiance/montjoie_nuit", "guilde": "ambiance/guilde",
 	"campagne": "ambiance/campagne", "lac_grenouilles": "ambiance/lac_grenouilles", "foret_lutins": "ambiance/foret_lutins",
 	"donjon_caves": "ambiance/donjon_caves", "donjon_lac": "ambiance/donjon_lac",
+	"boucan_jour": "ambiance/boucan_jour", "boucan_nuit": "ambiance/boucan_nuit", "halle_hurlante": "ambiance/halle",
+	"spores": "ambiance/spores", "casse": "ambiance/casse", "usine": "ambiance/usine", "port_boucan": "ambiance/port_boucan",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -48,6 +50,7 @@ const BED_DB := {
 	"arene": -11.0, "thermes_soufre": -12.0,
 	"montjoie_jour": -12.0, "montjoie_nuit": -12.0, "guilde": -10.0, "campagne": -12.0, "lac_grenouilles": -12.0, "foret_lutins": -12.0,
 	"donjon_caves": -11.0, "donjon_lac": -11.0,
+	"boucan_jour": -13.0, "boucan_nuit": -13.0, "halle_hurlante": -12.0, "spores": -12.0, "casse": -13.0, "usine": -11.0, "port_boucan": -12.0,
 }
 
 var main: Node
@@ -270,8 +273,14 @@ func _choose_zone(running: bool) -> void:
 		var bd: Node = br.dungeon if br != null and br.get("dungeon") != null else null
 		var mjn: Node = main.get("montjoie_v71")
 		var md: Node = mjn.dungeon if mjn != null and mjn.get("dungeon") != null else null
+		var bon: Node = main.get("boucan_v75")
+		var bud: Node = bon.dungeon if bon != null and bon.get("dungeon") != null else null
+		# V75 : dans l'Usine Grise (les machines, partout)
+		if bud != null and bud.contains(p):
+			zone = "bo_usine"
+			targets["usine"] = 1.0
 		# V71 : dans le Donjon des Mille Marches (le Lac Souterrain : l'eau qui goutte)
-		if md != null and md.contains(p):
+		elif md != null and md.contains(p):
 			zone = "mj_donjon"
 			targets[str(md.ambience()) if md.has_method("ambience") else "donjon_caves"] = 1.0
 			targets["grotte"] = 0.2
@@ -366,6 +375,14 @@ func _choose_zone(running: bool) -> void:
 	if az_zone != "" and not on_boat:
 		zone = az_zone
 		_azur_beds(az_zone, p)
+		_night_beds()
+		return
+	# V75 : l'Île du Boucan (Port-Boucan, la Halle Hurlante, la Cathédrale des Spores, la Casse, l'usine)
+	var bos: Node = main.get("boucan_v75")
+	var bo_zone: String = bos.zone_at(p) if bos != null and bos.get("city") != null and bos.city != null and not on_ferry else ""
+	if bo_zone != "" and not on_boat:
+		zone = bo_zone
+		_boucan_beds(bo_zone, p)
 		_night_beds()
 		return
 	# V71 : l'Île de Montjoie (la ville sur la Butte, la Guilde, la campagne, le lac, le bois)
@@ -520,6 +537,42 @@ func _montjoie_beds(z: String, p: Vector3) -> void:
 			targets["campagne"] = 1.0 if day else 0.3
 			targets["grillons"] = 0.0 if day else 0.7
 			targets["ressac"] = 0.25 * sea
+
+
+## V75 : les nappes de l'Île du Boucan.
+func _boucan_beds(z: String, p: Vector3) -> void:
+	var day: bool = not _is_night()
+	var ville: String = "boucan_jour" if day else "boucan_nuit"
+	if z.begins_with("bo_concert"):
+		targets["halle_hurlante"] = 0.6
+		return
+	match z:
+		"bo_halle":
+			targets["halle_hurlante"] = 0.5
+			targets[ville] = 0.3
+		"bo_port", "bo_cargo":
+			targets["port_boucan"] = 1.0
+			targets["ressac"] = 0.3 + 0.4 * sea
+		"bo_spores", "bo_bois":
+			targets["spores"] = 1.0 if z == "bo_spores" else 0.6
+			targets["oiseaux"] = 0.0 if not day or z == "bo_spores" else 0.4
+		"bo_casse":
+			targets["casse"] = 1.0
+		"bo_usine":
+			targets["usine"] = 1.0
+		"bo_usine_dehors":
+			targets["usine"] = 0.6
+			targets["brise"] = 0.3
+		"bo_phare", "bo_plage", "bo_rivage":
+			targets["ressac"] = 0.6 + 0.4 * sea
+			targets["brise"] = 0.5
+		"bo_friche":
+			targets["brise"] = 0.5
+			targets["grillons"] = 0.0 if day else 0.6
+			targets["cigales"] = 0.3 if day else 0.0
+		_:
+			targets[ville] = 1.0
+			targets["ressac"] = 0.15 * sea
 
 
 ## V70 : les nappes de l'Île de Braise.

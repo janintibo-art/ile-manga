@@ -48,6 +48,12 @@ const ZONE_TRACK := {
 	"mj_port": "montjoie", "mj_lac": "campagne", "mj_foret": "campagne", "mj_ruine": "campagne", "mj_crocs": "campagne",
 	"mj_champs": "campagne", "mj_alerte": "campagne", "mj_rivage": "large", "mj_campagne": "campagne",
 	"mj_donjon": "donjon_mille_marches", "mj_donjon_roi": "roi_gelatineux",
+	# V75 : l'Île du Boucan
+	"bo_halle": "boucan", "bo_conserverie": "boucan", "bo_toit": "boucan", "bo_filature": "boucan", "bo_place": "boucan",
+	"bo_port": "boucan", "bo_cargo": "boucan", "bo_skate": "boucan", "bo_mur": "boucan", "bo_jardins": "boucan", "bo_boites": "boucan",
+	"bo_ville": "boucan", "bo_descente": "boucan", "bo_concert_1": "concert_1", "bo_concert_2": "concert_2", "bo_concert_3": "concert_3",
+	"bo_concert_gedeon": "concert_gedeon", "bo_spores": "spores", "bo_bois": "spores", "bo_usine_dehors": "usine_grise",
+	"bo_usine": "usine_grise", "bo_casse": "", "bo_phare": "large", "bo_plage": "large", "bo_rivage": "large", "bo_friche": "",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
@@ -58,8 +64,10 @@ const TRACK_DB := {
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
 	"pandemonia": -9.0, "braise": -9.0, "neuf_cercles": -8.0, "arene": -8.0, "fete_lanternes": -7.0,
 	"montjoie": -9.0, "guilde": -9.0, "campagne": -9.0, "donjon_mille_marches": -8.0, "roi_gelatineux": -7.0,
+	"boucan": -9.0, "boucan_nuit": -9.0, "concert_1": -6.0, "concert_2": -6.0, "concert_3": -6.0, "concert_gedeon": -6.0,
+	"spores": -9.0, "usine_grise": -9.0, "grande_pelleteuse": -7.0,
 }
-const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux"]
+const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux", "boucan", "boucan_nuit", "spores", "usine_grise", "grande_pelleteuse"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
 const END_FADE := 4.0                # un morceau joué une fois s'éteint sur ses 4 dernières secondes
 const COMBAT_RANGE := 20.0
@@ -205,6 +213,11 @@ func _decide(dt: float) -> void:
 	var amb: Node = main.get("ambiance_v49")
 	var z: String = "menu" if not running else (str(amb.zone) if amb != null and str(amb.zone) != "" else "village")
 	var want_zone: String = str(ZONE_TRACK.get(z, ""))
+	# V75 : Port-Boucan la nuit : le dub du soir
+	if want_zone == "boucan":
+		var tv: Node = main.get("temps_v56")
+		if tv != null and (float(tv.hour) >= 20.0 or float(tv.hour) < 6.0):
+			want_zone = "boucan_nuit"
 	# V56 : quand on entend Django jouer, la musique du lieu se tait
 	var az: Node = main.get("azur_v56")
 	if az != null and bool(az.get("django_heard")):
@@ -241,6 +254,11 @@ func _decide(dt: float) -> void:
 	combat = boss or (combat and _combat_hold > 0.0) or (fighting and _combat_t >= 1.0)
 	# V71 : le Roi Gélatineux a sa propre musique (au fond du Donjon des Mille Marches)
 	if boss:
+		# V75 : la Grande Pelleteuse, au fond de l'Usine Grise
+		var bom: Node = main.get("boucan_v75")
+		if bom != null and bom.get("dungeon") != null and bom.dungeon != null and bom.dungeon.contains(main._player_pos_v27()):
+			_switch("grande_pelleteuse")
+			return
 		var mjm: Node = main.get("montjoie_v71")
 		if mjm != null and mjm.get("dungeon") != null and mjm.dungeon != null and mjm.dungeon.contains(main._player_pos_v27()):
 			_switch("roi_gelatineux")
@@ -274,7 +292,8 @@ func _decide(dt: float) -> void:
 		var p: AudioStreamPlayer = tracks[current]["player"]
 		if not p.playing:
 			current = ""
-			rest = _rng.randf_range(40.0, 90.0)
+			# V75 : entre deux morceaux d'un concert, juste le temps d'accorder les guitares
+			rest = _rng.randf_range(4.0, 8.0) if zone_track.begins_with("concert") else _rng.randf_range(40.0, 90.0)
 	if current == "":
 		rest -= dt
 		if rest <= 0.0 and zone_track != "":
@@ -326,6 +345,9 @@ func _fighting() -> bool:
 ## Un combat de boss est-il en cours (Karkinos, Nâga, la Reine des Ronces) ?
 func _boss_fight() -> bool:
 	# V71 : le Roi Gélatineux, au fond du Donjon des Mille Marches
+	var bov: Node = main.get("boucan_v75")
+	if bov != null and bov.get("dungeon") != null and bov.dungeon != null and bool(bov.dungeon.get("fight")):
+		return true
 	var mjv: Node = main.get("montjoie_v71")
 	if mjv != null and mjv.get("dungeon") != null and mjv.dungeon != null and bool(mjv.dungeon.get("fight")):
 		return true

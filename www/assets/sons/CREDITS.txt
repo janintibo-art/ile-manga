@@ -165,3 +165,60 @@ l'accordéon et le chœur sont synthétisés :
   musique/campagne.ogg (« Les Champs de Montjoie », dehors, dans les champs et les bois),
   musique/donjon_mille_marches.ogg (« Le Donjon des Mille Marches »),
   musique/roi_gelatineux.ogg (« Le Roi Gélatineux », le combat contre le boss du donjon).
+
+L'Île du Boucan : Port-Boucan, la Halle Hurlante, la Cathédrale des Spores et l'Usine Grise (V75) —
+tous CC0 1.0 / domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v75.py : synthétisés (bips, voix et servomoteurs
+des robots polis, chenilles, boulons qui rebondissent, drone, arc électrique, vapeur, rugissement
+hydraulique et ferraille qui gémit de la Grande Pelleteuse, béton qui éclate, durite, tapis roulant,
+tampon, photocopieuse, alarmes, sirène à manivelle, « pouf » et rires des champignards, éternuement,
+ressort, carillons et célesta, scintillements, aboiements, pigeons, corneilles, jingle et grésillements
+de Radio Boucan, bombe de peinture, treuil, skate, monte-charge, tourniquet, vanne, porte coulissante,
+foule (voix synthétiques à formants), larsen, vent, grillons, eau du port…) et mêlés à des
+enregistrements retravaillés (découpés, transposés, filtrés, réverbérés) :
+  du recueil github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, Voiceover Pack, Voiceover Fighter (le brouhaha) ;
+  « 80 CC0 creature SFX » (aboiements), « 100 CC0 SFX », « 100 CC0 wood/metal SFX »,
+  « 75 CC0 breaking/falling/hit SFX », « Micro Pack - Cat Meows » et « BB Retail Therapy Sample Pack »
+  (Ben Burnes, CC0), les rires de « Free Retro Arcade Sounds » (The Motion Monkey, CC0) ;
+  de l'enregistrement « wind-breeze » par keweldog (Freesound, CC0, via
+  github.com/DNAABR/ambient-sounds-library) ;
+  de la banque VSCO-2 CE (Versilian Studios, CC0) : glockenspiel, cloche de vache, enclume, tambour de
+  frein, claves ;
+  de la « Versilian Community Sample Library » (VCSL, Versilian Studios, github.com/sgossner/VCSL,
+  CC0 1.0) : grosse caisse, caisses claires modernes, charleston, cymbales suspendues, toms, claquements
+  de mains, tambourin, carillons à main, arbres à clochettes.
+  Les guitares, la basse et la batterie des bruitages et des nappes (riffs, roulements, cymbales,
+  musique entendue de loin, la bassiste qui s'accorde) sont celles de compose_musique_v75.py.
+  sfx/robot_bip_1..3, robot_servo_1..3, robot_pas_1..3, robot_mort_1..2, robot_voix_1..3, drone_vol_1,
+      drone_zap_1..2, soudure_1..2, vapeur_3..4, pelleteuse_cri_1..2, pelleteuse_frappe_1..3,
+      durite_1..2, tapis_roulant_1, tampon_bureau_1..2, photocopieuse_1..2, alarme_usine_1..2,
+      champignard_pouf_1..3, champignard_rire_1..3, eternuement_1..2, champi_boing_1..2,
+      champi_magie_1..2, champi_fin_1..2, aboiement_1..4, aboiement_petit_1..3, chat_miaou_1..3,
+      pigeon_1..2, sirene_alerte_1..2, radio_jingle_1..2, radio_gresillement_1..2, bombe_peinture_1..2,
+      grue_1..2, skate_1..3, pogo_1..2, foule_acclame_1..2, larsen_micro_1..2, guitare_riff_1..3,
+      batterie_roulement_1..2, cymbale_1..2, monte_charge_1..2, tourniquet_1..2, vanne_1..2,
+      porte_usine_1..2
+  ambiance/boucan_jour, boucan_nuit, halle, spores, casse, usine, port_boucan
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v75.py. Le groupe des
+Rats de Cale est joué « en vrai » dans une salle : la batterie avec des échantillons de la VCSL (CC0 :
+grosse caisse, caisses claires modernes, charleston, cymbales suspendues, toms, baguettes, claquements
+de mains, tambourin, bloc de bois), les guitares électriques et la basse synthétisées (cordes pincées de
+Karplus-Strong en quintes, étouffées ou ouvertes, deux prises gauche et droite, passées dans un ampli et
+un baffle simulés ; guitare solo avec vibrato, tirés et glissés, et écho), l'orgue « combo » synthétisé,
+la trompette (et sa sourdine « harmon »), le trombone, le cor, le tuba, le basson, la clarinette, les
+cordes, la harpe, le glockenspiel, le marimba, le xylophone, les timbales, l'enclume, le tambour de
+frein, la cloche de vache et les claves de la banque VSCO-2 CE (Versilian Studios, CC0), les verres
+frottés et les carillons à main de la VCSL (CC0) ; le célesta, les nappes, la basse de synthèse, les
+jets de vapeur et les « clang » de l'usine sont synthétisés ; la foule
+de la Halle (« Hé ! », « Oh-oh-oh », bravos) est faite de voix synthétiques (comme les foules de la V70)
+et des claquements de mains de la VCSL :
+  musique/boucan.ogg (« Port-Boucan », le thème de la ville, le jour : ska-punk),
+  musique/boucan_nuit.ogg (« Port-Boucan, la nuit » : dub),
+  musique/concert_1.ogg (« Les Rats de Cale », à la Halle Hurlante),
+  musique/concert_2.ogg (« Rangers et Pâquerettes », à la Halle Hurlante),
+  musique/concert_3.ogg (« Tout le Monde Chante », l'hymne, à la Halle Hurlante),
+  musique/concert_gedeon.ogg (« Gédéon Tape Fort », le grand final avec le nouveau batteur),
+  musique/spores.ogg (« La Cathédrale des Spores »),
+  musique/usine_grise.ogg (« L'Usine Grise », le donjon),
+  musique/grande_pelleteuse.ogg (« La Grande Pelleteuse », le combat contre le boss).

@@ -12,6 +12,7 @@ const Monster68 = preload("res://scripts/monstre_v68.gd")
 const Monster69 = preload("res://scripts/monstre_v69.gd")
 const Monster70 = preload("res://scripts/monstre_v70.gd")
 const Monster71 = preload("res://scripts/monstre_v71.gd")
+const Monster75 = preload("res://scripts/monstre_v75.gd")
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -105,7 +106,8 @@ func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V69 : les monstres de l'Île des Trois Soleils et de ses donjons (momies, jaguars, chauves-souris, Ammit, Apophis, Camazotz, Cipactli)
 	# V70 : les monstres de l'Île de Braise, de l'Arène des Cornes et des Neuf Cercles
 	# V71 : les monstres de l'Île de Montjoie et du Donjon des Mille Marches (slimes, grenouilles, gobelins, navets, mimiques)
-	var m: CharacterBody3D = Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()))))
+	# V75 : les monstres de l'Île du Boucan (robots de Lisse & Fils, la Grande Pelleteuse, champignards)
+	var m: CharacterBody3D = Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())))))
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -211,7 +213,8 @@ func _vr_faint() -> void:
 	var sol69: bool = main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(pp)
 	var br70: bool = main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(pp)
 	var mj71: bool = main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(pp)
-	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71
+	var bo75: bool = main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.owns_point(pp)
+	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71 and not bo75
 	if temple and not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
 		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
@@ -229,6 +232,11 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V75 : sur l'Île du Boucan, ou dans l'Usine Grise
+	if main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.owns_point(p):
+		main.boucan_v75.on_faint(p)
+		_heal_player()
+		return
 	# V71 : sur l'Île de Montjoie, ou dans le Donjon des Mille Marches
 	if main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(p):
 		main.montjoie_v71.on_faint(p)
@@ -395,6 +403,9 @@ func _process(delta: float) -> void:
 		outdoor = true
 	# V63 : les combats de la grande enquête (au bord de la grande mare de Ramure…)
 	if not inside and main.get("sceaux_v63") != null and main.sceaux_v63 != null and main.sceaux_v63.hostile_zone(main._player_pos_v27()):
+		outdoor = true
+	# V75 : les repaires de l'Île du Boucan, et la Descente des Déménageurs
+	if not inside and main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.hostile_zone(main._player_pos_v27()):
 		outdoor = true
 	# V71 : les repaires de l'Île de Montjoie, et l'alerte aux navets
 	if not inside and main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.hostile_zone(main._player_pos_v27()):

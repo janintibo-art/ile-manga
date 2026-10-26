@@ -12,6 +12,7 @@ func _initialize() -> void:
 		"soleils": "res://scripts/pnj/soleils_habitants_v69.gd",
 		"braise": "res://scripts/pnj/braise_habitants_v70.gd",
 		"montjoie": "res://scripts/pnj/montjoie_habitants_v71.gd",
+		"boucan": "res://scripts/pnj/boucan_habitants_v75.gd",
 	}
 	for k in mods:
 		var m = load(mods[k])

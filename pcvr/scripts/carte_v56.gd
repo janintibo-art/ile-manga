@@ -74,6 +74,14 @@ const PLACES := [
 	["Les Crocs", Vector2(560, 790), "montjoie"],
 	["Champs du Sud", Vector2(774, 850), "montjoie"],
 	["Donjon des Mille Marches", Vector2(622, 736), "montjoie"],
+	# V75 : l'Île du Boucan
+	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
+	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
+	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],
+	["L'Usine Grise", Vector2(82, 894), "boucan"],
+	["La Casse", Vector2(120, 810), "boucan"],
+	["Plage aux Galets", Vector2(158, 888), "boucan"],
+	["Le Phare tagué", Vector2(-30, 990), "boucan"],
 ]
 
 var main: Node
@@ -271,6 +279,26 @@ func _quest_targets(id: String) -> Array:
 						out.append(mj.city.lieux.chaumiere_door)
 					"inscription", "rang_d", "compagnon":
 						out.append(mj.city.lieux.guild_counter)
+			# V75 : l'Île du Boucan (l'Usine Grise, Sardine, la Halle, le Mur, la Descente)
+			var bo: Node = main.get("boucan_v75")
+			if bo != null and bo.get("city") != null and bo.city != null:
+				match str(e.get("cle", "")):
+					"grande_pelleteuse", "usine_5", "usine_grise":
+						if bo.dehors != null:
+							out.append(bo.dehors.dungeon_door)
+					"sardine_trouvee":
+						if bo.dehors != null and bo.dehors.objets.has("sardine"):
+							out.append(bo.dehors.objets["sardine"])
+					"grand_boucan", "gedeon_batteur", "boucan_concert":
+						out.append(bo.city.lieux.halle_fosse)
+					"graffitis_3":
+						if bo.city.objets.has("mur_expression"):
+							out.append(bo.city.objets["mur_expression"])
+					"descente_repoussee":
+						out.append(bo.respawn_point()[0])
+					"boucan_champignon":
+						if bo.dehors != null:
+							out.append(bo.dehors.gazo_center)
 			# V70 : l'Île de Braise (la porte des Neuf Cercles, le Cœur-Brasier, Pépin, l'arène, les lanternes, les repaires)
 			var br: Node = main.get("braise_v70")
 			if br != null and br.get("city") != null and br.city != null:

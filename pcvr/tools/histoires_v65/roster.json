@@ -1698,5 +1698,160 @@
 "groupe": "montjoie",
 "nom": "Odon",
 "titre": "gardien du Donjon des Mille Marches"
+},
+"rouille": {
+"groupe": "boucan",
+"nom": "Rouille",
+"titre": "chanteuse des Rats de Cale"
+},
+"clou": {
+"groupe": "boucan",
+"nom": "Clou",
+"titre": "guitariste des Rats de Cale"
+},
+"mouette": {
+"groupe": "boucan",
+"nom": "Mouette",
+"titre": "bassiste des Rats de Cale"
+},
+"barricade": {
+"groupe": "boucan",
+"nom": "Mamie Barricade",
+"titre": "fondatrice du squat de la Conserverie"
+},
+"lentille": {
+"groupe": "boucan",
+"nom": "Lentille",
+"titre": "cuisinier de la Cantine à prix libre"
+},
+"trocante": {
+"groupe": "boucan",
+"nom": "Trocante",
+"titre": "gardienne de la Gratuiterie"
+},
+"pastille": {
+"groupe": "boucan",
+"nom": "Pastille",
+"titre": "infirmière bénévole du Point Soins"
+},
+"tapage": {
+"groupe": "boucan",
+"nom": "Tapage",
+"titre": "vieux punk légendaire"
+},
+"velours": {
+"groupe": "boucan",
+"nom": "Velours",
+"titre": "couturière de récup"
+},
+"rustine": {
+"groupe": "boucan",
+"nom": "Rustine",
+"titre": "mécanicienne de l'atelier vélo"
+},
+"agrafe": {
+"groupe": "boucan",
+"nom": "Agrafe",
+"titre": "imprimeur de fanzines"
+},
+"pigment": {
+"groupe": "boucan",
+"nom": "Pigment",
+"titre": "graffeuse"
+},
+"copeau": {
+"groupe": "boucan",
+"nom": "Copeau",
+"titre": "menuisier de récup"
+},
+"fusible": {
+"groupe": "boucan",
+"nom": "Fusible",
+"titre": "électricien du Boucan"
+},
+"sirene": {
+"groupe": "boucan",
+"nom": "Sirène",
+"titre": "patronne du bar à limonades de la Halle"
+},
+"larsen": {
+"groupe": "boucan",
+"nom": "Larsen",
+"titre": "ingénieur du son de la Halle"
+},
+"boulon": {
+"groupe": "boucan",
+"nom": "Boulon",
+"titre": "grutier du Vieux Bassin"
+},
+"sergent": {
+"groupe": "boucan",
+"nom": "Sergent Fréquence",
+"titre": "animateur de Radio Boucan"
+},
+"radis": {
+"groupe": "boucan",
+"nom": "Radis",
+"titre": "jardinier des Jardins Partagés"
+},
+"chaussette": {
+"groupe": "boucan",
+"nom": "Chaussette",
+"titre": "promeneuse de chiens"
+},
+"cradoc": {
+"groupe": "boucan",
+"nom": "Cradoc",
+"titre": "jongleur et cracheur de bulles"
+},
+"bardane": {
+"groupe": "boucan",
+"nom": "Bardane",
+"titre": "grimpeuse d'arbres et militante écolo"
+},
+"patchouli": {
+"groupe": "boucan",
+"nom": "Patchouli",
+"titre": "voisine des Boîtes, liseuse de pigeons"
+},
+"tornade": {
+"groupe": "boucan",
+"nom": "Tornade",
+"titre": "skateur du Bassin à sec, le fils de Rustine et de Copeau"
+},
+"cerise": {
+"groupe": "boucan",
+"nom": "Cerise",
+"titre": "dessinatrice de fanzines, la fille de Rustine et de Copeau"
+},
+"morille": {
+"groupe": "boucan",
+"nom": "Mère Morille",
+"titre": "sage des champignons de la Cathédrale des Spores"
+},
+"ferraille": {
+"groupe": "boucan",
+"nom": "Ferraille",
+"titre": "sculpteur de la Casse"
+},
+"gravier": {
+"groupe": "boucan",
+"nom": "Gravier",
+"titre": "pêcheur de la Plage aux Galets"
+},
+"lisse": {
+"groupe": "boucan",
+"nom": "Monsieur Lisse",
+"titre": "promoteur, patron de Lisse & Fils"
+},
+"gedeon": {
+"groupe": "boucan",
+"nom": "Gédéon",
+"titre": "fils de Monsieur Lisse"
+},
+"prune": {
+"groupe": "boucan",
+"nom": "Mademoiselle Prune",
+"titre": "secrétaire de Monsieur Lisse"
 }
 }

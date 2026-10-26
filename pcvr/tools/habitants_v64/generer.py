@@ -95,6 +95,9 @@ def etape_cheveux(only=None):
         'tresse': lambda: hs.style_tresse(body),
         'chauve_couronne': lambda: hs.style_couronne(body),
         'dreads': lambda: hs.style_dreads(body),
+        'crete': lambda: hs.style_crete(body),
+        'crete_courte': lambda: hs.style_crete(body, seed=32, n=700, half_w=0.034, short=True),
+        'plaque': lambda: g(body, 33, 750, 0.06, 0.03, 0.035, 0.0, 0.002, 0.003, 5, 0.05, 0.6, (0.014, 0.022), [(0, 0.7), (1, 0.3)], comb=hs.back_comb(body), taper=0.55)[0],
         'nain_long': lambda: g(body, 12, 450, 0.2, 0.22, 0.26, 0.0, 0.005, 0.012, 7, 0.5, 0.55, (0.022, 0.036), [(3, 0.5), (6, 0.5)], wave=0.2, taper=0.45)[0],
         'nain_tresses': nain_tresses,
         'barbe_moustache': lambda: hs.style_beard(body, 'moustache'),
@@ -186,6 +189,9 @@ def etape_amples(only=None):
         'cape': lambda: lo.skirt(body, F, hull, F.neck_y - 0.05, knee - 0.12, clear_top=0.025, flare=0.16, folds=9, fold_amp=(0.003, 0.016), span=(np.pi - 1.85, np.pi + 1.85), nk=40),
         'ceinture_ample': lambda: lo.tube_ring(body, hull, wy - 0.005, 0.009, 0.016),
         'foulard': lambda: lo.tube_ring(body, hull_neck, F.neck_y - 0.035, 0.012, 0.004),
+        # V75 : la cravate de Monsieur Lisse, le châle de Mère Morille
+        'cravate': lambda: lo.tie(body, F.neck_y - 0.03, F.waist_y + 0.02),
+        'chale': lambda: lo.skirt(body, F, hull, F.neck_y - 0.045, F.waist_y + 0.03, clear_top=0.024, flare=0.13, folds=8, fold_amp=(0.002, 0.012), span=(np.pi - 2.2, np.pi + 2.2), nk=44),
     }
     # tabliers portés sur une jupe : ils restent toujours au-dessus d'elle (même forme, un peu plus loin)
     dessous = {'jupe': dict(y_top=wy, y_bot=knee - 0.04, flare=0.07, folds=12),
@@ -194,8 +200,8 @@ def etape_amples(only=None):
     for k, u in dessous.items():
         G['tablier_sur_' + k] = (lambda u=u: lo.skirt(body, F, hull, wy, knee - 0.02, clear_top=0.02, flare=0.02, folds=5, fold_amp=(0.001, 0.005), span=(-1.25, 1.25), nk=24, under=u))
         G['tablier_court_sur_' + k] = (lambda u=u: lo.skirt(body, F, hull, wy, F.crotch_y - 0.05, clear_top=0.02, flare=0.015, folds=4, fold_amp=(0.001, 0.004), span=(-1.15, 1.15), nk=20, under=u))
-    anchor = {'cape': 'Spine', 'bavette': 'Spine02', 'foulard': 'Spine'}
-    mix = {'cape': 0.75, 'tablier': 0.55, 'tablier_court': 0.7, 'bavette': 1.0, 'foulard': 1.0, 'ceinture_ample': 1.0, 'blouse_bas': 0.55, 'tunique_bas': 0.6}
+    anchor = {'cape': 'Spine', 'bavette': 'Spine02', 'foulard': 'Spine', 'cravate': 'Spine', 'chale': 'Spine'}
+    mix = {'cravate': 1.0, 'chale': 0.9, 'cape': 0.75, 'tablier': 0.55, 'tablier_court': 0.7, 'bavette': 1.0, 'foulard': 1.0, 'ceinture_ample': 1.0, 'blouse_bas': 0.55, 'tunique_bas': 0.6}
     for k in dessous:
         mix['tablier_sur_' + k] = 0.5
         mix['tablier_court_sur_' + k] = 0.6

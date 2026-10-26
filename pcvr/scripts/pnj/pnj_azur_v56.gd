@@ -438,12 +438,23 @@ func _arrive() -> void:
 	if pose in ["assis", "allonge", "guitare", "lire"]:
 		global_position = p
 		_body.global_transform = Transform3D(Basis(Vector3.UP, rotation.y), global_position)
-	var f: Vector3 = sp["face"] - global_position
+	var f: Vector3 = _spot_face(sp)
 	f.y = 0.0
 	if f.length() > 0.01:
 		rotation.y = atan2(f.x, f.z)
 	_gest = _rng2.randf_range(4.0, 12.0)
 	current_anim = ""
+
+
+
+## V75 : le « face » d'un lieu est un point à regarder (Port-Azur) ou une direction (les îles d'après,
+## dont les lieux donnent un vecteur unité) : avant, les habitants de ces îles-là regardaient tous
+## vers le centre du monde.
+func _spot_face(sp: Dictionary) -> Vector3:
+	var fv: Vector3 = sp.get("face", Vector3.ZERO)
+	if fv.length() < 1.5:
+		return fv
+	return fv - global_position
 
 
 func _set_hidden(h: bool) -> void:

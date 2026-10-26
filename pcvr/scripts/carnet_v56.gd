@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise", "Montjoie"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise", "Montjoie", "Boucan"]
 
 var main: Node
 var inv: Node
@@ -633,6 +633,8 @@ func _region_of(n: Node) -> String:
 		return "Braise"
 	if place.begins_with("Île de Montjoie") or place.begins_with("L'Île de Montjoie"):
 		return "Montjoie"
+	if place.begins_with("Île du Boucan") or place.begins_with("L'Île du Boucan"):
+		return "Boucan"
 	if place.begins_with("Carène") or place.begins_with("La grande île") or place.begins_with("Les hautes") or place.begins_with("La forêt des brumes") or place.begins_with("Le désert") or place.begins_with("Le Cœur"):
 		return "Carène"
 	if place.begins_with("L'Atlantide"):
@@ -678,6 +680,8 @@ func _met_list() -> Array:
 				reg = "Braise"
 			if str(n.profile.get("groupe", "")) == "montjoie":
 				reg = "Montjoie"
+			if str(n.profile.get("groupe", "")) == "boucan":
+				reg = "Boucan"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])
 	return out

@@ -540,6 +540,62 @@ def archipel(src: Path) -> None:
         kx, kz = mw(*Md["camp"])
         d.polygon([(kx, kz - 7), (kx - 6, kz + 5), (kx + 6, kz + 5)], fill=(150, 70, 50, 255), outline=(70, 34, 24, 255))
 
+    # V75 : l'Île du Boucan : Port-Boucan (le vieux port, ses entrepôts et ses squats), le Vieux
+    # Bassin, le cargo échoué, la Cathédrale des Spores dans son gazomètre et le Bois des Spores,
+    # l'Usine Grise, la Casse, le Phare tagué (bake75.gd écrit boucan.json)
+    bof = src / "boucan.json"
+    if OX > 540 and rows == 980 and bof.exists():
+        Bo = json.loads(bof.read_text())
+
+        def bw2(x, z):
+            return (x + OX, z + OZ)
+
+        gx, gz = bw2(*Bo["gazo"])
+        rngb = np.random.default_rng(7575)
+        sr, gr = Bo["spores_r"], Bo["gazo_r"]
+        for k in range(320):
+            a = rngb.uniform(0, math.tau)
+            r = gr + 4 + math.sqrt(rngb.uniform()) * (sr - gr - 4)
+            tx, tz = gx + math.cos(a) * r, gz + math.sin(a) * r
+            c = [(70, 112, 70, 255), (84, 120, 76, 255), (120, 90, 150, 255), (70, 120, 160, 255)][k % 4]
+            d.ellipse((tx - 3, tz - 3, tx + 3, tz + 3), fill=c, outline=(40, 64, 44, 255))
+        for line in Bo.get("chemins", []):
+            if len(line) > 1:
+                d.line([bw2(q[0], q[1]) for q in line], fill=(150, 130, 104, 255), width=2)
+        # la ville : le béton gris de la friche, seulement sur la terre ferme (le bassin reste de l'eau)
+        tx0, tz0, tw2, th2 = Bo["ville"]
+        x0, z0 = bw2(tx0, tz0)
+        tm = np.zeros((H, W), bool)
+        tm[int(z0):int(z0 + th2), int(x0):int(x0 + tw2)] = True
+        tm &= land
+        im.paste((150, 146, 140, 255), (0, 0), Image.fromarray((tm * 255).astype(np.uint8)))
+        edge = tm ^ ndimage.binary_erosion(tm, iterations=2)
+        im.paste((84, 80, 76, 255), (0, 0), Image.fromarray((edge * 255).astype(np.uint8)))
+        for q in Bo.get("maisons", []):
+            x, z = bw2(q[0], q[1])
+            d.rectangle((x - 2, z - 2, x + 2, z + 2), fill=(170, 74, 56, 255), outline=(80, 36, 28, 255))
+        hx, hz = bw2(*Bo["halle"])
+        d.rectangle((hx - 12, hz - 7, hx + 12, hz + 7), fill=(60, 56, 60, 255), outline=(230, 200, 60, 255), width=2)
+        d.ellipse((gx - gr, gz - gr, gx + gr, gz + gr), fill=(60, 110, 130, 255), outline=(150, 220, 230, 255), width=3)
+        for k in range(14):
+            a = k * math.tau / 14
+            d.line([(gx + math.cos(a) * (gr - 6), gz + math.sin(a) * (gr - 6)), (gx + math.cos(a) * gr, gz + math.sin(a) * gr)], fill=(40, 60, 70, 255), width=2)
+        ux, uz = bw2(*Bo["usine"])
+        d.rectangle((ux - 24, uz - 16, ux + 24, uz + 16), fill=(128, 128, 130, 255), outline=(60, 60, 64, 255), width=3)
+        d.rectangle((ux + 8, uz - 30, ux + 14, uz - 16), fill=(110, 110, 114, 255), outline=(60, 60, 64, 255))
+        cx2, cz2 = bw2(*Bo["casse"])
+        for k in range(26):
+            a = rngb.uniform(0, math.tau)
+            r = math.sqrt(rngb.uniform()) * 26
+            tx, tz = cx2 + math.cos(a) * r, cz2 + math.sin(a) * r
+            d.rectangle((tx - 3, tz - 2, tx + 3, tz + 2), fill=[(150, 80, 50, 255), (90, 110, 130, 255), (170, 150, 60, 255)][k % 3], outline=(60, 40, 30, 255))
+        kx, kz = bw2(*Bo["cargo"])
+        yaw = math.radians(Bo["cargo_yaw"])
+        hull = [(-38, 0), (-30, -8), (30, -8), (42, 0), (30, 8), (-30, 8)]
+        d.polygon([(kx + math.cos(yaw) * x - math.sin(yaw) * z, kz + math.sin(yaw) * x + math.cos(yaw) * z) for x, z in hull], fill=(160, 60, 44, 255), outline=(60, 30, 24, 255))
+        fx, fz = bw2(*Bo["phare"])
+        d.ellipse((fx - 6, fz - 6, fx + 6, fz + 6), fill=(240, 236, 226, 255), outline=(200, 50, 50, 255), width=3)
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

@@ -94,6 +94,9 @@ const KILL_XP := {
 	"gardien": 14, "armure": 18, "golem": 21, "plante_mere": 60,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
+	# V75 : l'Île du Boucan
+	"robot_demenageur": 8, "drone_huissier": 7, "robot_soudeur": 12, "pelleteuse_mini": 40, "grande_pelleteuse": 80,
+	"champignard": 4, "champignard_roi": 35,
 }
 const KILL_DECAY: float = 0.9
 
