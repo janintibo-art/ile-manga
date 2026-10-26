@@ -364,7 +364,7 @@ static func _all() -> Array:
 			}},
 		# ================================================================ les promeneurs, les enfants
 		{"id": "philibert", "nom": "Philibert Vis", "titre": "inventeur sans invention", "maison": "porte_maison_0",
-			"agenda": [[9, 12, ["stand_client_1", "stand_client_2", "stand_client_3"]], [12, 14, "cafe_table_4"], [14, 18, ["machine_3", "stand_client_6", "stand_client_4"]], [18, 22, ["promenade_vue_1", "promenade_banc_2"]], [22, 9, "maison"]],
+			"agenda": [[9, 12, "atelier_ailes_etabli"], [12, 14, "cafe_table_4"], [14, 18, ["atelier_ailes_etabli", "atelier_ailes_piste"]], [18, 22, ["promenade_vue_1", "promenade_banc_2"]], [22, 9, "maison"]],
 			"azur": {"cheveux": [0.55, 0.4, 0.25], "coiffure": "court", "haut": [0.55, 0.5, 0.42], "yeux": [0.3, 0.4, 0.3], "lunettes": true},
 			"cq": {"haut_de_forme": [0.35, 0.25, 0.15]},
 			"teinte": PEAU[0], "humeur_base": -0.1, "traits": {"bavard": 0.7, "humour": 0.5, "curiosite": 0.9, "susceptible": 0.5, "rancunier": 0.1},

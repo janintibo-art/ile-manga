@@ -178,6 +178,32 @@ const LISTE := {
 	"grande_pelleteuse": ["La Grande Pelleteuse", "boucan", 200],
 	"usine_grise": ["L'Usine Grise", "boucan", 60],
 	"gedeon_batteur": ["Un batteur pour les Rats de Cale", "boucan", 60],
+	# V76 : Astralys, les compagnons, le chantier naval, l'aéronef
+	"astralys": ["Astralys, l'île flottante des Lumens", "astralys", 30],
+	"astralys_ville": ["La cité de cristal", "astralys", 20],
+	"rayon_accueil": ["Le Rayon d'accueil", "astralys", 15],
+	"aurores": ["La Nuit des Aurores", "astralys", 20],
+	"apesanteur_record": ["Les sept anneaux des apesanteurs", "astralys", 40],
+	"cache_cache_trouves": ["Pixel et Quark retrouvés", "astralys", 25],
+	"meduse_rendue": ["La méduse de ciel ramenée à la Serre", "astralys", 30],
+	"course_comete": ["La course de Comète", "astralys", 60],
+	"fleche_coeur": ["Le Cœur de la Flèche", "astralys", 150],
+	"brioche_adoptee": ["Brioche, la chatte", "compagnons", 30],
+	"biscotte_adoptee": ["Biscotte, le rat", "compagnons", 30],
+	"truffe_adoptee": ["Truffe, le cochon", "compagnons", 30],
+	"compagnons_4": ["Les quatre compagnons", "compagnons", 80],
+	"glisseur": ["Aux commandes du Glisseur stellaire", "astralys", 40],
+	"bateau_sloop": ["Le sloop", "compagnons", 30],
+	"bateau_goelette": ["La goélette", "compagnons", 50],
+	"bateau_vapeur": ["Le moteur à vapeur", "compagnons", 40],
+	"bateau_cristal": ["Le moteur à cristal", "compagnons", 60],
+	"bateau_complet": ["Un bateau tout équipé", "compagnons", 80],
+	"atelier_ailes": ["L'Atelier des Ailes", "grande", 15],
+	"aeronef_1": ["L'Alouette", "compagnons", 30],
+	"aeronef_2": ["L'Alouette à hélice", "compagnons", 40],
+	"aeronef_3": ["L'Albatros", "compagnons", 60],
+	"aeronef_4": ["Le Glisseur stellaire", "compagnons", 80],
+	"vol_haut": ["Plus haut que les nuages (250 m)", "compagnons", 30],
 }
 
 ## Compteurs : une première fois, puis un peu à chaque pas (pas les monstres : ils rapportent
@@ -197,7 +223,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -209,7 +235,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

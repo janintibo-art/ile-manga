@@ -1,13 +1,16 @@
 extends RefCounted
 ## V75 : les modèles des animaux de Port-Boucan (chien, chat, rat, pigeon, mouette), partagés
 ## par la faune de la ville (faune_v75.gd) et par Sardine, le chien compagnon (chien_v75.gd).
+## V76 : le COCHON (Truffe), et les poses des compagnons (compagnons_animaux_v76.gd).
 ## Tout est fait de « fuseaux » (anneaux elliptiques le long d'un chemin) aux couleurs de pelage
 ## peintes dans les sommets (taches, ventre clair, museau…) : un seul matériau « fourrure » pour
 ## tous les animaux, des maillages partagés entre les animaux d'une même allure.
 ##
 ##   var a: Node3D = Animaux.build("chien", {"taille": 1.0, "base": Color(...), ...})
-##   Animaux.animate(a, clock, vitesse_m_s, pose, delta)    # pose : "", "assis", "couche", "renifle",
-##                                                          # "aboie", "vol", "picore", "plane"
+##   Animaux.animate(a, clock, vitesse_m_s, pose, wag, delta)  # pose : "", "assis", "couche", "renifle",
+##                                                          # "aboie", "vol", "picore", "plane" ;
+##                                                          # V76 : "dort", "creuse", "content",
+##                                                          # "affut" et "miaule" (chat), "epaule" (rat)
 ## Le rig (les articulations) est rangé dans la méta « rig » du nœud renvoyé.
 
 const VIS_END: float = 75.0          # au-delà, l'animal n'est plus dessiné
@@ -474,7 +477,7 @@ static func _coat(v: Dictionary, p: Vector3, belly_y: float, part: String) -> Co
 
 # =================================================================== l'entrée
 
-## Construit un animal : espece = chien, chat, rat, pigeon, mouette. Variante : voir chaque
+## Construit un animal : espece = chien, chat, rat, cochon, pigeon, mouette. Variante : voir chaque
 ## constructeur. La racine est au sol, l'animal regarde vers +Z.
 static func build(espece: String, v: Dictionary = {}) -> Node3D:
 	match espece:
@@ -484,6 +487,8 @@ static func build(espece: String, v: Dictionary = {}) -> Node3D:
 			return build_cat(v)
 		"rat":
 			return build_rat(v)
+		"cochon":
+			return build_pig(v)
 		"pigeon":
 			return build_bird(v, false)
 		"mouette":
@@ -765,7 +770,11 @@ static func build_cat(v: Dictionary) -> Node3D:
 	var wm: Material = plain_mat("moustache", Color(0.95, 0.95, 0.92), 0.4, 0.0, 0.0, true)
 	_mi(head, parts["moustaches"], wm, Vector3.ZERO, Vector3.ZERO, Vector3.ONE, false)
 	var tail := _node(body, "Queue", Vector3(0, 0.23, -0.22))
-	_mi(tail, parts["queue"], fur)
+	rig["tail_up"] = _mi(tail, parts["queue"], fur)
+	# V76 : la queue posée (assis, couché), enroulée autour des pattes
+	var td := _mi(tail, parts["queue_posee"], fur)
+	td.visible = false
+	rig["tail_down"] = td
 	rig["tail"] = tail
 	for fr in [true, false]:
 		for sx3 in [-1.0, 1.0]:
@@ -811,6 +820,8 @@ static func _cat_meshes(v: Dictionary) -> Dictionary:
 			c = c.lerp(v.get("tache", Color(0.95, 0.93, 0.9)), 0.9)
 		return c
 	out["queue"] = tube([Vector3.ZERO, Vector3(0, 0.0, -0.08), Vector3(0, 0.05, -0.17), Vector3(0, 0.15, -0.21), Vector3(0, 0.24, -0.2), Vector3(0, 0.29, -0.16)], 0.02, 0.014, 16, 8, colq)
+	out["queue_posee"] = tube([Vector3.ZERO, Vector3(0, -0.012, -0.04), Vector3(0.045, -0.022, -0.075), Vector3(0.1, -0.024, -0.05), Vector3(0.128, -0.024, 0.03),
+		Vector3(0.118, -0.024, 0.11), Vector3(0.085, -0.023, 0.17), Vector3(0.05, -0.021, 0.19)], 0.02, 0.014, 18, 8, colq)
 	var colp := func(p: Vector3, _u: float, _a: float) -> Color: return _coat(v, p + Vector3(0.04, 0.15, 0.1), 0.12, "patte")
 	var colpb := func(p: Vector3, _u: float, _a: float) -> Color: return _coat(v, p + Vector3(0.04, 0.05, 0.1), 0.0, "patte_bas")
 	out["avant_haut"] = loft([Vector3(0, 0.03, -0.005), Vector3(0, 0.0, 0.0), Vector3(0, -0.05, -0.005), Vector3(0, -0.105, -0.012), Vector3(0, -0.112, -0.013)],
@@ -872,9 +883,11 @@ static func build_rat(v: Dictionary) -> Node3D:
 	for sx in [-1.0, 1.0]:
 		_mi(head, _sph(0.0055, 8), eye_m, Vector3(sx * 0.014, 0.012, 0.018), Vector3.ZERO, Vector3.ONE, false)
 		var ear := _node(head, "Oreille", Vector3(sx * 0.016, 0.02, 0.0))
-		_mi(ear, _sph(0.011, 10), skin, Vector3.ZERO, Vector3(0.3, sx * 0.6, 0), Vector3(1.0, 1.0, 0.25), false)
+		_mi(ear, _sph(0.0125, 10), skin, Vector3(0, 0.002, 0), Vector3(0.3, sx * 0.6, 0), Vector3(1.0, 1.0, 0.25), false)
 		rig["ears"].append([ear, sx, false])
 	_mi(head, _sph(0.004, 8), skin, Vector3(0, 0.0, 0.054), Vector3.ZERO, Vector3.ONE, false)
+	# V76 : les moustaches
+	_mi(head, parts["moustaches"], plain_mat("moustache", Color(0.95, 0.95, 0.92), 0.4, 0.0, 0.0, true), Vector3.ZERO, Vector3.ZERO, Vector3.ONE, false)
 	var tail := _node(body, "Queue", Vector3(0, 0.035, -0.07))
 	_mi(tail, parts["queue"], skin)
 	rig["tail"] = tail
@@ -897,8 +910,9 @@ static func _rat_meshes(v: Dictionary) -> Dictionary:
 		elif hood and p.y > 0.06 and absf(p.x) < 0.012:
 			c = c.lerp(v.get("tache", Color(0.3, 0.25, 0.22)), 0.85)
 		return c
-	out["corps"] = loft([Vector3(0, 0.04, -0.085), Vector3(0, 0.042, -0.078), Vector3(0, 0.046, -0.055), Vector3(0, 0.046, -0.015), Vector3(0, 0.045, 0.025), Vector3(0, 0.048, 0.055), Vector3(0, 0.052, 0.075), Vector3(0, 0.054, 0.082)],
-		[0.0, 0.022, 0.038, 0.042, 0.036, 0.026, 0.018, 0.0], [0.0, 0.022, 0.036, 0.04, 0.034, 0.026, 0.018, 0.0], 14, colb, 0.03, Vector3.UP, int(v.get("seed", 3)))
+	# V76 : le dos rond du rat (plus haut aux hanches), les épaules plus fines
+	out["corps"] = loft([Vector3(0, 0.038, -0.088), Vector3(0, 0.041, -0.08), Vector3(0, 0.048, -0.056), Vector3(0, 0.05, -0.02), Vector3(0, 0.046, 0.018), Vector3(0, 0.046, 0.05), Vector3(0, 0.05, 0.072), Vector3(0, 0.053, 0.082)],
+		[0.0, 0.022, 0.038, 0.041, 0.034, 0.025, 0.018, 0.0], [0.0, 0.022, 0.039, 0.043, 0.034, 0.026, 0.018, 0.0], 16, colb, 0.03, Vector3.UP, int(v.get("seed", 3)))
 	var colh := func(p: Vector3, _u: float, _a: float) -> Color:
 		var c2: Color = _coat(v, p + Vector3(0, 0.055, 0.075), 0.05, "tete")
 		if hood:
@@ -909,7 +923,207 @@ static func _rat_meshes(v: Dictionary) -> Dictionary:
 	out["queue"] = tube([Vector3.ZERO, Vector3(0, -0.01, -0.06), Vector3(0.02, -0.03, -0.12), Vector3(0.05, -0.035, -0.18), Vector3(0.06, -0.035, -0.24)], 0.008, 0.0025, 14, 6)
 	out["patte"] = loft([Vector3(0, 0.005, 0), Vector3(0, -0.01, 0.002), Vector3(0, -0.022, 0.006), Vector3(0, -0.025, 0.014), Vector3(0, -0.025, 0.018)],
 		[0.0, 0.006, 0.005, 0.006, 0.0], [0.0, 0.006, 0.004, 0.002, 0.0], 6, Callable(), 0.0, Vector3.FORWARD)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for sx in [-1.0, 1.0]:
+		for k in range(3):
+			var a := Vector3(sx * 0.008, -0.003 + k * 0.002, 0.048)
+			var b := Vector3(sx * 0.045, -0.008 + k * 0.007, 0.04 - k * 0.004)
+			var w := Vector3(0, 0.0007, 0)
+			for p in [a - w, b, a + w]:
+				st.set_normal(Vector3.UP)
+				st.add_vertex(p)
+	out["moustaches"] = st.commit()
 	return out
+
+
+# =================================================================== le cochon (V76)
+
+## La peau du cochon : rose, presque nue (un duvet clair sur les bords), un grain de peau léger.
+static func skin_mat() -> StandardMaterial3D:
+	if _mat.has("peau_cochon"):
+		return _mat["peau_cochon"]
+	var m := StandardMaterial3D.new()
+	m.vertex_color_use_as_albedo = true
+	m.albedo_texture = _noise_tex("peau", 761, 0.05, Vector2.ONE, false, 0.86, 1.0)
+	m.normal_enabled = true
+	m.normal_texture = _noise_tex("peau", 762, 0.11, Vector2.ONE, true)
+	m.normal_scale = 0.25
+	m.uv1_triplanar = true
+	m.uv1_scale = Vector3(6.0, 6.0, 6.0)
+	m.roughness = 0.68
+	m.metallic_specular = 0.35
+	m.rim_enabled = true
+	m.rim = 0.3
+	m.rim_tint = 0.35
+	_mat["peau_cochon"] = m
+	return m
+
+
+## Variante du cochon : taille (1 = un petit cochon de 55 cm au garrot), base (rose), tache (noir),
+## taches (0..1), taches_f, ventre, groin (couleur du groin), seed.
+static func build_pig(v: Dictionary) -> Node3D:
+	var s: float = float(v.get("taille", 1.0))
+	var root := Node3D.new()
+	root.name = "Cochon"
+	var key: String = "cochon_" + _vkey(v)
+	var parts: Dictionary
+	if _mesh.has(key):
+		parts = _mesh[key]
+	else:
+		parts = _pig_meshes(v)
+		_mesh[key] = parts
+	var skin: Material = skin_mat()
+	var rig := {"espece": "cochon", "taille": s, "legs": [], "tail": null, "head": null, "jaw": null, "ears": [], "tongue": null}
+	var scl := Node3D.new()
+	scl.name = "Echelle"
+	scl.scale = Vector3.ONE * s
+	root.add_child(scl)
+	var hip_y: float = 0.32
+	var pivot := _node(scl, "Pivot", Vector3(0, hip_y, -0.26))
+	var body := _node(pivot, "Corps", Vector3(0, -hip_y, 0.26))
+	rig["pivot"] = pivot
+	rig["pivot_y"] = hip_y
+	rig["body"] = body
+	_mi(body, parts["torse"], skin)
+	var head := _node(body, "Tete", Vector3(0, 0.425, 0.27))
+	rig["head"] = head
+	rig["head_rest"] = head.position
+	_mi(head, parts["tete"], skin)
+	# le groin : un disque rose foncé, deux narines
+	var snout_m: Material = plain_mat("groin_" + (v.get("groin", Color(0.84, 0.47, 0.47)) as Color).to_html(false), v.get("groin", Color(0.84, 0.47, 0.47)), 0.42, 0.35)
+	_mi(head, parts["groin"], snout_m, Vector3(0, -0.06, 0.2), Vector3(PI * 0.5 - 0.12, 0, 0), Vector3.ONE, false)
+	var nost: Material = plain_mat("narine_cochon", Color(0.2, 0.08, 0.08), 0.5)
+	for sx in [-1.0, 1.0]:
+		_mi(head, _sph(0.0105, 10), nost, Vector3(sx * 0.017, -0.0615, 0.2125), Vector3(0, 0, sx * 0.3), Vector3(0.6, 1.0, 0.3), false)
+	# les yeux (petits, malins), avec des cils clairs
+	var eye_m: Material = plain_mat("oeil_cochon", Color(0.09, 0.05, 0.03), 0.05, 1.0)
+	var lid_m: Material = plain_mat("paupiere_cochon", Color(0.86, 0.6, 0.57), 0.7)
+	for sx2 in [-1.0, 1.0]:
+		_mi(head, _sph(0.0105, 10), eye_m, Vector3(sx2 * 0.07, 0.024, 0.078), Vector3(0, sx2 * 0.7, 0), Vector3(1, 0.85, 0.8), false)
+		_mi(head, _sph(0.0125, 10), lid_m, Vector3(sx2 * 0.0695, 0.0295, 0.0765), Vector3(-0.25, sx2 * 0.7, 0), Vector3(1.05, 0.55, 0.9), false)
+	# les oreilles tombantes (sur les yeux)
+	for k in range(2):
+		var sx3: float = -1.0 if k == 0 else 1.0
+		var ear := _node(head, "Oreille%d" % k, Vector3(sx3 * 0.06, 0.1, -0.015))
+		_mi(ear, parts["oreille"], skin, Vector3.ZERO, Vector3(0.15, sx3 * 0.25, -sx3 * 0.75), Vector3(sx3, 1, 1))
+		rig["ears"].append([ear, sx3, true])
+	# la queue en tire-bouchon
+	var tail := _node(body, "Queue", Vector3(0, 0.47, -0.395))
+	_mi(tail, parts["queue"], skin, Vector3.ZERO, Vector3.ZERO, Vector3.ONE, false)
+	rig["tail"] = tail
+	# les pattes : [hanche, genou, jarret, côté, avant]
+	for fr in [true, false]:
+		for sx4 in [-1.0, 1.0]:
+			var hip := _node(body, "Patte", Vector3(sx4 * (0.085 if fr else 0.088), 0.3 if fr else 0.32, 0.17 if fr else -0.26))
+			var knee: Node3D
+			var hock: Node3D = null
+			if fr:
+				_mi(hip, parts["avant_haut"], skin)
+				knee = _node(hip, "Coude", Vector3(0, -0.13, -0.005))
+				_mi(knee, parts["avant_bas"], skin)
+			else:
+				_mi(hip, parts["cuisse"], skin)
+				knee = _node(hip, "Genou", Vector3(0, -0.12, 0.03))
+				_mi(knee, parts["tibia"], skin)
+				hock = _node(knee, "Jarret", Vector3(0, -0.1, -0.035))
+				_mi(hock, parts["canon"], skin)
+			rig["legs"].append([hip, knee, hock, sx4, fr])
+	root.set_meta("rig", rig)
+	return root
+
+
+static func _pig_meshes(v: Dictionary) -> Dictionary:
+	var out: Dictionary = {}
+	var sd: int = int(v.get("seed", 4))
+	var vv: Dictionary = v.duplicate()
+	if not vv.has("base"):
+		vv["base"] = Color(0.88, 0.58, 0.54)
+	if not vv.has("tache"):
+		vv["tache"] = Color(0.13, 0.11, 0.11)
+	if not vv.has("taches"):
+		vv["taches"] = 0.36
+	if not vv.has("taches_f"):
+		vv["taches_f"] = 2.7
+	if not vv.has("ventre"):
+		vv["ventre"] = (vv["base"] as Color).lightened(0.12)
+	vv["ventre_k"] = 0.6
+	var snout_c: Color = v.get("groin", Color(0.84, 0.47, 0.47))
+	var colb := func(p: Vector3, _u: float, _a: float) -> Color:
+		var c: Color = _coat(vv, p, 0.3, "corps")
+		# le dos un peu moins « sombre » qu'un pelage : c'est de la peau
+		return c.lightened(0.04)
+	# le corps : un tonneau, la ligne du dos droite, le ventre rond (de la croupe au poitrail)
+	var tz: Array = [-0.415, -0.4, -0.36, -0.28, -0.14, 0.0, 0.12, 0.21, 0.28, 0.315, 0.33]
+	var tyy: Array = [0.4, 0.4, 0.39, 0.375, 0.36, 0.355, 0.362, 0.375, 0.395, 0.41, 0.42]
+	var trx: Array = [0.0, 0.075, 0.132, 0.162, 0.175, 0.177, 0.168, 0.15, 0.12, 0.085, 0.0]
+	var trr: Array = [0.0, 0.08, 0.14, 0.172, 0.19, 0.194, 0.182, 0.164, 0.132, 0.095, 0.0]
+	var pts: Array = []
+	for i in range(tz.size()):
+		pts.append(Vector3(0, float(tyy[i]), float(tz[i])))
+	out["torse"] = loft(pts, trx, trr, 28, colb, 0.0, Vector3.UP, sd)
+	# la tête : bajoues pleines, front plat, le museau qui finit en groin plat (repère de la tête)
+	var colh := func(p: Vector3, _u: float, _a: float) -> Color:
+		var c2: Color = _coat(vv, p + Vector3(0, 0.425, 0.27), 0.38, "tete").lightened(0.04)
+		# le bout du museau rosit
+		return c2.lerp(snout_c.lightened(0.1), smoothstep(0.15, 0.2, p.z) * 0.7)
+	var hz: Array = [-0.085, -0.07, -0.035, 0.005, 0.05, 0.1, 0.15, 0.185, 0.2, 0.206]
+	var hyy: Array = [0.0, 0.0, -0.002, -0.008, -0.018, -0.032, -0.046, -0.055, -0.059, -0.06]
+	var hrx: Array = [0.0, 0.09, 0.118, 0.124, 0.106, 0.08, 0.06, 0.052, 0.05, 0.0]
+	var hry: Array = [0.0, 0.105, 0.128, 0.124, 0.104, 0.075, 0.056, 0.05, 0.047, 0.0]
+	var hp: Array = []
+	for i2 in range(hz.size()):
+		hp.append(Vector3(0, float(hyy[i2]), float(hz[i2])))
+	out["tete"] = loft(hp, hrx, hry, 22, colh, 0.0, Vector3.UP, sd + 2)
+	# l'oreille : une grande feuille qui monte puis retombe en avant sur l'œil (côté +X)
+	var cole := func(p: Vector3, u: float, _a: float) -> Color:
+		var c3: Color = _coat(vv, p * 0.6 + Vector3(0.06, 0.52, 0.27), 0.0, "oreille")
+		return c3.lerp(Color(0.9, 0.55, 0.55), 0.15 * u)
+	out["oreille"] = loft([Vector3(0, -0.006, -0.01), Vector3(0.006, 0.014, 0.0), Vector3(0.018, 0.03, 0.03), Vector3(0.03, 0.022, 0.07), Vector3(0.038, -0.004, 0.105), Vector3(0.04, -0.03, 0.128), Vector3(0.04, -0.04, 0.134)],
+		[0.0, 0.04, 0.06, 0.058, 0.046, 0.022, 0.0], [0.0, 0.011, 0.009, 0.008, 0.006, 0.005, 0.0], 10, cole, 0.0, Vector3.UP)
+	# le groin : un disque épais, le bord arrondi (repère du groin : l'axe Y regarde vers l'avant)
+	out["groin"] = loft([Vector3(0, -0.012, 0), Vector3(0, -0.01, 0), Vector3(0, 0.004, 0), Vector3(0, 0.011, 0), Vector3(0, 0.0125, 0)],
+		[0.0, 0.049, 0.05, 0.046, 0.0], [0.0, 0.046, 0.047, 0.043, 0.0], 18, Callable(), 0.0, Vector3.FORWARD, 0, 2)
+	# la queue en tire-bouchon : une hélice de deux tours et demi (repère de la queue)
+	var colq := func(p: Vector3, _u: float, _a: float) -> Color: return _coat(vv, p + Vector3(0, 0.47, -0.395), 0.3, "queue").lightened(0.04)
+	var hel: Array = [Vector3.ZERO, Vector3(0, 0.004, -0.014)]
+	for k in range(1, 15):
+		var t: float = float(k) / 14.0
+		var ang: float = t * TAU * 2.5
+		var r: float = 0.02 * (1.0 - 0.35 * t)
+		hel.append(Vector3(cos(ang) * r - r * 0.0, -0.01 - t * 0.05 + sin(ang) * r, -0.028 - t * 0.045))
+	out["queue"] = tube(hel, 0.011, 0.006, 40, 6, colq)
+	# les pattes (repère de chaque articulation) ; les onglons sombres en bas
+	var hoof: Color = Color(0.36, 0.28, 0.26)
+	var vh: Dictionary = vv.duplicate()
+	vh["taches"] = float(vv["taches"]) * 0.6
+	var vl: Dictionary = vv.duplicate()
+	vl["taches"] = 0.0
+	var colp := func(p: Vector3, _u: float, _a: float) -> Color: return _coat(vh, p + Vector3(0.09, 0.3, 0.2), 0.25, "patte").lightened(0.04)
+	var colpb := func(p: Vector3, _u: float, _a: float) -> Color:
+		var c4: Color = _coat(vl, p + Vector3(0.09, 0.1, 0.2), 0.0, "patte").lightened(0.04)
+		return c4.lerp(hoof, smoothstep(-0.13, -0.142, p.y))
+	var colpc := func(p: Vector3, _u: float, _a: float) -> Color:
+		var c5: Color = _coat(vl, p + Vector3(0.09, 0.08, -0.3), 0.0, "patte").lightened(0.04)
+		return c5.lerp(hoof, smoothstep(-0.062, -0.074, p.y))
+	out["avant_haut"] = loft([Vector3(0, 0.1, -0.025), Vector3(0, 0.06, -0.02), Vector3(0, -0.0, -0.01), Vector3(0, -0.08, -0.004), Vector3(0, -0.13, -0.004), Vector3(0, -0.15, -0.004)],
+		[0.0, 0.058, 0.056, 0.042, 0.033, 0.0], [0.0, 0.085, 0.07, 0.048, 0.036, 0.0], 12, colp, 0.0, Vector3.FORWARD, sd + 4)
+	out["avant_bas"] = _hoof_leg(0.166, 0.031, 0.025, colpb)
+	out["cuisse"] = loft([Vector3(0, 0.11, -0.05), Vector3(0, 0.07, -0.035), Vector3(0, -0.01, -0.01), Vector3(0, -0.08, 0.018), Vector3(0, -0.12, 0.03), Vector3(0, -0.14, 0.032)],
+		[0.0, 0.07, 0.074, 0.055, 0.036, 0.0], [0.0, 0.1, 0.11, 0.075, 0.04, 0.0], 12, colp, 0.0, Vector3.FORWARD, sd + 5)
+	out["tibia"] = loft([Vector3(0, 0.02, 0.004), Vector3(0, -0.005, 0.0), Vector3(0, -0.05, -0.016), Vector3(0, -0.1, -0.035), Vector3(0, -0.112, -0.038)],
+		[0.0, 0.038, 0.032, 0.026, 0.0], [0.0, 0.042, 0.034, 0.027, 0.0], 10, colp, 0.0, Vector3.FORWARD)
+	out["canon"] = _hoof_leg(0.095, 0.026, 0.024, colpc)
+	return out
+
+
+## Une patte de cochon (avant-bras ou canon) avec son onglon fendu : [haut → bas], vers +Z.
+static func _hoof_leg(l: float, r0: float, r1: float, colf: Callable) -> ArrayMesh:
+	var pts: Array = [Vector3(0, 0.02, 0), Vector3(0, 0.0, 0), Vector3(0, -l * 0.5, 0.004), Vector3(0, -l * 0.8, 0.008), Vector3(0, -l * 0.9, 0.012),
+		Vector3(0, -l + 0.004, 0.022), Vector3(0, -l - 0.003, 0.03), Vector3(0, -l - 0.004, 0.034)]
+	var rx: Array = [0.0, r0, r0 * 0.88, r1, r1 * 1.05, r1 * 1.1, r1 * 0.9, 0.0]
+	var ry: Array = [0.0, r0 * 1.1, r0 * 0.95, r1, r1 * 1.0, r1 * 0.8, r1 * 0.5, 0.0]
+	return loft(pts, rx, ry, 10, colf, 0.0, Vector3.FORWARD)
 
 
 # =================================================================== les oiseaux
@@ -1048,14 +1262,24 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 	var esp: String = str(rig.get("espece", "chien"))
 	var cat: bool = esp == "chat"
 	var rat: bool = esp == "rat"
+	var pig: bool = esp == "cochon"
 	var leg_len: float = (0.45 if not cat else 0.22) * s
 	if rat:
 		leg_len = 0.03 * s
+	elif pig:
+		leg_len = 0.3 * s
+	# V76 : « dort » = couché, la tête posée ; « content » = frétille sur place
+	var sleep: bool = pose == "dort"
+	if sleep:
+		pose = "couche"
+	var happy: bool = pose == "content"
+	if happy:
+		wag = 1.0
 	# allure : longueur de foulée ~ 1,1 × hauteur de patte
 	var stride: float = leg_len * (2.2 if not rat else 5.0)
 	var freq: float = speed / maxf(stride, 0.01)
 	var ph: float = clock * TAU * freq if speed > 0.05 else 0.0
-	var run: bool = speed > 2.6 * s and not rat
+	var run: bool = speed > (2.6 if not pig else 2.4) * s and not rat
 	var amp: float = clampf(speed / (1.4 * s if not rat else 0.3), 0.0, 1.0) * (0.55 if not run else 0.75)
 	var k: float = clampf(delta * 8.0, 0.0, 1.0)
 	var pivot: Node3D = rig.get("pivot")
@@ -1063,20 +1287,51 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 	var py: float = float(rig.get("pivot_y", 0.4))
 	var sit: bool = pose == "assis"
 	var lie: bool = pose == "couche"
+	var crouch: bool = pose == "affut" and not rat          # le chat à l'affût (papillons)
+	var dig: bool = pose == "creuse"
+	var shoulder: bool = pose == "epaule" and rat           # le rat sur l'épaule du héros
 	var piv_rot: float = 0.0
 	var piv_drop: float = 0.0
 	if sit:
 		piv_rot = -0.7 if not cat else -0.62
 		piv_drop = py * (0.65 if not cat else 0.75)
+		if pig:
+			piv_rot = -0.62
+			piv_drop = py * 0.6
+		elif rat:
+			# le rat se dresse sur ses pattes arrière
+			piv_rot = -1.05
+			piv_drop = 0.0
 	elif lie:
 		piv_rot = 0.04
 		piv_drop = py * 0.62
+		if pig:
+			piv_drop = py * 0.6
+		elif rat:
+			piv_drop = py * 0.4
+	elif crouch:
+		piv_rot = 0.06
+		piv_drop = py * 0.32
+	elif dig:
+		piv_rot = 0.14 if pig else 0.2
+		piv_drop = py * 0.05
+	elif shoulder:
+		piv_drop = py * 0.45
 	if pivot != null:
 		pivot.rotation.x = lerpf(pivot.rotation.x, piv_rot, k)
 		var bob: float = absf(sin(ph * (2.0 if not run else 1.0))) * 0.02 * amp
+		if happy:
+			bob += absf(sin(clock * 7.0)) * 0.025 * s
 		pivot.position.y = lerpf(pivot.position.y, py - piv_drop + bob, k)
 		if run:
 			pivot.rotation.x += sin(ph) * 0.06
+		# frétiller (le cochon content), remuer le derrière (le chat qui va bondir)
+		var wig: float = 0.0
+		if happy:
+			wig = sin(clock * 13.0) * 0.07
+		elif crouch:
+			wig = sin(clock * 9.0) * 0.05
+		pivot.rotation.z = lerpf(pivot.rotation.z, wig, clampf(delta * 14.0, 0.0, 1.0))
 	# les pattes
 	for l in rig.get("legs", []):
 		var hip: Node3D = l[0]
@@ -1109,24 +1364,74 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 				h_goal = -0.55 if not cat else -0.68
 				k_goal = 1.42 if not cat else 1.49
 				j_goal = -1.62 if not cat else -1.69
+				if pig:
+					h_goal = -0.62
+					k_goal = 1.45
+					j_goal = -1.5
 		elif lie:
 			if front:
 				h_goal = -1.35
 				k_goal = 0.0
+				if pig:
+					# le cochon replie les pattes avant sous lui
+					h_goal = -0.2
+					k_goal = 2.2
+				elif cat:
+					# le chat « en pain » : les pattes avant repliées sous le poitrail
+					h_goal = -1.25
+					k_goal = 2.0
 			else:
 				h_goal = -1.3
 				k_goal = 0.75
 				j_goal = -0.95
+				if pig:
+					h_goal = -1.2
+					k_goal = 1.1
+					j_goal = -1.2
+		elif crouch:
+			if front:
+				# les coudes relevés, les pattes sous le poitrail
+				h_goal = 0.7
+				k_goal = -1.35
+			else:
+				h_goal = -0.45
+				k_goal = 1.0
+				j_goal = -1.05
+		elif dig:
+			if front and not pig:
+				# il gratte la terre des pattes avant, l'une après l'autre
+				var sc: float = sin(clock * 14.0 + (0.0 if side > 0.0 else PI))
+				h_goal = -0.35 + sc * 0.5
+				k_goal = 0.6 + maxf(0.0, -sc) * 0.9
+			elif front:
+				h_goal = -0.12
+				k_goal = 0.25
+			else:
+				h_goal = -0.1
+				k_goal = 0.2
+				j_goal = -0.15
+		elif happy:
+			# de petits sautillements des pattes avant
+			if front:
+				var hp2: float = maxf(0.0, sin(clock * 7.0 + (0.0 if side > 0.0 else 0.6)))
+				h_goal = -0.15 * hp2
+				k_goal = 0.5 * hp2
 		elif pose == "aboie" and front:
 			h_goal = -0.15
 		if rat:
-			hip.rotation.x = lerpf(hip.rotation.x, swing * 1.4, clampf(delta * 14.0, 0.0, 1.0))
+			var rg: float = swing * 1.4
+			if sit:
+				rg = -0.9 if front else 0.9
+			elif shoulder or lie:
+				rg = 1.1 if front else -1.1
+			hip.rotation.x = lerpf(hip.rotation.x, rg, clampf(delta * 14.0, 0.0, 1.0))
 			continue
-		hip.rotation.x = lerpf(hip.rotation.x, h_goal, k if (sit or lie) else 1.0)
+		var still: bool = sit or lie or crouch
+		hip.rotation.x = lerpf(hip.rotation.x, h_goal, k if still else 1.0)
 		if knee != null:
-			knee.rotation.x = lerpf(knee.rotation.x, k_goal, k if (sit or lie) else 1.0)
+			knee.rotation.x = lerpf(knee.rotation.x, k_goal, k if still else 1.0)
 		if hock != null:
-			hock.rotation.x = lerpf(hock.rotation.x, j_goal, k if (sit or lie) else 1.0)
+			hock.rotation.x = lerpf(hock.rotation.x, j_goal, k if still else 1.0)
 	# la tête
 	var head: Node3D = rig.get("head")
 	if head != null:
@@ -1139,18 +1444,53 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 				look_x = 0.75
 				hpos = hr + Vector3(0, -0.12, 0.04) * (1.0 if not cat else 0.5)
 				look_y = sin(clock * 3.1) * 0.35
+				if pig:
+					look_x = 0.55
+					hpos = hr + Vector3(0, -0.11, 0.03)
+					look_y = sin(clock * 2.3) * 0.4
+			"creuse":
+				look_x = 0.8 + (sin(clock * 9.0) * 0.25 if pig else 0.0)
+				hpos = hr + Vector3(0, -0.13 if pig else -0.08, 0.03 + (sin(clock * 9.0) * 0.02 if pig else 0.0))
+				look_y = sin(clock * 4.0) * (0.2 if pig else 0.08)
 			"aboie":
 				look_x = -0.25 + sin(clock * 9.0) * 0.08
 				look_y = 0.0
+			"miaule":
+				look_x = -0.35
+				look_y = 0.0
 			"assis":
 				look_x = 0.35 if not cat else 0.6
+				if pig:
+					look_x = 0.45
+				elif rat:
+					look_x = 0.9
 			"couche":
 				look_x = 0.4
 				hpos = hr + Vector3(0, -0.06, 0.0)
+				if pig:
+					hpos = hr + Vector3(0, -0.07, 0.02)
+					look_x = 0.2
+			"affut":
+				look_x = 0.15
+				hpos = hr + Vector3(0, -0.05, 0.02)
+				look_y = 0.0
+			"content":
+				look_x = -0.15 + sin(clock * 7.0) * 0.08
+				look_y = sin(clock * 3.0) * 0.2
+			"epaule":
+				look_x = 0.3
+		if sleep:
+			look_x = 0.75
+			look_y = 0.25
+			hpos = hpos + Vector3(0, -0.04, 0)
+			if pig:
+				look_x = 0.1
+				look_y = 0.15
+				hpos = hr + Vector3(0, -0.05, 0.015)
 		if speed > 0.2:
 			look_y *= 0.3
 			look_x = 0.1 + sin(ph * 2.0) * 0.05
-		if rat:
+		if rat and not sleep and pose != "assis":
 			look_x = 0.2 + sin(clock * 11.0) * 0.06
 		head.rotation.x = lerpf(head.rotation.x, look_x, k)
 		head.rotation.y = lerpf(head.rotation.y, look_y, k)
@@ -1158,7 +1498,7 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 	# la mâchoire : aboie, halète
 	var jaw: Node3D = rig.get("jaw")
 	var tongue: Node3D = rig.get("tongue")
-	var pant: bool = (speed > 1.5 or wag > 0.6) and not cat
+	var pant: bool = (speed > 1.5 or wag > 0.6) and not cat and not sleep
 	if jaw != null:
 		var open: float = 0.0
 		if pose == "aboie":
@@ -1179,19 +1519,58 @@ static func _anim_quad(rig: Dictionary, clock: float, speed: float, pose: String
 		if rat:
 			wf = 2.0
 			wa = 0.3
-		tail.rotation.y = sin(clock * wf) * wa
+		if pig:
+			# le tire-bouchon tourne sur lui-même quand il est content
+			wf = 4.0 + wag * 14.0
+			wa = 0.12 + wag * 0.3
+		if sleep:
+			wa *= 0.15
 		var up: float = 0.0
-		if not cat and not rat:
+		if not cat and not rat and not pig:
 			up = -0.25 * wag + (0.3 if sit else 0.0)
-		tail.rotation.x = lerpf(tail.rotation.x, up, k)
+		var tz: float = 0.0
+		if pig:
+			tz = sin(clock * wf * 1.3) * wa * 1.5
+		var down_t: Node3D = rig.get("tail_down")
+		var up_t: Node3D = rig.get("tail_up")
+		if cat and down_t != null and up_t != null:
+			# assis ou couché : la queue posée au sol, enroulée autour des pattes
+			var posed: bool = sit or lie
+			down_t.visible = posed
+			up_t.visible = not posed
+			if posed:
+				tail.rotation.y = sin(clock * 0.8) * 0.04
+				tail.rotation.x = -(pivot.rotation.x if pivot != null else 0.0)
+				tail.rotation.z = 0.0
+			elif crouch:
+				# à l'affût : la queue basse, le bout qui frétille
+				tail.rotation.x = lerpf(tail.rotation.x, -0.95, k)
+				tail.rotation.y = sin(clock * 7.0) * 0.18
+			else:
+				tail.rotation.y = sin(clock * wf) * wa
+				tail.rotation.x = lerpf(tail.rotation.x, 0.0, k)
+		else:
+			tail.rotation.y = sin(clock * wf) * wa
+			if rat and shoulder:
+				up = -1.25
+			elif rat and sit:
+				up = 0.9
+			tail.rotation.x = lerpf(tail.rotation.x, up, k)
+			if pig:
+				tail.rotation.z = tz
 	# les oreilles : petits frémissements
 	for e in rig.get("ears", []):
 		var ear: Node3D = e[0]
 		var side2: float = float(e[1])
 		var floppy: bool = bool(e[2])
 		var tw: float = maxf(0.0, sin(clock * 0.7 + side2 * 2.0) - 0.92) * 6.0
+		if sleep:
+			tw = 0.0
 		if floppy:
-			ear.rotation.x = sin(ph * 2.0) * 0.25 * amp + tw * 0.2
+			var flap: float = sin(ph * 2.0) * 0.25 * amp + tw * 0.2
+			if happy:
+				flap += sin(clock * 13.0 + side2) * 0.18
+			ear.rotation.x = flap
 		else:
 			ear.rotation.z = -side2 * tw * 0.3
 

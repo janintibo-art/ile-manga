@@ -230,6 +230,10 @@ def build_hats(body):
     # V75 : Port-Boucan : le bandana noué derrière la tête (deux pans qui pendent) et le casque de skate
     hats['ch_bandana_noeud'] = bandana_knot(H)
     hats['ch_casque_skate'] = skate_helmet(H)
+    # V76 : les Lumens d'Astralys : antennes (et taches lumineuses des tempes), crête de cristal, filaments
+    hats['ch_lumen_antennes'] = lumen_antennes(H)
+    hats['ch_lumen_cristal'] = lumen_cristal(H)
+    hats['ch_lumen_filaments'] = lumen_filaments(H)
     return hats
 
 
@@ -372,4 +376,202 @@ def turban(H):
         m.grid(rows, wrap=True, hem_from_bottom=False)
     cap = close_top(head_shell(H, -180, 180, 40, 88, 40, 8, lambda t, p: 0.034 + 0.008 * smooth(40, 70, p)))
     m.grid(cap, wrap=True, hem_from_bottom=False)
+    return m
+
+
+# ------------------------------------------------------------------ V76 : les Lumens
+# UV.y = part de lumière (0 : la matière, 1 : la lueur), lue par les motifs 12 et 14 du shader des tissus.
+
+def _unit(v):
+    return v / (np.linalg.norm(v) + 1e-12)
+
+
+def _dir(th, ph):
+    th, ph = np.radians(th), np.radians(ph)
+    return np.array([np.sin(th) * np.cos(ph), np.sin(ph), np.cos(th) * np.cos(ph)])
+
+
+def _sag(s, x=0.0):
+    """direction depuis le centre de la tête dans le plan médian : s = 0 devant (à l'horizontale),
+    90 en haut, 180 derrière ; x : écart latéral (m, approximatif)."""
+    s = np.radians(s)
+    return _unit(np.array([x / 0.09, np.sin(s), np.cos(s)]))
+
+
+def _vert(m, p, n, t, u, g):
+    m.P.append(np.asarray(p, float)); m.N.append(_unit(np.asarray(n, float))); m.T.append(_unit(np.asarray(t, float)))
+    m.UV.append([float(u), float(g)]); m.H.append(0.05); m.WH.append(1.0)
+    m.n += 1
+    return m.n - 1
+
+
+def _frame(a):
+    ref = np.array([1.0, 0.0, 0.0]) if abs(a[0]) < 0.9 else np.array([0.0, 1.0, 0.0])
+    u = _unit(np.cross(a, ref))
+    v = np.cross(a, u)
+    return u, v
+
+
+def _tube(m, pts, radii, glows, k=6):
+    """tube le long d'une polyligne (repère transporté), fermé au départ par un anneau réduit."""
+    pts = np.asarray(pts, float)
+    n = len(pts)
+    tan = np.gradient(pts, axis=0)
+    tan = tan / (np.linalg.norm(tan, axis=1, keepdims=True) + 1e-12)
+    u, v = _frame(tan[0])
+    base = m.n
+    for i in range(n):
+        if i > 0:
+            u = _unit(u - tan[i] * np.dot(u, tan[i]))
+            v = np.cross(tan[i], u)
+        for j in range(k):
+            a = 2 * np.pi * j / k
+            d = u * np.cos(a) + v * np.sin(a)
+            _vert(m, pts[i] + d * radii[i], d, tan[i], j / k, glows[i])
+    for i in range(n - 1):
+        for j in range(k):
+            a = base + i * k + j
+            b = base + i * k + (j + 1) % k
+            m.I += [a, a + k, b, b, a + k, b + k]
+
+
+def _ball(m, c, r, g, squash=None, k=10, rows=6):
+    """sphère (squash : (axe, facteur) pour l'aplatir)."""
+    base = m.n
+    for i in range(rows + 1):
+        ph = np.pi / 2 - np.pi * i / rows
+        for j in range(k):
+            a = 2 * np.pi * j / k
+            d = np.array([np.cos(ph) * np.cos(a), np.sin(ph), np.cos(ph) * np.sin(a)])
+            q = d * r
+            nn = d
+            if squash is not None:
+                ax, f = squash
+                q = q + ax * np.dot(q, ax) * (f - 1.0)
+                nn = _unit(d + ax * np.dot(d, ax) * (1.0 / f - 1.0))
+            _vert(m, c + q, nn, np.array([-np.sin(a), 0.0, np.cos(a)]), j / k, g)
+    for i in range(rows):
+        for j in range(k):
+            a = base + i * k + j
+            b = base + i * k + (j + 1) % k
+            m.I += [a, b, a + k, b, b + k, a + k]
+
+
+def _bezier(P, n):
+    P = np.asarray(P, float)
+    t = np.linspace(0, 1, n)[:, None]
+    return (1 - t) ** 3 * P[0] + 3 * (1 - t) ** 2 * t * P[1] + 3 * (1 - t) * t ** 2 * P[2] + t ** 3 * P[3]
+
+
+def lumen_antennes(H):
+    """deux antennes souples (une tige fine, une petite boule de lumière au bout) et, sur chaque tempe,
+    une ligne de taches lumineuses qui remonte du coin de l'œil vers le crâne."""
+    m = ClothMesh()
+    up = np.array([0.0, 1.0, 0.0])
+    for sx in (-1.0, 1.0):
+        b = H.surface(_sag(72, sx * 0.034))
+        n = H.body.grad(b)[0]
+        x = np.array([sx, 0.0, 0.0])
+        fwd = np.array([0.0, 0.0, 1.0])
+        P = [b - n * 0.004, b + n * 0.035 + up * 0.012 + x * 0.008, b + up * 0.075 + x * 0.034 - fwd * 0.01, b + up * 0.098 + x * 0.05 + fwd * 0.014]
+        pts = _bezier(P, 16)
+        t = np.linspace(0, 1, len(pts))
+        _tube(m, pts, 0.0034 - 0.0016 * t, 0.12 * t ** 3, k=7)
+        _ball(m, b - n * 0.001, 0.0062, 0.0, squash=(n, 0.6))
+        tip = pts[-1] + _unit(pts[-1] - pts[-2]) * 0.008
+        _ball(m, tip, 0.0105, 1.0)
+        # les taches des tempes
+        for k in range(6):
+            th, ph = 70 + 8.5 * k, 8 + 6.5 * k
+            q = H.surface(_dir(sx * th, ph))
+            nq = H.body.grad(q)[0]
+            r = 0.0027 - 0.00024 * k
+            _ball(m, q - nq * r * 0.15, r, 0.85, squash=(nq, 0.45), k=8, rows=4)
+    return m
+
+
+def _crystal(m, b, a, L, w, lat, g0=0.25, g1=0.95):
+    """un cristal : prisme hexagonal à facettes (aplati de côté), pointe en haut ; sommets dupliqués par face."""
+    a = _unit(a)
+    u = _unit(lat - a * np.dot(lat, a))
+    v = np.cross(a, u)
+    ring = lambda c, r, rot: [c + (u * np.cos(t + rot) * 0.62 + v * np.sin(t + rot)) * r for t in np.linspace(0, 2 * np.pi, 7)[:-1]]
+    R0 = ring(b, w, 0.0)
+    R1 = ring(b + a * L * 0.6, w * 1.08, 0.0)
+    tip = b + a * L
+    gm = (g0 + g1) / 2
+
+    def face(p0, p1, p2, gs):
+        nn = np.cross(p1 - p0, p2 - p0)
+        c = (p0 + p1 + p2) / 3
+        if np.dot(nn, c - (b + a * L * 0.4)) < 0:
+            p1, p2 = p2, p1
+            gs = (gs[0], gs[2], gs[1])
+            nn = -nn
+        i0 = _vert(m, p0, nn, p1 - p0, 0.0, gs[0])
+        i1 = _vert(m, p1, nn, p1 - p0, 0.5, gs[1])
+        i2 = _vert(m, p2, nn, p1 - p0, 1.0, gs[2])
+        m.I += [i0, i1, i2]
+    for i in range(6):
+        j = (i + 1) % 6
+        face(R0[i], R0[j], R1[i], (g0, g0, gm))
+        face(R0[j], R1[j], R1[i], (g0, gm, gm))
+        face(R1[i], R1[j], tip, (gm, gm, g1))
+
+
+def lumen_cristal(H):
+    """la crête de cristal : une arête de cristaux du haut du front à l'arrière du crâne (les plus grands
+    au sommet), et de petits cristaux de part et d'autre."""
+    m = ClothMesh()
+    rng = np.random.default_rng(76)
+    back = np.array([0.0, 0.0, -1.0])
+    for k, s in enumerate(np.linspace(64, 150, 10)):
+        q = H.surface(_sag(s))
+        n = H.body.grad(q)[0]
+        f = np.sin(np.pi * (s - 50) / 115) ** 1.6
+        L = 0.022 + 0.062 * f
+        a = _unit(n + back * 0.35 + np.array([0.0, 0.25, 0.0]))
+        _crystal(m, q - n * 0.005, a, L, 0.006 + 0.085 * L, np.array([1.0, 0.0, 0.0]))
+        if 0 < k < 9:
+            for sx in (-1.0, 1.0):
+                s2 = s + rng.uniform(-4, 4)
+                q2 = H.surface(_sag(s2, sx * 0.016))
+                n2 = H.body.grad(q2)[0]
+                L2 = L * rng.uniform(0.4, 0.58)
+                a2 = _unit(n2 + back * 0.3 + np.array([sx * 0.35, 0.15, 0.0]))
+                _crystal(m, q2 - n2 * 0.003, a2, L2, 0.004 + 0.07 * L2, np.array([1.0, 0.0, 0.0]), g0=0.15, g1=0.8)
+    return m
+
+
+def lumen_filaments(H):
+    """les filaments : de longues fibres fines et souples, lumineuses comme des fibres optiques, qui
+    poussent sur une bande au milieu du crâne et retombent en panache vers la nuque ; pointes allumées."""
+    m = ClothMesh()
+    body = H.body
+    rng = np.random.default_rng(77)
+    up, back = np.array([0.0, 1.0, 0.0]), np.array([0.0, 0.0, -1.0])
+    n_f = 64
+    for i in range(n_f):
+        s = rng.uniform(64, 132)
+        x = rng.uniform(-0.024, 0.024) * (1.0 - 0.3 * (s < 75))
+        q = H.surface(_sag(s, x))
+        n = body.grad(q)[0]
+        ln = (0.13 + 0.12 * (s - 64) / 68) * rng.uniform(0.85, 1.15)
+        d = _unit(back * 0.8 + n * 0.45 + np.array([np.sign(x) * (abs(x) / 0.024) ** 1.5 * 0.55, 0.0, 0.0]))
+        pts = [q - n * 0.003]
+        nseg = 16
+        stp = ln / nseg
+        for k in range(nseg):
+            d = _unit(d + np.array([0.0, -0.16, 0.0]) + rng.normal(0, 0.02, 3))
+            p = pts[-1] + d * stp
+            dist = body.dist(p)[0]
+            if dist < 0.009:
+                gr = body.grad(p)[0]
+                p = p + gr * (0.009 - dist)
+                d = _unit(d - gr * min(0.0, float(np.dot(d, gr))))
+            pts.append(p)
+        pts = np.array(pts)
+        t = np.linspace(0, 1, len(pts))
+        _tube(m, pts, 0.0017 - 0.0008 * t, 0.08 + 0.55 * t ** 3, k=5)
+        _ball(m, pts[-1], 0.0026, 1.0, k=6, rows=4)
     return m

@@ -235,6 +235,9 @@ func _can_fish() -> bool:
 	var sky: Node = main.get("ciel_v54")
 	if sky != null and (bool(sky.riding) or sky.on_sky(_player_pos())):
 		return false
+	var ae: Node = main.get("aeronef_v76")
+	if ae != null and bool(ae.riding):
+		return false
 	if not main.xr_active and main.hero_v28 != null and not main.hero_v28.state in ["sol", "peche"]:
 		return false
 	return true

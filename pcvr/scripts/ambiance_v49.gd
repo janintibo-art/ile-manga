@@ -35,6 +35,8 @@ const BEDS := {
 	"donjon_caves": "ambiance/donjon_caves", "donjon_lac": "ambiance/donjon_lac",
 	"boucan_jour": "ambiance/boucan_jour", "boucan_nuit": "ambiance/boucan_nuit", "halle_hurlante": "ambiance/halle",
 	"spores": "ambiance/spores", "casse": "ambiance/casse", "usine": "ambiance/usine", "port_boucan": "ambiance/port_boucan",
+	"astralys_jour": "ambiance/astralys_jour", "astralys_nuit": "ambiance/astralys_nuit", "spatioport": "ambiance/spatioport",
+	"serre_especes": "ambiance/serre_especes", "chantier_naval": "ambiance/chantier_naval",
 }
 ## Volume de référence de chaque nappe (dB) quand elle est à fond.
 const BED_DB := {
@@ -51,6 +53,7 @@ const BED_DB := {
 	"montjoie_jour": -12.0, "montjoie_nuit": -12.0, "guilde": -10.0, "campagne": -12.0, "lac_grenouilles": -12.0, "foret_lutins": -12.0,
 	"donjon_caves": -11.0, "donjon_lac": -11.0,
 	"boucan_jour": -13.0, "boucan_nuit": -13.0, "halle_hurlante": -12.0, "spores": -12.0, "casse": -13.0, "usine": -11.0, "port_boucan": -12.0,
+	"astralys_jour": -12.0, "astralys_nuit": -12.0, "spatioport": -12.0, "serre_especes": -12.0, "chantier_naval": -12.0,
 }
 
 var main: Node
@@ -345,6 +348,13 @@ func _choose_zone(running: bool) -> void:
 		return
 	# V54 : en vol sur Ventaile, ou là-haut sur l'île flottante
 	var sky: Node = main.get("ciel_v54")
+	var ae: Node = main.get("aeronef_v76")
+	if ae != null and bool(ae.riding):
+		zone = "vol"
+		sea = 0.0
+		targets["vent_vol"] = 0.35 + 0.55 * clampf(float(ae.speed) / 40.0, 0.0, 1.0)
+		targets["large"] = 0.25
+		return
 	if sky != null and bool(sky.riding):
 		zone = "vol"
 		sea = 0.0
@@ -375,6 +385,14 @@ func _choose_zone(running: bool) -> void:
 	if az_zone != "" and not on_boat:
 		zone = az_zone
 		_azur_beds(az_zone, p)
+		_night_beds()
+		return
+	# V76 : Astralys, là-haut (la cité, le Spatioport, la Serre, les bords)
+	var ass: Node = main.get("astralys_v76")
+	var as_zone: String = ass.zone_at(p) if ass != null and ass.get("city") != null and ass.city != null and not on_ferry else ""
+	if as_zone != "" and not on_boat:
+		zone = as_zone
+		_astralys_beds(as_zone, p)
 		_night_beds()
 		return
 	# V75 : l'Île du Boucan (Port-Boucan, la Halle Hurlante, la Cathédrale des Spores, la Casse, l'usine)
@@ -537,6 +555,23 @@ func _montjoie_beds(z: String, p: Vector3) -> void:
 			targets["campagne"] = 1.0 if day else 0.3
 			targets["grillons"] = 0.0 if day else 0.7
 			targets["ressac"] = 0.25 * sea
+
+
+## V76 : les nappes d'Astralys.
+func _astralys_beds(z: String, _p: Vector3) -> void:
+	var day: bool = not _is_night()
+	var ville: String = "astralys_jour" if day else "astralys_nuit"
+	match z:
+		"as_spatioport":
+			targets["spatioport"] = 1.0
+			targets[ville] = 0.3
+		"as_serre":
+			targets["serre_especes"] = 1.0
+		"as_bord", "as_ciel", "as_pont", "as_observatoire", "as_apesanteur":
+			targets["vent_vol"] = 0.6
+			targets[ville] = 0.4
+		_:
+			targets[ville] = 1.0
 
 
 ## V75 : les nappes de l'Île du Boucan.

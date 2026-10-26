@@ -129,11 +129,7 @@ func _at_step(qid: String, cle: String) -> bool:
 	if j == null or _quest(qid) != "en_cours":
 		return false
 	var st: Dictionary = (j.states as Dictionary).get(qid, {})
-	var q: Dictionary = {}
-	for qq in j.QUESTS:
-		if str(qq.get("id", "")) == qid:
-			q = qq
-			break
+	var q: Dictionary = j.quest(qid)
 	var steps: Array = q.get("etapes", [])
 	var i: int = int(st.get("etape", 0))
 	return i >= 0 and i < steps.size() and str((steps[i] as Dictionary).get("cle", "")) == cle

@@ -14,6 +14,7 @@ const PLACES := [
 	["pandemonia", "Pandémonia"], ["pandemonia_port", "Le Port de Cendre"],
 	["montjoie", "Montjoie, la Grand-Place"], ["montjoie_port", "Le Port des Mouettes"],
 	["boucan", "Port-Boucan, la Place des Palettes"], ["boucan_port", "Le Vieux Bassin de Port-Boucan"],
+	["astralys", "Astralys, le Portail d'accueil"], ["astralys_bouee", "La Bouée d'accueil d'Astralys"],
 ]
 
 var main: Node
@@ -101,6 +102,9 @@ func spot(id: String) -> Array:
 		"montjoie", "montjoie_port":
 			var mj: Node = main.get("montjoie_v71")
 			return mj.village_point(id) if mj != null and mj.get("city") != null and mj.city != null else []
+		"astralys", "astralys_bouee":
+			var ast: Node = main.get("astralys_v76")
+			return ast.village_point(id) if ast != null and ast.get("city") != null and ast.city != null else []
 		"boucan", "boucan_port":
 			var bo: Node = main.get("boucan_v75")
 			return bo.village_point(id) if bo != null and bo.get("city") != null and bo.city != null else []
@@ -157,6 +161,9 @@ func current_place() -> String:
 	var br2: Node = main.get("braise_v70")
 	if br2 != null and br2.get("city") != null and br2.city != null and br2.contains(p) and p.y > -10.0 and str(br2.people_at(p)) == "cite":
 		return "pandemonia_port" if str(br2.zone_at(p)) == "braise_port" else "pandemonia"
+	var as2: Node = main.get("astralys_v76")
+	if as2 != null and as2.get("city") != null and as2.city != null and as2.contains(p) and str(as2.people_at(p)) == "ville":
+		return "astralys"
 	var bo2: Node = main.get("boucan_v75")
 	if bo2 != null and bo2.get("city") != null and bo2.city != null and bo2.contains(p) and p.y > -10.0:
 		var bz: String = str(bo2.zone_at(p))
@@ -217,7 +224,7 @@ func _process(delta: float) -> void:
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
-	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"]]:
+	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true
 

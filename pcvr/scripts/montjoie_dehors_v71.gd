@@ -278,6 +278,8 @@ func _moulin() -> void:
 	for k in range(3):
 		kit.crate71(mx * Vector3(-3.6 - k * 0.6, 0, -2.0 + k * 0.4), k * 0.4, 0.6)
 	objets["moulin"] = mx.origin
+	objets["clochette_cochon_1"] = mx * Vector3(-4.4, 0.05, -3.2)   # V76 : près des caisses du moulin
+	objets["truffe_attente"] = G(-100.0, 226.0, 0.02)              # V76 : Truffe, dans les bosquets au bord des champs
 	flora_avoid.append([Vector2(mp.x, mp.z), 9.0])
 
 

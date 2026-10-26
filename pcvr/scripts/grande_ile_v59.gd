@@ -21,6 +21,7 @@ const SoleilsIle = preload("res://scripts/ile_soleils_v69.gd")
 const BraiseIle = preload("res://scripts/ile_braise_v70.gd")
 const MontjoieIle = preload("res://scripts/ile_montjoie_v71.gd")
 const BoucanIle = preload("res://scripts/ile_boucan_v75.gd")
+const AstraleIle = preload("res://scripts/ile_astrale_v76.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -130,7 +131,7 @@ static func east_clamp(x: float, z: float) -> Vector2:
 ## (V70) celle de l'Île de Braise, au sud-ouest ; (V71) celle de l'Île de Montjoie, au sud de la grande île ;
 ## (V75) celle de l'Île du Boucan, au sud du village.
 static func sea_contains(x: float, z: float, mid: Vector2, radius: float) -> bool:
-	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z)
+	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z)
 
 
 static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector2:
@@ -144,12 +145,14 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	var c4: Vector2 = BraiseIle.sea_clamp(x, z)
 	var c5: Vector2 = MontjoieIle.sea_clamp(x, z)
 	var c6: Vector2 = BoucanIle.sea_clamp(x, z)
+	var c7: Vector2 = AstraleIle.sea_clamp(x, z)
 	var best: Vector2 = c0 if p.distance_to(c0) < p.distance_to(c1) else c1
 	best = best if p.distance_to(best) < p.distance_to(c2) else c2
 	best = best if p.distance_to(best) < p.distance_to(c3) else c3
 	best = best if p.distance_to(best) < p.distance_to(c4) else c4
 	best = best if p.distance_to(best) < p.distance_to(c5) else c5
-	return best if p.distance_to(best) < p.distance_to(c6) else c6
+	best = best if p.distance_to(best) < p.distance_to(c6) else c6
+	return best if p.distance_to(best) < p.distance_to(c7) else c7
 
 
 # =================================================================== régions

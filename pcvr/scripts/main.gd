@@ -136,6 +136,7 @@ func _ready() -> void:
 	_create_v70()
 	_create_v71()
 	_create_v75()
+	_create_v76()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -1015,6 +1016,16 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			montjoie_v71.load_data({})
 		if boucan_v75 != null and boucan_v75.city != null:
 			boucan_v75.load_data({})
+		if astralys_v76 != null and astralys_v76.city != null:
+			astralys_v76.load_data({})
+		if compagnons_animaux_v76 != null:
+			compagnons_animaux_v76.load_data({})
+		if aeronef_v76 != null:
+			aeronef_v76.load_data({})
+		if chantier_v76 != null:
+			chantier_v76.load_data({})
+		if atelier_ailes_v76 != null:
+			atelier_ailes_v76.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1090,6 +1101,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			var boat_data: Variant = data.get("bateau", {})
 			boat_v29.driving = false
 			boat_v29.load_data(boat_data if boat_data is Dictionary else {})
+			# V76 : les évolutions du bateau (le chantier naval de Port-Azur)
+			if chantier_v76 != null:
+				var ch_data: Variant = data.get("chantier", {})
+				chantier_v76.load_data(ch_data if ch_data is Dictionary else {})
 			if boat_data is Dictionary and bool(boat_data.get("a_bord", false)):
 				_board_boat_v29()
 	if not xr_active and pc_hero != null:
@@ -1151,6 +1166,21 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and boucan_v75 != null and boucan_v75.city != null:
 		var bdata75: Variant = SaveStore.read_slot(slot).get("boucan", {})
 		boucan_v75.load_data(bdata75 if bdata75 is Dictionary else {})
+	# V76 : Astralys, l'île flottante des Lumens
+	if not new_game and astralys_v76 != null and astralys_v76.city != null:
+		var adata76: Variant = SaveStore.read_slot(slot).get("astralys", {})
+		astralys_v76.load_data(adata76 if adata76 is Dictionary else {})
+	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
+	if not new_game and compagnons_animaux_v76 != null:
+		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
+		compagnons_animaux_v76.load_data(cdata76 if cdata76 is Dictionary else {})
+	# V76 : l'aéronef et l'Atelier des Ailes (après le ciel : on peut reprendre un vol en cours)
+	if not new_game and atelier_ailes_v76 != null:
+		var adata_at: Variant = SaveStore.read_slot(slot).get("atelier_ailes", {})
+		atelier_ailes_v76.load_data(adata_at if adata_at is Dictionary else {})
+	if not new_game and aeronef_v76 != null:
+		var adata_ae: Variant = SaveStore.read_slot(slot).get("aeronef", {})
+		aeronef_v76.load_data(adata_ae if adata_ae is Dictionary else {})
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
@@ -1264,6 +1294,16 @@ func _save_slot(slot: int) -> void:
 		extra["montjoie"] = montjoie_v71.serialize()
 	if boucan_v75 != null and boucan_v75.city != null:
 		extra["boucan"] = boucan_v75.serialize()
+	if astralys_v76 != null and astralys_v76.city != null:
+		extra["astralys"] = astralys_v76.serialize()
+	if compagnons_animaux_v76 != null:
+		extra["compagnons"] = compagnons_animaux_v76.serialize()
+	if aeronef_v76 != null:
+		extra["aeronef"] = aeronef_v76.serialize()
+	if chantier_v76 != null:
+		extra["chantier"] = chantier_v76.serialize()
+	if atelier_ailes_v76 != null:
+		extra["atelier_ailes"] = atelier_ailes_v76.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -1322,7 +1362,10 @@ func _physics_process(delta: float) -> void:
 	if autosave_clock >= 90.0:
 		_save_slot(0)
 		autosave_clock = 0.0
-	if ciel_v54 != null and ciel_v54.riding:
+	if aeronef_v76 != null and aeronef_v76.riding:
+		# V76 : à bord de son aéronef (de l'Alouette au Glisseur stellaire)
+		aeronef_v76.ride_tick(delta)
+	elif ciel_v54 != null and ciel_v54.riding:
 		# V54 : en vol sur Ventaile
 		ciel_v54.ride_tick(delta)
 	elif azur_v56 != null and azur_v56.ferry != null and azur_v56.ferry.riding:
@@ -1541,6 +1584,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			inventory_v28.toggle({KEY_J: 1, KEY_M: 2, KEY_P: 3}[event.keycode])
 		elif event.keycode == KEY_G and game_started and ciel_v54 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			ciel_v54.call_eagle()
+		elif event.keycode == KEY_N and game_started and aeronef_v76 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
+			# V76 : appeler son aéronef (ou déplier l'Alouette)
+			aeronef_v76.call_vehicle()
 		elif event.keycode == KEY_T and game_started and teleport_v58 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
 			open_teleport_v58()
 		elif event.keycode == KEY_H and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
@@ -1818,6 +1864,13 @@ func _doors_update_v27() -> void:
 	if houses_v27 == null:
 		return
 	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened)
+	# V76 : à bord de l'aéronef
+	if aeronef_v76 != null and aeronef_v76.riding:
+		if door_prompt_v27 != null:
+			door_prompt_v27.text = aeronef_v76.ride_prompt() if not xr_active else ""
+		if donjon_v35 != null:
+			donjon_v35.show_vr_hint(_player_pos_v27(), false)
+		return
 	# V54 : en vol, pas d'invites (E sert à se poser)
 	if ciel_v54 != null and ciel_v54.riding:
 		if door_prompt_v27 != null:
@@ -1935,6 +1988,9 @@ func _create_gameplay_v28() -> void:
 		# V75 : les champignons féeriques de l'Île du Boucan
 		if item_id.begins_with("champi_") and boucan_v75 != null and boucan_v75.city != null:
 			return boucan_v75.eat_mushroom(item_id)
+		# V76 : le sifflet des compagnons (« Qui vient avec moi ? »)
+		if item_id == "sifflet_compagnons" and compagnons_animaux_v76 != null:
+			return compagnons_animaux_v76.use_whistle(item_id)
 		# V75 : un os à mâcher pour Sardine (s'il est là)
 		if item_id == "os_sardine" and boucan_v75 != null and boucan_v75.chien != null and boucan_v75.chien.has_method("is_active") and boucan_v75.chien.is_active():
 			inventory_v28.remove("os_sardine", 1)
@@ -2018,6 +2074,10 @@ func _door_distance_v28() -> float:
 
 ## E : bateau (monter / débarquer), sinon ramasser l'objet le plus proche, sinon la porte.
 func _interact_v28() -> void:
+	# V76 : à bord de l'aéronef, E demande à se poser
+	if aeronef_v76 != null and aeronef_v76.riding:
+		aeronef_v76.request_landing()
+		return
 	# V54 : en vol, E demande à Ventaile de se poser
 	if ciel_v54 != null and ciel_v54.riding:
 		ciel_v54.request_landing()
@@ -2111,6 +2171,10 @@ func _on_equip_v28(item_id: String) -> void:
 
 
 func _respawn_v28() -> void:
+	if aeronef_v76 != null:
+		aeronef_v76.force_end()
+	if compagnons_animaux_v76 != null:
+		compagnons_animaux_v76.on_faint()
 	# V63 : évanoui sous le Cœur-de-Pierre (ou dans un sanctuaire des sceaux)
 	if coeur_v63 != null and coeur_v63.region_contains(_player_pos_v27()):
 		coeur_v63.respawn()
@@ -2128,6 +2192,10 @@ func _respawn_v28() -> void:
 	# V71 : sur l'Île de Montjoie (le donjon : au dernier point de reprise ; dehors : la Grand-Place, ou son lit)
 	if montjoie_v71 != null and montjoie_v71.city != null and montjoie_v71.owns_point(_player_pos_v27()):
 		montjoie_v71.on_faint(_player_pos_v27())
+		return
+	# V76 : à Astralys (près du Portail d'accueil, Aurore veille)
+	if astralys_v76 != null and astralys_v76.city != null and astralys_v76.owns_point(_player_pos_v27()):
+		astralys_v76.on_faint(_player_pos_v27())
 		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
@@ -2208,9 +2276,19 @@ func _vr_actions_v28(delta: float) -> void:
 	var a_now: bool = right_hand.is_button_pressed("ax_button")
 	var y_now: bool = left_hand.is_button_pressed("by_button")
 	# V54 : bouton X (main gauche) : appeler Ventaile
+	# V76 : X bref = Ventaile (au relâchement) ; X maintenu 0,6 s = l'aéronef
 	var x_now: bool = left_hand.is_button_pressed("ax_button")
-	if x_now and not vr_buttons_v28.get("x", false) and ciel_v54 != null:
-		ciel_v54.call_eagle()
+	if x_now:
+		vr_x_hold_v76 += delta
+		if vr_x_hold_v76 >= 0.6 and not vr_buttons_v28.get("x_long", false):
+			vr_buttons_v28["x_long"] = true
+			if aeronef_v76 != null:
+				aeronef_v76.call_vehicle()
+	else:
+		if vr_buttons_v28.get("x", false) and not vr_buttons_v28.get("x_long", false) and ciel_v54 != null:
+			ciel_v54.call_eagle()
+		vr_x_hold_v76 = 0.0
+		vr_buttons_v28["x_long"] = false
 	vr_buttons_v28["x"] = x_now
 	var a_edge: bool = a_now and not vr_buttons_v28.get("a", false)
 	var y_edge: bool = y_now and not vr_buttons_v28.get("y", false)
@@ -2420,6 +2498,15 @@ func _create_jungle_v29() -> void:
 	boucan_v75.build_island()
 	var bo_d: Array = boucan_v75.dock()
 	boat_v29._make_dock("Ponton_boucan", bo_d[0], bo_d[1])
+	# V76 : Astralys, l'île flottante des Lumens, à 380 m au-dessus de la mer, au nord-ouest ; sur
+	# la mer, en dessous, la Bouée d'accueil (son ponton) d'où le Rayon monte à la cité.
+	astralys_v76 = preload("res://scripts/astrale_v76.gd").new()
+	astralys_v76.name = "Astralys_v76"
+	add_child(astralys_v76)
+	astralys_v76.setup(self)
+	astralys_v76.build_island()
+	var as_d: Array = astralys_v76.dock()
+	boat_v29._make_dock("Ponton_astralys", as_d[0], as_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2456,6 +2543,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V76 : là-haut, à Astralys : le plateau, les îlots, les ponts de lumière (pas le vide)
+	if astralys_v76 != null and astralys_v76.contains(p) and p.y > 150.0:
+		if astralys_v76.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
 			body.velocity = Vector3.ZERO
 		return
@@ -3019,7 +3114,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3144,6 +3239,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V75 : Port-Boucan (Sardine, la Gratuiterie…)
 	if boucan_v75 != null and boucan_v75.city != null:
 		boucan_v75.after_reply(r, npc)
+	# V76 : Astralys
+	if astralys_v76 != null and astralys_v76.city != null:
+		astralys_v76.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -3236,6 +3334,12 @@ var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia
 var manette_v74: Node                      # V74 : la manette sur PC (Xbox, PlayStation…)
 var montjoie_v71: Node3D                   # V71 : l'Île de Montjoie, la ville des aventuriers, le Donjon des Mille Marches
 var boucan_v75: Node3D                     # V75 : l'Île du Boucan, Port-Boucan (la ville libre des punks), l'Usine Grise
+var astralys_v76: Node3D                   # V76 : Astralys, l'île flottante des Lumens
+var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
+var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
+var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
+var chantier_v76: Node                     # V76 : le chantier naval de Port-Azur (le bateau qui évolue)
+var atelier_ailes_v76: Node3D              # V76 : l'Atelier des Ailes de Philibert Vis, à Cliquetis
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
@@ -3297,6 +3401,9 @@ func _spawn_azur_v56() -> void:
 	# V75 : les habitants de Port-Boucan
 	if boucan_v75 != null and boucan_v75.city != null:
 		boucan_v75.spawn_npcs()
+	# V76 : les Lumens d'Astralys
+	if astralys_v76 != null and astralys_v76.city != null:
+		astralys_v76.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -3325,6 +3432,15 @@ func _create_v56() -> void:
 		journal_v56.lieux = azur_v56.port.objets.duplicate()
 		journal_v56.lieux["fontaine"] = azur_v56.port.fountain
 		journal_v56.lieux["phare_porte"] = azur_v56.port.spots["phare_porte"]["pos"]
+		# V76 : le chantier naval de Port-Azur (les évolutions du bateau)
+		chantier_v76 = preload("res://scripts/chantier_v76.gd").new()
+		chantier_v76.name = "Chantier_v76"
+		add_child(chantier_v76)
+		chantier_v76.setup(self)
+		chantier_v76.build()
+		chantier_v76.register_services(journal_v56)
+		if donjon_v35 != null:
+			chantier_v76.register_interactions(donjon_v35)
 		# la barque peut accoster au ponton des plaisanciers
 		if boat_v29 != null:
 			var ad: Array = azur_v56.dock()
@@ -3430,6 +3546,38 @@ func _create_v75() -> void:
 	boucan_v75.build_town()
 	if journal_v56 != null:
 		boucan_v75.register_services(journal_v56)
+
+
+## V76 : Astralys (la cité de cristal, le Rayon d'accueil, les aurores, les Lumens) ; la bouée est
+## posée avec le relief.
+func _create_v76() -> void:
+	compagnons_animaux_v76 = preload("res://scripts/compagnons_animaux_v76.gd").new()
+	compagnons_animaux_v76.name = "Compagnons_animaux_v76"
+	add_child(compagnons_animaux_v76)
+	compagnons_animaux_v76.setup(self)
+	# l'aéronef, et l'Atelier des Ailes de Cliquetis où on le construit
+	aeronef_v76 = preload("res://scripts/aeronef_v76.gd").new()
+	aeronef_v76.name = "Aeronef_v76"
+	add_child(aeronef_v76)
+	aeronef_v76.setup(self)
+	aeronef_v76.build()
+	if grande_v59 != null and grande_v59.get("cliquetis") != null:
+		atelier_ailes_v76 = preload("res://scripts/atelier_ailes_v76.gd").new()
+		atelier_ailes_v76.name = "Atelier_ailes_v76"
+		add_child(atelier_ailes_v76)
+		atelier_ailes_v76.setup(self, aeronef_v76)
+		atelier_ailes_v76.build()
+		if donjon_v35 != null:
+			atelier_ailes_v76.register_interactions(donjon_v35)
+		if journal_v56 != null:
+			atelier_ailes_v76.register_services(journal_v56)
+	elif donjon_v35 != null:
+		aeronef_v76.register_interactions(donjon_v35)
+	if astralys_v76 == null:
+		return
+	astralys_v76.build_town()
+	if journal_v56 != null:
+		astralys_v76.register_services(journal_v56)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande

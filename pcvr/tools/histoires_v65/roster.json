@@ -1853,5 +1853,135 @@
 "groupe": "boucan",
 "nom": "Mademoiselle Prune",
 "titre": "secrétaire de Monsieur Lisse"
+},
+"astree": {
+"groupe": "astralys",
+"nom": "la Doyenne Astrée",
+"titre": "Doyenne du Conseil d'Astralys"
+},
+"ecliptique": {
+"groupe": "astralys",
+"nom": "Écliptique",
+"titre": "chef du protocole du Conseil"
+},
+"tempo": {
+"groupe": "astralys",
+"nom": "Tempo",
+"titre": "horloger du temps"
+},
+"solenne": {
+"groupe": "astralys",
+"nom": "Solenne",
+"titre": "ambassadrice d'Astralys"
+},
+"volt": {
+"groupe": "astralys",
+"nom": "Volt",
+"titre": "ingénieur de l'énergie de la Flèche"
+},
+"halo": {
+"groupe": "astralys",
+"nom": "Halo",
+"titre": "gardien du Portail d'accueil"
+},
+"hologuide": {
+"groupe": "astralys",
+"nom": "l'Hologuide",
+"titre": "guide holographique d'Astralys"
+},
+"gloubi": {
+"groupe": "astralys",
+"nom": "Gloubi",
+"titre": "cuisinier du Café Nébuleuse"
+},
+"nebula": {
+"groupe": "astralys",
+"nom": "Nébula",
+"titre": "marchande du Bazar galactique"
+},
+"vibrato": {
+"groupe": "astralys",
+"nom": "Vibrato",
+"titre": "musicien au thérémine"
+},
+"prisme": {
+"groupe": "astralys",
+"nom": "Prisme",
+"titre": "danseuse de lumière"
+},
+"lyre": {
+"groupe": "astralys",
+"nom": "Lyre",
+"titre": "poétesse"
+},
+"glorb": {
+"groupe": "astralys",
+"nom": "Glorb",
+"titre": "touriste de la planète Gloop"
+},
+"orbe": {
+"groupe": "astralys",
+"nom": "Orbe",
+"titre": "Archiviste du Musée des Mondes"
+},
+"quasar": {
+"groupe": "astralys",
+"nom": "Professeur Quasar",
+"titre": "savant de l'Académie des Sciences"
+},
+"murmure": {
+"groupe": "astralys",
+"nom": "Murmure",
+"titre": "bibliothécaire de l'Académie"
+},
+"zenith": {
+"groupe": "astralys",
+"nom": "Zénith",
+"titre": "astronome de l'Observatoire"
+},
+"sextant": {
+"groupe": "astralys",
+"nom": "Sextant",
+"titre": "cartographe"
+},
+"ionie": {
+"groupe": "astralys",
+"nom": "Ionie",
+"titre": "mécanicienne du Spatioport"
+},
+"comete": {
+"groupe": "astralys",
+"nom": "Comète",
+"titre": "pilote de soucoupe"
+},
+"photon": {
+"groupe": "astralys",
+"nom": "Photon",
+"titre": "jardinier des Jardins suspendus"
+},
+"nova": {
+"groupe": "astralys",
+"nom": "Nova",
+"titre": "zoologiste de la Serre des Espèces"
+},
+"bulle_lumen": {
+"groupe": "astralys",
+"nom": "Bulle",
+"titre": "architecte des dômes"
+},
+"aurore_lumen": {
+"groupe": "astralys",
+"nom": "Aurore",
+"titre": "guérisseuse d'Astralys"
+},
+"pixel": {
+"groupe": "astralys",
+"nom": "Pixel",
+"titre": "enfant lumen (89 ans, soit 8 ans lumens)"
+},
+"quark": {
+"groupe": "astralys",
+"nom": "Quark",
+"titre": "enfant lumen, petit frère de Pixel"
 }
 }

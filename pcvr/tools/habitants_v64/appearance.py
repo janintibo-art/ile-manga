@@ -316,8 +316,220 @@ def decide(pid, p):
     if species in ('elfe', 'atlante'):
         look['barbe'] = [0.0, 0.0, 0.0]
     look['cils'] = [c * 0.35 for c in brow] if lum(hair) > 0.5 else [0.05, 0.04, 0.035]
-    return dict(id=pid, species=species, female=female, child=child, old=old, taille=taille, morph=m, mods=mods,
-                look=look, hair=style, beard=beard, carrure=carrure, village=p.get('village'))
+    D = dict(id=pid, species=species, female=female, child=child, old=old, taille=taille, morph=m, mods=mods,
+             look=look, hair=style, beard=beard, carrure=carrure, village=p.get('village'))
+    if p.get('village') == 'astralys':
+        lumen_decide(D, p)
+    return D
+
+
+# =================================================================== V76 : les Lumens d'Astralys
+
+FEMALE_LUMEN = set('astree solenne ionie comete nebula prisme lyre aurore_lumen nova bulle_lumen murmure pixel'.split())
+# la lueur de chaque teinte de peau (antennes, taches, crêtes, liserés)
+LUEUR_LUMEN = {'bleu_pale': [0.55, 0.8, 1.0], 'lavande': [0.75, 0.6, 1.0], 'argent': [0.82, 0.88, 1.0],
+               'turquoise': [0.4, 1.0, 0.88], 'rose_nacre': [1.0, 0.68, 0.88], 'or_pale': [1.0, 0.84, 0.5]}
+
+
+def lumen_decide(D, p):
+    """V76 : grands, minces, visage fin et allongé, grands yeux clairs, pas de cheveux ni de sourcils
+    marqués, une peau teintée (bleu pâle, lavande, argent, turquoise, rose nacré, or pâle), nacrée.
+    Deux cas à part : Glorb (petit, rond, trapu) et l'Hologuide (un humain élégant)."""
+    pid = D['id']
+    lu = p.get('lumen', {})
+    sp = str(lu.get('special', ''))
+    r = rng_for(pid, 'lumen')
+    m, mods, look = D['morph'], D['mods'], D['look']
+    D['lumen'] = lu
+    D['special'] = sp
+    if sp == 'hologramme':
+        # un guide holographique : forme humaine élégante (le jeu le rend transparent)
+        D['species'] = 'humain'
+        m.update(gender=0.97, age=0.5, weight=0.38, muscle=0.58, height=0.85, proportions=1.0)
+        D['hair'] = 'chauve'           # des cartes de mèches feraient une tache blanche dans l'hologramme
+        D['look']['crane'] = 0.7
+        D['lumen_h'] = 1.88
+        D['lueur'] = [0.5, 0.82, 1.0]
+        return
+    D['species'] = 'lumen'
+    if sp == 'glorb':
+        # le touriste de Gloop : petit, rond, trapu, de grands yeux ronds (le jeu le fait en gelée)
+        D['child'] = False
+        D['female'] = False
+        m.update(gender=0.7, age=0.5, weight=1.0, muscle=0.15, height=0.0, proportions=0.0)
+        m['african'], m['asian'], m['caucasian'] = 0.2, 0.6, 0.2
+        for k in list(mods):
+            mods[k] *= 0.3
+        mods.update({'head/head-round': 1.0, 'head/head-fat|decr,incr': 1.0, 'head/head-scale-horiz|decr,incr': 0.5,
+                     'head/head-scale-vert|decr,incr': -0.3, 'neck/neck-scale-vert|decr,incr': -1.0, 'neck/neck-scale-horiz|decr,incr': 1.0,
+                     'nose/nose-volume|decr,incr': -1.0, 'nose/nose-scale-horiz|decr,incr': -0.8, 'nose/nose-scale-vert|decr,incr': -0.6,
+                     'nose/nose-scale-depth|decr,incr': -0.8, 'mouth/mouth-scale-horiz|decr,incr': 0.7, 'mouth/mouth-angles|down,up': 0.8,
+                     'chin/chin-width|decr,incr': 0.8, 'chin/chin-prominent|decr,incr': -0.6,
+                     'torso/torso-scale-horiz|decr,incr': 0.7, 'torso/torso-scale-depth|decr,incr': 0.6,
+                     'stomach/stomach-pregnant|decr,incr': 0.8,
+                     'armslegs/lowerlegs-height|decr,incr': -0.8, 'armslegs/upperlegs-height|decr,incr': -0.8})
+        for sd in ('l', 'r'):
+            mods.update({'eyes/%s-eye-scale|decr,incr' % sd: 1.0, 'eyes/%s-eye-height2|decr,incr' % sd: 0.6,
+                         'ears/%s-ear-scale|decr,incr' % sd: -1.0, 'ears/%s-ear-flap|decr,incr' % sd: -1.0,
+                         'cheek/%s-cheek-volume|decr,incr' % sd: 1.0})
+        skin = [0.36, 0.78, 0.32]
+        D['lumen_h'] = 1.32
+    else:
+        child, old, female = D['child'], D['old'], pid in FEMALE_LUMEN
+        D['female'] = female
+        m['gender'] = clamp01((0.03 + r.random() * 0.06) if female else (0.9 + r.random() * 0.08))
+        if child:
+            pass
+        elif old:
+            m['age'] = 0.74 + r.random() * 0.04
+        else:
+            m['age'] = 0.47 + r.random() * 0.08
+        if not child:
+            m['weight'] = 0.22 + r.random() * 0.12 + max(0.0, D['carrure'] - 1.0) * 0.8
+            m['muscle'] = (0.36 if female else 0.46) + r.random() * 0.08 + max(0.0, D['carrure'] - 1.0) * 0.4
+            m['height'] = 0.85 + r.random() * 0.15
+            m['proportions'] = 1.0
+        m['african'], m['asian'], m['caucasian'] = 0.08, 0.52, 0.4
+        m['breastsize'] = 0.3 if female else 0.5
+        # le visage : on garde un peu des traits tirés au hasard (chacun le sien), puis le type lumen
+        for k in list(mods):
+            mods[k] *= 0.4
+        amp = 0.8 if child else 1.0
+        L = {'head/head-oval': 0.8, 'head/head-invertedtriangular': 0.45, 'head/head-scale-vert|decr,incr': 0.45,
+             'head/head-scale-horiz|decr,incr': -0.2, 'head/head-back-scale-depth|decr,incr': 0.7, 'head/head-age|decr,incr': -0.6,
+             'forehead/forehead-scale-vert|decr,incr': 0.6, 'forehead/forehead-trans|backward,forward': 0.2,
+             'eyebrows/eyebrows-trans|down,up': 0.25,
+             'nose/nose-scale-horiz|decr,incr': -0.6, 'nose/nose-volume|decr,incr': -0.6, 'nose/nose-nostrils-width|decr,incr': -0.6,
+             'nose/nose-scale-depth|decr,incr': -0.45, 'nose/nose-point-width|decr,incr': -0.5, 'nose/nose-hump|decr,incr': -0.5,
+             'nose/nose-scale-vert|decr,incr': -0.2,
+             'mouth/mouth-scale-horiz|decr,incr': -0.3, 'mouth/mouth-lowerlip-volume|decr,incr': -0.15, 'mouth/mouth-angles|down,up': 0.35,
+             'chin/chin-width|decr,incr': -0.6, 'chin/chin-height|decr,incr': 0.25, 'chin/chin-prominent|decr,incr': 0.1,
+             'chin/chin-bones|decr,incr': -0.3,
+             'neck/neck-scale-vert|decr,incr': 0.55, 'neck/neck-scale-horiz|decr,incr': -0.35}
+        for sd in ('l', 'r'):
+            L.update({'eyes/%s-eye-scale|decr,incr' % sd: 1.5, 'eyes/%s-eye-height2|decr,incr' % sd: 0.6,
+                      'eyes/%s-eye-height1|decr,incr' % sd: 0.4, 'eyes/%s-eye-push1|in,out' % sd: 0.3,
+                      'eyes/%s-eye-corner1|down,up' % sd: 0.35, 'eyes/%s-eye-trans|in,out' % sd: 0.15,
+                      'eyes/%s-eye-bag|decr,incr' % sd: -0.6,
+                      'cheek/%s-cheek-bones|decr,incr' % sd: 0.5, 'cheek/%s-cheek-volume|decr,incr' % sd: -0.15,
+                      'ears/%s-ear-scale|decr,incr' % sd: -0.55, 'ears/%s-ear-flap|decr,incr' % sd: -0.7,
+                      'ears/%s-ear-shape|pointed,triangle' % sd: -0.3})
+        for k, v in L.items():
+            mods[k] = mods.get(k, 0.0) * 0.5 + v * amp
+        teinte = p.get('teinte', [0.72, 0.84, 0.98])
+        # une vraie teinte (la fiche donne un pastel très clair, qui blanchit sous la lumière) : on la sature
+        mt = sum(teinte) / 3.0
+        sat = {'or_pale': 1.5, 'argent': 2.6}.get(str(lu.get('peau', '')), 2.3)
+        skin = [min(1.0, max(0.05, mt + (x - mt) * sat)) * 0.8 * (1 + r.normal(0, 0.02)) for x in teinte]
+        if str(lu.get('peau', '')) == 'or_pale':
+            skin = [skin[0] * 1.02, skin[1] * 0.93, skin[2] * 0.95]      # un or chaud (pas un jaune-vert)
+        h = (1.86 if not female else 1.84) + (D['taille'] - 1.0) * 0.9 + r.normal(0, 0.015)
+        if not child:
+            D['lumen_h'] = float(min(2.0, max(1.82, h)))
+    for k in ('muscle', 'weight', 'height', 'proportions'):
+        m[k] = clamp01(m[k])
+    glow = LUEUR_LUMEN.get(str(lu.get('peau', '')), [0.6, 0.85, 1.0]) if sp != 'glorb' else [0.6, 1.0, 0.5]
+    D['lueur'] = glow
+    look['peau'] = skin
+    # pas de cheveux : un crâne lisse et nacré (le duvet peint, dans la teinte de la lueur, fait un grain de nacre)
+    look['cheveux'] = mix(skin, glow, 0.45)
+    look['crane'] = 0.18 if sp != 'glorb' else 0.0
+    look['poils'] = skin
+    look['sourcils'] = mix(skin, [1.0, 1.0, 1.0], 0.35)
+    look['sourcils_epais'] = 0.0
+    look['barbe'] = [0.0, 0.0, 0.0]
+    look['cils'] = mix(skin, [0.2, 0.2, 0.3], 0.55)
+    # lèvres : la teinte de la peau, plus profonde et un peu rosée ; paupières nacrées
+    look['levres'] = [skin[0] * 0.78 + 0.06, skin[1] * 0.62, skin[2] * 0.78 + 0.04]
+    look['levres_force'] = 0.55
+    look['rose'] = 0.04
+    look['fard'] = mix(glow, [1.0, 1.0, 1.0], 0.3)
+    look['fard_force'] = 0.35 if sp != 'glorb' else 0.0
+    look['age'] = 0.3 if D['old'] else 0.0
+    if sp == 'glorb':
+        look['iris'] = [0.08, 0.08, 0.08]
+    D['hair'] = 'chauve'
+    D['beard'] = ''
+
+
+def lumen_head(D, p):
+    """V76 : les parures de tête des Lumens (plusieurs à la fois) : antennes (et taches lumineuses
+    des tempes), crête de cristal ou filaments de lumière. Motifs 12 et 14 du shader des tissus."""
+    lu = D.get('lumen', {})
+    sp = D.get('special', '')
+    if sp == 'hologramme':
+        return []
+    glow = D.get('lueur', [0.6, 0.85, 1.0])
+    skin = D['look']['peau']
+    out = []
+    if lu.get('antennes', False) or sp == 'glorb':
+        out.append({'v': 'ch_lumen_antennes', 'c': [min(1.0, x * 1.05) for x in skin], 'c2': glow, 'motif': 12, 'tissu': 'cuir'})
+    crete = str(lu.get('crete', 'aucune'))
+    if crete == 'cristal':
+        out.append({'v': 'ch_lumen_cristal', 'c': mix(glow, [1.0, 1.0, 1.0], 0.15), 'c2': glow, 'motif': 14, 'tissu': 'soie'})
+    elif crete == 'filaments':
+        out.append({'v': 'ch_lumen_filaments', 'c': mix(skin, glow, 0.5), 'c2': glow, 'motif': 12, 'tissu': 'soie'})
+    return out
+
+
+def lumen_outfit(D, p, add, r, T):
+    """V76 : tenues fluides des Lumens : soies pastel et lumineuses, liserés de lumière (motifs 10, 11, 13
+    du shader des tissus), bottes souples nacrées."""
+    az = p.get('azur', {})
+    lu = D.get('lumen', {})
+    sp = D.get('special', '')
+    glow = D.get('lueur', [0.6, 0.85, 1.0])
+    haut = col(az.get('haut', [0.9, 0.9, 0.95]))
+    robe = col(az.get('robe', haut))
+    nacre = [0.9, 0.9, 0.94]
+    argent = [0.78, 0.8, 0.86]
+    lis = {'motif': 10, 'c2': glow}
+    ref = {'motif': 13, 'c2': glow}
+    if sp == 'glorb':
+        add('chemise_courte', haut, 'coton', boutons=1.0, motif=4, c2=[1.0, 0.9, 0.35], echelle=0.05)
+        add('bermuda', [0.95, 0.85, 0.55], 'toile', poches=1.0)
+        add('chaussures', [0.55, 0.35, 0.2], 'cuir')
+        return T
+    if sp == 'hologramme':
+        add('djellaba_haut', haut, 'soie', **lis)
+        add('blouse_bas', haut, 'soie', **lis)
+        add('pantalon', darker(haut, 0.7), 'soie')
+        add('bottes_hautes', argent, 'cuir')
+        return T
+    tenue = str(lu.get('tenue', 'tunique'))
+    bottes = argent if r.random() < 0.5 else nacre
+    if D['child'] or tenue == 'enfant':
+        add('tunique_haut', haut, 'soie', **lis)
+        add('tunique_bas', haut, 'soie', **lis)
+        add('collant', mix(haut, [1.0, 1.0, 1.0], 0.45), 'soie')
+        add('chaussures', nacre, 'cuir')
+        add('ceinture_ample', glow, 'soie', motif=10, c2=glow)
+    elif tenue == 'robe_longue':
+        add('corsage_long', haut, 'soie', **ref)
+        add('jupe_longue', robe, 'soie', **ref)
+        add('chaussures', bottes, 'cuir')
+        add('ceinture_ample', [0.92, 0.8, 0.5] if r.random() < 0.5 else argent, 'metal')
+    elif tenue == 'combinaison':
+        add('pull', haut, 'soie', motif=11, c2=glow, echelle=0.11)
+        add('pantalon', haut, 'soie', motif=11, c2=glow, echelle=0.11)
+        add('bottes_hautes', argent, 'metal')
+        add('ceinture_ample', argent, 'metal')
+    elif tenue == 'toge':
+        add('djellaba_haut', haut, 'soie', **lis)
+        add('djellaba_bas', haut, 'soie', **lis)
+        add('chaussures', bottes, 'cuir')
+        add('chale', robe, 'soie', **ref)
+    else:
+        # tunique longue (et sous la cape)
+        add('djellaba_haut', haut, 'soie', **lis)
+        add('blouse_bas', haut, 'soie', **lis)
+        add('collant', robe if tenue == 'cape' and lum(robe) > 0.3 else mix(haut, [0.3, 0.32, 0.45], 0.45), 'soie')
+        add('bottes_hautes', bottes, 'cuir')
+        add('ceinture_ample', [0.92, 0.8, 0.5] if r.random() < 0.5 else argent, 'metal')
+        if tenue == 'cape':
+            add('cape', robe if robe != haut else mix(haut, [0.2, 0.22, 0.45], 0.6), 'soie', **ref)
+    return T
+
 
 
 # =================================================================== tenues
@@ -382,6 +594,8 @@ def outfit(D, p):
         add('tablier', [0.36, 0.22, 0.12], 'cuir')
         add('bavette', [0.36, 0.22, 0.12], 'cuir')
         return T
+    if vil == 'astralys':
+        return lumen_outfit(D, p, add, r, T)
     if D['species'] in ('elfe', 'atlante') or pid == 'lyra':
         robe = col(el.get('robe', [0.16, 0.42, 0.32]))
         cape = el.get('cape')
@@ -1027,6 +1241,8 @@ def hats_for(D, p):
     te = p.get('teuf', {})
     na = p.get('nain', {})
     out = []
+    if p.get('village') == 'astralys':
+        return lumen_head(D, p), 99.0
     hc = az.get('chapeau_c')
     k = str(az.get('chapeau', ''))
     defaults = {'paille': [0.86, 0.72, 0.42], 'capeline': [0.92, 0.86, 0.7], 'casquette': [0.15, 0.2, 0.4], 'kepi': [0.12, 0.15, 0.3],

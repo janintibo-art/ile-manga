@@ -354,6 +354,10 @@ func _can_travel() -> bool:
 	if main.get("ciel_v54") != null and main.ciel_v54 != null and bool(main.ciel_v54.riding):
 		main._show_message_v28("Pas en plein vol ! Pose-toi d'abord.")
 		return false
+	# V76 : ni à bord de l'aéronef
+	if main.get("aeronef_v76") != null and main.aeronef_v76 != null and bool(main.aeronef_v76.riding):
+		main._show_message_v28("Pas en plein vol ! Pose-toi d'abord.")
+		return false
 	if main.get("boat_v29") != null and main.boat_v29 != null and bool(main.boat_v29.driving):
 		main._show_message_v28("Pas en pleine mer ! Accoste d'abord.")
 		return false

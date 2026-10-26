@@ -180,6 +180,9 @@ func _fish_market(x: float) -> void:
 			kit.box(sxf * Transform3D(Basis(Vector3.UP, 0.3 * (f % 2)).rotated(Vector3.RIGHT, -0.25), Vector3(fx, 1.05, -0.05 + (f % 2) * 0.2)), Vector3(0.1, 0.05, 0.38), fc, 1.0)
 		kit.col_box(sxf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(2.2, 1.0, 1.0))
 	_spot("poissonnerie", -43.0, 14.2, -43.0, 6.0, "comptoir")
+	# V76 : Brioche, la chatte des toits, attend sur la poutre de la halle (quête pet_brioche)
+	objets["brioche_attente"] = xf * Vector3(2.6, 4.72, 0.4)
+	objets["brioche_sol"] = xf * Vector3(2.6, 0.05, -1.4)
 
 
 ## L'intérieur de la taverne du Perroquet Bleu : comptoir, étagères de bouteilles,
@@ -461,6 +464,7 @@ func _hotel() -> void:
 	_spot("hotel_couloir", -64.0, 46.0, -60.0, 46.0, "debout")
 	_spot("hotel_jardin_1", -77.0, 45.0, -77.6, 45.5, "assis")
 	_spot("hotel_jardin_2", -77.0, 36.0, -77.6, 36.5, "assis")
+	objets["pelote_laine_1"] = T(-79.5, 43.0, 0.05)   # V76 : sous un palmier du jardin de l'hôtel
 	_spot("hotel_perron", -76.4, 39.0, -85.0, 39.0, "debout")
 
 

@@ -4,7 +4,7 @@
 
 **Un horizon, mille histoires.** Jeu d'aventure fantastique gratuit en monde ouvert, fait avec **Godot 4.7.2** :
 un archipel d'îles très différentes (elfes, nains, île flottante, Atlantide, pirates, pyramides, démons, ville
-des aventuriers, ville libre des punks…), des centaines d'habitants, des quêtes, des donjons et des boss. À jouer sur PC ou en VR.
+des aventuriers, ville libre des punks, cité flottante des Lumens…), des centaines d'habitants, des quêtes, des donjons et des boss. À jouer sur PC ou en VR.
 
 🌐 **Site du jeu : https://janintibo-art.github.io/ile-manga/**
 

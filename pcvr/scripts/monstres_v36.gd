@@ -214,7 +214,8 @@ func _vr_faint() -> void:
 	var br70: bool = main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(pp)
 	var mj71: bool = main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(pp)
 	var bo75: bool = main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.owns_point(pp)
-	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71 and not bo75
+	var as76: bool = main.get("astralys_v76") != null and main.astralys_v76 != null and main.astralys_v76.city != null and main.astralys_v76.owns_point(pp)
+	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71 and not bo75 and not as76
 	if temple and not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
 		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
@@ -232,6 +233,11 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V76 : à Astralys
+	if main.get("astralys_v76") != null and main.astralys_v76 != null and main.astralys_v76.city != null and main.astralys_v76.owns_point(p):
+		main.astralys_v76.on_faint(p)
+		_heal_player()
+		return
 	# V75 : sur l'Île du Boucan, ou dans l'Usine Grise
 	if main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.owns_point(p):
 		main.boucan_v75.on_faint(p)

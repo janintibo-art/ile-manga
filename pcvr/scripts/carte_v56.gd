@@ -82,6 +82,11 @@ const PLACES := [
 	["La Casse", Vector2(120, 810), "boucan"],
 	["Plage aux Galets", Vector2(158, 888), "boucan"],
 	["Le Phare tagué", Vector2(-30, 990), "boucan"],
+	# V76 : Astralys (l'île flottante) et sa bouée
+	["Astralys", Vector2(-820, -760), "astralys"],
+	["Bouée d'accueil", Vector2(-664, -604), "astralys"],
+	["Atelier des Ailes", Vector2(847, -337), "atelier_ailes"],
+	["Chantier naval", Vector2(158, 211), "azur"],
 ]
 
 var main: Node

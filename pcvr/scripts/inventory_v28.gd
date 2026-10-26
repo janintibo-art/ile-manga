@@ -546,6 +546,47 @@ const ITEMS := {
 	"bail_collectif": {"name": "Bail collectif de Port-Boucan", "art": "le Bail collectif de Port-Boucan", "kind": "curiosite", "sorte": "Souvenir de Port-Boucan", "max": 1,
 		"desc": "Une grande feuille signée par Monsieur Aldric Lisse (en tout petit) et par tout Port-Boucan (en très grand, avec des dessins) : « Le vieux port appartient à ceux qui l'habitent, le font vivre et le partagent. Pour toujours. »",
 		"effet": "Tu déplies le Bail collectif. Trente et une signatures, un rat à crête, une empreinte de patte (Sardine) et, tout en bas, une toute petite signature grise qui tremble un peu."},
+	# ================================================================ V76 : Astralys (les Lumens), les compagnons, le chantier naval, l'aéronef
+	"cristal_astral": {"name": "Cristal astral", "art": "un cristal astral", "kind": "materiau", "max": 20,
+		"desc": "Un cristal bleu-violet qui pousse sous l'île flottante d'Astralys et qui bourdonne tout bas, comme s'il fredonnait. Les Lumens en font des moteurs, des lampes et des boîtes à musique."},
+	"toile_voile": {"name": "Toile à voile", "art": "un rouleau de toile à voile", "kind": "materiau", "max": 20,
+		"desc": "Un rouleau de toile épaisse, tissée serré, qui sent le sel et le chanvre. Pour les voiles des bateaux… et les ailes des machines volantes."},
+	"engrenage": {"name": "Engrenage", "art": "un engrenage", "kind": "materiau", "max": 30,
+		"desc": "Un engrenage de laiton aux dents bien taillées, venu des ateliers de Cliquetis. Il tourne tout seul si on souffle dessus (non, c'est faux, mais c'est joli à dire)."},
+	"fragment_meteorite": {"name": "Fragment de météorite", "art": "un fragment de météorite", "kind": "materiau", "max": 20,
+		"desc": "Un caillou noir et lourd, encore un peu tiède, tombé du ciel une nuit d'étoiles filantes sur Astralys. Il a des reflets de fer et sent la pluie d'orage."},
+	"sifflet_compagnons": {"name": "Sifflet des compagnons", "art": "le sifflet des compagnons", "kind": "outil", "max": 1,
+		"desc": "Un petit sifflet en os sculpté, avec un chien, un chat, un rat et un cochon gravés tout autour. « Utiliser » : choisir quel compagnon vient avec toi."},
+	"truffe": {"name": "Truffe", "art": "une truffe", "kind": "nourriture", "max": 20, "heal": 4,
+		"desc": "Une truffe noire et parfumée, déterrée par Truffe le cochon (oui, il porte bien son nom). Ça sent la forêt après la pluie. Rend deux cœurs."},
+	"pelote_laine": {"name": "Pelote de laine", "art": "une pelote de laine rouge", "kind": "quete", "sorte": "Objet de quête : un compagnon", "max": 3,
+		"desc": "Une pelote de laine rouge vif, un peu défaite. Aucun chat au monde ne peut y résister. Même les chats très dignes."},
+	"fromage_affine": {"name": "Fromage affiné", "art": "un morceau de fromage affiné", "kind": "quete", "sorte": "Objet de quête : un compagnon", "max": 3,
+		"desc": "Un morceau de fromage qui a beaucoup voyagé, à la croûte dorée et à l'odeur… courageuse. Pour un rat, c'est un trésor."},
+	"clochette_cochon": {"name": "Clochette de cochon", "art": "une clochette de cochon", "kind": "quete", "sorte": "Objet de quête : un compagnon", "max": 1,
+		"desc": "Une petite clochette de laiton au bout d'un ruban vert. Quand on la secoue, quelque part, un petit cochon dresse les oreilles."},
+	"carte_stellaire": {"name": "Carte stellaire", "art": "une carte stellaire", "kind": "quete", "sorte": "Objet de quête : Astralys", "max": 1,
+		"desc": "Une carte du ciel dessinée à l'encre de lumière : les étoiles bougent doucement dessus, au rythme des vraies."},
+	"graine_lumineuse": {"name": "Graine lumineuse", "art": "une graine lumineuse", "kind": "quete", "sorte": "Objet de quête : Astralys", "max": 10,
+		"desc": "Une graine ronde et tiède qui luit comme une veilleuse. Photon dit qu'elle donne une fleur qui chante quand le soleil se lève."},
+	"puce_holo": {"name": "Puce holographique", "art": "une puce holographique", "kind": "quete", "sorte": "Objet de quête : Astralys", "max": 5,
+		"desc": "Un minuscule carré de cristal. Quand on souffle dessus, un petit hologramme en sort et fait la révérence."},
+	"fleur_nebuleuse": {"name": "Fleur de nébuleuse", "art": "une fleur de nébuleuse", "kind": "curiosite", "sorte": "Curiosité d'Astralys", "max": 5,
+		"desc": "Une fleur aux pétales translucides dans lesquels tournent de minuscules galaxies.",
+		"effet": "Tu regardes au fond de la fleur. Une toute petite galaxie tourne, tourne… Tu as un peu le vertige. Elle sent la vanille."},
+	"badge_visiteur": {"name": "Badge de visiteur d'Astralys", "art": "le badge de visiteur d'Astralys", "kind": "curiosite", "sorte": "Souvenir d'Astralys", "max": 1,
+		"desc": "Un badge rond qui brille, avec ton nom écrit en lettres lumens (qui ressemblent à des petites étoiles qui dansent) : « VISITEUR TRÈS APPRÉCIÉ — PIEDS-LOURDS, MAIS GENTIL ».",
+		"effet": "Tu frottes ton badge. Il fait « bip-bip » et affiche, en tout petit : « Bonjour ! »"},
+	"appareil_holo": {"name": "Holo-photo de Glorb", "art": "l'holo-photo de Glorb", "kind": "quete", "sorte": "Objet de quête : Astralys", "max": 1,
+		"desc": "Un appareil photo holographique, un peu gluant (Glorb est gélatineux). Il prend des photos en trois dimensions, et parfois en quatre."},
+	"the_stellaire": {"name": "Thé stellaire", "art": "un thé stellaire", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Un thé bleu nuit où flottent des paillettes d'or, servi au Café Nébuleuse. Il a le goût de la menthe, de la pluie et d'autre chose que personne n'arrive à nommer. Rend un cœur."},
+	"gelee_cosmique": {"name": "Gelée cosmique", "art": "une gelée cosmique", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Une gelée violette qui tremble toute seule et qui scintille, spécialité de Gloubi. Elle chatouille la langue. Rend deux cœurs."},
+	"biscuit_lunaire": {"name": "Biscuit lunaire", "art": "un biscuit lunaire", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Un biscuit en forme de croissant de lune, saupoudré de sucre argenté. Croustillant d'un côté, moelleux de l'autre (les Lumens ne savent pas choisir). Rend un cœur."},
+	"coeur_fleche": {"name": "Éclat du Cœur de la Flèche", "art": "un éclat du Cœur de la Flèche", "kind": "quete", "sorte": "Objet de quête : Astralys", "max": 3,
+		"desc": "Un éclat de cristal qui bat doucement, comme un cœur. Il est chaud, et il chante une seule note, très pure."},
 	"cle_baleine": {"name": "Clé de la Baleine Rouillée", "art": "la clé de la Baleine Rouillée", "kind": "quete", "sorte": "Objet de Port-Boucan", "max": 1,
 		"desc": "Une grosse clé de laiton, accrochée à un bouchon de liège (pour qu'elle flotte). Elle ouvre la cabine du capitaine de la Baleine Rouillée, le vieux cargo de Radio Boucan."},
 	"titre_propriete": {"name": "Titre de propriété", "art": "le titre de propriété de la Chaumière", "kind": "quete", "sorte": "Ta maison à Montjoie", "max": 1,
@@ -2010,7 +2051,7 @@ func _refresh_pc() -> void:
 		"arme", "canne":
 			_use_button.text = "Ranger" if equipped == sid else "Équiper"
 		"outil":
-			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else ("Croquer" if sid == "champignon_magique" or sid.begins_with("champi_") else ("Donner" if sid == "os_sardine" else "Examiner"))
+			_use_button.text = ("Ranger" if equipped == sid else "Équiper") if bool(info.get("equip", false)) else ("Croquer" if sid == "champignon_magique" or sid.begins_with("champi_") else ("Donner" if sid == "os_sardine" else ("Siffler" if sid == "sifflet_compagnons" else "Examiner")))
 		"curiosite":
 			_use_button.text = "Essayer"
 		_:

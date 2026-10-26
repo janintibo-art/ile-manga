@@ -222,3 +222,50 @@ et des claquements de mains de la VCSL :
   musique/spores.ogg (« La Cathédrale des Spores »),
   musique/usine_grise.ogg (« L'Usine Grise », le donjon),
   musique/grande_pelleteuse.ogg (« La Grande Pelleteuse », le combat contre le boss).
+
+Astralys, l'île flottante des Lumens, les compagnons animaux, le chantier naval et l'aéronef (V76) —
+tous CC0 1.0 / domaine public.
+Bruitages et nappes faits par pcvr/tools/generate_sons_v76.py : synthétisés (le faisceau du rayon
+d'accueil, les ponts de lumière, les bips d'hologramme, la fontaine holographique, le téléporteur, le
+bourdon et le « wou-wou » des soucoupes, le vent dans la toile du deltaplane, l'hélice à pédales, le
+moteur de l'Albatros, le moteur à vapeur et le moteur à cristal du bateau, la scie égoïne, le
+ronronnement, les couinements du rat, les « groin » et « grouik » du cochon, le sifflet à bille, les
+étoiles filantes, la météorite, les « boïng » de l'apesanteur, les anneaux, le rire gélatineux du Glorb,
+le salut des Lumens, les carillons de cristal, le voile des aurores, les glouglous et les méduses de ciel
+de la Serre…) et mêlés à des enregistrements retravaillés (découpés, transposés, filtrés, réverbérés) :
+  du recueil github.com/lavenderdotpet/CC0-Public-Domain-Sounds :
+  packs de Kenney (kenney.nl, CC0) : Impact Sounds, Voiceover Pack (les passants, les charpentiers) ;
+  « 100 CC0 wood/metal SFX » (marteaux, outils, planche qui tombe), « 25 CC0 mud SFX » (la terre que
+  fouille le cochon), « 80 CC0 creature SFX » (pépiements de la Serre), « Micro Pack - Cat Meows » et
+  « bb - Slide Whistle » (Ben Burnes, CC0) ;
+  des enregistrements « wind-breeze » (keweldog) et « water-stream » (Freesound, CC0, via
+  github.com/DNAABR/ambient-sounds-library) ;
+  de la banque VSCO-2 CE (Versilian Studios, CC0) : trompette, cor, trombone, glockenspiel ;
+  de la « Versilian Community Sample Library » (VCSL, Versilian Studios, github.com/sgossner/VCSL,
+  CC0 1.0) : verres frottés, arbres à clochettes.
+  Le célesta vient de compose_musique_v75.py, le thérémine lointain de l'Agora est celui de
+  compose_musique_v76.py.
+  sfx/rayon_montee_1..2, rayon_descente_1..2, pont_lumiere_1..2, holo_bip_1..3, fontaine_holo_1 (boucle),
+      cristal_chante_1..3, teleporteur_1..2, soucoupe_vol_1 (boucle), soucoupe_pose_1..2,
+      deltaplane_vent_1 (boucle), helice_pedale_1 (boucle), aeronef_moteur_1 (boucle), aeronef_evolue_1..2,
+      bateau_vapeur_1 (boucle), bateau_cristal_1 (boucle), bateau_evolue_1..2, confettis_canon_1..2,
+      scie_1..3, marteau_chantier_1..3, miaou_1..6, ronron_1 (boucle), couinement_rat_1..3, groin_1..3,
+      grouik_1..2, creuse_cochon_1..2, sifflet_compagnons_1..2, etoile_filante_1..2, meteorite_impact_1..2,
+      apesanteur_saut_1..3, anneau_passe_1..2, glorb_rire_1..3, lumen_salut_1..3
+  ambiance/astralys_jour, astralys_nuit, spatioport, serre_especes, chantier_naval
+Musique : compositions originales, partitions dans pcvr/tools/compose_musique_v76.py, jouées avec les
+outils de la V75 et de la V70 : la harpe, le glockenspiel, le marimba, le xylophone, les cordes (tenues,
+trémolos, pizzicati, spiccato), la flûte, le piccolo, le hautbois, la clarinette, le basson, les cors, la
+trompette, le trombone, le tuba et les timbales de la banque VSCO-2 CE (Versilian Studios, CC0) ; les
+verres frottés, les carillons à main, les arbres à clochettes, l'harmonica chromatique (joué à trois
+anches par note : l'accordéon musette), le tambourin, le bloc de bois, les claves, l'enclume, les
+cymbales, les toms et la grosse caisse de la VCSL (CC0) ; le célesta, le thérémine, les nappes, le voile
+des aurores, la basse « rebond », les scintillements, l'accordéon de la main gauche et le chœur doux
+(voix synthétiques à formants) sont synthétisés ; les « Ho ! » des charpentiers sont des voix
+synthétiques (comme les foules de la V70) :
+  musique/astralys.ogg (« Astralys, la Cité de Lumière », le jour),
+  musique/astralys_nuit.ogg (« La Nuit des Aurores »),
+  musique/apesanteur.ogg (« Le Jardin des Apesanteurs »),
+  musique/ciel_libre.ogg (« Ciel Libre », le vol en aéronef),
+  musique/chantier.ogg (« Le Chantier Naval », chanson de marins en 6/8),
+  musique/compagnons.ogg (« Un Ami pour la Vie », la ritournelle d'adoption, non bouclée).

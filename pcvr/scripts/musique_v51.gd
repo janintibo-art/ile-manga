@@ -54,6 +54,11 @@ const ZONE_TRACK := {
 	"bo_ville": "boucan", "bo_descente": "boucan", "bo_concert_1": "concert_1", "bo_concert_2": "concert_2", "bo_concert_3": "concert_3",
 	"bo_concert_gedeon": "concert_gedeon", "bo_spores": "spores", "bo_bois": "spores", "bo_usine_dehors": "usine_grise",
 	"bo_usine": "usine_grise", "bo_casse": "", "bo_phare": "large", "bo_plage": "large", "bo_rivage": "large", "bo_friche": "",
+	# V76 : Astralys
+	"as_fleche": "astralys", "as_agora": "astralys", "as_cafe": "", "as_bazar": "astralys", "as_musee": "astralys", "as_academie": "astralys",
+	"as_observatoire": "astralys", "as_spatioport": "astralys", "as_jardins": "astralys", "as_apesanteur": "apesanteur", "as_serre": "astralys",
+	"as_portail": "astralys", "as_bulles_no": "astralys", "as_bulles_ne": "astralys", "as_ville": "astralys", "as_pont": "astralys", "as_bord": "astralys",
+	"as_ciel": "ciel_libre",
 }
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
@@ -66,8 +71,9 @@ const TRACK_DB := {
 	"montjoie": -9.0, "guilde": -9.0, "campagne": -9.0, "donjon_mille_marches": -8.0, "roi_gelatineux": -7.0,
 	"boucan": -9.0, "boucan_nuit": -9.0, "concert_1": -6.0, "concert_2": -6.0, "concert_3": -6.0, "concert_gedeon": -6.0,
 	"spores": -9.0, "usine_grise": -9.0, "grande_pelleteuse": -7.0,
+	"astralys": -9.0, "astralys_nuit": -9.0, "apesanteur": -9.0, "ciel_libre": -8.0, "chantier": -9.0, "compagnons": -6.0,
 }
-const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux", "boucan", "boucan_nuit", "spores", "usine_grise", "grande_pelleteuse"]
+const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux", "boucan", "boucan_nuit", "spores", "usine_grise", "grande_pelleteuse", "astralys", "astralys_nuit", "apesanteur", "ciel_libre", "chantier"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
 const END_FADE := 4.0                # un morceau joué une fois s'éteint sur ses 4 dernières secondes
 const COMBAT_RANGE := 20.0
@@ -213,6 +219,11 @@ func _decide(dt: float) -> void:
 	var amb: Node = main.get("ambiance_v49")
 	var z: String = "menu" if not running else (str(amb.zone) if amb != null and str(amb.zone) != "" else "village")
 	var want_zone: String = str(ZONE_TRACK.get(z, ""))
+	# V76 : Astralys la nuit : la musique des aurores
+	if want_zone == "astralys":
+		var tv2: Node = main.get("temps_v56")
+		if tv2 != null and (float(tv2.hour) >= 21.0 or float(tv2.hour) < 5.0):
+			want_zone = "astralys_nuit"
 	# V75 : Port-Boucan la nuit : le dub du soir
 	if want_zone == "boucan":
 		var tv: Node = main.get("temps_v56")

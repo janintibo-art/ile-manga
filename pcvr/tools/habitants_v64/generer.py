@@ -260,7 +260,9 @@ def etape_corps(only=None):
         Vw, HJ, s = make_body(base, topo, W, macro_targets(D['morph']) + modifier_targets(D['mods']))
         hgt = Vw[:topo.nb, 1].max()
         scale = 1.0
-        if D['child'] or D['species'] == 'nain':
+        if 'lumen_h' in D:
+            scale = D['lumen_h'] / hgt          # V76 : les Lumens (1,82 à 2 m), Glorb (1,32 m)
+        elif D['child'] or D['species'] == 'nain':
             scale = D['taille'] * 1.70 / hgt
         else:
             scale = adult_height(D, hgt) / hgt

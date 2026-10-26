@@ -217,6 +217,7 @@ func _quai() -> void:
 	_spot("quai_caisse_1", W(-18.0, 85.1, y + 0.85), W(-18.0, 92.0, y), "assis")
 	_spot("quai_caisse_2", W(14.0, 85.5, y + 0.85), W(14.0, 92.0, y), "assis")
 	_spot("quai_caisse_3", W(50.0, 85.5, y + 0.85), W(50.0, 92.0, y), "assis")
+	objets["fromage_affine_1"] = W(-17.15, 84.2, y + 0.86)      # V76 : sur la pile de caisses du quai
 	# les canons au bout des jetées, tournés vers le large
 	kit.cannon(XF(W(R.QUAY_X0 - 0.7, R.BAY_RECT.end.y - 1.6, y), 0.0, 1.0))
 	kit.cannon(XF(W(R.QUAY_X1 + 0.7, R.BAY_RECT.end.y - 1.6, y), 0.0, 1.0))
@@ -254,6 +255,7 @@ func _pontons() -> void:
 	var pb: Vector2 = R.PIER_B[1]
 	_spot("ponton_peche_1", W(pa.x - 1.0, pa.y - 1.0, py + 0.08), W(pa.x - 6.0, pa.y + 2.0, 0.0), "pecher")
 	_spot("ponton_peche_2", W(pb.x - 1.0, pb.y - 1.0, py + 0.08), W(pb.x - 6.0, pb.y + 2.0, 0.0), "pecher")
+	objets["fromage_affine_2"] = W(R.PIER_B[0].lerp(pb, 0.8).x, R.PIER_B[0].lerp(pb, 0.8).y, py + 0.08)   # V76
 
 
 # =================================================================== les navires
@@ -296,6 +298,8 @@ func _navires() -> void:
 	kit.rng.seed = 6870
 	_passerelle(req, -2.0, 1.0, W(R.PIER_A[0].x + 1.3, 0.0, _pier_y() + 0.07), "requin")
 	_passerelle(veu, -2.0, 1.0, W(R.PIER_B[0].x + 1.3, 0.0, _pier_y() + 0.07), "veuve")
+	# V76 : Biscotte, le rat de cale du Requin Borgne, sort d'entre le ponton et la coque (quête pet_biscotte)
+	objets["biscotte_attente"] = W(R.PIER_A[0].x + 0.9, 117.0, _pier_y() + 0.07)
 	# l'échafaudage autour du Sans-Pitié
 	for k in range(5):
 		var z: float = 108.0 + k * 3.6
@@ -372,6 +376,7 @@ func _place() -> void:
 	kit.cyl(Transform3D(Basis(), well_pos + Vector3(0, 1.0, 0)), 0.18, 0.15, 0.32, "bois", 8)
 	_spot("puits_1", well_pos + Vector3(1.9, 0.05, 0.3), well_pos, "debout")
 	_spot("puits_2", well_pos + Vector3(-0.6, 0.05, 1.8), well_pos, "debout")
+	objets["fromage_affine_3"] = well_pos + Vector3(-1.5, 0.05, -1.4)   # V76 : au pied du puits
 	# l'étal des perroquets de Joe
 	var jxf: Transform3D = XF(W(-8.0, 72.0, TY(-8.0, 72.0)), 0.0, -1.0)
 	for sx in [-1.0, 1.0]:

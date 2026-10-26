@@ -67,6 +67,8 @@ const DB := {
 	# V75 : l'Île du Boucan (robots de Lisse & Fils, drones-huissiers, la Grande Pelleteuse, champignards, animaux)
 	"robot_bip": -8.0, "robot_servo": -7.0, "robot_pas": -8.0, "robot_mort": -3.0, "robot_voix": -5.0, "drone_vol": -9.0, "drone_zap": -4.0, "soudure": -5.0, "pelleteuse_cri": 0.0, "pelleteuse_frappe": -1.0, "durite": -2.0, "champignard_pouf": -5.0, "champignard_rire": -6.0, "eternuement": -4.0, "aboiement": -5.0, "aboiement_petit": -6.0, "chat_miaou": -8.0, "pigeon": -7.0,
 	"sirene_alerte": -4.0, "radio_jingle": -6.0, "champi_magie": -5.0, "champi_fin": -7.0, "bombe_peinture": -6.0, "foule_acclame": -6.0, "pogo": -6.0,
+	# V76 : Astralys (rayon d'accueil, ponts de lumière, hologrammes, soucoupes, apesanteur, Lumens), les compagnons, le chantier naval, l'aéronef
+	"rayon_montee": -5.0, "rayon_descente": -5.0, "pont_lumiere": -8.0, "holo_bip": -10.0, "fontaine_holo": -10.0, "cristal_chante": -8.0, "teleporteur": -5.0, "soucoupe_vol": -9.0, "soucoupe_pose": -5.0, "deltaplane_vent": -10.0, "helice_pedale": -8.0, "aeronef_moteur": -8.0, "aeronef_evolue": -5.0, "bateau_vapeur": -8.0, "bateau_cristal": -10.0, "bateau_evolue": -5.0, "confettis_canon": 0.0, "scie": -3.0, "marteau_chantier": -2.0, "miaou": -7.0, "ronron": -3.0, "couinement_rat": -9.0, "groin": -7.0, "grouik": -6.0, "creuse_cochon": -6.0, "sifflet_compagnons": -9.0, "etoile_filante": -7.0, "meteorite_impact": -4.0, "apesanteur_saut": -8.0, "anneau_passe": -7.0, "glorb_rire": -6.0, "lumen_salut": -8.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 
@@ -169,6 +171,10 @@ func _process(delta: float) -> void:
 	# V54 : en vol sur Ventaile, pas de pas (les ailes s'entendent, voir ciel_v54.gd)
 	var sky: Node = main.get("ciel_v54")
 	if sky != null and bool(sky.riding):
+		_last_pos = Vector3.INF
+		return
+	var ae: Node = main.get("aeronef_v76")
+	if ae != null and bool(ae.riding):
 		_last_pos = Vector3.INF
 		return
 	# V55 : en nageant, pas de pas (les brasses s'entendent, voir mer_v55.gd)

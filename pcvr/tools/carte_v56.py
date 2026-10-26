@@ -596,6 +596,10 @@ def archipel(src: Path) -> None:
         fx, fz = bw2(*Bo["phare"])
         d.ellipse((fx - 6, fz - 6, fx + 6, fz + 6), fill=(240, 236, 226, 255), outline=(200, 50, 50, 255), width=3)
 
+    # V76 : Astralys, la grande île flottante des Lumens (au nord-ouest), sa bouée d'accueil
+    if OX > 540 and rows == 980:
+        _astralys(im, OX, OZ)
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)
@@ -606,13 +610,85 @@ def archipel(src: Path) -> None:
     # cartouche
     # V67 : le cartouche quitte le coin nord-ouest, où émerge Arcanelle
     # V68 : la carte monte jusqu'à la Balafre ; le coin nord-ouest est libre de nouveau
-    _cartouche(im, (40, 34) if H > 1080 else ((660, 34) if W > 1080 else (40, 34)), "Archipel d'Île Manga", "levé par un voyageur curieux")
+    # V76 : Astralys flotte au nord-ouest : le cartouche passe entre elle et la Balafre
+    _cartouche(im, (900, 34) if H > 1900 else (40, 34) if H > 1080 else ((660, 34) if W > 1080 else (40, 34)), "Archipel d'Île Manga", "levé par un voyageur curieux")
     # cadre
     d.rectangle((6, 6, W - 7, H - 7), outline=(70, 50, 30, 255), width=4)
     d.rectangle((14, 14, W - 15, H - 15), outline=(70, 50, 30, 180), width=1)
     OUT.mkdir(parents=True, exist_ok=True)
     im.convert("RGB").save(OUT / "archipel.png", optimize=True)
     print("archipel.png")
+
+
+def _astralys(im: Image.Image, OX: int, OZ: int) -> None:
+    """V76 : l'île flottante d'Astralys vue du ciel (centre monde (-820, -760), rayon ~192 m),
+    son ombre sur la mer, ses deux îlots, la Flèche de Cristal, la bouée et le Rayon d'accueil."""
+    W, H = im.size
+    rng = np.random.default_rng(7676)
+    cx, cz = -820 + OX, -760 + OZ
+
+    def coast(th: float) -> float:
+        r = 192 + math.sin(th * 3 + 0.6) * 4 + math.sin(th * 7 + 1.3) * 1.5 + math.sin(th * 5 + 2.1) * 5
+        dth = (th - math.pi * 0.25 + math.pi) % math.tau - math.pi
+        return r + 16 * math.exp(-(dth / 0.16) ** 2)
+
+    poly = [(cx + math.cos(k / 180 * math.pi) * coast(k / 180 * math.pi), cz + math.sin(k / 180 * math.pi) * coast(k / 180 * math.pi)) for k in range(360)]
+    # l'ombre sur la mer, décalée (le soleil au nord-ouest)
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ds = ImageDraw.Draw(sh)
+    ds.polygon([(x + 46, z + 58) for x, z in poly], fill=(14, 30, 60, 90))
+    sh = sh.filter(ImageFilter.GaussianBlur(16))
+    im.alpha_composite(sh)
+    # un halo de nuages tout autour
+    cl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    dc = ImageDraw.Draw(cl)
+    for k in range(40):
+        a = k / 40 * math.tau + rng.uniform(-0.05, 0.05)
+        r = coast(a) + rng.uniform(-6, 14)
+        x, z = cx + math.cos(a) * r, cz + math.sin(a) * r
+        rr = rng.uniform(16, 28)
+        dc.ellipse((x - rr * 1.3, z - rr, x + rr * 1.3, z + rr), fill=(250, 250, 255, 170))
+    cl = cl.filter(ImageFilter.GaussianBlur(5))
+    im.alpha_composite(cl)
+    d = ImageDraw.Draw(im)
+    # le plateau : la prairie lunaire (argent bleu-vert)
+    d.polygon(poly, fill=(166, 204, 196, 255), outline=(70, 60, 90, 255), width=3)
+    # les grands anneaux de nacre (avenues) et les rayons
+    for r in (38, 112):
+        d.ellipse((cx - r, cz - r, cx + r, cz + r), outline=(236, 232, 240, 255), width=5)
+    for k in range(8):
+        a = k * math.pi / 4
+        d.line([(cx + math.cos(a) * 34, cz + math.sin(a) * 34), (cx + math.cos(a) * 150, cz + math.sin(a) * 150)], fill=(236, 232, 240, 255), width=4)
+    # les places de cristal
+    for (lx, lz, r, c) in [(0, 52, 15, (110, 150, 214)), (-92, 58, 28, (70, 72, 132)), (108, 58, 30, (120, 170, 220)), (0, 0, 28, (150, 190, 236)),
+                           (-62, -26, 12, (200, 196, 230)), (62, -26, 12, (200, 196, 230)), (126, -26, 14, (150, 214, 170))]:
+        d.ellipse((cx + lx - r, cz + lz - r, cx + lx + r, cz + lz + r), fill=c + (255,), outline=(60, 60, 100, 255), width=2)
+    # les maisons-bulles
+    for k in range(70):
+        a = rng.uniform(0, math.tau)
+        r = rng.uniform(60, 150)
+        x, z = cx + math.cos(a) * r, cz + math.sin(a) * r
+        if math.hypot(x - (cx - 92), z - (cz + 58)) < 32 or math.hypot(x - (cx + 108), z - (cz + 58)) < 34:
+            continue
+        d.ellipse((x - 4, z - 4, x + 4, z + 4), fill=(244, 240, 252, 255), outline=(110, 100, 150, 255))
+    # la Flèche de Cristal
+    d.ellipse((cx - 9, cz - 9, cx + 9, cz + 9), fill=(190, 220, 255, 255), outline=(60, 70, 140, 255), width=3)
+    d.ellipse((cx - 3, cz - 3, cx + 3, cz + 3), fill=(255, 255, 255, 255))
+    # les îlots : l'Observatoire (nord), le Jardin des Apesanteurs (ouest)
+    for (lx, lz, r) in [(0, -236, 20), (-196, 138, 24)]:
+        x, z = cx + lx, cz + lz
+        d.ellipse((x - r, z - r, x + r, z + r), fill=(176, 160, 214, 255), outline=(70, 60, 90, 255), width=2)
+    d.line([(cx, cz - 184), (cx, cz - 216)], fill=(120, 200, 255, 255), width=3)
+    d.line([(cx - 150, cz + 110), (cx - 176, cz + 126)], fill=(200, 140, 255, 255), width=3)
+    # la bouée d'accueil (sur la mer) et le Rayon (pointillés jusqu'au belvédère du Portail)
+    bx, bz = -664 + OX, -604 + OZ
+    tx, tz = cx + 130, cz + 130
+    n = 12
+    for k in range(n):
+        if k % 2 == 0:
+            d.line([(tx + (bx - tx) * k / n, tz + (bz - tz) * k / n), (tx + (bx - tx) * (k + 1) / n, tz + (bz - tz) * (k + 1) / n)], fill=(255, 236, 160, 255), width=3)
+    d.ellipse((bx - 7, bz - 7, bx + 7, bz + 7), fill=(255, 200, 80, 255), outline=(90, 60, 30, 255), width=2)
+    d.ellipse((tx - 6, tz - 6, tx + 6, tz + 6), fill=(255, 236, 160, 255), outline=(90, 60, 30, 255), width=2)
 
 
 def _compass(d: ImageDraw.ImageDraw, cx: float, cy: float, r: float) -> None:

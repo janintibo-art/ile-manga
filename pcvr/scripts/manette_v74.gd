@@ -13,7 +13,7 @@ extends Node
 ##   EN JEU                         A  sauter / monter (nage, vol)     B  roulade / descendre
 ##   X  frapper (maintenir : coup chargé)   Y  parler, ouvrir, ramasser
 ##   LB parer   RB courir (ou clic du stick gauche)   LT pouvoir du sceau   RT sort
-##   Croix : haut = aigle, bas = téléportation, gauche = pouvoir suivant, droite = sort suivant
+##   Croix : haut = aigle (maintenue : l'aéronef), bas = téléportation, gauche = pouvoir suivant, droite = sort suivant
 ##   Start = menu   Select/View = carnet   clic du stick droit = carte
 
 const DEAD: float = 0.22                 # zone morte des sticks
@@ -40,6 +40,8 @@ var _help_pad: bool = false              # le bandeau d'aide montre-t-il les bou
 var _help_kb: String = ""
 var _sig: int = -1                       # nombre de boutons à l'écran (pour se reposer dessus)
 var _sig_t: float = 0.0
+var _up_t: float = 0.0                   # V76 : depuis quand la croix haute est maintenue
+var _up_long: bool = false
 var _flash: float = 0.0                  # le curseur grossit un instant quand on appuie
 
 const BTN_A := JOY_BUTTON_A
@@ -211,8 +213,17 @@ func _game_tick(delta: float, s: Dictionary, p: Dictionary) -> void:
 		_tap(KEY_X)
 	if p["rt"]:
 		_tap(KEY_V)
-	if p[int(JOY_BUTTON_DPAD_UP)]:
-		_tap(KEY_G)
+	# V76 : croix haute brève = l'aigle (au relâchement) ; maintenue une demi-seconde = l'aéronef
+	if s[int(JOY_BUTTON_DPAD_UP)]:
+		_up_t += delta
+		if _up_t >= 0.5 and not _up_long:
+			_up_long = true
+			_tap(KEY_N)
+	else:
+		if _up_t > 0.0 and not _up_long:
+			_tap(KEY_G)
+		_up_t = 0.0
+		_up_long = false
 	if p[int(JOY_BUTTON_DPAD_DOWN)]:
 		_tap(KEY_T)
 	if p[int(JOY_BUTTON_DPAD_LEFT)]:

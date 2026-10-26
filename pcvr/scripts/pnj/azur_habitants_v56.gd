@@ -185,7 +185,7 @@ static func _all() -> Array:
 				"interpelle": [L("Poisson frais ! Poisson frais !", {}), L("{surnom} ! Viens voir ma daurade !", {"visites_min": 1})],
 			}},
 		{"id": "yannick", "nom": "Yannick", "titre": "loueur de bateaux", "maison": "porte_location",
-			"agenda": [[8, 12, "location"], [12, 13, ["tav_terrasse_3", "tav_terrasse_3b"]], [13, 19, "ponton_yannick", ["location"]], [19, 22, ["paillote_1", "paillote_2"]], [22, 8, "maison"]],
+			"agenda": [[8, 12, "location"], [12, 13, ["tav_terrasse_3", "tav_terrasse_3b"]], [13, 16, "ponton_yannick", ["location"]], [16, 19, "chantier_charpentier"], [19, 22, ["paillote_1", "paillote_2"]], [22, 8, "maison"]],
 			"azur": {"cheveux": [0.85, 0.7, 0.35], "coiffure": "queue", "haut": [0.2, 0.6, 0.65], "yeux": [0.2, 0.55, 0.6], "lunettes": false},
 			"teinte": PEAU[2], "humeur_base": 0.5, "traits": {"bavard": 0.7, "humour": 0.7, "curiosite": 0.4, "susceptible": 0.1, "rancunier": 0.1},
 			"aime": {"punch_coco": 2.0, "noix_coco": 1.0}, "deteste": {},
