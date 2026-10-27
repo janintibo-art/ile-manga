@@ -40,6 +40,8 @@ var _help_pad: bool = false              # le bandeau d'aide montre-t-il les bou
 var _help_kb: String = ""
 var _sig: int = -1                       # nombre de boutons à l'écran (pour se reposer dessus)
 var _sig_t: float = 0.0
+var _warp_ms: int = -10000               # V77 : le dernier warp_mouse (sa propre trace est ignorée)
+var _mouse_acc: float = 0.0              # V77 : la souris qui bouge pendant que la manette mène
 var _up_t: float = 0.0                   # V76 : depuis quand la croix haute est maintenue
 var _up_long: bool = false
 var _flash: float = 0.0                  # le curseur grossit un instant quand on appuie
@@ -99,12 +101,18 @@ func _input(event: InputEvent) -> void:
 	if (event is InputEventKey or event is InputEventMouseButton) and event.device != SYNTH_DEVICE and active:
 		active = false
 	elif event is InputEventMouseMotion and event.device != SYNTH_DEVICE:
-		# (le mouvement provoqué par notre propre warp_mouse ne compte pas)
-		if event.position.distance_to(cursor_pos) < 3.0:
+		# V77 : le mouvement provoqué par notre propre warp_mouse ne compte pas (il arrive un peu
+		# après, et en pixels de fenêtre : il ne tombe pas pile sur le curseur doré) ; quand la
+		# manette mène, il faut vraiment bouger la souris (pas un frémissement) pour reprendre la main.
+		if Time.get_ticks_msec() - _warp_ms < 250 or event.position.distance_to(cursor_pos) < 3.0:
 			return
-		cursor_pos = event.position
-		if active and event.relative.length() > 4.0:
+		if active:
+			_mouse_acc += event.relative.length()
+			if _mouse_acc < 40.0:
+				return
 			active = false
+		_mouse_acc = 0.0
+		cursor_pos = event.position
 
 
 # =================================================================== lecture
@@ -453,7 +461,11 @@ func _motion() -> void:
 	Input.parse_input_event(m)
 	# la vraie souris suit : les boutons s'éclairent au survol, et le clic tombe dans la fenêtre
 	if active and DisplayServer.get_name() != "headless":
-		Input.warp_mouse(cursor_pos)
+		# V77 : warp_mouse attend des pixels de fenêtre, le curseur est en pixels de la vue
+		# (étirée) : on convertit, sinon la vraie souris se pose ailleurs et ramène le curseur.
+		Input.warp_mouse(main.get_viewport().get_screen_transform() * cursor_pos)
+		_warp_ms = Time.get_ticks_msec()
+		_mouse_acc = 0.0
 
 
 func _tap(k: Key) -> void:

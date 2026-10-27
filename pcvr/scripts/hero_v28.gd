@@ -95,6 +95,7 @@ var combo_queued: bool = false
 var hits_pending: Array = []            # instants (dans l'animation en cours) des coups à porter
 var attack_clock: float = 0.0
 var cam_distance: float = 1.0
+var _indoor_k: float = 0.0                # V77 : 0 dehors, 1 sous un plafond (caméra rapprochée)
 var current_anim: String = ""
 var ko_time: float = 0.0
 var hurt_cooldown: float = 0.0
@@ -1596,12 +1597,29 @@ func _update_camera() -> void:
 		pivot = mid
 		wanted = mid + side * (2.6 + dist * 0.4) - fwd * 1.2 + Vector3.UP * 0.35
 	var space := body.get_world_3d().direct_space_state
+	# V77 : sous un plafond bas (une pièce), la caméra se rapproche et monte au-dessus de
+	# l'épaule : elle tient dans la pièce au lieu de s'écraser contre un mur.
+	if npc == null:
+		var up_q := PhysicsRayQueryParameters3D.create(pivot, pivot + Vector3.UP * 3.0, 1 | 256, [body.get_rid()])
+		var indoor: bool = not space.intersect_ray(up_q).is_empty()
+		_indoor_k = move_toward(_indoor_k, 1.0 if indoor else 0.0, get_physics_process_delta_time() * 2.5)
+		if _indoor_k > 0.0:
+			var wanted_in: Vector3 = root.global_transform * Vector3(0, 2.0, 1.9)
+			wanted = wanted.lerp(wanted_in, smoothstep(0.0, 1.0, _indoor_k))
 	# V53 : calque 9 (256) = toits et auvents qui arrêtent la caméra sans gêner le joueur.
 	var q := PhysicsRayQueryParameters3D.create(pivot, wanted, 1 | 256, [body.get_rid()])
 	var hit := space.intersect_ray(q)
 	var place: Vector3 = wanted
 	if not hit.is_empty():
-		place = hit.position + (pivot - hit.position).normalized() * 0.25
+		place = hit.position + (pivot - hit.position).normalized() * 0.35
+		# trop près du héros (dos au mur) : la caméra monte au-dessus de sa tête, sous le plafond
+		var d: float = place.distance_to(pivot)
+		if d < 0.9:
+			var lift: float = (0.9 - d) * 0.7
+			var up_room := space.intersect_ray(PhysicsRayQueryParameters3D.create(place, place + Vector3.UP * (lift + 0.3), 1 | 256, [body.get_rid()]))
+			if not up_room.is_empty():
+				lift = maxf(0.0, (up_room.position as Vector3).y - place.y - 0.3)
+			place += Vector3.UP * lift
 	camera.global_position = place
 	var look: Vector3 = root.global_position + Vector3.UP * 1.2
 	if npc != null:

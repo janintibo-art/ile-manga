@@ -37,6 +37,7 @@ var _beam: StandardMaterial3D
 var _wall: StandardMaterial3D
 var _floor: StandardMaterial3D
 var _ceiling: StandardMaterial3D
+var _cam: StaticBody3D                  # V77 : les murs de la pièce, pour la caméra seulement
 
 
 static func hole_for(label: String) -> Dictionary:
@@ -330,8 +331,15 @@ func _make_room(house: Node3D, cfg: Dictionary) -> void:
 	body.collision_layer = 1
 	body.collision_mask = 0
 	add_child(body)
+	# V77 : les murs et le plafond de la pièce arrêtent la caméra (calque 9, sans gêner le joueur) :
+	# avant, elle passait à travers et l'on voyait l'intérieur des murs, ou la maison de dehors.
+	_cam = StaticBody3D.new()
+	_cam.name = "Camera_" + str(house.name) + "_v77"
+	_cam.collision_layer = 256
+	_cam.collision_mask = 0
+	add_child(_cam)
 	_box("Plancher_v27", Vector3(mid.x, lo.y - 0.03, mid.z), Vector3(size.x, 0.06, size.z), _floor, false)
-	_box("Plafond_v27", Vector3(mid.x, hi.y + 0.03, mid.z), Vector3(size.x, 0.06, size.z), _ceiling, false)
+	_box("Plafond_v27", Vector3(mid.x, hi.y + 0.03, mid.z), Vector3(size.x, 0.06, size.z), _ceiling, true, _cam)
 	for side in [-1.0, 1.0]:
 		# Murs perpendiculaires à x et à z.
 		var wx := Vector3(mid.x + side * (size.x * 0.5 + t * 0.5), mid.y, mid.z)
@@ -341,11 +349,11 @@ func _make_room(house: Node3D, cfg: Dictionary) -> void:
 		if is_door_x:
 			_wall_with_door(wx, size.z, size.y, door_c.z, door_half, door_top, lo.y, true)
 		else:
-			_box("Mur_v27", wx, Vector3(t, size.y, size.z), _wall, false)
+			_box("Mur_v27", wx, Vector3(t, size.y, size.z), _wall, true, _cam)
 		if is_door_z:
 			_wall_with_door(wz, size.x, size.y, door_c.x, door_half, door_top, lo.y, false)
 		else:
-			_box("Mur_v27", wz, Vector3(size.x, size.y, t), _wall, false)
+			_box("Mur_v27", wz, Vector3(size.x, size.y, t), _wall, true, _cam)
 	# Colombages : poteaux d'angle, plinthes et poutres au plafond.
 	for cx in [lo.x + 0.08, hi.x - 0.08]:
 		for cz in [lo.z + 0.08, hi.z - 0.08]:
@@ -394,13 +402,23 @@ func _wall_with_door(center: Vector3, length: float, height: float, door_along: 
 		var c: float = (float(seg[0]) + float(seg[1])) * 0.5
 		var pos := Vector3(center.x, center.y, c) if along_z else Vector3(c, center.y, center.z)
 		var sz := Vector3(t, height, l) if along_z else Vector3(l, height, t)
-		_box("Mur_v27", pos, sz, _wall, false)
+		_box("Mur_v27", pos, sz, _wall, true, _cam)
+	# V77 : un panneau invisible dans l'embrasure, pour la caméra seulement (elle ne sort plus
+	# par la porte quand on tourne dans la pièce)
+	if _cam != null:
+		var dcs := CollisionShape3D.new()
+		var dsh := BoxShape3D.new()
+		var dh: float = door_top - floor_y
+		dsh.size = Vector3(t, dh, half * 2.0) if along_z else Vector3(half * 2.0, dh, t)
+		dcs.shape = dsh
+		dcs.position = Vector3(center.x, floor_y + dh * 0.5, door_along) if along_z else Vector3(door_along, floor_y + dh * 0.5, center.z)
+		_cam.add_child(dcs)
 	var top_h: float = floor_y + height - door_top
 	if top_h > 0.02:
 		var ly: float = door_top + top_h * 0.5
 		var lpos := Vector3(center.x, ly, door_along) if along_z else Vector3(door_along, ly, center.z)
 		var lsz := Vector3(t, top_h, half * 2.0) if along_z else Vector3(half * 2.0, top_h, t)
-		_box("Linteau_v27", lpos, lsz, _wall, false)
+		_box("Linteau_v27", lpos, lsz, _wall, true, _cam)
 
 
 # Mobilier simple, posé contre les murs opposés à la porte (passage dégagé).
