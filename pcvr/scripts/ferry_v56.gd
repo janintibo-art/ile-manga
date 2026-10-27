@@ -38,7 +38,7 @@ var heading: float = 0.0               # rotation Y (l'avant regarde -Z local)
 var speed: float = 0.0
 var dest: String = ""
 var _bob: float = 0.0
-var _seat_local := Vector3(1.2, 1.55, 6.2)
+var _seat_local := Vector3(-1.4, 2.02, 5.98)   # V77 : sur le banc bâbord avant du pont arrière (le dessus des planches), face à la proue
 var _wake: GPUParticles3D
 var _nav_lights: Array = []
 var _engine: AudioStreamPlayer3D
@@ -338,13 +338,27 @@ func place_captain() -> void:
 	var toward_ship: Vector3 = (b.origin - g)
 	toward_ship.y = 0.0
 	var p: Vector3 = g - toward_ship.normalized() * 1.2 + (b.basis * Vector3(0, 0, 1)) * 2.0
-	captain.global_position = Vector3(p.x, g.y, p.z)
+	# V77 : sur le plancher du ponton (un rayon vers le bas), pas à la hauteur théorique de la passerelle
+	captain.global_position = Vector3(p.x, _floor_y(p, g.y), p.z)
 	captain.rotation.y = atan2(toward_ship.x, toward_ship.z) + PI * 0.5
 	captain.points["quai_ferry"] = captain.global_position
 	captain.at_point = "quai_ferry"
 	captain.route.clear()
 	captain.state = "repos"
 	captain.idle_clock = 1e9
+
+
+## V77 : la hauteur du sol (ponton, quai) sous un point, par un rayon ; sinon « fallback ».
+func _floor_y(p: Vector3, fallback: float) -> float:
+	var w: World3D = get_world_3d() if is_inside_tree() else null
+	if w == null:
+		return fallback
+	var ex: Array = []
+	if body != null:
+		ex.append(body.get_rid())
+	var q := PhysicsRayQueryParameters3D.create(Vector3(p.x, fallback + 6.0, p.z), Vector3(p.x, fallback - 4.0, p.z), 1, ex)
+	var hit: Dictionary = w.direct_space_state.intersect_ray(q)
+	return float((hit["position"] as Vector3).y) if not hit.is_empty() else fallback
 
 
 ## Départ : avec le joueur à bord (passenger) ou à vide (on l'a appelé de l'autre côté).
@@ -380,7 +394,13 @@ func depart(with_player: bool) -> void:
 		_engine.play()
 
 
+var _captain_fix_t: float = 1.0          # V77 : on repose le capitaine une fois la physique prête
+
 func _physics_process(delta: float) -> void:
+	if _captain_fix_t > 0.0:
+		_captain_fix_t -= delta
+		if _captain_fix_t <= 0.0 and riding == false:
+			place_captain()
 	if main == null:
 		return
 	_bob += delta
@@ -454,7 +474,7 @@ func _arrive() -> void:
 
 ## Le joueur passager, assis sur le banc du pont arrière.
 func _carry_player() -> void:
-	var seat: Transform3D = hull.global_transform * Transform3D(Basis(Vector3.UP, PI * 0.5), _seat_local)
+	var seat: Transform3D = hull.global_transform * Transform3D(Basis(), _seat_local)
 	if main.xr_active:
 		var cam_local: Vector3 = main.xr_camera.position
 		var off: Vector3 = Basis(Vector3.UP, main.xr_origin.rotation.y) * Vector3(cam_local.x, 0.0, cam_local.z)

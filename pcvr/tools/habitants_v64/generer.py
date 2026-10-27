@@ -117,7 +117,7 @@ def etape_cheveux(only=None):
 def etape_habits(only=None):
     import clothes as cl
     from hair import Body
-    from export import welded_normals, split_tangents, build_weights
+    from export import welded_normals, split_tangents, skin_weights
     import gdvar
     body = Body()
     F = cl.Features(body)
@@ -125,7 +125,7 @@ def etape_habits(only=None):
     ao_v = pickle.load(open(cache('cache_ao.pkl'), 'rb'))
     topo = body.topo
     TAN = split_tangents(topo, body.V, welded_normals(topo, body.V))
-    bidx, bw = build_weights(topo, body.W)
+    bidx, bw = skin_weights(topo, body.W)          # mêmes poids que la peau (base.bin)
     cat = cl.shell_catalog(body, F, G)
     os.makedirs(OUT + '/habits', exist_ok=True)
     for name in (only or list(cat)):
@@ -142,14 +142,14 @@ def etape_amples(only=None):
     from clothes import Features
     import loose as lo
     from proxy import Binder, interp_weights
-    from export import build_weights
+    from export import skin_weights
     from rig import HB
     import gdvar
     body = Body()
     F = Features(body)
     hull = lo.Hull(body, F)
     hull_neck = lo.Hull(body, F, parts=(0, 5))
-    bidx, bw = build_weights(body.topo, body.W)
+    bidx, bw = skin_weights(body.topo, body.W)
     binder = Binder(body)
 
     def export(name, m, path, hips_mix=0.6, anchor=None):

@@ -158,6 +158,53 @@ def fit(base, Vdm, W, finger_curl=0.35, thumb_curl=0.2):
     return Vn, HJ, s, shift
 
 
+# V77 : épaules. Les poids mixamo passent du tronc au bras sur quelques centimètres seulement :
+# bras levé (danse, salut), le haut du bras tournait d'un bloc et se décollait du buste.
+# On diffuse les poids tronc / clavicule / bras autour de l'épaule (lissage de Laplace sur le
+# maillage, masque radial autour de l'articulation) : la peau se tend progressivement de l'aisselle
+# au deltoïde (le milieu du buste reste au tronc). Seuls les poids de peau changent (pas la forme des corps ni le découpage des habits).
+SHOULDER_SMOOTH = dict(iters=80, r0=0.06, r1=0.20, x0=0.02, x1=0.08)
+
+
+def _adjacency(base):
+    import scipy.sparse as sp
+    F = base.F
+    e = np.concatenate([F[:, [0, 1]], F[:, [1, 2]], F[:, [2, 3]], F[:, [3, 0]]])
+    e = np.concatenate([e, e[:, ::-1]])
+    A = sp.coo_matrix((np.ones(len(e)), (e[:, 0], e[:, 1])), shape=(base.n, base.n)).tocsr()
+    A.data[:] = 1
+    deg = np.asarray(A.sum(1)).ravel()
+    deg[deg == 0] = 1
+    return sp.diags(1 / deg) @ A
+
+
+def smooth_shoulders(base, W, P=SHOULDER_SMOOTH):
+    """W (n, mixamo) du maillage de base -> poids lissés autour des épaules (somme conservée)."""
+    W = W.copy()
+    V = base.V * 0.1
+    J = mixamo_joints(base, V)
+    L = _adjacency(base)
+    body = np.zeros(base.n, bool)
+    body[base.group_verts('body')] = True
+    for side in ('Left', 'Right'):
+        cols = [MIXN.index(m) for m in ('Spine2', side + 'Shoulder', side + 'Arm')]
+        d = np.linalg.norm(V - J[side + 'Arm'][0], axis=1)
+        m = np.clip((P['r1'] - d) / (P['r1'] - P['r0']), 0, 1)
+        m = m * m * (3 - 2 * m)
+        m[~body] = 0
+        t = np.clip((np.abs(V[:, 0]) - P['x0']) / (P['x1'] - P['x0']), 0, 1)
+        m *= t * t * (3 - 2 * t)                # le milieu du buste (sternum, colonne) ne bouge pas
+        Ws = W[:, cols]
+        tot = Ws.sum(1, keepdims=True)
+        for _ in range(P['iters']):
+            Ws = Ws * (1 - m[:, None]) + (L @ Ws) * m[:, None]
+            s = Ws.sum(1, keepdims=True)
+            s[s == 0] = 1
+            Ws = Ws / s * tot
+        W[:, cols] = Ws
+    return W
+
+
 def hero_weights(W, n_keep=4):
     """W (n, mixamo) -> (indices (n,4) des os du héros, poids (n,4))."""
     n = W.shape[0]

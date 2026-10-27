@@ -514,6 +514,7 @@ func _square() -> void:
 	kit.cyl(fxf, 0.35, 0.25, 1.6, "zellige", 8)
 	kit.cyl(fxf * Transform3D(Basis(), Vector3(0, 1.6, 0)), 0.9, 0.4, 0.3, "chaux_blanc", 12)
 	kit.col_cyl(fxf.origin, 3.1, 0.85)
+	kit.col_cyl(fxf.origin, 0.9, 1.9)          # V77 : la colonne et la vasque sont solides
 	var jet := CPUParticles3D.new()
 	jet.amount = 24
 	jet.lifetime = 0.9
@@ -1350,7 +1351,10 @@ func _graph() -> void:
 		_link(str(quai[i]), _nearest(points[quai[i]], ["qh"]))
 	# les rues de la ville
 	var east: Array = _street("re", Vector2(-100.0, 40.5), Vector2(-17.0, 40.5), 8.0)
-	var west: Array = _street("rw", Vector2(0.0, 40.5) + Vector2(0.0, -1.0), Vector2(100.0, 39.5), 8.0)
+	# V77 : la rue de l'ouest passe entre les îlots (elle traversait les maisons de z 38 à 59)
+	var west: Array = _street("rw", Vector2(0.0, 36.0), Vector2(70.5, 36.0), 8.0)
+	var west2: Array = _street("rwb", Vector2(72.0, 40.0), Vector2(100.0, 40.0), 8.0)
+	_link(str(west[west.size() - 1]), str(west2[0]))
 	var high: Array = _street("rh", Vector2(-100.0, 62.0), Vector2(100.0, 62.0), 8.0)
 	var x_rues := [-60.0, 30.0, 70.0]
 	for xr in x_rues:

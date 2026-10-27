@@ -328,6 +328,8 @@ func _fountain() -> void:
 		var dir: Vector3 = to - from
 		kit.box(xf * Transform3D(Basis.looking_at(dir.normalized(), Vector3.UP), (from + to) * 0.5), Vector3(0.05, 0.05, dir.length()), "eau", 1.0)
 	kit.col_cyl(fountain, 3.35, 0.7)
+	# V77 : la colonne, la vasque du haut et le jet sont solides (on ne rentre plus dedans)
+	kit.col_cyl(fountain + Vector3.UP * 0.06, 1.25, 2.75)
 
 
 ## La tour de l'horloge, sur la Mairie : quatre cadrans, un clocheton et sa cloche.
@@ -830,9 +832,11 @@ func _breakwater() -> void:
 func _piers() -> void:
 	# le môle de la gare maritime (pierre), 7 m de large, 38 m vers le large
 	var xf: Transform3D = TF(-70.0, -19.0)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, -2.7, 0)), Vector3(7.0, 8.0, 38.0), "moellons", 3.0, 63 - 8 - 16)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 1.25, 0)), Vector3(7.0, 0.1, 38.0), "dalles", 3.5, 4)
-	kit.col_box(xf * Transform3D(Basis(), Vector3(0, -2.7, 0)), Vector3(7.0, 8.0, 38.0))
+	# V77 : le môle est au niveau du quai (il dépassait de 1,1 m, sans paroi côté quai : on voyait
+	# au travers, et ses bittes, ses lampadaires, son banc et son kiosque y étaient enfoncés)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, -3.83, 0)), Vector3(7.0, 8.0, 38.0), "moellons", 3.0, 63 - 8 - 16)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.12, 0)), Vector3(7.0, 0.1, 38.0), "dalles", 3.5, 4)
+	kit.col_box(xf * Transform3D(Basis(), Vector3(0, -3.83, 0)), Vector3(7.0, 8.0, 38.0))
 	for z in [-34.0, -26.0, -18.0, -10.0, -3.0]:
 		kit.bollard(T(-66.9, z))
 	kit.lamppost(T(-72.8, -34.0), ile.TOWN_YAW)
@@ -840,9 +844,9 @@ func _piers() -> void:
 	kit.bench(TF(-72.6, -22.0, -90.0))
 	# l'Hirondelle s'amarre côté est du môle, l'avant vers le large
 	ferry_berth = Transform3D(Basis(Vector3.UP, ile.TOWN_YAW), T(-62.6, -25.0, -1.62))
-	ferry_gangway = T(-67.6, -24.0)
-	_spot("gare_capitaine", -67.8, -21.0, -62.0, -21.0, "debout")
-	_spot("gare_attente", -71.5, -26.0, -62.0, -26.0, "debout")
+	ferry_gangway = T(-67.6, -24.0, 0.17)
+	_spot("gare_capitaine", -67.8, -21.0, -62.0, -21.0, "debout", 0.15)
+	_spot("gare_attente", -71.5, -26.0, -62.0, -26.0, "debout", 0.15)
 	_spot("capitainerie", -55.0, 8.4, -55.0, 0.0, "comptoir")
 	_spot("location", -27.0, 8.6, -27.0, 0.0, "comptoir")
 	_spot("paulo", 10.0, 8.6, 10.0, 0.0, "comptoir")

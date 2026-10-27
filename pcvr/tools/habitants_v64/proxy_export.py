@@ -2,7 +2,7 @@
 import numpy as np
 import gdvar
 from proxy import Binder, interp_weights
-from export import build_weights
+from export import skin_weights
 from rig import HB
 
 
@@ -16,7 +16,7 @@ def export_cards(body, mesh, path, kind, head_bound=True, zone=None, force_head=
     binder = Binder(body)
     refs, bary, off = binder.bind(P)
     reg = np.where(head_region_mask(body, P) if head_bound else np.zeros(len(P), bool), 0, 1).astype(np.uint8)
-    bidx, bw = build_weights(body.topo, body.W)
+    bidx, bw = skin_weights(body.topo, body.W)
     idx, w = interp_weights(bidx, bw, refs, bary, len(HB))
     if force_head is not None:
         fh = force_head(P)

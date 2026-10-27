@@ -236,6 +236,8 @@ func fountain76(c: Vector3, r: float) -> Vector3:
 	cyl(Transform3D(Basis(), c), 1.2, 0.9, 1.3, "nacre76_bleu", 16)
 	cyl(Transform3D(Basis(), c + Vector3.UP * 1.3), 0.22, 0.05, 5.0, "eau76", 10, false)
 	col_cyl(c, r, 0.8)
+	col_cyl(c, 1.2, 1.3)                       # V77 : la colonne et le jet sont solides
+	col_cyl(c, 0.3, 6.3)
 	return c + Vector3.UP * 5.0
 
 

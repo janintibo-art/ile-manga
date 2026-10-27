@@ -7,7 +7,11 @@ extends Node3D
 
 signal chosen(id: String)
 
-const TYPE_SPEED: float = 55.0          # lettres par seconde
+const TYPE_SPEED: float = 45.0          # lettres par seconde
+## V77 : la réponse reste affichée tant que le joueur ne l'a pas validée : on lit à son rythme.
+## Les choix n'apparaissent qu'après « ▸ Continuer » (E, Espace, Entrée, clic, A, gâchette).
+const LIRE := "__lire"
+const READ_DELAY: float = 0.45          # après la fin du texte, avant d'accepter une touche
 
 var opened: bool = false
 var xr_mode: bool = false
@@ -20,6 +24,8 @@ var _text: Label
 var _box: GridContainer
 var _buttons: Array = []
 var _typing: float = 0.0
+var _gate: bool = false                 # V77 : on attend « Continuer » avant de montrer les choix
+var _shown_t: float = 0.0               # V77 : depuis quand le texte est entièrement affiché
 var _vr_panel: Node3D
 var _vr_text: Label3D
 var _vr_back: MeshInstance3D            # V65 : le fond grandit avec le texte (histoires, anecdotes)
@@ -182,8 +188,11 @@ func _mood_color(word: String) -> Color:
 
 ## Affiche une réplique et ses choix (liste de {id, label}).
 func show_line(who: String, mood_word: String, text: String, new_choices: Array) -> void:
+	# V77 : plusieurs réponses possibles après un vrai texte : on valide d'abord la lecture
 	choices = new_choices
+	_gate = new_choices.size() > 1 and text.strip_edges().length() > 24
 	selection = 0
+	_shown_t = 0.0
 	if _layer != null:
 		_name.text = who
 		_mood.text = "— " + mood_word
@@ -191,14 +200,25 @@ func show_line(who: String, mood_word: String, text: String, new_choices: Array)
 		_text.text = text
 		_text.visible_characters = 0
 		_typing = 0.0
+	_build_buttons()
+	if _vr_panel != null:
+		_vr_text.set_meta("entete", who + "  — " + mood_word)
+		_vr_text.set_meta("texte", text)
+		_refresh_vr()
+		_place_vr()
+
+
+func _build_buttons() -> void:
+	if _layer != null:
 		for b in _buttons:
 			b.queue_free()
 		_buttons.clear()
 		# V33 : au-delà de 5 choix, deux colonnes.
-		_box.columns = 2 if choices.size() > 5 else 1
-		for i in range(choices.size()):
+		var shown: Array = _shown_choices()
+		_box.columns = 2 if shown.size() > 5 else 1
+		for i in range(shown.size()):
 			var b := Button.new()
-			b.text = "%d.  %s" % [(i + 1) % 10, choices[i]["label"]]
+			b.text = "%d.  %s" % [(i + 1) % 10, shown[i]["label"]]
 			b.custom_minimum_size = Vector2(COL_W / 2 - 4 if _box.columns == 2 else COL_W, 0)
 			b.clip_text = true
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -207,17 +227,25 @@ func show_line(who: String, mood_word: String, text: String, new_choices: Array)
 			b.add_theme_stylebox_override("normal", _style(Color(0.06, 0.16, 0.22, 0.9), Color(0.3, 0.42, 0.52), 8, 1))
 			b.add_theme_stylebox_override("hover", _style(Color(0.1, 0.24, 0.32, 0.95), Color(1.0, 0.85, 0.45), 8, 2))
 			b.pressed.connect(_pick.bind(i))
-			b.visible = false
+			b.visible = _text.visible_characters == -1
 			_box.add_child(b)
 			_buttons.append(b)
-	if _vr_panel != null:
-		_vr_text.set_meta("entete", who + "  — " + mood_word)
-		_vr_text.set_meta("texte", text)
-		_refresh_vr()
-		_place_vr()
+
+
+func _shown_choices() -> Array:
+	return [{"id": LIRE, "label": "▸ Continuer"}] if _gate else choices
 
 
 func _pick(i: int) -> void:
+	if _gate:
+		# la lecture est validée : les vraies réponses apparaissent (le texte reste)
+		_gate = false
+		selection = 0
+		_shown_t = 0.0
+		_build_buttons()
+		if _vr_panel != null:
+			_refresh_vr()
+		return
 	if i < 0 or i >= choices.size():
 		return
 	chosen.emit(str(choices[i]["id"]))
@@ -254,6 +282,7 @@ func _process(delta: float) -> void:
 		_text.visible_characters = int(_typing)
 	else:
 		_text.visible_characters = -1
+		_shown_t += delta
 		for b in _buttons:
 			b.visible = true
 
@@ -266,11 +295,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if k == KEY_SPACE or k == KEY_E or k == KEY_ENTER:
 			if _text.visible_characters != -1:
 				_text.visible_characters = -1
-			elif choices.size() == 1:
+			elif (choices.size() == 1 or _gate) and _shown_t >= READ_DELAY:
 				_pick(0)
 			get_viewport().set_input_as_handled()
 		elif (k >= KEY_1 and k <= KEY_9) or k == KEY_0:
-			# Pas besoin d'attendre la fin du texte pour répondre (0 = dixième choix).
+			# Pas besoin d'attendre la fin du texte pour répondre (0 = dixième choix) ; V77 : sauf
+			# pendant « Continuer » : la touche affiche alors seulement les réponses.
 			_text.visible_characters = -1
 			_pick(9 if k == KEY_0 else k - KEY_1)
 			get_viewport().set_input_as_handled()
@@ -304,8 +334,9 @@ func _place_vr() -> void:
 
 func _refresh_vr() -> void:
 	var lines: Array = [str(_vr_text.get_meta("entete", "")), "", str(_vr_text.get_meta("texte", "")), ""]
-	for i in range(choices.size()):
-		lines.append(("> " if i == selection else "   ") + str(choices[i]["label"]))
+	var shown: Array = _shown_choices()
+	for i in range(shown.size()):
+		lines.append(("> " if i == selection else "   ") + str(shown[i]["label"]))
 	lines.append("")
 	lines.append("Stick droit : choisir   Gâchette : répondre   B : partir")
 	_vr_text.text = "\n".join(lines)
@@ -325,7 +356,7 @@ func vr_tick(stick_y: float, trigger: float, b_button: bool) -> void:
 	if absf(stick_y) < 0.3:
 		_vr_neutral = true
 	elif _vr_neutral and not choices.is_empty():
-		selection = wrapi(selection + (1 if stick_y < 0.0 else -1), 0, choices.size())
+		selection = wrapi(selection + (1 if stick_y < 0.0 else -1), 0, _shown_choices().size())
 		_vr_neutral = false
 		_refresh_vr()
 	var pressed: bool = trigger > 0.7

@@ -145,6 +145,19 @@ def build_weights(topo, W):
     return np.concatenate([idx, eidx]), np.concatenate([w, ew])
 
 
+_SKIN = {}
+
+
+def skin_weights(topo, W):
+    """poids de peau exportés pour le jeu (corps, coques, amples, mèches) : comme build_weights,
+    épaules lissées (V77). build_weights reste la référence du découpage des habits."""
+    from rig import smooth_shoulders
+    key = id(W)
+    if key not in _SKIN:
+        _SKIN[key] = (W, build_weights(topo, smooth_shoulders(topo.base, W)))
+    return _SKIN[key][1]
+
+
 def make_body(base, topo, W, tlist, full=False):
     V = apply_targets(base.V, tlist)
     Vn, HJ, s, shift = fit(base, V, W)
@@ -228,7 +241,7 @@ def surface_pack(topo, sname):
 
 
 def write_base(topo, W, Vw0, path, refs=None):
-    bidx, bw = build_weights(topo, W)
+    bidx, bw = skin_weights(topo, W)
     N0 = welded_normals(topo, Vw0)
     TAN = split_tangents(topo, Vw0, N0)
     d = {'nw': int(topo.nw), 'base': gdvar.v3(Vw0), 'bone_names': HB, 'surfaces': list(topo.surfaces.keys()) + ['visage']}

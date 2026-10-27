@@ -1031,6 +1031,34 @@ func _link(a: String, b: String) -> void:
 		graph[b].append(a)
 
 
+## V77 : les rues du milieu et du nord-sud se croisaient au centre de la Machine Universelle (les
+## habitants traversaient sa chaudière) : les nœuds qui tombaient sur son socle passent sur un anneau
+## autour d'elle, et l'on fait le tour.
+func _detour_machine() -> void:
+	var c: Vector3 = T(0.0, 0.0)
+	var r_ring: float = 6.4
+	var ring: Array = []
+	for k in points.keys():
+		var p: Vector3 = points[k]
+		var d := Vector2(p.x - c.x, p.z - c.z)
+		if d.length() < 5.9 and graph.has(k):
+			var a: float = atan2(d.y, d.x) if d.length() > 0.1 else 0.0
+			points[k] = Vector3(c.x + cos(a) * r_ring, c.y, c.z + sin(a) * r_ring)
+			ring.append(k)
+	for a2 in ring:
+		for b2 in ring:
+			if a2 != b2 and (graph[a2] as Array).has(b2):
+				(graph[a2] as Array).erase(b2)
+	for i in range(8):
+		var an: float = TAU * i / 8.0 + PI / 8.0
+		var nm: String = "machine_%d" % i
+		points[nm] = Vector3(c.x + cos(an) * r_ring, c.y, c.z + sin(an) * r_ring)
+		ring.append(nm)
+	ring.sort_custom(func(x, y): return atan2((points[x] as Vector3).z - c.z, (points[x] as Vector3).x - c.x) < atan2((points[y] as Vector3).z - c.z, (points[y] as Vector3).x - c.x))
+	for i in range(ring.size()):
+		_link(str(ring[i]), str(ring[(i + 1) % ring.size()]))
+
+
 func _chain(names: Array) -> void:
 	for i in range(names.size() - 1):
 		_link(names[i], names[i + 1])
@@ -1088,6 +1116,7 @@ func _graph() -> void:
 			_link(str(mid[k]), _nearest(points[mid[k]], ["ns"]))
 	_link(_nearest(T(-70.0, 6.0), ["wx"]), _nearest(T(-70.0, 6.0), ["mi", "we"]))
 	# la Machine : on n'y marche pas au travers (les nœuds du milieu évitent le socle)
+	_detour_machine()
 	# le téléphérique (gare haute, sur la promenade)
 	points["tel_haut"] = T(TEL_TOP.x, TEL_TOP.y + 3.2)
 	_link("tel_haut", _nearest(points["tel_haut"], ["pr"]))

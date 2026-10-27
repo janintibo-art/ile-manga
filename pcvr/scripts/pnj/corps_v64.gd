@@ -182,6 +182,11 @@ static func build(model: Node3D, skel: Skeleton3D, anim: AnimationPlayer, id: St
 	for i in range(names.size()):
 		var g := Transform3D(gbasis[i], joints[i] * 100.0)
 		skin.add_named_bind(str(names[i]), g.affine_inverse() * Transform3D(Basis.from_scale(Vector3.ONE * 100.0), Vector3.ZERO))
+	if skel.get_node_or_null("Epaules64") == null:
+		var ep := Epaules.new()
+		ep.name = "Epaules64"
+		ep.setup(skel)
+		skel.add_child(ep)
 	# vêtements « coques » : chaque triangle de peau appartient à la couche la plus externe
 	var nw: PackedVector3Array = normals(d)
 	var out := {"positions": pw, "normals": nw, "skin": skin, "shells": []}
@@ -628,6 +633,47 @@ static func build_full(model: Node3D, skel: Skeleton3D, anim: AnimationPlayer, i
 		(parts["yeux"] as MeshInstance3D).visibility_range_end = 45.0
 	return parts
 
+
+
+## V77 : les épaules suivent le bras. Quand le bras se lève au-delà de 40° (danse, salut, poing
+## en l'air), la clavicule monte avec lui (la moitié de l'élévation en plus, 55° au plus),
+## comme chez un vrai danseur ; le bras est recompensé pour garder exactement sa direction.
+## Le haut du bras ne pivote plus seul de 170° contre le buste : l'épaule reste attachée.
+## Agit après toutes les animations (clips du modèle comme poses construites).
+class Epaules extends SkeletonModifier3D:
+	const K: float = 0.5
+	const START: float = 40.0
+	const MAX: float = 55.0
+	var sides: Array = []
+
+	func setup(sk: Skeleton3D) -> void:
+		for s in [["Left", 1.0], ["Right", -1.0]]:
+			var sh: int = sk.find_bone(str(s[0]) + "Shoulder")
+			var arm: int = sk.find_bone(str(s[0]) + "Arm")
+			if sh < 0 or arm < 0 or sk.get_bone_parent(arm) != sh or sk.get_bone_parent(sh) < 0:
+				continue
+			sides.append([sh, arm, sk.get_bone_parent(sh), float(s[1])])
+
+	func _process_modification_with_delta(_delta: float) -> void:
+		var sk: Skeleton3D = get_skeleton()
+		if sk == null or not sk.is_visible_in_tree():
+			return
+		for e in sides:
+			var sh: int = e[0]
+			var arm: int = e[1]
+			var gp_rest: Quaternion = sk.get_bone_global_rest(e[2]).basis.get_rotation_quaternion()
+			var gp: Quaternion = sk.get_bone_global_pose(e[2]).basis.get_rotation_quaternion()
+			var garm: Quaternion = sk.get_bone_global_pose(arm).basis.get_rotation_quaternion()
+			# direction du bras dans le repère du buste au repos (Y vers le haut)
+			var a: Vector3 = gp_rest * (gp.inverse() * (garm * Vector3.UP))
+			var elev: float = rad_to_deg(acos(clampf(-a.y, -1.0, 1.0)))
+			var lift: float = minf(MAX, K * maxf(0.0, elev - START))
+			if lift < 0.05:
+				continue
+			var c := Quaternion(Vector3(0, 0, 1), deg_to_rad(lift) * float(e[3]))
+			var shl: Quaternion = (gp_rest.inverse() * c * gp_rest * sk.get_bone_pose_rotation(sh)).normalized()
+			sk.set_bone_pose_rotation(sh, shl)
+			sk.set_bone_pose_rotation(arm, ((gp * shl).inverse() * garm).normalized())
 
 
 ## Expressions : cligne (paupières), bouche (ouverte), sourire. w : 0..1.

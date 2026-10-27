@@ -362,6 +362,8 @@ func fountain71(xf: Transform3D, r: float = 3.4) -> Vector3:
 	disc(xf * T(0, 0.55, 0), r - 0.4, "eau71_claire", 32, 3.0)
 	disc(xf * T(0, 0.05, 0), r - 0.4, "dalles71", 24, 2.0)
 	col_cyl(xf.origin, r, 0.85)
+	col_cyl(xf.origin, 1.2, 2.4)                # V77 : la colonne, la vasque et la statue sont solides
+	col_cyl(xf.origin, 0.55, 5.1)
 	cyl(xf * T(0, 0.0, 0), 0.5, 0.42, 2.0, "dalles71_clair", 12)
 	cyl(xf * T(0, 2.0, 0), 1.2, 0.3, 0.35, "dalles71_clair", 16)
 	disc(xf * T(0, 2.3, 0), 1.05, "eau71_claire", 16)

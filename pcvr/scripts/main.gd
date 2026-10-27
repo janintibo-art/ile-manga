@@ -2047,11 +2047,101 @@ func _create_gameplay_v28() -> void:
 
 func _spawn_world_v28() -> void:
 	await get_tree().physics_frame
+	# V77 : les lieux et chemins des habitants posés un peu sous le vrai sol (un môle, une marche,
+	# un sentier, un pont…) remontent dessus : plus d'habitants enterrés jusqu'aux genoux
+	_snap_spots_v77()
 	inventory_v28.spawn_world()
 	print("ILE_MANGA_V28: ", inventory_v28.pickups.size(), " objets à ramasser")
 	_create_npcs_v31()
 	# V56 : les habitants de Port-Azur (après Barnabé et Octave)
 	_spawn_azur_v56()
+
+
+const SEATED_V77 := ["assis", "boire", "prier", "lire", "dormir", "couche", "allonge", "pecher"]
+
+func _snap_spots_v77() -> void:
+	var space := get_world_3d().direct_space_state
+	var moved: int = 0
+	for node in get_children():
+		for n in [node] + node.find_children("*", "Node3D", true, false):
+			if n is CollisionObject3D or n is MeshInstance3D:
+				continue
+			for prop in ["spots", "points"]:
+				var d: Variant = n.get(prop)
+				if not (d is Dictionary):
+					continue
+				for k in (d as Dictionary).keys():
+					var e: Variant = d[k]
+					var is_spot: bool = e is Dictionary and (e as Dictionary).has("pos")
+					var p: Variant = e["pos"] if is_spot else e
+					if not (p is Vector3):
+						continue
+					if is_spot and str(e.get("pose", "")) in SEATED_V77:
+						continue
+					var y: float = _snap_y_v77(space, p)
+					# V77 : un point de chemin pris dans un mur, une machine, un étal : on le pousse dehors
+					var stuck_ok: bool = (prop == "points" and not str(k).begins_with("porte") and not str(k).begins_with("@") and not str(k).ends_with("_face")) or (is_spot and not (str(e.get("pose", "")) in ["comptoir", "dormir"]))
+					if stuck_ok and _solid_at_v77(space, p + Vector3.UP * 0.35) and _solid_at_v77(space, p + Vector3.UP * 1.1):
+						var free: Variant = _free_near_v77(space, p)
+						if free is Vector3:
+							if is_spot:
+								e["pos"] = free
+							else:
+								d[k] = free
+							moved += 1
+							continue
+					if y != (p as Vector3).y:
+						moved += 1
+						if is_spot:
+							e["pos"] = Vector3(p.x, y, p.z)
+						else:
+							d[k] = Vector3(p.x, y, p.z)
+	print("ILE_MANGA_V77: %d lieux d'habitants remontés sur le sol" % moved)
+
+
+func _solid_at_v77(space: PhysicsDirectSpaceState3D, p: Vector3) -> bool:
+	var pq := PhysicsPointQueryParameters3D.new()
+	pq.position = p
+	pq.collision_mask = 1
+	return not space.intersect_point(pq, 1).is_empty()
+
+
+## La place libre la plus proche (jusqu'à 6 m) : debout, sans mur, avec un sol à moins de 0,6 m.
+func _free_near_v77(space: PhysicsDirectSpaceState3D, p: Vector3) -> Variant:
+	for r in [1.0, 1.6, 2.3, 3.0, 4.0, 5.0, 6.0]:
+		for i in range(12):
+			var a: float = TAU * i / 12.0
+			var c: Vector3 = p + Vector3(cos(a) * r, 0.0, sin(a) * r)
+			var q := PhysicsRayQueryParameters3D.create(c + Vector3.UP * 0.9, c - Vector3.UP * 0.9, 1)
+			var h: Dictionary = space.intersect_ray(q)
+			if h.is_empty() or (h["normal"] as Vector3).y < 0.7:
+				continue
+			var f: Vector3 = h["position"]
+			if absf(f.y - p.y) > 0.6:
+				continue
+			if _solid_at_v77(space, f + Vector3.UP * 0.35) or _solid_at_v77(space, f + Vector3.UP * 1.1) or _solid_at_v77(space, f + Vector3.UP * 1.7):
+				continue
+			return f
+	return null
+
+
+## Le sol juste au-dessus de p (0,12 à 0,75 m plus haut, avec de la place pour se tenir debout), ou p.y.
+func _snap_y_v77(space: PhysicsDirectSpaceState3D, p: Vector3) -> float:
+	var q := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 0.8, p - Vector3.UP * 0.3, 1)
+	var h: Dictionary = space.intersect_ray(q)
+	if h.is_empty():
+		return p.y
+	var fy: float = (h["position"] as Vector3).y
+	var dy: float = fy - p.y
+	if dy < 0.12 or dy > 0.75 or (h["normal"] as Vector3).y < 0.7:
+		return p.y
+	for up in [0.5, 1.2]:
+		var pq := PhysicsPointQueryParameters3D.new()
+		pq.position = Vector3(p.x, fy + up, p.z)
+		pq.collision_mask = 1
+		if not space.intersect_point(pq, 1).is_empty():
+			return p.y
+	return fy
 
 
 func _show_message_v28(text: String) -> void:
