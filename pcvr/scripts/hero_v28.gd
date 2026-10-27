@@ -1358,6 +1358,10 @@ func heal(amount: int) -> bool:
 func hurt(amount: int, from_pos: Vector3) -> void:
 	if state == "ko" or hurt_cooldown > 0.0:
 		return
+	# V78 : le mode testeur (F8) : invincible
+	var tst: Variant = main.get("testeur_v78")
+	if tst != null and bool(tst.invincible):
+		return
 	var me: Vector3 = _me()
 	# V63 : la roulade d'esquive : les coups passent à travers
 	if state == "roulade" and talents.has("roulade_esquive") and action_time < ROLL_TIME * 0.8:

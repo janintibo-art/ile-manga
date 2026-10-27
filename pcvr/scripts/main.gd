@@ -1604,6 +1604,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_save_slot(game_menu.active_slot)
 		elif event.keycode == KEY_F9 and game_started:
 			game_menu.open_menu()
+		elif event.keycode == KEY_F8 and game_started and testeur_v78 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
+			# V78 : le mode testeur (se téléporter n'importe où, l'heure, invincible…)
+			testeur_v78.open_menu()
 		elif OS.has_feature("ile_manga_pc") and event.keycode == KEY_F11:
 			if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
 				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
@@ -3428,6 +3431,7 @@ var astralys_v76: Node3D                   # V76 : Astralys, l'île flottante de
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
 var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
+var testeur_v78: Node                      # V78 : le mode testeur (F8)
 var chantier_v76: Node                     # V76 : le chantier naval de Port-Azur (le bateau qui évolue)
 var atelier_ailes_v76: Node3D              # V76 : l'Atelier des Ailes de Philibert Vis, à Cliquetis
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
@@ -3641,6 +3645,10 @@ func _create_v75() -> void:
 ## V76 : Astralys (la cité de cristal, le Rayon d'accueil, les aurores, les Lumens) ; la bouée est
 ## posée avec le relief.
 func _create_v76() -> void:
+	testeur_v78 = preload("res://scripts/testeur_v78.gd").new()
+	testeur_v78.name = "Testeur_v78"
+	add_child(testeur_v78)
+	testeur_v78.setup(self)
 	compagnons_animaux_v76 = preload("res://scripts/compagnons_animaux_v76.gd").new()
 	compagnons_animaux_v76.name = "Compagnons_animaux_v76"
 	add_child(compagnons_animaux_v76)
