@@ -63,7 +63,10 @@ func spot(id: String) -> Array:
 			if el == null or el.ile == null:
 				return []
 			var g: Vector3 = el.ile.glade_world()
-			var at: Vector3 = g + Vector3(0, 0, 22.0)
+			# V80 : sur le sentier des lanternes, à l'entrée de la place (et non plus dans le tronc
+			# de l'arbre-maison du sud, planté pile à 21 m du centre).
+			var to_dock: Vector3 = (el.ile.dock_start - g) * Vector3(1, 0, 1)
+			var at: Vector3 = g + (to_dock.normalized() if to_dock.length() > 1.0 else Vector3(0, 0, 1)) * 15.0
 			at.y = el.ile.height(at.x, at.z) + 0.1
 			return [at, (g - at).normalized() * Vector3(1, 0, 1)]
 		"nains":

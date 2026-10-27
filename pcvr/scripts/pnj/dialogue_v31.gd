@@ -298,15 +298,31 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif (choices.size() == 1 or _gate) and _shown_t >= READ_DELAY:
 				_pick(0)
 			get_viewport().set_input_as_handled()
-		elif (k >= KEY_1 and k <= KEY_9) or k == KEY_0:
+		elif digit_index(event) >= 0:
 			# Pas besoin d'attendre la fin du texte pour répondre (0 = dixième choix) ; V77 : sauf
 			# pendant « Continuer » : la touche affiche alors seulement les réponses.
 			_text.visible_characters = -1
-			_pick(9 if k == KEY_0 else k - KEY_1)
+			_pick(digit_index(event))
 			get_viewport().set_input_as_handled()
 		elif k == KEY_ESCAPE:
 			chosen.emit("au_revoir" if _has_choice("au_revoir") else "fermer")
 			get_viewport().set_input_as_handled()
+
+
+## V80 : le numéro de réponse d'une touche (0 pour « 1 », … 9 pour « 0 »), -1 sinon. Sur un clavier
+## AZERTY, la rangée du haut donne « & é " ' ( … » sans Maj : on lit donc aussi la touche physique,
+## et le pavé numérique.
+static func digit_index(event: InputEventKey) -> int:
+	for k in [event.keycode, event.physical_keycode]:
+		if k >= KEY_1 and k <= KEY_9:
+			return k - KEY_1
+		if k == KEY_0:
+			return 9
+		if k >= KEY_KP_1 and k <= KEY_KP_9:
+			return k - KEY_KP_1
+		if k == KEY_KP_0:
+			return 9
+	return -1
 
 
 func _has_choice(id: String) -> bool:

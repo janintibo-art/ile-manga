@@ -259,6 +259,18 @@ func _build_village() -> void:
 	halo.omni_attenuation = 0.8
 	add_child(halo)
 	halo.global_position = G + Vector3.UP * 30.0
+	# V80 : sous les arbres géants, la place restait sombre même à midi : une douce lumière
+	# de remplissage (sans ombre) éclaire tout l'anneau des arbres-maisons.
+	var fill := OmniLight3D.new()
+	fill.name = "Lumiere_de_la_place_v80"
+	fill.light_color = Color(1.0, 0.93, 0.78)
+	fill.light_energy = 1.1
+	fill.omni_range = 34.0
+	fill.omni_attenuation = 0.6
+	fill.shadow_enabled = false
+	fill.light_specular = 0.2
+	add_child(fill)
+	fill.global_position = G + Vector3.UP * 9.0
 	var motes := CPUParticles3D.new()
 	motes.amount = 90
 	motes.lifetime = 7.0

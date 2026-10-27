@@ -1575,7 +1575,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_tree().quit()
 		elif event.keycode == KEY_E and game_started and houses_v27 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
 			_interact_v28()
-		elif inventory_v28 != null and inventory_v28.opened and inventory_v28.carnet != null and inventory_v28.carnet.handle_key(event.keycode):
+		elif inventory_v28 != null and inventory_v28.opened and inventory_v28.carnet != null and inventory_v28.carnet.handle_key(_digit_key_v80(event)):
 			pass
 		elif (event.keycode == KEY_I or event.keycode == KEY_TAB) and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
 			inventory_v28.toggle(0)
@@ -1592,10 +1592,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_H and game_started and inventory_v28 != null and not game_menu.opened and (dialogue_v31 == null or not dialogue_v31.opened):
 			# V63 : H, le carnet ouvert sur la page du héros (niveau, talents, équipement, sceaux)
 			inventory_v28.toggle(4)
-		elif progression_v63 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and progression_v63.handle_key(event.keycode):
+		elif progression_v63 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and progression_v63.handle_key(_digit_key_v80(event)):
 			# V63 : 1 à 4 choisissent le pouvoir d'un sceau, X le lance
 			pass
-		elif sorts_v67 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and sorts_v67.handle_key(event.keycode):
+		elif sorts_v67 != null and not event.echo and game_started and not xr_active and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and sorts_v67.handle_key(_digit_key_v80(event)):
 			# V67 : 5 à 0 choisissent un sort d'Arcanelle, V le lance, B passe au suivant
 			pass
 		elif event.keycode == KEY_F1 and info != null:
@@ -3896,3 +3896,12 @@ func _bake_shore_v48() -> void:
 	ocean_material.set_shader_parameter("shore_size", SHORE_SIZE_V48)
 	ocean_material.set_shader_parameter("has_shore", true)
 	print("ILE_MANGA_V48: carte des rivages ", samples, " mesures en ", Time.get_ticks_msec() - t0, " ms")
+
+
+## V80 : sur un clavier AZERTY, la rangée des chiffres donne « & é " ' ( … » sans Maj ; pour les
+## raccourcis 1 à 9 (carnet, pouvoirs, sorts), on lit la touche physique quand c'en est un chiffre.
+func _digit_key_v80(event: InputEventKey) -> Key:
+	var p: Key = event.physical_keycode
+	if p >= KEY_0 and p <= KEY_9:
+		return p
+	return event.keycode

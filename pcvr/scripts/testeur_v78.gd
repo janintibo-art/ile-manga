@@ -9,7 +9,7 @@ extends Node
 ## Tout passe par la fenêtre de dialogue (souris, chiffres, manette) ; rien n'est enregistré
 ## avec la partie, sauf ce qu'on y gagne (pièces, lieux visités).
 
-const PAGE: int = 8
+const PAGE: int = 7                       # V80 : 7 + Suivants + Précédents + Retour = 10 touches (1…0)
 
 var main: Node
 var invincible: bool = false

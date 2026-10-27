@@ -378,7 +378,8 @@ func place_name(p: Vector3) -> String:
 
 
 func respawn_point() -> Array:
-	var p: Vector3 = city.portail_point if city != null else IleScript.W(120.0, 120.0)
+	# V80 : quelques pas devant l'arche, pour ne plus arriver collé dans le dos de Halo.
+	var p: Vector3 = city.portail_arrivee if city != null and city.portail_arrivee != Vector3.ZERO else IleScript.W(120.0, 120.0)
 	return [p + Vector3.UP * 0.3, Vector3(-0.7, 0, -0.7)]
 
 

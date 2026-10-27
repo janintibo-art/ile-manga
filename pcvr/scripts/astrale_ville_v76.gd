@@ -49,6 +49,7 @@ var heart_light: OmniLight3D
 var hoops: Array = []                    # les anneaux du parcours des apesanteurs (monde)
 var rayon_top := Vector3.ZERO            # le belvédère du Rayon (monde, au sol)
 var portail_point := Vector3.ZERO
+var portail_arrivee := Vector3.ZERO      # V80 : où l'on arrive (quelques pas devant l'arche, côté ville)
 var council := Vector3.ZERO
 var stage := Vector3.ZERO                # la petite scène de l'Agora (les spectacles du soir)
 var telescope := Vector3.ZERO
@@ -614,6 +615,7 @@ func _portail() -> void:
 	var xf: Transform3D = XF(c.x, c.y, d.x, d.y)
 	kit.arch76(xf, 7.0, 8.0, "or")
 	portail_point = GV(c - d * 3.0)
+	portail_arrivee = GV(c - d * 8.0)
 	# le pont jusqu'au belvédère, au-delà du bord
 	var rp: Vector2 = R.RAYON
 	var plat_y: float = 0.1

@@ -323,14 +323,17 @@ func ring_spot() -> Vector3:
 
 ## Sur la plage de la teuf, à quelques pas de Lulu.
 func beach_spot() -> Array:
+	# V80 : au bord de la piste, sur le sable (avant : 9 m en retrait, dans l'herbe du village).
 	var tf: Node = main.get("teuf_v57")
-	var x: float = 2.0 - 7.0
-	var z: float = 51.5 - 9.0
+	var px: float = 2.0
+	var pz: float = 51.5
 	if tf != null:
-		x = tf.PISTE.x - 7.0
-		z = tf.PISTE.y - 9.0
+		px = tf.PISTE.x
+		pz = tf.PISTE.y
+	var x: float = px - 10.0
+	var z: float = pz - 3.5
 	var at := Vector3(x, main._height_at(x, z) + 0.1, z)
-	return [at, (Vector3(x + 7.0, at.y, z + 9.0) - at).normalized()]
+	return [at, (Vector3(px, at.y, pz) - at).normalized()]
 
 
 # =================================================================== entrer et sortir du royaume
