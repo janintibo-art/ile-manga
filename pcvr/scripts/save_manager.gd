@@ -77,6 +77,10 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 		return false
 	var g_path: String = ProjectSettings.globalize_path(path)
 	var had_old: bool = FileAccess.file_exists(path)
+	# V83 : si le fichier actuel est abîmé, il ne prend pas la place d'une bonne copie de secours
+	if had_old and _parse(path).is_empty() and FileAccess.file_exists(path + ".bak") and not _parse(path + ".bak").is_empty():
+		DirAccess.remove_absolute(g_path)
+		had_old = false
 	if had_old:
 		if FileAccess.file_exists(path + ".bak"):
 			DirAccess.remove_absolute(g_path + ".bak")

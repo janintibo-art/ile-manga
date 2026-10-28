@@ -124,6 +124,16 @@ static func plat(style: String) -> String:
 	return "de la bouillabaisse"
 
 
+## V83 : cette histoire existe-t-elle (encore) ?
+static func has_scenario(sc: String) -> bool:
+	if sc in ["chez", "fee"] or Iles.has(sc):
+		return true
+	for e in SCENARIOS:
+		if str(e[0]) == sc:
+			return true
+	return false
+
+
 static func pick(M) -> String:
 	var ctx: Dictionary = M.ctx
 	if str(ctx["style"]) == "fee":

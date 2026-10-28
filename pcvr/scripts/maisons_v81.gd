@@ -42,6 +42,8 @@ var _talk_with: Node = null              # Figurant qui parle (pour end_talk)
 var _exit_cb: Callable
 var visits: int = 0                      # maisons visitées pendant la partie (tests)
 var force_scenario: String = ""          # mode testeur : imposer l'histoire de la prochaine maison
+var pending: Array = []                  # V83 : [[id, n], …] reçus quand le sac était plein (sauvegardé)
+var _pending_t: float = 3.0
 
 
 func setup(main_node: Node) -> void:
@@ -130,6 +132,7 @@ func _process(delta: float) -> void:
 	if main == null or not main.game_started:
 		return
 	_t += delta
+	_pending_tick(delta)
 	_collect_t -= delta
 	if _collect_t <= 0.0:
 		_collect_t = 5.0
@@ -338,7 +341,16 @@ func _build() -> Array:
 	R.door_x = rng.randf_range(-w * 0.2, w * 0.2)
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
-	scenario = Scenes.pick(self) if force_scenario == "" else force_scenario
+	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
+	var st0: Dictionary = state()
+	if force_scenario != "":
+		scenario = force_scenario
+	elif str(st0.get("scenario", "")) != "" and (Scenes.has_scenario(str(st0["scenario"]))):
+		scenario = str(st0["scenario"])
+	else:
+		scenario = Scenes.pick(self)
+		if scenario != "chez" and scenario != "fee":
+			st0["scenario"] = scenario
 	force_scenario = ""
 	ctx["scenario"] = scenario
 	R.shell()
@@ -435,6 +447,8 @@ func give(items: Array, intro: String = "") -> void:
 		var got: int = int(inv.add(id, n))
 		if got < n:
 			lost = true
+			# V83 : ce qui ne rentre pas dans le sac est gardé de côté (rendu dès qu'il y a de la place)
+			pending.append([id, n - got])
 		if got <= 0:
 			continue
 		var nm: String = str(inv.ITEMS[id]["art"]) if got <= 1 else ("%d pièces" % got if id == "piece" else "%d × %s" % [got, str(inv.ITEMS[id]["name"]).to_lower()])
@@ -444,7 +458,7 @@ func give(items: Array, intro: String = "") -> void:
 	main.sfx("ramasse")
 	var msg: String = intro + ("Tu reçois : " + ", ".join(names) + "." if not names.is_empty() else "")
 	if lost:
-		msg += " (Ton sac est plein : tu n'as pas pu tout prendre.)"
+		msg += " (Ton sac est plein : le reste t'attend, tu le récupéreras dès qu'il y aura de la place.)"
 	say(msg.strip_edges(), 6.0)
 
 
@@ -541,9 +555,37 @@ func end_talk_hook() -> void:
 
 # =================================================================== sauvegarde
 
+## V83 : rendre ce qui attendait (sac plein), dès qu'il y a de la place.
+func _pending_tick(delta: float) -> void:
+	if pending.is_empty() or busy:
+		return
+	_pending_t -= delta
+	if _pending_t > 0.0:
+		return
+	_pending_t = 3.0
+	var inv: Node = main.get("inventory_v28")
+	if inv == null:
+		return
+	var names: Array = []
+	var still: Array = []
+	for e in pending:
+		var id: String = str(e[0])
+		var n: int = int(e[1])
+		var got: int = int(inv.add(id, n)) if inv.ITEMS.has(id) else n
+		if got > 0 and inv.ITEMS.has(id):
+			names.append(str(inv.ITEMS[id]["art"]) if got <= 1 else ("%d pièces" % got if id == "piece" else "%d × %s" % [got, str(inv.ITEMS[id]["name"]).to_lower()]))
+		if got < n:
+			still.append([id, n - got])
+	pending = still
+	if not names.is_empty():
+		main.sfx("ramasse")
+		say("Tu récupères ce que tu n'avais pas pu porter : " + ", ".join(names) + ".", 5.0)
+
+
 func serialize() -> Dictionary:
-	return {"etat": etat.duplicate(true)}
+	return {"etat": etat.duplicate(true), "en_attente": pending.duplicate(true)}
 
 
 func load_data(d: Dictionary) -> void:
 	etat = (d.get("etat", {}) as Dictionary).duplicate(true)
+	pending = (d.get("en_attente", []) as Array).duplicate(true)

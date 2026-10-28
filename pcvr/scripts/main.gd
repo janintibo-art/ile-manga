@@ -944,7 +944,9 @@ func _create_game_menu_v8() -> void:
 	game_menu = preload("res://scripts/menu_v8.gd").new()
 	add_child(game_menu)
 	game_menu.start_slot.connect(_start_save_slot)
-	game_menu.save_requested.connect(_save_slot)
+	game_menu.save_requested.connect(func(s: int):
+		if _save_slot(s):
+			_show_message_v28("Partie sauvegardée (emplacement %d)." % s))
 	game_menu.delete_requested.connect(_delete_slot)
 	game_menu.resume_requested.connect(func(): pass)
 	game_menu.setup(xr_active, xr_camera, right_hand)
@@ -963,6 +965,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	# V81 : on charge une partie depuis une maison : on la démonte d'abord
 	if maisons_v81 != null and maisons_v81.inside:
 		maisons_v81._teardown()
+	# V83 : le mode testeur ne survit pas à un changement de partie
+	if testeur_v78 != null:
+		testeur_v78.invincible = false
 	game_started = true
 	var origin: Node3D = xr_origin if xr_active else pc_root
 	if new_game:
@@ -1244,9 +1249,9 @@ func _delete_slot(slot: int) -> void:
 	print("ILE_MANGA_DELETE: ", slot, " = ", SaveStore.delete_slot(slot))
 
 
-func _save_slot(slot: int) -> void:
+func _save_slot(slot: int) -> bool:
 	if not game_started:
-		return
+		return false
 	var origin: Node3D = xr_origin if xr_active else pc_root
 	var extra: Dictionary = {}
 	if inventory_v28 != null:
@@ -1351,6 +1356,10 @@ func _save_slot(slot: int) -> void:
 		save_pos = maisons_v81.outside_pos()
 	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
+	# V83 : une sauvegarde ratée se voit (la sauvegarde automatique aussi, si elle échoue)
+	if not ok:
+		_show_message_v28("La sauvegarde a échoué (disque plein ou dossier protégé ?). Ta partie précédente est intacte.")
+	return ok
 
 
 func _physics_process(delta: float) -> void:
@@ -1617,7 +1626,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F1 and info != null:
 			info_clock_v53 = 0.0 if info.modulate.a > 0.5 else 1e9
 		elif event.keycode == KEY_F5 and game_started:
-			_save_slot(game_menu.active_slot)
+			if _save_slot(game_menu.active_slot):
+				_show_message_v28("Partie sauvegardée (emplacement %d)." % game_menu.active_slot)
 		elif event.keycode == KEY_F9 and game_started:
 			game_menu.open_menu()
 		elif event.keycode == KEY_F8 and game_started and testeur_v78 != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened):
