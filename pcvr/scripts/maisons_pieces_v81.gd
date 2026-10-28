@@ -88,6 +88,21 @@ const STYLES := {
 		"poutre": Color(0.36, 0.24, 0.14), "bois": Color(0.55, 0.36, 0.22), "h": 2.8,
 		"tapis": ["tazira/tapis_3.png"], "tableaux": ["soleils/fresque_huitzilopochtli.png", "soleils/fresque_tlaloc.png", "soleils/pierre_soleil.png"],
 		"fenetre": "fente", "foyer": "foyer_pierres"},
+	"elfe": {"sol": ["azur/planches.png", Color(0.95, 0.85, 0.65), 2.0], "mur": ["temple/temple_wall.png", Color(1.0, 0.97, 0.9), 2.5],
+		"bas": ["ramure/rondins.png", Color(0.9, 0.8, 0.62), 2.0], "plafond": ["fees/cernes.png", Color(0.9, 0.82, 0.62), 3.0],
+		"poutre": Color(0.55, 0.4, 0.22), "bois": Color(0.78, 0.62, 0.4), "h": 3.0, "rond": true,
+		"tapis": ["tazira/tapis_2.png"], "tableaux": ["elfes/elfe_lyra.png", "elfes/elfe_azur.png", "arcanelle/carte_ciel.png"],
+		"fenetre": "rond", "foyer": "cristal"},
+	"fee": {"sol": ["fees/cernes.png", Color(1.0, 0.92, 0.8), 2.0], "mur": ["fees/ecorce_ygg.png", Color(1.0, 0.95, 0.9), 2.0],
+		"bas": ["fees/ecorce_ygg.png", Color(0.8, 0.72, 0.65), 2.0], "plafond": ["fees/fleurs_arbre.png", Color(1.0, 0.9, 0.95), 2.0],
+		"poutre": Color(0.45, 0.32, 0.22), "bois": Color(0.7, 0.52, 0.36), "h": 3.0, "rond": true,
+		"tapis": ["tazira/tapis_2.png"], "tableaux": ["fees/runes_porte.png", "fees/fleurs_arbre.png"],
+		"fenetre": "rond", "foyer": "cristal"},
+	"atlante": {"sol": ["atlantide/mosaique.png", Color(1, 1, 1), 2.0], "mur": ["atlantide/marbre.png", Color(0.96, 0.98, 1.0), 2.5],
+		"bas": ["atlantide/frise.png", Color(1, 1, 1), 1.2], "plafond": ["atlantide/cuivre_vert.png", Color(0.8, 0.9, 0.9), 2.5],
+		"poutre": Color(0.75, 0.62, 0.35), "bois": Color(0.75, 0.68, 0.55), "h": 3.2, "rond": true, "poutres_metal": true,
+		"tapis": ["tazira/tapis_2.png"], "tableaux": ["atlantide/fresque.png", "temple/fresque.png", "temple/glyph_vague.png"],
+		"fenetre": "hublot", "foyer": "cristal"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -300,6 +315,10 @@ func mat(key: String) -> Material:
 
 
 func _window_color() -> Color:
+	if style == "atlante":
+		return Color(0.12, 0.42, 0.55)          # la mer, derrière le hublot
+	if style == "fee":
+		return Color(0.55, 0.4, 0.75)           # la lueur de la caverne des fées
 	if hour >= 7.5 and hour < 18.5:
 		return Color(0.78, 0.88, 1.0)
 	if hour >= 6.0 and hour < 7.5:

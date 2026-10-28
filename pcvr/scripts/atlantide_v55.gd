@@ -528,6 +528,10 @@ func _build_houses() -> void:
 			var wa: float = sx * 0.85
 			_mesh(root, _cyl(0.38, 0.38, 0.2, 14), _glow(Color(0.95, 0.85, 0.55), 0.9), Vector3(sin(wa) * rad, 2.8, -cos(wa) * rad), Vector3(PI * 0.5, 0, -wa))
 		_solid_cyl("Maison_atlante_collision", root.global_position + Vector3(0, wall_h * 0.5, 0), rad + 0.1, wall_h)
+		# V82 : on peut entrer dans la maison (la porte regarde la place)
+		var fwd: Vector3 = -root.global_transform.basis.z
+		fwd.y = 0.0
+		preload("res://scripts/azur_kit_v56.gd").note_v81(root.global_position + fwd.normalized() * (rad + 0.9) + Vector3.UP * 0.05, fwd.normalized(), rad * 2.0, rad * 2.0, "atlante", 1)
 
 
 func _build_gardens_and_lamps() -> void:

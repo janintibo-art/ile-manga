@@ -204,6 +204,12 @@ func _apply_anim(force: bool = false) -> void:
 			_play("v81/pointer", 0.3)
 		"boire":
 			_play("Stand_and_Drink", 0.4)
+		"guitare_bo":
+			_play("bo/guitare", 0.3)
+		"basse_bo":
+			_play("bo/basse", 0.3)
+		"leviter":
+			_play("lu/leviter", 0.4)
 		_:
 			_play("v28/idle", 0.4)
 

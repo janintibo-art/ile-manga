@@ -160,6 +160,16 @@ func _house_stories() -> Array:
 		return out
 	for sc in M.Scenes.SCENARIOS:
 		out.append([str(labels.get(str(sc[0]), str(sc[0]))), [str(sc[0])]])
+	# V82 : les histoires des îles (on va dans la maison la plus proche de la bonne ville)
+	var iles := {"chevalier": "Montjoie : le chevalier", "demon_peureux": "Pandémonia : le petit démon peureux", "repetition": "Port-Boucan : la répétition",
+		"the": "Tazira : le thé à la menthe", "apesanteur": "Astralys : la pièce en apesanteur", "robot": "Cliquetis : le robot-majordome",
+		"tanuki": "Ramure : la théière qui remue la queue", "potion": "Arcanelle : la potion ratée", "perroquet": "Port-Coutelas : le perroquet bavard",
+		"bouteille": "Carène : le bateau en bouteille", "chat_sacre": "Per-Hâpy : le chat sacré", "chocolat": "Yaxché : le chocolat",
+		"plumes": "Aztlán : l'atelier des plumes", "peintre": "Port-Azur : le peintre", "chant_elfe": "Bois-Doré : la chanteuse elfe",
+		"aquarium": "Atlantide : la maison-aquarium"}
+	for sc2 in M.Scenes.Iles.SCENARIOS:
+		out.append([str(iles.get(str(sc2[0]), str(sc2[0]))), [str(sc2[0])]])
+	out.append(["Royaume des fées : chez une fée", ["fee"]])
 	return out
 
 
@@ -173,8 +183,17 @@ func _visit(sc: String) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	var best: int = 0
 	var bd: float = INF
+	var styles: Array = []
+	for sc2 in M.Scenes.Iles.SCENARIOS:
+		if str(sc2[0]) == sc:
+			styles = (sc2[2] as Dictionary).get("style", [])
+	if sc == "fee":
+		styles = ["fee"]
 	for i in range(M.portes.size()):
-		if sc == "" or str(M.portes[i].get("owner", "")) == "":
+		var ok: bool = sc == "" or str(M.portes[i].get("owner", "")) == "" or sc == "fee"
+		if not styles.is_empty() and not (str(M.portes[i]["style"]) in styles):
+			ok = false
+		if ok:
 			var dd: float = (M.portes[i]["door"] as Vector3).distance_to(p)
 			if dd < bd:
 				bd = dd

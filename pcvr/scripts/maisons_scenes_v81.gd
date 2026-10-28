@@ -17,6 +17,8 @@ const SCENARIOS := [
 	["coucou", 4, {}], ["vide", 9, {}],
 ]
 
+const Iles = preload("res://scripts/maisons_iles_v82.gd")
+
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
 	["Pourquoi les plongeurs plongent-ils toujours en arrière ?", "Parce que sinon, ils tombent dans le bateau !"],
@@ -124,6 +126,8 @@ static func plat(style: String) -> String:
 
 static func pick(M) -> String:
 	var ctx: Dictionary = M.ctx
+	if str(ctx["style"]) == "fee":
+		return "fee"
 	if str(ctx.get("owner", "")) != "" and ctx.get("owner_node", null) != null:
 		return "chez"
 	var rng := RandomNumberGenerator.new()
@@ -139,6 +143,11 @@ static func pick(M) -> String:
 			continue
 		cands.append(sc)
 		total += float(sc[1])
+	# V82 : les histoires propres à l'île
+	for sc3 in Iles.SCENARIOS:
+		if Iles.allowed(sc3, str(ctx["style"])):
+			cands.append(sc3)
+			total += float(sc3[1])
 	var x: float = rng.randf() * total
 	for sc2 in cands:
 		x -= float(sc2[1])
@@ -195,7 +204,10 @@ static func build(M) -> void:
 		"chez":
 			_b_chez(M)
 		_:
-			_b_vide(M)
+			if Iles.has(str(M.ctx["scenario"])):
+				Iles.build(M, str(M.ctx["scenario"]))
+			else:
+				_b_vide(M)
 
 
 static func on_enter(M, first: bool) -> void:
@@ -747,7 +759,7 @@ static func _trappe(M, x: float, z: float, contenu: String) -> void:
 	M.act(C.P(0.0, 0, 1.9), "E : remonter l'échelle", func(): M.go(tp + Vector3(0.9, 0.05, 0.6), Vector3(0, 0, -1)), 1.3)
 	M.act(tp, "E : soulever le tapis", func() -> void:
 		M.state()["tapis"] = true
-		var tw: Tween = M.create_tween()
+		var tw: Tween = M.room.create_tween()
 		tw.tween_property(rug, "position", Vector3(1.6, 0, 0.6), 0.6).set_trans(Tween.TRANS_QUAD)
 		M.main.sfx("touche_bois")
 		M.say("Sous le tapis… une trappe !", 4.0), 1.5, func(): return not bool(M.state().get("tapis", false)))
@@ -874,7 +886,7 @@ static func _b_biblio(M) -> void:
 	M.act(book, "E : tirer le livre rouge", func() -> void:
 		M.state()["passage"] = true
 		M.main.sfx("mecanisme", book)
-		var tw: Tween = M.create_tween()
+		var tw: Tween = M.room.create_tween()
 		tw.tween_interval(0.4)
 		tw.tween_property(shelf, "position", Vector3(1.25, 0, 0), 1.6).set_trans(Tween.TRANS_SINE)
 		M.main.sfx("pierre_glisse", book)
@@ -1696,7 +1708,7 @@ static func _b_coucou(M) -> void:
 			lab.no_depth_test = true
 			M.room.add_child(lab)
 			lab.global_position = p + Vector3(0, 0.3, 0.2)
-			var tw: Tween = M.create_tween()
+			var tw: Tween = M.room.create_tween()
 			tw.tween_property(lab, "global_position", p + Vector3(0, 0.6, 0.3), 1.5)
 			tw.tween_callback(lab.queue_free)
 			k += 1
@@ -1754,7 +1766,7 @@ static func _b_vide(M) -> void:
 			fish.material_override = fm
 			M.room.add_child(fish)
 			fish.global_position = R.P(R.W * 0.18 - 0.6, 1.43, -hd + 0.4)
-			var tw: Tween = M.create_tween().set_loops()
+			var tw: Tween = M.room.create_tween().set_loops()
 			tw.tween_property(fish, "global_position:x", fish.global_position.x + 0.07, 1.6).set_trans(Tween.TRANS_SINE)
 			tw.tween_property(fish, "global_position:x", fish.global_position.x - 0.07, 1.6).set_trans(Tween.TRANS_SINE)
 			M.act(R.P(R.W * 0.18 - 0.6, 0, -hd + 1.0), "E : regarder le poisson rouge", func(): M.say(str(_pick(M, ["Le poisson rouge fait des tours. Il a l'air de réfléchir. À quoi ? Mystère.", "Le poisson rouge te regarde. Glouglou. Tu as l'impression qu'il te juge.", "Sur le bocal, une étiquette : « Fernand. Ne pas nourrir (il ment). »"])), 4.0), 1.0)

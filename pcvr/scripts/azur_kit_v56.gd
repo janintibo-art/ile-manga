@@ -54,6 +54,11 @@ func porte_v81(xf: Transform3D, door_local: Vector3, w: float, d: float, style: 
 
 
 func porte_v81_dir(door: Vector3, out: Vector3, w: float, d: float, style: String, floors: int = 1, owner: String = "") -> void:
+	note_v81(door, out, w, d, style, floors, owner)
+
+
+## V82 : la même chose, pour les villages qui n'ont pas de boîte à outils (elfes, fées, Atlantide).
+static func note_v81(door: Vector3, out: Vector3, w: float, d: float, style: String, floors: int = 1, owner: String = "") -> void:
 	out.y = 0.0
 	if out.length() < 0.01:
 		return

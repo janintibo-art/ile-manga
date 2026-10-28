@@ -13,9 +13,10 @@ const STYLES := {
 	"cliquetis": ["cliquetis", "lumen", 6], "ramure": ["ramure", "ramure", 6], "arcanelle": ["arcanelle", "lumen", 6],
 	"pirate": ["balafre", "pirate", 6], "carene": ["carene", "lumen", 6], "egypte": ["egypte", "lumen", 6],
 	"maya": ["maya", "lumen", 6], "azteque": ["azteque", "lumen", 6],
+	"elfe": ["elfes", "lumen", 6], "atlante": ["atlantes", "lumen", 4],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
-const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan"}
+const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 
@@ -46,6 +47,10 @@ const PRENOMS := {
 		"f": ["Nefertari", "Mérit", "Tiyi", "Isis", "Henoutmira", "Satamon", "Nebet", "Taouret", "Iset", "Sitré", "Néfret", "Ankhésen"]},
 	"maya": {"h": ["Kinich", "Chac", "Itzam", "Yax", "Ek", "Kan", "Bacab", "Hun", "Ah-Puch", "Kukul", "Pakal", "Tohil"],
 		"f": ["Ixchel", "Ixtab", "Sak-Nik", "Kanal", "Ixik", "Yaxkin", "Chel", "Nikte", "Saasil", "Kuxtal", "Ix-Balam", "Muyal"]},
+	"elfe": {"h": ["Elrohir", "Faelan", "Thranduin", "Aerendil", "Calenor", "Gilthas", "Lindir", "Merethor", "Nimrodel", "Orophel", "Silvan", "Tauron"],
+		"f": ["Arwenya", "Elwing", "Galadwen", "Idril", "Luthiel", "Míriel", "Nimloth", "Silmë", "Tinúviel", "Yavië", "Elanor", "Aredhel"]},
+	"atlante": {"h": ["Triton", "Nérée", "Okéanos", "Glaucos", "Pontos", "Phorcys", "Égée", "Thaumas", "Palémon", "Mélicerte", "Proteus", "Ichtys"],
+		"f": ["Amphitrite", "Galatée", "Thétis", "Doris", "Ondine", "Néréa", "Marinella", "Coralie", "Perle", "Salacia", "Écume", "Calypso"]},
 	"azteque": {"h": ["Cuauhtli", "Itzcoatl", "Tochtli", "Mazatl", "Ocelotl", "Xolotl", "Tenoch", "Acatl", "Ehecatl", "Tlacotl", "Huemac", "Coaxoch"],
 		"f": ["Xochitl", "Citlali", "Itzel", "Yoltzin", "Atzin", "Nenetl", "Quetzalli", "Metztli", "Tonantzin", "Ameyal", "Nahui", "Teyacapan"]},
 }
@@ -161,6 +166,27 @@ static func _make(st: String, i: int) -> Dictionary:
 		az["tablier"] = _c(r, [[0.92, 0.9, 0.85], [0.3, 0.25, 0.2], [0.6, 0.55, 0.42]])
 	var p := {"id": "f81_%s_%d" % [st, i], "nom": "?", "titre": "habitant", "village": vil, "classe": str(STYLES[st][1]),
 		"role": role, "femme": f, "azur": az, "teinte": _c(r, skin), "humeur_base": 0.4, "repliques": {}}
+	if vil in ["elfes", "atlantes"]:
+		# V82 : les elfes et les Atlantes ont leur propre fiche (« elfe »), comme ceux de leur village
+		p.erase("azur")
+		var at: bool = vil == "atlantes"
+		var robes: Array = [[0.18, 0.55, 0.6], [0.8, 0.85, 0.88], [0.25, 0.3, 0.55], [0.3, 0.6, 0.5]] if at else [[0.2, 0.45, 0.35], [0.3, 0.38, 0.6], [0.55, 0.25, 0.3], [0.88, 0.82, 0.62], [0.4, 0.32, 0.55]]
+		var el := {"cheveux": _c(r, hair_old if old else ([[0.75, 0.88, 0.92], [0.95, 0.75, 0.55], [0.2, 0.3, 0.35], [0.88, 0.88, 0.85]] if at else [[0.85, 0.75, 0.5], [0.9, 0.9, 0.85], [0.55, 0.3, 0.15], [0.2, 0.18, 0.16], [0.95, 0.8, 0.5]])),
+			"coiffure": (["long", "tresse", "chignon"] if f else ["court", "long", "queue"])[r.randi() % 3], "silhouette": "robe" if f else "tunique",
+			"robe": _c(r, robes), "cape": [0.9, 0.93, 0.95] if at else [0.9, 0.88, 0.8], "bijou": [0.9, 0.8, 0.55] if at else [0.85, 0.85, 0.9],
+			"yeux": _c(r, [[0.3, 0.65, 0.75], [0.35, 0.5, 0.6], [0.3, 0.55, 0.4]]),
+			"texture": "res://assets/textures/" + ("pnj/atlante_nacre.png" if at else "elfes/elfe_azur.png")}
+		if kid:
+			el["taille"] = r.randf_range(0.72, 0.8)
+		if old:
+			el["vieux"] = true
+		p["elfe"] = el
+		if at:
+			p["atlante"] = {"collier": r.randf() < 0.5, "nageoires": r.randf() < 0.6}
+			p["teinte"] = [0.88, 0.95, 1.0]
+		else:
+			p["teinte"] = _c(r, [[1.0, 0.9, 0.84], [0.95, 0.82, 0.72]])
+		return p
 	match vil:
 		"montjoie":
 			var t: Array = ["artisan", "paysan", "marchand", "cuisinier", "savant", "barde", "noble", "forgeron"]

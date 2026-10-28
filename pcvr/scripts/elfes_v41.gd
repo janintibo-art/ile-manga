@@ -448,6 +448,11 @@ func _house_tree(i: int) -> void:
 	for wa in [0.9, -0.9, 2.4]:
 		_mesh(house, _sphere(0.24, 12), _mat("fenetre"), Vector3(cos(wa) * 1.66, 1.55, sin(wa) * 1.66), Vector3.ZERO, Vector3(0.25, 1.0, 1.0) if absf(cos(wa)) > 0.5 else Vector3(1.0, 1.0, 0.25))
 	_cyl_collision(hc, 1.7, 2.8)
+	# V82 : on peut entrer dans la maison ronde (sa porte regarde la plate-forme)
+	var ddir: Vector3 = (house.global_transform.basis * Vector3(1, 0, 0)).normalized()
+	if ddir.dot(p - hc) < 0.0:
+		ddir = -ddir
+	preload("res://scripts/azur_kit_v56.gd").note_v81(hc + ddir * 2.3 + Vector3.UP * 0.05, ddir, 5.5, 5.0, "elfe", 1)
 	# Lanternes
 	for la in [a_in + 0.55, a_in - 0.55]:
 		_lantern(Vector3(p.x + cos(la) * 6.3, H + 1.4, p.z + sin(la) * 6.3), true, 1.2)

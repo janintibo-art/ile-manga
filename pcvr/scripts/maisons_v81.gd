@@ -98,6 +98,15 @@ func _owners() -> void:
 		if best >= 0:
 			portes[best]["owner"] = str((n.get("profile") as Dictionary).get("id", ""))
 			portes[best]["owner_node"] = n
+	# V82 : les maisons dont la ville connaît déjà l'habitant (les fées, Mathurin, Khéti…)
+	var by_id: Dictionary = {}
+	for n2 in main.get("npcs_v31"):
+		if is_instance_valid(n2) and n2.get("profile") is Dictionary:
+			by_id[str((n2.get("profile") as Dictionary).get("id", ""))] = n2
+	for e in portes:
+		var ow: String = str(e.get("owner", ""))
+		if ow != "" and e.get("owner_node", null) == null and by_id.has(ow):
+			e["owner_node"] = by_id[ow]
 
 
 func nearest(p: Vector3, radius: float = 1.8) -> int:
@@ -475,7 +484,7 @@ func chest(x: float, z: float, yaw: float, loot: Array, key: String = "coffre", 
 			return
 		state()[key] = true
 		main.sfx("coffre", root.global_position)
-		var tw := create_tween()
+		var tw := room.create_tween()
 		tw.tween_property(hinge, "rotation:x", -1.95, 0.7).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		if main.has_method("jingle"):
 			main.jingle("decouverte")

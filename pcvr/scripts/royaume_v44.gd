@@ -313,6 +313,8 @@ func _house(at: Vector3, cap_c: Color, i: int) -> void:
 		var wp: Vector3 = at + to_c * (stem_r * 1.0) + side * w.x + Vector3.UP * w.y
 		f._mesh(s, f._sphere(0.22, 10), f._glow(Color(1.0, 0.8, 0.45), 2.2), wp, Vector3(0, atan2(to_c.x, to_c.z), 0), Vector3(1.0, 1.0, 0.3))
 	f._light(s, at + to_c * 2.2 + Vector3.UP * 2.8, Color(1.0, 0.8, 0.5), 1.2, 7.0)
+	# V82 : on peut entrer chez la fée (une maison à sa taille… et à la nôtre, par magie)
+	preload("res://scripts/azur_kit_v56.gd").note_v81(s.to_global(door_p + to_c * 0.9) + Vector3.UP * 0.05, s.global_transform.basis * to_c, 5.0, 5.0, "fee", 1, str((Fees.FEES[i]["data"] as Dictionary).get("id", "")))
 	# Une petite lanterne-fleur devant la porte
 	f._mesh(s, f._cyl(0.025, 0.03, 1.2, 6), f._glow(Color(0.35, 0.6, 0.3), 0.2), door_p + to_c * 0.9 + side * 0.9 + Vector3.UP * 0.6)
 	f._mesh(s, f._sphere(0.12, 10), f._glow(Color(1.0, 0.85, 0.55), 2.5), door_p + to_c * 0.9 + side * 0.9 + Vector3.UP * 1.25, Vector3.ZERO, Vector3(1.0, 1.3, 1.0))

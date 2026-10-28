@@ -82,7 +82,7 @@ def decide(pid, p):
         species = 'demon'
     female = pid in FEMALE or bool(p.get('femme', False))   # V81 : les habitants des maisons le disent eux-mêmes
     taille = float(az.get('taille', el.get('taille', na.get('taille', 1.0))))
-    old = bool(az.get('vieux', False)) or pid in OLD_EXTRA
+    old = bool(az.get('vieux', False)) or bool(el.get('vieux', False)) or pid in OLD_EXTRA
     child = taille <= 0.82 and species != 'nain'
     carrure = float(az.get('carrure', 1.0))
     teinte = p.get('teinte', [0.95, 0.8, 0.68])
