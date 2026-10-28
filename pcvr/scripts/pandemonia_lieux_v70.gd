@@ -243,7 +243,7 @@ func grand_place() -> void:
 			var rr: float = 79.0 + k7 * 8.8 + 4.4
 			var hx: Transform3D = c.PX(s3 * 9.8, rr, y, "ccw" if s3 > 0 else "cw")
 			kit.house70(hx, 8.4, 6.0, {"floors": 4, "wall": ["erouge70", "pgoth70", "mrouge70", "bnoire70"][k7], "roof": "ardoise70", "gable": true,
-				"shop": "", "lit": 0.7, "banner": k7 % 2 == 0, "balcony": 2, "door_x": 0.0, "gf": 4.0, "uf": 3.3, "chimney": k7 % 2 == 1, "sides": 0})
+				"shop": "", "lit": 0.7, "banner": k7 % 2 == 0, "balcony": 2, "door_x": 0.0, "gf": 4.0, "uf": 3.3, "chimney": k7 % 2 == 1, "sides": 0, "v81": true})
 			kit.lamp70(hx * Vector3(4.2, 0, 1.6), 3.9, k7 % 2 == 0, false)
 	# les points de la place : autour de la fontaine
 	c._pt("pl_o", c.PW(0.0, 82.5, y + 0.05))

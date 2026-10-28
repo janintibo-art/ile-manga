@@ -36,6 +36,10 @@ func _initialize() -> void:
 		_add(out, "nains", na.complete(e["data"]))
 	for n in range(7):
 		_add(out, "nains", na.passant(n))
+	# V81 : les habitants des maisons qu'on visite (leur fiche dit leur ville)
+	var mh = load("res://scripts/pnj/maisons_habitants_v81.gd")
+	for d81 in mh.all_profiles():
+		_add(out, str(d81.get("village", "azur")), d81)
 	for k2 in ["barnabe_v31", "octave_v33", "lyra_v41"]:
 		var m2 = load("res://scripts/pnj/%s.gd" % k2)
 		_add(out, k2.get_slice("_", 0), m2.DATA)

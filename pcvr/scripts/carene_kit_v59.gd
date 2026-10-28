@@ -210,6 +210,8 @@ func shack(xf: Transform3D, w: float, d: float, h: float, roof: String = "cabane
 		if absf(wx - door_x) > 0.9:
 			quad(xf * Transform3D(Basis(), Vector3(wx, h * 0.62, -0.06)), 0.7, 0.6, "fenetre_nuit")
 			box(xf * Transform3D(Basis(), Vector3(wx, h * 0.62 - 0.33, -0.1)), Vector3(0.84, 0.06, 0.14), "bois_sombre", 1.0)
+	if window:
+		porte_v81(xf, Vector3(door_x, 0, -0.8), w, d, "carene", 1)
 	return Vector3(door_x, 0, -0.8)
 
 

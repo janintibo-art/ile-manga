@@ -315,6 +315,8 @@ func usine75(xf: Transform3D, w: float, d: float, opts: Dictionary = {}) -> Dict
 	if opts.has("chimney"):
 		var cp: Vector3 = xf * Vector3(w * 0.3, 0, -d * 0.7)
 		cheminee75(cp, float(opts["chimney"]), 1.1, 0.8)
+	if not hollow and bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(dx, 0, 1.6), w, d, "boucan_entrepot", 1)
 	return {"door": xf * Vector3(dx, 0, 1.6), "inside": xf * Vector3(0, 0, -d * 0.5), "top": top}
 
 
@@ -452,6 +454,8 @@ func maison75(xf: Transform3D, w: float, d: float, opts: Dictionary = {}) -> Vec
 		chimneys70.append(cx + Vector3.UP * 1.8)
 	if opts.has("graffiti"):
 		quadz(xf * T(w * 0.15, 1.6, 0.04), minf(w * 0.7, 4.0), minf(w * 0.35, 2.0), "graffiti75_" + str(opts["graffiti"]))
+	if bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(dx, 0, 1.2), w, d, "boucan", floors)
 	return xf * Vector3(dx, 0, 1.2)
 
 
@@ -483,6 +487,8 @@ func conteneur75(xf: Transform3D, color: String, opts: Dictionary = {}) -> Vecto
 		box(xf * T(len * 0.38, 1.05, fz), Vector3(0.9, 2.05, 0.04), "peint75_" + str(opts.get("door_color", "jaune")), 1.0)
 	if bool(opts.get("solid", true)):
 		col_box(xf * T(0, ch * 0.5, 0), Vector3(len, ch, cw))
+	if bool(opts.get("home", false)) and bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(len * 0.38, 0, cw * 0.5 + 1.0), len, cw, "boucan_conteneur", 1)
 	return xf * Vector3(len * 0.38, 0, cw * 0.5 + 1.0)
 
 

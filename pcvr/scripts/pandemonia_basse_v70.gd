@@ -649,7 +649,7 @@ func port() -> void:
 	# des entrepôts, des caisses, des tonneaux, une grue
 	for e in [[124.0, 76.0], [146.0, 80.0], [192.0, 70.0], [82.0, 72.0]]:
 		var ex: Transform3D = HX(float(e[0]), float(e[1]), "in")
-		kit.house70(ex, 13.0, 10.0, {"floors": 2, "wall": "bnoire70", "roof": "tuile70_sombre", "gable": true, "lit": 0.3, "door_x": 0.0, "chimney": false, "gf": 4.6})
+		kit.house70(ex, 13.0, 10.0, {"floors": 2, "wall": "bnoire70", "roof": "tuile70_sombre", "gable": true, "lit": 0.3, "door_x": 0.0, "chimney": false, "gf": 4.6, "v81": true})
 	for k4 in range(14):
 		var al: float = 100.0 + k4 * 7.0
 		if absf(al - 135.0) < 6.0:

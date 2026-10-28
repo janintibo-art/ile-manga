@@ -153,7 +153,9 @@ func play(name: String, at: Variant = null, db: float = 0.0, pitch_spread: float
 	p.volume_db = vol
 	p.pitch_scale = pitch
 	var d: Node = main.get("donjon_v35")
-	p.bus = "Ambiance_grotte" if d != null and d.is_inside(at) and AudioServer.get_bus_index("Ambiance_grotte") >= 0 else "Bruitages"
+	var mv: Node = main.get("maisons_v81")
+	var house: bool = mv != null and bool(mv.get("inside"))
+	p.bus = "Ambiance_grotte" if d != null and d.is_inside(at) and not house and AudioServer.get_bus_index("Ambiance_grotte") >= 0 else "Bruitages"
 	p.play()
 
 

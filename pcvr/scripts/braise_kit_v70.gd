@@ -393,6 +393,8 @@ func house70(xf: Transform3D, w: float, d: float, opts: Dictionary = {}) -> Vect
 		balcony70(xf * T(0, gf + (bal - 1) * uf, jet), minf(w * 0.55, 3.0))
 	if bool(opts.get("banner", false)) and floors >= 3:
 		banner70(xf * T(-w * 0.5 + 0.75 if n > 1 else 0.0, H - 0.4, jet), 0.8, minf(2.6, uf * 1.1))
+	if bool(opts.get("door", true)) and bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(dx, 0.0, 1.2), w, d, "braise", floors)
 	return xf * Vector3(dx, 0.0, 1.2)
 
 

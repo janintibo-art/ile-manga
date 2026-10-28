@@ -689,6 +689,7 @@ func _houses() -> void:
 				var door_x: float = kit.rng.randf_range(-w * 0.25, w * 0.25)
 				var door: Vector3 = kit.riad(xf, w - 0.1, d, h, wall, str(doors[kit.rng.randi() % doors.size()]), kit.rng.randf() < 0.3, kit.rng.randf() < 0.35, door_x)
 				points["porte_maison_%d" % n] = door
+				kit.porte_v81(xf, Vector3(door_x, 0, -1.0), w, d, "tazira", 2 if h > 6.0 else 1)
 				n += 1
 				x += w
 	roof_spot = _cat_house()

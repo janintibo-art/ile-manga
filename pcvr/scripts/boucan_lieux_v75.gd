@@ -710,7 +710,7 @@ func boites() -> void:
 			var x: float = 66.0 + i * 13.5
 			var col: String = kit.CONT_V[(row * 3 + i + 2) % kit.CONT_V.size()]
 			var cxf: Transform3D = c.XF(x, z, 0.0, 1.0)
-			var door: Vector3 = kit.conteneur75(cxf, col, {"len": 12.0, "home": true, "door_color": ["jaune", "rouge", "bleu"][i]})
+			var door: Vector3 = kit.conteneur75(cxf, col, {"len": 12.0, "home": true, "door_color": ["jaune", "rouge", "bleu"][i], "v81": true})
 			if k < homes.size():
 				c.doors["porte_" + homes[k]] = c._pt("porte_" + homes[k], door + Vector3.UP * 0.05)
 				_street_link("porte_" + homes[k])

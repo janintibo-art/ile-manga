@@ -695,7 +695,7 @@ func _house(ri: int, deg: float, r: float, w: float, depth: float, sens: int, nt
 		"balcony": 2 if _rng.randf() < (0.22 if haute else 0.1) else 0,
 		"turret": (1 if _rng.randf() < 0.5 else -1) if (floors >= 3 and _rng.randf() < (0.16 if haute else 0.07)) else 0,
 		"base": "pgoth70_sombre" if _rng.randf() < 0.7 else "basalte70",
-		"gf": 3.8 if haute else 3.5, "uf": 3.2 if haute else 3.0,
+		"gf": 3.8 if haute else 3.5, "uf": 3.2 if haute else 3.0, "v81": true,
 	}
 	var door: Vector3 = kit.house70(xf, w, depth, opts)
 	door.y = y + 0.05

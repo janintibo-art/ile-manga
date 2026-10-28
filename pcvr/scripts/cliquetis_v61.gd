@@ -794,6 +794,7 @@ func _houses() -> void:
 		var h: Array = HOUSES[i]
 		var o: Dictionary = (h[6] as Dictionary).duplicate()
 		o["porte_x"] = o.get("porte_x", 0.0)
+		o["v81"] = true
 		var door: Vector3 = kit.workshop(TF(float(h[0]), float(h[1]), float(h[2])), float(h[3]), float(h[4]), float(h[5]), o)
 		points["porte_maison_%d" % i] = door
 		for s in o.get("_fumees", []):

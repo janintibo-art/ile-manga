@@ -472,7 +472,7 @@ func _house(ri: int, deg: float, r: float, w: float, depth: float, sens: int) ->
 	var opts := {
 		"floors": floors, "lit": 0.55 if zone != "basse" else 0.45, "door_x": dx, "gable": _rng.randf() < 0.7,
 		"base": "moellons71" if _rng.randf() < 0.55 else "enduit71_" + Kit.ENDUIT_V[_rng.randi() % Kit.ENDUIT_V.size()],
-		"gf": 3.2, "uf": 2.9, "jet": _rng.randf_range(0.2, 0.45), "sides": 0,
+		"gf": 3.2, "uf": 2.9, "jet": _rng.randf_range(0.2, 0.45), "sides": 0, "v81": true,
 	}
 	if zone == "haute":
 		opts["gf"] = 3.5

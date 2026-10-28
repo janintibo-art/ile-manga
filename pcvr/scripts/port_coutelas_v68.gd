@@ -724,6 +724,7 @@ func _cases() -> void:
 		_socle(xf, w, d, 1.8)
 		var door: Vector3 = kit.shack(xf, w, d, {"couleur": str(c[5]), "toit": str(c[6]), "porch": 1.4, "pilotis": 0.0})
 		doors[str(c[7])] = door
+		kit.porte_v81(xf, Vector3(0, 0, -1.4 - 0.8), w, d, "pirate", 1)
 		_pt("porte_" + str(c[7]), xf * Vector3(0, 0.05, 1.0))
 		_pt("devant_" + str(c[7]), G(R.L((xf * Vector3(0, 0, -2.6)).x, (xf * Vector3(0, 0, -2.6)).z).x, R.L((xf * Vector3(0, 0, -2.6)).x, (xf * Vector3(0, 0, -2.6)).z).y, 0.05))
 		_link("devant_" + str(c[7]), "porte_" + str(c[7]))

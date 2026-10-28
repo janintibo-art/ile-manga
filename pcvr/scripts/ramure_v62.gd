@@ -245,6 +245,8 @@ func _hut(id: String, i: int, a: float, door: String, opts: Dictionary = {}) -> 
 	var dp: Vector3 = kit.round_hut(c, r, float(opts.get("h", 2.4)), to_trunk, opts)
 	points[door] = dp
 	_link(door, _deck_node(id, i, a))
+	if not opts.has("noren"):
+		kit.porte_v81_dir(dp, to_trunk, r * 2.0, r * 2.0, "ramure", 1)
 	return dp
 
 

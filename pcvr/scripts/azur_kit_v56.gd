@@ -30,6 +30,9 @@ var temps: Node                          # temps_v56 (lampes et fenêtres de nui
 var rng := RandomNumberGenerator.new()
 var lamp_count: int = 0
 var signs: Array = []                    # MeshInstance3D des enseignes
+## V81 : les portes des maisons décoratives (on y entre par un fondu : maisons_v81.gd).
+## {door, out, w, d, style, floors} ; remis à zéro par main avant la construction du monde.
+static var PORTES_V81: Array = []
 
 
 func setup(parent: Node3D, time_node: Node) -> void:
@@ -41,6 +44,20 @@ func setup(parent: Node3D, time_node: Node) -> void:
 	body.collision_layer = 1
 	body.collision_mask = 0
 	root.add_child(body)
+
+
+## V81 : note la porte d'une maison décorative. xf : le repère de la maison ; door_local : la porte
+## dans ce repère (juste devant, dehors) ; la sortie regarde du côté de la porte.
+func porte_v81(xf: Transform3D, door_local: Vector3, w: float, d: float, style: String, floors: int = 1, owner: String = "") -> void:
+	var out: Vector3 = xf.basis * Vector3(0, 0, signf(door_local.z) if absf(door_local.z) > 0.01 else 1.0)
+	porte_v81_dir(xf * door_local, out, w, d, style, floors, owner)
+
+
+func porte_v81_dir(door: Vector3, out: Vector3, w: float, d: float, style: String, floors: int = 1, owner: String = "") -> void:
+	out.y = 0.0
+	if out.length() < 0.01:
+		return
+	PORTES_V81.append({"door": door, "out": out.normalized(), "w": w, "d": d, "style": style, "floors": floors, "owner": owner})
 
 
 # =================================================================== matériaux
@@ -766,6 +783,8 @@ func building(xf: Transform3D, spec: Dictionary) -> Dictionary:
 					continue
 				window(xf * Transform3D(Basis(), Vector3(wx, 1.8, 0)), 0.9, 1.3, volets, rng.randf() < lit_p, rng.randf() < 0.25)
 			out["door"] = xf * Vector3(door_x, 0, -1.0)
+			if walkin.is_empty() and not bool(spec.get("pas_v81", false)):
+				porte_v81(xf, Vector3(door_x, 0, -1.0), w, d, "azur", floors.size())
 	if not walkin.is_empty():
 		out["door"] = xf * Vector3(float(walkin.get("door_x", 0.0)), 0, -1.0)
 	# étages

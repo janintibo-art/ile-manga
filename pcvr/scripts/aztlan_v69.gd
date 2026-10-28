@@ -251,6 +251,7 @@ func _maisons() -> void:
 		_avoid(float(m[0]), float(m[1]), 6.0)
 		if str(m[5]) != "":
 			doors[str(m[5])] = _pt(str(m[5]), Vector3(front.x, Y + 0.05, front.z))
+		kit.porte_v81_dir(Vector3(front.x, Y + 0.05, front.z), Vector3(dirv.x, 0, dirv.y), float(m[3]), float(m[4]), "azteque", 1, str(m[5]).trim_prefix("porte_"))
 	# l'atelier du potier : des jarres de Tlaloc qui sèchent au soleil
 	for k in range(5):
 		kit.jar(W(-96.5, 118.5 + k * 1.1, Y), 0.7, "argile69_bleu" if k % 2 == 0 else "argile69")
@@ -262,7 +263,8 @@ func _maisons() -> void:
 	for m2 in MAISONS_RUE:
 		var d2: Vector2 = m2[2]
 		var xf2: Transform3D = XZ(W(float(m2[0]), float(m2[1]), Y), d2.x, d2.y)
-		kit.aztec_house(xf2, float(m2[3]), float(m2[4]), 3.2, {"mur": ["enduit69_blanc", "enduit69_ocre", "enduit69_rose"][r2.randi() % 3], "rideau": ["rouge", "bleu", "jaune", "vert"][r2.randi() % 4]})
+		var front2: Vector3 = kit.aztec_house(xf2, float(m2[3]), float(m2[4]), 3.2, {"mur": ["enduit69_blanc", "enduit69_ocre", "enduit69_rose"][r2.randi() % 3], "rideau": ["rouge", "bleu", "jaune", "vert"][r2.randi() % 4]})
+		kit.porte_v81_dir(Vector3(front2.x, Y + 0.05, front2.z), Vector3(d2.x, 0, d2.y), float(m2[3]), float(m2[4]), "azteque", 1)
 		_avoid(float(m2[0]) - d2.x * 2.5, float(m2[1]) - d2.y * 2.5, 5.0)
 		# sur le toit-terrasse, des pots de fleurs et de maïs
 		for k3 in range(3):

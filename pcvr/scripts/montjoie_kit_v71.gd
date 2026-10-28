@@ -233,6 +233,8 @@ func house71(xf: Transform3D, w: float, d: float, opts: Dictionary = {}) -> Vect
 		box(xf * T(cxs, H + ch_h + 0.06, -d * 0.62), Vector3(0.86, 0.12, 0.86), "dalles71_clair", 1.0)
 		box(xf * T(cxs, H + ch_h + 0.24, -d * 0.62), Vector3(0.3, 0.26, 0.3), "terre71", 1.0)
 		chimneys70.append(xf * Vector3(cxs, H + ch_h + 0.45, -d * 0.62))
+	if not opts.has("shop") and bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(dx, 0.0, 1.2), w, d, "montjoie", floors)
 	return xf * Vector3(dx, 0.0, 1.2)
 
 

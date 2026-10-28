@@ -94,6 +94,8 @@ const ROOMS_V27 := [[8.2, 11.4, 0.7, 7.3, 6.33], [-13.6, -9.55, 6.2, 10.7, 4.05]
 
 
 func _ready() -> void:
+	# V81 : les portes des maisons décoratives sont notées pendant la construction des villes
+	preload("res://scripts/azur_kit_v56.gd").PORTES_V81.clear()
 	_configure_quality()
 	_create_lighting()
 	_create_land()
@@ -958,6 +960,9 @@ func _create_game_menu_v8() -> void:
 
 func _start_save_slot(slot: int, new_game: bool) -> void:
 	_reset_session_v48()
+	# V81 : on charge une partie depuis une maison : on la démonte d'abord
+	if maisons_v81 != null and maisons_v81.inside:
+		maisons_v81._teardown()
 	game_started = true
 	var origin: Node3D = xr_origin if xr_active else pc_root
 	if new_game:
@@ -1026,6 +1031,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			chantier_v76.load_data({})
 		if atelier_ailes_v76 != null:
 			atelier_ailes_v76.load_data({})
+		if maisons_v81 != null:
+			maisons_v81.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
 		if teleport_v58 != null:
@@ -1178,6 +1185,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and atelier_ailes_v76 != null:
 		var adata_at: Variant = SaveStore.read_slot(slot).get("atelier_ailes", {})
 		atelier_ailes_v76.load_data(adata_at if adata_at is Dictionary else {})
+	# V81 : ce dont les maisons se souviennent (coffres ouverts, gens qui nous ont mis dehors…)
+	if not new_game and maisons_v81 != null:
+		var mdata81: Variant = SaveStore.read_slot(slot).get("maisons", {})
+		maisons_v81.load_data(mdata81 if mdata81 is Dictionary else {})
 	if not new_game and aeronef_v76 != null:
 		var adata_ae: Variant = SaveStore.read_slot(slot).get("aeronef", {})
 		aeronef_v76.load_data(adata_ae if adata_ae is Dictionary else {})
@@ -1304,6 +1315,8 @@ func _save_slot(slot: int) -> void:
 		extra["chantier"] = chantier_v76.serialize()
 	if atelier_ailes_v76 != null:
 		extra["atelier_ailes"] = atelier_ailes_v76.serialize()
+	if maisons_v81 != null:
+		extra["maisons"] = maisons_v81.serialize()
 	if teleport_v58 != null:
 		extra["teleport"] = teleport_v58.serialize()
 	# V63 : la progression du héros, la grande enquête des sceaux, le donjon du Cœur-de-Pierre
@@ -1333,6 +1346,9 @@ func _save_slot(slot: int) -> void:
 		var sp: Array = teleport_v58.spot("azur" if side == "azur" else "village")
 		if sp.size() == 2:
 			save_pos = sp[0]
+	# V81 : dans une maison, on se réveillera devant sa porte
+	if maisons_v81 != null and maisons_v81.inside:
+		save_pos = maisons_v81.outside_pos()
 	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 
@@ -3432,6 +3448,7 @@ var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux
 var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
 var testeur_v78: Node                      # V78 : le mode testeur (F8)
+var maisons_v81: Node3D                    # V81 : les maisons décoratives qu'on visite
 var chantier_v76: Node                     # V76 : le chantier naval de Port-Azur (le bateau qui évolue)
 var atelier_ailes_v76: Node3D              # V76 : l'Atelier des Ailes de Philibert Vis, à Cliquetis
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
@@ -3649,6 +3666,11 @@ func _create_v76() -> void:
 	testeur_v78.name = "Testeur_v78"
 	add_child(testeur_v78)
 	testeur_v78.setup(self)
+	# V81 : toutes les maisons décoratives se visitent (les portes sont récupérées une fois le
+	# monde construit, au début de la partie)
+	maisons_v81 = preload("res://scripts/maisons_v81.gd").new()
+	add_child(maisons_v81)
+	maisons_v81.setup(self)
 	compagnons_animaux_v76 = preload("res://scripts/compagnons_animaux_v76.gd").new()
 	compagnons_animaux_v76.name = "Compagnons_animaux_v76"
 	add_child(compagnons_animaux_v76)

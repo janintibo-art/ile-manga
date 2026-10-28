@@ -311,6 +311,8 @@ func workshop(xf: Transform3D, w: float, d: float, h: float, opts: Dictionary = 
 		cyl(txf * Transform3D(Basis(), Vector3(0, 2.0, 0)), 1.25, 1.25, 1.8, "cuivre", 14)
 		dome(txf * Transform3D(Basis(), Vector3(0, 3.8, 0)), 1.25, "cuivre", 0.5, 14, false)
 	opts["_fumees"] = tops
+	if bool(opts.get("v81", false)):
+		porte_v81(xf, Vector3(door_x, 0, -1.2), w, d, "cliquetis", 2 if h > 6.8 else 1)
 	return xf * Vector3(door_x, 0, -1.2)
 
 

@@ -80,7 +80,7 @@ def decide(pid, p):
         species = 'kemo'
     elif 'demon' in p:
         species = 'demon'
-    female = pid in FEMALE
+    female = pid in FEMALE or bool(p.get('femme', False))   # V81 : les habitants des maisons le disent eux-mêmes
     taille = float(az.get('taille', el.get('taille', na.get('taille', 1.0))))
     old = bool(az.get('vieux', False)) or pid in OLD_EXTRA
     child = taille <= 0.82 and species != 'nain'
@@ -375,7 +375,7 @@ def lumen_decide(D, p):
         skin = [0.36, 0.78, 0.32]
         D['lumen_h'] = 1.32
     else:
-        child, old, female = D['child'], D['old'], pid in FEMALE_LUMEN
+        child, old, female = D['child'], D['old'], pid in FEMALE_LUMEN or bool(p.get('femme', False))
         D['female'] = female
         m['gender'] = clamp01((0.03 + r.random() * 0.06) if female else (0.9 + r.random() * 0.08))
         if child:

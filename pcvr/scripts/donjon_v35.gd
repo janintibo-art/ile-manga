@@ -1866,6 +1866,16 @@ func update_inside(force: bool = false) -> void:
 			env.fog_light_color = Color(0.04, 0.045, 0.05)
 			env.fog_density = 0.01
 			env.tonemap_exposure = 1.3
+		# V81 : dans une maison (loin sous la mer, elle aussi) : pas de brume, une ambiance douce ;
+		# la pièce a ses propres lampes et ses fenêtres
+		var mv: Node = main.get("maisons_v81")
+		if mv != null and mv.inside_stage(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.56, 0.5, 0.44)
+			env.ambient_light_energy = 0.55
+			env.fog_light_color = Color(0.02, 0.02, 0.02)
+			env.fog_density = 0.001
+			env.volumetric_fog_density = 0.0
+			env.tonemap_exposure = 1.1
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

@@ -693,6 +693,7 @@ func _bulles() -> void:
 			if not graph.has("porte_" + owner) or (graph["porte_" + owner] as Array).is_empty():
 				_link("porte_" + owner, nearest(door, "in_"))
 		houses.append({"door": door, "x": l.x, "z": l.y, "owner": owner})
+		kit.porte_v81_dir(door, Vector3(to_road.x, 0, to_road.y), r * 2.0, r * 2.0, "astralys", 1, owner)
 	# les lieux des quartiers
 	var no := Vector2(-80.0, -64.0)
 	var ne := Vector2(80.0, -64.0)

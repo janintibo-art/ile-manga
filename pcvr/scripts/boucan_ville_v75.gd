@@ -338,7 +338,7 @@ func _fill_houses() -> void:
 						# un entrepôt (tôle, un rideau de garage tagué, une fresque parfois)
 						var ew: float = w + 3.0
 						var res: Dictionary = kit.usine75(xf, ew, d + 3.0, {"h": 6.5, "wall": "tole75" if _rng.randf() < 0.5 else "brique75", "roof": "gable", "pitch": 14.0,
-							"rows": 1, "lit": 0.1, "bay": 4.0, "pilasters": false, "cornice": false})
+							"rows": 1, "lit": 0.1, "bay": 4.0, "pilasters": false, "cornice": false, "v81": true})
 						kit.place("rideau75|" + ["gris", "rouge", "bleu", "vert"][_rng.randi() % 4], xf * Transform3D(Basis(), Vector3(0, 0, 0.05)))
 						if _rng.randf() < 0.6:
 							kit.quadz(xf * Transform3D(Basis(), Vector3(-ew * 0.25, 2.2, 0.08)), 3.6, 1.8, "graffiti75_" + str(1 + _rng.randi() % 12))
@@ -349,8 +349,8 @@ func _fill_houses() -> void:
 					var door: Vector3 = kit.maison75(xf, w, d, {"floors": 2 if _rng.randf() < 0.6 else 3, "wall": walls[_rng.randi() % walls.size()],
 						"roof": "tole75" if _rng.randf() < 0.45 else ("tuiles71_rouge" if _rng.randf() < 0.6 else "tuiles71_ardoise"),
 						"door": doors_c[_rng.randi() % doors_c.size()], "volet": doors_c[_rng.randi() % doors_c.size()] if _rng.randf() < 0.3 else "",
-						"graffiti": 1 + _rng.randi() % 12} if _rng.randf() < 0.35 else {"floors": 2, "wall": walls[_rng.randi() % walls.size()],
-						"roof": "tole75", "door": doors_c[_rng.randi() % doors_c.size()]})
+						"graffiti": 1 + _rng.randi() % 12, "v81": true} if _rng.randf() < 0.35 else {"floors": 2, "wall": walls[_rng.randi() % walls.size()],
+						"roof": "tole75", "door": doors_c[_rng.randi() % doors_c.size()], "v81": true})
 					houses.append({"door": door, "x": c.x, "z": c.y})
 					# un petit bric-à-brac devant : des plantes, un vélo de palettes, un banc
 					if _rng.randf() < 0.3:

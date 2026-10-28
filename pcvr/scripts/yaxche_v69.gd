@@ -261,6 +261,7 @@ func _cases() -> void:
 		_avoid(float(cs[0]), float(cs[1]), w * 0.7)
 		if str(cs[3]) != "":
 			doors[str(cs[3])] = _pt(str(cs[3]), Vector3(front.x, Y + 0.05, front.z))
+		kit.porte_v81_dir(Vector3(front.x, Y + 0.05, front.z), Vector3(dirv.x, 0, dirv.y), w, w * 0.58, "maya", 1, str(cs[3]).trim_prefix("porte_"))
 	# les ruches de Yum Kab, le métier à tisser d'Ix Sak, un feu de cuisine
 	kit.beehive_logs(XZ(W(53.0, -107.0, Y), -1.0, 0.0), 6)
 	_spot("ruches", W(51.2, -107.0, Y + 0.05), Vector3(1, 0, 0), "jardiner", "s_ee")

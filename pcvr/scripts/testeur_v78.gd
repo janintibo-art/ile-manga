@@ -34,6 +34,7 @@ func open_menu() -> void:
 		{"id": "iles", "label": "Aller sur une île ou une grande place"},
 		{"id": "lieux", "label": "Aller à un lieu de quête (carnet)"},
 		{"id": "pnj", "label": "Aller près d'un habitant"},
+		{"id": "maisons", "label": "Visiter une maison (choisir l'histoire)"},
 		{"id": "heure", "label": "Changer l'heure"},
 		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
 		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
@@ -50,6 +51,8 @@ func _pick(id: String) -> void:
 			_open_list("lieux", _quest_places(), 0)
 		"pnj":
 			_open_list("pnj", _npcs(), 0)
+		"maisons":
+			_open_list("maisons", _house_stories(), 0)
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -119,6 +122,9 @@ func _go(i: int) -> void:
 		_land(n.global_position + f * 1.6, -f)
 	elif v is Vector3:
 		_land(v, Vector3.FORWARD)
+	elif v is Array:
+		_visit(str((v as Array)[0]))
+		return
 	main._show_message_v28("Mode testeur : " + str(_list[i][0]))
 
 
@@ -138,6 +144,45 @@ func _land(at: Vector3, face: Vector3) -> void:
 		if free is Vector3:
 			p = free
 	main.place_player_v35(p + Vector3.UP * 0.15, face)
+
+
+## V81 : les histoires des maisons (on entre dans la maison la plus proche avec celle-là).
+func _house_stories() -> Array:
+	var out: Array = [["(Au hasard : la maison la plus proche)", [""]]]
+	var labels := {"famille": "La famille à table", "fou_rire": "Le fou rire", "pyjama": "Qu'est-ce que tu fiches chez moi ?!", "dormeur": "Le dormeur",
+		"abandon": "La maison abandonnée", "fantome": "Le fantôme", "cave": "La cave secrète", "biblio": "La bibliothèque qui pivote",
+		"chats": "La dame aux chats", "surprise": "La fête surprise", "inventeur": "L'inventeur", "cache_cache": "Cache-cache",
+		"musicien": "Le musicien", "mamie": "Mamie gâteaux", "travaux": "Les travaux", "sportif": "Le sportif",
+		"collection": "Le collectionneur", "envers": "La maison à l'envers", "dispute": "La dispute", "mime": "Le mime",
+		"coucou": "Les coucous", "vide": "Personne à la maison"}
+	var M: Node = main.get("maisons_v81")
+	if M == null:
+		return out
+	for sc in M.Scenes.SCENARIOS:
+		out.append([str(labels.get(str(sc[0]), str(sc[0]))), [str(sc[0])]])
+	return out
+
+
+func _visit(sc: String) -> void:
+	var M: Node = main.get("maisons_v81")
+	if M == null or M.portes.is_empty():
+		main._show_message_v28("Mode testeur : pas de maison à visiter ici.")
+		return
+	if M.inside:
+		M._teardown()
+	var p: Vector3 = main._player_pos_v27()
+	var best: int = 0
+	var bd: float = INF
+	for i in range(M.portes.size()):
+		if sc == "" or str(M.portes[i].get("owner", "")) == "":
+			var dd: float = (M.portes[i]["door"] as Vector3).distance_to(p)
+			if dd < bd:
+				bd = dd
+				best = i
+	var door: Vector3 = M.portes[best]["door"]
+	main.place_player_v35(door + Vector3.UP * 0.1, -(M.portes[best]["out"] as Vector3))
+	M.force_scenario = sc
+	M.enter(best)
 
 
 func _islands() -> Array:

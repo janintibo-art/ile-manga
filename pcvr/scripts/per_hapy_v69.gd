@@ -189,6 +189,7 @@ func _maisons() -> void:
 		_avoid(float(m[0]), float(m[1]), maxf(float(m[2]), float(m[3])) * 0.65)
 		if str(m[6]) != "":
 			doors[str(m[6])] = _pt(str(m[6]), Vector3(front.x, Y + 0.05, front.z))
+		kit.porte_v81_dir(Vector3(front.x, Y + 0.05, front.z), Vector3(dir.x, 0, dir.y), float(m[2]), float(m[3]), "egypte", 1, str(m[6]).trim_prefix("porte_"))
 	# des palmiers entre les maisons
 	for pp in [Vector2(161.0, -9.0), Vector2(217.0, -9.5), Vector2(160.0, -24.0), Vector2(219.0, -26.0), Vector2(243.0, -12.0), Vector2(149.5, -14.0)]:
 		palms.append(W(pp.x, pp.y, Y))
