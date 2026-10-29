@@ -13,6 +13,7 @@ extends Node3D
 const Kit = preload("res://scripts/azur_kit_v56.gd")
 const Pieces = preload("res://scripts/maisons_pieces_v81.gd")
 const Scenes = preload("res://scripts/maisons_scenes_v81.gd")
+const Deco = preload("res://scripts/maisons_deco_v86.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
 
@@ -361,6 +362,8 @@ func _build() -> Array:
 	var door_in: Vector3 = R.P(R.door_x, 0, d * 0.5 - 0.6)
 	act(door_in, "E : sortir", func(): leave(), 1.3)
 	Scenes.build(self)
+	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier)
+	Deco.habiller(self)
 	R.commit()
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])
 	return [R.P(R.door_x, 0.05, d * 0.5 - 1.1), Vector3(0, 0, -1)]

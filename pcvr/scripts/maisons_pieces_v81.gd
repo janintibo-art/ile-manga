@@ -120,6 +120,54 @@ const STYLES := {
 		"fenetre": "hublot", "foyer": "cristal"},
 }
 
+## V86 : d'une maison à l'autre, dans la même ville, les murs et les sols changent (papiers
+## peints, chaux colorée, lambris, parquet à chevrons, tomettes, carreaux de ciment, damier…).
+## Chaque entrée remplace une partie de la palette de la ville ; la variante 0 est l'originale.
+const VARIANTES := {
+	"montjoie": [{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/parquet_chevron.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/pp_damas_bordeaux.png", Color(1, 1, 1), 1.8], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/pp_rayures_sauge.png", Color(1, 1, 1), 2.2], "sol": ["montjoie/dalles.png", Color(0.95, 0.92, 0.88), 2.0]}],
+	"azur": [{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0], "sol": ["maisons/carreaux_ciment_bleu.png", Color(1, 1, 1), 1.6]},
+		{"mur": ["maisons/pp_rayures_bleu.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_blanc.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]}],
+	"tazira": [{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/carreaux_ciment_vert.png", Color(1, 1, 1), 1.6]},
+		{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0], "bas": ["tazira/zellige.png", Color(1, 1, 1), 1.2]},
+		{"mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]}],
+	"carene": [{"mur": ["maisons/lambris_blanc.png", Color(1, 1, 1), 1.8], "sol": ["carene/bordage_int.png", Color(1, 1, 1), 2.0]},
+		{"mur": ["maisons/pp_rayures_bleu.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_blanc.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]}],
+	"cliquetis": [{"mur": ["maisons/pp_damas_bleu.png", Color(1, 1, 1), 1.8], "bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/pp_rayures_sauge.png", Color(1, 1, 1), 2.2], "sol": ["maisons/parquet_chevron.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["cliquetis/brique.png", Color(1, 1, 1), 2.0], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]}],
+	"arcanelle": [{"mur": ["maisons/pp_damas_bordeaux.png", Color(1, 1, 1), 1.8], "sol": ["maisons/parquet_chevron.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["maisons/pp_fleurs_vert.png", Color(1, 1, 1), 2.0], "bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["arcanelle/pierre_arc.png", Color(1, 1, 1), 2.5], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]}],
+	"boucan": [{"mur": ["boucan/brique_peinte.png", Color(1, 1, 1), 2.5], "sol": ["maisons/damier_rouge_creme.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["boucan/beton.png", Color(1, 1, 1), 2.5], "sol": ["boucan/carrelage_bureau.png", Color(1, 1, 1), 2.0]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]}],
+	"braise": [{"mur": ["braise/enduit_rouge.png", Color(1, 1, 1), 2.5], "sol": ["braise/dalles_palais.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["braise/brique_noire.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/pp_damas_bordeaux.png", Color(1, 1, 1), 1.8], "bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4]}],
+	"pirate": [{"mur": ["pirates/planchesp.png", Color(1, 1, 1), 2.0]},
+		{"mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]}],
+	"ramure": [{"mur": ["ramure/papier.png", Color(1, 1, 1), 2.0], "sol": ["ramure/planches.png", Color(1, 1, 1), 2.0]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0]}],
+	"egypte": [{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0]}],
+	"maya": [{"mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0]}],
+	"azteque": [{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0]}],
+	"elfe": [{"mur": ["maisons/pp_fleurs_vert.png", Color(1, 1, 1), 2.0], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]}],
+	"atlante": [{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0]}],
+	"astralys": [{"mur": ["astralys/lumiere_motif.png", Color(1, 1, 1), 2.5]}],
+	"nain": [{"mur": ["montjoie/pierre_donjon.png", Color(0.9, 0.82, 0.74), 2.5], "sol": ["montjoie/dalles_donjon.png", Color(0.9, 0.85, 0.8), 2.0]},
+		{"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/parquet_chevron.png", Color(0.85, 0.75, 0.65), 2.4]}],
+}
+
 var kit
 var root: Node3D
 var main: Node
@@ -138,6 +186,8 @@ var door_x: float = 0.0
 var lights: Array = []                    # OmniLight3D de la pièce
 var flames: Array = []                    # [OmniLight3D, énergie] qui vacillent
 var occupied: Array = []                  # [Rect2] déjà meublés (repère de la pièce)
+var variante: int = 0                     # V86 : 0 = la palette de la ville, sinon une variante
+var wall_marks: Array = []                # V86 : [x, y, z, demi-largeur] déjà pris sur les murs
 var _mats: Dictionary = {}
 static var _cobweb: Texture2D
 static var _dot: Texture2D
@@ -150,6 +200,15 @@ func setup(parent: Node3D, main_node: Node, at: Vector3, w: float, d: float, sty
 	xf0 = Transform3D(Basis(), at)
 	style = style_name if STYLES.has(style_name) else "montjoie"
 	pal = STYLES[style]
+	# V86 : la variante de cette maison (toujours la même pour une maison donnée)
+	var vs: Array = VARIANTES.get(style, [])
+	var vi: int = posmod(seed_v * 31 + 7, vs.size() + 1)
+	variante = vi
+	if vi > 0:
+		pal = (STYLES[style] as Dictionary).duplicate()
+		var ov: Dictionary = vs[vi - 1]
+		for k in ov:
+			pal[k] = ov[k]
 	W = w
 	D = d
 	H = float(pal.get("h", 2.9))
@@ -176,6 +235,18 @@ func P(x: float, y: float, z: float) -> Vector3:
 ## Une place libre (repère de la pièce) pour un meuble de taille (sx, sz) ; marque la place.
 func reserve(x: float, z: float, sx: float, sz: float) -> void:
 	occupied.append(Rect2(x - sx * 0.5, z - sz * 0.5, sx, sz))
+
+
+## V86 : une place prise sur un mur (repère de la pièce), pour ne rien accrocher par-dessus.
+func mark_wall(x: float, y: float, z: float, half: float) -> void:
+	wall_marks.append([x, y, z, half])
+
+
+func wall_free(x: float, y: float, z: float, half: float) -> bool:
+	for m in wall_marks:
+		if absf(float(m[1]) - y) < 1.1 and Vector2(float(m[0]) - x, float(m[2]) - z).length() < float(m[3]) + half:
+			return false
+	return true
 
 
 func is_free(x: float, z: float, sx: float, sz: float) -> bool:
@@ -526,6 +597,8 @@ func _windows(hw: float, hd: float) -> void:
 
 ## Une fenêtre (xf : son centre, posée sur le mur, qui regarde l'intérieur = +Z local).
 func window(xf: Transform3D, kind: String) -> void:
+	var lp: Vector3 = xf0.affine_inverse() * xf.origin
+	mark_wall(lp.x, lp.y, lp.z, 0.75)
 	var w: float = 0.9
 	var h: float = 1.15
 	match kind:
@@ -692,6 +765,7 @@ func etagere(x: float, z: float, yaw: float, w: float = 1.2, h: float = 1.9, liv
 
 ## Une petite étagère murale chargée de bocaux / pots / objets (key des objets).
 func etagere_murale(x: float, y: float, z: float, yaw: float, w: float, key: String = "ceramique", n: int = 5) -> void:
+	mark_wall(x, y, z, w * 0.5 + 0.1)
 	var xf: Transform3D = L(x, y, z, yaw)
 	kit.box(xf, Vector3(w, 0.03, 0.25), "bois", 1.0)
 	for sx in [-1.0, 1.0]:
@@ -744,6 +818,7 @@ func tapis(x: float, z: float, yaw: float, w: float, d: float, idx: int = -1) ->
 
 ## Un tableau sur un mur (xf du mur : yaw tel que le tableau regarde l'intérieur).
 func tableau(x: float, y: float, z: float, yaw: float, w: float = 0.8, h: float = 0.6, idx: int = -1) -> void:
+	mark_wall(x, y, z, w * 0.5 + 0.15)
 	var n: int = (pal["tableaux"] as Array).size()
 	var k: int = idx if idx >= 0 else rng.randi() % n
 	var xf: Transform3D = L(x, y, z, yaw)
