@@ -164,6 +164,12 @@ const LISTE := {
 	"mille_marches": ["Le Donjon des Mille Marches", "montjoie", 60],
 	# V75 : l'Île du Boucan
 	"boucan": ["L'Île du Boucan", "boucan", 20],
+	# V87 : l'Île aux Moaïs
+	"moai": ["L'Île aux Moaïs", "moai", 20],
+	"moai_plateau": ["Le Plateau des Anciens et le Grand Moaï", "moai", 20],
+	"moai_lac": ["Le Cratère du Lac", "moai", 20],
+	"moai_carriere": ["La Butte de la Carrière", "moai", 20],
+	"moai_blagues": ["Cinq blagues des petits Moaïs", "moai", 30],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -223,7 +229,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {

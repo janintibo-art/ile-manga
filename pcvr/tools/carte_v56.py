@@ -611,7 +611,8 @@ def archipel(src: Path) -> None:
     # V67 : le cartouche quitte le coin nord-ouest, où émerge Arcanelle
     # V68 : la carte monte jusqu'à la Balafre ; le coin nord-ouest est libre de nouveau
     # V76 : Astralys flotte au nord-ouest : le cartouche passe entre elle et la Balafre
-    _cartouche(im, (900, 34) if H > 1900 else (40, 34) if H > 1080 else ((660, 34) if W > 1080 else (40, 34)), "Archipel d'Île Manga", "levé par un voyageur curieux")
+    # V87 : l'Île aux Moaïs émerge au nord : le cartouche part dans le coin nord-ouest, à l'ouest d'Astralys
+    _cartouche(im, (24, 30) if H > 1900 else (40, 34) if H > 1080 else ((660, 34) if W > 1080 else (40, 34)), "Archipel d'Île Manga", "levé par un voyageur curieux")
     # cadre
     d.rectangle((6, 6, W - 7, H - 7), outline=(70, 50, 30, 255), width=4)
     d.rectangle((14, 14, W - 15, H - 15), outline=(70, 50, 30, 180), width=1)

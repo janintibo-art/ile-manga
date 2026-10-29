@@ -75,6 +75,11 @@ const PLACES := [
 	["Champs du Sud", Vector2(774, 850), "montjoie"],
 	["Donjon des Mille Marches", Vector2(622, 736), "montjoie"],
 	# V75 : l'Île du Boucan
+	# V87 : l'Île aux Moaïs
+	["L'Île aux Moaïs", Vector2(-30, -790), "moai"],
+	["Le Grand Moaï", Vector2(-30, -800), "moai_plateau"],
+	["Le Cratère du Lac", Vector2(-126, -738), "moai_lac"],
+	["La Butte de la Carrière", Vector2(56, -720), "moai_carriere"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],

@@ -139,6 +139,7 @@ func _ready() -> void:
 	_create_v71()
 	_create_v75()
 	_create_v76()
+	_create_v87()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -192,6 +193,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V75 : l'Île du Boucan (au sud, sous l'île céleste ; son carré ne touche aucune autre île)
 	if boucan_v75 != null and boucan_v75.ile != null and boucan_v75.ile.contains(x, z):
 		return maxf(h, boucan_v75.ile.height(x, z))
+	# V87 : l'Île aux Moaïs (au nord, entre la jungle et la Balafre ; son carré ne touche aucune autre île)
+	if moai_v87 != null and moai_v87.ile != null and moai_v87.ile.contains(x, z):
+		return maxf(h, moai_v87.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1028,6 +1032,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			boucan_v75.load_data({})
 		if astralys_v76 != null and astralys_v76.city != null:
 			astralys_v76.load_data({})
+		if moai_v87 != null and moai_v87.ile != null:
+			moai_v87.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1182,6 +1188,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and astralys_v76 != null and astralys_v76.city != null:
 		var adata76: Variant = SaveStore.read_slot(slot).get("astralys", {})
 		astralys_v76.load_data(adata76 if adata76 is Dictionary else {})
+	# V87 : l'Île aux Moaïs
+	if not new_game and moai_v87 != null and moai_v87.ile != null:
+		var modata87: Variant = SaveStore.read_slot(slot).get("moai", {})
+		moai_v87.load_data(modata87 if modata87 is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1312,6 +1322,8 @@ func _save_slot(slot: int) -> bool:
 		extra["boucan"] = boucan_v75.serialize()
 	if astralys_v76 != null and astralys_v76.city != null:
 		extra["astralys"] = astralys_v76.serialize()
+	if moai_v87 != null and moai_v87.ile != null:
+		extra["moai"] = moai_v87.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -2316,6 +2328,10 @@ func _respawn_v28() -> void:
 	if astralys_v76 != null and astralys_v76.city != null and astralys_v76.owns_point(_player_pos_v27()):
 		astralys_v76.on_faint(_player_pos_v27())
 		return
+	# V87 : sur l'Île aux Moaïs : sur la Plage Blanche
+	if moai_v87 != null and moai_v87.ile != null and moai_v87.owns_point(_player_pos_v27()):
+		moai_v87.on_faint(_player_pos_v27())
+		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
 		boucan_v75.on_faint(_player_pos_v27())
@@ -2626,6 +2642,15 @@ func _create_jungle_v29() -> void:
 	astralys_v76.build_island()
 	var as_d: Array = astralys_v76.dock()
 	boat_v29._make_dock("Ponton_astralys", as_d[0], as_d[1])
+	# V87 : l'Île aux Moaïs, au nord : les géants de pierre, la ronde des Moaïs habités, le Grand
+	# Moaï (le relief d'abord ; les statues et la végétation après l'heure du jour, voir _create_v87).
+	moai_v87 = preload("res://scripts/moai_v87.gd").new()
+	moai_v87.name = "Moai_v87"
+	add_child(moai_v87)
+	moai_v87.setup(self)
+	moai_v87.build_island()
+	var mo_d: Array = moai_v87.dock()
+	boat_v29._make_dock("Ponton_moai", mo_d[0], mo_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2668,6 +2693,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V76 : là-haut, à Astralys : le plateau, les îlots, les ponts de lumière (pas le vide)
 	if astralys_v76 != null and astralys_v76.contains(p) and p.y > 150.0:
 		if astralys_v76.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V87 : l'Île aux Moaïs : la terre ferme
+	if moai_v87 != null and moai_v87.contains(p):
+		if moai_v87.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3233,7 +3266,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3454,6 +3487,7 @@ var manette_v74: Node                      # V74 : la manette sur PC (Xbox, Play
 var montjoie_v71: Node3D                   # V71 : l'Île de Montjoie, la ville des aventuriers, le Donjon des Mille Marches
 var boucan_v75: Node3D                     # V75 : l'Île du Boucan, Port-Boucan (la ville libre des punks), l'Usine Grise
 var astralys_v76: Node3D                   # V76 : Astralys, l'île flottante des Lumens
+var moai_v87: Node3D                       # V87 : l'Île aux Moaïs
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
 var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
@@ -3710,6 +3744,16 @@ func _create_v76() -> void:
 		astralys_v76.register_services(journal_v56)
 
 
+## V87 : l'Île aux Moaïs (les statues, la végétation, les portes des petits Moaïs, la grande
+## porte) ; le ponton est posé avec le relief.
+func _create_v87() -> void:
+	if moai_v87 == null:
+		return
+	moai_v87.build_town()
+	if journal_v56 != null:
+		moai_v87.register_services(journal_v56)
+
+
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
 ## enquête des Quatre Sceaux dans les quatre villages, le donjon sous le Cœur-de-Pierre.
 ## V65 : les histoires des habitants (chargées une fois) et leurs bavardages.
@@ -3904,6 +3948,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(montjoie_v71.ile.CENTER.x, montjoie_v71.ile.CENTER.z), montjoie_v71.ile.HALF])
 	if boucan_v75 != null and boucan_v75.ile != null:
 		boxes.append([Vector2(boucan_v75.ile.CENTER.x, boucan_v75.ile.CENTER.z), boucan_v75.ile.HALF])
+	if moai_v87 != null and moai_v87.ile != null:
+		boxes.append([Vector2(moai_v87.ile.CENTER.x, moai_v87.ile.CENTER.z), moai_v87.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:
