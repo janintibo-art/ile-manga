@@ -82,7 +82,8 @@ def decide(pid, p):
         species = 'demon'
     female = pid in FEMALE or bool(p.get('femme', False))   # V81 : les habitants des maisons le disent eux-mêmes
     taille = float(az.get('taille', el.get('taille', na.get('taille', 1.0))))
-    old = bool(az.get('vieux', False)) or bool(el.get('vieux', False)) or pid in OLD_EXTRA
+    old = bool(az.get('vieux', False)) or bool(el.get('vieux', False)) or bool(na.get('vieux', False)) or pid in OLD_EXTRA
+    nain_enfant = bool(na.get('enfant', False))   # V85 : les petits nains des maisons de Forgefer
     child = taille <= 0.82 and species != 'nain'
     carrure = float(az.get('carrure', 1.0))
     teinte = p.get('teinte', [0.95, 0.8, 0.68])
@@ -107,6 +108,8 @@ def decide(pid, p):
         m['age'] = 0.62 + r.random() * 0.2 if not old else 0.86 + r.random() * 0.08
         if 'apprenti' in titre:
             m['age'] = 0.5
+        if nain_enfant:
+            m['age'] = 0.3 + r.random() * 0.04
     m['muscle'] = 0.5 + r.normal(0, 0.1) + (0.06 if not female else 0.0) - (0.1 if old else 0.0)
     m['weight'] = 0.5 + r.normal(0, 0.12)
     if carrure > 1.0:
@@ -282,7 +285,7 @@ def decide(pid, p):
         style = 'dreads'
         look['cheveux'] = teuf['dreads']
     beard = str(az.get('barbe', ''))
-    if species == 'nain' and not female:
+    if species == 'nain' and not female and not nain_enfant:
         beard = 'nain_' + str(na.get('style_barbe', 'large'))
     if pid == 'barnabe':
         beard, style = 'longue', 'chauve_couronne'

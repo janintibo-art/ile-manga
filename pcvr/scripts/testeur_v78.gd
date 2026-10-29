@@ -170,6 +170,11 @@ func _house_stories() -> Array:
 	for sc2 in M.Scenes.Iles.SCENARIOS:
 		out.append([str(iles.get(str(sc2[0]), str(sc2[0]))), [str(sc2[0])]])
 	out.append(["Royaume des fées : chez une fée", ["fee"]])
+	# V85 : les boutiques, et les maisons naines de Forgefer
+	var v85 := {"boutique": "Une boutique (la ville la plus proche)", "barbe": "Forgefer : le concours de barbe", "tunnel": "Forgefer : le tunnel",
+		"berceuse": "Forgefer : la berceuse", "soupe_cailloux": "Forgefer : la soupe aux cailloux"}
+	for sc3 in M.Scenes.Echoppes.SCENARIOS:
+		out.append([str(v85.get(str(sc3[0]), str(sc3[0]))), [str(sc3[0])]])
 	return out
 
 
@@ -184,7 +189,7 @@ func _visit(sc: String) -> void:
 	var best: int = 0
 	var bd: float = INF
 	var styles: Array = []
-	for sc2 in M.Scenes.Iles.SCENARIOS:
+	for sc2 in M.Scenes.Iles.SCENARIOS + M.Scenes.Echoppes.SCENARIOS:
 		if str(sc2[0]) == sc:
 			styles = (sc2[2] as Dictionary).get("style", [])
 	if sc == "fee":

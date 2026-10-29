@@ -14,6 +14,7 @@ const STYLES := {
 	"pirate": ["balafre", "pirate", 6], "carene": ["carene", "lumen", 6], "egypte": ["egypte", "lumen", 6],
 	"maya": ["maya", "lumen", 6], "azteque": ["azteque", "lumen", 6],
 	"elfe": ["elfes", "lumen", 6], "atlante": ["atlantes", "lumen", 4],
+	"nain": ["nains", "lumen", 8],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
@@ -51,6 +52,8 @@ const PRENOMS := {
 		"f": ["Arwenya", "Elwing", "Galadwen", "Idril", "Luthiel", "Míriel", "Nimloth", "Silmë", "Tinúviel", "Yavië", "Elanor", "Aredhel"]},
 	"atlante": {"h": ["Triton", "Nérée", "Okéanos", "Glaucos", "Pontos", "Phorcys", "Égée", "Thaumas", "Palémon", "Mélicerte", "Proteus", "Ichtys"],
 		"f": ["Amphitrite", "Galatée", "Thétis", "Doris", "Ondine", "Néréa", "Marinella", "Coralie", "Perle", "Salacia", "Écume", "Calypso"]},
+	"nain": {"h": ["Brokk", "Eitri", "Alvis", "Fjalar", "Galar", "Regin", "Sindri", "Grimbald", "Hornbori", "Skirvir", "Throrin", "Nyrdan"],
+		"f": ["Sigrid", "Ragna", "Thyra", "Gudrun", "Astrid", "Ingrid", "Helka", "Dagny", "Runa", "Svala", "Hjalma", "Bergdis"]},
 	"azteque": {"h": ["Cuauhtli", "Itzcoatl", "Tochtli", "Mazatl", "Ocelotl", "Xolotl", "Tenoch", "Acatl", "Ehecatl", "Tlacotl", "Huemac", "Coaxoch"],
 		"f": ["Xochitl", "Citlali", "Itzel", "Yoltzin", "Atzin", "Nenetl", "Quetzalli", "Metztli", "Tonantzin", "Ameyal", "Nahui", "Teyacapan"]},
 }
@@ -175,6 +178,25 @@ static func _make(st: String, i: int) -> Dictionary:
 		az["tablier"] = _c(r, [[0.92, 0.9, 0.85], [0.3, 0.25, 0.2], [0.6, 0.55, 0.42]])
 	var p := {"id": "f81_%s_%d" % [st, i], "nom": "?", "titre": "habitant", "village": vil, "classe": str(STYLES[st][1]),
 		"role": role, "femme": f, "azur": az, "teinte": _c(r, skin), "humeur_base": 0.4, "repliques": {}}
+	if vil == "nains":
+		# V85 : les nains de Forgefer (leur fiche « nain », comme ceux de la Grande Halle)
+		p.erase("azur")
+		var tex: Array = ["nain_suie.png", "nain_braise.png", "nain_mousse.png", "nain_royal.png"]
+		var poils: Array = [[0.18, 0.14, 0.12], [0.62, 0.3, 0.12], [0.85, 0.55, 0.25], [0.4, 0.38, 0.36], [0.15, 0.12, 0.12], [0.3, 0.2, 0.12], [0.75, 0.32, 0.12]]
+		var coiffes: Array = ["bonnet", "capuche"] if kid else (["bonnet", "capuche", "casque"] if f else ["casque", "capuche", "bonnet", "chauve"])
+		var na := {"texture": "res://assets/textures/nains/" + str(tex[r.randi() % tex.size()]),
+			"barbe": _c(r, hair_old) if old else _c(r, poils), "style_barbe": ["large", "tresse", "fourche"][r.randi() % 3],
+			"coiffe": str(coiffes[r.randi() % coiffes.size()]),
+			"tunique": _c(r, [[0.4, 0.22, 0.12], [0.24, 0.3, 0.2], [0.3, 0.28, 0.35], [0.45, 0.15, 0.12], [0.25, 0.25, 0.3], [0.5, 0.36, 0.18]]),
+			"metal": [0.6, 0.6, 0.64] if r.randf() < 0.5 else [0.72, 0.52, 0.28], "tablier": not kid and r.randf() < 0.4, "outil": "",
+			"taille": r.randf_range(0.55, 0.6) if kid else r.randf_range(0.73, 0.8)}
+		if old:
+			na["vieux"] = true
+		if kid:
+			na["enfant"] = true
+		p["nain"] = na
+		p["teinte"] = _c(r, [[0.98, 0.74, 0.6], [1.0, 0.78, 0.64], [0.9, 0.64, 0.5]])
+		return p
 	if vil in ["elfes", "atlantes"]:
 		# V82 : les elfes et les Atlantes ont leur propre fiche (« elfe »), comme ceux de leur village
 		p.erase("azur")

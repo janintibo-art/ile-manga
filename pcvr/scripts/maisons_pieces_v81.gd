@@ -103,6 +103,12 @@ const STYLES := {
 		"poutre": Color(0.75, 0.62, 0.35), "bois": Color(0.75, 0.68, 0.55), "h": 3.2, "rond": true, "poutres_metal": true,
 		"tapis": ["tazira/tapis_2.png"], "tableaux": ["atlantide/fresque.png", "temple/fresque.png", "temple/glyph_vague.png"],
 		"fenetre": "hublot", "foyer": "cristal"},
+	# V85 : les maisons des nains, creusées dans la roche de la Grande Halle de Forgefer
+	"nain": {"sol": ["temple/temple_floor.png", Color(0.8, 0.74, 0.68), 2.0], "mur": ["temple/temple_wall.png", Color(0.84, 0.76, 0.68), 2.5],
+		"bas": ["montjoie/moellons.png", Color(0.62, 0.56, 0.5), 1.6], "plafond": ["temple/temple_wall.png", Color(0.52, 0.47, 0.44), 2.5],
+		"poutre": Color(0.22, 0.2, 0.2), "bois": Color(0.52, 0.37, 0.24), "h": 3.0, "poutres_metal": true,
+		"tapis": ["tazira/tapis_3.png", "tazira/tapis_2.png"], "tableaux": ["pirates/carte_tresor.png", "temple/glyph_soleil.png"],
+		"fenetre": "aucune", "foyer": "cheminee"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -452,10 +458,10 @@ func _after_door(hw: float, hd: float) -> void:
 func ceiling_lamp(x: float, z: float) -> void:
 	var y: float = H - 0.55
 	match style:
-		"montjoie", "arcanelle", "braise", "cave":
+		"montjoie", "arcanelle", "braise", "cave", "nain":
 			# une couronne de bois et ses bougies
 			kit.cyl(L(x, y + 0.25, z), 0.006, 0.006, H - y - 0.25, "fer", 4, false)
-			kit.ring(L(x, y, z), 0.42, 0.48, 0.06, "bois_sombre" if style != "braise" else "fer", 16)
+			kit.ring(L(x, y, z), 0.42, 0.48, 0.06, "bois_sombre" if style not in ["braise", "nain"] else "fer", 16)
 			for k in range(6):
 				var a: float = TAU * k / 6.0
 				kit.cyl(L(x + cos(a) * 0.45, y + 0.06, z + sin(a) * 0.45), 0.02, 0.02, 0.1, "ceramique", 6)

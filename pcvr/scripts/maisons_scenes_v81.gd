@@ -18,6 +18,7 @@ const SCENARIOS := [
 ]
 
 const Iles = preload("res://scripts/maisons_iles_v82.gd")
+const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -61,6 +62,10 @@ static func region(style: String) -> String:
 			return "balafre"
 		"egypte", "maya", "azteque":
 			return "soleils"
+		"nain":
+			return "nains"
+		"elfe", "fee":
+			return "elfes"
 	return "azur"
 
 
@@ -91,6 +96,8 @@ static func food(style: String) -> Array:
 			return ["galette_mais", "cacao"]
 		"astralys":
 			return ["the_stellaire", "gelee_cosmique", "biscuit_lunaire"]
+		"nain":
+			return ["ragout_nain", "fromage_chevre", "champignon_braise"]
 	return ["croissant", "bouillabaisse", "glace"]
 
 
@@ -121,12 +128,14 @@ static func plat(style: String) -> String:
 			return "des galettes de maïs"
 		"astralys":
 			return "de la gelée cosmique"
+		"nain":
+			return "du ragoût aux champignons de braise"
 	return "de la bouillabaisse"
 
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -154,7 +163,7 @@ static func pick(M) -> String:
 		cands.append(sc)
 		total += float(sc[1])
 	# V82 : les histoires propres à l'île
-	for sc3 in Iles.SCENARIOS:
+	for sc3 in Iles.SCENARIOS + Echoppes.SCENARIOS:
 		if Iles.allowed(sc3, str(ctx["style"])):
 			cands.append(sc3)
 			total += float(sc3[1])
@@ -216,6 +225,8 @@ static func build(M) -> void:
 		_:
 			if Iles.has(str(M.ctx["scenario"])):
 				Iles.build(M, str(M.ctx["scenario"]))
+			elif Echoppes.has(str(M.ctx["scenario"])):
+				Echoppes.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

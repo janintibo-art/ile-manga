@@ -93,6 +93,7 @@ func build() -> void:
 	_tavern()
 	_runes()
 	_jeweler()
+	_maisons_v85()
 	# Grand tapis rouge dans l'allée centrale
 	var rug := StandardMaterial3D.new()
 	rug.albedo_color = Color(0.45, 0.08, 0.08)
@@ -115,6 +116,38 @@ func _leave() -> void:
 
 
 # =================================================================== architecture
+
+## V85 : les maisons des nains, creusées dans les murs de la halle (trois de chaque côté) : une
+## porte de bois cerclée de fer dans un cadre de pierre, une rune qui luit au-dessus. On y entre
+## comme dans toutes les maisons (maisons_v81.gd).
+const MAISONS_V85 := [[-1.0, -19.5, 6.6, 5.8], [-1.0, 2.0, 6.0, 5.0], [-1.0, 21.0, 7.2, 6.0],
+	[1.0, -19.5, 6.4, 5.4], [1.0, 4.5, 7.0, 5.6], [1.0, 21.0, 6.0, 5.4]]
+
+
+func _maisons_v85() -> void:
+	var stone: Material = n._mat("pierre")
+	var wood: Material = n._mat("bois")
+	var iron: Material = n._mat("fer")
+	for e in MAISONS_V85:
+		var sx: float = float(e[0])
+		var z: float = float(e[1])
+		var inner: float = X0 if sx < 0.0 else X1
+		var di: float = -sx
+		var x := func(off: float) -> float:
+			return inner + di * off
+		n._mesh(s, n._box_mesh(Vector3(0.5, 0.08, 1.7)), stone, Vector3(x.call(0.62), 0.04, z))
+		for sz in [-1.0, 1.0]:
+			n._mesh(s, n._box_mesh(Vector3(0.44, 2.75, 0.32)), stone, Vector3(x.call(0.22), 1.375, z + sz * 0.8))
+		n._mesh(s, n._box_mesh(Vector3(0.46, 0.45, 1.95)), stone, Vector3(x.call(0.23), 2.95, z))
+		n._mesh(s, n._box_mesh(Vector3(0.08, 2.5, 1.28)), wood, Vector3(x.call(0.36), 1.25, z))
+		for k in range(3):
+			n._mesh(s, n._box_mesh(Vector3(0.1, 0.08, 1.3)), iron, Vector3(x.call(0.41), 0.45 + k * 0.8, z))
+		n._mesh(s, n._cyl(0.07, 0.07, 0.03, 12), n._mat("bronze"), Vector3(x.call(0.42), 1.15, z + 0.38), Vector3(0, 0, PI * 0.5))
+		n._mesh(s, n._cyl(0.17, 0.17, 0.04, 6), n._mat("rune"), Vector3(x.call(0.3), 3.45, z), Vector3(0, 0, PI * 0.5))
+		var door: Vector3 = s.to_global(Vector3(x.call(0.45), 0.05, z))
+		var out: Vector3 = s.global_basis * Vector3(di, 0, 0)
+		preload("res://scripts/azur_kit_v56.gd").note_v81(door, out, float(e[2]), float(e[3]), "nain", 1)
+
 
 func _torch(at: Vector3) -> void:
 	n._mesh(s, n._cyl(0.06, 0.04, 0.6, 8), n._mat("fer"), at)
