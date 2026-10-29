@@ -189,7 +189,7 @@ func _redraw() -> void:
 		if view in ["load", "save", "new", "delete"]:
 			var footer := Label.new()
 			footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			footer.text = "6 emplacements  •  Sauvegardes compatibles V8 / V9"
+			footer.text = "6 emplacements  •  F5 : sauvegarde rapide"
 			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
 			list_box.add_child(footer)
 		if view == "load" and playing:

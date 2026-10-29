@@ -345,6 +345,9 @@ func _build() -> Array:
 	var st0: Dictionary = state()
 	if force_scenario != "":
 		scenario = force_scenario
+		# V84 : l'histoire imposée par le testeur reste aussi (on peut tester « ENCORE TOI ?! »)
+		if scenario != "chez" and scenario != "fee" and Scenes.has_scenario(scenario):
+			st0["scenario"] = scenario
 	elif str(st0.get("scenario", "")) != "" and (Scenes.has_scenario(str(st0["scenario"]))):
 		scenario = str(st0["scenario"])
 	else:
@@ -463,12 +466,14 @@ func give(items: Array, intro: String = "") -> void:
 
 
 ## Un vrai coffre (il s'ouvre, une fois pour toutes) ; loot : [[id, n], …].
-func chest(x: float, z: float, yaw: float, loot: Array, key: String = "coffre", text: String = "E : ouvrir le coffre") -> Node3D:
+func chest(x: float, z: float, yaw: float, loot: Array, key: String = "coffre", text: String = "E : ouvrir le coffre", piece: Variant = null) -> Node3D:
+	# V84 : `piece` = la pièce où poser le coffre (la cave, la pièce secrète) ; sinon la pièce principale
+	var PR = piece if piece != null else R
 	var ob: Node = main.get("objets_v66")
 	var root := Node3D.new()
 	root.name = "Coffre_v81"
 	room.add_child(root)
-	root.global_transform = R.L(x, 0, z, yaw)
+	root.global_transform = PR.L(x, 0, z, yaw)
 	var body := MeshInstance3D.new()
 	var hinge := Node3D.new()
 	hinge.position = Vector3(0, 0.46, -0.275)
@@ -487,7 +492,7 @@ func chest(x: float, z: float, yaw: float, loot: Array, key: String = "coffre", 
 	cs.position = Vector3(0, 0.36, 0)
 	sb.add_child(cs)
 	root.add_child(sb)
-	R.reserve(x, z, 1.1, 0.8)
+	PR.reserve(x, z, 1.1, 0.8)
 	var st: Dictionary = state()
 	if bool(st.get(key, false)):
 		hinge.rotation.x = -1.95

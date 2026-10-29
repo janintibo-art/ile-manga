@@ -266,6 +266,11 @@ func _aim_portrait() -> void:
 	# le personnage se tourne vers le joueur pendant la conversation : on filme de ce côté
 	var cam: Camera3D = get_viewport().get_camera_3d()
 	var fwd: Vector3 = (cam.global_position - _npc.global_position) if cam != null else _npc.global_basis.z
+	# V84 : les habitants des maisons (figurants) : on filme leur visage, là où ils regardent
+	# (assis dans leur bain, ou tournés vers le héros qui n'est pas forcément devant la caméra)
+	var fig: Node = _npc.get_node_or_null("Figurant_v81")
+	if fig != null and not bool(fig.get("_lying")):
+		fwd = _npc.global_basis.z
 	fwd.y = 0.0
 	fwd = fwd.normalized() if fwd.length() > 0.01 else Vector3.BACK
 	var side: Vector3 = fwd.cross(Vector3.UP).normalized()

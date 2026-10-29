@@ -86,6 +86,15 @@ static func pick(style: String, role: String, rng: RandomNumberGenerator) -> Dic
 	for i in range(n):
 		if ROLES[i] == role or (role == "adulte" and ROLES[i] in ["homme", "femme"]) or (role == "enfant" and ROLES[i] in ["garcon", "fille"]) or (role == "ancien" and ROLES[i] in ["vieux", "vieille"]):
 			cands.append(i)
+	# V84 : un homme aux cheveux longs sans barbe passe pour une femme (« Barnabé ») : on l'évite
+	if not femme(role):
+		var nets: Array = []
+		for c in cands:
+			var az: Dictionary = profile("f81_%s_%d" % [st, int(c)]).get("azur", {})
+			if femme(str(ROLES[int(c)])) or not (str(az.get("coiffure", "")) == "long" and not az.has("barbe")):
+				nets.append(c)
+		if not nets.is_empty():
+			cands = nets
 	if cands.is_empty():
 		cands = [0]
 	var i2: int = int(cands[rng.randi() % cands.size()])

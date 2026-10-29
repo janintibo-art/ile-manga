@@ -797,7 +797,7 @@ static func _cave_contenu(M, C, contenu: String) -> void:
 			C.tonneau(2.3, -1.0)
 			M.ctx["cave_txt"] = "Une cave à fromages ! Des dizaines de meules… et une odeur à faire pleurer un oignon."
 			_mot_c(M, C, 1.2, 0.5, "Sur une ardoise : « Défense de goûter. Sauf toi, voyageur. Une seule. — Le fromager du dessus »")
-			M.chest(2.0, 0.6, -90, [["fromage_chevre", 2], ["piece", 8 + r.randi() % 10]], "coffre_cave")
+			M.chest(2.0, 0.6, -90, [["fromage_chevre", 2], ["piece", 8 + r.randi() % 10]], "coffre_cave", "E : ouvrir le coffre", C)
 		"confitures":
 			for i in range(3):
 				C.etagere(-1.0 + i * 1.3, -2.25, 0, 1.2, 1.9, false, 5)
@@ -805,15 +805,15 @@ static func _cave_contenu(M, C, contenu: String) -> void:
 					for k in range(5):
 						C.kit.cyl(C.L(-1.45 + i * 1.3 + k * 0.22, 0.1 + row * 0.36, -2.25), 0.06, 0.06, 0.13, ["confiture", "pomme", "fromage", "soupe"][(row + k + i) % 4], 10)
 			M.ctx["cave_txt"] = "Une cave pleine de pots de confiture. Des centaines. Il y a même une confiture de… cornichons ?"
-			_mot_c(M, C, 1.2, 0.5, "Une étiquette sur la porte : « Réserve de Mamie. 412 pots. Je les ai comptés. Prends-en un, va. »")
-			M.chest(2.0, 0.6, -90, [["miel", 1], ["jus_pomme", 1], ["piece", 5 + r.randi() % 8]], "coffre_cave")
+			_mot_c(M, C, 1.2, 0.5, "Une étiquette sur l'étagère : « Réserve de Mamie. 412 pots. Je les ai comptés. Prends-en un, va. »")
+			M.chest(2.0, 0.6, -90, [["miel", 1], ["jus_pomme", 1], ["piece", 5 + r.randi() % 8]], "coffre_cave", "E : ouvrir le coffre", C)
 		"tresor":
 			C.tonneau(-2.3, 1.2)
 			C.tonneau(-1.6, 1.6)
 			C.caisse(2.2, -1.2, 0.7)
 			C.caisse(2.3, -0.4, 0.5)
 			M.ctx["cave_txt"] = "Une vieille cave voûtée. Au fond, un coffre cerclé de fer… Le trésor du grand-père ?"
-			M.chest(0.0, -1.7, 0, M.loot(2.0) + [["piece_or", 1]], "coffre_cave")
+			M.chest(0.0, -1.7, 0, M.loot(2.0) + [["piece_or", 1]], "coffre_cave", "E : ouvrir le coffre", C)
 			_mot_c(M, C, 1.2, 0.8, "Gravé sur une poutre : « Le trésor de Papi : à partager avec qui le trouvera. Sauf les pièces en chocolat : celles-là, c'est pour moi. »")
 		"groupe":
 			for k2 in range(3):
@@ -823,7 +823,7 @@ static func _cave_contenu(M, C, contenu: String) -> void:
 			C.tapis(0.0, -0.8, 0, 2.6, 1.8)
 			M.ctx["cave_txt"] = "Une salle de répétition secrète ! Une batterie, un ampli, des affiches… et des boules de coton sur les murs pour que les voisins n'entendent rien."
 			_mot_c(M, C, 1.2, 0.5, "Une affiche : « LES TAUPES HURLANTES — concert samedi — entrée : un gâteau » ")
-			M.chest(2.0, 0.6, -90, [["piece", 12 + r.randi() % 10], ["partition", 1]], "coffre_cave")
+			M.chest(2.0, 0.6, -90, [["piece", 12 + r.randi() % 10], ["partition", 1]], "coffre_cave", "E : ouvrir le coffre", C)
 		_:
 			for k3 in range(14):
 				var p := Vector3(r.randf_range(-2.4, 2.4), 0, r.randf_range(-2.0, 0.8))
@@ -836,7 +836,7 @@ static func _cave_contenu(M, C, contenu: String) -> void:
 			C.root.add_child(l)
 			l.global_position = C.P(0, 0.5, -0.6)
 			M.ctx["cave_txt"] = "Une champignonnière secrète ! Des champignons partout… et certains brillent dans le noir."
-			M.chest(2.0, 0.6, -90, [["champignon", 3], ["champignon_lune", 1], ["piece", 6 + r.randi() % 8]], "coffre_cave")
+			M.chest(2.0, 0.6, -90, [["champignon", 3], ["champignon_lune", 1], ["piece", 6 + r.randi() % 8]], "coffre_cave", "E : ouvrir le coffre", C)
 
 
 static func _mot_c(M, C, x: float, z: float, text: String) -> void:
@@ -875,13 +875,18 @@ static func _b_biblio(M) -> void:
 		lecteur = M.person(str(_pick(M, ["vieux", "vieille", "homme", "femme"])), hw - 1.0, 0.2, -110, "lire")
 		lecteur.lines = ["Chut… je lis.", "Mmh… passionnant.", "Encore un chapitre…"]
 	# le mur derrière la bibliothèque secrète est percé : un passage
-	R.kit.box(R.L(secret_x, 1.05, -hd - 0.01), Vector3(1.0, 2.1, 0.02), "noir", 1.0, 16)
+	# V84 : devant le mur (avant, il était dedans : on ne voyait pas l'ouverture)
+	R.kit.box(R.L(secret_x, 1.05, -hd + 0.025), Vector3(1.0, 2.1, 0.02), "noir", 1.0, 16)
 	var shelf: Node3D = R.movable(func():
 		R.etagere(secret_x, -hd + 0.22, 0, 1.2, minf(2.3, R.H - 0.3), true, 5)
 		R.kit.box(R.L(secret_x + 0.35, 1.35, -hd + 0.33), Vector3(0.06, 0.3, 0.22), "tissu_rouge", 1.0))
+	# V84 : la bibliothèque PIVOTE sur son coin avant droit (avant, elle glissait dans sa voisine)
+	var pivot: Vector3 = R.P(secret_x + 0.6, 0, -hd + 0.4)
+	var swing := func(a: float) -> void:
+		shelf.transform = Transform3D(Basis(), pivot) * Transform3D(Basis(Vector3.UP, a), Vector3.ZERO) * Transform3D(Basis(), -pivot)
 	var st: Dictionary = M.state()
 	if bool(st.get("passage", false)):
-		shelf.position = Vector3(1.25, 0, 0)
+		swing.call(deg_to_rad(88.0))
 	# la pièce secrète, à côté
 	var sec_at: Vector3 = M.STAGE + Vector3(M.SECRET_DX, 0, 0)
 	var S = (load("res://scripts/maisons_pieces_v81.gd") as Script).new()
@@ -898,7 +903,7 @@ static func _b_biblio(M) -> void:
 		M.main.sfx("mecanisme", book)
 		var tw: Tween = M.room.create_tween()
 		tw.tween_interval(0.4)
-		tw.tween_property(shelf, "position", Vector3(1.25, 0, 0), 1.6).set_trans(Tween.TRANS_SINE)
+		tw.tween_method(swing, 0.0, deg_to_rad(88.0), 1.6).set_trans(Tween.TRANS_SINE)
 		M.main.sfx("pierre_glisse", book)
 		if lecteur != null:
 			lecteur.say("Oh. Tu as trouvé. Bon… ne dis rien à personne.", 4.0)
@@ -930,20 +935,20 @@ static func _secret_contenu(M, S, quoi: String) -> void:
 						S.kit.cyl(S.L(x + 0.04, y + 0.08, -1.85), 0.045, 0.04, 0.06, "fromage", 10)
 						S.kit.box(S.L(x + 0.1, y + 0.1, -1.85), Vector3(0.04, 0.015, 0.03), "terre_cuite", 1.0)
 			M.ctx["secret_txt"] = "Le musée secret du canard en caoutchouc ! Cent quarante-quatre canards, rangés par taille. Et un panneau : « NE PAS LES FAIRE COUINER »."
-			M.chest(1.6, 0.5, -90, [["canard_mecanique", 1], ["piece", 10 + r.randi() % 10]], "coffre_secret")
+			M.chest(1.6, 0.5, -90, [["canard_mecanique", 1], ["piece", 10 + r.randi() % 10]], "coffre_secret", "E : ouvrir le coffre", S)
 		"chat":
 			for k2 in range(6):
 				S.tableau(-1.8 + k2 * 0.72, 1.5 + (k2 % 2) * 0.35, -2.08, 0, 0.55, 0.45)
 			S.fauteuil(0, -0.8, 0, "rouge")
 			S.chat(0.0, -0.75, 0, Color(0.95, 0.6, 0.25), true, 0.48)
 			M.ctx["secret_txt"] = "Une pièce secrète… pleine de portraits du même chat. Le chat en personne trône dans un fauteuil de velours. Il te regarde comme si TU étais l'intrus."
-			M.chest(1.6, 0.5, -90, [["sardine", 2], ["piece", 8 + r.randi() % 10]], "coffre_secret")
+			M.chest(1.6, 0.5, -90, [["sardine", 2], ["piece", 8 + r.randi() % 10]], "coffre_secret", "E : ouvrir le coffre", S)
 		"trone":
 			for k3 in range(10):
 				S.kit.box(S.L(r.randf_range(-0.6, 0.6), 0.15 + k3 * 0.12, -1.3 + r.randf_range(-0.3, 0.3), r.randf_range(0, 90)), Vector3(0.6, 0.14, 0.5), "tissu_" + str(_pick(M, ["rouge", "violet", "jaune", "bleu", "rose"])), 1.0)
 			S.kit.cyl(S.L(0, 1.45, -1.3), 0.14, 0.17, 0.12, "or", 8, false)
 			M.ctx["secret_txt"] = "Une pièce secrète, et au fond, un trône… fait de coussins empilés, coiffé d'une couronne en papier doré. Sur une pancarte : « Ici règne Sa Majesté le Roi des Coussins. »"
-			M.chest(1.6, 0.5, -90, [["piece_or", 1], ["piece", 6 + r.randi() % 10]], "coffre_secret")
+			M.chest(1.6, 0.5, -90, [["piece_or", 1], ["piece", 6 + r.randi() % 10]], "coffre_secret", "E : ouvrir le coffre", S)
 		"plans":
 			S.table(0, -1.0, 0, 1.6, 0.9)
 			for k4 in range(5):
@@ -951,12 +956,12 @@ static func _secret_contenu(M, S, quoi: String) -> void:
 			S.tableau(0, 1.6, -2.08, 0, 1.4, 0.9)
 			M.ctx["secret_txt"] = "Une pièce secrète, des plans partout sur la table."
 			_mot(M, 0.0, -1.0, 0.0, "« PLAN POUR CONQUÉRIR LE MONDE. Étape 1 : se lever tôt. Étape 2 : prendre un bon petit-déjeuner. Étape 3 : … bon, on verra demain. »", "E : lire les plans")
-			M.chest(1.6, 0.5, -90, [["boussole_sud", 1], ["piece", 8 + r.randi() % 10]], "coffre_secret")
+			M.chest(1.6, 0.5, -90, [["boussole_sud", 1], ["piece", 8 + r.randi() % 10]], "coffre_secret", "E : ouvrir le coffre", S)
 		_:
 			S.tonneau(-1.6, -1.4)
 			S.caisse(-0.9, -1.6, 0.6)
 			M.ctx["secret_txt"] = "Une petite pièce secrète. Un seul meuble : un coffre. Le genre de coffre qu'on cache derrière une bibliothèque."
-			M.chest(0.4, -1.3, 0, M.loot(1.8), "coffre_secret")
+			M.chest(0.4, -1.3, 0, M.loot(1.8), "coffre_secret", "E : ouvrir le coffre", S)
 
 
 # =================================================================== la dame aux chats

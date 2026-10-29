@@ -1583,6 +1583,11 @@ func _update_visual(delta: float) -> void:
 	hero.rotation.y = lerp_angle(hero.rotation.y, target_yaw, k)
 
 
+func _in_house() -> bool:
+	var mv: Node = main.get("maisons_v81") if main != null else null
+	return mv != null and bool(mv.get("inside"))
+
+
 ## Caméra à l'épaule qui ne traverse plus les murs (intérieurs des maisons).
 func _update_camera() -> void:
 	if camera == null or not camera.current:
@@ -1609,6 +1614,10 @@ func _update_camera() -> void:
 		_indoor_k = move_toward(_indoor_k, 1.0 if indoor else 0.0, get_physics_process_delta_time() * 2.5)
 		if _indoor_k > 0.0:
 			var wanted_in: Vector3 = root.global_transform * Vector3(0, 2.0, 1.9)
+			# V84 : dans les maisons, plus haut, plus loin et un peu sur le côté : la tête du
+			# héros ne cache plus la pièce
+			if _in_house():
+				wanted_in = root.global_transform * Vector3(0.5, 2.5, 2.55)
 			wanted = wanted.lerp(wanted_in, smoothstep(0.0, 1.0, _indoor_k))
 	# V53 : calque 9 (256) = toits et auvents qui arrêtent la caméra sans gêner le joueur.
 	var q := PhysicsRayQueryParameters3D.create(pivot, wanted, 1 | 256, [body.get_rid()])
@@ -1618,14 +1627,24 @@ func _update_camera() -> void:
 		place = hit.position + (pivot - hit.position).normalized() * 0.35
 		# trop près du héros (dos au mur) : la caméra monte au-dessus de sa tête, sous le plafond
 		var d: float = place.distance_to(pivot)
-		if d < 0.9:
-			var lift: float = (0.9 - d) * 0.7
+		# V84 : dans une maison (pièce étroite), la caméra monte plus tôt et plus haut : elle
+		# regarde par-dessus le héros au lieu de se coller à son dos
+		var near_d: float = 1.7 if _in_house() else 0.9
+		if d < near_d:
+			var lift: float = (near_d - d) * (1.1 if _in_house() else 0.7)
 			var up_room := space.intersect_ray(PhysicsRayQueryParameters3D.create(place, place + Vector3.UP * (lift + 0.3), 1 | 256, [body.get_rid()]))
 			if not up_room.is_empty():
 				lift = maxf(0.0, (up_room.position as Vector3).y - place.y - 0.3)
 			place += Vector3.UP * lift
 	camera.global_position = place
 	var look: Vector3 = root.global_position + Vector3.UP * 1.2
+	if npc == null and _indoor_k > 0.0 and _in_house():
+		# V84 : on regarde la pièce devant le héros, pas l'arrière de sa tête
+		var ahead: Vector3 = -root.global_basis.z
+		ahead.y = 0.0
+		if ahead.length() > 0.01:
+			var look_in: Vector3 = root.global_position + Vector3.UP * 0.95 + ahead.normalized() * 1.6
+			look = look.lerp(look_in, smoothstep(0.0, 1.0, _indoor_k))
 	if npc != null:
 		# La fenêtre de dialogue couvre le bas de l'écran : on vise un peu plus bas.
 		look = pivot + Vector3.DOWN * 0.55
