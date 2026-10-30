@@ -109,6 +109,12 @@ const STYLES := {
 		"poutre": Color(0.22, 0.2, 0.2), "bois": Color(0.52, 0.37, 0.24), "h": 3.0, "poutres_metal": true,
 		"tapis": ["tazira/tapis_3.png", "tazira/tapis_2.png"], "tableaux": ["pirates/carte_tresor.png", "temple/glyph_soleil.png"],
 		"fenetre": "aucune", "foyer": "cheminee"},
+	# V88 : chez les petits Moaïs : la pièce creusée dans le tuf, le sable, les gravures
+	"moai": {"sol": ["terrain/sand.jpg", Color(0.92, 0.86, 0.74), 2.5], "mur": ["moai/pierre_moai.png", Color(0.95, 0.9, 0.82), 2.0],
+		"bas": ["moai/ahu.png", Color(0.9, 0.88, 0.84), 1.6], "plafond": ["moai/pierre_moai.png", Color(0.7, 0.65, 0.6), 2.0],
+		"poutre": Color(0.42, 0.3, 0.2), "bois": Color(0.62, 0.46, 0.3), "h": 2.8,
+		"tapis": ["tazira/tapis_1.png"], "tableaux": ["moai/fresque_tortue.png", "moai/fresque_oiseau.png", "moai/fresque_poissons.png", "moai/fresque_soleil.png"],
+		"fenetre": "rond", "foyer": "brasero"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,

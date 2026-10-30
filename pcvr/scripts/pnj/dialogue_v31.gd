@@ -271,6 +271,8 @@ func _aim_portrait() -> void:
 	var fig: Node = _npc.get_node_or_null("Figurant_v81")
 	if fig != null and not bool(fig.get("_lying")):
 		fwd = _npc.global_basis.z
+	elif _npc.has_method("freeze"):
+		fwd = _npc.global_basis.z         # V88 : un petit Moaï regarde celui qui lui parle
 	fwd.y = 0.0
 	fwd = fwd.normalized() if fwd.length() > 0.01 else Vector3.BACK
 	var side: Vector3 = fwd.cross(Vector3.UP).normalized()

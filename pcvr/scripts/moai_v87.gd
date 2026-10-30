@@ -14,6 +14,8 @@ extends Node3D
 const IleScript = preload("res://scripts/ile_moai_v87.gd")
 const Statue = preload("res://scripts/moai_statue_v87.gd")
 const FLORE := "res://scripts/moai_flore_v87.gd"
+const Kit = preload("res://scripts/azur_kit_v56.gd")
+const Moais = preload("res://scripts/maisons_moai_v88.gd")
 
 ## La ronde des Moaïs habités autour du Plateau des Anciens : [angle (degrés ; 0 = est, 90 = sud),
 ## rayon, hauteur, variante, chignon]. Le sud (le chemin de la plage) reste libre.
@@ -57,6 +59,7 @@ var objets: Dictionary = {}               # lieux pour le carnet (nom -> Vector3
 var maisons: Array = []                   # {"node", "door" (monde), "out", "nom"}
 var grand: Node3D
 var moais: Array = []
+var promeneurs: Array = []                # V88 : les petits Moaïs qui se promènent sur le plateau
 var _clock: float = 0.0
 var _zone_t: float = 0.0
 var _registered: bool = false
@@ -71,7 +74,7 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "toc": 0, "grande_porte": false}
+	return {"visite": false, "visites": {}, "toc": 0, "grande_porte": false, "legende": false}
 
 
 # =================================================================== construction
@@ -110,6 +113,9 @@ func build_town() -> void:
 		var door: Vector3 = m.global_transform * (m.get_meta("porte") as Vector3)
 		door.y = ile.height(door.x, door.z) + 0.05
 		maisons.append({"node": m, "door": door, "out": face, "nom": "Moai_%d" % i})
+		# V88 : on entre chez les petits Moaïs (maisons_v81) ; chaque porte a son histoire
+		Kit.PORTES_V81.append({"door": door, "out": face, "w": 7.0, "d": 6.4, "style": "moai", "floors": 1, "owner": "",
+			"histoire": str(Moais.HISTOIRES[i % Moais.HISTOIRES.size()])})
 		avoid.append([Vector2(at.x, at.z), 6.0])
 	# --- les ahu et leurs rangées
 	for k in AHUS:
@@ -143,6 +149,7 @@ func build_town() -> void:
 		for a2 in avoid:
 			flore.avoid.append(a2)
 		flore.build_moai(ile, pc)
+	_promeneurs()
 	objets["plage"] = _ground(8.0, 92.0)
 	objets["venteux"] = _ground(0.0, -112.0)
 	print("ILE_MANGA_V87: l'Île aux Moaïs est prête (%d Moaïs, %d ms)" % [moais.size() + 1, Time.get_ticks_msec() - t0])
@@ -152,6 +159,63 @@ func _ground(x: float, z: float) -> Vector3:
 	var w: Vector3 = IleScript.W(x, z)
 	w.y = ile.height(w.x, w.z)
 	return w
+
+
+## V88 : quatre petits Moaïs se promènent sur le Plateau des Anciens, entre le Grand Moaï et la
+## ronde ; ils sautillent, s'arrêtent, racontent des blagues à qui veut les entendre.
+func _promeneurs() -> void:
+	var Mini = load("res://scripts/pnj/mini_moai_v88.gd")
+	var noms: Array = ["Gravillon", "Pépite", "Silex", "Ponce"]
+	for i in range(4):
+		var a: float = TAU * (float(i) + 0.3) / 4.0
+		var at: Vector3 = _ground(cos(a) * 15.0, sin(a) * 15.0)
+		var m: Node3D = Mini.spawn(self, main, str(noms[i]), at, Vector3(-cos(a), 0, -sin(a)), "debout", {"parure": ["fleurs", "lunettes", "chignon", "coquillages"][i]})
+		m.lines = []
+		for t in TOC:
+			m.lines.append(str(t[0]))
+		m.line_every = Vector2(9.0, 18.0)
+		promeneurs.append({"m": m, "cible": at, "pause": _rng.randf_range(1.0, 4.0)})
+
+
+func _promeneurs_tick(delta: float) -> void:
+	for e in promeneurs:
+		var m: Node3D = e["m"]
+		if not is_instance_valid(m) or bool(m.get("talking")):
+			continue
+		var p: Vector3 = m.global_position
+		var c: Vector3 = e["cible"]
+		var to: Vector3 = c - p
+		to.y = 0.0
+		if to.length() < 0.3:
+			e["pause"] = float(e["pause"]) - delta
+			if float(e["pause"]) <= 0.0:
+				var a: float = _rng.randf() * TAU
+				e["cible"] = _ground(cos(a) * _rng.randf_range(11.0, 20.0), sin(a) * _rng.randf_range(11.0, 20.0))
+				e["pause"] = _rng.randf_range(2.0, 6.0)
+			continue
+		var step: Vector3 = to.normalized() * minf(to.length(), delta * 0.9)
+		var np: Vector3 = p + step
+		np.y = ile.height(np.x, np.z)
+		m.global_position = np
+		m.face_dir = to.normalized()
+		if e.has("it"):
+			e["it"]["pos"] = np
+
+
+## Parler à un petit Moaï du plateau : une blague, toujours une autre.
+func _talk_promeneur(i: int) -> void:
+	var m: Node3D = promeneurs[i]["m"]
+	var n: int = int(state.get("toc", 0))
+	var b: Array = Moais.BLAGUES[(n + i * 2) % Moais.BLAGUES.size()]
+	state["toc"] = n + 1
+	m.begin_talk()
+	main.ask_v69(m, str(m.display_name), "farceur", str(b[0]) + " … " + str(b[1]), [{"id": "encore", "label": "Ha ha ! Une autre !"}, {"id": "fermer", "label": "Au revoir !"}], func(id):
+		m.gesture("rire", 2.0)
+		if id == "encore":
+			_talk_promeneur(i)
+		else:
+			main._close_dialogue_v31()
+			m.end_talk())
 
 
 ## Un ahu : la plateforme de grosses pierres ajustées, sa rampe de galets devant, et ses Moaïs
@@ -260,11 +324,14 @@ func _register_interactions() -> void:
 	if d == null:
 		return
 	_registered = true
-	for i in range(maisons.size()):
-		var e: Dictionary = maisons[i]
-		var idx: int = i
-		d._interactions.append({"id": "moai_toc_%d" % i, "pos": e["door"], "radius": 1.8,
-			"text": "E : frapper à la porte", "vr": "Gâchette : frapper à la porte", "call": func(): _knock(idx)})
+	# (V88 : les portes des petits Moaïs s'ouvrent : c'est maisons_v81 qui les tient)
+	for i2 in range(promeneurs.size()):
+		var idx: int = i2
+		var m2: Node3D = promeneurs[i2]["m"]
+		var it := {"id": "moai_promeneur_%d" % i2, "pos": m2.global_position, "radius": 1.8,
+			"text": "E : parler à " + str(m2.display_name), "vr": "Gâchette : parler à " + str(m2.display_name), "call": func(): _talk_promeneur(idx)}
+		d._interactions.append(it)
+		promeneurs[i2]["it"] = it
 	if grand != null:
 		d._interactions.append({"id": "moai_grande_porte", "pos": grand.get_meta("grande_porte"), "radius": 2.6,
 			"text": "E : examiner la grande porte", "vr": "Gâchette : examiner la grande porte", "call": _grand_porte})
@@ -292,7 +359,10 @@ func _grand_porte() -> void:
 	if first:
 		say("Une immense dalle de pierre ferme le ventre du Grand Moaï. Au milieu, un cercle de signes luit faiblement, comme s'il respirait. On entend, très loin dessous, de l'eau qui coule… et quelque chose qui chante.", 8.0)
 	else:
-		say("La dalle ne bouge pas d'un cheveu. Il manque quelque chose pour l'ouvrir. Les petits Moaïs savent peut-être…", 6.0)
+		if bool(state.get("legende", false)):
+			say("Tu repenses à la légende de Mamie Basalte : rendre ses deux yeux au Grand Moaï. Un dans « l'eau qui regarde le ciel », l'autre « sous les têtes qui regardent les nuages ».", 7.0)
+		else:
+			say("La dalle ne bouge pas d'un cheveu. Il manque quelque chose pour l'ouvrir. Les petits Moaïs savent peut-être…", 6.0)
 
 
 func say(text: String, seconds: float = 6.0) -> void:
@@ -386,6 +456,8 @@ func _process(delta: float) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	if not ile.contains(p.x, p.z):
 		return
+	if p.distance_to(IleScript.W(0.0, 0.0, p.y)) < 120.0:
+		_promeneurs_tick(delta)
 	if not bool(state["visite"]) and ile.height(p.x, p.z) > -0.2 and bool(main.get("game_started")):
 		state["visite"] = true
 		main._show_message_v28("L'Île aux Moaïs — des géants de pierre qui regardent l'île… et qui, paraît-il, rigolent quand on a le dos tourné")
@@ -420,7 +492,7 @@ func trouvailles() -> Dictionary:
 	var vis: Dictionary = state.get("visites", {})
 	return {"moai": 1 if bool(state.get("visite", false)) else 0, "moai_plateau": 1 if bool(vis.get("plateau", false)) else 0,
 		"moai_lac": 1 if bool(vis.get("lac", false)) else 0, "moai_carriere": 1 if bool(vis.get("carriere", false)) else 0,
-		"moai_blagues": 1 if int(state.get("toc", 0)) >= 5 else 0}
+		"moai_blagues": 1 if int(state.get("toc", 0)) >= 5 else 0, "moai_legende": 1 if bool(state.get("legende", false)) else 0}
 
 
 func serialize() -> Dictionary:

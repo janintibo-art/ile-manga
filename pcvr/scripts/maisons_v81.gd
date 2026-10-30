@@ -349,6 +349,9 @@ func _build() -> Array:
 		# V84 : l'histoire imposée par le testeur reste aussi (on peut tester « ENCORE TOI ?! »)
 		if scenario != "chez" and scenario != "fee" and Scenes.has_scenario(scenario):
 			st0["scenario"] = scenario
+	elif str(cur.get("histoire", "")) != "" and Scenes.has_scenario(str(cur["histoire"])):
+		# V88 : une porte qui a son histoire à elle (les maisons des petits Moaïs)
+		scenario = str(cur["histoire"])
 	elif str(st0.get("scenario", "")) != "" and (Scenes.has_scenario(str(st0["scenario"]))):
 		scenario = str(st0["scenario"])
 	else:
@@ -393,6 +396,10 @@ func act(pos: Vector3, text: String, cb: Callable, radius: float = 1.3, when: Ca
 ## Un habitant de la maison. role : "homme", "femme", "vieux", "vieille", "garcon", "fille"
 ## (ou un id de fiche) ; x, z, yaw en repère de la pièce.
 func person(role: String, x: float, z: float, yaw: float, pose: String, nom: String = "") -> Node:
+	# V88 : chez les petits Moaïs, les habitants sont des petits Moaïs
+	if str(ctx.get("style", "")) == "moai":
+		var Mini = load("res://scripts/pnj/mini_moai_v88.gd")
+		return person_moai(nom if nom != "" else str(Mini.NOMS[(ctx["rng"] as RandomNumberGenerator).randi() % Mini.NOMS.size()]), x, z, yaw, pose, {"h": 0.75 if role in ["garcon", "fille"] else 1.0})
 	var prof: Dictionary = Gens.pick(str(ctx["style"]), role, ctx["rng"])
 	if nom == "":
 		nom = Gens.prenom(str(ctx["style"]), role, ctx["rng"])
@@ -400,6 +407,15 @@ func person(role: String, x: float, z: float, yaw: float, pose: String, nom: Str
 	var face: Vector3 = Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1)
 	var y: float = 0.0
 	var f: Node = Figurant.spawn(room, main, prof, R.P(x, y, z), face, pose)
+	people.append(f)
+	return f
+
+
+## V88 : un petit Moaï (pnj/mini_moai_v88.gd), à la place d'un habitant ; x, z, yaw en repère de la pièce.
+func person_moai(nom: String, x: float, z: float, yaw: float, pose: String = "debout", opts: Dictionary = {}) -> Node:
+	var face: Vector3 = Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1)
+	var Mini = load("res://scripts/pnj/mini_moai_v88.gd")
+	var f: Node = Mini.spawn(room, main, nom, R.P(x, 0.0, z), face, pose, opts)
 	people.append(f)
 	return f
 

@@ -170,6 +170,7 @@ const LISTE := {
 	"moai_lac": ["Le Cratère du Lac", "moai", 20],
 	"moai_carriere": ["La Butte de la Carrière", "moai", 20],
 	"moai_blagues": ["Cinq blagues des petits Moaïs", "moai", 30],
+	"moai_legende": ["La légende des yeux du Grand Moaï", "moai", 30],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],

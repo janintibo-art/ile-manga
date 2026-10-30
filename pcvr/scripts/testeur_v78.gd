@@ -175,6 +175,12 @@ func _house_stories() -> Array:
 		"berceuse": "Forgefer : la berceuse", "soupe_cailloux": "Forgefer : la soupe aux cailloux"}
 	for sc3 in M.Scenes.Echoppes.SCENARIOS:
 		out.append([str(v85.get(str(sc3[0]), str(sc3[0]))), [str(sc3[0])]])
+	# V88 : chez les petits Moaïs (on va à la porte qui a cette histoire)
+	var v88 := {"grimaces": "Moaïs : le concours de grimaces", "blagues": "Moaïs : le cabaret des cailloux", "statues": "Moaïs : 1, 2, 3, Moaï !",
+		"sieste": "Moaïs : le dormeur de 800 ans", "four": "Moaïs : le four de terre", "cache": "Moaïs : cache-cache sous les rochers",
+		"chorale": "Moaïs : la chorale", "mer": "Moaïs : le petit qui n'a jamais vu la mer", "doyenne": "Moaïs : la doyenne et la légende"}
+	for sc4 in M.Scenes.Moais.HISTOIRES:
+		out.append([str(v88.get(str(sc4), str(sc4))), [str(sc4)]])
 	return out
 
 
@@ -194,9 +200,12 @@ func _visit(sc: String) -> void:
 			styles = (sc2[2] as Dictionary).get("style", [])
 	if sc == "fee":
 		styles = ["fee"]
+	var fixe: bool = M.Scenes.Moais.has(sc)
 	for i in range(M.portes.size()):
 		var ok: bool = sc == "" or str(M.portes[i].get("owner", "")) == "" or sc == "fee"
 		if not styles.is_empty() and not (str(M.portes[i]["style"]) in styles):
+			ok = false
+		if fixe and str(M.portes[i].get("histoire", "")) != sc:
 			ok = false
 		if ok:
 			var dd: float = (M.portes[i]["door"] as Vector3).distance_to(p)

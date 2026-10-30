@@ -19,6 +19,7 @@ const SCENARIOS := [
 
 const Iles = preload("res://scripts/maisons_iles_v82.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
+const Moais = preload("res://scripts/maisons_moai_v88.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -64,6 +65,8 @@ static func region(style: String) -> String:
 			return "soleils"
 		"nain":
 			return "nains"
+		"moai":
+			return "moai"
 		"elfe", "fee":
 			return "elfes"
 	return "azur"
@@ -98,6 +101,8 @@ static func food(style: String) -> Array:
 			return ["the_stellaire", "gelee_cosmique", "biscuit_lunaire"]
 		"nain":
 			return ["ragout_nain", "fromage_chevre", "champignon_braise"]
+		"moai":
+			return ["brochette_poisson", "noix_coco", "baies"]
 	return ["croissant", "bouillabaisse", "glace"]
 
 
@@ -135,7 +140,7 @@ static func plat(style: String) -> String:
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -227,6 +232,8 @@ static func build(M) -> void:
 				Iles.build(M, str(M.ctx["scenario"]))
 			elif Echoppes.has(str(M.ctx["scenario"])):
 				Echoppes.build(M, str(M.ctx["scenario"]))
+			elif Moais.has(str(M.ctx["scenario"])):
+				Moais.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

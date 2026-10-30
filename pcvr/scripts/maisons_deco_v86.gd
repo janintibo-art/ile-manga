@@ -15,7 +15,8 @@ const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 ## Les histoires qui ont tout leur décor à elles (rien à ajouter).
 const RIEN := ["envers", "abandon", "fantome", "apesanteur", "fee"]
 ## Celles où le sol est déjà occupé par l'histoire : seulement les murs et le plafond.
-const LEGER := ["chats", "cache_cache", "travaux", "surprise", "coucou", "sportif", "boutique"]
+const LEGER := ["chats", "cache_cache", "travaux", "surprise", "coucou", "sportif", "boutique",
+	"cache", "statues", "chorale", "blagues"]
 
 ## Au sol, contre un mur : [nom, largeur, profondeur]
 const SOL := [["porte_manteau", 0.5, 0.5], ["panier", 0.5, 0.45], ["bois_feu", 0.95, 0.45], ["plante_haute", 0.6, 0.6],
@@ -29,6 +30,7 @@ const SOL_VILLE := {
 	"egypte": [["jarre", 0.5, 0.5], ["jarre", 0.5, 0.5]], "maya": [["jarre", 0.5, 0.5], ["tambour", 0.5, 0.5]],
 	"azteque": [["tambour", 0.5, 0.5], ["jarre", 0.5, 0.5]], "elfe": [["harpe", 0.6, 0.5], ["plante_haute", 0.6, 0.6]],
 	"atlante": [["corail", 0.55, 0.55], ["jarre", 0.5, 0.5]], "nain": [["enclume", 0.65, 0.45], ["tonneau", 0.75, 0.75]],
+	"moai": [["jarre", 0.5, 0.5], ["corail", 0.55, 0.55], ["panier", 0.5, 0.45]],
 }
 ## Sur un mur : [nom, demi-largeur]
 const MUR := [["horloge", 0.3], ["miroir", 0.35], ["patere", 0.45], ["cadres", 0.5], ["etagere_bocaux", 0.6], ["applique", 0.15],
@@ -42,11 +44,13 @@ const MUR_VILLE := {
 	"egypte": [["papyrus", 0.4], ["assiettes", 0.5]], "maya": [["masque", 0.28], ["natte", 0.5]],
 	"azteque": [["masque", 0.28], ["natte", 0.5]], "elfe": [["couronne", 0.32], ["miroir", 0.35]],
 	"atlante": [["coquillages", 0.5], ["bouee", 0.38]], "nain": [["marteaux", 0.45], ["chopes", 0.55]],
+	"moai": [["coquillages", 0.5], ["natte", 0.5], ["filet", 0.6]],
 }
 ## Au plafond
 const HAUT := ["herbes", "ail", "cage"]
 const HAUT_VILLE := {"tazira": ["lanterne_ajouree"], "ramure": ["lanterne_papier"], "astralys": ["mobile_cristaux"],
-	"arcanelle": ["bougies_flottantes"], "elfe": ["lianes"], "egypte": ["lanterne_ajouree"], "nain": ["herbes"], "pirate": ["cage"]}
+	"arcanelle": ["bougies_flottantes"], "elfe": ["lianes"], "egypte": ["lanterne_ajouree"], "nain": ["herbes"], "pirate": ["cage"],
+	"moai": ["lanterne_papier", "herbes"]}
 
 
 # =================================================================== placer
