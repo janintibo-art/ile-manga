@@ -8,14 +8,16 @@ extends Node3D
 ## la Butte de la Carrière, le Moaï tombé ; il plante la végétation (moai_flore_v87), tient les
 ## lanternes la nuit, les messages de découverte, les lieux pour le carnet, la téléportation et
 ## la sauvegarde.
-## (V88 : on entre chez les petits Moaïs ; V89 : la grande porte s'ouvre sur l'escalier et le
-## souterrain.)
+## (V88 : on entre chez les petits Moaïs ; V89 : on rend ses deux yeux de corail au Grand Moaï
+## — l'un dort dans l'eau du Cratère du Lac, l'autre sous la Tête qui rêve, à la Carrière — et sa
+## grande porte s'ouvre sur l'escalier du souterrain : souterrain_moai_v89.)
 
 const IleScript = preload("res://scripts/ile_moai_v87.gd")
 const Statue = preload("res://scripts/moai_statue_v87.gd")
 const FLORE := "res://scripts/moai_flore_v87.gd"
 const Kit = preload("res://scripts/azur_kit_v56.gd")
 const Moais = preload("res://scripts/maisons_moai_v88.gd")
+const Souterrain = preload("res://scripts/souterrain_moai_v89.gd")
 
 ## La ronde des Moaïs habités autour du Plateau des Anciens : [angle (degrés ; 0 = est, 90 = sud),
 ## rayon, hauteur, variante, chignon]. Le sud (le chemin de la plage) reste libre.
@@ -31,6 +33,19 @@ const AHUS := {
 ## Les têtes à moitié enterrées de la Butte de la Carrière : [x, z, hauteur, angle (degrés), penché]
 const TETES := [[78.0, 64.0, 10.0, 200.0, 6.0], [84.0, 74.0, 9.0, 230.0, -8.0], [92.0, 66.0, 11.0, 190.0, 4.0],
 	[98.0, 76.0, 9.5, 250.0, 10.0], [72.0, 74.0, 8.5, 215.0, -5.0], [90.0, 58.0, 10.5, 180.0, 0.0], [104.0, 68.0, 9.0, 235.0, -10.0]]
+## V89 : la Tête qui rêve : la seule qui regarde les nuages (bien penchée en arrière) ; dessous,
+## une pierre plate, et sous la pierre, un œil de corail.
+const TETE_REVEUSE := [68.0, 86.0, 9.5, 200.0, -30.0]
+## Ce qu'on trouve sous les autres têtes (rien d'utile, mais on rit).
+const SOUS_TETES := [
+	"Sous la tête, de la terre, une fourmi, et la fourmi te regarde d'un air de dire : « C'est chez moi, ici. »",
+	"Rien. Cette tête-là regarde l'horizon, droit devant elle ; pas les nuages.",
+	"Un ver de terre, vexé d'avoir été dérangé. Il repart en soupirant (pour un ver).",
+	"Rien sous la tête… mais tu as l'impression qu'elle a pouffé de rire quand tu t'es penché.",
+	"Un vieux coquillage, apporté là par un oiseau farceur. Cette tête-là regarde la mer, pas le ciel.",
+	"De l'herbe, de la terre, et pas le moindre œil. Celle-ci regarde ses pieds… qu'elle n'a pas.",
+	"Une petite araignée a tissé une toile entre le menton de la tête et l'herbe. Rien d'autre.",
+]
 
 const PLACES := {"plage": "la Plage Blanche", "plateau": "le Plateau des Anciens", "lac": "le Cratère du Lac",
 	"venteux": "le Mont Venteux", "carriere": "la Butte de la Carrière", "ahu_couchant": "l'Ahu du Couchant",
@@ -60,6 +75,13 @@ var maisons: Array = []                   # {"node", "door" (monde), "out", "nom
 var grand: Node3D
 var moais: Array = []
 var promeneurs: Array = []                # V88 : les petits Moaïs qui se promènent sur le plateau
+var souterrain: Node3D                    # V89 : le souterrain du Grand Moaï (construit quand on descend)
+var tetes: Array = []                     # V89 : les têtes de la Carrière {"node", "at" (devant), "reveuse"}
+var oeil_lac_at := Vector3.ZERO           # V89 : où l'on plonge la main (au bord du lac)
+var _oeil_lac: Node3D
+var _oeil_lac_light: OmniLight3D
+var _pierre_plate: MeshInstance3D
+var _grand_yeux: Array = []
 var _clock: float = 0.0
 var _zone_t: float = 0.0
 var _registered: bool = false
@@ -74,7 +96,9 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "toc": 0, "grande_porte": false, "legende": false}
+	return {"visite": false, "visites": {}, "toc": 0, "grande_porte": false, "legende": false,
+		"oeil_lac": false, "oeil_carriere": false, "porte_ouverte": false, "souterrain": false,
+		"fresques": false, "chant": false, "tresor": false}
 
 
 # =================================================================== construction
@@ -126,6 +150,7 @@ func build_town() -> void:
 	moais.append(Statue.make(self, gp, Vector3(0, 0, 1), {"h": 7.0, "v": 2, "yeux": true, "nom": "Gardien_du_lac"}))
 	avoid.append([Vector2(gp.x, gp.z), 6.0])
 	objets["lac"] = IleScript.W(float(lv[0]), float(lv[1]), IleScript.LAC_Y)
+	_oeil_du_lac()
 	# --- les têtes de la Butte de la Carrière
 	for t in TETES:
 		var tp: Vector3 = _ground(float(t[0]), float(t[1]))
@@ -133,6 +158,9 @@ func build_town() -> void:
 		hd.rotate_object_local(Vector3.RIGHT, deg_to_rad(float(t[4])))
 		moais.append(hd)
 		avoid.append([Vector2(tp.x, tp.z), 5.0])
+		var fd := Vector3(sin(deg_to_rad(float(t[3]))), 0, cos(deg_to_rad(float(t[3]))))
+		tetes.append({"node": hd, "at": _ground(tp.x - IleScript.CENTER.x + fd.x * float(t[2]) * 0.32, tp.z - IleScript.CENTER.z + fd.z * float(t[2]) * 0.32), "reveuse": false})
+	_tete_reveuse(avoid)
 	objets["carriere"] = _ground(86.0, 70.0)
 	# --- le Moaï tombé, face contre terre, près de l'Ahu du Couchant
 	var fp: Vector3 = _ground(-100.0, -34.0)
@@ -150,6 +178,10 @@ func build_town() -> void:
 			flore.avoid.append(a2)
 		flore.build_moai(ile, pc)
 	_promeneurs()
+	souterrain = Souterrain.new()
+	add_child(souterrain)
+	souterrain.setup(main, self)
+	_sync_grand()
 	objets["plage"] = _ground(8.0, 92.0)
 	objets["venteux"] = _ground(0.0, -112.0)
 	print("ILE_MANGA_V87: l'Île aux Moaïs est prête (%d Moaïs, %d ms)" % [moais.size() + 1, Time.get_ticks_msec() - t0])
@@ -280,6 +312,8 @@ func _grand_door(m: Node3D) -> void:
 	slab.material_override = Statue.stone_mat("ahu", Color(0.9, 0.86, 0.8))
 	m.add_child(slab)
 	slab.position = Vector3(0, 2.3, fz + 0.1)
+	m.set_meta("slab", slab)
+	var bits: Array = []
 	var glow := StandardMaterial3D.new()
 	glow.albedo_color = Color(0.4, 0.85, 0.95)
 	glow.emission_enabled = true
@@ -304,6 +338,7 @@ func _grand_door(m: Node3D) -> void:
 		m.add_child(g)
 		g.position = Vector3(cos(a) * 0.72, 2.6 + sin(a) * 0.72, fz + 0.37)
 		g.rotation = Vector3(0, 0, a)
+		bits.append(g)
 	var eye := MeshInstance3D.new()
 	var sm := SphereMesh.new()
 	sm.radius = 0.2
@@ -312,8 +347,68 @@ func _grand_door(m: Node3D) -> void:
 	eye.material_override = glow
 	m.add_child(eye)
 	eye.position = Vector3(0, 2.6, fz + 0.38)
+	bits.append(eye)
+	m.set_meta("bits", bits)
 	m.set_meta("grande_porte", m.global_transform * Vector3(0, 0.05, fz + 1.6))
 	m.set_meta("glow", glow)
+	# V89 : derrière la dalle, le noir de l'escalier (on ne le voit que quand elle s'est enfoncée),
+	# et une lueur turquoise qui monte d'en bas
+	var dark := MeshInstance3D.new()
+	var qm := QuadMesh.new()
+	qm.size = Vector2(3.1, 4.4)
+	dark.mesh = qm
+	var dm := StandardMaterial3D.new()
+	dm.albedo_color = Color(0.0, 0.0, 0.0)
+	dm.emission_enabled = true
+	dm.emission = Color(0.02, 0.09, 0.1)
+	dm.roughness = 1.0
+	dark.material_override = dm
+	m.add_child(dark)
+	dark.position = Vector3(0, 2.25, fz + 0.06)
+	dark.visible = false
+	m.set_meta("noir", dark)
+	var up := OmniLight3D.new()
+	up.light_color = Color(0.35, 0.95, 0.9)
+	up.light_energy = 0.0
+	up.omni_range = 6.0
+	m.add_child(up)
+	up.position = Vector3(0, 0.6, fz + 0.9)
+	m.set_meta("lueur", up)
+	# V89 : ses deux yeux de corail (cachés tant qu'on ne les lui a pas rendus)
+	var h: float = float(m.get_meta("h"))
+	var P: Array = Statue._var(1)
+	var em := StandardMaterial3D.new()
+	em.albedo_color = Color(0.97, 0.94, 0.88)
+	em.roughness = 0.3
+	em.emission_enabled = true
+	em.emission = Color(0.6, 0.95, 0.9)
+	em.emission_energy_multiplier = 0.18
+	var pm := StandardMaterial3D.new()
+	pm.albedo_color = Color(0.03, 0.03, 0.04)
+	pm.roughness = 0.15
+	for sx in [-1.0, 1.0]:
+		var ez: float = Statue._front_z(sx * 0.062, 0.815, P) - 0.012
+		var e1 := MeshInstance3D.new()
+		var sm1 := SphereMesh.new()
+		sm1.radius = 0.03 * h
+		sm1.height = 0.04 * h
+		e1.mesh = sm1
+		e1.material_override = em
+		m.add_child(e1)
+		e1.position = Vector3(sx * 0.062 * h, 0.815 * h, ez * h)
+		e1.scale = Vector3(1.25, 0.8, 0.6)
+		var p1 := MeshInstance3D.new()
+		var sp := SphereMesh.new()
+		sp.radius = 0.013 * h
+		sp.height = 0.02 * h
+		p1.mesh = sp
+		p1.material_override = pm
+		m.add_child(p1)
+		p1.position = Vector3(sx * 0.062 * h, 0.812 * h, (ez + 0.012) * h)
+		e1.visible = false
+		p1.visible = false
+		_grand_yeux.append(e1)
+		_grand_yeux.append(p1)
 
 
 ## Les interactions (quand donjon_v35 existe) : frapper chez les petits Moaïs, la grande porte.
@@ -333,8 +428,26 @@ func _register_interactions() -> void:
 		d._interactions.append(it)
 		promeneurs[i2]["it"] = it
 	if grand != null:
-		d._interactions.append({"id": "moai_grande_porte", "pos": grand.get_meta("grande_porte"), "radius": 2.6,
-			"text": "E : examiner la grande porte", "vr": "Gâchette : examiner la grande porte", "call": _grand_porte})
+		var gp: Vector3 = grand.get_meta("grande_porte")
+		d._interactions.append({"id": "moai_grande_porte", "pos": gp, "radius": 2.6,
+			"text": "E : examiner la grande porte", "vr": "Gâchette : examiner la grande porte", "call": _grand_porte,
+			"when": func(): return not _deux_yeux() and not bool(state.get("porte_ouverte", false))})
+		# V89 : rendre ses yeux au Grand Moaï ; puis descendre l'escalier
+		d._interactions.append({"id": "moai_rendre_yeux", "pos": gp, "radius": 2.6,
+			"text": "E : rendre ses yeux au Grand Moaï", "vr": "Gâchette : rendre ses yeux au Grand Moaï", "call": _rendre_yeux,
+			"when": func(): return _deux_yeux() and not bool(state.get("porte_ouverte", false))})
+		d._interactions.append({"id": "moai_descendre", "pos": gp, "radius": 2.6,
+			"text": "E : descendre l'escalier", "vr": "Gâchette : descendre l'escalier", "call": _descendre,
+			"when": func(): return bool(state.get("porte_ouverte", false)) and souterrain != null and not souterrain.inside})
+	# V89 : l'œil qui dort dans l'eau du lac ; les têtes de la Carrière
+	if oeil_lac_at != Vector3.ZERO:
+		d._interactions.append({"id": "moai_oeil_lac", "pos": oeil_lac_at, "radius": 2.8,
+			"text": "E : plonger la main dans l'eau qui brille", "vr": "Gâchette : plonger la main dans l'eau", "call": _prendre_oeil_lac,
+			"when": func(): return not bool(state.get("oeil_lac", false))})
+	for i3 in range(tetes.size()):
+		d._interactions.append({"id": "moai_tete_%d" % i3, "pos": tetes[i3]["at"], "radius": 2.4,
+			"text": "E : regarder sous la tête", "vr": "Gâchette : regarder sous la tête", "call": _sous_tete.bind(i3),
+			"when": func(): return not bool(state.get("oeil_carriere", false))})
 
 
 ## Toc toc ! Une petite voix de pierre répond (une blague, toujours une autre).
@@ -360,10 +473,216 @@ func _grand_porte() -> void:
 		say("Une immense dalle de pierre ferme le ventre du Grand Moaï. Au milieu, un cercle de signes luit faiblement, comme s'il respirait. On entend, très loin dessous, de l'eau qui coule… et quelque chose qui chante.", 8.0)
 	else:
 		if bool(state.get("legende", false)):
-			say("Tu repenses à la légende de Mamie Basalte : rendre ses deux yeux au Grand Moaï. Un dans « l'eau qui regarde le ciel », l'autre « sous les têtes qui regardent les nuages ».", 7.0)
+			var got: String = ""
+			if bool(state.get("oeil_lac", false)) or bool(state.get("oeil_carriere", false)):
+				got = " Tu en as déjà un : il te reste à trouver l'autre."
+			say("Tu repenses à la légende de Mamie Basalte : rendre ses deux yeux au Grand Moaï. Un dans « l'eau qui regarde le ciel », l'autre « sous les têtes qui regardent les nuages »." + got, 8.0)
 		else:
 			say("La dalle ne bouge pas d'un cheveu. Il manque quelque chose pour l'ouvrir. Les petits Moaïs savent peut-être…", 6.0)
 
+
+
+# =================================================================== V89 : les yeux du Grand Moaï
+
+func _deux_yeux() -> bool:
+	return bool(state.get("oeil_lac", false)) and bool(state.get("oeil_carriere", false))
+
+
+## L'œil qui dort dans « l'eau qui regarde le ciel » : au bord du lac, sous le Gardien.
+func _oeil_du_lac() -> void:
+	var lv: Array = IleScript.VOLCANS["lac"]
+	var from := Vector2(-96.0, 26.0)
+	var to := Vector2(float(lv[0]), float(lv[1]))
+	var dir: Vector2 = (to - from).normalized()
+	var shore := Vector2.ZERO
+	for k in range(120):
+		var l: Vector2 = from + dir * (k * 0.5)
+		var w: Vector3 = IleScript.W(l.x, l.y)
+		if ile.in_lake(w.x, w.z):
+			shore = l
+			break
+	if shore == Vector2.ZERO:
+		return
+	var stand: Vector2 = shore - dir * 0.6
+	oeil_lac_at = _ground(stand.x, stand.y)
+	var ep: Vector2 = shore + dir * 1.6
+	var at: Vector3 = IleScript.W(ep.x, ep.y, IleScript.LAC_Y - 0.28)
+	_oeil_lac = _coral_eye(0.22)
+	add_child(_oeil_lac)
+	_oeil_lac.global_position = at
+	_oeil_lac.rotation = Vector3(-1.2, 0.3, 0)
+	_oeil_lac_light = OmniLight3D.new()
+	_oeil_lac_light.light_color = Color(0.45, 0.95, 0.95)
+	_oeil_lac_light.light_energy = 1.2
+	_oeil_lac_light.omni_range = 3.5
+	add_child(_oeil_lac_light)
+	_oeil_lac_light.global_position = at + Vector3.UP * 0.5
+	objets["oeil_lac"] = oeil_lac_at
+
+
+## Un œil de corail : une pierre blanche, ronde, avec sa pupille noire (et une lueur douce).
+func _coral_eye(r: float) -> Node3D:
+	var n := Node3D.new()
+	n.name = "Oeil_de_corail"
+	var e := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = r
+	sm.height = r * 1.6
+	e.mesh = sm
+	var em := StandardMaterial3D.new()
+	em.albedo_color = Color(0.97, 0.94, 0.88)
+	em.roughness = 0.3
+	em.emission_enabled = true
+	em.emission = Color(0.55, 0.95, 0.9)
+	em.emission_energy_multiplier = 0.9
+	e.material_override = em
+	n.add_child(e)
+	var p := MeshInstance3D.new()
+	var sp := SphereMesh.new()
+	sp.radius = r * 0.45
+	sp.height = r * 0.7
+	p.mesh = sp
+	var pm := StandardMaterial3D.new()
+	pm.albedo_color = Color(0.03, 0.03, 0.04)
+	pm.roughness = 0.15
+	p.material_override = pm
+	n.add_child(p)
+	p.position = Vector3(0, 0, r * 0.62)
+	return n
+
+
+## La Tête qui rêve, à la Carrière : elle seule regarde les nuages. Devant elle, une pierre plate.
+func _tete_reveuse(avoid: Array) -> void:
+	var t: Array = TETE_REVEUSE
+	var tp: Vector3 = _ground(float(t[0]), float(t[1]))
+	var fd := Vector3(sin(deg_to_rad(float(t[3]))), 0, cos(deg_to_rad(float(t[3]))))
+	var hd: Node3D = Statue.make(self, tp, fd, {"h": float(t[2]), "v": 0, "enfoui": float(t[2]) * 0.5, "nom": "Tete_qui_reve"})
+	hd.rotate_object_local(Vector3.RIGHT, deg_to_rad(float(t[4])))
+	moais.append(hd)
+	avoid.append([Vector2(tp.x, tp.z), 6.0])
+	var front: Vector3 = _ground(float(t[0]) + fd.x * float(t[2]) * 0.34, float(t[1]) + fd.z * float(t[2]) * 0.34)
+	_pierre_plate = MeshInstance3D.new()
+	_pierre_plate.name = "Pierre_plate"
+	var bm := BoxMesh.new()
+	bm.size = Vector3(1.3, 0.22, 0.95)
+	_pierre_plate.mesh = bm
+	_pierre_plate.material_override = Statue.stone_mat("ahu", Color(0.8, 0.76, 0.72))
+	add_child(_pierre_plate)
+	_pierre_plate.global_position = front + Vector3.UP * 0.08
+	_pierre_plate.rotation.y = atan2(fd.x, fd.z) + 0.3
+	tetes.append({"node": hd, "at": front, "reveuse": true})
+	objets["tete_reveuse"] = front
+
+
+func _prendre_oeil_lac() -> void:
+	if bool(state.get("oeil_lac", false)):
+		return
+	state["oeil_lac"] = true
+	sfx("plouf", oeil_lac_at)
+	if _oeil_lac != null:
+		_oeil_lac.visible = false
+	if _oeil_lac_light != null:
+		_oeil_lac_light.visible = false
+	say("Tu plonges le bras dans l'eau froide du lac… et tu en sors une grosse pierre ronde, blanche comme le corail, avec une pupille noire : un ŒIL ! Il te regarde. Il a l'air ravi d'être sorti de l'eau. (« L'eau qui regarde le ciel » : c'était le lac du cratère !)", 9.0)
+	_apres_oeil()
+
+
+func _sous_tete(i: int) -> void:
+	if bool(state.get("oeil_carriere", false)):
+		return
+	var t: Dictionary = tetes[i]
+	sfx("pelle", t["at"])
+	if not bool(t["reveuse"]):
+		say(str(SOUS_TETES[i % SOUS_TETES.size()]), 6.0)
+		return
+	state["oeil_carriere"] = true
+	if _pierre_plate != null:
+		var tw := create_tween()
+		tw.tween_property(_pierre_plate, "position", _pierre_plate.position + Vector3(0.9, 0.0, 0.3), 0.8)
+		tw.parallel().tween_property(_pierre_plate, "rotation:z", 0.35, 0.8)
+	sfx("pierre_glisse", t["at"])
+	say("Tu soulèves la pierre plate, au pied de la seule tête qui a le nez en l'air, à regarder passer les nuages… Dessous, dans un nid de mousse : un œil de corail, blanc, rond, avec sa pupille noire. On dirait qu'il cligne. (Non : c'est l'émotion.)", 9.0)
+	_apres_oeil()
+
+
+func _apres_oeil() -> void:
+	sfx("perle", main._player_pos_v27())
+	if main.has_method("jingle"):
+		main.jingle("decouverte")
+	if _deux_yeux():
+		await get_tree().create_timer(9.5).timeout
+		say("Tu as les deux yeux de corail ! Il ne reste plus qu'à les rendre au Grand Moaï, au milieu du Plateau des Anciens.", 7.0)
+	elif not bool(state.get("legende", false)):
+		await get_tree().create_timer(9.5).timeout
+		say("Un œil de pierre… Les petits Moaïs du plateau sauront peut-être à qui il appartient. (La doyenne, Mamie Basalte, connaît toutes les légendes.)", 7.0)
+
+
+## On rend ses yeux au Grand Moaï : ils s'allument, la dalle de son ventre s'enfonce.
+func _rendre_yeux() -> void:
+	if not _deux_yeux() or bool(state.get("porte_ouverte", false)):
+		return
+	state["porte_ouverte"] = true
+	sfx("sceau_pose", grand.get_meta("grande_porte"))
+	for e in _grand_yeux:
+		(e as Node3D).visible = true
+		var s0: Vector3 = (e as Node3D).scale
+		(e as Node3D).scale = s0 * 0.05
+		var tw := create_tween()
+		tw.tween_property(e, "scale", s0, 1.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	say("Les deux yeux de corail s'envolent de tes mains, montent tout là-haut et se posent dans le visage du Grand Moaï. Il cligne. Une fois. Lentement.", 7.0)
+	await get_tree().create_timer(3.0).timeout
+	sfx("sceau_eveil", grand.get_meta("grande_porte"))
+	var glow: StandardMaterial3D = grand.get_meta("glow")
+	var tw2 := create_tween()
+	tw2.tween_property(glow, "emission_energy_multiplier", 4.0, 1.5)
+	await get_tree().create_timer(1.8).timeout
+	sfx("grande_porte", grand.get_meta("grande_porte"))
+	(grand.get_meta("noir") as Node3D).visible = true
+	for b in grand.get_meta("bits"):
+		(b as Node3D).visible = false
+	var slab: Node3D = grand.get_meta("slab")
+	var tw3 := create_tween()
+	tw3.tween_property(slab, "position:y", -2.6, 5.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw3.parallel().tween_property(grand.get_meta("lueur"), "light_energy", 1.4, 5.0)
+	await get_tree().create_timer(5.2).timeout
+	say("La grande dalle s'est enfoncée dans le sol. Derrière, un escalier de pierre descend en tournant dans le noir… et, tout en bas, ça chante.", 7.0)
+	if main.has_method("jingle"):
+		main.jingle("decouverte")
+
+
+func _descendre() -> void:
+	if souterrain != null:
+		souterrain.enter()
+
+
+## Devant la grande porte, dos au Grand Moaï (en remontant du souterrain).
+func door_outside() -> Array:
+	var gp: Vector3 = grand.get_meta("grande_porte")
+	var fwd: Vector3 = grand.global_basis.z
+	fwd.y = 0.0
+	fwd = fwd.normalized()
+	var at: Vector3 = gp + fwd * 1.2
+	at.y = ile.height(at.x, at.z) + 0.1
+	return [at, fwd]
+
+
+## L'état des yeux et de la porte (après une construction ou un chargement).
+func _sync_grand() -> void:
+	if grand == null:
+		return
+	var open: bool = bool(state.get("porte_ouverte", false))
+	for e in _grand_yeux:
+		(e as Node3D).visible = open
+	(grand.get_meta("slab") as Node3D).position.y = -2.6 if open else 2.3
+	(grand.get_meta("noir") as Node3D).visible = open
+	(grand.get_meta("lueur") as OmniLight3D).light_energy = 1.4 if open else 0.0
+	for b in grand.get_meta("bits"):
+		(b as Node3D).visible = not open
+	if _oeil_lac != null:
+		_oeil_lac.visible = not bool(state.get("oeil_lac", false))
+		_oeil_lac_light.visible = _oeil_lac.visible
+	if _pierre_plate != null:
+		_pierre_plate.rotation.z = 0.35 if bool(state.get("oeil_carriere", false)) else 0.0
 
 func say(text: String, seconds: float = 6.0) -> void:
 	var d: Node = main.get("donjon_v35")
@@ -399,7 +718,7 @@ func walkable(p: Vector3) -> bool:
 
 
 func owns_point(p: Vector3) -> bool:
-	return contains(p)
+	return contains(p) or (souterrain != null and souterrain.contains(p))
 
 
 func zone_at(p: Vector3) -> String:
@@ -422,6 +741,8 @@ func zone_at(p: Vector3) -> String:
 
 
 func place_name(p: Vector3) -> String:
+	if souterrain != null and souterrain.contains(p):
+		return souterrain.place_name(p)
 	return "L'Île aux Moaïs, " + str(PLACES.get(zone_at(p), "l'île"))
 
 
@@ -437,6 +758,8 @@ func respawn_point() -> Array:
 
 func on_faint(_p: Vector3) -> void:
 	var at: Array = respawn_point()
+	if souterrain != null and souterrain.contains(_p):
+		at = souterrain.respawn_point()
 	main.place_player_v35(at[0], at[1])
 
 
@@ -449,10 +772,14 @@ func _process(delta: float) -> void:
 	if main == null or ile == null:
 		return
 	_clock += delta
-	# la grande porte respire
+	# la grande porte respire (ouverte : elle brille fort)
 	if grand != null and grand.has_meta("glow"):
 		var g: StandardMaterial3D = grand.get_meta("glow")
-		g.emission_energy_multiplier = 0.7 + 0.45 * (0.5 + 0.5 * sin(_clock * 1.3))
+		var base: float = 3.0 if bool(state.get("porte_ouverte", false)) else 0.7
+		g.emission_energy_multiplier = base + 0.45 * (0.5 + 0.5 * sin(_clock * 1.3))
+	# V89 : l'œil qui dort dans le lac luit doucement
+	if _oeil_lac_light != null and _oeil_lac_light.visible:
+		_oeil_lac_light.light_energy = 0.9 + 0.6 * (0.5 + 0.5 * sin(_clock * 0.9))
 	var p: Vector3 = main._player_pos_v27()
 	if not ile.contains(p.x, p.z):
 		return
@@ -482,6 +809,14 @@ func _process(delta: float) -> void:
 				main._show_message_v28("L'Ahu du Levant — sept Moaïs alignés, le dos à la mer, qui regardent l'île")
 			"ahu_couchant":
 				main._show_message_v28("L'Ahu du Couchant — ils regardent le soleil se lever sur l'île, chaque matin, depuis toujours")
+	# V89 : quand on connaît la légende, un indice en passant au bon endroit
+	elif bool(state.get("legende", false)) and z in ["lac", "carriere"] and not bool(vis.get("indice_" + z, false)):
+		if z == "lac" and not bool(state.get("oeil_lac", false)):
+			vis["indice_lac"] = true
+			say("L'eau du cratère regarde le ciel, immobile… Tout près du bord, sous le Gardien du Lac, quelque chose brille sous la surface.", 7.0)
+		elif z == "carriere" and not bool(state.get("oeil_carriere", false)):
+			vis["indice_carriere"] = true
+			say("Les têtes de la Carrière regardent l'horizon, ou leurs pieds… Toutes ? Non : un peu plus bas, l'une d'elles a le nez en l'air, à regarder passer les nuages.", 7.0)
 	# la surface vue d'en dessous suit le plongeur (la mer de l'île est loin du centre du monde)
 	var mer: Node = main.get("mer_v55")
 	if mer != null and mer.get("_underside") != null:
@@ -492,7 +827,9 @@ func trouvailles() -> Dictionary:
 	var vis: Dictionary = state.get("visites", {})
 	return {"moai": 1 if bool(state.get("visite", false)) else 0, "moai_plateau": 1 if bool(vis.get("plateau", false)) else 0,
 		"moai_lac": 1 if bool(vis.get("lac", false)) else 0, "moai_carriere": 1 if bool(vis.get("carriere", false)) else 0,
-		"moai_blagues": 1 if int(state.get("toc", 0)) >= 5 else 0, "moai_legende": 1 if bool(state.get("legende", false)) else 0}
+		"moai_blagues": 1 if int(state.get("toc", 0)) >= 5 else 0, "moai_legende": 1 if bool(state.get("legende", false)) else 0,
+		"moai_yeux": 1 if _deux_yeux() else 0, "moai_souterrain": 1 if bool(state.get("souterrain", false)) else 0,
+		"moai_tresor": 1 if bool(state.get("tresor", false)) else 0}
 
 
 func serialize() -> Dictionary:
@@ -504,3 +841,6 @@ func load_data(d: Dictionary) -> void:
 	for k in state:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary) else (d[k] as Dictionary).duplicate(true)
+	if souterrain != null and souterrain.inside:
+		souterrain.teardown()
+	_sync_grand()

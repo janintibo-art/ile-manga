@@ -269,3 +269,14 @@ synthétiques (comme les foules de la V70) :
   musique/ciel_libre.ogg (« Ciel Libre », le vol en aéronef),
   musique/chantier.ogg (« Le Chantier Naval », chanson de marins en 6/8),
   musique/compagnons.ogg (« Un Ami pour la Vie », la ritournelle d'adoption, non bouclée).
+
+Le souterrain du Grand Moaï, l'Île aux Moaïs (V89) —
+Bruitages synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v89.py :
+  sfx/chant_0_1..chant_4_1 (les cinq Pierres-qui-Chantent : une voix de pierre en « o », la résonance
+      d'une grosse pierre frappée du plat de la main ; ré, fa, sol, la, do)
+Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v89.py, jouée avec les
+outils des V75 et V76 : la harpe, les contrebasses, les violoncelles et la flûte de la banque VSCO-2 CE
+(Versilian Studios, CC0) ; les verres frottés et les arbres à clochettes de la VCSL (CC0) ; la nappe, le
+célesta des gouttes, les scintillements, le souffle grave et le chœur doux (voix synthétiques à formants)
+sont synthétisés :
+  musique/salle_du_chant.ogg (« La Salle du Chant », sous le Grand Moaï).

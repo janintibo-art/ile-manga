@@ -314,6 +314,11 @@ func _choose_zone(running: bool) -> void:
 			zone = "forgefer"
 			targets["halle"] = 1.0
 			targets["grotte"] = 0.25
+		# V89 : sous le Grand Moaï (la Salle du Chant : la grotte, et la féerie des cristaux)
+		elif main.get("moai_v87") != null and main.moai_v87 != null and main.moai_v87.get("souterrain") != null and main.moai_v87.souterrain != null and main.moai_v87.souterrain.contains(p):
+			zone = "moai_chant"
+			targets["grotte"] = 0.9
+			targets["feerique"] = 0.3
 		else:
 			zone = "souterrain"
 			targets["grotte"] = 1.0
@@ -991,11 +996,11 @@ func _event() -> void:
 			list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
 			gap = Vector2(5.0, 12.0)
 			high = 5.0
-		"souterrain", "racines", "coeur":
+		"souterrain", "racines", "coeur", "moai_chant":
 			list = ["ponctuels/goutte_1", "ponctuels/goutte_2", "ponctuels/goutte_3", "ponctuels/goutte_4"]
 			gap = Vector2(1.5, 5.0)
 			high = 3.0
-			if zone == "racines" and _rng.randf() < 0.35:
+			if zone in ["racines", "moai_chant"] and _rng.randf() < 0.35:
 				list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
 	_event_clock = _rng.randf_range(gap.x, gap.y)
 	if list.is_empty():
@@ -1007,7 +1012,7 @@ func _event() -> void:
 	var r: float = _rng.randf_range(6.0, 22.0)
 	sp.global_position = lp + Vector3(cos(a) * r, _rng.randf_range(1.0, high), sin(a) * r)
 	sp.stream = _stream(str(list[_rng.randi() % list.size()]))
-	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines", "coeur"] else "Ambiance"
+	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines", "coeur", "moai_chant"] else "Ambiance"
 	sp.pitch_scale = _rng.randf_range(0.9, 1.1)
-	sp.volume_db = -6.0 if zone in ["souterrain", "racines", "coeur"] else -3.0
+	sp.volume_db = -6.0 if zone in ["souterrain", "racines", "coeur", "moai_chant"] else -3.0
 	sp.play()

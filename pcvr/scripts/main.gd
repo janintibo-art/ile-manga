@@ -1366,6 +1366,9 @@ func _save_slot(slot: int) -> bool:
 	# V81 : dans une maison, on se réveillera devant sa porte
 	if maisons_v81 != null and maisons_v81.inside:
 		save_pos = maisons_v81.outside_pos()
+	# V89 : sous le Grand Moaï, on se réveillera devant sa grande porte
+	if moai_v87 != null and moai_v87.get("souterrain") != null and moai_v87.souterrain.inside:
+		save_pos = moai_v87.door_outside()[0]
 	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 	# V83 : une sauvegarde ratée se voit (la sauvegarde automatique aussi, si elle échoue)

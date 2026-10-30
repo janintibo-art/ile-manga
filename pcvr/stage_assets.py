@@ -279,6 +279,14 @@ def main() -> int:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
             n64 += 1
+    # V89 : la roche du souterrain du Grand Moaï (maillage taillé par tools/generate_souterrain_v89.py)
+    m89 = source / "models" / "moai89"
+    if m89.is_dir():
+        for f in sorted(m89.glob("*.bin")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            n64 += 1
     tex64 = source / "textures" / "pnj64"
     if tex64.is_dir():
         for f in sorted(tex64.glob("*.png")):

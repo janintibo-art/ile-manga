@@ -35,6 +35,7 @@ func open_menu() -> void:
 		{"id": "lieux", "label": "Aller à un lieu de quête (carnet)"},
 		{"id": "pnj", "label": "Aller près d'un habitant"},
 		{"id": "maisons", "label": "Visiter une maison (choisir l'histoire)"},
+		{"id": "moai89", "label": "Le souterrain du Grand Moaï (yeux rendus, on descend)"},
 		{"id": "heure", "label": "Changer l'heure"},
 		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
 		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
@@ -53,6 +54,8 @@ func _pick(id: String) -> void:
 			_open_list("pnj", _npcs(), 0)
 		"maisons":
 			_open_list("maisons", _house_stories(), 0)
+		"moai89":
+			_souterrain_v89()
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -182,6 +185,22 @@ func _house_stories() -> Array:
 	for sc4 in M.Scenes.Moais.HISTOIRES:
 		out.append([str(v88.get(str(sc4), str(sc4))), [str(sc4)]])
 	return out
+
+
+## V89 : les deux yeux rendus, la grande porte ouverte, et l'on descend dans le souterrain.
+func _souterrain_v89() -> void:
+	var mo: Node = main.get("moai_v87")
+	if mo == null or mo.get("souterrain") == null or mo.souterrain == null:
+		main._show_message_v28("Mode testeur : l'Île aux Moaïs n'est pas là.")
+		return
+	main._close_dialogue_v31()
+	var M: Node = main.get("maisons_v81")
+	if M != null and M.inside:
+		M._teardown()
+	for k in ["legende", "oeil_lac", "oeil_carriere", "porte_ouverte"]:
+		mo.state[k] = true
+	mo._sync_grand()
+	mo.souterrain.enter()
 
 
 func _visit(sc: String) -> void:

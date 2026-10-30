@@ -1876,6 +1876,17 @@ func update_inside(force: bool = false) -> void:
 			env.fog_density = 0.001
 			env.volumetric_fog_density = 0.0
 			env.tonemap_exposure = 1.1
+		# V89 : le souterrain du Grand Moaï : une pénombre bleu-vert ; une brume légère où la lumière
+		# des cristaux, des veines de la roche et de la vasque fait des halos
+		var mo: Node = main.get("moai_v87")
+		if mo != null and mo.get("souterrain") != null and mo.souterrain != null and mo.souterrain.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.34, 0.48, 0.54)
+			env.ambient_light_energy = 0.75
+			env.fog_light_color = Color(0.015, 0.035, 0.04)
+			env.fog_density = 0.008
+			env.volumetric_fog_density = 0.02
+			env.volumetric_fog_albedo = Color(0.55, 0.75, 0.78)
+			env.tonemap_exposure = 1.3
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

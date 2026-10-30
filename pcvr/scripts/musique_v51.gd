@@ -16,7 +16,7 @@ const DIR := "res://assets/sons/musique/"
 const SETTINGS := "user://reglages_son.cfg"
 const ZONE_TRACK := {
 	"menu": "theme_ile", "village": "village", "jungle": "jungle", "elfes": "elfes", "nains": "nains",
-	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "racines": "racines",
+	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "moai_chant": "salle_du_chant", "racines": "racines",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
@@ -63,7 +63,7 @@ const ZONE_TRACK := {
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
+	"souterrain": -8.0, "salle_du_chant": -8.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
