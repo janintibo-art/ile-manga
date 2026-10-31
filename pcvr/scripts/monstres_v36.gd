@@ -13,6 +13,7 @@ const Monster69 = preload("res://scripts/monstre_v69.gd")
 const Monster70 = preload("res://scripts/monstre_v70.gd")
 const Monster71 = preload("res://scripts/monstre_v71.gd")
 const Monster75 = preload("res://scripts/monstre_v75.gd")
+const Monster90 = preload("res://scripts/monstre_v90.gd")
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -107,7 +108,8 @@ func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V70 : les monstres de l'Île de Braise, de l'Arène des Cornes et des Neuf Cercles
 	# V71 : les monstres de l'Île de Montjoie et du Donjon des Mille Marches (slimes, grenouilles, gobelins, navets, mimiques)
 	# V75 : les monstres de l'Île du Boucan (robots de Lisse & Fils, la Grande Pelleteuse, champignards)
-	var m: CharacterBody3D = Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())))))
+	# V90 : les dinosaures de l'Île Pixelithique (raptors, tricératops, ankylosaures, ptéranodons, Grosse-Dent)
+	var m: CharacterBody3D = Monster90.new() if Monster90.SPECS90.has(kind) else (Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()))))))
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)

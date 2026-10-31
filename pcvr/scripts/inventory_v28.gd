@@ -340,6 +340,13 @@ const ITEMS := {
 	# V68 : l'Île de la Balafre, ses pirates et ses trésors
 	"dent_croco": {"name": "Dent de crocodile", "art": "une dent de crocodile", "kind": "materiau", "max": 30,
 		"desc": "Une dent jaune et pointue, dure comme l'acier, prise à un crocodile du Marais des Noyés. Brutus en sertit ses poings de fer ; Isaac Cinq-Doigts les rachète six pièces."},
+	# V90 : l'Île Pixelithique
+	"dent_grosse_dent": {"name": "Dent de Grosse-Dent", "art": "la dent de Grosse-Dent", "kind": "tresor", "max": 1,
+		"desc": "Une dent de tyrannosaure longue comme un bras… en petits carrés, comme tout ce qui vient de l'Île Pixelithique. Grosse-Dent l'a perdue en tombant endormi. Le Clan dit qu'elle porte bonheur (à condition de ne pas la rendre)."},
+	"galette_fougere": {"name": "Galette de fougère", "art": "une galette de fougère", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "La recette de Mamie Silex : des crosses de fougère écrasées, grillées sur une pierre plate au bord du feu. Bien croustillante, un peu fumée. Rend deux cœurs (et « des carrés en plus », dit Mamie)."},
+	"peinture_clan": {"name": "Ton portrait par Ocre", "art": "ton portrait par Ocre", "kind": "tresor", "max": 1,
+		"desc": "Une pierre plate peinte à l'ocre rouge et à la craie : c'est toi, vu par Ocre, la peintre du Clan. Tu es tout carré. Ocre a mis du jaune autour de ta tête, « parce que toi brille »."},
 	"croc_geant": {"name": "Croc de Vieille-Dent", "art": "le croc de Vieille-Dent", "kind": "tresor", "max": 1,
 		"desc": "Une dent longue comme un avant-bras, jaunie par cent ans de marais : celle de Vieille-Dent, le crocodile géant. Isaac Cinq-Doigts en offre quarante pièces."},
 	"des_pipes": {"name": "Dés pipés", "art": "des dés pipés", "kind": "curiosite", "sorte": "Curiosité de la Balafre", "max": 1,

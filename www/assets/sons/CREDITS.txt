@@ -280,3 +280,16 @@ outils des V75 et V76 : la harpe, les contrebasses, les violoncelles et la flût
 célesta des gouttes, les scintillements, le souffle grave et le chœur doux (voix synthétiques à formants)
 sont synthétisés :
   musique/salle_du_chant.ogg (« La Salle du Chant », sous le Grand Moaï).
+
+L'Île Pixelithique (V90) —
+D'après le recueil CC0 « lavenderdotpet/CC0-Public-Domain-Sounds » (créatures, monstres), transposé et
+mélangé, et des sons synthétisés (domaine public), dans pcvr/tools/generate_sons_v90.py :
+  sfx/raptor_cri_1..3, raptor_fuite_1..2, trice_grogne_1..2, trice_fuite_1, anky_grogne_1..2, anky_fuite_1,
+      ptero_cri_1..3, trex_rugit_1..2, trex_ronfle_1, trex_pas_1..2, longcou_cri_1..2
+Musique : compositions originales (CC0), partitions dans pcvr/tools/compose_musique_v90.py, jouées avec
+les outils des V75 et V76 : des instruments « 8 bits » synthétisés (ondes carrées, basse triangle,
+percussions de bruit) avec le marimba, le xylophone, la flûte, les pizzicati de la banque VSCO-2 CE
+(Versilian Studios, CC0), les toms, le tambour sur cadre, la grosse caisse et les claquements de mains de
+la VCSL (CC0), et les voix du Clan (voix synthétiques à formants) :
+  musique/pixelithique.ogg (« L'Île Pixelithique »),
+  musique/clan_du_feu.ogg (« Le Clan du Feu »).

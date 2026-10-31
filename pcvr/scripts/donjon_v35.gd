@@ -1876,6 +1876,15 @@ func update_inside(force: bool = false) -> void:
 			env.fog_density = 0.001
 			env.volumetric_fog_density = 0.0
 			env.tonemap_exposure = 1.1
+		# V90 : une grotte du Clan : le feu, les torches ; une pénombre chaude, sans brume
+		var pxg: Node = main.get("pixel_v90")
+		if pxg != null and pxg.get("grottes") != null and pxg.grottes != null and pxg.grottes.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.5, 0.42, 0.34)
+			env.ambient_light_energy = 0.5
+			env.fog_light_color = Color(0.03, 0.025, 0.02)
+			env.fog_density = 0.004
+			env.volumetric_fog_density = 0.008
+			env.tonemap_exposure = 1.2
 		# V89 : le souterrain du Grand Moaï : une pénombre bleu-vert ; une brume légère où la lumière
 		# des cristaux, des veines de la roche et de la vasque fait des halos
 		var mo: Node = main.get("moai_v87")

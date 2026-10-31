@@ -36,6 +36,8 @@ func open_menu() -> void:
 		{"id": "pnj", "label": "Aller près d'un habitant"},
 		{"id": "maisons", "label": "Visiter une maison (choisir l'histoire)"},
 		{"id": "moai89", "label": "Le souterrain du Grand Moaï (yeux rendus, on descend)"},
+		{"id": "pixel90", "label": "Île Pixelithique : Grosse-Dent (le Cirque des Os)"},
+		{"id": "pixel90g", "label": "Île Pixelithique : la Grotte aux Peintures"},
 		{"id": "heure", "label": "Changer l'heure"},
 		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
 		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
@@ -56,6 +58,8 @@ func _pick(id: String) -> void:
 			_open_list("maisons", _house_stories(), 0)
 		"moai89":
 			_souterrain_v89()
+		"pixel90", "pixel90g":
+			_pixel_v90(id)
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -185,6 +189,22 @@ func _house_stories() -> Array:
 	for sc4 in M.Scenes.Moais.HISTOIRES:
 		out.append([str(v88.get(str(sc4), str(sc4))), [str(sc4)]])
 	return out
+
+
+## V90 : l'Île Pixelithique : à l'entrée du Cirque des Os (Grosse-Dent), ou dans la Grotte aux Peintures.
+func _pixel_v90(id: String) -> void:
+	var px: Node = main.get("pixel_v90")
+	if px == null or px.get("ile") == null or px.ile == null:
+		main._show_message_v28("Mode testeur : l'Île Pixelithique n'est pas là.")
+		return
+	main._close_dialogue_v31()
+	if id == "pixel90g":
+		if px.grottes != null:
+			px.grottes.enter("peintures")
+		return
+	var a: Array = px.IleScript.CIRQUE
+	var at: Vector3 = px._ground(float(a[0]), float(a[1]) + float(a[2]) + 6.0) + Vector3.UP * 0.3
+	main.place_player_v35(at, Vector3(0, 0, -1))
 
 
 ## V89 : les deux yeux rendus, la grande porte ouverte, et l'on descend dans le souterrain.

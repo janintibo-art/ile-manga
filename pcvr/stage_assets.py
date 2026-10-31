@@ -259,7 +259,7 @@ def main() -> int:
     # V58 : le royaume des fées et Yggdrasil (textures/fees)
     # V63 : la grande enquête et le donjon du Cœur-de-Pierre (textures/coeur)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90"):
         d = source / folder
         if not d.is_dir():
             continue
@@ -269,6 +269,13 @@ def main() -> int:
             shutil.copy2(f, dest)
             n56 += 1
     print(f"Textures V56: {n56} fichiers")
+    # V90 : les peintures du Clan sont du pixel art : importées sans perte et sans flou (pas de mipmaps)
+    px90 = target / "textures" / "pixel90"
+    if px90.is_dir():
+        for f in sorted(px90.glob("*.png")):
+            imp = f.with_name(f.name + ".import")
+            if not imp.is_file() or "compress/mode=0" not in imp.read_text():
+                imp.write_text(IMPORT_V64.format(nm=0, hq="false").replace("compress/mode=2", "compress/mode=0").replace("mipmaps/generate=true", "mipmaps/generate=false"))
     # V64 : les vrais corps des habitants (formes, cheveux, vêtements) et leurs textures ;
     # les textures sont importées compressées avec mipmaps (sinon moirés et scintillement).
     n64 = 0
@@ -280,8 +287,10 @@ def main() -> int:
             shutil.copy2(f, dest)
             n64 += 1
     # V89 : la roche du souterrain du Grand Moaï (maillage taillé par tools/generate_souterrain_v89.py)
-    m89 = source / "models" / "moai89"
-    if m89.is_dir():
+    # V90 : le relief et les modèles en petits cubes de l'Île Pixelithique (tools/generate_pixel_v90.py)
+    for m89 in (source / "models" / "moai89", source / "models" / "pixel90"):
+        if not m89.is_dir():
+            continue
         for f in sorted(m89.glob("*.bin")):
             dest = target / f.relative_to(source)
             dest.parent.mkdir(parents=True, exist_ok=True)

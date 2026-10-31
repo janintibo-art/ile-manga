@@ -314,6 +314,11 @@ func _choose_zone(running: bool) -> void:
 			zone = "forgefer"
 			targets["halle"] = 1.0
 			targets["grotte"] = 0.25
+		# V90 : dans une grotte du Clan (l'Île Pixelithique) : le feu qui crépite, l'écho de la roche
+		elif main.get("pixel_v90") != null and main.pixel_v90 != null and main.pixel_v90.get("grottes") != null and main.pixel_v90.grottes != null and main.pixel_v90.grottes.contains(p):
+			zone = "px_grotte"
+			targets["grotte"] = 0.6
+			targets["halle"] = 0.15
 		# V89 : sous le Grand Moaï (la Salle du Chant : la grotte, et la féerie des cristaux)
 		elif main.get("moai_v87") != null and main.moai_v87 != null and main.moai_v87.get("souterrain") != null and main.moai_v87.souterrain != null and main.moai_v87.souterrain.contains(p):
 			zone = "moai_chant"
@@ -398,6 +403,33 @@ func _choose_zone(running: bool) -> void:
 	if as_zone != "" and not on_boat:
 		zone = as_zone
 		_astralys_beds(as_zone, p)
+		_night_beds()
+		return
+	# V90 : l'Île Pixelithique (la jungle des fougères, le volcan, la plage, le campement)
+	var pxs: Node = main.get("pixel_v90")
+	var px_zone: String = pxs.zone_at(p) if pxs != null and pxs.get("ile") != null and pxs.ile != null and not on_ferry else ""
+	if px_zone != "" and not on_boat:
+		zone = "px_" + px_zone
+		match px_zone:
+			"jungle":
+				targets["jungle"] = 1.0
+				targets["oiseaux"] = 0.3
+			"volcan":
+				targets["volcan"] = 0.9
+				targets["brise"] = 0.5
+			"plage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.4
+			"lac":
+				targets["marais"] = 0.6
+				targets["oiseaux"] = 0.4
+			"cirque":
+				targets["brise"] = 0.7
+				targets["lande"] = 0.4
+			_:
+				targets["oiseaux"] = 0.6
+				targets["brise"] = 0.5
+				targets["jungle"] = 0.3
 		_night_beds()
 		return
 	# V75 : l'Île du Boucan (Port-Boucan, la Halle Hurlante, la Cathédrale des Spores, la Casse, l'usine)
@@ -996,7 +1028,7 @@ func _event() -> void:
 			list = ["ponctuels/carillon_1", "ponctuels/carillon_2", "ponctuels/carillon_3"]
 			gap = Vector2(5.0, 12.0)
 			high = 5.0
-		"souterrain", "racines", "coeur", "moai_chant":
+		"souterrain", "racines", "coeur", "moai_chant", "px_grotte":
 			list = ["ponctuels/goutte_1", "ponctuels/goutte_2", "ponctuels/goutte_3", "ponctuels/goutte_4"]
 			gap = Vector2(1.5, 5.0)
 			high = 3.0
@@ -1012,7 +1044,7 @@ func _event() -> void:
 	var r: float = _rng.randf_range(6.0, 22.0)
 	sp.global_position = lp + Vector3(cos(a) * r, _rng.randf_range(1.0, high), sin(a) * r)
 	sp.stream = _stream(str(list[_rng.randi() % list.size()]))
-	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines", "coeur", "moai_chant"] else "Ambiance"
+	sp.bus = "Ambiance_grotte" if zone in ["souterrain", "racines", "coeur", "moai_chant", "px_grotte"] else "Ambiance"
 	sp.pitch_scale = _rng.randf_range(0.9, 1.1)
-	sp.volume_db = -6.0 if zone in ["souterrain", "racines", "coeur", "moai_chant"] else -3.0
+	sp.volume_db = -6.0 if zone in ["souterrain", "racines", "coeur", "moai_chant", "px_grotte"] else -3.0
 	sp.play()

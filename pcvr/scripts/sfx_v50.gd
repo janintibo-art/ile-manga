@@ -70,6 +70,9 @@ const DB := {
 	# V76 : Astralys (rayon d'accueil, ponts de lumière, hologrammes, soucoupes, apesanteur, Lumens), les compagnons, le chantier naval, l'aéronef
 	"rayon_montee": -5.0, "rayon_descente": -5.0, "pont_lumiere": -8.0, "holo_bip": -10.0, "fontaine_holo": -10.0, "cristal_chante": -8.0, "teleporteur": -5.0, "soucoupe_vol": -9.0, "soucoupe_pose": -5.0, "deltaplane_vent": -10.0, "helice_pedale": -8.0, "aeronef_moteur": -8.0, "aeronef_evolue": -5.0, "bateau_vapeur": -8.0, "bateau_cristal": -10.0, "bateau_evolue": -5.0, "confettis_canon": 0.0, "scie": -3.0, "marteau_chantier": -2.0, "miaou": -7.0, "ronron": -3.0, "couinement_rat": -9.0, "groin": -7.0, "grouik": -6.0, "creuse_cochon": -6.0, "sifflet_compagnons": -9.0, "etoile_filante": -7.0, "meteorite_impact": -4.0, "apesanteur_saut": -8.0, "anneau_passe": -7.0, "glorb_rire": -6.0, "lumen_salut": -8.0,
 	"chant_0": -5.0, "chant_1": -5.0, "chant_2": -5.0, "chant_3": -5.0, "chant_4": -5.0,
+	# V90 : les dinosaures de l'Île Pixelithique
+	"raptor_cri": -6.0, "raptor_fuite": -8.0, "trice_grogne": -4.0, "trice_fuite": -6.0, "anky_grogne": -4.0, "anky_fuite": -6.0,
+	"ptero_cri": -7.0, "trex_rugit": 0.0, "trex_ronfle": -6.0, "trex_pas": -3.0, "longcou_cri": -6.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

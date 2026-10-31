@@ -174,6 +174,15 @@ const LISTE := {
 	"moai_yeux": ["Les deux yeux de corail du Grand Moaï", "moai", 40],
 	"moai_souterrain": ["L'escalier du Grand Moaï", "moai", 30],
 	"moai_tresor": ["Le Cœur du Chant", "moai", 60],
+	"pixel": ["L'Île Pixelithique", "pixel", 20],
+	"pixel_clan": ["La rencontre avec le Clan", "pixel", 20],
+	"pixel_volcan": ["Le Mont Fumant", "pixel", 20],
+	"pixel_lac": ["Le Lac des Long-Cous", "pixel", 20],
+	"pixel_cirque": ["Le Cirque des Os", "pixel", 20],
+	"pixel_grottes": ["Les deux grottes du Clan", "pixel", 30],
+	"pixel_portrait": ["Ton portrait par Ocre", "pixel", 30],
+	"pixel_danse": ["La danse autour du feu", "pixel", 20],
+	"pixel_trex": ["Grosse-Dent, vaincu", "pixel", 80],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -233,7 +242,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {

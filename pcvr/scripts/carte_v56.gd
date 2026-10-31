@@ -80,6 +80,12 @@ const PLACES := [
 	["Le Grand Moaï", Vector2(-30, -800), "moai_plateau"],
 	["Le Cratère du Lac", Vector2(-126, -738), "moai_lac"],
 	["La Butte de la Carrière", Vector2(56, -720), "moai_carriere"],
+	# V90 : l'Île Pixelithique
+	["L'Île Pixelithique", Vector2(1000, -742), "pixel"],
+	["Le Campement du Clan", Vector2(950, -744), "pixel_clan"],
+	["Le Mont Fumant", Vector2(1072, -822), "pixel_volcan"],
+	["Le Lac des Long-Cous", Vector2(958, -672), "pixel_lac"],
+	["Le Cirque des Os", Vector2(992, -868), "pixel_cirque"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],
