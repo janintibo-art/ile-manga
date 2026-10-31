@@ -293,3 +293,14 @@ percussions de bruit) avec le marimba, le xylophone, la flûte, les pizzicati de
 la VCSL (CC0), et les voix du Clan (voix synthétiques à formants) :
   musique/pixelithique.ogg (« L'Île Pixelithique »),
   musique/clan_du_feu.ogg (« Le Clan du Feu »).
+
+L'Île de Larsen (V91) —
+Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v91.py :
+  ambiance/pluie (Rainville sous la pluie : l'averse, les gouttes sur les toiles, la tôle, la gouttière),
+  ambiance/camp_fleurs (le Camp des Fleurs : la brise, les carillons, les oiseaux, un djembé au loin),
+  sfx/djembe_1..3, sfx/carillon_1..2, sfx/larsen_1 (l'effet Larsen : la corde, l'ampli qui siffle, le « pop »)
+Musique : compositions originales (CC0), partitions dans pcvr/tools/compose_musique_v91.py, jouées avec
+les outils de la V75 (cordes de Karplus-Strong, ampli simulé, batterie et tambourin de la VCSL, CC0) et
+la flûte, le glockenspiel de la banque VSCO-2 CE (Versilian Studios, CC0) :
+  musique/camp_des_fleurs.ogg (« Le Camp des Fleurs », guitares acoustiques, flûte),
+  musique/rainville.ogg (« Rainville », grunge : couplets calmes, refrains saturés).

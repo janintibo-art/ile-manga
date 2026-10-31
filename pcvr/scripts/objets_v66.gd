@@ -101,6 +101,7 @@ const ILES := [
 	["boucan", Vector3(-30, 0, 790), 280.0],
 	["moai", Vector3(-30, 0, -790), 190.0],
 	["pixel", Vector3(1000, 0, -750), 180.0],
+	["larsen", Vector3(-430, 0, -790), 150.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -116,6 +117,7 @@ const MANGER := {
 	"boucan": ["soupe_prix_libre", "pomme", "champignon"],
 	"moai": ["noix_coco", "baies", "pomme"],
 	"pixel": ["galette_fougere", "baies", "champignon"],
+	"larsen": ["pomme", "baies", "pain_miel"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
@@ -128,6 +130,7 @@ const BOIRE := {
 	"boucan": "limonade_boucan",
 	"moai": "noix_coco",
 	"pixel": "noix_coco",
+	"larsen": "tisane_lune",
 }
 
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]

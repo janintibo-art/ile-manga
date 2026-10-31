@@ -24,6 +24,7 @@ const BEDS := {
 	"epave": "ambiance/epave", "lande": "ambiance/lande", "brumes": "ambiance/brumes", "desert": "ambiance/desert",
 	"souk": "ambiance/souk", "criee": "ambiance/criee", "atelier": "ambiance/atelier",
 	"ramure": "ambiance/ramure",
+	"pluie": "ambiance/pluie", "camp_fleurs": "ambiance/camp_fleurs",
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
@@ -54,6 +55,7 @@ const BED_DB := {
 	"donjon_caves": -11.0, "donjon_lac": -11.0,
 	"boucan_jour": -13.0, "boucan_nuit": -13.0, "halle_hurlante": -12.0, "spores": -12.0, "casse": -13.0, "usine": -11.0, "port_boucan": -12.0,
 	"astralys_jour": -12.0, "astralys_nuit": -12.0, "spatioport": -12.0, "serre_especes": -12.0, "chantier_naval": -12.0,
+	"pluie": -11.0, "camp_fleurs": -12.0,
 }
 
 var main: Node
@@ -430,6 +432,43 @@ func _choose_zone(running: bool) -> void:
 				targets["oiseaux"] = 0.6
 				targets["brise"] = 0.5
 				targets["jungle"] = 0.3
+		_night_beds()
+		return
+	# V91 : l'Île de Larsen (le Camp des Fleurs, Rainville sous la pluie, les champs, le bois, la plage)
+	var las: Node = main.get("larsen_v91")
+	var la_zone: String = las.zone_at(p) if las != null and las.get("ile") != null and las.ile != null and not on_ferry else ""
+	if la_zone != "" and not on_boat:
+		zone = "la_" + la_zone
+		match la_zone:
+			"fleurs":
+				targets["camp_fleurs"] = 1.0
+				targets["oiseaux"] = 0.35
+			"rainville":
+				targets["pluie"] = 1.0
+			"festival":
+				targets["brise"] = 0.6
+				targets["oiseaux"] = 0.4
+				targets["camp_fleurs"] = 0.25
+			"chanvre", "coquelicots", "corderie", "prairie":
+				targets["campagne"] = 0.8
+				targets["brise"] = 0.5
+			"bois":
+				targets["oiseaux"] = 1.0
+				targets["brise"] = 0.4
+			"colline":
+				targets["brise"] = 1.0
+				targets["lande"] = 0.4
+			"mare":
+				targets["lac_grenouilles"] = 0.8
+				targets["oiseaux"] = 0.3
+			"plage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.5
+			_:
+				targets["oiseaux"] = 0.6
+				targets["brise"] = 0.5
+		if las.in_rain(p) and la_zone != "rainville":
+			targets["pluie"] = 0.6
 		_night_beds()
 		return
 	# V75 : l'Île du Boucan (Port-Boucan, la Halle Hurlante, la Cathédrale des Spores, la Casse, l'usine)

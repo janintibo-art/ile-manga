@@ -19,6 +19,9 @@ const ZONE_TRACK := {
 	"forgefer": "nains", "large": "large", "souterrain": "souterrain", "moai_chant": "salle_du_chant", "racines": "racines",
 	"px_jungle": "pixelithique", "px_volcan": "pixelithique", "px_plage": "pixelithique", "px_lac": "pixelithique", "px_cirque": "pixelithique",
 	"px_camp": "clan_du_feu", "px_falaises": "clan_du_feu", "px_grotte": "clan_du_feu", "px_plaine": "pixelithique", "px_ile": "pixelithique",
+	"la_fleurs": "camp_des_fleurs", "la_festival": "camp_des_fleurs", "la_mare": "camp_des_fleurs", "la_coquelicots": "camp_des_fleurs",
+	"la_chanvre": "camp_des_fleurs", "la_corderie": "camp_des_fleurs", "la_prairie": "camp_des_fleurs", "la_plage": "camp_des_fleurs",
+	"la_rainville": "rainville", "la_bois": "rainville", "la_colline": "rainville", "la_roadies": "camp_des_fleurs",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
@@ -65,7 +68,7 @@ const ZONE_TRACK := {
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
+	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "camp_des_fleurs": -9.0, "rainville": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,

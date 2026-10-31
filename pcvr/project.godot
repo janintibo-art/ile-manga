@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Les Mondes de Travers VR V90"
+config/name="Les Mondes de Travers VR V91"
 config/icon="res://assets/textures/ui/les_mondes_de_travers_icon.png"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"

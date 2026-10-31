@@ -1909,6 +1909,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.moai_v87.place_name(p))
 	if main.get("pixel_v90") != null and main.pixel_v90 != null and main.pixel_v90.ile != null and main.pixel_v90.owns_point(p):
 		return str(main.pixel_v90.place_name(p))
+	if main.get("larsen_v91") != null and main.larsen_v91 != null and main.larsen_v91.ile != null and main.larsen_v91.owns_point(p):
+		return str(main.larsen_v91.place_name(p))
 	if main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(p):
 		return str(main.braise_v70.place_name(p))
 	if main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(p):

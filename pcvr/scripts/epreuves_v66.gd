@@ -183,6 +183,16 @@ const LISTE := {
 	"pixel_portrait": ["Ton portrait par Ocre", "pixel", 30],
 	"pixel_danse": ["La danse autour du feu", "pixel", 20],
 	"pixel_trex": ["Grosse-Dent, vaincu", "pixel", 80],
+	"larsen": ["L'Île de Larsen", "larsen", 20],
+	"larsen_fleurs": ["Le Camp des Fleurs", "larsen", 20],
+	"larsen_rainville": ["Rainville, sous la pluie", "larsen", 20],
+	"larsen_scene": ["La Grande Scène", "larsen", 20],
+	"larsen_chanvre": ["Les champs de chanvre", "larsen", 15],
+	"larsen_coquelicots": ["Les champs de coquelicots", "larsen", 15],
+	"larsen_colline": ["La Colline du Feedback", "larsen", 20],
+	"larsen_djembe": ["Le rythme du Camp des Fleurs", "larsen", 25],
+	"larsen_ampli": ["L'effet Larsen", "larsen", 25],
+	"larsen_corde": ["Une corde de chanvre", "larsen", 20],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -242,7 +252,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {

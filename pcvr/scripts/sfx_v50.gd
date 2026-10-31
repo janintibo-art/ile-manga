@@ -73,6 +73,8 @@ const DB := {
 	# V90 : les dinosaures de l'Île Pixelithique
 	"raptor_cri": -6.0, "raptor_fuite": -8.0, "trice_grogne": -4.0, "trice_fuite": -6.0, "anky_grogne": -4.0, "anky_fuite": -6.0,
 	"ptero_cri": -7.0, "trex_rugit": 0.0, "trex_ronfle": -6.0, "trex_pas": -3.0, "longcou_cri": -6.0,
+	# V91 : l'Île de Larsen (le djembé du Camp des Fleurs, le carillon de la Colline du Feedback, l'effet Larsen)
+	"djembe": -4.0, "carillon": -6.0, "larsen": -8.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 
