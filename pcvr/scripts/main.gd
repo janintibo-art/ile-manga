@@ -3633,6 +3633,9 @@ func _spawn_azur_v56() -> void:
 	# V76 : les Lumens d'Astralys
 	if astralys_v76 != null and astralys_v76.city != null:
 		astralys_v76.spawn_npcs()
+	# V92 : les habitants de l'Île de Larsen
+	if larsen_v91 != null and larsen_v91.get("ville") != null and larsen_v91.ville != null:
+		larsen_v91.ville.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.

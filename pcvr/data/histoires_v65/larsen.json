@@ -1,0 +1,1803 @@
+{
+ "mamie_tournesol": {
+  "genre": "f",
+  "prenom": "Mamie Tournesol",
+  "histoire": [
+   {
+    "titre": "le bateau des deux amies",
+    "t": "Il y a cinquante ans, deux jeunes filles ont débarqué ici avec une valise chacune. Dans la mienne, des graines de tournesol. Dans celle de mon amie, un parapluie et un petit nuage qui nous suivait partout. On a monté une yourte ensemble, toute trouée. On riait toute la journée."
+   },
+   {
+    "titre": "la première graine",
+    "t": "J'ai planté la première graine de tournesol au milieu des coquelicots. Puis cent. Puis mille. Les gens qui passaient en bateau voyaient les fleurs jaunes de loin, et ils accostaient pour voir. Ils restaient pour la musique du soir. C'est comme ça qu'est né le Camp des Fleurs."
+   },
+   {
+    "titre": "la dispute pour une météo",
+    "t": "Chaque été, il y avait le grand Festival du Larsen. Une année, il a fallu choisir : au soleil ou sous la pluie ? J'ai dit soleil. Elle a dit pluie. On a crié. Elle est partie de l'autre côté de l'île, avec son nuage. Cinquante ans sans se parler, {surnom}. Pour une météo."
+   },
+   {
+    "titre": "le soleil revient toujours",
+    "t": "Aujourd'hui, j'arrose mes tournesols le matin, je raconte des histoires aux petits le soir, autour du feu. Et parfois, quand le vent vient de Rainville, j'entends des guitares qui grincent. Je fais semblant de ne pas aimer. Mais je tape du pied."
+   },
+   {
+    "titre": "la photo dans la boîte",
+    "t": "Je vais te confier une chose, {surnom}. Dans ma boîte à bijoux, il n'y a pas de bijoux. Il y a une photo : Averse et moi, à vingt ans, sur le bateau, qui rions sous son nuage. Je la regarde tous les soirs. Je ne l'ai jamais dit à personne. Sauf à toi, maintenant."
+   }
+  ],
+  "reve": [
+   "Revoir le Festival du Larsen une dernière fois, avec les deux villages sur la même scène. Et danser avec ma vieille amie, au soleil ou sous la pluie, ça m'est bien égal maintenant."
+  ],
+  "question": {
+   "texte": "Dis-moi, mon petit : tu préfères le soleil ou la pluie ?",
+   "reponses": [
+    {
+     "label": "Le soleil, bien sûr.",
+     "valeur": "soleil",
+     "t": "Ah ! Un enfant du soleil. Viens t'asseoir près de mes tournesols, ils tournent la tête vers les gens comme toi.",
+     "rappel": "Toi qui aimes le soleil… tu as vu comme il brille sur mes fleurs, aujourd'hui ?"
+    },
+    {
+     "label": "La pluie.",
+     "valeur": "pluie",
+     "t": "La pluie ? Hm. Tu parles comme une vieille amie à moi. Elle disait que la pluie lave les chagrins. Elle avait peut-être raison.",
+     "rappel": "Toi qui aimes la pluie… si tu passes à Rainville, salue le petit nuage de ma part."
+    },
+    {
+     "label": "Les deux, ça fait un arc-en-ciel.",
+     "valeur": "deux",
+     "t": "Oh… C'est exactement ce qu'on disait, elle et moi, il y a cinquante ans. Tu as un vieux cœur dans un jeune corps, toi.",
+     "rappel": "Un arc-en-ciel… Je repense souvent à ce que tu m'as dit, tu sais."
+    }
+   ]
+  },
+  "liens": {
+   "mere_averse": {
+    "qui": "ma vieille amie fâchée,",
+    "nom": "Mère Averse",
+    "sentiment": 0.7,
+    "avis": "Averse a une langue de vipère et un cœur de pain d'épices. Je ne lui parle plus depuis cinquante ans. Mais je sais qu'elle tricote en rythme quand les jeunes jouent. Je l'ai vue.",
+    "anecdotes": [
+     "Quand nous étions jeunes, Averse ouvrait son parapluie au-dessus de mes tournesols quand il faisait trop chaud. Elle disait que c'était pour les fleurs. C'était pour moi.",
+     "Elle a gardé son petit nuage pendant cinquante ans. Moi, j'ai gardé sa photo. On est bêtes pareil."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "…Bonjour, Averse."
+     ],
+     [
+      "b",
+      "Tiens. Tournesol. Il va pleuvoir."
+     ],
+     [
+      "a",
+      "Le soleil revient toujours."
+     ]
+    ]
+   },
+   "bouton_dor": {
+    "qui": "ma petite voisine",
+    "nom": "Bouton-d'Or",
+    "sentiment": 0.95,
+    "avis": "Bouton-d'Or tresse des couronnes pour tout le camp. C'est la plus jolie graine que j'aie jamais vue pousser.",
+    "anecdotes": [
+     "Bouton-d'Or m'a demandé pourquoi les vieilles dames se fâchent. Je lui ai dit que c'est parce qu'elles ont trop de souvenirs. Elle m'a dit qu'il fallait en faire des couronnes. Je n'ai pas su quoi répondre."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mamie ! Je t'ai fait une couronne !"
+     ],
+     [
+      "a",
+      "Des tournesols ! Tu me gâtes, ma fleur."
+     ],
+     [
+      "b",
+      "C'est pour que tu souries."
+     ]
+    ]
+   }
+  }
+ },
+ "arc_en_ciel": {
+  "genre": "m",
+  "prenom": "Arc-en-Ciel",
+  "histoire": [
+   {
+    "titre": "le tronc de l'orage",
+    "t": "Mon grand-père a fabriqué mon djembé avec un tronc tombé pendant un orage. Il l'a appelé Tonnerre. Il me l'a donné quand j'avais six ans, en disant : « Ne joue pas plus fort que ton cœur. » J'ai mis vingt ans à comprendre."
+   },
+   {
+    "titre": "le garçon qui ne tenait pas en place",
+    "t": "Petit, je tapais sur tout : les tables, les casseroles, les genoux des gens. On m'a envoyé au Camp des Fleurs pour un été, pour me calmer. Ça n'a pas marché. Mais Mamie Tournesol m'a montré qu'on pouvait taper sur un tambour au lieu des genoux. Je ne suis jamais reparti."
+   },
+   {
+    "titre": "les dreadlocks",
+    "t": "Chaque mèche de mes cheveux est un été. Je pourrais te raconter les quarante. Celle-ci, c'est celle où une mouette a essayé d'y faire son nid. Je l'ai laissée faire trois jours. Elle est partie quand j'ai joué Tonnerre."
+   },
+   {
+    "titre": "le cercle des tambours",
+    "t": "Tous les soirs, au feu du camp, je joue. Les petits viennent avec des seaux, des bâtons, des boîtes. On fait un boucan de tous les diables. Mamie Tournesol dit que c'est la meilleure musique de l'île. Elle n'a jamais entendu les Gouttières, je crois."
+   },
+   {
+    "titre": "le rythme à l'envers",
+    "t": "Un secret, {surnom} ? Un soir, j'ai joué vers Rainville, et la batterie du garage m'a répondu. Le même rythme, à l'envers. Depuis, chaque soir de vent d'ouest, on se parle comme ça. Je ne sais pas à quoi elle ressemble. Mais je connais son cœur par ses rythmes."
+   }
+  ],
+  "reve": [
+   "Jouer Tonnerre sur la Grande Scène, avec la batterie de Rainville qui répond. Il paraît qu'elle tape fort, la batteuse. On verrait bien qui fait trembler l'île en premier."
+  ],
+  "question": {
+   "texte": "Hé, {surnom}, tape-moi un rythme sur tes genoux. Lequel tu choisis ?",
+   "reponses": [
+    {
+     "label": "Boum… boum… tout doux.",
+     "valeur": "doux",
+     "t": "Le rythme du cœur qui dort. Joli. Tu es quelqu'un de calme, toi.",
+     "rappel": "Tu te souviens de ton rythme tout doux ? Je l'ai mis dans une chanson."
+    },
+    {
+     "label": "BOUM-TCHAK-BOUM-TCHAK !",
+     "valeur": "fort",
+     "t": "Ha ha ! Voilà un cœur qui court ! Tu ferais un sacré batteur.",
+     "rappel": "BOUM-TCHAK ! Je me souviens de toi, le batteur !"
+    },
+    {
+     "label": "Je ne sais pas taper.",
+     "valeur": "pas",
+     "t": "Tout le monde sait. Ton cœur le fait toute la journée sans toi. Écoute-le, c'est tout.",
+     "rappel": "Alors, tu as écouté ton cœur ? Il tape bien, hein ?"
+    }
+   ]
+  },
+  "liens": {
+   "bourrasque": {
+    "qui": "la batteuse de Rainville,",
+    "nom": "Bourrasque",
+    "sentiment": 0.6,
+    "avis": "Je ne la connais pas vraiment. Mais le soir, quand le vent tourne, j'entends sa batterie. Elle a un sacré poignet. J'aimerais bien jouer avec elle. Un jour.",
+    "anecdotes": [
+     "Une fois, j'ai joué un rythme vers Rainville. Une minute après, la batterie du garage m'a répondu, le même rythme, à l'envers. On a joué comme ça une heure, sans se voir."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "C'était toi, la batterie, hier soir ?"
+     ],
+     [
+      "b",
+      "Peut-être. C'était toi, le djembé ?"
+     ],
+     [
+      "a",
+      "Peut-être."
+     ]
+    ]
+   },
+   "mamie_tournesol": {
+    "qui": "notre doyenne,",
+    "nom": "Mamie Tournesol",
+    "sentiment": 0.95,
+    "avis": "Mamie Tournesol m'a appris à jouer moins fort que mon cœur. C'est la meilleure leçon de musique de ma vie.",
+    "anecdotes": [
+     "Mamie Tournesol danse quand je joue, mais seulement quand elle croit que personne ne la regarde. Moi, je joue les yeux fermés, pour qu'elle danse plus longtemps."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Joue-moi la chanson des tournesols, mon garçon."
+     ],
+     [
+      "a",
+      "Encore ? C'est la troisième fois."
+     ],
+     [
+      "b",
+      "Les tournesols ne s'en lassent pas."
+     ]
+    ]
+   }
+  }
+ },
+ "lune": {
+  "genre": "f",
+  "prenom": "Lune",
+  "histoire": [
+   {
+    "titre": "la fille du tisserand",
+    "t": "Mon père tissait des voiles de bateau, sur le continent. Moi, je tissais avec ce que je trouvais : de l'herbe, des fils de laine, mes propres cheveux. Il disait que j'avais des araignées dans les doigts. C'était un compliment, je crois."
+   },
+   {
+    "titre": "le chanvre de Galet",
+    "t": "En arrivant ici, j'ai découvert le chanvre. Galet le bat, le file, le tord en cordes. Moi, j'en tisse des toiles. Solides comme le roc, douces comme un vieux pull. Toutes les yourtes du camp portent une de mes toiles sur le dos."
+   },
+   {
+    "titre": "la toile de la Grande Scène",
+    "t": "Jack m'a demandé de tisser la grande toile du fond de la scène. Vingt-deux mètres. J'ai commencé il y a trois ans. Chaque fois que j'avance d'un mètre, quelqu'un se dispute, et je défais un rang. Je ne la finirai que quand les deux villages se parleront."
+   },
+   {
+    "titre": "les motifs secrets",
+    "t": "Dans chaque toile, je cache un motif. Une fleur, une goutte, une note de musique. Si tu regardes bien la yourte de Mamie Tournesol, tu verras une petite goutte de pluie, tout en bas. Elle ne l'a jamais remarquée. Ou elle fait semblant."
+   },
+   {
+    "titre": "le rang défait",
+    "t": "Je vais te dire pourquoi la toile n'avance pas, {surnom}. Ce n'est pas les disputes. C'est moi. J'ai peur qu'une fois finie, on la range dans une caisse et qu'on l'oublie. Une toile, ça doit servir. Alors je la défais un peu, chaque soir, en attendant qu'on en ait besoin."
+   }
+  ],
+  "reve": [
+   "Finir la toile de la Grande Scène, et la voir gonfler au vent le soir du festival, avec un soleil d'un côté et un nuage de l'autre."
+  ],
+  "question": {
+   "texte": "Si je tissais une toile pour toi, {surnom}, quel motif je devrais y cacher ?",
+   "reponses": [
+    {
+     "label": "Une étoile.",
+     "valeur": "etoile",
+     "t": "Une étoile… pour quelqu'un qui voyage la nuit. Je la ferai en fil d'argent.",
+     "rappel": "J'ai commencé ton étoile. Elle brille déjà un peu."
+    },
+    {
+     "label": "Une vague.",
+     "valeur": "vague",
+     "t": "Une vague. Tu viens de la mer, toi, ça se sent. Je la tisserai en bleu de Rainville.",
+     "rappel": "Ta vague avance bien. Elle fait déjà trois rangs."
+    },
+    {
+     "label": "Un tournesol.",
+     "valeur": "tournesol",
+     "t": "Bien sûr ! Un enfant du Camp, alors. Jaune vif, avec un cœur brun.",
+     "rappel": "Ton tournesol est presque fini. Il me regarde quand je tisse."
+    }
+   ]
+  },
+  "liens": {
+   "galet": {
+    "qui": "mon cordier,",
+    "nom": "Galet",
+    "sentiment": 0.85,
+    "avis": "Galet parle peu et file beaucoup. Ses cordes ne cassent jamais. Ses silences non plus.",
+    "anecdotes": [
+     "Galet m'a fait une corde spéciale pour mon métier, toute fine, avec un nœud de marin à chaque bout. Il a dit : « Pour toi. » Puis il est parti. C'est le plus long discours qu'il m'ait fait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Il me faut du fil, Galet."
+     ],
+     [
+      "b",
+      "Hm."
+     ],
+     [
+      "a",
+      "Merci."
+     ]
+    ]
+   },
+   "jack": {
+    "qui": "le chef roadie,",
+    "nom": "Jack",
+    "sentiment": 0.7,
+    "avis": "Jack veut sa toile pour la scène. Il est patient comme un rocher. Il me demande tous les jours où j'en suis, et il sourit quand je lui dis « presque ».",
+    "anecdotes": [
+     "Un jour, Jack m'a apporté un thermos de chocolat chaud et s'est assis à côté de mon métier pendant trois heures. Il n'a rien dit. J'ai tissé deux mètres. C'est mon record."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Alors, la toile ?"
+     ],
+     [
+      "a",
+      "Presque."
+     ],
+     [
+      "b",
+      "Presque, c'est déjà beaucoup."
+     ]
+    ]
+   }
+  }
+ },
+ "galet": {
+  "genre": "m",
+  "prenom": "Galet",
+  "histoire": [
+   {
+    "titre": "trois fois le tour du monde",
+    "t": "J'étais marin. Trois fois le tour du monde. J'ai fait des nœuds sur tous les océans. Un soir, le bateau s'est arrêté ici pour l'eau douce. Les gens chantaient autour d'un feu. Je suis descendu. Le bateau est reparti sans moi."
+   },
+   {
+    "titre": "la Corderie",
+    "t": "Au nord, il y avait un champ de chanvre que personne n'utilisait. J'ai bâti une corderie. On coupe, on fait sécher en meules, on bat, on file, on tord. C'est le même geste qu'en mer. Mes mains sont contentes."
+   },
+   {
+    "titre": "les cinq cents mètres",
+    "t": "Jack m'a commandé cinq cents mètres de corde pour la Grande Scène. J'ai cru qu'il voulait attacher l'île au continent. Puis j'ai vu la scène. Il en faut, des cordes, pour tenir une toile de vingt-deux mètres dans le vent."
+   },
+   {
+    "titre": "le nœud des deux villages",
+    "t": "Je connais un vieux nœud de marin qu'on appelle le nœud d'amitié. Deux cordes, une de chaque côté, qui se serrent l'une l'autre. Plus on tire, plus ça tient. Je l'ai fait sur toutes les cordes de la scène. Personne n'a remarqué."
+   },
+   {
+    "titre": "la lettre jamais envoyée",
+    "t": "Hm. {surnom}. J'ai une sœur, sur le continent. Je lui ai écrit une lettre il y a vingt ans. Elle est toujours dans ma poche. Pliée. Je n'ai jamais trouvé de bateau. Ou jamais cherché. Hm. Les nœuds, c'est plus facile que les mots."
+   }
+  ],
+  "reve": [
+   "Hm. Remonter une fois sur un bateau. Juste faire le tour de l'île. Et revenir."
+  ],
+  "question": {
+   "texte": "Hm. Tu sais faire un nœud, {surnom} ?",
+   "reponses": [
+    {
+     "label": "Oui, un nœud de lacet.",
+     "valeur": "lacet",
+     "t": "Hm. C'est un début. Le plus important, c'est qu'il tienne.",
+     "rappel": "Hm. Tes lacets tiennent ?"
+    },
+    {
+     "label": "Un nœud de marin !",
+     "valeur": "marin",
+     "t": "… Montre. … Hm. Pas mal. Tu as navigué, toi.",
+     "rappel": "Hm. Le marin. Viens, j'ai une corde à tordre."
+    },
+    {
+     "label": "Non, jamais.",
+     "valeur": "jamais",
+     "t": "Hm. Viens à la Corderie. Je t'apprendrai. Ça prend une vie.",
+     "rappel": "Hm. La leçon de nœuds t'attend."
+    }
+   ]
+  },
+  "liens": {
+   "jack": {
+    "qui": "mon meilleur client,",
+    "nom": "Jack",
+    "sentiment": 0.8,
+    "avis": "Jack, c'est un gars solide. Il sait ce que pèse une corde. Il ne me presse jamais. Il commande, et il attend.",
+    "anecdotes": [
+     "Jack et moi, on a tendu la première corde de la scène ensemble, à deux, sans parler. Elle a tenu du premier coup. On s'est serré la main. C'est tout."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hm. Ta corde est prête."
+     ],
+     [
+      "b",
+      "Merci, Galet. Combien je te dois ?"
+     ],
+     [
+      "a",
+      "Un concert."
+     ]
+    ]
+   },
+   "lune": {
+    "qui": "la tisserande,",
+    "nom": "Lune",
+    "sentiment": 0.85,
+    "avis": "Lune a des doigts comme des araignées. Elle fait de mon fil des choses que je ne comprends pas. Des toiles. Des motifs. Hm. C'est beau.",
+    "anecdotes": [
+     "Je lui ai fait une petite corde pour son métier. Elle l'a regardée comme si c'était un bijou. Hm. Je n'ai plus su où mettre mes mains."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ta dernière corde est parfaite, Galet."
+     ],
+     [
+      "a",
+      "Hm."
+     ],
+     [
+      "b",
+      "Ça veut dire merci, je sais."
+     ]
+    ]
+   }
+  }
+ },
+ "lavande": {
+  "genre": "f",
+  "prenom": "Lavande",
+  "histoire": [
+   {
+    "titre": "la fille aux poches pleines",
+    "t": "Petite, j'avais toujours les poches pleines de graines. Ma mère vidait mes poches avant la lessive et la machine à laver était pleine de petites pousses. Elle disait que j'étais un jardin qui marche."
+   },
+   {
+    "titre": "les plantes qui parlent",
+    "t": "Je parle à mes plantes. Elles ne répondent pas avec des mots, mais avec des fleurs. La menthe est bavarde, la sauge est sage, la camomille est timide. Et la lavande… elle sent bon, c'est tout ce qu'elle veut."
+   },
+   {
+    "titre": "les tisanes du camp",
+    "t": "Toutes les tisanes du Camp des Fleurs viennent de mon jardin. Une pour dormir, une pour rire, une pour les maux de ventre, une pour les chagrins d'amour. Celle-là, c'est la plus demandée. Je ne dirai pas par qui."
+   },
+   {
+    "titre": "le jardin de l'autre côté",
+    "t": "En secret, je vais parfois à Rainville voir le jardin de Mère Averse. Il y pousse de la mousse, des fougères, des champignons qui brillent la nuit. Des plantes qui aiment la pluie. Je voudrais tant mélanger nos deux jardins."
+   },
+   {
+    "titre": "la tisane des chagrins",
+    "t": "La tisane des chagrins d'amour, celle que tout le monde me demande… Je vais te dire qui en prend le plus, {surnom}. Mamie Tournesol. Une tasse tous les soirs depuis que je suis ici. Et je crois que ce n'est pas un chagrin d'amour. C'est un chagrin d'amitié. C'est pareil, en plus long."
+   }
+  ],
+  "reve": [
+   "Planter un jardin au milieu de l'île, à mi-chemin entre le soleil et la pluie. Les plantes des deux villages y pousseraient ensemble, et personne ne pourrait dire où commence l'un et où finit l'autre."
+  ],
+  "question": {
+   "texte": "Sens ces trois feuilles, {surnom}. Laquelle tu préfères ?",
+   "reponses": [
+    {
+     "label": "La menthe.",
+     "valeur": "menthe",
+     "t": "La bavarde ! Tu dois être quelqu'un de joyeux. Tiens, garde-la.",
+     "rappel": "Toi, l'ami de la menthe ! Elle a beaucoup poussé depuis."
+    },
+    {
+     "label": "La lavande.",
+     "valeur": "lavande",
+     "t": "Oh… C'est mon nom, tu sais. Merci. Ça me fait plaisir.",
+     "rappel": "Ma lavande te dit bonjour. Elle s'est souvenue de toi."
+    },
+    {
+     "label": "La sauge.",
+     "valeur": "sauge",
+     "t": "La sage. Tu réfléchis beaucoup, toi. Mantra t'aimerait bien.",
+     "rappel": "La sauge pousse sagement. Comme toi, je suppose."
+    }
+   ]
+  },
+  "liens": {
+   "mantra": {
+    "qui": "notre sage,",
+    "nom": "Mantra",
+    "sentiment": 0.75,
+    "avis": "Mantra médite au bord de la mare. Je lui apporte de la tisane. Il ne me voit pas toujours, mais il boit toujours.",
+    "anecdotes": [
+     "Une fois, j'ai posé un pot de basilic à côté de Mantra pendant qu'il méditait. Quand il a ouvert les yeux, trois jours plus tard, le basilic avait fleuri. Il a dit : « Il a compris. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ta tisane, Mantra."
+     ],
+     [
+      "b",
+      "Merci… Respire avec moi."
+     ],
+     [
+      "a",
+      "Je respire. Ça sent la menthe."
+     ]
+    ]
+   },
+   "mere_averse": {
+    "qui": "la doyenne de Rainville,",
+    "nom": "Mère Averse",
+    "sentiment": 0.6,
+    "avis": "Mère Averse a le plus beau jardin de pluie de l'île. Elle fait semblant d'être bourrue. Moi, je sais qu'elle parle à ses escargots.",
+    "anecdotes": [
+     "Je lui ai laissé un sachet de graines de camomille sur sa porte. Le lendemain, il y avait un pot de mousse sur la mienne. On ne s'est jamais parlé. On échange quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Mère Averse."
+     ],
+     [
+      "b",
+      "Hm. Tes graines ont poussé."
+     ],
+     [
+      "a",
+      "Ta mousse aussi."
+     ]
+    ]
+   }
+  }
+ },
+ "mantra": {
+  "genre": "m",
+  "prenom": "Mantra",
+  "histoire": [
+   {
+    "titre": "Bernard",
+    "t": "Avant, je m'appelais Bernard. Je vendais des assurances. Je courais toute la journée. Un jour, j'ai couru si vite que je suis passé à côté de ma propre vie sans la voir. Alors j'ai arrêté de courir."
+   },
+   {
+    "titre": "dix ans dans les montagnes",
+    "t": "J'ai cherché la sagesse dans les montagnes pendant dix ans. J'ai trouvé de la neige, des chèvres et beaucoup de silence. La sagesse, je l'ai trouvée en arrivant ici, au bord d'une mare, en regardant une grenouille. Elle ne se presse jamais."
+   },
+   {
+    "titre": "la mare qui donne un nom",
+    "t": "Les gens du camp m'ont trouvé assis au bord de la mare, à respirer. Ils ont appelé l'endroit la Mare aux Mantras. Puis ils m'ont appelé Mantra. C'est la mare qui m'a donné mon nom. Bernard est resté dans les montagnes."
+   },
+   {
+    "titre": "la grenouille sur la tête",
+    "t": "On raconte qu'une grenouille s'est installée sur ma tête pendant que je méditais. C'est vrai. Elle est restée deux jours. Nous sommes devenus amis. Elle s'appelle Bernard, en souvenir."
+   },
+   {
+    "titre": "Bernard revient parfois",
+    "t": "Un aveu, {surnom}. Parfois, Bernard revient. Le vieux moi qui courait. Il veut tout réparer tout de suite : la dispute, la scène, les villages. Je lui dis de respirer. Mais quelquefois, je me demande s'il n'a pas un peu raison. Il faut peut-être courir un peu, de temps en temps."
+   }
+  ],
+  "reve": [
+   "Que tout le monde, sur cette île, prenne une grande inspiration en même temps. Une seule. Je crois que les disputes s'envoleraient avec l'air."
+  ],
+  "question": {
+   "texte": "Ferme les yeux, {surnom}. Qu'est-ce que tu entends ?",
+   "reponses": [
+    {
+     "label": "La mare et les grenouilles.",
+     "valeur": "mare",
+     "t": "Tu écoutes ce qui est là. C'est très rare. Tu es déjà un peu sage.",
+     "rappel": "Les grenouilles demandent de tes nouvelles."
+    },
+    {
+     "label": "Des guitares au loin.",
+     "valeur": "guitares",
+     "t": "Oui… Rainville répète. Même le bruit peut être une prière, si on l'écoute bien.",
+     "rappel": "Les guitares jouent encore. Tu les entends toujours ?"
+    },
+    {
+     "label": "Rien, je pense à mille choses.",
+     "valeur": "mille",
+     "t": "C'est normal. Laisse passer les pensées comme des nuages. Un jour, il restera le ciel.",
+     "rappel": "Alors, tes nuages de pensées ? Il y a un peu de ciel, aujourd'hui ?"
+    }
+   ]
+  },
+  "liens": {
+   "gresil": {
+    "qui": "mon élève de Rainville,",
+    "nom": "Grésil",
+    "sentiment": 0.7,
+    "avis": "Grésil vient méditer avec moi. Il ne bouge pas, il ne parle pas. Il est très doué. Ou il dort. Les deux se ressemblent beaucoup.",
+    "anecdotes": [
+     "Grésil a médité six heures à côté de moi. Quand il s'est réveillé, il a dit : « … C'était bien. » Je n'ai pas eu le cœur de lui dire qu'il ronflait."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "… Salut."
+     ],
+     [
+      "a",
+      "Respire, Grésil."
+     ],
+     [
+      "b",
+      "… Je dors un peu, alors."
+     ]
+    ]
+   },
+   "bouton_dor": {
+    "qui": "ma petite élève,",
+    "nom": "Bouton-d'Or",
+    "sentiment": 0.9,
+    "avis": "Bouton-d'Or veut devenir grenouille. Je lui ai dit que c'était possible si elle respirait bien. Elle respire très bien.",
+    "anecdotes": [
+     "Bouton-d'Or a médité avec moi pendant quarante secondes. Puis elle a dit : « J'ai tout compris ! » et elle est partie en courant. Elle avait peut-être raison."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mantra ! Je respire comme une grenouille !"
+     ],
+     [
+      "a",
+      "Très bien. Et maintenant ?"
+     ],
+     [
+      "b",
+      "Maintenant je saute !"
+     ]
+    ]
+   }
+  }
+ },
+ "bigoudi": {
+  "genre": "f",
+  "prenom": "Bigoudi",
+  "histoire": [
+   {
+    "titre": "la fille du garage",
+    "t": "J'ai grandi dans un garage, sur le continent. À quatre ans, je savais démonter une roue. À dix ans, je savais la remonter. Mon père disait que j'avais de l'huile de moteur dans les veines et des bigoudis sur la tête. Le nom est resté."
+   },
+   {
+    "titre": "les bus jaunes",
+    "t": "Sur la plage de l'île, il y avait de vieux bus d'école jaunes, abandonnés, rongés par le sel. J'en ai réparé un. Puis deux. Puis trois. Je les ai peints avec les enfants du camp : des fleurs, des cœurs, des yeux, des soleils."
+   },
+   {
+    "titre": "le tour de l'île en klaxonnant",
+    "t": "Une fois par an, on fait le tour de l'île en bus, en klaxonnant. Ça prend dix minutes. Avec les pique-niques, une journée entière. C'est la meilleure journée de l'année. Mamie Tournesol s'assoit toujours devant, avec son chapeau."
+   },
+   {
+    "titre": "les lits du festival",
+    "t": "Autrefois, pendant le festival, les bus servaient de dortoirs. Trente personnes par bus, à dormir en chantant. Depuis la dispute, ils dorment tout seuls. Je les entretiens quand même. Un moteur, ça se garde prêt."
+   },
+   {
+    "titre": "le quatrième bus",
+    "t": "Chut, {surnom}. Derrière les dunes, il y a un quatrième bus. Je le répare en secret depuis cinq ans. Il est peint à moitié en fleurs et à moitié en gouttes. Le jour où les villages se réconcilient, je le sors, et il emmène tout le monde au festival. Ne dis rien à personne."
+   }
+  ],
+  "reve": [
+   "Remplir mes trois bus de gens des deux villages et faire le plus grand tour de l'île de tous les temps, avec un concert à chaque arrêt."
+  ],
+  "question": {
+   "texte": "Tu as une clé de douze, {surnom} ? Non ? Alors dis-moi : quelle couleur pour mon prochain bus ?",
+   "reponses": [
+    {
+     "label": "Violet avec des étoiles.",
+     "valeur": "violet",
+     "t": "Violet étoilé ! Comme le ciel juste avant la nuit. Je note.",
+     "rappel": "Ton bus violet étoilé avance ! J'ai fait la première étoile."
+    },
+    {
+     "label": "Vert avec des feuilles.",
+     "valeur": "vert",
+     "t": "Un bus-jardin ! Lavande va adorer. Elle voudra planter des trucs sur le toit.",
+     "rappel": "Ton bus vert pousse bien. Lavande a déjà mis un pot de menthe sur le toit."
+    },
+    {
+     "label": "Gris avec des gouttes.",
+     "valeur": "gris",
+     "t": "Un bus de Rainville ! Audacieux. Pourquoi pas. Ça les fera peut-être monter dedans.",
+     "rappel": "Ton bus à gouttes me fait rire chaque matin."
+    }
+   ]
+  },
+  "liens": {
+   "clapotis": {
+    "qui": "le petit skateur de Rainville,",
+    "nom": "Clapotis",
+    "sentiment": 0.85,
+    "avis": "Clapotis vient faire du skate sur la rampe à côté de mes bus. Il est très fort. Il tombe très fort aussi. Je lui répare ses roues gratuitement.",
+    "anecdotes": [
+     "Clapotis m'a demandé si un bus pouvait faire du skate. J'ai dit non. Il a dit : « Pas encore. » J'ai peur de ce qu'il va inventer."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bigoudi ! Ma roue fait un bruit bizarre !"
+     ],
+     [
+      "a",
+      "Fais voir… C'est un caillou. Encore."
+     ],
+     [
+      "b",
+      "C'est un caillou très collant."
+     ]
+    ]
+   },
+   "arc_en_ciel": {
+    "qui": "mon voisin,",
+    "nom": "Arc-en-Ciel",
+    "sentiment": 0.8,
+    "avis": "Arc-en-Ciel tape sur tout. Même sur mes bus. Il dit que le capot du bus 2 sonne comme un gong.",
+    "anecdotes": [
+     "Arc-en-Ciel a fait un concert entier en tapant sur les trois bus. Le bus 1 pour les graves, le bus 3 pour les aigus. J'ai dû redresser deux capots."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pas sur le capot, Arc-en-Ciel !"
+     ],
+     [
+      "b",
+      "Mais il sonne si bien !"
+     ],
+     [
+      "a",
+      "Il sonnait mieux sans bosse."
+     ]
+    ]
+   }
+  }
+ },
+ "bouton_dor": {
+  "genre": "f",
+  "prenom": "Bouton-d'Or",
+  "histoire": [
+   {
+    "titre": "la fleur du camp",
+    "t": "Je suis née au Camp des Fleurs, dans la yourte bleue. Ma maman dit que je suis née au milieu des boutons-d'or. Moi, je crois qu'elle a dit ça pour le nom. Mais c'est joli quand même."
+   },
+   {
+    "titre": "les couronnes",
+    "t": "Je fais des couronnes de fleurs pour tout le monde. Une pour Mamie Tournesol, une pour Arc-en-Ciel, une pour Mantra, même s'il n'a pas de cheveux. Elle glisse, mais il dit que c'est pas grave."
+   },
+   {
+    "titre": "les lampes de poche",
+    "t": "Le soir, je vais en haut de la colline avec ma lampe. De l'autre côté, à Rainville, il y a Clapotis avec la sienne. On fait des signaux. Trois clignotements, ça veut dire « bonne nuit ». Deux, ça veut dire « demain ». On n'a pas encore de signal pour « viens jouer »."
+   },
+   {
+    "titre": "la photo secrète",
+    "t": "J'ai vu une photo dans la boîte à bijoux de Mamie Tournesol. Elle et Mère Averse, toutes jeunes, qui rigolent en se tenant par la main. Je ne comprends pas comment on peut être fâchées avec quelqu'un avec qui on a rigolé comme ça."
+   },
+   {
+    "titre": "le signal manquant",
+    "t": "Tu sais garder un secret, {surnom} ? Avec Clapotis, on a trois clignotements pour bonne nuit, deux pour demain. Il nous manque un signal pour « viens jouer ». J'ai décidé que ce serait quatre. Mais je n'ose pas le faire. Et s'il ne répondait pas ?"
+   }
+  ],
+  "reve": [
+   "Jouer avec Clapotis pour de vrai, en plein jour, sans se cacher. Et lui faire une couronne de fleurs. Même s'il dit que c'est pour les filles. Ce n'est pas vrai d'abord."
+  ],
+  "question": {
+   "texte": "Tu veux une couronne, {surnom} ? Avec quelles fleurs ?",
+   "reponses": [
+    {
+     "label": "Des marguerites !",
+     "valeur": "marguerites",
+     "t": "Des marguerites ! C'est les plus faciles. Tiens… voilà ! Tu es beau comme un pré.",
+     "rappel": "Tu as encore ta couronne de marguerites ? Elle a fané ? Je t'en refais une !"
+    },
+    {
+     "label": "Des coquelicots !",
+     "valeur": "coquelicots",
+     "t": "Des coquelicots ! Ils sont fragiles, il faut faire très attention. Voilà. Ne cours pas trop vite.",
+     "rappel": "Ta couronne de coquelicots ! Tu as couru trop vite, hein ?"
+    },
+    {
+     "label": "Je ne porte pas de couronne.",
+     "valeur": "non",
+     "t": "Tout le monde porte une couronne ici. Même Jack. Même le chat du café. Allez, juste une petite.",
+     "rappel": "Je t'ai gardé une toute petite couronne, au cas où."
+    }
+   ]
+  },
+  "liens": {
+   "clapotis": {
+    "qui": "mon ami secret de Rainville,",
+    "nom": "Clapotis",
+    "sentiment": 0.9,
+    "avis": "Clapotis, il a un ciré jaune et un skate. Il est un peu bête parfois, mais il est gentil. On se fait des signaux le soir. C'est un secret. Enfin… c'était un secret.",
+    "anecdotes": [
+     "Un jour, Clapotis a fait trois clignotements, puis deux, puis il a dessiné un cœur avec sa lampe. Enfin je crois. Ou alors il est tombé de son skate."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Clapotis ! Tu as vu mes signaux hier ?"
+     ],
+     [
+      "b",
+      "Ouais ! Tu as vu mon cœur ?"
+     ],
+     [
+      "a",
+      "Je croyais que tu étais tombé !"
+     ]
+    ]
+   },
+   "mamie_tournesol": {
+    "qui": "ma mamie de cœur,",
+    "nom": "Mamie Tournesol",
+    "sentiment": 0.95,
+    "avis": "Mamie Tournesol raconte les meilleures histoires du monde. Mais quand je lui parle de Mère Averse, elle regarde ses tournesols et elle ne dit plus rien.",
+    "anecdotes": [
+     "Mamie Tournesol m'a appris à planter une graine : un trou, la graine, un peu de terre, et on lui dit un secret. Je lui ai dit mon secret. Je ne te le dirai pas."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mamie, pourquoi tu es fâchée avec Mère Averse ?"
+     ],
+     [
+      "b",
+      "C'est une vieille histoire, ma fleur."
+     ],
+     [
+      "a",
+      "Alors il faut la finir !"
+     ]
+    ]
+   }
+  }
+ },
+ "mere_averse": {
+  "genre": "f",
+  "prenom": "Mère Averse",
+  "histoire": [
+   {
+    "titre": "le nuage qui m'a suivie",
+    "t": "Sur le continent, j'avais un petit nuage au-dessus de la tête. Tout le monde se moquait. Quand j'ai pris le bateau avec Tournesol, il nous a suivies sur la mer. Il est toujours là, au-dessus de Rainville. On ne laisse pas un nuage tout seul."
+   },
+   {
+    "titre": "les parapluies troués",
+    "t": "Je fabrique des parapluies. Tous troués, exprès. Un parapluie sans trou, ce n'est pas honnête avec la pluie. Il faut qu'il en passe un peu. Juste assez pour se rappeler qu'on est vivant."
+   },
+   {
+    "titre": "le jour de la dispute",
+    "t": "Le festival. Elle voulait le soleil, je voulais la pluie. J'ai dit des choses méchantes. Elle aussi. Je suis partie de l'autre côté de l'île, avec mon nuage. Les jeunes m'ont suivie. Ça a fait Rainville. Je ne suis pas fière de comment c'est né."
+   },
+   {
+    "titre": "la vieille dame qui tricote",
+    "t": "Aujourd'hui, je tricote des bonnets pour tout Rainville. Les jeunes jouent de la guitare très fort dans leur garage. Ils croient que je déteste. Je tricote en rythme. Un rang par chanson. Mon plus beau bonnet fait quarante chansons."
+   },
+   {
+    "titre": "la couronne grise",
+    "t": "Je vais te montrer quelque chose, {surnom}. Tu vois ce chapeau de paille tout gris, sur mon étagère ? C'était une couronne de tournesols. Tournesol me l'a faite le jour de nos vingt ans. Elle a séché. Elle est devenue grise, comme moi. Je n'ai jamais pu la jeter. Ne le lui dis pas. Ou si. Je ne sais plus."
+   }
+  ],
+  "reve": [
+   "Prendre un thé avec Tournesol, une dernière fois, au soleil. Et lui dire pardon. Je n'ai jamais su dire pardon. Je tricote mieux que je ne parle."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quand tu te fâches avec quelqu'un, qui fait le premier pas ?",
+   "reponses": [
+    {
+     "label": "Moi, toujours.",
+     "valeur": "moi",
+     "t": "Toujours toi ? Tu as plus de courage qu'une vieille dame que je connais.",
+     "rappel": "Toi qui fais toujours le premier pas… Tu crois qu'il n'est jamais trop tard ?"
+    },
+    {
+     "label": "Jamais moi.",
+     "valeur": "jamais",
+     "t": "Hm. Tu me ressembles. Ce n'est pas un compliment, mon petit.",
+     "rappel": "Toi qui ne fais jamais le premier pas… Tu y as repensé ? Moi, oui."
+    },
+    {
+     "label": "On en rit ensemble.",
+     "valeur": "rire",
+     "t": "Oh… C'est comme ça qu'on faisait, avant, elle et moi. Il faudrait que je me souvienne comment on rit.",
+     "rappel": "Rire ensemble… J'y pense en tricotant. C'est dur, à mon âge."
+    }
+   ]
+  },
+  "liens": {
+   "mamie_tournesol": {
+    "qui": "ma vieille amie fâchée,",
+    "nom": "Tournesol",
+    "sentiment": 0.7,
+    "avis": "Tournesol plante des fleurs partout où elle passe. Elle est têtue comme une mule et lumineuse comme un matin d'été. Je ne lui parle plus. C'est ma faute. Un peu.",
+    "anecdotes": [
+     "Quand on était jeunes, Tournesol me faisait des couronnes de tournesols. Je les faisais sécher dans mon parapluie. J'en ai encore une. Elle est toute grise, mais je la garde."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hm. Tournesol."
+     ],
+     [
+      "b",
+      "Averse."
+     ],
+     [
+      "a",
+      "… Il va pleuvoir."
+     ]
+    ]
+   },
+   "flanelle": {
+    "qui": "ma petite chanteuse,",
+    "nom": "Flanelle",
+    "sentiment": 0.9,
+    "avis": "Flanelle chante comme la pluie sur un toit de tôle. Sa mère chantait avec Tournesol, autrefois. Je ne lui ai jamais dit.",
+    "anecdotes": [
+     "Flanelle m'a chanté une chanson pour mes quatre-vingts ans. Une chanson sur un nuage qui suit une vieille dame. J'ai fait semblant d'avoir une poussière dans l'œil."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Je vous ai fait un bonnet de chanson, Mère Averse ?"
+     ],
+     [
+      "a",
+      "C'est moi qui tricote, petite."
+     ],
+     [
+      "b",
+      "Moi je chante. On fait la paire."
+     ]
+    ]
+   }
+  }
+ },
+ "flanelle": {
+  "genre": "f",
+  "prenom": "Flanelle",
+  "histoire": [
+   {
+    "titre": "la chemise de mon père",
+    "t": "Ma chemise à carreaux, c'était celle de mon père. Il était pêcheur, il chantait faux, il riait fort. Elle est trop grande, elle a des trous aux coudes. Quand je chante, je mets les mains dans les manches. C'est comme s'il me tenait."
+   },
+   {
+    "titre": "les Gouttières",
+    "t": "J'ai fondé les Gouttières avec Grésil dans un garage en tôle rouge. Puis Bruine est venue avec sa basse, et Bourrasque avec sa batterie. On joue fort parce que la pluie tape fort sur la tôle. Il faut bien couvrir le bruit."
+   },
+   {
+    "titre": "la chanson de ma mère",
+    "t": "Ma mère chantait sur la Grande Scène, avec les musiciens du Camp des Fleurs, avant la dispute. Il y a un disque chez Vinyle. Je ne l'ai jamais écouté. J'ai peur de pleurer devant le disquaire."
+   },
+   {
+    "titre": "chanter sous la pluie",
+    "t": "Je chante toujours mieux quand il pleut. Les gouttes sur la tôle, c'est mon métronome. Quand il fait beau, je me trompe de tempo. C'est pour ça que je ne suis jamais allée au Camp des Fleurs. Enfin, c'est ce que je dis."
+   },
+   {
+    "titre": "la voix de ma mère",
+    "t": "Un secret, {surnom}. Je ne chante pas mes chansons. Je chante celles de ma mère, que j'ai apprises en l'écoutant chanter dans la cuisine. Je les ai juste jouées plus fort, avec des guitares qui grincent. Personne ne l'a remarqué. Sauf peut-être Mère Averse. Elle tricote plus vite, sur celles-là."
+   }
+  ],
+  "reve": [
+   "Chanter la chanson de ma mère sur la Grande Scène, avec les tambours du camp derrière nous. Au soleil. Même si je me trompe de tempo."
+  ],
+  "question": {
+   "texte": "Si tu étais une chanson, {surnom}, tu serais laquelle ?",
+   "reponses": [
+    {
+     "label": "Une ballade douce.",
+     "valeur": "ballade",
+     "t": "Une ballade… une chanson qu'on chante tout bas, sous la couette. Je vois très bien.",
+     "rappel": "Ma ballade préférée, je l'ai écrite en pensant à toi. Un peu."
+    },
+    {
+     "label": "Un morceau très fort.",
+     "valeur": "fort",
+     "t": "Avec des guitares qui grincent ! Tu es des nôtres, toi. Viens au garage.",
+     "rappel": "Le morceau très fort ! Viens au garage ce soir, on joue ta chanson."
+    },
+    {
+     "label": "Une berceuse.",
+     "valeur": "berceuse",
+     "t": "Une berceuse… C'est ce que ma mère chantait. Tu as dû être un enfant très aimé.",
+     "rappel": "Je t'ai chanté ta berceuse hier soir. Tu ne l'as pas entendue ? Le vent l'a emportée."
+    }
+   ]
+  },
+  "liens": {
+   "gresil": {
+    "qui": "mon guitariste,",
+    "nom": "Grésil",
+    "sentiment": 0.85,
+    "avis": "Grésil parle lentement mais joue très vite. Sans lui, mes chansons seraient juste des mots. Avec lui, elles grincent. C'est mieux.",
+    "anecdotes": [
+     "Grésil a écrit un solo de douze minutes. Je lui ai demandé où je chantais, là-dedans. Il a dit : « … Après. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "On répète ce soir, Grésil ?"
+     ],
+     [
+      "b",
+      "… Oui."
+     ],
+     [
+      "a",
+      "Tu vas t'endormir ?"
+     ]
+    ]
+   },
+   "vinyle": {
+    "qui": "le disquaire,",
+    "nom": "Vinyle",
+    "sentiment": 0.7,
+    "avis": "Vinyle garde le disque de ma mère. Il sait que je ne l'ai jamais écouté. Il ne me le propose jamais. C'est gentil, je crois.",
+    "anecdotes": [
+     "Vinyle a mis une chanson des Gouttières dans sa vitrine, juste à côté du vieux disque de ma mère. Je suis passée devant cent fois. Je n'ai rien dit. Lui non plus."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Un nouveau disque, Flanelle ?"
+     ],
+     [
+      "a",
+      "Pas aujourd'hui."
+     ],
+     [
+      "b",
+      "Il t'attendra."
+     ]
+    ]
+   }
+  }
+ },
+ "gresil": {
+  "genre": "m",
+  "prenom": "Grésil",
+  "histoire": [
+   {
+    "titre": "… la première guitare",
+    "t": "… J'ai trouvé ma première guitare… dans une poubelle. … Il lui manquait trois cordes. … J'ai appris à jouer avec trois cordes. … Quand j'en ai eu six… c'était trop facile."
+   },
+   {
+    "titre": "… le larsen",
+    "t": "… Le larsen. … Le sifflement de l'ampli, quand on approche la guitare. … Tout le monde déteste. … Moi, je l'adore. … C'est le chant de l'île. … Elle porte son nom pour une raison."
+   },
+   {
+    "titre": "… dormir en jouant",
+    "t": "… Je m'endors facilement. … En méditant. … En mangeant. … En jouant. … Une fois, j'ai joué un solo en dormant. … C'était mon meilleur. … Je ne m'en souviens pas."
+   },
+   {
+    "titre": "… les fleurs",
+    "t": "… En secret… je vais écouter les djembés du camp. … Derrière la colline. … Ils jouent bien. … Je mets des accords dessus, dans ma tête. … Ça marche. … Ne le dis pas."
+   },
+   {
+    "titre": "… le carnet",
+    "t": "… Je vais te dire. … J'ai un carnet. … Dedans… les accords des djembés du camp. … Tous les soirs, je les note. … J'ai fait une chanson avec. … Elle s'appelle « Les Deux Côtés ». … Je ne l'ai jouée à personne. … Pas même à Flanelle."
+   }
+  ],
+  "reve": [
+   "… Faire un larsen… sur la Grande Scène. … Si fort… qu'on l'entende des deux côtés de l'île. … Et que tout le monde lève la tête en même temps."
+  ],
+  "question": {
+   "texte": "… Tu aimes… le larsen, {surnom} ?",
+   "reponses": [
+    {
+     "label": "J'adore !",
+     "valeur": "adore",
+     "t": "… Toi… tu as compris. … Respect.",
+     "rappel": "… Toi. … Le fan de larsen. … Salut."
+    },
+    {
+     "label": "Ça fait mal aux oreilles.",
+     "valeur": "mal",
+     "t": "… Oui. … C'est le but. … Un peu.",
+     "rappel": "… Tes oreilles… ça va ? … Bien."
+    },
+    {
+     "label": "C'est quoi, le larsen ?",
+     "valeur": "quoi",
+     "t": "… Viens au garage. … Je te montre. … Bouche-toi les oreilles.",
+     "rappel": "… La démonstration… tient toujours."
+    }
+   ]
+  },
+  "liens": {
+   "mantra": {
+    "qui": "… mon maître,",
+    "nom": "Mantra",
+    "sentiment": 0.8,
+    "avis": "… Mantra. … Il médite. … Moi aussi. … Enfin… je dors. … Il ne dit rien. … C'est un bon maître.",
+    "anecdotes": [
+     "… J'ai médité six heures avec lui. … Il dit que j'ai ronflé. … Je crois que c'était un mantra."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "… Salut, Mantra."
+     ],
+     [
+      "b",
+      "Respire, Grésil."
+     ],
+     [
+      "a",
+      "… Zzz."
+     ]
+    ]
+   },
+   "bourrasque": {
+    "qui": "… notre batteuse,",
+    "nom": "Bourrasque",
+    "sentiment": 0.85,
+    "avis": "… Bourrasque. … Elle tape fort. … Elle parle fort. … Elle me réveille. … C'est utile.",
+    "anecdotes": [
+     "… Pendant un concert… je me suis endormi. … Bourrasque m'a lancé une baguette. … Je me suis réveillé… en plein solo. … Le public a cru que c'était voulu."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "GRÉSIL ! RÉVEILLE-TOI !"
+     ],
+     [
+      "a",
+      "… Je suis réveillé."
+     ],
+     [
+      "b",
+      "Tu ronflais en accord !"
+     ]
+    ]
+   }
+  }
+ },
+ "bruine": {
+  "genre": "f",
+  "prenom": "Bruine",
+  "histoire": [
+   {
+    "titre": "la timide",
+    "t": "Je suis timide. Quand quelqu'un me parle, je regarde mes chaussures. Alors j'ai choisi la basse : c'est l'instrument qu'on entend sans regarder le bassiste. Tout le monde danse, et personne ne me regarde. C'est parfait."
+   },
+   {
+    "titre": "les chaussures qui savent",
+    "t": "Sur scène, je regarde mes chaussures. Elles connaissent toutes nos chansons par cœur. Ce sont de vieilles chaussures de randonnée, avec des lacets rouges. Je n'en change jamais. Elles ont le rythme dans les semelles."
+   },
+   {
+    "titre": "le disque des deux villages",
+    "t": "Chez Vinyle, il y a un disque des Gouttières d'il y a vingt ans, avec la chanteuse du Camp des Fleurs. Les deux villages ensemble. Je l'ai écouté onze fois. Une fois par an, le jour de mon anniversaire. C'est mon cadeau."
+   },
+   {
+    "titre": "les lampes du soir",
+    "t": "Le soir, je vois Clapotis et Bouton-d'Or se faire des signes avec des lampes de poche, d'un bout de l'île à l'autre. Je les regarde depuis ma fenêtre. Je trouve ça… tellement joli. Je ne leur ai jamais dit."
+   },
+   {
+    "titre": "la lettre à Arc-en-Ciel",
+    "t": "Euh… {surnom}… Bourrasque a écrit une lettre à Arc-en-Ciel, le joueur de djembé. Elle me l'a donnée pour que je la poste. Je… je ne l'ai pas postée. J'avais peur qu'il se moque. Elle est dans ma basse, dans la housse. Il faudrait peut-être que je la donne. Tu crois ?"
+   }
+  ],
+  "reve": [
+   "Jouer de la basse sur la Grande Scène… en regardant le public. Une seule chanson. Juste pour voir à quoi ressemblent les gens quand ils dansent."
+  ],
+  "question": {
+   "texte": "Euh… tu… tu regardes les gens dans les yeux, toi, {surnom} ?",
+   "reponses": [
+    {
+     "label": "Oui, toujours.",
+     "valeur": "oui",
+     "t": "Oh… Tu es courageux. Moi, j'ai dû regarder tes chaussures pour te répondre. Elles sont jolies.",
+     "rappel": "Euh… bonjour. … Tu as toujours tes jolies chaussures."
+    },
+    {
+     "label": "Ça dépend des gens.",
+     "valeur": "depend",
+     "t": "Oui… Moi aussi, peut-être. Il y a des gens qui ont des yeux faciles. Toi, par exemple. Un peu.",
+     "rappel": "Bonjour… Tu as des yeux faciles, toi. Je te l'ai déjà dit ?"
+    },
+    {
+     "label": "Non, je suis timide aussi.",
+     "valeur": "timide",
+     "t": "Oh ! Alors on peut regarder nos chaussures ensemble. C'est plus reposant.",
+     "rappel": "On regarde nos chaussures ? Les miennes vont bien. Et les tiennes ?"
+    }
+   ]
+  },
+  "liens": {
+   "bourrasque": {
+    "qui": "ma meilleure amie,",
+    "nom": "Bourrasque",
+    "sentiment": 0.9,
+    "avis": "Bourrasque parle pour deux. Ça tombe bien : moi, je ne parle pas. Elle tape, je suis. Sur scène comme dans la vie.",
+    "anecdotes": [
+     "Bourrasque a dit à tout le café que j'étais la meilleure bassiste de l'île. J'ai rougi pendant une semaine. C'est vrai, pourtant. C'est la seule bassiste de l'île."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "BRUINE ! On répète ?"
+     ],
+     [
+      "a",
+      "Oui… pas si fort."
+     ],
+     [
+      "b",
+      "C'était PAS FORT !"
+     ]
+    ]
+   },
+   "vinyle": {
+    "qui": "le disquaire,",
+    "nom": "Vinyle",
+    "sentiment": 0.75,
+    "avis": "Vinyle me laisse écouter le disque des deux villages une fois par an. Il met un casque sur mes oreilles et il sort arroser ses plantes. Il me laisse seule avec la musique.",
+    "anecdotes": [
+     "Pour mes trente ans, Vinyle m'a laissé écouter le disque deux fois. Il a dit que c'était un cadeau d'anniversaire, et qu'il ne fallait le dire à personne. Oups."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "C'est le jour, Bruine ?"
+     ],
+     [
+      "a",
+      "Oui…"
+     ],
+     [
+      "b",
+      "Le casque t'attend."
+     ]
+    ]
+   }
+  }
+ },
+ "bourrasque": {
+  "genre": "f",
+  "prenom": "Bourrasque",
+  "histoire": [
+   {
+    "titre": "LA CASSEROLE",
+    "t": "À trois ans, j'ai pris une casserole et une cuillère en bois. À quatre ans, il ne restait plus une casserole intacte à Rainville. À cinq ans, Mère Averse m'a offert une batterie. Pour sauver les casseroles."
+   },
+   {
+    "titre": "LE GARAGE ROUGE",
+    "t": "Le garage des Gouttières, c'est moi qui l'ai trouvé ! Murs en tôle, toit en tôle, porte en tôle ! Quand je tape, tout résonne ! On a l'impression d'être dans un tambour géant ! Les voisins adorent ! Enfin, ils disent rien. C'est pareil."
+   },
+   {
+    "titre": "LE RYTHME À L'ENVERS",
+    "t": "Un soir, j'ai entendu un djembé de l'autre côté de l'île. Alors je lui ai répondu ! Le même rythme, mais à l'envers ! On a joué une heure comme ça ! Je sais pas qui c'était ! Enfin si, je sais. Mais je dis rien."
+   },
+   {
+    "titre": "LES DJEMBÉS EN CACHETTE",
+    "t": "Un secret ? J'adore les djembés du Camp des Fleurs ! Je vais les écouter, cachée derrière un bus ! Arc-en-Ciel joue vraiment bien ! Ne lui dis pas ! Il prendrait la grosse tête, et une grosse tête avec des dreadlocks, ça fait beaucoup !"
+   },
+   {
+    "titre": "LA LETTRE",
+    "t": "Bon. Tu gardes ça pour toi, {surnom}. J'ai écrit une lettre à Arc-en-Ciel. Pour lui dire que ses rythmes sont géniaux. Je l'ai donnée à Bruine pour qu'elle la poste. Il ne m'a jamais répondu. C'est pas grave. Enfin si, un peu. Beaucoup. Bref."
+   }
+  ],
+  "reve": [
+   "UN CONCERT AVEC TOUS LES TAMBOURS DE L'ÎLE EN MÊME TEMPS ! Ma batterie, les djembés, les casseroles, les bus de Bigoudi ! TRRRA-BOUM-BA-DA-BOUM ! Que les mouettes en tombent du ciel ! Enfin, pas pour de vrai. Elles sont gentilles, les mouettes."
+  ],
+  "question": {
+   "texte": "HÉ ! {surnom} ! Tu préfères quoi : la grosse caisse ou la cymbale ?",
+   "reponses": [
+    {
+     "label": "La grosse caisse ! BOUM !",
+     "valeur": "caisse",
+     "t": "BOUM ! Ouais ! Le cœur de la musique ! T'as bon goût !",
+     "rappel": "BOUM ! Mon pote de la grosse caisse ! TCHAK !"
+    },
+    {
+     "label": "La cymbale ! TCHHH !",
+     "valeur": "cymbale",
+     "t": "TCHHH ! La classe ! Ça brille, ça éclabousse ! T'es une star, toi !",
+     "rappel": "TCHHH ! La star de la cymbale est de retour !"
+    },
+    {
+     "label": "Le silence entre les deux.",
+     "valeur": "silence",
+     "t": "… Oh. Ouah. C'est… profond. Mantra t'a parlé, toi.",
+     "rappel": "Toi… le silence entre les deux… J'y pense quand je joue. Tu m'as eue."
+    }
+   ]
+  },
+  "liens": {
+   "arc_en_ciel": {
+    "qui": "LE DJEMBÉ D'EN FACE,",
+    "nom": "Arc-en-Ciel",
+    "sentiment": 0.75,
+    "avis": "Arc-en-Ciel joue du djembé comme un dieu ! Je l'ai jamais rencontré en vrai ! Enfin, une fois, mais j'ai fait semblant d'être un buisson !",
+    "anecdotes": [
+     "Une fois, je l'ai croisé au marché ! J'ai voulu lui dire « ton rythme est génial » ! J'ai dit « bonjour, il fait beau » ! IL PLEUVAIT !"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "C'était toi, la batterie, hier soir ?"
+     ],
+     [
+      "a",
+      "QUI ? MOI ? PEUT-ÊTRE !"
+     ],
+     [
+      "b",
+      "Ha ha. Demain, même heure ?"
+     ]
+    ]
+   },
+   "clapotis": {
+    "qui": "MON PETIT FRÈRE DE CŒUR,",
+    "nom": "Clapotis",
+    "sentiment": 0.9,
+    "avis": "Clapotis tombe de son skate toutes les deux minutes ! Il se relève toutes les deux minutes ! C'est le plus grand batteur de l'île sans le savoir : il fait BOUM partout !",
+    "anecdotes": [
+     "Je lui ai raconté le vieux festival, avec les feux d'artifice ! Il en a jamais vu ! Depuis, il me demande tous les jours quand y'en aura ! Je sais pas quoi lui dire !"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bourrasque ! Quand il y aura des feux d'artifice ?"
+     ],
+     [
+      "a",
+      "BIENTÔT ! Peut-être ! J'espère !"
+     ],
+     [
+      "b",
+      "C'est trois réponses, ça."
+     ]
+    ]
+   }
+  }
+ },
+ "spleen": {
+  "genre": "m",
+  "prenom": "Spleen",
+  "histoire": [
+   {
+    "titre": "l'homme qui ne sourit pas",
+    "t": "On dit que je n'ai jamais souri. C'est faux. J'ai souri une fois, en 1994. Il y avait une flaque en forme de cœur devant ma porte. J'ai souri. Puis il a fait soleil, la flaque a séché, et voilà."
+   },
+   {
+    "titre": "le Café Feedback",
+    "t": "J'ai ouvert le café dans la plus grande yourte de Rainville. Un juke-box qui ne joue qu'une chanson, un chat qui dort sur l'ampli, une fuite au-dessus de la table trois. Les clients se battent pour la table trois. Ils trouvent ça poétique."
+   },
+   {
+    "titre": "le chocolat qui soigne",
+    "t": "Mon chocolat chaud soigne tout. Les chagrins, les rhumes, les disputes. Sauf la pluie. Contre la pluie, il n'y a rien à faire. Il faut juste rester au café et attendre. C'est très bon pour les affaires."
+   },
+   {
+    "titre": "les gens qui se serrent",
+    "t": "On croit qu'on aime la pluie parce qu'on est tristes. C'est faux. On aime la pluie parce qu'elle fait rentrer tout le monde au café. Les gens se serrent, ils parlent, ils rient. La pluie, c'est un prétexte pour être ensemble. Ne le répète pas, j'ai une réputation."
+   },
+   {
+    "titre": "le deuxième sourire",
+    "t": "Je vais te dire un secret, {surnom}. Je n'ai pas souri qu'une fois. J'ai souri une deuxième fois, l'an dernier, quand Clapotis et Bouton-d'Or se sont fait des signaux avec leurs lampes, de chaque côté de l'île. Je les voyais depuis la terrasse. Je n'ai rien dit. Une réputation, ça s'entretient."
+   }
+  ],
+  "reve": [
+   "Ouvrir une terrasse au Camp des Fleurs, au soleil. Avec des parasols troués, pour que les gens de Rainville s'y sentent chez eux. Et sourire. Une deuxième fois. Pour voir."
+  ],
+  "question": {
+   "texte": "Qu'est-ce que je te sers, {surnom} ?",
+   "reponses": [
+    {
+     "label": "Un chocolat chaud.",
+     "valeur": "chocolat",
+     "t": "Bon choix. Avec un nuage de crème. Comme le ciel de Rainville, mais en mieux.",
+     "rappel": "Un chocolat chaud, comme d'habitude ? Je l'ai déjà mis à chauffer."
+    },
+    {
+     "label": "Un thé à la menthe.",
+     "valeur": "the",
+     "t": "Hm. La menthe de Lavande, du camp d'en face. Je n'en achète pas. Elle me l'offre. Ne le dis à personne.",
+     "rappel": "Ton thé à la menthe. Toujours la menthe d'en face. Chut."
+    },
+    {
+     "label": "Juste un verre d'eau.",
+     "valeur": "eau",
+     "t": "De l'eau. De Rainville. Fraîchement tombée du ciel ce matin. C'est la spécialité de la maison.",
+     "rappel": "Un verre d'eau du ciel ? Il en est tombé beaucoup, aujourd'hui."
+    }
+   ]
+  },
+  "liens": {
+   "vinyle": {
+    "qui": "mon vieux complice,",
+    "nom": "Vinyle",
+    "sentiment": 0.85,
+    "avis": "Vinyle et moi, on a ouvert nos boutiques la même année. Il vend des disques, je vends du chocolat. Les gens achètent un disque, et viennent l'écouter au café. On s'est bien organisés.",
+    "anecdotes": [
+     "Vinyle m'a offert un disque pour mon juke-box. Une seule chanson, qu'il joue en boucle depuis vingt ans. Je ne l'ai jamais changé. Je ne sais pas comment on change, à vrai dire."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Un chocolat, Vinyle ?"
+     ],
+     [
+      "b",
+      "Avec la chanson du juke-box ?"
+     ],
+     [
+      "a",
+      "Il n'y en a qu'une."
+     ]
+    ]
+   },
+   "mere_averse": {
+    "qui": "ma plus vieille cliente,",
+    "nom": "Mère Averse",
+    "sentiment": 0.85,
+    "avis": "Mère Averse vient tous les jours à la table trois, sous la fuite. Elle dit que c'est pour la pluie. Je crois que c'est parce que la table trois regarde vers le Camp des Fleurs.",
+    "anecdotes": [
+     "Mère Averse a laissé un pourboire, une fois. Un bonnet tricoté pour mon chat. Il ne l'a jamais quitté. Moi non plus, je ne l'aurais pas quitté."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Comme d'habitude, Spleen."
+     ],
+     [
+      "a",
+      "Table trois. Sous la fuite."
+     ],
+     [
+      "b",
+      "Évidemment."
+     ]
+    ]
+   }
+  }
+ },
+ "vinyle": {
+  "genre": "m",
+  "prenom": "Vinyle",
+  "histoire": [
+   {
+    "titre": "six mille disques",
+    "t": "J'ai six mille disques. Je les ai tous écoutés. Deux fois. Sauf un. Celui-là, je le garde pour le jour où les deux villages joueront de nouveau ensemble. Ou pour les gens qui en ont vraiment besoin."
+   },
+   {
+    "titre": "le festival de mes vingt ans",
+    "t": "J'avais vingt ans au dernier Festival du Larsen. J'ai tout enregistré, avec un vieux magnétophone. Le soleil, la pluie, les tambours, les guitares, et la chanteuse du camp avec les Gouttières. Ça a fait un disque. Il n'en existe qu'un."
+   },
+   {
+    "titre": "le disquaire qui écoute",
+    "t": "Les gens croient qu'un disquaire vend des disques. Non. Un disquaire écoute les gens, et il leur trouve le disque qu'il leur faut. Parfois, c'est un disque joyeux. Parfois, c'est un disque triste. Parfois, c'est un silence."
+   },
+   {
+    "titre": "Jack et la scène",
+    "t": "Jack, le roadie, répare la Grande Scène tous les jours, en cachette. Il dit que « ça ne coûte rien d'être prêt ». Moi, je garde le disque prêt. Le jour où la scène se rallume, je le passerai dans les enceintes avant le premier concert."
+   },
+   {
+    "titre": "la face B",
+    "t": "Un secret de disquaire, {surnom}. Le vieux disque du festival a une face B. Personne ne l'a jamais écoutée. Moi non plus. Dessus, il y a la fin du concert, et puis… on entend deux vieilles amies qui rient, très près du micro. Je le sais parce que je les ai enregistrées. Je n'ose pas la passer."
+   }
+  ],
+  "reve": [
+   "Passer le vieux disque du festival dans les enceintes de la Grande Scène, devant les deux villages réunis. Et enregistrer un nouveau disque, le soir même. Le deuxième exemplaire."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quel disque emporterais-tu sur une île déserte ?",
+   "reponses": [
+    {
+     "label": "Quelque chose de joyeux.",
+     "valeur": "joyeux",
+     "t": "Joyeux, sur une île déserte… Bonne idée. Il faut se tenir compagnie. Je te trouverai ça.",
+     "rappel": "J'ai trouvé ton disque joyeux. Il t'attend dans le bac du fond."
+    },
+    {
+     "label": "Quelque chose de calme.",
+     "valeur": "calme",
+     "t": "Calme… avec la mer autour, ça ferait un bel accord. Tu as l'oreille, toi.",
+     "rappel": "Ton disque calme est arrivé. Écoute-le au bord de la mer."
+    },
+    {
+     "label": "Pas de disque, j'écoute la mer.",
+     "valeur": "mer",
+     "t": "La mer… le plus vieux disque du monde. Tu as raison. Il ne s'use jamais.",
+     "rappel": "Toi qui écoutes la mer… Tu as entendu une nouvelle chanson, depuis ?"
+    }
+   ]
+  },
+  "liens": {
+   "jack": {
+    "qui": "le chef roadie,",
+    "nom": "Jack",
+    "sentiment": 0.8,
+    "avis": "Jack prépare la scène. Moi, je prépare le disque. On ne s'est jamais dit qu'on attendait la même chose. On le sait.",
+    "anecdotes": [
+     "Jack est venu une fois écouter le vieux disque. Il a fermé les yeux pendant toute la face A. À la fin, il a dit : « La scène sera prête. » Puis il est reparti travailler."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "La scène avance, Jack ?"
+     ],
+     [
+      "b",
+      "Un boulon à la fois."
+     ],
+     [
+      "a",
+      "Le disque aussi est prêt."
+     ]
+    ]
+   },
+   "flanelle": {
+    "qui": "la chanteuse des Gouttières,",
+    "nom": "Flanelle",
+    "sentiment": 0.8,
+    "avis": "Flanelle n'a jamais écouté le disque de sa mère. Je ne le lui propose pas. Le jour où elle sera prête, elle viendra. Je serai là.",
+    "anecdotes": [
+     "J'ai mis une chanson des Gouttières dans la vitrine, à côté du vieux disque. Flanelle passe devant tous les jours. Un jour, elle s'est arrêtée trois secondes. C'est un début."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Vinyle."
+     ],
+     [
+      "a",
+      "Bonjour, Flanelle. Un disque ?"
+     ],
+     [
+      "b",
+      "Pas aujourd'hui."
+     ]
+    ]
+   }
+  }
+ },
+ "clapotis": {
+  "genre": "m",
+  "prenom": "Clapotis",
+  "histoire": [
+   {
+    "titre": "les flaques",
+    "t": "Je m'appelle Clapotis parce que, bébé, je sautais dans toutes les flaques. Maintenant, je saute avec un skate. C'est plus dur. Et c'est plus mouillé aussi, parce que les flaques sont toujours là."
+   },
+   {
+    "titre": "le ciré jaune",
+    "t": "Mon ciré jaune, c'est Mère Averse qui me l'a donné. Elle dit que comme ça, on me voit de loin quand je tombe. Je tombe souvent. On me voit souvent."
+   },
+   {
+    "titre": "la rampe des bus",
+    "t": "La meilleure rampe de l'île, c'est celle à côté des bus peints, au Camp des Fleurs. Je n'ai pas le droit d'y aller, à cause de la dispute des mamies. J'y vais quand même. Bigoudi dit rien. Elle me répare même mes roues."
+   },
+   {
+    "titre": "les signaux du soir",
+    "t": "Le soir, je monte sur le toit du garage avec ma lampe. De l'autre côté, il y a Bouton-d'Or avec la sienne. Trois clignotements : bonne nuit. Deux : demain. Une fois, j'ai essayé de faire un cœur. Elle a cru que j'étais tombé. C'était pas faux."
+   },
+   {
+    "titre": "la couronne cachée",
+    "t": "Promets de rien dire, {surnom}. La couronne de marguerites que Bouton-d'Or m'a donnée, je l'ai fait sécher dans un livre de Vinyle. Elle est toute plate maintenant. Je la garde sous mon oreiller. Si Bourrasque le sait, elle va le crier à toute l'île."
+   }
+  ],
+  "reve": [
+   "Voir des feux d'artifice ! Des vrais ! Bourrasque dit qu'il y en avait au vieux festival. Et faire du skate sur la Grande Scène. Et jouer avec Bouton-d'Or en plein jour. Dans cet ordre-là. Ou dans l'autre."
+  ],
+  "question": {
+   "texte": "Hé, {surnom} ! T'as déjà fait du skate ?",
+   "reponses": [
+    {
+     "label": "Oui, je suis un pro !",
+     "valeur": "pro",
+     "t": "Ouah ! Tu me montres un ollie ? Moi j'en fais un sur trois. Les deux autres, je tombe.",
+     "rappel": "Le pro du skate ! T'as vu, je fais un ollie sur deux maintenant !"
+    },
+    {
+     "label": "Non, ça fait peur.",
+     "valeur": "peur",
+     "t": "Mais non ! Le secret, c'est de tomber. Une fois que tu sais tomber, t'as plus peur. Moi je sais super bien tomber.",
+     "rappel": "Alors, t'as essayé ? Le plus dur c'est la première chute !"
+    },
+    {
+     "label": "Je préfère sauter dans les flaques.",
+     "valeur": "flaques",
+     "t": "Ha ha ! Comme moi bébé ! T'es un vrai Clapotis, toi !",
+     "rappel": "Hé, Clapotis numéro deux ! Il y a une super flaque derrière le café !"
+    }
+   ]
+  },
+  "liens": {
+   "bouton_dor": {
+    "qui": "ma copine secrète du camp,",
+    "nom": "Bouton-d'Or",
+    "sentiment": 0.9,
+    "avis": "Bouton-d'Or, elle fait des couronnes de fleurs et elle court super vite. On se fait des signaux le soir. Elle est géniale. Mais le dis pas, c'est une fille du camp et normalement on a pas le droit.",
+    "anecdotes": [
+     "Un jour, j'ai trouvé une couronne de marguerites accrochée à mon skate. Il y avait un mot : « Pour la tête des gens qui tombent. » Je l'ai mise. Je suis tombé. Elle a tenu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bouton-d'Or ! T'as vu mon cœur hier ?"
+     ],
+     [
+      "b",
+      "Je croyais que t'étais tombé !"
+     ],
+     [
+      "a",
+      "Bah… un peu les deux."
+     ]
+    ]
+   },
+   "bigoudi": {
+    "qui": "la mécano des bus,",
+    "nom": "Bigoudi",
+    "sentiment": 0.85,
+    "avis": "Bigoudi répare mes roues gratuitement. Elle dit que les skateurs et les bus, c'est la même famille : ça roule et ça fait du bruit.",
+    "anecdotes": [
+     "J'ai demandé à Bigoudi si un bus pouvait faire du skate. Elle a dit non. J'ai dit « pas encore ». Elle a eu l'air inquiète. Moi j'ai déjà un plan."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Encore un caillou dans ta roue, Clapotis ?"
+     ],
+     [
+      "a",
+      "Un caillou très collant !"
+     ],
+     [
+      "b",
+      "C'est toujours des cailloux très collants."
+     ]
+    ]
+   }
+  }
+ },
+ "jack": {
+  "genre": "m",
+  "prenom": "Jack",
+  "histoire": [
+   {
+    "titre": "les tournées",
+    "t": "Pendant vingt ans, j'ai monté des scènes partout dans le monde. Des stades, des festivals, des théâtres. Je les montais le matin, je les démontais la nuit. Je n'ai jamais vu un concert en entier. Toujours dans les coulisses, à porter des caisses."
+   },
+   {
+    "titre": "la scène qui attend",
+    "t": "En arrivant ici, j'ai trouvé la Grande Scène abandonnée depuis la dispute. Rouillée, bâchée, triste. Une scène sans musique, c'est comme un bateau sans mer. Alors je la répare. Un boulon par jour. Ça ne coûte rien d'être prêt."
+   },
+   {
+    "titre": "le hameau des roadies",
+    "t": "Mon hameau, derrière la scène, c'est celui des roadies. On vient des deux villages : un pied dans les fleurs, l'autre dans les flaques. On ne s'est jamais disputés. On était trop occupés à porter des caisses."
+   },
+   {
+    "titre": "ce qu'il manque",
+    "t": "La scène est presque prête. Il manque la toile du fond, que Lune tisse. Les cordes de Galet. Et des musiciens. Des deux villages. Ça, je ne peux pas le visser. Il faut que quelqu'un d'autre s'en occupe. Toi, peut-être."
+   },
+   {
+    "titre": "le premier concert",
+    "t": "Je vais te dire une chose, {surnom}. Le soir du dernier festival, j'étais là. Pas comme roadie : comme spectateur, j'avais dix ans. C'est ce concert-là qui m'a donné envie de faire ce métier. Je répare la scène pour rendre ce qu'on m'a donné ce soir-là."
+   }
+  ],
+  "reve": [
+   "Voir un concert en entier. Un seul. Assis dans l'herbe, au milieu du public, devant la scène que j'ai réparée. Sans porter une seule caisse."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : à un concert, tu te mets où ?",
+   "reponses": [
+    {
+     "label": "Tout devant, contre la scène !",
+     "valeur": "devant",
+     "t": "Ha ! Les meilleures places. Tu sens les basses dans le ventre. Je t'en garderai une.",
+     "rappel": "Ta place tout devant est réservée. J'ai mis une pierre dessus."
+    },
+    {
+     "label": "Au fond, dans l'herbe.",
+     "valeur": "fond",
+     "t": "Dans l'herbe… On voit tout, on entend tout, et on peut s'allonger. Tu es un sage, toi.",
+     "rappel": "Ta place dans l'herbe, au fond, je l'ai fauchée. Elle est toute douce."
+    },
+    {
+     "label": "Dans les coulisses !",
+     "valeur": "coulisses",
+     "t": "Ha ! Un futur roadie ! Viens, j'ai des caisses à porter.",
+     "rappel": "Le futur roadie ! J'ai une caisse pour toi. Une petite."
+    }
+   ]
+  },
+  "liens": {
+   "megaphone": {
+    "qui": "mon ingénieure du son,",
+    "nom": "Mégaphone",
+    "sentiment": 0.9,
+    "avis": "Mégaphone règle le son de la scène depuis dix ans. Sans concert. Elle teste les micros tous les matins. On est les deux seuls fous de l'île à croire que la musique reviendra. Ça fait une bonne équipe.",
+    "anecdotes": [
+     "Un matin, Mégaphone a dit « un, deux » dans le micro, et j'ai répondu « trois » depuis le fond de la prairie. Elle en a fait tomber sa tasse. Elle attendait ça depuis dix ans."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Un, deux… un, deux…"
+     ],
+     [
+      "a",
+      "Trois !"
+     ],
+     [
+      "b",
+      "JACK ! Ne me refais jamais ça. … Si, refais-le demain."
+     ]
+    ]
+   },
+   "galet": {
+    "qui": "mon cordier,",
+    "nom": "Galet",
+    "sentiment": 0.85,
+    "avis": "Galet m'a fait cinq cents mètres de corde. Il ne m'a demandé qu'une chose en échange : un concert. Je compte bien le payer.",
+    "anecdotes": [
+     "Galet a fait des nœuds bizarres sur toutes les cordes de la scène. Je lui ai demandé ce que c'était. Il a dit : « Hm. Des nœuds. » Je crois qu'ils veulent dire quelque chose."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Merci pour les cordes, Galet."
+     ],
+     [
+      "b",
+      "Hm. Le concert ?"
+     ],
+     [
+      "a",
+      "Bientôt. Promis."
+     ]
+    ]
+   }
+  }
+ },
+ "megaphone": {
+  "genre": "f",
+  "prenom": "Mégaphone",
+  "histoire": [
+   {
+    "titre": "la fille qui parlait fort",
+    "t": "Petite, je parlais si fort qu'on m'entendait de l'autre côté du port. Ma maîtresse m'a appelée Mégaphone. Au lieu de me vexer, j'ai décidé d'en faire un métier. Aujourd'hui, je rends tout le monde fort. Sauf moi : je chuchote, maintenant."
+   },
+   {
+    "titre": "dix ans de « un, deux »",
+    "t": "Tous les matins, depuis dix ans, je teste les micros de la Grande Scène. « Un, deux. Un, deux. » Il n'y a pas eu un seul concert. Mais si un jour il y en a un, le son sera parfait. Je ne laisse rien au hasard."
+   },
+   {
+    "titre": "la régie",
+    "t": "Ma régie, c'est une grande table pleine de boutons, au milieu de la prairie. Chaque bouton a un nom. Le rouge s'appelle Tournesol. Le bleu s'appelle Averse. Je les monte toujours ensemble, à la même hauteur. C'est une habitude."
+   },
+   {
+    "titre": "le « trois »",
+    "t": "Un matin, après dix ans de « un, deux », quelqu'un a répondu « trois » depuis le fond de la prairie. C'était Jack. J'ai fait tomber ma tasse de chocolat. J'ai ri pendant une heure. Puis je l'ai obligé à recommencer tous les matins."
+   },
+   {
+    "titre": "le bouton du milieu",
+    "t": "Un secret de régie, {surnom}. Entre le bouton Tournesol et le bouton Averse, il y a un troisième bouton, sans nom. Je ne l'ai jamais touché. Je le garde pour le jour où les deux villages chanteront ensemble. Ce jour-là, je l'appellerai comme toi, peut-être."
+   }
+  ],
+  "reve": [
+   "Pousser tous les boutons de la régie à fond, d'un coup, le soir du festival. Et entendre l'île entière chanter dans mes enceintes."
+  ],
+  "question": {
+   "texte": "Un, deux… Tu veux essayer le micro, {surnom} ? Qu'est-ce que tu dirais ?",
+   "reponses": [
+    {
+     "label": "« Bonjour l'Île de Larsen ! »",
+     "valeur": "bonjour",
+     "t": "Parfait ! Clair, net, joyeux ! Tu as une voix de présentateur. Le soir du festival, c'est toi qui annonces.",
+     "rappel": "Notre présentateur ! Ta voix est restée dans mes enceintes. Je l'entends encore."
+    },
+    {
+     "label": "« Trois ! »",
+     "valeur": "trois",
+     "t": "Ha ha ! Tu as parlé avec Jack, toi. C'est notre blague. Bienvenue dans l'équipe.",
+     "rappel": "Un, deux… — Trois ! Ha ! Tu t'en souviens !"
+    },
+    {
+     "label": "Rien, je suis gêné.",
+     "valeur": "gene",
+     "t": "Pas de souci. Le silence aussi, ça se règle. Le tien est très joli.",
+     "rappel": "Toi, le silencieux. J'ai réglé un bouton rien que pour ton silence."
+    }
+   ]
+  },
+  "liens": {
+   "jack": {
+    "qui": "mon chef roadie,",
+    "nom": "Jack",
+    "sentiment": 0.9,
+    "avis": "Jack porte les caisses, je règle les boutons. On est les deux seuls à croire encore à la Grande Scène. Il a répondu « trois » à mon micro. Je ne l'oublierai jamais.",
+    "anecdotes": [
+     "Jack m'a offert un nouveau micro pour mon anniversaire. Il a mis un nœud de Galet dessus. J'ai dit « un, deux » dedans. Il a dit « joyeux anniversaire ». Je l'ai gardé enregistré."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Un, deux…"
+     ],
+     [
+      "b",
+      "Trois."
+     ],
+     [
+      "a",
+      "Bonjour, Jack."
+     ]
+    ]
+   },
+   "flanelle": {
+    "qui": "la chanteuse des Gouttières,",
+    "nom": "Flanelle",
+    "sentiment": 0.75,
+    "avis": "Flanelle a la plus belle voix de Rainville. J'ai réglé un micro rien que pour elle, avec un peu d'écho, comme sous une averse. Elle ne l'a jamais essayé. Il l'attend.",
+    "anecdotes": [
+     "J'ai enregistré Flanelle en cachette, un soir, depuis la fenêtre du garage. J'ai passé l'enregistrement dans mes enceintes à quatre heures du matin. Toute la prairie a dormi en musique."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tu viens essayer ton micro, Flanelle ?"
+     ],
+     [
+      "b",
+      "Pas encore. Je… je n'ose pas."
+     ],
+     [
+      "a",
+      "Il a de l'écho. Comme la pluie."
+     ]
+    ]
+   }
+  }
+ }
+}

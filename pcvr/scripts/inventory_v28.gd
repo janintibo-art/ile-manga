@@ -343,6 +343,19 @@ const ITEMS := {
 	# V90 : l'Île Pixelithique
 	"dent_grosse_dent": {"name": "Dent de Grosse-Dent", "art": "la dent de Grosse-Dent", "kind": "tresor", "max": 1,
 		"desc": "Une dent de tyrannosaure longue comme un bras… en petits carrés, comme tout ce qui vient de l'Île Pixelithique. Grosse-Dent l'a perdue en tombant endormi. Le Clan dit qu'elle porte bonheur (à condition de ne pas la rendre)."},
+	# V92 : l'Île de Larsen
+	"bouquet_tournesols": {"name": "Bouquet de tournesols", "art": "un bouquet de tournesols", "kind": "quete", "sorte": "Objet de quête : Île de Larsen", "max": 1,
+		"desc": "Trois grands tournesols du jardin de Mamie Tournesol, noués d'un ruban jaune. Ils tournent la tête vers toi, comme vers le soleil."},
+	"parapluie_rainville": {"name": "Parapluie aux tournesols", "art": "le parapluie aux tournesols", "kind": "quete", "sorte": "Objet de quête : Île de Larsen", "max": 1,
+		"desc": "Un parapluie noir, comme tous ceux de Rainville… mais dessous, quand on l'ouvre, il y a des tournesols peints. Mère Averse l'a fait il y a cinquante ans, pour sa meilleure amie."},
+	"corde_chanvre": {"name": "Corde de chanvre", "art": "une corde de chanvre", "kind": "curiosite", "sorte": "Curiosité de Larsen", "max": 5,
+		"desc": "Une corde solide, tordue à la main à la Corderie de Galet, avec le chanvre des champs de l'île. Elle sent la paille et le soleil.",
+		"effet": "Tu fais un nœud de marin, comme Galet. Puis tu le défais. Puis tu le refais. C'est étrangement apaisant."},
+	"chocolat_chaud": {"name": "Chocolat chaud", "art": "un chocolat chaud", "kind": "nourriture", "max": 10, "heal": 3,
+		"desc": "Le chocolat chaud du Café Feedback, avec un nuage de crème. Ça réchauffe les mains, le ventre et le cœur. Rend un cœur et demi."},
+	"attrape_reves": {"name": "Attrape-rêves", "art": "un attrape-rêves", "kind": "curiosite", "sorte": "Curiosité de Larsen", "max": 1,
+		"desc": "Un cercle de bois tressé d'un filet de chanvre, avec des perles et des plumes. Le filet attrape les mauvais rêves ; les beaux glissent le long des plumes.",
+		"effet": "Tu fais tourner l'attrape-rêves. Les perles tintent doucement. Tu bâilles."},
 	"galette_fougere": {"name": "Galette de fougère", "art": "une galette de fougère", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "La recette de Mamie Silex : des crosses de fougère écrasées, grillées sur une pierre plate au bord du feu. Bien croustillante, un peu fumée. Rend deux cœurs (et « des carrés en plus », dit Mamie)."},
 	"peinture_clan": {"name": "Ton portrait par Ocre", "art": "ton portrait par Ocre", "kind": "tresor", "max": 1,
@@ -1636,6 +1649,22 @@ func make_model(id: String) -> Node3D:
 				var bend: float = t * t * 0.09
 				_part(m, _box_mesh(Vector3(0.045 - t * 0.012, 0.09, 0.008)), steel, Vector3(bend, y0, 0), Vector3(0, 0, -t * 14.0))
 			_tip(m, 0.82)
+	# V92 : les objets de l'Île de Larsen (le bouquet, le parapluie)
+	if id == "bouquet_tournesols":
+		var tige := _mat("tournesol_tige", Color(0.2, 0.42, 0.14), 0.8)
+		var jaune := _mat("tournesol_jaune", Color(0.98, 0.78, 0.12), 0.7)
+		var brun := _mat("tournesol_coeur", Color(0.28, 0.16, 0.06), 0.9)
+		for k in range(3):
+			var dx: float = -0.06 + k * 0.06
+			_part(m, _cyl(0.008, 0.01, 0.5, 6), tige, Vector3(dx, 0.25, 0), Vector3(0, 0, -12.0 + k * 12.0))
+			_part(m, _cyl(0.08, 0.08, 0.015, 14), jaune, Vector3(dx * 2.2, 0.5, 0.02), Vector3(70, 0, -12.0 + k * 12.0))
+			_part(m, _cyl(0.04, 0.04, 0.02, 12), brun, Vector3(dx * 2.2, 0.505, 0.025), Vector3(70, 0, -12.0 + k * 12.0))
+		_part(m, _cyl(0.025, 0.025, 0.04, 10), _mat("ruban_jaune", Color(0.98, 0.9, 0.3), 0.6), Vector3(0, 0.12, 0))
+	elif id == "parapluie_rainville":
+		var toile := _mat("parapluie_noir", Color(0.06, 0.06, 0.07), 0.5)
+		_part(m, _cyl(0.008, 0.008, 0.75, 6), _mat("parapluie_manche", Color(0.3, 0.18, 0.1), 0.6), Vector3(0, 0.375, 0))
+		_part(m, _cyl(0.03, 0.09, 0.42, 8), toile, Vector3(0, 0.62, 0))
+		_part(m, _sphere(0.02), _mat("parapluie_bout", Color(0.75, 0.75, 0.78), 0.3), Vector3(0, 0.86, 0))
 	for c in m.get_children():
 		if c is MeshInstance3D:
 			(c as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON

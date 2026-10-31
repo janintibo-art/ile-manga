@@ -15,6 +15,7 @@ const STYLES := {
 	"maya": ["maya", "lumen", 6], "azteque": ["azteque", "lumen", 6],
 	"elfe": ["elfes", "lumen", 6], "atlante": ["atlantes", "lumen", 4],
 	"nain": ["nains", "lumen", 8],
+	"yourte_fleurs": ["larsen", "lumen", 10], "yourte_rainville": ["larsen", "lumen", 10],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
@@ -54,6 +55,10 @@ const PRENOMS := {
 		"f": ["Amphitrite", "Galatée", "Thétis", "Doris", "Ondine", "Néréa", "Marinella", "Coralie", "Perle", "Salacia", "Écume", "Calypso"]},
 	"nain": {"h": ["Brokk", "Eitri", "Alvis", "Fjalar", "Galar", "Regin", "Sindri", "Grimbald", "Hornbori", "Skirvir", "Throrin", "Nyrdan"],
 		"f": ["Sigrid", "Ragna", "Thyra", "Gudrun", "Astrid", "Ingrid", "Helka", "Dagny", "Runa", "Svala", "Hjalma", "Bergdis"]},
+	"yourte_fleurs": {"h": ["Pissenlit", "Tambourin", "Cerf-Volant", "Arc", "Soleil", "Ruisseau", "Colibri", "Saule", "Pinson", "Zéphyr", "Ciel", "Lotus"],
+		"f": ["Marguerite", "Pâquerette", "Iris", "Libellule", "Aurore", "Bleuet", "Rosée", "Myosotis", "Églantine", "Ondine", "Camomille", "Violette"]},
+	"yourte_rainville": {"h": ["Crachin", "Ondée", "Gouttière", "Larsen", "Distorsion", "Brouillard", "Torrent", "Riff", "Écho", "Novembre", "Flaque", "Ciré"],
+		"f": ["Giboulée", "Pluie", "Brume", "Mélodie", "Grisaille", "Neige", "Mousson", "Saturation", "Cascade", "Rosée-Noire", "Nuée", "Gamme"]},
 	"azteque": {"h": ["Cuauhtli", "Itzcoatl", "Tochtli", "Mazatl", "Ocelotl", "Xolotl", "Tenoch", "Acatl", "Ehecatl", "Tlacotl", "Huemac", "Coaxoch"],
 		"f": ["Xochitl", "Citlali", "Itzel", "Yoltzin", "Atzin", "Nenetl", "Quetzalli", "Metztli", "Tonantzin", "Ameyal", "Nahui", "Teyacapan"]},
 }
@@ -288,6 +293,21 @@ static func _make(st: String, i: int) -> Dictionary:
 			p["sol"] = {"tenue": "enfant" if kid else ["peuple", "chasseur", "peuple"][r.randi() % 3]}
 			if not kid and r.randf() < 0.4:
 				p["sol"]["plumes"] = _c(r, [[0.1, 0.5, 0.3], [0.75, 0.15, 0.08]])
+		"larsen":
+			# V92 : les gens des yourtes de l'Île de Larsen (hippies du Camp des Fleurs, grunges de Rainville)
+			var hip: bool = st == "yourte_fleurs"
+			var tl: Array = (["tie_dye", "poncho", "robe_fleurs", "robe_longue", "tunique", "salopette_fleurs"] if hip else ["flanelle", "cardigan", "robe_grunge", "salopette_grunge", "impermeable", "flanelle"])
+			if not f:
+				tl = (["tie_dye", "poncho", "tunique", "salopette_fleurs"] if hip else ["flanelle", "cardigan", "salopette_grunge", "flanelle", "impermeable"])
+			p["larsen"] = {"style": "hippie" if hip else "grunge", "tenue": "enfant" if kid else str(tl[r.randi() % tl.size()])}
+			if not kid and r.randf() < 0.4:
+				p["larsen"]["chapeau"] = (["bandeau", "capeline", "paille"] if hip else ["bonnet", "casquette", "bonnet"])[r.randi() % 3]
+			if hip and r.randf() < 0.45:
+				p["larsen"]["couronne"] = ["marguerites", "coquelicots", "tournesol"][r.randi() % 3]
+			if not old:
+				az["coiffure"] = ((["long", "boucles", "tresse", "long", "couronne"] if f else ["long", "dreads", "boucles", "queue", "long"]) if hip else (["long", "carre", "queue", "long"] if f else ["long", "court", "long", "queue"]))[r.randi() % (5 if hip else 4)]
+				if az["coiffure"] == "couronne":
+					az["coiffure"] = "tresse"
 		"azteque":
 			p["sol"] = {"tenue": "enfant" if kid else "peuple"}
 			if r.randf() < 0.5:

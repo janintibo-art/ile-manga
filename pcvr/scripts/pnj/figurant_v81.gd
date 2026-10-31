@@ -37,7 +37,8 @@ static func spawn(parent: Node3D, main_node: Node, profile: Dictionary, pos: Vec
 		"ramure":
 			npc = PnjRamure.new()
 		_:
-			npc = PnjLumen.new()
+			# V92 : les gens des yourtes de Larsen (la couronne de fleurs)
+			npc = (load("res://scripts/pnj/pnj_larsen_v92.gd") as Script).new() if profile.has("larsen") else PnjLumen.new()
 	parent.add_child(npc)
 	npc.setup(main_node, profile, {"ici": pos}, {"ici": []}, "ici")
 	var stub := Node.new()
@@ -210,6 +211,8 @@ func _apply_anim(force: bool = false) -> void:
 			_play("bo/basse", 0.3)
 		"leviter":
 			_play("lu/leviter", 0.4)
+		"mediter":
+			_play("lu/mediter", 0.5)
 		_:
 			_play("v28/idle", 0.4)
 

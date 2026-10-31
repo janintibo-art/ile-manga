@@ -193,6 +193,7 @@ const LISTE := {
 	"larsen_djembe": ["Le rythme du Camp des Fleurs", "larsen", 25],
 	"larsen_ampli": ["L'effet Larsen", "larsen", 25],
 	"larsen_corde": ["Une corde de chanvre", "larsen", 20],
+	"larsen_disque_rare": ["Le disque des deux villages", "larsen", 30],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],

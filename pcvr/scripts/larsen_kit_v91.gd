@@ -620,7 +620,7 @@ static func djembe(b: Batch, at: Vector3) -> void:
 ## Un banc de rondins (un tronc couché sur deux cales).
 static func log_bench(b: Batch, at: Vector3, yaw: float, l: float = 2.4) -> void:
 	var xf := Transform3D(Basis(Vector3.UP, yaw), at)
-	b.cyl("bois", xf * Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(l * 0.5, 0.32, 0)), 0.24, 0.22, l, 10, true)
+	b.cyl("bois", xf * Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-l * 0.5, 0.32, 0)), 0.24, 0.22, l, 10, true)
 	for sx in [-1.0, 1.0]:
 		b.box("bois", xf * Transform3D(Basis(), Vector3(sx * l * 0.35, 0.08, 0)), Vector3(0.18, 0.18, 0.6))
 

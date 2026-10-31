@@ -76,6 +76,45 @@ void fragment() {
 		float fil = clamp(lh + lv + nd, 0.0, 1.0);
 		c = mix(couleur, couleur2, fil * 0.85);
 		emi += couleur2 * fil * 0.9;
+	} else if (motif == 15) {
+		// V92 : le tie-dye des hippies de Larsen : des spirales de couleurs qui fusent du ventre,
+		// trois teintes (couleur, couleur2 et une troisième, à mi-chemin, plus claire), bords baveux
+		vec2 q = vec2(rest.x, rest.y - 1.15) / max(echelle, 0.05);
+		float rr = length(q);
+		float ang = atan(q.y, q.x);
+		float sp = fract(ang / 6.2832 * 3.0 + rr * 0.9 + sin(rest.z * 40.0 + rest.y * 17.0) * 0.04);
+		vec3 c3 = mix(mix(couleur, couleur2, 0.5), vec3(1.0, 0.97, 0.9), 0.45);
+		float a = smoothstep(0.28, 0.36, sp) - smoothstep(0.6, 0.68, sp);
+		float b = smoothstep(0.66, 0.74, sp) - smoothstep(0.92, 0.99, sp);
+		c = mix(couleur, couleur2, clamp(a, 0.0, 1.0));
+		c = mix(c, c3, clamp(b, 0.0, 1.0));
+		// les plis du nouage : des rayons plus pâles
+		c = mix(c, vec3(1.0, 0.97, 0.92), 0.25 * smoothstep(0.85, 1.0, abs(sin(ang * 8.0 + rr * 2.0))));
+	} else if (motif == 16) {
+		// V92 : un imprimé à petites fleurs (cinq pétales, un cœur), semées en quinconce
+		vec2 q = vec2(rest.x + rest.z * 0.7, rest.y) / max(echelle, 0.02);
+		q.x += step(1.0, mod(floor(q.y), 2.0)) * 0.5;
+		vec2 cell = floor(q);
+		vec2 f = fract(q) - 0.5;
+		float h1 = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.5453);
+		f = mat2(vec2(cos(h1 * 6.28), sin(h1 * 6.28)), vec2(-sin(h1 * 6.28), cos(h1 * 6.28))) * f;
+		float r0 = length(f);
+		float an = atan(f.y, f.x);
+		float pet = step(r0, 0.2 + 0.09 * cos(an * 5.0));
+		vec3 pc = h1 < 0.5 ? couleur2 : mix(couleur2, vec3(1.0), 0.5);
+		c = mix(couleur, pc, pet);
+		c = mix(c, vec3(0.98, 0.8, 0.2), step(r0, 0.06));
+	} else if (motif == 17) {
+		// V92 : le jean délavé et troué des grunges de Rainville : plus pâle sur les cuisses et aux
+		// genoux, des trous aux genoux (des fils blancs en travers, l'ombre du trou derrière)
+		float fade = smoothstep(0.75, 0.45, abs(rest.y - 0.62)) * 0.35;
+		c = mix(couleur, mix(couleur, vec3(0.85, 0.88, 0.92), 0.6), fade);
+		vec2 kq = vec2(abs(rest.x) - 0.1, rest.y - 0.5);
+		float hole = step(length(kq * vec2(1.0, 1.6)), 0.045) * step(0.0, rest.z);
+		if (hole > 0.5) {
+			float fil = step(0.55, fract(rest.y / 0.006));
+			c = mix(vec3(0.08, 0.07, 0.07), couleur2, fil);
+		}
 	} else if (motif == 13) {
 		// V76 : la soie à reflets des Lumens : la teinte glisse vers couleur2 sous les angles rasants
 		float fr = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);

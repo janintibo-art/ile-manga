@@ -892,6 +892,21 @@ const QUETES := [
 		],
 		"fin": "LES TROIS ! Bravo ! Maintenant, tu as goûté la soupe, entendu siffler Rustine et bu la limonade de Sirène : tu es officiellement du Boucan. Bon, il n'y a pas de papier officiel. On a voté contre les papiers en assemblée. Tiens, quelques pièces de la caisse commune, pour tes premiers jours. Et viens au concert ce soir : on t'attend dans la fosse !",
 		"recompense": {"pieces": 10, "rep": 0}},
+	# V92 : l'Île de Larsen
+	{"id": "la_soleil_pluie", "titre": "Le Soleil et la Pluie", "donneur": "mamie_tournesol", "lieu": "Île de Larsen, le Camp des Fleurs", "sorte": "Île de Larsen",
+		"si": {},
+		"resume": "Mamie Tournesol, la doyenne du Camp des Fleurs, et Mère Averse, la doyenne de Rainville, étaient les meilleures amies du monde. Il y a cinquante ans, elles se sont fâchées pour une histoire de météo (le soleil ou la pluie pour le festival ?), et depuis, plus personne n'ose monter sur la Grande Scène. Mamie Tournesol voudrait faire la paix… mais elle n'ose pas.",
+		"offre_label": "Mamie Tournesol, pourquoi regardez-vous Rainville comme ça ?",
+		"offre": "Oh… tu as remarqué. Là-bas, sous le petit nuage, il y a une vieille amie à moi. Mère Averse. On s'est fâchées il y a cinquante ans, pour une bêtise. Je voudrais lui envoyer un bouquet de mes tournesols, pour lui dire que je pense à elle. Mais je suis trop fière pour y aller moi-même. Tu veux bien être mon messager ? Cueille un bouquet dans mon jardin, et porte-le-lui.",
+		"etapes": [
+			{"type": "ramasser", "objets": {"bouquet_tournesols": 1}, "lieux": ["larsen_bouquet"], "objectif": "Cueillir un bouquet de tournesols dans le jardin de Mamie Tournesol (au Camp des Fleurs, au sud-ouest du feu)"},
+			{"type": "objets", "pnj": "mere_averse", "objets": {"bouquet_tournesols": 1}, "label": "Mère Averse, Mamie Tournesol vous envoie ces tournesols.", "texte": "… Des tournesols. De SON jardin. (Elle les regarde longtemps. Une goutte tombe sur un pétale ; ce n'est pas la pluie.) Cette vieille bique… Elle se souvient que je les aimais, alors. Attends. Sur le porche de ma yourte, il y a un parapluie. Le plus beau que j'aie jamais fait, avec des tournesols peints dessous. Je l'ai fait pour elle il y a cinquante ans, et je ne le lui ai jamais donné. Porte-le-lui.", "objectif": "Porter le bouquet à Mère Averse, à Rainville (le jour, dans la rue ou à la terrasse du Café Feedback)"},
+			{"type": "ramasser", "objets": {"parapluie_rainville": 1}, "lieux": ["larsen_parapluie"], "objectif": "Prendre le parapluie aux tournesols, sur le porche de la yourte de Mère Averse (Rainville, en haut de la grande rue, à gauche)"},
+			{"type": "objets", "pnj": "mamie_tournesol", "objets": {"parapluie_rainville": 1}, "label": "Mamie Tournesol, Mère Averse vous a fait ce parapluie.", "texte": "Un parapluie… avec des tournesols peints dessous. Pour que, même sous la pluie, je voie le soleil. (Elle l'ouvre ; elle rit ; elle pleure un peu.) Elle me l'avait promis, l'été de notre dispute. Cinquante ans… Bon. Il est temps que deux vieilles dames arrêtent de faire les idiotes.", "objectif": "Rapporter le parapluie à Mamie Tournesol, au Camp des Fleurs"},
+			{"type": "rendre", "pnj": "mamie_tournesol", "label": "Alors, Mamie Tournesol, la paix ?", "objectif": "Parler encore à Mamie Tournesol"},
+		],
+		"fin": "La paix ! Demain, j'irai prendre un thé chez elle. Sous la pluie, avec mon nouveau parapluie. Et tu sais quoi ? On a décidé ensemble : le Festival du Larsen va revenir, cet été, sur la Grande Scène. Les deux villages, ensemble. Il fera soleil ET il pleuvra, et ce sera parfait. Merci, mon messager. Tu as rendu son arc-en-ciel à cette île.",
+		"recompense": {"pieces": 60, "rep": 0, "titre": "Messager du Soleil et de la Pluie", "objets": [["gateau_miel", 2]]}},
 	{"id": "bo_concert", "titre": "Le Grand Boucan", "donneur": "rouille", "lieu": "Île du Boucan, la Halle Hurlante", "sorte": "Île du Boucan",
 		"si": {"apres": "bo_bienvenue"},
 		"resume": "Les robots déménageurs de Monsieur Lisse ont volé le matériel des Rats de Cale juste avant le Grand Boucan, le plus grand concert de l'année : Germaine-la-Terrible, la guitare de Clou, l'ampli à lampes et les baguettes de batterie. Il faut tout retrouver, rendre la guitare et l'ampli à Rouille, puis venir au Grand Boucan, le soir, à la Halle Hurlante.",
@@ -1911,6 +1926,15 @@ func place_name(p: Vector3) -> String:
 		return str(main.pixel_v90.place_name(p))
 	if main.get("larsen_v91") != null and main.larsen_v91 != null and main.larsen_v91.ile != null and main.larsen_v91.owns_point(p):
 		return str(main.larsen_v91.place_name(p))
+	# V92 : dans une yourte de l'Île de Larsen
+	var mv92: Variant = main.get("maisons_v81")
+	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):
+		var h92: String = str((mv92.cur as Dictionary).get("histoire", ""))
+		if h92 == "cafe":
+			return "L'Île de Larsen, le Café Feedback"
+		if h92 == "disquaire":
+			return "L'Île de Larsen, chez le Disquaire"
+		return "L'Île de Larsen, une yourte " + ("du Camp des Fleurs" if str(mv92.cur.get("style", "")) == "yourte_fleurs" else "de Rainville")
 	if main.get("braise_v70") != null and main.braise_v70 != null and main.braise_v70.city != null and main.braise_v70.owns_point(p):
 		return str(main.braise_v70.place_name(p))
 	if main.get("soleils_v69") != null and main.soleils_v69 != null and main.soleils_v69.egypte != null and main.soleils_v69.owns_point(p):

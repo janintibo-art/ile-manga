@@ -86,9 +86,10 @@ const COFFRE_BUTIN := {
 	"boucan": [[18, 32], ["soupe_prix_libre", "limonade_boucan", "sirop_menthe", "fanzine", "bombe_peinture", "boulon"]],
 	"azur": [[15, 26], ["croissant", "punch_coco", "coquillage", "biere_naine"]],
 	"grande": [[20, 35], ["cidre_carene", "dattes", "rhum_murene", "galette_sarrasin", "pain_carotte"]],
+	"larsen": [[14, 26], ["tisane_lune", "chocolat_chaud", "pain_miel", "baies", "corde_chanvre"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [

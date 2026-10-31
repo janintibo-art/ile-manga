@@ -20,6 +20,7 @@ const SCENARIOS := [
 const Iles = preload("res://scripts/maisons_iles_v82.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 const Moais = preload("res://scripts/maisons_moai_v88.gd")
+const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -67,6 +68,8 @@ static func region(style: String) -> String:
 			return "nains"
 		"moai":
 			return "moai"
+		"yourte_fleurs", "yourte_rainville":
+			return "larsen"
 		"elfe", "fee":
 			return "elfes"
 	return "azur"
@@ -103,6 +106,10 @@ static func food(style: String) -> Array:
 			return ["ragout_nain", "fromage_chevre", "champignon_braise"]
 		"moai":
 			return ["brochette_poisson", "noix_coco", "baies"]
+		"yourte_fleurs":
+			return ["tisane_lune", "pain_miel", "baies"]
+		"yourte_rainville":
+			return ["chocolat_chaud", "gateau_lune", "pomme"]
 	return ["croissant", "bouillabaisse", "glace"]
 
 
@@ -135,12 +142,16 @@ static func plat(style: String) -> String:
 			return "de la gelée cosmique"
 		"nain":
 			return "du ragoût aux champignons de braise"
+		"yourte_fleurs":
+			return "de la soupe de courge du jardin"
+		"yourte_rainville":
+			return "des crêpes au chocolat (il pleut, il faut du réconfort)"
 	return "de la bouillabaisse"
 
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -152,6 +163,9 @@ static func pick(M) -> String:
 	var ctx: Dictionary = M.ctx
 	if str(ctx["style"]) == "fee":
 		return "fee"
+	# V92 : les yourtes de l'Île de Larsen ont leurs histoires à elles (et « chez » à la mode des yourtes)
+	if Yourtes.is_yourte(str(ctx["style"])):
+		return Yourtes.pick(M)
 	if str(ctx.get("owner", "")) != "" and ctx.get("owner_node", null) != null:
 		return "chez"
 	var rng := RandomNumberGenerator.new()
@@ -182,6 +196,10 @@ static func pick(M) -> String:
 
 static func build(M) -> void:
 	_garde_entree(M)
+	# V92 : dans une yourte de Larsen, ses histoires d'abord (des noms qui ne se mélangent pas)
+	if Yourtes.is_yourte(str(M.ctx["style"])) and Yourtes.has(str(M.ctx["scenario"])):
+		Yourtes.build(M, str(M.ctx["scenario"]))
+		return
 	match str(M.ctx["scenario"]):
 		"famille":
 			_b_famille(M)
@@ -234,6 +252,8 @@ static func build(M) -> void:
 				Echoppes.build(M, str(M.ctx["scenario"]))
 			elif Moais.has(str(M.ctx["scenario"])):
 				Moais.build(M, str(M.ctx["scenario"]))
+			elif Yourtes.has(str(M.ctx["scenario"])):
+				Yourtes.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

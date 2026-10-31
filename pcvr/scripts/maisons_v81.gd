@@ -16,6 +16,7 @@ const Scenes = preload("res://scripts/maisons_scenes_v81.gd")
 const Deco = preload("res://scripts/maisons_deco_v86.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
+const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -148,6 +149,10 @@ func _process(delta: float) -> void:
 	if inside:
 		if R != null:
 			R.tick(_t)
+		# V92 : ce qui bouge dans une maison (le disque qui tourne…)
+		var tk: Variant = ctx.get("tick", null)
+		if tk is Callable and (tk as Callable).is_valid():
+			(tk as Callable).call(delta)
 		# on est sorti par un autre chemin (téléportation, mode testeur…) : on démonte
 		var pp: Vector3 = main._player_pos_v27()
 		if not busy and pp.distance_to(STAGE) > 120.0:
@@ -337,9 +342,13 @@ func _build() -> Array:
 	elif style == "boucan_entrepot":
 		w = clampf(w, 8.0, 11.0)
 		d = clampf(d, 7.0, 10.0)
+	elif Yourtes.is_yourte(style):
+		# V92 : une yourte de l'Île de Larsen : une pièce ronde (la porte au milieu de +z)
+		w = Yourtes.RI * 2.0
+		d = Yourtes.RI * 2.0
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
-	R.door_x = rng.randf_range(-w * 0.2, w * 0.2)
+	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) else 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -360,13 +369,17 @@ func _build() -> Array:
 			st0["scenario"] = scenario
 	force_scenario = ""
 	ctx["scenario"] = scenario
-	R.shell()
+	if Yourtes.is_yourte(style):
+		Yourtes.shell(self)
+	else:
+		R.shell()
 	# la porte, de l'intérieur
 	var door_in: Vector3 = R.P(R.door_x, 0, d * 0.5 - 0.6)
 	act(door_in, "E : sortir", func(): leave(), 1.3)
 	Scenes.build(self)
-	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier)
-	Deco.habiller(self)
+	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
+	if not Yourtes.is_yourte(style):
+		Deco.habiller(self)
 	R.commit()
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])
 	return [R.P(R.door_x, 0.05, d * 0.5 - 1.1), Vector3(0, 0, -1)]

@@ -16,6 +16,8 @@ const IleScript = preload("res://scripts/ile_larsen_v91.gd")
 const Kit = preload("res://scripts/larsen_kit_v91.gd")
 const Decor = preload("res://scripts/decor_v53.gd")
 const FLORE := "res://scripts/larsen_flore_v91.gd"
+const Ville = preload("res://scripts/larsen_ville_v92.gd")
+const AzurKit = preload("res://scripts/azur_kit_v56.gd")
 
 const PLACES := {"plage": "la Plage du Larsen", "festival": "la Prairie du Festival", "fleurs": "le Camp des Fleurs",
 	"rainville": "Rainville", "chanvre": "les champs de chanvre", "coquelicots": "les champs de coquelicots",
@@ -75,6 +77,7 @@ const TOC_RAIN := [
 var main: Node
 var ile: Node3D
 var flore: Node3D
+var ville: Node3D                         # V92 : les rues, les lieux, les habitants
 var pc: bool = true
 var state: Dictionary = {}
 var objets: Dictionary = {}               # lieux pour le carnet (nom -> Vector3 monde)
@@ -106,7 +109,7 @@ func setup(main_node: Node) -> void:
 
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "toc": 0, "djembe": 0, "carillon": 0, "ampli": false, "corde": false,
-		"arbre": false, "panneaux": {}}
+		"arbre": false, "panneaux": {}, "soleil_pluie": false, "disque_rare": false, "bouquet": false, "parapluie": false}
 
 
 # =================================================================== construction
@@ -142,6 +145,11 @@ func build_town() -> void:
 		for j in jardins:
 			flore.jardins.append(j)
 		flore.build_larsen(ile, pc)
+	# V92 : la vie de l'île (les rues, les lieux, les habitants arrivent avec ceux des autres îles)
+	ville = Ville.new()
+	add_child(ville)
+	ville.setup(main, self)
+	ville.build()
 	objets["plage"] = _ground(14.0, 96.0)
 	objets["scene"] = _ground(SCENE.x, SCENE.y + 12.0)
 	objets["fleurs"] = _ground(-62.0 + 6.0, 14.0)
@@ -149,6 +157,16 @@ func build_town() -> void:
 	objets["corderie"] = _ground(-28.0, -36.0)
 	objets["colline"] = _ground(8.0, -80.0)
 	objets["mare"] = _ground(-66.0, 40.0)
+	# V92 : la quête « Le Soleil et la Pluie » (le bouquet dans le jardin de Mamie Tournesol, le
+	# parapluie sur le porche de Mère Averse)
+	if not jardins.is_empty():
+		objets["bouquet"] = (jardins[0][0] as Vector3) + Vector3.UP * 0.05
+	for y in yourtes:
+		if str(y["nom"]) == "rain_0":
+			var side: Vector3 = (y["face"] as Vector3).cross(Vector3.UP).normalized()
+			var pp: Vector3 = (y["door"] as Vector3) + side * 1.1
+			pp.y = ile.height(pp.x, pp.z) + 0.05
+			objets["parapluie"] = pp
 	print("ILE_MANGA_V91: l'Île de Larsen est prête (%d yourtes, %d ms)" % [yourtes.size(), Time.get_ticks_msec() - t0])
 
 
@@ -177,7 +195,30 @@ func _add_yurt(list: Array, x: float, z: float, face2: Vector2, s: float, style:
 	var door: Vector3 = Kit.yurt_door(at, face, s)
 	door.y = ile.height(door.x, door.z) + 0.05
 	yourtes.append({"at": at, "face": face, "s": s, "style": style, "door": door, "nom": nom})
+	# V92 : on entre dans les yourtes (maisons_v81 ; la pièce ronde : maisons_larsen_v92)
+	var e81 := {"door": door, "out": face, "w": Kit.R * 2.0 * s, "d": Kit.R * 2.0 * s, "style": "yourte_fleurs" if style == 0 else "yourte_rainville", "floors": 1, "owner": ""}
+	if nom in ["cafe", "disquaire"]:
+		e81["histoire"] = nom
+	AzurKit.PORTES_V81.append(e81)
 	_avoid.append([Vector2(at.x, at.z), (Kit.R + 1.2) * s])
+
+
+## V92 : une boîte de collision (la scène, les bus, les garages, la rampe, les canapés…).
+var _cols: StaticBody3D
+
+func _col(xf: Transform3D, size: Vector3) -> void:
+	if _cols == null:
+		_cols = StaticBody3D.new()
+		_cols.name = "Larsen_collisions_v92"
+		_cols.collision_layer = 1
+		_cols.collision_mask = 0
+		add_child(_cols)
+	var cs := CollisionShape3D.new()
+	var sh := BoxShape3D.new()
+	sh.size = size
+	cs.shape = sh
+	_cols.add_child(cs)
+	cs.global_transform = xf
 
 
 func _light(at: Vector3, col: Color, energy: float, rng: float, night_only: bool) -> OmniLight3D:
@@ -258,6 +299,7 @@ func _camp_fleurs() -> void:
 		var bw: Vector3 = _ground(bl.x, bl.y)
 		var yaw: float = -a6 + PI * 0.5
 		Kit.bus(b, Transform3D(Basis(Vector3.UP, yaw), bw), str(bu[2]), bool(bu[3]))
+		_col(Transform3D(Basis(Vector3.UP, yaw), bw + Basis(Vector3.UP, yaw) * Vector3(0, 1.6, 0)), Vector3(8.6, 3.0, 2.45))
 		if bool(bu[3]):
 			# un tapis sous l'auvent, deux poufs
 			var side: Vector3 = Basis(Vector3.UP, yaw) * Vector3(0, 0, 1)
@@ -300,11 +342,14 @@ func _rainville() -> void:
 		var gp: Vector3 = _ground(float(GARAGES[g][0]), float(GARAGES[g][1]))
 		var xf := Transform3D(Basis(Vector3.UP, -PI * 0.5), gp)
 		Kit.garage(b, xf, toles[g])
+		_col(xf * Transform3D(Basis(), Vector3(0, 1.7, 0)), Vector3(6.1, 3.4, 7.1))
 		_avoid.append([Vector2(gp.x, gp.z), 5.5])
 		var front: Vector3 = gp + Vector3(-5.0, 0, 0)
 		front.y = ile.height(front.x, front.z)
 		Kit.amp(b, Transform3D(Basis(Vector3.UP, -PI * 0.5 + 0.3), front + Vector3(0, 0, -2.0)), 2 if g != 1 else 1, g == 2)
-		Kit.couch(b, Transform3D(Basis(Vector3.UP, -PI * 0.5 - 0.15), front + Vector3(-1.0, 0, 1.5)), "toile_canape" if g % 2 == 0 else "toile_canape_2")
+		if g != 0:
+			Kit.couch(b, Transform3D(Basis(Vector3.UP, -PI * 0.5 - 0.15), front + Vector3(-1.0, 0, 1.5)), "toile_canape" if g % 2 == 0 else "toile_canape_2")
+			_col(Transform3D(Basis(Vector3.UP, -PI * 0.5 - 0.15), front + Vector3(-1.0, 0.25, 1.5)), Vector3(2.0, 0.5, 0.9))
 		if g == 1:
 			_ampli_at = front + Vector3(0, 0, -2.0)
 		# une enseigne au néon au-dessus du volet
@@ -312,6 +357,8 @@ func _rainville() -> void:
 	# --- la rampe de skate, au coin sud-ouest
 	var rp: Vector3 = _ground(42.0, 27.0)
 	Kit.ramp(b, Transform3D(Basis(Vector3.UP, PI * 0.25), rp))
+	_col(Transform3D(Basis(Vector3.UP, PI * 0.25), rp) * Transform3D(Basis(Vector3.RIGHT, 0.75), Vector3(0, 1.0, 1.0)), Vector3(5.0, 0.3, 3.2))
+	_col(Transform3D(Basis(Vector3.UP, PI * 0.25), rp) * Transform3D(Basis(), Vector3(0, 1.2, -0.4)), Vector3(5.0, 2.4, 0.9))
 	_avoid.append([Vector2(rp.x, rp.z), 5.0])
 	# --- les réverbères de la rue (des lanternes au bout de grands poteaux) et les guirlandes
 	var lamps: Array = []
@@ -431,6 +478,12 @@ func _festival() -> void:
 	var o := Vector3(sc.x, sy, sc.z)
 	# --- le plancher de la scène, sa jupe noire, les escaliers de côté
 	b.box("planches", Transform3D(Basis(), o + Vector3(0, H - 0.06, 0)), Vector3(W, 0.12, D))
+	# (V92 : on peut monter sur la scène : le plancher, les deux escaliers, les murs d'enceintes)
+	_col(Transform3D(Basis(), o + Vector3(0, (H - 0.6) * 0.5, 0)), Vector3(W, H + 0.6, D))
+	for sxc in [-1.0, 1.0]:
+		var stair := Transform3D(Basis(Vector3.BACK, sxc * -0.74), o + Vector3(sxc * (W * 0.5 + 0.85), H * 0.5 - 0.15, D * 0.25))
+		_col(stair, Vector3(2.4, 0.3, 1.8))
+		_col(Transform3D(Basis(), o + Vector3(sxc * (W * 0.5 + 2.0), 1.6, D * 0.5 - 1.4)), Vector3(1.8, 3.4, 1.9))
 	b.box("toile_noire", Transform3D(Basis(), o + Vector3(0, (H - 0.12) * 0.5 - 0.3, D * 0.5 - 0.02)), Vector3(W, H - 0.12 + 0.6, 0.04))
 	for sx in [-1.0, 1.0]:
 		b.box("toile_noire", Transform3D(Basis(), o + Vector3(sx * W * 0.5, (H - 0.12) * 0.5 - 0.3, 0)), Vector3(0.04, H - 0.12 + 0.6, D))
@@ -480,6 +533,7 @@ func _festival() -> void:
 			b.tube("chrome", reg + Vector3(rx, 0, rz), reg + Vector3(rx, 2.4, rz), 0.035, 6)
 	b.box("toile_rayee", Transform3D(Basis(), reg + Vector3(0, 2.45, 0)), Vector3(4.0, 0.05, 3.4))
 	b.box("planches_gris", Transform3D(Basis(), reg + Vector3(0, 0.45, 0)), Vector3(2.6, 0.9, 1.0))
+	_col(Transform3D(Basis(), reg + Vector3(0, 0.5, 0)), Vector3(2.6, 1.0, 1.0))
 	b.box("vinyle", Transform3D(Basis(Vector3.RIGHT, 0.25), reg + Vector3(0, 0.98, 0)), Vector3(1.8, 0.1, 0.8))
 	_avoid.append([Vector2(reg.x, reg.z), 3.5])
 	# --- l'arche d'entrée, sur le chemin de la plage
@@ -675,6 +729,7 @@ func _plage() -> void:
 	# le quatrième bus peint, garé au bord de la plage
 	var bp: Vector3 = _ground(-38.0, 88.0)
 	Kit.bus(b, Transform3D(Basis(Vector3.UP, 0.35), bp), "bus_3", true)
+	_col(Transform3D(Basis(Vector3.UP, 0.35), bp + Vector3.UP * 1.6), Vector3(8.6, 3.0, 2.45))
 	_avoid.append([Vector2(bp.x, bp.z), 6.0])
 	var sp: Vector3 = _ground(-8.0, 98.0)
 	b.box("bus_1", Transform3D(Basis(Vector3.RIGHT, 0.1), sp + Vector3.UP * 0.8), Vector3(0.5, 2.0, 0.07))
@@ -722,16 +777,7 @@ func _register_interactions() -> void:
 	if d == null:
 		return
 	_registered = true
-	for i in range(yourtes.size()):
-		var y: Dictionary = yourtes[i]
-		var nm: String = str(y["nom"])
-		var txt: String = "E : frapper à la porte"
-		if nm == "cafe":
-			txt = "E : entrer au Café Feedback"
-		elif nm == "disquaire":
-			txt = "E : entrer chez le Disquaire"
-		d._interactions.append({"id": "larsen_porte_%d" % i, "pos": y["door"], "radius": 1.6,
-			"text": txt, "vr": txt.replace("E :", "Gâchette :"), "call": _knock.bind(i)})
+	# (V92 : les portes des yourtes s'ouvrent : c'est maisons_v81 qui les tient)
 	for j in range(panneaux.size()):
 		var pn: Dictionary = panneaux[j]
 		d._interactions.append({"id": "larsen_panneau_%s" % str(pn["id"]), "pos": pn["at"], "radius": 2.2,
@@ -816,8 +862,12 @@ func _corde() -> void:
 	var first: bool = not bool(state.get("corde", false))
 	state["corde"] = true
 	sfx("ramasse_bois", _corde_at)
-	say("Tu tournes la manivelle du rouet : les fils de chanvre se tordent ensemble, serrés, serrés… et voilà une corde solide ! Le chanvre, ici, ça sert à ça : des cordes, des toiles, de la ficelle." if first
+	say("Tu tournes la manivelle du rouet : les fils de chanvre se tordent ensemble, serrés, serrés… et voilà une corde solide ! Le chanvre, ici, ça sert à ça : des cordes, des toiles, de la ficelle. Tu peux la garder." if first
 		else "Une corde de plus pour la Corderie. Il en faudra beaucoup pour tendre la toile du festival.", 7.0)
+	if first:
+		var inv: Node = main.get("inventory_v28")
+		if inv != null:
+			inv.add("corde_chanvre", 1)
 
 
 func say(text: String, seconds: float = 6.0) -> void:
@@ -985,7 +1035,7 @@ func trouvailles() -> Dictionary:
 		"larsen_scene": 1 if bool(vis.get("festival", false)) else 0, "larsen_chanvre": 1 if bool(vis.get("chanvre", false)) else 0,
 		"larsen_coquelicots": 1 if bool(vis.get("coquelicots", false)) else 0, "larsen_colline": 1 if bool(vis.get("colline", false)) else 0,
 		"larsen_djembe": 1 if int(state.get("djembe", 0)) >= 8 else 0, "larsen_ampli": 1 if bool(state.get("ampli", false)) else 0,
-		"larsen_corde": 1 if bool(state.get("corde", false)) else 0}
+		"larsen_corde": 1 if bool(state.get("corde", false)) else 0, "larsen_disque_rare": 1 if bool(state.get("disque_rare", false)) else 0}
 
 
 func serialize() -> Dictionary:
