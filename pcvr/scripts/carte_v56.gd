@@ -12,7 +12,7 @@ const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## (V59 : la carte s'étend à l'est jusqu'à la grande île)
 ## (V68 : au nord jusqu'à la Balafre ; V69 : à l'ouest jusqu'à l'Île des Trois Soleils ;
 ## V70 : au sud jusqu'à l'Île de Braise)
-const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 1960.0)
+const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 2760.0)   # V94 : jusqu'à Néopolis, au sud (z = 1800)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -90,6 +90,11 @@ const PLACES := [
 	["Le Camp des Fleurs", Vector2(-492, -776), "larsen_fleurs"],
 	["Rainville", Vector2(-370, -792), "larsen_rainville"],
 	["La Grande Scène", Vector2(-430, -812), "larsen_scene"],
+	["Néopolis", Vector2(300, 1400), "neo"],
+	["La Tour Axiome", Vector2(331, 1370), "neo_terrasse"],
+	["Le Marché de Nuit", Vector2(269, 1430), "neo_marche"],
+	["Les Ruelles", Vector2(180, 1490), "neo_ruelles"],
+	["Le Jardin Zen", Vector2(450, 1550), "neo_jardin"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],
@@ -132,7 +137,7 @@ func setup(main_node: Node, carnet_node: Node) -> void:
 
 func _tex_size() -> Vector2:
 	var t: Texture2D = _tex.get(mode, null)
-	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(2580, 1440) if mode == "archipel" else Vector2(960, 840))
+	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(2580, 2760) if mode == "archipel" else Vector2(960, 840))
 
 
 func set_mode(m: String) -> void:

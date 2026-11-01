@@ -142,6 +142,7 @@ func _ready() -> void:
 	_create_v87()
 	_create_v90()
 	_create_v91()
+	_create_v94()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -204,6 +205,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V91 : l'Île de Larsen (au nord-ouest, à l'ouest de l'Île aux Moaïs ; son carré ne touche aucune autre île)
 	if larsen_v91 != null and larsen_v91.ile != null and larsen_v91.ile.contains(x, z):
 		return maxf(h, larsen_v91.ile.height(x, z))
+	# V94 : Néopolis (au sud, entre le Boucan et Montjoie ; son carré ne touche aucune autre île)
+	if neo_v94 != null and neo_v94.ile != null and neo_v94.ile.contains(x, z):
+		return maxf(h, neo_v94.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1046,6 +1050,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			pixel_v90.load_data({})
 		if larsen_v91 != null and larsen_v91.ile != null:
 			larsen_v91.load_data({})
+		if neo_v94 != null and neo_v94.ile != null:
+			neo_v94.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1212,6 +1218,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and larsen_v91 != null and larsen_v91.ile != null:
 		var ladata91: Variant = SaveStore.read_slot(slot).get("larsen", {})
 		larsen_v91.load_data(ladata91 if ladata91 is Dictionary else {})
+	# V94 : Néopolis
+	if not new_game and neo_v94 != null and neo_v94.ile != null:
+		var nedata94: Variant = SaveStore.read_slot(slot).get("neo", {})
+		neo_v94.load_data(nedata94 if nedata94 is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1348,6 +1358,8 @@ func _save_slot(slot: int) -> bool:
 		extra["pixel"] = pixel_v90.serialize()
 	if larsen_v91 != null and larsen_v91.ile != null:
 		extra["larsen"] = larsen_v91.serialize()
+	if neo_v94 != null and neo_v94.ile != null:
+		extra["neo"] = neo_v94.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -2370,6 +2382,10 @@ func _respawn_v28() -> void:
 	if larsen_v91 != null and larsen_v91.ile != null and larsen_v91.owns_point(_player_pos_v27()):
 		larsen_v91.on_faint(_player_pos_v27())
 		return
+	# V94 : à Néopolis : au bout de la jetée, sur le Quai des Drones
+	if neo_v94 != null and neo_v94.ile != null and neo_v94.owns_point(_player_pos_v27()):
+		neo_v94.on_faint(_player_pos_v27())
+		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
 		boucan_v75.on_faint(_player_pos_v27())
@@ -2707,6 +2723,15 @@ func _create_jungle_v29() -> void:
 	larsen_v91.build_island()
 	var la_d: Array = larsen_v91.dock()
 	boat_v29._make_dock("Ponton_larsen", la_d[0], la_d[1])
+	# V94 : Néopolis, au sud : la ville cyberpunk (la dalle et ses quais d'abord ; les tours, les rues,
+	# le monorail et les voitures volantes après l'heure du jour, voir _create_v94).
+	neo_v94 = preload("res://scripts/neo_v94.gd").new()
+	neo_v94.name = "Neo_v94"
+	add_child(neo_v94)
+	neo_v94.setup(self)
+	neo_v94.build_island()
+	var ne_d: Array = neo_v94.dock()
+	boat_v29._make_dock("Ponton_neo", ne_d[0], ne_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2773,6 +2798,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V91 : l'Île de Larsen : la terre ferme
 	if larsen_v91 != null and larsen_v91.contains(p):
 		if larsen_v91.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
+	if neo_v94 != null and neo_v94.contains(p):
+		if neo_v94.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3338,7 +3371,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3562,6 +3595,7 @@ var astralys_v76: Node3D                   # V76 : Astralys, l'île flottante de
 var moai_v87: Node3D                       # V87 : l'Île aux Moaïs
 var pixel_v90: Node3D                      # V90 : l'Île Pixelithique
 var larsen_v91: Node3D                     # V91 : l'Île de Larsen (la ville de yourtes)
+var neo_v94: Node3D                        # V94 : Néopolis (la ville cyberpunk)
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
 var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
@@ -3851,6 +3885,16 @@ func _create_v91() -> void:
 		larsen_v91.register_services(journal_v56)
 
 
+## V94 : Néopolis (les tours, les rues, la Tour Axiome, le Marché de Nuit, le monorail, les voitures
+## volantes) ; la jetée et son ponton sont posés avec la dalle.
+func _create_v94() -> void:
+	if neo_v94 == null:
+		return
+	neo_v94.build_town()
+	if journal_v56 != null:
+		neo_v94.register_services(journal_v56)
+
+
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
 ## enquête des Quatre Sceaux dans les quatre villages, le donjon sous le Cœur-de-Pierre.
 ## V65 : les histoires des habitants (chargées une fois) et leurs bavardages.
@@ -4051,6 +4095,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(pixel_v90.ile.CENTER.x, pixel_v90.ile.CENTER.z), pixel_v90.ile.HALF])
 	if larsen_v91 != null and larsen_v91.ile != null:
 		boxes.append([Vector2(larsen_v91.ile.CENTER.x, larsen_v91.ile.CENTER.z), larsen_v91.ile.HALF])
+	if neo_v94 != null and neo_v94.ile != null:
+		boxes.append([Vector2(neo_v94.ile.CENTER.x, neo_v94.ile.CENTER.z), neo_v94.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

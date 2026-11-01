@@ -304,3 +304,19 @@ les outils de la V75 (cordes de Karplus-Strong, ampli simulé, batterie et tambo
 la flûte, le glockenspiel de la banque VSCO-2 CE (Versilian Studios, CC0) :
   musique/camp_des_fleurs.ogg (« Le Camp des Fleurs », guitares acoustiques, flûte),
   musique/rainville.ogg (« Rainville », grunge : couplets calmes, refrains saturés).
+
+Le Festival du Larsen (V93) —
+Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v93.py :
+  sfx/artifice_sifflet_1..2, sfx/artifice_boum_1..3 (le feu d'artifice de 23 heures)
+Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v93.py :
+  musique/festival_larsen.ogg (« Le Soleil et la Pluie »).
+
+Néopolis (V94) —
+Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v94.py :
+  ambiance/neopolis (la rumeur de la ville, les voitures volantes au loin, le monorail, une annonce),
+  ambiance/marche_nuit (le Marché de Nuit : des voix sans mots, les woks, les bols),
+  sfx/voiture_volante_1..2, sfx/monorail_1, sfx/ascenseur_tour_1, sfx/distributeur_1..2, sfx/robot_nouilles_1..2,
+  sfx/arcade_1..3, sfx/hologramme_1
+Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v94.py (synthétiseurs
+calculés, batterie de la VCSL, CC0) :
+  musique/neopolis.ogg (« Néopolis, la nuit »).

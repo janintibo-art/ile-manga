@@ -1267,6 +1267,11 @@ const AVENTURES := [
 		"etapes": [["larsen", "Accoster sur l'Île de Larsen"], ["larsen_fleurs", "Entrer au Camp des Fleurs"], ["larsen_rainville", "Marcher sous la pluie de Rainville"],
 			["larsen_ampli", "Faire siffler l'ampli (l'effet Larsen)"], ["larsen_paix", "Réconcilier Mamie Tournesol et Mère Averse"],
 			["festival_larsen", "Danser au Festival du Larsen"], ["larsen_artifice", "Voir le feu d'artifice de 23 heures"]]},
+	{"id": "neo", "titre": "Néopolis, la ville qui ne dort jamais", "lieu": "Néopolis, au sud de l'archipel", "debut": "neo",
+		"etapes": [["neo", "Accoster à Néopolis, sur le Quai des Drones"], ["neo_place", "Voir nager les carpes de la Place des Hologrammes"],
+			["neo_terrasse", "Monter à la Terrasse du Ciel, en haut de la Tour Axiome"], ["neo_nouilles", "Goûter le néo-ramen du robot du Marché de Nuit"],
+			["neo_monorail", "Faire le tour de la ville en monorail (les quatre stations)"], ["neo_arcade", "Battre son record à Dragon-Pixel"],
+			["neo_jardin", "Trouver le calme au Jardin Zen"]]},
 	{"id": "ailes", "titre": "Les Ailes de Philibert", "lieu": "Cliquetis, puis le ciel", "debut": "atelier_ailes",
 		"etapes": [["aeronef_1", "L'Alouette, le deltaplane de Philibert (à l'Atelier des Ailes, à l'ouest de Cliquetis)"], ["aeronef_2", "L'Alouette à hélice"], ["aeronef_3", "L'Albatros, le petit aéronef"],
 			["vol_haut", "Voler à plus de 250 m"], ["aeronef_4", "Le Glisseur stellaire des Lumens (Ionie, au Spatioport d'Astralys)"]]},
@@ -1946,6 +1951,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.pixel_v90.place_name(p))
 	if main.get("larsen_v91") != null and main.larsen_v91 != null and main.larsen_v91.ile != null and main.larsen_v91.owns_point(p):
 		return str(main.larsen_v91.place_name(p))
+	if main.get("neo_v94") != null and main.neo_v94 != null and main.neo_v94.ile != null and main.neo_v94.owns_point(p):
+		return str(main.neo_v94.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

@@ -194,6 +194,17 @@ const LISTE := {
 	"larsen_ampli": ["L'effet Larsen", "larsen", 25],
 	"larsen_corde": ["Une corde de chanvre", "larsen", 20],
 	"larsen_disque_rare": ["Le disque des deux villages", "larsen", 30],
+	"neo": ["Néopolis", "neo", 20],
+	"neo_place": ["La Place des Hologrammes", "neo", 20],
+	"neo_terrasse": ["La Terrasse du Ciel", "neo", 25],
+	"neo_marche": ["Le Marché de Nuit", "neo", 15],
+	"neo_ruelles": ["Les Ruelles", "neo", 15],
+	"neo_hauts": ["Les Hauts", "neo", 15],
+	"neo_jardin": ["Le Jardin Zen", "neo", 20],
+	"neo_monorail": ["Le tour de la ville en monorail", "neo", 25],
+	"neo_arcade": ["Un record à Dragon-Pixel", "neo", 25],
+	"neo_soda": ["Un Synthé-Soda", "neo", 10],
+	"neo_nouilles": ["Le néo-ramen du robot", "neo", 15],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -253,7 +264,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {

@@ -94,9 +94,10 @@ def archipel(src: Path) -> None:
     # V68 : 900 x 720 (jusqu'à l'Île de la Balafre, au nord) : la carte commence à z = -960
     # V69 : 1290 x 720 (à l'ouest, jusqu'à l'Île des Trois Soleils) : la carte commence à x = -1320
     # V70 : 1290 x 980 (au sud, jusqu'à l'Île de Braise) : la carte va jusqu'à z = 1000
-    rows = 980 if raw.size == 1290 * 980 else (720 if raw.size in (900 * 720, 1290 * 720) else 540)
-    cols = 1290 if raw.size in (1290 * 720, 1290 * 980) else (900 if raw.size in (900 * 540, 900 * 720) else 540)
-    OZ = 960 if rows in (720, 980) else 600
+    # V94 : 1290 x 1380 (plus au sud, jusqu'à Néopolis) : la carte va jusqu'à z = 1800
+    rows = 1380 if raw.size == 1290 * 1380 else (980 if raw.size == 1290 * 980 else (720 if raw.size in (900 * 720, 1290 * 720) else 540))
+    cols = 1290 if raw.size in (1290 * 720, 1290 * 980, 1290 * 1380) else (900 if raw.size in (900 * 540, 900 * 720) else 540)
+    OZ = 960 if rows in (720, 980, 1380) else 600
     OX = 1320 if cols == 1290 else 540
     h = raw.reshape(rows, cols)
     W, H = cols * 2, rows * 2
@@ -125,7 +126,7 @@ def archipel(src: Path) -> None:
     lands = ramp(hl, [(0, (232, 214, 160)), (0.9, (230, 212, 160)), (1.1, (222, 210, 186)), (1.6, (214, 206, 176)), (4, (160, 182, 110)), (14, (118, 152, 86)), (30, (104, 128, 76)),
                       (55, (140, 120, 90)), (85, (128, 108, 96)), (115, (176, 170, 168)), (140, (242, 240, 236))])
     # V70 : l'Île de Braise, terre volcanique : sable noir, cendres, mousses rousses, basalte
-    if rows == 980:
+    if rows >= 980:
         yy, xx = np.mgrid[0:H, 0:W]
         brz = np.hypot(xx - (-870.0 + OX), yy - (600.0 + OZ)) < 410.0
         lb = ramp(hl, [(0, (96, 90, 86)), (1.2, (92, 86, 82)), (3, (120, 98, 78)), (12, (128, 96, 72)), (30, (112, 84, 66)),
@@ -444,7 +445,7 @@ def archipel(src: Path) -> None:
     # rempart, la Haute-Ville, le Cercle de Feu, la Citadelle, les maisons) ; l'arène ; le port ;
     # les sources de soufre ; les Ruines
     bj = src / "braise.json"
-    if OX > 540 and rows == 980 and bj.exists():
+    if OX > 540 and rows >= 980 and bj.exists():
         Bd = json.loads(bj.read_text())
 
         def bw(x, z):
@@ -491,7 +492,7 @@ def archipel(src: Path) -> None:
     # Château, les maisons), le Lac des Grenouilles, les Champs du Sud, le Bois des Lutins, le port,
     # le moulin, la tour en ruine du donjon (bake71.gd écrit montjoie.json)
     mjf = src / "montjoie.json"
-    if OX > 540 and rows == 980 and mjf.exists():
+    if OX > 540 and rows >= 980 and mjf.exists():
         Md = json.loads(mjf.read_text())
 
         def mw(x, z):
@@ -544,7 +545,7 @@ def archipel(src: Path) -> None:
     # Bassin, le cargo échoué, la Cathédrale des Spores dans son gazomètre et le Bois des Spores,
     # l'Usine Grise, la Casse, le Phare tagué (bake75.gd écrit boucan.json)
     bof = src / "boucan.json"
-    if OX > 540 and rows == 980 and bof.exists():
+    if OX > 540 and rows >= 980 and bof.exists():
         Bo = json.loads(bof.read_text())
 
         def bw2(x, z):
@@ -597,8 +598,52 @@ def archipel(src: Path) -> None:
         d.ellipse((fx - 6, fz - 6, fx + 6, fz + 6), fill=(240, 236, 226, 255), outline=(200, 50, 50, 255), width=3)
 
     # V76 : Astralys, la grande île flottante des Lumens (au nord-ouest), sa bouée d'accueil
-    if OX > 540 and rows == 980:
+    if OX > 540 and rows >= 980:
         _astralys(im, OX, OZ)
+
+    # V94 : Néopolis, la ville cyberpunk (au sud) : la dalle de béton, le quadrillage des rues, les
+    # tours (plus sombres quand elles sont hautes), la Place des Hologrammes, la boucle du monorail,
+    # le Jardin Zen (bake94.gd écrit neo.json)
+    nf = src / "neo.json"
+    if OX > 540 and rows >= 1380 and nf.exists():
+        Ne = json.loads(nf.read_text())
+        cxn, czn = Ne["centre"]
+
+        def nw(x, z):
+            return (x + OX, z + OZ)
+
+        x0, z0 = nw(cxn - 236, czn - 236)
+        dalle = np.zeros((H, W), bool)
+        yy, xx = np.mgrid[0:H, 0:W]
+        dalle = ((np.abs(xx - (cxn + OX)) ** 4 + np.abs(yy - (czn + OZ)) ** 4) ** 0.25 < 234.0) & land
+        im.paste((150, 150, 156, 255), (0, 0), Image.fromarray((dalle * 255).astype(np.uint8)))
+        edge = dalle ^ ndimage.binary_erosion(dalle, iterations=2)
+        im.paste((70, 70, 78, 255), (0, 0), Image.fromarray((edge * 255).astype(np.uint8)))
+        A, P = Ne["anneau"], Ne["pas"]
+        for k in range(-3, 4):
+            w = 12 if k == 0 else 8
+            a = nw(cxn + k * P, czn - A)
+            b = nw(cxn + k * P, czn + A)
+            d.line([a, b], fill=(96, 96, 104, 255), width=w)
+            a = nw(cxn - A, czn + k * P)
+            b = nw(cxn + A, czn + k * P)
+            d.line([a, b], fill=(96, 96, 104, 255), width=w)
+        for t in Ne["tours"]:
+            hh = min(t[4] / 180.0, 1.0)
+            c = (int(120 - 60 * hh), int(124 - 60 * hh), int(140 - 50 * hh), 255)
+            d.rectangle((nw(t[0], t[1]), nw(t[2], t[3])), fill=c, outline=(40, 40, 52, 255))
+        px_, pz_ = nw(*Ne["place"])
+        d.ellipse((px_ - 20, pz_ - 20, px_ + 20, pz_ + 20), fill=(170, 220, 235, 255), outline=(60, 180, 220, 255), width=3)
+        tx, tz = nw(cxn + 31.25, czn - 30.0)
+        d.rectangle((tx - 14, tz - 14, tx + 14, tz + 14), fill=(30, 50, 70, 255), outline=(90, 220, 255, 255), width=3)
+        jx0, jz0 = nw(cxn + 127, czn + 127)
+        d.rectangle((jx0, jz0, jx0 + 46, jz0 + 46), fill=(200, 196, 186, 255), outline=(120, 110, 100, 255))
+        rng94 = np.random.default_rng(9494)
+        for k in range(10):
+            x, z = jx0 + rng94.uniform(6, 40), jz0 + rng94.uniform(6, 40)
+            d.ellipse((x - 4, z - 4, x + 4, z + 4), fill=(240, 170, 200, 255))
+        R, rc = Ne["rail"], Ne["rail_rc"]
+        d.rounded_rectangle((nw(cxn - R, czn - R), nw(cxn + R, czn + R)), radius=rc, outline=(230, 236, 245, 255), width=3)
 
     # quadrillage léger
     for g in range(0, W, 120):

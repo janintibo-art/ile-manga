@@ -87,9 +87,10 @@ const COFFRE_BUTIN := {
 	"azur": [[15, 26], ["croissant", "punch_coco", "coquillage", "biere_naine"]],
 	"grande": [[20, 35], ["cidre_carene", "dattes", "rhum_murene", "galette_sarrasin", "pain_carotte"]],
 	"larsen": [[14, 26], ["tisane_lune", "chocolat_chaud", "pain_miel", "baies", "corde_chanvre"]],
+	"neo": [[20, 34], ["soda_neon", "nouilles_neo", "jus_pomme", "the_menthe"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [
@@ -103,6 +104,7 @@ const ILES := [
 	["moai", Vector3(-30, 0, -790), 190.0],
 	["pixel", Vector3(1000, 0, -750), 180.0],
 	["larsen", Vector3(-430, 0, -790), 150.0],
+	["neo", Vector3(300, 0, 1400), 250.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -119,6 +121,7 @@ const MANGER := {
 	"moai": ["noix_coco", "baies", "pomme"],
 	"pixel": ["galette_fougere", "baies", "champignon"],
 	"larsen": ["pomme", "baies", "pain_miel"],
+	"neo": ["nouilles_neo", "pomme"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
@@ -132,6 +135,7 @@ const BOIRE := {
 	"moai": "noix_coco",
 	"pixel": "noix_coco",
 	"larsen": "tisane_lune",
+	"neo": "soda_neon",
 }
 
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]
@@ -144,7 +148,7 @@ const BOISSONS := {
 	"biere_heqet": [0.3, ""], "cacao": [-0.4, "cafe"],
 	"grog_soufre": [0.0, ""], "cafe_brasier": [-0.5, "cafe"], "lave_glacee": [0.0, ""],
 	"cidre_montjoie": [0.0, ""], "jus_pomme": [0.0, ""],
-	"limonade_boucan": [0.0, ""], "sirop_menthe": [-0.2, ""],
+	"limonade_boucan": [0.0, ""], "soda_neon": [0.0, ""], "sirop_menthe": [-0.2, ""],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde

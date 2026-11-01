@@ -25,6 +25,7 @@ const BEDS := {
 	"souk": "ambiance/souk", "criee": "ambiance/criee", "atelier": "ambiance/atelier",
 	"ramure": "ambiance/ramure",
 	"pluie": "ambiance/pluie", "camp_fleurs": "ambiance/camp_fleurs",
+	"neopolis": "ambiance/neopolis", "marche_nuit": "ambiance/marche_nuit",
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
@@ -56,6 +57,7 @@ const BED_DB := {
 	"boucan_jour": -13.0, "boucan_nuit": -13.0, "halle_hurlante": -12.0, "spores": -12.0, "casse": -13.0, "usine": -11.0, "port_boucan": -12.0,
 	"astralys_jour": -12.0, "astralys_nuit": -12.0, "spatioport": -12.0, "serre_especes": -12.0, "chantier_naval": -12.0,
 	"pluie": -11.0, "camp_fleurs": -12.0,
+	"neopolis": -11.0, "marche_nuit": -12.0,
 }
 
 var main: Node
@@ -473,6 +475,29 @@ func _choose_zone(running: bool) -> void:
 		if las.in_rain(p) and la_zone != "rainville":
 			targets["pluie"] = 0.6
 		_night_beds()
+		return
+	# V94 : Néopolis (la rumeur de la ville, le marché, le jardin, le quai ; la pluie du soir)
+	var nes: Node = main.get("neo_v94")
+	var ne_zone: String = nes.zone_at(p) if nes != null and nes.get("ile") != null and nes.ile != null and not on_ferry else ""
+	if ne_zone != "" and not on_boat:
+		zone = "ne_" + ne_zone
+		match ne_zone:
+			"marche":
+				targets["marche_nuit"] = 1.0
+				targets["neopolis"] = 0.5
+			"jardin":
+				targets["brise"] = 0.5
+				targets["neopolis"] = 0.25
+			"terrasse":
+				targets["vent_vol"] = 0.7
+				targets["neopolis"] = 0.35
+			"port", "front_de_mer":
+				targets["ressac"] = 0.7
+				targets["neopolis"] = 0.6
+			_:
+				targets["neopolis"] = 1.0
+		if nes.is_raining() and ne_zone != "terrasse":
+			targets["pluie"] = 0.55
 		return
 	# V75 : l'Île du Boucan (Port-Boucan, la Halle Hurlante, la Cathédrale des Spores, la Casse, l'usine)
 	var bos: Node = main.get("boucan_v75")

@@ -77,6 +77,8 @@ const DB := {
 	"djembe": -4.0, "carillon": -6.0, "larsen": -8.0,
 	# V93 : le Festival du Larsen (le feu d'artifice)
 	"artifice_sifflet": -10.0, "artifice_boum": -4.0,
+	# V94 : Néopolis (les voitures volantes, le monorail, l'ascenseur, les distributeurs, le robot, l'arcade, les hologrammes)
+	"voiture_volante": -6.0, "monorail": -6.0, "ascenseur_tour": -6.0, "distributeur": -5.0, "robot_nouilles": -6.0, "arcade": -7.0, "hologramme": -7.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 
