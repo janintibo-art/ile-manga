@@ -18,6 +18,7 @@ const Decor = preload("res://scripts/decor_v53.gd")
 const FLORE := "res://scripts/larsen_flore_v91.gd"
 const Ville = preload("res://scripts/larsen_ville_v92.gd")
 const AzurKit = preload("res://scripts/azur_kit_v56.gd")
+const Festival = preload("res://scripts/larsen_festival_v93.gd")
 
 const PLACES := {"plage": "la Plage du Larsen", "festival": "la Prairie du Festival", "fleurs": "le Camp des Fleurs",
 	"rainville": "Rainville", "chanvre": "les champs de chanvre", "coquelicots": "les champs de coquelicots",
@@ -78,6 +79,8 @@ var main: Node
 var ile: Node3D
 var flore: Node3D
 var ville: Node3D                         # V92 : les rues, les lieux, les habitants
+var fest: Node3D                          # V93 : le Festival du Larsen
+var scene_labels: Array = []              # V93 : les lettres peintes au fond de la scène
 var pc: bool = true
 var state: Dictionary = {}
 var objets: Dictionary = {}               # lieux pour le carnet (nom -> Vector3 monde)
@@ -109,7 +112,8 @@ func setup(main_node: Node) -> void:
 
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "toc": 0, "djembe": 0, "carillon": 0, "ampli": false, "corde": false,
-		"arbre": false, "panneaux": {}, "soleil_pluie": false, "disque_rare": false, "bouquet": false, "parapluie": false}
+		"arbre": false, "panneaux": {}, "soleil_pluie": false, "disque_rare": false, "bouquet": false, "parapluie": false,
+		"festival": false, "festival_toile": false, "festival_vu": false, "artifice": false, "concerts": 0}
 
 
 # =================================================================== construction
@@ -150,6 +154,11 @@ func build_town() -> void:
 	add_child(ville)
 	ville.setup(main, self)
 	ville.build()
+	# V93 : le Festival du Larsen (la toile, les projecteurs, le public, le feu d'artifice)
+	fest = Festival.new()
+	add_child(fest)
+	fest.setup(self)
+	fest.build()
 	objets["plage"] = _ground(14.0, 96.0)
 	objets["scene"] = _ground(SCENE.x, SCENE.y + 12.0)
 	objets["fleurs"] = _ground(-62.0 + 6.0, 14.0)
@@ -167,7 +176,24 @@ func build_town() -> void:
 			var pp: Vector3 = (y["door"] as Vector3) + side * 1.1
 			pp.y = ile.height(pp.x, pp.z) + 0.05
 			objets["parapluie"] = pp
+	# V93 : la quête du festival (le rouleau de cordes près du rouet de Galet, la toile roulée près du
+	# métier à tisser de Lune)
+	if _corde_at != Vector3.ZERO:
+		var cp: Vector3 = _corde_at + Vector3(1.4, 0, 0.8)
+		cp.y = ile.height(cp.x, cp.z) + 0.05
+		objets["cordes"] = cp
+	var tis: Dictionary = ville.spot("tissage")
+	if not tis.is_empty():
+		var side2: Vector3 = (tis["face"] as Vector3).cross(Vector3.UP).normalized()
+		var tp: Vector3 = (tis["pos"] as Vector3) + side2 * 1.3
+		tp.y = ile.height(tp.x, tp.z) + 0.05
+		objets["toile"] = tp
 	print("ILE_MANGA_V91: l'Île de Larsen est prête (%d yourtes, %d ms)" % [yourtes.size(), Time.get_ticks_msec() - t0])
+
+
+## V93 : la Grande Scène (repère de l'île).
+func scene_xz() -> Vector2:
+	return SCENE
 
 
 func _ground(x: float, z: float) -> Vector3:
@@ -526,6 +552,7 @@ func _festival() -> void:
 	var lbl2: Label3D = Kit.label(self, "~ la Grande Scène ~", o + Vector3(0, H + (TH - H) * 0.42, -D * 0.5 + 0.75), Vector3(0, 0, 1), 0.02, Color(0.95, 0.95, 0.9))
 	lbl2.outline_size = 8
 	lbl2.outline_modulate = Color(0.1, 0.2, 0.4)
+	scene_labels = [lbl, lbl2]
 	# --- la régie, au milieu de la prairie (une tente rayée, une table, la console)
 	var reg: Vector3 = _ground(0.0, 14.0)
 	for rx in [-1.8, 1.8]:
@@ -754,7 +781,7 @@ func _panneaux() -> void:
 		lb.font_size = 40
 		lb.width = 620.0
 		lb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		panneaux.append({"id": str(e[0]), "at": at + face * 1.0, "texte": str(e[4]).replace("\n", " ")})
+		panneaux.append({"id": str(e[0]), "at": at + face * 1.0, "texte": str(e[4]).replace("\n", " "), "label": lb})
 	b.commit(self, "Panneaux_larsen")
 
 
@@ -910,6 +937,8 @@ func owns_point(p: Vector3) -> bool:
 func zone_at(p: Vector3) -> String:
 	if not contains(p):
 		return ""
+	if fest != null and fest.on and fest.near(p) and Vector2(p.x - fest.o.x, p.z - fest.o.z).length() < 60.0:
+		return "festival_concert"
 	var l: Vector2 = IleScript.L(p.x, p.z)
 	for k in ["festival", "fleurs", "rainville"]:
 		var pd: Array = IleScript.PADS[k]
@@ -999,7 +1028,10 @@ func _process(delta: float) -> void:
 		(e[0] as OmniLight3D).visible = night
 	var lampe: StandardMaterial3D = Kit.mat("lampe")
 	lampe.emission_energy_multiplier = 2.4 if night else 0.35
+	_panneau_festival()
 	var z: String = zone_at(p)
+	if z == "festival_concert":
+		z = "festival"
 	var vis: Dictionary = state["visites"]
 	if z in ["fleurs", "rainville", "festival", "chanvre", "coquelicots", "colline", "corderie", "mare", "bois"] and not bool(vis.get(z, false)):
 		vis[z] = true
@@ -1028,9 +1060,25 @@ func _process(delta: float) -> void:
 		(mer._underside as Node3D).global_position = Vector3(snappedf(p.x, 40.0), (mer._underside as Node3D).global_position.y, snappedf(p.z, 40.0))
 
 
+## V93 : le panneau de la prairie annonce le festival, quand il est rallumé.
+func _panneau_festival() -> void:
+	if fest == null or not fest.pret():
+		return
+	for pn in panneaux:
+		if str(pn["id"]) == "scene" and not bool(pn.get("festival", false)):
+			pn["festival"] = true
+			var txt := "Festival du Larsen\nChaque soir à 20 h 30 : « Le Soleil et la Pluie »,\nles deux villages sur la Grande Scène !\nFeu d'artifice à 23 h."
+			if pn.get("label") != null and is_instance_valid(pn["label"]):
+				(pn["label"] as Label3D).text = txt
+			pn["texte"] = txt.replace("\n", " ")
+
+
 func trouvailles() -> Dictionary:
 	var vis: Dictionary = state.get("visites", {})
-	return {"larsen": 1 if bool(state.get("visite", false)) else 0,
+	var j: Node = main.get("journal_v56") if main != null else null
+	return {"festival_larsen": 1 if bool(state.get("festival_vu", false)) else 0, "larsen_artifice": 1 if bool(state.get("artifice", false)) else 0,
+		"larsen_paix": 1 if j != null and str(j.state("la_soleil_pluie")) == "finie" else 0,
+		"larsen": 1 if bool(state.get("visite", false)) else 0,
 		"larsen_fleurs": 1 if bool(vis.get("fleurs", false)) else 0, "larsen_rainville": 1 if bool(vis.get("rainville", false)) else 0,
 		"larsen_scene": 1 if bool(vis.get("festival", false)) else 0, "larsen_chanvre": 1 if bool(vis.get("chanvre", false)) else 0,
 		"larsen_coquelicots": 1 if bool(vis.get("coquelicots", false)) else 0, "larsen_colline": 1 if bool(vis.get("colline", false)) else 0,

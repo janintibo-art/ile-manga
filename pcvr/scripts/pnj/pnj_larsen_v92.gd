@@ -10,6 +10,15 @@ var _larsen: Dictionary = {}
 var _couronne: Node3D
 
 
+## V93 : pendant le Festival du Larsen, chacun a sa place (sur scène ou dans le public).
+func _slot_target(i: int) -> String:
+	if azur != null and azur.has_method("festival_spot"):
+		var fs: String = azur.festival_spot(self)
+		if fs != "":
+			return fs
+	return super._slot_target(i)
+
+
 func setup_azur(manager: Node, data: Dictionary) -> void:
 	super.setup_azur(manager, data)
 	larsen_props(data.get("larsen", {}))

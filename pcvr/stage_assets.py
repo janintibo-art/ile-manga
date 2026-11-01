@@ -258,8 +258,9 @@ def main() -> int:
     # V56 : Port-Azur (textures de la ville), la carte, les portraits, toutes les icônes d'objets
     # V58 : le royaume des fées et Yggdrasil (textures/fees)
     # V63 : la grande enquête et le donjon du Cœur-de-Pierre (textures/coeur)
+    # V93 : la toile peinte de la Grande Scène de Larsen (textures/larsen)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen"):
         d = source / folder
         if not d.is_dir():
             continue

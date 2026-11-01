@@ -348,6 +348,11 @@ const ITEMS := {
 		"desc": "Trois grands tournesols du jardin de Mamie Tournesol, noués d'un ruban jaune. Ils tournent la tête vers toi, comme vers le soleil."},
 	"parapluie_rainville": {"name": "Parapluie aux tournesols", "art": "le parapluie aux tournesols", "kind": "quete", "sorte": "Objet de quête : Île de Larsen", "max": 1,
 		"desc": "Un parapluie noir, comme tous ceux de Rainville… mais dessous, quand on l'ouvre, il y a des tournesols peints. Mère Averse l'a fait il y a cinquante ans, pour sa meilleure amie."},
+	# V93 : le Festival du Larsen
+	"cordes_scene": {"name": "Rouleau de cordes de Galet", "art": "le rouleau de cordes de Galet", "kind": "quete", "sorte": "Objet de quête : Île de Larsen", "max": 1,
+		"desc": "Cinq cents mètres de corde de chanvre, enroulés serré. Chaque bout est fermé par un drôle de nœud : le nœud d'amitié, dit Galet. Plus on tire, plus ça tient."},
+	"toile_scene": {"name": "Toile de la Grande Scène", "art": "la toile de la Grande Scène", "kind": "quete", "sorte": "Objet de quête : Île de Larsen", "max": 1,
+		"desc": "La grande toile que Lune a mis trois ans à tisser, roulée comme un tapis. Dedans, on devine un soleil, un nuage et un arc-en-ciel. Elle est lourde comme un âne qui dort."},
 	"corde_chanvre": {"name": "Corde de chanvre", "art": "une corde de chanvre", "kind": "curiosite", "sorte": "Curiosité de Larsen", "max": 5,
 		"desc": "Une corde solide, tordue à la main à la Corderie de Galet, avec le chanvre des champs de l'île. Elle sent la paille et le soleil.",
 		"effet": "Tu fais un nœud de marin, comme Galet. Puis tu le défais. Puis tu le refais. C'est étrangement apaisant."},
@@ -1660,6 +1665,16 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.08, 0.08, 0.015, 14), jaune, Vector3(dx * 2.2, 0.5, 0.02), Vector3(70, 0, -12.0 + k * 12.0))
 			_part(m, _cyl(0.04, 0.04, 0.02, 12), brun, Vector3(dx * 2.2, 0.505, 0.025), Vector3(70, 0, -12.0 + k * 12.0))
 		_part(m, _cyl(0.025, 0.025, 0.04, 10), _mat("ruban_jaune", Color(0.98, 0.9, 0.3), 0.6), Vector3(0, 0.12, 0))
+	elif id == "cordes_scene":
+		var chanvre := _mat("corde_chanvre_m", Color(0.72, 0.58, 0.36), 0.95)
+		for k in range(5):
+			_part(m, _cyl(0.17 - k * 0.022, 0.17 - k * 0.022, 0.05, 16), chanvre, Vector3(0, 0.03 + k * 0.05, 0))
+		_part(m, _cyl(0.05, 0.05, 0.26, 10), _mat("corde_coeur", Color(0.5, 0.38, 0.22), 0.9), Vector3(0, 0.13, 0))
+	elif id == "toile_scene":
+		var rouleau := _mat("toile_rouleau", Color(0.88, 0.8, 0.6), 0.9)
+		_part(m, _cyl(0.11, 0.11, 1.1, 14), rouleau, Vector3(0, 0.11, 0), Vector3(0, 0, 90))
+		for dx in [-0.35, 0.35]:
+			_part(m, _cyl(0.115, 0.115, 0.04, 14), _mat("toile_lien", Color(0.85, 0.3, 0.35), 0.7), Vector3(dx, 0.11, 0), Vector3(0, 0, 90))
 	elif id == "parapluie_rainville":
 		var toile := _mat("parapluie_noir", Color(0.06, 0.06, 0.07), 0.5)
 		_part(m, _cyl(0.008, 0.008, 0.75, 6), _mat("parapluie_manche", Color(0.3, 0.18, 0.1), 0.6), Vector3(0, 0.375, 0))

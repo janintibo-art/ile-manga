@@ -298,6 +298,64 @@ func _lieux() -> void:
 			var np: String = _pt("lieu_" + str(nm), sp2["pos"])
 			_link(np, node)
 			sp2["node"] = np
+	_lieux_festival()
+
+
+## V93 : les places du Festival du Larsen. Sur la scène (le plancher est à 1,6 m) : on arrive au pied
+## de l'escalier de son côté, puis on monte (les musiciens se posent à leur place). Devant : le public.
+const SCENE_H := 1.6
+const FESTIVAL := {
+	"flanelle": "fest_chant", "gresil": "fest_guitare", "bruine": "fest_basse", "bourrasque": "fest_batterie",
+	"arc_en_ciel": "fest_djembe", "lune": "fest_choeur", "jack": "fest_coulisse", "megaphone": "regie",
+	"mamie_tournesol": "fest_public_1", "mere_averse": "fest_public_2", "bouton_dor": "fest_public_3", "clapotis": "fest_public_4",
+	"bigoudi": "fest_public_5", "galet": "fest_public_6", "lavande": "fest_public_7", "mantra": "fest_public_8",
+	"spleen": "fest_public_9", "vinyle": "fest_public_10"}
+
+func _lieux_festival() -> void:
+	var sc := Vector2(0.0, -22.0)           # (larsen_v91.SCENE)
+	var top: float = G(sc.x, sc.y).y + SCENE_H
+	var marches: Array = []
+	for sx in [-1.0, 1.0]:
+		marches.append(_pt("fest_escalier_%d" % (0 if sx < 0 else 1), G(sc.x + sx * 13.6, sc.y + 3.0)))
+		_link(str(marches[-1]), nearest_street(points[marches[-1]]))
+	var on_stage := [["fest_chant", 0.0, 4.0, "chanter"], ["fest_guitare", -4.0, 2.5, "guitare"], ["fest_basse", 4.0, 2.5, "basse"],
+		["fest_batterie", 0.0, -1.5, "batterie"], ["fest_djembe", -7.5, 1.5, "batterie"], ["fest_choeur", 2.2, 3.6, "chanter"]]
+	for e in on_stage:
+		var w: Vector3 = G(sc.x + float(e[1]), sc.y + float(e[2]))
+		w.y = top
+		spots[str(e[0])] = {"pos": w, "face": Vector3(0, 0, 1), "pose": str(e[3]), "node": marches[0 if float(e[1]) < 0.0 else 1]}
+	_spot("fest_coulisse", sc.x + 12.2, sc.y + 1.0, Vector3(-1, 0, 0.3), "bras_croises")
+	spots["fest_coulisse"]["node"] = marches[1]
+	# le public : au premier rang les deux doyennes, côte à côte ; les enfants ensemble ; puis les autres
+	var pub := [[-0.9, 9.0, "acclamer"], [0.9, 9.0, "acclamer"], [-3.4, 10.2, "danse"], [-2.4, 10.4, "danse"], [3.2, 10.0, "danse"],
+		[5.0, 11.5, "acclamer"], [-5.6, 11.8, "danse"], [-1.2, 12.6, "danse"], [1.6, 13.4, "acclamer"], [4.2, 13.8, "acclamer"]]
+	for i in range(pub.size()):
+		var q: Array = pub[i]
+		var f := Vector3(-float(q[0]) * 0.08, 0, -1).normalized()
+		_spot("fest_public_%d" % (i + 1), sc.x + float(q[0]), sc.y + float(q[1]), f, str(q[2]))
+		var sp4: Dictionary = spots["fest_public_%d" % (i + 1)]
+		if (points[str(sp4["node"])] as Vector3).distance_to(sp4["pos"]) > 12.0:
+			var np2: String = _pt("lieu_fest_public_%d" % (i + 1), sp4["pos"])
+			_link(np2, str(sp4["node"]))
+			sp4["node"] = np2
+
+
+func festival_on() -> bool:
+	return L != null and L.get("fest") != null and L.fest != null and L.fest.concert_on()
+
+
+## La place de cet habitant pendant le concert (« » : pas de concert, ou il n'y va pas).
+func festival_spot(npc: Node) -> String:
+	if not festival_on():
+		return ""
+	return str(FESTIVAL.get(str((npc.get("profile") as Dictionary).get("id", "")), ""))
+
+
+## Le concert commence (ou finit) : chacun repart vers sa place (ou vers sa vie).
+func festival_switch() -> void:
+	for n in habitants:
+		if is_instance_valid(n) and str(n.get("state")) != "parle":
+			n._start_slot(n._slot_now(), false)
 
 
 func _yourte(nom: String) -> Dictionary:
@@ -354,6 +412,19 @@ func _decor() -> void:
 			for sz in [-0.17, 0.17]:
 				b.tube("fer", cp + Basis(Vector3.UP, atan2(fc.x, fc.z)) * Vector3(sx, 0, sz), cp + Basis(Vector3.UP, atan2(fc.x, fc.z)) * Vector3(sx, 0.43, sz), 0.015, 4)
 	Kit.couch(b, Transform3D(Basis(Vector3.UP, PI * 0.5), G(45.0, -28.0)), "toile_canape_2")
+	# V93 : la scène est équipée (la batterie sur son estrade, le djembé de Tonnerre, les pieds de micro)
+	if spots.has("fest_batterie"):
+		var bt: Vector3 = spots["fest_batterie"]["pos"]
+		b.box("toile_noire", Transform3D(Basis(), bt + Vector3(0, 0.01, 0.5)), Vector3(3.0, 0.02, 2.6))
+		_drum_kit(b, Transform3D(Basis(), bt))
+		var dj: Vector3 = spots["fest_djembe"]["pos"]
+		b.cyl("bois", Transform3D(Basis(), dj - Vector3(0, 0, 0.05)), 0.17, 0.2, 0.42, 10, true)
+		Kit.djembe(b, dj + Vector3(0, 0, 0.55))
+		for nm2 in ["fest_chant", "fest_choeur"]:
+			var mp: Vector3 = (spots[nm2]["pos"] as Vector3) + Vector3(0, 0, 0.45)
+			b.cyl("fer", Transform3D(Basis(), mp), 0.16, 0.16, 0.03, 10, true)
+			b.tube("chrome", mp, mp + Vector3.UP * 1.45, 0.012, 6)
+			b.cyl("fer", Transform3D(Basis(Vector3.RIGHT, -0.5), mp + Vector3(0, 1.45, 0)), 0.025, 0.035, 0.14, 8, true)
 	b.commit(self, "Larsen_vie_decor")
 
 

@@ -449,6 +449,9 @@ func _choose_zone(running: bool) -> void:
 				targets["brise"] = 0.6
 				targets["oiseaux"] = 0.4
 				targets["camp_fleurs"] = 0.25
+			"festival_concert":
+				targets["halle_hurlante"] = 0.35
+				targets["brise"] = 0.3
 			"chanvre", "coquelicots", "corderie", "prairie":
 				targets["campagne"] = 0.8
 				targets["brise"] = 0.5

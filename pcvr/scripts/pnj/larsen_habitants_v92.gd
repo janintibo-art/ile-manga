@@ -101,6 +101,23 @@ static func L(t: String, si: Dictionary = {}, geste: String = "") -> Dictionary:
 	return Azur.L(t, si, geste)
 
 
+## V93 : après le premier Festival du Larsen.
+const FESTIVAL_LIGNES := {
+	"mamie_tournesol": ["Tu nous as vues, au premier rang, Averse et moi ? On a chanté tellement faux que les grenouilles de la mare sont venues voir. Je n'ai jamais été aussi heureuse."],
+	"mere_averse": ["Au concert, il a fait soleil ET il a plu. Mon nuage est venu tout seul au-dessus de la scène. Je crois qu'il voulait danser, lui aussi."],
+	"arc_en_ciel": ["Sur scène, Bourrasque m'a renvoyé tous mes rythmes à l'envers. Je sais enfin à quoi elle ressemble. Elle tape encore plus fort que dans mes rêves."],
+	"bourrasque": ["J'AI JOUÉ AVEC LE DJEMBÉ D'EN FACE ! SUR LA GRANDE SCÈNE ! … Il m'a dit merci pour la lettre. Bruine l'a donnée, finalement. Je vais l'embrasser. Bruine, pas lui. Enfin…"],
+	"flanelle": ["J'ai chanté la chanson de ma mère. Au soleil. Je me suis trompée de tempo deux fois, et personne ne l'a remarqué. Sauf Mère Averse, qui a tricoté plus vite."],
+	"gresil": ["… J'ai joué « Les Deux Côtés ». … Ma chanson du carnet. … Personne ne dormait. … Même pas moi."],
+	"clapotis": ["J'EN AI VU ! DES FEUX D'ARTIFICE ! Des rouges, des bleus, des qui font pchiii et des qui font BOUM ! Et Bouton-d'Or m'a fait une couronne. Je l'ai gardée. Dis rien."],
+	"bouton_dor": ["Pendant le feu d'artifice, j'ai fait quatre clignotements avec ma lampe. Ça veut dire « viens jouer ». Clapotis a répondu quatre. Maintenant on joue en plein jour !"],
+	"jack": ["J'ai regardé un concert en entier. Assis dans l'herbe. J'en rêvais depuis vingt ans. La scène tiendra encore longtemps : je resserre les boulons tous les matins, au cas où."],
+	"megaphone": ["Un, deux… trois ! Tous les soirs, maintenant. Et le bouton du milieu, je l'ai appelé comme toi. Ne le répète pas, j'ai une réputation de régisseuse sérieuse."],
+	"lune": ["Ma toile a tenu toute la nuit, même dans le vent. Galet dit que c'est grâce à ses nœuds. Moi je dis que c'est grâce aux gens qui dansaient devant. Les deux, sans doute."],
+	"vinyle": ["J'ai passé la face B du vieux disque dans les enceintes, avant le concert. Les deux vieilles dames qui riaient. Toute la prairie s'est tue pour écouter. Puis tout le monde a ri avec elles."],
+	"spleen": ["J'ai souri pendant le concert. Trois fois. Ne compte pas. Je ne compte plus."],
+}
+
 static func complete(d: Dictionary) -> Dictionary:
 	var out: Dictionary = d.duplicate(true)
 	var camp: String = "fleurs" if str((out.get("larsen", {}) as Dictionary).get("style", "")) == "hippie" else "rain"
@@ -116,6 +133,13 @@ static func complete(d: Dictionary) -> Dictionary:
 				(e2["si"] as Dictionary).erase("camp")
 				lst.append(e2)
 			rep[k] = lst
+	# V93 : ce qu'ils disent quand le festival est revenu
+	var fl: Array = FESTIVAL_LIGNES.get(str(out.get("id", "")), [])
+	if not fl.is_empty():
+		var hum: Array = rep.get("humeur", [])
+		for t in fl:
+			hum.push_front(L(str(t), {"q56": "la_festival=finie"}, "rire"))
+		rep["humeur"] = hum
 	out["repliques"] = rep
 	for k in ["prefixes", "tics", "humeur_mots", "surnoms"]:
 		if not out.has(k):

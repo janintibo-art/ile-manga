@@ -75,6 +75,8 @@ const DB := {
 	"ptero_cri": -7.0, "trex_rugit": 0.0, "trex_ronfle": -6.0, "trex_pas": -3.0, "longcou_cri": -6.0,
 	# V91 : l'Île de Larsen (le djembé du Camp des Fleurs, le carillon de la Colline du Feedback, l'effet Larsen)
 	"djembe": -4.0, "carillon": -6.0, "larsen": -8.0,
+	# V93 : le Festival du Larsen (le feu d'artifice)
+	"artifice_sifflet": -10.0, "artifice_boum": -4.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 
