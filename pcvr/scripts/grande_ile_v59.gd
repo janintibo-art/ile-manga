@@ -26,6 +26,7 @@ const MoaiIle = preload("res://scripts/ile_moai_v87.gd")
 const PixelIle = preload("res://scripts/ile_pixel_v90.gd")
 const LarsenIle = preload("res://scripts/ile_larsen_v91.gd")
 const NeoIle = preload("res://scripts/ile_neo_v94.gd")
+const PastaIle = preload("res://scripts/ile_pasta_v97.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -135,7 +136,7 @@ static func east_clamp(x: float, z: float) -> Vector2:
 ## (V70) celle de l'Île de Braise, au sud-ouest ; (V71) celle de l'Île de Montjoie, au sud de la grande île ;
 ## (V75) celle de l'Île du Boucan, au sud du village.
 static func sea_contains(x: float, z: float, mid: Vector2, radius: float) -> bool:
-	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z)
+	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z) or PastaIle.sea_contains(x, z)
 
 
 static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector2:
@@ -154,6 +155,7 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	var c9: Vector2 = PixelIle.sea_clamp(x, z)
 	var c10: Vector2 = LarsenIle.sea_clamp(x, z)
 	var c11: Vector2 = NeoIle.sea_clamp(x, z)
+	var c12: Vector2 = PastaIle.sea_clamp(x, z)
 	var best: Vector2 = c0 if p.distance_to(c0) < p.distance_to(c1) else c1
 	best = best if p.distance_to(best) < p.distance_to(c2) else c2
 	best = best if p.distance_to(best) < p.distance_to(c3) else c3
@@ -164,7 +166,8 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	best = best if p.distance_to(best) < p.distance_to(c8) else c8
 	best = best if p.distance_to(best) < p.distance_to(c9) else c9
 	best = best if p.distance_to(best) < p.distance_to(c10) else c10
-	return best if p.distance_to(best) < p.distance_to(c11) else c11
+	best = best if p.distance_to(best) < p.distance_to(c11) else c11
+	return best if p.distance_to(best) < p.distance_to(c12) else c12
 
 
 # =================================================================== régions

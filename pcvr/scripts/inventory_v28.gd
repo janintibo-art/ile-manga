@@ -364,6 +364,14 @@ const ITEMS := {
 		"desc": "Une vieille puce vocale, grosse comme un timbre, avec des pattes dorées et une étiquette jaunie : « SÉRIE Z — VOIX N° 0 ». On n'en fabrique plus depuis trente ans. Cargo l'avait gardée, au cas où."},
 	"nouilles_neo": {"name": "Bol de néo-ramen", "art": "un bol de néo-ramen", "kind": "nourriture", "max": 10, "heal": 5,
 		"desc": "Le bol fumant du robot des nouilles du Marché de Nuit : des nouilles, un bouillon doré, un œuf, des légumes, et un smiley dessiné à la sauce. Rend deux cœurs et demi."},
+	# V97 : l'Île Al Dente
+	"sauce_volcan": {"name": "Pot de sauce du volcan", "art": "un pot de sauce du volcan", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Un petit pot de sauce tomate, puisé à la louche géante dans la Marmite du Mont Bolognaise : de la tomate, de l'ail, du basilic, une pointe de sucre. Encore tiède. Rend deux cœurs."},
+	"tomate_coeur": {"name": "Tomate cœur-de-bœuf", "art": "une tomate cœur-de-bœuf", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Une grosse tomate de la Tomateraie de l'Île Al Dente, lourde, côtelée, chaude de soleil. Rend un cœur."},
+	"spaghettis_secs": {"name": "Botte de spaghettis", "art": "une botte de spaghettis", "kind": "curiosite", "sorte": "Curiosité d'Al Dente", "max": 5,
+		"desc": "Une botte de spaghettis séchés au Séchoir de l'Île Al Dente, faits avec le blé dur de ses champs. Liés d'un ruban vert, blanc et rouge.",
+		"effet": "Tu tiens la botte bien droite, comme une baguette de chef d'orchestre. (Recommandation n° 3 : tu ne la casses pas en deux.)"},
 	"chocolat_chaud": {"name": "Chocolat chaud", "art": "un chocolat chaud", "kind": "nourriture", "max": 10, "heal": 3,
 		"desc": "Le chocolat chaud du Café Feedback, avec un nuage de crème. Ça réchauffe les mains, le ventre et le cœur. Rend un cœur et demi."},
 	"attrape_reves": {"name": "Attrape-rêves", "art": "un attrape-rêves", "kind": "curiosite", "sorte": "Curiosité de Larsen", "max": 1,
@@ -1701,6 +1709,20 @@ func make_model(id: String) -> Node3D:
 		_part(m, _cyl(0.092, 0.092, 0.006, 18), _mat("ramen_bouillon", Color(0.86, 0.6, 0.25), 0.15), Vector3(0, 0.07, 0))
 		_part(m, _sphere(0.022), _mat("ramen_oeuf", Color(0.98, 0.95, 0.88), 0.4), Vector3(0.03, 0.074, 0.01), Vector3.ZERO, Vector3(1.0, 0.4, 1.0))
 		_part(m, _cyl(0.004, 0.004, 0.24, 6), _mat("ramen_baguette", Color(0.55, 0.36, 0.2), 0.7), Vector3(-0.02, 0.1, 0), Vector3(0, 0, 75))
+	elif id == "sauce_volcan":
+		_part(m, _cyl(0.05, 0.045, 0.09, 16), _mat("pot_verre", Color(0.62, 0.08, 0.04), 0.15), Vector3(0, 0.045, 0))
+		_part(m, _cyl(0.052, 0.052, 0.025, 16), _mat("pot_couvercle", Color(0.85, 0.75, 0.35), 0.3), Vector3(0, 0.1, 0))
+		_part(m, _cyl(0.0505, 0.0505, 0.035, 16), _mat("pot_etiquette", Color(0.95, 0.92, 0.84), 0.8), Vector3(0, 0.05, 0))
+	elif id == "tomate_coeur":
+		_part(m, _sphere(0.055), _mat("tomate_rouge", Color(0.78, 0.1, 0.05), 0.25), Vector3(0, 0.05, 0), Vector3.ZERO, Vector3(1.1, 0.85, 1.1))
+		_part(m, _cyl(0.004, 0.006, 0.02, 6), _mat("tomate_queue", Color(0.2, 0.42, 0.1), 0.7), Vector3(0, 0.097, 0))
+		_part(m, _cyl(0.025, 0.0, 0.006, 5), _mat("tomate_queue", Color(0.2, 0.42, 0.1), 0.7), Vector3(0, 0.094, 0))
+	elif id == "spaghettis_secs":
+		for k in range(14):
+			var a: float = TAU * k / 14.0
+			_part(m, _cyl(0.0025, 0.0025, 0.26, 4), _mat("spaghetti_sec", Color(0.95, 0.8, 0.42), 0.55), Vector3(cos(a) * 0.012 * (1 + k % 2), 0.025, sin(a) * 0.012 * (1 + k % 2)), Vector3(0, 0, 90))
+		for c in [[-0.03, Color(0.1, 0.45, 0.22)], [0.0, Color(0.93, 0.91, 0.86)], [0.03, Color(0.72, 0.1, 0.1)]]:
+			_part(m, _cyl(0.03, 0.03, 0.028, 12), _mat("ruban_%s" % str(c[0]), c[1], 0.8), Vector3(float(c[0]) - 0.014, 0.025, 0), Vector3(0, 0, 90))
 	elif id == "parapluie_rainville":
 		var toile := _mat("parapluie_noir", Color(0.06, 0.06, 0.07), 0.5)
 		_part(m, _cyl(0.008, 0.008, 0.75, 6), _mat("parapluie_manche", Color(0.3, 0.18, 0.1), 0.6), Vector3(0, 0.375, 0))

@@ -645,6 +645,35 @@ def archipel(src: Path) -> None:
         R, rc = Ne["rail"], Ne["rail_rc"]
         d.rounded_rectangle((nw(cxn - R, czn - R), nw(cxn + R, czn + R)), radius=rc, outline=(230, 236, 245, 255), width=3)
 
+    # V97 : l'Île Al Dente (au sud-ouest) : la Marmite pleine de sauce en haut du Mont Bolognaise, les
+    # deux rivières de sauce, le Lac Napolitain, le chemin en spirale, le Temple-Passoire (un rond
+    # d'acier piqué de trous) (bake97.gd écrit pasta.json)
+    pf = src / "pasta.json"
+    if OX > 540 and rows >= 1380 and pf.exists():
+        Pa = json.loads(pf.read_text())
+
+        def pw(x, z):
+            return (x + OX, z + OZ)
+
+        sp = [pw(*q) for q in Pa["spirale"]]
+        d.line(sp, fill=(150, 120, 90, 255), width=3)
+        for fl in Pa["flows"]:
+            d.line([pw(*q) for q in fl], fill=(190, 40, 25, 255), width=6)
+        lx, lz = pw(*Pa["lac"])
+        r = Pa["lac_r"]
+        d.ellipse((lx - r, lz - r, lx + r, lz + r), fill=(185, 38, 24, 255), outline=(120, 20, 12, 255), width=2)
+        cx, cz = pw(*Pa["cratere"])
+        r = Pa["cratere_r"] * 0.8
+        d.ellipse((cx - r, cz - r, cx + r, cz + r), fill=(195, 45, 28, 255), outline=(70, 60, 58, 255), width=4)
+        tx, tz = pw(*Pa["temple"])
+        r = Pa["temple_r"]
+        d.ellipse((tx - r, tz - r, tx + r, tz + r), fill=(196, 200, 206, 255), outline=(110, 114, 120, 255), width=3)
+        for k in range(18):
+            a = k / 18 * 2 * math.pi
+            for rr in (0.35, 0.7):
+                hx, hz = tx + math.cos(a + rr) * r * rr, tz + math.sin(a + rr) * r * rr
+                d.ellipse((hx - 1.6, hz - 1.6, hx + 1.6, hz + 1.6), fill=(90, 94, 100, 255))
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

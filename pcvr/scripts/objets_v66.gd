@@ -88,9 +88,10 @@ const COFFRE_BUTIN := {
 	"grande": [[20, 35], ["cidre_carene", "dattes", "rhum_murene", "galette_sarrasin", "pain_carotte"]],
 	"larsen": [[14, 26], ["tisane_lune", "chocolat_chaud", "pain_miel", "baies", "corde_chanvre"]],
 	"neo": [[20, 34], ["soda_neon", "nouilles_neo", "jus_pomme", "the_menthe"]],
+	"pasta": [[16, 30], ["sauce_volcan", "tomate_coeur", "spaghettis_secs", "jus_pomme"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo", "pasta": "pasta"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [
@@ -105,6 +106,7 @@ const ILES := [
 	["pixel", Vector3(1000, 0, -750), 180.0],
 	["larsen", Vector3(-430, 0, -790), 150.0],
 	["neo", Vector3(300, 0, 1400), 250.0],
+	["pasta", Vector3(-420, 0, 1400), 175.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -122,6 +124,7 @@ const MANGER := {
 	"pixel": ["galette_fougere", "baies", "champignon"],
 	"larsen": ["pomme", "baies", "pain_miel"],
 	"neo": ["nouilles_neo", "pomme"],
+	"pasta": ["tomate_coeur", "pomme", "baies"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
@@ -136,6 +139,7 @@ const BOIRE := {
 	"pixel": "noix_coco",
 	"larsen": "tisane_lune",
 	"neo": "soda_neon",
+	"pasta": "jus_pomme",
 }
 
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]

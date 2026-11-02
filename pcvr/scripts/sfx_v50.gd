@@ -79,6 +79,8 @@ const DB := {
 	"artifice_sifflet": -10.0, "artifice_boum": -4.0,
 	# V94 : Néopolis (les voitures volantes, le monorail, l'ascenseur, les distributeurs, le robot, l'arcade, les hologrammes)
 	"voiture_volante": -6.0, "monorail": -6.0, "ascenseur_tour": -6.0, "distributeur": -5.0, "robot_nouilles": -6.0, "arcade": -7.0, "hologramme": -7.0,
+	# V97 : l'Île Al Dente (l'éruption, les gouttes de sauce, le Couvercle Sacré, la louche)
+	"eruption": -2.0, "splotch": -6.0, "couvercle": -4.0, "louche": -6.0,
 }
 const STRIDE: float = 0.72          # un pas tous les 72 cm
 

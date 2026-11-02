@@ -205,6 +205,17 @@ const LISTE := {
 	"neo_arcade": ["Un record à Dragon-Pixel", "neo", 25],
 	"neo_soda": ["Un Synthé-Soda", "neo", 10],
 	"neo_nouilles": ["Le néo-ramen du robot", "neo", 15],
+	"pasta": ["L'Île Al Dente", "pasta", 20],
+	"pasta_temple": ["Le Temple-Passoire", "pasta", 20],
+	"pasta_effigie": ["Le Grand Spaghetti Volant", "pasta", 15],
+	"pasta_couvercle": ["Le Couvercle Sacré", "pasta", 10],
+	"pasta_recommandations": ["Les Huit Recommandations des Pâtes", "pasta", 10],
+	"pasta_cratere": ["Au bord de la Marmite", "pasta", 30],
+	"pasta_sauce": ["La louche du volcan", "pasta", 15],
+	"pasta_eruption": ["Une éruption de sauce tomate", "pasta", 25],
+	"pasta_eclabousse": ["Éclaboussé de sauce", "pasta", 15],
+	"pasta_lac": ["Le Lac Napolitain", "pasta", 15],
+	"pasta_cascade": ["La Cascade Arrabbiata", "pasta", 20],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -264,7 +275,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["pasta", "L'Île Al Dente"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {

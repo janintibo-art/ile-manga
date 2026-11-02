@@ -1300,6 +1300,11 @@ const AVENTURES := [
 			["neo_terrasse", "Monter à la Terrasse du Ciel, en haut de la Tour Axiome"], ["neo_nouilles", "Goûter le néo-ramen du robot du Marché de Nuit"],
 			["neo_monorail", "Faire le tour de la ville en monorail (les quatre stations)"], ["neo_arcade", "Battre son record à Dragon-Pixel"],
 			["neo_jardin", "Trouver le calme au Jardin Zen"]]},
+	{"id": "pasta", "titre": "L'Île Al Dente, l'île du Spaghetti Volant", "lieu": "L'Île Al Dente, au sud-ouest de l'archipel", "debut": "pasta",
+		"etapes": [["pasta", "Accoster sur la Plage du Parmesan"], ["pasta_temple", "Entrer dans le Temple-Passoire"],
+			["pasta_effigie", "Lever les yeux vers le Grand Spaghetti Volant"], ["pasta_couvercle", "Faire sonner le Couvercle Sacré"],
+			["pasta_cratere", "Monter jusqu'à la Marmite, en haut du Mont Bolognaise"], ["pasta_sauce", "Goûter la sauce du volcan avec la louche géante"],
+			["pasta_eruption", "Voir le volcan cracher sa sauce"], ["pasta_cascade", "Voir la Cascade Arrabbiata tomber dans la mer"]]},
 	{"id": "ailes", "titre": "Les Ailes de Philibert", "lieu": "Cliquetis, puis le ciel", "debut": "atelier_ailes",
 		"etapes": [["aeronef_1", "L'Alouette, le deltaplane de Philibert (à l'Atelier des Ailes, à l'ouest de Cliquetis)"], ["aeronef_2", "L'Alouette à hélice"], ["aeronef_3", "L'Albatros, le petit aéronef"],
 			["vol_haut", "Voler à plus de 250 m"], ["aeronef_4", "Le Glisseur stellaire des Lumens (Ionie, au Spatioport d'Astralys)"]]},
@@ -1996,6 +2001,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.larsen_v91.place_name(p))
 	if main.get("neo_v94") != null and main.neo_v94 != null and main.neo_v94.ile != null and main.neo_v94.owns_point(p):
 		return str(main.neo_v94.place_name(p))
+	if main.get("pasta_v97") != null and main.pasta_v97 != null and main.pasta_v97.ile != null and main.pasta_v97.owns_point(p):
+		return str(main.pasta_v97.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

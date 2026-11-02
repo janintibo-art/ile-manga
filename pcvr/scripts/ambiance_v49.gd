@@ -26,6 +26,7 @@ const BEDS := {
 	"ramure": "ambiance/ramure",
 	"pluie": "ambiance/pluie", "camp_fleurs": "ambiance/camp_fleurs",
 	"neopolis": "ambiance/neopolis", "marche_nuit": "ambiance/marche_nuit",
+	"marmite": "ambiance/marmite",
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
@@ -58,6 +59,7 @@ const BED_DB := {
 	"astralys_jour": -12.0, "astralys_nuit": -12.0, "spatioport": -12.0, "serre_especes": -12.0, "chantier_naval": -12.0,
 	"pluie": -11.0, "camp_fleurs": -12.0,
 	"neopolis": -11.0, "marche_nuit": -12.0,
+	"marmite": -11.0,
 }
 
 var main: Node
@@ -474,6 +476,43 @@ func _choose_zone(running: bool) -> void:
 				targets["brise"] = 0.5
 		if las.in_rain(p) and la_zone != "rainville":
 			targets["pluie"] = 0.6
+		_night_beds()
+		return
+	# V97 : l'Île Al Dente (la sauce qui mijote dans la Marmite, les cigales de l'oliveraie, la plage)
+	var pas: Node = main.get("pasta_v97")
+	var pa_zone: String = pas.zone_at(p) if pas != null and pas.get("ile") != null and pas.ile != null and not on_ferry else ""
+	if pa_zone != "" and not on_boat:
+		zone = "pa_" + pa_zone
+		match pa_zone:
+			"cratere":
+				targets["marmite"] = 1.0
+				targets["vent_vol"] = 0.5
+			"volcan":
+				targets["volcan"] = 0.6
+				targets["marmite"] = 0.2
+			"lac":
+				targets["marmite"] = 0.55
+				targets["brise"] = 0.5
+			"cascade":
+				targets["marmite"] = 0.5
+				targets["ressac"] = 0.8
+			"temple_dedans":
+				targets["brise"] = 0.25
+				targets["grotte"] = 0.25
+			"oliveraie", "tomateraie":
+				targets["cigales"] = 1.0
+				targets["brise"] = 0.4
+			"champs", "sechoir", "prairie", "temple":
+				targets["cigales"] = 0.6
+				targets["campagne"] = 0.5
+				targets["brise"] = 0.5
+			"plage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.5
+			_:
+				targets["brise"] = 0.6
+		if pas.is_erupting():
+			targets["marmite"] = 1.0
 		_night_beds()
 		return
 	# V94 : Néopolis (la rumeur de la ville, le marché, le jardin, le quai ; la pluie du soir)

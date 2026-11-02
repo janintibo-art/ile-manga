@@ -320,3 +320,12 @@ Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v94.py :
 Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v94.py (synthétiseurs
 calculés, batterie de la VCSL, CC0) :
   musique/neopolis.ogg (« Néopolis, la nuit »).
+
+L'Île Al Dente (V97) —
+Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v97.py :
+  ambiance/marmite (la sauce tomate qui mijote dans le cratère),
+  sfx/eruption_1 (le volcan crache sa sauce), sfx/splotch_1..3 (les gouttes qui s'écrasent),
+  sfx/couvercle_1 (le Couvercle Sacré), sfx/louche_1 (la louche géante)
+Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v97.py (mandoline et
+accordéon calculés, tambourin de la VCSL, contrebasse, clarinette et glockenspiel de VSCO-2 CE, CC0) :
+  musique/al_dente.ogg (« Al Dente », une tarentelle).
