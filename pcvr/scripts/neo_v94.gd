@@ -41,6 +41,7 @@ const RAIL_R: float = 180.0
 const RAIL_RC: float = 10.0          # les coins de la boucle (assez serrés pour ne pas frôler les tours des coins)
 const RAIL_Y: float = 10.0
 const TOUR := Vector2(31.25, -30.0)
+const Ville = preload("res://scripts/neo_ville_v95.gd")
 
 var main: Node
 var ile: Node3D
@@ -76,6 +77,7 @@ var _light_t: float = 0.0
 var _car_sfx_t: float = 0.0
 var night: float = 0.0
 var lobby := Vector3.ZERO
+var ville: Node3D                         # V95 : les rues, les lieux, les habitants, les passants
 var terrasse := Vector3.ZERO
 
 
@@ -127,6 +129,11 @@ func build_town() -> void:
 	objets["arcade"] = _ground(-8.0, 90.0)
 	objets["ruelles"] = _ground(-120.0, 90.0)
 	objets["jardin"] = _ground(150.0, 150.0)
+	# V95 : la vie de la ville (les habitants arrivent avec les autres, voir main._spawn_azur_v56)
+	ville = Ville.new()
+	add_child(ville)
+	ville.setup(main, self)
+	ville.build()
 	print("ILE_MANGA_V94: Néopolis est prête (%d tours, %d boîtes, %d ms)" % [batiments.size(), nb_boites, Time.get_ticks_msec() - t0])
 
 

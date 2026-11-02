@@ -276,7 +276,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

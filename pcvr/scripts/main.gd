@@ -3670,6 +3670,9 @@ func _spawn_azur_v56() -> void:
 	# V92 : les habitants de l'Île de Larsen
 	if larsen_v91 != null and larsen_v91.get("ville") != null and larsen_v91.ville != null:
 		larsen_v91.ville.spawn_npcs()
+	# V95 : les habitants de Néopolis
+	if neo_v94 != null and neo_v94.get("ville") != null and neo_v94.ville != null:
+		neo_v94.ville.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.

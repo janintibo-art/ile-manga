@@ -359,6 +359,9 @@ const ITEMS := {
 	# V94 : Néopolis
 	"soda_neon": {"name": "Synthé-Soda", "art": "un Synthé-Soda", "kind": "nourriture", "max": 10, "heal": 2,
 		"desc": "Une canette glacée sortie d'un distributeur de Néopolis. « Pétillant aux fruits de la Lune » : personne ne sait quel goût ont les fruits de la Lune, mais c'est bon. Elle brille un peu dans le noir. Rend un cœur."},
+	# V95 : la quête « La voix de Zéro »
+	"puce_vocale": {"name": "Puce vocale Série Z", "art": "la puce vocale Série Z", "kind": "quete", "sorte": "Objet de quête : Néopolis", "max": 1,
+		"desc": "Une vieille puce vocale, grosse comme un timbre, avec des pattes dorées et une étiquette jaunie : « SÉRIE Z — VOIX N° 0 ». On n'en fabrique plus depuis trente ans. Cargo l'avait gardée, au cas où."},
 	"nouilles_neo": {"name": "Bol de néo-ramen", "art": "un bol de néo-ramen", "kind": "nourriture", "max": 10, "heal": 5,
 		"desc": "Le bol fumant du robot des nouilles du Marché de Nuit : des nouilles, un bouillon doré, un œuf, des légumes, et un smiley dessiné à la sauce. Rend deux cœurs et demi."},
 	"chocolat_chaud": {"name": "Chocolat chaud", "art": "un chocolat chaud", "kind": "nourriture", "max": 10, "heal": 3,
@@ -1684,6 +1687,15 @@ func make_model(id: String) -> Node3D:
 		_part(m, _cyl(0.033, 0.033, 0.12, 16), _mat("soda_canette", Color(1.0, 0.24, 0.66), 0.25), Vector3(0, 0.06, 0))
 		_part(m, _cyl(0.0335, 0.0335, 0.04, 16), _mat("soda_bande", Color(0.15, 0.85, 1.0), 0.25), Vector3(0, 0.065, 0))
 		_part(m, _cyl(0.028, 0.033, 0.008, 16), _mat("soda_couvercle", Color(0.8, 0.8, 0.84), 0.2), Vector3(0, 0.124, 0))
+	elif id == "puce_vocale":
+		_part(m, _box_mesh(Vector3(0.07, 0.008, 0.05)), _mat("puce_corps", Color(0.08, 0.3, 0.12), 0.35), Vector3(0, 0.006, 0))
+		_part(m, _box_mesh(Vector3(0.03, 0.006, 0.03)), _mat("puce_coeur", Color(0.06, 0.06, 0.07), 0.25), Vector3(0, 0.012, 0))
+		var or_m := _mat("puce_pattes", Color(0.95, 0.75, 0.3), 0.2)
+		or_m.metallic = 1.0
+		for k in range(6):
+			for sz in [-1.0, 1.0]:
+				_part(m, _box_mesh(Vector3(0.004, 0.002, 0.012)), or_m, Vector3(-0.025 + k * 0.01, 0.003, sz * 0.03))
+		_part(m, _box_mesh(Vector3(0.05, 0.001, 0.012)), _mat("puce_etiquette", Color(0.92, 0.86, 0.6), 0.8), Vector3(0, 0.0105, 0.012))
 	elif id == "nouilles_neo":
 		_part(m, _cyl(0.1, 0.055, 0.075, 18), _mat("ramen_bol", Color(0.92, 0.9, 0.86), 0.3), Vector3(0, 0.038, 0))
 		_part(m, _cyl(0.092, 0.092, 0.006, 18), _mat("ramen_bouillon", Color(0.86, 0.6, 0.25), 0.15), Vector3(0, 0.07, 0))

@@ -323,7 +323,40 @@ def decide(pid, p):
              look=look, hair=style, beard=beard, carrure=carrure, village=p.get('village'))
     if p.get('village') == 'astralys':
         lumen_decide(D, p)
+    if p.get('village') == 'neo':
+        neo_decide(D, p)
     return D
+
+
+# =================================================================== V95 : les gens de Néopolis
+
+def neo_decide(D, p):
+    """Fiche « neo » : android (une peau de polymère, des joints, des circuits, des yeux qui
+    luisent, pas de barbe), implant (l'avant-bras et la tempe gauches en métal), circuit (la
+    couleur des circuits), peau (la teinte d'un androïde), metal (la teinte de l'implant)."""
+    ne = p.get('neo', {})
+    if not isinstance(ne, dict):
+        return
+    look = D['look']
+    if ne.get('circuit') is not None:
+        look['circuit'] = col(ne['circuit'])
+    if ne.get('implant'):
+        look['implant'] = 1.0
+        if ne.get('metal') is not None:
+            look['metal_c'] = col(ne['metal'])
+    if ne.get('android'):
+        look['android'] = 1.0
+        if ne.get('peau') is not None:
+            look['peau'] = col(ne['peau'])
+        sk = look['peau']
+        look['levres'] = [sk[0] * 0.9, sk[1] * 0.82, sk[2] * 0.84]
+        look['levres_force'] = 0.35
+        look['rose'] = 0.0
+        look['age'] = 0.0 if not ne.get('vieux_modele') else 0.15
+        look['barbe'] = [0.0, 0.0, 0.0]
+        look['fard_force'] = 0.0
+        look['iris_lueur'] = float(ne.get('lueur_yeux', 0.7))
+        D['beard'] = ''
 
 
 # =================================================================== V76 : les Lumens d'Astralys
@@ -909,6 +942,100 @@ def outfit(D, p):
             add('pantalon', denim, 'jean', poches=1.0)
             add('chaussures', shoe, 'cuir')
         return T
+    # --------------------------------------------------------- V95 : les gens de Néopolis
+    ne = p.get('neo')
+    if vil == 'neo' and isinstance(ne, dict):
+        tenue = str(ne.get('tenue', 'techwear'))
+        c1 = col(ne.get('c', haut))
+        c2 = col(ne.get('c2', [0.2, 0.9, 1.0]))
+        sombres = [[0.06, 0.06, 0.07], [0.12, 0.13, 0.15], [0.18, 0.19, 0.22], [0.1, 0.1, 0.14], [0.22, 0.2, 0.24]]
+        neons = [[0.2, 0.9, 1.0], [1.0, 0.25, 0.7], [0.75, 0.3, 1.0], [0.35, 1.0, 0.5], [1.0, 0.65, 0.15]]
+        def pick(pal):
+            return col(pal[int(r.integers(len(pal)))])
+        if child or tenue == 'enfant':
+            add('tshirt', c1, 'coton', motif=10, c2=c2)
+            if female:
+                add('jupe', pick(sombres), 'coton')
+                add('collant', pick(sombres), 'coton')
+            else:
+                add('short', pick(sombres), 'toile', poches=1.0)
+            add('chaussures', [0.92, 0.92, 0.94], 'cuir')
+            return T
+        if tenue == 'techwear':
+            add('tshirt', pick(sombres), 'coton')
+            add('veste', c1, 'toile', boutons=1.0, poches=1.0, motif=10, c2=c2)
+            add('pantalon', pick(sombres), 'toile', poches=1.0)
+            add('bottes', [0.07, 0.07, 0.08], 'cuir')
+        elif tenue == 'holo':
+            add('debardeur', pick(sombres), 'coton')
+            add('veste', c1, 'soie', motif=13, c2=c2)
+            add('pantalon', [0.06, 0.06, 0.07], 'cuir')
+            add('bottes', [0.07, 0.07, 0.08], 'cuir')
+        elif tenue == 'sweat':
+            add('pull', c1, 'coton', poches=1.0, motif=10, c2=c2)
+            add('pantalon', [0.18, 0.2, 0.26], 'jean', poches=1.0)
+            add('chaussures', [0.9, 0.9, 0.92], 'cuir')
+        elif tenue == 'mecano':
+            add('tshirt', c1, 'coton')
+            add('pantalon', [0.2, 0.21, 0.2], 'toile', poches=1.0)
+            add('bottes', [0.1, 0.09, 0.08], 'cuir')
+            add('tablier', [0.28, 0.18, 0.11], 'cuir')
+            add('bavette', [0.28, 0.18, 0.11], 'cuir')
+        elif tenue == 'chef':
+            add('chemise_courte', [0.96, 0.96, 0.95], 'coton', boutons=1.0)
+            add('pantalon', [0.12, 0.12, 0.13], 'toile')
+            add('chaussures', [0.1, 0.1, 0.1], 'cuir')
+            add('tablier', c1, 'toile')
+        elif tenue == 'kimono':
+            add('corsage_long', c1, 'soie', motif=16, c2=c2)
+            add('jupe_longue', [0.12, 0.1, 0.16], 'soie')
+            add('ceinture_ample', c2, 'soie')
+            add('chaussures', [0.1, 0.08, 0.08], 'cuir')
+            add('chale', [0.3, 0.12, 0.2], 'laine')
+        elif tenue == 'jardinier':
+            add('tunique_haut', c1, 'lin')
+            add('pantalon', [0.25, 0.22, 0.18], 'lin')
+            add('ceinture_ample', [0.12, 0.1, 0.09], 'coton')
+            add('chaussures', [0.12, 0.1, 0.08], 'cuir')
+        elif tenue == 'tailleur':
+            add('chemise_rentree', [0.94, 0.94, 0.95], 'soie', boutons=1.0)
+            add('veste', c1, 'laine', boutons=1.0, motif=10, c2=c2)
+            add('pantalon' if not female else 'jupe', c1, 'laine')
+            add('chaussures', [0.06, 0.06, 0.07], 'cuir')
+            add('col', c2, 'soie')
+        elif tenue == 'marchand':
+            add('chemise_longue', [0.55, 0.12, 0.45], 'soie', boutons=1.0)
+            add('gilet', [0.08, 0.06, 0.1], 'soie', boutons=1.0, motif=13, c2=[0.9, 0.7, 0.2])
+            add('pantalon', [0.1, 0.08, 0.12], 'laine')
+            add('chaussures', [0.55, 0.45, 0.1], 'cuir')
+            add('cravate', [0.9, 0.7, 0.2], 'soie')
+        elif tenue == 'service':
+            add('chemise_rentree', [0.97, 0.97, 0.98], 'coton', boutons=1.0)
+            add('gilet', c1, 'laine', boutons=1.0, motif=11, c2=c2)
+            add('pantalon', c1, 'laine')
+            add('chaussures', [0.04, 0.04, 0.05], 'cuir')
+            add('cravate', c2, 'soie')
+        elif tenue == 'combinaison':
+            add('tshirt', [0.3, 0.32, 0.34], 'coton')
+            add('pantalon', c1, 'toile', poches=1.0)
+            add('bavette', c1, 'toile')
+            add('bottes', [0.15, 0.15, 0.16], 'cuir')
+        elif tenue == 'docker':
+            add('tshirt', [0.15, 0.16, 0.18], 'coton')
+            add('gilet', c1, 'toile', poches=1.0, motif=10, c2=[0.92, 0.94, 0.96])
+            add('pantalon', [0.2, 0.22, 0.25], 'toile', poches=1.0)
+            add('bottes', [0.12, 0.1, 0.08], 'cuir')
+        elif tenue == 'artiste':
+            add('corsage', c1, 'coton')
+            add('jupe', [0.15, 0.14, 0.2], 'coton')
+            add('collant', [0.08, 0.08, 0.1], 'coton')
+            add('tablier_court', [0.9, 0.88, 0.84], 'toile', motif=4, c2=c2, echelle=0.05)
+            add('chaussures', [0.1, 0.1, 0.12], 'cuir')
+        else:
+            add('tshirt', c1, 'coton')
+            add('pantalon', pick(sombres), 'jean', poches=1.0)
+            add('chaussures', shoe, 'cuir')
+        return T
     # --------------------------------------------------------- V71 : les gens de Montjoie
     mj = p.get('mj')
     if vil == 'montjoie' and isinstance(mj, dict):
@@ -1427,6 +1554,24 @@ def hats_for(D, p):
         out.append({'v': 'ch_casquette', 'c': [[0.1, 0.1, 0.11], [0.55, 0.1, 0.1], [0.2, 0.3, 0.45]][int(lzr.integers(3))], 'tissu': 'coton'})
     elif lzc == 'casque_skate':
         out.append({'v': 'ch_casque_skate', 'c': [0.95, 0.8, 0.1], 'tissu': 'cuir'})
+    # V95 : les couvre-chefs de Néopolis
+    ne = p.get('neo', {}) if p.get('village') == 'neo' else {}
+    nec = str(ne.get('chapeau', '')) if isinstance(ne, dict) else ''
+    nhc = ne.get('chapeau_c') if isinstance(ne, dict) else None
+    if nec == 'capuche':
+        out.append({'v': 'ch_capuche', 'c': col(nhc if nhc is not None else [0.1, 0.1, 0.12]), 'tissu': 'coton'})
+    elif nec == 'casquette':
+        out.append({'v': 'ch_casquette', 'c': col(nhc if nhc is not None else [0.08, 0.08, 0.09]), 'tissu': 'coton'})
+    elif nec == 'cuisinier':
+        out.append({'v': 'ch_cuisinier', 'c': [0.97, 0.97, 0.96], 'tissu': 'coton'})
+    elif nec == 'paille':
+        out.append({'v': 'ch_paille', 'c': [0.82, 0.7, 0.45], 'tissu': 'paille'})
+    elif nec == 'haut_de_forme':
+        out.append({'v': 'ch_haut_de_forme', 'c': col(nhc if nhc is not None else [0.2, 0.08, 0.25]), 'tissu': 'laine'})
+    elif nec == 'beret':
+        out.append({'v': 'ch_beret', 'c': col(nhc if nhc is not None else [0.75, 0.15, 0.3]), 'tissu': 'laine'})
+    elif nec == 'bonnet':
+        out.append({'v': 'ch_bonnet', 'c': col(nhc if nhc is not None else [0.1, 0.1, 0.12]), 'tissu': 'laine'})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

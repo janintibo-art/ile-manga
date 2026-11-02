@@ -39,6 +39,10 @@ static func spawn(parent: Node3D, main_node: Node, profile: Dictionary, pos: Vec
 		_:
 			# V92 : les gens des yourtes de Larsen (la couronne de fleurs)
 			npc = (load("res://scripts/pnj/pnj_larsen_v92.gd") as Script).new() if profile.has("larsen") else PnjLumen.new()
+			# V95 : les passants de Néopolis (androïdes, implants, visières)
+			if profile.has("neo"):
+				npc.free()
+				npc = (load("res://scripts/pnj/pnj_neo_v95.gd") as Script).new()
 	parent.add_child(npc)
 	npc.setup(main_node, profile, {"ici": pos}, {"ici": []}, "ici")
 	var stub := Node.new()

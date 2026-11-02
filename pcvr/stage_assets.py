@@ -305,7 +305,7 @@ def main() -> int:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
             normal = f.name.endswith("_n.png")
-            hq = f.name.startswith(("yeux", "peau_masques"))
+            hq = f.name.startswith(("yeux", "peau_masques", "peau_synth"))      # V95 : les joints fins des androïdes
             imp = dest.with_name(dest.name + ".import")
             if not imp.is_file() or "mipmaps/generate=true" not in imp.read_text():
                 imp.write_text(IMPORT_V64.format(nm=1 if normal else 2, hq="true" if hq else "false"))

@@ -16,6 +16,7 @@ const STYLES := {
 	"elfe": ["elfes", "lumen", 6], "atlante": ["atlantes", "lumen", 4],
 	"nain": ["nains", "lumen", 8],
 	"yourte_fleurs": ["larsen", "lumen", 10], "yourte_rainville": ["larsen", "lumen", 10],
+	"neo": ["neo", "lumen", 10], "neo_android": ["neo", "lumen", 6],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
@@ -59,6 +60,10 @@ const PRENOMS := {
 		"f": ["Marguerite", "Pâquerette", "Iris", "Libellule", "Aurore", "Bleuet", "Rosée", "Myosotis", "Églantine", "Ondine", "Camomille", "Violette"]},
 	"yourte_rainville": {"h": ["Crachin", "Ondée", "Gouttière", "Larsen", "Distorsion", "Brouillard", "Torrent", "Riff", "Écho", "Novembre", "Flaque", "Ciré"],
 		"f": ["Giboulée", "Pluie", "Brume", "Mélodie", "Grisaille", "Neige", "Mousson", "Saturation", "Cascade", "Rosée-Noire", "Nuée", "Gamme"]},
+	"neo": {"h": ["Ren", "Kaito", "Daichi", "Jun", "Sora", "Taro", "Yuki", "Haru", "Kenta", "Shin", "Riku", "Akio"],
+		"f": ["Emi", "Hana", "Rei", "Sakura", "Yume", "Nami", "Aoi", "Mika", "Saki", "Rina", "Kumi", "Nori"]},
+	"neo_android": {"h": ["Unité-12", "K-40", "Delta", "Byte", "Ohm", "Volt", "Néon-3", "Pixel-9", "Rotor", "Quartz", "Servo", "Diode"],
+		"f": ["Ada", "Lumi", "Iris-2", "Ondine-7", "Synthia", "Mira", "Nova-5", "Cyra", "Vega-8", "Alpha", "Echo", "Lyra-4"]},
 	"azteque": {"h": ["Cuauhtli", "Itzcoatl", "Tochtli", "Mazatl", "Ocelotl", "Xolotl", "Tenoch", "Acatl", "Ehecatl", "Tlacotl", "Huemac", "Coaxoch"],
 		"f": ["Xochitl", "Citlali", "Itzel", "Yoltzin", "Atzin", "Nenetl", "Quetzalli", "Metztli", "Tonantzin", "Ameyal", "Nahui", "Teyacapan"]},
 }
@@ -308,6 +313,43 @@ static func _make(st: String, i: int) -> Dictionary:
 				az["coiffure"] = ((["long", "boucles", "tresse", "long", "couronne"] if f else ["long", "dreads", "boucles", "queue", "long"]) if hip else (["long", "carre", "queue", "long"] if f else ["long", "court", "long", "queue"]))[r.randi() % (5 if hip else 4)]
 				if az["coiffure"] == "couronne":
 					az["coiffure"] = "tresse"
+		"neo":
+			# V95 : les passants de Néopolis : des humains (un sur trois porte un implant) et des androïdes
+			var neons: Array = [[0.25, 0.9, 1.0], [1.0, 0.3, 0.75], [0.7, 0.35, 1.0], [0.35, 1.0, 0.5], [1.0, 0.65, 0.15]]
+			var sombres: Array = [[0.08, 0.08, 0.1], [0.15, 0.16, 0.2], [0.2, 0.18, 0.24], [0.1, 0.12, 0.16], [0.75, 0.75, 0.78]]
+			var ne := {"c": _c(r, sombres + clothes), "c2": _c(r, neons)}
+			if st == "neo_android":
+				ne["android"] = true
+				ne["circuit"] = _c(r, neons)
+				ne["peau"] = _c(r, [[0.93, 0.92, 0.9], [0.86, 0.87, 0.9], [0.62, 0.64, 0.68], [0.95, 0.85, 0.8], [0.4, 0.42, 0.46]])
+				ne["lueur_yeux"] = 0.7
+				ne["tenue"] = ["service", "techwear", "service", "docker", "combinaison", "techwear"][i % 6]
+				ne["props"] = ["led_tempe"] if i % 2 == 0 else ["led_tempe", "collier"]
+				if old:
+					ne["vieux_modele"] = true
+					ne["props"] = ["led_tempe", "antenne"]
+				az.erase("barbe")
+				az.erase("vieux")
+				az.erase("taille")
+				az["coiffure"] = ["court", "carre", "chauve", "court", "court", "carre"][i % 6]
+				az["cheveux"] = _c(r, [[0.85, 0.86, 0.9], [0.08, 0.08, 0.1], [0.3, 0.75, 0.95], [0.9, 0.9, 0.92]])
+				az["yeux"] = ne["circuit"]
+				if role in ["garcon", "fille"]:
+					p["role"] = "homme" if role == "garcon" else "femme"
+			else:
+				ne["tenue"] = "enfant" if kid else ["techwear", "holo", "sweat", "tailleur", "techwear", "sweat"][r.randi() % 6]
+				if old:
+					ne["tenue"] = ["kimono", "jardinier"][r.randi() % 2]
+				if not kid and not old and r.randf() < 0.35:
+					ne["implant"] = true
+					ne["circuit"] = ne["c2"]
+				if not kid and r.randf() < 0.3:
+					ne["chapeau"] = ["capuche", "casquette", "bonnet"][r.randi() % 3]
+				if not old and r.randf() < 0.3:
+					az["cheveux"] = _c(r, neons)
+				if not kid and not old and r.randf() < 0.2:
+					ne["props"] = [["visiere"], ["oreillettes"], ["casque_audio"]][r.randi() % 3]
+			p["neo"] = ne
 		"azteque":
 			p["sol"] = {"tenue": "enfant" if kid else "peuple"}
 			if r.randf() < 0.5:

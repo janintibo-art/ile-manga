@@ -24,6 +24,14 @@ uniform float fard_force = 0.0;
 uniform float rose = 0.25;
 uniform float diffusion = 0.35;
 uniform float lueur = 0.0;
+// V95 : les androïdes de Néopolis (peau de polymère, joints des plaques, circuits lumineux) et les
+// implants des « modifiés » (une zone de métal sur l'avant-bras et la tempe gauches) : peau_synth.png
+// (R joints, G circuits, B zone de l'implant, A joints de l'implant).
+uniform sampler2D synth : hint_default_black, filter_linear_mipmap_anisotropic, repeat_disable;
+uniform float android = 0.0;
+uniform float implant = 0.0;
+uniform vec3 circuit : source_color = vec3(0.3, 0.9, 1.0);
+uniform vec3 metal_c : source_color = vec3(0.32, 0.33, 0.36);
 
 float hash(vec2 p) {
 	p = fract(p * vec2(123.34, 456.21));
@@ -63,15 +71,36 @@ void fragment() {
 	// sourcils
 	float b = smoothstep(0.42 - 0.3 * sourcils_epais, 0.82 - 0.3 * sourcils_epais, m1.g);
 	col = mix(col, sourcils, b * 0.92);
+	// V95 : androïde — le teint s'unifie (moins de rougeurs), les lèvres s'effacent, les joints se creusent
+	vec4 sy = vec4(0.0);
+	float mz = 0.0;
+	if (android > 0.0 || implant > 0.0) {
+		sy = texture(synth, UV);
+		mz = sy.b * implant;
+	}
+	if (android > 0.0) {
+		float l = dot(col, vec3(0.3, 0.55, 0.15));
+		vec3 flat_c = peau * (l / max(dot(peau, vec3(0.3, 0.55, 0.15)), 0.01));
+		col = mix(col, mix(col, flat_c, 0.75), android);
+		col *= 1.0 - 0.78 * sy.r * android;
+	}
+	if (mz > 0.0) {
+		float plates = 0.92 + 0.08 * sin(UV.x * 900.0) * sin(UV.y * 700.0);
+		col = mix(col, metal_c * plates * (1.0 - 0.8 * sy.a), mz);
+	}
 	ALBEDO = col;
 	// relief : grain + rides (âge)
 	vec2 g = texture(grain_n, UV).xy * 2.0 - 1.0;
 	vec2 r = texture(rides_n, UV).xy * 2.0 - 1.0;
 	vec2 n = g * 1.0 + r * age + vec2(fol - 0.5) * 0.0;
+	n *= 1.0 - 0.8 * max(android, mz);
 	NORMAL_MAP = vec3(n * 0.5 + 0.5, 1.0);
 	NORMAL_MAP_DEPTH = 1.0;
-	ROUGHNESS = mix(0.58, 0.42, lip) + 0.12 * max(stub, sc) + 0.08 * b;
-	SPECULAR = 0.42;
-	SSS_STRENGTH = diffusion;
-	EMISSION = col * lueur;
+	ROUGHNESS = mix(mix(0.58, 0.42, lip) + 0.12 * max(stub, sc) + 0.08 * b, 0.3, android * 0.75);
+	ROUGHNESS = mix(ROUGHNESS, 0.28 + 0.3 * sy.a, mz);
+	SPECULAR = mix(0.42, 0.55, max(android, mz));
+	METALLIC = mz * 0.9;
+	SSS_STRENGTH = diffusion * (1.0 - 0.7 * android) * (1.0 - mz);
+	float pulse = 0.7 + 0.3 * sin(TIME * 2.2 + UV.y * 60.0);
+	EMISSION = col * lueur + circuit * sy.g * (android * (1.0 - sy.b) + mz) * pulse * 3.5;
 }

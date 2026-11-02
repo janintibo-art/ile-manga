@@ -329,6 +329,15 @@ static func skin_material(look: Dictionary) -> ShaderMaterial:
 	m.set_shader_parameter("fard", _col(look.get("fard"), Color(0.45, 0.32, 0.4)))
 	m.set_shader_parameter("fard_force", float(look.get("fard_force", 0.0)))
 	m.set_shader_parameter("rose", float(look.get("rose", 0.25)))
+	# V95 : les androïdes de Néopolis et les implants des « modifiés »
+	var an: float = float(look.get("android", 0.0))
+	var im: float = float(look.get("implant", 0.0))
+	if an > 0.0 or im > 0.0:
+		m.set_shader_parameter("synth", _tex("peau_synth.png"))
+		m.set_shader_parameter("android", an)
+		m.set_shader_parameter("implant", im)
+		m.set_shader_parameter("circuit", _col(look.get("circuit"), Color(0.3, 0.9, 1.0)))
+		m.set_shader_parameter("metal_c", _col(look.get("metal_c"), Color(0.32, 0.33, 0.36)))
 	return m
 
 
@@ -337,6 +346,7 @@ static func eye_material(look: Dictionary) -> ShaderMaterial:
 	m.shader = load("res://shaders/oeil_v64.gdshader")
 	m.set_shader_parameter("tex", _tex("yeux.png"))
 	m.set_shader_parameter("iris", _col(look.get("iris"), Color(0.35, 0.25, 0.15)))
+	m.set_shader_parameter("iris_lueur", float(look.get("iris_lueur", 0.0)))      # V95 : androïdes
 	return m
 
 
