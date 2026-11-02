@@ -3723,6 +3723,9 @@ func _spawn_azur_v56() -> void:
 	# V95 : les habitants de Néopolis
 	if neo_v94 != null and neo_v94.get("ville") != null and neo_v94.ville != null:
 		neo_v94.ville.spawn_npcs()
+	# V98 : les adeptes de l'Île Al Dente
+	if pasta_v97 != null and pasta_v97.get("ville") != null and pasta_v97.ville != null:
+		pasta_v97.ville.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.

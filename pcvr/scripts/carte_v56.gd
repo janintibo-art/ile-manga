@@ -100,6 +100,8 @@ const PLACES := [
 	["Le Mont Bolognaise", Vector2(-415, 1342), "pasta_cratere"],
 	["Le Lac Napolitain", Vector2(-318, 1412), "pasta_lac"],
 	["La Cascade Arrabbiata", Vector2(-445, 1258), "pasta_cascade"],
+	["Le Borgo des Coquillettes", Vector2(-440, 1468), "pasta_borgo"],
+	["La Barque-Maison", Vector2(-366, 1530), "pasta_barque"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],

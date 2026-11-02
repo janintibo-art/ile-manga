@@ -103,6 +103,49 @@ class Batch:
 				p.shader = load(BPSHADER)
 				p.set_shader_parameter("holes", false)
 				m = p
+			# V98 : le Borgo et la Barque-Maison
+			"feuille":
+				var f := StandardMaterial3D.new()
+				f.albedo_color = Color(0.3, 0.52, 0.2)
+				f.vertex_color_use_as_albedo = true
+				f.roughness = 0.75
+				f.cull_mode = BaseMaterial3D.CULL_DISABLED
+				f.backlight_enabled = true
+				f.backlight = Color(0.25, 0.4, 0.1)
+				m = f
+			"tomate", "sauce":
+				var tm := StandardMaterial3D.new()
+				tm.albedo_color = Color(0.78, 0.08, 0.04) if key == "tomate" else Color(0.62, 0.07, 0.03)
+				tm.roughness = 0.25 if key == "tomate" else 0.35
+				tm.clearcoat_enabled = key == "tomate"
+				tm.clearcoat = 0.6
+				m = tm
+			"parmesan":
+				var pm := StandardMaterial3D.new()
+				pm.albedo_color = Color(0.97, 0.92, 0.7)
+				pm.roughness = 0.85
+				m = pm
+			"suie", "drapeau":
+				var su := StandardMaterial3D.new()
+				su.albedo_color = Color(0.04, 0.035, 0.035) if key == "suie" else Color(0.07, 0.07, 0.08)
+				su.roughness = 0.95
+				su.cull_mode = BaseMaterial3D.CULL_DISABLED
+				m = su
+			"cep":
+				m = BDecor.wood(Color(0.42, 0.3, 0.2))
+			"coque", "coque_b":
+				var cq: StandardMaterial3D = (BDecor.planks(Color(0.42, 0.3, 0.2) if key == "coque" else Color(0.36, 0.25, 0.17)) as StandardMaterial3D).duplicate()
+				cq.cull_mode = BaseMaterial3D.CULL_DISABLED
+				m = cq
+			"verre":
+				var vr := StandardMaterial3D.new()
+				vr.albedo_color = Color(0.55, 0.7, 0.75)
+				vr.metallic = 0.4
+				vr.roughness = 0.08
+				vr.emission_enabled = true
+				vr.emission = Color(1.0, 0.75, 0.4)
+				vr.emission_energy_multiplier = 0.3
+				m = vr
 			_:
 				m = BDecor.stone(Color(0.6, 0.6, 0.6))
 		_mcache[key] = m

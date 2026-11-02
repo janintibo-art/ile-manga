@@ -115,6 +115,12 @@ void fragment() {
 			float fil = step(0.55, fract(rest.y / 0.006));
 			c = mix(vec3(0.08, 0.07, 0.07), couleur2, fil);
 		}
+	} else if (motif == 18) {
+		// V98 : le vichy des tabliers de l'Île Al Dente (deux jeux de bandes croisées : trois tons)
+		vec2 q = vec2(rest.x + rest.z * 0.7, rest.y) / max(echelle, 0.01);
+		float a = step(0.5, fract(q.x));
+		float b = step(0.5, fract(q.y));
+		c = mix(couleur, couleur2, (a + b) * 0.5);
 	} else if (motif == 13) {
 		// V76 : la soie à reflets des Lumens : la teinte glisse vers couleur2 sous les angles rasants
 		float fr = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);

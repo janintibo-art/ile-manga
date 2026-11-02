@@ -17,6 +17,7 @@ const STYLES := {
 	"nain": ["nains", "lumen", 8],
 	"yourte_fleurs": ["larsen", "lumen", 10], "yourte_rainville": ["larsen", "lumen", 10],
 	"neo": ["neo", "lumen", 10], "neo_android": ["neo", "lumen", 6],
+	"pasta": ["pasta", "lumen", 10],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
@@ -64,6 +65,8 @@ const PRENOMS := {
 		"f": ["Emi", "Hana", "Rei", "Sakura", "Yume", "Nami", "Aoi", "Mika", "Saki", "Rina", "Kumi", "Nori"]},
 	"neo_android": {"h": ["Unité-12", "K-40", "Delta", "Byte", "Ohm", "Volt", "Néon-3", "Pixel-9", "Rotor", "Quartz", "Servo", "Diode"],
 		"f": ["Ada", "Lumi", "Iris-2", "Ondine-7", "Synthia", "Mira", "Nova-5", "Cyra", "Vega-8", "Alpha", "Echo", "Lyra-4"]},
+	"pasta": {"h": ["Frère Orzo", "Rotini", "Ditalini", "Cannelloni", "Frère Vermicelle", "Capellini", "Ziti", "Paccheri", "Cavatappi", "Strozzapreti", "Frère Gemelli", "Mafaldo"],
+		"f": ["Orecchiette", "Sœur Conchiglie", "Pastina", "Mafalda", "Campanelle", "Stellina", "Fettuccine", "Sœur Lumaca", "Radiatori", "Ruote", "Pappardelle", "Sœur Anelli"]},
 	"azteque": {"h": ["Cuauhtli", "Itzcoatl", "Tochtli", "Mazatl", "Ocelotl", "Xolotl", "Tenoch", "Acatl", "Ehecatl", "Tlacotl", "Huemac", "Coaxoch"],
 		"f": ["Xochitl", "Citlali", "Itzel", "Yoltzin", "Atzin", "Nenetl", "Quetzalli", "Metztli", "Tonantzin", "Ameyal", "Nahui", "Teyacapan"]},
 }
@@ -350,6 +353,19 @@ static func _make(st: String, i: int) -> Dictionary:
 				if not kid and not old and r.randf() < 0.2:
 					ne["props"] = [["visiere"], ["oreillettes"], ["casque_audio"]][r.randi() % 3]
 			p["neo"] = ne
+		"pasta":
+			# V98 : les adeptes de l'Île Al Dente : robes couleur de pâte ou de tomate, tabliers à carreaux,
+			# chemises de paysan ; une passoire sur la tête une fois sur deux (et toujours pour les enfants)
+			var pates: Array = [[0.95, 0.82, 0.45], [0.94, 0.9, 0.8], [0.78, 0.12, 0.08], [0.2, 0.45, 0.18], [0.85, 0.7, 0.42], [0.6, 0.15, 0.12]]
+			var pa := {"c": _c(r, pates), "c2": _c(r, [[0.78, 0.12, 0.08], [0.2, 0.45, 0.18], [0.94, 0.9, 0.8]])}
+			pa["tenue"] = "enfant" if kid else ["adepte", "adepte", "paysan", "tablier", "pelerin", "adepte"][r.randi() % 6]
+			if old:
+				pa["tenue"] = ["adepte", "paysan"][r.randi() % 2]
+			if kid or r.randf() < 0.5:
+				pa["passoire"] = "grande" if kid else "simple"
+			elif r.randf() < 0.5:
+				pa["chapeau"] = ["paille", "foulard", "beret"][r.randi() % 3] if f else ["paille", "beret", "bandana"][r.randi() % 3]
+			p["pasta"] = pa
 		"azteque":
 			p["sol"] = {"tenue": "enfant" if kid else "peuple"}
 			if r.randf() < 0.5:

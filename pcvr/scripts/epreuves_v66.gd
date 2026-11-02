@@ -216,6 +216,9 @@ const LISTE := {
 	"pasta_eclabousse": ["Éclaboussé de sauce", "pasta", 15],
 	"pasta_lac": ["Le Lac Napolitain", "pasta", 15],
 	"pasta_cascade": ["La Cascade Arrabbiata", "pasta", 20],
+	"pasta_borgo": ["Le Borgo des Coquillettes", "pasta", 15],
+	"pasta_barque": ["La Barque-Maison du Capitaine", "pasta", 15],
+	"pasta_offrande": ["La Grande Réconciliation", "pasta", 40],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -287,7 +290,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

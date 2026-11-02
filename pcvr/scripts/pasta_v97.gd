@@ -27,7 +27,7 @@ const PASSOIRE := "res://shaders/passoire_v97.gdshader"
 const PLACES := {"plage": "la Plage du Parmesan", "temple": "le parvis du Temple-Passoire", "temple_dedans": "le Temple-Passoire",
 	"volcan": "le Mont Bolognaise", "cratere": "la Marmite (le cratère)", "lac": "le Lac Napolitain", "cascade": "la Cascade Arrabbiata",
 	"champs": "les Champs de Blé Dur", "sechoir": "le Séchoir à pâtes", "tomateraie": "la Tomateraie", "oliveraie": "l'Oliveraie",
-	"prairie": "la prairie"}
+	"prairie": "la prairie", "borgo": "le Borgo des Coquillettes", "barque": "la Barque-Maison du Capitaine"}
 
 ## Ce que disent les panneaux : [id, x, z, vers où il regarde, texte]
 const PANNEAUX := [
@@ -93,6 +93,12 @@ var _hot_t: float = 0.0
 var _hot_msg_t: float = 0.0
 var cascade_at := Vector3.ZERO
 var _sauce_t: float = 0.0                 # le dernier coup de louche (secondes)
+# V98 : la vie de l'île (le Borgo, les adeptes, la Barque-Maison) et l'humeur du Grand Spaghetti
+const Ville = preload("res://scripts/pasta_ville_v98.gd")
+var ville: Node3D
+var humeur_effigie: float = 1.0           # 0 : il boude (nouilles pendantes, yeux mi-clos) ; 1 : il va bien
+var fete_k: float = 0.0                   # la Grande Réconciliation : il danse
+var _humeur_lisse: float = 1.0
 
 
 func setup(main_node: Node) -> void:
@@ -105,7 +111,7 @@ func setup(main_node: Node) -> void:
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "panneaux": {}, "temple": false, "effigie": false, "couvercle": 0, "cratere": false,
 		"sauce": 0, "eruptions": 0, "eclabousse": false, "cascade": false, "lac": false, "spaghettis": false, "tomates": 0,
-		"recommandations": false}
+		"recommandations": false, "offrande": false}
 
 
 # =================================================================== construction
@@ -133,6 +139,12 @@ func build_town() -> void:
 	_champs()
 	_plage()
 	_panneaux()
+	# V98 : le Borgo des Coquillettes, la Barque-Maison, les rues et les lieux des adeptes (avant la
+	# végétation : les maisons écartent les arbres ; les adeptes arrivent avec les autres habitants)
+	ville = Ville.new()
+	add_child(ville)
+	ville.setup(main, self)
+	ville.build()
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
 		flore.name = "Flore_al_dente_v97"
@@ -289,7 +301,8 @@ func _temple() -> void:
 			var aa2: float = k3 * 0.36
 			var dirb: Vector3 = (door.rotated(Vector3.UP, aa2)).normalized()
 			var bp: Vector3 = _autel_at + dirb * rr2
-			Kit.pew(b, Transform3D(Basis(Vector3.UP, atan2(dirb.x, dirb.z)), bp), 2.0)
+			# V98 : les bancs regardent l'autel (le dossier côté porte)
+			Kit.pew(b, Transform3D(Basis(Vector3.UP, atan2(-dirb.x, -dirb.z)), bp), 2.0)
 	b.commit(self, "Temple_passoire")
 	# la collision de la paroi : des boîtes tout autour (sauf la porte), le socle
 	var n: int = 44
@@ -897,6 +910,9 @@ func _register_interactions() -> void:
 		"text": "E : décrocher une botte de spaghettis", "vr": "Gâchette : décrocher des spaghettis", "call": _spaghettis})
 	d._interactions.append({"id": "pasta_tomate", "pos": _tomates_at, "radius": 6.0,
 		"text": "E : cueillir une tomate", "vr": "Gâchette : cueillir une tomate", "call": _tomate})
+	# V98 : le Plat de la Grande Réconciliation, sur l'autel
+	if ville != null:
+		ville.register_interactions(d)
 
 
 func _lire(j: int) -> void:
@@ -934,8 +950,13 @@ func _lever_les_yeux() -> void:
 	state["effigie"] = true
 	_wiggle = maxf(_wiggle, 1.2)
 	_blink = 0.35
-	say("Là-haut, au-dessus de la passoire, flotte le Grand Spaghetti Volant : une énorme pelote de spaghettis, deux boulettes, et deux yeux au bout de leurs tiges… qui te regardent. Il vient de cligner des yeux. Si, si." if first
-		else "Le Grand Spaghetti Volant te fait un petit signe de nouille. (Personne ne sait comment il tient en l'air. Les adeptes disent : « par la sauce ! »)", 8.0)
+	if humeur_effigie < 0.5:
+		# V98 : il boude (la quête « Le Grand Spaghetti boude »)
+		say("Là-haut, au-dessus de la passoire, flotte le Grand Spaghetti Volant : une énorme pelote de spaghettis, deux boulettes, et deux yeux au bout de leurs tiges… à moitié fermés. Ses nouilles pendent. On dirait qu'il boude." if first
+			else "Le Grand Spaghetti Volant entrouvre un œil, te regarde, et le referme. Il boude toujours. (Le Révérend Père Farfalle, au temple, saurait peut-être pourquoi.)", 8.0)
+	else:
+		say("Là-haut, au-dessus de la passoire, flotte le Grand Spaghetti Volant : une énorme pelote de spaghettis, deux boulettes, et deux yeux au bout de leurs tiges… qui te regardent. Il vient de cligner des yeux. Si, si." if first
+			else "Le Grand Spaghetti Volant te fait un petit signe de nouille. (Personne ne sait comment il tient en l'air. Les adeptes disent : « par la sauce ! »)", 8.0)
 	if first and main.has_method("jingle"):
 		main.jingle("decouverte")
 
@@ -1180,6 +1201,11 @@ func zone_at(p: Vector3) -> String:
 		return "cascade"
 	if vd < float(v[3]) - 6.0:
 		return "volcan"
+	# V98 : le Borgo des Coquillettes (les maisons, la piazzetta) et la Barque-Maison
+	if l.distance_to(Vector2(-18.0, 72.0)) < 25.0:
+		return "borgo"
+	if l.distance_to(Ville.BARQUE) < 11.0:
+		return "barque"
 	if IleScript.champ_at(l.x, l.y) != "":
 		return "champs"
 	var sc: Array = IleScript.PADS["sechoir"]
@@ -1229,10 +1255,14 @@ func _process(delta: float) -> void:
 	# le Grand Spaghetti Volant : il flotte, il tourne doucement, ses yeux suivent le promeneur
 	if effigie != null and (near or dist < 1500.0):
 		_wiggle = maxf(_wiggle - delta * 0.35, 0.0)
-		effigie.global_position = Vector3(temple_c.x + sin(_clock * 0.11) * 1.5, _effigie_y + sin(_clock * 0.45) * 0.9, temple_c.z + cos(_clock * 0.09) * 1.5)
-		effigie.rotation = Vector3(sin(_clock * 0.3) * 0.04, effigie.rotation.y + delta * 0.03, cos(_clock * 0.27) * 0.04)
+		# V98 : quand il boude, il pend un peu plus bas, il tourne à peine ; quand il fête, il danse
+		_humeur_lisse = move_toward(_humeur_lisse, humeur_effigie, delta * 0.25)
+		var hm: float = _humeur_lisse
+		var bob: float = 0.9 + 1.6 * fete_k
+		effigie.global_position = Vector3(temple_c.x + sin(_clock * 0.11) * 1.5, _effigie_y - (1.0 - hm) * 1.5 + sin(_clock * (0.45 + fete_k * 1.2)) * bob, temple_c.z + cos(_clock * 0.09) * 1.5)
+		effigie.rotation = Vector3(sin(_clock * 0.3) * (0.04 + fete_k * 0.12), effigie.rotation.y + delta * (0.01 + 0.02 * hm + 0.9 * fete_k), cos(_clock * 0.27) * (0.04 + fete_k * 0.12))
 		if _nouille_mat != null:
-			_nouille_mat.set_shader_parameter("sway", 0.9 + 1.6 * _wiggle)
+			_nouille_mat.set_shader_parameter("sway", 0.3 + 0.6 * hm + 1.6 * _wiggle)
 		_blink -= delta
 		if _blink < -_rng.randf_range(3.0, 7.0):
 			_blink = 0.18
@@ -1242,7 +1272,7 @@ func _process(delta: float) -> void:
 			if eye.global_position.distance_to(to) > 1.0:
 				eye.look_at(to, Vector3.UP)
 				eye.rotate_object_local(Vector3.UP, PI)
-			eye.scale = Vector3(1.0, 0.12 if _blink > 0.0 else 1.0, 1.0)
+			eye.scale = Vector3(1.0, 0.12 if _blink > 0.0 else lerpf(0.42, 1.0, _humeur_lisse), 1.0)
 	if near:
 		_update_eruption(delta, p, dist < 450.0)
 	if not ile.contains(p.x, p.z):
@@ -1275,7 +1305,7 @@ func _process(delta: float) -> void:
 		state["lac"] = true
 	if z == "cascade":
 		state["cascade"] = true
-	if z in ["temple", "temple_dedans", "volcan", "cratere", "lac", "cascade", "champs", "sechoir", "tomateraie", "oliveraie"] and not bool(vis.get(z, false)):
+	if z in ["temple", "temple_dedans", "volcan", "cratere", "lac", "cascade", "champs", "sechoir", "tomateraie", "oliveraie", "borgo", "barque"] and not bool(vis.get(z, false)):
 		vis[z] = true
 		match z:
 			"temple":
@@ -1298,6 +1328,10 @@ func _process(delta: float) -> void:
 				main._show_message_v28("La Tomateraie — des tomates grosses comme le poing, rouges, chaudes de soleil")
 			"oliveraie":
 				main._show_message_v28("L'Oliveraie — de vieux oliviers tordus, et des cigales qui chantent")
+			"borgo":
+				main._show_message_v28("Le Borgo des Coquillettes — le hameau des adeptes : des maisons de toutes les couleurs, une treille, une grande table, et une odeur de pain chaud")
+			"barque":
+				main._show_message_v28("La Barque-Maison — une vieille barque retournée sur le sable, un mât, un drapeau… c'est la maison du Capitaine Rigatoni")
 	# la surface vue d'en dessous suit le plongeur (la mer de l'île est loin du centre du monde)
 	var mer: Node = main.get("mer_v55")
 	if mer != null and mer.get("_underside") != null:
@@ -1315,7 +1349,11 @@ func trouvailles() -> Dictionary:
 		"pasta_eclabousse": 1 if bool(state.get("eclabousse", false)) else 0,
 		"pasta_cascade": 1 if bool(state.get("cascade", false)) else 0,
 		"pasta_lac": 1 if bool(state.get("lac", false)) else 0,
-		"pasta_recommandations": 1 if bool(state.get("recommandations", false)) else 0}
+		"pasta_recommandations": 1 if bool(state.get("recommandations", false)) else 0,
+		"pasta_tomates": 1 if int(state.get("tomates", 0)) > 0 else 0,
+		"pasta_offrande": 1 if bool(state.get("offrande", false)) else 0,
+		"pasta_borgo": 1 if bool((state.get("visites", {}) as Dictionary).get("borgo", false)) else 0,
+		"pasta_barque": 1 if bool((state.get("visites", {}) as Dictionary).get("barque", false)) else 0}
 
 
 func serialize() -> Dictionary:

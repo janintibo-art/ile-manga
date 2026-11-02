@@ -582,6 +582,7 @@ TROUSERS = {
     'maya': [[0.92, 0.9, 0.84], [0.7, 0.2, 0.15], [0.2, 0.3, 0.6]],
     'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
     'pandemonia': [[0.12, 0.1, 0.1], [0.25, 0.08, 0.08], [0.18, 0.14, 0.2], [0.3, 0.24, 0.2]],
+    'pasta': [[0.36, 0.3, 0.22], [0.3, 0.28, 0.24], [0.75, 0.68, 0.5], [0.24, 0.3, 0.5]],
     'montjoie': [[0.3, 0.24, 0.18], [0.42, 0.34, 0.24], [0.2, 0.22, 0.28], [0.5, 0.44, 0.32], [0.26, 0.3, 0.2]],
     # V75 : Port-Boucan : jean noir, jean brut, kaki, gris anthracite, jean délavé
     'boucan': [[0.07, 0.07, 0.08], [0.12, 0.16, 0.28], [0.26, 0.29, 0.18], [0.2, 0.2, 0.22], [0.3, 0.38, 0.52]],
@@ -1035,6 +1036,107 @@ def outfit(D, p):
             add('tshirt', c1, 'coton')
             add('pantalon', pick(sombres), 'jean', poches=1.0)
             add('chaussures', shoe, 'cuir')
+        return T
+    # --------------------------------------------------------- V98 : les adeptes de l'Île Al Dente
+    pa = p.get('pasta')
+    if vil == 'pasta' and isinstance(pa, dict):
+        tenue = str(pa.get('tenue', 'adepte'))
+        c1 = col(pa.get('c', haut))
+        c2 = col(pa.get('c2', [0.78, 0.12, 0.08]))
+        tomate, creme, basilic, pate = [0.78, 0.12, 0.08], [0.94, 0.9, 0.8], [0.2, 0.45, 0.18], [0.95, 0.82, 0.45]
+        vichy = {'motif': 18, 'c2': tomate, 'echelle': 0.035}
+        brun = [0.36, 0.24, 0.14]
+        if child or tenue == 'enfant':
+            add('tshirt', [0.95, 0.94, 0.9], 'coton', motif=1, c2=c2, echelle=0.035)
+            add('short', [0.24, 0.3, 0.5] if r.random() < 0.6 else [0.75, 0.68, 0.5], 'toile', poches=1.0)
+            add('ceinture_ample', c2, 'coton')
+            add('chaussures', brun, 'cuir')
+            return T
+        if tenue == 'pretre':
+            add('djellaba_haut', c1, 'lin')
+            add('djellaba_bas', c1, 'lin')
+            add('cape', c2, 'laine', motif=16, c2=[0.92, 0.75, 0.3], echelle=0.09)
+            add('ceinture_ample', [0.85, 0.66, 0.25], 'soie')
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'soeur':
+            add('djellaba_haut', c1, 'laine')
+            add('djellaba_bas', c1, 'laine')
+            add('col', creme, 'soie')
+            add('ceinture_ample', [0.94, 0.9, 0.8], 'coton')
+            add('chaussures', [0.1, 0.08, 0.07], 'cuir')
+        elif tenue == 'novice':
+            add('tunique_haut', c1, 'lin')
+            add('tunique_bas', c1, 'lin')
+            add('pantalon', darker(c1, 0.8), 'lin')
+            add('ceinture_ample', c2, 'coton')
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'gardien_gong':
+            add('chemise_longue', [0.92, 0.9, 0.84], 'lin', boutons=1.0)
+            add('gilet', c1, 'laine', boutons=1.0, motif=1, c2=darker(c1, 0.7), echelle=0.03)
+            add('pantalon', [0.2, 0.2, 0.18], 'laine')
+            add('ceinture_ample', c2, 'soie')
+            add('bottes', [0.08, 0.07, 0.07], 'cuir')
+        elif tenue == 'mamma':
+            add('corsage_long', c1, 'coton')
+            add('jupe_longue', [0.16, 0.13, 0.18], 'laine')
+            add('tablier', [0.96, 0.95, 0.92], 'coton', **vichy)
+            add('bavette', [0.96, 0.95, 0.92], 'coton', **vichy)
+            add('chaussures', [0.12, 0.1, 0.09], 'cuir')
+        elif tenue == 'paysan':
+            add('chemise_longue', c1, 'lin', boutons=1.0)
+            add('gilet', c2 if lum(c2) < 0.6 else [0.35, 0.26, 0.18], 'laine', boutons=1.0)
+            add('pantalon', [0.36, 0.3, 0.22], 'toile', poches=1.0)
+            add('ceinture_ample', tomate, 'coton')
+            add('bottes', [0.2, 0.14, 0.09], 'cuir')
+        elif tenue == 'jardiniere':
+            add('corsage', c1, 'coton')
+            add('jupe', tomate, 'coton', motif=16, c2=[0.96, 0.94, 0.88], echelle=0.07)
+            add('tablier_court', basilic, 'toile')
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'savante':
+            add('chemise_rentree', [0.96, 0.96, 0.95], 'soie', boutons=1.0)
+            add('gilet', c1, 'laine', boutons=1.0)
+            add('jupe', c1, 'laine')
+            add('collant', [0.1, 0.1, 0.12], 'coton')
+            add('cravate', c2, 'soie')
+            add('chaussures', [0.1, 0.08, 0.07], 'cuir')
+        elif tenue == 'peintre':
+            add('corsage', c1, 'coton')
+            add('jupe', [0.18, 0.3, 0.24], 'coton')
+            add('collant', [0.12, 0.1, 0.1], 'coton')
+            add('tablier_court', [0.94, 0.92, 0.86], 'toile', motif=4, c2=c2, echelle=0.06)
+            add('chaussures', [0.3, 0.12, 0.1], 'cuir')
+        elif tenue == 'gardien_marmite':
+            add('debardeur', c1, 'coton')
+            add('pantalon', [0.24, 0.22, 0.2], 'toile', poches=1.0)
+            add('tablier', [0.32, 0.2, 0.12], 'cuir')
+            add('bavette', [0.32, 0.2, 0.12], 'cuir')
+            add('bottes_hautes', [0.12, 0.1, 0.08], 'cuir')
+        elif tenue == 'pirate':
+            add('chemise_longue', [0.92, 0.88, 0.78], 'lin', boutons=1.0)
+            add('veste', c1, 'laine')
+            add('pantalon', [0.3, 0.22, 0.16], 'toile', poches=1.0)
+            add('ceinture_ample', c2, 'laine')
+            add('bottes_hautes', [0.16, 0.11, 0.08], 'cuir')
+        elif tenue == 'tablier':
+            if female:
+                add('corsage_long', c1, 'coton')
+                add('jupe_longue', [0.2, 0.18, 0.22], 'coton')
+            else:
+                add('chemise_courte', c1, 'lin', boutons=1.0)
+                add('pantalon', [0.3, 0.28, 0.24], 'toile', poches=1.0)
+            add('tablier', [0.96, 0.95, 0.92], 'coton', **vichy)
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'pelerin':
+            add('tshirt', c1, 'coton')
+            add('pantacourt' if not female else 'jupe', [0.75, 0.68, 0.52], 'toile', poches=1.0)
+            add('chaussures', [0.9, 0.9, 0.88], 'cuir')
+        else:
+            # l'adepte : la longue robe couleur de pâte (ou de tomate), une ceinture de l'autre couleur
+            add('djellaba_haut', c1, 'lin')
+            add('djellaba_bas', c1, 'lin')
+            add('ceinture_ample', c2 if c2 != c1 else basilic, 'coton')
+            add('chaussures', brun, 'cuir')
         return T
     # --------------------------------------------------------- V71 : les gens de Montjoie
     mj = p.get('mj')
@@ -1572,6 +1674,23 @@ def hats_for(D, p):
         out.append({'v': 'ch_beret', 'c': col(nhc if nhc is not None else [0.75, 0.15, 0.3]), 'tissu': 'laine'})
     elif nec == 'bonnet':
         out.append({'v': 'ch_bonnet', 'c': col(nhc if nhc is not None else [0.1, 0.1, 0.12]), 'tissu': 'laine'})
+    # V98 : les couvre-chefs de l'Île Al Dente (la passoire est posée par le jeu)
+    pa = p.get('pasta', {}) if p.get('village') == 'pasta' else {}
+    pac = str(pa.get('chapeau', '')) if isinstance(pa, dict) and not pa.get('passoire') else ''
+    if pac == 'kepi':
+        out.append({'v': 'ch_kepi', 'c': [0.2, 0.22, 0.17], 'tissu': 'laine'})
+    elif pac == 'foulard':
+        out.append({'v': 'ch_foulard_tete', 'c': [0.78, 0.12, 0.08], 'tissu': 'coton', 'motif': 4, 'c2': [0.96, 0.94, 0.9], 'echelle': 0.04})
+    elif pac == 'paille':
+        out.append({'v': 'ch_paille', 'c': [0.85, 0.72, 0.42], 'tissu': 'paille'})
+    elif pac == 'capeline':
+        out.append({'v': 'ch_capeline', 'c': [0.92, 0.84, 0.62], 'tissu': 'lin'})
+    elif pac == 'beret':
+        out.append({'v': 'ch_beret', 'c': [0.2, 0.42, 0.2], 'tissu': 'laine'})
+    elif pac == 'bandana':
+        out.append({'v': 'ch_bandana', 'c': [0.78, 0.12, 0.08], 'tissu': 'coton', 'motif': 4, 'c2': [0.96, 0.94, 0.9], 'echelle': 0.035})
+    elif pac == 'tricorne':
+        out.append({'v': 'ch_tricorne', 'c': [0.08, 0.07, 0.07], 'tissu': 'laine'})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

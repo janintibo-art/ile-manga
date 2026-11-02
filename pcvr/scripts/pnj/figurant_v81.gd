@@ -43,6 +43,10 @@ static func spawn(parent: Node3D, main_node: Node, profile: Dictionary, pos: Vec
 			if profile.has("neo"):
 				npc.free()
 				npc = (load("res://scripts/pnj/pnj_neo_v95.gd") as Script).new()
+			# V98 : les adeptes de l'Île Al Dente (la passoire sur la tête)
+			if profile.has("pasta"):
+				npc.free()
+				npc = (load("res://scripts/pnj/pnj_pasta_v98.gd") as Script).new()
 	parent.add_child(npc)
 	npc.setup(main_node, profile, {"ici": pos}, {"ici": []}, "ici")
 	var stub := Node.new()

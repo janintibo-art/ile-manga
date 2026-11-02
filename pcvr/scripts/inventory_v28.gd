@@ -372,6 +372,17 @@ const ITEMS := {
 	"spaghettis_secs": {"name": "Botte de spaghettis", "art": "une botte de spaghettis", "kind": "curiosite", "sorte": "Curiosité d'Al Dente", "max": 5,
 		"desc": "Une botte de spaghettis séchés au Séchoir de l'Île Al Dente, faits avec le blé dur de ses champs. Liés d'un ruban vert, blanc et rouge.",
 		"effet": "Tu tiens la botte bien droite, comme une baguette de chef d'orchestre. (Recommandation n° 3 : tu ne la casses pas en deux.)"},
+	# V98 : les adeptes de l'Île Al Dente et la quête « Le Grand Spaghetti boude »
+	"focaccia": {"name": "Focaccia au romarin", "art": "une focaccia au romarin", "kind": "nourriture", "max": 10, "heal": 3,
+		"desc": "Une galette de pain moelleuse, dorée au four du Borgo, piquée de romarin et de gros sel, luisante d'huile d'olive. Mamma Lasagna en fait trois fournées par jour. Rend un cœur et demi."},
+	"spaghettis_bolo": {"name": "Assiette de spaghettis bolognaise", "art": "une assiette de spaghettis bolognaise", "kind": "nourriture", "max": 6, "heal": 6,
+		"desc": "Une grande assiette de spaghettis de Mamma Lasagna, nappés de sauce du volcan, trois boulettes et une neige de parmesan. Bénie (un peu) par les Nouilles. Rend trois cœurs."},
+	"pates_benites": {"name": "Nid de tagliatelles fraîches", "art": "le nid de tagliatelles de Mamma Lasagna", "kind": "quete", "sorte": "Objet de quête : l'Île Al Dente", "max": 1,
+		"desc": "Un nid de tagliatelles dorées, faites à la main ce matin par Mamma Lasagna, « en chantant ». Pour le Plat de la Grande Réconciliation. Ne pas écraser, ne pas casser, ne pas manger en route."},
+	"rape_or": {"name": "Râpe d'Or du Capitaine", "art": "la Râpe d'Or du Capitaine Rigatoni", "kind": "quete", "sorte": "Objet de quête : l'Île Al Dente", "max": 1,
+		"desc": "Une râpe à fromage en laiton doré, gravée d'une fourchette et d'une cuillère croisées. Le Capitaine Rigatoni l'avait enterrée sur la plage il y a trente ans, « pour que personne ne la vole ». Elle sent encore un peu le parmesan."},
+	"plat_sacre": {"name": "Plat de la Grande Réconciliation", "art": "le Plat de la Grande Réconciliation", "kind": "quete", "sorte": "Objet de quête : l'Île Al Dente", "max": 1,
+		"desc": "Un grand plat doré : les tagliatelles de Mamma Lasagna, la sauce sacrée de la Marmite, trois boulettes, et une neige de parmesan râpé à la Râpe d'Or. À poser sur l'autel du Temple-Passoire, pour que le Grand Spaghetti arrête de bouder."},
 	"chocolat_chaud": {"name": "Chocolat chaud", "art": "un chocolat chaud", "kind": "nourriture", "max": 10, "heal": 3,
 		"desc": "Le chocolat chaud du Café Feedback, avec un nuage de crème. Ça réchauffe les mains, le ventre et le cœur. Rend un cœur et demi."},
 	"attrape_reves": {"name": "Attrape-rêves", "art": "un attrape-rêves", "kind": "curiosite", "sorte": "Curiosité de Larsen", "max": 1,
@@ -1723,6 +1734,40 @@ func make_model(id: String) -> Node3D:
 			_part(m, _cyl(0.0025, 0.0025, 0.26, 4), _mat("spaghetti_sec", Color(0.95, 0.8, 0.42), 0.55), Vector3(cos(a) * 0.012 * (1 + k % 2), 0.025, sin(a) * 0.012 * (1 + k % 2)), Vector3(0, 0, 90))
 		for c in [[-0.03, Color(0.1, 0.45, 0.22)], [0.0, Color(0.93, 0.91, 0.86)], [0.03, Color(0.72, 0.1, 0.1)]]:
 			_part(m, _cyl(0.03, 0.03, 0.028, 12), _mat("ruban_%s" % str(c[0]), c[1], 0.8), Vector3(float(c[0]) - 0.014, 0.025, 0), Vector3(0, 0, 90))
+	elif id == "focaccia":
+		_part(m, _cyl(0.085, 0.09, 0.03, 20), _mat("focaccia_pate", Color(0.9, 0.7, 0.36), 0.55), Vector3(0, 0.015, 0), Vector3.ZERO, Vector3(1.25, 1.0, 0.9))
+		_part(m, _cyl(0.08, 0.085, 0.004, 20), _mat("focaccia_croute", Color(0.82, 0.55, 0.22), 0.35), Vector3(0, 0.032, 0), Vector3.ZERO, Vector3(1.25, 1.0, 0.9))
+		for k in range(9):
+			var a3: float = TAU * k / 9.0
+			_part(m, _box_mesh(Vector3(0.025, 0.002, 0.004)), _mat("romarin", Color(0.2, 0.36, 0.18), 0.7), Vector3(cos(a3) * 0.05 * (1 + k % 2) * 0.7, 0.035, sin(a3) * 0.04), Vector3(0, k * 40, 0))
+	elif id == "spaghettis_bolo" or id == "plat_sacre":
+		var gold: bool = id == "plat_sacre"
+		var am := _mat("assiette_or" if gold else "assiette", Color(0.9, 0.72, 0.3) if gold else Color(0.95, 0.94, 0.9), 0.25)
+		if gold:
+			am.metallic = 1.0
+		_part(m, _cyl(0.12, 0.09, 0.02, 24), am, Vector3(0, 0.01, 0))
+		_part(m, _sphere(0.075), _mat("spaghettis_plat", Color(0.96, 0.82, 0.48), 0.4), Vector3(0, 0.035, 0), Vector3.ZERO, Vector3(1.0, 0.45, 1.0))
+		_part(m, _sphere(0.05), _mat("sauce_plat", Color(0.62, 0.08, 0.03), 0.3), Vector3(0, 0.055, 0), Vector3.ZERO, Vector3(1.0, 0.4, 1.0))
+		for k2 in range(3):
+			var a4: float = TAU * k2 / 3.0
+			_part(m, _sphere(0.016), _mat("boulette_plat", Color(0.35, 0.18, 0.09), 0.6), Vector3(cos(a4) * 0.03, 0.068, sin(a4) * 0.03))
+		_part(m, _sphere(0.03), _mat("parmesan_plat", Color(0.98, 0.94, 0.75), 0.9), Vector3(0, 0.078, 0), Vector3.ZERO, Vector3(1.0, 0.3, 1.0))
+	elif id == "pates_benites":
+		for ring in range(4):
+			var tm := TorusMesh.new()
+			tm.inner_radius = 0.026 - ring * 0.005
+			tm.outer_radius = 0.04 - ring * 0.005
+			tm.rings = 16
+			tm.ring_segments = 6
+			_part(m, tm, _mat("tagliatelle", Color(0.97, 0.84, 0.46), 0.5), Vector3(0, 0.008 + ring * 0.009, 0), Vector3.ZERO, Vector3(1.0, 0.6, 1.0))
+	elif id == "rape_or":
+		var laiton := _mat("rape_laiton", Color(0.9, 0.72, 0.3), 0.22)
+		laiton.metallic = 1.0
+		for k3 in range(4):
+			var a5: float = TAU * k3 / 4.0
+			_part(m, _box_mesh(Vector3(0.07, 0.16, 0.003)), laiton, Vector3(sin(a5) * 0.035, 0.08, cos(a5) * 0.035), Vector3(0, rad_to_deg(a5), 0))
+		_part(m, _box_mesh(Vector3(0.074, 0.004, 0.074)), laiton, Vector3(0, 0.162, 0))
+		_part(m, _cyl(0.008, 0.008, 0.07, 8), _mat("rape_manche", Color(0.32, 0.18, 0.08), 0.5), Vector3(0, 0.19, 0), Vector3(0, 0, 90))
 	elif id == "parapluie_rainville":
 		var toile := _mat("parapluie_noir", Color(0.06, 0.06, 0.07), 0.5)
 		_part(m, _cyl(0.008, 0.008, 0.75, 6), _mat("parapluie_manche", Color(0.3, 0.18, 0.1), 0.6), Vector3(0, 0.375, 0))

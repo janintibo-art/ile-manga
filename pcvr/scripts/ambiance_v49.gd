@@ -502,11 +502,11 @@ func _choose_zone(running: bool) -> void:
 			"oliveraie", "tomateraie":
 				targets["cigales"] = 1.0
 				targets["brise"] = 0.4
-			"champs", "sechoir", "prairie", "temple":
+			"champs", "sechoir", "prairie", "temple", "borgo":
 				targets["cigales"] = 0.6
 				targets["campagne"] = 0.5
 				targets["brise"] = 0.5
-			"plage":
+			"plage", "barque":
 				targets["ressac"] = 0.9
 				targets["plage"] = 0.5
 			_:

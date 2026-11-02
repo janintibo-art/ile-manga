@@ -28,7 +28,7 @@ const ZONE_TRACK := {
 	"ne_arcades": "neopolis", "ne_marche": "neopolis", "ne_terrasse": "neopolis", "ne_jardin": "neopolis",
 	"pa_plage": "al_dente", "pa_temple": "al_dente", "pa_temple_dedans": "al_dente", "pa_volcan": "al_dente", "pa_cratere": "al_dente",
 	"pa_lac": "al_dente", "pa_cascade": "al_dente", "pa_champs": "al_dente", "pa_sechoir": "al_dente", "pa_tomateraie": "al_dente",
-	"pa_oliveraie": "al_dente", "pa_prairie": "al_dente",
+	"pa_oliveraie": "al_dente", "pa_prairie": "al_dente", "pa_borgo": "al_dente", "pa_barque": "al_dente",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",

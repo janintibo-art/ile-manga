@@ -354,6 +354,13 @@ func build_pasta(island: Node3D, high_quality: bool) -> void:
 		for sd in [-1.0, 1.0]:
 			var p2: Vector3 = cp + side * sd * 3.4
 			p2.y = _ilep.height(p2.x, p2.z)
+			# V98 : pas de cyprès devant les maisons du Borgo (ni dans leurs murs)
+			var libre: bool = true
+			for a in avoid:
+				if Vector2(p2.x, p2.z).distance_to(a[0]) < float(a[1]) + 1.5:
+					libre = false
+			if not libre:
+				continue
 			L["cypres"][k2 % 2].append(_xf(p2, _rng.randf_range(0.9, 1.1)))
 			_trunk(p2, 0.3, 3.0)
 	var tpd: Array = RPA.PADS["temple"]

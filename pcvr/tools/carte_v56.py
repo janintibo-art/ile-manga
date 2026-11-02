@@ -673,6 +673,35 @@ def archipel(src: Path) -> None:
             for rr in (0.35, 0.7):
                 hx, hz = tx + math.cos(a + rr) * r * rr, tz + math.sin(a + rr) * r * rr
                 d.ellipse((hx - 1.6, hz - 1.6, hx + 1.6, hz + 1.6), fill=(90, 94, 100, 255))
+        # V98 : le Borgo des Coquillettes (six maisons crépies, leurs toits de tuiles), la piazzetta et sa
+        # Grande Tablée, la Barque-Maison du Capitaine (une coque retournée sur la plage)
+        if "maisons" in Pa:
+            crepis = {"creme": (236, 222, 190), "bleu": (176, 196, 210), "rose": (226, 168, 156), "jaune": (238, 210, 140),
+                      "ocre": (226, 182, 124), "saumon": (226, 156, 124)}
+            for (mx, mz, mw, md, fx, fz, cc) in Pa["maisons"]:
+                sx, sz = -fz, fx
+                pts = [pw(mx + fx * a2 * md * 0.5 + sx * b2 * mw * 0.5, mz + fz * a2 * md * 0.5 + sz * b2 * mw * 0.5) for (a2, b2) in ((-1, -1), (-1, 1), (1, 1), (1, -1))]
+                d.polygon(pts, fill=(176, 88, 58, 255), outline=(110, 54, 36, 255))
+                d.line([pw(mx + sx * mw * 0.5, mz + sz * mw * 0.5), pw(mx - sx * mw * 0.5, mz - sz * mw * 0.5)], fill=(130, 64, 42, 255), width=1)
+                fxp, fzp = pw(mx + fx * md * 0.55, mz + fz * md * 0.55)
+                d.ellipse((fxp - 1.2, fzp - 1.2, fxp + 1.2, fzp + 1.2), fill=crepis.get(cc, (230, 200, 160)) + (255,))
+            px, pz = pw(*Pa["piazza"])
+            d.rectangle((px - 6.5, pz - 3.8, px + 6.5, pz + 3.8), fill=(214, 200, 176, 255), outline=(150, 130, 100, 255))
+            d.rectangle((px - 4.2, pz - 0.7, px + 4.2, pz + 0.7), fill=(196, 40, 36, 255))
+            bx, bz, by = Pa["barque"]
+            ax, az = math.cos(by), math.sin(by)
+            nx, nz = -az, ax
+            hull = []
+            for k in range(13):
+                u = -1 + k / 6
+                half = 2.2 * math.sqrt(max(1 - abs(u) ** 2.4, 0.0)) + 0.15
+                hull.append(pw(bx + ax * u * 5 + nx * half, bz + az * u * 5 + nz * half))
+            for k in range(12, -1, -1):
+                u = -1 + k / 6
+                half = 2.2 * math.sqrt(max(1 - abs(u) ** 2.4, 0.0)) + 0.15
+                hull.append(pw(bx + ax * u * 5 - nx * half, bz + az * u * 5 - nz * half))
+            d.polygon(hull, fill=(110, 76, 50, 255), outline=(60, 40, 26, 255))
+            d.line([pw(bx - ax * 5, bz - az * 5), pw(bx + ax * 5, bz + az * 5)], fill=(70, 46, 30, 255), width=1)
 
     # quadrillage léger
     for g in range(0, W, 120):
