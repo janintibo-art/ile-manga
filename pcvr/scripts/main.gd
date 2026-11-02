@@ -867,7 +867,7 @@ func _hud_v53(hud: CanvasLayer) -> void:
 
 func _hud_tick_v53(delta: float) -> void:
 	if message_panel_v53 != null:
-		var covered: bool = (inventory_v28 != null and inventory_v28.opened) or (game_menu != null and game_menu.opened and game_started)
+		var covered: bool = (inventory_v28 != null and inventory_v28.opened) or (game_menu != null and game_menu.opened and game_started) or virus_open_v96()
 		message_panel_v53.visible = message.visible and message.text != "" and not covered
 	if info == null or xr_active:
 		return
@@ -1283,6 +1283,8 @@ func _reset_session_v48() -> void:
 		fishing_v32.cancel("")
 	if monstres_v36 != null:
 		monstres_v36.reset_session()
+	if neo_v94 != null and neo_v94.virus != null:
+		neo_v94.virus.reset()
 
 
 func _delete_slot(slot: int) -> void:
@@ -1436,6 +1438,12 @@ func _physics_process(delta: float) -> void:
 		game_menu.open_menu()
 	_doors_update_v27()
 	if game_menu != null and (game_menu.opened or not game_started):
+		return
+	# V96 : le faux virus de Monsieur Fil occupe tout l'écran : le héros attend sans bouger
+	if virus_open_v96():
+		if hero_v28 != null and not xr_active:
+			hero_v28.physics(0.0001)
+		_hud_tick_v53(delta)
 		return
 	autosave_clock += delta
 	if autosave_clock >= 90.0:
@@ -3499,6 +3507,9 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V76 : Astralys
 	if astralys_v76 != null and astralys_v76.city != null:
 		astralys_v76.after_reply(r, npc)
+	# V96 : Néopolis (le programme pas cher de Monsieur Fil, Glitch qui chasse le virus)
+	if neo_v94 != null and neo_v94.ile != null:
+		neo_v94.after_reply(r, npc)
 
 
 func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
@@ -3553,6 +3564,11 @@ func ask_v69(speaker: Node3D, who: String, mood: String, text: String, choices: 
 		sfx("ui_dialogue")
 	riddle_v69 = cb
 	dialogue_v31.show_line(who, mood, text, choices)
+
+
+## V96 : le faux virus de Monsieur Fil (neo_v94.virus) occupe-t-il l'écran ?
+func virus_open_v96() -> bool:
+	return neo_v94 != null and neo_v94.virus != null and bool(neo_v94.virus.opened)
 
 
 func _close_dialogue_v31() -> void:

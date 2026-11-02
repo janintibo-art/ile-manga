@@ -196,6 +196,9 @@ func _ui_open() -> bool:
 		return true
 	if main.get("dialogue_v31") != null and main.dialogue_v31 != null and main.dialogue_v31.opened:
 		return true
+	# V96 : le faux virus de Monsieur Fil (ses fenêtres, ses couleurs, ses circuits)
+	if main.has_method("virus_open_v96") and main.virus_open_v96():
+		return true
 	return false
 
 
@@ -357,6 +360,8 @@ func _back() -> void:
 
 ## La fenêtre ouverte au premier plan (le curseur ne vise que ses boutons).
 func _scope() -> Node:
+	if main.has_method("virus_open_v96") and main.virus_open_v96():
+		return main.neo_v94.virus
 	if main.game_menu != null and main.game_menu.opened:
 		return main.game_menu
 	if main.get("dialogue_v31") != null and main.dialogue_v31 != null and main.dialogue_v31.opened:

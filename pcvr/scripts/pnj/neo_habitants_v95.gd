@@ -315,7 +315,8 @@ static func _all() -> Array:
 			"repliques": {
 				"accueil": [
 					L("Approchez, approchez ! Monsieur Fil, marchand de programmes ! Des applications pour tout : pour rendre votre frigo plus drôle, votre réveil plus doux, votre robot aspirateur plus… aspirant. Et tout ça, pas cher ! Presque gratuit !", {"visites_max": 1}, "salut"),
-					L("Ah, mon {surnom} ! J'ai reçu des nouveautés. Toutes garanties. Garanties quoi ? Garanties… nouvelles.", {"visites_min": 2}, "rire"),
+					L("Ah, mon {surnom} ! J'ai reçu des nouveautés. Toutes garanties. Garanties quoi ? Garanties… nouvelles.", {"visites_min": 2, "q56": "ne_virus_fil="}, "rire"),
+					L("Ah… mon {surnom}. Le chasseur de virus. (Il cache vite une tablette derrière son dos.) Rien à vendre aujourd'hui ! Rien de rien. Que des programmes vérifiés. Enfin, à vérifier.", {"visites_min": 2, "q56": "ne_virus_fil=finie"}, "rire"),
 				],
 				"humeur": [
 					L("Excellente ! Les affaires marchent. Enfin, elles marchent… elles avancent. Lentement. Les gens sont méfiants, à Néopolis. Je me demande pourquoi.", {}),
@@ -330,7 +331,8 @@ static func _all() -> Array:
 					L("La petite Glitch, avec sa visière, passe tous les jours devant mon étal en me regardant de travers. Elle croit que mes programmes sont… pas nets. Quelle idée.", {"sujet_min": ["ile", 1]}),
 				],
 				"rumeur": [
-					L("Bientôt, j'aurai un programme exceptionnel. Le meilleur de tous. Il rendra ton aventure plus facile, plus rapide, plus… tout. Repasse me voir dans quelque temps. Pour toi, je ferai un prix.", {}, "rire"),
+					L("J'ai enfin reçu mon programme exceptionnel ! Le Turbo-Aventure 3000. Le meilleur de tous. Il rendra ton aventure plus facile, plus rapide, plus… tout. Demande-moi : pour toi, je ferai un prix.", {"q56": "ne_virus_fil="}, "rire"),
+					L("Glitch vérifie mes programmes, maintenant. Elle en a ouvert un hier : il y avait trois virus et une recette de crêpes. Elle a gardé la recette. Moi, je garde… la honte.", {"q56": "ne_virus_fil=finie"}),
 				],
 				"interpelle": [L("Psst ! Toi ! Un programme pas cher ?", {}, "salut"), L("Mon {surnom} ! Des nouveautés !", {"visites_min": 1})],
 			}},
@@ -508,6 +510,7 @@ static func _all() -> Array:
 				"accueil": [
 					L("Salut. Glitch. Oui, comme un bug. Ma visière me montre les réseaux de la ville : les lignes de données, les feux, les distributeurs, les ascenseurs. Tout parle, ici. Moi, j'écoute. Et quand quelque chose tousse, je le soigne.", {"visites_max": 1}, "salut"),
 					L("{surnom}. Mes capteurs t'ont repéré il y a trois rues. Tu marches toujours un peu à gauche, tu le savais ?", {"visites_min": 2}, "rire"),
+					L("Salut, chasseur de virus. Ton carnet va bien ? Pas de fenêtres surprises ? Pas de poney en chocolat ? Parfait. Hé hé.", {"visites_min": 2, "q56": "ne_virus_fil=finie"}, "rire"),
 				],
 				"humeur": [
 					L("Vigilante. Il se passe des trucs bizarres dans les Ruelles. Des machines qui font n'importe quoi, d'un coup.", {}),

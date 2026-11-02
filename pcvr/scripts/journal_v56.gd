@@ -938,6 +938,19 @@ const QUETES := [
 		],
 		"fin": "Bonjour. … Bonjour ! Bonjour, bonjour, bonjour ! Pardon. Ça faisait si longtemps. (Sa voix est un peu grave, un peu grésillante, comme une vieille radio.) Merci, mon ami. Mio va être si contente. Et Cargo… il l'avait gardée pour moi, n'est-ce pas ? Il garde tout, ce grand nigaud. Tiens : ce sont les deux sodas que j'avais dans ma trappe à trésors. Depuis vingt ans. Ils brillent encore.",
 		"recompense": {"pieces": 45, "rep": 0, "titre": "Ami des androïdes", "objets": [["soda_neon", 2]]}},
+	# V96 : le programme pas cher de Monsieur Fil (la quête commence quand on l'achète : neo_v94)
+	{"id": "ne_virus_fil", "titre": "Le programme pas cher", "donneur": "fil", "lieu": "Néopolis, les Ruelles", "sorte": "Néopolis",
+		"si": {"sans_offre": true},
+		"resume": "Monsieur Fil, le marchand de programmes des Ruelles, t'a vendu son « Turbo-Aventure 3000 » pour quelques pièces. Il l'a copié dans ton carnet de voyage… et c'était un virus ! Un faux, heureusement : il fait partie du jeu. Glitch, la hackeuse des Arcades, t'aide à t'en débarrasser.",
+		"offre_label": "C'est quoi, votre programme exceptionnel ?",
+		"offre": "Le Turbo-Aventure 3000 ! Pas cher, pas cher !",
+		"etapes": [
+			{"type": "etat", "cle": "virus_neo", "objectif": "Chasser le virus de ton carnet : casser ses trois verrous sur l'écran (après une pause, Glitch t'aide à reprendre : près de la Station des Arcades le matin et le soir, dans la salle d'arcade l'après-midi)"},
+			{"type": "parler", "pnj": "glitch", "label": "Glitch, c'était toi, dans l'écran ?", "texte": "Évidemment, que c'était moi. (Elle relève sa visière, très fière.) Tu sais ce qu'il y avait dans le « Turbo-Aventure 3000 » ? Un virus qui ouvre des fenêtres partout pour vendre… d'autres programmes de Fil. Ce n'est même pas un méchant virus. C'est un virus commercial. Va le lui dire. Moi, quand il me voit, il part en courant.", "objectif": "Aller dire ses quatre vérités à Monsieur Fil (à son étal des Ruelles, l'après-midi et le soir)"},
+			{"type": "rendre", "pnj": "fil", "label": "Monsieur Fil, votre programme était un virus !", "objectif": "Aller dire ses quatre vérités à Monsieur Fil (à son étal des Ruelles, l'après-midi et le soir)"},
+		],
+		"fin": "Un virus ? Dans MON programme ? (Il devient tout rouge, puis tout violet, assorti à son chapeau.) Bon. D'accord. Peut-être. Je l'avais acheté à un marchand encore moins cher que moi, et je ne l'avais pas essayé… Je te rends tes pièces, avec des excuses en plus. Et je te fais une promesse : désormais, Monsieur Fil ne vendra que des programmes vérifiés ! Vérifiés par Glitch. Elle a dit oui. Enfin, elle a dit « on verra ». C'est presque oui.",
+		"recompense": {"pieces": 15, "rep": 0, "titre": "Chasseur de virus", "objets": [["soda_neon", 1]]}},
 	{"id": "bo_concert", "titre": "Le Grand Boucan", "donneur": "rouille", "lieu": "Île du Boucan, la Halle Hurlante", "sorte": "Île du Boucan",
 		"si": {"apres": "bo_bienvenue"},
 		"resume": "Les robots déménageurs de Monsieur Lisse ont volé le matériel des Rats de Cale juste avant le Grand Boucan, le plus grand concert de l'année : Germaine-la-Terrible, la guitare de Clou, l'ampli à lampes et les baguettes de batterie. Il faut tout retrouver, rendre la guitare et l'ampli à Rouille, puis venir au Grand Boucan, le soir, à la Halle Hurlante.",
@@ -1392,6 +1405,9 @@ func _can_offer(q: Dictionary) -> bool:
 	var si: Dictionary = q.get("si", {})
 	if si.has("apres") and state(str(si["apres"])) != "finie":
 		return false
+	# V96 : une quête qui ne se propose pas (elle commence par un achat, un évènement : start_quest)
+	if bool(si.get("sans_offre", false)):
+		return false
 	# V71 : un rang minimum à la Guilde des Aventuriers de Montjoie (« rang D au moins »)
 	if si.has("rang"):
 		var mj: Variant = main.get("montjoie_v71") if main != null else null
@@ -1429,6 +1445,18 @@ func topics_for(npc: Node) -> Array:
 		for s in (services[id][0] as Callable).call(npc):
 			out.append(s)
 	return out
+
+
+## V96 : une quête qui commence sans offre (un achat, un évènement) : elle passe « en cours ».
+func start_quest(qid: String) -> void:
+	var q: Dictionary = quest(qid)
+	if q.is_empty() or state(qid) in ["en_cours", "finie"]:
+		return
+	states[qid] = {"etat": "en_cours", "etape": 0, "debut": _now()}
+	main._show_message_v28("Nouvelle quête : " + str(q["titre"]))
+	main.sfx("ui_quete")
+	_enter_step(qid)
+	changed.emit()
 
 
 func _step(qid: String) -> Dictionary:

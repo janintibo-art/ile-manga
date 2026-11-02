@@ -42,6 +42,8 @@ const RAIL_RC: float = 10.0          # les coins de la boucle (assez serrés pou
 const RAIL_Y: float = 10.0
 const TOUR := Vector2(31.25, -30.0)
 const Ville = preload("res://scripts/neo_ville_v95.gd")
+const Virus = preload("res://scripts/virus_v96.gd")
+const PRIX_VIRUS: int = 3
 
 var main: Node
 var ile: Node3D
@@ -78,6 +80,7 @@ var _car_sfx_t: float = 0.0
 var night: float = 0.0
 var lobby := Vector3.ZERO
 var ville: Node3D                         # V95 : les rues, les lieux, les habitants, les passants
+var virus: Node                           # V96 : le faux virus du « programme pas cher » de Monsieur Fil
 var terrasse := Vector3.ZERO
 
 
@@ -90,7 +93,7 @@ func setup(main_node: Node) -> void:
 
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "terrasse": false, "monorail": 0, "stations": {}, "sodas": 0, "nouilles": 0,
-		"arcade": 0, "record": 0, "hologramme": 0, "zen": 0}
+		"arcade": 0, "record": 0, "hologramme": 0, "zen": 0, "virus": 0, "virus_pas": 0}
 
 
 # =================================================================== construction
@@ -1317,6 +1320,91 @@ func register_services(journal: Node) -> void:
 		journal.lieux["neo_" + str(k)] = objets[k]
 	journal.lieux["neo"] = respawn_point()[0]
 	_register_interactions()
+	# V96 : le programme pas cher de Monsieur Fil, et Glitch qui chasse le virus
+	if virus == null:
+		virus = Virus.new()
+		virus.name = "Virus_v96"
+		add_child(virus)
+		virus.setup(main, self)
+	journal.add_service("fil", Callable(self, "_fil_topics"), Callable(self, "_fil_choose"))
+	journal.add_service("glitch", Callable(self, "_glitch_topics"), Callable(self, "_glitch_choose"))
+
+
+# =================================================================== V96 : le « Turbo-Aventure 3000 »
+
+func _virus_q() -> String:
+	var j: Node = main.get("journal_v56")
+	return str(j.state("ne_virus_fil")) if j != null else ""
+
+
+func _fil_topics(_npc: Node) -> Array:
+	var v: int = int(state.get("virus", 0))
+	if v == 0:
+		return [{"id": "q56:service:fil", "label": "✦ C'est quoi, votre programme exceptionnel ?"}]
+	if _virus_q() == "finie":
+		return [{"id": "q56:service:fil:encore", "label": "✦ Un nouveau programme, Monsieur Fil ?"}]
+	if v == 1:
+		return [{"id": "q56:service:fil:virus", "label": "✦ Monsieur Fil, mon carnet a attrapé un virus !"}]
+	return []
+
+
+func _fil_choose(_npc: Node, choice: String) -> Dictionary:
+	match choice:
+		"q56:service:fil":
+			if int(state.get("virus", 0)) != 0:
+				return {}
+			return {"texte": "Ah ! Mon chef-d'œuvre ! Le Turbo-Aventure 3000 ! (Il fait briller sa tablette sous ton nez.) Il range ton sac tout seul, il trouve les trésors avant toi, il fait même tes devoirs. Enfin… presque. Je le copie directement dans ton carnet de voyage : ton carnet est magique, non ? Alors il est sûrement compatible. Et pour toi, seulement %d pièces ! Garanti sans virus. Enfin… garanti." % PRIX_VIRUS,
+				"geste": "rire", "choix": [{"id": "q56:service:fil:acheter", "label": "D'accord, je le prends ! (%d pièces)" % PRIX_VIRUS}, {"id": "q56:service:fil:non", "label": "Hmm… non merci."}]}
+		"q56:service:fil:acheter":
+			if int(state.get("virus", 0)) != 0:
+				return {}
+			var n: int = mini(PRIX_VIRUS, int(main.inventory_v28.count("piece")))
+			var t: String = "(Il branche un petit câble violet sur ton carnet de voyage.) Et… voilà ! Installation en cours. Ne t'inquiète pas si ça clignote un peu. C'est normal. C'est… prévu."
+			if n == 0:
+				t = "Pas une seule pièce ? Bon… pour toi, c'est offert ! Un cadeau de bienvenue. " + t
+			elif n < PRIX_VIRUS:
+				t = "Tu n'as que %d pièce%s ? Allez, ce sera le prix ! " % [n, "s" if n > 1 else ""] + t
+			var r: Dictionary = {"texte": t, "geste": "rire", "_virus96": "start", "fin": true}
+			if n > 0:
+				r["prendre"] = [["piece", n]]
+			return r
+		"q56:service:fil:non":
+			return {"texte": "Tant pis pour toi ! Enfin… tant mieux pour toi, peut-être. Hé hé. L'offre tient toujours !", "geste": "parle"}
+		"q56:service:fil:virus":
+			return {"texte": "Un virus ? Dans MES programmes ? Impossible ! Ils sont garantis. Garantis… quelque chose. (Il regarde ailleurs.) Va voir la petite Glitch : elle s'y connaît, en… en choses. Le matin et le soir, elle traîne près de la Station des Arcades ; l'après-midi, dans la salle d'arcade. Moi, j'ai un rendez-vous. Très loin. Tout de suite.", "geste": "parle"}
+		"q56:service:fil:encore":
+			return {"texte": "Ah non ! Fini, les programmes pas chers. Maintenant, Monsieur Fil vend des programmes vérifiés par Glitch. Elle n'en a encore vérifié aucun… alors je n'en vends aucun. Le commerce honnête, c'est très reposant.", "geste": "rire"}
+	return {}
+
+
+func _glitch_topics(_npc: Node) -> Array:
+	if int(state.get("virus", 0)) == 1 and virus != null and not virus.opened:
+		return [{"id": "q56:service:glitch:virus", "label": "✦ Glitch, aide-moi à chasser le virus de mon carnet !"}]
+	return []
+
+
+func _glitch_choose(_npc: Node, choice: String) -> Dictionary:
+	if choice == "q56:service:glitch:virus" and int(state.get("virus", 0)) == 1:
+		return {"texte": "Encore le virus de Fil ? Donne-moi ton carnet. (Elle branche un câble rose sur ton carnet et tape à toute vitesse.) Voilà : je t'ouvre le système. On reprend là où tu t'étais arrêté.", "geste": "parle", "_virus96": "resume", "fin": true}
+	return {}
+
+
+## Appelé par main après un échange réussi : l'achat du programme (le virus arrive), ou Glitch qui
+## rouvre le système.
+func after_reply(r: Dictionary, _npc: Node) -> void:
+	if not r.has("_virus96") or virus == null:
+		return
+	var mode: String = str(r["_virus96"])
+	main._close_dialogue_v31()
+	if mode == "start":
+		state["virus"] = 1
+		state["virus_pas"] = 0
+		var j: Node = main.get("journal_v56")
+		if j != null:
+			j.start_quest("ne_virus_fil")
+	get_tree().create_timer(1.2 if mode == "start" else 0.6).timeout.connect(func():
+		if virus != null and not virus.opened and int(state.get("virus", 0)) == 1:
+			virus.begin(mode))
 
 
 func contains(p: Vector3) -> bool:
@@ -1494,7 +1582,8 @@ func trouvailles() -> Dictionary:
 		"neo_hauts": 1 if bool(vis.get("hauts", false)) else 0, "neo_jardin": 1 if bool(vis.get("jardin", false)) else 0,
 		"neo_monorail": 1 if (state.get("stations", {}) as Dictionary).size() >= 4 else 0,
 		"neo_arcade": 1 if int(state.get("arcade", 0)) >= 3 else 0, "neo_soda": 1 if int(state.get("sodas", 0)) >= 1 else 0,
-		"neo_nouilles": 1 if int(state.get("nouilles", 0)) >= 1 else 0}
+		"neo_nouilles": 1 if int(state.get("nouilles", 0)) >= 1 else 0,
+		"virus_neo": 1 if int(state.get("virus", 0)) >= 2 else 0}
 
 
 func serialize() -> Dictionary:
@@ -1506,3 +1595,6 @@ func load_data(d: Dictionary) -> void:
 	for k in state:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary) else (d[k] as Dictionary).duplicate(true)
+	# V96 : une partie chargée referme le faux virus (il reprendra avec Glitch, là où on en était)
+	if virus != null:
+		virus.reset()
