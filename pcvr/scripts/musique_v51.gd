@@ -29,6 +29,8 @@ const ZONE_TRACK := {
 	"pa_plage": "al_dente", "pa_temple": "al_dente", "pa_temple_dedans": "al_dente", "pa_volcan": "al_dente", "pa_cratere": "al_dente",
 	"pa_lac": "al_dente", "pa_cascade": "al_dente", "pa_champs": "al_dente", "pa_sechoir": "al_dente", "pa_tomateraie": "al_dente",
 	"pa_oliveraie": "al_dente", "pa_prairie": "al_dente", "pa_borgo": "al_dente", "pa_barque": "al_dente",
+	"cr_plage": "crayonnee", "cr_clairiere": "crayonnee", "cr_bois": "crayonnee", "cr_mont": "crayonnee", "cr_sommet": "crayonnee",
+	"cr_cascade": "crayonnee", "cr_etang": "crayonnee", "cr_ruisseau": "crayonnee", "cr_pres": "crayonnee", "cr_prairie": "crayonnee",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
@@ -75,7 +77,7 @@ const ZONE_TRACK := {
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "camp_des_fleurs": -9.0, "rainville": -9.0, "festival_larsen": -7.0, "neopolis": -9.0, "al_dente": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
+	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "camp_des_fleurs": -9.0, "rainville": -9.0, "festival_larsen": -7.0, "neopolis": -9.0, "al_dente": -9.0, "crayonnee": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,

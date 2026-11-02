@@ -703,6 +703,79 @@ def archipel(src: Path) -> None:
             d.polygon(hull, fill=(110, 76, 50, 255), outline=(60, 40, 26, 255))
             d.line([pw(bx - ax * 5, bz - az * 5), pw(bx + ax * 5, bz + az * 5)], fill=(70, 46, 30, 255), width=1)
 
+    # V99 : l'Île Crayonnée (au sud-est) : elle n'a pas encore ses couleurs, alors la carte la montre
+    # comme un dessin à la plume sur du papier blanc : le trait de côte, les courbes de niveau du Mont
+    # Fusain, l'étang et les ruisseaux (de petites vagues), les arbres (des ronds festonnés), les
+    # chemins en pointillés, la Clairière des Géants (un cercle en tirets) (bake99.gd écrit crayon.json)
+    cf = src / "crayon.json"
+    if OX > 540 and rows >= 1380 and cf.exists():
+        Cr = json.loads(cf.read_text())
+        ccx, ccz = Cr["centre"]
+        half = Cr["half"]
+
+        def cw(x, z):
+            return (x + OX, z + OZ)
+
+        x0, z0 = int(ccx - half + OX), int(ccz - half + OZ)
+        size = int(2 * half)
+        box = np.zeros((H, W), bool)
+        box[max(z0, 0):z0 + size, max(x0, 0):x0 + size] = True
+        il = land & box
+        arr = np.array(im)
+        arr[il, :3] = (247, 245, 238)
+        # les courbes de niveau (tous les 5 m), en gris
+        lv = np.floor(np.where(il, h, -10.0) / 5.0)
+        cont = il & ((lv != np.roll(lv, 1, 0)) | (lv != np.roll(lv, 1, 1))) & (h > 1.0)
+        arr[cont, :3] = (150, 146, 140)
+        # les hachures sur les pentes raides (vers le sud-est : l'ombre)
+        gy, gx = np.gradient(np.where(il, h, 0.0))
+        yy2, xx2 = np.mgrid[0:H, 0:W]
+        steep = il & (np.hypot(gx, gy) > 0.35) & (((xx2 + yy2) % 5) == 0)
+        arr[steep, :3] = (110, 106, 100)
+        # le trait de côte, à l'encre
+        edge = il ^ ndimage.binary_erosion(il, iterations=2)
+        arr[edge, :3] = (34, 32, 30)
+        im.paste(Image.fromarray(arr))
+        d = ImageDraw.Draw(im)
+        ink = (34, 32, 30, 255)
+        # les chemins : des pointillés
+        for line in Cr["chemins"]:
+            pts = [cw(*q) for q in line]
+            for k in range(0, len(pts) - 1, 2):
+                d.line([pts[k], pts[k + 1]], fill=(90, 86, 80, 255), width=1)
+        # les ruisseaux : deux traits fins
+        for fl in Cr["flows"]:
+            pts = [cw(*q) for q in fl]
+            d.line(pts, fill=ink, width=4)
+            d.line(pts, fill=(247, 245, 238, 255), width=2)
+        # l'Étang Gommé : un rond blanc cerné d'encre, trois vaguelettes
+        ex, ez = cw(*Cr["etang"][:2])
+        er = Cr["etang"][2]
+        d.ellipse((ex - er, ez - er, ex + er, ez + er), fill=(247, 245, 238, 255), outline=ink, width=2)
+        for k in range(3):
+            yv = ez - er * 0.4 + k * er * 0.4
+            d.arc((ex - er * 0.5, yv - 2, ex - er * 0.1, yv + 2), 180, 360, fill=ink, width=1)
+            d.arc((ex - er * 0.1, yv - 2, ex + er * 0.3, yv + 2), 0, 180, fill=ink, width=1)
+        # la Clairière des Géants : un cercle en tirets ; la Palette de pierre au milieu
+        qx, qz = cw(*Cr["clairiere"][:2])
+        qr = Cr["clairiere"][2]
+        for k in range(36):
+            if k % 2 == 0:
+                d.arc((qx - qr, qz - qr, qx + qr, qz + qr), k * 10, k * 10 + 10, fill=ink, width=2)
+        px, pz = cw(*Cr["palette"])
+        d.ellipse((px - 5, pz - 3.5, px + 5, pz + 3.5), fill=(247, 245, 238, 255), outline=ink, width=1)
+        for k in range(5):
+            a = math.pi * (0.9 + k * 0.25)
+            d.ellipse((px + math.cos(a) * 3.4 - 0.8, pz + math.sin(a) * 2.2 - 0.8, px + math.cos(a) * 3.4 + 0.8, pz + math.sin(a) * 2.2 + 0.8), outline=ink)
+        # les arbres : des ronds festonnés (les pins : de petits triangles)
+        for (tx, tz, pin) in Cr["arbres"]:
+            x, z = cw(tx, tz)
+            if pin:
+                d.polygon([(x, z - 3.5), (x - 2.5, z + 2.5), (x + 2.5, z + 2.5)], fill=(247, 245, 238, 255), outline=ink)
+            else:
+                d.ellipse((x - 3.2, z - 3.2, x + 3.2, z + 3.2), fill=(247, 245, 238, 255), outline=ink, width=1)
+                d.arc((x - 2.0, z - 2.0, x + 1.2, z + 1.2), 200, 300, fill=(120, 116, 110, 255), width=1)
+
     # quadrillage léger
     for g in range(0, W, 120):
         d.line([(g, 0), (g, H)], fill=(80, 60, 40, 40), width=1)

@@ -1324,6 +1324,11 @@ const AVENTURES := [
 			["pasta_eruption", "Voir le volcan cracher sa sauce"], ["pasta_cascade", "Voir la Cascade Arrabbiata tomber dans la mer"],
 			["pasta_borgo", "Passer au Borgo des Coquillettes, le hameau des adeptes"], ["pasta_barque", "Rendre visite au Capitaine Rigatoni, dans sa Barque-Maison"],
 			["pasta_offrande", "Réconcilier le Grand Spaghetti Volant avec ses adeptes"]]},
+	{"id": "crayon", "titre": "L'Île Crayonnée, l'île sans couleurs", "lieu": "L'Île Crayonnée, au sud-est de l'archipel", "debut": "crayon",
+		"etapes": [["crayon", "Accoster sur la Grève Blanche"], ["crayon_clairiere", "Entrer dans la Clairière des Géants"],
+			["crayon_palette", "Regarder la Palette de pierre et ses neuf godets vides"], ["crayon_bois", "Se promener dans le Bois des Hachures"],
+			["crayon_etang", "Faire le tour de l'Étang Gommé"], ["crayon_cascade", "Voir la Cascade d'Encre tomber de la falaise"],
+			["crayon_sommet", "Monter au sommet du Mont Fusain"], ["crayon_pres", "Traverser les Prés Blancs"]]},
 	{"id": "ailes", "titre": "Les Ailes de Philibert", "lieu": "Cliquetis, puis le ciel", "debut": "atelier_ailes",
 		"etapes": [["aeronef_1", "L'Alouette, le deltaplane de Philibert (à l'Atelier des Ailes, à l'ouest de Cliquetis)"], ["aeronef_2", "L'Alouette à hélice"], ["aeronef_3", "L'Albatros, le petit aéronef"],
 			["vol_haut", "Voler à plus de 250 m"], ["aeronef_4", "Le Glisseur stellaire des Lumens (Ionie, au Spatioport d'Astralys)"]]},
@@ -2022,6 +2027,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.neo_v94.place_name(p))
 	if main.get("pasta_v97") != null and main.pasta_v97 != null and main.pasta_v97.ile != null and main.pasta_v97.owns_point(p):
 		return str(main.pasta_v97.place_name(p))
+	if main.get("crayon_v99") != null and main.crayon_v99 != null and main.crayon_v99.ile != null and main.crayon_v99.owns_point(p):
+		return str(main.crayon_v99.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

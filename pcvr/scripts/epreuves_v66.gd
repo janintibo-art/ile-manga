@@ -219,6 +219,14 @@ const LISTE := {
 	"pasta_borgo": ["Le Borgo des Coquillettes", "pasta", 15],
 	"pasta_barque": ["La Barque-Maison du Capitaine", "pasta", 15],
 	"pasta_offrande": ["La Grande Réconciliation", "pasta", 40],
+	"crayon": ["L'Île Crayonnée", "crayon", 20],
+	"crayon_clairiere": ["La Clairière des Géants", "crayon", 15],
+	"crayon_palette": ["La Palette de pierre", "crayon", 15],
+	"crayon_sommet": ["Au sommet du Mont Fusain", "crayon", 25],
+	"crayon_cascade": ["La Cascade d'Encre", "crayon", 20],
+	"crayon_etang": ["L'Étang Gommé", "crayon", 15],
+	"crayon_bois": ["Le Bois des Hachures", "crayon", 15],
+	"crayon_pres": ["Les Prés Blancs", "crayon", 15],
 	"boucan_ville": ["Port-Boucan, la ville libre", "boucan", 20],
 	"boucan_concert": ["Un pogo à la Halle Hurlante", "boucan", 25],
 	"boucan_champignon": ["Un champignon féerique", "boucan", 20],
@@ -278,7 +286,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["pasta", "L'Île Al Dente"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["pasta", "L'Île Al Dente"], ["crayon", "L'Île Crayonnée"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -290,7 +298,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

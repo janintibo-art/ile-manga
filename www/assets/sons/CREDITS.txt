@@ -329,3 +329,8 @@ Sons synthétisés (domaine public, CC0), dans pcvr/tools/generate_sons_v97.py :
 Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v97.py (mandoline et
 accordéon calculés, tambourin de la VCSL, contrebasse, clarinette et glockenspiel de VSCO-2 CE, CC0) :
   musique/al_dente.ogg (« Al Dente », une tarentelle).
+
+L'Île Crayonnée (V99) —
+Musique : composition originale (CC0), partition dans pcvr/tools/compose_musique_v99.py (célesta calculé,
+harpe, pizzicati, flûte et glockenspiel de VSCO-2 CE, CC0) :
+  musique/crayonnee.ogg (« La Page Blanche », une petite valse de boîte à musique).

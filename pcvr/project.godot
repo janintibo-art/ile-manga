@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Les Mondes de Travers VR V98"
+config/name="Les Mondes de Travers VR V99"
 config/icon="res://assets/textures/ui/les_mondes_de_travers_icon.png"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"
@@ -29,3 +29,22 @@ shaders/enabled=true
 
 [physics]
 common/physics_ticks_per_second=90
+
+[shader_globals]
+
+crayon_masque={
+"type": "sampler2D",
+"value": ""
+}
+crayon_rect={
+"type": "vec4",
+"value": Vector4(810, 1260, 380, 380)
+}
+crayon_soleil={
+"type": "vec3",
+"value": Vector3(0.4, 0.8, 0.45)
+}
+crayon_jour={
+"type": "float",
+"value": 1.0
+}

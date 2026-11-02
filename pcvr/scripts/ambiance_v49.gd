@@ -478,6 +478,35 @@ func _choose_zone(running: bool) -> void:
 			targets["pluie"] = 0.6
 		_night_beds()
 		return
+	# V99 : l'Île Crayonnée (les oiseaux du bois, la cascade, le vent du sommet, la plage)
+	var crs: Node = main.get("crayon_v99")
+	var cr_zone: String = crs.zone_at(p) if crs != null and crs.get("ile") != null and crs.ile != null and not on_ferry else ""
+	if cr_zone != "" and not on_boat:
+		zone = "cr_" + cr_zone
+		match cr_zone:
+			"bois":
+				targets["oiseaux"] = 1.0
+				targets["brise"] = 0.4
+			"cascade":
+				targets["ressac"] = 0.8
+				targets["oiseaux"] = 0.3
+			"etang", "ruisseau":
+				targets["oiseaux"] = 0.6
+				targets["brise"] = 0.4
+			"mont", "sommet":
+				targets["vent_vol"] = 0.6
+				targets["brise"] = 0.5
+			"pres", "clairiere", "prairie":
+				targets["campagne"] = 0.6
+				targets["oiseaux"] = 0.5
+				targets["brise"] = 0.4
+			"plage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.5
+			_:
+				targets["brise"] = 0.6
+		_night_beds()
+		return
 	# V97 : l'Île Al Dente (la sauce qui mijote dans la Marmite, les cigales de l'oliveraie, la plage)
 	var pas: Node = main.get("pasta_v97")
 	var pa_zone: String = pas.zone_at(p) if pas != null and pas.get("ile") != null and pas.ile != null and not on_ferry else ""
