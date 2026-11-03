@@ -25,6 +25,14 @@ var _run_loop: Array = []              # boucle de jogging
 var _run_i: int = 0
 var _prop: Node3D                      # guitare, livre, pinceau…
 var _rng2 := RandomNumberGenerator.new()
+# V102 : plus de vie (petits gestes, flâneries, saluts aux voisins)
+var _au_lieu: float = 0.0              # depuis quand il est à son lieu
+var _flane: Array = []                 # flânerie en cours : nœuds à suivre (« ~pause » : on regarde autour)
+var _flane_rot: float = 0.0
+var _flane_wait: float = 0.0
+var _regard: Node3D                    # le voisin qu'il salue
+var _regard_t: float = 0.0
+const GESTES_V102 := {"etirer": 3.2, "gratter_tete": 2.6, "visiere": 3.6, "regarder": 4.0, "mains_dos": 4.5, "baille": 2.8}
 
 
 func setup_azur(manager: Node, data: Dictionary) -> void:
@@ -41,6 +49,7 @@ func setup_azur(manager: Node, data: Dictionary) -> void:
 	if vr_label != null:
 		vr_label.position.y = 2.0 - (1.0 - size_k) * 1.8
 	_build_extra_poses()
+	_build_v102_poses()
 	_make_prop(str(data.get("accessoire", "")))
 
 
@@ -82,6 +91,150 @@ func _build_extra_poses() -> void:
 	poses.add_animation("lire", lib._clip(5.0, true, [[0.0, read, Vector3(0, -38, 0)], [2.5, read_b, Vector3(0, -38, 0)], [5.0, read, Vector3(0, -38, 0)]]))
 	anim.add_animation_library("v56", poses)
 	lib.free()
+
+
+## V102 : des gestes du quotidien (s'étirer, se gratter la tête, regarder au loin, les mains dans le
+## dos, regarder autour de soi, bâiller, saluer de la main).
+func _build_v102_poses() -> void:
+	if anim == null or skel == null or anim.has_animation_library("v102"):
+		return
+	var lib = HeroLib.new()
+	lib.hero = model
+	lib.anim = anim
+	lib.skel = skel
+	var poses := AnimationLibrary.new()
+	var o := Vector3.ZERO
+	var base := {"LeftArm": Vector3(0, 0, -10), "RightArm": Vector3(0, 0, 10), "LeftForeArm": Vector3(-10, 0, 0), "RightForeArm": Vector3(-10, 0, 0)}
+	var up := lib._merge(base, {"LeftArm": Vector3(-165, 0, 22), "RightArm": Vector3(-165, 0, -22), "LeftForeArm": Vector3(-15, 0, 0), "RightForeArm": Vector3(-15, 0, 0),
+		"Spine02": Vector3(-12, 0, 0), "Spine01": Vector3(-4, 0, 0), "Head": Vector3(-18, 0, 0)})
+	var up_b := lib._merge(up, {"LeftArm": Vector3(-160, 0, 32), "RightArm": Vector3(-160, 0, -32), "Spine02": Vector3(-15, 0, 0)})
+	poses.add_animation("etirer", lib._clip(3.2, false, [[0.0, base, o], [1.0, up, Vector3(0, 1.0, 0)], [2.0, up_b, Vector3(0, 1.2, 0)], [3.2, base, o]]))
+	var g_a := lib._merge(base, {"RightArm": Vector3(-150, 0, -28), "RightForeArm": Vector3(-105, 0, 0), "Head": Vector3(6, 0, -8)})
+	var g_b := lib._merge(g_a, {"RightForeArm": Vector3(-92, 0, 0)})
+	poses.add_animation("gratter_tete", lib._clip(2.6, false, [[0.0, base, o], [0.5, g_a, o], [0.8, g_b, o], [1.1, g_a, o], [1.4, g_b, o], [1.7, g_a, o], [2.6, base, o]]))
+	var v := lib._merge(base, {"RightArm": Vector3(-130, 0, -20), "RightForeArm": Vector3(-115, 0, 0), "Head": Vector3(-10, 0, 0), "Spine02": Vector3(-4, 0, 0)})
+	var v_b := lib._merge(v, {"Head": Vector3(-10, 25, 0), "Spine02": Vector3(-4, 6, 0)})
+	var v_c := lib._merge(v, {"Head": Vector3(-10, -22, 0), "Spine02": Vector3(-4, -6, 0)})
+	poses.add_animation("visiere", lib._clip(3.6, false, [[0.0, base, o], [0.6, v, o], [1.5, v_b, o], [2.4, v_c, o], [3.0, v, o], [3.6, base, o]]))
+	var l_a := lib._merge(base, {"Head": Vector3(0, -45, 0), "Spine02": Vector3(0, -10, 0)})
+	var l_b := lib._merge(base, {"Head": Vector3(0, 45, 0), "Spine02": Vector3(0, 10, 0)})
+	poses.add_animation("regarder", lib._clip(4.0, false, [[0.0, base, o], [1.0, l_a, o], [2.0, base, o], [3.0, l_b, o], [4.0, base, o]]))
+	var h_a := {"LeftArm": Vector3(14, 0, -10), "LeftForeArm": Vector3(-70, 0, 0), "RightArm": Vector3(14, 0, 10), "RightForeArm": Vector3(-70, 0, 0), "Spine02": Vector3(-3, 0, 0), "Head": Vector3(-4, 0, 0)}
+	var h_b := lib._merge(h_a, {"Head": Vector3(-2, 18, 0), "Spine02": Vector3(-4, 4, 0)})
+	var h_c := lib._merge(h_a, {"Head": Vector3(-2, -16, 0), "Spine02": Vector3(-4, -4, 0)})
+	poses.add_animation("mains_dos", lib._clip(4.5, false, [[0.0, base, o], [0.6, h_a, o], [1.8, h_b, Vector3(0, -0.4, 0)], [3.0, h_c, o], [3.9, h_a, o], [4.5, base, o]]))
+	var b := lib._merge(base, {"Head": Vector3(-25, 0, 0), "Spine02": Vector3(-8, 0, 0), "RightArm": Vector3(-62, 0, -26), "RightForeArm": Vector3(-125, 0, 0)})
+	var b_b := lib._merge(b, {"Head": Vector3(-28, 0, 0)})
+	poses.add_animation("baille", lib._clip(2.8, false, [[0.0, base, o], [0.7, b, o], [1.9, b_b, o], [2.8, base, o]]))
+	var s_a := lib._merge(base, {"RightArm": Vector3(-150, 0, -5), "RightForeArm": Vector3(-25, 0, 0), "Head": Vector3(-4, 0, 0)})
+	var s_b := lib._merge(s_a, {"RightArm": Vector3(-150, 0, -35)})
+	poses.add_animation("saluer", lib._clip(1.8, false, [[0.0, base, o], [0.35, s_a, o], [0.6, s_b, o], [0.85, s_a, o], [1.1, s_b, o], [1.35, s_a, o], [1.8, base, o]]))
+	anim.add_animation_library("v102", poses)
+	lib.free()
+
+
+## V102 : un geste au hasard (selon l'heure : on bâille le matin et le soir).
+func _geste_v102() -> bool:
+	if anim == null or not anim.has_animation_library("v102"):
+		return false
+	var h: float = float(azur.hour()) if azur != null else 12.0
+	var l: Array = ["etirer", "gratter_tete", "visiere", "regarder", "regarder", "mains_dos"]
+	if h < 9.0 or h >= 21.0:
+		l.append("baille")
+		l.append("etirer")
+	var g: String = str(l[_rng2.randi() % l.size()])
+	_play("v102/" + g, 0.35)
+	gesture_clock = float(GESTES_V102[g]) - 0.2
+	return true
+
+
+## V102 : saluer de la main (un voisin qui passe, le joueur qui arrive).
+func saluer_v102(qui: Node3D = null) -> void:
+	if anim == null or not anim.has_animation("v102/saluer"):
+		return
+	_play("v102/saluer", 0.25, 1.0, 0.0)
+	gesture_clock = 1.7
+	if qui != null:
+		_regard = qui
+		_regard_t = 2.2
+
+
+## V102 : un voisin qui passe à côté (il marche, il est visible).
+func _voisin_qui_passe() -> Node3D:
+	var list: Variant = main.get("npcs_v31")
+	if not (list is Array):
+		return null
+	for n in list:
+		if n == self or not is_instance_valid(n) or not (n as Node3D).visible or str(n.get("state")) != "marche":
+			continue
+		if (n as Node3D).global_position.distance_to(global_position) < 7.0:
+			return n
+	return null
+
+
+## V102 : une petite flânerie (un ou deux nœuds plus loin, on regarde autour, puis on revient).
+func _flane_start() -> bool:
+	var home_node: String = at_point
+	if not points.has(home_node):
+		return false
+	var p0: Vector3 = points[home_node]
+	var ok := func(nb: String, ref: Vector3) -> bool:
+		if not points.has(nb) or nb.begins_with("porte_") or nb.begins_with("villa_"):
+			return false
+		var q: Vector3 = points[nb]
+		return q.distance_to(p0) < 12.0 and absf(q.y - ref.y) < 1.2 and q.distance_to(ref) > 1.0
+	var nbs: Array = (links.get(home_node, []) as Array).filter(func(n): return ok.call(str(n), p0))
+	if nbs.is_empty():
+		return false
+	var a: String = str(nbs[_rng2.randi() % nbs.size()])
+	var path: Array = [a]
+	if _rng2.randf() < 0.5:
+		var nbs2: Array = (links.get(a, []) as Array).filter(func(n): return str(n) != home_node and ok.call(str(n), points[a]))
+		if not nbs2.is_empty():
+			path.append(str(nbs2[_rng2.randi() % nbs2.size()]))
+	var back: Array = path.slice(0, path.size() - 1)
+	back.reverse()
+	_flane = path + ["~pause"] + back + [home_node]
+	_flane_rot = rotation.y
+	_flane_wait = 0.0
+	return true
+
+
+func _flane_tick(delta: float, dist: float) -> void:
+	if dist < 1.6:
+		_play("v28/idle", 0.3)
+		return
+	var tok: String = str(_flane[0])
+	if tok == "~pause":
+		if _flane_wait <= 0.0:
+			_flane_wait = _rng2.randf_range(3.0, 6.0)
+			_play("v102/regarder", 0.35)
+		_flane_wait -= delta
+		if _flane_wait <= 0.0:
+			_flane.pop_front()
+			_flane_wait = 0.0
+		return
+	if not points.has(tok):
+		_flane.clear()
+		return
+	var to_goal: Vector3 = points[tok] - global_position
+	to_goal.y = 0.0
+	if to_goal.length() < 0.12:
+		at_point = tok
+		_flane.pop_front()
+		if _flane.is_empty():
+			global_position = points[tok]
+			_snap_to_floor()
+			rotation.y = _flane_rot
+			_au_lieu = 0.0
+			_gest = _rng2.randf_range(6.0, 12.0)
+			_play("v28/idle", 0.4)
+		return
+	var speed: float = SPEED_WALK * 0.8
+	_face(to_goal, delta, 5.0)
+	global_position += to_goal.normalized() * minf(speed * delta, to_goal.length())
+	_snap_to_floor()
+	_play("Walking", 0.3, speed / 1.05)
 
 
 func _make_prop(kind: String) -> void:
@@ -424,6 +577,8 @@ func _arrive() -> void:
 	state = "repos"
 	idle_clock = 1e9
 	pose = "debout"
+	_flane.clear()
+	_au_lieu = 0.0
 	if target_spot == "maison" or target_spot == "":
 		_set_hidden(true)
 		return
@@ -525,6 +680,9 @@ func _process(delta: float) -> void:
 			if line != "":
 				say_bubble(line, 4.5)
 				main.set_meta("pnj_appel_v42", now)
+				# V102 : debout, il fait un signe de la main
+				if state == "repos" and pose == "debout" and _flane.is_empty() and _run_loop.is_empty() and gesture_clock <= 0.0:
+					saluer_v102()
 		called_clock = 90.0
 	player_was_near = near
 	match state:
@@ -538,8 +696,18 @@ func _process(delta: float) -> void:
 		"marche":
 			_walk_azur(delta, dist)
 		_:
+			_au_lieu += delta
+			# V102 : il se tourne vers le voisin qu'il salue
+			if _regard_t > 0.0:
+				_regard_t -= delta
+				if is_instance_valid(_regard) and pose == "debout":
+					_face(_regard.global_position - global_position, delta, 4.0)
+			# V102 : une petite flânerie en cours
+			if not _flane.is_empty() and chat_hold <= 0.0 and _run_loop.is_empty():
+				if gesture_clock <= 0.0:
+					_flane_tick(delta, dist)
 			# V65 : en plein bavardage avec un voisin, il reste là et se tourne vers lui (s'il est debout)
-			if chat_hold > 0.0 and _run_loop.is_empty():
+			elif chat_hold > 0.0 and _run_loop.is_empty():
 				chat_hold = maxf(chat_hold - delta, 0.0)
 				if is_instance_valid(chat_partner) and pose in ["debout", "comptoir", "bras_croises", "boire", "jouer", "petanque"]:
 					_face(chat_partner.global_position - global_position, delta, 3.0)
@@ -581,6 +749,11 @@ func _activity(delta: float, dist: float, to_player: Vector3) -> void:
 		"peindre":
 			_play("v56/peindre", 0.4)
 		"bras_croises":
+			# V102 : de temps en temps, il décroise les bras pour un petit geste
+			if _gest <= 0.0:
+				_gest = _rng2.randf_range(10.0, 20.0)
+				if _rng2.randf() < 0.6 and _geste_v102():
+					return
 			_play("v56/bras_croises", 0.4)
 		"petanque":
 			if _gest <= 0.0:
@@ -613,9 +786,31 @@ func _activity(delta: float, dist: float, to_player: Vector3) -> void:
 						if not route.is_empty():
 							state = "marche"
 							return
+				# V102 : un voisin passe : on le salue ; sinon une petite flânerie, ou un geste du quotidien
+				var other: Node3D = _voisin_qui_passe()
+				if other != null and _rng2.randf() < 0.6:
+					_saluer_voisin(other)
+					return
+				if _pair.is_empty() and _au_lieu > 25.0 and dist > 6.0 and _rng2.randf() < 0.3 and _flane_start():
+					return
+				if _rng2.randf() < 0.75 and _geste_v102():
+					return
 				_play("Walking_Scan_with_Sudden_Look_Back" if _rng2.randf() < 0.3 else "v28/idle", 0.4)
 			elif current_anim != "Walking_Scan_with_Sudden_Look_Back" or (anim != null and not anim.is_playing()):
 				_play("v28/idle", 0.4)
+
+
+## V102 : un signe de la main au voisin qui passe, parfois un mot, et il répond.
+func _saluer_voisin(other: Node3D) -> void:
+	saluer_v102(other)
+	if _rng2.randf() < 0.4 and bubble_clock <= 0.0:
+		var h: float = float(azur.hour()) if azur != null else 12.0
+		var nom: String = str(other.get("display_name"))
+		var l: Array = (["Bonsoir, %s !", "Bonne soirée, %s !"] if h >= 18.0 or h < 5.0 else ["Bonjour, %s !", "Salut, %s !", "Bonne journée, %s !", "Tiens, %s !"])
+		say_bubble(str(l[_rng2.randi() % l.size()]) % nom, 3.0)
+		if other.has_method("say_bubble") and float(other.get("bubble_clock")) <= 0.0 and _rng2.randf() < 0.6:
+			var r: Array = ["Bonjour !", "Salut !", "Oh, bonjour !", "Bonne journée à toi !"] if h < 18.0 and h >= 5.0 else ["Bonsoir !", "Bonne soirée !"]
+			other.call("say_bubble", str(r[_rng2.randi() % r.size()]), 2.6)
 
 
 func _walk_azur(delta: float, player_dist: float) -> void:

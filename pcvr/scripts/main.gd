@@ -57,6 +57,7 @@ const ISLAND_DOCK_V29 := [Vector3(0.0, 1.0, -56.5), Vector3(0.0, 1.0, -72.5)]
 # V31 : habitants (petite IA commune) et dialogues.
 var npcs_v31: Array = []
 var dialogue_v31: Node3D
+var conversation_v102: RefCounted          # V102 : menus de conversation allégés et variés
 var fishing_v32: Node3D
 # V33 : le rival de Barnabé (cabane dans l'arbre, boutique) et la pelle.
 var flora_v30: Node3D
@@ -2128,6 +2129,7 @@ func _create_gameplay_v28() -> void:
 	add_child(dialogue_v31)
 	dialogue_v31.setup(xr_active)
 	dialogue_v31.chosen.connect(_on_dialogue_choice_v31)
+	conversation_v102 = preload("res://scripts/pnj/conversation_v102.gd").new(self)
 	# V32 : mode pêche (canne donnée par Barnabé).
 	fishing_v32 = preload("res://scripts/fishing_v32.gd").new()
 	fishing_v32.name = "Peche_v32"
@@ -3505,6 +3507,15 @@ func _on_dialogue_choice_v31(id: String) -> void:
 	if npc == null or id == "fermer":
 		_close_dialogue_v31()
 		return
+	# V102 : « D'autres sujets… » et les sujets nouveaux (ce qu'il fait, l'heure, ses goûts, un conseil)
+	if conversation_v102 != null:
+		if id == conversation_v102.PLUS:
+			_apply_reply_v31(npc, conversation_v102.plus(npc))
+			return
+		if conversation_v102.gere(id):
+			_brain_reply_v48(npc, func(): return conversation_v102.repondre(npc, id, _npc_ctx_v31()))
+			return
+		conversation_v102.retenir(npc, id)
 	# V56 : les quêtes et services du carnet
 	if id.begins_with("q56:") and journal_v56 != null:
 		_brain_reply_v48(npc, func(): return journal_v56.choose(npc, id))
@@ -3601,13 +3612,16 @@ func _apply_reply_v31(npc: Node3D, r: Dictionary) -> void:
 	if choices.is_empty() and not bool(r.get("fin", false)) and str(r.get("texte", "")) != "":
 		choices = npc.brain.topics(_npc_ctx_v31())
 	# V56 : les sujets du carnet (quêtes, services) en tête de la liste
-	if journal_v56 != null and not bool(r.get("fin", false)):
+	if journal_v56 != null and not bool(r.get("fin", false)) and not bool(r.get("_complet", false)):
 		var has_bye: bool = false
 		for c in choices:
 			if str(c.get("id", "")) == "au_revoir":
 				has_bye = true
 		if has_bye:
 			choices = journal_v56.topics_for(npc) + choices
+	# V102 : un panneau plus léger, des questions qui changent
+	if conversation_v102 != null and not bool(r.get("_complet", false)) and not bool(r.get("fin", false)):
+		choices = conversation_v102.compacter(npc, choices)
 	if bool(r.get("fin", false)) or choices.is_empty():
 		choices = [{"id": "fermer", "label": "(Partir)"}]
 	dialogue_v31.show_line(npc.display_name, npc.brain.humeur_mot(), str(r.get("texte", "…")), choices)
