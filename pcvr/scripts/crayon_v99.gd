@@ -14,17 +14,20 @@ const IleScript = preload("res://scripts/ile_crayon_v99.gd")
 const CrayonMat = preload("res://scripts/crayon_mat_v99.gd")
 const Kit = preload("res://scripts/pasta_kit_v97.gd")
 const FLORE := "res://scripts/crayon_flore_v99.gd"
+const VILLAGE := "res://scripts/village_crayon_v100.gd"
 const EAU := "res://shaders/eau_douce_v69.gdshader"
 const CHUTE := "res://shaders/waterfall_v26.gdshader"
 const MASK_RES: int = 512
 
 const PLACES := {"plage": "la Grève Blanche", "clairiere": "la Clairière des Géants", "bois": "le Bois des Hachures",
 	"mont": "le Mont Fusain", "sommet": "le sommet du Mont Fusain", "cascade": "la Cascade d'Encre", "etang": "l'Étang Gommé",
-	"ruisseau": "le Ruisseau Pointillé", "pres": "les Prés Blancs", "prairie": "la prairie"}
+	"ruisseau": "le Ruisseau Pointillé", "pres": "les Prés Blancs", "prairie": "la prairie",
+	"village": "le Village des Arbres-Maisons", "belvedere": "le Belvédère des Couleurs"}
 ## Les panneaux : [id, x, z, vers où ils regardent (repère île), texte]
 const PANNEAUX := [
 	["accueil", -3.0, 132.0, Vector2(0.25, 1.0), "L'Île Crayonnée\nIci, tout attend ses couleurs."],
 	["clairiere", -14.0, 62.0, Vector2(0.6, 0.8), "La Clairière des Géants"],
+	["village", -25.0, 55.0, Vector2(-0.2, 1.0), "Le Village des Arbres-Maisons\nLes habitants sont partis chercher leurs couleurs. Montez donc voir !"],
 	["etang", 22.0, -10.0, Vector2(-0.3, 1.0), "L'Étang Gommé\n(ne pas effacer les canards)"],
 	["mont", -50.0, 4.0, Vector2(0.4, 1.0), "Le Mont Fusain\npar ici, le sentier du sommet"],
 ]
@@ -32,6 +35,7 @@ const PANNEAUX := [
 var main: Node
 var ile: Node3D
 var flore: Node3D
+var village: Node3D                       # V100 : le Village des Arbres-Maisons
 var pc: bool = true
 var state: Dictionary = {}
 var objets: Dictionary = {}               # lieux pour le carnet (nom -> Vector3 monde)
@@ -68,7 +72,7 @@ func setup(main_node: Node) -> void:
 
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "panneaux": {}, "palette": false, "sommet": false, "cascade": false,
-		"etang": false, "taches": []}
+		"etang": false, "taches": [], "ponts": {}, "portes": {}}
 
 
 ## Les paramètres partagés par tous les matériaux au crayon (déclarés dans project.godot,
@@ -100,6 +104,13 @@ func build_town() -> void:
 		Kit.mat(str(k[0])).set_meta("crayon", int(k[1]))
 	_eau()
 	_palette()
+	if ResourceLoader.exists(VILLAGE):
+		village = load(VILLAGE).new()
+		village.name = "Village_arbres_maisons_v100"
+		add_child(village)
+		village.build(ile, pc)
+		for a in village.avoid:
+			_avoid.append(a)
 	_panneaux()
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
@@ -116,6 +127,9 @@ func build_town() -> void:
 	objets["sommet"] = ile.pads_world["sommet"]
 	objets["bois"] = _ground(-110.0, 50.0)
 	objets["pres"] = _ground(80.0, 80.0)
+	if village != null:
+		objets["village"] = village.conseil
+		objets["belvedere"] = village.belvedere
 	# là où l'on accoste, les couleurs du bateau ont coulé sur le sable
 	_tache_depart()
 	print("ILE_MANGA_V99: l'Île Crayonnée est prête (%d ms, %d matériaux au crayon)" % [Time.get_ticks_msec() - t0, CrayonMat.converted])
@@ -420,6 +434,11 @@ func _register_interactions() -> void:
 		var pn: Dictionary = panneaux[j]
 		d._interactions.append({"id": "crayon_panneau_%s" % str(pn["id"]), "pos": pn["at"], "radius": 2.2,
 			"text": "E : lire le panneau", "vr": "Gâchette : lire le panneau", "call": _lire.bind(j)})
+	if village != null:
+		for t2 in village.arbres:
+			var t: Dictionary = t2
+			d._interactions.append({"id": "crayon_porte_%s" % str(t["id"]), "pos": t["porte"], "radius": 1.8,
+				"text": "E : frapper à la porte", "vr": "Gâchette : frapper à la porte", "call": _frapper.bind(str(t["id"]))})
 	d._interactions.append({"id": "crayon_palette", "pos": palette_at, "radius": 5.0,
 		"text": "E : regarder la Palette de pierre", "vr": "Gâchette : regarder la Palette de pierre", "call": _regarder_palette})
 
@@ -428,6 +447,20 @@ func _lire(j: int) -> void:
 	var pn: Dictionary = panneaux[j]
 	(state["panneaux"] as Dictionary)[str(pn["id"])] = true
 	say("« " + str(pn["texte"]) + " »", 7.0)
+
+
+## V100 : personne n'est là ; un petit mot est épinglé sur chaque porte.
+const MOTS := {
+	"pinceau": "Toc toc… Personne. Sur la porte, un petit mot : « Partis chercher le bleu du ciel. On revient vite ! — la famille Pinceau »",
+	"grand": "Toc toc… La Maison du Conseil est fermée. Une affiche : « Réunion extraordinaire : OÙ SONT PASSÉES NOS COULEURS ? Tout le monde est prié de chercher partout. »",
+	"gomme": "Toc toc… Personne. Un petit mot : « Partis chercher le vert des feuilles. Ne rien effacer en notre absence ! — les Gomme »",
+	"buvard": "Toc toc… Personne. Un mot un peu taché : « Partis chercher le rouge des coquelicots. Arrosez nos fleurs, merci ! — les Buvard »",
+}
+
+
+func _frapper(id: String) -> void:
+	(state["portes"] as Dictionary)[id] = true
+	say(str(MOTS.get(id, "Toc toc… Personne.")), 8.0)
 
 
 func _regarder_palette() -> void:
@@ -462,6 +495,10 @@ func owns_point(p: Vector3) -> bool:
 func zone_at(p: Vector3) -> String:
 	if not contains(p):
 		return ""
+	if village != null:
+		var vz: String = village.zone(p)
+		if vz != "":
+			return vz
 	var l: Vector2 = IleScript.L(p.x, p.z)
 	var md: float = IleScript.mont_d(l.x, l.y)
 	var sm: Array = IleScript.PADS["sommet"]
@@ -564,7 +601,16 @@ func _process(delta: float) -> void:
 		state["cascade"] = true
 	if z == "etang":
 		state["etang"] = true
-	if z in ["clairiere", "bois", "mont", "sommet", "cascade", "etang", "ruisseau", "pres"] and not bool(vis.get(z, false)):
+	if village != null:
+		var pm: int = village.pont_milieu(p)
+		if pm >= 0 and not bool((state["ponts"] as Dictionary).get(str(pm), false)):
+			(state["ponts"] as Dictionary)[str(pm)] = true
+			var nb: int = (state["ponts"] as Dictionary).size()
+			if nb >= village.ponts.size():
+				main._show_message_v28("Les quatre passerelles de corde, toutes traversées ! Elles grincent un peu, mais elles tiennent bon.")
+			else:
+				main._show_message_v28("Une passerelle de corde, au-dessus de la clairière (%d sur %d)" % [nb, village.ponts.size()])
+	if z in ["clairiere", "bois", "mont", "sommet", "cascade", "etang", "ruisseau", "pres", "village", "belvedere"] and not bool(vis.get(z, false)):
 		vis[z] = true
 		match z:
 			"clairiere":
@@ -581,6 +627,12 @@ func _process(delta: float) -> void:
 				main._show_message_v28("L'Étang Gommé — une eau calme, des nénuphars dessinés au crayon")
 			"ruisseau":
 				main._show_message_v28("Le Ruisseau Pointillé — il file vers la mer en petites vagues tracées à l'encre")
+			"village":
+				main._show_message_v28("Le Village des Arbres-Maisons — des maisons rondes perchées dans des chênes géants, des escaliers autour des troncs… mais pas un habitant")
+			"belvedere":
+				main._show_message_v28("Le Belvédère des Couleurs, en haut du Grand-Chêne — toute l'île, toute blanche ; il faudra beaucoup de couleurs !")
+				if main.has_method("jingle"):
+					main.jingle("decouverte")
 			"pres":
 				main._show_message_v28("Les Prés Blancs — des milliers de fleurs… toutes blanches, en attendant leurs couleurs")
 	# la surface vue d'en dessous suit le plongeur (la mer de l'île est loin du centre du monde)
@@ -598,7 +650,11 @@ func trouvailles() -> Dictionary:
 		"crayon_cascade": 1 if bool(state.get("cascade", false)) else 0,
 		"crayon_etang": 1 if bool(state.get("etang", false)) else 0,
 		"crayon_bois": 1 if bool(vis.get("bois", false)) else 0,
-		"crayon_pres": 1 if bool(vis.get("pres", false)) else 0}
+		"crayon_pres": 1 if bool(vis.get("pres", false)) else 0,
+		"crayon_village": 1 if bool(vis.get("village", false)) else 0,
+		"crayon_belvedere": 1 if bool(vis.get("belvedere", false)) else 0,
+		"crayon_passerelles": 1 if village != null and (state.get("ponts", {}) as Dictionary).size() >= village.ponts.size() else 0,
+		"crayon_portes": 1 if village != null and (state.get("portes", {}) as Dictionary).size() >= village.arbres.size() else 0}
 
 
 func serialize() -> Dictionary:

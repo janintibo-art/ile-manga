@@ -109,6 +109,8 @@ const PLACES := [
 	["L'Étang Gommé", Vector2(1034, 1424), "crayon_etang"],
 	["Le Bois des Hachures", Vector2(888, 1500), "crayon_bois"],
 	["Les Prés Blancs", Vector2(1082, 1530), "crayon_pres"],
+	["Le Village des Arbres-Maisons", Vector2(960, 1484), "crayon_village"],
+	["Le Belvédère des Couleurs", Vector2(967, 1464), "crayon_belvedere"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],

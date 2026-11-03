@@ -31,6 +31,7 @@ const ZONE_TRACK := {
 	"pa_oliveraie": "al_dente", "pa_prairie": "al_dente", "pa_borgo": "al_dente", "pa_barque": "al_dente",
 	"cr_plage": "crayonnee", "cr_clairiere": "crayonnee", "cr_bois": "crayonnee", "cr_mont": "crayonnee", "cr_sommet": "crayonnee",
 	"cr_cascade": "crayonnee", "cr_etang": "crayonnee", "cr_ruisseau": "crayonnee", "cr_pres": "crayonnee", "cr_prairie": "crayonnee",
+	"cr_village": "crayonnee", "cr_belvedere": "crayonnee",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",

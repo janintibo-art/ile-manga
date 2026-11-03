@@ -503,6 +503,13 @@ func _choose_zone(running: bool) -> void:
 			"plage":
 				targets["ressac"] = 0.9
 				targets["plage"] = 0.5
+			"village":
+				targets["oiseaux"] = 0.9
+				targets["brise"] = 0.6
+			"belvedere":
+				targets["vent_vol"] = 0.5
+				targets["oiseaux"] = 0.6
+				targets["brise"] = 0.6
 			_:
 				targets["brise"] = 0.6
 		_night_beds()

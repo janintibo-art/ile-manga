@@ -767,6 +767,27 @@ def archipel(src: Path) -> None:
         for k in range(5):
             a = math.pi * (0.9 + k * 0.25)
             d.ellipse((px + math.cos(a) * 3.4 - 0.8, pz + math.sin(a) * 2.2 - 0.8, px + math.cos(a) * 3.4 + 0.8, pz + math.sin(a) * 2.2 + 0.8), outline=ink)
+        # V100 : le Village des Arbres-Maisons : les quatre chênes géants (de grands ronds festonnés,
+        # une petite maison au toit pointu dessus) reliés par les passerelles de corde (des tirets)
+        G = Cr.get("geants", [])
+        for k in range(len(G)):
+            ax, az = cw(*G[k][:2])
+            bx, bz = cw(*G[(k + 1) % len(G)][:2])
+            n = 10
+            for j in range(n):
+                if j % 2 == 0:
+                    d.line([(ax + (bx - ax) * j / n, az + (bz - az) * j / n), (ax + (bx - ax) * (j + 1) / n, az + (bz - az) * (j + 1) / n)], fill=ink, width=1)
+        for (gx, gz, gr) in G:
+            x, z = cw(gx, gz)
+            r = max(6.0, gr * 0.5)
+            pts = []
+            for k in range(48):
+                a = 2 * math.pi * k / 48
+                rr = r * (1.0 + 0.08 * math.cos(a * 8))
+                pts.append((x + math.cos(a) * rr, z + math.sin(a) * rr))
+            d.polygon(pts, fill=(247, 245, 238, 255), outline=ink)
+            d.polygon([(x - 2.6, z + 2.2), (x + 2.6, z + 2.2), (x + 2.6, z - 0.6), (x, z - 3.4), (x - 2.6, z - 0.6)], fill=(247, 245, 238, 255), outline=ink)
+            d.rectangle((x - 0.6, z + 0.6, x + 0.6, z + 2.2), fill=ink)
         # les arbres : des ronds festonnés (les pins : de petits triangles)
         for (tx, tz, pin) in Cr["arbres"]:
             x, z = cw(tx, tz)
