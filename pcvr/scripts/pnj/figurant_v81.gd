@@ -47,6 +47,10 @@ static func spawn(parent: Node3D, main_node: Node, profile: Dictionary, pos: Vec
 			if profile.has("pasta"):
 				npc.free()
 				npc = (load("res://scripts/pnj/pnj_pasta_v98.gd") as Script).new()
+			# V101 : les habitants de l'Île Crayonnée (le grand pinceau, l'arrosoir, la longue-vue)
+			if profile.has("crayon"):
+				npc.free()
+				npc = (load("res://scripts/pnj/pnj_crayon_v101.gd") as Script).new()
 	parent.add_child(npc)
 	npc.setup(main_node, profile, {"ici": pos}, {"ici": []}, "ici")
 	var stub := Node.new()

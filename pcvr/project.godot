@@ -2,7 +2,7 @@
 config_version=5
 
 [application]
-config/name="Les Mondes de Travers VR V100"
+config/name="Les Mondes de Travers VR V101"
 config/icon="res://assets/textures/ui/les_mondes_de_travers_icon.png"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"
@@ -47,4 +47,8 @@ crayon_soleil={
 crayon_jour={
 "type": "float",
 "value": 1.0
+}
+crayon_vague={
+"type": "vec4",
+"value": Vector4(0, 0, -10, 4)
 }

@@ -372,6 +372,27 @@ const ITEMS := {
 	"spaghettis_secs": {"name": "Botte de spaghettis", "art": "une botte de spaghettis", "kind": "curiosite", "sorte": "Curiosité d'Al Dente", "max": 5,
 		"desc": "Une botte de spaghettis séchés au Séchoir de l'Île Al Dente, faits avec le blé dur de ses champs. Liés d'un ruban vert, blanc et rouge.",
 		"effet": "Tu tiens la botte bien droite, comme une baguette de chef d'orchestre. (Recommandation n° 3 : tu ne la casses pas en deux.)"},
+	# V101 : l'Île Crayonnée : le Pinceau de l'île et les neuf pots de couleur de la Palette de pierre
+	"pinceau": {"name": "Pinceau de l'île", "art": "le Pinceau de l'île", "kind": "outil", "equip": true, "max": 1, "damage": 1,
+		"desc": "Le pinceau des doyens du Village des Arbres-Maisons, confié par Grand-Mère Aquarelle. Il ne peint qu'avec les couleurs de la Palette de pierre : trempe-le dans la Palette (20 coups), puis, en main, E (gâchette en VR) pour poser une tache de couleur devant toi, sur l'Île Crayonnée."},
+	"pot_bleu": {"name": "Pot de bleu (n° 1)", "art": "le pot de bleu", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 1 ». Dedans, le bleu de l'Île Crayonnée (l'Étang Gommé, le ciel dans l'eau, les ruisseaux). À verser dans le godet n° 1 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_vert": {"name": "Pot de vert (n° 2)", "art": "le pot de vert", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 2 ». Dedans, le vert de l'Île Crayonnée (les feuilles, l'herbe, la mousse du Bois des Hachures). À verser dans le godet n° 2 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_rouge": {"name": "Pot de rouge (n° 3)", "art": "le pot de rouge", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 3 ». Dedans, le rouge de l'Île Crayonnée (les coquelicots des Prés Blancs). À verser dans le godet n° 3 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_jaune": {"name": "Pot de jaune (n° 4)", "art": "le pot de jaune", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 4 ». Dedans, le jaune de l'Île Crayonnée (le sable de la Grève Blanche). À verser dans le godet n° 4 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_brun": {"name": "Pot de brun (n° 5)", "art": "le pot de brun", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 5 ». Dedans, le brun de l'Île Crayonnée (le bois du village, la terre de la clairière). À verser dans le godet n° 5 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_violet": {"name": "Pot de violet (n° 6)", "art": "le pot de violet", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 6 ». Dedans, le violet de l'Île Crayonnée (la bruyère du Mont Fusain). À verser dans le godet n° 6 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_orange": {"name": "Pot d'orange (n° 7)", "art": "le pot d'orange", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 7 ». Dedans, l'orange de l'Île Crayonnée (la Cascade d'Encre au coucher du soleil). À verser dans le godet n° 7 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_turquoise": {"name": "Pot de turquoise (n° 8)", "art": "le pot de turquoise", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 8 ». Dedans, le turquoise de l'Île Crayonnée (le Ruisseau Pointillé, jusqu'à la mer). À verser dans le godet n° 8 de la Palette de pierre, au milieu de la Clairière des Géants."},
+	"pot_rose": {"name": "Pot de rose (n° 9)", "art": "le pot de rose", "kind": "quete", "sorte": "Objet de quête : l'Île Crayonnée", "max": 1,
+		"desc": "Un petit pot de peinture en fer-blanc, cabossé par la Grande Averse, une étiquette : « 9 ». Dedans, le rose de l'Île Crayonnée (les fleurs des prairies du sud-ouest). À verser dans le godet n° 9 de la Palette de pierre, au milieu de la Clairière des Géants."},
 	# V98 : les adeptes de l'Île Al Dente et la quête « Le Grand Spaghetti boude »
 	"focaccia": {"name": "Focaccia au romarin", "art": "une focaccia au romarin", "kind": "nourriture", "max": 10, "heal": 3,
 		"desc": "Une galette de pain moelleuse, dorée au four du Borgo, piquée de romarin et de gros sel, luisante d'huile d'olive. Mamma Lasagna en fait trois fournées par jour. Rend un cœur et demi."},
@@ -1264,6 +1285,29 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.21, 0.24, 0.012)), iron, Vector3(0, 1.08, 0.01), Vector3(-8, 0, 0))
 			_part(m, _box_mesh(Vector3(0.15, 0.06, 0.012)), iron, Vector3(0, 1.215, 0.03), Vector3(-8, 0, 0))
 			_tip(m, 1.2)
+		"pinceau":
+			# V101 : le Pinceau de l'île, le long de +Y : le manche (dans la main), la virole, les soies
+			var manche := _mat("pinceau_manche", Color(0.42, 0.24, 0.12), 0.35)
+			var virole := _mat("pinceau_virole", Color(0.86, 0.7, 0.36), 0.25)
+			virole.metallic = 0.9
+			_part(m, _cyl(0.012, 0.016, 0.42, 10), manche, Vector3(0, 0.16, 0))
+			_part(m, _cyl(0.019, 0.016, 0.07, 10), virole, Vector3(0, 0.4, 0))
+			_part(m, _cyl(0.024, 0.019, 0.07, 10), _mat("pinceau_soies", Color(0.9, 0.84, 0.7), 0.9), Vector3(0, 0.47, 0))
+			_part(m, _cyl(0.004, 0.024, 0.05, 10), _mat("pinceau_bout", Color(0.2, 0.45, 0.85), 0.4), Vector3(0, 0.53, 0))
+			_tip(m, 0.55)
+		"pot_bleu", "pot_vert", "pot_rouge", "pot_jaune", "pot_brun", "pot_violet", "pot_orange", "pot_turquoise", "pot_rose":
+			# V101 : un pot de peinture en fer-blanc, sa couleur qui déborde un peu, son numéro
+			var cols := {"pot_bleu": Color(0.16, 0.38, 0.78), "pot_vert": Color(0.2, 0.55, 0.22), "pot_rouge": Color(0.84, 0.13, 0.11), "pot_jaune": Color(0.98, 0.82, 0.18),
+				"pot_brun": Color(0.5, 0.31, 0.16), "pot_violet": Color(0.5, 0.27, 0.66), "pot_orange": Color(0.97, 0.52, 0.12), "pot_turquoise": Color(0.14, 0.68, 0.68), "pot_rose": Color(0.95, 0.5, 0.66)}
+			var tin := _mat("fer_blanc", Color(0.78, 0.79, 0.8), 0.35)
+			tin.metallic = 0.85
+			var paint := _mat(id + "_peinture", cols[id], 0.15)
+			_part(m, _cyl(0.07, 0.07, 0.13, 18), tin, Vector3(0, 0.065, 0))
+			_part(m, _cyl(0.072, 0.072, 0.012, 18), tin, Vector3(0, 0.128, 0))
+			_part(m, _cyl(0.066, 0.066, 0.006, 18), paint, Vector3(0, 0.133, 0))
+			_part(m, _cyl(0.0715, 0.0715, 0.05, 18), _mat("pot_etiquette", Color(0.95, 0.93, 0.86), 0.9), Vector3(0, 0.06, 0))
+			_part(m, _box_mesh(Vector3(0.03, 0.04, 0.006)), paint, Vector3(0.0, 0.095, 0.07), Vector3(0, 0, 8))
+			_part(m, _cyl(0.003, 0.003, 0.15, 6), _mat("anse", Color(0.6, 0.6, 0.62), 0.4), Vector3(0, 0.17, 0), Vector3(0, 0, 90))
 		"hache":
 			var haft := _mat("manche_hache", Color(0.56, 0.38, 0.22), 0.7)
 			var head := _mat("fer_hache", Color(0.4, 0.42, 0.45), 0.3)

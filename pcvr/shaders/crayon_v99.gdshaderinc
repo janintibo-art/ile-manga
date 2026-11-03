@@ -11,6 +11,9 @@ global uniform sampler2D crayon_masque;
 global uniform vec4 crayon_rect;
 global uniform vec3 crayon_soleil;
 global uniform float crayon_jour;
+// V101 : la vague de couleur d'un pot versé dans la Palette (x, z du centre, rayon, largeur du bord ;
+// rayon négatif : aucune), avant que la région ne soit peinte pour de bon dans la carte.
+global uniform vec4 crayon_vague;
 
 #ifndef CR_KIND
 #define CR_KIND 0
@@ -36,6 +39,10 @@ float cr_couleur(vec3 wp) {
 		return 1.0;
 	}
 	float m = textureLod(crayon_masque, uv, 0.0).r;
+	if (crayon_vague.z > 0.0) {
+		float dv = length(wp.xz - crayon_vague.xy);
+		m = max(m, 1.0 - smoothstep(crayon_vague.z - crayon_vague.w, crayon_vague.z, dv));
+	}
 	float n = cr_noise(wp.xz * 0.45) * 0.6 + cr_noise(wp.xz * 2.1 + 7.0) * 0.4;
 	return smoothstep(0.4, 0.6, m + (n - 0.5) * 0.4);
 }

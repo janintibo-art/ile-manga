@@ -583,6 +583,7 @@ TROUSERS = {
     'azteque': [[0.94, 0.92, 0.86], [0.85, 0.75, 0.4], [0.25, 0.5, 0.55]],
     'pandemonia': [[0.12, 0.1, 0.1], [0.25, 0.08, 0.08], [0.18, 0.14, 0.2], [0.3, 0.24, 0.2]],
     'pasta': [[0.36, 0.3, 0.22], [0.3, 0.28, 0.24], [0.75, 0.68, 0.5], [0.24, 0.3, 0.5]],
+    'crayon': [[0.3, 0.26, 0.22], [0.24, 0.3, 0.46], [0.62, 0.56, 0.44], [0.36, 0.3, 0.24]],
     'montjoie': [[0.3, 0.24, 0.18], [0.42, 0.34, 0.24], [0.2, 0.22, 0.28], [0.5, 0.44, 0.32], [0.26, 0.3, 0.2]],
     # V75 : Port-Boucan : jean noir, jean brut, kaki, gris anthracite, jean délavé
     'boucan': [[0.07, 0.07, 0.08], [0.12, 0.16, 0.28], [0.26, 0.29, 0.18], [0.2, 0.2, 0.22], [0.3, 0.38, 0.52]],
@@ -1035,6 +1036,62 @@ def outfit(D, p):
         else:
             add('tshirt', c1, 'coton')
             add('pantalon', pick(sombres), 'jean', poches=1.0)
+            add('chaussures', shoe, 'cuir')
+        return T
+    # --------------------------------------------------------- V101 : les habitants de l'Île Crayonnée
+    cy = p.get('crayon')
+    if vil == 'crayon' and isinstance(cy, dict):
+        tenue = str(cy.get('tenue', ''))
+        c1 = col(cy.get('c', haut))
+        c2 = col(cy.get('c2', [0.2, 0.4, 0.75]))
+        brun = [0.36, 0.24, 0.14]
+        taches = {'motif': 19, 'c2': c2, 'echelle': 0.07}
+        if child or tenue == 'enfant':
+            add('tshirt', c1, 'coton', motif=1, c2=[0.96, 0.95, 0.92], echelle=0.04)
+            add('short', [0.24, 0.3, 0.5], 'toile', poches=1.0)
+            add('chaussures', [0.85, 0.2, 0.18], 'cuir')
+            return T
+        if tenue == 'doyenne':
+            add('corsage_long', c1, 'coton')
+            add('jupe_longue', darker(c1, 0.7), 'laine')
+            add('chale', c2, 'laine', motif=16, c2=[0.55, 0.42, 0.72], echelle=0.06)
+            add('chaussures', [0.2, 0.14, 0.12], 'cuir')
+        elif tenue == 'guetteur':
+            add('chemise_longue', [0.86, 0.84, 0.78], 'lin', boutons=1.0)
+            add('veste', c1, 'laine')
+            add('pantalon', [0.3, 0.27, 0.22], 'toile', poches=1.0)
+            add('ceinture_ample', c2, 'cuir')
+            add('bottes', [0.18, 0.12, 0.08], 'cuir')
+        elif tenue == 'salopette':
+            add('tshirt', [0.2, 0.36, 0.62], 'coton')
+            add('pantalon', c1, 'toile', poches=1.0, **taches)
+            add('bavette', c1, 'toile', **taches)
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'jardiniere':
+            add('chemise_courte', c1, 'lin', boutons=1.0)
+            add('pantalon', [0.34, 0.3, 0.24], 'toile', poches=1.0)
+            add('tablier', c2, 'toile')
+            add('bottes', [0.16, 0.3, 0.18], 'cuir')
+        elif tenue == 'maitre':
+            add('chemise_rentree', [0.94, 0.93, 0.9], 'coton', boutons=1.0)
+            add('gilet', c1, 'laine', boutons=1.0)
+            add('pantalon', [0.28, 0.26, 0.24], 'laine')
+            add('cravate', c2, 'soie')
+            add('chaussures', [0.12, 0.1, 0.09], 'cuir')
+        elif tenue == 'fleuriste':
+            add('corsage', c1, 'coton')
+            add('jupe', c2, 'coton', motif=16, c2=[0.96, 0.94, 0.88], echelle=0.07)
+            add('tablier_court', [0.3, 0.46, 0.26], 'toile')
+            add('chaussures', brun, 'cuir')
+        elif tenue == 'poete':
+            add('chemise_longue', c2, 'lin', boutons=1.0)
+            add('veste', c1, 'laine')
+            add('pantalon', [0.16, 0.16, 0.2], 'laine')
+            add('cravate', [0.1, 0.1, 0.12], 'soie')
+            add('chaussures', [0.08, 0.07, 0.07], 'cuir')
+        else:
+            add('chemise_longue', c1, 'lin', boutons=1.0)
+            add('pantalon', trous, 'toile', poches=1.0)
             add('chaussures', shoe, 'cuir')
         return T
     # --------------------------------------------------------- V98 : les adeptes de l'Île Al Dente
@@ -1691,6 +1748,17 @@ def hats_for(D, p):
         out.append({'v': 'ch_bandana', 'c': [0.78, 0.12, 0.08], 'tissu': 'coton', 'motif': 4, 'c2': [0.96, 0.94, 0.9], 'echelle': 0.035})
     elif pac == 'tricorne':
         out.append({'v': 'ch_tricorne', 'c': [0.08, 0.07, 0.07], 'tissu': 'laine'})
+    # V101 : les couvre-chefs de l'Île Crayonnée
+    cy = p.get('crayon', {}) if p.get('village') == 'crayon' else {}
+    cyc = str(cy.get('chapeau', '')) if isinstance(cy, dict) else ''
+    if cyc == 'casquette':
+        out.append({'v': 'ch_casquette', 'c': [0.94, 0.93, 0.88] if cy.get('tenue') == 'salopette' else [0.26, 0.28, 0.3], 'tissu': 'toile'})
+    elif cyc == 'paille':
+        out.append({'v': 'ch_paille', 'c': [0.86, 0.73, 0.44], 'tissu': 'paille'})
+    elif cyc == 'capeline':
+        out.append({'v': 'ch_capeline', 'c': [0.94, 0.86, 0.66], 'tissu': 'lin'})
+    elif cyc == 'beret':
+        out.append({'v': 'ch_beret', 'c': [0.12, 0.12, 0.14] if cy.get('tenue') == 'poete' else [0.45, 0.2, 0.18], 'tissu': 'laine'})
     coiffe = str(na.get('coiffe', ''))
     if coiffe == 'casque':
         out.append({'v': 'ch_casque', 'c': col(na.get('metal', [0.6, 0.6, 0.64])), 'tissu': 'metal'})

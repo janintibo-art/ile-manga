@@ -15,6 +15,7 @@ const CrayonMat = preload("res://scripts/crayon_mat_v99.gd")
 const Kit = preload("res://scripts/pasta_kit_v97.gd")
 const FLORE := "res://scripts/crayon_flore_v99.gd"
 const VILLAGE := "res://scripts/village_crayon_v100.gd"
+const VIE := "res://scripts/crayon_vie_v101.gd"
 const EAU := "res://shaders/eau_douce_v69.gdshader"
 const CHUTE := "res://shaders/waterfall_v26.gdshader"
 const MASK_RES: int = 512
@@ -36,6 +37,8 @@ var main: Node
 var ile: Node3D
 var flore: Node3D
 var village: Node3D                       # V100 : le Village des Arbres-Maisons
+var vie: Node3D                           # V101 : les habitants, les pots de couleur, le pinceau
+var godets: Array = []                    # V101 : le fond des neuf godets de la Palette (monde)
 var pc: bool = true
 var state: Dictionary = {}
 var objets: Dictionary = {}               # lieux pour le carnet (nom -> Vector3 monde)
@@ -72,7 +75,9 @@ func setup(main_node: Node) -> void:
 
 func _fresh_state() -> Dictionary:
 	return {"visite": false, "visites": {}, "panneaux": {}, "palette": false, "sommet": false, "cascade": false,
-		"etang": false, "taches": [], "ponts": {}, "portes": {}}
+		"etang": false, "taches": [], "ponts": {}, "portes": {},
+		# V101 : les pots versés dans la Palette, la peinture du pinceau, le panier, la longue-vue, la fête
+		"pots": {}, "peinture": 0, "coups": 0, "panier": false, "longue_vue": false, "fete": false}
 
 
 ## Les paramètres partagés par tous les matériaux au crayon (déclarés dans project.godot,
@@ -81,6 +86,8 @@ func _set_globals() -> void:
 	var rect := Vector4(IleScript.CENTER.x - IleScript.HALF, IleScript.CENTER.z - IleScript.HALF, IleScript.HALF * 2.0, IleScript.HALF * 2.0)
 	RenderingServer.global_shader_parameter_set("crayon_masque", masque_tex)
 	RenderingServer.global_shader_parameter_set("crayon_rect", rect)
+	# V101 : la vague de couleur d'un pot versé (x, z, rayon, largeur du bord ; rayon < 0 : aucune)
+	RenderingServer.global_shader_parameter_set("crayon_vague", Vector4(0, 0, -10.0, 4.0))
 
 
 # =================================================================== construction
@@ -111,6 +118,14 @@ func build_town() -> void:
 		village.build(ile, pc)
 		for a in village.avoid:
 			_avoid.append(a)
+		if ResourceLoader.exists(VIE):
+			vie = load(VIE).new()
+			add_child(vie)
+			vie.setup(main, self)
+			vie.build()
+			for c in vie.cachettes:
+				var cp: Vector3 = vie.cachettes[c]
+				_avoid.append([Vector2(cp.x, cp.z), 2.6])
 	_panneaux()
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
@@ -302,6 +317,7 @@ func _palette() -> void:
 	for i in range(9):
 		var a3: float = lerpf(-2.5, 2.0, float(i) / 8.0) + PI
 		var gp: Vector3 = base * Vector3(cos(a3) * 2.7, top_y, sin(a3) * 1.75)
+		godets.append(gp + Vector3.UP * 0.145)
 		b.cyl("moellons", Transform3D(Basis(), gp), 0.34, 0.3, 0.16, 14)
 		b.cyl("pierre", Transform3D(Basis(), gp + Vector3.UP * 0.12), 0.24, 0.24, 0.05, 14)
 		var toward: Vector3 = (base.origin - gp)
@@ -350,13 +366,27 @@ func colorier(at: Vector3, radius: float, dur: float = 4.0) -> void:
 
 ## Peint la tache jusqu'à la fraction k de son rayon (bord adouci sur 2 m).
 func _paint(l: Vector2, radius: float, k: float) -> void:
+	var rows: Vector2i = rows_for(l, radius * k)
+	paint_rows(l, radius * k, rows.x, rows.y)
+
+
+## V101 : les rangées de la carte des couleurs que touche une tache (de, jusqu'à : exclu).
+func rows_for(l: Vector2, r: float) -> Vector2i:
 	var px: float = IleScript.HALF * 2.0 / MASK_RES
-	var r: float = radius * k
+	var cz: float = (l.y + IleScript.HALF) / px
+	var reach: int = int(ceil((r + 2.0) / px)) + 1
+	return Vector2i(maxi(0, int(cz) - reach), mini(MASK_RES, int(cz) + reach + 1))
+
+
+## V101 : peint une tache (rayon r, bord adouci sur 2 m) sur les rangées z0 à z1 seulement (une grande
+## région se peint en plusieurs images).
+func paint_rows(l: Vector2, r: float, z0: int, z1: int) -> void:
+	var px: float = IleScript.HALF * 2.0 / MASK_RES
 	var edge: float = 2.0
 	var cx: float = (l.x + IleScript.HALF) / px
 	var cz: float = (l.y + IleScript.HALF) / px
 	var reach: int = int(ceil((r + edge) / px)) + 1
-	for zi in range(maxi(0, int(cz) - reach), mini(MASK_RES, int(cz) + reach + 1)):
+	for zi in range(maxi(0, z0), mini(MASK_RES, z1)):
 		for xi in range(maxi(0, int(cx) - reach), mini(MASK_RES, int(cx) + reach + 1)):
 			var d: float = Vector2((xi + 0.5 - cx) * px, (zi + 0.5 - cz) * px).length()
 			if d > r + edge:
@@ -380,8 +410,23 @@ func couleur_at(p: Vector3) -> float:
 
 func _repaint_all() -> void:
 	masque.fill(Color(0, 0, 0))
+	_taches.clear()
+	_mask_dirty = true
+	# V101 : après la fête des couleurs, toute l'île est en couleurs
+	if bool(state.get("fete", false)):
+		masque.fill(Color(1, 0, 0))
+		return
 	for t in state["taches"]:
 		_paint(Vector2(float(t[0]), float(t[1])), float(t[2]), 1.0)
+
+
+## V101 : la carte des couleurs a changé (une région peinte rangée par rangée) ; toute l'île en couleurs.
+func flush_mask() -> void:
+	_mask_dirty = true
+
+
+func fill_mask() -> void:
+	masque.fill(Color(1, 0, 0))
 	_taches.clear()
 	_mask_dirty = true
 
@@ -420,6 +465,8 @@ func register_services(journal: Node) -> void:
 	for k in objets:
 		journal.lieux["crayon_" + str(k)] = objets[k]
 	journal.lieux["crayon"] = respawn_point()[0]
+	if vie != null:
+		vie.register_services(journal)
 	_register_interactions()
 
 
@@ -440,7 +487,10 @@ func _register_interactions() -> void:
 			d._interactions.append({"id": "crayon_porte_%s" % str(t["id"]), "pos": t["porte"], "radius": 1.8,
 				"text": "E : frapper à la porte", "vr": "Gâchette : frapper à la porte", "call": _frapper.bind(str(t["id"]))})
 	d._interactions.append({"id": "crayon_palette", "pos": palette_at, "radius": 5.0,
-		"text": "E : regarder la Palette de pierre", "vr": "Gâchette : regarder la Palette de pierre", "call": _regarder_palette})
+		"text": "E : regarder la Palette de pierre", "vr": "Gâchette : regarder la Palette de pierre", "call": _regarder_palette,
+		"when": func(): return vie == null or (vie.pots_en_poche().is_empty() and not (vie.a_le_pinceau() and vie.nb_pots() > 0 and int(state.get("peinture", 0)) < vie.PINCEAU_MAX))})
+	if vie != null:
+		vie.register_interactions(d)
 
 
 func _lire(j: int) -> void:
@@ -458,14 +508,36 @@ const MOTS := {
 }
 
 
+## V101 : les familles sont revenues ; la nuit, on les réveille ; le jour, elles cherchent leurs couleurs.
+const OU := {
+	"pinceau": "Basile est à l'Étang Gommé, Lili sur la Grève Blanche.",
+	"grand": "Grand-Mère Aquarelle est devant la Palette, Gaspard au Belvédère.",
+	"gomme": "Rosalie est à la lisière du Bois des Hachures, Papi Augustin près de la Palette.",
+	"buvard": "Capucine est aux Prés Blancs, Achille au pied de la Cascade d'Encre.",
+}
+
+
 func _frapper(id: String) -> void:
 	(state["portes"] as Dictionary)[id] = true
-	say(str(MOTS.get(id, "Toc toc… Personne.")), 8.0)
+	if vie == null or vie.habitants.is_empty():
+		say(str(MOTS.get(id, "Toc toc… Personne.")), 8.0)
+		return
+	var h: float = hour()
+	if h >= 21.0 or h < 7.0:
+		say("Toc toc… (Une voix ensommeillée, derrière la porte.) « Qui est là ? … Ah, c'est toi. On dort, il fait nuit ! Reviens demain, on cherchera les couleurs ensemble. »", 7.0)
+	else:
+		say("Toc toc… Personne : de jour, tout le monde cherche les pots de couleur. " + str(OU.get(id, "")), 7.0)
 
 
 func _regarder_palette() -> void:
 	state["palette"] = true
-	say("La Palette de pierre : neuf godets numérotés, de 1 à 9, tous vides et secs. Au fond du premier, une toute petite trace de bleu… Qui a pris les couleurs de l'île ?", 9.0)
+	var n: int = vie.nb_pots() if vie != null else 0
+	if bool(state.get("fete", false)):
+		say("La Palette de pierre : les neuf godets sont pleins, chacun de sa couleur, du bleu au rose. Elle brille au soleil comme un arc-en-ciel posé dans l'herbe.", 8.0)
+	elif n > 0:
+		say("La Palette de pierre : %d godets sur 9 ont retrouvé leur couleur. Les autres attendent leur pot." % n, 7.0)
+	else:
+		say("La Palette de pierre : neuf godets numérotés, de 1 à 9, tous vides et secs. Au fond du premier, une toute petite trace de bleu… Qui a pris les couleurs de l'île ?", 9.0)
 
 
 func say(text: String, seconds: float = 6.0) -> void:
@@ -654,7 +726,7 @@ func trouvailles() -> Dictionary:
 		"crayon_village": 1 if bool(vis.get("village", false)) else 0,
 		"crayon_belvedere": 1 if bool(vis.get("belvedere", false)) else 0,
 		"crayon_passerelles": 1 if village != null and (state.get("ponts", {}) as Dictionary).size() >= village.ponts.size() else 0,
-		"crayon_portes": 1 if village != null and (state.get("portes", {}) as Dictionary).size() >= village.arbres.size() else 0}
+		"crayon_portes": 1 if village != null and (state.get("portes", {}) as Dictionary).size() >= village.arbres.size() else 0}.merged(vie.trouvailles() if vie != null else {})
 
 
 func serialize() -> Dictionary:
@@ -667,4 +739,8 @@ func load_data(d: Dictionary) -> void:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary or d[k] is Array) else d[k].duplicate(true)
 	if ile != null and masque != null:
+		if vie != null:
+			vie.reset_vagues()
 		_tache_depart()
+	if vie != null:
+		vie.on_load()

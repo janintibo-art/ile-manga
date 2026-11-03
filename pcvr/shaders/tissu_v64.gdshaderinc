@@ -121,6 +121,20 @@ void fragment() {
 		float a = step(0.5, fract(q.x));
 		float b = step(0.5, fract(q.y));
 		c = mix(couleur, couleur2, (a + b) * 0.5);
+	} else if (motif == 19) {
+		// V101 : les taches de peinture (la salopette de Basile Pinceau, l'Île Crayonnée) : des gouttes
+		// éparses, bleues, rouges, jaunes ou de couleur2, au bord un peu baveux
+		vec2 q = vec2(rest.x + rest.z * 0.7, rest.y) / max(echelle, 0.01);
+		vec2 cell = floor(q);
+		vec2 f = fract(q) - 0.5;
+		float h1 = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.5453);
+		float h2 = fract(sin(dot(cell, vec2(39.3468, 11.135))) * 24634.6345);
+		vec2 o = (vec2(h1, h2) - 0.5) * 0.4;
+		float an = atan(f.y - o.y, f.x - o.x);
+		float rr = length(f - o);
+		float blob = step(rr, (0.1 + 0.12 * h2) * (1.0 + 0.25 * sin(an * 5.0 + h1 * 6.28)));
+		vec3 pc = h1 < 0.25 ? vec3(0.16, 0.38, 0.78) : (h1 < 0.5 ? vec3(0.84, 0.13, 0.11) : (h1 < 0.75 ? vec3(0.98, 0.82, 0.18) : couleur2));
+		c = mix(couleur, pc, blob * step(0.45, h2));
 	} else if (motif == 13) {
 		// V76 : la soie à reflets des Lumens : la teinte glisse vers couleur2 sous les angles rasants
 		float fr = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);
