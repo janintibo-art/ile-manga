@@ -146,6 +146,7 @@ func _ready() -> void:
 	_create_v94()
 	_create_v97()
 	_create_v99()
+	_create_v103()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -3694,6 +3695,8 @@ var larsen_v91: Node3D                     # V91 : l'Île de Larsen (la ville de
 var neo_v94: Node3D                        # V94 : Néopolis (la ville cyberpunk)
 var pasta_v97: Node3D                      # V97 : l'Île Al Dente (la secte du Spaghetti Volant)
 var crayon_v99: Node3D                     # V99 : l'Île Crayonnée (l'île en noir et blanc)
+var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
+var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
 var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est maintenu
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
@@ -4020,6 +4023,16 @@ func _create_v99() -> void:
 	crayon_v99.build_town()
 	if journal_v56 != null:
 		crayon_v99.register_services(journal_v56)
+
+
+## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
+func _create_v103() -> void:
+	trafic_v103 = preload("res://scripts/trafic_v103.gd").new()
+	add_child(trafic_v103)
+	trafic_v103.setup(self)
+	oiseaux_v103 = preload("res://scripts/oiseaux_v103.gd").new()
+	add_child(oiseaux_v103)
+	oiseaux_v103.setup(self)
 
 
 ## V63 : la progression du héros (niveaux, talents, forge), les pouvoirs des sceaux, la grande
