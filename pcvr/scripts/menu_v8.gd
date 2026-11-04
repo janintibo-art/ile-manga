@@ -6,6 +6,7 @@ signal delete_requested(slot: int)
 signal resume_requested
 
 const Saves = preload("res://scripts/save_manager.gd")
+const Langue = preload("res://scripts/langue_v104.gd")
 var opened: bool = true
 var playing: bool = false
 var pc_layer: CanvasLayer
@@ -150,6 +151,8 @@ func _show_view(which: String) -> void:
 		var mu: Node = _music()
 		if mu != null:
 			options = [mu.volume_label("musique"), mu.volume_label("bruitages"), mu.volume_label("ambiances")]
+		# V104 : la langue du jeu
+		options.append("Langue : " + Langue.nom(Langue.code))
 		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
@@ -157,9 +160,9 @@ func _redraw() -> void:
 	if not opened:
 		return
 	if xr_mode:
-		var lines: PackedStringArray = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", "6 emplacements de sauvegarde", ""])
+		var lines: PackedStringArray = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", Langue.t("6 emplacements de sauvegarde"), ""])
 		for i in range(options.size()):
-			lines.append(("➤ " if i == selection else "   ") + options[i])
+			lines.append(("➤ " if i == selection else "   ") + Langue.t(options[i]))
 		vr_text.text = "\n".join(lines)
 	else:
 		for n in list_box.get_children():
@@ -236,6 +239,12 @@ func _activate(index: int) -> void:
 			mu.cycle_volume(keys[index])
 			_show_view("settings")
 			selection = index
+			_redraw()
+		elif action.begins_with("Langue : "):
+			Langue.choisir(Langue.suivante())
+			var keep: int = index
+			_show_view("settings")
+			selection = keep
 			_redraw()
 		elif action == "Retour":
 			_show_view("home")

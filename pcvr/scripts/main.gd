@@ -95,6 +95,8 @@ const ROOMS_V27 := [[8.2, 11.4, 0.7, 7.3, 6.33], [-13.6, -9.55, 6.2, 10.7, 4.05]
 
 
 func _ready() -> void:
+	# V104 : la langue choisie (français, anglais, espagnol) avant de construire les textes
+	preload("res://scripts/langue_v104.gd").charger()
 	# V81 : les portes des maisons décoratives sont notées pendant la construction des villes
 	preload("res://scripts/azur_kit_v56.gd").PORTES_V81.clear()
 	_configure_quality()
