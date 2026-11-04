@@ -409,18 +409,45 @@ MOTIFS = [
 ]
 
 
+def _toutes():
+    # V105 : les listes des versions suivantes (langues_v105.py…) et les grandes listes
+    # tools/langues/*.json ([français, anglais, espagnol]).
+    import glob, importlib.util
+    here = os.path.dirname(os.path.abspath(__file__))
+    textes = []
+    motifs = list(MOTIFS)
+    for f in sorted(glob.glob(os.path.join(here, "langues", "*.json"))):
+        with open(f, encoding="utf-8") as fh:
+            rows = [tuple(r) for r in json.load(fh)]
+        if os.path.basename(f).startswith("motifs_"):
+            motifs += rows
+        else:
+            textes += rows
+    for f in sorted(glob.glob(os.path.join(here, "langues_v1*.py"))):
+        if os.path.basename(f) == "langues_v104.py":
+            continue
+        spec = importlib.util.spec_from_file_location(os.path.basename(f)[:-3], f)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        textes += list(getattr(mod, "TEXTES", []))
+        motifs += list(getattr(mod, "MOTIFS", []))
+    # les textes de l'interface (V104) gardent le dernier mot
+    return textes + list(TEXTES), motifs
+
+
 def build(out_dir):
     os.makedirs(out_dir, exist_ok=True)
+    all_tx, all_mo = _toutes()
     for i, code in ((1, "en"), (2, "es")):
         tx = {}
-        for row in TEXTES:
+        for row in all_tx:
             tx[row[0]] = row[i]
         mo = {}
-        for row in MOTIFS:
+        for row in all_mo:
             mo[row[0]] = row[i]
         with open(os.path.join(out_dir, code + ".json"), "w", encoding="utf-8") as f:
             json.dump({"textes": tx, "motifs": mo}, f, ensure_ascii=False, indent=1, sort_keys=True)
-    print("langues : %d textes, %d motifs" % (len(TEXTES), len(MOTIFS)))
+    print("langues : %d textes, %d motifs" % (len(all_tx), len(all_mo)))
 
 
 if __name__ == "__main__":

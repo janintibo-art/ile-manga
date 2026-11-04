@@ -143,7 +143,7 @@ static func _phrase(s: String, depth: int) -> String:
 		var vals: Array = []
 		for g in range(1, int(m[2]) + 1):
 			var v: String = rm.get_string(g)
-			vals.append(_coeur(v, depth + 1) if depth < 3 else v)
+			vals.append(_decoupe(v, depth + 1) if depth < 3 else v)   # V105 : le trou est découpé lui aussi
 		for g2 in range(vals.size()):
 			out = out.replace("{%d}" % (g2 + 1), vals[g2])
 		# les trous dans l'ordre, {} ou {n}, le premier rencontré d'abord
@@ -169,6 +169,11 @@ static func _coeur(s: String, depth: int) -> String:
 	var r: String = _phrase(s, depth)
 	if r != "":
 		return r
+	# V105 : un nom mis en minuscules au milieu d'une phrase (« 2 × pomme ») : la table, sans la
+	# majuscule du début
+	if s == s.to_lower() and _bas.has(s):
+		var rb: String = str(_bas[s])
+		return rb.substr(0, 1).to_lower() + rb.substr(1)
 	var a: int = 0
 	while a < s.length() and DECOR_DEBUT.contains(s[a]):
 		a += 1
@@ -189,6 +194,16 @@ static func _coeur(s: String, depth: int) -> String:
 	var core2: String = s.strip_edges()
 	if core2 == core2.to_upper() and core2 != core2.to_lower() and _bas.has(core2.to_lower()):
 		return str(_bas[core2.to_lower()]).to_upper()
+	# V105 : une liste « a, b, c » (récompenses, objets à apporter) : élément par élément
+	if depth < 3 and s.contains(", "):
+		var outp: PackedStringArray = []
+		var moved: bool = false
+		for p in s.split(", "):
+			var tp: String = _coeur(p, depth + 1)
+			moved = moved or tp != p
+			outp.append(tp)
+		if moved:
+			return ", ".join(outp)
 	return s
 
 
