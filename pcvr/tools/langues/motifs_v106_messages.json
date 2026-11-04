@@ -1,0 +1,2292 @@
+[
+[
+"Le coffre des Abysses : {n} pièces, {n} rubis et {n} perles noires comme l'eau du lac.",
+"The Abyss chest: {n} coins, {n} rubies and {n} pearls as black as the lake water.",
+"El cofre del Abismo: {n} monedas, {n} rubíes y {n} perlas negras como el agua del lago."
+],
+[
+"L'Alouette est à toi ! Un deltaplane de toile et de frêne, plié dans ton sac. Pour t'envoler, il faut un point haut : le bord d'une falaise, une tour, l'aire d'envol de l'Atelier… ou en pleine chute ! Là, {}. {}",
+"The Alouette is yours! A hang glider of canvas and ash wood, folded in your bag. To take off you need a high point: a cliff edge, a tower, the Workshop's launch pad… or mid-fall! Once there, {}. {}",
+"¡La Alouette es tuya! Un ala delta de lona y fresno, plegada en tu mochila. Para echar a volar necesitas un punto alto: el borde de un acantilado, una torre, la zona de despegue del Taller… ¡o en plena caída! Allí, {}. {}"
+],
+[
+"L'Alouette à hélice ! Un pédalier, une chaîne, une hélice : tu peux maintenant décoller d'un terrain plat (pédale pour rouler) et remonter un peu en pédalant — {}. Pédaler fatigue : quand tu n'as plus de souffle, plane.",
+"The propeller Alouette! A pedal set, a chain, a propeller: now you can take off from flat ground (pedal to roll) and climb a little by pedalling — {}. Pedalling is tiring: when you run out of breath, glide.",
+"¡La Alouette de hélice! Un pedalier, una cadena, una hélice: ahora puedes despegar desde un terreno llano (pedalea para rodar) y subir un poco pedaleando — {}. Pedalear cansa: cuando te quedes sin aliento, planea."
+],
+[
+"L'Albatros ! Un ballon allongé, une nacelle de bois et de laiton, deux hélices qui ronronnent. Il monte, il descend, il flâne jusqu'à trois cents mètres. Pour l'appeler, {} : il vient se poser près de toi.",
+"The Albatros! A long balloon, a gondola of wood and brass, two purring propellers. It climbs, it descends, it drifts along up to three hundred metres. To call it, {}: it comes and lands next to you.",
+"¡El Albatros! Un globo alargado, una góndola de madera y latón, dos hélices que ronronean. Sube, baja, flota despacio hasta trescientos metros. Para llamarlo, {}: viene a posarse junto a ti."
+],
+[
+"Le Glisseur stellaire ! Une petite soucoupe de nacre qui file comme une étoile, monte jusqu'à six cents mètres et se pose partout : sur Astralys, sur l'île flottante… Pour l'appeler, {}.",
+"The Star Glider! A little mother-of-pearl saucer that zips along like a star, climbs up to six hundred metres and can land anywhere: on Astralys, on the floating island… To call it, {}.",
+"¡El Planeador estelar! Un pequeño platillo de nácar que surca el cielo como una estrella, sube hasta seiscientos metros y aterriza en cualquier parte: en Astralys, en la isla flotante… Para llamarlo, {}."
+],
+[
+"Au royaume des fées, la magie de l'Arbre-Monde garde le ciel : {} ne s'y déploie pas.",
+"In the fairy kingdom, the magic of the World Tree guards the sky: {} can't take flight there.",
+"En el reino de las hadas, la magia del Árbol del Mundo guarda el cielo: {} no puede desplegarse allí."
+],
+[
+"Pas sous un toit : sors à l'air libre pour {}.",
+"Not under a roof: go out into the open air to {}.",
+"No bajo techo: sal al aire libre para {}."
+],
+[
+"Tu déplies l'Alouette à hélice et tu t'installes. {} pour pédaler : elle roule, prend de la vitesse… et décolle !",
+"You unfold the propeller Alouette and settle in. {} to pedal: it rolls, picks up speed… and takes off!",
+"Despliegas la Alouette de hélice y te acomodas. {} para pedalear: rueda, coge velocidad… ¡y despega!"
+],
+[
+"{} t'attend déjà, juste là. E pour monter à bord.",
+"{} is already waiting for you, right there. E to climb aboard.",
+"{} ya te está esperando, justo ahí. E para subir a bordo."
+],
+[
+"{} t'attend déjà, juste là. Gâchette pour monter à bord.",
+"{} is already waiting for you, right there. Trigger to climb aboard.",
+"{} ya te está esperando, justo ahí. Gatillo para subir a bordo."
+],
+[
+"Pas assez de place ici pour que {} se pose. Va sur un terrain dégagé.",
+"There isn't enough room here for {} to land. Go to some clear ground.",
+"Aquí no hay sitio suficiente para que {} aterrice. Ve a un terreno despejado."
+],
+[
+"À bord de l'Albatros ! {}",
+"Aboard the Albatros! {}",
+"¡A bordo del Albatros! {}"
+],
+[
+"Dans le Glisseur stellaire ! La coque vibre doucement, les feux s'allument un à un. {}",
+"In the Star Glider! The hull hums softly, the lights come on one by one. {}",
+"¡En el Planeador estelar! El casco vibra suavemente, las luces se encienden una a una. {}"
+],
+[
+"Une Alouette ne se pose pas d'un coup : descends en planant jusqu'au sol ({}). Elle se posera toute seule en douceur.",
+"An Alouette doesn't land all at once: glide down to the ground ({}). It will land gently on its own.",
+"Una Alouette no aterriza de golpe: desciende planeando hasta el suelo ({}). Aterrizará sola, con suavidad."
+],
+[
+"Trop haut pour se poser : l'Albatros descend lentement. Descends d'abord un peu ({}).",
+"Too high to land: the Albatros descends slowly. Go down a little first ({}).",
+"Demasiado alto para aterrizar: el Albatros desciende despacio. Baja un poco primero ({})."
+],
+[
+"Pas de terre ferme ici… {} descend au ras des vagues : tu sauteras dans l'eau.",
+"No dry land here… {} drops down to skim the waves: you'll jump into the water.",
+"No hay tierra firme aquí… {} desciende a ras de las olas: saltarás al agua."
+],
+[
+"Ta barque est juste là : {} descend tout près.",
+"Your rowboat is right there: {} comes down close by.",
+"Tu barca está justo ahí: {} desciende muy cerca."
+],
+[
+"Tu sautes dans l'eau ! {} remonte dans le ciel : rappelle-le quand tu seras sur la terre ferme.",
+"You jump into the water! {} flies back up into the sky: call it again when you're on dry land.",
+"¡Saltas al agua! {} vuelve a subir al cielo: llámalo de nuevo cuando estés en tierra firme."
+],
+[
+"{} s'est posé près de toi. {} pour monter à bord.",
+"{} has landed near you. {} to climb aboard.",
+"{} ha aterrizado cerca de ti. {} para subir a bordo."
+],
+[
+"{} ne peut pas monter plus haut ({n} m) : l'air est trop léger.",
+"{} can't climb any higher ({n} m): the air is too thin.",
+"{} no puede subir más ({n} m): el aire es demasiado ligero."
+],
+[
+"{}  —  altitude {n} m (sol à {n} m)",
+"{}  —  altitude {n} m (ground at {n} m)",
+"{}  —  altitud {n} m (suelo a {n} m)"
+],
+[
+"  ·  plafond {n} m",
+"  ·  ceiling {n} m",
+"  ·  techo {n} m"
+],
+[
+"L'amulette brille : un Œil s'ouvre ! ({n} sur 3)",
+"The amulet glows: an Eye opens! ({n} of 3)",
+"¡El amuleto brilla: se abre un Ojo! ({n} de 3)"
+],
+[
+"Le trésor de Nâga : {n} pièces, {n} pièces d'or, {n} rubis… et une ÉCAILLE DE NÂGA, verte et dure comme du jade.{}",
+"Nâga's treasure: {n} coins, {n} gold coins, {n} rubies… and a NÂGA SCALE, green and hard as jade.{}",
+"El tesoro de Nâga: {n} monedas, {n} monedas de oro, {n} rubíes… y una ESCAMA DE NÂGA, verde y dura como el jade.{}"
+],
+[
+"☾ {} (6 pièces)",
+"☾ {} (6 coins)",
+"☾ {} (6 monedas)"
+],
+[
+"Je vois… {}",
+"I see… {}",
+"Veo… {}"
+],
+[
+"Quelqu'un t'attend… {}.",
+"Someone is waiting for you… {}.",
+"Alguien te espera… {}."
+],
+[
+"(Agathe se penche sur la boule. La brume tourne, devient bleue, puis violette.) {}",
+"(Agathe leans over the ball. The mist swirls, turns blue, then purple.) {}",
+"(Agathe se inclina sobre la bola. La bruma gira, se vuelve azul, luego violeta.) {}"
+],
+[
+"Brasero allumé : {n} / {n} (vite, avant qu'ils ne s'éteignent !)",
+"Brazier lit: {n} / {n} (quick, before they go out!)",
+"Brasero encendido: {n} / {n} (¡rápido, antes de que se apaguen!)"
+],
+[
+"Une rune s'éveille sous ta lumière… ({n} / {n})",
+"A rune awakens under your light… ({n} / {n})",
+"Una runa despierta bajo tu luz… ({n} / {n})"
+],
+[
+"Madame Hurla : « VICTOIRE ! » La foule tape des pieds et des queues sur les gradins. (+{n} pièces.) Frappe le gong pour la manche suivante.",
+"Madame Hurla: “VICTORY!” The crowd stamps its feet and tails on the stands. (+{n} coins.) Strike the gong for the next round.",
+"Madame Hurla: « ¡VICTORIA! » El público golpea la grada con los pies y con las colas. (+{n} monedas.) Golpea el gong para la siguiente ronda."
+],
+[
+"Gorgoth pose un genou dans le sable et lève sa grosse main : « Je… je m'avoue vaincu. Quel combat ! Tu as le cœur d'un poète. » Madame Hurla hurle : « NOUVEAU CHAMPION DES CORNES ! » et te tend la Corne d'or. (+{n} pièces.)",
+"Gorgoth drops to one knee in the sand and raises his big hand: “I… I admit defeat. What a fight! You have the heart of a poet.” Madame Hurla bellows: “NEW CHAMPION OF THE HORNS!” and hands you the Golden Horn. (+{n} coins.)",
+"Gorgoth hinca una rodilla en la arena y levanta su manaza: « Yo… me doy por vencido. ¡Qué combate! Tienes el corazón de un poeta. » Madame Hurla brama: « ¡NUEVO CAMPEÓN DE LOS CUERNOS! » y te entrega el Cuerno de Oro. (+{n} monedas.)"
+],
+[
+"Premier anneau ! Le parcours commence : encore six, dans l'ordre, en moins de {n} secondes.",
+"First ring! The course begins: six more, in order, in under {n} seconds.",
+"¡Primer anillo! Empieza el recorrido: seis más, en orden, en menos de {n} segundos."
+],
+[
+"Les sept anneaux en {n} s !{}",
+"All seven rings in {n} s!{}",
+"¡Los siete anillos en {n} s!{}"
+],
+[
+" (Record : {n} s.)",
+" (Record: {n} s.)",
+" (Récord: {n} s.)"
+],
+[
+"{n} pièces",
+"{n} coins",
+"{n} monedas"
+],
+[
+"L'Alouette ! Un deltaplane : de la toile tendue sur une armature de frêne et d'aluminium. On saute d'un point haut, et on plane. Il me faut {}.",
+"The Alouette! A hang glider: canvas stretched over a frame of ash and aluminium. You jump from a high point, and you glide. I need {}.",
+"¡La Alouette! Un ala delta: lona tensada sobre una armadura de fresno y aluminio. Se salta desde un punto alto, y se planea. Necesito {}."
+],
+[
+"Un pédalier, une chaîne de vélo, une hélice en bois de poirier : l'Alouette pourra décoller du plat et remonter un peu. Il me faut {}.",
+"A pedal set, a bicycle chain, a pear-wood propeller: the Alouette will be able to take off from flat ground and climb a little. I need {}.",
+"Un pedalier, una cadena de bici, una hélice de madera de peral: la Alouette podrá despegar en llano y subir un poco. Necesito {}."
+],
+[
+"L'Albatros : un ballon allongé, une nacelle, deux hélices, un petit moteur à vapeur. Et pour le gaz… un fragment de météorite : ça flotte tout seul, c'est très pratique. Il me faut {}.",
+"The Albatros: a long balloon, a gondola, two propellers, a little steam engine. And for the gas… a meteorite fragment: it floats all by itself, very handy. I need {}.",
+"El Albatros: un globo alargado, una góndola, dos hélices, un pequeño motor de vapor. Y para el gas… un fragmento de meteorito: flota solito, muy práctico. Necesito {}."
+],
+[
+"✦ Construire {} ({})",
+"✦ Build {} ({})",
+"✦ Construir {} ({})"
+],
+[
+"◆ Acheter : {} ({n} pièces)",
+"◆ Buy: {} ({n} coins)",
+"◆ Comprar: {} ({n} monedas)"
+],
+[
+"L'établi de Philibert, couvert de plans. Sur le plan du dessus : {}. ",
+"Philibert's workbench, covered in plans. On the top plan: {}. ",
+"El banco de trabajo de Philibert, cubierto de planos. En el plano de arriba: {}. "
+],
+[
+"Il manque encore : {}.",
+"Still missing: {}.",
+"Aún falta: {}."
+],
+[
+"Il te faut {n} pièces.",
+"You need {n} coins.",
+"Necesitas {n} monedas."
+],
+[
+"◆ Une toile à voile ({n} pièces)",
+"◆ A sailcloth canvas ({n} coins)",
+"◆ Una lona de vela ({n} monedas)"
+],
+[
+"◆ Un engrenage ({n} pièces)",
+"◆ A gear ({n} coins)",
+"◆ Un engranaje ({n} monedas)"
+],
+[
+" Il te manque encore {}. Je t'attends ! Je ne bouge pas. Enfin, si, je bouge, mais je reviens.",
+" You're still missing {}. I'll be waiting! I won't move. Well, I will move, but I'll come back.",
+" Todavía te falta {}. ¡Te espero! No me muevo. Bueno, sí me muevo, pero vuelvo."
+],
+[
+"{n} pièces, s'il te plaît. Les inventeurs aussi mangent. Surtout des biscuits.",
+"{n} coins, please. Inventors have to eat too. Mostly biscuits.",
+"{n} monedas, por favor. Los inventores también comen. Sobre todo galletas."
+],
+[
+"Tiens ! De la bonne {}, de chez Bricolette.",
+"Here you go! Fine {}, from Bricolette's.",
+"¡Toma! {} de la buena, de casa de Bricolette."
+],
+[
+"✦ Transformer l'Albatros en Glisseur stellaire ({})",
+"✦ Turn the Albatros into the Star Glider ({})",
+"✦ Transformar el Albatros en el Planeador estelar ({})"
+],
+[
+"Pour la coque de nacre, il me faut {}. Il te manque {}. Les pièces ? Je ne sais pas à quoi elles servent, mais je les accepte, par politesse.",
+"For the mother-of-pearl hull, I need {}. You're missing {}. Coins? I don't know what they're for, but I'll accept them, out of politeness.",
+"Para el casco de nácar necesito {}. Te falta {}. ¿Monedas? No sé para qué sirven, pero las acepto, por cortesía."
+],
+[
+"⚓ Embarquer pour {} ({})",
+"⚓ Set sail for {} ({})",
+"⚓ Embarcar hacia {} ({})"
+],
+[
+"C'est {n} pièces la traversée, et ta bourse sonne creux. Reviens quand tu pourras payer, matelot.",
+"The crossing is {n} coins, and your purse sounds empty. Come back when you can pay, sailor.",
+"La travesía cuesta {n} monedas, y tu bolsa suena vacía. Vuelve cuando puedas pagar, marinero."
+],
+[
+"Bienvenue à bord ! Installe-toi sur le pont, on largue les amarres. Cap sur {} !",
+"Welcome aboard! Make yourself at home on the deck, we're casting off. Setting course for {}!",
+"¡Bienvenido a bordo! Ponte cómodo en cubierta, soltamos amarras. ¡Rumbo a {}!"
+],
+[
+"☾ {} (10 pièces)",
+"☾ {} (10 coins)",
+"☾ {} (10 monedas)"
+],
+[
+"Ton chemin passe par ceci : {}",
+"Your path leads through this: {}",
+"Tu camino pasa por esto: {}"
+],
+[
+"Je vois… je vois… {}",
+"I see… I see… {}",
+"Veo… veo… {}"
+],
+[
+"On touche pas à un gars du {} !",
+"Nobody touches a guy from the {}!",
+"¡Nadie se mete con un tipo del {}!"
+],
+[
+"Tiens bon, {}, j'arrive !",
+"Hang in there, {}, I'm coming!",
+"¡Aguanta, {}, ya voy!"
+],
+[
+"Le {}, c'est un rafiot !",
+"The {} is a rust bucket!",
+"¡El {} es un cascarón!"
+],
+[
+"Allez, {} !",
+"Come on, {}!",
+"¡Vamos, {}!"
+],
+[
+"Tu as gagné la bagarre !{}",
+"You won the brawl!{}",
+"¡Has ganado la pelea!{}"
+],
+[
+"  (+{n} pièces ramassées par terre)",
+"  (+{n} coins picked up off the floor)",
+"  (+{n} monedas recogidas del suelo)"
+],
+[
+"La rune de ce pouvoir est déjà brisée… Il en reste {n}.",
+"The rune of this power is already shattered… {n} remain.",
+"La runa de este poder ya está rota… Quedan {n}."
+],
+[
+"Une rune de moins ! Il en reste {n}.",
+"One rune fewer! {n} remain.",
+"¡Una runa menos! Quedan {n}."
+],
+[
+"Île du Boucan, {}",
+"Boucan Island, {}",
+"Isla del Boucan, {}"
+],
+[
+"Île de Braise, {}",
+"Ember Island, {}",
+"Isla de Brasa, {}"
+],
+[
+"Arbre abattu ! {}",
+"Tree felled! {}",
+"¡Árbol talado! {}"
+],
+[
+"Jour {n}  —  {}  ({})",
+"Day {n}  —  {}  ({})",
+"Día {n}  —  {}  ({})"
+],
+[
+"Quêtes de Port-Azur accomplies : {n} / {n}   •   Bonus gagnés : {}",
+"Port-Azur quests completed: {n} / {n}   •   Bonuses earned: {}",
+"Misiones de Port-Azur completadas: {n} / {n}   •   Bonificaciones obtenidas: {}"
+],
+[
+"[b]Amitié :[/b] [color=#ff8a8a]{}[/color]   ([i]vous appelle « {} »[/i])\n",
+"[b]Friendship:[/b] [color=#ff8a8a]{}[/color]   ([i]calls you “{}”[/i])\n",
+"[b]Amistad:[/b] [color=#ff8a8a]{}[/color]   ([i]te llama «{}»[/i])\n"
+],
+[
+"[b]Cœurs :[/b] {n}  [color=#9aa7b0](dont +{n} gagnés en aidant les gens)[/color]\n",
+"[b]Hearts:[/b] {n}  [color=#9aa7b0](including +{n} earned by helping people)[/color]\n",
+"[b]Corazones:[/b] {n}  [color=#9aa7b0](de los cuales +{n} ganados ayudando a la gente)[/color]\n"
+],
+[
+"[b]Souffle sous l'eau sans masque :[/b] {n} secondes  [color=#9aa7b0](+{n})[/color]\n",
+"[b]Breath underwater without a mask:[/b] {n} seconds  [color=#9aa7b0](+{n})[/color]\n",
+"[b]Aliento bajo el agua sin máscara:[/b] {n} segundos  [color=#9aa7b0](+{n})[/color]\n"
+],
+[
+"[b]Force :[/b] +{n} aux dégâts\n\n",
+"[b]Strength:[/b] +{n} damage\n\n",
+"[b]Fuerza:[/b] +{n} de daño\n\n"
+],
+[
+"{}  —  {n} points{}\n",
+"{}  —  {n} points{}\n",
+"{}  —  {n} puntos{}\n"
+],
+[
+"Jours passés : {n}   •   Personnages rencontrés : {n}\n",
+"Days spent: {n}   •   Characters met: {n}\n",
+"Días transcurridos: {n}   •   Personajes conocidos: {n}\n"
+],
+[
+"Poissons pêchés : {n}   •   Trésors déterrés : {n}   •   Arbres abattus : {n}\n",
+"Fish caught: {n}   •   Treasures dug up: {n}   •   Trees felled: {n}\n",
+"Peces pescados: {n}   •   Tesoros desenterrados: {n}   •   Árboles talados: {n}\n"
+],
+[
+"Quêtes accomplies : {n}   •   en cours : {n}\n",
+"Quests completed: {n}   •   in progress: {n}\n",
+"Misiones completadas: {n}   •   en curso: {n}\n"
+],
+[
+"Tu croques le {}. Ça pétille sous la langue !",
+"You bite into the {}. It fizzes on your tongue!",
+"Muerdes la {}. ¡Chisporrotea en la lengua!"
+],
+[
+"L'effet du {} s'en va doucement.",
+"The effect of the {} slowly fades.",
+"El efecto de la {} se va apagando poco a poco."
+],
+[
+"E : cueillir un {}",
+"E: pick a {}",
+"E: coger una {}"
+],
+[
+"Tu cueilles un {}. Il luit doucement dans ta main. (À croquer depuis le sac.)",
+"You pick a {}. It glows softly in your hand. (To eat from your bag.)",
+"Coges una {}. Brilla suavemente en tu mano. (Para comer desde la mochila.)"
+],
+[
+"  (Cachettes de la Lunaire : {n} sur {n}.)",
+"  (Moonling hideouts: {n} of {n}.)",
+"  (Escondites de la Lunaria: {n} de {n}.)"
+],
+[
+"j'en vends ici même, {n} pièces le rouleau",
+"I sell some right here, {n} coins a roll",
+"yo vendo aquí mismo, {n} monedas el rollo"
+],
+[
+"Coup de pinceau, coup de pinceau… Et voilà : une coque {} ! Elle sèche en un clin d'œil (c'est de la peinture de Port-Azur).",
+"Brush stroke, brush stroke… And there: a {} hull! It dries in a flash (it's Port-Azur paint).",
+"Pincelada, pincelada… Y listo: ¡un casco {}! Se seca en un abrir y cerrar de ojos (es pintura de Port-Azur)."
+],
+[
+"Hissez le pavillon ! « {} » flotte maintenant à la poupe.",
+"Hoist the flag! “{}” now flies at the stern.",
+"¡Izad la bandera! «{}» ondea ahora en la popa."
+],
+[
+"C'est fait : ton bateau t'attend {}. Un ami pêcheur me l'a ramené en chantant faux.",
+"Done: your boat is waiting for you {}. A fisherman friend brought it back for me, singing off-key.",
+"Hecho: tu barco te espera {}. Un amigo pescador me lo trajo cantando desafinado."
+],
+[
+"Bienvenue au chantier, capitaine ! Ici, on rabote, on cloue, on goudronne… et on rêve de grand large. {}",
+"Welcome to the shipyard, captain! Here we plane, nail, and tar… and dream of the open sea. {}",
+"¡Bienvenido al astillero, capitán! Aquí se cepilla, se clava, se embrea… y se sueña con alta mar. {}"
+],
+[
+"Le gros registre du chantier est ouvert. Yannick y a écrit : « Commandes à noter ici, paiement dans la boîte, je construis la nuit (et je chante). » {}",
+"The big shipyard register is open. Yannick wrote in it: “Orders to be noted here, payment in the box, I build at night (and I sing).” {}",
+"El gran registro del astillero está abierto. Yannick ha escrito en él: «Los encargos se anotan aquí, el pago en la caja; construyo de noche (y canto).» {}"
+],
+[
+" Dans ta bourse : {}.",
+" In your purse: {}.",
+" En tu bolsa: {}."
+],
+[
+"Ton bateau : {}.",
+"Your boat: {}.",
+"Tu barco: {}."
+],
+[
+"⚓ Nouvelle coque : {} ({n} pièces + matériaux)",
+"⚓ New hull: {} ({n} coins + materials)",
+"⚓ Casco nuevo: {} ({n} monedas + materiales)"
+],
+[
+"⚒ Propulsion : {} ({n} pièces + matériaux)",
+"⚒ Propulsion: {} ({n} coins + materials)",
+"⚒ Propulsión: {} ({n} monedas + materiales)"
+],
+[
+"✦ Accessoires ({n} sur 6 à bord)",
+"✦ Accessories ({n} of 6 on board)",
+"✦ Accesorios ({n} de 6 a bordo)"
+],
+[
+"Acheter un rouleau de toile à voile ({n} pièces)",
+"Buy a roll of sailcloth ({n} coins)",
+"Comprar un rollo de lona de vela ({n} monedas)"
+],
+[
+"{} {} : {} mètres de long, {} m/s à fond.",
+"{} {}: {} metres long, {} m/s flat out.",
+"{} {}: {} metros de eslora, {} m/s a toda velocidad."
+],
+[
+" À bord : {}.",
+" On board: {}.",
+" A bordo: {}."
+],
+[
+" Coque peinte en {}.",
+" Hull painted {}.",
+" Casco pintado de {}."
+],
+[
+" Pavillon : « {} ».",
+" Flag: “{}”.",
+" Bandera: «{}»."
+],
+[
+" Il est amarré {}.",
+" It is moored {}.",
+" Está amarrado {}."
+],
+[
+"\nPrix : {}.",
+"\nPrice: {}.",
+"\nPrecio: {}."
+],
+[
+"✔ Oui, construis-le ! ({})",
+"✔ Yes, build it! ({})",
+"✔ ¡Sí, constrúyelo! ({})"
+],
+[
+"\nIl te manque : {}",
+"\nYou're missing: {}",
+"\nTe falta: {}"
+],
+[
+"C'est installé : {} ! Ça te va comme un gant de marin.",
+"It's installed: {}! It fits you like a sailor's glove.",
+"¡Instalado: {}! Te sienta como un guante de marinero."
+],
+[
+"Chantier naval : {} {}.",
+"Shipyard: {} {}.",
+"Astillero: {} {}."
+],
+[
+"✔ {} (à bord)",
+"✔ {} (on board)",
+"✔ {} (a bordo)"
+],
+[
+"Un rouleau de toile, c'est {n} pièces… et ta bourse fait la grimace.",
+"A roll of cloth is {n} coins… and your purse is pulling a face.",
+"Un rollo de lona cuesta {n} monedas… y tu bolsa está poniendo mala cara."
+],
+[
+"Et un rouleau de toile à voile, un ! Solide, souple, et ça sent le large. Tu en as maintenant {n}.",
+"And one roll of sailcloth, coming up! Strong, supple, and it smells of the open sea. You now have {n}.",
+"¡Y un rollo de lona de vela, marchando! Fuerte, flexible y huele a mar abierto. Ahora tienes {n}."
+],
+[
+"+{n} Pièce{} de cuivre",
+"+{n} Copper coin{}",
+"+{n} Moneda{} de cobre"
+],
+[
+"E : sonner la cloche {}",
+"E: ring the bell {}",
+"E: tocar la campana {}"
+],
+[
+"Ventaile avale {} d'un coup de bec. Elle en voudrait encore… ({n})",
+"Ventaile swallows {} in one snap of her beak. She'd like more… ({n})",
+"Ventaile se traga {} de un picotazo. Querría más… ({n})"
+],
+[
+"Tu boucles les sangles de la selle naine. Ventaile se redresse, fière, et t'offre une plume dorée. Elle est à toi, et toi à elle. {}",
+"You buckle the straps of the dwarven saddle. Ventaile rises, proud, and offers you a golden feather. She is yours, and you are hers. {}",
+"Abrochas las correas de la silla enana. Ventaile se yergue, orgullosa, y te ofrece una pluma dorada. Ella es tuya, y tú eres suyo. {}"
+],
+[
+"Trop haut pour se poser : descends d'abord ({}).",
+"Too high to land: descend first ({}).",
+"Demasiado alto para aterrizar: baja primero ({})."
+],
+[
+"Le Sceau des Vents : une stèle gravée d'une rose des vents, avec deux logements vides. La grande porte du donjon ne bouge pas. Il manque {}",
+"The Seal of Winds: a stele engraved with a compass rose, with two empty slots. The great door of the keep doesn't budge. Missing: {}",
+"El Sello de los Vientos: una estela grabada con una rosa de los vientos y dos huecos vacíos. La gran puerta de la torre del homenaje no se mueve. Falta: {}"
+],
+[
+"Une niche vide sous la Pierre du Soleil, marquée de {n} point{}. Il y manque une tablette gravée. Les quatre salles des soleils en gardent chacune une.",
+"An empty niche beneath the Sun Stone, marked with {n} dot{}. An engraved tablet is missing. The four sun chambers each keep one.",
+"Un nicho vacío bajo la Piedra del Sol, marcado con {n} punto{}. Falta una tablilla grabada. Las cuatro salas de los soles guardan una cada una."
+],
+[
+"Poser le glyphe : {}",
+"Place glyph: {}",
+"Colocar glifo: {}"
+],
+[
+"La niche marquée de {n} point{}. Quel glyphe y poses-tu ?",
+"The niche marked with {n} dot{}. Which glyph will you place in it?",
+"El nicho marcado con {n} punto{}. ¿Qué glifo colocas en él?"
+],
+[
+"Tu poses {} dans la niche. Le glyphe s'enfonce avec un déclic.",
+"You place {} in the niche. The glyph sinks in with a click.",
+"Colocas {} en el nicho. El glifo encaja con un clic."
+],
+[
+"Tu tournes la roue de bronze : un grondement d'eau dans les murs… le bassin monte, et les chinampas avec lui. ({n} vanne{} sur 3)",
+"You turn the bronze wheel: a rumble of water in the walls… the basin rises, and the chinampas with it. ({n} sluice{} of 3)",
+"Giras la rueda de bronce: un estruendo de agua en los muros… la cuenca sube, y las chinampas con ella. ({n} compuerta{} de 3)"
+],
+[
+"E : descendre à {}",
+"E: go down to {}",
+"E: bajar a {}"
+],
+[
+"☾ {} (7 pièces)",
+"☾ {} (7 coins)",
+"☾ {} (7 monedas)"
+],
+[
+"E : tourner le {} cadran",
+"E: turn the {} dial",
+"E: girar el cuadrante {}"
+],
+[
+"Le sceau du Cœur : un grand disque de pierre sombre cerclé d'or, et quatre cristaux tournés vers les quatre ailes : bleu-vert vers les Marées, orange vers les Sables, or vers les Rouages, argent vers la Lune. {}",
+"The Heart seal: a great disc of dark stone ringed with gold, and four crystals turned toward the four wings: blue-green toward the Tides, orange toward the Sands, gold toward the Gears, silver toward the Moon. {}",
+"El sello del Corazón: un gran disco de piedra oscura rodeado de oro y cuatro cristales orientados hacia las cuatro alas: azul verdoso hacia las Mareas, naranja hacia las Arenas, dorado hacia los Engranajes, plateado hacia la Luna. {}"
+],
+[
+"{n} sur quatre brillent.",
+"{n} of four are shining.",
+"{n} de cuatro brillan."
+],
+[
+"La herse retombe derrière toi… {} se dresse au milieu de l'arène !",
+"The portcullis drops behind you… {} rises in the middle of the arena!",
+"La reja cae a tus espaldas… ¡{} se alza en medio de la arena!"
+],
+[
+"Le gardien de {} est vaincu ! Au fond de l'arène, sur l'estrade, un cristal monte lentement du sol, et la herse se relève. (E : toucher le cristal)",
+"The guardian of {} is defeated! At the back of the arena, on the dais, a crystal slowly rises from the floor, and the portcullis lifts. (E: touch the crystal)",
+"¡El guardián de {} ha sido derrotado! Al fondo de la arena, sobre la tarima, un cristal sube lentamente del suelo, y la reja se levanta. (E: tocar el cristal)"
+],
+[
+"Le cristal s'illumine sous ta main. Un rayon de lumière part vers la Rose des Sceaux : là-bas, un des quatre cristaux du sceau du Cœur s'allume ({n} sur 4). Un cercle de lumière s'est ouvert à côté de l'estrade : il te ramènera à la Rose des Sceaux.",
+"The crystal lights up under your hand. A beam of light shoots toward the Rose of Seals: over there, one of the four crystals of the Heart seal glows ({n} of 4). A circle of light has opened beside the dais: it will take you back to the Rose of Seals.",
+"El cristal se ilumina bajo tu mano. Un rayo de luz parte hacia la Rosa de los Sellos: allí, uno de los cuatro cristales del sello del Corazón se enciende ({n} de 4). Se ha abierto un círculo de luz junto a la tarima: te llevará de vuelta a la Rosa de los Sellos."
+],
+[
+"L'arène du gardien de {}. Le silence… Avance, si tu l'oses.",
+"The arena of the guardian of {}. Silence… Step forward, if you dare.",
+"La arena del guardián de {}. El silencio… Avanza, si te atreves."
+],
+[
+"Le Gardien du Cœur — runes brisées : {n} / 4",
+"The Guardian of the Heart — broken runes: {n} / 4",
+"El Guardián del Corazón — runas rotas: {n} / 4"
+],
+[
+"Le coffre englouti, couvert de coquillages : {n} pièces et deux perles. Les marins d'autrefois savaient cacher leurs trésors.",
+"The sunken chest, covered in shells: {n} coins and two pearls. The sailors of old knew how to hide their treasures.",
+"El cofre hundido, cubierto de conchas: {n} monedas y dos perlas. Los marineros de antaño sabían esconder sus tesoros."
+],
+[
+"Le {} cadran montre {}.",
+"The {} dial shows {}.",
+"El cuadrante {} muestra {}."
+],
+[
+"Zzz… {}",
+"Zzz… {}",
+"Zzz… {}"
+],
+[
+"Brioche s'arrête net, les oreilles dressées, et fixe le {}. « Miaou. » Il y a {} caché par là, {}.",
+"Brioche stops dead, ears pricked, and stares at the {1}. “Meow.” There's {2} hidden over there, {3}.",
+"Brioche se para en seco, con las orejas tiesas, y mira fijamente hacia el {1}. «Miau.» Hay {2} escondido por ahí, {3}."
+],
+[
+"Brioche se fige, la queue en point d'interrogation, le nez tourné vers le {}. Elle miaule : {}, {} !",
+"Brioche freezes, tail like a question mark, nose turned toward the {1}. She meows: {2}, {3}!",
+"Brioche se queda inmóvil, con la cola como un signo de interrogación y el hocico girado hacia el {1}. Maúlla: ¡{2}, {3}!"
+],
+[
+"Brioche s'assoit très droite et regarde fixement vers le {}. Quand une chatte regarde comme ça, c'est qu'il y a {}… {}.",
+"Brioche sits up very straight and stares toward the {1}. When a cat stares like that, there's {2}… {3}.",
+"Brioche se sienta muy erguida y mira fijamente hacia el {1}. Cuando una gata mira así, es que hay {2}… {3}."
+],
+[
+"Biscotte file dans un trou… et revient avec {} entre les dents ! Il te le tend, la moustache frémissante.",
+"Biscotte darts into a hole… and comes back with {1} between his teeth! He holds it out to you, whiskers twitching.",
+"Biscotte se mete en un agujero… ¡y vuelve con {1} entre los dientes! Te lo tiende, con el bigote temblando."
+],
+[
+"Petites pattes, grandes trouvailles : Biscotte te rapporte {}.",
+"Little paws, big finds: Biscotte brings you {1}.",
+"Patitas pequeñas, grandes hallazgos: Biscotte te trae {1}."
+],
+[
+"Biscotte ressort d'un trou, tout poussiéreux, avec {}. Il est très fier.",
+"Biscotte pops out of a hole, all dusty, with {1}. He's very proud.",
+"Biscotte sale de un agujero, todo polvoriento, con {1}. Está muy orgulloso."
+],
+[
+"Truffe creuse, creuse… et déterre {} ! Quelqu'un l'avait enterré là il y a longtemps.",
+"Truffle digs and digs… and unearths {1}! Someone buried it there long ago.",
+"Truffe cava, cava… ¡y desentierra {1}! Alguien lo enterró allí hace mucho."
+],
+[
+"Le groin de Truffe a trouvé mieux qu'une truffe : {} !",
+"Truffle's snout found something better than a truffle: {1}!",
+"¡El hocico de Truffe ha encontrado algo mejor que una trufa: {1}!"
+],
+[
+"Tu siffles. {} te regarde comme pour dire : « Mais je suis déjà là. »",
+"You whistle. {1} looks at you as if to say: “But I'm already here.”",
+"Silbas. {1} te mira como diciendo: «Pero si ya estoy aquí.»"
+],
+[
+"{n} pièce{}",
+"{n} coin{}",
+"{n} moneda{}"
+],
+[
+"Fuiii-iii ! {}",
+"Tweeeet! {}",
+"¡Fiiiu-iiiu! {}"
+],
+[
+"\t\t{} *= cr_c;\n",
+"\t\t{} *= cr_c;\n",
+"\t\t{} *= cr_c;\n"
+],
+[
+"\t\tfloat cr_ink = crayon_encre(cr_wp, cr_nw, cr_vw, UV, {}, TIME);\n",
+"\t\tfloat cr_ink = crayon_encre(cr_wp, cr_nw, cr_vw, UV, {}, TIME);\n",
+"\t\tfloat cr_ink = crayon_encre(cr_wp, cr_nw, cr_vw, UV, {}, TIME);\n"
+],
+[
+"#define CR_KIND {n}\n#include \"{}\"",
+"#define CR_KIND {n}\n#include “{}”",
+"#define CR_KIND {n}\n#include \"{}\""
+],
+[
+"shader_type spatial;\nrender_mode {};\n",
+"shader_type spatial;\nrender_mode {};\n",
+"shader_type spatial;\nrender_mode {};\n"
+],
+[
+"Toc toc… Personne : de jour, tout le monde cherche les pots de couleur. {}",
+"Knock knock… Nobody: by day, everyone is out looking for the colour pots. {}",
+"Toc toc… Nadie: de día, todo el mundo anda buscando los botes de color. {}"
+],
+[
+"La Palette de pierre : {n} godets sur 9 ont retrouvé leur couleur. Les autres attendent leur pot.",
+"The Stone Palette: {n} paint wells out of 9 have got their colour back. The others are waiting for their pots.",
+"La Paleta de piedra: {n} godets de 9 han recuperado su color. Los demás esperan su bote."
+],
+[
+"L'Île Crayonnée, {}",
+"Sketched Island, {}",
+"Isla Dibujada, {}"
+],
+[
+"Une passerelle de corde, au-dessus de la clairière ({n} sur {n})",
+"A rope bridge, above the clearing ({n} of {n})",
+"Una pasarela de cuerda, sobre el claro ({n} de {n})"
+],
+[
+"Le dernier pot ({}) retrouve son godet… Les neuf couleurs sont à leur place ! Toute la Palette brille.",
+"The last pot ({}) returns to its well… All nine colours are in place! The whole Palette shines.",
+"El último bote ({}) vuelve a su godet… ¡Los nueve colores están en su sitio! Toda la Paleta brilla."
+],
+[
+"{} retrouve son godet : la couleur coule dans la pierre, et l'île reprend ses couleurs, là-bas, dans {} ! ({n} pots sur 9)",
+"{} returns to its well: the colour flows into the stone, and the island gets its colours back, over in {}! ({n} pots out of 9)",
+"{} vuelve a su godet: el color fluye por la piedra, ¡y la isla recupera sus colores, allá en {}! ({n} botes de 9)"
+],
+[
+"Le pot {}",
+"The pot {}",
+"El bote {}"
+],
+[
+"Les pots {}",
+"The pots {}",
+"Los botes {}"
+],
+[
+"Le Pinceau de l'île boit la couleur de la Palette : {n} coups de pinceau.{}",
+"The island's Brush drinks the colour of the Palette: {n} brushstrokes.{}",
+"El Pincel de la isla bebe el color de la Paleta: {n} pinceladas.{}"
+],
+[
+"Un coup de pinceau… et la couleur s'étale sur la page ! (Il reste {n} coups ; on recharge à la Palette.)",
+"One brushstroke… and the colour spreads across the page! ({n} strokes left; recharge at the Palette.)",
+"Una pincelada… ¡y el color se extiende por la página! (Quedan {n} pinceladas; se recarga en la Paleta.)"
+],
+[
+"E : donner un coup de pinceau ({n})",
+"E: give a brushstroke ({n})",
+"E: dar una pincelada ({n})"
+],
+[
+"Gâchette : coup de pinceau ({n})",
+"Trigger: brushstroke ({n})",
+"Gatillo: pincelada ({n})"
+],
+[
+"Tu trouves : {}",
+"You find: {}",
+"Encuentras: {}"
+],
+[
+"Un trésor enterré ! {n} pièces de cuivre !",
+"A buried treasure! {n} copper coins!",
+"¡Un tesoro enterrado! ¡{n} monedas de cobre!"
+],
+[
+"Un petit trésor ! Le coffret contient : {}",
+"A little treasure! The box contains: {}",
+"¡Un pequeño tesoro! El cofrecito contiene: {}"
+],
+[
+"Le Zéphyr largue les amarres : prochaine escale, {}.",
+"The Zephyr casts off: next stop, {}.",
+"El Céfiro suelta amarras: próxima parada, {}."
+],
+[
+"Escale : {}. E pour descendre — ou restez à bord jusqu'à {}.",
+"Stop: {}. E to get off — or stay aboard until {}.",
+"Parada: {}. E para bajar — o quédate a bordo hasta {}."
+],
+[
+"À bord du Zéphyr ! Prochaine escale : {} (le dirigeable part dans {n} s).",
+"Aboard the Zephyr! Next stop: {} (the airship leaves in {n} s).",
+"¡A bordo del Céfiro! Próxima parada: {} (el dirigible parte en {n} s)."
+],
+[
+"Bienvenue à {} !",
+"Welcome to {}!",
+"¡Bienvenido a {}!"
+],
+[
+"Le trésor du Crabe-Roi : {n} pièces, {}… et le DEUXIÈME fragment de l'amulette, gravé d'une vague !{}",
+"The King Crab's treasure: {n} coins, {}… and the SECOND amulet fragment, engraved with a wave!{}",
+"El tesoro del Cangrejo Rey: {n} monedas, {}… ¡y el SEGUNDO fragmento del amuleto, grabado con una ola!{}"
+],
+[
+"Dans l'urne : {n} pièces, et un parchemin roulé : « Trois gardiens veillent sur l'Œil du Serpent. Qui réunira l'amulette ouvrira la porte. »",
+"In the urn: {n} coins, and a rolled parchment: “Three guardians watch over the Eye of the Serpent. Whoever gathers the amulet will open the door.”",
+"En la urna: {n} monedas y un pergamino enrollado: «Tres guardianes velan por el Ojo de la Serpiente. Quien reúna el amuleto abrirá la puerta.»"
+],
+[
+"Le coffre du gardien : {n} pièces… et un fragment d'amulette en jade, gravé d'un œil. Le premier des trois ?{}\nUn grondement : à l'est, une dalle s'enfonce dans le sol…",
+"The guardian's chest: {n} coins… and a jade amulet fragment, engraved with an eye. The first of three?{}\nA rumble: to the east, a slab sinks into the floor…",
+"El cofre del guardián: {n} monedas… y un fragmento de amuleto de jade, grabado con un ojo. ¿El primero de tres?{}\nUn estruendo: al este, una losa se hunde en el suelo…"
+],
+[
+"Vous vous êtes évanoui… et réveillé à l'entrée de la salle. {}",
+"You fainted… and woke up at the entrance of the hall. {}",
+"Te has desmayado… y has despertado a la entrada de la sala. {}"
+],
+[
+"Fin de l'alerte ! Vous avez attrapé {n} navet{}. Mélusine, enrouée : « Bravo… (tousse) … à tous… (tousse) ! » Les navets dorés se revendent à la Guilde.",
+"End of the alert! You caught {n} turnip{}. Mélusine, hoarse: “Well done… (coughs) … everyone… (coughs)!” The golden turnips can be sold at the Guild.",
+"¡Fin de la alerta! Has atrapado {n} nabo{}. Mélusine, ronca: «¡Bravo… (tose) … a todos… (tose)!» Los nabos dorados se venden en el Gremio."
+],
+[
+"Ce soir à la batterie : {} ! On croise les doigts.",
+"Tonight on drums: {}! Fingers crossed.",
+"Esta noche a la batería: ¡{}! Con los dedos cruzados."
+],
+[
+"Un robot est arrivé au quai avec un canapé dans les bras : « Merci de votre compréhension. » Le canapé part sur une barge grise. ({n} meuble{} perdu{})",
+"A robot has reached the dock carrying a sofa: “Thank you for your understanding.” The sofa leaves on a grey barge. ({n} piece{} of furniture lost to the robot{})",
+"Un robot ha llegado al muelle con un sofá en brazos: «Gracias por su comprensión». El sofá se va en una barcaza gris. ({n} mueble{} perdido{})"
+],
+[
+"Fin de l'alerte. Les robots ont emporté {n} meuble{}… Mamie Barricade soupire : « On en retrouvera d'autres à la Gratuiterie. Mais la prochaine fois, on les arrête TOUS. »",
+"The alert is over. The robots carried off {n} piece{} of furniture… Granny Barricade sighs: “We'll find more at the Free Shop. But next time, we stop them ALL.”",
+"Fin de la alerta. Los robots se han llevado {n} mueble{}… La abuela Barricade suspira: «Encontraremos otros en la Tienda Gratuita. Pero la próxima vez los paramos a TODOS»."
+],
+[
+"Pschhhhht ! Pschht ! Tu recules d'un pas : {}, tout frais, qui brille encore. Un passant siffle d'admiration.",
+"Pshhhhht! Pshht! You step back: {}, fresh and still shiny. A passer-by whistles in admiration.",
+"¡Pschhhhht! ¡Pschht! Das un paso atrás: {}, recién pintado y aún brillante. Un transeúnte silba de admiración."
+],
+[
+"♥ Déposer : {}",
+"♥ Leave: {}",
+"♥ Dejar: {}"
+],
+[
+"La Gratuiterie : une longue table couverte d'objets, une pancarte peinte à la main : « RIEN NE SE JETTE, TOUT SE DONNE. Un objet par jour et par personne, merci ! — Trocante ». {}",
+"The Free Shop: a long table covered in objects, and a hand-painted sign: “NOTHING IS THROWN AWAY, EVERYTHING IS GIVEN. One item per day per person, thank you! — Trocante”. {}",
+"La Tienda Gratuita: una larga mesa cubierta de objetos y un cartel pintado a mano: «NADA SE TIRA, TODO SE REGALA. ¡Un objeto al día por persona, gracias! — Trocante». {}"
+],
+[
+"(Tu prends : {}.)",
+"(You take: {}.)",
+"(Coges: {}.)"
+],
+[
+"✦ Un bol de soupe — {}",
+"✦ A bowl of soup — {}",
+"✦ Un cuenco de sopa — {}"
+],
+[
+"je donne {n} pièce{}",
+"I give {n} coin{}",
+"doy {n} moneda{}"
+],
+[
+"Tu repasses l'anneau d'or AVANT Comète ! ({n} secondes.) Elle arrive juste derrière toi, bouche bée : « Personne ne m'avait jamais battue ! » Va la retrouver au Spatioport.",
+"You fly through the golden ring BEFORE Comète! ({n} seconds.) She arrives right behind you, mouth wide open: “Nobody has ever beaten me!” Go and find her at the Spaceport.",
+"¡Vuelves a pasar el anillo dorado ANTES que Comète! ({n} segundos). Ella llega justo detrás de ti, boquiabierta: «¡Nadie me había ganado nunca!» Ve a buscarla al Espaciopuerto."
+],
+[
+"E : toucher la pierre-rune {}",
+"E: touch the {} rune-stone",
+"E: tocar la piedra-runa {}"
+],
+[
+"E : effleurer la fleur {}",
+"E: brush the {} flower",
+"E: rozar la flor {}"
+],
+[
+"La fleur {} : {}.",
+"The {} flower: {}.",
+"La flor {}: {}."
+],
+[
+"L'esprit-luciole se glisse dans la lanterne de fée en tintant comme une clochette. ({n} / {n})",
+"The firefly spirit slips into the fairy lantern, tinkling like a little bell. ({n} / {n})",
+"El espíritu luciérnaga se desliza en la linterna de hadas tintineando como una campanilla. ({n} / {n})"
+],
+[
+"Le cinquième esprit ! La lanterne brille comme une petite étoile. Ils veulent rentrer chez eux : à la porte de l'Arbre-Mère. ({n} / {n})",
+"The fifth spirit! The lantern shines like a little star. They want to go home: to the door of the Mother Tree. ({n} / {n})",
+"¡El quinto espíritu! La linterna brilla como una estrellita. Quieren volver a casa: a la puerta del Árbol Madre. ({n} / {n})"
+],
+[
+"Cinq niches vides au-dessus de la porte. Ta lanterne de fée abrite {n} esprit{} sur {n}. Ils dansent dans la forêt, au-dessus des cercles de champignons blancs.",
+"Five empty niches above the door. Your fairy lantern shelters {n} spirit{} out of {n}. They dance in the forest, above the circles of white mushrooms.",
+"Cinco nichos vacíos sobre la puerta. Tu linterna de hadas alberga {n} espíritu{} de {n}. Bailan en el bosque, sobre los círculos de setas blancas."
+],
+[
+"Le coffre des fées : {n} pièces, et une bourse de poussière de fée qui scintille entre tes doigts.{} Lumi bat des ailes : « Garde-la bien ! »",
+"The fairy chest: {n} coins, and a pouch of fairy dust that sparkles between your fingers.{} Lumi flutters her wings: “Keep it safe!”",
+"El cofre de las hadas: {n} monedas y una bolsita de polvo de hada que centellea entre tus dedos.{} Lumi bate las alas: «¡Guárdala bien!»"
+],
+[
+"Un mur de ronces noires, dures comme du fer, qui frémissent quand tu approches. Lumi se cache derrière ton épaule : « Le domaine de la Reine des Ronces… Il nous faudra cinq pincées de poussière de fée pour passer. » (Tu en as {n}. La suite au prochain chapitre !)",
+"A wall of black brambles, hard as iron, that shiver when you come near. Lumi hides behind your shoulder: “The domain of the Bramble Queen… We'll need five pinches of fairy dust to get through.” (You have {n}. To be continued in the next chapter!)",
+"Un muro de zarzas negras, duras como el hierro, que se estremecen cuando te acercas. Lumi se esconde tras tu hombro: «El dominio de la Reina de las Zarzas… Necesitaremos cinco pizcas de polvo de hada para pasar». (Tienes {n}. ¡Continuará en el próximo capítulo!)"
+],
+[
+"Arrivée à {}",
+"Arrived at {}",
+"Llegada a {}"
+],
+[
+"E : allumer la Grande Lanterne {}",
+"E: light the Great Lantern {}",
+"E: encender el Gran Farol {}"
+],
+[
+"Tu tends la lanterne de braise vers la cage de fer : la flamme saute dedans, et la Grande Lanterne {} s'embrase d'or ! ({n} sur {n})",
+"You hold the ember lantern up to the iron cage: the flame leaps inside, and the Great Lantern {} bursts into golden fire! ({n} of {n})",
+"Acercas el farol de brasa a la jaula de hierro: la llama salta dentro y el Gran Farol {} se prende en dorado. ({n} de {n})"
+],
+[
+"ÇA MORD ! Vite, {}",
+"A BITE! Quick, {}",
+"¡PICA! Rápido, {}"
+],
+[
+"{n} kg",
+"{n} kg",
+"{n} kg"
+],
+[
+"Tension {}",
+"Tension {}",
+"Tensión {}"
+],
+[
+"Prise   {}",
+"Catch   {}",
+"Presa   {}"
+],
+[
+"Le vieux coffre de la cascade : {n} pièces d'or, {n} rubis et {n} perles ! Quelqu'un avait trouvé la cachette bien avant toi…",
+"The old waterfall chest: {n} gold coins, {n} rubies and {n} pearls! Someone found the hiding place long before you…",
+"El viejo cofre de la cascada: ¡{n} monedas de oro, {n} rubíes y {n} perlas! Alguien encontró el escondite mucho antes que tú…"
+],
+[
+"E : entrer dans {}",
+"E: enter {}",
+"E: entrar en {}"
+],
+[
+"Gâchette : entrer dans {}",
+"Trigger: enter {}",
+"Gatillo: entrar en {}"
+],
+[
+"L'Île Pixelithique, {}",
+"Pixelithic Island, {}",
+"Isla Pixelítica, {}"
+],
+[
+"Gâchette : {}",
+"Trigger: {}",
+"Gatillo: {}"
+],
+[
+"+{n} points de guilde{}",
+"+{n} guild points{}",
+"+{n} puntos de gremio{}"
+],
+[
+"Mélusine, la crieuse, sur la Grand-Place : « {} »",
+"Mélusine, the town crier, in the Great Square: “{}”",
+"Mélusine, la pregonera, en la Plaza Mayor: «{}»"
+],
+[
+"[{}] {} — {n} pièces, {n} points",
+"[{}] {} — {n} coins, {n} points",
+"[{}] {} — {n} monedas, {n} puntos"
+],
+[
+"✔ (accepté) {} — {n}/{n}",
+"✔ (accepted) {} — {n}/{n}",
+"✔ (aceptado) {} — {n}/{n}"
+],
+[
+"Le Tableau des Quêtes. Rang {}, {n} points de guilde (prochain rang à {}). Contrats acceptés : {n} sur 3. Les contrats changent chaque matin.",
+"The Quest Board. Rank {}, {n} guild points (next rank at {}). Contracts accepted: {n} of 3. Contracts change every morning.",
+"El Tablón de Misiones. Rango {}, {n} puntos de gremio (próximo rango en {}). Contratos aceptados: {n} de 3. Los contratos cambian cada mañana."
+],
+[
+"Contrat accepté : {}",
+"Contract accepted: {}",
+"Contrato aceptado: {}"
+],
+[
+"La boule de cristal s'illumine, ronronne, réfléchit… « {}. » {}",
+"The crystal ball lights up, purrs, ponders… “{}.” {}",
+"La bola de cristal se ilumina, ronronea, reflexiona… « {}. » {}"
+],
+[
+"★ Rendre le contrat : {}",
+"★ Hand in the contract: {}",
+"★ Entregar el contrato: {}"
+],
+[
+"☾ Envoyer {} se reposer à la Guilde",
+"☾ Send {} to rest at the Guild",
+"☾ Enviar a {} a descansar al Gremio"
+],
+[
+"« {} » : {n} sur {n}",
+"“{}”: {n} of {n}",
+"« {} »: {n} de {n}"
+],
+[
+"Je regarde vos fiches… {}",
+"Let me look at your files… {}",
+"Déjeme mirar sus fichas… {}"
+],
+[
+"encore {n} points pour le rang {}",
+"{n} more points for rank {}",
+"{n} puntos más para el rango {}"
+],
+[
+"Rang {}, {n} points de guilde : {}. Contrats rendus : {n}. Et votre carte est impeccablement tamponnée.",
+"Rank {}, {n} guild points: {}. Contracts handed in: {n}. And your card is perfectly stamped.",
+"Rango {}, {n} puntos de gremio: {}. Contratos entregados: {n}. Y su tarjeta está perfectamente sellada."
+],
+[
+"Je note : « {}, repos à la Guilde ». Une tasse de tisane l'attend à la table du fond. Vous pourrez revenir la chercher quand vous voudrez.",
+"I'll note it down: “{}, resting at the Guild”. A cup of herbal tea is waiting at the back table. You can come and fetch them whenever you like.",
+"Lo anoto: « {}, descansando en el Gremio ». Una taza de infusión espera en la mesa del fondo. Podrá venir a buscarlo cuando quiera."
+],
+[
+"Pas encore tout à fait : {n} sur {n}. La fiche est patiente. Moi aussi. Presque.",
+"Not quite yet: {n} of {n}. The notice is patient. So am I. Almost.",
+"Todavía no del todo: {n} de {n}. La ficha es paciente. Yo también. Casi."
+],
+[
+"Contrat rempli ! (CLAC ! fait le tampon.) Voici votre récompense : {n} pièces. Et {n} points de guilde, notés dans la marge. La Guilde vous remercie ; les habitants aussi ; Clac aussi.",
+"Contract fulfilled! (STAMP! goes the stamp.) Here is your reward: {n} coins. And {n} guild points, noted in the margin. The Guild thanks you; the townsfolk thank you; Clac thanks you too.",
+"¡Contrato cumplido! (¡CLAC! hace el sello.) Aquí tiene su recompensa: {n} monedas. Y {n} puntos de gremio, anotados en el margen. El Gremio se lo agradece; los vecinos también; Clac también."
+],
+[
+"{} rentre se reposer à la Guilde. (Églantine lui gardera une tasse de tisane.)",
+"{} heads back to rest at the Guild. (Églantine will keep a cup of herbal tea for them.)",
+"{} vuelve a descansar al Gremio. (Églantine le guardará una taza de infusión.)"
+],
+[
+"Gâchette droite : {}",
+"Right trigger: {}",
+"Gatillo derecho: {}"
+],
+[
+"E : ramasser {}",
+"E: pick up {}",
+"E: recoger {}"
+],
+[
+"INVENTAIRE      En main : {}",
+"INVENTORY      In hand: {}",
+"INVENTARIO      En la mano: {}"
+],
+[
+"Nouvelle quête : {}",
+"New quest: {}",
+"Nueva misión: {}"
+],
+[
+"Merci ! {}",
+"Thank you! {}",
+"¡Gracias! {}"
+],
+[
+"Il me manque encore : {}.",
+"I'm still missing: {}.",
+"Todavía me falta: {}."
+],
+[
+"Il te manque encore : {}.",
+"You're still missing: {}.",
+"Todavía te falta: {}."
+],
+[
+"titre : « {} »",
+"title: “{}”",
+"título: « {} »"
+],
+[
+"Quête accomplie : {}",
+"Quest completed: {}",
+"Misión cumplida: {}"
+],
+[
+"Quête « {} » : {}",
+"Quest “{}”: {}",
+"Misión « {} »: {}"
+],
+[
+"Arrivé en {n} secondes ! Va l'annoncer à Bernard.",
+"Arrived in {n} seconds! Go tell Bernard.",
+"¡Llegaste en {n} segundos! Ve a contárselo a Bernard."
+],
+[
+"{n} secondes… trop lent ! Retourne à la fontaine pour réessayer.",
+"{n} seconds… too slow! Go back to the fountain to try again.",
+"{n} segundos… ¡demasiado lento! Vuelve a la fuente para intentarlo de nuevo."
+],
+[
+"Course du phare : {n} s",
+"Lighthouse race: {n} s",
+"Carrera del faro: {n} s"
+],
+[
+"Tu as trouvé : {}",
+"You found: {}",
+"Encontraste: {}"
+],
+[
+"-{n} % chez les commerçants de Port-Azur",
+"-{n} % at Port-Azur shops",
+"-{n} % en los comercios de Port-Azur"
+],
+[
+"-{n} % partout (clé de la ville)",
+"-{n} % everywhere (town key)",
+"-{n} % en todas partes (llave de la ciudad)"
+],
+[
+"Parler à {} : « {} »",
+"Talk to {}: “{}”",
+"Hablar con {}: « {} »"
+],
+[
+"La demande de {}",
+"The request from {}",
+"La petición de {}"
+],
+[
+"{} m'a demandé : {}.",
+"{} asked me: {}.",
+"{} me pidió: {}."
+],
+[
+"{} a peut-être besoin d'aide. Il faut apprendre à le connaître.",
+"{} may need help. You have to get to know them.",
+"Puede que {} necesite ayuda. Hay que llegar a conocerlo."
+],
+[
+"Apporter : {}",
+"Bring: {}",
+"Traer: {}"
+],
+[
+"Parler avec {} (de sa vie, de ses soucis).",
+"Talk with {} (about their life and their worries).",
+"Hablar con {} (de su vida, de sus preocupaciones)."
+],
+[
+"Étapes franchies : {n} / {n}.",
+"Steps completed: {n} / {n}.",
+"Pasos completados: {n} / {n}."
+],
+[
+"titre « {} »",
+"title “{}”",
+"título « {} »"
+],
+[
+"+{n} réputation",
+"+{n} reputation",
+"+{n} de reputación"
+],
+[
+"L'Île de Larsen, une yourte {}",
+"Larsen Island, a yurt {}",
+"Isla de Larsen, una yurta {}"
+],
+[
+"L'Île de Larsen, {}",
+"Larsen Island, {}",
+"Isla de Larsen, {}"
+],
+[
+"E : parler à {}",
+"E: talk to {}",
+"E: hablar con {}"
+],
+[
+"« Attends… ton sac est plein. Fais un peu de place pour {}, puis reviens me voir. »",
+"“Wait… your bag is full. Make some room for {}, then come back and see me.”",
+"« Espera… tu bolsa está llena. Haz un poco de sitio para {} y vuelve a verme. »"
+],
+[
+"Bienvenue chez {}",
+"Welcome to {}",
+"Bienvenido a {}"
+],
+[
+"Acheter : {} — {n} pièces",
+"Buy: {} — {n} coins",
+"Comprar: {} — {n} monedas"
+],
+[
+"Vendre : {} (tu en as {n})",
+"Sell: {} (you have {n})",
+"Vender: {} (tienes {n})"
+],
+[
+"Bienvenue chez {} ! Ici, les prix sont fixes. Enfin… fixes-ish. Tu as {n} pièces.",
+"Welcome to {}! Prices here are fixed. Well… fixed-ish. You have {n} coins.",
+"¡Bienvenido a {}! Aquí los precios son fijos. Bueno… más o menos fijos. Tienes {n} monedas."
+],
+[
+"Bienvenue chez {}. Tout ce que tu vois est à vendre. Théoriquement. Tu as {n} pièces.",
+"Welcome to {}. Everything you see is for sale. In theory. You have {n} coins.",
+"Bienvenido a {}. Todo lo que ves está en venta. En teoría. Tienes {n} monedas."
+],
+[
+"Bienvenue chez {} ! Regarde, tout est frais, tout est beau, tout est d'ici ! Tu as {n} pièces.",
+"Welcome to {}! Look, everything is fresh, everything is lovely, everything is local! You have {n} coins.",
+"¡Bienvenido a {}! ¡Mira, todo es fresco, todo es bonito, todo es de aquí! Tienes {n} monedas."
+],
+[
+"{} ? Ça fait {n} pièces. … Non, {n}. … Allez, {n}, mais c'est bien parce que c'est toi ! … Ne me regarde pas comme ça, sinon je baisse encore.",
+"{}? That's {n} coins. … No, {n}. … All right, {n}, but only because it's you! … Don't look at me like that, or I'll lower it again.",
+"¿{}? Son {n} monedas. … No, {n}. … Venga, {n}, ¡pero solo porque eres tú! … No me mires así, que si no lo vuelvo a bajar."
+],
+[
+"Il te manque {n} pièce{}. Je ne fais pas crédit… sauf aux chats. Tu n'es pas un chat ?",
+"You're short {n} coin{}. I don't give credit… except to cats. You're not a cat, are you?",
+"Te faltan {n} moneda{}. No fío… salvo a los gatos. ¿No serás un gato?"
+],
+[
+"Marché conclu ! {n} pièces pour toi.",
+"Deal! {n} coins for you.",
+"¡Trato hecho! {n} monedas para ti."
+],
+[
+"Toi, le grand ! Tu tombes bien. Demain, c'est le Grand Concours de la Barbe de Forgefer. {} et moi, on n'est pas d'accord. La plus belle barbe, c'est la mienne… ou la sienne ?",
+"Hey, big fella! Perfect timing. Tomorrow is the Great Forgefer Beard Contest. {} and I can't agree. The finest beard is mine… or hers?",
+"¡Tú, grandullón! Llegas justo a tiempo. Mañana es el Gran Concurso de la Barba de Forgefer. {} y yo no estamos de acuerdo. La barba más bella es la mía… ¿o la suya?"
+],
+[
+"La vôtre, {} !",
+"Yours, {}!",
+"¡La suya, {}!"
+],
+[
+"Celle de {} !",
+"{}'s!",
+"¡La de {}!"
+],
+[
+"Depuis que le mur est percé, {} vient manger chez moi tous les soirs. Tous. Les. Soirs. … Je rebouche le trou demain.",
+"Ever since the wall got a hole in it, {} comes to eat at my place every single evening. Every. Single. Evening. … I'm patching the hole tomorrow.",
+"Desde que la pared tiene un agujero, {} viene a comer a mi casa todas las noches. Todas. Las. Noches. … Mañana tapo el agujero."
+],
+[
+"Je creuse un tunnel jusqu'à la cuisine de ma sœur, {}. Elle habite juste à côté. Ça fait douze ans que je creuse.",
+"I'm digging a tunnel to the kitchen of my sister, {}. She lives right next door. I've been digging for twelve years.",
+"Estoy cavando un túnel hasta la cocina de mi hermana, {}. Vive justo al lado. Llevo doce años cavando."
+],
+[
+"« {} ?! ENFIN ! Douze ans ! Tu entres, tu t'essuies les pieds, et tu goûtes ma tarte. Ton ami aussi. »",
+"“{}?! AT LAST! Twelve years! You come in, you wipe your feet, and you taste my pie. Your friend too.”",
+"«¡¿{}?! ¡POR FIN! ¡Doce años! Entras, te limpias los pies y pruebas mi tarta. Tu amigo también.»"
+],
+[
+"Pour le coup de pioche, une part de tarte… et la trouvaille du tunnel. {}",
+"For the pickaxe swing, a slice of pie… and what the tunnel turned up. {}",
+"Por el golpe de pico, una porción de tarta… y el hallazgo del túnel. {}"
+],
+[
+"La maman te glisse un petit cadeau, sans un bruit. {}",
+"The mother slips you a little gift, without a sound. {}",
+"La madre te desliza un pequeño regalo, sin hacer ruido. {}"
+],
+[
+"Trois verres de thé ! Tu es requinqué. {}",
+"Three glasses of tea! You feel refreshed. {}",
+"¡Tres vasos de té! Te sientes revigorizado. {}"
+],
+[
+"Bien caché, un petit sac de pièces ! Le trésor du capitaine ! (Il dort. Il ne saura jamais que son perroquet a parlé.) {}",
+"Well hidden, a little bag of coins! The captain's treasure! (He's asleep. He'll never know his parrot talked.) {}",
+"¡Bien escondido, un saquito de monedas! ¡El tesoro del capitán! (Duerme. Nunca sabrá que su loro habló.) {}"
+],
+[
+"La plume {}",
+"The feather {}",
+"La pluma {}"
+],
+[
+"Une plume {} ! Parfait ! La coiffe est finie ! Le grand prêtre va être jaloux.",
+"A feather {}! Perfect! The headdress is finished! The high priest is going to be jealous.",
+"¡Una pluma {}! ¡Perfecto! ¡El tocado está terminado! El gran sacerdote va a ponerse celoso."
+],
+[
+"« Partie danser sur la place. Si tu as faim, il y a du nectar dans la tasse-gland. Ne touche pas aux gouttes de rosée : elles chatouillent. — {} »",
+"“Gone dancing in the square. If you're hungry, there's nectar in the acorn cup. Don't touch the dewdrops: they tickle. — {}”",
+"«Me he ido a bailar a la plaza. Si tienes hambre, hay néctar en la taza-bellota. No toques las gotas de rocío: hacen cosquillas. — {}»"
+],
+[
+"« Chère personne-géante : bienvenue chez moi ! Oui, c'est petit. Non, ce n'est pas une maison de poupée. Bisous scintillants, {} »",
+"“Dear giant-person: welcome to my home! Yes, it's small. No, it's not a dollhouse. Sparkly kisses, {}”",
+"«Querida persona gigante: ¡bienvenida a mi casa! Sí, es pequeña. No, no es una casa de muñecas. Besos brillantes, {}»"
+],
+[
+"« Je suis à la cascade de lumière. Si c'est encore toi, Grommelot : rends-moi mon dé à coudre ! — {} »",
+"“I'm at the waterfall of light. If it's you again, Grommelot: give me back my thimble! — {}”",
+"«Estoy en la cascada de luz. Si eres tú otra vez, Grommelot: ¡devuélveme mi dedal! — {}»"
+],
+[
+"Tu entres chez {}… La maison semble s'agrandir autour de toi, par magie. Tout scintille, et ça sent le miel et les fleurs.",
+"You enter {}'s home… The house seems to grow around you, by magic. Everything sparkles, and it smells of honey and flowers.",
+"Entras en casa de {}… La casa parece agrandarse a tu alrededor, por arte de magia. Todo reluce y huele a miel y a flores."
+],
+[
+"Plonc ! Un seau de placé. Encore {n}.",
+"Plunk! One bucket in place. {n} more to go.",
+"¡Plonc! Un cubo colocado. Faltan {n}."
+],
+[
+"Le disque tourne, le diamant crépite… {}",
+"The record spins, the needle crackles… {}",
+"El disco gira, la aguja crepita… {}"
+],
+[
+"Tu es chez {}.",
+"You're at {}'s place.",
+"Estás en casa de {}."
+],
+[
+"Un mot de {} : « Partie dehors, au soleil (ou sous la pluie). Fais comme chez toi, mais ne mange pas tous les biscuits. »",
+"A note from {}: “Gone outside, in the sun (or in the rain). Make yourself at home, but don't eat all the cookies.”",
+"Una nota de {}: «He salido, al sol (o bajo la lluvia). Estás en tu casa, pero no te comas todas las galletas.»"
+],
+[
+"Un mot sur la table basse : « Je reviens ce soir. — {} »",
+"A note on the coffee table: “Back this evening. — {}”",
+"Una nota sobre la mesita: «Vuelvo esta noche. — {}»"
+],
+[
+"C'est la yourte de {}. Il n'y a personne : on doit être dehors.",
+"This is {}'s yurt. Nobody's here: they must be outside.",
+"Es la yurta de {}. No hay nadie: debe de estar fuera."
+],
+[
+"Le jury a parlé ! {}",
+"The jury has spoken! {}",
+"¡El jurado ha hablado! {}"
+],
+[
+"Bienvenue au Cabaret des Cailloux ! Tiens, écoute celle-là : {}",
+"Welcome to the Pebble Cabaret! Here, listen to this one: {}",
+"¡Bienvenido al Cabaret de los Guijarros! Toma, escucha este: {}"
+],
+[
+"Tu racontes : « {}",
+"You tell it: \" {}",
+"Cuentas: « {}"
+],
+[
+"Le public te lance des pièces (et un coquillage). {}",
+"The audience throws coins at you (and a seashell). {}",
+"El público te lanza monedas (y una concha). {}"
+],
+[
+"Les petits Moaïs, beaux joueurs, te donnent leur trésor. {}",
+"The little Moai, good sports, give you their treasure. {}",
+"Los moáis pequeños, buenos perdedores, te dan su tesoro. {}"
+],
+[
+"La chorale te remercie avec ce qu'elle a. {}",
+"The choir thanks you with what it has. {}",
+"El coro te lo agradece con lo que tiene. {}"
+],
+[
+"Les yeux de pierre brillent. « Tiens. Je l'ai trouvée dans mon rêve. C'est pour toi. » {}",
+"The stone eyes shine. “Here. I found it in my dream. It's for you.” {}",
+"Los ojos de piedra brillan. «Toma. Lo encontré en mi sueño. Es para ti.» {}"
+],
+[
+"{n} heures",
+"{n} hours",
+"{n} horas"
+],
+[
+"Re-bonjour ! Il n'y a plus {}",
+"Hello again! We're out of {}",
+"¡Hola de nuevo! Ya no tenemos {}"
+],
+[
+"Oh ! Un invité ! Il reste {}, tu en veux ?",
+"Oh! A guest! There's still some {} left, would you like some?",
+"¡Oh! ¡Un invitado! Todavía tenemos {}, ¿quieres?"
+],
+[
+"Tu t'installes avec eux. C'est délicieux (et tout le monde te regarde manger). Tes cœurs sont remplis ! Pour la route : {}",
+"You sit down with them. It's delicious (and everyone watches you eat). Your hearts are full! For the road: {}",
+"Te sientas con ellos. Está delicioso (y todos te miran comer). ¡Tus corazones están llenos! Para el camino: {}"
+],
+[
+"Tant pis ! Ça en fera plus pour {}.",
+"Too bad! There'll be more for {}.",
+"¡Qué le vamos a hacer! Habrá más para {}."
+],
+[
+"Ha ha ha ! Pardon… pardon… {}",
+"Ha ha ha! Sorry… sorry… {}",
+"¡Ja, ja, ja! Perdón… perdón… {}"
+],
+[
+"Pour la peine, ils t'offrent un morceau de ce qu'il y a sur la table. {}",
+"For your trouble, they give you a piece of what's on the table. {}",
+"Por las molestias, te ofrecen un trozo de lo que hay en la mesa. {}"
+],
+[
+"{} t'a mis dehors avant même que tu aies dit bonjour.",
+"{} threw you out before you even said hello.",
+"{} te ha echado antes de que dijeras hola."
+],
+[
+"Mais… QU'EST-CE QUE TU FICHES CHEZ MOI ?! Il est {} ! Les honnêtes gens dorment !",
+"But… WHAT ON EARTH ARE YOU DOING IN MY HOUSE?! It's {}! Honest folk are asleep!",
+"Pero… ¡¿QUÉ HACES EN MI CASA?! ¡Son las {}! ¡La gente decente duerme!"
+],
+[
+"({} parle en dormant.) « {} »",
+"({} talks in their sleep.) “{}”",
+"({} habla dormido.) «{}»"
+],
+[
+"E : écouter {}",
+"E: listen {}",
+"E: escuchar {}"
+],
+[
+"Un carnet couvert de poussière. Sur la dernière page : {}",
+"A dust-covered notebook. On the last page: {}",
+"Un cuaderno cubierto de polvo. En la última página: {}"
+],
+[
+"Le drap tombe : c'est un enfant du quartier, ravi. « Vrai ? Génial ! Tiens, mon trésor, pour ton courage ! » {}",
+"The sheet falls: it's a kid from the neighborhood, delighted. “Really? Great! Here, my treasure, for your courage!” {}",
+"La sábana cae: es un niño del barrio, encantado. «¿De verdad? ¡Genial! ¡Toma, mi tesoro, por tu valentía!» {}"
+],
+[
+"Une affiche : « LES TAUPES HURLANTES — concert samedi — entrée : un gâteau » {}",
+"A poster: “THE HOWLING MOLES — concert Saturday — admission: one cake” {}",
+"Un cartel: «LOS TOPOS AULLADORES — concierto el sábado — entrada: un pastel» {}"
+],
+[
+"Alors… {}, {}, {}, {}, {}… et le gros, là, c'est {}. Il est au régime. Il ne le sait pas.",
+"Let's see… {}, {}, {}, {}, {}… and the big one there is {}. He's on a diet. He doesn't know it.",
+"A ver… {}, {}, {}, {}, {}… y el gordito de ahí es {}. Está a dieta. Él no lo sabe."
+],
+[
+"Onze. Ou douze. {} compte pour deux.",
+"Eleven. Or twelve. {} counts as two.",
+"Once. O doce. {} cuenta por dos."
+],
+[
+"Tous les chats accourent ! La dame est ravie : « Tu es adopté. Par eux. C'est un honneur ! » {}",
+"All the cats come running! The lady is delighted: “You've been adopted. By them. It's an honor!” {}",
+"¡Todos los gatos acuden corriendo! La señora está encantada: «Te han adoptado. Ellos. ¡Es un honor!» {}"
+],
+[
+"La fête est réussie ! {}",
+"The party is a success! {}",
+"¡La fiesta ha sido un éxito! {}"
+],
+[
+"… Ah. Ce n'est pas {}.",
+"… Ah. That's not {}.",
+"… Ah. No es {}."
+],
+[
+"Joyeux anniversaire… à {} ?",
+"Happy birthday… to {}?",
+"Feliz cumpleaños… ¿a {}?"
+],
+[
+"Une part de gâteau rien que pour toi ! {}",
+"A slice of cake just for you! {}",
+"¡Un trozo de pastel solo para ti! {}"
+],
+[
+"Où est passé {}",
+"Where's {}",
+"¿Dónde está {}"
+],
+[
+"Tu cherches quoi ? Ici, c'est le chantier du siècle. Ma moitié voulait du {}. Moi, je voulais du {}. Résultat : on fait les deux. Un mur chacun.",
+"What are you looking for? This is the building site of the century. My other half wanted {}. I wanted {}. The result: we do both. One wall each.",
+"¿Qué buscas? Esto es la obra del siglo. Mi media naranja quería {}. Yo quería {}. Resultado: hacemos las dos. Una pared cada uno."
+],
+[
+"Je collectionne {} ! {}",
+"I collect {}! {}",
+"¡Colecciono {}! {}"
+],
+[
+"Des étagères du sol au plafond, remplies… {}. Rien que {}.",
+"Shelves from floor to ceiling, filled with… {}. Nothing but {}.",
+"Estantes del suelo al techo, llenos de… {}. Solo {}."
+],
+[
+"Toi ! Tu tombes bien ! Dis-lui, toi : {}",
+"You! Just in time! Tell him, would you: {}",
+"¡Tú! ¡Llegas justo a tiempo! Dile tú: {}"
+],
+[
+"HA ! Tu vois ! … Bon. D'accord. C'est un peu bête de se disputer pour {}.",
+"HA! See! … Fine. All right. It's a bit silly to argue about {}.",
+"¡JA! ¡Lo ves! … Bueno. De acuerdo. Es un poco tonto discutir por {}."
+],
+[
+"Quoi ?! … Bon. Bon, bon, bon. Tu as peut-être raison. Ou pas. Enfin… on s'en fiche, de {}, non ?",
+"What?! … Well. Well, well, well. Maybe you're right. Or not. Anyway… who cares about {}, right?",
+"¿¡Qué!? … Bueno. Bueno, bueno, bueno. Tal vez tengas razón. O no. En fin… a quién le importa {}, ¿no?"
+],
+[
+"Ils éclatent de rire tous les deux. « Merci, arbitre ! Tiens, pour ta peine. » {}",
+"They both burst out laughing. “Thanks, referee! Here, for your trouble.” {}",
+"Los dos estallan en carcajadas. «¡Gracias, árbitro! Toma, por las molestias». {}"
+],
+[
+"Deux personnes se disputent au milieu du salon. Le sujet : {}",
+"Two people are arguing in the middle of the living room. The topic: {}",
+"Dos personas discuten en medio del salón. El tema: {}"
+],
+[
+"Derrière le balancier de la grande horloge, accrochée à un clou : une petite clé ! {}",
+"Behind the pendulum of the grand clock, hanging from a nail: a little key! {}",
+"Detrás del péndulo del gran reloj, colgada de un clavo: ¡una llavecita! {}"
+],
+[
+"Une étiquette sur le bocal : « Servez-vous (UN seul !) ». Tu en prends un. Un seul. Promis. {}",
+"A label on the jar: “Help yourself (just ONE!)”. You take one. Just one. Promise. {}",
+"Una etiqueta en el tarro: «Sírvase (¡solo UNO!)». Coges uno. Solo uno. Prometido. {}"
+],
+[
+"Dans la poche d'un vieux manteau : {}",
+"In the pocket of an old coat: {}",
+"En el bolsillo de un abrigo viejo: {}"
+],
+[
+"Au fond de l'armoire, dans une chaussette : {}",
+"At the back of the wardrobe, in a sock: {}",
+"Al fondo del armario, dentro de un calcetín: {}"
+],
+[
+"Sous une pile de draps : {}",
+"Under a pile of sheets: {}",
+"Bajo un montón de sábanas: {}"
+],
+[
+"quelques pièces oubliées… {}",
+"a few forgotten coins… {}",
+"unas monedas olvidadas… {}"
+],
+[
+"Un mot de {} : « Parti travailler. Retour ce soir. Si c'est toi, maman : il y a de la soupe. »",
+"A note from {}: “Gone to work. Back tonight. If it's you, Mum: there's soup.”",
+"Una nota de {}: «Me he ido a trabajar. Vuelvo esta noche. Si eres tú, mamá: hay sopa»."
+],
+[
+"Un mot sur la table : « Partie faire un tour. — {} »",
+"A note on the table: “Gone for a walk. — {}”",
+"Una nota sobre la mesa: «Salgo a dar un paseo. — {}»"
+],
+[
+"Une liste, de la main de {} : « Aujourd'hui : travailler, saluer les voisins, ranger la maison (demain). »",
+"A list in {}'s handwriting: “Today: work, say hello to the neighbors, tidy the house (tomorrow).”",
+"Una lista escrita por {}: «Hoy: trabajar, saludar a los vecinos, ordenar la casa (mañana)»."
+],
+[
+"C'est la maison de {}. Il n'y a personne : on doit être dehors, en train de travailler.",
+"This is the house of {}. Nobody's in: they must be outside, working.",
+"Esta es la casa de {}. No hay nadie: deben de estar fuera, trabajando."
+],
+[
+"E : entrer chez {}",
+"E: enter {}'s house",
+"E: entrar en casa de {}"
+],
+[
+"Tu reçois : {}",
+"You receive: {}",
+"Recibes: {}"
+],
+[
+"Tu récupères ce que tu n'avais pas pu porter : {}",
+"You pick up what you couldn't carry: {}",
+"Recoges lo que no pudiste llevar: {}"
+],
+[
+"Manette connectée : {}. Start : menu  •  Select : carnet",
+"Controller connected: {}. Start: menu  •  Select: journal",
+"Mando conectado: {}. Start: menú  •  Select: cuaderno"
+],
+[
+"{}  •  {}  •  {n} min",
+"{}  •  {}  •  {n} min",
+"{}  •  {}  •  {n} min"
+],
+[
+"Langue : {}",
+"Language: {}",
+"Idioma: {}"
+],
+[
+" (Perles de Lumière : {n} / 3)",
+" (Pearls of Light: {n} / 3)",
+" (Perlas de Luz: {n} / 3)"
+],
+[
+"Le cristal bleu s'illumine : tout tourne, ça sent la menthe… et te revoilà au soleil, devant la tour en ruine. Odon trempe sa plume : « Étage {n}. C'est noté. »",
+"The blue crystal lights up: everything spins, it smells of mint… and you're back in the sun in front of the ruined tower. Odon dips his quill: “Floor {n}. Noted.”",
+"El cristal azul se ilumina: todo gira, huele a menta… y vuelves a estar al sol frente a la torre en ruinas. Odon moja su pluma: «Piso {n}. Anotado»."
+],
+[
+"Le cristal violet bourdonne. « Étage {n}, {} », murmure la voix d'Odon, comme s'il était là. Ça descend vite… très vite…",
+"The purple crystal hums. “Floor {n}, {},” murmurs Odon's voice, as if he were right there. You're going down fast… very fast…",
+"El cristal violeta zumba. «Piso {n}, {}», murmura la voz de Odon, como si estuviera allí. Bajas rápido… muy rápido…"
+],
+[
+"Clac ! Une lampe s'allume au-dessus de la porte du sud. Encore {n} levier(s).",
+"Clack! A lamp lights up above the south door. {n} lever(s) to go.",
+"¡Clac! Se enciende una lámpara sobre la puerta del sur. Faltan {n} palanca(s)."
+],
+[
+"Clonk ! Une deuxième lampe brille. Plus que {n} levier.",
+"Clonk! A second lamp shines. Only {n} lever left.",
+"¡Clonk! Brilla una segunda lámpara. Solo queda {n} palanca."
+],
+[
+"Le Cœur de gelée royale ! 200 pièces, un cœur de plus, et un titre : « {} ». Un escalier de lumière descend du plafond : il remonte jusqu'à la surface. Odon va devoir agrandir son registre !",
+"The Royal jelly heart! 200 coins, an extra heart, and a title: “{}”. A staircase of light descends from the ceiling: it leads all the way up to the surface. Odon will have to enlarge his ledger!",
+"¡El Corazón de gelatina real! 200 monedas, un corazón más y un título: «{}». Una escalera de luz desciende del techo: sube hasta la superficie. ¡Odon tendrá que ampliar su registro!"
+],
+[
+"E : descendre directement à l'étage {n} (Odon l'a noté)",
+"E: go straight down to floor {n} (Odon has noted it)",
+"E: bajar directamente al piso {n} (Odon lo ha anotado)"
+],
+[
+"Étage {n} : {} ! (Odon le notera dans son registre : le cristal du hall pourra t'y redescendre directement.)",
+"Floor {n}: {}! (Odon will note it in his ledger: the hall crystal will be able to take you straight back down there.)",
+"¡Piso {n}: {}! (Odon lo anotará en su registro: el cristal del vestíbulo podrá llevarte directamente hasta allí.)"
+],
+[
+"Le Donjon des Mille Marches. Odon a noté l'étage {n} dans son registre : le cristal violet du hall t'y descend directement.",
+"The Dungeon of a Thousand Steps. Odon has noted floor {n} in his ledger: the purple crystal in the hall takes you straight down there.",
+"La Mazmorra de los Mil Escalones. Odon ha anotado el piso {n} en su registro: el cristal violeta del vestíbulo te lleva directamente hasta allí."
+],
+[
+"Gâchette : parler à {}",
+"Trigger: talk to {}",
+"Gatillo: hablar con {}"
+],
+[
+"Toc, toc, toc. Une petite voix, derrière la porte : « {}",
+"Knock, knock, knock. A little voice, behind the door: \" {}",
+"Toc, toc, toc. Una vocecita, detrás de la puerta: « {}"
+],
+[
+"L'Île aux Moaïs, {}",
+"Moai Island, {}",
+"Isla de los Moáis, {}"
+],
+[
+"Île de Montjoie, {}",
+"Montjoie Island, {}",
+"Isla de Montjoie, {}"
+],
+[
+"Dans la nacelle ! Départ dans {n} s — {}.",
+"In the gondola! Departure in {n} s — {}.",
+"¡En la góndola! Salida en {n} s — {}."
+],
+[
+"E : prendre le monorail (vers {})",
+"E: take the monorail (to {})",
+"E: tomar el monorraíl (a {})"
+],
+[
+"Tu montes dans le monorail. Il glisse sans bruit au-dessus des rues, entre les tours… « Prochain arrêt : {}. »",
+"You board the monorail. It glides silently above the streets, between the towers… “Next stop: {}.”",
+"Subes al monorraíl. Se desliza sin ruido sobre las calles, entre las torres… « Próxima parada: {}. »"
+],
+[
+"Tu glisses une pièce. Le petit dragon de pixels saute, crache du feu… et tombe dans un trou. Score : {n}. Pas mal, pour une première partie !",
+"You slip in a coin. The little pixel dragon jumps, breathes fire… and falls into a hole. Score: {n}. Not bad for a first game!",
+"Metes una moneda. El pequeño dragón de píxeles salta, escupe fuego… y cae en un agujero. Puntuación: {n}. ¡No está mal para una primera partida!"
+],
+[
+"Bip-bip-bip ! NOUVEAU RECORD : {n} ! Le dragon fait une danse de la victoire. L'écran clignote en arc-en-ciel.",
+"Beep-beep-beep! NEW RECORD: {n}! The dragon does a victory dance. The screen flashes rainbow colors.",
+"¡Bip-bip-bip! ¡NUEVO RÉCORD: {n}! El dragón baila de victoria. La pantalla parpadea con los colores del arcoíris."
+],
+[
+"Le dragon saute, plane, crache du feu… Score : {n}. Record : {n}.",
+"The dragon jumps, glides, breathes fire… Score: {n}. Record: {n}.",
+"El dragón salta, planea, escupe fuego… Puntuación: {n}. Récord: {n}."
+],
+[
+"Ah ! Mon chef-d'œuvre ! Le Turbo-Aventure 3000 ! (Il fait briller sa tablette sous ton nez.) Il range ton sac tout seul, il trouve les trésors avant toi, il fait même tes devoirs. Enfin… presque. Je le copie directement dans ton carnet de voyage : ton carnet est magique, non ? Alors il est sûrement compatible. Et pour toi, seulement {n} pièces ! Garanti sans virus. Enfin… garanti.",
+"Ah! My masterpiece! The Turbo-Adventure 3000! (He makes his tablet gleam under your nose.) It packs your bag all by itself, finds treasures before you do, it even does your homework. Well… almost. I'll copy it straight into your travel journal: your journal is magic, right? So it's surely compatible. And for you, only {n} coins! Virus-free guaranteed. Well… guaranteed.",
+"¡Ah! ¡Mi obra maestra! ¡El Turbo-Aventura 3000! (Hace brillar su tableta bajo tu nariz.) Te hace la mochila solo, encuentra los tesoros antes que tú, hasta te hace los deberes. Bueno… casi. Lo copio directamente en tu cuaderno de viaje: tu cuaderno es mágico, ¿no? Entonces seguro que es compatible. ¡Y para ti, solo {n} monedas! Garantizado sin virus. Bueno… garantizado."
+],
+[
+"D'accord, je le prends ! ({n} pièces)",
+"All right, I'll take it! ({n} coins)",
+"¡De acuerdo, me lo quedo! ({n} monedas)"
+],
+[
+"Pas une seule pièce ? Bon… pour toi, c'est offert ! Un cadeau de bienvenue. {}",
+"Not a single coin? Well… for you, it's free! A welcome gift. {}",
+"¿Ni una sola moneda? Bueno… ¡para ti, es gratis! Un regalo de bienvenida. {}"
+],
+[
+"Tu n'as que {n} pièce{} ? Allez, ce sera le prix ! ",
+"You only have {n} coin{}? Fine, that'll be the price! ",
+"¿Solo tienes {n} moneda{}? ¡Anda, ese será el precio! "
+],
+[
+"« Qui vient là ? Un vivant ! » Minos, le juge, se penche, et sa queue de serpent s'enroule. « Réponds à trois questions sur ton voyage. {}",
+"“Who comes there? A living one!” Minos, the judge, leans forward, and his serpent tail coils. \"Answer three questions about your journey. {}",
+"« ¿Quién va allí? ¡Un vivo! » Minos, el juez, se inclina y su cola de serpiente se enrosca. « Responde a tres preguntas sobre tu viaje. {}"
+],
+[
+"« Bien. Ensuite : {}",
+"\"Good. Next: {}",
+"« Bien. Ahora: {}"
+],
+[
+"Un coffre caché ! Dedans : {}.",
+"A hidden chest! Inside: {}.",
+"¡Un cofre escondido! Dentro: {}."
+],
+[
+"Tu bois {} au comptoir.",
+"You have {} at the counter.",
+"Tomas {} en el mostrador."
+],
+[
+"Tu bois {}.",
+"You have {}.",
+"Tomas {}."
+],
+[
+" Une chaleur bleue court jusqu'au bout des doigts : ta magie revient ({n} / {n}).",
+" A blue warmth runs down to your fingertips: your magic returns ({n} / {n}).",
+" Un calor azul te recorre hasta la punta de los dedos: tu magia vuelve ({n} / {n})."
+],
+[
+"{} ({n} pièces)",
+"{} ({n} coins)",
+"{} ({n} monedas)"
+],
+[
+"L'Île Al Dente, {}",
+"Al Dente Island, {}",
+"Isla Al Dente, {}"
+],
+[
+"{}, un des trois champions du port, est au tapis ! ({n} sur 3)",
+"{}, one of the three champions of the harbour, is down! ({n} of 3)",
+"¡{}, uno de los tres campeones del puerto, está en el suelo! ({n} de 3)"
+],
+[
+"Tu te réveilles sur le quai, la mâchoire en compote… et {n} pièces en moins. Ici, les poches ont des mains.",
+"You wake up on the quay, your jaw in a mess… and {n} coins lighter. Around here, pockets have hands.",
+"Despiertas en el muelle, con la mandíbula hecha papilla… y {n} monedas menos. Aquí, los bolsillos tienen manos."
+],
+[
+"☾ {} (5 pièces)",
+"☾ {} (5 coins)",
+"☾ {} (5 monedas)"
+],
+[
+"Le Clan te couvre de cadeaux (surtout des pièces brillantes trouvées dans la rivière). {}",
+"The Clan showers you with gifts (mostly shiny coins found in the river). {}",
+"El Clan te cubre de regalos (sobre todo monedas brillantes encontradas en el río). {}"
+],
+[
+"Niveau {n} ! +1 point de caractéristique, +1 point de talent. (Carnet, onglet Héros : touche H)",
+"Level {n}! +1 stat point, +1 talent point. (Journal, Hero tab: H key)",
+"¡Nivel {n}! +1 punto de característica, +1 punto de talento. (Cuaderno, pestaña Héroe: tecla H)"
+],
+[
+"Les quêtes que tu as déjà faites pour les habitants comptent aussi : +{n} XP.",
+"The quests you've already done for the villagers count too: +{n} XP.",
+"Las misiones que ya has hecho para los vecinos también cuentan: +{n} XP."
+],
+[
+"Tout ce que tu as déjà accompli compte : te voilà niveau {n} ! Ouvre le carnet (H) pour répartir tes points.",
+"Everything you've already accomplished counts: you're now level {n}! Open the journal (H) to spend your points.",
+"Todo lo que ya has logrado cuenta: ¡ya eres de nivel {n}! Abre el cuaderno (H) para repartir tus puntos."
+],
+[
+"La quête de {}",
+"The quest of {}",
+"La misión de {}"
+],
+[
+"Épreuve réussie : {}",
+"Trial passed: {}",
+"Prueba superada: {}"
+],
+[
+"Épreuves réussies : {}",
+"Trials passed: {}",
+"Pruebas superadas: {}"
+],
+[
+"Il faut être niveau {n}.",
+"You need to be level {n}.",
+"Hace falta ser de nivel {n}."
+],
+[
+"Il faut d'abord « {} ».",
+"You must first learn “{}”.",
+"Antes hay que aprender « {} »."
+],
+[
+"Talent appris : {}",
+"Talent learned: {}",
+"Talento aprendido: {}"
+],
+[
+"Pouvoir choisi : {}",
+"Power chosen: {}",
+"Poder elegido: {}"
+],
+[
+"Pouvoir choisi : {} (X pour le lancer)",
+"Power chosen: {} (X to cast)",
+"Poder elegido: {} (X para lanzarlo)"
+],
+[
+"⚒ Améliorer ma lame : {} ({})",
+"⚒ Upgrade my blade: {} ({})",
+"⚒ Mejorar mi hoja: {} ({})"
+],
+[
+"⚒ Me forger une armure : {} ({})",
+"⚒ Forge me some armour: {} ({})",
+"⚒ Forjarme una armadura: {} ({})"
+],
+[
+"Il me faut : {}. Reviens quand tu les auras.",
+"I need: {}. Come back when you have them.",
+"Necesito: {}. Vuelve cuando los tengas."
+],
+[
+"Il me faut {}. Pas une miette de moins.",
+"I need {}. Not one crumb less.",
+"Necesito {}. Ni una miga menos."
+],
+[
+"Forgé : {} !",
+"Forged: {}!",
+"¡Forjado: {}!"
+],
+[
+"   ✦ {n} point{}",
+"   ✦ {n} point{}",
+"   ✦ {n} punto{}"
+],
+[
+"Niveau {}",
+"Level {}",
+"Nivel {}"
+],
+[
+"   •   {n} monstres vaincus",
+"   •   {n} monsters defeated",
+"   •   {n} monstruos derrotados"
+],
+[
+"[font_size=22][b]{}[/b][/font_size]   (niveau {n})\n{}\n{}",
+"[font_size=22][b]{}[/b][/font_size]   (level {n})\n{}\n{}",
+"[font_size=22][b]{}[/b][/font_size]   (nivel {n})\n{}\n{}"
+],
+[
+"[color=#{}]●[/color] [b]{}[/b] — {} (touche {})\n[color=#9aa7b0]{}[/color]\n",
+"[color=#{}]●[/color] [b]{}[/b] — {} (key {})\n[color=#9aa7b0]{}[/color]\n",
+"[color=#{}]●[/color] [b]{}[/b] — {} (tecla {})\n[color=#9aa7b0]{}[/color]\n"
+],
+[
+"[color=#9aa7b0]{n} épreuve{} réussie{}, {n} coffre{} ouvert{}.[/color]\n",
+"[color=#9aa7b0]{n} trial{} passed (prize{} won), {n} chest{} opened (key{} used).[/color]\n",
+"[color=#9aa7b0]{n} prueba{} superada{}, {n} cofre{} abierto{}.[/color]\n"
+],
+[
+"Une voix de pierre, grave comme le désert : « Je garde la porte de Rê. Réponds à mes trois questions, et elle s'ouvrira. Trompe-toi, et reviens quand tu sauras. » {}",
+"A voice of stone, deep as the desert: “I guard the door of Ra. Answer my three questions, and it will open. Get one wrong, and come back when you know.” {}",
+"Una voz de piedra, grave como el desierto: « Guardo la puerta de Ra. Responde a mis tres preguntas y se abrirá. Si te equivocas, vuelve cuando lo sepas. » {}"
+],
+[
+"Le sarcophage d'Osiris est vide. Sur son couvercle, ces mots : « Seth a dispersé mon corps aux quatre chapelles d'Isis. Rassemble-moi, et je te laisserai passer. » (Morceaux d'Osiris : {n} sur 4)",
+"The sarcophagus of Osiris is empty. On its lid, these words: “Seth scattered my body among the four chapels of Isis. Gather me, and I will let you pass.” (Pieces of Osiris: {n} of 4)",
+"El sarcófago de Osiris está vacío. En su tapa, estas palabras: « Seth dispersó mi cuerpo por las cuatro capillas de Isis. Reúneme y te dejaré pasar. » (Pedazos de Osiris: {n} de 4)"
+],
+[
+"Arche {n} sur {n} — {n} s",
+"Arch {n} of {n} — {n} s",
+"Arco {n} de {n} — {n} s"
+],
+[
+"Dernière arche ! Vite, l'arrivée — {n} s",
+"Last arch! Quick, to the finish — {n} s",
+"¡Último arco! Rápido, a la meta — {n} s"
+],
+[
+"VICTOIRE ! Premier en {n} s ! Toute la Clairière applaudit. Va voir Pépin.",
+"VICTORY! First in {n} s! The whole Clearing applauds. Go see Pépin.",
+"¡VICTORIA! ¡Primero en {n} s! Todo el Claro aplaude. Ve a ver a Pépin."
+],
+[
+"Arrivé {} en {n} s. {}",
+"Finished {} in {n} s. {}",
+"Llegaste {} en {n} s. {}"
+],
+[
+"⇄ Troquer {}",
+"⇄ Swap {}",
+"⇄ Trocar {}"
+],
+[
+"La rose de lumière s'ouvre et brûle la Reine de son rayon ! ({n} / {n})",
+"The rose of light opens and burns the Queen with its ray! ({n} / {n})",
+"¡La rosa de luz se abre y quema a la Reina con su rayo! ({n} / {n})"
+],
+[
+"« Merci, humain. Cent ans, prisonnière de mes propres ronces… Tu m'as rendu mon cœur. Prends ceci : {n} pièces, {n} nectars… et cette carte. À l'ouest, derrière les Récifs de Feu, les nains de la Montagne de Feu forgent depuis mille ans. Leur île est cachée par la cendre ; la carte te montrera la passe. Ils te feront bon accueil… peut-être. »{}",
+"“Thank you, human. A hundred years, a prisoner of my own brambles… You gave me back my heart. Take this: {n} coins, {n} nectars… and this map. To the west, beyond the Fire Reefs, the dwarves of Fire Mountain have been forging for a thousand years. Their island is hidden by ash; the map will show you the pass. They will welcome you… perhaps.”{}",
+"« Gracias, humano. Cien años prisionera de mis propias zarzas… Me has devuelto mi corazón. Toma esto: {n} monedas, {n} néctares… y este mapa. Al oeste, tras los Arrecifes de Fuego, los enanos de la Montaña de Fuego forjan desde hace mil años. Su isla está oculta por la ceniza; el mapa te mostrará el paso. Te acogerán bien… quizá. »{}"
+],
+[
+"E : tourner l'anneau {}",
+"E: turn the {} ring",
+"E: girar el anillo {}"
+],
+[
+"E : tourner la {} roue",
+"E: turn the {} wheel",
+"E: girar la {} rueda"
+],
+[
+"L'anneau {} montre {}.",
+"The {} ring shows {}.",
+"El anillo {} muestra {}."
+],
+[
+"Le couvercle de grès glisse : {n} pièces des caravanes, et un rubis gros comme une datte.",
+"The sandstone lid slides open: {n} caravan coins, and a ruby as big as a date.",
+"La tapa de arenisca se desliza: {n} monedas de las caravanas y un rubí grande como un dátil."
+],
+[
+"La {} roue montre {n} mouton{}.",
+"The {} wheel shows {n} lamb{}.",
+"La {} rueda muestra {n} oveja{}."
+],
+[
+" Le journal le disait : elle attend ses trois sœurs. Il t'en manque {n}.",
+" The logbook said so: she is waiting for her three sisters. You are missing {n}.",
+" El cuaderno lo decía: espera a sus tres hermanas. Te faltan {n}."
+],
+[
+"La Porte aux Quatre Sceaux. Les quatre creux attendent leurs sceaux : tu en as {n} sur quatre. Les autres peuples de l'île gardent les leurs…",
+"The Gate of the Four Seals. The four hollows wait for their seals: you have {n} of four. The other peoples of the island keep theirs…",
+"La Puerta de los Cuatro Sellos. Los cuatro huecos esperan sus sellos: tienes {n} de cuatro. Los demás pueblos de la isla guardan los suyos…"
+],
+[
+"Pierre contre pierre : deux serpents pivotent. ({n} sur 4 regardent l'autel)",
+"Stone against stone: two serpents pivot. ({n} of 4 face the altar)",
+"Piedra contra piedra: dos serpientes giran. ({n} de 4 miran al altar)"
+],
+[
+"La Porte du Serpent. Un serpent de bronze s'enroule autour d'un œil rouge. Trois empreintes creuses attendent les fragments d'une amulette. ({n} sur 3)",
+"The Serpent Gate. A bronze serpent coils around a red eye. Three hollow imprints await the fragments of an amulet. ({n} of 3)",
+"La Puerta de la Serpiente. Una serpiente de bronce se enrosca alrededor de un ojo rojo. Tres huellas huecas esperan los fragmentos de un amuleto. ({n} de 3)"
+],
+[
+"Les offrandes des Anciens : {n} pièces, {n} pièces d'or{}.",
+"The Elders' offerings: {n} coins, {n} gold coins{}.",
+"Las ofrendas de los Ancianos: {n} monedas, {n} monedas de oro{}."
+],
+[
+"Trois Soleils, {}",
+"Three Suns, {}",
+"Tres Soles, {}"
+],
+[
+"E : poser {} sur l'autel",
+"E: place {} on the altar",
+"E: poner {} en el altar"
+],
+[
+"Cette niche attend {}. Elle est cachée au fond d'un des trois grands temples de l'île.",
+"This niche awaits {}. It is hidden deep inside one of the island's three great temples.",
+"Este nicho espera {}. Está escondido en el fondo de uno de los tres grandes templos de la isla."
+],
+[
+"{} brille sur l'autel. ({n} relique{} sur 3)",
+"{} shines on the altar. ({n} relic{} of 3)",
+"{} brilla en el altar. ({n} reliquia{} de 3)"
+],
+[
+"[color=#{}]●[/color] [b]{}[/b] — touche {}, {n} de magie{}\n[color=#9aa7b0]{}[/color]\n",
+"[color=#{}]●[/color] [b]{}[/b] — key {}, {n} magic{}\n[color=#9aa7b0]{}[/color]\n",
+"[color=#{}]●[/color] [b]{}[/b] — tecla {}, {n} de magia{}\n[color=#9aa7b0]{}[/color]\n"
+],
+[
+"[color=#3a4a55]●[/color] [color=#9aa7b0]{} — à apprendre à Arcanelle[/color]\n",
+"[color=#3a4a55]●[/color] [color=#9aa7b0]{} — to be learned at Arcanelle[/color]\n",
+"[color=#3a4a55]●[/color] [color=#9aa7b0]{} — por aprender en Arcanelle[/color]\n"
+],
+[
+"Sous le dessin de {}",
+"Under the drawing of {}",
+"Bajo el dibujo: {}"
+],
+[
+", des signes gravés. Tu les déchiffres lentement : {}",
+", some engraved signs. You slowly decipher them: {}",
+", signos grabados. Los descifras lentamente: {}"
+],
+[
+"toucher la pierre de {}",
+"touch the stone of {}",
+"tocar la piedra: {}"
+],
+[
+"On reprend ? Tu en étais à la chanson {n} sur 3.",
+"Shall we continue? You were at song {n} of 3.",
+"¿Continuamos? Ibas por la canción {n} de 3."
+],
+[
+"Le trésor du Cœur du Chant ! {}",
+"The treasure of the Heart of the Song! {}",
+"¡El tesoro del Corazón del Canto! {}"
+],
+[
+"☾ {} (8 pièces)",
+"☾ {} (8 coins)",
+"☾ {} (8 monedas)"
+],
+[
+"En cabine ! Départ dans {n} s — {}.",
+"All aboard! Departure in {n} s — {}.",
+"¡Todos a bordo! Salida en {n} s — {}."
+],
+[
+"Terminus : {}.",
+"End of the line: {}.",
+"Fin del trayecto: {}."
+],
+[
+"Invincible : {}",
+"Invincible: {}",
+"Invencible: {}"
+],
+[
+"Mode testeur : invincible {}",
+"Tester mode: invincible {}",
+"Modo probador: invencible {}"
+],
+[
+"▸ Suivants ({n}/{n})",
+"▸ Next ({n}/{n})",
+"▸ Siguientes ({n}/{n})"
+],
+[
+"Page {n} / {n}",
+"Page {n} / {n}",
+"Página {n} / {n}"
+],
+[
+"Mode testeur : {}",
+"Tester mode: {}",
+"Modo probador: {}"
+],
+[
+"E : tamponner le formulaire {}",
+"E: stamp the {} form",
+"E: sellar el formulario {}"
+],
+[
+"Gâchette : tamponner le formulaire {}",
+"Trigger: stamp the {} form",
+"Gatillo: sellar el formulario {}"
+],
+[
+"E : basculer le levier {n}",
+"E: flip lever {n}",
+"E: accionar la palanca {n}"
+],
+[
+"Gâchette : levier {n}",
+"Trigger: lever {n}",
+"Gatillo: palanca {n}"
+],
+[
+"E : tourner la vanne {n}",
+"E: turn valve {n}",
+"E: girar la válvula {n}"
+],
+[
+"Gâchette : tourner la vanne {n}",
+"Trigger: valve {n}",
+"Gatillo: válvula {n}"
+],
+[
+"Le terminal clignote : « > REMONTER ? [O] ». Tu tapes « O ». L'écran devient tout vert, un panneau coulisse, un tapis secret t'emporte en zigzag… et te revoilà au grand jour, devant le portail de l'Usine Grise. (Le terminal a noté : étage {n}.)",
+"The terminal blinks: “> GO BACK UP? [Y]”. You type “Y”. The screen turns all green, a panel slides away, a secret conveyor whisks you away in zigzags… and there you are again in broad daylight, in front of the Grey Factory gate. (The terminal noted: floor {n}.)",
+"El terminal parpadea: «> ¿SUBIR? [S]». Tecleas «S». La pantalla se pone toda verde, un panel se desliza y una cinta secreta te lleva en zigzag… y vuelves a estar a plena luz del día, frente al portón de la Fábrica Gris. (El terminal ha anotado: planta {n}.)"
+],
+[
+"Ding ! « Ascenseur de service. Descente vers l'étage {n} : {}. Veuillez patienter en écoutant cette musique d'attente optimisée. » Pouêt-pouêt-pouêêêt…",
+"Ding! “Service elevator. Descending to floor {n}: {}. Please wait while listening to this optimised hold music.” Toot-toot-tooot…",
+"¡Ding! «Ascensor de servicio. Descenso a la planta {n}: {}. Por favor, espere escuchando esta música de espera optimizada.» Pi-pi-piiii…"
+],
+[
+"Bzzt ! Le distributeur crache un ticket : « N° {n}. Numéro actuellement servi : 12. Temps d'attente estimé : 31 ans et 2 mois. Merci de votre patience. »",
+"Bzzt! The dispenser spits out a ticket: “No. {n}. Number currently being served: 12. Estimated waiting time: 31 years and 2 months. Thank you for your patience.”",
+"¡Bzzt! El dispensador escupe un número: «N.º {n}. Número atendido actualmente: 12. Tiempo de espera estimado: 31 años y 2 meses. Gracias por su paciencia.»"
+],
+[
+"POF ! Tu tamponnes le formulaire {}… Quelque part, une photocopieuse se met à ronronner. Oh oh.",
+"POF! You stamp the {} form… Somewhere, a photocopier starts to purr. Uh-oh.",
+"¡POF! Sellas el formulario {}… En algún lugar, una fotocopiadora empieza a ronronear. Uy, uy."
+],
+[
+"POF ! « VU » en rouge sur {} (le formulaire {}). Le tourniquet fait « tic ». Encore deux.",
+"POF! A red “SEEN” on {} (the {} form). The turnstile goes “tick”. Two more.",
+"¡POF! Un «VISTO» rojo en {} (el formulario {}). El torniquete hace «tic». Quedan dos."
+],
+[
+"POF ! « VU » sur {} (le formulaire {}). Le tourniquet fait « tic-tic ». Plus qu'un !",
+"POF! “SEEN” on {} (the {} form). The turnstile goes “tick-tick”. Just one left!",
+"¡POF! «VISTO» en {} (el formulario {}). El torniquete hace «tic-tic». ¡Solo queda uno!"
+],
+[
+"le tapis {n}",
+"belt {n}",
+"la cinta {n}"
+],
+[
+"Clac ! Le levier {n} bascule {}. Regarde le synoptique, au mur : vert = « aller », rouge = « retour ».",
+"Clack! Lever {n} flips {}. Look at the diagram on the wall: green = “forward”, red = “back”.",
+"¡Clac! La palanca {n} cambia {}. Mira el sinóptico de la pared: verde = «ida», rojo = «vuelta»."
+],
+[
+"Les Plans du Lisse-Center ! 200 pièces, un cœur de plus, et un titre : « {} ». Dans le coin de la fosse, le monte-charge s'allume en vert : il remonte jusqu'à la surface. Mamie Barricade va adorer ces plans… pour en faire des confettis.",
+"The Lisse-Center Plans! 200 coins, one more heart, and a title: “{}”. In the corner of the pit, the freight lift lights up green: it goes back up to the surface. Mamie Barricade is going to love these plans… to make confetti.",
+"¡Los Planos del Lisse-Center! 200 monedas, un corazón más y un título: «{}». En un rincón del foso, el montacargas se ilumina en verde: sube hasta la superficie. A Mamie Barricade le van a encantar estos planos… para hacer confeti."
+],
+[
+"E : prendre l'ascenseur de service (étage {n})",
+"E: take the service elevator (floor {n})",
+"E: coger el ascensor de servicio (planta {n})"
+],
+[
+"Étage {n} : {} ! (L'ascenseur de service de l'accueil le note : il pourra t'y descendre directement.)",
+"Floor {n}: {}! (The reception service elevator notes it down: it will be able to take you straight there.)",
+"¡Planta {n}: {}! (El ascensor de servicio de la entrada lo anota: podrá llevarte directamente.)"
+],
+[
+"L'Usine Grise. L'ascenseur de service t'attend à gauche : il descend directement à l'étage {n}.",
+"The Grey Factory. The service elevator is waiting on your left: it goes straight down to floor {n}.",
+"La Fábrica Gris. El ascensor de servicio te espera a la izquierda: baja directamente a la planta {n}."
+],
+[
+"{n} % effectué",
+"{n} % complete",
+"{n} % completado"
+],
+[
+"Ce virus est un faux : il fait partie du jeu, c'est la farce du « programme pas cher » de Monsieur Fil. {} va très bien : rien n'a été installé et rien n'est cassé.\nPour débarrasser ton carnet de voyage de ce virus, il suffit de casser ses trois verrous.",
+"This virus is a fake: it's part of the game, it's the “cheap program” prank by Mister Fil. {} is perfectly fine: nothing was installed and nothing is broken.\nTo rid your travel journal of this virus, you just have to break its three locks.",
+"Este virus es falso: forma parte del juego, es la broma del «programa barato» del señor Fil. {} está perfectamente: no se ha instalado nada y no se ha roto nada.\nPara librar tu cuaderno de viaje de este virus, basta con romper sus tres cerrojos."
+],
+[
+"Grigri : {}",
+"Grigri: {}",
+"Grigri: {}"
+],
+[
+"[color=#ff70d8][b]Glitch :[/b][/color] {}",
+"[color=#ff70d8][b]Glitch:[/b][/color] {}",
+"[color=#ff70d8][b]Glitch:[/b][/color] {}"
+],
+[
+"Fenêtres fermées : 0 / {n}",
+"Windows closed: 0 / {n}",
+"Ventanas cerradas: 0 / {n}"
+],
+[
+"Fenêtres fermées : {n} / {n}",
+"Windows closed: {n} / {n}",
+"Ventanas cerradas: {n} / {n}"
+],
+[
+"Manche {n} / {n}",
+"Round {n} / {n}",
+"Ronda {n} / {n}"
+],
+[
+"À toi ! Clique sur les couleurs dans le même ordre ({n} couleurs).",
+"Your turn! Click the colours in the same order ({n} colours).",
+"¡Te toca! Haz clic en los colores en el mismo orden ({n} colores)."
+],
+[
+"La date : {n} {}",
+"The date: {n} {}",
+"La fecha: {n} {}"
+],
+[
+"« Aïe ! » — « Qu'as-tu, {} ? »",
+"“Ouch!” — “What's the matter, {}?”",
+"«¡Ay!» — «¿Qué te pasa, {}?»"
+],
+[
+"« Salut à toi, {}. » Le Seigneur te regarde de ses yeux de braise : « Je ne suis pas le plus grand ici. Ce n'est pas moi que tu dois saluer d'abord. »",
+"“Greetings, {}.” The Lord looks at you with eyes of embers: “I am not the greatest here. It is not me you must greet first.”",
+"«Salve, {}.» El Señor te mira con ojos de brasa: «No soy el más grande aquí. No soy yo a quien debes saludar primero.»"
+],
+[
+"« Salut à toi, {} ! » Le Seigneur incline lentement son crâne. Il en reste un…",
+"“Greetings, {}!” The Lord slowly bows his skull. One remains…",
+"«¡Salve, {}!» El Señor inclina lentamente su cráneo. Queda uno…"
+],
+[
+"Tu piques une plume d'ara rouge dans le porte-torche : elle brille comme une flamme… qui ne brûle pas. ({n} sur 3)",
+"You stick a red macaw feather in the torch holder: it glows like a flame… that doesn't burn. ({n} of 3)",
+"Clavas una pluma de guacamayo rojo en el portaantorchas: brilla como una llama… que no quema. ({n} de 3)"
+],
+[
+"DANS L'ANNEAU ! La balle traverse la pierre. Les Seigneurs se taisent d'un coup. ({n} sur 3)",
+"IN THE RING! The ball passes through the stone. The Lords fall silent at once. ({n} of 3)",
+"¡POR EL ARO! La pelota atraviesa la piedra. Los Señores se callan de golpe. ({n} de 3)"
+]
+]

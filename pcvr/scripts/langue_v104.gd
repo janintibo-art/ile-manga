@@ -26,7 +26,9 @@ const DECOR_FIN := " \u00a0\u202f\t)]»\"'.!?…✦✧◆:,;"
 static var code: String = "fr"
 static var _textes: Dictionary = {}
 static var _bas: Dictionary = {}          # minuscules -> traduction (pour les MAJUSCULES)
-static var _motifs: Array = []            # [RegEx, modèle, nb de trous]
+static var _motifs: Array = []            # [RegEx, modèle, nb de trous, début fixe, longueur]
+static var _par_lettre: Dictionary = {}   # V106 : première lettre du début fixe -> motifs (les plus longs d'abord)
+static var _sans_debut: Array = []        # V106 : les motifs qui commencent par un trou
 static var _cache: Dictionary = {}
 static var _inst: Translation = null
 static var _sep: RegEx = null
@@ -58,6 +60,8 @@ static func choisir(c: String, garder: bool = true) -> void:
 	_textes.clear()
 	_bas.clear()
 	_motifs.clear()
+	_par_lettre.clear()
+	_sans_debut.clear()
 	if _inst != null:
 		TranslationServer.remove_translation(_inst)
 	if c != "fr":
@@ -111,7 +115,18 @@ static func _lire_table(c: String) -> void:
 		rx_s += "$"
 		var rx := RegEx.new()
 		if rx.compile(rx_s) == OK:
-			_motifs.append([rx, str(mo[k2]), holes])
+			var deb: String = src
+			var cut: int = deb.find("{")
+			if cut >= 0:
+				deb = deb.substr(0, cut)
+			var e: Array = [rx, str(mo[k2]), holes, deb, src.length()]
+			_motifs.append(e)
+			if deb == "":
+				_sans_debut.append(e)
+			else:
+				if not _par_lettre.has(deb[0]):
+					_par_lettre[deb[0]] = []
+				_par_lettre[deb[0]].append(e)
 
 
 ## La traduction d'un texte (dans la langue choisie).
@@ -135,7 +150,24 @@ func _get_message(src_message: StringName, _context: StringName) -> StringName:
 static func _phrase(s: String, depth: int) -> String:
 	if _textes.has(s):
 		return _textes[s]
-	for m in _motifs:
+	if s == "":
+		return ""
+	# V106 : seuls les motifs qui commencent comme le texte (ou par un trou) sont essayés, toujours
+	# les plus longs d'abord
+	var a: Array = _par_lettre.get(s[0], [])
+	var b: Array = _sans_debut
+	var ia: int = 0
+	var ib: int = 0
+	while ia < a.size() or ib < b.size():
+		var m: Array
+		if ib >= b.size() or (ia < a.size() and int(a[ia][4]) >= int(b[ib][4])):
+			m = a[ia]
+			ia += 1
+			if not s.begins_with(str(m[3])):
+				continue
+		else:
+			m = b[ib]
+			ib += 1
 		var rm: RegExMatch = (m[0] as RegEx).search(s)
 		if rm == null:
 			continue

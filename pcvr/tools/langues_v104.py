@@ -431,8 +431,8 @@ def _toutes():
         spec.loader.exec_module(mod)
         textes += list(getattr(mod, "TEXTES", []))
         motifs += list(getattr(mod, "MOTIFS", []))
-    # les textes de l'interface (V104) gardent le dernier mot
-    return textes + list(TEXTES), motifs
+    # les textes et les motifs de l'interface (V104) gardent le dernier mot
+    return textes + list(TEXTES), motifs + list(MOTIFS)
 
 
 def build(out_dir):
