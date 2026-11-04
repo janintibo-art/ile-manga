@@ -32,6 +32,9 @@ static var _sans_debut: Array = []        # V106 : les motifs qui commencent par
 static var _cache: Dictionary = {}
 static var _inst: Translation = null
 static var _sep: RegEx = null
+## V107 : les textes déjà traduits (sorties du traducteur, répliques composées par les habitants) :
+## on ne les retraduit pas quand une étiquette les affiche.
+static var _sorties: Dictionary = {}
 
 
 static func nom(c: String) -> String:
@@ -62,6 +65,7 @@ static func choisir(c: String, garder: bool = true) -> void:
 	_motifs.clear()
 	_par_lettre.clear()
 	_sans_debut.clear()
+	_sorties.clear()
 	if _inst != null:
 		TranslationServer.remove_translation(_inst)
 	if c != "fr":
@@ -89,7 +93,9 @@ static func _lire_table(c: String) -> void:
 	var tx: Dictionary = data.get("textes", {})
 	for k in tx:
 		_textes[str(k)] = str(tx[k])
-		_bas[str(k).to_lower()] = str(tx[k])
+		# V107 : les minuscules ne servent qu'aux noms et aux courtes étiquettes (pas aux dialogues)
+		if str(k).length() <= 80:
+			_bas[str(k).to_lower()] = str(tx[k])
 	var mo: Dictionary = data.get("motifs", {})
 	var keys: Array = mo.keys()
 	# les motifs les plus longs d'abord (les plus précis)
@@ -135,11 +141,30 @@ static func t(s: String) -> String:
 		return s
 	if _cache.has(s):
 		return _cache[s]
+	if _sorties.has(s):
+		return s
 	var r: String = _decoupe(s, 0)
 	if _cache.size() > 6000:
 		_cache.clear()
 	_cache[s] = r
+	marque(r)
 	return r
+
+
+## V107 : la traduction exacte d'un texte de la table (sans motif), "" s'il n'y en a pas.
+static func exact(s: String) -> String:
+	if code == "fr":
+		return s
+	return str(_textes.get(s, ""))
+
+
+## V107 : ce texte est déjà dans la langue du joueur (une réplique composée morceau par morceau).
+static func marque(s: String) -> String:
+	if code != "fr" and s != "":
+		if _sorties.size() > 6000:
+			_sorties.clear()
+		_sorties[s] = true
+	return s
 
 
 func _get_message(src_message: StringName, _context: StringName) -> StringName:
@@ -152,6 +177,8 @@ static func _phrase(s: String, depth: int) -> String:
 		return _textes[s]
 	if s == "":
 		return ""
+	if _sorties.has(s):
+		return s
 	# V106 : seuls les motifs qui commencent comme le texte (ou par un trou) sont essayés, toujours
 	# les plus longs d'abord
 	var a: Array = _par_lettre.get(s[0], [])

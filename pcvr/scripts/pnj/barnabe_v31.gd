@@ -121,7 +121,7 @@ const DATA := {
 			{"t": "Tu as mis le pied sur l'île des nains ?! Moi, en soixante ans de mer, jamais. Rapporte-moi un caillou de leur volcan, que je le montre à Octave.", "si": {"a_trouve": "ile_nains"}, "geste": "rire"},
 			{"t": "On dit que l'île flottante au-dessus de ton village a été posée là par un enfant géant qui jouait aux dés.", "si": {"affinite_min": 30}},
 			# V55 : la cité engloutie
-			{"t": "Tu vois cette pointe dorée qui dépasse de l'eau, au sud-ouest, quand la mer est calme ? Elle s'allume la nuit. Mon grand-père disait qu'il y avait une ville en dessous. Une ville entière ! Sous l'eau ! … Il buvait beaucoup, mon grand-père.", "si": {"pas_trouve": "atlantide"}, "geste": "rire"},
+			{"t": "Tu vois cette pointe dorée qui dépasse de l'eau, au sud-ouest, quand la mer est calme ? Elle s'allume la nuit. Mon grand-père disait qu'il y avait une ville en dessous. Une ville entière ! Sous l'eau ! … Il racontait beaucoup d'histoires, mon grand-père.", "si": {"pas_trouve": "atlantide"}, "geste": "rire"},
 			{"t": "Tu as plongé jusqu'à la ville engloutie ?! Mon grand-père avait raison ! Il faut que je redessine toutes mes cartes. Toutes !", "si": {"a_trouve": "atlantide"}, "geste": "rire"},
 			{"t": "Il paraît qu'il y a des ruines sous les racines des grands fromagers. Des escaliers qui ne mènent nulle part. Ou alors très loin.", "si": {"affinite_min": 30}},
 			{"t": "Entre nous… j'ai vu des lumières au sommet du plus grand piton, une nuit. Gaston dit que c'était la lune. Gaston dit beaucoup de choses.", "si": {"affinite_min": 40}},
@@ -144,7 +144,7 @@ const DATA := {
 			{"t": "Sur ma carte des Anciens, à l'est, entre le village et ici, il y a une tache de brume et un œil doré. Je croyais que c'était du café renversé.", "si": {"pas_trouve": "arbre_sacre"}},
 			{"t": "Tu es allé chez les elfes ! Raconte ! Est-ce qu'ils ont des coquillages ? Non ? Quel peuple étrange.", "si": {"a_trouve": "ile_elfes"}, "geste": "rire"},
 			# V40 : la fin du Temple englouti
-			{"t": "NÂGA ! Vaincu ! Par toi ! Gaston, sors le rhum de cérémonie… Ah, c'est du jus de coco. Gaston, sors le jus de coco de cérémonie !", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.35},
+			{"t": "NÂGA ! Vaincu ! Par toi ! Gaston, sors le tonneau de cérémonie… Ah, c'est du jus de coco. Gaston, sors le jus de coco de cérémonie !", "si": {"a_trouve": "naga"}, "geste": "rire", "humeur": 0.35},
 			{"t": "Sur ma carte, j'ai barré le mot « NON » écrit trois fois et j'ai mis ton nom à la place. En tout petit. Il n'y avait pas beaucoup de place.", "si": {"a_trouve": "naga"}, "humeur": 0.2},
 			{"t": "Pour Nâga, souviens-toi : la tête à terre, tu frappes. Et quand il plonge, les trois Yeux… comme sur la fresque de l'antre, je parie.", "si": {"a_trouve": "abime", "pas_trouve": "naga"}},
 			# V39 : le Puits des Abysses

@@ -10,6 +10,7 @@ extends RefCounted
 ## Tout est partagé par les cerveaux (variables statiques) et sauvegardé avec la partie (« societe »).
 
 const DOSSIER := "res://data/histoires_v65/"
+const Langue = preload("res://scripts/langue_v104.gd")
 const GROUPES := ["heros", "azur", "teuf", "carene", "tazira", "cliquetis", "ramure", "elfes", "nains", "atlantes", "fees", "arcanelle", "balafre", "soleils", "braise", "montjoie", "boucan", "astralys", "larsen", "neo", "pasta", "crayon"]
 const MAX_EVENEMENTS := 80
 
@@ -80,12 +81,24 @@ static func designe(a: String, b: String) -> String:
 	var l: Dictionary = lien(a, b)
 	if l.is_empty():
 		return prenom(b)
-	return (str(l.get("qui", "")) + " " + str(l.get("nom", prenom(b)))).strip_edges()
+	# V107 : « ma voisine » et le nom, chacun dans la langue du joueur
+	return (Langue.t(str(l.get("qui", ""))) + " " + nom_t(str(l.get("nom", prenom(b))))).strip_edges()
 
 
 static func nom_pour(a: String, b: String) -> String:
 	var l: Dictionary = lien(a, b)
-	return str(l.get("nom", prenom(b))) if not l.is_empty() else prenom(b)
+	return nom_t(str(l.get("nom", prenom(b)))) if not l.is_empty() else prenom(b)
+
+
+## V107 : un nom dans la langue du joueur. Un prénom seul (« Rose ») ne se traduit pas ; un nom
+## qui décrit (« la vieille Mabel », « le Doc ») vient de la table.
+static func nom_t(n: String) -> String:
+	if Langue.code == "fr" or n == "":
+		return n
+	if not n.contains(" ") and n.substr(0, 1) == n.substr(0, 1).to_upper():
+		return n
+	var e: String = Langue.exact(n)
+	return e if e != "" else n
 
 
 static func sentiment(a: String, b: String) -> float:

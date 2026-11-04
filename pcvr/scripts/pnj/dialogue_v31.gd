@@ -36,6 +36,8 @@ var _npc: Node3D
 var _portrait_vp: SubViewport           # V53 : portrait du personnage (PC)
 var _portrait_cam: Camera3D
 const COL_W: int = 736
+## V107 : le mot d'humeur dans la langue du joueur (la couleur se choisit sur le mot français)
+const Langue = preload("res://scripts/langue_v104.gd")
 
 
 func setup(use_xr: bool) -> void:
@@ -195,14 +197,14 @@ func show_line(who: String, mood_word: String, text: String, new_choices: Array)
 	_shown_t = 0.0
 	if _layer != null:
 		_name.text = who
-		_mood.text = "— " + mood_word
+		_mood.text = "— " + Langue.t(mood_word)
 		_mood.add_theme_color_override("font_color", _mood_color(mood_word))
 		_text.text = text
 		_text.visible_characters = 0
 		_typing = 0.0
 	_build_buttons()
 	if _vr_panel != null:
-		_vr_text.set_meta("entete", who + "  — " + mood_word)
+		_vr_text.set_meta("entete", who + "  — " + Langue.t(mood_word))
 		_vr_text.set_meta("texte", text)
 		_refresh_vr()
 		_place_vr()

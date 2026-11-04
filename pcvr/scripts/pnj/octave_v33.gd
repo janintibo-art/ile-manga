@@ -83,7 +83,7 @@ const DATA := {
 			{"t": "Tu veux te rendre utile, {surnom} ? Rapporte-moi {manque} bâtons bien droits. Il me faut des manches de pelle. Je paie, évidemment. Pas cher.", "si": {"quete": "", "sujet_min": ["lui", 2]}, "action": "quete_demande"},
 			{"t": "Mes bâtons, tu y penses ? Il m'en faut {manque}. Sans manche, une pelle, c'est un caillou plat.", "si": {"quete": "demandee"}},
 			{"t": "Grâce à tes bâtons, j'ai de quoi travailler tout l'hiver. Enfin, il n'y a pas d'hiver ici. Toute l'année, alors.", "si": {"quete": "finie"}},
-			{"t": "Entre nous… ce n'était peut-être pas que la carte. J'avais peut-être un peu bu, à la barre. Ne le répète JAMAIS à Barnabé.", "si": {"affinite_min": 55, "sujet_min": ["lui", 3]}, "humeur": -0.1},
+			{"t": "Entre nous… ce n'était peut-être pas que la carte. Je m'étais peut-être un peu assoupi, à la barre. Ne le répète JAMAIS à Barnabé.", "si": {"affinite_min": 55, "sujet_min": ["lui", 3]}, "humeur": -0.1},
 		],
 		# ------------------------------------------------------------ l'île
 		"ile": [

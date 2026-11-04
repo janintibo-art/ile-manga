@@ -1,0 +1,282 @@
+[
+[
+"Tu es venu me voir {n} fois.",
+"You've come to see me {n} times.",
+"Has venido a verme {n} veces."
+],
+[
+"Vous êtes venu me voir {n} fois.",
+"You've come to see me {n} times.",
+"Ha venido a verme {n} veces."
+],
+[
+"Tu m'as fait {n} cadeaux, le dernier : {}.",
+"You've given me {n} gifts, the last one: {}.",
+"Me has hecho {n} regalos, el último: {}."
+],
+[
+"Vous m'avez fait {n} cadeaux, le dernier : {}.",
+"You've given me {n} gifts, the last one: {}.",
+"Me ha hecho {n} regalos, el último: {}."
+],
+[
+"Tu m'as fait {n} cadeau, le dernier : {}.",
+"You've given me {n} gift, the last one: {}.",
+"Me has hecho {n} regalo, el último: {}."
+],
+[
+"Vous m'avez fait {n} cadeau, le dernier : {}.",
+"You've given me {n} gift, the last one: {}.",
+"Me ha hecho {n} regalo, el último: {}."
+],
+[
+"Et tu m'as frappé {n} fois. Je n'oublie pas.",
+"And you hit me {n} times. I don't forget.",
+"Y me pegaste {n} veces. No lo olvido."
+],
+[
+"Et vous m'avez frappé {n} fois. Je n'oublie pas.",
+"And you hit me {n} times. I don't forget.",
+"Y usted me pegó {n} veces. No lo olvido."
+],
+[
+"Tu m'as acheté {n} objets, pour {n} pièces.",
+"You've bought {n} items from me, for {n} coins.",
+"Me has comprado {n} objetos, por {n} monedas."
+],
+[
+"Vous m'avez acheté {n} objets, pour {n} pièces.",
+"You've bought {n} items from me, for {n} coins.",
+"Me ha comprado {n} objetos, por {n} monedas."
+],
+[
+"Tu m'as acheté {n} objet, pour {n} pièces.",
+"You've bought {n} item from me, for {n} coins.",
+"Me has comprado {n} objeto, por {n} monedas."
+],
+[
+"Vous m'avez acheté {n} objet, pour {n} pièces.",
+"You've bought {n} item from me, for {n} coins.",
+"Me ha comprado {n} objeto, por {n} monedas."
+],
+[
+"Et tu m'as vendu {n} prises.",
+"And you've sold me {n} catches.",
+"Y me has vendido {n} capturas."
+],
+[
+"Et vous m'avez vendu {n} prises.",
+"And you've sold me {n} catches.",
+"Y me ha vendido {n} capturas."
+],
+[
+"Et tu m'as vendu {n} prise.",
+"And you've sold me {n} catch.",
+"Y me has vendido {n} captura."
+],
+[
+"Et vous m'avez vendu {n} prise.",
+"And you've sold me {n} catch.",
+"Y me ha vendido {n} captura."
+],
+[
+"Je t'ai confié ma vieille canne et tu as sorti {n} prises de l'eau.",
+"I lent you my old rod and you pulled {n} catches out of the water.",
+"Te presté mi vieja caña y sacaste {n} capturas del agua."
+],
+[
+"Je t'ai confié ma vieille canne et tu as sorti {n} prise de l'eau.",
+"I lent you my old rod and you pulled {n} catch out of the water.",
+"Te presté mi vieja caña y sacaste {n} captura del agua."
+],
+[
+"Offrir : {}",
+"Give: {}",
+"Regalar: {}"
+],
+[
+"D'autres choses… ({n}/{n})",
+"Other things… ({n}/{n})",
+"Otras cosas… ({n}/{n})"
+],
+[
+"Acheter : {} — {n} pièces",
+"Buy: {} — {n} coins",
+"Comprar: {} — {n} monedas"
+],
+[
+"Acheter : {} — {n} pièce",
+"Buy: {} — {n} coin",
+"Comprar: {} — {n} moneda"
+],
+[
+"Vendre : {} ×{n} — {n} pièces l'unité",
+"Sell: {} ×{n} — {n} coins each",
+"Vender: {} ×{n} — {n} monedas cada uno"
+],
+[
+"Vendre : {} ×{n} — {n} pièce l'unité",
+"Sell: {} ×{n} — {n} coin each",
+"Vender: {} ×{n} — {n} moneda cada uno"
+],
+[
+"Tout vendre — {n} pièces",
+"Sell everything — {n} coins",
+"Venderlo todo — {n} monedas"
+],
+[
+"Parle-moi {}.",
+"Tell me about {}.",
+"Háblame de {}."
+],
+[
+"Parle-moi encore {}.",
+"Tell me more about {}.",
+"Háblame más de {}."
+],
+[
+"Une autre histoire sur {} ? Écoute ça.",
+"Another story about {}? Listen to this.",
+"¿Otra historia sobre {}? Escucha esto."
+],
+[
+"Une autre histoire sur {} ? Écoutez ça.",
+"Another story about {}? Listen to this.",
+"¿Otra historia sobre {}? Escuche esto."
+],
+[
+"Ah, {}… Tiens, encore une :",
+"Ah, {}… Here, there's another one:",
+"Ah, {}… Toma, ahí va otra:"
+],
+[
+"Ah, {}… Tenez, encore une :",
+"Ah, {}… Here, there's another one:",
+"Ah, {}… Tenga, ahí va otra:"
+],
+[
+"Encore {} ? D'accord.",
+"{} again? All right.",
+"¿Otra vez {}? De acuerdo."
+],
+[
+"Je t'ai raconté tout ce que je sais sur {}.",
+"I've told you everything I know about {}.",
+"Te he contado todo lo que sé sobre {}."
+],
+[
+"Je vous ai raconté tout ce que je sais sur {}.",
+"I've told you everything I know about {}.",
+"Le he contado todo lo que sé sobre {}."
+],
+[
+"La dernière fois, je t'ai raconté {}.",
+"Last time, I told you {}.",
+"La última vez te conté {}."
+],
+[
+"La dernière fois, je vous ai raconté {}.",
+"Last time, I told you {}.",
+"La última vez le conté {}."
+],
+[
+"La dernière fois, je t'ai parlé {}.",
+"Last time, I told you about {}.",
+"La última vez te hablé de {}."
+],
+[
+"La dernière fois, je vous ai parlé {}.",
+"Last time, I told you about {}.",
+"La última vez le hablé de {}."
+],
+[
+"Je t'ai raconté {n} chapitres de ma vie.",
+"I've told you {n} chapters of my life.",
+"Te he contado {n} capítulos de mi vida."
+],
+[
+"Je vous ai raconté {n} chapitres de ma vie.",
+"I've told you {n} chapters of my life.",
+"Le he contado {n} capítulos de mi vida."
+],
+[
+"Je t'ai parlé {}.",
+"I told you about {}.",
+"Te hablé de {}."
+],
+[
+"Je vous ai parlé {}.",
+"I told you about {}.",
+"Le hablé de {}."
+],
+[
+"Tu m'as dit que tu trouvais {} très sympathique.",
+"You told me you found {} very nice.",
+"Me dijiste que {} te parecía muy simpático."
+],
+[
+"Vous m'avez dit que vous trouviez {} très sympathique.",
+"You told me you found {} very nice.",
+"Me dijo que {} le parecía muy simpático."
+],
+[
+"Tu m'as dit que tu trouvais {} un peu bizarre.",
+"You told me you found {} a bit weird.",
+"Me dijiste que {} te parecía un poco raro."
+],
+[
+"Vous m'avez dit que vous trouviez {} un peu bizarre.",
+"You told me you found {} a bit weird.",
+"Me dijo que {} le parecía un poco raro."
+],
+[
+"Et je sais que tu as aidé {}.",
+"And I know you helped {}.",
+"Y sé que ayudaste a {}."
+],
+[
+"Et je sais que vous avez aidé {}.",
+"And I know you helped {}.",
+"Y sé que usted ayudó a {}."
+],
+[
+"Et je sais que tu as frappé {}.",
+"And I know you hit {}.",
+"Y sé que le pegaste a {}."
+],
+[
+"Et je sais que vous avez frappé {}.",
+"And I know you hit {}.",
+"Y sé que usted le pegó a {}."
+],
+[
+"Et je sais que tu as fait un cadeau à {}.",
+"And I know you gave a present to {}.",
+"Y sé que le hiciste un regalo a {}."
+],
+[
+"Et je sais que vous avez fait un cadeau à {}.",
+"And I know you gave a present to {}.",
+"Y sé que usted le hizo un regalo a {}."
+],
+[
+"Ce qui me ferait plaisir ? {}. Je ne dis jamais non à ça.",
+"What would make me happy? {}. I never say no to that.",
+"¿Lo que me haría ilusión? {}. Nunca digo que no a eso."
+],
+[
+"Si tu veux me faire plaisir, pense à {}. Mais je ne t'ai rien dit.",
+"If you want to make me happy, think of {}. But you didn't hear it from me.",
+"Si quieres darme una alegría, piensa en {}. Pero yo no te he dicho nada."
+],
+[
+"Mon péché mignon ? {}. Rien qu'en y pensant, je souris.",
+"My guilty pleasure? {}. Just thinking about it makes me smile.",
+"¿Mi capricho? {}. Solo de pensarlo, sonrío."
+],
+[
+"J'adore {}. Tout le monde le sait, ici.",
+"I adore {}. Everyone here knows it.",
+"Me encanta {}. Aquí lo sabe todo el mundo."
+]
+]

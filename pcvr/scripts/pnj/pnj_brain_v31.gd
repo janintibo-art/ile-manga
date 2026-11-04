@@ -22,6 +22,9 @@ var affinite: float = 0.0
 var memoire: Dictionary = {}
 var _pending_question: Dictionary = {}
 const Societe = preload("res://scripts/pnj/societe_v65.gd")
+## V107 : les répliques sont écrites en français ; elles sont traduites au moment d'être dites
+## (le modèle d'abord, puis ce qu'on y glisse : objets, surnom, noms…).
+const Langue = preload("res://scripts/langue_v104.gd")
 ## V65 : la fiche d'histoire de ce personnage (histoire, reve, question, liens).
 var v65: Dictionary = {}
 ## V65 : il vouvoie le joueur (d'après sa façon de parler dans sa fiche) : les phrases du cerveau aussi.
@@ -85,6 +88,37 @@ func _remember(text: String, now: float) -> void:
 		j.pop_front()
 
 
+# =================================================================== V107 : la langue
+
+## Un texte dans la langue du joueur.
+static func _t(s: String) -> String:
+	return Langue.t(s)
+
+
+static func _en_fr() -> bool:
+	return Langue.code == "fr"
+
+
+## Un modèle à trous %s / %d : traduit tel quel s'il est dans la table, sinon la phrase remplie.
+static func _tf(fmt: String, args: Variant) -> String:
+	if Langue.code == "fr":
+		return fmt % args
+	var tr: String = Langue.exact(fmt)
+	if tr != "" and tr.count("%") == fmt.count("%"):
+		return tr % args
+	return Langue.t(fmt % args)
+
+
+## « et » dans la langue du joueur.
+static func _et() -> String:
+	return {"en": " and ", "es": " y "}.get(Langue.code, " et ")
+
+
+## Une réplique composée, déjà dans la langue du joueur.
+static func _m(s: String) -> String:
+	return Langue.marque(s)
+
+
 # =================================================================== lecture de l'état
 
 func humeur_mot() -> String:
@@ -120,14 +154,14 @@ func surnom() -> String:
 
 func _absence_text(seconds: float) -> String:
 	if seconds < 120.0:
-		return "à peine deux minutes"
+		return _t("à peine deux minutes")
 	if seconds < 900.0:
-		return "un petit moment"
+		return _t("un petit moment")
 	if seconds < 3600.0:
-		return "une bonne heure de marée"
+		return _t("une bonne heure de marée")
 	if seconds < 4.0 * 3600.0:
-		return "des heures et des heures"
-	return "une éternité"
+		return _t("des heures et des heures")
+	return _t("une éternité")
 
 
 # =================================================================== conditions et variables
@@ -247,16 +281,19 @@ func _has_fact(spec: String) -> bool:
 func _item_name(id: String, ctx: Dictionary) -> String:
 	var arts: Dictionary = ctx.get("articles", {})
 	if arts.has(id):
-		return str(arts[id])
+		return _t(str(arts[id]))
 	var names: Dictionary = ctx.get("noms", {})
-	return str(names.get(id, id)).to_lower()
+	return _t(str(names.get(id, id)).to_lower())
 
 
-func _fill(text: String, ctx: Dictionary) -> String:
+func _fill(text: String, ctx: Dictionary, deja: bool = false) -> String:
+	# V107 : le modèle dans la langue du joueur (sauf s'il est déjà traduit)
+	if not deja:
+		text = _t(text)
 	var q: Dictionary = data.get("quete", {})
 	var shells: int = int((ctx.get("objets", {}) as Dictionary).get(str(q.get("objet", "")), 0))
 	var objets: Dictionary = ctx.get("objets", {})
-	var some: String = "tes poches vides"
+	var some: String = _t("tes poches vides")
 	if not objets.is_empty():
 		var keys: Array = objets.keys()
 		some = _item_name(str(keys[rng.randi() % keys.size()]), ctx)
@@ -268,21 +305,25 @@ func _fill(text: String, ctx: Dictionary) -> String:
 			fav = str(s)
 	var absent: float = float(ctx.get("now", 0.0)) - float(memoire.get("absence_ref", memoire["derniere"]))
 	var peche: Dictionary = ctx.get("peche", {})
-	var record: String = "rien du tout"
+	var record: String = _t("rien du tout")
 	if str(peche.get("record_id", "")) != "":
-		record = _item_name(str(peche["record_id"]), ctx) + (" de %.2f kg" % float(peche.get("record_kg", 0.0))).replace(".", ",")
+		var kg: String = "%.2f" % float(peche.get("record_kg", 0.0))
+		if Langue.code == "en":
+			record = _item_name(str(peche["record_id"]), ctx) + " of " + kg + " kg"
+		else:
+			record = _item_name(str(peche["record_id"]), ctx) + " de " + kg.replace(".", ",") + " kg"
 	var vars := {
 		"{nb_poissons}": str(int(peche.get("total", 0))), "{record}": record,
-		"{bouton}": "la gâchette" if bool(ctx.get("vr", false)) else "le clic",
+		"{bouton}": _t("la gâchette") if bool(ctx.get("vr", false)) else _t("le clic"),
 		"{depense}": str(int(memoire.get("depense", 0))), "{objet}": _item_name(str(ctx.get("_objet", "")), ctx),
 		"{prix}": str(int(ctx.get("_prix", 0))), "{pieces}": str(int((ctx.get("objets", {}) as Dictionary).get("piece", 0))),
 		"{nb_tresors}": str(int((ctx.get("trouvailles", {}) as Dictionary).get("tresors", 0))),
 		"{nb_arbres}": str(int((ctx.get("trouvailles", {}) as Dictionary).get("arbres", 0))),
 		"{nb_especes}": str((peche.get("especes", {}) as Dictionary).size()),
-		"{surnom}": surnom(), "{visites}": str(memoire["visites"]), "{absence}": _absence_text(absent),
+		"{surnom}": _t(surnom()), "{visites}": str(memoire["visites"]), "{absence}": _absence_text(absent),
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,
 		"{dernier_cadeau}": _item_name(str(memoire["dernier_cadeau"]), ctx), "{nb_cadeaux}": str(memoire["nb_cadeaux"]),
-		"{coquillages}": str(shells), "{manque}": str(int(q.get("nombre", 0))), "{humeur_mot}": humeur_mot(), "{sujet_prefere}": fav,
+		"{coquillages}": str(shells), "{manque}": str(int(q.get("nombre", 0))), "{humeur_mot}": _t(humeur_mot()), "{sujet_prefere}": fav,
 		"{manque_liste}": _missing_text(ctx),
 	}
 	for k in vars:
@@ -307,13 +348,13 @@ func _missing_text(ctx: Dictionary) -> String:
 	var miss: Dictionary = _missing(ctx)
 	var parts: Array = []
 	for id in miss:
-		var art: String = str((ctx.get("articles", {}) as Dictionary).get(id, _item_name(str(id), ctx)))
+		var art: String = _t(str((ctx.get("articles", {}) as Dictionary).get(id, _item_name(str(id), ctx))))
 		parts.append(art if int(miss[id]) == 1 else "%d × %s" % [int(miss[id]), _item_name(str(id), ctx)])
 	if parts.is_empty():
-		return "rien du tout"
+		return _t("rien du tout")
 	if parts.size() == 1:
 		return str(parts[0])
-	return ", ".join(parts.slice(0, parts.size() - 1)) + " et " + str(parts[-1])
+	return ", ".join(parts.slice(0, parts.size() - 1)) + _et() + str(parts[-1])
 
 
 # =================================================================== choix d'une réplique
@@ -363,15 +404,15 @@ func _dress(core: String, intent: String) -> String:
 	# Le petit mot d'humeur ne va qu'aux sujets « neutres » (pas aux cadeaux, coups, adieux…).
 	if intent in ["humeur", "lui", "ile", "rumeur", "blague", "souvenir", "reponse", "peche"] and rng.randf() < 0.35 and prefixes.has(humeur_famille()):
 		var list: Array = prefixes[humeur_famille()]
-		parts.append(str(list[rng.randi() % list.size()]))
+		parts.append(_t(str(list[rng.randi() % list.size()])))
 	parts.append(core)
 	var tics: Array = data.get("tics", [])
 	if not tics.is_empty() and rng.randf() < float(traits.get("bavard", 0.5)) * 0.3 and humeur > -0.4:
-		parts.append(str(tics[rng.randi() % tics.size()]))
-	var text: String = " ".join(parts)
+		parts.append(_t(str(tics[rng.randi() % tics.size()])))
+	var text: String = _m(" ".join(parts))
 	var pet: Array = data.get("compagnon_lignes", [])
 	if not pet.is_empty() and rng.randf() < 0.22:
-		text += "\n\n" + str(pet[rng.randi() % pet.size()])
+		text += "\n\n" + _t(str(pet[rng.randi() % pet.size()]))
 	return text
 
 
@@ -380,7 +421,7 @@ func say(intent: String, ctx: Dictionary, dress: bool = true) -> Dictionary:
 	if e.is_empty():
 		return {"texte": "…", "geste": ""}
 	_mood(float(e.get("humeur", 0.0)))
-	var text: String = _fill(str(e["t"]), ctx)
+	var text: String = _m(_fill(str(e["t"]), ctx))
 	if dress:
 		text = _dress(text, intent)
 	var out := {"texte": text, "geste": str(e.get("geste", "parle"))}
@@ -420,10 +461,11 @@ func start(ctx: Dictionary) -> Dictionary:
 			chance = 0.35
 	if not q.is_empty() and rng.randf() < chance:
 		_pending_question = q
-		reply["texte"] = str(reply["texte"]) + "\n\n" + str(q["texte"])
+		# V107 : la question de la fiche du personnage (data) est traduite ici ; celles de V65 l'ont été
+		reply["texte"] = str(reply["texte"]) + "\n\n" + (str(q["texte"]) if q.has("v65") else _t(str(q["texte"])))
 		reply["choix"] = []
 		for i in range(q["reponses"].size()):
-			reply["choix"].append({"id": "rep:%d" % i, "label": str(q["reponses"][i]["label"])})
+			reply["choix"].append({"id": "rep:%d" % i, "label": _t(str(q["reponses"][i]["label"]))})
 		return reply
 	reply["choix"] = topics(ctx)
 	return reply
@@ -440,31 +482,31 @@ func _next_question(ctx: Dictionary) -> Dictionary:
 
 ## Sujets proposés au joueur, selon ce que le personnage sait et ressent.
 func topics(ctx: Dictionary) -> Array:
-	var t: Array = [{"id": "humeur", "label": "Comment ça va ?"}]
-	t.append({"id": "lui", "label": "Qui es-tu ?" if int((memoire["sujets"] as Dictionary).get("lui", 0)) == 0 else "Raconte-moi encore ta vie."})
+	var t: Array = [{"id": "humeur", "label": _t("Comment ça va ?")}]
+	t.append({"id": "lui", "label": _t("Qui es-tu ?") if int((memoire["sujets"] as Dictionary).get("lui", 0)) == 0 else _t("Raconte-moi encore ta vie.")})
 	# V65 : son histoire, les gens qu'il connaît, son rêve.
 	t.append_array(_v65_topics(ctx))
-	t.append({"id": "ile", "label": "Parle-moi de cette île."})
-	t.append({"id": "rumeur", "label": "Tu as entendu des rumeurs ?"})
+	t.append({"id": "ile", "label": _t("Parle-moi de cette île.")})
+	t.append({"id": "rumeur", "label": _t("Tu as entendu des rumeurs ?")})
 	if float((data.get("traits", {}) as Dictionary).get("humour", 0.0)) > 0.5:
-		t.append({"id": "blague", "label": "Raconte-moi une blague."})
+		t.append({"id": "blague", "label": _t("Raconte-moi une blague.")})
 	# V32 : la pêche, si le personnage a quelque chose à en dire.
 	if ((data.get("repliques", {}) as Dictionary).get("peche", []) as Array).size() > 0:
-		t.append({"id": "peche", "label": "Tu sais pêcher ?" if int((memoire["sujets"] as Dictionary).get("peche", 0)) == 0 else "Parlons pêche."})
+		t.append({"id": "peche", "label": _t("Tu sais pêcher ?") if int((memoire["sujets"] as Dictionary).get("peche", 0)) == 0 else _t("Parlons pêche.")})
 	# V33 : un marchand ouvre sa boutique.
 	if data.has("boutique"):
-		t.insert(1, {"id": "boutique", "label": "Montre-moi ta marchandise."})
+		t.insert(1, {"id": "boutique", "label": _t("Montre-moi ta marchandise.")})
 	if str(memoire["quete"]) == "demandee":
-		t.append({"id": "quete", "label": str((data.get("quete", {}) as Dictionary).get("sujet", "À propos de tes coquillages…"))})
+		t.append({"id": "quete", "label": _t(str((data.get("quete", {}) as Dictionary).get("sujet", "À propos de tes coquillages…")))})
 	# V41 : sujets particuliers qui n'apparaissent que dans certaines circonstances.
 	for sp in data.get("sujets_speciaux", []):
 		if _ok((sp as Dictionary).get("si", {}), ctx):
-			t.insert(mini(2, t.size()), {"id": str(sp["id"]), "label": str(sp["label"])})
+			t.insert(mini(2, t.size()), {"id": str(sp["id"]), "label": _t(str(sp["label"]))})
 	if int(memoire["visites"]) >= 3:
-		t.append({"id": "souvenir", "label": "Tu te souviens de moi ?"})
+		t.append({"id": "souvenir", "label": _t("Tu te souviens de moi ?")})
 	if not (ctx.get("objets", {}) as Dictionary).is_empty():
-		t.append({"id": "cadeau", "label": "Je voudrais t'offrir quelque chose."})
-	t.append({"id": "au_revoir", "label": "Au revoir."})
+		t.append({"id": "cadeau", "label": _t("Je voudrais t'offrir quelque chose.")})
+	t.append({"id": "au_revoir", "label": _t("Au revoir.")})
 	return t
 
 
@@ -480,8 +522,10 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 			_v65_reponse(_pending_question, r, now)
 		else:
 			_remember("réponse « %s » : %s" % [_pending_question["id"], r["valeur"]], now)
+		# V107 : les réponses « avis » (V65) sont déjà remplies et traduites
+		var deja: bool = str(_pending_question.get("v65", "")) == "avis"
 		_pending_question = {}
-		return {"texte": _dress(_fill(str(r["t"]), ctx), "reponse"), "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _dress(_fill(str(r["t"]), ctx, deja), "reponse"), "geste": "parle", "choix": topics(ctx)}
 	if choice.begins_with("don:"):
 		return _gift(choice.substr(4), ctx)
 	if choice.begins_with("cadeau_page:"):
@@ -502,7 +546,7 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		"reve":
 			return _v65_reve(ctx)
 		"autre":
-			return {"texte": _pick_line(_tv(["Bien. De quoi d'autre veux-tu parler ?", "D'accord. Autre chose ?", "Bon. Je t'écoute."], ["Bien. De quoi d'autre voulez-vous parler ?", "D'accord. Autre chose ?", "Bon. Je vous écoute."])), "geste": "parle", "choix": topics(ctx)}
+			return {"texte": _t(_pick_line(_tv(["Bien. De quoi d'autre veux-tu parler ?", "D'accord. Autre chose ?", "Bon. Je t'écoute."], ["Bien. De quoi d'autre voulez-vous parler ?", "D'accord. Autre chose ?", "Bon. Je vous écoute."]))), "geste": "parle", "choix": topics(ctx)}
 		"rumeur":
 			# V65 : les nouvelles qui circulent (ce que le joueur a fait aux gens d'ici)
 			if rng.randf() < 0.45:
@@ -516,11 +560,11 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 			if not hist.is_empty() and int(memoire.get("chapitre", 0)) >= hist.size() and rng.randf() < 0.4:
 				sujets["lui"] = int(sujets.get("lui", 0)) + 1
 				var c: Dictionary = hist[rng.randi() % hist.size()]
-				return {"texte": _tv("Tu veux l'entendre encore ? ", "Vous voulez l'entendre encore ? ") + _fill(str(c.get("t", "")), ctx), "geste": "parle", "choix": topics(ctx)}
+				return {"texte": _m(_t(_tv("Tu veux l'entendre encore ? ", "Vous voulez l'entendre encore ? ")) + _fill(str(c.get("t", "")), ctx)), "geste": "parle", "choix": topics(ctx)}
 		"cadeau":
 			return _gift_page(0, ctx)
 		"retour":
-			return {"texte": "Bon. Une autre fois, peut-être.", "geste": "parle", "choix": topics(ctx)}
+			return {"texte": _t("Bon. Une autre fois, peut-être."), "geste": "parle", "choix": topics(ctx)}
 		"quete":
 			return _quest_turn_in(ctx)
 		"boutique":
@@ -571,34 +615,47 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 func _memories_text(ctx: Dictionary) -> String:
 	var lines: Array = []
 	var v: int = int(memoire["visites"])
-	lines.append(_tv("Tu es venu me voir %d fois.", "Vous êtes venu me voir %d fois.") % v)
+	# V107 : chaque phrase entière (singulier ou pluriel), pour pouvoir la traduire
+	lines.append(_tf(_tv("Tu es venu me voir %d fois.", "Vous êtes venu me voir %d fois."), v))
 	var faits: Dictionary = memoire["faits"]
 	if faits.has("origine"):
 		match str(faits["origine"]):
-			"village": lines.append("Tu viens du village d'en face.")
-			"aventurier": lines.append("Tu te dis aventurier. Je te crois. À moitié.")
-			_: lines.append("Tu n'as jamais voulu me dire d'où tu viens. Je m'en souviens, ça.")
+			"village": lines.append(_t("Tu viens du village d'en face."))
+			"aventurier": lines.append(_t("Tu te dis aventurier. Je te crois. À moitié."))
+			_: lines.append(_t("Tu n'as jamais voulu me dire d'où tu viens. Je m'en souviens, ça."))
 	if int(memoire["nb_cadeaux"]) > 0:
-		lines.append(_tv("Tu m'as fait %d cadeau%s, le dernier : %s.", "Vous m'avez fait %d cadeau%s, le dernier : %s.") % [memoire["nb_cadeaux"], "x" if int(memoire["nb_cadeaux"]) > 1 else "", _item_name(str(memoire["dernier_cadeau"]), ctx)])
+		var nc: int = int(memoire["nb_cadeaux"])
+		var fc: String = _tv("Tu m'as fait %d cadeaux, le dernier : %s.", "Vous m'avez fait %d cadeaux, le dernier : %s.") if nc > 1 else _tv("Tu m'as fait %d cadeau, le dernier : %s.", "Vous m'avez fait %d cadeau, le dernier : %s.")
+		lines.append(_tf(fc, [nc, _item_name(str(memoire["dernier_cadeau"]), ctx)]))
 	if faits.has("frappe"):
 		var n_hits: int = int(faits["frappe"])
-		lines.append(_tv("Et tu m'as frappé %s. Je n'oublie pas.", "Et vous m'avez frappé %s. Je n'oublie pas.") % ("une fois" if n_hits == 1 else "%d fois" % n_hits))
+		if n_hits == 1:
+			lines.append(_t(_tv("Et tu m'as frappé une fois. Je n'oublie pas.", "Et vous m'avez frappé une fois. Je n'oublie pas.")))
+		else:
+			lines.append(_tf(_tv("Et tu m'as frappé %d fois. Je n'oublie pas.", "Et vous m'avez frappé %d fois. Je n'oublie pas."), n_hits))
 	if faits.has("coquillage_prefere"):
-		lines.append("Tu préfères les coquillages %s." % ("ronds" if faits["coquillage_prefere"] == "ronds" else ("pointus" if faits["coquillage_prefere"] == "pointus" else "… aucun, hélas")))
+		lines.append(_t("Tu préfères les coquillages ronds." if faits["coquillage_prefere"] == "ronds" else ("Tu préfères les coquillages pointus." if faits["coquillage_prefere"] == "pointus" else "Tu préfères les coquillages… aucun, hélas.")))
 	if str(memoire["quete"]) == "finie":
-		lines.append(str((data.get("quete", {}) as Dictionary).get("souvenir", "Et grâce à toi, ma collection est complète.")))
+		lines.append(_t(str((data.get("quete", {}) as Dictionary).get("souvenir", "Et grâce à toi, ma collection est complète."))))
 	if int(memoire.get("depense", 0)) > 0:
 		var n_items: int = 0
 		for k in memoire["achats"]:
 			n_items += int(memoire["achats"][k])
-		lines.append(_tv("Tu m'as acheté %d objet%s, pour %d pièces.", "Vous m'avez acheté %d objet%s, pour %d pièces.") % [n_items, "s" if n_items > 1 else "", int(memoire["depense"])])
+		var fa: String = _tv("Tu m'as acheté %d objets, pour %d pièces.", "Vous m'avez acheté %d objets, pour %d pièces.") if n_items > 1 else _tv("Tu m'as acheté %d objet, pour %d pièces.", "Vous m'avez acheté %d objet, pour %d pièces.")
+		lines.append(_tf(fa, [n_items, int(memoire["depense"])]))
 	if int(memoire.get("ventes", 0)) > 0:
-		lines.append(_tv("Et tu m'as vendu %d prise%s.", "Et vous m'avez vendu %d prise%s.") % [int(memoire["ventes"]), "s" if int(memoire["ventes"]) > 1 else ""])
+		var nv: int = int(memoire["ventes"])
+		lines.append(_tf(_tv("Et tu m'as vendu %d prises.", "Et vous m'avez vendu %d prises.") if nv > 1 else _tv("Et tu m'as vendu %d prise.", "Et vous m'avez vendu %d prise."), nv))
 	if faits.has("canne"):
 		var total: int = int((ctx.get("peche", {}) as Dictionary).get("total", 0))
-		lines.append("Je t'ai confié ma vieille canne" + (" et tu as sorti %d prise%s de l'eau." % [total, "s" if total > 1 else ""] if total > 0 else ", et tu n'as encore rien attrapé avec."))
+		if total > 1:
+			lines.append(_tf("Je t'ai confié ma vieille canne et tu as sorti %d prises de l'eau.", total))
+		elif total == 1:
+			lines.append(_tf("Je t'ai confié ma vieille canne et tu as sorti %d prise de l'eau.", total))
+		else:
+			lines.append(_t("Je t'ai confié ma vieille canne, et tu n'as encore rien attrapé avec."))
 	lines.append_array(_v65_souvenirs(ctx))
-	return " ".join(lines)
+	return _m(" ".join(lines))
 
 
 ## V72 : la liste des cadeaux, six par page (seulement ce qu'on peut offrir : pas les objets de
@@ -611,20 +668,20 @@ func _gift_page(page: int, ctx: Dictionary) -> Dictionary:
 	var list: Array = []
 	for i in range(page * per, mini(ids.size(), (page + 1) * per)):
 		var id: String = str(ids[i])
-		list.append({"id": "don:" + id, "label": "Offrir : " + str((ctx.get("noms", {}) as Dictionary).get(id, id))})
+		list.append({"id": "don:" + id, "label": _tf("Offrir : %s", _t(str((ctx.get("noms", {}) as Dictionary).get(id, id))))})
 	if page + 1 < n_pages:
-		list.append({"id": "cadeau_page:%d" % (page + 1), "label": "D'autres choses… (%d/%d)" % [page + 2, n_pages]})
-	list.append({"id": "retour", "label": "Non, rien finalement."})
+		list.append({"id": "cadeau_page:%d" % (page + 1), "label": _tf("D'autres choses… (%d/%d)", [page + 2, n_pages])})
+	list.append({"id": "retour", "label": _t("Non, rien finalement.")})
 	if ids.is_empty():
-		return {"texte": "Oh ? Tu n'as rien que tu puisses offrir, on dirait. Ce n'est pas grave : ta visite me suffit.", "geste": "parle", "choix": [{"id": "retour", "label": "Une autre fois."}]}
-	return {"texte": "Oh ? Qu'as-tu donc pour moi ?" if page == 0 else "Et quoi d'autre ?", "geste": "parle", "choix": list}
+		return {"texte": _t("Oh ? Tu n'as rien que tu puisses offrir, on dirait. Ce n'est pas grave : ta visite me suffit."), "geste": "parle", "choix": [{"id": "retour", "label": _t("Une autre fois.")}]}
+	return {"texte": _t("Oh ? Qu'as-tu donc pour moi ?") if page == 0 else _t("Et quoi d'autre ?"), "geste": "parle", "choix": list}
 
 
 func _gift(item: String, ctx: Dictionary) -> Dictionary:
 	var now: float = float(ctx.get("now", 0.0))
 	# V72 : un objet qu'on ne peut pas offrir (objet de quête, outil…) n'est jamais pris
 	if ctx.has("offrables") and not (ctx["offrables"] as Array).has(item):
-		return {"texte": "Garde-le, voyons : on dirait que tu en as besoin.", "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _t("Garde-le, voyons : on dirait que tu en as besoin."), "geste": "parle", "choix": topics(ctx)}
 	if (data.get("refuse", []) as Array).has(item):
 		var specific: bool = (data.get("repliques", {}) as Dictionary).has("cadeau_refus_" + item)
 		var r: Dictionary = say("cadeau_refus_" + item if specific else "cadeau_refus", ctx)
@@ -666,7 +723,7 @@ func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 			var unk: Dictionary = say("quete_inconnue", ctx)
 			unk["choix"] = topics(ctx)
 			return unk
-		return {"texte": "Mes coquillages ? Quels coquillages ? Ah… je ne t'ai encore rien demandé, il me semble.", "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _t("Mes coquillages ? Quels coquillages ? Ah… je ne t'ai encore rien demandé, il me semble."), "geste": "parle", "choix": topics(ctx)}
 	if not _missing(ctx).is_empty():
 		var r: Dictionary = say("quete_manque", ctx)
 		r["choix"] = topics(ctx)
@@ -693,9 +750,9 @@ func call_out(ctx: Dictionary) -> String:
 	# V65 : s'il a appris quelque chose sur le joueur, il l'appelle pour lui en parler.
 	var news: String = _v65_peek()
 	if news != "" and rng.randf() < 0.6:
-		return _fill(_pick_line(_tv(CALL65, CALL65_V)[news]), ctx)
+		return _m(_fill(_pick_line(_tv(CALL65, CALL65_V)[news]), ctx))
 	var e: Dictionary = _pick("interpelle", ctx)
-	return _fill(str(e.get("t", "")), ctx) if not e.is_empty() else ""
+	return _m(_fill(str(e.get("t", "")), ctx)) if not e.is_empty() else ""
 
 
 ## Le joueur l'a frappé : il s'en souvient longtemps (selon son caractère rancunier).
@@ -770,9 +827,9 @@ func _shop_choices(ctx: Dictionary) -> Array:
 	var list: Array = []
 	for id in shop.get("vend", {}):
 		var p: int = prix(str(id))
-		var label: String = "Acheter : %s — %d pièce%s" % [str(noms.get(id, id)), p, "s" if p > 1 else ""]
+		var label: String = _tf("Acheter : %s — %d pièces" if p > 1 else "Acheter : %s — %d pièce", [_t(str(noms.get(id, id))), p])
 		if int(place.get(id, 1)) <= 0 and int(objets.get(id, 0)) > 0:
-			label += " (déjà à toi)"
+			label += _t(" (déjà à toi)")
 		list.append({"id": "achat:" + str(id), "label": label})
 	# Ce qu'il rachète, du plus cher au moins cher (quatre lignes au plus).
 	var sells: Array = []
@@ -783,15 +840,15 @@ func _shop_choices(ctx: Dictionary) -> Array:
 	for i in range(mini(sells.size(), 4)):
 		var id2: String = sells[i]
 		var p2: int = prix_rachat(id2)
-		list.append({"id": "vente:" + id2, "label": "Vendre : %s ×%d — %d pièce%s l'unité" % [str(noms.get(id2, id2)), int(objets[id2]), p2, "s" if p2 > 1 else ""]})
+		list.append({"id": "vente:" + id2, "label": _tf("Vendre : %s ×%d — %d pièces l'unité" if p2 > 1 else "Vendre : %s ×%d — %d pièce l'unité", [_t(str(noms.get(id2, id2))), int(objets[id2]), p2])})
 	if sells.size() > 1:
 		var total: int = 0
 		for id3 in sells:
 			total += prix_rachat(id3) * int(objets[id3])
-		list.append({"id": "vendre_tout", "label": "Tout vendre — %d pièces" % total})
+		list.append({"id": "vendre_tout", "label": _tf("Tout vendre — %d pièces", total)})
 	if int(memoire.get("marchande", -1)) != int(memoire["visites"]):
-		list.append({"id": "marchander", "label": "Tu ne me ferais pas un prix ?"})
-	list.append({"id": "retour", "label": "Autre chose…"})
+		list.append({"id": "marchander", "label": _t("Tu ne me ferais pas un prix ?")})
+	list.append({"id": "retour", "label": _t("Autre chose…")})
 	return list
 
 
@@ -1137,6 +1194,9 @@ func _cap(s: String) -> String:
 
 ## « de Rose », « d'Odette ».
 static func _de(name: String) -> String:
+	# V107 : en anglais et en espagnol, le modèle porte lui-même « about » / « de »
+	if Langue.code != "fr":
+		return name
 	var c: String = name.substr(0, 1).to_lower()
 	return ("d'" if "aeiouyhéèêàâîïôû".contains(c) and c != "" else "de ") + name
 
@@ -1145,11 +1205,13 @@ static func _de(name: String) -> String:
 static func _liste(names: Array) -> String:
 	if names.size() <= 1:
 		return "" if names.is_empty() else str(names[0])
-	return ", ".join(names.slice(0, names.size() - 1)) + " et " + str(names[-1])
+	return ", ".join(names.slice(0, names.size() - 1)) + _et() + str(names[-1])
 
 
 ## Contractions et élisions après remplacement des noms (« à le » → « au », « de Odette » → « d'Odette »).
 static func _fr(t: String) -> String:
+	if Langue.code != "fr":
+		return t
 	for pair in [[" à le ", " au "], [" à les ", " aux "], [" de le ", " du "], [" de les ", " des "], ["À le ", "Au "]]:
 		t = t.replace(pair[0], pair[1])
 	var re := RegEx.new()
@@ -1164,18 +1226,31 @@ func _pick_line(list: Array) -> String:
 ## Remplit un modèle de phrase sur « qui » : {qn} (comment je le désigne), {nom}, {il}, {e}…
 func _v65_tpl(t: String, qui: String, ctx: Dictionary, extra: Dictionary = {}) -> String:
 	var me: String = _v65_id()
+	t = _t(t)
 	var qn: String = Societe.designe(me, qui)
 	var fem: bool = Societe.feminin(qui)
+	var moi_f: bool = str(v65.get("genre", "m")) == "f"
 	var vars := {"{Qn}": _cap(qn), "{qn}": qn, "{nom}": Societe.nom_pour(me, qui),
 		"{Il}": "Elle" if fem else "Il", "{il}": "elle" if fem else "il", "{e}": "e" if fem else "",
-		"{le}": "la" if fem else "le", "{lui}": "elle" if fem else "lui", "{me}": "e" if str(v65.get("genre", "m")) == "f" else ""}
+		"{le}": "la" if fem else "le", "{lui}": "elle" if fem else "lui", "{me}": "e" if moi_f else ""}
+	# V107 : les mêmes trous en anglais et en espagnol ({son} : his / her ; {o}, {mo} : -o / -a)
+	if Langue.code == "en":
+		vars = {"{Qn}": _cap(qn), "{qn}": qn, "{nom}": Societe.nom_pour(me, qui),
+			"{Il}": "She" if fem else "He", "{il}": "she" if fem else "he", "{e}": "", "{le}": "her" if fem else "him",
+			"{lui}": "her" if fem else "him", "{me}": "", "{Son}": "Her" if fem else "His", "{son}": "her" if fem else "his",
+			"{o}": "", "{mo}": ""}
+	elif Langue.code == "es":
+		vars = {"{Qn}": _cap(qn), "{qn}": qn, "{nom}": Societe.nom_pour(me, qui),
+			"{Il}": "Ella" if fem else "Él", "{il}": "ella" if fem else "él", "{e}": "", "{le}": "la" if fem else "lo",
+			"{lui}": "ella" if fem else "él", "{me}": "", "{Son}": "Su", "{son}": "su",
+			"{o}": "a" if fem else "o", "{mo}": "a" if moi_f else "o"}
 	if extra.has("objet"):
 		var o: String = _item_name(str(extra["objet"]), ctx)
 		vars["{Objet}"] = _cap(o)
 		vars["{objet}"] = o
 	for k in vars:
 		t = t.replace(k, str(vars[k]))
-	return _fr(_fill(t, ctx))
+	return _m(_fr(_fill(t, ctx, true)))
 
 
 ## Sujets V65 proposés au joueur.
@@ -1184,11 +1259,11 @@ func _v65_topics(_ctx: Dictionary) -> Array:
 	var hist: Array = v65.get("histoire", [])
 	var ch: int = int(memoire.get("chapitre", 0))
 	if not hist.is_empty() and ch < hist.size() and int(memoire.get("histoire_refus", -1)) != int(memoire["visites"]):
-		t.append({"id": "histoire", "label": "Raconte-moi ton histoire." if ch == 0 else "Et ensuite ? Raconte-moi la suite."})
+		t.append({"id": "histoire", "label": _t("Raconte-moi ton histoire.") if ch == 0 else _t("Et ensuite ? Raconte-moi la suite.")})
 	if not _v65_liens().is_empty():
-		t.append({"id": "gens", "label": "Parle-moi des gens que tu connais."})
+		t.append({"id": "gens", "label": _t("Parle-moi des gens que tu connais.")})
 	if ch >= 2 and not (v65.get("reve", []) as Array).is_empty() and not (memoire["faits"] as Dictionary).has("reve65"):
-		t.append({"id": "reve", "label": "Et toi, de quoi tu rêves ?"})
+		t.append({"id": "reve", "label": _t("Et toi, de quoi tu rêves ?")})
 	return t
 
 
@@ -1204,10 +1279,10 @@ func _v65_histoire(ctx: Dictionary) -> Dictionary:
 	var hist: Array = v65.get("histoire", [])
 	var ch: int = int(memoire.get("chapitre", 0))
 	if hist.is_empty():
-		return {"texte": "Mon histoire ? Il n'y a pas grand-chose à raconter.", "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _t("Mon histoire ? Il n'y a pas grand-chose à raconter."), "geste": "parle", "choix": topics(ctx)}
 	if ch >= hist.size():
 		var again: Dictionary = hist[rng.randi() % hist.size()]
-		return {"texte": _fill(_tv("Je t'ai déjà tout raconté, {surnom}. Mais bon, puisque tu insistes : ", "Je vous ai déjà tout raconté, {surnom}. Mais bon, puisque vous insistez : ") + str(again.get("t", "")), ctx), "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _m(_fill(_tv("Je t'ai déjà tout raconté, {surnom}. Mais bon, puisque tu insistes : ", "Je vous ai déjà tout raconté, {surnom}. Mais bon, puisque vous insistez : "), ctx) + _fill(str(again.get("t", "")), ctx)), "geste": "parle", "choix": topics(ctx)}
 	if affinite < _v65_gate(ch):
 		memoire["histoire_refus"] = int(memoire["visites"])
 		_remember("je ne lui ai pas encore tout raconté", now)
@@ -1227,7 +1302,7 @@ func _v65_histoire(ctx: Dictionary) -> Dictionary:
 	var c: Dictionary = hist[ch]
 	var text: String = _fill(str(c.get("t", "")), ctx)
 	if ch > 0 and ch < hist.size() - 1 and rng.randf() < 0.4:
-		text = _pick_line(["Où en étais-je ? Ah oui.", _tv("La suite ? Bon, écoute.", "La suite ? Bon, écoutez."), "Je reprends.", "Alors, la suite…"]) + " " + text
+		text = _m(_t(_pick_line(["Où en étais-je ? Ah oui.", _tv("La suite ? Bon, écoute.", "La suite ? Bon, écoutez."), "Je reprends.", "Alors, la suite…"])) + " " + text)
 	memoire["chapitre"] = ch + 1
 	memoire["dernier_sujet"] = "histoire:%d" % ch
 	var sujets: Dictionary = memoire["sujets"]
@@ -1256,12 +1331,12 @@ func _v65_gens_menu(ctx: Dictionary, lead: String) -> Dictionary:
 		var l: Dictionary = liens[id2]
 		var nm: String = str(l.get("nom", Societe.prenom(id2)))
 		var told: int = int((memoire["racontes"] as Dictionary).get(id2, 0))
-		list.append({"id": "gens:" + id2, "label": ("Parle-moi %s." if told == 0 else "Parle-moi encore %s.") % _de(nm)})
-	list.append({"id": "autre", "label": "Autre chose…"})
-	var text: String = lead if lead != "" else _pick_line(_tv(["Les gens d'ici ? J'en connais quelques-uns. Lequel t'intéresse ?",
+		list.append({"id": "gens:" + id2, "label": _tf("Parle-moi %s." if told == 0 else "Parle-moi encore %s.", _de(Societe.nom_t(nm)))})
+	list.append({"id": "autre", "label": _t("Autre chose…")})
+	var text: String = lead if lead != "" else _t(_pick_line(_tv(["Les gens d'ici ? J'en connais quelques-uns. Lequel t'intéresse ?",
 		"Tu veux que je te parle de qui ?", "Ah, les gens… Demande, je te dirai ce que je sais."],
 		["Les gens d'ici ? J'en connais quelques-uns. Lequel vous intéresse ?",
-		"Vous voulez que je vous parle de qui ?", "Ah, les gens… Demandez, je vous dirai ce que je sais."]))
+		"Vous voulez que je vous parle de qui ?", "Ah, les gens… Demandez, je vous dirai ce que je sais."])))
 	return {"texte": text, "geste": "parle", "choix": list}
 
 
@@ -1275,26 +1350,28 @@ func _v65_gens(id: String, ctx: Dictionary) -> Dictionary:
 	var n: int = int(rac.get(id, 0))
 	var anec: Array = l.get("anecdotes", [])
 	var nm: String = str(l.get("nom", Societe.prenom(id)))
+	var nm_t: String = Societe.nom_t(nm)
+	# V107 : chaque morceau est rempli (et traduit) à part, puis assemblé
 	var text: String
 	if n == 0:
-		text = str(l.get("avis", ""))
+		text = _fill(str(l.get("avis", "")), ctx)
 		if not anec.is_empty():
-			text += "\n\n" + str(anec[0])
+			text += "\n\n" + _fill(str(anec[0]), ctx)
 		_bond(0.8)
 		_remember("je lui ai parlé " + _de(nm), now)
 	elif n < anec.size():
-		text = str(anec[n])
+		text = _fill(str(anec[n]), ctx)
 		if rng.randf() < 0.4:
-			text = _pick_line([_tv("Une autre histoire sur %s ? Écoute ça.", "Une autre histoire sur %s ? Écoutez ça.") % nm, _tv("Ah, %s… Tiens, encore une :", "Ah, %s… Tenez, encore une :") % nm, "Encore %s ? D'accord." % nm]) + " " + text
+			text = _tf(_pick_line([_tv("Une autre histoire sur %s ? Écoute ça.", "Une autre histoire sur %s ? Écoutez ça."), _tv("Ah, %s… Tiens, encore une :", "Ah, %s… Tenez, encore une :"), "Encore %s ? D'accord."]), nm_t) + " " + text
 	else:
-		text = _tv("Je t'ai raconté tout ce que je sais sur %s. %s", "Je vous ai raconté tout ce que je sais sur %s. %s") % [nm, str(l.get("avis", ""))]
+		text = _tf(_tv("Je t'ai raconté tout ce que je sais sur %s.", "Je vous ai raconté tout ce que je sais sur %s."), nm_t) + " " + _fill(str(l.get("avis", "")), ctx)
 	rac[id] = n + 1
 	Societe.dire(_v65_id(), id)
 	memoire["dernier_sujet"] = "gens:" + id
 	var sujets: Dictionary = memoire["sujets"]
 	sujets["gens"] = int(sujets.get("gens", 0)) + 1
 	var out: Dictionary = _v65_gens_menu(ctx, "")
-	out["texte"] = _fill(text, ctx)
+	out["texte"] = _m(text)
 	out["geste"] = "rire" if float(l.get("sentiment", 0.0)) > 0.5 and rng.randf() < 0.25 else "parle"
 	return out
 
@@ -1303,7 +1380,7 @@ func _v65_reve(ctx: Dictionary) -> Dictionary:
 	var rv: Array = v65.get("reve", [])
 	var faits: Dictionary = memoire["faits"]
 	if rv.is_empty():
-		return {"texte": "Mon rêve ? Je n'y ai jamais vraiment pensé.", "geste": "parle", "choix": topics(ctx)}
+		return {"texte": _t("Mon rêve ? Je n'y ai jamais vraiment pensé."), "geste": "parle", "choix": topics(ctx)}
 	faits["reve65"] = true
 	memoire["dernier_sujet"] = "reve"
 	_bond(0.8)
@@ -1311,7 +1388,7 @@ func _v65_reve(ctx: Dictionary) -> Dictionary:
 	var parts: Array = []
 	for s in rv:
 		parts.append(_fill(str(s), ctx))
-	return {"texte": " ".join(parts), "geste": "parle", "choix": topics(ctx)}
+	return {"texte": _m(" ".join(parts)), "geste": "parle", "choix": topics(ctx)}
 
 
 ## La question de sa fiche (à partir de la deuxième visite, une seule fois).
@@ -1321,7 +1398,7 @@ func _v65_question(ctx: Dictionary) -> Dictionary:
 		return {}
 	var reps: Array = []
 	for r in q.get("reponses", []):
-		reps.append({"label": str(r.get("label", "")), "valeur": str(r.get("valeur", "")), "t": str(r.get("t", "")), "humeur": 0.04, "affinite": 1.5})
+		reps.append({"label": _t(str(r.get("label", ""))), "valeur": str(r.get("valeur", "")), "t": str(r.get("t", "")), "humeur": 0.04, "affinite": 1.5})
 	if reps.is_empty():
 		return {}
 	return {"id": "q65", "texte": _fill(str(q.get("texte", "")), ctx), "reponses": reps, "v65": "question"}
@@ -1345,11 +1422,11 @@ func _v65_question_avis(ctx: Dictionary) -> Dictionary:
 	var band: String = "pos" if s > 0.25 else ("neg" if s < -0.25 else "neu")
 	var R: Dictionary = _tv(R_AVIS65, R_AVIS65_V)
 	var reps: Array = [
-		{"label": "Très sympathique.", "valeur": "sympa", "t": _v65_tpl(_pick_line(R["sympa_" + band]), x, ctx),
+		{"label": _t("Très sympathique."), "valeur": "sympa", "t": _v65_tpl(_pick_line(R["sympa_" + band]), x, ctx),
 			"humeur": 0.08 if band == "pos" else 0.0, "affinite": 2.0 if band == "pos" else (-0.5 if band == "neg" else 0.5)},
-		{"label": "Un peu bizarre.", "valeur": "bizarre", "t": _v65_tpl(_pick_line(R["bizarre_" + band]), x, ctx),
+		{"label": _t("Un peu bizarre."), "valeur": "bizarre", "t": _v65_tpl(_pick_line(R["bizarre_" + band]), x, ctx),
 			"humeur": -0.06 if band == "pos" else 0.04, "affinite": -1.0 if band == "pos" else (2.0 if band == "neg" else 0.0)},
-		{"label": "Je ne sais pas encore.", "valeur": "nsp", "t": _v65_tpl(_pick_line(R["nsp"]), x, ctx), "humeur": 0.0, "affinite": 0.3},
+		{"label": _t("Je ne sais pas encore."), "valeur": "nsp", "t": _v65_tpl(_pick_line(R["nsp"]), x, ctx), "humeur": 0.0, "affinite": 0.3},
 	]
 	return {"id": "avis_" + x, "texte": _v65_tpl(_pick_line(_tv(Q_AVIS65, Q_AVIS65_V)), x, ctx), "reponses": reps, "v65": "avis", "sujet": x}
 
@@ -1415,7 +1492,7 @@ func _v65_peek() -> String:
 
 ## Retire « Fernand ? » au début d'un avis (quand on vient de nommer la personne).
 func _v65_avis_court(l: Dictionary) -> String:
-	var av: String = str(l.get("avis", ""))
+	var av: String = _t(str(l.get("avis", "")))
 	var words: PackedStringArray = str(l.get("nom", "")).split(" ", false)
 	var i: int = av.find("?")
 	if i > 0 and i < 45 and not words.is_empty() and av.substr(0, i).to_lower().contains(words[-1].to_lower()):
@@ -1431,7 +1508,7 @@ func _v65_echo(a: String, ctx: Dictionary) -> String:
 		return _v65_tpl(_pick_line(_tv(ECHOS65, ECHOS65_V)["inconnu"]), a, ctx)
 	var s: float = float(l.get("sentiment", 0.0))
 	var t: String = _v65_tpl(_pick_line(_tv(ECHOS65, ECHOS65_V)["neg" if s < -0.2 else "pos"]), a, ctx)
-	return t + " " + _fill(_v65_avis_court(l), ctx)
+	return _m(t + " " + _fill(_v65_avis_court(l), ctx, true))
 
 
 ## Une nouvelle qu'il n'a pas encore commentée : sur un proche (ou, rarement, sur quelqu'un du
@@ -1521,24 +1598,25 @@ func _v65_rappel(ctx: Dictionary) -> String:
 	if ds.begins_with("histoire:"):
 		var i: int = int(ds.substr(9))
 		if i < hist.size():
-			var t: String = _tv("La dernière fois, je t'ai raconté %s.", "La dernière fois, je vous ai raconté %s.") % str((hist[i] as Dictionary).get("titre", "un bout de ma vie"))
+			var t: String = _tf(_tv("La dernière fois, je t'ai raconté %s.", "La dernière fois, je vous ai raconté %s."), _t(str((hist[i] as Dictionary).get("titre", "un bout de ma vie"))))
 			var ch: int = int(memoire.get("chapitre", 0))
 			if ch < hist.size() and affinite >= _v65_gate(ch):
-				t += _tv(" Tu veux la suite ?", " Vous voulez la suite ?")
-			return _fill(t, ctx)
+				t += _t(_tv(" Tu veux la suite ?", " Vous voulez la suite ?"))
+			return _m(_fill(t, ctx, true))
 	elif ds.begins_with("gens:"):
 		var x: String = ds.substr(5)
-		var t2: String = _tv("La dernière fois, je t'ai parlé %s.", "La dernière fois, je vous ai parlé %s.") % _de(Societe.nom_pour(me, x))
+		var t2: String = _tf(_tv("La dernière fois, je t'ai parlé %s.", "La dernière fois, je vous ai parlé %s."), _de(Societe.nom_pour(me, x)))
+		var suite: String
 		if int((ctx.get("rencontres", {}) as Dictionary).get(x, 0)) > 0:
-			t2 += _tv(" Tu as eu l'occasion de lui parler, depuis ?", " Vous avez eu l'occasion de lui parler, depuis ?")
+			suite = _tv(" Tu as eu l'occasion de lui parler, depuis ?", " Vous avez eu l'occasion de lui parler, depuis ?")
 		else:
-			t2 += _tv(" Si tu {le} croises, dis-lui bonjour de ma part.", " Si vous {le} croisez, dites-lui bonjour de ma part.")
-		return _v65_tpl(t2, x, ctx)
+			suite = _tv(" Si tu {le} croises, dis-lui bonjour de ma part.", " Si vous {le} croisez, dites-lui bonjour de ma part.")
+		return _m(_fr(t2 + _v65_tpl(suite, x, ctx)))
 	elif ds == "reve":
-		return _tv("Je repense à ce que je t'ai confié l'autre jour, mon rêve… Tu n'en as parlé à personne, j'espère ?", "Je repense à ce que je vous ai confié l'autre jour, mon rêve… Vous n'en avez parlé à personne, j'espère ?")
+		return _t(_tv("Je repense à ce que je t'ai confié l'autre jour, mon rêve… Tu n'en as parlé à personne, j'espère ?", "Je repense à ce que je vous ai confié l'autre jour, mon rêve… Vous n'en avez parlé à personne, j'espère ?"))
 	var rp: String = _v65_rappel_question()
 	if rp != "" and rng.randf() < 0.6:
-		return _fill(rp, ctx)
+		return _m(_fill(rp, ctx))
 	return ""
 
 
@@ -1562,17 +1640,17 @@ func _v65_souvenirs(ctx: Dictionary) -> Array:
 	var ch: int = int(memoire.get("chapitre", 0))
 	if ch > 0:
 		if ch >= hist.size():
-			out.append(_tv("Je t'ai raconté toute ma vie. Ça, je ne l'oublie pas.", "Je vous ai raconté toute ma vie. Ça, je ne l'oublie pas."))
+			out.append(_t(_tv("Je t'ai raconté toute ma vie. Ça, je ne l'oublie pas.", "Je vous ai raconté toute ma vie. Ça, je ne l'oublie pas.")))
 		elif ch == 1:
-			out.append(_tv("Je t'ai raconté le début de mon histoire.", "Je vous ai raconté le début de mon histoire."))
+			out.append(_t(_tv("Je t'ai raconté le début de mon histoire.", "Je vous ai raconté le début de mon histoire.")))
 		else:
-			out.append(_tv("Je t'ai raconté %d chapitres de ma vie.", "Je vous ai raconté %d chapitres de ma vie.") % ch)
+			out.append(_tf(_tv("Je t'ai raconté %d chapitres de ma vie.", "Je vous ai raconté %d chapitres de ma vie."), ch))
 	var names: Array = []
 	for x in memoire.get("racontes", {}):
 		if names.size() < 4:
 			names.append(_de(Societe.nom_pour(me, str(x))))
 	if not names.is_empty():
-		out.append(_tv("Je t'ai parlé %s.", "Je vous ai parlé %s.") % _liste(names))
+		out.append(_tf(_tv("Je t'ai parlé %s.", "Je vous ai parlé %s."), _liste(names)))
 	var rp: String = _v65_rappel_question()
 	if rp != "":
 		out.append(_fill(rp, ctx))
@@ -1580,7 +1658,8 @@ func _v65_souvenirs(ctx: Dictionary) -> Array:
 	for k in faits:
 		if str(k).begins_with("avis_") and str(k) != "avis_moi" and str(faits[k]) != "nsp":
 			var x2: String = str(k).substr(5)
-			out.append(_tv("Tu m'as dit que tu trouvais %s %s.", "Vous m'avez dit que vous trouviez %s %s.") % [Societe.nom_pour(me, x2), "très sympathique" if str(faits[k]) == "sympa" else "un peu bizarre"])
+			var fs: String = _tv("Tu m'as dit que tu trouvais %s très sympathique.", "Vous m'avez dit que vous trouviez %s très sympathique.") if str(faits[k]) == "sympa" else _tv("Tu m'as dit que tu trouvais %s un peu bizarre.", "Vous m'avez dit que vous trouviez %s un peu bizarre.")
+			out.append(_tf(fs, Societe.nom_pour(me, x2)))
 			break
 	var deeds: Array = []
 	var whos: Array = []
@@ -1591,6 +1670,18 @@ func _v65_souvenirs(ctx: Dictionary) -> Array:
 			continue
 		whos.append(str(a[1]))
 		var who: String = Societe.designe(me, str(a[1]))
+		# V107 : hors du français, une phrase entière par nouvelle
+		if Langue.code != "fr":
+			match str(a[0]):
+				"quete":
+					deeds.append(_tf(_tv("Et je sais que tu as aidé %s.", "Et je sais que vous avez aidé %s."), who))
+				"frappe":
+					deeds.append(_tf(_tv("Et je sais que tu as frappé %s.", "Et je sais que vous avez frappé %s."), who))
+				"cadeau":
+					deeds.append(_tf(_tv("Et je sais que tu as fait un cadeau à %s.", "Et je sais que vous avez fait un cadeau à %s."), who))
+			if deeds.size() >= 2:
+				break
+			continue
 		match str(a[0]):
 			"quete":
 				deeds.append(_tv("que tu as aidé ", "que vous avez aidé ") + who)
@@ -1601,5 +1692,5 @@ func _v65_souvenirs(ctx: Dictionary) -> Array:
 		if deeds.size() >= 2:
 			break
 	if not deeds.is_empty():
-		out.append(_fr("Et je sais " + " et ".join(deeds) + "."))
+		out.append(_fr("Et je sais " + " et ".join(deeds) + ".") if Langue.code == "fr" else " ".join(deeds))
 	return out

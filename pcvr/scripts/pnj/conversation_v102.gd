@@ -21,6 +21,8 @@ const BAVARDAGE := ["humeur", "lui", "ile", "rumeur", "blague", "peche", "souven
 ## les sujets qui font avancer une relation (une histoire pas finie, un rêve pas encore confié)
 const PROGRES := ["histoire", "reve"]
 const MAX_BAVARDAGE := 4
+## V107 : les mots du joueur et les réponses, dans la langue choisie
+const Langue = preload("res://scripts/langue_v104.gd")
 
 var main: Node
 var rng := RandomNumberGenerator.new()
@@ -128,7 +130,17 @@ func _melanger(a: Array) -> void:
 
 
 func _un(list: Array) -> String:
-	return str(list[rng.randi() % list.size()])
+	return Langue.t(str(list[rng.randi() % list.size()]))
+
+
+## V107 : un modèle à trous traduit tel quel s'il est dans la table, sinon la phrase remplie.
+static func _tf(fmt: String, args: Variant) -> String:
+	if Langue.code == "fr":
+		return fmt % args
+	var tr: String = Langue.exact(fmt)
+	if tr != "" and tr.count("%") == fmt.count("%"):
+		return tr % args
+	return Langue.t(fmt % args)
 
 
 func _heure() -> float:
@@ -224,7 +236,7 @@ func repondre(npc: Node, id: String, ctx: Dictionary) -> Dictionary:
 			t = _conseil(brain)
 	if brain.has_method("_fr"):
 		t = brain._fr(t)
-	return {"texte": t, "geste": "parle", "choix": brain.topics(ctx)}
+	return {"texte": Langue.marque(t), "geste": "parle", "choix": brain.topics(ctx)}
 
 
 func _tv(brain, tu: String, vs: String) -> String:
@@ -311,12 +323,10 @@ func _gout(brain, ctx: Dictionary) -> String:
 	ok.sort_custom(func(a, b): return float(aime[a]) > float(aime[b]))
 	var pick: String = ok[0] if rng.randf() < 0.6 or ok.size() == 1 else ok[rng.randi_range(1, ok.size() - 1)]
 	var nom: String = brain._item_name(pick, ctx)
-	return _un([
-		"Ce qui me ferait plaisir ? %s. Je ne dis jamais non à ça." % (nom.substr(0, 1).to_upper() + nom.substr(1)),
-		"Si tu veux me faire plaisir, pense à %s. Mais je ne t'ai rien dit." % nom,
-		"Mon péché mignon ? %s. Rien qu'en y pensant, je souris." % (nom.substr(0, 1).to_upper() + nom.substr(1)),
-		"J'adore %s. Tout le monde le sait, ici." % nom,
-	])
+	var nom_maj: String = nom.substr(0, 1).to_upper() + nom.substr(1)
+	var i: int = rng.randi() % 4
+	return _tf(["Ce qui me ferait plaisir ? %s. Je ne dis jamais non à ça.", "Si tu veux me faire plaisir, pense à %s. Mais je ne t'ai rien dit.",
+		"Mon péché mignon ? %s. Rien qu'en y pensant, je souris.", "J'adore %s. Tout le monde le sait, ici."][i], nom_maj if i % 2 == 0 else nom)
 
 
 const CONSEILS := [
@@ -338,10 +348,13 @@ const CONSEILS := [
 
 
 func _conseil(brain) -> String:
-	var t: String = _un(CONSEILS)
+	var t: String = str(CONSEILS[rng.randi() % CONSEILS.size()])
+	var intro: String = str(["Un conseil ? ", "Écoute bien : ", "Hm. ", "", "Je vais te dire une chose : "][rng.randi() % 5])
+	# V107 : hors du français, le conseil et son introduction sont traduits tels quels
+	if Langue.code != "fr":
+		return Langue.marque(Langue.t(intro) + Langue.t(t))
 	if bool(brain.get("vous")):
 		t = _vous(t)
-	var intro: String = _un(["Un conseil ? ", "Écoute bien : ", "Hm. ", "", "Je vais te dire une chose : "])
 	if bool(brain.get("vous")):
 		intro = intro.replace("Écoute bien", "Écoutez bien").replace("te dire", "vous dire")
 	return intro + t
