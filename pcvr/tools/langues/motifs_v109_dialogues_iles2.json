@@ -1,0 +1,62 @@
+[
+[
+"(Tu voulais dire {}… mais le grog a parlé à ta place : {})",
+"(You meant to say {}… but the grog spoke for you: {})",
+"(Querías decir {}… pero el grog habló por ti: {})"
+],
+[
+"Tes dés : {}",
+"Your dice: {}",
+"Tus dados: {}"
+],
+[
+"Ceux de {} : {}",
+"{}'s: {}",
+"Los de {}: {}"
+],
+[
+"Tu gagnes {n} pièces !",
+"You win {n} coins!",
+"¡Ganas {n} monedas!"
+],
+[
+"Tu perds {n} pièces.",
+"You lose {n} coins.",
+"Pierdes {n} monedas."
+],
+[
+"(Tu voulais dire {}… mais le grog a parlé à ta place : {})",
+"(You meant to say {}… but the grog spoke for you: {})",
+"(Querías decir {}… pero el grog habló por ti: {})"
+],
+[
+"Miser {n} pièces",
+"Bet {n} coins",
+"Apostar {n} monedas"
+],
+[
+"Miser {n} pièces… avec tes dés pipés",
+"Bet {n} coins… with your loaded dice",
+"Apostar {n} monedas… con tus dados trucados"
+],
+[
+"(Les dés roulent sur la table…)\n\nTes dés : {}\nCeux de {} : {}",
+"(The dice roll across the table…)\n\nYour dice: {}\n{}'s dice: {}",
+"(Los dados ruedan por la mesa…)\n\nTus dados: {}\nLos de {}: {}"
+],
+[
+"Tu gagnes {n} pièces !",
+"You win {n} coins!",
+"¡Ganas {n} monedas!"
+],
+[
+"Tu perds {n} pièces.",
+"You lose {n} coins.",
+"Pierdes {n} monedas."
+],
+[
+"On remet ça ! ({n} pièces)",
+"Again! ({n} coins)",
+"¡Otra! ({n} monedas)"
+]
+]
