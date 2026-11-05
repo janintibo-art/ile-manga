@@ -534,8 +534,7 @@ static func passant(n: int) -> Dictionary:
 	var p: Array = PASSANTS[n % PASSANTS.size()]
 	var robe_cols := [[0.2, 0.45, 0.35], [0.3, 0.38, 0.6], [0.55, 0.25, 0.3], [0.88, 0.82, 0.62], [0.4, 0.32, 0.55]]
 	var lines: Dictionary = PASSANT_LINES.duplicate(true)
-	for e in lines["lui"]:
-		e["t"] = str(e["t"]).replace("{titre}", str(p[5]))
+	# V108 : {titre} est rempli par le cerveau (pnj_brain_v31._fill), traduit dans la langue du joueur
 	var d := {
 		"id": "elfe_%d" % n, "nom": str(p[0]), "titre": str(p[5]),
 		"elfe": {"texture": TEX + str(p[4]), "cheveux": p[3], "coiffure": str(p[2]), "silhouette": str(p[1]),

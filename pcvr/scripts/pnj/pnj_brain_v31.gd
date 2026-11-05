@@ -324,7 +324,7 @@ func _fill(text: String, ctx: Dictionary, deja: bool = false) -> String:
 		"{arme}": _item_name(str(ctx.get("arme", "")), ctx), "{objet_joueur}": some,
 		"{dernier_cadeau}": _item_name(str(memoire["dernier_cadeau"]), ctx), "{nb_cadeaux}": str(memoire["nb_cadeaux"]),
 		"{coquillages}": str(shells), "{manque}": str(int(q.get("nombre", 0))), "{humeur_mot}": _t(humeur_mot()), "{sujet_prefere}": fav,
-		"{manque_liste}": _missing_text(ctx),
+		"{manque_liste}": _missing_text(ctx), "{titre}": _t(str(data.get("titre", ""))),
 	}
 	for k in vars:
 		text = text.replace(k, str(vars[k]))
