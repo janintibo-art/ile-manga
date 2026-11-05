@@ -146,6 +146,8 @@ const BOIRE := {
 	"crayon": "jus_pomme",
 }
 
+const Public = preload("res://scripts/public_v111.gd")
+
 ## Ce qui se boit : [degré (+ ivre, - dégrise), effet particulier]
 const BOISSONS := {
 	"biere_naine": [0.35, ""], "cidre_carene": [0.25, ""], "rhum_murene": [0.5, ""], "grog_bordee": [0.4, ""],
@@ -1031,7 +1033,18 @@ func drink(id: String, at_counter: bool = false) -> void:
 	get_tree().create_timer(0.45).timeout.connect(func(): main.sfx("boire", me))
 	var was: float = ivresse
 	var msg: String = ("Tu bois %s au comptoir." % art) if at_counter else ("Tu bois %s." % art)
-	if deg > 0.0:
+	# V111 : Tout public, rien ne fait tourner la tête ; la boisson donne quand même du courage
+	if deg > 0.0 and Public.tout():
+		_force_t = FORCE_TEMPS
+		if hero != null and not _force_on:
+			hero.set("temp_force", int(hero.get("temp_force")) + 1)
+			_force_on = true
+		# (deux espaces : la phrase est traduite à part, et le nom de la boisson aussi)
+		msg += "  Ça redonne du courage ! +1 de force pendant deux minutes."
+		if id in ["biere_naine", "cidre_carene"] and _rng.randf() < 0.45:
+			get_tree().create_timer(2.1).timeout.connect(func(): main.sfx("rot", main._player_pos_v27() + Vector3.UP * 1.5))
+		deg = 0.0
+	elif deg > 0.0:
 		ivresse = minf(ivresse + deg, 2.2)
 		_force_t = FORCE_TEMPS
 		if hero != null and not _force_on:

@@ -102,6 +102,11 @@ static func _en_fr() -> bool:
 ## Un modèle à trous %s / %d : traduit tel quel s'il est dans la table, sinon la phrase remplie.
 static func _tf(fmt: String, args: Variant) -> String:
 	if Langue.code == "fr":
+		# V111 : en Tout public, le modèle peut avoir sa version familiale
+		if Langue.fr_actif():
+			var f2: String = Langue.exact(fmt)
+			if f2 != fmt and f2.count("%") == fmt.count("%"):
+				return f2 % args
 		return fmt % args
 	var tr: String = Langue.exact(fmt)
 	if tr != "" and tr.count("%") == fmt.count("%"):

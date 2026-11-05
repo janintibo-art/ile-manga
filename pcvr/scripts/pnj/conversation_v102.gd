@@ -136,6 +136,11 @@ func _un(list: Array) -> String:
 ## V107 : un modèle à trous traduit tel quel s'il est dans la table, sinon la phrase remplie.
 static func _tf(fmt: String, args: Variant) -> String:
 	if Langue.code == "fr":
+		# V111 : en Tout public, le modèle peut avoir sa version familiale
+		if Langue.fr_actif():
+			var f2: String = Langue.exact(fmt)
+			if f2 != fmt and f2.count("%") == fmt.count("%"):
+				return f2 % args
 		return fmt % args
 	var tr: String = Langue.exact(fmt)
 	if tr != "" and tr.count("%") == fmt.count("%"):
@@ -353,6 +358,7 @@ func _conseil(brain) -> String:
 	# V107 : hors du français, le conseil et son introduction sont traduits tels quels
 	if Langue.code != "fr":
 		return Langue.marque(Langue.t(intro) + Langue.t(t))
+	t = Langue.t(t)   # V111 : sa version Tout public, s'il y en a une
 	if bool(brain.get("vous")):
 		t = _vous(t)
 	if bool(brain.get("vous")):

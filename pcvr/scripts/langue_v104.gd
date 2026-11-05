@@ -16,12 +16,20 @@ extends Translation
 ## API (statique) : Langue.charger() au démarrage ; Langue.choisir("en") ; Langue.code ;
 ##   Langue.t("texte") pour traduire à la main (texte composé dans le code, panneau VR) ;
 ##   Langue.nom("es") -> "Español" ; Langue.suivante() -> le code suivant (fr -> en -> es -> fr).
+## V111 : la version choisie (public_v111.gd) s'ajoute par-dessus la table de la langue :
+##  - « Tout public » : les textes qui parlent d'alcool sont remplacés par leur version familiale
+##    (data/langues/public.json, « tout » : fr, en, es) — en français aussi : la « traduction »
+##    est alors branchée même en français, avec seulement ces textes-là, et les motifs à trous
+##    recopiés tels quels (pour que le nom d'une boisson dans « Tu bois {}. » soit remplacé) ;
+##  - « Public averti » : en anglais et en espagnol, la vraie boisson (« averti » : en, es).
 
 const CODES := ["fr", "en", "es"]
 const NOMS := {"fr": "Français", "en": "English", "es": "Español"}
 const FICHIER := "user://langue_v104.cfg"
 const DECOR_DEBUT := " \u00a0\u202f\t([«\"'✦✧▸➤◉★●⚔•✓▶○◆◇✹⚑☀☠⌖🎒📜🗺👥⭐♥♡▲⚓➶◔-–:"
 const DECOR_FIN := " \u00a0\u202f\t)]»\"'.!?…✦✧◆:,;"
+const Public = preload("res://scripts/public_v111.gd")
+const FICHIER_PUBLIC := "res://data/langues/public.json"
 
 static var code: String = "fr"
 static var _textes: Dictionary = {}
@@ -35,6 +43,9 @@ static var _sep: RegEx = null
 ## V107 : les textes déjà traduits (sorties du traducteur, répliques composées par les habitants) :
 ## on ne les retraduit pas quand une étiquette les affiche.
 static var _sorties: Dictionary = {}
+## V111 : la table des deux versions (lue une fois), et « le français passe par la table » (Tout public)
+static var _public: Dictionary = {}
+static var _fr_actif: bool = false
 
 
 static func nom(c: String) -> String:
@@ -48,6 +59,7 @@ static func suivante() -> String:
 
 ## Au démarrage : la langue choisie la dernière fois.
 static func charger() -> void:
+	Public.charger()   # V111 : Tout public / Public averti
 	var cf := ConfigFile.new()
 	var c: String = "fr"
 	if cf.load(FICHIER) == OK:
@@ -68,8 +80,13 @@ static func choisir(c: String, garder: bool = true) -> void:
 	_sorties.clear()
 	if _inst != null:
 		TranslationServer.remove_translation(_inst)
+	_fr_actif = c == "fr" and Public.tout()
 	if c != "fr":
 		_lire_table(c)
+	elif _fr_actif:
+		_ajoute_motifs(_table_public().get("motifs_fr", {}))
+	_par_dessus(c)
+	if c != "fr" or _fr_actif:
 		if _inst == null:
 			_inst = (load("res://scripts/langue_v104.gd") as GDScript).new()
 		_inst.locale = c
@@ -96,7 +113,37 @@ static func _lire_table(c: String) -> void:
 		# V107 : les minuscules ne servent qu'aux noms et aux courtes étiquettes (pas aux dialogues)
 		if str(k).length() <= 80:
 			_bas[str(k).to_lower()] = str(tx[k])
-	var mo: Dictionary = data.get("motifs", {})
+	_ajoute_motifs(data.get("motifs", {}))
+
+
+## V111 : la version choisie, par-dessus la table de la langue.
+static func _par_dessus(c: String) -> void:
+	if Public.mode == "":
+		return
+	var tb: Dictionary = (_table_public().get(Public.mode, {}) as Dictionary).get(c, {})
+	for k in tb:
+		_textes[str(k)] = str(tb[k])
+		if str(k).length() <= 80:
+			_bas[str(k).to_lower()] = str(tb[k])
+
+
+static func _table_public() -> Dictionary:
+	if _public.is_empty():
+		if FileAccess.file_exists(FICHIER_PUBLIC):
+			var d = JSON.parse_string(FileAccess.get_file_as_string(FICHIER_PUBLIC))
+			if typeof(d) == TYPE_DICTIONARY:
+				_public = d
+		if _public.is_empty():
+			_public = {"vide": true}
+	return _public
+
+
+## V111 : vrai si le français passe par la table (Tout public).
+static func fr_actif() -> bool:
+	return _fr_actif
+
+
+static func _ajoute_motifs(mo: Dictionary) -> void:
 	var keys: Array = mo.keys()
 	# les motifs les plus longs d'abord (les plus précis)
 	keys.sort_custom(func(a, b): return str(a).length() > str(b).length())
@@ -137,7 +184,7 @@ static func _lire_table(c: String) -> void:
 
 ## La traduction d'un texte (dans la langue choisie).
 static func t(s: String) -> String:
-	if code == "fr" or s == "":
+	if s == "" or (code == "fr" and not _fr_actif):
 		return s
 	if _cache.has(s):
 		return _cache[s]
@@ -154,13 +201,13 @@ static func t(s: String) -> String:
 ## V107 : la traduction exacte d'un texte de la table (sans motif), "" s'il n'y en a pas.
 static func exact(s: String) -> String:
 	if code == "fr":
-		return s
+		return str(_textes.get(s, s)) if _fr_actif else s
 	return str(_textes.get(s, ""))
 
 
 ## V107 : ce texte est déjà dans la langue du joueur (une réplique composée morceau par morceau).
 static func marque(s: String) -> String:
-	if code != "fr" and s != "":
+	if (code != "fr" or _fr_actif) and s != "":
 		if _sorties.size() > 6000:
 			_sorties.clear()
 		_sorties[s] = true
@@ -268,6 +315,8 @@ static func _coeur(s: String, depth: int) -> String:
 
 ## La ponctuation : « mot : » en français, « word: » en anglais et en espagnol.
 static func _fin(suf: String) -> String:
+	if code == "fr":
+		return suf
 	var st: String = suf.strip_edges()
 	if st != "" and st in [":", "!", "?", ";", " :", "…"] or (st.length() <= 3 and st.begins_with(":")):
 		return suf.lstrip(" \u00a0\u202f")

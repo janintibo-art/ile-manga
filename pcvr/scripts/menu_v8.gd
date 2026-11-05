@@ -7,6 +7,11 @@ signal resume_requested
 
 const Saves = preload("res://scripts/save_manager.gd")
 const Langue = preload("res://scripts/langue_v104.gd")
+const Public = preload("res://scripts/public_v111.gd")
+## V111 : au début d'une nouvelle partie (ou en reprenant une partie si rien n'a encore été choisi),
+## le menu demande la version : Tout public ou Public averti. [action, emplacement] en attente.
+const PUBLIC_CHOIX := ["Tout public  —  sans alcool, pour toute la famille", "Public averti  —  rhum, grog, insultes salées, bagarres plus rudes"]
+var _apres_public: Array = []
 var opened: bool = true
 var playing: bool = false
 var pc_layer: CanvasLayer
@@ -146,6 +151,10 @@ func _show_view(which: String) -> void:
 				info = "%s  •  %s  •  %d min" % [str(data.get("zone", "Les Mondes de Travers")), str(data.get("saved_at", "date inconnue")), int(float(data.get("play_seconds", 0.0)) / 60.0)]
 			options.append("Partie %d : %s" % [i, info])
 		options.append("Retour")
+	elif view == "public":
+		options.append_array(PUBLIC_CHOIX)
+		options.append("Retour")
+		selection = 1 if Public.averti() else 0
 	elif view == "settings":
 		# V51 : volumes de la musique, des bruitages et des ambiances
 		var mu: Node = _music()
@@ -153,6 +162,8 @@ func _show_view(which: String) -> void:
 			options = [mu.volume_label("musique"), mu.volume_label("bruitages"), mu.volume_label("ambiances")]
 		# V104 : la langue du jeu
 		options.append("Langue : " + Langue.nom(Langue.code))
+		# V111 : Tout public / Public averti
+		options.append(_version_option())
 		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
@@ -161,6 +172,8 @@ func _redraw() -> void:
 		return
 	if xr_mode:
 		var lines: PackedStringArray = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", Langue.t("6 emplacements de sauvegarde"), ""])
+		if view == "public":
+			lines = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", Langue.t("Quelle version du jeu ?"), ""])
 		for i in range(options.size()):
 			lines.append(("➤ " if i == selection else "   ") + Langue.t(options[i]))
 		vr_text.text = "\n".join(lines)
@@ -168,7 +181,8 @@ func _redraw() -> void:
 		for n in list_box.get_children():
 			n.queue_free()
 		heading.text = {"home": "✦  LES MONDES DE TRAVERS  ✦", "new": "✦  NOUVELLE PARTIE  ✦", "load": "✦  CHARGER UNE PARTIE  ✦",
-			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦", "confirm": "✦  ÊTES-VOUS SÛR ?  ✦"}.get(view, "✦  LES MONDES DE TRAVERS  ✦")
+			"save": "✦  SAUVEGARDER  ✦", "delete": "✦  EFFACER UNE SAUVEGARDE  ✦", "settings": "✦  PARAMÈTRES  ✦", "confirm": "✦  ÊTES-VOUS SÛR ?  ✦",
+			"public": "✦  QUELLE VERSION ?  ✦"}.get(view, "✦  LES MONDES DE TRAVERS  ✦")
 		frame.modulate.a = 0.84
 		for i in range(options.size()):
 			var choice: String = options[i]
@@ -195,6 +209,12 @@ func _redraw() -> void:
 			footer.text = "6 emplacements  •  F5 : sauvegarde rapide"
 			footer.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
 			list_box.add_child(footer)
+		if view == "public":
+			var note_p := Label.new()
+			note_p.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			note_p.text = "Tu pourras changer d'avis dans les Paramètres."
+			note_p.add_theme_color_override("font_color", Color(0.82, 0.79, 0.64))
+			list_box.add_child(note_p)
 		if view == "load" and playing:
 			var warn := Label.new()
 			warn.text = "Charger remplace la partie en cours : pense à sauvegarder avant."
@@ -219,7 +239,7 @@ func _activate(index: int) -> void:
 			"Continuer":
 				var recent: int = Saves.latest_slot()
 				if recent >= 0:
-					_load_or_create(recent, false)
+					_start_or_ask(recent, false)
 			"Nouvelle partie":
 				_show_view("new")
 			"Sauvegarder":
@@ -246,7 +266,28 @@ func _activate(index: int) -> void:
 			_show_view("settings")
 			selection = keep
 			_redraw()
+		elif action.begins_with("Version : "):
+			# V111 : Tout public <-> Public averti (les textes changent tout de suite)
+			Public.choisir(Public.suivant())
+			Langue.choisir(Langue.code, false)
+			var keep2: int = index
+			_show_view("settings")
+			selection = keep2
+			_redraw()
 		elif action == "Retour":
+			_show_view("home")
+	elif view == "public":
+		if index >= PUBLIC_CHOIX.size():
+			_apres_public = []
+			_show_view("home")
+			return
+		Public.choisir("averti" if index == 1 else "tout")
+		Langue.choisir(Langue.code, false)
+		var todo: Array = _apres_public
+		_apres_public = []
+		if todo.size() == 2:
+			_load_or_create(int(todo[0]), bool(todo[1]))
+		else:
 			_show_view("home")
 	elif view == "confirm":
 		var what: String = str(_confirm[0]) if not _confirm.is_empty() else ""
@@ -257,7 +298,7 @@ func _activate(index: int) -> void:
 			return
 		match what:
 			"new":
-				_load_or_create(slot, true)
+				_start_or_ask(slot, true)
 			"delete":
 				delete_requested.emit(slot)
 				_show_view("delete")
@@ -273,10 +314,10 @@ func _activate(index: int) -> void:
 		if not Saves.read_slot(index + 1).is_empty():
 			_ask_confirm("new", index + 1)
 		else:
-			_load_or_create(index + 1, true)
+			_start_or_ask(index + 1, true)
 	elif view == "load":
 		if not Saves.read_slot(index + 1).is_empty():
-			_load_or_create(index + 1, false)
+			_start_or_ask(index + 1, false)
 	elif view == "delete":
 		if not Saves.read_slot(index + 1).is_empty():
 			_ask_confirm("delete", index + 1)
@@ -327,6 +368,22 @@ func _ask_confirm(what: String, slot: int) -> void:
 			options.append("Oui, quitter le jeu")
 	options.append("Non, revenir")
 	_redraw()
+
+## V111 : une nouvelle partie commence toujours par le choix de la version ; une partie
+## sauvegardée aussi, tant que le joueur n'a jamais choisi.
+func _start_or_ask(slot: int, new_game: bool) -> void:
+	if new_game or not Public.choisi:
+		_apres_public = [slot, new_game]
+		_show_view("public")
+		return
+	_load_or_create(slot, new_game)
+
+
+func _version_option() -> String:
+	if not Public.choisi:
+		return "Version : pas encore choisie"
+	return "Version : " + Public.nom(Public.mode)
+
 
 func _music() -> Node:
 	var p: Node = get_parent()

@@ -20,6 +20,12 @@ const FLEE_TIME: float = 2.5
 const JOIN_DIST: float = 16.0
 const WATCH_DIST: float = 22.0
 const MAX_ATTACK: int = 2
+const Public = preload("res://scripts/public_v111.gd")
+## V111 : en Public averti, les bagarres sont plus rudes : trois cognent en même temps, quatre
+## s'en mêlent, la mêlée de la taverne s'étend, et la foule crie des choses moins polies.
+const SHOUTS_AVERTI := ["Arrache-lui les moustaches !", "Fais-lui bouffer le plancher !", "Écrase-le comme un cafard de cale !",
+	"Une chaise ! Pas la mienne !", "Mords-le ! Mords-le !", "Il cogne comme une sardine morte !", "Dans le bide !", "Allez, sac à rhum, relève-toi !"]
+const KO_AVERTI := ["Il a les dents dans le plancher !", "Rincé ! Au suivant !", "Bonne nuit, la crevette !", "Ramassez-le à la petite cuillère !"]
 
 var mgr: Node                      # pirates_v68.gd
 var main: Node
@@ -114,7 +120,7 @@ func start(npc: Node3D, why: String, fair: bool) -> void:
 	var crew: String = _crew(npc)
 	if not loyal:
 		for n2 in near:
-			if attackers.size() >= 3:
+			if attackers.size() >= (4 if Public.averti() else 3):
 				break
 			if not n2.brain.can_fight() or n2.global_position.distance_to(center) > JOIN_DIST:
 				continue
@@ -134,11 +140,11 @@ func start(npc: Node3D, why: String, fair: bool) -> void:
 				n3.say_bubble("Tiens bon, %s, j'arrive !" % str(n3.brain.surnom()), 2.5)
 		# dans une taverne (ou s'il y a du monde), ça dégénère : deux équipages règlent leurs comptes
 		var crowded: bool = mgr.inside_tavern(center) or near.size() >= 6
-		if crowded and _rng.randf() < 0.75:
+		if crowded and _rng.randf() < (0.9 if Public.averti() else 0.75):
 			var pool: Array = near.filter(func(n4): return not attackers.has(n4) and not allies.has(n4) and n4.brain.can_fight() and _crew(n4) != "port")
 			var pairs: int = 0
 			for a in pool:
-				if pairs >= 2 or brawlers.has(a):
+				if pairs >= (3 if Public.averti() else 2) or brawlers.has(a):
 					continue
 				for b in pool:
 					if b == a or brawlers.has(b) or _crew(b) == _crew(a):
@@ -201,7 +207,7 @@ func can_attack(npc: Node) -> bool:
 	var order: Array = attackers.filter(func(a): return is_instance_valid(a) and not (a.fight as Dictionary).is_empty())
 	order.sort_custom(func(a, b): return a.global_position.distance_to(p) < b.global_position.distance_to(p))
 	var i: int = order.find(npc)
-	return i >= 0 and i < MAX_ATTACK
+	return i >= 0 and i < (MAX_ATTACK + 1 if Public.averti() else MAX_ATTACK)
 
 
 ## Sa cible est tombée : une autre, ou il s'arrête (et regarde la suite).
@@ -272,7 +278,10 @@ func on_ko(npc: Node, by_player: bool) -> void:
 	var sp: Array = spectators.filter(func(s): return is_instance_valid(s))
 	if not sp.is_empty():
 		var who: Node = sp[_rng.randi() % sp.size()]
-		who.say_bubble(["OUAIIIS !", "Au tapis !", "Ha ! Il a son compte !", "Quelqu'un appelle le Doc !", "Il ne s'est pas vu tomber !"][_rng.randi() % 5], 2.2)
+		var ko: Array = ["OUAIIIS !", "Au tapis !", "Ha ! Il a son compte !", "Quelqu'un appelle le Doc !", "Il ne s'est pas vu tomber !"]
+		if Public.averti():
+			ko.append_array(KO_AVERTI)
+		who.say_bubble(ko[_rng.randi() % ko.size()], 2.2)
 
 
 func _process(delta: float) -> void:
@@ -309,7 +318,7 @@ func _process(delta: float) -> void:
 		var sp: Array = spectators.filter(func(s): return is_instance_valid(s) and s.global_position.distance_to(p) < 30.0)
 		if not sp.is_empty():
 			var who: Node = sp[_rng.randi() % sp.size()]
-			var pool: Array = SHOUTS + (SHOUTS_PORT if _crew(who) == "port" else [])
+			var pool: Array = SHOUTS + (SHOUTS_PORT if _crew(who) == "port" else []) + (SHOUTS_AVERTI if Public.averti() else [])
 			var line: String = str(pool[_rng.randi() % pool.size()])
 			if _rng.randf() < 0.3 and not attackers.is_empty():
 				line = "Allez, %s !" % str(attackers[0].display_name).split(" ")[0]

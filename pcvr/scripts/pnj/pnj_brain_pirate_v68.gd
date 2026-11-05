@@ -13,6 +13,10 @@ extends "res://scripts/pnj/pnj_brain_v31.gd"
 ##  - les costauds acceptent un duel à la loyale ; après une bagarre, il s'en souvient.
 ## V109 : tout ce que le pirate dit (et les choix proposés) est traduit dans la langue du joueur
 ## (_t / _tf / _m du cerveau commun).
+## V111 : en Public averti, le ton est plus cru : des provocations plus salées, des mots de
+## travers plus vexants, et une fois sur deux, des menaces et des cris de bagarre bien sentis.
+
+const Public = preload("res://scripts/public_v111.gd")
 
 static var mgr: Node                     # pirates_v68.gd (l'ivresse du joueur, les quêtes, les sons)
 
@@ -37,6 +41,37 @@ const SLIPS := {
 	"blague": ["« Raconte-moi une blague. »", "« La meilleure blague, c'est ta tête. »"],
 	"reve": ["« Tu rêves de quoi ? »", "« Tu rêves de prendre un bain, j'espère ? »"],
 }
+## V111 : Public averti seulement
+const PROVOCS_AVERTI := {
+	"bulot": "T'as une cervelle de bulot. Et encore, le bulot se vexerait.",
+	"rat": "Retourne dans ta cale, rat mouillé. Ça sent le fromage moisi, par ici.",
+	"rhum": "T'as pas les épaules pour un rhum de la Balafre, gamin. Bois ton lait.",
+	"ancre": "Ta grand-mère nageait mieux que toi. Avec une ancre au pied.",
+	"gelee": "Tu trembles comme une gelée de méduse, moussaillon.",
+}
+const SLIPS_AVERTI := {
+	"humeur": "« Ça va, vieux sac à rhum mal rincé ? »",
+	"lui": "« T'es qui, toi, tête de bulot pas frais ? »",
+	"ile": "« Elle pue la vase, ton île. Et toi aussi. »",
+	"rumeur": "« Paraît que ton équipage t'a vendu pour trois sardines. »",
+	"histoire": "« Ta vie, c'est une épave. Ça se voit d'ici. »",
+	"gens": "« T'as des amis, toi, avec une tronche pareille ? »",
+	"blague": "« Une blague ? T'en es une, de blague, espèce de moule. »",
+	"reve": "« Tu rêves d'un bain ? Parce que tu sens la cale à plein nez. »",
+}
+const MENACES_AVERTI := [
+	"Répète ça, et je te fais manger ta casquette, sac à puces !",
+	"Encore un mot, tête de thon, et tu rentres chez toi à la nage.",
+	"Tu cherches les ennuis, crevette ? T'es au bon comptoir.",
+	"Je vais te ranger dans un tonneau de harengs, et m'asseoir sur le couvercle.",
+	"Approche encore, et je te repeins le nez en violet.",
+]
+const BAGARRE_AVERTI := [
+	"Viens là, que je t'arrange le portrait, face de mérou !",
+	"Ça va cogner ! Prévenez le Doc, il va avoir du boulot !",
+	"Je vais te démonter comme une vieille barque pourrie !",
+	"À la baille, le terrien ! Mais d'abord, une beigne !",
+]
 const SEUIL_MENACE: float = 0.5
 const BAGARRE: float = 1.0
 
@@ -111,7 +146,9 @@ func _susceptible() -> float:
 # =================================================================== conversation
 
 func start(ctx: Dictionary) -> Dictionary:
-	var pool: Array = pir().get("provocs", ["odeur", "vue", "nage"])
+	var pool: Array = (pir().get("provocs", ["odeur", "vue", "nage"]) as Array).duplicate()
+	if Public.averti():
+		pool.append_array(PROVOCS_AVERTI.keys())
 	_provoc_du_jour = str(pool[rng.randi() % pool.size()]) if not pool.is_empty() else ""
 	var r: Dictionary = super.start(ctx)
 	# encore fâché : il le fait savoir tout de suite
@@ -136,7 +173,9 @@ func topics(ctx: Dictionary) -> Array:
 		extra.append(sp)
 	if bool(p.get("costaud", false)) and can_fight():
 		extra.append({"id": "duel", "label": _t("⚔ Je te défie, à la loyale !")})
-	if _provoc_du_jour != "" and PROVOCS.has(_provoc_du_jour):
+	if _provoc_du_jour != "" and PROVOCS_AVERTI.has(_provoc_du_jour) and Public.averti():
+		extra.append({"id": "pv:" + _provoc_du_jour, "label": _t(str(PROVOCS_AVERTI[_provoc_du_jour]))})
+	elif _provoc_du_jour != "" and PROVOCS.has(_provoc_du_jour):
 		var label: String = _t(str(PROVOCS[_provoc_du_jour]))
 		if _provoc_du_jour == "capitaine" and str(p.get("role", "")) == "capitaine":
 			label = _t("Paraît que tu as peur de l'eau, capitaine.")
@@ -219,7 +258,9 @@ func choose(choice: String, ctx: Dictionary) -> Dictionary:
 		var iv: float = _ivresse()
 		var chance: float = clampf((iv - 0.6) * 0.75, 0.0, 0.6)
 		if iv >= 0.75 and rng.randf() < chance:
-			var s: Array = SLIPS[choice]
+			var s: Array = (SLIPS[choice] as Array).duplicate()
+			if Public.averti() and SLIPS_AVERTI.has(choice) and rng.randf() < 0.5:
+				s[1] = SLIPS_AVERTI[choice]
 			var add: float = 0.42 * (0.6 + _susceptible()) * _respect()
 			set_tension(tension() + add)
 			_mood(-0.15)
@@ -280,6 +321,8 @@ func _stage_reply(head: String, ctx: Dictionary, motif: String) -> Dictionary:
 	var r: Dictionary = say(intent, ctx, false)
 	if str(r["texte"]) == "…":
 		r["texte"] = _t("Répète un peu, pour voir ?") if intent == "menace" else _t("Hé. Fais attention à ce que tu dis.")
+	if intent == "menace" and Public.averti() and rng.randf() < 0.5:
+		r["texte"] = _t(str(MENACES_AVERTI[rng.randi() % MENACES_AVERTI.size()]))
 	r["texte"] = _m(head + str(r["texte"]))
 	r["geste"] = "colere"
 	r["choix"] = topics(ctx)
@@ -290,6 +333,8 @@ func _fight_reply(intent: String, ctx: Dictionary, loyal: bool, motif: String) -
 	var r: Dictionary = say(intent, ctx, false)
 	if str(r["texte"]) == "…":
 		r["texte"] = _t("Ça, tu vas le regretter !")
+	if intent == "bagarre" and Public.averti() and rng.randf() < 0.5:
+		r["texte"] = _t(str(BAGARRE_AVERTI[rng.randi() % BAGARRE_AVERTI.size()]))
 	return _with_fight(r, loyal, motif)
 
 
