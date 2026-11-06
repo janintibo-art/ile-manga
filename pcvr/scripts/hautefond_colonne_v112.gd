@@ -7,7 +7,9 @@ extends Node3D
 ##    on tire le levier (E / gâchette), les portes se ferment, ça monte ! Le joueur est porté par la
 ##    cabine (sa hauteur suit celle du plancher, au PC comme en VR) ;
 ##  - les trois cages extérieures : leurs cabines dorées montent et descendent sans fin (les lignes
-##    des Nuées et des Strates, encore « en révision » : des panneaux le disent) ;
+##    des Nuées et des Strates) ;
+##  - V113 : au bord du Belvédère, la balustrade s'ouvre sur le quai de la Ligne des Nuées
+##    (nuees_ligne_v113 : la capsule qui monte à la Cité des Nuées) ;
 ##  - au-dessus du Belvédère, la tour continue jusqu'à sa couronne de verre (une lanterne qui luit la
 ##    nuit) et sa flèche.
 ## Les points de la Colonne (repère monde) : foot (le centre au sol), top (le plancher du Belvédère).
@@ -20,6 +22,8 @@ const H_BELV: float = 70.0               # le plancher du Belvédère, au-dessus
 const R_BELV: float = 18.0
 const DUREE: float = 16.0                # la montée (s)
 const H_CAB: float = 3.0
+## V113 : l'angle (repère monde, atan2(z, x)) du quai de la Ligne des Nuées, au bord du Belvédère.
+const NUEES_A: float = -PI * 0.75
 
 var main: Node
 var kit
@@ -236,10 +240,12 @@ func _belvedere() -> void:
 		var a: float = TAU * k / 16.0
 		var d := Vector3(cos(a), 0, sin(a))
 		kit.beam(c + d * 9.0 + Vector3.DOWN * 6.0, c + d * (R_BELV - 0.6) + Vector3.DOWN * 0.9, 0.5, "pierre112_clair")
-	# la balustrade
+	# la balustrade (V113 : elle s'ouvre vers le quai de la Ligne des Nuées)
 	for k2 in range(40):
 		var a0: float = TAU * k2 / 40.0
 		var a1: float = TAU * (k2 + 1) / 40.0
+		if absf(wrapf((a0 + a1) * 0.5 - NUEES_A, -PI, PI)) < 0.1:
+			continue
 		var p0: Vector3 = c + Vector3(cos(a0), 0, sin(a0)) * (R_BELV - 0.3)
 		var p1: Vector3 = c + Vector3(cos(a1), 0, sin(a1)) * (R_BELV - 0.3)
 		kit.railing70(p0, p1, 1.15)
@@ -260,6 +266,8 @@ func _belvedere() -> void:
 	# deux bancs, une longue-vue, des lampes
 	for k4 in range(4):
 		var a4: float = TAU * k4 / 4.0 + PI * 0.25
+		if absf(wrapf(a4 - NUEES_A, -PI, PI)) < 0.3:
+			a4 += 0.55
 		var d4 := Vector3(cos(a4), 0, sin(a4))
 		kit.bench112(Transform3D(Basis.looking_at(-d4, Vector3.UP), c + d4 * 13.6))
 		belv_spots.append([c + d4 * 14.8 + Vector3.UP * 0.05, d4])

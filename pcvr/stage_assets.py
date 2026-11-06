@@ -435,6 +435,25 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n112 += 1
     print(f"Hautefond V112: {n112} fichiers")
+    # V113 : la Cité des Nuées (dalles claires, béton blanc, bois blond, façades vitrées, panneaux
+    # solaires, nuages, enseignes) : les dalles du sol sans perte, comme les sols du Boucan.
+    n113 = 0
+    tex113 = source / "textures" / "nuees"
+    sols113 = {"dalle_claire"}
+    if tex113.is_dir():
+        for f in sorted(tex113.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if f.stem.removesuffix("_n") in sols113:
+                if "compress/mode=0" not in old or "compress/normal_map=0" not in old or "mipmaps/generate=true" not in old:
+                    imp.write_text(IMPORT_V64.replace("compress/mode=2", "compress/mode=0").format(nm=0, hq="false"))
+            elif "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n113 += 1
+    print(f"Nuées V113: {n113} fichiers")
     # V75 : l'Île du Boucan (sols de friche, briques, tôles, béton, fresques, graffitis, affiches,
     # enseignes, champignons, l'Usine Grise) : même règle (les sols du relief sans perte).
     n75 = 0

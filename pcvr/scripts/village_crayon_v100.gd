@@ -474,7 +474,8 @@ func _stairs(b: Kit.Batch, t: Dictionary, y0: float, y1: float, a_end: float, tu
 		var hp: Array = []
 		for k2 in [i, i + 1]:
 			var ak: float = a_start + float(k2) * da
-			var hk: float = minf(y0 + dh * (float(k2) + 0.5), y1 + 0.03)
+			# le pied de la rampe part au ras du sol (V113 : plus de petit rebord où l'on butait)
+			var hk: float = minf(y0 + dh * (float(k2) + 0.5), y1 + 0.03) if k2 > 0 else y0 - 0.02
 			for rr in [r_col, r_ext]:
 				hp.append(c + dir(ak) * float(rr) + Vector3.UP * (g + hk))
 				hp.append(c + dir(ak) * float(rr) + Vector3.UP * (g + hk - 0.25))

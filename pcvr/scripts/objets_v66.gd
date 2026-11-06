@@ -164,6 +164,7 @@ const BOISSONS := {
 	"cidre_montjoie": [0.0, ""], "jus_pomme": [0.0, ""],
 	"limonade_boucan": [0.0, ""], "soda_neon": [0.0, ""], "sirop_menthe": [-0.2, ""],
 	"chocolat_chaud": [-0.3, "cafe"],
+	"lait_nuage": [0.0, ""], "the_sommets": [-0.35, "the"], "jus_soleil": [0.0, ""],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -187,6 +188,7 @@ const COMPTOIRS := {
 	"rissole": ["jus_pomme", 2, "Un jus de pomme au bar de la Guilde"],
 	"sirene": ["limonade_boucan", 2, "Une limonade maison au bar de la Halle Hurlante"],
 	"firmin": ["chocolat_chaud", 2, "Un chocolat à la vapeur au Piston Joyeux"],
+	"gustave_nu": ["lait_nuage", 2, "Un lait de nuage au Café Cumulus"],
 }
 
 const PLAINTES := {

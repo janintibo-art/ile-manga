@@ -649,7 +649,7 @@ func _region_of(n: Node) -> String:
 	if place.begins_with("L'Île Crayonnée"):
 		return "Crayonnée"
 	# V112 : l'Île de Hautefond
-	if place.begins_with("Île de Hautefond"):
+	if place.begins_with("Île de Hautefond") or place.begins_with("Cité des Nuées"):
 		return "Hautefond"
 	if place.begins_with("Carène") or place.begins_with("La grande île") or place.begins_with("Les hautes") or place.begins_with("La forêt des brumes") or place.begins_with("Le désert") or place.begins_with("Le Cœur"):
 		return "Carène"
@@ -708,7 +708,7 @@ func _met_list() -> Array:
 				reg = "Al Dente"
 			if str(n.profile.get("groupe", "")) == "crayon":
 				reg = "Crayonnée"
-			if str(n.profile.get("groupe", "")) == "hautefond":
+			if str(n.profile.get("groupe", "")) in ["hautefond", "nuees"]:
 				reg = "Hautefond"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])

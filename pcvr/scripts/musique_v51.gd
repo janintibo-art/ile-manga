@@ -36,6 +36,8 @@ const ZONE_TRACK := {
 	"hf_moyenne": "cliquetis", "hf_marche": "cliquetis", "hf_taverne": "", "hf_mat": "cliquetis", "hf_basse": "cliquetis", "hf_forge": "cliquetis",
 	"hf_belvedere": "ciel", "hf_cabine": "ciel", "hf_port": "port_azur", "hf_phare": "large", "hf_moulin": "campagne", "hf_vergers": "campagne",
 	"hf_falaises": "large", "hf_plage": "large", "hf_rivage": "large", "hf_campagne": "campagne",
+	"nu_gare": "ciel", "nu_capsule": "ciel", "nu_belvedere": "ciel", "nu_esplanade": "ciel", "nu_cafe": "", "nu_atelier": "ciel", "nu_conseil": "ciel",
+	"nu_serres": "campagne", "nu_institut": "ciel", "nu_port": "ciel", "nu_residences": "ciel", "nu_parc": "campagne", "nu_promenade": "ciel", "nu_ville": "ciel",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",

@@ -1,0 +1,24 @@
+extends RefCounted
+## V113 : les passants de la Cité des Nuées : [style, rôle, [deux phrases]] (même forme que les
+## PASSANTS de hautefond_v112.gd). Style « nuees » ; rôle : homme | femme | vieux | vieille | enfant.
+
+const PASSANTS := [
+	["nuees", "homme", ["La Ligne a rouvert ! Ce matin, j'ai pris la capsule rien que pour redescendre la reprendre. Trois fois.", "Bon vent ! … Pardon, c'est l'habitude. Ici, on dit ça même pour demander l'heure."]],
+	["nuees", "femme", ["Gustave a sorti les chouquettes du four solaire. Toute l'Esplanade renifle en même temps. On dirait une chorale.", "Mon balcon a trois panneaux solaires, deux fraisiers et un moineau qui paie son loyer en chansons."]],
+	["nuees", "vieux", ["Cent vingt ans que l'île flotte, et toujours personne pour me rapporter mon chapeau, tombé en bas il y a cinquante ans.", "Le vent d'ouest se lève. Le Docteur Aurèle l'avait prévu pour hier. Il est très ponctuel, à sa façon."]],
+	["nuees", "vieille", ["Les gens du Plancher font la queue à la Gare jusqu'au Belvédère. Je leur apporte des tisanes. Ils sont si contents d'être en haut.", "Ma sœur habite en bas, à Hautefond. Elle m'appelle « la Perchée ». Je l'appelle « la Plancheuse ». On s'adore."]],
+	["nuees", "enfant", ["J'ai marché sur le Belvédère de verre ! J'ai vu la mer sous mes pieds ! Puis j'ai vu mes pieds. Ils tremblaient un peu.", "Plumeau a dit bonjour à mon cerf-volant. Je crois qu'il l'a pris pour un arbre."]],
+	["nuees", "homme", ["Ce soir, il y a concert dans les Strates, en bas. On va encore entendre la Fronde par le conduit de la Colonne. Boum, boum. Moi, j'aime bien.", "Monsieur Pascal a écrit sa quarantième réclamation contre la musique d'en bas. Il bat la mesure en l'écrivant."]],
+	["nuees", "femme", ["J'ai trié mes déchets en sept bacs, ce matin. Ma voisine en fait neuf. Je ne dors plus.", "La Capitaine Zéphyrine a encore gagné contre la Capitaine Héloïse. Héloïse aussi, paraît-il. Le ciel est grand, il y a de la place pour deux victoires."]],
+	["nuees", "enfant", ["Quand je serai grand, je serai liftier comme Théo. Ou nuage. Je n'ai pas encore choisi.", "Le Dôme d'Azur, au fond de la mer, c'est fermé pour travaux. Mais quand ça rouvrira, j'irai voir les baleines par le plafond !"]],
+	["nuees", "vieux", ["Le Grand-Père Séverin raconte la montée de l'île comme s'il y était. Moi aussi. On n'y était ni l'un ni l'autre. On se corrige mutuellement.", "Ici, il fait toujours beau. Alors, pour parler du temps, on parle de celui d'en bas. Ça occupe."]],
+	["nuees", "femme", ["Je travaille à l'Institut des Vents. Aujourd'hui, j'ai lâché un ballon-sonde. Il est revenu avec un pigeon dedans. Très surpris, le pigeon.", "Ces fraises géantes de Flora… J'en ai coupé une pour toute la famille. Il en reste pour demain."]],
+	["nuees", "homme", ["Je suis monté du Plancher pour voir la Cité. C'est si propre que j'ai peur de respirer trop fort.", "Il paraît qu'Icare n'a pas marché depuis trois ans. Il plane jusqu'à la boulangerie. Et il revient en planant, avec la baguette."]],
+	["nuees", "vieille", ["De mon temps, la capsule était déjà blanche. Elle est toujours blanche. Moi, je suis devenue blanche. On a vieilli ensemble.", "Garde la tête dans les nuages, mon petit. Ici, c'est un compliment. En bas, apparemment, c'est un reproche. Drôles de gens."]],
+	["nuees", "enfant", ["Lili n'est jamais descendue en bas ! Moi, si, une fois. La mer, c'est mouillé. Et salé. Et elle bouge tout le temps, sans arrêt !", "J'ai lancé un avion en papier du bord de l'île. Il vole encore. Je crois qu'il est parti à Hautefond."]],
+	["nuees", "homme", ["L'Ingénieure Nova dit que l'île flotte grâce aux calculs et au thé. J'ai bu trois thés aujourd'hui. Je participe.", "Mireille m'a vendu un grille-pain solaire. Ma tartine est parfaite. Ma table, moins."]],
+	["nuees", "femme", ["Au Parc des Brumes, la Cascade tombe dans le vide et se change en nuage avant d'arriver en bas. Même l'eau préfère rester en haut.", "Ombeline peint le coucher de soleil au Belvédère. Elle dit qu'il n'est jamais le même. Celui d'hier était violet. Je l'ai vu !"]],
+	["nuees", "vieux", ["Les Sustentateurs ronronnent sous nos pieds. Cent vingt ans de service. Ils sont plus vieux que moi, et ils ne se plaignent jamais. Contrairement à moi.", "On dit « Bon vent » ici. En bas, ils disent « Ça monte ». Nous, on est déjà montés. On attend que le vent nous dise la suite."]],
+	["nuees", "vieille", ["J'ai pris un lait de nuage chez Gustave. J'ai encore la moustache blanche. Je la garde, elle me va bien.", "Il paraît que le chocolat du frère de Gustave, en bas, siffle comme une locomotive. Ici, notre chocolat chuchote. C'est plus poli."]],
+	["nuees", "enfant", ["Le Docteur Aurèle a donné mon prénom à un nuage ! Il est tout petit et tout rond. Comme moi, dit Maman.", "Plumeau m'a raconté une blague. Il ne savait pas pourquoi c'était drôle. Moi non plus. Mais on a ri quand même."]],
+]

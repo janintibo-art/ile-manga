@@ -509,6 +509,17 @@ func _choose_zone(running: bool) -> void:
 				targets["campagne"] = 0.6
 				targets["oiseaux"] = 0.5
 				targets["brise"] = 0.4
+			# V113 : la Cité des Nuées (le vent du large, les jardins, le café)
+			"nu_belvedere", "nu_promenade", "nu_port", "nu_capsule", "nu_institut":
+				targets["vent_vol"] = 0.55
+				targets["brise"] = 0.7
+			"nu_parc", "nu_serres", "nu_residences":
+				targets["oiseaux"] = 0.6
+				targets["brise"] = 0.5
+			"nu_cafe", "nu_esplanade", "nu_gare", "nu_atelier", "nu_conseil", "nu_ville":
+				targets["ville_azur"] = 0.35
+				targets["oiseaux"] = 0.25
+				targets["brise"] = 0.5
 			_:
 				targets["ville_azur"] = 0.5
 				targets["atelier"] = 0.15

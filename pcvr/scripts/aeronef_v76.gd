@@ -1174,6 +1174,12 @@ func _rock_span(x: float, z: float) -> Array:
 		if top < -1e6:
 			top = y0 + 1.0
 		return [bottom, top]
+	# V113 : la Cité des Nuées, l'île flottante au-dessus de Hautefond
+	var hf: Variant = main.get("hautefond_v112")
+	if hf is Node and (hf as Node).get("nuees_ile") != null:
+		var spn: Array = (hf as Node).nuees_ile.rock_span(x, z)
+		if not spn.is_empty():
+			return spn
 	var a: Node = _astralys()
 	if a != null and a.has_method("rock_span"):
 		return a.rock_span(x, z)
@@ -1193,6 +1199,9 @@ func _rock_span(x: float, z: float) -> Array:
 
 ## Dans la roche d'une île flottante ?
 func _in_rock(p: Vector3) -> bool:
+	var hf: Variant = main.get("hautefond_v112")
+	if hf is Node and (hf as Node).get("nuees_ile") != null and (hf as Node).nuees_ile.near_xz(p.x, p.z, 10.0):
+		return bool((hf as Node).nuees_ile.solid(p))
 	var a: Node = _astralys()
 	if a != null and a.has_method("solid") and Vector2(p.x - ASTRALYS_C.x, p.z - ASTRALYS_C.z).length() < ASTRALYS_R + 60.0:
 		return bool(a.solid(p))

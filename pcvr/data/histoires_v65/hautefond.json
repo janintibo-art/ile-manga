@@ -25,7 +25,7 @@
    }
   ],
   "reve": [
-   "Faire la première montée vers la Cité des Nuées quand la ligne rouvrira, avec Barnabé aux commandes, et ne pas dire un seul mot de tout le trajet. Juste regarder la Colonne faire ce qu'elle sait faire."
+   "J'ai fait la première montée vers la Cité des Nuées, avec Barnabé aux commandes, sans dire un seul mot de tout le trajet. Maintenant, je rêve de la faire en entier, quand toutes les lignes seront rouvertes : du ciel jusqu'au fond de la mer. En silence. Juste regarder la Colonne faire ce qu'elle sait faire."
   ],
   "question": {
    "texte": "Dites-moi, {surnom} : dans la cabine, vous regardez par la vitre ou vous regardez les gens ?",
@@ -179,11 +179,11 @@
    },
    {
     "titre": "le secret",
-    "t": "Je vais te dire un secret, {surnom}. Je n'ai pas peur de tomber. J'ai peur de décevoir. Maîtresse Capucine compte sur moi pour la ligne des Nuées. Alors chaque soir, je monte au Belvédère et je reste une minute de plus près de la rambarde. Une minute par jour. Dans un an, ça fera six heures."
+    "t": "Je vais te dire un secret, {surnom}. Je n'ai pas peur de tomber. J'ai peur de décevoir. Maîtresse Capucine comptait sur moi pour la ligne des Nuées. Alors chaque soir, je montais au Belvédère et je restais une minute de plus près de la rambarde. Une minute par jour. Et le jour de la réouverture, j'ai fait la première montée. Tout vert. Mais jusqu'en haut."
    }
   ],
   "reve": [
-   "Faire la première montée vers la Cité des Nuées les yeux ouverts, du début à la fin, et dire « Ça monte ! » sans que ma voix tremble. Même un tout petit peu."
+   "J'ai fait la première montée vers la Cité des Nuées. Les yeux fermés, presque tout le trajet. Maintenant, je rêve de la refaire les yeux ouverts, du début à la fin, de dire « Ça monte ! » sans que ma voix tremble, et d'aller m'asseoir avec Théo sur son Belvédère de verre."
   ],
   "question": {
    "texte": "Dis-moi, {surnom}… tu as peur de quelque chose, toi ?",
@@ -437,7 +437,7 @@
    }
   ],
   "reve": [
-   "Monter à la Cité des Nuées avec ma lunette, une nuit sans nuage, et compter toutes les étoiles jusqu'au bout. Ou presque. Et savoir enfin, une bonne fois pour toutes, si Clémentine me fait des clins d'œil."
+   "Remonter à la Cité des Nuées avec ma lunette, une nuit où le Docteur Aurèle n'aura mis aucun nuage, et compter toutes les étoiles jusqu'au bout. Ou presque. Et savoir enfin, une bonne fois pour toutes, si Clémentine me fait des clins d'œil."
   ],
   "question": {
    "texte": "Dites-moi, {surnom} : à votre avis, une étoile peut-elle faire un clin d'œil à quelqu'un ?",
@@ -586,7 +586,7 @@
     {
      "label": "L'Île aux Mille Escaliers.",
      "valeur": "escaliers",
-     "t": "(Elle chuchote.) Oh, c'est très Hautefond, ça. Mille escaliers, et une seule cabine, toujours en révision. Je vais le dessiner. En perspective.",
+     "t": "(Elle chuchote.) Oh, c'est très Hautefond, ça. Mille escaliers, et une seule cabine, avec toujours la queue. Je vais le dessiner. En perspective.",
      "rappel": "(Elle chuchote.) J'ai dessiné quarante escaliers de votre île. Plus que neuf cent soixante."
     },
     {
@@ -695,7 +695,7 @@
    }
   ],
   "reve": [
-   "Couper le ruban de la réouverture des quatre lignes de la Colonne, le même jour, devant les gens des Nuées, de Hautefond, des Strates et du Dôme réunis. Et faire un discours de quatre heures. Bon. De quatre minutes. Je ferai un effort."
+   "Pour les Nuées, je n'ai eu droit qu'à trente centimètres de ruban. Alors je rêve de couper les deux qui restent, celui des Strates et celui du Dôme, le même jour, devant les gens des Nuées, de Hautefond, des Strates et du Dôme réunis. Et faire un discours de quatre heures. Bon. De quatre minutes. Je ferai un effort."
   ],
   "question": {
    "texte": "Mon cher {surnom}, une question d'importance : un bon discours, c'est long ou c'est court ?",
@@ -957,7 +957,7 @@
    }
   ],
   "reve": [
-   "Monter à la Cité des Nuées pour voir leurs horloges de verre, où l'on voit tourner tous les rouages. Et, peut-être, trouver enfin où va la pièce en trop."
+   "Remonter à la Cité des Nuées pour régler l'horloge de verre que l'inventrice de là-haut me fabrique, celle où l'on voit tourner tous les rouages. Et, peut-être, trouver enfin où va la pièce en trop."
   ],
   "question": {
    "texte": "Une question, {surnom}. Quand vous avez rendez-vous, vous arrivez comment ?",
@@ -1084,7 +1084,7 @@
    }
   ],
   "reve": [
-   "Faire monter ma machine à chocolat à la Cité des Nuées, quand la ligne rouvrira, et la faire siffler au-dessus des nuages. Qu'on l'entende jusqu'en bas. Que tout le monde, dans les quatre mondes, sache qu'il y a du chocolat."
+   "Faire monter ma machine à chocolat à la Cité des Nuées, maintenant que la ligne a rouvert, et la faire siffler au-dessus des nuages, sous les fenêtres du Café Cumulus de mon frère Gustave. Qu'on l'entende jusqu'en bas. Que tout le monde, dans les quatre mondes, sache qu'il y a du chocolat."
   ],
   "question": {
    "texte": "Question sérieuse, {surnom} : ton chocolat, tu le prends avec ou sans cannelle ?",
@@ -1923,7 +1923,7 @@
    }
   ],
   "reve": [
-   "Monter à la Cité des Nuées, quand la ligne rouvrira, écouter le vent qui n'a jamais touché terre, et écrire enfin un poème entier. Puis le donner à quelqu'un. En personne. Sans sac de farine."
+   "Monter à la Cité des Nuées, dimanche, maintenant que la ligne a rouvert, écouter le vent qui n'a jamais touché terre, et écrire enfin un poème entier. Puis le donner à quelqu'un. En personne. Sans sac de farine."
   ],
   "question": {
    "texte": "« Ô voyageur… » Pardon. Dis-moi : quel vent préfères-tu ?",

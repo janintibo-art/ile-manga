@@ -8,8 +8,12 @@ extends Node3D
 ## engrenages qui tournent, l'Albatros qui se balance à son mât, le marteau-pilon de la forge, les
 ## dirigeables qui croisent au-dessus de la ville ; il fait vivre les habitants selon l'heure (et les
 ## fait monter au Belvédère par la cabine) et les passants.
-## La suite (les versions d'après) : la Cité des Nuées (l'île flottante), les Strates et le quartier
-## de la Fronde (sous la ville), le Dôme d'Azur (au fond de la mer).
+## V113 : la CITÉ DES NUÉES, l'île flottante, deux cents mètres au-dessus de la ville (ile_nuees_v113 :
+## le plateau, le dessous, les sustentateurs, les nuages, la cascade ; nuees_ville_v113 : la ville,
+## la Ligne des Nuées et sa capsule qui part du Belvédère ; nuees_flore_v113 : les jardins) ; ses
+## quatorze habitants (pnj/nuees_habitants_v113, au costume de Néopolis : pnj_neo_v95) et ses passants.
+## La suite (les versions d'après) : les Strates et le quartier de la Fronde (sous la ville), le Dôme
+## d'Azur (au fond de la mer).
 
 const IleScript = preload("res://scripts/ile_hautefond_v112.gd")
 const CityScript = preload("res://scripts/hautefond_ville_v112.gd")
@@ -21,15 +25,26 @@ const HABITANTS := "res://scripts/pnj/hautefond_habitants_v112.gd"
 const PNJ := "res://scripts/pnj/pnj_montjoie_v71.gd"
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
+## V113 : la Cité des Nuées
+const NueesIle = preload("res://scripts/ile_nuees_v113.gd")
+const NueesVille = preload("res://scripts/nuees_ville_v113.gd")
+const MatsN = preload("res://scripts/nuees_mats_v113.gd")
+const FLORE_N := "res://scripts/nuees_flore_v113.gd"
+const HABITANTS_N := "res://scripts/pnj/nuees_habitants_v113.gd"
+const PNJ_N := "res://scripts/pnj/pnj_neo_v95.gd"
+const PASSANTS_N := "res://scripts/pnj/nuees_passants_v113.gd"
+## Les prénoms des passants des Nuées
+const PRENOMS_N := {"h": ["Aurèle", "Cyrus", "Élian", "Orion", "Sacha", "Noé", "Thélo", "Zéphyr", "Ilan", "Maël", "Nils", "Adrien"],
+	"f": ["Alizée", "Célia", "Nuée", "Brume", "Iris", "Maëlys", "Azalée", "Solène", "Line", "Elsa", "Livia", "Aube"]}
 
 ## Les passants : [style, rôle, phrases] (leurs lieux : les bancs des promenades, des coins de rue)
 const PASSANTS := [
-	["montjoie", "homme", ["Trois quarts d'heure de queue pour la cabine. Et elle ne monte qu'au Belvédère ! Bon, la vue vaut le coup.", "Par la Colonne, j'ai oublié mon parapluie au cinquième. Il n'y a pas de cinquième. Je ne comprends rien."]],
+	["montjoie", "homme", ["Trois quarts d'heure de queue pour la cabine, et encore autant pour la capsule des Nuées ! Bon, la vue vaut le coup.", "Par la Colonne, j'ai oublié mon parapluie au cinquième. Il n'y a pas de cinquième. Je ne comprends rien."]],
 	["montjoie", "femme", ["Le chocolat de Firmin a sifflé : il est seize heures. Pas besoin de montre, ici.", "Le marché est plein, aujourd'hui. Rosalie a dû annoncer un nouveau potin."]],
 	["montjoie", "vieux", ["De mon temps, on montait à la Colonne par l'escalier. Mille marches. Et on disait merci.", "Huile tes rouages, jeune homme. Et tes genoux aussi, tant que tu y es."]],
 	["montjoie", "vieille", ["J'ai connu la Colonne quand la cabine était en bois. Elle grinçait comme mon mari. Je les regrette tous les deux.", "Regarde l'Albatros, là-haut ! Cette Héloïse, elle va finir par décrocher la lune."]],
 	["montjoie", "enfant", ["Tu as vu les engrenages de l'horloger ? Il y en a un qui tourne à l'envers, exprès !", "Quand je serai grand, je serai liftier. Ou dirigeable. Je n'ai pas encore choisi."]],
-	["montjoie", "homme", ["Il paraît que la ligne des Nuées rouvre bientôt. Mon beau-frère dit ça depuis trois ans.", "Attention, ça souffle ! Le tuyau de la Forge vient de lâcher sa vapeur."]],
+	["montjoie", "homme", ["La ligne des Nuées a rouvert ! Mon beau-frère l'annonçait depuis trois ans. Il est insupportable, maintenant.", "Attention, ça souffle ! Le tuyau de la Forge vient de lâcher sa vapeur."]],
 	["montjoie", "femme", ["Au Belvédère, on voit l'île flottante juste au-dessus. Si près ! On a envie de tendre la main.", "Mon chapeau s'est envolé au Belvédère. Il doit être à la Cité des Nuées, maintenant. Veinard."]],
 	["montjoie", "enfant", ["J'ai fait un vœu dans la fontaine de Dame Ysolde. Je ne te dis pas lequel. Ça a un rapport avec des boulons.", "Barnabé a fermé les yeux pendant toute la montée ! Moi, je les avais grands ouverts !"]],
 	["montjoie", "vieux", ["Le vent tourne à l'ouest : le moulin d'Augustin va se mettre à chanter.", "Tu entends cette musique qui monte de la cage du bas ? Hm. De mon temps, les travaux faisaient moins de bruit."]],
@@ -74,6 +89,11 @@ var _crowd_t: float = 0.0
 var _crowd_spawned: bool = false
 var _interactions: Array = []
 var _hammer_t: float = 0.0
+var nuees_ile: Node3D                    # V113 : l'île flottante (ile_nuees_v113)
+var nuees: Node3D                        # V113 : la Cité des Nuées (nuees_ville_v113)
+var nuees_flore: Node3D
+var _crowd_n_spawned: bool = false
+var _last_safe_n := Vector3.ZERO
 
 
 func setup(main_node: Node) -> void:
@@ -84,7 +104,7 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "montees": 0}
+	return {"visite": false, "visites": {}, "montees": 0, "nuees": false, "capsule": 0}
 
 
 # =================================================================== construction
@@ -94,6 +114,10 @@ func build_island() -> void:
 	ile.name = "Ile_hautefond_v112"
 	add_child(ile)
 	ile.build(pc)
+	nuees_ile = NueesIle.new()
+	nuees_ile.name = "Ile_nuees_v113"
+	add_child(nuees_ile)
+	nuees_ile.build(pc)
 
 
 ## Après le relief et l'heure du jour : la ville, le dehors, la végétation, les feux, les fumées, la
@@ -104,6 +128,10 @@ func build_town() -> void:
 	city.name = "Hautefond_v112"
 	add_child(city)
 	city.build(main, ile, pc)
+	nuees = NueesVille.new()
+	nuees.name = "Cite_des_Nuees_v113"
+	add_child(nuees)
+	nuees.build(main, nuees_ile, city, pc)
 	dehors = DehorsScript.new()
 	dehors.name = "Hautefond_dehors_v112"
 	add_child(dehors)
@@ -117,6 +145,13 @@ func build_town() -> void:
 		for a2 in dehors.flora_avoid:
 			flore.avoid.append(a2)
 		flore.build_hautefond(ile, pc, {"arbres": city.tree_spots, "vergers": dehors.orchard_spots})
+	if ResourceLoader.exists(FLORE_N):
+		nuees_flore = load(FLORE_N).new()
+		nuees_flore.name = "Flore_nuees_v113"
+		add_child(nuees_flore)
+		for a3 in nuees.flora_avoid:
+			nuees_flore.avoid.append(a3)
+		nuees_flore.build_nuees(nuees_ile, pc, {"arbres": nuees.kit.tree_spots, "serre": nuees.serre_spots})
 	for f in city.fire_spots:
 		_fires.append(_make_fire(f[0], float(f[1])))
 	for f2 in dehors.fire_spots:
@@ -174,11 +209,15 @@ func _glows() -> void:
 	var t: Node = main.get("temps_v56") if main != null else null
 	if t == null or not t.has_method("register_glow"):
 		Mats.night(0.0)
+		MatsN.night(0.0)
 		return
 	t.register_glow(Mats71.make("vitre71_on"), 2.4, 0.12)
 	t.register_glow(Mats.make("lampe112"), 4.0, 0.6)
 	t.register_glow(Mats.make("cadran112"), 1.2, 0.05)
 	t.register_glow(Mats.make("phare112"), 8.0, 1.0)
+	t.register_glow(MatsN.make("led113"), 3.6, 0.4)
+	t.register_glow(MatsN.make("led113_chaud"), 3.0, 0.3)
+	t.register_glow(MatsN.make("facade113"), 1.6, 0.0)
 	if flore != null and flore.get("glow_mats") != null:
 		for g in flore.glow_mats:
 			t.register_glow(g[0], float(g[1]), float(g[2]))
@@ -190,11 +229,13 @@ func _register_interactions() -> void:
 		return
 	if city != null and city.colonne != null:
 		city.colonne.register(d, self)
+	if nuees != null and nuees.ligne != null:
+		nuees.ligne.register(d, self)
 	var col: Node3D = city.colonne
 	var me = self
 	# les deux lignes encore fermées : un panneau à chaque portail (est et ouest)
 	_ia(d, {"id": "hf_ligne_nuees", "pos": col.foot + Vector3(col.R_SOCLE + 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Nuées)",
-		"vr": "Gâchette : lire le panneau (Ligne des Nuées)", "call": func(): me.say("« LIGNE DES NUÉES — en révision. La cabine de la Cité des Nuées rouvrira très bientôt. La Confrérie des Liftiers vous remercie de votre patience (et de votre absence de vertige). »", 8.0), "when": func(): return true})
+		"vr": "Gâchette : lire le panneau (Ligne des Nuées)", "call": func(): me.say("« LIGNE DES NUÉES — ROUVERTE ! Prenez la cabine jusqu'au Belvédère, puis la capsule de verre jusqu'à la Gare des Nuées. La Confrérie des Liftiers vous souhaite bon vent (et pas de vertige). »", 8.0), "when": func(): return true})
 	_ia(d, {"id": "hf_ligne_strates", "pos": col.foot + Vector3(-col.R_SOCLE - 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Strates)",
 		"vr": "Gâchette : lire le panneau (Ligne des Strates)", "call": func(): me.say("« LIGNE DES STRATES ET DU DÔME D'AZUR — fermée pour travaux. » En dessous, quelqu'un a griffonné : « Les travaux, c'est nous qui les faisons. Bisous d'en bas. »", 8.0), "when": func(): return true})
 
@@ -227,7 +268,16 @@ func contains(p: Vector3) -> bool:
 
 
 func on_structure(p: Vector3) -> bool:
-	return city != null and city.on_structure(p)
+	return (city != null and city.on_structure(p)) or (nuees != null and nuees.on_structure(p))
+
+
+## V113 : sur la Cité des Nuées (le plateau, ses ponts, la capsule en haut) ?
+func on_nuees(p: Vector3) -> bool:
+	if nuees_ile == null:
+		return false
+	if nuees != null and nuees.ligne != null and nuees.ligne.inside(p) and p.y > nuees.ligne.foot.y + 6.0:
+		return true
+	return p.y > NueesIle.Y0 - 12.0 and nuees_ile.near_xz(p.x, p.z, 10.0)
 
 
 ## À pied : on peut marcher ici (la terre ferme, les quais, la Colonne, le Belvédère) ?
@@ -247,6 +297,12 @@ func blocks_boat(_p: Vector3) -> bool:
 func zone_at(p: Vector3) -> String:
 	if ile == null or not ile.contains(p.x, p.z) or p.y < -20.0:
 		return ""
+	if nuees != null and on_nuees(p):
+		var nz: String = nuees.zone_at(p)
+		if nz != "":
+			return nz
+	if nuees != null and nuees.ligne != null and nuees.ligne.walkable(p) and p.y < nuees.ligne.foot.y + 4.0:
+		return "hf_belvedere"
 	var cz: String = city.zone_at(p) if city != null else ""
 	if cz != "":
 		return cz
@@ -274,7 +330,7 @@ func people_at(p: Vector3) -> String:
 	var z: String = zone_at(p)
 	if z == "":
 		return ""
-	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare"]:
+	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare", "nu_capsule"]:
 		return "sauvage"
 	return "ville"
 
@@ -286,6 +342,8 @@ func village_point(id: String) -> Array:
 		"hautefond_port":
 			var q: Vector3 = city.points.get("port_q3", dock()[0])
 			return [q + Vector3.UP * 0.3, Vector3(0, 0, 1)]
+		"nuees":
+			return respawn_nuees()
 	return []
 
 
@@ -294,11 +352,19 @@ const PLACES := {"hf_colonne": "la Place de la Colonne", "hf_belvedere": "le Bel
 	"hf_moyenne": "Hautefond, la Ville-Moyenne", "hf_marche": "le Grand Marché", "hf_taverne": "la taverne « Le Piston Joyeux »", "hf_mat": "le Mât des dirigeables",
 	"hf_basse": "Hautefond, la Basse-Ville", "hf_forge": "la Forge à vapeur", "hf_port": "le Port des Cordages", "hf_phare": "le Phare de la Pointe",
 	"hf_moulin": "le Moulin des Quatre Vents", "hf_vergers": "les Vergers en terrasses", "hf_falaises": "les Falaises", "hf_plage": "la Plage des Galets Blonds",
-	"hf_rivage": "le rivage", "hf_campagne": "la campagne"}
+	"hf_rivage": "le rivage", "hf_campagne": "la campagne",
+	"nu_gare": "la Gare des Nuées", "nu_capsule": "la capsule de la Ligne des Nuées", "nu_belvedere": "le Belvédère de Verre",
+	"nu_esplanade": "l'Esplanade du Ciel", "nu_cafe": "le Café Cumulus", "nu_atelier": "l'Atelier des Inventeurs",
+	"nu_conseil": "la Maison du Conseil", "nu_serres": "les Serres d'Altitude", "nu_institut": "l'Institut des Vents",
+	"nu_port": "le Port des Nuées", "nu_residences": "les Résidences des Terrasses", "nu_parc": "le Parc des Brumes",
+	"nu_promenade": "la Promenade du bord", "nu_ville": "les rues"}
 
 
 func place_name(p: Vector3) -> String:
-	return "Île de Hautefond, " + str(PLACES.get(zone_at(p), "l'île"))
+	var z: String = zone_at(p)
+	if z.begins_with("nu_"):
+		return "Cité des Nuées, " + str(PLACES.get(z, "les rues"))
+	return "Île de Hautefond, " + str(PLACES.get(z, "l'île"))
 
 
 func respawn_point() -> Array:
@@ -306,6 +372,14 @@ func respawn_point() -> Array:
 	if sp.is_empty():
 		return [city.points.values()[0] + Vector3.UP * 0.3, Vector3(0, 0, 1)]
 	return [(sp["pos"] as Vector3) + Vector3.UP * 0.3, sp["face"]]
+
+
+## V113 : le point de retour sur la Cité des Nuées (devant le miroir d'eau de l'Esplanade).
+func respawn_nuees() -> Array:
+	var sp: Dictionary = spot("esplanade_fontaine")
+	if sp.is_empty():
+		return [NueesIle.W(0.0, 14.0, 0.4), Vector3(0, 0, -1)]
+	return [(sp["pos"] as Vector3) + Vector3.UP * 0.3 + (sp["face"] as Vector3) * -1.2, sp["face"]]
 
 
 func hostile_zone(_p: Vector3) -> bool:
@@ -357,6 +431,24 @@ func spawn_npcs() -> void:
 		habitants.append(npc)
 		by_id[str(data["id"])] = npc
 	print("ILE_MANGA_V112: %d habitants à Hautefond" % habitants.size())
+	if nuees != null and ResourceLoader.exists(HABITANTS_N) and ResourceLoader.exists(PNJ_N):
+		var HN = load(HABITANTS_N)
+		var PN = load(PNJ_N)
+		var n0: int = habitants.size()
+		for data2 in HN.all_profiles():
+			var home2: String = str(data2.get("maison", ""))
+			var start2: String = home2 if city.points.has(home2) else "nu_es_0"
+			var npc2: Node3D = PN.new()
+			main.add_child(npc2)
+			npc2.setup(main, data2, city.points, city.graph, start2)
+			npc2.setup_azur(self, data2)
+			var saved2: Variant = main.pending_pnj_v31.get(str(data2["id"]), {})
+			if saved2 is Dictionary and not (saved2 as Dictionary).is_empty():
+				npc2.load_data(saved2)
+			main.npcs_v31.append(npc2)
+			habitants.append(npc2)
+			by_id[str(data2["id"])] = npc2
+		print("ILE_MANGA_V113: %d habitants dans la Cité des Nuées" % (habitants.size() - n0))
 
 
 ## Les habitants prennent la cabine : quand l'un d'eux arrive au pied (ou en haut) de la cage et
@@ -364,17 +456,20 @@ func spawn_npcs() -> void:
 func _npc_lift() -> void:
 	if city == null or not city.points.has("cab_haut"):
 		return
-	var top_y: float = (city.points["cab_haut"] as Vector3).y
-	var low_y: float = (city.points["cab_bas"] as Vector3).y
-	for npc in habitants:
-		if not is_instance_valid(npc):
+	for pair in [["cab_bas", "cab_haut"], ["nu_cab_bas", "nu_cab_haut"]]:
+		if not city.points.has(pair[1]):
 			continue
-		var ap: String = str(npc.get("at_point"))
-		var y: float = (npc as Node3D).global_position.y
-		if ap == "cab_haut" and y < top_y - 5.0:
-			(npc as Node3D).global_position.y += top_y - low_y
-		elif ap == "cab_bas" and y > low_y + 5.0:
-			(npc as Node3D).global_position.y -= top_y - low_y
+		var top_y: float = (city.points[pair[1]] as Vector3).y
+		var low_y: float = (city.points[pair[0]] as Vector3).y
+		for npc in habitants:
+			if not is_instance_valid(npc):
+				continue
+			var ap: String = str(npc.get("at_point"))
+			var y: float = (npc as Node3D).global_position.y
+			if ap == pair[1] and y < top_y - 5.0:
+				(npc as Node3D).global_position.y += top_y - low_y
+			elif ap == pair[0] and y > low_y + 5.0:
+				(npc as Node3D).global_position.y -= top_y - low_y
 
 
 ## Les services (les comptoirs, les lieux pour le carnet et les quêtes à venir).
@@ -387,6 +482,10 @@ func register_services(journal: Node) -> void:
 	journal.lieux["hautefond"] = respawn_point()[0]
 	journal.lieux["hf_colonne"] = city.colonne.foot
 	journal.lieux["hf_belvedere"] = city.colonne.top
+	if nuees != null:
+		for k3 in nuees.objets:
+			journal.lieux["nu_" + str(k3)] = nuees.objets[k3]
+		journal.lieux["nuees"] = respawn_nuees()[0]
 	_register_interactions()
 
 
@@ -422,6 +521,56 @@ func _spawn_crowd() -> void:
 		claim_spot(sname, f)
 		var h0: float = [7.0, 8.0, 9.0, 10.0, 14.0, 16.0][i % 6]
 		var h1: float = [18.0, 20.0, 21.0, 19.0, 22.0, 23.0][i % 6]
+		crowd.append([f, h0, h1, sp["pos"]])
+	_crowd_vis(true)
+
+
+## V113 : les passants de la Cité des Nuées (des gens de Néopolis, habillés de clair, sans implant).
+func _spawn_crowd_n() -> void:
+	_crowd_n_spawned = true
+	if nuees == null or not ResourceLoader.exists(PASSANTS_N):
+		return
+	var list: Array = load(PASSANTS_N).PASSANTS
+	var names: Array = nuees.crowd_spots.duplicate()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 113000
+	names.shuffle()
+	var clairs: Array = [[0.92, 0.92, 0.9], [0.86, 0.88, 0.9], [0.78, 0.84, 0.9], [0.86, 0.8, 0.68], [0.62, 0.72, 0.64], [0.7, 0.72, 0.76], [0.94, 0.9, 0.84]]
+	var douces: Array = [[0.42, 0.62, 0.8], [0.56, 0.7, 0.58], [0.86, 0.66, 0.5], [0.7, 0.62, 0.82], [0.9, 0.8, 0.46]]
+	var n: int = mini(list.size() if pc else 8, names.size())
+	for i in range(n):
+		var e: Array = list[i]
+		var sname: String = str(names[i])
+		var sp: Dictionary = city.spots.get(sname, {})
+		if sp.is_empty():
+			continue
+		var role: String = str(e[1])
+		var prof: Dictionary = Gens.pick("neo", role, rng)
+		if prof.is_empty():
+			continue
+		prof = prof.duplicate(true)
+		var ne: Dictionary = prof.get("neo", {})
+		ne.erase("implant")
+		ne.erase("circuit")
+		ne.erase("props")
+		ne["c"] = clairs[rng.randi() % clairs.size()]
+		ne["c2"] = douces[rng.randi() % douces.size()]
+		if not role in ["enfant", "garcon", "fille"]:
+			ne["tenue"] = ["tailleur", "techwear", "sweat", "jardinier", "tailleur"][rng.randi() % 5]
+		ne.erase("chapeau")
+		prof["neo"] = ne
+		var az: Dictionary = prof.get("azur", {})
+		if az.has("cheveux") and rng.randf() < 0.8:
+			az["cheveux"] = [[0.2, 0.14, 0.1], [0.5, 0.36, 0.22], [0.82, 0.7, 0.46], [0.1, 0.08, 0.07], [0.86, 0.86, 0.84]][rng.randi() % 5]
+		var lst: Array = PRENOMS_N["f" if Gens.femme(role) else "h"]
+		prof["nom"] = str(lst[rng.randi() % lst.size()])
+		var f: Node = Figurant.spawn(self, main, prof, sp["pos"], sp["face"], str(sp["pose"]))
+		if f == null:
+			continue
+		f.set("lines", e[2])
+		claim_spot(sname, f)
+		var h0: float = [7.0, 8.0, 9.0, 10.0, 13.0, 15.0][i % 6]
+		var h1: float = [19.0, 21.0, 22.0, 18.0, 23.0, 20.0][i % 6]
 		crowd.append([f, h0, h1, sp["pos"]])
 	_crowd_vis(true)
 
@@ -472,8 +621,16 @@ func _process(delta: float) -> void:
 		_night = 1.0 if (h >= 20.0 or h < 5.5) else (smoothstep(18.5, 20.0, h) if h > 12.0 else 1.0 - smoothstep(5.5, 7.0, h))
 		if city != null and city.colonne != null:
 			city.colonne.set_night(_night)
+		if nuees_ile != null:
+			nuees_ile.set_night(_night)
+		if nuees != null and nuees.ligne != null:
+			nuees.ligne.set_night(_night)
 	if dehors != null:
 		dehors.tick(delta, _clock, _night)
+	if nuees_ile != null:
+		nuees_ile.tick(delta, dist < 900.0)
+	if nuees != null:
+		nuees.tick(delta, _night, dist < 700.0)
 	if dist > 700.0:
 		return
 	if city != null and city.colonne != null:
@@ -496,9 +653,12 @@ func _process(delta: float) -> void:
 			if dist < 420.0 and bool(main.get("game_started")):
 				_spawn_crowd()
 		else:
+			if not _crowd_n_spawned and nuees != null and on_nuees(p) and bool(main.get("game_started")):
+				_spawn_crowd_n()
 			_crowd_vis()
 	if not ile.contains(p.x, p.z):
 		return
+	_nuees_tick(p)
 	if not bool(state["visite"]) and (ile.height(p.x, p.z) > -0.2 or on_structure(p)) and bool(main.get("game_started")):
 		state["visite"] = true
 		main._show_message_v28("L'Île de Hautefond — la cité-colonne (ça monte !)")
@@ -521,7 +681,40 @@ func _process(delta: float) -> void:
 	if mer != null and mer.get("_underside") != null:
 		(mer._underside as Node3D).global_position = Vector3(snappedf(p.x, 40.0), (mer._underside as Node3D).global_position.y, snappedf(p.z, 40.0))
 	state["montees"] = int(city.colonne.rides)
+	if nuees != null and nuees.ligne != null:
+		state["capsule"] = int(nuees.ligne.rides)
 
+
+## V113 : la Cité des Nuées : la découverte, les lieux visités, et le filet qui rattrape ceux qui
+## passent par-dessus bord (sauf en aéronef).
+func _nuees_tick(p: Vector3) -> void:
+	if nuees == null or nuees_ile == null:
+		return
+	if nuees.ligne != null and nuees.ligne.inside(p):
+		_last_safe_n = Vector3.ZERO
+		return
+	var on_top: bool = nuees_ile.on_top(p) or (nuees.on_structure(p) and p.y > NueesIle.Y0 - 6.0)
+	if on_top:
+		_last_safe_n = p
+		if not bool(state.get("nuees", false)) and bool(main.get("game_started")):
+			state["nuees"] = true
+			main._show_message_v28("La Cité des Nuées — au-dessus des nuages (bon vent !)")
+			if main.has_method("jingle"):
+				main.jingle("decouverte")
+		var z: String = zone_at(p)
+		var vis: Dictionary = state["visites"]
+		for key in ["esplanade", "gare", "belvedere", "serres", "institut", "port", "parc", "cafe", "atelier", "conseil", "residences"]:
+			if z == "nu_" + key and not bool(vis.get("nu_" + key, false)):
+				vis["nu_" + key] = true
+				if key == "belvedere":
+					main._show_message_v28("Le Belvédère de Verre : deux cents mètres de vide sous vos pieds (le verre est très solide)")
+	elif _last_safe_n != Vector3.ZERO and p.y < NueesIle.Y0 - 25.0 and p.y > NueesIle.Y0 - 260.0:
+		var flying: bool = main.get("aeronef_v76") != null and main.aeronef_v76 != null and bool(main.aeronef_v76.get("riding"))
+		if not flying:
+			var at: Array = respawn_nuees()
+			main.place_player_v35(at[0], at[1])
+			main._show_message_v28("Oups ! Le filet anti-chute de la Cité vous rattrape au vol et vous dépose doucement sur l'Esplanade. Plumeau vous tend un mouchoir : « Bonjour. Vous êtes tombé. Ça arrive. »")
+		_last_safe_n = Vector3.ZERO
 
 func _make_smoke(at: Vector3, col: Color, scale_k: float = 1.0) -> CPUParticles3D:
 	var s := CPUParticles3D.new()
@@ -613,6 +806,11 @@ func owns_point(p: Vector3) -> bool:
 
 
 func on_faint(_p: Vector3) -> void:
+	if on_nuees(_p):
+		var at2: Array = respawn_nuees()
+		main.place_player_v35(at2[0], at2[1])
+		main._show_message_v28("Vous vous êtes évanoui… Plumeau, le robot jardinier, vous a porté jusqu'au miroir d'eau, et Gustave vous a apporté un lait de nuage. Ça plane !")
+		return
 	var at: Array = respawn_point()
 	main.place_player_v35(at[0], at[1])
 	main._show_message_v28("Vous vous êtes évanoui… Des passants vous ont porté jusqu'à la fontaine de Dame Ysolde, et Firmin vous a apporté un chocolat chaud. Ça remonte !")
@@ -624,7 +822,10 @@ func trouvailles() -> Dictionary:
 		"hautefond_belvedere": 1 if bool(vis.get("belvedere", false)) else 0, "hautefond_marche": 1 if bool(vis.get("marche", false)) else 0,
 		"hautefond_port": 1 if bool(vis.get("port", false)) else 0, "hautefond_phare": 1 if bool(vis.get("phare", false)) else 0,
 		"hautefond_moulin": 1 if bool(vis.get("moulin", false)) else 0, "hautefond_vergers": 1 if bool(vis.get("vergers", false)) else 0,
-		"hautefond_falaises": 1 if bool(vis.get("falaises", false)) else 0, "hautefond_observatoire": 1 if bool(vis.get("observatoire", false)) else 0}
+		"hautefond_falaises": 1 if bool(vis.get("falaises", false)) else 0, "hautefond_observatoire": 1 if bool(vis.get("observatoire", false)) else 0,
+		"nuees": 1 if bool(state.get("nuees", false)) else 0, "nuees_belvedere": 1 if bool(vis.get("nu_belvedere", false)) else 0,
+		"nuees_serres": 1 if bool(vis.get("nu_serres", false)) else 0, "nuees_institut": 1 if bool(vis.get("nu_institut", false)) else 0,
+		"nuees_port": 1 if bool(vis.get("nu_port", false)) else 0, "nuees_parc": 1 if bool(vis.get("nu_parc", false)) else 0}
 
 
 func serialize() -> Dictionary:

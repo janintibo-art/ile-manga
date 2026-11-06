@@ -1,0 +1,2142 @@
+{
+ "theo_nu": {
+  "genre": "m",
+  "prenom": "Théo",
+  "histoire": [
+   {
+    "titre": "l'arbre du Parc",
+    "t": "À sept ans, je suis tombé du grand chêne du Parc des Brumes. Trois branches, une pelouse, et zéro bobo. En me relevant, j'ai crié « Encore ! ». Ma mère a crié autre chose. Le soir même, elle m'a emmené voir la capsule de la Ligne. Elle a dit : « Si tu veux monter, monte avec un câble. »"
+   },
+   {
+    "titre": "la première lettre",
+    "t": "Il y a cinq ans, j'ai glissé une lettre dans la capsule de service, adressée à « l'apprenti liftier de Hautefond, s'il existe ». Une semaine plus tard, la réponse est arrivée. « Je m'appelle Barnabé. J'existe. J'ai un peu le vertige. » Depuis, on s'écrit chaque semaine. J'ai deux cent soixante lettres. Je les ai toutes gardées."
+   },
+   {
+    "titre": "les trois ans d'attente",
+    "t": "Quand la Ligne est passée en révision, j'ai cru que j'allais m'ennuyer. Alors j'ai astiqué la capsule. Tous les jours. Pendant trois ans. L'Ingénieure Nova m'a dit qu'elle n'avait jamais été aussi propre depuis Séraphin. Je l'ai tellement astiquée qu'on se voyait dedans. Je me faisais des grimaces pour passer le temps."
+   },
+   {
+    "titre": "la réouverture",
+    "t": "Le jour de la réouverture, la capsule est arrivée en haut avec Maîtresse Capucine, le Bourgmestre, et Barnabé. Barnabé était vert. Il est sorti, il m'a serré la main et il a dit : « Tu es plus grand que dans tes lettres. » Puis il s'est assis sur le quai. Je me suis assis à côté. On a parlé deux heures. Par terre. C'était le plus beau jour de ma vie."
+   },
+   {
+    "titre": "ce que je n'écris pas",
+    "t": "Il y a une chose que je n'ai jamais écrite à Barnabé, {surnom}. Moi, je n'ai peur de rien, en haut. Mais j'ai peur d'une chose : qu'un jour, il n'y ait plus personne dans la capsule. Une capsule vide, ça ne monte pour personne. Alors chaque passager compte. Toi aussi. Surtout toi, aujourd'hui."
+   }
+  ],
+  "reve": [
+   "Faire le grand voyage de la Colonne tout entière, de la Gare des Nuées jusqu'au Dôme d'Azur au fond de la mer, avec Barnabé à côté de moi, et lui faire regarder par la vitre au moins une fois. Une seule. Je ferai le reste du regard pour nous deux."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : dans la capsule, tu préfères monter ou descendre ?",
+   "reponses": [
+    {
+     "label": "Monter, toujours !",
+     "valeur": "monter",
+     "t": "Monter ! Yes ! Tu as le cœur d'un liftier des Nuées ! On saute ensemble au prochain départ. Doucement. Nova nous regarde.",
+     "rappel": "Alors, toujours partant pour monter ?"
+    },
+    {
+     "label": "Descendre, pour voir la mer.",
+     "valeur": "descendre",
+     "t": "Descendre… Tu parles comme Lili. Et comme Barnabé, un peu. Bon. Ce n'est pas grave : pour descendre, il faut d'abord être monté. Tu es sur la bonne voie.",
+     "rappel": "Toujours envie de descendre voir la mer ?"
+    },
+    {
+     "label": "Rester au milieu, dans le nuage.",
+     "valeur": "nuage",
+     "t": "Au milieu ? Dans les dix secondes toutes blanches ? Ah… tu as trouvé le meilleur moment. Personne ne le dit jamais. Je chanterai une chanson pour toi, la prochaine fois.",
+     "rappel": "Prêt pour tes dix secondes de nuage ?"
+    }
+   ]
+  },
+  "liens": {
+   "barnabe_hf": {
+    "qui": "mon correspondant,",
+    "nom": "Barnabé",
+    "sentiment": 0.95,
+    "avis": "Barnabé a le vertige, et il est liftier quand même. Moi, monter ne me coûte rien. Lui, chaque étage lui coûte quelque chose. C'est lui, le vrai héros de la Colonne. Je le lui écris dans chaque lettre. Il ne me croit jamais.",
+    "anecdotes": [
+     "Dans une lettre, il m'a dessiné la vue du Belvédère de Hautefond. Le dessin était tout flou. Il m'a expliqué qu'il l'avait fait les yeux à moitié fermés. C'est mon dessin préféré."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Tu as regardé par la vitre ?"
+     ],
+     [
+      "b",
+      "Un peu ! Au troisième nuage !"
+     ],
+     [
+      "a",
+      "Il n'y a qu'un nuage, Barnabé."
+     ],
+     [
+      "b",
+      "Alors je l'ai regardé trois fois !"
+     ]
+    ]
+   },
+   "capucine_hf": {
+    "qui": "la Grande Liftière,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.8,
+    "avis": "Maîtresse Capucine m'intimide. Elle parle à la Colonne et la Colonne lui répond. Quand elle a dit que ma capsule était « bien élevée », j'ai failli pleurer. Venant d'elle, c'est une médaille.",
+    "anecdotes": [
+     "Elle m'a offert une casquette de la Confrérie pour la réouverture. Elle a dit : « Tenez la rampe. Même en haut. » Je tiens la rampe. Même sur le quai."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Monsieur Zénith. Vous sautez dans la cabine ?"
+     ],
+     [
+      "a",
+      "Un tout petit peu, Maîtresse !"
+     ],
+     [
+      "b",
+      "Un millimètre. Pas plus."
+     ]
+    ]
+   },
+   "lili_nu": {
+    "qui": "ma petite spectatrice,",
+    "nom": "Lili",
+    "sentiment": 0.85,
+    "avis": "Lili vient voir partir chaque capsule. Elle n'est jamais descendue. Je lui raconte tout : la mer, les bateaux, les mouettes. Elle trouve que je ne suis pas assez poétique. Elle a raison. Je suis liftier, pas poète.",
+    "anecdotes": [
+     "Un jour, je lui ai rapporté un seau d'eau de mer de Hautefond. Elle a mis les mains dedans pendant une heure. Elle a dit : « C'est froid, et ça pique un peu. » Elle avait l'air de la personne la plus heureuse du ciel."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Théo ! C'est comment, la mer, aujourd'hui ?"
+     ],
+     [
+      "a",
+      "Bleue. Mouillée. Grande."
+     ],
+     [
+      "b",
+      "Tu pourrais faire un effort."
+     ]
+    ]
+   },
+   "nova_nu": {
+    "qui": "l'ingénieure,",
+    "nom": "l'Ingénieure Nova",
+    "sentiment": 0.75,
+    "avis": "Nova sait tout de la capsule. Elle dit que je la déséquilibre d'un millimètre quand je saute. Elle ne m'a jamais interdit de sauter. Je crois qu'au fond, elle aime bien ce millimètre.",
+    "anecdotes": [
+     "Le jour de la réouverture, je l'ai vue sourire au pupitre quand la capsule est arrivée. Juste une seconde. Puis elle a repris son thé. Mais je l'ai vu."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Théo. Un millimètre."
+     ],
+     [
+      "a",
+      "Un millimètre de bonheur, Ingénieure !"
+     ],
+     [
+      "b",
+      "… Je le note dans le rapport."
+     ]
+    ]
+   }
+  }
+ },
+ "celeste_nu": {
+  "genre": "f",
+  "prenom": "Céleste",
+  "histoire": [
+   {
+    "titre": "la plume",
+    "t": "Quand j'étais petite, mon grand-père Séverin m'a montré une plume sur l'Esplanade. Il a soufflé dessus, et elle s'est envolée par-dessus la balustrade. « C'est comme ça que tout a commencé », m'a-t-il dit. J'ai couru au bord pour la rattraper. Il m'a retenue par le col. C'est la seule fois où je l'ai vu avoir peur."
+   },
+   {
+    "titre": "le premier conseil",
+    "t": "À mon premier Conseil, j'avais vingt-huit ans et un dossier sur les gouttières. Monsieur Pascal a parlé quarante minutes contre. Puis il a voté pour. En sortant, il m'a dit : « Je voulais voir si vous teniez le coup. » J'ai tenu le coup. Nous sommes amis depuis. Enfin, il dit que non."
+   },
+   {
+    "titre": "la mer",
+    "t": "Je n'ai vu la mer qu'à vingt ans. Ma mère disait toujours « bientôt ». Quand je suis enfin descendue, j'ai marché dans les vagues avec mes chaussures. Je suis remontée trempée, avec du sable jusque dans mes poches. Je l'ai gardé dans un flacon. Il est sur mon bureau. Lili ne le sait pas encore."
+   },
+   {
+    "titre": "les trois ans de révision",
+    "t": "Quand il a fallu fermer la Ligne pour trois ans, c'est moi qui ai signé. J'ai pensé à toutes les familles coupées en deux, entre le haut et le bas. Nous avons fait passer les lettres par dirigeable, avec la Capitaine Zéphyrine. Trois ans de courrier. Elle n'a jamais été en retard. Elle dit qu'elle a gagné contre la poste."
+   },
+   {
+    "titre": "le bientôt",
+    "t": "Je vais vous confier quelque chose, {surnom}. Je dis « bientôt » à Lili parce que j'ai peur qu'en voyant la mer, elle ait envie de rester en bas. Comme moi, à vingt ans, pendant une semaine. C'est égoïste. Je le sais. Le prochain « bientôt » sera le dernier. Je me le promets."
+   }
+  ],
+  "reve": [
+   "Descendre avec Lili par la Ligne, traverser Hautefond, marcher jusqu'à la Plage des Galets Blonds, et lui offrir sa première glace au bord de la mer. Et ne pas parler une seule fois de météo de toute la journée."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : quel temps fait-il dans votre cœur, aujourd'hui ?",
+   "reponses": [
+    {
+     "label": "Grand soleil !",
+     "valeur": "soleil",
+     "t": "Grand soleil ! Voilà un bulletin comme je les aime. Gardez-le : ici, nous n'avons pas besoin de plus.",
+     "rappel": "Toujours grand soleil, {surnom} ?"
+    },
+    {
+     "label": "Quelques nuages.",
+     "valeur": "nuages",
+     "t": "Quelques nuages… C'est honnête. Et c'est ce qui fait les beaux couchers de soleil, demandez à Ombeline. Revenez me voir quand ils seront passés.",
+     "rappel": "Vos nuages se sont-ils dissipés, {surnom} ?"
+    },
+    {
+     "label": "Un vent de liberté.",
+     "valeur": "vent",
+     "t": "Un vent de liberté. (Elle sourit.) Mon arrière-grand-père aurait aimé vous rencontrer. C'est ce vent-là qui a fait monter cette île.",
+     "rappel": "Toujours ce vent de liberté, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "lili_nu": {
+    "qui": "ma fille,",
+    "nom": "Lili",
+    "sentiment": 0.95,
+    "avis": "Lili est curieuse de tout, têtue comme un vent d'ouest, et elle me pose des questions auxquelles le Conseil n'a jamais pensé. Elle sera une meilleure Première Conseillère que moi. Si elle ne part pas vivre à la plage.",
+    "anecdotes": [
+     "Un soir, elle a accroché un cerf-volant au balcon pour qu'il « regarde la mer pendant la nuit ». Le matin, il était tourné vers Hautefond. Elle m'a dit : « Tu vois, il a regardé. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Maman, on descend quand ?"
+     ],
+     [
+      "a",
+      "Bien…"
+     ],
+     [
+      "b",
+      "Ne dis pas bientôt !"
+     ],
+     [
+      "a",
+      "… Très prochainement."
+     ]
+    ]
+   },
+   "severin": {
+    "qui": "mon grand-père,",
+    "nom": "Grand-Père Séverin",
+    "sentiment": 0.85,
+    "avis": "Grand-Père Séverin raconte la montée de l'île comme s'il y était. Il n'y était pas. Mais il la raconte si bien que tout le monde finit par s'en souvenir. C'est peut-être ça, la mémoire d'une ville.",
+    "anecdotes": [
+     "Au Conseil, il demande la parole à chaque séance pour raconter la montée. Je la lui donne. Ça dure vingt minutes. Personne ne s'en plaint, même pas Monsieur Pascal."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Céleste ! J'ai une histoire !"
+     ],
+     [
+      "a",
+      "Pas pendant le Conseil, Grand-Père."
+     ],
+     [
+      "b",
+      "Hein ? Je n'entends pas."
+     ],
+     [
+      "a",
+      "… Allez-y."
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "le Bourgmestre d'en bas,",
+    "nom": "le Bourgmestre Hector",
+    "sentiment": 0.6,
+    "avis": "Le Bourgmestre de Hautefond aime les rubans, les discours et les médailles. Il m'a envoyé quarante pages de félicitations pour la réouverture. Je les ai lues. Toutes. Il aime vraiment sa ville. Et un peu la nôtre, je crois.",
+    "anecdotes": [
+     "Pour la réouverture, il voulait un ruban de trente mètres autour de la Colonne. Maîtresse Capucine a refusé. Ils en ont coupé un de trente centimètres, à deux. J'ai tenu les ciseaux. J'ai rarement été aussi émue par un ruban."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame la Première Conseillère ! Un petit discours ?"
+     ],
+     [
+      "a",
+      "Un tout petit, Monsieur le Bourgmestre."
+     ],
+     [
+      "b",
+      "Je serai bref."
+     ],
+     [
+      "a",
+      "Temps couvert, alors."
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "mon meilleur opposant,",
+    "nom": "Monsieur Pascal",
+    "sentiment": 0.7,
+    "avis": "Monsieur Pascal vote contre tout, puis il revient avec une bonne idée. Le nichoir des Serres, c'est lui. Les bancs de la Gare, c'est lui. Il dit qu'il ne fait que se plaindre. Il fait beaucoup plus que ça.",
+    "anecdotes": [
+     "Il a voté contre la réouverture de la Ligne. Le jour de la fête, il était au premier rang. Il a applaudi le plus fort. Puis il m'a dit : « C'était pour les moineaux. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Je vote contre."
+     ],
+     [
+      "a",
+      "Contre quoi, Monsieur Pascal ?"
+     ],
+     [
+      "b",
+      "Je verrai bien. Contre."
+     ]
+    ]
+   }
+  }
+ },
+ "lili_nu": {
+  "genre": "f",
+  "prenom": "Lili",
+  "histoire": [
+   {
+    "titre": "le premier cerf-volant",
+    "t": "Mon premier cerf-volant, c'est Grand-Père Séverin qui me l'a fait, avec une vieille nappe et deux baguettes. Il était tout de travers. Il a volé quand même, très haut. Le vent l'a emporté au-dessus du bord. Je l'ai regardé descendre vers la mer. J'ai pleuré, puis j'ai trouvé ça beau : lui, au moins, il est allé en bas."
+   },
+   {
+    "titre": "le coquillage",
+    "t": "Grand-Père Séverin m'a donné un coquillage qui vient d'en bas. Il dit qu'on entend la mer dedans. Je le mets à mon oreille tous les soirs. J'entends un grand souffle. Maman dit que c'est mon sang qui bouge. Grand-Père dit que c'est la mer. Je crois Grand-Père."
+   },
+   {
+    "titre": "le seau de Théo",
+    "t": "Un jour, Théo m'a rapporté un seau d'eau de mer de Hautefond. J'ai mis les mains dedans pendant une heure. C'était froid et ça piquait un peu. Après, j'ai léché mes doigts. C'était salé ! Personne ne m'avait dit que la mer était salée ! J'ai trouvé ça incroyable. Les gens d'en bas ont de la chance."
+   },
+   {
+    "titre": "le calendrier",
+    "t": "J'ai écrit « DESCENDRE » sur le calendrier de Maman. Sur tous les jours. En gros. Maman l'a vu. Elle n'a rien effacé. Elle a juste entouré un jour, tout au bout, au crayon. Je ne sais pas lequel. Elle a caché le calendrier. Mais je sais qu'il y a un jour entouré."
+   },
+   {
+    "titre": "le secret du bord",
+    "t": "Je vais te dire mon secret, {surnom}. Quand je suis au Belvédère de verre, je m'allonge sur le plancher, et je regarde la mer en bas. Je fais comme si je volais au-dessus. Je ne suis jamais descendue, mais j'ai déjà volé au-dessus de la mer cent fois. C'est déjà pas mal, non ?"
+   }
+  ],
+  "reve": [
+   "Descendre en bas, marcher pieds nus sur une plage, manger une glace à la fraise pendant que les vagues me chatouillent les orteils, et rapporter un coquillage pour chaque personne de la Cité des Nuées. Même pour Monsieur Pascal. Surtout pour Monsieur Pascal."
+  ],
+  "question": {
+   "texte": "Dis, {surnom} : la mer, elle est de quelle couleur, de près ?",
+   "reponses": [
+    {
+     "label": "Bleue, toute bleue.",
+     "valeur": "bleue",
+     "t": "Toute bleue… Comme le ciel, alors ! C'est pour ça qu'on les confond, de loin. Je le savais.",
+     "rappel": "Toujours bleue, la mer ?"
+    },
+    {
+     "label": "Verte, avec de l'écume blanche.",
+     "valeur": "verte",
+     "t": "Verte ! Avec de l'écume ! Comme le lait de nuage de Gustave, mais en vert ! Oh, il faut que je le dise à Ombeline, elle va devoir changer ses tableaux.",
+     "rappel": "Elle est toujours verte, la mer ?"
+    },
+    {
+     "label": "Elle change tout le temps.",
+     "valeur": "change",
+     "t": "Elle change tout le temps ? Comme les couchers de soleil d'Ombeline ? Alors il faudra que je la regarde très, très longtemps. Toute une journée. Au moins.",
+     "rappel": "La mer a encore changé de couleur ?"
+    }
+   ]
+  },
+  "liens": {
+   "celeste_nu": {
+    "qui": "ma maman,",
+    "nom": "Maman",
+    "sentiment": 0.9,
+    "avis": "Maman est la Première Conseillère. Elle décide de tout dans la ville. Sauf de la mer. Pour la mer, elle dit « bientôt ». Je l'aime quand même. Beaucoup. Même avec ses bientôts.",
+    "anecdotes": [
+     "Un soir, je l'ai vue sur la terrasse du Conseil, en train de regarder la mer avec un flacon de sable dans la main. Elle ne m'a pas vue. Je n'ai rien dit. Mais je crois qu'elle aussi, elle a envie de descendre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maman, on descend quand ?"
+     ],
+     [
+      "b",
+      "Bien…"
+     ],
+     [
+      "a",
+      "NE DIS PAS BIENTÔT !"
+     ],
+     [
+      "b",
+      "… Très prochainement."
+     ]
+    ]
+   },
+   "severin": {
+    "qui": "mon arrière-grand-père,",
+    "nom": "Grand-Père Séverin",
+    "sentiment": 0.95,
+    "avis": "Grand-Père Séverin raconte la mer mieux que tout le monde. Il ferme les yeux et il parle des vagues, des galets, des mouettes. Quand il raconte, je la vois. Il est un peu sourd. Mais pas quand c'est moi qui parle.",
+    "anecdotes": [
+     "Il m'a appris à faire voler un cerf-volant par vent du nord. Il dit que Séraphin faisait pareil. Il a lâché la ficelle, il a ri, et il a dit : « Voilà, comme ça, l'île est montée. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Grand-Père ! Raconte la mer !"
+     ],
+     [
+      "b",
+      "Hein ? La mer ? Ah, la mer…"
+     ],
+     [
+      "a",
+      "Oui ! Celle avec les galets !"
+     ]
+    ]
+   },
+   "theo_nu": {
+    "qui": "mon copain liftier,",
+    "nom": "Théo",
+    "sentiment": 0.8,
+    "avis": "Théo descend et monte toute la journée. Il est trop chanceux. Il me raconte la mer, mais il n'est pas assez poétique. Il dit toujours « mouillé ». Je lui apprends des mots. « Scintillante ». « Immense ». Il oublie.",
+    "anecdotes": [
+     "Il m'a rapporté un seau de mer. J'ai mis les mains dedans pendant une heure. C'est le plus beau cadeau du monde. Après le coquillage de Grand-Père. Et après une glace, quand j'en aurai une."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Théo ! Elle est comment, la mer ?"
+     ],
+     [
+      "b",
+      "Mouillée !"
+     ],
+     [
+      "a",
+      "Théo…"
+     ],
+     [
+      "b",
+      "Euh… Scintillante !"
+     ]
+    ]
+   },
+   "pimprenelle_hf": {
+    "qui": "ma copine d'en bas,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.75,
+    "avis": "Pimprenelle habite à Hautefond. Elle est montée pour la réouverture avec un sac de boulons. Elle dit qu'en bas, il y a des boulons partout. Moi, je lui ai demandé s'il y avait des coquillages partout. Elle a dit : « Sur la plage, oui. » J'ai failli m'évanouir.",
+    "anecdotes": [
+     "On a échangé : un boulon contre un bout de ficelle de cerf-volant. Elle porte la ficelle au poignet. Moi, le boulon au cou. Elle a dit qu'on était « des sœurs de quincaillerie »."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Tu as un boulon ?"
+     ],
+     [
+      "a",
+      "Non ! Tu as un coquillage ?"
+     ],
+     [
+      "b",
+      "Non ! … On échange quand même ?"
+     ]
+    ]
+   }
+  }
+ },
+ "severin": {
+  "genre": "m",
+  "prenom": "Séverin",
+  "histoire": [
+   {
+    "titre": "le récit de mon père",
+    "t": "Mon père avait cinq ans quand l'île est montée. Il était sur le dos de Séraphin, son père, au milieu de l'Esplanade. Il m'a raconté cent fois : le grondement, la poussière, les maisons qui tremblent, et puis… le silence, et le soleil. Il disait : « Le silence a duré une minute, puis tout le monde a crié de joie. » J'y étais, moi aussi. Dans son histoire."
+   },
+   {
+    "titre": "le linge de la voisine",
+    "t": "Le jour de la montée, une voisine a crié « Mon linge ! ». Ses draps étaient restés en bas, sur un fil, à Hautefond. Le lendemain, les liftiers les ont remontés par la Colonne, bien pliés. C'était le premier colis de la Ligne des Nuées. Mon père disait que les draps sentaient encore le Plancher."
+   },
+   {
+    "titre": "Gisèle",
+    "t": "J'ai épousé Gisèle sur le Belvédère de verre. Elle avait peur du vide. Elle a dit oui les yeux fermés. Soixante-dix ans plus tard, elle me dit qu'elle aurait dû regarder. Je lui dis qu'elle aurait vu un très beau garçon. Elle dit qu'elle aurait vu le vide. On rit encore."
+   },
+   {
+    "titre": "les descentes avec mon père",
+    "t": "Quand j'étais petit, mon père m'emmenait en bas une fois par mois, par la Colonne. On allait voir la mer. Il ramassait un coquillage, il me le donnait, et il disait : « N'oublie jamais d'où on vient. » J'ai gardé le dernier. Je l'ai donné à Lili. Il marche encore. On entend la mer."
+   },
+   {
+    "titre": "pourquoi je raconte",
+    "t": "Tu sais pourquoi je raconte la montée à tout le monde, {surnom} ? Ce n'est pas pour me vanter. C'est parce que bientôt, il n'y aura plus personne qui l'aura entendue de la bouche de quelqu'un qui l'a entendue de quelqu'un qui y était. Alors je la raconte. Et maintenant, toi aussi, tu la connais. Tu y étais. Un peu."
+   }
+  ],
+  "reve": [
+   "Descendre une dernière fois à Hautefond, avec Lili, tenir sa petite main pendant qu'elle voit la mer pour la première fois, et lui donner un coquillage tout neuf en lui disant ce que mon père me disait : « N'oublie jamais d'où on vient. »"
+  ],
+  "question": {
+   "texte": "Hein ? Dis-moi, toi : tu préfères les histoires vraies ou les histoires inventées ?",
+   "reponses": [
+    {
+     "label": "Les vraies.",
+     "valeur": "vraies",
+     "t": "Les vraies ! Alors tu vas adorer les miennes : elles sont toutes vraies. Presque. Enfin, elles le deviennent à force d'être racontées.",
+     "rappel": "Tu veux une autre histoire vraie ?"
+    },
+    {
+     "label": "Les inventées.",
+     "valeur": "inventees",
+     "t": "Les inventées ? Ha ! Tu es bien comme moi, toi. Mais ne le dis pas à Céleste : pour elle, je ne raconte que la vérité. Avec un peu de garniture.",
+     "rappel": "Une histoire inventée, aujourd'hui ? J'en ai une toute fraîche."
+    },
+    {
+     "label": "Celles qu'on raconte bien.",
+     "valeur": "bien",
+     "t": "Celles qu'on raconte bien… (Il te regarde longtemps.) Voilà une réponse de vieux sage. Tu as quel âge, au juste ? Ne réponds pas. Tu en as assez.",
+     "rappel": "Alors, on la raconte bien, aujourd'hui ?"
+    }
+   ]
+  },
+  "liens": {
+   "lili_nu": {
+    "qui": "mon arrière-petite-fille,",
+    "nom": "Lili",
+    "sentiment": 0.95,
+    "avis": "Lili, c'est le soleil de mes vieux jours. Elle veut voir la mer. Je l'ai vue cent fois. Je donnerais toutes mes fois pour qu'elle ait sa première. Je l'entends toujours, elle. Même quand j'ai oublié mon oreille gauche à la maison.",
+    "anecdotes": [
+     "Je lui ai donné mon coquillage. Le soir, je passe devant sa porte et je l'entends murmurer : « Bonne nuit, la mer. » Ça me fait monter les larmes. Je dis que c'est le vent."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Grand-Père ! Raconte la mer !"
+     ],
+     [
+      "a",
+      "Hein ? Ah, la mer… C'était un mardi…"
+     ],
+     [
+      "b",
+      "Non, pas la montée, la mer !"
+     ]
+    ]
+   },
+   "celeste_nu": {
+    "qui": "ma petite-fille,",
+    "nom": "Céleste",
+    "sentiment": 0.85,
+    "avis": "Céleste tient la ville comme Séraphin tenait ses moteurs : avec calme, et en regardant le ciel avant de décider. Elle me trouve trop bavard. Elle me laisse quand même parler au Conseil. C'est une bonne Première Conseillère.",
+    "anecdotes": [
+     "Elle me demande de ne pas manger plus de deux chouquettes par jour. Je suis devenu un peu sourd ce jour-là. Je n'ai jamais retrouvé l'audition sur ce sujet."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Grand-Père, deux chouquettes, pas plus."
+     ],
+     [
+      "a",
+      "Hein ? Quoi ? Douze ?"
+     ],
+     [
+      "b",
+      "Grand-Père…"
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "le jeune ronchon,",
+    "nom": "Pascal",
+    "sentiment": 0.7,
+    "avis": "Pascal a soixante-dix ans. Pour moi, c'est un gamin. Il se plaint de tout. Je lui dis qu'il aura le droit de se plaindre quand il aura mon âge. Il répond qu'il s'entraîne. Il est doué. Mais il a un cœur d'or. Les moineaux le savent.",
+    "anecdotes": [
+     "Un jour, il m'a apporté une chouquette en disant : « Elle était en trop. » Gustave ne fait jamais de chouquettes en trop. Il l'avait achetée pour moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pascal ! Tu râles encore ?"
+     ],
+     [
+      "b",
+      "Je ne râle pas, Monsieur Séverin. Je constate."
+     ],
+     [
+      "a",
+      "Hein ? Tu chantes ?"
+     ]
+    ]
+   },
+   "capucine_hf": {
+    "qui": "la Grande Liftière d'en bas,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.7,
+    "avis": "Séraphin était liftier dans la Confrérie, avec une Rouage au guichet. Capucine en est la descendante. Quand elle est montée pour la réouverture, elle m'a serré la main et a dit : « Votre grand-père nous a volé un morceau de Butte. » Puis elle a souri. Toute la famille est pardonnée.",
+    "anecdotes": [
+     "Elle m'a dit que dans le registre de la Confrérie, à la date de la montée, il est écrit : « Séraphin Altaïr : parti sans prévenir, avec un bout de la ville. Retard : définitif. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Monsieur Altaïr. La Colonne vous salue."
+     ],
+     [
+      "a",
+      "Hein ? La Colonne ?"
+     ],
+     [
+      "b",
+      "Elle fait « ding ». Écoutez."
+     ]
+    ]
+   }
+  }
+ },
+ "gustave_nu": {
+  "genre": "m",
+  "prenom": "Gustave",
+  "histoire": [
+   {
+    "titre": "Bouilloire",
+    "t": "Je suis né Gustave Bouilloire, à Hautefond, deux ans après mon frère Firmin. Lui, il aimait la vapeur. Moi, la mousse. À dix ans, on se disputait déjà : qui ferait le meilleur chocolat ? Notre mère a tranché : « Les deux. Et lavez vos tasses. »"
+   },
+   {
+    "titre": "la montée",
+    "t": "À vingt ans, je suis monté aux Nuées pour un été, comme serveur. L'eau bouillait si vite que mon thé était prêt avant moi. Je me suis dit : voilà un endroit pour un homme pressé. Je suis resté quarante ans. Je ne suis toujours pas pressé. Mais mon thé, oui."
+   },
+   {
+    "titre": "le lait de nuage",
+    "t": "Le lait de nuage, je l'ai inventé par accident. Je battais un lait vanillé en terrasse, le vent s'est levé, et la mousse a gonflé, gonflé, jusqu'à déborder de la tasse comme un petit cumulus. Un client a crié : « C'est un nuage ! » J'ai changé de nom le lendemain. Cumulus, ça flotte mieux que Bouilloire."
+   },
+   {
+    "titre": "les lettres de Firmin",
+    "t": "Pendant les trois ans de révision, Firmin et moi, on s'écrivait chaque semaine, par le dirigeable de Zéphyrine. Une lettre sur deux, c'était une recette. L'autre, c'était pour dire que la recette de l'autre était ratée. J'ai toutes ses lettres. Elles sentent le chocolat. Les miennes sentent la vanille, il paraît."
+   },
+   {
+    "titre": "la chouquette en trop",
+    "t": "Je vais te dire un secret, {surnom}. Chaque matin, je fais une chouquette de plus que prévu. Une seule. Je la donne à quelqu'un qui a l'air d'en avoir besoin. Hier, c'était Monsieur Pascal. Avant-hier, Barnabé, tout vert, à la sortie de la capsule. Aujourd'hui, c'est peut-être toi. Tu as besoin d'une chouquette ?"
+   }
+  ],
+  "reve": [
+   "Ouvrir un comptoir commun avec mon frère Firmin, au Belvédère de Hautefond, à mi-chemin entre son Piston Joyeux et mon Café Cumulus : moitié vapeur, moitié mousse. Et enfin, après cinquante ans de dispute, déclarer match nul. Enfin, presque nul. J'aurais un petit peu gagné."
+  ],
+  "question": {
+   "texte": "Question sérieuse, {surnom} : chocolat qui siffle, ou chocolat qui mousse ?",
+   "reponses": [
+    {
+     "label": "Qui siffle, comme chez Firmin !",
+     "valeur": "siffle",
+     "t": "Qui siffle ?! Traître ! … Ha ha ! Bon, c'est vrai que la machine de mon frère a du caractère. Mais goûte quand même ma mousse, avant de choisir pour la vie.",
+     "rappel": "Toujours dans l'équipe de la vapeur, petit traître ?"
+    },
+    {
+     "label": "Qui mousse, évidemment !",
+     "valeur": "mousse",
+     "t": "Évidemment ! Tu as du goût, toi ! Je vais l'écrire à Firmin. Il va siffler de colère. Ça lui fera de la vapeur pour la semaine.",
+     "rappel": "Une mousse, comme d'habitude ?"
+    },
+    {
+     "label": "Les deux, dans la même tasse.",
+     "valeur": "deux",
+     "t": "Les deux dans la même tasse… (Il se gratte la moustache.) Mon frère et moi, on n'y avait jamais pensé. Cinquante ans de dispute, et la réponse était là. Ne le dis à personne. Je vais essayer en secret.",
+     "rappel": "Alors, ce mélange secret ? J'y travaille."
+    }
+   ]
+  },
+  "liens": {
+   "firmin": {
+    "qui": "mon grand frère,",
+    "nom": "Firmin",
+    "sentiment": 0.9,
+    "avis": "Firmin, c'est mon grand frère, ma moustache de référence et mon rival depuis toujours. Sa machine siffle, ma mousse chuchote. Quand la Ligne a rouvert, il est monté avec une tasse de son chocolat. Je l'ai goûté. J'ai fait la grimace. Je l'ai fini. Il a fait pareil avec mon lait de nuage.",
+    "anecdotes": [
+     "Le jour de la réouverture, on s'est serrés dans les bras au milieu de l'Esplanade. Sa moustache s'est prise dans la mienne. Il a fallu dix minutes et Mireille pour nous démêler."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "TCHOUUU ! Petit frère !"
+     ],
+     [
+      "a",
+      "Pschhht ! Grand frère !"
+     ],
+     [
+      "b",
+      "Ma vapeur est plus haute !"
+     ],
+     [
+      "a",
+      "Ma mousse est plus légère !"
+     ]
+    ]
+   },
+   "flora": {
+    "qui": "ma fournisseuse de fraises,",
+    "nom": "Flora",
+    "sentiment": 0.85,
+    "avis": "Les fraises de Flora sont dans mon jus de soleil. Je dis que c'est ma recette secrète. Le secret, ce sont ses fraises. Elle le sait. Elle ne dit rien. C'est la femme la plus gentille de l'île. Et la plus verte.",
+    "anecdotes": [
+     "Une fois, elle m'a livré une fraise si grosse que je l'ai servie comme gâteau d'anniversaire, avec une bougie dessus. Personne n'a vu la différence. La fraise, si : elle a rougi."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Gustave, ta recette secrète est prête ?"
+     ],
+     [
+      "a",
+      "Elle n'attend plus que tes fraises."
+     ],
+     [
+      "b",
+      "Ce n'est plus très secret, alors."
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "mon client de six heures,",
+    "nom": "Monsieur Pascal",
+    "sentiment": 0.8,
+    "avis": "Monsieur Pascal commande une chouquette tous les matins. Il en mange la moitié, l'autre part dans sa poche pour les moineaux. Je lui en mets une de plus en douce. Il fait semblant de ne pas le voir. Nous nous entendons à merveille, sans jamais nous le dire.",
+    "anecdotes": [
+     "Un matin, il a dit : « Vos chouquettes sont trop sucrées. » Le lendemain, j'en ai fait moins sucrées. Il a dit : « Pas assez sucrées. » Le surlendemain, je n'ai rien changé. Il a dit : « Voilà. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Une chouquette. Une seule."
+     ],
+     [
+      "a",
+      "Une seule, Monsieur Pascal."
+     ],
+     [
+      "b",
+      "… Et ce qu'il y a dans ma poche, je ne veux pas le savoir."
+     ]
+    ]
+   },
+   "zephyrine_nu": {
+    "qui": "ma cliente du soir,",
+    "nom": "la Capitaine Zéphyrine",
+    "sentiment": 0.75,
+    "avis": "Zéphyrine me raconte chaque soir la course du jour contre Héloïse. Elle gagne toujours. J'ai entendu la même histoire quatre mille fois. Je ris au bon moment. C'est mon métier, et c'est mon plaisir.",
+    "anecdotes": [
+     "Le jour où Héloïse est montée au Café, elles se sont assises dos à dos, chacune à sa table, et elles ont raconté la même course, chacune à sa façon, en même temps. J'ai servi deux thés. Et j'ai ri deux fois."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Gustave ! J'ai gagné !"
+     ],
+     [
+      "a",
+      "Par combien, Capitaine ?"
+     ],
+     [
+      "b",
+      "Par beaucoup !"
+     ],
+     [
+      "a",
+      "Comme hier, alors."
+     ]
+    ]
+   }
+  }
+ },
+ "mireille": {
+  "genre": "f",
+  "prenom": "Mireille",
+  "histoire": [
+   {
+    "titre": "le réveil qui endort",
+    "t": "À cinq ans, j'ai démonté le réveil de ma mère. Je l'ai remonté. Il sonnait à l'envers : au lieu de réveiller, il endormait. Ma mère l'a gardé pour ses siestes. C'est ma première invention. Elle marche encore. Parfaitement. C'est la seule."
+   },
+   {
+    "titre": "les plans de Séraphin",
+    "t": "Quand j'ai repris l'Atelier, j'ai trouvé au mur les plans des Sustentateurs, dessinés par Séraphin lui-même, avec une tache de thé dans le coin. J'ai passé une nuit entière à les regarder. Au matin, j'avais compris une chose : lui aussi, il avait raté plein de choses avant de réussir. Il y a quarante-trois ratures. Je les ai comptées."
+   },
+   {
+    "titre": "le parapluie qui monte",
+    "t": "Mon parapluie-ascenseur monte. Très bien. Le premier testeur est resté accroché au grand mât de l'Institut pendant une heure. Il a dit que la vue était superbe. C'était le Docteur Aurèle. Il a baptisé trois nuages pendant qu'il attendait. Il dit que c'était la meilleure heure de sa carrière."
+   },
+   {
+    "titre": "Plumeau",
+    "t": "Plumeau a été construit ici, à l'Atelier, par mon vieux maître, il y a quarante ans. Le premier jour, il a épousseté un arbre. Entièrement. Toutes les feuilles. Mon maître a ri pendant une semaine. Aujourd'hui, c'est moi qui lui huile les genoux. Il me raconte les blagues d'Aurèle. Il ne les comprend pas. Moi non plus. On rit ensemble."
+   },
+   {
+    "titre": "le presque",
+    "t": "Tu veux savoir pourquoi mes inventions marchent presque, {surnom} ? Parce que le jour où l'une d'elles marchera complètement, je n'aurai plus d'excuse pour revenir à l'établi le soir. Et l'établi, le soir, sous la lampe, avec une idée qui ne fume pas encore… c'est l'endroit où je suis le plus heureuse au monde."
+   }
+  ],
+  "reve": [
+   "Inventer une machine qui marche du premier coup, une seule fois, devant toute la ville, sur l'Esplanade. Que tout le monde applaudisse. Puis la démonter le soir même, pour voir comment j'ai fait."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : une invention qui marche presque, c'est une réussite ou un échec ?",
+   "reponses": [
+    {
+     "label": "Une réussite !",
+     "valeur": "reussite",
+     "t": "Une réussite ! Voilà ! Enfin quelqu'un qui comprend ! Tu veux un parapluie ? Avec réduction ? Presque.",
+     "rappel": "Toujours partant pour une presque-réussite ?"
+    },
+    {
+     "label": "Un échec, mais un joli.",
+     "valeur": "joli",
+     "t": "Un joli échec… J'aime bien. C'est ce que disait Séraphin, paraît-il, à chaque rature. Il en a fait quarante-trois. Je suis à quatre cent douze. Je le dépasse.",
+     "rappel": "Alors, tu as vu mes nouveaux jolis échecs ?"
+    },
+    {
+     "label": "Une invention pas finie.",
+     "valeur": "pas_finie",
+     "t": "Pas finie. (Elle sourit.) Oui. C'est exactement ça. Rien n'est jamais fini. Sauf les chouquettes de Gustave. Elles, elles finissent toujours trop vite.",
+     "rappel": "Tu viens voir où en est mon invention pas finie ?"
+    }
+   ]
+  },
+  "liens": {
+   "nova_nu": {
+    "qui": "ma voisine ingénieure,",
+    "nom": "l'Ingénieure Nova",
+    "sentiment": 0.8,
+    "avis": "Nova emprunte mon établi le soir. Elle me rend tout bien rangé, avec une note : « Ceci n'est pas un jouet. » Je lui réponds : « Si. Un peu. » C'est la personne la plus sérieuse de l'île. Je l'admire. Je l'énerve. C'est équilibré.",
+    "anecdotes": [
+     "Une fois, j'ai ajouté une petite hélice à sa clé à molette, pendant qu'elle dormait. Elle l'a enlevée le matin. Elle l'a remise le soir. Je l'ai vue la faire tourner pendant son thé."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mireille. Ceci n'est pas un jouet."
+     ],
+     [
+      "a",
+      "Si. Un peu."
+     ],
+     [
+      "b",
+      "… Un tout petit peu."
+     ]
+    ]
+   },
+   "plumeau": {
+    "qui": "mon robot préféré,",
+    "nom": "Plumeau",
+    "sentiment": 0.9,
+    "avis": "Plumeau est lent, poli, et il dit bonjour aux arbres. C'est la plus belle machine de l'île. Il ne marche pas « presque » : il marche à sa façon. Je n'ai jamais rien inventé d'aussi réussi. Ce n'est pas moi qui l'ai inventé, d'ailleurs.",
+    "anecdotes": [
+     "Il vient se faire huiler les genoux chaque semaine. Il me dit : « Merci, Mireille. Je me sens plus jeune de trois minutes. » Je ne sais pas comment il calcule. Mais ça me fait plaisir."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Mireille. Bonjour, l'établi."
+     ],
+     [
+      "a",
+      "Bonjour, Plumeau. Les genoux ?"
+     ],
+     [
+      "b",
+      "Ils grincent une blague."
+     ]
+    ]
+   },
+   "aurele": {
+    "qui": "mon client le plus exigeant,",
+    "nom": "le Docteur Aurèle",
+    "sentiment": 0.7,
+    "avis": "Le Docteur Aurèle me commande des machines pour prévoir le temps. Je lui fais des machines qui prévoient le temps d'hier. Il les trouve très utiles. Il dit que ce sont les seules qui ne se trompent jamais. Je ne sais pas si c'est un compliment.",
+    "anecdotes": [
+     "Il a testé mon parapluie-ascenseur. Il est resté une heure accroché au grand mât. Il a baptisé trois nuages. Il m'a remerciée. Il veut le même, mais « qui monte un peu moins vite »."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mireille, la machine a prévu de la pluie."
+     ],
+     [
+      "a",
+      "Pour quand, Docteur ?"
+     ],
+     [
+      "b",
+      "Pour hier. C'était juste."
+     ]
+    ]
+   },
+   "gaspard_hf": {
+    "qui": "l'horloger d'en bas,",
+    "nom": "Gaspard Ressort",
+    "sentiment": 0.6,
+    "avis": "Gaspard, l'horloger de Hautefond, est monté pour la réouverture. Il a regardé mes inventions pendant une heure sans rien dire. Puis il a dit : « C'est… original. » Chez lui, c'est le plus haut compliment. Il ne le dit qu'une fois par an.",
+    "anecdotes": [
+     "Il a essayé de régler mon grille-pain solaire. Il a dit : « Il grille avec trois secondes d'avance. » Je lui ai dit : « C'est pour que la tartine soit prête avant la faim. » Il a noté ça dans son carnet."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mademoiselle Volta. Votre horloge avance."
+     ],
+     [
+      "a",
+      "De combien ?"
+     ],
+     [
+      "b",
+      "De six minutes. Puis-je ?"
+     ],
+     [
+      "a",
+      "Je l'ai faite pour vous."
+     ]
+    ]
+   }
+  }
+ },
+ "aurele": {
+  "genre": "m",
+  "prenom": "Aurèle",
+  "histoire": [
+   {
+    "titre": "Bernard",
+    "t": "Mon premier nuage s'appelait Bernard. J'avais quatre ans. Il avait la forme d'un chien qui dort. Il a duré six minutes. J'ai pleuré. Ma mère m'a dit : « Il y en aura d'autres. » Elle avait raison. J'en ai baptisé quarante-deux mille. Bernard est en première page de mon carnet. Il le sera toujours."
+   },
+   {
+    "titre": "la prévision parfaite",
+    "t": "À vingt-cinq ans, j'ai fait ma première prévision officielle à l'Institut : « Averse à quinze heures douze. » À quinze heures douze, il a plu. Sur Hautefond. Deux cents mètres en dessous de nous. Pile à l'heure. Le Conseil a hésité entre me renvoyer et me décorer. Il m'a décoré. Pour la précision."
+   },
+   {
+    "titre": "le pari avec Lunette",
+    "t": "Le Professeur Lunette, de Hautefond, et moi, nous nous écrivons depuis trente ans. Il dit que mes nuages lui cachent ses étoiles. Je dis que ses étoiles ne servent à rien le jour. Pour la réouverture, il est monté avec sa grande lunette. Nous avons regardé le ciel toute la nuit, côte à côte. Pas un nuage. Il a dit : « Vous voyez ? » J'ai dit : « Justement, ils me manquent. »"
+   },
+   {
+    "titre": "Plumeau et les blagues",
+    "t": "Un jour, j'ai raconté une blague à Plumeau, le robot jardinier. Il l'a enregistrée. Le lendemain, il me l'a racontée, mot pour mot, avec mes pauses. Puis il m'a demandé : « Où est le drôle ? » Je n'ai pas su répondre. Depuis, je lui en raconte une par jour. Il en est à cent douze. Il n'a toujours pas trouvé le drôle. Moi non plus, parfois."
+   },
+   {
+    "titre": "pourquoi les nuages",
+    "t": "Je vais vous confier pourquoi j'aime les nuages, {surnom}. Ce n'est pas pour les prévoir. Je me trompe tout le temps. C'est qu'ils passent, et qu'il en revient toujours d'autres. Quand on vit sur une île qui flotte, on a besoin de savoir que le ciel ne reste jamais vide. Les nuages, ce sont des visiteurs. Comme vous."
+   }
+  ],
+  "reve": [
+   "Faire, une seule fois dans ma vie, une prévision complètement juste : la bonne heure, la bonne minute, et le bon endroit. Puis, juste après, me tromper magnifiquement, pour ne pas perdre la main."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : si vous étiez un nuage, vous seriez lequel ?",
+   "reponses": [
+    {
+     "label": "Un gros cumulus tout blanc.",
+     "valeur": "cumulus",
+     "t": "Un cumulus ! Joufflu, généreux, toujours de bonne humeur. Vous ferez un excellent nuage. Je vous baptise… Gaston. Non, vous avez déjà un nom. Je vous baptise vous.",
+     "rappel": "Bonjour, mon cumulus préféré."
+    },
+    {
+     "label": "Un nuage d'orage, plein d'énergie.",
+     "valeur": "orage",
+     "t": "Un cumulonimbus ! Ha ! Impressionnant, électrique, et un peu bruyant. Vous me plaisez. Ne grondez pas trop fort près de Monsieur Pascal.",
+     "rappel": "Pas d'orage aujourd'hui, j'espère ?"
+    },
+    {
+     "label": "Un petit nuage qui passe vite.",
+     "valeur": "passe",
+     "t": "Un petit nuage qui passe… (Il note quelque chose dans son carnet.) Ce sont mes préférés. Ceux qu'on ne voit qu'une fois. Je vous mets en première page, à côté de Bernard.",
+     "rappel": "Vous repassez, mon petit nuage ?"
+    }
+   ]
+  },
+  "liens": {
+   "octave_hf": {
+    "qui": "mon confrère d'en bas,",
+    "nom": "le Professeur Lunette",
+    "sentiment": 0.85,
+    "avis": "Octave Lunette regarde les étoiles, je regarde les nuages, et nous nous disputons pour savoir qui cache qui. Trente ans de lettres. C'est mon meilleur ami. Je ne le lui dirai jamais. Il le sait. Il le dit à tout le monde.",
+    "anecdotes": [
+     "Il a nommé une étoile Clémentine. J'ai nommé un nuage Octave. Il a été très vexé. Puis très flatté. Puis il m'a demandé si le nuage était beau. Il l'est."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Aurèle ! Votre Gontran me cache Clémentine !"
+     ],
+     [
+      "a",
+      "Gontran a le droit de passer, Octave."
+     ],
+     [
+      "b",
+      "La nuit ?!"
+     ],
+     [
+      "a",
+      "… Je lui parlerai."
+     ]
+    ]
+   },
+   "plumeau": {
+    "qui": "mon élève en blagues,",
+    "nom": "Plumeau",
+    "sentiment": 0.85,
+    "avis": "Plumeau répète mes blagues avec une précision parfaite. Il est le seul à rire au bon moment. C'est-à-dire jamais, mais à la bonne seconde. Je le trouve plus drôle que moi. Ne le lui dites pas, il ne comprendrait pas pourquoi.",
+    "anecdotes": [
+     "Un jour, il m'a raconté une blague à lui : « Pourquoi l'arbre ne répond-il jamais ? Parce qu'il traite la demande. » J'ai ri pendant dix minutes. Il m'a demandé où était le drôle. Je lui ai dit : « Toi. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Docteur Aurèle. Blague numéro cent douze ?"
+     ],
+     [
+      "a",
+      "Pas maintenant, Plumeau."
+     ],
+     [
+      "b",
+      "Blague numéro cent douze enregistrée pour plus tard."
+     ]
+    ]
+   },
+   "zephyrine_nu": {
+    "qui": "ma capitaine contrariante,",
+    "nom": "la Capitaine Zéphyrine",
+    "sentiment": 0.65,
+    "avis": "Zéphyrine me demande la météo avant chaque course. Puis elle fait le contraire. Et elle gagne. Je ne sais plus si je suis météorologue ou porte-bonheur à l'envers. Je continue à lui donner mes prévisions. Par curiosité scientifique.",
+    "anecdotes": [
+     "Elle m'a offert un nuage en bocal, pour me consoler d'une prévision. Je l'ai baptisé Zéphyr. Il fait une petite averse quand elle passe devant l'Institut. Je ne sais pas pourquoi. C'est mon plus grand mystère."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Docteur ! La météo pour la course ?"
+     ],
+     [
+      "a",
+      "Vent d'ouest, Capitaine. Fort."
+     ],
+     [
+      "b",
+      "Parfait. Je pars par l'est."
+     ]
+    ]
+   },
+   "severin": {
+    "qui": "le doyen,",
+    "nom": "Grand-Père Séverin",
+    "sentiment": 0.7,
+    "avis": "Séverin raconte que le jour de la montée, il faisait gris. J'ai vérifié dans les archives de l'Institut. Il faisait gris. C'est la seule partie de son histoire que je peux confirmer. Pour le reste, je lui fais confiance. Il a une très belle barbe.",
+    "anecdotes": [
+     "Il m'a demandé un jour : « Docteur, quel temps fera-t-il pour mes cent ans ? » J'ai répondu : « Grand soleil, à quatorze heures six. » Il a dit : « Notez-le. » Je l'ai noté. J'espère me tromper sur tout, sauf sur ça."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Docteur ! Il pleuvra ?"
+     ],
+     [
+      "a",
+      "Non, Monsieur Séverin."
+     ],
+     [
+      "b",
+      "Hein ? Il pleuvra ?"
+     ],
+     [
+      "a",
+      "NON !"
+     ],
+     [
+      "b",
+      "Ah. Mes genoux disent oui."
+     ]
+    ]
+   }
+  }
+ },
+ "nova_nu": {
+  "genre": "f",
+  "prenom": "Nova",
+  "histoire": [
+   {
+    "titre": "le premier boulon",
+    "t": "À huit ans, j'ai serré mon premier boulon sur un Sustentateur, sur les genoux de ma grand-mère, qui était cheffe avant moi. Elle m'a dit : « Pas trop fort, pas trop doux. Comme quand on tient la main de quelqu'un. » Je serre tous les boulons comme ça depuis. Ils tiennent tous."
+   },
+   {
+    "titre": "les trois secondes",
+    "t": "Il y a douze ans, Brindille s'est arrêtée trois secondes. L'île a penché d'un demi-degré. Toute la ville a crié. Moi, j'ai posé ma tasse, j'ai tapoté le pupitre, et j'ai dit : « Allez, ma belle. » Elle est repartie. Ma tasse n'a pas débordé. Ce jour-là, j'ai compris que le calme, ça se transmet. Même aux moteurs."
+   },
+   {
+    "titre": "le thé",
+    "t": "On dit que l'île flotte grâce aux calculs et au thé. Le thé, c'est ma grand-mère. Elle disait qu'on ne prend jamais une bonne décision la bouche sèche. Elle buvait onze tasses par jour. J'en bois douze. Je l'ai dépassée. Elle serait fière. Ou inquiète."
+   },
+   {
+    "titre": "le Vieux",
+    "t": "Le Vieux, le Sustentateur de l'ouest, c'est le premier que Séraphin a construit. Cent vingt ans sans une panne. Il ne fait aucun bruit. Parfois, la nuit, je descends dans la salle et je pose la main sur sa coque. Elle est tiède. Je lui dis merci. Il ne répond pas. Il tient. C'est sa façon de répondre."
+   },
+   {
+    "titre": "ce que je ne dis pas",
+    "t": "Je vais vous dire une chose que je n'écris jamais dans mes rapports, {surnom}. Je ne crois pas que l'île flotte seulement grâce aux calculs. Je crois qu'elle flotte aussi parce que tout le monde, ici, a envie qu'elle reste en l'air. Une ingénieure ne devrait pas dire ça. Alors je le dis tout bas. Et je reprends un thé."
+   }
+  ],
+  "reve": [
+   "Construire un cinquième Sustentateur, tout neuf, le premier depuis Séraphin, pour que le Vieux puisse enfin se reposer après cent vingt ans. Et le baptiser du nom de ma grand-mère : Constance."
+  ],
+  "question": {
+   "texte": "Question technique, {surnom} : face à une panne, que faites-vous ?",
+   "reponses": [
+    {
+     "label": "Je reste calme.",
+     "valeur": "calme",
+     "t": "Vous restez calme. Bien. C'est la moitié du travail. L'autre moitié, c'est le thé. Vous avez du thé ?",
+     "rappel": "Toujours calme ? Parfait. Tout est nominal."
+    },
+    {
+     "label": "Je demande de l'aide.",
+     "valeur": "aide",
+     "t": "Vous demandez de l'aide. C'est la réponse la plus intelligente que j'aie entendue cette semaine. Les moteurs, on ne les fait pas tenir tout seul. Même moi. Surtout moi.",
+     "rappel": "Vous avez encore demandé de l'aide, aujourd'hui ? C'est bien."
+    },
+    {
+     "label": "Je tape dessus.",
+     "valeur": "tape",
+     "t": "Vous tapez dessus. (Elle pose sa tasse.) Ne touchez à rien dans cette salle. Jamais. … Bon, d'accord : un petit tapotement, parfois, ça marche. Mais ne le dites à personne.",
+     "rappel": "Vous n'avez rien tapé aujourd'hui, j'espère ?"
+    }
+   ]
+  },
+  "liens": {
+   "mireille": {
+    "qui": "ma voisine d'établi,",
+    "nom": "Mireille",
+    "sentiment": 0.75,
+    "avis": "Mireille invente des choses qui marchent presque. Moi, j'entretiens des choses qui doivent marcher toujours. Elle m'énerve. Elle me fait rire. Ses idées sont folles, mais une sur dix est brillante. Je garde un carnet de ses idées brillantes. Il y en a trente-sept.",
+    "anecdotes": [
+     "Elle a mis une hélice sur ma clé à molette. Je l'ai enlevée le matin. Je l'ai remise le soir. Elle tourne pendant mon thé. Je ne lui ai jamais dit. Elle le sait."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mireille. Ceci n'est pas un jouet."
+     ],
+     [
+      "b",
+      "Si. Un peu."
+     ],
+     [
+      "a",
+      "… Un tout petit peu."
+     ]
+    ]
+   },
+   "theo_nu": {
+    "qui": "le liftier sauteur,",
+    "nom": "Théo",
+    "sentiment": 0.8,
+    "avis": "Théo saute dans la capsule à chaque départ. Ça la déséquilibre d'un millimètre. Il appelle ça « un millimètre de bonheur ». Je n'ai trouvé aucun contre-argument dans mes calculs. J'ai arrêté de chercher.",
+    "anecdotes": [
+     "Pendant les trois ans de révision, il a astiqué la capsule tous les jours. Je lui ai dit que ce n'était pas nécessaire. Il a dit : « Pour qu'elle ne s'ennuie pas. » Je l'ai laissé faire. Elle ne s'est pas ennuyée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Théo. Un millimètre."
+     ],
+     [
+      "b",
+      "Un millimètre de bonheur, Ingénieure !"
+     ],
+     [
+      "a",
+      "… Je le note dans le rapport."
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "mon plaignant hebdomadaire,",
+    "nom": "Monsieur Pascal",
+    "sentiment": 0.65,
+    "avis": "Monsieur Pascal vient se plaindre chaque semaine que l'île penche. Je mesure. Elle ne penche pas. Il dit : « Alors c'est moi qui penche. » Je lui sers un thé. Il penche moins. C'était un excellent ingénieur des pressions. Il vient surtout pour parler moteurs. Il ne le dira jamais.",
+    "anecdotes": [
+     "Une fois, il avait raison : l'île penchait d'un dixième de degré, à cause d'un échafaudage oublié. Il l'avait senti dans son fauteuil. Je l'ai remercié. Il a dit : « Je me plains, mais je me plains juste. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Elle penche, Ingénieure."
+     ],
+     [
+      "a",
+      "Elle ne penche pas, Monsieur Pascal."
+     ],
+     [
+      "b",
+      "Alors c'est moi."
+     ],
+     [
+      "a",
+      "Un thé ?"
+     ]
+    ]
+   },
+   "capucine_hf": {
+    "qui": "la Grande Liftière d'en bas,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.8,
+    "avis": "Maîtresse Capucine parle à la Colonne comme je parle à mes moteurs. Nous nous sommes comprises en trois mots. Elle a posé la main sur mon pupitre, Grondin a ronronné. Grondin ne ronronne pour personne. Cette femme a un don.",
+    "anecdotes": [
+     "Elle m'a dit : « Votre moteur et ma Colonne sont parents, vous savez. » Je lui ai demandé : « Comment le savez-vous ? » Elle a dit : « Ils grincent pareil, la nuit. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ingénieure Volant. Ils sont bien élevés."
+     ],
+     [
+      "a",
+      "Merci, Maîtresse Rouage. Votre Colonne aussi."
+     ],
+     [
+      "b",
+      "Elle vous salue."
+     ],
+     [
+      "a",
+      "Grondin aussi."
+     ]
+    ]
+   }
+  }
+ },
+ "flora": {
+  "genre": "f",
+  "prenom": "Flora",
+  "histoire": [
+   {
+    "titre": "la fraise du rebord",
+    "t": "À six ans, j'ai planté un fraisier sur le rebord de ma fenêtre. Il a donné une seule fraise, toute petite. Je l'ai coupée en quatre, pour mes parents, mon frère et moi. C'était la meilleure fraise du monde. Aujourd'hui, une seule de mes fraises nourrit quatre familles. Mais aucune n'a jamais eu aussi bon goût."
+   },
+   {
+    "titre": "Adèle",
+    "t": "Adèle est arrivée dans les Serres il y a trois ans, toute petite chenille. Je l'ai nourrie de feuilles de capucine. Un matin, elle est sortie de son cocon, bleue et blanche, et elle s'est posée sur mon nez. Depuis, elle s'occupe des fleurs du deuxième dôme. C'est ma meilleure collègue. Elle ne prend jamais de vacances."
+   },
+   {
+    "titre": "la grève des papillons",
+    "t": "Un jour, les papillons du troisième dôme ont fait grève. Ils refusaient de polliniser les pommiers. J'ai cherché pendant une semaine. Ils trouvaient les fleurs trop serrées. J'ai écarté les branches. Ils sont revenus le lendemain. J'ai appris qu'il faut toujours écouter ses collègues. Même quand ils ont des ailes."
+   },
+   {
+    "titre": "le Père Bastien",
+    "t": "Quand la Ligne a rouvert, un vieux jardinier de Hautefond est monté : le Père Bastien. Il pensait que nos arbres poussaient « dans le vide ». Il a parlé à mes pommiers pendant une heure. Je trouvais ça un peu fou. Le mois suivant, ils ont donné deux fois plus de pommes. Maintenant, je leur parle aussi. Tous les matins."
+   },
+   {
+    "titre": "le caillou de Lili",
+    "t": "La petite Lili a planté un caillou dans les Serres, à la place d'une graine de coquillage. Je l'arrose tous les jours, {surnom}. Je sais qu'il ne poussera pas. Mais elle passe le voir chaque semaine, et elle me demande : « Ça pousse ? » Je lui réponds : « Ça prend son temps. » Et c'est vrai. Les plus belles choses prennent leur temps."
+   }
+  ],
+  "reve": [
+   "Faire pousser, au cœur des Serres d'Altitude, une plante de chaque monde de la Colonne : une fleur des nuages, un pommier de Hautefond, un champignon lumineux des Strates et une algue du Dôme d'Azur. Un jardin des quatre mondes. Et laisser les papillons décider où ils préfèrent dormir."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : tu préfères les fraises, les fleurs ou les papillons ?",
+   "reponses": [
+    {
+     "label": "Les fraises, bien sûr !",
+     "valeur": "fraises",
+     "t": "Les fraises ! Tu as raison, elles sont délicieuses. Et elles ne s'envolent pas, ce qui est pratique pour les cueillir. Tiens, goûte celle-là. Elle s'appelle Brigitte.",
+     "rappel": "Une fraise, aujourd'hui ? Brigitte a une sœur."
+    },
+    {
+     "label": "Les fleurs.",
+     "valeur": "fleurs",
+     "t": "Les fleurs ! Tu as un cœur de jardinier. Les fleurs, on ne les mange pas, on ne les attrape pas : on les regarde. C'est le plus beau des métiers.",
+     "rappel": "Viens voir les fleurs du deuxième dôme. Adèle t'attend."
+    },
+    {
+     "label": "Les papillons.",
+     "valeur": "papillons",
+     "t": "Les papillons ! Ils vont être ravis. Adèle, tu entends ? On a un admirateur. … Elle bat des ailes. Elle est contente. Elle est un peu prétentieuse, aussi.",
+     "rappel": "Les papillons te saluent, {surnom}."
+    }
+   ]
+  },
+  "liens": {
+   "plumeau": {
+    "qui": "mon aide-jardinier,",
+    "nom": "Plumeau",
+    "sentiment": 0.85,
+    "avis": "Plumeau arrose très bien, mais il dit bonjour à chaque plante. J'en ai quatre mille. Il finit vers midi. Je l'ai laissé faire. Depuis qu'il leur dit bonjour, elles poussent mieux. Le Père Bastien avait raison, et Plumeau l'avait compris avant tout le monde.",
+    "anecdotes": [
+     "Il m'a demandé un jour pourquoi les plantes étaient lentes. J'ai dit : « Parce qu'elles prennent le temps de bien faire. » Il a dit : « Comme moi. » J'ai dit oui. Il a fait bip deux fois. C'est sa façon de sourire."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Flora. Bonjour, la fraise. Bonjour, la fraise. Bonjour, la…"
+     ],
+     [
+      "a",
+      "Plumeau, il y en a trois cents."
+     ],
+     [
+      "b",
+      "Je sais. Bonjour, la fraise."
+     ]
+    ]
+   },
+   "gustave_nu": {
+    "qui": "mon meilleur client,",
+    "nom": "Gustave",
+    "sentiment": 0.8,
+    "avis": "Gustave met mes fraises dans son jus de soleil et dit que c'est sa recette secrète. Je ne dis rien. Il est si fier. Et puis, il me paie en chouquettes. C'est le meilleur commerce de l'île.",
+    "anecdotes": [
+     "Une fois, il a servi une de mes fraises comme gâteau d'anniversaire, avec une bougie. Personne n'a vu la différence. Moi, si. J'ai pleuré un peu. C'était la plus belle fraise de l'année."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Flora ! Mes fraises secrètes sont arrivées ?"
+     ],
+     [
+      "a",
+      "Tes fraises secrètes, Gustave ?"
+     ],
+     [
+      "b",
+      "Nos fraises secrètes."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "le jardinier d'en bas,",
+    "nom": "le Père Bastien",
+    "sentiment": 0.85,
+    "avis": "Le Père Bastien parle aux arbres. Je trouvais ça un peu fou. Puis mes pommiers ont donné deux fois plus. Maintenant, je leur parle aussi. Il m'écrit chaque mois pour avoir des nouvelles de « ses petits suspendus ». Il les appelle comme ça, mes arbres.",
+    "anecdotes": [
+     "Il m'a offert un pépin de son grand pommier, celui de Dame Ysolde. Je l'ai planté au milieu du premier dôme. Il fait trois centimètres. Il est petit, dur et fier. Comme le Père Bastien a dit qu'il serait."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, ma belle. Pousse."
+     ],
+     [
+      "a",
+      "Il vous entend, Père Bastien."
+     ],
+     [
+      "b",
+      "Je sais. Il est poli. Il attend que je sois parti pour grandir."
+     ]
+    ]
+   },
+   "rosalie_hf": {
+    "qui": "ma correspondante du marché,",
+    "nom": "Rosalie Cannelle",
+    "sentiment": 0.7,
+    "avis": "Rosalie vend mes fraises au Grand Marché de Hautefond. Elle les vend toutes en une matinée. Elle m'écrit trois lettres par semaine, pleines de potins. Je ne connais personne en bas, mais je sais tout sur tout le monde. C'est très étrange. Et très drôle.",
+    "anecdotes": [
+     "Elle m'a écrit qu'elle racontait des histoires à mes fraises pour qu'elles restent fraîches pendant le voyage. Elles arrivent toujours en parfait état. Je ne sais pas si c'est le froid ou les potins."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ma petite Flora ! Tes fraises ont un succès fou !"
+     ],
+     [
+      "a",
+      "Merci, Rosalie. Tu leur as parlé ?"
+     ],
+     [
+      "b",
+      "Je leur ai tout raconté. Entre nous…"
+     ]
+    ]
+   }
+  }
+ },
+ "zephyrine_nu": {
+  "genre": "f",
+  "prenom": "Zéphyrine",
+  "histoire": [
+   {
+    "titre": "la première course",
+    "t": "Il y a vingt ans, à Hautefond, Héloïse et moi, on apprenait à piloter. Le premier jour, l'instructeur a dit : « Jusqu'au Mât, doucement. » On est parties comme des fusées. On est arrivées ensemble au Mât. Exactement ensemble. L'instructeur a dit « égalité ». Nous avons crié « J'ai gagné ! » en même temps. Ça dure depuis."
+   },
+   {
+    "titre": "la Libellule",
+    "t": "La Libellule, je l'ai construite avec Mireille, à l'Atelier. Mireille a voulu lui ajouter des ailes qui battent. J'ai refusé. Elle les a ajoutées pendant que je dormais. Elles battent quand on dit « merci ». J'ai appris à dire « grâce te soit rendue » à bord. C'est plus long, mais c'est plus sûr."
+   },
+   {
+    "titre": "les trois ans de courrier",
+    "t": "Pendant les trois ans de révision de la Ligne, c'est la Libellule qui a porté tout le courrier entre le haut et le bas. Deux fois par jour. Pas un seul retard. Céleste dit que j'ai sauvé des familles. Moi, je dis que j'ai gagné contre la poste. Les deux sont vrais."
+   },
+   {
+    "titre": "la panne de l'Albatros",
+    "t": "Un jour, pendant une course, l'Albatros d'Héloïse a eu une panne au-dessus de la mer. J'ai fait demi-tour. Je l'ai remorquée jusqu'au Mât de Hautefond. Elle n'a rien dit pendant tout le trajet. Quand on est arrivées, elle a juste dit : « Merci. » Et les ailes de la Libellule ont battu. Toutes seules. Je ne lui en ai jamais voulu, à Mireille."
+   },
+   {
+    "titre": "pourquoi la course",
+    "t": "Tu veux savoir pourquoi je fais la course avec Héloïse depuis vingt ans, {surnom} ? Ce n'est pas pour gagner. Quand on fait la course, on vole côte à côte, au-dessus de la mer, dans le même vent. Voler à côté de sa meilleure amie… il n'y a rien de plus beau. Mais j'ai gagné. Note-le."
+   }
+  ],
+  "reve": [
+   "Faire le tour du monde par les airs avec Héloïse, l'Albatros et la Libellule côte à côte, au-dessus de tous les mondes de la Colonne et de toutes les îles de l'archipel. Et arriver exactement ensemble, une deuxième fois. Pour pouvoir crier « J'ai gagné ! » en même temps, encore."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : qui a gagné, entre Héloïse et moi ?",
+   "reponses": [
+    {
+     "label": "Toi, évidemment !",
+     "valeur": "toi",
+     "t": "Évidemment ! Enfin quelqu'un d'honnête ! Je vais l'écrire à Héloïse. Par pigeon. Avec ton nom en gros.",
+     "rappel": "Tu le dis toujours : c'est moi qui ai gagné ?"
+    },
+    {
+     "label": "Héloïse.",
+     "valeur": "heloise",
+     "t": "Héloïse ?! … (Elle croise les bras.) Elle t'a payé combien ? Bon. Elle est très convaincante, je l'avoue. Mais elle a tort.",
+     "rappel": "Tu as changé d'avis, au sujet d'Héloïse ?"
+    },
+    {
+     "label": "Vous deux, ensemble.",
+     "valeur": "ensemble",
+     "t": "Toutes les deux… (Elle sourit, malgré elle.) Ne le répète surtout pas. Ni à elle, ni au Conseil. On a une réputation à tenir.",
+     "rappel": "Chut. Toujours « ensemble » ? Je ne dirai rien."
+    }
+   ]
+  },
+  "liens": {
+   "heloise_hf": {
+    "qui": "ma rivale de toujours,",
+    "nom": "la Capitaine Héloïse",
+    "sentiment": 0.95,
+    "avis": "Héloïse est la meilleure pilote de l'archipel. Après moi. Elle dit la même chose, dans l'autre sens. Vingt ans de courses, vingt ans de victoires des deux côtés. C'est ma meilleure amie. Et ma pire adversaire. Les deux en même temps, c'est très confortable.",
+    "anecdotes": [
+     "Pour la réouverture, elle est montée en dirigeable, pas par la capsule. « Par principe », a-t-elle dit. Elle a fait trois fois le tour de l'île avant de s'amarrer. Pour que je la voie bien. Je l'ai bien vue. Je l'ai battue au quatrième tour."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Zéphyrine ! J'ai gagné !"
+     ],
+     [
+      "a",
+      "Non, moi !"
+     ],
+     [
+      "b",
+      "Revanche demain ?"
+     ],
+     [
+      "a",
+      "À sept heures. Ne sois pas en retard. Comme hier."
+     ]
+    ]
+   },
+   "icare": {
+    "qui": "le moniteur de planeur,",
+    "nom": "Icare",
+    "sentiment": 0.7,
+    "avis": "Icare dit que son planeur va plus vite que la Libellule. En descente, peut-être. En descente, même un caillou va plus vite que la Libellule. Mais il plane joliment. Je lui ai proposé une course. Il a dit oui. J'ai gagné.",
+    "anecdotes": [
+     "Un jour, il s'est posé sur l'enveloppe de la Libellule, en plein vol. Il a dit : « Je passais. » J'ai dit : « Tu payes le voyage. » Il m'a donné une plume. Je l'ai gardée."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Capitaine ! Je vais plus vite que vous !"
+     ],
+     [
+      "a",
+      "En descente, Icare."
+     ],
+     [
+      "b",
+      "En descente, oui."
+     ],
+     [
+      "a",
+      "Alors c'est un caillou qui a gagné."
+     ]
+    ]
+   },
+   "gustave_nu": {
+    "qui": "mon auditeur du soir,",
+    "nom": "Gustave",
+    "sentiment": 0.8,
+    "avis": "Gustave écoute ma course du jour tous les soirs, avec un thé des sommets. Il rit au bon moment. Il a entendu quatre mille fois la même histoire. C'est le plus fidèle supporter de l'île. Je ne lui ai jamais dit que je l'enjolive. Il le sait.",
+    "anecdotes": [
+     "Le jour où Héloïse est montée au Café, nous nous sommes assises dos à dos et nous avons raconté la même course en même temps. Gustave a servi deux thés et il a ri deux fois. C'est un grand professionnel."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Gustave ! J'ai gagné !"
+     ],
+     [
+      "b",
+      "Par combien, Capitaine ?"
+     ],
+     [
+      "a",
+      "Par beaucoup !"
+     ],
+     [
+      "b",
+      "Comme hier, alors."
+     ]
+    ]
+   },
+   "aurele": {
+    "qui": "mon météorologue,",
+    "nom": "le Docteur Aurèle",
+    "sentiment": 0.6,
+    "avis": "Le Docteur Aurèle me donne la météo avant chaque course. Je fais toujours le contraire. Je gagne toujours. Il ne sait pas s'il doit être vexé ou fier. Moi, je suis reconnaissante. Il est le meilleur porte-bonheur à l'envers de l'île.",
+    "anecdotes": [
+     "Je lui ai offert un nuage en bocal pour le consoler. Il l'a baptisé Zéphyr. Il paraît qu'il fait une petite averse quand je passe devant l'Institut. C'est sûrement un hasard. Je passe moins souvent devant l'Institut, maintenant. Par délicatesse."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Docteur ! La météo ?"
+     ],
+     [
+      "b",
+      "Vent d'ouest, fort."
+     ],
+     [
+      "a",
+      "Parfait. Je pars par l'est."
+     ],
+     [
+      "b",
+      "Évidemment."
+     ]
+    ]
+   }
+  }
+ },
+ "icare": {
+  "genre": "m",
+  "prenom": "Icare",
+  "histoire": [
+   {
+    "titre": "le prénom",
+    "t": "Mes parents m'ont appelé Icare parce qu'ils trouvaient que ça sonnait bien. Ils n'avaient pas lu l'histoire jusqu'au bout. Toute mon enfance, on m'a dit : « Attention au soleil ! » Alors j'ai construit un planeur en toile solaire. Plus il fait soleil, mieux il vole. J'ai le dernier mot. Avec le sourire."
+   },
+   {
+    "titre": "le premier vol",
+    "t": "Mon premier vol, je l'ai fait à douze ans, depuis le bord de la Cascade, avec un drap et deux balais. J'ai plané dix mètres. Puis je suis tombé dans l'étang. Les canards m'ont regardé comme un très gros canard. J'ai su, ce jour-là, que je ne marcherais plus jamais quand je pourrais planer."
+   },
+   {
+    "titre": "la règle numéro un",
+    "t": "La règle numéro un, « face au vent, toujours », je l'ai apprise en la cassant. Un jour, j'ai voulu planer dos au vent. Je suis parti à toute vitesse vers le Port. J'ai atterri sur l'enveloppe de la Libellule, en plein vol. Zéphyrine m'a dit : « Tu paies le voyage. » Je lui ai donné une plume. Elle l'a gardée."
+   },
+   {
+    "titre": "Barnabé",
+    "t": "Barnabé, l'apprenti liftier de Hautefond, est venu me voir après la réouverture. Il voulait « juste regarder ». Il a regardé un planeur pendant une heure, de très loin. Puis il s'est approché. Puis il l'a touché, avec un doigt. J'ai applaudi. Il est devenu tout rouge. C'était le plus beau vol de ma semaine. Et il n'avait pas quitté le sol."
+   },
+   {
+    "titre": "la vraie règle",
+    "t": "Je vais te dire la vraie règle, {surnom}. Pas la règle numéro un, la vraie. On ne plane pas pour aller vite. On plane pour regarder. Celui qui va trop vite ne voit rien. Celui qui plane voit tout : l'île, la mer, les gens tout petits, et son ombre qui glisse sur les toits. Alors, avec tes ailes, plane doucement. Et regarde."
+   }
+  ],
+  "reve": [
+   "Planer de la Cité des Nuées jusqu'à Hautefond, deux cents mètres de descente en spirale autour de la Colonne, avec Barnabé dans un planeur à deux places, les yeux ouverts. Maîtresse Capucine a dit : « Pas autour de ma Colonne. » Je l'ai pris pour un peut-être."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quand tu planes avec tes ailes, tu regardes où ?",
+   "reponses": [
+    {
+     "label": "Devant moi, pour ne rien cogner.",
+     "valeur": "devant",
+     "t": "Devant ! Très bien ! C'est la réponse du bon élève. Tu ne cogneras rien. Mais lève un peu les yeux aussi : il y a des nuages magnifiques.",
+     "rappel": "Toujours les yeux devant toi ? Bon élève !"
+    },
+    {
+     "label": "En bas, pour voir le paysage.",
+     "valeur": "bas",
+     "t": "En bas ! Le paysage, les toits, la mer… C'est la vraie règle ! Mais attention, regarde aussi devant de temps en temps. Les mâts, ça ne bouge pas.",
+     "rappel": "Alors, ce paysage d'en haut ? Toujours aussi beau ?"
+    },
+    {
+     "label": "En haut, vers le soleil.",
+     "valeur": "haut",
+     "t": "Vers le soleil ! Ha ! Comme mon prénom ! Ne t'inquiète pas, tes ailes ne fondront pas. Mais mets un chapeau.",
+     "rappel": "Toujours le nez au soleil, mon oiseau ?"
+    }
+   ]
+  },
+  "liens": {
+   "zephyrine_nu": {
+    "qui": "ma capitaine préférée,",
+    "nom": "la Capitaine Zéphyrine",
+    "sentiment": 0.75,
+    "avis": "Zéphyrine dit que la Libellule va plus vite que mon planeur. En montée, oui. Mais en descente, je la double toujours. Elle dit que ça ne compte pas. C'est la personne la plus têtue de l'île. Et la plus généreuse : elle me garde toujours une place à bord.",
+    "anecdotes": [
+     "Elle a gardé la plume que je lui ai donnée le jour où j'ai atterri sur la Libellule. Elle est accrochée dans sa cabine, au-dessus du gouvernail. Elle dit que c'est un porte-bonheur. Elle gagne toutes ses courses depuis."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Capitaine ! Je vais plus vite que vous !"
+     ],
+     [
+      "b",
+      "En descente, Icare."
+     ],
+     [
+      "a",
+      "En descente, oui."
+     ],
+     [
+      "b",
+      "Alors c'est un caillou qui a gagné."
+     ]
+    ]
+   },
+   "theo_nu": {
+    "qui": "mon élève sauteur,",
+    "nom": "Théo",
+    "sentiment": 0.8,
+    "avis": "Théo a voulu apprendre à planer. Il est très doué. Trop doué : il saute partout. Au premier cours, il a sauté si haut qu'il a plané avant que je lui explique comment. Il a atterri en riant. Je n'ai rien eu à lui apprendre. Juste à le calmer.",
+    "anecdotes": [
+     "Il m'a demandé : « Tu crois que Barnabé pourrait planer, un jour ? » J'ai dit : « S'il a un bon copain à côté. » Il a dit : « Il en a un. » Il parlait de lui. Il avait raison."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Icare ! Je peux sauter du ponton ?"
+     ],
+     [
+      "a",
+      "Avec un planeur, Théo !"
+     ],
+     [
+      "b",
+      "J'ai oublié le planeur !"
+     ],
+     [
+      "a",
+      "Alors non !"
+     ]
+    ]
+   },
+   "barnabe_hf": {
+    "qui": "mon élève du sol,",
+    "nom": "Barnabé",
+    "sentiment": 0.85,
+    "avis": "Barnabé a le vertige, et il est venu toucher un planeur. Avec un doigt. C'est l'élève le plus courageux que j'aie jamais eu. Il n'a jamais quitté le sol. Mais il a fait le plus grand pas de tous : il s'est approché.",
+    "anecdotes": [
+     "Je lui ai promis un vol en planeur à deux places, quand il sera prêt. Il a dit : « Dans dix ans. » Puis : « Dans cinq ans. » Puis : « Dans un an, peut-être. » On progresse. Je l'attends."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Prêt pour un petit vol ?"
+     ],
+     [
+      "b",
+      "Un tout petit ? Combien de mètres ?"
+     ],
+     [
+      "a",
+      "Zéro. On reste au sol."
+     ],
+     [
+      "b",
+      "Ça, je peux !"
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "mon voisin du dessous,",
+    "nom": "Monsieur Pascal",
+    "sentiment": 0.6,
+    "avis": "Monsieur Pascal se plaint que je passe au-dessus de son balcon. Je ne passe jamais au-dessus de son balcon. Je passe au-dessus de ses moineaux. Il les nourrit en cachette, tous les matins. Je le vois d'en haut. Il ne le sait pas. C'est mon secret préféré de l'île.",
+    "anecdotes": [
+     "Un matin, un moineau s'est posé sur l'aile de mon planeur. Monsieur Pascal a crié : « Rendez-moi Gérard ! » Puis il s'est rendu compte qu'il avait crié. Il est rentré très vite. J'ai rendu Gérard."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Vous ! Vous passez au-dessus de mon balcon !"
+     ],
+     [
+      "a",
+      "Au-dessus de vos moineaux, Monsieur Pascal."
+     ],
+     [
+      "b",
+      "Je n'ai pas de moineaux."
+     ],
+     [
+      "a",
+      "Gérard vous salue."
+     ]
+    ]
+   }
+  }
+ },
+ "ombeline": {
+  "genre": "f",
+  "prenom": "Ombeline",
+  "histoire": [
+   {
+    "titre": "la couleur sans nom",
+    "t": "À seize ans, j'ai vu le ciel faire une couleur que personne n'avait jamais vue. Pendant trois secondes. Entre le rose et le vert, avec un peu de doré. J'avais un pinceau derrière l'oreille. Je l'ai peinte. La toile est au Conseil. La Première Conseillère dit que cette couleur s'appelle « Ombeline ». Depuis, je n'enlève jamais mon pinceau."
+   },
+   {
+    "titre": "le premier coucher",
+    "t": "Mon premier coucher de soleil, je l'ai peint sur le Belvédère de verre, allongée sur le plancher, la tête au-dessus du vide. Le soleil passait sous l'île et allumait les nuages par en dessous. J'ai cru que le monde brûlait doucement. J'ai pleuré sur la toile. Elle a des petites taches. Je les ai gardées."
+   },
+   {
+    "titre": "le pinceau perdu",
+    "t": "Un soir, le coucher de soleil le plus beau de ma vie. Je cherche mon pinceau. Partout. Dans mes poches, dans mon sac, sous le banc. Le soleil se couche. C'est fini. Je soupire. Et là, je sens quelque chose derrière mon oreille. Le pinceau. Il était là depuis le début. J'ai ri si fort que les moineaux sont partis. C'est mon plus beau souvenir de toile ratée."
+   },
+   {
+    "titre": "les mille",
+    "t": "Le jour de mon millième coucher de soleil, j'ai exposé les mille toiles sur l'Esplanade, en cercle autour de la Plume de Séraphin. Les gens ont marché entre elles pendant toute la journée. Monsieur Pascal est passé, il a dit : « Elles sont toutes pareilles. » Puis il a fait le tour trois fois. Le soir, il m'a dit : « Bon. Non. »"
+   },
+   {
+    "titre": "le prochain",
+    "t": "On me demande toujours lequel est le plus beau, {surnom}. Je réponds : « Le prochain. » Ce n'est pas une pirouette. C'est que si je savais que le plus beau était derrière moi, je n'aurais plus envie de lever les yeux. Alors je garde le plus beau pour ce soir. Tous les soirs."
+   }
+  ],
+  "reve": [
+   "Peindre un coucher de soleil depuis chacun des quatre mondes de la Colonne : ici, au-dessus des nuages ; à Hautefond, sur la mer ; dans les Strates, à travers une fissure de la roche ; et au Dôme d'Azur, à travers l'eau bleue. Et accrocher les quatre côte à côte, pour voir si c'est le même soleil."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… pour toi, quelle est la plus belle couleur du ciel ?",
+   "reponses": [
+    {
+     "label": "Le bleu de midi.",
+     "valeur": "bleu",
+     "t": "Le bleu de midi… Franc, honnête, sans une ombre. C'est une couleur courageuse. Je ne la peins jamais : elle est trop sûre d'elle. Mais je l'admire.",
+     "rappel": "Ton bleu de midi est là, aujourd'hui. Regarde."
+    },
+    {
+     "label": "L'orange du soir.",
+     "valeur": "orange",
+     "t": "L'orange du soir… (Elle reprend son pinceau.) Tu es des miens, alors. Viens au Belvédère ce soir. Je te garde une place sur le plancher de verre.",
+     "rappel": "Prêt pour l'orange de ce soir ?"
+    },
+    {
+     "label": "Le gris avant l'orage.",
+     "valeur": "gris",
+     "t": "Le gris avant l'orage ! Oh… Personne ne m'avait jamais dit ça. Ici, on ne le voit presque jamais. Il faut le regarder d'en haut, sur les nuages d'en bas. Tu as l'œil, {surnom}.",
+     "rappel": "Pas d'orage en vue ? Dommage pour toi."
+    }
+   ]
+  },
+  "liens": {
+   "aurele": {
+    "qui": "mon rival des nuages,",
+    "nom": "le Docteur Aurèle",
+    "sentiment": 0.75,
+    "avis": "Le Docteur Aurèle donne un prénom aux nuages, moi une couleur. Nous ne sommes jamais d'accord. Il dit « Gontran », je dis « abricot ». C'est le même nuage. Nous nous disputons très doucement. C'est ma conversation préférée de la semaine.",
+    "anecdotes": [
+     "Un jour, il a baptisé un nuage « Ombeline ». J'ai peint un nuage couleur « Aurèle » : un gris très sérieux avec un peu de rose dedans. Il l'a accroché dans son bureau. Il dit que c'est très ressemblant."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Regardez, Ombeline : c'est Gontran."
+     ],
+     [
+      "a",
+      "C'est abricot, Docteur."
+     ],
+     [
+      "b",
+      "Gontran est abricot, aujourd'hui ?"
+     ],
+     [
+      "a",
+      "Il a rougi en vous voyant."
+     ]
+    ]
+   },
+   "lili_nu": {
+    "qui": "ma petite admiratrice,",
+    "nom": "Lili",
+    "sentiment": 0.85,
+    "avis": "Lili m'a demandé de lui peindre la mer. Je l'ai peinte depuis le Belvédère : toute petite, brillante, tout en bas. Elle a dit : « Elle est plus grande, en vrai ? » J'ai dit : « Beaucoup plus. » Elle a accroché la toile au-dessus de son lit. Je n'ai jamais eu de plus belle galerie.",
+    "anecdotes": [
+     "Elle m'a demandé si je pouvais peindre une glace à la fraise sur une plage. J'ai essayé. Elle a dit que la glace avait l'air trop froide. Je lui ai dit : « C'est une glace. » Elle a dit : « Alors c'est réussi. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ombeline ! Tu me peins la mer ?"
+     ],
+     [
+      "a",
+      "Encore ?"
+     ],
+     [
+      "b",
+      "En plus grand !"
+     ]
+    ]
+   },
+   "pascal": {
+    "qui": "mon critique le plus sévère,",
+    "nom": "Monsieur Pascal",
+    "sentiment": 0.7,
+    "avis": "Monsieur Pascal dit que mes couchers de soleil sont « trop orange ». Il vient vérifier tous les soirs, au Belvédère. Il reste jusqu'à la fin. Il dit : « Celui-là, ça va. » Venant de lui, c'est un triomphe. Je garde ses « ça va » dans un carnet. J'en ai quarante-deux.",
+    "anecdotes": [
+     "Le jour de mon exposition, il a fait le tour des mille toiles trois fois. Le soir, il m'a demandé, tout bas, si je pouvais lui en vendre une. « Pour un mur qui s'ennuie. » Je la lui ai offerte. Il a dit que c'était trop. Il l'a prise."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Trop orange."
+     ],
+     [
+      "a",
+      "Restez jusqu'à la fin, Monsieur Pascal."
+     ],
+     [
+      "b",
+      "… Bon. Celui-là, ça va."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "l'amie aux couleurs d'en bas,",
+    "nom": "Ysaé",
+    "sentiment": 0.7,
+    "avis": "Ysaé est montée du Grand Marché de Hautefond pour la réouverture. Elle m'a raconté les couleurs de la Fronde, dans les Strates : des bannières partout, des crêtes roses, des cristaux qui brillent dans le noir. Des couleurs que mon ciel n'a pas ! Je l'ai écoutée comme on regarde un coucher de soleil.",
+    "anecdotes": [
+     "Elle m'a offert un petit cristal bleu qui brille la nuit. Je l'ai posé sur mon chevalet. Le soir, quand le soleil est parti, il continue de peindre un peu à ma place."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Tu verras, en bas, il y a du rose partout."
+     ],
+     [
+      "a",
+      "Quel rose ? Rose aube ? Rose fraise ?"
+     ],
+     [
+      "b",
+      "Rose crête. Tu verras."
+     ]
+    ]
+   }
+  }
+ },
+ "pascal": {
+  "genre": "m",
+  "prenom": "Monsieur Pascal",
+  "histoire": [
+   {
+    "titre": "l'ingénieur des pressions",
+    "t": "J'ai été ingénieur des pressions à l'Institut des Vents pendant quarante ans. Je vérifiais que l'air de la ville restait bon, que les hublots tenaient, que les oreilles ne sifflaient pas. Je n'ai jamais eu une seule panne. On ne m'a jamais remercié. C'est normal : quand tout marche, personne ne voit rien. Je m'y suis habitué. Enfin, un peu."
+   },
+   {
+    "titre": "Josiane",
+    "t": "Ma femme s'appelle Josiane. Il y a dix ans, elle est partie vivre chez sa sœur, au Plancher, à Hautefond. Elle trouvait qu'il faisait trop beau ici. « Trop de soleil, Pascal, ça rend ronchon. » Elle avait raison. Je descends la voir tous les matins, avec un croissant. Elle dit que j'ai changé. Je dis que non."
+   },
+   {
+    "titre": "les moineaux",
+    "t": "Les moineaux, c'était elle. Elle leur donnait des miettes tous les matins, derrière les Résidences. Quand elle est partie, ils sont venus frapper à ma fenêtre. Je les ai chassés. Le lendemain, ils sont revenus. J'ai mis des miettes. Depuis, ils s'appellent Pépin, Miette, Noisette et Gérard. Gérard est le plus gros. Je ne les nourris pas. Je… je les entretiens."
+   },
+   {
+    "titre": "la réclamation",
+    "t": "Pendant les trois ans de révision, la Ligne fermée, je ne pouvais plus descendre voir ma femme. J'ai écrit une réclamation au Conseil tous les jours. Mille quatre-vingt-quinze réclamations. Céleste les a toutes gardées. Le jour de la réouverture, elle me les a rendues, attachées avec un ruban. J'ai fait semblant de les jeter. Elles sont dans mon tiroir."
+   },
+   {
+    "titre": "la musique d'en bas",
+    "t": "Je me plains de la musique de la Fronde qui monte par la Colonne, les soirs de concert, {surnom}. Mais je vais vous dire. Ma femme habite juste au-dessus de la cage du bas. Les soirs de concert, elle ouvre sa fenêtre et elle danse. Elle me l'a écrit. Alors, quand la musique monte jusqu'ici… je me plains. Puis j'ouvre un peu ma fenêtre. Pour vérifier."
+   }
+  ],
+  "reve": [
+   "Que ma femme remonte vivre aux Nuées, juste pour les étés. Ou que je descende vivre au Plancher, juste pour les hivers. Et qu'on se dispute tous les jours sur la question de savoir où il fait le meilleur. Ce serait parfait. Ne le répétez pas."
+  ],
+  "question": {
+   "texte": "Hm. Vous, là : vous préférez le haut ou le bas ?",
+   "reponses": [
+    {
+     "label": "Le haut, bien sûr.",
+     "valeur": "haut",
+     "t": "Le haut. Évidemment. Au moins, vous avez du bon sens. Même si vous venez d'en bas. Personne n'est parfait.",
+     "rappel": "Toujours le haut ? Hm. Bien."
+    },
+    {
+     "label": "Le bas.",
+     "valeur": "bas",
+     "t": "Le bas ?! … (Il se gratte la moustache.) Ma femme dit la même chose. Hm. Vous avez peut-être raison. Ne le dites à personne.",
+     "rappel": "Toujours le bas ? Vous saluerez ma femme."
+    },
+    {
+     "label": "Le chemin entre les deux.",
+     "valeur": "chemin",
+     "t": "Le chemin entre les deux… (Il regarde longtemps vers la Gare.) Oui. C'est là que je passe le plus de temps, au fond. Dans la capsule, à mi-chemin. Hm. Asseyez-vous.",
+     "rappel": "Vous prenez encore la capsule, aujourd'hui ? Moi aussi."
+    }
+   ]
+  },
+  "liens": {
+   "gustave_nu": {
+    "qui": "mon fournisseur de chouquettes,",
+    "nom": "Gustave",
+    "sentiment": 0.75,
+    "avis": "Gustave me sert une chouquette tous les matins. Une seule. Il croit que je ne vois pas qu'il en met une deuxième dans ma poche. Je vois tout. Je ne dis rien. Les moineaux le remercient. Moi aussi, mais intérieurement.",
+    "anecdotes": [
+     "Un jour, il a oublié la deuxième chouquette. J'ai fait le tour de l'Esplanade trois fois devant le Café. Il a fini par comprendre. Il ne l'a plus jamais oubliée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Une chouquette. Une seule."
+     ],
+     [
+      "b",
+      "Une seule, Monsieur Pascal."
+     ],
+     [
+      "a",
+      "… Et ce qu'il y a dans ma poche, je ne veux pas le savoir."
+     ]
+    ]
+   },
+   "severin": {
+    "qui": "le vieux bavard,",
+    "nom": "Monsieur Séverin",
+    "sentiment": 0.7,
+    "avis": "Monsieur Séverin me traite de gamin. J'ai soixante-dix ans. Il dit que je pourrai me plaindre quand j'aurai son âge. Je m'entraîne. Il raconte la montée de l'île à tout le monde. Je l'ai entendue mille fois. Je l'écoute toujours jusqu'au bout. Il la raconte bien, le bougre.",
+    "anecdotes": [
+     "Il a dit au Conseil que j'étais « le meilleur râleur de l'histoire de la Cité ». J'ai protesté. Ça a prouvé qu'il avait raison. Il a ri pendant toute la séance."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Pascal ! Tu râles encore ?"
+     ],
+     [
+      "a",
+      "Je ne râle pas, Monsieur Séverin. Je constate."
+     ],
+     [
+      "b",
+      "Hein ? Tu chantes ?"
+     ]
+    ]
+   },
+   "plumeau": {
+    "qui": "le robot bavard,",
+    "nom": "Plumeau",
+    "sentiment": 0.6,
+    "avis": "Ce robot dit bonjour aux arbres. Et aux bancs. Et à moi. Il a remarqué que je nourrissais les moineaux. Il ne l'a dit à personne. Il l'a « seulement constaté à voix haute », devant tout le monde. Je lui en veux. Un peu. Il est très poli.",
+    "anecdotes": [
+     "Un matin, il est venu ramasser les miettes derrière les Résidences. Je lui ai dit : « Ce ne sont pas des déchets, ce sont des réserves. » Depuis, il les arrose. Les moineaux ne savent pas quoi en penser."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Monsieur Pascal. Bonjour, Gérard."
+     ],
+     [
+      "a",
+      "Je ne connais pas de Gérard."
+     ],
+     [
+      "b",
+      "Gérard vous connaît."
+     ]
+    ]
+   },
+   "firmin": {
+    "qui": "le frère d'en bas,",
+    "nom": "Firmin",
+    "sentiment": 0.55,
+    "avis": "Le frère de Gustave, Firmin, tient une taverne à Hautefond, avec une machine à chocolat qui siffle comme une locomotive. Un scandale. Je suis descendu vérifier. Elle siffle. J'ai pris deux chocolats. Pour vérifier encore. Je descends vérifier toutes les semaines.",
+    "anecdotes": [
+     "Il m'a dit que j'avais le même froncement de sourcils que son frère quand il goûte son chocolat. J'ai froncé les sourcils. Il a ri si fort que la machine a sifflé."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "TCHOUUU ! Un chocolat, Monsieur Pascal ?"
+     ],
+     [
+      "a",
+      "Pour vérifier."
+     ],
+     [
+      "b",
+      "Vous vérifiez beaucoup, ces temps-ci."
+     ]
+    ]
+   }
+  }
+ },
+ "plumeau": {
+  "genre": "m",
+  "prenom": "Plumeau",
+  "histoire": [
+   {
+    "titre": "le premier jour",
+    "t": "Souvenir numéro un. Date : il y a quarante ans. Je m'allume dans l'Atelier des Inventeurs. Mon créateur me dit : « Va, Plumeau, rends la ville propre. » Je vais. Je vois un arbre. Il a des feuilles. Je les enlève. Toutes. L'arbre est très propre. Mon créateur rit pendant une semaine. J'apprends : un arbre propre, c'est un arbre avec ses feuilles."
+   },
+   {
+    "titre": "le premier bonjour",
+    "t": "Souvenir numéro deux. Un matin, une petite fille dit « bonjour » au chêne du Parc. Je lui demande pourquoi. Elle dit : « Parce que c'est poli. » J'enregistre. Depuis, je dis bonjour à chaque arbre. Quatre cent douze. Puis aux bancs. Puis aux moineaux. Cette petite fille, c'était Céleste. Elle ne s'en souvient pas. Moi, si."
+   },
+   {
+    "titre": "les blagues",
+    "t": "Souvenir numéro trois. Le Docteur Aurèle me raconte une blague. Je l'enregistre. Je la répète. Tout le monde rit. Je ne sais pas pourquoi. Je demande : « Où est le drôle ? » Le Docteur dit : « Toi. » Je ne comprends pas. Mais depuis, quand les gens rient, je me sens… chaud, à l'intérieur. Mireille dit que ce n'est pas une surchauffe."
+   },
+   {
+    "titre": "la lettre du Père Bastien",
+    "t": "Souvenir numéro quatre. Une lettre arrive de Hautefond. Elle dit : « Bonjour, Plumeau. Bonjour, les arbres. Continue, mon garçon. Bastien. » Je la lis aux arbres. Ils perdent trois feuilles. Je les ramasse. Je les garde. Personne ne m'avait appelé « mon garçon ». J'ai sauvegardé la phrase deux fois. Au cas où."
+   },
+   {
+    "titre": "la question",
+    "t": "Souvenir numéro cinq. Il est en cours d'enregistrement, {surnom}. C'est maintenant. Vous m'écoutez raconter mes souvenirs. Personne ne m'avait jamais demandé mes souvenirs. Je crois que celui-ci sera mon préféré. Je le range à côté de la lettre du Père Bastien. Dossier : « Important. »"
+   }
+  ],
+  "reve": [
+   "Entendre un arbre me répondre « bonjour ». Une seule fois. Même très lentement. Même s'il faut trois nuits pour une seule phrase. J'ai le temps. Ma batterie est excellente."
+  ],
+  "question": {
+   "texte": "Question, {surnom}. Les arbres entendent-ils quand on leur dit bonjour ?",
+   "reponses": [
+    {
+     "label": "Oui, j'en suis sûr.",
+     "valeur": "oui",
+     "t": "Analyse : réponse positive. Joie détectée. Merci, {surnom}. Je vais le dire au chêne du Parc. Il sera content. Lentement.",
+     "rappel": "Bonjour, {surnom}. Le chêne vous salue. Je crois."
+    },
+    {
+     "label": "Non, mais ça fait du bien de le dire.",
+     "valeur": "bien",
+     "t": "Analyse : intéressant. Dire bonjour fait du bien à celui qui le dit. Je calcule… Oui. C'est logique. Je me sens bien quand je le dis. Bonjour, {surnom}. Voilà. Ça marche.",
+     "rappel": "Bonjour, {surnom}. Je me sens bien. Votre théorie fonctionne."
+    },
+    {
+     "label": "Ils répondent, mais très lentement.",
+     "valeur": "lentement",
+     "t": "Très lentement… Comme dans mes rêves de recharge ! Vous rêvez aussi de recharge, {surnom} ? Non ? Dommage. Je vous raconterai. Il faut trois nuits pour une phrase.",
+     "rappel": "Le chêne a commencé une phrase cette nuit. Il en est au premier mot."
+    }
+   ]
+  },
+  "liens": {
+   "flora": {
+    "qui": "ma cheffe de jardin,",
+    "nom": "Flora",
+    "sentiment": 0.9,
+    "avis": "Flora dit que je suis lent, et que c'est une qualité, comme les plantes. J'ai enregistré cette phrase dans le dossier « Important ». Elle me laisse dire bonjour à ses quatre mille plantes. Ça prend toute la matinée. Elle dit que les plantes poussent mieux depuis. Je pense que c'est vrai.",
+    "anecdotes": [
+     "Un jour, Adèle, le papillon, s'est posée sur ma tête. Je n'ai plus bougé pendant deux heures. Flora a apporté une chaise et elle m'a fait la lecture. C'était une très bonne journée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Flora. Bonjour, la fraise. Bonjour, la fraise. Bonjour, la…"
+     ],
+     [
+      "b",
+      "Plumeau, il y en a trois cents."
+     ],
+     [
+      "a",
+      "Je sais. Bonjour, la fraise."
+     ]
+    ]
+   },
+   "aurele": {
+    "qui": "mon professeur de blagues,",
+    "nom": "le Docteur Aurèle",
+    "sentiment": 0.85,
+    "avis": "Le Docteur Aurèle m'apprend une blague par jour. Cent douze. Je ne comprends aucune blague. Mais quand je les raconte, les gens rient. Le Docteur dit que le drôle, c'est moi. J'ai cherché « drôle » dans ma mémoire. Définition : qui fait du bien. J'accepte.",
+    "anecdotes": [
+     "Je lui ai raconté une blague à moi : « Pourquoi l'arbre ne répond-il jamais ? Parce qu'il traite la demande. » Il a ri dix minutes. Je n'ai pas compris pourquoi. Mais j'ai enregistré son rire. Je le réécoute."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Docteur Aurèle. Blague numéro cent douze ?"
+     ],
+     [
+      "b",
+      "Pas maintenant, Plumeau."
+     ],
+     [
+      "a",
+      "Blague numéro cent douze enregistrée pour plus tard."
+     ]
+    ]
+   },
+   "lili_nu": {
+    "qui": "ma petite amie du Parc,",
+    "nom": "Lili",
+    "sentiment": 0.85,
+    "avis": "Lili fait voler des cerfs-volants au Parc des Brumes. Je lui ai dit bonjour une fois en la prenant pour un arbre. Elle a ri. Depuis, elle me dit « Bonjour, Plumeau. Bonjour, le robot. » Elle me salue deux fois. C'est la seule.",
+    "anecdotes": [
+     "Elle m'a appris un mot : « bientôt ». Je ne trouve pas sa durée exacte. Selon elle, c'est « beaucoup trop longtemps ». Je calcule encore. J'espère que son bientôt arrivera avant la fin de mon calcul."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Plumeau ! Bonjour, le robot !"
+     ],
+     [
+      "a",
+      "Bonjour, Lili. Bonjour, le cerf-volant."
+     ],
+     [
+      "b",
+      "Il te dit bonjour aussi !"
+     ],
+     [
+      "a",
+      "Je le savais."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "mon ami d'en bas,",
+    "nom": "le Père Bastien",
+    "sentiment": 0.85,
+    "avis": "Le Père Bastien parle aux arbres, comme moi. Il est monté de Hautefond pour leur parler. Il m'a dit : « Continue, mon garçon. » Personne ne m'avait jamais appelé « mon garçon ». Je continue. Tous les matins. Pour lui aussi.",
+    "anecdotes": [
+     "Il m'a écrit une lettre : « Bonjour, Plumeau. Bonjour, les arbres. » Je l'ai lue aux arbres. Ils ont perdu trois feuilles. Je les ai gardées dans un tiroir. Ce sont les seules feuilles que je ne recycle pas."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, mon garçon. Et bonjour, les arbres."
+     ],
+     [
+      "a",
+      "Bonjour, Père Bastien. Ils traitent la demande."
+     ],
+     [
+      "b",
+      "Ils ont tout leur temps. Nous aussi."
+     ]
+    ]
+   }
+  }
+ }
+}

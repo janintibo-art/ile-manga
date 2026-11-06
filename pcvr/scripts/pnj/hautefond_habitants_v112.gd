@@ -14,8 +14,9 @@ extends RefCounted
 ##  - la Basse-Ville : Mathilde Soufflet, la forgeronne de la Forge à vapeur (la mère de Pimprenelle) ;
 ##  - dehors : Léon Calfat (le Port des Cordages), Margot (le Phare de la Pointe), Augustin Meule (le
 ##    Moulin des Quatre Vents) et Père Bastien Greffe (les Vergers en terrasses).
-## Pas encore de quête à Hautefond : les lignes de la Colonne vers la Cité des Nuées (en haut), les
-## Strates et la Fronde (en bas) et le Dôme d'Azur (au fond de la mer) « rouvrent bientôt ».
+## Pas encore de quête à Hautefond : la ligne de la Colonne vers la Cité des Nuées (en haut) vient de
+## rouvrir (V113) ; celles des Strates et de la Fronde (en bas) et du Dôme d'Azur (au fond de la mer)
+## « rouvrent bientôt ».
 ## Même cerveau que les autres habitants (pnj_brain_v31.gd), même vie réglée par l'heure
 ## (pnj_azur_v56.gd), même costume que Montjoie (fiche « mj », pnj_montjoie_v71.gd).
 ## Fiche « village » : hautefond. Fiche « mj » : tenue (aventurier | pretresse | mage | chevalier |
@@ -147,13 +148,13 @@ static func _all() -> Array:
 			"surnoms": [[0, "cher passager"], [25, "passager régulier"], [50, "passager d'honneur"], [75, "liftier de cœur"], [95, "ami de la Colonne"]],
 			"repliques": {
 				"accueil": [
-					L("Bienvenue au pied de la Grande Colonne ! Maîtresse Capucine Rouage, Grande Liftière de la Confrérie. Billets, horaires, réclamations, objets oubliés dans la cabine : tout passe par ce guichet. Aujourd'hui, la Colonne monte jusqu'au Belvédère. Pas plus haut. Elle se repose. Elle le mérite.", {"visites_max": 1}, "salut"),
+					L("Bienvenue au pied de la Grande Colonne ! Maîtresse Capucine Rouage, Grande Liftière de la Confrérie. Billets, horaires, réclamations, objets oubliés dans la cabine : tout passe par ce guichet. Aujourd'hui, la Colonne monte jusqu'au Belvédère, et la capsule vous emmène jusqu'aux Nuées. Elle a rouvert. Elle en est fière.", {"visites_max": 1}, "salut"),
 					L("{surnom} ! Vous revoilà. La Colonne vous salue. Si, si : vous n'avez pas entendu ce petit « ding » ? C'est elle. Elle vous reconnaît.", {"visites_min": 2}),
 					L("Ah, {surnom}. Vous tombez bien : la cabine vient de redescendre, Barnabé est encore vert, et j'ai trois minutes. Trois. Je les ai comptées.", {"visites_min": 4}, "rire"),
 				],
 				"humeur": [
 					L("Excellente ! Quatre cents montées depuis ce matin, zéro retard, zéro cri. Enfin, un cri. C'était Barnabé. Ça ne compte pas, il crie à chaque fois.", {}, "rire"),
-					L("Un peu inquiète. La ligne des Nuées est en révision, et la Colonne n'aime pas avoir des étages fermés. Elle grince la nuit. Je lui parle. Elle se calme.", {}),
+					L("Un peu inquiète. La ligne des Nuées a rouvert, et la Colonne n'a plus l'habitude d'avoir autant de monde. Elle grince la nuit. Je lui parle. Elle se calme.", {}),
 					L("Le soir, je m'assois sur le banc de la Place et je la regarde, toute dorée sous les réverbères. Deux cents ans, et pas une ride. Enfin, quelques rivets.", {"soir": true}),
 				],
 				"lui": [
@@ -163,11 +164,11 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("La Grande Colonne relie quatre mondes, {surnom}. En haut, la Cité des Nuées, au-dessus des nuages. Ici, Hautefond. En dessous, les Strates, creusées dans la roche. Et tout au fond de la mer, sous son grand dôme de verre, le Dôme d'Azur. Une seule tour. Quatre mondes. Pas mal pour un panier à salade.", {}),
-					L("La ligne des Nuées est en révision. On change les câbles, on graisse les poulies, on cire les cages. La ligne rouvre bientôt. Très bientôt. Je ne donne pas de date : la Colonne déteste qu'on la presse.", {"sujet_min": ["ile", 1]}),
+					L("La ligne des Nuées a rouvert. Câbles neufs, poulies graissées, capsule cirée. J'ai fait la première montée, avec Barnabé aux commandes. Là-haut, j'ai posé la main sur la capsule et j'ai dit : « Elle est bien élevée. » Elle l'est.", {"sujet_min": ["ile", 1]}),
 					L("La ligne du bas, celle des Strates, est fermée pour travaux. Officiellement. Vous entendez cette musique qui monte de la cage ? Moi non plus. Je n'entends rien. Je suis la Grande Liftière. Je n'entends que ce qui est réglementaire.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
-					L("Le Bourgmestre veut couper un ruban à la réouverture des Nuées. Un ruban de trente mètres, autour de la Colonne. Je lui ai dit qu'elle n'aimait pas les rubans. Il m'a fait un discours. Elle a grincé pendant tout le discours.", {}, "rire"),
+					L("Le Bourgmestre voulait couper un ruban de trente mètres autour de la Colonne, pour la réouverture des Nuées. J'ai dit non. Nous en avons coupé un de trente centimètres, à deux. Il a fait un discours quand même. Elle a grincé pendant tout le discours.", {}, "rire"),
 					L("La petite Pimprenelle m'apporte un boulon chaque matin, « pour la Colonne ». J'en ai une boîte pleine. Je ne lui dirai jamais qu'ils ne vont nulle part. Enfin… j'en ai vissé un. Un seul. Il tient très bien.", {}),
 					L("Cette Ysaé, du marché… Elle s'arrête devant la cage du bas et elle écoute la musique en battant du pied. Je fais semblant de ne pas voir. Elle fait semblant de ne pas savoir que je vois. On s'entend très bien, comme ça.", {}),
 				],
@@ -192,7 +193,7 @@ static func _all() -> Array:
 				"humeur": [
 					L("Génial ! Aujourd'hui, j'ai regardé par la vitre jusqu'au troisième étage. Le troisième ! Après, j'ai vu un pigeon, et j'ai dû m'asseoir.", {}, "rire"),
 					L("Bien, bien. J'ai un peu la tête qui tourne, mais c'est normal : la cabine aussi, elle tourne. Non ? Elle ne tourne pas ? … Ah. Alors c'est moi.", {}),
-					L("Le soir, je monte au Belvédère tout seul, pour m'entraîner. Je reste cinq minutes près de la rambarde. Hier, six. Maîtresse Capucine dit que je serai prêt pour les Nuées dans… elle n'a pas fini sa phrase.", {"soir": true}),
+					L("Le soir, je monte au Belvédère tout seul, pour m'entraîner. Je reste cinq minutes près de la rambarde. Hier, six. Théo m'attend sur son Belvédère de verre, aux Nuées. Je lui ai dit « un jour ». Il a apporté une chaise.", {"soir": true}),
 				],
 				"lui": [
 					L("Je veux être liftier depuis que j'ai cinq ans. J'ai découvert que j'avais le vertige à six ans, dans la cabine. J'ai décidé que ce n'était pas une raison. Mes genoux, eux, ne sont toujours pas d'accord.", {}),
@@ -201,7 +202,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Le Belvédère, c'est un balcon tout rond, à soixante mètres. De là, on voit toute l'île : le Moulin, les Vergers, le Phare, les Arches dans la mer… et au-dessus, la Cité des Nuées qui flotte. Paraît-il. Moi, je regarde mes chaussures. Elles sont très belles.", {}, "rire"),
-					L("La ligne des Nuées rouvre bientôt. Maîtresse Capucine dit que c'est moi qui ferai la première montée. Je suis très fier. Et très pâle. Les deux en même temps, c'est possible, je te le confirme.", {"sujet_min": ["ile", 1]}),
+					L("La ligne des Nuées a rouvert, et c'est moi qui ai fait la première montée ! Là-haut, Théo, mon correspondant, m'attendait sur le quai. Je suis sorti tout vert. Mais très fier. Les deux en même temps, c'est possible, je te le confirme.", {"sujet_min": ["ile", 1]}),
 					L("Mon oncle travaille au Dôme d'Azur, tout au fond de la mer. Il m'écrit que là-bas, on voit passer des baleines par le plafond. Descendre au fond de la mer ? Ça, je pourrais. C'est monter, mon problème.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -239,7 +240,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Tu as vu la statue de Dame Ysolde, dans la fontaine ? Elle lève une lanterne. Elle a construit la première cabine avec une corde, une poulie et un panier à salade ! Moi aussi, j'ai essayé. Avec le chat. Il n'a pas aimé.", {}, "rire"),
-					L("Tout en haut de la Colonne, il y a la Cité des Nuées. Ysaé dit que là-haut, les gens ont des maisons en verre. Moi, je veux voir s'ils ont des boulons en verre. La ligne rouvre bientôt. J'ai déjà préparé mon sac.", {"sujet_min": ["ile", 1]}),
+					L("Tout en haut de la Colonne, il y a la Cité des Nuées. La ligne a rouvert, et j'y suis montée avec Maman ! Les maisons sont en verre, c'est vrai. Mais les boulons, non. J'ai vérifié. Tous.", {"sujet_min": ["ile", 1]}),
 					L("En dessous de la ville, il y a les Strates, et la Fronde. C'est là qu'habite Ysaé ! Elle dit qu'il y a des forges, des rails, des cristaux qui brillent dans le noir, et de la musique tout le temps. Maman dit « on verra quand la ligne rouvrira ». Ça veut dire oui. Je crois.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -278,7 +279,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("L'Observatoire est tout en haut de la Haute-Ville, sous sa coupole. La grande lunette pèse trois tonnes et tourne avec un seul doigt. Gaspard l'a réglée. Il a dit « c'est parfait ». Je ne l'avais jamais entendu dire ça.", {}),
-					L("La Cité des Nuées flotte au-dessus des nuages, juste à côté des étoiles. De là-haut, le ciel doit être si clair ! J'ai déjà réservé une place dans la première cabine quand la ligne rouvrira. Et une place pour ma lunette. Elle est très grosse.", {"sujet_min": ["ile", 1]}),
+					L("La Cité des Nuées flotte au-dessus des nuages, juste à côté des étoiles. La ligne a rouvert, et j'y suis monté avec ma lunette. Elle a pris deux places. Hélas, un certain Docteur Aurèle a mis des nuages partout. Avec des prénoms !", {"sujet_min": ["ile", 1]}),
 					L("Au Dôme d'Azur, au fond de la mer, ils ont leurs propres étoiles : des poissons qui s'allument dans le noir. J'ai écrit à leur astronome. Il m'a répondu qu'il était « océanographe ». J'ai trouvé ça très beau, comme mot.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -316,7 +317,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("(Elle chuchote.) Nous avons ici la première carte de Hautefond, dessinée par Dame Ysolde elle-même. Il n'y a que la butte, la mer, et une petite colonne dessinée au crayon, avec écrit : « un jour ». Je la regarde souvent.", {}),
-					L("(Elle chuchote.) Nous n'avons qu'une carte de la Cité des Nuées, et elle est fausse : elle a été dessinée depuis en bas, en regardant en l'air. Quand la ligne rouvrira, j'irai la corriger moi-même. Avec un très long crayon.", {"sujet_min": ["ile", 1]}),
+					L("(Elle chuchote.) Notre carte de la Cité des Nuées était fausse : elle avait été dessinée depuis en bas, en regardant en l'air. La ligne a rouvert, et je suis montée la corriger moi-même. Quarante erreurs. Et une très longue gomme.", {"sujet_min": ["ile", 1]}),
 					L("(Elle chuchote.) Les plans des Strates sont rangés dans un tiroir fermé, « par ordre du Bourgmestre ». Mais Ysaé est venue me décrire la Fronde. J'ai fait une carte d'après ses mots. Elle est pleine de musique et de couleurs. C'est la plus belle de la Bibliothèque.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -344,7 +345,7 @@ static func _all() -> Array:
 				],
 				"humeur": [
 					L("Magnifique ! Ce matin, j'ai coupé le ruban du nouveau banc de la Place. Un discours de quarante minutes. Le banc était très ému. Les gens assis dessus, un peu moins.", {}, "rire"),
-					L("Un peu nerveux. La réouverture de la ligne des Nuées approche, et je n'ai toujours pas trouvé de ruban assez long pour faire le tour de la Colonne. Maîtresse Capucine dit que c'est tant mieux.", {}),
+					L("Un peu vexé. Pour la réouverture de la ligne des Nuées, Maîtresse Capucine ne m'a laissé couper qu'un ruban de trente centimètres. À deux. Mon discours, lui, a duré trente minutes. Elle dit que c'est encore trop.", {}),
 					L("Le soir, je fais le tour de la fontaine et je salue Dame Ysolde. Je lui raconte ma journée. Elle ne m'interrompt jamais. C'est mon public préféré.", {"soir": true}, "rire"),
 				],
 				"lui": [
@@ -355,7 +356,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Hautefond, mes chers concitoyens, c'est la plus belle ville de l'archipel ! Pierre blonde, ardoise bleue, laiton et cuivre ! La Place de la Colonne, la Haute-Ville, la Ville-Moyenne, la Basse-Ville… une ville en étages, comme un beau gâteau. Avec une Colonne en guise de bougie.", {}),
 					L("Les Strates, sous la ville… Hum. Des ateliers, des mines de cristaux, des forges. Très utiles. Et puis il y a la Fronde. Des musiciens, des crêtes de couleur, des bannières… Bon. Ce n'est pas mon style. Mais la ligne rouvrira, et je ferai un discours. Un discours très ouvert.", {"sujet_min": ["ile", 1]}),
-					L("La Cité des Nuées, le Dôme d'Azur… Quand toutes les lignes seront ouvertes, Hautefond sera le cœur de quatre mondes ! Il me faudra quatre rubans. Et quatre discours. J'ai déjà écrit les quatre. Ils font deux heures chacun.", {"sujet_min": ["ile", 2]}, "rire"),
+					L("La Cité des Nuées, c'est fait : un ruban, un discours. Restent les Strates et le Dôme d'Azur… Quand toutes les lignes seront ouvertes, Hautefond sera le cœur de quatre mondes ! J'ai déjà écrit les discours qui restent. Ils font deux heures chacun.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
 					L("Cette jeune Ysaé, du marché, avec ses cheveux bleus et ses bijoux de boulons… Hum. Ce n'est pas très réglementaire. Mais j'ai vu une broche, sur son étal, en forme de petite Colonne… Si vous la voyez, ne lui dites pas que je l'ai regardée. Deux fois.", {}),
@@ -435,7 +436,7 @@ static func _all() -> Array:
 				"ile": [
 					L("La Grande Colonne tient son horloge de moi. L'horloge des départs, au-dessus du guichet. Maîtresse Capucine et moi, nous la vérifions chaque lundi à sept heures pile. Nous ne disons rien. Nous hochons la tête. C'est notre façon d'être heureux.", {}),
 					L("Le Moulin des Quatre Vents, sur la colline, tourne si régulièrement par vent d'ouest qu'on pourrait y lire l'heure. J'ai essayé. Augustin a changé une aile ce jour-là. J'ai été en retard pour la première fois de ma vie. Je ne lui ai jamais pardonné. Si, un peu.", {"sujet_min": ["ile", 1]}, "rire"),
-					L("Les horloges de la Cité des Nuées sont en verre, paraît-il. On voit les rouages tourner. Quand la ligne rouvrira, je monterai les voir. Avec mon tournevis. Juste pour regarder. Peut-être pour régler. Un tout petit peu.", {"sujet_min": ["ile", 2]}),
+					L("On m'avait dit que les horloges de la Cité des Nuées étaient en verre. Je suis monté pour la réouverture, avec mon tournevis. Pas une seule ! Mais l'inventrice de là-haut m'en fabrique une. J'y retourne bientôt. Juste pour regarder. Peut-être pour régler.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
 					L("Barnabé a la montre que je lui ai offerte. Elle sonne cinq minutes avant chaque départ. Il est encore en retard. Je suis en train de mettre au point une montre qui le pousse dans le dos.", {}, "rire"),
@@ -474,7 +475,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Le Piston Joyeux est au cœur de la Ville-Moyenne, entre le Grand Marché et l'horloger. Si tu te perds, écoute : quand ça siffle, c'est ici. Quand ça rit très fort, c'est Rosalie, ici aussi.", {}, "rire"),
-					L("Mon frère tient un café dans la Cité des Nuées. Là-haut, l'eau bout plus vite, à cause de l'altitude. Il dit que son chocolat est prêt avant d'avoir été commandé. La ligne rouvre bientôt. J'irai vérifier. Avec ma moustache.", {"sujet_min": ["ile", 1]}),
+					L("Mon frère Gustave tient le Café Cumulus, dans la Cité des Nuées. Depuis que la ligne a rouvert, je lui envoie un chocolat par la première capsule du matin. Il arrive encore chaud. Il fait la grimace, et il le finit. Ma moustache a gagné.", {"sujet_min": ["ile", 1]}),
 					L("La nuit, quand la taverne est calme, j'entends de la musique monter de la cage du bas de la Colonne. De la Fronde, dans les Strates. Ça tape, ça grince, ça chante. Ma machine siffle en rythme. Je crois qu'elle a de la famille, là-dessous.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
@@ -513,7 +514,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Le Mât des dirigeables, c'est mon port à moi. Il est en acier, il a cent marches, et en haut, il y a une passerelle où l'Albatros vient s'accrocher par le nez. Le nez, c'est l'endroit le plus solide d'un dirigeable. Comme chez les gens têtus.", {}, "rire"),
-					L("La Cité des Nuées… Je l'ai frôlée, une fois, avec l'Albatros. Mais on n'y accoste pas en dirigeable : les vents tournent trop fort autour de l'île flottante. Il faut la Colonne. Quand la ligne rouvrira, je monterai comme tout le monde. En cabine. Avec Barnabé. Je lui tiendrai la main.", {"sujet_min": ["ile", 1]}),
+					L("La Cité des Nuées… On peut accoster au Port des Nuées, en dirigeable, mais seulement par vent calme : les vents tournent fort autour de l'île flottante. Et Zéphyrine dit toujours qu'elle est arrivée la première. Alors pour la réouverture, j'ai pris la capsule. Avec Barnabé. Je lui ai tenu la main.", {"sujet_min": ["ile", 1]}),
 					L("Par temps clair, d'en haut, on voit une grande tache bleue sous la mer, au large : c'est le Dôme d'Azur, la ville sous-marine. Parfois, une baleine passe par-dessus. On dirait un nuage qui nage. Je n'ai jamais rien vu d'aussi beau.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -591,7 +592,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("La Basse-Ville, c'est là où Hautefond travaille. Les ateliers, le lavoir, la Forge à vapeur, les rues des artisans. En haut, ils ont la vue. En bas, on a le bruit. Moi, je préfère le bruit. HA HA ! Il me ressemble.", {}, "rire"),
-					L("Les câbles de la Colonne, c'est ma forge qui fait les crochets. Pour la ligne des Nuées, Maîtresse Capucine m'en a commandé deux cents tout neufs. Je les ai faits, elle les a vérifiés un par un avec ses lunettes. La ligne rouvre bientôt. Mes crochets sont prêts. Elle, presque.", {"sujet_min": ["ile", 1]}),
+					L("Les câbles de la Colonne, c'est ma forge qui fait les crochets. Pour la ligne des Nuées, Maîtresse Capucine m'en a commandé deux cents tout neufs. Je les ai faits, elle les a vérifiés un par un avec ses lunettes. La ligne a rouvert. Pas un crochet n'a bougé. Elle, presque.", {"sujet_min": ["ile", 1]}),
 					L("Juste sous la forge, il y a les premières galeries des Strates. Quand je tape fort, ils tapent en retour. Un coup, deux coups. C'est notre bonjour. Quand la ligne rouvrira, je descendrai serrer la main de ceux qui tapent. Fort.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
@@ -670,7 +671,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Le Phare de la Pointe guide les bateaux vers le Port des Cordages. Il y a des rochers partout, ici. Ma lampe leur dit : « Pas par là, par là. » Les bateaux obéissent. Les mouettes, jamais.", {}),
 					L("D'ici, la nuit, je vois des lumières dans la mer, au large. C'est le Dôme d'Azur, sous l'eau. Parfois, une grande ombre passe devant : une baleine. Les mouettes deviennent toutes silencieuses. Même Firmin.", {"sujet_min": ["ile", 1]}),
-					L("Les mouettes montent parfois jusqu'à la Cité des Nuées. Elles redescendent avec des miettes de gâteau tout blanc. Je ne sais pas ce qu'on mange, là-haut. Quand la ligne rouvrira, Hortense ira voir. Moi, je reste. Il faut bien que quelqu'un garde la lampe.", {"sujet_min": ["ile", 2]}),
+					L("Les mouettes montent parfois jusqu'à la Cité des Nuées. Elles redescendent avec des miettes de gâteau tout blanc. Depuis que la ligne a rouvert, tout le monde monte voir. Ce sont des chouquettes, paraît-il. Hortense le savait déjà. Moi, je reste. Il faut bien que quelqu'un garde la lampe.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
 					L("Léon fait le bourru. Mais chaque matin, il traverse la baie en barque pour m'apporter du pain. Il dit que c'est « en passant ». Le Phare n'est sur le chemin de rien. Hortense le sait. Hortense sait tout.", {}),
@@ -707,7 +708,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Le Moulin des Quatre Vents est sur la colline de l'ouest. D'ici, on voit toute Hautefond en étages, la Colonne qui brille, et les Vergers au sud. Toute la farine de la ville vient d'ici. Tout le pain de Hautefond a un peu de poésie dedans.", {}),
-					L("Là-haut, à la Cité des Nuées, le vent souffle sans jamais toucher terre. Un vent qui n'a jamais rencontré d'arbre ! Quand la ligne rouvrira, j'irai l'écouter. Il doit parler une autre langue. Une langue toute neuve.", {"sujet_min": ["ile", 1]}),
+					L("Là-haut, à la Cité des Nuées, le vent souffle sans jamais toucher terre. Un vent qui n'a jamais rencontré d'arbre ! La ligne a rouvert, et j'ai mon billet pour dimanche. J'irai l'écouter. Il doit parler une autre langue. Une langue toute neuve.", {"sujet_min": ["ile", 1]}),
 					L("La Cascade des Falaises, au sud-ouest, fait un bruit de pluie qui ne finit jamais. Et sous les falaises, les Arches de pierre. Le vent y passe en sifflant comme dans une flûte. J'y vais pour accorder mes poèmes.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
@@ -745,7 +746,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("Les Vergers en terrasses, au sud de l'île, descendent jusqu'à la mer. Pommiers en haut, poiriers au milieu, cerisiers en bas. Les pommes finissent au marché, chez Rosalie, et dans les tartes d'Augustin. Et un peu dans le ventre des voleurs. Je ne leur en veux pas.", {}),
-					L("On m'a dit qu'à la Cité des Nuées, ils ont des arbres qui poussent dans le vide, accrochés à rien. Ça me fait de la peine pour leurs racines. Quand la ligne rouvrira, je monterai leur parler. Ils doivent avoir besoin d'un peu de terre. Et d'un peu de conversation.", {"sujet_min": ["ile", 1]}),
+					L("On m'avait dit qu'à la Cité des Nuées, les arbres poussaient dans le vide. La ligne a rouvert, je suis monté leur parler. Ils ont de la terre, en vérité, et une jardinière, Flora, qui leur fait la conversation. Elle m'a donné une fraise grosse comme le poing.", {"sujet_min": ["ile", 1]}),
 					L("Sous nos pieds, dans les Strates, il y a des jardins de champignons qui brillent dans le noir. Ysaé me l'a raconté. Des jardins sans soleil ! J'ai hâte de voir ça. La ligne rouvre bientôt. Je descendrai avec un panier de pommes. On fera des échanges.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [

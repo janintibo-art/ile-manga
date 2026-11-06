@@ -204,6 +204,12 @@ const LISTE := {
 	"hautefond_vergers": ["Les Vergers en terrasses", "hautefond", 15],
 	"hautefond_falaises": ["Les Falaises et les Arches", "hautefond", 20],
 	"hautefond_observatoire": ["L'Observatoire", "hautefond", 15],
+	"nuees": ["La Cité des Nuées", "hautefond", 25],
+	"nuees_belvedere": ["Le Belvédère de Verre", "hautefond", 20],
+	"nuees_serres": ["Les Serres d'Altitude", "hautefond", 15],
+	"nuees_institut": ["L'Institut des Vents", "hautefond", 15],
+	"nuees_port": ["Le Port des Nuées", "hautefond", 15],
+	"nuees_parc": ["Le Parc des Brumes et sa cascade", "hautefond", 15],
 	"neo": ["Néopolis", "neo", 20],
 	"neo_place": ["La Place des Hologrammes", "neo", 20],
 	"neo_terrasse": ["La Terrasse du Ciel", "neo", 25],
@@ -316,7 +322,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon", "Île de Hautefond": "hautefond", "Hautefond": "hautefond"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon", "Île de Hautefond": "hautefond", "Hautefond": "hautefond", "Cité des Nuées": "hautefond"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15
