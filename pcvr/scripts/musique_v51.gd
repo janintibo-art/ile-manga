@@ -38,6 +38,11 @@ const ZONE_TRACK := {
 	"hf_falaises": "large", "hf_plage": "large", "hf_rivage": "large", "hf_campagne": "campagne",
 	"nu_gare": "ciel", "nu_capsule": "ciel", "nu_belvedere": "ciel", "nu_esplanade": "ciel", "nu_cafe": "", "nu_atelier": "ciel", "nu_conseil": "ciel",
 	"nu_serres": "campagne", "nu_institut": "ciel", "nu_port": "ciel", "nu_residences": "ciel", "nu_parc": "campagne", "nu_promenade": "ciel", "nu_ville": "ciel",
+	"st_gare": "cliquetis", "st_ligne": "souterrain", "st_place": "cliquetis", "st_forge": "cliquetis", "st_marmite": "", "st_lumieres": "cliquetis",
+	"st_train": "cliquetis", "st_galeries": "cliquetis", "st_guilde": "cliquetis", "st_mines": "souterrain", "st_grotte": "salle_du_chant",
+	"st_jardins": "salle_du_chant", "st_pont": "souterrain", "st_bord": "cliquetis", "st_ville": "cliquetis",
+	"fr_entree": "boucan", "fr_place": "boucan", "fr_scene": "boucan", "fr_cantine": "boucan", "fr_atelier": "boucan", "fr_troc": "boucan",
+	"fr_assemblee": "boucan", "fr_skate": "boucan", "fr_fresques": "boucan",
 	"ciel": "ciel", "chateau": "ciel", "vol": "ciel",
 	"sous_marin": "atlantide", "atlantide": "atlantide",
 	"azur_ville": "port_azur", "azur_port": "port_azur", "azur_plage": "port_azur", "azur_collines": "port_azur",
@@ -245,6 +250,11 @@ func _decide(dt: float) -> void:
 		var tv2: Node = main.get("temps_v56")
 		if tv2 != null and (float(tv2.hour) >= 21.0 or float(tv2.hour) < 5.0):
 			want_zone = "astralys_nuit"
+	# V114 : la Fronde, pendant le concert des Soupapes (20 h - 23 h), près de la scène : le concert
+	if z == "fr_scene" or z == "fr_place":
+		var hfm: Node = main.get("hautefond_v112")
+		if hfm != null and hfm.has_method("concert_on") and bool(hfm.concert_on()):
+			want_zone = "concert_2"
 	# V75 : Port-Boucan la nuit : le dub du soir
 	if want_zone == "boucan":
 		var tv: Node = main.get("temps_v56")

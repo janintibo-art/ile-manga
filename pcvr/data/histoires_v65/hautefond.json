@@ -392,7 +392,7 @@
     "sentiment": 0.9,
     "avis": "Ysaé a les cheveux bleus et elle fait des bijoux avec des boulons ! C'est la personne la plus intelligente du monde. Après moi. Non, avant moi.",
     "anecdotes": [
-     "Elle m'a promis de m'emmener voir la Fronde quand la ligne rouvrira. Il paraît qu'il y a des boulons grands comme moi. J'ai déjà préparé un sac. Très grand."
+     "Elle m'a emmenée voir la Fronde, quand la ligne a rouvert. Il y a des boulons grands comme moi ! J'avais préparé un sac. Très grand. Il n'était pas assez grand."
     ],
     "bavardage": [
      [
@@ -568,7 +568,7 @@
    },
    {
     "titre": "la carte de la Fronde",
-    "t": "(Elle chuchote.) Je vais vous confier quelque chose, {surnom}. Ysaé est venue me décrire la Fronde, en bas. J'ai dessiné une carte d'après ses mots : des rues peintes, des bannières, des escaliers qui chantent. C'est la seule carte de la Bibliothèque d'un pays qui existe et que je n'ai jamais vu. Elle est rangée avec les pays imaginaires. En attendant."
+    "t": "(Elle chuchote.) Je vais vous confier quelque chose, {surnom}. Ysaé est venue me décrire la Fronde, en bas. J'ai dessiné une carte d'après ses mots : des rues peintes, des bannières, des escaliers qui chantent. C'est la seule carte de la Bibliothèque d'un pays qui existe et que je n'avais jamais vu. Elle était rangée avec les pays imaginaires. Depuis que la ligne a rouvert, je l'ai changée d'étagère."
    }
   ],
   "reve": [
@@ -695,7 +695,7 @@
    }
   ],
   "reve": [
-   "Pour les Nuées, je n'ai eu droit qu'à trente centimètres de ruban. Alors je rêve de couper les deux qui restent, celui des Strates et celui du Dôme, le même jour, devant les gens des Nuées, de Hautefond, des Strates et du Dôme réunis. Et faire un discours de quatre heures. Bon. De quatre minutes. Je ferai un effort."
+   "Pour les Nuées, puis pour les Strates, je n'ai eu droit qu'à trente centimètres de ruban. Alors je rêve de couper le dernier, celui du Dôme, devant les gens des Nuées, de Hautefond, des Strates et du Dôme réunis. Et faire un discours de quatre heures. Bon. De quatre minutes. Je ferai un effort."
   ],
   "question": {
    "texte": "Mon cher {surnom}, une question d'importance : un bon discours, c'est long ou c'est court ?",
@@ -1342,7 +1342,7 @@
    }
   ],
   "reve": [
-   "Le jour où la ligne du bas rouvrira, voir les gens d'en haut descendre à la Fronde, danser avec ceux d'en bas, et le Bourgmestre faire un discours sous une bannière au A cerclé. Avec une crête. Bon, au moins la broche."
+   "Maintenant que la ligne du bas a rouvert, voir les gens d'en haut descendre à la Fronde, danser avec ceux d'en bas, et le Bourgmestre faire un discours sous une bannière au A cerclé. Avec une crête. Bon, au moins la broche."
   ],
   "question": {
    "texte": "Dis-moi, {surnom} : t'es plutôt du genre à monter ou à descendre ?",
@@ -1356,7 +1356,7 @@
     {
      "label": "À descendre, pour voir.",
      "valeur": "descendre",
-     "t": "Ha ! Bien. Quand la ligne rouvrira, je t'emmène. Prépare tes oreilles, et tes pieds : en bas, on danse.",
+     "t": "Ha ! Bien. La ligne a rouvert : je t'emmène quand tu veux. Prépare tes oreilles, et tes pieds : en bas, on danse.",
      "rappel": "Toujours partant pour descendre ? La Fronde t'attend."
     },
     {
@@ -1414,7 +1414,7 @@
      ],
      [
       "b",
-      "Je viens avec toi quand la ligne rouvre !"
+      "Je redescends avec toi la prochaine fois !"
      ],
      [
       "a",
@@ -1496,7 +1496,7 @@
    }
   ],
   "reve": [
-   "Descendre dans les Strates quand la ligne rouvrira, trouver celui qui me répond sous l'enclume depuis vingt ans, lui serrer la main… et forger quelque chose ensemble. Une grande porte, peut-être. Une porte qui reste ouverte."
+   "Descendre dans les Strates, maintenant que la ligne a rouvert, trouver celui qui me répond sous l'enclume depuis vingt ans, lui serrer la main… et forger quelque chose ensemble. Une grande porte, peut-être. Une porte qui reste ouverte."
   ],
   "question": {
    "texte": "Dis-moi, {surnom} : t'es plutôt marteau ou plutôt enclume ?",

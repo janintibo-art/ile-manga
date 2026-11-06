@@ -11,7 +11,7 @@ extends RefCounted
 
 const DOSSIER := "res://data/histoires_v65/"
 const Langue = preload("res://scripts/langue_v104.gd")
-const GROUPES := ["heros", "azur", "teuf", "carene", "tazira", "cliquetis", "ramure", "elfes", "nains", "atlantes", "fees", "arcanelle", "balafre", "soleils", "braise", "montjoie", "boucan", "astralys", "larsen", "neo", "pasta", "crayon", "hautefond", "nuees"]
+const GROUPES := ["heros", "azur", "teuf", "carene", "tazira", "cliquetis", "ramure", "elfes", "nains", "atlantes", "fees", "arcanelle", "balafre", "soleils", "braise", "montjoie", "boucan", "astralys", "larsen", "neo", "pasta", "crayon", "hautefond", "nuees", "strates", "fronde"]
 const MAX_EVENEMENTS := 80
 
 static var _fiches: Dictionary = {}

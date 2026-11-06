@@ -290,7 +290,8 @@ def main() -> int:
             n64 += 1
     # V89 : la roche du souterrain du Grand Moaï (maillage taillé par tools/generate_souterrain_v89.py)
     # V90 : le relief et les modèles en petits cubes de l'Île Pixelithique (tools/generate_pixel_v90.py)
-    for m89 in (source / "models" / "moai89", source / "models" / "pixel90"):
+    # V114 : la roche des Strates et de la Fronde (tools/generate_strates_v114.py)
+    for m89 in (source / "models" / "moai89", source / "models" / "pixel90", source / "models" / "strates114"):
         if not m89.is_dir():
             continue
         for f in sorted(m89.glob("*.bin")):
@@ -454,6 +455,20 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n113 += 1
     print(f"Nuées V113: {n113} fichiers")
+    # V114 : les Strates et la Fronde (enseignes, bannière, fresques, plaques) : comme Hautefond.
+    n114 = 0
+    tex114 = source / "textures" / "strates"
+    if tex114.is_dir():
+        for f in sorted(tex114.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n114 += 1
+    print(f"Strates V114: {n114} fichiers")
     # V75 : l'Île du Boucan (sols de friche, briques, tôles, béton, fresques, graffitis, affiches,
     # enseignes, champignons, l'Usine Grise) : même règle (les sols du relief sans perte).
     n75 = 0

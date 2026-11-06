@@ -1896,6 +1896,17 @@ func update_inside(force: bool = false) -> void:
 			env.volumetric_fog_density = 0.02
 			env.volumetric_fog_albedo = Color(0.55, 0.75, 0.78)
 			env.tonemap_exposure = 1.3
+		# V114 : les Strates et la Fronde, sous Hautefond : une caverne immense, éclairée par le Soleil de
+		# Laiton ; une lumière chaude de grès, une brume légère où les lampes font des halos
+		var hfs: Node = main.get("hautefond_v112")
+		if hfs != null and hfs.has_method("in_strates") and hfs.in_strates(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.6, 0.52, 0.43)
+			env.ambient_light_energy = 0.7
+			env.fog_light_color = Color(0.07, 0.055, 0.045)
+			env.fog_density = 0.0028
+			env.volumetric_fog_density = 0.006
+			env.volumetric_fog_albedo = Color(0.85, 0.75, 0.62)
+			env.tonemap_exposure = 1.25
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

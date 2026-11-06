@@ -330,6 +330,49 @@ func _choose_zone(running: bool) -> void:
 			zone = "moai_chant"
 			targets["grotte"] = 0.9
 			targets["feerique"] = 0.3
+		# V114 : les Strates et la Fronde, sous Hautefond (la ville, la vapeur, les forges, les cristaux, la
+		# cascade des Jardins, la rivière du Gouffre ; la Fronde et ses concerts)
+		elif main.get("hautefond_v112") != null and main.hautefond_v112 != null and main.hautefond_v112.has_method("in_strates") and main.hautefond_v112.in_strates(p):
+			zone = str(main.hautefond_v112.zone_at(p))
+			match zone:
+				"st_forge":
+					targets["atelier"] = 0.9
+					targets["halle"] = 0.5
+					targets["grotte"] = 0.2
+				"st_marmite", "fr_cantine":
+					targets["marmite"] = 0.7
+					targets["ville_azur"] = 0.3
+					targets["grotte"] = 0.2
+				"st_mines", "st_grotte":
+					targets["grotte"] = 1.0
+					targets["feerique"] = 0.3 if zone == "st_grotte" else 0.0
+				"st_jardins":
+					targets["grotte"] = 0.6
+					targets["pluie"] = 0.35
+					targets["feerique"] = 0.3
+				"st_pont":
+					targets["grotte"] = 0.7
+					targets["ressac"] = 0.35
+				"st_ligne":
+					targets["grotte"] = 0.5
+					targets["halle"] = 0.3
+				"st_galeries", "st_guilde":
+					targets["ville_azur"] = 0.25
+					targets["grotte"] = 0.45
+				"fr_atelier":
+					targets["atelier"] = 0.8
+					targets["casse"] = 0.3
+					targets["grotte"] = 0.2
+				"fr_scene", "fr_place", "fr_entree", "fr_troc", "fr_assemblee", "fr_skate", "fr_fresques":
+					targets["casse"] = 0.35
+					targets["ville_azur"] = 0.3
+					targets["grotte"] = 0.3
+					if main.hautefond_v112.has_method("concert_on") and bool(main.hautefond_v112.concert_on()) and zone in ["fr_scene", "fr_place"]:
+						targets["halle_hurlante"] = 0.6
+				_:
+					targets["ville_azur"] = 0.45
+					targets["halle"] = 0.2
+					targets["grotte"] = 0.35
 		else:
 			zone = "souterrain"
 			targets["grotte"] = 1.0

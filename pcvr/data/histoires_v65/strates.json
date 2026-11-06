@@ -1,0 +1,1384 @@
+{
+ "anatole": {
+  "genre": "m",
+  "prenom": "Anatole",
+  "histoire": [
+   {
+    "titre": "le premier jour",
+    "t": "J'ai commencé liftier à quinze ans. Le premier jour, la cabine faisait un tel vacarme que le vieux liftier m'a appris le métier par gestes. Un doigt en l'air : on monte. Un doigt en bas : on descend. La main sur le cœur : « Souris aux passagers, petit. » C'est le seul geste que je fais encore tous les jours."
+   },
+   {
+    "titre": "Capucine",
+    "t": "Il y a quarante ans, une jeune liftière d'en haut a crié dans le tuyau acoustique : « Allô ? Il y a quelqu'un en bas ? » J'ai hurlé : « COMMENT ? » Elle a ri. Un rire tout petit, qui est descendu cent mètres de tuyau. C'était Capucine. Depuis, on se parle tous les matins. Elle chuchote, je hurle. Ça marche très bien."
+   },
+   {
+    "titre": "les oreilles",
+    "t": "Mes oreilles sont parties petit à petit, avec le bruit des vieilles machines. Un jour, je n'ai plus entendu la cloche du départ. J'ai eu peur de ne plus être liftier. Alors j'ai appris à sentir la cabine dans mes pieds : quand elle vibre, elle part ; quand elle soupire, elle arrive. Mes pieds sont devenus mes oreilles. Elles sentent même la pluie."
+   },
+   {
+    "titre": "les dix ans",
+    "t": "Quand la Ligne a fermé pour travaux, on m'a dit de prendre ma retraite. J'ai dit : « Comment ? » Et je suis revenu le lendemain huiler la cabine. Et le surlendemain. Pendant dix ans. Le matin de la réouverture, la Doyenne Agathe m'a tendu la clé du départ. Elle n'a rien dit. Elle n'avait pas besoin : je n'aurais pas entendu, de toute façon."
+   },
+   {
+    "titre": "la grille",
+    "t": "Je vais te dire un secret, {surnom}. La grille du Dôme d'Azur, derrière moi, je l'ouvre un peu tous les soirs, quand tout le monde est parti. Juste pour écouter. Au fond du tunnel, ça résonne comme la mer. Un jour, la Ligne du Dôme rouvrira, et je ferai la première descente. Jusqu'au fond de la mer. Et là, je crois que j'entendrai tout."
+   }
+  ],
+  "reve": [
+   "Faire la grande descente de la Colonne tout entière, des Nuées jusqu'au Dôme d'Azur, avec Capucine à côté de moi, et pour une fois, ne pas avoir besoin du tuyau pour lui parler. Juste se taire tous les deux, et regarder défiler les quatre mondes."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} (et parle fort !) : dans la cabine, tu aimes mieux monter ou descendre ?",
+   "reponses": [
+    {
+     "label": "Descendre, vers les Strates !",
+     "valeur": "descendre",
+     "t": "Descendre ! Ha ! Tu as le cœur d'un liftier du fond ! En haut, ils regardent le ciel. En bas, on regarde les gens arriver. C'est bien plus joli.",
+     "rappel": "Alors, toujours partant pour descendre ?"
+    },
+    {
+     "label": "Monter, vers la lumière.",
+     "valeur": "monter",
+     "t": "Monter ? Comment ? Ah, MONTER ! Bon, bon. Capucine sera contente. Mais tu redescendras me voir, hein ? Les ascenseurs, ça marche dans les deux sens.",
+     "rappel": "Toujours à vouloir monter ? Reviens quand même !"
+    },
+    {
+     "label": "Rester dans la cabine, entre les deux.",
+     "valeur": "entre",
+     "t": "Entre les deux ? Dans la cabine ? Ha ! Toi, tu es un vrai liftier. C'est là qu'on est le mieux : ni en haut, ni en bas. En route.",
+     "rappel": "Toujours à rêver de cabine, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "capucine_hf": {
+    "qui": "ma collègue d'en haut,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.95,
+    "avis": "Capucine, c'est la meilleure liftière de la Colonne. Elle parle à la machine, et la machine lui répond. Moi, je ne l'entends plus, la machine. Mais j'entends Capucine. Toujours. Même quand elle chuchote. Allez comprendre.",
+    "anecdotes": [
+     "Le jour de la réouverture, elle est descendue dans ma cabine. Elle a posé la main sur la rampe et elle a dit : « Elle est bien élevée, Anatole. » Je n'ai pas entendu. Mais j'ai vu ses lèvres. Je les ai lues trois fois."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Capucine ! Tu m'entends ?"
+     ],
+     [
+      "b",
+      "Je vous entends très bien, Anatole. Toute la Place vous entend."
+     ],
+     [
+      "a",
+      "COMMENT ?"
+     ],
+     [
+      "b",
+      "… Bonjour, Anatole."
+     ]
+    ]
+   },
+   "ferdinand_st": {
+    "qui": "mon vieux copain,",
+    "nom": "Ferdinand",
+    "sentiment": 0.85,
+    "avis": "Ferdinand et moi, on est les deux plus vieilles machines des Strates. Lui, il tourne en rond. Moi, je monte et je descends. On ne va jamais au même endroit. Alors on se retrouve à La Marmite, au milieu.",
+    "anecdotes": [
+     "Il dit que Bernadette siffle plus fort que ma cabine. Un jour, on a fait un concours. Toute la Place a voté pour Bernadette. Moi, je n'ai rien entendu, alors j'ai voté pour moi."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Anatole ! Tu as entendu Bernadette ?"
+     ],
+     [
+      "a",
+      "Comment ?"
+     ],
+     [
+      "b",
+      "Bernadette ! Elle a sifflé !"
+     ],
+     [
+      "a",
+      "Ah ! Oui ! Dans les pieds !"
+     ]
+    ]
+   },
+   "tom_st": {
+    "qui": "mon petit guetteur,",
+    "nom": "Tom",
+    "sentiment": 0.75,
+    "avis": "Le petit Tom vient tous les soirs près du quai. Il attend une petite d'en haut. Il dit que non. À chaque cabine, il se recoiffe. Je fais exprès de faire durer l'ouverture des portes. Pour lui laisser le temps.",
+    "anecdotes": [
+     "Un soir, je lui ai prêté ma casquette de liftier, pour qu'il ait l'air officiel quand elle arrivera. Il l'a gardée sur la tête jusqu'à la dernière cabine. Elle n'est pas venue ce soir-là. Il me l'a rendue en disant : « Demain. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Monsieur Anatole, elle arrive quand, la prochaine cabine ?"
+     ],
+     [
+      "a",
+      "Comment ?"
+     ],
+     [
+      "b",
+      "LA PROCHAINE CABINE !"
+     ],
+     [
+      "a",
+      "Dans deux minutes. Recoiffe-toi."
+     ]
+    ]
+   },
+   "agathe_st": {
+    "qui": "ma Doyenne,",
+    "nom": "la Doyenne Agathe",
+    "sentiment": 0.8,
+    "avis": "Agathe parle peu. Moi, je n'entends pas. On fait une excellente équipe. Pendant dix ans, elle a écrit des lettres au Bourgmestre pour rouvrir la Ligne. Moi, j'ai huilé la cabine. Le même jour, on a eu fini.",
+    "anecdotes": [
+     "Le matin de la réouverture, elle m'a tendu la clé du départ sans un mot. J'ai compris tout de suite. C'est la seule personne des Strates à qui je n'ai jamais dit « Comment ? »."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Anatole. C'est l'heure."
+     ],
+     [
+      "a",
+      "Je sais, Doyenne."
+     ],
+     [
+      "b",
+      "Vous m'avez entendue ?"
+     ],
+     [
+      "a",
+      "Non. Mais je sais."
+     ]
+    ]
+   }
+  }
+ },
+ "brunehaut_st": {
+  "genre": "f",
+  "prenom": "Maîtresse Brunehaut",
+  "histoire": [
+   {
+    "titre": "le premier marteau",
+    "t": "À cinq ans, j'ai soulevé le marteau de ma grand-mère. Il était plus lourd que moi. Je suis tombée en arrière, le marteau sur le ventre, et j'ai ri si fort que toute la Forge s'est arrêtée pour me regarder. Grand-Mère a dit : « Celle-là, elle a le bon rire. » C'est le plus beau compliment qu'on puisse faire à une Enclume."
+   },
+   {
+    "titre": "les coups d'en haut",
+    "t": "Il y a vingt ans, un matin, j'ai entendu taper au-dessus de ma tête, à travers la roche. Deux coups, puis un. Le vieux signe des forgerons : bonjour, merci. J'ai répondu. Le lendemain, ça a recommencé. J'ai su plus tard que c'était Mathilde, la petite-fille de l'ancien élève de ma grand-mère. On ne s'est jamais vues. On se dit bonjour tous les matins."
+   },
+   {
+    "titre": "Grand-Mère",
+    "t": "Quand j'ai pris la tête de la Grande Forge, on a installé le nouveau marteau-pilon. Je l'ai appelé Grand-Mère, en l'honneur de la mienne. Il tape lentement, très fort, et il ne se trompe jamais. Le jour où j'ai appris que Mathilde avait appelé le sien Mamie, j'ai ri pendant une heure. Les grands esprits forgent ensemble."
+   },
+   {
+    "titre": "la pince de la Fronde",
+    "t": "Le soir du premier concert de la Fronde, il y a trente ans, quelqu'un a « emprunté » ma grande pince pour taper dessus en rythme. J'ai traversé le Pont, furieuse. J'ai entendu le son de ma pince. C'était beau. Je suis restée jusqu'à la fin. Ils me l'ont rendue le lendemain, avec un autocollant. Depuis, ils l'empruntent à chaque concert."
+   },
+   {
+    "titre": "pourquoi je ris",
+    "t": "Tu sais pourquoi je ris si fort, {surnom} ? Sous terre, on ne voit pas toujours les gens. Mais un rire, ça traverse les murs, les galeries, la roche. Quand je ris, tout le monde sait que Brunehaut est là, que la Forge tourne, que tout va bien. C'est mon lampadaire, à moi. HO HO ! Tu vois ? Il éclaire."
+   }
+  ],
+  "reve": [
+   "Que Mathilde descende enfin, qu'on se tienne chacune devant une enclume, face à face, et qu'on tape ensemble : deux coups, puis un. Que toute la caverne l'entende. Et forger avec elle une grande porte, entre le haut et le bas. Une porte qui ne ferme pas."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : un rire, c'est fait pour être fort ou pour être doux ?",
+   "reponses": [
+    {
+     "label": "Fort ! Qu'on l'entende de loin !",
+     "valeur": "fort",
+     "t": "HO HO HO ! Voilà ! Un rire, c'est comme un coup de marteau : s'il ne s'entend pas, il ne sert à rien ! Viens, on va faire trembler Grand-Mère.",
+     "rappel": "Toujours pour les rires forts ? HO HO !"
+    },
+    {
+     "label": "Doux, juste pour soi.",
+     "valeur": "doux",
+     "t": "Doux… Hm. Comme la Doyenne Agathe, qui sourit d'un millimètre par an. Bon. Il en faut, des rires doux. Ils tiennent chaud de l'intérieur. Mais garde-m'en un fort, de temps en temps.",
+     "rappel": "Toujours tes rires doux ? Je les entends quand même."
+    },
+    {
+     "label": "Les deux, selon le jour.",
+     "valeur": "deux",
+     "t": "Les deux ! Comme le feu de la Forge : il gronde le jour, il ronronne la nuit. Tu as tout compris, toi. On te ferait forgeronne. Ou forgeron. Les deux, selon le jour !",
+     "rappel": "Fort ou doux, aujourd'hui, ton rire ?"
+    }
+   ]
+  },
+  "liens": {
+   "mathilde": {
+    "qui": "ma sœur de roche,",
+    "nom": "Mathilde",
+    "sentiment": 0.95,
+    "avis": "Mathilde, je ne l'ai jamais vue. Mais je la connais mieux que la moitié des Strates. Je sais quand elle est de bonne humeur : elle tape vite. Quand elle est fatiguée : elle tape lourd. Quand elle rit : elle rate un coup. Elle rate souvent.",
+    "anecdotes": [
+     "Un matin, elle a tapé deux coups, puis un, puis deux autres. Je n'ai pas compris. Ysaé m'a expliqué plus tard : « Bonjour, merci, et bonjour à Ysaé. » J'ai répondu trois fois. On s'est mises à rire, chacune de son côté de la roche."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "(Deux coups, puis un.)"
+     ],
+     [
+      "b",
+      "(Deux coups, puis un. Puis un éclat de rire qui traverse la roche.)"
+     ],
+     [
+      "a",
+      "HO HO HO !"
+     ]
+    ]
+   },
+   "tom_st": {
+    "qui": "mon apprenti,",
+    "nom": "Tom",
+    "sentiment": 0.9,
+    "avis": "Tom a onze ans, des bras en coton et un cœur de forgeron. Il tape un code secret sur la roche pour parler à la fille de Mathilde. Il croit que je ne comprends pas. J'ai inventé la moitié des signes. Je ne lui dirai jamais.",
+    "anecdotes": [
+     "Il forge en cachette un boulon à six pans, avec un « P » gravé dessus. Il le cache derrière le four numéro trois. Je fais le ménage autour, tous les soirs, pour ne pas le trouver."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Tom ! La pince !"
+     ],
+     [
+      "b",
+      "J'arrive, Maîtresse ! Je finissais… un truc !"
+     ],
+     [
+      "a",
+      "Un truc à six pans ? HO HO !"
+     ],
+     [
+      "b",
+      "Non ! … Peut-être."
+     ]
+    ]
+   },
+   "ludovic": {
+    "qui": "mon contremaître préféré,",
+    "nom": "Ludovic",
+    "sentiment": 0.75,
+    "avis": "Ludovic est sérieux comme une poutre. Il dit que mon rire est sa meilleure alarme. Je ris donc deux fois plus fort, pour qu'il soit tranquille. C'est un service que je rends à la sécurité des Strates.",
+    "anecdotes": [
+     "Un jour, j'avais mal à la gorge et je n'ai pas ri de la matinée. Ludovic est remonté de la mine en courant, casque sur la tête, pour voir si tout allait bien. Je lui ai fait « ho ». Tout petit. Il est redescendu rassuré."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Maîtresse Brunehaut. Vous riez, aujourd'hui ?"
+     ],
+     [
+      "a",
+      "HO HO HO !"
+     ],
+     [
+      "b",
+      "Bien. La mine est en sécurité."
+     ]
+    ]
+   },
+   "brasero": {
+    "qui": "le vieux de la Fronde,",
+    "nom": "Brasero",
+    "sentiment": 0.7,
+    "avis": "Brasero et sa bande ont fondé la Fronde quand j'étais petite. Ma grand-mère disait qu'ils étaient fous. Puis elle leur a forgé leurs premières marmites. Les Enclume ont toujours eu un faible pour les fous qui fabriquent.",
+    "anecdotes": [
+     "Pour les cinquante ans de la Fronde, Brasero m'a demandé de forger une grande cloche. Je l'ai forgée. Elle sonne faux. Exprès. Il a dit que c'était parfait."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Brunehaut ! Ma pince est prête ?"
+     ],
+     [
+      "a",
+      "Ce n'est pas ta pince, c'est la mienne !"
+     ],
+     [
+      "b",
+      "C'est ce que je dis : ma pince préférée."
+     ]
+    ]
+   }
+  }
+ },
+ "tom_st": {
+  "genre": "m",
+  "prenom": "Tom",
+  "histoire": [
+   {
+    "titre": "le premier coup",
+    "t": "À huit ans, j'ai demandé à Maîtresse Brunehaut si je pouvais taper une fois. Une seule. Elle m'a donné un petit marteau et un vieux clou. J'ai tapé. Le clou s'est envolé jusqu'à la voûte. Elle a ri si fort que les fours ont tremblé. Le lendemain, j'étais apprenti. Je crois que c'est le clou qui m'a fait embaucher."
+   },
+   {
+    "titre": "les coups dans la roche",
+    "t": "Il y a deux ans, j'étais tout seul à la Forge, le soir. J'ai entendu taper au-dessus, à travers la roche : deux coups, puis un. Mais pas comme d'habitude. Plus petit, plus rapide. J'ai répondu, tout doucement. On m'a répondu. Je suis resté une heure à taper. Le lendemain, Maîtresse Brunehaut m'a dit : « C'est la fille de Mathilde. Elle a neuf ans. Elle s'appelle Pimprenelle. »"
+   },
+   {
+    "titre": "le code",
+    "t": "Avec Pimprenelle, on a inventé un code. Deux coups, puis un : bonjour, merci. Trois coups vite : boulon trouvé. Un long frottement : bonne nuit. Quatre coups lents : « Ta maman te cherche. » Celui-là, c'est elle qui l'a inventé. Je crois qu'elle s'en sert surtout pour elle."
+   },
+   {
+    "titre": "la réouverture",
+    "t": "Le jour où la Ligne a rouvert, j'étais au premier rang sur la Place des Rouages. Les gens d'en haut sont sortis de la cabine en clignant des yeux. J'ai regardé chaque enfant. Il y avait une petite rousse ! Mon cœur a fait trois coups vite. C'était pas elle. C'était la nièce de quelqu'un. J'ai tapé un long frottement sur un banc. Bonne nuit, quand même."
+   },
+   {
+    "titre": "le boulon",
+    "t": "Je vais te dire mon plus grand secret, {surnom}. Je forge un boulon, à la pause, derrière le four numéro trois. Un vrai, à six pans, avec un « P » gravé dessus. Il est presque fini. Le jour où elle descendra, je le laisserai tomber devant elle. Elle le ramassera, c'est sûr. Et là, elle saura que c'est moi. Enfin, j'espère. Sinon, elle le rangera avec les trois cents autres."
+   }
+  ],
+  "reve": [
+   "Que Pimprenelle descende par la Ligne, qu'elle sorte de la cabine, et qu'avant même qu'on se dise bonjour, elle tape deux coups, puis un, sur la rampe. Et que je réponde. Et puis lui faire visiter toute la Forge, et lui montrer Grand-Mère, le marteau-pilon. Il est bien plus grand que tous ses boulons."
+  ],
+  "question": {
+   "texte": "Dis, {surnom} : si tu avais un code secret, tu dirais quoi en premier ?",
+   "reponses": [
+    {
+     "label": "Bonjour.",
+     "valeur": "bonjour",
+     "t": "Bonjour ! Deux coups, puis un ! C'est le premier qu'on a appris, Pimprenelle et moi. C'est le plus important. Après, on peut tout dire.",
+     "rappel": "Deux coups, puis un, {surnom} !"
+    },
+    {
+     "label": "J'ai trouvé un trésor !",
+     "valeur": "tresor",
+     "t": "Trois coups vite ! Boulon trouvé ! Ha ! Tu parles comme Pimprenelle ! Elle tape ça au moins cinq fois par jour. Elle trouve des boulons partout. Même là où il n'y en a pas.",
+     "rappel": "Trois coups vite ! Tu as trouvé un trésor, aujourd'hui ?"
+    },
+    {
+     "label": "Bonne nuit.",
+     "valeur": "nuit",
+     "t": "Un long frottement… C'est le plus doux. Je le tape tous les soirs sur le mur de ma chambre. Je ne sais pas si ça monte jusqu'en haut. Mais je le tape quand même.",
+     "rappel": "Un long frottement pour toi, {surnom}. Ça veut dire : à bientôt."
+    }
+   ]
+  },
+  "liens": {
+   "pimprenelle_hf": {
+    "qui": "mon amie à travers la roche,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.95,
+    "avis": "Je n'ai jamais vu Pimprenelle. Mais je sais qu'elle tape vite, qu'elle ne rate jamais un coup, et qu'elle trouve au moins cinq boulons par jour. Elle a neuf ans. Elle apprend le code plus vite que moi. C'est un peu vexant. C'est surtout génial.",
+    "anecdotes": [
+     "Un soir, elle a tapé un nouveau signe que je ne connaissais pas : un coup, un frottement, un coup. J'ai cherché toute la nuit. Le lendemain, elle a tapé : « Devine. » Je cherche encore."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "(Deux coups, puis un.)"
+     ],
+     [
+      "b",
+      "(Trois coups vite !)"
+     ],
+     [
+      "a",
+      "Elle a trouvé un boulon ! Encore !"
+     ]
+    ]
+   },
+   "brunehaut_st": {
+    "qui": "ma maîtresse de forge,",
+    "nom": "Maîtresse Brunehaut",
+    "sentiment": 0.9,
+    "avis": "Maîtresse Brunehaut rit tellement fort qu'on l'entend jusqu'aux Jardins. Elle crie, elle tape, elle rit, et elle a toujours une galette en plus pour moi dans sa poche. Elle croit que je ne sais pas qu'elle comprend notre code. Je sais. Je fais semblant.",
+    "anecdotes": [
+     "Un jour, j'ai raté mon crochet. Je voulais pleurer. Elle l'a pris, elle l'a regardé longtemps, et elle a dit : « Il a du caractère. » Puis elle l'a accroché au-dessus de son enclume. Il y est toujours."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Tom ! Tu as encore tapé pendant la pause ?"
+     ],
+     [
+      "a",
+      "Non, Maîtresse ! … Un peu."
+     ],
+     [
+      "b",
+      "HO HO ! Deux coups, puis un ?"
+     ],
+     [
+      "a",
+      "… Oui."
+     ]
+    ]
+   },
+   "ferdinand_st": {
+    "qui": "mon papy du train,",
+    "nom": "Papy Ferdinand",
+    "sentiment": 0.85,
+    "avis": "Papy Ferdinand me laisse tirer le sifflet de Bernadette, un coup par soir. Il raconte des histoires de train très longues. Je l'écoute jusqu'au bout. Lui, il s'endort au milieu des miennes.",
+    "anecdotes": [
+     "Il m'a appris à reconnaître le bruit de chaque rail. Il dit que les rails chantent, si on écoute bien. Maintenant, je les entends. Ludovic a raison : tout parle, en bas."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "En voiture, petit !"
+     ],
+     [
+      "a",
+      "Je peux tirer le sifflet ?"
+     ],
+     [
+      "b",
+      "Un coup."
+     ],
+     [
+      "a",
+      "Pour Pimprenelle !"
+     ]
+    ]
+   },
+   "ressort": {
+    "qui": "mon pote de la Fronde,",
+    "nom": "Ressort",
+    "sentiment": 0.8,
+    "avis": "Ressort a onze ans, comme moi, et fait du skate à la Fronde. Ressort descend la rampe en criant « LIBERTÉ ! ». Moi, je crie « ATTENTION AUX RAILS ! ». On s'entend super bien. Ressort m'a appris à tomber. Moi, je lui ai appris à freiner.",
+    "anecdotes": [
+     "Un jour, j'ai forgé des roulettes en laiton pour sa planche. Elles font des étincelles au freinage. Toute la Fronde a applaudi. Ressort dit que c'est le plus beau cadeau du monde, et essaie de garder les étincelles dans un bocal. Ça ne marche pas. Ressort essaie quand même."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Tom ! Viens rider !"
+     ],
+     [
+      "a",
+      "J'ai forge !"
+     ],
+     [
+      "b",
+      "Après la forge, alors !"
+     ],
+     [
+      "a",
+      "Après la forge !"
+     ]
+    ]
+   }
+  }
+ },
+ "ludovic": {
+  "genre": "m",
+  "prenom": "Ludovic",
+  "histoire": [
+   {
+    "titre": "le casque du grand-père",
+    "t": "Mon grand-père m'a donné son casque le jour de mes six ans. Il était trop grand : il me tombait sur le nez. Je l'ai porté quand même, toute la journée, même à table. Ma mère a voulu me l'enlever pour dormir. J'ai dit : « Et si le plafond tombe ? » Elle a ri. Elle me l'a laissé. Il protège encore les visiteurs."
+   },
+   {
+    "titre": "la minute du père",
+    "t": "Quand j'avais douze ans, mon père travaillait dans une vieille galerie. Il a entendu la roche craquer. Une toute petite plainte. Il a sifflé la sortie. Tout le monde est remonté, en riant, en disant qu'il exagérait. Une minute après, la galerie s'est affaissée. Personne n'était dedans. Ce soir-là, mon père m'a dit : « La roche parle. Il faut juste l'écouter. »"
+   },
+   {
+    "titre": "la Vieille",
+    "t": "Ma première fois au fond de la Grotte aux Cristaux, j'ai éteint ma lampe. Tout est devenu bleu. J'ai dit, tout bas : « Bonjour, la Vieille. » Je ne sais pas pourquoi. Ça m'est venu. Depuis, je lui dis bonjour tous les matins. Les jeunes rient. Puis ils le font aussi. Une mine, c'est une maison. On salue la maison."
+   },
+   {
+    "titre": "le tableau",
+    "t": "Quand je suis devenu contremaître, j'ai accroché un tableau dans mon bureau : « Jours sans accident : 0 ». Le lendemain, j'ai écrit 1. Puis 2. Aujourd'hui, j'en suis à quatre mille deux cents. Chaque matin, j'écris un nouveau chiffre. C'est la seule chose que j'écrive de la journée. C'est mon plus beau poème."
+   },
+   {
+    "titre": "ce que je ne dis pas",
+    "t": "Je vais vous dire une chose, {surnom}. On me croit sérieux, prudent, un peu grognon. C'est vrai. Mais chaque matin, quand j'éteins ma lampe au fond de la Grotte et que les cristaux s'allument, j'ai les yeux qui piquent. Ce n'est pas la poussière. C'est que c'est beau. Je suis prudent parce que je veux que tout le monde puisse le voir. Longtemps."
+   }
+  ],
+  "reve": [
+   "Descendre un jour au Dôme d'Azur, quand sa Ligne rouvrira, poser la main sur la roche du fond de la mer, et lui dire bonjour de la part de la Vieille. Et puis prendre une journée de congé. Une seule. Sans casque. Non. Avec un casque. Mais une journée."
+  ],
+  "question": {
+   "texte": "Une question, {surnom}. Avant d'entrer quelque part, vous dites bonjour ?",
+   "reponses": [
+    {
+     "label": "Toujours. Même aux maisons.",
+     "valeur": "toujours",
+     "t": "Bien. Très bien. Vous feriez un bon mineur. La Vieille vous aimera. Elle aime les gens polis.",
+     "rappel": "Bonjour, {surnom}. Et bonjour à la Vieille, de votre part."
+    },
+    {
+     "label": "Seulement quand il y a quelqu'un.",
+     "valeur": "quelqu'un",
+     "t": "Hm. Il y a toujours quelqu'un, {surnom}. Une roche, un arbre, une vieille maison. Ils ne répondent pas. Mais ils remarquent. Essayez. Vous verrez.",
+     "rappel": "Vous avez essayé de dire bonjour à la roche ?"
+    },
+    {
+     "label": "Je mets d'abord mon casque.",
+     "valeur": "casque",
+     "t": "(Il sourit, enfin, un peu.) Ah. Voilà une réponse sérieuse. Le casque d'abord, le bonjour ensuite. Vous êtes engagé. Enfin, presque.",
+     "rappel": "Votre casque est bien attaché, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "opaline": {
+    "qui": "ma cristallière distraite,",
+    "nom": "la Docteure Opaline",
+    "sentiment": 0.8,
+    "avis": "La Docteure Opaline est la personne la plus intelligente des Strates. Et la plus distraite. Elle oublie son casque tous les matins. Je l'attends à l'entrée de la mine, tous les matins, avec le casque. C'est devenu le moment que je préfère.",
+    "anecdotes": [
+     "Je lui ai accroché un casque à la porte de son Atelier. Elle en a fait un pot à crayons. J'ai voulu me fâcher. J'ai vu les crayons, bien rangés, bien protégés. J'ai ri. Ne le dites à personne."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Docteure. Le casque."
+     ],
+     [
+      "b",
+      "Oui ! Bien sûr ! … Il est où ?"
+     ],
+     [
+      "a",
+      "Sur votre tête. Je viens de le mettre."
+     ]
+    ]
+   },
+   "brunehaut_st": {
+    "qui": "mon alarme,",
+    "nom": "Maîtresse Brunehaut",
+    "sentiment": 0.75,
+    "avis": "Le rire de Brunehaut s'entend jusqu'au fond de la mine. Tant que je l'entends, je sais que tout va bien en surface. C'est la meilleure alarme du monde. Et la plus bruyante.",
+    "anecdotes": [
+     "Un matin, je ne l'ai pas entendue rire. J'ai fait remonter toute l'équipe. Elle avait mal à la gorge. Elle m'a fait « ho », tout doucement. On est redescendus. Les mineurs ne se sont pas plaints. Ils savent."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maîtresse Brunehaut. Vous allez bien ?"
+     ],
+     [
+      "b",
+      "HO HO HO ! Très bien !"
+     ],
+     [
+      "a",
+      "Bien. Je redescends."
+     ]
+    ]
+   },
+   "agathe_st": {
+    "qui": "ma Doyenne,",
+    "nom": "la Doyenne Agathe",
+    "sentiment": 0.85,
+    "avis": "La Doyenne Agathe a travaillé vingt ans à la mine, avant d'être Doyenne. Elle connaît la Vieille aussi bien que moi. Elle ne dit pas grand-chose. Mais quand elle regarde mon tableau, elle hoche la tête. Ça me suffit pour un mois.",
+    "anecdotes": [
+     "Pour mes quatre mille jours sans accident, elle m'a offert un caillou de la galerie où elle avait commencé. Elle a dit : « Elle vous salue. » Je l'ai posé sur mon bureau. Je lui dis bonjour aussi."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Monsieur Grisou. Combien ?"
+     ],
+     [
+      "a",
+      "Quatre mille deux cents, Doyenne."
+     ],
+     [
+      "b",
+      "Bien. Continuez."
+     ]
+    ]
+   },
+   "rivet": {
+    "qui": "mon réparateur de rails,",
+    "nom": "Rivet",
+    "sentiment": 0.65,
+    "avis": "Rivet, de la Fronde, répare les rails des wagonnets de la mine. Le travail est parfait. Les rails sont souvent peints en couleurs. Je râle pour la peinture. Jamais pour le travail.",
+    "anecdotes": [
+     "Un jour, Rivet a remarqué une fissure dans un rail que j'avais vérifié trois fois. On l'a changé ensemble, sans un mot. Le soir, à La Marmite, je lui ai offert un chocolat du mineur. Ça veut dire beaucoup, chez moi."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ludovic ! J'ai repeint le rail trois en violet !"
+     ],
+     [
+      "a",
+      "Il tient ?"
+     ],
+     [
+      "b",
+      "Comme un roc."
+     ],
+     [
+      "a",
+      "… Le violet, ça va."
+     ]
+    ]
+   }
+  }
+ },
+ "opaline": {
+  "genre": "f",
+  "prenom": "Docteure Opaline",
+  "histoire": [
+   {
+    "titre": "le caillou bleu",
+    "t": "À sept ans, en haut, à Hautefond, j'ai trouvé dans une boîte de mon grand-père un petit caillou bleu qui brillait dans le noir. « Ça vient d'en bas », m'a-t-il dit. Je l'ai gardé sous mon oreiller pendant des années. J'ai lu tous les livres sur les cristaux. Il en manquait un : celui qui expliquait pourquoi il brillait. J'ai décidé de l'écrire."
+   },
+   {
+    "titre": "la semaine de trente ans",
+    "t": "Je suis descendue aux Strates pour une semaine d'études, avec une seule valise. Le premier soir, j'ai vu la Grotte aux Cristaux, toutes lampes éteintes. Je me suis assise par terre. Je ne me suis pas relevée avant l'aube. Ma valise est toujours sous mon lit. Je ne l'ai jamais défaite. Ça fait trente ans. Je crois que je reste."
+   },
+   {
+    "titre": "la petite voleuse",
+    "t": "Quand Ysaé était petite, elle venait à l'Atelier après l'école. Elle se cachait sous mon établi et chipait les éclats trop petits pour une lanterne. Je faisais semblant de ne rien voir. Un jour, elle m'a offert un collier fait avec mes propres éclats. Je le porte encore. Sous ma blouse."
+   },
+   {
+    "titre": "le soleil rose",
+    "t": "Un soir, c'était mon tour de baisser le Soleil de Laiton. Quarante tours de manivelle. J'ai commencé à compter, puis j'ai pensé à un cristal, puis à un autre, et j'ai arrêté au vingtième tour. Toute la caverne est restée rose. Les gens sont sortis sur les balcons, émerveillés. La Doyenne Agathe a dit : « Recommencez quand vous voulez. » Je recommence. Par distraction."
+   },
+   {
+    "titre": "ce que je cherche",
+    "t": "Je vais vous confier une chose, {surnom}. Je n'ai toujours pas trouvé pourquoi les cristaux bleus brillent. J'ai des hypothèses, des carnets, des calculs. Mais au fond, j'espère ne jamais trouver. Tant que je cherche, je descends à la Grotte tous les matins, et je m'émerveille. Le jour où je saurai, j'ai peur de m'émerveiller un peu moins."
+   }
+  ],
+  "reve": [
+   "Tailler, avec Ludovic, une seule lanterne faite d'un cristal de chaque monde de la Colonne : un éclat de la Cité des Nuées, un de Hautefond, un des Strates, et un du Dôme d'Azur quand sa Ligne rouvrira. Et l'allumer au milieu de la Place des Rouages, pour voir de quelle couleur brillent les quatre mondes ensemble."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : à votre avis, pourquoi les cristaux brillent-ils dans le noir ?",
+   "reponses": [
+    {
+     "label": "Parce qu'ils gardent la lumière du jour.",
+     "valeur": "lumiere",
+     "t": "C'est mon hypothèse numéro un ! Ils boivent le Soleil de Laiton et ils le rendent la nuit. Vous avez l'esprit scientifique. Et un joli sens de la poésie. Les deux vont ensemble, quoi qu'on dise.",
+     "rappel": "Toujours d'accord avec mon hypothèse numéro un ?"
+    },
+    {
+     "label": "Parce qu'ils sont heureux.",
+     "valeur": "heureux",
+     "t": "Heureux… (Elle note dans un carnet.) Hypothèse numéro quarante-sept : « Les cristaux brillent parce qu'ils sont heureux. » Je ne peux pas la prouver. Je ne peux pas la réfuter non plus. Je la garde.",
+     "rappel": "Vos cristaux sont-ils heureux, aujourd'hui, {surnom} ?"
+    },
+    {
+     "label": "Je ne sais pas, et c'est très bien.",
+     "valeur": "mystere",
+     "t": "Oh ! Vous avez compris mon secret. Le plus beau, c'est de ne pas savoir encore. Ne le dites pas aux autres savants, ils me retireraient mon titre.",
+     "rappel": "Toujours d'accord pour ne pas savoir, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "ludovic": {
+    "qui": "mon gardien de casque,",
+    "nom": "Ludovic",
+    "sentiment": 0.85,
+    "avis": "Ludovic m'attend tous les matins à l'entrée de la mine, avec un casque. Il ne dit rien. Il me le pose sur la tête. Je dis merci. J'oublie. Le lendemain, il recommence. Je crois que c'est la personne la plus patiente de l'archipel.",
+    "anecdotes": [
+     "Un matin, j'ai mis mon casque toute seule, avant d'arriver. Il m'a regardée longtemps. Puis il a dit : « Bien. » Il avait l'air presque déçu. Le lendemain, je l'ai oublié exprès."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Docteure. Le casque."
+     ],
+     [
+      "a",
+      "Oh ! Merci, Ludovic. Où l'avais-je mis ?"
+     ],
+     [
+      "b",
+      "Dans le pot à crayons."
+     ]
+    ]
+   },
+   "bertille": {
+    "qui": "ma rivale lumineuse,",
+    "nom": "Bertille",
+    "sentiment": 0.8,
+    "avis": "Bertille prétend que ses champignons brillent plus fort que mes cristaux. C'est faux. C'est différent. Ses champignons brillent comme une conversation, mes cristaux comme un poème. On se dispute tous les soirs au bord de l'étang. C'est mon moment préféré.",
+    "anecdotes": [
+     "Nous avons fait un concours, lumières éteintes, avec le petit Tom pour jury. Il a dit « les deux ». Nous avons ri toutes les deux pendant dix minutes, dans le noir. On ne voyait rien. C'était très lumineux."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mes champignons brillent plus fort ce soir, Opaline."
+     ],
+     [
+      "a",
+      "Mes cristaux brillent plus longtemps."
+     ],
+     [
+      "b",
+      "On recommence le concours ?"
+     ],
+     [
+      "a",
+      "Demain. Avec Tom."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma petite voleuse d'éclats,",
+    "nom": "Ysaé",
+    "sentiment": 0.9,
+    "avis": "Ysaé chipait mes éclats sous l'établi quand elle avait six ans. Aujourd'hui, elle en fait des bijoux que le Bourgmestre de Hautefond porte sous son écharpe. Je lui donne mes éclats, maintenant. Mais elle préfère encore les chiper. Pour la tradition.",
+    "anecdotes": [
+     "Pour son premier marché en haut, elle m'a demandé : « Et si personne n'en veut ? » Je lui ai dit : « Alors tu en feras pour nous. » Elle n'a jamais eu besoin d'en faire pour nous. Elle en fait quand même."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Opaline ! T'as des petits éclats ?"
+     ],
+     [
+      "a",
+      "Sous l'établi, comme toujours."
+     ],
+     [
+      "b",
+      "Je peux les prendre ?"
+     ],
+     [
+      "a",
+      "Non. Chipe-les."
+     ]
+    ]
+   },
+   "octave_hf": {
+    "qui": "mon astronome d'en haut,",
+    "nom": "le Professeur Lunette",
+    "sentiment": 0.7,
+    "avis": "Le Professeur Lunette m'a écrit pour une lentille en cristal bleu. Il veut voir « des étoiles bleues ». Les étoiles ne sont pas bleues. Mais il a répondu « pas encore », et un savant qui dit « pas encore », c'est un savant que j'aime.",
+    "anecdotes": [
+     "Il m'a envoyé un dessin de sa grande lunette, avec une petite flèche : « Ici, votre cristal. » Et une autre flèche, à côté : « Ici, Clémentine. » Je ne sais pas qui est Clémentine. Je lui taille quand même la plus belle lentille de ma vie."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Docteure Quartz ! Ma lentille est prête ?"
+     ],
+     [
+      "a",
+      "Presque, Professeur. Elle brille encore un peu trop."
+     ],
+     [
+      "b",
+      "On ne brille jamais trop !"
+     ]
+    ]
+   }
+  }
+ },
+ "bertille": {
+  "genre": "f",
+  "prenom": "Bertille",
+  "histoire": [
+   {
+    "titre": "le seau de Grand-Mère",
+    "t": "Ma grand-mère a trouvé le premier champignon lumineux au fond d'une galerie abandonnée. Un tout petit, bleu, tout seul dans le noir. Elle l'a ramené dans un seau, au pied de la cascade. Elle lui a chanté une chanson tous les soirs pendant un an. L'année d'après, il y en avait dix. Aujourd'hui, ils sont deux mille. Je chante toujours la chanson."
+   },
+   {
+    "titre": "le soleil qui fait mal",
+    "t": "Quand j'avais six ans, ma mère m'a emmenée en haut, à Hautefond, voir le vrai soleil. Je suis sortie du pavillon, j'ai levé les yeux, et j'ai pleuré. Ça faisait mal. Tout était trop grand, trop blanc, trop chaud. Ma mère m'a ramenée en bas. J'ai couru aux Jardins, je me suis assise au milieu des champignons, et je me suis sentie chez moi."
+   },
+   {
+    "titre": "la cascade qui parle",
+    "t": "À dix ans, j'ai remarqué que la cascade changeait de voix. Parfois elle chantait fort, parfois tout doux. J'ai noté pendant un an, dans un carnet. Puis j'ai demandé à Anatole de demander à Capucine, en haut, par le tuyau : il pleuvait les jours où la cascade chantait fort. Depuis, je suis la météo des Strates. Avec un jour de retard."
+   },
+   {
+    "titre": "Hector",
+    "t": "Un matin, un nouveau champignon a poussé au bord de l'étang. Violet, à points dorés, avec un petit chapeau tout fier. Je l'ai appelé Hector. Le Bourgmestre est descendu pour la réouverture, il est passé aux Jardins, et il s'est arrêté devant lui. Longtemps. Il a dit : « Il a de l'allure, celui-là. » Je n'ai rien dit. Personne n'a rien dit. On s'est mordu les joues."
+   },
+   {
+    "titre": "le grand chapeau",
+    "t": "Je vais te dire mon secret, {surnom}. Je me suis acheté un très grand chapeau, à bords larges. Je l'ai caché sous mon lit. Le jour où j'aurai le courage, je le mettrai, je prendrai la Ligne, et j'irai voir le vrai soleil. Juste une minute. Pour lui dire que mes champignons vont bien, et que sa pluie arrive bien jusqu'à nous."
+   }
+  ],
+  "reve": [
+   "Faire pousser un champignon lumineux dans chacun des quatre mondes de la Colonne : un aux Nuées, chez Flora, un dans les Vergers du Père Bastien, un ici, et un sous le Dôme d'Azur. Pour que, la nuit, partout, il y ait une petite lumière des Strates qui veille."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : quand il pleut, toi, tu fais quoi ?",
+   "reponses": [
+    {
+     "label": "Je cours sous la pluie !",
+     "valeur": "courir",
+     "t": "Tu cours sous la pluie ! Oh, c'est merveilleux. Alors, une partie de cette pluie arrive ici, par ma cascade, avec tes pas dedans. Je l'écouterai mieux, la prochaine fois.",
+     "rappel": "Tu as couru sous la pluie, ces jours-ci ? La cascade chantait fort."
+    },
+    {
+     "label": "Je reste au chaud et j'écoute.",
+     "valeur": "ecouter",
+     "t": "Tu écoutes la pluie ! Comme moi la cascade. On fait le même métier, toi et moi, chacun à un bout de la roche. Bienvenue chez les écouteurs de pluie.",
+     "rappel": "Tu as écouté la pluie, ces jours-ci ?"
+    },
+    {
+     "label": "Je pense à ceux d'en bas.",
+     "valeur": "en_bas",
+     "t": "À ceux d'en bas ? (Elle rougit.) Personne ne m'avait jamais dit ça. Alors, la prochaine fois qu'il pleut, je saurai que la cascade m'apporte un peu de toi. Merci, {surnom}.",
+     "rappel": "Il a plu en haut. Tu as pensé à nous ? La cascade me l'a dit."
+    }
+   ]
+  },
+  "liens": {
+   "opaline": {
+    "qui": "ma rivale scintillante,",
+    "nom": "la Docteure Opaline",
+    "sentiment": 0.85,
+    "avis": "Opaline prétend que ses cristaux brillent plus fort que mes champignons. Ce n'est pas vrai. Ses cristaux sont froids et parfaits. Mes champignons sont vivants et un peu de travers. Je préfère les miens. Elle vient quand même s'asseoir au bord de mon étang tous les soirs.",
+    "anecdotes": [
+     "Un soir, elle a oublié de compter les tours de manivelle et la caverne est restée rose. Mes champignons ont tous changé de couleur. Ils ont cru que c'était le matin. On a ri jusqu'à minuit."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Opaline ! Tu as encore oublié de compter ?"
+     ],
+     [
+      "b",
+      "Oh. Peut-être. Pourquoi ?"
+     ],
+     [
+      "a",
+      "Mes champignons sont tout orange !"
+     ]
+    ]
+   },
+   "honorine_st": {
+    "qui": "ma cuisinière,",
+    "nom": "Honorine",
+    "sentiment": 0.8,
+    "avis": "Honorine fait sa soupe avec mes champignons bruns. Ceux qui brillent, elle ne les touche jamais : elle dit que ça porte malheur de manger une lumière. On est d'accord sur tout. Sauf sur le sel.",
+    "anecdotes": [
+     "Le jour où la cascade s'est presque arrêtée, il y a deux ans, Honorine est venue avec tous ses seaux, et on a arrosé les Jardins toute la nuit, à deux. Le matin, elle a fait une soupe pour nous deux. Je n'en ai jamais mangé de meilleure."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bertille ! Mes champignons de la semaine ?"
+     ],
+     [
+      "a",
+      "Dans le panier. Pas les bleus."
+     ],
+     [
+      "b",
+      "Je ne mange pas la lumière, ma belle."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "mon jardinier d'en haut,",
+    "nom": "le Père Bastien",
+    "sentiment": 0.7,
+    "avis": "Le Père Bastien, des Vergers de Hautefond, parle à ses arbres. Moi, j'écoute ma cascade. On s'écrit par la cabine d'Anatole. Il veut descendre avec des pommes. Moi, je veux lui montrer les champignons. On sera deux jardiniers qui ne font pas pousser la même chose, et qui se comprennent.",
+    "anecdotes": [
+     "Il m'a envoyé une pomme, une seule, avec un mot : « Elle a mûri au soleil. Elle vous le racontera. » Je l'ai gardée trois jours avant de la manger. Elle racontait très bien."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, ma petite. Ils poussent ?"
+     ],
+     [
+      "a",
+      "Ils brillent, Père Bastien."
+     ],
+     [
+      "b",
+      "C'est leur façon de pousser, je suppose."
+     ]
+    ]
+   },
+   "fusain": {
+    "qui": "l'artiste de la Fronde,",
+    "nom": "Fusain",
+    "sentiment": 0.7,
+    "avis": "Fusain vient peindre aux Jardins. Ses couleurs sont belles, mais pas autant que celles de mes champignons. Alors on a fait un échange : je donne un peu de lumière, et les fresques de la Fronde brillent la nuit. Je ne dirai pas comment. C'est un secret de jardinière.",
+    "anecdotes": [
+     "Sur le Mur des Fresques, il y a maintenant une jardinière avec un chapeau en forme de champignon, qui écoute une cascade. Je suis passée devant mille fois. Je ne me suis reconnue qu'à la millième."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bertille ! Je peux peindre ton bleu ?"
+     ],
+     [
+      "a",
+      "Tu peux le regarder. Le peindre, c'est autre chose."
+     ],
+     [
+      "b",
+      "J'essaie quand même !"
+     ]
+    ]
+   }
+  }
+ },
+ "honorine_st": {
+  "genre": "f",
+  "prenom": "Honorine",
+  "histoire": [
+   {
+    "titre": "les lanternes de la famille",
+    "t": "Mon arrière-grand-mère était la dernière allumeuse de lanternes des Galeries. Matin et soir, elle allumait chaque lanterne, porte après porte. Quand le Soleil de Laiton a été allumé, on lui a dit qu'elle n'avait plus de travail. Elle a ouvert une cantine. Elle a dit : « On n'éclaire plus les portes. Alors on éclairera les ventres. » C'était La Marmite."
+   },
+   {
+    "titre": "la grande panne",
+    "t": "L'année de mes sept ans, le Soleil de Laiton s'est éteint pendant trois jours. Tout noir. Tout froid. Ma mère a ouvert La Marmite jour et nuit, avec toutes les vieilles lanternes de la famille. Tout le monde est venu. Les forgerons, les mineurs, la Fronde. On a chanté pour se tenir chaud. C'est le plus beau souvenir de ma vie. Et le plus noir."
+   },
+   {
+    "titre": "le chocolat du mineur",
+    "t": "Le chocolat du mineur, je l'ai inventé pour Ludovic, un matin où il était remonté tout gris de la mine. J'ai mis du cacao, du lait, du miel, une pincée de sel, et j'ai tourné jusqu'à ce que la cuillère tienne debout. Il l'a bu sans rien dire. Puis il a dit : « Encore. » C'est le mot le plus long que Ludovic m'ait jamais dit."
+   },
+   {
+    "titre": "les cuillères d'Ysaé",
+    "t": "Ysaé, la petite de Rivet et Bielle, venait manger après l'école. Elle vidait son bol, puis elle tordait la cuillère pour en faire une bague. Au début, je grondais. Puis j'ai gardé les cuillères. J'en ai une boîte pleine. Aujourd'hui, elle vend des bijoux au Grand Marché de Hautefond. Moi, j'ai ses premières œuvres. Elles ne sont pas à vendre."
+   },
+   {
+    "titre": "le bol de plus",
+    "t": "Tu sais pourquoi je sers toujours un bol de plus, {surnom} ? Parce qu'il y a toujours quelqu'un qui n'ose pas en demander un deuxième. Je ne sais jamais qui. Alors je le pose au milieu de la table. Et je regarde. C'est toujours quelqu'un qu'on n'attendait pas. Parfois, c'est la Doyenne. Elle fait semblant de rien."
+   }
+  ],
+  "reve": [
+   "Faire une grande soupe des quatre mondes, quand la Ligne du Dôme rouvrira : des champignons des Strates, des pommes de Hautefond, des fraises des Nuées (pour le dessert) et une algue du Dôme. Et la servir sur la Place des Rouages, à une seule grande table, à tout le monde. Même au Bourgmestre. Surtout au Bourgmestre."
+  ],
+  "question": {
+   "texte": "Dis-moi, mon petit : ton plat préféré, c'est quoi ?",
+   "reponses": [
+    {
+     "label": "Une bonne soupe bien chaude.",
+     "valeur": "soupe",
+     "t": "Une soupe ! Ah, tu as le cœur d'un mineur. Assieds-toi, il y en a toujours une sur le feu. Et ne dis pas « non merci », je n'écoute pas.",
+     "rappel": "Une soupe, comme d'habitude ? Assieds-toi."
+    },
+    {
+     "label": "Un chocolat, épais comme tout.",
+     "valeur": "chocolat",
+     "t": "Le chocolat du mineur ! La cuillère debout ! Tu vas aimer ça. Firmin, en haut, appelle ça une soupe. Firmin a tort. C'est un câlin.",
+     "rappel": "Un chocolat du mineur, la cuillère debout ?"
+    },
+    {
+     "label": "Ce que les autres ont cuisiné pour moi.",
+     "valeur": "partage",
+     "t": "(Elle s'arrête, la louche en l'air.) Ça, c'est la meilleure réponse qu'on m'ait jamais faite. Ma grand-mère disait exactement ça. Viens. Ce soir, c'est moi qui cuisine pour toi.",
+     "rappel": "Ce soir, c'est moi qui cuisine pour toi, mon petit."
+    }
+   ]
+  },
+  "liens": {
+   "brunehaut_st": {
+    "qui": "ma cliente la plus bruyante,",
+    "nom": "Maîtresse Brunehaut",
+    "sentiment": 0.85,
+    "avis": "Brunehaut prend deux bols à midi, un pour elle et un « pour le marteau-pilon ». Elle rit si fort que les cuillères dansent. Quand elle n'est pas là, La Marmite est trop calme. Je mets la radio. Il n'y a pas de radio. Je chante.",
+    "anecdotes": [
+     "Un jour, elle m'a forgé une louche géante, pour la grande marmite. Elle est si lourde qu'il faut être deux pour la soulever. Elle vient m'aider à la soulever tous les matins. Je crois que c'était le but."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Honorine ! Deux bols !"
+     ],
+     [
+      "a",
+      "Un pour toi et un pour le marteau-pilon ?"
+     ],
+     [
+      "b",
+      "HO HO ! Il a faim, aujourd'hui !"
+     ]
+    ]
+   },
+   "ferdinand_st": {
+    "qui": "mon conteur du midi,",
+    "nom": "Papy Ferdinand",
+    "sentiment": 0.8,
+    "avis": "Ferdinand vient à treize heures, toujours à la même table. Il raconte la fois où Bernadette a fait le tour de la caverne sans lui. Tout le monde connaît l'histoire. Tout le monde rit. Il la raconte un peu différemment chaque fois. Bernadette va de plus en plus vite.",
+    "anecdotes": [
+     "Le jour où il a vendu sa vieille chaudière à Firmin, il est venu manger, tout triste. Je lui ai servi un chocolat. Il a dit : « Elle va faire ça, maintenant, ma chaudière. Du chocolat. » Puis il a souri. Il a fini la tasse."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Honorine ! Tu connais celle de Bernadette sans moi ?"
+     ],
+     [
+      "a",
+      "Non, Ferdinand. Raconte."
+     ],
+     [
+      "b",
+      "Alors voilà…"
+     ]
+    ]
+   },
+   "gamelle": {
+    "qui": "ma voisine de marmite,",
+    "nom": "Gamelle",
+    "sentiment": 0.8,
+    "avis": "Gamelle tient la Cantine Libre, à la Fronde. Ses soupes sont à prix libre, les miennes à prix doux. Gamelle met trop de piment, moi trop de sel. On se dispute sur tout ce qui se mange. Jamais sur ceux qui mangent.",
+    "anecdotes": [
+     "La nuit de la grande panne, quand j'étais petite, c'est sa mère qui a traversé le Pont avec une marmite pleine pour aider la mienne. Nos deux mères ont nourri toute la caverne. Gamelle et moi, on ne l'oublie jamais."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Honorine ! T'as encore trop salé !"
+     ],
+     [
+      "a",
+      "Et toi, trop pimenté !"
+     ],
+     [
+      "b",
+      "Échange de bols ?"
+     ],
+     [
+      "a",
+      "Échange de bols."
+     ]
+    ]
+   },
+   "firmin": {
+    "qui": "mon rival d'en haut,",
+    "nom": "Firmin",
+    "sentiment": 0.7,
+    "avis": "Firmin fait son chocolat dans la vieille chaudière de Ferdinand. Il dit que mon chocolat du mineur est une soupe. Je dis que son chocolat est une boisson pour les gens pressés. On s'écrit par la cabine d'Anatole. Nos lettres sentent le cacao.",
+    "anecdotes": [
+     "Il m'a envoyé une tasse de son chocolat, avec un mot : « Goûtez une vraie boisson, Madame. » Elle est arrivée froide. Je l'ai réchauffée, j'ai ajouté une pincée de sel. Je l'ai renvoyée. Il m'a répondu : « Pas mal. » Venant de lui, c'est une médaille."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame Honorine ! C'est une soupe, votre chocolat !"
+     ],
+     [
+      "a",
+      "Et le vôtre, c'est de la vapeur parfumée !"
+     ],
+     [
+      "b",
+      "TCHOUUU !"
+     ],
+     [
+      "a",
+      "Voilà. Exactement."
+     ]
+    ]
+   }
+  }
+ },
+ "ferdinand_st": {
+  "genre": "m",
+  "prenom": "Papy Ferdinand",
+  "histoire": [
+   {
+    "titre": "la première pelletée",
+    "t": "À huit ans, mon père m'a fait monter dans la cabine de Bernadette. Il m'a donné une petite pelle. « Une pelletée de charbon, pas plus. » J'en ai mis une. La chaudière a fait « pfff ». Bernadette a avancé d'un mètre. J'avais fait avancer un train ! Je n'ai jamais arrêté depuis. Enfin, j'ai arrêté de mettre trop de charbon."
+   },
+   {
+    "titre": "Bernadette sans moi",
+    "t": "Un jour, il y a trente ans, je suis descendu de Bernadette pour ramasser ma casquette. J'avais mal serré le frein. Bernadette est partie toute seule, tout doucement, et elle a fait le tour complet de la caverne. Sans moi ! Elle s'est arrêtée pile au quai. Les gens ont applaudi. Depuis, je dis qu'elle n'a pas besoin de moi. Mais je ne descends plus pour ma casquette."
+   },
+   {
+    "titre": "la chaudière de secours",
+    "t": "Bernadette avait une chaudière de secours, toute neuve, qu'on n'utilisait jamais. Un jour, un jeune moustachu d'en haut est descendu, Firmin. Il cherchait une machine pour faire du chocolat. Je lui ai montré la chaudière. Il a ouvert de grands yeux. Je lui ai dit : « Elle siffle un peu. » Il a ri. J'ai entendu son rire s'arrêter, de l'autre bout de la Colonne, la première fois qu'il l'a allumée."
+   },
+   {
+    "titre": "la nuit des fresques",
+    "t": "Un matin, j'ai trouvé mon dépôt tout repeint. Des étoiles, des rails, des notes de musique, et Bernadette avec des lunettes de soleil. La Fronde, pendant la nuit. J'ai crié pour la forme. Puis j'ai regardé Bernadette. Elle avait l'air tellement contente, avec ses lunettes. Je me suis acheté les mêmes. On les porte le dimanche."
+   },
+   {
+    "titre": "la mer",
+    "t": "Je vais te dire un secret, {surnom}. Je n'ai jamais vu la mer. Cinquante-deux ans à tourner en rond, sous terre. La Ligne a rouvert. Anatole me pousse tous les jours. Je dis « demain ». La vérité, c'est que j'ai peur que la mer soit trop grande, et que je n'aie plus envie de tourner en rond. Et Bernadette, alors ? Qui la conduirait ?"
+   }
+  ],
+  "reve": [
+   "Prendre un jour la Ligne avec Bernadette. Bon, pas Bernadette : elle ne rentre pas dans la cabine. Avec le petit Tom, alors. Monter jusqu'à Hautefond, aller au Piston Joyeux, boire un chocolat dans ma vieille chaudière, et voir la mer. Une fois. Puis redescendre, et faire un tour de caverne, tranquillement. Le plus beau voyage, c'est celui qui revient."
+  ],
+  "question": {
+   "texte": "Dis, {surnom} : un voyage, c'est mieux tout droit ou en rond ?",
+   "reponses": [
+    {
+     "label": "Tout droit, vers l'inconnu !",
+     "valeur": "droit",
+     "t": "Tout droit ! Comme la Ligne d'Anatole. Bon. C'est courageux. Mais n'oublie pas de revenir, hein ? Un train qui ne revient pas, c'est un train qu'on attend pour rien.",
+     "rappel": "Toujours tout droit, {surnom} ? Reviens quand même."
+    },
+    {
+     "label": "En rond, pour revenir.",
+     "valeur": "rond",
+     "t": "En rond ! Ah, tu as le cœur d'un cheminot des Strates. On part, on voit tout, et on revient au quai, où quelqu'un nous attend. Monte, je t'emmène.",
+     "rappel": "Un petit tour en rond, {surnom} ? Bernadette est chaude."
+    },
+    {
+     "label": "Peu importe, si on est bien accompagné.",
+     "valeur": "compagnie",
+     "t": "(Il enlève sa casquette.) Voilà. Voilà la vraie réponse. C'est ce que mon père disait. Les rails, on s'en fiche. C'est qui est à côté de toi dans la cabine. Allez, monte. À côté de moi.",
+     "rappel": "Prêt pour un tour, avec moi à côté ?"
+    }
+   ]
+  },
+  "liens": {
+   "anatole": {
+    "qui": "mon vieux complice,",
+    "nom": "Anatole",
+    "sentiment": 0.85,
+    "avis": "Anatole n'entend presque plus rien. Mais il sent Bernadette dans ses pieds quand elle passe devant la Gare. Il dit qu'elle a un bon fond. On est les deux plus vieilles machines des Strates. Lui monte, moi je tourne. On se retrouve à La Marmite.",
+    "anecdotes": [
+     "Pour mes cinquante ans de train, il m'a offert un sifflet de liftier. Il ne siffle pas : il est cassé. Il a dit : « Comme ça, on est pareils. » Je le porte autour du cou."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anatole ! Tu viens faire un tour ?"
+     ],
+     [
+      "b",
+      "Comment ?"
+     ],
+     [
+      "a",
+      "UN TOUR !"
+     ],
+     [
+      "b",
+      "Ah ! Demain !"
+     ]
+    ]
+   },
+   "firmin": {
+    "qui": "le gardien de ma chaudière,",
+    "nom": "Firmin",
+    "sentiment": 0.75,
+    "avis": "Firmin a ma vieille chaudière de secours. Il en a fait une machine à chocolat. Il paraît que toute la ville d'en haut règle ses montres sur son sifflet. Ma chaudière est devenue une horloge. Elle a fait une belle carrière.",
+    "anecdotes": [
+     "Il m'a envoyé, par la cabine, le premier chocolat de la machine. Avec un mot : « Elle siffle un peu. » Je l'ai bu en riant. J'ai gardé la tasse. Elle sent encore la vapeur."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Elle siffle bien, ma chaudière ?"
+     ],
+     [
+      "b",
+      "Elle siffle un peu, Papy Ferdinand !"
+     ],
+     [
+      "a",
+      "Je te l'avais dit !"
+     ]
+    ]
+   },
+   "tom_st": {
+    "qui": "mon petit siffleur,",
+    "nom": "Tom",
+    "sentiment": 0.85,
+    "avis": "Le petit Tom vient voir rentrer Bernadette tous les soirs. Je le laisse tirer le sifflet, un coup. Il dit que c'est pour une amie d'en haut. Bernadette siffle un peu plus fort pour lui. Ne me demande pas comment. Elle a ses préférés.",
+    "anecdotes": [
+     "Un soir, il m'a raconté son code secret, en entier. Je me suis endormi au milieu. Je me suis réveillé, il avait fini, et il m'avait mis ma couverture sur les genoux. Ce petit-là sera un bon forgeron. Et un bon tout."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Papy Ferdinand ! Je peux tirer le sifflet ?"
+     ],
+     [
+      "a",
+      "Un coup."
+     ],
+     [
+      "b",
+      "Pour Pimprenelle !"
+     ],
+     [
+      "a",
+      "Pour Pimprenelle. Tchou-tchou."
+     ]
+    ]
+   },
+   "brunehaut_st": {
+    "qui": "ma forgeronne,",
+    "nom": "Maîtresse Brunehaut",
+    "sentiment": 0.75,
+    "avis": "C'est la grand-mère de Brunehaut qui a construit Bernadette. Et c'est Brunehaut qui a forgé les rivets de la chaudière de secours. Ma locomotive est un peu une Enclume. Ça explique pourquoi elle est si têtue.",
+    "anecdotes": [
+     "Quand Bernadette a perdu une roue, il y a dix ans, Brunehaut a forgé la nouvelle en une nuit. Elle l'a posée elle-même, au matin, en riant si fort que la roue a tourné toute seule."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ferdinand ! Ta Bernadette grince !"
+     ],
+     [
+      "a",
+      "Elle chante, Brunehaut !"
+     ],
+     [
+      "b",
+      "HO HO ! Elle chante faux, alors !"
+     ]
+    ]
+   }
+  }
+ },
+ "agathe_st": {
+  "genre": "f",
+  "prenom": "Doyenne Agathe",
+  "histoire": [
+   {
+    "titre": "les planches du Pont",
+    "t": "Il y a cinquante ans, Brasero et une bande de jeunes ont décidé de traverser le Gouffre pour vivre à leur façon, dans la grande caverne de l'est. Les anciens de la Guilde étaient furieux. Moi, j'avais vingt ans. La nuit, j'ai porté des planches pour leur Pont. Sans rien dire. Le Pont des Frondeurs tient encore. Il y a un peu de mes bras dedans."
+   },
+   {
+    "titre": "les vingt ans de mine",
+    "t": "J'ai travaillé vingt ans à la mine. Un jour, j'ai trouvé, au fond de la Grotte, un cristal bleu en forme de cœur. Je ne l'ai pas rapporté. Je l'ai laissé là, au fond. Il y est toujours. Ludovic le connaît. On n'en parle pas. C'est la seule chose dans les Strates qui n'appartient à personne."
+   },
+   {
+    "titre": "la Doyenne",
+    "t": "Quand la Guilde m'a demandé de devenir Doyenne, j'ai dit : « Je réfléchis. » J'ai réfléchi trente secondes. Mon premier acte a été d'inviter Brasero à prendre le thé. Le scandale ! Les anciens de la Guilde ont protesté pendant un an. Brasero vient toujours prendre le thé. Les anciens, eux, sont partis à la retraite."
+   },
+   {
+    "titre": "les dix ans de lettres",
+    "t": "Pendant dix ans, j'ai écrit au Bourgmestre Hector pour rouvrir la Ligne. Il m'a répondu par des discours. Douze pages, quinze pages, vingt pages. J'ai répondu par des lignes. Une, deux, parfois trois. À la fin, il m'a écrit : « Madame, votre concision m'épuise. Rouvrons. » C'est la plus belle phrase qu'il ait jamais écrite."
+   },
+   {
+    "titre": "la fierté",
+    "t": "Je vais vous dire une chose, {surnom}. Le soir, depuis le balcon de la Guilde, je regarde les lumières de la Fronde s'allumer. J'entends leur musique. Ils sont libres, bruyants, colorés, un peu fous. Ils sont tout ce que je n'ai jamais osé être. Je les surveille de loin. Avec fierté. Comme on regarde ses enfants traverser seuls un pont qu'on a aidé à construire."
+   }
+  ],
+  "reve": [
+   "Organiser un jour, sur la Place des Rouages, une grande fête des quatre mondes, quand toutes les Lignes seront ouvertes. Les Nuées, Hautefond, les Strates, le Dôme d'Azur, et la Fronde qui jouera la musique. Et pour une fois, faire un discours. Un long. De trois phrases."
+  ],
+  "question": {
+   "texte": "Une question, {surnom}. Vous préférez qu'on vous laisse libre, ou qu'on veille sur vous ?",
+   "reponses": [
+    {
+     "label": "Libre, toujours.",
+     "valeur": "libre",
+     "t": "Libre. (Elle hoche la tête.) Vous auriez porté des planches pour le Pont, vous aussi. Bien. Mais sachez que quelqu'un vous regardera traverser. De loin.",
+     "rappel": "Toujours libre, {surnom} ? Je surveille. De loin."
+    },
+    {
+     "label": "Qu'on veille sur moi.",
+     "valeur": "veille",
+     "t": "Qu'on veille sur vous. C'est honnête, et c'est rare de l'avouer. Ici, tout le monde veille sur tout le monde. C'est ça, une ville. Bienvenue.",
+     "rappel": "On veille sur vous, ici, {surnom}. Vous le sentez ?"
+    },
+    {
+     "label": "Les deux : libre, mais pas seul.",
+     "valeur": "deux",
+     "t": "Libre, mais pas seul. (Un long silence.) C'est exactement ce que j'essaie de faire depuis cinquante ans. Vous l'avez dit en une ligne. Vous feriez une excellente Doyenne.",
+     "rappel": "Libre, mais pas seul, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "brasero": {
+    "qui": "mon vieil adversaire,",
+    "nom": "Brasero",
+    "sentiment": 0.9,
+    "avis": "Brasero et moi, on n'est d'accord sur rien depuis cinquante ans. Il est la Fronde, je suis la Guilde. Il crie, je me tais. Il apporte les biscuits, je fournis le thé. On ne s'est jamais disputés. C'est mon plus vieil ami. Ne le lui dites pas, il le chanterait.",
+    "anecdotes": [
+     "Pour les cinquante ans de la Fronde, il m'a invitée sur la scène. Je suis montée. Je n'ai rien dit. Toute la Fronde a applaudi mon silence pendant cinq minutes. Je crois que c'était mon meilleur discours."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Agathe ! La Guilde est toujours aussi sérieuse ?"
+     ],
+     [
+      "a",
+      "Toujours, Brasero. Et la Fronde, toujours aussi bruyante ?"
+     ],
+     [
+      "b",
+      "Toujours !"
+     ],
+     [
+      "a",
+      "Bien. Du thé ?"
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "mon Bourgmestre d'en haut,",
+    "nom": "le Bourgmestre Hector",
+    "sentiment": 0.6,
+    "avis": "Le Bourgmestre Hector aime les rubans, les médailles et les discours. Il nous regardait de travers, avant. Maintenant, il nous regarde de face, parfois de biais. On progresse. Il a fini par rouvrir la Ligne. Il aime vraiment sa ville. Et, depuis peu, la nôtre un peu aussi.",
+    "anecdotes": [
+     "Pour la réouverture, il a voulu un ruban de trente mètres. J'ai proposé trente centimètres. Il a soupiré, et il a coupé avec moi. Puis il a fait un discours de quarante minutes. Je lui ai répondu en deux phrases. Il m'a serré la main en disant : « Vous me battrez toujours. » Je n'ai pas souri. Enfin, d'un millimètre."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame la Doyenne ! Un petit discours ?"
+     ],
+     [
+      "a",
+      "Non."
+     ],
+     [
+      "b",
+      "Juste un mot ?"
+     ],
+     [
+      "a",
+      "Bienvenue."
+     ]
+    ]
+   },
+   "anatole": {
+    "qui": "mon liftier,",
+    "nom": "Anatole",
+    "sentiment": 0.85,
+    "avis": "Anatole a huilé la cabine tous les jours pendant dix ans, pendant que j'écrivais des lettres. On ne s'est jamais concertés. On a juste fait chacun notre part. Le jour de la réouverture, on a fini en même temps.",
+    "anecdotes": [
+     "Je lui ai tendu la clé du départ sans un mot. Il l'a prise sans un mot. C'était la seule fois de sa vie qu'il n'a pas dit « Comment ? ». Je crois qu'il avait tout entendu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anatole. C'est l'heure."
+     ],
+     [
+      "b",
+      "Je sais, Doyenne."
+     ],
+     [
+      "a",
+      "Bien."
+     ]
+    ]
+   },
+   "ludovic": {
+    "qui": "mon gardien de la Vieille,",
+    "nom": "Ludovic",
+    "sentiment": 0.85,
+    "avis": "Ludovic est le meilleur contremaître que la mine ait eu. Il parle à la roche. Moi aussi, quand j'y travaillais. Je ne le lui ai jamais dit. Il a peut-être deviné. On se comprend sans parler. C'est reposant.",
+    "anecdotes": [
+     "Pour ses quatre mille jours sans accident, je lui ai offert un caillou de la galerie où j'avais commencé. J'ai dit : « Elle vous salue. » Il a compris tout de suite. Il a les yeux qui piquent facilement, Ludovic. Comme moi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Monsieur Grisou. Combien ?"
+     ],
+     [
+      "b",
+      "Quatre mille deux cents, Doyenne."
+     ],
+     [
+      "a",
+      "Bien. Continuez."
+     ]
+    ]
+   }
+  }
+ }
+}

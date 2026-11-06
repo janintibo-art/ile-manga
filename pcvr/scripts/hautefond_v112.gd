@@ -12,8 +12,15 @@ extends Node3D
 ## le plateau, le dessous, les sustentateurs, les nuages, la cascade ; nuees_ville_v113 : la ville,
 ## la Ligne des Nuées et sa capsule qui part du Belvédère ; nuees_flore_v113 : les jardins) ; ses
 ## quatorze habitants (pnj/nuees_habitants_v113, au costume de Néopolis : pnj_neo_v95) et ses passants.
-## La suite (les versions d'après) : les Strates et le quartier de la Fronde (sous la ville), le Dôme
-## d'Azur (au fond de la mer).
+## V114 : les STRATES, la ville sous la ville, une centaine de mètres sous la Place (strates_roche_v114 :
+## les cavernes de grès en couches ; strates_ville_v114 : la Colonne Renversée, le Soleil de Laiton, la
+## Gare, la Place des Rouages, la Grande Forge, La Marmite, l'Atelier des Lumières, les Galeries, les
+## Mines de Cristaux, les Jardins des Champignons, le Petit Train ; fronde_v114 : la FRONDE, le quartier
+## libre, au-delà du Pont des Frondeurs ; strates_ligne_v114 : le pavillon de la Ligne des Strates, sur
+## la Place, et sa cabine) ; neuf habitants des Strates (pnj/strates_habitants_v114, comme ceux d'en
+## haut), neuf Frondeurs (pnj/fronde_habitants_v114, au costume de Port-Boucan : pnj_boucan_v75) et
+## leurs passants. Sous terre (y < -40), le jeu passe en lumière d'intérieur (donjon_v35).
+## La suite (la version d'après) : le Dôme d'Azur (au fond de la mer).
 
 const IleScript = preload("res://scripts/ile_hautefond_v112.gd")
 const CityScript = preload("res://scripts/hautefond_ville_v112.gd")
@@ -33,6 +40,15 @@ const FLORE_N := "res://scripts/nuees_flore_v113.gd"
 const HABITANTS_N := "res://scripts/pnj/nuees_habitants_v113.gd"
 const PNJ_N := "res://scripts/pnj/pnj_neo_v95.gd"
 const PASSANTS_N := "res://scripts/pnj/nuees_passants_v113.gd"
+## V114 : les Strates et la Fronde
+const StratesRoche = preload("res://scripts/strates_roche_v114.gd")
+const StratesVille = preload("res://scripts/strates_ville_v114.gd")
+const MatsS = preload("res://scripts/strates_mats_v114.gd")
+const HABITANTS_S := "res://scripts/pnj/strates_habitants_v114.gd"
+const HABITANTS_F := "res://scripts/pnj/fronde_habitants_v114.gd"
+const PNJ_F := "res://scripts/pnj/pnj_boucan_v75.gd"
+const PASSANTS_S := "res://scripts/pnj/strates_passants_v114.gd"
+const PASSANTS_F := "res://scripts/pnj/fronde_passants_v114.gd"
 ## Les prénoms des passants des Nuées
 const PRENOMS_N := {"h": ["Aurèle", "Cyrus", "Élian", "Orion", "Sacha", "Noé", "Thélo", "Zéphyr", "Ilan", "Maël", "Nils", "Adrien"],
 	"f": ["Alizée", "Célia", "Nuée", "Brume", "Iris", "Maëlys", "Azalée", "Solène", "Line", "Elsa", "Livia", "Aube"]}
@@ -94,6 +110,12 @@ var nuees: Node3D                        # V113 : la Cité des Nuées (nuees_vil
 var nuees_flore: Node3D
 var _crowd_n_spawned: bool = false
 var _last_safe_n := Vector3.ZERO
+var strates_roche: Node3D                # V114 : la roche des Strates (strates_roche_v114)
+var strates: Node3D                      # V114 : les Strates et la Fronde (strates_ville_v114, fronde_v114)
+var strates_ligne: Node3D                # V114 : la Ligne des Strates (strates_ligne_v114)
+var _crowd_s_spawned: bool = false
+var _under: bool = false                 # le joueur est sous terre (on cache la surface, on montre les Strates)
+var _last_safe_s := Vector3.ZERO
 
 
 func setup(main_node: Node) -> void:
@@ -104,7 +126,7 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "montees": 0, "nuees": false, "capsule": 0}
+	return {"visite": false, "visites": {}, "montees": 0, "nuees": false, "capsule": 0, "strates": false, "fronde": false, "descentes": 0}
 
 
 # =================================================================== construction
@@ -118,6 +140,11 @@ func build_island() -> void:
 	nuees_ile.name = "Ile_nuees_v113"
 	add_child(nuees_ile)
 	nuees_ile.build(pc)
+	strates_roche = StratesRoche.new()
+	strates_roche.name = "Roche_strates_v114"
+	add_child(strates_roche)
+	strates_roche.build(pc)
+	strates_roche.visible = false
 
 
 ## Après le relief et l'heure du jour : la ville, le dehors, la végétation, les feux, les fumées, la
@@ -132,6 +159,16 @@ func build_town() -> void:
 	nuees.name = "Cite_des_Nuees_v113"
 	add_child(nuees)
 	nuees.build(main, nuees_ile, city, pc)
+	strates = StratesVille.new()
+	strates.name = "Strates_v114"
+	add_child(strates)
+	strates.build(main, strates_roche, city, pc)
+	strates.visible = false
+	strates_ligne = load("res://scripts/strates_ligne_v114.gd").new()
+	strates_ligne.name = "Ligne_des_Strates_v114"
+	add_child(strates_ligne)
+	strates_ligne.build(main, strates.kit, city.colonne, strates, pc)
+	strates.ligne = strates_ligne
 	dehors = DehorsScript.new()
 	dehors.name = "Hautefond_dehors_v112"
 	add_child(dehors)
@@ -166,6 +203,11 @@ func build_town() -> void:
 		if n_steam < (30 if pc else 12):
 			_steam.append(_make_smoke(sp2, Color(0.95, 0.95, 0.97, 0.3), 0.7))
 			n_steam += 1
+	# V114 : la vapeur des Strates (les évents de la Place, la Marmite, la Forge, l'orgue des Soupapes)
+	if strates != null:
+		for sp3 in strates.steam + strates.fronde.steam + strates.fronde.organ_steam:
+			var sm: CPUParticles3D = _make_smoke(sp3, Color(0.95, 0.93, 0.9, 0.28), 0.6)
+			sm.reparent(strates)
 	for k in [city.kit, dehors.kit]:
 		for s in k.sails:
 			_sails.append(s)
@@ -231,13 +273,18 @@ func _register_interactions() -> void:
 		city.colonne.register(d, self)
 	if nuees != null and nuees.ligne != null:
 		nuees.ligne.register(d, self)
+	if strates_ligne != null:
+		strates_ligne.register(d, self)
 	var col: Node3D = city.colonne
 	var me = self
 	# les deux lignes encore fermées : un panneau à chaque portail (est et ouest)
 	_ia(d, {"id": "hf_ligne_nuees", "pos": col.foot + Vector3(col.R_SOCLE + 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Nuées)",
 		"vr": "Gâchette : lire le panneau (Ligne des Nuées)", "call": func(): me.say("« LIGNE DES NUÉES — ROUVERTE ! Prenez la cabine jusqu'au Belvédère, puis la capsule de verre jusqu'à la Gare des Nuées. La Confrérie des Liftiers vous souhaite bon vent (et pas de vertige). »", 8.0), "when": func(): return true})
 	_ia(d, {"id": "hf_ligne_strates", "pos": col.foot + Vector3(-col.R_SOCLE - 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Strates)",
-		"vr": "Gâchette : lire le panneau (Ligne des Strates)", "call": func(): me.say("« LIGNE DES STRATES ET DU DÔME D'AZUR — fermée pour travaux. » En dessous, quelqu'un a griffonné : « Les travaux, c'est nous qui les faisons. Bisous d'en bas. »", 8.0), "when": func(): return true})
+		"vr": "Gâchette : lire le panneau (Ligne des Strates)", "call": func(): me.say("« LIGNE DES STRATES — ROUVERTE ! Le pavillon est juste derrière : entrez, tirez le levier, et descendez cent mètres sous la ville. LIGNE DU DÔME D'AZUR — encore fermée pour travaux. » En dessous, quelqu'un a griffonné : « Bienvenue en bas ! Bisous de la Fronde. »", 8.0), "when": func(): return true})
+	if strates != null and strates.objets.has("ligne_dome"):
+		_ia(d, {"id": "st_ligne_dome", "pos": strates.objets["ligne_dome"] + Vector3.UP * 1.0, "radius": 2.4, "text": "E : lire la plaque (Ligne du Dôme d'Azur)",
+			"vr": "Gâchette : lire la plaque (Ligne du Dôme d'Azur)", "call": func(): me.say("« LIGNE DU DÔME D'AZUR — fermée pour travaux. Réouverture prochaine. » Derrière la grille, la cage s'enfonce dans le noir. On entend, très loin, comme le ressac de la mer.", 8.0), "when": func(): return true})
 
 
 func _ia(d: Node, it: Dictionary) -> void:
@@ -265,6 +312,11 @@ func dock() -> Array:
 
 func contains(p: Vector3) -> bool:
 	return ile != null and ile.contains(p.x, p.z) and p.y > -45.0
+
+
+## V114 : dans les Strates (ou la Fronde) ?
+func in_strates(p: Vector3) -> bool:
+	return strates != null and StratesRoche.contains(p)
 
 
 func on_structure(p: Vector3) -> bool:
@@ -295,6 +347,10 @@ func blocks_boat(_p: Vector3) -> bool:
 
 ## La zone du joueur (pour la musique, les ambiances, le carnet).
 func zone_at(p: Vector3) -> String:
+	if in_strates(p):
+		return strates.zone_at(p)
+	if strates_ligne != null and strates_ligne.in_kiosk(p):
+		return "hf_colonne"
 	if ile == null or not ile.contains(p.x, p.z) or p.y < -20.0:
 		return ""
 	if nuees != null and on_nuees(p):
@@ -330,7 +386,7 @@ func people_at(p: Vector3) -> String:
 	var z: String = zone_at(p)
 	if z == "":
 		return ""
-	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare", "nu_capsule"]:
+	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare", "nu_capsule", "st_ligne", "st_grotte", "st_pont"]:
 		return "sauvage"
 	return "ville"
 
@@ -344,6 +400,10 @@ func village_point(id: String) -> Array:
 			return [q + Vector3.UP * 0.3, Vector3(0, 0, 1)]
 		"nuees":
 			return respawn_nuees()
+		"strates":
+			return respawn_strates()
+		"fronde":
+			return respawn_fronde()
 	return []
 
 
@@ -357,13 +417,25 @@ const PLACES := {"hf_colonne": "la Place de la Colonne", "hf_belvedere": "le Bel
 	"nu_esplanade": "l'Esplanade du Ciel", "nu_cafe": "le Café Cumulus", "nu_atelier": "l'Atelier des Inventeurs",
 	"nu_conseil": "la Maison du Conseil", "nu_serres": "les Serres d'Altitude", "nu_institut": "l'Institut des Vents",
 	"nu_port": "le Port des Nuées", "nu_residences": "les Résidences des Terrasses", "nu_parc": "le Parc des Brumes",
-	"nu_promenade": "la Promenade du bord", "nu_ville": "les rues"}
+	"nu_promenade": "la Promenade du bord", "nu_ville": "les rues",
+	"st_gare": "la Gare des Strates", "st_ligne": "la cabine de la Ligne des Strates", "st_place": "la Place des Rouages",
+	"st_forge": "la Grande Forge des Strates", "st_marmite": "La Marmite", "st_lumieres": "l'Atelier des Lumières",
+	"st_train": "la gare du Petit Train", "st_galeries": "les Galeries", "st_guilde": "la Maison de la Guilde",
+	"st_mines": "les Mines de Cristaux", "st_grotte": "la Grotte aux Cristaux", "st_jardins": "les Jardins des Champignons",
+	"st_pont": "le Pont des Frondeurs", "st_bord": "le pied des parois", "st_ville": "les rues",
+	"fr_entree": "l'entrée", "fr_place": "la Place Libre", "fr_scene": "la Scène des Soupapes", "fr_cantine": "la Cantine Libre",
+	"fr_atelier": "l'Atelier Libre", "fr_troc": "le Troc", "fr_assemblee": "l'Assemblée", "fr_skate": "le Skatepark",
+	"fr_fresques": "le Mur des Fresques"}
 
 
 func place_name(p: Vector3) -> String:
 	var z: String = zone_at(p)
 	if z.begins_with("nu_"):
 		return "Cité des Nuées, " + str(PLACES.get(z, "les rues"))
+	if z.begins_with("st_"):
+		return "Les Strates, " + str(PLACES.get(z, "les rues"))
+	if z.begins_with("fr_"):
+		return "La Fronde, " + str(PLACES.get(z, "la Place Libre"))
 	return "Île de Hautefond, " + str(PLACES.get(z, "l'île"))
 
 
@@ -380,6 +452,25 @@ func respawn_nuees() -> Array:
 	if sp.is_empty():
 		return [NueesIle.W(0.0, 14.0, 0.4), Vector3(0, 0, -1)]
 	return [(sp["pos"] as Vector3) + Vector3.UP * 0.3 + (sp["face"] as Vector3) * -1.2, sp["face"]]
+
+
+## V114 : le point de retour dans les Strates (sur le quai de la Gare) et dans la Fronde.
+func respawn_strates() -> Array:
+	var sp: Dictionary = spot("st_gare_quai")
+	if sp.is_empty():
+		return [StratesRoche.W(0.0, 7.0, StratesRoche.F0 + 0.3), Vector3(0, 0, 1)]
+	return [(sp["pos"] as Vector3) + Vector3.UP * 0.3 + Vector3(0, 0, 1.5), Vector3(0, 0, 1)]
+
+
+func respawn_fronde() -> Array:
+	var p: Vector3 = city.points.get("fr_p_0", StratesRoche.W(112.0, 23.0, -98.0))
+	return [p + Vector3.UP * 0.3, Vector3(1, 0, 0.2).normalized()]
+
+
+## V114 : les Soupapes jouent chaque soir, de 20 h à 23 h (pour pnj_boucan_v75 : la scène, la fosse).
+func concert_on() -> bool:
+	var h: float = hour()
+	return h >= 20.0 and h < 23.0
 
 
 func hostile_zone(_p: Vector3) -> bool:
@@ -449,6 +540,28 @@ func spawn_npcs() -> void:
 			habitants.append(npc2)
 			by_id[str(data2["id"])] = npc2
 		print("ILE_MANGA_V113: %d habitants dans la Cité des Nuées" % (habitants.size() - n0))
+	# V114 : les gens des Strates (comme ceux d'en haut) et les Frondeurs (comme ceux de Port-Boucan)
+	if strates != null:
+		for spec in [[HABITANTS_S, PNJ, "st_p_gare", "Strates"], [HABITANTS_F, PNJ_F, "fr_p_0", "Fronde"]]:
+			if not ResourceLoader.exists(str(spec[0])) or not ResourceLoader.exists(str(spec[1])):
+				continue
+			var HS = load(str(spec[0]))
+			var PS = load(str(spec[1]))
+			var n1: int = habitants.size()
+			for data3 in HS.all_profiles():
+				var home3: String = str(data3.get("maison", ""))
+				var start3: String = home3 if city.points.has(home3) else str(spec[2])
+				var npc3: Node3D = PS.new()
+				main.add_child(npc3)
+				npc3.setup(main, data3, city.points, city.graph, start3)
+				npc3.setup_azur(self, data3)
+				var saved3: Variant = main.pending_pnj_v31.get(str(data3["id"]), {})
+				if saved3 is Dictionary and not (saved3 as Dictionary).is_empty():
+					npc3.load_data(saved3)
+				main.npcs_v31.append(npc3)
+				habitants.append(npc3)
+				by_id[str(data3["id"])] = npc3
+			print("ILE_MANGA_V114: %d habitants dans %s" % [habitants.size() - n1, "les Strates" if spec[3] == "Strates" else "la Fronde"])
 
 
 ## Les habitants prennent la cabine : quand l'un d'eux arrive au pied (ou en haut) de la cage et
@@ -486,6 +599,14 @@ func register_services(journal: Node) -> void:
 		for k3 in nuees.objets:
 			journal.lieux["nu_" + str(k3)] = nuees.objets[k3]
 		journal.lieux["nuees"] = respawn_nuees()[0]
+	if strates != null:
+		for k4 in strates.objets:
+			journal.lieux["st_" + str(k4)] = strates.objets[k4]
+		for k5 in strates.fronde.objets:
+			journal.lieux["fr_" + str(k5)] = strates.fronde.objets[k5]
+		journal.lieux["strates"] = respawn_strates()[0]
+		journal.lieux["fronde"] = respawn_fronde()[0]
+		journal.lieux["st_pavillon"] = strates_ligne.kiosk
 	_register_interactions()
 
 
@@ -575,6 +696,56 @@ func _spawn_crowd_n() -> void:
 	_crowd_vis(true)
 
 
+## V114 : les passants des Strates (comme ceux d'en haut) et de la Fronde (des Frondeurs, comme les gens
+## de Port-Boucan).
+func _spawn_crowd_s() -> void:
+	_crowd_s_spawned = true
+	if strates == null:
+		return
+	var list: Array = []
+	if ResourceLoader.exists(PASSANTS_S):
+		list += load(PASSANTS_S).PASSANTS
+	var list_f: Array = load(PASSANTS_F).PASSANTS if ResourceLoader.exists(PASSANTS_F) else []
+	var names_s: Array = []
+	var names_f: Array = []
+	for nm in strates.crowd_spots:
+		if str(nm).begins_with("fr_"):
+			names_f.append(str(nm))
+		else:
+			names_s.append(str(nm))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 114000
+	names_s.shuffle()
+	names_f.shuffle()
+	for pack in [[list, names_s, 10 if pc else 6], [list_f, names_f, 6 if pc else 4]]:
+		var lst: Array = pack[0]
+		var nms: Array = pack[1]
+		var n: int = mini(mini(lst.size(), int(pack[2])), nms.size())
+		for i in range(n):
+			var e: Array = lst[i]
+			var sname: String = str(nms[i])
+			var sp: Dictionary = city.spots.get(sname, {})
+			if sp.is_empty():
+				continue
+			var style: String = "boucan" if str(e[0]) == "fronde" else str(e[0])
+			var role: String = str(e[1])
+			if role == "enfant":
+				role = "garcon" if rng.randf() < 0.5 else "fille"
+			var prof: Dictionary = Gens.pick(style, role, rng)
+			if prof.is_empty():
+				continue
+			prof["nom"] = Gens.prenom(style, role, rng)
+			var f: Node = Figurant.spawn(self, main, prof, sp["pos"], sp["face"], str(sp["pose"]))
+			if f == null:
+				continue
+			f.set("lines", e[2])
+			claim_spot(sname, f)
+			var h0: float = [6.0, 7.0, 8.0, 10.0, 12.0, 15.0][i % 6]
+			var h1: float = [19.0, 21.0, 23.0, 20.0, 22.0, 18.0][i % 6]
+			crowd.append([f, h0, h1, sp["pos"]])
+	_crowd_vis(true)
+
+
 static func _in_hours(h: float, a: float, b: float) -> bool:
 	return (a <= b and h >= a and h < b) or (a > b and (h >= a or h < b))
 
@@ -625,6 +796,12 @@ func _process(delta: float) -> void:
 			nuees_ile.set_night(_night)
 		if nuees != null and nuees.ligne != null:
 			nuees.ligne.set_night(_night)
+		if strates != null:
+			MatsS.night(_night)
+	_under_vis(p)
+	if strates != null and _under:
+		strates.tick(delta, _night, true)
+		strates_roche.tick(delta)
 	if dehors != null:
 		dehors.tick(delta, _clock, _night)
 	if nuees_ile != null:
@@ -655,10 +832,13 @@ func _process(delta: float) -> void:
 		else:
 			if not _crowd_n_spawned and nuees != null and on_nuees(p) and bool(main.get("game_started")):
 				_spawn_crowd_n()
+			if not _crowd_s_spawned and in_strates(p) and bool(main.get("game_started")):
+				_spawn_crowd_s()
 			_crowd_vis()
 	if not ile.contains(p.x, p.z):
 		return
 	_nuees_tick(p)
+	_strates_tick(p)
 	if not bool(state["visite"]) and (ile.height(p.x, p.z) > -0.2 or on_structure(p)) and bool(main.get("game_started")):
 		state["visite"] = true
 		main._show_message_v28("L'Île de Hautefond — la cité-colonne (ça monte !)")
@@ -683,6 +863,72 @@ func _process(delta: float) -> void:
 	state["montees"] = int(city.colonne.rides)
 	if nuees != null and nuees.ligne != null:
 		state["capsule"] = int(nuees.ligne.rides)
+	if strates_ligne != null:
+		state["descentes"] = int(strates_ligne.rides)
+
+
+## V114 : sous terre, on cache la surface (la ville, le dehors, la végétation, la Cité des Nuées : on ne
+## les verrait pas à travers la roche) et l'on montre les Strates ; et l'inverse en remontant.
+func _under_vis(p: Vector3) -> void:
+	if strates == null:
+		return
+	var deep: bool = in_strates(p) or (strates_ligne != null and strates_ligne.carrying and p.y < -20.0)
+	var want: bool = _under
+	if not _under and (deep or p.y < -35.0) and p.distance_to(StratesRoche.O) < 420.0:
+		want = true
+	elif _under and (p.y > -20.0 or p.distance_to(StratesRoche.O) > 460.0):
+		want = false
+	if want == _under:
+		return
+	_under = want
+	strates.visible = _under
+	strates_roche.visible = _under
+	for n in [city, dehors, flore, nuees, nuees_ile, nuees_flore, ile]:
+		if n != null:
+			(n as Node3D).visible = not _under
+	for sm in _smoke + _fires:
+		if is_instance_valid(sm):
+			(sm as Node3D).visible = not _under
+
+
+## V114 : les Strates et la Fronde : la découverte, les lieux visités ; le Gouffre (on vous repêche) ;
+## le tube de la Colonne Renversée (on n'y reste pas en l'air).
+func _strates_tick(p: Vector3) -> void:
+	if strates == null or not in_strates(p):
+		return
+	var l: Vector3 = StratesRoche.L(p)
+	if strates_ligne != null and strates_ligne.in_shaft(p) and not strates_ligne.carrying and not strates_ligne.in_deep_cabin(p):
+		var at0: Array = respawn_strates()
+		main.place_player_v35(at0[0], at0[1])
+		return
+	if l.y < -112.0 and l.x > 88.0 and l.x < 104.0:
+		var east: bool = l.x > (StratesRoche.GOUFFRE_X0 + StratesRoche.GOUFFRE_X1) * 0.5
+		var at: Vector3 = city.points.get("fr_p_0" if east else "st_p_fr_1", StratesRoche.W(110.0, 23.0, -98.0))
+		main.place_player_v35(at + Vector3.UP * 0.3, Vector3(1, 0, 0.3).normalized() if east else Vector3(-1, 0, -0.3).normalized())
+		main._show_message_v28("Plouf ! La rivière du Gouffre vous emporte… et le filet des cheminots vous repêche au bout du Pont. Brasero vous tend une couverture : « On ne se penche pas, on regarde. »")
+		return
+	if not bool(main.get("game_started")):
+		return
+	var z: String = zone_at(p)
+	var vis: Dictionary = state["visites"]
+	if z.begins_with("st_") and not bool(state.get("strates", false)):
+		state["strates"] = true
+		main._show_message_v28("Les Strates — la ville sous la ville, sous son Soleil de Laiton")
+		if main.has_method("jingle"):
+			main.jingle("decouverte")
+	if z.begins_with("fr_") and not bool(state.get("fronde", false)):
+		state["fronde"] = true
+		main._show_message_v28("La Fronde — le quartier libre (ici, tout se décide en Assemblée)")
+		if main.has_method("jingle"):
+			main.jingle("decouverte")
+	for key in ["st_forge", "st_mines", "st_grotte", "st_jardins", "st_galeries", "st_guilde", "st_train", "st_marmite", "st_lumieres", "st_pont",
+			"fr_scene", "fr_cantine", "fr_atelier", "fr_troc", "fr_assemblee", "fr_skate", "fr_fresques"]:
+		if z == key and not bool(vis.get(key, false)):
+			vis[key] = true
+			if key == "st_grotte":
+				main._show_message_v28("La Grotte aux Cristaux : la roche s'allume en bleu, tout doucement")
+			elif key == "st_pont":
+				main._show_message_v28("Le Pont des Frondeurs : sous vos pieds, le Gouffre (et, très loin, une rivière qui luit)")
 
 
 ## V113 : la Cité des Nuées : la découverte, les lieux visités, et le filet qui rattrape ceux qui
@@ -802,10 +1048,16 @@ func _make_fire(at: Vector3, s: float) -> Node3D:
 # =================================================================== s'évanouir, carnet, sauvegarde
 
 func owns_point(p: Vector3) -> bool:
-	return contains(p)
+	return contains(p) or in_strates(p)
 
 
 func on_faint(_p: Vector3) -> void:
+	if in_strates(_p):
+		var fr: bool = zone_at(_p).begins_with("fr_")
+		var at3: Array = respawn_fronde() if fr else respawn_strates()
+		main.place_player_v35(at3[0], at3[1])
+		main._show_message_v28("Vous vous êtes évanoui… Gamelle vous a porté jusqu'à l'entrée de la Fronde et vous a fait avaler une louche de potée. Ça requinque !" if fr else "Vous vous êtes évanoui… Des mineurs vous ont porté jusqu'à la Gare des Strates, et Honorine vous a apporté un chocolat du mineur. Ça remonte !")
+		return
 	if on_nuees(_p):
 		var at2: Array = respawn_nuees()
 		main.place_player_v35(at2[0], at2[1])
@@ -825,7 +1077,11 @@ func trouvailles() -> Dictionary:
 		"hautefond_falaises": 1 if bool(vis.get("falaises", false)) else 0, "hautefond_observatoire": 1 if bool(vis.get("observatoire", false)) else 0,
 		"nuees": 1 if bool(state.get("nuees", false)) else 0, "nuees_belvedere": 1 if bool(vis.get("nu_belvedere", false)) else 0,
 		"nuees_serres": 1 if bool(vis.get("nu_serres", false)) else 0, "nuees_institut": 1 if bool(vis.get("nu_institut", false)) else 0,
-		"nuees_port": 1 if bool(vis.get("nu_port", false)) else 0, "nuees_parc": 1 if bool(vis.get("nu_parc", false)) else 0}
+		"nuees_port": 1 if bool(vis.get("nu_port", false)) else 0, "nuees_parc": 1 if bool(vis.get("nu_parc", false)) else 0,
+		"strates": 1 if bool(state.get("strates", false)) else 0, "strates_forge": 1 if bool(vis.get("st_forge", false)) else 0,
+		"strates_mines": 1 if bool(vis.get("st_grotte", false)) else 0, "strates_jardins": 1 if bool(vis.get("st_jardins", false)) else 0,
+		"strates_galeries": 1 if bool(vis.get("st_guilde", false)) or bool(vis.get("st_galeries", false)) else 0,
+		"fronde": 1 if bool(state.get("fronde", false)) else 0, "fronde_scene": 1 if bool(vis.get("fr_scene", false)) else 0}
 
 
 func serialize() -> Dictionary:

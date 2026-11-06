@@ -692,6 +692,24 @@ const ITEMS := {
 	"bocal_nuage": {"name": "Nuage en bocal", "art": "un nuage en bocal", "kind": "curiosite", "sorte": "Souvenir de la Cité des Nuées", "max": 3,
 		"desc": "Un bocal de verre fermé par un bouchon de liège, avec un tout petit nuage blanc dedans, cueilli au bord de la Cascade des Nuées. Il fait parfois une minuscule averse.",
 		"effet": "Vous secouez doucement le bocal. Le petit nuage se gonfle, devient gris… et fait pleuvoir trois gouttes sur le fond. Puis il redevient blanc, l'air satisfait."},
+	# V114 : les Strates (La Marmite d'Honorine) et la Fronde (la Cantine Libre de Gamelle, le Troc de Lumi)
+	"chocolat_mineur": {"name": "Chocolat du mineur", "art": "un chocolat du mineur", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le chocolat d'Honorine, à La Marmite : cacao, lait, miel et une pincée de sel, tourné jusqu'à ce que la cuillère tienne debout. Firmin, en haut, dit que c'est une soupe. Rend deux cœurs."},
+	"bouillon_strates": {"name": "Bouillon des Strates", "art": "un bol de bouillon des Strates", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le bouillon de La Marmite : des champignons bruns des Jardins de Bertille (jamais ceux qui brillent), des légumes d'en haut et l'eau de la cascade. Il tient chaud jusqu'au fond de la mine. Rend deux cœurs."},
+	"galette_rouages": {"name": "Galette des Rouages", "art": "une galette des Rouages", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Une grosse galette dorée, cuite sur la plaque de La Marmite, découpée en forme de roue dentée. Les forgerons en mangent une à chaque pause. Brunehaut en mange deux. Rend deux cœurs."},
+	"sirop_cascade": {"name": "Sirop de la Cascade", "art": "un sirop de la Cascade", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "L'eau fraîche de la cascade des Jardins des Champignons (la pluie de Hautefond, venue à travers la roche), avec un trait de sirop de menthe. Sans une goutte d'alcool. Rend un cœur."},
+	"potee_gamelle": {"name": "Potée de Mémé Gamelle", "art": "un bol de potée de Mémé Gamelle", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Une potée fumante de la Cantine Libre : des champignons des Jardins de Bertille, des pommes de terre, des carottes un peu étourdies (elles arrivent en skate), servie d'un seul coup de louche par Excalibur. Prix libre : on laisse ce qu'on peut. Rend deux cœurs."},
+	"limonade_gouffre": {"name": "Limonade du Gouffre", "art": "une limonade du Gouffre", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "L'eau de la rivière du Gouffre, filtrée par les cristaux de la Fronde, avec du citron d'en haut et des bulles faites à la chaudière par Bricole. Elle pétille comme un rail qui chante. Sans alcool, comme tout à la Cantine Libre. Rend un cœur."},
+	"pain_chaudiere": {"name": "Pain de chaudière", "art": "un pain de chaudière", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Une grosse miche ronde, cuite dans la moitié d'une vieille chaudière de locomotive (l'autre moitié, c'est la baignoire de Brasero). La croûte est noire comme du charbon, l'intérieur doux comme un coussin de l'Assemblée. Rend un cœur."},
+	"bague_boulon": {"name": "Bague de boulon", "art": "une bague de boulon", "kind": "curiosite", "sorte": "Souvenir de la Fronde", "max": 3,
+		"desc": "Un petit boulon de laiton poli, ouvert et arrondi par Lumi, avec un éclat de cristal bleu du Gouffre serti dessus. C'est avec ces bagues-là qu'Ysaé a appris le métier, assise sur la caisse aux boulons du Troc.",
+		"effet": "Tu fais tourner la bague à ton doigt. Le petit cristal attrape la lumière et lance un reflet bleu sur ta main. Quelque part, Lumi dirait : « Ça brille, hein ? »"},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 

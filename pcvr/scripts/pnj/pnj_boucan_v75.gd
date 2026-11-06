@@ -322,4 +322,4 @@ func _concert_on() -> bool:
 
 
 func _on_stage() -> bool:
-	return target_spot.begins_with("halle_scene")
+	return target_spot.begins_with("halle_scene") or target_spot.begins_with("fr_scene")
