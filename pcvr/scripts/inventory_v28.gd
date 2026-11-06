@@ -710,6 +710,25 @@ const ITEMS := {
 	"bague_boulon": {"name": "Bague de boulon", "art": "une bague de boulon", "kind": "curiosite", "sorte": "Souvenir de la Fronde", "max": 3,
 		"desc": "Un petit boulon de laiton poli, ouvert et arrondi par Lumi, avec un éclat de cristal bleu du Gouffre serti dessus. C'est avec ces bagues-là qu'Ysaé a appris le métier, assise sur la caisse aux boulons du Troc.",
 		"effet": "Tu fais tourner la bague à ton doigt. Le petit cristal attrape la lumière et lance un reflet bleu sur ta main. Quelque part, Lumi dirait : « Ça brille, hein ? »"},
+	# V115 : le Dôme d'Azur (La Conque de Josette, le Comptoir des Courants d'Ernest, l'étal des Serres de Mélisande)
+	"soupe_salicorne": {"name": "Soupe de salicorne", "art": "un bol de soupe de salicorne", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "La soupe de Josette, à La Conque : de la salicorne des bacs d'eau salée des Serres, revenue avec un oignon, un bouillon de poisson du Bassin et une pointe de citron des Lampes. Elle a le goût de la mer, mais en gentil. Rend deux cœurs."},
+	"limonade_bleue": {"name": "Limonade bleue", "art": "une limonade bleue", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Du citron du Verger des Lampes, l'eau fraîche de la Cheminée d'Air et une cuillère de spiruline du mur des algues : elle devient bleue comme le Bassin des Bathyscaphes, et elle laisse la langue bleue toute la journée. Sans une goutte d'alcool. Rend un cœur."},
+	"chocolat_abysses": {"name": "Chocolat des abysses", "art": "un chocolat des abysses", "kind": "nourriture", "max": 10, "heal": 4,
+		"desc": "Le chocolat de La Conque : noir comme le fond de la Fosse, avec une pincée de sel de mer et une écume blanche dessus, comme une petite vague. Firmin, Gustave et Honorine l'ont goûté ; ils ont dit « pas mal » tous les trois en même temps. Rend deux cœurs."},
+	"fraises_lampes": {"name": "Fraises des Lampes", "art": "une barquette de fraises des Lampes", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "De petites fraises mûries sous les lampes roses des tours hydroponiques du Dôme des Serres. Elles ont toutes une joue plus rouge : celle qui regardait la lampe. Mélisande leur a parlé tous les matins. Rend un cœur."},
+	"mandarine_lampes": {"name": "Mandarine des Lampes", "art": "une mandarine des Lampes", "kind": "nourriture", "max": 20, "heal": 2,
+		"desc": "Une petite mandarine du Verger des Lampes, mûrie sous un soleil artificiel au fond de la mer. Elle rougit d'un seul côté. Ernest en mange une par jour, sur le banc de Mélisande. Rend un cœur."},
+	"spiruline": {"name": "Spiruline des Serres", "art": "un sachet de spiruline", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "Des paillettes bleu-vert récoltées au filet sur le mur des algues, le cœur des Serres, là où les algues font l'air du Dôme. Un petit goût d'herbe et de mer. Le Dôme en envoie maintenant aux quatre mondes. Rend un cœur."},
+	"perle_azur": {"name": "Perle d'Azur", "art": "une perle d'Azur", "kind": "curiosite", "sorte": "Souvenir du Dôme d'Azur", "max": 3,
+		"desc": "Une perle bleu nuit montée en pendentif sur un fil d'argent par Ernest Coquillard. Les huîtres des falaises de la Fosse la font très lentement, dans le noir ; Lou n'en rapporte qu'une par semaine. Elle garde un reflet de la Grande Perle.",
+		"effet": "Tu fais tourner la perle entre tes doigts. Au fond, un petit reflet doré passe, puis violet, comme la Grande Perle quand vient le soir."},
+	"coquillage_chanteur": {"name": "Coquillage qui chante", "art": "un coquillage qui chante", "kind": "curiosite", "sorte": "Souvenir du Dôme d'Azur", "max": 3,
+		"desc": "Un grand coquillage de nacre en spirale, du Comptoir des Courants. Quand on le porte à l'oreille, on entend… la Grande Chanteuse, dit Ernest. Ton sang qui bouge, dit le Professeur Benthos, qui en a acheté trois.",
+		"effet": "Tu portes le coquillage à ton oreille. Tout au fond, très loin, une voix immense et lente chante trois notes graves, puis une aiguë. « Bonjour, le Dôme », dirait le Professeur."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 

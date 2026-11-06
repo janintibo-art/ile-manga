@@ -217,6 +217,12 @@ const LISTE := {
 	"strates_galeries": ["Les Galeries des Strates", "hautefond", 15],
 	"fronde": ["La Fronde", "hautefond", 25],
 	"fronde_scene": ["La Scène des Soupapes", "hautefond", 15],
+	"dome": ["Le Dôme d'Azur", "hautefond", 30],
+	"dome_funiculaire": ["La descente du Funiculaire d'Azur", "hautefond", 20],
+	"dome_serres": ["Le Dôme des Serres", "hautefond", 15],
+	"dome_institut": ["L'Institut des Abysses et son Grand Aquarium", "hautefond", 15],
+	"dome_belvedere": ["Le Belvédère des Abysses", "hautefond", 15],
+	"dome_baleine": ["La Grande Chanteuse", "hautefond", 25],
 	"neo": ["Néopolis", "neo", 20],
 	"neo_place": ["La Place des Hologrammes", "neo", 20],
 	"neo_terrasse": ["La Terrasse du Ciel", "neo", 25],
@@ -329,7 +335,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon", "Île de Hautefond": "hautefond", "Hautefond": "hautefond", "Cité des Nuées": "hautefond", "Les Strates": "hautefond", "La Fronde": "hautefond"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon", "Île de Hautefond": "hautefond", "Hautefond": "hautefond", "Cité des Nuées": "hautefond", "Les Strates": "hautefond", "La Fronde": "hautefond", "Le Dôme d'Azur": "hautefond"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

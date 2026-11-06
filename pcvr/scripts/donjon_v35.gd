@@ -1907,6 +1907,16 @@ func update_inside(force: bool = false) -> void:
 			env.volumetric_fog_density = 0.006
 			env.volumetric_fog_albedo = Color(0.85, 0.75, 0.62)
 			env.tonemap_exposure = 1.25
+		# V115 : le Dôme d'Azur, au fond de la mer : la lumière blanche et dorée de la Grande Perle, un air à
+		# peine bleuté ; dehors, derrière le verre, la mer profonde (shaders/verre_abysse_v115)
+		if hfs != null and hfs.has_method("in_dome") and hfs.in_dome(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.58, 0.68, 0.78)
+			env.ambient_light_energy = 0.5
+			env.fog_light_color = Color(0.03, 0.08, 0.12)
+			env.fog_density = 0.0022
+			env.volumetric_fog_density = 0.0025
+			env.volumetric_fog_albedo = Color(0.7, 0.85, 0.95)
+			env.tonemap_exposure = 1.05
 		if sun != null:
 			sun.visible = false
 	elif not _env_saved.is_empty():

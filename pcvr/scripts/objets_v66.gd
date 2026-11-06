@@ -166,6 +166,7 @@ const BOISSONS := {
 	"chocolat_chaud": [-0.3, "cafe"],
 	"lait_nuage": [0.0, ""], "the_sommets": [-0.35, "the"], "jus_soleil": [0.0, ""],
 	"chocolat_mineur": [-0.3, "cafe"], "sirop_cascade": [-0.2, ""], "limonade_gouffre": [0.0, ""],
+	"limonade_bleue": [0.0, ""], "chocolat_abysses": [-0.3, "cafe"],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -192,6 +193,7 @@ const COMPTOIRS := {
 	"gustave_nu": ["lait_nuage", 2, "Un lait de nuage au Café Cumulus"],
 	"honorine_st": ["chocolat_mineur", 2, "Un chocolat du mineur à La Marmite"],
 	"gamelle": ["limonade_gouffre", 1, "Une limonade du Gouffre à la Cantine Libre"],
+	"josette": ["limonade_bleue", 2, "Une limonade bleue au comptoir de La Conque"],
 }
 
 const PLAINTES := {

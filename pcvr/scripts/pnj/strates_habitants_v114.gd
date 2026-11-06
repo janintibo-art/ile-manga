@@ -20,7 +20,8 @@ extends RefCounted
 ##  - la Maison de la Guilde : la Doyenne Agathe Basalte (qui « surveille la Fronde de loin, avec fierté »).
 ## La Fronde (de l'autre côté du Pont des Frondeurs) a ses propres habitants (fichier à part) ; ici, on
 ## les cite seulement (Rivet et Bielle, Brasero, Gamelle, Fusain, Ressort…). La Ligne du Dôme d'Azur,
-## qui part de la Gare des Strates, est encore « fermée pour travaux ».
+## qui part de la Gare des Strates (la grille d'Anatole, la cage de laiton, puis le Funiculaire d'Azur),
+## a rouvert à son tour (V115), après douze ans de travaux.
 ## Même cerveau que les autres habitants (pnj_brain_v31.gd), même vie réglée par l'heure
 ## (pnj_azur_v56.gd), même costume que Hautefond et Montjoie (fiche « mj », pnj_montjoie_v71.gd ; voir
 ## l'en-tête de hautefond_habitants_v112.gd pour les tenues, objets et chapeaux). Les liftiers portent la
@@ -159,7 +160,7 @@ static func _all() -> Array:
 					L("Ah, {surnom} ! Tu descends si souvent que la cabine connaît ton poids. Elle a fait « ding » avant même que tu arrives. Enfin, je crois. Je l'ai senti dans mes pieds.", {"visites_min": 4}, "rire"),
 				],
 				"humeur": [
-					L("Grognon. La grille du Dôme d'Azur a grincé toute la nuit. « Travaux », dit le panneau. Moi, je dis qu'elle s'impatiente. Je la comprends. Mais elle me casse les oreilles. Ce qu'il en reste.", {"humeur_max": -0.2}),
+					L("Grognon. La grille du Dôme d'Azur a grincé toute la nuit. Douze ans que je l'huile, et maintenant qu'elle s'ouvre trente fois par jour, elle grince ! Moi, je dis qu'elle fait l'intéressante. Je la comprends. Mais elle me casse les oreilles. Ce qu'il en reste.", {"humeur_max": -0.2}),
 					L("Formidable ! La Ligne a rouvert, et la cabine descend pleine à chaque voyage ! Des gens d'en haut, avec des chapeaux, des parapluies (ici, il ne pleut pas !) et des yeux grands comme des lanternes. J'adore leurs yeux quand la porte s'ouvre sur la caverne.", {}, "rire"),
 					L("Un peu fatigué des bras. Dix ans de cabine immobile, et maintenant soixante voyages par jour. Mes bras avaient oublié. Mon cœur, non.", {}),
 					L("Ce matin, j'ai fait la première descente avec le pain d'en haut, pour La Marmite. Toute la cabine sentait la croûte chaude. Honorine m'a embrassé sur le crâne. Je n'ai pas entendu ce qu'elle a dit, mais j'ai senti que c'était gentil.", {"matin": true}),
@@ -169,12 +170,13 @@ static func _all() -> Array:
 					L("J'ai commencé liftier à quinze ans, dans cette même cabine. À l'époque, les machines faisaient un tel vacarme qu'on se parlait par gestes. Cinquante ans plus tard, les machines sont devenues douces. Mes oreilles, elles, sont restées au temps des gestes.", {}),
 					L("Maîtresse Capucine et moi, on se parle par le tuyau acoustique de la Colonne. Cent mètres de tuyau ! En haut, elle chuchote. En bas, je hurle. Et on se comprend parfaitement. C'est le secret des vieux collègues de la Colonne.", {"sujet_min": ["lui", 1]}, "rire"),
 					L("Dix ans de Ligne fermée, {surnom}. Dix ans à huiler une cabine qui ne partait pas. Tous les matins. Les gens me disaient : « À quoi bon ? » Je répondais : « Comment ? » Ça m'évitait de répondre. Et un matin, elle est repartie. Bien huilée.", {"sujet_min": ["lui", 2]}),
+					L("Douze ans, {surnom}, que j'huilais la grille du Dôme tous les soirs, au cas où. Et j'écrivais à Marius, le chef de gare d'en bas : « Grille huilée. Toujours fermée. Toujours prête. » Trois lignes. Lui me répondait douze pages. Le jour de la réouverture, je ne lui ai rien écrit. Je suis descendu avec lui.", {"sujet_min": ["lui", 3]}),
 					L("Tu as rencontré Capucine, en haut ? Dis-lui qu'Anatole a bien graissé la poulie douze. Elle comprendra. Entre liftiers, c'est notre façon de dire « tu me manques ». Ne rougis pas. Moi, je ne rougis plus, j'ai l'âge.", {"a_rencontre": "capucine_hf"}, "rire"),
 				],
 				"ile": [
 					L("La Ligne des Strates, c'est deux cabines, {surnom}. Celle d'en haut part du pavillon de la Place de la Colonne. Puis on change, et la mienne descend dans la Colonne Renversée : la Grande Colonne qui continue sous terre, en laiton et en verre, et qui pend de la voûte jusqu'à ma Gare. Une tour à l'envers ! Il fallait y penser.", {}),
 					L("Tu as vu le Soleil de Laiton, autour de la Colonne Renversée ? Une grande sphère de cercles de laiton, et au cœur, une lampe à arc qui éclaire toute la caverne. Le jour, il brille fort. La nuit, il devient ambré. C'est notre soleil à nous. Il ne se couche jamais : il baisse juste les yeux.", {"sujet_min": ["ile", 1]}),
-					L("La Colonne relie quatre mondes : les Nuées tout en haut, Hautefond, nous, les Strates, et tout au fond de la mer, le Dôme d'Azur. La grille du Dôme est juste derrière moi. « Fermée pour travaux ». C'est moi qui garde la clé. Elle rouvrira bientôt. Je le sais : la grille grince d'impatience.", {"sujet_min": ["ile", 2]}),
+					L("La Colonne relie quatre mondes : les Nuées tout en haut, Hautefond, nous, les Strates, et tout au fond de la mer, le Dôme d'Azur. La grille du Dôme est juste derrière moi. Douze ans « fermée pour travaux ». C'est moi qui garde la clé. Elle a enfin rouvert ! Derrière, la cage de laiton descend jusqu'au Funiculaire. Je le savais : la grille grinçait d'impatience.", {"sujet_min": ["ile", 2]}),
 					L("Le petit Barnabé, l'apprenti de Capucine, est descendu pour la réouverture. Tout vert. Il m'a dit : « Au moins, en descendant, on ne voit pas le vide. » J'ai dit : « Comment ? » Il a répété trois fois. À la troisième, il riait. Ça lui a fait du bien, je crois.", {"a_rencontre": "barnabe_hf"}, "rire"),
 				],
 				"rumeur": [
@@ -182,9 +184,10 @@ static func _all() -> Array:
 					L("Le petit Tom, l'apprenti de la Forge, vient attendre près du quai tous les soirs. Il attend une petite d'en haut, Pimprenelle, avec qui il se parle à coups de marteau à travers la roche. Il dit que ce n'est pas pour elle. Il se recoiffe à chaque cabine.", {}, "rire"),
 					L("Ferdinand, du Petit Train, dit que sa Bernadette siffle plus fort que ma cabine. Je ne sais pas. Je n'entends ni l'une ni l'autre. Mais je sens Bernadette dans mes pieds quand elle passe. Elle a un bon fond.", {}),
 					L("Tu es passé au Piston Joyeux ? Firmin a la vieille chaudière de Ferdinand ! En haut, toute la ville règle ses montres sur son sifflet. Moi, je l'entends d'ici, quand le vent descend la Colonne. C'est la seule chose d'en haut que j'entends bien.", {"a_rencontre": "firmin"}, "rire"),
+					L("Tu as vu Marius, au Funiculaire d'Azur ? Le jour de la réouverture, je me suis assis à côté de son pupitre. En bas, la Grande Chanteuse est passée au-dessus du Dôme. J'ai posé les mains sur la vitre, j'ai fermé les yeux… et je l'ai entendue, {surnom}. Moi ! Dans les mains, dans les pieds. On a pleuré tous les deux. Dans nos moustaches. Ne le répète pas. Enfin, si. Mais fort.", {"a_rencontre": "marius"}),
 				],
 				"interpelle": [L("Hé ! Vous descendez ? Comment ? Vous remontez ? Comment ?", {"visites_max": 0}, "salut"), L("{surnom} ! La cabine part ! Tenez la rampe, comme dit Capucine !", {"visites_min": 1}, "salut")],
-				"au_revoir": [L("Bonne route, {surnom} ! Et parle fort, en haut : qu'on t'entende jusqu'ici !", {}, "salut"), L("À bientôt ! Si tu cherches la grille du Dôme, ne cherche pas : elle est fermée. Mais elle te dit bonjour quand même.", {}, "rire"), L("Bonne nuit ! Après la dernière cabine, la Colonne Renversée dort la tête en bas. Comme une chauve-souris. Très bien élevée.", {"soir": true}, "rire")],
+				"au_revoir": [L("Bonne route, {surnom} ! Et parle fort, en haut : qu'on t'entende jusqu'ici !", {}, "salut"), L("À bientôt ! Si tu cherches la grille du Dôme, elle est au bout du quai, grande ouverte. Elle te dit bonjour. Et « Bonnes bulles ! », comme on dit en bas.", {}, "rire"), L("Bonne nuit ! Après la dernière cabine, la Colonne Renversée dort la tête en bas. Comme une chauve-souris. Très bien élevée.", {"soir": true}, "rire")],
 				"souvenir": [L("Si je me souviens de toi ? Bien sûr ! Je ne retiens pas les voix, {surnom}, je retiens les visages. Et le tien a souri quand la porte s'est ouverte sur la caverne. Ça, je l'ai vu.", {})],
 			}},
 		# ================================================================ la Grande Forge des Strates
@@ -228,6 +231,7 @@ static func _all() -> Array:
 					L("Mon apprenti, Tom, tape un code sur la roche pour parler à la fille de Mathilde. Trois coups vite, c'est « boulon trouvé ». Un long frottement, c'est « bonne nuit ». Il croit que je ne comprends pas. J'ai inventé la moitié de ces signes à son âge.", {}, "rire"),
 					L("Papy Ferdinand a vendu la chaudière de secours de Bernadette à un tavernier d'en haut, pour en faire une machine à chocolat. J'ai forgé les rivets de cette chaudière quand j'avais vingt ans. Alors ce chocolat a un peu de ma forge dedans. Ça explique pourquoi il siffle.", {}),
 					L("Tu as vu la petite Pimprenelle, en haut ? Tom ne parle que d'elle. Enfin, de « la personne qui tape ». Il rougit comme un fer chaud. Quand elle descendra, je lui offrirai un boulon forgé exprès. Le plus beau. Fait par Tom. Il ne le sait pas encore.", {"a_rencontre": "pimprenelle_hf"}, "rire"),
+					L("Tu es descendu au Dôme d'Azur ? Tu as vu Yolande, à l'Atelier des Scaphandres ? Les roues du Funiculaire, c'est ici, à la Grande Forge, qu'on les a coulées ! J'avais mis un mot sur la caisse : « Trempées dans le rire. HO HO ! » Elle a gardé la caisse. Et elle tapote ses vitres deux coups, puis un. C'est moi qui lui ai appris. Elle rit en « hm », paraît-il. Ça compte. HO HO HO !", {"a_rencontre": "yolande"}, "rire"),
 				],
 				"interpelle": [L("Hé, toi ! Viens voir taper ! Derrière la ligne jaune !", {"visites_max": 0}, "salut"), L("{surnom} ! HO HO ! Viens, le four est chaud !", {"visites_min": 1}, "rire")],
 				"au_revoir": [L("À plus, {surnom} ! Et si tu entends deux coups, puis un, réponds ! Ça veut dire bonjour, merci.", {}, "salut"), L("Salut ! Dis à Honorine que j'arrive pour la soupe. Elle le sait déjà. Elle le sait toujours. HO HO !", {}, "rire"), L("Bonne nuit ! La Forge s'endort. Elle ronfle un peu par les cheminées. Comme moi.", {"soir": true}, "rire")],
@@ -310,7 +314,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Les Mines de Cristaux sont à l'ouest de la caverne, par le grand tunnel. Au bout, la Grotte aux Cristaux : des cristaux bleus partout, aux murs, au plafond, qui brillent dans le noir. Les rails vont jusqu'au fond, et les wagonnets ramènent les cristaux à l'Atelier des Lumières. Doucement. On ne secoue pas un cristal.", {}),
 					L("Le grès des Strates est en couches : ocre, crème, rouille, gris. Chaque couche, ce sont des milliers d'années. On lit la roche comme un livre, de bas en haut. Tout en haut, la dernière page, c'est Hautefond. Elle est encore en cours d'écriture.", {"sujet_min": ["ile", 1]}),
-					L("La Colonne relie quatre mondes, et sous le Dôme d'Azur, au fond de la mer, il y a encore de la roche, paraît-il. Plus vieille que la nôtre. Quand la Ligne du Dôme rouvrira, je descendrai lui dire bonjour. Elle doit être cousine avec la Vieille. Il faut faire les présentations.", {"sujet_min": ["ile", 2]}),
+					L("La Colonne relie quatre mondes, et sous le Dôme d'Azur, au fond de la mer, il y a encore de la roche, paraît-il. Plus vieille que la nôtre. La Ligne du Dôme a rouvert, et je suis descendu lui dire bonjour, de la part de la Vieille. Elles doivent être cousines. Il fallait faire les présentations. J'ai gardé mon casque.", {"sujet_min": ["ile", 2]}),
 					L("Le Bourgmestre Hector voulait visiter la Grotte sans casque, « pour le portrait ». J'ai dit non. Il a fait un discours sur la liberté. J'ai fait un discours sur la gravité. Le mien était plus court. Il a mis le casque. Le portrait est très réussi.", {"a_rencontre": "hector_hf"}, "rire"),
 				],
 				"rumeur": [
@@ -409,6 +413,7 @@ static func _all() -> Array:
 					L("Fusain, de la Fronde, vient peindre aux Jardins. Paraît que mes champignons ont des couleurs qu'on ne trouve dans aucun pot de peinture. Depuis, les fresques de la Fronde ont des taches qui brillent la nuit. Je ne dirai pas d'où vient le secret.", {}),
 					L("Les amoureux des Galeries viennent s'asseoir sur mon banc, le soir, quand tout brille. Ils chuchotent. Les champignons clignotent. Moi, je fais semblant d'arroser. J'arrose beaucoup, le soir.", {}, "rire"),
 					L("Rosalie, la marchande d'épices d'en haut, m'a écrit : elle veut vendre mes champignons lumineux au Grand Marché. Je lui ai répondu qu'ils ne se vendent pas, ils se regardent. Elle m'a répondu : « Alors je vendrai des places pour les regarder. » Cette femme est un génie.", {"a_rencontre": "rosalie_hf"}, "rire"),
+					L("Tu es allé au Dôme des Serres, au fond de la mer ? Tu as vu Mélisande ? Avec Flora, aux Nuées, on est « les trois jardinières ». Je lui ai envoyé un champignon qui brille, dans un bocal. Il vit au bord de son bassin, paraît-il, et ses nénuphars le trouvent bavard. Maintenant que la Ligne a rouvert, je descends voir son jardin. Elle allume son soleil avec un bouton. Moi, je n'en ai pas du tout. On va bien s'entendre.", {"a_rencontre": "melisande"}, "rire"),
 				],
 				"interpelle": [L("Chut… doucement… ils se réveillent.", {"visites_max": 0}), L("{surnom} ! Viens voir, il y en a un nouveau qui s'allume !", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Au revoir, {surnom}. Et s'il pleut en haut, pense à moi : la pluie arrive ici le lendemain.", {}, "salut"), L("Va, petit spore. Et ne mange jamais un champignon qui brille. Même s'il te fait de l'œil.", {}, "rire"), L("Bonne nuit. Les Jardins s'allument. Reste un peu, si tu veux. Le banc est fait pour ça.", {"soir": true})],
@@ -447,7 +452,7 @@ static func _all() -> Array:
 				],
 				"ile": [
 					L("La Marmite est sur la Place des Rouages, juste sous la Grande Horloge. Quand elle sonne midi, toute la caverne descend chez moi. Je l'entends arriver : les bottes sur les pavés, les rires de la Forge. Je remue la soupe en rythme. Ça la rend meilleure.", {}),
-					L("Mes champignons viennent des Jardins de Bertille, mon eau de la cascade, ma farine descend d'en haut par la cabine d'Anatole, et mon cacao… c'est un secret. Tout ce qu'il y a dans mon bol vient d'un bout ou de l'autre de la Colonne. Une soupe des quatre mondes. Enfin, de trois : le Dôme est encore fermé.", {"sujet_min": ["ile", 1]}),
+					L("Mes champignons viennent des Jardins de Bertille, mon eau de la cascade, ma farine descend d'en haut par la cabine d'Anatole, et mon cacao… c'est un secret. Tout ce qu'il y a dans mon bol vient d'un bout ou de l'autre de la Colonne. Une soupe des quatre mondes. Enfin, de trois, pour l'instant : le Dôme vient de rouvrir, et Josette, de La Conque, m'a promis ses algues.", {"sujet_min": ["ile", 1]}),
 					L("Le jour de la réouverture, le Bourgmestre a pris trois bols. Puis il a fait un discours sur la soupe. Je l'ai écouté jusqu'au bout, et je lui ai servi un quatrième bol. Pour qu'il ait la bouche pleine. Ça a très bien marché.", {"sujet_min": ["ile", 2]}, "rire"),
 					L("Le petit Barnabé, l'apprenti liftier d'en haut, est descendu pour la réouverture. Tout vert. Je lui ai servi un chocolat du mineur. Il a repris des couleurs en trois gorgées : rouge, rose, puis normal. Il y a des gens comme ça, qu'on a envie de réchauffer.", {"a_rencontre": "barnabe_hf"}),
 				],
@@ -487,7 +492,7 @@ static func _all() -> Array:
 				"lui": [
 					L("Je conduis le Petit Train depuis cinquante-deux ans. Avant moi, c'était mon père. Avant lui, le sien. Bernadette, elle, a cent ans. C'est la doyenne de la famille. On la respecte. Et on l'astique.", {}),
 					L("La machine à chocolat de Firmin, en haut, c'était la chaudière de secours de Bernadette. Une belle chaudière, faite pour une locomotive. Firmin la voulait pour sa taverne. Je lui ai dit : « Elle siffle un peu. » Il a ri. Il ne rit plus quand elle siffle : il sursaute. Mais il l'aime.", {"sujet_min": ["lui", 1]}, "rire"),
-					L("Je vais te dire un secret, {surnom}. Je n'ai jamais pris la Ligne. Jamais vu la mer. Cinquante-deux ans à tourner en rond dans la caverne. Maintenant que la Ligne a rouvert, Anatole me pousse. Je dis « demain ». Je n'aime pas les trains qui montent tout droit. Ils n'ont pas de virages.", {"sujet_min": ["lui", 2]}),
+					L("Je vais te dire un secret, {surnom}. Je n'ai jamais pris la Ligne d'en haut. Cinquante-deux ans à tourner en rond dans la caverne. La mer, je ne l'ai vue que par en dessous, depuis la bulle du Funiculaire. Pour la voir par au-dessus, Anatole me pousse. Je dis « demain ». Je n'aime pas les trains qui montent tout droit. Ils n'ont pas de virages.", {"sujet_min": ["lui", 2]}),
 					L("Tu as goûté le chocolat de Firmin ? Alors tu as goûté ma vieille chaudière ! Dis-lui de bien la détartrer tous les mois, et de lui dire bonjour le matin, avant de la faire siffler. Elle aime ça. Il le fait déjà ? Ah, brave garçon.", {"a_rencontre": "firmin"}, "rire"),
 				],
 				"ile": [
@@ -546,6 +551,7 @@ static func _all() -> Array:
 					L("Maîtresse Brunehaut rit si fort que la Grande Horloge s'est déréglée deux fois. J'ai proposé une règle : pas de rire pendant que l'horloge sonne. Elle a ri. L'horloge s'est déréglée une troisième fois. J'ai retiré la règle.", {}, "rire"),
 					L("Le contremaître Ludovic m'apporte chaque mois son tableau : « Jours sans accident ». Quatre mille deux cents. Je le félicite. Il répond : « Ce n'est pas moi, c'est la Vieille. » La roche. Il a raison. Mais c'est un peu lui aussi.", {}),
 					L("Maîtresse Capucine, la Grande Liftière, m'a dit le jour de la réouverture : « La Colonne est contente de redescendre. » Je lui ai répondu : « Les Strates sont contentes de la revoir. » Nous nous sommes regardées. C'était la conversation la plus sincère de toute la cérémonie.", {"a_rencontre": "capucine_hf"}),
+					L("Vous êtes descendu au Dôme ? Vous avez vu la Présidente Ondine ? Pendant les douze ans de travaux, je lui ai écrit une ligne par mois : « Tenez bon. » Cent quarante-quatre fois. Le jour de la réouverture, je lui ai serré la main et j'ai dit : « Bien tenu. » Deux mots. Elle dit que c'est son plus beau compliment. J'ai souri de cinq millimètres. Un record.", {"a_rencontre": "ondine_da"}, "rire"),
 				],
 				"interpelle": [L("Vous. Bonjour. C'est tout.", {"visites_max": 0}), L("{surnom}. Venez. J'ai une minute de silence pour vous.", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Au revoir, {surnom}. Revenez. C'est un conseil de la Guilde. Le seul que je donne gratuitement.", {}, "salut"), L("Allez. Et si on vous demande, en haut, comment c'est, en bas, dites : « Ça travaille, et ça chante. » C'est assez juste.", {}), L("Bonsoir. Je vais surveiller la Fronde depuis le balcon. De loin. Avec fierté. Mais ne le répétez pas.", {"soir": true})],

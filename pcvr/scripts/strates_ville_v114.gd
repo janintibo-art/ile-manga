@@ -3,7 +3,8 @@ extends Node3D
 ## Hautefond, dans les cavernes de grès en couches (strates_roche_v114). Fantastique-vapeur, sous terre :
 ##  - la COLONNE RENVERSÉE : la Grande Colonne continue sous terre ; un tube de verre cerclé de laiton
 ##    pend du sommet de la voûte jusqu'à la GARE DES STRATES (la cabine de la Ligne des Strates y
-##    descend : strates_ligne_v114) ; à côté, la grille fermée de la LIGNE DU DÔME D'AZUR ;
+##    descend : strates_ligne_v114) ; à côté, la cage de laiton de la LIGNE DU DÔME D'AZUR (V115 :
+##    dome_ligne_v115) ;
 ##  - le SOLEIL DE LAITON : une grande sphère armillaire de laiton, à mi-hauteur de la Colonne, dont le
 ##    cœur (des lampes à arc) éclaire toute la caverne : fort le jour, ambré et doux la nuit ;
 ##  - la PLACE DES ROUAGES (autour de la Gare) : la Grande Horloge des Strates, la Fontaine aux
@@ -363,20 +364,11 @@ func _gare() -> void:
 	_sp("st_gare_banc_1", P(-6.5, 2.5) + (c - P(-6.5, 2.5)).normalized() * 0.3, c, "assis")
 	_sp("st_gare_banc_2", P(6.5, 2.5) + (c - P(6.5, 2.5)).normalized() * 0.3, c, "assis")
 	_sp("st_gare_quai", P(0.8, 5.0), P(0, 0), "debout")
-	# la grille de la Ligne du Dôme d'Azur : une petite cage de laiton qui descend dans le sol, fermée
+	# la Ligne du Dôme d'Azur : V115, sa cage de laiton (qui s'enfonce dans le sol) est bâtie par
+	# dome_ligne_v115 ; ici, son seuil (un anneau de dalles et de laiton)
 	var dz: Vector3 = P(0, -7.6)
-	kit.cyl(Transform3D(Basis(), dz), 1.7, 1.7, 3.2, "verre112", 16, false, 2.0)
-	kit.ring(Transform3D(Basis(), dz), 1.6, 1.9, 0.25, "laiton112", 20)
-	kit.ring(Transform3D(Basis(), dz + Vector3.UP * 3.1), 1.6, 1.9, 0.25, "laiton112", 20)
-	kit.dome76(Transform3D(Basis(), dz + Vector3.UP * 3.25), 1.9, 0.9, "verdigris112", 16, 5)
-	var gb := Basis.looking_at(Vector3(0, 0, 1), Vector3.UP)
-	for k3 in range(9):
-		var x: float = -0.8 + k3 * 0.2
-		kit.box(Transform3D(gb, dz + Vector3(x, 1.3, 1.75)), Vector3(0.04, 2.6, 0.04), "laiton112_vieux", 1.0)
-	kit.box(Transform3D(gb, dz + Vector3(0, 0.9, 1.78)), Vector3(1.9, 0.08, 0.06), "laiton112_vieux", 1.0)
-	kit.box(Transform3D(gb, dz + Vector3(0, 1.4, 1.82)), Vector3(1.9, 0.12, 0.04), "fer114", 1.0)
-	kit.sign114(Transform3D(gb, dz + Vector3(0, 2.3, 1.85)), "dome", 1.6, 0.8)
-	kit.col_cyl(dz, 1.9, 3.4)
+	kit.ring(Transform3D(Basis(), dz + Vector3.UP * 0.01), 1.8, 2.3, 0.03, "pave112", 24)
+	kit.ring(Transform3D(Basis(), dz + Vector3.UP * 0.02), 2.25, 2.4, 0.04, "laiton112", 24)
 	objets["ligne_dome"] = dz + Vector3(0, 0, 2.4)
 	objets["gare"] = c + Vector3(0, 0, 6.0)
 

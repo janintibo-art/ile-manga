@@ -187,7 +187,7 @@ gm.EMBLEMS.update({"colonne": hf.em_colonne, "horloge": hf.em_horloge, "tasse": 
 ENSEIGNES = {
     "gare": ("Gare des Strates", "Ligne des Strates · Hautefond", "fer", (40, 46, 60), "or", "colonne"),
     "ligne": ("Ligne des Strates", "Cent mètres sous la ville · Ça descend !", "fer", (36, 46, 70), "or", "colonne"),
-    "dome": ("Ligne du Dôme d'Azur", "Fermée pour travaux", "fer", (24, 56, 80), "creme", "colonne"),
+    "dome": ("Ligne du Dôme d'Azur", "Rouverte ! · Funiculaire d'Azur", "fer", (24, 56, 80), "creme", "colonne"),
     "forge": ("Grande Forge des Strates", "Maîtresse Brunehaut · On tape fort", "fer", (56, 44, 40), "laiton", "enclume"),
     "marmite": ("La Marmite", "Cantine des Strates · Soupes & chocolat", "bois", (96, 50, 30), "or", "marmite"),
     "lumieres": ("Atelier des Lumières", "Lanternes à cristal · Docteure Quartz", "peint", (30, 44, 74), "or", "lanterne"),

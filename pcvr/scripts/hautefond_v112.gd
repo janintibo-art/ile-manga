@@ -20,7 +20,12 @@ extends Node3D
 ## la Place, et sa cabine) ; neuf habitants des Strates (pnj/strates_habitants_v114, comme ceux d'en
 ## haut), neuf Frondeurs (pnj/fronde_habitants_v114, au costume de Port-Boucan : pnj_boucan_v75) et
 ## leurs passants. Sous terre (y < -40), le jeu passe en lumière d'intérieur (donjon_v35).
-## La suite (la version d'après) : le Dôme d'Azur (au fond de la mer).
+## V115 : le DÔME D'AZUR, au fond de la mer, à cent quarante mètres sous la surface, au pied des falaises
+## du sud (fosse_azur_v115 : la Fosse ; dome_azur_v115 : le Grand Dôme, le Dôme des Serres, le Dôme de
+## l'Institut, leurs galeries de verre, la bouée-phare de la Cheminée d'Air à la surface ; dome_ligne_v115 :
+## la Ligne du Dôme d'Azur, de la cage de laiton de la Gare des Strates à la bulle du Funiculaire ;
+## dome_vie_v115 : les poissons, les méduses, les raies et la Grande Chanteuse, dehors) ; les habitants
+## du Dôme (pnj/dome_habitants_v115, au costume des Nuées : pnj_neo_v95) et leurs passants.
 
 const IleScript = preload("res://scripts/ile_hautefond_v112.gd")
 const CityScript = preload("res://scripts/hautefond_ville_v112.gd")
@@ -49,6 +54,15 @@ const HABITANTS_F := "res://scripts/pnj/fronde_habitants_v114.gd"
 const PNJ_F := "res://scripts/pnj/pnj_boucan_v75.gd"
 const PASSANTS_S := "res://scripts/pnj/strates_passants_v114.gd"
 const PASSANTS_F := "res://scripts/pnj/fronde_passants_v114.gd"
+## V115 : le Dôme d'Azur
+const DomeFosse = preload("res://scripts/fosse_azur_v115.gd")
+const DomeVille = preload("res://scripts/dome_azur_v115.gd")
+const MatsD = preload("res://scripts/dome_mats_v115.gd")
+const HABITANTS_D := "res://scripts/pnj/dome_habitants_v115.gd"
+const PASSANTS_D := "res://scripts/pnj/dome_passants_v115.gd"
+## Les prénoms des passants du Dôme
+const PRENOMS_D := {"h": ["Marin", "Loïc", "Erwan", "Gabin", "Corentin", "Yann", "Nolan", "Téo", "Malo", "Bastien", "Ewen", "Titouan"],
+	"f": ["Océane", "Marine", "Nacre", "Ondine", "Perle", "Coralie", "Morgane", "Azilis", "Maïwenn", "Léna", "Nolwenn", "Rozenn"]}
 ## Les prénoms des passants des Nuées
 const PRENOMS_N := {"h": ["Aurèle", "Cyrus", "Élian", "Orion", "Sacha", "Noé", "Thélo", "Zéphyr", "Ilan", "Maël", "Nils", "Adrien"],
 	"f": ["Alizée", "Célia", "Nuée", "Brume", "Iris", "Maëlys", "Azalée", "Solène", "Line", "Elsa", "Livia", "Aube"]}
@@ -72,7 +86,7 @@ const PASSANTS := [
 	["montjoie", "vieille", ["Ici, il y a plus d'horloges que d'habitants. Et elles ne sont jamais d'accord, sauf chez Gaspard.", "Une limonade à la vapeur, chez Firmin. Ça pique le nez, ça réchauffe le cœur."]],
 	["montjoie", "femme", ["Il fait frais, sur la Haute-Ville. Le vent monte de la mer et redescend par les escaliers.", "Je travaille au lavoir. Avec toute cette vapeur, le linge sèche avant d'être lavé."]],
 	["montjoie", "vieux", ["J'ai été liftier pendant trente ans. Je n'ai jamais eu le vertige. Seulement le mal de mer. Dans une tour.", "Ça monte, ça descend… Moi, je reste assis. C'est ma façon de voyager."]],
-	["montjoie", "enfant", ["Maman dit que si je suis sage, on ira voir les poissons qui brillent au Dôme d'Azur. Quand la ligne rouvrira.", "J'ai trouvé un engrenage par terre ! Je vais l'échanger à Pimprenelle contre deux boulons."]],
+	["montjoie", "enfant", ["Maman dit que si je suis sage, on ira voir les poissons qui brillent au Dôme d'Azur. La ligne a rouvert : je suis sage depuis trois jours !", "J'ai trouvé un engrenage par terre ! Je vais l'échanger à Pimprenelle contre deux boulons."]],
 	["montjoie", "homme", ["Je suis venu par le bateau de ligne pour voir la Colonne. Elle est plus haute que sur les cartes postales.", "Les cabines sont dorées, les rampes sont dorées… Même le guichet brille. Je n'ose pas toucher."]],
 	["montjoie", "femme", ["Les pommes des Vergers sont arrivées au marché. Le Père Bastien leur a parlé toute la semaine : elles sont aux anges.", "Avec ce soleil, la Colonne brille tellement qu'il faut des lunettes pour la regarder."]],
 	["montjoie", "vieux", ["Le soir, quand les réverbères s'allument, toute la ville ronronne. C'est la vapeur dans les tuyaux. Ou mon ventre.", "Par tous les pistons, ce que ça grimpe, ces rues ! Hautefond, c'est une ville pour les mollets."]],
@@ -116,6 +130,14 @@ var strates_ligne: Node3D                # V114 : la Ligne des Strates (strates_
 var _crowd_s_spawned: bool = false
 var _under: bool = false                 # le joueur est sous terre (on cache la surface, on montre les Strates)
 var _last_safe_s := Vector3.ZERO
+var dome_fosse: Node3D                   # V115 : la Fosse d'Azur (fosse_azur_v115)
+var dome: Node3D                         # V115 : le Dôme d'Azur (dome_azur_v115)
+var dome_ligne: Node3D                   # V115 : la Ligne du Dôme d'Azur (dome_ligne_v115)
+var dome_vie: Node3D                     # V115 : la vie autour des dômes (dome_vie_v115)
+var dome_surface: Node3D                 # V115 : la bouée-phare (à la surface)
+var _crowd_d_spawned: bool = false
+var _dome_vis: int = -1                  # 1 : on montre le Dôme (et pas les Strates) ; 0 : l'inverse
+var _whale_seen_pass: int = 0
 
 
 func setup(main_node: Node) -> void:
@@ -126,7 +148,7 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "montees": 0, "nuees": false, "capsule": 0, "strates": false, "fronde": false, "descentes": 0}
+	return {"visite": false, "visites": {}, "montees": 0, "nuees": false, "capsule": 0, "strates": false, "fronde": false, "descentes": 0, "dome": false, "funiculaire": 0, "baleine": false}
 
 
 # =================================================================== construction
@@ -145,6 +167,11 @@ func build_island() -> void:
 	add_child(strates_roche)
 	strates_roche.build(pc)
 	strates_roche.visible = false
+	dome_fosse = DomeFosse.new()
+	dome_fosse.name = "Fosse_d_Azur_v115"
+	add_child(dome_fosse)
+	dome_fosse.build(pc, main._soft_dot_v24() if main != null and main.has_method("_soft_dot_v24") else null)
+	dome_fosse.visible = false
 
 
 ## Après le relief et l'heure du jour : la ville, le dehors, la végétation, les feux, les fumées, la
@@ -169,6 +196,26 @@ func build_town() -> void:
 	add_child(strates_ligne)
 	strates_ligne.build(main, strates.kit, city.colonne, strates, pc)
 	strates.ligne = strates_ligne
+	# V115 : le Dôme d'Azur, sa Ligne, la vie autour
+	dome_surface = Node3D.new()
+	dome_surface.name = "Dome_surface_v115"
+	add_child(dome_surface)
+	dome = DomeVille.new()
+	dome.name = "Dome_d_Azur_v115"
+	add_child(dome)
+	dome.build(main, dome_fosse, city, pc, dome_surface)
+	dome.visible = false
+	dome_ligne = load("res://scripts/dome_ligne_v115.gd").new()
+	dome_ligne.name = "Ligne_du_Dome_v115"
+	add_child(dome_ligne)
+	dome_ligne.build(main, dome, strates, pc)
+	dome.ligne = dome_ligne
+	dome_ligne.visible = false
+	dome_vie = load("res://scripts/dome_vie_v115.gd").new()
+	dome_vie.name = "Vie_du_Dome_v115"
+	add_child(dome_vie)
+	dome_vie.build(main, pc)
+	dome_vie.visible = false
 	dehors = DehorsScript.new()
 	dehors.name = "Hautefond_dehors_v112"
 	add_child(dehors)
@@ -275,17 +322,15 @@ func _register_interactions() -> void:
 		nuees.ligne.register(d, self)
 	if strates_ligne != null:
 		strates_ligne.register(d, self)
+	if dome_ligne != null:
+		dome_ligne.register(d, self)
 	var col: Node3D = city.colonne
 	var me = self
-	# les deux lignes encore fermées : un panneau à chaque portail (est et ouest)
+	# les lignes rouvertes : un panneau à chaque portail (est et ouest)
 	_ia(d, {"id": "hf_ligne_nuees", "pos": col.foot + Vector3(col.R_SOCLE + 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Nuées)",
 		"vr": "Gâchette : lire le panneau (Ligne des Nuées)", "call": func(): me.say("« LIGNE DES NUÉES — ROUVERTE ! Prenez la cabine jusqu'au Belvédère, puis la capsule de verre jusqu'à la Gare des Nuées. La Confrérie des Liftiers vous souhaite bon vent (et pas de vertige). »", 8.0), "when": func(): return true})
 	_ia(d, {"id": "hf_ligne_strates", "pos": col.foot + Vector3(-col.R_SOCLE - 3.2, 1.0, 0.0), "radius": 2.6, "text": "E : lire le panneau (Ligne des Strates)",
-		"vr": "Gâchette : lire le panneau (Ligne des Strates)", "call": func(): me.say("« LIGNE DES STRATES — ROUVERTE ! Le pavillon est juste derrière : entrez, tirez le levier, et descendez cent mètres sous la ville. LIGNE DU DÔME D'AZUR — encore fermée pour travaux. » En dessous, quelqu'un a griffonné : « Bienvenue en bas ! Bisous de la Fronde. »", 8.0), "when": func(): return true})
-	if strates != null and strates.objets.has("ligne_dome"):
-		_ia(d, {"id": "st_ligne_dome", "pos": strates.objets["ligne_dome"] + Vector3.UP * 1.0, "radius": 2.4, "text": "E : lire la plaque (Ligne du Dôme d'Azur)",
-			"vr": "Gâchette : lire la plaque (Ligne du Dôme d'Azur)", "call": func(): me.say("« LIGNE DU DÔME D'AZUR — fermée pour travaux. Réouverture prochaine. » Derrière la grille, la cage s'enfonce dans le noir. On entend, très loin, comme le ressac de la mer.", 8.0), "when": func(): return true})
-
+		"vr": "Gâchette : lire le panneau (Ligne des Strates)", "call": func(): me.say("« LIGNE DES STRATES — ROUVERTE ! Le pavillon est juste derrière : entrez, tirez le levier, et descendez cent mètres sous la ville. LIGNE DU DÔME D'AZUR — ROUVERTE ! À la Gare des Strates, la cage de laiton vous emmène au fond de la mer. » En dessous, quelqu'un a griffonné : « Bienvenue en bas ! Bisous de la Fronde. » Et, plus bas encore, d'une écriture ronde : « Et bienvenue tout en bas ! Le Dôme. »", 8.0), "when": func(): return true})
 
 func _ia(d: Node, it: Dictionary) -> void:
 	d._interactions.append(it)
@@ -319,6 +364,11 @@ func in_strates(p: Vector3) -> bool:
 	return strates != null and StratesRoche.contains(p)
 
 
+## V115 : au Dôme d'Azur (ses dômes, ses galeries, la bulle du Funiculaire) ?
+func in_dome(p: Vector3) -> bool:
+	return dome != null and DomeFosse.contains(p)
+
+
 func on_structure(p: Vector3) -> bool:
 	return (city != null and city.on_structure(p)) or (nuees != null and nuees.on_structure(p))
 
@@ -347,6 +397,8 @@ func blocks_boat(_p: Vector3) -> bool:
 
 ## La zone du joueur (pour la musique, les ambiances, le carnet).
 func zone_at(p: Vector3) -> String:
+	if in_dome(p):
+		return dome.zone_at(p)
 	if in_strates(p):
 		return strates.zone_at(p)
 	if strates_ligne != null and strates_ligne.in_kiosk(p):
@@ -386,7 +438,7 @@ func people_at(p: Vector3) -> String:
 	var z: String = zone_at(p)
 	if z == "":
 		return ""
-	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare", "nu_capsule", "st_ligne", "st_grotte", "st_pont"]:
+	if z in ["hf_rivage", "hf_campagne", "hf_falaises", "hf_vergers", "hf_moulin", "hf_plage", "hf_phare", "nu_capsule", "st_ligne", "st_grotte", "st_pont", "da_funiculaire"]:
 		return "sauvage"
 	return "ville"
 
@@ -404,6 +456,8 @@ func village_point(id: String) -> Array:
 			return respawn_strates()
 		"fronde":
 			return respawn_fronde()
+		"dome":
+			return respawn_dome()
 	return []
 
 
@@ -425,7 +479,12 @@ const PLACES := {"hf_colonne": "la Place de la Colonne", "hf_belvedere": "le Bel
 	"st_pont": "le Pont des Frondeurs", "st_bord": "le pied des parois", "st_ville": "les rues",
 	"fr_entree": "l'entrée", "fr_place": "la Place Libre", "fr_scene": "la Scène des Soupapes", "fr_cantine": "la Cantine Libre",
 	"fr_atelier": "l'Atelier Libre", "fr_troc": "le Troc", "fr_assemblee": "l'Assemblée", "fr_skate": "le Skatepark",
-	"fr_fresques": "le Mur des Fresques"}
+	"fr_fresques": "le Mur des Fresques",
+	"da_gare": "la Gare d'Azur", "da_funiculaire": "la bulle du Funiculaire d'Azur", "da_place": "la Place de la Perle", "da_conque": "La Conque",
+	"da_comptoir": "le Comptoir des Courants", "da_atelier": "l'Atelier des Scaphandres", "da_ecole": "l'École des Abysses",
+	"da_conseil": "la Maison du Conseil des Marées", "da_jardin": "le Jardin des Coraux", "da_hublots": "la Promenade des Hublots",
+	"da_belvedere": "le Belvédère des Abysses", "da_ville": "les allées", "da_galerie": "les galeries de verre", "da_serres": "le Dôme des Serres",
+	"da_institut": "l'Institut des Abysses", "da_aquarium": "le Grand Aquarium", "da_bassin": "le Bassin des Bathyscaphes"}
 
 
 func place_name(p: Vector3) -> String:
@@ -436,6 +495,8 @@ func place_name(p: Vector3) -> String:
 		return "Les Strates, " + str(PLACES.get(z, "les rues"))
 	if z.begins_with("fr_"):
 		return "La Fronde, " + str(PLACES.get(z, "la Place Libre"))
+	if z.begins_with("da_"):
+		return "Le Dôme d'Azur, " + str(PLACES.get(z, "les allées"))
 	return "Île de Hautefond, " + str(PLACES.get(z, "l'île"))
 
 
@@ -460,6 +521,12 @@ func respawn_strates() -> Array:
 	if sp.is_empty():
 		return [StratesRoche.W(0.0, 7.0, StratesRoche.F0 + 0.3), Vector3(0, 0, 1)]
 	return [(sp["pos"] as Vector3) + Vector3.UP * 0.3 + Vector3(0, 0, 1.5), Vector3(0, 0, 1)]
+
+
+## V115 : le point de retour au Dôme d'Azur (devant la Fontaine des Bulles).
+func respawn_dome() -> Array:
+	var c: Vector3 = DomeVille.PR(-75.0, 9.0) if dome != null else DomeFosse.W(0.0, -9.0, 0.0)
+	return [c + Vector3.UP * 0.3, (DomeVille.P(0, 0) - c).normalized() if dome != null else Vector3(0, 0, 1)]
 
 
 func respawn_fronde() -> Array:
@@ -562,6 +629,25 @@ func spawn_npcs() -> void:
 				habitants.append(npc3)
 				by_id[str(data3["id"])] = npc3
 			print("ILE_MANGA_V114: %d habitants dans %s" % [habitants.size() - n1, "les Strates" if spec[3] == "Strates" else "la Fronde"])
+	# V115 : les gens du Dôme d'Azur (le costume des Nuées)
+	if dome != null and ResourceLoader.exists(HABITANTS_D) and ResourceLoader.exists(PNJ_N):
+		var HD = load(HABITANTS_D)
+		var PD = load(PNJ_N)
+		var n2: int = habitants.size()
+		for data4 in HD.all_profiles():
+			var home4: String = str(data4.get("maison", ""))
+			var start4: String = home4 if city.points.has(home4) else "da_p_pl_0"
+			var npc4: Node3D = PD.new()
+			main.add_child(npc4)
+			npc4.setup(main, data4, city.points, city.graph, start4)
+			npc4.setup_azur(self, data4)
+			var saved4: Variant = main.pending_pnj_v31.get(str(data4["id"]), {})
+			if saved4 is Dictionary and not (saved4 as Dictionary).is_empty():
+				npc4.load_data(saved4)
+			main.npcs_v31.append(npc4)
+			habitants.append(npc4)
+			by_id[str(data4["id"])] = npc4
+		print("ILE_MANGA_V115: %d habitants au Dôme d'Azur" % (habitants.size() - n2))
 
 
 ## Les habitants prennent la cabine : quand l'un d'eux arrive au pied (ou en haut) de la cage et
@@ -607,6 +693,12 @@ func register_services(journal: Node) -> void:
 		journal.lieux["strates"] = respawn_strates()[0]
 		journal.lieux["fronde"] = respawn_fronde()[0]
 		journal.lieux["st_pavillon"] = strates_ligne.kiosk
+	if dome != null:
+		for k6 in dome.objets:
+			journal.lieux["da_" + str(k6)] = dome.objets[k6]
+		journal.lieux["dome"] = respawn_dome()[0]
+		if dome_ligne != null:
+			journal.lieux["da_cage"] = dome_ligne.cage_pos
 	_register_interactions()
 
 
@@ -717,7 +809,7 @@ func _spawn_crowd_s() -> void:
 	rng.seed = 114000
 	names_s.shuffle()
 	names_f.shuffle()
-	for pack in [[list, names_s, 10 if pc else 6], [list_f, names_f, 6 if pc else 4]]:
+	for pack in [[list, names_s, 12 if pc else 6], [list_f, names_f, 8 if pc else 4]]:
 		var lst: Array = pack[0]
 		var nms: Array = pack[1]
 		var n: int = mini(mini(lst.size(), int(pack[2])), nms.size())
@@ -743,6 +835,57 @@ func _spawn_crowd_s() -> void:
 			var h0: float = [6.0, 7.0, 8.0, 10.0, 12.0, 15.0][i % 6]
 			var h1: float = [19.0, 21.0, 23.0, 20.0, 22.0, 18.0][i % 6]
 			crowd.append([f, h0, h1, sp["pos"]])
+	_crowd_vis(true)
+
+
+## V115 : les passants du Dôme d'Azur (le costume des Nuées, aux couleurs du Dôme : nacre, aigue-marine,
+## bleu nuit, corail doux).
+func _spawn_crowd_d() -> void:
+	_crowd_d_spawned = true
+	if dome == null or not ResourceLoader.exists(PASSANTS_D):
+		return
+	var list: Array = load(PASSANTS_D).PASSANTS
+	var names: Array = dome.crowd_spots.duplicate()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 115000
+	names.shuffle()
+	var clairs: Array = [[0.95, 0.94, 0.92], [0.86, 0.92, 0.94], [0.9, 0.88, 0.84], [0.8, 0.86, 0.9], [0.92, 0.9, 0.94]]
+	var douces: Array = [[0.25, 0.62, 0.66], [0.12, 0.24, 0.38], [0.88, 0.55, 0.5], [0.4, 0.7, 0.78], [0.55, 0.5, 0.72]]
+	var n: int = mini(list.size() if pc else 8, names.size())
+	for i in range(n):
+		var e: Array = list[i]
+		var sname: String = str(names[i])
+		var sp: Dictionary = city.spots.get(sname, {})
+		if sp.is_empty():
+			continue
+		var role: String = str(e[1])
+		var prof: Dictionary = Gens.pick("neo", role, rng)
+		if prof.is_empty():
+			continue
+		prof = prof.duplicate(true)
+		var ne: Dictionary = prof.get("neo", {})
+		ne.erase("implant")
+		ne.erase("circuit")
+		ne.erase("props")
+		ne["c"] = clairs[rng.randi() % clairs.size()]
+		ne["c2"] = douces[rng.randi() % douces.size()]
+		if not role in ["enfant", "garcon", "fille"]:
+			ne["tenue"] = ["combinaison", "techwear", "tailleur", "jardinier", "mecano"][rng.randi() % 5]
+		ne.erase("chapeau")
+		prof["neo"] = ne
+		var az: Dictionary = prof.get("azur", {})
+		if az.has("cheveux") and rng.randf() < 0.8:
+			az["cheveux"] = [[0.2, 0.14, 0.1], [0.5, 0.36, 0.22], [0.82, 0.7, 0.46], [0.1, 0.08, 0.07], [0.86, 0.86, 0.84], [0.62, 0.3, 0.18]][rng.randi() % 6]
+		var lst: Array = PRENOMS_D["f" if Gens.femme(role) else "h"]
+		prof["nom"] = str(lst[rng.randi() % lst.size()])
+		var f: Node = Figurant.spawn(self, main, prof, sp["pos"], sp["face"], str(sp["pose"]))
+		if f == null:
+			continue
+		f.set("lines", e[2])
+		claim_spot(sname, f)
+		var h0: float = [7.0, 8.0, 9.0, 10.0, 12.0, 14.0][i % 6]
+		var h1: float = [19.0, 21.0, 22.0, 18.0, 23.0, 20.0][i % 6]
+		crowd.append([f, h0, h1, sp["pos"]])
 	_crowd_vis(true)
 
 
@@ -798,7 +941,15 @@ func _process(delta: float) -> void:
 			nuees.ligne.set_night(_night)
 		if strates != null:
 			MatsS.night(_night)
+		if dome != null:
+			MatsD.night(_night)
+			dome.night_glass(_night)
+			_dome_env(_night)
 	_under_vis(p)
+	if dome != null and _dome_vis == 1:
+		dome.tick(delta, _night, true)
+	if dome_vie != null:
+		dome_vie.tick(delta, _dome_vis == 1)
 	if strates != null and _under:
 		strates.tick(delta, _night, true)
 		strates_roche.tick(delta)
@@ -834,7 +985,10 @@ func _process(delta: float) -> void:
 				_spawn_crowd_n()
 			if not _crowd_s_spawned and in_strates(p) and bool(main.get("game_started")):
 				_spawn_crowd_s()
+			if not _crowd_d_spawned and in_dome(p) and bool(main.get("game_started")):
+				_spawn_crowd_d()
 			_crowd_vis()
+	_dome_tick(p)
 	if not ile.contains(p.x, p.z):
 		return
 	_nuees_tick(p)
@@ -865,6 +1019,21 @@ func _process(delta: float) -> void:
 		state["capsule"] = int(nuees.ligne.rides)
 	if strates_ligne != null:
 		state["descentes"] = int(strates_ligne.rides)
+	if dome_ligne != null:
+		state["funiculaire"] = int(dome_ligne.rides)
+
+
+## V115 : au Dôme, le soir, la lumière baisse avec la Grande Perle (elle passe au bleu nuit et au violet) :
+## la lumière ambiante que donjon_v35 a posée en entrant (0,5) descend doucement, et bleuit.
+func _dome_env(k: float) -> void:
+	if _dome_vis != 1 or main == null:
+		return
+	for c in main.get_children():
+		if c is WorldEnvironment and (c as WorldEnvironment).environment != null:
+			var env: Environment = (c as WorldEnvironment).environment
+			env.ambient_light_energy = lerpf(0.5, 0.26, k)
+			env.ambient_light_color = Color(0.58, 0.68, 0.78).lerp(Color(0.46, 0.44, 0.72), k)
+			return
 
 
 ## V114 : sous terre, on cache la surface (la ville, le dehors, la végétation, la Cité des Nuées : on ne
@@ -872,17 +1041,33 @@ func _process(delta: float) -> void:
 func _under_vis(p: Vector3) -> void:
 	if strates == null:
 		return
-	var deep: bool = in_strates(p) or (strates_ligne != null and strates_ligne.carrying and p.y < -20.0)
+	var deep: bool = in_strates(p) or in_dome(p) or (strates_ligne != null and strates_ligne.carrying and p.y < -20.0) or (dome_ligne != null and dome_ligne.carrying)
 	var want: bool = _under
 	if not _under and (deep or p.y < -35.0) and p.distance_to(StratesRoche.O) < 420.0:
 		want = true
 	elif _under and (p.y > -20.0 or p.distance_to(StratesRoche.O) > 460.0):
 		want = false
-	if want == _under:
+	# V115 : au Dôme d'Azur, on montre le Dôme (pas les Strates) ; aux Strates, l'inverse
+	var dv: int = 1 if (want and dome != null and in_dome(p)) else 0
+	if want == _under and dv == _dome_vis:
 		return
+	var changed: bool = want != _under
 	_under = want
-	strates.visible = _under
-	strates_roche.visible = _under
+	_dome_vis = dv
+	strates.visible = _under and dv == 0
+	strates_roche.visible = _under and dv == 0
+	if dome != null:
+		dome.visible = dv == 1
+		dome_fosse.visible = dv == 1
+		dome_vie.visible = dv == 1
+		dome_ligne.visible = _under
+	if not changed:
+		# des Strates au Dôme (ou l'inverse) sans passer par la surface : la lumière change aussi
+		var dj: Node = main.get("donjon_v35")
+		if dj != null and _under and dj.has_method("update_inside"):
+			dj.update_inside(true)
+			_dome_env(_night)
+		return
 	for n in [city, dehors, flore, nuees, nuees_ile, nuees_flore, ile]:
 		if n != null:
 			(n as Node3D).visible = not _under
@@ -929,6 +1114,48 @@ func _strates_tick(p: Vector3) -> void:
 				main._show_message_v28("La Grotte aux Cristaux : la roche s'allume en bleu, tout doucement")
 			elif key == "st_pont":
 				main._show_message_v28("Le Pont des Frondeurs : sous vos pieds, le Gouffre (et, très loin, une rivière qui luit)")
+
+
+## V115 : le Dôme d'Azur : la découverte, les lieux visités, la baleine ; et si l'on se retrouve hors
+## des dômes (dans l'eau, hors du verre) ou au fond du puits des bathyscaphes, on vous repêche.
+func _dome_tick(p: Vector3) -> void:
+	if dome == null or not in_dome(p):
+		return
+	var l: Vector3 = DomeFosse.L(p)
+	if dome_ligne != null and (dome_ligne.carrying or dome_ligne.in_cabin(p)):
+		return
+	var bc: Vector3 = dome.objets.get("bassin", Vector3.INF)
+	if bc != Vector3.INF and l.y < -1.6 and Vector2(p.x - bc.x, p.z - bc.z).length() < DomeVille.POOL_R + 0.5:
+		var at: Array = [bc + DomeVille.dirv(300.0) * (DomeVille.POOL_R + 2.4) + Vector3.UP * 0.3, Vector3(0, 0, 1)]
+		main.place_player_v35(at[0], at[1])
+		main._show_message_v28("Plouf ! L'eau du puits est glacée… Une perche vous repêche : « Le Bassin des Bathyscaphes, c'est pour les bathyscaphes ! » Ça réveille.")
+		return
+	if not dome.inside_air(p):
+		var at2: Array = respawn_dome()
+		main.place_player_v35(at2[0], at2[1])
+		main._show_message_v28("Ouh là… Vous voilà de retour sur la Place de la Perle, tout étourdi. Ici, on reste à l'abri du verre !")
+		return
+	if not bool(main.get("game_started")):
+		return
+	var z: String = zone_at(p)
+	var vis: Dictionary = state["visites"]
+	if not bool(state.get("dome", false)) and z != "da_funiculaire":
+		state["dome"] = true
+		main._show_message_v28("Le Dôme d'Azur — la ville au fond de la mer (respirez : l'air vient de la surface)")
+		if main.has_method("jingle"):
+			main.jingle("decouverte")
+	for key in ["da_serres", "da_institut", "da_aquarium", "da_bassin", "da_belvedere", "da_conque", "da_jardin", "da_hublots", "da_ecole"]:
+		if z == key and not bool(vis.get(key, false)):
+			vis[key] = true
+			if key == "da_belvedere":
+				main._show_message_v28("Le Belvédère des Abysses : sous le verre, la Faille plonge dans le noir… Écoutez : parfois, la Grande Chanteuse chante.")
+			elif key == "da_bassin":
+				main._show_message_v28("Le Bassin des Bathyscaphes : un puits ouvert sur la mer, au ras du sol. La pression garde l'eau dehors. Magique ? Non : physique !")
+	if dome_vie != null and int(dome_vie.passes) > _whale_seen_pass and dome_vie.whale.visible:
+		_whale_seen_pass = int(dome_vie.passes)
+		if not bool(state.get("baleine", false)):
+			state["baleine"] = true
+			main._show_message_v28("Là-haut, au-dessus des dômes… une ombre immense passe dans le bleu : la Grande Chanteuse !")
 
 
 ## V113 : la Cité des Nuées : la découverte, les lieux visités, et le filet qui rattrape ceux qui
@@ -1048,10 +1275,15 @@ func _make_fire(at: Vector3, s: float) -> Node3D:
 # =================================================================== s'évanouir, carnet, sauvegarde
 
 func owns_point(p: Vector3) -> bool:
-	return contains(p) or in_strates(p)
+	return contains(p) or in_strates(p) or in_dome(p)
 
 
 func on_faint(_p: Vector3) -> void:
+	if in_dome(_p):
+		var at4: Array = respawn_dome()
+		main.place_player_v35(at4[0], at4[1])
+		main._show_message_v28("Vous vous êtes évanoui… On vous a porté jusqu'à la Fontaine des Bulles, et quelqu'un vous a apporté une limonade bleue de la Conque. Ça pétille !")
+		return
 	if in_strates(_p):
 		var fr: bool = zone_at(_p).begins_with("fr_")
 		var at3: Array = respawn_fronde() if fr else respawn_strates()
@@ -1081,7 +1313,10 @@ func trouvailles() -> Dictionary:
 		"strates": 1 if bool(state.get("strates", false)) else 0, "strates_forge": 1 if bool(vis.get("st_forge", false)) else 0,
 		"strates_mines": 1 if bool(vis.get("st_grotte", false)) else 0, "strates_jardins": 1 if bool(vis.get("st_jardins", false)) else 0,
 		"strates_galeries": 1 if bool(vis.get("st_guilde", false)) or bool(vis.get("st_galeries", false)) else 0,
-		"fronde": 1 if bool(state.get("fronde", false)) else 0, "fronde_scene": 1 if bool(vis.get("fr_scene", false)) else 0}
+		"fronde": 1 if bool(state.get("fronde", false)) else 0, "fronde_scene": 1 if bool(vis.get("fr_scene", false)) else 0,
+		"dome": 1 if bool(state.get("dome", false)) else 0, "dome_funiculaire": 1 if int(state.get("funiculaire", 0)) > 0 else 0,
+		"dome_serres": 1 if bool(vis.get("da_serres", false)) else 0, "dome_institut": 1 if bool(vis.get("da_institut", false)) or bool(vis.get("da_aquarium", false)) else 0,
+		"dome_belvedere": 1 if bool(vis.get("da_belvedere", false)) else 0, "dome_baleine": 1 if bool(state.get("baleine", false)) else 0}
 
 
 func serialize() -> Dictionary:

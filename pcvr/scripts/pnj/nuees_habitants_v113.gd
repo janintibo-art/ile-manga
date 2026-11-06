@@ -18,8 +18,8 @@ extends RefCounted
 ##  - les Résidences des Terrasses : Monsieur Pascal Pression (le retraité ronchon au cœur d'or) ;
 ##  - partout : Ombeline (la peintre des couchers de soleil) et Plumeau (le robot jardinier).
 ## Pas encore de quête aux Nuées : la ligne de la Colonne vers les Strates et la Fronde (sous
-## Hautefond) a rouvert à son tour (V114) ; celle du Dôme d'Azur (au fond de la mer) est encore
-## « fermée pour travaux ».
+## Hautefond) a rouvert à son tour (V114), puis celle du Dôme d'Azur (au fond de la mer, V115 : la cage
+## de laiton de la Gare des Strates, puis le Funiculaire d'Azur).
 ## Même cerveau que les autres habitants (pnj_brain_v31.gd), même vie réglée par l'heure
 ## (pnj_azur_v56.gd), même corps que Néopolis (fiche « neo », pnj_neo_v95.gd), mais en clair et sans
 ## implant : tenue (tailleur | combinaison | techwear | jardinier | service | chef | enfant | sweat |
@@ -205,7 +205,7 @@ static func _all() -> Array:
 					L("Tu as vu Maîtresse Capucine, au pied de la Colonne ? Elle m'a offert une casquette de la Confrérie pour la réouverture. Bleu nuit, galon doré. Je la porte le dimanche. Le reste de la semaine, je la regarde.", {"a_rencontre": "capucine_hf"}),
 					L("La Ligne des Nuées part du Belvédère de Hautefond et monte jusqu'ici, dans une cage de verre blanc. Deux cents mètres de ciel ! Au milieu, on traverse les nuages. Pendant dix secondes, tout est blanc. Les gens retiennent leur souffle. Moi, je chante.", {}),
 					L("Juste à côté de la Gare, il y a le Belvédère de verre : le plancher est transparent, au-dessus du vide. On voit Hautefond, la Colonne, la mer… J'y vais tous les soirs. Barnabé m'a promis de venir. Un jour. Il a dit « un jour » en tremblant un peu.", {"sujet_min": ["ile", 1]}),
-					L("La Colonne descend aussi sous Hautefond, vers les Strates et la Fronde, et tout au fond de la mer, jusqu'au Dôme d'Azur. La ligne des Strates vient de rouvrir ; celle du Dôme est encore fermée pour travaux. Moi, je rêve de faire le trajet en entier : du ciel jusqu'au fond de la mer. Le plus grand ascenseur du monde !", {"sujet_min": ["ile", 2]}),
+					L("La Colonne descend aussi sous Hautefond, vers les Strates et la Fronde, et tout au fond de la mer, jusqu'au Dôme d'Azur. La ligne des Strates a rouvert, et maintenant celle du Dôme aussi ! Je vais enfin pouvoir faire le trajet en entier : du ciel jusqu'au fond de la mer. Le plus grand ascenseur du monde !", {"sujet_min": ["ile", 2]}),
 					L("Le soir, du Belvédère de verre, je regarde la Colonne. Avant, pour moi, elle s'arrêtait à la Place. Maintenant, je sais qu'elle continue sous la terre, jusqu'à une gare où un vieux liftier, Anatole, répond « Comment ? » à tout le monde. Barnabé l'adore.", {"sujet_min": ["ile", 3]}),
 				],
 				"rumeur": [
@@ -251,13 +251,14 @@ static func _all() -> Array:
 				"ile": [
 					L("La Cité des Nuées est ronde, large de deux cents mètres, posée sur une montagne de roche à l'envers. Dessous, quatre Sustentateurs la tiennent en l'air depuis cent vingt ans. Au milieu, l'Esplanade du Ciel et la Plume de Séraphin. Au nord, la Tour du Zénith. Et partout, des jardins.", {}),
 					L("Ici, nous recueillons l'eau de la pluie et des nuages, nous vivons du soleil et du vent, et nous recyclons absolument tout. Nous en sommes fiers. Un peu trop, peut-être. Le Bourgmestre Hector dit que nous recyclons même les compliments.", {"sujet_min": ["ile", 1]}, "rire"),
-					L("Les gens du Dôme d'Azur, tout au fond de la mer, sont nos cousins : deux villes de verre, l'une en l'air, l'autre sous l'eau. Leur ligne est fermée pour travaux, mais nous nous écrivons. Ils m'envoient des coquillages. Je leur envoie des nuages en bocal. Ils arrivent vides. Ils disent merci quand même.", {"sujet_min": ["ile", 2]}),
+					L("Les gens du Dôme d'Azur, tout au fond de la mer, sont nos cousins : deux villes de verre, l'une en l'air, l'autre sous l'eau. Leur ligne vient de rouvrir, et nous nous écrivons toujours. Ils m'envoient des coquillages. Je leur envoie des nuages en bocal. Ils arrivent vides. Ils disent merci quand même.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
 					L("Vous avez rencontré le Bourgmestre Hector, en bas ? Il m'a envoyé un discours de félicitations de quarante pages pour la réouverture. Je l'ai lu en entier. Temps couvert, avec de longues éclaircies.", {"a_rencontre": "hector_hf"}, "rire"),
 					L("Le Bourgmestre de Hautefond voulait couper un ruban de trente mètres pour la réouverture. Maîtresse Capucine a refusé. Ils ont fini par en couper un de trente centimètres, à deux. Je les ai trouvés très touchants. Et très lents.", {}, "rire"),
 					L("La Capitaine Zéphyrine et la Capitaine Héloïse ont encore fait la course autour de la Colonne. Chacune a gagné, bien entendu. Le Conseil reçoit deux réclamations par semaine. Nous les classons ensemble, dans un dossier intitulé « Égalité ».", {}, "rire"),
 					L("Mon grand-père Séverin raconte la montée de l'île à tous les visiteurs, comme s'il y était. Il n'était pas né. Mais à force de l'entendre, je finis par m'en souvenir aussi.", {}),
+					L("Vous avez rencontré la Présidente Ondine, au fond de la mer ? Pour la réouverture de leur ligne, nous avons coupé le ruban à quatre : le Bourgmestre, la Doyenne Agathe, Ondine et moi. Sept centimètres et demi chacun. Elle garde mes nuages en bocal sur une étagère. Ils arrivent tous vides. Elle dit qu'ils contiennent l'intention. Éclaircie générale sur mon moral.", {"a_rencontre": "ondine_da"}),
 				],
 				"interpelle": [L("Bonjour ! Vous êtes nouveau, n'est-ce pas ? Cela se voit : vous regardez en l'air.", {"visites_max": 0}, "salut"), L("{surnom} ! Le ciel est clair aujourd'hui. Venez donc.", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Bon vent, {surnom}. Que vos journées soient ensoleillées, et vos soucis légers comme un cumulus.", {}, "salut"), L("À bientôt. Et si vous croisez Lili, dites-lui de rentrer goûter. Avec ou sans cerf-volant.", {}, "rire"), L("Bonsoir, {surnom}. Nuit claire, vent faible, étoiles nombreuses. Je ne me trompe jamais sur ce bulletin-là.", {"soir": true})],
@@ -293,13 +294,14 @@ static func _all() -> Array:
 				"ile": [
 					L("Le Parc des Brumes, c'est le meilleur endroit pour les cerfs-volants. Il y a du vent, de l'herbe, et l'étang qui déborde par-dessus le bord de l'île : ça fait la Cascade des Nuées. L'eau tombe, tombe, et elle devient de la brume avant d'arriver en bas. Même l'eau ne descend jamais jusqu'en bas !", {}),
 					L("Mon arrière-arrière-grand-père, c'est Séraphin ! Celui qui a fait monter l'île. Grand-Père Séverin dit qu'il l'a fait « pour que les enfants aient toujours du soleil ». Moi, j'aurais préféré qu'il fasse aussi un petit escalier jusqu'à la mer.", {"sujet_min": ["ile", 1]}, "rire"),
-					L("Il paraît qu'il y a une ville tout au fond de la mer, sous un dôme de verre, le Dôme d'Azur ! Avec des baleines qui passent au-dessus des maisons ! Leur ligne est fermée pour travaux. Moi, je descends dès qu'elle rouvre. Je l'ai écrit sur le calendrier de Maman. En gros.", {"sujet_min": ["ile", 2]}),
+					L("Il paraît qu'il y a une ville tout au fond de la mer, sous un dôme de verre, le Dôme d'Azur ! Avec des baleines qui passent au-dessus des maisons ! Leur ligne vient de rouvrir. Moi, j'y descends dès que Maman dit oui. Je l'ai écrit sur le calendrier de Maman. En gros. Sur tous les jours.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
 					L("Tu connais Pimprenelle, en bas ? Elle est montée avec un sac plein de boulons ! Elle m'en a donné un. Moi, je lui ai donné un bout de ficelle de cerf-volant. Elle dit que c'est la meilleure ficelle du monde. Elle a raison.", {"a_rencontre": "pimprenelle_hf"}, "rire"),
 					L("Plumeau, le robot jardinier, dit bonjour aux arbres. Moi aussi, maintenant. Le chêne du Parc ne répond pas, mais Plumeau dit qu'il « traite la demande ». Ça fait trois ans qu'il traite.", {}, "rire"),
 					L("Monsieur Pascal fait semblant d'être grognon, mais je l'ai vu donner des miettes aux moineaux derrière les Résidences. Il m'a dit : « Tu n'as rien vu. » J'ai dit : « D'accord. » Mais j'ai tout vu.", {}, "rire"),
 					L("Théo, le liftier, il saute dans la capsule quand elle part ! Il dit que c'est pour lui dire au revoir. Moi, quand je serai grande, je serai liftière, comme ça je descendrai tous les jours. Et je remonterai, sinon Maman va s'inquiéter.", {}),
+					L("Tu as vu Mila, au Dôme d'Azur ? On est nées le même jour ! Elle n'a jamais vu le ciel, et moi, jamais la mer. On est pareilles, mais à l'envers ! Sa lettre est arrivée toute chiffonnée : elle est passée par quatre facteurs. Dis-lui que je lui garde un cerf-volant. Celui en forme de baleine. Comme ça, elle aura un ciel avec une baleine dedans.", {"a_rencontre": "mila"}),
 				],
 				"interpelle": [L("Hé ! Tu viens d'en bas ? C'est comment ?", {"visites_max": 0}, "salut"), L("{surnom} ! Regarde mon cerf-volant !", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Au revoir ! Si tu vas à la plage, mange une glace pour moi. Une à la fraise. Et décris-la-moi après.", {}, "salut"), L("Salut ! Bon vent ! C'est pour les cerfs-volants, mais ça marche aussi pour les gens.", {}, "rire"), L("Bonne nuit ! Je vais rêver de la mer. Comme d'habitude.", {"soir": true})],
@@ -473,6 +475,7 @@ static func _all() -> Array:
 					L("Plumeau, le robot jardinier, apprend mes blagues par cœur. Il ne les comprend pas, mais il les répète avec une précision parfaite. Il est le seul à rire au bon moment. C'est-à-dire jamais, mais exactement à la bonne seconde.", {}, "rire"),
 					L("La Capitaine Zéphyrine me demande la météo avant chaque course. Je lui donne mes prévisions. Elle fait le contraire. Elle gagne. Je ne sais pas si je dois être vexé ou fier.", {}, "rire"),
 					L("Le Grand-Père Séverin raconte la montée de l'île à tout le monde. J'ai vérifié dans les archives : ce jour-là, il faisait gris. Il a raison sur ce point. Pour le reste, il a beaucoup d'imagination. Et une très belle barbe.", {}),
+					L("Vous avez rencontré le Professeur Benthos, au Dôme d'Azur ? Mon plus vieux correspondant ! Lui étudie le bas, moi le haut. Il baptise ses méduses, je baptise mes nuages. Nous sommes d'accord sur un point : une méduse, c'est un nuage qui a choisi la mer. La ligne a rouvert : je descends lui serrer la main jeudi, à quinze heures douze. À une minute près.", {"a_rencontre": "hippolyte"}, "rire"),
 				],
 				"interpelle": [L("Pardon ! Vous ! Avez-vous vu passer un petit cirrus ? Il s'appelle Octave.", {"visites_max": 0}), L("{surnom} ! Gontran est revenu !", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Au revoir, {surnom}. Je prévois que nous nous reverrons demain à seize heures huit. Ou un autre jour. À une minute près.", {}, "salut"), L("Bon vent ! Et si vous voyez un nuage qui n'a pas de nom, revenez me le décrire.", {}), L("Bonne nuit, {surnom}. Ciel dégagé, étoiles nombreuses, nuages endormis. Même Gontran.", {"soir": true})],
@@ -550,13 +553,14 @@ static func _all() -> Array:
 				"ile": [
 					L("Les Serres d'Altitude, ce sont trois grands dômes de verre, à l'est de la ville. Le premier pour les fruits, le deuxième pour les fleurs, le troisième pour les papillons. Et un bassin au milieu, rempli de l'eau des nuages. Tout pousse ici. Même les mauvaises herbes. Elles sont très fières.", {}),
 					L("Ici, on ne gaspille pas une goutte. L'eau de pluie coule du toit des dômes, on la garde dans le bassin, on arrose, et ce qui reste repart vers la Source du Parc. Le Docteur Aurèle dit que certaines gouttes ont fait le tour de l'île cent fois. Elles connaissent le chemin.", {"sujet_min": ["ile", 1]}),
-					L("Mes fraises descendent maintenant à Hautefond, par la Ligne. Rosalie Cannelle, au Grand Marché, les vend toutes en une matinée. Elle m'a écrit qu'elle voulait aussi les vendre aux Strates, maintenant que leur ligne a rouvert, et au Dôme d'Azur, dès que la sienne rouvrira. Elle a déjà réservé les deux étals.", {"sujet_min": ["ile", 2]}, "rire"),
+					L("Mes fraises descendent maintenant à Hautefond, par la Ligne. Rosalie Cannelle, au Grand Marché, les vend toutes en une matinée. Elle m'a écrit qu'elle voulait aussi les vendre aux Strates et au Dôme d'Azur, maintenant que leurs lignes ont rouvert. Elle a déjà réservé les deux étals.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
 					L("Tu connais Rosalie Cannelle, au Grand Marché d'en bas ? Elle m'écrit trois lettres par semaine, pleines de potins. En échange, je lui envoie mes fraises. Ses lettres sentent la cannelle, mes fraises sentent le soleil. C'est un bon commerce.", {"a_rencontre": "rosalie_hf"}, "rire"),
 					L("Plumeau, le robot jardinier, vient m'aider le matin. Il arrose très bien. Mais il dit bonjour à chaque plante, une par une. J'ai quatre mille plantes. Il finit l'arrosage vers midi. Les plantes ont l'air très contentes.", {}, "rire"),
 					L("Gustave, au Café, prend mes fraises pour son jus de soleil. Il dit que c'est « sa recette secrète ». Le secret, c'est mes fraises. Je ne lui dis rien. Il est si content.", {}, "rire"),
 					L("La petite Lili vient s'asseoir sur le banc des Serres et me demande si j'ai des graines de coquillage. Je lui ai expliqué que les coquillages ne poussaient pas. Elle a planté un caillou à la place. Je l'arrose. On ne sait jamais.", {}),
+					L("Tu as vu Mélisande, au Dôme des Serres ? Nous sommes « les trois jardinières » : moi, qui ai trop de soleil ; Bertille, aux Strates, qui n'en a pas du tout ; et Mélisande, qui allume le sien avec un bouton. Je lui ai envoyé une fraise géante : trois jours pour descendre ! Maintenant que la ligne a rouvert, je l'invite ici. Elle a peur que mon soleil soit trop fort. Je lui garde un chapeau de paille.", {"a_rencontre": "melisande"}, "rire"),
 				],
 				"interpelle": [L("Doucement ! Tu vas réveiller Adèle !", {"visites_max": 0}), L("{surnom} ! Les fraises sont mûres !", {"visites_min": 1}, "salut")],
 				"au_revoir": [L("Bon vent, {surnom} ! Et si tu croises un papillon, dis-lui bonjour de ma part. Il saura.", {}, "salut"), L("Va, petite graine. Et reviens avec un panier vide : je le remplirai.", {}), L("Bonne nuit ! Les papillons dorment. Les fraises, elles, continuent de pousser. Elles ne savent pas s'arrêter.", {"soir": true}, "rire")],
@@ -595,7 +599,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Le Port des Nuées, c'est un grand ponton qui avance dans le ciel, à l'ouest de l'île. On y amarre les dirigeables et les planeurs. Il y a la capitainerie, mon bureau, et un panneau qui dit « Attention au vide ». Personne ne le lit. Tout le monde regarde le vide.", {}),
 					L("Avec la Libellule, je fais le tour de l'archipel. J'ai survolé l'Île de Braise, la Pointe du Phare, et même Néopolis, la nuit, avec ses lumières qui clignotent. Je préfère nos nuages. Mais il faut avouer que c'était joli.", {"sujet_min": ["ile", 1]}),
-					L("Héloïse rêve de faire le tour du monde par les airs. Moi aussi. Nous avons décidé de le faire ensemble, quand le Dôme aura rouvert, lui aussi, et qu'on aura fait le tour de tout ce qu'il y a en dessous. Ce sera une course, évidemment. J'ai déjà gagné.", {"sujet_min": ["ile", 2]}, "rire"),
+					L("Héloïse rêve de faire le tour du monde par les airs. Moi aussi. Nous avons décidé de le faire ensemble, maintenant que le Dôme a rouvert, lui aussi, dès qu'on aura fait le tour de tout ce qu'il y a en dessous. Ce sera une course, évidemment. J'ai déjà gagné.", {"sujet_min": ["ile", 2]}, "rire"),
 				],
 				"rumeur": [
 					L("Icare, le moniteur de planeur, dit qu'il va plus vite que la Libellule. En descente, peut-être. En descente, même un caillou va plus vite que la Libellule. Ce n'est pas un argument.", {}, "rire"),
@@ -678,7 +682,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Ici, le soleil se couche en dessous de nous. Il passe sous l'île, il traverse les nuages, et il les allume par en dessous. Tu le verras ce soir, au Belvédère de verre. Tu marcheras sur le coucher de soleil. C'est le seul endroit du monde où l'on peut.", {}),
 					L("Les gens de Hautefond nous appellent « les Perchés ». Je trouve ça joli. Nous les appelons « le Plancher ». Je trouve ça moins joli. Je leur peins des cartes postales de leur ville vue d'en haut. Ils les achètent pour les envoyer à leurs cousins d'en haut. Ça fait un drôle de voyage.", {"sujet_min": ["ile", 1]}, "rire"),
-					L("On m'a dit qu'au Dôme d'Azur, au fond de la mer, la lumière est bleue toute la journée, et qu'on voit le soleil comme une tache qui danse à la surface. Je veux le peindre. Quand la ligne rouvrira, je descendrai avec du bleu. Beaucoup de bleu.", {"sujet_min": ["ile", 2]}),
+					L("On m'avait dit qu'au Dôme d'Azur, au fond de la mer, la lumière est bleue toute la journée. C'est vrai. La ligne a rouvert, et je suis descendue avec du bleu. Quarante tubes. Je suis remontée en réclamant du violet : là-bas, le soir, leur soleil est une perle qui devient violette.", {"sujet_min": ["ile", 2]}),
 				],
 				"rumeur": [
 					L("Ysaé, la jeune femme aux cheveux bleus du marché d'en bas, m'a décrit les couleurs de la Fronde : des bannières partout, des crêtes roses, des cristaux qui brillent dans le noir. Des couleurs que le ciel n'a pas ! Leur ligne vient de rouvrir. Je descends demain. Je n'ai pas assez de rose.", {"a_rencontre": "ysae"}),
@@ -720,7 +724,7 @@ static func _all() -> Array:
 				"ile": [
 					L("Les Résidences des Terrasses, au sud-ouest : des immeubles blancs en gradins, des balcons fleuris, des jardins partout. Avant, c'était calme. Maintenant, il y a des gens du Plancher qui viennent photographier nos balcons. Je mets ma plus belle chemise. Pour les décourager.", {}, "rire"),
 					L("La Gare des Nuées, depuis la réouverture : une queue jusqu'au Belvédère ! Des gens d'en bas qui regardent tout, qui touchent tout, qui disent « c'est propre, ici ». Évidemment que c'est propre ! On recycle tout ! Même les remarques ! … Ils sont gentils, remarquez. Un peu bruyants. Gentils.", {"sujet_min": ["ile", 1]}),
-					L("Le Dôme d'Azur, au fond de la mer, rouvre bientôt, paraît-il. Encore des gens qui vont monter ici. Du fond de la mer jusqu'au ciel ! Ils vont avoir les oreilles qui sifflent. Je vais leur préparer des chouquettes. Pour les oreilles. Ça aide.", {"sujet_min": ["ile", 2]}, "rire"),
+					L("Le Dôme d'Azur, au fond de la mer, a rouvert, paraît-il. Encore des gens qui vont monter ici. Du fond de la mer jusqu'au ciel ! Ils vont avoir les oreilles qui sifflent. Je leur ai envoyé des chouquettes. Pour les oreilles. Ça aide. Ils n'ont pas compris. Ils les ont mangées.", {"sujet_min": ["ile", 2]}, "rire"),
 					L("La ligne des Strates a rouvert. J'ai écrit quarante réclamations contre la musique de la Fronde. Puis je suis descendu les porter moi-même. Une dame m'a servi une potée. Je suis remonté avec les joues roses. Je n'ai rien déposé. Ne me regardez pas comme ça.", {"sujet_min": ["ile", 3]}),
 				],
 				"rumeur": [

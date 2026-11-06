@@ -708,7 +708,7 @@ func _met_list() -> Array:
 				reg = "Al Dente"
 			if str(n.profile.get("groupe", "")) == "crayon":
 				reg = "Crayonnée"
-			if str(n.profile.get("groupe", "")) in ["hautefond", "nuees", "strates", "fronde"]:
+			if str(n.profile.get("groupe", "")) in ["hautefond", "nuees", "strates", "fronde", "dome"]:
 				reg = "Hautefond"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])

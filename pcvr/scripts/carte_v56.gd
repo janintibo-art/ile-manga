@@ -120,6 +120,7 @@ const PLACES := [
 	["La Cité des Nuées", Vector2(-1060, 1340), "nuees"],
 	["Les Strates (sous la ville)", Vector2(-992, 1440), "strates"],
 	["La Fronde (sous la ville)", Vector2(-828, 1446), "fronde"],
+	["Le Dôme d'Azur (au fond de la mer)", Vector2(-1110, 1700), "dome"],
 	["Port-Boucan", Vector2(-30, 684), "boucan_ville"],
 	["La Baleine Rouillée", Vector2(-180, 622), "boucan"],
 	["Cathédrale des Spores", Vector2(-94, 882), "boucan"],

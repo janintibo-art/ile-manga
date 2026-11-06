@@ -1,0 +1,1622 @@
+{
+ "marius": {
+  "genre": "m",
+  "prenom": "Marius",
+  "histoire": [
+   {
+    "titre": "la première descente",
+    "t": "À six ans, mon grand-père m'a fait asseoir sur le pupitre du Funiculaire. « Ne touche à rien, regarde dehors. » La cabine est sortie de la falaise, et toute la ville s'est allumée sous nous, dans le bleu. J'ai oublié de respirer. Mon grand-père m'a tapé dans le dos : « Respire, petit. Ici, l'air est gratuit, mais il faut le prendre. » Je respire depuis. Et je conduis."
+   },
+   {
+    "titre": "la lettre dans la grille",
+    "t": "Il y a trente ans, en arrivant au bout du tunnel, j'ai trouvé une lettre coincée dans la grille de la Gare des Strates : « Au conducteur du fond. Bonne route. Anatole. » Trois lignes. J'ai répondu douze pages. Il m'a renvoyé trois lignes : « Reçu. Trop long. Continuez. » On ne s'est jamais arrêtés."
+   },
+   {
+    "titre": "les douze ans",
+    "t": "Le jour où on a fermé la ligne pour changer le tube de verre, j'ai cru que ce serait pour un an. Ça a duré douze ans. Chaque matin, je descendais à la gare, j'astiquais la cabine, je tirais le levier pour rien, et je criais « Tout le monde descend ! » dans le vide. Un jour, j'ai compté : trois mille deux cents fois, pour personne. Je n'en regrette pas une seule. Les poissons-lanternes, eux, ne m'ont jamais raté."
+   },
+   {
+    "titre": "Barnabé",
+    "t": "Mon neveu Barnabé m'écrivait depuis Hautefond : « Tonton, j'ai le vertige, mais je veux être liftier. » Je lui répondais : « Moi, j'ai peur du noir, et je conduis au fond de la mer. » C'était faux. Je n'ai jamais eu peur du noir. Mais il fallait bien que quelqu'un ait peur avec lui. Le jour de la réouverture, il est descendu avec moi, les yeux grands ouverts. Il m'a dit : « Dans l'eau, il n'y a pas de vide. Il y a du bleu. »"
+   },
+   {
+    "titre": "quatre lignes",
+    "t": "Je vais te dire mon plus beau souvenir, {surnom}. Le soir de la réouverture, après la Grande Chanteuse, Anatole est remonté sans un mot. Le lendemain, une lettre est descendue. La plus longue de sa vie : quatre lignes. « Je l'ai entendue. Merci. Je reviendrai. Comment ? » Le « Comment ? », c'était pour rire. Je crois. Je l'ai encadrée au-dessus du pupitre."
+   }
+  ],
+  "reve": [
+   "Qu'un jour, Barnabé prenne ma place au pupitre du Funiculaire. Lui qui a peur de monter, il est fait pour descendre. Je m'assiérai sur le banc des passagers, je regarderai dehors, et pour la première fois de ma vie, je ferai « oh » avec les autres quand la cabine sortira de la falaise."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : dans la cabine, tu regardes où, pendant la descente ?",
+   "reponses": [
+    {
+     "label": "En bas, vers la ville qui s'allume.",
+     "valeur": "ville",
+     "t": "Vers la ville ! Comme moi, la première fois. Trois dômes qui luisent dans le bleu… On ne s'en lasse jamais. Je te garde la place devant.",
+     "rappel": "Toujours à regarder la ville s'allumer, {surnom} ?"
+    },
+    {
+     "label": "Dehors, vers les poissons et la mer.",
+     "valeur": "mer",
+     "t": "Vers la mer ! Tu as raison : la ville ne bouge pas, mais la mer change à chaque descente. Une raie, une méduse, un banc de lanternes… Tu ferais un bon conducteur.",
+     "rappel": "Tu as vu passer quelque chose de beau, dehors, aujourd'hui ?"
+    },
+    {
+     "label": "Je ferme les yeux, comme Barnabé.",
+     "valeur": "yeux",
+     "t": "Comme mon neveu ! Ha ! Pas de honte à ça. Mais essaie, une fois, d'ouvrir un œil à mi-chemin. Juste un. Dans l'eau, il n'y a pas de vide : il y a du bleu.",
+     "rappel": "Tu as ouvert un œil, la dernière fois ? Un seul ?"
+    }
+   ]
+  },
+  "liens": {
+   "anatole": {
+    "qui": "mon vieux correspondant,",
+    "nom": "Anatole",
+    "sentiment": 0.95,
+    "avis": "Anatole, c'est mon plus vieil ami, et je ne l'avais jamais vu avant la réouverture. Trente ans de lettres. Les siennes font trois lignes, les miennes douze pages. Il n'entend plus rien, mais il comprend tout. Par écrit, il n'a jamais besoin de dire « Comment ? ».",
+    "anecdotes": [
+     "Pendant les douze ans de travaux, il a huilé sa grille tous les soirs, au cas où. Il m'écrivait : « Grille huilée. Toujours fermée. Toujours prête. » Le jour où elle s'est ouverte, il est descendu avec moi. Il avait mis sa casquette du dimanche. C'était un mardi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Anatole ! Tu descends ?"
+     ],
+     [
+      "b",
+      "Comment ?"
+     ],
+     [
+      "a",
+      "TU DESCENDS ?"
+     ],
+     [
+      "b",
+      "Ah ! Toujours !"
+     ]
+    ]
+   },
+   "barnabe_hf": {
+    "qui": "mon neveu,",
+    "nom": "Barnabé",
+    "sentiment": 0.95,
+    "avis": "Barnabé a le vertige, et il veut être liftier. Il monte en tremblant, il descend en souriant. Je crois savoir où il finira : ici, au fond, au pupitre du Funiculaire. Descendre, c'est son métier. Il ne le sait pas encore.",
+    "anecdotes": [
+     "Pour la réouverture, il est descendu avec moi sans fermer les yeux une seule fois. En bas, il a dit : « Tonton, je n'ai pas eu peur. » Puis il a pensé à la remontée. Il est devenu tout vert. On a laissé passer le Funiculaire suivant. Et celui d'après."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Tonton ! On descend ?"
+     ],
+     [
+      "a",
+      "Les yeux ouverts ?"
+     ],
+     [
+      "b",
+      "Grands ouverts ! … Pour descendre."
+     ],
+     [
+      "a",
+      "Ça me va."
+     ]
+    ]
+   },
+   "yolande": {
+    "qui": "ma mécanicienne,",
+    "nom": "Yolande",
+    "sentiment": 0.85,
+    "avis": "Yolande vérifie les roues du Funiculaire à chaque descente. Je lui demande si elle est sûre. Elle dit oui. Je la remercie. Elle soupire. On fait ça trente fois par jour. Sans elle, ma bulle de verre ne serait qu'une bulle. Avec elle, c'est un funiculaire.",
+    "anecdotes": [
+     "Le matin de la réouverture, elle avait passé la nuit dans le tunnel à vérifier chaque rail. À sept heures, elle est sortie couverte de graisse et elle a dit : « Ça tient. » Je l'ai serrée dans mes bras. Ma veste de chef de gare est restée noire pendant une semaine. Je ne l'ai pas lavée. C'est une médaille."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yolande, les roues ?"
+     ],
+     [
+      "b",
+      "Parfaites."
+     ],
+     [
+      "a",
+      "Tu es sûre ?"
+     ],
+     [
+      "b",
+      "Marius. C'est la trentième fois."
+     ]
+    ]
+   },
+   "mila": {
+    "qui": "ma petite questionneuse,",
+    "nom": "Mila",
+    "sentiment": 0.85,
+    "avis": "Mila vient sur le banc de la Gare après l'école et demande à chaque voyageur : « C'est comment, le ciel ? » Elle note toutes les réponses. Elle en est à trois cahiers. Moi, je la laisse sonner la cloche du dernier départ. C'est son salaire.",
+    "anecdotes": [
+     "Un jour, un vieux monsieur d'en haut lui a répondu : « Le ciel ? C'est comme ton Dôme, mais sans le verre. » Elle a réfléchi longtemps. Puis elle a demandé : « Alors qu'est-ce qui empêche le bleu de tomber ? » Le monsieur a repris le Funiculaire sans répondre. Il avait l'air très ému."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Marius ! Je peux sonner la cloche ?"
+     ],
+     [
+      "a",
+      "Pour le dernier départ, oui."
+     ],
+     [
+      "b",
+      "Ding-ding ! … Il est comment, le ciel, vu de la cabine ?"
+     ],
+     [
+      "a",
+      "Bleu. Mais mouillé."
+     ]
+    ]
+   }
+  }
+ },
+ "ondine_da": {
+  "genre": "f",
+  "prenom": "Présidente Ondine",
+  "histoire": [
+   {
+    "titre": "la nappe",
+    "t": "Ma grand-mère, Amélie Nacre, a dessiné le Grand Dôme sur une nappe de restaurant, à Hautefond, il y a quatre-vingts ans. Tout le restaurant a ri. Elle a payé la nappe, elle est rentrée chez elle, et elle a construit le Dôme. Quand j'étais petite, elle me montrait la tache de soupe sur la Fosse et me disait : « Les grandes idées commencent toujours par une petite tache. »"
+   },
+   {
+    "titre": "la première plongée",
+    "t": "À douze ans, j'ai fait ma première plongée dans le vieux bathyscaphe de l'Institut. À cent quatre-vingts mètres, le pilote a éteint les projecteurs. Le noir complet. Puis, une à une, des lumières se sont allumées autour de nous : des méduses, des poissons, des crevettes. J'ai compris ce jour-là que la mer n'est jamais noire. C'est nous qui ne savons pas encore voir."
+   },
+   {
+    "titre": "la même eau",
+    "t": "Pendant trente ans, à l'Institut, j'ai mesuré les courants de la Fosse. Un jour, j'ai découvert qu'une partie de l'eau douce qui suinte des falaises vient de la pluie de Hautefond, filtrée par la roche des Strates. La même pluie, du ciel jusqu'au fond. J'en ai parlé au Conseil. Le Conseil a été très ému. Le lendemain, il m'a demandé de le présider."
+   },
+   {
+    "titre": "cent quarante-quatre lettres",
+    "t": "Il y a douze ans, j'ai dû signer la fermeture de la ligne, pour changer le tube. Douze ans sans voyageurs. Seule la nacelle de service passait : la spiruline montait, les lettres descendaient. Chaque mois, la Doyenne Agathe, aux Strates, m'écrivait une seule ligne : « Tenez bon. » Cent quarante-quatre fois. Nous avons tenu."
+   },
+   {
+    "titre": "le carnet",
+    "t": "Puis-je vous confier quelque chose, {surnom} ? Chaque soir, j'écris une phrase dans un carnet, pour ceux qui vivront ici dans cent ans. Je ne leur parle ni de lois ni de budgets. Je leur parle d'un enfant qui a ri devant une méduse, de la Chanteuse qui est passée, d'un voyageur qui a dit bonjour aux poissons. Je voudrais qu'ils sachent que nous avons été heureux ici. C'est tout ce que je veux leur laisser."
+   }
+  ],
+  "reve": [
+   "Réunir un jour, autour de la Fontaine des Bulles, les quatre conseils de la Colonne, et la Fronde avec eux : le Bourgmestre Hector, Céleste Altaïr, la Doyenne Agathe, Brasero, et moi. Un Conseil des quatre mondes. Brasero voudra un feu, Hector un discours, Agathe le silence. Nous aurons les trois. Et nous laisserons une chaise libre, pour l'Atlantide, le jour où elle viendra."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : une bonne décision, pour vous, elle doit être rapide ou lente ?",
+   "reponses": [
+    {
+     "label": "Rapide, avant qu'il soit trop tard.",
+     "valeur": "rapide",
+     "t": "Rapide… Il en faut, parfois. Quand une vitre fait « tonk », Yolande ne réunit pas le Conseil. Mais pour le reste, laissez monter la marée. Ce qui monte doucement redescend rarement.",
+     "rappel": "Toujours pressé, {surnom} ? Respirez."
+    },
+    {
+     "label": "Lente, comme la marée.",
+     "valeur": "lente",
+     "t": "Comme la marée. (Elle sourit.) Nos fondateurs auraient aimé vous entendre. Une décision qui monte lentement tient longtemps. Vous feriez un bon membre du Conseil.",
+     "rappel": "Vous avez laissé monter la marée, aujourd'hui, {surnom} ?"
+    },
+    {
+     "label": "Prise avec tout le monde.",
+     "valeur": "ensemble",
+     "t": "Avec tout le monde… C'est la plus difficile, et la plus belle. Cela prend du temps, cela fait du bruit, et à la fin, personne n'a tout à fait gagné. C'est ainsi qu'on bâtit une ville sous la mer. Ou n'importe où.",
+     "rappel": "Toujours pour décider ensemble, {surnom} ?"
+    }
+   ]
+  },
+  "liens": {
+   "hippolyte": {
+    "qui": "mon ancien élève,",
+    "nom": "le Professeur Benthos",
+    "sentiment": 0.85,
+    "avis": "Hippolyte était mon élève, à l'Institut. Puis il est devenu mon maître. Puis il est devenu distrait. Il oublie de manger, il parle à une baleine, et il a un jour fait tomber sa cravate dans l'Aquarium. C'est le plus grand savant que je connaisse. Et le plus doux.",
+    "anecdotes": [
+     "Quand j'ai été élue présidente, il m'a offert un enregistrement de la Grande Chanteuse, avec un mot : « Elle vous félicite. » Je lui ai demandé comment il le savait. Il a dit : « Trois notes graves, une aiguë. » Je l'écoute encore, les soirs de Conseil difficile."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Professeur. Vous avez déjeuné ?"
+     ],
+     [
+      "b",
+      "Hein ? Oui ! … Non. Quel jour sommes-nous ?"
+     ],
+     [
+      "a",
+      "Allez chez Josette."
+     ],
+     [
+      "b",
+      "Après la baleine !"
+     ]
+    ]
+   },
+   "mila": {
+    "qui": "ma petite pétitionnaire,",
+    "nom": "Mila",
+    "sentiment": 0.9,
+    "avis": "Mila m'a apporté une pétition : « Pour que tous les enfants du Dôme voient le ciel. » Écrite au crayon bleu, avec des étoiles dans les marges. Quatorze signatures, plus Lou, plus le Professeur, deux fois. Je l'ai lue debout devant le Conseil. Nous l'avons votée à l'unanimité.",
+    "anecdotes": [
+     "Après le vote, elle est venue me demander : « Et maintenant, c'est quand ? » J'ai failli dire « bientôt ». Je me suis souvenue d'une Première Conseillère, là-haut, qui dit « bientôt » à sa fille depuis des années. J'ai dit : « Le premier jeudi du mois prochain. » Elle a sauté si haut qu'elle a presque touché la Perle."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame la Présidente ! C'est bientôt jeudi ?"
+     ],
+     [
+      "a",
+      "Dans neuf jours, Mila."
+     ],
+     [
+      "b",
+      "Ça fait combien de dodos ?"
+     ],
+     [
+      "a",
+      "Neuf. Comme les jours."
+     ]
+    ]
+   },
+   "celeste_nu": {
+    "qui": "ma cousine du ciel,",
+    "nom": "Céleste Altaïr",
+    "sentiment": 0.8,
+    "avis": "Céleste Altaïr préside une ville en l'air, moi une ville sous l'eau. Deux villes de verre, aux deux bouts de la Colonne. Elle parle en météo, moi en marées. Nous ne nous étions jamais vues avant la réouverture. Nous nous écrivions depuis vingt ans.",
+    "anecdotes": [
+     "Elle m'envoie des nuages en bocal. Ils arrivent toujours vides : un nuage ne supporte pas la pression, paraît-il. Je ne le lui ai jamais dit. J'ai toute une étagère de bocaux vides. Ils contiennent l'intention. C'est ce qu'il y a de plus précieux."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Présidente Ondine ! Mes nuages sont bien arrivés ?"
+     ],
+     [
+      "a",
+      "Parfaitement, Céleste. Intacts."
+     ],
+     [
+      "b",
+      "Vraiment ?"
+     ],
+     [
+      "a",
+      "L'intention, en tout cas. Intacte."
+     ]
+    ]
+   },
+   "agathe_st": {
+    "qui": "ma collègue des Strates,",
+    "nom": "la Doyenne Agathe",
+    "sentiment": 0.85,
+    "avis": "La Doyenne Agathe parle peu. Moi aussi, mais un peu plus. Ses lettres font une ligne, les miennes deux. Nous nous comprenons parfaitement. Pendant les douze ans de travaux, elle m'a écrit chaque mois : « Tenez bon. » Je n'ai jamais eu besoin d'autre chose.",
+    "anecdotes": [
+     "Le jour de la réouverture, nous avons coupé le ruban à quatre, avec le Bourgmestre et Céleste. Agathe m'a tendu les ciseaux et a dit : « À vous. » Puis, plus bas : « Bien tenu. » Deux mots. Après le discours de deux heures du Bourgmestre, c'était de loin le meilleur."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Présidente."
+     ],
+     [
+      "a",
+      "Doyenne."
+     ],
+     [
+      "b",
+      "Bien."
+     ],
+     [
+      "a",
+      "Très bien."
+     ]
+    ]
+   }
+  }
+ },
+ "josette": {
+  "genre": "f",
+  "prenom": "Josette",
+  "histoire": [
+   {
+    "titre": "mille goûts",
+    "t": "Quand j'étais petite, mes parents relevaient les nasses du Bassin. Ils remontaient des poissons bleus, luisants, qui faisaient un peu peur. Moi, je voulais savoir quel goût ils avaient. Un soir, j'en ai fait cuire un, toute seule, avec du citron des Lampes. Ma mère a goûté. Elle a dit : « Il y a mille goûts de la mer, ma fille. Tu viens d'en trouver un. » J'ai passé ma vie à chercher les neuf cent quatre-vingt-dix-neuf autres."
+   },
+   {
+    "titre": "la cannelle qui ne sentait rien",
+    "t": "Ma cousine Rosalie et moi, on s'est vues une seule fois avant la réouverture, à huit ans, à Hautefond. Elle m'a fait goûter toutes ses épices, une par une. J'ai éternué pendant une heure. En partant, elle m'a donné un sachet de cannelle. Au Dôme, il ne sentait plus rien : l'air filtré efface les parfums. J'ai pleuré. Puis j'ai décidé de cuisiner avec des goûts qui ne s'envolent pas."
+   },
+   {
+    "titre": "La Conque",
+    "t": "La Conque était une vieille coquille vide quand je l'ai reprise. Le premier soir, j'ai fait une soupe de salicorne pour six personnes. Il en est venu quarante. J'ai rajouté de l'eau, du sel, et beaucoup de sourires. Personne ne s'en est aperçu. Depuis, je fais toujours la soupe pour un peu plus de monde que prévu. Il en vient toujours un peu plus."
+   },
+   {
+    "titre": "la recette d'Honorine",
+    "t": "Il y a vingt ans, une lettre est descendue par le Funiculaire : « À la cuisinière du fond, de la part de la cantinière des Strates. Recette du chocolat du mineur. Cuillère debout. » Je l'ai fait. La cuillère est tombée. J'ai recommencé dix fois. À la onzième, elle a tenu. J'ai renvoyé ma soupe de salicorne. Depuis, Honorine et moi, on s'échange une recette par mois. On ne s'était jamais vues : une cuisinière ne quitte pas sa marmite."
+   },
+   {
+    "titre": "la marmite allumée",
+    "t": "Tu veux savoir pourquoi La Conque ne ferme jamais, {surnom} ? Pendant les douze ans de ligne fermée, le Dôme s'est senti un peu seul au fond de la mer. Alors j'ai allumé ma marmite tous les soirs, même les jours de rien. Tant qu'une marmite fume quelque part, personne n'est vraiment seul. Les gens venaient pour la soupe. Ils restaient pour la marmite."
+   }
+  ],
+  "reve": [
+   "Faire avec Honorine la soupe des quatre mondes : ses champignons des Strates, mes algues du Dôme, les pommes des Vergers de Hautefond, et les fraises géantes des Nuées pour le dessert. La servir sur la Place de la Perle, à une seule grande table, pendant que Rosalie ouvre un sac de cannelle au milieu. Tout le monde éternuera en même temps. Ce sera la plus belle fête de la Colonne."
+  ],
+  "question": {
+   "texte": "Dis-moi, mon poisson : la mer, pour toi, elle a quel goût ?",
+   "reponses": [
+    {
+     "label": "Salé, comme une larme.",
+     "valeur": "sel",
+     "t": "Comme une larme… C'est vrai. Mais une larme de joie, alors : ici, la mer nous nourrit. Viens, je te fais goûter la version heureuse.",
+     "rappel": "Toujours ce goût de larme heureuse, {surnom} ?"
+    },
+    {
+     "label": "Je ne sais pas, je n'y ai jamais goûté.",
+     "valeur": "jamais",
+     "t": "Jamais ? Alors assieds-toi, tout de suite. Une cuillère de soupe de salicorne, et tu sauras. Ne réfléchis pas. Goûte.",
+     "rappel": "Alors, maintenant, tu sais quel goût a la mer ?"
+    },
+    {
+     "label": "Le goût des vacances.",
+     "valeur": "vacances",
+     "t": "Les vacances ! Ha ! Ici, on vit dedans, alors pour nous, c'est le goût de tous les jours. Mais tu as raison : un goût de tous les jours peut devenir un goût de fête. C'est tout le travail d'une cuisinière.",
+     "rappel": "Ça avait encore le goût des vacances, ma soupe ?"
+    }
+   ]
+  },
+  "liens": {
+   "melisande": {
+    "qui": "ma jardinière,",
+    "nom": "Mélisande",
+    "sentiment": 0.85,
+    "avis": "Mélisande parle à ses salades. Au début, je me moquais. Puis j'ai goûté ses salades. Depuis, je parle à mes soupes. Tout ce qui est bon à La Conque pousse chez elle : la salicorne, les citrons, les fraises, la spiruline. Elle est douce comme une feuille de laitue. Et têtue comme une racine.",
+    "anecdotes": [
+     "La nuit de la grande panne des lampes, elle est venue me réveiller, toute paniquée : ses fraises avaient froid. On a porté mes marmites d'eau chaude jusqu'aux Serres, toute la nuit, pour tiédir l'air. Les fraises ont tenu. Le lendemain, elle m'a apporté la première. La plus rouge."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mélisande ! Ma salicorne ?"
+     ],
+     [
+      "b",
+      "Chut… elle se réveille. Deux paniers ?"
+     ],
+     [
+      "a",
+      "Trois. Il y a des gens d'en haut."
+     ],
+     [
+      "b",
+      "Je vais lui dire de pousser plus vite."
+     ]
+    ]
+   },
+   "hippolyte": {
+    "qui": "mon savant affamé,",
+    "nom": "le Professeur Benthos",
+    "sentiment": 0.8,
+    "avis": "Le Professeur Benthos oublie de manger. Tous les jours. Alors je lui garde un bol et une place, à treize heures. Il arrive en parlant de baleine, il mange en parlant de baleine, et il repart en disant qu'il n'avait pas faim. Il a pris deux bols.",
+    "anecdotes": [
+     "Un jour, il m'a demandé si la soupe était meilleure les jours où la Grande Chanteuse passait. J'ai dit oui, pour rire. Il a fait une étude. Trois mois. Il a conclu que oui. Je n'ai jamais osé lui avouer que je plaisantais. Maintenant, j'y crois aussi."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame Josette ! Je n'ai pas faim, je passe juste…"
+     ],
+     [
+      "a",
+      "Assis. Bol. Cuillère."
+     ],
+     [
+      "b",
+      "… Elle est passée, ce matin, la Chanteuse ?"
+     ],
+     [
+      "a",
+      "Oui. La soupe est excellente."
+     ]
+    ]
+   },
+   "honorine_st": {
+    "qui": "ma correspondante de marmite,",
+    "nom": "Honorine",
+    "sentiment": 0.9,
+    "avis": "Honorine Lanterne tient La Marmite, aux Strates. On s'échange une recette par mois depuis vingt ans. Elle met trop de lait, moi trop de sel. On s'est rencontrées pour la première fois à la réouverture. On ne s'est pas serré la main : on s'est fait goûter nos cuillères.",
+    "anecdotes": [
+     "Pour la réouverture, elle est descendue avec une marmite de bouillon des Strates sur les genoux. Pendant toute la descente, elle a tenu le couvercle. Marius dit que c'est la passagère la plus concentrée de l'histoire de la ligne. Elle n'a pas regardé une seule raie. Mais le bouillon est arrivé chaud."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Josette ! Ta soupe manque de champignons !"
+     ],
+     [
+      "a",
+      "Et ton bouillon manque de mer !"
+     ],
+     [
+      "b",
+      "On les mélange ?"
+     ],
+     [
+      "a",
+      "La soupe des quatre mondes ! Enfin !"
+     ]
+    ]
+   },
+   "rosalie_hf": {
+    "qui": "ma cousine,",
+    "nom": "Rosalie",
+    "sentiment": 0.85,
+    "avis": "Rosalie Cannelle, au Grand Marché de Hautefond, c'est ma cousine. Nos mères étaient sœurs. Elle dit « goûte, goûte » ; moi, « goûte » une seule fois : sous la mer, on économise l'air. Elle sait tous les potins d'en haut. Moi, tous les goûts d'en bas. À nous deux, on sait presque tout.",
+    "anecdotes": [
+     "Pour la réouverture, elle est arrivée avec un sac de cannelle grand comme elle. « Je vais vous réveiller le nez ! » Elle l'a ouvert au milieu de la Place de la Perle. Toute la ville a éternué en même temps. Elle a dit : « Voilà. Maintenant, vous êtes réveillés. » Le Professeur Benthos a noté l'heure."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Josette ! Goûte, goûte !"
+     ],
+     [
+      "a",
+      "Goûte. Une fois, ça suffit."
+     ],
+     [
+      "b",
+      "Tu as perdu un « goûte » en descendant !"
+     ],
+     [
+      "a",
+      "Il est resté dans le tunnel. Avec ta cannelle."
+     ]
+    ]
+   }
+  }
+ },
+ "ernest_da": {
+  "genre": "m",
+  "prenom": "Ernest",
+  "histoire": [
+   {
+    "titre": "Gédéon",
+    "t": "À cinq ans, j'ai trouvé un coquillage au fond du Bassin des Bathyscaphes, coincé dans une grille. Un tout petit, tout rose, en spirale. Je l'ai appelé Gédéon. Je ne sais pas pourquoi. Aujourd'hui, j'en ai trois cent soixante-dix-sept, chacun avec un nom. Gédéon est toujours au premier rang. Il a vu arriver tous les autres."
+   },
+   {
+    "titre": "le Grand Cahier",
+    "t": "Mon père tenait le Comptoir avant moi. Il notait dans un cahier tout ce que les voyageurs racontaient d'en haut. « Il pleut à Hautefond. » « La Grande Liftière a une nouvelle apprentie. » « Une île flotte au-dessus des nuages. » Quand il a pris sa retraite, il m'a laissé le cahier. J'en ai rempli six autres. Je relis encore les siens, le soir. Ses nouvelles sont vieilles. Elles sont toujours vraies."
+   },
+   {
+    "titre": "les lectures du samedi",
+    "t": "Pendant les douze ans de travaux, les nouvelles n'arrivaient plus que par lettre, dans la nacelle de service. Alors chaque samedi, je montais sur un banc de la Place de la Perle et je les lisais à voix haute. Au début, il y avait trois personnes. À la fin, tout le Dôme. Même la Présidente. C'est comme ça que je suis devenu bavard. Avant, j'étais seulement curieux."
+   },
+   {
+    "titre": "Lili et Mila",
+    "t": "Il y a dix ans, une lettre est descendue d'en haut : « Une petite fille est née aux Nuées, le trois du mois. Elle s'appelle Lili. » Je l'ai lue sur la Place. Une maman a levé la main dans la foule : « La mienne aussi est née le trois. Elle s'appelle Mila. » Tout le Dôme a applaudi pour les deux. Une en haut, une en bas. Depuis, je garde un œil sur les deux. L'une par lettre, l'autre par la vitre du Comptoir."
+   },
+   {
+    "titre": "le cahier blanc",
+    "t": "Tu sais garder un secret, {surnom} ? Le Funiculaire, je ne l'ai jamais pris. Je sais tout ce qui se passe là-haut, et je n'y suis jamais allé. Si j'y monte, j'ai peur que ce soit moins beau que dans mes cahiers. Ou plus beau. Et alors, qu'est-ce que je ferais de mes cahiers ? … Un jour, j'irai. Avec un cahier neuf. Tout blanc. Je l'ai déjà acheté."
+   }
+  ],
+  "reve": [
+   "Monter un jour dans le Funiculaire avec mon cahier tout blanc, traverser les quatre mondes, et noter tout moi-même, pour une fois : les Strates, Hautefond, les Nuées. Puis redescendre, monter sur un banc de la Place de la Perle et tout lire à voix haute. Le plus grand journal du fond de la mer. Écrit par le fond de la mer."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : une bonne nouvelle, il faut la garder pour soi ou la raconter à tout le monde ?",
+   "reponses": [
+    {
+     "label": "La raconter à tout le monde !",
+     "valeur": "raconter",
+     "t": "À tout le monde ! Voilà ! Une bonne nouvelle, c'est comme une bulle : si tu la serres dans ta main, elle éclate. Si tu la lâches, elle monte, et tout le monde la voit. Viens, j'ai une place sur mon banc.",
+     "rappel": "Tu as une bonne nouvelle à raconter, aujourd'hui ?"
+    },
+    {
+     "label": "La garder un peu pour soi, d'abord.",
+     "valeur": "garder",
+     "t": "Un peu pour soi… Hm. Mélisande ferait comme toi. Elle garde ses nouvelles comme des graines, au chaud, avant de les planter. Bon. Garde-la. Mais pas trop longtemps, hein ? Je serai là.",
+     "rappel": "Tu l'as gardée assez longtemps, ta nouvelle ? Raconte !"
+    },
+    {
+     "label": "La dire seulement à la bonne personne.",
+     "valeur": "bonne",
+     "t": "À la bonne personne… (Il pose son crayon.) C'est la réponse la plus sage qu'on m'ait faite. Je raconte tout à tout le monde, et parfois, la nouvelle n'arrive pas à celui qui l'attendait. Je vais y réfléchir. Une heure. Peut-être deux.",
+     "rappel": "Tu as trouvé la bonne personne pour ta nouvelle ?"
+    }
+   ]
+  },
+  "liens": {
+   "marius": {
+    "qui": "mon fournisseur de voyageurs,",
+    "nom": "Marius",
+    "sentiment": 0.85,
+    "avis": "Marius m'apporte, à chaque descente, une cabine pleine de gens qui ont vu le monde d'en haut. Je les attends sur le banc de la Gare. Il dit que je fais peur aux touristes. Je ne fais peur à personne. Je pose juste beaucoup de questions, très vite.",
+    "anecdotes": [
+     "Le jour de la réouverture, il m'a laissé m'asseoir dans la cabine, à quai, pendant une minute. Il n'a pas tiré le levier. On est restés assis tous les deux, sans bouger, au fond de la mer. Il a dit : « Le jour où tu voudras, Ernest. » Je n'ai pas encore voulu. Mais je sais que la place m'attend."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Marius ! Des nouvelles, dans cette cabine ?"
+     ],
+     [
+      "b",
+      "Trois touristes, un pain, et une dame qui a vu une raie."
+     ],
+     [
+      "a",
+      "Une raie ! Grande ?"
+     ],
+     [
+      "b",
+      "Grande comme ton cahier, Ernest."
+     ]
+    ]
+   },
+   "melisande": {
+    "qui": "ma confidente,",
+    "nom": "Mélisande",
+    "sentiment": 0.8,
+    "avis": "Mélisande est la seule personne du Dôme qui ne me pose jamais de question. J'achète une mandarine, je m'assois sur son banc, et je lui raconte toutes les nouvelles. Elle écoute. Elle hoche la tête. Pour une fois, c'est moi qui parle et personne qui demande. C'est reposant.",
+    "anecdotes": [
+     "Un jour, je lui ai demandé pourquoi elle ne posait jamais de question. Elle a dit : « Les salades non plus ne posent pas de question. Et elles poussent très bien. » Je n'ai pas compris. Je l'ai noté. Je le relis souvent. Je commence à comprendre."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mélisande, tu sais quoi ?"
+     ],
+     [
+      "b",
+      "… (Elle tend une mandarine.)"
+     ],
+     [
+      "a",
+      "Le Bourgmestre a une nouvelle médaille !"
+     ],
+     [
+      "b",
+      "C'est bien. Assieds-toi."
+     ]
+    ]
+   },
+   "mila": {
+    "qui": "ma petite collègue,",
+    "nom": "Mila",
+    "sentiment": 0.85,
+    "avis": "Mila collectionne les réponses sur le ciel, comme moi les nouvelles d'en haut. Elle a trois cahiers, moi sept. Elle me rattrape. Elle est née le même jour que Lili, la fille des Nuées ; c'est moi qui l'ai annoncé sur la Place. Je l'ai un peu adoptée, ce jour-là. Elle ne le sait pas.",
+    "anecdotes": [
+     "Un soir, elle est venue au Comptoir avec son Cahier du Ciel : « On échange ? Une page de nouvelles contre une page de ciel. » On a échangé : ma page sur la pluie de Hautefond contre sa page sur les nuages. La sienne est mieux écrite que la mienne. Avec des dessins."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ernest ! Tu as une nouvelle du ciel ?"
+     ],
+     [
+      "a",
+      "Il a plu sous les Nuées. Pas dessus : dessous."
+     ],
+     [
+      "b",
+      "Le ciel a un dessous ?"
+     ],
+     [
+      "a",
+      "Je note la question."
+     ]
+    ]
+   },
+   "rosalie_hf": {
+    "qui": "ma rivale en nouvelles,",
+    "nom": "Rosalie",
+    "sentiment": 0.8,
+    "avis": "Rosalie Cannelle, au Grand Marché de Hautefond, sait tout avant tout le monde, en haut. Moi, en bas. On s'échange nos nouvelles par lettre. Elle m'en envoie dix, je lui en envoie une. Mais la mienne vient du fond de la mer : elle en vaut dix. Elle n'est pas d'accord.",
+    "anecdotes": [
+     "Pour me prouver qu'elle avait raison, elle m'a envoyé onze nouvelles d'un coup. J'ai répondu avec une seule : « La Grande Chanteuse a chanté pour la réouverture. » Elle m'a répondu : « Bon. Celle-là vaut onze. » C'est la plus belle victoire de ma carrière."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ernest ! J'en ai douze, aujourd'hui !"
+     ],
+     [
+      "a",
+      "Moi, une seule. Une baleine."
+     ],
+     [
+      "b",
+      "… Bon. Égalité."
+     ],
+     [
+      "a",
+      "Je note : égalité."
+     ]
+    ]
+   }
+  }
+ },
+ "yolande": {
+  "genre": "f",
+  "prenom": "Yolande",
+  "histoire": [
+   {
+    "titre": "les douze écrous",
+    "t": "Mon père était scaphandrier. Quand j'étais petite, je l'aidais à fermer son casque : douze écrous, dans l'ordre, en croix. Je les comptais à voix haute. Il disait : « Si tu en oublies un, je le saurai tout de suite. » Je n'en ai jamais oublié un. Aujourd'hui, je compte encore à voix haute. Les gens croient que je parle toute seule. Je parle à mon père."
+   },
+   {
+    "titre": "la vitre cent quatre",
+    "t": "À quinze ans, j'ai fait le tour de toutes les vitres de la coupole avec un vieux mécanicien. Il m'a appris à les tapoter : « ting », c'est sain ; « tonk », c'est fatigué. À la cent quatre, j'ai vu une petite bulle prise dans le verre. Il m'a dit : « Elle est là depuis le premier jour. Elle tient. Comme nous. » C'est ma vitre préférée."
+   },
+   {
+    "titre": "les roues",
+    "t": "Quand on a refait le Funiculaire, il fallait des roues capables de rouler au fond de la mer sans un grincement. J'ai écrit à la Grande Forge des Strates. Maîtresse Brunehaut m'a répondu : « Envoyez les plans. Et un peu de patience. » Trois mois plus tard, Rivet et Bielle, de la Fronde, les ont descendues sur un wagonnet, par le tunnel des travaux. Sur la caisse, un mot : « Trempées dans le rire. HO HO ! » Elles n'ont jamais grincé."
+   },
+   {
+    "titre": "deux cents",
+    "t": "Le jour où Lou a passé son brevet de pilote, elle avait dix-huit ans et voulait descendre à trois cents mètres. J'ai dit : « Deux cents. » Elle a dit : « Deux cent cinquante. » J'ai dit : « Deux cents. » Elle a dit : « D'accord, mais je regarderai en bas. » Le soir même, j'ai gravé « 200 » sur son tableau de bord. Et en dessous, en tout petit : « Lou, je te vois. »"
+   },
+   {
+    "titre": "personne ne sait",
+    "t": "Je vais te dire ce que c'est, être ingénieure ici, {surnom}. C'est faire en sorte que personne n'ait jamais besoin de penser au verre au-dessus de sa tête. Les gens regardent les poissons, la Perle, la Chanteuse. Ils ne regardent jamais les joints. Tant mieux. Mon travail est réussi le jour où personne ne sait que j'existe. Ça arrive souvent. J'en suis très fière."
+   }
+  ],
+  "reve": [
+   "Dessiner avec Lou un nouveau bathyscaphe, plus grand, plus solide, capable de descendre au fond du fond de la Fosse. Le vérifier mille fois. Puis m'asseoir à côté d'elle pour la première plongée, et la laisser dépasser les deux cents mètres. Une seule fois. Et lui dire, en bas, tout près : « Je te vois. » En vrai."
+  ],
+  "question": {
+   "texte": "Une question, {surnom}. Quand quelque chose marche, tu le laisses tranquille ou tu vérifies quand même ?",
+   "reponses": [
+    {
+     "label": "Je vérifie quand même.",
+     "valeur": "verifie",
+     "t": "Bien. Très bien. Tu ferais une bonne mécanicienne. Ce qui marche aujourd'hui marchera demain parce que quelqu'un a vérifié hier. Viens, je te prête un petit marteau.",
+     "rappel": "Tu as vérifié quelque chose, aujourd'hui, {surnom} ?"
+    },
+    {
+     "label": "Je le laisse tranquille.",
+     "valeur": "tranquille",
+     "t": "Hm. C'est reposant, comme méthode. Lou fait comme toi. C'est pour ça qu'il y a moi. Bon. Continue de laisser tranquille. Je vérifierai pour deux.",
+     "rappel": "Tu laisses toujours tout tranquille ? Je vérifie, alors."
+    },
+    {
+     "label": "Je lui dis merci.",
+     "valeur": "merci",
+     "t": "Merci… (Elle pose sa clé.) Comme moi avec mes vitres. Deux coups, puis un : bonjour, merci. Personne ne m'avait jamais répondu ça. Garde-le. C'est la meilleure méthode.",
+     "rappel": "Tu as dit merci à quelque chose qui marche, aujourd'hui ?"
+    }
+   ]
+  },
+  "liens": {
+   "lou": {
+    "qui": "ma pilote,",
+    "nom": "Lou",
+    "sentiment": 0.9,
+    "avis": "Lou veut toujours descendre plus bas, et moi, je veux toujours qu'elle remonte. On se dispute tous les jours à l'Atelier. Puis on prend le chocolat ensemble à La Conque. Elle est audacieuse, rapide, un peu folle. Je suis prudente, lente, un peu ennuyeuse. Le Petit Plongeon a besoin des deux.",
+    "anecdotes": [
+     "Après chaque plongée, je l'attends sur le quai du Bassin. « Par hasard. » Avec deux chocolats. Un jour, elle est remontée avec dix minutes de retard. Quand elle est enfin sortie, j'avais renversé les deux chocolats. Elle ne m'a jamais demandé pourquoi. On est allées en reprendre deux."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Yolande ! Juste dix mètres de plus ?"
+     ],
+     [
+      "a",
+      "Non."
+     ],
+     [
+      "b",
+      "Cinq ?"
+     ],
+     [
+      "a",
+      "Lou. Je te vois."
+     ]
+    ]
+   },
+   "marius": {
+    "qui": "mon chef de gare,",
+    "nom": "Marius",
+    "sentiment": 0.8,
+    "avis": "Marius veut que je vérifie les roues du Funiculaire à chaque descente. Je les vérifie. Il me demande si j'en suis sûre. Je dis oui. Il me remercie. On fait ça trente fois par jour. Au début, ça m'agaçait. Maintenant, c'est devenu notre bonjour.",
+    "anecdotes": [
+     "Le matin de la réouverture, j'avais passé la nuit dans le tunnel à vérifier chaque rail. À sept heures, je suis sortie couverte de graisse. Marius m'a serrée dans ses bras. Sa veste est restée noire pendant une semaine. Il a refusé de la laver. Il dit que c'est une médaille. Je trouve ça très peu hygiénique. Et très gentil."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Yolande, les roues ?"
+     ],
+     [
+      "a",
+      "Parfaites."
+     ],
+     [
+      "b",
+      "Sûre ?"
+     ],
+     [
+      "a",
+      "Trentième fois, Marius."
+     ]
+    ]
+   },
+   "brunehaut_st": {
+    "qui": "ma forgeronne,",
+    "nom": "Maîtresse Brunehaut",
+    "sentiment": 0.8,
+    "avis": "Maîtresse Brunehaut, de la Grande Forge des Strates, a coulé les roues du Funiculaire. Elle rit en « HO », moi en « hm ». Elle forge fort, je vérifie doucement. On ne se ressemble en rien. On se comprend parfaitement. Le métal, ça rapproche.",
+    "anecdotes": [
+     "Elle m'a appris le code des forgerons : deux coups, puis un, ça veut dire « bonjour, merci ». Quand elle est descendue pour la réouverture, elle a tapé deux coups, puis un, sur une vitre de la Promenade. Toute la coupole a vibré. Elle a ri si fort que j'ai vérifié les joints. Ils tenaient."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "HO HO ! Yolande ! Mes roues tournent ?"
+     ],
+     [
+      "a",
+      "Sans un grincement."
+     ],
+     [
+      "b",
+      "Deux coups, puis un !"
+     ],
+     [
+      "a",
+      "(Deux petits coups, puis un.) Hm."
+     ]
+    ]
+   },
+   "nova_nu": {
+    "qui": "ma collègue du ciel,",
+    "nom": "l'Ingénieure Nova",
+    "sentiment": 0.75,
+    "avis": "Nova Volant garde la Cité des Nuées en l'air ; moi, je garde le Dôme sous l'eau. Elle compte la portance, je compte la pression. Aucune de nous deux ne panique jamais. On s'écrit des chiffres. Ce sont nos lettres d'amitié. Les plus belles que je reçoive.",
+    "anecdotes": [
+     "Pour la réouverture, elle m'a envoyé un sachet de thé des sommets, avec un mot : « Tout est nominal. » Je lui ai renvoyé une bulle de la Fontaine, dans un flacon bien fermé, avec un mot : « Ici aussi. » Elle l'a posée sur son pupitre, à côté de ses quatre voyants. Elle m'a écrit que la bulle tenait."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Yolande. La pression ?"
+     ],
+     [
+      "a",
+      "Nominale. Et ta portance ?"
+     ],
+     [
+      "b",
+      "Nominale."
+     ],
+     [
+      "a",
+      "Bien. Thé ?"
+     ]
+    ]
+   }
+  }
+ },
+ "hippolyte": {
+  "genre": "m",
+  "prenom": "Professeur Hippolyte",
+  "histoire": [
+   {
+    "titre": "la coque du bateau",
+    "t": "Je suis né à Hautefond. À six ans, au Port des Cordages, j'ai collé mon oreille contre la coque d'un bateau. J'ai entendu chanter, très loin, sous l'eau. Une voix immense, lente, grave. J'ai couru le dire à ma mère. Elle a ri : « C'est le bateau qui grince. » Ce n'était pas le bateau. Quarante ans plus tard, je l'écoute tous les soirs. Je le lui ai écrit. Elle m'a répondu : « Tu avais raison. Mange un peu. »"
+   },
+   {
+    "titre": "la valise de carnets",
+    "t": "À vingt ans, j'ai pris le Funiculaire avec une seule valise, pleine de carnets vides. Je suis allé tout droit à la Baie d'Observation. Une jeune océanographe, qui n'était pas encore présidente, m'a dit : « Asseyez-vous et ne dites rien. » Au bout d'une heure, la Grande Chanteuse est passée. Je n'ai rien dit. J'ai pleuré. Aujourd'hui, tous les carnets sont pleins. J'ai dû racheter une valise."
+   },
+   {
+    "titre": "le Dictionnaire",
+    "t": "J'ai commencé le Grand Dictionnaire de la Chanteuse un soir où elle a chanté trois notes graves et une aiguë, juste au moment où la Perle s'allumait. Le lendemain, à la même heure : encore. J'ai écrit : « Bonjour, le Dôme ? » Avec un point d'interrogation. Vingt ans plus tard, il y a mille deux cents phrases. J'ai enlevé ce point d'interrogation-là. Pas les autres."
+   },
+   {
+    "titre": "Aurèle",
+    "t": "Un jour, une lettre est descendue des Nuées : « Cher collègue d'en bas, que se passe-t-il sous vos pieds ? Au-dessus des nôtres, il y a des nuages. Je leur donne des prénoms. Docteur Aurèle Brise. » J'ai répondu : « Ici, il y a des méduses. Je leur en donne aussi. » Depuis, nous nous écrivons chaque semaine. Il est convaincu qu'une méduse est un nuage qui a choisi la mer. Moi aussi. C'est notre seule théorie commune."
+   },
+   {
+    "titre": "la phrase de côté",
+    "t": "Voulez-vous savoir un secret, {surnom} ? Il y a une phrase de la Chanteuse que je n'ai jamais traduite. Une seule note, très grave, qui dure, qui dure, et qui finit tout doucement. Je crois savoir ce qu'elle veut dire. Mais je ne l'écris pas. Si je comprenais tout, je n'aurais plus de raison de l'attendre le soir. Alors je garde cette phrase de côté. C'est mon rendez-vous."
+   }
+  ],
+  "reve": [
+   "Descendre avec Lou dans le Petit Plongeon, un soir où la Grande Chanteuse passe, éteindre les projecteurs, et rester là, dans le noir, tout près d'elle. Pas pour l'étudier. Pas pour noter. Juste pour lui dire bonjour de près, une fois, avec les trois notes graves et l'aiguë. Et entendre, peut-être, qu'elle me répond."
+  ],
+  "question": {
+   "texte": "Une question pour mon Dictionnaire, {surnom} : pourquoi les baleines chantent-elles, d'après vous ?",
+   "reponses": [
+    {
+     "label": "Pour se parler entre elles.",
+     "valeur": "parler",
+     "t": "Pour se parler ! C'est l'hypothèse la plus sérieuse. Elle est en page une de mon Dictionnaire. Mais alors, il faut se demander ce qu'elles se disent. Et cela, cher ami, c'est une vie entière de travail. Une très belle vie.",
+     "rappel": "Toujours d'avis qu'elles se parlent, {surnom} ?"
+    },
+    {
+     "label": "Parce qu'elles sont heureuses.",
+     "valeur": "heureuses",
+     "t": "Heureuses… (Il note.) Je ne peux pas le prouver. Je ne peux pas le réfuter non plus. Et quand je l'entends, le soir, je suis heureux aussi. C'est peut-être contagieux. Hypothèse retenue.",
+     "rappel": "Elle avait l'air heureuse, ce soir, vous ne trouvez pas ?"
+    },
+    {
+     "label": "Pour que quelqu'un, quelque part, les entende.",
+     "valeur": "entendre",
+     "t": "(Il enlève ses lunettes.) Pour que quelqu'un les entende… C'est ce que je me dis depuis quarante ans, sans jamais oser l'écrire. Merci. Je vais l'écrire, maintenant.",
+     "rappel": "Quelqu'un l'a entendue, ce soir. Moi. Et vous ?"
+    }
+   ]
+  },
+  "liens": {
+   "ondine_da": {
+    "qui": "ma présidente,",
+    "nom": "la Présidente Ondine",
+    "sentiment": 0.85,
+    "avis": "La Présidente Ondine m'a appris à écouter la Fosse, quand j'étais jeune et bavard. Elle m'a dit : « Asseyez-vous et ne dites rien. » Je me suis assis. La Chanteuse est passée. Depuis, je suis toujours bavard. Mais je sais me taire quand il faut.",
+    "anecdotes": [
+     "Quand elle a été élue présidente, je lui ai offert un enregistrement de la Chanteuse, avec un mot : « Elle vous félicite. » Elle m'a demandé comment je le savais. J'ai dit : « Trois notes graves, une aiguë. » C'était un peu exagéré. Mais la Chanteuse avait vraiment l'air contente."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Présidente ! Elle est passée !"
+     ],
+     [
+      "b",
+      "Je sais, Hippolyte. Tout le Dôme s'est tu."
+     ],
+     [
+      "a",
+      "Elle a dit bonjour !"
+     ],
+     [
+      "b",
+      "Alors répondez-lui. Et allez déjeuner."
+     ]
+    ]
+   },
+   "lou": {
+    "qui": "ma pilote audacieuse,",
+    "nom": "Lou",
+    "sentiment": 0.85,
+    "avis": "Lou me rapporte des échantillons de la Fosse : de l'eau du fond, des cailloux qui brillent, et parfois une crevette, si la crevette est d'accord. Elle veut toujours descendre plus bas. Pour la science, je suis de son côté. Pour Lou, je suis du côté de Yolande.",
+    "anecdotes": [
+     "Un jour, elle m'a rapporté un enregistrement fait à cent quatre-vingt-dix-neuf mètres. On y entendait la Chanteuse, et derrière elle, très loin, une autre voix. Plus aiguë. Plus jeune. Un petit ? Lou a dit : « Il faut descendre voir. » Yolande a dit non. J'ai écouté l'enregistrement deux cents fois."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Professeur ! J'ai une crevette !"
+     ],
+     [
+      "a",
+      "Elle est d'accord ?"
+     ],
+     [
+      "b",
+      "Elle n'a rien dit."
+     ],
+     [
+      "a",
+      "Alors on la relâche. Avec nos excuses."
+     ]
+    ]
+   },
+   "mila": {
+    "qui": "mon assistante d'écoute,",
+    "nom": "Mila",
+    "sentiment": 0.8,
+    "avis": "Mila vient écouter la Chanteuse avec moi, certains soirs, un verre plaqué contre la vitre. C'est elle qui a trouvé le nom des vers géants de la cheminée : « les sucres d'orge ». J'ai cherché un nom plus savant. Je n'ai pas trouvé mieux. Je l'ai mis dans mes rapports. Avec son nom à côté.",
+    "anecdotes": [
+     "Un soir, elle m'a demandé si la baleine avait déjà vu le ciel. Je lui ai dit qu'elle remontait respirer, alors oui, tous les jours. Mila est restée silencieuse longtemps. Puis elle a dit : « Alors elle pourrait me le raconter. » Depuis, elle chante trois notes graves et une aiguë contre la vitre. Je n'ai pas osé lui dire que c'était « bonjour », et pas « raconte-moi »."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Professeur ! Elle a dit quoi, là ?"
+     ],
+     [
+      "a",
+      "Deux longues… « Il fait bon, là-haut. »"
+     ],
+     [
+      "b",
+      "Il fait bon, là-haut ? C'est vrai ?"
+     ],
+     [
+      "a",
+      "Elle ne ment jamais."
+     ]
+    ]
+   },
+   "aurele": {
+    "qui": "mon collègue du ciel,",
+    "nom": "le Docteur Aurèle",
+    "sentiment": 0.85,
+    "avis": "Le Docteur Aurèle Brise étudie le haut, moi le bas. Il baptise ses nuages, je baptise mes méduses. Il m'envoie la météo du ciel, je lui envoie celle de la Fosse. Nous ne nous étions jamais rencontrés avant la réouverture. Nous nous sommes reconnus tout de suite : à la façon de regarder vers le haut. Ou vers le bas.",
+    "anecdotes": [
+     "Pour la réouverture, il est descendu avec un bocal : un nuage, pour moi. Il est arrivé vide. Aurèle était désolé. J'ai trouvé cela merveilleux : la preuve qu'un nuage ne supporte pas la pression ! Nous avons écrit un article ensemble. Le premier article de l'histoire signé par le haut et par le bas."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mon cher Hippolyte ! Votre méduse Clémence va bien ?"
+     ],
+     [
+      "a",
+      "Très bien. Et votre nuage Gontran ?"
+     ],
+     [
+      "b",
+      "Il est passé hier. Il vous salue."
+     ],
+     [
+      "a",
+      "Clémence aussi. En s'allumant."
+     ]
+    ]
+   }
+  }
+ },
+ "lou": {
+  "genre": "f",
+  "prenom": "Lou",
+  "histoire": [
+   {
+    "titre": "le hublot du sixième",
+    "t": "Je suis née dans les Gradins, au sixième étage, avec un hublot qui donnait sur le Bassin des Bathyscaphes. Petite, je regardais le vieux bathyscaphe partir et revenir. Je comptais les bulles qu'il laissait. Mille, deux mille, trois mille… Ma mère disait : « Elle s'endort en comptant les bulles. » Ce n'est pas vrai. Je ne m'endormais jamais avant qu'il soit remonté."
+   },
+   {
+    "titre": "le Capitaine Gobie",
+    "t": "Le jour de mes seize ans, le vieux pilote, le Capitaine Gobie, m'a fait signe depuis le quai : « Tu comptes mes bulles depuis dix ans. Monte. » À cinquante mètres, il m'a laissé les commandes. J'ai fait un tonneau. Pas exprès. Il a ri si fort que le hublot a fait de la buée. En remontant, il m'a dit : « Tu as tout pour être pilote. Sauf la prudence. Va voir Yolande. »"
+   },
+   {
+    "titre": "le canard jaune",
+    "t": "Le Petit Plongeon, c'est Yolande et moi qui l'avons remis à neuf, quand j'avais dix-sept ans. La ligne était fermée ; au fond de la mer, il n'y avait pas grand-chose d'autre à faire. Je l'ai repeint en jaune, parce que le jaune se voit de loin dans le bleu. Yolande a dit : « Comme ça, je te verrai toujours. » Je croyais qu'elle parlait de la peinture."
+   },
+   {
+    "titre": "les lumières du fond",
+    "t": "Un jour, à cent quatre-vingt-dix-neuf mètres, j'ai éteint les projecteurs pour économiser la batterie. Tout en bas, très loin, dans le noir du fond de la Fosse, une petite lumière s'est allumée. Puis une autre. Puis elles se sont éteintes. Personne ne sait ce que c'est. Le Professeur dit : « Peut-être rien. » Moi, je dis : « Peut-être quelqu'un. » Depuis, je les attends à chaque plongée."
+   },
+   {
+    "titre": "dire bonjour",
+    "t": "Je vais te dire mon vrai secret, {surnom}. Je n'ai pas envie de descendre plus bas pour battre un record. J'en ai envie parce qu'il y a là-dessous des choses que personne n'a jamais vues. Et je voudrais être la première à leur dire bonjour. Pas pour les prendre. Juste pour qu'elles sachent qu'on est là, au-dessus, et qu'on est gentils."
+   }
+  ],
+  "reve": [
+   "Piloter un jour un bathyscaphe tout neuf, dessiné avec Yolande, jusqu'au fond du fond de la Fosse, là où s'allument les petites lumières. Puis, une autre fois, pousser jusqu'à l'Atlantide, si elle existe. Arriver devant sa bulle, allumer les projecteurs, et faire coucou. Avec Yolande à côté de moi, qui dira : « Bon. D'accord. Mais on remonte avant le dîner. »"
+  ],
+  "question": {
+   "texte": "Dis, {surnom} : si tu pouvais descendre là où personne n'est jamais allé, tu irais ?",
+   "reponses": [
+    {
+     "label": "Tout de suite ! Où sont les commandes ?",
+     "valeur": "oui",
+     "t": "Ha ! Mon binôme ! Tu as le cœur d'une pilote. Mais on attend Yolande. Toujours. C'est la règle numéro deux. La numéro un, c'est le goûter.",
+     "rappel": "Toujours prêt à plonger, {surnom} ?"
+    },
+    {
+     "label": "Oui, mais avec quelqu'un de prudent.",
+     "valeur": "prudent",
+     "t": "Avec quelqu'un de prudent… Tu parles comme Yolande. Bon. C'est vrai. Je ne plonge jamais sans qu'elle ait tout vérifié. C'est pour ça que je reviens toujours. Tu as raison. Ne lui dis pas que je l'ai dit.",
+     "rappel": "Tu as trouvé ton binôme prudent, {surnom} ?"
+    },
+    {
+     "label": "Non, certaines choses doivent rester secrètes.",
+     "valeur": "secret",
+     "t": "Rester secrètes… (Elle regarde vers la Fosse.) Le Professeur dit pareil, pour la Chanteuse. Il garde une phrase sans la traduire. Peut-être que vous avez raison, tous les deux. Je descendrai quand même. Mais je ne raconterai pas tout.",
+     "rappel": "Tu crois toujours que certaines choses doivent rester secrètes ?"
+    }
+   ]
+  },
+  "liens": {
+   "yolande": {
+    "qui": "ma mécanicienne,",
+    "nom": "Yolande",
+    "sentiment": 0.95,
+    "avis": "Yolande, c'est ma limite et ma sécurité. Elle a gravé « 200 » sur mon tableau de bord, et « Lou, je te vois » en dessous. Elle fait semblant d'être sévère. Mais quand je remonte, elle est toujours sur le quai, « par hasard », avec deux chocolats. Je n'ai jamais plongé sans savoir qu'elle m'attendait.",
+    "anecdotes": [
+     "Un jour, je suis remontée avec dix minutes de retard : une raie s'était posée sur le hublot, et je n'osais pas la déranger. Sur le quai, Yolande avait renversé les deux chocolats. Elle n'a rien dit. Moi non plus. On est allées en reprendre deux à La Conque. Elle a tenu le sien à deux mains."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Yolande ! Juste dix mètres de plus ?"
+     ],
+     [
+      "b",
+      "Non."
+     ],
+     [
+      "a",
+      "Pour la science !"
+     ],
+     [
+      "b",
+      "La science peut attendre. Moi, je t'attends."
+     ]
+    ]
+   },
+   "hippolyte": {
+    "qui": "mon savant,",
+    "nom": "le Professeur",
+    "sentiment": 0.85,
+    "avis": "Le Professeur Benthos me demande de rapporter « un peu d'eau du fond, et une crevette, si elle est d'accord ». Il écoute la Chanteuse, il parle aux méduses, et il oublie de manger. C'est le seul adulte du Dôme qui ait encore plus envie que moi de savoir ce qu'il y a en bas.",
+    "anecdotes": [
+     "Un jour, je lui ai rapporté un enregistrement fait à cent quatre-vingt-dix-neuf mètres : la Chanteuse, et derrière elle, une petite voix plus aiguë. Il l'a écouté deux cents fois. Il a dit : « Un petit. » Puis il m'a serrée dans ses bras. C'est la seule fois où je l'ai vu oublier sa baleine pour quelqu'un d'autre."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Lou ! De l'eau du fond, s'il vous plaît !"
+     ],
+     [
+      "a",
+      "Et une crevette ?"
+     ],
+     [
+      "b",
+      "Si elle est d'accord."
+     ],
+     [
+      "a",
+      "Je lui demanderai poliment."
+     ]
+    ]
+   },
+   "mila": {
+    "qui": "ma future copilote,",
+    "nom": "Mila",
+    "sentiment": 0.85,
+    "avis": "Mila veut plonger avec moi. Elle a dix ans. Je lui ai dit « quand tu seras grande ». Tous les matins, elle vient me demander si elle est grande. Elle a grandi d'un centimètre depuis le début de l'année. Elle dit que ça devrait compter. Je commence à être d'accord.",
+    "anecdotes": [
+     "Pour son anniversaire, je l'ai laissée s'asseoir dans le Petit Plongeon, à quai, les hublots fermés. Elle a tenu les commandes pendant une heure, sans bouger. Elle a dit : « Ballasts pleins. On plonge. » On n'a pas bougé d'un millimètre. Elle est ressortie en disant que c'était la plus belle plongée de sa vie."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Lou ! Je suis grande, aujourd'hui ?"
+     ],
+     [
+      "a",
+      "Pas encore."
+     ],
+     [
+      "b",
+      "J'ai mangé deux soupes, hier !"
+     ],
+     [
+      "a",
+      "Alors… presque."
+     ]
+    ]
+   },
+   "heloise_hf": {
+    "qui": "ma collègue des airs,",
+    "nom": "la Capitaine Héloïse",
+    "sentiment": 0.75,
+    "avis": "La Capitaine Héloïse pilote un dirigeable rouge, là-haut. Moi, un bathyscaphe jaune, en bas. Elle vole, je plonge. On fait le même métier, à l'envers. Elle voit le Dôme d'en haut, comme une tache bleue sous la mer. Moi, je vois parfois l'ombre de son dirigeable à travers l'eau, quand elle passe bas.",
+    "anecdotes": [
+     "Quand elle est descendue voir le Petit Plongeon, elle m'a dit : « Toi, tu voles à l'envers. » Je l'ai écrit sur la coque, au feutre. Yolande l'a effacé. Je l'ai réécrit. Héloïse m'a envoyé un pot de peinture rouge pour que ça tienne. Yolande a soupiré. Ça tient."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ohé, la pilote du fond ! Toujours à l'envers ?"
+     ],
+     [
+      "a",
+      "Toujours, Capitaine ! Et vous, toujours à l'endroit ?"
+     ],
+     [
+      "b",
+      "Sauf les jours de tempête !"
+     ],
+     [
+      "a",
+      "Pareil pour moi, alors."
+     ]
+    ]
+   }
+  }
+ },
+ "melisande": {
+  "genre": "f",
+  "prenom": "Mélisande",
+  "histoire": [
+   {
+    "titre": "la première graine",
+    "t": "Quand j'avais cinq ans, ma mère m'a donné une graine de laitue et un pot. « Elle poussera si tu lui donnes de la lumière et des mots gentils. » J'ai posé le pot sous ma lampe de chevet et je lui ai parlé tous les soirs. Elle a poussé. Ma mère disait que c'était la lampe. Moi, je savais que c'étaient les mots. Nous avions raison toutes les deux."
+   },
+   {
+    "titre": "le mur des algues",
+    "t": "À douze ans, je me suis endormie au pied du mur des algues. Quand je me suis réveillée, les tubes luisaient tout verts autour de moi, et des milliers de petites bulles montaient dedans. J'ai compris que ces algues respiraient pour nous. Pour moi. Depuis, je dis merci au mur tous les matins. Il ne répond pas. Il fait des bulles. C'est une réponse."
+   },
+   {
+    "titre": "les trois jardinières",
+    "t": "Il y a quinze ans, une lettre est descendue des Nuées, avec une graine de fraisier géant : « De la part d'une jardinière qui a trop de soleil, pour une jardinière qui n'en a pas. Flora. » Un an plus tard, une autre est arrivée des Strates, avec un champignon qui brillait : « De la part d'une jardinière qui n'en a pas du tout. Bertille. » On s'écrit depuis. On s'appelle les trois jardinières. On ne s'était jamais vues."
+   },
+   {
+    "titre": "la nuit sans lampes",
+    "t": "Il y a huit ans, une grande panne a éteint toutes les lampes des Serres pendant une nuit. Les salades ont eu froid. Les fraises ont pâli. Avec Josette, on a porté des marmites d'eau chaude toute la nuit, et j'ai parlé aux plantes, une par une, jusqu'au matin. Quand les lampes sont revenues, il ne manquait pas une feuille. Yolande dit que c'est la chaleur. Josette dit que c'est la voix. Je n'ai pas tranché."
+   },
+   {
+    "titre": "le sachet dans la poche",
+    "t": "Je peux te confier un secret, {surnom} ? Un vrai jardin, sous le vrai ciel, je n'en ai jamais vu. Pas un seul. J'ai toujours jardiné sous des lampes que j'allume avec un bouton. Flora m'invite aux Nuées, Bertille aux Strates. J'ai peur que le vrai soleil soit trop fort. Mais j'ai, dans ma poche, un petit sachet de graines du Dôme. Le jour où j'irai, je les planterai là-haut. Pour qu'un peu de fond de la mer pousse sous le ciel."
+   }
+  ],
+  "reve": [
+   "Réunir un jour les trois jardinières dans un même jardin : Flora, Bertille et moi. Planter ensemble une fraise des Nuées, un champignon des Strates et une salicorne du Dôme, dans un même bac, et voir ce qui pousse. Peut-être rien. Peut-être quelque chose que personne n'a jamais vu. Une plante des trois mondes. Je l'appellerais « Patience »."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : une plante, elle pousse grâce à la lumière, à l'eau, ou aux mots gentils ?",
+   "reponses": [
+    {
+     "label": "À la lumière, bien sûr.",
+     "valeur": "lumiere",
+     "t": "La lumière… C'est vrai. Ici, je l'allume moi-même, rose et violette. Mais tu sais, même la plus belle lampe ne fait rien pousser toute seule. Il faut quelqu'un pour l'allumer. Et pour rester à côté.",
+     "rappel": "Tu as eu ta part de lumière, aujourd'hui ?"
+    },
+    {
+     "label": "À l'eau, surtout.",
+     "valeur": "eau",
+     "t": "L'eau… Ici, il y en a tout autour, mais on n'a droit qu'à celle des tubes. C'est drôle, non ? Vivre dans la mer et compter ses gouttes. Mes salades, elles, ne se plaignent jamais. Elles boivent ce qu'on leur donne.",
+     "rappel": "Tu as bu assez d'eau, aujourd'hui, petite laitue ?"
+    },
+    {
+     "label": "Aux mots gentils.",
+     "valeur": "mots",
+     "t": "(Elle sourit, tout bas.) Je le savais. Ma mère disait ça. Le Professeur dit que c'est le gaz de notre souffle. Il a peut-être raison. Mais alors, autant que notre souffle porte des mots gentils, non ?",
+     "rappel": "Tu as dit un mot gentil à quelque chose qui pousse, aujourd'hui ?"
+    }
+   ]
+  },
+  "liens": {
+   "josette": {
+    "qui": "ma cuisinière,",
+    "nom": "Josette",
+    "sentiment": 0.85,
+    "avis": "Josette vient chercher sa salicorne tous les matins. Elle la goûte avant de la payer. Elle sourit toujours. Je crois qu'elle fait exprès. Elle se moquait de moi parce que je parle à mes salades. Maintenant, elle parle à ses soupes. Je n'ai rien dit. J'ai juste souri.",
+    "anecdotes": [
+     "La nuit de la grande panne des lampes, elle est arrivée avec toutes ses marmites d'eau chaude, en chemise de nuit, et elle a dit : « On tiédit. » On a tiédi les Serres jusqu'au matin. Le lendemain, elle a fait une soupe avec mes salades les plus courageuses. Elle l'a appelée « la soupe des rescapées ». C'est toujours sur sa carte."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mélisande ! Trois paniers de salicorne !"
+     ],
+     [
+      "a",
+      "Chut… elle se réveille. Elle est un peu timide, ce matin."
+     ],
+     [
+      "b",
+      "Je lui parlerai doucement dans la marmite."
+     ],
+     [
+      "a",
+      "Elle aimera ça."
+     ]
+    ]
+   },
+   "ernest_da": {
+    "qui": "mon bavard préféré,",
+    "nom": "Ernest",
+    "sentiment": 0.75,
+    "avis": "Ernest vient acheter une mandarine par jour. Une seule. Il la mange sur mon banc en me racontant toutes les nouvelles d'en haut. J'écoute. Je ne pose jamais de question. Il dit que je suis la seule personne du Dôme qui le repose. Lui, il me fatigue un peu. Mais gentiment.",
+    "anecdotes": [
+     "Un jour, il m'a apporté une nouvelle rien que pour moi : « Flora Verdine, aux Nuées, a donné ton prénom à un fraisier. » Il l'avait apprise d'un touriste. Je n'ai rien dit. J'ai rougi comme une mandarine du côté de la lampe. Il l'a noté. Je l'ai vu."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mélisande, tu sais quoi ?"
+     ],
+     [
+      "a",
+      "… (Elle tend une mandarine.)"
+     ],
+     [
+      "b",
+      "Il pleut à Hautefond !"
+     ],
+     [
+      "a",
+      "Ça va faire plaisir aux salades d'en haut."
+     ]
+    ]
+   },
+   "flora": {
+    "qui": "ma sœur de jardin d'en haut,",
+    "nom": "Flora",
+    "sentiment": 0.9,
+    "avis": "Flora Verdine fait pousser des fraises géantes au soleil éternel des Nuées. Elle a trop de lumière, moi pas assez. On s'écrit depuis quinze ans. Ses graines poussent si vite qu'elles touchent mes lampes. Les miennes poussent si lentement qu'elles l'ennuient. On s'apprend la patience et la vitesse.",
+    "anecdotes": [
+     "Pour la réouverture, elle m'a envoyé une fraise géante, grosse comme le poing. Elle a mis trois jours à descendre. Elle est arrivée un peu fatiguée, mais toujours géante. Je l'ai coupée en douze. Tout le Dôme des Serres en a eu un morceau. J'ai planté les graines. On verra."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mélisande ! Tes graines ont poussé, chez moi !"
+     ],
+     [
+      "a",
+      "Déjà ? Combien de temps ?"
+     ],
+     [
+      "b",
+      "Deux jours !"
+     ],
+     [
+      "a",
+      "Chez moi, deux mois. Elles devaient être pressées de te voir."
+     ]
+    ]
+   },
+   "bertille": {
+    "qui": "ma sœur de jardin d'en dessous,",
+    "nom": "Bertille",
+    "sentiment": 0.85,
+    "avis": "Bertille Champignac fait pousser des champignons qui brillent, dans le noir des Strates. Elle n'a pas de soleil du tout ; moi, un soleil à bouton. On se comprend : on jardine toutes les deux là où les autres pensent que rien ne peut pousser. On a toutes les deux raison de ne pas les écouter.",
+    "anecdotes": [
+     "Elle m'a envoyé un champignon qui brille, dans un bocal, avec un mot : « Pour qu'une petite lumière des Strates veille sur tes Serres. » Il vit au bord de mon bassin. Il brille bleu, la nuit. Les nénuphars le trouvent un peu bavard. Moi, je lui dis bonne nuit avant d'éteindre les lampes."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mélisande ! Mon champignon brille encore ?"
+     ],
+     [
+      "a",
+      "Tous les soirs. Il fait de l'œil à mes nénuphars."
+     ],
+     [
+      "b",
+      "Ha ! Il tient de moi."
+     ],
+     [
+      "a",
+      "Il tient de toi."
+     ]
+    ]
+   }
+  }
+ },
+ "mila": {
+  "genre": "f",
+  "prenom": "Mila",
+  "histoire": [
+   {
+    "titre": "un petit bout de vent",
+    "t": "Quand j'avais quatre ans, mon papa m'a emmenée au pied de la Cheminée d'Air. Il m'a dit de mettre la main sur la grille. J'ai senti de l'air froid qui descendait, tout doucement. Il m'a dit : « Ça, c'est un petit bout de vent. Il vient du ciel. » J'ai gardé la main fermée tout le reste de la journée, pour ne pas le perdre. Le soir, je l'ai ouverte. Il était parti. Papa a dit : « Il est remonté le raconter aux autres. »"
+   },
+   {
+    "titre": "je ne sais pas",
+    "t": "Ma première Leçon de Ciel, j'avais six ans. On s'est allongés dans la cour, les yeux fermés, et Madame Nautile a raconté le ciel : « Bleu, très haut, sans plafond. » J'ai demandé : « Alors, qu'est-ce qui empêche l'air de partir ? » Elle a réfléchi longtemps. Puis elle a dit : « Je ne sais pas. » C'était la première fois qu'une grande personne me disait ça. Je l'ai aimée tout de suite."
+   },
+   {
+    "titre": "le trois du mois",
+    "t": "Ernest dit que je suis née le même jour que Lili Altaïr, la fille de la Cité des Nuées. Le trois du mois. Quand il l'a lu sur la Place, ma maman a levé la main pour dire que moi aussi. Tout le Dôme a applaudi pour nous deux. Je ne m'en souviens pas : j'étais toute petite. Mais depuis que je le sais, je pense à elle tous les jours. Elle n'a jamais vu la mer. Moi, jamais le ciel. On devrait échanger."
+   },
+   {
+    "titre": "le Cahier du Ciel",
+    "t": "Depuis que la ligne a rouvert, je m'assois sur le banc de la Gare après l'école et je demande à chaque voyageur : « C'est comment, le ciel ? » J'ai trois cahiers pleins. La pluie : « de l'eau qui tombe toute seule ». Le vent : « de l'air qui court ». Un monsieur m'a juste dit : « Grand. » J'ai écrit « grand » en très grand, sur une page entière. C'est ma page préférée."
+   },
+   {
+    "titre": "tomber vers le haut",
+    "t": "Il y a une chose que je n'ai dite qu'à Lou, {surnom}. J'ai envie de voir le ciel plus que tout au monde. Mais j'ai un tout petit peu peur. Ici, il y a toujours un plafond au-dessus de nous : le verre, la Perle, la mer. Là-haut, il n'y a rien. Et si on tombait vers le haut ? Madame Nautile dit que non : la terre nous tient. Je la crois. Mais je lui tiendrai la main quand même. Fort."
+   }
+  ],
+  "reve": [
+   "Monter jusqu'à la Cité des Nuées avec toute ma classe et Madame Nautile, rencontrer Lili au bord de son île, et lui donner le coquillage qui chante. Elle me donnera un cerf-volant. On le fera voler ensemble, au-dessus de la mer. Et s'il pleut ce jour-là, ce sera parfait. Je n'ouvrirai pas de parapluie. Je n'en ai pas, de toute façon."
+  ],
+  "question": {
+   "texte": "Dis, {surnom} : le ciel, il est de quelle couleur, pour de vrai ?",
+   "reponses": [
+    {
+     "label": "Bleu, comme le Bassin.",
+     "valeur": "bleu",
+     "t": "Comme le Bassin ! Alors je le connais déjà un peu ! Mais en plus grand, et sans poissons ? … Ou avec des poissons qui volent ? Ça s'appelle des oiseaux, je sais. Je vérifiais.",
+     "rappel": "Il était bleu comme le Bassin, aujourd'hui, le ciel ?"
+    },
+    {
+     "label": "Ça dépend de l'heure et du temps.",
+     "valeur": "depend",
+     "t": "Ça dépend ? Comme la Grande Perle, alors ! Blanc le matin, violet le soir ! Mais le vrai, il le fait tout seul, sans que personne appuie sur un bouton ? … Il est vraiment très fort, le ciel.",
+     "rappel": "Il était de quelle couleur, le ciel, la dernière fois ?"
+    },
+    {
+     "label": "Il faudra que tu viennes voir toi-même.",
+     "valeur": "viens",
+     "t": "(Elle ouvre de grands yeux.) Moi ? Pour de vrai ? … D'accord. Je viendrai. Avec Madame Nautile, et toute la classe. Et tu seras là pour me le montrer. C'est noté dans mon cahier. Ça veut dire que c'est promis.",
+     "rappel": "Tu n'as pas oublié ? Tu me montreras le ciel. C'est noté."
+    }
+   ]
+  },
+  "liens": {
+   "odile": {
+    "qui": "ma maîtresse,",
+    "nom": "Madame Nautile",
+    "sentiment": 0.95,
+    "avis": "Madame Nautile est la seule grande personne qui dit « je ne sais pas » quand elle ne sait pas. Elle nous apprend le ciel avec des cartes postales, tous les jeudis. Elle est douce, mais il faut garder les mains sur les genoux. Sauf pendant la Leçon de Ciel. Là, on a le droit de lever les bras.",
+    "anecdotes": [
+     "Un jeudi, pendant la Leçon de Ciel, j'ai levé les bras et j'ai dit : « Je le touche. » Tout le monde a ri. Sauf Madame Nautile. Elle a dit : « Tu as raison, Mila. Garde-le. » Après la classe, je l'ai vue essuyer ses lunettes. Elle a dit que c'était la spiruline."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Madame ! C'est quoi, un oiseau, exactement ?"
+     ],
+     [
+      "b",
+      "Lève la main, Mila."
+     ],
+     [
+      "a",
+      "(Elle lève la main.) C'est quoi, un oiseau, exactement ?"
+     ],
+     [
+      "b",
+      "Un poisson qui a choisi le ciel."
+     ]
+    ]
+   },
+   "lou": {
+    "qui": "ma pilote,",
+    "nom": "Lou",
+    "sentiment": 0.9,
+    "avis": "Lou pilote le Petit Plongeon, le sous-marin jaune. Elle va plus bas que tout le monde. Elle ne veut pas m'emmener : « Quand tu seras grande. » Je lui demande tous les matins si je suis grande. Elle dit « pas encore ». Mais hier, elle a dit « presque ». C'est un progrès énorme.",
+    "anecdotes": [
+     "Pour mon anniversaire, Lou m'a laissée m'asseoir dans le Petit Plongeon, à quai, avec les hublots fermés. J'ai tenu les commandes une heure. J'ai dit : « Ballasts pleins, on plonge ! » On n'a pas bougé. C'était quand même la plus belle plongée de ma vie. J'ai tout noté dans mon cahier. En inventant un peu."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lou ! Je suis grande, aujourd'hui ?"
+     ],
+     [
+      "b",
+      "Presque."
+     ],
+     [
+      "a",
+      "Presque, c'est demain ?"
+     ],
+     [
+      "b",
+      "Presque, c'est presque."
+     ]
+    ]
+   },
+   "hippolyte": {
+    "qui": "mon professeur de baleine,",
+    "nom": "le Professeur Benthos",
+    "sentiment": 0.85,
+    "avis": "Le Professeur Benthos écoute la Grande Chanteuse tous les soirs. Il dit qu'elle parle, et il a un dictionnaire. Je crois qu'il invente un peu. Mais quand elle chante, il a les yeux qui brillent comme un poisson-lanterne. Alors je l'écoute aussi. Avec un verre contre la vitre.",
+    "anecdotes": [
+     "J'ai donné un nom aux grands vers rouge et blanc, devant la Baie : « les sucres d'orge ». Le Professeur a cherché un nom plus savant pendant une semaine. Puis il a écrit « sucres d'orge » dans son grand rapport. Avec mon nom à côté. Je suis dans un rapport scientifique. À dix ans."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Professeur ! Elle a dit quoi, là ?"
+     ],
+     [
+      "b",
+      "Deux longues : « Il fait bon, là-haut. »"
+     ],
+     [
+      "a",
+      "Elle a de la chance."
+     ],
+     [
+      "b",
+      "Toi aussi, bientôt. Elle te le dit."
+     ]
+    ]
+   },
+   "lili_nu": {
+    "qui": "ma jumelle du ciel,",
+    "nom": "Lili",
+    "sentiment": 0.9,
+    "avis": "Lili Altaïr est née le même jour que moi, tout en haut, dans la Cité des Nuées. Elle n'a jamais vu la mer, et moi, jamais le ciel. On est pareilles, mais à l'envers. Je lui ai écrit une lettre. Elle passe par quatre facteurs pour arriver. Elle arrivera toute chiffonnée. Mais elle arrivera.",
+    "anecdotes": [
+     "Elle m'a répondu ! Une lettre avec un dessin de cerf-volant en forme de baleine, et une question : « Est-ce que la mer fait du bruit, dedans ? » J'ai collé mon cahier contre la vitre de la Promenade et j'ai écrit tout ce que j'entendais. Trois pages. Avec la Chanteuse à la fin. J'ai hâte qu'elle réponde."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Lili ! C'est comment, le ciel ?"
+     ],
+     [
+      "b",
+      "Mila ! C'est comment, la mer ?"
+     ],
+     [
+      "a",
+      "Mouillée !"
+     ],
+     [
+      "b",
+      "Le ciel aussi, quand il pleut !"
+     ]
+    ]
+   }
+  }
+ },
+ "odile": {
+  "genre": "f",
+  "prenom": "Madame Nautile",
+  "histoire": [
+   {
+    "titre": "la carte postale",
+    "t": "Quand j'avais sept ans, un voyageur m'a donné une carte postale de Hautefond : la Place de la Colonne, sous un grand ciel bleu, avec des nuages blancs. Je l'ai regardée tous les soirs pendant des années. Je croyais que les nuages étaient peints. Quand ma mère m'a dit qu'ils étaient vrais, et qu'ils bougeaient, je n'ai pas dormi de la nuit."
+   },
+   {
+    "titre": "le premier ciel",
+    "t": "À dix-huit ans, j'ai pris le Funiculaire pour aller étudier à Hautefond. En sortant du pavillon de la Colonne, j'ai vu le ciel pour la première fois. Je me suis assise par terre, au milieu de la Place, et j'ai pleuré une heure. Une jeune liftière m'a apporté un chocolat. Elle ne m'a rien demandé. Elle s'est assise à côté de moi. Je ne lui ai jamais demandé son nom. Je lui dois mon métier."
+   },
+   {
+    "titre": "le retour",
+    "t": "Après quatre ans d'études en haut, j'aurais pu rester. Il y avait le ciel, le vent, la pluie. Mais je pensais aux enfants du Dôme, qui ne savaient même pas qu'un coucher de soleil pouvait être rouge. Alors je suis redescendue, avec une valise pleine de cartes postales. Je n'ai jamais regretté. Enfin, si. Un peu, les jours de pluie, là-haut. Je les raconte à la classe. Ça console tout le monde."
+   },
+   {
+    "titre": "douze ans de ciel raconté",
+    "t": "Quand la ligne a fermé, j'ai cru que je ne pourrais plus enseigner le ciel. Plus de voyage, plus de voyageurs, plus rien de vrai à montrer. Alors j'ai inventé la Leçon de Ciel : on s'allonge dans la cour, on ferme les yeux, et je raconte. Douze ans de ciel raconté. Mes élèves ne l'avaient jamais vu, et ils le connaissaient par cœur. C'est ce dont je suis la plus fière."
+   },
+   {
+    "titre": "la punaise",
+    "t": "Tu sais ce qu'il y a au fond de ma classe, {surnom} ? Le Mur du Dessus : deux cent quatre-vingt-sept cartes postales, chacune avec une punaise dorée. Quand un élève voit enfin le vrai paysage d'une carte, il a le droit d'enlever la punaise et de garder la carte. Pendant douze ans, personne n'en a enlevé une seule. Cette semaine, trois. J'ai pleuré trois fois. Discrètement. Derrière le tableau."
+   }
+  ],
+  "reve": [
+   "Emmener toute ma classe, les quatorze, en une seule journée, de la mer jusqu'au ciel : le Funiculaire, les Strates, la Colonne de Hautefond, puis la capsule jusqu'à la Cité des Nuées. Les regarder sortir sur le Belvédère de verre, sous le vrai ciel, tous ensemble. Et ce jour-là, ne faire aucune leçon. Les laisser regarder. Pour une fois, c'est le ciel qui fera la classe."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : pour bien apprendre quelque chose, il vaut mieux le voir ou se le faire raconter ?",
+   "reponses": [
+    {
+     "label": "Le voir, il n'y a rien de mieux.",
+     "valeur": "voir",
+     "t": "Le voir… Oui. Rien ne remplace le vrai ciel. C'est pour ça que je veux emmener ma classe là-haut. Mais en attendant, on fait comme on peut. Avec des mots, et des yeux fermés.",
+     "rappel": "Tu as vu quelque chose de nouveau, aujourd'hui ?"
+    },
+    {
+     "label": "Se le faire raconter par quelqu'un qu'on aime.",
+     "valeur": "raconter",
+     "t": "Par quelqu'un qu'on aime… (Elle sourit.) C'est ce que j'essaie de faire tous les jeudis. On croit que les enfants apprennent avec les yeux. Ils apprennent surtout avec le cœur de celui qui raconte.",
+     "rappel": "Quelqu'un t'a raconté une belle chose, aujourd'hui ?"
+    },
+    {
+     "label": "Les deux : d'abord rêver, ensuite voir.",
+     "valeur": "deux",
+     "t": "D'abord rêver, ensuite voir. Je vais l'écrire au tableau. En grand. Mes élèves rêvent le ciel depuis toujours. Bientôt, ils le verront. Et je crois qu'ils le trouveront encore plus beau, parce qu'ils l'auront rêvé.",
+     "rappel": "Tu as rêvé de quelque chose, avant de le voir ?"
+    }
+   ]
+  },
+  "liens": {
+   "mila": {
+    "qui": "ma meilleure élève,",
+    "nom": "Mila",
+    "sentiment": 0.95,
+    "avis": "Mila pose des questions plus vite que je ne réponds. « Pourquoi le ciel est bleu ? Pourquoi la pluie tombe ? Pourquoi les oiseaux ne tombent pas ? » Je réponds à une, elle en pose trois. C'est épuisant. Je ne l'échangerais contre aucune autre élève. Elle me rappelle quelqu'un : moi, à son âge.",
+    "anecdotes": [
+     "Pendant une Leçon de Ciel, elle a levé les bras et elle a dit : « Je le touche. » Toute la classe a ri. Moi, non. Je lui ai dit de le garder. Après la classe, j'ai dû essuyer mes lunettes. J'ai dit que c'était la spiruline. Elle n'y a pas cru. Elle est bien trop maligne."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame ! Pourquoi le ciel ne tombe pas ?"
+     ],
+     [
+      "a",
+      "Lève la main, Mila."
+     ],
+     [
+      "b",
+      "(Elle lève la main.) Pourquoi le ciel ne tombe pas ?"
+     ],
+     [
+      "a",
+      "… Bonne question. Jeudi."
+     ]
+    ]
+   },
+   "ondine_da": {
+    "qui": "ma présidente,",
+    "nom": "la Présidente Ondine",
+    "sentiment": 0.8,
+    "avis": "La Présidente Ondine vient à l'école une fois par an, pour expliquer le Conseil des Marées aux enfants. Elle parle doucement, lentement, et ils l'écoutent comme la Chanteuse. Elle a fait voter la pétition de mes élèves pour voir le ciel. À l'unanimité. Je lui devrai le plus beau jeudi de ma carrière. Il n'a pas encore eu lieu.",
+    "anecdotes": [
+     "Quand la pétition a été votée, elle est venue l'annoncer elle-même, dans la classe : « Le premier jeudi du mois prochain. » Les enfants ont crié si fort que Yolande est venue vérifier les vitres. La Présidente a dit : « La meilleure décision du Conseil depuis quatre-vingts ans. » Puis elle a demandé une chaise."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame Nautile. Vos élèves sont prêts ?"
+     ],
+     [
+      "a",
+      "Depuis toujours, Présidente."
+     ],
+     [
+      "b",
+      "Alors le ciel aussi."
+     ],
+     [
+      "a",
+      "J'espère qu'il sera bleu."
+     ]
+    ]
+   },
+   "josette": {
+    "qui": "ma cuisinière préférée,",
+    "nom": "Josette",
+    "sentiment": 0.75,
+    "avis": "Josette nourrit toute l'école, une fois par semaine, à La Conque. Pour la Leçon de Ciel, elle fait des galettes de salicorne en forme d'étoile. Les enfants les mangent les yeux fermés, pour mieux imaginer. Elle dit que c'est la première fois qu'on mange ses galettes sans les regarder. Elle ne s'en vexe pas.",
+    "anecdotes": [
+     "Elle m'a appris à faire la limonade bleue avec la classe. On a mis de la spiruline partout : sur les cahiers, sur les murs, sur les élèves. Toute la classe a eu la langue bleue pendant deux jours. Les parents ont été très compréhensifs. Enfin, presque tous. Josette a offert une soupe aux autres."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Odile ! Combien de galettes, jeudi ?"
+     ],
+     [
+      "a",
+      "Quatorze. En forme d'étoile."
+     ],
+     [
+      "b",
+      "Et une en forme de baleine ?"
+     ],
+     [
+      "a",
+      "Pour Mila. Évidemment."
+     ]
+    ]
+   },
+   "philippine": {
+    "qui": "ma correspondante des cartes,",
+    "nom": "Mademoiselle Philippine",
+    "sentiment": 0.75,
+    "avis": "Mademoiselle Philippine Feuillet, à la Bibliothèque des Cartes de Hautefond, m'envoie des cartes du ciel pour ma classe : les étoiles, les nuages, les vents. Elle écrit tout petit, très droit, avec des flèches. Mes élèves adorent ses flèches. Ils suivent les vents avec le doigt.",
+    "anecdotes": [
+     "Sur la dernière, elle a dessiné le Dôme d'Azur d'après mes lettres, avec la Grande Chanteuse au-dessus. La baleine est aussi grande que toute la ville. J'ai voulu le lui faire remarquer. Mila m'a arrêtée : « C'est très juste, Madame. Quand elle chante, elle est aussi grande que le Dôme. » Je n'ai rien écrit à Philippine. Elle avait raison."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Madame Nautile, la carte des vents est bien arrivée ?"
+     ],
+     [
+      "a",
+      "Parfaitement. Les enfants suivent les flèches."
+     ],
+     [
+      "b",
+      "Avec le doigt ?"
+     ],
+     [
+      "a",
+      "Avec le doigt. Et avec le cœur."
+     ]
+    ]
+   }
+  }
+ }
+}

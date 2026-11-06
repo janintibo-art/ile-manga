@@ -330,6 +330,26 @@ func _choose_zone(running: bool) -> void:
 			zone = "moai_chant"
 			targets["grotte"] = 0.9
 			targets["feerique"] = 0.3
+		# V115 : le Dôme d'Azur, au fond de la mer (le souffle de la Cheminée d'Air, les bulles, la mer
+		# derrière le verre ; la Conque, les Serres, l'Atelier, la bulle du Funiculaire)
+		elif main.get("hautefond_v112") != null and main.hautefond_v112 != null and main.hautefond_v112.has_method("in_dome") and main.hautefond_v112.in_dome(p):
+			zone = str(main.hautefond_v112.zone_at(p))
+			match zone:
+				"da_conque":
+					targets["marmite"] = 0.6
+					targets["atlantide"] = 0.5
+				"da_serres":
+					targets["serre_especes"] = 0.7
+					targets["atlantide"] = 0.4
+				"da_atelier":
+					targets["atelier"] = 0.7
+					targets["atlantide"] = 0.4
+				"da_funiculaire":
+					targets["sous_marin"] = 0.5
+					targets["atlantide"] = 0.35
+				_:
+					targets["atlantide"] = 1.0
+					targets["ville_azur"] = 0.2
 		# V114 : les Strates et la Fronde, sous Hautefond (la ville, la vapeur, les forges, les cristaux, la
 		# cascade des Jardins, la rivière du Gouffre ; la Fronde et ses concerts)
 		elif main.get("hautefond_v112") != null and main.hautefond_v112 != null and main.hautefond_v112.has_method("in_strates") and main.hautefond_v112.in_strates(p):
