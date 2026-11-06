@@ -2116,6 +2116,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.pasta_v97.place_name(p))
 	if main.get("crayon_v99") != null and main.crayon_v99 != null and main.crayon_v99.ile != null and main.crayon_v99.owns_point(p):
 		return str(main.crayon_v99.place_name(p))
+	if main.get("hautefond_v112") != null and main.hautefond_v112 != null and main.hautefond_v112.city != null and main.hautefond_v112.owns_point(p):
+		return str(main.hautefond_v112.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

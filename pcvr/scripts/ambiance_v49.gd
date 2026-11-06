@@ -478,6 +478,43 @@ func _choose_zone(running: bool) -> void:
 			targets["pluie"] = 0.6
 		_night_beds()
 		return
+	# V112 : l'Île de Hautefond (la ville et sa vapeur, le port, le vent du Belvédère, les falaises)
+	var hfs: Node = main.get("hautefond_v112")
+	var hf_zone: String = hfs.zone_at(p) if hfs != null and hfs.get("city") != null and hfs.city != null and not on_ferry else ""
+	if hf_zone != "" and not on_boat:
+		zone = hf_zone
+		match hf_zone:
+			"hf_port":
+				targets["port_azur"] = 0.7
+				targets["ressac"] = 0.5
+			"hf_taverne":
+				targets["taverne"] = 0.8
+			"hf_forge":
+				targets["atelier"] = 0.8
+				targets["halle"] = 0.4
+			"hf_marche":
+				targets["ville_azur"] = 0.8
+				targets["brise"] = 0.3
+			"hf_belvedere", "hf_cabine":
+				targets["vent_vol"] = 0.5
+				targets["brise"] = 0.6
+			"hf_falaises", "hf_phare":
+				targets["ressac"] = 0.8
+				targets["vent_vol"] = 0.3
+				targets["brise"] = 0.5
+			"hf_plage", "hf_rivage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.5
+			"hf_vergers", "hf_moulin", "hf_campagne":
+				targets["campagne"] = 0.6
+				targets["oiseaux"] = 0.5
+				targets["brise"] = 0.4
+			_:
+				targets["ville_azur"] = 0.5
+				targets["atelier"] = 0.15
+				targets["brise"] = 0.3
+		_night_beds()
+		return
 	# V99 : l'Île Crayonnée (les oiseaux du bois, la cascade, le vent du sommet, la plage)
 	var crs: Node = main.get("crayon_v99")
 	var cr_zone: String = crs.zone_at(p) if crs != null and crs.get("ile") != null and crs.ile != null and not on_ferry else ""

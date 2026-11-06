@@ -38,7 +38,7 @@ const LIGNES := [
 	{"nom": "La Libellule", "coque": "turquoise", "toile": "turquoise", "escales": ["Ponton_village", "Ponton_elfes", "Ponton_village", "Ponton_nains"]},
 	{"nom": "Le Goéland", "coque": "rouge", "toile": "rouge", "escales": ["Ponton_azur", "Ponton_carene", "Ponton_montjoie"]},
 	{"nom": "La Sterne", "coque": "vert", "toile": "vert", "escales": ["Ponton_arcanelle", "Ponton_larsen", "Ponton_astralys"]},
-	{"nom": "Le Pélican", "coque": "orange", "toile": "jaune", "escales": ["Ponton_boucan", "Ponton_braise"]},
+	{"nom": "Le Pélican", "coque": "orange", "toile": "jaune", "escales": ["Ponton_boucan", "Ponton_braise", "Ponton_hautefond"]},
 	{"nom": "La Mouette", "coque": "bleu", "toile": "bleu", "escales": ["Ponton_tazira", "Ponton_ramure", "Ponton_cliquetis"]},
 ]
 const VOILIERS := [
@@ -49,7 +49,7 @@ const VOILIERS := [
 const STYLE_QUAI := {"Ponton_village": ["azur"], "Ponton_elfes": ["elfe"], "Ponton_nains": ["nain"], "Ponton_azur": ["azur"],
 	"Ponton_carene": ["carene"], "Ponton_montjoie": ["montjoie"], "Ponton_arcanelle": ["arcanelle"], "Ponton_larsen": ["yourte_fleurs", "yourte_rainville"],
 	"Ponton_astralys": ["astralys"], "Ponton_boucan": ["boucan"], "Ponton_braise": ["braise"],
-	"Ponton_tazira": ["tazira"], "Ponton_ramure": ["ramure"], "Ponton_cliquetis": ["cliquetis"]}
+	"Ponton_tazira": ["tazira"], "Ponton_ramure": ["ramure"], "Ponton_cliquetis": ["cliquetis"], "Ponton_hautefond": ["montjoie"]}
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme"]
 
 const PHRASES_QUAI := ["Il arrive quand, ce bateau ?", "Je vais voir ma sœur sur l'autre île.", "Le capitaine est toujours à l'heure. Enfin, presque.",

@@ -1,0 +1,2169 @@
+{
+ "capucine_hf": {
+  "genre": "f",
+  "prenom": "Maîtresse Capucine",
+  "histoire": [
+   {
+    "titre": "le panier à salade",
+    "t": "Dans ma famille, on se raconte l'histoire du panier à salade avant de dormir. Dame Ysolde tirait la corde, mon aïeule tenait la poulie, et le panier montait, avec un chat dedans. Le chat était le premier passager de la Colonne. Il n'a jamais voulu redescendre."
+   },
+   {
+    "titre": "ma première montée",
+    "t": "À six ans, ma mère m'a fait monter dans la cabine. J'avais si peur que je tenais la rampe avec les deux mains et les dents. Elle m'a dit : « Regarde les gens, pas le vide. » J'ai regardé les gens. Ils souriaient. Je n'ai plus jamais eu peur. Enfin, presque."
+   },
+   {
+    "titre": "les lunettes de cuivre",
+    "t": "Mes lunettes de cuivre étaient celles de ma grand-mère. Elle les portait sur le front, comme moi, pour que la Colonne sache qu'elle était prête. Le jour où elle me les a données, la Colonne a fait « ding » toute seule. Personne n'avait appuyé sur le bouton."
+   },
+   {
+    "titre": "la grande panne",
+    "t": "Il y a vingt ans, la Colonne s'est arrêtée entre deux étages, avec le Bourgmestre dedans. Pendant trois heures. Il a fait un discours aux poulies. Quand nous l'avons sorti, il a dit que c'était « une expérience enrichissante ». La Colonne, elle, n'a plus jamais calé avec lui. Je crois qu'elle a eu peur du deuxième discours."
+   },
+   {
+    "titre": "Barnabé",
+    "t": "Je vais vous dire pourquoi j'ai choisi Barnabé, {surnom}. Ce n'est pas pour les poulies. C'est parce qu'il avait peur, et qu'il est quand même venu. Les liftiers qui n'ont jamais peur ne savent pas rassurer les passagers. Lui, il saura. Un jour."
+   }
+  ],
+  "reve": [
+   "Faire la première montée vers la Cité des Nuées quand la ligne rouvrira, avec Barnabé aux commandes, et ne pas dire un seul mot de tout le trajet. Juste regarder la Colonne faire ce qu'elle sait faire."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : dans la cabine, vous regardez par la vitre ou vous regardez les gens ?",
+   "reponses": [
+    {
+     "label": "Par la vitre !",
+     "valeur": "vitre",
+     "t": "Par la vitre ! Courageux. La vue est magnifique. Mais pensez à regarder les gens, parfois : ils font des têtes formidables.",
+     "rappel": "Toujours le nez à la vitre, {surnom} ?"
+    },
+    {
+     "label": "Je regarde les gens.",
+     "valeur": "gens",
+     "t": "Ah. Vous avez compris le secret de ma mère. Vous feriez une excellente liftière. Enfin, un excellent passager. C'est déjà beaucoup.",
+     "rappel": "Toujours à regarder les gens, {surnom} ? C'est bien."
+    },
+    {
+     "label": "Je ferme les yeux, comme Barnabé.",
+     "valeur": "yeux",
+     "t": "Comme Barnabé ! (Elle soupire.) Bon. Au moins, vous tenez la rampe. Vous tenez la rampe, n'est-ce pas ?",
+     "rappel": "Toujours les yeux fermés ? Tenez bien la rampe."
+    }
+   ]
+  },
+  "liens": {
+   "barnabe_hf": {
+    "qui": "mon apprenti,",
+    "nom": "Barnabé",
+    "sentiment": 0.85,
+    "avis": "Barnabé a le vertige, il est toujours en retard, et il a donné un prénom à chaque poulie. C'est le meilleur apprenti que j'aie jamais eu. C'est aussi le seul. Mais il serait le meilleur quand même.",
+    "anecdotes": [
+     "Le premier jour, Barnabé s'est évanoui au troisième étage. En se réveillant, il a dit : « On est arrivés ? » On était redescendus. Il était très fier quand même."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! La cabine !"
+     ],
+     [
+      "b",
+      "J'arrive, Maîtresse ! Je… je finis de respirer !"
+     ],
+     [
+      "a",
+      "Respirez dans la cabine. Elle a de l'air aussi."
+     ]
+    ]
+   },
+   "pimprenelle_hf": {
+    "qui": "ma future remplaçante,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.8,
+    "avis": "Pimprenelle connaît le règlement mieux que mes liftiers. Elle a neuf ans. J'ai un peu peur. Mais une bonne peur. Celle qu'on a devant l'avenir.",
+    "anecdotes": [
+     "Pimprenelle m'a apporté un boulon « pour la Colonne ». Je l'ai vissé sur la porte du guichet. Elle vient le vérifier tous les matins."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Maîtresse Capucine, mon boulon tient toujours ?"
+     ],
+     [
+      "a",
+      "Parfaitement, mademoiselle."
+     ],
+     [
+      "b",
+      "Alors je peux être liftière ?"
+     ],
+     [
+      "a",
+      "Dans dix ans. Ou neuf."
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "le Bourgmestre,",
+    "nom": "Hector Bellevue",
+    "sentiment": 0.5,
+    "avis": "Le Bourgmestre veut des rubans, des discours et des inaugurations. La Colonne veut de l'huile, du silence et de la ponctualité. Je suis entre les deux. C'est épuisant. Mais il aime vraiment cette ville. Ça se voit à ses moustaches.",
+    "anecdotes": [
+     "Pour l'anniversaire de la Colonne, il a voulu accrocher des guirlandes sur les câbles. J'ai dit non. Il a fait un discours sur le mot « non ». Il était très bien, d'ailleurs."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Maîtresse Capucine ! Un petit ruban, pour la réouverture ?"
+     ],
+     [
+      "a",
+      "Non."
+     ],
+     [
+      "b",
+      "Un tout petit ?"
+     ],
+     [
+      "a",
+      "Elle n'aime pas les rubans, Monsieur le Bourgmestre."
+     ]
+    ]
+   },
+   "gaspard_hf": {
+    "qui": "mon horloger,",
+    "nom": "Gaspard Ressort",
+    "sentiment": 0.75,
+    "avis": "Gaspard règle l'horloge des départs. Chaque lundi, à sept heures pile, nous la vérifions ensemble. Nous ne disons rien. Nous hochons la tête. C'est la conversation la plus agréable de ma semaine.",
+    "anecdotes": [
+     "Une fois, l'horloge a pris une seconde de retard. Gaspard et moi l'avons remarqué en même temps, à cent mètres l'un de l'autre. Nous avons couru. Nous sommes arrivés ensemble. À l'heure."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sept heures, Monsieur Ressort."
+     ],
+     [
+      "b",
+      "Sept heures, Maîtresse Rouage."
+     ],
+     [
+      "a",
+      "…"
+     ],
+     [
+      "b",
+      "Parfait."
+     ]
+    ]
+   }
+  }
+ },
+ "barnabe_hf": {
+  "genre": "m",
+  "prenom": "Barnabé",
+  "histoire": [
+   {
+    "titre": "le tabouret",
+    "t": "J'ai découvert que j'avais le vertige à six ans. Sur un tabouret. Pour attraper un pot de confiture. Je suis resté là-haut une heure, sans bouger. Ma mère a fini par me donner la confiture sur le tabouret. C'était bon, mais c'était haut."
+   },
+   {
+    "titre": "les quarante-deux poulies",
+    "t": "Pour l'examen d'apprenti, il fallait connaître le nom de toutes les poulies de la Colonne. Les vrais noms, c'est des numéros. Moi, je leur avais donné des prénoms : Gertrude, Paulin, Josette… Maîtresse Capucine m'a demandé la poulie seize. J'ai dit « Raymond ». Elle a souri. J'étais pris."
+   },
+   {
+    "titre": "le premier « oooh »",
+    "t": "Ma première montée au Belvédère, j'avais les yeux fermés. Quand les portes se sont ouvertes, les passagers ont tous fait « oooh ». J'ai ouvert un œil. J'ai vu toute l'île, toute dorée. J'ai fait « oooh » aussi. Puis je me suis assis par terre. Mais j'avais vu."
+   },
+   {
+    "titre": "la montre",
+    "t": "Gaspard l'horloger m'a offert une montre qui sonne avant chaque départ. Elle sonne tout le temps. Une fois, elle a sonné pendant que je dormais, et j'ai couru jusqu'à la Colonne en pyjama. Il était trois heures du matin. Maîtresse Capucine était là, quand même. Elle n'a rien dit. Elle m'a prêté sa veste."
+   },
+   {
+    "titre": "le secret",
+    "t": "Je vais te dire un secret, {surnom}. Je n'ai pas peur de tomber. J'ai peur de décevoir. Maîtresse Capucine compte sur moi pour la ligne des Nuées. Alors chaque soir, je monte au Belvédère et je reste une minute de plus près de la rambarde. Une minute par jour. Dans un an, ça fera six heures."
+   }
+  ],
+  "reve": [
+   "Faire la première montée vers la Cité des Nuées les yeux ouverts, du début à la fin, et dire « Ça monte ! » sans que ma voix tremble. Même un tout petit peu."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom}… tu as peur de quelque chose, toi ?",
+   "reponses": [
+    {
+     "label": "Oui, du vide aussi.",
+     "valeur": "vide",
+     "t": "C'est vrai ? Oh, merci ! Enfin, pas merci que tu aies peur. Merci de le dire. On pourra fermer les yeux ensemble. Chacun son tour.",
+     "rappel": "Alors, ce vide ? On l'affronte ensemble aujourd'hui ?"
+    },
+    {
+     "label": "Non, de rien du tout.",
+     "valeur": "rien",
+     "t": "De rien ?! Tu veux être liftier ? Non, attends, ne réponds pas, sinon Maîtresse Capucine va te prendre à ma place.",
+     "rappel": "Toujours peur de rien ? Ne le dis pas trop fort près du guichet."
+    },
+    {
+     "label": "Des araignées.",
+     "valeur": "araignees",
+     "t": "Des araignées ! Ah, ça, il y en a une dans la cabine, au plafond. Elle s'appelle Lucienne. Elle a très peur de toi aussi, je te rassure.",
+     "rappel": "Lucienne te passe le bonjour. Du plafond."
+    }
+   ]
+  },
+  "liens": {
+   "capucine_hf": {
+    "qui": "ma maîtresse,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.9,
+    "avis": "Maîtresse Capucine est sévère, précise, et elle parle à la Colonne. Mais quand je suis tout vert, elle me met la main sur l'épaule sans rien dire. Ça vaut tous les discours du Bourgmestre.",
+    "anecdotes": [
+     "Un jour, je me suis évanoui dans la cabine. Je me suis réveillé avec sa veste sous la tête. Elle a dit que c'était « pour protéger le plancher »."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Barnabé, vous avez regardé en bas aujourd'hui ?"
+     ],
+     [
+      "a",
+      "Oui, Maîtresse ! Deux secondes !"
+     ],
+     [
+      "b",
+      "C'est une de plus qu'hier."
+     ],
+     [
+      "a",
+      "Je compte aussi !"
+     ]
+    ]
+   },
+   "heloise_hf": {
+    "qui": "mon héroïne,",
+    "nom": "la Capitaine Héloïse",
+    "sentiment": 0.85,
+    "avis": "La Capitaine Héloïse vole tous les jours, dans un ballon, sans murs autour ! Elle n'a peur de rien. Elle dit que si, mais je ne la crois pas.",
+    "anecdotes": [
+     "Elle m'a proposé un tour dans l'Albatros. Je suis monté jusqu'à la dixième marche du Mât. Elle m'a applaudi du haut de la passerelle. Personne ne m'avait jamais applaudi pour dix marches."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Alors, Barnabé, ce tour en dirigeable ?"
+     ],
+     [
+      "a",
+      "Bientôt ! Très bientôt ! Peut-être !"
+     ],
+     [
+      "b",
+      "L'offre tient toujours."
+     ]
+    ]
+   },
+   "firmin": {
+    "qui": "mon sauveur de midi,",
+    "nom": "Firmin",
+    "sentiment": 0.8,
+    "avis": "Firmin me sert un chocolat très sucré chaque midi, après mes montées. Il dit que je reprends des couleurs. Rouge, puis rose, puis normal. Il trouve ça joli. Moi, je trouve surtout ça bon.",
+    "anecdotes": [
+     "Une fois, la machine a sifflé pile quand je buvais. J'ai sursauté si fort que le chocolat est monté au plafond. Firmin a dit : « Tu vois, toi aussi tu sais faire monter les choses. »"
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Chocolat bien sucré, Barnabé ?"
+     ],
+     [
+      "a",
+      "Double, s'il te plaît. J'ai fait le Belvédère."
+     ],
+     [
+      "b",
+      "TCHOUUU !"
+     ],
+     [
+      "a",
+      "AAH !"
+     ]
+    ]
+   }
+  }
+ },
+ "pimprenelle_hf": {
+  "genre": "f",
+  "prenom": "Pimprenelle",
+  "histoire": [
+   {
+    "titre": "le premier boulon",
+    "t": "Mon premier boulon, je l'ai trouvé à trois ans, sous l'enclume de Maman. Je l'ai mis dans ma bouche. Maman a crié si fort que la forge s'est arrêtée. Depuis, je ne mets plus les boulons dans ma bouche. Je les mets dans des boîtes. C'est moins rigolo, mais c'est plus propre."
+   },
+   {
+    "titre": "Gérard",
+    "t": "Gérard, c'est le truc que j'ai trouvé au marché. Personne ne sait ce que c'est. Gaspard dit que c'est « une pièce d'un mécanisme inconnu ». Ysaé dit que c'est « un bout de quelque chose ». Moi, je dis que c'est Gérard. Il dort sur ma table de nuit."
+   },
+   {
+    "titre": "le panier à salade",
+    "t": "Un jour, j'ai voulu faire comme Dame Ysolde. J'ai pris une corde, une poulie et un panier à salade, et j'ai mis le chat dedans. Le chat est monté jusqu'à la fenêtre du premier. Il a sauté chez la voisine. Il y habite maintenant. C'est un peu de ma faute."
+   },
+   {
+    "titre": "le collier d'Ysaé",
+    "t": "Ysaé m'a fait un collier avec un boulon et un cristal bleu. Elle a dit : « Comme ça, tu portes un peu d'en haut et un peu d'en bas. » Je ne l'enlève jamais. Même pour le bain. Maman dit que le boulon va rouiller. Je l'essuie très bien."
+   },
+   {
+    "titre": "le boulon de la fontaine",
+    "t": "Mon boulon le plus précieux, je l'ai trouvé au fond de la fontaine, sous la statue de Dame Ysolde. Il est tout vert. Je crois que c'est elle qui l'a fait tomber, il y a deux cents ans, pendant qu'elle construisait la première cabine. Chaque soir, je lui dis bonne nuit. À Dame Ysolde aussi."
+   }
+  ],
+  "reve": [
+   "Être Grande Liftière, avec la casquette à galon doré, et faire monter tout le monde, même les gens qui ont le vertige. Surtout eux. Et avoir un boulon de chaque étage de la Colonne."
+  ],
+  "question": {
+   "texte": "Question très importante : tu préfères les boulons ou les écrous ?",
+   "reponses": [
+    {
+     "label": "Les boulons !",
+     "valeur": "boulons",
+     "t": "OUI ! Les boulons, c'est les meilleurs ! Ils sont longs, ils sont fiers, ils tiennent tout. Tu es dans mon équipe.",
+     "rappel": "Toujours dans l'équipe des boulons ?"
+    },
+    {
+     "label": "Les écrous.",
+     "valeur": "ecrous",
+     "t": "Les écrous ?! … Bon. Les écrous, c'est bien aussi. Sans écrou, un boulon, ça tombe. D'accord, tu peux être dans mon équipe. Mais au fond.",
+     "rappel": "Toujours les écrous ? Tu es bizarre. Mais gentil."
+    },
+    {
+     "label": "Les engrenages.",
+     "valeur": "engrenages",
+     "t": "Oh ! Tu triches ! Mais c'est une bonne triche. Les engrenages, c'est des boulons qui savent danser.",
+     "rappel": "Les engrenages, toujours ? Ils dansent bien, aujourd'hui ?"
+    }
+   ]
+  },
+  "liens": {
+   "mathilde": {
+    "qui": "ma maman,",
+    "nom": "Maman",
+    "sentiment": 0.95,
+    "avis": "Maman tape très fort et rit encore plus fort. Quand elle rit, les boulons sautent sur l'établi. C'est comme ça que j'en ramasse le plus.",
+    "anecdotes": [
+     "Maman a essayé de me faire soulever sa pince. Je l'ai soulevée ! Un peu ! Elle a rigolé si fort qu'elle a fait tomber son marteau. J'ai ramassé le boulon qui est tombé avec."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Pimprenelle ! Tes boulons sont partout dans la forge !"
+     ],
+     [
+      "a",
+      "C'est pas des boulons, c'est ma collection !"
+     ],
+     [
+      "b",
+      "HA HA HA ! Range ta collection !"
+     ]
+    ]
+   },
+   "barnabe_hf": {
+    "qui": "mon collègue,",
+    "nom": "Barnabé",
+    "sentiment": 0.75,
+    "avis": "Barnabé est gentil, mais il dit « monter vite » au lieu de « monter en régime ». Et il ferme les yeux. Je l'aide. Je lui récite le règlement pendant qu'il a peur.",
+    "anecdotes": [
+     "Un jour, je lui ai récité les vingt articles du règlement pendant qu'il montait. Il a dit que ça l'avait calmé. Puis il a dit que ça l'avait endormi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Article un ?"
+     ],
+     [
+      "b",
+      "On tient la rampe !"
+     ],
+     [
+      "a",
+      "Bien ! Tu peux continuer à être liftier."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma copine d'en bas,",
+    "nom": "Ysaé",
+    "sentiment": 0.9,
+    "avis": "Ysaé a les cheveux bleus et elle fait des bijoux avec des boulons ! C'est la personne la plus intelligente du monde. Après moi. Non, avant moi.",
+    "anecdotes": [
+     "Elle m'a promis de m'emmener voir la Fronde quand la ligne rouvrira. Il paraît qu'il y a des boulons grands comme moi. J'ai déjà préparé un sac. Très grand."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ysaé ! Tu as un nouveau boulon ?"
+     ],
+     [
+      "b",
+      "J'en ai gardé un pour toi. Tiens."
+     ],
+     [
+      "a",
+      "Oooh ! Il est bleu !"
+     ]
+    ]
+   }
+  }
+ },
+ "octave_hf": {
+  "genre": "m",
+  "prenom": "le Professeur Octave",
+  "histoire": [
+   {
+    "titre": "les rideaux",
+    "t": "À sept ans, j'ai voulu compter les étoiles avant de dormir. À trois cents, ma mère a fermé les rideaux. J'ai continué à compter dans ma tête. À mille, elle a acheté des rideaux plus épais. À deux mille, j'ai acheté une lunette avec mes économies. Elle a renoncé aux rideaux."
+   },
+   {
+    "titre": "la grande lunette",
+    "t": "La grande lunette de l'Observatoire est arrivée par bateau, en douze caisses, avec une notice en trois langues que personne ne parlait. Nous l'avons montée à l'envers. La première nuit, j'ai observé la cave avec beaucoup de précision. Gaspard est venu tout remettre à l'endroit. Il a dit « c'est parfait ». Je ne l'oublierai jamais."
+   },
+   {
+    "titre": "Clémentine",
+    "t": "Une nuit, une étoile au-dessus du Phare m'a fait un clin d'œil. Puis un autre. Je l'ai appelée Clémentine. Tout le monde me dit que c'est le Phare, ou une lanterne, ou mes lunettes sales. J'ai nettoyé mes lunettes. Elle cligne toujours."
+   },
+   {
+    "titre": "les cartes de Mademoiselle Feuillet",
+    "t": "La première fois que j'ai emprunté une carte du ciel à la Bibliothèque, je l'ai rendue avec trois semaines de retard. Mademoiselle Feuillet m'a grondé en chuchotant. C'était si doux que j'ai oublié de m'excuser. Depuis, je rends tout en retard. Ce n'est pas de la science. C'est autre chose."
+   },
+   {
+    "titre": "trente ans",
+    "t": "Je compte les étoiles depuis trente ans, {surnom}, et je n'ai jamais fini. Je me trompe toujours vers trois mille quatre cents. Au début, ça m'agaçait. Maintenant, je crois que c'est fait exprès. Un ciel qu'on peut finir de compter, ce serait triste."
+   }
+  ],
+  "reve": [
+   "Monter à la Cité des Nuées avec ma lunette, une nuit sans nuage, et compter toutes les étoiles jusqu'au bout. Ou presque. Et savoir enfin, une bonne fois pour toutes, si Clémentine me fait des clins d'œil."
+  ],
+  "question": {
+   "texte": "Dites-moi, {surnom} : à votre avis, une étoile peut-elle faire un clin d'œil à quelqu'un ?",
+   "reponses": [
+    {
+     "label": "Bien sûr !",
+     "valeur": "oui",
+     "t": "Ah ! Enfin quelqu'un de raisonnable ! Je vous présenterai Clémentine. Ce soir, si le ciel est clair. Elle sera ravie.",
+     "rappel": "Clémentine vous salue, {surnom}. Je crois. Elle a cligné deux fois."
+    },
+    {
+     "label": "C'est sûrement le Phare.",
+     "valeur": "phare",
+     "t": "Vous aussi ! Margot vous a parlé, n'est-ce pas ? … Bon. Peut-être. Mais alors pourquoi cligne-t-elle quand le Phare est éteint ? Hein ? Hein ?",
+     "rappel": "Toujours le Phare, d'après vous ? Je vous prouverai le contraire."
+    },
+    {
+     "label": "Peut-être qu'elle vous trouve sympathique.",
+     "valeur": "sympathique",
+     "t": "… Oh. Je n'y avais jamais pensé sous cet angle. Ce n'est pas très scientifique. Mais c'est très agréable. Je vais le noter dans la marge.",
+     "rappel": "Clémentine me trouve toujours sympathique, vous croyez ?"
+    }
+   ]
+  },
+  "liens": {
+   "philippine": {
+    "qui": "ma chère bibliothécaire,",
+    "nom": "Mademoiselle Philippine",
+    "sentiment": 0.9,
+    "avis": "Mademoiselle Feuillet me prête les cartes du ciel et me gronde en chuchotant quand je les rends en retard. Je ne connais rien de plus agréable. À part les étoiles. Et encore.",
+    "anecdotes": [
+     "J'ai dessiné une petite étoile sur une de ses cartes de la côte, au crayon, pour Clémentine. Elle ne l'a pas effacée. J'y pense souvent."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "(Elle chuchote.) Professeur, vous avez six semaines de retard."
+     ],
+     [
+      "a",
+      "Six ? Seulement ? Je m'améliore."
+     ],
+     [
+      "b",
+      "(Elle chuchote.) Ce n'est pas un compliment."
+     ],
+     [
+      "a",
+      "Pour moi, si."
+     ]
+    ]
+   },
+   "margot_hf": {
+    "qui": "ma rivale lumineuse,",
+    "nom": "Margot",
+    "sentiment": 0.65,
+    "avis": "Margot prétend que Clémentine, c'est la lumière de son Phare. Elle est très gentille, très calme, et totalement dans l'erreur. Je l'aime beaucoup.",
+    "anecdotes": [
+     "Elle a éteint le Phare une minute pour me prouver qu'elle avait raison. Clémentine a cligné quand même. Margot a dit que c'était une mouette. Une mouette à trois cents lieues de haut. Ha !"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Margot ! Elle a encore cligné !"
+     ],
+     [
+      "b",
+      "C'était Basile."
+     ],
+     [
+      "a",
+      "Basile est une mouette !"
+     ],
+     [
+      "b",
+      "Justement."
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "le Bourgmestre,",
+    "nom": "Hector Bellevue",
+    "sentiment": 0.55,
+    "avis": "Le Bourgmestre veut donner mon nom à une étoile. C'est très aimable. Il cherche une étoile « libre » avec ma lunette depuis deux mois. Il regarde par le mauvais bout. Je n'ose pas le lui dire.",
+    "anecdotes": [
+     "Il a cru découvrir une comète. C'était une miette de biscuit sur la lentille. Il a fait un discours quand même. Très beau, sur les miettes."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Professeur ! J'ai trouvé une étoile libre !"
+     ],
+     [
+      "a",
+      "Où ça, Monsieur le Bourgmestre ?"
+     ],
+     [
+      "b",
+      "Là ! Dans votre lunette !"
+     ],
+     [
+      "a",
+      "… C'est ma lampe de bureau."
+     ]
+    ]
+   }
+  }
+ },
+ "philippine": {
+  "genre": "f",
+  "prenom": "Mademoiselle Philippine",
+  "histoire": [
+   {
+    "titre": "la maison qui chuchotait",
+    "t": "(Elle chuchote.) Chez nous, on chuchotait tout. Les bonjours, les disputes, les anniversaires. « Joyeux anniversaire », tout bas, avec un gâteau aux bougies qu'on soufflait doucement. Quand je suis allée à l'école, la maîtresse a cru que j'étais malade. J'étais juste bien élevée."
+   },
+   {
+    "titre": "la première carte",
+    "t": "(Elle chuchote.) À huit ans, j'ai trouvé dans le grenier une carte d'une île qui n'existait pas. Elle s'appelait « l'Île des Chaussettes Perdues ». Un marin l'avait dessinée, un soir de tempête. C'est ma première carte de pays imaginaire. Elle est encadrée au-dessus de mon bureau."
+   },
+   {
+    "titre": "la souris",
+    "t": "(Elle chuchote.) Un jour, une souris est entrée dans le rayon des Mers du Sud. J'ai crié. Une seule fois dans ma vie. Toute la Haute-Ville a entendu. Le Bourgmestre est arrivé en courant avec un seau d'eau. Il l'a renversé sur le Grand Atlas. Je l'ai fait sécher pendant un mois. La souris est partie toute seule."
+   },
+   {
+    "titre": "les poèmes du mardi",
+    "t": "(Elle chuchote.) Chaque mardi, Augustin livre un sac de farine à la Bibliothèque. Nous n'avons pas besoin de farine. Dans chaque sac, il y a un poème, plié en quatre. Je les range dans un tiroir à moi. J'en ai quarante-trois. Je ne lui ai jamais dit que je les avais trouvés. Il ne m'a jamais dit qu'il les avait mis. C'est très bien comme ça. Pour l'instant."
+   },
+   {
+    "titre": "la carte de la Fronde",
+    "t": "(Elle chuchote.) Je vais vous confier quelque chose, {surnom}. Ysaé est venue me décrire la Fronde, en bas. J'ai dessiné une carte d'après ses mots : des rues peintes, des bannières, des escaliers qui chantent. C'est la seule carte de la Bibliothèque d'un pays qui existe et que je n'ai jamais vu. Elle est rangée avec les pays imaginaires. En attendant."
+   }
+  ],
+  "reve": [
+   "(Elle chuchote.) Partir un jour, avec un carnet et un crayon, dessiner la carte d'un pays que personne n'a jamais dessiné. Et revenir la ranger. Rayon trois, étagère douze."
+  ],
+  "question": {
+   "texte": "(Elle chuchote.) Dites-moi, {surnom} : si vous pouviez inventer un pays, comment l'appelleriez-vous ?",
+   "reponses": [
+    {
+     "label": "Le Pays des Siestes.",
+     "valeur": "siestes",
+     "t": "(Elle chuchote.) Le Pays des Siestes… Une capitale nommée Oreiller, des fleuves de couettes… Je vais le dessiner. Très doucement, pour ne pas le réveiller.",
+     "rappel": "(Elle chuchote.) Votre Pays des Siestes avance. J'ai fini la capitale."
+    },
+    {
+     "label": "L'Île aux Mille Escaliers.",
+     "valeur": "escaliers",
+     "t": "(Elle chuchote.) Oh, c'est très Hautefond, ça. Mille escaliers, et une seule cabine, toujours en révision. Je vais le dessiner. En perspective.",
+     "rappel": "(Elle chuchote.) J'ai dessiné quarante escaliers de votre île. Plus que neuf cent soixante."
+    },
+    {
+     "label": "Je ne sais pas, je préfère les vrais.",
+     "valeur": "vrais",
+     "t": "(Elle chuchote.) Les vrais pays sont très bien aussi. Ils ont l'avantage d'exister. C'est leur seul défaut : ils ne changent pas quand on leur demande.",
+     "rappel": "(Elle chuchote.) Toujours les vrais pays ? Vous êtes plus raisonnable que moi."
+    }
+   ]
+  },
+  "liens": {
+   "augustin_hf": {
+    "qui": "notre meunier,",
+    "nom": "Augustin Meule",
+    "sentiment": 0.85,
+    "avis": "(Elle chuchote.) Augustin livre de la farine à une bibliothèque. Ce n'est pas raisonnable. Les poèmes dans les sacs non plus. Mais je ne suis pas sûre de vouloir que tout soit raisonnable.",
+    "anecdotes": [
+     "(Elle chuchote.) Un mardi, il n'y avait pas de poème dans le sac. J'ai été triste toute la journée. Le mercredi, il y en avait deux."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mademoiselle Philippine… votre farine. Pour la… Bibliothèque."
+     ],
+     [
+      "a",
+      "(Elle chuchote.) Merci, Augustin. Elle sera très utile."
+     ],
+     [
+      "b",
+      "Ah ? Ah. Bon. Tant mieux."
+     ]
+    ]
+   },
+   "octave_hf": {
+    "qui": "mon emprunteur en retard,",
+    "nom": "le Professeur Lunette",
+    "sentiment": 0.75,
+    "avis": "(Elle chuchote.) Le Professeur rend toujours tout en retard. Toujours. Je devrais lui interdire la Bibliothèque. Je n'y arrive pas. Il a une façon de dire « pardon » qui donne envie de lui prêter le reste.",
+    "anecdotes": [
+     "(Elle chuchote.) Il a dessiné une étoile sur ma carte de la côte. Pour Clémentine. Je ne l'ai pas effacée. Je ne sais pas pourquoi."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "(Elle chuchote.) Professeur, votre retard."
+     ],
+     [
+      "b",
+      "Je sais, je sais. Je suis impardonnable."
+     ],
+     [
+      "a",
+      "(Elle chuchote.) Presque."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma guide d'en bas,",
+    "nom": "Ysaé",
+    "sentiment": 0.8,
+    "avis": "(Elle chuchote.) Ysaé parle fort, rit fort, et porte des boulons aux oreilles. Dans la Bibliothèque, elle chuchote. Juste pour moi. C'est la plus belle politesse qu'on m'ait jamais faite.",
+    "anecdotes": [
+     "(Elle chuchote.) Elle m'a décrit la Fronde pendant trois heures. J'ai dessiné. À la fin, elle a regardé la carte et elle a dit : « C'est chez moi. » Elle avait les yeux qui brillaient."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "(Elle chuchote, elle aussi.) Salut, Philippine."
+     ],
+     [
+      "a",
+      "(Elle chuchote.) Bonjour, Ysaé. Une nouvelle rue ?"
+     ],
+     [
+      "b",
+      "(Toujours tout bas.) Trois. Et un escalier qui chante."
+     ]
+    ]
+   }
+  }
+ },
+ "hector_hf": {
+  "genre": "m",
+  "prenom": "le Bourgmestre Hector",
+  "histoire": [
+   {
+    "titre": "le bégaiement",
+    "t": "Quand j'étais petit, je bégayais. Pour dire « bonjour », il me fallait trois respirations. Alors je me suis entraîné tout seul, devant la fontaine de Dame Ysolde. Je lui faisais des discours. Elle ne se moquait jamais. Aujourd'hui encore, c'est mon public préféré."
+   },
+   {
+    "titre": "la première médaille",
+    "t": "Ma première médaille, je l'ai gagnée à douze ans : le concours de lancer de chapeau de la fête de la Colonne. Mon chapeau est monté jusqu'au premier étage. Il y est resté trois ans. La médaille, je l'ai toujours. Le chapeau, Maîtresse Capucine l'a gardé. Pour l'exemple."
+   },
+   {
+    "titre": "la panne",
+    "t": "Il y a vingt ans, je suis resté coincé trois heures dans la cabine, entre deux étages. J'ai fait un discours aux poulies. C'était le meilleur de ma carrière : personne ne pouvait partir. Quand on m'a sorti, j'ai décidé de me présenter aux élections. Si je pouvais parler à des poulies, je pouvais parler à une ville."
+   },
+   {
+    "titre": "le ruban",
+    "t": "Mon premier ruban de Bourgmestre, c'était pour le nouveau lavoir de la Basse-Ville. J'ai oublié les ciseaux. Mathilde a coupé le ruban avec son marteau. Ça a fait un bruit formidable et un trou dans le pavé. Depuis, j'ai toujours trois paires de ciseaux sur moi. Et je ne demande plus d'aide à Mathilde."
+   },
+   {
+    "titre": "la broche",
+    "t": "Je vais vous confier un secret, {surnom}. J'ai acheté une broche à la jeune Ysaé. Une petite Colonne en boulons. Je la porte sous mon écharpe. Je ne sais pas encore quoi penser de la Fronde, là-dessous. Mais quelqu'un qui fait une si jolie Colonne avec des boulons… ne peut pas être tout à fait contre nous."
+   }
+  ],
+  "reve": [
+   "Couper le ruban de la réouverture des quatre lignes de la Colonne, le même jour, devant les gens des Nuées, de Hautefond, des Strates et du Dôme réunis. Et faire un discours de quatre heures. Bon. De quatre minutes. Je ferai un effort."
+  ],
+  "question": {
+   "texte": "Mon cher {surnom}, une question d'importance : un bon discours, c'est long ou c'est court ?",
+   "reponses": [
+    {
+     "label": "Court, toujours.",
+     "valeur": "court",
+     "t": "Court ! Hum. C'est ce que tout le monde me dit. Je vais essayer. Je vous ferai un discours sur la brièveté. Il ne durera qu'une heure.",
+     "rappel": "Toujours partisan des discours courts, mon cher ? Hum."
+    },
+    {
+     "label": "Long, avec des médailles.",
+     "valeur": "long",
+     "t": "Enfin ! Un homme de goût ! Une âme d'orateur ! Je vous décerne la médaille de l'Écoute ! Je vais la faire forger tout de suite !",
+     "rappel": "Ma médaille de l'Écoute avance, mon cher ! Mathilde rit encore."
+    },
+    {
+     "label": "Ça dépend de qui écoute.",
+     "valeur": "public",
+     "t": "… Hum. C'est très juste. Pour Dame Ysolde, je peux parler des heures. Pour les gens, peut-être un peu moins. Vous êtes un sage, mon cher.",
+     "rappel": "Ça dépend de qui écoute, disiez-vous… J'y pense à chaque discours."
+    }
+   ]
+  },
+  "liens": {
+   "capucine_hf": {
+    "qui": "notre Grande Liftière,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.7,
+    "avis": "Maîtresse Capucine me dit « non » plus souvent que tout le reste de la ville réuni. Mais la Colonne n'a jamais eu une seule minute de retard depuis qu'elle est au guichet. Je lui ai proposé une médaille. Elle a dit « non ».",
+    "anecdotes": [
+     "Pour l'anniversaire de la Colonne, je voulais des guirlandes sur les câbles. Elle a refusé. J'ai fait un discours sur le mot « non ». Elle l'a écouté jusqu'au bout. C'est la seule."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Maîtresse Capucine ! Un tout petit ruban ?"
+     ],
+     [
+      "b",
+      "Non."
+     ],
+     [
+      "a",
+      "Un ruban de rien du tout ?"
+     ],
+     [
+      "b",
+      "Non, Monsieur le Bourgmestre."
+     ]
+    ]
+   },
+   "mathilde": {
+    "qui": "ma forgeronne de médailles,",
+    "nom": "Mathilde Soufflet",
+    "sentiment": 0.65,
+    "avis": "Mathilde forge toutes mes médailles. Elles sont magnifiques. Elle rit beaucoup quand je les commande. Elle dit que c'est de joie. Je la crois. En grande partie.",
+    "anecdotes": [
+     "Le jour du lavoir, elle a coupé mon ruban avec son marteau. Il reste un trou dans le pavé. J'ai fait poser une petite plaque : « Ici, un ruban fut coupé avec enthousiasme. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mathilde ! Une nouvelle médaille !"
+     ],
+     [
+      "b",
+      "HA HA HA ! La médaille de quoi ?"
+     ],
+     [
+      "a",
+      "On verra !"
+     ],
+     [
+      "b",
+      "HA HA HA HA !"
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "la jeune fille du marché,",
+    "nom": "Ysaé",
+    "sentiment": 0.45,
+    "avis": "Cette jeune Ysaé, avec ses cheveux bleus… Hum. Pas très réglementaire. Mais elle me salue toujours poliment, et ses bijoux sont superbes. Je suis un Bourgmestre ouvert. Je m'entraîne.",
+    "anecdotes": [
+     "Elle m'a vendu la broche sans rien dire. Puis, pendant mon discours de mardi, elle a applaudi la première. Toute seule. Puis tout le monde l'a suivie. Je ne sais pas si c'était pour moi ou pour la broche."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hum. Bonjour, mademoiselle."
+     ],
+     [
+      "b",
+      "Bonjour, Monsieur le Bourgmestre. Elle brille bien, votre écharpe."
+     ],
+     [
+      "a",
+      "Hum ! Hum hum."
+     ]
+    ]
+   }
+  }
+ },
+ "rosalie_hf": {
+  "genre": "f",
+  "prenom": "Rosalie",
+  "histoire": [
+   {
+    "titre": "le bateau d'épices",
+    "t": "Mes parents sont arrivés avec un bateau plein d'épices, d'une île très loin au sud. Le bateau a coulé tout doucement dans le Port des Cordages, juste à l'arrivée. Toute la baie a senti la cannelle pendant un mois. Léon, qui était jeune, a dit : « Restez. Ça sent trop bon pour repartir. »"
+   },
+   {
+    "titre": "le premier étal",
+    "t": "Mon premier étal, c'était une caisse et un parasol. J'avais dix ans. J'ai vendu trois pommes et j'ai appris cinq secrets. J'ai compris ce jour-là que les gens n'achètent pas seulement des fruits. Ils achètent cinq minutes avec quelqu'un qui les écoute."
+   },
+   {
+    "titre": "le chocolat à la cannelle",
+    "t": "Un soir d'hiver, j'ai jeté une pincée de ma cannelle dans le chocolat de Firmin. Pour rire. Toute la taverne a voulu le même. Depuis, Firmin dit que c'est sa recette. Je dis que c'est ma cannelle. Nous nous disputons tous les soirs depuis quinze ans. C'est la meilleure dispute de l'île."
+   },
+   {
+    "titre": "le jour où je me suis tue",
+    "t": "Une seule fois, je n'ai rien répété. Une petite fille m'avait dit qu'elle avait peur du noir. Je ne l'ai dit à personne. Des années plus tard, elle est devenue gardienne de Phare. C'est Margot. Elle n'a plus peur du noir. Elle l'allume tous les soirs."
+   },
+   {
+    "titre": "le vrai secret",
+    "t": "Tu veux savoir mon vrai secret, mon chou ? Je ne répète que les jolies choses. Les méchantes, je les laisse tomber derrière l'étal, avec les épluchures. Les jolies, je les fais voyager. Elles reviennent toujours, un peu plus grandes. Comme les pommes de Bastien."
+   }
+  ],
+  "reve": [
+   "Ouvrir un étal dans chacun des quatre mondes de la Colonne, un en haut, un ici, un en bas, un au fond de la mer, et faire voyager les nouvelles de l'un à l'autre. Avec de la cannelle dedans."
+  ],
+  "question": {
+   "texte": "Dis-moi tout, mon chou : sucré ou épicé ?",
+   "reponses": [
+    {
+     "label": "Sucré !",
+     "valeur": "sucre",
+     "t": "Sucré ! Alors tu vas adorer les dattes. Et le miel. Et les gens d'ici, ils sont tous un peu sucrés. Même Léon, au fond.",
+     "rappel": "Toujours sucré, mon chou ? J'ai des dattes pour toi."
+    },
+    {
+     "label": "Épicé !",
+     "valeur": "epice",
+     "t": "Épicé ! Ah, un aventurier ! Tiens, goûte ce poivre. … Tu pleures ? C'est normal. C'est qu'il t'aime bien.",
+     "rappel": "Encore un peu d'épicé, mon chou ? Mon poivre te réclame."
+    },
+    {
+     "label": "Les deux à la fois.",
+     "valeur": "deux",
+     "t": "Les deux ! Comme le chocolat à la cannelle ! Tu es du côté de Rosalie, mon chou. Va dire à Firmin que c'est ma recette.",
+     "rappel": "Sucré et épicé, toujours ? Tu as dit à Firmin que c'était ma recette ?"
+    }
+   ]
+  },
+  "liens": {
+   "firmin": {
+    "qui": "mon meilleur ennemi,",
+    "nom": "Firmin Bouilloire",
+    "sentiment": 0.9,
+    "avis": "Firmin a une moustache trop grande, une machine trop bruyante et un cœur encore plus gros que les deux. Il dit que le chocolat à la cannelle est sa recette. Il a tort. Je le lui dirai encore ce soir.",
+    "anecdotes": [
+     "Une fois, il a fait semblant de ne pas mettre ma cannelle. J'ai goûté. Il y en avait. Il a rougi jusqu'à la moustache."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "C'est ma cannelle, Firmin."
+     ],
+     [
+      "b",
+      "C'est ma recette, Rosalie."
+     ],
+     [
+      "a",
+      "Ressers-moi quand même."
+     ],
+     [
+      "b",
+      "Évidemment."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma voisine d'étal,",
+    "nom": "Ysaé",
+    "sentiment": 0.85,
+    "avis": "Ysaé vient d'en bas, et alors ? Elle a des doigts d'or et un cœur de cristal. Les dames de la Haute-Ville la regardent de travers. Moi, je les regarde de travers en retour. Ça les occupe.",
+    "anecdotes": [
+     "Le premier jour, je lui ai donné une pomme et posé quarante questions. Elle a répondu à trois. J'ai deviné le reste. J'avais presque tout juste."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ysaé, mon chou, tu as mangé ?"
+     ],
+     [
+      "b",
+      "Oui, Rosalie."
+     ],
+     [
+      "a",
+      "Une pomme quand même ?"
+     ],
+     [
+      "b",
+      "… D'accord."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "mon fournisseur de pommes,",
+    "nom": "Père Bastien",
+    "sentiment": 0.8,
+    "avis": "Le Père Bastien parle à ses arbres, et ses arbres lui répondent avec des pommes magnifiques. Moi, je leur raconte les potins pendant la cueillette. Ses pommes sont les mieux informées de l'île.",
+    "anecdotes": [
+     "Il m'a confié que les pommes du mardi sont les plus sucrées. Le mardi, c'est le jour où je viens. Je n'ai rien dit. J'ai rougi comme une reinette."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, Père Bastien ! Elles sont prêtes ?"
+     ],
+     [
+      "b",
+      "Elles t'attendaient, Rosalie. Raconte-leur quelque chose."
+     ],
+     [
+      "a",
+      "Alors, mes jolies, écoutez ça…"
+     ]
+    ]
+   }
+  }
+ },
+ "gaspard_hf": {
+  "genre": "m",
+  "prenom": "Gaspard",
+  "histoire": [
+   {
+    "titre": "la pièce en trop",
+    "t": "À quatre ans, j'ai démonté la montre de mon grand-père. Je l'ai remontée à quatre ans et demi. Il restait une pièce. La montre marchait quand même. J'ai gardé la pièce dans une petite boîte. Quarante ans plus tard, je ne sais toujours pas où elle va. Je la regarde chaque soir. Elle me regarde aussi."
+   },
+   {
+    "titre": "le premier retard",
+    "t": "Je n'ai été en retard qu'une seule fois dans ma vie. Un mardi. Je réglais ma montre sur le Moulin des Quatre Vents, qui tourne si régulièrement par vent d'ouest. Ce jour-là, Augustin avait changé une aile. Trois minutes de retard. J'en rêve encore."
+   },
+   {
+    "titre": "l'Horloge Chantante",
+    "t": "J'ai mis neuf ans à fabriquer l'Horloge Chantante. Neuf ans pour qu'elle chante l'heure, juste, à la seconde. La première fois qu'elle a chanté « il est midi, tra-la-la », j'ai pleuré. Discrètement. Derrière le comptoir. Personne ne l'a su. Sauf l'horloge."
+   },
+   {
+    "titre": "la grande lunette",
+    "t": "Le Professeur Lunette avait monté la grande lunette de l'Observatoire à l'envers. Il observait la cave. Je l'ai remise à l'endroit en une nuit. Quand j'ai eu fini, j'ai dit « c'est parfait ». C'est la seule fois que je l'ai dit à voix haute. C'était vrai."
+   },
+   {
+    "titre": "les secondes",
+    "t": "Je vais vous dire pourquoi je déteste le retard, {surnom}. Mon grand-père m'attendait, un jour, au Port. Je suis arrivé trois minutes après le bateau. Il était parti. Il est revenu, bien sûr, des mois plus tard. Mais ces trois minutes-là, je les ai encore dans ma poche. Avec la pièce en trop."
+   }
+  ],
+  "reve": [
+   "Monter à la Cité des Nuées pour voir leurs horloges de verre, où l'on voit tourner tous les rouages. Et, peut-être, trouver enfin où va la pièce en trop."
+  ],
+  "question": {
+   "texte": "Une question, {surnom}. Quand vous avez rendez-vous, vous arrivez comment ?",
+   "reponses": [
+    {
+     "label": "En avance.",
+     "valeur": "avance",
+     "t": "En avance. Hm. C'est mieux que le retard. Mais vous perdez des minutes à attendre. Apportez un livre. Ou une montre à régler.",
+     "rappel": "Toujours en avance, {surnom} ? Hm. J'ai une montre à vous faire régler."
+    },
+    {
+     "label": "Pile à l'heure.",
+     "valeur": "pile",
+     "t": "Pile à l'heure. (Ses yeux brillent.) Vous… vous êtes une personne remarquable. Revenez quand vous voulez. À l'heure que vous voulez. Pile.",
+     "rappel": "Pile à l'heure, comme d'habitude. Parfait."
+    },
+    {
+     "label": "Un peu en retard…",
+     "valeur": "retard",
+     "t": "En retard. (Il ferme les yeux.) Bon. Je vais vous offrir une montre. Une qui sonne cinq minutes avant. Comme celle de Barnabé. Elle ne marche pas sur lui, mais vous, vous avez une chance.",
+     "rappel": "Toujours en retard ? J'ai réglé votre montre. Elle sonne maintenant."
+    }
+   ]
+  },
+  "liens": {
+   "capucine_hf": {
+    "qui": "ma partenaire de lundi,",
+    "nom": "Maîtresse Capucine",
+    "sentiment": 0.85,
+    "avis": "Maîtresse Capucine est la seule personne de Hautefond aussi ponctuelle que moi. Nous ne parlons presque jamais. Nous n'en avons pas besoin. Nous hochons la tête. Tout est dit.",
+    "anecdotes": [
+     "Une fois, nous avons vu la même seconde de retard sur l'horloge des départs, à cent mètres l'un de l'autre. Nous avons couru. Arrivés ensemble. Nous avons hoché la tête. C'était merveilleux."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Sept heures."
+     ],
+     [
+      "b",
+      "Sept heures."
+     ],
+     [
+      "a",
+      "…"
+     ],
+     [
+      "b",
+      "Parfait."
+     ]
+    ]
+   },
+   "barnabe_hf": {
+    "qui": "mon cas désespéré,",
+    "nom": "Barnabé",
+    "sentiment": 0.65,
+    "avis": "Barnabé est gentil, travailleur, courageux. Et toujours en retard. Toujours. Je lui ai offert une montre qui sonne trois fois avant chaque départ. Il est toujours en retard, mais maintenant, il le sait. C'est un progrès.",
+    "anecdotes": [
+     "Une nuit, ma montre l'a réveillé par erreur. Il a couru à la Colonne en pyjama, à trois heures du matin. Il était en avance. Pour la première fois de sa vie. J'ai failli lui faire une médaille."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé. Quelle heure est-il ?"
+     ],
+     [
+      "b",
+      "Euh… l'heure d'être en retard ?"
+     ],
+     [
+      "a",
+      "Exactement."
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma cliente surprenante,",
+    "nom": "Ysaé",
+    "sentiment": 0.6,
+    "avis": "Ysaé m'achète mes vieux rouages pour en faire des bijoux. Je n'aime pas qu'on démonte les rouages. Mais sa bague qui tourne quand on bouge le doigt… est juste. Parfaitement juste. Cela me contrarie beaucoup.",
+    "anecdotes": [
+     "Elle m'a offert une boucle d'oreille faite avec un de mes ressorts. Je ne porte pas de boucle d'oreille. Je l'ai accrochée à l'Horloge Chantante. Depuis, l'horloge chante un peu plus gaiement."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Gaspard, t'as des rouages pour moi ?"
+     ],
+     [
+      "a",
+      "Des rouages hors tolérance. Rien de bon."
+     ],
+     [
+      "b",
+      "Parfait, c'est ceux-là que je veux."
+     ]
+    ]
+   }
+  }
+ },
+ "firmin": {
+  "genre": "m",
+  "prenom": "Firmin",
+  "histoire": [
+   {
+    "titre": "la taverne de mon père",
+    "t": "Le Piston Joyeux, c'était la taverne de mon père. On y servait des boissons fortes, et les gens finissaient toujours par se disputer. Quand il m'a laissé la taverne, j'ai tout remplacé par du chocolat. Le premier soir, il n'y avait personne. Le deuxième, trois personnes. Le troisième, toute la Ville-Moyenne. Les gens ne savaient pas qu'ils avaient besoin de chocolat."
+   },
+   {
+    "titre": "la machine",
+    "t": "J'ai acheté ma machine à un vieux mécanicien des Strates. Elle était faite pour une locomotive. Il m'a dit : « Elle siffle un peu. » La première fois que je l'ai allumée, toutes les vitres de la rue ont tremblé et Gaspard a sorti la tête de sa boutique avec un chronomètre. Depuis, la ville règle ses montres sur elle."
+   },
+   {
+    "titre": "la moustache",
+    "t": "Ma moustache, je la laisse pousser depuis mes dix-huit ans. Le jour où elle a dépassé celle du Bourgmestre, il m'a regardé longtemps, puis il m'a donné une médaille. « La médaille de la Moustache ». Il n'y en a qu'une. Je la porte le dimanche."
+   },
+   {
+    "titre": "la cannelle de Rosalie",
+    "t": "Un soir d'hiver, Rosalie a jeté de la cannelle dans mon chocolat, pour rire. Toute la taverne en a voulu. Depuis quinze ans, je dis que c'est ma recette, et elle dit que c'est sa cannelle. Nous avons tous les deux raison. Mais je ne le dirai jamais en premier."
+   },
+   {
+    "titre": "pourquoi je siffle",
+    "t": "Tu sais pourquoi ma machine siffle si fort, {surnom} ? Ce n'est pas un défaut. Je l'ai réglée comme ça. Pour que, dans toute la ville, les gens qui sont tristes l'entendent et se disent : « Tiens, il y a du chocolat chaud quelque part. » Ça ne guérit pas tout. Mais ça donne une direction."
+   }
+  ],
+  "reve": [
+   "Faire monter ma machine à chocolat à la Cité des Nuées, quand la ligne rouvrira, et la faire siffler au-dessus des nuages. Qu'on l'entende jusqu'en bas. Que tout le monde, dans les quatre mondes, sache qu'il y a du chocolat."
+  ],
+  "question": {
+   "texte": "Question sérieuse, {surnom} : ton chocolat, tu le prends avec ou sans cannelle ?",
+   "reponses": [
+    {
+     "label": "Avec cannelle !",
+     "valeur": "cannelle",
+     "t": "Avec ! Bon choix. Ne le dis pas à Rosalie, elle croira qu'elle a gagné. Ce soir, je lui dirai que c'est toi qui l'as choisie. Ça fera un débat.",
+     "rappel": "Avec cannelle, comme d'habitude ? Rosalie est au courant, hélas."
+    },
+    {
+     "label": "Sans, nature.",
+     "valeur": "nature",
+     "t": "Nature ! Un puriste ! Ah, ça me fait plaisir. Le chocolat tout seul, c'est déjà un bonheur complet. Je te mets une petite mousse en plus. Pour le principe.",
+     "rappel": "Un nature, comme d'habitude ? Mousse en plus, évidemment."
+    },
+    {
+     "label": "Avec beaucoup de mousse.",
+     "valeur": "mousse",
+     "t": "De la mousse ! Beaucoup ! Alors tu vas finir avec une moustache comme la mienne. Bienvenue au club des moustaches de chocolat !",
+     "rappel": "Beaucoup de mousse, comme d'habitude ? Ta moustache te va bien."
+    }
+   ]
+  },
+  "liens": {
+   "rosalie_hf": {
+    "qui": "ma voisine de comptoir,",
+    "nom": "Rosalie Cannelle",
+    "sentiment": 0.9,
+    "avis": "Rosalie rit si fort que ma machine se tait par respect. Elle sait tout de tout le monde, et ne dit que du bien. Elle a tort sur la recette. Mais elle a raison sur tout le reste.",
+    "anecdotes": [
+     "Un soir, j'ai fait semblant d'oublier sa cannelle. Elle a goûté, elle a souri, et elle a dit : « Menteur. » Il y en avait. Il y en a toujours."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "C'est ma cannelle, Firmin."
+     ],
+     [
+      "a",
+      "C'est ma recette, Rosalie."
+     ],
+     [
+      "b",
+      "Ressers-moi quand même."
+     ],
+     [
+      "a",
+      "TCHOUUU !"
+     ]
+    ]
+   },
+   "heloise_hf": {
+    "qui": "ma cliente des nuages,",
+    "nom": "la Capitaine Héloïse",
+    "sentiment": 0.8,
+    "avis": "Héloïse boit un soda au gingembre avant chaque décollage, et un chocolat à chaque atterrissage. Entre les deux, elle fait le tour de l'île. Le soir, elle raconte ses voyages à ma table. J'ai l'impression d'avoir voyagé, moi aussi, sans quitter mon comptoir.",
+    "anecdotes": [
+     "Chaque fois qu'elle invente un dragon dans ses histoires, je lui ressers un chocolat. Un soir, elle en a inventé sept. Elle a dormi à la taverne."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Firmin ! Un soda au gingembre, je décolle !"
+     ],
+     [
+      "a",
+      "Et le chocolat ?"
+     ],
+     [
+      "b",
+      "Au retour ! Garde-le au chaud !"
+     ]
+    ]
+   },
+   "leon_hf": {
+    "qui": "mon grognon du dimanche,",
+    "nom": "Léon Calfat",
+    "sentiment": 0.75,
+    "avis": "Le vieux Léon vient le dimanche. Il grogne en entrant, grogne en buvant, grogne en partant. Il reprend toujours une deuxième tasse. C'est mon client le plus fidèle. Il ne l'avouera jamais.",
+    "anecdotes": [
+     "Une fois, il a ri. Un vrai rire. C'était quand la machine a sifflé pendant que le Bourgmestre faisait un discours dans la taverne. Le discours s'est arrêté net. Léon m'a laissé un pourboire."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Hm. Un chocolat."
+     ],
+     [
+      "a",
+      "Un grand ?"
+     ],
+     [
+      "b",
+      "Hm. Oui."
+     ]
+    ]
+   }
+  }
+ },
+ "heloise_hf": {
+  "genre": "f",
+  "prenom": "Héloïse",
+  "histoire": [
+   {
+    "titre": "le ballon rouge",
+    "t": "À six ans, j'avais un ballon rouge, un ballon de fête. Je l'ai lâché par accident. Il est monté, monté, jusqu'à ce que je ne le voie plus. J'ai pleuré, puis j'ai décidé que j'irais le chercher. C'est pour ça que l'Albatros est rouge. Pour qu'il me reconnaisse, s'il est encore quelque part."
+   },
+   {
+    "titre": "le premier vol",
+    "t": "J'ai construit l'Albatros avec des toiles de tente, des tonneaux et un moteur trouvé dans une grange. Le jour du premier vol, il a décollé à l'envers. J'étais suspendue la tête en bas au-dessus des Vergers. Père Bastien m'a fait signe avec un râteau. J'ai fait signe avec les pieds."
+   },
+   {
+    "titre": "le brouillard",
+    "t": "Un jour de brouillard épais, je ne voyais plus rien. Plus l'île, plus la mer, plus le Mât. Alors j'ai écouté. Et j'ai entendu le rire de Rosalie, au marché. J'ai suivi le rire. Je suis arrivée pile au Mât. Depuis, je lui offre un tour en dirigeable chaque année. Elle refuse. Elle dit qu'elle préfère qu'on la suive."
+   },
+   {
+    "titre": "la baleine",
+    "t": "Une fois, en volant très bas au-dessus de la mer, j'ai vu une ombre immense passer sous l'Albatros. Une baleine, qui allait vers le Dôme d'Azur. Elle a tourné un œil vers moi. Nous nous sommes regardées une seconde. Deux géantes, une dans l'eau, une dans l'air. C'est mon plus beau souvenir de vol."
+   },
+   {
+    "titre": "revenir",
+    "t": "Je rêve de faire le tour du monde, {surnom}. Mais tu sais ce que j'aime le plus, dans un voyage ? Le retour. Quand j'aperçois la Colonne qui brille, le Phare de Margot, la fumée de la Forge… Et que je sais qu'un chocolat m'attend au Piston Joyeux. On ne part bien que quand on sait où revenir."
+   }
+  ],
+  "reve": [
+   "Faire le tour du monde par les airs, sans m'arrêter, juste en regardant tout d'en haut. Et retrouver, quelque part au-dessus d'un océan, un petit ballon rouge qui m'attendait."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : si tu avais un dirigeable, où irais-tu en premier ?",
+   "reponses": [
+    {
+     "label": "Tout droit, au hasard !",
+     "valeur": "hasard",
+     "t": "Au hasard ! Le meilleur cap qui soit ! C'est comme ça que j'ai découvert les plus belles choses. Et que je me suis perdue le plus souvent. Les deux vont ensemble.",
+     "rappel": "Toujours cap au hasard, {surnom} ? Le vent est bon pour ça, aujourd'hui."
+    },
+    {
+     "label": "Au-dessus des nuages.",
+     "valeur": "nuages",
+     "t": "Au-dessus des nuages ! Là où il fait toujours beau. Tu sais qu'au-dessus de la pluie, le soleil brille tout le temps ? C'est le secret des aéronautes. Garde-le.",
+     "rappel": "Toujours envie d'aller au-dessus des nuages ? Le ciel y est d'un bleu…"
+    },
+    {
+     "label": "Je resterais ici, c'est très bien.",
+     "valeur": "ici",
+     "t": "Ha ! Comme Léon ! Bon, je ne te jette pas la pierre. Hautefond, vu d'en haut, c'est le plus bel endroit du monde. Et vu d'en bas, ce n'est pas mal non plus.",
+     "rappel": "Toujours casanier, {surnom} ? Léon serait fier de toi."
+    }
+   ]
+  },
+  "liens": {
+   "leon_hf": {
+    "qui": "mon meilleur ennemi,",
+    "nom": "Léon Calfat",
+    "sentiment": 0.9,
+    "avis": "Léon dit que les dirigeables, ce sont des bateaux qui ont perdu la mer. Je dis que les bateaux, ce sont des dirigeables qui ont oublié de monter. On se dispute depuis dix ans. C'est mon meilleur ami. Il le sait. Il ne le dira jamais.",
+    "anecdotes": [
+     "Un jour de tempête, l'Albatros a dû se poser dans la baie. C'est Léon qui est venu me chercher, en barque, sous la pluie. Il a grogné tout le trajet. Il m'a donné sa veste."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Bonjour, vieux loup de mer !"
+     ],
+     [
+      "b",
+      "Hm. Bonjour, la girouette."
+     ],
+     [
+      "a",
+      "Belle mer, ce matin ?"
+     ],
+     [
+      "b",
+      "Meilleure que ton ciel."
+     ]
+    ]
+   },
+   "barnabe_hf": {
+    "qui": "mon futur passager,",
+    "nom": "Barnabé",
+    "sentiment": 0.8,
+    "avis": "Barnabé a le vertige et veut quand même voler avec moi. C'est la chose la plus courageuse que j'aie jamais vue. Les gens sans peur, ce n'est pas du courage. Lui, c'est du courage.",
+    "anecdotes": [
+     "Il est monté jusqu'à la dixième marche du Mât. Je l'ai applaudi de la passerelle. Il a rougi tellement qu'on aurait dit l'Albatros."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Barnabé ! Aujourd'hui, la onzième marche ?"
+     ],
+     [
+      "b",
+      "Peut-être ! Si le vent est calme !"
+     ],
+     [
+      "a",
+      "Le vent est toujours calme pour les courageux."
+     ]
+    ]
+   },
+   "mathilde": {
+    "qui": "ma forgeronne,",
+    "nom": "Mathilde Soufflet",
+    "sentiment": 0.7,
+    "avis": "Mathilde forge les rivets de l'Albatros. Les meilleurs rivets de l'archipel. Mais quand je lui demande s'ils sont prêts, elle dit « demain » en riant. Je n'ai jamais su si c'était vrai ou si elle adorait ma tête.",
+    "anecdotes": [
+     "Je soupçonne qu'elle a fini mes rivets depuis une semaine. Elle les cache derrière l'enclume. Je l'ai vue. Je fais semblant de rien. Demain, je lui dirai que je sais. En riant."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mathilde, mes rivets ?"
+     ],
+     [
+      "b",
+      "HA HA ! Demain !"
+     ],
+     [
+      "a",
+      "Tu dis ça depuis lundi !"
+     ],
+     [
+      "b",
+      "HA HA HA ! Demain !"
+     ]
+    ]
+   }
+  }
+ },
+ "ysae": {
+  "genre": "f",
+  "prenom": "Ysaé",
+  "histoire": [
+   {
+    "titre": "la forge et la batterie",
+    "t": "Je suis née dans la Fronde, dans les Strates, sous Hautefond. Mon père répare les rails, ma mère taille les cristaux. Le soir, ils jouent dans un groupe : lui à la batterie, elle à la guitare à vapeur. J'ai dormi toute mon enfance avec de la musique au-dessus du berceau. Le silence, c'est la seule chose qui m'empêche de dormir."
+   },
+   {
+    "titre": "le bleu",
+    "t": "En bas, chacun choisit la couleur de ses cheveux le jour de ses quinze ans. Toute la rue vient voir. J'ai hésité trois jours. Puis je suis descendue dans la mine, et j'ai vu le bleu des cristaux qui brillaient dans le noir. J'ai choisi ce bleu-là. Celui qui éclaire sans soleil."
+   },
+   {
+    "titre": "le premier bijou",
+    "t": "Mon premier bijou, je l'ai fait avec un boulon tombé d'un wagon et un éclat de cristal. Je l'ai offert à ma grand-mère. Elle l'a porté à son cou jusqu'à la fin. Elle disait : « Ce n'est pas l'or qui fait un bijou. C'est la main qui l'a fait. »"
+   },
+   {
+    "titre": "la première montée",
+    "t": "La première fois que je suis montée au marché, une dame de la Haute-Ville a changé de trottoir. Puis une autre. Puis Rosalie, à l'étal d'à côté, m'a tendu une pomme et m'a dit : « Bienvenue, ma cannelle. » Je ne l'ai jamais oublié. Il suffit d'une personne pour que tout un marché change de couleur."
+   },
+   {
+    "titre": "pourquoi je monte",
+    "t": "Je vais te dire pourquoi je monte vendre en haut, {surnom}. Ce n'est pas pour les pièces. C'est pour qu'en haut, on voie que la Fronde, ce n'est pas des gens bizarres. C'est des gens qui fabriquent, qui chantent et qui s'entraident. Un bijou à la fois. Le Bourgmestre porte une de mes broches. On progresse."
+   }
+  ],
+  "reve": [
+   "Le jour où la ligne du bas rouvrira, voir les gens d'en haut descendre à la Fronde, danser avec ceux d'en bas, et le Bourgmestre faire un discours sous une bannière au A cerclé. Avec une crête. Bon, au moins la broche."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : t'es plutôt du genre à monter ou à descendre ?",
+   "reponses": [
+    {
+     "label": "À monter, toujours plus haut.",
+     "valeur": "monter",
+     "t": "Comme tout le monde, en haut. Bon, c'est joli, les nuages. Mais n'oublie pas qu'il y a des étoiles en bas aussi. Les nôtres brillent dans la roche.",
+     "rappel": "Toujours à vouloir monter ? Un jour, je te ferai descendre. Tu verras."
+    },
+    {
+     "label": "À descendre, pour voir.",
+     "valeur": "descendre",
+     "t": "Ha ! Bien. Quand la ligne rouvrira, je t'emmène. Prépare tes oreilles, et tes pieds : en bas, on danse.",
+     "rappel": "Toujours partant pour descendre ? La Fronde t'attend."
+    },
+    {
+     "label": "Un peu des deux.",
+     "valeur": "deux",
+     "t": "Un peu des deux. C'est la bonne réponse, en fait. La Colonne sert à ça : à monter, à descendre, et à revenir. Tu as tout compris.",
+     "rappel": "Toujours un peu des deux ? C'est comme ça qu'on voit tout."
+    }
+   ]
+  },
+  "liens": {
+   "rosalie_hf": {
+    "qui": "ma voisine d'étal,",
+    "nom": "Rosalie Cannelle",
+    "sentiment": 0.9,
+    "avis": "Rosalie m'a dit bonjour le premier jour, quand personne ne le faisait. Elle m'a donné une pomme et posé quarante questions. Je l'adore. Je ne lui dirai jamais tout. Mais elle devine tout quand même.",
+    "anecdotes": [
+     "Une fois, une dame de la Haute-Ville a dit tout fort que mes bijoux étaient « de la ferraille ». Rosalie a éclaté de rire si fort que la dame est partie. Puis elle est revenue acheter une bague. Rosalie lui a dit : « Bon choix, ma cannelle. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Salut, Rosalie."
+     ],
+     [
+      "b",
+      "Ysaé, mon chou ! Tu as mangé ?"
+     ],
+     [
+      "a",
+      "Oui."
+     ],
+     [
+      "b",
+      "Une pomme quand même."
+     ]
+    ]
+   },
+   "pimprenelle_hf": {
+    "qui": "ma petite fan,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.9,
+    "avis": "Pimprenelle a neuf ans, trois cents boulons, et plus de courage que la moitié de la Haute-Ville. Elle me pose des questions sur la Fronde toute la journée. Je lui réponds à toutes. Les enfants, c'est par eux que les murs tombent.",
+    "anecdotes": [
+     "Je lui ai fait un collier avec un boulon et un cristal bleu. Un peu d'en haut, un peu d'en bas. Elle ne l'enlève jamais. Même pour le bain. Sa mère me l'a dit en riant."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Ysaé ! En bas, il y a des boulons grands comme moi ?"
+     ],
+     [
+      "a",
+      "Plus grands, même."
+     ],
+     [
+      "b",
+      "Je viens avec toi quand la ligne rouvre !"
+     ],
+     [
+      "a",
+      "Marché conclu."
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "mon client secret,",
+    "nom": "le Bourgmestre",
+    "sentiment": 0.55,
+    "avis": "Le Bourgmestre me regarde de travers depuis le premier jour. Puis il m'a acheté une broche, en douce. Il la porte sous son écharpe. Les gens qui font semblant de ne pas aimer quelque chose, c'est souvent qu'ils commencent à l'aimer.",
+    "anecdotes": [
+     "Pendant son discours de mardi, j'ai applaudi la première. Il a eu l'air tellement surpris qu'il a oublié la suite. Le discours n'a duré que vingt minutes. Toute la ville m'a remerciée."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Hum. Bonjour, mademoiselle."
+     ],
+     [
+      "a",
+      "Bonjour, Monsieur le Bourgmestre. Elle brille bien, votre écharpe."
+     ],
+     [
+      "b",
+      "Hum ! Hum hum."
+     ]
+    ]
+   },
+   "mathilde": {
+    "qui": "ma forgeronne d'en haut,",
+    "nom": "Mathilde Soufflet",
+    "sentiment": 0.85,
+    "avis": "Mathilde me garde les chutes de cuivre de sa forge. Son grand-père a appris à forger en bas, avec les forgerons de la Fronde. Elle a la même façon de taper qu'eux. Et le même rire. Je me sens chez moi, à sa forge.",
+    "anecdotes": [
+     "Un jour, elle a tapé deux coups sur l'enclume, puis un. Sous nos pieds, quelqu'un a répondu. Deux coups, puis un. Elle m'a regardée. J'ai dit : « C'est mon oncle. » Elle a ri pendant dix minutes."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "HA HA ! Ysaé ! J'ai du cuivre pour toi !"
+     ],
+     [
+      "a",
+      "Merci, Mathilde. Tu le salueras, en bas ?"
+     ],
+     [
+      "b",
+      "Deux coups, puis un !"
+     ]
+    ]
+   }
+  }
+ },
+ "mathilde": {
+  "genre": "f",
+  "prenom": "Mathilde",
+  "histoire": [
+   {
+    "titre": "les coups d'en bas",
+    "t": "Mon grand-père a appris à forger en bas, dans les Strates, avec les forgerons de la Fronde. Il disait qu'en bas, on tape deux fois pour dire bonjour et une fois pour dire merci. Quand je frappe sur mon enclume, deux coups puis un, quelqu'un répond sous mes pieds. Je ne sais pas qui. Je réponds toujours."
+   },
+   {
+    "titre": "Pif, Paf et Mamie",
+    "t": "Quand j'ai repris la forge, j'ai installé trois marteaux à vapeur. Pif, Paf, et le plus gros, Mamie, en l'honneur de ma grand-mère. Elle tapait si fort qu'on l'entendait au Port. Le jour où Mamie, le marteau, a donné son premier coup, toutes les tasses de la Basse-Ville ont sauté. J'ai ri pendant une heure."
+   },
+   {
+    "titre": "le ruban du lavoir",
+    "t": "Le Bourgmestre avait oublié ses ciseaux pour couper le ruban du lavoir. Je lui ai proposé mon marteau. Il a dit oui. Je n'aurais pas dû taper aussi fort. Il reste un trou dans le pavé, avec une petite plaque. Je passe devant tous les jours. Je ris tous les jours."
+   },
+   {
+    "titre": "Pimprenelle",
+    "t": "Quand Pimprenelle est née, elle a serré mon doigt si fort que la sage-femme a dit : « Celle-là, elle sera forgeronne. » Elle veut être liftière. Au début, ça m'a pincé le cœur. Puis j'ai compris : la Colonne, c'est des tonnes d'acier qui montent vers le ciel. C'est un peu ma forge qui s'envole."
+   },
+   {
+    "titre": "le rire",
+    "t": "Tu sais pourquoi je ris si fort, {surnom} ? Quand j'étais petite, j'avais peur du bruit de la forge. Mon père m'a dit : « Ris plus fort qu'elle, et elle aura peur de toi. » J'ai essayé. Ça a marché. Je n'ai plus jamais arrêté. HA HA ! Tu vois ? Même la presse a sursauté."
+   }
+  ],
+  "reve": [
+   "Descendre dans les Strates quand la ligne rouvrira, trouver celui qui me répond sous l'enclume depuis vingt ans, lui serrer la main… et forger quelque chose ensemble. Une grande porte, peut-être. Une porte qui reste ouverte."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : t'es plutôt marteau ou plutôt enclume ?",
+   "reponses": [
+    {
+     "label": "Marteau !",
+     "valeur": "marteau",
+     "t": "Marteau ! HA HA ! Tu fonces, tu tapes, tu fais du bruit ! Viens, je te prête Pif. Pas Mamie. Mamie, il faut la mériter.",
+     "rappel": "Toujours marteau ? Pif t'attend, HA HA !"
+    },
+    {
+     "label": "Enclume.",
+     "valeur": "enclume",
+     "t": "Enclume ! Solide, patient, toujours là. C'est le plus important, l'enclume. Sans elle, le marteau tape dans le vide. Et il a l'air bête.",
+     "rappel": "Toujours enclume ? Solide comme toujours, hein ?"
+    },
+    {
+     "label": "Plutôt le rire.",
+     "valeur": "rire",
+     "t": "Le rire ! HA HA HA ! Ça, c'est la bonne réponse ! Le rire, c'est ce qui fait marcher la forge. La vapeur, c'est juste pour faire joli.",
+     "rappel": "Toujours le rire ? HA HA ! T'as raison !"
+    }
+   ]
+  },
+  "liens": {
+   "pimprenelle_hf": {
+    "qui": "ma fille,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.95,
+    "avis": "Pimprenelle ramasse tout ce qui tombe de l'établi. Elle a trois cents boulons sous son lit, un truc qui s'appelle Gérard, et un avenir de Grande Liftière. Je suis la mère la plus fière de la Basse-Ville.",
+    "anecdotes": [
+     "Elle a essayé de soulever ma grande pince. Elle l'a soulevée ! De deux centimètres ! J'ai ri si fort que j'en ai fait tomber mon marteau. Elle a ramassé le boulon qui est tombé avec. Évidemment."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Pimprenelle ! Tes boulons, dans la forge !"
+     ],
+     [
+      "b",
+      "C'est pas des boulons, c'est ma collection, Maman !"
+     ],
+     [
+      "a",
+      "HA HA HA ! Range ta collection !"
+     ]
+    ]
+   },
+   "heloise_hf": {
+    "qui": "ma cliente des nuages,",
+    "nom": "la Capitaine Héloïse",
+    "sentiment": 0.8,
+    "avis": "Héloïse vient tous les jours demander si ses rivets sont prêts. Ils sont prêts depuis une semaine. Mais sa tête quand je dis « demain »… Je ne m'en lasse pas. Je les lui donnerai demain. Promis.",
+    "anecdotes": [
+     "Elle m'a emmenée faire un tour dans l'Albatros, une fois. J'ai ri si fort pendant le décollage que le dirigeable a pris dix mètres de plus. Elle dit que je suis un meilleur moteur que la vapeur."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mathilde, mes rivets ?"
+     ],
+     [
+      "a",
+      "HA HA ! Demain !"
+     ],
+     [
+      "b",
+      "Tu dis ça depuis lundi !"
+     ],
+     [
+      "a",
+      "HA HA HA ! Demain !"
+     ]
+    ]
+   },
+   "ysae": {
+    "qui": "ma petite cousine d'en bas,",
+    "nom": "Ysaé",
+    "sentiment": 0.85,
+    "avis": "Ysaé fait avec mes chutes de cuivre des bijoux plus beaux que tout ce que je forge. Elle vient d'en bas, comme les maîtres de mon grand-père. Les notables font les gros yeux. Moi, je fais les gros rires.",
+    "anecdotes": [
+     "Elle m'a dit que celui qui répond à mes coups sous l'enclume, c'est peut-être son oncle. Je ne sais pas si c'est vrai. Mais depuis, je tape deux coups, puis un, puis deux autres : « Bonjour, merci, et bonjour à Ysaé. »"
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Ysaé ! Du cuivre pour toi !"
+     ],
+     [
+      "b",
+      "Merci, Mathilde. Tu le salueras, en bas ?"
+     ],
+     [
+      "a",
+      "Deux coups, puis un ! HA HA !"
+     ]
+    ]
+   },
+   "hector_hf": {
+    "qui": "mon meilleur client,",
+    "nom": "le Bourgmestre",
+    "sentiment": 0.6,
+    "avis": "Le Bourgmestre m'a commandé cinquante-sept médailles. Pour lui. La médaille de la Médaille, la médaille du Ruban, la médaille de la Moustache… Il est vaniteux comme un paon et gentil comme un mouton. C'est un mélange très rare.",
+    "anecdotes": [
+     "Il m'a demandé une médaille « on verra ». Je l'ai forgée. Il y a écrit dessus : « On verra ». Il la porte. Il en est très fier."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Mathilde ! Une nouvelle médaille !"
+     ],
+     [
+      "a",
+      "HA HA HA ! La médaille de quoi ?"
+     ],
+     [
+      "b",
+      "On verra !"
+     ]
+    ]
+   }
+  }
+ },
+ "leon_hf": {
+  "genre": "m",
+  "prenom": "Léon",
+  "histoire": [
+   {
+    "titre": "le mousse",
+    "t": "J'ai embarqué comme mousse à onze ans, sur une goélette qui transportait des cordages. C'est pour ça que je suis revenu ici, au Port des Cordages. Les cordes, je les connais toutes. Nœud de chaise, nœud de cabestan, nœud de cœur. Le dernier, je ne l'ai fait qu'une fois. Ça ne regarde personne."
+   },
+   {
+    "titre": "le radeau",
+    "t": "Une fois, mon bateau a coulé au large, à cause d'une baleine trop curieuse. J'ai fait un radeau avec des planches et ma chemise. J'ai dérivé six jours. Le septième, j'ai vu la Colonne qui brillait, au loin. J'ai ramé vers elle. Depuis, quand je la regarde, je pense : « Voilà. La maison. »"
+   },
+   {
+    "titre": "la cannelle",
+    "t": "Il y a des années, un bateau d'épices a coulé, tout doucement, dans mon port. Toute la baie a senti la cannelle pendant un mois. Une famille en est sortie, toute trempée, avec une petite fille qui riait. Je leur ai dit de rester. C'était Rosalie. Elle rit toujours pareil."
+   },
+   {
+    "titre": "le pain de Margot",
+    "t": "Chaque matin, je prends ma barque et j'apporte du pain au Phare. Margot ne dit jamais merci. Elle me présente une mouette. Hortense, Basile, Colette… J'en connais vingt, maintenant. Elle en a cent douze. J'ai le temps. Je ne suis pas pressé."
+   },
+   {
+    "titre": "hm",
+    "t": "Tu veux savoir pourquoi je dis « hm », {surnom} ? En mer, on n'a pas le temps de faire des phrases. Un « hm », ça veut dire : « je t'ai entendu, je suis là, tout va bien ». Les gens d'ici croient que je suis bourru. Ceux qui ont navigué savent que c'est la plus longue phrase du monde."
+   }
+  ],
+  "reve": [
+   "Hm. Voir un jour le bateau de ligne, les dirigeables d'Héloïse et les cabines de la Colonne partir tous en même temps, vers tous les mondes. Et qu'ils reviennent tous. C'est le plus important, qu'ils reviennent."
+  ],
+  "question": {
+   "texte": "Hm. Dis-moi, moussaillon : la mer ou le ciel ?",
+   "reponses": [
+    {
+     "label": "La mer.",
+     "valeur": "mer",
+     "t": "Hm. Bien. (Il sourit, presque.) La mer, elle te porte. Le ciel, il te lâche. Va dire ça à Héloïse. Non, ne lui dis pas. Elle rirait.",
+     "rappel": "Toujours la mer ? Hm. Bien."
+    },
+    {
+     "label": "Le ciel.",
+     "valeur": "ciel",
+     "t": "Hmm. Encore un qu'Héloïse a ensorcelé. Bon. Le ciel, c'est joli. Mais quand il pleut, c'est sur toi qu'il tombe. La mer, elle, est déjà mouillée.",
+     "rappel": "Toujours le ciel ? Hmm. Héloïse sera contente."
+    },
+    {
+     "label": "Les deux, comme les mouettes.",
+     "valeur": "mouettes",
+     "t": "Hm ! Comme les mouettes. Pas bête, ça. Margot serait d'accord. Les mouettes, elles, ne choisissent jamais. Elles ont raison.",
+     "rappel": "Toujours comme les mouettes ? Hm. Margot t'aime bien."
+    }
+   ]
+  },
+  "liens": {
+   "heloise_hf": {
+    "qui": "la girouette,",
+    "nom": "Héloïse Nimbus",
+    "sentiment": 0.85,
+    "avis": "Héloïse vole dans un ballon. Ce n'est pas naturel. Mais elle a le cœur d'un vrai marin. Elle sait d'où vient le vent, elle sait revenir, et elle n'abandonne jamais personne. Hm. Ne lui dis pas.",
+    "anecdotes": [
+     "Un jour de tempête, son Albatros est tombé dans la baie. Je suis allé la chercher en barque. J'ai grogné tout le trajet. Elle a ri tout le trajet. On était trempés. C'est un bon souvenir."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, vieux loup de mer !"
+     ],
+     [
+      "a",
+      "Hm. Bonjour, la girouette."
+     ],
+     [
+      "b",
+      "Belle mer, ce matin ?"
+     ],
+     [
+      "a",
+      "Meilleure que ton ciel."
+     ]
+    ]
+   },
+   "margot_hf": {
+    "qui": "ma gardienne de Phare,",
+    "nom": "Margot",
+    "sentiment": 0.9,
+    "avis": "Margot parle aux mouettes et presque pas aux gens. Moi, je dis « hm ». On se comprend très bien. Son Phare m'a ramené au port plus de fois que je ne peux compter.",
+    "anecdotes": [
+     "Une fois, j'ai oublié le pain. Elle n'a rien dit. Le lendemain, Hortense m'attendait sur ma barque. Elle m'a pincé l'oreille. Je n'ai plus jamais oublié."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hm. Le pain."
+     ],
+     [
+      "b",
+      "Merci, Léon. Voici Gaston, il est né mardi."
+     ],
+     [
+      "a",
+      "Hm. Bonjour, Gaston."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "mon partenaire de cartes,",
+    "nom": "Père Bastien",
+    "sentiment": 0.8,
+    "avis": "Bastien et moi, on joue aux cartes le dimanche, depuis quarante ans. Il parle à ses cartes. Il gagne. Je ne comprends pas. J'ai vérifié les cartes. Elles sont normales. C'est lui qui ne l'est pas.",
+    "anecdotes": [
+     "Une fois, j'ai gagné. Une seule fois. Il a dit à ses cartes : « Laissez-le gagner, il a eu une dure semaine. » Je n'ai jamais su si c'était une blague."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Allez, ma petite dame de cœur, pousse…"
+     ],
+     [
+      "a",
+      "Hm. Tu triches."
+     ],
+     [
+      "b",
+      "Je l'encourage, Léon. Ce n'est pas pareil."
+     ]
+    ]
+   },
+   "firmin": {
+    "qui": "mon tavernier,",
+    "nom": "Firmin",
+    "sentiment": 0.65,
+    "avis": "Firmin a une machine qui siffle comme un vapeur dans le brouillard. Ça me plaît. Son chocolat aussi. Hm. Je n'en dirai pas plus.",
+    "anecdotes": [
+     "Un dimanche, sa machine a sifflé en plein discours du Bourgmestre. Le discours s'est arrêté net. J'ai ri. Firmin m'a regardé comme si j'étais un fantôme."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Hm. Un chocolat."
+     ],
+     [
+      "b",
+      "Un grand ?"
+     ],
+     [
+      "a",
+      "Hm. Oui."
+     ]
+    ]
+   }
+  }
+ },
+ "margot_hf": {
+  "genre": "f",
+  "prenom": "Margot",
+  "histoire": [
+   {
+    "titre": "le noir",
+    "t": "Quand j'étais petite, j'avais peur du noir. Je ne l'ai dit qu'à une seule personne : Rosalie, au marché. Elle n'en a jamais parlé à personne. Aujourd'hui, je suis gardienne de Phare. J'allume la nuit tous les soirs. Je crois que c'est ma façon de lui répondre."
+   },
+   {
+    "titre": "le remplacement",
+    "t": "Je suis arrivée au Phare à dix-neuf ans, pour remplacer le gardien pendant une semaine. Il ne m'a jamais dit pourquoi il partait. Il ne m'a jamais dit qu'il ne reviendrait pas. Au bout d'un mois, j'ai compris. Au bout d'un an, j'étais contente. Ça fait trente ans."
+   },
+   {
+    "titre": "Hortense",
+    "t": "La première mouette qui m'a parlé, c'est Hortense. Elle s'est posée sur la rambarde le premier matin et elle a fait « kia ». J'ai répondu « bonjour ». Elle a fait « kia » une deuxième fois. Depuis, on se dit bonjour tous les jours. Elle est la cheffe. Je suis la gardienne. On se partage le Phare."
+   },
+   {
+    "titre": "la tempête",
+    "t": "Une nuit de grande tempête, la lampe s'est éteinte. Le vent avait cassé la vitre. Un bateau arrivait. J'ai tenu une lanterne à bout de bras, au sommet, pendant deux heures, sous la pluie. Le bateau est entré au port. Léon était à bord. Il ne m'a jamais dit merci. Il m'apporte du pain chaque matin depuis."
+   },
+   {
+    "titre": "les clins d'œil",
+    "t": "Je vais te dire un secret, {surnom}. Le Professeur Lunette croit qu'une étoile lui fait des clins d'œil. Parfois, c'est ma lampe. Parfois, c'est la lanterne d'Héloïse. Mais parfois… ce n'est ni l'une ni l'autre. Je ne lui dis pas. Les mystères, c'est comme les mouettes : il ne faut pas les attraper."
+   }
+  ],
+  "reve": [
+   "Qu'un jour, une de mes mouettes revienne de la Cité des Nuées avec des nouvelles de là-haut. Et que je sois la première à les savoir. Avant Rosalie. Juste une fois."
+  ],
+  "question": {
+   "texte": "Dis-moi, {surnom} : si tu étais une mouette, tu t'appellerais comment ?",
+   "reponses": [
+    {
+     "label": "Hortense, comme la cheffe.",
+     "valeur": "hortense",
+     "t": "Hortense ! Oh là. Ne le dis pas trop fort, elle est jalouse de son nom. Mais tu as le regard d'une cheffe. Un peu.",
+     "rappel": "Bonjour, Hortense numéro deux. La vraie te regarde."
+    },
+    {
+     "label": "Un nom de gâteau.",
+     "valeur": "gateau",
+     "t": "Un nom de gâteau ! Comme Biscotte, ou Madeleine ! Il y a déjà une Madeleine. Elle mange tout. Tu lui ressembles peut-être.",
+     "rappel": "Bonjour, ma petite Madeleine. Tu as encore faim ?"
+    },
+    {
+     "label": "Je ne serais pas une mouette, je serais le Phare.",
+     "valeur": "phare",
+     "t": "Le Phare… (Elle sourit longtemps.) C'est la plus jolie réponse qu'on m'ait faite. Le Phare, il ne bouge pas, mais tout le monde revient vers lui.",
+     "rappel": "Bonjour, petit Phare. Tu brilles bien, aujourd'hui."
+    }
+   ]
+  },
+  "liens": {
+   "leon_hf": {
+    "qui": "mon porteur de pain,",
+    "nom": "Léon",
+    "sentiment": 0.9,
+    "avis": "Léon m'apporte du pain chaque matin. Il dit que c'est « en passant ». Le Phare n'est sur le chemin de rien. Il grogne, je souris, Hortense l'observe. C'est notre petit-déjeuner. Il est parfait.",
+    "anecdotes": [
+     "Un matin, il a oublié le pain. Le lendemain, Hortense l'attendait sur sa barque. Elle lui a pincé l'oreille. Il n'a plus jamais oublié."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Hm. Le pain."
+     ],
+     [
+      "a",
+      "Merci, Léon. Voici Gaston, il est né mardi."
+     ],
+     [
+      "b",
+      "Hm. Bonjour, Gaston."
+     ]
+    ]
+   },
+   "octave_hf": {
+    "qui": "mon astronome entêté,",
+    "nom": "le Professeur Lunette",
+    "sentiment": 0.7,
+    "avis": "Le Professeur croit que son étoile Clémentine lui fait des clins d'œil. Je lui dis que c'est ma lampe. Il ne me croit pas. Il a peut-être raison. Mais je ne le lui dirai jamais.",
+    "anecdotes": [
+     "J'ai éteint le Phare une minute pour lui prouver que c'était ma lampe. Clémentine a cligné quand même. Je lui ai dit que c'était une mouette. Il était si content d'avoir raison que je n'ai pas eu le cœur d'insister."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Margot ! Elle a encore cligné !"
+     ],
+     [
+      "a",
+      "C'était Basile."
+     ],
+     [
+      "b",
+      "Basile est une mouette !"
+     ],
+     [
+      "a",
+      "Justement."
+     ]
+    ]
+   },
+   "augustin_hf": {
+    "qui": "le poète du vent,",
+    "nom": "Augustin",
+    "sentiment": 0.6,
+    "avis": "Augustin vient parfois lire ses poèmes aux rochers. Le vent les emporte. Les mouettes aussi. Il ne s'en aperçoit pas. Il continue de lire, les mains vides. C'est très beau à regarder.",
+    "anecdotes": [
+     "Basile, ma mouette la plus rêveuse, a gardé un de ses poèmes dans son nid. Il s'assoit dessus tous les soirs. Je crois qu'il le couve."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "« Ô mer, ô vent, ô… » Il est parti."
+     ],
+     [
+      "a",
+      "Basile l'a attrapé."
+     ],
+     [
+      "b",
+      "Ah. Il est entre de bonnes ailes."
+     ]
+    ]
+   }
+  }
+ },
+ "augustin_hf": {
+  "genre": "m",
+  "prenom": "Augustin",
+  "histoire": [
+   {
+    "titre": "le cri envolé",
+    "t": "Je suis né un jour de grand vent. Ma mère dit que mon premier cri est parti tout seul vers la mer, emporté par une rafale. Depuis, je cherche les mots que le vent m'a pris. J'écris des poèmes pour essayer de les rattraper. J'en ai retrouvé quelques-uns. Il en manque beaucoup."
+   },
+   {
+    "titre": "les quatre ailes",
+    "t": "Quand mon père m'a laissé le moulin, il m'a présenté les quatre vents comme on présente une famille. « Le Nord, c'est le grognon. L'Est, le timide. Le Sud, le paresseux. L'Ouest, le poète. » J'ai demandé lequel j'étais. Il a ri et il a dit : « L'Ouest, évidemment. Tu fais des courants d'air sentimentaux. »"
+   },
+   {
+    "titre": "l'aile du mardi",
+    "t": "Un mardi, j'ai changé une aile du moulin. Je ne savais pas que Gaspard l'horloger réglait sa montre sur mes ailes. Il a été en retard pour la seule fois de sa vie. Il ne me l'a jamais pardonné. Enfin, un peu. Il me salue. Avec trois secondes d'avance. Pour me montrer qu'il peut."
+   },
+   {
+    "titre": "la Bibliothèque",
+    "t": "La première fois que je suis entré à la Bibliothèque des Cartes, je cherchais une carte des vents. Mademoiselle Philippine me l'a trouvée en chuchotant. Je ne me souviens plus de la carte. Je me souviens du chuchotement. Depuis, je livre de la farine à la Bibliothèque. Ils n'en ont pas besoin. Moi, si."
+   },
+   {
+    "titre": "le poème entier",
+    "t": "Je n'ai jamais écrit un poème entier, {surnom}. Le vent emporte toujours le dernier vers. Mais je crois que c'est fait exprès. Un poème fini, on le range. Un poème qui attend son dernier vers, on le garde dans son cœur. Et on revient demain."
+   }
+  ],
+  "reve": [
+   "Monter à la Cité des Nuées, quand la ligne rouvrira, écouter le vent qui n'a jamais touché terre, et écrire enfin un poème entier. Puis le donner à quelqu'un. En personne. Sans sac de farine."
+  ],
+  "question": {
+   "texte": "« Ô voyageur… » Pardon. Dis-moi : quel vent préfères-tu ?",
+   "reponses": [
+    {
+     "label": "Le vent d'ouest, qui sent la mer.",
+     "valeur": "ouest",
+     "t": "L'Ouest ! Le poète ! Comme moi ! Tu sens la mer et la pomme, quand il souffle ? Moi aussi. Nous sommes frères de brise.",
+     "rappel": "Le vent d'ouest souffle aujourd'hui, frère de brise. Tu le sens ?"
+    },
+    {
+     "label": "La brise douce du soir.",
+     "valeur": "brise",
+     "t": "La brise du soir… Celle qui chuchote. Comme… euh. Comme une feuille. Oui. Comme une feuille de papier. À la Bibliothèque. Pourquoi je dis ça ?",
+     "rappel": "La brise du soir arrive bientôt. Elle chuchote toujours autant."
+    },
+    {
+     "label": "Le grand vent qui décoiffe !",
+     "valeur": "tempete",
+     "t": "Le grand vent ! Celui qui fait tourner le moulin à toute allure et voler la farine jusqu'au Phare ! Margot n'aime pas beaucoup. Ses mouettes deviennent toutes blanches.",
+     "rappel": "Toujours fan du grand vent ? Il souffle fort, aujourd'hui. Accroche ton chapeau."
+    }
+   ]
+  },
+  "liens": {
+   "philippine": {
+    "qui": "ma lectrice secrète,",
+    "nom": "Mademoiselle Philippine",
+    "sentiment": 0.95,
+    "avis": "Mademoiselle Philippine chuchote, range les pays qui n'existent pas, et ne plie jamais une carte dans le mauvais sens. Je glisse un poème dans chaque sac de farine. Je ne sais pas si elle les trouve. Je préfère ne pas savoir. Enfin… j'aimerais savoir.",
+    "anecdotes": [
+     "Un mardi, j'ai oublié le poème. Le mercredi, j'ai livré un deuxième sac, avec deux poèmes. Elle a dit : « Encore de la farine ? » J'ai cru que mon cœur allait s'envoler avec les ailes du moulin."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Mademoiselle Philippine… votre farine."
+     ],
+     [
+      "b",
+      "(Elle chuchote.) Merci, Augustin. Elle sera très utile."
+     ],
+     [
+      "a",
+      "Ah ? Ah. Bon. Tant mieux."
+     ]
+    ]
+   },
+   "bastien_hf": {
+    "qui": "mon voisin des vergers,",
+    "nom": "Père Bastien",
+    "sentiment": 0.85,
+    "avis": "Le Père Bastien me donne des pommes, je lui donne de la farine, et nous faisons des tartes. Il parle aux pommes. Je récite des vers. Les tartes sont excellentes et très cultivées.",
+    "anecdotes": [
+     "Une fois, il a dit à une tarte : « Tu es la plus belle tarte du monde. » Elle a doré d'un seul coup. Je n'explique pas. Je constate."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Augustin, la farine est prête ?"
+     ],
+     [
+      "a",
+      "Fine comme un vers de Philippine… euh. Comme un vers tout court."
+     ],
+     [
+      "b",
+      "Hé hé. Les pommes ont entendu."
+     ]
+    ]
+   },
+   "gaspard_hf": {
+    "qui": "mon horloger rancunier,",
+    "nom": "Gaspard",
+    "sentiment": 0.55,
+    "avis": "Gaspard ne me pardonne pas l'aile du mardi. Il me salue avec trois secondes d'avance pour me montrer qu'il peut. Je lui ai écrit un poème d'excuse. Il l'a chronométré. « Quatre secondes trop long. »",
+    "anecdotes": [
+     "Je lui ai offert un poème de quatre vers exactement. Il l'a chronométré. Pile à l'heure. Il a hoché la tête. Je crois que c'était la paix."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Augustin. Votre moulin tourne à trois tours par minute."
+     ],
+     [
+      "a",
+      "C'est le vent d'ouest, Gaspard."
+     ],
+     [
+      "b",
+      "Qu'il reste comme ça."
+     ]
+    ]
+   }
+  }
+ },
+ "bastien_hf": {
+  "genre": "m",
+  "prenom": "le Père Bastien",
+  "histoire": [
+   {
+    "titre": "le premier pépin",
+    "t": "Mon premier arbre, je l'ai planté à six ans. Un pépin de pomme, dans un pot de fleur. Je lui parlais tous les soirs. Mes parents riaient. À dix ans, il était plus grand que moi. À vingt ans, il donnait des pommes. Il est toujours là, au bout de la deuxième terrasse. On se dit bonjour."
+   },
+   {
+    "titre": "le pommier de Dame Ysolde",
+    "t": "Tout en haut des Vergers, il y a un vieux pommier tordu. On dit que Dame Ysolde elle-même l'a planté, il y a deux cents ans. Ses pommes sont petites, dures et fières. Chaque automne, j'en apporte une à sa statue, dans la fontaine. C'est la tradition. Je l'ai inventée. Mais elle est très belle."
+   },
+   {
+    "titre": "le cerisier jaloux",
+    "t": "Il y avait un petit cerisier qui ne voulait pas fleurir. Trois ans de suite. J'ai compris qu'il était jaloux du pommier d'à côté, que tout le monde admirait. Alors chaque matin, je lui ai fait un compliment. Un seul. Au printemps suivant, il a fleuri si fort qu'on le voyait depuis le Belvédère."
+   },
+   {
+    "titre": "les cartes du dimanche",
+    "t": "Le dimanche, je joue aux cartes avec Léon, sur le banc du port. Je parle à mes cartes, comme à mes arbres. « Allez, ma petite dame de cœur, pousse. » Je gagne presque toujours. Léon dit que je triche. Je ne triche pas. J'encourage. Ce n'est pas pareil."
+   },
+   {
+    "titre": "écouter",
+    "t": "Tu sais pourquoi je parle aux arbres, {surnom} ? Ce n'est pas pour qu'ils m'entendent. C'est pour que moi, j'apprenne à écouter. Quand on parle à quelqu'un tous les jours, même s'il ne répond pas, on finit par entendre ce qu'il ne dit pas. Un arbre dit beaucoup. Juste très lentement."
+   }
+  ],
+  "reve": [
+   "Planter un pommier de Hautefond dans chacun des quatre mondes de la Colonne : un dans les nuages, un ici, un dans les Strates, et un sous le Dôme, au fond de la mer. Et revenir les voir grandir, l'un après l'autre."
+  ],
+  "question": {
+   "texte": "Dis-moi, jeune pousse : si tu étais un arbre, tu serais lequel ?",
+   "reponses": [
+    {
+     "label": "Un grand chêne solide.",
+     "valeur": "chene",
+     "t": "Un chêne ! Fort, patient, qui abrite tout le monde. C'est un bel arbre pour un voyageur. Il ne bouge pas, mais tout le monde vient à lui.",
+     "rappel": "Bonjour, mon petit chêne. Tu as encore poussé."
+    },
+    {
+     "label": "Un pommier, pour donner des fruits.",
+     "valeur": "pommier",
+     "t": "Un pommier ! Le plus généreux de tous. Il donne, il donne, et il ne demande qu'un peu de soleil et une gentille parole. Tu as un cœur de verger.",
+     "rappel": "Bonjour, mon petit pommier. Tu donnes toujours autant ?"
+    },
+    {
+     "label": "Un cerisier qui fleurit tard.",
+     "valeur": "cerisier",
+     "t": "Un cerisier qui fleurit tard… (Il sourit.) Ce sont les plus beaux. Ceux qui prennent leur temps, et qui éclatent d'un coup quand on ne les attend plus.",
+     "rappel": "Bonjour, mon petit cerisier. Pas encore de fleurs ? Ça viendra."
+    }
+   ]
+  },
+  "liens": {
+   "rosalie_hf": {
+    "qui": "ma cueilleuse du mardi,",
+    "nom": "Rosalie Cannelle",
+    "sentiment": 0.85,
+    "avis": "Rosalie raconte des potins à mes pommes pendant la cueillette. Les pommes du mardi sont les plus sucrées de la semaine. Je ne lui ai jamais dit. Elle le sait sûrement quand même.",
+    "anecdotes": [
+     "Une fois, elle leur a raconté une histoire si drôle qu'une pomme est tombée toute seule. Elle a dit : « Tu vois, elle a ri. » Je n'ai rien pu répondre à ça."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Bonjour, Père Bastien ! Elles sont prêtes ?"
+     ],
+     [
+      "a",
+      "Elles t'attendaient, Rosalie. Raconte-leur quelque chose."
+     ],
+     [
+      "b",
+      "Alors, mes jolies, écoutez ça…"
+     ]
+    ]
+   },
+   "leon_hf": {
+    "qui": "mon vieux camarade,",
+    "nom": "Léon Calfat",
+    "sentiment": 0.85,
+    "avis": "Léon grogne, je souris, on joue aux cartes. Ça dure depuis quarante ans. C'est un arbre, Léon : il a l'écorce dure, mais il a de la sève douce dedans.",
+    "anecdotes": [
+     "Un dimanche, il a gagné. J'avais dit à mes cartes de le laisser gagner. Il ne le saura jamais. Il était si content qu'il a dit trois phrases d'affilée."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Allez, ma petite dame de cœur, pousse…"
+     ],
+     [
+      "b",
+      "Hm. Tu triches."
+     ],
+     [
+      "a",
+      "Je l'encourage, Léon. Ce n'est pas pareil."
+     ]
+    ]
+   },
+   "pimprenelle_hf": {
+    "qui": "ma petite jardinière de boulons,",
+    "nom": "Pimprenelle",
+    "sentiment": 0.75,
+    "avis": "Pimprenelle est venue planter un boulon, pour voir s'il pousserait un arbre à boulons. Je lui ai dit que ça ne marcherait pas. Puis je l'ai arrosé quand même. Il ne faut jamais décourager une graine. Même en métal.",
+    "anecdotes": [
+     "Le printemps suivant, un petit pissenlit a poussé juste à côté du boulon. Pimprenelle a dit : « Tu vois, ça marche. » Je n'ai pas eu le cœur de la contredire."
+    ],
+    "bavardage": [
+     [
+      "b",
+      "Père Bastien ! Mon boulon a poussé ?"
+     ],
+     [
+      "a",
+      "Pas encore, ma petite. Mais il a un voisin."
+     ],
+     [
+      "b",
+      "C'est déjà un début !"
+     ]
+    ]
+   },
+   "augustin_hf": {
+    "qui": "mon meunier poète,",
+    "nom": "Augustin Meule",
+    "sentiment": 0.75,
+    "avis": "Augustin me donne sa farine, je lui donne mes pommes, et nous faisons des tartes en leur récitant des vers. Il rougit quand on parle de la Bibliothèque. Les arbres l'ont remarqué. Moi aussi.",
+    "anecdotes": [
+     "Je lui ai dit, un jour : « Un arbre qu'on n'ose pas planter ne donnera jamais de fruits. » Il a rougi jusqu'aux oreilles. Le mardi suivant, il a livré deux sacs de farine."
+    ],
+    "bavardage": [
+     [
+      "a",
+      "Augustin, la farine est prête ?"
+     ],
+     [
+      "b",
+      "Fine comme un vers de Philippine… euh. Comme un vers tout court."
+     ],
+     [
+      "a",
+      "Hé hé. Les pommes ont entendu."
+     ]
+    ]
+   }
+  }
+ }
+}

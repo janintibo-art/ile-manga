@@ -148,6 +148,7 @@ func _ready() -> void:
 	_create_v94()
 	_create_v97()
 	_create_v99()
+	_create_v112()
 	_create_v103()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
@@ -220,6 +221,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V99 : l'Île Crayonnée (au sud-est, à l'est de Néopolis ; son carré ne touche aucune autre île)
 	if crayon_v99 != null and crayon_v99.ile != null and crayon_v99.ile.contains(x, z):
 		return maxf(h, crayon_v99.ile.height(x, z))
+	# V112 : l'Île de Hautefond (au sud-ouest, au sud de Braise ; son carré ne touche aucune autre île)
+	if hautefond_v112 != null and hautefond_v112.ile != null and hautefond_v112.ile.contains(x, z):
+		return maxf(h, hautefond_v112.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1068,6 +1072,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			pasta_v97.load_data({})
 		if crayon_v99 != null and crayon_v99.ile != null:
 			crayon_v99.load_data({})
+		if hautefond_v112 != null and hautefond_v112.ile != null:
+			hautefond_v112.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1246,6 +1252,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and crayon_v99 != null and crayon_v99.ile != null:
 		var crdata99: Variant = SaveStore.read_slot(slot).get("crayon", {})
 		crayon_v99.load_data(crdata99 if crdata99 is Dictionary else {})
+	# V112 : l'Île de Hautefond
+	if not new_game and hautefond_v112 != null and hautefond_v112.ile != null:
+		var hfdata: Variant = SaveStore.read_slot(slot).get("hautefond", {})
+		hautefond_v112.load_data(hfdata if hfdata is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1390,6 +1400,8 @@ func _save_slot(slot: int) -> bool:
 		extra["pasta"] = pasta_v97.serialize()
 	if crayon_v99 != null and crayon_v99.ile != null:
 		extra["crayon"] = crayon_v99.serialize()
+	if hautefond_v112 != null and hautefond_v112.ile != null:
+		extra["hautefond"] = hautefond_v112.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -2431,6 +2443,10 @@ func _respawn_v28() -> void:
 	if crayon_v99 != null and crayon_v99.ile != null and crayon_v99.owns_point(_player_pos_v27()):
 		crayon_v99.on_faint(_player_pos_v27())
 		return
+	# V112 : sur l'Île de Hautefond : à la fontaine de Dame Ysolde
+	if hautefond_v112 != null and hautefond_v112.ile != null and hautefond_v112.owns_point(_player_pos_v27()):
+		hautefond_v112.on_faint(_player_pos_v27())
+		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
 		boucan_v75.on_faint(_player_pos_v27())
@@ -2795,6 +2811,15 @@ func _create_jungle_v29() -> void:
 	crayon_v99.build_island()
 	var cr_d: Array = crayon_v99.dock()
 	boat_v29._make_dock("Ponton_crayonnee", cr_d[0], cr_d[1])
+	# V112 : l'Île de Hautefond, au sud-ouest : la cité-colonne (le relief d'abord ; la ville, la
+	# Grande Colonne, le dehors et la végétation après l'heure du jour, voir _create_v112).
+	hautefond_v112 = preload("res://scripts/hautefond_v112.gd").new()
+	hautefond_v112.name = "Hautefond_v112"
+	add_child(hautefond_v112)
+	hautefond_v112.setup(self)
+	hautefond_v112.build_island()
+	var hf_d: Array = hautefond_v112.dock()
+	boat_v29._make_dock("Ponton_hautefond", hf_d[0], hf_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2869,6 +2894,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
 	if neo_v94 != null and neo_v94.contains(p):
 		if neo_v94.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V112 : l'Île de Hautefond : la terre ferme, les quais, la Grande Colonne, son Belvédère
+	if hautefond_v112 != null and hautefond_v112.contains(p):
+		if hautefond_v112.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3450,7 +3483,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3697,6 +3730,7 @@ var larsen_v91: Node3D                     # V91 : l'Île de Larsen (la ville de
 var neo_v94: Node3D                        # V94 : Néopolis (la ville cyberpunk)
 var pasta_v97: Node3D                      # V97 : l'Île Al Dente (la secte du Spaghetti Volant)
 var crayon_v99: Node3D                     # V99 : l'Île Crayonnée (l'île en noir et blanc)
+var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cité-colonne)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
@@ -3782,6 +3816,9 @@ func _spawn_azur_v56() -> void:
 	# V101 : les habitants du Village des Arbres-Maisons (l'Île Crayonnée)
 	if crayon_v99 != null and crayon_v99.get("vie") != null and crayon_v99.vie != null:
 		crayon_v99.vie.spawn_npcs()
+	# V112 : les habitants de Hautefond
+	if hautefond_v112 != null and hautefond_v112.city != null:
+		hautefond_v112.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -4027,6 +4064,16 @@ func _create_v99() -> void:
 		crayon_v99.register_services(journal_v56)
 
 
+## V112 : l'Île de Hautefond (la ville en terrasses, la Grande Colonne et son ascenseur, le port, le
+## phare, le moulin, les vergers, les falaises, la végétation) ; le ponton est posé avec le relief.
+func _create_v112() -> void:
+	if hautefond_v112 == null:
+		return
+	hautefond_v112.build_town()
+	if journal_v56 != null:
+		hautefond_v112.register_services(journal_v56)
+
+
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
 func _create_v103() -> void:
 	trafic_v103 = preload("res://scripts/trafic_v103.gd").new()
@@ -4243,6 +4290,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(pasta_v97.ile.CENTER.x, pasta_v97.ile.CENTER.z), pasta_v97.ile.HALF])
 	if crayon_v99 != null and crayon_v99.ile != null:
 		boxes.append([Vector2(crayon_v99.ile.CENTER.x, crayon_v99.ile.CENTER.z), crayon_v99.ile.HALF])
+	if hautefond_v112 != null and hautefond_v112.ile != null:
+		boxes.append([Vector2(hautefond_v112.ile.CENTER.x, hautefond_v112.ile.CENTER.z), hautefond_v112.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

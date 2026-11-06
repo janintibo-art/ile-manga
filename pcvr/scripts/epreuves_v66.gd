@@ -194,6 +194,16 @@ const LISTE := {
 	"larsen_ampli": ["L'effet Larsen", "larsen", 25],
 	"larsen_corde": ["Une corde de chanvre", "larsen", 20],
 	"larsen_disque_rare": ["Le disque des deux villages", "larsen", 30],
+	"hautefond": ["L'Île de Hautefond", "hautefond", 20],
+	"hautefond_ville": ["Hautefond, la cité-colonne", "hautefond", 20],
+	"hautefond_belvedere": ["Le Belvédère de la Grande Colonne", "hautefond", 25],
+	"hautefond_marche": ["Le Grand Marché", "hautefond", 15],
+	"hautefond_port": ["Le Port des Cordages", "hautefond", 15],
+	"hautefond_phare": ["Le Phare de la Pointe", "hautefond", 15],
+	"hautefond_moulin": ["Le Moulin des Quatre Vents", "hautefond", 15],
+	"hautefond_vergers": ["Les Vergers en terrasses", "hautefond", 15],
+	"hautefond_falaises": ["Les Falaises et les Arches", "hautefond", 20],
+	"hautefond_observatoire": ["L'Observatoire", "hautefond", 15],
 	"neo": ["Néopolis", "neo", 20],
 	"neo_place": ["La Place des Hologrammes", "neo", 20],
 	"neo_terrasse": ["La Terrasse du Ciel", "neo", 25],
@@ -294,7 +304,7 @@ const XP_INCONNUE: int = 10
 
 const REGIONS := [["village", "L'île du village et la jungle"], ["elfes", "Le Bois-Doré et les Racines"], ["nains", "La Montagne de Feu"],
 	["ciel", "Le ciel"], ["mer", "La mer et l'Atlantide"], ["azur", "Port-Azur"], ["fees", "Le royaume des fées"], ["grande", "La grande île de l'est"],
-	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["pasta", "L'Île Al Dente"], ["crayon", "L'Île Crayonnée"], ["compagnons", "Les compagnons et les voyages"]]
+	["arcanelle", "Arcanelle, l'île des sorciers"], ["balafre", "L'Île de la Balafre"], ["soleils", "L'Île des Trois Soleils"], ["braise", "L'Île de Braise"], ["montjoie", "L'Île de Montjoie"], ["boucan", "L'Île du Boucan"], ["astralys", "Astralys, l'île flottante"], ["moai", "L'Île aux Moaïs"], ["pixel", "L'Île Pixelithique"], ["larsen", "L'Île de Larsen"], ["neo", "Néopolis, la ville cyberpunk"], ["pasta", "L'Île Al Dente"], ["crayon", "L'Île Crayonnée"], ["hautefond", "L'Île de Hautefond"], ["compagnons", "Les compagnons et les voyages"]]
 
 ## Quêtes des habitants (leur cerveau) : région et expérience (les autres : 50).
 const QUETES_PNJ := {
@@ -306,7 +316,7 @@ const QUETES_PNJ := {
 }
 
 ## Les quêtes du carnet par région, d'après le début de leur lieu (décompte de la page Héros).
-const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon"}
+const REGION_CARNET := {"Port-Azur": "azur", "Le royaume des fées": "fees", "Carène": "grande", "Tazira": "grande", "Cliquetis": "grande", "Ramure": "grande", "Arcanelle": "arcanelle", "La Balafre": "balafre", "Trois Soleils": "soleils", "Île de Braise": "braise", "Île de Montjoie": "montjoie", "Île du Boucan": "boucan", "Astralys": "astralys", "Île de Larsen": "larsen", "Néopolis": "neo", "L'Île Al Dente": "pasta", "L'Île Crayonnée": "crayon", "Île de Hautefond": "hautefond", "Hautefond": "hautefond"}
 
 ## Expérience d'un coffre ouvert.
 const XP_COFFRE: int = 15

@@ -421,6 +421,20 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n71 += 1
     print(f"Montjoie V71: {n71} fichiers")
+    # V112 : Hautefond, la cité-colonne (pierre blonde, ardoise bleue, dalles, enseignes, bannière)
+    n112 = 0
+    tex112 = source / "textures" / "hautefond"
+    if tex112.is_dir():
+        for f in sorted(tex112.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n112 += 1
+    print(f"Hautefond V112: {n112} fichiers")
     # V75 : l'Île du Boucan (sols de friche, briques, tôles, béton, fresques, graffitis, affiches,
     # enseignes, champignons, l'Usine Grise) : même règle (les sols du relief sans perte).
     n75 = 0

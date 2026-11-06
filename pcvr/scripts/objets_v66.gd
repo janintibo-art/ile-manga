@@ -90,9 +90,10 @@ const COFFRE_BUTIN := {
 	"neo": [[20, 34], ["soda_neon", "nouilles_neo", "jus_pomme", "the_menthe"]],
 	"pasta": [[16, 30], ["sauce_volcan", "tomate_coeur", "spaghettis_secs", "jus_pomme"]],
 	"crayon": [[16, 30], ["pomme", "baies", "jus_pomme", "pain_miel"]],
+	"hautefond": [[18, 32], ["pomme", "chocolat_chaud", "jus_pomme", "pain_miel", "boulon"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
-const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo", "pasta": "pasta", "crayon": "crayon"}
+const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo", "pasta": "pasta", "crayon": "crayon", "hautefond": "hautefond"}
 
 ## Les îles (centre, rayon) pour savoir où l'on casse.
 const ILES := [
@@ -109,6 +110,7 @@ const ILES := [
 	["neo", Vector3(300, 0, 1400), 250.0],
 	["pasta", Vector3(-420, 0, 1400), 175.0],
 	["crayon", Vector3(1000, 0, 1450), 175.0],
+	["hautefond", Vector3(-980, 0, 1420), 255.0],
 ]
 ## Ce que lâche un objet cassé, selon le pays : à manger, à boire (tonneaux).
 const MANGER := {
@@ -128,6 +130,7 @@ const MANGER := {
 	"neo": ["nouilles_neo", "pomme"],
 	"pasta": ["tomate_coeur", "pomme", "baies"],
 	"crayon": ["pomme", "baies", "champignon"],
+	"hautefond": ["pomme", "pain_miel", "baies"],
 }
 const BOIRE := {
 	"village": "cidre_carene", "jungle": "noix_coco", "elfes": "tisane_lune", "nains": "biere_naine", "azur": "biere_naine", "carene": "cidre_carene",
@@ -144,6 +147,7 @@ const BOIRE := {
 	"neo": "soda_neon",
 	"pasta": "jus_pomme",
 	"crayon": "jus_pomme",
+	"hautefond": "chocolat_chaud",
 }
 
 const Public = preload("res://scripts/public_v111.gd")
@@ -159,6 +163,7 @@ const BOISSONS := {
 	"grog_soufre": [0.0, ""], "cafe_brasier": [-0.5, "cafe"], "lave_glacee": [0.0, ""],
 	"cidre_montjoie": [0.0, ""], "jus_pomme": [0.0, ""],
 	"limonade_boucan": [0.0, ""], "soda_neon": [0.0, ""], "sirop_menthe": [-0.2, ""],
+	"chocolat_chaud": [-0.3, "cafe"],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -181,6 +186,7 @@ const COMPTOIRS := {
 	"ulric": ["cidre_montjoie", 3, "Un cidre de Montjoie à la Grenouille Repue"],
 	"rissole": ["jus_pomme", 2, "Un jus de pomme au bar de la Guilde"],
 	"sirene": ["limonade_boucan", 2, "Une limonade maison au bar de la Halle Hurlante"],
+	"firmin": ["chocolat_chaud", 2, "Un chocolat à la vapeur au Piston Joyeux"],
 }
 
 const PLAINTES := {
