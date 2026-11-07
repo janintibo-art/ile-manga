@@ -91,6 +91,7 @@ const COFFRE_BUTIN := {
 	"pasta": [[16, 30], ["sauce_volcan", "tomate_coeur", "spaghettis_secs", "jus_pomme"]],
 	"crayon": [[16, 30], ["pomme", "baies", "jus_pomme", "pain_miel"]],
 	"hautefond": [[18, 32], ["pomme", "chocolat_chaud", "jus_pomme", "pain_miel", "boulon"]],
+	"nuees": [[18, 32], ["lait_nuage", "chouquettes", "fraise_geante", "jus_soleil", "plume_vent"]],
 }
 ## Région d'un coffre -> région des épreuves (page Héros).
 const COFFRE_EP := {"village": "village", "jungle": "village", "elfes": "elfes", "nains": "nains", "azur": "azur", "grande": "grande", "arcanelle": "arcanelle", "balafre": "balafre", "soleils": "soleils", "braise": "braise", "montjoie": "montjoie", "boucan": "boucan", "larsen": "larsen", "neo": "neo", "pasta": "pasta", "crayon": "crayon", "hautefond": "hautefond"}

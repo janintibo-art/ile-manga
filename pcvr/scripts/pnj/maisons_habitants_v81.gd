@@ -20,11 +20,15 @@ const STYLES := {
 	"pasta": ["pasta", "lumen", 10],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
-const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie"}
+const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie",
+	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 
 const PRENOMS := {
+	# V117 : la Cité des Nuées (les corps de Néopolis, habillés de clair ; les prénoms de l'île flottante)
+	"nuees": {"h": ["Aurèle", "Cyrus", "Élian", "Orion", "Sacha", "Noé", "Thélo", "Zéphyr", "Ilan", "Maël", "Nils", "Adrien"],
+		"f": ["Alizée", "Célia", "Nuée", "Brume", "Iris", "Maëlys", "Azalée", "Solène", "Line", "Elsa", "Livia", "Aube"]},
 	# V116 : Hautefond (les corps sont ceux de Montjoie ; les prénoms, ceux de la ville-colonne)
 	"hautefond": {"h": ["Anatole", "Eugène", "Léonce", "Philémon", "Émile", "Honoré", "Achille", "Aristide", "Gustave", "Théodule", "Alphonse", "Célestin"],
 		"f": ["Adélaïde", "Eulalie", "Hortense", "Philomène", "Victorine", "Joséphine", "Léontine", "Ernestine", "Clémentine", "Augustine", "Valentine", "Félicie"]},
@@ -118,6 +122,41 @@ static func pick(style: String, role: String, rng: RandomNumberGenerator) -> Dic
 		cands = [0]
 	var i2: int = int(cands[rng.randi() % cands.size()])
 	var p: Dictionary = profile("f81_%s_%d" % [st, i2])
+	if style.begins_with("nuees"):
+		p = clair(p, rng)
+	return p
+
+
+## V117 : un habitant de la Cité des Nuées : un corps de Néopolis, mais habillé de clair (blanc, crème,
+## bleu ciel, sable, vert sauge, gris doux), sans implant ni néon, les cheveux d'ici (comme les passants
+## de hautefond_v112._spawn_crowd_n).
+static func clair(p0: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
+	var p: Dictionary = p0.duplicate(true)
+	var ne: Dictionary = p.get("neo", {})
+	if ne.is_empty():
+		return p
+	if bool(ne.get("android", false)):
+		# un robot des Nuées (comme Plumeau) : polymère blanc, lueurs bleu doux
+		ne["c"] = [0.92, 0.93, 0.94]
+		ne["c2"] = [0.55, 0.75, 0.95]
+		ne["circuit"] = [0.5, 0.75, 1.0]
+		ne["peau"] = [0.94, 0.94, 0.95]
+		p["neo"] = ne
+		var aa: Dictionary = p.get("azur", {})
+		aa["yeux"] = [0.5, 0.75, 1.0]
+		return p
+	var clairs: Array = [[0.92, 0.92, 0.9], [0.86, 0.88, 0.9], [0.78, 0.84, 0.9], [0.86, 0.8, 0.68], [0.62, 0.72, 0.64], [0.7, 0.72, 0.76], [0.94, 0.9, 0.84]]
+	var douces: Array = [[0.42, 0.62, 0.8], [0.56, 0.7, 0.58], [0.86, 0.66, 0.5], [0.7, 0.62, 0.82], [0.9, 0.8, 0.46]]
+	for k in ["implant", "circuit", "props", "chapeau"]:
+		ne.erase(k)
+	ne["c"] = clairs[rng.randi() % clairs.size()]
+	ne["c2"] = douces[rng.randi() % douces.size()]
+	if str(ne.get("tenue", "")) != "enfant":
+		ne["tenue"] = ["tailleur", "techwear", "sweat", "jardinier", "tailleur"][rng.randi() % 5]
+	p["neo"] = ne
+	var az: Dictionary = p.get("azur", {})
+	if az.has("cheveux") and not bool(az.get("vieux", false)):
+		az["cheveux"] = [[0.2, 0.14, 0.1], [0.5, 0.36, 0.22], [0.82, 0.7, 0.46], [0.1, 0.08, 0.07], [0.62, 0.4, 0.22]][rng.randi() % 5]
 	return p
 
 

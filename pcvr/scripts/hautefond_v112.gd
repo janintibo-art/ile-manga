@@ -136,6 +136,7 @@ var dome_ligne: Node3D                   # V115 : la Ligne du Dôme d'Azur (dome
 var dome_vie: Node3D                     # V115 : la vie autour des dômes (dome_vie_v115)
 var dome_surface: Node3D                 # V115 : la bouée-phare (à la surface)
 var activite: Node3D                     # V116 : la vie dans les lieux ouverts (hautefond_activite_v116)
+var activite_nu: Node3D                  # V117 : la vie dans les lieux ouverts de la Cité des Nuées
 var _crowd_d_spawned: bool = false
 var _dome_vis: int = -1                  # 1 : on montre le Dôme (et pas les Strates) ; 0 : l'inverse
 var _whale_seen_pass: int = 0
@@ -229,6 +230,12 @@ func build_town() -> void:
 	activite = load("res://scripts/hautefond_activite_v116.gd").new()
 	add_child(activite)
 	activite.build(self)
+	# V117 : les grands lieux de la Cité des Nuées (le Café Cumulus, la Tour du Zénith…), et la vie dans
+	# ses lieux ouverts
+	print("ILE_MANGA_V117: %d grands lieux de la Cité des Nuées à visiter" % int(load("res://scripts/lieux_nuees_v117.gd").register(nuees.portes117)))
+	activite_nu = load("res://scripts/nuees_activite_v117.gd").new()
+	add_child(activite_nu)
+	activite_nu.build(self)
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
 		flore.name = "Flore_hautefond_v112"

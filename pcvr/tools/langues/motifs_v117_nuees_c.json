@@ -1,0 +1,122 @@
+[
+[
+"Chut… {n} centimètres de porte. Toujours {n} mètres d'ailes. Toujours pas.",
+"Shh… {n} centimetres of door. Still {n} metres of wings. Still no go.",
+"Chis… {n} centímetros de puerta. Siguen siendo {n} metros de alas. Sigue sin pasar."
+],
+[
+"La porte : {n} centimètres. Les ailes : {n} mètres. Il ne passera jamais… On démontera les ailes. Ou le mur.",
+"The door: {n} centimetres. The wings: {n} metres. It'll never get through… We'll take the wings off. Or the wall.",
+"La puerta: {n} centímetros. Las alas: {n} metros. No pasará nunca… Desmontaremos las alas. O la pared."
+],
+[
+"{n} centimètres de porte, {n} mètres d'ailes. Bon. Quelqu'un a un tournevis ? Ou une très grande scie ?",
+"{n} centimetres of door, {n} metres of wings. Right. Anyone got a screwdriver? Or a really big saw?",
+"{n} centímetros de puerta, {n} metros de alas. Bueno. ¿Alguien tiene un destornillador? ¿O una sierra muy grande?"
+],
+[
+"La porte fait {n} centimètres, les ailes {n} mètres. J'ai refait le calcul trois fois. Le calcul est têtu.",
+"The door is {n} centimetres, the wings {n} metres. I've redone the sums three times. The sums are stubborn.",
+"La puerta mide {n} centímetros; las alas, {n} metros. He rehecho el cálculo tres veces. El cálculo es testarudo."
+],
+[
+"{n} kilomètres-heure… Je le note pour demain matin.",
+"{n} kilometres an hour… I'll note it down for tomorrow morning.",
+"{n} kilómetros por hora… Lo apunto para mañana por la mañana."
+],
+[
+"{n} kilomètres-heure ! Nouveau record de la station !",
+"{n} kilometres an hour! A new station record!",
+"¡{n} kilómetros por hora! ¡Nuevo récord de la estación!"
+],
+[
+"{n} kilomètres-heure ! Assistant, notez !",
+"{n} kilometres an hour! Assistant, write that down!",
+"¡{n} kilómetros por hora! ¡Asistente, anote!"
+],
+[
+"{n} kilomètres-heure ! Vous soufflez comme une tempête de poche !",
+"{n} kilometres an hour! You blow like a pocket-sized storm!",
+"¡{n} kilómetros por hora! ¡Sopla usted como una tempestad de bolsillo!"
+],
+[
+"{n} kilomètres-heure ! Le Docteur Aurèle serait impressionné !",
+"{n} kilometres an hour! Doctor Aurèle would be impressed!",
+"¡{n} kilómetros por hora! ¡El Doctor Aurèle estaría impresionado!"
+],
+[
+"Tu comptes les papillons endormis, fleur après fleur, tout bas : {n}. Pour une fois, personne ne bouge. C'est le bon compte !",
+"You count the sleeping butterflies, flower by flower, under your breath: {n}. For once, nobody moves. That's the right count!",
+"Cuentas las mariposas dormidas, flor tras flor, en voz baja: {n}. Por una vez, nadie se mueve. ¡Esta vez sí sale la cuenta!"
+],
+[
+"Sur chaque fleur, des papillons dorment, les ailes fermées. Tu les comptes sans un bruit : {n}. Exactement.",
+"On every flower, butterflies are sleeping, wings closed. You count them without a sound: {n}. Exactly.",
+"En cada flor duermen mariposas, con las alas cerradas. Las cuentas sin hacer ruido: {n}. Exactamente."
+],
+[
+"Un, deux, trois… {n} ! Non, attends : le jaune, tu l'as compté deux fois.",
+"One, two, three… {n}! No, wait: you counted the yellow one twice.",
+"Una, dos, tres… ¡{n}! No, espera: la amarilla la has contado dos veces."
+],
+[
+"Tu arrives à {n}. Puis un papillon se pose sur ton nez, et tu perds le fil.",
+"You get to {n}. Then a butterfly lands on your nose, and you lose track.",
+"Llegas a {n}. Entonces una mariposa se te posa en la nariz y pierdes la cuenta."
+],
+[
+"{n} papillons ! Enfin, à peu près : les bleus ne restent jamais assez longtemps pour être comptés.",
+"{n} butterflies! Well, roughly: the blue ones never stay still long enough to be counted.",
+"¡{n} mariposas! Bueno, más o menos: las azules nunca se quedan quietas el tiempo suficiente para contarlas."
+],
+[
+"Tu en comptes {n}. Pendant ce temps, trois autres sont passés derrière la lampe. Ou les mêmes. Difficile à dire.",
+"You count {n}. Meanwhile, three more have slipped behind the lamp. Or the same ones. Hard to tell.",
+"Cuentas {n}. Mientras tanto, otras tres han pasado por detrás de la lámpara. O las mismas. Difícil saberlo."
+],
+[
+"Moi, j'en ai compté {n} !",
+"I counted {n}!",
+"¡Pues yo he contado {n}!"
+],
+[
+"Presque ! Moi, j'en ai trouvé {n}. Je crois.",
+"Nearly! I found {n} myself. I think.",
+"¡Casi! A mí me salen {n}. Creo."
+],
+[
+"Pas du tout ! Il y en a au moins {n} !",
+"No way! There are at least {n}!",
+"¡Qué va! ¡Hay por lo menos {n}!"
+],
+[
+"Moi, j'ai dit {n}. On n'a qu'à faire la moyenne !",
+"I said {n}. Let's just take the average!",
+"Yo he dicho {n}. ¡Pues hacemos la media!"
+],
+[
+"Hier, j'en ai compté {n}. Ce matin, {n}. Papa dit que c'est parce qu'ils bougent. Moi, je crois qu'il y en a qui trichent.",
+"Yesterday I counted {n}. This morning, {n}. Dad says it's because they move. I think some of them are cheating.",
+"Ayer conté {n}. Esta mañana, {n}. Papá dice que es porque se mueven. Yo creo que algunas hacen trampa."
+],
+[
+"Hier, j'en ai compté {n}. Ce matin, {n}. Maman dit que c'est parce qu'ils bougent. Moi, je crois qu'il y en a qui trichent.",
+"Yesterday I counted {n}. This morning, {n}. Mum says it's because they move. I think some of them are cheating.",
+"Ayer conté {n}. Esta mañana, {n}. Mamá dice que es porque se mueven. Yo creo que algunas hacen trampa."
+],
+[
+"Bon vent ! Entre doucement : ici, on partage l'appartement avec {n} colocataires. Aucun ne fait la vaisselle, mais ils sont très décoratifs.",
+"Fair winds! Come in quietly: here, we share the flat with {n} flatmates. Not one of them does the washing-up, but they're very decorative.",
+"¡Buen viento! Entra despacito: aquí compartimos el piso con {n} compañeras. Ninguna friega los platos, pero son muy decorativas."
+],
+[
+"Exactement {n}. Mais chut ! Ne le dis pas au petit : il compte depuis trois semaines, c'est son jeu préféré.",
+"Exactly {n}. But shh! Don't tell the little one: he's been counting for three weeks, it's his favourite game.",
+"Exactamente {n}. ¡Pero chis! No se lo digas al pequeño: lleva tres semanas contando, es su juego favorito."
+],
+[
+"Exactement {n}. Mais chut ! Ne le dis pas à la petite : elle compte depuis trois semaines, c'est son jeu préféré.",
+"Exactly {n}. But shh! Don't tell the little one: she's been counting for three weeks, it's her favourite game.",
+"Exactamente {n}. ¡Pero chis! No se lo digas a la pequeña: lleva tres semanas contando, es su juego favorito."
+]
+]

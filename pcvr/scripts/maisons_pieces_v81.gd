@@ -137,6 +137,20 @@ const STYLES := {
 		"poutre": Color(0.28, 0.2, 0.15), "bois": Color(0.5, 0.33, 0.21), "h": 3.4, "poutres_metal": true,
 		"tapis": ["tazira/tapis_2.png", "tazira/tapis_3.png"], "tableaux": ["cliquetis/affiche_dirigeable.png", "cliquetis/cadran.png", "hautefond/banniere_hautefond.png", "pirates/carte_tresor.png", "arcanelle/carte_ciel.png"],
 		"fenetre": "plomb", "foyer": "poele"},
+	# V117 : les appartements de la Cité des Nuées (futuristes et lumineux) : parquet de bois blond, murs
+	# blancs, ni poutres ni cimaise, de grandes baies vitrées sur le ciel, un plafonnier rond et plat,
+	# une cheminée à l'éthanol ; aux murs, les couchers de soleil d'Ombeline et le plan de l'île
+	"nuees": {"sol": ["nuees/bois_blond.png", Color(1, 1, 1), 2.6], "mur": ["nuees/enduit_blanc.png", Color(1, 1, 1), 3.0],
+		"bas": ["nuees/enduit_blanc.png", Color(1, 1, 1), 3.0], "plafond": ["nuees/enduit_blanc.png", Color(1, 1, 1), 3.0],
+		"poutre": Color(0.92, 0.92, 0.9), "bois": Color(0.8, 0.66, 0.5), "h": 3.0, "sans_poutres": true, "sans_cimaise": true,
+		"tapis": ["nuees/tapis_laine.png", "nuees/tapis_ciel.png"], "tableaux": ["nuees/tableau_coucher.png", "nuees/tableau_nuages.png", "nuees/affiche_ligne.png", "nuees/plan_ile.png", "nuees/tableau_cascade.png"],
+		"fenetre": "baie", "foyer": "ethanol", "porte": "blanche"},
+	# V117 : les grands lieux de la Cité des Nuées (lieux_nuees_v117 bâtit leur coque) : béton blanc, dalles claires
+	"nuees_lieu": {"sol": ["nuees/dalle_claire.png", Color(1, 1, 1), 2.4], "mur": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0],
+		"bas": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0], "plafond": ["nuees/enduit_blanc.png", Color(1, 1, 1), 3.0],
+		"poutre": Color(0.9, 0.9, 0.9), "bois": Color(0.8, 0.66, 0.5), "h": 3.6, "sans_poutres": true, "sans_cimaise": true,
+		"tapis": ["nuees/tapis_laine.png", "nuees/tapis_ciel.png"], "tableaux": ["nuees/tableau_coucher.png", "nuees/tableau_nuages.png", "nuees/affiche_ligne.png", "nuees/plan_ile.png", "nuees/tableau_cascade.png"],
+		"fenetre": "baie", "foyer": "ethanol", "porte": "verre"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -197,6 +211,10 @@ const VARIANTES := {
 		{"mur": ["hautefond/pierre_blonde.png", Color(1, 1, 1), 2.5], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]},
 		{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
 		{"mur": ["maisons/pp_rayures_rose.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_blanc.png", Color(1, 1, 1), 1.4]}],
+	"nuees": [{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0], "bas": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "bas": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]},
+		{"sol": ["nuees/dalle_claire.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0], "bas": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0]}],
 	"nain": [{"mur": ["montjoie/pierre_donjon.png", Color(0.9, 0.82, 0.74), 2.5], "sol": ["montjoie/dalles_donjon.png", Color(0.9, 0.85, 0.8), 2.0]},
 		{"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/parquet_chevron.png", Color(0.85, 0.75, 0.65), 2.4]}],
 }
@@ -513,6 +531,27 @@ func shell(with_door: bool = true) -> void:
 
 
 func _entry_door(dw: float, dh: float, hd: float) -> void:
+	var porte: String = str(pal.get("porte", ""))
+	if porte == "verre" or porte == "blanche" or porte == "acier":
+		# V117 (la Cité des Nuées) : une porte de verre (les grands lieux) ou laquée blanche (les
+		# appartements), dans un cadre fin d'acier, et sa poignée en barre
+		if porte == "verre":
+			# derrière le verre : le ciel (le panorama, vu de la porte)
+			vue(L(door_x, dh * 0.5, hd - 0.06, 180.0), Vector2(dw, dh), dh * 0.5, rng.randf(), 2.5)
+		elif porte == "acier":
+			kit.box(L(door_x, dh * 0.5, hd - 0.05), Vector3(dw, dh, 0.06), "argent", 1.0)
+			for k3 in range(3):
+				kit.box(L(door_x, 0.45 + k3 * 0.65, hd - 0.085), Vector3(dw - 0.16, 0.03, 0.01), "noir", 1.0)
+		else:
+			kit.box(L(door_x, dh * 0.5, hd - 0.05), Vector3(dw, dh, 0.06), "ceramique", 1.0)
+		for sx3 in [-1.0, 1.0]:
+			kit.box(L(door_x + sx3 * (dw * 0.5 + 0.03), dh * 0.5, hd - 0.04), Vector3(0.06, dh + 0.06, 0.08), "argent", 1.0)
+		kit.box(L(door_x, dh + 0.03, hd - 0.04), Vector3(dw + 0.12, 0.06, 0.08), "argent", 1.0)
+		kit.box(L(door_x, 0.05, hd - 0.075), Vector3(dw, 0.1, 0.02), "argent", 1.0)
+		kit.box(L(door_x + dw * 0.33, 1.05, hd - 0.13), Vector3(0.03, 0.8, 0.03), "argent", 1.0)
+		for sy in [-1.0, 1.0]:
+			kit.box(L(door_x + dw * 0.33, 1.05 + sy * 0.3, hd - 0.09), Vector3(0.025, 0.025, 0.07), "argent", 1.0)
+		return
 	kit.box(L(door_x, dh * 0.5, hd - 0.05), Vector3(dw, dh, 0.06), "bois_sombre", 1.0)
 	for sx2 in [-1.0, 1.0]:
 		kit.box(L(door_x + sx2 * (dw * 0.5 + 0.06), dh * 0.5, hd - 0.04), Vector3(0.12, dh + 0.12, 0.1), "poutre", 1.0)
@@ -526,6 +565,8 @@ func _after_door(hw: float, hd: float) -> void:
 	# les poutres du plafond
 	var nb: int = maxi(2, int(W / 1.6))
 	for i in range(nb):
+		if bool(pal.get("sans_poutres", false)):
+			break
 		var bx: float = -hw + W * (i + 0.5) / nb
 		kit.box(L(bx, H - 0.12, 0), Vector3(0.18, 0.24, D), "poutre", 1.0)
 	if bool(pal.get("colombage", false)):
@@ -581,6 +622,10 @@ func ceiling_lamp(x: float, z: float) -> void:
 		"astralys":
 			kit.cyl(L(x, y, z), 0.35, 0.35, 0.05, "lumiere", 20)
 			kit.ring(L(x, y + 0.02, z), 0.35, 0.4, 0.06, "argent", 20)
+		"nuees", "nuees_lieu":
+			# V117 : un plafonnier rond et plat, sa couronne de lumière
+			kit.cyl(L(x, H - 0.05, z), 0.5, 0.5, 0.05, "argent", 28)
+			kit.cyl(L(x, H - 0.08, z), 0.44, 0.44, 0.02, "lumiere", 28)
 		"hautefond", "hautefond_lieu":
 			# V116 : un lustre de laiton à globes de verre (le gaz de Hautefond)
 			kit.cyl(L(x, y + 0.2, z), 0.01, 0.01, H - y - 0.2, "or", 4, false)
@@ -604,9 +649,11 @@ func _wall(xf: Transform3D, len: float, bh: float, tm: float) -> void:
 	# des boîtes fines dont seule la face tournée vers l'intérieur est utile (faces 32 = -Z).
 	kit.box(xf * Transform3D(Basis(), Vector3(0, bh * 0.5, 0.01)), Vector3(len, bh, 0.02), "bas", float((pal["bas"] as Array)[2]), 16)
 	kit.box(xf * Transform3D(Basis(), Vector3(0, bh + (H - bh) * 0.5, 0.01)), Vector3(len, H - bh, 0.02), "mur", tm, 16)
-	# plinthe et cimaise
-	kit.box(xf * Transform3D(Basis(), Vector3(0, bh, 0.035)), Vector3(len, 0.06, 0.05), "bois_sombre", 1.0, 16 + 4 + 8)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.06, 0.03)), Vector3(len, 0.12, 0.04), "bois_sombre", 1.0, 16 + 4)
+	# plinthe et cimaise (V117 : dans les Nuées, une plinthe blanche, pas de cimaise)
+	var moderne: bool = bool(pal.get("sans_cimaise", false))
+	if not moderne:
+		kit.box(xf * Transform3D(Basis(), Vector3(0, bh, 0.035)), Vector3(len, 0.06, 0.05), "bois_sombre", 1.0, 16 + 4 + 8)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.06, 0.03)), Vector3(len, 0.12, 0.04), "ceramique" if moderne else "bois_sombre", 1.0, 16 + 4)
 
 
 func _colombage(hw: float, hd: float) -> void:
@@ -626,6 +673,8 @@ func _windows(hw: float, hd: float) -> void:
 	if kind == "aucune":
 		return
 	var wy: float = 1.55 if H > 2.7 else 1.4
+	if kind == "baie":
+		wy = 1.22
 	var spots: Array = []
 	# côtés : au milieu de la profondeur (ou deux si c'est profond)
 	var nz: int = 1 if D < 7.0 else 2
@@ -639,10 +688,48 @@ func _windows(hw: float, hd: float) -> void:
 		window(s[0], kind)
 
 
+## V117 : le panorama vu de la Cité des Nuées (textures_nuees_v117 : un ruban de 360° en largeur, de
+## +25° à -45° en hauteur) : son matériau, cadré (u0, du : la part de l'azimut ; v0, v1 : de haut en bas).
+const PANO_HAUT: float = 25.0
+const PANO_BAS: float = 45.0
+
+
+func vue_mat(u0: float, du: float, v0: float, v1: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_texture = _tex("nuees/panorama_jour.png" if day else "nuees/panorama_nuit.png")
+	if m.albedo_texture == null:
+		m.albedo_color = _window_color()
+	m.uv1_scale = Vector3(du, v1 - v0, 1.0)
+	m.uv1_offset = Vector3(u0, v0, 0.0)
+	return m
+
+
+## La hauteur dans le ruban (0 en haut, 1 en bas) d'un point vu sous l'angle « el » (en degrés).
+func vue_v(el: float) -> float:
+	return clampf((PANO_HAUT - el) / (PANO_HAUT + PANO_BAS), 0.0, 1.0)
+
+
+## Une vue (un rectangle de taille « s », posé en xf, qui regarde +Z) : ce qu'on voit par la fenêtre
+## depuis à peu près « d » mètres, les yeux à 1,6 m ; « y » : la hauteur du centre, dans la pièce.
+func vue(xf: Transform3D, s: Vector2, y: float, u0: float, d: float) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	var q := QuadMesh.new()
+	q.size = s
+	mi.mesh = q
+	var top: float = rad_to_deg(atan((y + s.y * 0.5 - 1.6) / d))
+	var bot: float = rad_to_deg(atan((y - s.y * 0.5 - 1.6) / d))
+	mi.material_override = vue_mat(u0, rad_to_deg(2.0 * atan(s.x * 0.5 / d)) / 360.0, vue_v(top), vue_v(bot))
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(mi)
+	mi.global_transform = xf
+	return mi
+
+
 ## Une fenêtre (xf : son centre, posée sur le mur, qui regarde l'intérieur = +Z local).
 func window(xf: Transform3D, kind: String) -> void:
 	var lp: Vector3 = xf0.affine_inverse() * xf.origin
-	mark_wall(lp.x, lp.y, lp.z, 0.75)
+	mark_wall(lp.x, lp.y, lp.z, 1.1 if kind == "baie" else 0.75)
 	var w: float = 0.9
 	var h: float = 1.15
 	match kind:
@@ -661,9 +748,28 @@ func window(xf: Transform3D, kind: String) -> void:
 		"moucharabieh":
 			w = 0.85
 			h = 1.2
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0, 0.005)), Vector3(w, h, 0.01), "vitre", 1.0, 16)
+		"baie":
+			# V117 : une baie vitrée (presque du sol au plafond), un cadre fin d'aluminium ; derrière,
+			# le ciel de la Cité des Nuées (le panorama, cadré selon la place de la baie)
+			w = 1.8
+			h = 2.1
+	if kind == "baie":
+		vue(xf * Transform3D(Basis(), Vector3(0, 0, 0.006)), Vector2(w, h), lp.y, rng.randf(), 2.4)
+	else:
+		kit.box(xf * Transform3D(Basis(), Vector3(0, 0, 0.005)), Vector3(w, h, 0.01), "vitre", 1.0, 16)
 	# le cadre
 	var fk: String = "bois_sombre" if kind != "atelier" else "fer"
+	if kind == "baie":
+		for sx3 in [-1.0, 1.0]:
+			kit.box(xf * Transform3D(Basis(), Vector3(sx3 * (w * 0.5 + 0.025), 0, 0.02)), Vector3(0.05, h + 0.05, 0.04), "argent", 1.0)
+			kit.box(xf * Transform3D(Basis(), Vector3(0, sx3 * (h * 0.5 + 0.025), 0.02)), Vector3(w + 0.1, 0.05, 0.04), "argent", 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(0, 0, 0.015)), Vector3(0.035, h, 0.02), "argent", 1.0, 16)
+		kit.box(xf * Transform3D(Basis(), Vector3(0, -h * 0.5 + 0.45, 0.015)), Vector3(w, 0.03, 0.02), "argent", 1.0, 16)
+		if rideaux and rng.randf() < 0.5:
+			var tb: String = ["blanc", "creme", "gris"][rng.randi() % 3]
+			for sx4 in [-1.0, 1.0]:
+				kit.box(xf * Transform3D(Basis(), Vector3(sx4 * (w * 0.5 + 0.2), -0.02, 0.08)), Vector3(0.32, h + 0.25, 0.03), "tissu_" + tb, 1.0)
+		return
 	for sx in [-1.0, 1.0]:
 		kit.box(xf * Transform3D(Basis(), Vector3(sx * (w * 0.5 + 0.04), 0, 0.03)), Vector3(0.08, h + 0.16, 0.06), fk, 1.0)
 	for sy in [-1.0, 1.0]:
@@ -960,6 +1066,17 @@ func foyer(x: float, z: float, yaw: float, allume: bool = true) -> void:
 				root.add_child(l2)
 				l2.global_position = xf * Vector3(0, 0.4, 0.9)
 				flames.append([l2, 1.0])
+		"ethanol":
+			# V117 : une cheminée à l'éthanol : un long caisson blanc, sa vitre, deux petites flammes
+			kit.box(xf * Transform3D(Basis(), Vector3(0, 0.42, 0)), Vector3(1.5, 0.84, 0.4), "ceramique", 1.0)
+			kit.box(xf * Transform3D(Basis(), Vector3(0, 0.4, 0.17)), Vector3(1.2, 0.34, 0.08), "noir", 1.0)
+			kit.box(xf * Transform3D(Basis(), Vector3(0, 0.4, 0.212)), Vector3(1.22, 0.36, 0.006), "verre", 1.0)
+			kit.box(xf * Transform3D(Basis(), Vector3(0, 0.86, 0.02)), Vector3(1.56, 0.04, 0.46), "bois", 1.0)
+			if allume:
+				for k4 in [-0.3, 0.3]:
+					fire(xf * Vector3(k4, 0.26, 0.15), 0.32)
+			kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.42, 0)), Vector3(1.5, 0.84, 0.4))
+			reserve(x, z, 1.8, 0.8)
 		"cristal":
 			kit.cyl(xf, 0.3, 0.2, 0.5, "argent", 12)
 			for k3 in range(5):

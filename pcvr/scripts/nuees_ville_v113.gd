@@ -44,6 +44,8 @@ var _clock: float = 0.0
 var _gare := Vector3.ZERO
 var _to_col := Vector3.ZERO
 var _side := Vector3.ZERO
+var portes117: Dictionary = {}           # V117 : les grands lieux qu'on visite : « lieu » -> [porte, dehors]
+var cadres117: Dictionary = {}           # V117 : les repères des lieux ouverts (la vie qu'on y met : nuees_activite_v117)
 
 
 # =================================================================== repères
@@ -85,6 +87,33 @@ func _chain(names: Array) -> void:
 
 func _spot(name: String, pos: Vector3, face: Vector3, pose: String, node: String) -> void:
 	hf._spot(name, pos, face, pose, node)
+
+
+## V117 : une maison des Nuées où l'on peut entrer (maisons_v81, style « nuees »).
+func _maison117(door: Vector3, out: Vector3, floors: int = 1) -> void:
+	kit.porte_v81_dir(door + Vector3.UP * 0.05, out, 8.0, 7.0, "nuees", floors, "")
+
+
+## V117 : les deux vantaux de verre fumé d'une entrée et leur cadre d'acier (fx : la façade, qui regarde
+## +Z local ; z : là où est la vitre du rez-de-chaussée).
+func _vantaux117(fx: Transform3D, z: float) -> void:
+	for sx in [-1.0, 1.0]:
+		kit.box(fx * kit.T(sx * 0.52, 1.15, z + 0.03), Vector3(1.0, 2.3, 0.05), "verre113_fume", 1.0)
+		kit.box(fx * kit.T(sx * 0.12, 1.1, z + 0.08), Vector3(0.04, 0.9, 0.04), "acier113", 1.0)
+	for sx2 in [-1.07, 0.0, 1.07]:
+		kit.box(fx * kit.T(sx2, 1.2, z + 0.04), Vector3(0.08, 2.4, 0.08), "acier113", 1.0)
+	kit.box(fx * kit.T(0, 2.42, z + 0.04), Vector3(2.22, 0.08, 0.08), "acier113", 1.0)
+
+
+## V117 : une entrée d'immeuble de plus (sur le côté ou à l'arrière) : l'auvent de verre, la porte vitrée ;
+## on peut y entrer (une maison des Nuées). fx : au ras de la façade, +Z local vers dehors.
+func _entree117(fx: Transform3D, inset: float, gf: float, floors: int) -> Vector3:
+	kit.box(fx * kit.T(0, gf - 0.5, 0.9), Vector3(3.0, 0.12, 1.8), "acier113", 1.0)
+	kit.quad(fx * Transform3D(Basis(Vector3.RIGHT, -PI * 0.5), Vector3(0, gf - 0.43, 0.9)), 2.9, 1.7, "verre113_fume", Vector2(0, 0), Vector2(1, 1), true)
+	_vantaux117(fx, -inset)
+	var door: Vector3 = fx * Vector3(0, 0, 1.3)
+	_maison117(door, fx.basis * Vector3(0, 0, 1), floors)
+	return door
 
 
 func _avoid(p: Vector3, r: float) -> void:
@@ -238,6 +267,7 @@ func _gare_des_nuees() -> void:
 	_link("nu_rg_2", "nu_g_cote2")
 	_spot("gare_quai", ligne.quai_haut + sd * 2.4 + Vector3.UP * 0.05, -sd, "bras_croises", "nu_g_quai")
 	objets["gare"] = c
+	cadres117["gare"] = xf
 	_avoid(c, 14.0)
 	# la capsule : les points dedans (les habitants la prennent ; hautefond_v112._npc_lift)
 	_pt("nu_cab_haut", ligne.top + Vector3.UP * 0.05)
@@ -295,6 +325,7 @@ func _belvedere_verre() -> void:
 		var sp: Vector3 = R.W(d.x * (r1 - 1.4), d.z * (r1 - 1.4), 0) + Vector3.UP * (y - R.Y0 + 0.05) + sd * s4 * 2.4
 		_spot("belvedere_verre_%d" % (1 if s4 < 0 else 2), sp, d, "observer", "nu_bv_bout")
 	objets["belvedere_verre"] = mid
+	cadres117["belvedere"] = Transform3D(bs, mid)
 	_bv_gap = [a, 3.0]
 
 
@@ -345,6 +376,7 @@ func _esplanade() -> void:
 	_spot("esplanade_fontaine", PR(112.5, 10.6, 0.05), -dirv(112.5), "debout", "nu_es_2")
 	objets["esplanade"] = c
 	objets["plume"] = c
+	cadres117["esplanade"] = Transform3D(Basis(), c)
 	_avoid(c, 26.0)
 
 
@@ -380,8 +412,12 @@ func _cafe() -> void:
 	var xf: Transform3D = XR(a, 30.0)
 	var door: Vector3 = kit.tower113(xf, 14.0, 10.0, 1, {"gf": 4.4, "toit": "jardin", "boutique": "cumulus", "balcons": ["av"], "tous_balcons": true})
 	doors["porte_gustave"] = door
+	# V117 : on entre au Café Cumulus
+	_vantaux117(xf, -0.8)
+	portes117["nu_cafe"] = [door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
 	# la terrasse : une toile tendue, quatre tables, le comptoir (le kiosque, dehors)
 	var tf: Transform3D = xf * kit.T(0, 0, 5.0)
+	cadres117["cafe"] = tf
 	kit.canopy113(tf, 12.0, 6.5, 3.2, "toile113_bleu")
 	var tables: Array = [Vector3(-3.6, 0, -0.8), Vector3(0.4, 0, 1.4), Vector3(3.8, 0, -0.6)]
 	for i in range(tables.size()):
@@ -413,6 +449,10 @@ func _atelier() -> void:
 	var xf: Transform3D = XR(a, 30.0)
 	var door: Vector3 = kit.tower113(xf, 14.0, 10.0, 1, {"gf": 5.2, "toit": "solaire", "boutique": "atelier", "retrait": 0.6})
 	doors["porte_mireille"] = door
+	# V117 : on entre dans l'Atelier des Inventeurs
+	_vantaux117(xf, -0.6)
+	portes117["nu_atelier"] = [door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
+	cadres117["atelier"] = xf
 	# l'établi dehors, sous un auvent : des outils, une hélice, un petit robot à moitié monté
 	var ex: Transform3D = xf * Transform3D(Basis(), Vector3(3.8, 0, 2.6))
 	kit.box(ex * kit.T(0, 0.85, 0), Vector3(2.8, 0.08, 1.0), "bois113", 1.0)
@@ -445,7 +485,11 @@ func _atelier() -> void:
 func _conseil() -> void:
 	var a: float = -90.0
 	var xf: Transform3D = XR(a, 30.0)
-	kit.tower113(xf * kit.T(0, 0, -1.6), 22.0, 10.0, 1, {"gf": 5.0, "toit": "jardin", "ailettes": true})
+	var door_c: Vector3 = kit.tower113(xf * kit.T(0, 0, -1.6), 22.0, 10.0, 1, {"gf": 5.0, "toit": "jardin", "ailettes": true})
+	# V117 : on entre dans la Maison du Conseil (sous la loggia)
+	_vantaux117(xf * kit.T(0, 0, -1.6), -0.8)
+	portes117["nu_conseil"] = [door_c + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
+	cadres117["conseil"] = xf
 	# la loggia : un grand auvent sur poteaux, le bureau dehors, l'enseigne
 	kit.box(xf * kit.T(0, 5.0, 0.6), Vector3(22.0, 0.36, 4.4), "beton113", 2.4)
 	for sx in [-10.6, -5.3, 0.0, 5.3, 10.6]:
@@ -471,6 +515,16 @@ func _conseil() -> void:
 	# la Tour du Zénith : ronde, torsadée, ses jardins à chaque étage
 	var zc: Vector3 = PR(a, 58.0)
 	kit.round113(zc, 8.0, 14, 4.6, 0.11)
+	# V117 : la porte de la Tour du Zénith (face à l'Esplanade) : un portique, son auvent, ses vantaux
+	var to_c: Vector3 = G(0, 0) - zc
+	to_c.y = 0.0
+	to_c = to_c.normalized()
+	var zx := Transform3D(Basis.looking_at(-to_c, Vector3.UP), zc + to_c * 8.0)
+	kit.box(zx * kit.T(0, 3.7, 0.9), Vector3(3.4, 0.14, 1.9), "composite113", 1.0)
+	for sz in [-1.5, 1.5]:
+		kit.cyl(zx * kit.T(sz, 0, 1.7), 0.07, 0.07, 3.7, "acier113", 8, false)
+	_vantaux117(zx, -1.0)
+	portes117["nu_zenith"] = [zc + to_c * 9.1 + Vector3.UP * 0.05, to_c]
 	_pt("nu_zenith", PR(a + 12.0, 49.0, 0.05))
 	_link("nu_zenith", "nu_rg_12")
 	_link("nu_zenith", "nu_rg_13")
@@ -535,6 +589,7 @@ func _serres() -> void:
 			_spot("serres_banc", bx * Vector3(0, 0.45, 0.15), bx.basis * Vector3(0, 0, 1), "assis", "nu_se_dedans")
 			kit.sign113(Transform3D(Basis.looking_at(-to_center, Vector3.UP), c + to_center * (r + 2.6) + Vector3.UP * 3.4), "serres", 3.2, 1.6)
 			objets["serres"] = c + to_center * (r + 2.0)
+			cadres117["serres"] = Transform3D(Basis.looking_at(-to_center, Vector3.UP), c + Vector3.UP * 0.8)
 	# le sol des serres est un peu plus haut (sur la terre des massifs)
 	for i2 in range(DOMES.size()):
 		var dm2: Array = DOMES[i2]
@@ -557,6 +612,10 @@ func _institut() -> void:
 	var a: float = -90.0
 	var xf: Transform3D = XR(a, 72.0)
 	var door: Vector3 = kit.tower113(xf, 28.0, 12.0, 2, {"gf": 4.4, "toit": "solaire", "ailettes": true, "boutique": "institut"})
+	# V117 : on entre à l'Institut des Vents
+	_vantaux117(xf, -0.8)
+	portes117["nu_institut"] = [door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
+	cadres117["institut"] = xf
 	_pt("nu_in_porte", door + Vector3.UP * 0.05)
 	_pt("nu_in_ouest", G(-14.0, -66.0, 0.05))
 	_pt("nu_in_est", G(14.0, -66.0, 0.05))
@@ -625,6 +684,20 @@ func _institut() -> void:
 		kit.col_box(Transform3D(pb, pp + Vector3.UP * 0.5), Vector3(1.1, 1.0, 0.5))
 	kit.ring(Transform3D(Basis(), sc + Vector3.UP * 0.32), 1.0, 1.3, 0.04, "anneau113", 32)
 	kit.disc(Transform3D(Basis(), sc + Vector3.UP * 0.31), 1.0, "verre113_fume", 32)
+	# V117 : l'escalier qui descend au cœur des Sustentateurs (sous la trappe de verre) : sa rambarde
+	# (ouverte du côté de la ville), et l'on y descend
+	var a_tc: float = atan2(tc.z, tc.x)
+	var prev: Vector3 = Vector3.ZERO
+	for k6 in range(10):
+		var a6: float = a_tc + deg_to_rad(40.0 + k6 * 31.0)
+		var pp6: Vector3 = sc + Vector3(cos(a6), 0, sin(a6)) * 1.45 + Vector3.UP * 0.3
+		kit.cyl(Transform3D(Basis(), pp6), 0.025, 0.025, 1.0, "acier113", 6, false)
+		if k6 > 0:
+			kit.beam(prev + Vector3.UP * 1.0, pp6 + Vector3.UP * 1.0, 0.035, "acier113")
+		prev = pp6
+		kit.col_cyl(pp6, 0.08, 1.0)
+	portes117["nu_machines"] = [sc + tc * 1.8 + Vector3.UP * 0.35, tc]
+	cadres117["sustentateurs"] = Transform3D(Basis.looking_at(-tc, Vector3.UP), sc + Vector3.UP * 0.3)
 	_pt("nu_moteurs", sc + tc * 4.2 + Vector3.UP * 0.35)
 	_link("nu_moteurs", "nu_in_est")
 	_link("nu_moteurs", "nu_rg_13")
@@ -689,10 +762,38 @@ func _port() -> void:
 	_spot("ponton_banc", bx * Vector3(0, 0.45, 0.15), bx.basis * Vector3(0, 0, 1), "assis", "nu_port_milieu")
 	objets["port_nuees"] = mid
 	_port_gap = [a, 2.6]
+	cadres117["port"] = Transform3D(bs, mid)
+	# V117 : l'embarquement de la Libellule : la cabine de verre au pied du mât (elle monte à la nacelle),
+	# son panneau
+	var lc: Vector3 = mp - d * 1.35
+	var lb := Basis.looking_at(d, Vector3.UP)
+	kit.box(Transform3D(lb, lc + Vector3.UP * 1.25), Vector3(1.5, 2.5, 1.2), "verre113", 1.0)
+	for e4 in [[-0.75, -0.6], [0.75, -0.6], [-0.75, 0.6], [0.75, 0.6]]:
+		kit.box(Transform3D(lb, lc + lb * Vector3(float(e4[0]), 1.25, float(e4[1]))), Vector3(0.07, 2.5, 0.07), "acier113", 1.0)
+	kit.box(Transform3D(lb, lc + Vector3.UP * 2.55), Vector3(1.6, 0.1, 1.3), "composite113", 1.0)
+	for sx5 in [-0.35, 0.35]:
+		kit.box(Transform3D(lb, lc + lb * Vector3(sx5, 6.0, -0.75)), Vector3(0.06, 9.0, 0.06), "acier113", 1.0)
+	kit.col_box(Transform3D(lb, lc + Vector3.UP * 1.25), Vector3(1.5, 2.5, 1.2))
+	var pan := Transform3D(lb, lc + lb * Vector3(-1.4, 0, 1.4))
+	kit.cyl(pan, 0.05, 0.05, 2.2, "acier113", 8, false)
+	kit.box(pan * kit.T(0, 1.9, 0), Vector3(1.4, 0.5, 0.05), "composite113", 1.0)
+	for sg in [-1.0, 1.0]:
+		var lab := Label3D.new()
+		lab.text = "Embarquement : la Libellule"
+		lab.font_size = 44
+		lab.pixel_size = 0.0028
+		lab.modulate = Color(0.2, 0.32, 0.48)
+		lab.outline_size = 0
+		add_child(lab)
+		lab.global_transform = Transform3D(lb * Basis(Vector3.UP, 0.0 if sg > 0 else PI), pan * Vector3(0, 1.9, sg * 0.03))
+	portes117["nu_libellule"] = [lc - d * 1.5 + Vector3.UP * 0.05, -d]
 	# la capitainerie (au nord du ponton) et son bureau dehors
 	var cx: Transform3D = XR(193.0, 84.0)
 	var door: Vector3 = kit.tower113(cx, 10.0, 8.0, 1, {"gf": 4.0, "toit": "jardin", "boutique": "port"})
 	doors["porte_zephyrine"] = door
+	# V117 : on entre dans la Capitainerie
+	_vantaux117(cx, -0.8)
+	portes117["nu_capitainerie"] = [door + Vector3.UP * 0.05, cx.basis * Vector3(0, 0, 1)]
 	_pt("porte_zephyrine", door + Vector3.UP * 0.05)
 	_link("porte_zephyrine", "nu_port_racine")
 	_pt("nu_capitainerie", cx * Vector3(-3.0, 0.05, 2.6))
@@ -718,6 +819,13 @@ func _residences() -> void:
 		var dl: Array = kit.terraces113(xf, float(s[2]), float(s[3]), int(s[4]), float(s[5]))
 		for dp in dl:
 			all_doors.append(dp)
+			# V117 : on entre dans les appartements (chez Céleste, chez Pascal…)
+			_vantaux117(Transform3D(xf.basis, dp - xf.basis * Vector3(0, 0, 0.9)), 0.0)
+			_maison117(dp, xf.basis * Vector3(0, 0, 1), int(s[4]))
+		var sgn: float = -1.0 if i == 0 else 1.0
+		_entree117(xf * Transform3D(Basis(Vector3.UP, sgn * PI * 0.5), Vector3(sgn * float(s[2]) * 0.5, 0, -float(s[3]) * 0.5)), 0.0, 3.0, int(s[4]))
+		if i == 0:
+			cadres117["residences"] = xf
 		kit.sign113(xf * kit.T(0, 2.3, 0.25), "residences", 3.6, 1.8)
 		# le jardin devant : des bacs, des bancs
 		for sx in [-8.0, 8.0]:
@@ -776,6 +884,13 @@ func _immeubles() -> void:
 			opts.erase("boutique")
 		var door: Vector3 = kit.tower113(xf, float(s[2]), float(s[3]), int(s[4]), opts)
 		_avoid(xf * Vector3(0, 0, -float(s[3]) * 0.5), maxf(float(s[2]), float(s[3])) * 0.6)
+		# V117 : on entre dans les appartements : par devant (chez Théo, chez Flora…), par derrière, et
+		# par le côté des grandes tours
+		_vantaux117(xf, -0.8)
+		_maison117(door, xf.basis * Vector3(0, 0, 1), int(s[4]))
+		_entree117(xf * Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -float(s[3]))), 0.8, 4.2, int(s[4]))
+		if float(s[1]) > 40.0:
+			_entree117(xf * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(float(s[2]) * 0.5, 0, -float(s[3]) * 0.5)), 0.8, 4.2, int(s[4]))
 		if str(s[6]) != "":
 			doors[str(s[6])] = door
 			_pt(str(s[6]), door + Vector3.UP * 0.05)
@@ -787,6 +902,9 @@ func _immeubles() -> void:
 	var dd: Vector3 = PR(247.5, 58.2)
 	doors["porte_aurele"] = dd
 	_pt("porte_aurele", dd + Vector3.UP * 0.05)
+	# V117 : on entre chez le Docteur Aurèle
+	_vantaux117(Transform3D(Basis.looking_at(dirv(247.5), Vector3.UP), PR(247.5, 60.0)), 0.0)
+	_maison117(dd, -dirv(247.5), 9)
 	_link("porte_aurele", "nu_rg_11")
 	# l'auvent de la porte de la tour ronde
 	kit.box(Transform3D(Basis.looking_at(dirv(247.5), Vector3.UP), PR(247.5, 58.6, 3.0)), Vector3(3.0, 0.14, 1.6), "composite113", 1.0)
@@ -886,6 +1004,7 @@ func _parc() -> void:
 	_link("nu_cascade", "nu_pk_bord")
 	_spot("cascade_bord", PR(R.CASCADE_DEG + 3.0, rim(R.CASCADE_DEG) - 5.4, 0.05), dirv(R.CASCADE_DEG), "observer", "nu_cascade")
 	objets["parc"] = G(R.PARC.x, R.PARC.y)
+	cadres117["parc"] = Transform3D(Basis(), G(R.PARC.x, R.PARC.y))
 	objets["cascade"] = PR(R.CASCADE_DEG, rim(R.CASCADE_DEG) - 6.0)
 
 

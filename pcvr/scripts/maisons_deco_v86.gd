@@ -11,6 +11,7 @@ extends RefCounted
 
 const Iles = preload("res://scripts/maisons_iles_v82.gd")
 const Hautefond116 = preload("res://scripts/maisons_hautefond_v116.gd")
+const Nuees117 = preload("res://scripts/maisons_nuees_v117.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 
 ## Les histoires qui ont tout leur décor à elles (rien à ajouter).
@@ -33,6 +34,7 @@ const SOL_VILLE := {
 	"atlante": [["corail", 0.55, 0.55], ["jarre", 0.5, 0.5]], "nain": [["enclume", 0.65, 0.45], ["tonneau", 0.75, 0.75]],
 	"moai": [["jarre", 0.5, 0.5], ["corail", 0.55, 0.55], ["panier", 0.5, 0.45]],
 	"hautefond": [["globe", 0.5, 0.5], ["porte_manteau", 0.5, 0.5], ["caisses", 0.8, 0.7]],
+	"nuees": [["plante_haute", 0.6, 0.6], ["globe", 0.5, 0.5], ["gueridon", 0.6, 0.6]],
 }
 ## Sur un mur : [nom, demi-largeur]
 const MUR := [["horloge", 0.3], ["miroir", 0.35], ["patere", 0.45], ["cadres", 0.5], ["etagere_bocaux", 0.6], ["applique", 0.15],
@@ -48,12 +50,13 @@ const MUR_VILLE := {
 	"atlante": [["coquillages", 0.5], ["bouee", 0.38]], "nain": [["marteaux", 0.45], ["chopes", 0.55]],
 	"moai": [["coquillages", 0.5], ["natte", 0.5], ["filet", 0.6]],
 	"hautefond": [["engrenages", 0.55], ["barometre", 0.25], ["horloge", 0.3], ["cadres", 0.5]],
+	"nuees": [["cadres", 0.5], ["miroir", 0.35], ["barometre", 0.25], ["globe_mural", 0.35]],
 }
 ## Au plafond
 const HAUT := ["herbes", "ail", "cage"]
 const HAUT_VILLE := {"tazira": ["lanterne_ajouree"], "ramure": ["lanterne_papier"], "astralys": ["mobile_cristaux"],
 	"arcanelle": ["bougies_flottantes"], "elfe": ["lianes"], "egypte": ["lanterne_ajouree"], "nain": ["herbes"], "pirate": ["cage"],
-	"moai": ["lanterne_papier", "herbes"], "hautefond": ["cage", "herbes"]}
+	"moai": ["lanterne_papier", "herbes"], "hautefond": ["cage", "herbes"], "nuees": ["mobile_cristaux"]}
 
 
 # =================================================================== placer
@@ -64,7 +67,7 @@ static func habiller(M) -> void:
 		return
 	var R = M.R
 	var style: String = str(R.style)
-	var leger: bool = sc in LEGER or Iles.has(sc) or Echoppes.has(sc) or Hautefond116.has(sc)
+	var leger: bool = sc in LEGER or Iles.has(sc) or Echoppes.has(sc) or Hautefond116.has(sc) or Nuees117.has(sc)
 	var r := RandomNumberGenerator.new()
 	r.seed = hash(str(M.ctx.get("id", "")) + "deco")
 	_mats(R)

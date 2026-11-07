@@ -1,0 +1,2632 @@
+[
+[
+"E : entrer au Café Cumulus",
+"E: enter the Cumulus Café",
+"E: entrar en el Café Cúmulo"
+],
+[
+"E : entrer dans l'Atelier des Inventeurs",
+"E: enter the Inventors' Workshop",
+"E: entrar en el Taller de los Inventores"
+],
+[
+"E : entrer dans la Maison du Conseil",
+"E: enter the Council House",
+"E: entrar en la Casa del Consejo"
+],
+[
+"E : entrer à l'Institut des Vents",
+"E: enter the Institute of Winds",
+"E: entrar en el Instituto de los Vientos"
+],
+[
+"E : entrer dans la Tour du Zénith",
+"E: enter the Zenith Tower",
+"E: entrar en la Torre del Cénit"
+],
+[
+"E : descendre au cœur des Sustentateurs",
+"E: go down to the heart of the Levitators",
+"E: bajar al corazón de los Sustentadores"
+],
+[
+"E : monter à bord de la Libellule",
+"E: go aboard the Dragonfly",
+"E: subir a bordo de la Libélula"
+],
+[
+"L'ARDOISE DU CAFÉ CUMULUS. Lait de nuage (avec sa moustache). Thé des sommets. Jus de soleil. Chocolat qui chuchote. Chouquettes du four solaire, croissants du matin. Pas une goutte d'alcool : ici, on se régale de la vue, et elle est offerte.",
+"THE CUMULUS CAFÉ MENU BOARD. Cloud milk (moustache included). Summit tea. Sunshine juice. Whispering hot chocolate. Sugar puffs from the solar oven, morning croissants. Not a drop of alcohol: up here, we feast on the view, and it's on the house.",
+"LA PIZARRA DEL CAFÉ CÚMULO. Leche de nube (con su bigote). Té de las cumbres. Zumo de sol. Chocolate que susurra. Buñuelos de azúcar del horno solar, cruasanes de la mañana. Ni una gota de alcohol: aquí el festín son las vistas, e invita la casa."
+],
+[
+"Ah, de la visite ! Le café est fermé, mais pas pour les amis. Tu veux un fond de lait de nuage ?",
+"Ah, company! The café's closed, but not to friends. Fancy the last drop of cloud milk?",
+"¡Ah, visita! El café está cerrado, pero no para los amigos. ¿Quieres lo que queda de la leche de nube?"
+],
+[
+"Bonsoir ! Je fais mes comptes : trois cent douze chouquettes aujourd'hui. Un record. Monsieur Pascal en a pris quarante.",
+"Good evening! I'm doing my accounts: three hundred and twelve sugar puffs today. A record. Mr Pascal had forty of them.",
+"¡Buenas noches! Estoy haciendo cuentas: trescientos doce buñuelos de azúcar hoy. Un récord. El señor Pascal se ha llevado cuarenta."
+],
+[
+"Je prépare la pâte des chouquettes de demain. Elle doit se reposer toute la nuit. Comme moi.",
+"I'm making the dough for tomorrow's sugar puffs. It has to rest all night. Like me.",
+"Estoy preparando la masa de los buñuelos de mañana. Tiene que reposar toda la noche. Como yo."
+],
+[
+"Le four solaire dort, la nuit. Alors les chouquettes attendent le lever du soleil, comme tout le monde.",
+"The solar oven sleeps at night. So the sugar puffs wait for sunrise, like everybody else.",
+"El horno solar duerme por la noche. Así que los buñuelos esperan a que salga el sol, como todo el mundo."
+],
+[
+"Chut… la pâte se repose. Bonsoir !",
+"Shh… the dough is resting. Good evening!",
+"Chis… la masa está reposando. ¡Buenas noches!"
+],
+[
+"Bonsoir ! Le café ouvre à sept heures. Les chouquettes, à sept heures et une minute.",
+"Good evening! The café opens at seven. The sugar puffs, at one minute past seven.",
+"¡Buenas noches! El café abre a las siete. Los buñuelos, a las siete y un minuto."
+],
+[
+"Un four solaire, la nuit ?",
+"A solar oven, at night?",
+"¿Un horno solar, de noche?"
+],
+[
+"Il garde la chaleur du jour dans ses pierres. Mais pour les chouquettes, Gustave veut le vrai soleil. Il dit qu'elles le sentent.",
+"It keeps the day's heat in its stones. But for the sugar puffs, Gustave wants real sunshine. He says they can tell.",
+"Guarda el calor del día en sus piedras. Pero para los buñuelos, Gustave quiere sol de verdad. Dice que lo notan."
+],
+[
+"Le Café Cumulus, la nuit : les chaises dorment sur les tables, les lustres-nuages luisent à peine, et la machine à nuages ronronne toute seule sur le comptoir.",
+"The Cumulus Café at night: the chairs are asleep on the tables, the cloud chandeliers barely glow, and the cloud machine purrs away all by itself on the counter.",
+"El Café Cúmulo, de noche: las sillas duermen sobre las mesas, las lámparas-nube apenas brillan, y la máquina de nubes ronronea ella sola sobre la barra."
+],
+[
+"Un lait de nuage, un ! Avec la moustache !",
+"One cloud milk, coming up! With the moustache!",
+"¡Marchando una leche de nube! ¡Con bigote!"
+],
+[
+"Le chocolat d'ici chuchote. Celui d'en bas siffle, paraît-il. Chacun son caractère.",
+"The hot chocolate up here whispers. The one down below whistles, apparently. Each has its own personality.",
+"El chocolate de aquí susurra. El de abajo silba, por lo visto. Cada uno tiene su carácter."
+],
+[
+"Bon vent ! Bienvenue au Café Cumulus ! Assieds-toi où tu veux, le ciel est pour tout le monde.",
+"Fair winds! Welcome to the Cumulus Café! Sit wherever you like, the sky is for everyone.",
+"¡Buen viento! ¡Bienvenido al Café Cúmulo! Siéntate donde quieras, el cielo es de todos."
+],
+[
+"Bonjour ! Gustave est à son kiosque, sur la terrasse. Moi, je garde la maison… et la machine à nuages.",
+"Hello! Gustave's at his kiosk, out on the terrace. I'm minding the place… and the cloud machine.",
+"¡Hola! Gustave está en su quiosco, en la terraza. Yo cuido de la casa… y de la máquina de nubes."
+],
+[
+"C'est quoi, cette machine ?",
+"What's that machine?",
+"¿Qué es esa máquina?"
+],
+[
+"La machine à nuages ! Elle mousse le lait comme un petit cumulus. L'Ingénieure Nova dit que c'est la même science que les Sustentateurs, en plus petit et en plus sucré.",
+"The cloud machine! It froths the milk up like a little cumulus. Engineer Nova says it's the same science as the Levitators, only smaller and sweeter.",
+"¡La máquina de nubes! Espuma la leche como un pequeño cúmulo. La Ingeniera Nova dice que es la misma ciencia que la de los Sustentadores, pero en pequeño y más dulce."
+],
+[
+"Gustave est là ?",
+"Is Gustave here?",
+"¿Está Gustave?"
+],
+[
+"Il est dehors, au kiosque de la terrasse, à vendre ses chouquettes à toute l'Esplanade. Il ne rentre qu'à la fermeture. Il dit que ses chouquettes ont besoin de voir du monde.",
+"He's outside, at the kiosk on the terrace, selling his sugar puffs to the whole Esplanade. He only comes in at closing time. He says his sugar puffs need to see people.",
+"Está fuera, en el quiosco de la terraza, vendiendo sus buñuelos a toda la Explanada. No entra hasta la hora de cerrar. Dice que sus buñuelos necesitan ver gente."
+],
+[
+"Ici, je lis le journal du Plancher. Les nouvelles d'en bas arrivent avec la capsule. Toujours un peu essoufflées.",
+"Up here, I read the paper from the Floor. The news from down below comes up with the capsule. Always a little out of breath.",
+"Aquí leo el periódico del Suelo. Las noticias de abajo llegan con la cápsula. Siempre un poco sin aliento."
+],
+[
+"Un lait de nuage, et la vue. Je ne demande rien d'autre à la vie.",
+"A cloud milk, and the view. I ask nothing more of life.",
+"Una leche de nube, y las vistas. No le pido nada más a la vida."
+],
+[
+"Bonjour ! Prends la chaise d'en face, si tu veux. Elle ne sert qu'aux nuages, d'habitude.",
+"Hello! Take the chair opposite, if you like. Usually only the clouds sit in it.",
+"¡Hola! Coge la silla de enfrente, si quieres. Normalmente solo la usan las nubes."
+],
+[
+"Chut… regarde par la baie : le nuage, là, a la forme d'une chouquette.",
+"Shh… look out of the big window: that cloud there is shaped like a sugar puff.",
+"Chis… mira por el ventanal: esa nube de ahí tiene forma de buñuelo."
+],
+[
+"Quelles nouvelles d'en bas ?",
+"Any news from down below?",
+"¿Qué noticias hay de abajo?"
+],
+[
+"Le Dôme d'Azur a rouvert, au fond de la mer, et la Fronde joue encore toute la nuit dans les Strates. Ici, on entend la musique par le conduit de la Colonne. Monsieur Pascal a écrit sa quarantième réclamation.",
+"The Azure Dome has reopened, at the bottom of the sea, and the Fronde is still playing all night long in the Strata. Up here, we hear the music through the Column's shaft. Mr Pascal has written his fortieth complaint.",
+"La Cúpula Azur ha vuelto a abrir, en el fondo del mar, y la Fronda sigue tocando toda la noche en los Estratos. Aquí oímos la música por el conducto de la Columna. El señor Pascal ha escrito su cuadragésima reclamación."
+],
+[
+"Ha ha ! Tu as une moustache de nuage ! … Moi aussi ? Depuis quand ?",
+"Ha ha! You've got a cloud moustache! … Me too? Since when?",
+"¡Ja, ja! ¡Tienes bigote de nube! … ¿Yo también? ¿Desde cuándo?"
+],
+[
+"Le deuxième lait de nuage est toujours meilleur que le premier. Le troisième, je ne sais pas, je n'ai jamais osé.",
+"The second cloud milk is always better than the first. The third, I couldn't say, I've never dared.",
+"La segunda leche de nube siempre está más rica que la primera. La tercera, no sé, nunca me he atrevido."
+],
+[
+"Ces chouquettes… On dirait qu'elles ont été cuites par un nuage très gentil.",
+"These sugar puffs… You'd think they'd been baked by a very kind cloud.",
+"Estos buñuelos… Parece que los haya horneado una nube muy amable."
+],
+[
+"Mon mari m'a demandée en mariage à cette table. Il y a cinquante ans. Il avait une moustache de lait de nuage. J'ai dit oui quand même.",
+"My husband proposed to me at this table. Fifty years ago. He had a cloud-milk moustache. I said yes anyway.",
+"Mi marido me pidió matrimonio en esta mesa. Hace cincuenta años. Tenía un bigote de leche de nube. Le dije que sí de todos modos."
+],
+[
+"Bonjour, mon petit ! Une chouquette ? Je les compte, mais je partage.",
+"Hello, dear! A sugar puff? I count them, but I share.",
+"¡Hola, tesoro! ¿Un buñuelo? Los cuento, pero los comparto."
+],
+[
+"Bon vent ! Tu as l'air d'avoir faim. Ça tombe bien : moi aussi, toujours.",
+"Fair winds! You look hungry. That's lucky: so am I, always.",
+"¡Buen viento! Tienes cara de hambre. Qué bien: yo también, siempre."
+],
+[
+"Elles sont bonnes ?",
+"Are they good?",
+"¿Están buenos?"
+],
+[
+"Les meilleures de tout l'archipel. Le four solaire de Gustave les cuit à la lumière du matin. Le soir, elles goûtent un peu le coucher de soleil. Je te jure.",
+"The best in the whole archipelago. Gustave's solar oven bakes them in the morning light. By evening, they taste a little of sunset. I swear.",
+"Los mejores de todo el archipiélago. El horno solar de Gustave los hornea con la luz de la mañana. Por la tarde, saben un poco a puesta de sol. Te lo juro."
+],
+[
+"Pardon, pardon ! Lait de nuage pour la table du fond !",
+"Excuse me, excuse me! Cloud milk for the back table!",
+"¡Perdón, perdón! ¡Leche de nube para la mesa del fondo!"
+],
+[
+"Attention, chouquettes brûlantes ! … Enfin, tièdes. Le four solaire est très poli.",
+"Careful, scorching-hot sugar puffs! … Well, warm. The solar oven is very polite.",
+"¡Cuidado, buñuelos ardiendo! … Bueno, templaditos. El horno solar es muy educado."
+],
+[
+"Pardon ! Je passe ! Tu veux commander ? Dis-le à ma collègue, au comptoir.",
+"Sorry! Coming through! Want to order? Tell my colleague at the counter.",
+"¡Perdón! ¡Paso! ¿Quieres pedir? Díselo a mi compañera, en la barra."
+],
+[
+"Bon vent ! Attention au plateau, il est plein de nuages.",
+"Fair winds! Mind the tray, it's full of clouds.",
+"¡Buen viento! Cuidado con la bandeja, que está llena de nubes."
+],
+[
+"Le Café Cumulus : des tables blanches, des lustres en forme de nuages, et derrière le comptoir, dans un globe de verre, un petit nuage qui tourne doucement.",
+"The Cumulus Café: white tables, cloud-shaped chandeliers, and behind the counter, in a glass globe, a little cloud slowly turning.",
+"El Café Cúmulo: mesas blancas, lámparas con forma de nube y, detrás de la barra, dentro de un globo de cristal, una nubecita que gira despacio."
+],
+[
+"Ça sent la chouquette chaude et le lait mousseux. Au Café Cumulus, tout le monde a une moustache blanche, et personne n'ose le dire aux autres.",
+"It smells of warm sugar puffs and frothy milk. At the Cumulus Café, everyone has a white moustache, and nobody dares tell anyone else.",
+"Huele a buñuelo caliente y a leche espumosa. En el Café Cúmulo, todo el mundo tiene bigote blanco, y nadie se atreve a decírselo a los demás."
+],
+[
+"Par les grandes baies, le ciel entre dans le café. Les lustres-nuages se balancent un peu. Une machine, sur le comptoir, fait des nuages en lait.",
+"Through the big windows, the sky comes into the café. The cloud chandeliers sway a little. On the counter, a machine makes clouds out of milk.",
+"Por los grandes ventanales, el cielo entra en el café. Las lámparas-nube se balancean un poco. Sobre la barra, una máquina hace nubes de leche."
+],
+[
+"E : goûter le lait de nuage",
+"E: taste the cloud milk",
+"E: probar la leche de nube"
+],
+[
+"« Goûte, c'est la maison qui offre ! » Une tasse de lait de nuage, tout mousseux. Tu as maintenant une moustache blanche, et une tasse à emporter :\n",
+"“Have a taste, it's on the house!” A cup of cloud milk, all frothy. Now you have a white moustache, and a cup to take away:\n",
+"«¡Pruébala, invita la casa!» Una taza de leche de nube, bien espumosa. Ahora tienes un bigote blanco, y una taza para llevar:\n"
+],
+[
+"Mmm… On dirait de boire un petit nuage tiède. Ta moustache blanche est revenue.",
+"Mmm… Like drinking a little warm cloud. Your white moustache is back.",
+"Mmm… Es como beberse una nubecita tibia. Tu bigote blanco ha vuelto."
+],
+[
+"Un lait de nuage. Léger, sucré, avec un goût de ciel. Et une moustache offerte.",
+"A cloud milk. Light, sweet, with a taste of sky. And a free moustache.",
+"Una leche de nube. Ligera, dulce, con sabor a cielo. Y un bigote de regalo."
+],
+[
+"Tu bois une gorgée. Quelque part, un nuage est très fier de toi.",
+"You take a sip. Somewhere, a cloud is very proud of you.",
+"Bebes un sorbo. En algún lugar, una nube está muy orgullosa de ti."
+],
+[
+"E : regarder la machine à nuages",
+"E: look at the cloud machine",
+"E: mirar la máquina de nubes"
+],
+[
+"Pfffouu… Le petit nuage gonfle, tourne trois fois sur lui-même et mousse dans une tasse. Puis il recommence à tourner, l'air satisfait.",
+"Pfffooo… The little cloud puffs up, spins round three times and froths into a cup. Then it starts turning again, looking very pleased with itself.",
+"Pfffuuu… La nubecita se hincha, da tres vueltas sobre sí misma y se vuelve espuma en una taza. Luego vuelve a girar, con aire satisfecho."
+],
+[
+"La machine souffle, siffle tout bas, et un petit cumulus de lait se pose dans une tasse. C'est la même science que les Sustentateurs, en plus sucré.",
+"The machine puffs, whistles very softly, and a little cumulus of milk settles into a cup. It's the same science as the Levitators, only sweeter.",
+"La máquina sopla, silba muy bajito, y un pequeño cúmulo de leche se posa en una taza. Es la misma ciencia que la de los Sustentadores, pero más dulce."
+],
+[
+"Dans le globe de verre, le petit nuage fait une pirouette. On dirait qu'il te salue.",
+"In the glass globe, the little cloud does a pirouette. It looks like it's waving at you.",
+"En el globo de cristal, la nubecita hace una pirueta. Parece que te saluda."
+],
+[
+"E : lire l'ardoise",
+"E: read the menu board",
+"E: leer la pizarra"
+],
+[
+"Plan numéro 412 : le grille-pain qui chante l'heure. Problème : il chante faux. Solution envisagée : apprendre la musique au grille-pain.",
+"Blueprint number 412: the toaster that sings the time. Problem: it sings off-key. Proposed solution: teach the toaster music.",
+"Plano número 412: la tostadora que canta la hora. Problema: desafina. Solución prevista: enseñarle solfeo a la tostadora."
+],
+[
+"Plan numéro 413 : le parapluie-ascenseur, modèle « Ça monte ! » (merci à la Confrérie des Liftiers d'en bas pour le nom). Autonomie : un étage et demi. Atterrissage : à revoir.",
+"Blueprint number 413: the lift-umbrella, “Going up!” model (thanks to the Liftkeepers' Guild down below for the name). Range: one and a half floors. Landing: needs work.",
+"Plano número 413: el paraguas-ascensor, modelo «¡Subimos!» (gracias a la Cofradía de los Ascensoristas de abajo por el nombre). Autonomía: un piso y medio. Aterrizaje: por revisar."
+],
+[
+"Plan numéro 414 : la tasse tourneuse. Elle mélange le sucre toute seule. Elle mélange aussi la nappe, la table, et parfois le chat. À régler.",
+"Blueprint number 414: the spinning cup. It stirs the sugar in all by itself. It also stirs the tablecloth, the table, and sometimes the cat. Needs adjusting.",
+"Plano número 414: la taza giratoria. Remueve el azúcar ella sola. También remueve el mantel, la mesa y, a veces, el gato. Por ajustar."
+],
+[
+"Plan numéro 415 : le bocal à nuage. Un petit nuage domestique, très calme, qui pleut sur les plantes quand on oublie de les arroser. Testé et approuvé par Flora.",
+"Blueprint number 415: the cloud jar. A small pet cloud, very calm, that rains on your plants when you forget to water them. Tested and approved by Flora.",
+"Plano número 415: el tarro de nube. Una nubecita doméstica, muy tranquila, que llueve sobre las plantas cuando te olvidas de regarlas. Probado y aprobado por Flora."
+],
+[
+"Oh ! De la visite, à cette heure-ci ? Tant mieux : j'ai besoin de quelqu'un pour tenir la ficelle du parapluie.",
+"Oh! A visitor, at this hour? All the better: I need someone to hold the umbrella's string.",
+"¡Oh! ¿Visita, a estas horas? Mejor: necesito a alguien que sujete el cordel del paraguas."
+],
+[
+"Bonsoir ! Ne marche pas sur le plan, il est encore humide. Oui, c'est de l'encre. Non, ce n'est pas grave.",
+"Good evening! Don't step on the blueprint, it's still wet. Yes, that's ink. No, it doesn't matter.",
+"¡Buenas noches! No pises el plano, que todavía está húmedo. Sí, es tinta. No, no pasa nada."
+],
+[
+"Mireille m'a laissé les plans à recopier. Elle dessine plus vite qu'elle n'écrit. Je déchiffre.",
+"Mireille left me the blueprints to copy out. She draws faster than she writes. I'm deciphering.",
+"Mireille me ha dejado los planos para pasarlos a limpio. Dibuja más rápido de lo que escribe. Voy descifrando."
+],
+[
+"La nuit, l'atelier fait de petits bruits : tic, bip, frrr. Ce sont les inventions qui rêvent.",
+"At night, the workshop makes little noises: tick, beep, whirr. That's the inventions dreaming.",
+"De noche, el taller hace ruiditos: tic, bip, frrr. Son los inventos, que sueñan."
+],
+[
+"Bonsoir ! L'atelier est fermé, mais les inventions ne dorment jamais vraiment.",
+"Good evening! The workshop is closed, but the inventions never really sleep.",
+"¡Buenas noches! El taller está cerrado, pero los inventos nunca duermen del todo."
+],
+[
+"Chut… le drone dort. Enfin, il fait semblant.",
+"Shh… the drone's asleep. Well, it's pretending.",
+"Chis… el dron duerme. Bueno, se hace el dormido."
+],
+[
+"La nuit, l'Atelier des Inventeurs n'est jamais tout à fait noir : des diodes clignotent, le petit drone tourne encore sous le plafond, et quelqu'un dessine sous la lampe.",
+"At night, the Inventors' Workshop is never quite dark: little lights blink, the small drone still circles under the ceiling, and someone is drawing under the lamp.",
+"De noche, el Taller de los Inventores nunca está del todo a oscuras: parpadean los diodos, el pequeño dron sigue dando vueltas bajo el techo, y alguien dibuja bajo la lámpara."
+],
+[
+"Je règle l'hélice du parapluie. Si elle tourne trop vite, on monte au plafond. Si elle tourne trop lentement, on reste un inventeur à pied.",
+"I'm adjusting the umbrella's propeller. If it spins too fast, you shoot up to the ceiling. If it spins too slowly, you stay a pedestrian inventor.",
+"Estoy ajustando la hélice del paraguas. Si gira demasiado rápido, subes hasta el techo. Si gira demasiado despacio, te quedas en inventor de a pie."
+],
+[
+"Mireille dit qu'une bonne invention rate au moins cent fois. J'en suis à quatre-vingt-dix-sept.",
+"Mireille says a good invention fails at least a hundred times. I'm up to ninety-seven.",
+"Mireille dice que un buen invento falla al menos cien veces. Yo voy por noventa y siete."
+],
+[
+"Bon vent ! Tu viens essayer le parapluie-ascenseur ? Tout le monde vient pour ça.",
+"Fair winds! Here to try the lift-umbrella? Everyone comes for that.",
+"¡Buen viento! ¿Vienes a probar el paraguas-ascensor? Todo el mundo viene a eso."
+],
+[
+"Bonjour ! Ne touche pas au bras mécanique, il serre la main un peu trop fort.",
+"Hello! Don't touch the mechanical arm, its handshake is a bit too firm.",
+"¡Hola! No toques el brazo mecánico, que aprieta demasiado al dar la mano."
+],
+[
+"Il marche vraiment, ce parapluie ?",
+"Does that umbrella really work?",
+"¿De verdad funciona ese paraguas?"
+],
+[
+"Il monte d'un étage et demi ! Le problème, c'est la descente : Mireille travaille sur la partie « atterrir ». Pour l'instant, on tient la ficelle.",
+"It goes up a floor and a half! The problem is coming down: Mireille is working on the “landing” part. For now, we hold the string.",
+"¡Sube un piso y medio! El problema es la bajada: Mireille está trabajando en la parte de «aterrizar». De momento, sujetamos el cordel."
+],
+[
+"Où est Mireille ?",
+"Where's Mireille?",
+"¿Dónde está Mireille?"
+],
+[
+"Au comptoir, dehors, sous l'auvent. Elle vend les inventions qui marchent. Celles qui marchent presque, on les garde ici, pour les améliorer.",
+"At the counter outside, under the awning. She sells the inventions that work. The ones that almost work, we keep in here, to improve them.",
+"En el mostrador de fuera, bajo el toldo. Vende los inventos que funcionan. Los que casi funcionan, los guardamos aquí, para mejorarlos."
+],
+[
+"Je cherche un grille-pain solaire qui ne boude pas la nuit. Celui-ci a l'air de bonne humeur.",
+"I'm looking for a solar toaster that doesn't sulk at night. This one looks cheerful.",
+"Busco una tostadora solar que no se enfurruñe por la noche. Esta parece de buen humor."
+],
+[
+"Un bocal à nuage ! Pour mes plantes. Je pars en vacances au Plancher, et elles ont toujours soif.",
+"A cloud jar! For my plants. I'm going on holiday to the Floor, and they're always thirsty.",
+"¡Un tarro de nube! Para mis plantas. Me voy de vacaciones al Suelo, y siempre tienen sed."
+],
+[
+"Bonjour ! Tu crois que ce parapluie est remboursé s'il s'envole ?",
+"Hello! Do you think I'd get a refund on this umbrella if it flies away?",
+"¡Hola! ¿Crees que me devuelven el dinero de este paraguas si sale volando?"
+],
+[
+"Bon vent ! Je n'arrive pas à choisir : le bocal à nuage ou la tasse qui tourne ?",
+"Fair winds! I can't decide: the cloud jar or the spinning cup?",
+"¡Buen viento! No consigo decidirme: ¿el tarro de nube o la taza giratoria?"
+],
+[
+"Je prendrais le bocal à nuage.",
+"I'd go for the cloud jar.",
+"Yo me quedaría con el tarro de nube."
+],
+[
+"Tu as raison. La tasse qui tourne, j'en ai déjà une. Elle a mélangé mon thé, puis ma nappe, puis mon chat. Il ne vient plus prendre le thé avec moi.",
+"You're right. I already have a spinning cup. It stirred my tea, then my tablecloth, then my cat. He doesn't come to tea with me any more.",
+"Tienes razón. Taza giratoria ya tengo una. Me removió el té, luego el mantel, luego el gato. Ya no viene a tomar el té conmigo."
+],
+[
+"L'Atelier des Inventeurs : des établis, des plans partout, des inventions sur les étagères, et au milieu, sur son socle, un parapluie avec une hélice sur la tête.",
+"The Inventors' Workshop: workbenches, blueprints everywhere, inventions on the shelves, and in the middle, on its stand, an umbrella with a propeller on its head.",
+"El Taller de los Inventores: bancos de trabajo, planos por todas partes, inventos en las estanterías y, en el centro, sobre su pedestal, un paraguas con una hélice en la cabeza."
+],
+[
+"Ça sent l'huile fine et le papier à dessin. Un petit drone fait des ronds sous le plafond ; un bras mécanique te fait signe depuis l'établi.",
+"It smells of fine oil and drawing paper. A little drone flies in circles under the ceiling; a mechanical arm waves at you from the workbench.",
+"Huele a aceite fino y a papel de dibujo. Un pequeño dron da vueltas bajo el techo; un brazo mecánico te saluda desde el banco de trabajo."
+],
+[
+"Bip, frrr, clic. Tout bouge, tourne ou clignote, chez les inventeurs. Même la tasse, sur l'étagère, tourne toute seule sur sa soucoupe.",
+"Beep, whirr, click. At the inventors', everything moves, spins or blinks. Even the cup on the shelf spins all by itself on its saucer.",
+"Bip, frrr, clic. En casa de los inventores, todo se mueve, gira o parpadea. Hasta la taza de la estantería gira ella sola sobre su platillo."
+],
+[
+"E : essayer le parapluie-ascenseur",
+"E: try the lift-umbrella",
+"E: probar el paraguas-ascensor"
+],
+[
+"Tu tires sur la ficelle : l'hélice siffle, le parapluie décolle et monte jusqu'au plafond… puis redescend en rebondissant. « Atterrissage : à revoir », note l'apprenti.",
+"You pull the string: the propeller whistles, the umbrella takes off and rises to the ceiling… then comes back down, bouncing. “Landing: needs work,” notes the apprentice.",
+"Tiras del cordel: la hélice silba, el paraguas despega y sube hasta el techo… y luego vuelve a bajar dando botes. «Aterrizaje: por revisar», apunta el aprendiz."
+],
+[
+"Frrrr… Le parapluie monte, tout droit, très fier, puis hésite, puis redescend en faisant des petits bonds. Tout le monde applaudit, par politesse.",
+"Whirrrr… The umbrella rises, straight up, very proud, then hesitates, then comes back down in little hops. Everyone claps, out of politeness.",
+"Frrrr… El paraguas sube, bien recto, muy orgulloso, luego duda, y luego vuelve a bajar dando saltitos. Todo el mundo aplaude, por educación."
+],
+[
+"L'hélice tourne, le parapluie s'élève d'un étage et demi, fait un petit salut, et retombe sur son socle. « Presque ! », dit-on derrière toi.",
+"The propeller spins, the umbrella rises a floor and a half, gives a little bow, and drops back onto its stand. “Almost!” says someone behind you.",
+"La hélice gira, el paraguas se eleva un piso y medio, hace una pequeña reverencia y vuelve a caer sobre su pedestal. «¡Casi!», dice alguien detrás de ti."
+],
+[
+"« Bravo, pilote d'essai ! Pour ton courage, une boussole à nuages : elle montre toujours le plus joli. » Tu reçois :\n",
+"“Well done, test pilot! For your courage, a cloud compass: it always points to the prettiest one.” You receive:\n",
+"«¡Bravo, piloto de pruebas! Por tu valor, una brújula de las nubes: siempre señala la más bonita.» Recibes:\n"
+],
+[
+"E : remonter le petit drone",
+"E: wind up the little drone",
+"E: dar cuerda al pequeño dron"
+],
+[
+"Tu tournes la petite clé : le drone file comme une hirondelle, fait trois tours de l'atelier à toute vitesse… puis ralentit, très content de lui.",
+"You turn the little key: the drone darts off like a swallow, zooms three times round the workshop… then slows down, very pleased with itself.",
+"Giras la llavecita: el dron sale disparado como una golondrina, da tres vueltas al taller a toda velocidad… y luego frena, muy contento de sí mismo."
+],
+[
+"Bzzzz ! Le petit drone accélère, frôle le plafonnier, bip-bip, et reprend sa ronde tranquille. Il s'est cru pressé.",
+"Bzzzz! The little drone speeds up, skims the ceiling light, beep-beep, and goes back to its quiet rounds. It thought it was in a hurry.",
+"¡Bzzzz! El pequeño dron acelera, roza la lámpara del techo, bip-bip, y retoma su ronda tranquila. Se creyó que tenía prisa."
+],
+[
+"LE LIVRE DES VENTS, page un. « En l'an premier, Séraphin Altaïr, inventeur, posa quatre moteurs sous la Montagne Renversée. Le premier matin, elle ne bougea pas. Le deuxième non plus. Le troisième, elle monta d'un pouce, et toute la ville d'en bas applaudit. »",
+"THE BOOK OF WINDS, page one. “In the Year One, Séraphin Altaïr, inventor, set four engines beneath the Upside-Down Mountain. On the first morning, it did not move. Nor on the second. On the third, it rose by an inch, and the whole town below applauded.”",
+"EL LIBRO DE LOS VIENTOS, página uno. «En el año primero, Séraphin Altaïr, inventor, colocó cuatro motores bajo la Montaña Invertida. La primera mañana, no se movió. La segunda, tampoco. La tercera, subió una pulgada, y toda la ciudad de abajo aplaudió.»"
+],
+[
+"LE LIVRE DES VENTS, page deux. « Il fallut quarante jours pour que la Montagne atteigne les nuages. Les gens montaient chaque soir par la Colonne et une longue échelle, pour voir. Séraphin leur servait du thé. Ainsi naquit la Cité des Nuées, et la coutume du thé des sommets. »",
+"THE BOOK OF WINDS, page two. “It took forty days for the Mountain to reach the clouds. Every evening, people came up by the Column and a long ladder, to watch. Séraphin served them tea. Thus was born the City of Clouds, and the custom of summit tea.”",
+"EL LIBRO DE LOS VIENTOS, página dos. «Hicieron falta cuarenta días para que la Montaña alcanzara las nubes. Cada tarde, la gente subía por la Columna y por una larga escalera, para verlo. Séraphin les servía té. Así nació la Ciudad de las Nubes, y la costumbre del té de las cumbres.»"
+],
+[
+"LE LIVRE DES VENTS, page trois. « Il fut décidé que l'eau viendrait des nuages, la lumière du soleil, et les décisions du Conseil, où chacun peut parler. Il fut aussi décidé qu'on se saluerait par « Bon vent ». Ce fut la première loi votée, à l'unanimité moins une voix : celle de Séraphin, qui proposait « Bonne altitude ». »",
+"THE BOOK OF WINDS, page three. “It was decided that water would come from the clouds, light from the sun, and decisions from the Council, where everyone may speak. It was also decided that people would greet one another with ‘Fair winds’. This was the first law ever voted, unanimously but for one vote: that of Séraphin, who had proposed ‘Good altitude’.”",
+"EL LIBRO DE LOS VIENTOS, página tres. «Se decidió que el agua vendría de las nubes; la luz, del sol; y las decisiones, del Consejo, donde todos pueden hablar. También se decidió que la gente se saludaría con un “Buen viento”. Fue la primera ley votada, por unanimidad menos un voto: el de Séraphin, que proponía “Buena altitud”.»"
+],
+[
+"LE LIVRE DES VENTS, dernière page écrite. « Cette année, la Ligne des Nuées a rouvert après trois ans de révision. Le Conseil a voté une fête, et un nom pour le nouveau nuage du matin : « Chouquette ». Le Docteur Aurèle s'est abstenu. »",
+"THE BOOK OF WINDS, last page written. “This year, the Cloud Line reopened after three years of maintenance. The Council voted for a celebration, and for a name for the new morning cloud: ‘Sugar Puff’. Doctor Aurèle abstained.”",
+"EL LIBRO DE LOS VIENTOS, última página escrita. «Este año, la Línea de las Nubes ha vuelto a abrir tras tres años de revisión. El Consejo ha aprobado una fiesta, y un nombre para la nueva nube de la mañana: “Buñuelo”. El Doctor Aurèle se ha abstenido.»"
+],
+[
+"SÉRAPHIN ALTAÏR, inventeur des Sustentateurs, fondateur de la Cité des Nuées. « Il suffit de quatre moteurs, d'une montagne, et de beaucoup de patience. » Sur l'épaule du buste, quelqu'un a posé une petite plume blanche. Il y en a une nouvelle chaque matin.",
+"SÉRAPHIN ALTAÏR, inventor of the Levitators, founder of the City of Clouds. “All it takes is four engines, a mountain, and a great deal of patience.” On the bust's shoulder, someone has placed a small white feather. There's a new one every morning.",
+"SÉRAPHIN ALTAÏR, inventor de los Sustentadores, fundador de la Ciudad de las Nubes. «Basta con cuatro motores, una montaña y mucha paciencia.» Sobre el hombro del busto, alguien ha dejado una pequeña pluma blanca. Cada mañana hay una nueva."
+],
+[
+"Proposition du jour : baptiser le nuage du matin « Chouquette ». Tu votes pour. Adopté, sous les applaudissements !",
+"Today's motion: to name the morning cloud “Sugar Puff”. You vote in favour. Carried, to applause!",
+"Propuesta del día: bautizar la nube de la mañana como «Buñuelo». Votas a favor. ¡Aprobado, entre aplausos!"
+],
+[
+"Proposition du jour : une deuxième Navette, dans l'autre sens, pour ceux qui ont le tournis. Tu votes pour. Adopté ! Monsieur Pascal, au fond, vote contre par principe.",
+"Today's motion: a second Shuttle, going the other way, for those who get dizzy. You vote in favour. Carried! Mr Pascal, at the back, votes against on principle.",
+"Propuesta del día: una segunda Lanzadera, en sentido contrario, para los que se marean. Votas a favor. ¡Aprobado! El señor Pascal, al fondo, vota en contra por principio."
+],
+[
+"Proposition du jour : un banc de plus au Belvédère de verre, pour ceux qui ont les jambes qui tremblent. Tu votes pour. Adopté à l'unanimité, même les jambes.",
+"Today's motion: one more bench on the Glass Belvedere, for those whose legs go wobbly. You vote in favour. Carried unanimously, legs and all.",
+"Propuesta del día: un banco más en el Mirador de Cristal, para quienes tienen las piernas temblorosas. Votas a favor. Aprobado por unanimidad, piernas incluidas."
+],
+[
+"Proposition du jour : le goûter obligatoire à seize heures, pour tous les âges. Tu votes pour. Adopté ! La classe en visite fait une ovation.",
+"Today's motion: a compulsory afternoon snack at four o'clock, for all ages. You vote in favour. Carried! The visiting school class gives it a standing ovation.",
+"Propuesta del día: merienda obligatoria a las cuatro de la tarde, para todas las edades. Votas a favor. ¡Aprobado! La clase que está de visita aplaude a rabiar."
+],
+[
+"La nuit, l'hologramme veille avec moi. Il tourne, je tourne. On se tient compagnie.",
+"At night, the hologram keeps watch with me. It turns, I do my rounds. We keep each other company.",
+"De noche, el holograma vela conmigo. Él da vueltas, yo hago la ronda. Nos hacemos compañía."
+],
+[
+"Chut… Ici, même la nuit, on parle bas. Les murs ont entendu tellement de discours qu'ils ont besoin de repos.",
+"Shh… In here, even at night, we speak softly. The walls have heard so many speeches they need a rest.",
+"Chis… Aquí, incluso de noche, se habla bajito. Las paredes han oído tantos discursos que necesitan descansar."
+],
+[
+"Bonsoir ! La séance est levée depuis longtemps, mais tu peux regarder. Sans voter, hein.",
+"Good evening! The session ended long ago, but you can have a look. No voting, mind.",
+"¡Buenas noches! La sesión se levantó hace mucho, pero puedes mirar. Sin votar, ¿eh?"
+],
+[
+"Bon vent ! Tu viens voir l'hologramme ? La nuit, il est encore plus joli.",
+"Fair winds! Come to see the hologram? It's even prettier at night.",
+"¡Buen viento! ¿Vienes a ver el holograma? De noche es todavía más bonito."
+],
+[
+"Que fait le Conseil la nuit ?",
+"What does the Council do at night?",
+"¿Qué hace el Consejo por la noche?"
+],
+[
+"Il dort ! Même la Première Conseillère. Enfin, je crois. Parfois, sa fenêtre reste allumée très tard. Elle relit les lettres des habitants, une par une.",
+"It sleeps! Even the First Councillor. Well, I think so. Sometimes her window stays lit very late. She rereads the residents' letters, one by one.",
+"¡Duerme! Hasta la Primera Consejera. Bueno, eso creo. A veces su ventana sigue encendida hasta muy tarde. Relee las cartas de los vecinos, una a una."
+],
+[
+"La Maison du Conseil, la nuit : les bancs de l'hémicycle sont vides, et seule la carte de l'île, en hologramme, tourne doucement au milieu, d'un bleu de lune.",
+"The Council House at night: the benches of the chamber are empty, and only the hologram map of the island turns slowly in the middle, moon-blue.",
+"La Casa del Consejo, de noche: los bancos del hemiciclo están vacíos, y solo el mapa de la isla, en holograma, gira despacio en el centro, de un azul de luna."
+],
+[
+"Chers conseillers ! Je propose qu'on ajoute un banc au Belvédère de verre. Pour ceux qui ont les jambes qui tremblent. Comme moi.",
+"Dear councillors! I propose we add a bench to the Glass Belvedere. For those whose legs go wobbly. Like mine.",
+"¡Queridos consejeros! Propongo que añadamos un banco al Mirador de Cristal. Para quienes tienen las piernas temblorosas. Como yo."
+],
+[
+"Et ensuite, nous voterons pour le nom du nuage du matin. J'ai une proposition : « Chouquette ».",
+"And after that, we shall vote on the name of the morning cloud. I have a suggestion: “Sugar Puff”.",
+"Y después, votaremos el nombre de la nube de la mañana. Tengo una propuesta: «Buñuelo»."
+],
+[
+"Bon vent ! Oh, un visiteur ! Bienvenue au Conseil : ici, tout le monde peut parler. Même toi. Surtout toi.",
+"Fair winds! Oh, a visitor! Welcome to the Council: here, everyone can speak. Even you. Especially you.",
+"¡Buen viento! ¡Oh, un visitante! Bienvenido al Consejo: aquí todo el mundo puede hablar. Incluso tú. Sobre todo tú."
+],
+[
+"Bonjour ! Tu tombes en pleine séance. Assieds-toi au fond, et lève la main si tu as une idée.",
+"Hello! You've dropped in mid-session. Sit at the back, and raise your hand if you have an idea.",
+"¡Hola! Llegas en plena sesión. Siéntate al fondo, y levanta la mano si tienes una idea."
+],
+[
+"De quoi parle la séance ?",
+"What's the session about?",
+"¿De qué trata la sesión?"
+],
+[
+"Des bancs du Belvédère, de l'eau des nuages pour les Serres, et de la fête pour la réouverture de la Ligne. Et du nom du nuage du matin. C'est le plus disputé.",
+"The benches on the Belvedere, cloud water for the Greenhouses, and the party for the Line's reopening. And the name of the morning cloud. That's the most hotly debated.",
+"De los bancos del Mirador, del agua de las nubes para los Invernaderos y de la fiesta por la reapertura de la Línea. Y del nombre de la nube de la mañana. Es lo más reñido."
+],
+[
+"Où est la Première Conseillère ?",
+"Where's the First Councillor?",
+"¿Dónde está la Primera Consejera?"
+],
+[
+"Céleste Altaïr ? Elle préside depuis son bureau, ou bien elle se promène sur l'Esplanade pour écouter les gens. Elle dit qu'on décide mieux avec les pieds sur le sol. Enfin, sur la Cité.",
+"Céleste Altaïr? She presides from her office, or else she strolls about the Esplanade listening to people. She says you decide better with your feet on the ground. Well, on the City.",
+"¿Céleste Altaïr? Preside desde su despacho, o si no, pasea por la Explanada para escuchar a la gente. Dice que se decide mejor con los pies en el suelo. Bueno, en la Ciudad."
+],
+[
+"Je demande la parole ! … Ah, c'est déjà mon tour ? Alors je la rends.",
+"I request the floor! … Oh, is it my turn already? Then I'll hand it back.",
+"¡Pido la palabra! … Ah, ¿ya me toca? Pues la devuelvo."
+],
+[
+"Au Conseil des Nuées, on vote à main levée. Et quand on n'est pas d'accord, à main très levée.",
+"At the Cloud Council, we vote with our hands up. And when we disagree, with our hands way, way up.",
+"En el Consejo de las Nubes, se vota a mano alzada. Y cuando no estamos de acuerdo, a mano muy alzada."
+],
+[
+"Bonjour, jeune citoyen ! Tu as une idée à proposer ? Toutes les idées sont bienvenues. Surtout les idées de goûter.",
+"Hello, young citizen! Got an idea to propose? All ideas are welcome. Especially snack ideas.",
+"¡Hola, joven ciudadano! ¿Tienes alguna idea que proponer? Todas las ideas son bienvenidas. Sobre todo las de merienda."
+],
+[
+"Bon vent ! Chut… l'orateur va bientôt finir. Dans une heure, à peu près.",
+"Fair winds! Shh… the speaker's nearly done. In an hour or so.",
+"¡Buen viento! Chis… el orador está a punto de terminar. Dentro de una hora, más o menos."
+],
+[
+"Comment vote-t-on ?",
+"How do you vote?",
+"¿Cómo se vota?"
+],
+[
+"Chacun peut proposer, chacun peut voter. Même les visiteurs, une fois par jour, à la borne, près de l'entrée. C'est une très vieille loi de Séraphin : « Celui qui monte jusqu'ici mérite d'être écouté. »",
+"Anyone can propose, anyone can vote. Even visitors, once a day, at the ballot box by the entrance. It's a very old law of Séraphin's: “Whoever climbs all the way up here deserves to be heard.”",
+"Todos pueden proponer, todos pueden votar. Incluso los visitantes, una vez al día, en la urna, junto a la entrada. Es una ley muy antigua de Séraphin: «Quien sube hasta aquí merece ser escuchado.»"
+],
+[
+"J'écris tout ce qui se dit. Tout. Même les éternuements. Surtout les éternuements de Monsieur Pascal, qui sont des opinions.",
+"I write down everything that's said. Everything. Even the sneezes. Especially Mr Pascal's sneezes, which are opinions.",
+"Apunto todo lo que se dice. Todo. Hasta los estornudos. Sobre todo los estornudos del señor Pascal, que son opiniones."
+],
+[
+"Le Livre des Vents a mille pages. J'en suis à la mille-et-unième.",
+"The Book of Winds has a thousand pages. I'm on page one thousand and one.",
+"El Libro de los Vientos tiene mil páginas. Voy por la mil y una."
+],
+[
+"Bonjour ! Je suis la greffière : j'écris l'histoire de la Cité, une séance après l'autre.",
+"Hello! I'm the clerk: I write the history of the City, one session at a time.",
+"¡Hola! Soy la secretaria: escribo la historia de la Ciudad, sesión tras sesión."
+],
+[
+"Chut ! Je note. … Voilà. Bon vent !",
+"Shh! I'm writing this down. … There. Fair winds!",
+"¡Chis! Estoy tomando nota. … Listo. ¡Buen viento!"
+],
+[
+"Qu'y a-t-il dans le Livre des Vents ?",
+"What's in the Book of Winds?",
+"¿Qué hay en el Libro de los Vientos?"
+],
+[
+"Tout ! La fondation de la Cité par Séraphin, chaque loi, chaque fête, chaque nom de nuage. Le livre ouvert sur le lutrin, c'est la première page. Tu peux la lire.",
+"Everything! Séraphin founding the City, every law, every festival, every cloud's name. The book open on the lectern shows the first page. You can read it.",
+"¡Todo! La fundación de la Ciudad por Séraphin, cada ley, cada fiesta, cada nombre de nube. El libro abierto en el atril muestra la primera página. Puedes leerla."
+],
+[
+"La Maison du Conseil : un hémicycle de bancs blancs, une grande plume sur le mur du fond, et au milieu, sur une table de verre, la carte de l'île qui tourne en hologramme.",
+"The Council House: a semicircular chamber of white benches, a great feather on the back wall, and in the middle, on a glass table, the map of the island turning as a hologram.",
+"La Casa del Consejo: un hemiciclo de bancos blancos, una gran pluma en la pared del fondo y, en el centro, sobre una mesa de cristal, el mapa de la isla girando en holograma."
+],
+[
+"« … et je propose donc un banc de plus au Belvédère ! » Tu entres en pleine séance. Les conseillers t'adressent un petit signe : ici, tout le monde peut écouter.",
+"“… and so I propose one more bench at the Belvedere!” You've walked in right in the middle of a session. The councillors give you a little wave: here, anyone may listen.",
+"«… ¡y por eso propongo un banco más en el Mirador!» Entras en plena sesión. Los consejeros te saludan con un pequeño gesto: aquí todo el mundo puede escuchar."
+],
+[
+"Sous la grande plume de la Cité, les conseillers débattent. Le buste de Séraphin Altaïr, l'inventeur des Sustentateurs, a l'air de trouver le débat très intéressant.",
+"Beneath the City's great feather, the councillors are debating. The bust of Séraphin Altaïr, inventor of the Levitators, seems to find the debate most interesting.",
+"Bajo la gran pluma de la Ciudad, los consejeros debaten. El busto de Séraphin Altaïr, el inventor de los Sustentadores, parece encontrar el debate muy interesante."
+],
+[
+"E : regarder la carte de l'île",
+"E: look at the map of the island",
+"E: mirar el mapa de la isla"
+],
+[
+"Tu effleures la table : la carte s'allume plus fort et tourne. Au milieu, l'Esplanade et la Plume ; au sud-est, la Gare ; à l'est, les trois dômes des Serres ; au nord, l'Institut des Vents ; à l'ouest, le Port ; au nord-ouest, le Parc des Brumes et sa Cascade.",
+"You brush the table: the map glows brighter and turns. In the middle, the Esplanade and the Feather; to the south-east, the Station; to the east, the three domes of the Greenhouses; to the north, the Institute of Winds; to the west, the Harbour; to the north-west, the Mist Park and its Falls.",
+"Rozas la mesa: el mapa se ilumina más y gira. En el centro, la Explanada y la Pluma; al sureste, la Estación; al este, las tres cúpulas de los Invernaderos; al norte, el Instituto de los Vientos; al oeste, el Puerto; al noroeste, el Parque de las Brumas y su Cascada."
+],
+[
+"L'hologramme montre l'île vue de dessus, comme un oiseau la voit : un cercle de jardins et de toits blancs, la Navette tout autour, et sous l'île, quatre petits anneaux qui clignotent : les Sustentateurs.",
+"The hologram shows the island from above, the way a bird sees it: a circle of gardens and white roofs, the Shuttle running all around, and under the island, four little blinking rings: the Levitators.",
+"El holograma muestra la isla vista desde arriba, como la ve un pájaro: un círculo de jardines y tejados blancos, la Lanzadera alrededor y, bajo la isla, cuatro anillitos que parpadean: los Sustentadores."
+],
+[
+"Un point doré clignote sur la carte : « Vous êtes ici ». Juste à côté, un autre point, plus petit : « Chouquettes chaudes ». Quelqu'un a dû le rajouter.",
+"A golden dot blinks on the map: “You are here”. Right next to it, another, smaller dot: “Hot sugar puffs”. Someone must have added it.",
+"Un punto dorado parpadea en el mapa: «Usted está aquí». Justo al lado, otro punto, más pequeño: «Buñuelos de azúcar calientes». Alguien lo habrá añadido."
+],
+[
+"E : lire le Livre des Vents",
+"E: read the Book of Winds",
+"E: leer el Libro de los Vientos"
+],
+[
+"E : lire la plaque",
+"E: read the plaque",
+"E: leer la placa"
+],
+[
+"E : voter",
+"E: vote",
+"E: votar"
+],
+[
+"BULLETIN DU MATIN. Vent d'ouest, doux. Brume au Parc jusqu'à neuf heures, puis soleil sur toute la Cité. Un nuage en forme de lapin passera au-dessus de la Gare vers dix heures. Il est en avance.",
+"MORNING REPORT. West wind, gentle. Mist in the Park until nine, then sunshine over the whole City. A rabbit-shaped cloud will pass over the Station at about ten. It's running early.",
+"PARTE DE LA MAÑANA. Viento del oeste, suave. Bruma en el Parque hasta las nueve; después, sol en toda la Ciudad. Una nube con forma de conejo pasará sobre la Estación hacia las diez. Va adelantada."
+],
+[
+"BULLETIN DE L'APRÈS-MIDI. Ciel bleu, vent léger. Les cerfs-volants sont autorisés jusqu'à trois cents mètres. Les chapeaux, jusqu'à la tête. Risque de chouquettes en terrasse : élevé.",
+"AFTERNOON REPORT. Blue sky, light wind. Kites are permitted up to three hundred metres. Hats, up to head height only. Chance of sugar puffs on the terraces: high.",
+"PARTE DE LA TARDE. Cielo azul, viento flojo. Las cometas están autorizadas hasta trescientos metros. Los sombreros, solo hasta la cabeza. Riesgo de buñuelos de azúcar en las terrazas: alto."
+],
+[
+"BULLETIN DU SOIR. Le vent tombe avec le soleil. Coucher de soleil violet prévu au Belvédère ; Ombeline est déjà installée. Nuit claire : on verra les étoiles, et les lumières de Hautefond tout en bas.",
+"EVENING REPORT. The wind drops with the sun. Violet sunset expected at the Belvedere; Ombeline has already set up. Clear night: you'll see the stars, and the lights of Hautefond far below.",
+"PARTE DEL ATARDECER. El viento amaina con el sol. Puesta de sol violeta prevista en el Mirador; Ombeline ya se ha instalado. Noche despejada: se verán las estrellas, y las luces de Hautefond allá abajo."
+],
+[
+"BULLETIN DE NUIT. Calme plat. Quelques nuages dorment sous l'île. Merci de ne pas les réveiller : ils ont travaillé toute la journée.",
+"NIGHT REPORT. Dead calm. A few clouds are sleeping under the island. Please do not wake them: they've been working all day.",
+"PARTE DE LA NOCHE. Calma chicha. Unas cuantas nubes duermen bajo la isla. Se ruega no despertarlas: han trabajado todo el día."
+],
+[
+"Veille de nuit : je surveille les nuages pendant qu'ils dorment. Ils ronflent un peu, à l'ouest.",
+"Night watch: I keep an eye on the clouds while they sleep. They snore a little, over in the west.",
+"Guardia nocturna: vigilo las nubes mientras duermen. Roncan un poco, por el oeste."
+],
+[
+"Le radar ne montre rien. C'est la meilleure nouvelle d'une nuit de veille.",
+"Nothing on the radar. That's the best news you can get on a night watch.",
+"El radar no muestra nada. Es la mejor noticia en una noche de guardia."
+],
+[
+"Bonsoir ! Doucement, les écrans dorment à moitié.",
+"Good evening! Softly now, the screens are half asleep.",
+"¡Buenas noches! Despacito, que las pantallas están medio dormidas."
+],
+[
+"Bon vent ! Tu veux le bulletin de nuit ? Il est très court : « tout va bien ».",
+"Fair winds! Want the night report? It's very short: “all is well”.",
+"¡Buen viento! ¿Quieres el parte de la noche? Es muy corto: «todo va bien»."
+],
+[
+"Que surveille-t-on la nuit ?",
+"What do you watch over at night?",
+"¿Qué se vigila por la noche?"
+],
+[
+"Le vent, la brume, et les orages qui pourraient monter du Plancher. Si un orage approche, on prévient l'Ingénieure Nova : les Sustentateurs n'aiment pas les éclairs. Moi non plus.",
+"The wind, the mist, and any storms that might come up from the Floor. If a storm gets close, we warn Engineer Nova: the Levitators don't like lightning. Neither do I.",
+"El viento, la bruma y las tormentas que pudieran subir del Suelo. Si se acerca una tormenta, avisamos a la Ingeniera Nova: a los Sustentadores no les gustan los rayos. A mí tampoco."
+],
+[
+"L'Institut des Vents, la nuit : les écrans luisent en bleu, la chambre à nuages tourne toute seule, et le veilleur de nuit boit son thé en regardant le radar.",
+"The Institute of Winds at night: the screens glow blue, the cloud chamber turns all by itself, and the night watchman drinks his tea while watching the radar.",
+"El Instituto de los Vientos, de noche: las pantallas brillan en azul, la cámara de nubes gira sola y el vigilante nocturno se toma su té mirando el radar."
+],
+[
+"Pression : mille treize. Vent : d'ouest. Humeur du ciel : excellente.",
+"Pressure: one thousand and thirteen. Wind: westerly. Mood of the sky: excellent.",
+"Presión: mil trece. Viento: del oeste. Humor del cielo: excelente."
+],
+[
+"Je compare les nuages d'aujourd'hui à ceux d'il y a cent ans. Ils ont un peu grandi. Comme nous.",
+"I'm comparing today's clouds with the ones from a hundred years ago. They've grown a little. Like us.",
+"Comparo las nubes de hoy con las de hace cien años. Han crecido un poco. Como nosotros."
+],
+[
+"Bonjour ! Bienvenue à l'Institut des Vents. Ici, on écoute le ciel, et parfois il répond.",
+"Hello! Welcome to the Institute of Winds. Here, we listen to the sky, and sometimes it answers.",
+"¡Hola! Bienvenido al Instituto de los Vientos. Aquí escuchamos al cielo y, a veces, contesta."
+],
+[
+"Bon vent ! Au sens propre : le vent est bon, aujourd'hui. Je l'ai mesuré.",
+"Fair winds! Literally: the wind is fair today. I've measured it.",
+"¡Buen viento! En sentido literal: hoy el viento es bueno. Lo he medido."
+],
+[
+"Où est le Docteur Aurèle ?",
+"Where's Doctor Aurèle?",
+"¿Dónde está el Doctor Aurèle?"
+],
+[
+"Le Docteur Aurèle Brise ? Il est sur le terrain, c'est-à-dire sur la Promenade, en train de regarder le ciel avec ses jumelles. Il baptise les nouveaux nuages. Il en a nommé un « Gaston-du-Mardi ».",
+"Doctor Aurèle Brise? He's out in the field, which is to say on the Promenade, watching the sky through his binoculars. He names the new clouds. He called one of them “Tuesday-Gaston”.",
+"¿El Doctor Aurèle Brise? Está sobre el terreno, es decir, en el Paseo, mirando el cielo con sus prismáticos. Bautiza las nubes nuevas. A una la llamó «Gastón-del-Martes»."
+],
+[
+"À quoi sert la soufflerie ?",
+"What's the wind tunnel for?",
+"¿Para qué sirve el túnel de viento?"
+],
+[
+"On y essaie les ailes des planeurs d'Icare, les hélices des parapluies de Mireille, et parfois des chapeaux. Le vent souffle toujours dans le même sens, dans la soufflerie. C'est reposant.",
+"We test the wings of Icare's gliders in it, the propellers of Mireille's umbrellas, and sometimes hats. In the wind tunnel, the wind always blows the same way. It's restful.",
+"Ahí probamos las alas de los planeadores de Icare, las hélices de los paraguas de Mireille y, a veces, sombreros. En el túnel de viento, el viento siempre sopla en el mismo sentido. Es relajante."
+],
+[
+"Le radar montre un nuage en forme de baleine. Le Docteur Aurèle voudra le baptiser. Je propose « Mathilde ».",
+"The radar shows a whale-shaped cloud. Doctor Aurèle will want to name it. I suggest “Mathilde”.",
+"El radar muestra una nube con forma de ballena. El Doctor Aurèle querrá bautizarla. Yo propongo «Mathilde»."
+],
+[
+"Si tu entends un bip, c'est un nouveau nuage qui entre dans la carte. Bip ! … Voilà.",
+"If you hear a beep, that's a new cloud coming onto the map. Beep! … There.",
+"Si oyes un pitido, es una nube nueva que entra en el mapa. ¡Bip! … Ahí está."
+],
+[
+"Je règle la soufflerie pour l'aile du nouveau planeur d'Icare. Il la veut plus légère qu'une plume. On en est à plume et demie.",
+"I'm tuning the wind tunnel for the wing of Icare's new glider. He wants it lighter than a feather. We're at a feather and a half.",
+"Estoy ajustando el túnel de viento para el ala del nuevo planeador de Icare. La quiere más ligera que una pluma. Vamos por pluma y media."
+],
+[
+"Attention, si je mets la soufflerie à fond, les rubans font la fête.",
+"Careful: if I put the wind tunnel on full blast, the ribbons start partying.",
+"Cuidado, que si pongo el túnel de viento a tope, las cintas se van de fiesta."
+],
+[
+"Bonjour ! Tu veux lancer la soufflerie ? Le bouton est là. Pas trop longtemps : les rubans se fatiguent.",
+"Hello! Want to start the wind tunnel? The button's right there. Not for too long, though: the ribbons get tired.",
+"¡Hola! ¿Quieres encender el túnel de viento? El botón está ahí. No mucho rato: las cintas se cansan."
+],
+[
+"Bon vent ! Ici, on fabrique du vent. Du vent bien droit, bien poli.",
+"Fair winds! Here, we make wind. Straight, smooth, well-mannered wind.",
+"¡Buen viento! Aquí fabricamos viento. Viento bien derechito y bien educado."
+],
+[
+"Le bulletin de midi, pour l'affichage ! Pardon !",
+"The noon report, for the noticeboard! Excuse me!",
+"¡El parte del mediodía, para el tablón! ¡Perdón!"
+],
+[
+"Encore trois cartes à classer, et je vais lâcher le ballon-sonde avec l'équipe.",
+"Three more charts to file, and then I'm off to release the weather balloon with the team.",
+"Tres mapas más por archivar y me voy a soltar el globo sonda con el equipo."
+],
+[
+"L'Institut des Vents : des écrans pleins de cartes et de flèches, une longue soufflerie où des rubans dansent, et une colonne de verre où tourne un petit nuage.",
+"The Institute of Winds: screens full of maps and arrows, a long wind tunnel where ribbons dance, and a glass column with a little cloud spinning inside.",
+"El Instituto de los Vientos: pantallas llenas de mapas y flechas, un largo túnel de viento donde bailan unas cintas y una columna de cristal donde gira una nubecita."
+],
+[
+"Ffffffff… La soufflerie souffle dans son tunnel de verre. Les météorologues, eux, chuchotent, comme s'ils avaient peur de réveiller un orage.",
+"Ffffffff… The wind tunnel blows through its glass tube. The meteorologists, for their part, whisper, as if they were afraid of waking a storm.",
+"Ffffffff… El túnel de viento sopla dentro de su tubo de cristal. Los meteorólogos, en cambio, hablan en susurros, como si temieran despertar una tormenta."
+],
+[
+"« Bip ! » Un nouveau nuage vient d'entrer sur la carte. À l'Institut des Vents, on les compte, on les mesure, et on leur donne un nom.",
+"“Beep!” A new cloud has just come onto the map. At the Institute of Winds, they count them, measure them, and give them a name.",
+"«¡Bip!» Una nube nueva acaba de entrar en el mapa. En el Instituto de los Vientos las cuentan, las miden y les ponen nombre."
+],
+[
+"E : lancer la soufflerie",
+"E: start the wind tunnel",
+"E: encender el túnel de viento"
+],
+[
+"Tu appuies sur le gros bouton : l'hélice hurle, la fumée file dans le tunnel, les rubans claquent comme des drapeaux, et la petite aile tremble de tout son long.",
+"You press the big button: the propeller howls, smoke streams down the tunnel, the ribbons snap like flags, and the little wing quivers from tip to tip.",
+"Pulsas el botón grande: la hélice aúlla, el humo corre por el túnel, las cintas restallan como banderas y la pequeña ala tiembla de punta a punta."
+],
+[
+"VRROUUM ! La soufflerie se déchaîne. Dans le tunnel, les rubans font la fête ; dehors, ta mèche de cheveux aussi.",
+"VRROOOM! The wind tunnel goes wild. Inside the tunnel, the ribbons are partying; outside, so is your fringe.",
+"¡BRRRUUUM! El túnel de viento se desata. Dentro del túnel, las cintas están de fiesta; fuera, tu mechón de pelo también."
+],
+[
+"Une plume blanche s'est envolée de la soufflerie et s'est posée sur ton épaule. « Garde-la, dit le technicien, c'est une plume de vent : elle porte chance aux pilotes. » Tu reçois :\n",
+"A white feather flew out of the wind tunnel and landed on your shoulder. “Keep it,” says the technician, “it's a wind feather: it brings pilots luck.” You receive:\n",
+"Una pluma blanca ha salido volando del túnel de viento y se te ha posado en el hombro. «Quédatela —dice el técnico—, es una pluma de viento: da suerte a los pilotos». Recibes:\n"
+],
+[
+"E : regarder la chambre à nuages",
+"E: look at the cloud chamber",
+"E: mirar la cámara de nubes"
+],
+[
+"Dans la colonne de verre, un petit nuage tourne sur lui-même. Il grossit, s'éclaircit, puis laisse tomber trois gouttes de pluie, très fier de lui. C'est ainsi qu'on étudie la naissance des nuages.",
+"In the glass column, a little cloud spins round and round. It swells, brightens, then lets fall three drops of rain, very proud of itself. That's how they study the birth of clouds.",
+"En la columna de cristal, una nubecita gira sobre sí misma. Crece, se aclara y luego deja caer tres gotas de lluvia, muy orgullosa de sí misma. Así se estudia el nacimiento de las nubes."
+],
+[
+"Le nuage de la chambre tourne lentement, comme une toupie de coton. Une étiquette dit : « Ne pas tapoter le verre. Il est timide. »",
+"The cloud in the chamber turns slowly, like a cotton spinning top. A label says: “Do not tap on the glass. It's shy.”",
+"La nube de la cámara gira despacio, como una peonza de algodón. Una etiqueta dice: «No dar golpecitos en el cristal. Es tímida»."
+],
+[
+"Pfff… La brume monte dans le cylindre et se change en nuage. Un météorologue te souffle : « C'est comme ça que naissent ceux du matin, sous l'île. »",
+"Pfff… The mist rises in the cylinder and turns into a cloud. A meteorologist whispers to you: “That's how the morning ones are born, under the island.”",
+"Pfff… La bruma sube por el cilindro y se convierte en nube. Un meteorólogo te sopla: «Así nacen las de la mañana, bajo la isla»."
+],
+[
+"E : lire le bulletin du jour",
+"E: read today's weather report",
+"E: leer el parte meteorológico del día"
+],
+[
+"Plein sud, tout en bas : Hautefond, la Grande Colonne qui brille comme une aiguille d'or, le Grand Marché, et le Phare de la Pointe. Une cabine dorée monte le long de la Colonne. On dirait une perle sur un fil.",
+"Due south, far below: Hautefond, the Great Column shining like a golden needle, the Great Market, and the Point Lighthouse. A golden cabin is climbing up the Column. It looks like a pearl on a string.",
+"Justo al sur, allá abajo: Hautefond, la Gran Columna que brilla como una aguja de oro, el Gran Mercado y el Faro de la Punta. Una cabina dorada sube por la Columna. Parece una perla ensartada en un hilo."
+],
+[
+"Plein sud, tout en bas : les lumières de Hautefond, la Colonne illuminée de haut en bas, et le Phare qui tourne. D'ici, la ville ressemble à un gâteau d'anniversaire.",
+"Due south, far below: the lights of Hautefond, the Column lit up from top to bottom, and the Lighthouse turning. From up here, the town looks like a birthday cake.",
+"Justo al sur, allá abajo: las luces de Hautefond, la Columna iluminada de arriba abajo y el Faro que gira. Desde aquí, la ciudad parece una tarta de cumpleaños."
+],
+[
+"À l'est : la mer, à perte de vue, et sur l'eau, une petite bouée-phare. Juste en dessous, au fond de la mer, il y a le Dôme d'Azur. On ne le voit pas, mais on le sait. C'est presque pareil.",
+"To the east: the sea, as far as the eye can see, and on the water, a little lighthouse buoy. Right beneath it, at the bottom of the sea, lies the Azure Dome. You can't see it, but you know it's there. That's almost the same thing.",
+"Al este: el mar, hasta donde alcanza la vista, y sobre el agua, una pequeña boya-faro. Justo debajo, en el fondo del mar, está la Cúpula Azur. No se ve, pero se sabe. Es casi lo mismo."
+],
+[
+"À l'est : la mer est noire et calme. Une petite lumière clignote sur l'eau : la bouée-phare du Dôme d'Azur. Quelque part, très loin sous elle, une baleine chante.",
+"To the east: the sea is black and calm. A little light blinks on the water: the Azure Dome's lighthouse buoy. Somewhere, far, far beneath it, a whale is singing.",
+"Al este: el mar está negro y en calma. Una lucecita parpadea sobre el agua: la boya-faro de la Cúpula Azur. En algún lugar, muy por debajo de ella, canta una ballena."
+],
+[
+"À l'ouest : le Parc des Brumes, l'étang, la Cascade des Nuées qui tombe dans le vide et se change en nuage ; et au bout du ponton, la Libellule, amarrée par le nez.",
+"To the west: the Mist Park, the pond, the Cloud Falls tumbling into the void and turning into cloud; and at the end of the jetty, the Dragonfly, moored by the nose.",
+"Al oeste: el Parque de las Brumas, el estanque, la Cascada de las Nubes que cae al vacío y se convierte en nube; y al final del pontón, la Libélula, amarrada por el morro."
+],
+[
+"À l'ouest : la Navette circulaire passe, toute éclairée, comme un collier de lanternes autour de l'île. Au-dessus, des milliers d'étoiles. Le guide dit qu'il en a compté trois cents. Il s'est arrêté pour dormir.",
+"To the west: the Circle Shuttle glides past, all lit up, like a necklace of lanterns around the island. Above, thousands of stars. The guide says he counted three hundred. Then he stopped to get some sleep.",
+"Al oeste: pasa la Lanzadera Circular, toda iluminada, como un collar de farolillos alrededor de la isla. Encima, miles de estrellas. El guía dice que contó trescientas. Luego paró para dormir."
+],
+[
+"Bon vent ! L'ascenseur monte au sommet en vingt secondes. Le record, c'est Théo : il est monté à pied, en dix minutes, pour voir.",
+"Fair winds! The lift goes up to the top in twenty seconds. The record belongs to Théo: he climbed up on foot, in ten minutes, just to see.",
+"¡Buen viento! El ascensor sube a la cima en veinte segundos. El récord lo tiene Théo: subió a pie, en diez minutos, solo por probar."
+],
+[
+"Le sommet est ouvert jusqu'à minuit. Après, ce sont les étoiles qui le visitent.",
+"The top is open until midnight. After that, it's the stars who come to visit.",
+"La cima está abierta hasta medianoche. Después, son las estrellas quienes la visitan."
+],
+[
+"Bienvenue à la Tour du Zénith ! Quatorze étages, et tout en haut, la plus belle vue de l'archipel.",
+"Welcome to the Zenith Tower! Fourteen floors, and right at the top, the finest view in the archipelago.",
+"¡Bienvenido a la Torre del Cénit! Catorce plantas y, arriba del todo, la vista más bonita del archipiélago."
+],
+[
+"Bon vent ! Tu montes au sommet ? L'ascenseur est au milieu. Il est en verre : ne regarde pas tes pieds.",
+"Fair winds! Going up to the top? The lift is in the middle. It's made of glass: don't look at your feet.",
+"¡Buen viento! ¿Subes a la cima? El ascensor está en el centro. Es de cristal: no te mires los pies."
+],
+[
+"Qui habite dans la tour ?",
+"Who lives in the tower?",
+"¿Quién vive en la torre?"
+],
+[
+"Quatorze étages d'appartements, de jardins et de bureaux, qui tournent un peu à chaque étage : c'est la torsade. Tout en haut, la salle panoramique, ouverte à tout le monde. C'est la règle de la Cité : le plus haut appartient à tous.",
+"Fourteen floors of flats, gardens and offices, each one turned a little more than the one below: that's what gives it the twist. Right at the top, the panoramic room, open to everyone. That's the City's rule: the highest place belongs to all.",
+"Catorce plantas de pisos, jardines y oficinas, cada una un poco girada respecto a la de abajo: de ahí la torsión. Arriba del todo, la sala panorámica, abierta a todo el mundo. Es la norma de la Ciudad: lo más alto es de todos."
+],
+[
+"Qu'est-ce qu'on voit du sommet ?",
+"What can you see from the top?",
+"¿Qué se ve desde la cima?"
+],
+[
+"Tout ! Hautefond et la Colonne tout en bas, la mer, la bouée du Dôme d'Azur, le Parc des Brumes, la Libellule… Prends le temps de regarder dans les longues-vues.",
+"Everything! Hautefond and the Column far below, the sea, the Azure Dome's buoy, the Mist Park, the Dragonfly… Take your time and look through the spyglasses.",
+"¡Todo! Hautefond y la Columna allá abajo, el mar, la boya de la Cúpula Azur, el Parque de las Brumas, la Libélula… Tómate tu tiempo para mirar por los catalejos."
+],
+[
+"J'attends ma femme. Elle est montée au sommet il y a une heure. Elle dit qu'elle n'a pas encore fini de regarder.",
+"I'm waiting for my wife. She went up to the top an hour ago. She says she hasn't finished looking yet.",
+"Estoy esperando a mi mujer. Subió a la cima hace una hora. Dice que todavía no ha terminado de mirar."
+],
+[
+"Quatorze étages qui tournent… Je me demande qui a eu le tournis le premier : l'architecte ou la tour.",
+"Fourteen twisting floors… I wonder who got dizzy first: the architect or the tower.",
+"Catorce plantas que giran… Me pregunto quién se mareó primero: el arquitecto o la torre."
+],
+[
+"E : monter au sommet",
+"E: go up to the top",
+"E: subir a la cima"
+],
+[
+"La Tour du Zénith : un grand hall rond et clair, des arbres en pots, et au milieu, un ascenseur de verre qui monte tout droit vers le ciel.",
+"The Zenith Tower: a big, bright, round hall, potted trees, and in the middle, a glass lift rising straight up towards the sky.",
+"La Torre del Cénit: un gran vestíbulo redondo y luminoso, árboles en macetas y, en el centro, un ascensor de cristal que sube derecho hacia el cielo."
+],
+[
+"Le hall de la Tour du Zénith, le soir : les arbres en pots dorment, l'ascenseur de verre luit doucement. Au sommet, paraît-il, les étoiles sont toutes proches.",
+"The hall of the Zenith Tower in the evening: the potted trees are asleep, the glass lift glows softly. At the top, they say, the stars are very close.",
+"El vestíbulo de la Torre del Cénit, al anochecer: los árboles en macetas duermen, el ascensor de cristal brilla suavemente. En la cima, dicen, las estrellas están muy cerca."
+],
+[
+"Regarde : l'étoile qui clignote, là. Le Docteur Aurèle dit que c'est un phare, très loin. Moi, je préfère que ce soit une étoile.",
+"Look: that twinkling star, there. Doctor Aurèle says it's a lighthouse, very far away. I'd rather it were a star.",
+"Mira: esa estrella que parpadea, ahí. El Doctor Aurèle dice que es un faro, muy lejos. Yo prefiero que sea una estrella."
+],
+[
+"D'ici, on voit les lumières de Hautefond, tout en bas, et les étoiles, tout en haut. Et nous, au milieu. C'est une bonne place.",
+"From here, you can see the lights of Hautefond, way down below, and the stars, way up above. And us, in the middle. It's a good spot.",
+"Desde aquí se ven las luces de Hautefond, allá abajo, y las estrellas, allá arriba. Y nosotros, en medio. Es un buen sitio."
+],
+[
+"Chut… on regarde les étoiles filantes. Il en est passé trois. J'ai fait trois vœux. Le troisième, c'était d'avoir encore des vœux.",
+"Shh… we're watching the shooting stars. Three have gone by. I made three wishes. The third was to have more wishes.",
+"Chis… estamos mirando las estrellas fugaces. Han pasado tres. He pedido tres deseos. El tercero era tener más deseos."
+],
+[
+"On monte ici chaque soir depuis trente ans. Le ciel ne s'est jamais répété.",
+"We've been coming up here every evening for thirty years. The sky has never repeated itself.",
+"Llevamos treinta años subiendo aquí cada noche. El cielo nunca se ha repetido."
+],
+[
+"Bonsoir… Chut. Regarde le ciel.",
+"Good evening… Shh. Look at the sky.",
+"Buenas noches… Chis. Mira el cielo."
+],
+[
+"Bon vent ! Tu viens voir les étoiles ? Il y en a assez pour tout le monde.",
+"Fair winds! Come to see the stars? There are plenty for everyone.",
+"¡Buen viento! ¿Vienes a ver las estrellas? Hay de sobra para todos."
+],
+[
+"On voit bien les étoiles, d'ici ?",
+"Can you see the stars well from here?",
+"¿Se ven bien las estrellas desde aquí?"
+],
+[
+"Mieux que partout ailleurs ! On est au-dessus des nuages, et la Cité éteint ses lumières à minuit. Le Professeur Lunette, en bas, à l'Observatoire, nous envie un peu. On lui envoie des cartes postales.",
+"Better than anywhere else! We're above the clouds, and the City switches off its lights at midnight. Professor Lunette, down at the Observatory, is a little jealous of us. We send him postcards.",
+"¡Mejor que en ningún otro sitio! Estamos por encima de las nubes, y la Ciudad apaga sus luces a medianoche. El Profesor Lunette, allá abajo, en el Observatorio, nos tiene un poco de envidia. Le mandamos postales."
+],
+[
+"Mesdames, messieurs, à votre droite : la Grande Colonne de Hautefond. À votre gauche : la mer. Sous vos pieds : quatorze étages et une montagne qui flotte.",
+"Ladies and gentlemen, on your right: the Great Column of Hautefond. On your left: the sea. Beneath your feet: fourteen floors and a floating mountain.",
+"Señoras y señores, a su derecha: la Gran Columna de Hautefond. A su izquierda: el mar. Bajo sus pies: catorce plantas y una montaña que flota."
+],
+[
+"Les longues-vues sont gratuites. Les nuages aussi. Profitez-en.",
+"The spyglasses are free. So are the clouds. Enjoy them.",
+"Los catalejos son gratis. Las nubes también. Aprovechen."
+],
+[
+"Bienvenue au sommet du Zénith ! Le plus haut point de la Cité des Nuées. Plus haut, il n'y a que les oiseaux. Et les ballons-sondes.",
+"Welcome to the top of the Zenith! The highest point in the City of Clouds. Any higher, and there are only birds. And weather balloons.",
+"¡Bienvenido a la cima del Cénit! El punto más alto de la Ciudad de las Nubes. Más arriba solo hay pájaros. Y globos sonda."
+],
+[
+"Bon vent ! Approche, regarde dans une longue-vue : chacune montre un côté de l'archipel.",
+"Fair winds! Come closer and look through a spyglass: each one shows a different side of the archipelago.",
+"¡Buen viento! Acércate y mira por un catalejo: cada uno muestra un lado del archipiélago."
+],
+[
+"On est à quelle hauteur ?",
+"How high up are we?",
+"¿A qué altura estamos?"
+],
+[
+"Deux cents mètres au-dessus de la mer pour l'île, plus quatorze étages de tour. Les jours de grand vent, la tour se balance d'un centimètre. On ne le sent pas. Enfin, presque pas.",
+"Two hundred metres above the sea for the island, plus fourteen floors of tower. On very windy days, the tower sways by a centimetre. You can't feel it. Well, hardly.",
+"Doscientos metros sobre el mar para la isla, más catorce plantas de torre. Los días de mucho viento, la torre se balancea un centímetro. No se nota. Bueno, casi no."
+],
+[
+"Séraphin venait ici ?",
+"Did Séraphin come up here?",
+"¿Séraphin venía aquí?"
+],
+[
+"La tour n'existait pas encore ! Mais on raconte qu'il montait sur le plus haut rocher de l'île pour vérifier qu'elle était bien droite. Elle l'était. Elle l'est toujours.",
+"The tower didn't exist yet! But they say he used to climb the highest rock on the island to check that it was perfectly level. It was. It still is.",
+"¡La torre todavía no existía! Pero cuentan que subía a la roca más alta de la isla para comprobar que estaba bien nivelada. Lo estaba. Y lo sigue estando."
+],
+[
+"Je vois ma maison ! … Non, c'est un nuage.",
+"I can see my house! … No, it's a cloud.",
+"¡Veo mi casa! … No, es una nube."
+],
+[
+"Ma femme dit que j'ai le vertige. Je n'ai pas le vertige : j'ai beaucoup de respect pour le vide.",
+"My wife says I'm scared of heights. I'm not scared of heights: I just have a great deal of respect for the drop.",
+"Mi mujer dice que tengo vértigo. No tengo vértigo: es que le tengo mucho respeto al vacío."
+],
+[
+"La Libellule ! Elle passe sous nous ! Je vois le dessus d'un dirigeable !",
+"The Dragonfly! It's going under us! I can see the top of an airship!",
+"¡La Libélula! ¡Pasa por debajo de nosotros! ¡Estoy viendo un dirigible desde arriba!"
+],
+[
+"Je vais tout raconter à ma classe. Personne ne me croira. Alors je vais leur montrer mon dessin.",
+"I'm going to tell my whole class. Nobody will believe me. So I'll show them my drawing.",
+"Se lo voy a contar todo a mi clase. Nadie me va a creer. Así que les enseñaré mi dibujo."
+],
+[
+"Sustentateur numéro un : 99,8 %. Numéro deux : 99,9 %. Numéro trois : 99,8 %. Numéro quatre : 100 %. Une petite note, à côté, au crayon : « Le quatre fait le malin. »",
+"Levitator number one: 99.8%. Number two: 99.9%. Number three: 99.8%. Number four: 100%. A little note beside it, in pencil: “Number four is showing off.”",
+"Sustentador número uno: 99,8 %. Número dos: 99,9 %. Número tres: 99,8 %. Número cuatro: 100 %. Al lado, una notita a lápiz: «El cuatro se está luciendo»."
+],
+[
+"Altitude de l'île : deux cent trente-six mètres, et trois centimètres. Les trois centimètres, c'est Théo qui saute de joie dans sa capsule.",
+"Altitude of the island: two hundred and thirty-six metres, and three centimetres. The three centimetres are Théo jumping for joy in his capsule.",
+"Altitud de la isla: doscientos treinta y seis metros, y tres centímetros. Los tres centímetros son Théo saltando de alegría en su cápsula."
+],
+[
+"Équilibre : parfait. Température du cœur : tiède. Humeur du cœur : ronronnante. (Cette dernière mesure a été ajoutée par l'Ingénieure Nova.)",
+"Balance: perfect. Heart temperature: lukewarm. Heart mood: purring. (This last reading was added by Engineer Nova.)",
+"Equilibrio: perfecto. Temperatura del corazón: tibia. Humor del corazón: ronroneante. (Esta última medición la añadió la Ingeniera Nova.)"
+],
+[
+"Heures de service sans panne : un million cinquante mille. Prochaine révision : quand il faudra. Le Sustentateur n'a pas l'air pressé.",
+"Hours of service without a breakdown: one million and fifty thousand. Next overhaul: when needed. The Levitator doesn't seem to be in any hurry.",
+"Horas de servicio sin averías: un millón cincuenta mil. Próxima revisión: cuando haga falta. El Sustentador no parece tener prisa."
+],
+[
+"Cœur du Sustentateur numéro deux : tout va bien. Il ronronne en mi bémol. L'Ingénieure Nova dit que c'est la note du bonheur.",
+"Heart of Levitator number two: all is well. It's humming in E flat. Engineer Nova says that's the note of happiness.",
+"Corazón del Sustentador número dos: todo va bien. Ronronea en mi bemol. La Ingeniera Nova dice que es la nota de la felicidad."
+],
+[
+"Ne t'inquiète pas si le sol vibre un peu. C'est l'île qui respire.",
+"Don't worry if the floor vibrates a little. That's the island breathing.",
+"No te preocupes si el suelo vibra un poco. Es la isla, que respira."
+],
+[
+"Bon vent ! Bienvenue au cœur des Sustentateurs. Ne te penche pas au-dessus du puits : il est très profond, et très bleu.",
+"Fair winds! Welcome to the heart of the Levitators. Don't lean over the shaft: it's very deep, and very blue.",
+"¡Buen viento! Bienvenido al corazón de los Sustentadores. No te asomes al pozo: es muy profundo, y muy azul."
+],
+[
+"Bonjour ! Tu entends ? Ce ronronnement, c'est toute une ville qui flotte.",
+"Hello! Can you hear that? That hum is a whole city floating.",
+"¡Hola! ¿Lo oyes? Ese ronroneo es toda una ciudad que flota."
+],
+[
+"Le cœur de cristal garde l'énergie du soleil ; l'anneau la fait tourner, et la pousse vers le bas, très loin, jusqu'à la mer. L'île s'appuie dessus, comme une main sur une table. Séraphin l'a calculé il y a cent vingt ans. Nous, on surveille.",
+"The crystal heart stores the sun's energy; the ring spins it and pushes it downwards, a long way down, all the way to the sea. The island rests on it, like a hand on a table. Séraphin worked it all out a hundred and twenty years ago. We just keep an eye on it.",
+"El corazón de cristal guarda la energía del sol; el anillo la hace girar y la empuja hacia abajo, muy lejos, hasta el mar. La isla se apoya en ella, como una mano sobre una mesa. Séraphin lo calculó hace ciento veinte años. Nosotros vigilamos."
+],
+[
+"Il y en a quatre ?",
+"There are four of them?",
+"¿Hay cuatro?"
+],
+[
+"Quatre Sustentateurs, aux quatre coins de l'île, sous la roche. Celui-ci est le numéro deux, le plus bavard. Si l'un d'eux s'arrête, les trois autres tiennent l'île sans souci. Mais aucun ne s'est jamais arrêté.",
+"Four Levitators, at the four corners of the island, under the rock. This one is number two, the chattiest. If one of them stops, the other three hold the island up without any trouble. But none of them has ever stopped.",
+"Cuatro Sustentadores, en las cuatro esquinas de la isla, bajo la roca. Este es el número dos, el más parlanchín. Si uno se para, los otros tres sostienen la isla sin problema. Pero ninguno se ha parado nunca."
+],
+[
+"L'Ingénieure Nova vient ici ?",
+"Does Engineer Nova come down here?",
+"¿La Ingeniera Nova viene por aquí?"
+],
+[
+"Tous les matins, avec son thé. Elle pose sa tasse sur la rambarde, écoute le ronronnement, et dit « bonjour, les gros ». Ils ronronnent plus fort quand elle est là. Je te jure.",
+"Every morning, with her tea. She sets her cup on the railing, listens to the hum, and says “morning, big fellas”. They purr louder when she's here. I swear.",
+"Todas las mañanas, con su té. Deja la taza en la barandilla, escucha el ronroneo y dice «buenos días, grandullones». Ronronean más fuerte cuando ella está. Te lo juro."
+],
+[
+"Tour de ronde. Je vérifie la rambarde, les tuyaux, et mon pas. Tout est en ordre.",
+"On my rounds. I check the railing, the pipes, and my footing. All in order.",
+"De ronda. Compruebo la barandilla, las tuberías y dónde piso. Todo en orden."
+],
+[
+"Quand l'anneau accélère, c'est que Théo fait monter la capsule. On le sait toujours.",
+"When the ring speeds up, it means Théo is taking the capsule up. We always know.",
+"Cuando el anillo acelera, es que Théo está subiendo la cápsula. Siempre lo sabemos."
+],
+[
+"Ronde de nuit. Le cœur brille plus fort, la nuit. On dirait qu'il veille sur la ville.",
+"Night rounds. The heart glows brighter at night. As if it were watching over the city.",
+"Ronda nocturna. El corazón brilla más por la noche. Parece que vela por la ciudad."
+],
+[
+"Chut… À cette heure-ci, on entend toute l'île respirer.",
+"Shh… At this hour, you can hear the whole island breathing.",
+"Chis… A estas horas se oye respirar a toda la isla."
+],
+[
+"Tu descends l'escalier de service… et tu débouches dans une salle immense, creusée dans la roche. Au milieu, au-dessus d'un puits bleu, un anneau géant tourne lentement autour d'un cœur de cristal.",
+"You go down the service stairs… and come out into a vast hall, carved into the rock. In the middle, above a blue shaft, a giant ring turns slowly around a crystal heart.",
+"Bajas por la escalera de servicio… y desembocas en una sala inmensa, excavada en la roca. En el centro, sobre un pozo azul, un anillo gigante gira despacio alrededor de un corazón de cristal."
+],
+[
+"Un ronronnement profond fait vibrer la rampe. Sous la Cité, dans la roche, le Sustentateur numéro deux tourne, depuis cent vingt ans, sans jamais s'arrêter.",
+"A deep hum makes the handrail vibrate. Beneath the City, in the rock, Levitator number two has been turning for a hundred and twenty years, without ever stopping.",
+"Un ronroneo profundo hace vibrar el pasamanos. Bajo la Ciudad, en la roca, el Sustentador número dos gira desde hace ciento veinte años, sin detenerse jamás."
+],
+[
+"Bleu, partout. Le cœur de cristal pulse comme une respiration ; les deux anneaux tournent l'un dans l'autre. C'est donc ça, qui tient toute la Cité en l'air.",
+"Blue, everywhere. The crystal heart pulses like breathing; the two rings turn one inside the other. So this is what holds the whole City up in the air.",
+"Azul, por todas partes. El corazón de cristal palpita como una respiración; los dos anillos giran uno dentro del otro. Así que esto es lo que sostiene toda la Ciudad en el aire."
+],
+[
+"E : poser la main sur la rambarde",
+"E: put your hand on the railing",
+"E: poner la mano en la barandilla"
+],
+[
+"Sous ta main, la rambarde vibre doucement. Le cœur de cristal s'illumine plus fort, comme s'il t'avait senti. Puis il reprend son rythme tranquille.",
+"Under your hand, the railing vibrates softly. The crystal heart glows brighter, as if it had sensed you. Then it settles back into its calm rhythm.",
+"Bajo tu mano, la barandilla vibra suavemente. El corazón de cristal brilla con más fuerza, como si te hubiera notado. Luego recupera su ritmo tranquilo."
+],
+[
+"Ça vibre, ça chante tout bas. Un technicien sourit : « Il t'aime bien. Il fait ça avec les gens qu'il aime bien. »",
+"It vibrates, it sings under its breath. A technician smiles: “It likes you. It does that with people it likes.”",
+"Vibra, canta muy bajito. Un técnico sonríe: «Le caes bien. Hace eso con la gente que le cae bien.»"
+],
+[
+"E : lire les mesures",
+"E: check the readings",
+"E: leer las mediciones"
+],
+[
+"E : écouter le ronronnement",
+"E: listen to the hum",
+"E: escuchar el ronroneo"
+],
+[
+"Tu fermes les yeux. Un ronron profond, régulier, qui vient de partout à la fois : de la roche, de la rampe, de tes pieds. Cent vingt ans que ça dure. On a envie de dire merci.",
+"You close your eyes. A deep, steady purr, coming from everywhere at once: from the rock, from the handrail, from your feet. A hundred and twenty years it's been going. It makes you want to say thank you.",
+"Cierras los ojos. Un ronroneo profundo, regular, que viene de todas partes a la vez: de la roca, del pasamanos, de tus pies. Lleva así ciento veinte años. Dan ganas de dar las gracias."
+],
+[
+"Rrrrrrrr… Le son est si grave qu'on le sent plus qu'on ne l'entend. Un peu comme un énorme chat qui dormirait sous toute la Cité.",
+"Rrrrrrrr… The sound is so low you feel it more than you hear it. A bit like a giant cat asleep under the whole City.",
+"Rrrrrrrr… El sonido es tan grave que se siente más que se oye. Un poco como un gato enorme que durmiera debajo de toda la Ciudad."
+],
+[
+"Par la baie : le ciel, immense, et la Cité des Nuées vue de côté, avec sa montagne renversée qui flotte. Tout en bas, la mer brille. La Libellule tire un peu sur son amarre, comme un chien qui veut partir en promenade.",
+"Through the big window: the sky, vast, and the City of Clouds seen from the side, with its upside-down mountain floating. Far below, the sea sparkles. The Dragonfly tugs gently at her mooring, like a dog that wants to go for a walk.",
+"Por el ventanal: el cielo, inmenso, y la Ciudad de las Nubes vista de lado, con su montaña del revés flotando. Muy abajo, brilla el mar. La Libélula tira un poco de su amarra, como un perro que quiere salir de paseo."
+],
+[
+"Par la baie : des nuages qui passent tout près, si près qu'on pourrait les toucher. L'un d'eux a la forme d'une chouquette. Le Docteur Aurèle l'a sûrement déjà baptisé.",
+"Through the big window: clouds drifting by very close, so close you could touch them. One of them is shaped like a sugar puff. Doctor Aurèle has surely named it already.",
+"Por el ventanal: nubes que pasan muy cerca, tan cerca que se podrían tocar. Una tiene forma de buñuelo de azúcar. Seguro que el Doctor Aurèle ya le ha puesto nombre."
+],
+[
+"Par la baie, la nuit : les lumières de la Cité, la Navette qui tourne, toute éclairée, et tout en bas, les lumières de Hautefond, comme une poignée d'étoiles tombée dans la mer.",
+"Through the big window, at night: the lights of the City, the Shuttle going round, all lit up, and far below, the lights of Hautefond, like a handful of stars dropped into the sea.",
+"Por el ventanal, de noche: las luces de la Ciudad, la Lanzadera que gira, toda iluminada, y muy abajo, las luces de Hautefond, como un puñado de estrellas caído en el mar."
+],
+[
+"LA CARTE DES VENTS DE LA LIBELLULE. Au nord, le vent des sommets, régulier : bon pour le tour de l'île. À l'ouest, la descente de la Cascade : interdite aux dirigeables (trop de brume, trop de surprises). Au sud, en bas, le Port des Cordages de Hautefond et, au crayon rouge : « Ne pas faire la course avec l'Albatros. (Sauf si Héloïse commence.) »",
+"THE DRAGONFLY'S WIND CHART. To the north, the summit wind, steady: good for the island tour. To the west, the descent by the Falls: no airships allowed (too much mist, too many surprises). To the south, down below, Hautefond's Rigging Harbour and, in red pencil: “Do not race the Albatross. (Unless Héloïse starts it.)”",
+"LA CARTA DE VIENTOS DE LA LIBÉLULA. Al norte, el viento de las cumbres, regular: bueno para la vuelta a la isla. Al oeste, el descenso por la Cascada: prohibido a los dirigibles (demasiada bruma, demasiadas sorpresas). Al sur, abajo, el Puerto de las Jarcias de Hautefond y, con lápiz rojo: «No echar carreras con el Albatros. (Salvo si empieza Héloïse.)»"
+],
+[
+"Je veille sur la Libellule pendant qu'elle dort. Elle tire un peu sur son amarre, la nuit. Elle rêve de voyages.",
+"I watch over the Dragonfly while she sleeps. She tugs a little at her mooring at night. She's dreaming of voyages.",
+"Velo por la Libélula mientras duerme. De noche tira un poco de su amarra. Sueña con viajes."
+],
+[
+"La Capitaine Zéphyrine dort à la Capitainerie. Moi, je dors ici, d'un œil. L'autre regarde les étoiles.",
+"Captain Zéphyrine sleeps at the Harbour Master's Office. Me, I sleep here with one eye open. That one watches the stars.",
+"La Capitana Zéphyrine duerme en la Capitanía. Yo duermo aquí con un ojo abierto. Ese mira las estrellas."
+],
+[
+"Bonsoir ! Doucement, la Libellule dort.",
+"Good evening! Quietly, now: the Dragonfly's asleep.",
+"¡Buenas noches! Sin hacer ruido, que la Libélula duerme."
+],
+[
+"Bon vent ! Tu as raté le dernier tour de l'île. Reviens demain matin, à dix heures.",
+"Fair winds! You've missed the last island tour. Come back tomorrow morning, at ten.",
+"¡Buen viento! Te has perdido la última vuelta a la isla. Vuelve mañana por la mañana, a las diez."
+],
+[
+"On vole la nuit ?",
+"Do you fly at night?",
+"¿Voláis de noche?"
+],
+[
+"Jamais ! La Capitaine dit que la nuit appartient aux oiseaux et aux étoiles. Et puis, la Libellule a besoin de sommeil. Elle est très vieille, tu sais : quatre-vingts ans de ciel.",
+"Never! The Captain says the night belongs to the birds and the stars. Besides, the Dragonfly needs her sleep. She's very old, you know: eighty years of sky.",
+"¡Jamás! La Capitana dice que la noche es de los pájaros y de las estrellas. Y además, la Libélula necesita dormir. Es muy mayor, ¿sabes? Ochenta años de cielo."
+],
+[
+"La Libellule, la nuit : la nacelle est sombre et silencieuse ; seule une lampe de lecture brille près d'un fauteuil, et par les baies, les lumières de la Cité.",
+"The Dragonfly, at night: the gondola is dark and silent; only a reading lamp glows beside an armchair, and through the big windows, the lights of the City.",
+"La Libélula, de noche: la góndola está oscura y silenciosa; solo brilla una lámpara de lectura junto a un sillón y, por los ventanales, las luces de la Ciudad."
+],
+[
+"Cap au nord, vent arrière. On fera le tour de l'île en quarante minutes. Ou en trente-neuf, si la Capitaine regarde.",
+"Heading north, wind behind us. We'll go round the island in forty minutes. Or thirty-nine, if the Captain's watching.",
+"Rumbo al norte, viento de cola. Daremos la vuelta a la isla en cuarenta minutos. O en treinta y nueve, si la Capitana está mirando."
+],
+[
+"La Libellule a quatre-vingts ans. Elle grince un peu dans les virages. Comme moi.",
+"The Dragonfly is eighty years old. She creaks a bit on the turns. Like me.",
+"La Libélula tiene ochenta años. Cruje un poco en las curvas. Como yo."
+],
+[
+"Bon vent ! Bienvenue à bord de la Libellule ! Je suis la seconde de la Capitaine Zéphyrine. Ne touche pas au manche… sauf si je te le propose.",
+"Fair winds! Welcome aboard the Dragonfly! I'm Captain Zéphyrine's first mate. Don't touch the wheel… unless I offer you a go.",
+"¡Buen viento! ¡Bienvenido a bordo de la Libélula! Soy la segunda de a bordo de la Capitana Zéphyrine. No toques el timón… salvo si te lo ofrezco."
+],
+[
+"Bonjour, passager ! Nous partons bientôt pour le tour de l'île. Installe-toi face à une baie.",
+"Hello, passenger! We'll be setting off on the island tour soon. Take a seat facing one of the big windows.",
+"¡Hola, pasajero! Pronto salimos a dar la vuelta a la isla. Siéntate frente a un ventanal."
+],
+[
+"Où est la Capitaine Zéphyrine ?",
+"Where's Captain Zéphyrine?",
+"¿Dónde está la Capitana Zéphyrine?"
+],
+[
+"À la Capitainerie, sur le ponton, en train de lire la météo du Docteur Aurèle à voix haute. Elle prend la barre pour les grands départs. Et pour les courses avec l'Albatros.",
+"At the Harbour Master's Office, on the pier, reading Doctor Aurèle's forecast out loud. She takes the helm for the big departures. And for races with the Albatross.",
+"En la Capitanía, en el pontón, leyendo en voz alta el parte del Doctor Aurèle. Se pone al timón en las grandes salidas. Y en las carreras con el Albatros."
+],
+[
+"Vous connaissez l'Albatros ?",
+"Do you know the Albatross?",
+"¿Conoce el Albatros?"
+],
+[
+"Le dirigeable de la Capitaine Héloïse Nimbus, en bas, à Hautefond ! Elles font la course chaque fois qu'elles se croisent. Les deux disent qu'elles gagnent. Le ciel est grand : il y a de la place pour deux victoires.",
+"Captain Héloïse Nimbus's airship, down in Hautefond! They race every time they cross paths. They both say they win. The sky is big: there's room for two victories.",
+"¡El dirigible de la Capitana Héloïse Nimbus, allá abajo, en Hautefond! Echan una carrera cada vez que se cruzan. Las dos dicen que ganan. El cielo es grande: hay sitio para dos victorias."
+],
+[
+"Mon premier vol ! Je ne regarde pas en bas. Je regarde devant. Devant, c'est très bien aussi.",
+"My first flight! I'm not looking down. I'm looking ahead. Ahead is very nice too.",
+"¡Mi primer vuelo! No miro hacia abajo. Miro hacia delante. Hacia delante también está muy bien."
+],
+[
+"Mon mari est resté au Café Cumulus. Il dit que le ciel, il le voit très bien depuis une chaise.",
+"My husband stayed behind at the Cumulus Café. He says he can see the sky perfectly well from a chair.",
+"Mi marido se ha quedado en el Café Cúmulo. Dice que el cielo lo ve muy bien desde una silla."
+],
+[
+"Zzz… Plus haut… Zzz…",
+"Zzz… Higher… Zzz…",
+"Zzz… Más alto… Zzz…"
+],
+[
+"Zzz… Je ne dors pas, je profite du paysage les yeux fermés… Zzz…",
+"Zzz… I'm not asleep, I'm enjoying the view with my eyes closed… Zzz…",
+"Zzz… No estoy durmiendo, disfruto del paisaje con los ojos cerrados… Zzz…"
+],
+[
+"La Cascade ! Je vois la Cascade d'en dessous ! Elle tombe et elle devient un nuage !",
+"The Falls! I can see the Falls from underneath! The water drops and turns into a cloud!",
+"¡La Cascada! ¡Veo la Cascada desde abajo! ¡Cae y se convierte en una nube!"
+],
+[
+"Quand je serai grand, je serai capitaine de dirigeable. Ou nuage. Je n'ai pas encore choisi.",
+"When I grow up, I'm going to be an airship captain. Or a cloud. I haven't decided yet.",
+"De mayor seré capitán de dirigible. O nube. Todavía no lo he decidido."
+],
+[
+"Jus de soleil, lait de nuage ! Pour les passagers qui ont la tête qui tourne : un thé des sommets.",
+"Sunshine juice, cloud milk! For passengers feeling dizzy: a summit tea.",
+"¡Zumo de sol, leche de nube! Para los pasajeros a los que les da vueltas la cabeza: un té de las cumbres."
+],
+[
+"Attention, la Libellule penche un peu à gauche. Moi aussi. On s'équilibre.",
+"Careful, the Dragonfly's leaning a bit to the left. So am I. We balance each other out.",
+"Cuidado, la Libélula se inclina un poco a la izquierda. Yo también. Nos equilibramos."
+],
+[
+"Bon vent ! Un jus de soleil ? C'est offert à bord, pour le premier vol.",
+"Fair winds! A sunshine juice? It's free on board for your first flight.",
+"¡Buen viento! ¿Un zumo de sol? En el primer vuelo, invita la casa."
+],
+[
+"Bonjour ! Attention au plateau : la Libellule danse un peu.",
+"Hello! Mind the tray: the Dragonfly's dancing a bit.",
+"¡Hola! Cuidado con la bandeja: la Libélula baila un poco."
+],
+[
+"Je veux bien un jus de soleil !",
+"I'd love a sunshine juice!",
+"¡Me encantaría un zumo de sol!"
+],
+[
+"Tu en as déjà eu un ! Mais je te remets un peu de soleil dans le verre, pour la route. Voilà. Il est surtout fait de sourire.",
+"You've already had one! But I'll top up your glass with a little more sunshine, for the road. There. This one's mostly made of smiles.",
+"¡Ya te has tomado uno! Pero te pongo un poco más de sol en el vaso, para el camino. Ya está. Este lleva sobre todo sonrisas."
+],
+[
+"« Un jus de soleil, pressé ce matin dans les Serres ! » Tu reçois :\n",
+"“A sunshine juice, squeezed this morning in the Greenhouses!” You receive:\n",
+"«¡Un zumo de sol, exprimido esta mañana en los Invernaderos!» Recibes:\n"
+],
+[
+"Tu montes à bord de la Libellule : une longue nacelle blanche, des fauteuils face à de grandes baies sur le ciel, et tout au bout, la passerelle.",
+"You step aboard the Dragonfly: a long white gondola, armchairs facing big windows onto the sky, and right at the end, the bridge.",
+"Subes a bordo de la Libélula: una larga góndola blanca, sillones frente a grandes ventanales abiertos al cielo y, al fondo del todo, el puente de mando."
+],
+[
+"La nacelle bouge à peine, comme une barque sur une eau très calme. Par les baies, le ciel. Rien que le ciel, et un peu de Cité.",
+"The gondola barely moves, like a rowing boat on very still water. Through the windows, the sky. Nothing but sky, and a bit of City.",
+"La góndola apenas se mueve, como una barca sobre un agua muy tranquila. Por los ventanales, el cielo. Nada más que cielo, y un poco de Ciudad."
+],
+[
+"« Bienvenue à bord ! » Les lampes se balancent doucement au rythme du vent. La Libellule est amarrée, mais elle a déjà envie de partir.",
+"“Welcome aboard!” The lamps sway gently in time with the wind. The Dragonfly is moored, but she's already itching to set off.",
+"«¡Bienvenidos a bordo!» Las lámparas se balancean suavemente al ritmo del viento. La Libélula está amarrada, pero ya tiene ganas de salir."
+],
+[
+"Tu tournes le manche : la Libellule tire sur son amarre, la nacelle penche un peu, les lampes se balancent. « Doucement, dit la seconde, on est encore amarrés ! »",
+"You turn the wheel: the Dragonfly tugs at her mooring, the gondola tilts a little, the lamps sway. “Easy,” says the first mate, “we're still moored!”",
+"Giras el timón: la Libélula tira de su amarra, la góndola se inclina un poco, las lámparas se balancean. «Despacio —dice la segunda de a bordo—, ¡que todavía estamos amarrados!»"
+],
+[
+"Le manche est léger comme une plume. La Libellule répond aussitôt : elle se dandine au bout de son mât, ravie. « Elle t'aime bien, dit-on derrière toi. Elle ne fait ça qu'avec les vrais pilotes. »",
+"The wheel is light as a feather. The Dragonfly responds at once: she sways from side to side on her mooring mast, delighted. “She likes you,” says a voice behind you. “She only does that with real pilots.”",
+"El timón es ligero como una pluma. La Libélula responde enseguida: se contonea en su mástil de amarre, encantada. «Le caes bien —dice una voz a tu espalda—. Solo hace eso con los pilotos de verdad.»"
+],
+[
+"E : regarder par la baie",
+"E: look out of the big window",
+"E: mirar por el ventanal"
+],
+[
+"E : consulter la carte des vents",
+"E: check the wind chart",
+"E: consultar la carta de vientos"
+],
+[
+"« Ici la Libellule, je tourne au-dessus de la Cascade, tout va bien. — Ici l'Albatros, je te vois, Zéphyrine ! — Tu vois surtout mon sillage, Héloïse ! » Puis des rires, et un grésillement.",
+"“Dragonfly here, circling over the Falls, all's well. — Albatross here, I can see you, Zéphyrine! — All you can see is my wake, Héloïse!” Then laughter, and a crackle.",
+"«Aquí la Libélula, sobrevolando la Cascada en círculos, todo en orden. — Aquí el Albatros, ¡te veo, Zéphyrine! — ¡Lo que ves es mi estela, Héloïse!» Luego, risas y un chisporroteo."
+],
+[
+"« Capitainerie des Nuées, ici le planeur numéro trois. Je cherche un courant ascendant. — Planeur trois, essayez au-dessus des Serres, ça monte bien après le déjeuner. — Merci ! … Ça monte ! »",
+"“Cloud Harbour Master's Office, this is glider number three. I'm looking for an updraught. — Glider three, try over the Greenhouses, the air rises nicely after lunch. — Thanks! … Going up!”",
+"«Capitanía de las Nubes, aquí el planeador número tres. Busco una corriente ascendente. — Planeador tres, pruebe sobre los Invernaderos, después de comer sube muy bien. — ¡Gracias! … ¡Subimos!»"
+],
+[
+"« Ici la Gare des Nuées : la capsule part dans deux minutes. Théo demande si quelqu'un a vu son chapeau. — Capitainerie : un chapeau bleu ciel vole vers l'ouest. Il a l'air heureux. »",
+"“Cloud Station here: the capsule leaves in two minutes. Théo's asking if anyone has seen his hat. — Harbour Master's Office: a sky-blue hat is flying west. It looks happy.”",
+"«Aquí la Estación de las Nubes: la cápsula sale dentro de dos minutos. Théo pregunta si alguien ha visto su sombrero. — Capitanía: un sombrero azul celeste vuela hacia el oeste. Parece feliz.»"
+],
+[
+"« Bulletin de l'Institut des Vents : vent d'ouest, doux, avec un nuage en forme de lapin au-dessus du Port. Je répète : un lapin. Fin du bulletin. »",
+"“Institute of Winds report: westerly wind, gentle, with a rabbit-shaped cloud over the Harbour. I repeat: a rabbit. End of report.”",
+"«Parte del Instituto de los Vientos: viento del oeste, suave, con una nube en forma de conejo sobre el Puerto. Repito: un conejo. Fin del parte.»"
+],
+[
+"La Libellule : tour de l'île, à dix heures",
+"The Dragonfly: island tour, at ten in the morning",
+"La Libélula: vuelta a la isla, a las diez de la mañana"
+],
+[
+"La Libellule : tour de l'île, à quinze heures",
+"The Dragonfly: island tour, at three in the afternoon",
+"La Libélula: vuelta a la isla, a las tres de la tarde"
+],
+[
+"La Libellule : descente au Port des Cordages, le dimanche",
+"The Dragonfly: trip down to Rigging Harbour, on Sundays",
+"La Libélula: bajada al Puerto de las Jarcias, los domingos"
+],
+[
+"École de planeur d'Icare : selon le vent",
+"Icare's gliding school: wind permitting",
+"Escuela de vuelo sin motor de Icare: según el viento"
+],
+[
+"Tiens, un visiteur du soir ! J'écoute la radio : quelquefois, l'Albatros passe en bas, et Héloïse me souhaite bonne nuit. Avec beaucoup de mauvaise foi.",
+"Well, an evening visitor! I'm listening to the radio: sometimes the Albatross passes down below, and Héloïse wishes me good night. With plenty of cheek.",
+"¡Vaya, una visita a estas horas! Estoy escuchando la radio: a veces el Albatros pasa por abajo, y Héloïse me da las buenas noches. Con muchísimo retintín."
+],
+[
+"Bonsoir ! La Libellule dort, le vent aussi. Moi, je lis la météo de demain. Elle dit « beau ». Elle dit toujours « beau ». Elle a raison.",
+"Good evening! The Dragonfly's asleep, and so is the wind. Me, I'm reading tomorrow's forecast. It says “fine”. It always says “fine”. And it's right.",
+"¡Buenas noches! La Libélula duerme, y el viento también. Yo leo el parte de mañana. Dice «buen tiempo». Siempre dice «buen tiempo». Y tiene razón."
+],
+[
+"Veille radio. Tout est calme. Même l'Albatros, en bas, s'est tu.",
+"Radio watch. All quiet. Even the Albatross, down below, has gone silent.",
+"Guardia de radio. Todo en calma. Hasta el Albatros, allá abajo, se ha callado."
+],
+[
+"La Capitaine Zéphyrine est rentrée chez elle. Elle a laissé un mot : « Réveillez-moi s'il y a une course. »",
+"Captain Zéphyrine has gone home. She left a note: “Wake me if there's a race.”",
+"La Capitana Zéphyrine se ha ido a casa. Ha dejado una nota: «Que me despierten si hay una carrera.»"
+],
+[
+"Bonsoir ! La Capitainerie est en veille. Comme le ciel.",
+"Good evening! The Harbour Master's Office is on night watch. Like the sky.",
+"¡Buenas noches! La Capitanía está en vela. Como el cielo."
+],
+[
+"Bon vent ! Chut… j'écoute la radio.",
+"Fair winds! Shh… I'm listening to the radio.",
+"¡Buen viento! Chis… estoy escuchando la radio."
+],
+[
+"La Capitainerie, le soir : la radio grésille tout bas, la maquette du planeur tourne au plafond, et par la grande baie, la Libellule dort au bout du ponton.",
+"The Harbour Master's Office, in the evening: the radio crackles softly, the model glider turns slowly under the ceiling, and through the big window, the Dragonfly sleeps at the end of the pier.",
+"La Capitanía, al anochecer: la radio chisporrotea muy bajito, la maqueta del planeador gira colgada del techo y, por el gran ventanal, la Libélula duerme al final del pontón."
+],
+[
+"« Capitainerie des Nuées, j'écoute ! » … Ah, c'est encore le pigeon qui tape sur l'antenne.",
+"“Cloud Harbour Master's Office, go ahead!” … Ah, it's that pigeon tapping on the aerial again.",
+"«¡Capitanía de las Nubes, adelante!» … Ah, otra vez la paloma picoteando la antena."
+],
+[
+"Le prochain tour de l'île part à quinze heures. Il reste deux places. Et un strapontin pour les très courageux.",
+"The next island tour leaves at three. Two seats left. And a fold-down seat for the very brave.",
+"La próxima vuelta a la isla sale a las tres. Quedan dos plazas. Y un traspuntín para los más valientes."
+],
+[
+"Bon vent ! Capitainerie du Port des Nuées. Un départ, une réclamation, une météo ?",
+"Fair winds! Cloud Harbour Master's Office. A departure, a complaint, a forecast?",
+"¡Buen viento! Capitanía del Puerto de las Nubes. ¿Una salida, una reclamación, un parte del tiempo?"
+],
+[
+"Bonjour ! La Libellule part à quinze heures. Tu veux une place côté baie ? Elles sont toutes côté baie.",
+"Hello! The Dragonfly leaves at three. Would you like a window seat? They're all window seats.",
+"¡Hola! La Libélula sale a las tres. ¿Quieres asiento de ventanilla? Todos son de ventanilla."
+],
+[
+"Vous avez un souvenir ?",
+"Do you have a souvenir?",
+"¿Tiene algún recuerdo?"
+],
+[
+"Je t'en ai déjà donné une ! Il ne m'en reste que trois, et la Capitaine les garde pour les courses gagnées contre l'Albatros. C'est-à-dire pour toutes les courses.",
+"I've already given you one! I've only got three left, and the Captain keeps them for races won against the Albatross. In other words, for every race.",
+"¡Ya te he dado una! Solo me quedan tres, y la Capitana las guarda para las carreras ganadas contra el Albatros. O sea, para todas las carreras."
+],
+[
+"« Une carte postale de la Libellule, au-dessus de la Cascade. Envoie-la en bas, ça leur fera envie ! » Tu reçois :\n",
+"“A postcard of the Dragonfly, above the Falls. Send it down below, it'll make them jealous!” You receive:\n",
+"«Una postal de la Libélula sobre la Cascada. ¡Mándala abajo, que les dé envidia!» Recibes:\n"
+],
+[
+"Où est l'école de planeur ?",
+"Where's the gliding school?",
+"¿Dónde está la escuela de vuelo sin motor?"
+],
+[
+"Au bout du ponton, avec Icare Plané ! Il part avec ses élèves quand le vent est bon. Il n'a pas marché depuis trois ans, paraît-il : il plane jusqu'à la boulangerie.",
+"At the end of the pier, with Icare Plané! He takes off with his students when the wind is right. Apparently he hasn't walked in three years: he glides to the bakery.",
+"¡Al final del pontón, con Icare Plané! Sale con sus alumnos cuando hace buen viento. Dicen que lleva tres años sin caminar: va planeando hasta la panadería."
+],
+[
+"Regarde, la maquette du planeur d'Icare ! Le vrai a des ailes de quinze mètres. Moi, j'ai les bras de un mètre. Il faut que je grandisse.",
+"Look, the model of Icare's glider! The real one has fifteen-metre wings. Me, I've got one-metre arms. I need to grow.",
+"¡Mira, la maqueta del planeador de Icare! El de verdad tiene alas de quince metros. Yo tengo brazos de un metro. Tengo que crecer."
+],
+[
+"Demain, c'est ma première leçon. J'ai déjà le casque. Je l'ai même mis pour dormir.",
+"Tomorrow's my first lesson. I've already got the helmet. I even wore it to bed.",
+"Mañana es mi primera clase. Ya tengo el casco. Hasta me lo puse para dormir."
+],
+[
+"Je regarde le tableau des départs. La Libellule descend au Plancher le dimanche. Je vais voir ma sœur. En dirigeable ! Elle va être verte de jalousie.",
+"I'm looking at the departures board. The Dragonfly goes down to the Floor on Sundays. I'm going to see my sister. By airship! She'll be green with envy.",
+"Estoy mirando el panel de salidas. La Libélula baja al Suelo los domingos. Voy a ver a mi hermana. ¡En dirigible! Se va a morir de envidia."
+],
+[
+"Il paraît que la Capitaine Zéphyrine n'a jamais perdu une course. Héloïse non plus. Quelle époque.",
+"They say Captain Zéphyrine has never lost a race. Neither has Héloïse. What times we live in.",
+"Dicen que la Capitana Zéphyrine nunca ha perdido una carrera. Héloïse tampoco. Qué tiempos."
+],
+[
+"Bonjour ! Tu pars aussi ? J'ai pris mon plus beau chapeau. Il est attaché, cette fois.",
+"Hello! Are you leaving too? I've brought my best hat. It's tied on, this time.",
+"¡Hola! ¿Tú también te vas? Me he traído mi mejor sombrero. Esta vez va bien atado."
+],
+[
+"Bon vent ! On dit que le dimanche, la Libellule descend jusqu'au Port des Cordages. Tout en bas !",
+"Fair winds! They say that on Sundays, the Dragonfly goes all the way down to Rigging Harbour. Right to the bottom!",
+"¡Buen viento! Dicen que los domingos la Libélula baja hasta el Puerto de las Jarcias. ¡Hasta allá abajo!"
+],
+[
+"La Capitainerie du Port des Nuées : une grande baie sur le ponton, une radio qui grésille, un tableau des départs, et une maquette de planeur qui tourne au plafond.",
+"The Cloud Harbour Master's Office: a big window onto the pier, a crackling radio, a departures board, and a model glider turning under the ceiling.",
+"La Capitanía del Puerto de las Nubes: un gran ventanal que da al pontón, una radio que chisporrotea, un panel de salidas y una maqueta de planeador que gira colgada del techo."
+],
+[
+"« Capitainerie des Nuées, j'écoute ! » La radio grésille, le commis répond, et par la baie, au bout du ponton, la Libellule se dandine au bout de son mât.",
+"“Cloud Harbour Master's Office, go ahead!” The radio crackles, the clerk answers, and through the big window, at the end of the pier, the Dragonfly sways from side to side on her mooring mast.",
+"«¡Capitanía de las Nubes, adelante!» La radio chisporrotea, el empleado responde y, por el ventanal, al final del pontón, la Libélula se contonea en su mástil de amarre."
+],
+[
+"Ça sent le café des sommets et le papier des cartes. Sur le mur, un tableau annonce les départs ; au plafond, un petit planeur fait des ronds.",
+"It smells of summit coffee and map paper. On the wall, a board lists the departures; on the ceiling, a little glider goes round in circles.",
+"Huele a café de las cumbres y a papel de mapas. En la pared, un panel anuncia las salidas; en el techo, un pequeño planeador da vueltas."
+],
+[
+"E : écouter la radio",
+"E: listen to the radio",
+"E: escuchar la radio"
+],
+[
+"E : lire le tableau des départs",
+"E: read the departures board",
+"E: leer el panel de salidas"
+],
+[
+"LES DÉPARTS DU PORT DES NUÉES. La Libellule : tour de l'île, à dix heures et à quinze heures. Le dimanche : descente au Port des Cordages, à Hautefond. L'école de planeur d'Icare : selon le vent. La Navette circulaire : toutes les dix minutes, dans les deux sens. (Dans un seul sens, en fait.)",
+"CLOUD HARBOUR DEPARTURES. The Dragonfly: island tour, at ten in the morning and three in the afternoon. Sundays: trip down to Rigging Harbour, in Hautefond. Icare's gliding school: wind permitting. The Circle Shuttle: every ten minutes, in both directions. (In one direction, actually.)",
+"SALIDAS DEL PUERTO DE LAS NUBES. La Libélula: vuelta a la isla, a las diez de la mañana y a las tres de la tarde. Los domingos: bajada al Puerto de las Jarcias, en Hautefond. La escuela de vuelo sin motor de Icare: según el viento. La Lanzadera Circular: cada diez minutos, en los dos sentidos. (En un solo sentido, en realidad.)"
+],
+[
+"E : essayer un casque de planeur",
+"E: try on a glider helmet",
+"E: probarse un casco de planeador"
+],
+[
+"Tu mets le casque jaune. Il est un peu grand. Tu as l'air d'un vrai pilote. Enfin, d'un vrai pilote un peu perdu.",
+"You put on the yellow helmet. It's a bit big. You look like a real pilot. Well, a real pilot who's a bit lost.",
+"Te pones el casco amarillo. Te queda un poco grande. Pareces un piloto de verdad. Bueno, un piloto de verdad un poco perdido."
+],
+[
+"Le casque bleu te va très bien. Une élève planeuse te fait un salut militaire. Tu lui rends son salut. Le casque tombe sur ton nez.",
+"The blue helmet really suits you. A gliding student gives you a military salute. You salute back. The helmet slips down over your nose.",
+"El casco azul te queda muy bien. Una alumna de vuelo sin motor te hace un saludo militar. Le devuelves el saludo. El casco se te cae sobre la nariz."
+],
+[
+"La capsule arrive dans deux minutes. Ou deux nuages. Ici, on compte en nuages.",
+"The capsule arrives in two minutes. Or two clouds. Up here, we count in clouds.",
+"La cápsula llega dentro de dos minutos. O de dos nubes. Aquí contamos en nubes."
+],
+[
+"J'emmène ma grand-mère voir la mer, en bas. Elle dit que la mer, c'est un ciel qui est tombé.",
+"I'm taking my grandmother to see the sea, down below. She says the sea is a sky that fell down.",
+"Llevo a mi abuela a ver el mar, abajo. Dice que el mar es un cielo que se ha caído."
+],
+[
+"Mon fils veut monter dans la capsule pour la cinquième fois. Moi, je veux un café.",
+"My son wants to ride in the capsule for the fifth time. I want a coffee.",
+"Mi hijo quiere subir a la cápsula por quinta vez. Yo quiero un café."
+],
+[
+"Théo nous a fait coucou depuis la cabine. Trois fois. Il est très accueillant, Théo.",
+"Théo waved to us from the cabin. Three times. He's very welcoming, Théo is.",
+"Théo nos ha saludado con la mano desde la cabina. Tres veces. Es muy hospitalario, Théo."
+],
+[
+"Elle descend ! Elle descend ! … Elle remonte !",
+"It's going down! It's going down! … It's coming back up!",
+"¡Baja! ¡Baja! … ¡Vuelve a subir!"
+],
+[
+"Quand je serai grand, je conduirai la capsule. Et je klaxonnerai aux nuages.",
+"When I grow up, I'm going to drive the capsule. And honk at the clouds.",
+"De mayor conduciré la cápsula. Y les pitaré a las nubes."
+],
+[
+"Un aller pour le Plancher, s'il vous plaît. Et un retour. Surtout le retour.",
+"One ticket down to the Floor, please. And one back up. Especially the one back up.",
+"Un billete de ida al Suelo, por favor. Y uno de vuelta. Sobre todo el de vuelta."
+],
+[
+"Mon billet est bleu ciel. Assorti à mon chapeau. C'est important, l'élégance, en altitude.",
+"My ticket is sky blue. To match my hat. Elegance is important, at altitude.",
+"Mi billete es azul celeste. A juego con mi sombrero. La elegancia es importante, en las alturas."
+],
+[
+"Bon vent ! Tu prends la capsule, toi aussi ?",
+"Fair winds! Are you taking the capsule too?",
+"¡Buen viento! ¿Tú también coges la cápsula?"
+],
+[
+"Bonjour ! Tu fais la queue ? Moi, je fais la conversation.",
+"Hello! Are you here for the queue? I'm here for the conversation.",
+"¡Hola! ¿Haces cola? Yo hago conversación."
+],
+[
+"Il faut un billet ?",
+"Do you need a ticket?",
+"¿Hace falta billete?"
+],
+[
+"Un billet ? Non, la Ligne est gratuite depuis qu'elle a rouvert ! Mais j'aime bien en demander un quand même. Ça me fait un souvenir.",
+"A ticket? No, the Line has been free since it reopened! But I like to ask for one anyway. It makes a nice souvenir.",
+"¿Un billete? ¡No, la Línea es gratuita desde que reabrió! Pero me gusta pedir uno de todos modos. Me lo guardo de recuerdo."
+],
+[
+"Vous descendez souvent ?",
+"Do you go down often?",
+"¿Baja a menudo?"
+],
+[
+"Une fois par semaine, pour voir ma sœur. Elle habite à Hautefond. Elle m'appelle « la Perchée ». Je l'appelle « la Plancheuse ». On s'adore.",
+"Once a week, to see my sister. She lives in Hautefond. She calls me “the Percher”. I call her “the Floorer”. We adore each other.",
+"Una vez por semana, para ver a mi hermana. Vive en Hautefond. Ella me llama «la Encaramada». Yo la llamo «la Sueleña». Nos adoramos."
+],
+[
+"Pardon, pardon ! Je descends acheter du pain au Plancher. Monsieur Pascal dit qu'il est meilleur en bas.",
+"Excuse me, excuse me! I'm going down to buy bread on the Floor. Mr Pascal says it's better down there.",
+"¡Perdón, perdón! Bajo a comprar pan al Suelo. El señor Pascal dice que abajo es mejor."
+],
+[
+"Je reviens dans une heure ! Avec le pain. Et des nouvelles.",
+"Back in an hour! With the bread. And all the news.",
+"¡Vuelvo dentro de una hora! Con el pan. Y con noticias."
+],
+[
+"Bagages ! Bagages ! Bip. Attention, valise à gauche.",
+"Luggage! Luggage! Beep. Careful, suitcase on the left.",
+"¡Equipaje! ¡Equipaje! Bip. Cuidado, maleta a la izquierda."
+],
+[
+"Je suis le porteur de la Gare. Je porte tout, sauf les nuages. Ils glissent.",
+"I'm the Station porter. I carry everything, except clouds. They're slippery.",
+"Soy el mozo de equipajes de la Estación. Lo llevo todo, menos las nubes. Se me escurren."
+],
+[
+"Je ne regarde pas en bas. Je ne regarde pas en bas. … J'ai regardé en bas.",
+"I'm not looking down. I'm not looking down. … I looked down.",
+"No miro abajo. No miro abajo. … He mirado abajo."
+],
+[
+"Ma femme est au bout. Moi, je garde la rambarde. Il faut bien que quelqu'un la garde.",
+"My wife's out at the end. I'm minding the railing. Somebody has to mind it.",
+"Mi mujer está en la punta. Yo cuido la barandilla. Alguien tiene que cuidarla."
+],
+[
+"Tu vas jusqu'au bout, toi ? Courageux.",
+"Going all the way to the end, are you? Brave.",
+"¿Tú vas hasta la punta? Qué valor."
+],
+[
+"Ne fais pas attention à moi. Je profite de la vue. Les yeux fermés.",
+"Don't mind me. I'm enjoying the view. With my eyes shut.",
+"No me hagas caso. Estoy disfrutando de la vista. Con los ojos cerrados."
+],
+[
+"Vous avez le vertige ?",
+"Are you afraid of heights?",
+"¿Tiene vértigo?"
+],
+[
+"Moi ? Non ! J'ai juste une grande admiration pour le sol. Surtout quand il est sous moi, et pas deux cents mètres plus bas.",
+"Me? No! I just have a great admiration for the ground. Especially when it's under me, and not two hundred metres further down.",
+"¿Yo? ¡No! Solo siento una gran admiración por el suelo. Sobre todo cuando está debajo de mí, y no doscientos metros más abajo."
+],
+[
+"Le verre est solide ?",
+"Is the glass strong?",
+"¿El cristal es resistente?"
+],
+[
+"L'Ingénieure Nova dit qu'il tiendrait un éléphant. J'ai demandé : « Et deux éléphants ? » Elle n'a pas répondu. Je suis resté ici.",
+"Engineer Nova says it would hold an elephant. I asked: “And two elephants?” She didn't answer. I stayed here.",
+"La Ingeniera Nova dice que aguantaría un elefante. Le pregunté: «¿Y dos elefantes?» No me contestó. Me quedé aquí."
+],
+[
+"Là, en bas : la Grande Colonne. Et tout petit, le Phare. On dirait une maquette.",
+"There, down below: the Great Column. And, tiny, the Lighthouse. It looks like a model.",
+"Allí, abajo: la Gran Columna. Y, chiquitito, el Faro. Parece una maqueta."
+],
+[
+"Les bateaux du Port des Cordages ressemblent à des miettes sur une nappe bleue.",
+"The boats in Rigging Harbour look like crumbs on a blue tablecloth.",
+"Los barcos del Puerto de las Jarcias parecen migas sobre un mantel azul."
+],
+[
+"Regarde ! Un nuage passe sous mes pieds ! Je marche sur un nuage !",
+"Look! A cloud's passing under my feet! I'm walking on a cloud!",
+"¡Mira! ¡Una nube pasa bajo mis pies! ¡Estoy caminando sobre una nube!"
+],
+[
+"Si je saute, est-ce que j'atterris à Hautefond ? … Je demandais juste.",
+"If I jump, will I land in Hautefond? … Just asking.",
+"Si salto, ¿aterrizo en Hautefond? … Solo preguntaba."
+],
+[
+"Je viens ici tous les matins depuis soixante ans. Le paysage n'a jamais été le même deux fois.",
+"I've been coming here every morning for sixty years. The view has never been the same twice.",
+"Vengo aquí todas las mañanas desde hace sesenta años. El paisaje nunca ha sido el mismo dos veces."
+],
+[
+"Les gens d'en bas viennent voir le vide. Nous, on vient voir les gens d'en bas qui voient le vide. C'est très distrayant.",
+"The folk from down below come to stare into the void. We come to watch the folk from down below staring into the void. It's very entertaining.",
+"La gente de abajo viene a asomarse al vacío. Nosotros venimos a ver a la gente de abajo asomándose al vacío. Es muy entretenido."
+],
+[
+"Le premier qui fait le tour du miroir d'eau a gagné !",
+"First one round the reflecting pool wins!",
+"¡El primero que dé la vuelta al estanque espejo gana!"
+],
+[
+"Je vais plus vite que la navette !",
+"I'm faster than the shuttle!",
+"¡Voy más rápido que la lanzadera!"
+],
+[
+"Attends-moi ! … Non, ne m'attends pas, je vais te dépasser !",
+"Wait for me! … No, don't wait for me, I'm going to overtake you!",
+"¡Espérame! … No, no me esperes, ¡que te voy a adelantar!"
+],
+[
+"On fait la course jusqu'à la Plume ! … Ah non, elle est dans l'eau.",
+"Race you to the Feather! … Oh no, it's in the water.",
+"¡Una carrera hasta la Pluma! … Ah, no, que está en el agua."
+],
+[
+"♪ La la lère… C'est la valse des nuages. Elle n'a pas de fin : le vent la continue.",
+"♪ La la laa… It's the waltz of the clouds. It never ends: the wind carries it on.",
+"♪ La la lá… Es el vals de las nubes. No tiene fin: el viento lo sigue tocando."
+],
+[
+"Ici, les pièces qu'on me lance remontent avec le vent. … Non, je plaisante. Merci !",
+"Up here, the coins people throw me float back up on the wind. … No, I'm joking. Thank you!",
+"Aquí, las monedas que me echan vuelven a subir con el viento. … No, es broma. ¡Gracias!"
+],
+[
+"Je peins la Plume de Séraphin. Elle bouge un peu avec le vent. Moi aussi, du coup.",
+"I'm painting Séraphin's Feather. It moves a bit in the wind. So, naturally, do I.",
+"Estoy pintando la Pluma de Séraphin. Se mueve un poco con el viento. Así que yo también, claro."
+],
+[
+"Ombeline m'a appris : « On ne peint pas le ciel. On l'écoute, et on le recopie. »",
+"Ombeline taught me: “You don't paint the sky. You listen to it, and you copy it out.”",
+"Ombeline me enseñó: «El cielo no se pinta. Se escucha, y se copia.»"
+],
+[
+"Bonjour ! Tu veux voir ? Ne regarde pas le nez de la Plume, je l'ai raté.",
+"Hello! Want to see? Don't look at the Feather's nose, I botched it.",
+"¡Hola! ¿Quieres verlo? No mires la nariz de la Pluma, me ha salido mal."
+],
+[
+"Chut… le ciel est en train de changer de bleu. Ah, c'est fait.",
+"Shh… the sky's changing to another blue. Ah, done.",
+"Chis… el cielo está cambiando de azul. Ah, ya está."
+],
+[
+"Qu'est-ce que vous peignez ?",
+"What are you painting?",
+"¿Qué está pintando?"
+],
+[
+"La Plume de Séraphin, avec le ciel derrière. Le ciel change toutes les dix minutes. Alors je peins vite, ou je peins dix tableaux.",
+"Séraphin's Feather, with the sky behind it. The sky changes every ten minutes. So either I paint fast, or I paint ten pictures.",
+"La Pluma de Séraphin, con el cielo detrás. El cielo cambia cada diez minutos. Así que o pinto rápido, o pinto diez cuadros."
+],
+[
+"Vous connaissez Ombeline ?",
+"Do you know Ombeline?",
+"¿Conoce a Ombeline?"
+],
+[
+"Bien sûr ! C'est la peintre des couchers de soleil. Elle dit qu'il n'y en a jamais deux pareils. Moi, je n'arrive même pas à en peindre un pareil.",
+"Of course! She's the sunset painter. She says you never see the same one twice. I can't even paint the same one once.",
+"¡Claro! Es la pintora de los atardeceres. Dice que nunca hay dos iguales. Yo no consigo pintar ni uno igual."
+],
+[
+"Des ballons ! Des ballons qui montent ! Ici, ils montent encore plus haut, forcément.",
+"Balloons! Balloons that go up! Up here, they go even higher, naturally.",
+"¡Globos! ¡Globos que suben! Aquí suben todavía más alto, claro."
+],
+[
+"Un ballon pour la petite ? Il est gonflé à l'air des sommets. Le meilleur.",
+"A balloon for the little girl? It's filled with summit air. The finest there is.",
+"¿Un globo para la pequeña? Está inflado con aire de las cumbres. El mejor."
+],
+[
+"On fait le tour de l'Esplanade trois fois après le déjeuner. C'est le règlement de la digestion.",
+"We go round the Esplanade three times after lunch. Digestion regulations.",
+"Damos tres vueltas a la Explanada después de comer. Lo manda el reglamento de la digestión."
+],
+[
+"Regarde le miroir d'eau : on y voit le ciel deux fois. Une fois en haut, une fois en bas.",
+"Look at the reflecting pool: you see the sky twice. Once up above, once down below.",
+"Mira el estanque espejo: se ve el cielo dos veces. Una arriba y otra abajo."
+],
+[
+"Un lait de nuage pour la table deux ! Avec sa moustache offerte !",
+"One cloud milk for table two! Moustache on the house!",
+"¡Una leche de nube para la mesa dos! ¡Con su bigote de regalo!"
+],
+[
+"Attention, chouquettes brûlantes ! Enfin, tièdes. Le four solaire est très poli.",
+"Careful, red-hot sugar puffs! Well, lukewarm. The solar oven is very polite.",
+"¡Cuidado, buñuelos de azúcar ardiendo! Bueno, templados. El horno solar es muy educado."
+],
+[
+"Un thé des sommets, s'il vous plaît. Et une chouquette. Et une autre chouquette. Pour mon chapeau.",
+"A summit tea, please. And a sugar puff. And another sugar puff. For my hat.",
+"Un té de las cumbres, por favor. Y un buñuelo de azúcar. Y otro buñuelo de azúcar. Para mi sombrero."
+],
+[
+"Gustave dit que sa meilleure recette, c'est la vue. Elle est servie avec tout.",
+"Gustave says his best recipe is the view. It's served with everything.",
+"Gustave dice que su mejor receta es la vista. Se sirve con todo."
+],
+[
+"Maman, je veux la chouquette la plus grosse ! Celle qui ressemble à un nuage !",
+"Mum, I want the biggest sugar puff! The one that looks like a cloud!",
+"¡Mamá, quiero el buñuelo más grande! ¡El que parece una nube!"
+],
+[
+"Le lait de nuage, ça donne une moustache blanche. J'en ai déjà trois.",
+"Cloud milk gives you a white moustache. I've already got three.",
+"La leche de nube te deja bigote blanco. Ya tengo tres."
+],
+[
+"Ce lait de nuage… On dirait de boire un oreiller. Un oreiller délicieux.",
+"This cloud milk… It's like drinking a pillow. A delicious pillow.",
+"Esta leche de nube… Es como beberse una almohada. Una almohada deliciosa."
+],
+[
+"J'ai pris une chouquette pour le pigeon. Il en a pris deux. Il est très fort, ce pigeon.",
+"I got one sugar puff for the pigeon. He took two. He's a sharp one, that pigeon.",
+"He pedido un buñuelo para la paloma. Se ha llevado dos. Es muy lista, esta paloma."
+],
+[
+"Gustave m'a raconté une blague sur les cumulus. Elle était légère. Comme un nuage.",
+"Gustave told me a joke about cumulus clouds. Light and fluffy. Like a cloud.",
+"Gustave me ha contado un chiste sobre cúmulos. Era ligerito. Como una nube."
+],
+[
+"À mon âge, une chouquette par jour. Le docteur a dit « une ». Il n'a pas dit « une petite ».",
+"At my age, one sugar puff a day. The doctor said “one”. He didn't say “a small one”.",
+"A mi edad, un buñuelo al día. El médico dijo «uno». No dijo «uno pequeño»."
+],
+[
+"Je viens rapporter mon grille-pain solaire. Il fait des tartines parfaites. Mais la nuit, il boude.",
+"I'm bringing my solar toaster back. It makes perfect toast. But at night, it sulks.",
+"Vengo a devolver mi tostador solar. Hace unas tostadas perfectas. Pero por la noche se enfurruña."
+],
+[
+"Mireille m'a dit : « Ça marche presque. » Presque, c'est déjà beaucoup, ici.",
+"Mireille told me: “It almost works.” Around here, almost is already a lot.",
+"Mireille me dijo: «Casi funciona». Aquí, «casi» ya es mucho."
+],
+[
+"Je suis apprenti inventeur ! Aujourd'hui, j'invente un tournevis qui tourne tout seul. Il tourne. Il ne visse pas encore.",
+"I'm an apprentice inventor! Today I'm inventing a screwdriver that turns all by itself. It turns. It just doesn't screw anything in yet.",
+"¡Soy aprendiz de inventor! Hoy invento un destornillador que gira solo. Gira. Lo que pasa es que todavía no atornilla."
+],
+[
+"Mireille dit qu'une bonne invention rate au moins cent fois. J'en suis à quatre-vingt-dix-sept. Bientôt !",
+"Mireille says a good invention fails at least a hundred times. I'm on ninety-seven. Nearly there!",
+"Mireille dice que un buen invento falla por lo menos cien veces. Voy por el noventa y siete. ¡Ya queda poco!"
+],
+[
+"Chut ! Je suis en train d'inventer. … Bon, tu peux parler. Ça ne marchait pas, de toute façon.",
+"Shh! I'm inventing. … All right, you can talk. It wasn't working anyway.",
+"¡Chis! Estoy inventando. … Bueno, puedes hablar. De todas formas, no funcionaba."
+],
+[
+"Bonjour ! Tu veux voir mon invention ? Elle n'existe pas encore, mais elle est géniale.",
+"Hello! Want to see my invention? It doesn't exist yet, but it's brilliant.",
+"¡Hola! ¿Quieres ver mi invento? Todavía no existe, pero es genial."
+],
+[
+"Qu'est-ce que tu inventes ?",
+"What are you inventing?",
+"¿Qué estás inventando?"
+],
+[
+"Un parapluie qui pleut. Pour arroser les plantes en se promenant. Mireille dit que c'est une idée « à l'envers ». Moi, je trouve que c'est une idée à l'endroit des plantes.",
+"An umbrella that rains. For watering the plants while you're out for a walk. Mireille says it's an “upside-down” idea. I think it's the right way up, if you're a plant.",
+"Un paraguas que llueve. Para regar las plantas mientras paseas. Mireille dice que es una idea «al revés». Yo creo que, para las plantas, es una idea al derecho."
+],
+[
+"Mireille est une bonne maîtresse ?",
+"Is Mireille a good teacher?",
+"¿Mireille es buena maestra?"
+],
+[
+"La meilleure ! Elle ne se fâche jamais quand ça explose. Elle dit : « Note ce qui s'est passé, et recommence en reculant un peu. »",
+"The best! She never gets cross when something blows up. She says: “Write down what happened, and start again a bit further back.”",
+"¡La mejor! Nunca se enfada cuando algo explota. Dice: «Apunta lo que ha pasado y vuelve a empezar un poco más atrás»."
+],
+[
+"Il paraît que Mireille a inventé un parapluie qui monte. Je viens voir s'il redescend.",
+"I hear Mireille has invented an umbrella that goes up. I've come to see if it comes back down.",
+"Dicen que Mireille ha inventado un paraguas que sube. Vengo a ver si vuelve a bajar."
+],
+[
+"J'ai acheté une boussole à nuages. Elle indique toujours le plus joli. C'est pratique, mais lent.",
+"I bought a cloud compass. It always points to the prettiest one. Handy, but slow.",
+"Me he comprado una brújula de nubes. Siempre señala la más bonita. Es práctica, pero lenta."
+],
+[
+"Je viens proposer une loi : interdire aux nuages de cacher le coucher de soleil. Le Conseil étudie la question.",
+"I've come to propose a law: clouds will no longer be allowed to hide the sunset. The Council is looking into it.",
+"Vengo a proponer una ley: prohibir que las nubes tapen la puesta de sol. El Consejo está estudiando la cuestión."
+],
+[
+"Ma demande est en lecture depuis trois jours. C'est normal, elle est longue : quarante pages, et un dessin.",
+"My request has been under review for three days. That's normal, it's a long one: forty pages, and a drawing.",
+"Mi solicitud lleva tres días en estudio. Es normal, es larga: cuarenta páginas y un dibujo."
+],
+[
+"Je fais la queue pour remercier la Première Conseillère. Elle a fait réparer le banc de mon allée. Je lui ai tricoté une écharpe.",
+"I'm queuing to thank the First Councillor. She had the bench in my lane repaired. I've knitted her a scarf.",
+"Hago cola para darle las gracias a la Primera Consejera. Mandó arreglar el banco de mi calle. Le he tejido una bufanda."
+],
+[
+"Céleste Altaïr écoute tout le monde. Même moi. Et moi, je parle beaucoup.",
+"Céleste Altaïr listens to everyone. Even me. And I talk a lot.",
+"Céleste Altaïr escucha a todo el mundo. Incluso a mí. Y yo hablo mucho."
+],
+[
+"Les enfants, voici la Maison du Conseil. Ici, on décide de tout : des jardins, de l'eau des nuages, et de l'heure du goûter.",
+"Children, this is the Council House. This is where everything gets decided: the gardens, the cloud water, and snack time.",
+"Niños, esta es la Casa del Consejo. Aquí se decide todo: los jardines, el agua de las nubes y la hora de la merienda."
+],
+[
+"Qui sait qui a fait flotter notre île ? … Oui ! Séraphin Altaïr, il y a cent vingt ans !",
+"Who knows who made our island float? … Yes! Séraphin Altaïr, a hundred and twenty years ago!",
+"¿Quién sabe quién hizo flotar nuestra isla? … ¡Sí! ¡Séraphin Altaïr, hace ciento veinte años!"
+],
+[
+"Bonjour ! Nous sommes en sortie scolaire. Tu veux te joindre à nous ? Il y a un questionnaire.",
+"Hello! We're on a school trip. Would you like to join us? There's a quiz.",
+"¡Hola! Estamos de excursión escolar. ¿Quieres unirte a nosotros? Hay un cuestionario."
+],
+[
+"Chut, les enfants, on a de la visite ! Dites « Bon vent ».",
+"Shh, children, we have a visitor! Say “Fair winds”.",
+"¡Chis, niños, que tenemos visita! Decid «Buen viento»."
+],
+[
+"À quoi sert le Conseil ?",
+"What does the Council do?",
+"¿Para qué sirve el Consejo?"
+],
+[
+"Le Conseil des Nuées décide de tout ce qui se partage : l'eau des nuages, les jardins, les ballons-sondes, les horaires de la Navette. Et une fois par an, le nom du plus beau nuage.",
+"The Cloud Council decides everything we share: the cloud water, the gardens, the weather balloons, the Shuttle timetable. And once a year, the name of the most beautiful cloud.",
+"El Consejo de las Nubes decide todo lo que se comparte: el agua de las nubes, los jardines, los globos sonda, los horarios de la Lanzadera. Y una vez al año, el nombre de la nube más bonita."
+],
+[
+"Qui était Séraphin Altaïr ?",
+"Who was Séraphin Altaïr?",
+"¿Quién era Séraphin Altaïr?"
+],
+[
+"L'inventeur des Sustentateurs ! Il y a cent vingt ans, il a fait monter cette montagne dans le ciel, avec quatre moteurs et beaucoup de patience. Son arrière-petit-fils, le Grand-Père Séverin, raconte encore l'histoire à qui veut l'entendre.",
+"The inventor of the Levitators! A hundred and twenty years ago, he lifted this mountain up into the sky, with four engines and a lot of patience. His great-grandson, Grandpa Séverin, still tells the story to anyone who'll listen.",
+"¡El inventor de los Sustentadores! Hace ciento veinte años hizo subir esta montaña al cielo, con cuatro motores y mucha paciencia. Su bisnieto, el abuelo Séverin, todavía cuenta la historia a quien quiera oírla."
+],
+[
+"Maîtresse, maîtresse ! Est-ce que la Première Conseillère sait voler ?",
+"Miss! Miss! Can the First Councillor fly?",
+"¡Seño, seño! ¿La Primera Consejera sabe volar?"
+],
+[
+"Quand je serai grand, je serai conseiller. Je voterai le goûter deux fois par jour.",
+"When I grow up, I'm going to be a councillor. I'll vote for snack time twice a day.",
+"De mayor seré consejero. Votaré que haya merienda dos veces al día."
+],
+[
+"J'ai vu la Première Conseillère ! Elle m'a dit « Bon vent » ! À MOI !",
+"I saw the First Councillor! She said “Fair winds” to me! TO ME!",
+"¡He visto a la Primera Consejera! ¡Me ha dicho «Buen viento»! ¡A MÍ!"
+],
+[
+"On va voter pour choisir le nom du nouveau nuage. Je propose « Chouquette ».",
+"We're going to vote to pick the new cloud's name. I'm suggesting “Sugar Puff”.",
+"Vamos a votar para elegir el nombre de la nube nueva. Yo propongo «Buñuelo»."
+],
+[
+"Les fraisiers géants ont besoin de chansons. Je leur chante des berceuses. Ils poussent en dormant.",
+"The giant strawberry plants need songs. I sing them lullabies. They grow in their sleep.",
+"Los fresales gigantes necesitan canciones. Les canto nanas. Crecen mientras duermen."
+],
+[
+"Une seule fraise de Flora suffit pour une tarte. Une tarte pour six. Ou pour moi, un dimanche.",
+"Just one of Flora's strawberries is enough for a whole tart. A tart for six. Or for me, on a Sunday.",
+"Con una sola fresa de Flora hay para una tarta. Una tarta para seis. O para mí, un domingo."
+],
+[
+"Bonjour ! Attention où tu marches, les courgettes sont susceptibles.",
+"Hello! Watch where you step, the courgettes are very touchy.",
+"¡Hola! Mira dónde pisas, que los calabacines son muy susceptibles."
+],
+[
+"Bon vent ! Tu viens voir les fraises géantes ? Tout le monde vient voir les fraises géantes.",
+"Fair winds! Have you come to see the giant strawberries? Everyone comes to see the giant strawberries.",
+"¡Buen viento! ¿Vienes a ver las fresas gigantes? Todo el mundo viene a ver las fresas gigantes."
+],
+[
+"Comment les fraises deviennent-elles si grosses ?",
+"How do the strawberries get so big?",
+"¿Cómo se ponen tan grandes las fresas?"
+],
+[
+"Le soleil d'ici ne se couche presque jamais derrière une montagne. Et Flora leur parle tous les matins. Moi, je leur chante des berceuses. On ne sait pas laquelle des trois choses marche le mieux.",
+"The sun up here almost never sets behind a mountain. And Flora talks to them every morning. I sing them lullabies. Nobody knows which of the three works best.",
+"El sol de aquí casi nunca se pone detrás de una montaña. Y Flora les habla todas las mañanas. Yo les canto nanas. No sabemos cuál de las tres cosas funciona mejor."
+],
+[
+"Que pousse-t-il dans les serres ?",
+"What grows in the greenhouses?",
+"¿Qué crece en los invernaderos?"
+],
+[
+"Des tomates, des salades, des pommiers nains, des fraises géantes, et tout le miel des abeilles des terrasses. De quoi nourrir la Cité, avec l'eau des nuages.",
+"Tomatoes, lettuces, dwarf apple trees, giant strawberries, and all the honey from the terrace bees. Enough to feed the City, along with the cloud water.",
+"Tomates, lechugas, manzanos enanos, fresas gigantes y toda la miel de las abejas de las terrazas. Lo suficiente para alimentar a la Ciudad, junto con el agua de las nubes."
+],
+[
+"Terreau frais pour les dômes ! Pardon, ça passe !",
+"Fresh compost for the domes! Sorry, coming through!",
+"¡Mantillo fresco para las cúpulas! ¡Perdón, que paso!"
+],
+[
+"J'ai trouvé une fraise grosse comme ma tête. Je l'ai portée jusqu'à Flora. On l'a mesurée. Ma tête a perdu.",
+"I found a strawberry as big as my head. I carried it all the way to Flora. We measured it. My head lost.",
+"Encontré una fresa tan grande como mi cabeza. Se la llevé a Flora. La medimos. Mi cabeza perdió."
+],
+[
+"Il fait chaud comme en été, ici ! Dehors, c'est l'été aussi. Mais ici, c'est l'été de l'été.",
+"It's as hot as summer in here! Outside it's summer too. But in here, it's the summeriest summer.",
+"¡Aquí dentro hace calor como en verano! Fuera también es verano. Pero aquí es el verano del verano."
+],
+[
+"Une abeille m'a regardée. Je l'ai regardée. On est amies, maintenant.",
+"A bee looked at me. I looked at it. We're friends now.",
+"Una abeja me ha mirado. Yo la he mirado. Ahora somos amigas."
+],
+[
+"Je viens chaque jour voir pousser les tomates. Elles poussent quand je ne regarde pas. Alors je regarde ailleurs, très fort.",
+"I come every day to watch the tomatoes grow. They grow when I'm not looking. So I look the other way, really hard.",
+"Vengo todos los días a ver crecer los tomates. Crecen cuando no miro. Así que miro hacia otro lado, con todas mis fuerzas."
+],
+[
+"De mon temps, on faisait pousser des salades sur le toit de la Gare. Elles avaient le vertige.",
+"In my day, we grew lettuces on the roof of the Station. They suffered from vertigo.",
+"En mis tiempos, cultivábamos lechugas en el tejado de la Estación. Les daba vértigo."
+],
+[
+"Bulletin de midi : vent d'ouest, ciel bleu, et un nuage en forme de lapin. Je l'ai noté.",
+"Midday report: westerly wind, blue sky, and a rabbit-shaped cloud. I've noted it down.",
+"Parte de mediodía: viento del oeste, cielo azul y una nube con forma de conejo. Lo he anotado."
+],
+[
+"Le Docteur Aurèle veut le ballon en l'air dans dix minutes. Ou dans dix nuages.",
+"Doctor Aurèle wants the balloon up in ten minutes. Or in ten clouds.",
+"El Doctor Aurèle quiere el globo en el aire dentro de diez minutos. O de diez nubes."
+],
+[
+"Trois, deux, un… On lâche ! … Il faut le lâcher, Jules. Lâche-le.",
+"Three, two, one… Release! … You do have to let go of it, Jules. Let it go.",
+"Tres, dos, uno… ¡Soltamos! … Hay que soltarlo, Jules. Suéltalo."
+],
+[
+"Ce ballon-sonde va monter à dix kilomètres. Il nous enverra la température de là-haut. Et une carte postale, j'espère.",
+"This weather balloon will climb to ten kilometres. It'll send us the temperature from up there. And a postcard, I hope.",
+"Este globo sonda subirá a diez kilómetros. Nos mandará la temperatura de allí arriba. Y una postal, espero."
+],
+[
+"Bonjour ! Recule un peu : le ballon a le hoquet quand il y a du monde.",
+"Hello! Step back a little: the balloon gets hiccups when there's a crowd.",
+"¡Hola! Échate un poco hacia atrás: al globo le entra hipo cuando hay gente."
+],
+[
+"Bon vent ! Tu tombes bien : on lâche un ballon-sonde dans un instant.",
+"Fair winds! You're just in time: we're releasing a weather balloon in a moment.",
+"¡Buen viento! Llegas justo a tiempo: vamos a soltar un globo sonda dentro de un momento."
+],
+[
+"À quoi sert ce ballon ?",
+"What's the balloon for?",
+"¿Para qué sirve este globo?"
+],
+[
+"Il monte très haut avec ses instruments : la température, le vent, l'humidité. Le Docteur Aurèle en tire ses prévisions. Et quand le ballon éclate, très haut, le petit parachute ramène les instruments. En général.",
+"It goes up very high with its instruments: temperature, wind, humidity. Doctor Aurèle bases his forecasts on them. And when the balloon bursts, way up high, the little parachute brings the instruments back down. Usually.",
+"Sube muy alto con sus instrumentos: la temperatura, el viento, la humedad. El Doctor Aurèle saca de ahí sus previsiones. Y cuando el globo revienta, muy arriba, el paracaídas pequeñito trae de vuelta los instrumentos. Por lo general."
+],
+[
+"Le Docteur Aurèle est là ?",
+"Is Doctor Aurèle in?",
+"¿Está el Doctor Aurèle?"
+],
+[
+"Il est dans son bureau, à l'étage, en train de baptiser un nouveau nuage. Il hésite entre « Hortense » et « Cumulus le Brave ». Ça peut durer.",
+"He's in his office, upstairs, christening a new cloud. He can't decide between “Hortense” and “Cumulus the Brave”. This could take a while.",
+"Está en su despacho, en el piso de arriba, bautizando una nube nueva. Duda entre «Hortense» y «Cúmulo el Valiente». Puede ir para largo."
+],
+[
+"Je tiens la corde. C'est mon travail. Le plus important de l'Institut, d'après moi.",
+"I hold the rope. That's my job. The most important one at the Institute, if you ask me.",
+"Yo sujeto la cuerda. Es mi trabajo. El más importante del Instituto, si me preguntas."
+],
+[
+"La dernière fois, le ballon est revenu avec un pigeon dedans. Très surpris, le pigeon.",
+"Last time, the balloon came back with a pigeon inside. Very surprised, that pigeon was.",
+"La última vez, el globo volvió con una paloma dentro. Muy sorprendida, la paloma."
+],
+[
+"L'anémomètre du haut tourne un peu de travers. Je le soigne d'en bas. Avec des encouragements.",
+"The anemometer up top is spinning a bit crooked. I'm nursing it from down here. With words of encouragement.",
+"El anemómetro de arriba gira un poco torcido. Lo cuido desde abajo. A base de ánimos."
+],
+[
+"Trente-quatre mètres de mât. Je monte une fois par semaine. Le reste du temps, je lui parle d'en bas.",
+"Thirty-four metres of mast. I climb it once a week. The rest of the time, I talk to it from down here.",
+"Treinta y cuatro metros de mástil. Subo una vez por semana. El resto del tiempo, le hablo desde abajo."
+],
+[
+"Je viens inscrire mon nuage. Il est passé au-dessus de mon balcon trois matins de suite. Je crois qu'il m'aime bien.",
+"I've come to register my cloud. It floated over my balcony three mornings in a row. I think it likes me.",
+"Vengo a inscribir mi nube. Ha pasado por encima de mi balcón tres mañanas seguidas. Creo que le caigo bien."
+],
+[
+"Le Docteur Aurèle donne un nom à chaque nouveau nuage. Il y en a un qui s'appelle « Gaston-du-Mardi ».",
+"Doctor Aurèle gives every new cloud a name. There's one called “Tuesday-Gaston”.",
+"El Doctor Aurèle le pone nombre a cada nube nueva. Hay una que se llama «Gastón-del-Martes»."
+],
+[
+"Sustentateur numéro trois : quatre-vingt-dix-neuf virgule huit pour cent. Il ronronne. C'est bon signe.",
+"Levitator number three: ninety-nine point eight per cent. It's purring. That's a good sign.",
+"Sustentador número tres: noventa y nueve coma ocho por ciento. Ronronea. Es buena señal."
+],
+[
+"On surveille les moteurs nuit et jour. La nuit, ils ronronnent plus doucement. Comme nous.",
+"We watch over the engines night and day. At night, they purr more softly. Like us.",
+"Vigilamos los motores día y noche. Por la noche ronronean más bajito. Como nosotros."
+],
+[
+"Bon vent ! Ne touche à rien, s'il te plaît : ce bouton-là fait monter l'île d'un centimètre.",
+"Fair winds! Please don't touch anything: that button there raises the island by a centimetre.",
+"¡Buen viento! No toques nada, por favor: ese botón de ahí sube la isla un centímetro."
+],
+[
+"Bonjour ! Tu entends ? Ce ronronnement, c'est l'île qui flotte.",
+"Hello! Can you hear that? That hum is the island floating.",
+"¡Hola! ¿Lo oyes? Ese ronroneo es la isla flotando."
+],
+[
+"Comment marchent les Sustentateurs ?",
+"How do the Levitators work?",
+"¿Cómo funcionan los Sustentadores?"
+],
+[
+"Quatre grands anneaux tournent sous l'île, dans la roche, et repoussent le sol très loin en dessous. Séraphin Altaïr l'a calculé il y a cent vingt ans. Nous, on vérifie qu'ils ne s'endorment pas.",
+"Four great rings spin under the island, inside the rock, and push against the ground far, far below. Séraphin Altaïr worked it all out a hundred and twenty years ago. We just make sure they don't nod off.",
+"Cuatro grandes anillos giran bajo la isla, dentro de la roca, y repelen el suelo, allá muy abajo. Séraphin Altaïr lo calculó hace ciento veinte años. Nosotros comprobamos que no se duerman."
+],
+[
+"On peut les voir ?",
+"Can we see them?",
+"¿Se pueden ver?"
+],
+[
+"Oui ! L'escalier, là, sous la trappe de verre, descend jusqu'au cœur des Sustentateurs. Mets ton casque… non, je plaisante, il n'y a pas de casque. Mais tiens la rampe.",
+"Yes! The stairs there, under the glass hatch, go down to the heart of the Levitators. Put on your helmet… no, just kidding, there's no helmet. But hold on to the handrail.",
+"¡Sí! La escalera de ahí, bajo la trampilla de cristal, baja hasta el corazón de los Sustentadores. Ponte el casco… no, es broma, no hay casco. Pero agárrate al pasamanos."
+],
+[
+"Équilibre de l'île : parfait. Bon, à un millimètre près. C'est Théo qui saute dans sa capsule.",
+"Island balance: perfect. Well, give or take a millimetre. That's Théo bouncing around in his capsule.",
+"Equilibrio de la isla: perfecto. Bueno, con un milímetro de margen. Es Théo, que da saltos en su cápsula."
+],
+[
+"L'Ingénieure Nova dit que l'île flotte grâce aux calculs et au thé. Je m'occupe du thé.",
+"Engineer Nova says the island floats thanks to calculations and tea. I'm in charge of the tea.",
+"La Ingeniera Nova dice que la isla flota gracias a los cálculos y al té. Yo me encargo del té."
+],
+[
+"Sous nos pieds, quatre moteurs tiennent toute une ville en l'air depuis cent vingt ans. Et moi, je n'arrive pas à tenir mon chapeau.",
+"Under our feet, four engines have kept a whole city up in the air for a hundred and twenty years. And I can't even keep hold of my hat.",
+"Bajo nuestros pies, cuatro motores sostienen una ciudad entera en el aire desde hace ciento veinte años. Y yo no soy capaz de sujetar mi sombrero."
+],
+[
+"Séraphin Altaïr était mon arrière-grand-oncle. Enfin, je crois. Tout le monde ici dit ça.",
+"Séraphin Altaïr was my great-great-uncle. Well, I think so. Everyone here says that.",
+"Séraphin Altaïr era mi tío bisabuelo. Bueno, eso creo. Aquí todo el mundo lo dice."
+],
+[
+"J'ai un billet pour le tour de l'île en dirigeable ! La Capitaine Zéphyrine dit qu'on verra la cascade d'en dessous.",
+"I've got a ticket for the airship tour round the island! Captain Zéphyrine says we'll see the falls from underneath.",
+"¡Tengo un billete para la vuelta a la isla en dirigible! La Capitana Zéphyrine dice que veremos la cascada desde abajo."
+],
+[
+"Mon mari a peur en dirigeable. Il est resté au café. Il m'a demandé une photo du vide.",
+"My husband's scared of airships. He stayed at the café. He asked me for a photo of the drop.",
+"A mi marido le dan miedo los dirigibles. Se ha quedado en el café. Me ha pedido una foto del vacío."
+],
+[
+"La Libellule ! Elle est amarrée par le nez, comme un chien en laisse. Un très gros chien.",
+"The Dragonfly! She's moored by the nose, like a dog on a lead. A very big dog.",
+"¡La Libélula! Está amarrada por el morro, como un perro con correa. Un perro muy grande."
+],
+[
+"Quand je serai grand, je serai capitaine. Comme Zéphyrine. Et comme Héloïse. Les deux en même temps.",
+"When I grow up, I'm going to be a captain. Like Zéphyrine. And like Héloïse. Both at the same time.",
+"De mayor seré capitán. Como Zéphyrine. Y como Héloïse. Las dos a la vez."
+],
+[
+"Je vérifie les amarres. Un dirigeable mal attaché, ça part faire un tour tout seul.",
+"I'm checking the moorings. A badly tied airship goes off for a spin all by itself.",
+"Reviso las amarras. Un dirigible mal amarrado se va a dar una vuelta él solito."
+],
+[
+"La Capitaine Zéphyrine veut que tout brille. Même le vent. Je fais de mon mieux.",
+"Captain Zéphyrine wants everything to shine. Even the wind. I do my best.",
+"La Capitana Zéphyrine quiere que todo brille. Hasta el viento. Hago lo que puedo."
+],
+[
+"Bon vent ! Attention aux cordes, elles sont plus vieilles que moi.",
+"Fair winds! Mind the ropes, they're older than I am.",
+"¡Buen viento! Cuidado con las cuerdas, que son más viejas que yo."
+],
+[
+"Bonjour ! Tu embarques ? La cabine de verre, là, au pied du mât, monte jusqu'à la nacelle.",
+"Hello! Are you boarding? The glass cabin there, at the foot of the mast, goes up to the gondola.",
+"¡Hola! ¿Embarcas? La cabina de cristal de ahí, al pie del mástil, sube hasta la góndola."
+],
+[
+"Où va la Libellule ?",
+"Where does the Dragonfly go?",
+"¿Adónde va la Libélula?"
+],
+[
+"Elle fait le tour de l'île deux fois par jour, et descend parfois jusqu'au Port des Cordages, à Hautefond. Là-bas, il y a l'Albatros de la Capitaine Héloïse. Ces deux-là font la course dès qu'elles se croisent.",
+"She goes round the island twice a day, and sometimes goes down as far as Rigging Harbour, in Hautefond. That's where Captain Héloïse's Albatross is. Those two race each other the moment they cross paths.",
+"Da la vuelta a la isla dos veces al día y a veces baja hasta el Puerto de las Jarcias, en Hautefond. Allí está el Albatros de la Capitana Héloïse. Esas dos echan una carrera en cuanto se cruzan."
+],
+[
+"Et les planeurs ?",
+"And the gliders?",
+"¿Y los planeadores?"
+],
+[
+"Ça, c'est Icare Plané et son école. Ils partent du bout du ponton et planent autour de l'île. Icare n'a pas marché depuis trois ans, paraît-il.",
+"That's Icare Plané and his school. They take off from the end of the pier and glide around the island. Word is, Icare hasn't walked anywhere in three years.",
+"Eso es cosa de Icare Plané y su escuela. Salen desde el final del pontón y planean alrededor de la isla. Dicen que Icare lleva tres años sin andar."
+],
+[
+"Leçon de planeur avec Icare ! Je porte l'aile. Elle est plus grande que moi.",
+"Gliding lesson with Icare! I'm carrying the wing. It's bigger than me.",
+"¡Clase de planeador con Icare! Llevo el ala. Es más grande que yo."
+],
+[
+"Icare dit : « Le vent, c'est un ami qui ne prévient jamais. » Alors je reste polie.",
+"Icare says: “The wind is a friend who never tells you he's coming.” So I stay polite.",
+"Icare dice: «El viento es un amigo que nunca avisa». Así que soy educada con él."
+],
+[
+"Un planeur, ça ne tombe pas : ça cherche un endroit où atterrir. Nuance.",
+"A glider doesn't fall: it looks for a place to land. Big difference.",
+"Un planeador no se cae: busca un sitio donde aterrizar. Que no es lo mismo."
+],
+[
+"Leçon numéro un : on regarde les oiseaux. Leçon numéro deux : on ne leur demande pas leur avis.",
+"Lesson number one: watch the birds. Lesson number two: don't ask their opinion.",
+"Lección número uno: se mira a los pájaros. Lección número dos: no se les pide opinión."
+],
+[
+"J'arrose les fraisiers de la jardinière. Ils sont à tout le monde. Les fraises aussi. En théorie.",
+"I'm watering the strawberry plants in the planter. They belong to everyone. So do the strawberries. In theory.",
+"Riego los fresales de la jardinera. Son de todos. Las fresas también. En teoría."
+],
+[
+"Mon balcon donne sur le Parc des Brumes. Le matin, la brume monte me dire bonjour.",
+"My balcony looks out over the Mist Park. In the morning, the mist comes up to say hello.",
+"Mi balcón da al Parque de las Brumas. Por la mañana, la bruma sube a darme los buenos días."
+],
+[
+"Chat perché ! … Ici, on dit « nuage perché ». Il faut monter sur un banc.",
+"Off-ground tag! … Up here, we call it “cloud tag”. You have to climb onto a bench.",
+"¡Pilla-pilla en alto! … Aquí lo llamamos «pilla-pilla en las nubes». Hay que subirse a un banco."
+],
+[
+"Je suis le vent ! Personne ne m'attrape !",
+"I'm the wind! Nobody can catch me!",
+"¡Soy el viento! ¡Nadie me pilla!"
+],
+[
+"Tu es le vent, moi je suis la tempête ! Ouuuuh !",
+"You're the wind, I'm the storm! Whoooooo!",
+"¡Tú eres el viento y yo la tempestad! ¡Uuuuuh!"
+],
+[
+"Monsieur Pascal a dit « Moins fort ! ». Alors on court moins fort. Mais plus vite.",
+"Mr Pascal said “Quieter!” So we run quieter. But faster.",
+"El señor Pascal ha dicho «¡Menos fuerte!». Así que corremos menos fuerte. Pero más rápido."
+],
+[
+"Monsieur Pascal a encore écrit une réclamation. Contre le vent, cette fois. Il dit qu'il souffle trop fort sur son journal.",
+"Mr Pascal has written another complaint. Against the wind, this time. He says it blows too hard on his newspaper.",
+"El señor Pascal ha escrito otra reclamación. Contra el viento, esta vez. Dice que sopla demasiado fuerte sobre su periódico."
+],
+[
+"Ici, tout le monde connaît tout le monde. Et tout le monde connaît le chat de tout le monde.",
+"Round here, everybody knows everybody. And everybody knows everybody's cat.",
+"Aquí todo el mundo conoce a todo el mundo. Y todo el mundo conoce al gato de todo el mundo."
+],
+[
+"Ha ha ! Et le chat, il est remonté tout seul par la navette ? Il a pris un billet ?",
+"Ha ha! And the cat came back up on the shuttle all by himself? Did he buy a ticket?",
+"¡Ja, ja! ¿Y el gato volvió a subir él solito en la lanzadera? ¿Se sacó un billete?"
+],
+[
+"Ma voisine du troisième fait des confitures de fraises géantes. Une fraise, douze pots.",
+"My neighbour on the third floor makes giant strawberry jam. One strawberry, twelve jars.",
+"Mi vecina del tercero hace mermelada de fresas gigantes. Una fresa, doce tarros."
+],
+[
+"Pique-nique au Parc des Brumes ! Le seul endroit où les nuages viennent goûter avec vous.",
+"Picnic in the Mist Park! The only place where the clouds join you for a snack.",
+"¡Pícnic en el Parque de las Brumas! El único sitio donde las nubes vienen a merendar contigo."
+],
+[
+"J'ai apporté des fraises géantes. Une seule. Elle prend toute la nappe.",
+"I brought giant strawberries. Just the one. It takes up the whole picnic blanket.",
+"He traído fresas gigantes. Solo una. Ocupa todo el mantel."
+],
+[
+"Chut, écoute : la Cascade, là-bas. Elle tombe dans le vide et se change en nuage. Elle ne fait presque pas de bruit.",
+"Shh, listen: the Falls, over there. They drop into the void and turn into cloud. They barely make a sound.",
+"Chis, escucha: la Cascada, allí. Cae al vacío y se convierte en nube. Casi no hace ruido."
+],
+[
+"On vient ici chaque dimanche. Aujourd'hui, c'est mardi. Mais il faisait trop beau pour attendre.",
+"We come here every Sunday. Today's Tuesday. But it was far too nice to wait.",
+"Venimos aquí todos los domingos. Hoy es martes. Pero hacía demasiado bueno para esperar."
+],
+[
+"J'ai fait une couronne de trèfles. Elle est pour le nuage qui ressemble à un mouton.",
+"I made a clover crown. It's for the cloud that looks like a sheep.",
+"He hecho una corona de tréboles. Es para la nube que parece una oveja."
+],
+[
+"Papa dit qu'on ne nourrit pas les nuages. Mais celui-là, il a l'air d'avoir faim.",
+"Dad says we don't feed the clouds. But that one looks hungry.",
+"Papá dice que a las nubes no se les da de comer. Pero esa parece que tiene hambre."
+],
+[
+"Mon cerf-volant touche presque les nuages ! … Il est dans un nuage. Il revient tout mouillé.",
+"My kite's almost touching the clouds! … It's in a cloud. It's coming back soaking wet.",
+"¡Mi cometa casi toca las nubes! … Está dentro de una nube. Vuelve empapada."
+],
+[
+"Lili Altaïr fait voler le sien plus haut que tout le monde. Un jour, je la battrai. Peut-être.",
+"Lili Altaïr flies hers higher than anybody. One day I'll beat her. Maybe.",
+"Lili Altaïr hace volar la suya más alto que nadie. Algún día le ganaré. A lo mejor."
+],
+[
+"Regarde mon cerf-volant ! Le rouge, là-haut ! … Non, l'autre rouge.",
+"Look at my kite! The red one, up there! … No, the other red one.",
+"¡Mira mi cometa! ¡La roja, allí arriba! … No, la otra roja."
+],
+[
+"Bon vent ! Aujourd'hui, il y a du vent. Donc c'est un bon vent.",
+"Fair winds! It's windy today. So it really is a fair wind.",
+"¡Buen viento! Hoy hace viento. Así que es un buen viento de verdad."
+],
+[
+"Comment tu le fais monter si haut ?",
+"How do you get it up so high?",
+"¿Cómo haces que suba tan alto?"
+],
+[
+"Il faut courir trois pas, lâcher la ficelle doucement, et dire merci au vent. Lili dit que le merci est le plus important.",
+"You run three steps, let the string out gently, and say thank you to the wind. Lili says the thank-you is the most important part.",
+"Hay que correr tres pasos, soltar el hilo despacito y darle las gracias al viento. Lili dice que las gracias son lo más importante."
+],
+[
+"Tu connais Lili ?",
+"Do you know Lili?",
+"¿Conoces a Lili?"
+],
+[
+"Lili Altaïr ! La fille de la Première Conseillère ! Elle a un cerf-volant en forme de dragon. Elle n'est jamais descendue en bas, mais son cerf-volant, si : la ficelle a cassé. Il est à Hautefond, maintenant.",
+"Lili Altaïr! The First Councillor's daughter! She's got a dragon-shaped kite. She's never been down below, but her kite has: the string snapped. It's in Hautefond now.",
+"¡Lili Altaïr! ¡La hija de la Primera Consejera! Tiene una cometa con forma de dragón. Ella nunca ha bajado, pero su cometa sí: se rompió el hilo. Ahora está en Hautefond."
+],
+[
+"Le vent tire très fort ! Si je m'envole, dis à Maman que je reviens pour le goûter !",
+"The wind's pulling really hard! If I blow away, tell Mum I'll be back for snack time!",
+"¡El viento tira muy fuerte! ¡Si salgo volando, dile a mamá que vuelvo para la merienda!"
+],
+[
+"Mon cerf-volant est en forme de baleine. Comme celle du Dôme d'Azur. En plus petit. Et en plus haut.",
+"My kite is shaped like a whale. Like the one at the Azure Dome. Only smaller. And higher up.",
+"Mi cometa tiene forma de ballena. Como la de la Cúpula Azur. Pero más pequeña. Y más arriba."
+],
+[
+"Une, deux ! Une, deux ! Le tour de l'île, c'est six kilomètres. Moi, j'en fais un. Mais avec conviction.",
+"One, two! One, two! Round the island is six kilometres. I do one. But with conviction.",
+"¡Un, dos! ¡Un, dos! La vuelta a la isla son seis kilómetros. Yo hago uno. Pero con convicción."
+],
+[
+"Bon vent ! … Pardon, je n'ai plus de souffle pour le reste de la phrase.",
+"Fair winds! … Sorry, I haven't got the breath for the rest of the sentence.",
+"¡Buen viento! … Perdón, no me queda aliento para el resto de la frase."
+],
+[
+"Gâchette : entrer au Café Cumulus",
+"Trigger: enter the Cumulus Café",
+"Gatillo: entrar en el Café Cúmulo"
+],
+[
+"Gâchette : entrer dans l'Atelier des Inventeurs",
+"Trigger: enter the Inventors' Workshop",
+"Gatillo: entrar en el Taller de los Inventores"
+],
+[
+"Gâchette : entrer dans la Maison du Conseil",
+"Trigger: enter the Council House",
+"Gatillo: entrar en la Casa del Consejo"
+],
+[
+"Gâchette : entrer à l'Institut des Vents",
+"Trigger: enter the Institute of Winds",
+"Gatillo: entrar en el Instituto de los Vientos"
+],
+[
+"Gâchette : entrer dans la Tour du Zénith",
+"Trigger: enter the Zenith Tower",
+"Gatillo: entrar en la Torre del Cénit"
+],
+[
+"Gâchette : descendre au cœur des Sustentateurs",
+"Trigger: go down to the heart of the Levitators",
+"Gatillo: bajar al corazón de los Sustentadores"
+],
+[
+"Gâchette : monter à bord de la Libellule",
+"Trigger: board the Dragonfly",
+"Gatillo: subir a bordo de la Libélula"
+],
+[
+"Gâchette : goûter le lait de nuage",
+"Trigger: taste the cloud milk",
+"Gatillo: probar la leche de nube"
+],
+[
+"Gâchette : regarder la machine à nuages",
+"Trigger: look at the cloud machine",
+"Gatillo: mirar la máquina de nubes"
+],
+[
+"Gâchette : lire l'ardoise",
+"Trigger: read the menu board",
+"Gatillo: leer la pizarra"
+],
+[
+"Gâchette : essayer le parapluie-ascenseur",
+"Trigger: try the lift-umbrella",
+"Gatillo: probar el paraguas-ascensor"
+],
+[
+"Gâchette : remonter le petit drone",
+"Trigger: wind up the little drone",
+"Gatillo: dar cuerda al pequeño dron"
+],
+[
+"Gâchette : lire les plans",
+"Trigger: read the blueprints",
+"Gatillo: leer los planos"
+],
+[
+"Gâchette : regarder la carte de l'île",
+"Trigger: look at the island map",
+"Gatillo: mirar el mapa de la isla"
+],
+[
+"Gâchette : lire le Livre des Vents",
+"Trigger: read the Book of Winds",
+"Gatillo: leer el Libro de los Vientos"
+],
+[
+"Gâchette : lire la plaque",
+"Trigger: read the plaque",
+"Gatillo: leer la placa"
+],
+[
+"Gâchette : voter",
+"Trigger: vote",
+"Gatillo: votar"
+],
+[
+"Gâchette : lancer la soufflerie",
+"Trigger: start the wind tunnel",
+"Gatillo: poner en marcha el túnel de viento"
+],
+[
+"Gâchette : regarder la chambre à nuages",
+"Trigger: look at the cloud chamber",
+"Gatillo: mirar la cámara de nubes"
+],
+[
+"Gâchette : lire le bulletin du jour",
+"Trigger: read today's weather report",
+"Gatillo: leer el parte meteorológico del día"
+],
+[
+"Gâchette : monter au sommet",
+"Trigger: go up to the top",
+"Gatillo: subir a la cima"
+],
+[
+"Gâchette : poser la main sur la rambarde",
+"Trigger: put your hand on the railing",
+"Gatillo: poner la mano en la barandilla"
+],
+[
+"Gâchette : lire les mesures",
+"Trigger: check the readings",
+"Gatillo: leer las mediciones"
+],
+[
+"Gâchette : écouter le ronronnement",
+"Trigger: listen to the hum",
+"Gatillo: escuchar el ronroneo"
+],
+[
+"Gâchette : regarder par la baie",
+"Trigger: look out of the big window",
+"Gatillo: mirar por el ventanal"
+],
+[
+"Gâchette : consulter la carte des vents",
+"Trigger: check the wind chart",
+"Gatillo: consultar la carta de vientos"
+],
+[
+"Gâchette : écouter la radio",
+"Trigger: listen to the radio",
+"Gatillo: escuchar la radio"
+],
+[
+"Gâchette : lire le tableau des départs",
+"Trigger: read the departures board",
+"Gatillo: leer el panel de salidas"
+],
+[
+"Gâchette : essayer un casque de planeur",
+"Trigger: try on a glider helmet",
+"Gatillo: probarse un casco de planeador"
+],
+[
+"Embarquement : la Libellule",
+"Boarding: the Dragonfly",
+"Embarque: la Libélula"
+],
+[
+"de la tarte aux fraises géantes",
+"giant strawberry tart",
+"tarta de fresas gigantes"
+]
+]

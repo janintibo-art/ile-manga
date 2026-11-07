@@ -143,6 +143,8 @@ var _rng := RandomNumberGenerator.new()
 var _t_check: float = 0.0
 var _t: float = 0.0
 var _actifs: Dictionary = {}             # groupe -> bool
+var style: String = "hautefond"          # V117 : l'allure des gens (la Cité des Nuées réutilise ce script)
+var prefix: String = "hf116_"            # V117 : le préfixe des interactions (pour ne pas mélanger)
 
 
 ## Construit les décors (bureaux, chaises, file d'attente, chariot, linge…) ; les gens viendront quand
@@ -170,8 +172,13 @@ func build(owner: Node) -> void:
 	if cadres.has("marche"):
 		centres["marche"] = (cadres["marche"] as Transform3D).origin
 	_decors(city.kit, dehors.kit if dehors != null else null)
+	print("ILE_MANGA_V116: %d travailleurs et visiteurs dans les lieux de Hautefond" % _poster(POSTES))
+
+
+## Les postes de ce qui a un repère (en VR, seulement ceux marqués « vr »).
+func _poster(list: Array) -> int:
 	var n: int = 0
-	for p in POSTES:
+	for p in list:
 		if not cadres.has(str(p[0])):
 			continue
 		var opts: Dictionary = p[7]
@@ -179,7 +186,7 @@ func build(owner: Node) -> void:
 			continue
 		gens.append({"poste": p, "fig": null, "it": {}, "t": _rng.randf() * TAU, "sens": 1, "pause": 0.0, "angle": float(opts.get("phase", 0.0))})
 		n += 1
-	print("ILE_MANGA_V116: %d travailleurs et visiteurs dans les lieux de Hautefond" % n)
+	return n
 
 
 func _groupe(lieu: String) -> String:
@@ -414,11 +421,12 @@ func _venir(w: Dictionary) -> void:
 	var role: String = str(pst[1])
 	var r := RandomNumberGenerator.new()
 	r.seed = hash(str(pst[0]) + str(pst[2]) + role)
-	var prof: Dictionary = Gens.pick("hautefond", role, r)
+	var st: String = str(opts.get("style", style))
+	var prof: Dictionary = Gens.pick(st, role, r)
 	if prof.is_empty():
 		w["rate"] = true        # (personne pour ce rôle : on ne réessaie pas à chaque fois)
 		return
-	prof["nom"] = Gens.prenom("hautefond", role, r)
+	prof["nom"] = Gens.prenom(st, role, r)
 	var pos: Vector3 = xf * (pst[2] as Vector3)
 	var face: Vector3 = xf.basis * (Basis(Vector3.UP, deg_to_rad(float(pst[3]))) * Vector3(0, 0, 1))
 	if opts.has("rond"):
@@ -441,7 +449,7 @@ func _venir(w: Dictionary) -> void:
 	if opts.has("parle"):
 		var me = self
 		var court: String = load("res://scripts/maisons_v81.gd").nom_court(str(prof["nom"]))
-		var it := {"id": "hf116_%d" % gens.find(w), "pos": pos + Vector3.UP * 0.05, "radius": 1.7, "text": "E : parler à " + court,
+		var it := {"id": prefix + str(gens.find(w)), "pos": pos + Vector3.UP * 0.05, "radius": 1.7, "text": "E : parler à " + court,
 			"vr": "Gâchette : parler à " + court, "call": func(): me._parler(w), "when": func(): return true}
 		var dj: Node = main.get("donjon_v35")
 		if dj != null:
