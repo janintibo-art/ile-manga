@@ -19,6 +19,7 @@ const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
 const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
 const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
 const Lieux117 = preload("res://scripts/lieux_nuees_v117.gd")
+const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -371,9 +372,14 @@ func _build() -> Array:
 		var tl2: Vector2 = Lieux117.taille(cur)
 		w = tl2.x
 		d = tl2.y
+	elif Lieux118.is_lieu(style):
+		# V118 : un grand lieu des Strates ou de la Fronde (La Marmite, la Maison de la Guilde, le Troc…)
+		var tl3: Vector2 = Lieux118.taille(cur)
+		w = tl3.x
+		d = tl3.y
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
-	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) else 0.0
+	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) else 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -400,6 +406,8 @@ func _build() -> Array:
 		Lieux116.shell(self)
 	elif Lieux117.is_lieu(style):
 		Lieux117.shell(self)
+	elif Lieux118.is_lieu(style):
+		Lieux118.shell(self)
 	else:
 		R.shell()
 	# la porte, de l'intérieur
@@ -408,7 +416,7 @@ func _build() -> Array:
 	Scenes.build(self)
 	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
 	# (V116 : ni dans les grands lieux, qui ont tout leur décor)
-	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style):
+	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style):
 		Deco.habiller(self)
 	R.commit()
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])

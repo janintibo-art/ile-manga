@@ -488,7 +488,7 @@ func conteneur75(xf: Transform3D, color: String, opts: Dictionary = {}) -> Vecto
 	if bool(opts.get("solid", true)):
 		col_box(xf * T(0, ch * 0.5, 0), Vector3(len, ch, cw))
 	if bool(opts.get("home", false)) and bool(opts.get("v81", false)):
-		porte_v81(xf, Vector3(len * 0.38, 0, cw * 0.5 + 1.0), len, cw, "boucan_conteneur", 1)
+		porte_v81(xf, Vector3(len * 0.38, 0, cw * 0.5 + 1.0), len, cw, str(opts.get("style81", "boucan_conteneur")), 1)
 	return xf * Vector3(len * 0.38, 0, cw * 0.5 + 1.0)
 
 

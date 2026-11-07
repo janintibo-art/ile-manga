@@ -41,6 +41,8 @@ var fronde: Node3D                       # fronde_v114
 var objets: Dictionary = {}
 var crowd_spots: Array = []
 var doors: Dictionary = {}
+var portes118: Dictionary = {}           # V118 : les grands lieux qu'on visite : lieu -> [porte, dehors]
+var cadres118: Dictionary = {}           # V118 : les repères des lieux ouverts (strates_activite_v118)
 var lights: Array = []                   # [OmniLight3D, énergie de jour, énergie de nuit]
 var soleil_light: OmniLight3D
 var soleil_rings: Array = []             # Node3D : les anneaux de la sphère armillaire (ils tournent)
@@ -371,6 +373,7 @@ func _gare() -> void:
 	kit.ring(Transform3D(Basis(), dz + Vector3.UP * 0.02), 2.25, 2.4, 0.04, "laiton112", 24)
 	objets["ligne_dome"] = dz + Vector3(0, 0, 2.4)
 	objets["gare"] = c + Vector3(0, 0, 6.0)
+	cadres118["gare"] = Transform3D(Basis(), c)
 
 
 # =================================================================== la Place des Rouages
@@ -410,8 +413,12 @@ func _place() -> void:
 		crowd_spots.append("st_place_%d" % (i + 1))
 	# la Grande Horloge des Strates (au sud-est) : une tour de pierre et de laiton, deux cadrans, des
 	# engrenages à l'air qui tournent
+	cadres118["place"] = Transform3D(Basis(), P(0, 0, F0))
 	var hx: Transform3D = XL(P(15.5, 17.0), c)
-	kit.box(hx * kit.T(0, 0.6, 0), Vector3(3.6, 1.2, 3.6), "pierre112_sombre", 1.6)
+	kit.box(hx * kit.T(0, 1.3, 0), Vector3(3.6, 2.6, 3.6), "pierre112_sombre", 1.6)
+	# V118 : on entre dans la tour de l'Horloge (une porte de planches, côté Place)
+	kit.door71(hx * kit.T(0, 0.0, 1.8), "planches71_sombre")
+	portes118["st_horloge"] = [hx * Vector3(0, 0, 1.95), hx.basis * Vector3(0, 0, 1)]
 	kit.box(hx * kit.T(0, 5.2, 0), Vector3(2.8, 8.4, 2.8), "pierre112_clair", 2.0)
 	kit.box(hx * kit.T(0, 9.6, 0), Vector3(3.3, 0.5, 3.3), "laiton112_vieux", 1.0)
 	kit.col_box(hx * kit.T(0, 5.0, 0), Vector3(3.6, 10.0, 3.6))
@@ -559,6 +566,7 @@ func _forge() -> void:
 	_sp("st_forge_comptoir", cx * Vector3(0, 0, -0.9), cx * Vector3(0, 0, 3.0), "comptoir")
 	objets["forge"] = cx * Vector3(0, 0, 1.6)
 	steam.append(c * Vector3(7.5, 1.0, 3.8))
+	cadres118["forge"] = c
 
 
 # =================================================================== La Marmite (la cantine)
@@ -594,14 +602,18 @@ func _marmite() -> void:
 	_light(xf * Vector3(0, 3.0, 5.0), Color(1.0, 0.72, 0.42), 1.4, 2.2, 13.0)
 	objets["marmite"] = cx * Vector3(0, 0, 1.8)
 	_door("porte_marmite_cuisine", door)
+	portes118["st_marmite"] = [door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
+	cadres118["marmite"] = xf
 
 
 # =================================================================== l'Atelier des Lumières
 
 func _lumieres() -> void:
 	var xf: Transform3D = XE(0.5, 138.0)
-	kit.house112(xf, 11.0, 9.0, {"floors": 2, "lit": 1.0, "door_x": -3.0, "roof": "mansarde", "balcons": false})
+	var door: Vector3 = kit.house112(xf, 11.0, 9.0, {"floors": 2, "lit": 1.0, "door_x": -3.0, "roof": "mansarde", "balcons": false})
 	kit.sign114(xf * kit.T(1.5, 4.1, 0.12), "lumieres", 4.0, 1.1)
+	portes118["st_lumieres"] = [door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1)]
+	cadres118["lumieres"] = xf
 	kit.awning71(xf * kit.T(0, 3.2, 0.0), 10.4, 2.6, 0.8, "bleu")
 	# l'étal : des lanternes à cristal pendues à une barre
 	var cx: Transform3D = xf * kit.T(1.6, 0, 1.6)
@@ -653,7 +665,7 @@ func _maisons() -> void:
 				var fl: int = 3 if (e > 0.6 and _rng.randf() < 0.5) else 2
 				var dx: float = _rng.randf_range(-w * 0.25, w * 0.25)
 				var xf: Transform3D = XE(e, deg)
-				var door: Vector3 = kit.house112(xf, w, dd, {"floors": fl, "lit": 0.7, "door_x": dx, "v81": true, "style81": "montjoie", "gf": 3.5, "uf": 3.0})
+				var door: Vector3 = kit.house112(xf, w, dd, {"floors": fl, "lit": 0.7, "door_x": dx, "v81": true, "style81": "strates", "gf": 3.5, "uf": 3.0})
 				_place_door(door, deg, doors_left)
 				if _rng.randf() < 0.4:
 					kit.flower_box71(xf * kit.T(-w * 0.3, 1.0, 0.1))
@@ -727,13 +739,15 @@ func _galeries() -> void:
 			continue
 		var w: float = _rng.randf_range(7.5, 9.5)
 		var xf: Transform3D = XE(G1_EH, aa, y1)
-		var door: Vector3 = kit.house112(xf, w, 7.0, {"floors": 2, "lit": 0.8, "door_x": _rng.randf_range(-1.5, 1.5), "gf": 3.4, "uf": 2.9, "roof": "pignon", "chimney": false, "back": false, "v81": true, "style81": "montjoie", "balcons": true})
+		var door: Vector3 = kit.house112(xf, w, 7.0, {"floors": 2, "lit": 0.8, "door_x": _rng.randf_range(-1.5, 1.5), "gf": 3.4, "uf": 2.9, "roof": "pignon", "chimney": false, "back": false, "v81": true, "style81": "strates", "balcons": true})
 		if not gdoors.is_empty() and absf(aa + 90.0) < 30.0:
 			_door(str(gdoors.pop_front()), door)
 		aa += w / (R.GS_A * G1_EH) * 57.3 + 1.5
 	# la Maison de la Guilde (au milieu, face aux escaliers) : une grande façade à colonnes, un balcon
 	var gx: Transform3D = XE(G1_EH + 0.01, -90.0, y1)
-	kit.house112(gx, 15.0, 8.0, {"floors": 2, "lit": 0.95, "door_x": 0.0, "gf": 3.8, "uf": 3.0, "roof": "mansarde", "chimney": false, "back": false, "balcons": true, "wall": "pierre112_clair"})
+	var gdoor: Vector3 = kit.house112(gx, 15.0, 8.0, {"floors": 2, "lit": 0.95, "door_x": 0.0, "gf": 3.8, "uf": 3.0, "roof": "mansarde", "chimney": false, "back": false, "balcons": true, "wall": "pierre112_clair"})
+	portes118["st_guilde"] = [gdoor + Vector3.UP * 0.05, gx.basis * Vector3(0, 0, 1)]
+	cadres118["galerie"] = gx
 	for x in [-5.5, -2.0, 2.0, 5.5]:
 		kit.cyl(gx * kit.T(x, 0, 0.6), 0.32, 0.28, 6.6, "pierre112_clair", 12)
 	kit.box(gx * kit.T(0, 6.75, 0.6), Vector3(14.4, 0.4, 1.6), "pierre112_clair", 1.5)
@@ -818,6 +832,8 @@ func _mines() -> void:
 	kit.col_box(ox * kit.T(0, 1.4, -1.6), Vector3(4.2, 2.8, 3.2))
 	kit.box(ox * kit.T(-1.6, 0.8, 0.5), Vector3(1.0, 0.06, 0.6), "bois112", 1.0)
 	_sp("st_mine_bureau", ox * Vector3(-1.6, 0, 1.2), ox * Vector3(-1.6, 0.8, 0.5), "lire")
+	portes118["st_mine"] = [ox * Vector3(1.0, 0.05, 0.3), ox.basis * Vector3(0, 0, 1)]
+	cadres118["mines"] = Transform3D(bs, mouth)
 	_sp("st_mine_entree", mouth + inward * 4.0 + bs.x * 2.0, mouth, "bras_croises")
 	_sp("st_mine_wagon", (tp[1] as Vector3).lerp(tp[2], 0.43) + XL(tp[1], tp[2]).basis.x * 1.2, (tp[1] as Vector3).lerp(tp[2], 0.43), "bricoler")
 	# dans la Grotte : le front de taille (une échelle, des outils), le treuil
@@ -905,6 +921,8 @@ func _jardins() -> void:
 	kit.window112(hx * Transform3D(Basis(Vector3.UP, 0.7), Vector3(-1.6, 1.6, -0.7)), true, true)
 	kit.col_cyl(hx * Vector3(0, 0, -2.6), 2.8, 3.2)
 	_door("porte_bertille", hx * Vector3(0, 0, 1.2))
+	kit.porte_v81_dir(hx * Vector3(0, 0.05, 0.3), hx.basis * Vector3(0, 0, 1), 5.0, 5.0, "strates", 1)
+	cadres118["jardins"] = Transform3D(Basis(), P(4.0, 96.0, y0))
 	# le banc au bord de l'étang
 	var bp: Vector3 = P(R.ETANG.x - 11.5, R.ETANG.y + 2.0, y0)
 	kit.bench112(XL(bp, ep))
@@ -999,6 +1017,7 @@ func _petit_train() -> void:
 	kit.bench112(qx * kit.T(-3.0, 0.4, -0.9))
 	_sp("st_train_quai", qx * Vector3(2.0, 0.4, 0.3), qx * Vector3(2.0, 0.4, 3.0), "debout")
 	objets["train"] = qx * Vector3(0, 0.4, 0.6)
+	cadres118["train"] = qx
 	_link(_pt("st_p_train", qx * Vector3(0, 0.4, -0.2)), _near_pt_named(qx.origin, "st_p_ex_"))
 	# le dépôt (au nord-ouest) : une halle de briques sur la voie
 	var dx: Transform3D = XE(TRAIN_E + 0.07, -158.0)

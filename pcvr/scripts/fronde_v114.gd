@@ -22,6 +22,8 @@ var hf: Node3D
 var kit
 var pc: bool = true
 var objets: Dictionary = {}
+var portes118: Dictionary = {}           # V118 : les lieux qu'on visite : lieu -> [porte, dehors]
+var cadres118: Dictionary = {}           # V118 : les repères des lieux ouverts (strates_activite_v118)
 var organ_steam: Array = []
 var _rng := RandomNumberGenerator.new()
 
@@ -155,6 +157,7 @@ func _pont() -> void:
 	rv.global_position = P(96.2, 15.0, R.RIVIERE_Y)
 	ville._light(P(96.2, 15.0, R.RIVIERE_Y + 6.0), Color(0.3, 0.7, 0.9), 1.6, 1.6, 40.0)
 	objets["pont"] = (a + b) * 0.5
+	cadres118["pont"] = Transform3D(Basis.looking_at(-(b - a).normalized(), Vector3.UP), (a + b) * 0.5)
 	objets["gouffre"] = P(96.2, 15.0, R.RIVIERE_Y)
 
 
@@ -195,7 +198,10 @@ func _scene() -> void:
 		if k % 3 == 1:
 			organ_steam.append(base + Vector3.UP * (h + 0.3))
 	kit.box(xf * kit.T(0, 1.6, -7.8), Vector3(12.0, 1.0, 1.0), "tole114_noir", 1.0)
-	kit.chaudiere114(xf * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(-7.6, 0, -6.0)), 1.1, 3.6, "noir", false)
+	# V118 : la chaudière derrière la scène est la loge des Soupapes (on y entre par sa porte ronde)
+	var lx: Transform3D = xf * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(-7.6, 0, -6.0))
+	var ldoor: Vector3 = kit.chaudiere114(lx, 1.1, 3.6, "noir", true)
+	portes118["fr_loge"] = [ldoor - lx.basis * Vector3(0, -0.05, 0.9), lx.basis * Vector3(0, 0, 1)]
 	kit.banner70(xf * kit.T(-5.0, 6.0, -7.9), 1.2, 3.0, "banniere114")
 	kit.banner70(xf * kit.T(5.0, 6.0, -7.9), 1.2, 3.0, "banniere114")
 	kit.sign114(xf * kit.T(0, 7.1, -0.5), "soupapes", 4.6, 1.2)
@@ -211,6 +217,7 @@ func _scene() -> void:
 		_sp("fr_fosse_%d" % (k3 + 1), xf * Vector3(fx, 0, fz), xf * Vector3(0, 1.5, -2), "pogo")
 	ville._light(xf * Vector3(0, 4.0, 3.0), Color(1.0, 0.55, 0.45), 1.2, 1.8, 18.0)
 	objets["scene"] = xf * Vector3(0, 0, 5.0)
+	cadres118["scene"] = xf
 
 
 # =================================================================== la Cantine Libre
@@ -246,6 +253,7 @@ func _cantine() -> void:
 	kit.sign114(kx * kit.T(1.4, 2.6, -0.3), "cantine", 2.8, 0.9)
 	ville._light(c + Vector3.UP * 3.2, Color(1.0, 0.74, 0.45), 1.3, 1.9, 13.0)
 	objets["cantine"] = kx * Vector3(1.4, 0, 1.8)
+	cadres118["cantine"] = Transform3D(Basis(), c)
 
 
 # =================================================================== l'Atelier Libre
@@ -257,6 +265,10 @@ func _atelier() -> void:
 	var x2: Transform3D = XL(c + Vector3(4.5, 0, -2.0), c + Vector3(-5.0, 0, 0.0))
 	kit.conteneur75(x2 * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3.ZERO), "jaune", {"len": 6.1, "home": false})
 	kit.sign114(x1 * kit.T(0, 3.2, 1.3), "atelier", 2.8, 0.9)
+	# V118 : on entre dans le conteneur de l'Atelier Libre, par sa porte du bout
+	kit.box(x1 * kit.T(6.1 * 0.5 + 0.03, 1.05, 0), Vector3(0.04, 2.05, 0.9), "peint75_jaune", 1.0)
+	portes118["fr_atelier"] = [x1 * Vector3(6.1 * 0.5 + 0.1, 0.05, 0), x1.basis * Vector3(1, 0, 0)]
+	cadres118["atelier_libre"] = Transform3D(Basis(), c)
 	# l'établi, l'étau, la ferraille, les vélos à moitié faits
 	var ex: Transform3D = XL(c + Vector3(-2.0, 0, 0.5), c + Vector3(-2.0, 0, 6.0))
 	kit.box(ex * kit.T(0, 0.9, 0), Vector3(3.0, 0.1, 1.0), "bois112", 1.0)
@@ -289,6 +301,10 @@ func _troc() -> void:
 	var x1: Transform3D = XL(c + Vector3(0, 0, 2.0), c + Vector3(6.0, 0, -4.0))
 	kit.conteneur75(x1, "rouge", {"len": 6.1, "home": false})
 	kit.sign114(x1 * kit.T(0, 3.2, 1.3), "troc", 2.6, 0.9)
+	# V118 : on entre dans le conteneur du Troc, par sa porte du bout
+	kit.box(x1 * kit.T(6.1 * 0.5 + 0.03, 1.05, 0), Vector3(0.04, 2.05, 0.9), "peint75_vert", 1.0)
+	portes118["fr_troc"] = [x1 * Vector3(6.1 * 0.5 + 0.1, 0.05, 0), x1.basis * Vector3(1, 0, 0)]
+	cadres118["troc"] = x1
 	kit.awning71(x1 * kit.T(0, 2.4, 1.25), 5.8, 2.0, 0.6, "jaune")
 	var cx: Transform3D = x1 * kit.T(-1.0, 0, 2.6)
 	kit.counter71(cx, 2.6, "planches71")
@@ -326,6 +342,7 @@ func _assemblee() -> void:
 		_sp("fr_assemblee_%d" % (k + 1), seat - Vector3.UP * 0.45, c, "assis")
 	kit.sign114(XL(c + Vector3(0, 0, 7.5), c) * kit.T(0, 2.2, 0), "assemblee", 2.8, 0.9)
 	objets["assemblee"] = c + Vector3(0, 0, -6.0)
+	cadres118["assemblee"] = Transform3D(Basis(), c)
 
 
 # =================================================================== le Skatepark
@@ -338,6 +355,7 @@ func _skatepark() -> void:
 	_sp("fr_skate_1", c + Vector3(-3.5, 0, -3.0), c + Vector3(3, 0, -3), "skate")
 	_sp("fr_skate_2", c + Vector3(3.0, 0, 3.6), c + Vector3(-3, 0, 3.6), "skate")
 	objets["skate"] = c + Vector3(0, 0, -5.0)
+	cadres118["skate"] = Transform3D(Basis(), c)
 
 
 # =================================================================== le Mur des Fresques
@@ -355,6 +373,8 @@ func _fresques() -> void:
 		kit.cyl(Transform3D(Basis(), P(169.0 + k * 0.4, 0.5)), 0.12, 0.12, 0.25, "tole114_" + ["rouge", "jaune", "bleu", "vert"][k], 8)
 	ville._light(P(172.0, 8.0, FY + 3.5), Color(1.0, 0.85, 0.65), 0.9, 1.3, 14.0)
 	objets["fresques"] = P(171.0, 6.0)
+	cadres118["fresques"] = Transform3D(Basis(), P(171.0, 6.0))
+	cadres118["place_libre"] = Transform3D(Basis(), P(C.x, C.y))
 
 
 # =================================================================== les maisons
@@ -375,10 +395,11 @@ func _maisons() -> void:
 		var door: Vector3
 		if i % 4 == 3:
 			door = kit.chaudiere114(xf, 1.4, 5.0, cols[i % cols.size()], true)
+			kit.porte_v81_dir(door + Vector3.UP * 0.05, xf.basis * Vector3(0, 0, 1), 4.6, 6.0, "fronde", 1)
 		else:
 			# la façade longue tournée vers le milieu : le conteneur est couché de travers
 			var cx: Transform3D = xf * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(0, 0, -1.3))
-			kit.conteneur75(cx * Transform3D(Basis(Vector3.UP, -PI * 0.5), Vector3.ZERO), cols[i % cols.size()], {"len": 6.1, "home": true, "lit": true, "door_color": cols[(i + 3) % cols.size()]})
+			kit.conteneur75(cx * Transform3D(Basis(Vector3.UP, -PI * 0.5), Vector3.ZERO), cols[i % cols.size()], {"len": 6.1, "home": true, "lit": true, "door_color": cols[(i + 3) % cols.size()], "v81": true, "style81": "fronde"})
 			door = xf * Vector3(6.1 * 0.38, 0, 1.0)
 			# le second rang : un conteneur posé dessus, décalé ; un escalier de fer
 			if i % 2 == 0:

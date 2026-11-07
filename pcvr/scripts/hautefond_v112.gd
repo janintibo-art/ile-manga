@@ -137,6 +137,7 @@ var dome_vie: Node3D                     # V115 : la vie autour des dômes (dome
 var dome_surface: Node3D                 # V115 : la bouée-phare (à la surface)
 var activite: Node3D                     # V116 : la vie dans les lieux ouverts (hautefond_activite_v116)
 var activite_nu: Node3D                  # V117 : la vie dans les lieux ouverts de la Cité des Nuées
+var activite_st: Node3D                  # V118 : la vie dans les lieux ouverts des Strates et de la Fronde
 var _crowd_d_spawned: bool = false
 var _dome_vis: int = -1                  # 1 : on montre le Dôme (et pas les Strates) ; 0 : l'inverse
 var _whale_seen_pass: int = 0
@@ -236,6 +237,12 @@ func build_town() -> void:
 	activite_nu = load("res://scripts/nuees_activite_v117.gd").new()
 	add_child(activite_nu)
 	activite_nu.build(self)
+	# V118 : les grands lieux des Strates et de la Fronde (La Marmite, la Maison de la Guilde, le Troc…), et
+	# la vie dans leurs lieux ouverts
+	print("ILE_MANGA_V118: %d grands lieux des Strates et de la Fronde à visiter" % int(load("res://scripts/lieux_strates_v118.gd").register(strates.portes118, strates.fronde.portes118)))
+	activite_st = load("res://scripts/strates_activite_v118.gd").new()
+	add_child(activite_st)
+	activite_st.build(self)
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
 		flore.name = "Flore_hautefond_v112"

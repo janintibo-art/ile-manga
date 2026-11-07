@@ -21,11 +21,18 @@ const STYLES := {
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie",
-	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android"}
+	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android",
+	"strates": "montjoie", "strates_lieu": "montjoie", "fronde": "boucan", "fronde_lieu": "boucan"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 
 const PRENOMS := {
+	# V118 : les Strates (les corps de Montjoie, les prénoms d'en bas, un peu anciens, comme ceux des mineurs)
+	"strates": {"h": ["Anselme", "Firmin", "Casimir", "Gaston", "Léandre", "Marius", "Octave", "Prosper", "Séverin", "Ulysse", "Basile", "Évariste"],
+		"f": ["Agathe", "Blandine", "Colette", "Delphine", "Eugénie", "Flavie", "Germaine", "Honorine", "Isaure", "Juliette", "Mathilde", "Rosalie"]},
+	# V118 : la Fronde (les corps de Port-Boucan ; des surnoms d'atelier, comme Rivet, Bielle ou Gamelle)
+	"fronde": {"h": ["Boulon", "Clapet", "Piston", "Tuyau", "Gadget", "Vérin", "Sifflet", "Loquet", "Crampon", "Cliquet", "Pignon", "Tambour"],
+		"f": ["Visse", "Étincelle", "Rondelle", "Bobine", "Paillette", "Toupie", "Fusette", "Lampe", "Pastille", "Goupille", "Mélodie", "Ficelle"]},
 	# V117 : la Cité des Nuées (les corps de Néopolis, habillés de clair ; les prénoms de l'île flottante)
 	"nuees": {"h": ["Aurèle", "Cyrus", "Élian", "Orion", "Sacha", "Noé", "Thélo", "Zéphyr", "Ilan", "Maël", "Nils", "Adrien"],
 		"f": ["Alizée", "Célia", "Nuée", "Brume", "Iris", "Maëlys", "Azalée", "Solène", "Line", "Elsa", "Livia", "Aube"]},

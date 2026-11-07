@@ -25,6 +25,9 @@ const Hautefond116 = preload("res://scripts/maisons_hautefond_v116.gd")
 const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
 const Nuees117 = preload("res://scripts/maisons_nuees_v117.gd")
 const Lieux117 = preload("res://scripts/lieux_nuees_v117.gd")
+const Strates118 = preload("res://scripts/maisons_strates_v118.gd")
+const Fronde118 = preload("res://scripts/maisons_fronde_v118.gd")
+const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -56,6 +59,10 @@ static func region(style: String) -> String:
 	match style:
 		"montjoie":
 			return "montjoie"
+		"strates", "strates_lieu":
+			return "strates"
+		"fronde", "fronde_lieu":
+			return "fronde"
 		"braise":
 			return "braise"
 		"boucan", "boucan_entrepot", "boucan_conteneur":
@@ -88,6 +95,10 @@ static func food(style: String) -> Array:
 	match style:
 		"montjoie":
 			return ["pain_montjoie", "tourte_montjoie", "jus_pomme"]
+		"strates", "strates_lieu":
+			return ["bouillon_strates", "galette_rouages", "chocolat_mineur"]
+		"fronde", "fronde_lieu":
+			return ["potee_gamelle", "limonade_gouffre", "pain_chaudiere"]
 		"braise":
 			return ["brioche_braise", "lave_glacee", "cafe_brasier"]
 		"boucan", "boucan_entrepot", "boucan_conteneur":
@@ -130,6 +141,10 @@ static func plat(style: String) -> String:
 	match style:
 		"montjoie":
 			return "de la tourte aux champignons"
+		"strates", "strates_lieu":
+			return "du bouillon des Strates"
+		"fronde", "fronde_lieu":
+			return "de la potée de Mémé Gamelle"
 		"braise":
 			return "du ragoût de lave douce"
 		"boucan", "boucan_entrepot", "boucan_conteneur":
@@ -167,7 +182,7 @@ static func plat(style: String) -> String:
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -198,7 +213,7 @@ static func pick(M) -> String:
 		cands.append(sc)
 		total += float(sc[1])
 	# V82 : les histoires propres à l'île (V116 : et celles de Hautefond)
-	for sc3 in Iles.SCENARIOS + Echoppes.SCENARIOS + Hautefond116.SCENARIOS + Nuees117.SCENARIOS:
+	for sc3 in Iles.SCENARIOS + Echoppes.SCENARIOS + Hautefond116.SCENARIOS + Nuees117.SCENARIOS + Strates118.SCENARIOS + Fronde118.SCENARIOS:
 		if Iles.allowed(sc3, str(ctx["style"])):
 			cands.append(sc3)
 			total += float(sc3[1])
@@ -278,6 +293,12 @@ static func build(M) -> void:
 				Nuees117.build(M, str(M.ctx["scenario"]))
 			elif Lieux117.has(str(M.ctx["scenario"])):
 				Lieux117.build(M, str(M.ctx["scenario"]))
+			elif Strates118.has(str(M.ctx["scenario"])):
+				Strates118.build(M, str(M.ctx["scenario"]))
+			elif Fronde118.has(str(M.ctx["scenario"])):
+				Fronde118.build(M, str(M.ctx["scenario"]))
+			elif Lieux118.has(str(M.ctx["scenario"])):
+				Lieux118.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

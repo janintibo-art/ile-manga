@@ -370,7 +370,7 @@ func _check(tout: bool = false) -> void:
 	var maisons: Node = main.get("maisons_v81")
 	var dedans: bool = maisons != null and bool(maisons.get("inside"))
 	# sous terre (les Strates, le Dôme), la surface est cachée : personne
-	if owner_hf.city != null and not (owner_hf.city as Node3D).is_visible_in_tree():
+	if _cache():
 		dedans = true
 	for g in centres:
 		var c: Vector3 = centres[g]
@@ -404,6 +404,11 @@ func _check(tout: bool = false) -> void:
 			_partir(w)
 	if not best.is_empty():
 		_venir(best)
+
+
+## Personne quand on n'est pas au bon étage : sous terre (les Strates, le Dôme), la surface est cachée.
+func _cache() -> bool:
+	return owner_hf.city != null and not (owner_hf.city as Node3D).is_visible_in_tree()
 
 
 static func _heure(h: float, hh: Array) -> bool:

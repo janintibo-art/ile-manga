@@ -151,6 +151,32 @@ const STYLES := {
 		"poutre": Color(0.9, 0.9, 0.9), "bois": Color(0.8, 0.66, 0.5), "h": 3.6, "sans_poutres": true, "sans_cimaise": true,
 		"tapis": ["nuees/tapis_laine.png", "nuees/tapis_ciel.png"], "tableaux": ["nuees/tableau_coucher.png", "nuees/tableau_nuages.png", "nuees/affiche_ligne.png", "nuees/plan_ile.png", "nuees/tableau_cascade.png"],
 		"fenetre": "baie", "foyer": "ethanol", "porte": "verre"},
+	# V118 : les maisons creusées dans le grès des Strates : le grès en couches aux murs, des dalles de
+	# grès au sol, des poutres de bois sombre, des lampes à cristal ; les fenêtres donnent sur la caverne
+	"strates": {"sol": ["strates/dalles_gres.png", Color(0.95, 0.9, 0.84), 2.2], "mur": ["strates/gres.png", Color(1, 1, 1), 2.6],
+		"bas": ["strates/gres.png", Color(0.9, 0.88, 0.85), 2.6], "plafond": ["montjoie/bois_planches.png", Color(0.6, 0.5, 0.42), 2.0],
+		"poutre": Color(0.34, 0.25, 0.18), "bois": Color(0.6, 0.44, 0.3), "h": 2.9, "sans_cimaise": true,
+		"tapis": ["tazira/tapis_2.png", "tazira/tapis_3.png"], "tableaux": ["montjoie/tableau_liege.png", "azur/tableau_2.png", "strates/affiche_soupapes_3.png"],
+		"fenetre": "plomb", "foyer": "poele", "porte": "acier"},
+	# V118 : les grands lieux des Strates (lieux_strates_v118 bâtit leur coque) : du grès, de grandes dalles
+	"strates_lieu": {"sol": ["strates/dalles_gres.png", Color(0.9, 0.86, 0.8), 2.6], "mur": ["strates/gres.png", Color(1, 1, 1), 3.0],
+		"bas": ["strates/gres.png", Color(0.9, 0.88, 0.85), 3.0], "plafond": ["montjoie/bois_planches.png", Color(0.55, 0.46, 0.38), 2.0],
+		"poutre": Color(0.34, 0.25, 0.18), "bois": Color(0.6, 0.44, 0.3), "h": 3.6, "sans_cimaise": true,
+		"tapis": ["tazira/tapis_2.png"], "tableaux": ["montjoie/tableau_liege.png", "azur/tableau_2.png"],
+		"fenetre": "plomb", "foyer": "poele", "porte": "acier"},
+	# V118 : les conteneurs et les chaudières de la Fronde : de la tôle peinte, écaillée, des planches de
+	# palette au sol, des poutrelles, un poêle, des affiches de concert partout
+	"fronde": {"sol": ["montjoie/bois_planches.png", Color(0.72, 0.62, 0.5), 1.8], "mur": ["strates/tole_fronde.png", Color(1, 1, 1), 2.0],
+		"bas": ["boucan/metal_rivete.png", Color(0.7, 0.68, 0.64), 1.5], "plafond": ["boucan/tole_peinte.png", Color(0.7, 0.7, 0.7), 2.0],
+		"poutre": Color(0.3, 0.3, 0.32), "bois": Color(0.62, 0.5, 0.36), "h": 2.5, "poutres_metal": true, "sans_cimaise": true,
+		"tapis": ["tazira/tapis_3.png", "tazira/tapis_1.png"], "tableaux": ["strates/affiche_soupapes_1.png", "strates/affiche_soupapes_2.png", "strates/affiche_soupapes_3.png", "boucan/affiche_concert_1.png", "boucan/fanzine_couverture.png"],
+		"fenetre": "atelier", "foyer": "poele", "porte": "acier"},
+	# V118 : les lieux de la Fronde (l'Atelier Libre, le Troc, la loge des Soupapes)
+	"fronde_lieu": {"sol": ["boucan/beton_usine.png", Color(0.85, 0.84, 0.82), 2.0], "mur": ["strates/tole_fronde.png", Color(1, 1, 1), 2.0],
+		"bas": ["boucan/metal_rivete.png", Color(0.7, 0.68, 0.64), 1.5], "plafond": ["boucan/tole_peinte.png", Color(0.7, 0.7, 0.7), 2.0],
+		"poutre": Color(0.3, 0.3, 0.32), "bois": Color(0.62, 0.5, 0.36), "h": 2.6, "poutres_metal": true, "sans_cimaise": true,
+		"tapis": ["tazira/tapis_3.png"], "tableaux": ["strates/affiche_soupapes_1.png", "strates/affiche_soupapes_2.png", "boucan/affiche_concert_2.png"],
+		"fenetre": "atelier", "foyer": "poele", "porte": "acier"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -215,6 +241,13 @@ const VARIANTES := {
 		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "bas": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]},
 		{"sol": ["nuees/dalle_claire.png", Color(1, 1, 1), 2.4]},
 		{"mur": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0], "bas": ["nuees/beton_blanc.png", Color(1, 1, 1), 3.0]}],
+	"strates": [{"mur": ["strates/gres.png", Color(0.9, 0.86, 0.82), 2.6], "bas": ["strates/gres.png", Color(0.85, 0.82, 0.8), 2.6]},
+		{"sol": ["montjoie/bois_planches.png", Color(0.9, 0.82, 0.72), 2.0]},
+		{"mur": ["montjoie/enduit.png", Color(0.96, 0.9, 0.78), 2.5], "bas": ["strates/gres.png", Color(1, 1, 1), 2.6]}],
+	"fronde": [{"mur": ["strates/tole_fronde.png", Color(0.8, 0.9, 1.0), 2.0]},
+		{"mur": ["strates/tole_fronde.png", Color(1.0, 0.85, 0.75), 2.0], "sol": ["boucan/moquette_bureau.png", Color(0.8, 0.5, 0.45), 1.6]},
+		{"mur": ["boucan/metal_rivete.png", Color(0.75, 0.72, 0.68), 1.5], "bas": ["boucan/metal_rivete.png", Color(0.6, 0.58, 0.56), 1.5], "tuyaux": true},
+		{"mur": ["strates/tole_fronde.png", Color(0.85, 1.0, 0.85), 2.0], "sol": ["montjoie/bois_planches.png", Color(0.6, 0.52, 0.42), 1.8]}],
 	"nain": [{"mur": ["montjoie/pierre_donjon.png", Color(0.9, 0.82, 0.74), 2.5], "sol": ["montjoie/dalles_donjon.png", Color(0.9, 0.85, 0.8), 2.0]},
 		{"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/parquet_chevron.png", Color(0.85, 0.75, 0.65), 2.4]}],
 }
@@ -448,6 +481,11 @@ func _window_color() -> Color:
 		return Color(0.12, 0.42, 0.55)          # la mer, derrière le hublot
 	if style == "fee":
 		return Color(0.55, 0.4, 0.75)           # la lueur de la caverne des fées
+	if style.begins_with("strates") or style.begins_with("fronde"):
+		# la caverne des Strates, sous le Soleil de Laiton : ambrée le jour, braise la nuit
+		if hour >= 6.5 and hour < 20.5:
+			return Color(0.66, 0.5, 0.32)
+		return Color(0.2, 0.12, 0.07)
 	if hour >= 7.5 and hour < 18.5:
 		return Color(0.78, 0.88, 1.0)
 	if hour >= 6.0 and hour < 7.5:
