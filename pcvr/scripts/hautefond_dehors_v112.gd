@@ -20,6 +20,8 @@ var ile: Node3D
 var city: Node3D
 var kit
 var objets: Dictionary = {}
+var portes116: Dictionary = {}           # V116 : les grands lieux qu'on visite : lieu -> [porte, dehors]
+var cadres116: Dictionary = {}           # V116 : les repères des lieux ouverts (hautefond_activite_v116)
 var fire_spots: Array = []
 var flora_avoid: Array = []
 var orchard_spots: Array = []            # Vector3 : les arbres fruitiers des vergers
@@ -98,6 +100,7 @@ func _port() -> void:
 	kit.clock112(cap * T(0, 6.0, 0.15), 0.6)
 	kit.plaque112(cap * T(2.4, 2.9, 0.05), "liftiers", 1.4)
 	objets["capitainerie"] = door
+	portes116["hf_capitainerie"] = [door + Vector3.UP * 0.05, cap.basis * Vector3(0, 0, 1)]
 	city._pt("port_cap", cap * Vector3(2.4, 0.05, 3.0))
 	city._spot("port_capitainerie", cap * Vector3(2.6, 0.05, 1.6), cap.basis * Vector3(0, 0, 1), "bras_croises", "port_cap")
 	# la grue à vapeur (sa flèche pivote doucement)
@@ -155,6 +158,10 @@ func _port() -> void:
 		gl.y = R.QUAY_Y
 		kit.globe_lamp112(gl, 0.0, 4.0, k3 % 2 == 0)
 	objets["port"] = hc + to_town * (R.HARBOR_R + 4.0)
+	# V116 : le repère du quai (+Z vers la ville, X le long du quai), pour les dockers
+	var qo: Vector3 = hc + to_town * R.HARBOR_R
+	qo.y = R.QUAY_Y
+	cadres116["port"] = Transform3D(Basis.looking_at(-to_town, Vector3.UP), qo)
 	# des barques amarrées
 	for k4 in range(3):
 		var a4: float = a_town + PI + (k4 - 1) * 0.55
@@ -201,6 +208,9 @@ func _phare() -> void:
 	city._pt("phare_pt", ph + to_h * 4.5 + Vector3.UP * 0.85)
 	city._link("porte_margot", "phare_pt")
 	city._spot("phare_porte", ph + to_h * 3.6 + Vector3.UP * 0.85, to_h, "bras_croises", "phare_pt")
+	# V116 : on entre dans le phare, et chez Margot
+	portes116["hf_phare"] = [ph + to_h * 3.15 + Vector3.UP * 0.85, to_h]
+	portes116["maison_margot"] = [door2 + Vector3.UP * 0.05, hx.basis * Vector3(0, 0, 1)]
 	var rock: Vector3 = ph - to_h * 6.0
 	rock.y = ile.height(rock.x, rock.z)
 	city._pt("phare_rochers_pt", rock + to_h * 1.0 + Vector3.UP * 0.05)
@@ -254,6 +264,7 @@ func _moulin() -> void:
 	kit.windmill71(mx)
 	var door: Vector3 = mx * Vector3(0, 0.25, -3.6)
 	city.doors["porte_augustin"] = city._pt("porte_augustin", door)
+	portes116["hf_moulin"] = [door, mx.basis * Vector3(0, 0, -1)]
 	city._pt("moulin_pt", mx * Vector3(3.4, 0.05, -3.0))
 	city._link("porte_augustin", "moulin_pt")
 	city._spot("moulin_porte", mx * Vector3(2.2, 0.05, -4.2), mx.basis * Vector3(0, 0, -1), "bricoler", "moulin_pt")
@@ -314,6 +325,7 @@ func _vergers() -> void:
 	for k in range(4):
 		kit.crate71(sx * Vector3(-1.2 + k * 0.7, 0, 0.7), k * 0.3, 0.55)
 	city._pt("verger_abri", sx * Vector3(0, 0.05, 1.6))
+	portes116["hf_abri"] = [sx * Vector3(0.6, 0.05, 1.25), sx.basis * Vector3(0, 0, 1)]
 	var v1: Vector3 = G(R.polar(78.0, R.ORCH_R0 + 7.0).x, R.polar(78.0, R.ORCH_R0 + 7.0).y, 0.05)
 	var v2: Vector3 = G(R.polar(105.0, R.ORCH_R0 + 16.0).x, R.polar(105.0, R.ORCH_R0 + 16.0).y, 0.05)
 	city._pt("verger_1_pt", v1 + Vector3(0.8, 0, 0))

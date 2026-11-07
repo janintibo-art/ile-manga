@@ -21,6 +21,8 @@ const Iles = preload("res://scripts/maisons_iles_v82.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 const Moais = preload("res://scripts/maisons_moai_v88.gd")
 const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
+const Hautefond116 = preload("res://scripts/maisons_hautefond_v116.gd")
+const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -72,6 +74,8 @@ static func region(style: String) -> String:
 			return "larsen"
 		"elfe", "fee":
 			return "elfes"
+		"hautefond", "hautefond_lieu":
+			return "hautefond"
 	return "azur"
 
 
@@ -110,6 +114,8 @@ static func food(style: String) -> Array:
 			return ["tisane_lune", "pain_miel", "baies"]
 		"yourte_rainville":
 			return ["chocolat_chaud", "gateau_lune", "pomme"]
+		"hautefond", "hautefond_lieu":
+			return ["chocolat_chaud", "pain_miel", "jus_pomme"]
 	return ["croissant", "bouillabaisse", "glace"]
 
 
@@ -146,12 +152,14 @@ static func plat(style: String) -> String:
 			return "de la soupe de courge du jardin"
 		"yourte_rainville":
 			return "des crêpes au chocolat (il pleut, il faut du réconfort)"
+		"hautefond", "hautefond_lieu":
+			return "du pot-au-feu cuit à la vapeur"
 	return "de la bouillabaisse"
 
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -181,8 +189,8 @@ static func pick(M) -> String:
 			continue
 		cands.append(sc)
 		total += float(sc[1])
-	# V82 : les histoires propres à l'île
-	for sc3 in Iles.SCENARIOS + Echoppes.SCENARIOS:
+	# V82 : les histoires propres à l'île (V116 : et celles de Hautefond)
+	for sc3 in Iles.SCENARIOS + Echoppes.SCENARIOS + Hautefond116.SCENARIOS:
 		if Iles.allowed(sc3, str(ctx["style"])):
 			cands.append(sc3)
 			total += float(sc3[1])
@@ -254,6 +262,10 @@ static func build(M) -> void:
 				Moais.build(M, str(M.ctx["scenario"]))
 			elif Yourtes.has(str(M.ctx["scenario"])):
 				Yourtes.build(M, str(M.ctx["scenario"]))
+			elif Hautefond116.has(str(M.ctx["scenario"])):
+				Hautefond116.build(M, str(M.ctx["scenario"]))
+			elif Lieux116.has(str(M.ctx["scenario"])):
+				Lieux116.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

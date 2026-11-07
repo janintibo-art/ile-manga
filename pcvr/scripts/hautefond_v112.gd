@@ -135,6 +135,7 @@ var dome: Node3D                         # V115 : le Dôme d'Azur (dome_azur_v11
 var dome_ligne: Node3D                   # V115 : la Ligne du Dôme d'Azur (dome_ligne_v115)
 var dome_vie: Node3D                     # V115 : la vie autour des dômes (dome_vie_v115)
 var dome_surface: Node3D                 # V115 : la bouée-phare (à la surface)
+var activite: Node3D                     # V116 : la vie dans les lieux ouverts (hautefond_activite_v116)
 var _crowd_d_spawned: bool = false
 var _dome_vis: int = -1                  # 1 : on montre le Dôme (et pas les Strates) ; 0 : l'inverse
 var _whale_seen_pass: int = 0
@@ -220,6 +221,14 @@ func build_town() -> void:
 	dehors.name = "Hautefond_dehors_v112"
 	add_child(dehors)
 	dehors.build(self)
+	# V116 : les grands lieux qu'on visite (l'atelier de l'horloger, l'Observatoire, le Phare…)
+	var p116: Dictionary = city.portes116.duplicate()
+	p116.merge(dehors.portes116)
+	print("ILE_MANGA_V116: %d grands lieux de Hautefond à visiter" % int(load("res://scripts/lieux_hautefond_v116.gd").register(p116)))
+	# V116 : la vie dans les lieux ouverts (les commis, les clients, les dockers…)
+	activite = load("res://scripts/hautefond_activite_v116.gd").new()
+	add_child(activite)
+	activite.build(self)
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
 		flore.name = "Flore_hautefond_v112"

@@ -20,11 +20,14 @@ const STYLES := {
 	"pasta": ["pasta", "lumen", 10],
 }
 ## Les autres styles de pièce empruntent les gens d'une ville.
-const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe"}
+const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 
 const PRENOMS := {
+	# V116 : Hautefond (les corps sont ceux de Montjoie ; les prénoms, ceux de la ville-colonne)
+	"hautefond": {"h": ["Anatole", "Eugène", "Léonce", "Philémon", "Émile", "Honoré", "Achille", "Aristide", "Gustave", "Théodule", "Alphonse", "Célestin"],
+		"f": ["Adélaïde", "Eulalie", "Hortense", "Philomène", "Victorine", "Joséphine", "Léontine", "Ernestine", "Clémentine", "Augustine", "Valentine", "Félicie"]},
 	"montjoie": {"h": ["Gauvain", "Thibaut", "Enguerrand", "Bertrand", "Aymeric", "Godefroy", "Lancelin", "Perceval", "Guillaume", "Anselme", "Barnabé", "Hugues"],
 		"f": ["Iseult", "Bertille", "Aliénor", "Mahaut", "Guenièvre", "Ysabeau", "Clémence", "Aude", "Brunehilde", "Mélisende", "Pernelle", "Ermengarde"]},
 	"braise": {"h": ["Brasillon", "Fumerol", "Cendrin", "Sulfure", "Ardent", "Tisonnet", "Charbonnot", "Grillard", "Flambert", "Pyrrhus", "Soufflet", "Étincel"],
@@ -124,7 +127,7 @@ static func femme(role: String) -> bool:
 
 static func prenom(style: String, role: String, rng: RandomNumberGenerator) -> String:
 	var st: String = style_of(style)
-	var l: Dictionary = PRENOMS.get(st, PRENOMS["montjoie"])
+	var l: Dictionary = PRENOMS.get(style, PRENOMS.get(style.trim_suffix("_lieu"), PRENOMS.get(st, PRENOMS["montjoie"])))
 	var r: String = role
 	var lst: Array = l["f"] if femme(r) else l["h"]
 	var nm: String = str(lst[rng.randi() % lst.size()])

@@ -69,6 +69,8 @@ var graph: Dictionary = {}
 var spots: Dictionary = {}
 var doors: Dictionary = {}
 var objets: Dictionary = {}              # nom -> Vector3 (les comptoirs, les lieux)
+var portes116: Dictionary = {}           # V116 : les grands lieux qu'on visite : lieu -> [porte, dehors]
+var cadres116: Dictionary = {}           # V116 : les repères des lieux ouverts (la vie qu'on y met : hautefond_activite_v116)
 var flora_avoid: Array = []
 var fire_spots: Array = []               # [Vector3, taille]
 var smoke_spots: Array = []
@@ -471,6 +473,8 @@ func _house(ri: int, deg: float, r: float, w: float, depth: float, sens: int) ->
 			var node: String = _pt("pt_" + sname, xf * Vector3(cx + 1.7, y + 0.05 - xf.origin.y, 1.3))
 			_spot(sname, xf * Vector3(cx, y + 0.05 - xf.origin.y, 0.95), xf.basis * Vector3(0, 0, 1), "comptoir", node)
 		if shop_id == "gaspard":
+			# V116 : on entre dans l'atelier, derrière la boutique
+			portes116["hf_horloger"] = [door, xf.basis * Vector3(0, 0, 1)]
 			# l'établi de l'horloger, devant la vitrine : des engrenages, une horloge démontée
 			var ex: Transform3D = xf * kit.T(-w * 0.32, 0, 1.6)
 			kit.box(ex * kit.T(0, 0.45, 0), Vector3(1.6, 0.9, 0.7), "bois112", 1.0)

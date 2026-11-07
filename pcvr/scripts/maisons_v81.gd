@@ -17,6 +17,7 @@ const Deco = preload("res://scripts/maisons_deco_v86.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
 const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
+const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -188,6 +189,11 @@ func _update_door_prompt() -> void:
 	var e: Dictionary = portes[i]
 	_it_door["pos"] = e["door"]
 	_it_door["porte"] = i
+	# V116 : un grand lieu (l'Observatoire, le Phare…) dit ce qu'on y fait en entrant
+	if str(e.get("entrer", "")) != "":
+		_it_door["text"] = str(e["entrer"])
+		_it_door["vr"] = "Gâchette : entrer"
+		return
 	var who: String = owner_name(e)
 	var st: Dictionary = etat.get(str(e["id"]), {})
 	if who != "":
@@ -346,9 +352,14 @@ func _build() -> Array:
 		# V92 : une yourte de l'Île de Larsen : une pièce ronde (la porte au milieu de +z)
 		w = Yourtes.RI * 2.0
 		d = Yourtes.RI * 2.0
+	elif Lieux116.is_lieu(style):
+		# V116 : un grand lieu de Hautefond (l'Observatoire, le Phare…) : sa taille à lui
+		var tl: Vector2 = Lieux116.taille(cur)
+		w = tl.x
+		d = tl.y
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
-	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) else 0.0
+	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) else 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -371,6 +382,8 @@ func _build() -> Array:
 	ctx["scenario"] = scenario
 	if Yourtes.is_yourte(style):
 		Yourtes.shell(self)
+	elif Lieux116.is_lieu(style):
+		Lieux116.shell(self)
 	else:
 		R.shell()
 	# la porte, de l'intérieur
@@ -378,7 +391,8 @@ func _build() -> Array:
 	act(door_in, "E : sortir", func(): leave(), 1.3)
 	Scenes.build(self)
 	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
-	if not Yourtes.is_yourte(style):
+	# (V116 : ni dans les grands lieux, qui ont tout leur décor)
+	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style):
 		Deco.habiller(self)
 	R.commit()
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])
@@ -451,9 +465,20 @@ func close_talk() -> void:
 	_talk_with = null
 
 
+## V116 : le nom pour « parler à » : le prénom ; avec son titre (« Papi Anatole », « Le vieux Émile »,
+## « Maître Philémon »), pas « Le » tout seul.
+static func nom_court(n: String) -> String:
+	var parts: PackedStringArray = n.strip_edges().split(" ", false)
+	if parts.size() > 2 and parts[0] in ["Le", "La"]:
+		return parts[0] + " " + parts[1] + " " + parts[2]
+	if parts.size() > 1 and parts[0] in ["Papi", "Pépé", "Mamie", "Mémé", "Petit", "Petite", "P'tit", "Grand-père", "Grand-mère", "Maître", "Madame", "Monsieur", "Mademoiselle", "Capitaine", "Professeur", "Docteur"]:
+		return parts[0] + " " + parts[1]
+	return parts[0] if parts.size() > 0 else n
+
+
 ## L'interaction « parler » au-dessus d'un habitant.
 func talk_spot(f: Node, cb: Callable, text: String = "") -> Dictionary:
-	var nm: String = str(f.npc.get("display_name")).split(" ")[0]
+	var nm: String = nom_court(str(f.npc.get("display_name")))
 	var it: Dictionary = act(f.npc.global_position + Vector3.UP * 0.05, text if text != "" else "E : parler à " + nm, cb, 1.7)
 	it["suit"] = f.npc
 	return it

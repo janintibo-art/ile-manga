@@ -225,6 +225,27 @@ func _apply_anim(force: bool = false) -> void:
 			_play("lu/leviter", 0.4)
 		"mediter":
 			_play("lu/mediter", 0.5)
+		# V116 : les gestes du travail (dans les grands lieux de Hautefond et dans la ville)
+		"forger":
+			_play("br/forger", 0.3)
+		"jardiner":
+			_play("arc/jardiner", 0.4)
+		"enseigner":
+			_play("arc/enseigner", 0.4)
+		"observer":
+			_play("cq/observer", 0.4)
+		"holo":
+			_play("lu/holo", 0.4)
+		"crier":
+			_play("tz/crier", 0.4)
+		"moudre":
+			_play("sol/moudre", 0.4)
+		"prier":
+			_play("sol/prier", 0.4)
+		"chanter":
+			_play("bo/chanter", 0.3)
+		"marcher":
+			_play("Walking", 0.25)
 		_:
 			_play("v28/idle", 0.4)
 

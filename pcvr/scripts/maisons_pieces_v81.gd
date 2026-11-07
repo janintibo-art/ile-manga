@@ -124,6 +124,19 @@ const STYLES := {
 		"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "plafond": ["tazira/chaux.png", Color(0.4, 0.38, 0.36), 2.0],
 		"poutre": Color(0.45, 0.4, 0.34), "bois": Color(0.5, 0.4, 0.3), "h": 3.45,
 		"tapis": ["tazira/tapis_3.png", "tazira/tapis_2.png"], "tableaux": ["boucan/affiche_concert_2.png"], "fenetre": "aucune", "foyer": "brasero"},
+	# V116 : Hautefond (fantastique-vapeur) : parquet à chevrons, papier peint damassé, lambris sombre,
+	# poutres de fer, tuyaux de cuivre, un poêle ; des affiches de dirigeables, des cadrans
+	"hautefond": {"sol": ["maisons/parquet_chevron.png", Color(0.96, 0.9, 0.84), 2.4], "mur": ["maisons/pp_damas_bordeaux.png", Color(1, 1, 1), 1.8],
+		"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "plafond": ["maisons/lambris_blanc.png", Color(0.92, 0.9, 0.86), 2.0],
+		"poutre": Color(0.3, 0.22, 0.16), "bois": Color(0.5, 0.33, 0.21), "h": 3.1, "poutres_metal": true, "tuyaux": true,
+		"tapis": ["tazira/tapis_2.png", "tazira/tapis_3.png"], "tableaux": ["cliquetis/affiche_dirigeable.png", "cliquetis/cadran.png", "hautefond/banniere_hautefond.png", "cliquetis/affiche_telepherique.png", "azur/tableau_2.png"],
+		"fenetre": "plomb", "foyer": "poele"},
+	# V116 : les grands lieux de Hautefond (lieux_hautefond_v116 bâtit leur coque) : pierre blonde
+	"hautefond_lieu": {"sol": ["maisons/parquet_chevron.png", Color(0.92, 0.86, 0.8), 2.4], "mur": ["hautefond/pierre_blonde.png", Color(1, 1, 1), 2.5],
+		"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "plafond": ["maisons/lambris_blanc.png", Color(0.9, 0.88, 0.84), 2.0],
+		"poutre": Color(0.28, 0.2, 0.15), "bois": Color(0.5, 0.33, 0.21), "h": 3.4, "poutres_metal": true,
+		"tapis": ["tazira/tapis_2.png", "tazira/tapis_3.png"], "tableaux": ["cliquetis/affiche_dirigeable.png", "cliquetis/cadran.png", "hautefond/banniere_hautefond.png", "pirates/carte_tresor.png", "arcanelle/carte_ciel.png"],
+		"fenetre": "plomb", "foyer": "poele"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -179,6 +192,11 @@ const VARIANTES := {
 		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]}],
 	"atlante": [{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0]}],
 	"astralys": [{"mur": ["astralys/lumiere_motif.png", Color(1, 1, 1), 2.5]}],
+	"hautefond": [{"mur": ["maisons/pp_rayures_sauge.png", Color(1, 1, 1), 2.2], "sol": ["maisons/parquet_chevron_clair.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["maisons/pp_damas_bleu.png", Color(1, 1, 1), 1.8], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["hautefond/pierre_blonde.png", Color(1, 1, 1), 2.5], "sol": ["maisons/damier_noir_blanc.png", Color(1, 1, 1), 2.4]},
+		{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/pp_rayures_rose.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_blanc.png", Color(1, 1, 1), 1.4]}],
 	"nain": [{"mur": ["montjoie/pierre_donjon.png", Color(0.9, 0.82, 0.74), 2.5], "sol": ["montjoie/dalles_donjon.png", Color(0.9, 0.85, 0.8), 2.0]},
 		{"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/parquet_chevron.png", Color(0.85, 0.75, 0.65), 2.4]}],
 }
@@ -194,6 +212,7 @@ var H: float = 2.9
 var style: String = "montjoie"
 var pal: Dictionary = {}
 var rng := RandomNumberGenerator.new()
+var rideaux: bool = true                 # V116 : pas de rideaux aux fenêtres d'un moulin, d'un abri de jardin
 var hour: float = 12.0
 var pc: bool = true
 var day: bool = true
@@ -562,6 +581,16 @@ func ceiling_lamp(x: float, z: float) -> void:
 		"astralys":
 			kit.cyl(L(x, y, z), 0.35, 0.35, 0.05, "lumiere", 20)
 			kit.ring(L(x, y + 0.02, z), 0.35, 0.4, 0.06, "argent", 20)
+		"hautefond", "hautefond_lieu":
+			# V116 : un lustre de laiton à globes de verre (le gaz de Hautefond)
+			kit.cyl(L(x, y + 0.2, z), 0.01, 0.01, H - y - 0.2, "or", 4, false)
+			kit.ring(L(x, y, z), 0.34, 0.39, 0.04, "or", 18)
+			kit.cyl(L(x, y - 0.14, z), 0.02, 0.06, 0.34, "or", 8)
+			for k3 in range(4):
+				var a3: float = TAU * k3 / 4.0 + 0.4
+				kit.box(Transform3D(Basis(Vector3.UP, -a3), P(x + cos(a3) * 0.19, y + 0.02, z + sin(a3) * 0.19)), Vector3(0.38, 0.02, 0.02), "or", 1.0)
+				kit.cyl(L(x + cos(a3) * 0.365, y + 0.04, z + sin(a3) * 0.365), 0.03, 0.03, 0.04, "or", 6)
+				kit.cyl(L(x + cos(a3) * 0.365, y + 0.08, z + sin(a3) * 0.365), 0.05, 0.075, 0.14, "lumiere", 10)
 		_:
 			# une lanterne de papier / de tissu, ronde
 			kit.cyl(L(x, y + 0.3, z), 0.006, 0.006, H - y - 0.3, "fer", 4, false)
@@ -658,7 +687,7 @@ func window(xf: Transform3D, kind: String) -> void:
 			kit.box(xf * Transform3D(Basis(), Vector3(0, 0, 0.012)), Vector3(0.03, h, 0.01), "bois_sombre", 1.0, 16)
 			kit.box(xf * Transform3D(Basis(), Vector3(0, 0, 0.012)), Vector3(w, 0.03, 0.01), "bois_sombre", 1.0, 16)
 	# des rideaux de part et d'autre (souvent)
-	if rng.randf() < 0.6 and kind != "fente":
+	if rideaux and rng.randf() < 0.6 and kind != "fente":
 		var tc: String = ["rouge", "bleu", "vert", "jaune", "creme", "rose", "violet"][rng.randi() % 7]
 		for sx2 in [-1.0, 1.0]:
 			kit.box(xf * Transform3D(Basis(), Vector3(sx2 * (w * 0.5 + 0.22), -0.1, 0.08)), Vector3(0.3, h + 0.6, 0.04), "tissu_" + tc, 1.0)

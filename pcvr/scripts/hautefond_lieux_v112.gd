@@ -278,6 +278,8 @@ func observatoire() -> void:
 	c._spot("observatoire_bureau", dkx * Vector3(0, 0.05, -1.0), side, "lire", "obs_terrasse")
 	c.doors["porte_octave_obs"] = c._pt("porte_octave_obs", oc + to_street * (rr + 1.0) + Vector3.UP * 0.05)
 	c._link("porte_octave_obs", "obs_porte")
+	# V116 : on entre dans l'Observatoire (maisons_v81, lieux_hautefond_v116)
+	c.portes116["hf_observatoire"] = [oc + to_street * (rr + 0.9) + Vector3.UP * 0.05, to_street]
 	c._avoid(oc, rr + 5.0)
 	_zone("hf_observatoire", Transform3D(Basis(), oc), Vector3(0, 5.0, 0), Vector3(rr + 6.0, 9.0, rr + 6.0))
 
@@ -289,6 +291,7 @@ func mairie() -> void:
 	var fx: Transform3D = c.PX(a, 54.0, y, "in")
 	var w: float = 20.0
 	var d: float = 14.0
+	c.cadres116["mairie"] = fx
 	var info: Dictionary = kit.hall71(fx, w, d, {"h": 8.0, "wall": "pierre112", "inner": "enduit71_creme", "floor_key": "pave112", "door_w": 2.6, "door_h": 3.6,
 		"roof": "ardoise112", "pitch": 42.0, "lights": 3, "energy": 2.0, "front_windows": [-6.5, -3.5, 3.5, 6.5], "base": "pierre112_sombre", "timber": false})
 	_zone("hf_mairie", fx, Vector3(0, 4.0, -d * 0.5), Vector3(w * 0.5 - 0.6, 4.2, d * 0.5 - 0.5))
@@ -335,6 +338,10 @@ func mairie() -> void:
 	c._spot("mairie_balcon", fx * Vector3(1.6, 0.35, 1.6), fx.basis * Vector3(0, 0, 1), "observer", "mairie_dehors")
 	c.doors["porte_hector_mairie"] = c._pt("porte_hector_mairie", fx * Vector3(-7.0, 0.05, -d + 1.5))
 	c._link("porte_hector_mairie", "mairie_salle")
+	# V116 : au fond de la grande salle, la petite porte de l'escalier du beffroi (on y monte)
+	kit.door71(fx * T(6.5, 0.1, -d + 0.62), "bois112")
+	kit.box(fx * T(6.5, 2.95, -d + 0.66), Vector3(1.5, 0.14, 0.12), "pierre112_clair", 1.0)
+	c.portes116["hf_beffroi"] = [fx * Vector3(6.5, 0.15, -d + 1.3), fx.basis * Vector3(0, 0, 1)]
 	c._avoid(fx * Vector3(0, 0, -d * 0.5), 13.0)
 
 
@@ -346,6 +353,7 @@ func bibliotheque() -> void:
 	var fx: Transform3D = c.PX(a, 54.0, y, "in")
 	var w: float = 16.0
 	var d: float = 14.0
+	c.cadres116["bibliotheque"] = fx
 	kit.hall71(fx, w, d, {"h": 8.5, "wall": "pierre112_chaud", "inner": "enduit71_creme", "floor_key": "planches71", "door_w": 2.2, "door_h": 3.4,
 		"roof": "ardoise112", "pitch": 46.0, "lights": 3, "energy": 1.7, "front_windows": [-5.0, 5.0], "base": "pierre112_sombre", "timber": false})
 	_zone("hf_bibliotheque", fx, Vector3(0, 4.0, -d * 0.5), Vector3(w * 0.5 - 0.6, 4.4, d * 0.5 - 0.5))
@@ -446,6 +454,7 @@ func marche() -> void:
 		var sp: Vector3 = c.PW(sa, sr, y)
 		var sx: Transform3D = c.XD(sp, fc - sp)
 		kit.stall71(sx, 2.8, 1.4, colors[i])
+		c.cadres116["etal_%d" % i] = sx
 		c._avoid(sx.origin, 3.2)
 		var pt: String = c._pt("ma_etal_%d" % i, sx * Vector3(1.9, 0.05, -0.7))
 		c._link(pt, ["ma_est", "ma_est", "ma_sud", "ma_sud", "ma_ouest", "ma_ouest"][i])
@@ -462,6 +471,7 @@ func marche() -> void:
 	for k2 in range(5):
 		c.tree_spots.append(c.PW(fa - 18.0 + k2 * 9.0, 121.0, y))
 	_zone("hf_marche", c.XD(fc, c.radial(fa)), Vector3(0, 4.0, 0), Vector3(22.0, 6.0, 17.0))
+	c.cadres116["marche"] = c.XD(fc, c.radial(fa))
 
 
 ## La taverne « Le Piston Joyeux » : la salle, le comptoir, les tables, la cheminée, et la grande
@@ -472,6 +482,7 @@ func taverne() -> void:
 	var fx: Transform3D = c.PX(a, 114.5, y, "out")
 	var w: float = 15.0
 	var d: float = 16.0
+	c.cadres116["taverne"] = fx
 	kit.hall71(fx, w, d, {"h": 6.6, "wall": "pierre112", "inner": "enduit71_ocre", "floor_key": "planches71", "door_w": 2.0, "door_h": 2.8,
 		"roof": "ardoise112", "pitch": 50.0, "lights": 2, "energy": 1.8, "front_windows": [-4.5, 4.5], "base": "pierre112_sombre", "timber": false})
 	_zone("hf_taverne", fx, Vector3(0, 3.2, -d * 0.5), Vector3(w * 0.5 - 0.6, 3.4, d * 0.5 - 0.5))
@@ -579,6 +590,24 @@ func mat() -> void:
 	c._spot("mat_pied", mp + rad * 2.6 + Vector3.UP * 0.05, -rad, "observer", "mat_pied_pt")
 	c._spot("mat_passerelle", kx * Vector3(0, 0.05, 0.9), kx.basis * Vector3(0, 0, 1), "comptoir", "mat_kiosque")
 	c.doors["porte_heloise_mat"] = c._pt("porte_heloise_mat", kx * Vector3(0, 0.05, 2.4))
+	# V116 : l'embarquement, au pied du mât (on monte à bord de l'Albatros), et son panneau
+	var emb: Vector3 = mp + rad * 2.2 - tang * 2.4
+	var pn: Vector3 = emb - tang * 1.0
+	kit.cyl(Transform3D(Basis(), pn), 0.06, 0.06, 1.7, "bois112", 6)
+	var sxf := Transform3D(Basis.looking_at(-rad, Vector3.UP), pn + Vector3.UP * 1.62)
+	kit.box(sxf, Vector3(1.3, 0.34, 0.05), "bois112", 1.0)
+	for s116 in [1.0, -1.0]:
+		var lab := Label3D.new()
+		lab.text = "Embarquement : l'Albatros"
+		lab.font_size = 44
+		lab.pixel_size = 0.0035
+		lab.outline_size = 10
+		lab.modulate = Color(1.0, 0.95, 0.82)
+		lab.outline_modulate = Color(0.18, 0.11, 0.05)
+		lab.double_sided = false
+		c.add_child(lab)
+		lab.global_transform = sxf * Transform3D(Basis(Vector3.UP, 0.0 if s116 > 0.0 else PI), Vector3(0, 0, 0.035 * s116))
+	c.portes116["hf_albatros"] = [emb + Vector3.UP * 0.05, rad]
 	c._avoid(mp, 8.0)
 	_zone("hf_mat", Transform3D(Basis(), mp), Vector3(0, 10.0, 0), Vector3(10.0, 20.0, 10.0))
 
@@ -591,6 +620,7 @@ func forge() -> void:
 	var y: float = R.BASSE_Y
 	var a: float = 36.0
 	var fx: Transform3D = c.PX(a, 140.0, y, "in")
+	c.cadres116["forge"] = fx
 	for sx in [-1.0, 1.0]:
 		for sz in [0.0, -8.0]:
 			kit.box(fx * T(sx * 5.4, 2.4, sz - 0.5), Vector3(0.5, 4.8, 0.5), "pierre112", 1.0)
@@ -660,6 +690,7 @@ func lavoir() -> void:
 	var y: float = R.BASSE_Y
 	var a: float = 158.0
 	var lx: Transform3D = c.PX(a, 146.0, y, "in")
+	c.cadres116["lavoir"] = lx
 	kit.box(lx * T(0, 0.35, -2.0), Vector3(7.0, 0.7, 3.4), "pierre112_clair", 1.2, 63 - 4 - 8)
 	kit.box(lx * T(0, 0.45, -2.0), Vector3(6.2, 0.04, 2.6), "eau112", 1.0, 4)
 	kit.col_box(lx * T(0, 0.35, -2.0), Vector3(7.0, 0.7, 3.4))

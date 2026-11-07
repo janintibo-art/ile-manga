@@ -286,6 +286,7 @@ static func _all() -> Array:
 					L("Vous savez ce que je préfère, dans l'astronomie ? Ce n'est pas de compter. C'est qu'à chaque fois que je lève la tête, il y a quelque chose de nouveau. Une vie entière à regarder le même ciel, et pas une nuit pareille. C'est un cadeau.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("L'Observatoire est ouvert aux curieux ! Entrez, montez l'escalier en colimaçon, et regardez dans la grande lunette. Le jour, le Soleil ; la nuit, Saturne. Et parfois une mouette, mais ça, ce n'est pas de l'astronomie.", {}),
 					L("L'Observatoire est tout en haut de la Haute-Ville, sous sa coupole. La grande lunette pèse trois tonnes et tourne avec un seul doigt. Gaspard l'a réglée. Il a dit « c'est parfait ». Je ne l'avais jamais entendu dire ça.", {}),
 					L("La Cité des Nuées flotte au-dessus des nuages, juste à côté des étoiles. La ligne a rouvert, et j'y suis monté avec ma lunette. Elle a pris deux places. Hélas, un certain Docteur Aurèle a mis des nuages partout. Avec des prénoms !", {"sujet_min": ["ile", 1]}),
 					L("Au Dôme d'Azur, au fond de la mer, ils ont leurs propres étoiles : des poissons qui s'allument dans le noir. J'ai écrit à leur astronome. Il m'a répondu qu'il était « océanographe ». J'ai trouvé ça très beau, comme mot.", {"sujet_min": ["ile", 2]}),
@@ -365,6 +366,7 @@ static func _all() -> Array:
 					L("Vous voulez savoir pourquoi j'aime tant les discours ? Quand j'étais petit, je bégayais. Je n'osais pas parler. Aujourd'hui, toute la Place m'écoute. Enfin, elle m'entend. C'est déjà beaucoup.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("L'Hôtel de Ville est la maison de tous ! Le guichet des formulaires vous attend, et au fond de la grande salle, une petite porte mène au beffroi. Cent douze marches. Je les monte une fois par an, pour la photographie.", {}),
 					L("Hautefond, mes chers concitoyens, c'est la plus belle ville de l'archipel ! Pierre blonde, ardoise bleue, laiton et cuivre ! La Place de la Colonne, la Haute-Ville, la Ville-Moyenne, la Basse-Ville… une ville en étages, comme un beau gâteau. Avec une Colonne en guise de bougie.", {}),
 					L("Les Strates, sous la ville… Hum. Des ateliers, des mines de cristaux, des forges. Très utiles. Et puis il y a la Fronde. Des musiciens, des crêtes de couleur, des bannières… Bon. Ce n'est pas mon style. Mais la ligne a rouvert, et j'ai fait un discours. Un discours très ouvert. Devant un brasero.", {"sujet_min": ["ile", 1]}),
 					L("Les Nuées, c'est fait. Les Strates aussi. Et maintenant le Dôme d'Azur : trois rubans, trois discours ! Toutes les lignes sont ouvertes, et Hautefond est le cœur de quatre mondes ! Le dernier discours a fait deux heures. Je l'avais écrit à l'avance.", {"sujet_min": ["ile", 2]}, "rire"),
@@ -449,6 +451,7 @@ static func _all() -> Array:
 					L("On dit que je déteste le retard. C'est vrai. Mais vous savez pourquoi ? Une seconde perdue, on ne la retrouve jamais. Alors je préfère qu'on les passe ensemble, à l'heure. Au moins, on ne les perd pas tout seuls.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("Mon atelier est derrière la boutique. Entrez, si vous aimez le tic-tac : cent pendules, une loupe, et un coucou au caractère impossible. On touche avec les yeux. Sauf la grande pendule : celle-là, vous pouvez la remonter.", {}),
 					L("La Grande Colonne tient son horloge de moi. L'horloge des départs, au-dessus du guichet. Maîtresse Capucine et moi, nous la vérifions chaque lundi à sept heures pile. Nous ne disons rien. Nous hochons la tête. C'est notre façon d'être heureux.", {}),
 					L("Le Moulin des Quatre Vents, sur la colline, tourne si régulièrement par vent d'ouest qu'on pourrait y lire l'heure. J'ai essayé. Augustin a changé une aile ce jour-là. J'ai été en retard pour la première fois de ma vie. Je ne lui ai jamais pardonné. Si, un peu.", {"sujet_min": ["ile", 1]}, "rire"),
 					L("On m'avait dit que les horloges de la Cité des Nuées étaient en verre. Je suis monté pour la réouverture, avec mon tournevis. Pas une seule ! Mais l'inventrice de là-haut m'en fabrique une. J'y retourne bientôt. Juste pour regarder. Peut-être pour régler.", {"sujet_min": ["ile", 2]}),
@@ -530,6 +533,7 @@ static func _all() -> Array:
 					L("Mon rêve, c'est de faire le tour du monde par les airs. Sans m'arrêter. Juste en regardant tout, d'en haut. Je sais que je reviendrai à Hautefond quand même. On revient toujours là où quelqu'un vous attend avec un chocolat.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("L'Albatros t'attend au pied du Mât : monte à bord ! Le steward fait un chocolat d'altitude qui met la tête dans les nuages. Et ne touche pas au porte-voix : la cuisine prend tout au pied de la lettre.", {}),
 					L("Le Mât des dirigeables, c'est mon port à moi. Il est en acier, il a cent marches, et en haut, il y a une passerelle où l'Albatros vient s'accrocher par le nez. Le nez, c'est l'endroit le plus solide d'un dirigeable. Comme chez les gens têtus.", {}, "rire"),
 					L("La Cité des Nuées… On peut accoster au Port des Nuées, en dirigeable, mais seulement par vent calme : les vents tournent fort autour de l'île flottante. Et Zéphyrine dit toujours qu'elle est arrivée la première. Alors pour la réouverture, j'ai pris la capsule. Avec Barnabé. Je lui ai tenu la main.", {"sujet_min": ["ile", 1]}),
 					L("Par temps clair, d'en haut, on voit une grande tache bleue sous la mer, au large : c'est le Dôme d'Azur, la ville sous-marine. Parfois, une baleine passe par-dessus. On dirait un nuage qui nage. Je n'ai jamais rien vu d'aussi beau.", {"sujet_min": ["ile", 2]}),
@@ -653,6 +657,7 @@ static func _all() -> Array:
 					L("Chaque matin, je prends ma barque et j'apporte du pain frais à Margot, au Phare. Elle ne me dit jamais merci. Elle me donne une mouette à saluer. C'est mieux. Ne le répète pas, on me croirait gentil.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("La Capitainerie est ouverte à tous : viens voir la carte des mers et ses petits bateaux. Le commis tamponne tout ce qui ne bouge pas. Alors ne reste pas trop longtemps immobile !", {}),
 					L("Le Port des Cordages, au nord-est. On l'appelle comme ça à cause des cordes : il y en a partout. Pour les bateaux, pour les filets, pour les grues. Dame Ysolde a acheté sa première corde ici. Je la garde dans la capitainerie. Elle est très vieille, très courte, et très importante.", {}),
 					L("Le Dôme d'Azur… Les jeunes disent que c'est une ville sous la mer, avec des rues en verre. De mon temps, sous la mer, il y avait des poissons. Maintenant, il y a des gens. Les poissons doivent être surpris. La ligne a rouvert. Je suis descendu voir si elle mouille. Elle ne mouille pas. Hm.", {"sujet_min": ["ile", 1]}),
 					L("Les Arches de pierre, au sud-ouest, sous les falaises… Quand j'étais mousse, on passait dessous en barque, à marée haute, en retenant notre souffle. Pour la chance. Je le fais encore. J'ai beaucoup de chance. Et un très bon souffle.", {"sujet_min": ["ile", 2]}),
@@ -691,6 +696,7 @@ static func _all() -> Array:
 					L("Les gens croient que je suis seule. Je ne suis jamais seule. J'ai cent douze mouettes, une lampe, la mer, et Léon qui m'apporte du pain chaque matin en grognant. C'est beaucoup de compagnie, pour quelqu'un qui n'aime pas le bruit.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("Si tu veux voir la lanterne, entre dans le phare et monte l'escalier. Fais briller la lentille : elle te le rendra. Et ma maison est juste à côté, si tu passes le soir.", {}),
 					L("Le Phare de la Pointe guide les bateaux vers le Port des Cordages. Il y a des rochers partout, ici. Ma lampe leur dit : « Pas par là, par là. » Les bateaux obéissent. Les mouettes, jamais.", {}),
 					L("D'ici, la nuit, je vois des lumières dans la mer, au large. C'est le Dôme d'Azur, sous l'eau. Parfois, une grande ombre passe devant : une baleine. Les mouettes deviennent toutes silencieuses. Même Firmin.", {"sujet_min": ["ile", 1]}),
 					L("Les mouettes montent parfois jusqu'à la Cité des Nuées. Elles redescendent avec des miettes de gâteau tout blanc. Depuis que la ligne a rouvert, tout le monde monte voir. Ce sont des chouquettes, paraît-il. Hortense le savait déjà. Moi, je reste. Il faut bien que quelqu'un garde la lampe.", {"sujet_min": ["ile", 2]}),
@@ -729,6 +735,7 @@ static func _all() -> Array:
 					L("J'écris un poème par semaine pour la Bibliothèque des Cartes. Pour la Bibliothèque. Pas pour quelqu'un en particulier. Pour… les cartes. Elles aiment la poésie. Tout le monde sait ça. Ne regarde pas mes oreilles, elles rougissent toutes seules.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("Entre donc dans le moulin ! Regarde tourner la grande roue, écoute chanter la meule. Et si tu lâches le frein… tiens-toi bien, ça décoiffe.", {}),
 					L("Le Moulin des Quatre Vents est sur la colline de l'ouest. D'ici, on voit toute Hautefond en étages, la Colonne qui brille, et les Vergers au sud. Toute la farine de la ville vient d'ici. Tout le pain de Hautefond a un peu de poésie dedans.", {}),
 					L("Là-haut, à la Cité des Nuées, le vent souffle sans jamais toucher terre. Un vent qui n'a jamais rencontré d'arbre ! La ligne a rouvert, et j'ai mon billet pour dimanche. J'irai l'écouter. Il doit parler une autre langue. Une langue toute neuve.", {"sujet_min": ["ile", 1]}),
 					L("La Cascade des Falaises, au sud-ouest, fait un bruit de pluie qui ne finit jamais. Et sous les falaises, les Arches de pierre. Le vent y passe en sifflant comme dans une flûte. J'y vais pour accorder mes poèmes.", {"sujet_min": ["ile", 2]}),
@@ -767,6 +774,7 @@ static func _all() -> Array:
 					L("Je parle aux arbres, oui. Tout le monde rit un peu. Mais tu sais, quand on parle à quelqu'un tous les jours, même s'il ne répond pas, on apprend à écouter. Et un arbre, ça a beaucoup de choses à dire. Juste très lentement.", {"sujet_min": ["lui", 2]}),
 				],
 				"ile": [
+					L("Mon abri est au bout du chemin des Vergers. Si tu as un bon nez, viens aider à trier les pommes : celles du marché, celles de la compote, et celles qu'on croque en cachette.", {}),
 					L("Les Vergers en terrasses, au sud de l'île, descendent jusqu'à la mer. Pommiers en haut, poiriers au milieu, cerisiers en bas. Les pommes finissent au marché, chez Rosalie, et dans les tartes d'Augustin. Et un peu dans le ventre des voleurs. Je ne leur en veux pas.", {}),
 					L("On m'avait dit qu'à la Cité des Nuées, les arbres poussaient dans le vide. La ligne a rouvert, je suis monté leur parler. Ils ont de la terre, en vérité, et une jardinière, Flora, qui leur fait la conversation. Elle m'a donné une fraise grosse comme le poing.", {"sujet_min": ["ile", 1]}),
 					L("Sous nos pieds, dans les Strates, il y a des jardins de champignons qui brillent dans le noir. Ysaé me l'a raconté. Des jardins sans soleil ! J'ai hâte de voir ça. La ligne a rouvert : je descends la semaine prochaine avec un panier de pommes. On fera des échanges.", {"sujet_min": ["ile", 2]}),

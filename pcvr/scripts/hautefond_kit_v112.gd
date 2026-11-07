@@ -198,7 +198,7 @@ func house112(xf: Transform3D, w: float, d: float, opts: Dictionary = {}) -> Vec
 	cyl(xf * T(w * 0.5 - 0.08, 0.0, 0.16), 0.06, 0.06, H, "cuivre112", 6, false)
 	box(xf * T(0, H - 0.02, 0.16), Vector3(w, 0.1, 0.14), "cuivre112", 1.0)
 	if not opts.has("shop") and bool(opts.get("v81", false)):
-		porte_v81(xf, Vector3(dx, 0.0, 1.2), w, d, "montjoie", floors)
+		porte_v81(xf, Vector3(dx, 0.0, 1.2), w, d, str(opts.get("style81", "hautefond")), floors)
 	return xf * Vector3(dx, 0.0, 1.2)
 
 

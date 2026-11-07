@@ -653,7 +653,7 @@ func _maisons() -> void:
 				var fl: int = 3 if (e > 0.6 and _rng.randf() < 0.5) else 2
 				var dx: float = _rng.randf_range(-w * 0.25, w * 0.25)
 				var xf: Transform3D = XE(e, deg)
-				var door: Vector3 = kit.house112(xf, w, dd, {"floors": fl, "lit": 0.7, "door_x": dx, "v81": true, "gf": 3.5, "uf": 3.0})
+				var door: Vector3 = kit.house112(xf, w, dd, {"floors": fl, "lit": 0.7, "door_x": dx, "v81": true, "style81": "montjoie", "gf": 3.5, "uf": 3.0})
 				_place_door(door, deg, doors_left)
 				if _rng.randf() < 0.4:
 					kit.flower_box71(xf * kit.T(-w * 0.3, 1.0, 0.1))
@@ -727,7 +727,7 @@ func _galeries() -> void:
 			continue
 		var w: float = _rng.randf_range(7.5, 9.5)
 		var xf: Transform3D = XE(G1_EH, aa, y1)
-		var door: Vector3 = kit.house112(xf, w, 7.0, {"floors": 2, "lit": 0.8, "door_x": _rng.randf_range(-1.5, 1.5), "gf": 3.4, "uf": 2.9, "roof": "pignon", "chimney": false, "back": false, "v81": true, "balcons": true})
+		var door: Vector3 = kit.house112(xf, w, 7.0, {"floors": 2, "lit": 0.8, "door_x": _rng.randf_range(-1.5, 1.5), "gf": 3.4, "uf": 2.9, "roof": "pignon", "chimney": false, "back": false, "v81": true, "style81": "montjoie", "balcons": true})
 		if not gdoors.is_empty() and absf(aa + 90.0) < 30.0:
 			_door(str(gdoors.pop_front()), door)
 		aa += w / (R.GS_A * G1_EH) * 57.3 + 1.5
