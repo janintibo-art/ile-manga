@@ -32,6 +32,8 @@ const ZONE_TRACK := {
 	"cr_plage": "crayonnee", "cr_clairiere": "crayonnee", "cr_bois": "crayonnee", "cr_mont": "crayonnee", "cr_sommet": "crayonnee",
 	"cr_cascade": "crayonnee", "cr_etang": "crayonnee", "cr_ruisseau": "crayonnee", "cr_pres": "crayonnee", "cr_prairie": "crayonnee",
 	"cr_village": "crayonnee", "cr_belvedere": "crayonnee",
+	"sv_port": "sombreval", "sv_marche": "sombreval", "sv_vieille_ville": "sombreval", "sv_centre": "sombreval", "sv_gare": "sombreval",
+	"sv_faubourg": "sombreval", "sv_cimetiere": "sombreval", "sv_butte": "sombreval", "sv_chateau": "sombreval", "sv_greve": "sombreval", "sv_ville": "sombreval",
 	"hf_colonne": "cliquetis", "hf_haute": "cliquetis", "hf_observatoire": "cliquetis", "hf_mairie": "cliquetis", "hf_bibliotheque": "",
 	"hf_moyenne": "cliquetis", "hf_marche": "cliquetis", "hf_taverne": "", "hf_mat": "cliquetis", "hf_basse": "cliquetis", "hf_forge": "cliquetis",
 	"hf_belvedere": "ciel", "hf_cabine": "ciel", "hf_port": "port_azur", "hf_phare": "large", "hf_moulin": "campagne", "hf_vergers": "campagne",
@@ -92,7 +94,7 @@ const ZONE_TRACK := {
 ## Volume de chaque morceau (dB) quand il est à fond.
 const TRACK_DB := {
 	"theme_ile": -5.0, "village": -9.0, "jungle": -10.0, "elfes": -8.0, "nains": -9.0, "large": -8.0,
-	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "camp_des_fleurs": -9.0, "rainville": -9.0, "festival_larsen": -7.0, "neopolis": -9.0, "al_dente": -9.0, "crayonnee": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
+	"souterrain": -8.0, "salle_du_chant": -8.0, "pixelithique": -9.0, "clan_du_feu": -9.0, "camp_des_fleurs": -9.0, "rainville": -9.0, "festival_larsen": -7.0, "neopolis": -9.0, "sombreval": -8.0, "al_dente": -9.0, "crayonnee": -9.0, "racines": -8.0, "combat": -7.0, "victoire": -4.0, "decouverte": -5.0, "ciel": -8.0, "atlantide": -8.0, "port_azur": -10.0,
 	"royaume_fees": -8.0, "carene": -9.0, "tazira": -9.0, "cliquetis": -9.0, "ramure": -9.0,
 	"coeur": -8.0, "niveau": -6.0, "arcanelle": -9.0, "balafre": -9.0, "gigue_crane": -11.0,
 	"per_hapy": -9.0, "yaxche": -9.0, "aztlan": -9.0, "trois_soleils_donjon": -8.0,
@@ -102,7 +104,7 @@ const TRACK_DB := {
 	"spores": -9.0, "usine_grise": -9.0, "grande_pelleteuse": -7.0,
 	"astralys": -9.0, "astralys_nuit": -9.0, "apesanteur": -9.0, "ciel_libre": -8.0, "chantier": -9.0, "compagnons": -6.0,
 }
-const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux", "boucan", "boucan_nuit", "spores", "usine_grise", "grande_pelleteuse", "astralys", "astralys_nuit", "apesanteur", "ciel_libre", "chantier"]
+const LOOPED := ["theme_ile", "combat", "gigue_crane", "roi_gelatineux", "boucan", "boucan_nuit", "spores", "usine_grise", "grande_pelleteuse", "astralys", "astralys_nuit", "apesanteur", "ciel_libre", "chantier", "sombreval"]
 const FADE := 0.4                    # vitesse des fondus (part du volume par seconde)
 const END_FADE := 4.0                # un morceau joué une fois s'éteint sur ses 4 dernières secondes
 const COMBAT_RANGE := 20.0
@@ -383,6 +385,9 @@ func _fighting() -> bool:
 	var p: Vector3 = main._player_pos_v27()
 	for m in ms.monsters:
 		if is_instance_valid(m) and str(m.state) in ["chasse", "armer", "frappe", "souffle"] and m.global_position.distance_to(p) < COMBAT_RANGE:
+			# V121 : à Sombreval, la musique de la ville morte continue (la peur, pas la bataille)
+			if str(m.kind).begins_with("zombie"):
+				continue
 			return true
 	return false
 

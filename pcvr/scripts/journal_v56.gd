@@ -1421,6 +1421,10 @@ const AVENTURES := [
 	{"id": "ailes", "titre": "Les Ailes de Philibert", "lieu": "Cliquetis, puis le ciel", "debut": "atelier_ailes",
 		"etapes": [["aeronef_1", "L'Alouette, le deltaplane de Philibert (à l'Atelier des Ailes, à l'ouest de Cliquetis)"], ["aeronef_2", "L'Alouette à hélice"], ["aeronef_3", "L'Albatros, le petit aéronef"],
 			["vol_haut", "Voler à plus de 250 m"], ["aeronef_4", "Le Glisseur stellaire des Lumens (Ionie, au Spatioport d'Astralys)"]]},
+	{"id": "sombreval", "titre": "La ville morte", "lieu": "Sombreval, tout au sud de l'archipel", "debut": "sombreval",
+		"etapes": [["sombreval", "Aborder Sombreval, la ville morte"], ["sv_beffroi", "Trouver le vieux beffroi, sur la Place du Marché"], ["sv_zombies", "Repousser dix morts-vivants"],
+			["sv_notes", "Retrouver les cinq pages du journal du docteur Vasseur"], ["sv_cimetiere", "Traverser le Vieux Cimetière"], ["sv_butte", "Gravir la Butte du Comte"],
+			["sv_porte", "Frapper à la grande porte du château du comte"]]},
 ]
 
 var main: Node
@@ -2120,6 +2124,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.crayon_v99.place_name(p))
 	if main.get("hautefond_v112") != null and main.hautefond_v112 != null and main.hautefond_v112.city != null and main.hautefond_v112.owns_point(p):
 		return str(main.hautefond_v112.place_name(p))
+	if main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.owns_point(p):
+		return str(main.sombreval_v121.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

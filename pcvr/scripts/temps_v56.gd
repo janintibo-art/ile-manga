@@ -17,6 +17,9 @@ const MOON_ENERGY: float = 0.5
 const FOG_DAY := Color(0.66, 0.77, 0.9)
 const FOG_DUSK := Color(0.84, 0.62, 0.5)
 const FOG_NIGHT := Color(0.045, 0.06, 0.1)
+## V121 : Sombreval, la ville morte : un ciel bas, une lumière blafarde, une brume gris-vert
+const FOG_SOMBRE := Color(0.2, 0.23, 0.21)
+var sombre: float = 0.0                 # 0 ailleurs, 1 au cœur de Sombreval (réglé par sombreval_v121)
 
 var main: Node
 var hour: float = 9.0
@@ -181,15 +184,20 @@ func apply() -> void:
 			else:
 				sun.light_energy = MOON_ENERGY * moon_k
 				sun.light_color = Color(0.62, 0.72, 1.0)
+			if sombre > 0.0:
+				sun.light_energy *= 1.0 - 0.62 * sombre
+				sun.light_color = sun.light_color.lerp(Color(0.72, 0.78, 0.8), 0.7 * sombre)
 			if env != null:
 				var fog: Color = (FOG_DAY * w_day + FOG_DUSK * w_dusk + FOG_NIGHT * w_night) / maxf(w_day + w_dusk + w_night, 0.001)
+				if sombre > 0.0:
+					fog = fog.lerp(FOG_SOMBRE * (0.35 + 0.65 * (w_day + w_dusk * 0.6)), 0.85 * sombre)
 				env.fog_light_color = fog
 				# la nuit, le ciel éclaire peu : on garde assez de lumière pour se promener
 				var fk: float = 0.0
 				var fo: Node = main.get("foret_v52")
 				if fo != null:
 					fk = float(fo.k)
-				env.ambient_light_energy = _amb_base * (1.0 + 1.6 * fk) * (1.0 + 2.4 * w_night + 0.6 * w_dusk)
+				env.ambient_light_energy = _amb_base * (1.0 + 1.6 * fk) * (1.0 + 2.4 * w_night + 0.6 * w_dusk) * (1.0 - 0.35 * sombre)
 	if sky_mat != null:
 		sky_mat.set_shader_parameter("day", w_day)
 		sky_mat.set_shader_parameter("dusk", w_dusk)
@@ -198,6 +206,8 @@ func apply() -> void:
 		sky_mat.set_shader_parameter("moon_dir", _dir(ma.x, ma.y))
 		sky_mat.set_shader_parameter("sun_tint", Vector3(sun_tint.r, sun_tint.g, sun_tint.b))
 		sky_mat.set_shader_parameter("star_rot", hour / 24.0 * TAU)
+		sky_mat.set_shader_parameter("cloud_coverage", lerpf(0.52, 0.93, sombre))
+		sky_mat.set_shader_parameter("sky_energy", lerpf(1.0, 0.45, sombre))
 	var want: bool = sun_elev < 4.0
 	if want != lamps_on:
 		lamps_on = want

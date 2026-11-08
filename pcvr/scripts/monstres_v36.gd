@@ -14,6 +14,7 @@ const Monster70 = preload("res://scripts/monstre_v70.gd")
 const Monster71 = preload("res://scripts/monstre_v71.gd")
 const Monster75 = preload("res://scripts/monstre_v75.gd")
 const Monster90 = preload("res://scripts/monstre_v90.gd")
+const Monster121 = preload("res://scripts/monstre_v121.gd")   # V121 : les morts-vivants de Sombreval
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -109,7 +110,8 @@ func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V71 : les monstres de l'Île de Montjoie et du Donjon des Mille Marches (slimes, grenouilles, gobelins, navets, mimiques)
 	# V75 : les monstres de l'Île du Boucan (robots de Lisse & Fils, la Grande Pelleteuse, champignards)
 	# V90 : les dinosaures de l'Île Pixelithique (raptors, tricératops, ankylosaures, ptéranodons, Grosse-Dent)
-	var m: CharacterBody3D = Monster90.new() if Monster90.SPECS90.has(kind) else (Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()))))))
+	# V121 : les morts-vivants de Sombreval
+	var m: CharacterBody3D = Monster121.new() if Monster121.SPECS121.has(kind) else (Monster90.new() if Monster90.SPECS90.has(kind) else (Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())))))))
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -426,6 +428,9 @@ func _process(delta: float) -> void:
 		outdoor = true
 	# V68 : l'intérieur de l'Île de la Balafre (les repaires des monstres), et les bagarres
 	if not inside and main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.hostile_zone(main._player_pos_v27()):
+		outdoor = true
+	# V121 : Sombreval, la ville morte (les morts-vivants rôdent partout)
+	if not inside and main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.hostile_zone(main._player_pos_v27()):
 		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))

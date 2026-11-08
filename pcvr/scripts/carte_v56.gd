@@ -12,7 +12,7 @@ const AZUR_TEX := "res://assets/textures/carte/port_azur.png"
 ## (V59 : la carte s'étend à l'est jusqu'à la grande île)
 ## (V68 : au nord jusqu'à la Balafre ; V69 : à l'ouest jusqu'à l'Île des Trois Soleils ;
 ## V70 : au sud jusqu'à l'Île de Braise)
-const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 2760.0)   # V94 : jusqu'à Néopolis, au sud (z = 1800)
+const ARCH_RECT := Rect2(-1320.0, -960.0, 2580.0, 3400.0)   # V94 : jusqu'à Néopolis ; V121 : jusqu'à Sombreval, au sud (z = 2440)
 ## Rectangle du plan de Port-Azur, dans le repère de la ville (x0, z0 = côté collines… voir _to_map)
 const AZUR_X0: float = -180.0
 const AZUR_X1: float = 140.0
@@ -111,6 +111,9 @@ const PLACES := [
 	["Les Prés Blancs", Vector2(1082, 1530), "crayon_pres"],
 	["Le Village des Arbres-Maisons", Vector2(960, 1484), "crayon_village"],
 	["Le Belvédère des Couleurs", Vector2(967, 1464), "crayon_belvedere"],
+	["Sombreval", Vector2(-60, 1900), "sombreval"],
+	["Le château du comte", Vector2(-60, 2050), "sv_butte"],
+	["Le Vieux Cimetière", Vector2(65, 2205), "sv_cimetiere"],
 	["Hautefond", Vector2(-980, 1420), "hautefond_ville"],
 	["Le Port des Cordages", Vector2(-829, 1269), "hautefond_port"],
 	["Le Phare de la Pointe", Vector2(-940, 1170), "hautefond_phare"],
@@ -163,7 +166,7 @@ func setup(main_node: Node, carnet_node: Node) -> void:
 
 func _tex_size() -> Vector2:
 	var t: Texture2D = _tex.get(mode, null)
-	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(2580, 2760) if mode == "archipel" else Vector2(960, 840))
+	return Vector2(t.get_width(), t.get_height()) if t != null else (Vector2(2580, 3400) if mode == "archipel" else Vector2(960, 840))
 
 
 func set_mode(m: String) -> void:

@@ -19,6 +19,8 @@ const DB := {
 	"pelle": -6.0, "lancer": -10.0, "plouf": -6.0, "gros_plouf": -5.0, "moulinet": -14.0, "ferrage": -8.0, "rame": -14.0,
 	"ui_ouvrir": -12.0, "ui_fermer": -12.0, "ui_choix": -14.0, "ui_clic": -14.0, "ui_dialogue": -12.0, "ui_erreur": -10.0,
 	"ui_quete": -8.0, "boss_cri": 0.0,
+	# V121 : les morts-vivants de Sombreval
+	"zombie_grogne": -3.0, "zombie_cri": -2.0, "zombie_attaque": -3.0, "zombie_mort": -4.0, "coeur_peur": -5.0,
 	"plongeon": -4.0, "nage": -8.0, "nage_sous": -9.0, "bulles": -10.0, "respiration": -6.0, "suffoque": -4.0,
 	"requin_menace": -3.0, "requin_morsure": -2.0, "requin_mort": -3.0, "meduse_pique": -5.0, "dauphin": -6.0,
 	"perle": -4.0, "cristal_eveil": 0.0,

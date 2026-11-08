@@ -142,7 +142,11 @@ func _show_view(which: String) -> void:
 		options.append("Nouvelle partie")
 		if playing:
 			options.append("Sauvegarder")
-		options.append_array(["Charger une partie", "Effacer une sauvegarde", "Paramètres", "Quitter"])
+		options.append_array(["Charger une partie", "Effacer une sauvegarde", "Paramètres"])
+		# V121 : le mode testeur (F8 au clavier) s'ouvre aussi d'ici : à la manette et en réalité virtuelle
+		if playing and get_parent() != null and get_parent().get("testeur_v78") != null:
+			options.append("Mode testeur")
+		options.append("Quitter")
 	elif view == "load" or view == "new" or view == "save" or view == "delete":
 		for i in range(1, 7):
 			var data: Dictionary = Saves.read_slot(i)
@@ -250,6 +254,13 @@ func _activate(index: int) -> void:
 				_show_view("delete")
 			"Paramètres":
 				_show_view("settings")
+			"Mode testeur":
+				_close()
+				resume_requested.emit()
+				var mn: Node = get_parent()
+				get_tree().create_timer(0.2).timeout.connect(func():
+					if mn != null and mn.get("testeur_v78") != null:
+						mn.testeur_v78.open_menu())
 			"Quitter":
 				_ask_confirm("quit", 0)
 	elif view == "settings":

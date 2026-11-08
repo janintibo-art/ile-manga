@@ -149,6 +149,7 @@ func _ready() -> void:
 	_create_v97()
 	_create_v99()
 	_create_v112()
+	_create_v121()
 	_create_v103()
 	_create_v120()
 	_create_manette_v74()
@@ -225,6 +226,8 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V112 : l'Île de Hautefond (au sud-ouest, au sud de Braise ; son carré ne touche aucune autre île)
 	if hautefond_v112 != null and hautefond_v112.ile != null and hautefond_v112.ile.contains(x, z):
 		return maxf(h, hautefond_v112.ile.height(x, z))
+	if sombreval_v121 != null and sombreval_v121.ile != null and sombreval_v121.ile.contains(x, z):
+		return maxf(h, sombreval_v121.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1075,6 +1078,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			crayon_v99.load_data({})
 		if hautefond_v112 != null and hautefond_v112.ile != null:
 			hautefond_v112.load_data({})
+		if sombreval_v121 != null and sombreval_v121.ile != null:
+			sombreval_v121.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1257,6 +1262,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and hautefond_v112 != null and hautefond_v112.ile != null:
 		var hfdata: Variant = SaveStore.read_slot(slot).get("hautefond", {})
 		hautefond_v112.load_data(hfdata if hfdata is Dictionary else {})
+	# V121 : Sombreval, la ville morte
+	if not new_game and sombreval_v121 != null and sombreval_v121.ile != null:
+		var svdata: Variant = SaveStore.read_slot(slot).get("sombreval", {})
+		sombreval_v121.load_data(svdata if svdata is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1403,6 +1412,8 @@ func _save_slot(slot: int) -> bool:
 		extra["crayon"] = crayon_v99.serialize()
 	if hautefond_v112 != null and hautefond_v112.ile != null:
 		extra["hautefond"] = hautefond_v112.serialize()
+	if sombreval_v121 != null and sombreval_v121.ile != null:
+		extra["sombreval"] = sombreval_v121.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -2448,6 +2459,10 @@ func _respawn_v28() -> void:
 	if hautefond_v112 != null and hautefond_v112.ile != null and hautefond_v112.owns_point(_player_pos_v27()):
 		hautefond_v112.on_faint(_player_pos_v27())
 		return
+	# V121 : à Sombreval : au bout de la jetée du Port des Brumes
+	if sombreval_v121 != null and sombreval_v121.ile != null and sombreval_v121.owns_point(_player_pos_v27()):
+		sombreval_v121.on_faint(_player_pos_v27())
+		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
 		boucan_v75.on_faint(_player_pos_v27())
@@ -2821,6 +2836,15 @@ func _create_jungle_v29() -> void:
 	hautefond_v112.build_island()
 	var hf_d: Array = hautefond_v112.dock()
 	boat_v29._make_dock("Ponton_hautefond", hf_d[0], hf_d[1])
+	# V121 : Sombreval, la ville morte, tout au sud (le relief d'abord ; la ville, le château et la
+	# végétation après l'heure du jour, voir _create_v121).
+	sombreval_v121 = preload("res://scripts/sombreval_v121.gd").new()
+	sombreval_v121.name = "Sombreval_v121"
+	add_child(sombreval_v121)
+	sombreval_v121.setup(self)
+	sombreval_v121.build_island()
+	var sv_d: Array = sombreval_v121.dock()
+	boat_v29._make_dock("Ponton_sombreval", sv_d[0], sv_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -2895,6 +2919,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
 	if neo_v94 != null and neo_v94.contains(p):
 		if neo_v94.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V121 : Sombreval : la terre ferme, la jetée
+	if sombreval_v121 != null and sombreval_v121.contains(p):
+		if sombreval_v121.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3484,7 +3516,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3735,6 +3767,7 @@ var neo_v94: Node3D                        # V94 : Néopolis (la ville cyberpunk
 var pasta_v97: Node3D                      # V97 : l'Île Al Dente (la secte du Spaghetti Volant)
 var crayon_v99: Node3D                     # V99 : l'Île Crayonnée (l'île en noir et blanc)
 var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cité-colonne)
+var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
@@ -4081,6 +4114,16 @@ func _create_v112() -> void:
 		hautefond_v112.register_services(journal_v56)
 
 
+## V121 : Sombreval, la ville morte (les immeubles en ruine, la végétation, le château du comte,
+## la brume, l'orage, les morts-vivants) ; le ponton est posé avec le relief.
+func _create_v121() -> void:
+	if sombreval_v121 == null:
+		return
+	sombreval_v121.build_town()
+	if journal_v56 != null:
+		sombreval_v121.register_services(journal_v56)
+
+
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
 ## V120 : la popularité de l'archipel (son état est rangé avec le carnet de quêtes).
 func _create_v120() -> void:
@@ -4259,9 +4302,9 @@ static func _opaque_materials_v48(root: Node) -> void:
 ## V48 : carte des fonds pour l'océan VR (lagon clair et écume le long de chaque rivage).
 ## 512 × 512 pixels sur 1600 m ; on ne mesure le relief que dans le carré de chaque île
 ## (le reste est le grand large). Valeur = (hauteur + 12) / 14, entre 0 et 1.
-const SHORE_RES_V48: int = 768
+const SHORE_RES_V48: int = 920
 const SHORE_ORIGIN_V48 := Vector2(-1400.0, -1000.0)   # V69 : la carte s'étend jusqu'à l'Île des Trois Soleils
-const SHORE_SIZE_V48: float = 3000.0
+const SHORE_SIZE_V48: float = 3600.0   # V121 : jusqu'à Sombreval, tout au sud
 var shore_image_v48: Image
 
 func _bake_shore_v48() -> void:
@@ -4307,6 +4350,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(crayon_v99.ile.CENTER.x, crayon_v99.ile.CENTER.z), crayon_v99.ile.HALF])
 	if hautefond_v112 != null and hautefond_v112.ile != null:
 		boxes.append([Vector2(hautefond_v112.ile.CENTER.x, hautefond_v112.ile.CENTER.z), hautefond_v112.ile.HALF])
+	if sombreval_v121 != null and sombreval_v121.ile != null:
+		boxes.append([Vector2(sombreval_v121.ile.CENTER.x, sombreval_v121.ile.CENTER.z), sombreval_v121.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

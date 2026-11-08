@@ -32,6 +32,11 @@ uniform float android = 0.0;
 uniform float implant = 0.0;
 uniform vec3 circuit : source_color = vec3(0.3, 0.9, 1.0);
 uniform vec3 metal_c : source_color = vec3(0.32, 0.33, 0.36);
+// V121 : les morts-vivants de Sombreval (une peau grise et marbrée, des veines, les yeux creusés)
+// et, en « Public averti », du sang (le menton, des taches) ; « coup » : l'éclair d'un coup reçu.
+uniform float mort_vivant = 0.0;
+uniform float sang = 0.0;
+uniform float coup = 0.0;
 
 float hash(vec2 p) {
 	p = fract(p * vec2(123.34, 456.21));
@@ -88,6 +93,34 @@ void fragment() {
 		float plates = 0.92 + 0.08 * sin(UV.x * 900.0) * sin(UV.y * 700.0);
 		col = mix(col, metal_c * plates * (1.0 - 0.8 * sy.a), mz);
 	}
+	float mv_n = 0.0;
+	if (mort_vivant > 0.0) {
+		vec2 q = UV * 38.0;
+		vec2 qi = floor(q);
+		vec2 qf = fract(q);
+		qf = qf * qf * (3.0 - 2.0 * qf);
+		float n1 = mix(mix(hash(qi), hash(qi + vec2(1.0, 0.0)), qf.x), mix(hash(qi + vec2(0.0, 1.0)), hash(qi + vec2(1.0, 1.0)), qf.x), qf.y);
+		vec2 q2 = UV * 140.0;
+		vec2 q2i = floor(q2);
+		vec2 q2f = fract(q2);
+		q2f = q2f * q2f * (3.0 - 2.0 * q2f);
+		float n2 = mix(mix(hash(q2i), hash(q2i + vec2(1.0, 0.0)), q2f.x), mix(hash(q2i + vec2(0.0, 1.0)), hash(q2i + vec2(1.0, 1.0)), q2f.x), q2f.y);
+		mv_n = n1 * 0.65 + n2 * 0.35;
+		float l = dot(col, vec3(0.3, 0.55, 0.15));
+		vec3 gris = vec3(0.58, 0.62, 0.52) * (l * 1.6 + 0.12);
+		vec3 mv = mix(gris, gris * vec3(0.62, 0.55, 0.6), smoothstep(0.55, 0.8, mv_n));
+		// des veines sombres
+		float veine = 1.0 - smoothstep(0.0, 0.03, abs(n2 - 0.5));
+		mv = mix(mv, vec3(0.16, 0.18, 0.24), veine * 0.45);
+		// les yeux creusés, les lèvres noircies
+		mv = mix(mv, vec3(0.1, 0.07, 0.08), m2.b * 0.85);
+		mv = mix(mv, vec3(0.16, 0.1, 0.1), lip * 0.9);
+		col = mix(col, mv, mort_vivant);
+	}
+	if (sang > 0.0) {
+		float tache = smoothstep(0.62, 0.7, mv_n + m1.r * 0.6);
+		col = mix(col, vec3(0.28, 0.02, 0.02) * (0.7 + 0.6 * mv_n), tache * sang);
+	}
 	ALBEDO = col;
 	// relief : grain + rides (âge)
 	vec2 g = texture(grain_n, UV).xy * 2.0 - 1.0;
@@ -102,5 +135,9 @@ void fragment() {
 	METALLIC = mz * 0.9;
 	SSS_STRENGTH = diffusion * (1.0 - 0.7 * android) * (1.0 - mz);
 	float pulse = 0.7 + 0.3 * sin(TIME * 2.2 + UV.y * 60.0);
-	EMISSION = col * lueur + circuit * sy.g * (android * (1.0 - sy.b) + mz) * pulse * 3.5;
+	EMISSION = col * lueur + circuit * sy.g * (android * (1.0 - sy.b) + mz) * pulse * 3.5 + vec3(1.0, 0.95, 0.9) * coup;
+	if (mort_vivant > 0.0) {
+		SSS_STRENGTH *= 1.0 - 0.8 * mort_vivant;
+		ROUGHNESS = mix(ROUGHNESS, 0.75, mort_vivant * 0.6);
+	}
 }

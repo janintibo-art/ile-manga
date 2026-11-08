@@ -27,6 +27,7 @@ const BEDS := {
 	"pluie": "ambiance/pluie", "camp_fleurs": "ambiance/camp_fleurs",
 	"neopolis": "ambiance/neopolis", "marche_nuit": "ambiance/marche_nuit",
 	"marmite": "ambiance/marmite",
+	"sombreval": "ambiance/sombreval",
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
@@ -60,6 +61,7 @@ const BED_DB := {
 	"pluie": -11.0, "camp_fleurs": -12.0,
 	"neopolis": -11.0, "marche_nuit": -12.0,
 	"marmite": -11.0,
+	"sombreval": -9.0,
 }
 
 var main: Node
@@ -661,6 +663,17 @@ func _choose_zone(running: bool) -> void:
 		if pas.is_erupting():
 			targets["marmite"] = 1.0
 		_night_beds()
+		return
+	# V121 : Sombreval, la ville morte (le vent dans les ruines, les grognements lointains ; le ressac sur la grève)
+	var svs: Node = main.get("sombreval_v121")
+	var sv_zone: String = svs.zone_at(p) if svs != null and svs.get("ile") != null and svs.ile != null and not on_ferry else ""
+	if sv_zone != "" and not on_boat:
+		zone = "sv_" + sv_zone
+		targets["sombreval"] = 1.0
+		if sv_zone in ["greve", "port"]:
+			targets["ressac"] = 0.5
+		elif sv_zone == "chateau":
+			targets["vent_vol"] = 0.4
 		return
 	# V94 : Néopolis (la rumeur de la ville, le marché, le jardin, le quai ; la pluie du soir)
 	var nes: Node = main.get("neo_v94")

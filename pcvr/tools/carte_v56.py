@@ -95,9 +95,10 @@ def archipel(src: Path) -> None:
     # V69 : 1290 x 720 (à l'ouest, jusqu'à l'Île des Trois Soleils) : la carte commence à x = -1320
     # V70 : 1290 x 980 (au sud, jusqu'à l'Île de Braise) : la carte va jusqu'à z = 1000
     # V94 : 1290 x 1380 (plus au sud, jusqu'à Néopolis) : la carte va jusqu'à z = 1800
-    rows = 1380 if raw.size == 1290 * 1380 else (980 if raw.size == 1290 * 980 else (720 if raw.size in (900 * 720, 1290 * 720) else 540))
-    cols = 1290 if raw.size in (1290 * 720, 1290 * 980, 1290 * 1380) else (900 if raw.size in (900 * 540, 900 * 720) else 540)
-    OZ = 960 if rows in (720, 980, 1380) else 600
+    # V121 : 1290 x 1700 (encore plus au sud, jusqu'à Sombreval) : la carte va jusqu'à z = 2440
+    rows = 1700 if raw.size == 1290 * 1700 else 1380 if raw.size == 1290 * 1380 else (980 if raw.size == 1290 * 980 else (720 if raw.size in (900 * 720, 1290 * 720) else 540))
+    cols = 1290 if raw.size in (1290 * 720, 1290 * 980, 1290 * 1380, 1290 * 1700) else (900 if raw.size in (900 * 540, 900 * 720) else 540)
+    OZ = 960 if rows in (720, 980, 1380, 1700) else 600
     OX = 1320 if cols == 1290 else 540
     h = raw.reshape(rows, cols)
     W, H = cols * 2, rows * 2
@@ -796,6 +797,51 @@ def archipel(src: Path) -> None:
             else:
                 d.ellipse((x - 3.2, z - 3.2, x + 3.2, z + 3.2), fill=(247, 245, 238, 255), outline=ink, width=1)
                 d.arc((x - 2.0, z - 2.0, x + 1.2, z + 1.2), 200, 300, fill=(120, 116, 110, 255), width=1)
+
+    # V121 : Sombreval, la ville morte (tout au sud) : les rues en damier, les immeubles en ruine (des
+    # blocs bruns, plus sombres quand ils sont hauts), le Vieux Cimetière, la route en spirale de la
+    # Butte du Comte, et le château (un octogone noir, ses tours, le donjon rouge) (bake121 écrit sombreval.json)
+    sf = src / "sombreval.json"
+    if OX > 540 and rows >= 1700 and sf.exists():
+        Sv = json.loads(sf.read_text())
+        cxs, czs = Sv["centre"]
+
+        def sw(x, z):
+            return (x + OX, z + OZ)
+
+        A, P, Rb = Sv["anneau"], Sv["pas"], Sv["butte"]
+        road = (112, 108, 100, 255)
+        for k in range(-3, 4):
+            for (ax, az, bx, bz) in ((cxs + k * P, czs - A, cxs + k * P, czs + A), (cxs - A, czs + k * P, cxs + A, czs + k * P)):
+                n = 40
+                for j in range(n):
+                    x0, z0 = ax + (bx - ax) * j / n, az + (bz - az) * j / n
+                    x1, z1 = ax + (bx - ax) * (j + 1) / n, az + (bz - az) * (j + 1) / n
+                    if math.hypot((x0 + x1) * 0.5 - cxs, (z0 + z1) * 0.5 - czs) < Rb:
+                        continue
+                    d.line([sw(x0, z0), sw(x1, z1)], fill=road, width=11 if k == 0 else 8)
+        d.rectangle((sw(cxs - A, czs - A), sw(cxs + A, czs + A)), outline=road, width=9)
+        for b in Sv["bat"]:
+            hh = min(b[4] / 30.0, 1.0)
+            c = (int(118 - 50 * hh), int(102 - 44 * hh), int(90 - 38 * hh), 255)
+            d.rectangle((sw(b[0], b[1]), sw(b[2], b[3])), fill=c, outline=(50, 40, 34, 255))
+        cm = Sv["cimetiere"]
+        d.rectangle((sw(cm[0], cm[1]), sw(cm[2], cm[3])), fill=(120, 134, 110, 255), outline=(60, 60, 56, 255), width=2)
+        for gi in range(6):
+            for gj in range(8):
+                gx = cm[0] + 4 + gj * (cm[2] - cm[0] - 8) / 7
+                gz = cm[1] + 6 + gi * (cm[3] - cm[1] - 14) / 5
+                x, z = sw(gx, gz)
+                d.rectangle((x - 1.2, z - 2, x + 1.2, z + 2), fill=(80, 80, 78, 255))
+        pts = [sw(*q) for q in Sv["rampe"]]
+        d.line(pts, fill=(196, 186, 160, 255), width=8)
+        d.line(pts, fill=(120, 110, 96, 255), width=2)
+        ox, oz = sw(cxs, czs)
+        oct_ = [(ox + 37 * math.cos(math.radians(22.5 + 45 * k)), oz + 37 * math.sin(math.radians(22.5 + 45 * k))) for k in range(8)]
+        d.polygon(oct_, fill=(58, 56, 62, 255), outline=(24, 22, 26, 255))
+        for (tx, tz) in oct_:
+            d.ellipse((tx - 5, tz - 5, tx + 5, tz + 5), fill=(40, 38, 46, 255), outline=(18, 16, 20, 255))
+        d.rectangle((ox + 4 - 9, oz - 9, ox + 4 + 9, oz + 9), fill=(110, 24, 22, 255), outline=(30, 10, 10, 255), width=2)
 
     # quadrillage léger
     for g in range(0, W, 120):
