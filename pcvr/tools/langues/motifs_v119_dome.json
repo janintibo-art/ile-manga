@@ -1,0 +1,47 @@
+[
+[
+"Tu écris dans le carnet : « Visite n° {n}. Il est venu, pile à l'heure. Il a cligné. Il avait l'air content. »",
+"You write in the logbook: “Visit no. {n}. He came, right on time. He blinked. He looked happy.”",
+"Escribes en el cuaderno: «Visita n.º {n}. Ha venido, puntualísimo. Ha parpadeado. Parecía contento»."
+],
+[
+"Le carnet des visites, plein de dessins et de petites croix. La dernière page dit : « Ce soir : visite n° {n}. Penser aux piles. »",
+"The visit logbook, full of drawings and little crosses. The last page says: “Tonight: visit no. {n}. Remember the batteries.”",
+"El cuaderno de visitas, lleno de dibujos y crucecitas. La última página dice: «Esta noche: visita n.º {n}. Acordarse de las pilas»."
+],
+[
+"Le carnet des visites. Visite n° {n} : il est venu avec deux copains. Ils ont tous clignoté en même temps. On a applaudi. Eux aussi, je crois.",
+"The visit logbook. Visit no. {n}: he came with two friends. They all blinked at the same time. We clapped. So did they, I think.",
+"El cuaderno de visitas. Visita n.º {n}: vino con dos amigos. Parpadearon todos a la vez. Aplaudimos. Ellos también, creo."
+],
+[
+"Le carnet des visites. Visite n° {n} : arrivé à 19 h 04. A répondu trois fois à la lampe. A fait une drôle de tête devant le chocolat.",
+"The visit logbook. Visit no. {n}: arrived at 7:04 p.m. Answered the lamp three times. Pulled a funny face at the hot chocolate.",
+"El cuaderno de visitas. Visita n.º {n}: llegó a las 19:04. Respondió tres veces a la linterna. Puso una cara rara ante el chocolate."
+],
+[
+"Le carnet des visites. Visite n° {n} : la Grande Chanteuse est passée au loin. Il s'est caché tout contre notre hublot. On lui a laissé la lumière.",
+"The visit logbook. Visit no. {n}: the Great Singer passed by in the distance. He hid right up against our porthole. We left the light on for him.",
+"El cuaderno de visitas. Visita n.º {n}: la Gran Cantora pasó a lo lejos. Se escondió pegadito a nuestro ojo de buey. Le dejamos la luz encendida."
+],
+[
+"Ce soir, Lumignon vient ! Je lui fais un nouveau dessin pour le mur. Ça fera {n} dessins.",
+"Lumignon's coming tonight! I'm doing him a new drawing for the wall. That'll make {n} drawings.",
+"¡Esta noche viene Lumignon! Le estoy haciendo un dibujo nuevo para la pared. Serán {n} dibujos."
+],
+[
+"Ce soir, Falot vient ! Je lui fais un nouveau dessin pour le mur. Ça fera {n} dessins.",
+"Falot's coming tonight! I'm doing him a new drawing for the wall. That'll make {n} drawings.",
+"¡Esta noche viene Falot! Le estoy haciendo un dibujo nuevo para la pared. Serán {n} dibujos."
+],
+[
+"Ce soir, Pistache vient ! Je lui fais un nouveau dessin pour le mur. Ça fera {n} dessins.",
+"Pistache's coming tonight! I'm doing him a new drawing for the wall. That'll make {n} drawings.",
+"¡Esta noche viene Pistache! Le estoy haciendo un dibujo nuevo para la pared. Serán {n} dibujos."
+],
+[
+"Au dos du carnet, des milliers de petites étoiles, une par passage. En bas, au crayon : « Passages notés depuis soixante ans : {n}. Et ce n'est pas fini. »",
+"On the back of the notebook, thousands of little stars, one per passing. At the bottom, in pencil: “Passings recorded over sixty years: {n}. And it's not over.”",
+"En el reverso del cuaderno, miles de estrellitas, una por paso. Abajo, a lápiz: «Pasos anotados en sesenta años: {n}. Y esto no se acaba.»"
+]
+]

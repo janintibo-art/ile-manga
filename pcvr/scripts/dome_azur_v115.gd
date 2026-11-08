@@ -17,8 +17,12 @@ extends Node3D
 ##  - dehors : le tube de verre du Funiculaire, ses pylônes, le portail du canyon et son tunnel.
 ## Le verre (verre_abysse_v115) connaît les volumes d'air (set_glass) : derrière lui, la mer profonde.
 ## Les points, le réseau et les lieux des habitants vont dans ceux de Hautefond (comme ceux des Strates).
+## V119 : on entre dans les maisons (maisons_v81, style « dome ») : les quatorze maisons-bulles, les deux
+## tours-coquillages, la maisonnette de Mélisande ; huit grands lieux ont leur porte dessinée (portes119 :
+## lieux_dome_v119) ; les repères des lieux ouverts pour l'activité (cadres119 : dome_activite_v119).
 
 const F = preload("res://scripts/fosse_azur_v115.gd")
+const Kit56 = preload("res://scripts/azur_kit_v56.gd")
 const Kit = preload("res://scripts/dome_kit_v115.gd")
 const Mats = preload("res://scripts/dome_mats_v115.gd")
 const DomeFlore = preload("res://scripts/dome_flore_v115.gd")
@@ -78,6 +82,8 @@ var tank_fish: Array = []
 var tank_center := Vector3.ZERO
 var massifs: Array = []                  # [centre (le dessus de la terre), rayon, "arbre" | "buisson"]
 var _rng := RandomNumberGenerator.new()
+var portes119: Dictionary = {}           # V119 : les grands lieux qu'on visite : lieu -> [porte, dehors]
+var cadres119: Dictionary = {}           # V119 : les repères des lieux ouverts (dome_activite_v119)
 
 
 # =================================================================== repères
@@ -170,6 +176,26 @@ func _door(name: String, p: Vector3) -> void:
 	if near != "":
 		_link(name, near)
 	doors[name] = p
+
+
+## V119 : une maison où l'on entre (maisons_v81, style « dome ») : door, la porte (au sol, dehors, juste
+## devant le seuil) ; out, la direction du dehors ; w × d, la pièce.
+func _maison119(door: Vector3, out: Vector3, w: float, d: float, floors: int) -> void:
+	Kit56.note_v81(door + Vector3.UP * 0.05, Vector3(out.x, 0, out.z), w, d, "dome", floors)
+
+
+## V119 : une maison-bulle de rayon r : la taille de sa pièce.
+static func taille_bulle119(r: float) -> Vector2:
+	return Vector2(clampf(r * 1.55, 6.5, 8.5), clampf(r * 1.35, 6.0, 7.5))
+
+
+## V119 : un grand lieu qu'on visite : sa porte dessinée (xf : son pied, au ras du mur ; elle regarde +Z)
+## et, dans portes119, le point devant elle (au sol + 0,05, dehors) et la direction du dehors.
+func _lieu119(lieu: String, xf: Transform3D, leaf: String = "titane") -> void:
+	kit.door119(xf, leaf)
+	var out: Vector3 = xf.basis * Vector3.BACK
+	out.y = 0.0
+	portes119[lieu] = [xf * Vector3(0, 0.05, 0.6), out.normalized()]
 
 
 func _light(p: Vector3, c: Color, e_day: float, e_night: float, rng_m: float, shadow: bool = false) -> OmniLight3D:
@@ -510,6 +536,15 @@ func _gare() -> void:
 	kit.cyl(Transform3D(Basis(), gx * Vector3(0, 0, -0.9)), 1.9, 1.9, 0.05, "terrazzo115_bleu", 24, true)
 	kit.col_box(gx * kit.T(0, 0.55, 0), Vector3(2.8, 1.1, 0.8))
 	_sp("da_gare_guichet", gx * Vector3(0, 0, -0.75), gx * Vector3(0, 0, 3.0), "comptoir")
+	## V119 : le poste du chef de gare : une petite cabine de nacre juste derrière le guichet (un hublot
+	## sur le côté, un toit de titane, un liseré de diodes) ; sa porte au bout, vers le Cours (da_gare)
+	var cbx := Transform3D(bd, LR(50.5, 13.3))          # +Z : vers le centre ; +X : vers le dehors du guichet
+	kit.box(cbx * kit.T(0, 1.5, 0), Vector3(2.4, 3.0, 3.4), "nacre115", 1.5)
+	kit.box(cbx * kit.T(0, 3.07, 0), Vector3(2.7, 0.14, 3.7), "titane115_clair", 1.0)
+	kit.box(cbx * kit.T(0, 2.95, 0), Vector3(2.44, 0.06, 3.44), "led115_cyan", 1.0, 1 | 2 | 16 | 32)
+	kit.col_box(cbx * kit.T(0, 1.5, 0), Vector3(2.4, 3.0, 3.4))
+	kit.porthole115(Transform3D(kit._basis_up(sd), cbx * Vector3(1.21, 1.7, 0)), 0.45)
+	_lieu119("da_gare", cbx * Transform3D(Basis(), Vector3(0, 0, 1.7)), "titane")
 	for k2 in range(2):
 		var bp: Vector3 = LR(57.8 + k2 * 2.6, 6.0, plat_h)
 		var bx: Transform3D = XL(bp, bp - sd * 3.0)
@@ -530,6 +565,9 @@ func _gare() -> void:
 	_link("da_p_ga_0", _near_pt(LR(46.0, 10.0), "da_p_co_"))
 	objets["gare"] = LR(60.0, 4.0, plat_h)
 	objets["guichet"] = gx.origin
+	## V119 : le repère du quai (au milieu du quai, à sa hauteur ; +X le long de la voie vers le fond, +Z
+	## vers les bancs, loin de la voie)
+	cadres119["gare"] = Transform3D(bs, LR(62.5, 4.0, plat_h))
 	# le totem, au départ de l'avenue
 	kit.totem115(PR(A_GARE - 9.0, 19.0), deg_to_rad(-A_GARE + 90.0), "gare")
 
@@ -638,6 +676,28 @@ func _place_perle() -> void:
 	perle_light.global_position = c + Vector3.UP * PERLE_Y
 	objets["perle"] = c + Vector3.UP * PERLE_Y
 	objets["fontaine"] = c
+	## V119 : la guérite des Souffleries : le pied de la Cheminée est dans la Fontaine (pas de socle où
+	## mettre une porte) ; une petite guérite de titane, adossée au bassin (vers le sud-est, là où il n'y
+	## a ni banc ni allée), reliée à la colonne par une conduite au-dessus de l'eau ; sa porte regarde
+	## dehors (da_souffleries)
+	var ga: float = 95.0
+	var gw: Transform3D = XL(PR(ga, 7.75), PR(ga, 20.0))
+	kit.box(gw * kit.T(0, 1.5, 0), Vector3(2.2, 3.0, 1.5), "titane119", 1.5)
+	kit.box(gw * kit.T(0, 3.07, 0), Vector3(2.5, 0.14, 1.8), "nacre115", 1.0)
+	kit.box(gw * kit.T(0, 2.95, 0), Vector3(2.24, 0.06, 1.54), "led115_cyan", 1.0, 1 | 2 | 16 | 32)
+	for s in [-1.0, 1.0]:
+		kit.box(gw * kit.T(s * 1.12, 1.5, 0), Vector3(0.08, 3.0, 1.56), "titane115_sombre", 1.0, 1 | 2)
+	kit.col_box(gw * kit.T(0, 1.5, 0), Vector3(2.2, 3.0, 1.5))
+	var dk_a: Vector3 = gw * Vector3(0, 2.4, -0.75)
+	var dk_b: Vector3 = PR(ga, 3.5, 2.4)
+	kit.rod(dk_a, dk_b, 0.34, 0.34, "titane115", 12)
+	for q in [dk_a.lerp(dk_b, 0.08), dk_a.lerp(dk_b, 0.92)]:
+		kit.ring(Transform3D(Basis(dirv(ga).cross(Vector3.UP), dirv(ga), Vector3.UP).orthonormalized(), q), 0.33, 0.44, 0.14, "led115_cyan", 16)
+	_lieu119("da_souffleries", gw * Transform3D(Basis(), Vector3(0, 0, 0.75)), "titane")
+	## V119 : les repères de la Place et de la Fontaine : le centre (le pied de la Cheminée), au sol ;
+	## +X vers l'est, +Z vers le sud (les angles de PR)
+	cadres119["place"] = Transform3D(Basis(), c)
+	cadres119["fontaine"] = Transform3D(Basis(), c)
 	# les bancs autour de la Place, les spots
 	var bench_a: Array = [-30.0, 40.0, 130.0, 160.0, 220.0, 255.0]
 	for k4 in range(bench_a.size()):
@@ -770,6 +830,8 @@ func _conque() -> void:
 			kit.cyl(Transform3D(Basis(), sp2), 0.22, 0.2, 0.45, "nacre115_bleu", 12, true)
 			_crowd("da_c_conque_%d" % k7, sp2 + Vector3.UP * 0.4, tp, "assis")
 	kit.totem115(xf * Vector3(6.5, 0, 9.0), atan2((xf.basis * Vector3.BACK).x, (xf.basis * Vector3.BACK).z), "conque")
+	## V119 : le repère de la terrasse (son milieu, au sol, devant la Conque ; +Z vers la Place)
+	cadres119["conque"] = Transform3D(xf.basis, xf * Vector3(0, 0, 11.0))
 	kit.glows115.append([xf * Vector3(0, 3.6, -1.0), Color(1.0, 0.8, 0.55), 2.2, 12.0])
 
 
@@ -811,6 +873,14 @@ func _comptoir() -> void:
 	kit.col_box(sx * kit.T(0, 1.0, 0), Vector3(3.8, 2.0, 0.7))
 	_sp("da_comptoir", c + fwd * 1.6, c + fwd * 6.0, "comptoir")
 	_sp("da_comptoir_reserve", sx * Vector3(0, 0, 0.9), sx * Vector3(0, 0, -2.0), "bricoler")
+	## V119 : la réserve : une cloison de nacre sable, plus haute, contre le dos des étagères ; sa porte
+	## de l'autre côté, vers le fond du Comptoir (dehors, entre deux colonnes) (da_reserve)
+	kit.box(sx * kit.T(0, 1.55, -0.45), Vector3(3.9, 3.1, 0.14), "nacre115_sable", 1.5)
+	kit.box(sx * kit.T(0, 3.12, -0.45), Vector3(3.96, 0.05, 0.18), "led115_cyan", 1.0)
+	kit.col_box(sx * kit.T(0, 1.55, -0.45), Vector3(3.9, 3.1, 0.14))
+	_lieu119("da_reserve", sx * Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -0.52)), "titane")
+	## V119 : le repère du Comptoir (le centre du pavillon, au sol ; son plancher est à +0,25 ; +Z vers la Place)
+	cadres119["comptoir"] = xf
 	kit.totem115(c + fwd * 8.4 + (fwd.cross(Vector3.UP)) * 3.0, atan2(fwd.x, fwd.z), "comptoir")
 	kit.glows115.append([c + Vector3.UP * 3.8, Color(0.85, 0.95, 1.0), 1.6, 10.0])
 
@@ -864,6 +934,8 @@ func _atelier() -> void:
 	kit.box(cx * kit.T(0, 1.12, 0), Vector3(2.8, 0.06, 0.8), "titane115_clair", 1.0)
 	kit.col_box(cx * kit.T(0, 0.55, 0), Vector3(2.6, 1.1, 0.7))
 	_sp("da_atelier_comptoir", cx * Vector3(0, 0, -0.75), cx * Vector3(0, 0, 3.0), "comptoir")
+	## V119 : le repère de l'Atelier (le milieu de sa façade, au sol ; +Z vers la Place ; l'atelier vers -Z)
+	cadres119["atelier"] = xf
 	kit.glows115.append([back * Vector3(0, h - 0.6, 0), Color(0.9, 0.95, 1.0), 2.0, 12.0])
 
 
@@ -932,6 +1004,10 @@ func _ecole() -> void:
 			for yy3 in [2.3, 6.5]:
 				kit.porthole115(Transform3D(kit._basis_up(tg), PR(t, rr2) + tg * 0.22 + Vector3.UP * yy3), 0.6)
 	kit.sign115(Transform3D(xf.basis, PR(126.0, r_in - 0.3, h1 + 1.6)), "ecole", 3.6, 1.8)
+	## V119 : la porte « vers l'étage » (la Salle du Ciel) : dans le mur plein du bord est (136°), sur sa
+	## face de dedans, à deux mètres et demi de l'entrée (les hublots sont sur l'autre face) (da_ciel)
+	var nin := Vector3(sin(deg_to_rad(a1)), 0, -cos(deg_to_rad(a1)))
+	_lieu119("da_ciel", Transform3D(Basis.looking_at(-nin, Vector3.UP), PR(a1, 32.6) + nin * 0.2), "verre")
 	# la classe : le grand tableau (un écran), les deux bancs
 	var tx: Transform3D = XL(PR(126.0, r_out - 1.2), P(0, 0))
 	kit.box(tx * kit.T(0, 2.0, 0), Vector3(5.0, 2.4, 0.1), "ecran115", 1.0)
@@ -959,6 +1035,8 @@ func _ecole() -> void:
 	kit.ring(Transform3D(Basis(), gym + Vector3.UP * 0.9), 1.1, 1.18, 0.06, "led115_rose", 16)
 	kit.col_cyl(gym, 1.6, 1.8)
 	_sp("da_ecole_cour", cour + Vector3(1.0, 0, 3.4), cour, "debout")
+	## V119 : le repère de la cour (son centre, au sol ; +Z vers la Place, l'École derrière, vers -Z)
+	cadres119["ecole"] = XL(cour, P(0, 0))
 	kit.glows115.append([PR(126.0, 35.0, 3.6), Color(0.9, 0.95, 1.0), 1.8, 12.0])
 
 
@@ -990,6 +1068,8 @@ func _jardin() -> void:
 	_sp("da_jardin_2", c + Vector3(-1.0, 0, 6.6), c + Vector3(-3.8, 0, 4.2), "observer")
 	kit.totem115(c + (P(0, 0) - c).normalized() * 9.0 + Vector3(2.0, 0, 0), atan2((P(0, 0) - c).x, (P(0, 0) - c).z), "jardin")
 	kit.glows115.append([c + Vector3.UP * 2.5, Color(0.6, 0.45, 1.0), 1.6, 12.0])
+	## V119 : le repère du Jardin des Coraux (son centre, au sol ; +X vers l'est, +Z vers le sud)
+	cadres119["jardin"] = Transform3D(Basis(), c)
 
 
 func _conseil() -> void:
@@ -1035,6 +1115,22 @@ func _conseil() -> void:
 	kit.col_box(bx * kit.T(0, 0.4, 0), Vector3(3.6, 0.8, 1.4))
 	_sp("da_conseil_bureau", bx * Vector3(0, 0, -1.3), bx * Vector3(0, 0, 3.0), "scribe")
 	_sp("da_conseil_balcon", per + Vector3.UP * 0.6 + fwd * 2.0, per + fwd * 10.0, "observer")
+	## V119 : la porte « vers l'étage » (la Salle des Marées) : dans le mur plein, au rez-de-chaussée, sur
+	## sa face de dedans, du côté +X du repère (à droite en entrant), loin du bureau (da_marees)
+	var side: Vector3 = xf.basis * Vector3.RIGHT
+	var best_a: float = 0.0
+	var best_d: float = -2.0
+	for i2 in range(seg):
+		var am: float = TAU * (i2 + 0.5) / seg
+		var dd: float = Vector3(cos(am), 0, sin(am)).dot(side)
+		if dd > best_d:
+			best_d = dd
+			best_a = am
+	var dmx := Vector3(cos(best_a), 0, sin(best_a))
+	_lieu119("da_marees", Transform3D(Basis.looking_at(dmx, Vector3.UP), c + dmx * (r * cos(PI / seg) - 0.31) + Vector3.UP * 0.12), "verre")
+	## V119 : le repère du perron (le centre des marches, au sol ; le dessus est à +0,6 ; +Z vers la Place,
+	## le bâtiment vers -Z)
+	cadres119["conseil"] = Transform3D(xf.basis, per)
 	kit.glows115.append([c + Vector3.UP * 3.8, Color(1.0, 0.92, 0.8), 1.8, 12.0])
 
 
@@ -1044,6 +1140,8 @@ func _tours() -> void:
 		var door: Vector3 = kit.shell_tower(c, 6.5, int(spec[2]), float(spec[3]), (P(0, 0) - c).normalized())
 		_pt("da_tour_%d" % int(spec[0]), door)
 		_link("da_tour_%d" % int(spec[0]), _near_pt(door + (P(0, 0) - c).normalized() * 3.0))
+		## V119 : on y entre (une pièce de 8 × 7)
+		_maison119(door, (P(0, 0) - c).normalized(), 8.0, 7.0, int(spec[2]))
 
 
 func _bulles() -> void:
@@ -1052,6 +1150,9 @@ func _bulles() -> void:
 		var face: Vector3 = (P(0, 0) - p).normalized()
 		var door: Vector3 = kit.bubble_house(p, float(b[2]), face, str(b[4]), int(b[3]))
 		bulle_doors.append(door)
+		## V119 : on y entre (la pièce à la taille de la bulle)
+		var tb: Vector2 = taille_bulle119(float(b[2]))
+		_maison119(door, face, tb.x, tb.y, int(b[3]))
 		# un petit jardin de corail devant chaque bulle, une lampe
 		if bulle_doors.size() % 2 == 0:
 			kit.coral115(p + face * (float(b[2]) + 0.6) + face.cross(Vector3.UP) * 2.2, 1.0, ["rose", "cyan", "violet"][bulle_doors.size() % 3], 11530 + bulle_doors.size())
@@ -1080,6 +1181,9 @@ func _promenade() -> void:
 		var bxf2: Transform3D = XL(PR(a2, 66.2), PR(a2, 80.0))
 		kit.bench115(bxf2, 2.4, "corail")
 		_crowd("da_c_hublot_%d" % int(absf(a2)), bxf2 * Vector3(0, 0.45, 0.15), PR(a2, 80.0), "assis")
+	## V119 : le repère de la Promenade (un tronçon libre, entre la Galerie de l'Institut et le deuxième
+	## hublot ; au sol, sur la Promenade ; +Z vers le verre, +X le long de la Promenade)
+	cadres119["promenade"] = XL(PR(22.5, 66.5), PR(22.5, 80.0))
 	# les lampadaires du Cours
 	for k in range(12):
 		var a3: float = 30.0 * k + 7.0
@@ -1114,6 +1218,9 @@ func _belvedere() -> void:
 	kit.bench115(bxf, 2.8, "")
 	_sp("da_belvedere_banc", bxf * Vector3(0, 0.45, 0.15), PR(a, 80.0), "assis")
 	kit.totem115(PR(a + 13.0, 60.0), deg_to_rad(-a - 90.0), "belvedere")
+	## V119 : le repère du Belvédère (le milieu de la terrasse, au sol ; le dessus est à +0,35 ; +Z vers le
+	## verre et la Faille)
+	cadres119["belvedere"] = XL(c, PR(a, 80.0))
 	_pt("da_p_be", PR(a, 62.0, 0.35))
 	_link("da_p_be", _near_pt(PR(a, PR_R), "da_p_pr_"))
 
@@ -1185,10 +1292,25 @@ func _serres() -> void:
 			kit.ball(Transform3D(Basis(), cp + ex.basis * Vector3(-0.18 + (k5 % 2) * 0.36, 0.14, -0.1 + (k5 / 2) * 0.2)), 0.09, ["fruit115", "fruit115_fraise", "fruit115_citron", "feuille115_salade"][k4], 6, 3)
 	kit.canopy113(ex * Transform3D(Basis(), Vector3(0, 0, -0.3)), 4.4, 2.6, 2.6, "toile113_vert")
 	_sp("da_serres_etal", ex * Vector3(0, 0, -0.8), ex * Vector3(0, 0, 3.0), "comptoir")
+	## V119 : la chambre des semences : une petite cabine de nacre, à côté de l'étal (quatorze degrés plus
+	## au nord), un toit de titane, un liseré de diodes vertes, un hublot ; sa porte regarde le centre des
+	## Serres, comme l'étal (da_semences)
+	var smx: Transform3D = XC(S_C, a_in - 46.0, 23.6)
+	kit.box(smx * kit.T(0, 1.5, 0), Vector3(3.2, 3.0, 2.6), "nacre115", 1.5)
+	kit.box(smx * kit.T(0, 3.07, 0), Vector3(3.5, 0.14, 2.9), "titane115_clair", 1.0)
+	kit.box(smx * kit.T(0, 2.95, 0), Vector3(3.24, 0.06, 2.64), "led115_vert", 1.0, 1 | 2 | 16 | 32)
+	kit.col_box(smx * kit.T(0, 1.5, 0), Vector3(3.2, 3.0, 2.6))
+	kit.porthole115(Transform3D(kit._basis_up(smx.basis * Vector3.RIGHT), smx * Vector3(1.61, 1.7, 0)), 0.42)
+	_lieu119("da_semences", smx * Transform3D(Basis(), Vector3(0, 0, 1.3)), "verre")
+	## V119 : le repère des Serres (le centre du dôme, au sol ; +X vers l'est, +Z vers le sud)
+	cadres119["serres"] = Transform3D(Basis(), c)
 	kit.totem115(PC(S_C, a_in, 24.0) + Vector3(0, 0, 3.0), deg_to_rad(-a_in + 90.0), "serres")
 	# la maisonnette de la jardinière, au fond du Verger des Lampes
 	var mh: Vector3 = PC(S_C, 90.0, 25.0)
 	objets["maison_melisande"] = kit.bubble_house(mh, 3.3, c - mh, "sable", 1)
+	## V119 : on y entre aussi (une maison-bulle de 3,3 m)
+	var tm: Vector2 = taille_bulle119(3.3)
+	_maison119(objets["maison_melisande"], (c - mh).normalized(), tm.x, tm.y, 1)
 	kit.coral115(mh + Vector3(3.9, 0, -1.2), 0.8, "rose", 11590)
 	# la petite Perle des Serres (au sommet, au bout d'un câble)
 	var pp: Vector3 = c + Vector3.UP * 17.5
@@ -1271,6 +1393,15 @@ func _institut() -> void:
 	kit.box(Transform3D(Basis.looking_at(dirv(270.0), Vector3.UP), bp + Vector3.UP * 0.38), Vector3(2.6, 0.06, 1.2), "nacre115", 1.0)
 	kit.col_box(Transform3D(Basis.looking_at(dirv(270.0), Vector3.UP), bp + Vector3.UP * 0.4), Vector3(2.6, 0.8, 1.2))
 	_sp("da_institut_bureau", bp + (c - bp).normalized() * -1.0 + Vector3.ZERO, c, "scribe")
+	## V119 : le cabinet du Professeur Benthos : une porte dans le mur du fond, juste à côté de son bureau
+	## (le pan entre 259° et 270°, sans paillasse) (da_benthos)
+	var bw0: Vector3 = PC(I_C, 259.0, r_out)
+	var bw1: Vector3 = PC(I_C, 270.0, r_out)
+	_lieu119("da_benthos", Transform3D(Basis.looking_at(dirv(264.5), Vector3.UP), (bw0 + bw1) * 0.5), "titane")
+	## V119 : le repère de l'Institut (au rez-de-chaussée, devant le bureau ; +Z vers l'Aquarium, le mur
+	## du fond vers -Z)
+	cadres119["institut"] = XC(I_C, 270.0, 22.5)
+	cadres119["aquarium"] = Transform3D(Basis(), c)
 	# le Grand Aquarium : une grande cuve au centre, des petites autour (des méduses qui luisent)
 	var centers: Array = []
 	centers.append(kit.tank115(c, 3.0, 6.0))
@@ -1296,10 +1427,45 @@ func _institut() -> void:
 	pw.material_override = kit.mat("eau115_puits")
 	add_child(pw)
 	pw.global_position = bc + Vector3.DOWN * 0.9
+	## V119 : le garde-corps s'ouvre (le pan de 337,5° à 360°) sur la passerelle du Petit Plongeon
+	var gg: Vector3 = dirv(348.75)
+	var gt: Vector3 = gg.cross(Vector3.UP).normalized()
 	for k4 in range(16):
 		var q0: Vector3 = bc + dirv(22.5 * k4) * (POOL_R + 0.9)
 		var q1: Vector3 = bc + dirv(22.5 * (k4 + 1)) * (POOL_R + 0.9)
+		if k4 == 15:
+			var qm: Vector3 = bc + gg * ((POOL_R + 0.9) * cos(deg_to_rad(11.25)))
+			kit.glass_rail113(q0, qm - gt * 0.8, 1.1, true)
+			kit.glass_rail113(qm + gt * 0.8, q1, 1.1, true)
+			continue
 		kit.glass_rail113(q0, q1, 1.1, true)
+	## V119 : la passerelle : un tablier de titane au-dessus du puits (ses bords jaunes, ses garde-corps), au
+	## bout le sas (un caisson de titane, sa porte vers le quai) et le soufflet qui monte à l'écoutille du
+	## bathyscaphe, suspendu au milieu du puits (da_plongeon)
+	var g_in: float = 2.25
+	var g_sas: float = 2.8
+	var g_out: float = POOL_R + 1.5
+	var gb := Basis.looking_at(-gg, Vector3.UP)
+	var gmid: Vector3 = bc + gg * ((g_in + g_out) * 0.5)
+	kit.box(Transform3D(gb, gmid + Vector3.UP * 0.02), Vector3(1.6, 0.12, g_out - g_in), "titane119", 1.0)
+	kit.col_box(Transform3D(gb, gmid + Vector3.UP * 0.02), Vector3(1.6, 0.12, g_out - g_in))
+	var qm2: Vector3 = bc + gg * ((POOL_R + 0.9) * cos(deg_to_rad(11.25)))
+	for s in [-1.0, 1.0]:
+		kit.box(Transform3D(gb, gmid + gt * s * 0.72 + Vector3.UP * 0.085), Vector3(0.12, 0.01, g_out - g_in), "jaune115", 1.0)
+		kit.glass_rail113(bc + gg * g_sas + gt * s * 0.8, qm2 + gt * s * 0.8, 1.1, true)
+	var sas: Vector3 = bc + gg * ((g_in + g_sas) * 0.5)
+	kit.box(Transform3D(gb, sas + Vector3.UP * 1.54), Vector3(2.0, 2.92, g_sas - g_in), "titane119", 1.5)
+	kit.box(Transform3D(gb, sas + Vector3.UP * 3.06), Vector3(2.2, 0.12, g_sas - g_in + 0.2), "nacre115", 1.0)
+	kit.box(Transform3D(gb, sas + Vector3.UP * 2.96), Vector3(2.04, 0.06, g_sas - g_in + 0.04), "led115_cyan", 1.0, 1 | 2 | 16 | 32)
+	kit.col_box(Transform3D(gb, sas + Vector3.UP * 1.54), Vector3(2.0, 2.92, g_sas - g_in))
+	var sf_a: Vector3 = bc + gg * (g_in + 0.05) + Vector3.UP * 2.2
+	var sf_b: Vector3 = bc + Vector3.UP * 3.2 + (gg + Vector3.DOWN * 0.85).normalized() * 1.15
+	kit.rod(sf_a, sf_b, 0.4, 0.36, "titane115_sombre", 12)
+	for k5 in range(4):
+		kit.ring(Transform3D(kit._basis_up((sf_b - sf_a).normalized()), sf_a.lerp(sf_b, 0.12 + 0.24 * k5)), 0.38, 0.47, 0.1, "titane115_clair", 14)
+	_lieu119("da_plongeon", Transform3D(gb, bc + gg * g_sas + Vector3.UP * 0.08), "titane")
+	## V119 : le repère du Bassin (le centre du puits, au sol ; +X vers l'est, +Z vers le sud)
+	cadres119["bassin"] = Transform3D(Basis(), bc)
 	var g0: Vector3 = bc + dirv(20.0) * (POOL_R + 1.6)
 	var g1: Vector3 = bc + dirv(200.0) * (POOL_R + 1.6)
 	for gp in [g0, g1]:
@@ -1481,6 +1647,9 @@ func _jardinets() -> void:
 		keep.append([Vector2((d as Vector3).x, (d as Vector3).z), 2.8])
 	for d2 in doors.values():
 		keep.append([Vector2((d2 as Vector3).x, (d2 as Vector3).z), 2.8])
+	## V119 : pas de massif devant les portes des grands lieux
+	for e119 in portes119.values():
+		keep.append([Vector2((e119[0] as Vector3).x, (e119[0] as Vector3).z), 2.4])
 	# [centre du dôme, rayon de l'anneau, rayon du massif, écart, genre, rayon du dôme]
 	var rings: Array = [[Vector2.ZERO, 17.0, 2.4, 9.0, "arbre", R_G], [Vector2.ZERO, 40.5, 2.1, 11.0, "arbre", R_G],
 		[Vector2.ZERO, 49.5, 1.7, 9.0, "buisson", R_G], [S_C, 10.0, 1.4, 6.5, "buisson", R_SAT], [S_C, 22.5, 1.6, 7.0, "arbre", R_SAT]]

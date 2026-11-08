@@ -14,7 +14,7 @@ extends "res://scripts/nuees_kit_v113.gd"
 ##  - shell_tower() : une tour-coquillage (torsadée, des balcons en spirale, une couronne en conque) ;
 ##  - lamp115(), bench115(), sign115(), totem115(), porthole115() ; coral115() (un corail qui luit),
 ##    hydro_tower115() (une tour de culture), algae_tube115() (un tube d'algues), tank115() (une cuve
-##    d'aquarium).
+##    d'aquarium) ; V119 : door119() (la porte dessinée d'un grand lieu qu'on visite).
 ## Repères : une façade « xf » regarde +Z local (comme les autres kits).
 
 const Mats115 = preload("res://scripts/dome_mats_v115.gd")
@@ -36,6 +36,27 @@ func mat(key: String) -> Material:
 			mats[key] = cp
 			return cp
 		return base
+	# V119 : les portes des grands lieux : un titane brossé clair (peu métallique : sous la mer, sans
+	# reflets, le titane115 tourne au noir) et un verre dépoli laiteux qui luit un peu
+	if key == "titane119" or key == "verre119":
+		var m2 := StandardMaterial3D.new()
+		if key == "titane119":
+			m2.albedo_color = Color(0.76, 0.79, 0.82)
+			m2.metallic = 0.45
+			m2.roughness = 0.34
+			m2.clearcoat_enabled = true
+			m2.clearcoat = 0.4
+		else:
+			m2.albedo_color = Color(0.74, 0.88, 0.94)
+			m2.metallic = 0.05
+			m2.roughness = 0.5
+			m2.emission_enabled = true
+			m2.emission = Color(0.5, 0.82, 1.0)
+			m2.emission_energy_multiplier = 0.3
+			m2.rim_enabled = true
+			m2.rim = 0.4
+		mats[key] = m2
+		return m2
 	var m: Material = Mats115.make(key)
 	if m != null:
 		mats[key] = m
@@ -395,6 +416,31 @@ func bubble_house(pos: Vector3, r: float, face: Vector3, tint: String = "", floo
 	cs.position = c
 	body.add_child(cs)
 	return pos + f * (r * 0.92 + 1.6)
+
+
+## V119 : une porte dessinée (celle d'un grand lieu qu'on visite) : un encadrement de nacre (ses montants,
+## son linteau, un seuil de titane), un vantail de titane clair et son hublot de verre dépoli (leaf
+## « titane ») ou tout de verre dépoli cerclé de titane (leaf « verre »), une poignée, une petite plaque,
+## un liseré de diodes aigue-marine au-dessus et le long des montants. xf : le pied de la porte, au ras du
+## mur ; elle regarde +Z et déborde de 0,18 m ; 1,42 m de large, 2,55 m de haut. Avec sa collision.
+func door119(xf: Transform3D, leaf: String = "titane") -> void:
+	for s in [-1.0, 1.0]:
+		box(xf * T(s * 0.62, 1.15, 0.08), Vector3(0.18, 2.3, 0.16), "nacre115", 1.0)
+		box(xf * T(s * 0.62, 1.15, 0.165), Vector3(0.04, 2.0, 0.02), "led115_cyan", 1.0)
+	box(xf * T(0, 2.39, 0.09), Vector3(1.42, 0.2, 0.18), "nacre115", 1.0)
+	box(xf * T(0, 2.515, 0.12), Vector3(1.2, 0.05, 0.05), "led115_cyan", 1.0)
+	box(xf * T(0, 0.02, 0.1), Vector3(1.3, 0.04, 0.22), "titane115_clair", 1.0)
+	box(xf * T(0, 1.15, 0.05), Vector3(1.06, 2.2, 0.06), "titane119", 1.0)
+	if leaf == "verre":
+		box(xf * T(0, 1.17, 0.085), Vector3(0.86, 1.96, 0.02), "verre119", 1.0)
+	else:
+		box(xf * T(0, 1.62, 0.085), Vector3(0.62, 0.8, 0.02), "verre119", 1.0)
+		box(xf * T(0, 0.98, 0.085), Vector3(0.36, 0.12, 0.02), "titane115_sombre", 1.0)
+		box(xf * T(0, 0.98, 0.097), Vector3(0.26, 0.025, 0.01), "led115_cyan", 1.0)
+		for yy in [0.3, 0.55]:
+			box(xf * T(0, yy, 0.083), Vector3(0.86, 0.03, 0.02), "titane115", 1.0)
+	box(xf * T(0.38, 1.05, 0.11), Vector3(0.05, 0.38, 0.06), "titane115_sombre", 1.0)
+	col_box(xf * T(0, 1.25, 0.09), Vector3(1.42, 2.5, 0.18))
 
 
 ## Un hublot : un anneau de titane et son verre (xf : son centre, son axe +Y vers le dehors).

@@ -138,6 +138,7 @@ var dome_surface: Node3D                 # V115 : la bouée-phare (à la surface
 var activite: Node3D                     # V116 : la vie dans les lieux ouverts (hautefond_activite_v116)
 var activite_nu: Node3D                  # V117 : la vie dans les lieux ouverts de la Cité des Nuées
 var activite_st: Node3D                  # V118 : la vie dans les lieux ouverts des Strates et de la Fronde
+var activite_da: Node3D                  # V119 : la vie dans les lieux ouverts du Dôme d'Azur
 var _crowd_d_spawned: bool = false
 var _dome_vis: int = -1                  # 1 : on montre le Dôme (et pas les Strates) ; 0 : l'inverse
 var _whale_seen_pass: int = 0
@@ -243,6 +244,13 @@ func build_town() -> void:
 	activite_st = load("res://scripts/strates_activite_v118.gd").new()
 	add_child(activite_st)
 	activite_st.build(self)
+	# V119 : les grands lieux du Dôme d'Azur (le Petit Plongeon, la Salle des Marées…), les maisons-bulles
+	# où l'on entre, et la vie dans ses lieux ouverts
+	if dome != null:
+		print("ILE_MANGA_V119: %d grands lieux du Dôme d'Azur à visiter" % int(load("res://scripts/lieux_dome_v119.gd").register(dome.portes119)))
+		activite_da = load("res://scripts/dome_activite_v119.gd").new()
+		add_child(activite_da)
+		activite_da.build(self)
 	if ResourceLoader.exists(FLORE):
 		flore = load(FLORE).new()
 		flore.name = "Flore_hautefond_v112"

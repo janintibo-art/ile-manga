@@ -177,6 +177,19 @@ const STYLES := {
 		"poutre": Color(0.3, 0.3, 0.32), "bois": Color(0.62, 0.5, 0.36), "h": 2.6, "poutres_metal": true, "sans_cimaise": true,
 		"tapis": ["tazira/tapis_3.png"], "tableaux": ["strates/affiche_soupapes_1.png", "strates/affiche_soupapes_2.png", "boucan/affiche_concert_2.png"],
 		"fenetre": "atelier", "foyer": "poele", "porte": "acier"},
+	# V119 : les maisons-bulles et les tours-coquillages du Dôme d'Azur : de la nacre aux murs, du terrazzo
+	# au sol, du titane, des diodes aigue-marine ; les hublots donnent sur la mer profonde
+	"dome": {"sol": ["dome115/terrazzo.png", Color(0.96, 0.97, 1.0), 2.4], "mur": ["astralys/nacre_mur.png", Color(1, 1, 1), 3.0],
+		"bas": ["astralys/nacre_mur.png", Color(0.86, 0.92, 0.96), 3.0], "plafond": ["astralys/nacre_mur.png", Color(0.95, 0.97, 1.0), 3.0],
+		"poutre": Color(0.82, 0.86, 0.9), "bois": Color(0.78, 0.7, 0.6), "h": 2.9, "sans_poutres": true, "sans_cimaise": true,
+		"tapis": ["nuees/tapis_laine.png", "nuees/tapis_ciel.png"], "tableaux": ["dome119/affiche_chanteuse.png", "dome119/affiche_plongeon.png", "dome119/affiche_perle.png", "azur/tableau_2.png"],
+		"fenetre": "hublot", "foyer": "ethanol", "porte": "verre"},
+	# V119 : les grands lieux du Dôme (lieux_dome_v119 bâtit leur coque)
+	"dome_lieu": {"sol": ["dome115/terrazzo.png", Color(0.94, 0.96, 1.0), 2.6], "mur": ["astralys/nacre_mur.png", Color(1, 1, 1), 3.2],
+		"bas": ["astralys/metal_lumen.png", Color(0.85, 0.9, 0.95), 2.0], "plafond": ["astralys/nacre_mur.png", Color(0.95, 0.97, 1.0), 3.2],
+		"poutre": Color(0.82, 0.86, 0.9), "bois": Color(0.78, 0.7, 0.6), "h": 3.4, "sans_poutres": true, "sans_cimaise": true,
+		"tapis": ["nuees/tapis_ciel.png"], "tableaux": ["dome119/affiche_chanteuse.png", "dome119/affiche_plongeon.png", "dome119/affiche_perle.png"],
+		"fenetre": "hublot", "foyer": "ethanol", "porte": "verre"},
 	"cave": {"sol": ["montjoie/dalles_donjon.png", Color(0.85, 0.82, 0.78), 2.0], "mur": ["montjoie/pierre_donjon.png", Color(0.85, 0.82, 0.78), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.7, 0.68, 0.64), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.45, 0.38, 0.32), 2.0],
 		"poutre": Color(0.28, 0.2, 0.14), "bois": Color(0.5, 0.36, 0.24), "h": 2.6,
@@ -248,6 +261,9 @@ const VARIANTES := {
 		{"mur": ["strates/tole_fronde.png", Color(1.0, 0.85, 0.75), 2.0], "sol": ["boucan/moquette_bureau.png", Color(0.8, 0.5, 0.45), 1.6]},
 		{"mur": ["boucan/metal_rivete.png", Color(0.75, 0.72, 0.68), 1.5], "bas": ["boucan/metal_rivete.png", Color(0.6, 0.58, 0.56), 1.5], "tuyaux": true},
 		{"mur": ["strates/tole_fronde.png", Color(0.85, 1.0, 0.85), 2.0], "sol": ["montjoie/bois_planches.png", Color(0.6, 0.52, 0.42), 1.8]}],
+	"dome": [{"mur": ["astralys/nacre_mur.png", Color(0.92, 0.97, 1.0), 3.0]},
+		{"mur": ["astralys/nacre_mur.png", Color(1.0, 0.94, 0.94), 3.0], "sol": ["nuees/bois_blond.png", Color(1, 1, 1), 2.6]},
+		{"mur": ["astralys/nacre_mur.png", Color(0.96, 0.95, 0.88), 3.0], "bas": ["astralys/metal_lumen.png", Color(0.85, 0.9, 0.95), 2.0]}],
 	"nain": [{"mur": ["montjoie/pierre_donjon.png", Color(0.9, 0.82, 0.74), 2.5], "sol": ["montjoie/dalles_donjon.png", Color(0.9, 0.85, 0.8), 2.0]},
 		{"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/parquet_chevron.png", Color(0.85, 0.75, 0.65), 2.4]}],
 }
@@ -481,6 +497,11 @@ func _window_color() -> Color:
 		return Color(0.12, 0.42, 0.55)          # la mer, derrière le hublot
 	if style == "fee":
 		return Color(0.55, 0.4, 0.75)           # la lueur de la caverne des fées
+	if style.begins_with("dome"):
+		# la mer profonde, derrière le hublot (un peu plus claire le jour, sous la Grande Perle)
+		if hour >= 6.5 and hour < 20.5:
+			return Color(0.06, 0.24, 0.36)
+		return Color(0.02, 0.07, 0.14)
 	if style.begins_with("strates") or style.begins_with("fronde"):
 		# la caverne des Strates, sous le Soleil de Laiton : ambrée le jour, braise la nuit
 		if hour >= 6.5 and hour < 20.5:
@@ -653,19 +674,19 @@ func ceiling_lamp(x: float, z: float) -> void:
 			for k2 in range(3):
 				var a2: float = TAU * k2 / 3.0
 				kit.box(Transform3D(Basis(Vector3.UP, -a2) * Basis(Vector3.BACK, 0.62), P(x + cos(a2) * 0.22, y + 0.17, z + sin(a2) * 0.22)), Vector3(0.012, 0.52, 0.012), "fer", 1.0)
-		"boucan", "boucan_entrepot", "boucan_conteneur", "cliquetis":
+		"boucan", "boucan_entrepot", "boucan_conteneur", "cliquetis", "fronde", "fronde_lieu":
 			kit.cyl(L(x, y + 0.2, z), 0.008, 0.008, H - y - 0.2, "noir", 4, false)
 			kit.cyl(L(x, y, z), 0.28, 0.06, 0.2, "metal", 14, false)
 			kit.cyl(L(x, y - 0.04, z), 0.06, 0.06, 0.08, "lumiere", 8)
 		"astralys":
 			kit.cyl(L(x, y, z), 0.35, 0.35, 0.05, "lumiere", 20)
 			kit.ring(L(x, y + 0.02, z), 0.35, 0.4, 0.06, "argent", 20)
-		"nuees", "nuees_lieu":
-			# V117 : un plafonnier rond et plat, sa couronne de lumière
+		"nuees", "nuees_lieu", "dome", "dome_lieu":
+			# V117 : un plafonnier rond et plat, sa couronne de lumière (V119 : au Dôme aussi)
 			kit.cyl(L(x, H - 0.05, z), 0.5, 0.5, 0.05, "argent", 28)
 			kit.cyl(L(x, H - 0.08, z), 0.44, 0.44, 0.02, "lumiere", 28)
-		"hautefond", "hautefond_lieu":
-			# V116 : un lustre de laiton à globes de verre (le gaz de Hautefond)
+		"hautefond", "hautefond_lieu", "strates", "strates_lieu":
+			# V116 : un lustre de laiton à globes de verre (le gaz de Hautefond ; V119 : aux Strates aussi)
 			kit.cyl(L(x, y + 0.2, z), 0.01, 0.01, H - y - 0.2, "or", 4, false)
 			kit.ring(L(x, y, z), 0.34, 0.39, 0.04, "or", 18)
 			kit.cyl(L(x, y - 0.14, z), 0.02, 0.06, 0.34, "or", 8)
@@ -735,7 +756,8 @@ const PANO_BAS: float = 45.0
 func vue_mat(u0: float, du: float, v0: float, v1: float) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.albedo_texture = _tex("nuees/panorama_jour.png" if day else "nuees/panorama_nuit.png")
+	# (V119 : sous la mer, au Dôme, le verre ne montre que l'eau profonde)
+	m.albedo_texture = null if style.begins_with("dome") else _tex("nuees/panorama_jour.png" if day else "nuees/panorama_nuit.png")
 	if m.albedo_texture == null:
 		m.albedo_color = _window_color()
 	m.uv1_scale = Vector3(du, v1 - v0, 1.0)
