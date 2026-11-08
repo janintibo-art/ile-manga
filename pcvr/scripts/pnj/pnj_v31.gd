@@ -1208,6 +1208,8 @@ func is_hittable() -> bool:
 func take_hit(_damage: int, from_pos: Vector3) -> void:
 	var line: String = brain.hit(main._npc_ctx_v31())
 	say_bubble(line, 3.5)
+	# V120 : frapper quelqu'un, toute l'île le saura
+	Brain.Pop120.gagne(Brain.Pop120.region_npc(self), "frappe")
 	gesture("colere")
 	_face(from_pos - global_position, 1.0, 50.0)
 	if state == "parle":

@@ -544,6 +544,7 @@ static func _nuage(M) -> void:
 		var tw: Tween = M.room.create_tween()
 		tw.tween_property(arc_m, "albedo_color:a", 0.0, 1.0)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("nu_nuage", false)):
 			if nuit:
 				parent.say("Il ne fait ses arcs-en-lune que pour les amis.", 3.5)
@@ -2175,6 +2176,7 @@ static func _meteo(M) -> void:
 	# --- souffler sur l'anémomètre : il s'emballe, la girouette se tourne vers toi, on mesure ; le
 	# premier record de la station vaut le parapluie d'honneur (une fois)
 	var recompense := func(record: bool) -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("nu_meteo", false)):
 			return
 		var cad: String = _neuf(M, "parapluie_helice", "plume_vent")
@@ -3781,6 +3783,7 @@ static func _papillons(M) -> void:
 		return pp + fwd * 0.28 + droite * 0.3 + Vector3(0, 1.2, 0)
 	# la récompense, une seule fois : un sachet de graines (ou du miel, si on a déjà des graines)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("nu_papillons", false)):
 			return
 		M.state()["nu_papillons"] = true

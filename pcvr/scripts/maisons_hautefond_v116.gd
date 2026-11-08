@@ -386,6 +386,7 @@ static func _liftiers(M) -> void:
 		papi.gesture("rire", 2.0)
 		M.talk(papi, "Ha ! Un vrai coup de poignet de liftier ! De mon temps, on donnait un rouage au nouveau pour son premier « Ça monte ! ». Tiens : il vient de ma toute première cabine.",
 			I._bye("Merci ! Ça monte !"), func(_i):
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["engrenage", 1], ["biscuit_engrenage", 1]], "")
 			M.close_talk(), "ému")
 	M.ctx["tick"] = func(dt: float) -> void:
@@ -684,6 +685,7 @@ static func _coucous(M) -> void:
 		var cad: String = _neuf(M, "montre_envers", "ressort")
 		var txt: String = "Elle repart ! Tic, tac ! Tu as des doigts d'horloger. Tiens : la seule montre de la maison que je n'ai jamais su régler. Elle est juste, mais à l'envers." if cad == "montre_envers" else "Elle repart ! Tic, tac ! Tu as des doigts d'horloger. Tiens, un ressort de rechange : à Hautefond, ça sert toujours."
 		M.talk(dame, txt, I._bye("Merci, madame !"), func(_i):
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([[cad, 1], ["piece", 4 + r.randi() % 5]], "")
 			M.close_talk(), "ravie")
 	, 1.2)
@@ -829,6 +831,7 @@ static func _dirigeable(M) -> void:
 			var cad: String = _neuf(M, "boussole_sud", "bocal_nuage")
 			var txt: String = "Tu as écouté sans avoir le mal de l'air : tu feras un bon aéronaute ! Tiens, ma boussole de secours. Elle indique le sud… des deux côtés. Impossible de se tromper." if cad == "boussole_sud" else "Tu as écouté sans avoir le mal de l'air : tu feras un bon aéronaute ! Tiens, un petit nuage que j'ai attrapé au-dessus de la Cité des Nuées."
 			M.talk(pilote, txt, I._bye("Merci, capitaine !"), func(_j):
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.give([[cad, 1], ["piece", 5 + r.randi() % 6]], "")
 				M.close_talk(), "fier")
 		, "conteur")
@@ -1054,6 +1057,7 @@ static func _vapeur_matin(M) -> void:
 		var cad: String = _neuf(M, "chaussettes_vapeur", "pain_miel")
 		var txt: String = "Bravo, tu as trouvé la manette ! Personne ne la trouve jamais. Tiens, un chocolat bien chaud… et des chaussettes à vapeur : mon mari en a inventé quarante paires." if cad == "chaussettes_vapeur" else "Bravo, tu as trouvé la manette ! Personne ne la trouve jamais. Tiens, un chocolat bien chaud, et du pain de miel pour la route."
 		M.talk(mere, txt, I._bye("Merci !"), func(_i):
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["chocolat_chaud", 1], [cad, 1]], "")
 			M.close_talk(), "reconnaissante")
 	, 1.0)
@@ -1208,6 +1212,7 @@ static func _allumettes(M) -> void:
 			if premier:
 				M.talk(papi, "ELLE TIENT ! Essai numéro %d, et c'est toi qui poses la dernière ! Tu as des mains d'horloger. Tiens, ta part du trésor : la boîte à biscuits de la victoire." % (46 + int(st["essais"])),
 					I._bye("Bravo à vous !"), func(_i):
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["biscuit_engrenage", 1], ["piece", 8 + r.randi() % 8]], "")
 					M.close_talk(), "ému")
 			await M.get_tree().create_timer(4.0).timeout
@@ -1238,6 +1243,7 @@ static func _allumettes(M) -> void:
 		if premier:
 			M.talk(papi, "HA HA HA ! Patatras ! Ce n'est rien : c'est la prochaine qui sera la bonne. Tiens, un jus de pomme pour te remettre de tes émotions.",
 				I._bye("Pardon !"), func(_i):
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.give([["jus_pomme", 1], ["piece", 3 + r.randi() % 4]], "")
 				M.close_talk(), "hilare")
 		else:
@@ -1584,6 +1590,7 @@ static func _pianola(M) -> void:
 					if not bool(M.state().get("hf_pianola", false)):
 						M.state()["hf_pianola"] = true
 						M.talk(mamie, "Avec plaisir ! Un, deux, trois… un, deux, trois… Tu as le pied léger ! Tiens, un pain de miel : on danse mieux le ventre plein.", I._bye("Merci, mamie !"), func(_i):
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["pain_miel", 1], ["piece", 3 + r.randi() % 5]], "")
 							M.close_talk())
 					else:

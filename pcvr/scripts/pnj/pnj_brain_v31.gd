@@ -25,6 +25,8 @@ const Societe = preload("res://scripts/pnj/societe_v65.gd")
 ## V107 : les répliques sont écrites en français ; elles sont traduites au moment d'être dites
 ## (le modèle d'abord, puis ce qu'on y glisse : objets, surnom, noms…).
 const Langue = preload("res://scripts/langue_v104.gd")
+## V120 : la popularité (le salut, les prix)
+const Pop120 = preload("res://scripts/popularite_v120.gd")
 ## V65 : la fiche d'histoire de ce personnage (histoire, reve, question, liens).
 var v65: Dictionary = {}
 ## V65 : il vouvoie le joueur (d'après sa façon de parler dans sa fiche) : les phrases du cerveau aussi.
@@ -451,6 +453,10 @@ func start(ctx: Dictionary) -> Dictionary:
 		_mood(0.05 + (0.08 if float(memoire["derniere"]) > 0.0 and now - float(memoire["derniere"]) > 1800.0 else 0.0))
 	_bond(0.8)
 	var reply: Dictionary = say("accueil", ctx, false)
+	# V120 : on le salue selon sa popularité sur l'île (mauvaise réputation… légende locale)
+	var sal120: String = Pop120.salut(_pop_region120(), rng)
+	if sal120 != "":
+		reply["texte"] = sal120 + "\n\n" + str(reply["texte"])
 	# V65 : une nouvelle, un écho, un souvenir de la dernière fois.
 	var hook: String = _v65_accroche(ctx)
 	if hook != "":
@@ -717,6 +723,8 @@ func _gift(item: String, ctx: Dictionary) -> Dictionary:
 		_bond(0.5)
 	var r2: Dictionary = say(intent, ctx)
 	r2["prendre"] = [[item, 1]]
+	# V120 : un cadeau fait parler de soi (en bien, sauf s'il le déteste)
+	r2["_pop120"] = {"cadeau_aime": "cadeau_aime", "cadeau_deteste": "cadeau_deteste"}.get(intent, "cadeau")
 	r2["choix"] = topics(ctx)
 	return r2
 
@@ -747,6 +755,7 @@ func _quest_turn_in(ctx: Dictionary) -> Dictionary:
 		out["prendre"] = [[str(q["objet"]), int(q["nombre"])]]
 	out["donner"] = q.get("recompense", [])
 	out["choix"] = topics(ctx)
+	out["_pop120"] = "quete_habitant"
 	return out
 
 
@@ -806,7 +815,19 @@ func prix(id: String) -> int:
 	# V56 : réputation à Port-Azur, faveurs d'un commerçant, clé de la ville
 	var off: float = float(remises.get(str(data.get("groupe", "")), 0.0)) + float(remises.get(str(data.get("id", "")), 0.0)) + float(remises.get("tout", 0.0))
 	f *= 1.0 - clampf(off, 0.0, 0.5)
+	# V120 : la popularité sur l'île (de -15 % à +25 %)
+	f *= Pop120.prix_facteur(_pop_region120())
 	return maxi(1, int(round(base * f)))
+
+
+## V120 : la région de cet habitant (son groupe, sinon là où l'on est en train de lui parler).
+func _pop_region120() -> String:
+	var g: String = str(data.get("groupe", ""))
+	if Pop120.GROUPES.has(g):
+		return str(Pop120.GROUPES[g])
+	if Pop120.REGIONS.has(g):
+		return g
+	return Pop120.region_npc(Pop120.parle_a) if Pop120.parle_a != null and is_instance_valid(Pop120.parle_a) else ""
 
 
 func prix_rachat(id: String) -> int:

@@ -1,6 +1,8 @@
 extends Node
 
 const Brain := preload("res://scripts/pnj/pnj_brain_v31.gd")
+## V120 : la popularité de chaque île est rangée ici (sauvegarde, et annulation quand le sac est plein)
+const Pop120 = preload("res://scripts/popularite_v120.gd")
 ## V56 : le carnet de quêtes. Il connaît :
 ##  - les petites quêtes de Port-Azur (QUETES, ci-dessous) : étapes (parler à quelqu'un,
 ##    apporter des objets, ramasser des objets posés dans le monde, creuser, faire une
@@ -2166,7 +2168,7 @@ func place_name(p: Vector3) -> String:
 # =================================================================== sauvegarde
 
 func serialize() -> Dictionary:
-	return {"etats": states.duplicate(true), "bonus": bonus.duplicate(), "rep": reputation, "titres": titres.duplicate(), "flags": flags.duplicate(), "remises": remises.duplicate()}
+	return {"etats": states.duplicate(true), "bonus": bonus.duplicate(), "rep": reputation, "titres": titres.duplicate(), "flags": flags.duplicate(), "remises": remises.duplicate(), "pop": Pop120.sauver()}
 
 
 func load_data(d: Dictionary) -> void:
@@ -2180,6 +2182,7 @@ func load_data(d: Dictionary) -> void:
 	titres = (d.get("titres", []) as Array).duplicate() if d.get("titres", []) is Array else []
 	flags = (d.get("flags", {}) as Dictionary).duplicate() if d.get("flags", {}) is Dictionary else {}
 	remises = (d.get("remises", {}) as Dictionary).duplicate() if d.get("remises", {}) is Dictionary else {}
+	Pop120.charger(d.get("pop", {}))
 	_course_t = -1.0
 	apply_bonuses()
 	changed.emit()

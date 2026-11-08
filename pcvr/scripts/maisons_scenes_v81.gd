@@ -18,6 +18,8 @@ const SCENARIOS := [
 ]
 
 const Iles = preload("res://scripts/maisons_iles_v82.gd")
+## V120 : la popularité (l'accueil chez les habitants)
+const Pop120 = preload("res://scripts/popularite_v120.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
 const Moais = preload("res://scripts/maisons_moai_v88.gd")
 const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
@@ -1860,6 +1862,9 @@ static func _b_vide(M) -> void:
 			R.chat(0.9, 0.9, r.randf_range(0, 360), [Color(0.95, 0.6, 0.25), Color(0.15, 0.15, 0.17), Color(0.92, 0.92, 0.9)][r.randi() % 3], true)
 			M.act(R.P(0.9, 0, 0.9), "E : caresser le chat", func() -> void:
 				M.main.sfx("ronron")
+				if not bool(M.state().get("pop_chat120", false)):
+					M.state()["pop_chat120"] = true
+					M.bonne_action_v120("animal")  ## V120 : les gens aiment qu'on soit gentil avec leur chat
 				M.say(str(_pick(M, ["Le chat ronronne. Puis il te mord gentiment, pour la forme. Puis il ronronne encore.", "Le chat ouvre un œil, te juge, et se rendort. Tu es accepté.", "Ronron. Le chat se roule sur le dos. C'est un piège, tout le monde le sait."])), 4.0), 1.0)
 		2:
 			# un poisson rouge dans son bocal
@@ -1937,12 +1942,26 @@ static func _b_chez(M) -> void:
 		var acc: Array = (prof.get("repliques", {}) as Dictionary).get("lui", [])
 		M.talk_spot(f, func() -> void:
 			var t: String = str(_pick(M, ["Oh ! Tu es venu me voir chez moi ? Quelle bonne surprise ! Fais comme chez toi.", "Ah, c'est toi ! Entre, entre. Excuse le désordre, je ne m'attendais pas à de la visite.", "Bienvenue chez moi ! C'est petit, mais c'est chaud et ça sent bon."]))
+			# V120 : l'accueil suit la popularité (invité d'honneur… ou visiteur qu'on surveille)
+			var niv120: int = Pop120.niveau(Pop120.region_maison(M.cur))
+			if niv120 >= 4:
+				t = str(_pick(M, ["Te voilà enfin ! Je t'avais invité, tu te souviens ? Assieds-toi, je t'en prie : ici, tu es chez toi.", "Oh, quel honneur ! Toute la rue va savoir que tu es venu chez moi !", "Entre, entre ! J'ai gardé le meilleur fauteuil pour toi. Tout le monde parle de toi, tu sais ?"]))
+			elif niv120 <= 1:
+				t = str(_pick(M, ["Ah. C'est toi. … Bon, entre, mais ne touche à rien.", "Tu es chez moi, là. Alors sois sage, d'accord ? On m'a raconté des choses sur toi.", "Hmm. Entre. Mais je te garde à l'œil."]))
 			var choices: Array = [{"id": "maison", "label": "Elle est jolie, ta maison !"}]
+			if niv120 >= 4 and not bool(M.state().get("cadeau_pop120", false)):
+				choices.push_front({"id": "invitation", "label": "Merci pour l'invitation !"})
 			if not acc.is_empty():
 				choices.append({"id": "lui", "label": "Parle-moi un peu de toi."})
 			choices.append({"id": "fermer", "label": "Je ne fais que passer. À bientôt !"})
 			M.talk(f, t, choices, func(id):
 				match id:
+					"invitation":
+						M.state()["cadeau_pop120"] = true
+						var it2: Array = food(str(M.ctx["style"]))
+						M.talk(f, "C'est moi qui te remercie ! Tiens, un petit quelque chose. On ne reçoit pas tous les jours quelqu'un dont toute l'île parle !", [{"id": "fermer", "label": "Oh, merci, c'est trop gentil !"}], func(_i):
+							M.give([[str(it2[r.randi() % it2.size()]), 1], ["piece", 8 + r.randi() % 8]], "")
+							M.close_talk())
 					"maison":
 						if not bool(M.state().get("cadeau_chez", false)):
 							M.state()["cadeau_chez"] = true

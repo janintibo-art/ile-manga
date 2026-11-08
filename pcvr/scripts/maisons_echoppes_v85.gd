@@ -234,7 +234,7 @@ static func _menu(M, f: Node, data: Dictionary, msg: String) -> void:
 		var e: Array = data["stock"][i]
 		var left: int = int(st.get("stock_" + str(e[0]), 3))
 		if left > 0:
-			choices.append({"id": "b:%d" % i, "label": "Acheter : %s — %d pièces" % [_nom_objet(str(e[0])), _prix_actuel(st, e)]})
+			choices.append({"id": "b:%d" % i, "label": "Acheter : %s — %d pièces" % [_nom_objet(str(e[0])), _prix_pop(M, st, e)]})
 	for id in data["achats"]:
 		if inv != null and int(inv.count(str(id))) > 0:
 			choices.append({"id": "v:" + str(id), "label": "Vendre : %s (tu en as %d)" % [_nom_objet(str(id)), int(inv.count(str(id)))]})
@@ -251,6 +251,13 @@ static func _menu(M, f: Node, data: Dictionary, msg: String) -> void:
 	M.talk(f, text, choices, func(id): _choix(M, f, data, str(id)), "de bonne humeur")
 
 
+## V120 : le prix suit la popularité de l'île (sauf un prix déjà marchandé).
+static func _prix_pop(M, st: Dictionary, e: Array) -> int:
+	if st.has("prix_" + str(e[0])):
+		return _prix_actuel(st, e)
+	return S.Pop120.prix(_prix_actuel(st, e), S.Pop120.region_maison(M.cur))
+
+
 static func _prix_actuel(st: Dictionary, e: Array) -> int:
 	return int(st.get("prix_" + str(e[0]), int(e[1])))
 
@@ -261,7 +268,7 @@ static func _choix(M, f: Node, data: Dictionary, id: String) -> void:
 	if id.begins_with("b:"):
 		var e: Array = data["stock"][int(id.substr(2))]
 		var item: String = str(e[0])
-		var price: int = _prix_actuel(st, e)
+		var price: int = _prix_pop(M, st, e)
 		match str(data["perso"]):
 			"collection":
 				var n: int = int(st.get("refus_" + item, 0))

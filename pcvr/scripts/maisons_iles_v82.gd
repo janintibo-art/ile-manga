@@ -184,6 +184,7 @@ static func _chevalier(M) -> void:
 				M.state()["adoube"] = true
 				k.gesture("salut", 2.0)
 				M.talk(k, "À genoux ! … Bon, pas la peine, le sol est froid. Par le pouvoir qui m'est conféré par… moi-même, je te nomme Écuyer d'Honneur de Montjoie ! Voici ta solde.", _bye("Merci, Sire !"), func(_i):
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["piece", 15 + r.randi() % 10], ["tourte_montjoie", 1]], "")
 					M.close_talk())
 			elif id == "armure":
@@ -228,6 +229,7 @@ static func _demon(M) -> void:
 					kid.set_pose("debout", Vector3(0, 0, 1))
 					kid.gesture("joie", 2.0)
 					M.talk(kid, "C'est… c'est vrai ? Tu ne manges pas les petits démons ? … Ouf ! Tiens, c'est ma brioche préférée. Tu peux l'avoir. Mais juste une !", _bye("Merci !"), func(_i):
+						M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 						M.give([["brioche_braise", 1]], "")
 						M.close_talk())
 				"grimace":
@@ -238,6 +240,7 @@ static func _demon(M) -> void:
 					M.state()["calme"] = true
 					kid.set_pose("debout", Vector3(0, 0, 1))
 					M.talk(kid, "Vrai ?! Toi aussi ?! … Alors on n'a qu'à avoir peur ensemble ! Comme ça, on aura moins peur ! Tiens, ça porte bonheur.", _bye("Marché conclu !"), func(_i):
+						M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 						M.give([["piment_infernal", 1], ["piece", 4 + r.randi() % 5]], "")
 						M.close_talk())
 		, "terrifié")
@@ -288,6 +291,7 @@ static func _repetition(M) -> void:
 					M.state()["chante"] = true
 					M.talk(b, "(Tu cries dans le micro. Le larsen fait sauter un pot de fleurs. Le chien du voisin se met à hurler en rythme.) … OUAIS ! C'ÉTAIT PARFAIT ! Tu es engagé !" + (" Tiens, notre fanzine dédicacé !" if first else ""), _bye("ROCK'N'ROLL !"), func(_i):
 						if first:
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["fanzine", 1]], "")
 						M.close_talk())
 				"nom":
@@ -405,6 +409,7 @@ static func _apesanteur(M) -> void:
 				if not bool(M.state().get("gravite", false)):
 					M.state()["gravite"] = true
 					M.talk(l, "BOUM ! … Voilà, tout est par terre. Même moi, presque. Merci, tiens, un biscuit de chez nous. Il flotte aussi, attention.", _bye("Merci !"), func(_i):
+						M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 						M.give([["biscuit_lunaire", 1], ["piece", 6 + r.randi() % 6]], "")
 						M.close_talk())
 				else:
@@ -475,6 +480,7 @@ static func _robot(M) -> void:
 					M.talk(maitre, "… Une soupe aux boulons. C'est la troisième fois cette semaine. Bon, garde les boulons, ils peuvent toujours servir.", _bye("Merci, Bielle !"), func(_i):
 						if not bool(M.state().get("boulons", false)):
 							M.state()["boulons"] = true
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["boulon", 2], ["cafe_vapeur", 1]], "")
 						M.close_talk())
 				"danse":
@@ -541,6 +547,7 @@ static func _tanuki(M) -> void:
 		M.talk(tanuki, str(_pick(M, ["POUF ! Ha ha ha ! Tu as vu la tête que tu as faite ?! Une théière qui remue la queue, ça ne t'a pas mis la puce à l'oreille ?", "Démasqué ! Ha ha ! Personne ne m'avait jamais trouvé aussi vite. Enfin… à part ma grand-mère. Et le chat."])) + (" Tiens, pour le gagnant !" if first else ""),
 			_bye("Ha ha ! Bien joué, toi aussi."), func(_i):
 			if first:
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.give([["gland_dore", 1], ["pain_carotte", 1]], "")
 			M.close_talk())
 	M.act(tp.global_position, "E : examiner la théière", cb, 1.4)
@@ -634,6 +641,7 @@ static func _potion(M) -> void:
 				redevenir.call()
 				app.gesture("joie", 2.5)
 				M.talk(app, "Ça a marché !!! Maître ! Vous êtes redevenu… vous ! Merci, merci ! Tiens, prends ça, c'est une potion réussie. Enfin, je crois.", _bye("Bravo !"), func(_i):
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["potion_mana", 1], ["piece", 8 + r.randi() % 8]], "")
 					M.close_talk())
 			else:
@@ -751,6 +759,7 @@ static func _bouteille(M) -> void:
 					M.main.sfx("ui_quete")
 					M.talk(f, "Les mâts se lèvent… les voiles se déplient… PARFAIT ! Tu as des doigts de fée ! Tiens, celle-là est pour toi." if first else "Encore une réussite ! Tu devrais ouvrir ta propre boutique.", _bye("Merci !"), func(_i):
 						if first:
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["carte_postale", 1], ["piece", 10 + r.randi() % 8]], "")
 						M.close_talk())
 				"fort":
@@ -794,6 +803,7 @@ static func _chat_sacre(M) -> void:
 					if not bool(M.state().get("bastet", false)):
 						M.state()["bastet"] = true
 						M.talk(gens[1], "Elle ronronne ! Nefer-Miou t'a accepté ! C'est un grand honneur. Prends ce gâteau de miel : c'est elle qui l'aurait voulu.", _bye("Merci, ô Nefer-Miou !"), func(_i):
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["gateau_miel", 1], ["piece", 6 + r.randi() % 6]], "")
 							M.close_talk())
 					else:
@@ -838,6 +848,7 @@ static func _chocolat(M) -> void:
 					M.state()["cacao"] = true
 					M.talk(f, ("Quelle mousse ! Tu es doué ! Un peu en a giclé sur le plafond, mais c'est le signe d'un bon cacao. Tiens, goûte !" if r.randf() < 0.5 else "Oh ! Belle mousse ! … Et belle moustache en chocolat, aussi. Tiens, tu l'as bien mérité."), _bye("Miam !"), func(_i):
 						if first:
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["cacao", 1], ["galette_mais", 1]], "")
 						M.close_talk())
 				"piment":
@@ -896,6 +907,7 @@ static func _plumes(M) -> void:
 			M.state()["plume"] = true
 			M.talk(f, "Une plume %s ! Parfait ! La coiffe est finie ! Le grand prêtre va être jaloux." % nom + (" Tiens, garde celle-là en souvenir." if first else ""), _bye("Elle est magnifique !"), func(_i):
 				if first:
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["plume_ara", 1]], "")
 				M.close_talk())
 		, "inspiré")
@@ -949,6 +961,7 @@ static func _peintre(M) -> void:
 			M.state()["portrait"] = true
 			M.talk(f, str(txt.get(id, "Voilà !")) + (" Tiens, une petite carte de ton portrait, en souvenir !" if first else ""), _bye("Merci, maître !"), func(_i):
 				if first:
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["carte_postale", 1]], "")
 				M.close_talk())
 		, "inspiré")
@@ -1001,6 +1014,7 @@ static func _chant_elfe(M) -> void:
 			M.state()["chant"] = true
 			M.talk(f, ("Regarde ! Elles poussent ! Tu as une jolie voix… pour un humain." if id == "chanter" else "Ça marche aussi ! Les plantes aiment toutes les musiques. Même les sifflements un peu faux.") + (" Prends ce thé de lune, il vient de mon jardin." if first else ""), _bye("Merci !"), func(_i):
 				if first:
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["tisane_lune", 1], ["baies", 2]], "")
 				M.close_talk())
 		, "serein")
@@ -1068,6 +1082,7 @@ static func _aquarium(M) -> void:
 					M.state()["poissons"] = true
 					M.talk(f, "Regarde-les se bousculer ! Le gros orange, c'est Amiral : il mange toujours en premier. Merci ! Tiens, une perle de mon jardin." if first else "Ils te reconnaissent ! Amiral te fait un clin d'œil. Enfin, je crois.", _bye("Ils sont adorables !"), func(_i):
 						if first:
+							M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 							M.give([["perle", 1]], "")
 						M.close_talk())
 				"comment":

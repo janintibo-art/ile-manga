@@ -150,6 +150,7 @@ func _ready() -> void:
 	_create_v99()
 	_create_v112()
 	_create_v103()
+	_create_v120()
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 
@@ -3518,6 +3519,7 @@ func _talk_v31(npc: Node3D) -> void:
 	if inventory_v28 != null and inventory_v28.opened:
 		inventory_v28.close()
 	talking_npc_v31 = npc
+	Popularite_v120.parle_a = npc
 	if fishing_v32 != null:
 		fishing_v32.cancel("")
 	npc.begin_talk()
@@ -3589,6 +3591,8 @@ func _brain_reply_v48(npc: Node3D, call: Callable) -> void:
 	# V56 : quête accomplie (récompenses, bonus), départ du bateau, nuit à l'hôtel
 	if journal_v56 != null:
 		journal_v56.commit_reply(r, npc)
+	# V120 : une quête accomplie, un cadeau qui fait plaisir : la popularité monte
+	Popularite_v120.after_reply(r, npc)
 	if azur_v56 != null:
 		azur_v56.after_reply(r, npc)
 	if grande_v59 != null:
@@ -3741,6 +3745,9 @@ var maisons_v81: Node3D                    # V81 : les maisons décoratives qu'o
 var chantier_v76: Node                     # V76 : le chantier naval de Port-Azur (le bateau qui évolue)
 var atelier_ailes_v76: Node3D              # V76 : l'Atelier des Ailes de Philibert Vis, à Cliquetis
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
+## V120 : la popularité (par île : saluts, prix, portes, invitations)
+const Popularite_v120 = preload("res://scripts/popularite_v120.gd")
+var popularite_v120: Node
 const FERRY_PIER_V56 := [Vector3(51.96, 1.0, 30.0), Vector3(77.94, 1.0, 45.0)]   # ponton de L'Hirondelle au village
 var grotte_v52: Node3D                     # V52 : la grotte derrière la cascade
 var foret_v52: Node                       # V52 : lumière sous les arbres
@@ -4075,6 +4082,14 @@ func _create_v112() -> void:
 
 
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
+## V120 : la popularité de l'archipel (son état est rangé avec le carnet de quêtes).
+func _create_v120() -> void:
+	popularite_v120 = Popularite_v120.new()
+	popularite_v120.name = "Popularite_v120"
+	add_child(popularite_v120)
+	popularite_v120.setup(self)
+
+
 func _create_v103() -> void:
 	trafic_v103 = preload("res://scripts/trafic_v103.gd").new()
 	add_child(trafic_v103)

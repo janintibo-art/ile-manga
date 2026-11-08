@@ -641,6 +641,7 @@ static func _lanterne(M) -> void:
 		eclair.light_energy = 1.6 if on else 0.0
 	# la récompense : il vous a répondu (le soir : l'enfant ; la nuit : le parent, tout bas)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("la_lanterne", false)):
 			return
 		M.state()["la_lanterne"] = true
@@ -1390,6 +1391,7 @@ static func _boite(M) -> void:
 		M.main.sfx("coffre", R.P(kx, 0.4, kz), -12.0 if nuit else -4.0)
 	# le grand-parent donne un morceau de mer en échange (une seule fois)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("da_boite", false)):
 			gpf.say(str(_pick(M, ["Encore un morceau… Cette boîte sera bientôt plus grande que le ciel.", "Merci. Vraiment. Pour lui, et un peu pour moi.", "Bonnes bulles, et revenez avec du ciel !"])), 4.0)
 			return
@@ -2198,6 +2200,7 @@ static func _poulpe(M) -> void:
 		return "Trop tard, il file ! Regarde bien où il va !"
 	# --- la récompense (une seule fois) : il fouille dans son pot et donne son trésor
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("da_poulpe", false)):
 			return
 		await M.get_tree().create_timer(1.6).timeout
@@ -2920,6 +2923,7 @@ static func _chanteuse(M) -> void:
 		M.main.sfx("baleine", a_hublot, (-11.0 if fort else -19.0) - (4.0 if nuit else 0.0))
 	# la récompense (une seule fois) : un coquillage qui chante (ou une perle d'Azur, si on en a déjà un)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("da_chanteuse", false)):
 			mamie.say(str(_pick(M, ["Elle t'a encore répondu. Je l'écris dans le carnet, avec ton nom à côté.", "Bravo ! On fera un trio, la prochaine fois.",
 				"Tu vois ? Elle reconnaît les voix. La tienne, maintenant, elle la connaît."])), 3.5)
@@ -3420,6 +3424,7 @@ static func _baignoire(M) -> void:
 	regler_phare.call()
 	# la récompense (une fois) : le goûter du pilote
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("da_baignoire", false)):
 			return
 		M.state()["da_baignoire"] = true

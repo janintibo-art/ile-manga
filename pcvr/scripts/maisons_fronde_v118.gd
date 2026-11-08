@@ -588,6 +588,7 @@ static func _casseroles(M) -> void:
 	M.act(R.P(dside * (hw - 1.05), 0, zl + 0.3), "E : taper sur une casserole", taper, 1.0)
 	# --- chanter avec eux (la nuit : une berceuse, tout bas) ; la première fois, le fanzine
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("fr_casseroles", false)):
 			if nuit:
 				pb.say("Merci… Ils ont souri en dormant, je l'ai vu.", 3.5)
@@ -1460,6 +1461,7 @@ static func _planche(M) -> void:
 		humeur = "à voix basse" if nuit else "les mains pleines de peinture"
 	# ce dont la maison se souvient : une bague de boulon, la première planche finie
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("fr_planche", false)):
 			return
 		M.state()["fr_planche"] = true
@@ -2023,6 +2025,7 @@ static func _murs(M) -> void:
 	var st := {"t": r.randf() * 10.0, "coups": 0, "couleur": "", "vu": 0, "coule": 0.0, "coule_max": r.randf_range(0.25, 0.55), "pause": 3.0}
 	# la récompense : le fanzine des fresques, une seule fois
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("fr_murs", false)):
 			return
 		M.state()["fr_murs"] = true
@@ -2608,6 +2611,7 @@ static func _vapeur(M) -> void:
 	# servir le thé : la théière siffle, on verse, le vieux raconte (la première fois : le pain de chaudière)
 	var fx := {}
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("fr_vapeur", false)):
 			M.close_talk()
 			return

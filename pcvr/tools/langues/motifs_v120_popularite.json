@@ -1,0 +1,37 @@
+[
+[
+"E : frapper chez {} (on ne t'ouvre plus…)",
+"E: knock at {}'s (they won't open for you anymore…)",
+"E: llamar a casa de {} (ya no te abren…)"
+],
+[
+"E : entrer chez {} (tu es invité !)",
+"E: go into {}'s home (you're invited!)",
+"E: entrar en casa de {} (¡estás invitado!)"
+],
+[
+"Tu frappes chez {}. Un rideau bouge… puis plus rien. On ne t'ouvrira pas.",
+"You knock at {}'s. A curtain moves… then nothing. They won't open for you.",
+"Llamas a casa de {}. Una cortina se mueve… y luego nada. No te abrirán."
+],
+[
+"Toc toc. Derrière la porte, la voix de {} : « Pas toi. Pas après ce que tu as fait. »",
+"Knock knock. Behind the door, {}'s voice: “Not you. Not after what you did.”",
+"Toc, toc. Tras la puerta, la voz de {}: «Tú no. No después de lo que hiciste»."
+],
+[
+"Tu frappes. {} entrouvre, te reconnaît, et referme aussitôt. Clac.",
+"You knock. {} opens the door a crack, recognises you, and shuts it at once. Slam.",
+"Llamas. {} entreabre, te reconoce y cierra enseguida. Plaf."
+],
+[
+"Popularité à {} : +{n} ({})",
+"Popularity in {}: +{n} ({})",
+"Popularidad en {}: +{n} ({})"
+],
+[
+"Popularité à {} : -{n} ({})",
+"Popularity in {}: -{n} ({})",
+"Popularidad en {}: -{n} ({})"
+]
+]

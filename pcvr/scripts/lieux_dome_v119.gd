@@ -500,6 +500,7 @@ static func _reserve(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("tri_reserve119", false)):
 			st["tri_reserve119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			for f2 in M.people:
 				if is_instance_valid(f2) and f2.has_method("gesture"):
 					f2.gesture("applaudir", 2.0)
@@ -1080,6 +1081,7 @@ static func _semences(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("graine_semences119", false)):
 			st["graine_semences119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			for f in M.people:
 				if is_instance_valid(f) and f.has_method("gesture"):
 					f.gesture("joie", 2.0)
@@ -1580,6 +1582,7 @@ static func _ciel(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("ciel_carte119", false)):
 			st["ciel_carte119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["carte_postale", 1]], "Sous le Mur du Dessus, une boîte porte un mot de Madame Odile : « Cartes en double. Servez-vous, une chacun. Et écrivez-nous quand vous verrez le vrai paysage ! »\n")
 		else:
 			M.say(str(CIEL_CARTES[nc % CIEL_CARTES.size()]), 8.0)
@@ -1920,6 +1923,7 @@ static func _souffleries(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("souf_spiruline119", false)):
 			st["souf_spiruline119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["spiruline", 1]], "Tu frottes, tu rinces, et le filtre brun redevient d'un beau vert qui bouillonne. Les algues que tu as récoltées, c'est de la spiruline toute fraîche. « Garde-la, dit-on derrière toi : c'est la paye des nettoyeurs. »\n")
 		else:
 			M.say(str(L._pick(M, SOUF_FILTRE)), 6.0)
@@ -2178,6 +2182,7 @@ static func _gare(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("gare_chocolat119", false)):
 			st["gare_chocolat119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["chocolat_abysses", 1]], "Ding-ding ! La cloche résonne dans tout le poste. Sur le pupitre, une boîte en fer porte une étiquette : « Pour les sonneurs de cloche. Un chacun. Signé : Marius. » Dedans, des chocolats des abysses.\n")
 		elif L._nuit(M):
 			M.say(GARE_CLOCHE_NUIT, 6.0)
@@ -2834,6 +2839,7 @@ static func _plongeon(M) -> void:
 				"Dans la boîte, une pomme, deux sandwichs, et une étiquette : « Règle numéro un des pilotes : jamais de plongée sans goûter. » Tu refermes la boîte. Tu as déjà eu ta part."])), 6.0)
 			return
 		st["plongeon119"] = true
+		M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 		M.give([["chocolat_abysses", 1]], "La boîte à goûter de Lou : des sandwichs, une pomme, et des chocolats. Sur le couvercle : « Règle numéro un des pilotes : jamais de plongée sans goûter. Servez-vous, l'équipage ! » Tu fais partie de l'équipage. ")
 	, 0.9)
 	M.act(R.P(1.17, 1.1, 0.68), "E : lire le journal de bord", func() -> void:
@@ -3140,6 +3146,7 @@ static func _marees(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("marees119", false)):
 			st["marees119"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["perle_azur", 1]], "Tu prends la plume et tu écris une phrase pour ceux qui vivront ici dans cent ans. À côté du livre, une petite boîte de nacre porte une étiquette : « Pour ceux qui écrivent : une perle d'Azur. Merci pour dans cent ans. » ")
 			return
 		var n: int = int(M.ctx.get("livre119", 0))
@@ -3468,6 +3475,7 @@ static func _benthos(M) -> void:
 					M.ctx["chante119"] = false
 					return
 				st["benthos119"] = true
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				if prof_la:
 					M.give([["coquillage_chanteur", 1]], "Le Professeur Benthos en a laissé tomber son carnet. « Elle vous a répondu ! Notez la date ! Tenez, gardez ceci : un coquillage qui chante. Collez-le à votre oreille, là-haut, et vous l'entendrez encore. » ")
 				else:

@@ -485,6 +485,7 @@ static func _marmite(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("bouillon118", false)):
 			st["bouillon118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["bouillon_strates", 1]], "« Goûte, c'est la maison qui offre ! » On te tend un bol de bouillon des Strates, si chaud qu'il fume jusqu'aux poutres. Il tient au corps, et au bol :\n")
 		else:
 			M.say(str(L._pick(M, ["Mmm… Un bouillon épais, doré, aux champignons bruns. Il réchauffe jusqu'aux orteils, même ceux qui sont restés en haut.",
@@ -698,6 +699,7 @@ static func _lumieres(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("cristal118", false)):
 			st["cristal118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["eclat_cristal", 1]], "Tu tournes doucement la cage de laiton vers la lumière : le cristal boit, frémit, puis s'allume d'un bleu tout neuf. « Bravo ! On dirait qu'elle vous attendait. Gardez cet éclat : il était trop petit pour une lanterne, mais pas pour une poche. » Tu reçois :\n")
 		else:
 			M.say(str(L._pick(M, ["La lanterne s'allume d'un bleu calme, sans flamme ni fumée. Elle éclairera toute la nuit, avec la lumière qu'elle a bue aujourd'hui.",
@@ -904,6 +906,7 @@ static func _guilde(M) -> void:
 				"Tu es déjà membre d'honneur de la Guilde. Le titre ne donne aucun droit, sauf celui de revenir. C'est le meilleur."])), 6.0)
 			return
 		st["guilde118"] = true
+		M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 		M.main.sfx("ui_quete", lt.origin)
 		for f in M.people:
 			if is_instance_valid(f) and f.has_method("gesture"):
@@ -1411,6 +1414,7 @@ static func _atelier(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("clapet118", false)):
 			st["clapet118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["bague_boulon", 1]], "Bip-bouïp ! Clapet hoche la tête à toute vitesse, fouille dans son ventre de bidon… Clapet te tend un boulon poli : une bague de boulon. Ses yeux clignotent de fierté.\n")
 		else:
 			M.say(str(L._pick(M, ATL118_CLAPET)), 5.0)
@@ -2077,6 +2081,7 @@ static func _mine(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("tamis118", false)):
 			st["tamis118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.main.sfx("cristal_chante", tamis.global_position)
 			if is_instance_valid(eclats[0]):
 				(eclats[0] as Node3D).visible = false
@@ -2350,6 +2355,7 @@ static func _horloge(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("poids118", false)):
 			st["poids118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			if nuit:
 				M.give([["galette_rouages", 1]], "Le veilleur ouvre un œil : « Merci… Tu as fait mon travail. » Et il te tend la galette de sa veillée, découpée en roue dentée.\n")
 			else:
@@ -2645,6 +2651,7 @@ static func _loge(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("fanzine118", false)):
 			st["fanzine118"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["fanzine", 1]], "Tu grattes trois accords. Ce n'est pas tout à fait juste, mais c'est très punk. « Bravo, camarade ! Tiens, le fanzine de la semaine : il y a une page entière sur les Soupapes ! »\n")
 		else:
 			M.say(str(L._pick(M, ["Tu grattes un accord : drang ! La guitare verte de Bielle ronronne comme une chaudière contente. Un jour, peut-être, une Soupape de plus ?",

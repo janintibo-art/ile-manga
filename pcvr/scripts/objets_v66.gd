@@ -425,6 +425,8 @@ func _complain(c: Node3D, k: String) -> void:
 			best.gesture("colere")
 		if best.brain.has_method("_bond"):
 			best.brain._bond(-1.0)
+		# V120 : casser sous les yeux des gens, ça se raconte
+		preload("res://scripts/popularite_v120.gd").gagne(preload("res://scripts/popularite_v120.gd").region_at(at), "casse")
 	if best.has_method("say_bubble"):
 		best.say_bubble(line, 3.2)
 

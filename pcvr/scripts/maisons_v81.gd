@@ -15,6 +15,8 @@ const Pieces = preload("res://scripts/maisons_pieces_v81.gd")
 const Scenes = preload("res://scripts/maisons_scenes_v81.gd")
 const Deco = preload("res://scripts/maisons_deco_v86.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
+## V120 : la popularité (portes closes, invitations, bonnes actions)
+const Pop120 = preload("res://scripts/popularite_v120.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
 const Yourtes = preload("res://scripts/maisons_larsen_v92.gd")
 const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
@@ -199,7 +201,12 @@ func _update_door_prompt() -> void:
 		return
 	var who: String = owner_name(e)
 	var st: Dictionary = etat.get(str(e["id"]), {})
-	if who != "":
+	# V120 : mauvaise réputation, la porte reste close ; populaire, on est invité
+	if Pop120.porte_close(e, who != ""):
+		_it_door["text"] = ("E : frapper chez %s (on ne t'ouvre plus…)" % who) if who != "" else "E : frapper (les volets sont fermés…)"
+	elif who != "" and Pop120.invite(e):
+		_it_door["text"] = "E : entrer chez %s (tu es invité !)" % who
+	elif who != "":
 		_it_door["text"] = "E : entrer chez %s" % who
 	elif bool(st.get("chasse", false)):
 		_it_door["text"] = "E : entrer (on t'a déjà mis dehors…)"
@@ -236,6 +243,11 @@ func enter_nearest() -> void:
 
 func enter(i: int) -> void:
 	if busy or inside:
+		return
+	# V120 : mauvaise réputation : on frappe, personne n'ouvre
+	if i >= 0 and i < portes.size() and Pop120.porte_close(portes[i], owner_name(portes[i]) != ""):
+		var who120: String = owner_name(portes[i])
+		say(str(_porte_close_txt(who120)), 5.0)
 		return
 	busy = true
 	cur = portes[i]
@@ -637,8 +649,34 @@ func loot(rich: float = 1.0) -> Array:
 ## Mis dehors (« Allez, ouste ! ») : on ressort, et la maison s'en souvient.
 func expel(text: String = "") -> void:
 	state()["chasse"] = true
+	# V120 : se faire mettre dehors, ça se sait
+	Pop120.gagne(Pop120.region_maison(cur), "dehors")
 	await get_tree().create_timer(0.8).timeout
 	leave(text)
+
+
+## V120 : une bonne action dans une maison ou un grand lieu (une quête, un service rendu) :
+## la popularité de l'île monte. `quoi` : "bonne_action" (une quête) ou "animal" (soigner une bête).
+func bonne_action_v120(quoi: String = "bonne_action") -> void:
+	if cur.is_empty():
+		return
+	Pop120.gagne(Pop120.region_maison(cur), quoi)
+
+
+func _porte_close_txt(who: String) -> String:
+	var r := RandomNumberGenerator.new()
+	r.randomize()
+	if who != "":
+		return [
+			"Tu frappes chez %s. Un rideau bouge… puis plus rien. On ne t'ouvrira pas." % who,
+			"Toc toc. Derrière la porte, la voix de %s : « Pas toi. Pas après ce que tu as fait. »" % who,
+			"Tu frappes. %s entrouvre, te reconnaît, et referme aussitôt. Clac." % who,
+		][r.randi() % 3]
+	return [
+		"Tu frappes. On chuchote derrière la porte : « C'est lui… ne réponds pas. » Personne n'ouvre.",
+		"Les volets se ferment au moment où tu approches. Ici, on n'ouvre pas aux gens qui ont mauvaise réputation.",
+		"Toc toc. Silence. Puis un verrou qu'on tourne… dans le mauvais sens.",
+	][r.randi() % 3]
 
 
 ## Ne fait rien (sert à clore proprement un bloc de lambda avant d'autres arguments).

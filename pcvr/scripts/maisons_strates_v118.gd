@@ -544,6 +544,7 @@ static func _canari(M) -> void:
 	ois.rotation.y = cage.rotation.y
 	# la récompense (une seule fois) : le premier cristal de la galerie trois
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		papi.gesture("joie", 2.0)
 		if bool(M.state().get("st_canari", false)):
 			papi.say(str(_pick(M, ["Quelle voix ! Il chante mieux pour toi que pour moi.", "Bravo, l'oiseau ! Bravo, le visiteur !", "Ça, c'est une chanson de mineur. Ça résonne jusqu'au fond des galeries."])), 3.5)
@@ -1124,6 +1125,7 @@ static func _train(M) -> void:
 		return dx > 0.0 and dx <= dn and dn < PI
 	# la récompense (une seule fois) : le train file à toute vapeur, en fumant
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("st_train", false)):
 			return
 		M.state()["st_train"] = true
@@ -1718,6 +1720,7 @@ static func _cristaux(M) -> void:
 	M.act(R.P(tx + s * 0.15, 0, tz + 0.85), "E : lire le carnet", lire, 1.2)
 	# --- chercher le cristal perdu : il revole à sa place ; l'enfant est fou de joie (une récompense, une fois)
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("st_cristaux", false)):
 			return
 		M.state()["st_cristaux"] = true
@@ -2242,6 +2245,7 @@ static func _fuite(M) -> void:
 			S._say_late(M, porteur, str(_pick(M, ["Et ça recommence…", "Plic. Bon. Ça recommence.", "Et voilà la suivante. Bonjour, la suivante."])), 2.5, 3.0)
 	# --- la récompense (une seule fois) : le sirop de la Cascade, fait avec l'eau de la surface
 	var recompense := func(parole: bool) -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("st_fuite", false)):
 			return
 		M.state()["st_fuite"] = true
@@ -2965,6 +2969,7 @@ static func _roche(M) -> void:
 		plus_tard.call(float(st["t"]) + 3.0, noter)
 	# la récompense (une fois) : un chocolat du mineur, pour la route jusqu'en haut
 	var recompense := func() -> void:
+		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("st_roche", false)):
 			return
 		M.state()["st_roche"] = true

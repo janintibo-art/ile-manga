@@ -498,6 +498,7 @@ static func _cafe(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("lait117", false)):
 			st["lait117"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["lait_nuage", 1]], "« Goûte, c'est la maison qui offre ! » Une tasse de lait de nuage, tout mousseux. Tu as maintenant une moustache blanche, et une tasse à emporter :\n")
 		else:
 			M.say(str(L._pick(M, ["Mmm… On dirait de boire un petit nuage tiède. Ta moustache blanche est revenue.",
@@ -733,6 +734,7 @@ static func _atelier(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("parapluie117", false)):
 			st["parapluie117"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["boussole_nuages", 1]], "« Bravo, pilote d'essai ! Pour ton courage, une boussole à nuages : elle montre toujours le plus joli. » Tu reçois :\n")
 	, 1.6)
 	M.act(R.P(0.6, 1.4, 1.2), "E : remonter le petit drone", func() -> void:
@@ -1137,6 +1139,7 @@ static func _institut(M) -> void:
 		var st: Dictionary = M.state()
 		if not bool(st.get("plume117", false)):
 			st["plume117"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["plume_vent", 1]], "Une plume blanche s'est envolée de la soufflerie et s'est posée sur ton épaule. « Garde-la, dit le technicien, c'est une plume de vent : elle porte chance aux pilotes. » Tu reçois :\n")
 	, 1.6)
 	M.act(cc + Vector3(-0.6, 1.2, 0.6), "E : regarder la chambre à nuages", func() -> void:
@@ -1654,6 +1657,7 @@ static func _libellule(M) -> void:
 					M.talk(stw, "Tu en as déjà eu un ! Mais je te remets un peu de soleil dans le verre, pour la route. Voilà. Il est surtout fait de sourire.", I._bye("Merci !"), I._close(M))
 					return
 				st["jus117"] = true
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.close_talk()
 				M.give([["jus_soleil", 1]], "« Un jus de soleil, pressé ce matin dans les Serres ! » Tu reçois :\n")]])
 		M.ctx["entree"] = str(L._pick(M, ["Tu montes à bord de la Libellule : une longue nacelle blanche, des fauteuils face à de grandes baies sur le ciel, et tout au bout, la passerelle.",
@@ -1787,6 +1791,7 @@ static func _capitainerie(M) -> void:
 					M.talk(com, "Je t'en ai déjà donné une ! Il ne m'en reste que trois, et la Capitaine les garde pour les courses gagnées contre l'Albatros. C'est-à-dire pour toutes les courses.", I._bye("Ha ha !"), I._close(M))
 					return
 				st["carte117"] = true
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.close_talk()
 				M.give([["carte_postale", 1]], "« Une carte postale de la Libellule, au-dessus de la Cascade. Envoie-la en bas, ça leur fera envie ! » Tu reçois :\n")],
 			["icare", "Où est l'école de planeur ?", ["Au bout du ponton, avec Icare Plané ! Il part avec ses élèves quand le vent est bon. Il n'a pas marché depuis trois ans, paraît-il : il plane jusqu'à la boulangerie."]]])

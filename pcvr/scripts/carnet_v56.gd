@@ -870,6 +870,8 @@ func _hero_stats_text(title: bool = false) -> String:
 		var bar_n: int = clampi(int(float(j.reputation) / 140.0 * 30.0), 0, 30)
 		s += "[color=#ffd27a]%s[/color][color=#3a4a55]%s[/color]\n\n" % ["█".repeat(bar_n), "█".repeat(30 - bar_n)]
 		s += "[b]Réductions :[/b]\n%s\n\n" % str(j.discount_text())
+		# V120 : la popularité, île par île
+		s += preload("res://scripts/popularite_v120.gd").texte_carnet()
 		s += "[font_size=24][color=#ffd27a][b]Titres[/b][/color][/font_size]\n"
 		if j.titres.is_empty():
 			s += "[i]Aucun pour l'instant. Rendez service, et les gens s'en souviendront.[/i]\n"

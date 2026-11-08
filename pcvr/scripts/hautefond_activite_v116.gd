@@ -603,7 +603,9 @@ func _parler(w: Dictionary) -> void:
 	choices.append({"id": "fermer", "label": "Au revoir !"})
 	var who: String = str(f.npc.get("display_name"))
 	f.begin_talk()
-	main.ask_v69(f.npc, who, "de bonne humeur", str(accueil[_rng.randi() % accueil.size()]), choices, func(id):
+	# V120 : le salut suit la popularité sur l'île
+	var txt120: String = preload("res://scripts/popularite_v120.gd").avec_salut(preload("res://scripts/popularite_v120.gd").region_at(f.npc.global_position), str(accueil[_rng.randi() % accueil.size()]), _rng)
+	main.ask_v69(f.npc, who, "de bonne humeur", txt120, choices, func(id):
 		for s2 in sujets:
 			if str(s2[0]) == str(id):
 				var rep: Array = s2[2]

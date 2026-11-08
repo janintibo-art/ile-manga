@@ -777,6 +777,7 @@ static func _horloger(M) -> void:
 		M.main.sfx("mecanisme", grandes[0])
 		if not bool(M.state().get("pendule116", false)):
 			M.state()["pendule116"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["ressort", 1]], "Tu remontes la grande pendule : quarante tours de clé. Elle te remercie d'un tic plus appuyé, et un petit ressort tombe de sa caisse. « Garde-le », dit-on derrière toi." + "\n")
 		else:
 			M.say("Elle est remontée pour huit jours. Elle bat, fière comme un tambour.", 4.0), 1.3)
@@ -1187,6 +1188,7 @@ static func _beffroi(M) -> void:
 		["cadeau", "Je peux t'aider ?", func() -> void:
 			if not bool(M.state().get("roue116", false)):
 				M.state()["roue116"] = true
+				M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 				M.talk(gardien, "Tu viens de le faire : tu m'as écouté. Tiens, une petite roue qui a pris sa retraite. Elle a tourné trente ans ; elle a bien mérité de voyager.", [{"id": "fermer", "label": "Merci !"}], func(_i):
 					M.give([["engrenage", 1]], "")
 					M.close_talk())
@@ -1484,6 +1486,7 @@ static func _lanterne(M, nuit: bool) -> void:
 		M.main.sfx("verser")
 		if not bool(M.state().get("lentille116", false)):
 			M.state()["lentille116"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["piece", 3]], "Tu frottes la lentille avec un chiffon doux : elle brille comme un sou neuf. L'apprenti te donne trois sous neufs : « Pour la peine ! »" + "\n")
 		else:
 			M.say("La lentille brille déjà. Tu y vois ton reflet, coupé en sept tranches.", 4.0), 1.1)
@@ -1636,6 +1639,7 @@ static func _moulin(M) -> void:
 		M.main.sfx("levier", R.P(lv.x, 1.0, lv.z))
 		if not bool(M.state().get("pain116", false)):
 			M.state()["pain116"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.give([["pain_miel", 1]], "Le moulin se calme. On te tend un pain de miel tout chaud : « Fait avec la farine d'hier. On ne repart pas d'un moulin les mains vides ! »" + "\n"), 1.1)
 	if augustin != null:
 		M.ctx["entree"] = "Tu entres chez Augustin Meule, au cœur de son moulin. Il se repose près de la meule, au rythme des ailes."
@@ -1733,6 +1737,7 @@ static func _tri(M, aide: Node, n: int) -> void:
 	if n >= 3:
 		if not bool(M.state().get("pommes116", false)):
 			M.state()["pommes116"] = true
+			M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 			M.talk(aide, "Bravo, tu as l'œil ! Tiens, prends-en trois : ce sont les meilleures. Le Père Bastien dirait que tu as un nez de jardinier.", [{"id": "fermer", "label": "Merci beaucoup !"}], func(_i):
 				M.give([["pomme", 3]], "")
 				M.close_talk())
@@ -1856,6 +1861,7 @@ static func _albatros(M) -> void:
 			if str(id) == "choco":
 				if not bool(M.state().get("choco116", false)):
 					M.state()["choco116"] = true
+					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.main.sfx("verser", steward.npc.global_position)
 					M.talk(steward, "Voilà ! Avec de la mousse en forme de nuage. Si tu le bois vite, tu as une moustache de nuage. C'est la tradition.", [{"id": "fermer", "label": "Merci !"}], func(_i):
 						M.give([["chocolat_chaud", 1]], "")
