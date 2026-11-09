@@ -5,7 +5,9 @@ extends Node
 ##  - aller près de n'importe quel habitant ;
 ##  - changer l'heure (matin, midi, soir, nuit) ;
 ##  - invincible (ni coups, ni chutes, ni noyade) ;
-##  - 500 pièces de cuivre.
+##  - 500 pièces de cuivre ;
+##  - V123 : le héros (niveau, caractéristiques, talents, sceaux, sorts), les armes, les outils,
+##    la forge, l'Alouette, et « tout remplir » (cœurs, endurance, air, magie).
 ## Tout passe par la fenêtre de dialogue (souris, chiffres, manette) ; rien n'est enregistré
 ## avec la partie, sauf ce qu'on y gagne (pièces, lieux visités).
 
@@ -30,6 +32,21 @@ func open_menu() -> void:
 	if main == null or main.get("dialogue_v31") == null:
 		return
 	_anchor.global_position = main._player_pos_v27() + Vector3.UP * 0.2
+	# V123 : le menu est rangé en sous-menus (voyager, le héros, les armes)
+	var ch: Array = [
+		{"id": "voyage", "label": "Voyager : îles, lieux de quête, habitants, maisons…"},
+		{"id": "heros", "label": "Le héros : niveau, caractéristiques, talents, sceaux, sorts"},
+		{"id": "armes_menu", "label": "Armes, outils, forge et Alouette"},
+		{"id": "remplir", "label": "Tout remplir : cœurs, endurance, air, magie"},
+		{"id": "heure", "label": "Changer l'heure"},
+		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
+		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
+		{"id": "fermer", "label": "(Fermer)"},
+	]
+	main.ask_v69(_anchor, "Mode testeur", "malin", "Que veux-tu faire ?", ch, _pick)
+
+
+func _menu_voyage() -> void:
 	var ch: Array = [
 		{"id": "iles", "label": "Aller sur une île ou une grande place"},
 		{"id": "lieux", "label": "Aller à un lieu de quête (carnet)"},
@@ -38,16 +55,200 @@ func open_menu() -> void:
 		{"id": "moai89", "label": "Le souterrain du Grand Moaï (yeux rendus, on descend)"},
 		{"id": "pixel90", "label": "Île Pixelithique : Grosse-Dent (le Cirque des Os)"},
 		{"id": "pixel90g", "label": "Île Pixelithique : la Grotte aux Peintures"},
-		{"id": "heure", "label": "Changer l'heure"},
-		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
-		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
-		{"id": "fermer", "label": "(Fermer)"},
+		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
 
 
+## V123 : le héros (niveau, caractéristiques, talents, sceaux, sorts).
+func _menu_heros() -> void:
+	var pr: Node = main.get("progression_v63")
+	var lv: int = int(pr.level) if pr != null else 1
+	var ch: Array = [
+		{"id": "h_niv1", "label": "Niveau + 1  (actuellement niveau %d)" % lv},
+		{"id": "h_nivmax", "label": "Niveau maximum (30)"},
+		{"id": "h_stats", "label": "Caractéristiques au maximum (cœur, endurance, force, agilité)"},
+		{"id": "h_talents", "label": "Tous les talents (double saut, coup chargé, parade parfaite…)"},
+		{"id": "h_sceaux", "label": "Les quatre sceaux et leurs pouvoirs (touches 1 à 4)"},
+		{"id": "h_sorts", "label": "Tous les sorts d'Arcanelle (touches 5 à 0, V pour lancer)"},
+		{"id": "h_tout", "label": "Tout d'un coup (et les armes, les outils, la forge)"},
+		{"id": "menu", "label": "(Retour)"},
+	]
+	main.ask_v69(_anchor, "Mode testeur", "malin", "Le héros", ch, _pick)
+
+
+## V123 : les armes, les outils, la forge, l'Alouette.
+func _menu_armes() -> void:
+	var ch: Array = [
+		{"id": "a_armes", "label": "Toutes les armes (à choisir dans le sac : I)"},
+		{"id": "a_outils", "label": "Tous les outils (masque, palmes, boussoles, sifflet, pelle…)"},
+		{"id": "a_forge", "label": "Forge au maximum (lame runique, armure runique)"},
+		{"id": "a_alouette", "label": "L'Alouette au dernier niveau"},
+		{"id": "menu", "label": "(Retour)"},
+	]
+	main.ask_v69(_anchor, "Mode testeur", "malin", "Armes, outils et forge", ch, _pick)
+
+
+func _consts(n: Object) -> Dictionary:
+	if n == null or n.get_script() == null:
+		return {}
+	return (n.get_script() as Script).get_script_constant_map()
+
+
+func _level_up(to_max: bool) -> void:
+	var pr: Node = main.get("progression_v63")
+	if pr == null:
+		return
+	var mx: int = int(_consts(pr).get("MAX_LEVEL", 30))
+	pr.set("_retro", true)
+	var guard: int = 0
+	while int(pr.level) < mx and guard < 40:
+		guard += 1
+		pr.gain(maxi(1, int(pr.need(int(pr.level))) - int(pr.xp)), "testeur")
+		if not to_max:
+			break
+	pr.set("_retro", false)
+	var j: Node = main.get("journal_v56")
+	if j != null:
+		j.apply_bonuses()
+
+
+func _all_stats() -> void:
+	var pr: Node = main.get("progression_v63")
+	if pr == null:
+		return
+	var c: Dictionary = _consts(pr)
+	for s in c.get("STATS", []):
+		pr.stats[str(s)] = int(c.get("STAT_MAX", 6))
+	pr.apply()
+
+
+func _all_talents() -> void:
+	var pr: Node = main.get("progression_v63")
+	if pr == null:
+		return
+	for t in _consts(pr).get("TALENTS", []):
+		pr.talents[str(t["id"])] = true
+	pr.apply()
+
+
+func _all_seals() -> void:
+	var pr: Node = main.get("progression_v63")
+	if pr == null:
+		return
+	for s in _consts(pr).get("SEAL_ORDER", []):
+		pr.give_seal(str(s))
+
+
+func _all_spells() -> void:
+	var so: Node = main.get("sorts_v67")
+	if so == null:
+		return
+	for s in _consts(so).get("ORDRE", []):
+		so.learn(str(s))
+	so.mana = float(so.mana_max())
+
+
+## Toutes les armes (kind "arme") ou tous les outils (kind "outil", "canne") qu'on ne possède qu'en un exemplaire.
+func _give_kind(kinds: Array) -> int:
+	var inv: Node = main.get("inventory_v28")
+	if inv == null:
+		return 0
+	var n: int = 0
+	var items: Dictionary = _consts(inv).get("ITEMS", {})
+	for id in items:
+		var it: Dictionary = items[id]
+		if kinds.has(str(it.get("kind", ""))) and int(it.get("max", 1)) == 1 and int(inv.count(str(id))) == 0:
+			inv.add(str(id), 1)
+			n += 1
+	return n
+
+
+func _max_forge() -> void:
+	var pr: Node = main.get("progression_v63")
+	if pr == null:
+		return
+	var c: Dictionary = _consts(pr)
+	pr.forge["arme"] = (c.get("FORGE_ARME", [0]) as Array).size() - 1
+	pr.forge["armure"] = (c.get("FORGE_ARMURE", [0]) as Array).size() - 1
+	pr.apply()
+
+
+func _fill_all() -> void:
+	var h: Node = main.get("hero_v28")
+	if h != null:
+		h.heal(999)
+		h.stamina = float(h.STAMINA_MAX)
+		h.stamina_lock = false
+	var mer: Node = main.get("mer_v55")
+	if mer != null:
+		mer.air = float(mer.AIR_MAX)
+	var so: Node = main.get("sorts_v67")
+	if so != null:
+		so.mana = float(so.mana_max())
+
+
+func _done(text: String, back: Callable) -> void:
+	main._show_message_v28("Mode testeur : " + text)
+	if main.has_method("sfx"):
+		main.sfx("ui_quete")
+	back.call()
+
+
 func _pick(id: String) -> void:
 	match id:
+		"voyage":
+			_menu_voyage()
+		"heros":
+			_menu_heros()
+		"armes_menu":
+			_menu_armes()
+		"remplir":
+			_fill_all()
+			_done("cœurs, endurance, air et magie au maximum.", open_menu)
+		"h_niv1":
+			_level_up(false)
+			_done("niveau %d." % int(main.progression_v63.level), _menu_heros)
+		"h_nivmax":
+			_level_up(true)
+			_done("niveau %d (endurance %d, %d s sous l'eau)." % [int(main.progression_v63.level), int(main.hero_v28.STAMINA_MAX), int(main.mer_v55.AIR_MAX)], _menu_heros)
+		"h_stats":
+			_all_stats()
+			_done("caractéristiques au maximum.", _menu_heros)
+		"h_talents":
+			_all_talents()
+			_done("tous les talents sont appris.", _menu_heros)
+		"h_sceaux":
+			_all_seals()
+			_done("les quatre sceaux : Bourrasque (1), Flamme (2), Rouage (3), Lueur de lune (4).", _menu_heros)
+		"h_sorts":
+			_all_spells()
+			_done("tous les sorts : Lumière (5), Boule de feu (6), Gel (7), Lévitation (8), Télékinésie (9), Soin (0) ; V pour lancer.", _menu_heros)
+		"h_tout":
+			_level_up(true)
+			_all_stats()
+			_all_seals()
+			_all_talents()
+			_all_spells()
+			_give_kind(["arme"])
+			_give_kind(["outil", "canne"])
+			_max_forge()
+			_fill_all()
+			_done("tout est débloqué : niveau max, talents, sceaux, sorts, armes, outils, forge.", open_menu)
+		"a_armes":
+			var na: int = _give_kind(["arme"])
+			_done("%d arme(s) ajoutée(s) au sac (I pour en choisir une)." % na, _menu_armes)
+		"a_outils":
+			var no: int = _give_kind(["outil", "canne"])
+			_done("%d outil(s) ajouté(s) au sac." % no, _menu_armes)
+		"a_forge":
+			_max_forge()
+			_done("lame runique et armure runique.", _menu_armes)
+		"a_alouette":
+			var ae: Node = main.get("aeronef_v76")
+			if ae != null:
+				ae.set_level(4, false)
+			_done("l'Alouette est au dernier niveau.", _menu_armes)
 		"iles":
 			_open_list("iles", _islands(), 0)
 		"lieux":

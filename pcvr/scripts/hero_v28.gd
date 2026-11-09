@@ -19,7 +19,7 @@ const ROLL_SPEED: float = 6.2
 const ROLL_TIME: float = 0.62
 const COYOTE: float = 0.14
 const JUMP_BUFFER: float = 0.16
-var STAMINA_MAX: float = 10.0          # V56 : + endurance gagnée en aidant les gens
+var STAMINA_MAX: float = 16.0          # V56 : + endurance gagnée en aidant les gens ; V123 : + le niveau
 var HP_MAX: int = 10                    # 5 cœurs, par demi-cœurs (V56 : + cœurs gagnés)
 var HEARTS: int = 5
 var bonus_force: int = 0                # V56 : + force (quêtes de Port-Azur)
@@ -95,6 +95,12 @@ var combo_queued: bool = false
 var hits_pending: Array = []            # instants (dans l'animation en cours) des coups à porter
 var attack_clock: float = 0.0
 var cam_distance: float = 1.0
+var cam_pitch: float = 0.0              # V123 : -1 = regard levé vers le ciel, +1 = vue plongeante
+
+
+## V123 : pas de réglage de la hauteur du regard pendant un dialogue (plan fixe de côté).
+func talking_free() -> bool:
+	return main == null or main.get("talking_npc_v31") == null
 var _indoor_k: float = 0.0                # V77 : 0 dehors, 1 sous un plafond (caméra rapprochée)
 var current_anim: String = ""
 var ko_time: float = 0.0
@@ -526,7 +532,8 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 	elif blocking:
 		move = dir * 1.2
 	if sprint and state == "sol" and on_floor:
-		_spend(1.6 * delta * (0.5 if talents.has("pas_du_vent") else 1.0))
+		# V123 : courir fatigue un peu moins (la carte est grande)
+		_spend(1.2 * delta * (0.5 if talents.has("pas_du_vent") else 1.0))
 	if dir.length() > 0.1 and state in ["sol", "air"] and not blocking:
 		facing = dir
 	# V63 : clic tenu après un coup d'arme : la lame se charge
@@ -1342,7 +1349,8 @@ func _spend(amount: float) -> void:
 func _regen(delta: float) -> void:
 	var resting: bool = state in ["sol", "action"] and body.is_on_floor() and not (Input.is_key_pressed(KEY_SHIFT) and _axis().length() > 0.1)
 	if resting:
-		stamina = minf(stamina + 2.6 * (1.0 + 0.08 * agilite) * delta, STAMINA_MAX)
+		# V123 : la recharge suit l'endurance maximale (une jauge vide se remplit toujours en ~4 s)
+		stamina = minf(stamina + 0.26 * maxf(STAMINA_MAX, 10.0) * (1.0 + 0.08 * agilite) * delta, STAMINA_MAX)
 	if stamina_lock and stamina >= STAMINA_MAX * 0.35:
 		stamina_lock = false
 
@@ -1593,7 +1601,12 @@ func _update_camera() -> void:
 	if camera == null or not camera.current:
 		return
 	var pivot: Vector3 = root.global_position + Vector3.UP * 1.5
-	var wanted: Vector3 = root.global_transform * (Vector3(0, 2.5, 5.0) * cam_distance + Vector3(0, 1.5 * (1.0 - cam_distance), 0))
+	# V123 : la hauteur du regard (clic droit + souris haut/bas) : la caméra tourne autour du héros,
+	# de presque à ras du sol (on lève les yeux vers le ciel) jusqu'à une vue plongeante.
+	var e0: float = atan2(2.5, 5.0)
+	var pk: float = cam_pitch if talking_free() else 0.0
+	var e: float = e0 + (pk * 0.6 if pk > 0.0 else pk * (e0 - 0.09))
+	var wanted: Vector3 = root.global_transform * (Vector3(0, sin(e), cos(e)) * 5.59 * cam_distance + Vector3(0, 1.5 * (1.0 - cam_distance), 0))
 	# V31 : pendant un dialogue, plan de côté qui montre les deux personnages.
 	var npc: Node3D = main.talking_npc_v31 if main.get("talking_npc_v31") != null else null
 	if npc != null:
@@ -1638,6 +1651,10 @@ func _update_camera() -> void:
 			place += Vector3.UP * lift
 	camera.global_position = place
 	var look: Vector3 = root.global_position + Vector3.UP * 1.2
+	# V123 : regard levé : on vise au-dessus du héros (jusqu'à ~50° vers le ciel)
+	if pk < 0.0:
+		var hd: float = Vector2(place.x - look.x, place.z - look.z).length()
+		look += Vector3.UP * (-pk) * maxf(hd, 1.5) * 1.25 * (1.0 - 0.6 * _indoor_k)
 	if npc == null and _indoor_k > 0.0 and _in_house():
 		# V84 : on regarde la pièce devant le héros, pas l'arrière de sa tête
 		var ahead: Vector3 = -root.global_basis.z

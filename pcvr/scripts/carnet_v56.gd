@@ -860,8 +860,12 @@ func _hero_stats_text(title: bool = false) -> String:
 		var bo: Dictionary = j.bonus
 		var hp_max: int = 10 + 2 * int(bo["coeur"])
 		s += "[b]Cœurs :[/b] %d  [color=#9aa7b0](dont +%d gagnés en aidant les gens)[/color]\n" % [hp_max / 2, int(bo["coeur"])]
-		s += "[b]Endurance :[/b] %d  [color=#9aa7b0](+%d)[/color]\n" % [10 + 3 * int(bo["endurance"]), int(bo["endurance"])]
-		s += "[b]Souffle sous l'eau sans masque :[/b] %d secondes  [color=#9aa7b0](+%d)[/color]\n" % [18 + 7 * int(bo["souffle"]), int(bo["souffle"])]
+		# V123 : les valeurs réelles (elles grandissent aussi avec le niveau)
+		var st_max: float = float(hero.STAMINA_MAX) if hero != null else 16.0
+		var mer: Node = main.get("mer_v55")
+		var air_max: float = float(mer.AIR_MAX) if mer != null else 25.0
+		s += "[b]Endurance :[/b] %d  [color=#9aa7b0](+%d gagnés en aidant les gens ; elle grandit avec le niveau)[/color]\n" % [int(round(st_max)), int(bo["endurance"])]
+		s += "[b]Souffle sous l'eau sans masque :[/b] %d secondes  [color=#9aa7b0](+%d ; il grandit avec le niveau)[/color]\n" % [int(round(air_max)), int(bo["souffle"])]
 		s += "[b]Force :[/b] +%d aux dégâts\n\n" % int(bo["force"])
 		var lvl: Array = j.rep_level()
 		var nxt: int = j.rep_next()

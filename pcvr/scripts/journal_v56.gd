@@ -1930,23 +1930,41 @@ func dig_spots() -> Array:
 
 # =================================================================== bonus
 
+## V123 : l'endurance de base selon le niveau (16 au niveau 1, 45 au niveau 30).
+static func stamina_max_for(lv: int) -> float:
+	return 16.0 + 1.0 * float(maxi(lv, 1) - 1)
+
+
+## V123 : le temps sous l'eau sans masque selon le niveau (25 s au niveau 1, 1 min 37 au niveau 30).
+static func air_max_for(lv: int) -> float:
+	return 25.0 + 2.5 * float(maxi(lv, 1) - 1)
+
+
 func apply_bonuses() -> void:
 	if main == null:
 		return
 	var hero: Node = main.get("hero_v28")
 	# V63 : les points de caractéristique de la progression s'ajoutent aux bonus des quêtes
 	var pr: Node = main.get("progression_v63")
+	# V123 : l'endurance et le souffle grandissent avec le niveau
+	var lv: int = int(pr.level) if pr != null else 1
 	if hero != null:
 		var hp_max: int = 10 + 2 * (int(bonus["coeur"]) + (int(pr.extra("coeur")) if pr != null else 0))
 		if int(hero.HP_MAX) != hp_max:
 			hero.set_max_hearts(hp_max)
-		hero.STAMINA_MAX = 10.0 + 3.0 * float(bonus["endurance"]) + (float(pr.extra("endurance")) if pr != null else 0.0)
+		var was_full: bool = float(hero.stamina) >= float(hero.STAMINA_MAX) - 0.01
+		hero.STAMINA_MAX = stamina_max_for(lv) + 3.0 * float(bonus["endurance"]) + (float(pr.extra("endurance")) if pr != null else 0.0)
+		if was_full:
+			hero.stamina = hero.STAMINA_MAX
 		hero.bonus_force = int(bonus["force"]) + (int(pr.extra("force")) if pr != null else 0)
 		if pr != null:
 			pr.apply_hero()
 	var mer: Node = main.get("mer_v55")
 	if mer != null:
-		mer.AIR_MAX = 18.0 + 7.0 * float(bonus["souffle"])
+		var air_full: bool = float(mer.air) >= float(mer.AIR_MAX) - 0.01
+		mer.AIR_MAX = air_max_for(lv) + 7.0 * float(bonus["souffle"])
+		if air_full:
+			mer.air = mer.AIR_MAX
 	# les réductions chez les commerçants
 	var r := remises.duplicate()
 	r["azur"] = float(rep_level()[2])

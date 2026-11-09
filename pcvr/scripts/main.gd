@@ -1760,6 +1760,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_restart_xr()
 	if not xr_active and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		pc_root.rotate_y(-event.relative.x * 0.005)
+		# V123 : souris vers le haut / le bas (clic droit tenu) : on lève ou on baisse le regard
+		if hero_v28 != null:
+			hero_v28.cam_pitch = clampf(float(hero_v28.cam_pitch) + event.relative.y * 0.004, -1.0, 1.0)
 
 func _hero_foot_offset_v11() -> float:
 	if pc_hero == null:

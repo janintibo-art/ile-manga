@@ -20,7 +20,7 @@ const AtlScript = preload("res://scripts/atlantide_v55.gd")
 const VieScript = preload("res://scripts/vie_marine_v55.gd")
 const SEA_Y: float = -0.42
 const SWIM_ENTER: float = 1.3            # profondeur d'eau au-delà de laquelle on nage
-var AIR_MAX: float = 18.0               # V56 : + souffle gagné en aidant les gens
+var AIR_MAX: float = 25.0               # V56 : + souffle gagné en aidant les gens ; V123 : + le niveau
 const DROWN_TICK: float = 1.5
 const SPEED: float = 2.3
 const SPEED_SUB: float = 2.9
@@ -72,6 +72,7 @@ var _overlay: CanvasLayer
 var _air_box: HBoxContainer
 var _air_icons: Array = []
 var _air_vr: Label3D
+var _air_ring: Control                   # V123 : la grande jauge ronde
 var _mask_node: Node3D
 var _tips: Dictionary = {}
 
@@ -145,6 +146,8 @@ func water_ok(p: Vector3) -> bool:
 func should_swim(feet: Vector3) -> bool:
 	if feet.y < -40.0 or feet.y > SEA_Y - 0.9:
 		return false
+	if Time.get_ticks_msec() < _leap_until:
+		return false
 	if atl != null and atl.in_dome(feet + Vector3.UP * 0.9):
 		return false
 	return SEA_Y - main._height_at(feet.x, feet.z) > SWIM_ENTER
@@ -185,7 +188,7 @@ func start_swim_pc(h: Node) -> void:
 		splash(Vector3(p.x, SEA_Y, p.z), 0.6)
 	if main.fishing_v32 != null:
 		main.fishing_v32.cancel("")
-	_tip("nage", "Tu nages ! Espace : remonter, Ctrl : plonger, Maj : nager vite. Face à un ponton ou un rocher, Espace pour te hisser.", 6.0)
+	_tip("nage", "Tu nages ! Espace : remonter (à la surface : bondir hors de l'eau), Ctrl : plonger, Maj : nager vite. Face à un ponton ou un rocher, Espace pour te hisser.", 7.0)
 
 
 func _leave_swim_pc(h: Node) -> void:
@@ -220,6 +223,9 @@ func swim_pc(h: Node, delta: float, dir: Vector3) -> void:
 			_leave_swim_pc(h)
 			h._start_mantle(ledge)
 			return
+		# V123 : sinon, un bond hors de l'eau (comme un dauphin)
+		_leap_pc(h, dir)
+		return
 	var target: Vector3 = _swim_target(feet, dir, up_in, down_in, sprint)
 	_vel = _vel.lerp(target, 1.0 - exp(-delta * 3.2)) + _push
 	_push = _push.lerp(Vector3.ZERO, clampf(delta * 4.0, 0.0, 1.0))
@@ -232,6 +238,29 @@ func swim_pc(h: Node, delta: float, dir: Vector3) -> void:
 	_attack_tick(h, delta)
 	_strokes(delta, body.global_position)
 	_breath(delta, body.global_position + Vector3.UP * (0.95 + 0.62 * cos(_pitch)))
+
+
+## V123 : le bond hors de l'eau (Espace à la surface). Les pieds sortent d'environ 1 m ; on retombe
+## dans un plongeon (ou sur la rive, si on a sauté vers elle).
+const LEAP_SPEED: float = 9.6
+var leaps: int = 0
+var _leap_until: int = 0
+
+
+func _leap_pc(h: Node, dir: Vector3) -> void:
+	var body: CharacterBody3D = h.body
+	h.jump_buffer = 0.0
+	var p: Vector3 = body.global_position
+	_leave_swim_pc(h)
+	h.state = "air"
+	h.coyote = 0.0
+	body.velocity = Vector3(dir.x * 2.0, LEAP_SPEED * (1.08 if has_fins() else 1.0), dir.z * 2.0)
+	h.fall_top = p.y
+	_leap_until = Time.get_ticks_msec() + 450
+	leaps += 1
+	h._play("v28/jump", 0.05, 1.0, 0.0)
+	main.sfx("plongeon", Vector3(p.x, SEA_Y, p.z), -3.0)
+	splash(Vector3(p.x, SEA_Y, p.z), 1.0)
 
 
 func _swim_target(feet: Vector3, dir: Vector3, up_in: bool, down_in: bool, sprint: bool) -> Vector3:
@@ -468,7 +497,7 @@ func _breath(delta: float, head: Vector3) -> void:
 	else:
 		if not head_under and _head_was_under and air < AIR_MAX * 0.6:
 			main.sfx("respiration", head, -6.0)
-		air = minf(air + delta * 8.0, AIR_MAX)
+		air = minf(air + delta * maxf(12.0, AIR_MAX * 0.5), AIR_MAX)
 		_drown = 0.0
 	if head_under and has_mask() and head.y < SEA_Y - 0.8:
 		_tip("masque", "Le masque des Rois-Ciel : tu respires sous l'eau ! Explore les profondeurs… au sud-ouest du village, une lumière brille au fond.", 6.0)
@@ -689,21 +718,35 @@ void fragment() {
 	_overlay.add_child(rect)
 	_overlay.visible = false
 	add_child(_overlay)
-	# Les bulles d'air (PC : sous les cœurs ; VR : sous le regard)
+	# Les bulles d'air (PC : V123, à gauche du personnage, sous une grande jauge ronde — avant, elles
+	# étaient cachées sous le niveau en haut à droite ; VR : sous le regard)
 	if main.get("hud_v28") != null and main.hud_v28 != null:
+		_air_ring = Control.new()
+		_air_ring.name = "Air_jauge_v123"
+		_air_ring.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		_air_ring.offset_left = -190.0
+		_air_ring.offset_top = -130.0
+		_air_ring.offset_right = -90.0
+		_air_ring.offset_bottom = -30.0
+		_air_ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_air_ring.draw.connect(_draw_air_ring)
+		_air_ring.visible = false
+		main.hud_v28.add_child(_air_ring)
 		_air_box = HBoxContainer.new()
 		_air_box.name = "Air_v55"
 		_air_box.add_theme_constant_override("separation", 0)
-		_air_box.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-		_air_box.offset_left = -20.0 - 9 * 26.0
-		_air_box.offset_right = -20.0
-		_air_box.offset_top = 60.0
-		_air_box.offset_bottom = 86.0
+		_air_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_air_box.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		_air_box.offset_left = -230.0
+		_air_box.offset_right = -230.0 + 9 * 20.0
+		_air_box.offset_top = 0.0
+		_air_box.offset_bottom = 20.0
 		var tex: Texture2D = load("res://assets/textures/mer/bulle.png") if ResourceLoader.exists("res://assets/textures/mer/bulle.png") else null
 		for i3 in range(9):
 			var tr := TextureRect.new()
 			tr.texture = tex
-			tr.custom_minimum_size = Vector2(26, 26)
+			tr.custom_minimum_size = Vector2(20, 20)
+			tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			_air_box.add_child(tr)
@@ -864,17 +907,48 @@ func _update_fx(cam: Camera3D, delta: float) -> void:
 
 
 func _update_air_hud() -> void:
-	var show: bool = air < AIR_MAX - 0.05
+	# V123 : la jauge s'affiche dès que la tête est sous l'eau (même pleine), et tant qu'elle remonte
+	var show: bool = (air < AIR_MAX - 0.05 or _head_was_under) and not has_mask() and bool(main.game_started)
+	var low: bool = air < AIR_MAX * 0.3
 	if _air_box != null:
 		_air_box.visible = show and not bool(main.xr_active)
 		var n: int = int(ceil(air / AIR_MAX * _air_icons.size()))
 		for i in range(_air_icons.size()):
 			(_air_icons[i] as TextureRect).modulate = Color(1, 1, 1, 1.0 if i < n else 0.15)
+	if _air_ring != null:
+		_air_ring.visible = show and not bool(main.xr_active)
+		if _air_ring.visible:
+			_air_ring.queue_redraw()
 	if _air_vr != null:
 		_air_vr.visible = show and bool(main.xr_active)
 		if _air_vr.visible:
 			var k: int = int(ceil(air / AIR_MAX * 9.0))
-			_air_vr.text = "Air  " + "●".repeat(k) + "○".repeat(9 - k)
+			_air_vr.text = ("REMONTE !  " if low else "") + "Air %d s  " % int(ceil(air)) + "●".repeat(k) + "○".repeat(9 - k)
+			_air_vr.modulate = Color(1.0, 0.45, 0.35) if low else Color(0.8, 0.95, 1.0)
+
+
+## V123 : la grande jauge d'air ronde (bleue, puis rouge et clignotante quand il faut remonter).
+func _draw_air_ring() -> void:
+	var c := Vector2(50, 50)
+	var ratio: float = clampf(air / maxf(AIR_MAX, 0.1), 0.0, 1.0)
+	var low: bool = ratio < 0.3
+	var blink: float = 0.55 + 0.45 * sin(float(Time.get_ticks_msec()) * 0.012) if low else 1.0
+	_air_ring.draw_circle(c, 40.0, Color(0, 0.05, 0.1, 0.35))
+	_air_ring.draw_arc(c, 34.0, 0.0, TAU, 64, Color(0, 0, 0, 0.5), 11.0, true)
+	var col := Color(1.0, 0.3, 0.22, blink) if low else Color(0.45, 0.8, 1.0)
+	if ratio > 0.0:
+		_air_ring.draw_arc(c, 34.0, -PI * 0.5, -PI * 0.5 + TAU * ratio, 64, col, 9.0, true)
+	var f: Font = ThemeDB.fallback_font
+	var t1: String = "AIR"
+	var t2: String = "%d s" % int(ceil(air))
+	_air_ring.draw_string_outline(f, Vector2(0, 44), t1, HORIZONTAL_ALIGNMENT_CENTER, 100.0, 15, 4, Color(0, 0, 0, 0.8))
+	_air_ring.draw_string(f, Vector2(0, 44), t1, HORIZONTAL_ALIGNMENT_CENTER, 100.0, 15, Color(0.8, 0.93, 1.0))
+	_air_ring.draw_string_outline(f, Vector2(0, 66), t2, HORIZONTAL_ALIGNMENT_CENTER, 100.0, 20, 4, Color(0, 0, 0, 0.8))
+	_air_ring.draw_string(f, Vector2(0, 66), t2, HORIZONTAL_ALIGNMENT_CENTER, 100.0, 20, col if low else Color(1, 1, 1))
+	if low:
+		var t3: String = "REMONTE !"
+		_air_ring.draw_string_outline(f, Vector2(-20, 104), t3, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 18, 5, Color(0, 0, 0, 0.85))
+		_air_ring.draw_string(f, Vector2(-20, 104), t3, HORIZONTAL_ALIGNMENT_CENTER, 140.0, 18, Color(1.0, 0.45, 0.35, blink))
 
 
 func _tip(key: String, text: String, seconds: float) -> void:
@@ -1063,7 +1137,7 @@ func _physics_process(delta: float) -> void:
 		if hero != null:
 			hero.fall_top = feet.y
 	if not swimming:
-		air = minf(air + delta * 8.0, AIR_MAX)
+		air = minf(air + delta * maxf(12.0, AIR_MAX * 0.5), AIR_MAX)
 		_head_was_under = false
 	_update_air_hud()
 	# La quête : la reine a reçu les trois perles

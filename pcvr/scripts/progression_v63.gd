@@ -184,6 +184,10 @@ func gain(amount: int, why: String = "", at: Variant = null) -> void:
 		xp = 0
 	if ups > 0:
 		_level_up_fx()
+		# V123 : l'endurance et le souffle grandissent avec le niveau
+		var j: Node = main.get("journal_v56") if main != null else null
+		if j != null:
+			j.apply_bonuses()
 	_refresh_hud()
 	changed.emit()
 
