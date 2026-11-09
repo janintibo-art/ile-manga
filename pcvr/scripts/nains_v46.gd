@@ -232,6 +232,44 @@ func _ground(x: float, z: float) -> float:
 	return ile.height(x, z)
 
 
+## V122 : un dallage rond qui suit le relief, 8 cm au-dessus du sol, avec un rebord qui descend
+## dans la terre (repère local de « root », déjà placé dans l'arbre).
+func _dallage(root: Node3D, rad: float) -> void:
+	var rings: int = int(ceil(rad / 0.8))
+	var segs: int = 96
+	var pts: Array = []                      # pts[r][s], r = 0 au centre, rings + 1 = le rebord enterré
+	for r in range(rings + 2):
+		var row: Array = []
+		var rr: float = minf(r * 0.8, rad) if r <= rings else rad + 0.35
+		for s in range(segs):
+			var a: float = TAU * s / segs
+			var w: Vector3 = root.to_global(Vector3(cos(a) * rr, 0.0, sin(a) * rr))
+			w.y = _ground(w.x, w.z) + (0.08 if r <= rings else -0.3)
+			row.append(root.to_local(w))
+		pts.append(row)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for r in range(rings + 1):
+		for s in range(segs):
+			var s2: int = (s + 1) % segs
+			_tri_up(st, pts[r][s], pts[r + 1][s], pts[r + 1][s2])
+			if r > 0:
+				_tri_up(st, pts[r][s], pts[r + 1][s2], pts[r][s2])
+	st.generate_normals()
+	_mesh(root, st.commit(), _mat("dalle"), Vector3.ZERO)
+
+
+## Un triangle tourné vers le haut (Godot : faces avant dans le sens des aiguilles d'une montre).
+func _tri_up(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3) -> void:
+	if (b - a).cross(c - a).y > 0.0:
+		var t: Vector3 = b
+		b = c
+		c = t
+	st.add_vertex(a)
+	st.add_vertex(b)
+	st.add_vertex(c)
+
+
 ## Fumée grise qui monte (cheminées, cratère).
 func _smoke(parent: Node3D, pos: Vector3, size: float, amount: int, spread: float, rise: float) -> CPUParticles3D:
 	var p := CPUParticles3D.new()
@@ -443,8 +481,9 @@ func _build_forgefer() -> void:
 	root.rotation.y = atan2(to_sea.x, to_sea.z)        # +Z local vers la mer
 	forge_root = root
 	var stone: Material = _mat("pierre")
-	# Dallage de la terrasse
-	_mesh(root, _cyl(ile.TERRACE_SIZE - 1.0, ile.TERRACE_SIZE - 0.6, 0.3, 40), _mat("dalle"), Vector3(0, 0.0, 0))
+	# Dallage de la terrasse. V122 : il épouse le sol (la rampe du ponton monte jusqu'au milieu de
+	# la terrasse) ; l'ancien disque plat flottait au-dessus et l'on s'enfonçait dedans près de Brunna.
+	_dallage(root, ile.TERRACE_SIZE - 1.0)
 	# La porte monumentale, adossée à la montagne (au fond de la terrasse, -Z local)
 	var gz: float = -ile.TERRACE_SIZE + 2.5
 	var facade := Node3D.new()

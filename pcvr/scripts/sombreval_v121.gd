@@ -367,8 +367,15 @@ func _lot(r: Array, floors: int, q: String, face: Vector2) -> void:
 	var hf: float = floors * 3.2 + 0.4
 	var keep: int = maxi(1, floors - (_rng.randi_range(0, 2) if _rng.randf() < 0.7 else 0))
 	var hm: float = keep * 3.2 + 0.4
-	_boite_rect(x0, z0, x1, z1, Y0 - 1.0, Y0 + hm, mat, ivy, tint)
-	batiments.append({"rect": [x0, z0, x1, z1], "h": hm, "quartier": q, "ruine": "casse" if keep < floors else "entier"})
+	# V122 : près d'un immeuble sur deux, le rez-de-chaussée est ouvert : on y entre par la porte
+	# défoncée (une pièce sombre, des meubles renversés, des gravats ; parfois une bougie)
+	var ouvert: bool = w >= 6.0 and dpt >= 6.0 and _rng.randf() < 0.5
+	if ouvert:
+		_rez_ouvert(x0, z0, x1, z1, face, mat, ivy, tint)
+		_boite_rect(x0, z0, x1, z1, Y0 + 3.3, Y0 + hm, mat, ivy, tint)
+	else:
+		_boite_rect(x0, z0, x1, z1, Y0 - 1.0, Y0 + hm, mat, ivy, tint)
+	batiments.append({"rect": [x0, z0, x1, z1], "h": hm, "quartier": q, "ruine": "casse" if keep < floors else "entier", "ouvert": ouvert})
 	var top: float = Y0 + hm
 	if keep < floors:
 		# le haut est cassé : des pans de façade, un coin de poteau, une dalle qui pend
@@ -408,13 +415,15 @@ func _lot(r: Array, floors: int, q: String, face: Vector2) -> void:
 		if _rng.randf() < 0.3:
 			tree_spots.append(IleScript.W(cx - w * 0.2, cz + dpt * 0.2, top))
 	# des fenêtres du bas murées de planches, une porte d'entrée défoncée : seulement des détails
-	if _rng.randf() < 0.25 and q != "port":
+	if _rng.randf() < 0.25 and q != "port" and not ouvert:
 		var bp: Vector3 = IleScript.W(cx + face.x * (w * 0.5 + 0.06), cz + face.y * (dpt * 0.5 + 0.06), Y0)
 		_det.box("bois_pourri", Transform3D(Basis(Vector3.UP, atan2(face.x, face.y)), bp + Vector3.UP * 1.2), Vector3(1.4, 2.2, 0.06))
 	# du lierre qui pend du haut de la façade sur la rue
 	if _rng.randf() < 0.45 + ivy * 0.4:
 		for k2 in range(_rng.randi_range(1, 3)):
 			var along2: float = _rng.randf_range(-0.4, 0.4)
+			if ouvert and absf(along2) < 0.25:
+				along2 = 0.3 if along2 >= 0.0 else -0.3
 			var p: Vector3
 			if absf(face.y) > 0.5:
 				p = IleScript.W(cx + along2 * w, cz + face.y * (dpt * 0.5 + 0.08), 0.0)
@@ -425,6 +434,158 @@ func _lot(r: Array, floors: int, q: String, face: Vector2) -> void:
 			var y_top: float = Y0 + hm if _rng.randf() < 0.6 else Y0 + hh
 			p.y = y_top - hh * 0.5
 			_ivy.append(Transform3D(Basis(Vector3.UP, atan2(face.x, face.y)).scaled(Vector3(ww, hh, 1.0)), p))
+
+
+## V122 : un rez-de-chaussée ouvert (repère île) : quatre murs, la porte défoncée sur la rue (et
+## parfois une autre sur la cour), le plafond porté par l'étage ; dedans, le désordre d'une
+## maison abandonnée en hâte.
+const MUR_EP: float = 0.35
+const PORTE_L: float = 1.8
+const PORTE_H: float = 2.5
+const PLAFOND: float = 3.3
+var portes: Array = []                    # V122 : le seuil des rez-de-chaussée ouverts (monde)
+var _bougies: int = 0
+
+func _rez_ouvert(x0: float, z0: float, x1: float, z1: float, face: Vector2, mat: float, ivy: float, tint: float) -> void:
+	var yb: float = Y0 - 1.0
+	var yt: float = Y0 + PLAFOND
+	var t: float = MUR_EP
+	var back: bool = _rng.randf() < 0.5
+	# le lierre ne pousse pas dedans : les murs du rez-de-chaussée en ont peu
+	ivy *= 0.2
+	# les murs le long de x (nord, sud) puis le long de z (ouest, est) ; ouverts sur la rue (face)
+	for side in [-1, 1]:
+		var zf: float = z0 if side < 0 else z1 - t
+		var porte_z: bool = (absf(face.y) > 0.5 and int(signf(face.y)) == side) or (back and absf(face.y) > 0.5 and int(signf(face.y)) == -side)
+		if porte_z:
+			var dc: float = (x0 + x1) * 0.5 + (_rng.randf_range(-1.0, 1.0) if int(signf(face.y)) != side else 0.0)
+			_boite_rect(x0, zf, dc - PORTE_L * 0.5, zf + t, yb, yt, mat, ivy, tint)
+			_boite_rect(dc + PORTE_L * 0.5, zf, x1, zf + t, yb, yt, mat, ivy, tint)
+			_boite_rect(dc - PORTE_L * 0.5, zf, dc + PORTE_L * 0.5, zf + t, Y0 + PORTE_H, yt, mat, ivy * 0.5, tint)
+			portes.append(IleScript.W(dc, zf + t * 0.5 + side * 0.8, ile.height(IleScript.W(dc, zf).x, IleScript.W(dc, zf).z)))
+		else:
+			_boite_rect(x0, zf, x1, zf + t, yb, yt, mat, ivy, tint)
+	for side2 in [-1, 1]:
+		var xf: float = x0 if side2 < 0 else x1 - t
+		var porte_x: bool = (absf(face.x) > 0.5 and int(signf(face.x)) == side2) or (back and absf(face.x) > 0.5 and int(signf(face.x)) == -side2)
+		if porte_x:
+			var dc2: float = (z0 + z1) * 0.5 + (_rng.randf_range(-1.0, 1.0) if int(signf(face.x)) != side2 else 0.0)
+			_boite_rect(xf, z0 + t, xf + t, dc2 - PORTE_L * 0.5, yb, yt, mat, ivy, tint)
+			_boite_rect(xf, dc2 + PORTE_L * 0.5, xf + t, z1 - t, yb, yt, mat, ivy, tint)
+			_boite_rect(xf, dc2 - PORTE_L * 0.5, xf + t, dc2 + PORTE_L * 0.5, Y0 + PORTE_H, yt, mat, ivy * 0.5, tint)
+			portes.append(IleScript.W(xf + t * 0.5 + side2 * 0.8, dc2, ile.height(IleScript.W(xf, dc2).x, IleScript.W(xf, dc2).z)))
+		else:
+			_boite_rect(xf, z0 + t, xf + t, z1 - t, yb, yt, mat, ivy, tint)
+	# le chambranle arraché qui pend, la porte elle-même par terre
+	var cx: float = (x0 + x1) * 0.5
+	var cz: float = (z0 + z1) * 0.5
+	var fw: Vector3 = IleScript.W(cx + face.x * ((x1 - x0) * 0.5 - 1.4), cz + face.y * ((z1 - z0) * 0.5 - 1.4), 0.0)
+	fw.y = ile.height(fw.x, fw.z) + 0.05
+	_det.box("bois_pourri", Transform3D(Basis(Vector3.UP, atan2(face.x, face.y) + _rng.randf_range(-0.5, 0.5)), fw), Vector3(0.95, 0.06, 2.05))
+	# dedans : le sol couvert de carreaux cassés et de plâtre tombé du plafond
+	var ix0: float = x0 + t + 0.2
+	var iz0: float = z0 + t + 0.2
+	var ix1: float = x1 - t - 0.2
+	var iz1: float = z1 - t - 0.2
+	# le sol de béton poussiéreux, posé sur le relief (il le suit : on ne s'y enfonce pas), troué par endroits
+	var fx0: float = x0 + t
+	var fz0: float = z0 + t
+	var nx: int = maxi(1, int(ceil((x1 - t - fx0) / 1.2)))
+	var nz: int = maxi(1, int(ceil((z1 - t - fz0) / 1.2)))
+	var sx: float = (x1 - t - fx0) / nx
+	var sz: float = (z1 - t - fz0) / nz
+	for a in range(nx):
+		for b in range(nz):
+			if _rng.randf() < 0.12:
+				continue
+			var cs: Array = []
+			var uvs: Array = []
+			for c in [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]:
+				var wv: Vector3 = IleScript.W(fx0 + (a + c.x) * sx, fz0 + (b + c.y) * sz, 0.0)
+				wv.y = ile.height(wv.x, wv.z) + 0.025
+				cs.append(wv)
+				uvs.append(Vector2(wv.x, wv.z) * 0.35)
+			_det.quad("beton", cs, Vector3.UP, uvs)
+	for k in range(int((ix1 - ix0) * (iz1 - iz0) / 6.0)):
+		var px: float = _rng.randf_range(ix0, ix1)
+		var pz: float = _rng.randf_range(iz0, iz1)
+		var g: Vector3 = _ground(px, pz)
+		_det.box("beton_clair" if _rng.randf() < 0.6 else "beton", Transform3D(Basis(Vector3.UP, _rng.randf() * TAU) * Basis(Vector3.RIGHT, _rng.randf_range(-0.08, 0.08)), g + Vector3.UP * 0.045), Vector3(_rng.randf_range(0.3, 1.1), 0.03, _rng.randf_range(0.3, 0.9)))
+	# un tas de gravats dans un coin (le plafond s'est ouvert au-dessus)
+	var corner := Vector2(ix0 + 1.0 if _rng.randf() < 0.5 else ix1 - 1.0, iz0 + 1.0 if _rng.randf() < 0.5 else iz1 - 1.0)
+	Kit.rubble(_det, _ground(corner.x, corner.y), _rng.randf_range(0.8, 1.4), _rng)
+	# des meubles : une table renversée, des chaises, une armoire tombée, un matelas éventré
+	var spots: Array = []
+	for k2 in range(6):
+		spots.append(Vector2(_rng.randf_range(ix0 + 0.6, ix1 - 0.6), _rng.randf_range(iz0 + 0.6, iz1 - 0.6)))
+	var a0: float = _rng.randf() * TAU
+	var tb: Vector3 = _ground(spots[0].x, spots[0].y)
+	if _rng.randf() < 0.5:
+		# debout, de travers
+		_det.box_at("bois_sombre", tb + Vector3.UP * 0.76, Vector3(1.6, 0.06, 0.9), a0)
+		for lx in [-0.7, 0.7]:
+			for lz in [-0.35, 0.35]:
+				var lp: Vector3 = tb + Basis(Vector3.UP, a0) * Vector3(lx, 0.37, lz)
+				_det.box_at("bois_sombre", lp, Vector3(0.07, 0.74, 0.07), a0)
+		_col(Transform3D(Basis(Vector3.UP, a0), tb + Vector3.UP * 0.4), Vector3(1.6, 0.8, 0.9))
+	else:
+		# renversée sur le côté, les pieds en l'air
+		var bt := Basis(Vector3.UP, a0) * Basis(Vector3.RIGHT, PI * 0.5)
+		_det.box("bois_sombre", Transform3D(bt, tb + Vector3.UP * 0.45), Vector3(1.6, 0.06, 0.9))
+		for lx2 in [-0.7, 0.7]:
+			for lz2 in [0.06, 0.06]:
+				var lp2: Vector3 = tb + Vector3.UP * 0.45 + bt * Vector3(lx2, 0.4, 0.0) + Basis(Vector3.UP, a0) * Vector3(0, 0, lz2)
+				_det.box("bois_sombre", Transform3D(Basis(Vector3.UP, a0), lp2), Vector3(0.07, 0.07, 0.74))
+		_col(Transform3D(Basis(Vector3.UP, a0), tb + Vector3.UP * 0.45), Vector3(1.6, 0.9, 0.3))
+	for k3 in range(_rng.randi_range(1, 3)):
+		var cp: Vector3 = _ground(spots[1 + k3].x, spots[1 + k3].y)
+		var ca: float = _rng.randf() * TAU
+		if _rng.randf() < 0.5:
+			_det.box_at("bois_sombre", cp + Vector3.UP * 0.45, Vector3(0.45, 0.05, 0.45), ca)
+			_det.box_at("bois_sombre", cp + Basis(Vector3.UP, ca) * Vector3(0, 0.75, -0.2), Vector3(0.45, 0.6, 0.05), ca)
+			for c4 in [Vector2(-0.18, -0.18), Vector2(0.18, -0.18), Vector2(-0.18, 0.18), Vector2(0.18, 0.18)]:
+				_det.box_at("bois_sombre", cp + Basis(Vector3.UP, ca) * Vector3(c4.x, 0.22, c4.y), Vector3(0.04, 0.44, 0.04), ca)
+		else:
+			# une chaise par terre
+			var bc := Basis(Vector3.UP, ca) * Basis(Vector3.RIGHT, PI * 0.5)
+			_det.box("bois_sombre", Transform3D(bc, cp + Vector3.UP * 0.25), Vector3(0.45, 0.05, 0.45))
+			_det.box("bois_sombre", Transform3D(bc, cp + Vector3.UP * 0.25 + bc * Vector3(0, 0.3, 0.2)), Vector3(0.45, 0.05, 0.6))
+	if _rng.randf() < 0.6:
+		# l'armoire tombée face contre terre
+		var ap: Vector3 = _ground(spots[4].x, spots[4].y)
+		var aa: float = _rng.randf() * TAU
+		_det.box_at("bois_sombre", ap + Vector3.UP * 0.3, Vector3(1.0, 0.6, 2.0), aa)
+		_col(Transform3D(Basis(Vector3.UP, aa), ap + Vector3.UP * 0.3), Vector3(1.0, 0.6, 2.0))
+	if _rng.randf() < 0.5:
+		var mp: Vector3 = _ground(spots[5].x, spots[5].y)
+		var ma: float = _rng.randf() * TAU
+		_det.box_at("tissu_rouge_sombre", mp + Vector3.UP * 0.1, Vector3(1.4, 0.2, 1.9), ma)
+		_det.blob("sac_sable", mp + Vector3.UP * 0.22 + Basis(Vector3.UP, ma) * Vector3(0.2, 0, 0.3), Vector3(0.35, 0.12, 0.3), 6)
+	# une poutre tombée du plafond, en travers
+	if _rng.randf() < 0.55:
+		var b0 := Vector3(_rng.randf_range(ix0, ix1), 0.0, iz0)
+		var b1 := Vector3(_rng.randf_range(ix0, ix1), 0.0, iz1)
+		var wa: Vector3 = IleScript.W(b0.x, b0.z, 0.0)
+		wa.y = ile.height(wa.x, wa.z) + 0.15
+		var wb: Vector3 = IleScript.W(b1.x, b1.z, Y0 + PLAFOND - 0.3)
+		_det.tube("bois_sombre", wa, wb, 0.12, 4)
+	# quelques maisons gardent une bougie allumée : quelqu'un est passé il n'y a pas longtemps
+	if _bougies < 14 and _rng.randf() < 0.12:
+		_bougies += 1
+		var bp: Vector3 = _ground(spots[0].x, spots[0].y)
+		bp.y += 0.79 if _rng.randf() < 0.5 else 0.02
+		_det.cyl_at("bougie", bp, 0.03, 0.03, 0.14, 6)
+		var li := OmniLight3D.new()
+		li.light_color = Color(1.0, 0.62, 0.3)
+		li.light_energy = 0.9
+		li.omni_range = 6.0
+		li.shadow_enabled = false
+		li.distance_fade_enabled = true
+		li.distance_fade_begin = 30.0
+		li.distance_fade_length = 10.0
+		add_child(li)
+		li.global_position = bp + Vector3.UP * 0.3
+		_castle_lights.append([li, 0.9])
 
 
 ## Les petites maisons entre la rue du tour de ville et la grève
@@ -1156,7 +1317,9 @@ func contains(p: Vector3) -> bool:
 func walkable(p: Vector3) -> bool:
 	if not contains(p):
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	# V122 : jusque dans l'eau peu profonde (là où l'on n'a plus assez d'eau pour nager, on marche)
+	# (la mer est à -0,42 m : la nage s'arrête là où le fond est à -1,02 m ; on recouvre largement)
+	return ile.height(p.x, p.z) > -1.3 or p.y > 1.0
 
 
 func owns_point(p: Vector3) -> bool:

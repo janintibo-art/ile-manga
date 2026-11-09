@@ -356,9 +356,19 @@ func _floor_y(p: Vector3, fallback: float) -> float:
 	var ex: Array = []
 	if body != null:
 		ex.append(body.get_rid())
-	var q := PhysicsRayQueryParameters3D.create(Vector3(p.x, fallback + 6.0, p.z), Vector3(p.x, fallback - 4.0, p.z), 1, ex)
-	var hit: Dictionary = w.direct_space_state.intersect_ray(q)
-	return float((hit["position"] as Vector3).y) if not hit.is_empty() else fallback
+	# V122 : on traverse les personnages (le capitaine lui-même) : sinon, à chaque escale, il se
+	# posait sur sa propre tête et finissait en l'air au-dessus du ponton
+	for i in range(6):
+		var q := PhysicsRayQueryParameters3D.create(Vector3(p.x, fallback + 6.0, p.z), Vector3(p.x, fallback - 4.0, p.z), 1, ex)
+		var hit: Dictionary = w.direct_space_state.intersect_ray(q)
+		if hit.is_empty():
+			return fallback
+		var col: Object = hit.get("collider")
+		if col is CharacterBody3D or (col is Node and (col as Node).get_parent() is CharacterBody3D):
+			ex.append(hit["rid"])
+			continue
+		return float((hit["position"] as Vector3).y)
+	return fallback
 
 
 ## Départ : avec le joueur à bord (passenger) ou à vide (on l'a appelé de l'autre côté).

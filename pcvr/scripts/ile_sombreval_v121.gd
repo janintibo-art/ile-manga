@@ -176,10 +176,13 @@ func _shape(x: float, z: float) -> float:
 	if q <= 1.0:
 		h = Y0 + _noise.get_noise_2d(x, z) * 0.35
 	else:
+		# V122 : la grève descend en pente douce jusqu'à l'eau (en V121, un mur de 3,6 m tout
+		# autour : on ne pouvait pas sortir de l'eau), puis le fond plonge vers le large
 		var off: float = (q - 1.0) * RS
-		h = lerpf(Y0, -1.4, smoothstep(0.0, 16.0, off))
-		h = minf(h, -1.4 - 30.0 * smoothstep(16.0, 52.0, off))
-		h = maxf(h, -32.0)
+		if off < 16.0:
+			h = lerpf(Y0, -1.4, smoothstep(0.0, 16.0, off))
+		else:
+			h = maxf(-1.4 - 30.0 * smoothstep(16.0, 52.0, off), -32.0)
 	h = maxf(h, hill_height(x, z))
 	var rp: Vector2 = ramp_at(x, z)
 	if rp.x >= -0.03 and rp.x <= 1.0 and rp.y < RAMP_W + 2.5:

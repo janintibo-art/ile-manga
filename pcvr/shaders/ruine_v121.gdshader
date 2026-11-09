@@ -48,7 +48,14 @@ void fragment() {
 	vec3 nrm;
 	float rough = 0.92;
 	float spec = 0.3;
-	if (abs(wnrm.y) > 0.5) {
+	if (wnrm.y < -0.5) {
+		// V122 : le plafond d'un rez-de-chaussée ouvert : du béton taché d'humidité, des fissures
+		vec2 pc = wpos.xz;
+		col = texture(beton_tex, pc * 0.25).rgb * vec3(0.32, 0.31, 0.3);
+		col *= 0.75 + 0.35 * fbm(pc * 0.3 + seed);
+		col = mix(col, vec3(0.06, 0.055, 0.05), smoothstep(0.6, 0.75, fbm(pc * 0.5 + seed * 1.7)) * 0.7);
+		nrm = texture(beton_n, pc * 0.25).rgb;
+	} else if (abs(wnrm.y) > 0.5) {
 		// le dessus : des gravats, de la mousse, des herbes
 		vec2 p = wpos.xz;
 		col = texture(beton_tex, p * 0.25).rgb * vec3(0.45, 0.44, 0.42);

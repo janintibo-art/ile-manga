@@ -49,6 +49,7 @@ func build(high_quality: bool) -> void:
 	_find_dock()
 	_carve_road()
 	_carve_trail()
+	_carve_ramp()
 	_build_mesh(high_quality)
 	_build_collision()
 	print("ILE_MANGA_V46: île des nains ", count, "x", count, " en ", Time.get_ticks_msec() - t0, " ms, terrasse à ", terrace)
@@ -157,6 +158,42 @@ func _carve_road() -> void:
 		var p2: Vector2 = a.lerp(b, t)
 		var lin: float = lerpf(h_start, terrace.y, smoothstep(0.0, 1.0, t))
 		_flatten(p2.x, p2.y, 2.0, 4.5, lerpf(lin, float(prof[k]), 0.45))
+
+
+## V122 : le chemin du ponton finissait par une marche de 6 m (63°) au bord de la terrasse : on
+## restait bloqué en bas. On taille une vraie rampe régulière (~32°), qui entre dans la terrasse
+## et la rejoint à 8 m de son centre (le dallage suit le sol).
+func _carve_ramp() -> void:
+	var a := Vector2(dock_start.x, dock_start.z)
+	var b := Vector2(terrace.x, terrace.z)
+	var ab: Vector2 = b - a
+	var full: float = ab.length()
+	if full < 10.0:
+		return
+	var dirv: Vector2 = ab / full
+	var ramp_len: float = full - 8.0
+	var h0: float = height(a.x, a.y)
+	var h1: float = terrace.y
+	var x_min: int = maxi(0, int(floor((minf(a.x, b.x) - 8.0 - CENTER.x + HALF) / CELL)))
+	var x_max: int = mini(count - 1, int(ceil((maxf(a.x, b.x) + 8.0 - CENTER.x + HALF) / CELL)))
+	var z_min: int = maxi(0, int(floor((minf(a.y, b.y) - 8.0 - CENTER.z + HALF) / CELL)))
+	var z_max: int = mini(count - 1, int(ceil((maxf(a.y, b.y) + 8.0 - CENTER.z + HALF) / CELL)))
+	for zi in range(z_min, z_max + 1):
+		for xi in range(x_min, x_max + 1):
+			var p := Vector2(CENTER.x - HALF + xi * CELL, CENTER.z - HALF + zi * CELL)
+			var s: float = (p - a).dot(dirv)
+			if s < -2.0 or s > full:
+				continue
+			var dr: float = absf((p - a).dot(Vector2(-dirv.y, dirv.x)))
+			if dr > 6.0:
+				continue
+			var u: float = clampf(s / ramp_len, 0.0, 1.0)
+			var target: float = lerpf(h0, h1, lerpf(u, smoothstep(0.0, 1.0, u), 0.3))
+			var k: float = smoothstep(2.5, 6.0, dr)
+			if s < 0.0:
+				k = maxf(k, -s / 2.0)
+			var i: int = zi * count + xi
+			heights[i] = lerpf(target, heights[i], k)
 
 
 ## V47 : le Sentier des Golems — une corniche qui monte en spirale autour du volcan, du
