@@ -1425,6 +1425,11 @@ const AVENTURES := [
 		"etapes": [["sombreval", "Aborder Sombreval, la ville morte"], ["sv_beffroi", "Trouver le vieux beffroi, sur la Place du Marché"], ["sv_zombies", "Repousser dix morts-vivants"],
 			["sv_notes", "Retrouver les cinq pages du journal du docteur Vasseur"], ["sv_cimetiere", "Traverser le Vieux Cimetière"], ["sv_butte", "Gravir la Butte du Comte"],
 			["sv_porte", "Frapper à la grande porte du château du comte"]]},
+	{"id": "chateau_comte", "titre": "Le château du comte", "lieu": "Sombreval, en haut de la Butte du Comte", "debut": "sv_chateau",
+		"etapes": [["sv_chateau", "Entrer dans le château du comte"], ["sv_mortimer", "Écouter Mortimer, le vieux majordome"],
+			["sv_ilona", "Démasquer la comtesse Ilona, au bal (celle qui n'a pas de reflet)"], ["sv_sigismund", "Obtenir le rubis du baron Sigismund, dans la bibliothèque"],
+			["sv_radu", "Vaincre le chevalier Radu dans la salle d'armes (la lumière !)"], ["sv_rubis", "Poser les trois rubis sur la porte de la Tour du Comte"],
+			["sv_tour", "Monter dans la Tour du Comte"]]},
 ]
 
 var main: Node

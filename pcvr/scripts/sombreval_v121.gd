@@ -20,12 +20,18 @@ const IleScript = preload("res://scripts/ile_sombreval_v121.gd")
 const Kit = preload("res://scripts/sombreval_kit_v121.gd")
 const Public = preload("res://scripts/public_v111.gd")
 const FLORE := "res://scripts/sombreval_flore_v121.gd"
+const CHATEAU := "res://scripts/chateau_comte_v124.gd"
 
 const Y0: float = IleScript.Y0
 const TOP: float = IleScript.TOP
 const PLACES := {"port": "le Port des Brumes", "marche": "la Place du Marché", "vieille_ville": "la Vieille Ville",
 	"centre": "le Centre", "gare": "le Quartier de la Gare", "faubourg": "les Faubourgs", "cimetiere": "le Vieux Cimetière",
-	"butte": "la Butte du Comte", "chateau": "le château du comte", "greve": "la grève", "ville": "la ville"}
+	"butte": "la Butte du Comte", "chateau": "le château du comte", "greve": "la grève", "ville": "la ville",
+	"chateau_hall": "le château du comte, le Grand Vestibule", "chateau_galerie": "le château du comte, la Galerie des Portraits",
+	"chateau_bal": "le château du comte, la Salle de Bal", "chateau_bal_valse": "le château du comte, la Salle de Bal",
+	"chateau_biblio": "le château du comte, la Bibliothèque", "chateau_cabinet": "le château du comte, le cabinet du baron",
+	"chateau_escalier": "le château du comte, l'escalier", "chateau_armes": "le château du comte, la Salle d'Armes",
+	"chateau_tour": "le château du comte, la Tour du Comte"}
 const MESSAGES := {
 	"marche": "La Place du Marché — le vieux beffroi, son horloge arrêtée à minuit… et pas un bruit",
 	"vieille_ville": "La Vieille Ville — des rues de brique, des volets arrachés, du lierre jusqu'aux toits",
@@ -107,6 +113,12 @@ var _derriere: Array = []                 # les zombies « dans le dos » : [mon
 var _cloche_h: int = -1
 var _note_mi: Dictionary = {}
 var sombre: float = 0.0
+var castle: Node3D                        # V124 : l'intérieur du château (chateau_comte_v124)
+var porte_donjon := Vector3.ZERO          # V124 : la porte du donjon, dans la cour
+var _herse: Node3D
+var _battants: Array = []
+var _gate_body: StaticBody3D
+var _donjon_c := Vector3.ZERO
 
 
 func setup(main_node: Node) -> void:
@@ -114,10 +126,16 @@ func setup(main_node: Node) -> void:
 	pc = OS.has_feature("ile_manga_pc")
 	_rng.seed = 12121
 	state = _fresh_state()
+	# V124 : l'intérieur du château (construit seulement à la première visite)
+	if ResourceLoader.exists(CHATEAU):
+		castle = load(CHATEAU).new()
+		castle.name = "Chateau_comte_v124"
+		add_child(castle)
+		castle.setup(main, self)
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "notes": {}, "vaincus": 0, "porte": false, "beffroi": false, "cimetiere": false}
+	return {"visite": false, "visites": {}, "notes": {}, "vaincus": 0, "porte": false, "beffroi": false, "cimetiere": false, "herse": false}
 
 
 # =================================================================== construction
@@ -171,6 +189,8 @@ func build_town() -> void:
 		for c in _blocked:
 			flore._blocked[c] = true
 		flore.build_sombreval(ile, pc, {"arbres": tree_spots})
+	if bool(state.get("herse", false)):
+		open_gate(false)
 	print("ILE_MANGA_V121: Sombreval est prête (%d immeubles, %d boîtes, %d ms)" % [batiments.size(), nb_boites, Time.get_ticks_msec() - t0])
 
 
@@ -947,8 +967,69 @@ func _chateau() -> void:
 	# de grandes bannières rouge sombre sur le donjon
 	for zz in [-5.0, 5.0]:
 		b.box("tissu_rouge_sombre", Transform3D(Basis(), dj + Vector3(-9.15, 19.0, zz)), Vector3(0.04, 9.0, 2.4))
+	# V124 : la porte du donjon (face à la grande porte), son arc, deux lanternes rouges
+	_donjon_c = dj
+	var dp: Vector3 = dj + Vector3(-9.05, 0, 0)
+	dp.y = ile.height(dp.x, dp.z)
+	b.box("pierre_chateau_claire", Transform3D(Basis(), dp + Vector3(-0.15, 2.7, 0)), Vector3(0.4, 0.5, 4.2))
+	for s in [-1.0, 1.0]:
+		b.box("pierre_chateau_claire", Transform3D(Basis(), dp + Vector3(-0.15, 1.25, s * 1.85)), Vector3(0.4, 2.5, 0.5))
+		_castle_light(dp + Vector3(-1.0, 3.2, s * 2.4), 1.2, Color(1.0, 0.3, 0.12))
+		b.cyl("fer_noir", Transform3D(Basis(), dp + Vector3(-0.35, 2.8, s * 2.4)), 0.12, 0.08, 0.35, 6)
+		b.blob("fenetre_rouge", dp + Vector3(-0.35, 3.0, s * 2.4), Vector3(0.08, 0.12, 0.08), 6)
+	b.box("bois_sombre", Transform3D(Basis(), dp + Vector3(0.0, 1.25, 0)), Vector3(0.2, 2.5, 3.2))
+	for yy in [0.4, 1.3, 2.2]:
+		b.box("fer_noir", Transform3D(Basis(), dp + Vector3(-0.06, yy, 0)), Vector3(0.12, 0.1, 3.1))
+	b.box("pierre_chateau_claire", Transform3D(Basis(), dp + Vector3(-1.2, 0.08, 0)), Vector3(2.0, 0.16, 4.0))
+	porte_donjon = dp + Vector3(-1.8, 0.0, 0)
+	var me = self
+	_interactions.append({"id": "sv_porte_donjon", "pos": porte_donjon, "radius": 2.6, "text": "E : pousser la porte du donjon",
+		"vr": "Gâchette : entrer dans le donjon", "call": func(): me._entrer_donjon(),
+		"when": func(): return bool(me.state.get("herse", false)) and me.castle != null})
+	# la cour : le carrosse noir du comte, un puits, un arbre mort
+	_cour(b, c0, dj)
 	b.commit(self, "Chateau_du_comte_v121", true)
 	_chauves_souris(dj)
+
+
+## V124 : la cour du château (le carrosse noir, le puits, un arbre mort, des gargouilles au sol)
+func _cour(b: Kit.Batch, c0: Vector3, dj: Vector3) -> void:
+	# le carrosse noir, près de la porte du donjon
+	var cp: Vector3 = c0 + Vector3(-18.0, 0, 12.0)
+	cp.y = ile.height(cp.x, cp.z)
+	var yaw: float = 0.4
+	var bs := Basis(Vector3.UP, yaw)
+	b.box("bois_sombre", Transform3D(bs, cp + bs * Vector3(0, 1.55, 0)), Vector3(1.6, 1.5, 2.4))
+	b.box("fer_noir", Transform3D(bs, cp + bs * Vector3(0, 2.34, 0)), Vector3(1.7, 0.08, 2.5))
+	b.box("tissu_rouge_sombre", Transform3D(bs, cp + bs * Vector3(0.81, 1.7, 0)), Vector3(0.02, 0.6, 0.8))
+	b.box("bois_sombre", Transform3D(bs, cp + bs * Vector3(0, 0.75, 1.9)), Vector3(1.2, 0.12, 1.6))
+	b.box("bois_sombre", Transform3D(bs, cp + bs * Vector3(0, 1.45, 1.55)), Vector3(1.4, 0.5, 0.6))
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			var wc: Vector3 = cp + bs * Vector3(sx * 0.95, 0.65 if sz < 0 else 0.5, sz * 0.9 + (0.0 if sz < 0 else 0.6))
+			var r: float = 0.65 if sz < 0 else 0.5
+			b.cyl("bois_sombre", Transform3D(bs * Basis(Vector3.FORWARD, PI * 0.5), wc - bs * Vector3(0.05, 0, 0)), r, r, 0.1, 14)
+		b.tube("fer_noir", cp + bs * Vector3(sx * 0.35, 0.8, 2.6), cp + bs * Vector3(sx * 0.35, 0.7, 5.0), 0.04, 5)
+	_col(Transform3D(bs, cp + bs * Vector3(0, 1.2, 0.6)), Vector3(2.0, 2.4, 3.8))
+	# le puits
+	var wp: Vector3 = c0 + Vector3(-12.0, 0, -16.0)
+	wp.y = ile.height(wp.x, wp.z)
+	b.cyl("pierre_chateau_claire", Transform3D(Basis(), wp), 1.1, 1.1, 0.9, 14)
+	b.cyl("interieur", Transform3D(Basis(), wp + Vector3.UP * 0.02), 0.85, 0.85, 0.9, 14)
+	for s in [-1.0, 1.0]:
+		b.box("bois_sombre", Transform3D(Basis(), wp + Vector3(s * 0.95, 1.6, 0)), Vector3(0.14, 1.6, 0.14))
+	b.box("ardoise", Transform3D(Basis(Vector3.FORWARD, 0.0), wp + Vector3(0, 2.5, 0)), Vector3(2.4, 0.12, 1.2))
+	b.tube("fer_noir", wp + Vector3(-0.95, 2.1, 0), wp + Vector3(0.95, 2.1, 0), 0.05, 6)
+	_col(Transform3D(Basis(), wp + Vector3.UP * 0.6), Vector3(2.2, 1.2, 2.2))
+	# un arbre mort, tordu
+	var tp: Vector3 = c0 + Vector3(-22.0, 0, -6.0)
+	tp.y = ile.height(tp.x, tp.z)
+	b.tube("bois_pourri", tp, tp + Vector3(0.4, 3.5, 0.2), 0.28, 8)
+	b.tube("bois_pourri", tp + Vector3(0.4, 3.5, 0.2), tp + Vector3(-1.2, 5.6, 0.8), 0.16, 6)
+	b.tube("bois_pourri", tp + Vector3(0.4, 3.5, 0.2), tp + Vector3(2.0, 5.0, -0.6), 0.14, 6)
+	b.tube("bois_pourri", tp + Vector3(-1.2, 5.6, 0.8), tp + Vector3(-2.0, 6.4, 0.4), 0.07, 5)
+	b.tube("bois_pourri", tp + Vector3(2.0, 5.0, -0.6), tp + Vector3(2.8, 6.0, -0.2), 0.06, 5)
+	_col(Transform3D(Basis(), tp + Vector3.UP * 1.6), Vector3(0.6, 3.2, 0.6))
 
 
 func _wall_col(a: Vector3, c: Vector3, h: float, ep: float) -> void:
@@ -970,16 +1051,53 @@ func _gatehouse(b: Kit.Batch, mid: Vector3, along: Vector3) -> void:
 		_col(Transform3D(Basis(), tp + Vector3.UP * 9.0), Vector3(6.0, 20.0, 6.0))
 	var yaw: float = atan2(along.x, along.z)
 	b.box("pierre_chateau", Transform3D(Basis(Vector3.UP, yaw), mid + Vector3.UP * 10.5), Vector3(3.4, 5.0, 6.4))
-	# les battants
-	b.box("bois_sombre", Transform3D(Basis(Vector3.UP, yaw), mid + out * 0.2 + Vector3.UP * 4.0), Vector3(0.3, 8.0, 6.2))
-	# la herse
+	# V124 : les battants (ils pivotent vers l'intérieur) et la herse (elle monte) sont à part
+	for s in [-1.0, 1.0]:
+		var hinge := Node3D.new()
+		hinge.name = "Battant_v124"
+		add_child(hinge)
+		hinge.global_position = mid + out * 0.2 + along * (s * 3.1)
+		hinge.rotation.y = yaw
+		var lm := MeshInstance3D.new()
+		var bm := BoxMesh.new()
+		bm.size = Vector3(0.3, 8.0, 3.1)
+		lm.mesh = bm
+		lm.material_override = Kit.mat("bois_sombre")
+		lm.position = Vector3(0, 4.0, -s * 1.55)
+		hinge.add_child(lm)
+		for yy in [1.2, 4.0, 6.8]:
+			var band := MeshInstance3D.new()
+			var bb := BoxMesh.new()
+			bb.size = Vector3(0.36, 0.14, 3.0)
+			band.mesh = bb
+			band.material_override = Kit.mat("fer_noir")
+			band.position = Vector3(0, yy, -s * 1.55)
+			hinge.add_child(band)
+		hinge.set_meta("s", s)
+		_battants.append(hinge)
+	_herse = Node3D.new()
+	_herse.name = "Herse_v124"
+	add_child(_herse)
+	var hb := Kit.Batch.new()
 	for k in range(9):
 		var p: Vector3 = mid + out * 1.0 + along * (-2.8 + k * 0.7)
-		b.tube("fer_noir", p, p + Vector3.UP * 8.0, 0.06, 6)
+		hb.tube("fer_noir", p, p + Vector3.UP * 8.0, 0.06, 6)
+		hb.cyl("fer_noir", Transform3D(Basis(Vector3.RIGHT, PI), p + Vector3.UP * 0.02), 0.06, 0.0, 0.25, 6, false)
 	for k2 in range(6):
 		var p2: Vector3 = mid + out * 1.0 + Vector3.UP * (0.8 + k2 * 1.4)
-		b.tube("fer_noir", p2 - along * 3.0, p2 + along * 3.0, 0.05, 6)
-	_col(Transform3D(Basis(Vector3.UP, yaw), mid + Vector3.UP * 4.0), Vector3(1.2, 8.0, 6.4))
+		hb.tube("fer_noir", p2 - along * 3.0, p2 + along * 3.0, 0.05, 6)
+	hb.commit(_herse, "Herse_maillage_v124", true)
+	_gate_body = StaticBody3D.new()
+	_gate_body.name = "Porte_chateau_v124"
+	_gate_body.collision_layer = 1
+	_gate_body.collision_mask = 0
+	add_child(_gate_body)
+	var gcs := CollisionShape3D.new()
+	var gsh := BoxShape3D.new()
+	gsh.size = Vector3(1.2, 8.0, 6.4)
+	gcs.shape = gsh
+	_gate_body.add_child(gcs)
+	gcs.global_transform = Transform3D(Basis(Vector3.UP, yaw), mid + Vector3.UP * 4.0)
 	# deux torches de part et d'autre (elles brûlent rouge)
 	for s2 in [-1.0, 1.0]:
 		var tc: Vector3 = mid + out * 1.4 + along * (s2 * 3.6) + Vector3.UP * 4.5
@@ -988,8 +1106,9 @@ func _gatehouse(b: Kit.Batch, mid: Vector3, along: Vector3) -> void:
 		_castle_light(tc + out * 0.4, 1.4, Color(1.0, 0.42, 0.12))
 	porte_chateau = mid + out * 3.5
 	porte_chateau.y = ile.height(porte_chateau.x, porte_chateau.z)
+	var me = self
 	_interactions.append({"id": "sv_porte_chateau", "pos": porte_chateau, "radius": 3.2, "text": "E : frapper à la grande porte du château",
-		"vr": "Gâchette : frapper à la porte du château", "call": _frapper_porte})
+		"vr": "Gâchette : frapper à la porte du château", "call": _frapper_porte, "when": func(): return not bool(me.state.get("herse", false))})
 
 
 func _castle_light(at: Vector3, energy: float, col: Color = Color(1.0, 0.2, 0.08)) -> void:
@@ -1268,19 +1387,83 @@ func _frapper_porte() -> void:
 	sfx("grande_porte", porte_chateau, 2.0)
 	_orage(true)
 	state["porte"] = true
+	# V124 : celui qui a lu les cinq pages du docteur (ou repoussé dix morts-vivants) est « digne »
+	if castle != null and ((state.get("notes", {}) as Dictionary).size() >= NOTES.size() or int(state.get("vaincus", 0)) >= 10):
+		get_tree().create_timer(1.6).timeout.connect(func():
+			say("La voix glacée, du haut des remparts : « Tu as lu le journal de ce pauvre docteur… Tu sais donc qui je suis. Entre, petit voyageur. Entre de ton plein gré. » Dans un grondement de chaînes, la herse se lève.", 10.0)
+			sfx("demon_rire", porte_chateau + Vector3.UP * 14.0, -2.0)
+			open_gate(true))
+		return
 	for k in range(_bats.size()):
 		_bats[k][2] = float(_bats[k][2]) * 2.0
 	get_tree().create_timer(1.6).timeout.connect(func():
-		say("Une voix glacée tombe du haut des remparts : « Quelle audace… Mes enfants n'ont pas fini de jouer avec toi, petit voyageur. Reviens quand tu seras digne de me rencontrer. » La grande porte ne s'ouvre pas.", 10.0)
+		say("Une voix glacée tombe du haut des remparts : « Quelle audace… Mes enfants n'ont pas fini de jouer avec toi, petit voyageur. Reviens quand tu seras digne de me rencontrer. » La grande porte ne s'ouvre pas. (Il faudrait d'abord en savoir plus : les pages du docteur Vasseur, ou dix morts-vivants repoussés.)", 10.0)
 		sfx("demon_rire", porte_chateau + Vector3.UP * 14.0, -2.0))
 	get_tree().create_timer(9.0).timeout.connect(func():
 		for k in range(_bats.size()):
 			_bats[k][2] = float(_bats[k][2]) * 0.5)
 
 
+## V124 : la herse se lève, les battants s'ouvrent vers la cour (animate : avec les chaînes)
+func open_gate(animate: bool) -> void:
+	state["herse"] = true
+	if _gate_body != null:
+		_gate_body.collision_layer = 0
+	if _herse != null:
+		if animate:
+			sfx("herse_monte", porte_chateau + Vector3.UP * 4.0, 0.0)
+			create_tween().tween_property(_herse, "position:y", 7.4, 5.0).set_trans(Tween.TRANS_SINE)
+		else:
+			_herse.position.y = 7.4
+	for h in _battants:
+		var target: float = (h as Node3D).rotation.y + float(h.get_meta("s")) * 1.45
+		if absf(float(h.get_meta("open_y", 99.0)) - target) < 0.01:
+			continue
+		h.set_meta("open_y", target)
+		if animate:
+			var tw := create_tween()
+			tw.tween_interval(3.5)
+			tw.tween_property(h, "rotation:y", target, 3.0).set_trans(Tween.TRANS_SINE)
+			get_tree().create_timer(3.5).timeout.connect(func(): sfx("porte_grince", (h as Node3D).global_position + Vector3.UP * 3.0, 0.0))
+		else:
+			(h as Node3D).rotation.y = target
+
+
+func close_gate() -> void:
+	state["herse"] = false
+	if _gate_body != null:
+		_gate_body.collision_layer = 1
+	if _herse != null:
+		_herse.position.y = 0.0
+	for h in _battants:
+		if h.has_meta("open_y"):
+			(h as Node3D).rotation.y = float(h.get_meta("open_y")) - float(h.get_meta("s")) * 1.45
+			h.remove_meta("open_y")
+
+
+func _entrer_donjon() -> void:
+	if castle == null:
+		return
+	sfx("porte_grince", porte_donjon + Vector3.UP * 1.5, 0.0)
+	castle.enter()
+
+
+## V124 : où l'on ressort du donjon (devant sa porte, dans la cour)
+func keep_out_point() -> Array:
+	var p: Vector3 = porte_donjon + Vector3(-1.5, 0.3, 0)
+	return [p, Vector3(-1, 0, 0)]
+
+
+func ensure_dungeon_at(p: Vector3) -> void:
+	if castle != null and castle.near(p):
+		castle.ensure_built()
+
+
 func register_services(journal: Node) -> void:
 	for k in objets:
 		journal.lieux["sombreval_" + str(k)] = objets[k]
+	if porte_donjon != Vector3.ZERO:
+		journal.lieux["sombreval_donjon"] = porte_donjon
 	journal.lieux["sombreval"] = respawn_point()[0]
 	_register_interactions()
 
@@ -1323,7 +1506,7 @@ func walkable(p: Vector3) -> bool:
 
 
 func owns_point(p: Vector3) -> bool:
-	return contains(p)
+	return contains(p) or (castle != null and castle.contains(p))
 
 
 ## Les morts-vivants rôdent partout sur l'île (sauf sur l'eau)
@@ -1332,6 +1515,8 @@ func hostile_zone(p: Vector3) -> bool:
 
 
 func zone_at(p: Vector3) -> String:
+	if castle != null and castle.contains(p):
+		return str(castle.zone_name(p))
 	if not contains(p):
 		return ""
 	var l: Vector2 = IleScript.L(p.x, p.z)
@@ -1363,6 +1548,9 @@ func respawn_point() -> Array:
 
 
 func on_faint(_p: Vector3) -> void:
+	if castle != null and castle.contains(_p):
+		castle.respawn()
+		return
 	var at: Array = respawn_point()
 	main.place_player_v35(at[0], at[1])
 
@@ -1393,6 +1581,11 @@ func _process(delta: float) -> void:
 		return
 	_bats_tick(delta)
 	_orage_tick(delta, d < 480.0)
+	# V124 : dans le château (loin sous la ville) : ni brume, ni hordes, ni morts-vivants dans le dos
+	if castle != null and castle.contains(p):
+		if _brume.emitting:
+			_brume.emitting = false
+		return
 	var inside: bool = ile.contains(p.x, p.z) and ile.height(p.x, p.z) > -1.0
 	var on_land: bool = inside and bool(main.get("game_started"))
 	if _brume.emitting != on_land:
@@ -1508,6 +1701,9 @@ func _orage(fort: bool) -> void:
 	_eclair.rotation_degrees = Vector3(-_rng.randf_range(35.0, 70.0), _rng.randf() * 360.0, 0.0)
 	_eclair_seq = [[0.0, e], [0.07, 0.0], [0.1, e * 0.7], [0.08, 0.0]]
 	_tonnerre_t = 0.3 if fort else _rng.randf_range(1.0, 3.0)
+	# V124 : dans le château, l'éclair passe par les vitraux
+	if castle != null and castle.get("built") == true:
+		castle.flash(fort)
 
 
 ## Le beffroi sonne minuit (une seule fois par nuit, pour qui est en ville)
@@ -1712,11 +1908,14 @@ func trouvailles() -> Dictionary:
 		"sv_notes": 1 if (state.get("notes", {}) as Dictionary).size() >= NOTES.size() else 0,
 		"sv_cimetiere": 1 if bool(state.get("cimetiere", false)) else 0,
 		"sv_butte": 1 if bool(vis.get("butte", false)) else 0,
-		"sv_porte": 1 if bool(state.get("porte", false)) else 0}
+		"sv_porte": 1 if bool(state.get("porte", false)) else 0}.merged(castle.trouvailles() if castle != null else {})
 
 
 func serialize() -> Dictionary:
-	return state.duplicate(true)
+	var d: Dictionary = state.duplicate(true)
+	if castle != null:
+		d["chateau"] = castle.serialize()
+	return d
 
 
 func load_data(d: Dictionary) -> void:
@@ -1724,6 +1923,14 @@ func load_data(d: Dictionary) -> void:
 	for k in state:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary) else (d[k] as Dictionary).duplicate(true)
+	# V124 : la herse, l'intérieur du château
+	if bool(state.get("herse", false)):
+		open_gate(false)
+	else:
+		close_gate()
+	if castle != null:
+		var cd: Variant = d.get("chateau", {})
+		castle.load_data(cd if cd is Dictionary else {})
 	# les pages déjà lues ne sont plus par terre
 	for id0 in _note_mi:
 		if is_instance_valid(_note_mi[id0]):

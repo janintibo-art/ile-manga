@@ -1866,6 +1866,17 @@ func update_inside(force: bool = false) -> void:
 			env.fog_light_color = Color(0.04, 0.045, 0.05)
 			env.fog_density = 0.01
 			env.tonemap_exposure = 1.3
+		# V124 : le château du comte (sous Sombreval) : les bougies, les vitraux ; une pénombre chaude, une
+		# brume légère où les flammes font des halos
+		var svd: Node = main.get("sombreval_v121")
+		if svd != null and svd.get("castle") != null and svd.castle != null and svd.castle.contains(main._player_pos_v27()):
+			env.ambient_light_color = Color(0.42, 0.36, 0.36)
+			env.ambient_light_energy = 0.45
+			env.fog_light_color = Color(0.03, 0.025, 0.03)
+			env.fog_density = 0.006
+			env.volumetric_fog_density = 0.012
+			env.volumetric_fog_albedo = Color(0.75, 0.68, 0.62)
+			env.tonemap_exposure = 1.3
 		# V81 : dans une maison (loin sous la mer, elle aussi) : pas de brume, une ambiance douce ;
 		# la pièce a ses propres lampes et ses fenêtres
 		var mv: Node = main.get("maisons_v81")

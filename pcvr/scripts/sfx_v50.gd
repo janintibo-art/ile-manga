@@ -21,6 +21,10 @@ const DB := {
 	"ui_quete": -8.0, "boss_cri": 0.0,
 	# V121 : les morts-vivants de Sombreval
 	"zombie_grogne": -3.0, "zombie_cri": -2.0, "zombie_attaque": -3.0, "zombie_mort": -4.0, "coeur_peur": -5.0,
+	# V124 : les vampires du château du comte
+	"vampire_siffle": -3.0, "vampire_rire": -2.0, "vampire_attaque": -3.0, "vampire_mort": -3.0, "vampire_brume": -5.0,
+	"nuee_chauves_souris": -4.0, "murmures": -7.0, "orgue_accord": -3.0, "porte_grince": -4.0, "herse_monte": -2.0,
+	"bougies_soufflees": -5.0, "boite_musique": -8.0,
 	"plongeon": -4.0, "nage": -8.0, "nage_sous": -9.0, "bulles": -10.0, "respiration": -6.0, "suffoque": -4.0,
 	"requin_menace": -3.0, "requin_morsure": -2.0, "requin_mort": -3.0, "meduse_pique": -5.0, "dauphin": -6.0,
 	"perle": -4.0, "cristal_eveil": 0.0,

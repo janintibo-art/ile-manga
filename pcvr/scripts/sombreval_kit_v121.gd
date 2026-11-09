@@ -124,6 +124,71 @@ static func mat(key: String) -> Material:
 			m = _glow(Color(1.0, 0.7, 0.35), 3.0)
 		"os":
 			m = _std(Color(0.78, 0.74, 0.64), 0.7)
+		# V124 : l'intérieur du château du comte
+		"parquet":
+			m = _tex("maisons/parquet_chevron.png", "", Color(0.46, 0.33, 0.25), 0.55, 0.42)
+		"damas":
+			m = _tex("maisons/pp_damas_bordeaux.png", "", Color(0.66, 0.52, 0.52), 0.42, 0.85)
+		"lambris":
+			m = _tex("maisons/lambris_sombre.png", "", Color(0.62, 0.5, 0.42), 0.5, 0.55)
+		"marbre_damier":
+			var md := _tex("maisons/damier_noir_blanc.png", "", Color(0.6, 0.57, 0.55), 0.3, 0.16)
+			md.metallic_specular = 0.8
+			m = md
+		"tapis_rouge":
+			m = _tex("chateau/tapis.png", "", Color(0.72, 0.36, 0.36), 0.45, 1.0)
+		"pierre_int":
+			m = _tex("chateau/pierre_chateau.png", "chateau/pierre_chateau_n.png", Color(0.56, 0.54, 0.53), 0.32, 0.9)
+		"dalles_int":
+			m = _tex("chateau/dalles_chateau.png", "chateau/dalles_chateau_n.png", Color(0.52, 0.5, 0.49), 0.3, 0.75)
+		"dorure":
+			m = _std(Color(0.72, 0.53, 0.26), 0.32, 1.0)
+		"dorure_terne":
+			m = _std(Color(0.45, 0.36, 0.22), 0.5, 0.85)
+		"velours":
+			var vv := _std(Color(0.3, 0.025, 0.04), 0.95)
+			vv.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = vv
+		"velours_noir":
+			var vn := _std(Color(0.035, 0.028, 0.032), 0.95)
+			vn.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = vn
+		"bois_cire":
+			m = _tex("doors/wood_plain.png", "", Color(0.32, 0.19, 0.13), 1.0, 0.38)
+		"livres":
+			m = _tex("chateau/livres.png", "", Color(0.92, 0.9, 0.88), 1.0, 0.75)
+		"cuir":
+			m = _std(Color(0.2, 0.1, 0.06), 0.55)
+		"cire":
+			m = _std(Color(0.86, 0.82, 0.72), 0.55)
+		"nappe":
+			m = _std(Color(0.7, 0.68, 0.62), 0.95)
+		"drap_poussiere":
+			m = _std(Color(0.58, 0.56, 0.52), 1.0)
+		"acier":
+			m = _std(Color(0.5, 0.51, 0.53), 0.3, 0.9)
+		"acier_noir":
+			m = _std(Color(0.12, 0.12, 0.13), 0.38, 0.85)
+		"rubis":
+			m = _glow(Color(0.95, 0.03, 0.06), 2.6)
+		"rubis_eteint":
+			m = _std(Color(0.18, 0.02, 0.03), 0.2, 0.3)
+		"vitrail_comte":
+			var vc := StandardMaterial3D.new()
+			if ResourceLoader.exists(TEX + "chateau/vitrail_comte.png"):
+				vc.albedo_texture = load(TEX + "chateau/vitrail_comte.png")
+				vc.emission_texture = vc.albedo_texture
+			vc.emission_enabled = true
+			vc.albedo_color = Color(0.75, 0.72, 0.78)
+			vc.emission = Color(0.42, 0.44, 0.62)
+			vc.emission_energy_multiplier = 0.45
+			vc.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+			vc.alpha_scissor_threshold = 0.5
+			vc.cull_mode = BaseMaterial3D.CULL_DISABLED
+			vc.roughness = 0.2
+			m = vc
+		"nuit_fenetre":
+			m = _glow(Color(0.16, 0.2, 0.32), 0.6)
 		_:
 			m = _std(Color(0.4, 0.4, 0.4), 0.8)
 	_mcache[key] = m

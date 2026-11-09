@@ -1122,6 +1122,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			# V75 : partie sauvée dans l'Usine Grise (sous l'usine de Lisse & Fils)
 			if boucan_v75 != null and boucan_v75.city != null:
 				boucan_v75.ensure_dungeon_at(origin.position)
+			# V124 : partie sauvée dans le château du comte (sous Sombreval)
+			if sombreval_v121 != null and sombreval_v121.ile != null:
+				sombreval_v121.ensure_dungeon_at(origin.position)
 		origin.rotation.y = float(data.get("yaw", 0.0))
 		game_menu.seconds = float(data.get("play_seconds", 0.0))
 		# V28 : inventaire et vie (absents des sauvegardes plus anciennes).

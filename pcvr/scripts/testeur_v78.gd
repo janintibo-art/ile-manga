@@ -55,6 +55,7 @@ func _menu_voyage() -> void:
 		{"id": "moai89", "label": "Le souterrain du Grand Moaï (yeux rendus, on descend)"},
 		{"id": "pixel90", "label": "Île Pixelithique : Grosse-Dent (le Cirque des Os)"},
 		{"id": "pixel90g", "label": "Île Pixelithique : la Grotte aux Peintures"},
+		{"id": "chateau124", "label": "Sombreval : dans le château du comte (herse levée)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -261,6 +262,8 @@ func _pick(id: String) -> void:
 			_souterrain_v89()
 		"pixel90", "pixel90g":
 			_pixel_v90(id)
+		"chateau124":
+			_chateau_v124()
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -289,6 +292,17 @@ func _pick(id: String) -> void:
 				_open_list(_list_kind, _list, int(id.substr(5)))
 			elif id.begins_with("go:"):
 				_go(int(id.substr(3)))
+
+
+## V124 : tout droit dans le Grand Vestibule du château du comte (la herse levée)
+func _chateau_v124() -> void:
+	main._close_dialogue_v31()
+	var sv: Node = main.get("sombreval_v121")
+	if sv == null or sv.get("castle") == null or sv.castle == null:
+		main._show_message_v28("Mode testeur : le château du comte n'est pas là.")
+		return
+	sv.open_gate(false)
+	sv.castle.enter()
 
 
 func _open_list(kind: String, items: Array, page: int) -> void:

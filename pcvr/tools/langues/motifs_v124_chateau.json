@@ -1,0 +1,112 @@
+[
+[
+"E : tirer le livre « {} »",
+"E: pull out the book “{}”",
+"E: sacar el libro «{}»"
+],
+[
+"Gâchette : tirer « {} »",
+"Trigger: pull out “{}”",
+"Gatillo: sacar «{}»"
+],
+[
+"La comtesse Ilona tombe en poussière au milieu du damier… Un rubis roule jusqu'à tes pieds. Tu le ramasses : il est tiède, comme un cœur. (Rubis : {n} sur 3)",
+"Countess Ilona crumbles to dust in the middle of the chessboard floor… A ruby rolls to your feet. You pick it up: it's warm, like a heart. (Rubies: {n} of 3)",
+"La condesa Ilona se convierte en polvo en medio del suelo ajedrezado… Un rubí rueda hasta tus pies. Lo recoges: está tibio, como un corazón. (Rubíes: {n} de 3)"
+],
+[
+"Tu tires « {} »… Le livre se referme tout seul avec un claquement sec. Tous les livres tremblent sur les étagères — et quelques-uns te foncent dessus !",
+"You pull out “{}”… The book snaps shut by itself. All the books shake on the shelves — and a few come flying at you!",
+"Sacas «{}»… El libro se cierra solo con un golpe seco. Todos los libros tiemblan en las estanterías — ¡y algunos se lanzan contra ti!"
+],
+[
+"Tu tires « {} ». Clic ! Quelque part dans le mur, un mécanisme a bougé.",
+"You pull out “{}”. Click! Somewhere in the wall, a mechanism has moved.",
+"Sacas «{}». ¡Clic! En algún lugar del muro, un mecanismo se ha movido."
+],
+[
+"Tu tires « {} »… Tout un pan d'étagère pivote en grinçant : derrière, une petite pièce éclairée par une bougie. Le cabinet du baron.",
+"You pull out “{}”… A whole section of shelving swings round with a creak: behind it, a small room lit by a candle. The baron's study.",
+"Sacas «{}»… Todo un tramo de estantería gira chirriando: detrás, una pequeña sala iluminada por una vela. El gabinete del barón."
+],
+[
+"« Juste. » Il tourne une page. Devinette {n} : « {} »",
+"“Correct.” He turns a page. Riddle {n}: “{}”",
+"«Correcto.» Pasa una página. Adivinanza {n}: «{}»"
+],
+[
+"Devinette {n} : « {} »",
+"Riddle {n}: “{}”",
+"Adivinanza {n}: «{}»"
+],
+[
+"« Bravo. Vraiment, bravo. » Le baron fait glisser un rubis sur le bureau. « Prends-le. Et si tu montes voir Père… dis-lui que je lisais. Il déteste ça. » Il s'incline — et se défait en une nuée de chauves-souris qui s'envolent entre les livres. (Rubis : {n} sur 3)",
+"“Bravo. Truly, bravo.” The baron slides a ruby across the desk. “Take it. And if you go up to see Father… tell him I was reading. He hates that.” He bows — and comes apart into a swarm of bats that flutter away between the books. (Rubies: {n} of 3)",
+"«Bravo. De verdad, bravo.» El barón desliza un rubí sobre el escritorio. «Tómalo. Y si subes a ver a Padre… dile que estaba leyendo. Lo detesta.» Se inclina — y se deshace en una nube de murciélagos que echan a volar entre los libros. (Rubíes: {n} de 3)"
+],
+[
+"Le baron Sigismund s'effondre en poussière au milieu de ses livres. Sur le parquet, un rubis brille encore. (Rubis : {n} sur 3)",
+"Baron Sigismund crumbles to dust among his books. On the parquet floor, a ruby is still shining. (Rubies: {n} of 3)",
+"El barón Sigismund se desmorona en polvo entre sus libros. Sobre el parqué, un rubí sigue brillando. (Rubíes: {n} de 3)"
+],
+[
+"Le brasero s'embrase. ({n} sur {n})",
+"The brazier flares up. ({n} of {n})",
+"El brasero se enciende. ({n} de {n})"
+],
+[
+"Le chevalier Radu met un genou à terre. « Bien combattu… chevalier. » Puis il tombe en poussière. Son rubis brille dans le sable. (Rubis : {n} sur 3)",
+"Sir Radu drops to one knee. “Well fought… knight.” Then he crumbles to dust. His ruby shines in the sand. (Rubies: {n} of 3)",
+"El caballero Radu hinca una rodilla en tierra. «Bien luchado… caballero.» Luego se convierte en polvo. Su rubí brilla en la arena. (Rubíes: {n} de 3)"
+],
+[
+"{n} rubis sur 3 brillent déjà au-dessus de la porte. Il en manque encore.",
+"{n} of 3 rubies already shine above the door. Some are still missing.",
+"{n} de 3 rubíes brillan ya encima de la puerta. Todavía faltan."
+],
+[
+"Tu poses ton rubis dans son chaton d'or : il s'allume, rouge sang. ({n} sur 3)",
+"You set your ruby in its golden setting: it lights up, blood red. ({n} of 3)",
+"Colocas tu rubí en su engaste de oro: se ilumina, rojo sangre. ({n} de 3)"
+],
+[
+"[b]Endurance :[/b] {n}  [color=#9aa7b0](+{n} gagnés en aidant les gens ; elle grandit avec le niveau)[/color]\n",
+"[b]Stamina:[/b] {n}  [color=#9aa7b0](+{n} earned by helping people; it grows with your level)[/color]\n",
+"[b]Resistencia:[/b] {n}  [color=#9aa7b0](+{n} ganados ayudando a la gente; crece con el nivel)[/color]\n"
+],
+[
+"[b]Souffle sous l'eau sans masque :[/b] {n} secondes  [color=#9aa7b0](+{n} ; il grandit avec le niveau)[/color]\n",
+"[b]Breath underwater without a mask:[/b] {n} seconds  [color=#9aa7b0](+{n}; it grows with your level)[/color]\n",
+"[b]Aliento bajo el agua sin máscara:[/b] {n} segundos  [color=#9aa7b0](+{n}; crece con el nivel)[/color]\n"
+],
+[
+"REMONTE !  Air {n} s  {}",
+"SURFACE!  Air {n} s  {}",
+"¡SUBE!  Aire {n} s  {}"
+],
+[
+"Air {n} s  {}",
+"Air {n} s  {}",
+"Aire {n} s  {}"
+],
+[
+"Niveau + 1  (actuellement niveau {n})",
+"Level + 1  (currently level {n})",
+"Nivel + 1  (actualmente nivel {n})"
+],
+[
+"niveau {n} (endurance {n}, {n} s sous l'eau).",
+"level {n} (stamina {n}, {n} s underwater).",
+"nivel {n} (resistencia {n}, {n} s bajo el agua)."
+],
+[
+"{n} arme(s) ajoutée(s) au sac (I pour en choisir une).",
+"{n} weapon(s) added to the bag (I to pick one).",
+"{n} arma(s) añadida(s) a la bolsa (I para elegir una)."
+],
+[
+"{n} outil(s) ajouté(s) au sac.",
+"{n} tool(s) added to the bag.",
+"{n} herramienta(s) añadida(s) a la bolsa."
+]
+]

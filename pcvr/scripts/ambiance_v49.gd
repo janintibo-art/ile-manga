@@ -27,7 +27,7 @@ const BEDS := {
 	"pluie": "ambiance/pluie", "camp_fleurs": "ambiance/camp_fleurs",
 	"neopolis": "ambiance/neopolis", "marche_nuit": "ambiance/marche_nuit",
 	"marmite": "ambiance/marmite",
-	"sombreval": "ambiance/sombreval",
+	"sombreval": "ambiance/sombreval", "chateau_comte": "ambiance/chateau_comte",
 	"port_pirate": "ambiance/port_pirate", "taverne_pirate": "ambiance/taverne_pirate", "marais": "ambiance/marais",
 	"nil": "ambiance/nil", "jungle_maya": "ambiance/jungle_maya", "lac_aztlan": "ambiance/lac_aztlan",
 	"donjon_pyramide": "ambiance/donjon_pyramide", "donjon_xibalba": "ambiance/donjon_xibalba", "donjon_soleils": "ambiance/donjon_soleils",
@@ -61,7 +61,7 @@ const BED_DB := {
 	"pluie": -11.0, "camp_fleurs": -12.0,
 	"neopolis": -11.0, "marche_nuit": -12.0,
 	"marmite": -11.0,
-	"sombreval": -9.0,
+	"sombreval": -9.0, "chateau_comte": -9.0,
 }
 
 var main: Node
@@ -274,6 +274,12 @@ func _choose_zone(running: bool) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	var d: Node = main.get("donjon_v35")
 	var under: bool = d != null and d.is_inside(p)
+	# V124 : dans le château du comte (sous Sombreval) : le vent dans les couloirs, l'orgue lointain
+	var svc: Node = main.get("sombreval_v121")
+	if under and svc != null and svc.get("castle") != null and svc.castle != null and svc.castle.contains(p):
+		zone = "sv_" + str(svc.castle.zone_name(p))
+		targets["chateau_comte"] = 1.0
+		return
 	if under:
 		var el: Node = main.get("elfes_v41")
 		var n: Node = main.get("nains_v46")

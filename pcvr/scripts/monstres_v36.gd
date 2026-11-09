@@ -15,6 +15,7 @@ const Monster71 = preload("res://scripts/monstre_v71.gd")
 const Monster75 = preload("res://scripts/monstre_v75.gd")
 const Monster90 = preload("res://scripts/monstre_v90.gd")
 const Monster121 = preload("res://scripts/monstre_v121.gd")   # V121 : les morts-vivants de Sombreval
+const Monster124 = preload("res://scripts/monstre_v124.gd")   # V124 : les vampires du château du comte
 
 ## [espèce, x, y, z] dans le repère de la section « village » du temple.
 const SPAWNS := [
@@ -111,7 +112,8 @@ func spawn_extra(kind: String, at: Vector3) -> Node3D:
 	# V75 : les monstres de l'Île du Boucan (robots de Lisse & Fils, la Grande Pelleteuse, champignards)
 	# V90 : les dinosaures de l'Île Pixelithique (raptors, tricératops, ankylosaures, ptéranodons, Grosse-Dent)
 	# V121 : les morts-vivants de Sombreval
-	var m: CharacterBody3D = Monster121.new() if Monster121.SPECS121.has(kind) else (Monster90.new() if Monster90.SPECS90.has(kind) else (Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new())))))))
+	# V124 : les vampires du château du comte
+	var m: CharacterBody3D = Monster124.new() if Monster124.SPECS124.has(kind) else (Monster121.new() if Monster121.SPECS121.has(kind) else (Monster90.new() if Monster90.SPECS90.has(kind) else (Monster75.new() if Monster75.SPECS75.has(kind) else (Monster71.new() if Monster71.SPECS71.has(kind) else (Monster70.new() if Monster70.SPECS70.has(kind) else (Monster69.new() if Monster69.SPECS69.has(kind) else (Monster68.new() if Monster68.SPECS68.has(kind) else (Monster63.new() if Monster63.SPECS63.has(kind) else MonsterScript.new()))))))))
 	add_child(m)
 	m.setup(self, kind, at)
 	m.died.connect(_on_died)
@@ -219,7 +221,9 @@ func _vr_faint() -> void:
 	var mj71: bool = main.get("montjoie_v71") != null and main.montjoie_v71 != null and main.montjoie_v71.city != null and main.montjoie_v71.owns_point(pp)
 	var bo75: bool = main.get("boucan_v75") != null and main.boucan_v75 != null and main.boucan_v75.city != null and main.boucan_v75.owns_point(pp)
 	var as76: bool = main.get("astralys_v76") != null and main.astralys_v76 != null and main.astralys_v76.city != null and main.astralys_v76.owns_point(pp)
-	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71 and not bo75 and not as76
+	# V124 : le château du comte (sous Sombreval)
+	var sv124: bool = main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.owns_point(pp)
+	var temple: bool = donjon.is_inside(pp) and not sol69 and not br70 and not mj71 and not bo75 and not as76 and not sv124
 	if temple and not (main.get("pirates_v68") != null and main.pirates_v68 != null and main.pirates_v68.contains(pp)):
 		donjon._say("Tu t'évanouis… et te réveilles au pied de l'échelle.", 4.0)
 	await donjon._fade_to(1.0, 0.6)
@@ -237,6 +241,11 @@ func _vr_faint() -> void:
 ## proche, cœurs pleins.
 func respawn_player() -> void:
 	var p: Vector3 = main._player_pos_v27()
+	# V124 : à Sombreval, ou dans le château du comte
+	if main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.owns_point(p):
+		main.sombreval_v121.on_faint(p)
+		_heal_player()
+		return
 	# V76 : à Astralys
 	if main.get("astralys_v76") != null and main.astralys_v76 != null and main.astralys_v76.city != null and main.astralys_v76.owns_point(p):
 		main.astralys_v76.on_faint(p)
