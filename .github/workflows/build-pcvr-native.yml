@@ -254,6 +254,22 @@ jobs:
           Get-ChildItem ..\..\installateurs | Format-Table Name, @{n="Mo";e={[int]($_.Length/1MB)}}
           if ((Get-ChildItem ..\..\installateurs -Filter *.exe).Count -ne 2) { throw "il faut deux installateurs" }
 
+      - name: Archiver l'installateur PC dans les artefacts d'Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NOM }}_Installation_v${{ env.V }}
+          path: installateurs/${{ env.NOM }}_Installation_v${{ env.V }}.exe
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Archiver l'installateur VR dans les artefacts d'Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.NOM }}_VR_Installation_v${{ env.V }}
+          path: installateurs/${{ env.NOM }}_VR_Installation_v${{ env.V }}.exe
+          retention-days: 7
+          if-no-files-found: error
+
       - name: Ajouter les installateurs a la Release V${{ env.V }}
         shell: bash
         env:

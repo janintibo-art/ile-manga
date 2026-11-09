@@ -168,7 +168,7 @@ footer img{width:56px;margin:0 auto 10px}
 <section id="jouer" style="background:var(--nuit2)">
   <div class="wrap">
     <h2>Jouer</h2>
-    <p class="sous">Télécharge l'EXE de ton choix sur la page <a href="https://github.com/janintibo-art/ile-manga/releases/latest">Releases</a> et lance-le : rien à installer. Windows peut afficher un avertissement la première fois (« Informations complémentaires », puis « Exécuter quand même »).</p>
+    <p class="sous">Télécharge l'installateur de ton choix (bouton en haut de la page, ou sur la page <a href="https://github.com/janintibo-art/ile-manga/releases/latest">Releases</a>) et lance-le : il met le jeu dans tes programmes, avec son icône sur le Bureau. Les fichiers sans « Installation » dans le nom sont les jeux seuls, qui se lancent directement. Windows peut afficher un avertissement la première fois (« Informations complémentaires », puis « Exécuter quand même »).</p>
     <div class="deux">
       <div class="carte">
         <h3>🖥️ Version PC</h3>
@@ -240,7 +240,7 @@ footer img{width:56px;margin:0 auto 10px}
 <div class="zoom" id="zoom" role="dialog" aria-label="Image agrandie"><img alt=""></div>
 
 <script>
-// Les liens de téléchargement pointent directement sur les EXE de la dernière Release.
+// Les liens de téléchargement pointent directement sur les installateurs de la dernière Release.
 (function(){
   var repo = "janintibo-art/ile-manga";
   fetch("https://api.github.com/repos/" + repo + "/releases/latest")
@@ -248,9 +248,14 @@ footer img{width:56px;margin:0 auto 10px}
     .then(function(rel){
       if (!rel) return;
       var pc = null, vr = null, size = function(a){ return Math.round(a.size / 1e6) + " Mo"; };
+      // D'abord les installateurs (icône, menu Démarrer, désinstallation), sinon les jeux seuls.
       (rel.assets || []).forEach(function(a){
-        if (/_PC_v\d+\.exe$/i.test(a.name)) pc = a;
-        if (/_VR_v\d+\.exe$/i.test(a.name)) vr = a;
+        if (/_VR_Installation_v\d+\.exe$/i.test(a.name)) vr = a;
+        else if (/_Installation_v\d+\.exe$/i.test(a.name)) pc = a;
+      });
+      (rel.assets || []).forEach(function(a){
+        if (!pc && /_PC_v\d+\.exe$/i.test(a.name)) pc = a;
+        if (!vr && /_VR_v\d+\.exe$/i.test(a.name)) vr = a;
       });
       if (pc) document.getElementById("dl-pc").href = pc.browser_download_url;
       if (vr) document.getElementById("dl-vr").href = vr.browser_download_url;
