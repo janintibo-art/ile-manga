@@ -19,15 +19,19 @@ jobs:
     permissions:
       contents: write
     timeout-minutes: 110
+    outputs:
+      v: ${{ steps.version.outputs.v }}
     steps:
       - name: Recuperer le depot
         uses: actions/checkout@v4
 
       - name: Lire le numero de version dans project.godot
+        id: version
         run: |
           V=$(grep -oP 'config/name="[^"]* VR V\K[0-9]+' pcvr/project.godot)
           test -n "$V"
           echo "V=$V" >> "$GITHUB_ENV"
+          echo "v=$V" >> "$GITHUB_OUTPUT"
           sed -i -E "s/(file_version|product_version)=\"[0-9.]+\"/\1=\"$V.0.0.0\"/; s/_v[0-9]+\.exe/_v$V.exe/" pcvr/export_presets.cfg
           grep -E 'version=|export_path' pcvr/export_presets.cfg
           echo "Version detectee : V$V"
@@ -176,6 +180,11 @@ jobs:
           PC="dist/${{ env.NOM }}_PC_v${{ env.V }}.exe"
           NOTES="**${{ env.TITRE }} V${{ env.V }}** — $(git log -1 --pretty=%s)
 
+          Le plus simple : les installateurs (ils arrivent quelques minutes après les EXE).
+          - \`${{ env.NOM }}_Installation_v${{ env.V }}.exe\` : installe la version écran, avec son icône.
+          - \`${{ env.NOM }}_VR_Installation_v${{ env.V }}.exe\` : installe la version casque, avec son icône.
+
+          Ou les jeux seuls, sans installation :
           - \`${{ env.NOM }}_VR_v${{ env.V }}.exe\` : version casque (Quest 3 par Link / Air Link, ou SteamVR).
           - \`${{ env.NOM }}_PC_v${{ env.V }}.exe\` : version écran, clavier et souris.
 
@@ -189,3 +198,66 @@ jobs:
               --title "${{ env.TITRE }} V${{ env.V }}" --notes "$NOTES" --latest
           fi
           echo "Release : https://github.com/${{ github.repository }}/releases/tag/$TAG"
+
+  # V125 : les deux installateurs Windows (Inno Setup, thème sombre, l'affiche du jeu en fond).
+  # Un installateur par version : un seul avec les deux jeux dépasserait les 2 Go qu'accepte une Release.
+  installateurs:
+    needs: windows-vr-et-pc
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    timeout-minutes: 60
+    env:
+      V: ${{ needs.windows-vr-et-pc.outputs.v }}
+    steps:
+      - name: Recuperer le script et les images de l'installateur
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            pcvr/installateur
+            www/assets/textures/ui
+
+      - name: Recuperer les deux EXE
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ env.NOM }}_*_v${{ env.V }}
+          path: dist
+          merge-multiple: true
+
+      - name: Installer Inno Setup 6.7 ou plus recent
+        shell: pwsh
+        run: |
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $ok = (Test-Path $iscc) -and ([version](Get-Item $iscc).VersionInfo.ProductVersion -ge [version]"6.7")
+          if (-not $ok) {
+            try {
+              Invoke-WebRequest "https://jrsoftware.org/download.php/is.exe?site=1" -OutFile "$env:RUNNER_TEMP\is.exe"
+              Start-Process "$env:RUNNER_TEMP\is.exe" -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SP-","/ALLUSERS" -Wait
+            } catch { choco upgrade innosetup -y --no-progress }
+          }
+          $v = [version](Get-Item $iscc).VersionInfo.ProductVersion
+          Write-Host "Inno Setup $v"
+          if ($v -lt [version]"6.7") { throw "Il faut Inno Setup 6.7 ou plus recent (image de fond)" }
+          "ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Construire les deux installateurs
+        shell: pwsh
+        working-directory: pcvr/installateur
+        run: |
+          Get-ChildItem ..\..\dist
+          $pc = (Resolve-Path "..\..\dist\${{ env.NOM }}_PC_v${{ env.V }}.exe").Path
+          $vr = (Resolve-Path "..\..\dist\${{ env.NOM }}_VR_v${{ env.V }}.exe").Path
+          & $env:ISCC /Q "/DVariante=PC" "/DVersion=${{ env.V }}" "/DExeSource=$pc" "/O..\..\installateurs" les_mondes_de_travers.iss
+          if ($LASTEXITCODE -ne 0) { throw "installateur PC" }
+          & $env:ISCC /Q "/DVariante=VR" "/DVersion=${{ env.V }}" "/DExeSource=$vr" "/O..\..\installateurs" les_mondes_de_travers.iss
+          if ($LASTEXITCODE -ne 0) { throw "installateur VR" }
+          Get-ChildItem ..\..\installateurs | Format-Table Name, @{n="Mo";e={[int]($_.Length/1MB)}}
+          if ((Get-ChildItem ..\..\installateurs -Filter *.exe).Count -ne 2) { throw "il faut deux installateurs" }
+
+      - name: Ajouter les installateurs a la Release V${{ env.V }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "v${{ env.V }}" installateurs/*.exe --clobber --repo "${{ github.repository }}"
+          echo "Installateurs : https://github.com/${{ github.repository }}/releases/tag/v${{ env.V }}"
