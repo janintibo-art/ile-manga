@@ -95,6 +95,8 @@ var combo_queued: bool = false
 var hits_pending: Array = []            # instants (dans l'animation en cours) des coups à porter
 var attack_clock: float = 0.0
 var cam_distance: float = 1.0
+var _dlg_npc_v126: Node3D = null         # V126 : la caméra de dialogue garde son côté
+var _dlg_alt_v126: bool = false
 var cam_pitch: float = 0.0              # V123 : -1 = regard levé vers le ciel, +1 = vue plongeante
 
 
@@ -1596,6 +1598,12 @@ func _in_house() -> bool:
 	return mv != null and bool(mv.get("inside"))
 
 
+## V126 : la longueur libre (sans mur) entre deux points, pour la caméra
+func _free_len_v126(space: PhysicsDirectSpaceState3D, a: Vector3, b: Vector3) -> float:
+	var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(a, b, 1 | 256, [body.get_rid()]))
+	return a.distance_to(b) if hit.is_empty() else a.distance_to(hit.position)
+
+
 ## Caméra à l'épaule qui ne traverse plus les murs (intérieurs des maisons).
 func _update_camera() -> void:
 	if camera == null or not camera.current:
@@ -1609,6 +1617,7 @@ func _update_camera() -> void:
 	var wanted: Vector3 = root.global_transform * (Vector3(0, sin(e), cos(e)) * 5.59 * cam_distance + Vector3(0, 1.5 * (1.0 - cam_distance), 0))
 	# V31 : pendant un dialogue, plan de côté qui montre les deux personnages.
 	var npc: Node3D = main.talking_npc_v31 if main.get("talking_npc_v31") != null else null
+	var alt_wanted := Vector3.ZERO
 	if npc != null:
 		var to_npc: Vector3 = npc.global_position - root.global_position
 		to_npc.y = 0.0
@@ -1618,7 +1627,19 @@ func _update_camera() -> void:
 		var mid: Vector3 = root.global_position + to_npc * 0.5 + Vector3.UP * 1.45
 		pivot = mid
 		wanted = mid + side * (2.6 + dist * 0.4) - fwd * 1.2 + Vector3.UP * 0.35
+		alt_wanted = mid - side * (2.6 + dist * 0.4) - fwd * 1.2 + Vector3.UP * 0.35
 	var space := body.get_world_3d().direct_space_state
+	if npc != null:
+		# V126 : un mur, un bastingage ou un mât de ce côté-là ? On filme de l'autre côté, et on
+		# garde le côté le plus dégagé (avant : la caméra se collait à l'obstacle et plongeait).
+		# (le côté est choisi une fois par conversation : la caméra ne saute pas d'un côté à l'autre)
+		if npc != _dlg_npc_v126:
+			_dlg_npc_v126 = npc
+			_dlg_alt_v126 = _free_len_v126(space, pivot, alt_wanted) > _free_len_v126(space, pivot, wanted) + 0.3
+		if _dlg_alt_v126:
+			wanted = alt_wanted
+	else:
+		_dlg_npc_v126 = null
 	# V77 : sous un plafond bas (une pièce), la caméra se rapproche et monte au-dessus de
 	# l'épaule : elle tient dans la pièce au lieu de s'écraser contre un mur.
 	if npc == null:

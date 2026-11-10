@@ -18,7 +18,7 @@ extends "res://scripts/monstre_v121.gd"
 ## de chauves-souris s'échappe de leur cape.
 
 const SPECS124 := {
-	"vampire": {"pv": 22, "vitesse": 3.1, "degats": 1, "portee": 1.8, "armer": 0.5, "repos": 1.0, "vue": 22.0, "laisse": 60.0,
+	"vampire": {"pv": 22, "vitesse": 3.1, "degats": 1, "portee": 1.8, "armer": 0.7, "repos": 1.5, "vue": 22.0, "laisse": 60.0,
 		"rayon": 0.42, "haut": 0.95, "nom": "Vampire", "brume": 9.0},
 	"vampire_garde": {"pv": 42, "vitesse": 2.0, "degats": 2, "portee": 2.2, "armer": 0.75, "repos": 1.4, "vue": 18.0, "laisse": 50.0,
 		"rayon": 0.5, "haut": 1.0, "nom": "Garde vampire", "chef": true},

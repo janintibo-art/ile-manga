@@ -15,6 +15,10 @@ const PAGE: int = 7                       # V80 : 7 + Suivants + Précédents + 
 
 var main: Node
 var invincible: bool = false
+var position_on: bool = false             # V126 : la position à l'écran (lieu, coordonnées)
+var _pos_label: Label
+var _pos_clock: float = 0.0
+const REGLAGES := "user://testeur_v126.cfg"
 var _anchor: Node3D
 var _list: Array = []                    # [[libellé, valeur], …] de la page en cours
 var _list_kind: String = ""
@@ -26,6 +30,75 @@ func setup(main_node: Node) -> void:
 	_anchor = Node3D.new()
 	_anchor.name = "Testeur_v78"
 	add_child(_anchor)
+	# V126 : la position à l'écran reste affichée d'une partie à l'autre si on l'a demandée
+	var cfg := ConfigFile.new()
+	if cfg.load(REGLAGES) == OK and bool(cfg.get_value("testeur", "position", false)):
+		set_position_on(true)
+
+
+# =================================================================== V126 : où suis-je ?
+## En bas à gauche : le lieu, la salle, les coordonnées, la direction du regard, l'heure du jeu
+## et la version. Sur une capture d'écran, on sait tout de suite où le bug se trouve.
+
+func set_position_on(on: bool) -> void:
+	position_on = on
+	var cfg := ConfigFile.new()
+	cfg.load(REGLAGES)
+	cfg.set_value("testeur", "position", on)
+	cfg.save(REGLAGES)
+	if on and _pos_label == null:
+		var layer := CanvasLayer.new()
+		layer.layer = 60
+		layer.name = "Position_v126"
+		add_child(layer)
+		_pos_label = Label.new()
+		_pos_label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+		_pos_label.offset_left = 14
+		_pos_label.offset_top = -64
+		_pos_label.offset_bottom = -10
+		_pos_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		_pos_label.add_theme_font_size_override("font_size", 15)
+		_pos_label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.6))
+		_pos_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
+		_pos_label.add_theme_constant_override("outline_size", 5)
+		_pos_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		layer.add_child(_pos_label)
+	if _pos_label != null:
+		_pos_label.visible = on
+		_pos_clock = 0.0
+
+
+func _process(delta: float) -> void:
+	if not position_on or _pos_label == null or main == null:
+		return
+	_pos_clock -= delta
+	if _pos_clock > 0.0:
+		return
+	_pos_clock = 0.25
+	_pos_label.text = position_text()
+
+
+func position_text() -> String:
+	var p: Vector3 = main._player_pos_v27()
+	var amb: Node = main.get("ambiance_v49")
+	var zone: String = str(amb.get("zone")) if amb != null and amb.get("zone") != null else ""
+	if zone == "":
+		zone = "?"
+	var yaw: float = 0.0
+	var root: Node3D = main.get("pc_root")
+	if root != null:
+		var f: Vector3 = -root.global_basis.z
+		yaw = fposmod(rad_to_deg(atan2(f.x, -f.z)), 360.0)
+	var dirs := ["nord", "nord-est", "est", "sud-est", "sud", "sud-ouest", "ouest", "nord-ouest"]
+	var dir: String = dirs[int(round(yaw / 45.0)) % 8]
+	var hour: String = ""
+	var t: Node = main.get("temps_v56")
+	if t != null and t.get("hour") != null:
+		var h: float = float(t.get("hour"))
+		hour = "  •  %02d h %02d" % [int(h), int(fmod(h, 1.0) * 60.0)]
+	var parts: PackedStringArray = str(ProjectSettings.get_setting("application/config/name", "")).split(" V")
+	var ver: String = parts[parts.size() - 1]
+	return "Lieu : %s\nx %.1f   y %.1f   z %.1f   •  regard %s%s  •  V%s" % [zone, p.x, p.y, p.z, dir, hour, ver]
 
 
 func open_menu() -> void:
@@ -41,6 +114,7 @@ func open_menu() -> void:
 		{"id": "heure", "label": "Changer l'heure"},
 		{"id": "invincible", "label": "Invincible : " + ("OUI (désactiver)" if invincible else "non (activer)")},
 		{"id": "pieces", "label": "+ 500 pièces de cuivre"},
+		{"id": "position", "label": "Position à l'écran : " + ("OUI (cacher)" if position_on else "non (afficher)")},
 		{"id": "fermer", "label": "(Fermer)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Que veux-tu faire ?", ch, _pick)
@@ -271,6 +345,10 @@ func _pick(id: String) -> void:
 		"invincible":
 			invincible = not invincible
 			main._show_message_v28("Mode testeur : invincible " + ("activé" if invincible else "désactivé") + ".")
+			open_menu()
+		"position":
+			set_position_on(not position_on)
+			main._show_message_v28("Mode testeur : position à l'écran %s." % ("affichée" if position_on else "cachée"))
 			open_menu()
 		"pieces":
 			var inv: Node = main.get("inventory_v28")

@@ -658,7 +658,7 @@ func respawn() -> void:
 		hero.hurt_cooldown = 0.0
 		hero.health_changed.emit(hero.hp, hero.HP_MAX)
 	main.donjon_v35.update_inside(true)
-	main._show_message_v28("Vous vous êtes évanoui… et réveillé à l'entrée de la salle. %s" % _faint_text())
+	main._show_message_v28("Tu t'es évanoui… et tu te réveilles à l'entrée de la salle. %s" % _faint_text())
 	room = ""
 
 

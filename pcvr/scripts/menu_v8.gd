@@ -1,4 +1,5 @@
 extends Node
+const Lumi126 := preload("res://scripts/luminosite_v126.gd")
 ## Menu PC + panneau 3D en VR ; manette droite pour selection, gachette pour valider.
 signal start_slot(slot: int, new_game: bool)
 signal save_requested(slot: int)
@@ -168,6 +169,8 @@ func _show_view(which: String) -> void:
 		options.append("Langue : " + Langue.nom(Langue.code))
 		# V111 : Tout public / Public averti
 		options.append(_version_option())
+		# V126 : la luminosité (pour les lieux sombres : château, donjons, nuit)
+		options.append(Lumi126.libelle())
 		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
@@ -284,6 +287,12 @@ func _activate(index: int) -> void:
 			var keep2: int = index
 			_show_view("settings")
 			selection = keep2
+			_redraw()
+		elif action.begins_with("Luminosité : "):
+			Lumi126.suivante(get_parent())
+			var keep3: int = index
+			_show_view("settings")
+			selection = keep3
 			_redraw()
 		elif action == "Retour":
 			_show_view("home")

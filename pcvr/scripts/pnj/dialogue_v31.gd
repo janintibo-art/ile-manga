@@ -222,7 +222,9 @@ func _build_buttons() -> void:
 			var b := Button.new()
 			b.text = "%d.  %s" % [(i + 1) % 10, shown[i]["label"]]
 			b.custom_minimum_size = Vector2(COL_W / 2 - 4 if _box.columns == 2 else COL_W, 0)
-			b.clip_text = true
+			# V126 : un choix long revient à la ligne au lieu d'être coupé (« En bois de cag… »)
+			b.clip_text = false
+			b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.focus_mode = Control.FOCUS_NONE
 			b.add_theme_font_size_override("font_size", 16)

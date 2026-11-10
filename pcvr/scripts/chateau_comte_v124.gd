@@ -83,7 +83,7 @@ func _init() -> void:
 	bbox = AABB(Vector3(-86.0, -12.0, -62.0), Vector3(140.0, 30.0, 80.0))
 	room_spawns = {
 		"galerie": [["vampire", -44.0, 0.0, 1.2]],
-		"biblio": [["vampire", 28.0, 0.0, -6.0], ["vampire", 22.0, 0.0, 8.0]],
+		"biblio": [["vampire", 28.0, 0.0, -6.0]],      # V126 : un seul (deux, dans la pénombre, c'était trop)
 		"armes": [["vampire_garde", 2.0, -8.0, -40.0], ["vampire_garde", 14.0, -8.0, -40.0]],
 	}
 
@@ -150,6 +150,32 @@ func _build() -> void:
 	_build_escalier()
 	_build_armes()
 	_build_tour()
+	_fill_lights()
+
+
+## V126 : une lumière douce, cachée sous les plafonds, dans les grandes salles : on voit les murs,
+## les meubles et les vampires ; les bougies gardent leurs halos (rien de tout ça ne vacille)
+func _fill_lights() -> void:
+	var step: float = 10.0 if pc else 13.0
+	for rn in ["hall", "galerie", "bal", "biblio", "armes"]:
+		var a: Vector3 = rooms[rn]["a"]
+		var b: Vector3 = rooms[rn]["b"]
+		var nx: int = maxi(1, int(round((b.x - a.x) / step)))
+		var nz: int = maxi(1, int(round((b.z - a.z) / step)))
+		var y: float = minf(a.y + 4.2, b.y - 1.2)
+		for i in range(nx):
+			for k in range(nz):
+				var lt := OmniLight3D.new()
+				lt.name = "Appoint_v126"
+				lt.set_meta("appoint_v126", true)
+				lt.light_color = Color(1.0, 0.8, 0.62)
+				lt.light_energy = 0.55
+				lt.omni_range = step * 1.25
+				lt.omni_attenuation = 0.8
+				lt.shadow_enabled = false
+				lt.light_specular = 0.2
+				(rooms[rn]["root"] as Node3D).add_child(lt)
+				lt.global_position = W(Vector3(lerpf(a.x, b.x, (i + 0.5) / nx), y, lerpf(a.z, b.z, (k + 0.5) / nz)))
 
 
 ## Une boîte (locale) dessinée dans le lot en cours ; « solid » : avec une collision
@@ -241,8 +267,9 @@ func light(room_n: String, l: Vector3, energy: float, rng: float, col: Color = C
 	var lt := OmniLight3D.new()
 	lt.light_color = col
 	lt.light_energy = energy
-	lt.omni_range = rng
-	lt.omni_attenuation = 1.4
+	# V126 : les flammes portent plus loin (le vrai jeu était bien plus sombre que les essais)
+	lt.omni_range = rng * 1.35
+	lt.omni_attenuation = 1.0
 	lt.shadow_enabled = shadow and pc
 	(rooms[room_n]["root"] as Node3D).add_child(lt)
 	lt.global_position = W(l)
@@ -499,6 +526,11 @@ func _build_hall() -> void:
 	var slope: float = atan2(rise, run)
 	var cb := Basis(Vector3.RIGHT, slope)
 	kit.col_box(X(Vector3(0, 3.0 - 0.15 * cos(slope), -5.0)) * Transform3D(cb, Vector3.ZERO), Vector3(5.6, 0.3, sqrt(rise * rise + run * run) + 0.2))
+	# V126 : le dessous de l'escalier est plein (avant, on y entrait par les côtés et la caméra
+	# restait enfermée dans la pierre : écran noir) ; chaque bloc reste sous la rampe
+	for k5 in range(1, 6):
+		var low_y: float = float(k5) * 1.0 - 0.2
+		kit.col_box(X(Vector3(0, low_y * 0.5, 1.0 - 2.0 * k5 - 1.0)), Vector3(6.0, low_y, 2.0))
 	for s in [-1.0, 1.0]:
 		# les flancs pleins de l'escalier, la rampe
 		bx("pierre_chateau_claire", Vector3(s * 2.95, 3.0, -5.0), Vector3(0.3, 0.2, 13.4), 0.0)

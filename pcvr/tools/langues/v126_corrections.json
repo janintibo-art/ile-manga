@@ -1,0 +1,42 @@
+[
+[
+"Luminosité : sombre",
+"Brightness: dark",
+"Brillo: oscuro"
+],
+[
+"Luminosité : normale",
+"Brightness: normal",
+"Brillo: normal"
+],
+[
+"Luminosité : claire",
+"Brightness: bright",
+"Brillo: claro"
+],
+[
+"Luminosité : très claire",
+"Brightness: very bright",
+"Brillo: muy claro"
+],
+[
+"Position à l'écran : OUI (cacher)",
+"Position on screen: YES (hide)",
+"Posición en pantalla: SÍ (ocultar)"
+],
+[
+"Position à l'écran : non (afficher)",
+"Position on screen: no (show)",
+"Posición en pantalla: no (mostrar)"
+],
+[
+"Mode testeur : position à l'écran affichée.",
+"Tester mode: position shown on screen.",
+"Modo probador: posición mostrada en pantalla."
+],
+[
+"Mode testeur : position à l'écran cachée.",
+"Tester mode: position hidden.",
+"Modo probador: posición oculta."
+]
+]

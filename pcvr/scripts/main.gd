@@ -97,10 +97,13 @@ const ROOMS_V27 := [[8.2, 11.4, 0.7, 7.3, 6.33], [-13.6, -9.55, 6.2, 10.7, 4.05]
 func _ready() -> void:
 	# V104 : la langue choisie (français, anglais, espagnol) avant de construire les textes
 	preload("res://scripts/langue_v104.gd").charger()
+	# V126 : la belle icône dans la barre des tâches (l'EXE n'emporte pas l'image d'origine)
+	_window_icon_v126()
 	# V81 : les portes des maisons décoratives sont notées pendant la construction des villes
 	preload("res://scripts/azur_kit_v56.gd").PORTES_V81.clear()
 	_configure_quality()
 	_create_lighting()
+	preload("res://scripts/luminosite_v126.gd").appliquer(self)     # V126 : la luminosité choisie
 	_create_land()
 	_create_water()
 	_create_village()
@@ -383,6 +386,41 @@ func _create_water() -> void:
 	ocean.material_override = ocean_material
 	ocean.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(ocean)
+
+
+## V126 : « parler à Gontran », « parler au Muet », « parler à la Rouquine », « parler à l'Ancien » :
+## le prénom seul, ou le surnom entier avec son article (avant : « parler à le »).
+static func talk_label_v126(full: String) -> String:
+	var n: String = full.strip_edges()
+	var low: String = n.to_lower()
+	if low.begins_with("le "):
+		return "parler au " + n.substr(3)
+	if low.begins_with("les "):
+		return "parler aux " + n.substr(4)
+	if low.begins_with("la "):
+		return "parler à la " + n.substr(3)
+	if low.begins_with("l'") or low.begins_with("l’"):
+		return "parler à l'" + n.substr(2)
+	var first: String = n.split(" ")[0] if n != "" else "?"
+	return "parler à " + first
+
+
+## V126 : l'icône de la fenêtre (barre des tâches de Windows). Godot la cherche dans l'image
+## d'origine, que l'EXE n'emporte pas : on la prend dans la texture importée.
+func _window_icon_v126() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	var tex: Texture2D = load("res://assets/textures/ui/les_mondes_de_travers_icon.png") if ResourceLoader.exists("res://assets/textures/ui/les_mondes_de_travers_icon.png") else null
+	if tex == null:
+		return
+	var img: Image = tex.get_image()
+	if img == null or img.is_empty():
+		return
+	if img.is_compressed():
+		img.decompress()
+	if img.get_width() > 256:
+		img.resize(256, 256, Image.INTERPOLATE_LANCZOS)
+	DisplayServer.set_icon(img)
 
 
 func _create_lighting() -> void:
@@ -868,7 +906,7 @@ func _hud_v53(hud: CanvasLayer) -> void:
 	message_panel_v53.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	message_panel_v53.offset_left = -460
 	message_panel_v53.offset_right = 460
-	message_panel_v53.offset_top = 64
+	message_panel_v53.offset_top = 104          # V126 : sous les cœurs et le niveau (ils se chevauchaient)
 	message_panel_v53.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	message_panel_v53.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	message_panel_v53.visible = false
@@ -2079,7 +2117,7 @@ func _doors_update_v27() -> void:
 			text = bucheron_v34.prompt(_player_pos_v27())
 	var near_npc: Node3D = _nearest_npc_v31() if playing else null
 	if near_npc != null and not xr_active:
-		text = "E : parler à " + str(near_npc.display_name).split(" ")[0]
+		text = "E : " + talk_label_v126(str(near_npc.display_name))
 	if xr_active and playing and near_npc != null:
 		if right_hand.get_float("trigger") > 0.7 and trigger_ready_v27:
 			_talk_v31(near_npc)
@@ -3043,6 +3081,9 @@ func place_player_v35(at: Vector3, facing: Vector3) -> void:
 		xr_origin.position = Vector3(at.x - head_offset.x, at.y, at.z - head_offset.z)
 	else:
 		pc_root.position = at
+		# V126 : la caméra regarde dans le sens d'arrivée (avant : elle gardait l'angle d'avant le
+		# voyage et regardait parfois un mur noir en entrant au château)
+		pc_root.rotation.y = atan2(-facing.x, -facing.z)
 		pc_body.global_position = at
 		pc_body.velocity = Vector3.ZERO
 		if hero_v28 != null:

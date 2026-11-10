@@ -1,0 +1,27 @@
+[
+[
+"E : parler au {}",
+"E: talk to {}",
+"E: hablar con el {}"
+],
+[
+"E : parler aux {}",
+"E: talk to {}",
+"E: hablar con los {}"
+],
+[
+"E : parler à la {}",
+"E: talk to {}",
+"E: hablar con la {}"
+],
+[
+"E : parler à l'{}",
+"E: talk to {}",
+"E: hablar con {}"
+],
+[
+"Tu t'es évanoui… et tu te réveilles à l'entrée de la salle. {}",
+"You fainted… and you wake up at the entrance of the hall. {}",
+"Te has desmayado… y despiertas a la entrada de la sala. {}"
+]
+]
