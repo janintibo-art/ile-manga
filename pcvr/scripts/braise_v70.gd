@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V70 : l'Île de Braise — le chef d'orchestre. Il construit l'île (ile_braise_v70), la cité
 ## (pandemonia_v70, ses grands lieux, son port), ce qu'il y a dehors (braise_dehors_v70 : les
 ## Ruines, les sources de soufre, le belvédère…) et la végétation (braise_flore_v70) ; il tient
@@ -424,7 +426,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if on_structure(p):
 		return true
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func blocks_boat(p: Vector3) -> bool:

@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V68 : l'Île de la Balafre, l'île des pirates — le chef d'orchestre. Il construit l'île
 ## (ile_pirate_v68), le port de Port-Coutelas, ses tripots et ses navires (port_coutelas_v68),
 ## la jungle et le marais (pirate_flore_v68) ; il fait vivre les pirates et les gens du port
@@ -136,7 +138,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if on_structure(p):
 		return true
-	return ile.height(p.x, p.z) > -0.3
+	return ile.height(p.x, p.z) > RIVE_V127
 
 
 func blocks_boat(p: Vector3) -> bool:

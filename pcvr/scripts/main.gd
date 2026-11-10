@@ -2116,6 +2116,9 @@ func _doors_update_v27() -> void:
 		elif text == "" and bucheron_v34 != null:
 			text = bucheron_v34.prompt(_player_pos_v27())
 	var near_npc: Node3D = _nearest_npc_v31() if playing else null
+	# V127 : devant la porte d'une maison, la porte passe avant l'habitant qui est plus loin
+	if near_npc != null and _door_before_npc_v127(near_npc):
+		near_npc = null
 	if near_npc != null and not xr_active:
 		text = "E : " + talk_label_v126(str(near_npc.display_name))
 	if xr_active and playing and near_npc != null:
@@ -2372,6 +2375,8 @@ func _interact_v28() -> void:
 			var pd: float = inventory_v28.pickup_distance(pk, p)
 			if pd < 1.4 and pd < Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z).length():
 				npc = null
+	if npc != null and _door_before_npc_v127(npc):
+		npc = null
 	if npc != null and (boat_v29 == null or not boat_v29.driving):
 		_talk_v31(npc)
 		return
@@ -3049,7 +3054,8 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 			body.velocity = Vector3.ZERO
 		return
 	if jungle_v29 != null and Vector2(p.x, p.z).length() > 120.0:
-		if _height_at(p.x, p.z) > -0.3:
+		# V127 : jusque dans l'eau peu profonde (sinon le rivage est un mur, dans les deux sens)
+		if _height_at(p.x, p.z) > -1.3:
 			last_ok_v29[key] = p
 			return
 		if last_ok_v29.has(key):
@@ -3062,6 +3068,20 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 		body.position.x = flat.x
 		body.position.z = flat.y
 	last_ok_v29[key] = body.position
+
+
+## V127 : la porte d'une maison (maisons_v81) est-elle plus près que cet habitant ?
+func _door_before_npc_v127(npc: Node3D) -> bool:
+	if donjon_v35 == null or donjon_v35._busy or npc == null:
+		return false
+	var p: Vector3 = _player_pos_v27()
+	var it: Dictionary = donjon_v35._current(p)
+	if it.is_empty() or str(it.get("id", "")) != "maisons_v81_porte":
+		return false
+	var q: Vector3 = it["pos"]
+	var dd: float = Vector2(q.x - p.x, q.z - p.z).length()
+	var nd: float = Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z).length()
+	return dd < nd
 
 
 ## V35 : le joueur est-il dans le souterrain (bien sous le niveau de la mer) ?

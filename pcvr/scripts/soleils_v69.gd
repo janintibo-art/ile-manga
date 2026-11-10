@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V69 : l'Île des Trois Soleils — le chef d'orchestre. Il construit l'île (ile_soleils_v69),
 ## les trois villages (per_hapy_v69 : les Égyptiens ; yaxche_v69 : les Mayas ; aztlan_v69 :
 ## les Aztèques) et la végétation (soleils_flore_v69) ; il fait vivre les habitants selon
@@ -191,7 +193,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if ile.in_cenote(p.x, p.z) and p.y < IleScript.CENOTE_Y + 0.4:
 		return false
-	return ile.height(p.x, p.z) > -0.3
+	return ile.height(p.x, p.z) > RIVE_V127
 
 
 func blocks_boat(p: Vector3) -> bool:

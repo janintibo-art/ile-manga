@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V91 : l'Île de Larsen — le chef d'orchestre. Une grande ville de yourtes, en deux quartiers :
 ##  - à l'ouest, le Camp des Fleurs (les hippies) : des yourtes claires en deux ronds autour du
 ##    cercle des tambours et de son feu, des bus peints de fleurs, des fanions de prières, l'arbre à
@@ -927,7 +929,7 @@ func contains(p: Vector3) -> bool:
 func walkable(p: Vector3) -> bool:
 	if not contains(p):
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func owns_point(p: Vector3) -> bool:

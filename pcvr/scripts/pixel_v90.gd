@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V90 : l'Île Pixelithique — le chef d'orchestre. Une île préhistorique où TOUT est en petits cubes
 ## (le sol en blocs de 50 cm peints de pixels fins, les plantes, les rochers, les bêtes, les gens) :
 ## le Mont Fumant et son lac de lave, les Falaises du Clan et leurs grottes, le Campement au pied de
@@ -663,7 +665,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if ile.in_lava(p.x, p.z):
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func owns_point(p: Vector3) -> bool:

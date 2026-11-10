@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V59 : la grande île de l'est (grande_ile_v59.gd), le Léviathan (epave_v59.gd), Carène
 ## (carene_v59.gd), la végétation (grande_flore_v59.gd), les gens de Carène
 ## (pnj/carene_habitants_v59.gd) et ce qui les relie au reste du jeu : les lieux et l'heure
@@ -151,7 +153,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if on_structure(p):
 		return true
-	return ile.height(p.x, p.z) > -0.3
+	return ile.height(p.x, p.z) > RIVE_V127
 
 
 ## La barque ne passe pas à travers la coque.

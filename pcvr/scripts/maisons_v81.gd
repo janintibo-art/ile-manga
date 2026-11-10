@@ -41,6 +41,7 @@ var people: Array = []                   # Figurant (contrôleurs) de la maison
 var scenario: String = ""
 var _its: Array = []                     # interactions de la maison (retirées en sortant)
 var _it_door: Dictionary = {}            # « E : entrer » (suit la porte la plus proche)
+var _door_reg: bool = false              # V127 : l'invite est-elle branchée (donjon_v35._interactions) ?
 var _grid: Dictionary = {}
 var _collect_t: float = 1.0
 var _n_seen: int = -1
@@ -148,8 +149,10 @@ func _process(delta: float) -> void:
 		if Kit.PORTES_V81.size() != _n_seen and not inside:
 			_n_seen = Kit.PORTES_V81.size()
 			collect()
-			if _it_door.is_empty():
-				_register_door()
+		# V127 : l'invite « entrer » doit être branchée, même si une ville (Larsen) a recompté
+		# les portes avant nous (avant, elle ne l'était jamais : on sortait, on ne rentrait plus)
+		if not _door_reg:
+			_register_door()
 	if portes.is_empty():
 		return
 	if inside:
@@ -177,6 +180,7 @@ func _register_door() -> void:
 	_it_door = {"id": "maisons_v81_porte", "pos": Vector3(0, -9999, 0), "radius": 1.6, "text": "E : entrer", "vr": "Gâchette : entrer",
 		"call": func(): enter_nearest(), "when": func(): return not inside and not busy and _door_ok()}
 	dj._interactions.append(_it_door)
+	_door_reg = true
 
 
 func _door_ok() -> bool:
@@ -186,6 +190,8 @@ func _door_ok() -> bool:
 
 
 func _update_door_prompt() -> void:
+	if not _door_reg:
+		return
 	var p: Vector3 = main._player_pos_v27()
 	var i: int = nearest(p, 2.4)
 	if i < 0:

@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V97 : l'Île Al Dente — le chef d'orchestre. L'île de la secte du Spaghetti Volant :
 ##  - le Temple-Passoire : une passoire géante retournée sur un socle de pierre, percée de centaines de
 ##    trous (le soleil dessine des taches de lumière à l'intérieur) ; dedans, des bancs en arc de cercle
@@ -1175,7 +1177,7 @@ func walkable(p: Vector3) -> bool:
 	if in_sauce(p):
 		_hot_t = _clock
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func owns_point(p: Vector3) -> bool:

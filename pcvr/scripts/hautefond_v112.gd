@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V112 : l'Île de Hautefond, la cité-colonne — le chef d'orchestre. Il construit l'île
 ## (ile_hautefond_v112), la ville en terrasses autour de la Grande Colonne (hautefond_ville_v112, ses
 ## grands lieux hautefond_lieux_v112, la Colonne et son ascenseur hautefond_colonne_v112), ce qu'il y a
@@ -419,7 +421,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if on_structure(p):
 		return true
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func blocks_boat(_p: Vector3) -> bool:

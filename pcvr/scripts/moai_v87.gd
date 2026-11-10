@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V87 : l'Île aux Moaïs — le chef d'orchestre. Il construit l'île (ile_moai_v87 : le triangle
 ## et ses trois volcans, la Plage Blanche, le Plateau des Anciens), y dresse les Moaïs
 ## (moai_statue_v87) : le Grand Moaï au milieu du plateau, la ronde des Moaïs habités autour de
@@ -714,7 +716,7 @@ func contains(p: Vector3) -> bool:
 func walkable(p: Vector3) -> bool:
 	if not contains(p):
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func owns_point(p: Vector3) -> bool:

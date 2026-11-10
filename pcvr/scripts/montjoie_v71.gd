@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V71 : l'Île de Montjoie — le chef d'orchestre. Il construit l'île (ile_montjoie_v71), la ville
 ## fortifiée sur la Butte (montjoie_ville_v71 et ses grands lieux, montjoie_lieux_v71), ce qu'il y
 ## a dehors (montjoie_dehors_v71 : le port, la ferme et ses champs, le moulin, le lac, le camp des
@@ -217,7 +219,7 @@ func walkable(p: Vector3) -> bool:
 		return true
 	if ile.in_lake_water(p.x, p.z):
 		return false
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func blocks_boat(_p: Vector3) -> bool:

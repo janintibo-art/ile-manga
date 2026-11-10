@@ -1,4 +1,6 @@
 extends Node3D
+## V127 : on marche jusque dans l'eau peu profonde (le rivage n'est plus un mur : on y entre et on en sort à la nage).
+const RIVE_V127: float = -1.3
 ## V75 : l'Île du Boucan — le chef d'orchestre. Il construit l'île (ile_boucan_v75), Port-Boucan,
 ## la ville libre des punks dans la friche du vieux port (boucan_ville_v75 et ses grands lieux,
 ## boucan_lieux_v75 : la Halle Hurlante, la Conserverie, la Filature, le Cargo de Radio Boucan, le
@@ -241,7 +243,7 @@ func walkable(p: Vector3) -> bool:
 		return false
 	if on_structure(p):
 		return true
-	return ile.height(p.x, p.z) > -0.3 or p.y > 1.0
+	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 
 func blocks_boat(_p: Vector3) -> bool:
