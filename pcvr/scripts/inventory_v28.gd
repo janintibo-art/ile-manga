@@ -559,6 +559,8 @@ const ITEMS := {
 		"desc": "Un petit croc jaune, perdu par un gobelin du Bois des Lutins (il en a d'autres, et une chaussette volée dans chaque poche). Maître Hugues en fait des colliers."},
 	"cle_cuivre": {"name": "Clé de cuivre", "art": "la clé de cuivre", "kind": "quete", "sorte": "Objet de quête : le Donjon des Mille Marches", "max": 1,
 		"desc": "Une clé de cuivre vert-de-grisé, un peu gluante : elle était dans le ventre d'une grenouille géante du Lac Souterrain. Elle ouvre la grille du troisième étage du donjon."},
+	"cle_souterrains": {"name": "Clé des souterrains", "art": "la clé des souterrains", "kind": "quete", "sorte": "Objet de quête : le château du comte", "max": 1,
+		"desc": "Une grosse clé de fer noir, froide comme la glace, que le comte Dracula portait à son cou, au bout d'une chaîne. Elle ouvre la grille des souterrains, au fond de la salle d'armes du château."},
 	"cle_argent": {"name": "Clé d'argent", "art": "la clé d'argent", "kind": "quete", "sorte": "Objet de quête : le Donjon des Mille Marches", "max": 1,
 		"desc": "Une clé d'argent ciselée de petits hiboux, trouvée dans le seul coffre de la Bibliothèque des Mimiques qui ne mord pas. Elle ouvre l'escalier du dernier étage."},
 	"cidre_montjoie": {"name": "Cidre de Montjoie", "art": "un cidre de Montjoie", "kind": "nourriture", "max": 10, "heal": 2,

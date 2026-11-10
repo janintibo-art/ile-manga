@@ -20,7 +20,8 @@ const IleScript = preload("res://scripts/ile_sombreval_v121.gd")
 const Kit = preload("res://scripts/sombreval_kit_v121.gd")
 const Public = preload("res://scripts/public_v111.gd")
 const FLORE := "res://scripts/sombreval_flore_v121.gd"
-const CHATEAU := "res://scripts/chateau_comte_v124.gd"
+const CHATEAU := "res://scripts/comte_v128.gd"            # V128 : le château, avec la Chambre du Comte et les souterrains
+const Comte128 = preload("res://scripts/comte_v128.gd")
 
 const Y0: float = IleScript.Y0
 const TOP: float = IleScript.TOP
@@ -31,7 +32,8 @@ const PLACES := {"port": "le Port des Brumes", "marche": "la Place du Marché", 
 	"chateau_bal": "le château du comte, la Salle de Bal", "chateau_bal_valse": "le château du comte, la Salle de Bal",
 	"chateau_biblio": "le château du comte, la Bibliothèque", "chateau_cabinet": "le château du comte, le cabinet du baron",
 	"chateau_escalier": "le château du comte, l'escalier", "chateau_armes": "le château du comte, la Salle d'Armes",
-	"chateau_tour": "le château du comte, la Tour du Comte"}
+	"chateau_tour": "le château du comte, la Tour du Comte", "chateau_comte": "le château du comte, la Chambre du Comte",
+	"chateau_cachots": "le château du comte, les souterrains"}
 const MESSAGES := {
 	"marche": "La Place du Marché — le vieux beffroi, son horloge arrêtée à minuit… et pas un bruit",
 	"vieille_ville": "La Vieille Ville — des rues de brique, des volets arrachés, du lierre jusqu'aux toits",
@@ -99,6 +101,8 @@ var _hordes: Dictionary = {}              # id -> {"monstres": [], "vide_t": flo
 var _clock: float = 0.0
 var _zone_t: float = 0.0
 var _hordes_t: float = 0.0
+var _gens: Dictionary = {}                # V128 : les gens libérés, sur la Place du Marché (id -> monstre « captif »)
+var _gens_t: float = 0.0
 var _peur_t: float = 40.0
 var _coeur_t: float = 0.0
 var _eclair_t: float = 25.0
@@ -135,7 +139,8 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "visites": {}, "notes": {}, "vaincus": 0, "porte": false, "beffroi": false, "cimetiere": false, "herse": false}
+	return {"visite": false, "visites": {}, "notes": {}, "vaincus": 0, "porte": false, "beffroi": false, "cimetiere": false, "herse": false,
+		"libere": false, "place": false}
 
 
 # =================================================================== construction
@@ -661,6 +666,7 @@ func _place_marche() -> void:
 	b.box("fer_noir", Transform3D(Basis(), cad + Vector3(0.09, 0.55, 0)), Vector3(0.04, 1.1, 0.1))
 	b.box("fer_noir", Transform3D(Basis(), cad + Vector3(0.1, 0.4, 0)), Vector3(0.04, 0.8, 0.14))
 	objets["beffroi"] = IleScript.W(bx + 5.0, bz, ile.height(IleScript.W(bx + 5.0, bz).x, IleScript.W(bx + 5.0, bz).z))
+	objets["fontaine"] = _ground(cx + 4.0, cz)
 	# la fontaine à sec, au milieu
 	var fc: Vector3 = _ground(cx + 4.0, cz)
 	b.cyl("pierre_tombe", Transform3D(Basis(), fc), 4.0, 4.0, 0.8, 24)
@@ -1276,6 +1282,13 @@ func _notes() -> void:
 		_note_mi[id] = mi
 		_interactions.append({"id": "sv_note_" + id, "pos": at, "radius": 1.8, "text": "E : ramasser la page de journal",
 			"vr": "Gâchette : lire la page", "call": _lire_note.bind(id, mi)})
+	# V128 : les gens libérés des souterrains, autour de la fontaine
+	if objets.has("fontaine"):
+		for e in Comte128.CAPTIFS:
+			var gid: String = str(e[0])
+			var gp: Vector3 = _gens_spot(gid)
+			_interactions.append({"id": "sv_gens_" + gid, "pos": gp, "radius": 2.2, "text": str(Comte128.PARLER.get(gid, "E : parler")),
+				"vr": "Gâchette : parler", "call": _gens_talk.bind(gid), "when": func(): return _gens.has(gid) and is_instance_valid(_gens[gid])})
 	# le beffroi
 	if objets.has("beffroi"):
 		_interactions.append({"id": "sv_beffroi", "pos": objets["beffroi"], "radius": 3.0, "text": "E : regarder l'horloge du beffroi",
@@ -1509,9 +1522,9 @@ func owns_point(p: Vector3) -> bool:
 	return contains(p) or (castle != null and castle.contains(p))
 
 
-## Les morts-vivants rôdent partout sur l'île (sauf sur l'eau)
+## Les morts-vivants rôdent partout sur l'île (sauf sur l'eau) ; V128 : plus après la chute du comte
 func hostile_zone(p: Vector3) -> bool:
-	return contains(p) and ile.height(p.x, p.z) > -0.6
+	return contains(p) and ile.height(p.x, p.z) > -0.6 and not bool(state.get("libere", false))
 
 
 func zone_at(p: Vector3) -> String:
@@ -1570,6 +1583,9 @@ func _process(delta: float) -> void:
 	var d: float = Vector2(p.x - IleScript.CENTER.x, p.z - IleScript.CENTER.z).length()
 	# la brume, la lumière blafarde : de plus en plus fortes en approchant
 	var want: float = 1.0 - smoothstep(330.0, 470.0, d)
+	# V128 : le comte est tombé : la brume se lève à moitié
+	if bool(state.get("libere", false)):
+		want *= 0.5
 	sombre = move_toward(sombre, want, delta * 0.25)
 	var tm: Node = main.get("temps_v56")
 	if tm != null and tm.get("sombre") != null:
@@ -1600,11 +1616,18 @@ func _process(delta: float) -> void:
 		main._show_message_v28("Sombreval — la ville morte. Pas une lumière, pas une voix… seulement le vent. Et, tout là-haut, le château.")
 		if main.has_method("jingle"):
 			main.jingle("decouverte")
-	_hordes_t -= delta
-	if _hordes_t <= 0.0:
-		_hordes_t = 1.0
-		_hordes_tick(p)
-	_peur_tick(delta, p)
+	# V128 : après la chute du comte, plus de morts-vivants ; les gens libérés sur la place
+	if bool(state.get("libere", false)):
+		_gens_t -= delta
+		if _gens_t <= 0.0:
+			_gens_t = 1.0
+			_gens_tick(p)
+	else:
+		_hordes_t -= delta
+		if _hordes_t <= 0.0:
+			_hordes_t = 1.0
+			_hordes_tick(p)
+		_peur_tick(delta, p)
 	_beffroi_tick()
 	_zone_t -= delta
 	if _zone_t > 0.0:
@@ -1652,13 +1675,22 @@ func _fog(k: float) -> void:
 
 
 func _lights_flicker() -> void:
+	var off: bool = bool(state.get("libere", false))
 	for e in _castle_lights:
 		var l: OmniLight3D = e[0]
-		l.light_energy = float(e[1]) * (0.75 + 0.25 * sin(_clock * 7.0 + l.position.x) * sin(_clock * 3.1 + l.position.z))
+		l.visible = not off
+		if not off:
+			l.light_energy = float(e[1]) * (0.75 + 0.25 * sin(_clock * 7.0 + l.position.x) * sin(_clock * 3.1 + l.position.z))
 
 
 func _bats_tick(delta: float) -> void:
 	if not objets.has("donjon"):
+		return
+	# V128 : les chauves-souris sont parties avec le comte
+	if bool(state.get("libere", false)):
+		if not _bats.is_empty() and (_bats[0][0] as Node3D).visible:
+			for e0 in _bats:
+				(e0[0] as Node3D).visible = false
 		return
 	var c: Vector3 = objets["donjon"]
 	for k in range(_bats.size()):
@@ -1688,7 +1720,7 @@ func _orage_tick(delta: float, near: bool) -> void:
 		_tonnerre_t -= delta
 		if _tonnerre_t <= 0.0:
 			sfx("tonnerre", main._player_pos_v27() + Vector3(_rng.randf_range(-60, 60), 40, _rng.randf_range(-60, 60)), -2.0)
-	if not near:
+	if not near or bool(state.get("libere", false)):
 		return
 	_eclair_t -= delta
 	if _eclair_t <= 0.0:
@@ -1898,6 +1930,118 @@ static func SPEC_OK(m: Node) -> bool:
 	return str(m.get("kind")).begins_with("zombie")
 
 
+# =================================================================== V128 : la ville libérée
+
+## Le comte est tombé : les morts-vivants s'endorment pour toujours, les fenêtres rouges s'éteignent,
+## l'orage s'en va, le beffroi se remet à sonner. « animate » : au moment même (pas au chargement)
+func liberer(animate: bool) -> void:
+	state["libere"] = true
+	for id in _hordes:
+		for m in (_hordes[id] as Dictionary)["monstres"]:
+			if is_instance_valid(m) and str(m.state) != "mort":
+				if animate:
+					m.call("_die63")
+				else:
+					m.queue_free()
+	_hordes.clear()
+	for e in _derriere:
+		if is_instance_valid(e[0]) and str(e[0].state) != "mort":
+			if animate:
+				e[0].call("_die63")
+			else:
+				e[0].queue_free()
+	_derriere.clear()
+	_eclair_seq.clear()
+	if _eclair != null:
+		_eclair.visible = false
+	if not animate:
+		return
+	say("Au loin, dans toute la ville, un long soupir… Les morts-vivants s'arrêtent, s'allongent doucement, et s'endorment pour toujours. Les fenêtres rouges du château s'éteignent. Et sur la Place du Marché, le vieux beffroi se remet à sonner.", 10.0)
+	if objets.has("beffroi"):
+		for k in range(6):
+			get_tree().create_timer(2.0 + k * 2.2).timeout.connect(func(): sfx("cloche_cathedrale", objets["beffroi"], -2.0))
+	var j: Node = main.get("journal_v56")
+	if j != null and j.has_method("refresh"):
+		j.refresh()
+
+
+## La place de chacun, autour de la fontaine
+func _gens_spot(id: String) -> Vector3:
+	var c: Vector3 = objets.get("fontaine", Vector3.ZERO)
+	var k: int = 0
+	for i in range(Comte128.CAPTIFS.size()):
+		if str(Comte128.CAPTIFS[i][0]) == id:
+			k = i
+	var a: float = TAU * (k + 0.5) / float(Comte128.CAPTIFS.size())
+	var p: Vector3 = c + Vector3(cos(a), 0, sin(a)) * 6.4
+	return Vector3(p.x, ile.height(p.x, p.z) if ile != null else p.y, p.z)
+
+
+## Quand tous les prisonniers sont libres : ils sont sur la place (on les fait venir quand on approche)
+func _gens_tick(p: Vector3) -> void:
+	if castle == null or not bool(castle.state.get("libres", false)) or not objets.has("fontaine"):
+		return
+	var c: Vector3 = objets["fontaine"]
+	var d: float = Vector2(p.x - c.x, p.z - c.z).length()
+	if d > 220.0:
+		_gens_free()
+		return
+	if d < 16.0 and not bool(state.get("place", false)):
+		state["place"] = true
+		say("La Place du Marché… Les huit prisonniers des souterrains sont là, autour de la fontaine. Ils t'ont vu ! Ils lèvent les bras, ils t'appellent par ton nom.", 7.0)
+		sfx("foule_acclame", c + Vector3.UP * 1.5, 0.0)
+		if main.has_method("jingle"):
+			main.jingle("decouverte")
+		var j: Node = main.get("journal_v56")
+		if j != null and j.has_method("refresh"):
+			j.refresh()
+	if d > 150.0 or not _gens.is_empty():
+		return
+	var mg: Node = _manager()
+	if mg == null or not mg.has_method("spawn_extra"):
+		return
+	for e in Comte128.CAPTIFS:
+		var id: String = str(e[0])
+		Comte128.Monster124.next_corps = str(e[2])
+		var at: Vector3 = _gens_spot(id) + Vector3.UP * 0.1
+		var m: Node3D = mg.spawn_extra("captif", at)
+		if m == null:
+			continue
+		m.set("home", at)
+		m.call("talk")
+		var out: Vector3 = (at - c)
+		out.y = 0.0
+		out = out.normalized() if out.length() > 0.01 else Vector3(0, 0, 1)
+		m.set("facing", out)
+		m.rotation.y = atan2(out.x, out.z)
+		_gens[id] = m
+
+
+func _gens_free() -> void:
+	var mg: Node = _manager()
+	for id in _gens:
+		var m: Variant = _gens[id]
+		if is_instance_valid(m):
+			if mg != null:
+				(mg.monsters as Array).erase(m)
+			(m as Node).queue_free()
+	_gens.clear()
+
+
+func _gens_talk(id: String) -> void:
+	var m: Node3D = _gens.get(id, null)
+	if m == null or not is_instance_valid(m):
+		return
+	var e: Array = []
+	for e0 in Comte128.CAPTIFS:
+		if str(e0[0]) == id:
+			e = e0
+	if e.is_empty():
+		return
+	var nom: String = str(e[1])
+	main.ask_v69(m, nom.substr(0, 1).to_upper() + nom.substr(1), "ravi", str(e[7]), [{"id": "ok", "label": "À bientôt !"}], func(_x): main._close_dialogue_v31())
+
+
 # =================================================================== sauvegarde, trouvailles
 
 func trouvailles() -> Dictionary:
@@ -1944,3 +2088,9 @@ func load_data(d: Dictionary) -> void:
 		if is_instance_valid(e[0]):
 			e[0].queue_free()
 	_derriere.clear()
+	# V128 : la ville libérée (ou pas) ; les gens de la place reviendront quand on approchera
+	_gens_free()
+	for e1 in _bats:
+		(e1[0] as Node3D).visible = not bool(state.get("libere", false))
+	if bool(state.get("libere", false)):
+		liberer(false)

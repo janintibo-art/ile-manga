@@ -1430,6 +1430,11 @@ const AVENTURES := [
 			["sv_ilona", "Démasquer la comtesse Ilona, au bal (celle qui n'a pas de reflet)"], ["sv_sigismund", "Obtenir le rubis du baron Sigismund, dans la bibliothèque"],
 			["sv_radu", "Vaincre le chevalier Radu dans la salle d'armes (la lumière !)"], ["sv_rubis", "Poser les trois rubis sur la porte de la Tour du Comte"],
 			["sv_tour", "Monter dans la Tour du Comte"]]},
+	# V128 : le comte lui-même, puis les prisonniers des souterrains
+	{"id": "comte_dracula", "titre": "Le comte Dracula", "lieu": "Sombreval, tout en haut de la Tour du Comte", "debut": "sv_chambre",
+		"etapes": [["sv_chambre", "Pousser la porte de fer, tout en haut de la Tour du Comte"], ["sv_comte", "Vaincre le comte Dracula (l'aube est derrière les rideaux)"],
+			["sv_grille", "Ouvrir la grille des souterrains, au fond de la salle d'armes"], ["sv_libres", "Libérer les huit prisonniers des souterrains"],
+			["sv_place", "Retrouver les gens libérés sur la Place du Marché"]]},
 ]
 
 var main: Node

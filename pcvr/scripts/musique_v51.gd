@@ -36,7 +36,7 @@ const ZONE_TRACK := {
 	"sv_faubourg": "sombreval", "sv_cimetiere": "sombreval", "sv_butte": "sombreval", "sv_chateau": "sombreval", "sv_greve": "sombreval", "sv_ville": "sombreval",
 	"sv_chateau_hall": "chateau_comte", "sv_chateau_galerie": "chateau_comte", "sv_chateau_bal": "chateau_comte", "sv_chateau_bal_valse": "bal_vampires",
 	"sv_chateau_biblio": "chateau_comte", "sv_chateau_cabinet": "chateau_comte", "sv_chateau_escalier": "chateau_comte", "sv_chateau_armes": "chateau_comte",
-	"sv_chateau_tour": "chateau_comte",
+	"sv_chateau_tour": "chateau_comte", "sv_chateau_comte": "chateau_comte", "sv_chateau_cachots": "chateau_comte",
 	"hf_colonne": "cliquetis", "hf_haute": "cliquetis", "hf_observatoire": "cliquetis", "hf_mairie": "cliquetis", "hf_bibliotheque": "",
 	"hf_moyenne": "cliquetis", "hf_marche": "cliquetis", "hf_taverne": "", "hf_mat": "cliquetis", "hf_basse": "cliquetis", "hf_forge": "cliquetis",
 	"hf_belvedere": "ciel", "hf_cabine": "ciel", "hf_port": "port_azur", "hf_phare": "large", "hf_moulin": "campagne", "hf_vergers": "campagne",

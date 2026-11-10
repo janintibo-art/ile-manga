@@ -30,15 +30,25 @@ const SPECS124 := {
 		"rayon": 0.5, "haut": 1.05, "nom": "Chevalier Radu", "boss": true},
 	"mortimer": {"pv": 999, "vitesse": 0.0, "degats": 0, "portee": 0.0, "armer": 1.0, "repos": 1.0, "vue": 0.0, "laisse": 0.0,
 		"rayon": 0.42, "haut": 0.95, "nom": "Mortimer", "pacifique": true},
+	# V128 : le comte Dracula lui-même (tout en haut de sa tour), et les prisonniers de ses souterrains
+	"dracula": {"pv": 240, "vitesse": 3.5, "degats": 2, "portee": 2.1, "armer": 0.5, "repos": 0.85, "vue": 40.0, "laisse": 200.0,
+		"rayon": 0.45, "haut": 1.0, "nom": "Comte Dracula", "brume": 5.0, "boss": true},
+	"captif": {"pv": 999, "vitesse": 0.0, "degats": 0, "portee": 0.0, "armer": 1.0, "repos": 1.0, "vue": 0.0, "laisse": 0.0,
+		"rayon": 0.42, "haut": 0.95, "nom": "Prisonnier", "pacifique": true},
 }
 const SOUNDS124 := {"vampire": ["vampire_siffle", "vampire_mort"], "vampire_garde": ["vampire_siffle", "vampire_mort"],
 	"ilona": ["vampire_siffle", "vampire_mort"], "sigismund": ["vampire_siffle", "vampire_mort"], "radu": ["vampire_siffle", "vampire_mort"],
-	"mortimer": ["vampire_rire", "vampire_mort"]}
+	"mortimer": ["vampire_rire", "vampire_mort"], "dracula": ["vampire_siffle", "vampire_mort"], "captif": ["murmures", "murmures"]}
 ## Les corps (des visages qu'on ne croise pas ailleurs) : [id, femme]
 const CORPS_V := [["f81_arcanelle_0", false], ["f81_azur_0", false], ["f81_neo_6", false], ["f81_cliquetis_0", false],
 	["f81_montjoie_7", true], ["f81_cliquetis_1", true], ["f81_neo_9", true], ["f81_tazira_7", true], ["f81_carene_1", true]]
 const CORPS_GARDE := ["f81_tazira_0", "f81_pirate_0", "f81_boucan_6", "f81_pasta_0"]
-const NOMMES := {"ilona": "f81_montjoie_7", "sigismund": "f81_tazira_2", "radu": "f81_montjoie_0", "mortimer": "f81_boucan_2"}
+const NOMMES := {"ilona": "f81_montjoie_7", "sigismund": "f81_tazira_2", "radu": "f81_montjoie_0", "mortimer": "f81_boucan_2", "dracula": "f81_neo_2"}
+## V128 : les prisonniers des souterrains (des gens de Sombreval) : corps -> femme ?
+const CAPTIFS_CORPS := {"f81_yourte_rainville_2": false, "f81_braise_3": true, "f81_yourte_fleurs_2": false, "f81_yourte_fleurs_9": true,
+	"f81_braise_8": false, "f81_yourte_rainville_7": true, "f81_pasta_2": false, "f81_pasta_9": true}
+## V128 : le corps du prochain prisonnier (le donjon le choisit juste avant de le faire venir)
+static var next_corps: String = ""
 
 static var _vlib: AnimationLibrary = null
 
@@ -166,7 +176,10 @@ func _build_body124() -> void:
 	if not _anim121.has_animation_library("vp"):
 		_anim121.add_animation_library("vp", _vlib)
 	var ids: Array = []
-	if NOMMES.has(kind):
+	if kind == "captif":
+		ids = [next_corps if CAPTIFS_CORPS.has(next_corps) else CAPTIFS_CORPS.keys()[randi() % CAPTIFS_CORPS.size()]]
+		next_corps = ""
+	elif NOMMES.has(kind):
 		ids = [NOMMES[kind]]
 	elif kind == "vampire_garde":
 		ids = CORPS_GARDE.duplicate()
@@ -196,6 +209,8 @@ func _build_body124() -> void:
 		_armure124()
 	if kind == "mortimer":
 		_chandelier124()
+	if kind == "dracula":
+		_model121.scale *= 1.05
 	_play121("vp/attente", 0.0)
 	_anim121.seek(randf() * 2.0, true)
 
@@ -203,6 +218,8 @@ func _build_body124() -> void:
 static func _is_femme(id: String) -> bool:
 	if id == NOMMES["ilona"]:
 		return true
+	if CAPTIFS_CORPS.has(id):
+		return bool(CAPTIFS_CORPS[id])
 	for e in CORPS_V:
 		if str(e[0]) == id:
 			return bool(e[1])
@@ -229,6 +246,22 @@ func _tenue121(id: String) -> Array:
 			return [{"v": "chemise_longue", "c": blanc, "c2": blanc, "tissu": "coton"}, {"v": "gilet", "c": [0.05, 0.12, 0.08], "c2": [0.6, 0.45, 0.15]},
 				{"v": "veste", "c": [0.1, 0.07, 0.05], "c2": noir, "tissu": "laine"}, {"v": "pantalon", "c": noir, "c2": noir, "tissu": "laine"},
 				{"v": "chaussures", "c": [0.05, 0.03, 0.02]}, {"v": "echarpe", "c": [0.3, 0.02, 0.04]}]
+		"dracula":
+			# V128 : la redingote noire, le gilet rouge brodé d'or, le grand col, la cape doublée de rouge
+			return [{"v": "chemise_longue", "c": blanc, "c2": blanc, "tissu": "soie"}, {"v": "gilet", "c": [0.3, 0.015, 0.03], "c2": [0.62, 0.46, 0.14]},
+				{"v": "veste", "c": [0.02, 0.018, 0.022], "c2": noir, "tissu": "laine"}, {"v": "pantalon", "c": noir, "c2": noir, "tissu": "laine"},
+				{"v": "bottes_hautes", "c": [0.015, 0.012, 0.012]}, {"v": "col", "c": noir}, {"v": "cape", "c": [0.015, 0.012, 0.016], "c2": [0.42, 0.02, 0.05]}]
+		"captif":
+			# V128 : des habits de tous les jours, usés, gris de poussière (trois ans dans un cachot)
+			var rc := RandomNumberGenerator.new()
+			rc.seed = hash(id) + 128
+			var t1: Array = [[0.32, 0.29, 0.25], [0.24, 0.26, 0.28], [0.3, 0.24, 0.18], [0.36, 0.33, 0.28], [0.22, 0.2, 0.17]][rc.randi() % 5]
+			var t2: Array = [[0.18, 0.16, 0.14], [0.2, 0.18, 0.15], [0.14, 0.15, 0.16]][rc.randi() % 3]
+			if _is_femme(id):
+				return [{"v": "corsage_long", "c": t1, "c2": t2, "tissu": "coton"}, {"v": "jupe_longue", "c": t2, "c2": t1, "tissu": "laine"},
+					{"v": "chaussures", "c": [0.1, 0.08, 0.06]}]
+			return [{"v": "chemise_longue", "c": t1, "c2": t1, "tissu": "coton"}, {"v": "gilet", "c": t2, "c2": t2},
+				{"v": "pantalon", "c": t2, "c2": t2, "tissu": "laine"}, {"v": "chaussures", "c": [0.1, 0.08, 0.06]}]
 		"radu", "vampire_garde":
 			return [{"v": "tunique_haut", "c": [0.1, 0.1, 0.11], "c2": noir, "tissu": "laine"}, {"v": "pantalon", "c": noir, "c2": noir, "tissu": "cuir"},
 				{"v": "bottes_hautes", "c": [0.04, 0.03, 0.03]}, {"v": "ceinture", "c": [0.08, 0.05, 0.03]},
@@ -249,6 +282,9 @@ func _tenue121(id: String) -> Array:
 func _zombify_parts(parts: Dictionary) -> void:
 	if not SPECS124.has(kind):
 		super._zombify_parts(parts)
+		return
+	# V128 : les prisonniers sont des gens (pâles, mais vivants)
+	if kind == "captif":
 		return
 	for k in ["peau", "visage"]:
 		var mi: MeshInstance3D = parts.get(k)
@@ -984,6 +1020,9 @@ func loot(rng: RandomNumberGenerator) -> Array:
 		"ilona", "sigismund", "radu":
 			g.append(["piece", rng.randi_range(25, 40)])
 			g.append(["piece_or", 2])
+		"dracula":
+			g.append(["piece", rng.randi_range(70, 100)])
+			g.append(["piece_or", 5])
 	for e in get_meta("butin_extra", []):
 		g.append(e)
 	return g
