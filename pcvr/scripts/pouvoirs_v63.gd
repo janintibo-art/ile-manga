@@ -134,6 +134,9 @@ func use(pid: String) -> bool:
 			_rouage()
 		"lune":
 			_lune()
+	# V129 : le cercle de runes du sceau
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.on_power(pid)
 	if _talent("coeur_sceaux") and hero != null:
 		_uses += 1
 		hero.stamina = minf(float(hero.stamina) + 2.5, float(hero.STAMINA_MAX))
@@ -342,6 +345,9 @@ func _flamme() -> void:
 	trail.color_ramp = grad
 	ball.add_child(trail)
 	_balls.append({"node": ball, "dir": dir, "speed": 17.0, "left": 24.0, "dmg": 6 if _talent("echo_sceaux") else 4})
+	# V129 : un cœur blanc, des flammèches, de la fumée, des braises
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.dress_fireball(ball)
 	main.sfx("flamme_lance", o)
 
 
@@ -407,6 +413,10 @@ func _tick_balls(delta: float) -> void:
 func _explode(at: Vector3) -> void:
 	last_explode = at
 	main.sfx("flamme_impact", at)
+	# V129 : la vraie explosion (boule de flammes, fumée, onde au sol, secousse)
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.explosion(at)
+		main.sfx("explosion_feu", at)
 	if main.combat_v28 != null:
 		main.combat_v28.puff(at, Color(1.0, 0.55, 0.2))
 	var flash := OmniLight3D.new()

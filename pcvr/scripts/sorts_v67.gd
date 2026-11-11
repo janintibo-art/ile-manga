@@ -224,6 +224,10 @@ func cast(id: String = "") -> bool:
 	mana -= float(c)
 	_cd[id] = float(COOLDOWN[id])
 	casts[id] = int(casts.get(id, 0)) + 1
+	# V129 : le cercle de runes, et l'effet propre au sort
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.on_spell(id, INFO[id]["couleur"])
+		main.sfx("cercle_magique", _origin())
 	if hero != null and not main.xr_active and str(hero.state) == "sol" and id != "levitation":
 		hero.play_action("push", _origin() + _aim() * 3.0)
 		hero.action_length = 0.42
@@ -298,6 +302,9 @@ func _gel() -> void:
 	var dir: Vector3 = _aim()
 	main.sfx("sort_gel", o)
 	_frost_fx(o, dir)
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.frost(o, dir)
+		main.sfx("glace_jaillit", o + dir * 3.0)
 	var pw: Node = main.get("pouvoirs_v63")
 	if pw != null:
 		for mo in pw._monsters():
@@ -471,6 +478,8 @@ func _telekinesie() -> bool:
 		return false
 	var pk2: Dictionary = inv.pickups[best]
 	main.sfx("sort_telekinesie", pk2["pos"])
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.tk_aura(pk2["node"], INFO["telekinesie"]["couleur"])
 	_flying.append({"node": pk2["node"], "from": pk2["pos"], "uid": str(pk2["uid"]), "t": 0.0})
 	last_hits.append(str(pk2["uid"]))
 	return true

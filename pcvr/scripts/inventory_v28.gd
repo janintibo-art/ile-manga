@@ -1242,8 +1242,14 @@ func _box_mesh(size: Vector3) -> BoxMesh:
 	return b
 
 
+const Armes129 := preload("res://scripts/armes_v129.gd")
+
+
 ## Maillage 3D d'un objet (au sol, dans la main ou à la ceinture). Taille réelle, en mètres.
 func make_model(id: String) -> Node3D:
+	# V129 : les armes ont leurs vrais modèles détaillés (armes_v129.gd)
+	if Armes129.has(id):
+		return Armes129.build(id)
 	var m := Node3D.new()
 	m.name = "Modele_" + id
 	match id:

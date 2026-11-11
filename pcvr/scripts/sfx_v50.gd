@@ -38,6 +38,10 @@ const DB := {
 	"rouage": -5.0, "lueur": -6.0, "sceau_eveil": -3.0, "sceau_pose": -2.0, "porte_coeur": 0.0, "feu_ronces": -3.0,
 	"mecanisme": -4.0, "eau_vanne": -4.0, "geyser": -4.0, "vague": -3.0, "lame": -6.0, "dard": -5.0, "dalle_clic": -4.0,
 	"piston": -3.0, "ombre_mains": -5.0, "onde_choc": -1.0, "rune_brisee": -2.0, "boss_coeur_cri": 0.0,
+	# V129 : le combat spectaculaire (l'âme des armes, les coups qui pèsent, la magie)
+	"impact_acier": -7.0, "impact_braise": -6.0, "impact_foudre": -7.0, "impact_maree": -6.0, "impact_cristal": -7.0,
+	"impact_arcane": -6.0, "coup_critique": -4.0, "onde_lame": -5.0, "cercle_magique": -9.0, "glace_jaillit": -4.0,
+	"explosion_feu": -2.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,
 	# V66 : objets à casser, coffres fermés à clé, boire

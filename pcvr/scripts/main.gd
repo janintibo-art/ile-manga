@@ -76,6 +76,8 @@ var donjon_v35: Node3D
 var trap_jungle_spot_v35: Vector3 = Vector3.INF
 var monstres_v36: Node3D
 var trainee_v34: Node3D
+# V129 : le spectacle du combat et de la magie (impacts, croissants, cercles de runes…).
+var combat_fx_v129: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -2156,6 +2158,10 @@ func _create_gameplay_v28() -> void:
 	combat_v28 = preload("res://scripts/combat_v28.gd").new()
 	combat_v28.name = "Combat_v28"
 	add_child(combat_v28)
+	combat_fx_v129 = preload("res://scripts/combat_fx_v129.gd").new()
+	combat_fx_v129.name = "Combat_fx_v129"
+	add_child(combat_fx_v129)
+	combat_fx_v129.setup(self)
 	inventory_v28 = preload("res://scripts/inventory_v28.gd").new()
 	inventory_v28.name = "Inventaire_v28"
 	add_child(inventory_v28)

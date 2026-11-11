@@ -1128,6 +1128,14 @@ func _charged_slash() -> void:
 	_play(name, 0.05, 0.9, 0.0)
 	if main.has_method("sfx"):
 		main.sfx("coup_charge", body.global_position + Vector3.UP * 1.2)
+	# V129 : un croissant d'énergie part devant la lame
+	if main.get("combat_fx_v129") != null:
+		var fx: Node = main.combat_fx_v129
+		get_tree().create_timer(SLASH_HIT * 0.9).timeout.connect(func():
+			if is_instance_valid(fx) and is_instance_valid(body):
+				fx.slash_wave(body.global_position + Vector3.UP * 1.1, facing, weapon)
+				if main.has_method("sfx"):
+					main.sfx("onde_lame", body.global_position + Vector3.UP * 1.2))
 
 
 ## L'attaque tournoyante (aussi en VR : clic du stick droit) : un tour complet, deux coups.
@@ -1144,6 +1152,8 @@ func spin_attack() -> void:
 	_play(name, 0.05, 1.3, 0.0)
 	if main.has_method("sfx"):
 		main.sfx("tournoyante", body.global_position + Vector3.UP * 1.2)
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.whirl(body.global_position, weapon)
 	if main.combat_v28 != null:
 		for k in range(6):
 			var a: float = TAU * k / 6.0
@@ -1195,6 +1205,8 @@ func vr_spin() -> void:
 			main.combat_v28.puff(vb.global_position + Vector3(cos(a) * 1.4, 0.9, sin(a) * 1.4), Color(0.6, 0.85, 1.0))
 	if main.has_method("sfx"):
 		main.sfx("tournoyante", vb.global_position + Vector3.UP * 1.2)
+	if main.get("combat_fx_v129") != null:
+		main.combat_fx_v129.whirl(vb.global_position, str(main.inventory_v28.equipped))
 
 
 ## V63 (VR) : à chaque image : la riposte et le second souffle s'écoulent.

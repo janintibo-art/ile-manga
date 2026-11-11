@@ -208,7 +208,7 @@ func strike(origin: Vector3, facing: Vector3, reach: float, damage: int) -> int:
 			continue
 		var snd: String = impact_sound(target)
 		target.take_hit(damage, origin)
-		_impact(snd, c)
+		_impact(snd, c, origin)
 		hits += 1
 	return hits
 
@@ -229,7 +229,7 @@ func strike_around(origin: Vector3, reach: float, damage: int) -> int:
 			continue
 		var snd: String = impact_sound(target)
 		target.take_hit(damage, origin)
-		_impact(snd, c)
+		_impact(snd, c, origin)
 		hits += 1
 	return hits
 
@@ -248,7 +248,7 @@ func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3)
 		if Vector2(point.x - base.x, point.z - base.z).length() <= float(target.hit_radius) + radius:
 			var snd: String = impact_sound(target)
 			target.take_hit(damage, from_pos)
-			_impact(snd, point)
+			_impact(snd, point, from_pos)
 			hits += 1
 	return hits
 
@@ -275,9 +275,35 @@ func impact_sound(target: Node) -> String:
 	return "touche_chair"
 
 
-func _impact(snd: String, at: Vector3) -> void:
+func _impact(snd: String, at: Vector3, from: Vector3 = Vector3.INF) -> void:
 	if snd != "" and main != null and main.has_method("sfx"):
 		main.sfx(snd, at, 2.0 if critical else 0.0)
+	# V129 : le spectacle du coup (éclair, onde, étincelles, âme de l'arme, poids du coup)
+	var fx: Node = main.get("combat_fx_v129") if main != null else null
+	if fx != null:
+		fx.impact(at, critical, _hit_item(), from)
+		if main.has_method("sfx"):
+			var son: String = SONS_AME.get(str(fx.last_genre), "")
+			if son != "":
+				main.sfx(son, at, 1.0 if critical else -2.0)
+			if critical:
+				main.sfx("coup_critique", at)
+
+
+## V129 : le son de l'âme de l'arme, par-dessus le bruit du coup.
+const SONS_AME := {"acier": "impact_acier", "forge": "impact_braise", "foudre": "impact_foudre", "maree": "impact_maree",
+	"or": "impact_acier", "coeur": "impact_cristal", "arcane": "impact_arcane"}
+var vr_item: String = "-"
+
+
+## V129 : l'arme qui porte le coup (« » : les poings).
+func _hit_item() -> String:
+	if vr_item != "-":
+		return vr_item
+	var hero: Node = main.get("hero_v28") if main != null else null
+	if hero != null and hero.get("weapon") != null:
+		return str(hero.get("weapon"))
+	return ""
 
 
 ## Mains VR : vitesse de chaque main ; au-delà de 2,2 m/s, la main frappe ce qu'elle traverse.
@@ -302,8 +328,11 @@ func vr_tick(delta: float, points: Dictionary, head: Vector3) -> void:
 					hero.set("_counter_t", 0.0)
 					mult *= 2.0
 			critical = mult > 1.0
+			var inv: Node = main.get("inventory_v28") if main != null else null
+			vr_item = str(inv.equipped) if inv != null and str(key) in ["lame", "pointe"] else ""
 			if strike_point(p, float(points[key][1]), int(round(dmg * mult)), head) > 0:
 				_vr_cool[key] = 0.35
+			vr_item = "-"
 			critical = false
 
 
