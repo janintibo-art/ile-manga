@@ -3,8 +3,10 @@
 ![Les Mondes de Travers](site/img/affiche.jpg)
 
 **Un horizon, mille histoires.** Jeu d'aventure fantastique gratuit en monde ouvert, fait avec **Godot 4.7.2** :
-un archipel d'îles très différentes (elfes, nains, île flottante, Atlantide, pirates, pyramides, démons, ville
-des aventuriers, ville libre des punks, cité flottante des Lumens…), des centaines d'habitants, des quêtes, des donjons et des boss. À jouer sur PC ou en VR.
+plus de vingt îles très différentes (elfes, nains, île flottante, Atlantide, pirates, pyramides, démons, ville
+des aventuriers, ville libre des punks, cité flottante des Lumens, Moaïs, ville cyberpunk, île en noir et blanc à recolorer,
+cité-colonne du ciel au fond de la mer, ville morte et château du comte Dracula…), plus de cinq cents habitants, des quêtes,
+des donjons et des boss, des armes et des sorts à grand spectacle. En français, en anglais et en espagnol. À jouer sur PC ou en VR.
 
 🌐 **Site du jeu : https://janintibo-art.github.io/ile-manga/**
 
