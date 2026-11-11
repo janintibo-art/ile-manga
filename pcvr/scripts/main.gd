@@ -78,6 +78,8 @@ var monstres_v36: Node3D
 var trainee_v34: Node3D
 # V129 : le spectacle du combat et de la magie (impacts, croissants, cercles de runes…).
 var combat_fx_v129: Node3D
+# V130 : un signe au-dessus des personnages qui ont « un truc en plus » (quête, secret, commerce).
+var indicateurs_v130: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -2162,6 +2164,10 @@ func _create_gameplay_v28() -> void:
 	combat_fx_v129.name = "Combat_fx_v129"
 	add_child(combat_fx_v129)
 	combat_fx_v129.setup(self)
+	indicateurs_v130 = preload("res://scripts/indicateurs_v130.gd").new()
+	indicateurs_v130.name = "Indicateurs_v130"
+	add_child(indicateurs_v130)
+	indicateurs_v130.setup(self)
 	inventory_v28 = preload("res://scripts/inventory_v28.gd").new()
 	inventory_v28.name = "Inventaire_v28"
 	add_child(inventory_v28)
