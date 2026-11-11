@@ -80,6 +80,9 @@ var trainee_v34: Node3D
 var combat_fx_v129: Node3D
 # V130 : un signe au-dessus des personnages qui ont « un truc en plus » (quête, secret, commerce).
 var indicateurs_v130: Node3D
+# V131 : l'écran de chargement (le monde se construit par étapes, la barre avance).
+var chargement_v131: CanvasLayer
+var chargement_bilan_v131: Dictionary = {}
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -103,12 +106,21 @@ func _ready() -> void:
 	preload("res://scripts/langue_v104.gd").charger()
 	# V126 : la belle icône dans la barre des tâches (l'EXE n'emporte pas l'image d'origine)
 	_window_icon_v126()
+	# V131 : l'écran de chargement (l'affiche, la barre, ce qui se construit, une astuce) ;
+	# pendant la construction, rien ne bouge (pause) et la barre avance entre deux étapes.
+	chargement_v131 = preload("res://scripts/chargement_v131.gd").new()
+	add_child(chargement_v131)
+	chargement_v131.setup(self)
+	get_tree().paused = true
+	await chargement_v131.pas("debut")
 	# V81 : les portes des maisons décoratives sont notées pendant la construction des villes
 	preload("res://scripts/azur_kit_v56.gd").PORTES_V81.clear()
 	_configure_quality()
 	_create_lighting()
 	preload("res://scripts/luminosite_v126.gd").appliquer(self)     # V126 : la luminosité choisie
+	await chargement_v131.pas("ciel")
 	_create_land()
+	await chargement_v131.pas("terre")
 	_create_water()
 	_create_village()
 	_create_ground_details()
@@ -116,51 +128,82 @@ func _ready() -> void:
 	_create_village_details_v7()
 	_create_scenery_v12()
 	_create_scenery_v13()
+	await chargement_v131.pas("village")
 	_create_scenery_v15()
 	_create_scenery_v16()
 	_create_scenery_v17()
 	_create_village_v18()
 	_create_structures()
-	_create_jungle_v29()
+	await chargement_v131.pas("structures")
+	await _create_jungle_v29()
 	_create_players()
+	await chargement_v131.pas("heros")
 	_build_physical_world_v11()
 	_init_native_xr()
 	_update_status()
 	_create_game_menu_v8()
 	_create_gameplay_v28()
+	await chargement_v131.pas("menu")
 	_bake_shore_v48()
+	await chargement_v131.pas("rivages")
 	_create_ambiance_v49()
 	_create_sfx_v50()
 	_create_music_v51()
+	await chargement_v131.pas("sons")
 	_create_v52()
 	_create_decor_v53()
 	_create_v54()
+	await chargement_v131.pas("ciel_ile")
 	_create_v55()
+	await chargement_v131.pas("atlantide")
 	_create_v56()
+	await chargement_v131.pas("habitants_azur")
 	_create_v58()
+	await chargement_v131.pas("fees")
 	_create_v59()
+	await chargement_v131.pas("grande_vie")
 	_create_v63()
 	_create_v65()
+	await chargement_v131.pas("sceaux")
 	_create_v66()
 	_create_v67()
+	await chargement_v131.pas("arcanelle_vie")
 	_create_v68()
+	await chargement_v131.pas("balafre_vie")
 	_create_v69()
+	await chargement_v131.pas("soleils_vie")
 	_create_v70()
+	await chargement_v131.pas("braise_vie")
 	_create_v71()
+	await chargement_v131.pas("montjoie_vie")
 	_create_v75()
+	await chargement_v131.pas("boucan_vie")
 	_create_v76()
+	await chargement_v131.pas("astralys_vie")
 	_create_v87()
+	await chargement_v131.pas("moais_vie")
 	_create_v90()
+	await chargement_v131.pas("pixel_vie")
 	_create_v91()
+	await chargement_v131.pas("larsen_vie")
 	_create_v94()
+	await chargement_v131.pas("neopolis_vie")
 	_create_v97()
+	await chargement_v131.pas("aldente_vie")
 	_create_v99()
+	await chargement_v131.pas("crayon_vie")
 	_create_v112()
+	await chargement_v131.pas("hautefond_vie")
 	_create_v121()
+	await chargement_v131.pas("sombreval_vie")
 	_create_v103()
 	_create_v120()
+	await chargement_v131.pas("fin")
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
+	# V131 : le monde est prêt : tout se remet à vivre, l'écran de chargement s'efface
+	get_tree().paused = false
+	chargement_v131.finir()
 
 
 # V24 : profils de qualité réglés pour une RTX 4070 ou mieux.
@@ -2245,7 +2288,11 @@ func _create_gameplay_v28() -> void:
 	add_child(monstres_v36)
 	monstres_v36.setup(self, donjon_v35)
 	# Les objets se posent sur le sol réel : on attend que la physique soit prête.
-	_spawn_world_v28.call_deferred()
+	# V131 : pendant le chargement par étapes, seulement quand tout le monde est construit
+	if chargement_v131 != null and chargement_v131.en_cours:
+		chargement_v131.apres.append(_spawn_world_v28)
+	else:
+		_spawn_world_v28.call_deferred()
 
 
 func _spawn_world_v28() -> void:
@@ -2734,6 +2781,7 @@ func _create_jungle_v29() -> void:
 		var lm: Vector3 = mouette_spot_v34 - jungle_v29.CENTER
 		flora.clearings.append([Vector2(lm.x, lm.z), 3.2])
 	flora.build(jungle_v29, OS.has_feature("ile_manga_pc"))
+	await chargement_v131.pas("jungle")
 	boat_v29 = preload("res://scripts/boat_v29.gd").new()
 	boat_v29.name = "Bateau_v29"
 	add_child(boat_v29)
@@ -2744,6 +2792,7 @@ func _create_jungle_v29() -> void:
 	add_child(elfes_v41)
 	elfes_v41.setup(self)
 	elfes_v41.build_island()
+	await chargement_v131.pas("elfes")
 	var ed: Array = elfes_v41.dock()
 	boat_v29._make_dock("Ponton_elfes", ed[0], ed[1])
 	# V46 : l'île volcanique des nains, cachée derrière les Récifs de Feu.
@@ -2752,6 +2801,7 @@ func _create_jungle_v29() -> void:
 	add_child(nains_v46)
 	nains_v46.setup(self)
 	nains_v46.build_island()
+	await chargement_v131.pas("nains")
 	var nd: Array = nains_v46.dock()
 	boat_v29._make_dock("Ponton_nains", nd[0], nd[1])
 	# V56 : Port-Azur (le relief d'abord ; la ville, ses habitants et le bateau de ligne
@@ -2761,6 +2811,7 @@ func _create_jungle_v29() -> void:
 	add_child(azur_v56)
 	azur_v56.setup(self)
 	azur_v56.build_island()
+	await chargement_v131.pas("azur")
 	boat_v29._make_dock("Ponton_ferry", FERRY_PIER_V56[0], FERRY_PIER_V56[1])
 	# V59 : la grande île de l'est et l'épave du Léviathan (le relief d'abord ; Carène, ses
 	# habitants et la végétation sont construits après l'heure du jour, voir _create_v59).
@@ -2769,6 +2820,7 @@ func _create_jungle_v29() -> void:
 	add_child(grande_v59)
 	grande_v59.setup(self)
 	grande_v59.build_island()
+	await chargement_v131.pas("grande")
 	# V67 : Arcanelle, l'île des sorciers, au nord-ouest (le relief d'abord ; l'Académie, le
 	# bourg, la communauté et les sorts sont construits après l'heure du jour, voir _create_v67).
 	arcanelle_v67 = preload("res://scripts/arcanelle_v67.gd").new()
@@ -2776,6 +2828,7 @@ func _create_jungle_v29() -> void:
 	add_child(arcanelle_v67)
 	arcanelle_v67.setup(self)
 	arcanelle_v67.build_island()
+	await chargement_v131.pas("arcanelle")
 	var arc_d: Array = arcanelle_v67.dock()
 	boat_v29._make_dock("Ponton_arcanelle", arc_d[0], arc_d[1])
 	# V68 : l'Île de la Balafre, l'île des pirates, au nord (le relief d'abord ; Port-Coutelas,
@@ -2785,6 +2838,7 @@ func _create_jungle_v29() -> void:
 	add_child(pirates_v68)
 	pirates_v68.setup(self)
 	pirates_v68.build_island()
+	await chargement_v131.pas("balafre")
 	var pir_d: Array = pirates_v68.dock()
 	boat_v29._make_dock("Ponton_balafre", pir_d[0], pir_d[1])
 	# V69 : l'Île des Trois Soleils, la grande île verte de l'ouest (le relief d'abord ; les trois
@@ -2794,6 +2848,7 @@ func _create_jungle_v29() -> void:
 	add_child(soleils_v69)
 	soleils_v69.setup(self)
 	soleils_v69.build_island()
+	await chargement_v131.pas("soleils")
 	var sol_d: Array = soleils_v69.dock()
 	boat_v29._make_dock("Ponton_soleils", sol_d[0], sol_d[1])
 	# V70 : l'Île de Braise, l'île volcanique du sud-ouest, et Pandémonia, la cité des démons
@@ -2804,6 +2859,7 @@ func _create_jungle_v29() -> void:
 	add_child(braise_v70)
 	braise_v70.setup(self)
 	braise_v70.build_island()
+	await chargement_v131.pas("braise")
 	var br_d: Array = braise_v70.dock()
 	boat_v29._make_dock("Ponton_braise", br_d[0], br_d[1])
 	# V71 : l'Île de Montjoie, à l'est de la grande île : la ville fortifiée sur la Butte, sa
@@ -2814,6 +2870,7 @@ func _create_jungle_v29() -> void:
 	add_child(montjoie_v71)
 	montjoie_v71.setup(self)
 	montjoie_v71.build_island()
+	await chargement_v131.pas("montjoie")
 	var mj_d: Array = montjoie_v71.dock()
 	boat_v29._make_dock("Ponton_montjoie", mj_d[0], mj_d[1])
 	# V75 : l'Île du Boucan, au sud : Port-Boucan, la ville libre des punks dans la friche du vieux
@@ -2823,6 +2880,7 @@ func _create_jungle_v29() -> void:
 	add_child(boucan_v75)
 	boucan_v75.setup(self)
 	boucan_v75.build_island()
+	await chargement_v131.pas("boucan")
 	var bo_d: Array = boucan_v75.dock()
 	boat_v29._make_dock("Ponton_boucan", bo_d[0], bo_d[1])
 	# V76 : Astralys, l'île flottante des Lumens, à 380 m au-dessus de la mer, au nord-ouest ; sur
@@ -2832,6 +2890,7 @@ func _create_jungle_v29() -> void:
 	add_child(astralys_v76)
 	astralys_v76.setup(self)
 	astralys_v76.build_island()
+	await chargement_v131.pas("astralys")
 	var as_d: Array = astralys_v76.dock()
 	boat_v29._make_dock("Ponton_astralys", as_d[0], as_d[1])
 	# V87 : l'Île aux Moaïs, au nord : les géants de pierre, la ronde des Moaïs habités, le Grand
@@ -2841,6 +2900,7 @@ func _create_jungle_v29() -> void:
 	add_child(moai_v87)
 	moai_v87.setup(self)
 	moai_v87.build_island()
+	await chargement_v131.pas("moais")
 	var mo_d: Array = moai_v87.dock()
 	boat_v29._make_dock("Ponton_moai", mo_d[0], mo_d[1])
 	# V90 : l'Île Pixelithique, au nord-est : tout en petits cubes (le relief d'abord ; les plantes, le
@@ -2850,6 +2910,7 @@ func _create_jungle_v29() -> void:
 	add_child(pixel_v90)
 	pixel_v90.setup(self)
 	pixel_v90.build_island()
+	await chargement_v131.pas("pixel")
 	var px_d: Array = pixel_v90.dock()
 	boat_v29._make_dock("Ponton_pixel", px_d[0], px_d[1])
 	# V91 : l'Île de Larsen, au nord-ouest : la ville de yourtes (le relief d'abord ; les yourtes, la
@@ -2859,6 +2920,7 @@ func _create_jungle_v29() -> void:
 	add_child(larsen_v91)
 	larsen_v91.setup(self)
 	larsen_v91.build_island()
+	await chargement_v131.pas("larsen")
 	var la_d: Array = larsen_v91.dock()
 	boat_v29._make_dock("Ponton_larsen", la_d[0], la_d[1])
 	# V94 : Néopolis, au sud : la ville cyberpunk (la dalle et ses quais d'abord ; les tours, les rues,
@@ -2868,6 +2930,7 @@ func _create_jungle_v29() -> void:
 	add_child(neo_v94)
 	neo_v94.setup(self)
 	neo_v94.build_island()
+	await chargement_v131.pas("neopolis")
 	var ne_d: Array = neo_v94.dock()
 	boat_v29._make_dock("Ponton_neo", ne_d[0], ne_d[1])
 	# V97 : l'Île Al Dente, au sud-ouest : le volcan de sauce tomate et le Temple-Passoire (le relief
@@ -2877,6 +2940,7 @@ func _create_jungle_v29() -> void:
 	add_child(pasta_v97)
 	pasta_v97.setup(self)
 	pasta_v97.build_island()
+	await chargement_v131.pas("aldente")
 	var pa_d: Array = pasta_v97.dock()
 	boat_v29._make_dock("Ponton_al_dente", pa_d[0], pa_d[1])
 	# V99 : l'Île Crayonnée, au sud-est : l'île en noir et blanc (le relief d'abord ; l'eau, la palette
@@ -2886,6 +2950,7 @@ func _create_jungle_v29() -> void:
 	add_child(crayon_v99)
 	crayon_v99.setup(self)
 	crayon_v99.build_island()
+	await chargement_v131.pas("crayon")
 	var cr_d: Array = crayon_v99.dock()
 	boat_v29._make_dock("Ponton_crayonnee", cr_d[0], cr_d[1])
 	# V112 : l'Île de Hautefond, au sud-ouest : la cité-colonne (le relief d'abord ; la ville, la
@@ -2895,6 +2960,7 @@ func _create_jungle_v29() -> void:
 	add_child(hautefond_v112)
 	hautefond_v112.setup(self)
 	hautefond_v112.build_island()
+	await chargement_v131.pas("hautefond")
 	var hf_d: Array = hautefond_v112.dock()
 	boat_v29._make_dock("Ponton_hautefond", hf_d[0], hf_d[1])
 	# V121 : Sombreval, la ville morte, tout au sud (le relief d'abord ; la ville, le château et la
@@ -2904,6 +2970,7 @@ func _create_jungle_v29() -> void:
 	add_child(sombreval_v121)
 	sombreval_v121.setup(self)
 	sombreval_v121.build_island()
+	await chargement_v131.pas("sombreval")
 	var sv_d: Array = sombreval_v121.dock()
 	boat_v29._make_dock("Ponton_sombreval", sv_d[0], sv_d[1])
 

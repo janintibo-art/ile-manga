@@ -1626,7 +1626,9 @@ func _update_camera() -> void:
 	var e0: float = atan2(2.5, 5.0)
 	var pk: float = cam_pitch if talking_free() else 0.0
 	var e: float = e0 + (pk * 0.6 if pk > 0.0 else pk * (e0 - 0.09))
-	var wanted: Vector3 = root.global_transform * (Vector3(0, sin(e), cos(e)) * 5.59 * cam_distance + Vector3(0, 1.5 * (1.0 - cam_distance), 0))
+	# V131 : en levant franchement les yeux, la caméra se rapproche un peu du héros
+	var dk: float = cam_distance * (1.0 - 0.22 * maxf(-pk, 0.0) * maxf(-pk, 0.0))
+	var wanted: Vector3 = root.global_transform * (Vector3(0, sin(e), cos(e)) * 5.59 * dk + Vector3(0, 1.5 * (1.0 - dk), 0))
 	# V31 : pendant un dialogue, plan de côté qui montre les deux personnages.
 	var npc: Node3D = main.talking_npc_v31 if main.get("talking_npc_v31") != null else null
 	var alt_wanted := Vector3.ZERO
@@ -1684,10 +1686,11 @@ func _update_camera() -> void:
 			place += Vector3.UP * lift
 	camera.global_position = place
 	var look: Vector3 = root.global_position + Vector3.UP * 1.2
-	# V123 : regard levé : on vise au-dessus du héros (jusqu'à ~50° vers le ciel)
+	# V123 : regard levé : on vise au-dessus du héros
+	# V131 : jusqu'à ~75° vers le ciel (on voit les étoiles, les îles flottantes, l'aigle)
 	if pk < 0.0:
 		var hd: float = Vector2(place.x - look.x, place.z - look.z).length()
-		look += Vector3.UP * (-pk) * maxf(hd, 1.5) * 1.25 * (1.0 - 0.6 * _indoor_k)
+		look += Vector3.UP * (-pk) * maxf(hd, 1.5) * (1.25 + 2.3 * pk * pk) * (1.0 - 0.6 * _indoor_k)
 	if npc == null and _indoor_k > 0.0 and _in_house():
 		# V84 : on regarde la pièce devant le héros, pas l'arrière de sa tête
 		var ahead: Vector3 = -root.global_basis.z

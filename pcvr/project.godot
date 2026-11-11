@@ -2,13 +2,17 @@
 config_version=5
 
 [application]
-config/name="Les Mondes de Travers VR V130"
+config/name="Les Mondes de Travers VR V131"
 config/icon="res://assets/textures/ui/les_mondes_de_travers_icon.png"
 config/windows_native_icon="res://assets/textures/ui/les_mondes_de_travers_icon.ico"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="IleManga"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
+boot_splash/bg_color=Color(0.05, 0.09, 0.14, 1)
+boot_splash/image="res://assets/textures/ui/chargement_v131.png"
+boot_splash/stretch_mode=1
+boot_splash/use_filter=true
 
 [display]
 window/size/viewport_width=1280

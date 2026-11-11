@@ -28,6 +28,8 @@ selected = [
     "textures/ui/les_mondes_de_travers_logo.png",
     "textures/ui/les_mondes_de_travers_icon.png",
     "textures/ui/les_mondes_de_travers_icon.ico",
+    "textures/ui/chargement_affiche.jpg",
+    "textures/ui/chargement_v131.png",
     "textures/terrain/grass.jpg",
     "textures/terrain/sand.jpg",
     "textures/terrain/stone.jpg",

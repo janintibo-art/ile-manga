@@ -19,6 +19,8 @@ extends Node
 const DEAD: float = 0.22                 # zone morte des sticks
 const TRIG: float = 0.45                 # gâchettes : appuyées au-delà
 const CAM_SPEED: float = 2.8             # rad/s, stick droit à fond
+var _r3_held: bool = false              # V131 : stick droit enfoncé (zoom ou carte)
+var _r3_zoom: bool = false
 const SYNTH_DEVICE: int = 74             # les évènements fabriqués ici (pour les reconnaître)
 
 var main: Node
@@ -218,8 +220,14 @@ func _game_tick(delta: float, s: Dictionary, p: Dictionary) -> void:
 		_tap(KEY_ESCAPE)
 	if p[int(JOY_BUTTON_BACK)]:
 		_tap(KEY_I)
-	if p[int(JOY_BUTTON_RIGHT_STICK)]:
-		_tap(KEY_M)
+	# V131 : stick droit enfoncé puis relâché sans zoomer : la carte
+	if s[int(JOY_BUTTON_RIGHT_STICK)]:
+		_r3_held = true
+	elif _r3_held:
+		_r3_held = false
+		if not _r3_zoom:
+			_tap(KEY_M)
+		_r3_zoom = false
 	if p["lt"]:
 		_tap(KEY_X)
 	if p["rt"]:
@@ -241,13 +249,19 @@ func _game_tick(delta: float, s: Dictionary, p: Dictionary) -> void:
 		_next_power()
 	if p[int(JOY_BUTTON_DPAD_RIGHT)]:
 		_tap(KEY_B)
-	# la caméra : stick droit (gauche-droite : tourner ; haut-bas : rapprocher, éloigner)
+	# la caméra : stick droit (gauche-droite : tourner ; haut-bas : lever ou baisser le regard)
+	# V131 : avant, haut-bas rapprochait la caméra : on ne pouvait pas regarder le ciel à la
+	# manette. Le zoom passe sur le stick droit enfoncé et tenu (avec haut-bas).
 	var r: Vector2 = _stick(JOY_AXIS_RIGHT_X, JOY_AXIS_RIGHT_Y)
 	if r != Vector2.ZERO and main.game_started:
 		main.pc_root.rotate_y(-r.x * absf(r.x) * CAM_SPEED * delta)
 		var h: Node = main.get("hero_v28")
-		if h != null and absf(r.y) > 0.3:
-			h.cam_distance = clampf(float(h.cam_distance) + r.y * delta * 0.9, 0.45, 1.6)
+		if h != null and absf(r.y) > 0.15:
+			if s[int(JOY_BUTTON_RIGHT_STICK)]:
+				h.cam_distance = clampf(float(h.cam_distance) + r.y * delta * 0.9, 0.45, 1.6)
+				_r3_zoom = true
+			else:
+				h.cam_pitch = clampf(float(h.cam_pitch) + r.y * absf(r.y) * delta * 1.7, -1.0, 1.0)
 
 
 ## Croix gauche : le pouvoir de sceau suivant (parmi ceux qu'on possède).
