@@ -1,0 +1,17 @@
+[
+[
+"Une mouette t'a chipé {} ! Frappe-la vite pour qu'elle le lâche.",
+"A gull snatched {}! Hit it quickly to make it drop it.",
+"¡Una gaviota te ha robado {}! Golpéala rápido para que lo suelte."
+],
+[
+"La mouette lâche {} !",
+"The gull drops {}!",
+"¡La gaviota suelta {}!"
+],
+[
+"Trop tard : la mouette s'est envolée avec {}.",
+"Too late: the gull flew off with {}.",
+"Demasiado tarde: la gaviota se ha ido volando con {}."
+]
+]

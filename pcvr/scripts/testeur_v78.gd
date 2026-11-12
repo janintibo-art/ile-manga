@@ -132,6 +132,9 @@ func _menu_voyage() -> void:
 		{"id": "chateau124", "label": "Sombreval : dans le château du comte (herse levée)"},
 		{"id": "comte128", "label": "Sombreval : devant la porte du comte (trois rubis posés)"},
 		{"id": "cachots128", "label": "Sombreval : les souterrains du château (comte vaincu)"},
+		{"id": "faune132v", "label": "Faune sauvage : la plage de l'île du village (crabes, mouettes)"},
+		{"id": "faune132e", "label": "Faune sauvage : le Bois-Doré (sangliers, ronceux, loups)"},
+		{"id": "faune132n", "label": "Faune sauvage : la Montagne de Feu (salamandres, boucs, chauves-souris)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -342,6 +345,8 @@ func _pick(id: String) -> void:
 			_chateau_v124()
 		"comte128", "cachots128":
 			_comte_v128(id == "cachots128")
+		"faune132v", "faune132e", "faune132n":
+			_faune_v132({"faune132v": "village", "faune132e": "elfes", "faune132n": "nains"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -378,6 +383,53 @@ func _pick(id: String) -> void:
 
 ## V128 : tout en haut de la Tour du Comte, devant la porte de fer (les trois rubis posés) ; ou bien
 ## dans la salle d'armes, devant la grille des souterrains (le comte vaincu, la clé en poche)
+## V132 : un coin sauvage de l'île, et quelques bêtes autour (pour les voir tout de suite).
+func _faune_v132(ile: String) -> void:
+	main._close_dialogue_v31()
+	var f: Node = main.get("faune_v132")
+	if f == null:
+		return
+	f.enabled = true
+	f._resolve_iles()
+	if not f.iles.has(ile):
+		main._show_message_v28("Mode testeur : cette île n'est pas là.")
+		return
+	var c: Vector3 = f.iles[ile]["c"]
+	var r: float = float(f.iles[ile]["r"])
+	f._refresh_npcs(c)
+	# un endroit loin des habitants, sur la terre ferme (sur la plage pour l'île du village)
+	var best := Vector3.INF
+	for i in range(80):
+		var a: float = randf() * TAU
+		var d: float = randf_range(0.25, 0.85) * r
+		var q := Vector3(c.x + cos(a) * d, 0, c.z + sin(a) * d)
+		var h: float = main._height_at(q.x, q.z)
+		if ile == "village" and (h < 0.3 or h > 1.8):
+			continue
+		if ile != "village" and h < 1.5:
+			continue
+		var ok: bool = true
+		for np in f._npc_pos:
+			if Vector2((np as Vector3).x - q.x, (np as Vector3).z - q.z).length() < 35.0:
+				ok = false
+				break
+		if ok:
+			best = Vector3(q.x, h + 0.2, q.z)
+			break
+	if best == Vector3.INF:
+		main._show_message_v28("Mode testeur : pas de coin sauvage trouvé, réessaie.")
+		return
+	main.place_player_v35(best, Vector3(0, 0, -1))
+	var kinds: Array = {"village": ["crabe_plage", "crabe_plage", "mouette"], "elfes": ["sanglier", "ronceux_sauvage", "loup_bois", "loup_bois"],
+		"nains": ["salamandre", "bouc", "chauve_souris_mont", "chauve_souris_mont"]}[ile]
+	for i in range(kinds.size()):
+		var a2: float = TAU * i / kinds.size()
+		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
+		q2.y = main._height_at(q2.x, q2.z) + (12.0 if kinds[i] == "mouette" else (2.8 if kinds[i] == "chauve_souris_mont" else 0.1))
+		f.spawn(str(kinds[i]), q2)
+	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
+
+
 func _comte_v128(cachots: bool) -> void:
 	main._close_dialogue_v31()
 	var sv: Node = main.get("sombreval_v121")

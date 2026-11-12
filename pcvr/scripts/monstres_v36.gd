@@ -441,6 +441,9 @@ func _process(delta: float) -> void:
 	# V121 : Sombreval, la ville morte (les morts-vivants rôdent partout)
 	if not inside and main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.hostile_zone(main._player_pos_v27()):
 		outdoor = true
+	# V132 : la faune sauvage menaçante (les cœurs en VR)
+	if not inside and main.get("faune_v132") != null and main.faune_v132 != null and main.faune_v132.hostile_zone(main._player_pos_v27()):
+		outdoor = true
 	active = (inside or outdoor) and main.game_started and (main.game_menu == null or not main.game_menu.opened) \
 		and (main.dialogue_v31 == null or not main.dialogue_v31.opened) and not bool(donjon.get("_busy"))
 	if main.xr_active and main.hero_v28 != null:

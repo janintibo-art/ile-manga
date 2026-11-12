@@ -83,6 +83,8 @@ var indicateurs_v130: Node3D
 # V131 : l'écran de chargement (le monde se construit par étapes, la barre avance).
 var chargement_v131: CanvasLayer
 var chargement_bilan_v131: Dictionary = {}
+# V132 : la faune sauvage des îles (crabes, mouettes, sangliers, loups, salamandres, boucs…).
+var faune_v132: Node3D
 var talking_npc_v31: Node3D
 var cabin_spot_v31: Dictionary = {}
 var pending_pnj_v31: Dictionary = {}
@@ -198,6 +200,7 @@ func _ready() -> void:
 	await chargement_v131.pas("sombreval_vie")
 	_create_v103()
 	_create_v120()
+	_create_v132()
 	await chargement_v131.pas("fin")
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
@@ -4344,6 +4347,13 @@ func _create_v58() -> void:
 ## V74 : le stick gauche de la manette (zéro sans manette, en VR ou dans un menu).
 func pad_move_v74() -> Vector2:
 	return manette_v74.move() if manette_v74 != null else Vector2.ZERO
+
+
+## V132 : la faune sauvage des îles.
+func _create_v132() -> void:
+	faune_v132 = preload("res://scripts/faune_v132.gd").new()
+	add_child(faune_v132)
+	faune_v132.setup(self)
 
 
 func _create_manette_v74() -> void:

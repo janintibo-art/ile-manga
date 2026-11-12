@@ -42,6 +42,8 @@ const DB := {
 	"impact_acier": -7.0, "impact_braise": -6.0, "impact_foudre": -7.0, "impact_maree": -6.0, "impact_cristal": -7.0,
 	"impact_arcane": -6.0, "coup_critique": -4.0, "onde_lame": -5.0, "cercle_magique": -9.0, "glace_jaillit": -4.0,
 	"explosion_feu": -2.0,
+	# V132 : la faune sauvage
+	"mouette_cri": -8.0, "sanglier_grogne": -5.0, "loup_hurle": -6.0, "bouc_belement": -6.0, "salamandre_crache": -5.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,
 	# V66 : objets à casser, coffres fermés à clé, boire

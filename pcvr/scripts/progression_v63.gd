@@ -93,6 +93,8 @@ const KILL_XP := {
 	"crabe": 5, "araignee": 6, "follet": 5, "vipere": 7, "plante": 7, "ronceux": 8, "gargouille": 10, "magma": 11,
 	"gardien": 14, "armure": 18, "golem": 21, "plante_mere": 60,
 	"vampire": 14, "vampire_garde": 20, "ilona": 90, "sigismund": 80, "radu": 110, "dracula": 300,
+	# V132 : la faune sauvage
+	"crabe_plage": 1, "sanglier": 10, "ronceux_sauvage": 7, "loup_bois": 8, "salamandre": 9, "bouc": 11, "chauve_souris_mont": 4,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 	# V75 : l'Île du Boucan
