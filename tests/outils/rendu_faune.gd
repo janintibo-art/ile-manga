@@ -3,7 +3,7 @@ extends SceneTree
 ##     godot --path pcvr --rendering-driver opengl3 --script res://rendu_faune.gd -- DOSSIER [nuit] espèce espèce…
 ## Pour chaque espèce : une image au repos (en marche) et une image en attaque, de trois quarts.
 
-const Bete := preload("res://scripts/monstre_v136.gd")
+const Bete := preload("res://scripts/monstre_v137.gd")
 
 ## La distance de la caméra et la hauteur visée (et, si on veut, l'avancée du point visé), selon la taille de la bête.
 const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauvage": [2.4, 0.45], "scarabee_geant": [2.4, 0.4],
@@ -11,14 +11,18 @@ const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauv
 	"coati": [1.6, 0.25], "singe_hurleur": [2.0, 0.5], "axolotl": [1.5, 0.12], "luciole": [1.8, 0.2],
 	"cheval_sauvage": [4.2, 0.85], "fregate": [3.2, 0.0], "tortue_verte": [2.4, 0.2], "perroquet": [1.7, 0.0], "varan": [3.0, 0.2],
 	"crabe_cocotier": [2.0, 0.25], "lapin_garenne": [1.0, 0.15], "frelon": [1.6, 0.0], "herisson": [0.75, 0.08],
-	"hibou_grand_duc": [1.7, 0.35], "renard_roux": [1.9, 0.3]}
+	"hibou_grand_duc": [1.7, 0.35], "renard_roux": [1.9, 0.3],
+	"papillon_morpho": [1.5, 0.0], "cerf_blanc": [4.0, 0.9], "blaireau": [1.8, 0.25], "marmotte": [1.1, 0.18], "gypaete": [3.8, 0.0],
+	"lynx": [1.6, 0.4, 0.2], "meduse_celeste": [3.0, -0.5], "raie_celeste": [3.2, 0.0]}
 ## La pose d'attaque de chaque espèce : [état, minuteur].
 const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "jaguar_sauvage": ["armer", 0.1], "scarabee_geant": ["chasse", 0.0],
 	"mille_pattes": ["armer", 0.1], "araignee_geante": ["armer", 0.05], "coyote": ["armer", 0.1], "chacal": ["armer", 0.1],
 	"coati": ["emporte", 3.0], "singe_hurleur": ["armer", 0.3], "axolotl": ["fuite", 1.0], "luciole": ["vol", 0.0],
 	"cheval_sauvage": ["ruade_fin", 0.3], "fregate": ["pique", 1.0], "tortue_verte": ["ponte", 5.0], "perroquet": ["tourne", 3.0],
 	"varan": ["fouet", 0.2], "crabe_cocotier": ["armer", 0.3], "lapin_garenne": ["alerte", 0.3], "frelon": ["chasse", 0.0],
-	"herisson": ["boule", 0.0], "hibou_grand_duc": ["envol", 0.0], "renard_roux": ["emporte", 3.0]}
+	"herisson": ["boule", 0.0], "hibou_grand_duc": ["envol", 0.0], "renard_roux": ["emporte", 3.0],
+	"papillon_morpho": ["pose", 0.0], "cerf_blanc": ["observe", 0.0], "blaireau": ["grogne", 0.0], "marmotte": ["debout", 1.0],
+	"gypaete": ["monte_os", 5.0], "lynx": ["aguet", 0.0], "meduse_celeste": ["derive", 0.0], "raie_celeste": ["rase", 1.0]}
 
 var nuit: bool = false
 
@@ -109,6 +113,8 @@ func _initialize() -> void:
 				b.timer = float(at[1])
 				if str(k) == "herisson":
 					b._ball = 1.0
+				if str(k) == "gypaete" and b._os != null:
+					b._os.visible = true
 			for i in range(40):
 				b._clock += 0.013
 				b._animate132(0.016, speed)

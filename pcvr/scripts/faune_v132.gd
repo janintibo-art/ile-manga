@@ -37,13 +37,23 @@ extends Node3D
 ##  - l'Île de Larsen : des lapins de garenne (ils plongent dans leur terrier), des frelons et un
 ##    renard chapardeur ; la nuit, des hérissons qui se roulent en boule et un grand-duc.
 ## Sous terre (un souterrain, une grotte), rien ne naît.
+## V137 : les trois îles du ciel (les bêtes elles-mêmes sont dans monstre_v137.gd). Leur sol n'est
+## pas celui de l'archipel : chaque île flottante a son relief, à son altitude ; les bêtes y
+## naissent loin du bord, et ne s'avancent pas dans le vide.
+##  - le royaume des fées : des papillons morphos (ils viennent se poser sur le héros s'il ne
+##    bouge plus) et le cerf blanc, qu'on ne peut pas toucher ; la nuit, des lucioles et des
+##    blaireaux qui défendent leur terrier ;
+##  - l'île flottante : des marmottes (la sentinelle siffle, toutes plongent dans leur terrier) et
+##    le gypaète, qui lâche des os sur les rochers ; la nuit, le lynx, à l'affût dans l'herbe ;
+##  - Astralys : des raies célestes qui planent et des méduses de ciel sauvages qui dérivent (leurs
+##    filaments piquent), lumineuses la nuit.
 ## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
 ## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v136.gd")
+const Bete := preload("res://scripts/monstre_v137.gd")
 const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
@@ -85,6 +95,13 @@ const ILES := {
 		"nuit": [["crabe_cocotier", 3, "sol", 1], ["varan", 1, "sol", 1]]},
 	"larsen": {"jour": [["lapin_garenne", 4, "sol", 2], ["frelon", 1, "air", 1], ["renard_roux", 1, "sol", 1]],
 		"nuit": [["herisson", 3, "sol", 1], ["hibou_grand_duc", 1, "air", 1], ["renard_roux", 1, "sol", 1]]},
+	# V137 : les îles du ciel
+	"fees": {"jour": [["papillon_morpho", 2, "air", 1], ["cerf_blanc", 2, "sol", 1]],
+		"nuit": [["luciole", 3, "air", 3], ["blaireau", 2, "sol", 1], ["cerf_blanc", 1, "sol", 1]]},
+	"celeste": {"jour": [["marmotte", 3, "sol", 3], ["gypaete", 1, "air", 1]],
+		"nuit": [["lynx", 1, "sol", 1]]},
+	"astrale": {"jour": [["raie_celeste", 3, "air", 3], ["meduse_celeste", 4, "air", 2]],
+		"nuit": [["meduse_celeste", 5, "air", 2]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -113,6 +130,7 @@ var _spits: Array = []
 var _decals: Array = []                  # V133 : taches d'encre, de sauce, de gomme au sol
 static var _decal_tex: Dictionary = {}
 var taches: Dictionary = {}              # tests : sorte de tache -> nombre posées
+var os_tombes: int = 0                   # tests (V137) : os lâchés par le gypaète, éclatés au sol
 
 
 func setup(main_node: Node) -> void:
@@ -148,7 +166,49 @@ func _resolve_iles() -> void:
 	for id in centres:
 		var c: Vector3 = centres[id]
 		iles[id] = {"c": c, "r": _rayon(c)}
+	# V137 : les îles du ciel (leur relief à elles, à leur altitude)
+	for e3 in [["fees", "feerie_v58"], ["celeste", "ciel_v54"], ["astrale", "astralys_v76"]]:
+		var w2: Node = main.get(str(e3[1]))
+		if w2 != null and w2.get("ile") != null and w2.ile.has_method("height"):
+			var il: Node = w2.ile
+			iles[str(e3[0])] = {"c": Vector3(il.CENTER.x, 0.0, il.CENTER.z), "r": float(il.R0), "y": float(il.Y0), "sol": Callable(il, "height")}
 	print("ILE_MANGA_V132: faune sauvage sur ", iles.keys(), " ", iles)
+
+
+## V137 : la hauteur du sol sur l'île « ile » (celle du héros si on ne dit rien). Sur une île du
+## ciel, son relief ; hors de son bord, le vide (bien plus bas que l'île).
+func hauteur(x: float, z: float, ile: String = "") -> float:
+	var e: Dictionary = iles.get(ile if ile != "" else ile_joueur, {})
+	if e.has("sol"):
+		var h: float = float((e["sol"] as Callable).call(x, z))
+		return h if h > -1e6 else float(e["y"]) - 100.0
+	return float(main._height_at(x, z))
+
+
+## L'altitude d'une île du ciel (-INF pour une île de l'archipel).
+func niveau_ile(ile: String) -> float:
+	var e: Dictionary = iles.get(ile, {})
+	return float(e["y"]) if e.has("y") else -INF
+
+
+## Le vide, au bord d'une île du ciel ?
+func vide(p: Vector3, ile: String = "") -> bool:
+	var e: Dictionary = iles.get(ile if ile != "" else ile_joueur, {})
+	if not e.has("sol"):
+		return false
+	return not (float((e["sol"] as Callable).call(p.x, p.z)) > -1e6)
+
+
+## Sur la terre ferme de l'île, à bonne distance du bord (pour une île du ciel).
+func sur_ile(ile: String, q: Vector3) -> bool:
+	var e: Dictionary = iles.get(ile, {})
+	if not e.has("sol"):
+		return true
+	var f: Callable = e["sol"]
+	for o in [Vector2.ZERO, Vector2(6, 0), Vector2(-6, 0), Vector2(0, 6), Vector2(0, -6)]:
+		if not (float(f.call(q.x + o.x, q.z + o.y)) > -1e6):
+			return false
+	return true
 
 
 ## Le rayon d'une île : on marche du centre vers le large jusqu'à la mer, dans 16 directions.
@@ -177,8 +237,18 @@ func _rayon(c: Vector3) -> float:
 func ile_de(p: Vector3) -> String:
 	var best: String = ""
 	var bk: float = 1.0
+	var bas: float = -INF
 	for id in iles:
 		var e: Dictionary = iles[id]
+		# V137 : une île du ciel, seulement à son altitude ; une île de l'archipel, pas de très haut
+		if e.has("y"):
+			if p.y < float(e["y"]) - 40.0 or p.y > float(e["y"]) + 80.0:
+				continue
+		else:
+			if bas == -INF:
+				bas = float(main._height_at(p.x, p.z))
+			if p.y > bas + 60.0:
+				continue
 		var d: float = Vector2(p.x - (e["c"] as Vector3).x, p.z - (e["c"] as Vector3).z).length() / maxf(float(e["r"]), 1.0)
 		if d < bk:
 			bk = d
@@ -238,7 +308,7 @@ func _blocked(p: Vector3) -> bool:
 	if donjon != null and bool(donjon.get("inside")):
 		return true
 	# en vol (l'aigle, l'aéronef) : rien ne naît sous les ailes
-	var hp: float = float(main._height_at(p.x, p.z))
+	var hp: float = hauteur(p.x, p.z)
 	if p.y - hp > 8.0:
 		return true
 	# V136 : sous terre (un souterrain, une grotte) non plus
@@ -294,8 +364,10 @@ func _maybe_spawn(p: Vector3) -> void:
 	for i in range(int(e2[3])):
 		var off := Vector3(_rng.randf_range(-ecart, ecart), 0, _rng.randf_range(-ecart, ecart)) if i > 0 else Vector3.ZERO
 		var q: Vector3 = at + off
+		if not sur_ile(ile_joueur, q):
+			continue
 		if str(e2[2]) != "air":
-			q.y = float(main._height_at(q.x, q.z)) + 0.1
+			q.y = hauteur(q.x, q.z) + 0.1
 		spawn(str(e2[0]), q)
 
 
@@ -336,6 +408,10 @@ func table_de(id: String, region: String = "") -> Array:
 func spawn(kind: String, at: Vector3) -> Node3D:
 	var b: CharacterBody3D = Bete.new()
 	add_child(b)
+	# V137 : la bête connaît son île (son sol, sur une île du ciel)
+	if "ile_sol" in b:
+		var il2: String = ile_de(at)
+		b.ile_sol = il2 if il2 != "" else "-"
 	b.setup(self, kind, at)
 	b.died.connect(_on_died)
 	betes.append(b)
@@ -359,7 +435,9 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 		var q := Vector3(p.x + cos(a) * d, 0, p.z + sin(a) * d)
 		if Vector2(q.x - c.x, q.z - c.z).length() > float(e["r"]) * 0.97:
 			continue
-		var h: float = main._height_at(q.x, q.z)
+		if not sur_ile(ile_joueur, q):
+			continue
+		var h: float = hauteur(q.x, q.z)
 		if not milieu_ok(q, h, milieu):
 			continue
 		# V133 : sur la grande île, la bête naît dans la région du héros
@@ -399,7 +477,7 @@ func milieu_ok(q: Vector3, h: float, milieu: String) -> bool:
 		"sol", "volcan":
 			if h < 1.2:
 				return false
-			if absf(main._height_at(q.x + 1.5, q.z) - h) > 1.1 or absf(main._height_at(q.x, q.z + 1.5) - h) > 1.1:
+			if absf(hauteur(q.x + 1.5, q.z) - h) > 1.1 or absf(hauteur(q.x, q.z + 1.5) - h) > 1.1:
 				return false
 			if milieu == "volcan":
 				return Vector2(q.x - IleSoleils.CENTER.x, q.z - IleSoleils.CENTER.z).distance_to(IleSoleils.VOLCANO) < 115.0
@@ -511,17 +589,37 @@ func spit(from: Vector3, to: Vector3, dmg: int, sorte: String = "braise") -> voi
 		tige.mesh = cyl
 		tige.position = Vector3(0, 0.12, 0)
 		mi.add_child(tige)
+	elif sorte == "os":
+		# V137 : un os long (le gypaète le lâche de haut sur les rochers)
+		var cap := CapsuleMesh.new()
+		cap.radius = 0.035
+		cap.height = 0.42
+		mi.rotation = Vector3(0, 0, PI * 0.5)
+		m.albedo_color = Color(0.9, 0.86, 0.76)
+		m.roughness = 0.7
+		cap.material = m
+		mi.mesh = cap
+		for sx in [-1.0, 1.0]:
+			var bout := MeshInstance3D.new()
+			var sb := SphereMesh.new()
+			sb.radius = 0.055
+			sb.height = 0.1
+			sb.material = m
+			bout.mesh = sb
+			bout.position = Vector3(0, sx * 0.2, 0)
+			mi.add_child(bout)
 	else:
 		m.albedo_color = Color(1.0, 0.55, 0.15)
 		m.emission_enabled = true
 		m.emission = Color(1.0, 0.45, 0.1)
 		m.emission_energy_multiplier = 4.0
 		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	s.material = m
-	mi.mesh = s
+	if sorte != "os":
+		s.material = m
+		mi.mesh = s
 	n.add_child(mi)
 	var fx: Node = main.get("combat_fx_v129")
-	if sorte != "fruit":
+	if sorte not in ["fruit", "os"]:
 		var l := OmniLight3D.new()
 		l.light_color = Color(1.0, 0.5, 0.15)
 		l.light_energy = 1.2
@@ -533,8 +631,12 @@ func spit(from: Vector3, to: Vector3, dmg: int, sorte: String = "braise") -> voi
 	var t: float = clampf(from.distance_to(to) / 10.0, 0.5, 1.2)
 	var v: Vector3 = (to - from) / t
 	v.y += 0.5 * 9.8 * t
-	_spits.append({"n": n, "v": v, "life": 2.5, "dmg": dmg, "from": from, "sorte": sorte, "spin": Vector3(randf_range(-9, 9), randf_range(-9, 9), 0)})
-	if sorte != "fruit":
+	if sorte == "os":
+		# lâché, il tombe : presque pas de vitesse au départ
+		var tf: float = sqrt(2.0 * maxf(from.y - to.y, 1.0) / 9.8)
+		v = Vector3(to.x - from.x, 0.0, to.z - from.z) / tf
+	_spits.append({"n": n, "v": v, "life": 6.0 if sorte == "os" else 2.5, "dmg": dmg, "from": from, "sorte": sorte, "spin": Vector3(randf_range(-9, 9), randf_range(-9, 9), 0)})
+	if sorte not in ["fruit", "os"]:
 		main.sfx("flamme_lance", from)
 
 
@@ -555,11 +657,17 @@ func _tick_spits(delta: float) -> void:
 		if n.global_position.distance_to(p) < 0.8:
 			hurt_player(int(s["dmg"]), s["from"])
 			done = true
-		elif n.global_position.y < float(main._height_at(n.global_position.x, n.global_position.z)) or float(s["life"]) <= 0.0:
+		elif n.global_position.y < hauteur(n.global_position.x, n.global_position.z) or float(s["life"]) <= 0.0:
 			done = true
 		if done:
 			var fx: Node = main.get("combat_fx_v129")
-			if str(s.get("sorte", "braise")) == "fruit":
+			if str(s.get("sorte", "braise")) == "os":
+				# l'os éclate sur le rocher
+				os_tombes += 1
+				if fx != null and fx.has_method("_puffs"):
+					fx._puffs(n.global_position, 10, Color(0.92, 0.88, 0.78, 0.9), 0.04, 0.12, 0.6, 1.5, 4.0, 0.4, 0.2)
+				main.sfx("os_choc", n.global_position)
+			elif str(s.get("sorte", "braise")) == "fruit":
 				# la mangue s'écrase : du jus et de la pulpe
 				if fx != null and fx.has_method("_puffs"):
 					fx._puffs(n.global_position, 8, Color(1.0, 0.68, 0.12, 0.9), 0.04, 0.12, 0.5, 1.5, 3.5, 0.4, 0.2)
@@ -737,9 +845,9 @@ func decal(at: Vector3, sorte: String, size: float, life: float) -> void:
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mi)
 	# posée selon la pente du terrain
-	var h0: float = main._height_at(at.x, at.z)
-	var hx: float = main._height_at(at.x + 0.5, at.z) - main._height_at(at.x - 0.5, at.z)
-	var hz: float = main._height_at(at.x, at.z + 0.5) - main._height_at(at.x, at.z - 0.5)
+	var h0: float = hauteur(at.x, at.z)
+	var hx: float = hauteur(at.x + 0.5, at.z) - hauteur(at.x - 0.5, at.z)
+	var hz: float = hauteur(at.x, at.z + 0.5) - hauteur(at.x, at.z - 0.5)
 	var n := Vector3(-hx, 1.0, -hz).normalized()
 	var x_axis: Vector3 = n.cross(Vector3.FORWARD).normalized() if absf(n.dot(Vector3.FORWARD)) < 0.95 else Vector3.RIGHT
 	var b := Basis(x_axis, n, x_axis.cross(n).normalized())

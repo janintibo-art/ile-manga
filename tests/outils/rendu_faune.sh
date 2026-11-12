@@ -9,7 +9,7 @@ OUT="$1"
 shift
 mkdir -p "$OUT"
 rm -f "$OUT"/*.png
-for f in pcvr/scripts/monstre_v132.gd pcvr/scripts/monstre_v133.gd pcvr/scripts/monstre_v135.gd pcvr/scripts/monstre_v136.gd pcvr/scripts/faune_v132.gd; do
+for f in pcvr/scripts/monstre_v132.gd pcvr/scripts/monstre_v133.gd pcvr/scripts/monstre_v135.gd pcvr/scripts/monstre_v136.gd pcvr/scripts/monstre_v137.gd pcvr/scripts/faune_v132.gd; do
   cp "$DEPOT/$f" "$COPIE/$f"
 done
 cp "$DEPOT/tests/outils/rendu_faune.gd" "$COPIE/pcvr/rendu_faune.gd"
