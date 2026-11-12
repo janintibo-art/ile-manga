@@ -3,16 +3,22 @@ extends SceneTree
 ##     godot --path pcvr --rendering-driver opengl3 --script res://rendu_faune.gd -- DOSSIER [nuit] espèce espèce…
 ## Pour chaque espèce : une image au repos (en marche) et une image en attaque, de trois quarts.
 
-const Bete := preload("res://scripts/monstre_v135.gd")
+const Bete := preload("res://scripts/monstre_v136.gd")
 
-## La distance de la caméra et la hauteur visée, selon la taille de la bête.
+## La distance de la caméra et la hauteur visée (et, si on veut, l'avancée du point visé), selon la taille de la bête.
 const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauvage": [2.4, 0.45], "scarabee_geant": [2.4, 0.4],
 	"mille_pattes": [2.3, 0.15], "araignee_geante": [2.2, 0.3], "coyote": [2.0, 0.42], "chacal": [1.8, 0.38],
-	"coati": [1.6, 0.25], "singe_hurleur": [2.0, 0.5], "axolotl": [1.5, 0.12], "luciole": [1.8, 0.2]}
+	"coati": [1.6, 0.25], "singe_hurleur": [2.0, 0.5], "axolotl": [1.5, 0.12], "luciole": [1.8, 0.2],
+	"cheval_sauvage": [4.2, 0.85], "fregate": [3.2, 0.0], "tortue_verte": [2.4, 0.2], "perroquet": [1.7, 0.0], "varan": [3.0, 0.2],
+	"crabe_cocotier": [2.0, 0.25], "lapin_garenne": [1.0, 0.15], "frelon": [1.6, 0.0], "herisson": [0.75, 0.08],
+	"hibou_grand_duc": [1.7, 0.35], "renard_roux": [1.9, 0.3]}
 ## La pose d'attaque de chaque espèce : [état, minuteur].
 const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "jaguar_sauvage": ["armer", 0.1], "scarabee_geant": ["chasse", 0.0],
 	"mille_pattes": ["armer", 0.1], "araignee_geante": ["armer", 0.05], "coyote": ["armer", 0.1], "chacal": ["armer", 0.1],
-	"coati": ["emporte", 3.0], "singe_hurleur": ["armer", 0.3], "axolotl": ["fuite", 1.0], "luciole": ["vol", 0.0]}
+	"coati": ["emporte", 3.0], "singe_hurleur": ["armer", 0.3], "axolotl": ["fuite", 1.0], "luciole": ["vol", 0.0],
+	"cheval_sauvage": ["ruade_fin", 0.3], "fregate": ["pique", 1.0], "tortue_verte": ["ponte", 5.0], "perroquet": ["tourne", 3.0],
+	"varan": ["fouet", 0.2], "crabe_cocotier": ["armer", 0.3], "lapin_garenne": ["alerte", 0.3], "frelon": ["chasse", 0.0],
+	"herisson": ["boule", 0.0], "hibou_grand_duc": ["envol", 0.0], "renard_roux": ["emporte", 3.0]}
 
 var nuit: bool = false
 
@@ -101,12 +107,14 @@ func _initialize() -> void:
 				var at: Array = ATTAQUE.get(str(k), ["armer", 0.2])
 				b.state = str(at[0])
 				b.timer = float(at[1])
+				if str(k) == "herisson":
+					b._ball = 1.0
 			for i in range(40):
 				b._clock += 0.013
 				b._animate132(0.016, speed)
 			var c: Array = CADRE.get(str(k), [2.5, 0.4])
 			var d: float = float(c[0])
-			var aim := Vector3(0, float(c[1]) + (b.global_position.y if b.vol else 0.0), 0)
+			var aim := Vector3(0, float(c[1]) + (b.global_position.y if b.vol else 0.0), float(c[2]) if c.size() > 2 else 0.0)
 			cam.global_position = aim + Vector3(d * 0.72, d * 0.42, d * 0.62)
 			cam.look_at(aim, Vector3.UP)
 			for i in range(4):

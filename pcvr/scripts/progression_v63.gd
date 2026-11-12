@@ -100,6 +100,9 @@ const KILL_XP := {
 	"boulette": 8, "boulette_mini": 2, "spaghetti_sauvage": 10, "tomate_kamikaze": 3, "gribouillis": 4, "tache_encre": 6, "gomme_geante": 15,
 	"singe_hurleur": 6, "mille_pattes": 7, "araignee_geante": 9, "luciole": 1, "crocodile": 14, "scarabee_geant": 8, "chacal": 7,
 	"coati": 1, "jaguar_sauvage": 16, "aigle_royal": 10, "axolotl": 1, "coyote": 7,
+	# V136 : l'Île aux Moaïs, la Balafre, Larsen
+	"cheval_sauvage": 12, "fregate": 5, "tortue_verte": 1, "perroquet": 1, "varan": 13, "crabe_cocotier": 10,
+	"lapin_garenne": 2, "frelon": 6, "herisson": 1, "hibou_grand_duc": 4, "renard_roux": 1,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 	# V75 : l'Île du Boucan

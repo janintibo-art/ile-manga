@@ -146,6 +146,9 @@ func _menu_voyage() -> void:
 		{"id": "faune135e", "label": "Faune sauvage : le fleuve et le désert égyptiens (crocodiles, scarabées, chacals)"},
 		{"id": "faune135m", "label": "Faune sauvage : les collines mayas (coatis, singes, jaguar)"},
 		{"id": "faune135a", "label": "Faune sauvage : le lac et le volcan aztèques (aigle, salamandres, axolotls, coyotes)"},
+		{"id": "faune136m", "label": "Faune sauvage : l'Île aux Moaïs (chevaux sauvages, frégate, tortue verte)"},
+		{"id": "faune136b", "label": "Faune sauvage : l'Île de la Balafre (aras, varan, crabe de cocotier)"},
+		{"id": "faune136l", "label": "Faune sauvage : l'Île de Larsen (lapins, frelons, renard, hérisson, grand-duc)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -366,6 +369,8 @@ func _pick(id: String) -> void:
 			_faune_v132("jungle")
 		"faune135e", "faune135m", "faune135a":
 			_faune_v132("soleils", {"faune135e": "egypte", "faune135m": "maya", "faune135a": "azteque"}[id])
+		"faune136m", "faune136b", "faune136l":
+			_faune_v132({"faune136m": "moai", "faune136b": "balafre", "faune136l": "larsen"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -457,7 +462,10 @@ func _faune_v132(ile: String, region: String = "") -> void:
 		"crayon": ["gribouillis", "gribouillis", "gribouillis", "tache_encre", "gomme_geante"],
 		"jungle": ["singe_hurleur", "singe_hurleur", "mille_pattes", "araignee_geante", "luciole"],
 		"soleils:egypte": ["crocodile", "scarabee_geant", "chacal", "chacal"], "soleils:maya": ["coati", "singe_hurleur", "jaguar_sauvage", "luciole"],
-		"soleils:azteque": ["aigle_royal", "salamandre", "axolotl", "coyote", "coyote"]}.get(ile + (":" + region if region != "" else ""), [])
+		"soleils:azteque": ["aigle_royal", "salamandre", "axolotl", "coyote", "coyote"],
+		"moai": ["cheval_sauvage", "cheval_sauvage", "cheval_sauvage", "fregate", "tortue_verte"],
+		"balafre": ["perroquet", "perroquet", "perroquet", "varan", "crabe_cocotier"],
+		"larsen": ["lapin_garenne", "lapin_garenne", "frelon", "renard_roux", "herisson", "hibou_grand_duc"]}.get(ile + (":" + region if region != "" else ""), [])
 	for i in range(kinds.size()):
 		var a2: float = TAU * i / kinds.size()
 		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
@@ -469,10 +477,20 @@ func _faune_v132(ile: String, region: String = "") -> void:
 				if w == Vector3.INF:
 					continue
 				q2 = Vector3(w.x, main._height_at(w.x, w.z) + 0.1, w.z)
-			"luciole":
+			"luciole", "frelon":
 				q2.y += 1.3
 			"aigle_royal":
 				q2.y += 10.0
+			# V136 : la tortue sur la plage la plus proche, les aras et la frégate en l'air
+			"tortue_verte":
+				var w2: Vector3 = _milieu_pres(f, best, "plage", 70.0)
+				if w2 == Vector3.INF:
+					continue
+				q2 = Vector3(w2.x, main._height_at(w2.x, w2.z) + 0.1, w2.z)
+			"perroquet":
+				q2.y += 3.0
+			"fregate":
+				q2.y += 16.0
 		f.spawn(str(kinds[i]), q2)
 	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
 

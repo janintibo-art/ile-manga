@@ -28,13 +28,22 @@ extends Node3D
 ##    lucioles ; côté aztèque (le lac, le volcan, les hautes terres), aigles royaux, salamandres
 ##    sur les pentes du volcan, axolotls paisibles dans les jardins flottants, la nuit des coyotes
 ##    et des chauves-souris.
+## V136 : trois îles du nord (les bêtes elles-mêmes sont dans monstre_v136.gd) :
+##  - l'Île aux Moaïs : des chevaux sauvages en troupeau (ils ruent si on les frappe par derrière)
+##    et des frégates qui plongent pêcher en mer ; la nuit, des tortues vertes viennent pondre sur
+##    la plage ;
+##  - l'Île de la Balafre : des aras bavards (ils crient des mots de pirate) et des varans ; la nuit,
+##    des crabes de cocotier à la carapace très dure ;
+##  - l'Île de Larsen : des lapins de garenne (ils plongent dans leur terrier), des frelons et un
+##    renard chapardeur ; la nuit, des hérissons qui se roulent en boule et un grand-duc.
+## Sous terre (un souterrain, une grotte), rien ne naît.
 ## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
 ## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v135.gd")
+const Bete := preload("res://scripts/monstre_v136.gd")
 const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
@@ -69,6 +78,13 @@ const ILES := {
 			"nuit": [["jaguar_sauvage", 1, "sol", 1], ["luciole", 3, "air", 3]]},
 		"azteque": {"jour": [["aigle_royal", 1, "air", 1], ["salamandre", 2, "volcan", 1], ["axolotl", 3, "lac", 1]],
 			"nuit": [["coyote", 3, "sol", 3], ["chauve_souris_mont", 4, "air", 4]]}}},
+	# V136
+	"moai": {"jour": [["cheval_sauvage", 4, "sol", 4], ["fregate", 2, "air", 1]],
+		"nuit": [["tortue_verte", 3, "plage", 1], ["cheval_sauvage", 3, "sol", 3]]},
+	"balafre": {"jour": [["perroquet", 3, "air", 3], ["varan", 2, "sol", 1]],
+		"nuit": [["crabe_cocotier", 3, "sol", 1], ["varan", 1, "sol", 1]]},
+	"larsen": {"jour": [["lapin_garenne", 4, "sol", 2], ["frelon", 1, "air", 1], ["renard_roux", 1, "sol", 1]],
+		"nuit": [["herisson", 3, "sol", 1], ["hibou_grand_duc", 1, "air", 1], ["renard_roux", 1, "sol", 1]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -120,7 +136,8 @@ func _resolve_iles() -> void:
 	if n != null and n.get("ile") != null:
 		centres["nains"] = n.ile.CENTER
 	# V133
-	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"]]:
+	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"],
+			["moai", "moai_v87"], ["balafre", "pirates_v68"], ["larsen", "larsen_v91"]]:
 		var w: Node = main.get(str(e2[1]))
 		if w != null and w.get("ile") != null:
 			centres[str(e2[0])] = w.ile.CENTER
@@ -221,7 +238,11 @@ func _blocked(p: Vector3) -> bool:
 	if donjon != null and bool(donjon.get("inside")):
 		return true
 	# en vol (l'aigle, l'aéronef) : rien ne naît sous les ailes
-	if p.y - float(main._height_at(p.x, p.z)) > 8.0:
+	var hp: float = float(main._height_at(p.x, p.z))
+	if p.y - hp > 8.0:
+		return true
+	# V136 : sous terre (un souterrain, une grotte) non plus
+	if p.y < hp - 4.0:
 		return true
 	return false
 
@@ -268,8 +289,10 @@ func _maybe_spawn(p: Vector3) -> void:
 	var at: Vector3 = _spot(p, str(e2[2]), str(e2[0]), region)
 	if at == Vector3.INF:
 		return
+	# V136 : les chevaux du troupeau naissent un peu plus écartés
+	var ecart: float = 5.0 if str(e2[0]) == "cheval_sauvage" else 2.5
 	for i in range(int(e2[3])):
-		var off := Vector3(_rng.randf_range(-2.5, 2.5), 0, _rng.randf_range(-2.5, 2.5)) if i > 0 else Vector3.ZERO
+		var off := Vector3(_rng.randf_range(-ecart, ecart), 0, _rng.randf_range(-ecart, ecart)) if i > 0 else Vector3.ZERO
 		var q: Vector3 = at + off
 		if str(e2[2]) != "air":
 			q.y = float(main._height_at(q.x, q.z)) + 0.1
@@ -626,7 +649,8 @@ func peut_chaparder() -> bool:
 ## dans la gueule et file. Renvoie vrai s'il a pris quelque chose.
 func chapardeur_vole(g: Node3D) -> bool:
 	var id: String = _food() if _chap_cd <= 0.0 else ""
-	main.sfx("coati_couine", g.global_position)
+	var renard: bool = str(g.get("kind")) == "renard_roux"
+	main.sfx("renard_glapit" if renard else "coati_couine", g.global_position)
 	if id == "":
 		return false
 	main.inventory_v28.remove(id, 1)
@@ -641,7 +665,10 @@ func chapardeur_vole(g: Node3D) -> bool:
 		if head != null:
 			head.add_child(mdl)
 			mdl.position = Vector3(0, -0.04, 0.32)
-	main._show_message_v28("Un coati t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
+	if renard:
+		main._show_message_v28("Un renard t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
+	else:
+		main._show_message_v28("Un coati t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
 	return true
 
 
@@ -653,7 +680,7 @@ func chapardeur_lache(g: Node3D) -> void:
 		return
 	main.inventory_v28.add(id, 1)
 	rendus += 1
-	main._show_message_v28("Le coati lâche %s !" % _art(id))
+	main._show_message_v28(("Le renard lâche %s !" if str(g.get("kind")) == "renard_roux" else "Le coati lâche %s !") % _art(id))
 	main.sfx("ramasse_pieces", g.global_position)
 
 
@@ -662,7 +689,7 @@ func chapardeur_garde(g: Node3D) -> void:
 	g.butin = ""
 	_drop_model(g)
 	if id != "":
-		main._show_message_v28("Trop tard : le coati a filé avec %s." % _art(id))
+		main._show_message_v28(("Trop tard : le renard a filé avec %s." if str(g.get("kind")) == "renard_roux" else "Trop tard : le coati a filé avec %s.") % _art(id))
 
 
 func mouette_lache(g: Node3D) -> void:
