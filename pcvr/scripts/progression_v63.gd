@@ -98,6 +98,8 @@ const KILL_XP := {
 	# V133 : la grande île, Al Dente, l'Île Crayonnée
 	"aurochs": 12, "loup_plaine": 8, "ours_lande": 16, "crapaud_vase": 7, "feu_follet": 5, "scorpion_dunes": 9, "serpent_sable": 8,
 	"boulette": 8, "boulette_mini": 2, "spaghetti_sauvage": 10, "tomate_kamikaze": 3, "gribouillis": 4, "tache_encre": 6, "gomme_geante": 15,
+	"singe_hurleur": 6, "mille_pattes": 7, "araignee_geante": 9, "luciole": 1, "crocodile": 14, "scarabee_geant": 8, "chacal": 7,
+	"coati": 1, "jaguar_sauvage": 16, "aigle_royal": 10, "axolotl": 1, "coyote": 7,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 	# V75 : l'Île du Boucan

@@ -142,6 +142,10 @@ func _menu_voyage() -> void:
 		{"id": "faune133s", "label": "Faune sauvage : le désert de la grande île (scorpions, serpents des sables)"},
 		{"id": "faune133p", "label": "Faune sauvage : l'Île Al Dente (boulettes, spaghettis, tomates)"},
 		{"id": "faune133c", "label": "Faune sauvage : l'Île Crayonnée (gribouillis, taches d'encre, gomme géante)"},
+		{"id": "faune135j", "label": "Faune sauvage : l'île de la jungle (singes, mille-pattes, araignées, lucioles)"},
+		{"id": "faune135e", "label": "Faune sauvage : le fleuve et le désert égyptiens (crocodiles, scarabées, chacals)"},
+		{"id": "faune135m", "label": "Faune sauvage : les collines mayas (coatis, singes, jaguar)"},
+		{"id": "faune135a", "label": "Faune sauvage : le lac et le volcan aztèques (aigle, salamandres, axolotls, coyotes)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -358,6 +362,10 @@ func _pick(id: String) -> void:
 			_faune_v132("grande", {"faune133o": "ouest", "faune133n": "nord", "faune133e": "est", "faune133s": "sud"}[id])
 		"faune133p", "faune133c":
 			_faune_v132({"faune133p": "aldente", "faune133c": "crayon"}[id])
+		"faune135j":
+			_faune_v132("jungle")
+		"faune135e", "faune135m", "faune135a":
+			_faune_v132("soleils", {"faune135e": "egypte", "faune135m": "maya", "faune135a": "azteque"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -424,6 +432,11 @@ func _faune_v132(ile: String, region: String = "") -> void:
 			continue
 		if ile != "village" and absf(main._height_at(q.x + 3.0, q.z) - h) + absf(main._height_at(q.x, q.z + 3.0) - h) > 2.4:
 			continue
+		# V135 : côté égyptien, au bord du fleuve (les crocodiles) ; côté aztèque, près du lac (les axolotls)
+		if region == "egypte" and _milieu_pres(f, q, "fleuve", 22.0) == Vector3.INF:
+			continue
+		if region == "azteque" and _milieu_pres(f, q, "lac", 30.0) == Vector3.INF:
+			continue
 		var ok: bool = true
 		for np in f._npc_pos:
 			if Vector2((np as Vector3).x - q.x, (np as Vector3).z - q.z).length() < 35.0:
@@ -441,13 +454,41 @@ func _faune_v132(ile: String, region: String = "") -> void:
 		"grande:ouest": ["aurochs", "aurochs", "loup_plaine", "loup_plaine"], "grande:nord": ["ours_lande", "bouc", "loup_plaine"],
 		"grande:est": ["crapaud_vase", "crapaud_vase", "feu_follet", "feu_follet"], "grande:sud": ["scorpion_dunes", "serpent_sable", "serpent_sable"],
 		"aldente": ["boulette", "spaghetti_sauvage", "tomate_kamikaze", "tomate_kamikaze"],
-		"crayon": ["gribouillis", "gribouillis", "gribouillis", "tache_encre", "gomme_geante"]}.get(ile + (":" + region if region != "" else ""), [])
+		"crayon": ["gribouillis", "gribouillis", "gribouillis", "tache_encre", "gomme_geante"],
+		"jungle": ["singe_hurleur", "singe_hurleur", "mille_pattes", "araignee_geante", "luciole"],
+		"soleils:egypte": ["crocodile", "scarabee_geant", "chacal", "chacal"], "soleils:maya": ["coati", "singe_hurleur", "jaguar_sauvage", "luciole"],
+		"soleils:azteque": ["aigle_royal", "salamandre", "axolotl", "coyote", "coyote"]}.get(ile + (":" + region if region != "" else ""), [])
 	for i in range(kinds.size()):
 		var a2: float = TAU * i / kinds.size()
 		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
 		q2.y = main._height_at(q2.x, q2.z) + (12.0 if kinds[i] == "mouette" else (2.8 if kinds[i] in ["chauve_souris_mont", "feu_follet"] else 0.1))
+		# V135 : le crocodile dans le fleuve, l'axolotl au bord du lac, les lucioles et l'aigle en l'air
+		match str(kinds[i]):
+			"crocodile", "axolotl":
+				var w: Vector3 = _milieu_pres(f, best, "fleuve" if kinds[i] == "crocodile" else "lac", 40.0)
+				if w == Vector3.INF:
+					continue
+				q2 = Vector3(w.x, main._height_at(w.x, w.z) + 0.1, w.z)
+			"luciole":
+				q2.y += 1.3
+			"aigle_royal":
+				q2.y += 10.0
 		f.spawn(str(kinds[i]), q2)
 	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
+
+
+## V135 : le point le plus proche de « centre » (en cercles de plus en plus grands) qui convient au
+## milieu demandé (« fleuve », « lac »…), ou Vector3.INF.
+func _milieu_pres(f: Node, centre: Vector3, milieu: String, rmax: float) -> Vector3:
+	var r: float = 4.0
+	while r <= rmax:
+		for k in range(16):
+			var a: float = TAU * float(k) / 16.0
+			var q := Vector3(centre.x + cos(a) * r, 0, centre.z + sin(a) * r)
+			if f.milieu_ok(q, main._height_at(q.x, q.z), milieu):
+				return q
+		r += 3.0
+	return Vector3.INF
 
 
 func _comte_v128(cachots: bool) -> void:

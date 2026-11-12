@@ -17,6 +17,7 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 | `40_lieux_speciaux` | souterrain du Grand Moaï, Île Pixelithique, château du comte et ses souterrains, les six donjons à énigmes |
 | `50_faune_iles` | la faune V132 (village paisible, Bois-Doré, Montagne de Feu) |
 | `51_faune_grande` | la faune V133 (grande île par région, Al Dente, Crayonnée) |
+| `52_faune_jungle_soleils` | la faune V135 (île de la jungle ; Trois Soleils côté égyptien, maya, aztèque) |
 | `60_combat` | butin et expérience, chaque arme, les six sorts, les quatre pouvoirs des sceaux |
 | `70_heros` | marcher, sauter, courir, nager, tomber, lever les yeux, se relever, le niveau |
 | `80_sauvegarde` | sauvegarder, nouvelle partie, recharger, copie de secours, Tout public / Public averti |
@@ -44,4 +45,6 @@ déjà importée (`/root/t38`, ou `TESTS_COPIE`) :
 ## Outils (`outils/`)
 
 - `verifier_workflow.py` : rejoue les contrôles de la compilation GitHub (sans l'export Windows).
+- `analyser.sh fichier.gd…` : vérifie la syntaxe de scripts du jeu (et de ce qu'ils chargent).
+- `rendu_faune.sh DOSSIER [nuit] espèce…` : des images des bêtes (repos, attaque) et une planche ; il faut xvfb-run.
 - `zip_livraison.sh N` : le zip de livraison `ile_manga_pcvr_vN.zip` (fichiers changés, dans `ile_manga_pcvr/`).

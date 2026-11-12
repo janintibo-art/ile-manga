@@ -45,6 +45,8 @@ const DB := {
 	# V132 : la faune sauvage
 	"mouette_cri": -8.0, "sanglier_grogne": -5.0, "loup_hurle": -6.0, "bouc_belement": -6.0, "salamandre_crache": -5.0,
 	"aurochs_meugle": -5.0, "ours_rugit": -4.0, "boulette_grogne": -6.0, "spaghetti_fouet": -5.0, "tomate_splat": -4.0,
+	"singe_hurle": -5.0, "mille_pattes_cliquette": -7.0, "araignee_siffle": -7.0, "crocodile_grogne": -3.0, "scarabee_crisse": -8.0,
+	"chacal_glapit": -6.0, "coati_couine": -8.0, "jaguar_feule": -4.0, "coyote_hurle": -6.0, "axolotl_bulle": -10.0,
 	"gribouillis_griffe": -7.0, "gomme_couine": -6.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,

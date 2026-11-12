@@ -19,11 +19,23 @@ extends Node3D
 ##  - l'Île Crayonnée : gribouillis en bande, taches d'encre qui bondissent, et la nuit, une gomme
 ##    géante qui efface tout devant elle.
 ## Les taches (encre, sauce, gomme) restent un moment au sol, puis s'effacent.
+## V135 : deux îles de plus (les bêtes elles-mêmes sont dans monstre_v135.gd) :
+##  - l'île de la jungle : singes hurleurs qui lancent des fruits, mille-pattes géants ; la nuit,
+##    araignées géantes et nuées de lucioles (paisibles) ;
+##  - l'Île des Trois Soleils, région par région : côté égyptien (le fleuve et le désert),
+##    crocodiles tapis dans l'eau et scarabées géants qui poussent leur boule, la nuit des chacals ;
+##    côté maya (les collines de jungle), coatis chapardeurs et singes, la nuit le jaguar et les
+##    lucioles ; côté aztèque (le lac, le volcan, les hautes terres), aigles royaux, salamandres
+##    sur les pentes du volcan, axolotls paisibles dans les jardins flottants, la nuit des coyotes
+##    et des chauves-souris.
+## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
+## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v133.gd")
+const Bete := preload("res://scripts/monstre_v135.gd")
+const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
 const ILES := {
@@ -47,6 +59,16 @@ const ILES := {
 		"nuit": [["boulette", 2, "sol", 1], ["spaghetti_sauvage", 2, "sol", 1], ["tomate_kamikaze", 4, "sol", 2]]},
 	"crayon": {"jour": [["gribouillis", 3, "sol", 3], ["tache_encre", 3, "sol", 1]],
 		"nuit": [["gribouillis", 3, "sol", 3], ["tache_encre", 2, "sol", 1], ["gomme_geante", 1, "sol", 1]]},
+	# V135
+	"jungle": {"jour": [["singe_hurleur", 4, "sol", 2], ["mille_pattes", 2, "sol", 1]],
+		"nuit": [["araignee_geante", 2, "sol", 1], ["mille_pattes", 1, "sol", 1], ["luciole", 3, "air", 3]]},
+	"soleils": {"regions": {
+		"egypte": {"jour": [["crocodile", 2, "fleuve", 1], ["scarabee_geant", 3, "sol", 1]],
+			"nuit": [["crocodile", 2, "fleuve", 1], ["chacal", 3, "sol", 3]]},
+		"maya": {"jour": [["coati", 2, "sol", 1], ["singe_hurleur", 2, "sol", 2]],
+			"nuit": [["jaguar_sauvage", 1, "sol", 1], ["luciole", 3, "air", 3]]},
+		"azteque": {"jour": [["aigle_royal", 1, "air", 1], ["salamandre", 2, "volcan", 1], ["axolotl", 3, "lac", 1]],
+			"nuit": [["coyote", 3, "sol", 3], ["chauve_souris_mont", 4, "air", 4]]}}},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -69,6 +91,7 @@ var _cool: Dictionary = {}               # espèce -> temps avant de revenir
 var _token: Node = null
 var _token_t: float = 0.0
 var _steal_cd: float = 240.0
+var _chap_cd: float = 60.0               # V135 : le coati ne revient pas chiper tout de suite
 var _swoop_t: float = 60.0
 var _spits: Array = []
 var _decals: Array = []                  # V133 : taches d'encre, de sauce, de gomme au sol
@@ -97,10 +120,14 @@ func _resolve_iles() -> void:
 	if n != null and n.get("ile") != null:
 		centres["nains"] = n.ile.CENTER
 	# V133
-	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"]]:
+	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"]]:
 		var w: Node = main.get(str(e2[1]))
 		if w != null and w.get("ile") != null:
 			centres[str(e2[0])] = w.ile.CENTER
+	# V135 : l'île de la jungle est son propre relief
+	var jg: Node = main.get("jungle_v29")
+	if jg != null:
+		centres["jungle"] = jg.CENTER
 	for id in centres:
 		var c: Vector3 = centres[id]
 		iles[id] = {"c": c, "r": _rayon(c)}
@@ -159,6 +186,7 @@ func _process(delta: float) -> void:
 	for k in _cool.keys():
 		_cool[k] = float(_cool[k]) - delta
 	_steal_cd -= delta
+	_chap_cd -= delta
 	if not enabled or not started:
 		return
 	_tick -= delta
@@ -249,7 +277,18 @@ func _maybe_spawn(p: Vector3) -> void:
 
 
 ## V133 : la région de la grande île (« ouest », « nord », « est », « sud ») ; "" ailleurs.
+## V135 : l'Île des Trois Soleils : « egypte » (à l'est : le fleuve, Per-Hâpy, le plateau de Rê),
+## « maya » (au nord : les collines de jungle, Yaxché), « azteque » (le reste : le lac de la Lune,
+## Aztlán, le Mont Fumant, les hautes terres).
 func region_de(id: String, p: Vector3) -> String:
+	if id == "soleils":
+		var lx: float = p.x - IleSoleils.CENTER.x
+		var lz: float = p.z - IleSoleils.CENTER.z
+		if lx > 70.0:
+			return "egypte"
+		if lz < -55.0:
+			return "maya"
+		return "azteque"
 	if id != "grande":
 		return ""
 	var g: Node = main.get("grande_v59")
@@ -278,8 +317,8 @@ func spawn(kind: String, at: Vector3) -> Node3D:
 	b.died.connect(_on_died)
 	betes.append(b)
 	spawned[kind] = int(spawned.get(kind, 0)) + 1
-	if kind in ["loup_bois", "loup_plaine"] and _count(kind) == 1:
-		main.sfx("loup_hurle", at + Vector3.UP)
+	if kind in ["loup_bois", "loup_plaine", "chacal", "coyote"] and _count(kind) == 1:
+		main.sfx({"chacal": "chacal_glapit", "coyote": "coyote_hurle"}.get(kind, "loup_hurle"), at + Vector3.UP)
 	return b
 
 
@@ -298,20 +337,8 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 		if Vector2(q.x - c.x, q.z - c.z).length() > float(e["r"]) * 0.97:
 			continue
 		var h: float = main._height_at(q.x, q.z)
-		match milieu:
-			"plage":
-				if h < 0.15 or h > 2.2:
-					continue
-			"sol":
-				if h < 1.2:
-					continue
-				var h2: float = main._height_at(q.x + 1.5, q.z)
-				var h3: float = main._height_at(q.x, q.z + 1.5)
-				if absf(h2 - h) > 1.1 or absf(h3 - h) > 1.1:
-					continue
-			"air":
-				if h < 0.3:
-					continue
+		if not milieu_ok(q, h, milieu):
+			continue
 		# V133 : sur la grande île, la bête naît dans la région du héros
 		if region != "" and region_de(ile_joueur, q) != region:
 			continue
@@ -337,6 +364,31 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 		q.y = (h + (float(_rng.randf_range(10.0, 16.0)) if kind == "mouette" else 2.8)) if milieu == "air" else h + 0.1
 		return q
 	return Vector3.INF
+
+
+## Le milieu où une bête peut naître : la plage, la terre ferme pas trop pentue, le ciel ; V135 :
+## le fleuve (l'eau peu profonde et ses bords), le lac de la Lune (rives et jardins flottants),
+## les pentes du Mont Fumant.
+func milieu_ok(q: Vector3, h: float, milieu: String) -> bool:
+	match milieu:
+		"plage":
+			return h >= 0.15 and h <= 2.2
+		"sol", "volcan":
+			if h < 1.2:
+				return false
+			if absf(main._height_at(q.x + 1.5, q.z) - h) > 1.1 or absf(main._height_at(q.x, q.z + 1.5) - h) > 1.1:
+				return false
+			if milieu == "volcan":
+				return Vector2(q.x - IleSoleils.CENTER.x, q.z - IleSoleils.CENTER.z).distance_to(IleSoleils.VOLCANO) < 115.0
+			return true
+		"air":
+			return h >= 0.3
+		"fleuve":
+			return h >= -1.3 and h <= 0.1
+		"lac":
+			var lq: float = IleSoleils.lake_q(q.x - IleSoleils.CENTER.x, q.z - IleSoleils.CENTER.z)
+			return lq > 0.62 and lq < 1.12 and h > IleSoleils.LAKE_Y - 0.25 and h < IleSoleils.LAKE_Y + 0.8
+	return false
 
 
 ## Les bêtes sauvages menaçantes autour du héros (les cœurs en VR, comme dans les donjons).
@@ -410,7 +462,8 @@ func _on_died(m: Node3D) -> void:
 
 # =================================================================== les crachats de braise
 
-func spit(from: Vector3, to: Vector3, dmg: int) -> void:
+## V135 : « sorte » = "braise" (la salamandre) ou "fruit" (la mangue que lance le singe hurleur).
+func spit(from: Vector3, to: Vector3, dmg: int, sorte: String = "braise") -> void:
 	var n := Node3D.new()
 	add_child(n)
 	n.global_position = from
@@ -419,28 +472,47 @@ func spit(from: Vector3, to: Vector3, dmg: int) -> void:
 	s.radius = 0.13
 	s.height = 0.26
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(1.0, 0.55, 0.15)
-	m.emission_enabled = true
-	m.emission = Color(1.0, 0.45, 0.1)
-	m.emission_energy_multiplier = 4.0
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	if sorte == "fruit":
+		# une mangue : ovale, jaune orangé virant au vert, luisante
+		mi.scale = Vector3(0.62, 0.8, 0.62)
+		m.albedo_color = Color(0.95, 0.6, 0.12)
+		m.roughness = 0.4
+		var tige := MeshInstance3D.new()
+		var cyl := CylinderMesh.new()
+		cyl.top_radius = 0.008
+		cyl.bottom_radius = 0.012
+		cyl.height = 0.05
+		var tm := StandardMaterial3D.new()
+		tm.albedo_color = Color(0.3, 0.4, 0.12)
+		cyl.material = tm
+		tige.mesh = cyl
+		tige.position = Vector3(0, 0.12, 0)
+		mi.add_child(tige)
+	else:
+		m.albedo_color = Color(1.0, 0.55, 0.15)
+		m.emission_enabled = true
+		m.emission = Color(1.0, 0.45, 0.1)
+		m.emission_energy_multiplier = 4.0
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	s.material = m
 	mi.mesh = s
 	n.add_child(mi)
-	var l := OmniLight3D.new()
-	l.light_color = Color(1.0, 0.5, 0.15)
-	l.light_energy = 1.2
-	l.omni_range = 3.0
-	n.add_child(l)
 	var fx: Node = main.get("combat_fx_v129")
-	if fx != null and fx.has_method("_burst"):
-		fx._burst(Vector3.ZERO, {"amount": 16, "life": 0.4, "v0": 0.0, "v1": 0.3, "radius": 0.05, "grav": Vector3(0, 1.0, 0), "size": 0.12,
-			"explo": 0.0, "loop": true, "parent": n, "cols": [Color(1, 0.9, 0.5), Color(1.0, 0.45, 0.1), Color(0.6, 0.15, 0.05, 0.0)]})
+	if sorte != "fruit":
+		var l := OmniLight3D.new()
+		l.light_color = Color(1.0, 0.5, 0.15)
+		l.light_energy = 1.2
+		l.omni_range = 3.0
+		n.add_child(l)
+		if fx != null and fx.has_method("_burst"):
+			fx._burst(Vector3.ZERO, {"amount": 16, "life": 0.4, "v0": 0.0, "v1": 0.3, "radius": 0.05, "grav": Vector3(0, 1.0, 0), "size": 0.12,
+				"explo": 0.0, "loop": true, "parent": n, "cols": [Color(1, 0.9, 0.5), Color(1.0, 0.45, 0.1), Color(0.6, 0.15, 0.05, 0.0)]})
 	var t: float = clampf(from.distance_to(to) / 10.0, 0.5, 1.2)
 	var v: Vector3 = (to - from) / t
 	v.y += 0.5 * 9.8 * t
-	_spits.append({"n": n, "v": v, "life": 2.5, "dmg": dmg, "from": from})
-	main.sfx("flamme_lance", from)
+	_spits.append({"n": n, "v": v, "life": 2.5, "dmg": dmg, "from": from, "sorte": sorte, "spin": Vector3(randf_range(-9, 9), randf_range(-9, 9), 0)})
+	if sorte != "fruit":
+		main.sfx("flamme_lance", from)
 
 
 func _tick_spits(delta: float) -> void:
@@ -454,6 +526,7 @@ func _tick_spits(delta: float) -> void:
 			continue
 		s["v"] = (s["v"] as Vector3) + Vector3.DOWN * 9.8 * delta
 		n.global_position += (s["v"] as Vector3) * delta
+		n.rotation += (s.get("spin", Vector3.ZERO) as Vector3) * delta
 		s["life"] = float(s["life"]) - delta
 		var done: bool = false
 		if n.global_position.distance_to(p) < 0.8:
@@ -463,10 +536,16 @@ func _tick_spits(delta: float) -> void:
 			done = true
 		if done:
 			var fx: Node = main.get("combat_fx_v129")
-			if fx != null and fx.has_method("_burst"):
-				fx._burst(n.global_position, {"amount": 12, "life": 0.6, "v0": 1.0, "v1": 3.0, "dir": Vector3.UP, "spread": 70.0, "grav": Vector3(0, -6.0, 0),
-					"size": 0.1, "mesh": "streak", "cols": [Color(1, 0.9, 0.5), Color(1.0, 0.45, 0.1), Color(1.0, 0.3, 0.05, 0.0)]})
-			main.sfx("flamme_impact", n.global_position)
+			if str(s.get("sorte", "braise")) == "fruit":
+				# la mangue s'écrase : du jus et de la pulpe
+				if fx != null and fx.has_method("_puffs"):
+					fx._puffs(n.global_position, 8, Color(1.0, 0.68, 0.12, 0.9), 0.04, 0.12, 0.5, 1.5, 3.5, 0.4, 0.2)
+				main.sfx("splotch", n.global_position)
+			else:
+				if fx != null and fx.has_method("_burst"):
+					fx._burst(n.global_position, {"amount": 12, "life": 0.6, "v0": 1.0, "v1": 3.0, "dir": Vector3.UP, "spread": 70.0, "grav": Vector3(0, -6.0, 0),
+						"size": 0.1, "mesh": "streak", "cols": [Color(1, 0.9, 0.5), Color(1.0, 0.45, 0.1), Color(1.0, 0.3, 0.05, 0.0)]})
+				main.sfx("flamme_impact", n.global_position)
 			n.queue_free()
 			_spits.erase(s)
 
@@ -529,11 +608,61 @@ func mouette_vole(g: Node3D) -> void:
 
 
 func _drop_model(g: Node3D) -> void:
-	var body: Node3D = g._pivots.get("corps")
-	if body != null:
-		var m: Node = body.get_node_or_null("Butin")
-		if m != null:
-			m.queue_free()
+	for piv in ["corps", "tete"]:
+		var body: Node3D = g._pivots.get(piv)
+		if body != null:
+			var m: Node = body.get_node_or_null("Butin")
+			if m != null:
+				m.queue_free()
+
+
+# =================================================================== V135 : les coatis chapardeurs
+
+func peut_chaparder() -> bool:
+	return _chap_cd <= 0.0 and _food() != ""
+
+
+## Le coati arrive au pied du héros : il chipe à manger (une fois de temps en temps), le garde
+## dans la gueule et file. Renvoie vrai s'il a pris quelque chose.
+func chapardeur_vole(g: Node3D) -> bool:
+	var id: String = _food() if _chap_cd <= 0.0 else ""
+	main.sfx("coati_couine", g.global_position)
+	if id == "":
+		return false
+	main.inventory_v28.remove(id, 1)
+	g.butin = id
+	vols += 1
+	_chap_cd = 120.0
+	var mdl: Node3D = main.inventory_v28.make_model(id)
+	if mdl != null:
+		mdl.name = "Butin"
+		mdl.scale = Vector3.ONE * 0.3
+		var head: Node3D = g._pivots.get("tete")
+		if head != null:
+			head.add_child(mdl)
+			mdl.position = Vector3(0, -0.04, 0.32)
+	main._show_message_v28("Un coati t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
+	return true
+
+
+func chapardeur_lache(g: Node3D) -> void:
+	var id: String = str(g.butin)
+	g.butin = ""
+	_drop_model(g)
+	if id == "":
+		return
+	main.inventory_v28.add(id, 1)
+	rendus += 1
+	main._show_message_v28("Le coati lâche %s !" % _art(id))
+	main.sfx("ramasse_pieces", g.global_position)
+
+
+func chapardeur_garde(g: Node3D) -> void:
+	var id: String = str(g.butin)
+	g.butin = ""
+	_drop_model(g)
+	if id != "":
+		main._show_message_v28("Trop tard : le coati a filé avec %s." % _art(id))
 
 
 func mouette_lache(g: Node3D) -> void:
