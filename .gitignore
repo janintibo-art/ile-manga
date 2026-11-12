@@ -11,3 +11,5 @@ pc-site/
 /pcvr/assets/
 /pcvr/.godot/
 /pcvr/build/
+/tests/sorties/
+__pycache__/

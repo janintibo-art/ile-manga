@@ -23,6 +23,7 @@ var _anchor: Node3D
 var _list: Array = []                    # [[libellé, valeur], …] de la page en cours
 var _list_kind: String = ""
 var _page: int = 0
+var _donjons: Array = []                 # V134 : les donjons à énigmes (construits à l'entrée)
 
 
 func setup(main_node: Node) -> void:
@@ -526,11 +527,35 @@ func _go(i: int) -> void:
 		var f: Vector3 = -n.global_transform.basis.z
 		_land(n.global_position + f * 1.6, -f)
 	elif v is Vector3:
-		_land(v, Vector3.FORWARD)
+		# V134 : l'intérieur d'un donjon à énigmes (pyramide, Xibalba, Cinq Soleils, Neuf Cercles,
+		# Mille Marches, Usine Grise) n'existe qu'une fois qu'on y est entré : on y entre par la porte
+		# au lieu de tomber dans le vide.
+		var dj: Node = _donjon_vers(v)
+		if dj != null:
+			dj.enter()
+		else:
+			_land(v, Vector3.FORWARD)
 	elif v is Array:
 		_visit(str((v as Array)[0]))
 		return
 	main._show_message_v28("Mode testeur : " + str(_list[i][0]))
+
+
+## V134 : le donjon à énigmes pas encore construit dont l'arrivée est à « at » (sinon null).
+func _donjon_vers(at: Vector3) -> Node:
+	if _donjons.is_empty():
+		var pile: Array = [main]
+		while not pile.is_empty():
+			var n: Node = pile.pop_back()
+			if n.has_method("ensure_built") and n.has_method("entry") and n.has_method("enter") and n.get("built") != null:
+				_donjons.append(n)
+			pile.append_array(n.get_children())
+	for d in _donjons:
+		if is_instance_valid(d) and d.built != true:
+			var e: Array = d.entry()
+			if not e.is_empty() and (e[0] as Vector3).distance_to(at) < 6.0:
+				return d
+	return null
 
 
 ## Se poser au mieux près de « at » : sur le sol, hors des murs.
