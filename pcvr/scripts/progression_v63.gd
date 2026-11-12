@@ -95,6 +95,9 @@ const KILL_XP := {
 	"vampire": 14, "vampire_garde": 20, "ilona": 90, "sigismund": 80, "radu": 110, "dracula": 300,
 	# V132 : la faune sauvage
 	"crabe_plage": 1, "sanglier": 10, "ronceux_sauvage": 7, "loup_bois": 8, "salamandre": 9, "bouc": 11, "chauve_souris_mont": 4,
+	# V133 : la grande île, Al Dente, l'Île Crayonnée
+	"aurochs": 12, "loup_plaine": 8, "ours_lande": 16, "crapaud_vase": 7, "feu_follet": 5, "scorpion_dunes": 9, "serpent_sable": 8,
+	"boulette": 8, "boulette_mini": 2, "spaghetti_sauvage": 10, "tomate_kamikaze": 3, "gribouillis": 4, "tache_encre": 6, "gomme_geante": 15,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 	# V75 : l'Île du Boucan

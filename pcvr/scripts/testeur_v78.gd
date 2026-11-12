@@ -135,6 +135,12 @@ func _menu_voyage() -> void:
 		{"id": "faune132v", "label": "Faune sauvage : la plage de l'île du village (crabes, mouettes)"},
 		{"id": "faune132e", "label": "Faune sauvage : le Bois-Doré (sangliers, ronceux, loups)"},
 		{"id": "faune132n", "label": "Faune sauvage : la Montagne de Feu (salamandres, boucs, chauves-souris)"},
+		{"id": "faune133o", "label": "Faune sauvage : les prairies de la grande île (aurochs, loups des plaines)"},
+		{"id": "faune133n", "label": "Faune sauvage : les hautes terres de la grande île (ours, boucs)"},
+		{"id": "faune133e", "label": "Faune sauvage : la forêt des brumes de la grande île (crapauds, feux follets)"},
+		{"id": "faune133s", "label": "Faune sauvage : le désert de la grande île (scorpions, serpents des sables)"},
+		{"id": "faune133p", "label": "Faune sauvage : l'Île Al Dente (boulettes, spaghettis, tomates)"},
+		{"id": "faune133c", "label": "Faune sauvage : l'Île Crayonnée (gribouillis, taches d'encre, gomme géante)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -347,6 +353,10 @@ func _pick(id: String) -> void:
 			_comte_v128(id == "cachots128")
 		"faune132v", "faune132e", "faune132n":
 			_faune_v132({"faune132v": "village", "faune132e": "elfes", "faune132n": "nains"}[id])
+		"faune133o", "faune133n", "faune133e", "faune133s":
+			_faune_v132("grande", {"faune133o": "ouest", "faune133n": "nord", "faune133e": "est", "faune133s": "sud"}[id])
+		"faune133p", "faune133c":
+			_faune_v132({"faune133p": "aldente", "faune133c": "crayon"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -384,7 +394,7 @@ func _pick(id: String) -> void:
 ## V128 : tout en haut de la Tour du Comte, devant la porte de fer (les trois rubis posés) ; ou bien
 ## dans la salle d'armes, devant la grille des souterrains (le comte vaincu, la clé en poche)
 ## V132 : un coin sauvage de l'île, et quelques bêtes autour (pour les voir tout de suite).
-func _faune_v132(ile: String) -> void:
+func _faune_v132(ile: String, region: String = "") -> void:
 	main._close_dialogue_v31()
 	var f: Node = main.get("faune_v132")
 	if f == null:
@@ -399,7 +409,7 @@ func _faune_v132(ile: String) -> void:
 	f._refresh_npcs(c)
 	# un endroit loin des habitants, sur la terre ferme (sur la plage pour l'île du village)
 	var best := Vector3.INF
-	for i in range(80):
+	for i in range(240 if region != "" else 80):
 		var a: float = randf() * TAU
 		var d: float = randf_range(0.25, 0.85) * r
 		var q := Vector3(c.x + cos(a) * d, 0, c.z + sin(a) * d)
@@ -407,6 +417,11 @@ func _faune_v132(ile: String) -> void:
 		if ile == "village" and (h < 0.3 or h > 1.8):
 			continue
 		if ile != "village" and h < 1.5:
+			continue
+		# V133 : la bonne région de la grande île, sur un terrain pas trop pentu
+		if region != "" and f.region_de(ile, q) != region:
+			continue
+		if ile != "village" and absf(main._height_at(q.x + 3.0, q.z) - h) + absf(main._height_at(q.x, q.z + 3.0) - h) > 2.4:
 			continue
 		var ok: bool = true
 		for np in f._npc_pos:
@@ -421,11 +436,15 @@ func _faune_v132(ile: String) -> void:
 		return
 	main.place_player_v35(best, Vector3(0, 0, -1))
 	var kinds: Array = {"village": ["crabe_plage", "crabe_plage", "mouette"], "elfes": ["sanglier", "ronceux_sauvage", "loup_bois", "loup_bois"],
-		"nains": ["salamandre", "bouc", "chauve_souris_mont", "chauve_souris_mont"]}[ile]
+		"nains": ["salamandre", "bouc", "chauve_souris_mont", "chauve_souris_mont"],
+		"grande:ouest": ["aurochs", "aurochs", "loup_plaine", "loup_plaine"], "grande:nord": ["ours_lande", "bouc", "loup_plaine"],
+		"grande:est": ["crapaud_vase", "crapaud_vase", "feu_follet", "feu_follet"], "grande:sud": ["scorpion_dunes", "serpent_sable", "serpent_sable"],
+		"aldente": ["boulette", "spaghetti_sauvage", "tomate_kamikaze", "tomate_kamikaze"],
+		"crayon": ["gribouillis", "gribouillis", "gribouillis", "tache_encre", "gomme_geante"]}.get(ile + (":" + region if region != "" else ""), [])
 	for i in range(kinds.size()):
 		var a2: float = TAU * i / kinds.size()
 		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
-		q2.y = main._height_at(q2.x, q2.z) + (12.0 if kinds[i] == "mouette" else (2.8 if kinds[i] == "chauve_souris_mont" else 0.1))
+		q2.y = main._height_at(q2.x, q2.z) + (12.0 if kinds[i] == "mouette" else (2.8 if kinds[i] in ["chauve_souris_mont", "feu_follet"] else 0.1))
 		f.spawn(str(kinds[i]), q2)
 	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
 

@@ -9,11 +9,21 @@ extends Node3D
 ##    nuit, des loups en meute ;
 ##  - la Montagne de Feu : salamandres de braise qui crachent du feu, boucs des roches qui
 ##    défendent leur coin, et la nuit, des nuées de chauves-souris des cendres.
+## V133 : trois îles de plus (les bêtes elles-mêmes sont dans monstre_v133.gd) :
+##  - la grande île de l'est, région par région : aurochs dans les prairies de l'ouest, ours et
+##    boucs sur les hautes terres du nord, crapauds dans la forêt des brumes de l'est (et la nuit,
+##    des feux follets au-dessus des mares), scorpions et serpents des sables dans le désert du
+##    sud ; la nuit, des loups des plaines ;
+##  - l'Île Al Dente : boulettes enragées qui roulent, spaghettis sauvages qui fouettent, et la
+##    nuit, des tomates kamikazes ;
+##  - l'Île Crayonnée : gribouillis en bande, taches d'encre qui bondissent, et la nuit, une gomme
+##    géante qui efface tout devant elle.
+## Les taches (encre, sauce, gomme) restent un moment au sol, puis s'effacent.
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v132.gd")
+const Bete := preload("res://scripts/monstre_v133.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
 const ILES := {
@@ -23,6 +33,20 @@ const ILES := {
 		"nuit": [["sanglier", 2, "sol", 1], ["ronceux_sauvage", 2, "sol", 1], ["loup_bois", 3, "sol", 3]]},
 	"nains": {"jour": [["salamandre", 3, "sol", 1], ["bouc", 2, "sol", 1]],
 		"nuit": [["salamandre", 3, "sol", 1], ["chauve_souris_mont", 4, "air", 4]]},
+	# V133 : la grande île a une faune par région (celle où se trouve le héros)
+	"grande": {"regions": {
+		"ouest": {"jour": [["aurochs", 3, "sol", 1]],
+			"nuit": [["aurochs", 2, "sol", 1], ["loup_plaine", 3, "sol", 3]]},
+		"nord": {"jour": [["ours_lande", 1, "sol", 1], ["bouc", 2, "sol", 1]],
+			"nuit": [["ours_lande", 1, "sol", 1], ["loup_plaine", 3, "sol", 3]]},
+		"est": {"jour": [["crapaud_vase", 3, "sol", 1], ["sanglier", 2, "sol", 1]],
+			"nuit": [["crapaud_vase", 2, "sol", 1], ["feu_follet", 3, "air", 3]]},
+		"sud": {"jour": [["scorpion_dunes", 2, "sol", 1], ["serpent_sable", 3, "sol", 1]],
+			"nuit": [["scorpion_dunes", 3, "sol", 1], ["serpent_sable", 2, "sol", 1]]}}},
+	"aldente": {"jour": [["boulette", 3, "sol", 1], ["spaghetti_sauvage", 2, "sol", 1]],
+		"nuit": [["boulette", 2, "sol", 1], ["spaghetti_sauvage", 2, "sol", 1], ["tomate_kamikaze", 4, "sol", 2]]},
+	"crayon": {"jour": [["gribouillis", 3, "sol", 3], ["tache_encre", 3, "sol", 1]],
+		"nuit": [["gribouillis", 3, "sol", 3], ["tache_encre", 2, "sol", 1], ["gomme_geante", 1, "sol", 1]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -47,6 +71,9 @@ var _token_t: float = 0.0
 var _steal_cd: float = 240.0
 var _swoop_t: float = 60.0
 var _spits: Array = []
+var _decals: Array = []                  # V133 : taches d'encre, de sauce, de gomme au sol
+static var _decal_tex: Dictionary = {}
+var taches: Dictionary = {}              # tests : sorte de tache -> nombre posées
 
 
 func setup(main_node: Node) -> void:
@@ -69,6 +96,11 @@ func _resolve_iles() -> void:
 	var n: Node = main.get("nains_v46")
 	if n != null and n.get("ile") != null:
 		centres["nains"] = n.ile.CENTER
+	# V133
+	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"]]:
+		var w: Node = main.get(str(e2[1]))
+		if w != null and w.get("ile") != null:
+			centres[str(e2[0])] = w.ile.CENTER
 	for id in centres:
 		var c: Vector3 = centres[id]
 		iles[id] = {"c": c, "r": _rayon(c)}
@@ -120,6 +152,7 @@ func _process(delta: float) -> void:
 	var dlg: Node = main.get("dialogue_v31")
 	active = enabled and started and (menu == null or not bool(menu.opened)) and (dlg == null or not bool(dlg.opened))
 	_tick_spits(delta)
+	_tick_decals(delta)
 	if _token != null and (not is_instance_valid(_token) or _token_t <= 0.0):
 		_token = null
 	_token_t -= delta
@@ -194,7 +227,8 @@ func _maybe_spawn(p: Vector3) -> void:
 			alive += 1
 	if alive >= MAX_TOTAL:
 		return
-	var table: Array = ILES[ile_joueur]["nuit" if night() else "jour"]
+	var region: String = region_de(ile_joueur, p)
+	var table: Array = table_de(ile_joueur, region)
 	var choix: Array = []
 	for e in table:
 		var kind: String = e[0]
@@ -203,7 +237,7 @@ func _maybe_spawn(p: Vector3) -> void:
 	if choix.is_empty():
 		return
 	var e2: Array = choix[_rng.randi() % choix.size()]
-	var at: Vector3 = _spot(p, str(e2[2]), str(e2[0]))
+	var at: Vector3 = _spot(p, str(e2[2]), str(e2[0]), region)
 	if at == Vector3.INF:
 		return
 	for i in range(int(e2[3])):
@@ -214,6 +248,28 @@ func _maybe_spawn(p: Vector3) -> void:
 		spawn(str(e2[0]), q)
 
 
+## V133 : la région de la grande île (« ouest », « nord », « est », « sud ») ; "" ailleurs.
+func region_de(id: String, p: Vector3) -> String:
+	if id != "grande":
+		return ""
+	var g: Node = main.get("grande_v59")
+	if g == null or g.get("ile") == null or not g.ile.has_method("region_name"):
+		return ""
+	return str(g.ile.region_name(p.x, p.z))
+
+
+## Les bêtes possibles sur cette île (dans cette région), de jour ou de nuit.
+func table_de(id: String, region: String = "") -> Array:
+	if not ILES.has(id):
+		return []
+	var e: Dictionary = ILES[id]
+	var key: String = "nuit" if night() else "jour"
+	if e.has("regions"):
+		var r: Dictionary = e["regions"]
+		return (r[region] as Dictionary).get(key, []) if r.has(region) else []
+	return e[key]
+
+
 ## Une bête de plus (les tests l'appellent aussi directement).
 func spawn(kind: String, at: Vector3) -> Node3D:
 	var b: CharacterBody3D = Bete.new()
@@ -222,17 +278,17 @@ func spawn(kind: String, at: Vector3) -> Node3D:
 	b.died.connect(_on_died)
 	betes.append(b)
 	spawned[kind] = int(spawned.get(kind, 0)) + 1
-	if kind == "loup_bois" and _count("loup_bois") == 1:
+	if kind in ["loup_bois", "loup_plaine"] and _count(kind) == 1:
 		main.sfx("loup_hurle", at + Vector3.UP)
 	return b
 
 
 ## Un endroit pour naître : sur l'île, dans son milieu (plage, sol, ciel), loin des habitants,
 ## hors du regard, sans toit ni mur au-dessus.
-func _spot(p: Vector3, milieu: String, kind: String) -> Vector3:
+func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vector3:
 	var e: Dictionary = iles[ile_joueur]
 	var c: Vector3 = e["c"]
-	var peaceful: bool = int(Bete.SPECS132[kind]["degats"]) == 0
+	var peaceful: bool = int(Bete.spec_of(kind)["degats"]) == 0
 	var far_npc: float = 12.0 if peaceful else 32.0
 	var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() else null
 	for tries in range(14):
@@ -256,6 +312,9 @@ func _spot(p: Vector3, milieu: String, kind: String) -> Vector3:
 			"air":
 				if h < 0.3:
 					continue
+		# V133 : sur la grande île, la bête naît dans la région du héros
+		if region != "" and region_de(ile_joueur, q) != region:
+			continue
 		var ok: bool = true
 		for np in _npc_pos:
 			if Vector2((np as Vector3).x - q.x, (np as Vector3).z - q.z).length() < far_npc:
@@ -303,7 +362,7 @@ func hurt_player(amount: int, from_pos: Vector3) -> void:
 
 
 func spawn_extra(kind: String, at: Vector3) -> Node3D:
-	return spawn(kind, at) if Bete.SPECS132.has(kind) else null
+	return spawn(kind, at) if Bete.has_kind(kind) else null
 
 
 ## Un seul loup (ou une seule chauve-souris) attaque à la fois.
@@ -334,6 +393,9 @@ func shove(v: Vector3) -> void:
 func _on_died(m: Node3D) -> void:
 	betes.erase(m)
 	_cool[str(m.kind)] = 25.0
+	# la tomate qui a éclaté d'elle-même ne rapporte rien
+	if m.get("_explose") == true:
+		return
 	if main.get("progression_v63") != null and main.progression_v63 != null:
 		main.progression_v63.on_kill(str(m.kind), m.global_position + Vector3.UP * 1.0)
 	var gains: Array = m.loot(_rng) if m.has_method("loot") else []
@@ -492,3 +554,96 @@ func mouette_garde(g: Node3D) -> void:
 	_drop_model(g)
 	if id != "":
 		main._show_message_v28("Trop tard : la mouette s'est envolée avec %s." % _art(id))
+
+
+# =================================================================== V133 : les taches au sol
+
+## Une tache posée à plat sur le sol : "encre" (noire, luisante), "sauce" (rouge), "gomme"
+## (le papier effacé, tout blanc). Elle s'efface au bout de `life` secondes.
+func decal(at: Vector3, sorte: String, size: float, life: float) -> void:
+	if main == null or not is_inside_tree():
+		return
+	var col: Color = {"encre": Color(0.01, 0.01, 0.012, 0.95), "sauce": Color(0.48, 0.04, 0.015, 0.95), "gomme": Color(0.99, 0.99, 0.98, 0.9)}.get(sorte, Color(0, 0, 0, 0.8))
+	var mi := MeshInstance3D.new()
+	var q := QuadMesh.new()
+	q.size = Vector2(size, size)
+	q.orientation = PlaneMesh.FACE_Y
+	var m := StandardMaterial3D.new()
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.albedo_texture = _splat_tex(sorte)
+	m.albedo_color = col
+	m.roughness = 0.2 if sorte == "encre" else (0.3 if sorte == "sauce" else 0.95)
+	if sorte == "encre":
+		m.metallic_specular = 0.5
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	q.material = m
+	mi.mesh = q
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(mi)
+	# posée selon la pente du terrain
+	var h0: float = main._height_at(at.x, at.z)
+	var hx: float = main._height_at(at.x + 0.5, at.z) - main._height_at(at.x - 0.5, at.z)
+	var hz: float = main._height_at(at.x, at.z + 0.5) - main._height_at(at.x, at.z - 0.5)
+	var n := Vector3(-hx, 1.0, -hz).normalized()
+	var x_axis: Vector3 = n.cross(Vector3.FORWARD).normalized() if absf(n.dot(Vector3.FORWARD)) < 0.95 else Vector3.RIGHT
+	var b := Basis(x_axis, n, x_axis.cross(n).normalized())
+	mi.global_transform = Transform3D(b.rotated(n, _rng.randf() * TAU), Vector3(at.x, h0 + 0.03, at.z))
+	_decals.append({"n": mi, "m": m, "life": life, "t": 0.0, "a": col.a, "s": sorte})
+	taches[sorte] = int(taches.get(sorte, 0)) + 1
+	while _decals.size() > 14:
+		var old: Dictionary = _decals.pop_front()
+		if is_instance_valid(old["n"]):
+			(old["n"] as Node).queue_free()
+
+
+func _tick_decals(delta: float) -> void:
+	for d in _decals.duplicate():
+		if not is_instance_valid(d["n"]):
+			_decals.erase(d)
+			continue
+		d["t"] = float(d["t"]) + delta
+		var life: float = float(d["life"])
+		var m: StandardMaterial3D = d["m"]
+		m.albedo_color.a = float(d["a"]) * (1.0 - smoothstep(life * 0.65, life, float(d["t"])))
+		if float(d["t"]) >= life:
+			(d["n"] as Node).queue_free()
+			_decals.erase(d)
+
+
+## Une éclaboussure dessinée une fois pour toutes : un rond aux bords dentelés et des gouttes
+## (l'encre, la sauce), ou une plage effacée aux bords doux, striée de coups de gomme.
+func _splat_tex(sorte: String) -> Texture2D:
+	if _decal_tex.has(sorte):
+		return _decal_tex[sorte]
+	var N: int = 96
+	var img := Image.create(N, N, false, Image.FORMAT_RGBA8)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = {"encre": 71, "sauce": 72, "gomme": 73}.get(sorte, 70)
+	var lobes: Array = []
+	for i in range(5):
+		lobes.append([rng.randf_range(3.0, 11.0), rng.randf_range(0.0, TAU), rng.randf_range(0.03, 0.08)])
+	var drops: Array = []
+	for i in range(10):
+		var a: float = rng.randf() * TAU
+		drops.append([Vector2(cos(a), sin(a)) * rng.randf_range(0.36, 0.47), rng.randf_range(0.015, 0.04)])
+	for y in range(N):
+		for x in range(N):
+			var p := Vector2((x + 0.5) / N - 0.5, (y + 0.5) / N - 0.5)
+			var r: float = p.length()
+			var a2: float = atan2(p.y, p.x)
+			var alpha: float = 0.0
+			if sorte == "gomme":
+				var edge: float = 0.36 + 0.03 * sin(a2 * 3.0 + 1.0)
+				alpha = 1.0 - smoothstep(edge - 0.12, edge, r)
+				alpha *= 0.8 + 0.2 * sin(p.x * 70.0 + p.y * 20.0)
+			else:
+				var edge2: float = 0.27
+				for l in lobes:
+					edge2 += float(l[2]) * sin(a2 * float(l[0]) + float(l[1]))
+				alpha = 1.0 - smoothstep(edge2 - 0.015, edge2, r)
+				for d in drops:
+					alpha = maxf(alpha, 1.0 - smoothstep(float(d[1]) - 0.008, float(d[1]), p.distance_to(d[0])))
+			img.set_pixel(x, y, Color(1, 1, 1, clampf(alpha, 0.0, 1.0)))
+	var t := ImageTexture.create_from_image(img)
+	_decal_tex[sorte] = t
+	return t
