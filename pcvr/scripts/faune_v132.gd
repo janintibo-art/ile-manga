@@ -56,13 +56,22 @@ extends Node3D
 ##  - Hautefond : des macareux sur la côte et des moutons sur les collines ; la nuit, la chouette
 ##    effraie qui chasse au ras des prés, et des sangliers qui viennent piller les vergers.
 ## Un milieu de plus : « cote » (la terre ferme tout près de la mer).
+## V139 : les îles des villes, au sud (les bêtes elles-mêmes sont dans monstre_v139.gd) :
+##  - l'Île du Boucan : des chats errants (immobile, on les voit venir se frotter à soi), des
+##    goélands sur le port ; la nuit, des rats dans la friche et des lucioles dans le Bois des Spores ;
+##  - Néopolis : des pigeons sur les places (ils s'envolent tous ensemble) ; la nuit, des rats et
+##    un chat errant ;
+##  - Sombreval : des corbeaux et un chat noir qui coupe la route au héros ; la nuit, des chauves-
+##    souris, des rats et le chat noir ;
+##  - la Cité des Nuées : une cane et ses canetons sur l'étang du Parc des Brumes, des pigeons sur
+##    les places. Un milieu de plus : « etang » (l'eau d'un étang, sur une île du ciel).
 ## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
 ## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v138.gd")
+const Bete := preload("res://scripts/monstre_v139.gd")
 const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
@@ -118,6 +127,15 @@ const ILES := {
 		"nuit": [["phalene_braise", 2, "air", 1], ["molosse_cendre", 2, "sol", 2]]},
 	"hautefond": {"jour": [["macareux", 4, "cote", 2], ["mouton", 4, "sol", 4]],
 		"nuit": [["effraie", 1, "air", 1], ["sanglier", 2, "sol", 1]]},
+	# V139
+	"boucan": {"jour": [["chat_errant", 2, "sol", 1], ["mouette", 3, "air", 3]],
+		"nuit": [["rat", 2, "sol", 1], ["chat_errant", 1, "sol", 1], ["luciole", 3, "air", 3]]},
+	"neo": {"jour": [["pigeon", 2, "sol", 1]],
+		"nuit": [["rat", 2, "sol", 1], ["chat_errant", 1, "sol", 1]]},
+	"sombreval": {"jour": [["corbeau", 3, "air", 3], ["chat_noir", 1, "sol", 1]],
+		"nuit": [["chauve_souris_mont", 4, "air", 4], ["rat", 2, "sol", 1], ["chat_noir", 1, "sol", 1]]},
+	"nuees": {"jour": [["canard", 1, "etang", 1], ["pigeon", 1, "sol", 1]],
+		"nuit": [["chat_errant", 1, "sol", 1]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -173,7 +191,8 @@ func _resolve_iles() -> void:
 	# V133
 	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"],
 			["moai", "moai_v87"], ["balafre", "pirates_v68"], ["larsen", "larsen_v91"],
-			["arcanelle", "arcanelle_v67"], ["braise", "braise_v70"], ["hautefond", "hautefond_v112"]]:
+			["arcanelle", "arcanelle_v67"], ["braise", "braise_v70"], ["hautefond", "hautefond_v112"],
+			["boucan", "boucan_v75"], ["neo", "neo_v94"], ["sombreval", "sombreval_v121"]]:
 		var w: Node = main.get(str(e2[1]))
 		if w != null and w.get("ile") != null:
 			centres[str(e2[0])] = w.ile.CENTER
@@ -194,6 +213,13 @@ func _resolve_iles() -> void:
 		if w2 != null and w2.get("ile") != null and w2.ile.has_method("height"):
 			var il: Node = w2.ile
 			iles[str(e3[0])] = {"c": Vector3(il.CENTER.x, 0.0, il.CENTER.z), "r": float(il.R0), "y": float(il.Y0), "sol": Callable(il, "height")}
+	# V139 : la Cité des Nuées, l'île flottante de Hautefond ; et l'étang de son Parc des Brumes
+	var hf: Node = main.get("hautefond_v112")
+	if hf != null and hf.get("nuees_ile") != null and hf.nuees_ile.has_method("height"):
+		var ni: Node = hf.nuees_ile
+		var pond: Vector3 = ni.W(ni.POND.x, ni.POND.y)
+		iles["nuees"] = {"c": Vector3(ni.CENTER.x, 0.0, ni.CENTER.z), "r": float(ni.R0), "y": float(ni.Y0), "sol": Callable(ni, "height"),
+			"etang": [Vector3(pond.x, float(ni.Y0) + float(ni.POND_Y), pond.z), float(ni.POND_R)]}
 	print("ILE_MANGA_V132: faune sauvage sur ", iles.keys(), " ", iles)
 
 
@@ -219,6 +245,11 @@ func lave(p: Vector3, ile: String = "") -> bool:
 	if not e.has("lave"):
 		return false
 	return float((e["lave"] as Callable).call(p.x, p.z)) > -1e6
+
+
+## V139 : l'étang d'une île (son centre, à la hauteur de l'eau, et son rayon), ou [].
+func etang_de(ile: String) -> Array:
+	return iles.get(ile, {}).get("etang", [])
 
 
 ## Le vide, au bord d'une île du ciel ?
@@ -455,6 +486,15 @@ func spawn(kind: String, at: Vector3) -> Node3D:
 ## Un endroit pour naître : sur l'île, dans son milieu (plage, sol, ciel), loin des habitants,
 ## hors du regard, sans toit ni mur au-dessus.
 func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vector3:
+	# V139 : sur l'étang (la Cité des Nuées), au milieu de l'eau, s'il n'est pas trop loin
+	if milieu == "etang":
+		var et: Array = etang_de(ile_joueur)
+		if et.is_empty():
+			return Vector3.INF
+		var c0: Vector3 = et[0]
+		if Vector2(c0.x - p.x, c0.z - p.z).length() > 70.0:
+			return Vector3.INF
+		return c0
 	var e: Dictionary = iles[ile_joueur]
 	var c: Vector3 = e["c"]
 	var peaceful: bool = int(Bete.spec_of(kind)["degats"]) == 0

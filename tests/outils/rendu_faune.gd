@@ -3,7 +3,7 @@ extends SceneTree
 ##     godot --path pcvr --rendering-driver opengl3 --script res://rendu_faune.gd -- DOSSIER [nuit] espèce espèce…
 ## Pour chaque espèce : une image au repos (en marche) et une image en attaque, de trois quarts.
 
-const Bete := preload("res://scripts/monstre_v138.gd")
+const Bete := preload("res://scripts/monstre_v139.gd")
 
 ## La distance de la caméra et la hauteur visée (et, si on veut, l'avancée du point visé), selon la taille de la bête.
 const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauvage": [2.4, 0.45], "scarabee_geant": [2.4, 0.4],
@@ -15,7 +15,8 @@ const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauv
 	"papillon_morpho": [1.5, 0.0], "cerf_blanc": [4.0, 0.9], "blaireau": [1.8, 0.25], "marmotte": [1.1, 0.18], "gypaete": [3.8, 0.0],
 	"lynx": [1.6, 0.4, 0.2], "meduse_celeste": [3.0, -0.5], "raie_celeste": [3.2, 0.0],
 	"corbeau": [1.6, 0.0], "hermine": [0.9, 0.1], "iguane_marin": [1.8, 0.15], "vautour_fauve": [4.2, 0.0], "phalene_braise": [1.4, 0.0],
-	"molosse_cendre": [2.2, 0.45], "macareux": [0.8, 0.18], "mouton": [3.0, 0.6], "effraie": [1.9, 0.0]}
+	"molosse_cendre": [2.2, 0.45], "macareux": [0.8, 0.18], "mouton": [3.0, 0.6], "effraie": [1.9, 0.0],
+	"rat": [1.5, 0.05], "chat_errant": [1.4, 0.2], "chat_noir": [1.4, 0.2], "pigeon": [3.4, 0.2], "canard": [1.6, 0.05, -0.15]}
 ## La pose d'attaque de chaque espèce : [état, minuteur].
 const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "jaguar_sauvage": ["armer", 0.1], "scarabee_geant": ["chasse", 0.0],
 	"mille_pattes": ["armer", 0.1], "araignee_geante": ["armer", 0.05], "coyote": ["armer", 0.1], "chacal": ["armer", 0.1],
@@ -27,7 +28,10 @@ const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "
 	"gypaete": ["monte_os", 5.0], "lynx": ["aguet", 0.0], "meduse_celeste": ["derive", 0.0], "raie_celeste": ["rase", 1.0],
 	"corbeau": ["sautille", 1.0], "hermine": ["guette", 1.0], "iguane_marin": ["menace", 1.0], "vautour_fauve": ["pose", 0.0],
 	"phalene_braise": ["lumiere", 0.0], "molosse_cendre": ["fonce", 1.0], "macareux": ["mer", 3.0], "mouton": ["galop", 2.0],
-	"effraie": ["sur_place", 1.0]}
+	"effraie": ["sur_place", 1.0],
+	"rat": ["fuite", 1.0], "chat_errant": ["crache", 0.5], "chat_noir": ["assis", 5.0], "pigeon": ["vol", 3.0], "canard": ["approche", 5.0]}
+## L'état « au repos », quand ce n'est pas « erre » (ou « vol »).
+const REPOS := {"rat": "fouille", "pigeon": "picore", "canard": "nage"}
 
 var nuit: bool = false
 
@@ -106,11 +110,15 @@ func _initialize() -> void:
 			b.rotation.y = 0.0
 			b._sink = 0.0
 			b._visual.position = Vector3.ZERO
-			if b.vol:
+			if b.vol and k != "canard":
 				b.global_position = Vector3(0, 0.9 if k == "aigle_royal" else 0.6, 0)
+			if b.has_method("_trace_derriere"):
+				b._trace_derriere()
 			var speed: float = 0.0
 			if pose == "repos":
 				b.state = "erre" if not b.vol else ("chasse" if k == "aigle_royal" else "vol")
+				if REPOS.has(str(k)):
+					b.state = str(REPOS[k])
 				speed = float(b.spec["vitesse"]) * (0.5 if k != "luciole" else 0.0)
 			else:
 				var at: Array = ATTAQUE.get(str(k), ["armer", 0.2])

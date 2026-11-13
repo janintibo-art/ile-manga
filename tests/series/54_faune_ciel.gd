@@ -232,10 +232,26 @@ func _serie() -> void:
 	_ok(str(ly.state) == "aguet", "lynx : tapi à l'affût (%s)" % str(ly.state))
 	var vl: Vector3 = ly.global_position - _pos()
 	vl.y = 0.0
-	await _poser_ici(F, ly.global_position - vl.normalized() * 4.8, vl.normalized())
+	# (V139 : on arrive par un côté où le sol est plat jusqu'à lui, sans rocher ni tronc entre nous, loin du bord)
+	var dir_l: Vector3 = vl.normalized()
+	var a0: float = atan2(dir_l.z, dir_l.x)
+	var yl: float = _h(F, ly.global_position.x, ly.global_position.z)
+	for k in range(16):
+		var al: float = a0 + TAU * float((k + 1) / 2) / 16.0 * (1.0 if k % 2 == 0 else -1.0)
+		var dk := Vector3(cos(al), 0, sin(al))
+		var ql: Vector3 = ly.global_position - dk * 4.8
+		var ml: Vector3 = ly.global_position - dk * 2.4
+		if not F.sur_ile(F.ile_joueur, ql) or absf(_h(F, ql.x, ql.z) - yl) > 0.6 or absf(_h(F, ml.x, ml.z) - yl) > 0.6:
+			continue
+		var rl := PhysicsRayQueryParameters3D.create(Vector3(ly.global_position.x, yl + 0.6, ly.global_position.z), Vector3(ql.x, yl + 0.6, ql.z), 1, [ly.get_rid()])
+		if get_world_3d().direct_space_state.intersect_ray(rl).is_empty():
+			dir_l = dk
+			break
+	await _poser_ici(F, ly.global_position - dir_l * 4.8, dir_l)
 	var sly: Dictionary = await _suivre(ly, 200, func() -> bool: return int(ly.landed_hits) >= 1 and str(ly.state) in ["souffle", "retraite"])
 	_ok(sly.has("armer") and int(ly.jumps) >= 1, "lynx : il se ramasse et bondit %s" % str(sly.keys()))
-	_ok(int(ly.landed_hits) >= 1, "lynx : son bond porte")
+	var tly: Vector3 = ly.global_position - _pos()
+	_ok(int(ly.landed_hits) >= 1, "lynx : son bond porte (posé à %.1f m, %.1f m plus bas, bond de %.1f m)" % [Vector2(tly.x, tly.z).length(), -tly.y, Vector2(ly._jump_to.x - ly._jump_from.x, ly._jump_to.z - ly._jump_from.z).length()])
 	var sret: Dictionary = await _suivre(ly, 120, func() -> bool: return str(ly.state) == "retraite")
 	_ok(sret.has("retraite") or sly.has("retraite"), "lynx : il se retire ensuite %s" % str(sret.keys()))
 	temps_v56.set_hour(12.0)

@@ -155,6 +155,10 @@ func _menu_voyage() -> void:
 		{"id": "faune138a", "label": "Faune sauvage : Arcanelle (corbeaux, hermine, feux follets, loups)"},
 		{"id": "faune138b", "label": "Faune sauvage : l'Île de Braise (iguanes, vautours, phalènes, molosses)"},
 		{"id": "faune138h", "label": "Faune sauvage : Hautefond (macareux, moutons, effraie, sangliers)"},
+		{"id": "faune139b", "label": "Faune sauvage : l'Île du Boucan (chats errants, rats, goélands)"},
+		{"id": "faune139n", "label": "Faune sauvage : Néopolis (pigeons, rats, chat errant)"},
+		{"id": "faune139s", "label": "Faune sauvage : Sombreval (chat noir, corbeaux, chauves-souris, rats)"},
+		{"id": "faune139c", "label": "Faune sauvage : la Cité des Nuées (cane et canetons, pigeons)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -381,6 +385,8 @@ func _pick(id: String) -> void:
 			_faune_v132({"faune137f": "fees", "faune137c": "celeste", "faune137a": "astrale"}[id])
 		"faune138a", "faune138b", "faune138h":
 			_faune_v132({"faune138a": "arcanelle", "faune138b": "braise", "faune138h": "hautefond"}[id])
+		"faune139b", "faune139n", "faune139s", "faune139c":
+			_faune_v132({"faune139b": "boucan", "faune139n": "neo", "faune139s": "sombreval", "faune139c": "nuees"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -434,9 +440,16 @@ func _faune_v132(ile: String, region: String = "") -> void:
 	f._refresh_npcs(Vector3(c.x, maxf(0.0, f.niveau_ile(ile)), c.z))
 	# un endroit loin des habitants, sur la terre ferme (sur la plage pour l'île du village)
 	var best := Vector3.INF
+	# V139 : dans les villes, les habitants sont partout ; et pas de coin sous un toit
+	var ville: bool = ile in ["boucan", "neo", "sombreval", "nuees"]
+	var et: Array = f.etang_de(ile) if f.has_method("etang_de") else []
 	for i in range(240):
 		var a: float = randf() * TAU
 		var d: float = randf_range(0.25, 0.85) * r
+		# (à la Cité des Nuées, au bord de l'étang)
+		if not et.is_empty():
+			c = Vector3((et[0] as Vector3).x, 0.0, (et[0] as Vector3).z)
+			d = float(et[1]) + randf_range(2.5, 5.0)
 		var q := Vector3(c.x + cos(a) * d, 0, c.z + sin(a) * d)
 		# V137 : sur une île du ciel, son relief à elle, loin du bord
 		if not f.sur_ile(ile, q):
@@ -444,7 +457,8 @@ func _faune_v132(ile: String, region: String = "") -> void:
 		var h: float = f.hauteur(q.x, q.z, ile)
 		if ile == "village" and (h < 0.3 or h > 1.8):
 			continue
-		if ile != "village" and h < 1.5:
+		# (V139 : la dalle de Néopolis est à 1,4 m)
+		if ile != "village" and h < (1.2 if ville else 1.5):
 			continue
 		# V133 : la bonne région de la grande île, sur un terrain pas trop pentu
 		if region != "" and f.region_de(ile, q) != region:
@@ -458,9 +472,12 @@ func _faune_v132(ile: String, region: String = "") -> void:
 			continue
 		var ok: bool = true
 		for np in f._npc_pos:
-			if Vector2((np as Vector3).x - q.x, (np as Vector3).z - q.z).length() < 35.0:
+			if Vector2((np as Vector3).x - q.x, (np as Vector3).z - q.z).length() < (6.0 if ville else 35.0):
 				ok = false
 				break
+		# (V139 : ni dans une ville ni ailleurs, pas sous un toit : le château de l'île flottante…)
+		if ok and (ville or i < 200) and _sous_toit(q, h):
+			ok = false
 		if ok:
 			best = Vector3(q.x, h + 0.2, q.z)
 			break
@@ -485,12 +502,16 @@ func _faune_v132(ile: String, region: String = "") -> void:
 		"astrale": ["raie_celeste", "raie_celeste", "meduse_celeste", "meduse_celeste"],
 		"arcanelle": ["corbeau", "corbeau", "hermine", "feu_follet", "loup_plaine"],
 		"braise": ["iguane_marin", "iguane_marin", "vautour_fauve", "phalene_braise", "molosse_cendre", "molosse_cendre"],
-		"hautefond": ["macareux", "macareux", "mouton", "mouton", "mouton", "effraie", "sanglier"]}.get(ile + (":" + region if region != "" else ""), [])
+		"hautefond": ["macareux", "macareux", "mouton", "mouton", "mouton", "effraie", "sanglier"],
+		"boucan": ["chat_errant", "chat_errant", "rat", "mouette", "luciole"], "neo": ["pigeon", "pigeon", "rat", "chat_errant"],
+		"sombreval": ["chat_noir", "corbeau", "corbeau", "rat", "chauve_souris_mont"], "nuees": ["canard", "pigeon", "chat_errant"]}.get(ile + (":" + region if region != "" else ""), [])
 	for i in range(kinds.size()):
 		var a2: float = TAU * i / kinds.size()
 		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
-		if not f.sur_ile(ile, q2):
+		if not f.sur_ile(ile, q2) or (ville and _sous_toit(q2, f.hauteur(q2.x, q2.z, ile))):
 			q2 = best + Vector3(cos(a2) * 6.0, 0, sin(a2) * 6.0)
+		if ville and _sous_toit(q2, f.hauteur(q2.x, q2.z, ile)):
+			q2 = best + Vector3(cos(a2) * 2.5, 0, sin(a2) * 2.5)
 		q2.y = f.hauteur(q2.x, q2.z, ile) + (12.0 if kinds[i] == "mouette" else (2.8 if kinds[i] in ["chauve_souris_mont", "feu_follet"] else 0.1))
 		# V135 : le crocodile dans le fleuve, l'axolotl au bord du lac, les lucioles et l'aigle en l'air
 		match str(kinds[i]):
@@ -536,8 +557,21 @@ func _faune_v132(ile: String, region: String = "") -> void:
 				q2.y += 1.2
 			"effraie":
 				q2.y += 3.0
+			# V139 : la cane sur l'étang
+			"canard":
+				if et.is_empty():
+					continue
+				q2 = et[0]
 		f.spawn(str(kinds[i]), q2)
 	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
+
+
+## V139 : un toit, un mur, une arche au-dessus de ce point ?
+func _sous_toit(q: Vector3, h: float) -> bool:
+	var space: PhysicsDirectSpaceState3D = (main as Node3D).get_world_3d().direct_space_state
+	var ray := PhysicsRayQueryParameters3D.create(Vector3(q.x, h + 40.0, q.z), Vector3(q.x, h - 2.0, q.z), 1)
+	var hit: Dictionary = space.intersect_ray(ray)
+	return not hit.is_empty() and float(hit.position.y) > h + 0.9
 
 
 ## V135 : le point le plus proche de « centre » (en cercles de plus en plus grands) qui convient au

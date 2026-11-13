@@ -126,6 +126,8 @@ var nuees: Node3D                        # V113 : la Cité des Nuées (nuees_vil
 var nuees_flore: Node3D
 var _crowd_n_spawned: bool = false
 var _last_safe_n := Vector3.ZERO
+var _last_tick_n := Vector3.INF          # V139 : où était le héros au passage précédent (un saut = un voyage)
+var _safe_t_n: float = -1000.0           # V139 : la dernière fois qu'il était sur la Cité
 var strates_roche: Node3D                # V114 : la roche des Strates (strates_roche_v114)
 var strates: Node3D                      # V114 : les Strates et la Fronde (strates_ville_v114, fronde_v114)
 var strates_ligne: Node3D                # V114 : la Ligne des Strates (strates_ligne_v114)
@@ -1196,12 +1198,19 @@ func _dome_tick(p: Vector3) -> void:
 func _nuees_tick(p: Vector3) -> void:
 	if nuees == null or nuees_ile == null:
 		return
+	# V139 : le héros a « sauté » d'un coup (téléporté, déposé au bout d'un voyage) : ce n'est pas une
+	# chute, le filet n'a pas à le rattraper (avant : revenir plus tard sur l'île, sous la Cité, vous
+	# renvoyait sur l'Esplanade)
+	if _last_tick_n != Vector3.INF and p.distance_to(_last_tick_n) > 25.0:
+		_last_safe_n = Vector3.ZERO
+	_last_tick_n = p
 	if nuees.ligne != null and nuees.ligne.inside(p):
 		_last_safe_n = Vector3.ZERO
 		return
 	var on_top: bool = nuees_ile.on_top(p) or (nuees.on_structure(p) and p.y > NueesIle.Y0 - 6.0)
 	if on_top:
 		_last_safe_n = p
+		_safe_t_n = _clock
 		if not bool(state.get("nuees", false)) and bool(main.get("game_started")):
 			state["nuees"] = true
 			main._show_message_v28("La Cité des Nuées — au-dessus des nuages (bon vent !)")
@@ -1216,7 +1225,7 @@ func _nuees_tick(p: Vector3) -> void:
 					main._show_message_v28("Le Belvédère de Verre : deux cents mètres de vide sous vos pieds (le verre est très solide)")
 	elif _last_safe_n != Vector3.ZERO and p.y < NueesIle.Y0 - 25.0 and p.y > NueesIle.Y0 - 260.0:
 		var flying: bool = main.get("aeronef_v76") != null and main.aeronef_v76 != null and bool(main.aeronef_v76.get("riding"))
-		if not flying:
+		if not flying and _clock - _safe_t_n < 20.0:
 			var at: Array = respawn_nuees()
 			main.place_player_v35(at[0], at[1])
 			main._show_message_v28("Oups ! Le filet anti-chute de la Cité vous rattrape au vol et vous dépose doucement sur l'Esplanade. Plumeau vous tend un mouchoir : « Bonjour. Vous êtes tombé. Ça arrive. »")

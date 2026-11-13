@@ -107,6 +107,8 @@ const KILL_XP := {
 	"papillon_morpho": 1, "cerf_blanc": 1, "blaireau": 8, "marmotte": 2, "gypaete": 8, "lynx": 14, "meduse_celeste": 4, "raie_celeste": 6,
 	# V138 : Arcanelle, Braise, Hautefond
 	"corbeau": 4, "hermine": 2, "iguane_marin": 5, "vautour_fauve": 8, "phalene_braise": 1, "molosse_cendre": 9, "macareux": 2, "mouton": 3, "effraie": 4,
+	# V139 : les îles des villes (les chats, les pigeons et les canards ne se laissent pas faire de mal)
+	"rat": 1,
 	"scorpion": 8, "ondin": 10, "automate": 14, "spectre": 11,
 	"garde_maree": 60, "scorpion_roi": 60, "colosse": 60, "loup_brumes": 60, "gardien_coeur": 80,
 	# V75 : l'Île du Boucan
