@@ -152,6 +152,9 @@ func _menu_voyage() -> void:
 		{"id": "faune137f", "label": "Faune sauvage : le royaume des fées (papillons, cerf blanc, blaireau)"},
 		{"id": "faune137c", "label": "Faune sauvage : l'île flottante (marmottes, gypaète, lynx)"},
 		{"id": "faune137a", "label": "Faune sauvage : Astralys (raies célestes, méduses de ciel)"},
+		{"id": "faune138a", "label": "Faune sauvage : Arcanelle (corbeaux, hermine, feux follets, loups)"},
+		{"id": "faune138b", "label": "Faune sauvage : l'Île de Braise (iguanes, vautours, phalènes, molosses)"},
+		{"id": "faune138h", "label": "Faune sauvage : Hautefond (macareux, moutons, effraie, sangliers)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
@@ -376,6 +379,8 @@ func _pick(id: String) -> void:
 			_faune_v132({"faune136m": "moai", "faune136b": "balafre", "faune136l": "larsen"}[id])
 		"faune137f", "faune137c", "faune137a":
 			_faune_v132({"faune137f": "fees", "faune137c": "celeste", "faune137a": "astrale"}[id])
+		"faune138a", "faune138b", "faune138h":
+			_faune_v132({"faune138a": "arcanelle", "faune138b": "braise", "faune138h": "hautefond"}[id])
 		"heure":
 			var ch: Array = [{"id": "h:7.5", "label": "Le matin (7 h 30)"}, {"id": "h:12.0", "label": "Midi"},
 				{"id": "h:18.5", "label": "Le soir (18 h 30)"}, {"id": "h:22.5", "label": "La nuit (22 h 30)"}, {"id": "menu", "label": "(Retour)"}]
@@ -429,7 +434,7 @@ func _faune_v132(ile: String, region: String = "") -> void:
 	f._refresh_npcs(Vector3(c.x, maxf(0.0, f.niveau_ile(ile)), c.z))
 	# un endroit loin des habitants, sur la terre ferme (sur la plage pour l'île du village)
 	var best := Vector3.INF
-	for i in range(240 if region != "" else 80):
+	for i in range(240):
 		var a: float = randf() * TAU
 		var d: float = randf_range(0.25, 0.85) * r
 		var q := Vector3(c.x + cos(a) * d, 0, c.z + sin(a) * d)
@@ -477,7 +482,10 @@ func _faune_v132(ile: String, region: String = "") -> void:
 		"larsen": ["lapin_garenne", "lapin_garenne", "frelon", "renard_roux", "herisson", "hibou_grand_duc"],
 		"fees": ["papillon_morpho", "cerf_blanc", "blaireau", "luciole"],
 		"celeste": ["marmotte", "marmotte", "marmotte", "gypaete", "lynx"],
-		"astrale": ["raie_celeste", "raie_celeste", "meduse_celeste", "meduse_celeste"]}.get(ile + (":" + region if region != "" else ""), [])
+		"astrale": ["raie_celeste", "raie_celeste", "meduse_celeste", "meduse_celeste"],
+		"arcanelle": ["corbeau", "corbeau", "hermine", "feu_follet", "loup_plaine"],
+		"braise": ["iguane_marin", "iguane_marin", "vautour_fauve", "phalene_braise", "molosse_cendre", "molosse_cendre"],
+		"hautefond": ["macareux", "macareux", "mouton", "mouton", "mouton", "effraie", "sanglier"]}.get(ile + (":" + region if region != "" else ""), [])
 	for i in range(kinds.size()):
 		var a2: float = TAU * i / kinds.size()
 		var q2: Vector3 = best + Vector3(cos(a2) * 14.0, 0, sin(a2) * 14.0)
@@ -514,6 +522,20 @@ func _faune_v132(ile: String, region: String = "") -> void:
 				q2.y += 8.0
 			"meduse_celeste":
 				q2.y += 2.0
+			# V138 : les iguanes et les macareux sur la côte, les oiseaux en l'air
+			"iguane_marin", "macareux":
+				var w3: Vector3 = _milieu_pres(f, best, "cote", 80.0)
+				if w3 == Vector3.INF:
+					continue
+				q2 = Vector3(w3.x, main._height_at(w3.x, w3.z) + 0.1, w3.z)
+			"corbeau":
+				q2.y += 6.0
+			"vautour_fauve":
+				q2.y += 25.0
+			"phalene_braise":
+				q2.y += 1.2
+			"effraie":
+				q2.y += 3.0
 		f.spawn(str(kinds[i]), q2)
 	main._show_message_v28("Mode testeur : des bêtes sauvages rôdent autour de toi.")
 

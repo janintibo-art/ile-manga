@@ -1,0 +1,17 @@
+[
+[
+"Un corbeau t'a volé {n} pièces ! Frappe-le vite pour qu'il les lâche.",
+"A raven stole {n} coins from you! Hit it quickly to make it drop them.",
+"¡Un cuervo te ha robado {n} monedas! Golpéalo rápido para que las suelte."
+],
+[
+"Le corbeau lâche tes {n} pièces !",
+"The raven drops your {n} coins!",
+"¡El cuervo suelta tus {n} monedas!"
+],
+[
+"Trop tard : le corbeau s'est envolé avec {n} pièces.",
+"Too late: the raven flew off with {n} coins.",
+"Demasiado tarde: el cuervo se ha ido volando con {n} monedas."
+]
+]

@@ -50,6 +50,7 @@ const DB := {
 	"cheval_hennit": -5.0, "fregate_claque": -8.0, "tortue_souffle": -9.0, "varan_siffle": -6.0, "lapin_tape": -8.0,
 	"frelon_bourdonne": -7.0, "herisson_renifle": -9.0, "hibou_hulule": -6.0, "renard_glapit": -6.0,
 	"cerf_brame": -5.0, "blaireau_grogne": -6.0, "marmotte_siffle": -7.0, "lynx_feule": -5.0,
+	"corbeau_croasse": -6.0, "molosse_jappe": -5.0, "macareux_grogne": -9.0, "mouton_bele": -7.0, "effraie_cri": -7.0,
 	"gribouillis_griffe": -7.0, "gomme_couine": -6.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,

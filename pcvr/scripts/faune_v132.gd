@@ -47,13 +47,22 @@ extends Node3D
 ##    le gypaète, qui lâche des os sur les rochers ; la nuit, le lynx, à l'affût dans l'herbe ;
 ##  - Astralys : des raies célestes qui planent et des méduses de ciel sauvages qui dérivent (leurs
 ##    filaments piquent), lumineuses la nuit.
+## V138 : trois îles de l'ouest et du sud (les bêtes elles-mêmes sont dans monstre_v138.gd) :
+##  - Arcanelle : des corbeaux qui volent les pièces du héros, une hermine curieuse qui le suit ;
+##    la nuit, des feux follets au-dessus de la lande et des loups ;
+##  - l'Île de Braise : des iguanes marins sur le sable noir et des vautours fauves qui se
+##    rapprochent quand le héros est mal en point ; la nuit, des phalènes de braise attirées par
+##    sa lumière et des molosses des cendres qui harcèlent. Rien ne naît ni ne marche sur la lave ;
+##  - Hautefond : des macareux sur la côte et des moutons sur les collines ; la nuit, la chouette
+##    effraie qui chasse au ras des prés, et des sangliers qui viennent piller les vergers.
+## Un milieu de plus : « cote » (la terre ferme tout près de la mer).
 ## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
 ## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v137.gd")
+const Bete := preload("res://scripts/monstre_v138.gd")
 const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
@@ -102,6 +111,13 @@ const ILES := {
 		"nuit": [["lynx", 1, "sol", 1]]},
 	"astrale": {"jour": [["raie_celeste", 3, "air", 3], ["meduse_celeste", 4, "air", 2]],
 		"nuit": [["meduse_celeste", 5, "air", 2]]},
+	# V138
+	"arcanelle": {"jour": [["corbeau", 3, "air", 3], ["hermine", 1, "sol", 1]],
+		"nuit": [["feu_follet", 3, "air", 3], ["loup_plaine", 3, "sol", 3]]},
+	"braise": {"jour": [["iguane_marin", 4, "cote", 2], ["vautour_fauve", 3, "air", 3]],
+		"nuit": [["phalene_braise", 2, "air", 1], ["molosse_cendre", 2, "sol", 2]]},
+	"hautefond": {"jour": [["macareux", 4, "cote", 2], ["mouton", 4, "sol", 4]],
+		"nuit": [["effraie", 1, "air", 1], ["sanglier", 2, "sol", 1]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -125,6 +141,7 @@ var _token: Node = null
 var _token_t: float = 0.0
 var _steal_cd: float = 240.0
 var _chap_cd: float = 60.0               # V135 : le coati ne revient pas chiper tout de suite
+var _corbeau_cd: float = 45.0            # V138 : les corbeaux ne volent pas sans arrêt
 var _swoop_t: float = 60.0
 var _spits: Array = []
 var _decals: Array = []                  # V133 : taches d'encre, de sauce, de gomme au sol
@@ -155,7 +172,8 @@ func _resolve_iles() -> void:
 		centres["nains"] = n.ile.CENTER
 	# V133
 	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"],
-			["moai", "moai_v87"], ["balafre", "pirates_v68"], ["larsen", "larsen_v91"]]:
+			["moai", "moai_v87"], ["balafre", "pirates_v68"], ["larsen", "larsen_v91"],
+			["arcanelle", "arcanelle_v67"], ["braise", "braise_v70"], ["hautefond", "hautefond_v112"]]:
 		var w: Node = main.get(str(e2[1]))
 		if w != null and w.get("ile") != null:
 			centres[str(e2[0])] = w.ile.CENTER
@@ -166,6 +184,10 @@ func _resolve_iles() -> void:
 	for id in centres:
 		var c: Vector3 = centres[id]
 		iles[id] = {"c": c, "r": _rayon(c)}
+	# V138 : sur l'Île de Braise, la lave (rien n'y naît, rien n'y marche)
+	var br: Node = main.get("braise_v70")
+	if iles.has("braise") and br != null and br.get("ile") != null and br.ile.has_method("lava_at"):
+		iles["braise"]["lave"] = Callable(br.ile, "lava_at")
 	# V137 : les îles du ciel (leur relief à elles, à leur altitude)
 	for e3 in [["fees", "feerie_v58"], ["celeste", "ciel_v54"], ["astrale", "astralys_v76"]]:
 		var w2: Node = main.get(str(e3[1]))
@@ -189,6 +211,14 @@ func hauteur(x: float, z: float, ile: String = "") -> float:
 func niveau_ile(ile: String) -> float:
 	var e: Dictionary = iles.get(ile, {})
 	return float(e["y"]) if e.has("y") else -INF
+
+
+## V138 : de la lave à cet endroit (l'Île de Braise) ?
+func lave(p: Vector3, ile: String = "") -> bool:
+	var e: Dictionary = iles.get(ile if ile != "" else ile_joueur, {})
+	if not e.has("lave"):
+		return false
+	return float((e["lave"] as Callable).call(p.x, p.z)) > -1e6
 
 
 ## Le vide, au bord d'une île du ciel ?
@@ -274,6 +304,7 @@ func _process(delta: float) -> void:
 		_cool[k] = float(_cool[k]) - delta
 	_steal_cd -= delta
 	_chap_cd -= delta
+	_corbeau_cd -= delta
 	if not enabled or not started:
 		return
 	_tick -= delta
@@ -437,6 +468,8 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 			continue
 		if not sur_ile(ile_joueur, q):
 			continue
+		if lave(q):
+			continue
 		var h: float = hauteur(q.x, q.z)
 		if not milieu_ok(q, h, milieu):
 			continue
@@ -486,6 +519,15 @@ func milieu_ok(q: Vector3, h: float, milieu: String) -> bool:
 			return h >= 0.3
 		"fleuve":
 			return h >= -1.3 and h <= 0.1
+		"cote":
+			# V138 : la terre ferme, tout près de la mer (un rocher, le haut d'une falaise, la grève)
+			if h < 0.4 or h > 28.0:
+				return false
+			for k in range(8):
+				var a: float = TAU * float(k) / 8.0
+				if hauteur(q.x + cos(a) * 9.0, q.z + sin(a) * 9.0) < -0.6:
+					return true
+			return false
 		"lac":
 			var lq: float = IleSoleils.lake_q(q.x - IleSoleils.CENTER.x, q.z - IleSoleils.CENTER.z)
 			return lq > 0.62 and lq < 1.12 and h > IleSoleils.LAKE_Y - 0.25 and h < IleSoleils.LAKE_Y + 0.8
@@ -798,6 +840,42 @@ func chapardeur_garde(g: Node3D) -> void:
 	_drop_model(g)
 	if id != "":
 		main._show_message_v28(("Trop tard : le renard a filé avec %s." if str(g.get("kind")) == "renard_roux" else "Trop tard : le coati a filé avec %s.") % _art(id))
+
+
+## V138 : le corbeau se pose près du héros et lui vole quelques pièces (si le héros en a).
+func corbeau_vole(g: Node3D) -> bool:
+	main.sfx("corbeau_croasse", g.global_position)
+	var inv: Node = main.inventory_v28
+	var n: int = mini(int(inv.count("piece")), _rng.randi_range(2, 5))
+	if n <= 0 or _corbeau_cd > 0.0:
+		return false
+	inv.remove("piece", n)
+	g.butin = "piece"
+	g.butin_n = n
+	vols += 1
+	_corbeau_cd = 90.0
+	main._show_message_v28("Un corbeau t'a volé %d pièces ! Frappe-le vite pour qu'il les lâche." % n)
+	return true
+
+
+func corbeau_lache(g: Node3D) -> void:
+	var n: int = int(g.get("butin_n"))
+	g.butin = ""
+	g.butin_n = 0
+	if n <= 0:
+		return
+	main.inventory_v28.add("piece", n)
+	rendus += 1
+	main._show_message_v28("Le corbeau lâche tes %d pièces !" % n)
+	main.sfx("ramasse_pieces", g.global_position)
+
+
+func corbeau_garde(g: Node3D) -> void:
+	var n: int = int(g.get("butin_n"))
+	g.butin = ""
+	g.butin_n = 0
+	if n > 0:
+		main._show_message_v28("Trop tard : le corbeau s'est envolé avec %d pièces." % n)
 
 
 func mouette_lache(g: Node3D) -> void:

@@ -20,6 +20,7 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 | `52_faune_jungle_soleils` | la faune V135 (île de la jungle ; Trois Soleils côté égyptien, maya, aztèque) |
 | `53_faune_nord` | la faune V136 (Île aux Moaïs, Île de la Balafre, Île de Larsen) |
 | `54_faune_ciel` | la faune V137 (royaume des fées, île flottante, Astralys ; le sol des îles du ciel) |
+| `55_faune_ouest` | la faune V138 (Arcanelle, Île de Braise, Hautefond) |
 | `60_combat` | butin et expérience, chaque arme, les six sorts, les quatre pouvoirs des sceaux |
 | `70_heros` | marcher, sauter, courir, nager, tomber, lever les yeux, se relever, le niveau |
 | `80_sauvegarde` | sauvegarder, nouvelle partie, recharger, copie de secours, Tout public / Public averti |
