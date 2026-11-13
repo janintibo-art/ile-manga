@@ -3,7 +3,7 @@ extends SceneTree
 ##     godot --path pcvr --rendering-driver opengl3 --script res://rendu_faune.gd -- DOSSIER [nuit] espèce espèce…
 ## Pour chaque espèce : une image au repos (en marche) et une image en attaque, de trois quarts.
 
-const Bete := preload("res://scripts/monstre_v139.gd")
+const Bete := preload("res://scripts/monstre_v140.gd")
 
 ## La distance de la caméra et la hauteur visée (et, si on veut, l'avancée du point visé), selon la taille de la bête.
 const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauvage": [2.4, 0.45], "scarabee_geant": [2.4, 0.4],
@@ -16,7 +16,9 @@ const CADRE := {"crocodile": [3.6, 0.3], "aigle_royal": [3.2, 0.0], "jaguar_sauv
 	"lynx": [1.6, 0.4, 0.2], "meduse_celeste": [3.0, -0.5], "raie_celeste": [3.2, 0.0],
 	"corbeau": [1.6, 0.0], "hermine": [0.9, 0.1], "iguane_marin": [1.8, 0.15], "vautour_fauve": [4.2, 0.0], "phalene_braise": [1.4, 0.0],
 	"molosse_cendre": [2.2, 0.45], "macareux": [0.8, 0.18], "mouton": [3.0, 0.6], "effraie": [1.9, 0.0],
-	"rat": [1.5, 0.05], "chat_errant": [1.4, 0.2], "chat_noir": [1.4, 0.2], "pigeon": [3.4, 0.2], "canard": [1.6, 0.05, -0.15]}
+	"rat": [1.5, 0.05], "chat_errant": [1.4, 0.2], "chat_noir": [1.4, 0.2], "pigeon": [3.4, 0.2], "canard": [1.6, 0.05, -0.15],
+	"poule": [3.2, 0.25], "heron": [3.0, 0.55], "ecureuil": [0.9, 0.1], "lezard": [0.55, 0.02, -0.03], "tortue_terre": [0.75, 0.05],
+	"guepier": [3.6, 0.0], "compsognathe": [1.5, 0.2, -0.05], "archeopteryx": [1.3, 0.0], "meganeura": [1.3, 0.0, -0.08]}
 ## La pose d'attaque de chaque espèce : [état, minuteur].
 const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "jaguar_sauvage": ["armer", 0.1], "scarabee_geant": ["chasse", 0.0],
 	"mille_pattes": ["armer", 0.1], "araignee_geante": ["armer", 0.05], "coyote": ["armer", 0.1], "chacal": ["armer", 0.1],
@@ -29,9 +31,15 @@ const ATTAQUE := {"crocodile": ["armer", 0.05], "aigle_royal": ["pique", 1.0], "
 	"corbeau": ["sautille", 1.0], "hermine": ["guette", 1.0], "iguane_marin": ["menace", 1.0], "vautour_fauve": ["pose", 0.0],
 	"phalene_braise": ["lumiere", 0.0], "molosse_cendre": ["fonce", 1.0], "macareux": ["mer", 3.0], "mouton": ["galop", 2.0],
 	"effraie": ["sur_place", 1.0],
-	"rat": ["fuite", 1.0], "chat_errant": ["crache", 0.5], "chat_noir": ["assis", 5.0], "pigeon": ["vol", 3.0], "canard": ["approche", 5.0]}
+	"rat": ["fuite", 1.0], "chat_errant": ["crache", 0.5], "chat_noir": ["assis", 5.0], "pigeon": ["vol", 3.0], "canard": ["approche", 5.0],
+	"poule": ["affole", 2.0], "heron": ["vol", 3.0], "ecureuil": ["perche", 3.0], "lezard": ["file", 0.8], "tortue_terre": ["rentree", 3.0],
+	"guepier": ["suit", 3.0], "compsognathe": ["dort", 3.0], "archeopteryx": ["plane", 3.0], "meganeura": ["inspecte", 3.0]}
 ## L'état « au repos », quand ce n'est pas « erre » (ou « vol »).
-const REPOS := {"rat": "fouille", "pigeon": "picore", "canard": "nage"}
+const REPOS := {"rat": "fouille", "pigeon": "picore", "canard": "nage", "poule": "picore", "heron": "guette", "ecureuil": "fouille",
+	"lezard": "soleil", "tortue_terre": "broute", "guepier": "chasse", "compsognathe": "rode", "archeopteryx": "perche", "meganeura": "patrouille"}
+## La hauteur de la bête (au repos, en attaque), quand ce n'est pas le sol (ou 0,6 m pour celles qui volent).
+const HAUT := {"heron": [0.0, 1.2], "lezard": [0.0, 0.0], "tortue_terre": [0.0, 0.0], "guepier": [1.6, 1.6], "archeopteryx": [0.1, 0.9],
+	"meganeura": [1.0, 1.0]}
 
 var nuit: bool = false
 
@@ -112,6 +120,8 @@ func _initialize() -> void:
 			b._visual.position = Vector3.ZERO
 			if b.vol and k != "canard":
 				b.global_position = Vector3(0, 0.9 if k == "aigle_royal" else 0.6, 0)
+			if HAUT.has(str(k)):
+				b.global_position = Vector3(0, float(HAUT[k][0 if pose == "repos" else 1]), 0)
 			if b.has_method("_trace_derriere"):
 				b._trace_derriere()
 			var speed: float = 0.0
@@ -119,7 +129,7 @@ func _initialize() -> void:
 				b.state = "erre" if not b.vol else ("chasse" if k == "aigle_royal" else "vol")
 				if REPOS.has(str(k)):
 					b.state = str(REPOS[k])
-				speed = float(b.spec["vitesse"]) * (0.5 if k != "luciole" else 0.0)
+				speed = float(b.spec["vitesse"]) * (0.5 if not k in ["luciole", "ecureuil", "heron", "lezard"] else 0.0)
 			else:
 				var at: Array = ATTAQUE.get(str(k), ["armer", 0.2])
 				b.state = str(at[0])

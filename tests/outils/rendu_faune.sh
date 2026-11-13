@@ -9,8 +9,12 @@ OUT="$1"
 shift
 mkdir -p "$OUT"
 rm -f "$OUT"/*.png
-for f in pcvr/scripts/monstre_v132.gd pcvr/scripts/monstre_v133.gd pcvr/scripts/monstre_v135.gd pcvr/scripts/monstre_v136.gd pcvr/scripts/monstre_v137.gd pcvr/scripts/monstre_v138.gd pcvr/scripts/monstre_v139.gd pcvr/scripts/faune_v132.gd; do
+for f in pcvr/scripts/monstre_v132.gd pcvr/scripts/monstre_v133.gd pcvr/scripts/monstre_v135.gd pcvr/scripts/monstre_v136.gd pcvr/scripts/monstre_v137.gd pcvr/scripts/monstre_v138.gd pcvr/scripts/monstre_v139.gd pcvr/scripts/monstre_v140.gd pcvr/scripts/faune_v132.gd; do
   cp "$DEPOT/$f" "$COPIE/$f"
+done
+# (les bêtes en petits cubes de l'Île Pixelithique)
+for f in "$DEPOT"/www/assets/models/pixel90/faune_v*.bin; do
+  [ -f "$f" ] && cp "$f" "$COPIE/pcvr/assets/models/pixel90/"
 done
 cp "$DEPOT/tests/outils/rendu_faune.gd" "$COPIE/pcvr/rendu_faune.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 600 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \

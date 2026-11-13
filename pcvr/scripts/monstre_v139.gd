@@ -655,22 +655,34 @@ func _envol_pigeons(from: Vector3) -> void:
 
 # ------------------------------------------------------------------- la cane et ses canetons
 
+## V140 : la distance du centre de l'étang à l'endroit où l'on nage, dans la direction dir (un lac
+## peut être une ellipse).
+func _r_canard(et: Array, dir: Vector3) -> float:
+	if et.is_empty():
+		return 4.0
+	var rr: float = float(manager.rayon_etang(et, dir)) if manager.has_method("rayon_etang") else float(et[1])
+	return rr - 2.5
+
+
 func _canards(delta: float, p: Vector3, dist: float) -> void:
 	var et: Array = manager.etang_de(ile_sol) if manager.has_method("etang_de") else []
 	var c: Vector3 = et[0] if not et.is_empty() else home
-	var r: float = float(et[1]) - 2.5 if not et.is_empty() else 4.0
+	var r: float = _r_canard(et, Vector3.RIGHT)
 	var target: Vector3
 	var speed: float = float(spec["vitesse"])
 	# le héros est au bord, tout près ?
 	var hc: float = Vector2(p.x - c.x, p.z - c.z).length()
-	var au_bord: bool = hc < r + 10.0
+	var vers_h: Vector3 = Vector3(p.x - c.x, 0, p.z - c.z)
+	vers_h = vers_h.normalized() if vers_h.length() > 0.1 else Vector3.FORWARD
+	var au_bord: bool = hc < _r_canard(et, vers_h) + 10.0
 	# les canetons piaillent de temps en temps
 	if dist < 18.0 and fmod(_clock + _flank * 2.0, 5.0) < delta and manager.main != null and manager.main.has_method("sfx"):
 		manager.main.sfx("caneton_piaille", global_position)
 	match state:
 		"nage":
 			_orbit_a += delta * speed / maxf(r, 1.0)
-			target = c + Vector3(cos(_orbit_a), 0, sin(_orbit_a)) * r * (0.8 + 0.2 * sin(_clock * 0.3))
+			var d_o := Vector3(cos(_orbit_a), 0, sin(_orbit_a))
+			target = c + d_o * _r_canard(et, d_o) * (0.8 + 0.2 * sin(_clock * 0.3))
 			if au_bord and _hero_v < 0.3:
 				_calm_t += delta
 				if _calm_t > 2.0:
@@ -681,13 +693,11 @@ func _canards(delta: float, p: Vector3, dist: float) -> void:
 					_sound("menace")
 			else:
 				_calm_t = 0.0
-			if au_bord and _hero_v > 2.5 and hc < r + 4.0:
+			if au_bord and _hero_v > 2.5 and hc < _r_canard(et, vers_h) + 4.0:
 				_eloigne_canards(p)
 		"approche":
 			# elle vient vers le héros, jusqu'au bord de l'eau, en cancanant
-			var vers: Vector3 = Vector3(p.x - c.x, 0, p.z - c.z)
-			vers = vers.normalized() if vers.length() > 0.1 else Vector3.FORWARD
-			target = c + vers * r
+			target = c + vers_h * _r_canard(et, vers_h)
 			speed *= 1.3
 			if fmod(_clock, 2.5) < delta:
 				_sound("menace")
@@ -723,10 +733,9 @@ func _canards(delta: float, p: Vector3, dist: float) -> void:
 func _eloigne_canards(from: Vector3) -> void:
 	var et: Array = manager.etang_de(ile_sol) if manager != null and manager.has_method("etang_de") else []
 	var c: Vector3 = et[0] if not et.is_empty() else home
-	var r: float = float(et[1]) - 2.5 if not et.is_empty() else 4.0
 	var loin: Vector3 = Vector3(c.x - from.x, 0, c.z - from.z)
 	loin = loin.normalized() if loin.length() > 0.1 else Vector3.FORWARD
-	_cible = c + loin * r
+	_cible = c + loin * _r_canard(et, loin)
 	state = "eloigne"
 	timer = 12.0
 	fuites += 1

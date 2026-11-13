@@ -65,14 +65,29 @@ extends Node3D
 ##    souris, des rats et le chat noir ;
 ##  - la Cité des Nuées : une cane et ses canetons sur l'étang du Parc des Brumes, des pigeons sur
 ##    les places. Un milieu de plus : « etang » (l'eau d'un étang, sur une île du ciel).
+## V140 : l'Île de Montjoie, Port-Azur et l'Île Pixelithique (les bêtes sont dans monstre_v140.gd) :
+##  - Montjoie, par région : la basse-cour de la ferme (le renard et l'effraie la nuit), le héron
+##    et la cane sur le Lac des Grenouilles, les écureuils du Bois des Lutins, les goélands du
+##    port, les pigeons de la ville, les lézards des Crocs, les lapins des prés (les hérissons la
+##    nuit) ;
+##  - Port-Azur : les goélands du port (ils chipent à manger, comme au village), les crabes de la
+##    plage, les lézards de la pointe, les tortues d'Hermann et les guêpiers du maquis ; la nuit,
+##    les chats du port, les chauves-souris, les hérissons ;
+##  - l'Île Pixelithique, en petits cubes : les compsognathes, les archéoptéryx perchés en haut des
+##    araucarias, la meganeura du Lac des Long-Cous.
+## Des milieux de plus : « rive » (l'eau peu profonde au bord d'un lac), « arbre » (la cime d'un
+## arbre) ; un lac peut être une ellipse (le Lac des Grenouilles).
 ## Des milieux de plus pour naître : « fleuve » (au bord et dans l'eau peu profonde), « lac » (les
 ## rives et les jardins flottants du lac de la Lune), « volcan » (les pentes du Mont Fumant).
 ## Les bêtes ont leur propre gestionnaire (pas celui des donjons) : elles ne se mêlent pas aux
 ## monstres des quêtes. Dans les tests sans écran, la faune dort (enabled = false), sauf si
 ## une suite la réveille.
 
-const Bete := preload("res://scripts/monstre_v139.gd")
+const Bete := preload("res://scripts/monstre_v140.gd")
 const IleSoleils := preload("res://scripts/ile_soleils_v69.gd")
+const IleMontjoie := preload("res://scripts/ile_montjoie_v71.gd")
+const IleAzur := preload("res://scripts/ile_azur_v56.gd")
+const Vox90 := preload("res://scripts/vox_v90.gd")
 
 ## île -> {"jour": [[espèce, nombre max, milieu, taille du groupe]…], "nuit": […]}
 const ILES := {
@@ -136,6 +151,23 @@ const ILES := {
 		"nuit": [["chauve_souris_mont", 4, "air", 4], ["rat", 2, "sol", 1], ["chat_noir", 1, "sol", 1]]},
 	"nuees": {"jour": [["canard", 1, "etang", 1], ["pigeon", 1, "sol", 1]],
 		"nuit": [["chat_errant", 1, "sol", 1]]},
+	# V140
+	"montjoie": {"regions": {
+		"ferme": {"jour": [["poule", 2, "sol", 1]], "nuit": [["renard_roux", 1, "sol", 1], ["effraie", 1, "air", 1]]},
+		"lac": {"jour": [["heron", 2, "rive", 1], ["canard", 1, "etang", 1]], "nuit": [["luciole", 3, "air", 3], ["herisson", 1, "sol", 1]]},
+		"bois": {"jour": [["ecureuil", 3, "sol", 1]], "nuit": [["herisson", 2, "sol", 1], ["effraie", 1, "air", 1]]},
+		"port": {"jour": [["mouette", 3, "air", 3]], "nuit": [["chat_errant", 1, "sol", 1]]},
+		"ville": {"jour": [["pigeon", 2, "sol", 1]], "nuit": [["chat_errant", 1, "sol", 1]]},
+		"crocs": {"jour": [["lezard", 3, "sol", 1]], "nuit": [["effraie", 1, "air", 1]]},
+		"pres": {"jour": [["lapin_garenne", 4, "sol", 2]], "nuit": [["herisson", 2, "sol", 1], ["renard_roux", 1, "sol", 1]]}}},
+	"azur": {"regions": {
+		"ville": {"jour": [["mouette", 3, "air", 3]], "nuit": [["chat_errant", 2, "sol", 1], ["chauve_souris_mont", 3, "air", 3]]},
+		"plage": {"jour": [["crabe_plage", 3, "plage", 1], ["mouette", 2, "air", 1]], "nuit": [["crabe_plage", 3, "plage", 1]]},
+		"pointe": {"jour": [["lezard", 3, "sol", 1], ["mouette", 2, "air", 1]], "nuit": [["chauve_souris_mont", 3, "air", 3]]},
+		"collines": {"jour": [["tortue_terre", 2, "sol", 1], ["guepier", 1, "air", 1], ["lezard", 2, "sol", 1]],
+			"nuit": [["herisson", 2, "sol", 1], ["chauve_souris_mont", 3, "air", 3]]}}},
+	"pixel": {"jour": [["compsognathe", 3, "sol", 3], ["archeopteryx", 2, "arbre", 1], ["meganeura", 2, "etang", 1]],
+		"nuit": [["compsognathe", 3, "sol", 3], ["luciole", 3, "air", 3]]},
 }
 const MAX_TOTAL: int = 11
 const LOIN: float = 120.0                # au-delà, la bête s'en va
@@ -192,7 +224,8 @@ func _resolve_iles() -> void:
 	for e2 in [["grande", "grande_v59"], ["aldente", "pasta_v97"], ["crayon", "crayon_v99"], ["soleils", "soleils_v69"],
 			["moai", "moai_v87"], ["balafre", "pirates_v68"], ["larsen", "larsen_v91"],
 			["arcanelle", "arcanelle_v67"], ["braise", "braise_v70"], ["hautefond", "hautefond_v112"],
-			["boucan", "boucan_v75"], ["neo", "neo_v94"], ["sombreval", "sombreval_v121"]]:
+			["boucan", "boucan_v75"], ["neo", "neo_v94"], ["sombreval", "sombreval_v121"],
+			["montjoie", "montjoie_v71"], ["azur", "azur_v56"], ["pixel", "pixel_v90"]]:
 		var w: Node = main.get(str(e2[1]))
 		if w != null and w.get("ile") != null:
 			centres[str(e2[0])] = w.ile.CENTER
@@ -203,6 +236,19 @@ func _resolve_iles() -> void:
 	for id in centres:
 		var c: Vector3 = centres[id]
 		iles[id] = {"c": c, "r": _rayon(c)}
+	# V140 : le Lac des Grenouilles de Montjoie (une ellipse), le Lac des Long-Cous et la lave de
+	# l'Île Pixelithique
+	if iles.has("montjoie"):
+		var lc: Vector3 = IleMontjoie.W(IleMontjoie.LAKE.x, IleMontjoie.LAKE.y)
+		iles["montjoie"]["etang"] = [Vector3(lc.x, IleMontjoie.LAKE_Y, lc.z), IleMontjoie.LAKE_AX.x, IleMontjoie.LAKE_AX.y]
+	var px: Node = main.get("pixel_v90")
+	if iles.has("pixel") and px != null and px.get("ile") != null:
+		var pi: Node = px.ile
+		var lac: Array = pi.LAC
+		var pl: Vector3 = pi.W(float(lac[0]), float(lac[1]))
+		iles["pixel"]["etang"] = [Vector3(pl.x, float(lac[3]) - 0.05, pl.z), float(lac[2])]
+		if pi.has_method("in_lava"):
+			iles["pixel"]["lave"] = Callable(pi, "in_lava")
 	# V138 : sur l'Île de Braise, la lave (rien n'y naît, rien n'y marche)
 	var br: Node = main.get("braise_v70")
 	if iles.has("braise") and br != null and br.get("ile") != null and br.ile.has_method("lava_at"):
@@ -244,12 +290,93 @@ func lave(p: Vector3, ile: String = "") -> bool:
 	var e: Dictionary = iles.get(ile if ile != "" else ile_joueur, {})
 	if not e.has("lave"):
 		return false
-	return float((e["lave"] as Callable).call(p.x, p.z)) > -1e6
+	var r: Variant = (e["lave"] as Callable).call(p.x, p.z)
+	# (V140 : celle de l'Île Pixelithique répond oui ou non)
+	if r is bool:
+		return r
+	return float(r) > -1e6
 
 
 ## V139 : l'étang d'une île (son centre, à la hauteur de l'eau, et son rayon), ou [].
+## V140 : ou ses deux demi-axes (un lac en ellipse : [centre, demi-axe x, demi-axe z]).
 func etang_de(ile: String) -> Array:
 	return iles.get(ile, {}).get("etang", [])
+
+
+## V140 : la distance du centre de l'étang à sa rive, dans la direction dir.
+func rayon_etang(et: Array, dir: Vector3) -> float:
+	if et.size() >= 3:
+		return 1.0 / sqrt(pow(dir.x / float(et[1]), 2.0) + pow(dir.z / float(et[2]), 2.0) + 1e-9)
+	return float(et[1]) if et.size() >= 2 else 6.0
+
+
+var _troncs: Dictionary = {}             # V140 : les troncs des arbres (collisions), par case de 20 m
+var _troncs_faits: bool = false
+var _cimes: Array = []                   # V140 : les cimes des grands arbres de l'Île Pixelithique
+var _cimes_faites: bool = false
+
+
+## V140 : le tronc le plus proche (moins de rmax) : [son pied, son rayon], ou [].
+func tronc_pres(p: Vector3, rmax: float) -> Array:
+	# (on les cherche une fois ; encore, tant qu'on n'en a trouvé aucun : la végétation d'une île peut
+	# se bâtir plus tard)
+	if not _troncs_faits or _troncs.is_empty():
+		_troncs_faits = true
+		for body in main.find_children("Troncs*", "StaticBody3D", true, false):
+			for cs in (body as Node).get_children():
+				if cs is CollisionShape3D and (cs as CollisionShape3D).shape is CylinderShape3D:
+					var cy: CylinderShape3D = (cs as CollisionShape3D).shape
+					if cy.radius > 1.2 or cy.height < 2.5:
+						continue
+					var w: Vector3 = (cs as CollisionShape3D).global_position
+					var key: String = "%d|%d" % [int(floor(w.x / 20.0)), int(floor(w.z / 20.0))]
+					if not _troncs.has(key):
+						_troncs[key] = []
+					(_troncs[key] as Array).append([Vector3(w.x, 0.0, w.z), cy.radius])
+	var best: Array = []
+	var bd: float = rmax
+	var ix: int = int(floor(p.x / 20.0))
+	var iz: int = int(floor(p.z / 20.0))
+	for dx in range(-1, 2):
+		for dz in range(-1, 2):
+			for t in _troncs.get("%d|%d" % [ix + dx, iz + dz], []):
+				var d: float = Vector2((t[0] as Vector3).x - p.x, (t[0] as Vector3).z - p.z).length()
+				if d < bd:
+					bd = d
+					best = [Vector3((t[0] as Vector3).x, hauteur((t[0] as Vector3).x, (t[0] as Vector3).z), (t[0] as Vector3).z), float(t[1])]
+	return best
+
+
+## V140 : la cime d'un grand arbre de l'Île Pixelithique (araucaria, fougère arborescente) à une
+## distance de rmin à rmax de p, le plus loin possible de loin_de (Vector3.INF : le plus proche).
+func arbre_pres(p: Vector3, rmin: float, rmax: float, loin_de: Vector3) -> Vector3:
+	if not _cimes_faites or _cimes.is_empty():
+		_cimes_faites = true
+		var px: Node = main.get("pixel_v90")
+		if px != null and px.get("ile") != null:
+			var pl: Dictionary = Vox90.plantes()
+			for nom in ["araucaria", "fougere_arbo"]:
+				var arr: PackedFloat32Array = pl.get(nom, PackedFloat32Array())
+				var nv: int = 2 if nom == "araucaria" else 3
+				for i in range(arr.size() / 5):
+					var mn: String = "%s_%d" % [nom, i % nv]
+					var m: Mesh = Vox90.mesh(mn)
+					if m == null:
+						continue
+					var top: float = m.get_aabb().end.y * arr[i * 5 + 4]
+					var w: Vector3 = px.ile.W(arr[i * 5], arr[i * 5 + 2], arr[i * 5 + 1])
+					_cimes.append(w + Vector3.UP * top)
+	var best := Vector3.INF
+	var bk: float = -1.0
+	for c in _cimes:
+		var d: float = Vector2((c as Vector3).x - p.x, (c as Vector3).z - p.z).length()
+		if d < rmin or d > rmax:
+			continue
+		var k: float = -d if loin_de == Vector3.INF else Vector2((c as Vector3).x - loin_de.x, (c as Vector3).z - loin_de.z).length()
+		if k > bk or best == Vector3.INF:
+			bk = k
+			best = c
+	return best
 
 
 ## Le vide, au bord d'une île du ciel ?
@@ -359,7 +486,8 @@ func _process(delta: float) -> void:
 	if ile_joueur == "" or not active or _blocked(p):
 		return
 	_maybe_spawn(p)
-	if ile_joueur == "village":
+	# V140 : les goélands chipent aussi à manger sur le port de Port-Azur et de Montjoie
+	if ile_joueur in ["village", "azur", "montjoie"]:
 		_gulls(p)
 
 
@@ -428,7 +556,8 @@ func _maybe_spawn(p: Vector3) -> void:
 		var q: Vector3 = at + off
 		if not sur_ile(ile_joueur, q):
 			continue
-		if str(e2[2]) != "air":
+		# (V140 : à la cime d'un arbre, sur l'eau d'un étang : à cette hauteur-là)
+		if not str(e2[2]) in ["air", "arbre", "etang"]:
 			q.y = hauteur(q.x, q.z) + 0.1
 		spawn(str(e2[0]), q)
 
@@ -446,6 +575,33 @@ func region_de(id: String, p: Vector3) -> String:
 		if lz < -55.0:
 			return "maya"
 		return "azteque"
+	# V140 : Montjoie (la ferme, le lac, le bois, le port, la ville, les Crocs, les prés) ; Port-Azur
+	# (la ville et le port, la plage, la pointe du phare, les collines)
+	if id == "montjoie":
+		var l := Vector2(p.x - IleMontjoie.CENTER.x, p.z - IleMontjoie.CENTER.z)
+		if IleMontjoie.FIELDS.grow(12.0).has_point(l):
+			return "ferme"
+		if IleMontjoie.lake_q(l.x, l.y) < 1.45:
+			return "lac"
+		if l.distance_to(IleMontjoie.FOREST) < IleMontjoie.FOREST_R + 12.0:
+			return "bois"
+		if l.distance_to(IleMontjoie.HARBOR) < IleMontjoie.HARBOR_R + 45.0:
+			return "port"
+		if l.distance_to(IleMontjoie.TOWN) < IleMontjoie.WALL_R1 + 4.0:
+			return "ville"
+		for cr in IleMontjoie.CROCS:
+			if l.distance_to(Vector2(float(cr[0]), float(cr[1]))) < float(cr[2]) + 14.0:
+				return "crocs"
+		return "pres"
+	if id == "azur":
+		var t: Vector2 = IleAzur.to_town(p.x, p.z)
+		if t.distance_to(IleAzur.HEADLAND) < IleAzur.HEADLAND_R + 18.0:
+			return "pointe"
+		if t.x > IleAzur.QUAY_X0 - 6.0 and t.x < IleAzur.QUAY_X1 + 12.0 and t.y > -20.0 and t.y < IleAzur.TOWN_Z1 + 8.0:
+			return "ville"
+		if t.x < IleAzur.QUAY_X0 - 6.0 and t.y < 70.0:
+			return "plage"
+		return "collines"
 	if id != "grande":
 		return ""
 	var g: Node = main.get("grande_v59")
@@ -492,9 +648,25 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 		if et.is_empty():
 			return Vector3.INF
 		var c0: Vector3 = et[0]
-		if Vector2(c0.x - p.x, c0.z - p.z).length() > 70.0:
+		if Vector2(c0.x - p.x, c0.z - p.z).length() > 95.0:
 			return Vector3.INF
 		return c0
+	# V140 : au bord du lac, dans l'eau peu profonde (le héron), pas tout près du héros
+	if milieu == "rive":
+		var et2: Array = etang_de(ile_joueur)
+		if et2.is_empty():
+			return Vector3.INF
+		for tries in range(16):
+			var a: float = _rng.randf() * TAU
+			var d := Vector3(cos(a), 0, sin(a))
+			var q0: Vector3 = (et2[0] as Vector3) + d * (rayon_etang(et2, d) - 1.2)
+			var dd: float = Vector2(q0.x - p.x, q0.z - p.z).length()
+			if dd > 18.0 and dd < 85.0:
+				return Vector3(q0.x, hauteur(q0.x, q0.z), q0.z)
+		return Vector3.INF
+	# V140 : à la cime d'un arbre (l'archéoptéryx), loin du héros
+	if milieu == "arbre":
+		return arbre_pres(p, 16.0, 42.0, p)
 	var e: Dictionary = iles[ile_joueur]
 	var c: Vector3 = e["c"]
 	var peaceful: bool = int(Bete.spec_of(kind)["degats"]) == 0
@@ -840,7 +1012,8 @@ func peut_chaparder() -> bool:
 func chapardeur_vole(g: Node3D) -> bool:
 	var id: String = _food() if _chap_cd <= 0.0 else ""
 	var renard: bool = str(g.get("kind")) == "renard_roux"
-	main.sfx("renard_glapit" if renard else "coati_couine", g.global_position)
+	var compso: bool = str(g.get("kind")) == "compsognathe"
+	main.sfx("renard_glapit" if renard else ("compso_piaille" if compso else "coati_couine"), g.global_position)
 	if id == "":
 		return false
 	main.inventory_v28.remove(id, 1)
@@ -850,12 +1023,14 @@ func chapardeur_vole(g: Node3D) -> bool:
 	var mdl: Node3D = main.inventory_v28.make_model(id)
 	if mdl != null:
 		mdl.name = "Butin"
-		mdl.scale = Vector3.ONE * 0.3
+		mdl.scale = Vector3.ONE * (0.18 if compso else 0.3)
 		var head: Node3D = g._pivots.get("tete")
 		if head != null:
 			head.add_child(mdl)
-			mdl.position = Vector3(0, -0.04, 0.32)
-	if renard:
+			mdl.position = Vector3(0, 0.13, 0.22) if compso else Vector3(0, -0.04, 0.32)
+	if compso:
+		main._show_message_v28("Un compsognathe t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
+	elif renard:
 		main._show_message_v28("Un renard t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
 	else:
 		main._show_message_v28("Un coati t'a chipé %s ! Frappe-le vite pour qu'il le lâche." % _art(id))
@@ -870,7 +1045,10 @@ func chapardeur_lache(g: Node3D) -> void:
 		return
 	main.inventory_v28.add(id, 1)
 	rendus += 1
-	main._show_message_v28(("Le renard lâche %s !" if str(g.get("kind")) == "renard_roux" else "Le coati lâche %s !") % _art(id))
+	if str(g.get("kind")) == "compsognathe":
+		main._show_message_v28("Le compsognathe lâche %s !" % _art(id))
+	else:
+		main._show_message_v28(("Le renard lâche %s !" if str(g.get("kind")) == "renard_roux" else "Le coati lâche %s !") % _art(id))
 	main.sfx("ramasse_pieces", g.global_position)
 
 
@@ -878,7 +1056,9 @@ func chapardeur_garde(g: Node3D) -> void:
 	var id: String = str(g.butin)
 	g.butin = ""
 	_drop_model(g)
-	if id != "":
+	if id != "" and str(g.get("kind")) == "compsognathe":
+		main._show_message_v28("Trop tard : le compsognathe a filé avec %s." % _art(id))
+	elif id != "":
 		main._show_message_v28(("Trop tard : le renard a filé avec %s." if str(g.get("kind")) == "renard_roux" else "Trop tard : le coati a filé avec %s.") % _art(id))
 
 
