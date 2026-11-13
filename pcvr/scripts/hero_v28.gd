@@ -42,6 +42,7 @@ var _charge_fx: Node3D
 var _heavy: String = ""                 # "" / "charge" / "tourne" : le coup en cours
 var _spin_t: float = -1.0
 var _counter_t: float = 0.0             # riposte après une parade parfaite
+var plongees: int = 0                   # V141 (tests) : coups plongeants
 var _souffle_cd: float = 0.0
 var _vr_charge_cd: float = 0.0
 var sol_mult: float = 1.0               # V63 : sables mouvants, mains d'ombre (ralentissent)
@@ -250,6 +251,13 @@ func _build_animations() -> void:
 	var w3 := _merge(stance, {"Spine02": Vector3(-12, 0, 0), "RightArm": Vector3(-175, 0, -8), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-150, 0, 10), "LeftForeArm": Vector3(-60, 0, 0)})
 	var s3 := _merge(stance, {"Spine02": Vector3(30, 0, 0), "RightArm": Vector3(-55, 0, -5), "RightForeArm": Vector3(-5, 0, 0), "LeftArm": Vector3(-50, 0, 5), "LeftForeArm": Vector3(-20, 0, 0)})
 	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
+	# V141 : le coup plongeant : l'arme levée à deux mains, les jambes repliées, puis le sol frappé,
+	# accroupi.
+	var plie := {"LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(72, 0, 0), "RightUpLeg": Vector3(-38, 0, 0), "RightLeg": Vector3(64, 0, 0)}
+	poses.add_animation("plonge", _clip(0.22, false, [[0.0, w3, Vector3(0, 2, 0)], [0.22, _merge(w3, plie), Vector3(0, 6, 0)]]))
+	var accroupi := _merge(s3, {"LeftUpLeg": Vector3(-74, 0, 0), "LeftLeg": Vector3(86, 0, 0), "RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(64, 0, 0),
+		"Spine02": Vector3(40, 0, 0), "RightArm": Vector3(-38, 0, -5), "LeftArm": Vector3(-34, 0, 5)})
+	poses.add_animation("plonge_frappe", _clip(0.45, false, [[0.0, accroupi, Vector3(0, -34, 8)], [0.22, accroupi, Vector3(0, -32, 8)], [0.45, arms_in, Vector3.ZERO]]))
 	# V29 : assis sur le banc de la barque, main droite sur la barre.
 	var seated := {"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
 		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0),
@@ -485,7 +493,7 @@ func physics(delta: float) -> void:
 
 func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 	# V55 : plus pied ? on nage.
-	if state in ["sol", "air"] and main.get("mer_v55") != null and main.mer_v55 != null and main.mer_v55.should_swim(body.global_position):
+	if state in ["sol", "air", "plonge"] and main.get("mer_v55") != null and main.mer_v55 != null and main.mer_v55.should_swim(body.global_position):
 		main.mer_v55.start_swim_pc(self)
 		return
 	var on_floor: bool = body.is_on_floor()
@@ -514,7 +522,14 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 			state = "sol"
 	elif state == "attaque":
 		move = dir * 0.6
+		# V141 : le coup final d'un enchaînement à la lame : un pas en avant, de tout son poids
+		if _finisher_step() and attack_clock < SLASH_HIT + 0.05:
+			move += facing * 2.8
 		_attack_tick(delta)
+	elif state == "plonge":
+		# V141 : le coup plongeant : on fond sur le sol
+		move = facing * 1.2
+		body.velocity.y = minf(body.velocity.y, -12.0)
 	elif state == "charge":
 		# V63 : la lame se charge tant que le clic est tenu
 		move = dir * 1.3
@@ -592,6 +607,8 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 			state = "air"
 	elif state == "air":
 		_landed()
+	elif state == "plonge":
+		_atterrit_plonge()
 	if on_floor and state == "sol":
 		fall_top = body.position.y
 	_pick_locomotion(move, on_floor)
@@ -936,10 +953,56 @@ func attack() -> void:
 	if state == "attaque":
 		combo_queued = true
 		return
+	# V141 : en plein saut, frapper : le coup plongeant
+	if state == "air" and _peut_plonger():
+		_start_plonge()
+		return
 	if state != "sol" or blocking:
 		return
 	combo_index = 0
 	_start_attack_step()
+
+
+## V141 : le coup plongeant n'a de sens qu'un peu haut au-dessus du sol (et avec du souffle).
+func _peut_plonger() -> bool:
+	if stamina_lock or stamina < 1.5 or body == null:
+		return false
+	var space := body.get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(body.global_position + Vector3.UP * 0.2, body.global_position + Vector3.DOWN * 40.0, 1, [body.get_rid()])
+	var hit: Dictionary = space.intersect_ray(q)
+	return hit.is_empty() or body.global_position.y - float(hit.position.y) > 0.9
+
+
+func _start_plonge() -> void:
+	state = "plonge"
+	_spend(1.5)
+	body.velocity.y = minf(body.velocity.y, 0.0) - 12.0
+	_play("v28/plonge", 0.06)
+	if main.has_method("sfx"):
+		main.sfx("plonge_vent", body.global_position + Vector3.UP * 1.0)
+
+
+## V141 : on touche le sol : l'onde de choc frappe tout autour (les plus proches tombent).
+func _atterrit_plonge() -> void:
+	var drop: float = fall_top - body.position.y
+	fall_top = body.position.y
+	state = "action"
+	action_time = 0.0
+	action_length = 0.45
+	_play("v28/plonge_frappe", 0.02)
+	# (de très haut, on se fait quand même mal ; un peu moins qu'en tombant)
+	if drop > SAFE_FALL + fall_bonus + 2.0:
+		hurt(1 + int((drop - SAFE_FALL - fall_bonus - 2.0) / 2.0), Vector3.ZERO)
+		if hp <= 0:
+			return
+	plongees += 1
+	if main.combat_v28 != null and main.combat_v28.has_method("slam"):
+		main.combat_v28.slam(body.global_position, 2.4, damage_for(weapon) * 2, 3)
+
+
+## V141 : le coup en cours est-il le coup final d'un enchaînement à la lame ?
+func _finisher_step() -> bool:
+	return weapon in ["epee", "hache", "epee_naine", "epee_nuees", "trident_marees", "sabre_corsaire", "lame_coeur"] and combo_index % SLASHES.size() == 2 and _heavy == ""
 
 
 func _start_attack_step() -> void:
@@ -1000,6 +1063,7 @@ func _deliver_hit() -> void:
 	if not crit and talents.has("coup_de_grace") and randf() < 0.125:
 		crit = true
 		dmg = int(round(dmg * 1.5))
+	var riposte: bool = _counter_t > 0.0
 	if _counter_t > 0.0:
 		_counter_t = 0.0
 		crit = true
@@ -1011,14 +1075,29 @@ func _deliver_hit() -> void:
 	elif _heavy == "tourne":
 		dmg = dmg * 2
 		crit = true
+	# V141 : la force du coup : le coup final et le coup chargé mettent à terre ; la tournoyante, la
+	# riposte et le dernier coup de poing font tituber
+	var force: int = 1
+	if finisher or _heavy == "charge":
+		force = 3
+	elif _heavy == "tourne" or riposte or (weapon == "" and combo_index % PUNCH_SEGMENTS.size() == PUNCH_SEGMENTS.size() - 1):
+		force = 2
 	if main.combat_v28 != null:
 		main.combat_v28.critical = crit
+		if "force_v141" in main.combat_v28:
+			main.combat_v28.force_v141 = force
+	var touches: int = 0
 	if _heavy == "tourne" and main.combat_v28 != null and main.combat_v28.has_method("strike_around"):
-		main.combat_v28.strike_around(body.global_position + Vector3.UP * 1.1, reach + 0.5, dmg)
+		touches = int(main.combat_v28.strike_around(body.global_position + Vector3.UP * 1.1, reach + 0.5, dmg))
 	else:
-		strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, dmg)
+		touches = int(strike.call(body.global_position + Vector3.UP * 1.1, facing, reach, dmg))
 	if main.combat_v28 != null:
 		main.combat_v28.critical = false
+		if "force_v141" in main.combat_v28:
+			main.combat_v28.force_v141 = 1
+	# V141 : le coup final frappe jusqu'au sol (l'onde rasante, la poussière, le poids du coup)
+	if finisher and main.get("coups_v141") != null and main.coups_v141 != null:
+		main.coups_v141.coup_final(body.global_position + facing * 1.3 + Vector3.UP * 0.3, facing, touches > 0)
 
 
 ## V63 : une vraie lame (pas un outil, pas les poings) : elle se charge et profite de la forge.

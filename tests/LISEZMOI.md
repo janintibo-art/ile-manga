@@ -24,6 +24,7 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 | `56_faune_sud` | la faune V139 (Île du Boucan, Néopolis, Sombreval, Cité des Nuées) |
 | `57_faune_est` | la faune V140 (Île de Montjoie, Port-Azur, Île Pixelithique) |
 | `60_combat` | butin et expérience, chaque arme, les six sorts, les quatre pouvoirs des sceaux |
+| `61_coups` | les sensations des coups V141 (plier, tituber, tomber ; coup final, coup plongeant, sol frappé ; le sang en Public averti) |
 | `70_heros` | marcher, sauter, courir, nager, tomber, lever les yeux, se relever, le niveau |
 | `80_sauvegarde` | sauvegarder, nouvelle partie, recharger, copie de secours, Tout public / Public averti |
 | `90_langues` | anglais et espagnol (échantillon des tables, objets, textes à trous, menu) |

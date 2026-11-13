@@ -20,6 +20,11 @@ var _shards: Array = []                 # éclats de jarre
 var _vr_prev: Dictionary = {}
 var _vr_cool: Dictionary = {}
 var critical: bool = false            # V34 : le coup en cours est un coup de grâce
+var force_v141: int = 1               # V141 : 2 le coup fait tituber, 3 il met à terre (coup final, plongeant)
+var _vr_air: bool = false             # V141 (VR) : en l'air à l'image d'avant
+var _vr_plonge: bool = false          # V141 (VR) : un coup vers le bas en plein saut : le sol tremblera
+var _vr_slam_cd: float = 0.0
+var slams: int = 0                    # tests : coups frappés au sol (VR) et plongeants
 
 
 func build(main_node: Node, inv: Node) -> void:
@@ -209,6 +214,7 @@ func strike(origin: Vector3, facing: Vector3, reach: float, damage: int) -> int:
 		var snd: String = impact_sound(target)
 		target.take_hit(damage, origin)
 		_impact(snd, c, origin)
+		_reagir(target, origin)
 		hits += 1
 	return hits
 
@@ -230,6 +236,7 @@ func strike_around(origin: Vector3, reach: float, damage: int) -> int:
 		var snd: String = impact_sound(target)
 		target.take_hit(damage, origin)
 		_impact(snd, c, origin)
+		_reagir(target, origin)
 		hits += 1
 	return hits
 
@@ -249,7 +256,50 @@ func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3)
 			var snd: String = impact_sound(target)
 			target.take_hit(damage, from_pos)
 			_impact(snd, point, from_pos)
+			_reagir(target, from_pos)
 			hits += 1
+	return hits
+
+
+## V141 : l'ennemi touché réagit (il plie, titube, tombe : voir coups_v141.gd).
+func _reagir(target: Node3D, from: Vector3) -> void:
+	var cp: Node = main.get("coups_v141") if main != null else null
+	if cp == null or not is_instance_valid(target):
+		return
+	cp.reagir(target, from, force_v141 if force_v141 > 1 else (2 if critical else 1))
+
+
+## V141 : le sol frappé de toute sa force (coup plongeant, coup frappé au sol en VR) : toutes les
+## cibles autour ; les plus proches tombent, les autres titubent ; l'onde de choc.
+func slam(at: Vector3, radius: float, damage: int, force: int) -> int:
+	var hits: int = 0
+	var old_f: int = force_v141
+	var old_c: bool = critical
+	critical = true
+	slams += 1
+	for t in get_tree().get_nodes_in_group("cibles_v28"):
+		var target: Node3D = t as Node3D
+		if not target.is_hittable():
+			continue
+		var c: Vector3 = target.global_position + Vector3.UP * float(target.hit_height)
+		var off: Vector3 = c - at
+		if absf(off.y) > 1.8:
+			continue
+		off.y = 0.0
+		var d: float = off.length() - float(target.hit_radius)
+		if d > radius:
+			continue
+		force_v141 = force if d < radius * 0.6 else maxi(force - 1, 1)
+		var snd: String = impact_sound(target)
+		target.take_hit(damage, at)
+		_impact(snd, c, at)
+		_reagir(target, at)
+		hits += 1
+	force_v141 = old_f
+	critical = old_c
+	var cp: Node = main.get("coups_v141") if main != null else null
+	if cp != null:
+		cp.onde_sol(at, radius)
 	return hits
 
 
@@ -310,6 +360,13 @@ func _hit_item() -> String:
 ## points : {nom: [position monde, rayon, dégâts, position dans l'espace du joueur]}
 ## La vitesse se mesure dans l'espace du joueur : marcher au joystick ne frappe pas.
 func vr_tick(delta: float, points: Dictionary, head: Vector3) -> void:
+	# V141 : le coup plongeant (frapper vers le bas en plein saut) et le coup frappé au sol
+	_vr_slam_cd = maxf(_vr_slam_cd - delta, 0.0)
+	var vb: Node3D = main.get("vr_body") if main != null else null
+	var air: bool = vb != null and vb is CharacterBody3D and not (vb as CharacterBody3D).is_on_floor()
+	var dmg_max: int = 1
+	for key0 in points:
+		dmg_max = maxi(dmg_max, int(points[key0][2]))
 	for key in points:
 		var p: Vector3 = points[key][0]
 		var local_p: Vector3 = points[key][3]
@@ -317,6 +374,13 @@ func vr_tick(delta: float, points: Dictionary, head: Vector3) -> void:
 		_vr_prev[key] = local_p
 		_vr_cool[key] = maxf(float(_vr_cool.get(key, 0.0)) - delta, 0.0)
 		var speed: float = local_p.distance_to(prev) / maxf(delta, 0.001)
+		var vy: float = (local_p.y - prev.y) / maxf(delta, 0.001)
+		if vb != null and str(key) != "lame":
+			if air and vy < -2.6:
+				_vr_plonge = true
+			elif not air and vy < -3.2 and _vr_slam_cd <= 0.0 and p.y < vb.global_position.y + 0.35 and _souffle_vr(1.5):
+				_vr_slam_cd = 1.6
+				slam(Vector3(p.x, vb.global_position.y, p.z), 2.0, int(round(dmg_max * 1.5)), 2)
 		if speed > 2.2 and float(_vr_cool[key]) <= 0.0:
 			# V63 : coup très rapide (Coup chargé), riposte après une parade parfaite
 			var dmg: int = int(points[key][2])
@@ -334,6 +398,31 @@ func vr_tick(delta: float, points: Dictionary, head: Vector3) -> void:
 				_vr_cool[key] = 0.35
 			vr_item = "-"
 			critical = false
+	_vr_atterrit(air, dmg_max)
+
+
+## V141 (VR) : on retombe d'un saut après avoir frappé vers le bas : le sol tremble. Appelé à la fin
+## de vr_tick.
+func _vr_atterrit(air: bool, dmg_max: int) -> void:
+	var vb: Node3D = main.get("vr_body") if main != null else null
+	if vb != null and _vr_air and not air and _vr_plonge:
+		_vr_plonge = false
+		if _souffle_vr(1.5):
+			slam(vb.global_position, 2.4, dmg_max * 2, 3)
+	if not air:
+		_vr_plonge = false
+	_vr_air = air
+
+
+## V141 (VR) : assez de souffle pour frapper le sol ? (on le dépense)
+func _souffle_vr(n: float) -> bool:
+	var hero: Node = main.get("hero_v28") if main != null else null
+	if hero == null or not hero.has_method("_spend"):
+		return true
+	if bool(hero.get("stamina_lock")) or float(hero.get("stamina")) < n:
+		return false
+	hero._spend(n)
+	return true
 
 
 func _would_hit(point: Vector3, radius: float) -> bool:

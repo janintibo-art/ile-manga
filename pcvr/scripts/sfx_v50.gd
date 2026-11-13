@@ -54,6 +54,8 @@ const DB := {
 	"chat_crache": -6.0, "rat_couine": -10.0, "canard_cancan": -7.0, "caneton_piaille": -11.0,
 	"poule_caquette": -8.0, "coq_chante": -5.0, "heron_croasse": -6.0, "ecureuil_crie": -9.0, "guepier_trille": -11.0,
 	"compso_piaille": -8.0, "archeo_cri": -7.0, "meganeura_bourdon": -9.0,
+	# V141 : les coups qui pèsent
+	"frappe_sol": -3.0, "coup_final": -4.0, "chute_corps": -5.0, "plonge_vent": -7.0,
 	"gribouillis_griffe": -7.0, "gomme_couine": -6.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,
