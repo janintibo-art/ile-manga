@@ -20,12 +20,21 @@ func _pres(kind: String, d: float, haut: float = 0.1, cote: float = 0.0) -> Node
 	var lat := Vector3(-dir.z, 0, dir.x)
 	var q: Vector3 = p + dir * d + lat * cote
 	q.y = _h(q.x, q.z)
-	for k in range(16):
+	# (V144 : et la voie doit être libre entre la bête et le héros : ni rocher, ni arbre, ni talus ;
+	# s'il n'y a pas d'endroit dégagé, le premier endroit à la bonne hauteur fait l'affaire)
+	var repli: Vector3 = Vector3.INF
+	for k in range(17):
 		if absf(q.y - p.y) < 1.2 and q.y > 0.3 and not testeur_v78._sous_toit(q, q.y):
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, q):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
 		q.y = _h(q.x, q.z)
+	if repli != Vector3.INF:
+		q = repli
 	q.y += haut
 	return faune_v132.spawn(kind, q)
 

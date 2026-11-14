@@ -23,14 +23,18 @@ func _bete(kind: String, avant: float = 2.5, cote: float = 0.0) -> Node3D:
 	return b
 
 
-## Un coin bien plat autour du héros (les bêtes y sont à sa hauteur) : on s'y pose, tourné vers le nord.
+## Un coin bien plat et dégagé autour du héros (les bêtes y sont à sa hauteur, et ni arbre ni rocher
+## n'arrête une boule de feu ou un éclair en chemin) : on s'y pose, tourné vers le nord. S'il n'y a
+## pas de coin à la fois plat et dégagé, on prend le plus plat.
 func _plat() -> bool:
 	var o: Vector3 = _pos()
 	var best: Vector3 = o
 	var bd: float = INF
-	for r in range(0, 60, 4):
-		for k in range(12):
-			var a: float = TAU * k / 12.0
+	var libre: Vector3 = Vector3.INF
+	var ld: float = 0.5
+	for r in range(0, 90, 3):
+		for k in range(16):
+			var a: float = TAU * k / 16.0 + r * 0.37
 			var c := Vector3(o.x + cos(a) * r, 0, o.z + sin(a) * r)
 			var h0: float = _height_at(c.x, c.z)
 			if h0 < 1.0:
@@ -42,10 +46,33 @@ func _plat() -> bool:
 			if d < bd:
 				bd = d
 				best = Vector3(c.x, h0, c.z)
-		if bd < 0.25:
+			if d < ld and _degage(Vector3(c.x, h0, c.z)):
+				ld = d
+				libre = Vector3(c.x, h0, c.z)
+		if libre != Vector3.INF and ld < 0.3:
 			break
+	if libre != Vector3.INF:
+		best = libre
+		bd = ld
 	_poser(best + Vector3.UP * 0.2, Vector3.FORWARD)
 	return bd < 0.5
+
+
+## Rien entre le héros (posé en c, tourné vers le nord) et les bêtes que l'on met devant lui ?
+func _degage(c: Vector3) -> bool:
+	var space := get_world_3d().direct_space_state
+	var sauf: Array = []
+	if pc_body != null:
+		sauf.append(pc_body.get_rid())
+	for h in [0.7, 1.3]:
+		for vers in [Vector3(0, 0, -13.0), Vector3(-2.2, 0, -12.0), Vector3(2.2, 0, -12.0)]:
+			var b: Vector3 = c + vers
+			b.y = _height_at(b.x, b.z) + h
+			var q := PhysicsRayQueryParameters3D.create(c + Vector3.UP * h, b, 1)
+			q.exclude = sauf
+			if not space.intersect_ray(q).is_empty():
+				return false
+	return true
 
 
 func _sol() -> void:

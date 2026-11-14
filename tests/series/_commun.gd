@@ -61,6 +61,25 @@ func _poser(p: Vector3, face: Vector3 = Vector3.FORWARD) -> void:
 	await _att(0.3)
 
 
+## Rien entre a et b (deux points au sol) qui arrêterait une bête : ni rocher, ni arbre, ni talus ?
+## (deux rayons, à hauteur de genou et de poitrine ; le héros ne compte pas). Les séries de la faune
+## s'en servent pour poser une bête près du héros : le coin sauvage est tiré au hasard, et un
+## obstacle entre eux faisait manquer l'essai une fois sur dix.
+func _voie_libre(a: Vector3, b: Vector3) -> bool:
+	var space := get_world_3d().direct_space_state
+	var sauf: Array = []
+	if pc_body != null:
+		sauf.append(pc_body.get_rid())
+	if vr_body != null:
+		sauf.append(vr_body.get_rid())
+	for h in [0.45, 1.1]:
+		var q := PhysicsRayQueryParameters3D.create(a + Vector3.UP * h, b + Vector3.UP * h, 1)
+		q.exclude = sauf
+		if not space.intersect_ray(q).is_empty():
+			return false
+	return true
+
+
 func _touche(k: Key, bas: bool) -> void:
 	var ev := InputEventKey.new()
 	ev.keycode = k

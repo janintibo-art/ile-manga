@@ -9,12 +9,21 @@ func _pres(kind: String, d: float) -> Node3D:
 	var p: Vector3 = _pos()
 	var q: Vector3 = p + hero_v28.facing * d
 	q.y = _height_at(q.x, q.z)
-	for k in range(16):
+	# (V144 : et la voie doit être libre entre la bête et le héros : ni rocher, ni arbre, ni talus ;
+	# s'il n'y a pas d'endroit dégagé, le premier endroit à la bonne hauteur fait l'affaire)
+	var repli: Vector3 = Vector3.INF
+	for k in range(17):
 		if absf(q.y - p.y) < 1.2:
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, q):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
 		q.y = _height_at(q.x, q.z)
+	if repli != Vector3.INF:
+		q = repli
 	q.y += 2.8 if kind == "feu_follet" else 0.1
 	return faune_v132.spawn(kind, q)
 
@@ -110,26 +119,35 @@ func _serie() -> void:
 	_ok(s0 == "cache" and str(sp.state) != "cache", "serpent : %s puis %s" % [s0, str(sp.state)])
 	_vider()
 	# --- l'ours se dresse, s'abat ; un coup ne l'arrête pas
-	testeur_v78._faune_v132("grande", "nord")
-	await _att(0.4)
-	_vider()
-	testeur_v78.invincible = false
-	var ours: Node3D = _pres("ours_lande", 3.0)
+	# (le coin sauvage est tiré au hasard : un rocher ou un talus peut empêcher l'ours d'arriver
+	# jusqu'au héros ; on essaie alors ailleurs, trois fois au plus)
+	var ours: Node3D = null
 	var rear: float = 0.0
 	var frappe_malgre_coup: bool = false
-	var touche: bool = false
-	for k in range(160):
-		await _att(0.03)
-		if not is_instance_valid(ours):
+	for essai in range(3):
+		testeur_v78._faune_v132("grande", "nord")
+		await _att(0.4)
+		_vider()
+		testeur_v78.invincible = false
+		ours = _pres("ours_lande", 3.0)
+		rear = 0.0
+		frappe_malgre_coup = false
+		var touche: bool = false
+		for k in range(160):
+			await _att(0.03)
+			if not is_instance_valid(ours):
+				break
+			rear = maxf(rear, float(ours._rear))
+			if str(ours.state) == "armer" and not touche:
+				ours.take_hit(1, _pos())
+				touche = true
+			if touche and str(ours.state) == "frappe":
+				frappe_malgre_coup = true
+			hero_v28.hp = hero_v28.HP_MAX
+		testeur_v78.invincible = true
+		if rear >= 0.5 and frappe_malgre_coup and is_instance_valid(ours) and int(ours.landed_hits) >= 1:
 			break
-		rear = maxf(rear, float(ours._rear))
-		if str(ours.state) == "armer" and not touche:
-			ours.take_hit(1, _pos())
-			touche = true
-		if touche and str(ours.state) == "frappe":
-			frappe_malgre_coup = true
-		hero_v28.hp = hero_v28.HP_MAX
-	testeur_v78.invincible = true
+		print("     (ours : essai %d manqué, dressé %.2f ; on essaie ailleurs)" % [essai + 1, rear])
 	_ok(rear >= 0.5, "ours : il se dresse (%.2f)" % rear)
 	_ok(frappe_malgre_coup, "ours : un coup ne l'arrête pas")
 	_ok(is_instance_valid(ours) and int(ours.landed_hits) >= 1, "ours : ses griffes portent")

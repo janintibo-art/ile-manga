@@ -70,6 +70,9 @@ const ETAPES := {
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [
+	"Astuce : touche C (ou clic de la molette) : verrouiller l'ennemi devant toi. Tes coups et tes sorts iront vers lui.",
+	"Astuce : un « ! » rouge au-dessus d'un ennemi : il arme son coup. C'est le moment de parer ou de rouler.",
+	"Astuce : un ennemi gelé frappé à l'arme se brise : dégâts doublés. Le feu sur la glace fait un nuage de vapeur.",
 	"Astuce : clic droit maintenu et la souris pour tourner la caméra et lever les yeux au ciel.",
 	"Astuce : à la manette, le stick droit tourne la caméra et lève ou baisse le regard.",
 	"Astuce : le carnet (I) garde tes quêtes, tes trouvailles et la carte.",

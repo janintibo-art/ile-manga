@@ -16,11 +16,19 @@ func _h(F: Node, x: float, z: float) -> float:
 func _pres(F: Node, kind: String, d: float, haut: float = 0.1) -> Node3D:
 	var p: Vector3 = _pos()
 	var q: Vector3 = p + hero_v28.facing * d
-	for k in range(17):
+	# (V144 : et la voie doit être libre entre la bête et le héros ; sinon, le premier endroit à la bonne hauteur)
+	var repli: Vector3 = Vector3.INF
+	for k in range(18):
 		if F.sur_ile(F.ile_joueur, q) and absf(_h(F, q.x, q.z) - p.y) < 1.5:
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, Vector3(q.x, _h(F, q.x, q.z), q.z)):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
+	if repli != Vector3.INF:
+		q = repli
 	q.y = _h(F, q.x, q.z) + haut
 	return F.spawn(kind, q)
 

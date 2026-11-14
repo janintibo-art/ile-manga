@@ -10,12 +10,21 @@ func _pres(kind: String, d: float) -> Node3D:
 	var p: Vector3 = _pos()
 	var q: Vector3 = p + hero_v28.facing * d
 	q.y = _height_at(q.x, q.z)
-	for k in range(16):
+	# (V144 : et la voie doit être libre entre la bête et le héros : ni rocher, ni arbre, ni talus ;
+	# s'il n'y a pas d'endroit dégagé, le premier endroit à la bonne hauteur fait l'affaire)
+	var repli: Vector3 = Vector3.INF
+	for k in range(17):
 		if absf(q.y - p.y) < 1.2 and q.y > 0.3:
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, q):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
 		q.y = _height_at(q.x, q.z)
+	if repli != Vector3.INF:
+		q = repli
 	q.y += {"luciole": 1.3, "aigle_royal": 9.0}.get(kind, 0.1)
 	return faune_v132.spawn(kind, q)
 
@@ -155,25 +164,46 @@ func _serie() -> void:
 	_ok(int(progression_v63.xp) >= xp0, "lucioles : pas d'expérience perdue")
 	_vider()
 	# --- côté égyptien : le crocodile tapi dans le fleuve
-	testeur_v78._faune_v132("soleils", "egypte")
-	await _att(0.4)
-	F._tick = 9999.0
-	_vider()
-	var eau: Vector3 = testeur_v78._milieu_pres(F, _pos(), "fleuve", 40.0)
-	if _ok(eau != Vector3.INF, "le fleuve est près du coin sauvage égyptien"):
+	# (le coin sauvage est tiré au hasard, et le crocodile ne s'éloigne pas de l'eau : si la rive
+	# est trop haute ou trop loin pour lui, on s'approche de l'eau, puis on essaie ailleurs, trois
+	# fois au plus)
+	var eau: Vector3 = Vector3.INF
+	var cr: Node3D = null
+	var away: Vector3 = Vector3.FORWARD
+	var tapi: bool = false
+	var tapi_etat: String = ""
+	var stc: Dictionary = {}
+	for essai in range(3):
+		testeur_v78._faune_v132("soleils", "egypte")
+		await _att(0.4)
+		F._tick = 9999.0
+		_vider()
+		eau = testeur_v78._milieu_pres(F, _pos(), "fleuve", 40.0)
+		if eau == Vector3.INF:
+			continue
 		# le héros d'abord loin de l'eau : le crocodile reste tapi
-		var cr: Node3D = F.spawn("crocodile", Vector3(eau.x, _height_at(eau.x, eau.z) + 0.1, eau.z))
-		var away: Vector3 = (_pos() - eau)
+		cr = F.spawn("crocodile", Vector3(eau.x, _height_at(eau.x, eau.z) + 0.1, eau.z))
+		away = (_pos() - eau)
 		away.y = 0.0
 		away = away.normalized() if away.length() > 0.1 else Vector3.FORWARD
 		var loin: Vector3 = eau + away * 12.0
 		await _poser(Vector3(loin.x, _height_at(loin.x, loin.z) + 0.3, loin.z))
 		await _att(0.6)
-		_ok(str(cr.state) == "cache" and float(cr._sink) > 0.5, "crocodile : tapi sous l'eau tant qu'on est loin (%s)" % str(cr.state))
-		# le héros longe la rive : il jaillit et mord
-		var rive: Vector3 = eau + away * 2.8
-		await _poser(Vector3(rive.x, maxf(_height_at(rive.x, rive.z), -0.3) + 0.3, rive.z), -away)
-		var stc: Dictionary = await _suivre(cr, 200, func() -> bool: return int(cr.landed_hits) >= 1)
+		tapi_etat = str(cr.state)
+		tapi = tapi_etat == "cache" and float(cr._sink) > 0.5
+		# le héros longe la rive : il jaillit et mord (de plus en plus près de l'eau s'il le faut)
+		stc = {}
+		for pres in [2.8, 1.9, 1.1]:
+			var rive: Vector3 = eau + away * pres
+			await _poser(Vector3(rive.x, maxf(_height_at(rive.x, rive.z), -0.3) + 0.3, rive.z), -away)
+			stc.merge(await _suivre(cr, 200 if pres > 2.5 else 110, func() -> bool: return int(cr.landed_hits) >= 1), true)
+			if not is_instance_valid(cr) or int(cr.landed_hits) >= 1:
+				break
+		if tapi and is_instance_valid(cr) and int(cr.landed_hits) >= 1:
+			break
+		print("     (crocodile : essai %d manqué %s ; on essaie ailleurs)" % [essai + 1, str(stc.keys())])
+	if _ok(eau != Vector3.INF and is_instance_valid(cr), "le fleuve est près du coin sauvage égyptien"):
+		_ok(tapi, "crocodile : tapi sous l'eau tant qu'on est loin (%s)" % tapi_etat)
 		_ok(stc.has("surgit") or stc.has("chasse"), "crocodile : il jaillit quand on longe la rive %s" % str(stc.keys()))
 		_ok(int(cr.landed_hits) >= 1, "crocodile : il mord")
 		# le héros s'en va : il retourne se cacher

@@ -59,6 +59,7 @@ const CONSEILS := {
 
 var main: Node
 var vus: Dictionary = {}                 # conseils déjà donnés (sauvegardé)
+var decouvertes: Dictionary = {}         # V144 : famille -> true (la faiblesse a été trouvée ; sauvegardé)
 var reactions: Dictionary = {}           # tests : réaction -> nombre
 var last_reaction: String = ""
 var last_mult: float = 1.0
@@ -101,6 +102,11 @@ func faiblesse(m: Node) -> String:
 		if float(a[e]) > 1.0:
 			return str(e)
 	return ""
+
+
+## V144 : la faiblesse de cette créature a-t-elle déjà été trouvée ?
+func connue(m: Node) -> bool:
+	return decouvertes.has(famille(m))
 
 
 func etat(m: Node) -> String:
@@ -198,6 +204,7 @@ func hit(m: Node3D, element: String, dmg: int, from: Vector3, arme: bool = false
 	var now: int = Time.get_ticks_msec()
 	var dit: bool = now - int(m.get_meta("el_dit_v143", -99999)) > 3000
 	if aff > 1.01:
+		decouvertes[famille(m)] = true
 		_compte("faible")
 		if dit:
 			m.set_meta("el_dit_v143", now)
@@ -570,6 +577,10 @@ func foudre(o: Vector3, dir: Vector3) -> Vector3:
 		if s < bs:
 			bs = s
 			best = m
+	# V144 : la cible verrouillée passe avant les autres
+	var cv: Node = main.get("cibles_v144")
+	if cv != null and bool(cv.verrou) and _vivant(cv.cible) and _centre(cv.cible).distance_to(o) < 20.0:
+		best = cv.cible
 	var at: Vector3
 	if best == null:
 		at = o + dir * 11.0
@@ -737,7 +748,7 @@ func reset() -> void:
 
 
 func serialize() -> Dictionary:
-	return {"vus": vus.keys()}
+	return {"vus": vus.keys(), "decouvertes": decouvertes.keys()}
 
 
 func load_data(d: Dictionary) -> void:
@@ -746,4 +757,9 @@ func load_data(d: Dictionary) -> void:
 	if v is Array:
 		for k in v:
 			vus[str(k)] = true
+	decouvertes.clear()
+	var v2: Variant = d.get("decouvertes", [])
+	if v2 is Array:
+		for k2 in v2:
+			decouvertes[str(k2)] = true
 	reset()

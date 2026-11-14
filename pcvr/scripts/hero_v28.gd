@@ -1305,6 +1305,14 @@ func vr_heavy_mult(speed: float) -> float:
 
 
 func _face_nearest_target() -> void:
+	# V144 : la cible verrouillée d'abord (si elle est à portée de quelques pas)
+	var cv: Node = main.get("cibles_v144") if main != null else null
+	if cv != null and bool(cv.verrou) and cv.cible != null and is_instance_valid(cv.cible):
+		var ov: Vector3 = (cv.cible as Node3D).global_position - body.global_position
+		ov.y = 0.0
+		if ov.length() > 0.05 and ov.length() < 5.0:
+			facing = ov.normalized()
+			return
 	var best: Node3D = null
 	var best_d: float = 2.8
 	for t in get_tree().get_nodes_in_group("cibles_v28"):

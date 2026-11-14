@@ -178,6 +178,13 @@ func _aim(flat: bool = true) -> Vector3:
 		d = -main.right_hand.global_basis.z
 	else:
 		d = main.hero_v28.facing if main.hero_v28 != null else Vector3.FORWARD
+		# V144 : la cible verrouillée : le héros se tourne vers elle, le sort part vers elle
+		var cv: Node = main.get("cibles_v144")
+		var dv: Vector3 = cv.direction(_origin(), flat) if cv != null else Vector3.ZERO
+		if dv != Vector3.ZERO:
+			d = dv
+			if main.hero_v28 != null and Vector3(dv.x, 0, dv.z).length() > 0.05:
+				main.hero_v28.facing = Vector3(dv.x, 0, dv.z).normalized()
 	if flat:
 		d.y = 0.0
 	return d.normalized() if d.length() > 0.01 else Vector3.FORWARD

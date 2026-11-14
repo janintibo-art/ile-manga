@@ -175,6 +175,7 @@ const LOIN: float = 120.0                # au-delà, la bête s'en va
 var main: Node
 var enabled: bool = true
 var active: bool = false
+var repeches: int = 0                   # V144 : bêtes revenues à la surface (tests)
 var donjon: Node
 var betes: Array = []
 var iles: Dictionary = {}                # id -> {"c": Vector3, "r": float}
@@ -483,12 +484,33 @@ func _process(delta: float) -> void:
 		elif b.state != "mort" and (b as Node3D).global_position.distance_to(p) > LOIN:
 			betes.erase(b)
 			b.queue_free()
+		elif b.state != "mort":
+			_repecher(b)
 	if ile_joueur == "" or not active or _blocked(p):
 		return
 	_maybe_spawn(p)
 	# V140 : les goélands chipent aussi à manger sur le port de Port-Azur et de Montjoie
 	if ile_joueur in ["village", "azur", "montjoie"]:
 		_gulls(p)
+
+
+## V144 : une bête passée à travers le sol (née sur une pente, un coin de son corps enfoncé dans le
+## terrain, elle tombait sans fin) revient à la surface.
+func _repecher(b: Node) -> void:
+	if bool(b.get("vol")):
+		return
+	var sp: Variant = b.get("spec")
+	if sp is Dictionary and bool((sp as Dictionary).get("vol", false)):
+		return
+	var bp: Vector3 = (b as Node3D).global_position
+	var il: String = str(b.get("ile_sol")) if b.get("ile_sol") != null and str(b.get("ile_sol")) != "" else "-"
+	if vide(bp, il):
+		return
+	var gy: float = hauteur(bp.x, bp.z, il)
+	if bp.y < gy - 3.0:
+		(b as Node3D).global_position = Vector3(bp.x, gy + 0.3, bp.z)
+		b.set("velocity", Vector3.ZERO)
+		repeches += 1
 
 
 func _blocked(p: Vector3) -> bool:
@@ -718,7 +740,14 @@ func _spot(p: Vector3, milieu: String, kind: String, region: String = "") -> Vec
 func milieu_ok(q: Vector3, h: float, milieu: String) -> bool:
 	match milieu:
 		"plage":
-			return h >= 0.15 and h <= 2.2
+			if h < 0.15 or h > 2.2:
+				return false
+			# V144 : une vraie plage, en pente douce (sur un rivage escarpé, la bête née là glissait
+			# jusqu'à la mer, ou passait à travers la roche : les tortues des Moaïs surtout)
+			for o in [Vector2(1.5, 0), Vector2(-1.5, 0), Vector2(0, 1.5), Vector2(0, -1.5)]:
+				if absf(hauteur(q.x + o.x, q.z + o.y) - h) > 1.1:
+					return false
+			return true
 		"sol", "volcan":
 			if h < 1.2:
 				return false

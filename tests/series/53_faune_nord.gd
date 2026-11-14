@@ -13,12 +13,21 @@ func _pres(kind: String, d: float) -> Node3D:
 	var p: Vector3 = _pos()
 	var q: Vector3 = p + hero_v28.facing * d
 	q.y = _height_at(q.x, q.z)
-	for k in range(16):
+	# (V144 : et la voie doit être libre entre la bête et le héros : ni rocher, ni arbre, ni talus ;
+	# s'il n'y a pas d'endroit dégagé, le premier endroit à la bonne hauteur fait l'affaire)
+	var repli: Vector3 = Vector3.INF
+	for k in range(17):
 		if absf(q.y - p.y) < 1.2 and q.y > 0.3:
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, q):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
 		q.y = _height_at(q.x, q.z)
+	if repli != Vector3.INF:
+		q = repli
 	q.y += {"frelon": 1.3, "perroquet": 3.0, "fregate": 16.0}.get(kind, 0.1)
 	return faune_v132.spawn(kind, q)
 
@@ -76,6 +85,37 @@ func _aller(F: Node, ile: String) -> void:
 	await _att(0.5)
 	F._tick = 9999.0
 	_vider()
+
+
+## Un endroit du rivage près de « centre » (entre 0,15 et 2,2 m au-dessus de la mer). « sable » : une
+## vraie plage en pente douce, assez haute pour qu'une tortue ait à descendre jusqu'à l'eau.
+func _rivage(F: Node, centre: Vector3, sable: bool, rmax: float) -> Vector3:
+	var r: float = 4.0
+	while r <= rmax:
+		var n: int = 16 if r < 60.0 else 32
+		for k in range(n):
+			var a: float = TAU * float(k) / float(n) + r * 0.21
+			var q := Vector3(centre.x + cos(a) * r, 0, centre.z + sin(a) * r)
+			var h: float = _height_at(q.x, q.z)
+			if h < 0.15 or h > 2.2:
+				continue
+			if not sable:
+				return q
+			if h < 0.7 or not F.milieu_ok(q, h, "plage"):
+				continue
+			# la mer n'est pas loin en contrebas, et le sable descend vers elle sans à-pic
+			var bas: float = h
+			var doux: bool = true
+			for j in range(12):
+				var b: float = TAU * float(j) / 12.0
+				var h4: float = _height_at(q.x + cos(b) * 4.0, q.z + sin(b) * 4.0)
+				bas = minf(bas, h4)
+				if absf(h4 - h) > 2.4:
+					doux = false
+			if doux and bas < h - 0.35:
+				return q
+		r += 3.0
+	return Vector3.INF
 
 
 ## Le héros juste derrière une bête (à « d » mètres de son arrière-train), tourné vers elle.
@@ -162,8 +202,8 @@ func _serie() -> void:
 	_ok(stf.has("cabre") and stf.has("galop"), "cheval : frappé de face, il se cabre puis s'enfuit %s" % str(stf.keys()))
 	_vider()
 	# la frégate : au-dessus de la côte, elle plonge pêcher en mer
-	var plage: Vector3 = testeur_v78._milieu_pres(F, _pos(), "plage", 90.0)
-	if _ok(plage != Vector3.INF, "Moaïs : une plage près du coin sauvage"):
+	var plage: Vector3 = _rivage(F, _pos(), false, 120.0)
+	if _ok(plage != Vector3.INF, "Moaïs : le rivage est près du coin sauvage"):
 		var fr: Node3D = F.spawn("fregate", plage + Vector3(0, _height_at(plage.x, plage.z) + 16.0, 0))
 		fr._cd136 = 0.0
 		var stp: Dictionary = await _suivre(fr, 400, func() -> bool: return int(fr.peches) >= 1 and str(fr.state) == "remonte")
@@ -172,6 +212,11 @@ func _serie() -> void:
 		_ok(bool(fr.peaceful) and not F.hostile_zone(_pos()), "frégate : paisible")
 		_vider()
 		# la tortue verte : sur la plage ; on approche, elle se fige, puis retourne à la mer
+		# (une vraie plage en pente douce : l'île des Moaïs est surtout bordée de rochers)
+		var sable: Vector3 = _rivage(F, _pos(), true, 420.0)
+		_ok(sable != Vector3.INF, "Moaïs : une plage de sable en pente douce")
+		if sable != Vector3.INF:
+			plage = sable
 		var to: Node3D = F.spawn("tortue_verte", Vector3(plage.x, _height_at(plage.x, plage.z) + 0.1, plage.z))
 		var loin: Vector3 = plage + Vector3(9.0, 0, 0)
 		loin.y = _height_at(loin.x, loin.z) + 0.3

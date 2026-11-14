@@ -9,12 +9,21 @@ func _pres(kind: String, d: float) -> Node3D:
 	var p: Vector3 = _pos()
 	var q: Vector3 = p + hero_v28.facing * d
 	q.y = _height_at(q.x, q.z)
-	for k in range(16):
+	# (V144 : et la voie doit être libre entre la bête et le héros : ni rocher, ni arbre, ni talus ;
+	# s'il n'y a pas d'endroit dégagé, le premier endroit à la bonne hauteur fait l'affaire)
+	var repli: Vector3 = Vector3.INF
+	for k in range(17):
 		if absf(q.y - p.y) < 1.2:
-			break
+			if repli == Vector3.INF:
+				repli = q
+			if _voie_libre(p, q):
+				repli = q
+				break
 		var a: float = TAU * float(k) / 16.0
 		q = p + Vector3(cos(a), 0, sin(a)) * d
 		q.y = _height_at(q.x, q.z)
+	if repli != Vector3.INF:
+		q = repli
 	q.y += 2.5 if kind == "chauve_souris_mont" else (12.0 if kind == "mouette" else 0.1)
 	return faune_v132.spawn(kind, q)
 
@@ -134,6 +143,16 @@ func _serie() -> void:
 	var cr: Node3D = _pres("crabe_plage", 3.0)
 	await _att(0.5)
 	_ok(str(cr.state) == "fuite", "crabe : il file (%s)" % str(cr.state))
+	_vider()
+	# V144 : une bête passée à travers le sol revient à la surface
+	var cr2: Node3D = _pres("crabe_plage", 5.0)
+	await _images(2)
+	var sol2: float = _height_at(cr2.global_position.x, cr2.global_position.z)
+	cr2.global_position.y = sol2 - 12.0
+	var rp0: int = F.repeches
+	F._tick = 0.0
+	await _att(0.3)
+	_ok(F.repeches == rp0 + 1 and is_instance_valid(cr2) and cr2.global_position.y > sol2 - 1.0, "une bête tombée sous le sol est repêchée (%d)" % (F.repeches - rp0))
 	_vider()
 	F.enabled = false
 	# --- les textes en anglais

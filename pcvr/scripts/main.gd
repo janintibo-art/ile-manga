@@ -1191,6 +1191,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			sorts_v67.load_data({})
 		if elements_v143 != null:
 			elements_v143.load_data({})
+		if cibles_v144 != null:
+			cibles_v144.reset()
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		if sceaux_v63 != null:
@@ -1393,6 +1395,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and elements_v143 != null:
 		var eldata: Variant = SaveStore.read_slot(slot).get("elements", {})
 		elements_v143.load_data(eldata if eldata is Dictionary else {})
+		if cibles_v144 != null:
+			cibles_v144.reset()
 	if not new_game and teleport_v58 != null:
 		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
 		teleport_v58.load_data(tdata if tdata is Dictionary else {})
@@ -1814,6 +1818,9 @@ func _sync_physics_after_load_v11() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# V144 : C ou le clic de la molette : verrouiller l'ennemi devant soi
+	if cibles_v144 != null and game_started and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and cibles_v144.handle_input(event):
+		return
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE and inventory_v28 != null and inventory_v28.opened:
 			inventory_v28.close()
@@ -3955,6 +3962,7 @@ var bavardages_v65: Node                   # V65 : les habitants qui se connaiss
 var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
+var cibles_v144: Node3D                    # V144 : la cible, le verrouillage, les barres de vie, les alertes
 var elements_v143: Node3D                  # V143 : la magie élémentaire (états, réactions, faiblesses, la Foudre)
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
@@ -4150,6 +4158,13 @@ func _create_v67() -> void:
 	elements_v143.name = "Elements_v143"
 	add_child(elements_v143)
 	elements_v143.setup(self)
+	# V144 : la lisibilité du combat (cible, verrouillage, barres de vie, alertes)
+	cibles_v144 = preload("res://scripts/cibles_v144.gd").new()
+	cibles_v144.name = "Cibles_v144"
+	add_child(cibles_v144)
+	cibles_v144.setup(self)
+	if hud_v28 != null and not xr_active:
+		cibles_v144.make_hud(hud_v28)
 	if hud_v28 != null and not xr_active:
 		sorts_v67.make_hud(hud_v28)
 	if arcanelle_v67 == null:
