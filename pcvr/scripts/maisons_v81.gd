@@ -23,6 +23,7 @@ const Lieux116 = preload("res://scripts/lieux_hautefond_v116.gd")
 const Lieux117 = preload("res://scripts/lieux_nuees_v117.gd")
 const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
+const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -401,9 +402,14 @@ func _build() -> Array:
 		var tl4: Vector2 = Lieux119.taille(cur)
 		w = tl4.x
 		d = tl4.y
+	elif Lieux147.is_lieu(style):
+		# V147 : un lieu du jeu de Pile-ou-Face (la Fosse aux Dés…)
+		var tl5: Vector2 = Lieux147.taille(cur)
+		w = tl5.x
+		d = tl5.y
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
-	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) else 0.0
+	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) else 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -434,6 +440,8 @@ func _build() -> Array:
 		Lieux118.shell(self)
 	elif Lieux119.is_lieu(style):
 		Lieux119.shell(self)
+	elif Lieux147.is_lieu(style):
+		Lieux147.shell(self)
 	else:
 		R.shell()
 	# la porte, de l'intérieur
@@ -442,7 +450,7 @@ func _build() -> Array:
 	Scenes.build(self)
 	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
 	# (V116 : ni dans les grands lieux, qui ont tout leur décor)
-	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style):
+	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style):
 		Deco.habiller(self)
 	R.commit()
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])

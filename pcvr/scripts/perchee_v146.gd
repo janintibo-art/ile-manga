@@ -16,6 +16,7 @@ const Kit = preload("res://scripts/perchee_kit_v146.gd")
 const GK = preload("res://scripts/geants_kit_v142.gd")
 const Chaine = preload("res://scripts/chaine_v146.gd")
 const Navette = preload("res://scripts/navette_v146.gd")
+const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 const HautefondIle = preload("res://scripts/ile_hautefond_v112.gd")
 const FLORE := "res://scripts/perchee_flore_v146.gd"
 const HABITANTS := "res://scripts/pnj/perchee_habitants_v146.gd"
@@ -694,7 +695,7 @@ func register_interactions() -> void:
 		I.append(ci)
 		_interactions.append(ci)
 	for e in portes:
-		if str(e["lieu"]) == "":
+		if str(e["lieu"]) == "" or Lieux147.has("pp_" + str(e["lieu"])):
 			continue
 		var de: Dictionary = e
 		I.append({"id": "pp_porte_" + str(e["id"]), "pos": (e["porte"] as Vector3) + Vector3.UP * 0.4, "radius": 1.6, "text": "E : pousser la porte", "vr": "Gâchette : pousser la porte",
@@ -705,7 +706,6 @@ func register_interactions() -> void:
 const PORTES_FERMEES := {
 	"saloon": "Le Saloon du Chien qui Mise : on y monte les grandes tables de poker. Bartholomé sert sur la terrasse en attendant.",
 	"tripot": "Le Tripot de la Dame de Pique : fermé. Sur la porte, un carton : « Table de blackjack en préparation. Revenez quand vous saurez vous arrêter. »",
-	"fosse": "La Fosse aux Dés : fermée. Derrière la porte, on entend rouler des dés, et Grand-Dé qui crie « Ça roule ! ». Les tables ouvrent bientôt.",
 	"barbier": "Le Coupe-Chou : « Fermé. Le barbier est parti chercher ses ciseaux. » Par la vitrine, au fond de la boutique, on devine une petite porte…",
 }
 

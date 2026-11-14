@@ -32,6 +32,7 @@ const Fronde118 = preload("res://scripts/maisons_fronde_v118.gd")
 const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 const Dome119 = preload("res://scripts/maisons_dome_v119.gd")
 const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
+const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -91,7 +92,7 @@ static func region(style: String) -> String:
 			return "elfes"
 		"hautefond", "hautefond_lieu":
 			return "hautefond"
-		"perchee":
+		"perchee", "perchee_lieu":
 			return "perchee"
 		"nuees", "nuees_lieu":
 			return "nuees"
@@ -141,7 +142,7 @@ static func food(style: String) -> Array:
 			return ["chocolat_chaud", "gateau_lune", "pomme"]
 		"hautefond", "hautefond_lieu":
 			return ["chocolat_chaud", "pain_miel", "jus_pomme"]
-		"perchee":
+		"perchee", "perchee_lieu":
 			return ["haricots_ranch", "salsepareille", "tarte_figue"]
 		"nuees", "nuees_lieu":
 			return ["lait_nuage", "chouquettes", "fraise_geante"]
@@ -189,7 +190,7 @@ static func plat(style: String) -> String:
 			return "des crêpes au chocolat (il pleut, il faut du réconfort)"
 		"hautefond", "hautefond_lieu":
 			return "du pot-au-feu cuit à la vapeur"
-		"perchee":
+		"perchee", "perchee_lieu":
 			return "des haricots du ranch, mijotés trois jours"
 		"nuees", "nuees_lieu":
 			return "de la tarte aux fraises géantes"
@@ -198,7 +199,7 @@ static func plat(style: String) -> String:
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc) or Lieux147.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -319,6 +320,8 @@ static func build(M) -> void:
 				Dome119.build(M, str(M.ctx["scenario"]))
 			elif Lieux119.has(str(M.ctx["scenario"])):
 				Lieux119.build(M, str(M.ctx["scenario"]))
+			elif Lieux147.has(str(M.ctx["scenario"])):
+				Lieux147.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

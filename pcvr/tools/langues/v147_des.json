@@ -1,0 +1,637 @@
+[
+[
+"Pigeon",
+"Pigeon",
+"Pichón"
+],
+[
+"Bleu",
+"Greenhorn",
+"Novato"
+],
+[
+"Joueur",
+"Player",
+"Jugador"
+],
+[
+"Fine lame",
+"Sharp",
+"Afilado"
+],
+[
+"Maître du jeu",
+"Game master",
+"Maestro del juego"
+],
+[
+"Menteur ! Ginette l'a vu !",
+"Liar! Ginette saw it!",
+"¡Mentiroso! ¡Ginette lo ha visto!"
+],
+[
+"Hé hé… Menteur, jeunot !",
+"Heh heh… Liar, youngster!",
+"Je, je… ¡Mentiroso, jovenzuelo!"
+],
+[
+"Ginette, tu m'avais dit cinq !",
+"Ginette, you told me five!",
+"¡Ginette, me habías dicho cinco!"
+],
+[
+"Bah. Un dé de moins, une histoire de plus.",
+"Bah. One die less, one more story.",
+"Bah. Un dado menos, una historia más."
+],
+[
+"De l'or, petit, de l'or ! Hé hé !",
+"Gold, kid, gold! Heh heh!",
+"¡Oro, chico, oro! ¡Je, je!"
+],
+[
+"Menteur.",
+"Liar.",
+"Mentiroso."
+],
+[
+"Non. Menteur.",
+"No. Liar.",
+"No. Mentiroso."
+],
+[
+"Hm. Bien joué.",
+"Hm. Well played.",
+"Hm. Bien jugado."
+],
+[
+"BANG. Raté.",
+"BANG. Missed.",
+"BANG. Fallé."
+],
+[
+"Solide.",
+"Solid.",
+"Sólido."
+],
+[
+"Clic ! Menteur, mon petit !",
+"Click! Liar, my dear!",
+"¡Clic! ¡Mentiroso, pequeño!"
+],
+[
+"Ma main dit : menteur.",
+"My hand says: liar.",
+"Mi mano dice: mentiroso."
+],
+[
+"Clic… clac. Tant pis.",
+"Click… clack. Oh well.",
+"Clic… clac. Qué le vamos a hacer."
+],
+[
+"De mon temps, les dés étaient plus polis.",
+"In my day, dice had better manners.",
+"En mis tiempos, los dados eran más educados."
+],
+[
+"Clic ! Un clou chasse l'autre !",
+"Click! One nail drives out another!",
+"¡Clic! ¡Un clavo saca otro clavo!"
+],
+[
+"HA HA ! La maison gagne ! Ça roule !",
+"HA HA! The house wins! Let it roll!",
+"¡JA, JA! ¡La casa gana! ¡Que ruede!"
+],
+[
+"Pétula, ma belle ! Elle ne dit rien, mais elle gagne.",
+"Petula, my beauty! She says nothing, but she wins.",
+"¡Pétula, preciosa! No dice nada, pero gana."
+],
+[
+"Aïe aïe aïe ! Bien lancé, toi !",
+"Ouch ouch ouch! Nice throw, you!",
+"¡Ay, ay, ay! ¡Buen tiro, tú!"
+],
+[
+"Gaston, tu m'as trahi !",
+"Gaston, you betrayed me!",
+"¡Gastón, me has traicionado!"
+],
+[
+"Égalité ! On reprend sa mise, on recommence !",
+"A tie! Take back your stake, let's go again!",
+"¡Empate! ¡Se recupera la apuesta y otra vez!"
+],
+[
+"DOUBLE SIX ! Triple mise ! Toute la Fosse t'applaudit !",
+"DOUBLE SIX! Triple stake! The whole Pit applauds you!",
+"¡DOBLE SEIS! ¡Apuesta triple! ¡Todo el Foso te aplaude!"
+],
+[
+"TIC. LA MAISON GAGNE. TAC.",
+"TICK. THE HOUSE WINS. TOCK.",
+"TIC. LA CASA GANA. TAC."
+],
+[
+"CALCUL TERMINÉ. VOUS AVEZ PERDU. BONNE JOURNÉE.",
+"CALCULATION COMPLETE. YOU HAVE LOST. GOOD DAY.",
+"CÁLCULO TERMINADO. HA PERDIDO. BUENOS DÍAS."
+],
+[
+"TIC ? … TAC. VOUS AVEZ GAGNÉ. FÉLICITATIONS MÉCANIQUES.",
+"TICK? … TOCK. YOU HAVE WON. MECHANICAL CONGRATULATIONS.",
+"¿TIC? … TAC. HA GANADO. FELICITACIONES MECÁNICAS."
+],
+[
+"ERREUR DE LA MAISON. VOUS GAGNEZ.",
+"HOUSE ERROR. YOU WIN.",
+"ERROR DE LA CASA. USTED GANA."
+],
+[
+"SEPT ! SEPT ! CLOCHETTE ! DRING !",
+"SEVEN! SEVEN! LITTLE BELL! DING!",
+"¡SIETE! ¡SIETE! ¡CAMPANILLA! ¡DING!"
+],
+[
+"Trois coups perdus d'affilée… À la Fosse, on murmure le mot « pigeon ».",
+"Three throws lost in a row… In the Pit, someone whispers the word “pigeon”.",
+"Tres jugadas perdidas seguidas… En el Foso, alguien murmura la palabra «pichón»."
+],
+[
+"Le Grand Lancer",
+"The Great Throw",
+"El Gran Lanzamiento"
+],
+[
+"Le Sept de Monsieur Rouage",
+"Mister Cogwheel's Seven",
+"El Siete del Señor Engranaje"
+],
+[
+"Le Menteur",
+"Liar's Dice",
+"El Mentiroso"
+],
+[
+"La Caisse de la Fosse",
+"The Pit's Cash Desk",
+"La Caja del Foso"
+],
+[
+"des pièces",
+"coins",
+"monedas"
+],
+[
+"Mise",
+"Stake",
+"Apuesta"
+],
+[
+"Miser",
+"Bet",
+"Apostar"
+],
+[
+"Pari",
+"Bet",
+"Apuesta"
+],
+[
+"Combien",
+"How many",
+"Cuántos"
+],
+[
+"De quelle face",
+"Which face",
+"Qué cara"
+],
+[
+"Lancer les dés !",
+"Roll the dice!",
+"¡Lanzar los dados!"
+],
+[
+"Deux dés contre les deux dés de Grand-Dé : le plus haut gagne (la mise double). Égalité : on reprend sa mise. Double six : triple mise !",
+"Two dice against Big-Die's two dice: the highest wins (double the stake). Tie: you get your stake back. Double six: triple stake!",
+"Dos dados contra los dos dados de Gran-Dado: gana el más alto (la apuesta se dobla). Empate: se recupera la apuesta. ¡Doble seis: apuesta triple!"
+],
+[
+"Moins de 7 (×2)",
+"Under 7 (×2)",
+"Menos de 7 (×2)"
+],
+[
+"Sept (×5)",
+"Seven (×5)",
+"Siete (×5)"
+],
+[
+"Plus de 7 (×2)",
+"Over 7 (×2)",
+"Más de 7 (×2)"
+],
+[
+"Que l'automate lance !",
+"Let the automaton roll!",
+"¡Que lance el autómata!"
+],
+[
+"Deux dés : misez sur moins de sept, sur sept, ou sur plus de sept.",
+"Two dice: bet on under seven, on seven, or on over seven.",
+"Dos dados: apueste a menos de siete, a siete o a más de siete."
+],
+[
+"Trois dés cachés chacun. On annonce combien il y a de dés d'une face sur toute la table ; on monte, ou l'on crie « Menteur ! ». Le dernier qui a des dés ramasse le pot.",
+"Three hidden dice each. You announce how many dice of one face are on the whole table; raise, or shout “Liar!”. The last one with dice takes the pot.",
+"Tres dados ocultos cada uno. Se anuncia cuántos dados de una cara hay en toda la mesa; se sube, o se grita «¡Mentiroso!». El último que tenga dados se lleva el bote."
+],
+[
+"Prendre place",
+"Take a seat",
+"Sentarse"
+],
+[
+"Ici, on joue avec des jetons de bois peint. Chaque jour, la Caisse en donne de quoi jouer ; on les échange contre des lots.",
+"Here we play with painted wooden chips. Every day the Cash Desk hands out enough to play; you trade them for prizes.",
+"Aquí se juega con fichas de madera pintada. Cada día la Caja da para jugar; se cambian por premios."
+],
+[
+"Prendre les jetons du jour",
+"Take today's chips",
+"Coger las fichas del día"
+],
+[
+"Ici, on joue des pièces, et parfois plus. La Caisse ne fait pas crédit.",
+"Here we play for coins, and sometimes more. The Cash Desk gives no credit.",
+"Aquí se juegan monedas, y a veces más. La Caja no fía."
+],
+[
+"Se lever",
+"Stand up",
+"Levantarse"
+],
+[
+"« Vous avez déjà de quoi jouer », dit la caissière.",
+"“You already have enough to play,” says the cashier.",
+"«Ya tiene para jugar», dice la cajera."
+],
+[
+"Votre sac est plein.",
+"Your bag is full.",
+"Tu bolsa está llena."
+],
+[
+"Égalité : la mise vous revient.",
+"Tie: your stake comes back to you.",
+"Empate: recupera su apuesta."
+],
+[
+"Vous perdez votre mise.",
+"You lose your stake.",
+"Pierde su apuesta."
+],
+[
+"Nouvelle manche : on secoue les gobelets.",
+"New round: everyone shakes their cup.",
+"Nueva ronda: se agitan los cubiletes."
+],
+[
+"Vous criez « Menteur ! »",
+"You shout “Liar!”",
+"Grita «¡Mentiroso!»"
+],
+[
+"vraie",
+"true",
+"verdadero"
+],
+[
+"fausse",
+"false",
+"falso"
+],
+[
+"Vous perdez un dé.",
+"You lose a die.",
+"Pierde un dado."
+],
+[
+"Vous perdez un dé. Éliminé !",
+"You lose a die. Eliminated!",
+"Pierde un dado. ¡Eliminado!"
+],
+[
+"Vous quittez la partie : votre place reste dans le pot.",
+"You leave the game: your seat stays in the pot.",
+"Deja la partida: su entrada se queda en el bote."
+],
+[
+"Quitter la partie",
+"Leave the game",
+"Dejar la partida"
+],
+[
+"À vous !",
+"Your turn!",
+"¡Le toca!"
+],
+[
+"Menteur !",
+"Liar!",
+"¡Mentiroso!"
+],
+[
+"Manche suivante",
+"Next round",
+"Siguiente ronda"
+],
+[
+"Voir la fin",
+"See the end",
+"Ver el final"
+],
+[
+"E : descendre à la Fosse aux Dés",
+"E: go down to the Dice Pit",
+"E: bajar al Foso de los Dados"
+],
+[
+"Dame de Pique",
+"Queen of Spades",
+"Dama de Picas"
+],
+[
+"Abélard Pépite",
+"Abelard Nugget",
+"Abelardo Pepita"
+],
+[
+"Grand-Dé",
+"Big-Die",
+"Gran-Dado"
+],
+[
+"Vous",
+"You",
+"Usted"
+],
+[
+"Ici, tout roule !",
+"Here, everything rolls!",
+"¡Aquí todo rueda!"
+],
+[
+"LE GRAND LANCER",
+"THE GREAT THROW",
+"EL GRAN LANZAMIENTO"
+],
+[
+"Double six : triple mise !",
+"Double six: triple stake!",
+"¡Doble seis: apuesta triple!"
+],
+[
+"Ça roule ! Qui lance ?",
+"Let it roll! Who's throwing?",
+"¡Que ruede! ¿Quién lanza?"
+],
+[
+"HA HA ! Approche, approche !",
+"HA HA! Come closer, come closer!",
+"¡JA, JA! ¡Acércate, acércate!"
+],
+[
+"Pétula me dit que tu as de la chance aujourd'hui.",
+"Petula tells me you're lucky today.",
+"Pétula me dice que hoy tienes suerte."
+],
+[
+"LE SEPT",
+"THE SEVEN",
+"EL SIETE"
+],
+[
+"Moins de 7",
+"Under 7",
+"Menos de 7"
+],
+[
+"Sept",
+"Seven",
+"Siete"
+],
+[
+"Plus de 7",
+"Over 7",
+"Más de 7"
+],
+[
+"MOINS DE 7",
+"UNDER 7",
+"MENOS DE 7"
+],
+[
+"SEPT",
+"SEVEN",
+"SIETE"
+],
+[
+"PLUS DE 7",
+"OVER 7",
+"MÁS DE 7"
+],
+[
+"À toi de parler.",
+"Your turn to speak.",
+"Te toca hablar."
+],
+[
+"Trois dés, et beaucoup de mensonges.",
+"Three dice, and a lot of lies.",
+"Tres dados, y muchas mentiras."
+],
+[
+"Ginette dit que je vais gagner. Ginette, c'est ma pioche.",
+"Ginette says I'm going to win. Ginette is my pickaxe.",
+"Ginette dice que voy a ganar. Ginette es mi pico."
+],
+[
+"Hé hé…",
+"Heh heh…",
+"Je, je…"
+],
+[
+"CAISSE",
+"CASH DESK",
+"CAJA"
+],
+[
+"Des jetons ? Des lots ? La Caisse ne dort jamais.",
+"Chips? Prizes? The Cash Desk never sleeps.",
+"¿Fichas? ¿Premios? La Caja nunca duerme."
+],
+[
+"Pas de crédit, mon chou.",
+"No credit, sweetie.",
+"Nada de fiado, cielo."
+],
+[
+"Sachez vous arrêter, c'est ça, le vrai jeu.",
+"Knowing when to stop — that's the real game.",
+"Saber parar: ese es el verdadero juego."
+],
+[
+"Allez, le six !",
+"Come on, six!",
+"¡Vamos, el seis!"
+],
+[
+"Grand-Dé n'a jamais perdu un mardi. On est mardi ?",
+"Big-Die has never lost on a Tuesday. Is it Tuesday?",
+"Gran-Dado nunca ha perdido un martes. ¿Es martes?"
+],
+[
+"J'ai tout misé sur le sept, une fois. Une seule fois.",
+"I bet everything on seven, once. Only once.",
+"Lo aposté todo al siete, una vez. Una sola vez."
+],
+[
+"De mon temps, on jouait des haricots.",
+"In my day, we played for beans.",
+"En mis tiempos, se jugaban judías."
+],
+[
+"Celui-là, il bluffe. Ça se voit à ses oreilles.",
+"That one's bluffing. You can tell by his ears.",
+"Ese va de farol. Se le nota en las orejas."
+],
+[
+"Pigeon ou maître du jeu, on le saura vite.",
+"Pigeon or game master, we'll soon find out.",
+"Pichón o maestro del juego, pronto lo sabremos."
+],
+[
+"Bravo ! Encore !",
+"Bravo! Again!",
+"¡Bravo! ¡Otra vez!"
+],
+[
+"TIC, TAC, la machine a parlé !",
+"TICK, TOCK, the machine has spoken!",
+"¡TIC, TAC, la máquina ha hablado!"
+],
+[
+"E : jouer au Grand Lancer",
+"E: play the Great Throw",
+"E: jugar al Gran Lanzamiento"
+],
+[
+"Gâchette : jouer au Grand Lancer",
+"Trigger: play the Great Throw",
+"Gatillo: jugar al Gran Lanzamiento"
+],
+[
+"E : jouer au Sept",
+"E: play the Seven",
+"E: jugar al Siete"
+],
+[
+"Gâchette : jouer au Sept",
+"Trigger: play the Seven",
+"Gatillo: jugar al Siete"
+],
+[
+"E : s'asseoir à la table du Menteur",
+"E: sit at the Liar's Dice table",
+"E: sentarse a la mesa del Mentiroso"
+],
+[
+"Gâchette : s'asseoir à la table du Menteur",
+"Trigger: sit at the Liar's Dice table",
+"Gatillo: sentarse a la mesa del Mentiroso"
+],
+[
+"E : aller à la Caisse",
+"E: go to the Cash Desk",
+"E: ir a la Caja"
+],
+[
+"Gâchette : aller à la Caisse",
+"Trigger: go to the Cash Desk",
+"Gatillo: ir a la Caja"
+],
+[
+"La Fosse aux Dés : une cave voûtée qui sent la bière et la cire, des lanternes, le bruit des dés sur le feutre. Au fond, Grand-Dé rit déjà.",
+"The Dice Pit: a vaulted cellar smelling of root beer and wax, lanterns, the sound of dice on felt. At the back, Big-Die is already laughing.",
+"El Foso de los Dados: una bodega abovedada que huele a cerveza de raíz y a cera, faroles, el ruido de los dados sobre el fieltro. Al fondo, Gran-Dado ya se ríe."
+],
+[
+"Des dés qui roulent, des jetons qui claquent, et une machine de laiton qui fait « TIC… TAC… ». Bienvenue à la Fosse aux Dés.",
+"Rolling dice, clacking chips, and a brass machine going “TICK… TOCK…”. Welcome to the Dice Pit.",
+"Dados que ruedan, fichas que chasquean y una máquina de latón que hace «TIC… TAC…». Bienvenido al Foso de los Dados."
+],
+[
+"La Fosse aux Dés. Trois tables : le Grand Lancer, le Sept, et le Menteur. La Caisse est près de la porte.",
+"The Dice Pit. Three tables: the Great Throw, the Seven, and Liar's Dice. The Cash Desk is by the door.",
+"El Foso de los Dados. Tres mesas: el Gran Lanzamiento, el Siete y el Mentiroso. La Caja está junto a la puerta."
+],
+[
+"TIC. TAC. FAITES VOS JEUX.",
+"TICK. TOCK. PLACE YOUR BETS.",
+"TIC. TAC. HAGAN JUEGO."
+],
+[
+"BONJOUR. JE SUIS MONSIEUR ROUAGE. JE NE TRICHE PAS. JE CALCULE.",
+"HELLO. I AM MISTER COGWHEEL. I DO NOT CHEAT. I CALCULATE.",
+"BUENOS DÍAS. SOY EL SEÑOR ENGRANAJE. NO HAGO TRAMPA. CALCULO."
+],
+[
+"LE SEPT SORT UNE FOIS SUR SIX. JE LE SAIS. JE SUIS UNE MACHINE.",
+"SEVEN COMES UP ONE TIME IN SIX. I KNOW IT. I AM A MACHINE.",
+"EL SIETE SALE UNA VEZ DE CADA SEIS. LO SÉ. SOY UNA MÁQUINA."
+],
+[
+"TIC… TAC…",
+"TICK… TOCK…",
+"TIC… TAC…"
+],
+[
+"TABLEAU DES RÉPUTATIONS",
+"REPUTATION BOARD",
+"TABLÓN DE REPUTACIONES"
+],
+[
+"Jeton de la Fosse",
+"Pit chip",
+"Ficha del Foso"
+],
+[
+"Un jeton de bois peint, rouge et crème, frappé d'un dé. On le mise aux tables de Pile-ou-Face ; la Caisse de la Fosse aux Dés en donne chaque jour, et l'échange contre des lots. Il ne s'achète pas et ne se vend pas.",
+"A painted wooden chip, red and cream, stamped with a die. You bet it at the tables of Heads-or-Tails; the Dice Pit's Cash Desk hands some out every day and trades them for prizes. It can't be bought or sold.",
+"Una ficha de madera pintada, roja y crema, con un dado grabado. Se apuesta en las mesas de Cara-o-Cruz; la Caja del Foso de los Dados da algunas cada día y las cambia por premios. No se compra ni se vende."
+],
+[
+"Dé d'or de Grand-Dé",
+"Big-Die's golden die",
+"Dado de oro de Gran-Dado"
+],
+[
+"Le plus beau lot de la Caisse de la Fosse aux Dés : un dé d'or massif (enfin, presque massif), aux points d'ébène. Grand-Dé jure qu'il ne tombe que sur six. Il ment.",
+"The finest prize at the Dice Pit's Cash Desk: a solid gold die (well, almost solid), with ebony pips. Big-Die swears it only lands on six. He's lying.",
+"El mejor premio de la Caja del Foso de los Dados: un dado de oro macizo (bueno, casi macizo), con puntos de ébano. Gran-Dado jura que solo cae en seis. Miente."
+],
+[
+"Tu lances le dé d'or. Il roule, hésite… et tombe sur six. Quelque part, Grand-Dé éclate de rire.",
+"You roll the golden die. It rolls, hesitates… and lands on six. Somewhere, Big-Die bursts out laughing.",
+"Lanzas el dado de oro. Rueda, duda… y cae en seis. En algún lugar, Gran-Dado suelta una carcajada."
+],
+[
+"Curiosité de Pile-ou-Face",
+"Heads-or-Tails curiosity",
+"Curiosidad de Cara-o-Cruz"
+]
+]

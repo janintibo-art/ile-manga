@@ -203,6 +203,7 @@ func _ready() -> void:
 	_create_v142()
 	await chargement_v131.pas("geants_vie")
 	_create_v146()
+	_create_v147()
 	await chargement_v131.pas("perchee_vie")
 	_create_v103()
 	_create_v120()
@@ -1181,6 +1182,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			geants_v142.load_data({})
 		if perchee_v146 != null and perchee_v146.ile != null:
 			perchee_v146.load_data({})
+		if jeux_v147 != null:
+			jeux_v147.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1384,6 +1387,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and perchee_v146 != null and perchee_v146.ile != null:
 		var ppdata: Variant = SaveStore.read_slot(slot).get("perchee", {})
 		perchee_v146.load_data(ppdata if ppdata is Dictionary else {})
+	# V147 : les jeux de Pile-ou-Face (la réputation, les jetons du jour)
+	if not new_game and jeux_v147 != null:
+		var jxdata: Variant = SaveStore.read_slot(slot).get("jeux", {})
+		jeux_v147.load_data(jxdata if jxdata is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1543,6 +1550,8 @@ func _save_slot(slot: int) -> bool:
 		extra["geants"] = geants_v142.serialize()
 	if perchee_v146 != null and perchee_v146.ile != null:
 		extra["perchee"] = perchee_v146.serialize()
+	if jeux_v147 != null:
+		extra["jeux"] = jeux_v147.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -1665,6 +1674,9 @@ func _physics_process(delta: float) -> void:
 			_vr_ladder_tick_v33(delta)
 		elif dialogue_v31 != null and dialogue_v31.opened:
 			dialogue_v31.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
+		elif jeux_v147 != null and jeux_v147.assis != "":
+			# V147 : assis à une table de jeu (le joystick choisit et règle, la gâchette valide, B se lève)
+			jeux_v147.vr_tick(right_hand.get_vector2("primary"), right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
 		else:
 			# V55 : dans l'eau, on nage (voir mer_v55.gd) ; sinon on marche
 			if mer_v55 == null or not mer_v55.vr_swim_tick(delta):
@@ -1710,7 +1722,7 @@ func _move_desktop(delta: float) -> void:
 		_drive_boat_pc_v29(delta)
 		return
 	if hero_v28 != null:
-		if (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened):
+		if (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and (jeux_v147 == null or jeux_v147.assis == ""):
 			hero_v28.physics(delta)
 		else:
 			hero_v28.physics(0.0001)
@@ -2151,7 +2163,7 @@ func _player_pos_v27() -> Vector3:
 func _doors_update_v27() -> void:
 	if houses_v27 == null:
 		return
-	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened)
+	var playing: bool = game_started and game_menu != null and not game_menu.opened and (inventory_v28 == null or not inventory_v28.opened) and (dialogue_v31 == null or not dialogue_v31.opened) and (jeux_v147 == null or jeux_v147.assis == "")
 	# V76 : à bord de l'aéronef
 	if aeronef_v76 != null and aeronef_v76.riding:
 		if door_prompt_v27 != null:
@@ -4045,6 +4057,7 @@ var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cit�
 var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
 var geants_v142: Node3D                    # V142 : l'Île des Géants (la ferme des Grandpré, cinq géants gentils)
 var perchee_v146: Node3D                   # V146 : l'Île Perchée (Pile-ou-Face, le bourg du Far West dans le ciel)
+var jeux_v147: Node                        # V147 : les jeux de Pile-ou-Face (les tables, les mises, la réputation)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
@@ -4441,6 +4454,16 @@ func _create_v146() -> void:
 	perchee_v146.build_town()
 	if journal_v56 != null:
 		perchee_v146.register_services(journal_v56)
+
+
+## V147 : les jeux de Pile-ou-Face (les tables de la Fosse aux Dés ; plus tard le blackjack, le poker).
+func _create_v147() -> void:
+	if jeux_v147 != null:
+		return
+	jeux_v147 = preload("res://scripts/jeux_v147.gd").new()
+	jeux_v147.name = "Jeux_v147"
+	add_child(jeux_v147)
+	jeux_v147.setup(self)
 
 
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.

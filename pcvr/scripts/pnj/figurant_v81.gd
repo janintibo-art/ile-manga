@@ -36,6 +36,9 @@ static func spawn(parent: Node3D, main_node: Node, profile: Dictionary, pos: Vec
 			npc = PnjPirate.new()
 		"ramure":
 			npc = PnjRamure.new()
+		"montjoie":
+			# V147 : un habitant de Pile-ou-Face (sa fiche, son visage), en figurant dans un lieu du jeu
+			npc = (load("res://scripts/pnj/pnj_montjoie_v71.gd") as Script).new()
 		_:
 			# V92 : les gens des yourtes de Larsen (la couronne de fleurs)
 			npc = (load("res://scripts/pnj/pnj_larsen_v92.gd") as Script).new() if profile.has("larsen") else PnjLumen.new()

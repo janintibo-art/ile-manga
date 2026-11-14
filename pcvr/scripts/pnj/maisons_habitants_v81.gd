@@ -23,7 +23,7 @@ const STYLES := {
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie",
 	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android",
 	"strates": "montjoie", "strates_lieu": "montjoie", "fronde": "boucan", "fronde_lieu": "boucan",
-	"dome": "neo", "dome_lieu": "neo", "perchee": "carene"}
+	"dome": "neo", "dome_lieu": "neo", "perchee": "carene", "perchee_lieu": "carene"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 

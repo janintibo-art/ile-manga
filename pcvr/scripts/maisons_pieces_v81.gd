@@ -21,6 +21,11 @@ const STYLES := {
 		"poutre": Color(0.32, 0.22, 0.14), "bois": Color(0.55, 0.38, 0.24), "h": 3.0,
 		"tapis": ["tazira/tapis_1.png", "tazira/tapis_3.png"], "tableaux": ["montjoie/affiche_recherche.png", "montjoie/tableau_liege.png", "strates/affiche_soupapes_1.png", "azur/tableau_2.png"],
 		"fenetre": "volets_bois", "foyer": "poele"},
+	# V147 : les lieux du jeu de Pile-ou-Face (lieux_perchee_v147 bâtit leur coque : une cave voûtée)
+	"perchee_lieu": {"sol": ["montjoie/dalles_donjon.png", Color(0.78, 0.7, 0.62), 2.0], "mur": ["montjoie/moellons.png", Color(0.9, 0.8, 0.7), 1.8],
+		"bas": ["montjoie/moellons.png", Color(0.68, 0.58, 0.5), 1.4], "plafond": ["montjoie/bois_planches.png", Color(0.42, 0.32, 0.24), 2.0],
+		"poutre": Color(0.26, 0.17, 0.1), "bois": Color(0.5, 0.32, 0.18), "h": 4.2,
+		"tapis": ["tazira/tapis_1.png"], "tableaux": ["montjoie/affiche_recherche.png"], "fenetre": "aucune", "foyer": "poele"},
 	"montjoie": {"sol": ["montjoie/bois_planches.png", Color(0.95, 0.88, 0.8), 2.0], "mur": ["montjoie/enduit.png", Color(0.98, 0.94, 0.84), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.9, 0.88, 0.84), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.7, 0.6, 0.5), 2.0],
 		"poutre": Color(0.36, 0.25, 0.16), "bois": Color(0.62, 0.45, 0.3), "colombage": true, "h": 2.9,

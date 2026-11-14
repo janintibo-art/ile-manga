@@ -11,6 +11,7 @@ const Kit = preload("res://scripts/perchee_kit_v146.gd")
 const GK = preload("res://scripts/geants_kit_v142.gd")
 const Ile = preload("res://scripts/ile_perchee_v146.gd")
 const AzurKit = preload("res://scripts/azur_kit_v56.gd")
+const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 
 const FACADE: float = 10.6               # la façade est à 10,6 m de l'axe de la grand-rue
 const FACADE_PIQUE: float = 9.1          # et à 9,1 m de l'axe de la rue du Pique
@@ -116,6 +117,9 @@ static func build(M) -> void:
 		if bool(s.get("maison", false)):
 			AzurKit.PORTES_V81.append({"door": r["porte"], "out": r["out"], "w": minf(w - 2.5, 8.0), "d": minf(float(s.get("d", 12.0)) - 3.0, 7.0),
 				"style": "perchee", "floors": int(s.get("etages", 1)), "owner": ""})
+		# V147 : les lieux du jeu qui ouvrent (la Fosse aux Dés) : on y entre comme dans une maison
+		if Lieux147.has("pp_" + str(s.get("lieu", ""))):
+			Lieux147.register("pp_" + str(s.get("lieu", "")), r["porte"], r["out"])
 		quartier += 1
 	_rue(M, cols, rng)
 	_place(M, cols, rng)

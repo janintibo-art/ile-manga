@@ -753,6 +753,12 @@ const ITEMS := {
 	"chapeau_stetson": {"name": "Stetson de Fanchon", "art": "un stetson de Fanchon", "kind": "curiosite", "sorte": "Curiosité de Pile-ou-Face", "max": 1,
 		"desc": "Un grand chapeau de feutre aux bords relevés, cousu par Fanchon Fil-d'Or, la chapelière de Pile-ou-Face. Un ruban de cuir, une plume de corbeau. « Le stetson, c'est l'aventure. »",
 		"effet": "Tu poses le stetson sur ta tête et tu le pousses du bout du doigt. Quelque part, une porte de saloon grince, et un harmonica joue trois notes."},
+	# V147 : les jeux de Pile-ou-Face
+	"jeton": {"name": "Jeton de la Fosse", "art": "un jeton de la Fosse", "kind": "tresor", "max": 9999,
+		"desc": "Un jeton de bois peint, rouge et crème, frappé d'un dé. On le mise aux tables de Pile-ou-Face ; la Caisse de la Fosse aux Dés en donne chaque jour, et l'échange contre des lots. Il ne s'achète pas et ne se vend pas."},
+	"de_or": {"name": "Dé d'or de Grand-Dé", "art": "un dé d'or", "kind": "curiosite", "sorte": "Curiosité de Pile-ou-Face", "max": 1,
+		"desc": "Le plus beau lot de la Caisse de la Fosse aux Dés : un dé d'or massif (enfin, presque massif), aux points d'ébène. Grand-Dé jure qu'il ne tombe que sur six. Il ment.",
+		"effet": "Tu lances le dé d'or. Il roule, hésite… et tombe sur six. Quelque part, Grand-Dé éclate de rire."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -1345,6 +1351,15 @@ func make_model(id: String) -> Node3D:
 			or_p.metallic = 0.95
 			_part(m, _sphere(0.035), or_p, Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(1.3, 0.8, 1.0))
 			_part(m, _sphere(0.022), or_p, Vector3(0.028, 0.025, 0.01), Vector3.ZERO, Vector3(1.0, 0.9, 1.2))
+		"jeton":
+			_part(m, _cyl(0.03, 0.03, 0.008, 18), _mat("jeton_rouge", Color(0.72, 0.1, 0.08), 0.5), Vector3(0, 0.004, 0))
+			_part(m, _cyl(0.02, 0.02, 0.0085, 18), _mat("jeton_creme", Color(0.94, 0.88, 0.74), 0.5), Vector3(0, 0.0045, 0))
+		"de_or":
+			var or_d := _mat("de_or", Color(1.0, 0.78, 0.3), 0.28)
+			or_d.metallic = 0.9
+			_part(m, _box_mesh(Vector3(0.06, 0.06, 0.06)), or_d, Vector3(0, 0.03, 0))
+			for k in range(6):
+				_part(m, _sphere(0.007), _mat("point_ebene", Color(0.08, 0.05, 0.03), 0.4), Vector3(-0.015 + (k % 2) * 0.03, 0.0605, -0.018 + (k / 2) * 0.018), Vector3.ZERO, Vector3(1, 0.3, 1))
 		"chapeau_stetson":
 			var feutre := _mat("feutre", Color(0.42, 0.3, 0.18), 0.85)
 			_part(m, _cyl(0.17, 0.18, 0.012, 18), feutre, Vector3(0, 0.006, 0))

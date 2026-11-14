@@ -1,0 +1,177 @@
+[
+[
+"{n} jeton",
+"{n} chip",
+"{n} ficha"
+],
+[
+"{n} jetons",
+"{n} chips",
+"{n} fichas"
+],
+[
+"{n} pièce",
+"{n} coin",
+"{n} moneda"
+],
+[
+"{n} pièces",
+"{n} coins",
+"{n} monedas"
+],
+[
+"Votre réputation grandit : à Pile-ou-Face, on vous appelle désormais « {} » !",
+"Your reputation grows: in Heads-or-Tails they now call you “{}”!",
+"Su reputación crece: en Cara-o-Cruz ahora le llaman «{}»."
+],
+[
+"Votre réputation baisse : à Pile-ou-Face, on vous appelle désormais « {} »…",
+"Your reputation drops: in Heads-or-Tails they now call you “{}”…",
+"Su reputación baja: en Cara-o-Cruz ahora le llaman «{}»…"
+],
+[
+"Vous vous levez avec {} de gain. « Celui-là sait s'arrêter », murmure-t-on. Votre réputation grandit.",
+"You stand up {} ahead. “That one knows when to stop,” people whisper. Your reputation grows.",
+"Se levanta con {} de ganancia. «Ese sabe parar», murmuran. Su reputación crece."
+],
+[
+"Vous vous levez, les poches plus légères de {}. On vous regarde partir avec un petit sourire…",
+"You stand up, your pockets {} lighter. People watch you leave with a little smile…",
+"Se levanta con los bolsillos {} más ligeros. Le miran irse con una sonrisita…"
+],
+[
+"Votre bourse : {}",
+"Your purse: {}",
+"Su bolsa: {}"
+],
+[
+"Réputation : {}",
+"Reputation: {}",
+"Reputación: {}"
+],
+[
+"La place : {} (le pot : {}).",
+"Entry: {} (the pot: {}).",
+"La entrada: {} (el bote: {})."
+],
+[
+"Échanger {} contre : {}",
+"Trade {} for: {}",
+"Cambiar {} por: {}"
+],
+[
+"Coups joués : {n}",
+"Throws played: {n}",
+"Jugadas: {n}"
+],
+[
+"gagnés : {n}",
+"won: {n}",
+"ganadas: {n}"
+],
+[
+"perdus : {n}",
+"lost: {n}",
+"perdidas: {n}"
+],
+[
+"La caissière vous glisse {} : « Bonne chance, et sachez vous arrêter ! »",
+"The cashier slips you {}: “Good luck, and know when to stop!”",
+"La cajera le pasa {}: «¡Buena suerte, y sepa parar!»"
+],
+[
+"Échangé : {} contre {}.",
+"Traded: {} for {}.",
+"Cambiado: {} por {}."
+],
+[
+"Vos dés : {n} + {n} = {n}",
+"Your dice: {n} + {n} = {n}",
+"Sus dados: {n} + {n} = {n}"
+],
+[
+"Grand-Dé : {n} + {n} = {n}",
+"Big-Die: {n} + {n} = {n}",
+"Gran-Dado: {n} + {n} = {n}"
+],
+[
+"Vous gagnez {} !",
+"You win {}!",
+"¡Gana {}!"
+],
+[
+"Les dés : {n} + {n} = {n}",
+"The dice: {n} + {n} = {n}",
+"Los dados: {n} + {n} = {n}"
+],
+[
+"Chacun pose {} : le pot est de {}.",
+"Everyone puts in {}: the pot is {}.",
+"Cada uno pone {}: el bote es de {}."
+],
+[
+"Vous annoncez : {n} × {n}",
+"You announce: {n} × {n}",
+"Anuncia: {n} × {n}"
+],
+[
+"{} crie « Menteur ! »",
+"{} shouts “Liar!”",
+"{} grita «¡Mentiroso!»"
+],
+[
+"{} annonce : {n} × {n}",
+"{} announces: {n} × {n}",
+"{} anuncia: {n} × {n}"
+],
+[
+"Il y a {n} dés de {n} : l'annonce était {} !",
+"There are {n} dice showing {n}: the bid was {}!",
+"Hay {n} dados de {n}: ¡el anuncio era {}!"
+],
+[
+"{} perd un dé.",
+"{} loses a die.",
+"{} pierde un dado."
+],
+[
+"{} perd un dé. Éliminé !",
+"{} loses a die. Eliminated!",
+"{} pierde un dado. ¡Eliminado!"
+],
+[
+"Vous êtes le dernier à avoir des dés : vous ramassez le pot ({}) !",
+"You're the last one with dice: you take the pot ({})!",
+"Es el último con dados: ¡se lleva el bote ({})!"
+],
+[
+"Vous perdez votre place. {} ramasse le pot.",
+"You lose your entry. {} takes the pot.",
+"Pierde su entrada. {} se lleva el bote."
+],
+[
+"Vos dés : {}",
+"Your dice: {}",
+"Sus dados: {}"
+],
+[
+"dés en jeu : {n}",
+"dice in play: {n}",
+"dados en juego: {n}"
+],
+[
+"Dés de chacun : {}",
+"Everyone's dice: {}",
+"Dados de cada uno: {}"
+],
+[
+"Annonce de {} : {n} × {n}",
+"{}'s bid: {n} × {n}",
+"Anuncio de {}: {n} × {n}"
+],
+[
+"Annoncer {n} × {n}",
+"Bid {n} × {n}",
+"Anunciar {n} × {n}"
+]
+]

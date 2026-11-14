@@ -62,6 +62,7 @@ const DB := {
 	# V145 : la roue des sorts (elle s'ouvre, un sort survolé) et le geste de magie en VR
 	"roue_ouvre": -9.0, "roue_tic": -12.0, "geste_magie": -7.0,
 	"cloche_chaine": -6.0, "cliquet_roue": -10.0,
+	"jetons": -8.0, "gobelet": -6.0,
 	"sort_foudre": -2.0, "vapeur_feu": -4.0, "brise_glace": -3.0, "brulure": -6.0, "electrocute": -4.0,
 	"gribouillis_griffe": -7.0, "gomme_couine": -6.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
