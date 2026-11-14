@@ -30,6 +30,7 @@ const PastaIle = preload("res://scripts/ile_pasta_v97.gd")
 const CrayonIle = preload("res://scripts/ile_crayon_v99.gd")
 const HautefondIle = preload("res://scripts/ile_hautefond_v112.gd")
 const SombrevalIle = preload("res://scripts/ile_sombreval_v121.gd")
+const GeantsIle = preload("res://scripts/ile_geants_v142.gd")
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -137,9 +138,10 @@ static func east_clamp(x: float, z: float) -> Vector2:
 ## Le monde marin complet : le cercle de l'archipel (centre, rayon), la mer de l'est et
 ## (V68) la mer de l'Île de la Balafre, au nord ; (V69) celle de l'Île des Trois Soleils, à l'ouest ;
 ## (V70) celle de l'Île de Braise, au sud-ouest ; (V71) celle de l'Île de Montjoie, au sud de la grande île ;
-## (V75) celle de l'Île du Boucan, au sud du village ; (V112) celle de l'Île de Hautefond, au sud-ouest.
+## (V75) celle de l'Île du Boucan, au sud du village ; (V112) celle de l'Île de Hautefond, au sud-ouest ;
+## (V142) celle de l'Île des Géants, au sud-est.
 static func sea_contains(x: float, z: float, mid: Vector2, radius: float) -> bool:
-	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z) or PastaIle.sea_contains(x, z) or CrayonIle.sea_contains(x, z) or HautefondIle.sea_contains(x, z) or SombrevalIle.sea_contains(x, z)
+	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z) or PastaIle.sea_contains(x, z) or CrayonIle.sea_contains(x, z) or HautefondIle.sea_contains(x, z) or SombrevalIle.sea_contains(x, z) or GeantsIle.sea_contains(x, z)
 
 
 static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector2:
@@ -162,6 +164,7 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	var c13: Vector2 = CrayonIle.sea_clamp(x, z)
 	var c14: Vector2 = HautefondIle.sea_clamp(x, z)
 	var c15: Vector2 = SombrevalIle.sea_clamp(x, z)
+	var c16: Vector2 = GeantsIle.sea_clamp(x, z)
 	var best: Vector2 = c0 if p.distance_to(c0) < p.distance_to(c1) else c1
 	best = best if p.distance_to(best) < p.distance_to(c2) else c2
 	best = best if p.distance_to(best) < p.distance_to(c3) else c3
@@ -176,7 +179,8 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	best = best if p.distance_to(best) < p.distance_to(c12) else c12
 	best = best if p.distance_to(best) < p.distance_to(c13) else c13
 	best = best if p.distance_to(best) < p.distance_to(c14) else c14
-	return best if p.distance_to(best) < p.distance_to(c15) else c15
+	best = best if p.distance_to(best) < p.distance_to(c15) else c15
+	return best if p.distance_to(best) < p.distance_to(c16) else c16
 
 
 # =================================================================== régions

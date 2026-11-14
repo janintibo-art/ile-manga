@@ -32,6 +32,8 @@ const ZONE_TRACK := {
 	"cr_plage": "crayonnee", "cr_clairiere": "crayonnee", "cr_bois": "crayonnee", "cr_mont": "crayonnee", "cr_sommet": "crayonnee",
 	"cr_cascade": "crayonnee", "cr_etang": "crayonnee", "cr_ruisseau": "crayonnee", "cr_pres": "crayonnee", "cr_prairie": "crayonnee",
 	"cr_village": "crayonnee", "cr_belvedere": "crayonnee",
+	"gt_ponton": "campagne", "gt_greve": "campagne", "gt_rivage": "campagne", "gt_maison": "campagne", "gt_cour": "campagne", "gt_grange": "campagne",
+	"gt_potager": "campagne", "gt_verger": "campagne", "gt_ble": "campagne", "gt_moulin": "campagne", "gt_mare": "campagne", "gt_pres": "campagne",
 	"sv_port": "sombreval", "sv_marche": "sombreval", "sv_vieille_ville": "sombreval", "sv_centre": "sombreval", "sv_gare": "sombreval",
 	"sv_faubourg": "sombreval", "sv_cimetiere": "sombreval", "sv_butte": "sombreval", "sv_chateau": "sombreval", "sv_greve": "sombreval", "sv_ville": "sombreval",
 	"sv_chateau_hall": "chateau_comte", "sv_chateau_galerie": "chateau_comte", "sv_chateau_bal": "chateau_comte", "sv_chateau_bal_valse": "bal_vampires",

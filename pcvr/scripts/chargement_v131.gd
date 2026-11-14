@@ -40,6 +40,7 @@ const ETAPES := {
 	"crayon": ["L'Île Crayonnée", 630],
 	"hautefond": ["Hautefond, la cité-colonne", 2310],
 	"sombreval": ["Sombreval, la ville morte", 370],
+	"geants": ["L'Île des Géants", 1760],
 	"heros": ["Le héros se réveille", 410],
 	"menu": ["Le carnet de voyage", 650],
 	"rivages": ["Les rivages et les vagues", 2160],
@@ -65,6 +66,7 @@ const ETAPES := {
 	"crayon_vie": ["Le village des arbres-maisons", 1190],
 	"hautefond_vie": ["Hautefond, du ciel au fond de la mer", 4130],
 	"sombreval_vie": ["Le château du comte", 1580],
+	"geants_vie": ["La ferme des Grandpré", 1500],
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [

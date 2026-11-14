@@ -18,7 +18,7 @@ const PANEL := Color(0.04, 0.12, 0.17, 0.95)
 const TABS := ["🎒  Inventaire", "📜  Quêtes", "🗺  Carte", "👥  Personnages", "⭐  Héros"]
 const UI_W: int = 1600
 const UI_H: int = 960
-const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise", "Montjoie", "Boucan", "Astralys", "Larsen", "Néopolis", "Al Dente", "Crayonnée", "Hautefond"]
+const REGIONS := ["Tous", "Île du village", "Jungle", "Elfes", "Nains", "Ciel", "Atlantide", "Port-Azur", "Fées", "Carène", "Tazira", "Cliquetis", "Ramure", "Arcanelle", "Balafre", "Trois Soleils", "Braise", "Montjoie", "Boucan", "Astralys", "Larsen", "Néopolis", "Al Dente", "Crayonnée", "Hautefond", "Géants"]
 
 var main: Node
 var inv: Node
@@ -648,6 +648,9 @@ func _region_of(n: Node) -> String:
 	# V101 : l'Île Crayonnée
 	if place.begins_with("L'Île Crayonnée"):
 		return "Crayonnée"
+	# V142 : l'Île des Géants
+	if place.begins_with("Île des Géants"):
+		return "Géants"
 	# V112 : l'Île de Hautefond
 	if place.begins_with("Île de Hautefond") or place.begins_with("Cité des Nuées") or place.begins_with("Les Strates") or place.begins_with("La Fronde"):
 		return "Hautefond"
@@ -710,6 +713,8 @@ func _met_list() -> Array:
 				reg = "Crayonnée"
 			if str(n.profile.get("groupe", "")) in ["hautefond", "nuees", "strates", "fronde", "dome"]:
 				reg = "Hautefond"
+			if str(n.profile.get("groupe", "")) == "geants":
+				reg = "Géants"
 			n.set_meta("region_v56", reg)
 		out.append([n, reg])
 	return out

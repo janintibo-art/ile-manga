@@ -22,6 +22,7 @@ const PLACES := [
 	["pasta", "L'Île Al Dente, la Plage du Parmesan"],
 	["crayon", "L'Île Crayonnée, la Grève Blanche"],
 	["sombreval", "Sombreval, le Port des Brumes"],
+	["geants", "L'Île des Géants, le Ponton des Petits"],
 	["hautefond", "Hautefond, la Place de la Colonne"], ["hautefond_port", "Le Port des Cordages"], ["nuees", "La Cité des Nuées, l'Esplanade du Ciel"], ["strates", "Les Strates, la Gare"], ["fronde", "La Fronde, l'entrée"], ["dome", "Le Dôme d'Azur, la Place de la Perle"],
 ]
 
@@ -137,6 +138,9 @@ func spot(id: String) -> Array:
 		"sombreval":
 			var sv: Node = main.get("sombreval_v121")
 			return sv.village_point(id) if sv != null and sv.get("ile") != null and sv.ile != null else []
+		"geants":
+			var gt: Node = main.get("geants_v142")
+			return gt.village_point(id) if gt != null and gt.get("ile") != null and gt.ile != null else []
 		"hautefond", "hautefond_port", "nuees", "strates", "fronde", "dome":
 			var hf: Node = main.get("hautefond_v112")
 			return hf.village_point(id) if hf != null and hf.get("city") != null and hf.city != null else []
@@ -220,6 +224,9 @@ func current_place() -> String:
 	var sv2: Node = main.get("sombreval_v121")
 	if sv2 != null and sv2.get("ile") != null and sv2.ile != null and sv2.contains(p) and p.y > -10.0 and sv2.ile.height(p.x, p.z) > -0.42:
 		return "sombreval"
+	var gt2: Node = main.get("geants_v142")
+	if gt2 != null and gt2.get("ile") != null and gt2.ile != null and gt2.contains(p) and p.y > -10.0 and gt2.ile.height(p.x, p.z) > -0.42:
+		return "geants"
 	var hf2: Node = main.get("hautefond_v112")
 	if hf2 != null and hf2.has_method("in_dome") and hf2.in_dome(p):
 		return "dome"
@@ -289,7 +296,7 @@ func _process(delta: float) -> void:
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
-	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"], ["moai", "moai"], ["pixel", "pixel"], ["larsen", "larsen"], ["neo", "neo"], ["pasta", "pasta"], ["crayon", "crayon"], ["sombreval", "sombreval"], ["hautefond", "hautefond_ville"], ["hautefond_port", "hautefond"], ["nuees", "nuees"], ["strates", "strates"], ["fronde", "fronde"], ["dome", "dome"]]:
+	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"], ["moai", "moai"], ["pixel", "pixel"], ["larsen", "larsen"], ["neo", "neo"], ["pasta", "pasta"], ["crayon", "crayon"], ["sombreval", "sombreval"], ["geants", "geants"], ["hautefond", "hautefond_ville"], ["hautefond_port", "hautefond"], ["nuees", "nuees"], ["strates", "strates"], ["fronde", "fronde"], ["dome", "dome"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true
 

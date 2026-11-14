@@ -731,6 +731,16 @@ const ITEMS := {
 	"coquillage_chanteur": {"name": "Coquillage qui chante", "art": "un coquillage qui chante", "kind": "curiosite", "sorte": "Souvenir du Dôme d'Azur", "max": 3,
 		"desc": "Un grand coquillage de nacre en spirale, du Comptoir des Courants. Quand on le porte à l'oreille, on entend… la Grande Chanteuse, dit Ernest. Ton sang qui bouge, dit le Professeur Benthos, qui en a acheté trois.",
 		"effet": "Tu portes le coquillage à ton oreille. Tout au fond, très loin, une voix immense et lente chante trois notes graves, puis une aiguë. « Bonjour, le Dôme », dirait le Professeur."},
+	# V142 : l'Île des Géants
+	"bague_geante": {"name": "Alliance de Mère Mathurine", "art": "l'alliance de Mère Mathurine", "kind": "quete", "sorte": "Objet de quête : Mère Mathurine", "max": 1,
+		"desc": "Un anneau d'or si grand qu'on le porte à deux bras, comme une roue de brouette. Pour Mère Mathurine, la géante, c'est une toute petite bague : son alliance, perdue entre les choux."},
+	"miette_geante": {"name": "Miette de pain des géants", "art": "une miette de pain des géants", "kind": "nourriture", "max": 5, "heal": 10,
+		"desc": "Une miette du pain de Mère Mathurine. Pour elle, une miette ; pour nous, une miche entière, dorée, encore tiède. Rend cinq cœurs."},
+	"pomme_geante": {"name": "Pomme des géants", "art": "une pomme des géants", "kind": "nourriture", "max": 5, "heal": 6,
+		"desc": "Une pomme du verger des Grandpré, grosse comme un ballon. On en a pour la semaine. Rend trois cœurs."},
+	"bille_geante": {"name": "Gustave, la bille de Pâquerette", "art": "Gustave, la bille de Pâquerette", "kind": "curiosite", "sorte": "Souvenir de l'Île des Géants", "max": 1,
+		"desc": "Une bille de verre des géants, grosse comme un melon, avec une spirale bleue dedans. Pâquerette l'appelle Gustave. C'était sa plus belle ; elle te l'a donnée, pour être amis pour toujours.",
+		"effet": "Tu fais rouler Gustave dans l'herbe. La spirale bleue tourne, tourne… et quelque part, très loin au sud-est, une petite géante rit."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -1287,6 +1297,31 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.2, 0.04, 0.27)), _mat("cuir_journal", Color(0.36, 0.2, 0.12), 0.7), Vector3(0, 0.02, 0))
 			_part(m, _box_mesh(Vector3(0.188, 0.032, 0.258)), _mat("pages_journal", Color(0.92, 0.88, 0.76), 0.9), Vector3(0.008, 0.02, 0))
 			_part(m, _box_mesh(Vector3(0.21, 0.012, 0.03)), _mat("fermoir_journal", Color(0.72, 0.56, 0.3), 0.35), Vector3(0, 0.02, 0.06))
+		"bague_geante":
+			# V142 : l'alliance d'une géante : un anneau d'or posé à plat, un peu de biais (1,3 m de large)
+			var or_g := _mat("or_geant", Color(1.0, 0.78, 0.32), 0.22)
+			or_g.metallic = 0.95
+			for k in range(24):
+				var a0: float = TAU * k / 24.0
+				var a1: float = TAU * (k + 1) / 24.0
+				var c0 := Vector3(cos(a0), 0, sin(a0)) * 0.62
+				var c1 := Vector3(cos(a1), 0, sin(a1)) * 0.62
+				var mid: Vector3 = (c0 + c1) * 0.5
+				var seg: MeshInstance3D = _part(m, _cyl(0.075, 0.075, c0.distance_to(c1) * 1.08, 10), or_g, mid + Vector3(0, 0.09 + mid.x * 0.12, 0))
+				seg.basis = Basis.looking_at((c1 - c0).normalized(), Vector3.UP) * Basis(Vector3.RIGHT, -PI * 0.5)
+		"miette_geante":
+			_part(m, _sphere(0.28), _mat("croute_geante", Color(0.78, 0.5, 0.22), 0.8), Vector3(0, 0.2, 0), Vector3.ZERO, Vector3(1.3, 0.8, 1))
+			_part(m, _sphere(0.2), _mat("mie_geante", Color(0.96, 0.9, 0.74), 0.9), Vector3(0.2, 0.22, 0.05), Vector3.ZERO, Vector3(0.7, 0.8, 0.9))
+		"pomme_geante":
+			_part(m, _sphere(0.33), _mat("pomme", Color(0.72, 0.08, 0.07), 0.45), Vector3(0, 0.3, 0), Vector3.ZERO, Vector3(1, 0.9, 1))
+			_part(m, _cyl(0.025, 0.035, 0.22, 6), _mat("tige", Color(0.3, 0.2, 0.1)), Vector3(0, 0.66, 0), Vector3(0, 0, 12))
+			_part(m, _sphere(0.12), _mat("feuille", Color(0.25, 0.5, 0.18)), Vector3(0.1, 0.7, 0), Vector3(0, 0, -30), Vector3(1.4, 0.25, 0.7))
+		"bille_geante":
+			var verre := _mat("bille_verre", Color(0.75, 0.88, 0.95), 0.05)
+			verre.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			verre.albedo_color = Color(0.75, 0.88, 0.95, 0.6)
+			_part(m, _sphere(0.2), verre, Vector3(0, 0.2, 0))
+			_part(m, _sphere(0.12), _mat("bille_spirale", Color(0.15, 0.38, 0.85), 0.2), Vector3(0, 0.2, 0), Vector3(0, 0, 30), Vector3(1.2, 0.3, 0.9))
 		"pomme":
 			_part(m, _sphere(0.075), _mat("pomme", Color(0.72, 0.08, 0.07), 0.45), Vector3(0, 0.07, 0), Vector3.ZERO, Vector3(1, 0.9, 1))
 			_part(m, _cyl(0.006, 0.008, 0.05, 6), _mat("tige", Color(0.3, 0.2, 0.1)), Vector3(0, 0.15, 0), Vector3(0, 0, 12))

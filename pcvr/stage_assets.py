@@ -429,6 +429,21 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n71 += 1
     print(f"Montjoie V71: {n71} fichiers")
+    # V142 : l'Île des Géants (feuilles de chou, peau de citrouille, cœur de tournesol, épis de blé,
+    # nénuphars, feuilles de citrouille) : compressées avec mipmaps (vues de près comme de loin).
+    n142 = 0
+    tex142 = source / "textures" / "geants"
+    if tex142.is_dir():
+        for f in sorted(tex142.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
+            n142 += 1
+    print(f"Île des Géants V142: {n142} fichiers")
     # V112 : Hautefond, la cité-colonne (pierre blonde, ardoise bleue, dalles, enseignes, bannière)
     n112 = 0
     tex112 = source / "textures" / "hautefond"

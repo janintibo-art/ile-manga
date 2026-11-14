@@ -200,6 +200,8 @@ func _ready() -> void:
 	await chargement_v131.pas("hautefond_vie")
 	_create_v121()
 	await chargement_v131.pas("sombreval_vie")
+	_create_v142()
+	await chargement_v131.pas("geants_vie")
 	_create_v103()
 	_create_v120()
 	_create_v132()
@@ -283,6 +285,9 @@ func _height_land_v55(x: float, z: float) -> float:
 		return maxf(h, hautefond_v112.ile.height(x, z))
 	if sombreval_v121 != null and sombreval_v121.ile != null and sombreval_v121.ile.contains(x, z):
 		return maxf(h, sombreval_v121.ile.height(x, z))
+	# V142 : l'Île des Géants (au sud-est, au sud de l'Île Crayonnée ; son carré ne touche aucune autre île)
+	if geants_v142 != null and geants_v142.ile != null and geants_v142.ile.contains(x, z):
+		return maxf(h, geants_v142.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1170,6 +1175,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			hautefond_v112.load_data({})
 		if sombreval_v121 != null and sombreval_v121.ile != null:
 			sombreval_v121.load_data({})
+		if geants_v142 != null and geants_v142.ile != null:
+			geants_v142.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1359,6 +1366,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and sombreval_v121 != null and sombreval_v121.ile != null:
 		var svdata: Variant = SaveStore.read_slot(slot).get("sombreval", {})
 		sombreval_v121.load_data(svdata if svdata is Dictionary else {})
+	# V142 : l'Île des Géants
+	if not new_game and geants_v142 != null and geants_v142.ile != null:
+		var gtdata: Variant = SaveStore.read_slot(slot).get("geants", {})
+		geants_v142.load_data(gtdata if gtdata is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1507,6 +1518,8 @@ func _save_slot(slot: int) -> bool:
 		extra["hautefond"] = hautefond_v112.serialize()
 	if sombreval_v121 != null and sombreval_v121.ile != null:
 		extra["sombreval"] = sombreval_v121.serialize()
+	if geants_v142 != null and geants_v142.ile != null:
+		extra["geants"] = geants_v142.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -2579,6 +2592,10 @@ func _respawn_v28() -> void:
 	if sombreval_v121 != null and sombreval_v121.ile != null and sombreval_v121.owns_point(_player_pos_v27()):
 		sombreval_v121.on_faint(_player_pos_v27())
 		return
+	# V142 : sur l'Île des Géants : Mère Mathurine vous pose sur le seuil de la porte
+	if geants_v142 != null and geants_v142.ile != null and geants_v142.owns_point(_player_pos_v27()):
+		geants_v142.on_faint(_player_pos_v27())
+		return
 	# V75 : sur l'Île du Boucan (l'usine : au dernier point de reprise ; dehors : la Place des Palettes)
 	if boucan_v75 != null and boucan_v75.city != null and boucan_v75.owns_point(_player_pos_v27()):
 		boucan_v75.on_faint(_player_pos_v27())
@@ -2981,6 +2998,16 @@ func _create_jungle_v29() -> void:
 	await chargement_v131.pas("sombreval")
 	var sv_d: Array = sombreval_v121.dock()
 	boat_v29._make_dock("Ponton_sombreval", sv_d[0], sv_d[1])
+	# V142 : l'Île des Géants, au sud-est (le relief d'abord ; la ferme des Grandpré, la végétation et
+	# les géants après l'heure du jour, voir _create_v142).
+	geants_v142 = preload("res://scripts/geants_v142.gd").new()
+	geants_v142.name = "Geants_v142"
+	add_child(geants_v142)
+	geants_v142.setup(self)
+	geants_v142.build_island()
+	await chargement_v131.pas("geants")
+	var gt_d: Array = geants_v142.dock()
+	boat_v29._make_dock("Ponton_geants", gt_d[0], gt_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -3055,6 +3082,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
 	if neo_v94 != null and neo_v94.contains(p):
 		if neo_v94.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V142 : l'Île des Géants : la terre ferme, le ponton ; sur la mare, les nénuphars
+	if geants_v142 != null and geants_v142.contains(p):
+		if geants_v142.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3574,9 +3609,15 @@ func _nearest_npc_v31() -> Node3D:
 			continue
 		var off := Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z)
 		var d: float = off.length()
-		if d >= 2.8 or absf(npc.global_position.y - p.y) >= 2.5:
+		# V142 : à un géant, on parle de plus loin (il s'agenouille)
+		var reach: float = 2.8
+		var dy_max: float = 2.5
+		if npc.get("talk_reach") != null:
+			reach = float(npc.get("talk_reach"))
+			dy_max = 9.0
+		if d >= reach or absf(npc.global_position.y - p.y) >= dy_max:
 			continue
-		var score: float = d
+		var score: float = d * 2.8 / reach
 		if d > 0.05:
 			score -= 0.9 * maxf(Vector2(look.x, look.z).dot(off / d), 0.0)
 		if score < best_d:
@@ -3670,7 +3711,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3922,6 +3963,7 @@ var pasta_v97: Node3D                      # V97 : l'Île Al Dente (la secte du 
 var crayon_v99: Node3D                     # V99 : l'Île Crayonnée (l'île en noir et blanc)
 var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cité-colonne)
 var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
+var geants_v142: Node3D                    # V142 : l'Île des Géants (la ferme des Grandpré, cinq géants gentils)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
@@ -4278,6 +4320,16 @@ func _create_v121() -> void:
 		sombreval_v121.register_services(journal_v56)
 
 
+## V142 : l'Île des Géants (la ferme des Grandpré, la végétation à leur échelle, les cinq géants) ;
+## le ponton est posé avec le relief.
+func _create_v142() -> void:
+	if geants_v142 == null:
+		return
+	geants_v142.build_town()
+	if journal_v56 != null:
+		geants_v142.register_services(journal_v56)
+
+
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
 ## V120 : la popularité de l'archipel (son état est rangé avec le carnet de quêtes).
 func _create_v120() -> void:
@@ -4513,6 +4565,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(hautefond_v112.ile.CENTER.x, hautefond_v112.ile.CENTER.z), hautefond_v112.ile.HALF])
 	if sombreval_v121 != null and sombreval_v121.ile != null:
 		boxes.append([Vector2(sombreval_v121.ile.CENTER.x, sombreval_v121.ile.CENTER.z), sombreval_v121.ile.HALF])
+	if geants_v142 != null and geants_v142.ile != null:
+		boxes.append([Vector2(geants_v142.ile.CENTER.x, geants_v142.ile.CENTER.z), geants_v142.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

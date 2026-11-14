@@ -1343,6 +1343,38 @@ const QUETES := [
 		],
 		"fin": "Il te suit ! Regarde-le, le groin collé à tes chaussures ! (Père Gaubert rit, puis se mouche bruyamment.) C'est le pollen. Écoute-moi bien, mon gars : il mange de tout, mais pas les navets dorés, hein, eux, ce sont mes petits. Dans les bois et les prés, laisse-le renifler : il te trouvera des truffes, et parfois une vieille chose enfouie, une pièce, une bague… Il a un groin d'or, je te dis. Tiens, deux truffes qu'il m'a trouvées hier, et quelques pièces. Et si tu n'as pas déjà un sifflet pour appeler tes bêtes, prends celui de mon père, en os sculpté : un chien, un chat, un rat et un cochon tout autour. Siffle, et ton cochon reviendra. Doucement avec mon petit, hein !",
 		"recompense": {"pieces": 15, "rep": 0, "objets": [["truffe", 2], ["sifflet_compagnons", 1]]}},
+	# V142 : l'Île des Géants (la famille Grandpré)
+	{"id": "gt_bague", "titre": "La bague de Mère Mathurine", "donneur": "mathurine_gt", "lieu": "Île des Géants, le potager", "sorte": "Île des Géants",
+		"resume": "Mère Mathurine, la fermière géante, a perdu son alliance en désherbant les choux. Pour elle, c'est un tout petit anneau perdu dans la terre. Pour moi, c'est un cerceau d'or, quelque part entre les choux et les laitues.",
+		"offre_label": "Mère Mathurine, vous avez l'air de chercher quelque chose…",
+		"offre": "Oh, {surnom}… (Elle renifle, et c'est un coup de vent.) Mon alliance. Je désherbais mes choux ce matin, et pfft, plus de bague. Elle est là, quelque part, dans la terre, entre les choux et les laitues. Mais mes doigts sont trop gros, et mes yeux trop loin du sol. Toi, tu es à la bonne hauteur. Tu veux bien la chercher pour moi ?",
+		"etapes": [
+			{"type": "ramasser", "objets": {"bague_geante": 1}, "lieux": ["gt_bague"], "objectif": "Chercher l'alliance de Mère Mathurine dans le potager (dans la planche des choux et des laitues, au nord-ouest du potager) : un grand anneau d'or qui brille entre les sillons"},
+			{"type": "objets", "pnj": "mathurine_gt", "objets": {"bague_geante": 1}, "label": "Mère Mathurine, voici votre bague !", "texte": "Ma bague ! (Elle la prend entre deux doigts, tout doucement, comme une fleur.) Trente ans que je la porte, et c'est la première fois que je la vois portée par quelqu'un. Tu la tenais à deux bras ! Merci, {surnom}. Merci de tout mon grand cœur.", "objectif": "Rapporter l'alliance à Mère Mathurine (au potager le matin, au puits à midi, à la corde à linge l'après-midi)"},
+		],
+		"fin": "Tiens, pour ta peine : une miette de mon pain. Pour moi, c'est une miette. Pour toi, c'est une miche entière, encore tiède. Et la prochaine fois que tu viens, il y aura une tarte. Une part, ça te fera la semaine !",
+		"recompense": {"pieces": 30, "rep": 0, "objets": [["miette_geante", 2]]}},
+	{"id": "gt_limaces", "titre": "Les limaces du potager", "donneur": "theophile_gt", "lieu": "Île des Géants, le potager", "sorte": "Île des Géants",
+		"si": {"apres": "gt_bague"},
+		"resume": "Oncle Théophile, le jardinier géant, n'en peut plus : des limaces dévorent ses choux et ses poireaux. Elles se cachent sous les feuilles, et lui est trop grand pour les voir. À ma hauteur, elles sont aussi longues que moi… mais il suffit d'un bon coup pour qu'elles filent se cacher.",
+		"offre_label": "Oncle Théophile, qu'est-ce qui ronge vos choux ?",
+		"offre": "Les limaces ! LES LIMACES ! (Il baisse la voix.) Pardon. Elles viennent la nuit, et le jour elles se cachent sous les feuilles. Moi, d'en haut, je ne vois que des feuilles. Mais toi… toi, tu es à leur hauteur. Chasse-les de mon potager, veux-tu ? Pas besoin de leur faire du mal : un bon coup, et elles filent se cacher sous la clôture.",
+		"etapes": [
+			{"type": "etat", "cle": "gt_limaces", "objectif": "Chasser six limaces du potager (dans les planches des choux et des poireaux) : un bon coup, et elles filent sous la clôture"},
+			{"type": "rendre", "pnj": "theophile_gt", "label": "Oncle Théophile, les limaces sont parties !", "objectif": "Retourner voir Oncle Théophile (au potager, près des citrouilles, le matin ; au verger l'après-midi)"},
+		],
+		"fin": "Parties ? Toutes ? (Il s'accroupit, regarde ses choux de très près, longtemps.) Ma parole, c'est vrai. Tu es le plus grand des tout-petits, {surnom}. Tiens : une pomme de mon verger. Garde-la bien, elle te nourrira longtemps. Et viens voir la Géante quand tu veux.",
+		"recompense": {"pieces": 25, "rep": 0, "objets": [["pomme_geante", 2]]}},
+	{"id": "gt_cache", "titre": "Cache-cache avec Pâquerette", "donneur": "paquerette_gt", "lieu": "Île des Géants, la ferme", "sorte": "Île des Géants",
+		"resume": "Pâquerette, sept ans (et neuf mètres), voudrait tant jouer à cache-cache avec un ami. Elle se cache dans la ferme, et c'est à moi de la trouver. Trois fois. Elle est grande, mais elle est très fière de ses cachettes.",
+		"offre_label": "Pâquerette, à quoi on joue ?",
+		"offre": "À cache-cache ! Je me cache, et tu me cherches ! Je suis la championne du monde de cache-cache. Enfin, de la ferme. Enfin, je suis la seule à jouer. Mais je suis très forte ! Il faut me trouver trois fois. Prêt ? Ferme les yeux !",
+		"etapes": [
+			{"type": "etat", "cle": "gt_cache", "objectif": "Trouver Pâquerette trois fois (elle se cache dans la ferme : écoute ses rires… et regarde ce qui dépasse)"},
+			{"type": "rendre", "pnj": "paquerette_gt", "label": "Pâquerette, je t'ai trouvée trois fois !", "objectif": "Retourner voir Pâquerette"},
+		],
+		"fin": "Tu m'as trouvée trois fois ! Personne ne m'avait jamais trouvée ! Enfin si, mais ils faisaient semblant que non. Tiens, c'est Gustave, ma plus belle bille. Je te la donne. Comme ça, on est amis pour toujours. Promis juré craché !",
+		"recompense": {"pieces": 10, "rep": 0, "objets": [["bille_geante", 1]]}},
 ]
 
 ## Les grandes aventures du jeu, suivies par les trouvailles (main._npc_ctx_v31).
@@ -1430,6 +1462,10 @@ const AVENTURES := [
 			["sv_ilona", "Démasquer la comtesse Ilona, au bal (celle qui n'a pas de reflet)"], ["sv_sigismund", "Obtenir le rubis du baron Sigismund, dans la bibliothèque"],
 			["sv_radu", "Vaincre le chevalier Radu dans la salle d'armes (la lumière !)"], ["sv_rubis", "Poser les trois rubis sur la porte de la Tour du Comte"],
 			["sv_tour", "Monter dans la Tour du Comte"]]},
+	# V142 : l'Île des Géants
+	{"id": "geants", "titre": "Le pays des géants", "lieu": "L'Île des Géants, au sud-est de l'archipel", "debut": "geants",
+		"etapes": [["geants", "Aborder l'Île des Géants (au sud de l'Île Crayonnée)"], ["gt_ferme", "Arriver à la ferme des Grandpré"],
+			["gt_moulin", "Monter au Moulin de la Butte"], ["gt_limaces", "Chasser les limaces du potager"], ["gt_cache", "Trouver Pâquerette trois fois, à cache-cache"]]},
 	# V128 : le comte lui-même, puis les prisonniers des souterrains
 	{"id": "comte_dracula", "titre": "Le comte Dracula", "lieu": "Sombreval, tout en haut de la Tour du Comte", "debut": "sv_chambre",
 		"etapes": [["sv_chambre", "Pousser la porte de fer, tout en haut de la Tour du Comte"], ["sv_comte", "Vaincre le comte Dracula (l'aube est derrière les rideaux)"],
@@ -2154,6 +2190,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.hautefond_v112.place_name(p))
 	if main.get("sombreval_v121") != null and main.sombreval_v121 != null and main.sombreval_v121.ile != null and main.sombreval_v121.owns_point(p):
 		return str(main.sombreval_v121.place_name(p))
+	if main.get("geants_v142") != null and main.geants_v142 != null and main.geants_v142.ile != null and main.geants_v142.owns_point(p):
+		return str(main.geants_v142.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
 	var mv92: Variant = main.get("maisons_v81")
 	if mv92 != null and bool(mv92.inside) and str((mv92.cur as Dictionary).get("style", "")).begins_with("yourte_"):

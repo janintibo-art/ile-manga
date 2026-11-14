@@ -597,6 +597,34 @@ func _choose_zone(running: bool) -> void:
 				targets["brise"] = 0.3
 		_night_beds()
 		return
+	# V142 : l'Île des Géants (la campagne, les oiseaux, le vent dans les grandes herbes, les grenouilles
+	# de la mare, la mer sur la grève)
+	var gts: Node = main.get("geants_v142")
+	var gt_zone: String = gts.zone_at(p) if gts != null and gts.get("ile") != null and gts.ile != null and not on_ferry else ""
+	if gt_zone != "" and not on_boat:
+		zone = gt_zone
+		match gt_zone:
+			"gt_ponton", "gt_greve", "gt_rivage":
+				targets["ressac"] = 0.9
+				targets["plage"] = 0.4
+				targets["brise"] = 0.4
+			"gt_moulin":
+				targets["vent_vol"] = 0.45
+				targets["campagne"] = 0.5
+				targets["brise"] = 0.6
+			"gt_mare":
+				targets["lac_grenouilles"] = 0.7
+				targets["campagne"] = 0.5
+			"gt_verger", "gt_ble":
+				targets["oiseaux"] = 0.9
+				targets["campagne"] = 0.6
+				targets["brise"] = 0.4
+			_:
+				targets["campagne"] = 1.0
+				targets["oiseaux"] = 0.5
+				targets["brise"] = 0.4
+		_night_beds()
+		return
 	# V99 : l'Île Crayonnée (les oiseaux du bois, la cascade, le vent du sommet, la plage)
 	var crs: Node = main.get("crayon_v99")
 	var cr_zone: String = crs.zone_at(p) if crs != null and crs.get("ile") != null and crs.ile != null and not on_ferry else ""
