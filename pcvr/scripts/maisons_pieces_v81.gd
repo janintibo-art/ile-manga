@@ -13,6 +13,14 @@ const TX := "res://assets/textures/"
 ## Les ambiances des villes : sol, murs, plafond, poutres, bois des meubles, tapis, tableaux.
 ## [texture, teinte, taille d'un motif en m]
 const STYLES := {
+	# V146 : les maisons de Pile-ou-Face (l'Île Perchée, le Far West) : un plancher de planches, le papier
+	# peint damassé au-dessus d'un lambris sombre, des poutres, un poêle de fonte, les volets de bois ;
+	# aux murs, l'avis de recherche, les affiches des tables de jeu
+	"perchee": {"sol": ["montjoie/bois_planches.png", Color(0.82, 0.68, 0.54), 1.8], "mur": ["maisons/pp_damas_bordeaux.png", Color(1, 0.95, 0.9), 1.8],
+		"bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "plafond": ["montjoie/bois_planches.png", Color(0.62, 0.52, 0.42), 2.0],
+		"poutre": Color(0.32, 0.22, 0.14), "bois": Color(0.55, 0.38, 0.24), "h": 3.0,
+		"tapis": ["tazira/tapis_1.png", "tazira/tapis_3.png"], "tableaux": ["montjoie/affiche_recherche.png", "montjoie/tableau_liege.png", "strates/affiche_soupapes_1.png", "azur/tableau_2.png"],
+		"fenetre": "volets_bois", "foyer": "poele"},
 	"montjoie": {"sol": ["montjoie/bois_planches.png", Color(0.95, 0.88, 0.8), 2.0], "mur": ["montjoie/enduit.png", Color(0.98, 0.94, 0.84), 2.5],
 		"bas": ["montjoie/moellons.png", Color(0.9, 0.88, 0.84), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.7, 0.6, 0.5), 2.0],
 		"poutre": Color(0.36, 0.25, 0.16), "bois": Color(0.62, 0.45, 0.3), "colombage": true, "h": 2.9,
@@ -205,6 +213,10 @@ const STYLES := {
 ## peints, chaux colorée, lambris, parquet à chevrons, tomettes, carreaux de ciment, damier…).
 ## Chaque entrée remplace une partie de la palette de la ville ; la variante 0 est l'originale.
 const VARIANTES := {
+	"perchee": [{"mur": ["maisons/pp_rayures_sauge.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},
+		{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
+		{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/parquet_chevron.png", Color(0.9, 0.85, 0.8), 2.4]},
+		{"mur": ["boucan/bardage.png", Color(1.1, 0.95, 0.85), 2.0], "bas": ["boucan/bardage.png", Color(0.8, 0.7, 0.62), 2.0]}],
 	"montjoie": [{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/parquet_chevron.png", Color(1, 1, 1), 2.4]},
 		{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "bas": ["maisons/lambris_sombre.png", Color(1, 1, 1), 1.4], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
 		{"mur": ["maisons/pp_damas_bordeaux.png", Color(1, 1, 1), 1.8], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},

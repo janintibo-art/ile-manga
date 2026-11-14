@@ -23,11 +23,14 @@ const STYLES := {
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie",
 	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android",
 	"strates": "montjoie", "strates_lieu": "montjoie", "fronde": "boucan", "fronde_lieu": "boucan",
-	"dome": "neo", "dome_lieu": "neo"}
+	"dome": "neo", "dome_lieu": "neo", "perchee": "carene"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
 const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
 
 const PRENOMS := {
+	# V146 : Pile-ou-Face (les corps de Carène ; des prénoms de Far West, à la française)
+	"perchee": {"h": ["Jethro", "Ézéchiel", "Bartholin", "Josué", "Wilbur", "Abélard", "Cornil", "Hiram", "Silas", "Jebediah", "Lucius", "Amos"],
+		"f": ["Calamité", "Prudence", "Constance", "Clémentine", "Abigaïl", "Marguerite", "Charity", "Lilou", "Opaline", "Josépha", "Annabelle", "Félicité"]},
 	# V119 : le Dôme d'Azur (les corps de Néopolis, habillés de clair ; des prénoms de la mer)
 	"dome": {"h": ["Corentin", "Loïc", "Marin", "Gaël", "Yvon", "Erwan", "Pierrick", "Malo", "Tanguy", "Ronan", "Alban", "Gwenn"],
 		"f": ["Marine", "Océane", "Perle", "Coralie", "Nérée", "Naïade", "Maëlle", "Azur", "Lagune", "Écume", "Rozenn", "Morgane"]},

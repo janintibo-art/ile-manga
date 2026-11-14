@@ -17,6 +17,12 @@ const SPEED: float = 15.0
 const CLIMB: float = 6.5
 const WAIT: float = 40.0
 const STOPS := [["cliquetis", "Cliquetis"], ["ramure", "Ramure"], ["tazira", "Tazira"], ["carene", "Carène"]]
+## V146 : la ligne et ses phrases sont réglables (la Navette des Nuées de l'Île Perchée les change).
+var cruise_y: float = CRUISE_Y
+var attente: float = WAIT
+var escales: Array = STOPS
+var msg_largue: String = "Le Zéphyr largue les amarres : prochaine escale, %s."
+var msg_bord: String = "À bord du Zéphyr ! Prochaine escale : %s (le dirigeable part dans %d s)."
 
 var main: Node
 var pads: Array = []                   # Vector3 : le sol de chaque aire (centre)
@@ -315,16 +321,16 @@ func _dock(i: int) -> void:
 	heading = atan2(-(nxt.z - p.z), nxt.x - p.x)
 	state = "quai"
 	docked = true
-	timer = WAIT
+	timer = attente
 	_apply()
 
 
 func stop_name(i: int) -> String:
-	return str(STOPS[i][1])
+	return str(escales[i][1])
 
 
 func at_stop() -> String:
-	return str(STOPS[stop_i][0]) if docked else ""
+	return str(escales[stop_i][0]) if docked else ""
 
 
 func _physics_process(delta: float) -> void:
@@ -341,16 +347,16 @@ func _physics_process(delta: float) -> void:
 				if _hum.stream != null:
 					_hum.play()
 				if riding:
-					main._show_message_v28("Le Zéphyr largue les amarres : prochaine escale, %s." % stop_name(next_i))
+					main._show_message_v28(msg_largue % stop_name(next_i))
 		"monte", "vol", "descend":
 			var tgt: Vector3 = pads[next_i]
 			var to := Vector2(tgt.x - pos.x, tgt.z - pos.z)
 			var dist: float = to.length()
 			var src: Vector3 = pads[stop_i]
-			var want_y: float = CRUISE_Y
-			var desc_len: float = (CRUISE_Y - dock_y(next_i)) / CLIMB * SPEED * 0.8
+			var want_y: float = cruise_y
+			var desc_len: float = (cruise_y - dock_y(next_i)) / CLIMB * SPEED * 0.8
 			if dist < desc_len:
-				want_y = lerpf(dock_y(next_i), CRUISE_Y, smoothstep(0.0, desc_len, dist))
+				want_y = lerpf(dock_y(next_i), cruise_y, smoothstep(0.0, desc_len, dist))
 			if dist < 0.6:
 				want_y = dock_y(next_i)
 			var floor_y: float = 0.0
@@ -445,7 +451,7 @@ func board() -> void:
 		main.inventory_v28.close()
 	if main.get("hero_v28") != null and not main.xr_active:
 		main.hero_v28.cam_distance = maxf(main.hero_v28.cam_distance, 3.5)
-	main._show_message_v28("À bord du Zéphyr ! Prochaine escale : %s (le dirigeable part dans %d s)." % [stop_name(next_i), int(ceil(timer))])
+	main._show_message_v28(msg_bord % [stop_name(next_i), int(ceil(timer))])
 	if main.get("sfx_v50") != null:
 		main.sfx_v50.here("vapeur")
 
@@ -487,16 +493,16 @@ func _carry_player() -> void:
 
 
 func serialize() -> Dictionary:
-	return {"escale": stop_i, "escale_nom": str(STOPS[stop_i][0])}
+	return {"escale": stop_i, "escale_nom": str(escales[stop_i][0])}
 
 
 func load_data(d: Dictionary) -> void:
 	riding = false
 	var i: int = int(d.get("escale", 0))
 	if d.has("escale_nom"):
-		for k in range(STOPS.size()):
-			if str(STOPS[k][0]) == str(d["escale_nom"]):
+		for k in range(escales.size()):
+			if str(escales[k][0]) == str(d["escale_nom"]):
 				i = k
-	elif i >= 1 and STOPS.size() == 4:
+	elif i >= 1 and escales.size() == 4:
 		i += 1      # une partie d'avant la V62 : Cliquetis, Tazira, Carène
 	_dock(clampi(i, 0, pads.size() - 1))

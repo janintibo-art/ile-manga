@@ -597,6 +597,41 @@ func _choose_zone(running: bool) -> void:
 				targets["brise"] = 0.3
 		_night_beds()
 		return
+	# V146 : l'Île Perchée (le bourg : les saloons, les ateliers à vapeur ; la prairie sèche et ses
+	# cigales ; le vent du bord ; la Chute ; l'Abreuvoir et ses grenouilles ; la mer sous le Ponton)
+	var pps: Node = main.get("perchee_v146")
+	var pp_zone: String = pps.zone_at(p) if pps != null and pps.get("ile") != null and pps.ile != null and not on_ferry else ""
+	if pp_zone != "" and not on_boat:
+		zone = pp_zone
+		match pp_zone:
+			"pp_ponton":
+				targets["ressac"] = 0.9
+				targets["large"] = 0.4
+				targets["brise"] = 0.5
+			"pp_bourg", "pp_place", "pp_corral":
+				targets["taverne"] = 0.45
+				targets["atelier"] = 0.3
+				targets["cigales"] = 0.3
+				targets["brise"] = 0.3
+			"pp_quai", "pp_potence", "pp_mat", "pp_bord", "pp_dessous":
+				targets["vent_vol"] = 0.8
+				targets["brise"] = 0.6
+				targets["atelier"] = 0.2 if pp_zone in ["pp_quai", "pp_potence", "pp_mat"] else 0.0
+			"pp_chute":
+				targets["ressac"] = 0.7
+				targets["vent_vol"] = 0.4
+				targets["brise"] = 0.4
+			"pp_abreuvoir", "pp_ruisseau":
+				targets["lac_grenouilles"] = 0.5
+				targets["oiseaux"] = 0.6
+				targets["cigales"] = 0.4
+			_:
+				targets["cigales"] = 0.7
+				targets["desert"] = 0.35
+				targets["brise"] = 0.6
+				targets["oiseaux"] = 0.3
+		_night_beds()
+		return
 	# V142 : l'Île des Géants (la campagne, les oiseaux, le vent dans les grandes herbes, les grenouilles
 	# de la mare, la mer sur la grève)
 	var gts: Node = main.get("geants_v142")

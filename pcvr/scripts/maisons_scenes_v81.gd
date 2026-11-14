@@ -91,6 +91,8 @@ static func region(style: String) -> String:
 			return "elfes"
 		"hautefond", "hautefond_lieu":
 			return "hautefond"
+		"perchee":
+			return "perchee"
 		"nuees", "nuees_lieu":
 			return "nuees"
 	return "azur"
@@ -139,6 +141,8 @@ static func food(style: String) -> Array:
 			return ["chocolat_chaud", "gateau_lune", "pomme"]
 		"hautefond", "hautefond_lieu":
 			return ["chocolat_chaud", "pain_miel", "jus_pomme"]
+		"perchee":
+			return ["haricots_ranch", "salsepareille", "tarte_figue"]
 		"nuees", "nuees_lieu":
 			return ["lait_nuage", "chouquettes", "fraise_geante"]
 	return ["croissant", "bouillabaisse", "glace"]
@@ -185,6 +189,8 @@ static func plat(style: String) -> String:
 			return "des crêpes au chocolat (il pleut, il faut du réconfort)"
 		"hautefond", "hautefond_lieu":
 			return "du pot-au-feu cuit à la vapeur"
+		"perchee":
+			return "des haricots du ranch, mijotés trois jours"
 		"nuees", "nuees_lieu":
 			return "de la tarte aux fraises géantes"
 	return "de la bouillabaisse"

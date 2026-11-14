@@ -41,6 +41,7 @@ const ETAPES := {
 	"hautefond": ["Hautefond, la cité-colonne", 2310],
 	"sombreval": ["Sombreval, la ville morte", 370],
 	"geants": ["L'Île des Géants", 1760],
+	"perchee": ["L'Île Perchée", 1900],
 	"heros": ["Le héros se réveille", 410],
 	"menu": ["Le carnet de voyage", 650],
 	"rivages": ["Les rivages et les vagues", 2160],
@@ -67,9 +68,12 @@ const ETAPES := {
 	"hautefond_vie": ["Hautefond, du ciel au fond de la mer", 4130],
 	"sombreval_vie": ["Le château du comte", 1580],
 	"geants_vie": ["La ferme des Grandpré", 1500],
+	"perchee_vie": ["Pile-ou-Face, la ville qui mise", 9000],
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [
+	"Astuce : l'Île Perchée flotte au sud de Hautefond. La Navette des Nuées part du Mât, au bout du ponton de la falaise du sud.",
+	"Astuce : sous l'Île Perchée, la barque peut s'amarrer au Ponton de la Chaîne ; la cage de la Grande Chaîne monte jusqu'à Pile-ou-Face.",
 	"Astuce : B maintenu ouvre la roue des sorts : le temps ralentit, la souris choisit le sort.",
 	"Astuce : en VR, gâchette gauche tenue, un geste vif vers l'avant lance le sort ; la main sur le cœur, le Soin.",
 	"Astuce : touche C (ou clic de la molette) : verrouiller l'ennemi devant toi. Tes coups et tes sorts iront vers lui.",

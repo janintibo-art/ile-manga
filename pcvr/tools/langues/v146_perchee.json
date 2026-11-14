@@ -1,0 +1,2142 @@
+[
+[
+"À la revoyure, {surnom} ! Et garde ta mise près du cœur.",
+"See you around, {surnom}! And keep your stake close to your heart.",
+"¡Hasta la vista, {surnom}! Y guarda tu apuesta cerca del corazón."
+],
+[
+"Bonne route ! Si la Roue s'arrête quand tu passes, c'est que tu as de la chance. Ou qu'elle a besoin d'huile.",
+"Safe travels! If the Wheel stops as you walk by, you're lucky. Or it needs oil.",
+"¡Buen camino! Si la Rueda se para cuando pasas, es que tienes suerte. O que necesita aceite."
+],
+[
+"Bonne nuit ! Ici, la nuit, les saloons chantent et les étoiles misent entre elles.",
+"Good night! Here, at night, the saloons sing and the stars place bets among themselves.",
+"¡Buenas noches! Aquí, de noche, los saloons cantan y las estrellas apuestan entre ellas."
+],
+[
+"Hé ! Range tes poings, cow-boy ! À Pile-ou-Face, on se dispute aux dés, pas aux coups. Sinon, la Shérif s'en mêle.",
+"Hey! Put those fists away, cowboy! In Heads-or-Tails we argue with dice, not punches. Otherwise the Sheriff steps in.",
+"¡Eh! ¡Guarda esos puños, vaquero! En Cara-o-Cruz discutimos con los dados, no a golpes. Si no, la Sheriff se mete."
+],
+[
+"Aïe ! Tu veux un duel ? Alors au bras de fer, chez Bartholomé. Et c'est le perdant qui paie la salsepareille.",
+"Ouch! You want a duel? Then arm-wrestling, at Bartholomew's. And the loser pays for the sarsaparilla.",
+"¡Ay! ¿Quieres un duelo? Pues un pulso, en casa de Bartolomé. Y el que pierde paga la zarzaparrilla."
+],
+[
+"Pour moi ? Merci, {surnom}. Je le garde. Peut-être que je le miserai un jour. Peut-être pas.",
+"For me? Thank you, {surnom}. I'll keep it. Maybe I'll bet it one day. Maybe not.",
+"¿Para mí? Gracias, {surnom}. Me lo quedo. Quizá lo apueste algún día. Quizá no."
+],
+[
+"C'est gentil. Ici, on dit qu'un cadeau, c'est une mise qu'on fait sur l'amitié. Tu viens de gagner.",
+"That's kind. Here we say a gift is a bet you place on friendship. You just won.",
+"Qué amable. Aquí decimos que un regalo es una apuesta por la amistad. Acabas de ganar."
+],
+[
+"Oh ! {dernier_cadeau} ! Ça, c'est un coup de maître, {surnom} ! Double ou rien ? Non : double, point.",
+"Oh! {dernier_cadeau}! Now that's a master stroke, {surnom}! Double or nothing? No: double, period.",
+"¡Oh! ¡{dernier_cadeau}! ¡Eso es una jugada maestra, {surnom}! ¿Doble o nada? No: doble, y punto."
+],
+[
+"Par la Roue ! Tu as tiré le bon numéro, {surnom}. Merci !",
+"By the Wheel! You drew the right number, {surnom}. Thank you!",
+"¡Por la Rueda! Has sacado el número bueno, {surnom}. ¡Gracias!"
+],
+[
+"Euh… merci. C'est ce qu'on appelle une mauvaise donne. Je le garde quand même, par politesse.",
+"Er… thanks. That's what we call a bad deal. I'll keep it anyway, to be polite.",
+"Eh… gracias. Es lo que llamamos una mala mano. Me lo quedo igual, por educación."
+],
+[
+"Une arme ? Non merci. À Pile-ou-Face, les seules armes, ce sont les cartes et les dés. Et le sourire du Shérif.",
+"A weapon? No thanks. In Heads-or-Tails the only weapons are cards and dice. And the Sheriff's smile.",
+"¿Un arma? No, gracias. En Cara-o-Cruz las únicas armas son las cartas y los dados. Y la sonrisa de la Sheriff."
+],
+[
+"Si je me souviens de toi ? Bien sûr. Ici, on retient les visages. Surtout ceux qui ont de la chance.",
+"Do I remember you? Of course. Here we remember faces. Especially lucky ones.",
+"¿Que si me acuerdo de ti? Claro. Aquí recordamos las caras. Sobre todo las de los que tienen suerte."
+],
+[
+"Hein ? Je ne t'ai rien demandé. Pas encore. À Pile-ou-Face, tout vient à point à qui sait miser.",
+"Huh? I didn't ask you for anything. Not yet. In Heads-or-Tails, good things come to those who know how to bet.",
+"¿Eh? No te he pedido nada. Todavía no. En Cara-o-Cruz, todo llega a quien sabe apostar."
+],
+[
+"Pourquoi les dés ne mentent jamais ? Parce qu'ils ont six faces, et aucune de cachée.",
+"Why do dice never lie? Because they have six faces, and none of them hidden.",
+"¿Por qué los dados nunca mienten? Porque tienen seis caras, y ninguna escondida."
+],
+[
+"Un cow-boy entre au saloon avec un nuage en laisse. Bartholomé lui dit : « Pas d'animaux. » Le cow-boy répond : « Ce n'est pas un animal, c'est mon parapluie. »",
+"A cowboy walks into the saloon with a cloud on a leash. Bartholomew says: “No animals.” The cowboy replies: “It's not an animal, it's my umbrella.”",
+"Un vaquero entra al saloon con una nube atada con correa. Bartolomé le dice: «Nada de animales.» El vaquero responde: «No es un animal, es mi paraguas.»"
+],
+[
+"Quelle est la différence entre un joueur et un horloger ? L'horloger sait toujours quand il faut s'arrêter.",
+"What's the difference between a gambler and a clockmaker? The clockmaker always knows when to stop.",
+"¿Cuál es la diferencia entre un jugador y un relojero? El relojero siempre sabe cuándo parar."
+],
+[
+"Non. Pour toi, la boutique est fermée. Reviens quand tu auras de meilleures manières.",
+"No. For you, the shop is closed. Come back when you have better manners.",
+"No. Para ti, la tienda está cerrada. Vuelve cuando tengas mejores modales."
+],
+[
+"Et voilà : {objet}, pour {prix} pièces. Marché conclu, topons là !",
+"There you go: {objet}, for {prix} coins. It's a deal, shake on it!",
+"Aquí tienes: {objet}, por {prix} monedas. ¡Trato hecho, choca esos cinco!"
+],
+[
+"C'est {prix} pièces, et tu n'en as que {pieces}… Même au poker, on ne mise pas ce qu'on n'a pas.",
+"It's {prix} coins, and you only have {pieces}… Even at poker, you don't bet what you don't have.",
+"Son {prix} monedas, y solo tienes {pieces}… Ni en el póquer se apuesta lo que no se tiene."
+],
+[
+"Tu en as déjà un, non ? Un seul suffit, crois-moi.",
+"You already have one, don't you? One is enough, trust me.",
+"Ya tienes uno, ¿no? Con uno basta, créeme."
+],
+[
+"Ton sac est plein comme un saloon un samedi soir, {surnom}.",
+"Your bag is as full as a saloon on a Saturday night, {surnom}.",
+"Tu bolsa está tan llena como un saloon un sábado por la noche, {surnom}."
+],
+[
+"Pour ça ? Je t'en donne {prix} pièces. Pas une de plus, pas une de moins.",
+"For that? I'll give you {prix} coins. Not one more, not one less.",
+"¿Por eso? Te doy {prix} monedas. Ni una más, ni una menos."
+],
+[
+"Tout le lot ? Allez : {prix} pièces, et une poignée de main en prime !",
+"The whole lot? Go on: {prix} coins, and a handshake thrown in!",
+"¿Todo el lote? Venga: {prix} monedas, ¡y un apretón de manos de regalo!"
+],
+[
+"Bon… tu as une bonne tête de joueur. Un petit geste. Mais ne le crie pas sur la place.",
+"Well… you have a good gambler's face. A little discount. But don't shout it around the square.",
+"Bueno… tienes buena cara de jugador. Un pequeño descuento. Pero no lo grites en la plaza."
+],
+[
+"Marchander ? Mes prix sont comme les dés de Grand-Dé : ils ne se discutent pas.",
+"Haggle? My prices are like Big-Die's dice: there's no arguing with them.",
+"¿Regatear? Mis precios son como los dados de Gran-Dado: no se discuten."
+],
+[
+"On a déjà marchandé aujourd'hui. Ne pousse pas ta chance, {surnom}.",
+"We already haggled today. Don't push your luck, {surnom}.",
+"Ya hemos regateado hoy. No tientes a la suerte, {surnom}."
+],
+[
+"Par la Roue !",
+"By the Wheel!",
+"¡Por la Rueda!"
+],
+[
+"Banco !",
+"Banco!",
+"¡Banco!"
+],
+[
+"Quelle veine !",
+"What luck!",
+"¡Qué suerte!"
+],
+[
+"Mauvaise donne…",
+"Bad deal…",
+"Mala mano…"
+],
+[
+"Tout le monde se couche…",
+"Everybody folds…",
+"Todos se retiran…"
+],
+[
+"Par tous les as !",
+"By all the aces!",
+"¡Por todos los ases!"
+],
+[
+"Pile ou face ?",
+"Heads or tails?",
+"¿Cara o cruz?"
+],
+[
+"Qui ne mise rien n'a rien.",
+"Nothing ventured, nothing gained.",
+"Quien no apuesta, no gana."
+],
+[
+"en veine",
+"on a lucky streak",
+"con buena racha"
+],
+[
+"un peu à sec",
+"a bit broke",
+"un poco sin blanca"
+],
+[
+"dans la mauvaise passe",
+"on a losing streak",
+"en mala racha"
+],
+[
+"complètement ruiné",
+"completely broke",
+"completamente arruinado"
+],
+[
+"as de cœur",
+"ace of hearts",
+"as de corazones"
+],
+[
+"enfant de Pile-ou-Face",
+"child of Heads-or-Tails",
+"hijo de Cara-o-Cruz"
+],
+[
+"Pile-ou-Face",
+"Heads-or-Tails",
+"Cara-o-Cruz"
+],
+[
+"la Veuve Clou",
+"the Widow Nail",
+"la Viuda Clavo"
+],
+[
+"marchande du Bazar de la Veuve Clou",
+"shopkeeper of the Widow Nail's Bazaar",
+"tendera del Bazar de la Viuda Clavo"
+],
+[
+"Clic, clac.",
+"Click, clack.",
+"Clic, clac."
+],
+[
+"Un clou chasse l'autre.",
+"One nail drives out another.",
+"Un clavo saca otro clavo."
+],
+[
+"jeune homme",
+"young man",
+"jovencito"
+],
+[
+"ma vis préférée",
+"my favourite screw",
+"mi tornillo favorito"
+],
+[
+"mon boulon d'or",
+"my golden bolt",
+"mi perno de oro"
+],
+[
+"Approchez, approchez. Clic, clac. Ne faites pas attention à ma main : elle est en laiton, à ressorts, et elle serre plus fort que la vôtre. Feu mon mari l'a fabriquée. Il était inventeur. Il est parti dans un ballon de sa fabrication, et le ballon ne l'a jamais rendu.",
+"Come closer, come closer. Click, clack. Don't mind my hand: it's brass, spring-loaded, and it grips harder than yours. My late husband made it. He was an inventor. He left in a balloon of his own making, and the balloon never gave him back.",
+"Acérquese, acérquese. Clic, clac. No haga caso de mi mano: es de latón, con muelles, y aprieta más fuerte que la suya. La hizo mi difunto marido. Era inventor. Se fue en un globo fabricado por él, y el globo nunca lo devolvió."
+],
+[
+"Tiens, {surnom} ! Ma main vous a reconnu avant moi. Elle a fait « clic ». Elle fait « clic » pour les gens qu'elle aime bien.",
+"Well, {surnom}! My hand recognized you before I did. It went “click”. It goes “click” for people it likes.",
+"¡Vaya, {surnom}! Mi mano le ha reconocido antes que yo. Ha hecho «clic». Hace «clic» con la gente que le cae bien."
+],
+[
+"Bonne. J'ai vendu un tire-bouchon à quelqu'un qui n'avait pas de bouteille. Il m'a dit : « On ne sait jamais. » C'est la devise de mon bazar.",
+"Good. I sold a corkscrew to someone who had no bottle. He told me: “You never know.” That's the motto of my bazaar.",
+"Bien. Le vendí un sacacorchos a alguien que no tenía botella. Me dijo: «Nunca se sabe.» Es el lema de mi bazar."
+],
+[
+"Le soir, je m'assois sur un banc de la place et je regarde la Roue tourner. Mon mari disait : « Quand elle s'arrêtera, je reviendrai. » Elle ne s'arrête jamais. Alors je reviens, moi, tous les soirs.",
+"In the evening I sit on a bench in the square and watch the Wheel turn. My husband used to say: “When it stops, I'll come back.” It never stops. So I come back, every evening.",
+"Por la tarde me siento en un banco de la plaza y miro girar la Rueda. Mi marido decía: «Cuando se pare, volveré.» Nunca se para. Así que vuelvo yo, todas las tardes."
+],
+[
+"On m'appelle la Veuve Clou. Je ne suis pas sûre d'être veuve : peut-être que Clou plane encore quelque part, au-dessus des nuages, en train de bricoler son ballon. Il en serait bien capable.",
+"They call me the Widow Nail. I'm not sure I'm a widow: maybe Nail is still drifting somewhere above the clouds, tinkering with his balloon. It would be just like him.",
+"Me llaman la Viuda Clavo. No estoy segura de ser viuda: quizá Clavo siga planeando en algún sitio, por encima de las nubes, arreglando su globo. Sería muy de él."
+],
+[
+"Dans mon bazar, il y a de tout : des clous, des vis, des cordes, des boussoles qui indiquent le sud, une lampe qui s'éteint quand on lui parle… Si vous cherchez quelque chose, je l'ai. Si je ne l'ai pas, c'est que vous ne le cherchez pas vraiment.",
+"My bazaar has everything: nails, screws, ropes, compasses that point south, a lamp that goes out when you talk to it… If you're looking for something, I have it. If I don't, you're not really looking for it.",
+"En mi bazar hay de todo: clavos, tornillos, cuerdas, brújulas que señalan el sur, una lámpara que se apaga cuando le hablas… Si busca algo, lo tengo. Si no lo tengo, es que no lo busca de verdad."
+],
+[
+"Pile-ou-Face, c'était un château, autrefois. Les vieilles pierres sont encore là, sous les planches. Puis les chercheurs d'or sont arrivés, les joueurs ensuite, et la vapeur en dernier. Aujourd'hui, tout le monde mise. Moi, je mise sur les clous. Ça rapporte peu, mais ça ne perd jamais.",
+"Heads-or-Tails used to be a castle. The old stones are still there, under the planks. Then the gold prospectors came, then the gamblers, and steam last of all. Today everybody bets. Me, I bet on nails. They don't pay much, but they never lose.",
+"Cara-o-Cruz era un castillo, antaño. Las viejas piedras siguen ahí, bajo las tablas. Luego llegaron los buscadores de oro, después los jugadores y, por último, el vapor. Hoy todo el mundo apuesta. Yo apuesto por los clavos. Rinden poco, pero nunca pierden."
+],
+[
+"L'île flotte grâce aux Pierres-de-Ciel, sous nos pieds, dans leurs cages de fer. Mon mari disait qu'elles chantent la nuit. Moi, je n'entends que les saloons.",
+"The island floats thanks to the Sky-Stones, under our feet, in their iron cages. My husband said they sing at night. All I hear are the saloons.",
+"La isla flota gracias a las Piedras-del-Cielo, bajo nuestros pies, en sus jaulas de hierro. Mi marido decía que cantan de noche. Yo solo oigo los saloons."
+],
+[
+"Entre nous : Madame Pique, au Tripot, ne retire jamais sa voilette. Pas même pour boire son thé. Elle le boit à la paille. J'ai vu la paille.",
+"Between you and me: Madame Spade, at the Gambling Den, never takes off her veil. Not even to drink her tea. She drinks it through a straw. I've seen the straw.",
+"Entre nosotros: Madame Pica, en el Garito, nunca se quita el velo. Ni siquiera para tomar el té. Se lo toma con pajita. He visto la pajita."
+],
+[
+"Bartholomé dit que son chien sait compter jusqu'à vingt et un. Moi, je dis qu'il sait surtout compter les saucisses.",
+"Bartholomew says his dog can count to twenty-one. I say what he can count best is sausages.",
+"Bartolomé dice que su perro sabe contar hasta veintiuno. Yo digo que lo que mejor cuenta son las salchichas."
+],
+[
+"Psst ! Vous ! Il vous manque un clou, ça se voit.",
+"Psst! You! You're missing a nail, I can tell.",
+"¡Psst! ¡Usted! Le falta un clavo, se nota."
+],
+[
+"{surnom} ! Ma main vous fait coucou. Clic.",
+"{surnom}! My hand is waving at you. Click.",
+"¡{surnom}! Mi mano le saluda. Clic."
+],
+[
+"Clous, cordes, ressorts, boussoles… Tout ce qu'il faut, et un peu de ce qu'il ne faut pas. Vous avez {pieces} pièces.",
+"Nails, ropes, springs, compasses… Everything you need, and a little of what you don't. You have {pieces} coins.",
+"Clavos, cuerdas, muelles, brújulas… Todo lo necesario, y un poco de lo que no. Tiene {pieces} monedas."
+],
+[
+"Bartholomé Pattes-de-Velours",
+"Bartholomew Velvet-Paws",
+"Bartolomé Patas-de-Terciopelo"
+],
+[
+"patron du Saloon du Chien qui Mise",
+"owner of the Betting Dog Saloon",
+"dueño del Saloon del Perro que Apuesta"
+],
+[
+"À la vôtre !",
+"Cheers!",
+"¡Salud!"
+],
+[
+"Une autre ?",
+"Another one?",
+"¿Otra?"
+],
+[
+"mon as de cœur",
+"my ace of hearts",
+"mi as de corazones"
+],
+[
+"Bienvenue au Saloon du Chien qui Mise, étranger ! Bartholomé Pattes-de-Velours, pour vous servir. On m'appelle comme ça parce que je marche sans bruit. Et parce que je ne renverse jamais un verre. Jamais. Sauf les mardis.",
+"Welcome to the Betting Dog Saloon, stranger! Bartholomew Velvet-Paws, at your service. They call me that because I walk without a sound. And because I never spill a glass. Never. Except on Tuesdays.",
+"¡Bienvenido al Saloon del Perro que Apuesta, forastero! Bartolomé Patas-de-Terciopelo, para servirle. Me llaman así porque camino sin hacer ruido. Y porque nunca derramo un vaso. Nunca. Salvo los martes."
+],
+[
+"{surnom} ! Ta salsepareille t'attend. Elle commençait à s'inquiéter.",
+"{surnom}! Your sarsaparilla is waiting for you. It was starting to worry.",
+"¡{surnom}! Tu zarzaparrilla te espera. Empezaba a preocuparse."
+],
+[
+"Excellente ! Banco a gagné trois parties de dés ce matin. Il a misé un os, il a gagné trois os. Ce chien est un génie. Un génie qui mâchonne mes chaussons, mais un génie.",
+"Excellent! Banco won three games of dice this morning. He bet a bone and won three bones. That dog is a genius. A genius who chews my slippers, but a genius.",
+"¡Excelente! Banco ha ganado tres partidas de dados esta mañana. Apostó un hueso y ganó tres huesos. Ese perro es un genio. Un genio que me mordisquea las zapatillas, pero un genio."
+],
+[
+"Le soir, le saloon chante. Il y a le piano mécanique, les cartes qui claquent, les dés qui roulent. Et moi, je cire ma moustache. Une moustache bien cirée, c'est la moitié du métier.",
+"In the evening the saloon sings. There's the player piano, the cards snapping, the dice rolling. And me, I wax my moustache. A well-waxed moustache is half the job.",
+"Por la noche, el saloon canta. Está la pianola, las cartas que chasquean, los dados que ruedan. Y yo me encero el bigote. Un bigote bien encerado es la mitad del oficio."
+],
+[
+"Banco, c'est mon chien. Il s'assoit à la table de dés, il regarde les joueurs, et quand il aboie une fois, c'est « pair ». Deux fois, « impair ». Il se trompe souvent. Mais il y croit tellement que personne n'ose lui dire.",
+"Banco is my dog. He sits at the dice table, watches the players, and when he barks once, it's “even”. Twice, “odd”. He's often wrong. But he believes in it so much that nobody dares tell him.",
+"Banco es mi perro. Se sienta en la mesa de dados, mira a los jugadores, y cuando ladra una vez, es «par». Dos veces, «impar». Se equivoca a menudo. Pero se lo cree tanto que nadie se atreve a decírselo."
+],
+[
+"Ici, pas une goutte de whisky : de la salsepareille, du café à la vapeur, du chocolat. On a la tête claire pour jouer. Et on a la tête claire pour perdre, ce qui est plus important.",
+"Not a drop of whisky here: sarsaparilla, steam coffee, chocolate. You keep a clear head to play. And a clear head to lose, which matters more.",
+"Aquí ni una gota de whisky: zarzaparrilla, café al vapor, chocolate. Se juega con la cabeza clara. Y se pierde con la cabeza clara, que es más importante."
+],
+[
+"Bientôt, on va monter les grandes tables, au saloon et dans tout le bourg : les dés, le blackjack, le poker. Les gens viendront de tout l'archipel ! On pourra miser des pièces, des objets… et se faire une réputation. De pigeon, ou de maître du jeu. À vous de voir.",
+"Soon we'll set up the big tables, at the saloon and all over town: dice, blackjack, poker. People will come from all over the archipelago! You'll be able to bet coins, objects… and make a name for yourself. As a pigeon, or as a game master. Up to you.",
+"Pronto montaremos las grandes mesas, en el saloon y por todo el pueblo: los dados, el blackjack, el póquer. ¡Vendrá gente de todo el archipiélago! Se podrán apostar monedas, objetos… y hacerse una reputación. De pichón, o de maestro del juego. Usted decide."
+],
+[
+"Pile-ou-Face a une règle, une seule : on ne triche pas. Celui qui triche, la Shérif Plomb le met au pilori, sur la place. Le pilori, c'est un banc où tout le monde vient vous raconter ses histoires. Très longues. C'est terrible.",
+"Heads-or-Tails has one rule, just one: no cheating. Whoever cheats, Sheriff Lead puts in the pillory, in the square. The pillory is a bench where everybody comes to tell you their stories. Very long ones. It's terrible.",
+"Cara-o-Cruz tiene una regla, una sola: no se hace trampa. Al que hace trampa, la Sheriff Plomo lo pone en la picota, en la plaza. La picota es un banco donde todo el mundo viene a contarte sus historias. Muy largas. Es terrible."
+],
+[
+"Grand-Dé, à la Fosse, a des dés qui portent un nom. Il y en a un qui s'appelle Gaston. Gaston fait toujours six. Enfin, Gaston dit qu'il fait toujours six.",
+"Big-Die, at the Pit, has dice with names. There's one called Gaston. Gaston always rolls six. Well, Gaston says he always rolls six.",
+"Gran-Dado, en el Foso, tiene dados con nombre. Hay uno que se llama Gastón. Gastón siempre saca seis. Bueno, Gastón dice que siempre saca seis."
+],
+[
+"Au fond de chez le barbier, il paraît qu'il y a une salle secrète. On y joue au poker, la nuit. Je n'en sais rien. Je n'en parle pas. Je n'en ai jamais parlé.",
+"At the back of the barber's, they say there's a secret room. People play poker there at night. I know nothing about it. I'm not talking about it. I never talked about it.",
+"Al fondo de la barbería, dicen que hay una sala secreta. Allí se juega al póquer, de noche. Yo no sé nada. No hablo de eso. Nunca he hablado de eso."
+],
+[
+"Hé, étranger ! Une salsepareille ? C'est la maison qui… non, c'est vous qui offrez.",
+"Hey, stranger! A sarsaparilla? It's on the house… no, it's on you.",
+"¡Eh, forastero! ¿Una zarzaparrilla? Invita la casa… no, invita usted."
+],
+[
+"{surnom} ! Viens, Banco t'a gardé ta place !",
+"{surnom}! Come on, Banco saved your seat!",
+"¡{surnom}! ¡Ven, Banco te ha guardado el sitio!"
+],
+[
+"Salsepareille glacée, haricots du ranch, tarte aux figues de Barbarie… Vous avez {pieces} pièces. Banco, tu ne touches pas à la tarte.",
+"Iced sarsaparilla, ranch beans, prickly pear pie… You have {pieces} coins. Banco, don't touch the pie.",
+"Zarzaparrilla helada, frijoles del rancho, tarta de higos chumbos… Tiene {pieces} monedas. Banco, no toques la tarta."
+],
+[
+"Madame Pique",
+"Madame Spade",
+"Madame Pica"
+],
+[
+"la Dame de Pique, patronne du Tripot",
+"the Queen of Spades, owner of the Gambling Den",
+"la Dama de Picas, dueña del Garito"
+],
+[
+"Les cartes le savent.",
+"The cards know.",
+"Las cartas lo saben."
+],
+[
+"Devinez.",
+"Guess.",
+"Adivine."
+],
+[
+"Coupez.",
+"Cut.",
+"Corte."
+],
+[
+"roi de cœur",
+"king of hearts",
+"rey de corazones"
+],
+[
+"mon atout",
+"my trump card",
+"mi triunfo"
+],
+[
+"Bonsoir. Ne cherchez pas mon visage derrière la voilette : il n'y a rien à voir, qu'une joueuse. On m'appelle la Dame de Pique. Devinez pourquoi.",
+"Good evening. Don't look for my face behind the veil: there's nothing to see but a player. They call me the Queen of Spades. Guess why.",
+"Buenas noches. No busque mi rostro tras el velo: no hay nada que ver, solo una jugadora. Me llaman la Dama de Picas. Adivine por qué."
+],
+[
+"{surnom}. Je vous attendais. Non, je ne lis pas l'avenir. Je lis les gens. C'est plus facile, et ça se trompe moins.",
+"{surnom}. I was expecting you. No, I don't read the future. I read people. It's easier, and it's wrong less often.",
+"{surnom}. Le esperaba. No, no leo el futuro. Leo a la gente. Es más fácil, y se equivoca menos."
+],
+[
+"Calme. Comme une main de cinq cartes avant qu'on la retourne.",
+"Calm. Like a five-card hand before it's turned over.",
+"Tranquila. Como una mano de cinco cartas antes de darle la vuelta."
+],
+[
+"La nuit, mon tripot s'allume. Les lampes sont vertes, les tables sont vertes, et les joueurs aussi, quand ils perdent.",
+"At night my den lights up. The lamps are green, the tables are green, and so are the players, when they lose.",
+"De noche, mi garito se enciende. Las lámparas son verdes, las mesas son verdes, y los jugadores también, cuando pierden."
+],
+[
+"Une devinette : j'ai un cœur, mais je ne bats pas ; j'ai une tête, mais je ne pense pas ; j'ai un roi, mais pas de royaume. Qui suis-je ? … Un jeu de cartes, voyons.",
+"A riddle: I have a heart, but it doesn't beat; I have a head, but I don't think; I have a king, but no kingdom. What am I? … A deck of cards, of course.",
+"Una adivinanza: tengo corazón, pero no late; tengo cabeza, pero no pienso; tengo rey, pero no reino. ¿Quién soy? … Una baraja de cartas, claro."
+],
+[
+"Au blackjack, il faut s'approcher de vingt et un sans jamais le dépasser. Comme dans la vie : vouloir beaucoup, mais savoir s'arrêter. Bientôt, ma table sera ouverte. Nous verrons si vous savez vous arrêter.",
+"In blackjack, you must get close to twenty-one without ever going over. As in life: want a lot, but know when to stop. Soon my table will be open. We'll see if you know when to stop.",
+"En el blackjack hay que acercarse a veintiuno sin pasarse nunca. Como en la vida: querer mucho, pero saber parar. Pronto mi mesa estará abierta. Veremos si sabe parar."
+],
+[
+"Les gens d'ici vous appelleront « pigeon » si vous perdez trop, et « maître du jeu » si vous gagnez avec élégance. L'élégance compte plus que les gains. Retenez-le.",
+"People here will call you “pigeon” if you lose too much, and “game master” if you win with elegance. Elegance counts more than winnings. Remember that.",
+"La gente de aquí le llamará «pichón» si pierde demasiado, y «maestro del juego» si gana con elegancia. La elegancia cuenta más que las ganancias. Recuérdelo."
+],
+[
+"Je suis arrivée par la Grande Chaîne, il y a longtemps, avec une valise et un jeu de cartes. La valise est vide. Le jeu de cartes, lui, a tout gagné.",
+"I arrived by the Great Chain, long ago, with a suitcase and a deck of cards. The suitcase is empty. The deck of cards won everything.",
+"Llegué por la Gran Cadena, hace mucho, con una maleta y una baraja. La maleta está vacía. La baraja, en cambio, lo ganó todo."
+],
+[
+"Gédéon Tic veut construire une machine qui bat les cartes toute seule. Je lui ai dit qu'une machine ne sait pas bluffer. Il m'a répondu : « Justement. »",
+"Gideon Tick wants to build a machine that shuffles cards on its own. I told him a machine can't bluff. He replied: “Exactly.”",
+"Gedeón Tic quiere construir una máquina que baraje las cartas sola. Le dije que una máquina no sabe farolear. Me respondió: «Precisamente.»"
+],
+[
+"Pistache, le petit crieur, sait tout avant tout le monde. Je soupçonne qu'il écrit les nouvelles avant qu'elles n'arrivent.",
+"Pistachio, the little newsboy, knows everything before everyone. I suspect he writes the news before it happens.",
+"Pistacho, el pequeño voceador, lo sabe todo antes que nadie. Sospecho que escribe las noticias antes de que ocurran."
+],
+[
+"Vous. Oui, vous. Approchez. Les cartes veulent vous voir.",
+"You. Yes, you. Come closer. The cards want to see you.",
+"Usted. Sí, usted. Acérquese. Las cartas quieren verle."
+],
+[
+"{surnom}. Coupez le jeu, voulez-vous.",
+"{surnom}. Cut the deck, would you.",
+"{surnom}. Corte la baraja, ¿quiere?"
+],
+[
+"Cornélius « Grand-Dé »",
+"Cornelius “Big-Die”",
+"Cornelio «Gran-Dado»"
+],
+[
+"maître de la Fosse aux Dés",
+"master of the Dice Pit",
+"maestro del Foso de los Dados"
+],
+[
+"HA HA !",
+"HA HA!",
+"¡JA, JA!"
+],
+[
+"Ça roule !",
+"Let's roll!",
+"¡Rueda que rueda!"
+],
+[
+"Six et six, douze !",
+"Six and six, twelve!",
+"¡Seis y seis, doce!"
+],
+[
+"Rien ne va plus !",
+"No more bets!",
+"¡No va más!"
+],
+[
+"mon double-six",
+"my double-six",
+"mi doble seis"
+],
+[
+"roi des dés",
+"king of dice",
+"rey de los dados"
+],
+[
+"mon jackpot",
+"my jackpot",
+"mi premio gordo"
+],
+[
+"HA HA ! Un nouveau ! Bienvenue à la Fosse aux Dés ! Cornélius, dit Grand-Dé. Grand, parce que je ris fort. Dé, parce que… eh bien, regarde autour de toi. Ici, tout roule !",
+"HA HA! A newcomer! Welcome to the Dice Pit! Cornelius, known as Big-Die. Big, because I laugh loud. Die, because… well, look around you. Here, everything rolls!",
+"¡JA, JA! ¡Uno nuevo! ¡Bienvenido al Foso de los Dados! Cornelio, alias Gran-Dado. Gran, porque me río fuerte. Dado, porque… bueno, mira a tu alrededor. ¡Aquí todo rueda!"
+],
+[
+"{surnom} ! Te voilà ! Tu as la main chaude, je le sens. Ça roule ?",
+"{surnom}! There you are! You've got a hot hand, I can feel it. Rolling?",
+"¡{surnom}! ¡Aquí estás! Tienes la mano caliente, lo noto. ¿Rodamos?"
+],
+[
+"Formidable ! Hier soir, un joueur a fait trois doubles-six d'affilée. On a tous crié si fort que les corbeaux du Vieux-Pic ont applaudi.",
+"Wonderful! Last night a player rolled three double-sixes in a row. We all shouted so loud the crows of Old Peak applauded.",
+"¡Estupendo! Anoche un jugador sacó tres dobles seis seguidos. Gritamos tan fuerte que los cuervos del Viejo Pico aplaudieron."
+],
+[
+"Bientôt, la Fosse rouvre en grand ! On jouera au Menteur, à la Ronde des Six et au Grand Lancer. Tu mises, tu lances, tu cries. Surtout, tu cries.",
+"Soon the Pit reopens in style! We'll play Liar's Dice, the Round of Sixes and the Big Throw. You bet, you throw, you shout. Mostly, you shout.",
+"¡Pronto el Foso reabre a lo grande! Jugaremos al Mentiroso, a la Ronda de los Seis y al Gran Lanzamiento. Apuestas, lanzas, gritas. Sobre todo, gritas."
+],
+[
+"Mes dés ont des noms. Gaston, Pétula, Bobine, Fernand, Clémentine et Lulu. Gaston fait toujours six. Enfin, il le dit. Pétula ne dit rien. C'est la plus dangereuse.",
+"My dice have names. Gaston, Petula, Bobbin, Fernand, Clementine and Lulu. Gaston always rolls six. Well, so he says. Petula says nothing. She's the most dangerous.",
+"Mis dados tienen nombre. Gastón, Pétula, Bobina, Fernando, Clementina y Lulú. Gastón siempre saca seis. Bueno, eso dice. Pétula no dice nada. Es la más peligrosa."
+],
+[
+"On ne triche pas, chez moi. Jamais. Celui qui sort des dés pipés, je les lui confisque, je les cloue au mur, et il doit danser la gigue devant toute la Fosse. Personne n'a envie de danser la gigue devant moi.",
+"No cheating in my place. Ever. Whoever pulls out loaded dice, I confiscate them, nail them to the wall, and he has to dance a jig in front of the whole Pit. Nobody wants to dance a jig in front of me.",
+"En mi casa no se hace trampa. Nunca. Al que saca dados cargados, se los confisco, los clavo en la pared y tiene que bailar una giga delante de todo el Foso. Nadie quiere bailar una giga delante de mí."
+],
+[
+"La Fosse, c'était le cellier du vieux château. Une cave de pierre voûtée. Le son des dés y résonne comme le tonnerre. Quand je lance, tout Pile-ou-Face l'entend !",
+"The Pit used to be the old castle's cellar. A vaulted stone cave. The sound of dice echoes like thunder there. When I throw, all of Heads-or-Tails hears it!",
+"El Foso era la bodega del viejo castillo. Una cueva de piedra abovedada. El sonido de los dados retumba como un trueno. ¡Cuando lanzo, todo Cara-o-Cruz lo oye!"
+],
+[
+"Les pigeons et les maîtres du jeu, c'est ce qu'on dit ici. Moi, je dis : il y a ceux qui s'amusent, et ceux qui ne s'amusent pas. Les premiers gagnent toujours, même quand ils perdent.",
+"Pigeons and game masters, that's what they say here. I say: there are those who have fun, and those who don't. The first always win, even when they lose.",
+"Pichones y maestros del juego, eso es lo que se dice aquí. Yo digo: están los que se divierten y los que no. Los primeros siempre ganan, incluso cuando pierden."
+],
+[
+"Doc Cornemuse a essayé de soigner mon hoquet en jouant de la cornemuse. Le hoquet est parti. Les voisins aussi.",
+"Doc Bagpipe tried to cure my hiccups by playing the bagpipes. The hiccups left. So did the neighbours.",
+"El Doc Gaita intentó curarme el hipo tocando la gaita. El hipo se fue. Los vecinos también."
+],
+[
+"Hilda, la forgeronne, m'a battu au bras de fer. Trois fois. Je l'ai laissée gagner. Les trois fois. Exprès. HA HA ! … Non, ce n'est pas vrai.",
+"Hilda, the blacksmith, beat me at arm-wrestling. Three times. I let her win. All three times. On purpose. HA HA! … No, that's not true.",
+"Hilda, la herrera, me ganó al pulso. Tres veces. La dejé ganar. Las tres veces. A propósito. ¡JA, JA! … No, no es verdad."
+],
+[
+"Hé, toi ! Tu as une tête à faire un double-six !",
+"Hey, you! You've got a double-six kind of face!",
+"¡Eh, tú! ¡Tienes cara de sacar un doble seis!"
+],
+[
+"{surnom} ! Ça roule ?!",
+"{surnom}! Rolling?!",
+"¡{surnom}! ¡¿Rodamos?!"
+],
+[
+"Doc Cornemuse",
+"Doc Bagpipe",
+"Doc Gaita"
+],
+[
+"Respirez.",
+"Breathe in.",
+"Respire."
+],
+[
+"Tirez la langue.",
+"Stick out your tongue.",
+"Saque la lengua."
+],
+[
+"Hmm, je vois.",
+"Hmm, I see.",
+"Mmm, ya veo."
+],
+[
+"Un petit air ?",
+"A little tune?",
+"¿Una cancioncita?"
+],
+[
+"mon cher patient",
+"my dear patient",
+"mi querido paciente"
+],
+[
+"mon cas fascinant",
+"my fascinating case",
+"mi caso fascinante"
+],
+[
+"mon miracle",
+"my miracle",
+"mi milagro"
+],
+[
+"Ah ! Un patient ! Doc Cornemuse, apothicaire diplômé de… euh… d'un endroit très sérieux. Tirez la langue. Hmm. Vous avez une langue. C'est bon signe.",
+"Ah! A patient! Doc Bagpipe, apothecary, graduate of… er… a very serious place. Stick out your tongue. Hmm. You have a tongue. That's a good sign.",
+"¡Ah! ¡Un paciente! Doc Gaita, boticario diplomado en… eh… un sitio muy serio. Saque la lengua. Mmm. Tiene lengua. Buena señal."
+],
+[
+"{surnom} ! Comment va le hoquet ? Vous n'en avez pas ? Dommage. J'avais préparé un air spécial.",
+"{surnom}! How are the hiccups? You don't have any? Pity. I'd prepared a special tune.",
+"¡{surnom}! ¿Qué tal el hipo? ¿No tiene? Lástima. Había preparado una melodía especial."
+],
+[
+"Très bonne. J'ai guéri trois hoquets, un éternuement coincé et une crise de fou rire. Le fou rire, c'était moi. Je me suis guéri tout seul, en lisant mon propre diplôme.",
+"Very good. I cured three hiccups, a stuck sneeze and a fit of giggles. The giggles were mine. I cured myself, by reading my own diploma.",
+"Muy bien. He curado tres hipos, un estornudo atascado y un ataque de risa. La risa era mía. Me curé solo, leyendo mi propio diploma."
+],
+[
+"Le soir, je joue de la cornemuse sur la place. Les gens disent que ça soigne la mélancolie. Ou que ça la fait fuir. Le résultat est le même.",
+"In the evening I play the bagpipes in the square. People say it cures melancholy. Or scares it away. Same result.",
+"Por la noche toco la gaita en la plaza. La gente dice que cura la melancolía. O que la espanta. El resultado es el mismo."
+],
+[
+"La cornemuse, c'est ma méthode. Une note grave pour le mal de dos, une note aiguë pour le hoquet, et le grand air des Hautes-Terres pour les cœurs brisés. Ça marche une fois sur deux. L'autre fois, ça fait rire, et rire, ça soigne aussi.",
+"The bagpipes are my method. A low note for backache, a high note for hiccups, and the great Highland air for broken hearts. It works half the time. The other half, it makes people laugh, and laughing heals too.",
+"La gaita es mi método. Una nota grave para el dolor de espalda, una aguda para el hipo, y el gran aire de las Tierras Altas para los corazones rotos. Funciona una vez de cada dos. La otra, hace reír, y reír también cura."
+],
+[
+"Mes potions, je les fais avec les plantes de l'île : la fleur de cactus, l'armoise, le miel des abeilles de la prairie. Et une pincée de vapeur. La vapeur, ça rend tout plus scientifique.",
+"I make my potions from the island's plants: cactus flower, sagebrush, honey from the prairie bees. And a pinch of steam. Steam makes everything more scientific.",
+"Hago mis pociones con las plantas de la isla: flor de cactus, artemisa, miel de las abejas de la pradera. Y una pizca de vapor. El vapor lo hace todo más científico."
+],
+[
+"Sur cette île, il y a de l'air pur, du soleil, des mesas rouges, et des gens qui misent leur chapeau sur un coup de dé. L'air pur, c'est bon pour les poumons. Le reste, c'est bon pour mes affaires.",
+"This island has fresh air, sunshine, red mesas, and people who bet their hats on a roll of the dice. Fresh air is good for the lungs. The rest is good for my business.",
+"En esta isla hay aire puro, sol, mesetas rojas y gente que se apuesta el sombrero a una tirada de dados. El aire puro es bueno para los pulmones. Lo demás, para mi negocio."
+],
+[
+"Au bord du ruisseau de l'Orpailleur poussent des herbes à fièvre. Je n'y touche pas : il paraît qu'elles soignent mieux là où elles poussent. Mais le miel et les champignons, rapportez-m'en, je vous en donne un bon prix.",
+"Fever herbs grow along the Gold-Panner's brook. I don't touch them: they say they heal best where they grow. But honey and mushrooms, bring me some, I'll give you a good price.",
+"A orillas del arroyo del Buscador crecen hierbas para la fiebre. No las toco: dicen que curan mejor donde crecen. Pero la miel y las setas, tráigamelas, le pagaré buen precio."
+],
+[
+"La Shérif Plomb porte une cuirasse de chevalier sous son gilet. Elle dit que c'est pour le dos. Moi, je dis qu'elle a peur des chatouilles.",
+"Sheriff Lead wears a knight's breastplate under her waistcoat. She says it's for her back. I say she's ticklish.",
+"La Sheriff Plomo lleva una coraza de caballero bajo el chaleco. Dice que es por la espalda. Yo digo que tiene cosquillas."
+],
+[
+"Le vieux Pépite parle à sa batée. Je l'ai examiné : il va très bien. C'est la batée qui m'inquiète. Elle répond.",
+"Old Nugget talks to his gold pan. I examined him: he's perfectly fine. It's the pan that worries me. It answers.",
+"El viejo Pepita le habla a su batea. Lo he examinado: está perfectamente. Es la batea la que me preocupa. Responde."
+],
+[
+"Vous ! Vous avez une petite mine. Approchez, que je vous ausculte.",
+"You! You look a bit peaky. Come here, let me examine you.",
+"¡Usted! Tiene mala cara. Acérquese, que le ausculte."
+],
+[
+"{surnom} ! Un petit air de cornemuse ?",
+"{surnom}! A little bagpipe tune?",
+"¡{surnom}! ¿Una cancioncita de gaita?"
+],
+[
+"Potions, tisanes, remontants… et la consultation est gratuite. La cornemuse aussi, malheureusement. Vous avez {pieces} pièces.",
+"Potions, herbal teas, tonics… and the consultation is free. So are the bagpipes, unfortunately. You have {pieces} coins.",
+"Pociones, infusiones, tónicos… y la consulta es gratis. La gaita también, por desgracia. Tiene {pieces} monedas."
+],
+[
+"la Shérif Augustine Plomb",
+"Sheriff Augustine Lead",
+"la Sheriff Agustina Plomo"
+],
+[
+"shérif de Pile-ou-Face",
+"sheriff of Heads-or-Tails",
+"sheriff de Cara-o-Cruz"
+],
+[
+"Circulez.",
+"Move along.",
+"Circulen."
+],
+[
+"Pas d'histoires.",
+"No trouble.",
+"Nada de líos."
+],
+[
+"La loi, c'est la loi.",
+"The law is the law.",
+"La ley es la ley."
+],
+[
+"mon adjoint préféré",
+"my favourite deputy",
+"mi ayudante favorito"
+],
+[
+"mon bras droit",
+"my right hand",
+"mi mano derecha"
+],
+[
+"Halte. Shérif Augustine Plomb. Ici, une seule loi : pas de triche. Le reste, c'est votre affaire. Bienvenue à Pile-ou-Face.",
+"Halt. Sheriff Augustine Lead. Here, one law only: no cheating. The rest is your business. Welcome to Heads-or-Tails.",
+"Alto. Sheriff Agustina Plomo. Aquí, una sola ley: nada de trampas. Lo demás es asunto suyo. Bienvenido a Cara-o-Cruz."
+],
+[
+"{surnom}. Toujours honnête ? Bien. Continuez comme ça.",
+"{surnom}. Still honest? Good. Keep it that way.",
+"{surnom}. ¿Sigue siendo honrado? Bien. Siga así."
+],
+[
+"Tranquille. Personne n'a triché depuis trois jours. Ça me laisse le temps de polir ma cuirasse.",
+"Quiet. Nobody has cheated for three days. Gives me time to polish my breastplate.",
+"Tranquila. Nadie ha hecho trampa en tres días. Me deja tiempo para pulir la coraza."
+],
+[
+"Le soir, je fais ma ronde, puis je m'assois sur la place. J'écoute. Un dé qui sonne faux, je l'entends de l'autre bout de la rue.",
+"In the evening I do my rounds, then I sit in the square. I listen. A die that sounds wrong, I can hear it from the other end of the street.",
+"Por la noche hago la ronda y luego me siento en la plaza. Escucho. Un dado que suena falso lo oigo desde la otra punta de la calle."
+],
+[
+"Cette cuirasse ? Elle était à mon arrière-arrière-grand-mère, chevalier du vieux château. Je la porte sous mon gilet. Elle arrête les bousculades, les coups de coude au comptoir, et les mauvaises pensées.",
+"This breastplate? It belonged to my great-great-grandmother, a knight of the old castle. I wear it under my waistcoat. It stops shoving, elbows at the bar, and bad thoughts.",
+"¿Esta coraza? Era de mi tatarabuela, caballero del viejo castillo. La llevo bajo el chaleco. Para empujones, codazos en la barra y malos pensamientos."
+],
+[
+"Mon donjon, derrière le bureau, a mille ans. Au sommet, j'ai installé une sirène à vapeur. Quand quelqu'un triche, elle hurle. Elle n'a hurlé que deux fois. Les deux fois, c'était un chat.",
+"My keep, behind the office, is a thousand years old. At the top I installed a steam siren. When someone cheats, it howls. It has only howled twice. Both times it was a cat.",
+"Mi torreón, detrás de la oficina, tiene mil años. Arriba instalé una sirena de vapor. Cuando alguien hace trampa, aúlla. Solo ha aullado dos veces. Las dos, era un gato."
+],
+[
+"Vous voulez miser ? Allez-y. Mais misez ce que vous pouvez perdre. Ceux qui misent leur chemise finissent comme pigeons. Ceux qui savent s'arrêter deviennent maîtres. C'est tout ce que j'ai à dire.",
+"You want to bet? Go ahead. But bet what you can afford to lose. Those who bet their shirt end up as pigeons. Those who know when to stop become masters. That's all I have to say.",
+"¿Quiere apostar? Adelante. Pero apueste lo que pueda perder. Los que se apuestan la camisa acaban de pichones. Los que saben parar se convierten en maestros. Es todo lo que tengo que decir."
+],
+[
+"Si vous tombez du bord, le grand filet vous rattrapera. Mais n'en faites pas une habitude : le filet râle à chaque fois.",
+"If you fall off the edge, the big net will catch you. But don't make a habit of it: the net grumbles every time.",
+"Si se cae por el borde, la gran red le recogerá. Pero no lo convierta en costumbre: la red refunfuña cada vez."
+],
+[
+"On me dit qu'il y a une salle de poker secrète en ville. Je le sais. Tout le monde sait que je le sais. Tant qu'on y joue honnêtement, je ne la trouve pas.",
+"People tell me there's a secret poker room in town. I know. Everybody knows I know. As long as they play honestly there, I can't find it.",
+"Me dicen que hay una sala de póquer secreta en el pueblo. Lo sé. Todo el mundo sabe que lo sé. Mientras se juegue honradamente, no la encuentro."
+],
+[
+"Bartholomé a promis à son chien une étoile de shérif en fer-blanc. S'il la lui donne, je démissionne. Le chien ferait un meilleur travail.",
+"Bartholomew promised his dog a tin sheriff's star. If he gives it to him, I resign. The dog would do a better job.",
+"Bartolomé le prometió a su perro una estrella de sheriff de hojalata. Si se la da, dimito. El perro haría mejor trabajo."
+],
+[
+"Vous. Pas d'histoires, hein.",
+"You. No trouble, eh.",
+"Usted. Nada de líos, ¿eh?"
+],
+[
+"{surnom}. Tout va bien ?",
+"{surnom}. All good?",
+"{surnom}. ¿Todo bien?"
+],
+[
+"Gédéon Tic",
+"Gideon Tick",
+"Gedeón Tic"
+],
+[
+"horloger-mécanicien de l'Horlogerie Tic & Tac",
+"clockmaker-mechanic of the Tick & Tock Clock Shop",
+"relojero-mecánico de la Relojería Tic y Tac"
+],
+[
+"Tic !",
+"Tick!",
+"¡Tic!"
+],
+[
+"Tac !",
+"Tock!",
+"¡Tac!"
+],
+[
+"Fascinant.",
+"Fascinating.",
+"Fascinante."
+],
+[
+"Attendez, je règle.",
+"Wait, I'm adjusting.",
+"Espere, estoy ajustando."
+],
+[
+"mécanicien",
+"mechanic",
+"mecánico"
+],
+[
+"mon rouage",
+"my cogwheel",
+"mi engranaje"
+],
+[
+"mon grand ressort",
+"my mainspring",
+"mi muelle real"
+],
+[
+"Tic ! Pardon. Tac ! Gédéon Tic, horloger-mécanicien. Ne regardez pas mes lunettes, elles ont sept loupes et elles grossissent tout, même les politesses. Bonjour. BONJOUR. Voilà.",
+"Tick! Sorry. Tock! Gideon Tick, clockmaker-mechanic. Don't look at my glasses, they have seven lenses and they magnify everything, even manners. Hello. HELLO. There.",
+"¡Tic! Perdón. ¡Tac! Gedeón Tic, relojero-mecánico. No mire mis gafas, tienen siete lupas y lo agrandan todo, hasta la cortesía. Buenos días. BUENOS DÍAS. Ya está."
+],
+[
+"{surnom} ! Vous tombez à pic : je viens de finir une machine qui ne sert à rien. Elle le fait très bien.",
+"{surnom}! Perfect timing: I've just finished a machine that does nothing. It does it very well.",
+"¡{surnom}! Llega justo a tiempo: acabo de terminar una máquina que no sirve para nada. Lo hace muy bien."
+],
+[
+"Excellente. J'ai réglé la Roue de la Fortune ce matin. Elle tourne à la vitesse idéale : assez lente pour qu'on rêve, assez rapide pour qu'on n'ait pas le temps d'y croire.",
+"Excellent. I tuned the Wheel of Fortune this morning. It turns at the ideal speed: slow enough to dream, fast enough that you don't have time to believe it.",
+"Excelente. Esta mañana ajusté la Rueda de la Fortuna. Gira a la velocidad ideal: lo bastante lenta para soñar, lo bastante rápida para no tener tiempo de creérselo."
+],
+[
+"Je travaille sur une machine à battre les cartes, pour Madame Pique. Elle bat les cartes. Elle bat aussi les œufs, les tapis et, une fois, mon chapeau.",
+"I'm working on a card-shuffling machine for Madame Spade. It shuffles cards. It also beats eggs, rugs and, once, my hat.",
+"Trabajo en una máquina de barajar cartas para Madame Pica. Baraja las cartas. También bate huevos, sacude alfombras y, una vez, mi sombrero."
+],
+[
+"Tous les rouages qui tournent dans le bourg, c'est moi : les roues sur les façades, l'éolienne, le treuil de la Grande Chaîne. J'aime que les choses tournent. C'est la preuve qu'elles sont vivantes.",
+"All the gears turning in town are mine: the wheels on the façades, the windmill, the winch of the Great Chain. I like things that turn. It proves they're alive.",
+"Todos los engranajes que giran en el pueblo son míos: las ruedas de las fachadas, el molino, el torno de la Gran Cadena. Me gusta que las cosas giren. Es la prueba de que están vivas."
+],
+[
+"Mon rêve ? Une horloge qui donnerait l'heure de la chance. Pas l'heure qu'il est : l'heure où il faut miser. Je la règle depuis dix ans. Pour l'instant, elle sonne toujours trop tard.",
+"My dream? A clock that tells the hour of luck. Not what time it is: the time to place your bet. I've been tuning it for ten years. So far it always chimes too late.",
+"¿Mi sueño? Un reloj que diera la hora de la suerte. No la hora que es: la hora de apostar. Llevo diez años ajustándolo. De momento, siempre suena demasiado tarde."
+],
+[
+"Les Pierres-de-Ciel, sous l'île, je les ai mesurées. Elles vibrent à la fréquence d'un la. Un la parfait. Doc Cornemuse essaie de jouer avec elles. Les Pierres ne sont pas d'accord.",
+"The Sky-Stones under the island: I measured them. They vibrate at the frequency of an A. A perfect A. Doc Bagpipe tries to play along with them. The Stones don't agree.",
+"Las Piedras-del-Cielo, bajo la isla, las he medido. Vibran a la frecuencia de un la. Un la perfecto. El Doc Gaita intenta tocar con ellas. Las Piedras no están de acuerdo."
+],
+[
+"Pour les grandes tables de jeu, je fabrique des machines : un sabot qui distribue les cartes, un gobelet qui secoue les dés tout seul. Bientôt, vous verrez !",
+"For the big gaming tables, I'm building machines: a shoe that deals the cards, a cup that shakes the dice by itself. You'll see soon!",
+"Para las grandes mesas de juego fabrico máquinas: un sabot que reparte las cartas, un cubilete que agita los dados solo. ¡Pronto lo verá!"
+],
+[
+"Fanchon, la chapelière, m'a commandé un chapeau à hélice. Je lui ai fait. Elle s'est envolée jusqu'au château d'eau. Elle était ravie.",
+"Fanchon, the milliner, ordered a propeller hat from me. I made it. She flew up to the water tower. She was delighted.",
+"Fanchon, la sombrerera, me encargó un sombrero con hélice. Se lo hice. Salió volando hasta el depósito de agua. Estaba encantada."
+],
+[
+"Marius, à la Chaîne, compte les maillons. Il en a compté neuf mille quatre cent douze. Moi, j'en compte neuf mille quatre cent treize. Nous ne nous parlons plus.",
+"Marius, at the Chain, counts the links. He counted nine thousand four hundred and twelve. I count nine thousand four hundred and thirteen. We're no longer on speaking terms.",
+"Marius, en la Cadena, cuenta los eslabones. Contó nueve mil cuatrocientos doce. Yo cuento nueve mil cuatrocientos trece. Ya no nos hablamos."
+],
+[
+"Tic ! Vous, là ! Vous aimez ce qui tourne ?",
+"Tick! You there! Do you like things that turn?",
+"¡Tic! ¡Usted! ¿Le gusta lo que gira?"
+],
+[
+"{surnom} ! Tac !",
+"{surnom}! Tock!",
+"¡{surnom}! ¡Tac!"
+],
+[
+"Ressorts, engrenages, montres qui reculent, canards qui marchent… Tout est garanti un an. Ou un tour. Vous avez {pieces} pièces.",
+"Springs, gears, watches that run backwards, ducks that walk… Everything is guaranteed for a year. Or one turn. You have {pieces} coins.",
+"Muelles, engranajes, relojes que van hacia atrás, patos que caminan… Todo tiene un año de garantía. O una vuelta. Tiene {pieces} monedas."
+],
+[
+"le vieil Abélard Pépite",
+"old Abelard Nugget",
+"el viejo Abelardo Pepita"
+],
+[
+"prospecteur, au Comptoir des Prospecteurs",
+"prospector, at the Prospectors' Trading Post",
+"buscador de oro, en el Mostrador de los Buscadores"
+],
+[
+"Hé hé.",
+"Heh heh.",
+"Je, je."
+],
+[
+"Pas vrai, Ginette ?",
+"Right, Ginette?",
+"¿Verdad, Ginette?"
+],
+[
+"Ça brille !",
+"It shines!",
+"¡Brilla!"
+],
+[
+"De l'or, petit, de l'or !",
+"Gold, kid, gold!",
+"¡Oro, chico, oro!"
+],
+[
+"mon associé",
+"my partner",
+"mi socio"
+],
+[
+"mon filon",
+"my lode",
+"mi filón"
+],
+[
+"ma grosse pépite",
+"my big nugget",
+"mi gran pepita"
+],
+[
+"Hé hé ! Un jeunot ! Abélard Pépite, prospecteur. Et voici Ginette, ma batée. Dis bonjour, Ginette. … Elle est timide. Elle a trouvé sa première pépite en dix-huit cent… euh… il y a longtemps.",
+"Heh heh! A youngster! Abelard Nugget, prospector. And this is Ginette, my gold pan. Say hello, Ginette. … She's shy. She found her first nugget in eighteen hundred and… er… a long time ago.",
+"¡Je, je! ¡Un jovenzuelo! Abelardo Pepita, buscador de oro. Y esta es Ginette, mi batea. Saluda, Ginette. … Es tímida. Encontró su primera pepita en mil ochocientos… eh… hace mucho."
+],
+[
+"{surnom} ! Ginette parlait de toi justement. En bien. Enfin, je crois. Elle parle bas.",
+"{surnom}! Ginette was just talking about you. Nicely. Well, I think so. She speaks softly.",
+"¡{surnom}! Ginette justo hablaba de ti. Bien. Bueno, eso creo. Habla bajito."
+],
+[
+"Bonne ! Ce matin, au ruisseau de l'Orpailleur, j'ai trouvé trois paillettes. Ginette en a trouvé quatre. Elle triche, je crois. Ne le dis pas à la Shérif.",
+"Good! This morning, at the Gold-Panner's brook, I found three flakes. Ginette found four. I think she cheats. Don't tell the Sheriff.",
+"¡Bien! Esta mañana, en el arroyo del Buscador, encontré tres pepitas diminutas. Ginette encontró cuatro. Creo que hace trampa. No se lo digas a la Sheriff."
+],
+[
+"Le soir, je m'assois sur la place et je raconte mes histoires à qui veut. Et à qui ne veut pas. Surtout à qui ne veut pas : ce sont les meilleurs auditeurs.",
+"In the evening I sit in the square and tell my stories to whoever wants to listen. And whoever doesn't. Especially whoever doesn't: they're the best listeners.",
+"Por la noche me siento en la plaza y cuento mis historias a quien quiera. Y a quien no quiera. Sobre todo a quien no quiera: son los mejores oyentes."
+],
+[
+"Je suis arrivé ici avant le bourg, avant les saloons, avant la vapeur. Il n'y avait que la prairie, les mesas, et le vieux château en ruine. Et l'or du ruisseau. J'ai planté ma tente au bord de l'eau. La tente est toujours là. Moi, j'ai déménagé au Comptoir.",
+"I got here before the town, before the saloons, before the steam. There was only the prairie, the mesas, and the old ruined castle. And the gold in the brook. I pitched my tent by the water. The tent is still there. I moved to the Trading Post.",
+"Llegué aquí antes que el pueblo, antes que los saloons, antes que el vapor. Solo estaban la pradera, las mesetas y el viejo castillo en ruinas. Y el oro del arroyo. Planté mi tienda junto al agua. La tienda sigue ahí. Yo me mudé al Mostrador."
+],
+[
+"L'or du ruisseau vient de la Chute, qui le ramène… non, attends, la Chute descend. Alors d'où vient l'or ? Mystère. Ginette dit que ça vient des Pierres-de-Ciel. Ginette lit trop.",
+"The gold in the brook comes from the Falls, which bring it back… no, wait, the Falls go down. So where does the gold come from? Mystery. Ginette says it comes from the Sky-Stones. Ginette reads too much.",
+"El oro del arroyo viene de la Cascada, que lo trae… no, espera, la Cascada baja. Entonces, ¿de dónde viene el oro? Misterio. Ginette dice que viene de las Piedras-del-Cielo. Ginette lee demasiado."
+],
+[
+"Si tu trouves de l'or, des cristaux, du minerai, apporte-les-moi. Je les achète bon prix. Pas trop bon. Mais bon.",
+"If you find gold, crystals, ore, bring them to me. I'll pay a good price. Not too good. But good.",
+"Si encuentras oro, cristales, mineral, tráemelos. Te los compro a buen precio. No demasiado bueno. Pero bueno."
+],
+[
+"Au Vieux-Pic, il y a des corbeaux qui ramassent tout ce qui brille. Un jour, je grimperai voir leur nid. Il doit y avoir un trésor. Ou des cuillères. Beaucoup de cuillères.",
+"On Old Peak there are crows that pick up everything shiny. One day I'll climb up to see their nest. There must be treasure. Or spoons. Lots of spoons.",
+"En el Viejo Pico hay cuervos que recogen todo lo que brilla. Un día subiré a ver su nido. Debe de haber un tesoro. O cucharas. Muchas cucharas."
+],
+[
+"Pistache vend son journal un sou. Il y a tout dedans, même ce qui n'est pas encore arrivé. Hier, il a annoncé ma mort. J'ai acheté trois exemplaires pour vérifier.",
+"Pistachio sells his paper for a penny. Everything's in it, even what hasn't happened yet. Yesterday he announced my death. I bought three copies to check.",
+"Pistacho vende su periódico a céntimo. Trae de todo, hasta lo que aún no ha pasado. Ayer anunció mi muerte. Compré tres ejemplares para comprobarlo."
+],
+[
+"Rosemonde fait une tarte aux figues de Barbarie qui pique. Pas à cause des épines. À cause du piment. Elle dit que c'est la recette de sa grand-mère. Sa grand-mère était cracheuse de feu.",
+"Rosemonde makes a prickly pear pie that stings. Not because of the thorns. Because of the chili. She says it's her grandmother's recipe. Her grandmother was a fire-eater.",
+"Rosamunda hace una tarta de higos chumbos que pica. No por las espinas. Por la guindilla. Dice que es la receta de su abuela. Su abuela era tragafuegos."
+],
+[
+"Hé, jeunot ! Tu as vu briller quelque chose ?",
+"Hey, youngster! Seen anything shiny?",
+"¡Eh, jovenzuelo! ¿Has visto brillar algo?"
+],
+[
+"{surnom} ! Ginette te salue !",
+"{surnom}! Ginette says hello!",
+"¡{surnom}! ¡Ginette te saluda!"
+],
+[
+"De l'or, des pelles, et des galettes pour la route. Montre-moi ce que tu as trouvé. Tu as {pieces} pièces.",
+"Gold, shovels, and flatbreads for the road. Show me what you've found. You have {pieces} coins.",
+"Oro, palas y tortas para el camino. Enséñame lo que has encontrado. Tienes {pieces} monedas."
+],
+[
+"Fanchon Fil-d'Or",
+"Fanchon Gold-Thread",
+"Fanchon Hilo-de-Oro"
+],
+[
+"chapelière, Au Chapeau Pointu",
+"milliner, at The Pointed Hat",
+"sombrerera, en El Sombrero Puntiagudo"
+],
+[
+"Divin !",
+"Divine!",
+"¡Divino!"
+],
+[
+"Ça vous irait à ravir !",
+"That would suit you perfectly!",
+"¡Le quedaría de maravilla!"
+],
+[
+"Un chapeau, c'est une humeur.",
+"A hat is a mood.",
+"Un sombrero es un estado de ánimo."
+],
+[
+"Tournez-vous !",
+"Turn around!",
+"¡Dese la vuelta!"
+],
+[
+"tête nue",
+"bare head",
+"cabeza descubierta"
+],
+[
+"mon mannequin",
+"my model",
+"mi maniquí"
+],
+[
+"ma muse",
+"my muse",
+"mi musa"
+],
+[
+"mon chef-d'œuvre",
+"my masterpiece",
+"mi obra maestra"
+],
+[
+"Oh ! Une tête nue ! Quelle tragédie ! Fanchon Fil-d'Or, chapelière. Asseyez-vous, je prends vos mesures. Tour de tête : courageux. Forme du crâne : aventureuse. Il vous faut un stetson. Évidemment.",
+"Oh! A bare head! What a tragedy! Fanchon Gold-Thread, milliner. Sit down, I'll take your measurements. Head size: brave. Skull shape: adventurous. You need a stetson. Obviously.",
+"¡Oh! ¡Una cabeza descubierta! ¡Qué tragedia! Fanchon Hilo-de-Oro, sombrerera. Siéntese, le tomo medidas. Contorno: valiente. Forma del cráneo: aventurera. Necesita un stetson. Evidentemente."
+],
+[
+"{surnom} ! Tournez-vous ! … Non, toujours pas de chapeau. Je vais pleurer.",
+"{surnom}! Turn around! … No, still no hat. I'm going to cry.",
+"¡{surnom}! ¡Dese la vuelta! … No, sigue sin sombrero. Voy a llorar."
+],
+[
+"Divine ! J'ai inventé un chapeau à vapeur : quand on se met en colère, il siffle. Bartholomé en a acheté un. Il siffle tout le temps. Il est pourtant de très bonne humeur. Je dois revoir le réglage.",
+"Divine! I invented a steam hat: when you get angry, it whistles. Bartholomew bought one. It whistles all the time. Yet he's in a very good mood. I need to adjust it.",
+"¡Divina! He inventado un sombrero de vapor: cuando uno se enfada, silba. Bartolomé compró uno. Silba todo el rato. Y eso que está de muy buen humor. Tengo que ajustarlo."
+],
+[
+"Le soir, je vais au Théâtre des Mirages. Pour la pièce ? Non. Pour les chapeaux des spectateurs. Il y a toujours des idées à prendre. Et des chapeaux à refaire.",
+"In the evening I go to the Theatre of Mirages. For the play? No. For the audience's hats. There are always ideas to pick up. And hats to redo.",
+"Por la noche voy al Teatro de los Espejismos. ¿Por la obra? No. Por los sombreros del público. Siempre hay ideas que tomar. Y sombreros que rehacer."
+],
+[
+"Un chapeau, c'est une humeur. Le stetson, c'est l'aventure. Le haut-de-forme, la dignité. Le melon, la ponctualité. Et la capeline, c'est l'été. Moi, j'ai des humeurs toute l'année, alors j'ai des chapeaux toute l'année.",
+"A hat is a mood. The stetson is adventure. The top hat, dignity. The bowler, punctuality. And the sun hat is summer. I have moods all year round, so I have hats all year round.",
+"Un sombrero es un estado de ánimo. El stetson es la aventura. La chistera, la dignidad. El bombín, la puntualidad. Y la pamela, el verano. Yo tengo estados de ánimo todo el año, así que tengo sombreros todo el año."
+],
+[
+"J'ai appris le métier à la ville, en bas, très loin. Puis j'ai vu l'Île Perchée passer dans le ciel, avec ses saloons et ses gens à chapeaux. J'ai pris la Grande Chaîne le jour même. On ne laisse pas passer une île pleine de têtes.",
+"I learned the trade in the city, down below, far away. Then I saw the Perched Isle drift across the sky, with its saloons and its hatted people. I took the Great Chain that very day. You don't let an island full of heads go by.",
+"Aprendí el oficio en la ciudad, abajo, muy lejos. Luego vi pasar la Isla Encaramada por el cielo, con sus saloons y su gente con sombrero. Tomé la Gran Cadena ese mismo día. No se deja pasar una isla llena de cabezas."
+],
+[
+"Rapportez-moi des plumes ! Des plumes de perroquet, d'ara, de corbeau… Les corbeaux du Vieux-Pic en perdent beaucoup. Ils sont très coquets.",
+"Bring me feathers! Parrot, macaw, crow feathers… The crows of Old Peak lose a lot of them. They're very vain.",
+"¡Tráigame plumas! Plumas de loro, de guacamayo, de cuervo… Los cuervos del Viejo Pico pierden muchas. Son muy coquetos."
+],
+[
+"Pour les grandes parties de cartes qui se préparent, je couds des chapeaux de joueur : un pour le chanceux, un pour le malchanceux. Le même, en fait. Tout dépend de comment on le porte.",
+"For the big card games being prepared, I'm sewing players' hats: one for the lucky, one for the unlucky. The same one, in fact. It all depends on how you wear it.",
+"Para las grandes partidas de cartas que se preparan, coso sombreros de jugador: uno para el afortunado, otro para el desafortunado. El mismo, en realidad. Todo depende de cómo se lleve."
+],
+[
+"Madame Pique m'a commandé une voilette plus épaisse. Plus épaisse ! On ne verra plus rien. Ni ses yeux, ni son bluff. C'est peut-être le but.",
+"Madame Spade ordered a thicker veil from me. Thicker! You won't see a thing. Neither her eyes nor her bluff. Maybe that's the point.",
+"Madame Pica me encargó un velo más tupido. ¡Más tupido! No se verá nada. Ni sus ojos, ni su farol. Quizá sea esa la idea."
+],
+[
+"Hilda, la forgeronne, porte un bandana depuis quinze ans. Le même. Je lui ai proposé trente chapeaux. Elle a dit non trente fois. Je respecte. Mais je souffre.",
+"Hilda, the blacksmith, has worn a bandana for fifteen years. The same one. I offered her thirty hats. She said no thirty times. I respect that. But I suffer.",
+"Hilda, la herrera, lleva un pañuelo desde hace quince años. El mismo. Le he propuesto treinta sombreros. Dijo que no treinta veces. Lo respeto. Pero sufro."
+],
+[
+"Vous ! Votre tête me fait de la peine. Venez !",
+"You! Your head makes me sad. Come here!",
+"¡Usted! Su cabeza me da pena. ¡Venga!"
+],
+[
+"{surnom} ! Un nouveau chapeau ?",
+"{surnom}! A new hat?",
+"¡{surnom}! ¿Un sombrero nuevo?"
+],
+[
+"Des chapeaux pour toutes les humeurs, et des plumes pour les jours de fête. Vous avez {pieces} pièces. Tournez-vous !",
+"Hats for every mood, and feathers for festive days. You have {pieces} coins. Turn around!",
+"Sombreros para todos los estados de ánimo, y plumas para los días de fiesta. Tiene {pieces} monedas. ¡Dese la vuelta!"
+],
+[
+"Hilda Enclume",
+"Hilda Anvil",
+"Hilda Yunque"
+],
+[
+"forgeronne de la Forge du Marteau-Pilon",
+"blacksmith of the Steam-Hammer Forge",
+"herrera de la Fragua del Martinete"
+],
+[
+"BANG.",
+"BANG.",
+"BANG."
+],
+[
+"Solide.",
+"Sturdy.",
+"Sólido."
+],
+[
+"Ça tiendra.",
+"It'll hold.",
+"Aguantará."
+],
+[
+"mon marteau",
+"my hammer",
+"mi martillo"
+],
+[
+"mon enclume",
+"my anvil",
+"mi yunque"
+],
+[
+"ma forge",
+"my forge",
+"mi fragua"
+],
+[
+"Hm. Hilda. Forgeronne. Le marteau-pilon, là, derrière, c'est moi qui l'ai construit. Il tape à ma place quand je bois ma salsepareille. BANG. Voilà, il vous a salué.",
+"Hm. Hilda. Blacksmith. The steam hammer, back there, I built it. It hammers for me while I drink my sarsaparilla. BANG. There, it said hello.",
+"Mm. Hilda. Herrera. El martinete, ahí detrás, lo construí yo. Golpea por mí mientras me tomo la zarzaparrilla. BANG. Ya está, le ha saludado."
+],
+[
+"{surnom}. Bien. Assieds-toi sur l'enclume, elle ne mord pas.",
+"{surnom}. Good. Sit on the anvil, it doesn't bite.",
+"{surnom}. Bien. Siéntate en el yunque, no muerde."
+],
+[
+"Bonne. J'ai forgé une ancre pour Marius, à la Chaîne. Il voulait une ancre pour une île qui flotte. Je n'ai pas posé de questions.",
+"Good. I forged an anchor for Marius, at the Chain. He wanted an anchor for a floating island. I didn't ask questions.",
+"Bien. He forjado un ancla para Marius, en la Cadena. Quería un ancla para una isla que flota. No hice preguntas."
+],
+[
+"Le soir, je laisse refroidir la forge et je reste à côté. Le fer qui refroidit chante. Un petit « tic, tic ». Gédéon dit que c'est de la physique. Moi, je dis qu'il est content.",
+"In the evening I let the forge cool down and stay beside it. Cooling iron sings. A little “tick, tick”. Gideon says it's physics. I say it's happy.",
+"Por la noche dejo enfriar la fragua y me quedo al lado. El hierro que se enfría canta. Un pequeño «tic, tic». Gedeón dice que es física. Yo digo que está contento."
+],
+[
+"Je viens du nord, d'un pays de neige. Là-bas, on forge les épées des chevaliers. Ici, je forge les fers des chevaux, les cercles des tonneaux et les jetons de cuivre des tables de jeu. C'est moins glorieux. C'est plus utile.",
+"I come from the north, a land of snow. There, we forge knights' swords. Here, I forge horseshoes, barrel hoops and the copper chips for the gaming tables. Less glorious. More useful.",
+"Vengo del norte, de un país de nieve. Allí se forjan las espadas de los caballeros. Aquí forjo herraduras, aros de toneles y las fichas de cobre de las mesas de juego. Menos glorioso. Más útil."
+],
+[
+"Grand-Dé dit qu'il m'a laissée gagner au bras de fer. Il dit ça à tout le monde. Moi, je ne dis rien. Je souris. Ça l'énerve davantage.",
+"Big-Die says he let me win at arm-wrestling. He tells everybody. I say nothing. I smile. It annoys him more.",
+"Gran-Dado dice que me dejó ganar al pulso. Se lo dice a todo el mundo. Yo no digo nada. Sonrío. Eso le enfada más."
+],
+[
+"Du minerai de fer, apporte-m'en. Il y en a dans les rochers, au pied des mesas. Je paie comptant.",
+"Iron ore, bring me some. There's some in the rocks at the foot of the mesas. I pay cash.",
+"Mineral de hierro, tráemelo. Hay en las rocas, al pie de las mesetas. Pago al contado."
+],
+[
+"Les cages des Pierres-de-Ciel, sous l'île, c'est l'œuvre de ma grand-mère. Chaque printemps, je descends les vérifier. Au bout d'une corde. Avec mon marteau. BANG, BANG. Tout tient.",
+"The cages of the Sky-Stones, under the island, are my grandmother's work. Every spring I go down to check them. On a rope. With my hammer. BANG, BANG. It all holds.",
+"Las jaulas de las Piedras-del-Cielo, bajo la isla, son obra de mi abuela. Cada primavera bajo a revisarlas. Colgada de una cuerda. Con mi martillo. BANG, BANG. Todo aguanta."
+],
+[
+"Bartholomé a peur de son propre chien. Si. Quand Banco aboie deux fois, il se cache derrière le comptoir.",
+"Bartholomew is afraid of his own dog. He is. When Banco barks twice, he hides behind the bar.",
+"Bartolomé le tiene miedo a su propio perro. Sí. Cuando Banco ladra dos veces, se esconde detrás de la barra."
+],
+[
+"La Shérif est venue faire redresser sa cuirasse. Une bosse, là, sur le ventre. Elle a dit : « Le comptoir. » Je n'ai pas posé de questions.",
+"The Sheriff came to have her breastplate straightened. A dent, right there, on the belly. She said: “The bar counter.” I didn't ask questions.",
+"La Sheriff vino a que le enderezara la coraza. Una abolladura, ahí, en la barriga. Dijo: «La barra.» No hice preguntas."
+],
+[
+"Hm. Toi. Besoin d'outils ?",
+"Hm. You. Need tools?",
+"Mm. Tú. ¿Necesitas herramientas?"
+],
+[
+"{surnom}. BANG.",
+"{surnom}. BANG.",
+"{surnom}. BANG."
+],
+[
+"Pelles, haches, cannes. Solides. Tu as {pieces} pièces.",
+"Shovels, axes, rods. Sturdy. You have {pieces} coins.",
+"Palas, hachas, cañas. Sólidas. Tienes {pieces} monedas."
+],
+[
+"Rosemonde Confiture",
+"Rosemonde Jam",
+"Rosamunda Mermelada"
+],
+[
+"épicière de Clous & Confitures",
+"grocer at Nails & Jams",
+"tendera de Clavos y Mermeladas"
+],
+[
+"Mon sucre !",
+"Sugar!",
+"¡Mi azúcar!"
+],
+[
+"Goûte !",
+"Taste!",
+"¡Prueba!"
+],
+[
+"Ça colle, c'est bon signe.",
+"It's sticky, that's a good sign.",
+"Se pega, buena señal."
+],
+[
+"Hmmm !",
+"Mmmm!",
+"¡Mmmm!"
+],
+[
+"mon sucre",
+"sugar",
+"mi azúcar"
+],
+[
+"ma confiture",
+"my jam",
+"mi mermelada"
+],
+[
+"mon caramel",
+"my caramel",
+"mi caramelo"
+],
+[
+"ma praline",
+"my praline",
+"mi praliné"
+],
+[
+"mon pot de miel",
+"my honey pot",
+"mi tarro de miel"
+],
+[
+"Entre, mon sucre ! Rosemonde Confiture. Oui, c'est mon vrai nom. Et la boutique s'appelle « Clous & Confitures » parce que ma voisine, la Veuve Clou, vend les clous. Moi, je vends tout le reste. Surtout ce qui colle.",
+"Come in, sugar! Rosemonde Jam. Yes, that's my real name. And the shop is called “Nails & Jams” because my neighbour, the Widow Nail, sells the nails. I sell everything else. Especially what's sticky.",
+"¡Pasa, mi azúcar! Rosamunda Mermelada. Sí, es mi nombre de verdad. Y la tienda se llama «Clavos y Mermeladas» porque mi vecina, la Viuda Clavo, vende los clavos. Yo vendo todo lo demás. Sobre todo lo que se pega."
+],
+[
+"{surnom} ! Goûte ma nouvelle confiture ! Figue de Barbarie et piment doux. Ça pique, puis ça console.",
+"{surnom}! Taste my new jam! Prickly pear and sweet chili. It stings, then it comforts.",
+"¡{surnom}! ¡Prueba mi nueva mermelada! Higo chumbo y guindilla dulce. Pica, y luego consuela."
+],
+[
+"Délicieuse ! Comme ma tarte. J'ai cueilli des figues de Barbarie sur la terre rouge, ce matin. Trois épines dans le pouce. Rien du tout. Ça fait partie de la recette.",
+"Delicious! Like my pie. I picked prickly pears on the red earth this morning. Three thorns in my thumb. Nothing at all. It's part of the recipe.",
+"¡Deliciosa! Como mi tarta. Esta mañana recogí higos chumbos en la tierra roja. Tres espinas en el pulgar. Nada de nada. Es parte de la receta."
+],
+[
+"Le soir, je vais à la chapelle allumer une bougie pour tous ceux qui ont perdu au jeu. Il en faut beaucoup, des bougies, à Pile-ou-Face.",
+"In the evening I go to the chapel to light a candle for everyone who lost at the tables. You need a lot of candles in Heads-or-Tails.",
+"Por la tarde voy a la capilla a encender una vela por todos los que han perdido en el juego. Hacen falta muchas velas en Cara-o-Cruz."
+],
+[
+"Mes haricots du ranch mijotent trois jours dans le pot de fonte de ma mère, avec du sirop d'érable et une feuille de laurier. Les cow-boys en mangent avant de jouer. Ils disent que ça porte chance. Moi, je dis que ça tient au ventre.",
+"My ranch beans simmer for three days in my mother's cast-iron pot, with maple syrup and a bay leaf. The cowboys eat them before playing. They say it brings luck. I say it fills you up.",
+"Mis frijoles del rancho se cuecen tres días en la olla de hierro de mi madre, con sirope de arce y una hoja de laurel. Los vaqueros los comen antes de jugar. Dicen que dan suerte. Yo digo que llenan la barriga."
+],
+[
+"La salsepareille, c'est une boisson de racines, pétillante, sucrée, un peu amère. Pas d'alcool : la Shérif goûte chaque tonneau. Elle en goûte même beaucoup.",
+"Sarsaparilla is a root drink, fizzy, sweet, a little bitter. No alcohol: the Sheriff tastes every barrel. She tastes quite a lot, actually.",
+"La zarzaparrilla es una bebida de raíces, burbujeante, dulce, un poco amarga. Sin alcohol: la Sheriff prueba cada barril. Prueba bastante, de hecho."
+],
+[
+"Près de l'Abreuvoir, les cotonniers perdent leur coton au printemps. Toute la prairie devient blanche, comme une neige qui ne fond pas. Les enfants font des bonshommes de coton.",
+"Near the Watering Hole, the cottonwoods shed their cotton in spring. The whole prairie turns white, like snow that doesn't melt. The children make cotton snowmen.",
+"Cerca del Abrevadero, los álamos sueltan su algodón en primavera. Toda la pradera se vuelve blanca, como una nieve que no se derrite. Los niños hacen muñecos de algodón."
+],
+[
+"Si tu trouves des baies, des pommes, du miel, apporte-les-moi. J'en fais des confitures, et tu en auras un pot.",
+"If you find berries, apples, honey, bring them to me. I'll make jam, and you'll get a jar.",
+"Si encuentras bayas, manzanas, miel, tráemelas. Hago mermeladas, y tendrás un tarro."
+],
+[
+"Pistache, le petit crieur, c'est mon neveu. Il dit que mes tartes sont « la deuxième meilleure nouvelle de la journée ». Je voudrais bien savoir quelle est la première.",
+"Pistachio, the little newsboy, is my nephew. He says my pies are “the second-best news of the day”. I'd love to know what the first is.",
+"Pistacho, el pequeño voceador, es mi sobrino. Dice que mis tartas son «la segunda mejor noticia del día». Me gustaría saber cuál es la primera."
+],
+[
+"Zoé, l'aviatrice, achète chaque matin un pot de confiture de lait. Elle dit que c'est pour le moteur de la Navette. Je ne la crois pas. Le moteur n'a pas de cuillère.",
+"Zoe, the aviator, buys a jar of milk jam every morning. She says it's for the Shuttle's engine. I don't believe her. The engine doesn't have a spoon.",
+"Zoé, la aviadora, compra cada mañana un tarro de dulce de leche. Dice que es para el motor de la Lanzadera. No la creo. El motor no tiene cuchara."
+],
+[
+"Hé, mon sucre ! Viens goûter !",
+"Hey, sugar! Come and taste!",
+"¡Eh, mi azúcar! ¡Ven a probar!"
+],
+[
+"{surnom} ! J'ai une tarte qui t'attend !",
+"{surnom}! There's a pie waiting for you!",
+"¡{surnom}! ¡Tengo una tarta esperándote!"
+],
+[
+"Haricots du ranch, tarte aux figues, salsepareille, pain au miel… Goûte d'abord ! Tu as {pieces} pièces.",
+"Ranch beans, prickly pear pie, sarsaparilla, honey bread… Taste first! You have {pieces} coins.",
+"Frijoles del rancho, tarta de higos, zarzaparrilla, pan de miel… ¡Prueba primero! Tienes {pieces} monedas."
+],
+[
+"Pistache",
+"Pistachio",
+"Pistacho"
+],
+[
+"crieur du « Courrier Perché »",
+"newsboy of the “Perched Courier”",
+"voceador del «Correo Encaramado»"
+],
+[
+"Demandez le Courrier !",
+"Get your Courier!",
+"¡Pidan el Correo!"
+],
+[
+"Extra ! Extra !",
+"Extra! Extra!",
+"¡Extra! ¡Extra!"
+],
+[
+"Scoop !",
+"Scoop!",
+"¡Exclusiva!"
+],
+[
+"C'est dans le journal !",
+"It's in the paper!",
+"¡Sale en el periódico!"
+],
+[
+"m'sieur-dame",
+"sir-ma'am",
+"señor-señora"
+],
+[
+"mon abonné",
+"my subscriber",
+"mi suscriptor"
+],
+[
+"mon informateur",
+"my informant",
+"mi informante"
+],
+[
+"mon rédacteur en chef",
+"my editor-in-chief",
+"mi redactor jefe"
+],
+[
+"Demandez le Courrier Perché ! Un sou le numéro ! Extra, extra : un voyageur arrive à Pile-ou-Face ! … C'est vous. Vous êtes en première page. Je m'appelle Pistache. Je suis le crieur. Et le journaliste. Et l'imprimeur. J'ai dix ans.",
+"Get your Perched Courier! A penny an issue! Extra, extra: a traveller arrives in Heads-or-Tails! … That's you. You're on the front page. My name's Pistachio. I'm the newsboy. And the reporter. And the printer. I'm ten.",
+"¡Pidan el Correo Encaramado! ¡A céntimo el número! Extra, extra: ¡un viajero llega a Cara-o-Cruz! … Es usted. Sale en primera página. Me llamo Pistacho. Soy el voceador. Y el periodista. Y el impresor. Tengo diez años."
+],
+[
+"{surnom} ! Scoop ! Vous êtes revenu ! Je le savais, je l'avais écrit hier.",
+"{surnom}! Scoop! You're back! I knew it, I wrote it yesterday.",
+"¡{surnom}! ¡Exclusiva! ¡Ha vuelto! Lo sabía, lo escribí ayer."
+],
+[
+"Génial ! Aujourd'hui, dans le Courrier : « La Roue a failli s'arrêter ! » Bon, elle ne s'est pas arrêtée. Mais elle a failli. C'est quand même une nouvelle.",
+"Great! Today in the Courier: “The Wheel nearly stopped!” OK, it didn't stop. But it nearly did. That's still news.",
+"¡Genial! Hoy en el Correo: «¡La Rueda estuvo a punto de pararse!» Bueno, no se paró. Pero casi. Sigue siendo noticia."
+],
+[
+"Le soir, je vais devant la poste écouter le télégraphe. Ça fait tic-tic-tac. Ernest, le télégraphiste, m'apprend à lire les messages. Hier, j'ai lu : « Arrivée navette. Stop. Apportez parapluie. Stop. » Il pleuvait des nuages.",
+"In the evening I go to the post office to listen to the telegraph. It goes tick-tick-tock. Ernest, the telegraph operator, is teaching me to read the messages. Yesterday I read: “Shuttle arriving. Stop. Bring umbrella. Stop.” It was raining clouds.",
+"Por la tarde voy a la oficina de correos a escuchar el telégrafo. Hace tic-tic-tac. Ernesto, el telegrafista, me enseña a leer los mensajes. Ayer leí: «Llega lanzadera. Stop. Traigan paraguas. Stop.» Llovían nubes."
+],
+[
+"Plus tard, je veux être maître du jeu. Le plus grand ! Celui qui ne perd jamais, parce qu'il sait quand s'arrêter. La Shérif dit que c'est le secret. Pour l'instant, je m'entraîne aux billes. Je ne sais pas encore m'arrêter.",
+"When I grow up, I want to be a game master. The greatest! The one who never loses, because he knows when to stop. The Sheriff says that's the secret. For now I'm practising with marbles. I don't know how to stop yet.",
+"De mayor quiero ser maestro del juego. ¡El más grande! El que nunca pierde, porque sabe cuándo parar. La Sheriff dice que ese es el secreto. De momento practico con las canicas. Todavía no sé parar."
+],
+[
+"Ma tante Rosemonde dit que je suis trop curieux. Moi, je dis que les journaux, c'est fait pour ça. Si personne n'était curieux, il n'y aurait que des pages blanches.",
+"My aunt Rosemonde says I'm too curious. I say that's what newspapers are for. If nobody were curious, there'd only be blank pages.",
+"Mi tía Rosamunda dice que soy demasiado curioso. Yo digo que para eso están los periódicos. Si nadie fuera curioso, solo habría páginas en blanco."
+],
+[
+"Exclusif ! Bientôt, les grandes tables de jeu ouvrent ! Les dés à la Fosse, le blackjack au Tripot, le poker au Saloon… et peut-être ailleurs, en secret. Vous lirez tout dans le Courrier.",
+"Exclusive! Soon the big gaming tables open! Dice at the Pit, blackjack at the Den, poker at the Saloon… and maybe somewhere else, in secret. You'll read all about it in the Courier.",
+"¡Exclusiva! ¡Pronto abren las grandes mesas de juego! Los dados en el Foso, el blackjack en el Garito, el póquer en el Saloon… y quizá en otro sitio, en secreto. Lo leerá todo en el Correo."
+],
+[
+"Vous avez vu la Chute de l'Orpailleur ? Elle tombe jusqu'à la mer ! Un jour, j'ai jeté une bouteille avec un message dedans. Un pêcheur de Hautefond l'a trouvée. Il m'a répondu : « Arrête de jeter des bouteilles. »",
+"Have you seen the Gold-Panner's Falls? It drops all the way to the sea! One day I threw in a bottle with a message inside. A fisherman from Hautefond found it. He replied: “Stop throwing bottles.”",
+"¿Ha visto la Cascada del Buscador? ¡Cae hasta el mar! Un día tiré una botella con un mensaje dentro. Un pescador de Hautefond la encontró. Me contestó: «Deja de tirar botellas.»"
+],
+[
+"Scoop : Madame Pique a un chat ! Noir. Il s'appelle As. Il s'assoit sur les cartes pendant qu'elle joue. Personne n'ose le déranger.",
+"Scoop: Madame Spade has a cat! A black one. His name is Ace. He sits on the cards while she plays. Nobody dares disturb him.",
+"Exclusiva: ¡Madame Pica tiene un gato! Negro. Se llama As. Se sienta sobre las cartas mientras ella juega. Nadie se atreve a molestarlo."
+],
+[
+"Scoop : Grand-Dé a perdu une partie de dés contre Banco, le chien du saloon. Il dit que le chien a triché. La Shérif enquête. Le chien a un alibi : il dormait.",
+"Scoop: Big-Die lost a game of dice to Banco, the saloon dog. He says the dog cheated. The Sheriff is investigating. The dog has an alibi: he was asleep.",
+"Exclusiva: Gran-Dado perdió una partida de dados contra Banco, el perro del saloon. Dice que el perro hizo trampa. La Sheriff investiga. El perro tiene coartada: estaba dormido."
+],
+[
+"Extra, extra ! Demandez le Courrier !",
+"Extra, extra! Get your Courier!",
+"¡Extra, extra! ¡Pidan el Correo!"
+],
+[
+"{surnom} ! Scoop !",
+"{surnom}! Scoop!",
+"¡{surnom}! ¡Exclusiva!"
+],
+[
+"Marius Maillon",
+"Marius Link",
+"Marius Eslabón"
+],
+[
+"gardien de la Grande Chaîne",
+"keeper of the Great Chain",
+"guardián de la Gran Cadena"
+],
+[
+"Neuf mille quatre cent douze.",
+"Nine thousand four hundred and twelve.",
+"Nueve mil cuatrocientos doce."
+],
+[
+"Accrochez-vous.",
+"Hold on tight.",
+"Agárrese."
+],
+[
+"Ça grince, c'est bon.",
+"It creaks, that's good.",
+"Chirría, eso es bueno."
+],
+[
+"Mille sabords.",
+"Blistering barnacles.",
+"Rayos y truenos."
+],
+[
+"maître d'équipage",
+"boatswain",
+"contramaestre"
+],
+[
+"mon second",
+"my first mate",
+"mi segundo"
+],
+[
+"Bienvenue à la Potence, moussaillon. Marius Maillon, gardien de la Grande Chaîne. La cage descend jusqu'à la mer, deux cent soixante-dix mètres. Et elle remonte. En général.",
+"Welcome to the Gallows Beam, cabin boy. Marius Link, keeper of the Great Chain. The cage goes down to the sea, two hundred and seventy metres. And it comes back up. Usually.",
+"Bienvenido a la Horca, grumete. Marius Eslabón, guardián de la Gran Cadena. La jaula baja hasta el mar, doscientos setenta metros. Y vuelve a subir. Por lo general."
+],
+[
+"{surnom} ! Tu montes, tu descends ? Les deux, ça se fait aussi.",
+"{surnom}! Going up, going down? Both is an option too.",
+"¡{surnom}! ¿Subes, bajas? Las dos cosas también se puede."
+],
+[
+"Bonne. J'ai recompté les maillons ce matin : neuf mille quatre cent douze. Gédéon dit neuf mille quatre cent treize. Il compte le crochet. Le crochet n'est pas un maillon. C'est un crochet.",
+"Good. I recounted the links this morning: nine thousand four hundred and twelve. Gideon says nine thousand four hundred and thirteen. He counts the hook. The hook is not a link. It's a hook.",
+"Bien. Esta mañana volví a contar los eslabones: nueve mil cuatrocientos doce. Gedeón dice nueve mil cuatrocientos trece. Cuenta el gancho. El gancho no es un eslabón. Es un gancho."
+],
+[
+"Quand le vent souffle, la chaîne chante. Une note longue, très grave. Les baleines, en bas, lui répondent. Je ne mens pas. Demande au Ponton.",
+"When the wind blows, the chain sings. One long, very deep note. The whales down below answer it. I'm not lying. Ask at the Pontoon.",
+"Cuando sopla el viento, la cadena canta. Una nota larga, muy grave. Las ballenas, abajo, le responden. No miento. Pregunta en el Pontón."
+],
+[
+"J'étais marin, avant. Puis j'ai vu cette île passer au-dessus de mon bateau. Une île dans le ciel ! Je me suis dit : il faut un marin, là-haut. Quelqu'un qui connaît les cordages. Et me voilà, au bout d'une chaîne.",
+"I used to be a sailor. Then I saw this island pass over my boat. An island in the sky! I told myself: they need a sailor up there. Someone who knows rigging. And here I am, at the end of a chain.",
+"Antes era marinero. Luego vi esta isla pasar por encima de mi barco. ¡Una isla en el cielo! Me dije: ahí arriba hace falta un marinero. Alguien que sepa de cabos. Y aquí estoy, al final de una cadena."
+],
+[
+"En bas, sur le Ponton de la Chaîne, tu peux amarrer ta barque. Elle t'attendra. Les mouettes la surveillent. Elles ne la volent pas : elles n'ont pas de mains.",
+"Down below, at the Chain Pontoon, you can moor your boat. It'll wait for you. The gulls keep an eye on it. They won't steal it: they don't have hands.",
+"Abajo, en el Pontón de la Cadena, puedes amarrar tu barca. Te esperará. Las gaviotas la vigilan. No la roban: no tienen manos."
+],
+[
+"La cage attend une dizaine de secondes, grille ouverte, puis elle part. Monte dedans, assieds-toi sur la banquette, et regarde la mer s'éloigner. Ou se rapprocher. Ça dépend dans quel sens tu vas.",
+"The cage waits about ten seconds, gate open, then it leaves. Get in, sit on the bench, and watch the sea move away. Or come closer. Depends which way you're going.",
+"La jaula espera unos diez segundos, con la reja abierta, y luego sale. Súbete, siéntate en el banco y mira cómo el mar se aleja. O se acerca. Depende de hacia dónde vayas."
+],
+[
+"Il y a deux cages : quand l'une monte, l'autre descend. Elles se croisent à mi-chemin et se font un petit salut. Je les ai peintes en face pour qu'elles se reconnaissent.",
+"There are two cages: when one goes up, the other comes down. They pass each other halfway and give a little wave. I painted them facing each other so they'd recognize each other.",
+"Hay dos jaulas: cuando una sube, la otra baja. Se cruzan a mitad de camino y se saludan. Las pinté una frente a la otra para que se reconozcan."
+],
+[
+"Zoé, la pilote de la Navette, dit que son dirigeable est plus rapide que ma chaîne. Plus rapide, peut-être. Plus solide, sûrement pas.",
+"Zoe, the Shuttle's pilot, says her airship is faster than my chain. Faster, maybe. Sturdier, certainly not.",
+"Zoé, la piloto de la Lanzadera, dice que su dirigible es más rápido que mi cadena. Más rápido, quizá. Más sólido, seguro que no."
+],
+[
+"Hilda m'a forgé une ancre. Pour quoi faire, sur une île qui flotte ? Pour le jour où elle voudra s'en aller, pardi.",
+"Hilda forged me an anchor. What for, on a floating island? For the day it decides to leave, of course.",
+"Hilda me forjó un ancla. ¿Para qué, en una isla que flota? Para el día en que quiera marcharse, ¡pues claro!"
+],
+[
+"Ohé, moussaillon ! La cage part bientôt !",
+"Ahoy, cabin boy! The cage leaves soon!",
+"¡Ah del barco, grumete! ¡La jaula sale pronto!"
+],
+[
+"{surnom} ! Accroche-toi !",
+"{surnom}! Hold on!",
+"¡{surnom}! ¡Agárrate!"
+],
+[
+"Zoé Nuée",
+"Zoe Cloud",
+"Zoé Nube"
+],
+[
+"aviatrice de la Navette des Nuées",
+"aviator of the Cloud Shuttle",
+"aviadora de la Lanzadera de las Nubes"
+],
+[
+"Contact !",
+"Contact!",
+"¡Contacto!"
+],
+[
+"Plein gaz !",
+"Full throttle!",
+"¡A todo gas!"
+],
+[
+"Vent arrière !",
+"Tailwind!",
+"¡Viento en popa!"
+],
+[
+"On décolle !",
+"Take-off!",
+"¡Despegamos!"
+],
+[
+"mon navigateur",
+"my navigator",
+"mi navegante"
+],
+[
+"as des nuages",
+"ace of the clouds",
+"as de las nubes"
+],
+[
+"Salut, terrien ! Zoé Nuée, pilote de la Navette des Nuées. Le gros ballon rayé, là, c'est ma Capucine. Elle fait la navette avec Hautefond, au Mât des Nuées. Monte quand elle est à quai, c'est gratuit !",
+"Hi, landlubber! Zoe Cloud, pilot of the Cloud Shuttle. The big striped balloon there is my Capucine. She shuttles to Hautefond, to the Cloud Mast. Hop on when she's docked, it's free!",
+"¡Hola, terrícola! Zoé Nube, piloto de la Lanzadera de las Nubes. El gran globo a rayas de ahí es mi Capucine. Va y viene a Hautefond, al Mástil de las Nubes. Sube cuando esté en el muelle, ¡es gratis!"
+],
+[
+"{surnom} ! On décolle bientôt. Tu viens ?",
+"{surnom}! We take off soon. Coming?",
+"¡{surnom}! Despegamos pronto. ¿Vienes?"
+],
+[
+"Au top ! Ce matin, on a traversé un nuage en forme de lapin. Les passagers ont applaudi. Le lapin aussi, je crois.",
+"Top notch! This morning we flew through a rabbit-shaped cloud. The passengers applauded. So did the rabbit, I think.",
+"¡Genial! Esta mañana atravesamos una nube con forma de conejo. Los pasajeros aplaudieron. El conejo también, creo."
+],
+[
+"La nuit, je dors à l'Hôtel des Nuages, chambre douze, la plus haute. J'ai besoin de voir le ciel avant de fermer les yeux. Sinon, je rêve de terre ferme, et ça me donne le mal de mer.",
+"At night I sleep at the Cloud Hotel, room twelve, the highest. I need to see the sky before I close my eyes. Otherwise I dream of solid ground, and it makes me seasick.",
+"De noche duermo en el Hotel de las Nubes, habitación doce, la más alta. Necesito ver el cielo antes de cerrar los ojos. Si no, sueño con tierra firme, y me mareo."
+],
+[
+"Mon grand-père pilotait le Zéphyr, le dirigeable de la grande île. Il m'a appris : « Ne te bats jamais contre le vent. Fais-en ton ami. » Depuis, le vent et moi, on se tutoie.",
+"My grandfather flew the Zephyr, the big island's airship. He taught me: “Never fight the wind. Make it your friend.” Since then, the wind and I are on first-name terms.",
+"Mi abuelo pilotaba el Céfiro, el dirigible de la isla grande. Me enseñó: «Nunca luches contra el viento. Hazlo tu amigo.» Desde entonces, el viento y yo nos tuteamos."
+],
+[
+"La Capucine monte à trois cents mètres, passe au-dessus de l'île et redescend sur le quai. Pendant le vol, regarde par le hublot : tu verras les mesas, la chute, et la Roue qui tourne. De là-haut, tout Pile-ou-Face ressemble à un jeu de société.",
+"The Capucine climbs to three hundred metres, flies over the island and comes back down on the quay. During the flight, look out of the porthole: you'll see the mesas, the falls, and the Wheel turning. From up there, all of Heads-or-Tails looks like a board game.",
+"La Capucine sube a trescientos metros, pasa por encima de la isla y vuelve a bajar al muelle. Durante el vuelo, mira por el ojo de buey: verás las mesetas, la cascada y la Rueda girando. Desde ahí arriba, todo Cara-o-Cruz parece un juego de mesa."
+],
+[
+"Pour monter ici, il y a ma Navette depuis Hautefond, ou la Grande Chaîne depuis la mer. Les gens pressés prennent la Navette. Les gens courageux prennent la Chaîne. Les gens très courageux prennent les deux, pour comparer.",
+"To get up here, there's my Shuttle from Hautefond, or the Great Chain from the sea. People in a hurry take the Shuttle. Brave people take the Chain. Very brave people take both, to compare.",
+"Para subir aquí está mi Lanzadera desde Hautefond, o la Gran Cadena desde el mar. La gente con prisa toma la Lanzadera. La gente valiente, la Cadena. La gente muy valiente toma las dos, para comparar."
+],
+[
+"Le Mât des Nuées, à Hautefond, est au bout d'un ponton qui avance au-dessus de la falaise du sud. La première fois, les gens ne regardent pas en bas. La deuxième fois, ils ne regardent que ça.",
+"The Cloud Mast, in Hautefond, is at the end of a pier that juts out over the south cliff. The first time, people don't look down. The second time, that's all they look at.",
+"El Mástil de las Nubes, en Hautefond, está al final de un pontón que avanza sobre el acantilado sur. La primera vez, la gente no mira hacia abajo. La segunda, no mira otra cosa."
+],
+[
+"Marius dit que sa chaîne est plus solide que mon ballon. Je lui ai proposé une course. Il a dit : « Une course, c'est un pari. » Ici, on n'y échappe pas.",
+"Marius says his chain is sturdier than my balloon. I suggested a race. He said: “A race is a bet.” Here, there's no escaping it.",
+"Marius dice que su cadena es más sólida que mi globo. Le propuse una carrera. Dijo: «Una carrera es una apuesta.» Aquí no hay escapatoria."
+],
+[
+"Rosemonde croit que je mets de la confiture de lait dans le moteur. N'importe quoi. Je la mange en vol. Le moteur, lui, préfère le charbon.",
+"Rosemonde thinks I put milk jam in the engine. Nonsense. I eat it in flight. The engine prefers coal.",
+"Rosamunda cree que echo dulce de leche en el motor. Qué tontería. Me lo como en vuelo. El motor prefiere el carbón."
+],
+[
+"Hé, terrien ! La Navette part bientôt !",
+"Hey, landlubber! The Shuttle leaves soon!",
+"¡Eh, terrícola! ¡La Lanzadera sale pronto!"
+],
+[
+"{surnom} ! Plein gaz ?",
+"{surnom}! Full throttle?",
+"¡{surnom}! ¿A todo gas?"
+],
+[
+"le Quai des Nuées",
+"the Cloud Quay",
+"el Muelle de las Nubes"
+],
+[
+"la place de la Roue",
+"Wheel Square",
+"la plaza de la Rueda"
+],
+[
+"la Potence de la Grande Chaîne",
+"the Gallows Beam of the Great Chain",
+"la Horca de la Gran Cadena"
+],
+[
+"le Ponton de la Chaîne",
+"the Chain Pontoon",
+"el Pontón de la Cadena"
+],
+[
+"le Vieux-Pic",
+"Old Peak",
+"el Viejo Pico"
+],
+[
+"la Mesa des Corbeaux",
+"Crows' Mesa",
+"la Meseta de los Cuervos"
+],
+[
+"le ruisseau de l'Orpailleur",
+"the Gold-Panner's brook",
+"el arroyo del Buscador"
+],
+[
+"la Chute de l'Orpailleur",
+"the Gold-Panner's Falls",
+"la Cascada del Buscador"
+],
+[
+"l'Abreuvoir",
+"the Watering Hole",
+"el Abrevadero"
+],
+[
+"le bord de l'île",
+"the edge of the island",
+"el borde de la isla"
+],
+[
+"sous l'île",
+"under the island",
+"bajo la isla"
+],
+[
+"la chapelle Notre-Dame-des-Nuées",
+"the chapel of Our Lady of the Clouds",
+"la capilla de Nuestra Señora de las Nubes"
+],
+[
+"le corral",
+"the corral",
+"el corral"
+],
+[
+"le Mât des Nuées de Hautefond",
+"the Cloud Mast of Hautefond",
+"el Mástil de las Nubes de Hautefond"
+],
+[
+"LA GRANDE CHAÎNE",
+"THE GREAT CHAIN",
+"LA GRAN CADENA"
+],
+[
+"PONTON DE LA CHAÎNE",
+"CHAIN PONTOON",
+"PONTÓN DE LA CADENA"
+],
+[
+"QUAI DES NUÉES\nNAVETTE POUR HAUTEFOND",
+"CLOUD QUAY\nSHUTTLE TO HAUTEFOND",
+"MUELLE DE LAS NUBES\nLANZADERA A HAUTEFOND"
+],
+[
+"MÂT DES NUÉES\nNAVETTE POUR L'ÎLE PERCHÉE",
+"CLOUD MAST\nSHUTTLE TO THE PERCHED ISLE",
+"MÁSTIL DE LAS NUBES\nLANZADERA A LA ISLA ENCARAMADA"
+],
+[
+"Vous vous êtes évanoui… On vous a porté sur un banc de la place de la Roue, à l'ombre, avec une salsepareille bien fraîche. Doc Cornemuse a joué un air de cornemuse « pour réveiller les esprits ». Ça marche, hélas.",
+"You fainted… They carried you to a bench on Wheel Square, in the shade, with a nice cold sarsaparilla. Doc Bagpipe played a bagpipe tune “to wake the spirits”. It works, alas.",
+"Te has desmayado… Te llevaron a un banco de la plaza de la Rueda, a la sombra, con una zarzaparrilla bien fresca. El Doc Gaita tocó una melodía de gaita «para despertar los espíritus». Funciona, por desgracia."
+],
+[
+"E : descendre de la Navette",
+"E: get off the Shuttle",
+"E: bajar de la Lanzadera"
+],
+[
+"E : monter à bord de la Navette des Nuées",
+"E: board the Cloud Shuttle",
+"E: subir a bordo de la Lanzadera de las Nubes"
+],
+[
+"Gâchette : monter à bord de la Navette",
+"Trigger: board the Shuttle",
+"Gatillo: subir a bordo de la Lanzadera"
+],
+[
+"E : monter dans la cage de la Grande Chaîne",
+"E: step into the Great Chain's cage",
+"E: subir a la jaula de la Gran Cadena"
+],
+[
+"Gâchette : monter dans la cage",
+"Trigger: step into the cage",
+"Gatillo: subir a la jaula"
+],
+[
+"E : pousser la porte",
+"E: push the door",
+"E: empujar la puerta"
+],
+[
+"Gâchette : pousser la porte",
+"Trigger: push the door",
+"Gatillo: empujar la puerta"
+],
+[
+"Le Saloon du Chien qui Mise : on y monte les grandes tables de poker. Bartholomé sert sur la terrasse en attendant.",
+"The Betting Dog Saloon: the big poker tables are being set up. Bartholomew serves on the terrace in the meantime.",
+"El Saloon del Perro que Apuesta: están montando las grandes mesas de póquer. Bartolomé sirve en la terraza mientras tanto."
+],
+[
+"Le Tripot de la Dame de Pique : fermé. Sur la porte, un carton : « Table de blackjack en préparation. Revenez quand vous saurez vous arrêter. »",
+"The Queen of Spades' Den: closed. On the door, a card: “Blackjack table being prepared. Come back when you know when to stop.”",
+"El Garito de la Dama de Picas: cerrado. En la puerta, un cartel: «Mesa de blackjack en preparación. Vuelva cuando sepa parar.»"
+],
+[
+"La Fosse aux Dés : fermée. Derrière la porte, on entend rouler des dés, et Grand-Dé qui crie « Ça roule ! ». Les tables ouvrent bientôt.",
+"The Dice Pit: closed. Behind the door you can hear dice rolling, and Big-Die shouting “Let's roll!”. The tables open soon.",
+"El Foso de los Dados: cerrado. Tras la puerta se oyen rodar dados, y a Gran-Dado gritando «¡Rueda que rueda!». Las mesas abren pronto."
+],
+[
+"Le Coupe-Chou : « Fermé. Le barbier est parti chercher ses ciseaux. » Par la vitrine, au fond de la boutique, on devine une petite porte…",
+"The Cut-Throat: “Closed. The barber has gone to fetch his scissors.” Through the window, at the back of the shop, you can make out a small door…",
+"La Navaja: «Cerrado. El barbero ha ido a buscar sus tijeras.» Por el escaparate, al fondo de la tienda, se adivina una puertecita…"
+],
+[
+"L'Île Perchée — Pile-ou-Face, la ville qui mise. Ici, on joue tout : son chapeau, son dîner, sa réputation… et parfois sa moustache.",
+"The Perched Isle — Heads-or-Tails, the betting town. Here people gamble everything: their hat, their dinner, their reputation… and sometimes their moustache.",
+"La Isla Encaramada — Cara-o-Cruz, el pueblo que apuesta. Aquí se juega todo: el sombrero, la cena, la reputación… y a veces el bigote."
+],
+[
+"La place de la Roue : la Roue de la Fortune tourne toute seule, jour et nuit. On dit qu'elle s'arrête quand quelqu'un a de la chance.",
+"Wheel Square: the Wheel of Fortune turns by itself, day and night. They say it stops when someone is lucky.",
+"La plaza de la Rueda: la Rueda de la Fortuna gira sola, día y noche. Dicen que se para cuando alguien tiene suerte."
+],
+[
+"La Chute de l'Orpailleur : le ruisseau tombe de l'île jusqu'à la mer. On dit qu'il roule des paillettes d'or.",
+"The Gold-Panner's Falls: the brook drops from the island all the way to the sea. They say it carries flakes of gold.",
+"La Cascada del Buscador: el arroyo cae desde la isla hasta el mar. Dicen que arrastra pepitas de oro."
+],
+[
+"Le Vieux-Pic : une mesa de grès rouge, rayée comme un gâteau. Les corbeaux y tiennent conseil.",
+"Old Peak: a red sandstone mesa, striped like a layer cake. The crows hold council there.",
+"El Viejo Pico: una meseta de arenisca roja, a capas como un pastel. Los cuervos celebran consejo allí."
+],
+[
+"Sous l'île : les Pierres-de-Ciel, d'énormes cristaux pris dans des cages de fer. Ce sont elles qui portent tout ça.",
+"Under the island: the Sky-Stones, huge crystals held in iron cages. They're what carry all of this.",
+"Bajo la isla: las Piedras-del-Cielo, enormes cristales presos en jaulas de hierro. Son ellas las que sostienen todo esto."
+],
+[
+"Ouf ! Le grand filet de Pile-ou-Face, tendu sous le bord, vous a rattrapé ; on vous a remonté au treuil jusqu'à la place. Ici, on perd parfois sa mise, jamais ses visiteurs.",
+"Phew! The big net of Heads-or-Tails, stretched under the edge, caught you; they winched you back up to the square. Here you sometimes lose your stake, never your visitors.",
+"¡Uf! La gran red de Cara-o-Cruz, tendida bajo el borde, te ha recogido; te subieron con el torno hasta la plaza. Aquí a veces se pierde la apuesta, nunca a los visitantes."
+],
+[
+"BARBIER\nLE COUPE-CHOU",
+"BARBER\nTHE CUT-THROAT",
+"BARBERÍA\nLA NAVAJA"
+],
+[
+"BAZAR DE LA VEUVE CLOU",
+"WIDOW NAIL'S BAZAAR",
+"BAZAR DE LA VIUDA CLAVO"
+],
+[
+"BANQUE DE L'ÉCU PERCHÉ",
+"BANK OF THE PERCHED CROWN",
+"BANCO DEL ESCUDO ENCARAMADO"
+],
+[
+"SALOON DU CHIEN QUI MISE",
+"THE BETTING DOG SALOON",
+"SALOON DEL PERRO QUE APUESTA"
+],
+[
+"FORGE DU MARTEAU-PILON",
+"STEAM-HAMMER FORGE",
+"FRAGUA DEL MARTINETE"
+],
+[
+"POSTE\n& TÉLÉGRAPHE",
+"POST\n& TELEGRAPH",
+"CORREOS\nY TELÉGRAFOS"
+],
+[
+"HÔTEL DES NUAGES",
+"CLOUD HOTEL",
+"HOTEL DE LAS NUBES"
+],
+[
+"LA FOSSE AUX DÉS",
+"THE DICE PIT",
+"EL FOSO DE LOS DADOS"
+],
+[
+"TRIPOT DE LA DAME DE PIQUE",
+"THE QUEEN OF SPADES' DEN",
+"GARITO DE LA DAMA DE PICAS"
+],
+[
+"CLOUS & CONFITURES",
+"NAILS & JAMS",
+"CLAVOS Y MERMELADAS"
+],
+[
+"APOTHICAIRE\nDOC CORNEMUSE",
+"APOTHECARY\nDOC BAGPIPE",
+"BOTICA\nDOC GAITA"
+],
+[
+"BUREAU DU SHÉRIF",
+"SHERIFF'S OFFICE",
+"OFICINA DEL SHERIFF"
+],
+[
+"COMPTOIR DES PROSPECTEURS",
+"PROSPECTORS' TRADING POST",
+"MOSTRADOR DE LOS BUSCADORES"
+],
+[
+"AU CHAPEAU POINTU",
+"THE POINTED HAT",
+"EL SOMBRERO PUNTIAGUDO"
+],
+[
+"SELLERIE DES ÉPERONS",
+"SPURS SADDLERY",
+"GUARNICIONERÍA DE LAS ESPUELAS"
+],
+[
+"ÉCURIE DU GRAND GALOP",
+"FULL GALLOP STABLES",
+"CUADRA DEL GRAN GALOPE"
+],
+[
+"PENSION ROSALIE",
+"ROSALIE'S BOARDING HOUSE",
+"PENSIÓN ROSALÍA"
+],
+[
+"HORLOGERIE\nTIC & TAC",
+"CLOCKMAKER\nTICK & TOCK",
+"RELOJERÍA\nTIC Y TAC"
+],
+[
+"THÉÂTRE DES MIRAGES",
+"THEATRE OF MIRAGES",
+"TEATRO DE LOS ESPEJISMOS"
+],
+[
+"QUAI DES NUÉES",
+"CLOUD QUAY",
+"MUELLE DE LAS NUBES"
+],
+[
+"LE VIEUX-PIC",
+"OLD PEAK",
+"EL VIEJO PICO"
+],
+[
+"L'ABREUVOIR",
+"THE WATERING HOLE",
+"EL ABREVADERO"
+],
+[
+"PILE-OU-FACE",
+"HEADS-OR-TAILS",
+"CARA-O-CRUZ"
+],
+[
+"×2",
+"×2",
+"×2"
+],
+[
+"GRAND\nTOURNOI\nDE DÉS",
+"GRAND\nDICE\nTOURNAMENT",
+"GRAN\nTORNEO\nDE DADOS"
+],
+[
+"ON CHERCHE\nUN\nCROUPIER",
+"WANTED:\nA\nCROUPIER",
+"SE BUSCA\nUN\nCRUPIER"
+],
+[
+"PILE-OU-FACE, LA VILLE QUI MISE",
+"HEADS-OR-TAILS, THE BETTING TOWN",
+"CARA-O-CRUZ, EL PUEBLO QUE APUESTA"
+],
+[
+"NOTRE-DAME-DES-NUÉES",
+"OUR LADY OF THE CLOUDS",
+"NUESTRA SEÑORA DE LAS NUBES"
+],
+[
+"vers Pile-ou-Face, là-haut",
+"up to Heads-or-Tails",
+"hacia Cara-o-Cruz, allá arriba"
+],
+[
+"vers le Ponton de la Chaîne, sur la mer",
+"down to the Chain Pontoon, on the sea",
+"hacia el Pontón de la Cadena, en el mar"
+],
+[
+"Pile-ou-Face, l'Île Perchée",
+"Heads-or-Tails, the Perched Isle",
+"Cara-o-Cruz, la Isla Encaramada"
+],
+[
+"Quai des Nuées (Pile-ou-Face)",
+"Cloud Quay (Heads-or-Tails)",
+"Muelle de las Nubes (Cara-o-Cruz)"
+],
+[
+"Mât des Nuées (Hautefond)",
+"Cloud Mast (Hautefond)",
+"Mástil de las Nubes (Hautefond)"
+],
+[
+"Haricots du ranch",
+"Ranch beans",
+"Frijoles del rancho"
+],
+[
+"une gamelle de haricots du ranch",
+"a tin of ranch beans",
+"una fiambrera de frijoles del rancho"
+],
+[
+"Les haricots de Rosemonde, mijotés trois jours dans un pot de fonte avec du sirop d'érable. Les joueurs en mangent avant une partie : ça porte chance, et ça tient au ventre. Rend trois cœurs.",
+"Rosemonde's beans, simmered for three days in a cast-iron pot with maple syrup. Players eat them before a game: it brings luck, and it fills you up. Restores three hearts.",
+"Los frijoles de Rosamunda, cocidos tres días en una olla de hierro con sirope de arce. Los jugadores los comen antes de una partida: dan suerte y llenan la barriga. Devuelve tres corazones."
+],
+[
+"Salsepareille",
+"Sarsaparilla",
+"Zarzaparrilla"
+],
+[
+"une bouteille de salsepareille",
+"a bottle of sarsaparilla",
+"una botella de zarzaparrilla"
+],
+[
+"La boisson des saloons de Pile-ou-Face : des racines, des bulles, du sucre et un soupçon d'amertume. Sans une goutte d'alcool (la Shérif goûte chaque tonneau). Rend un cœur.",
+"The drink of the saloons of Heads-or-Tails: roots, bubbles, sugar and a hint of bitterness. Not a drop of alcohol (the Sheriff tastes every barrel). Restores one heart.",
+"La bebida de los saloons de Cara-o-Cruz: raíces, burbujas, azúcar y una pizca de amargor. Sin una gota de alcohol (la Sheriff prueba cada barril). Devuelve un corazón."
+],
+[
+"Tarte aux figues de Barbarie",
+"Prickly pear pie",
+"Tarta de higos chumbos"
+],
+[
+"une part de tarte aux figues de Barbarie",
+"a slice of prickly pear pie",
+"un trozo de tarta de higos chumbos"
+],
+[
+"La tarte de Rosemonde Confiture, avec les figues des cactus de la terre rouge et une pointe de piment doux. Ça pique, puis ça console. Rend quatre cœurs.",
+"Rosemonde Jam's pie, made with prickly pears from the cacti of the red earth and a hint of sweet chili. It stings, then it comforts. Restores four hearts.",
+"La tarta de Rosamunda Mermelada, con los higos de los cactus de la tierra roja y un toque de guindilla dulce. Pica, y luego consuela. Devuelve cuatro corazones."
+],
+[
+"Pépite d'or",
+"Gold nugget",
+"Pepita de oro"
+],
+[
+"une pépite d'or",
+"a gold nugget",
+"una pepita de oro"
+],
+[
+"Une pépite d'or du ruisseau de l'Orpailleur, sur l'Île Perchée. Le vieil Abélard Pépite, au Comptoir des Prospecteurs, l'achète huit pièces.",
+"A gold nugget from the Gold-Panner's brook, on the Perched Isle. Old Abelard Nugget, at the Prospectors' Trading Post, buys it for eight coins.",
+"Una pepita de oro del arroyo del Buscador, en la Isla Encaramada. El viejo Abelardo Pepita, en el Mostrador de los Buscadores, la compra por ocho monedas."
+],
+[
+"Stetson de Fanchon",
+"Fanchon's stetson",
+"Stetson de Fanchon"
+],
+[
+"un stetson de Fanchon",
+"a stetson by Fanchon",
+"un stetson de Fanchon"
+],
+[
+"Curiosité de Pile-ou-Face",
+"Curiosity from Heads-or-Tails",
+"Curiosidad de Cara-o-Cruz"
+],
+[
+"Un grand chapeau de feutre aux bords relevés, cousu par Fanchon Fil-d'Or, la chapelière de Pile-ou-Face. Un ruban de cuir, une plume de corbeau. « Le stetson, c'est l'aventure. »",
+"A big felt hat with turned-up brims, sewn by Fanchon Gold-Thread, the milliner of Heads-or-Tails. A leather band, a crow feather. “The stetson is adventure.”",
+"Un gran sombrero de fieltro con el ala levantada, cosido por Fanchon Hilo-de-Oro, la sombrerera de Cara-o-Cruz. Una cinta de cuero, una pluma de cuervo. «El stetson es la aventura.»"
+],
+[
+"Tu poses le stetson sur ta tête et tu le pousses du bout du doigt. Quelque part, une porte de saloon grince, et un harmonica joue trois notes.",
+"You put the stetson on your head and push it back with one finger. Somewhere, a saloon door creaks, and a harmonica plays three notes.",
+"Te pones el stetson y lo empujas con la punta del dedo. En algún lugar, una puerta de saloon chirría y una armónica toca tres notas."
+],
+[
+"L'Île Perchée",
+"The Perched Isle",
+"La Isla Encaramada"
+],
+[
+"Pile-ou-Face, la ville qui mise",
+"Heads-or-Tails, the betting town",
+"Cara-o-Cruz, el pueblo que apuesta"
+],
+[
+"Perchée",
+"Perched Isle",
+"Encaramada"
+],
+[
+"Astuce : l'Île Perchée flotte au sud de Hautefond. La Navette des Nuées part du Mât, au bout du ponton de la falaise du sud.",
+"Tip: the Perched Isle floats south of Hautefond. The Cloud Shuttle leaves from the Mast, at the end of the pier on the south cliff.",
+"Consejo: la Isla Encaramada flota al sur de Hautefond. La Lanzadera de las Nubes sale del Mástil, al final del pontón del acantilado sur."
+],
+[
+"Astuce : sous l'Île Perchée, la barque peut s'amarrer au Ponton de la Chaîne ; la cage de la Grande Chaîne monte jusqu'à Pile-ou-Face.",
+"Tip: under the Perched Isle, the boat can moor at the Chain Pontoon; the Great Chain's cage goes up to Heads-or-Tails.",
+"Consejo: bajo la Isla Encaramada, la barca puede amarrar en el Pontón de la Cadena; la jaula de la Gran Cadena sube hasta Cara-o-Cruz."
+],
+[
+"L'Île Perchée, Pile-ou-Face",
+"The Perched Isle, Heads-or-Tails",
+"La Isla Encaramada, Cara-o-Cruz"
+],
+[
+"Le Ponton de la Chaîne",
+"The Chain Pontoon",
+"El Pontón de la Cadena"
+],
+[
+"Le Mât des Nuées",
+"The Cloud Mast",
+"El Mástil de las Nubes"
+],
+[
+"La Grande Chaîne",
+"The Great Chain",
+"La Gran Cadena"
+]
+]

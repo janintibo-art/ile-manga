@@ -1,0 +1,32 @@
+[
+[
+"Île Perchée, {}",
+"Perched Isle, {}",
+"Isla Encaramada, {}"
+],
+[
+"Hautefond, {}",
+"Hautefond, {}",
+"Hautefond, {}"
+],
+[
+"{} : la porte est fermée pour l'instant.",
+"{}: the door is closed for now.",
+"{}: la puerta está cerrada por ahora."
+],
+[
+"Dans la cage de la Grande Chaîne ! Départ dans {n} s — {}. Tenez-vous aux barreaux.",
+"In the Great Chain's cage! Leaving in {n} s — {}. Hold on to the bars.",
+"¡En la jaula de la Gran Cadena! Salida en {n} s — {}. Agárrese a los barrotes."
+],
+[
+"La Navette des Nuées largue les amarres : prochaine escale, {}.",
+"The Cloud Shuttle casts off: next stop, {}.",
+"La Lanzadera de las Nubes suelta amarras: próxima escala, {}."
+],
+[
+"À bord de la Navette des Nuées ! Prochaine escale : {} (le dirigeable part dans {n} s).",
+"Aboard the Cloud Shuttle! Next stop: {} (the airship leaves in {n} s).",
+"¡A bordo de la Lanzadera de las Nubes! Próxima escala: {} (el dirigible sale en {n} s)."
+]
+]

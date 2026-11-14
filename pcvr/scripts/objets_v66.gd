@@ -75,6 +75,7 @@ const COFFRES := [
 ## Ce qu'un coffre contient selon le pays : [pièces min, max], objets possibles.
 const COFFRE_BUTIN := {
 	"village": [[10, 18], ["pomme", "baies", "champignon", "coquillage"]],
+	"perchee": [[16, 30], ["haricots_ranch", "salsepareille", "tarte_figue", "pepite_or"]],
 	"jungle": [[12, 22], ["noix_coco", "miel", "coquillage", "baies"]],
 	"elfes": [[14, 24], ["pain_miel", "tisane_lune", "poussiere_fee", "baies"]],
 	"nains": [[16, 28], ["biere_naine", "minerai_fer", "fromage_chevre", "champignon_braise"]],

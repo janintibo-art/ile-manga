@@ -741,6 +741,18 @@ const ITEMS := {
 	"bille_geante": {"name": "Gustave, la bille de Pâquerette", "art": "Gustave, la bille de Pâquerette", "kind": "curiosite", "sorte": "Souvenir de l'Île des Géants", "max": 1,
 		"desc": "Une bille de verre des géants, grosse comme un melon, avec une spirale bleue dedans. Pâquerette l'appelle Gustave. C'était sa plus belle ; elle te l'a donnée, pour être amis pour toujours.",
 		"effet": "Tu fais rouler Gustave dans l'herbe. La spirale bleue tourne, tourne… et quelque part, très loin au sud-est, une petite géante rit."},
+	# V146 : l'Île Perchée (Pile-ou-Face)
+	"haricots_ranch": {"name": "Haricots du ranch", "art": "une gamelle de haricots du ranch", "kind": "nourriture", "max": 10, "heal": 6,
+		"desc": "Les haricots de Rosemonde, mijotés trois jours dans un pot de fonte avec du sirop d'érable. Les joueurs en mangent avant une partie : ça porte chance, et ça tient au ventre. Rend trois cœurs."},
+	"salsepareille": {"name": "Salsepareille", "art": "une bouteille de salsepareille", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "La boisson des saloons de Pile-ou-Face : des racines, des bulles, du sucre et un soupçon d'amertume. Sans une goutte d'alcool (la Shérif goûte chaque tonneau). Rend un cœur."},
+	"tarte_figue": {"name": "Tarte aux figues de Barbarie", "art": "une part de tarte aux figues de Barbarie", "kind": "nourriture", "max": 10, "heal": 8,
+		"desc": "La tarte de Rosemonde Confiture, avec les figues des cactus de la terre rouge et une pointe de piment doux. Ça pique, puis ça console. Rend quatre cœurs."},
+	"pepite_or": {"name": "Pépite d'or", "art": "une pépite d'or", "kind": "tresor", "max": 99,
+		"desc": "Une pépite d'or du ruisseau de l'Orpailleur, sur l'Île Perchée. Le vieil Abélard Pépite, au Comptoir des Prospecteurs, l'achète huit pièces."},
+	"chapeau_stetson": {"name": "Stetson de Fanchon", "art": "un stetson de Fanchon", "kind": "curiosite", "sorte": "Curiosité de Pile-ou-Face", "max": 1,
+		"desc": "Un grand chapeau de feutre aux bords relevés, cousu par Fanchon Fil-d'Or, la chapelière de Pile-ou-Face. Un ruban de cuir, une plume de corbeau. « Le stetson, c'est l'aventure. »",
+		"effet": "Tu poses le stetson sur ta tête et tu le pousses du bout du doigt. Quelque part, une porte de saloon grince, et un harmonica joue trois notes."},
 }
 const KIND_LABEL := {"nourriture": "Nourriture", "materiau": "Matériau", "tresor": "Trésor", "arme": "Arme", "outil": "Outil", "canne": "Outil de pêche", "quete": "Objet de quête", "curiosite": "Curiosité de Cliquetis"}
 
@@ -1316,6 +1328,28 @@ func make_model(id: String) -> Node3D:
 			_part(m, _sphere(0.33), _mat("pomme", Color(0.72, 0.08, 0.07), 0.45), Vector3(0, 0.3, 0), Vector3.ZERO, Vector3(1, 0.9, 1))
 			_part(m, _cyl(0.025, 0.035, 0.22, 6), _mat("tige", Color(0.3, 0.2, 0.1)), Vector3(0, 0.66, 0), Vector3(0, 0, 12))
 			_part(m, _sphere(0.12), _mat("feuille", Color(0.25, 0.5, 0.18)), Vector3(0.1, 0.7, 0), Vector3(0, 0, -30), Vector3(1.4, 0.25, 0.7))
+		"haricots_ranch":
+			_part(m, _cyl(0.085, 0.07, 0.07, 14), _mat("gamelle", Color(0.5, 0.52, 0.55), 0.35), Vector3(0, 0.035, 0))
+			_part(m, _cyl(0.08, 0.08, 0.01, 14), _mat("haricots", Color(0.55, 0.22, 0.12), 0.6), Vector3(0, 0.068, 0))
+			_part(m, _box_mesh(Vector3(0.012, 0.012, 0.14)), _mat("cuillere", Color(0.75, 0.75, 0.78), 0.3), Vector3(0.03, 0.09, 0), Vector3(25, 0, 0))
+		"salsepareille":
+			_part(m, _cyl(0.035, 0.04, 0.14, 12), _mat("verre_brun", Color(0.35, 0.18, 0.08), 0.12), Vector3(0, 0.07, 0))
+			_part(m, _cyl(0.015, 0.03, 0.06, 10), _mat("verre_brun", Color(0.35, 0.18, 0.08), 0.12), Vector3(0, 0.17, 0))
+			_part(m, _cyl(0.017, 0.017, 0.012, 10), _mat("capsule", Color(0.8, 0.12, 0.1), 0.4), Vector3(0, 0.205, 0))
+			_part(m, _cyl(0.041, 0.041, 0.05, 12), _mat("etiquette", Color(0.92, 0.86, 0.68), 0.8), Vector3(0, 0.07, 0))
+		"tarte_figue":
+			_part(m, _cyl(0.1, 0.09, 0.03, 18), _mat("pate", Color(0.85, 0.62, 0.32), 0.8), Vector3(0, 0.015, 0))
+			_part(m, _cyl(0.088, 0.088, 0.008, 18), _mat("figue", Color(0.72, 0.12, 0.28), 0.5), Vector3(0, 0.031, 0))
+		"pepite_or":
+			var or_p := _mat("pepite", Color(1.0, 0.78, 0.28), 0.3)
+			or_p.metallic = 0.95
+			_part(m, _sphere(0.035), or_p, Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(1.3, 0.8, 1.0))
+			_part(m, _sphere(0.022), or_p, Vector3(0.028, 0.025, 0.01), Vector3.ZERO, Vector3(1.0, 0.9, 1.2))
+		"chapeau_stetson":
+			var feutre := _mat("feutre", Color(0.42, 0.3, 0.18), 0.85)
+			_part(m, _cyl(0.17, 0.18, 0.012, 18), feutre, Vector3(0, 0.006, 0))
+			_part(m, _cyl(0.08, 0.1, 0.1, 14), feutre, Vector3(0, 0.06, 0))
+			_part(m, _cyl(0.102, 0.102, 0.02, 14), _mat("ruban_cuir", Color(0.16, 0.09, 0.05), 0.5), Vector3(0, 0.02, 0))
 		"bille_geante":
 			var verre := _mat("bille_verre", Color(0.75, 0.88, 0.95), 0.05)
 			verre.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA

@@ -484,6 +484,21 @@ func _azur_hat(az: Dictionary) -> void:
 					_part(hat, _cyl(0.23, 0.23, 0.03), _mat(Color(0.95, 0.95, 0.95)), Vector3(0, 0.12, 0))
 			"beret":
 				_part(hat, _sphere(0.24), hm, Vector3(0.03, 0.04, 0), Vector3(1.0, 0.32, 1.0))
+			# V146 : les chapeaux de Pile-ou-Face (le stetson aux bords relevés, le haut-de-forme, le melon)
+			"stetson":
+				_part(hat, _cyl(0.3, 0.32, 0.022), hm, Vector3.ZERO)
+				for s in [-1.0, 1.0]:
+					_part(hat, _box_mesh_np(Vector3(0.12, 0.02, 0.5)), hm, Vector3(s * 0.33, 0.04, 0), Vector3.ONE, Vector3(0, 0, s * 30.0))
+				_part(hat, _cyl(0.15, 0.19, 0.17), hm, Vector3(0, 0.09, 0))
+				_part(hat, _sphere(0.155), hm, Vector3(0, 0.17, 0), Vector3(1.0, 0.35, 1.15))
+				_part(hat, _cyl(0.193, 0.193, 0.035), _mat(Color(0.18, 0.1, 0.06)), Vector3(0, 0.03, 0))
+			"haut_de_forme":
+				_part(hat, _cyl(0.27, 0.28, 0.02), hm, Vector3.ZERO)
+				_part(hat, _cyl(0.17, 0.16, 0.32), hm, Vector3(0, 0.16, 0))
+				_part(hat, _cyl(0.163, 0.163, 0.05), _mat(Color(0.55, 0.1, 0.1)), Vector3(0, 0.04, 0))
+			"melon":
+				_part(hat, _cyl(0.25, 0.26, 0.02), hm, Vector3.ZERO)
+				_part(hat, _sphere(0.19), hm, Vector3(0, 0.06, 0), Vector3(1.0, 0.85, 1.05))
 			"cuisinier":
 				_part(hat, _cyl(0.21, 0.2, 0.12), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.05, 0))
 				_part(hat, _sphere(0.25), _mat(Color(0.97, 0.97, 0.96)), Vector3(0, 0.24, 0), Vector3(1.0, 0.7, 1.0))

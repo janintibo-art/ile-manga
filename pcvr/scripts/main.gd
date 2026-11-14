@@ -202,6 +202,8 @@ func _ready() -> void:
 	await chargement_v131.pas("sombreval_vie")
 	_create_v142()
 	await chargement_v131.pas("geants_vie")
+	_create_v146()
+	await chargement_v131.pas("perchee_vie")
 	_create_v103()
 	_create_v120()
 	_create_v132()
@@ -1177,6 +1179,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			sombreval_v121.load_data({})
 		if geants_v142 != null and geants_v142.ile != null:
 			geants_v142.load_data({})
+		if perchee_v146 != null and perchee_v146.ile != null:
+			perchee_v146.load_data({})
 		if compagnons_animaux_v76 != null:
 			compagnons_animaux_v76.load_data({})
 		if aeronef_v76 != null:
@@ -1376,6 +1380,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and geants_v142 != null and geants_v142.ile != null:
 		var gtdata: Variant = SaveStore.read_slot(slot).get("geants", {})
 		geants_v142.load_data(gtdata if gtdata is Dictionary else {})
+	# V146 : l'Île Perchée
+	if not new_game and perchee_v146 != null and perchee_v146.ile != null:
+		var ppdata: Variant = SaveStore.read_slot(slot).get("perchee", {})
+		perchee_v146.load_data(ppdata if ppdata is Dictionary else {})
 	# V76 : les compagnons animaux (Sardine, Brioche, Biscotte, Truffe)
 	if not new_game and compagnons_animaux_v76 != null:
 		var cdata76: Variant = SaveStore.read_slot(slot).get("compagnons", {})
@@ -1533,6 +1541,8 @@ func _save_slot(slot: int) -> bool:
 		extra["sombreval"] = sombreval_v121.serialize()
 	if geants_v142 != null and geants_v142.ile != null:
 		extra["geants"] = geants_v142.serialize()
+	if perchee_v146 != null and perchee_v146.ile != null:
+		extra["perchee"] = perchee_v146.serialize()
 	if compagnons_animaux_v76 != null:
 		extra["compagnons"] = compagnons_animaux_v76.serialize()
 	if aeronef_v76 != null:
@@ -1566,6 +1576,9 @@ func _save_slot(slot: int) -> bool:
 	var save_pos: Vector3 = origin.position
 	if grande_v59 != null and grande_v59.riding():
 		save_pos = grande_v59.ride_safe_pos()
+	# V146 : dans la Navette des Nuées ou dans une cage de la Grande Chaîne
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
+		save_pos = perchee_v146.ride_safe_pos()
 	# V72 : à bord de L'Hirondelle, on se réveillera sur le quai d'arrivée (pas en pleine mer)
 	if azur_v56 != null and azur_v56.get("ferry") != null and azur_v56.ferry != null and bool(azur_v56.ferry.riding) and teleport_v58 != null:
 		var side: String = str(azur_v56.ferry.dest) if str(azur_v56.ferry.at) == "" else str(azur_v56.ferry.at)
@@ -1638,6 +1651,13 @@ func _physics_process(delta: float) -> void:
 			if trig_ride and not bool(vr_buttons_v28.get("ride_v61", false)):
 				grande_v59.ride_interact()
 			vr_buttons_v28["ride_v61"] = trig_ride
+	elif perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
+		# V146 : passager de la Navette des Nuées ou de la Grande Chaîne (elles nous portent)
+		if xr_active:
+			var trig_ride146: bool = right_hand.get_float("trigger") > 0.8
+			if trig_ride146 and not bool(vr_buttons_v28.get("ride_v146", false)):
+				perchee_v146.ride_interact()
+			vr_buttons_v28["ride_v146"] = trig_ride146
 	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			_drive_boat_vr_v29(delta)
@@ -2154,6 +2174,14 @@ func _doors_update_v27() -> void:
 		if donjon_v35 != null:
 			donjon_v35.show_vr_hint(_player_pos_v27(), false)
 		return
+	# V146 : dans la Navette des Nuées, dans une cage de la Grande Chaîne
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
+		if door_prompt_v27 != null:
+			var rp146: String = perchee_v146.ride_prompt()
+			door_prompt_v27.text = rp146 if not xr_active else rp146.replace("E :", "Gâchette :")
+		if donjon_v35 != null:
+			donjon_v35.show_vr_hint(_player_pos_v27(), false)
+		return
 	var text: String = houses_v27.prompt(_player_pos_v27(), xr_active) if playing else ""
 	# V28 : l'objet à ramasser passe avant la porte s'il est plus proche.
 	if playing and inventory_v28 != null and not xr_active:
@@ -2462,6 +2490,9 @@ func _interact_v28() -> void:
 	if grande_v59 != null and grande_v59.riding():
 		grande_v59.ride_interact()
 		return
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
+		perchee_v146.ride_interact()
+		return
 	var p: Vector3 = _player_pos_v27()
 	var npc: Node3D = _nearest_npc_v31()
 	# V56 : dans la foule de Port-Azur, un objet juste à nos pieds passe avant la conversation
@@ -2607,6 +2638,10 @@ func _respawn_v28() -> void:
 	# V121 : à Sombreval : au bout de la jetée du Port des Brumes
 	if sombreval_v121 != null and sombreval_v121.ile != null and sombreval_v121.owns_point(_player_pos_v27()):
 		sombreval_v121.on_faint(_player_pos_v27())
+		return
+	# V146 : sur l'Île Perchée : sur un banc de la place de la Roue
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.owns_point(_player_pos_v27()):
+		perchee_v146.on_faint(_player_pos_v27())
 		return
 	# V142 : sur l'Île des Géants : Mère Mathurine vous pose sur le seuil de la porte
 	if geants_v142 != null and geants_v142.ile != null and geants_v142.owns_point(_player_pos_v27()):
@@ -3027,6 +3062,17 @@ func _create_jungle_v29() -> void:
 	await chargement_v131.pas("geants")
 	var gt_d: Array = geants_v142.dock()
 	boat_v29._make_dock("Ponton_geants", gt_d[0], gt_d[1])
+	# V146 : l'Île Perchée, l'île flottante du Far West, au sud de Hautefond, à 270 m au-dessus de la mer
+	# (le relief d'abord ; le bourg de Pile-ou-Face, la végétation, la Grande Chaîne et la Navette des
+	# Nuées après l'heure du jour, voir _create_v146) ; sur la mer, en dessous, le Ponton de la Chaîne.
+	perchee_v146 = preload("res://scripts/perchee_v146.gd").new()
+	perchee_v146.name = "Perchee_v146"
+	add_child(perchee_v146)
+	perchee_v146.setup(self)
+	perchee_v146.build_island()
+	await chargement_v131.pas("perchee")
+	var pp_d: Array = perchee_v146.dock()
+	boat_v29._make_dock("Ponton_perchee", pp_d[0], pp_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
@@ -3060,6 +3106,10 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	if boat_v29 != null and boat_v29.on_dock(p):
 		last_ok_v29[key] = p
 		return
+	# V146 : sur les plates-formes de l'Île Perchée (le Mât des Nuées de Hautefond, le Ponton de la Chaîne)
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.on_platform(p):
+		last_ok_v29[key] = p
+		return
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
 		if last_ok_v29.has(key):
@@ -3069,6 +3119,14 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	# V76 : là-haut, à Astralys : le plateau, les îlots, les ponts de lumière (pas le vide)
 	if astralys_v76 != null and astralys_v76.contains(p) and p.y > 150.0:
 		if astralys_v76.walkable(p):
+			last_ok_v29[key] = p
+		elif last_ok_v29.has(key):
+			body.position = last_ok_v29[key]
+			body.velocity = Vector3.ZERO
+		return
+	# V146 : là-haut, sur l'Île Perchée : la terre ferme, le Quai des Nuées, la Potence (pas le vide)
+	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.contains(p) and p.y > 150.0:
+		if perchee_v146.walkable(p):
 			last_ok_v29[key] = p
 		elif last_ok_v29.has(key):
 			body.position = last_ok_v29[key]
@@ -3730,7 +3788,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(perchee_v146.trouvailles() if perchee_v146 != null and perchee_v146.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -3986,6 +4044,7 @@ var crayon_v99: Node3D                     # V99 : l'Île Crayonnée (l'île en 
 var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cité-colonne)
 var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
 var geants_v142: Node3D                    # V142 : l'Île des Géants (la ferme des Grandpré, cinq géants gentils)
+var perchee_v146: Node3D                   # V146 : l'Île Perchée (Pile-ou-Face, le bourg du Far West dans le ciel)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
 var compagnons_animaux_v76: Node           # V76 : les quatre compagnons animaux (le sifflet)
@@ -4077,6 +4136,9 @@ func _spawn_azur_v56() -> void:
 	# V112 : les habitants de Hautefond
 	if hautefond_v112 != null and hautefond_v112.city != null:
 		hautefond_v112.spawn_npcs()
+	# V146 : les habitants de Pile-ou-Face
+	if perchee_v146 != null and perchee_v146.ile != null:
+		perchee_v146.spawn_npcs()
 
 
 ## V56 : après une nuit à l'hôtel : tous les cœurs, et on sauvegarde.
@@ -4369,6 +4431,16 @@ func _create_v142() -> void:
 	geants_v142.build_town()
 	if journal_v56 != null:
 		geants_v142.register_services(journal_v56)
+
+
+## V146 : l'Île Perchée (le bourg de Pile-ou-Face, la végétation, la Grande Chaîne, la Navette des Nuées
+## et son Mât à Hautefond) ; le Ponton de la Chaîne est posé avec le relief.
+func _create_v146() -> void:
+	if perchee_v146 == null:
+		return
+	perchee_v146.build_town()
+	if journal_v56 != null:
+		perchee_v146.register_services(journal_v56)
 
 
 ## V103 : la vie sur la mer (les navettes et leurs passagers, les voiliers) et les oiseaux.
