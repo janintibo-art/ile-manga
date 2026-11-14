@@ -58,6 +58,8 @@ const DB := {
 	"frappe_sol": -3.0, "coup_final": -4.0, "chute_corps": -5.0, "plonge_vent": -7.0,
 	# V142 : l'Île des Géants (leurs pas, les limaces, les rires de Pâquerette, la maison qui ronfle)
 	"pas_geant": -1.0, "limace_splotch": -4.0, "gloussement": -5.0, "ronflement_geant": -6.0,
+	# V143 : la magie élémentaire (la foudre, la vapeur, la glace qui se brise, la brûlure, l'ennemi électrocuté)
+	"sort_foudre": -2.0, "vapeur_feu": -4.0, "brise_glace": -3.0, "brulure": -6.0, "electrocute": -4.0,
 	"gribouillis_griffe": -7.0, "gomme_couine": -6.0,
 	"scorpion_menace": -4.0, "scorpion_mort": -4.0, "automate_menace": -4.0, "automate_mort": -3.0, "spectre_menace": -5.0,
 	"spectre_mort": -5.0, "ondin_menace": -4.0, "ondin_mort": -4.0, "loup_menace": -2.0,

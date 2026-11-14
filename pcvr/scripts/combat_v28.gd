@@ -212,7 +212,7 @@ func strike(origin: Vector3, facing: Vector3, reach: float, damage: int) -> int:
 		if d > 0.25 and facing.dot(off.normalized()) < 0.35:
 			continue
 		var snd: String = impact_sound(target)
-		target.take_hit(damage, origin)
+		_frappe_v143(target, damage, origin)
 		_impact(snd, c, origin)
 		_reagir(target, origin)
 		hits += 1
@@ -234,7 +234,7 @@ func strike_around(origin: Vector3, reach: float, damage: int) -> int:
 		if off.length() - float(target.hit_radius) > reach:
 			continue
 		var snd: String = impact_sound(target)
-		target.take_hit(damage, origin)
+		_frappe_v143(target, damage, origin)
 		_impact(snd, c, origin)
 		_reagir(target, origin)
 		hits += 1
@@ -254,11 +254,20 @@ func strike_point(point: Vector3, radius: float, damage: int, from_pos: Vector3)
 			continue
 		if Vector2(point.x - base.x, point.z - base.z).length() <= float(target.hit_radius) + radius:
 			var snd: String = impact_sound(target)
-			target.take_hit(damage, from_pos)
+			_frappe_v143(target, damage, from_pos)
 			_impact(snd, point, from_pos)
 			_reagir(target, from_pos)
 			hits += 1
 	return hits
+
+
+## V143 : le coup d'arme passe par les éléments (la glace se brise, l'âme de l'arme porte son élément).
+func _frappe_v143(target: Node3D, damage: int, from: Vector3) -> void:
+	var el: Node = main.get("elements_v143") if main != null else null
+	if el != null:
+		el.weapon_hit(target, damage, from)
+	else:
+		target.take_hit(damage, from)
 
 
 ## V141 : l'ennemi touché réagit (il plie, titube, tombe : voir coups_v141.gd).
@@ -291,7 +300,7 @@ func slam(at: Vector3, radius: float, damage: int, force: int) -> int:
 			continue
 		force_v141 = force if d < radius * 0.6 else maxi(force - 1, 1)
 		var snd: String = impact_sound(target)
-		target.take_hit(damage, at)
+		_frappe_v143(target, damage, at)
 		_impact(snd, c, at)
 		_reagir(target, at)
 		hits += 1

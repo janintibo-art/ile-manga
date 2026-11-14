@@ -26,6 +26,7 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 | `60_combat` | butin et expérience, chaque arme, les six sorts, les quatre pouvoirs des sceaux |
 | `61_coups` | les sensations des coups V141 (plier, tituber, tomber ; coup final, coup plongeant, sol frappé ; le sang en Public averti) |
 | `62_geants` | l'Île des Géants V142 (la ferme, les cinq géants : leur taille, parler de loin, ils s'agenouillent, leurs pas, la nuit ; les nénuphars ; la bague, les limaces, le cache-cache ; la sauvegarde ; l'anglais) |
+| `63_elements` | la magie élémentaire V143 (familles et faiblesses ; brûlure, glace, trempé ; Brisé, Vapeur, Éclats, Surcharge, Électrocuté, Gelé à cœur, Attisé ; la Foudre et sa chaîne ; les armes à élément ; la leçon de l'archimage ; la sauvegarde ; l'anglais) |
 | `70_heros` | marcher, sauter, courir, nager, tomber, lever les yeux, se relever, le niveau |
 | `80_sauvegarde` | sauvegarder, nouvelle partie, recharger, copie de secours, Tout public / Public averti |
 | `90_langues` | anglais et espagnol (échantillon des tables, objets, textes à trous, menu) |
@@ -55,4 +56,5 @@ déjà importée (`/root/t38`, ou `TESTS_COPIE`) :
 - `analyser.sh fichier.gd…` : vérifie la syntaxe de scripts du jeu (et de ce qu'ils chargent).
 - `rendu_faune.sh DOSSIER [nuit] espèce…` : des images des bêtes (repos, attaque) et une planche ; il faut xvfb-run. Le cadrage de chaque espèce est dans la table CADRE de `rendu_faune.gd` (distance, hauteur visée, et au besoin l'avancée du point visé, pour regarder une tête de près).
 - `rendu_geants.sh DOSSIER [tout | vues | geants]` : des images de l'Île des Géants (V142 : l'île vue de haut, la ferme, le potager, le moulin, la mare, le verger, le blé ; les cinq géants de près et de loin) et des planches ; il faut xvfb-run (les nouvelles textures sont importées au besoin).
+- `rendu_elements.sh DOSSIER` : des images de la magie élémentaire (V143 : un ennemi en feu, pris dans la glace, trempé ; la glace qui se brise, le nuage de vapeur, l'éclair de la Foudre qui saute d'un ennemi à l'autre) et une planche ; il faut xvfb-run.
 - `zip_livraison.sh N` : le zip de livraison `ile_manga_pcvr_vN.zip` (fichiers changés, dans `ile_manga_pcvr/`).

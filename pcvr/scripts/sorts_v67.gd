@@ -14,12 +14,12 @@ extends Node3D
 ## La magie : 10 points (15 avec le diplôme d'Arcanelle), qui reviennent d'eux-mêmes (un point
 ## toutes les deux secondes et demie) ; une potion de magie en rend 6, un élixir d'étoile tout.
 ## Le bâton de sorcier, en main, fait coûter chaque sort un point de moins.
-## PC : 5, 6, 7, 8, 9, 0 choisissent le sort, V le lance, B passe au suivant.
+## PC : 5, 6, 7, 8, 9, 0 choisissent le sort ( « ) » la Foudre : la touche à droite du 0), V le lance, B passe au suivant.
 ## VR : gâchette gauche = lancer ; gâchette gauche maintenue = sort suivant.
 ## Les objets du monde qui réagissent aux sorts s'inscrivent avec register() :
 ##   {id, sort, pos (Vector3 ou Callable), radius, call (Callable), when (Callable)}
 
-const ORDRE := ["lumiere", "feu", "gel", "levitation", "telekinesie", "soin"]
+const ORDRE := ["lumiere", "feu", "gel", "levitation", "telekinesie", "soin", "foudre"]
 const INFO := {
 	"lumiere": {"nom": "Lumière", "cout": 2, "touche": "5", "maitre": "Aurélien Lumen", "couleur": Color(1.0, 0.9, 0.55),
 		"desc": "Une boule de lumière te suit une minute. Elle éclaire le noir et réveille les runes qui dorment."},
@@ -33,8 +33,11 @@ const INFO := {
 		"desc": "L'objet que tu vises, même hors de portée, vole jusqu'à ta main."},
 	"soin": {"nom": "Soin", "cout": 4, "touche": "0", "maitre": "Mère Sauge", "couleur": Color(0.55, 1.0, 0.6),
 		"desc": "Deux cœurs rendus ; le sort soigne aussi les créatures blessées."},
+	# V143 : le septième sort, celui de l'archimage (après le diplôme)
+	"foudre": {"nom": "Foudre", "cout": 4, "touche": ")", "maitre": "l'archimage", "couleur": Color(0.72, 0.78, 1.0),
+		"desc": "Un éclair frappe l'ennemi visé, puis saute sur deux autres. Terrible sur un ennemi trempé, sur les machines et sur tout ce qui vole."},
 }
-const COOLDOWN := {"lumiere": 1.0, "feu": 0.9, "gel": 1.5, "levitation": 1.5, "telekinesie": 0.8, "soin": 2.5}
+const COOLDOWN := {"lumiere": 1.0, "feu": 0.9, "gel": 1.5, "levitation": 1.5, "telekinesie": 0.8, "soin": 2.5, "foudre": 1.4}
 const MANA_BASE: int = 10
 const MANA_DIPLOME: int = 5
 const REGEN: float = 2.5
@@ -219,6 +222,8 @@ func cast(id: String = "") -> bool:
 			ok = _telekinesie()
 		"soin":
 			_soin()
+		"foudre":
+			ok = _foudre()
 	if not ok:
 		return false
 	mana -= float(c)
@@ -310,6 +315,11 @@ func _gel() -> void:
 		for mo in pw._monsters():
 			var n3: Node3D = mo
 			if not pw._in_cone(o, dir, n3.global_position + Vector3.UP * 0.6, 10.0, 35.0):
+				continue
+			# V143 : le gel passe par les éléments (la gangue de glace, les réactions, les faiblesses)
+			var el: Node = main.get("elements_v143")
+			if el != null:
+				el.hit(n3, "glace", 1, o)
 				continue
 			if mo.has_method("stun"):
 				mo.stun(3.5)
@@ -413,6 +423,34 @@ func _frost_fx(o: Vector3, dir: Vector3) -> void:
 	fx.global_position = o + dir * 0.6
 	fx.emitting = true
 	get_tree().create_timer(1.5).timeout.connect(fx.queue_free)
+
+
+## V143 : la Foudre : l'éclair part de la main, frappe, et saute d'un ennemi à l'autre.
+func _foudre() -> bool:
+	var el: Node = main.get("elements_v143")
+	if el == null:
+		return false
+	var o: Vector3 = _origin() + _aim() * 0.5
+	var dir: Vector3 = _aim(not main.xr_active)
+	if main.xr_active and main.get("right_hand") != null:
+		o = main.right_hand.global_position
+	main.sfx("sort_foudre", o)
+	var at: Vector3 = el.foudre(o, dir)
+	for t in targets.duplicate():
+		if str(t.get("sort", "")) != "foudre" or not _alive(t):
+			continue
+		var p: Vector3 = _tpos(t)
+		if p == Vector3.INF:
+			continue
+		var off: Vector3 = p - o
+		var fo := Vector3(off.x, 0, off.z)
+		var fd := Vector3(dir.x, 0, dir.z)
+		if p.distance_to(at) < float(t.get("radius", 3.0)) or (fo.length() < 26.0 and fo.length() > 0.5 and fd.length() > 0.01 and rad_to_deg(fd.angle_to(fo)) < 24.0):
+			el.eclair(o, p, 1.0)
+			el._frappe_fx(p)
+			last_hits.append(str(t["id"]))
+			(t["call"] as Callable).call()
+	return true
 
 
 func _levitation() -> bool:
@@ -641,8 +679,8 @@ func handle_key(k: Key) -> bool:
 				return false
 			next_spell()
 			return true
-		KEY_5, KEY_KP_5, KEY_6, KEY_KP_6, KEY_7, KEY_KP_7, KEY_8, KEY_KP_8, KEY_9, KEY_KP_9, KEY_0, KEY_KP_0:
-			var i: int = {KEY_5: 0, KEY_KP_5: 0, KEY_6: 1, KEY_KP_6: 1, KEY_7: 2, KEY_KP_7: 2, KEY_8: 3, KEY_KP_8: 3, KEY_9: 4, KEY_KP_9: 4, KEY_0: 5, KEY_KP_0: 5}[k]
+		KEY_5, KEY_KP_5, KEY_6, KEY_KP_6, KEY_7, KEY_KP_7, KEY_8, KEY_KP_8, KEY_9, KEY_KP_9, KEY_0, KEY_KP_0, KEY_PARENRIGHT, KEY_MINUS:
+			var i: int = {KEY_5: 0, KEY_KP_5: 0, KEY_6: 1, KEY_KP_6: 1, KEY_7: 2, KEY_KP_7: 2, KEY_8: 3, KEY_KP_8: 3, KEY_9: 4, KEY_KP_9: 4, KEY_0: 5, KEY_KP_0: 5, KEY_PARENRIGHT: 6, KEY_MINUS: 6}[k]
 			var sid: String = str(ORDRE[i])
 			if not known.has(sid):
 				return false
@@ -765,7 +803,9 @@ func page_text() -> String:
 			r += "[color=#%s]●[/color] [b]%s[/b] — touche %s, %d de magie%s\n[color=#9aa7b0]%s[/color]\n" % [col, str(inf["nom"]), str(inf["touche"]), cost(sid), ", choisi" if sid == choisi else "", str(inf["desc"])]
 		else:
 			r += "[color=#3a4a55]●[/color] [color=#9aa7b0]%s — à apprendre à Arcanelle[/color]\n" % str(inf["nom"])
-	r += "[color=#9aa7b0][i]PC : 5 à 0 pour choisir un sort, V pour le lancer, B pour passer au suivant. VR : gâchette gauche pour lancer, maintenue pour changer.[/i][/color]\n"
+	# V143 : les éléments
+	r += "[b]Les éléments :[/b] [color=#9aa7b0]un ennemi gelé frappé à l'arme se brise (dégâts doublés) ; le feu sur la glace fait un nuage de vapeur qui touche tout autour ; la foudre fait deux fois plus mal à un ennemi trempé ; le vent attise le feu. Chaque créature a sa faiblesse : le feu pour les plantes et les ombres, la foudre pour les bêtes de l'eau, les machines et ce qui vole, la glace et l'eau pour les créatures de feu.[/color]\n"
+	r += "[color=#9aa7b0][i]PC : 5 à 0 (et « ) » pour la Foudre) pour choisir un sort, V pour le lancer, B pour passer au suivant. VR : gâchette gauche pour lancer, maintenue pour changer.[/i][/color]\n"
 	return r
 
 

@@ -1189,6 +1189,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			maisons_v81.load_data({})
 		if sorts_v67 != null:
 			sorts_v67.load_data({})
+		if elements_v143 != null:
+			elements_v143.load_data({})
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		if sceaux_v63 != null:
@@ -1388,6 +1390,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and sorts_v67 != null:
 		var sdata67: Variant = SaveStore.read_slot(slot).get("sorts", {})
 		sorts_v67.load_data(sdata67 if sdata67 is Dictionary else {})
+	if not new_game and elements_v143 != null:
+		var eldata: Variant = SaveStore.read_slot(slot).get("elements", {})
+		elements_v143.load_data(eldata if eldata is Dictionary else {})
 	if not new_game and teleport_v58 != null:
 		var tdata: Variant = SaveStore.read_slot(slot).get("teleport", {})
 		teleport_v58.load_data(tdata if tdata is Dictionary else {})
@@ -1490,6 +1495,8 @@ func _save_slot(slot: int) -> bool:
 		extra["arcanelle"] = arcanelle_v67.serialize()
 	if sorts_v67 != null:
 		extra["sorts"] = sorts_v67.serialize()
+	if elements_v143 != null:
+		extra["elements"] = elements_v143.serialize()
 	if pirates_v68 != null and pirates_v68.port != null:
 		extra["balafre"] = pirates_v68.serialize()
 	if soleils_v69 != null and soleils_v69.egypte != null:
@@ -3948,6 +3955,7 @@ var bavardages_v65: Node                   # V65 : les habitants qui se connaiss
 var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
+var elements_v143: Node3D                  # V143 : la magie élémentaire (états, réactions, faiblesses, la Foudre)
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 var soleils_v69: Node3D                    # V69 : l'Île des Trois Soleils (Égyptiens, Mayas, Aztèques) et ses donjons
 var braise_v70: Node3D                     # V70 : l'Île de Braise, Pandémonia (la cité des démons), les Neuf Cercles
@@ -4137,6 +4145,11 @@ func _create_v67() -> void:
 	sorts_v67.name = "Sorts_v67"
 	add_child(sorts_v67)
 	sorts_v67.setup(self)
+	# V143 : la magie élémentaire
+	elements_v143 = preload("res://scripts/elements_v143.gd").new()
+	elements_v143.name = "Elements_v143"
+	add_child(elements_v143)
+	elements_v143.setup(self)
 	if hud_v28 != null and not xr_active:
 		sorts_v67.make_hud(hud_v28)
 	if arcanelle_v67 == null:
@@ -4597,6 +4610,6 @@ func _bake_shore_v48() -> void:
 ## raccourcis 1 à 9 (carnet, pouvoirs, sorts), on lit la touche physique quand c'en est un chiffre.
 func _digit_key_v80(event: InputEventKey) -> Key:
 	var p: Key = event.physical_keycode
-	if p >= KEY_0 and p <= KEY_9:
-		return p
+	if (p >= KEY_0 and p <= KEY_9) or p == KEY_MINUS:
+		return p        # (V143 : la touche à droite du 0, « ) » en AZERTY : le sort de Foudre)
 	return event.keycode

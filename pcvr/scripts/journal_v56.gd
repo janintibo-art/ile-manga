@@ -483,6 +483,18 @@ const QUETES := [
 		],
 		"fin": "Elles ont chanté pour toi. Je les ai entendues jusqu'ici. Alors c'est dit : tu es sorcier d'Arcanelle. Tiens, ton bâton : du bois du Bois Tors et un cristal du Cercle. En main, il rend tes sorts plus légers. Et ta magie est plus grande désormais. Va, sorcier. Le monde a besoin de lumière, de feu, de glace, de vent, de patience et de soin. Surtout de soin.",
 		"recompense": {"pieces": 60, "titre": "Sorcier d'Arcanelle", "objets": [["baton_sorcier", 1]], "flag": "diplome_arc"}},
+	# V143 : le septième sort, la Foudre (après le diplôme)
+	{"id": "arc_foudre", "titre": "Le septième sort", "donneur": "archimage", "lieu": "Arcanelle, le Cercle des Pierres-Lunes", "sorte": "Arcanelle", "si": {"apres": "arc_diplome"},
+		"resume": "L'archimage Séraphine Astrelune garde pour les sorciers diplômés un septième sort, qu'aucun maître n'enseigne : la Foudre. Pour l'apprendre, il faudra faire chanter la plus haute des Pierres-Lunes.",
+		"offre_label": "Existe-t-il un septième sort ?",
+		"offre": "Un septième sort ? … Qui t'en a parlé ? Pip, je parie. Oui. Il y en a un. Aucun maître ne l'enseigne, parce qu'aucun maître n'a envie de repeindre son plafond. La Foudre. Le feu brûle, la glace fige ; la foudre, elle, choisit. Elle saute d'un ennemi à l'autre, elle aime l'eau, le métal et tout ce qui vole. Tu es sorcier, maintenant. Tu peux l'apprendre. Mais pas ici : j'aime mon plafond.",
+		"etapes": [
+			{"type": "parler", "pnj": "archimage", "sort": "foudre", "label": "Je suis prêt à apprendre la Foudre.", "texte": "Lève la main. Plus haut. Sens-tu l'air qui picote ? L'orage est toujours là, quelque part au-dessus de nous : il attend qu'on l'appelle. Ne le tire pas : invite-le. … Voilà. Tes cheveux se dressent, c'est bon signe. Maintenant, va au Cercle, et offre un éclair à la plus haute des Pierres-Lunes. Elle adore ça. Et retiens bien ceci : les éléments se parlent. Un ennemi gelé se brise sous l'épée. Le feu et la glace, ensemble, font de la vapeur. Et la foudre sur un ennemi trempé… tu verras.", "objectif": "Apprendre la Foudre avec l'archimage Séraphine Astrelune, dans la Grande Tour"},
+			{"type": "etat", "cle": "lecon_foudre", "objectif": "Au Cercle des Pierres-Lunes (à l'ouest de l'Académie), lancer la Foudre vers la plus haute pierre (touche « ) » à droite du 0, ou B, puis V ; en VR, gâchette gauche)"},
+			{"type": "rendre", "pnj": "archimage", "label": "La Pierre-Lune a chanté sous l'éclair.", "objectif": "Retourner voir l'archimage"},
+		],
+		"fin": "Je l'ai entendue. Une note grave, comme un très vieux chat qui ronronne. Elle t'aime bien. Tiens, des pièces, et deux potions de magie : la Foudre a bon appétit. Va, maintenant. Et pense à moi quand il pleuvra sur tes ennemis.",
+		"recompense": {"pieces": 40, "objets": [["potion_mana", 2]]}},
 	# V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
 	{"id": "bal_perroquet", "titre": "Rhubarbe s'est envolé", "donneur": "anne_rose", "lieu": "La Balafre, le Requin Borgne", "sorte": "Balafre",
 		"resume": "Rhubarbe, le perroquet rouge de la capitaine Anne-Rose Corbeau, s'est envolé vers le vieux camp abandonné, au nord-ouest de l'île. Perroquet-Joe saura comment l'attirer.",

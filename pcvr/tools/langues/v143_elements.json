@@ -1,0 +1,187 @@
+[
+[
+"Foudre",
+"Lightning",
+"Rayo"
+],
+[
+"Un éclair frappe l'ennemi visé, puis saute sur deux autres. Terrible sur un ennemi trempé, sur les machines et sur tout ce qui vole.",
+"A bolt strikes the enemy you aim at, then jumps to two more. Devastating on a soaked enemy, on machines and on anything that flies.",
+"Un rayo golpea al enemigo al que apuntas y luego salta a otros dos. Terrible contra un enemigo empapado, contra las máquinas y contra todo lo que vuela."
+],
+[
+"Faiblesse !",
+"Weakness!",
+"¡Debilidad!"
+],
+[
+"Résiste…",
+"Resists…",
+"Resiste…"
+],
+[
+"Insensible au froid",
+"Immune to cold",
+"Insensible al frío"
+],
+[
+"Gelé !",
+"Frozen!",
+"¡Congelado!"
+],
+[
+"Gelé à cœur !",
+"Frozen solid!",
+"¡Congelado hasta el corazón!"
+],
+[
+"En feu !",
+"On fire!",
+"¡En llamas!"
+],
+[
+"Trempé !",
+"Soaked!",
+"¡Empapado!"
+],
+[
+"Vapeur !",
+"Steam!",
+"¡Vapor!"
+],
+[
+"Éclats !",
+"Shards!",
+"¡Esquirlas!"
+],
+[
+"Surcharge !",
+"Overload!",
+"¡Sobrecarga!"
+],
+[
+"Électrocuté !",
+"Electrocuted!",
+"¡Electrocutado!"
+],
+[
+"Attisé !",
+"Fanned!",
+"¡Avivado!"
+],
+[
+"Brisé !",
+"Shattered!",
+"¡Hecho añicos!"
+],
+[
+"Vapeur ! Le feu sur un ennemi gelé (ou la glace sur un ennemi en feu) fait un nuage brûlant qui touche tout autour.",
+"Steam! Fire on a frozen enemy (or ice on a burning one) makes a scalding cloud that hits everything around.",
+"¡Vapor! El fuego sobre un enemigo congelado (o el hielo sobre uno en llamas) forma una nube ardiente que alcanza todo alrededor."
+],
+[
+"Brisé ! Un ennemi gelé frappé avec une arme prend le double.",
+"Shattered! A frozen enemy struck with a weapon takes double damage.",
+"¡Hecho añicos! Un enemigo congelado golpeado con un arma recibe el doble."
+],
+[
+"Éclats ! La foudre fait voler la glace en morceaux : ceux qui sont autour sont touchés.",
+"Shards! Lightning blows the ice to pieces: those standing nearby are hit.",
+"¡Esquirlas! El rayo hace saltar el hielo en pedazos: los que están alrededor reciben daño."
+],
+[
+"Surcharge ! La foudre sur un ennemi en feu fait tout sauter autour de lui.",
+"Overload! Lightning on a burning enemy blows up everything around it.",
+"¡Sobrecarga! El rayo sobre un enemigo en llamas hace estallar todo a su alrededor."
+],
+[
+"Électrocuté ! La foudre fait deux fois plus mal à un ennemi trempé.",
+"Electrocuted! Lightning hurts a soaked enemy twice as much.",
+"¡Electrocutado! El rayo hace el doble de daño a un enemigo empapado."
+],
+[
+"Attisé ! Le vent pousse le feu : il saute sur les ennemis voisins.",
+"Fanned! The wind drives the fire: it leaps to nearby enemies.",
+"¡Avivado! El viento empuja el fuego: salta a los enemigos cercanos."
+],
+[
+"Gelé à cœur ! Un ennemi trempé gèle bien plus longtemps.",
+"Frozen solid! A soaked enemy stays frozen much longer.",
+"¡Congelado hasta el corazón! Un enemigo empapado se congela mucho más tiempo."
+],
+[
+"Faiblesse ! Chaque créature craint un élément : le feu pour les plantes et les ombres, la foudre pour les bêtes de l'eau, les machines et ce qui vole, la glace pour les créatures de feu.",
+"Weakness! Every creature fears an element: fire for plants and shadows, lightning for water beasts, machines and flyers, ice for creatures of fire.",
+"¡Debilidad! Cada criatura teme un elemento: el fuego para las plantas y las sombras, el rayo para las bestias del agua, las máquinas y lo que vuela, el hielo para las criaturas de fuego."
+],
+[
+"Le septième sort",
+"The seventh spell",
+"El séptimo hechizo"
+],
+[
+"L'archimage Séraphine Astrelune garde pour les sorciers diplômés un septième sort, qu'aucun maître n'enseigne : la Foudre. Pour l'apprendre, il faudra faire chanter la plus haute des Pierres-Lunes.",
+"Archmage Séraphine Astrelune keeps a seventh spell for graduate wizards, one no master teaches: Lightning. To learn it, I must make the tallest Moonstone sing.",
+"La archimaga Séraphine Astrelune guarda para los hechiceros diplomados un séptimo hechizo que ningún maestro enseña: el Rayo. Para aprenderlo, habrá que hacer cantar a la más alta de las Piedras-Luna."
+],
+[
+"Existe-t-il un septième sort ?",
+"Is there a seventh spell?",
+"¿Existe un séptimo hechizo?"
+],
+[
+"Un septième sort ? … Qui t'en a parlé ? Pip, je parie. Oui. Il y en a un. Aucun maître ne l'enseigne, parce qu'aucun maître n'a envie de repeindre son plafond. La Foudre. Le feu brûle, la glace fige ; la foudre, elle, choisit. Elle saute d'un ennemi à l'autre, elle aime l'eau, le métal et tout ce qui vole. Tu es sorcier, maintenant. Tu peux l'apprendre. Mais pas ici : j'aime mon plafond.",
+"A seventh spell? … Who told you? Pip, I'll wager. Yes. There is one. No master teaches it, because no master wants to repaint the ceiling. Lightning. Fire burns, ice holds; lightning chooses. It leaps from one enemy to the next, it loves water, metal and anything that flies. You are a wizard now. You may learn it. But not here: I like my ceiling.",
+"¿Un séptimo hechizo? … ¿Quién te lo ha dicho? Pip, apuesto. Sí. Hay uno. Ningún maestro lo enseña, porque ningún maestro quiere volver a pintar su techo. El Rayo. El fuego quema, el hielo detiene; el rayo, en cambio, elige. Salta de un enemigo a otro, le gustan el agua, el metal y todo lo que vuela. Ahora eres hechicero. Puedes aprenderlo. Pero no aquí: le tengo cariño a mi techo."
+],
+[
+"Je suis prêt à apprendre la Foudre.",
+"I am ready to learn Lightning.",
+"Estoy listo para aprender el Rayo."
+],
+[
+"Lève la main. Plus haut. Sens-tu l'air qui picote ? L'orage est toujours là, quelque part au-dessus de nous : il attend qu'on l'appelle. Ne le tire pas : invite-le. … Voilà. Tes cheveux se dressent, c'est bon signe. Maintenant, va au Cercle, et offre un éclair à la plus haute des Pierres-Lunes. Elle adore ça. Et retiens bien ceci : les éléments se parlent. Un ennemi gelé se brise sous l'épée. Le feu et la glace, ensemble, font de la vapeur. Et la foudre sur un ennemi trempé… tu verras.",
+"Raise your hand. Higher. Can you feel the air tingling? The storm is always there, somewhere above us: it waits to be called. Don't pull it: invite it. … There. Your hair is standing on end, a good sign. Now go to the Circle and offer a bolt to the tallest Moonstone. She loves that. And remember this: the elements talk to each other. A frozen enemy shatters under the sword. Fire and ice together make steam. And lightning on a soaked enemy… you'll see.",
+"Levanta la mano. Más alto. ¿Notas cómo pica el aire? La tormenta siempre está ahí, en algún lugar sobre nosotros: espera a que la llamen. No tires de ella: invítala. … Eso es. Se te eriza el pelo, buena señal. Ahora ve al Círculo y ofrece un rayo a la más alta de las Piedras-Luna. Le encanta. Y recuerda esto: los elementos se hablan. Un enemigo congelado se rompe bajo la espada. El fuego y el hielo, juntos, hacen vapor. Y el rayo sobre un enemigo empapado… ya verás."
+],
+[
+"Apprendre la Foudre avec l'archimage Séraphine Astrelune, dans la Grande Tour",
+"Learn Lightning from Archmage Séraphine Astrelune, in the Great Tower",
+"Aprender el Rayo con la archimaga Séraphine Astrelune, en la Gran Torre"
+],
+[
+"Au Cercle des Pierres-Lunes (à l'ouest de l'Académie), lancer la Foudre vers la plus haute pierre (touche « ) » à droite du 0, ou B, puis V ; en VR, gâchette gauche)",
+"At the Moonstone Circle (west of the Academy), cast Lightning at the tallest stone (the key right of 0, or B, then V; in VR, left trigger)",
+"En el Círculo de las Piedras-Luna (al oeste de la Academia), lanzar el Rayo hacia la piedra más alta (la tecla a la derecha del 0, o B, y luego V; en RV, gatillo izquierdo)"
+],
+[
+"La Pierre-Lune a chanté sous l'éclair.",
+"The Moonstone sang under the bolt.",
+"La Piedra-Luna cantó bajo el rayo."
+],
+[
+"Je l'ai entendue. Une note grave, comme un très vieux chat qui ronronne. Elle t'aime bien. Tiens, des pièces, et deux potions de magie : la Foudre a bon appétit. Va, maintenant. Et pense à moi quand il pleuvra sur tes ennemis.",
+"I heard her. A low note, like a very old cat purring. She likes you. Here, some coins, and two magic potions: Lightning has a hearty appetite. Go now. And think of me when it rains on your enemies.",
+"La he oído. Una nota grave, como un gato muy viejo que ronronea. Le caes bien. Toma, unas monedas y dos pociones de magia: el Rayo tiene buen apetito. Ve, ahora. Y piensa en mí cuando llueva sobre tus enemigos."
+],
+[
+"La Pierre-Lune boit l'éclair et chante une note très grave.",
+"The Moonstone drinks the bolt and sings a very low note.",
+"La Piedra-Luna bebe el rayo y canta una nota muy grave."
+],
+[
+"L'éclair frappe la plus haute des Pierres-Lunes : elle chante, et les huit autres lui répondent. L'archimage a sûrement entendu.",
+"The bolt strikes the tallest Moonstone: she sings, and the other eight answer. The archmage surely heard.",
+"El rayo golpea la más alta de las Piedras-Luna: canta, y las otras ocho le responden. Seguro que la archimaga lo ha oído."
+],
+[
+"[b]Les éléments :[/b] [color=#9aa7b0]un ennemi gelé frappé à l'arme se brise (dégâts doublés) ; le feu sur la glace fait un nuage de vapeur qui touche tout autour ; la foudre fait deux fois plus mal à un ennemi trempé ; le vent attise le feu. Chaque créature a sa faiblesse : le feu pour les plantes et les ombres, la foudre pour les bêtes de l'eau, les machines et ce qui vole, la glace et l'eau pour les créatures de feu.[/color]",
+"[b]The elements:[/b] [color=#9aa7b0]a frozen enemy struck with a weapon shatters (double damage); fire on ice makes a cloud of steam that hits everything around; lightning hurts a soaked enemy twice as much; wind fans the fire. Every creature has its weakness: fire for plants and shadows, lightning for water beasts, machines and flyers, ice and water for creatures of fire.[/color]",
+"[b]Los elementos:[/b] [color=#9aa7b0]un enemigo congelado golpeado con un arma se hace añicos (daño doble); el fuego sobre el hielo forma una nube de vapor que alcanza todo alrededor; el rayo hace el doble de daño a un enemigo empapado; el viento aviva el fuego. Cada criatura tiene su debilidad: el fuego para las plantas y las sombras, el rayo para las bestias del agua, las máquinas y lo que vuela, el hielo y el agua para las criaturas de fuego.[/color]"
+],
+[
+"[color=#9aa7b0][i]PC : 5 à 0 (et « ) » pour la Foudre) pour choisir un sort, V pour le lancer, B pour passer au suivant. VR : gâchette gauche pour lancer, maintenue pour changer.[/i][/color]",
+"[color=#9aa7b0][i]PC: 5 to 0 (and the key right of 0 for Lightning) to select a spell, V to cast it, B to switch to the next. VR: left trigger to cast, hold to change.[/i][/color]",
+"[color=#9aa7b0][i]PC: de 5 a 0 (y la tecla a la derecha del 0 para el Rayo) para elegir un hechizo, V para lanzarlo, B para pasar al siguiente. VR: gatillo izquierdo para lanzar, mantenido para cambiar.[/i][/color]"
+]
+]

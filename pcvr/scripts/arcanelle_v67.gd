@@ -281,6 +281,17 @@ func _touch_frost() -> void:
 		main._show_message_v28("Le cristal est glacé. Il ne se passe rien… pour l'instant.")
 
 
+## V143 : la Foudre frappe la plus haute Pierre-Lune (la leçon de l'archimage).
+func _strike_stone() -> void:
+	var so: Node = main.get("sorts_v67")
+	main.sfx("sort_lumiere", bourg.circle_center + Vector3.UP * 3.0)
+	if so != null and so.knows("foudre"):
+		if _lecon("foudre"):
+			main._show_message_v28("La Pierre-Lune boit l'éclair et chante une note très grave.")
+		else:
+			_set_lecon("foudre", "L'éclair frappe la plus haute des Pierres-Lunes : elle chante, et les huit autres lui répondent. L'archimage a sûrement entendu.")
+
+
 func _ceremony_ready() -> bool:
 	var j: Node = main.get("journal_v56")
 	if j == null or str(j.state("arc_diplome")) != "en_cours":
@@ -311,6 +322,9 @@ func register_targets(so: Node, pw: Node) -> void:
 	so.register({"id": "chouette_blessee", "sort": "soin", "pos": bourg.owl_pos + Vector3.UP * 0.3, "radius": 3.5, "call": _heal_owl, "when": func(): return not bool(state["chouette"])})
 	so.register({"id": "lac_miroir", "sort": "gel", "pos": IleScript.W(IleScript.LAKE.x, IleScript.LAKE.y, IleScript.LAKE_Y), "radius": IleScript.LAKE_R + 14.0,
 		"call": func(): pass, "lake": true})
+	# V143 : la leçon de Foudre : la plus haute des Pierres-Lunes attend l'éclair
+	so.register({"id": "pierre_lune_foudre", "sort": "foudre", "pos": bourg.books_high.get("livre_menhir", bourg.circle_center + Vector3.UP * 6.3), "radius": 4.5,
+		"call": _strike_stone})
 
 
 func _light_brazier(i: int) -> void:
@@ -535,6 +549,7 @@ func trouvailles() -> Dictionary:
 				out["sort_" + str(k2)] = 1
 				n += 1
 	out["six_sorts"] = 1 if n >= SORTS.size() else 0
+	out["lecon_foudre"] = 1 if _lecon("foudre") else 0
 	out["cloche_tour"] = 1 if int(state["cloche"]) > 0 else 0
 	return out
 

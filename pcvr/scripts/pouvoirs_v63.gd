@@ -162,6 +162,10 @@ func _monsters() -> Array:
 	for m in get_tree().get_nodes_in_group("monstres_v36"):
 		if is_instance_valid(m) and str(m.get("state")) != "mort":
 			out.append(m)
+	# V143 : la faune sauvage des îles aussi (jusque-là, les sorts lui passaient au travers)
+	for m2 in get_tree().get_nodes_in_group("faune_v132"):
+		if is_instance_valid(m2) and str(m2.get("state")) != "mort" and not out.has(m2):
+			out.append(m2)
 	return out
 
 
@@ -188,6 +192,9 @@ func _vent() -> void:
 			m.take_hit(1, o)
 		if m.get("_knock") != null and str(m.get("kind")) != "gardien_coeur":
 			m.set("_knock", away * (11.0 if not (str(m.get("kind")) in ["golem", "colosse"]) else 3.0))
+		# V143 : le vent attise le feu
+		if main.get("elements_v143") != null:
+			main.elements_v143.on_wind(n3, o)
 	for t in targets.duplicate():
 		if str(t.get("power", "")) != "vent" or not _alive(t):
 			continue
@@ -372,7 +379,12 @@ func _tick_balls(delta: float) -> void:
 				var cb: Node = main.combat_v28
 				if cb != null:
 					cb.critical = true
-				m.take_hit(int(b["dmg"]), from)
+				# V143 : le feu passe par les éléments (la brûlure, les réactions, les faiblesses)
+				var el: Node = main.get("elements_v143")
+				if el != null:
+					el.hit(m, "feu", int(b["dmg"]), from)
+				else:
+					m.take_hit(int(b["dmg"]), from)
 				if cb != null:
 					cb.critical = false
 				hit_at = c
