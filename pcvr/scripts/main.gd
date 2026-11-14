@@ -1193,6 +1193,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			elements_v143.load_data({})
 		if cibles_v144 != null:
 			cibles_v144.reset()
+		if roue_v145 != null:
+			roue_v145.reset()
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		if sceaux_v63 != null:
@@ -2739,6 +2741,9 @@ func _vr_actions_v28(delta: float) -> void:
 	if combat_v28 != null:
 		var armed: bool = inventory_v28 != null and inventory_v28.equipped != ""
 		var points := {"gauche": [left_hand.global_position, 0.12, 1, left_hand.position]}
+		# V145 : gâchette gauche tenue, la main gauche fait de la magie (pas de coup de poing)
+		if roue_v145 != null and roue_v145.main_gauche_occupee():
+			points.erase("gauche")
 		if armed:
 			var dmg: int = int(inventory_v28.ITEMS[inventory_v28.equipped].get("damage", 1)) + (int(journal_v56.bonus["force"]) if journal_v56 != null else 0)
 			# V63 : la force gagnée en montant de niveau, la lame de la forge
@@ -3962,6 +3967,7 @@ var bavardages_v65: Node                   # V65 : les habitants qui se connaiss
 var objets_v66: Node                       # V66 : objets à casser, coffres cachés, boissons
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
+var roue_v145: Node3D                      # V145 : la roue des sorts et les gestes de la magie
 var cibles_v144: Node3D                    # V144 : la cible, le verrouillage, les barres de vie, les alertes
 var elements_v143: Node3D                  # V143 : la magie élémentaire (états, réactions, faiblesses, la Foudre)
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
@@ -4165,6 +4171,13 @@ func _create_v67() -> void:
 	cibles_v144.setup(self)
 	if hud_v28 != null and not xr_active:
 		cibles_v144.make_hud(hud_v28)
+	# V145 : la roue des sorts, les gestes
+	roue_v145 = preload("res://scripts/roue_v145.gd").new()
+	roue_v145.name = "Roue_v145"
+	add_child(roue_v145)
+	roue_v145.setup(self)
+	if hud_v28 != null and not xr_active:
+		roue_v145.make_hud(hud_v28)
 	if hud_v28 != null and not xr_active:
 		sorts_v67.make_hud(hud_v28)
 	if arcanelle_v67 == null:

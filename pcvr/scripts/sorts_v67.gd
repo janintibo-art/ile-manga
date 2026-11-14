@@ -67,6 +67,8 @@ var _vr_label: Label3D
 var _hud: Control
 var _hud_bar: Control
 var _clock: float = 0.0
+var aim_force := Vector3.ZERO           # V145 : un geste de lancer donne la direction (et la main, le départ)
+var origin_force := Vector3.INF
 
 
 func setup(main_node: Node) -> void:
@@ -165,6 +167,8 @@ func add_mana(n: float) -> void:
 # =================================================================== lancer
 
 func _origin() -> Vector3:
+	if origin_force != Vector3.INF:
+		return origin_force
 	if main.xr_active and main.vr_body != null:
 		return main.vr_body.global_position + Vector3.UP * 1.2
 	if main.pc_body != null:
@@ -174,7 +178,9 @@ func _origin() -> Vector3:
 
 func _aim(flat: bool = true) -> Vector3:
 	var d: Vector3
-	if main.xr_active:
+	if aim_force != Vector3.ZERO:
+		d = aim_force
+	elif main.xr_active:
 		d = -main.right_hand.global_basis.z
 	else:
 		d = main.hero_v28.facing if main.hero_v28 != null else Vector3.FORWARD
@@ -188,6 +194,16 @@ func _aim(flat: bool = true) -> Vector3:
 	if flat:
 		d.y = 0.0
 	return d.normalized() if d.length() > 0.01 else Vector3.FORWARD
+
+
+## V145 : lance un sort depuis « o », vers « d » (le geste de lancer, en VR).
+func cast_vers(id: String, o: Vector3, d: Vector3) -> bool:
+	aim_force = d.normalized() if d.length() > 0.01 else Vector3.ZERO
+	origin_force = o
+	var ok: bool = cast(id)
+	aim_force = Vector3.ZERO
+	origin_force = Vector3.INF
+	return ok
 
 
 ## Lance le sort choisi (ou celui donné). Renvoie false s'il n'a pas pu partir.
@@ -439,7 +455,9 @@ func _foudre() -> bool:
 		return false
 	var o: Vector3 = _origin() + _aim() * 0.5
 	var dir: Vector3 = _aim(not main.xr_active)
-	if main.xr_active and main.get("right_hand") != null:
+	if origin_force != Vector3.INF:
+		o = origin_force
+	elif main.xr_active and main.get("right_hand") != null:
 		o = main.right_hand.global_position
 	main.sfx("sort_foudre", o)
 	var at: Vector3 = el.foudre(o, dir)
@@ -684,7 +702,12 @@ func handle_key(k: Key) -> bool:
 		KEY_B:
 			if known.is_empty():
 				return false
-			next_spell()
+			# V145 : tapé, le sort suivant ; maintenu, la roue des sorts
+			var roue: Node = main.get("roue_v145")
+			if roue != null:
+				roue.pc_appui_b()
+			else:
+				next_spell()
 			return true
 		KEY_5, KEY_KP_5, KEY_6, KEY_KP_6, KEY_7, KEY_KP_7, KEY_8, KEY_KP_8, KEY_9, KEY_KP_9, KEY_0, KEY_KP_0, KEY_PARENRIGHT, KEY_MINUS:
 			var i: int = {KEY_5: 0, KEY_KP_5: 0, KEY_6: 1, KEY_KP_6: 1, KEY_7: 2, KEY_KP_7: 2, KEY_8: 3, KEY_KP_8: 3, KEY_9: 4, KEY_KP_9: 4, KEY_0: 5, KEY_KP_0: 5, KEY_PARENRIGHT: 6, KEY_MINUS: 6}[k]
@@ -705,6 +728,13 @@ func vr_tick(delta: float) -> void:
 	var c: Node = main.get("ciel_v54")
 	if (m != null and bool(m.get("swimming"))) or (c != null and bool(c.get("riding"))):
 		_vr_trig = -1.0
+		if main.get("roue_v145") != null and bool(main.roue_v145.main_gauche_occupee()):
+			main.roue_v145.reset()
+		return
+	# V145 : la roue des sorts et les gestes (roue_v145.gd)
+	var roue: Node = main.get("roue_v145")
+	if roue != null:
+		roue.vr_tick(delta)
 		return
 	var down: bool = main.left_hand.get_float("trigger") > 0.7
 	if down:
@@ -789,7 +819,11 @@ func _draw_hud() -> void:
 		_hud_bar.draw_circle(c, rr + 2.0, Color(0, 0, 0, 0.6))
 		var ready: bool = float(_cd.get(sid, 0.0)) <= 0.0 and mana >= float(cost(sid))
 		_hud_bar.draw_circle(c, rr, col if ready else col.darkened(0.6))
-		_hud_bar.draw_string(ThemeDB.fallback_font, c + Vector2(-4, 5), str(INFO[sid]["touche"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 13 if big else 10, Color(0.05, 0.05, 0.1))
+		# V145 : l'icône du sort (et la touche, en petit)
+		var ic: Texture2D = preload("res://scripts/roue_v145.gd").icone(sid)
+		_hud_bar.draw_texture_rect(ic, Rect2(c - Vector2(rr, rr) * 0.72, Vector2(rr, rr) * 1.44), false, Color(0.06, 0.06, 0.1, 0.92))
+		if big:
+			_hud_bar.draw_string(ThemeDB.fallback_font, c + Vector2(rr * 0.45, rr + 9.0), str(INFO[sid]["touche"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color(1, 1, 1, 0.75))
 	if choisi != "":
 		_hud_bar.draw_string(ThemeDB.fallback_font, Vector2(x - 170, 42), "%s  [V]" % str(INFO[choisi]["nom"]), HORIZONTAL_ALIGNMENT_RIGHT, 165, 14, Color(1, 1, 1, 0.9))
 
@@ -812,7 +846,8 @@ func page_text() -> String:
 			r += "[color=#3a4a55]●[/color] [color=#9aa7b0]%s — à apprendre à Arcanelle[/color]\n" % str(inf["nom"])
 	# V143 : les éléments
 	r += "[b]Les éléments :[/b] [color=#9aa7b0]un ennemi gelé frappé à l'arme se brise (dégâts doublés) ; le feu sur la glace fait un nuage de vapeur qui touche tout autour ; la foudre fait deux fois plus mal à un ennemi trempé ; le vent attise le feu. Chaque créature a sa faiblesse : le feu pour les plantes et les ombres, la foudre pour les bêtes de l'eau, les machines et ce qui vole, la glace et l'eau pour les créatures de feu.[/color]\n"
-	r += "[color=#9aa7b0][i]PC : 5 à 0 (et « ) » pour la Foudre) pour choisir un sort, V pour le lancer, B pour passer au suivant. VR : gâchette gauche pour lancer, maintenue pour changer.[/i][/color]\n"
+	r += "[color=#9aa7b0][i]PC : 5 à 0 (et « ) » pour la Foudre) pour choisir un sort, V pour le lancer, B pour passer au suivant ; B maintenu : la roue des sorts (la souris vers un sort, puis relâche B).[/i][/color]\n"
+	r += "[color=#9aa7b0][i]VR : gâchette gauche pour lancer ; maintenue : la roue des sorts autour de la main (pousse la main vers un sort, relâche). Gâchette tenue, les gestes : un geste vif vers l'avant lance le sort dans cette direction ; la main levée vite au-dessus de toi, la Lévitation ; la main posée un instant sur le cœur, le Soin.[/i][/color]\n"
 	return r
 
 

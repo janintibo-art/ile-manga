@@ -1,0 +1,42 @@
+[
+[
+"Roue des sorts",
+"Spell wheel",
+"Rueda de hechizos"
+],
+[
+"La souris vers un sort, puis relâche B",
+"Move the mouse to a spell, then release B",
+"Mueve el ratón hacia un hechizo y suelta B"
+],
+[
+"Sort inconnu",
+"Unknown spell",
+"Hechizo desconocido"
+],
+[
+"À apprendre à Arcanelle",
+"To be learned at Arcanelle",
+"Por aprender en Arcanelle"
+],
+[
+"[color=#9aa7b0][i]PC : 5 à 0 (et « ) » pour la Foudre) pour choisir un sort, V pour le lancer, B pour passer au suivant ; B maintenu : la roue des sorts (la souris vers un sort, puis relâche B).[/i][/color]",
+"[color=#9aa7b0][i]PC: 5 to 0 (and the key right of 0 for Lightning) to select a spell, V to cast it, B to switch to the next; hold B: the spell wheel (move the mouse to a spell, then release B).[/i][/color]",
+"[color=#9aa7b0][i]PC: de 5 a 0 (y la tecla a la derecha del 0 para el Rayo) para elegir un hechizo, V para lanzarlo, B para pasar al siguiente; B mantenida: la rueda de hechizos (mueve el ratón hacia un hechizo y suelta B).[/i][/color]"
+],
+[
+"[color=#9aa7b0][i]VR : gâchette gauche pour lancer ; maintenue : la roue des sorts autour de la main (pousse la main vers un sort, relâche). Gâchette tenue, les gestes : un geste vif vers l'avant lance le sort dans cette direction ; la main levée vite au-dessus de toi, la Lévitation ; la main posée un instant sur le cœur, le Soin.[/i][/color]",
+"[color=#9aa7b0][i]VR: left trigger to cast; hold it: the spell wheel around your hand (push your hand toward a spell, release). Trigger held, the gestures: a quick forward motion casts the spell in that direction; your hand raised quickly above you, Levitation; your hand laid on your heart for a moment, Healing.[/i][/color]",
+"[color=#9aa7b0][i]RV: gatillo izquierdo para lanzar; mantenido: la rueda de hechizos alrededor de la mano (empuja la mano hacia un hechizo y suelta). Con el gatillo pulsado, los gestos: un gesto rápido hacia delante lanza el hechizo en esa dirección; la mano levantada rápido por encima de ti, la Levitación; la mano sobre el corazón un momento, la Curación.[/i][/color]"
+],
+[
+"Astuce : B maintenu ouvre la roue des sorts : le temps ralentit, la souris choisit le sort.",
+"Tip: hold B to open the spell wheel: time slows down, the mouse picks the spell.",
+"Consejo: mantén B para abrir la rueda de hechizos: el tiempo se ralentiza y el ratón elige el hechizo."
+],
+[
+"Astuce : en VR, gâchette gauche tenue, un geste vif vers l'avant lance le sort ; la main sur le cœur, le Soin.",
+"Tip: in VR, left trigger held, a quick forward motion casts the spell; your hand on your heart, Healing.",
+"Consejo: en RV, con el gatillo izquierdo pulsado, un gesto rápido hacia delante lanza el hechizo; la mano sobre el corazón, la Curación."
+]
+]

@@ -70,6 +70,8 @@ const ETAPES := {
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [
+	"Astuce : B maintenu ouvre la roue des sorts : le temps ralentit, la souris choisit le sort.",
+	"Astuce : en VR, gâchette gauche tenue, un geste vif vers l'avant lance le sort ; la main sur le cœur, le Soin.",
 	"Astuce : touche C (ou clic de la molette) : verrouiller l'ennemi devant toi. Tes coups et tes sorts iront vers lui.",
 	"Astuce : un « ! » rouge au-dessus d'un ennemi : il arme son coup. C'est le moment de parer ou de rouler.",
 	"Astuce : un ennemi gelé frappé à l'arme se brise : dégâts doublés. Le feu sur la glace fait un nuage de vapeur.",

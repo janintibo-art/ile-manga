@@ -73,6 +73,10 @@ func _talent(id: String) -> bool:
 
 ## La poitrine du joueur (PC : le héros ; VR : sous la tête).
 func origin() -> Vector3:
+	# V145 : un geste de lancer (VR) : la boule part de la main
+	var so: Node = main.get("sorts_v67")
+	if so != null and so.origin_force != Vector3.INF:
+		return so.origin_force
 	if main.xr_active:
 		return main.vr_body.global_position + Vector3.UP * 1.2
 	return main.pc_body.global_position + Vector3.UP * 1.2
@@ -81,7 +85,10 @@ func origin() -> Vector3:
 ## Où l'on vise : PC, devant le héros ; VR, là où pointe la main droite.
 func aim_dir(flat: bool = true) -> Vector3:
 	var d: Vector3
-	if main.xr_active:
+	var so: Node = main.get("sorts_v67")
+	if so != null and so.aim_force != Vector3.ZERO:
+		d = so.aim_force
+	elif main.xr_active:
 		d = -main.right_hand.global_basis.z
 	else:
 		d = main.hero_v28.facing if main.hero_v28 != null else Vector3.FORWARD
