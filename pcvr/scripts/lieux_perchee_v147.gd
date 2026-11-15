@@ -10,6 +10,10 @@ extends RefCounted
 ## V148 : le Tripot de la Dame de Pique : un salon de papier peint bordeaux et de parquet, le lustre, le
 ## bar et son miroir, le piano, et la table de blackjack en demi-lune où la Dame de Pique donne les cartes
 ## (Gédéon Tic et Fanchon Fil-d'Or y jouent aussi) ; la Caisse, le Tableau des réputations.
+## V149 : le Saloon du Chien qui Mise (le long bar de Bartholomé, la scène et son banjo, l'escalier, et la
+## grande table de poker où jouent la Shérif, Zoé Nuée et Doc Cornemuse) ; le Coupe-Chou, la boutique du
+## barbier, et derrière son rideau de perles, le Terrier (« le Club des Moustaches » en Tout public), sa
+## petite table de poker où jouent Marius Maillon, Rosemonde Confiture et Hilda Enclume.
 ## Les tables sont confiées à jeux_v147 (main.jeux_v147) : on s'y assoit, on mise, on joue.
 ## M : maisons_v81.
 
@@ -17,10 +21,12 @@ const Kit = preload("res://scripts/azur_kit_v56.gd")
 const Des = preload("res://scripts/des_v147.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Cartes = preload("res://scripts/cartes_v148.gd")
+const Public = preload("res://scripts/public_v111.gd")
 
 const STYLE := "perchee_lieu"
-const TAILLES := {"pp_fosse": Vector2(15.0, 13.0), "pp_tripot": Vector2(15.0, 12.0)}
-const ENTRER := {"pp_fosse": "E : descendre à la Fosse aux Dés", "pp_tripot": "E : entrer au Tripot de la Dame de Pique"}
+const TAILLES := {"pp_fosse": Vector2(15.0, 13.0), "pp_tripot": Vector2(15.0, 12.0), "pp_saloon": Vector2(17.0, 14.0), "pp_barbier": Vector2(10.0, 12.0)}
+const ENTRER := {"pp_fosse": "E : descendre à la Fosse aux Dés", "pp_tripot": "E : entrer au Tripot de la Dame de Pique",
+	"pp_saloon": "E : pousser les portes du Saloon", "pp_barbier": "E : entrer chez le barbier"}
 const H: float = 4.2
 const HABITANTS := "res://scripts/pnj/perchee_habitants_v146.gd"
 ## Les rangs du Tableau des réputations (les habitués ; le joueur s'y ajoute).
@@ -64,6 +70,24 @@ static func _mur(M, key: String, tex: String, tint: Color, tile: float) -> void:
 static func shell(M) -> void:
 	var R = M.R
 	R.pal = (R.pal as Dictionary).duplicate()
+	if str(M.ctx.get("scenario", "")) == "pp_saloon":
+		R.H = 4.3
+		R.pal["fenetre"] = "aucune"
+		_mur(M, "mur", "montjoie/bois_planches.png", Color(0.82, 0.62, 0.46), 1.6)
+		_mur(M, "bas", "maisons/lambris_sombre.png", Color(0.9, 0.82, 0.74), 1.4)
+		_mur(M, "sol", "montjoie/bois_planches.png", Color(0.62, 0.46, 0.34), 1.8)
+		_mur(M, "plafond", "montjoie/bois_planches.png", Color(0.4, 0.28, 0.2), 2.0)
+		R.shell()
+		return
+	if str(M.ctx.get("scenario", "")) == "pp_barbier":
+		R.H = 3.2
+		R.pal["fenetre"] = "aucune"
+		_mur(M, "mur", "maisons/pp_rayures_bleu.png", Color(1, 1, 1), 1.6)
+		_mur(M, "bas", "maisons/lambris_blanc.png", Color(0.95, 0.95, 0.95), 1.4)
+		_mur(M, "sol", "maisons/damier_noir_blanc.png", Color(0.95, 0.95, 0.95), 1.2)
+		_mur(M, "plafond", "montjoie/bois_planches.png", Color(0.55, 0.45, 0.36), 2.0)
+		R.shell()
+		return
 	if str(M.ctx.get("scenario", "")) == "pp_tripot":
 		R.H = 3.7
 		R.pal["fenetre"] = "aucune"
@@ -241,6 +265,10 @@ static func build(M, sc: String) -> void:
 		_fosse(M)
 	elif sc == "pp_tripot":
 		_tripot(M)
+	elif sc == "pp_saloon":
+		_saloon(M)
+	elif sc == "pp_barbier":
+		_barbier(M)
 
 
 static func _fosse(M) -> void:
@@ -711,3 +739,274 @@ static func _tripot(M) -> void:
 	M.ctx["entree"] = str(_pick(M, ["Le Tripot de la Dame de Pique : du velours, un lustre, un piano qui joue en sourdine. Au fond, la Dame de Pique bat les cartes sans les regarder.",
 		"Ça sent la cire et la salsepareille. Des chuchotements, des jetons qui claquent, le froissement des cartes. Bienvenue au Tripot.",
 		"Le Tripot. Une table de blackjack en demi-lune, un bar, un piano. La Caisse est près de la porte."]))
+
+
+# =================================================================== le poker (V149) : le Saloon, le Terrier
+
+## Une table de poker ronde (huit pans de bois, le feutre, le rebord de cuir) ; trois habitués et la place
+## du joueur (au sud, vers la porte). Rend la table pour jeux_v147.
+static func _table_poker(M, c: Vector3, r: float, ids: Array, noms: Array, car: Array, feutre_c: Color) -> Dictionary:
+	var R = M.R
+	var ex: Vector3 = R.P(1, 0, 0) - R.P(0, 0, 0)
+	var ez: Vector3 = R.P(0, 0, 1) - R.P(0, 0, 0)
+	var bois: StandardMaterial3D = _m(M, "acajou", Color(0.34, 0.16, 0.08), 0.45)
+	var cuir: StandardMaterial3D = _m(M, "cuir_noir", Color(0.12, 0.08, 0.06), 0.5)
+	var h: float = 0.8
+	_mesh(M.room, _cyl(r + 0.08, r + 0.08, 0.06, 8), cuir, c + Vector3.UP * (h - 0.02))
+	_mesh(M.room, _cyl(r, r, 0.07, 8), bois, c + Vector3.UP * (h - 0.01))
+	_mesh(M.room, _cyl(r - 0.12, r - 0.12, 0.012, 8), _m(M, "feutre_pk_%s" % feutre_c.to_html(false), feutre_c, 0.95), c + Vector3.UP * (h + 0.025))
+	_mesh(M.room, _cyl(0.12, 0.2, h - 0.05, 10), bois, c + Vector3.UP * (h - 0.05) * 0.5)
+	_mesh(M.room, _cyl(0.5, 0.55, 0.06, 12), bois, c + Vector3.UP * 0.03)
+	R.kit.col_box(Transform3D(Basis(), c + Vector3.UP * h * 0.5), Vector3(r * 1.5, h, r * 1.5))
+	# la lampe au-dessus (un abat-jour vert, une ampoule qui chauffe)
+	_mesh(M.room, _cyl(0.008, 0.008, 1.6, 4), _m(M, "fer", Color(0.16, 0.15, 0.14), 0.5, 0.6), c + Vector3.UP * 2.6)
+	_mesh(M.room, _cyl(0.12, 0.4, 0.22, 16), _m(M, "abat_jour", Color(0.1, 0.32, 0.18), 0.5, 0.2), c + Vector3.UP * 1.75)
+	_mesh(M.room, _cyl(0.05, 0.05, 0.08, 10), _m(M, "ampoule", Color(1.0, 0.85, 0.55), 0.3, 0.0, 3.0), c + Vector3.UP * 1.66)
+	var l: OmniLight3D = _lampe(M, c + Vector3.UP * 1.55, Color(1.0, 0.86, 0.6), 1.4, 4.5)
+	l.omni_attenuation = 1.6
+	var dirs: Array = [ez, -ex, -ez, ex]
+	var places: Array = []
+	var adv: Array = []
+	for i in range(4):
+		var d: Vector3 = dirs[i]
+		places.append(c + d * (r - 0.32) + Vector3.UP * (h + 0.033))
+		_tabouret(M, c + d * (r + 0.42))
+		if i == 0:
+			continue
+		var f: Node = _habitant(M, str(ids[i - 1]), c + d * (r + 0.38), -d, "assis")
+		if f != null:
+			f.lines = ["Une partie ?", "Je sens une bonne main.", "Les cartes, c'est comme le temps : ça tourne."]
+		adv.append(f)
+	# une pile de jetons devant chacun
+	var couleurs: Array = [Color(0.75, 0.1, 0.08), Color(0.1, 0.25, 0.6), Color(0.9, 0.86, 0.75), Color(0.12, 0.45, 0.2)]
+	for i2 in range(1, 4):
+		var d2: Vector3 = dirs[i2]
+		var side: Vector3 = d2.cross(Vector3.UP)
+		for q in range(3):
+			var pc: Vector3 = c + d2 * (r - 0.2) + side * (0.18 + q * 0.05) + Vector3.UP * (h + 0.031)
+			for k in range(4 + (q * 3 + i2) % 5):
+				_mesh(M.room, _cyl(0.02, 0.02, 0.008, 12), _m(M, "jeton_%d" % q, couleurs[(q + i2) % 4], 0.5), pc + Vector3.UP * (k * 0.0085))
+	return {"centre": c + Vector3.UP * (h + 0.033), "siege": c + ez * (r + 0.85), "regard": -ez, "parent": M.room, "places": places,
+		"adversaires": adv, "noms": noms, "caracteres": car}
+
+
+static func _affiche(M, at: Vector3, face: Vector3, tex: String, w: float, h: float) -> void:
+	var q := MeshInstance3D.new()
+	var qm := QuadMesh.new()
+	qm.size = Vector2(w, h)
+	q.mesh = qm
+	var m := StandardMaterial3D.new()
+	if ResourceLoader.exists("res://assets/textures/" + tex):
+		m.albedo_texture = load("res://assets/textures/" + tex)
+	else:
+		m.albedo_color = Color(0.85, 0.78, 0.6)
+	m.roughness = 0.85
+	q.material_override = m
+	M.room.add_child(q)
+	q.global_position = at
+	q.look_at(at - face, Vector3.UP)
+
+
+static func _poker_acts(M, jeux: Node, t: Dictionary) -> void:
+	if jeux == null:
+		return
+	jeux.table("poker", t)
+	var assis_pas := func() -> bool: return str(jeux.assis) == ""
+	M.act((t["siege"] as Vector3) + Vector3.UP * 0.4, "E : s'asseoir à la table de poker", func(): jeux.asseoir("poker"), 1.3, assis_pas, "Gâchette : s'asseoir à la table de poker")
+
+
+static func _saloon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var hw: float = R.W * 0.5
+	var hd: float = R.D * 0.5
+	var jeux: Node = M.main.get("jeux_v147")
+	if jeux != null:
+		jeux.vider_tables()
+	var ex: Vector3 = R.P(1, 0, 0) - R.P(0, 0, 0)
+	var ez: Vector3 = R.P(0, 0, 1) - R.P(0, 0, 0)
+	var bois: StandardMaterial3D = _m(M, "acajou", Color(0.34, 0.16, 0.08), 0.45)
+	var laiton: StandardMaterial3D = _m(M, "laiton", Color(0.88, 0.68, 0.32), 0.35, 0.65)
+	var poutre: StandardMaterial3D = _m(M, "poutre", Color(0.26, 0.17, 0.1), 0.8)
+	# ---------------------------------------------------------------- les poteaux, les poutres, les lustres
+	for px in [-4.0, 4.0]:
+		for pz in [-1.5, 3.0]:
+			_mesh(M.room, _boite(0.25, 4.3, 0.25), poutre, R.P(px, 2.15, pz))
+			k.col_box(R.L(px, 2.15, pz), Vector3(0.25, 4.3, 0.25))
+	for pz2 in [-1.5, 3.0]:
+		_mesh(M.room, _boite(R.W, 0.3, 0.28), poutre, R.P(0, 4.15, pz2))
+	_lustre(M, R.P(-2.0, 3.5, 0.8))
+	_lustre(M, R.P(-5.5, 3.5, 4.0))
+	# ---------------------------------------------------------------- le long bar (au nord), son miroir, Bartholomé
+	var bz: float = -hd + 1.4
+	_mesh(M.room, _boite(9.0, 1.12, 0.7), bois, R.P(-1.5, 0.56, bz))
+	_mesh(M.room, _boite(9.1, 0.06, 0.85), _m(M, "comptoir_bar", Color(0.42, 0.22, 0.1), 0.3), R.P(-1.5, 1.14, bz))
+	_mesh(M.room, _cyl(0.025, 0.025, 9.0, 8), laiton, R.P(-1.5, 0.18, bz + 0.42), Basis(Vector3.BACK, PI * 0.5))
+	k.col_box(R.L(-1.5, 0.56, bz), Vector3(9.0, 1.12, 0.7))
+	for q in range(7):
+		_tabouret(M, R.P(-5.4 + q * 1.3, 0, bz + 0.85))
+	_mesh(M.room, _boite(6.0, 1.4, 0.04), _m(M, "miroir", Color(0.55, 0.6, 0.62), 0.05, 0.9), R.P(-1.5, 2.25, -hd + 0.04))
+	_mesh(M.room, _boite(6.3, 1.6, 0.03), bois, R.P(-1.5, 2.25, -hd + 0.02))
+	for y in [1.5, 3.05]:
+		_mesh(M.room, _boite(6.2, 0.04, 0.26), bois, R.P(-1.5, y, -hd + 0.15))
+		_bouteilles(M, R.P(-4.5, y + 0.02, -hd + 0.15), ex, 43)
+	var bart: Node = _habitant(M, "bartholome_pp", R.P(-1.5, 0, -hd + 0.6), ez, "comptoir")
+	if bart != null:
+		bart.lines = ["Une salsepareille, cow-boy ? Elle est fraîche comme une nuit dans le désert.", "Au poker, on regarde les mains. Pas les cartes : les mains.", "Le chien ? Il mise sur tout le monde. Il ne gagne jamais."]
+	_texte(M, R.P(-1.5, 3.55, -hd + 0.06), ez, "SALOON DU CHIEN QUI MISE", 72, Color(1.0, 0.85, 0.5))
+	# ---------------------------------------------------------------- la scène (à l'ouest), le banjo, l'escalier
+	var sc: Vector3 = R.P(-hw + 1.3, 0, 2.6)
+	_mesh(M.room, _boite(2.6, 0.4, 3.6), _m(M, "scene", Color(0.4, 0.22, 0.12), 0.6), sc + Vector3.UP * 0.2)
+	k.col_box(Transform3D(Basis(), sc + Vector3.UP * 0.2), Vector3(2.6, 0.4, 3.6))
+	_mesh(M.room, _boite(0.06, 3.0, 3.6), _m(M, "rideau_rouge", Color(0.5, 0.06, 0.06), 0.9), R.P(-hw + 0.08, 1.9, 2.6))
+	var banjo: Node = M.person("homme", -hw + 1.2, 2.6, 90.0, "guitare")
+	banjo.npc.global_position += Vector3.UP * 0.4
+	banjo.lines = ["♪ Oh, Pile-ou-Face, ma belle… ♪", "Une chanson pour le gagnant, et deux pour le perdant.", "♪ Tadam, tadam, la Roue tourne… ♪"]
+	for st in range(10):
+		_mesh(M.room, _boite(1.2, 0.2 * (st + 1), 0.32), bois, R.P(hw - 0.7, 0.1 * (st + 1), -hd + 6.8 - st * 0.32))
+	k.col_box(R.L(hw - 0.7, 1.0, -hd + 5.3), Vector3(1.2, 2.0, 3.4))
+	# ---------------------------------------------------------------- les affiches, la tête de bison
+	_affiche(M, R.P(-hw + 0.05, 2.3, -3.5), ex, "montjoie/affiche_recherche.png", 0.7, 0.95)
+	_affiche(M, R.P(hw - 0.05, 2.3, 1.0), -ex, "montjoie/affiche_recherche.png", 0.7, 0.95)
+	_affiche(M, R.P(-5.5, 2.4, hd - 0.05), -ez, "montjoie/tableau_liege.png", 1.1, 0.8)
+	# ---------------------------------------------------------------- les tables des clients
+	for tp in [Vector3(-3.0, 0, 3.8), Vector3(-5.6, 0, -1.0)]:
+		var ct: Vector3 = R.P(tp.x, 0, tp.z)
+		_mesh(M.room, _cyl(0.6, 0.6, 0.05, 20), bois, ct + Vector3.UP * 0.76)
+		_mesh(M.room, _cyl(0.07, 0.12, 0.74, 10), bois, ct + Vector3.UP * 0.37)
+		k.col_box(Transform3D(Basis(), ct + Vector3.UP * 0.4), Vector3(1.0, 0.8, 1.0))
+		_bouteilles(M, ct + Vector3.UP * 0.785 + ex * -0.1, ex, 2)
+	var c1: Node = M.person("homme", -3.0, 4.75, 180.0, "assis")
+	c1.lines = ["Ici, même le chien a une réputation.", "La Shérif ne perd jamais au poker. On dit que c'est son étoile."]
+	var c2: Node = M.person("femme", -2.1, 3.8, 270.0, "assis")
+	c2.lines = ["Un jour, je m'assiérai à la grande table.", "Zoé Nuée bluffe comme elle vole : sans regarder en bas."]
+	var c3: Node = M.person("vieux", -5.6, -0.1, 180.0, "assis")
+	c3.lines = ["Dans le temps, on misait des pépites.", "Hé, toi ! Tu as la tête d'un joueur."]
+	var c4: Node = M.person("homme", 1.4, 2.0, 225.0, "bras_croises")
+	c4.lines = ["Je regarde. Regarder, c'est gratuit.", "Le Doc compte ses cartes avec son stéthoscope."]
+	# ---------------------------------------------------------------- la Caisse, le Tableau des réputations
+	var cc: Vector3 = R.P(hw - 1.1, 0, hd - 1.9)
+	_mesh(M.room, _boite(0.7, 1.1, 1.6), _m(M, "comptoir", Color(0.3, 0.17, 0.09), 0.5), cc + Vector3.UP * 0.55)
+	_mesh(M.room, _boite(0.8, 0.05, 1.7), laiton, cc + Vector3.UP * 1.12)
+	k.col_box(Transform3D(Basis(), cc + Vector3.UP * 0.55), Vector3(0.7, 1.1, 1.6))
+	_texte(M, cc + Vector3.UP * 2.0 - ex * 0.36, -ex, "CAISSE", 64, Color(1.0, 0.85, 0.5))
+	var caissiere: Node = M.person("femme", hw - 0.6, hd - 1.9, -90.0, "comptoir", "Clémence")
+	caissiere.lines = ["Des jetons pour la grande table ?", "Au Saloon, on paie comptant. Même le chien."]
+	_tableau(M, R.P(hw - 0.06, 0, -0.2), -ex, jeux)
+	# ---------------------------------------------------------------- la grande table de poker
+	var t: Dictionary = _table_poker(M, R.P(3.0, 0, 0.6), 0.95, ["sherif_plomb_pp", "zoe_pp", "cornemuse_pp"], ["la Shérif", "Zoé", "le Doc"],
+		[{"prudence": 0.7, "bluff": 0.08, "alea": 0.05}, {"prudence": 0.25, "bluff": 0.4, "alea": 0.12}, {"prudence": 0.5, "bluff": 0.18, "alea": 0.1}], Color(0.1, 0.3, 0.17))
+	t["titre"] = "La grande table du Saloon"
+	_poker_acts(M, jeux, t)
+	if jeux != null:
+		jeux.table("caisse", {"centre": cc + Vector3.UP * 1.1, "siege": cc - ex * 1.0, "regard": ex, "parent": M.room, "titre": "La Caisse du Saloon"})
+		M.act(cc - ex * 1.0 + Vector3.UP * 0.4, "E : aller à la Caisse", func(): jeux.asseoir("caisse"), 1.4, func() -> bool: return str(jeux.assis) == "", "Gâchette : aller à la Caisse")
+	M.ctx["t149"] = 5.0
+	M.ctx["tick"] = func(delta: float) -> void:
+		M.ctx["t149"] = float(M.ctx["t149"]) - delta
+		if float(M.ctx["t149"]) <= 0.0:
+			M.ctx["t149"] = _r(M).randf_range(8.0, 16.0)
+			if jeux == null or str(jeux.assis) == "":
+				M.main.sfx("jetons" if _r(M).randf() < 0.6 else "cartes_battre", R.P(3.0, 0.9, 0.6), -12.0)
+	M.ctx["entree"] = str(_pick(M, ["Le Saloon du Chien qui Mise : un long bar, un banjo sur la scène, de la sciure par terre. À la grande table, la Shérif, Zoé et le Doc jouent au poker.",
+		"Les portes battantes claquent derrière vous. Bartholomé lève un sourcil : « Salsepareille ? Poker ? Les deux ? »",
+		"Le Saloon. Ça sent le bois, la salsepareille et le cuir. La grande table de poker attend un quatrième joueur."]))
+
+
+static func _barbier(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var hw: float = R.W * 0.5
+	var hd: float = R.D * 0.5
+	var jeux: Node = M.main.get("jeux_v147")
+	if jeux != null:
+		jeux.vider_tables()
+	var ex: Vector3 = R.P(1, 0, 0) - R.P(0, 0, 0)
+	var ez: Vector3 = R.P(0, 0, 1) - R.P(0, 0, 0)
+	var bois: StandardMaterial3D = _m(M, "acajou", Color(0.34, 0.16, 0.08), 0.45)
+	var laiton: StandardMaterial3D = _m(M, "laiton", Color(0.88, 0.68, 0.32), 0.35, 0.65)
+	var cuir: StandardMaterial3D = _m(M, "cuir_rouge", Color(0.45, 0.1, 0.08), 0.6)
+	var averti: bool = Public.averti()
+	# ---------------------------------------------------------------- la boutique : deux fauteuils, les miroirs, le barbier
+	for q in range(2):
+		var fz: float = 1.2 + q * 2.0
+		var f: Vector3 = R.P(hw - 1.1, 0, fz)
+		_mesh(M.room, _cyl(0.22, 0.28, 0.4, 12), _m(M, "fonte", Color(0.15, 0.15, 0.16), 0.4, 0.6), f + Vector3.UP * 0.2)
+		_mesh(M.room, _boite(0.6, 0.15, 0.6), cuir, f + Vector3.UP * 0.5)
+		_mesh(M.room, _boite(0.6, 0.75, 0.12), cuir, f + Vector3.UP * 0.9 + ex * 0.28, Basis(Vector3.BACK, 0.25) * Basis(Vector3.UP, PI * 0.5))
+		_mesh(M.room, _boite(0.08, 0.06, 0.6), laiton, f + Vector3.UP * 0.7 + ez * 0.32)
+		_mesh(M.room, _boite(0.08, 0.06, 0.6), laiton, f + Vector3.UP * 0.7 - ez * 0.32)
+		k.col_box(Transform3D(Basis(), f + Vector3.UP * 0.5), Vector3(0.7, 1.0, 0.7))
+		_mesh(M.room, _boite(0.04, 1.0, 0.8), _m(M, "miroir", Color(0.55, 0.6, 0.62), 0.05, 0.9), R.P(hw - 0.05, 1.7, fz))
+		_mesh(M.room, _boite(0.03, 1.1, 0.9), laiton, R.P(hw - 0.03, 1.7, fz))
+	_mesh(M.room, _boite(0.4, 0.9, 4.0), bois, R.P(hw - 0.25, 0.45, 2.2))
+	k.col_box(R.L(hw - 0.25, 0.45, 2.2), Vector3(0.4, 0.9, 4.0))
+	_bouteilles(M, R.P(hw - 0.25, 0.9, 0.5), ez, 10)
+	var client: Node = M.person("vieux", hw - 1.15, 1.2, -90.0, "assis")
+	client.npc.global_position += Vector3.UP * 0.12
+	client.lines = ["Pas trop court, hein. Ma moustache, c'est ma réputation.", "Zzz… hein ? Non, je ne dors pas. Je réfléchis."]
+	var barbier: Node = M.person("homme", hw - 1.9, 1.2, 90.0, "bricoler", "Figaro")
+	barbier.lines = ["Rasage, coupe, ou… autre chose ? Hm hm.", "Le rideau du fond ? C'est la réserve. Une réserve très animée.", "Clic, clac, voilà une moustache digne de ce nom."]
+	# la colonne de barbier, rouge et blanche, près de la porte
+	_mesh(M.room, _cyl(0.08, 0.08, 0.9, 12), _m(M, "colonne", Color(0.9, 0.9, 0.9), 0.4), R.P(-hw + 0.35, 1.5, hd - 0.6))
+	for b in range(6):
+		_mesh(M.room, _cyl(0.083, 0.083, 0.06, 12), _m(M, "rayure_rouge", Color(0.75, 0.08, 0.08), 0.4), R.P(-hw + 0.35, 1.12 + b * 0.15, hd - 0.6))
+	# un banc pour attendre, un porte-chapeaux, le journal
+	_mesh(M.room, _boite(1.6, 0.08, 0.45), bois, R.P(-hw + 0.5, 0.46, 2.0), Basis(Vector3.UP, PI * 0.5))
+	k.col_box(R.L(-hw + 0.5, 0.25, 2.0), Vector3(0.45, 0.5, 1.6))
+	_texte(M, R.P(0, 2.5, hd - 0.06), -ez, "LE COUPE-CHOU", 60, Color(0.12, 0.2, 0.42)).double_sided = false
+	# ---------------------------------------------------------------- la cloison, le rideau de perles
+	var cz: float = -1.2
+	var porte_x: float = -2.6
+	var mur: StandardMaterial3D = _m(M, "cloison", Color(0.75, 0.82, 0.9), 0.8)
+	var g0: float = -hw
+	var g1: float = porte_x - 0.55
+	var d0: float = porte_x + 0.55
+	var d1: float = hw
+	_mesh(M.room, _boite(g1 - g0, R.H, 0.15), mur, R.P((g0 + g1) * 0.5, R.H * 0.5, cz))
+	_mesh(M.room, _boite(d1 - d0, R.H, 0.15), mur, R.P((d0 + d1) * 0.5, R.H * 0.5, cz))
+	_mesh(M.room, _boite(1.1, R.H - 2.2, 0.15), mur, R.P(porte_x, 2.2 + (R.H - 2.2) * 0.5, cz))
+	k.col_box(R.L((g0 + g1) * 0.5, R.H * 0.5, cz), Vector3(g1 - g0, R.H, 0.15))
+	k.col_box(R.L((d0 + d1) * 0.5, R.H * 0.5, cz), Vector3(d1 - d0, R.H, 0.15))
+	var perles: Array = [_m(M, "perle_r", Color(0.7, 0.12, 0.1), 0.3), _m(M, "perle_o", Color(0.9, 0.7, 0.3), 0.3, 0.4), _m(M, "perle_v", Color(0.1, 0.4, 0.25), 0.3)]
+	for fil in range(11):
+		var x: float = porte_x - 0.5 + fil * 0.1
+		for pb in range(14):
+			var sp := SphereMesh.new()
+			sp.radius = 0.018
+			sp.height = 0.036
+			sp.radial_segments = 6
+			sp.rings = 3
+			_mesh(M.room, sp, perles[(fil + pb) % 3], R.P(x, 2.15 - pb * 0.15, cz))
+	_affiche(M, R.P(0.6, 1.8, cz + 0.08), ez, "montjoie/affiche_recherche.png", 0.6, 0.8)
+	# ---------------------------------------------------------------- le Terrier (derrière le rideau)
+	_lampe(M, R.P(0, 2.4, -3.4), Color(1.0, 0.7, 0.42), 0.6, 6.0)
+	var tissu: StandardMaterial3D = _m(M, "velours", Color(0.3, 0.08, 0.1), 0.9)
+	for zz in [-hd + 0.06]:
+		_mesh(M.room, _boite(R.W, 2.6, 0.04), tissu, R.P(0, 1.6, zz))
+	_texte(M, R.P(0, 2.55, -hd + 0.1), ez, "LE TERRIER" if averti else "LE CLUB DES MOUSTACHES", 56, Color(1.0, 0.82, 0.45))
+	_texte(M, R.P(0, 2.3, -hd + 0.1), ez, "On entre en silence, on sort en souriant." if not averti else "Ici, on mise ce qu'on a. Et on se tait.", 30, Color(0.92, 0.88, 0.8))
+	# des moustaches encadrées (les champions du club)
+	for mx in [-3.0, 3.0]:
+		_mesh(M.room, _boite(0.6, 0.45, 0.03), bois, R.P(mx, 1.9, -hd + 0.09))
+		_mesh(M.room, _boite(0.5, 0.35, 0.02), _m(M, "creme", Color(0.92, 0.86, 0.72), 0.7), R.P(mx, 1.9, -hd + 0.1))
+		for sx in [-1.0, 1.0]:
+			var mo := SphereMesh.new()
+			mo.radius = 0.06
+			mo.height = 0.05
+			_mesh(M.room, mo, _m(M, "moustache", Color(0.2, 0.12, 0.07), 0.8), R.P(mx + sx * 0.07, 1.88, -hd + 0.115), Basis.from_scale(Vector3(1.6, 0.6, 0.3)) * Basis(Vector3.BACK, sx * 0.3))
+	for t2 in [Vector3(-hw + 0.5, 0, -hd + 0.5), Vector3(hw - 0.5, 0, -hd + 0.5)]:
+		_tonneau(M, R.P(t2.x, 0, t2.z), 0.9)
+	var t: Dictionary = _table_poker(M, R.P(0.6, 0, -3.7), 0.8, ["maillon_pp", "rosemonde_pp", "hilda_pp"], ["Marius", "Rosemonde", "Hilda"],
+		[{"prudence": 0.55, "bluff": 0.12, "alea": 0.08}, {"prudence": 0.35, "bluff": 0.3, "alea": 0.12}, {"prudence": 0.8, "bluff": 0.06, "alea": 0.05}], Color(0.32, 0.08, 0.1))
+	t["titre"] = "La table du Terrier" if averti else "La table du Club des Moustaches"
+	_poker_acts(M, jeux, t)
+	M.ctx["t149"] = 6.0
+	M.ctx["tick"] = func(delta: float) -> void:
+		M.ctx["t149"] = float(M.ctx["t149"]) - delta
+		if float(M.ctx["t149"]) <= 0.0:
+			M.ctx["t149"] = _r(M).randf_range(9.0, 18.0)
+			if jeux == null or str(jeux.assis) == "":
+				M.main.sfx("jetons", R.P(0.6, 0.9, -3.7), -14.0)
+	M.ctx["entree"] = str(_pick(M, ["Le Coupe-Chou : deux fauteuils de cuir, des miroirs, l'odeur du savon à barbe. Au fond, derrière un rideau de perles, on entend des jetons…",
+		"« Rasage ? Coupe ? » demande Figaro. Puis, plus bas, avec un clin d'œil vers le rideau de perles : « Ou une petite partie ? »"]))

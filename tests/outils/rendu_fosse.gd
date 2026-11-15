@@ -2,6 +2,8 @@ extends SceneTree
 ## Des images de la Fosse aux Dés (V147), pour juger l'effet (lancé par tests/outils/rendu_fosse.sh) :
 ## la salle (les trois tables, la Caisse, le Tableau des réputations, Monsieur Rouage), les habitués, puis
 ## assis aux tables : le tapis de jeu (PC), les dés lancés, une partie de Menteur.
+## V149 : avec « saloon » ou « barbier », le Saloon du Chien qui Mise, le Coupe-Chou et son Terrier, et
+## une main de poker (Texas Hold'em au Saloon, à cinq cartes au Terrier).
 ## V148 : avec « tripot », le Tripot de la Dame de Pique (le salon, la table de blackjack, une main).
 
 const Maisons = preload("res://scripts/maisons_v81.gd")
@@ -145,6 +147,10 @@ func _initialize() -> void:
 		await _tripot(J, R)
 		quit()
 		return
+	if lieu == "saloon" or lieu == "barbier":
+		await _poker(J, R, lieu)
+		quit()
+		return
 	_vue(R.P(0, 2.6, 6.0), R.P(0, 0.8, -3.0))
 	await _photo("salle_depuis_porte")
 	_vue(R.P(-6.6, 2.4, 5.6), R.P(1.5, 0.9, -3.0))
@@ -214,3 +220,49 @@ func _tripot(J: Node, R) -> void:
 	await _photo("tripot_fin")
 	_vue(R.P(0, 1.45, -1.55), R.P(0, 0.86, -2.55))
 	await _photo("tripot_cartes_fin")
+
+
+func _poker(J: Node, R, lieu: String) -> void:
+	if lieu == "saloon":
+		_vue(R.P(0, 2.6, 6.4), R.P(0, 1.0, -3.0))
+		await _photo("saloon_salle")
+		_vue(R.P(6.5, 2.2, 5.6), R.P(-3.0, 1.0, -4.0))
+		await _photo("saloon_coin")
+		_vue(R.P(1.0, 1.7, -2.5), R.P(-3.0, 1.4, -6.5))
+		await _photo("saloon_bar")
+		_vue(R.P(-3.0, 2.0, 0.5), R.P(-7.5, 1.0, 2.6))
+		await _photo("saloon_scene")
+		_vue(R.P(3.0, 2.0, 3.2), R.P(3.0, 0.8, 0.6))
+		await _photo("saloon_table")
+	else:
+		_vue(R.P(-3.5, 2.0, 5.4), R.P(3.0, 1.0, 0.0))
+		await _photo("barbier_boutique")
+		_vue(R.P(-2.6, 1.7, 1.2), R.P(-2.6, 1.4, -2.0))
+		await _photo("barbier_rideau")
+		_vue(R.P(-2.6, 2.1, -1.6), R.P(1.0, 0.8, -4.5))
+		await _photo("terrier")
+	fm.inventory_v28.add("jeton", 60)
+	J.pk_mode = "holdem" if lieu == "saloon" else "cinq"
+	J.asseoir("poker")
+	await _photo(lieu + "_assis")
+	J._choix("donner", {})
+	for k in range(120):
+		await process_frame
+	# on suit tout le long
+	for tour in range(12):
+		if not J.en_partie:
+			break
+		if J.pk != null and J.pk.tour == 0:
+			if J.pk.mode == "cinq" and J.pk.etape == 0 and tour == 1:
+				await _photo(lieu + "_main")
+			J.tapis.choisi.emit("echanger" if (J.pk.mode == "cinq" and tour == 2) else "suivre", {})
+		for k2 in range(90):
+			await process_frame
+		if tour == 3:
+			await _photo(lieu + "_main_suite")
+	for k3 in range(200):
+		await process_frame
+	await _photo(lieu + "_abattage")
+	var c: Vector3 = J.tables["poker"]["centre"]
+	_vue(c + Vector3(0, 0.75, 0.75), c)
+	await _photo(lieu + "_cartes")

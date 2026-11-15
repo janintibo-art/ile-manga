@@ -1,0 +1,127 @@
+[
+[
+"Contre : {}.",
+"Against: {}.",
+"Contra: {}."
+],
+[
+"Il faut au moins {} pour s'asseoir.",
+"You need at least {} to sit down.",
+"Hace falta al menos {} para sentarse."
+],
+[
+"Nouvelle main : {} donne.",
+"New hand: {} deals.",
+"Nueva mano: {} reparte."
+],
+[
+"{} · pot : {}",
+"{} · pot: {}",
+"{} · bote: {}"
+],
+[
+"pot : {}",
+"pot: {}",
+"bote: {}"
+],
+[
+"Sur la table : {}",
+"On the table: {}",
+"En la mesa: {}"
+],
+[
+"Vos cartes : {} ({})",
+"Your cards: {} ({})",
+"Sus cartas: {} ({})"
+],
+[
+"Mises du tour : {}",
+"Bets this round: {}",
+"Apuestas de la ronda: {}"
+],
+[
+"Suivre ({})",
+"Call ({})",
+"Ir ({})"
+],
+[
+"Relancer ({})",
+"Raise ({})",
+"Subir ({})"
+],
+[
+"{} se couche.",
+"{} folds.",
+"{} se retira."
+],
+[
+"{} parle.",
+"{} checks.",
+"{} pasa."
+],
+[
+"{} suit.",
+"{} calls.",
+"{} va."
+],
+[
+"{} relance !",
+"{} raises!",
+"¡{} sube!"
+],
+[
+"Échanger {n} carte(s)",
+"Swap {n} card(s)",
+"Cambiar {n} carta(s)"
+],
+[
+"Choisissez les cartes à changer (jusqu'à {n}).",
+"Choose the cards to swap (up to {n}).",
+"Elija las cartas que va a cambiar (hasta {n})."
+],
+[
+"Vous changez {n} carte(s).",
+"You swap {n} card(s).",
+"Cambia {n} carta(s)."
+],
+[
+"{} change {n} carte(s).",
+"{} swaps {n} card(s).",
+"{} cambia {n} carta(s)."
+],
+[
+"{} garde ses cartes.",
+"{} keeps their cards.",
+"{} se queda con sus cartas."
+],
+[
+"Tout le monde s'est couché : vous ramassez le pot ({}) !",
+"Everyone folded: you take the pot ({})!",
+"Todos se han retirado: ¡se lleva el bote ({})!"
+],
+[
+"{} ramasse le pot ({}).",
+"{} takes the pot ({}).",
+"{} se lleva el bote ({})."
+],
+[
+"{} gagne le pot ({}), avec : {}.",
+"{} wins the pot ({}), with: {}.",
+"{} gana el bote ({}), con: {}."
+],
+[
+"{} se partagent le pot ({}), avec : {}.",
+"{} split the pot ({}), with: {}.",
+"{} se reparten el bote ({}), con: {}."
+],
+[
+"Vous gagnez {}.",
+"You win {}.",
+"Gana {}."
+],
+[
+"Vous perdez {}.",
+"You lose {}.",
+"Pierde {}."
+]
+]

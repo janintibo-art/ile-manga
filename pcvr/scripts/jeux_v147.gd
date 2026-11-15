@@ -10,7 +10,9 @@ extends Node
 ##    l'automate de Gédéon), le Menteur (trois dés cachés chacun, contre Abélard Pépite, Hilda Enclume
 ##    et la Veuve Clou ; le dernier qui a des dés ramasse le pot) ;
 ##  - V148 : le blackjack du Tripot de la Dame de Pique (blackjack_v148, cartes_v148) : la Dame de Pique
-##    donne, Gédéon Tic et Fanchon Fil-d'Or jouent à côté de nous.
+##    donne, Gédéon Tic et Fanchon Fil-d'Or jouent à côté de nous ;
+##  - V149 : le poker (poker_v149) : le Texas Hold'em ou le poker à cinq cartes, au choix, au Saloon du
+##    Chien qui Mise et au Terrier (derrière le barbier), contre trois habitués.
 ## Les tables sont déclarées par le lieu (lieux_perchee_v147) quand on entre ; tapis_v147 est la fenêtre.
 
 const Public = preload("res://scripts/public_v111.gd")
@@ -19,6 +21,7 @@ const Menteur = preload("res://scripts/menteur_v147.gd")
 const Tapis = preload("res://scripts/tapis_v147.gd")
 const BJ = preload("res://scripts/blackjack_v148.gd")
 const Cartes = preload("res://scripts/cartes_v148.gd")
+const Poker = preload("res://scripts/poker_v149.gd")
 
 const TITRES := [[-45.0, "Pigeon"], [-15.0, "Bleu"], [15.0, "Joueur"], [45.0, "Fine lame"], [999.0, "Maître du jeu"]]
 const MAX_MISE := 20
@@ -72,7 +75,7 @@ func setup(main_node: Node) -> void:
 
 func _frais() -> Dictionary:
 	return {"rep": 0.0, "jour": -1, "coups": 0, "gagnes": 0, "perdus": 0, "parties": 0, "menteur_gagnes": 0, "lots": 0, "meilleur_gain": 0, "serie": 0,
-		"mains": 0, "blackjacks": 0}
+		"mains": 0, "blackjacks": 0, "mains_poker": 0}
 
 
 # =================================================================== la monnaie, la réputation
@@ -169,7 +172,7 @@ func asseoir(id: String) -> void:
 	objet = 0
 	main.place_player_v35(t["siege"], t["regard"])
 	var titres := {"lancer": "Le Grand Lancer", "sept": "Le Sept de Monsieur Rouage", "menteur": "Le Menteur", "caisse": "La Caisse de la Fosse",
-		"blackjack": "Le Blackjack de la Dame de Pique"}
+		"blackjack": "Le Blackjack de la Dame de Pique", "poker": "La table de poker"}
 	if t.has("titre"):
 		titres[id] = str(t["titre"])
 	tapis.ouvrir(str(titres.get(id, id)), bool(main.xr_active))
@@ -286,6 +289,18 @@ func _menu() -> void:
 				r.append(_rang_mise(MAX_MISE))
 			r.append({"id": "distribuer", "label": "Distribuer !", "off": objet == 0 and solde() < 1})
 			l.insert(0, "Approchez-vous le plus possible de 21, sans le dépasser. Les figures valent 10, l'as 1 ou 11. La Dame de Pique tire jusqu'à 17. Le blackjack paie trois pour deux.")
+		"poker":
+			var t_pk: Dictionary = tables["poker"]
+			r.append({"id": "jeu", "label": "Jeu", "kind": "valeur", "value": 0 if pk_mode == "holdem" else 1, "min": 0, "max": 1,
+				"noms": ["Texas Hold'em", "Poker à cinq cartes"], "change": func(v: int): pk_mode = "holdem" if v == 0 else "cinq"; _menu()})
+			r.append({"id": "donner", "label": "Une main !", "off": solde() < PK_MIN})
+			if pk_mode == "holdem":
+				l.insert(0, "Le Texas Hold'em : deux cartes cachées chacun, cinq cartes communes. Les blindes : 1 et 2. On mise 2, puis 4 au tournant et à la rivière.")
+			else:
+				l.insert(0, "Le poker à cinq cartes : une mise d'entrée, cinq cartes, on mise, on échange jusqu'à trois cartes (quatre avec un as), on mise encore, on abat.")
+			l.append("Contre : %s." % ", ".join(t_pk.get("noms", [])))
+			if solde() < PK_MIN:
+				l.append("Il faut au moins %s pour s'asseoir." % unite(PK_MIN))
 		"caisse":
 			l = _lignes_base()
 			if monnaie() == "jeton":
@@ -329,6 +344,9 @@ func _choix(id: String, _v: Dictionary) -> void:
 		"blackjack":
 			if id == "distribuer":
 				_main_blackjack()
+		"poker":
+			if id == "donner":
+				_main_poker()
 		"caisse":
 			_caisse(id)
 
@@ -995,6 +1013,316 @@ func _main_blackjack() -> void:
 		return
 	var resume: Array = ["La Dame de Pique : %s" % _bj_texte(3), "Vous : %s" % _bj_texte(0)] + lignes
 	dernier = resume
+	if partir:
+		lever()
+	else:
+		_menu()
+
+
+# =================================================================== le poker (V149)
+
+const PK_MIN := 15
+const PK_LIGNES := {"coucher": ["Je me couche.", "Sans moi.", "Trop cher pour moi."], "parler": ["Parole.", "Je passe.", "Je regarde."],
+	"suivre": ["Je suis.", "Je paie pour voir.", "D'accord, je suis."], "relancer": ["Je relance !", "Et j'ajoute.", "Plus haut !"],
+	"gagne": ["Le pot est à moi !", "Merci, merci.", "On ne bluffe pas un vieux renard."], "echange": ["Deux cartes.", "Trois, s'il vous plaît.", "Je garde tout."]}
+
+var pk_mode: String = "holdem"
+var pk: RefCounted
+var _pk_noeuds: Array = []           # [joueur 0..3] -> les nœuds de ses cartes ; [4] -> les communes
+var _pk_paye: int = 0                # ce que le joueur a déjà payé (jetons ou pièces) dans cette main
+var _pk_jeter: Array = [false, false, false, false, false]
+
+
+func _pk_specs() -> Array:
+	var t: Dictionary = tables["poker"]
+	var s: Array = [{"id": "joueur", "nom": "Vous", "humain": true}]
+	var noms: Array = t.get("noms", ["A", "B", "C"])
+	var car: Array = t.get("caracteres", [])
+	for i in range(3):
+		var c: Dictionary = car[i] if i < car.size() else {}
+		s.append({"id": "pk%d" % i, "nom": str(noms[i]), "prudence": float(c.get("prudence", 0.5)), "bluff": float(c.get("bluff", 0.15)), "alea": float(c.get("alea", 0.08))})
+	return s
+
+
+func _pk_nom(i: int) -> String:
+	return "Vous" if i == 0 else str(pk.joueurs[i]["nom"])
+
+
+## Le joueur paie ce qu'il doit au pot (les blindes, l'ante, ses mises).
+func _pk_payer() -> void:
+	var du: int = int(pk.joueurs[0]["total"]) - _pk_paye
+	if du > 0:
+		_payer(du)
+		_pk_paye += du
+		main.sfx("jetons")
+
+
+## Pose (ou repose) les cartes : celles du joueur face visible, celles des autres face cachée (ou
+## visibles à l'abattage), les communes au milieu.
+func _pk_poser(tout: bool) -> void:
+	_effacer_cartes()
+	_pk_noeuds = [[], [], [], [], []]
+	var t: Dictionary = tables["poker"]
+	var parent: Node3D = t["parent"]
+	var places: Array = t["places"]
+	var c0: Vector3 = t["centre"]
+	for i in range(4):
+		var cs: Array = pk.joueurs[i]["cartes"]
+		var p: Vector3 = places[i]
+		var dirc: Vector3 = c0 - p
+		dirc.y = 0.0
+		dirc = dirc.normalized()
+		var side: Vector3 = dirc.cross(Vector3.UP)
+		var yaw: float = atan2(-dirc.x, -dirc.z)
+		var couche: bool = bool(pk.joueurs[i]["couche"])
+		for k in range(cs.size()):
+			var at: Vector3 = p - side * (k - (cs.size() - 1) * 0.5) * (0.07 if i == 0 else 0.03) + Vector3.UP * 0.0012 * k
+			if i == 0 and pk.mode == "cinq" and bool(_pk_jeter[k]) and pk.etape == 0:
+				at += dirc * 0.05 + Vector3.UP * 0.01
+			var visible: bool = (i == 0 or (tout and not couche))
+			var n: Node3D = Cartes.carte(parent, cs[k], at, yaw if i == 0 or tout else yaw, visible)
+			if couche:
+				n.position.y -= 0.0005
+			_cartes.append(n)
+			(_pk_noeuds[i] as Array).append(n)
+	var yaw0: float = atan2(-(t["regard"] as Vector3).x, -(t["regard"] as Vector3).z)
+	var side0: Vector3 = (t["regard"] as Vector3).cross(Vector3.UP).normalized()
+	for k2 in range(pk.communes.size()):
+		var n2: Node3D = Cartes.carte(parent, pk.communes[k2], c0 - side0 * (k2 - 2) * 0.075, yaw0, true)
+		_cartes.append(n2)
+		(_pk_noeuds[4] as Array).append(n2)
+
+
+func _pk_carte_txt(cs: Array) -> String:
+	var s: Array = []
+	for c in cs:
+		s.append(Cartes.nom(c))
+	return " ".join(s)
+
+
+func _pk_ecran(lignes: Array, rangs: Array) -> void:
+	var l: Array = []
+	var etapes: Array = ["Avant le flop", "Le flop", "Le tournant", "La rivière"] if pk.mode == "holdem" else ["Premier tour", "Après l'échange"]
+	l.append("%s · pot : %s" % [str(etapes[clampi(pk.etape, 0, etapes.size() - 1)]), unite(pk.pot)])
+	if pk.mode == "holdem":
+		l.append("Sur la table : %s" % (_pk_carte_txt(pk.communes) if not pk.communes.is_empty() else "—"))
+	var mv: Array = Poker.meilleure(pk.main_de(0))[0]
+	l.append("Vos cartes : %s (%s)" % [_pk_carte_txt(pk.joueurs[0]["cartes"]), Poker.nom_combinaison(mv)])
+	var adv: Array = []
+	for i in range(1, 4):
+		adv.append("%s %s" % [_pk_nom(i), "(couché)" if bool(pk.joueurs[i]["couche"]) else "· %d" % int(pk.joueurs[i]["mise_tour"])])
+	l.append("Mises du tour : " + ", ".join(adv))
+	tapis.montrer(l + lignes, rangs if not rangs.is_empty() else [{"id": "attendre", "label": "…", "off": true}])
+
+
+func _pk_dire(i: int, cle: String) -> void:
+	var t: Dictionary = tables["poker"]
+	var a: Array = t.get("adversaires", [])
+	if i >= 1 and i - 1 < a.size():
+		_dire(a[i - 1], PK_LIGNES[cle])
+
+
+## Un tour d'enchères ; rend false si le joueur a quitté la table.
+func _pk_encheres(hist: Array) -> bool:
+	var gen0: int = _gen
+	var garde: int = 0
+	while not pk.tour_fini() and garde < 60:
+		garde += 1
+		var i: int = pk.tour
+		if i == 0:
+			var du: int = pk.a_suivre(0)
+			var rangs: Array = [{"id": "suivre", "label": ("Suivre (%s)" % unite(du)) if du > 0 else "Parler (ne rien miser)", "off": du > solde()},
+				{"id": "relancer", "label": "Relancer (%s)" % unite(du + pk.taille()), "off": not pk.peut_relancer() or du + pk.taille() > solde()},
+				{"id": "coucher", "label": "Se coucher", "off": du == 0},
+				{"id": "lever", "label": "Se coucher et se lever"}]
+			_pk_ecran(hist.slice(maxi(0, hist.size() - 3)) + ["À vous !"], rangs)
+			var rr: Array = await tapis.choisi
+			if gen0 != _gen:
+				return false
+			var id: String = str(rr[0])
+			if id == "lever":
+				pk.joueurs[0]["couche"] = true
+				pk.agir("coucher")
+				return false
+			if id == "suivre" and du > solde():
+				continue
+			if id == "relancer" and (not pk.peut_relancer() or du + pk.taille() > solde()):
+				continue
+			if id == "coucher" and du == 0:
+				continue
+			if id in ["suivre", "relancer", "coucher"]:
+				pk.agir(id)
+				_pk_payer()
+				hist.append(("Vous parlez." if du == 0 else "Vous suivez.") if id == "suivre" else ("Vous relancez." if id == "relancer" else "Vous vous couchez."))
+				if id == "coucher":
+					_pk_poser(false)
+		else:
+			await _pause(0.9)
+			if gen0 != _gen:
+				return false
+			var du2: int = pk.a_suivre(i)
+			var d: Array = pk.decider(i)
+			var act: String = str(d[0])
+			pk.agir(act)
+			var cle: String = act if not (act == "suivre" and du2 == 0) else "parler"
+			_pk_dire(i, cle)
+			var txt := {"coucher": "%s se couche.", "parler": "%s parle.", "suivre": "%s suit.", "relancer": "%s relance !"}
+			hist.append(str(txt[cle]) % _pk_nom(i))
+			if act == "coucher":
+				_pk_poser(false)
+			_pk_ecran(hist.slice(maxi(0, hist.size() - 3)), [])
+	return true
+
+
+## L'échange (cinq) : le joueur choisit les cartes qu'il jette ; les adversaires aussi.
+func _pk_echange_montrer(hist: Array) -> void:
+	var n: int = 0
+	for b in _pk_jeter:
+		if b:
+			n += 1
+	var rangs: Array = []
+	var cs: Array = pk.joueurs[0]["cartes"]
+	for k in range(5):
+		var kk: int = k
+		rangs.append({"id": "c%d" % k, "label": Cartes.nom(cs[k]), "kind": "valeur", "value": 1 if _pk_jeter[k] else 0, "min": 0, "max": 1,
+			"noms": ["Garder", "Changer"], "change": func(v: int): _pk_jeter[kk] = v == 1; _pk_poser(false); _pk_echange_montrer(hist)})
+	rangs.append({"id": "echanger", "label": "Échanger %d carte(s)" % n if n > 0 else "Garder toutes mes cartes", "off": n > pk.max_echange(0)})
+	rangs.append({"id": "lever", "label": "Se coucher et se lever"})
+	_pk_ecran(hist.slice(maxi(0, hist.size() - 2)) + ["Choisissez les cartes à changer (jusqu'à %d)." % pk.max_echange(0)], rangs)
+
+
+func _pk_echange(hist: Array) -> bool:
+	var gen0: int = _gen
+	_pk_jeter = [false, false, false, false, false]
+	if not bool(pk.joueurs[0]["couche"]):
+		while true:
+			_pk_echange_montrer(hist)
+			var rr: Array = await tapis.choisi
+			if gen0 != _gen:
+				return false
+			var id: String = str(rr[0])
+			if id == "lever":
+				pk.joueurs[0]["couche"] = true
+				return false
+			var n: int = 0
+			for b in _pk_jeter:
+				if b:
+					n += 1
+			if id == "echanger" and n <= pk.max_echange(0):
+				var idx: Array = []
+				for k2 in range(5):
+					if _pk_jeter[k2]:
+						idx.append(k2)
+				pk.echanger(0, idx)
+				hist.append("Vous changez %d carte(s)." % idx.size() if not idx.is_empty() else "Vous gardez toutes vos cartes.")
+				main.sfx("carte")
+				break
+	_pk_jeter = [false, false, false, false, false]
+	for i in range(1, 4):
+		if bool(pk.joueurs[i]["couche"]):
+			continue
+		await _pause(0.6)
+		if gen0 != _gen:
+			return false
+		var j: Array = pk.a_jeter(i)
+		pk.echanger(i, j)
+		hist.append("%s change %d carte(s)." % [_pk_nom(i), j.size()] if not j.is_empty() else "%s garde ses cartes." % _pk_nom(i))
+		main.sfx("carte")
+		_pk_poser(false)
+		_pk_ecran(hist.slice(maxi(0, hist.size() - 3)), [])
+	return true
+
+
+
+
+func _main_poker() -> void:
+	if not tables.has("poker") or en_partie or solde() < PK_MIN:
+		return
+	var gen0: int = _gen
+	en_partie = true
+	_effacer_cartes()
+	pk = Poker.new(_pk_specs(), pk_mode)
+	pk.donneur = randi() % 4
+	pk.petite = 2
+	pk.grosse = 4
+	pk.nouvelle_main(1)
+	_pk_paye = 0
+	_pk_payer()
+	main.sfx("cartes_battre", tables["poker"]["centre"])
+	_pk_poser(false)
+	var hist: Array = ["Nouvelle main : %s donne." % _pk_nom(pk.donneur)]
+	var reste: bool = true
+	# les tours d'enchères, les étapes
+	while true:
+		reste = await _pk_encheres(hist)
+		if gen0 != _gen:
+			return
+		if not reste or pk.actifs().size() <= 1 or bool(pk.joueurs[0]["couche"]):
+			break
+		if pk.mode == "cinq" and pk.etape == 0:
+			reste = await _pk_echange(hist)
+			if gen0 != _gen:
+				return
+			if not reste:
+				break
+		if not pk.etape_suivante():
+			break
+		if pk.mode == "holdem":
+			main.sfx("carte", tables["poker"]["centre"])
+			hist.append(["", "Le flop.", "Le tournant.", "La rivière."][pk.etape])
+		else:
+			hist.append("Second tour d'enchères.")
+		_pk_poser(false)
+	# l'abattage (ou le dernier qui reste ramasse le pot)
+	var gain: int = 0
+	var lignes: Array = []
+	var a: Array = pk.actifs()
+	# (le joueur s'est couché : les autres vont au bout sans lui ; les communes sortent toutes)
+	if a.size() > 1 and pk.mode == "holdem":
+		while pk.communes.size() < 5:
+			pk.communes.append(pk.paquet.pop_back())
+	if a.size() == 1:
+		var w: int = int(a[0])
+		lignes.append(("Tout le monde s'est couché : vous ramassez le pot (%s) !" % unite(pk.pot)) if w == 0 else "%s ramasse le pot (%s)." % [_pk_nom(w), unite(pk.pot)])
+		if w == 0:
+			gain = pk.pot
+		else:
+			_pk_dire(w, "gagne")
+	else:
+		_pk_poser(true)
+		main.sfx("carte", tables["poker"]["centre"])
+		var ab: Array = pk.abattage()
+		var gagnants: Array = ab[0]
+		var vals: Dictionary = ab[2]
+		for i in a:
+			lignes.append("%s : %s" % [_pk_nom(int(i)), Poker.nom_combinaison(vals[i])])
+		var noms_g: Array = []
+		for g in gagnants:
+			noms_g.append(_pk_nom(int(g)))
+		var part: int = int(ceil(float(pk.pot) / float(gagnants.size())))
+		if 0 in gagnants:
+			gain = part
+		lignes.append(("%s gagne le pot (%s), avec : %s." if gagnants.size() == 1 else "%s se partagent le pot (%s), avec : %s.") % [" et ".join(noms_g), unite(pk.pot), Poker.nom_combinaison(ab[1])])
+		for g2 in gagnants:
+			if int(g2) != 0:
+				_pk_dire(int(g2), "gagne")
+	if gain > 0:
+		_gagner(gain)
+	var net: int = gain - _pk_paye
+	if gain > 0 and a.size() == 1 and int(a[0]) == 0:
+		# un pot gagné sans montrer ses cartes : la Fosse appelle ça du culot
+		rep(1.0)
+	_apres_coup(net, maxi(1, _pk_paye))
+	etat["mains_poker"] = int(etat.get("mains_poker", 0)) + 1
+	if net > 0:
+		lignes.append("Vous gagnez %s." % unite(net))
+		if net >= 10:
+			main.jingle("victoire")
+	elif net < 0:
+		lignes.append("Vous perdez %s." % unite(-net))
+	en_partie = false
+	dernier = lignes
+	var partir: bool = bool(pk.joueurs[0]["couche"]) and not reste
 	if partir:
 		lever()
 	else:

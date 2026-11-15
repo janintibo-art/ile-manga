@@ -1,0 +1,507 @@
+[
+[
+"Hauteur",
+"High card",
+"Carta alta"
+],
+[
+"Une paire",
+"One pair",
+"Pareja"
+],
+[
+"Deux paires",
+"Two pair",
+"Doble pareja"
+],
+[
+"Brelan",
+"Three of a kind",
+"Trío"
+],
+[
+"Quinte",
+"Straight",
+"Escalera"
+],
+[
+"Couleur",
+"Flush",
+"Color"
+],
+[
+"Full",
+"Full house",
+"Full"
+],
+[
+"Carré",
+"Four of a kind",
+"Póker"
+],
+[
+"Quinte flush",
+"Straight flush",
+"Escalera de color"
+],
+[
+"La table de poker",
+"The poker table",
+"La mesa de póker"
+],
+[
+"Jeu",
+"Game",
+"Juego"
+],
+[
+"Texas Hold'em",
+"Texas Hold'em",
+"Texas Hold'em"
+],
+[
+"Poker à cinq cartes",
+"Five-card draw",
+"Póker de cinco cartas"
+],
+[
+"Une main !",
+"Deal me in!",
+"¡Una mano!"
+],
+[
+"Le Texas Hold'em : deux cartes cachées chacun, cinq cartes communes. Les blindes : 1 et 2. On mise 2, puis 4 au tournant et à la rivière.",
+"Texas Hold'em: two hidden cards each, five community cards. Blinds: 1 and 2. Bets are 2, then 4 on the turn and the river.",
+"Texas Hold'em: dos cartas ocultas cada uno, cinco cartas comunes. Ciegas: 1 y 2. Se apuesta 2, luego 4 en el turn y el river."
+],
+[
+"Le poker à cinq cartes : une mise d'entrée, cinq cartes, on mise, on échange jusqu'à trois cartes (quatre avec un as), on mise encore, on abat.",
+"Five-card draw: an ante, five cards, a round of betting, you swap up to three cards (four with an ace), another round, and the showdown.",
+"Póker de cinco cartas: una apuesta inicial, cinco cartas, se apuesta, se cambian hasta tres cartas (cuatro con un as), se apuesta otra vez y se enseñan."
+],
+[
+"Je me couche.",
+"I fold.",
+"Me retiro."
+],
+[
+"Sans moi.",
+"Count me out.",
+"Sin mí."
+],
+[
+"Trop cher pour moi.",
+"Too rich for me.",
+"Demasiado caro para mí."
+],
+[
+"Parole.",
+"Check.",
+"Paso."
+],
+[
+"Je passe.",
+"I pass.",
+"Paso."
+],
+[
+"Je regarde.",
+"I'll watch.",
+"Miro."
+],
+[
+"Je suis.",
+"I call.",
+"Voy."
+],
+[
+"Je paie pour voir.",
+"I'll pay to see.",
+"Pago por ver."
+],
+[
+"D'accord, je suis.",
+"Fine, I call.",
+"De acuerdo, voy."
+],
+[
+"Je relance !",
+"I raise!",
+"¡Subo!"
+],
+[
+"Et j'ajoute.",
+"And I'll add.",
+"Y añado."
+],
+[
+"Plus haut !",
+"Higher!",
+"¡Más alto!"
+],
+[
+"Le pot est à moi !",
+"The pot is mine!",
+"¡El bote es mío!"
+],
+[
+"Merci, merci.",
+"Thank you, thank you.",
+"Gracias, gracias."
+],
+[
+"On ne bluffe pas un vieux renard.",
+"You can't bluff an old fox.",
+"A un zorro viejo no se le engaña."
+],
+[
+"Avant le flop",
+"Before the flop",
+"Antes del flop"
+],
+[
+"Le flop",
+"The flop",
+"El flop"
+],
+[
+"Le tournant",
+"The turn",
+"El turn"
+],
+[
+"La rivière",
+"The river",
+"El river"
+],
+[
+"Premier tour",
+"First round",
+"Primera ronda"
+],
+[
+"Après l'échange",
+"After the draw",
+"Después del cambio"
+],
+[
+"Le flop.",
+"The flop.",
+"El flop."
+],
+[
+"Le tournant.",
+"The turn.",
+"El turn."
+],
+[
+"La rivière.",
+"The river.",
+"El river."
+],
+[
+"Second tour d'enchères.",
+"Second betting round.",
+"Segunda ronda de apuestas."
+],
+[
+"Parler (ne rien miser)",
+"Check (bet nothing)",
+"Pasar (no apostar)"
+],
+[
+"Se coucher",
+"Fold",
+"Retirarse"
+],
+[
+"Se coucher et se lever",
+"Fold and get up",
+"Retirarse y levantarse"
+],
+[
+"Vous parlez.",
+"You check.",
+"Pasa."
+],
+[
+"Vous suivez.",
+"You call.",
+"Va."
+],
+[
+"Vous relancez.",
+"You raise.",
+"Sube."
+],
+[
+"Vous vous couchez.",
+"You fold.",
+"Se retira."
+],
+[
+"Garder",
+"Keep",
+"Guardar"
+],
+[
+"Changer",
+"Swap",
+"Cambiar"
+],
+[
+"Garder toutes mes cartes",
+"Keep all my cards",
+"Guardar todas mis cartas"
+],
+[
+"Vous gardez toutes vos cartes.",
+"You keep all your cards.",
+"Guarda todas sus cartas."
+],
+[
+"(couché)",
+"(folded)",
+"(retirado)"
+],
+[
+"E : pousser les portes du Saloon",
+"E: push open the Saloon doors",
+"E: empujar las puertas del Saloon"
+],
+[
+"E : entrer chez le barbier",
+"E: enter the barber's",
+"E: entrar en la barbería"
+],
+[
+"E : s'asseoir à la table de poker",
+"E: sit at the poker table",
+"E: sentarse a la mesa de póker"
+],
+[
+"Gâchette : s'asseoir à la table de poker",
+"Trigger: sit at the poker table",
+"Gatillo: sentarse a la mesa de póker"
+],
+[
+"La grande table du Saloon",
+"The Saloon's big table",
+"La gran mesa del Saloon"
+],
+[
+"La Caisse du Saloon",
+"The Saloon's Cash Desk",
+"La Caja del Saloon"
+],
+[
+"La table du Terrier",
+"The Burrow's table",
+"La mesa de la Madriguera"
+],
+[
+"La table du Club des Moustaches",
+"The Moustache Club's table",
+"La mesa del Club de los Bigotes"
+],
+[
+"SALOON DU CHIEN QUI MISE",
+"THE BETTING DOG SALOON",
+"SALOON DEL PERRO QUE APUESTA"
+],
+[
+"LE COUPE-CHOU",
+"THE CUTTHROAT",
+"EL NAVAJA"
+],
+[
+"LE TERRIER",
+"THE BURROW",
+"LA MADRIGUERA"
+],
+[
+"LE CLUB DES MOUSTACHES",
+"THE MOUSTACHE CLUB",
+"EL CLUB DE LOS BIGOTES"
+],
+[
+"On entre en silence, on sort en souriant.",
+"Come in quietly, leave smiling.",
+"Se entra en silencio, se sale sonriendo."
+],
+[
+"Ici, on mise ce qu'on a. Et on se tait.",
+"Here, you bet what you've got. And keep quiet.",
+"Aquí se apuesta lo que se tiene. Y se calla."
+],
+[
+"la Shérif",
+"the Sheriff",
+"la Sheriff"
+],
+[
+"Zoé",
+"Zoé",
+"Zoé"
+],
+[
+"le Doc",
+"the Doc",
+"el Doc"
+],
+[
+"Marius",
+"Marius",
+"Marius"
+],
+[
+"Rosemonde",
+"Rosemonde",
+"Rosemonda"
+],
+[
+"Une partie ?",
+"A game?",
+"¿Una partida?"
+],
+[
+"Je sens une bonne main.",
+"I feel a good hand coming.",
+"Presiento una buena mano."
+],
+[
+"Les cartes, c'est comme le temps : ça tourne.",
+"Cards are like the weather: they turn.",
+"Las cartas son como el tiempo: cambian."
+],
+[
+"Une salsepareille, cow-boy ? Elle est fraîche comme une nuit dans le désert.",
+"A sarsaparilla, cowboy? It's as cool as a desert night.",
+"¿Una zarzaparrilla, vaquero? Fresca como una noche en el desierto."
+],
+[
+"Au poker, on regarde les mains. Pas les cartes : les mains.",
+"At poker, you watch the hands. Not the cards: the hands.",
+"En el póker se miran las manos. No las cartas: las manos."
+],
+[
+"Le chien ? Il mise sur tout le monde. Il ne gagne jamais.",
+"The dog? He bets on everyone. He never wins.",
+"¿El perro? Apuesta por todos. Nunca gana."
+],
+[
+"♪ Oh, Pile-ou-Face, ma belle… ♪",
+"♪ Oh, Heads-or-Tails, my darling… ♪",
+"♪ Oh, Cara-o-Cruz, mi bella… ♪"
+],
+[
+"Une chanson pour le gagnant, et deux pour le perdant.",
+"One song for the winner, and two for the loser.",
+"Una canción para el ganador, y dos para el perdedor."
+],
+[
+"♪ Tadam, tadam, la Roue tourne… ♪",
+"♪ Tadum, tadum, the Wheel turns… ♪",
+"♪ Tadam, tadam, la Rueda gira… ♪"
+],
+[
+"Ici, même le chien a une réputation.",
+"Here, even the dog has a reputation.",
+"Aquí hasta el perro tiene reputación."
+],
+[
+"La Shérif ne perd jamais au poker. On dit que c'est son étoile.",
+"The Sheriff never loses at poker. They say it's her star.",
+"La Sheriff nunca pierde al póker. Dicen que es su estrella."
+],
+[
+"Un jour, je m'assiérai à la grande table.",
+"One day I'll sit at the big table.",
+"Algún día me sentaré a la gran mesa."
+],
+[
+"Zoé Nuée bluffe comme elle vole : sans regarder en bas.",
+"Zoé Cloud bluffs the way she flies: without looking down.",
+"Zoé Nube va de farol como vuela: sin mirar abajo."
+],
+[
+"Dans le temps, on misait des pépites.",
+"Back in the day, we bet nuggets.",
+"Antes se apostaban pepitas."
+],
+[
+"Hé, toi ! Tu as la tête d'un joueur.",
+"Hey, you! You look like a player.",
+"¡Eh, tú! Tienes cara de jugador."
+],
+[
+"Je regarde. Regarder, c'est gratuit.",
+"I'm watching. Watching is free.",
+"Miro. Mirar es gratis."
+],
+[
+"Le Doc compte ses cartes avec son stéthoscope.",
+"The Doc counts his cards with his stethoscope.",
+"El Doc cuenta sus cartas con el estetoscopio."
+],
+[
+"Des jetons pour la grande table ?",
+"Chips for the big table?",
+"¿Fichas para la gran mesa?"
+],
+[
+"Au Saloon, on paie comptant. Même le chien.",
+"At the Saloon, you pay cash. Even the dog.",
+"En el Saloon se paga al contado. Hasta el perro."
+],
+[
+"Le Saloon du Chien qui Mise : un long bar, un banjo sur la scène, de la sciure par terre. À la grande table, la Shérif, Zoé et le Doc jouent au poker.",
+"The Betting Dog Saloon: a long bar, a banjo on the stage, sawdust on the floor. At the big table, the Sheriff, Zoé and the Doc are playing poker.",
+"El Saloon del Perro que Apuesta: una larga barra, un banjo en el escenario, serrín en el suelo. En la gran mesa, la Sheriff, Zoé y el Doc juegan al póker."
+],
+[
+"Les portes battantes claquent derrière vous. Bartholomé lève un sourcil : « Salsepareille ? Poker ? Les deux ? »",
+"The swinging doors bang behind you. Bartholomew raises an eyebrow: “Sarsaparilla? Poker? Both?”",
+"Las puertas batientes golpean tras usted. Bartolomé levanta una ceja: «¿Zarzaparrilla? ¿Póker? ¿Las dos cosas?»"
+],
+[
+"Le Saloon. Ça sent le bois, la salsepareille et le cuir. La grande table de poker attend un quatrième joueur.",
+"The Saloon. It smells of wood, sarsaparilla and leather. The big poker table is waiting for a fourth player.",
+"El Saloon. Huele a madera, zarzaparrilla y cuero. La gran mesa de póker espera a un cuarto jugador."
+],
+[
+"Pas trop court, hein. Ma moustache, c'est ma réputation.",
+"Not too short, eh. My moustache is my reputation.",
+"No muy corto, ¿eh? Mi bigote es mi reputación."
+],
+[
+"Zzz… hein ? Non, je ne dors pas. Je réfléchis.",
+"Zzz… huh? No, I'm not sleeping. I'm thinking.",
+"Zzz… ¿eh? No, no duermo. Pienso."
+],
+[
+"Rasage, coupe, ou… autre chose ? Hm hm.",
+"Shave, haircut, or… something else? Hm hm.",
+"¿Afeitado, corte, o… otra cosa? Ejem."
+],
+[
+"Le rideau du fond ? C'est la réserve. Une réserve très animée.",
+"The curtain at the back? That's the storeroom. A very lively storeroom.",
+"¿La cortina del fondo? Es el almacén. Un almacén muy animado."
+],
+[
+"Clic, clac, voilà une moustache digne de ce nom.",
+"Snip, snap, now that's a moustache worthy of the name.",
+"Clic, clac, he aquí un bigote digno de ese nombre."
+],
+[
+"Le Coupe-Chou : deux fauteuils de cuir, des miroirs, l'odeur du savon à barbe. Au fond, derrière un rideau de perles, on entend des jetons…",
+"The Cutthroat: two leather chairs, mirrors, the smell of shaving soap. At the back, behind a bead curtain, you can hear chips…",
+"El Navaja: dos sillones de cuero, espejos, olor a jabón de afeitar. Al fondo, tras una cortina de cuentas, se oyen fichas…"
+],
+[
+"« Rasage ? Coupe ? » demande Figaro. Puis, plus bas, avec un clin d'œil vers le rideau de perles : « Ou une petite partie ? »",
+"“Shave? Haircut?” asks Figaro. Then, lower, with a wink toward the bead curtain: “Or a little game?”",
+"«¿Afeitado? ¿Corte?», pregunta Fígaro. Luego, más bajo, guiñando un ojo hacia la cortina de cuentas: «¿O una partidita?»"
+]
+]
