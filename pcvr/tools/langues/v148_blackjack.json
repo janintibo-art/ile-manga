@@ -1,0 +1,372 @@
+[
+[
+"Le Blackjack de la Dame de Pique",
+"The Queen of Spades' Blackjack",
+"El Blackjack de la Dama de Picas"
+],
+[
+"La Caisse du Tripot",
+"The Den's Cash Desk",
+"La Caja del Garito"
+],
+[
+"Distribuer !",
+"Deal!",
+"¡Repartir!"
+],
+[
+"Approchez-vous le plus possible de 21, sans le dépasser. Les figures valent 10, l'as 1 ou 11. La Dame de Pique tire jusqu'à 17. Le blackjack paie trois pour deux.",
+"Get as close to 21 as you can without going over. Face cards are worth 10, an ace 1 or 11. The Queen of Spades draws to 17. Blackjack pays three to two.",
+"Acérquese lo más posible a 21 sin pasarse. Las figuras valen 10, el as 1 u 11. La Dama de Picas pide hasta 17. El blackjack paga tres a dos."
+],
+[
+"Faites vos jeux.",
+"Place your bets.",
+"Hagan juego."
+],
+[
+"Les cartes sont prêtes. Et vous ?",
+"The cards are ready. Are you?",
+"Las cartas están listas. ¿Y usted?"
+],
+[
+"Asseyez-vous. Le sabot ne mord pas.",
+"Sit down. The shoe doesn't bite.",
+"Siéntese. El sabot no muerde."
+],
+[
+"Blackjack. Joli. Trois pour deux.",
+"Blackjack. Nice. Three to two.",
+"Blackjack. Bonito. Tres a dos."
+],
+[
+"Un as et une figure… Vous avez de la chance, ou du talent ?",
+"An ace and a face card… Is that luck, or talent?",
+"Un as y una figura… ¿Suerte o talento?"
+],
+[
+"Vingt-deux… Dommage.",
+"Twenty-two… Pity.",
+"Veintidós… Lástima."
+],
+[
+"Trop, c'est trop.",
+"Too much is too much.",
+"Demasiado es demasiado."
+],
+[
+"La maison remercie.",
+"The house thanks you.",
+"La casa se lo agradece."
+],
+[
+"Merci pour votre contribution.",
+"Thank you for your contribution.",
+"Gracias por su contribución."
+],
+[
+"Bien joué.",
+"Well played.",
+"Bien jugado."
+],
+[
+"Vous me battez. Pour cette fois.",
+"You beat me. This time.",
+"Me gana. Por esta vez."
+],
+[
+"Égalité. Reprenez votre mise.",
+"A tie. Take back your stake.",
+"Empate. Recupere su apuesta."
+],
+[
+"Je rebats le sabot. Coupez, s'il vous plaît… Merci.",
+"I'm reshuffling the shoe. Cut, please… Thank you.",
+"Vuelvo a barajar el sabot. Corte, por favor… Gracias."
+],
+[
+"Blackjack pour la maison. Navrée.",
+"Blackjack for the house. So sorry.",
+"Blackjack para la casa. Lo siento."
+],
+[
+"Gédéon",
+"Gideon",
+"Gedeón"
+],
+[
+"Fanchon",
+"Fanchon",
+"Fanchon"
+],
+[
+"Tic ! Carte.",
+"Tick! Card.",
+"¡Tic! Carta."
+],
+[
+"Une autre. Par calcul.",
+"Another. By calculation.",
+"Otra. Por cálculo."
+],
+[
+"Tac. Je reste.",
+"Tock. I stand.",
+"Tac. Me planto."
+],
+[
+"Mes engrenages disent stop.",
+"My gears say stop.",
+"Mis engranajes dicen basta."
+],
+[
+"Tic-tac, gagné !",
+"Tick-tock, won!",
+"¡Tic-tac, ganado!"
+],
+[
+"Le calcul paie !",
+"Calculation pays!",
+"¡El cálculo paga!"
+],
+[
+"Erreur de calcul…",
+"Miscalculation…",
+"Error de cálculo…"
+],
+[
+"Tic… tac… hélas.",
+"Tick… tock… alas.",
+"Tic… tac… por desgracia."
+],
+[
+"Allez, une carte, pour le panache !",
+"Come on, a card, for panache!",
+"¡Venga, una carta, por el estilo!"
+],
+[
+"Encore ! Le chapeau me le dit.",
+"Again! My hat says so.",
+"¡Otra! Me lo dice el sombrero."
+],
+[
+"Je reste. Élégamment.",
+"I stand. Elegantly.",
+"Me planto. Con elegancia."
+],
+[
+"Ça me suffit, chéri.",
+"That'll do, darling.",
+"Me basta, cariño."
+],
+[
+"Ha ! Je m'achète un ruban !",
+"Ha! I'm buying myself a ribbon!",
+"¡Ja! ¡Me compro una cinta!"
+],
+[
+"Gagné, avec style !",
+"Won, with style!",
+"¡Ganado, con estilo!"
+],
+[
+"Tant pis, je coudrai un chapeau de plus.",
+"Oh well, I'll sew one more hat.",
+"Qué más da, coseré otro sombrero."
+],
+[
+"Oh, flûte.",
+"Oh, drat.",
+"Oh, vaya."
+],
+[
+"Tirer une carte",
+"Hit",
+"Pedir carta"
+],
+[
+"Rester",
+"Stand",
+"Plantarse"
+],
+[
+"Doubler (une seule carte)",
+"Double down (one card only)",
+"Doblar (una sola carta)"
+],
+[
+"Rester, et se lever",
+"Stand, and get up",
+"Plantarse y levantarse"
+],
+[
+"Égalité : la mise vous revient.",
+"Tie: your stake comes back to you.",
+"Empate: recupera su apuesta."
+],
+[
+"Vous avez sauté : vous perdez votre mise.",
+"You went bust: you lose your stake.",
+"Se ha pasado: pierde su apuesta."
+],
+[
+"La Dame de Pique l'emporte : vous perdez votre mise.",
+"The Queen of Spades wins: you lose your stake.",
+"Gana la Dama de Picas: pierde su apuesta."
+],
+[
+"(mise doublée)",
+"(stake doubled)",
+"(apuesta doblada)"
+],
+[
+"E : entrer au Tripot de la Dame de Pique",
+"E: enter the Queen of Spades' Den",
+"E: entrar al Garito de la Dama de Picas"
+],
+[
+"TRIPOT DE LA DAME DE PIQUE",
+"THE QUEEN OF SPADES' DEN",
+"GARITO DE LA DAMA DE PICAS"
+],
+[
+"LE BLACKJACK PAIE 3 POUR 2",
+"BLACKJACK PAYS 3 TO 2",
+"EL BLACKJACK PAGA 3 A 2"
+],
+[
+"LA DONNEUSE TIRE JUSQU'À 17",
+"THE DEALER DRAWS TO 17",
+"LA CRUPIER PIDE HASTA 17"
+],
+[
+"Les cartes ne mentent pas. Les joueurs, si.",
+"Cards don't lie. Players do.",
+"Las cartas no mienten. Los jugadores, sí."
+],
+[
+"Savoir s'arrêter, c'est déjà gagner.",
+"Knowing when to stop is already winning.",
+"Saber parar ya es ganar."
+],
+[
+"Tic. Je compte.",
+"Tick. I'm counting.",
+"Tic. Estoy contando."
+],
+[
+"Le sabot est chaud ce soir.",
+"The shoe is hot tonight.",
+"El sabot está caliente esta noche."
+],
+[
+"Une carte, chéri, pour la beauté du geste.",
+"A card, darling, for the beauty of it.",
+"Una carta, cariño, por la belleza del gesto."
+],
+[
+"Ce chapeau me porte bonheur.",
+"This hat brings me luck.",
+"Este sombrero me da suerte."
+],
+[
+"Une salsepareille ? La maison n'a que ça. Et c'est très bien.",
+"A sarsaparilla? It's all the house has. And that's just fine.",
+"¿Una zarzaparrilla? La casa solo tiene eso. Y está muy bien."
+],
+[
+"Ici, on boit doux et on joue sec.",
+"Here we drink sweet and play hard.",
+"Aquí se bebe dulce y se juega en serio."
+],
+[
+"La Dame ne perd jamais. Presque jamais.",
+"The Queen never loses. Almost never.",
+"La Dama nunca pierde. Casi nunca."
+],
+[
+"♪ Tadaa-da-dam… ♪",
+"♪ Tadaa-da-dum… ♪",
+"♪ Tadaa-da-dam… ♪"
+],
+[
+"Une valse ? Un ragtime ? Tout, sauf la marche funèbre.",
+"A waltz? A ragtime? Anything but the funeral march.",
+"¿Un vals? ¿Un ragtime? Todo menos la marcha fúnebre."
+],
+[
+"Je joue plus vite quand quelqu'un gagne.",
+"I play faster when someone wins.",
+"Toco más rápido cuando alguien gana."
+],
+[
+"Je passe.",
+"I pass.",
+"Paso."
+],
+[
+"Cartes ! … Non, rien. Je passe encore.",
+"Cards! … No, nothing. I pass again.",
+"¡Cartas! … No, nada. Paso otra vez."
+],
+[
+"À mon âge, on bluffe avec les rides.",
+"At my age, you bluff with your wrinkles.",
+"A mi edad, se va de farol con las arrugas."
+],
+[
+"Paire de rois. Hé hé.",
+"Pair of kings. Heh heh.",
+"Pareja de reyes. Je, je."
+],
+[
+"La Dame de Pique a des yeux derrière la tête.",
+"The Queen of Spades has eyes in the back of her head.",
+"La Dama de Picas tiene ojos en la nuca."
+],
+[
+"Je joue petit, mais je joue longtemps.",
+"I play small, but I play long.",
+"Juego poco, pero juego mucho rato."
+],
+[
+"Jetons, lots, monnaie. Tout se règle ici.",
+"Chips, prizes, change. Everything is settled here.",
+"Fichas, premios, cambio. Todo se arregla aquí."
+],
+[
+"Madame Pique n'aime pas les dettes. Moi non plus.",
+"Madame Spade doesn't like debts. Neither do I.",
+"A Madame Pica no le gustan las deudas. A mí tampoco."
+],
+[
+"E : jouer au blackjack",
+"E: play blackjack",
+"E: jugar al blackjack"
+],
+[
+"Gâchette : jouer au blackjack",
+"Trigger: play blackjack",
+"Gatillo: jugar al blackjack"
+],
+[
+"Le Tripot de la Dame de Pique : du velours, un lustre, un piano qui joue en sourdine. Au fond, la Dame de Pique bat les cartes sans les regarder.",
+"The Queen of Spades' Den: velvet, a chandelier, a softly playing piano. At the back, the Queen of Spades shuffles without looking at the cards.",
+"El Garito de la Dama de Picas: terciopelo, una lámpara de araña, un piano que suena en sordina. Al fondo, la Dama de Picas baraja sin mirar las cartas."
+],
+[
+"Ça sent la cire et la salsepareille. Des chuchotements, des jetons qui claquent, le froissement des cartes. Bienvenue au Tripot.",
+"It smells of wax and sarsaparilla. Whispers, clacking chips, rustling cards. Welcome to the Den.",
+"Huele a cera y a zarzaparrilla. Susurros, fichas que chasquean, el roce de las cartas. Bienvenido al Garito."
+],
+[
+"Le Tripot. Une table de blackjack en demi-lune, un bar, un piano. La Caisse est près de la porte.",
+"The Den. A half-moon blackjack table, a bar, a piano. The Cash Desk is by the door.",
+"El Garito. Una mesa de blackjack de media luna, una barra, un piano. La Caja está junto a la puerta."
+],
+[
+"À vous !",
+"Your turn!",
+"¡Le toca!"
+]
+]

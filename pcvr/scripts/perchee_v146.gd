@@ -705,7 +705,6 @@ func register_interactions() -> void:
 ## Les portes des lieux (les tables de jeu y viendront ; en attendant, la porte dit ce qui se prépare).
 const PORTES_FERMEES := {
 	"saloon": "Le Saloon du Chien qui Mise : on y monte les grandes tables de poker. Bartholomé sert sur la terrasse en attendant.",
-	"tripot": "Le Tripot de la Dame de Pique : fermé. Sur la porte, un carton : « Table de blackjack en préparation. Revenez quand vous saurez vous arrêter. »",
 	"barbier": "Le Coupe-Chou : « Fermé. Le barbier est parti chercher ses ciseaux. » Par la vitrine, au fond de la boutique, on devine une petite porte…",
 }
 

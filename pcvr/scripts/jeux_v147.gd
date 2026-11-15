@@ -8,13 +8,17 @@ extends Node
 ##  - les jeux de la Fosse aux Dés (V147) : le Grand Lancer (deux dés contre deux dés, face à Grand-Dé ;
 ##    le double six paie triple), le Sept (moins de sept, sept ou plus de sept, chez Monsieur Rouage,
 ##    l'automate de Gédéon), le Menteur (trois dés cachés chacun, contre Abélard Pépite, Hilda Enclume
-##    et la Veuve Clou ; le dernier qui a des dés ramasse le pot).
+##    et la Veuve Clou ; le dernier qui a des dés ramasse le pot) ;
+##  - V148 : le blackjack du Tripot de la Dame de Pique (blackjack_v148, cartes_v148) : la Dame de Pique
+##    donne, Gédéon Tic et Fanchon Fil-d'Or jouent à côté de nous.
 ## Les tables sont déclarées par le lieu (lieux_perchee_v147) quand on entre ; tapis_v147 est la fenêtre.
 
 const Public = preload("res://scripts/public_v111.gd")
 const Des = preload("res://scripts/des_v147.gd")
 const Menteur = preload("res://scripts/menteur_v147.gd")
 const Tapis = preload("res://scripts/tapis_v147.gd")
+const BJ = preload("res://scripts/blackjack_v148.gd")
+const Cartes = preload("res://scripts/cartes_v148.gd")
 
 const TITRES := [[-45.0, "Pigeon"], [-15.0, "Bleu"], [15.0, "Joueur"], [45.0, "Fine lame"], [999.0, "Maître du jeu"]]
 const MAX_MISE := 20
@@ -67,7 +71,8 @@ func setup(main_node: Node) -> void:
 
 
 func _frais() -> Dictionary:
-	return {"rep": 0.0, "jour": -1, "coups": 0, "gagnes": 0, "perdus": 0, "parties": 0, "menteur_gagnes": 0, "lots": 0, "meilleur_gain": 0, "serie": 0}
+	return {"rep": 0.0, "jour": -1, "coups": 0, "gagnes": 0, "perdus": 0, "parties": 0, "menteur_gagnes": 0, "lots": 0, "meilleur_gain": 0, "serie": 0,
+		"mains": 0, "blackjacks": 0}
 
 
 # =================================================================== la monnaie, la réputation
@@ -163,7 +168,10 @@ func asseoir(id: String) -> void:
 	dernier = []
 	objet = 0
 	main.place_player_v35(t["siege"], t["regard"])
-	var titres := {"lancer": "Le Grand Lancer", "sept": "Le Sept de Monsieur Rouage", "menteur": "Le Menteur", "caisse": "La Caisse de la Fosse"}
+	var titres := {"lancer": "Le Grand Lancer", "sept": "Le Sept de Monsieur Rouage", "menteur": "Le Menteur", "caisse": "La Caisse de la Fosse",
+		"blackjack": "Le Blackjack de la Dame de Pique"}
+	if t.has("titre"):
+		titres[id] = str(t["titre"])
 	tapis.ouvrir(str(titres.get(id, id)), bool(main.xr_active))
 	tapis.placer_vr((t["centre"] as Vector3) + Vector3.UP * 1.25 - (t["regard"] as Vector3) * 0.1, t["regard"])
 	_menu()
@@ -182,6 +190,7 @@ func lever(force: bool = false) -> void:
 		rep(-2.0)
 		main._show_message_v28("Vous vous levez, les poches plus légères de %s. On vous regarde partir avec un petit sourire…" % unite(-net))
 	assis = ""
+	_gen += 1
 	en_partie = false
 	occupe = false
 	tapis.fermer()
@@ -269,6 +278,14 @@ func _menu() -> void:
 			l.insert(0, "Trois dés cachés chacun. On annonce combien il y a de dés d'une face sur toute la table ; on monte, ou l'on crie « Menteur ! ». Le dernier qui a des dés ramasse le pot.")
 			l.append("La place : %s (le pot : %s)." % [unite(BUYIN), unite(BUYIN * 4)])
 			r.append({"id": "prendre_place", "label": "Prendre place", "off": solde() < BUYIN})
+		"blackjack":
+			var ro3: Dictionary = _rang_objet()
+			if not ro3.is_empty():
+				r.append(ro3)
+			if objet == 0:
+				r.append(_rang_mise(MAX_MISE))
+			r.append({"id": "distribuer", "label": "Distribuer !", "off": objet == 0 and solde() < 1})
+			l.insert(0, "Approchez-vous le plus possible de 21, sans le dépasser. Les figures valent 10, l'as 1 ou 11. La Dame de Pique tire jusqu'à 17. Le blackjack paie trois pour deux.")
 		"caisse":
 			l = _lignes_base()
 			if monnaie() == "jeton":
@@ -309,6 +326,9 @@ func _choix(id: String, _v: Dictionary) -> void:
 		"menteur":
 			if id == "prendre_place":
 				_partie_menteur()
+		"blackjack":
+			if id == "distribuer":
+				_main_blackjack()
 		"caisse":
 			_caisse(id)
 
@@ -555,6 +575,7 @@ func _pause(s: float) -> void:
 
 ## Une partie de Menteur, du début à la fin (le joueur répond par le tapis).
 func _partie_menteur() -> void:
+	var gen0: int = _gen
 	if solde() < BUYIN or en_partie:
 		return
 	_payer(BUYIN)
@@ -574,6 +595,8 @@ func _partie_menteur() -> void:
 			var i: int = menteur.tour
 			if i == 0:
 				var choix: Array = await _tour_joueur(hist)
+				if gen0 != _gen:
+					return
 				if not en_partie:
 					break
 				if str(choix[0]) == "menteur":
@@ -586,6 +609,8 @@ func _partie_menteur() -> void:
 						hist.append("Vous annoncez : %d × %d" % [q, f])
 			else:
 				await _pause(1.0)
+				if gen0 != _gen:
+					return
 				var dec: Dictionary = menteur.decider(i)
 				var n: Variant = _adv_node(i)
 				if bool(dec.get("menteur", false)):
@@ -617,6 +642,8 @@ func _partie_menteur() -> void:
 			_dire(_adv_node(perd), ADVERSAIRES[perd - 1]["perd"])
 		premier = menteur.tour
 		var c: Array = await _attendre_suite(hist)
+		if gen0 != _gen:
+			return
 		if str(c[0]) == "lever":
 			break
 		hist = []
@@ -711,6 +738,267 @@ func _attendre_suite(hist: Array) -> Array:
 	if str(r[0]) == "lever":
 		en_partie = false
 	return r
+
+
+# =================================================================== le blackjack (V148, chez la Dame de Pique)
+
+## Ce que disent la donneuse et ses voisins de table.
+const DAME := {"bonjour": ["Faites vos jeux.", "Les cartes sont prêtes. Et vous ?", "Asseyez-vous. Le sabot ne mord pas."],
+	"bj": ["Blackjack. Joli. Trois pour deux.", "Un as et une figure… Vous avez de la chance, ou du talent ?"],
+	"saute": ["Vingt-deux… Dommage.", "Trop, c'est trop."], "gagne": ["La maison remercie.", "Merci pour votre contribution."],
+	"perd": ["Bien joué.", "Vous me battez. Pour cette fois."], "egal": ["Égalité. Reprenez votre mise."],
+	"rebat": ["Je rebats le sabot. Coupez, s'il vous plaît… Merci."], "dame_bj": ["Blackjack pour la maison. Navrée."]}
+const VOISINS := [
+	{"nom": "Gédéon", "audace": 0.2, "tire": ["Tic ! Carte.", "Une autre. Par calcul."], "reste": ["Tac. Je reste.", "Mes engrenages disent stop."],
+		"gagne": ["Tic-tac, gagné !", "Le calcul paie !"], "perd": ["Erreur de calcul…", "Tic… tac… hélas."]},
+	{"nom": "Fanchon", "audace": 0.7, "tire": ["Allez, une carte, pour le panache !", "Encore ! Le chapeau me le dit."], "reste": ["Je reste. Élégamment.", "Ça me suffit, chéri."],
+		"gagne": ["Ha ! Je m'achète un ruban !", "Gagné, avec style !"], "perd": ["Tant pis, je coudrai un chapeau de plus.", "Oh, flûte."]},
+]
+
+var bj: RefCounted
+var _cartes: Array = []               # les cartes posées sur la table (on les ramasse au coup suivant)
+var _bj_mains: Array = []             # [joueur, voisin 1, voisin 2, donneuse] : les cartes (dictionnaires)
+var _bj_noeuds: Array = []            # les mêmes, en nœuds
+var _bj_mise: int = 0
+var _gen: int = 0                     # change quand on se lève : une partie interrompue ne reprend pas
+
+
+func _effacer_cartes() -> void:
+	for c in _cartes:
+		if is_instance_valid(c):
+			c.queue_free()
+	_cartes.clear()
+
+
+func _bj_yaw() -> float:
+	var r: Vector3 = tables["blackjack"]["regard"]
+	return atan2(-r.x, -r.z)
+
+
+## Pose une carte devant la main « i » (0 : le joueur, 1 et 2 : les voisins, 3 : la donneuse).
+func _bj_donner(i: int, montrer: bool = true) -> void:
+	var t: Dictionary = tables["blackjack"]
+	var c: Dictionary = bj.tirer()
+	(_bj_mains[i] as Array).append(c)
+	var places: Array = t["mains"]
+	var k: int = (_bj_mains[i] as Array).size() - 1
+	var r: Vector3 = t["regard"]
+	var side: Vector3 = r.cross(Vector3.UP).normalized()
+	var at: Vector3 = (places[i] as Vector3) - side * (k * 0.028) - r * (k * 0.006) + Vector3.UP * (0.0012 * k)
+	var n: Node3D = Cartes.carte(t["parent"], c, t["sabot"], _bj_yaw(), false)
+	_cartes.append(n)
+	(_bj_noeuds[i] as Array).append(n)
+	main.sfx("carte", at, -4.0)
+	if test_mode:
+		n.global_transform = Transform3D(Basis(Vector3.UP, _bj_yaw()) * (Basis() if montrer else Basis(Vector3.BACK, PI)), at)
+		return
+	var tw: Tween = Cartes.distribuer(n, t["sabot"], at, _bj_yaw(), montrer)
+	await tw.finished
+
+
+func _bj_texte(i: int) -> String:
+	var m: Array = _bj_mains[i]
+	return "%s (%d)" % [BJ.texte_main(m), BJ.total(m)]
+
+
+func _bj_ecran(lignes: Array, rangs: Array, cachee: bool) -> void:
+	var l: Array = []
+	var d: Array = _bj_mains[3]
+	if cachee and d.size() >= 2:
+		l.append("La Dame de Pique : %s ?" % Cartes.nom(d[0]))
+	else:
+		l.append("La Dame de Pique : %s" % _bj_texte(3))
+	for v in range(2):
+		l.append("%s : %s" % [str(VOISINS[v]["nom"]), _bj_texte(v + 1)])
+	l.append("Vous : %s · mise : %s" % [_bj_texte(0), unite(_bj_mise)])
+	tapis.montrer(l + lignes, rangs if not rangs.is_empty() else [{"id": "attendre", "label": "…", "off": true}])
+
+
+func _main_blackjack() -> void:
+	var gen0: int = _gen
+	if not tables.has("blackjack") or en_partie:
+		return
+	var m: Array = _prendre_mise()
+	if m.is_empty():
+		return
+	en_partie = true
+	main.sfx("jetons")
+	if bj == null:
+		bj = BJ.new()
+	var t: Dictionary = tables["blackjack"]
+	var dame: Variant = t.get("croupier")
+	_effacer_cartes()
+	dernier = []
+	if bj.a_rebattre():
+		bj.rebattre()
+		_dire(dame, DAME["rebat"])
+		main.sfx("cartes_battre", t["sabot"])
+		await _pause(1.2)
+		if gen0 != _gen:
+			return
+	_bj_mains = [[], [], [], []]
+	_bj_noeuds = [[], [], [], []]
+	_bj_mise = int(m[0])
+	var mises_v: Array = [0, 5, 5]
+	var voisins: Array = t.get("adversaires", [])
+	# la donne : un tour, puis un second (la seconde carte de la donneuse, cachée)
+	for tour in range(2):
+		for i in [1, 0, 2, 3]:
+			await _bj_donner(i, not (i == 3 and tour == 1))
+			if gen0 != _gen:
+				return
+			await _pause(0.12)
+			if gen0 != _gen:
+				return
+	_bj_ecran([], [], true)
+	var partir: bool = false
+	var double: bool = false
+	var dame_bj: bool = BJ.blackjack(_bj_mains[3])
+	# le joueur
+	if not BJ.blackjack(_bj_mains[0]) and not dame_bj:
+		while BJ.total(_bj_mains[0]) < 21:
+			var peut_doubler: bool = (_bj_mains[0] as Array).size() == 2 and str(m[1]) == "" and solde() >= _bj_mise
+			_bj_ecran(["À vous !"], [{"id": "tirer", "label": "Tirer une carte"}, {"id": "rester", "label": "Rester"},
+				{"id": "doubler", "label": "Doubler (une seule carte)", "off": not peut_doubler}, {"id": "lever", "label": "Rester, et se lever"}], true)
+			var rr: Array = await tapis.choisi
+			if gen0 != _gen:
+				return
+			var id: String = str(rr[0])
+			if id == "lever":
+				partir = true
+				break
+			if id == "rester":
+				break
+			if id == "doubler" and peut_doubler:
+				_payer(_bj_mise)
+				_bj_mise *= 2
+				double = true
+				main.sfx("jetons")
+				await _bj_donner(0)
+				if gen0 != _gen:
+					return
+				break
+			if id == "tirer":
+				await _bj_donner(0)
+				if gen0 != _gen:
+					return
+		if BJ.saute(_bj_mains[0]):
+			_dire(dame, DAME["saute"])
+	# les voisins
+	if not dame_bj:
+		for v in range(2):
+			var vn: Variant = voisins[v] if v < voisins.size() else null
+			var garde: int = 0
+			while BJ.total(_bj_mains[v + 1]) < 21 and garde < 8:
+				garde += 1
+				var c: String = BJ.conseil(_bj_mains[v + 1], (_bj_mains[3] as Array)[0], float(VOISINS[v]["audace"]), randf())
+				if c == "rester":
+					_dire(vn, VOISINS[v]["reste"])
+					break
+				_dire(vn, VOISINS[v]["tire"])
+				if c == "doubler":
+					mises_v[v + 1] = 10
+					await _pause(0.5)
+					if gen0 != _gen:
+						return
+					await _bj_donner(v + 1)
+					if gen0 != _gen:
+						return
+					break
+				await _pause(0.7)
+				if gen0 != _gen:
+					return
+				await _bj_donner(v + 1)
+				if gen0 != _gen:
+					return
+			_bj_ecran([], [], true)
+			await _pause(0.4)
+			if gen0 != _gen:
+				return
+	# la donneuse retourne sa carte, et tire jusqu'à 17
+	var cachee: Node3D = (_bj_noeuds[3] as Array)[1]
+	if not test_mode:
+		await Cartes.retourner(cachee).finished
+		if gen0 != _gen:
+			return
+	else:
+		cachee.global_transform = Transform3D(Basis(Vector3.UP, _bj_yaw()), cachee.global_position)
+	var quelqu_un: bool = false
+	for i in range(3):
+		if not BJ.saute(_bj_mains[i]):
+			quelqu_un = true
+	if dame_bj:
+		_dire(dame, DAME["dame_bj"])
+	elif quelqu_un:
+		while BJ.donneuse_tire(_bj_mains[3]):
+			_bj_ecran([], [], false)
+			await _pause(0.7)
+			if gen0 != _gen:
+				return
+			await _bj_donner(3)
+			if gen0 != _gen:
+				return
+	# le règlement
+	var mult: float = BJ.reglement(_bj_mains[0], _bj_mains[3])
+	var v0: int = _bj_mise
+	var net: int = 0
+	var obj: String = str(m[1])
+	if obj != "":
+		if mult >= 1.0:
+			main.inventory_v28.add(obj, 1)
+			var plus: int = int(ceil(v0 * (mult - 1.0)))
+			if plus > 0:
+				main.inventory_v28.add("piece", plus)
+				main.sfx("ramasse_pieces")
+			net = plus
+		else:
+			objet = 0
+			net = -v0
+	else:
+		var retour: int = int(ceil(v0 * mult))
+		if retour > 0:
+			_gagner(retour)
+		net = retour - v0
+	var lignes: Array = []
+	if BJ.blackjack(_bj_mains[0]) and mult > 2.0:
+		lignes.append("Blackjack ! Vous gagnez %s." % unite(net))
+		_dire(dame, DAME["bj"])
+		etat["blackjacks"] = int(etat.get("blackjacks", 0)) + 1
+		rep(1.0)
+		main.jingle("victoire")
+	elif mult >= 2.0:
+		lignes.append("Vous gagnez %s !" % unite(net))
+		_dire(dame, DAME["perd"])
+	elif mult >= 1.0:
+		lignes.append("Égalité : la mise vous revient.")
+		_dire(dame, DAME["egal"])
+	else:
+		lignes.append("Vous avez sauté : vous perdez votre mise." if BJ.saute(_bj_mains[0]) else "La Dame de Pique l'emporte : vous perdez votre mise.")
+		if not BJ.saute(_bj_mains[0]):
+			_dire(dame, DAME["gagne"])
+	if double:
+		lignes.append("(mise doublée)")
+	for v in range(2):
+		var vm: float = BJ.reglement(_bj_mains[v + 1], _bj_mains[3])
+		var vn2: Variant = voisins[v] if v < voisins.size() else null
+		if vm >= 2.0:
+			_dire(vn2, VOISINS[v]["gagne"])
+		elif vm < 1.0:
+			_dire(vn2, VOISINS[v]["perd"])
+	etat["mains"] = int(etat.get("mains", 0)) + 1
+	_apres_coup(net, v0)
+	dernier = lignes
+	en_partie = false
+	_bj_ecran(lignes, [], false)
+	await _pause(0.1)
+	if gen0 != _gen:
+		return
+	var resume: Array = ["La Dame de Pique : %s" % _bj_texte(3), "Vous : %s" % _bj_texte(0)] + lignes
+	dernier = resume
+	if partir:
+		lever()
+	else:
+		_menu()
 
 
 # =================================================================== la sauvegarde

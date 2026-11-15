@@ -1,11 +1,12 @@
 #!/bin/bash
 # Des images de la Fosse aux Dés (V147 : la salle, les tables, assis aux tables) et une planche.
-#     bash tests/outils/rendu_fosse.sh DOSSIER
+#     bash tests/outils/rendu_fosse.sh DOSSIER [fosse | tripot]
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
 GODOT="${TESTS_GODOT:-$HOME/gd/godot}"
 OUT="$1"
+LIEU="${2:-fosse}"
 mkdir -p "$OUT"
 rm -f "$OUT"/*.png
 (cd "$DEPOT" && git ls-files -m -o --exclude-standard pcvr www) | while read -r r; do
@@ -16,7 +17,7 @@ done
 cp "$DEPOT/tests/outils/rendu_fosse.gd" "$COPIE/pcvr/rendu_fosse.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 900 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 960x600 --audio-driver Dummy \
-  --script res://rendu_fosse.gd -- "$OUT" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
+  --script res://rendu_fosse.gd -- "$OUT" "$LIEU" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
 rm -f "$COPIE/pcvr/rendu_fosse.gd"
 python3 - "$OUT" <<'PY'
 import sys, glob, os

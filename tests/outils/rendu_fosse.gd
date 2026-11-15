@@ -2,6 +2,7 @@ extends SceneTree
 ## Des images de la Fosse aux Dés (V147), pour juger l'effet (lancé par tests/outils/rendu_fosse.sh) :
 ## la salle (les trois tables, la Caisse, le Tableau des réputations, Monsieur Rouage), les habitués, puis
 ## assis aux tables : le tapis de jeu (PC), les dés lancés, une partie de Menteur.
+## V148 : avec « tripot », le Tripot de la Dame de Pique (le salon, la table de blackjack, une main).
 
 const Maisons = preload("res://scripts/maisons_v81.gd")
 const Jeux = preload("res://scripts/jeux_v147.gd")
@@ -98,6 +99,7 @@ func _vue(from: Vector3, to: Vector3) -> void:
 
 func _initialize() -> void:
 	out = str(OS.get_cmdline_user_args()[0])
+	var lieu: String = str(OS.get_cmdline_user_args()[1]) if OS.get_cmdline_user_args().size() > 1 else "fosse"
 	var we := WorldEnvironment.new()
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
@@ -129,7 +131,7 @@ func _initialize() -> void:
 	fm.add_child(M)
 	fm.maisons_v81 = M
 	M.main = fm
-	M.cur = {"id": "rendu_fosse", "style": "perchee_lieu", "histoire": "pp_fosse", "w": 15.0, "d": 13.0, "floors": 1, "owner": ""}
+	M.cur = {"id": "rendu_fosse", "style": "perchee_lieu", "histoire": "pp_" + lieu, "w": 15.0, "d": 13.0, "floors": 1, "owner": ""}
 	M.inside = true
 	for k in range(3):
 		await process_frame
@@ -139,6 +141,10 @@ func _initialize() -> void:
 	for k in range(10):
 		await process_frame
 	var R = M.R
+	if lieu == "tripot":
+		await _tripot(J, R)
+		quit()
+		return
 	_vue(R.P(0, 2.6, 6.0), R.P(0, 0.8, -3.0))
 	await _photo("salle_depuis_porte")
 	_vue(R.P(-6.6, 2.4, 5.6), R.P(1.5, 0.9, -3.0))
@@ -180,3 +186,31 @@ func _initialize() -> void:
 	_vue(R.P(0.0, 1.55, 2.1), R.P(0, 0.85, 0.7))
 	await _photo("menteur_des")
 	quit()
+
+
+func _tripot(J: Node, R) -> void:
+	_vue(R.P(0, 2.4, 5.6), R.P(0, 0.9, -3.0))
+	await _photo("tripot_salle")
+	_vue(R.P(5.8, 2.2, 4.8), R.P(-2.0, 0.9, -2.0))
+	await _photo("tripot_coin")
+	_vue(R.P(-2.2, 1.8, 1.8), R.P(-6.5, 1.4, -1.0))
+	await _photo("tripot_bar")
+	_vue(R.P(0, 1.9, 0.2), R.P(0, 0.9, -3.0))
+	await _photo("tripot_table")
+	_vue(R.P(-2.5, 1.6, 2.6), R.P(-3.6, 0.8, 2.4))
+	await _photo("tripot_habitues")
+	fm.inventory_v28.add("jeton", 40)
+	J.asseoir("blackjack")
+	await _photo("tripot_assis")
+	J._choix("distribuer", {})
+	for k in range(260):
+		await process_frame
+	await _photo("tripot_main")
+	_vue(R.P(0, 1.45, -1.55), R.P(0, 0.86, -2.55))
+	await _photo("tripot_cartes")
+	J.tapis.choisi.emit("rester", {})
+	for k in range(400):
+		await process_frame
+	await _photo("tripot_fin")
+	_vue(R.P(0, 1.45, -1.55), R.P(0, 0.86, -2.55))
+	await _photo("tripot_cartes_fin")
