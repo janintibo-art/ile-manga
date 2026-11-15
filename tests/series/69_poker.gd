@@ -150,6 +150,12 @@ func _serie() -> void:
 	_ok(int(r1[0]) == 5, "cinq mains de Texas Hold'em jusqu'au bout (%d)" % int(r1[0]))
 	_ok(bool(r1[1]), "les comptes sont justes (le pot, les blindes, les mises)")
 	_ok(int(J.etat.get("mains_poker", 0)) >= 5, "les mains sont comptées")
+	# V150 : Joker, le chien qui mise ; le banjo ; le pot en jetons
+	_ok(maisons_v81.room.find_child("Joker", true, false) != null, "Joker, le chien qui mise, est couché près de la table")
+	_ok(maisons_v81.room.find_child("Banjo", true, false) != null, "le musicien a son banjo")
+	J._apres_coup(5, 2)
+	_ok(J.fete > 0.0, "on gagne : Joker est content")
+	_ok(J._pot_pile.is_empty(), "le pot est ramassé à la fin de la main")
 	J.lever()
 	maisons_v81._teardown()
 	await _att(0.4)

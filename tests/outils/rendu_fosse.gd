@@ -230,7 +230,7 @@ func _poker(J: Node, R, lieu: String) -> void:
 		await _photo("saloon_coin")
 		_vue(R.P(1.0, 1.7, -2.5), R.P(-3.0, 1.4, -6.5))
 		await _photo("saloon_bar")
-		_vue(R.P(-3.0, 2.0, 0.5), R.P(-7.5, 1.0, 2.6))
+		_vue(R.P(-5.4, 1.8, 2.6), R.P(-7.3, 1.3, 2.6))
 		await _photo("saloon_scene")
 		_vue(R.P(3.0, 2.0, 3.2), R.P(3.0, 0.8, 0.6))
 		await _photo("saloon_table")

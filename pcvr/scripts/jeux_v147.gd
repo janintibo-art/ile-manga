@@ -61,6 +61,7 @@ var en_partie: bool = false            # une partie de Menteur est en cours
 var menteur: RefCounted
 var test_mode: bool = false            # les tests : pas d'attente (les dés se posent tout de suite)
 var _session: Dictionary = {}
+var fete: float = 0.0                  # V150 : on vient de gagner (le chien du Saloon remue la queue, aboie)
 var _des: Array = []                   # les dés posés sur la table (on les efface au coup suivant)
 
 
@@ -134,6 +135,7 @@ func _apres_coup(net: int, m: int) -> void:
 	_session["coups"] = int(_session.get("coups", 0)) + 1
 	_session["net"] = int(_session.get("net", 0)) + net
 	if net > 0:
+		fete = 4.0
 		etat["gagnes"] = int(etat["gagnes"]) + 1
 		etat["serie"] = 0
 		etat["meilleur_gain"] = maxi(int(etat["meilleur_gain"]), net)
@@ -212,6 +214,7 @@ func vr_tick(stick: Vector2, trig: float, b: bool) -> void:
 
 
 func _process(_d: float) -> void:
+	fete = maxf(0.0, fete - _d)
 	if assis == "" or main == null:
 		return
 	var mv: Node = main.get("maisons_v81")
@@ -1100,7 +1103,68 @@ func _pk_carte_txt(cs: Array) -> String:
 	return " ".join(s)
 
 
+## V150 : le pot, en piles de jetons, au milieu de la table (il grandit avec les mises).
+var _pot_pile: Array = []
+
+
+func _pk_pot_visuel() -> void:
+	var t: Dictionary = tables.get("poker", {})
+	if t.is_empty() or not is_instance_valid(t["parent"]):
+		return
+	var n: int = clampi(int(ceil(pk.pot / 2.0)), 0, 36)
+	if n == _pot_pile.size():
+		return
+	var couleurs: Array = [Color(0.75, 0.1, 0.08), Color(0.1, 0.25, 0.6), Color(0.9, 0.86, 0.75), Color(0.12, 0.45, 0.2)]
+	var base: Vector3 = (t["centre"] as Vector3) + (t["regard"] as Vector3) * 0.2
+	var side: Vector3 = (t["regard"] as Vector3).cross(Vector3.UP).normalized()
+	while _pot_pile.size() < n:
+		var k: int = _pot_pile.size()
+		var j := MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.02
+		cm.bottom_radius = 0.02
+		cm.height = 0.008
+		cm.radial_segments = 12
+		j.mesh = cm
+		var m := StandardMaterial3D.new()
+		m.albedo_color = couleurs[(k / 6) % 4]
+		m.roughness = 0.5
+		j.material_override = m
+		(t["parent"] as Node3D).add_child(j)
+		j.global_position = base + side * (float((k / 6) % 4) - 1.5) * 0.045 + (t["regard"] as Vector3) * (0.045 if (k / 24) % 2 == 1 else 0.0) + Vector3.UP * (0.004 + (k % 6) * 0.0085)
+		_pot_pile.append(j)
+	while _pot_pile.size() > n:
+		var d: Node = _pot_pile.pop_back()
+		if is_instance_valid(d):
+			d.queue_free()
+
+
+## Le pot glisse vers le gagnant (puis disparaît : il est dans sa bourse).
+func _pk_pot_vers(i: int) -> void:
+	var t: Dictionary = tables.get("poker", {})
+	var pile: Array = _pot_pile
+	_pot_pile = []
+	if t.is_empty() or test_mode:
+		for d in pile:
+			if is_instance_valid(d):
+				d.queue_free()
+		return
+	var cible: Vector3 = (t["places"] as Array)[i]
+	for k in range(pile.size()):
+		var d2: Node3D = pile[k]
+		if not is_instance_valid(d2):
+			continue
+		var tw: Tween = d2.create_tween()
+		var fin: Vector3 = cible + ((t["centre"] as Vector3) - cible).normalized() * 0.12 + Vector3.UP * (0.004 + (k % 12) * 0.0085)
+		tw.tween_interval(0.02 * k)
+		tw.tween_property(d2, "global_position", fin, 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_interval(1.6)
+		tw.tween_callback(d2.queue_free)
+	main.sfx("jetons", cible)
+
+
 func _pk_ecran(lignes: Array, rangs: Array) -> void:
+	_pk_pot_visuel()
 	var l: Array = []
 	var etapes: Array = ["Avant le flop", "Le flop", "Le tournant", "La rivière"] if pk.mode == "holdem" else ["Premier tour", "Après l'échange"]
 	l.append("%s · pot : %s" % [str(etapes[clampi(pk.etape, 0, etapes.size() - 1)]), unite(pk.pot)])
@@ -1241,6 +1305,10 @@ func _main_poker() -> void:
 	var gen0: int = _gen
 	en_partie = true
 	_effacer_cartes()
+	for d in _pot_pile:
+		if is_instance_valid(d):
+			d.queue_free()
+	_pot_pile = []
 	pk = Poker.new(_pk_specs(), pk_mode)
 	pk.donneur = randi() % 4
 	pk.petite = 2
@@ -1276,6 +1344,7 @@ func _main_poker() -> void:
 	# l'abattage (ou le dernier qui reste ramasse le pot)
 	var gain: int = 0
 	var lignes: Array = []
+	_pk_pot_visuel()
 	var a: Array = pk.actifs()
 	# (le joueur s'est couché : les autres vont au bout sans lui ; les communes sortent toutes)
 	if a.size() > 1 and pk.mode == "holdem":
@@ -1306,6 +1375,11 @@ func _main_poker() -> void:
 		for g2 in gagnants:
 			if int(g2) != 0:
 				_pk_dire(int(g2), "gagne")
+	if a.size() == 1:
+		_pk_pot_vers(int(a[0]))
+	else:
+		var ab2: Array = pk.abattage()
+		_pk_pot_vers(int((ab2[0] as Array)[0]))
 	if gain > 0:
 		_gagner(gain)
 	var net: int = gain - _pk_paye

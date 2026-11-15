@@ -859,8 +859,10 @@ static func _saloon(M) -> void:
 	_mesh(M.room, _boite(2.6, 0.4, 3.6), _m(M, "scene", Color(0.4, 0.22, 0.12), 0.6), sc + Vector3.UP * 0.2)
 	k.col_box(Transform3D(Basis(), sc + Vector3.UP * 0.2), Vector3(2.6, 0.4, 3.6))
 	_mesh(M.room, _boite(0.06, 3.0, 3.6), _m(M, "rideau_rouge", Color(0.5, 0.06, 0.06), 0.9), R.P(-hw + 0.08, 1.9, 2.6))
-	var banjo: Node = M.person("homme", -hw + 1.2, 2.6, 90.0, "guitare")
+	_tabouret(M, R.P(-hw + 1.2, 0, 2.6) + Vector3.UP * 0.4)
+	var banjo: Node = _musicien(M, "homme", -hw + 1.2, 2.6, 90.0, "banjo", "Jebediah")
 	banjo.npc.global_position += Vector3.UP * 0.4
+	_banjo(M, banjo.npc.global_position, ex)
 	banjo.lines = ["♪ Oh, Pile-ou-Face, ma belle… ♪", "Une chanson pour le gagnant, et deux pour le perdant.", "♪ Tadam, tadam, la Roue tourne… ♪"]
 	for st in range(10):
 		_mesh(M.room, _boite(1.2, 0.2 * (st + 1), 0.32), bois, R.P(hw - 0.7, 0.1 * (st + 1), -hd + 6.8 - st * 0.32))
@@ -901,13 +903,21 @@ static func _saloon(M) -> void:
 	if jeux != null:
 		jeux.table("caisse", {"centre": cc + Vector3.UP * 1.1, "siege": cc - ex * 1.0, "regard": ex, "parent": M.room, "titre": "La Caisse du Saloon"})
 		M.act(cc - ex * 1.0 + Vector3.UP * 0.4, "E : aller à la Caisse", func(): jeux.asseoir("caisse"), 1.4, func() -> bool: return str(jeux.assis) == "", "Gâchette : aller à la Caisse")
+	# V150 : le chien qui mise (Joker, couché près de la grande table) ; le banjo qui joue
+	var chien: Dictionary = _chien(M, R.P(4.9, 0, 2.1), (R.P(3.0, 0, 0.6) - R.P(4.9, 0, 2.1)).normalized(), jeux)
 	M.ctx["t149"] = 5.0
+	M.ctx["t150"] = 2.0
 	M.ctx["tick"] = func(delta: float) -> void:
 		M.ctx["t149"] = float(M.ctx["t149"]) - delta
 		if float(M.ctx["t149"]) <= 0.0:
 			M.ctx["t149"] = _r(M).randf_range(8.0, 16.0)
 			if jeux == null or str(jeux.assis) == "":
 				M.main.sfx("jetons" if _r(M).randf() < 0.6 else "cartes_battre", R.P(3.0, 0.9, 0.6), -12.0)
+		M.ctx["t150"] = float(M.ctx["t150"]) - delta
+		if float(M.ctx["t150"]) <= 0.0:
+			M.ctx["t150"] = _r(M).randf_range(4.5, 7.0)
+			M.main.sfx("banjo", R.P(-hw + 1.2, 1.4, 2.6), -9.0)
+		(chien["tick"] as Callable).call(delta)
 	M.ctx["entree"] = str(_pick(M, ["Le Saloon du Chien qui Mise : un long bar, un banjo sur la scène, de la sciure par terre. À la grande table, la Shérif, Zoé et le Doc jouent au poker.",
 		"Les portes battantes claquent derrière vous. Bartholomé lève un sourcil : « Salsepareille ? Poker ? Les deux ? »",
 		"Le Saloon. Ça sent le bois, la salsepareille et le cuir. La grande table de poker attend un quatrième joueur."]))
@@ -1010,3 +1020,135 @@ static func _barbier(M) -> void:
 				M.main.sfx("jetons", R.P(0.6, 0.9, -3.7), -14.0)
 	M.ctx["entree"] = str(_pick(M, ["Le Coupe-Chou : deux fauteuils de cuir, des miroirs, l'odeur du savon à barbe. Au fond, derrière un rideau de perles, on entend des jetons…",
 		"« Rasage ? Coupe ? » demande Figaro. Puis, plus bas, avec un clin d'œil vers le rideau de perles : « Ou une petite partie ? »"]))
+
+
+# =================================================================== V150 : le musicien, le chien qui mise
+
+## Un musicien avec son instrument (la fiche « punk » des habitants : « banjo », « guitare »…).
+static func _musicien(M, role: String, x: float, z: float, yaw: float, objet: String, nom: String) -> Node:
+	var Gens = load("res://scripts/pnj/maisons_habitants_v81.gd")
+	var prof: Dictionary = Gens.pick(str(M.ctx["style"]), role, M.ctx["rng"])
+	prof["nom"] = nom
+	prof["instrument"] = objet
+	var f: Node = Figurant.spawn(M.room, M.main, prof, M.R.P(x, 0, z), Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1), "assis")
+	M.people.append(f)
+	return f
+
+
+## Le banjo, posé sur les genoux du musicien assis (« pieds » : sous lui ; « face » : où il regarde).
+static func _banjo(M, pieds: Vector3, face: Vector3) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Banjo"
+	M.room.add_child(root)
+	var f: Vector3 = Vector3(face.x, 0, face.z).normalized()
+	var side: Vector3 = f.cross(Vector3.UP)
+	# le tambour sur la cuisse droite, le manche qui monte vers l'épaule gauche
+	var centre: Vector3 = pieds + Vector3.UP * 0.62 + f * 0.3 + side * 0.06
+	var axe: Vector3 = (-side * 0.75 + Vector3.UP * 0.55 + f * 0.05).normalized()
+	var peau: StandardMaterial3D = _m(M, "peau_banjo", Color(0.93, 0.9, 0.82), 0.6)
+	var cercle: StandardMaterial3D = _m(M, "cercle_banjo", Color(0.75, 0.72, 0.68), 0.3, 0.8)
+	var bois: StandardMaterial3D = _m(M, "acajou", Color(0.34, 0.16, 0.08), 0.45)
+	# le tambour : son disque face au public (son axe : vers l'avant)
+	var b_tambour: Basis = Basis(Quaternion(Vector3.UP, f))
+	_mesh(root, _cyl(0.15, 0.15, 0.06, 20), cercle, centre - f * 0.005, b_tambour)
+	_mesh(root, _cyl(0.14, 0.14, 0.064, 20), peau, centre, b_tambour)
+	var b_manche: Basis = Basis(Quaternion(Vector3.UP, axe))
+	_mesh(root, _boite(0.045, 0.62, 0.025), bois, centre + axe * 0.44 + f * 0.03, b_manche)
+	_mesh(root, _boite(0.065, 0.12, 0.022), bois, centre + axe * 0.8 + f * 0.03, b_manche)
+	for k in range(5):
+		_mesh(root, _boite(0.0016, 0.78, 0.0016), cercle, centre + axe * 0.36 + f * 0.045 + side * (-0.014 + k * 0.007), b_manche)
+	return root
+
+
+## Joker, le chien qui mise : un grand chien roux couché, la tête levée, un jeton entre les pattes. Il remue
+## la queue, suit le joueur des yeux ; quand le joueur gagne une main, il se lève à moitié et aboie. On
+## peut le caresser. Rend {tick}.
+static func _chien(M, at: Vector3, face: Vector3, jeux: Node) -> Dictionary:
+	var poil: StandardMaterial3D = _m(M, "poil_chien", Color(0.62, 0.38, 0.2), 0.9)
+	var poil_clair: StandardMaterial3D = _m(M, "poil_clair", Color(0.88, 0.75, 0.58), 0.9)
+	var noir: StandardMaterial3D = _m(M, "truffe", Color(0.05, 0.04, 0.04), 0.3)
+	var collier: StandardMaterial3D = _m(M, "collier", Color(0.7, 0.1, 0.08), 0.5)
+	var root := Node3D.new()
+	root.name = "Joker"
+	M.room.add_child(root)
+	root.global_position = at
+	var f: Vector3 = Vector3(face.x, 0, face.z).normalized()
+	root.global_transform = Transform3D(Basis.looking_at(-f, Vector3.UP), at)       # +Z local : vers la table
+	var corps := Node3D.new()
+	root.add_child(corps)
+	var sp := func(r: float) -> SphereMesh:
+		var m := SphereMesh.new()
+		m.radius = r
+		m.height = r * 2.0
+		m.radial_segments = 14
+		m.rings = 7
+		return m
+	var put := func(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, sc: Vector3 = Vector3.ONE, rot: Vector3 = Vector3.ZERO) -> MeshInstance3D:
+		var mi := MeshInstance3D.new()
+		mi.mesh = mesh
+		mi.material_override = mat
+		mi.transform = Transform3D(Basis.from_euler(rot) * Basis.from_scale(sc), pos)
+		parent.add_child(mi)
+		return mi
+	# le corps couché, le poitrail clair, les pattes allongées devant
+	put.call(corps, sp.call(0.2), poil, Vector3(0, 0.17, -0.1), Vector3(0.95, 0.8, 1.7))
+	put.call(corps, sp.call(0.14), poil_clair, Vector3(0, 0.17, 0.16), Vector3(0.95, 1.0, 0.9))
+	for sx in [-1.0, 1.0]:
+		put.call(corps, sp.call(0.055), poil, Vector3(sx * 0.09, 0.035, 0.3), Vector3(0.8, 0.55, 2.6))
+		put.call(corps, sp.call(0.045), poil_clair, Vector3(sx * 0.09, 0.03, 0.44), Vector3(1.0, 0.7, 1.0))
+		put.call(corps, sp.call(0.08), poil, Vector3(sx * 0.14, 0.1, -0.38), Vector3(0.7, 0.8, 1.4))
+	# la tête (elle tourne), le museau, la truffe, les oreilles qui tombent, les yeux, le collier
+	var tete := Node3D.new()
+	tete.position = Vector3(0, 0.36, 0.26)
+	corps.add_child(tete)
+	put.call(tete, sp.call(0.11), poil, Vector3(0, 0, 0), Vector3(1.0, 0.95, 1.05))
+	put.call(tete, sp.call(0.06), poil_clair, Vector3(0, -0.03, 0.11), Vector3(0.9, 0.8, 1.3))
+	put.call(tete, sp.call(0.022), noir, Vector3(0, -0.01, 0.18))
+	for sx2 in [-1.0, 1.0]:
+		put.call(tete, sp.call(0.045), _m(M, "oreille", Color(0.45, 0.26, 0.14), 0.9), Vector3(sx2 * 0.09, 0.0, -0.01), Vector3(0.5, 1.6, 0.9), Vector3(0, 0, sx2 * 0.25))
+		put.call(tete, sp.call(0.016), noir, Vector3(sx2 * 0.045, 0.04, 0.09))
+	var tm := TorusMesh.new()
+	tm.inner_radius = 0.085
+	tm.outer_radius = 0.105
+	put.call(corps, tm, collier, Vector3(0, 0.27, 0.2), Vector3.ONE, Vector3(0.9, 0, 0))
+	# la queue (un pivot qui remue)
+	var queue := Node3D.new()
+	queue.position = Vector3(0, 0.2, -0.42)
+	corps.add_child(queue)
+	put.call(queue, _cyl(0.025, 0.04, 0.3, 8), poil, Vector3(0, 0.0, -0.13), Vector3.ONE, Vector3(-1.2, 0, 0))
+	# le jeton entre les pattes
+	put.call(root, _cyl(0.025, 0.025, 0.01, 12), _m(M, "jeton_0", Color(0.75, 0.1, 0.08), 0.5), Vector3(0, 0.005, 0.56))
+	M.R.kit.col_box(Transform3D(Basis(), at + Vector3.UP * 0.2), Vector3(0.5, 0.4, 0.9))
+	var st := {"t": 0.0, "aboie": false, "debout": 0.0}
+	var caresses: Array = ["Joker remue la queue et pousse un jeton vers vous du bout du nez. Il mise sur vous !",
+		"Joker pose sa tête sur vos genoux et soupire. Au Saloon, on dit qu'il sent les bonnes mains.",
+		"Vous grattez Joker derrière l'oreille. Il ferme les yeux. Un chien heureux, c'est une table heureuse."]
+	M.act(at + Vector3.UP * 0.3, "E : caresser Joker, le chien qui mise", func():
+		M.main.sfx("aboiement", at + Vector3.UP * 0.4, -6.0)
+		M.main._show_message_v28(str(caresses[randi() % caresses.size()]))
+		st["debout"] = 1.5, 1.4, Callable(), "Gâchette : caresser Joker")
+	var tick := func(delta: float) -> void:
+		if not is_instance_valid(queue):
+			return
+		st["t"] = float(st["t"]) + delta
+		var t: float = st["t"]
+		var gai: bool = jeux != null and float(jeux.get("fete")) > 0.0
+		if gai and not bool(st["aboie"]):
+			st["aboie"] = true
+			st["debout"] = 2.5
+			M.main.sfx("aboiement", at + Vector3.UP * 0.4, -4.0)
+		elif not gai:
+			st["aboie"] = false
+		var vite: float = 14.0 if (gai or float(st["debout"]) > 0.0) else 3.0
+		queue.rotation.y = sin(t * vite) * (0.7 if vite > 5.0 else 0.35)
+		# la tête suit le joueur (un peu), et s'incline de temps en temps
+		var pp: Vector3 = M.main._player_pos_v27()
+		var loc: Vector3 = root.global_transform.affine_inverse() * pp
+		var cible: float = clampf(atan2(loc.x, loc.z), -0.9, 0.9)
+		tete.rotation.y = lerpf(tete.rotation.y, cible, clampf(delta * 2.0, 0.0, 1.0))
+		tete.rotation.z = sin(t * 0.4) * 0.12
+		# à moitié debout quand il est content
+		st["debout"] = maxf(0.0, float(st["debout"]) - delta)
+		var h: float = 0.08 if float(st["debout"]) > 0.0 else 0.0
+		corps.position.y = lerpf(corps.position.y, h, clampf(delta * 6.0, 0.0, 1.0))
+	return {"tick": tick}
