@@ -35,6 +35,12 @@ def fond(w, h):
     masque = Image.new("L", (hw, hh), 0)
     ImageDraw.Draw(masque).ellipse([-hw * 0.45, hh * 0.1, hw * 0.9, hh * 1.6], fill=255)
     masque = masque.filter(ImageFilter.GaussianBlur(hw / 16))
+    # V154 : le haut du masque s'efface en douceur (pas de bord net au-dessus de la tête).
+    rampe = Image.new("L", (hw, hh), 255)
+    dr = ImageDraw.Draw(rampe)
+    for y in range(int(hh * 0.07)):
+        dr.line([(0, y), (hw, y)], fill=int(255 * y / (hh * 0.07)))
+    masque = Image.composite(masque, Image.new("L", (hw, hh), 0), rampe)
     deco.paste(hero, (0, h - hh), masque)
     # Un voile nuit qui monte vers la droite (zone du texte) et un vignettage doux.
     voile = Image.new("RGB", (w, h), NUIT)
