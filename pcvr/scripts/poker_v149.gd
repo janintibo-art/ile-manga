@@ -80,7 +80,7 @@ static func valeur5(m: Array) -> Array:
 		compte[h] = int(compte.get(h, 0)) + 1
 	rs.sort()
 	rs.reverse()
-	var flush: bool = couleurs.size() == 1
+	var flush: bool = couleurs.size() == 1 and m.size() >= 5
 	var uniques: Array = compte.keys()
 	uniques.sort()
 	uniques.reverse()
@@ -100,6 +100,8 @@ static func valeur5(m: Array) -> Array:
 	var ordre: Array = []
 	for g in groupes:
 		ordre.append(g[1])
+	# V155 : moins de cinq cartes (deux cartes avant le flop, une paire en main) : un seul groupe
+	groupes.append([0, 0])
 	if int(groupes[0][0]) == 4:
 		return [7] + ordre
 	if int(groupes[0][0]) == 3 and int(groupes[1][0]) == 2:

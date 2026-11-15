@@ -123,6 +123,10 @@ func _initialize() -> void:
 	T.test_mode = true
 	for k in range(5):
 		await process_frame
+	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "quartiers":
+		await _quartiers(T)
+		quit()
+		return
 	# la plus grande tour de bureaux
 	var id: int = -1
 	for t in T.tours:
@@ -185,3 +189,101 @@ func _initialize() -> void:
 	_vue(Vector3(300, 60, 1150), Vector3(300, 30, 1400))
 	await _photo("ville")
 	quit()
+
+
+# =================================================================== V155 : les quartiers
+
+func _tour_rdc(T: Node, rdc: String, min_n: int = 2) -> int:
+	var best: int = -1
+	for t in T.tours:
+		if str(t.get("rdc", "")) == rdc and (t["etages"] as Array).size() >= min_n:
+			if best < 0 or (t["etages"] as Array).size() > (T.tours[best]["etages"] as Array).size():
+				best = int(t["id"])
+	return best
+
+
+func _coin(T: Node, nom: String, h: float = 1.75) -> void:
+	var rect: Rect2 = T.info["rect"]
+	var y: float = T.info["y"]
+	_vue(Vector3(rect.position.x + 0.9, y + h, rect.position.y + 0.9), Vector3(rect.get_center().x, y + 0.8, rect.get_center().y))
+	await _photo(nom)
+
+
+func _depuis_ascenseur(T: Node, nom: String) -> void:
+	var a: Vector3 = T.info["ascenseur"]
+	var rg: Vector3 = T.info["regard"]
+	var side: Vector3 = rg.cross(Vector3.UP)
+	_vue(a + Vector3.UP * 1.7 + rg * 0.2, a + Vector3.UP * 1.0 + rg * 4.0 + side * 3.0)
+	await _photo(nom)
+
+
+func _quartiers(T: Node) -> void:
+	for rdc in ["hangar", "atelier", "nouilles", "boutique", "salle_jeux"]:
+		var id: int = _tour_rdc(T, rdc)
+		if id < 0:
+			print("RENDU pas de ", rdc)
+			continue
+		await T.enter(id)
+		await _coin(T, rdc)
+		await _depuis_ascenseur(T, rdc + "_b")
+		if rdc == "salle_jeux":
+			await T.aller(1)
+			await _coin(T, "karaoke", 1.6)
+			await _depuis_ascenseur(T, "karaoke_b")
+			await T.aller(2)
+			await _coin(T, "capsules", 1.6)
+			await _depuis_ascenseur(T, "capsules_b")
+		await T.leave()
+	# un appartement
+	var idl: int = -1
+	for t in T.tours:
+		if str(t["type"]) == "logements" and str(t.get("rdc", "")) == "hall" and (t["etages"] as Array).size() >= 6:
+			idl = int(t["id"])
+			break
+	await T.enter(idl)
+	var fait: bool = false
+	for k in range(1, 6):
+		await T.aller(k)
+		for it in T._its.duplicate():
+			if str(it["id"]).begins_with("porte153_"):
+				var c: Callable = it["call"]
+				if c.get_bound_arguments().size() > 1 and bool(c.get_bound_arguments()[1]):
+					var p: Vector3 = it["pos"]
+					c.call()
+					await process_frame
+					# du couloir, par la porte ouverte ; puis dedans, vers la fenêtre ; puis vers l'entrée
+					var core: Rect2 = T.info["core"]
+					var dc: Vector3 = p - Vector3(core.get_center().x, p.y, core.get_center().y)
+					var dir: Vector3 = Vector3(signf(dc.x), 0, 0) if absf(dc.x) * core.size.y > absf(dc.z) * core.size.x else Vector3(0, 0, signf(dc.z))
+					_vue(p + Vector3.UP * 1.65 - dir * 0.3, p + dir * 5.0 + Vector3.UP * 1.0)
+					await _photo("appartement")
+					var lat: Vector3 = dir.cross(Vector3.UP)
+					_vue(p + dir * 2.0 + Vector3.UP * 1.65 + lat * 0.8, p + dir * 6.0 - lat * 1.5 + Vector3.UP * 0.7)
+					await _photo("appartement_b")
+					_vue(p + dir * 4.5 + Vector3.UP * 1.65, p + dir * 1.0 + Vector3.UP * 0.9 + lat * 1.2)
+					await _photo("appartement_c")
+					fait = true
+					break
+		if fait:
+			break
+	await T.aller(0)
+	await T.leave()
+	# les toits : une résidence, une tour de bureaux
+	for ty in ["logements", "bureaux"]:
+		var id2: int = -1
+		for t2 in T.tours:
+			if str(t2["type"]) == ty and (t2["etages"] as Array).size() >= 8:
+				if id2 < 0 or (ty == "bureaux" and (t2["etages"] as Array).size() > (T.tours[id2]["etages"] as Array).size()):
+					id2 = int(t2["id"])
+		await T.enter(id2)
+		await T.aller((T.tours[id2]["etages"] as Array).size() - 1)
+		await T.aller_toit()
+		var a: Vector3 = T.info["ascenseur"]
+		var rg: Vector3 = T.info["regard"]
+		_vue(a + Vector3.UP * 1.7, a + rg * 8.0 + Vector3.UP * 0.5)
+		await _photo("toit_" + ty)
+		var rr: Rect2 = T.info["rect"]
+		_vue(Vector3(rr.get_center().x, T.info["y"] + 2.2, rr.get_center().y) - rg * 0.0 + Vector3(0, 0, 0) + (Vector3(rr.end.x - 1.5, 0, rr.end.y - 1.5) - Vector3(rr.get_center().x, 0, rr.get_center().y)), Vector3(rr.position.x, T.info["y"], rr.position.y))
+		await _photo("toit_%s_b" % ty)
+		await T.aller(0)
+		await T.leave()

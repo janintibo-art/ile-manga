@@ -28,6 +28,12 @@ const NOMS_BUREAUX := ["Hikari", "Orion", "Kumo", "Prisme", "Quasar", "Tenshi", 
 const SOCIETES := ["Hikari Systèmes", "Orion Biotech", "Kumo Logistique", "Prisme Assurances", "Quasar Robotique", "Tenshi Médias",
 	"Vertex Finances", "Zénith Énergie", "Kaïdo Holographie", "Mirai Jeux", "Sora Aéronefs", "Nébula Data"]
 const NOMS_RESIDENCES := ["Les Cerisiers", "Les Lanternes", "Le Lotus", "Les Nuages", "Le Bambou", "La Pluie d'Or", "Les Carpes", "Le Héron"]
+const NOMS_ARCADES := ["Le Pixel Palace", "Capsules Kibō", "Le Néon Bleu", "La Ruche à Capsules", "Le Dragon qui Chante", "Étoile Karaoké", "Le Bip-Bip Club", "Capsules du Lotus"]
+const NOMS_ATELIERS := ["Atelier Rouage-Bot", "Le Docteur des Robots", "Boulons & Fils", "L'Atelier de Maître Kaneda"]
+const NOMS_NOUILLES := ["Nouilles Mama Ren", "Le Bol Fumant", "Ramen du Dragon Rouge", "Chez Oncle Udon"]
+const NOMS_BOUTIQUES := ["Électro Hoshi", "Gadgets & Circuits", "Le Bazar Néon", "Puces et Pixels"]
+const FAMILLES := ["Tanaka", "Moreau", "Kimura", "Okafor", "Silva", "Nakamura", "Dubois", "Park", "Haddad", "Ishikawa", "Rossi", "Nguyen", "Sato", "Leclerc"]
+const Q = preload("res://scripts/tours_quartiers_v155.gd")
 const ETAGE_STYLE := {0: 3.5, 1: 3.5, 2: 3.8, 3: 3.1}
 const COLW := {0: 1.5, 1: 2.6, 2: 3.0, 3: 2.2}
 
@@ -50,6 +56,7 @@ var _its_dehors: Array = []
 var _t: float = 0.0
 var _grace: float = 0.0              # juste après un déplacement : on laisse le temps au corps d'arriver
 var info: Dictionary = {}             # l'étage bâti : {type, ascenseur (Vector3), regard, sortie_dedans…}
+var _ouverte: int = -1                # V155 : la porte d'appartement ouverte à cet étage (son numéro)
 
 
 func setup(main_node: Node, neo: Node3D) -> void:
@@ -63,6 +70,8 @@ func setup(main_node: Node, neo: Node3D) -> void:
 	rng.seed = 1530
 	var n_bur: int = 0
 	var n_res: int = 0
+	var n_arc: int = 0
+	var n_rue: int = 0
 	for i in range(N.batiments.size()):
 		var b: Dictionary = N.batiments[i]
 		var q: String = str(b.get("quartier", ""))
@@ -78,6 +87,20 @@ func setup(main_node: Node, neo: Node3D) -> void:
 		else:
 			t["nom"] = ("Résidence " + str(NOMS_RESIDENCES[n_res % NOMS_RESIDENCES.size()])) if q == "residences" else "Immeuble n° %d" % (12 + n_res * 7 % 180)
 			n_res += 1
+		# V155 : le rez-de-chaussée selon le quartier ; les Arcades (karaoké, capsules) ; les échoppes des Ruelles
+		t["rdc"] = "hall"
+		if q == "quai":
+			t["rdc"] = "hangar"
+		elif q == "arcades":
+			t["type"] = "arcades"
+			t["rdc"] = "salle_jeux"
+			t["nom"] = str(NOMS_ARCADES[n_arc % NOMS_ARCADES.size()]) + ("" if n_arc < NOMS_ARCADES.size() else " II")
+			n_arc += 1
+		elif q == "ruelles":
+			t["rdc"] = ["atelier", "nouilles", "boutique"][n_rue % 3]
+			var noms: Array = {"atelier": NOMS_ATELIERS, "nouilles": NOMS_NOUILLES, "boutique": NOMS_BOUTIQUES}[t["rdc"]]
+			t["enseigne"] = str(noms[int(n_rue / 3.0) % noms.size()])
+			n_rue += 1
 		_etages(t)
 		if (t["etages"] as Array).is_empty():
 			continue
@@ -162,7 +185,7 @@ func _entree(b: Kit.Batch, t: Dictionary, rng: RandomNumberGenerator) -> void:
 	b.box_at("lampe_blanche", f + n * 0.9 + Vector3.UP * 3.18, Vector3(1.4, 0.03, 0.5), yaw)
 	# l'enseigne (le nom)
 	var l := Label3D.new()
-	l.text = str(t["nom"]).to_upper()
+	l.text = str(t.get("enseigne", t["nom"])).to_upper()
 	l.font_size = 72
 	l.pixel_size = 0.006
 	l.modulate = Kit.NEONS.get(neon.substr(5), Color.WHITE)
@@ -203,6 +226,13 @@ func _process(delta: float) -> void:
 		if not t.is_empty() and p.y < IleScript.Y0 + float(t["b"]["h"]) - 0.5:
 			_grace = 1.5
 			main.place_player_v35(t["sortie"] + Vector3.UP * 0.2, t["n"])
+		elif t.is_empty():
+			# V155 : debout sur un toit (une sauvegarde faite là-haut…) : le toit se bâtit autour de nous
+			var tt: Dictionary = toit_at(p)
+			if not tt.is_empty():
+				inside = int(tt["id"])
+				_batir_toit()
+				_grace = 1.0
 
 
 ## La tour dont l'emprise contient ce point (au sol), ou {}.
@@ -210,7 +240,7 @@ func tour_at(p: Vector3) -> Dictionary:
 	var l: Vector2 = IleScript.L(p.x, p.z)
 	for t in tours:
 		for s in t["b"]["segs"]:
-			if l.x > float(s[0]) + 0.2 and l.x < float(s[2]) - 0.2 and l.y > float(s[1]) + 0.2 and l.y < float(s[3]) - 0.2 and p.y > float(s[4]) - 1.0 and p.y < float(s[5]):
+			if l.x > float(s[0]) + 0.2 and l.x < float(s[2]) - 0.2 and l.y > float(s[1]) + 0.2 and l.y < float(s[3]) - 0.2 and p.y > float(s[4]) - 1.0 and p.y < float(s[5]) - 0.3:
 				return t
 	return {}
 
@@ -222,7 +252,7 @@ func _register() -> void:
 	_registered = true
 	for t in tours:
 		var id: int = int(t["id"])
-		var it := {"id": "tour153_%d" % id, "pos": (t["sortie"] as Vector3), "radius": 2.0, "text": "E : entrer — %s" % str(t["nom"]),
+		var it := {"id": "tour153_%d" % id, "pos": (t["sortie"] as Vector3), "radius": 2.0, "text": "E : entrer — %s" % str(t.get("enseigne", t["nom"])),
 			"vr": "Gâchette : entrer", "call": enter.bind(id), "when": func() -> bool: return inside < 0 and not busy}
 		d._interactions.append(it)
 		_its_dehors.append(it)
@@ -259,8 +289,14 @@ func enter(id: int) -> void:
 	var n: int = (t["etages"] as Array).size()
 	if not visites.has(id):
 		visites[id] = true
-		if t["type"] == "bureaux":
+		if t["rdc"] == "hangar":
+			main._show_message_v28("%s — %s, %d étages. Au rez-de-chaussée, le hangar ; l'ascenseur est au milieu." % [str(t["nom"]), str(t["societe"]), n])
+		elif t["type"] == "bureaux":
 			main._show_message_v28("%s — %s, %d étages. L'ascenseur est au fond du hall." % [str(t["nom"]), str(t["societe"]), n])
+		elif t["type"] == "arcades":
+			main._show_message_v28("%s — %d étages : la salle de jeux, le karaoké, l'hôtel capsule. Et le toit !" % [str(t["nom"]), n])
+		elif t.has("enseigne"):
+			main._show_message_v28("%s — au pied de l'immeuble ; au-dessus, %d étages de logements." % [str(t["enseigne"]), n - 1])
 		else:
 			main._show_message_v28("%s — %d étages de logements. L'ascenseur est au fond du hall." % [str(t["nom"]), n])
 
@@ -274,6 +310,7 @@ func leave() -> void:
 	_defaire()
 	_cols(inside, true)
 	inside = -1
+	_ouverte = -1
 	_grace = 1.5
 	main.place_player_v35((t["sortie"] as Vector3) + (t["n"] as Vector3) * 0.6 + Vector3.UP * 0.1, t["n"])
 	await _fade(0.0, 0.45)
@@ -287,6 +324,7 @@ func sortir_vite() -> void:
 	_defaire()
 	_cols(inside, true)
 	inside = -1
+	_ouverte = -1
 	busy = false
 
 
@@ -300,22 +338,50 @@ func aller(k: int) -> void:
 	busy = true
 	main.sfx("ascenseur_tour", main._player_pos_v27())
 	await _fade(1.0, 0.3)
+	var du_toit: bool = etage >= n
 	_defaire()
+	if du_toit:
+		_cols(inside, false)
+	_ouverte = -1
 	_batir(k)
 	_grace = 1.5
 	main.place_player_v35((info["ascenseur"] as Vector3) + Vector3.UP * 0.1, info["regard"])
 	await _fade(0.0, 0.4)
 	busy = false
 	main.sfx("ding_ascenseur", main._player_pos_v27())
+	if str(info.get("son", "")) != "":
+		main.sfx(str(info["son"]), main._player_pos_v27())
 	main._show_message_v28(_nom_etage(k))
+
+
+## V155 : monter sur le toit (par l'ascenseur, du dernier étage ; ou par l'escalier).
+func aller_toit() -> void:
+	if busy or inside < 0:
+		return
+	busy = true
+	main.sfx("ascenseur_tour", main._player_pos_v27())
+	await _fade(1.0, 0.3)
+	_defaire()
+	_batir_toit()
+	_grace = 1.5
+	main.place_player_v35((info["ascenseur"] as Vector3) + Vector3.UP * 0.1, info["regard"])
+	await _fade(0.0, 0.4)
+	busy = false
+	main.sfx(str(info.get("son", "deltaplane_vent")), main._player_pos_v27())
+	var t: Dictionary = tours[inside]
+	main._show_message_v28("%s — le toit, à %d mètres au-dessus des rues." % [str(t["nom"]), int(float(t["b"]["h"]))])
 
 
 func _nom_etage(k: int) -> String:
 	var t: Dictionary = tours[inside]
+	if k >= (t["etages"] as Array).size():
+		return "Le toit"
 	var ty: String = type_etage(inside, k)
 	var nom: String = "Rez-de-chaussée" if k == 0 else ("1er étage" if k == 1 else "%dᵉ étage" % k)
 	var quoi := {"hall": "le hall", "bureaux": "les bureaux de %s" % str(t.get("societe", "")), "cafeteria": "la cafétéria", "serveurs": "la salle des serveurs",
-		"direction": "la direction de %s" % str(t.get("societe", "")), "logements": "les logements"}
+		"direction": "la direction de %s" % str(t.get("societe", "")), "logements": "les logements", "hangar": "le hangar", "atelier": str(t.get("enseigne", "l'atelier")),
+		"nouilles": str(t.get("enseigne", "les nouilles")), "boutique": str(t.get("enseigne", "la boutique")), "salle_jeux": "la salle de jeux", "karaoke": "le karaoké",
+		"capsules": "l'hôtel capsule"}
 	return "%s — %s" % [nom, str(quoi.get(ty, ty))]
 
 
@@ -323,7 +389,9 @@ func type_etage(id: int, k: int) -> String:
 	var t: Dictionary = tours[id]
 	var n: int = (t["etages"] as Array).size()
 	if k == 0:
-		return "hall"
+		return str(t.get("rdc", "hall"))
+	if t["type"] == "arcades":
+		return "karaoke" if k % 3 == 1 else "capsules"
 	if t["type"] == "bureaux":
 		if k == n - 1 and n > 3:
 			return "direction"
@@ -355,6 +423,8 @@ func ascenseur() -> void:
 		ch.append({"id": "max", "label": "Le dernier étage"})
 	if n > 6:
 		ch.append({"id": "hasard", "label": "Un étage au hasard"})
+	if etage == n - 1:
+		ch.append({"id": "toit", "label": "Le toit"})
 	ch.append({"id": "rester", "label": "Rester ici"})
 	_anchor.global_position = info["ascenseur"]
 	main.ask_v69(_anchor, "Ascenseur", "serein", "Vous êtes ici : %s. Où allons-nous ? (%d étages)" % [_nom_etage(etage), n], ch, _choix_ascenseur)
@@ -381,6 +451,8 @@ func _choix_ascenseur(id: String) -> void:
 			if k == etage:
 				k = (k % (n - 1)) + 1
 			aller(k)
+		"toit":
+			aller_toit()
 
 
 # =================================================================== bâtir un étage
@@ -409,7 +481,9 @@ func _batir(k: int) -> void:
 	var Z0: float = IleScript.CENTER.z + float(r[1]) + 0.3
 	var Z1: float = IleScript.CENTER.z + float(r[3]) - 0.3
 	var ty: String = type_etage(int(t["id"]), k)
-	var sols := {"hall": "in_terrazzo", "bureaux": "in_moquette", "cafeteria": "in_parquet", "serveurs": "in_sol_technique", "direction": "in_parquet", "logements": "in_moquette_bleue"}
+	var sols := {"hall": "in_terrazzo", "bureaux": "in_moquette", "cafeteria": "in_parquet", "serveurs": "in_sol_technique", "direction": "in_parquet", "logements": "in_moquette_bleue",
+		"hangar": "in_beton_cire", "atelier": "in_sol_technique", "nouilles": "in_parquet", "boutique": "in_terrazzo", "salle_jeux": "in_moquette_bleue", "karaoke": "in_moquette",
+		"capsules": "in_moquette"}
 	var w: float = X1 - X0
 	var d: float = Z1 - Z0
 	var c := Vector3((X0 + X1) * 0.5, 0.0, (Z0 + Z1) * 0.5)
@@ -440,8 +514,15 @@ func _batir(k: int) -> void:
 		"call": ascenseur})
 	# le panneau de l'étage, à côté de l'ascenseur
 	var pan := _label(_nom_etage(k), 30, Color(0.9, 0.95, 1.0))
-	pan.global_position = fa + n * 0.08 + side * 1.6 + Vector3.UP * (y_sol + 1.75)
-	pan.look_at(pan.global_position - n, Vector3.UP)
+	var half_a: float = (absf(side.x) * cw + absf(side.z) * cd) * 0.5
+	if half_a >= 2.6:
+		pan.global_position = fa + n * 0.08 + side * 1.6 + Vector3.UP * (y_sol + 1.75)
+		pan.look_at(pan.global_position - n, Vector3.UP)
+	else:
+		var half_s: float = (absf(n.x) * cw + absf(n.z) * cd) * 0.5
+		pan.global_position = c + side * (half_a + 0.06) + Vector3.UP * (y_sol + 0.7)
+		pan.look_at(pan.global_position - side, Vector3.UP)
+		pan.width = maxf(200.0, (half_s * 2.0 - 0.3) / pan.pixel_size)
 	pan.width = 520.0
 	pan.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	# l'escalier de secours (sa porte, de l'autre côté du cœur)
@@ -459,7 +540,7 @@ func _batir(k: int) -> void:
 	# les plafonniers et les lumières
 	var nx: int = maxi(1, int(w / 4.5))
 	var nz: int = maxi(1, int(d / 4.5))
-	var chaud: bool = ty in ["cafeteria", "direction", "logements"]
+	var chaud: bool = ty in ["cafeteria", "direction", "logements", "nouilles", "karaoke", "capsules"]
 	for ix in range(nx):
 		for iz in range(nz):
 			var p := Vector3(X0 + (ix + 0.5) * w / nx, y_sol + hc - 0.02, Z0 + (iz + 0.5) * d / nz)
@@ -477,10 +558,10 @@ func _batir(k: int) -> void:
 		o.omni_attenuation = 1.2
 		_node.add_child(o)
 		o.global_position = lp
-	# les piliers de la structure (une trame de 8 m, hors du cœur et des allées)
+	# les piliers de la structure (une trame de 8 m, hors du cœur et des allées ; pas dans les cabines du karaoké)
 	var piliers: Array = []
 	info["piliers"] = piliers
-	var px: float = X0 + 4.0
+	var px: float = X0 + 4.0 if ty != "karaoke" else X1
 	while px < X1 - 2.5:
 		var pz: float = Z0 + 4.0
 		while pz < Z1 - 2.5:
@@ -503,9 +584,116 @@ func _batir(k: int) -> void:
 			_serveurs(b, rng, t)
 		"direction":
 			_direction(b, rng, t)
+		"hangar":
+			info["son"] = Q.hangar(self, b, rng, t)
+		"atelier":
+			info["son"] = Q.atelier(self, b, rng, t)
+		"nouilles":
+			info["son"] = Q.nouilles(self, b, rng, t)
+		"boutique":
+			info["son"] = Q.boutique(self, b, rng, t)
+		"salle_jeux":
+			info["son"] = Q.salle_jeux(self, b, rng, t)
+		"karaoke":
+			info["son"] = Q.karaoke(self, b, rng, t)
+		"capsules":
+			info["son"] = Q.capsules(self, b, rng, t)
 		_:
 			_logements(b, rng, t)
 	b.commit(_node, "Etage_maillage", false)
+
+
+## V155 : le toit (on y tient debout sur la tour elle-même : ses collisions reviennent) : le parapet,
+## l'édicule de l'escalier (on redescend par là), ce qu'il y avait déjà dessus (citerne, climatiseurs,
+## antenne : on ne les traverse plus), et le reste (tours_quartiers_v155.toit).
+func _batir_toit() -> void:
+	var t: Dictionary = tours[inside]
+	var n: int = (t["etages"] as Array).size()
+	etage = n
+	_ouverte = -1
+	_cols(inside, true)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(t["id"]) * 1009 + 777
+	_node = Node3D.new()
+	_node.name = "Toit_v155"
+	add_child(_node)
+	_body = StaticBody3D.new()
+	_body.collision_layer = 1
+	_body.collision_mask = 0
+	_node.add_child(_body)
+	var b := Kit.Batch.new()
+	var top: Array = t["b"]["top"]
+	var yt: float = IleScript.Y0 + float(t["b"]["h"])
+	var X0: float = IleScript.CENTER.x + float(top[0])
+	var X1: float = IleScript.CENTER.x + float(top[2])
+	var Z0: float = IleScript.CENTER.z + float(top[1])
+	var Z1: float = IleScript.CENTER.z + float(top[3])
+	var rect := Rect2(X0, Z0, X1 - X0, Z1 - Z0)
+	var c := Vector3(rect.get_center().x, yt, rect.get_center().y)
+	# ce qui est déjà sur le toit
+	var props: Array = []
+	for pr in t["b"].get("toit", []):
+		props.append(pr)
+		var ph: float = minf(float(pr[2]), 6.0)
+		_col((pr[0] as Vector3) + Vector3.UP * ph * 0.5, Vector3(float(pr[1]) * 1.5, ph, float(pr[1]) * 1.5))
+	# le parapet (plus haut qu'il n'en a l'air : on ne l'enjambe pas)
+	for e in [[Vector3(c.x, yt, Z0 + 0.12), Vector3(rect.size.x, 0, 0.25)], [Vector3(c.x, yt, Z1 - 0.12), Vector3(rect.size.x, 0, 0.25)],
+			[Vector3(X0 + 0.12, yt, c.z), Vector3(0.25, 0, rect.size.y)], [Vector3(X1 - 0.12, yt, c.z), Vector3(0.25, 0, rect.size.y)]]:
+		var at: Vector3 = e[0]
+		var s0: Vector3 = e[1]
+		b.box("in_mur_gris", Transform3D(Basis(), at + Vector3.UP * 0.55), Vector3(s0.x, 1.1, s0.z))
+		b.box("metal_noir", Transform3D(Basis(), at + Vector3.UP * 1.12), Vector3(s0.x, 0.04, s0.z + 0.04))
+		_col(at + Vector3.UP * 1.1, Vector3(s0.x, 2.2, s0.z))
+	# l'édicule de l'escalier : là où il y a le plus de place
+	var cands: Array = []
+	var hx: float = maxf(0.0, rect.size.x * 0.5 - 2.4)
+	var hz: float = maxf(0.0, rect.size.y * 0.5 - 2.3)
+	for d in [Vector2(-hx, -hz), Vector2(hx, -hz), Vector2(hx, hz), Vector2(-hx, hz), Vector2(0, -hz), Vector2(0, hz), Vector2(-hx, 0), Vector2(hx, 0)]:
+		cands.append(c + Vector3(d.x, 0, d.y))
+	var best: Vector3 = cands[0]
+	var best_s: float = -INF
+	for cd in cands:
+		var sc: float = 99.0
+		for pr2 in props:
+			var pp: Vector3 = pr2[0]
+			sc = minf(sc, Vector2(pp.x - cd.x, pp.z - cd.z).length() - float(pr2[1]))
+		if sc > best_s + 0.01:
+			best_s = sc
+			best = cd
+	var dx: float = best.x - c.x
+	var dz: float = best.z - c.z
+	var kn := Vector3(-signf(dx), 0, 0) if absf(dx) >= absf(dz) and absf(dx) > 0.01 else Vector3(0, 0, -signf(dz) if absf(dz) > 0.01 else 1.0)
+	var ksz := Vector3(2.8, 2.7, 2.4) if absf(kn.z) > 0.5 else Vector3(2.4, 2.7, 2.8)
+	_boite(b, "in_mur", best + Vector3.UP * 1.35, ksz, true)
+	b.box("metal_noir", Transform3D(Basis(), best + Vector3.UP * 2.74), ksz + Vector3(0.2, -2.62, 0.2))
+	var yaw: float = atan2(kn.x, kn.z)
+	var porte: Vector3 = best + kn * 1.2
+	b.box_at("in_porte", porte + kn * 0.03, Vector3(1.0, 2.2, 0.06), yaw)
+	b.box_at("in_led_verte", porte + kn * 0.07 + Vector3.UP * 2.35, Vector3(0.5, 0.16, 0.03), yaw)
+	b.box_at("lampe_blanche", porte + kn * 0.3 + Vector3.UP * 2.6, Vector3(0.5, 0.04, 0.2), yaw)
+	var kr := Rect2(best.x - ksz.x * 0.5, best.z - ksz.z * 0.5, ksz.x, ksz.z)
+	info = {"type": "toit", "ascenseur": porte + kn * 1.3, "regard": kn, "y": yt, "rect": rect, "core": kr, "piliers": [], "props": props, "son": "deltaplane_vent"}
+	_its_add({"id": "toit155", "pos": porte + kn * 1.0, "radius": 1.6, "text": "E : redescendre", "vr": "Gâchette : redescendre",
+		"call": func(): aller(n - 1)})
+	var o := OmniLight3D.new()
+	o.light_color = Color(1.0, 0.9, 0.75)
+	o.light_energy = 0.8
+	o.omni_range = 5.0
+	_node.add_child(o)
+	o.global_position = porte + kn * 0.8 + Vector3.UP * 2.4
+	info["son"] = Q.toit(self, b, rng, t)
+	b.commit(_node, "Toit_maillage", true)
+
+
+## La tour dont on est sur le toit (debout dessus), ou {}.
+func toit_at(p: Vector3) -> Dictionary:
+	var l: Vector2 = IleScript.L(p.x, p.z)
+	for t in tours:
+		var top: Array = t["b"]["top"]
+		var yt: float = IleScript.Y0 + float(t["b"]["h"])
+		if absf(p.y - yt) < 1.2 and l.x > float(top[0]) + 0.3 and l.x < float(top[2]) - 0.3 and l.y > float(top[1]) + 0.3 and l.y < float(top[3]) - 0.3:
+			return t
+	return {}
 
 
 func _defaire() -> void:
@@ -542,6 +730,8 @@ func _escalier() -> void:
 		ch.append({"id": "+1", "label": "Monter d'un étage"})
 	if etage > 0:
 		ch.append({"id": "-1", "label": "Descendre d'un étage"})
+	if etage == n - 1:
+		ch.append({"id": "toit", "label": "Monter sur le toit"})
 	ch.append({"id": "rester", "label": "Rester ici"})
 	_anchor.global_position = main._player_pos_v27()
 	main.ask_v69(_anchor, "Escalier de secours", "serein", "Des marches de béton, une rampe d'acier, une lumière verte. On entend l'écho de ses pas.", ch, _choix_ascenseur)
@@ -650,6 +840,9 @@ func _libre(p: Vector3, r: float) -> bool:
 		return false
 	for pl in info.get("piliers", []):
 		if (pl as Vector2).distance_to(Vector2(p.x, p.z)) < 0.55 + r:
+			return false
+	for pr in info.get("props", []):
+		if Vector2((pr[0] as Vector3).x, (pr[0] as Vector3).z).distance_to(Vector2(p.x, p.z)) < float(pr[1]) + 0.4 + r:
 			return false
 	return true
 
@@ -1074,9 +1267,51 @@ func _logements(b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> void
 			continue
 		var mil: Vector3 = (a + c) * 0.5
 		var portes: int = maxi(1, int(L / 4.2))
-		# le mur du couloir (une ouverture devant l'ascenseur et devant l'escalier)
 		var trou: bool = absf(dehors.dot(n)) > 0.5
+		# V155 : la profondeur des appartements (du mur du couloir au nu de la façade)
+		var fac: float
+		if dehors.z < -0.5:
+			fac = rect.position.y + 0.2
+		elif dehors.z > 0.5:
+			fac = rect.end.y - 0.2
+		elif dehors.x < -0.5:
+			fac = rect.position.x + 0.2
+		else:
+			fac = rect.end.x - 0.2
+		var P: float = absf(fac - (a.z if absf(dehors.z) > 0.5 else a.x)) - 0.08
+		# les portes : [le long, début de l'appartement, fin, numéro]
+		var dl: Array = []
+		for k in range(portes):
+			var up: float = (k + 0.5) * L / portes
+			if trou and absf(up - L * 0.5) < 1.8:
+				continue
+			var r0: float = k * L / portes
+			var r1: float = (k + 1) * L / portes
+			if trou:
+				if up < L * 0.5:
+					r1 = minf(r1, L * 0.5 - 1.3)
+				else:
+					r0 = maxf(r0, L * 0.5 + 1.3)
+			dl.append([up, r0, r1, num])
+			num += 1
+		var ouvert: Array = []
+		for d0 in dl:
+			if int(d0[3]) == _ouverte:
+				ouvert = d0
+		# le mur du couloir (une ouverture devant l'ascenseur et devant l'escalier ; la porte ouverte)
 		var segs: Array = [[0.0, L]] if not trou else [[0.0, L * 0.5 - 1.3], [L * 0.5 + 1.3, L]]
+		if not ouvert.is_empty():
+			var g0: float = float(ouvert[0]) - 0.55
+			var g1: float = float(ouvert[0]) + 0.55
+			var s2: Array = []
+			for sg0 in segs:
+				if float(sg0[1]) <= g0 or float(sg0[0]) >= g1:
+					s2.append(sg0)
+				else:
+					s2.append([float(sg0[0]), g0])
+					s2.append([g1, float(sg0[1])])
+			segs = s2
+			b.box("in_mur_couloir", Transform3D(Basis(), a + u * float(ouvert[0]) + Vector3.UP * (2.2 + (hc - 2.2) * 0.5)), Vector3(1.1, hc - 2.2, 0.15) if long_x else Vector3(0.15, hc - 2.2, 1.1))
 		for sg in segs:
 			var l0: float = sg[0]
 			var l1: float = sg[1]
@@ -1086,24 +1321,39 @@ func _logements(b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> void
 			var sz := Vector3(l1 - l0, hc, 0.15) if long_x else Vector3(0.15, hc, l1 - l0)
 			b.box("in_mur_couloir", Transform3D(Basis(), pm), sz)
 			_col(pm, sz)
-		if trou:
-			# l'ouverture : on voit l'appartement d'en face ? Non : un palier, une fenêtre au bout
-			pass
-		for k in range(portes):
-			var up: float = (k + 0.5) * L / portes
-			if trou and absf(up - L * 0.5) < 1.8:
-				continue
-			var pp: Vector3 = a + u * up
+		if trou and P > 0.5:
+			# l'ouverture : un palier, une fenêtre au bout (fermé sur les côtés : derrière, ce sont les appartements)
+			for sg2 in [L * 0.5 - 1.3, L * 0.5 + 1.3]:
+				var pw: Vector3 = a + u * sg2 + dehors * (P * 0.5 + 0.08) + Vector3.UP * hc * 0.5
+				var szw := Vector3(0.12, hc, P) if long_x else Vector3(P, hc, 0.12)
+				b.box("in_mur_couloir", Transform3D(Basis(), pw), szw)
+				_col(pw, szw)
+		for d1 in dl:
+			var up2: float = d1[0]
+			var nm: int = d1[3]
+			var pp: Vector3 = a + u * up2
 			var yaw: float = atan2(-dehors.x, -dehors.z)
-			b.box_at("in_porte_bois", pp - dehors * 0.09 + Vector3.UP * y * 0.0, Vector3(0.95, 2.15, 0.05), yaw)
-			b.box_at("in_inox", pp - dehors * 0.13 + u * 0.32 + Vector3.UP * 1.0, Vector3(0.12, 0.03, 0.04), yaw)
-			var lab := _label("%d" % num, 40, Color(0.95, 0.9, 0.75))
+			var W: float = float(d1[2]) - float(d1[1])
+			var ouvrable: bool = P >= 3.4 and W >= 3.2 and up2 - float(d1[1]) >= 0.9 and float(d1[2]) - up2 >= 0.9 and (int(t["id"]) * 7 + nm * 13) % 3 == 0
+			var lab := _label("%d" % nm, 40, Color(0.95, 0.9, 0.75))
 			lab.global_position = pp - dehors * 0.12 + Vector3.UP * 2.0
 			lab.look_at(lab.global_position + dehors, Vector3.UP)
-			var nom_porte: String = "%d" % num
-			_its_add({"id": "porte153_%d" % num, "pos": pp - dehors * 0.8 + Vector3.UP * 0.0, "radius": 1.0, "text": "E : frapper à la porte " + nom_porte,
-				"vr": "Gâchette : frapper", "call": _frapper.bind(nom_porte)})
-			num += 1
+			if nm == _ouverte and ouvrable:
+				# la porte ouverte (contre le mur, du côté opposé à l'hôte), le chambranle, l'appartement
+				var gauche: bool = up2 - float(d1[1]) >= W * 0.5
+				var hs: float = -1.0 if gauche else 1.0
+				b.box_at("in_porte_bois", pp + u * hs * 0.45 + dehors * 0.56, Vector3(0.05, 2.15, 0.95), yaw)
+				for sj in [-0.52, 0.52]:
+					b.box_at("in_menuiserie", pp + u * sj, Vector3(0.06, 2.2, 0.2), yaw)
+				var rng2 := RandomNumberGenerator.new()
+				rng2.seed = int(t["id"]) * 7717 + nm * 97
+				Q.appartement(self, b, rng2, {"O": a + u * float(d1[1]) + dehors * 0.08, "U": u, "D": dehors, "W": W, "P": P, "porte": up2 - float(d1[1]), "hc": hc})
+				continue
+			b.box_at("in_porte_bois", pp - dehors * 0.09, Vector3(0.95, 2.15, 0.05), yaw)
+			b.box_at("in_inox", pp - dehors * 0.13 + u * 0.32 + Vector3.UP * 1.0, Vector3(0.12, 0.03, 0.04), yaw)
+			var nom_porte: String = "%d" % nm
+			_its_add({"id": "porte153_%d" % nm, "pos": pp - dehors * 0.8, "radius": 1.0, "text": "E : frapper à la porte " + nom_porte,
+				"vr": "Gâchette : frapper", "call": _frapper.bind(nom_porte, ouvrable)})
 		# un voisin dans le couloir, une plante
 		if rng.randf() < 0.45 and nvois < 3:
 			nvois += 1
@@ -1120,9 +1370,30 @@ const REPONSES_PORTE := ["Personne ne répond.", "Une voix étouffée : « Pas a
 	"Un robot ménager répond : « LES OCCUPANTS SONT ABSENTS. VEUILLEZ RÉESSAYER. »", "Des rires, de la musique : une fête. On ne vous entend pas."]
 
 
-func _frapper(num: String) -> void:
+func _frapper(num: String, ouvrable: bool = false) -> void:
 	main.sfx("toc_porte", main._player_pos_v27())
+	if ouvrable and not busy and inside >= 0:
+		main._show_message_v28("Porte %s : « Entrez donc ! » — chez les %s." % [num, famille(int(num))])
+		_ouvrir(int(num))
+		return
 	main._show_message_v28("Porte %s : %s" % [num, str(REPONSES_PORTE[randi() % REPONSES_PORTE.size()])])
+
+
+func famille(num: int) -> String:
+	return str(FAMILLES[(maxi(inside, 0) * 3 + num) % FAMILLES.size()])
+
+
+## V155 : la porte s'ouvre ; l'étage se rebâtit avec l'appartement derrière (on ne bouge pas).
+func _ouvrir(num: int) -> void:
+	busy = true
+	await _fade(1.0, 0.18)
+	_defaire()
+	_ouverte = num
+	_batir(etage)
+	_grace = 1.0
+	await _fade(0.0, 0.3)
+	busy = false
+	main.sfx("porte_ouvre", main._player_pos_v27())
 
 
 # =================================================================== la sauvegarde

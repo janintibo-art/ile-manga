@@ -1,6 +1,6 @@
 #!/bin/bash
 # Des images des tours de Néopolis (V153 : une entrée, le hall, les étages, la vue) et des planches.
-#     bash tests/outils/rendu_tours.sh DOSSIER
+#     bash tests/outils/rendu_tours.sh DOSSIER [quartiers]
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
@@ -16,7 +16,7 @@ done
 cp "$DEPOT/tests/outils/rendu_tours.gd" "$COPIE/pcvr/rendu_tours.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 900 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 960x600 --audio-driver Dummy \
-  --script res://rendu_tours.gd -- "$OUT" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
+  --script res://rendu_tours.gd -- "$OUT" "${2:-}" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
 rm -f "$COPIE/pcvr/rendu_tours.gd"
 python3 - "$OUT" <<'PY'
 import sys, glob, os

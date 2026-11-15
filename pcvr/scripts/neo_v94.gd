@@ -256,17 +256,25 @@ func _tour(r: Array, h: float, style: int, quartier: String, socle: bool) -> voi
 	var cx: float = (x0 + x1) * 0.5
 	var cz: float = (z0 + z1) * 0.5
 	var roof: Vector3 = IleScript.W(cx, cz, top)
+	# V155 : ce qu'il y a sur le toit (on y monte) : [centre, rayon, hauteur]
+	var toit: Array = []
+	batiments[batiments.size() - 1]["toit"] = toit
 	if style == 1 or style == 3:
 		if _rng.randf() < 0.6 and x1 - x0 > 7.0:
 			Kit.water_tank(_roof_b, roof + Vector3((x1 - x0) * 0.22, 0, (z1 - z0) * 0.18))
+			toit.append([roof + Vector3((x1 - x0) * 0.22, 0, (z1 - z0) * 0.18), 1.75, 5.2])
 		for k2 in range(_rng.randi_range(1, 3)):
-			Kit.ac_unit(_roof_b, roof + Vector3(_rng.randf_range(-0.3, 0.3) * (x1 - x0), 0, _rng.randf_range(-0.3, 0.3) * (z1 - z0)), _rng.randf() * PI)
+			var ap: Vector3 = roof + Vector3(_rng.randf_range(-0.3, 0.3) * (x1 - x0), 0, _rng.randf_range(-0.3, 0.3) * (z1 - z0))
+			Kit.ac_unit(_roof_b, ap, _rng.randf() * PI)
+			toit.append([ap, 1.35, 1.3])
 	elif h > 70.0:
 		# une antenne, son feu rouge clignotant pour les voitures volantes
 		var mh: float = _rng.randf_range(8.0, 22.0)
 		_roof_b.cyl_at("metal", roof, 0.35, 0.12, mh, 8)
 		_roof_b.blob("neon_rouge", roof + Vector3.UP * mh, Vector3(0.35, 0.35, 0.35), 8)
 		Kit.ac_unit(_roof_b, roof + Vector3((x1 - x0) * 0.25, 0, 0), 0.0)
+		toit.append([roof, 0.5, mh])
+		toit.append([roof + Vector3((x1 - x0) * 0.25, 0, 0), 1.35, 1.3])
 
 
 func _layout() -> void:

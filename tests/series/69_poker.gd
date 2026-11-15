@@ -85,6 +85,8 @@ func _serie() -> void:
 		and PokerS.compare(PokerS.valeur5(_m("AP AC 9K 7T 3P")), PokerS.valeur5(_m("AK AT 9P 7C 2P"))) > 0
 		and PokerS.compare(PokerS.valeur5(_m("AP 2C 3K 4T 5P")), PokerS.valeur5(_m("2P 3C 4K 5T 6P"))) < 0
 		and PokerS.compare(PokerS.valeur5(_m("AP AC 9K 7T 3P")), PokerS.valeur5(_m("AK AT 9P 7C 3C"))) == 0, "les départages (les kickers, la petite quinte, l'égalité)")
+	_ok(int(PokerS.meilleure(_m("AP AC"))[0][0]) == 1 and int(PokerS.meilleure(_m("AP 7P"))[0][0]) == 0 and int(PokerS.meilleure(_m("9P 9C 9K"))[0][0]) == 3,
+		"avant le flop : une paire en main, deux cartes de la même couleur (pas une « couleur »)")
 	var b7: Array = PokerS.meilleure(_m("AP AC 9K 9T 3P RC AK"))
 	_ok(int(b7[0][0]) == 6 and (b7[1] as Array).size() == 5, "la meilleure main de sept cartes : %s" % PokerS.nom_combinaison(b7[0]))
 	# --- des mains entières entre adversaires
