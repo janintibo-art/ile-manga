@@ -201,6 +201,12 @@ func gain(amount: int, why: String = "", at: Variant = null) -> void:
 		xp = 0
 	if ups > 0:
 		_level_up_fx()
+		# V151 : le sac grandit avec le niveau
+		var inv: Node = main.get("inventory_v28") if main != null else null
+		if inv != null and inv.has_method("capacite"):
+			inv._refresh()
+			if main.has_method("_show_message_v28"):
+				main._show_message_v28("Ton sac s'agrandit : %d cases." % int(inv.capacite()))
 		# V123 : l'endurance et le souffle grandissent avec le niveau
 		var j: Node = main.get("journal_v56") if main != null else null
 		if j != null:

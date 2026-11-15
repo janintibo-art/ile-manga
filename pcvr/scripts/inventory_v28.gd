@@ -9,8 +9,11 @@ signal changed
 signal equipped_changed(item_id: String)
 signal notify(text: String)
 
-const SLOT_COUNT: int = 24
+const SLOT_COUNT: int = 90               # V151 : les cases du sac (on n'en ouvre qu'une partie : capacite())
+const SAC_BASE: int = 32                 # V151 : la taille du sac au niveau 1…
+const SAC_PAR_NIVEAU: int = 2            # … et ce qu'il gagne à chaque niveau (90 cases au niveau 30)
 const PICK_RADIUS: float = 1.7
+const Langue = preload("res://scripts/langue_v104.gd")
 
 ## kind : nourriture, materiau, tresor, arme. heal en demi-cœurs, damage en points.
 const ITEMS := {
@@ -794,6 +797,9 @@ var _drop_button: Button
 var _equip_label: Label
 # Panneau VR
 var _vr_panel: Node3D
+var _grille: GridContainer
+var _grille_cote: float = 108.0
+var _grille_cap: int = -1
 var _vr_text: Label3D
 var _vr_sel: int = 0
 var _vr_neutral: bool = true
@@ -834,6 +840,28 @@ func count(id: String) -> int:
 	return total
 
 
+## V151 : le nombre de cases ouvertes du sac : il grandit avec le niveau du personnage.
+func capacite() -> int:
+	var lv: int = 1
+	var pr: Node = main.get("progression_v63") if main != null else null
+	if pr != null:
+		lv = int(pr.level)
+	return clampi(SAC_BASE + SAC_PAR_NIVEAU * (lv - 1), SAC_BASE, SLOT_COUNT)
+
+
+## Les cases ouvertes.
+func _ouvertes() -> Array:
+	return slots.slice(0, capacite())
+
+
+func cases_libres() -> int:
+	var n: int = 0
+	for s in _ouvertes():
+		if str(s["id"]) == "":
+			n += 1
+	return n
+
+
 ## Ajoute n objets ; renvoie combien ont vraiment trouvé place.
 func add(id: String, n: int = 1) -> int:
 	if not ITEMS.has(id) or n <= 0:
@@ -847,7 +875,7 @@ func add(id: String, n: int = 1) -> int:
 			var put: int = mini(cap - int(s["n"]), left)
 			s["n"] = int(s["n"]) + put
 			left -= put
-	for s in slots:
+	for s in _ouvertes():
 		if left <= 0:
 			break
 		if s["id"] == "":
@@ -865,7 +893,7 @@ func add(id: String, n: int = 1) -> int:
 ## qui entre (gives), exactement comme add(). Rien n'est modifié.
 func can_accept(gives: Array, takes: Array = []) -> bool:
 	var sim: Array = []
-	for s in slots:
+	for s in _ouvertes():
 		sim.append({"id": str(s["id"]), "n": int(s["n"])})
 	for t in takes:
 		var left: int = int(t[1])
@@ -2104,7 +2132,11 @@ func _build_inventory_page(col: Control) -> void:
 	grid.columns = 6
 	grid.add_theme_constant_override("h_separation", 10)
 	grid.add_theme_constant_override("v_separation", 10)
+	# V151 : le sac grandit avec le niveau : la grille se resserre pour tout montrer (pas d'ascenseur,
+	# qui ne se manie pas au laser en VR)
 	row.add_child(grid)
+	_grille = grid
+	_grille_cote = 108.0
 	for i in range(SLOT_COUNT):
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(108, 108)
@@ -2219,6 +2251,9 @@ func _build_pc_window() -> void:
 	grid.add_theme_constant_override("h_separation", 8)
 	grid.add_theme_constant_override("v_separation", 8)
 	row.add_child(grid)
+	if _grille == null:
+		_grille = grid
+		_grille_cote = 78.0
 	for i in range(SLOT_COUNT):
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(78, 78)
@@ -2355,8 +2390,21 @@ func _refresh() -> void:
 
 
 func _refresh_pc() -> void:
-	for i in range(SLOT_COUNT):
+	var cap_v: int = capacite()
+	if cap_v != _grille_cap and _grille != null:
+		# la place de quatre rangées de six grandes cases ; plus de cases, plus petites
+		_grille_cap = cap_v
+		var larg: float = 6.0 * (_grille_cote + 10.0)
+		var haut: float = 5.0 * (_grille_cote + 10.0)
+		var cols: int = 6 if cap_v <= 24 else (8 if cap_v <= 48 else 10)
+		var rangs: int = int(ceil(float(cap_v) / float(cols)))
+		var cote: float = floorf(minf(larg / cols, haut / rangs) - 10.0)
+		_grille.columns = cols
+		for j in range(_buttons.size()):
+			(_buttons[j] as Button).custom_minimum_size = Vector2(cote, cote)
+	for i in range(mini(SLOT_COUNT, _buttons.size())):
 		var b: Button = _buttons[i]
+		b.visible = i < cap_v
 		var s: Dictionary = slots[i]
 		var id: String = s["id"]
 		b.icon = _icons.get(id) if id != "" else null
@@ -2370,6 +2418,9 @@ func _refresh_pc() -> void:
 		b.add_theme_stylebox_override("pressed", st)
 		b.tooltip_text = str(ITEMS[id]["name"]) if id != "" else ""
 	_equip_label.text = "En main : " + (str(ITEMS[equipped]["name"]) if equipped != "" else "mains nues")
+	# V151 : la place dans le sac
+	var cap: int = capacite()
+	_equip_label.text += "\n" + Langue.t("Sac : %d cases libres sur %d" % [cases_libres(), cap])
 	var has: bool = selected >= 0 and slots[selected]["id"] != ""
 	_use_button.visible = has
 	_drop_button.visible = has
