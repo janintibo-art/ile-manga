@@ -505,6 +505,20 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n115 += 1
     print(f"Dôme d'Azur V115: {n115} fichiers")
+    # V156 : les matières des intérieurs de Néopolis (couleur et relief), compressées, avec mipmaps
+    n156 = 0
+    tex156 = source / "textures" / "neo156"
+    if tex156.is_dir():
+        for f in sorted(tex156.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+            imp = dest.with_name(dest.name + ".import")
+            old = imp.read_text() if imp.is_file() else ""
+            if "mipmaps/generate=true" not in old:
+                imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="true"))
+            n156 += 1
+    print(f"Néopolis V156: {n156} fichiers")
     # V75 : l'Île du Boucan (sols de friche, briques, tôles, béton, fresques, graffitis, affiches,
     # enseignes, champignons, l'Usine Grise) : même règle (les sols du relief sans perte).
     n75 = 0

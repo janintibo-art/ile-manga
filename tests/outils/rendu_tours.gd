@@ -121,10 +121,15 @@ func _initialize() -> void:
 	N.build_town()
 	var T: Node3D = N.tours
 	T.test_mode = true
+	T.sondes = false
 	for k in range(5):
 		await process_frame
 	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "quartiers":
 		await _quartiers(T)
+		quit()
+		return
+	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "vie":
+		await _vie(T, fm)
 		quit()
 		return
 	# la plus grande tour de bureaux
@@ -286,4 +291,62 @@ func _quartiers(T: Node) -> void:
 		_vue(Vector3(rr.get_center().x, T.info["y"] + 2.2, rr.get_center().y) - rg * 0.0 + Vector3(0, 0, 0) + (Vector3(rr.end.x - 1.5, 0, rr.end.y - 1.5) - Vector3(rr.get_center().x, 0, rr.get_center().y)), Vector3(rr.position.x, T.info["y"], rr.position.y))
 		await _photo("toit_%s_b" % ty)
 		await T.aller(0)
+		await T.leave()
+
+
+# =================================================================== V156 : la beauté et la vie
+
+## Une tour et un étage de ce type (la plus haute tour qui en a un).
+func _etage_de(T: Node, ty: String) -> Array:
+	var best: Array = []
+	for t in T.tours:
+		var n: int = (t["etages"] as Array).size()
+		for k in range(n):
+			if T.type_etage(int(t["id"]), k) == ty:
+				if best.is_empty() or n > (T.tours[int(best[0])]["etages"] as Array).size():
+					best = [int(t["id"]), k]
+				break
+	return best
+
+
+func _vie(T: Node, fm: Node) -> void:
+	for ty in ["hall", "bureaux", "labo", "studio", "jardin", "sport", "piscine"]:
+		var tk: Array = _etage_de(T, ty) if ty != "hall" else []
+		if ty == "hall":
+			for t in T.tours:
+				if str(t["type"]) == "bureaux" and (tk.is_empty() or (t["etages"] as Array).size() > (T.tours[int(tk[0])]["etages"] as Array).size()):
+					tk = [int(t["id"]), 0]
+		if tk.is_empty():
+			print("RENDU pas de ", ty)
+			continue
+		await T.enter(int(tk[0]))
+		if int(tk[1]) > 0:
+			await T.aller(int(tk[1]))
+		for k in range(4):
+			await process_frame
+		await _coin(T, ty, 1.7)
+		await _depuis_ascenseur(T, ty + "_b")
+		if ty == "piscine":
+			var B: Rect2 = T.info["bassin"]
+			var y: float = T.info["y"]
+			_vue(Vector3(B.position.x - 0.6, y + 1.7, B.position.y - 0.6), Vector3(B.get_center().x, y - 0.6, B.get_center().y))
+			await _photo("piscine_c")
+		if ty == "bureaux":
+			# la nuit
+			await T.aller(int(tk[1]) + (1 if int(tk[1]) > 1 else 2))
+			fm.temps_v56.hour = 23.0
+			await T.aller(int(tk[1]))
+			await _coin(T, "bureaux_nuit", 1.7)
+			fm.temps_v56.hour = 15.0
+		if ty == "hall":
+			# l'ascenseur ouvert
+			var a: Vector3 = T.info["ascenseur"]
+			var rg: Vector3 = T.info["regard"]
+			T._portes_asc(true, 0.0, 0.0)
+			for k2 in range(3):
+				await process_frame
+			_vue(a + rg * 1.6 + Vector3.UP * 1.65 + rg.cross(Vector3.UP) * 0.6, a - rg * 1.3 + Vector3.UP * 1.2)
+			await _photo("ascenseur_ouvert")
+		if int(tk[1]) > 0:
+			await T.aller(0)
 		await T.leave()

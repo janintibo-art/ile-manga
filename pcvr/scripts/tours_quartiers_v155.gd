@@ -1053,3 +1053,428 @@ static func _bac(T: Node, b: Kit.Batch, p: Vector3, u: Vector3, rng: RandomNumbe
 		if rng.randf() < 0.4:
 			b.blob(["plastique_rouge", "peinture_jaune", "tissu_rouge"][rng.randi() % 3], q + Vector3(0.05, hh * 0.6, 0.04), Vector3(0.05, 0.05, 0.05), 5)
 	T._col(p + Vector3.UP * 0.3, Vector3(2.0, 0.6, 0.75), yw)
+
+
+# =================================================================== V156 : les étages à part
+
+const LIGNES_LABO := ["Ne touche pas à la cuve verte. Elle ne t'a rien fait.", "Expérience 412 : la plante parle. Enfin, elle chante faux.",
+	"Le microscope dit que tout va bien. Le microscope ment parfois.", "On cherche un remède contre le hoquet des robots."]
+const LIGNES_LABO_ANDROIDE := ["ÉCHANTILLON 7 : STABLE. ÉCHANTILLON 8 : IL M'A FAIT UN CLIN D'ŒIL.", "PORTEZ VOS LUNETTES DE PROTECTION. MERCI."]
+const LIGNES_STUDIO := ["Silence, on tourne ! … Coupez ! Encore une fois.", "Trois, deux, un… à l'antenne !", "Le présentateur a encore oublié son texte. Vive le prompteur.",
+	"Souriez, vous êtes en direct dans tout Néopolis !"]
+const LIGNES_SPORT := ["Encore dix ! … Bon, encore cinq.", "Le tapis de course, c'est comme le monorail : on avance sans bouger.", "Je m'entraîne pour le marathon des toits.",
+	"Pense à boire de l'eau. Et à respirer."]
+const LIGNES_JARDIN_INT := ["Ici, on vient respirer entre deux réunions.", "Les cerisiers fleurissent toute l'année. C'est un réglage du chauffage.",
+	"Écoute la fontaine… on oublierait presque les bureaux.", "Je médite. Enfin, j'essaie. Mon téléphone, lui, ne médite pas."]
+const LIGNES_PISCINE := ["L'eau est parfaite ! Viens !", "Une longueur, deux longueurs… je compte les étoiles par la verrière.", "Pas de plongeon, c'est le règlement. Et le règlement, c'est moi.",
+	"Nager au-dessus de la ville… c'est le luxe des Résidences."]
+
+
+static func labo(T: Node, b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> String:
+	var y: float = T.info["y"]
+	var hc: float = float(t["e"]) - 0.35
+	var occ: Array = []
+	enseigne(T, b, "LABORATOIRE — " + str(t.get("societe", "")).to_upper(), "neon_vert", -1.0, 60)
+	var bandes: Array = T._bandes()
+	if bandes.is_empty():
+		return ""
+	var ng: int = 0
+	for r in bandes:
+		var bi: Dictionary = bande(T, r)
+		var o: Vector3 = bi["o"]
+		# les sorbonnes (des hottes vitrées), contre la façade
+		var a: float = float(bi["a0"]) + 1.3
+		while a + 1.0 < float(bi["a1"]) - 0.3:
+			var p: Vector3 = pt(bi, a, 0.5, y)
+			if _okf(T, occ, p, 0.6, o, 0.5) and rng.randf() < 0.6:
+				var bs := Basis(Vector3.UP, _yaw(-o))
+				_piece(b, "in_bureau", p, bs, Vector3(0, 0.45, 0), Vector3(1.5, 0.9, 0.75))
+				_piece(b, "in_inox", p, bs, Vector3(0, 0.92, 0), Vector3(1.55, 0.04, 0.8))
+				_piece(b, "in_vitre", p, bs, Vector3(0, 1.55, 0.3), Vector3(1.45, 1.2, 0.02))
+				_piece(b, "in_bureau", p, bs, Vector3(0, 2.25, -0.05), Vector3(1.55, 0.3, 0.75))
+				_piece(b, "in_led_verte", p, bs, Vector3(0, 2.08, 0.0), Vector3(1.3, 0.02, 0.4))
+				for k in range(3):
+					b.cyl_at(["in_ecran_vert", "in_ecran_rose", "in_ecran"][k], p + bs * Vector3(-0.4 + k * 0.4, 0.94, 0.0), 0.04, 0.04, 0.22, 8)
+				T._col(p + Vector3.UP * 1.2, Vector3(1.55, 2.4, 0.8), _yaw(-o))
+				_prend(occ, p, 1.0)
+			a += 1.9
+		# les paillasses, au milieu
+		var a2: float = float(bi["a0"]) + 2.0
+		while a2 < float(bi["a1"]) - 1.6 and float(bi["prof"]) >= 4.4:
+			var p2: Vector3 = pt(bi, a2, float(bi["prof"]) * 0.55, y)
+			if _ok(T, occ, p2, 1.1):
+				_paillasse(T, b, p2, bi["u"], rng)
+				_prend(occ, p2, 1.25)
+				if rng.randf() < 0.45 and ng < 6:
+					ng += 1
+					_gens(T, rng, p2 - (bi["u"] as Vector3).cross(Vector3.UP) * 0.85, (bi["u"] as Vector3).cross(Vector3.UP), "bricoler", LIGNES_LABO)
+			a2 += 3.2
+	# la grande cuve, qui luit
+	var gr: Dictionary = _grande(T)
+	var cp: Vector3 = _place(T, occ, rng, gr["r"], 1.1, y)
+	if cp != Vector3.INF:
+		b.cyl_at("in_inox", cp, 0.85, 0.85, 0.3, 24)
+		b.cyl_at("in_inox", cp + Vector3.UP * (hc - 0.3), 0.85, 0.85, 0.3, 24)
+		b.cyl_at("in_vitre", cp + Vector3.UP * 0.3, 0.8, 0.8, hc - 0.6, 24)
+		var cuve := ecran(T, "in_ecran_vert", cp + Vector3.UP * (hc * 0.5), Vector3(1.2, hc - 0.7, 1.2), Basis(), rng)
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.72
+		cm.bottom_radius = 0.72
+		cm.height = hc - 0.7
+		cuve.mesh = cm
+		(cuve.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		(cuve.material_override as StandardMaterial3D).albedo_color.a = 0.45
+		b.blob("in_feuille", cp + Vector3.UP * (hc * 0.5), Vector3(0.25, 0.4, 0.25), 8)
+		T._col(cp + Vector3.UP * hc * 0.5, Vector3(1.7, hc, 1.7))
+		lumiere(T, cp + Vector3.UP * 1.2, Color(0.4, 1.0, 0.55), 1.4, 5.0)
+		_prend(occ, cp, 1.2)
+	var pa: Vector3 = _place(T, occ, rng, gr["r"], 0.5, y)
+	_gens(T, rng, pa, _dir(rng), "debout", LIGNES_LABO_ANDROIDE, ["homme", "femme"], true)
+	return "bip"
+
+
+static func _paillasse(T: Node, b: Kit.Batch, p: Vector3, u: Vector3, rng: RandomNumberGenerator) -> void:
+	var bs := Basis(Vector3.UP, atan2(u.x, u.z) + PI * 0.5)
+	_piece(b, "in_bureau", p, bs, Vector3(0, 0.45, 0), Vector3(2.4, 0.9, 1.2))
+	_piece(b, "in_marbre_noir", p, bs, Vector3(0, 0.92, 0), Vector3(2.5, 0.04, 1.3))
+	_piece(b, "in_inox", p, bs, Vector3(0, 1.45, 0), Vector3(2.2, 0.03, 0.35))
+	for sx in [-1.05, 1.05]:
+		_piece(b, "in_inox", p, bs, Vector3(sx, 1.2, 0), Vector3(0.04, 0.55, 0.04))
+	# le microscope, les tubes, la centrifugeuse
+	var mp: Vector3 = p + bs * Vector3(-0.7, 0.94, 0.25)
+	_piece(b, "in_noir", mp, Basis(), Vector3(0, 0.03, 0), Vector3(0.22, 0.06, 0.26))
+	b.tube("in_noir", mp + Vector3.UP * 0.05, mp + Vector3.UP * 0.32 + bs * Vector3(0, 0, -0.06), 0.035, 6)
+	b.tube("in_bureau", mp + Vector3.UP * 0.28, mp + Vector3.UP * 0.42 + bs * Vector3(0, 0, 0.08), 0.025, 6)
+	for k in range(6):
+		b.cyl_at(["in_ecran_vert", "in_ecran_rose", "in_ecran", "in_vitre"][rng.randi() % 4], p + bs * Vector3(0.1 + k * 0.08, 0.94, -0.3), 0.018, 0.018, 0.14, 6)
+	b.cyl_at("in_inox", p + bs * Vector3(0.75, 0.94, 0.2), 0.16, 0.16, 0.22, 14)
+	b.cyl_at("in_led_bleue", p + bs * Vector3(0.75, 1.16, 0.2), 0.1, 0.1, 0.01, 12)
+	T._col(p + Vector3.UP * 0.47, Vector3(2.5, 0.94, 1.3), atan2(u.x, u.z) + PI * 0.5)
+
+
+static func studio(T: Node, b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> String:
+	var y: float = T.info["y"]
+	var hc: float = float(t["e"]) - 0.35
+	var occ: Array = []
+	var gr: Dictionary = _grande(T)
+	if gr.is_empty():
+		return ""
+	var o: Vector3 = gr["o"]
+	var u: Vector3 = gr["u"]
+	var am: float = (float(gr["a0"]) + float(gr["a1"])) * 0.5
+	var la: float = minf(float(gr["a1"]) - float(gr["a0"]) - 2.0, 10.0)
+	var prof: float = gr["prof"]
+	if la >= 4.0 and prof >= 4.5:
+		# le plateau : l'estrade, le grand écran du fond (contre la façade), le bureau du présentateur
+		var pe: Vector3 = pt(gr, am, 1.6, y)
+		_meuble(T, b, "in_bois", pe, Vector3(la, 0.25, 2.8), -o)
+		b.box_at("neon_cyan", pt(gr, am, 3.0, y) + Vector3.UP * 0.12, Vector3(la, 0.03, 0.03), _yaw(-o))
+		var fond: Vector3 = pt(gr, am, 0.3, y) + Vector3.UP * (hc * 0.5 + 0.1)
+		b.box("in_noir", Transform3D(Basis(), fond), sz(gr, la, hc - 0.2, 0.15))
+		ecran(T, "in_ecran", fond - o * 0.09, sz(gr, la - 0.6, hc - 0.9, 0.02), Basis(), rng)
+		var titre: Label3D = T._label("NÉO-INFO — EN DIRECT", 80, Color(1, 1, 1))
+		titre.global_position = fond - o * 0.11 + Vector3.UP * (hc * 0.3)
+		titre.look_at(titre.global_position + o, Vector3.UP)
+		var bp: Vector3 = pt(gr, am, 1.9, y) + Vector3.UP * 0.25
+		_meuble(T, b, "in_marbre_noir", bp, Vector3(2.6, 0.95, 0.7), -o)
+		b.box_at("neon_rose", bp - o * 0.36 + Vector3.UP * 0.2, Vector3(2.6, 0.04, 0.02), _yaw(-o))
+		_gens(T, rng, bp + o * 0.7 + u * 0.5, -o, "pointer", LIGNES_STUDIO, ["homme", "femme"])
+		_gens(T, rng, bp + o * 0.7 - u * 0.6, -o, "comptoir", LIGNES_STUDIO, ["femme", "homme"])
+		_prend(occ, pt(gr, am, 1.6, y), 0.1)
+		# les caméras, les projecteurs (de vraies lumières, braquées sur le bureau)
+		for k in range(3):
+			var cp: Vector3 = pt(gr, am + (k - 1) * la * 0.3, 4.2, y)
+			if not T._libre(cp, 0.4):
+				continue
+			for a in range(3):
+				var an: float = TAU * a / 3.0
+				b.tube("in_noir", cp + Vector3.UP * 1.3, cp + Vector3(cos(an) * 0.4, 0, sin(an) * 0.4), 0.02, 4)
+			var cb := Basis(Vector3.UP, _yaw(o))
+			_piece(b, "in_noir", cp, cb, Vector3(0, 1.45, 0), Vector3(0.3, 0.32, 0.55))
+			b.tube("in_noir", cp + cb * Vector3(0, 1.45, 0.25), cp + cb * Vector3(0, 1.45, 0.45), 0.08, 10)
+			b.blob("in_led_ambre", cp + cb * Vector3(0.1, 1.64, -0.2), Vector3(0.03, 0.03, 0.03), 6)
+			T._col(cp + Vector3.UP * 0.8, Vector3(0.8, 1.6, 0.8))
+			if k != 1:
+				_gens(T, rng, cp - o * 0.5, o, "observer", LIGNES_STUDIO)
+			_prend(occ, cp, 0.6)
+		for s in [-1.0, 1.0]:
+			var sp: Vector3 = pt(gr, am + s * (la * 0.5 - 0.3), 3.4, y)
+			b.cyl_at("in_noir", sp, 0.03, 0.03, 2.3, 6)
+			b.cyl_at("in_noir", sp, 0.3, 0.3, 0.03, 10)
+			var tete: Vector3 = sp + Vector3.UP * 2.35
+			var cible: Vector3 = bp + Vector3.UP * 1.0
+			b.box("in_noir", Transform3D(Basis.looking_at(cible - tete, Vector3.UP), tete), Vector3(0.35, 0.3, 0.45))
+			var sl := SpotLight3D.new()
+			sl.light_color = Color(1.0, 0.95, 0.85)
+			sl.light_energy = 3.0
+			sl.spot_range = 9.0
+			sl.spot_angle = 24.0
+			T._node.add_child(sl)
+			sl.global_transform = Transform3D(Basis.looking_at(cible - tete, Vector3.UP), tete)
+			T._col(sp + Vector3.UP * 1.1, Vector3(0.4, 2.2, 0.4))
+		# « En direct » : la lampe rouge au-dessus de la porte du plateau
+		var ed: Label3D = enseigne(T, b, "● EN DIRECT", "neon_rouge", -1.0, 70, 2.1)
+		ed.modulate = Kit.NEONS["rouge"]
+	# la régie : des pupitres, des écrans
+	for r in T._bandes():
+		var bi: Dictionary = bande(T, r)
+		if bi["r"] == gr["r"]:
+			continue
+		for k2 in range(2):
+			var rp: Vector3 = _place(T, occ, rng, r, 1.0, y)
+			if rp == Vector3.INF:
+				continue
+			var f: Vector3 = -(bi["o"] as Vector3)
+			_meuble(T, b, "in_noir", rp, Vector3(1.8, 0.85, 0.8), f)
+			for k3 in range(3):
+				var bs := Basis(Vector3.UP, _yaw(f))
+				ecran(T, ["in_ecran", "in_ecran_vert", "in_ecran_rose"][k3], rp + bs * Vector3(-0.6 + k3 * 0.6, 1.15, 0.25), Vector3(0.5, 0.3, 0.02), bs * Basis(Vector3.RIGHT, -0.15), rng)
+			_gens(T, rng, rp - f * 0.75, f, "assis", LIGNES_STUDIO)
+			_prend(occ, rp, 1.1)
+	return "bip"
+
+
+static func sport(T: Node, b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> String:
+	var y: float = T.info["y"]
+	var hc: float = float(t["e"]) - 0.35
+	var occ: Array = []
+	enseigne(T, b, "SALLE DE SPORT", "neon_vert", -1.0, 80)
+	var n_tapis: int = 0
+	var n_gens: int = 0
+	for r in T._bandes():
+		var bi: Dictionary = bande(T, r)
+		var o: Vector3 = bi["o"]
+		# les tapis de course et les vélos, face aux fenêtres
+		var a: float = float(bi["a0"]) + 1.0
+		while a + 0.6 < float(bi["a1"]) - 0.2:
+			var p: Vector3 = pt(bi, a, 1.3, y)
+			if _okf(T, occ, p, 0.55, o, 1.3):
+				var velo: bool = rng.randf() < 0.35
+				if velo:
+					_velo(T, b, p, o)
+				else:
+					_tapis(T, b, p, o, rng)
+					n_tapis += 1
+				_prend(occ, p, 0.7)
+				if rng.randf() < 0.35 and n_gens < 5:
+					n_gens += 1
+					_gens(T, rng, p + Vector3.UP * (0.18 if not velo else 0.0), o, "marcher" if not velo else "assis", LIGNES_SPORT, ["homme", "femme", "garcon", "fille"])
+			a += 1.1
+		# le miroir, sur la façade intérieure du cœur ? non : un grand miroir sur une cloison
+		if float(bi["prof"]) >= 4.5:
+			var tp: Vector3 = _place(T, occ, rng, r, 1.1, y)
+			if tp != Vector3.INF:
+				# des tapis de sol, quelqu'un fait des pompes
+				b.box_at(["tissu_bleu", "tissu_rouge", "tissu_vert"][rng.randi() % 3], tp + Vector3.UP * 0.01, Vector3(0.7, 0.02, 1.9), _yaw(bi["u"]))
+				_prend(occ, tp, 1.1)
+				if n_gens < 7:
+					n_gens += 1
+					var f: Node = T._gens_ajoute(["homme", "femme", "garcon"][rng.randi() % 3], tp - (bi["u"] as Vector3) * 0.7, bi["u"], "debout", rng, LIGNES_SPORT)
+					if f != null and f.has_method("plank"):
+						f.plank(tp - (bi["u"] as Vector3) * 0.75 + Vector3.UP * 0.03, bi["u"])
+	# le coin des haltères
+	var gr: Dictionary = _grande(T)
+	if not gr.is_empty():
+		var hp: Vector3 = _place(T, occ, rng, gr["r"], 1.1, y)
+		if hp != Vector3.INF:
+			var f2: Vector3 = -(gr["o"] as Vector3)
+			var bs := Basis(Vector3.UP, _yaw(f2))
+			_piece(b, "metal_noir", hp, bs, Vector3(0, 0.45, 0), Vector3(1.8, 0.06, 0.5))
+			for sx in [-0.85, 0.85]:
+				_piece(b, "metal_noir", hp, bs, Vector3(sx, 0.22, 0), Vector3(0.06, 0.44, 0.45))
+			for k in range(8):
+				var dp: Vector3 = hp + bs * Vector3(-0.75 + k * 0.215, 0.52, 0)
+				b.tube("in_inox", dp - bs * Vector3(0, 0, 0.14), dp + bs * Vector3(0, 0, 0.14), 0.015, 5)
+				for sz2 in [-0.12, 0.12]:
+					b.cyl("in_noir", Transform3D(bs * Basis(Vector3.RIGHT, PI * 0.5), dp + bs * Vector3(0, 0, sz2)), 0.04 + k * 0.006, 0.04 + k * 0.006, 0.05, 10)
+			T._col(hp + Vector3.UP * 0.3, Vector3(1.8, 0.6, 0.5), _yaw(f2))
+			_gens(T, rng, hp + f2 * 0.8, -f2, "bras_croises", LIGNES_SPORT)
+			_prend(occ, hp, 1.2)
+	# le grand miroir, sur une face du cœur
+	var core: Rect2 = T.info["core"]
+	var n: Vector3 = T.info["regard"]
+	var side: Vector3 = n.cross(Vector3.UP)
+	var half: float = (absf(side.x) * core.size.x + absf(side.z) * core.size.y) * 0.5
+	var lg: float = (absf(n.x) * core.size.x + absf(n.z) * core.size.y) - 0.4
+	var mc := Vector3(core.get_center().x, y, core.get_center().y) + side * (half + 0.03)
+	b.box_at("in_miroir", mc + Vector3.UP * 0.2, Vector3(lg, 2.0, 0.02), _yaw(side))
+	b.box_at("in_menuiserie", mc + Vector3.UP * 0.15, Vector3(lg + 0.06, 0.05, 0.05), _yaw(side))
+	# l'eau fraîche
+	var fp: Vector3 = _place(T, occ, rng, (T._bandes()[0] as Rect2), 0.5, y) if not T._bandes().is_empty() else Vector3.INF
+	if fp != Vector3.INF:
+		Kit.vending(b, fp, Vector3(0, 0, 1), "plastique_bleu")
+		T._col(fp + Vector3.UP * 0.95, Vector3(1.05, 1.9, 0.8))
+	return ""
+
+
+static func _tapis(T: Node, b: Kit.Batch, p: Vector3, face: Vector3, rng: RandomNumberGenerator) -> void:
+	var bs := Basis(Vector3.UP, _yaw(face))
+	_piece(b, "in_noir", p, bs, Vector3(0, 0.1, 0), Vector3(0.75, 0.2, 1.8))
+	_piece(b, "in_cuir", p, bs, Vector3(0, 0.205, -0.05), Vector3(0.55, 0.01, 1.55))
+	for sx in [-0.33, 0.33]:
+		b.tube("in_inox", p + bs * Vector3(sx, 0.2, 0.75), p + bs * Vector3(sx, 1.25, 0.85), 0.025, 6)
+	_piece(b, "in_noir", p, bs, Vector3(0, 1.3, 0.85), Vector3(0.7, 0.3, 0.1))
+	_piece(b, "in_ecran_vert" if rng.randf() < 0.5 else "in_ecran", p, bs, Vector3(0, 1.32, 0.795), Vector3(0.36, 0.18, 0.01))
+	T._col(p + Vector3.UP * 0.1, Vector3(0.75, 0.2, 1.8), _yaw(face))
+	T._col(p + bs * Vector3(0, 0.75, 0.85), Vector3(0.75, 1.5, 0.15), _yaw(face))
+
+
+static func _velo(T: Node, b: Kit.Batch, p: Vector3, face: Vector3) -> void:
+	var bs := Basis(Vector3.UP, _yaw(face))
+	_piece(b, "in_noir", p, bs, Vector3(0, 0.05, 0), Vector3(0.5, 0.1, 1.1))
+	b.tube("in_inox", p + bs * Vector3(0, 0.1, -0.35), p + bs * Vector3(0, 0.75, -0.2), 0.04, 6)
+	b.tube("in_inox", p + bs * Vector3(0, 0.1, 0.35), p + bs * Vector3(0, 1.0, 0.35), 0.04, 6)
+	_piece(b, "in_cuir", p, bs, Vector3(0, 0.78, -0.2), Vector3(0.24, 0.07, 0.3))
+	_piece(b, "in_noir", p, bs, Vector3(0, 1.02, 0.35), Vector3(0.5, 0.04, 0.06))
+	b.cyl("in_noir", Transform3D(bs * Basis(Vector3.FORWARD, PI * 0.5), p + bs * Vector3(0, 0.35, 0.2)), 0.25, 0.25, 0.06, 16)
+	T._col(p + Vector3.UP * 0.5, Vector3(0.5, 1.0, 1.1), _yaw(face))
+
+
+static func jardin(T: Node, b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> String:
+	var y: float = T.info["y"]
+	var occ: Array = []
+	enseigne(T, b, "JARDIN SUSPENDU", "neon_vert", -1.0, 80)
+	# des cerisiers dans leurs bacs, des bambous, des bancs, des pas japonais
+	for r in T._bandes():
+		var bi: Dictionary = bande(T, r)
+		var o: Vector3 = bi["o"]
+		var a: float = float(bi["a0"]) + 1.8
+		while a < float(bi["a1"]) - 1.6:
+			var p: Vector3 = pt(bi, a, 1.0, y)
+			if _okf(T, occ, p, 0.9, o, 1.0):
+				if rng.randf() < 0.55:
+					b.cyl_at("in_bois", p, 0.85, 0.8, 0.45, 16)
+					b.cyl_at("in_terre", p + Vector3.UP * 0.45, 0.78, 0.78, 0.02, 16)
+					Kit.cherry(b, p + Vector3.UP * 0.45, rng, 0.75)
+					T._col(p + Vector3.UP * 0.5, Vector3(1.6, 1.0, 1.6))
+				else:
+					_meuble(T, b, "in_bois", p, Vector3(1.8, 0.4, 0.6), -o)
+					for k in range(9):
+						var bp: Vector3 = p + (bi["u"] as Vector3) * (-0.8 + k * 0.2) + Vector3.UP * 0.4
+						var hb: float = rng.randf_range(1.6, 2.4)
+						b.tube("in_feuille", bp, bp + Vector3(rng.randf_range(-0.08, 0.08), hb, rng.randf_range(-0.08, 0.08)), 0.03, 5)
+						b.blob("in_feuille", bp + Vector3.UP * hb, Vector3(0.18, 0.25, 0.18), 6)
+				_prend(occ, p, 1.0)
+			a += 2.6
+		for k2 in range(2):
+			var bp2: Vector3 = _place(T, occ, rng, r, 1.0, y)
+			if bp2 != Vector3.INF:
+				var yaw: float = _yaw(-o)
+				Kit.bench(b, bp2, yaw)
+				T._col(bp2 + Vector3.UP * 0.4, Vector3(1.9, 0.8, 0.5), yaw)
+				_prend(occ, bp2, 1.0)
+				if rng.randf() < 0.6:
+					_gens(T, rng, bp2, -o, ["assis", "lire", "mediter"][rng.randi() % 3], LIGNES_JARDIN_INT, ["homme", "femme", "vieux", "vieille"])
+		# des pas japonais sur le gravier
+		for k3 in range(6):
+			var sp: Vector3 = Vector3(rng.randf_range(r.position.x + 0.5, r.end.x - 0.5), y, rng.randf_range(r.position.y + 0.5, r.end.y - 0.5))
+			b.cyl_at("pierre", sp, 0.3, 0.32, 0.04, 9)
+	# la fontaine
+	var gr: Dictionary = _grande(T)
+	var fp: Vector3 = _place(T, occ, rng, gr["r"], 1.3, y)
+	if fp != Vector3.INF:
+		b.cyl_at("pierre", fp, 1.2, 1.25, 0.45, 24)
+		b.cyl_at("eau", fp + Vector3.UP * 0.4, 1.05, 1.05, 0.02, 24)
+		b.cyl_at("pierre", fp + Vector3.UP * 0.4, 0.2, 0.25, 0.7, 10)
+		b.blob("eau", fp + Vector3.UP * 1.15, Vector3(0.12, 0.12, 0.12), 8)
+		T._col(fp + Vector3.UP * 0.25, Vector3(2.4, 0.5, 2.4))
+		lumiere(T, fp + Vector3.UP * 0.6, Color(0.6, 0.85, 1.0), 0.7, 3.5)
+		_prend(occ, fp, 1.4)
+	return "fontaine_holo"
+
+
+## La piscine (le dernier étage des grandes Résidences) : le bassin creusé dans la dalle (T.info["bassin"] :
+## son rectangle ; tours_v153 a laissé le trou dans le sol), l'eau qui ondule, les transats, la verrière.
+static func piscine(T: Node, b: Kit.Batch, rng: RandomNumberGenerator, t: Dictionary) -> String:
+	var y: float = T.info["y"]
+	var hc: float = float(t["e"]) - 0.35
+	var occ: Array = []
+	var B: Rect2 = T.info.get("bassin", Rect2())
+	if B.size.x < 2.0:
+		return ""
+	var prof: float = 1.35
+	var c := Vector3(B.get_center().x, y, B.get_center().y)
+	# le fond et les parois carrelées, les lignes d'eau, les marches
+	T._boite(b, "in_carrelage", c + Vector3.DOWN * (prof + 0.1), Vector3(B.size.x, 0.2, B.size.y), true)
+	for e in [[Vector3(c.x, 0, B.position.y - 0.1), Vector3(B.size.x + 0.4, 0, 0.2)], [Vector3(c.x, 0, B.end.y + 0.1), Vector3(B.size.x + 0.4, 0, 0.2)],
+			[Vector3(B.position.x - 0.1, 0, c.z), Vector3(0.2, 0, B.size.y)], [Vector3(B.end.x + 0.1, 0, c.z), Vector3(0.2, 0, B.size.y)]]:
+		var at: Vector3 = e[0]
+		var s0: Vector3 = e[1]
+		T._boite(b, "in_carrelage", Vector3(at.x, y - prof * 0.5, at.z), Vector3(s0.x, prof, s0.z), true)
+		# la margelle
+		b.box("in_marbre_blanc", Transform3D(Basis(), Vector3(at.x, y + 0.02, at.z)), Vector3(s0.x + 0.1, 0.04, s0.z + 0.2))
+	var long_x: bool = B.size.x >= B.size.y
+	for k in range(1, 4):
+		var f: float = float(k) / 4.0
+		var lp := Vector3(lerpf(B.position.x, B.end.x, f), y - prof + 0.005, c.z) if not long_x else Vector3(c.x, y - prof + 0.005, lerpf(B.position.y, B.end.y, f))
+		b.box("plastique_bleu", Transform3D(Basis(), lp), Vector3(0.2, 0.01, B.size.y - 1.0) if not long_x else Vector3(B.size.x - 1.0, 0.01, 0.2))
+	# les marches, à un bout (quatre marches de 27 cm : on descend dans l'eau, on en ressort)
+	for i in range(4):
+		var haut: float = prof - (i + 1) * prof / 5.0
+		var al: float = (B.position.x if long_x else B.position.y) + 0.2 + i * 0.4
+		var sp := Vector3(al, y - prof + haut * 0.5, c.z) if long_x else Vector3(c.x, y - prof + haut * 0.5, al)
+		T._boite(b, "in_carrelage", sp, Vector3(0.4, haut, 1.6) if long_x else Vector3(1.6, haut, 0.4), true)
+	# l'eau : une surface qui ondule (son relief glisse : _process), une lumière dessous
+	var eau := MeshInstance3D.new()
+	var pm := PlaneMesh.new()
+	pm.size = B.size
+	eau.mesh = pm
+	var em := StandardMaterial3D.new()
+	em.albedo_color = Color(0.25, 0.65, 0.8, 0.55)
+	em.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	em.roughness = 0.04
+	em.metallic = 0.1
+	em.cull_mode = BaseMaterial3D.CULL_DISABLED
+	if ResourceLoader.exists("res://assets/textures/neo156/eau_n.png"):
+		em.normal_enabled = true
+		em.normal_texture = load("res://assets/textures/neo156/eau_n.png")
+		em.normal_scale = 0.6
+		em.uv1_scale = Vector3(B.size.x / 2.0, B.size.y / 2.0, 1.0)
+	eau.material_override = em
+	eau.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	T._node.add_child(eau)
+	eau.global_position = c + Vector3.DOWN * 0.15
+	T._eaux.append(em)
+	lumiere(T, c + Vector3.DOWN * 0.9, Color(0.35, 0.8, 1.0), 1.6, maxf(B.size.x, B.size.y) * 0.7)
+	_prend(occ, c, 0.0)
+	occ.append([Vector2(c.x, c.z), maxf(B.size.x, B.size.y) * 0.5 + 0.4])
+	# les baigneurs (debout dans l'eau), le maître-nageur sur sa chaise haute
+	for k2 in range(rng.randi_range(2, 4)):
+		var bp := Vector3(rng.randf_range(B.position.x + 2.0, B.end.x - 0.6), y - prof, rng.randf_range(B.position.y + 0.6, B.end.y - 0.6)) if long_x \
+			else Vector3(rng.randf_range(B.position.x + 0.6, B.end.x - 0.6), y - prof, rng.randf_range(B.position.y + 2.0, B.end.y - 0.6))
+		_gens(T, rng, bp, _dir(rng), ["debout", "rire"][rng.randi() % 2], LIGNES_PISCINE, ["homme", "femme", "garcon", "fille"])
+	# les transats, autour
+	for r in T._bandes():
+		for k3 in range(3):
+			var tp: Vector3 = _place(T, occ, rng, r, 0.8, y)
+			if tp == Vector3.INF:
+				continue
+			var f2: Vector3 = (c - tp)
+			f2.y = 0.0
+			f2 = f2.normalized()
+			var bs := Basis(Vector3.UP, _yaw(f2))
+			_piece(b, "peinture_blanche", tp, bs, Vector3(0, 0.3, 0.1), Vector3(0.65, 0.06, 1.3))
+			b.box(["tissu_bleu", "tissu_jaune", "tissu_rouge"][rng.randi() % 3], Transform3D(bs * Basis(Vector3.RIGHT, -0.7), tp + bs * Vector3(0, 0.55, -0.62)), Vector3(0.62, 0.06, 0.7))
+			for sx in [-0.28, 0.28]:
+				_piece(b, "metal", tp, bs, Vector3(sx, 0.14, 0.1), Vector3(0.04, 0.28, 1.2))
+			T._col(tp + Vector3.UP * 0.35, Vector3(0.7, 0.7, 1.6), _yaw(f2))
+			_prend(occ, tp, 0.9)
+			if rng.randf() < 0.4:
+				var f3: Node = T._gens_ajoute(["homme", "femme", "vieux", "vieille"][rng.randi() % 4], tp, f2, "debout", rng, LIGNES_PISCINE)
+				if f3 != null and f3.has_method("lie"):
+					f3.lie(tp + bs * Vector3(0, 0.25, 0.55), -f2)
+	var mp: Vector3 = Vector3(B.end.x + 1.3, y, c.z) if long_x else Vector3(c.x, y, B.end.y + 1.3)
+	if T._libre(mp, 0.4):
+		for sx2 in [-0.25, 0.25]:
+			b.cyl_at("peinture_blanche", mp + (Vector3(0, 0, sx2) if long_x else Vector3(sx2, 0, 0)), 0.03, 0.03, 1.7, 6)
+		b.box("peinture_blanche", Transform3D(Basis(), mp + Vector3.UP * 1.7), Vector3(0.6, 0.06, 0.6))
+		b.box("plastique_rouge", Transform3D(Basis(), mp + Vector3.UP * 1.95 + (Vector3(0.25, 0, 0) if long_x else Vector3(0, 0, 0.25))), Vector3(0.6, 0.5, 0.06) if not long_x else Vector3(0.06, 0.5, 0.6))
+		T._col(mp + Vector3.UP * 1.0, Vector3(0.7, 2.0, 0.7))
+		_gens(T, rng, mp + Vector3.UP * 1.73, (c - mp).normalized(), "assis", ["Pas de plongeon, c'est le règlement. Et le règlement, c'est moi.", "Je surveille. Même quand j'ai l'air de dormir."], ["homme", "femme"])
+	# des plantes
+	for k4 in range(6):
+		var pp: Vector3 = _place(T, occ, rng, T.info["rect"], 0.4, y)
+		if pp != Vector3.INF:
+			T._plante(b, pp, 1.5)
+			_prend(occ, pp, 0.5)
+	return "nage"

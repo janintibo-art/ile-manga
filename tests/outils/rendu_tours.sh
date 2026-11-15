@@ -13,8 +13,22 @@ rm -f "$OUT"/*.png
   mkdir -p "$(dirname "$COPIE/$r")"
   cmp -s "$DEPOT/$r" "$COPIE/$r" || cp "$DEPOT/$r" "$COPIE/$r"
 done
+# V156 : les textures des intérieurs (neo156) : copiées, réglées (stage_assets.py), importées si besoin
+mkdir -p "$COPIE/www/assets/textures/neo156"
+NOUVEAU=0
+for f in "$DEPOT"/www/assets/textures/neo156/*.png; do
+  d="$COPIE/www/assets/textures/neo156/$(basename "$f")"
+  if ! cmp -s "$f" "$d"; then cp "$f" "$d"; NOUVEAU=1; fi
+  i="$COPIE/pcvr/assets/textures/neo156/$(basename "$f").import"
+  if [ ! -f "$i" ] || ! grep -q "^path" "$i"; then NOUVEAU=1; fi
+done
+cp "$DEPOT/pcvr/stage_assets.py" "$COPIE/pcvr/stage_assets.py"
+(cd "$COPIE" && python3 pcvr/stage_assets.py > /dev/null)
+if [ "$NOUVEAU" = "1" ]; then
+  (cd "$COPIE" && flock /tmp/godot77.lock timeout 900 "$GODOT" --headless --path pcvr --import > /dev/null 2>&1)
+fi
 cp "$DEPOT/tests/outils/rendu_tours.gd" "$COPIE/pcvr/rendu_tours.gd"
-cd "$COPIE" && flock /tmp/godot77.lock timeout 900 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
+cd "$COPIE" && flock /tmp/godot77.lock timeout 1800 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 960x600 --audio-driver Dummy \
   --script res://rendu_tours.gd -- "$OUT" "${2:-}" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
 rm -f "$COPIE/pcvr/rendu_tours.gd"

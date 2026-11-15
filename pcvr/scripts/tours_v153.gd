@@ -57,6 +57,11 @@ var _t: float = 0.0
 var _grace: float = 0.0              # juste après un déplacement : on laisse le temps au corps d'arriver
 var info: Dictionary = {}             # l'étage bâti : {type, ascenseur (Vector3), regard, sortie_dedans…}
 var _ouverte: int = -1                # V155 : la porte d'appartement ouverte à cet étage (son numéro)
+var _marcheurs: Array = []            # V156 : les gens qui marchent : {f, pts, i, v, it}
+var _eaux: Array = []                 # V156 : les surfaces d'eau (la piscine) dont le relief glisse
+var _n_spawn: int = 0                 # V156 : le numéro de la personne qu'on pose (le tri jour / nuit)
+var _tw_asc: Tween                    # V156 : le mouvement des portes de l'ascenseur (un seul à la fois)
+var sondes: bool = true               # V156 : une sonde de reflets par étage (l'outil d'images, sans carte graphique, s'en passe)
 
 
 func setup(main_node: Node, neo: Node3D) -> void:
@@ -212,6 +217,26 @@ func _process(delta: float) -> void:
 		if is_instance_valid(mi) and mi.material_override is StandardMaterial3D:
 			var ph: float = float(e[1])
 			(mi.material_override as StandardMaterial3D).emission_energy_multiplier = 1.0 + 0.5 * sin(_t * 1.3 + ph)
+	# V156 : les gens qui marchent (ils s'arrêtent quand ils parlent)
+	for m in _marcheurs:
+		var f: Node = m["f"]
+		if not is_instance_valid(f) or f.get("npc") == null or not is_instance_valid(f.npc):
+			continue
+		if float(f.npc.get("bubble_clock")) > 0.0 or bool(f.get("talking")):
+			continue
+		var pts: Array = m["pts"]
+		var p0: Vector3 = f.npc.global_position
+		var tg: Vector3 = pts[int(m["i"])]
+		var dv := Vector3(tg.x - p0.x, 0.0, tg.z - p0.z)
+		if dv.length() < 0.12:
+			m["i"] = (int(m["i"]) + 1) % pts.size()
+			continue
+		var st: float = minf(dv.length(), float(m["v"]) * delta)
+		f.npc.global_position = p0 + dv.normalized() * st
+		f.face_dir = dv.normalized()
+		(m["it"] as Dictionary)["pos"] = f.npc.global_position
+	for em in _eaux:
+		(em as StandardMaterial3D).uv1_offset = Vector3(_t * 0.02, _t * 0.013, 0.0)
 	# dedans, mais on n'y est plus (un voyage, un évanouissement…) : on referme l'étage
 	_grace = maxf(0.0, _grace - delta)
 	if inside >= 0 and not busy and _node != null and _grace <= 0.0:
@@ -381,7 +406,8 @@ func _nom_etage(k: int) -> String:
 	var quoi := {"hall": "le hall", "bureaux": "les bureaux de %s" % str(t.get("societe", "")), "cafeteria": "la cafétéria", "serveurs": "la salle des serveurs",
 		"direction": "la direction de %s" % str(t.get("societe", "")), "logements": "les logements", "hangar": "le hangar", "atelier": str(t.get("enseigne", "l'atelier")),
 		"nouilles": str(t.get("enseigne", "les nouilles")), "boutique": str(t.get("enseigne", "la boutique")), "salle_jeux": "la salle de jeux", "karaoke": "le karaoké",
-		"capsules": "l'hôtel capsule"}
+		"capsules": "l'hôtel capsule", "labo": "le laboratoire", "studio": "le studio de télévision", "jardin": "le jardin suspendu", "sport": "la salle de sport",
+		"piscine": "la piscine"}
 	return "%s — %s" % [nom, str(quoi.get(ty, ty))]
 
 
@@ -399,8 +425,30 @@ func type_etage(id: int, k: int) -> String:
 			return "cafeteria"
 		if k % 9 == 5:
 			return "serveurs"
+		# V156 : les étages à part (selon la société), le jardin suspendu
+		var soc: String = str(t.get("societe", ""))
+		if k % 11 == 7:
+			return "jardin"
+		if k % 4 == 3 and (soc.contains("Biotech") or soc.contains("Robotique") or soc.contains("Énergie")):
+			return "labo"
+		if k % 5 == 3 and (soc.contains("Médias") or soc.contains("Jeux") or soc.contains("Holographie")):
+			return "studio"
 		return "bureaux"
+	# V156 : dans les Résidences, la salle de sport ; tout en haut des grandes, la piscine
+	if str(t["quartier"]) == "residences":
+		if k == n - 1 and n >= 8 and _bassin_possible(t, k):
+			return "piscine"
+		if k % 7 == 3 and n >= 6:
+			return "sport"
 	return "logements"
+
+
+## V156 : la place d'une piscine à cet étage (une bande assez grande autour du cœur).
+func _bassin_possible(t: Dictionary, k: int) -> bool:
+	var r: Array = (t["etages"] as Array)[k]["rect"]
+	var w: float = float(r[2]) - float(r[0]) - 0.6
+	var d: float = float(r[3]) - float(r[1]) - 0.6
+	return w >= 16.0 and d >= 16.0
 
 
 ## Le panneau de l'ascenseur.
@@ -427,6 +475,7 @@ func ascenseur() -> void:
 		ch.append({"id": "toit", "label": "Le toit"})
 	ch.append({"id": "rester", "label": "Rester ici"})
 	_anchor.global_position = info["ascenseur"]
+	_portes_asc(true)
 	main.ask_v69(_anchor, "Ascenseur", "serein", "Vous êtes ici : %s. Où allons-nous ? (%d étages)" % [_nom_etage(etage), n], ch, _choix_ascenseur)
 
 
@@ -453,6 +502,8 @@ func _choix_ascenseur(id: String) -> void:
 			aller(k)
 		"toit":
 			aller_toit()
+		_:
+			_portes_asc(false, 0.4)
 
 
 # =================================================================== bâtir un étage
@@ -463,7 +514,9 @@ func _batir(k: int) -> void:
 	var t: Dictionary = tours[inside]
 	var et: Dictionary = (t["etages"] as Array)[k]
 	var rng := RandomNumberGenerator.new()
-	rng.seed = int(t["id"]) * 1009 + k * 31 + 7
+	var nuit: bool = est_nuit()
+	rng.seed = int(t["id"]) * 1009 + k * 31 + 7 + (5003 if nuit else 0)
+	_n_spawn = 0
 	_node = Node3D.new()
 	_node.name = "Etage_v153"
 	add_child(_node)
@@ -483,41 +536,88 @@ func _batir(k: int) -> void:
 	var ty: String = type_etage(int(t["id"]), k)
 	var sols := {"hall": "in_terrazzo", "bureaux": "in_moquette", "cafeteria": "in_parquet", "serveurs": "in_sol_technique", "direction": "in_parquet", "logements": "in_moquette_bleue",
 		"hangar": "in_beton_cire", "atelier": "in_sol_technique", "nouilles": "in_parquet", "boutique": "in_terrazzo", "salle_jeux": "in_moquette_bleue", "karaoke": "in_moquette",
-		"capsules": "in_moquette"}
+		"capsules": "in_moquette", "labo": "in_carrelage_sol", "studio": "in_moquette", "jardin": "gravier_zen", "sport": "in_caoutchouc", "piscine": "in_carrelage"}
+	if ty == "hall" and t["type"] == "bureaux":
+		sols["hall"] = "in_marbre_blanc"
 	var w: float = X1 - X0
 	var d: float = Z1 - Z0
 	var c := Vector3((X0 + X1) * 0.5, 0.0, (Z0 + Z1) * 0.5)
-	# le sol, le plafond
 	var y_sol: float = y + (0.03 if k == 0 else 0.0)
-	_boite(b, str(sols.get(ty, "in_moquette")), Vector3(c.x, y_sol - 0.15, c.z), Vector3(w, 0.3, d), true)
-	_boite(b, "in_plafond", Vector3(c.x, y_sol + hc + 0.15, c.z), Vector3(w, 0.3, d), true)
 	# le cœur : l'ascenseur (face à la porte d'entrée), les escaliers
 	var n: Vector3 = t["n"]
 	var cw: float = clampf(w * 0.26, 3.2, 9.0)
 	var cd: float = clampf(d * 0.26, 3.2, 7.0)
 	var core := Rect2(c.x - cw * 0.5, c.z - cd * 0.5, cw, cd)
+	# le sol (V156 : à l'étage de la piscine, le bassin y est creusé), le plafond (là, une verrière)
+	var sol: String = str(sols.get(ty, "in_moquette"))
+	var bassin := Rect2()
+	if ty == "piscine":
+		var cg: Rect2 = core.grow(1.5)
+		var best := Rect2()
+		for rb in [Rect2(X0, Z0, w, cg.position.y - Z0), Rect2(X0, cg.end.y, w, Z1 - cg.end.y), Rect2(X0, cg.position.y, cg.position.x - X0, cg.size.y), Rect2(cg.end.x, cg.position.y, X1 - cg.end.x, cg.size.y)]:
+			if rb.get_area() > best.get_area():
+				best = rb
+		bassin = best.grow(-1.4)
+		if bassin.size.x < 3.0 or bassin.size.y < 2.6:
+			bassin = Rect2()
+	if bassin.size.x > 0.0:
+		for sb in [Rect2(X0, Z0, w, bassin.position.y - Z0), Rect2(X0, bassin.end.y, w, Z1 - bassin.end.y), Rect2(X0, bassin.position.y, bassin.position.x - X0, bassin.size.y),
+				Rect2(bassin.end.x, bassin.position.y, X1 - bassin.end.x, bassin.size.y)]:
+			if sb.size.x > 0.01 and sb.size.y > 0.01:
+				_boite(b, sol, Vector3(sb.get_center().x, y_sol - 0.15, sb.get_center().y), Vector3(sb.size.x, 0.3, sb.size.y), true)
+	else:
+		_boite(b, sol, Vector3(c.x, y_sol - 0.15, c.z), Vector3(w, 0.3, d), true)
+	if ty == "piscine":
+		# la verrière : du verre, une trame de poutrelles ; on voit le ciel
+		_boite(b, "in_vitre", Vector3(c.x, y_sol + hc + 0.05, c.z), Vector3(w, 0.1, d), true)
+		var gx: float = X0
+		while gx <= X1 + 0.01:
+			b.box("in_menuiserie", Transform3D(Basis(), Vector3(gx, y_sol + hc - 0.05, c.z)), Vector3(0.12, 0.2, d))
+			gx += 3.0
+		var gz: float = Z0
+		while gz <= Z1 + 0.01:
+			b.box("in_menuiserie", Transform3D(Basis(), Vector3(c.x, y_sol + hc - 0.05, gz)), Vector3(w, 0.16, 0.1))
+			gz += 3.0
+	else:
+		_boite(b, "in_plafond", Vector3(c.x, y_sol + hc + 0.15, c.z), Vector3(w, 0.3, d), true)
 	_boite(b, "in_mur_gris", Vector3(c.x, y_sol + hc * 0.5, c.z), Vector3(cw, hc, cd), true)
 	var fa: Vector3 = c + Vector3(n.x * cw * 0.5, 0, n.z * cd * 0.5)      # le milieu de la face de l'ascenseur
 	var side: Vector3 = n.cross(Vector3.UP)
 	var yaw: float = atan2(n.x, n.z)
-	b.box_at("in_ascenseur", fa + n * 0.03 + Vector3.UP * y_sol, Vector3(1.7, 2.35, 0.06), yaw)
-	b.box_at("in_noir", fa + n * 0.065 + Vector3.UP * y_sol, Vector3(0.02, 2.35, 0.02), yaw)
+	# V156 : la cabine (on la voit quand les portes s'ouvrent), les deux portes qui coulissent
+	b.box_at("in_inox", fa + n * 0.012 + Vector3.UP * y_sol, Vector3(1.66, 2.33, 0.02), yaw)
+	b.box_at("in_plafonnier_chaud", fa + n * 0.024 + Vector3.UP * (y_sol + 2.2), Vector3(1.4, 0.05, 0.01), yaw)
+	b.box_at("in_bois", fa + n * 0.024 + Vector3.UP * (y_sol + 0.9), Vector3(1.5, 0.08, 0.01), yaw)
+	var portes_asc: Array = []
+	for sgp in [-1.0, 1.0]:
+		var pa := MeshInstance3D.new()
+		var pbm := BoxMesh.new()
+		pbm.size = Vector3(0.84, 2.33, 0.04)
+		pa.mesh = pbm
+		pa.material_override = Kit.mat("in_ascenseur")
+		_node.add_child(pa)
+		var ferme: Vector3 = fa + n * 0.05 + side * sgp * 0.425 + Vector3.UP * (y_sol + 1.165)
+		pa.global_transform = Transform3D(Basis(Vector3.UP, yaw), ferme)
+		portes_asc.append([pa, ferme, fa - n * 0.06 + side * sgp * 1.27 + Vector3.UP * (y_sol + 1.165)])
 	b.box_at("in_menuiserie", fa + n * 0.05 + Vector3.UP * (y_sol + 2.35), Vector3(1.9, 0.12, 0.08), yaw)
 	for s in [-1.0, 1.0]:
 		b.box_at("in_menuiserie", fa + n * 0.05 + side * s * 0.9 + Vector3.UP * y_sol, Vector3(0.1, 2.4, 0.08), yaw)
 	b.box_at("in_led_ambre", fa + n * 0.06 + side * 1.15 + Vector3.UP * (y_sol + 1.15), Vector3(0.08, 0.14, 0.03), yaw)
-	var lab := _label(str(k) if k > 0 else "RDC", 80, Color(1.0, 0.65, 0.2))
-	lab.global_position = fa + n * 0.08 + Vector3.UP * (y_sol + 2.62)
+	var lab := _label(str(k) if k > 0 else "RDC", 64, Color(1.0, 0.65, 0.2))
+	lab.global_position = fa + n * 0.08 - side * 1.25 + Vector3.UP * (y_sol + 1.95)
 	lab.look_at(lab.global_position - n, Vector3.UP)
-	info = {"type": ty, "ascenseur": fa + n * 1.3 + Vector3.UP * y_sol, "regard": n, "y": y_sol, "rect": Rect2(X0, Z0, w, d), "core": core}
+	info = {"type": ty, "ascenseur": fa + n * 1.3 + Vector3.UP * y_sol, "regard": n, "y": y_sol, "rect": Rect2(X0, Z0, w, d), "core": core,
+		"portes_asc": portes_asc, "nuit": nuit, "bassin": bassin}
 	_its_add({"id": "ascenseur153", "pos": fa + n * 1.1 + Vector3.UP * y_sol, "radius": 1.6, "text": "E : appeler l'ascenseur", "vr": "Gâchette : appeler l'ascenseur",
 		"call": ascenseur})
 	# le panneau de l'étage, à côté de l'ascenseur
 	var pan := _label(_nom_etage(k), 30, Color(0.9, 0.95, 1.0))
 	var half_a: float = (absf(side.x) * cw + absf(side.z) * cd) * 0.5
 	if half_a >= 2.6:
-		pan.global_position = fa + n * 0.08 + side * 1.6 + Vector3.UP * (y_sol + 1.75)
+		# entre le chambranle de l'ascenseur et le coin du cœur
+		pan.global_position = fa + n * 0.08 + side * ((1.3 + half_a - 0.1) * 0.5) + Vector3.UP * (y_sol + 1.75)
 		pan.look_at(pan.global_position - n, Vector3.UP)
+		pan.width = maxf(200.0, (half_a - 0.1 - 1.3) / pan.pixel_size)
 	else:
 		var half_s: float = (absf(n.x) * cw + absf(n.z) * cd) * 0.5
 		pan.global_position = c + side * (half_a + 0.06) + Vector3.UP * (y_sol + 0.7)
@@ -540,28 +640,54 @@ func _batir(k: int) -> void:
 	# les plafonniers et les lumières
 	var nx: int = maxi(1, int(w / 4.5))
 	var nz: int = maxi(1, int(d / 4.5))
-	var chaud: bool = ty in ["cafeteria", "direction", "logements", "nouilles", "karaoke", "capsules"]
+	var chaud: bool = ty in ["cafeteria", "direction", "logements", "nouilles", "karaoke", "capsules", "jardin", "piscine"]
+	# V156 : la nuit, dans les bureaux, une lumière sur deux est éteinte
+	var veille: bool = nuit and ty in ["bureaux", "cafeteria", "serveurs", "direction", "labo", "studio", "hall"]
 	for ix in range(nx):
 		for iz in range(nz):
 			var p := Vector3(X0 + (ix + 0.5) * w / nx, y_sol + hc - 0.02, Z0 + (iz + 0.5) * d / nz)
-			if core.grow(0.3).has_point(Vector2(p.x, p.z)):
+			if core.grow(0.3).has_point(Vector2(p.x, p.z)) or ty == "piscine":
 				continue
-			b.box_at("in_plafonnier_chaud" if chaud else "in_plafonnier", p + Vector3.DOWN * 0.02, Vector3(1.2, 0.04, 0.6))
+			var eteint: bool = veille and (ix + iz) % 2 == 1
+			b.box_at("in_plafonnier_eteint" if eteint else ("in_plafonnier_chaud" if chaud else "in_plafonnier"), p + Vector3.DOWN * 0.02, Vector3(1.2, 0.04, 0.6))
+			b.box_at("in_menuiserie", p + Vector3.DOWN * 0.005, Vector3(1.26, 0.03, 0.66))
 	var nl: int = clampi(int(w * d / 160.0) + 1, 2, 6)
 	for li in range(nl):
 		var a: float = TAU * li / nl
 		var lp := Vector3(c.x + cos(a) * w * 0.3, y_sol + hc - 0.4, c.z + sin(a) * d * 0.3)
 		var o := OmniLight3D.new()
 		o.light_color = Color(1.0, 0.86, 0.68) if chaud else Color(0.92, 0.96, 1.0)
-		o.light_energy = 1.1
+		o.light_energy = 0.55 if veille else 1.1
 		o.omni_range = maxf(w, d) * 0.45 + 4.0
 		o.omni_attenuation = 1.2
 		_node.add_child(o)
 		o.global_position = lp
+	# V156 : les plinthes, au pied des façades et du cœur
+	for pl in [[Vector3(c.x, y_sol, Z0 + 0.21), Vector3(w, 0.08, 0.02)], [Vector3(c.x, y_sol, Z1 - 0.21), Vector3(w, 0.08, 0.02)],
+			[Vector3(X0 + 0.21, y_sol, c.z), Vector3(0.02, 0.08, d)], [Vector3(X1 - 0.21, y_sol, c.z), Vector3(0.02, 0.08, d)],
+			[Vector3(c.x, y_sol, core.position.y - 0.01), Vector3(cw, 0.1, 0.02)], [Vector3(c.x, y_sol, core.end.y + 0.01), Vector3(cw, 0.1, 0.02)],
+			[Vector3(core.position.x - 0.01, y_sol, c.z), Vector3(0.02, 0.1, cd)], [Vector3(core.end.x + 0.01, y_sol, c.z), Vector3(0.02, 0.1, cd)]]:
+		if ty != "jardin":
+			b.box_at("in_menuiserie" if ty in ["bureaux", "hall", "direction", "serveurs", "labo", "studio", "hangar", "atelier"] else "in_bois", pl[0], pl[1])
+	# V156 : une sonde de reflets pour l'étage (les sols qui brillent reflètent l'étage, pas le ciel)
+	# et une lumière d'ambiance à elle (sinon les plafonds prennent la couleur du sol du ciel)
+	if sondes:
+		var sonde := ReflectionProbe.new()
+		sonde.size = Vector3(w, hc, d)
+		sonde.box_projection = true
+		sonde.interior = ty != "piscine"
+		sonde.update_mode = ReflectionProbe.UPDATE_ONCE
+		sonde.max_distance = maxf(w, d) * 1.2
+		if ty != "piscine":
+			sonde.ambient_mode = ReflectionProbe.AMBIENT_COLOR
+			sonde.ambient_color = Color(0.64, 0.62, 0.58) if not veille else Color(0.42, 0.45, 0.55)
+			sonde.ambient_color_energy = 0.55
+		_node.add_child(sonde)
+		sonde.global_position = Vector3(c.x, y_sol + hc * 0.5, c.z)
 	# les piliers de la structure (une trame de 8 m, hors du cœur et des allées ; pas dans les cabines du karaoké)
 	var piliers: Array = []
 	info["piliers"] = piliers
-	var px: float = X0 + 4.0 if ty != "karaoke" else X1
+	var px: float = X0 + 4.0 if ty not in ["karaoke", "jardin"] else X1
 	while px < X1 - 2.5:
 		var pz: float = Z0 + 4.0
 		while pz < Z1 - 2.5:
@@ -598,9 +724,81 @@ func _batir(k: int) -> void:
 			info["son"] = Q.karaoke(self, b, rng, t)
 		"capsules":
 			info["son"] = Q.capsules(self, b, rng, t)
+		"labo":
+			info["son"] = Q.labo(self, b, rng, t)
+		"studio":
+			info["son"] = Q.studio(self, b, rng, t)
+		"sport":
+			info["son"] = Q.sport(self, b, rng, t)
+		"jardin":
+			info["son"] = Q.jardin(self, b, rng, t)
+		"piscine":
+			info["son"] = Q.piscine(self, b, rng, t)
 		_:
 			_logements(b, rng, t)
+	_promeneurs(rng, t, ty, nuit)
 	b.commit(_node, "Etage_maillage", false)
+	# on arrive : les portes sont ouvertes, elles se referment derrière nous
+	for pa in info.get("portes_asc", []):
+		(pa[0] as Node3D).global_position = pa[2]
+	_portes_asc(false, 2.2)
+
+
+## V156 : les portes de l'ascenseur s'ouvrent (ou se ferment), au bout de « apres » secondes.
+func _portes_asc(ouvrir: bool, apres: float = 0.0, duree: float = 0.7) -> void:
+	if _node == null or not is_instance_valid(_node):
+		return
+	if _tw_asc != null and _tw_asc.is_valid():
+		_tw_asc.kill()
+	var tw: Tween = _node.create_tween().set_parallel(true)
+	_tw_asc = tw
+	for pa in info.get("portes_asc", []):
+		var mi: MeshInstance3D = pa[0]
+		if is_instance_valid(mi):
+			tw.tween_property(mi, "global_position", (pa[2] if ouvrir else pa[1]) as Vector3, duree).set_delay(apres).set_trans(Tween.TRANS_SINE)
+
+
+const LIGNES_PASSANT := ["Pardon, je suis pressé !", "Bonjour ! … Ah, vous n'êtes pas d'ici ?", "Il paraît qu'il va pleuvoir des néons ce soir.", "Je cherche la salle 404. Introuvable."]
+const LIGNES_VIGILE := ["Ronde de nuit. Tout est calme.", "À cette heure-ci, les bureaux sont à moi. Et aux robots.", "Vous travaillez tard, vous aussi ?"]
+const LIGNES_MENAGE_NUIT := ["NETTOYAGE EN COURS. ATTENTION, SOL GLISSANT.", "MIETTES DÉTECTÉES SOUS LE BUREAU 12. ENCORE.", "JE NETTOIE LA NUIT. JE RÊVE D'ÉTOILES."]
+
+
+## V156 : des gens qui marchent (un tour du cœur, dans le couloir ou l'allée) : le jour, des passants ;
+## la nuit, dans les bureaux, le vigile et les robots de ménage.
+func _promeneurs(rng: RandomNumberGenerator, t: Dictionary, ty: String, nuit: bool) -> void:
+	var core: Rect2 = info["core"]
+	var y: float = info["y"]
+	var bureaux: bool = ty in ["bureaux", "cafeteria", "serveurs", "direction", "labo", "studio", "hall"]
+	var n: int = 0
+	var qui: Array = []
+	if nuit and bureaux:
+		qui = [["homme", LIGNES_VIGILE, false, 0.9], ["homme", LIGNES_MENAGE_NUIT, true, 0.6]]
+	elif ty in ["hall", "bureaux", "cafeteria", "logements", "hangar", "capsules", "salle_jeux", "karaoke", "boutique", "labo", "sport", "jardin", "direction"]:
+		n = 1 if ty in ["logements", "capsules", "direction", "labo", "sport", "jardin"] else 2
+		for k in range(n):
+			qui.append([["homme", "femme", "vieux", "vieille", "garcon", "fille"][rng.randi() % 6], LIGNES_PASSANT, rng.randf() < 0.15, rng.randf_range(0.9, 1.3)])
+	var g: float = 1.7 if ty == "karaoke" else (0.85 if ty == "logements" else (0.7 if ty == "hall" else 0.95))
+	var r: Rect2 = core.grow(g)
+	var coins: Array = [Vector3(r.position.x, y, r.position.y), Vector3(r.end.x, y, r.position.y), Vector3(r.end.x, y, r.end.y), Vector3(r.position.x, y, r.end.y)]
+	for k2 in range(qui.size()):
+		var q: Array = qui[k2]
+		var pts: Array = coins.duplicate()
+		if rng.randf() < 0.5:
+			pts.reverse()
+		var dep: int = (k2 * 2 + rng.randi() % 4) % 4
+		var tour: Array = pts.slice(dep) + pts.slice(0, dep)
+		var f: Node = _gens_ajoute(str(q[0]), tour[0], ((tour[1] as Vector3) - (tour[0] as Vector3)).normalized(), "marcher", rng, q[1], bool(q[2]), true)
+		if f != null and f.has_meta("it"):
+			_marcheurs.append({"f": f, "pts": tour, "i": 1, "v": float(q[3]), "it": f.get_meta("it")})
+
+
+## V156 : la nuit (de 20 h 30 à 6 h 30).
+func est_nuit() -> bool:
+	var tp: Node = main.get("temps_v56") if main != null else null
+	if tp == null:
+		return false
+	var h: float = float(tp.get("hour"))
+	return h >= 20.5 or h < 6.5
 
 
 ## V155 : le toit (on y tient debout sur la tour elle-même : ses collisions reviennent) : le parapet,
@@ -709,6 +907,8 @@ func _defaire() -> void:
 				PnjV31._npc_bodies.erase(rid)
 	_gens.clear()
 	_ecrans.clear()
+	_marcheurs.clear()
+	_eaux.clear()
 	if _node != null and is_instance_valid(_node):
 		_node.queue_free()
 	_node = null
@@ -814,8 +1014,11 @@ func _facade(b: Kit.Batch, a: Vector3, c: Vector3, dedans: Vector3, hc: float, c
 		_col(a + u * ((gap1 + L) * 0.5) + o + Vector3.UP * hc * 0.5, sz.call(L - gap1, hc, ep + 0.1))
 		# la porte, dedans : sortir
 		var pd: Vector3 = mil - dedans * 0.0 + dedans * 1.2
-		b.box("verre_fume", Transform3D(Basis(), mil + o + Vector3.UP * 1.35 - u * 0.66), sz.call(1.26, 2.7, 0.04))
-		b.box("verre_fume", Transform3D(Basis(), mil + o + Vector3.UP * 1.35 + u * 0.66), sz.call(1.26, 2.7, 0.04))
+		b.box("in_vitre", Transform3D(Basis(), mil + o + Vector3.UP * 1.35 - u * 0.66), sz.call(1.26, 2.7, 0.04))
+		b.box("in_vitre", Transform3D(Basis(), mil + o + Vector3.UP * 1.35 + u * 0.66), sz.call(1.26, 2.7, 0.04))
+		for sj in [-1.32, 0.0, 1.32]:
+			b.box("in_menuiserie", Transform3D(Basis(), mil + o + Vector3.UP * 1.35 + u * sj), sz.call(0.06, 2.7, 0.08))
+		b.box("in_menuiserie", Transform3D(Basis(), mil + o + Vector3.UP * 2.72), sz.call(2.7, 0.08, 0.08))
 		_col(mil + Vector3.UP * hc * 0.5 - dedans * 0.3, sz.call(2.7, hc, 0.1))
 		_its_add({"id": "sortie153", "pos": pd, "radius": 1.6, "text": "E : sortir dans la rue", "vr": "Gâchette : sortir", "call": leave})
 	else:
@@ -841,27 +1044,54 @@ func _libre(p: Vector3, r: float) -> bool:
 	for pl in info.get("piliers", []):
 		if (pl as Vector2).distance_to(Vector2(p.x, p.z)) < 0.55 + r:
 			return false
+	var bassin: Rect2 = info.get("bassin", Rect2())
+	if bassin.size.x > 0.0 and bassin.grow(0.5 + r).has_point(Vector2(p.x, p.z)):
+		return false
 	for pr in info.get("props", []):
 		if Vector2((pr[0] as Vector3).x, (pr[0] as Vector3).z).distance_to(Vector2(p.x, p.z)) < float(pr[1]) + 0.4 + r:
 			return false
 	return true
 
 
-func _gens_ajoute(role: String, at: Vector3, face: Vector3, pose: String, rng: RandomNumberGenerator, lignes: Array, android: bool = false) -> Node:
-	if _gens.size() >= 14:
+func _gens_ajoute(role: String, at: Vector3, face: Vector3, pose: String, rng: RandomNumberGenerator, lignes: Array, android: bool = false, force: bool = false) -> Node:
+	_n_spawn += 1
+	if _gens.size() >= (16 if force else 14):
+		return null
+	if not force and not _present(pose, android):
 		return null
 	var prof: Dictionary = Gens.pick("neo_android" if android else "neo", role, rng)
 	var f: Node = Figurant.spawn(_node, main, prof, at, face, pose)
 	f.lines = lignes
 	_gens.append(f)
 	var nom: String = str(prof.get("nom", ""))
-	_its_add({"id": "gens153_%d" % _gens.size(), "pos": at, "radius": 1.5, "text": "E : parler" + ((" à " + nom) if nom != "" else ""), "vr": "Gâchette : parler",
+	var it := {"id": "gens153_%d" % _gens.size(), "pos": at, "radius": 1.5, "text": "E : parler" + ((" à " + nom) if nom != "" else ""), "vr": "Gâchette : parler",
 		"call": func():
 			if is_instance_valid(f):
 				f.say(str(lignes[randi() % lignes.size()]), 4.0)
 				if f.has_method("gesture"):
-					f.gesture("salut")})
+					f.gesture("salut")}
+	_its_add(it)
+	f.set_meta("it", it)
 	return f
+
+
+## V156 : cette personne est-elle là à cette heure ? (la nuit, les bureaux et les boutiques se vident ;
+## le jour, le karaoké est calme). Toujours la même réponse pour le même étage, à la même heure.
+func _present(pose: String, android: bool) -> bool:
+	var ty: String = str(info.get("type", ""))
+	var nuit: bool = bool(info.get("nuit", false))
+	var h: int = absi(inside * 7919 + etage * 131 + _n_spawn * 37) % 100
+	if pose in ["comptoir", "bras_croises"]:
+		return true
+	if nuit and ty in ["bureaux", "cafeteria", "direction", "labo", "studio", "hall", "serveurs"]:
+		return h < (40 if android else 12)
+	if nuit and ty in ["atelier", "boutique", "hangar"]:
+		return h < 25
+	if nuit and ty in ["sport", "piscine", "jardin"]:
+		return h < 35
+	if not nuit and ty == "karaoke" and pose in ["chanter", "rire_assis"]:
+		return h < 45
+	return true
 
 
 func _plante(b: Kit.Batch, at: Vector3, s: float = 1.0) -> void:
@@ -892,7 +1122,7 @@ func _poste(b: Kit.Batch, at: Vector3, face: Vector3, rng: RandomNumberGenerator
 	var ec: Vector3 = at + face * 0.22 + Vector3.UP * 0.76
 	b.box_at("in_noir", ec + Vector3.UP * 0.05, Vector3(0.08, 0.1, 0.08), yaw)
 	b.box_at("in_noir", ec + Vector3.UP * 0.32, Vector3(0.62, 0.38, 0.03), yaw)
-	var ecran: String = ["in_ecran", "in_ecran", "in_ecran_vert", "in_ecran_rose"][rng.randi() % 4]
+	var ecran: String = ["in_ecran_ui_code", "in_ecran_ui_graphes", "in_ecran_ui_messages", "in_ecran_ui_graphes"][rng.randi() % 4]
 	b.box_at(ecran, ec + Vector3.UP * 0.32 - face * 0.017, Vector3(0.56, 0.33, 0.005), yaw)
 	b.box_at("in_noir", at - face * 0.05 + Vector3.UP * 0.745, Vector3(0.45, 0.015, 0.15), yaw)
 	if rng.randf() < 0.5:
