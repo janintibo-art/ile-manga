@@ -88,7 +88,7 @@ func _port() -> void:
 			kit.cyl(Transform3D(Basis(), p + Vector3.UP * 0.0), 0.16, 0.12, 0.55, "fer71", 8)
 	# la capitainerie : une maison de pierre face au bassin
 	var cap: Transform3D = GX(R.HARBOR.x + to_town.x * 58.0 + 6.0, R.HARBOR.y + to_town.z * 58.0 - 8.0, hc)
-	var door: Vector3 = kit.house71(cap, 8.0, 7.0, {"floors": 2, "base": "moellons71", "wall": "enduit71_bleu", "roof": "tuiles71_ardoise", "gable": true, "lit": 0.6, "volet": "bleu"})
+	var door: Vector3 = kit.house71(cap, 8.0, 7.0, {"floors": 2, "base": "moellons71", "wall": "enduit71_bleu", "roof": "tuiles71_ardoise", "gable": true, "lit": 0.6, "volet": "bleu", "v81": true})
 	objets["capitainerie"] = door
 	city.doors["porte_isidore"] = city._pt("porte_isidore", door)
 	city._pt("port_cap", cap * Vector3(2.4, 0.05, 3.0))
@@ -146,7 +146,7 @@ func _ferme() -> void:
 	var town: Vector3 = R.W(R.TOWN.x, R.TOWN.y)
 	var fl: Vector2 = R.L(fp.x, fp.z)
 	var hx: Transform3D = GX(fl.x - 6.0, fl.y - 8.0, town)
-	var door: Vector3 = kit.house71(hx, 10.0, 8.0, {"floors": 2, "base": "moellons71", "wall": "enduit71_creme", "roof": "chaume71", "gable": false, "lit": 0.6, "volet": "vert", "flowers": true})
+	var door: Vector3 = kit.house71(hx, 10.0, 8.0, {"floors": 2, "base": "moellons71", "wall": "enduit71_creme", "roof": "chaume71", "gable": false, "lit": 0.6, "volet": "vert", "flowers": true, "v81": true})
 	city.doors["porte_gaubert"] = city._pt("porte_gaubert", door)
 	city.doors["porte_germaine"] = city._pt("porte_germaine", door)
 	# la grange
@@ -337,7 +337,7 @@ func _lac() -> void:
 	var hp: Vector3 = shore - dirl * 12.0 + side * 9.0
 	var hl: Vector2 = R.L(hp.x, hp.z)
 	var hx: Transform3D = GX(hl.x, hl.y, c)
-	var door: Vector3 = kit.house71(hx, 6.0, 5.0, {"floors": 1, "base": "planches71", "wall": "planches71", "roof": "chaume71", "gable": true, "lit": 0.6, "volet": "bleu", "chimney": true})
+	var door: Vector3 = kit.house71(hx, 6.0, 5.0, {"floors": 1, "base": "planches71", "wall": "planches71", "roof": "chaume71", "gable": true, "lit": 0.6, "volet": "bleu", "chimney": true, "v81": true})
 	city.doors["porte_yvon"] = city._pt("porte_yvon", door)
 	city._link("porte_yvon", "lac_bord")
 	city._spot("lac_rive", shore - dirl * 1.5 - side * 4.0 + Vector3(0, ile.height(shore.x - dirl.x * 1.5 - side.x * 4.0, shore.z - dirl.z * 1.5 - side.z * 4.0) - shore.y + 0.05, 0), dirl, "observer", "lac_bord")
@@ -434,7 +434,7 @@ func _donjon() -> void:
 	# la cabane d'Odon et son enseigne « Donjon : registre, potions, cordes »
 	var ox: Transform3D = dx * Transform3D(Basis(Vector3.UP, 0.5), Vector3(-11.0, 0, 3.0))
 	ox.origin.y = ile.height(ox.origin.x, ox.origin.z)
-	var door: Vector3 = kit.house71(ox, 5.6, 5.0, {"floors": 1, "base": "planches71_sombre", "wall": "planches71", "roof": "tuiles71_brun", "gable": true, "lit": 0.8, "volet": "rouge"})
+	var door: Vector3 = kit.house71(ox, 5.6, 5.0, {"floors": 1, "base": "planches71_sombre", "wall": "planches71", "roof": "tuiles71_brun", "gable": true, "lit": 0.8, "volet": "rouge", "v81": true})
 	city.doors["porte_odon"] = city._pt("porte_odon", door)
 	kit.counter71(dx * T(-5.0, ile.height(c.x, c.z) - dx.origin.y, 4.0), 2.0)
 	city._pt("donjon_pt", dx * Vector3(-3.0, 0.05, 6.5))

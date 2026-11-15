@@ -207,18 +207,29 @@ func contains(p: Vector3) -> bool:
 	return ile != null and ile.contains(p.x, p.z) and p.y > -45.0
 
 
+## V152 : la surface du Lac des Grenouilles (on y nage, on y plonge) ; -INF ailleurs.
+func lac_niveau(p: Vector3) -> float:
+	if ile == null or not ile.contains(p.x, p.z):
+		return -INF
+	var l: Vector2 = IleScript.L(p.x, p.z)
+	if IleScript.lake_q(l.x, l.y) > 1.08 or ile.height(p.x, p.z) > IleScript.LAKE_Y - 0.05:
+		return -INF
+	return IleScript.LAKE_Y
+
+
 func on_structure(p: Vector3) -> bool:
 	return city != null and city.on_structure(p)
 
 
-## À pied : on peut marcher ici (la terre ferme, les pontons, les quais) ? Pas dans le lac.
+## À pied : on peut marcher ici (la terre ferme, les pontons, les quais) ? V152 : et l'on peut entrer
+## dans le lac (on y nage).
 func walkable(p: Vector3) -> bool:
 	if not contains(p):
 		return false
 	if on_structure(p):
 		return true
 	if ile.in_lake_water(p.x, p.z):
-		return false
+		return true
 	return ile.height(p.x, p.z) > RIVE_V127 or p.y > 1.0
 
 

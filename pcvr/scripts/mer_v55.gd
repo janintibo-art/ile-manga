@@ -134,35 +134,53 @@ func is_sea(p: Vector3) -> bool:
 	return p.y > -40.0 and SEA_Y - main._height_at(p.x, p.z) > 0.5 and not atl.in_dome(p + Vector3.UP * 0.9)
 
 
+## V152 : la surface de l'eau ici : la mer, ou un lac perché (le Lac des Grenouilles…) que les îles
+## déclarent (lac_niveau(p) : sa hauteur, ou -INF).
+var eau: float = SEA_Y
+const LACS := ["montjoie_v71"]
+
+
+func niveau(p: Vector3) -> float:
+	var best: float = SEA_Y
+	for nom in LACS:
+		var m: Node = main.get(nom)
+		if m != null and m.has_method("lac_niveau"):
+			var y: float = float(m.lac_niveau(p))
+			if y > best:
+				best = y
+	return best
+
+
 ## Pour main._limit_on_foot_v29 : dans l'eau, on peut aller partout (dans la limite du monde).
 func water_ok(p: Vector3) -> bool:
 	if not in_world(p):
 		return false
 	if swimming:
 		return true
-	return SEA_Y - main._height_at(p.x, p.z) > 0.6
+	return niveau(p) - main._height_at(p.x, p.z) > 0.6
 
 
 func should_swim(feet: Vector3) -> bool:
-	if feet.y < -40.0 or feet.y > SEA_Y - 0.9:
+	eau = niveau(feet)
+	if feet.y < -40.0 or feet.y > eau - 0.9:
 		return false
 	if Time.get_ticks_msec() < _leap_until:
 		return false
 	if atl != null and atl.in_dome(feet + Vector3.UP * 0.9):
 		return false
-	return SEA_Y - main._height_at(feet.x, feet.z) > SWIM_ENTER
+	return eau - main._height_at(feet.x, feet.z) > SWIM_ENTER
 
 
 func should_stand(feet: Vector3) -> bool:
 	if atl != null and atl.in_dome(feet + Vector3.UP * 0.9):
 		return true
 	var ground: float = main._height_at(feet.x, feet.z)
-	return SEA_Y - ground < 1.15 and feet.y - ground < 0.6
+	return eau - ground < 1.15 and feet.y - ground < 0.6
 
 
 ## Hauteur des pieds quand on flotte à la surface (selon l'inclinaison du corps).
 func _surface_feet() -> float:
-	return SEA_Y - (0.95 + 0.62 * cos(_pitch) - 0.18)
+	return eau - (0.95 + 0.62 * cos(_pitch) - 0.18)
 
 
 func _at_surface(feet: Vector3) -> bool:
@@ -181,11 +199,11 @@ func start_swim_pc(h: Node) -> void:
 	_yaw = atan2(h.facing.x, h.facing.z)
 	var p: Vector3 = body.global_position
 	if body.velocity.y < -4.0:
-		main.sfx("plongeon", Vector3(p.x, SEA_Y, p.z), 0.0)
-		splash(Vector3(p.x, SEA_Y, p.z), 1.3)
+		main.sfx("plongeon", Vector3(p.x, eau, p.z), 0.0)
+		splash(Vector3(p.x, eau, p.z), 1.3)
 	else:
-		main.sfx("nage", Vector3(p.x, SEA_Y, p.z), -4.0)
-		splash(Vector3(p.x, SEA_Y, p.z), 0.6)
+		main.sfx("nage", Vector3(p.x, eau, p.z), -4.0)
+		splash(Vector3(p.x, eau, p.z), 0.6)
 	if main.fishing_v32 != null:
 		main.fishing_v32.cancel("")
 	_tip("nage", "Tu nages ! Espace : remonter (à la surface : bondir hors de l'eau), Ctrl : plonger, Maj : nager vite. Face à un ponton ou un rocher, Espace pour te hisser.", 7.0)
@@ -205,6 +223,7 @@ func _leave_swim_pc(h: Node) -> void:
 func swim_pc(h: Node, delta: float, dir: Vector3) -> void:
 	var body: CharacterBody3D = h.body
 	var feet: Vector3 = body.global_position
+	eau = niveau(feet)
 	if should_stand(feet):
 		_leave_swim_pc(h)
 		return
@@ -259,8 +278,8 @@ func _leap_pc(h: Node, dir: Vector3) -> void:
 	_leap_until = Time.get_ticks_msec() + 450
 	leaps += 1
 	h._play("v28/jump", 0.05, 1.0, 0.0)
-	main.sfx("plongeon", Vector3(p.x, SEA_Y, p.z), -3.0)
-	splash(Vector3(p.x, SEA_Y, p.z), 1.0)
+	main.sfx("plongeon", Vector3(p.x, eau, p.z), -3.0)
+	splash(Vector3(p.x, eau, p.z), 1.0)
 
 
 func _swim_target(feet: Vector3, dir: Vector3, up_in: bool, down_in: bool, sprint: bool) -> Vector3:
@@ -382,6 +401,8 @@ func vr_swim_tick(delta: float) -> bool:
 	if body == null:
 		return false
 	var feet: Vector3 = body.global_position
+	if _vr_swim:
+		eau = niveau(feet)
 	if not _vr_swim:
 		if not should_swim(feet):
 			return false
@@ -389,8 +410,8 @@ func vr_swim_tick(delta: float) -> bool:
 		swimming = true
 		_vel = body.velocity
 		_vel.y = clampf(_vel.y, -6.0, 1.0)
-		main.sfx("plongeon" if body.velocity.y < -4.0 else "nage", Vector3(feet.x, SEA_Y, feet.z), -2.0)
-		splash(Vector3(feet.x, SEA_Y, feet.z), 1.0)
+		main.sfx("plongeon" if body.velocity.y < -4.0 else "nage", Vector3(feet.x, eau, feet.z), -2.0)
+		splash(Vector3(feet.x, eau, feet.z), 1.0)
 		_tip("nage_vr", "Tu nages ! Stick gauche : nager vers où tu regardes (regarde en bas pour plonger). A : remonter, B : descendre, gâchette gauche : nager vite.", 7.0)
 	elif should_stand(feet):
 		_vr_swim = false
@@ -413,7 +434,7 @@ func vr_swim_tick(delta: float) -> bool:
 	var sprint: bool = main.left_hand.get_float("trigger") > 0.6
 	var eye: float = cam.global_position.y - main.xr_origin.global_position.y
 	_pitch = 0.0
-	var surf_feet: float = SEA_Y + 0.14 - eye
+	var surf_feet: float = eau + 0.14 - eye
 	var surf: bool = feet.y > surf_feet - 0.35
 	# A à la surface, face à un ponton ou un rocher : on se hisse dessus
 	if up_in and not _vr_a_was and surf and main.hero_v28 != null:
@@ -481,7 +502,7 @@ func vr_swim_tick(delta: float) -> bool:
 # =================================================================== souffle
 
 func _breath(delta: float, head: Vector3) -> void:
-	var head_under: bool = head.y < SEA_Y - 0.05 and not atl.in_dome(head)
+	var head_under: bool = head.y < eau - 0.05 and not atl.in_dome(head)
 	if head_under and not has_mask():
 		air = maxf(air - delta, 0.0)
 		_tip("souffle", "Retiens ton souffle ! Sans masque, tu ne tiens que quelques secondes sous l'eau. Remonte respirer (Espace).", 5.0)
@@ -499,7 +520,7 @@ func _breath(delta: float, head: Vector3) -> void:
 			main.sfx("respiration", head, -6.0)
 		air = minf(air + delta * maxf(12.0, AIR_MAX * 0.5), AIR_MAX)
 		_drown = 0.0
-	if head_under and has_mask() and head.y < SEA_Y - 0.8:
+	if head_under and has_mask() and head.y < eau - 0.8:
 		_tip("masque", "Le masque des Rois-Ciel : tu respires sous l'eau ! Explore les profondeurs… au sud-ouest du village, une lumière brille au fond.", 6.0)
 	if head_under:
 		_bubble_clock -= delta
@@ -519,7 +540,7 @@ func _strokes(delta: float, at: Vector3) -> void:
 		_stroke_clock = 0.95
 		strokes += 1
 		if _at_surface(at):
-			main.sfx("nage", Vector3(at.x, SEA_Y, at.z), -6.0)
+			main.sfx("nage", Vector3(at.x, eau, at.z), -6.0)
 		else:
 			main.sfx("nage_sous", at + Vector3.UP, -8.0)
 
@@ -1152,7 +1173,7 @@ func _process(delta: float) -> void:
 	if cam == null:
 		return
 	var cp: Vector3 = cam.global_position
-	under = cp.y < SEA_Y - 0.08 and cp.y > -40.0 and not atl.in_dome(cp) and in_world(cp) and main._height_at(cp.x, cp.z) < cp.y + 0.5
+	under = cp.y < niveau(cp) - 0.08 and cp.y > -40.0 and not atl.in_dome(cp) and in_world(cp) and main._height_at(cp.x, cp.z) < cp.y + 0.5
 	_update_fx(cam, delta)
 
 

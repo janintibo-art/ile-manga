@@ -164,9 +164,28 @@ func _menu_voyage() -> void:
 		{"id": "faune140b", "label": "Faune sauvage : Montjoie, le Bois des Lutins (écureuils)"},
 		{"id": "faune140a", "label": "Faune sauvage : Port-Azur, le maquis (tortues, guêpiers, lézards)"},
 		{"id": "faune140p", "label": "Faune sauvage : l'Île Pixelithique (compsognathes, archéoptéryx, meganeura)"},
-		{"id": "menu", "label": "(Retour)"},
 	]
-	main.ask_v69(_anchor, "Mode testeur", "malin", "Où veux-tu aller ?", ch, _pick)
+	_menu_pages("Où veux-tu aller ?", ch, 0)
+
+
+## V152 : un menu trop long pour une seule page : sept choix par page, puis Suivants, Précédents,
+## Retour (dix touches, de 1 à 0), comme les listes.
+var _menu_titre: String = ""
+var _menu_items: Array = []
+
+
+func _menu_pages(titre: String, items: Array, page: int) -> void:
+	_menu_titre = titre
+	_menu_items = items
+	var n: int = maxi(1, (items.size() + PAGE - 1) / PAGE)
+	page = clampi(page, 0, n - 1)
+	var ch: Array = items.slice(page * PAGE, mini(page * PAGE + PAGE, items.size()))
+	if page < n - 1:
+		ch.append({"id": "mpage:%d" % (page + 1), "label": "▸ Suivants (%d/%d)" % [page + 2, n]})
+	if page > 0:
+		ch.append({"id": "mpage:%d" % (page - 1), "label": "◂ Précédents"})
+	ch.append({"id": "menu", "label": "(Retour)"})
+	main.ask_v69(_anchor, "Mode testeur", "malin", titre + ("  (page %d / %d)" % [page + 1, n] if n > 1 else ""), ch, _pick)
 
 
 ## V123 : le héros (niveau, caractéristiques, talents, sceaux, sorts).
@@ -424,6 +443,8 @@ func _pick(id: String) -> void:
 				if t != null:
 					t.set_hour(float(id.substr(2)))
 				main._close_dialogue_v31()
+			elif id.begins_with("mpage:"):
+				_menu_pages(_menu_titre, _menu_items, int(id.substr(6)))
 			elif id.begins_with("page:"):
 				_open_list(_list_kind, _list, int(id.substr(5)))
 			elif id.begins_with("go:"):
