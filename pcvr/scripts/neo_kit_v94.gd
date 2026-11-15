@@ -127,7 +127,11 @@ static func mat(key: String) -> Material:
 		"ecran_bleu":
 			m = _glow(Color(0.2, 0.6, 1.0), 1.6)
 		_:
-			m = _std(Color(0.5, 0.5, 0.5), 0.6)
+			# V153 : les matières des intérieurs des tours
+			if key.begins_with("in_"):
+				m = load("res://scripts/neo_mats_v153.gd").mat(key)
+			else:
+				m = _std(Color(0.5, 0.5, 0.5), 0.6)
 	_mcache[key] = m
 	return m
 

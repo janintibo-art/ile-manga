@@ -139,6 +139,10 @@ func build_town() -> void:
 	add_child(ville)
 	ville.setup(main, self)
 	ville.build()
+	# V153 : on entre dans les tours, on en visite les étages
+	tours = load("res://scripts/tours_v153.gd").new()
+	add_child(tours)
+	tours.setup(main, self)
 	print("ILE_MANGA_V94: Néopolis est prête (%d tours, %d boîtes, %d ms)" % [batiments.size(), nb_boites, Time.get_ticks_msec() - t0])
 
 
@@ -148,7 +152,7 @@ func _ground(x: float, z: float) -> Vector3:
 	return w
 
 
-func _col(xf: Transform3D, size: Vector3) -> void:
+func _col(xf: Transform3D, size: Vector3) -> CollisionShape3D:
 	if _cols == null:
 		_cols = StaticBody3D.new()
 		_cols.name = "Neo_collisions_v94"
@@ -161,6 +165,7 @@ func _col(xf: Transform3D, size: Vector3) -> void:
 	cs.shape = sh
 	_cols.add_child(cs)
 	cs.global_transform = xf
+	return cs
 
 
 func _light(at: Vector3, col: Color, energy: float, rng: float) -> OmniLight3D:
@@ -190,6 +195,9 @@ func _district(i: int, j: int) -> String:
 # =================================================================== les tours
 
 var _xfs: Array = []
+var _segs_tour: Array = []                 # V153 : les boîtes de la tour qu'on bâtit [x0, z0, x1, z1, y0, y1]
+var _cols_tour: Array = []
+var tours: Node3D                          # V153 : les intérieurs des tours (tours_v153)
 var _customs: Array = []
 var _roof_b: Kit.Batch
 
@@ -201,13 +209,18 @@ func _boite(x0: float, z0: float, x1: float, z1: float, y0: float, y1: float, st
 	var xf := Transform3D(Basis().scaled(s), c)
 	_xfs.append(xf)
 	_customs.append(Color(_rng.randf(), style / 4.0, hue, lit))
-	_col(Transform3D(Basis(), c), s)
+	var cs: CollisionShape3D = _col(Transform3D(Basis(), c), s)
 	nb_boites += 1
+	# V153 : la tour en cours garde ses étages de boîtes (on entre dedans) et leurs collisions
+	_segs_tour.append([x0, z0, x1, z1, y0, y1])
+	_cols_tour.append(cs)
 
 
 ## Une tour : un socle (au besoin), un fût, des retraits, et ce qu'il y a sur le toit.
 func _tour(r: Array, h: float, style: int, quartier: String, socle: bool) -> void:
 	h = minf(h, 198.0)                    # la Tour Axiome reste la plus haute
+	_segs_tour = []
+	_cols_tour = []
 	var x0: float = r[0]
 	var z0: float = r[1]
 	var x1: float = r[2]
@@ -238,7 +251,7 @@ func _tour(r: Array, h: float, style: int, quartier: String, socle: bool) -> voi
 				x1 -= sb
 				z1 -= sb
 	batiments.append({"rect": [float(r[0]), float(r[1]), float(r[2]), float(r[3])], "h": h, "quartier": quartier, "style": style, "hue": hue,
-		"top": [x0, z0, x1, z1]})
+		"top": [x0, z0, x1, z1], "segs": _segs_tour, "cols": _cols_tour})
 	# le toit
 	var cx: float = (x0 + x1) * 0.5
 	var cz: float = (z0 + z1) * 0.5
@@ -1589,7 +1602,10 @@ func trouvailles() -> Dictionary:
 
 
 func serialize() -> Dictionary:
-	return state.duplicate(true)
+	var d: Dictionary = state.duplicate(true)
+	if tours != null:
+		d["tours153"] = tours.serialize()
+	return d
 
 
 func load_data(d: Dictionary) -> void:
@@ -1597,6 +1613,10 @@ func load_data(d: Dictionary) -> void:
 	for k in state:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary) else (d[k] as Dictionary).duplicate(true)
+	# V153 : les tours (on ressort dans la rue ; les tours déjà visitées)
+	if tours != null:
+		var td: Variant = d.get("tours153", {})
+		tours.load_data(td if td is Dictionary else {})
 	# V96 : une partie chargée referme le faux virus (il reprendra avec Glitch, là où on en était)
 	if virus != null:
 		virus.reset()

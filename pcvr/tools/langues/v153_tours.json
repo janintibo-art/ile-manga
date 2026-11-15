@@ -1,0 +1,512 @@
+[
+[
+"Hikari Systèmes",
+"Hikari Systems",
+"Hikari Sistemas"
+],
+[
+"Orion Biotech",
+"Orion Biotech",
+"Orion Biotech"
+],
+[
+"Kumo Logistique",
+"Kumo Logistics",
+"Kumo Logística"
+],
+[
+"Prisme Assurances",
+"Prism Insurance",
+"Prisma Seguros"
+],
+[
+"Quasar Robotique",
+"Quasar Robotics",
+"Quasar Robótica"
+],
+[
+"Tenshi Médias",
+"Tenshi Media",
+"Tenshi Medios"
+],
+[
+"Vertex Finances",
+"Vertex Finance",
+"Vertex Finanzas"
+],
+[
+"Zénith Énergie",
+"Zenith Energy",
+"Cénit Energía"
+],
+[
+"Kaïdo Holographie",
+"Kaido Holography",
+"Kaido Holografía"
+],
+[
+"Mirai Jeux",
+"Mirai Games",
+"Mirai Juegos"
+],
+[
+"Sora Aéronefs",
+"Sora Aircraft",
+"Sora Aeronaves"
+],
+[
+"Nébula Data",
+"Nebula Data",
+"Nébula Data"
+],
+[
+"Les Cerisiers",
+"The Cherry Trees",
+"Los Cerezos"
+],
+[
+"Les Lanternes",
+"The Lanterns",
+"Las Linternas"
+],
+[
+"Le Lotus",
+"The Lotus",
+"El Loto"
+],
+[
+"Les Nuages",
+"The Clouds",
+"Las Nubes"
+],
+[
+"Le Bambou",
+"The Bamboo",
+"El Bambú"
+],
+[
+"La Pluie d'Or",
+"The Golden Rain",
+"La Lluvia de Oro"
+],
+[
+"Les Carpes",
+"The Carps",
+"Las Carpas"
+],
+[
+"Le Héron",
+"The Heron",
+"La Garza"
+],
+[
+"Gâchette : entrer",
+"Trigger: enter",
+"Gatillo: entrar"
+],
+[
+"Rez-de-chaussée",
+"Ground floor",
+"Planta baja"
+],
+[
+"1er étage",
+"1st floor",
+"1.ª planta"
+],
+[
+"le hall",
+"the lobby",
+"el vestíbulo"
+],
+[
+"la cafétéria",
+"the cafeteria",
+"la cafetería"
+],
+[
+"la salle des serveurs",
+"the server room",
+"la sala de servidores"
+],
+[
+"les logements",
+"the apartments",
+"las viviendas"
+],
+[
+"Monter d'un étage",
+"Up one floor",
+"Subir una planta"
+],
+[
+"Monter de cinq étages",
+"Up five floors",
+"Subir cinco plantas"
+],
+[
+"Descendre d'un étage",
+"Down one floor",
+"Bajar una planta"
+],
+[
+"Descendre de cinq étages",
+"Down five floors",
+"Bajar cinco plantas"
+],
+[
+"Le hall (rez-de-chaussée)",
+"The lobby (ground floor)",
+"El vestíbulo (planta baja)"
+],
+[
+"Le dernier étage",
+"The top floor",
+"La última planta"
+],
+[
+"Un étage au hasard",
+"A random floor",
+"Una planta al azar"
+],
+[
+"Rester ici",
+"Stay here",
+"Quedarse aquí"
+],
+[
+"Ascenseur",
+"Elevator",
+"Ascensor"
+],
+[
+"RDC",
+"GF",
+"PB"
+],
+[
+"E : appeler l'ascenseur",
+"E: call the elevator",
+"E: llamar al ascensor"
+],
+[
+"Gâchette : appeler l'ascenseur",
+"Trigger: call the elevator",
+"Gatillo: llamar al ascensor"
+],
+[
+"E : prendre l'escalier",
+"E: take the stairs",
+"E: tomar la escalera"
+],
+[
+"Gâchette : prendre l'escalier",
+"Trigger: take the stairs",
+"Gatillo: tomar la escalera"
+],
+[
+"Escalier de secours",
+"Emergency stairs",
+"Escalera de emergencia"
+],
+[
+"Des marches de béton, une rampe d'acier, une lumière verte. On entend l'écho de ses pas.",
+"Concrete steps, a steel handrail, a green light. Your footsteps echo.",
+"Escalones de hormigón, una barandilla de acero, una luz verde. Se oye el eco de los pasos."
+],
+[
+"E : sortir dans la rue",
+"E: go out into the street",
+"E: salir a la calle"
+],
+[
+"Gâchette : sortir",
+"Trigger: go out",
+"Gatillo: salir"
+],
+[
+"E : parler",
+"E: talk",
+"E: hablar"
+],
+[
+"Gâchette : parler",
+"Trigger: talk",
+"Gatillo: hablar"
+],
+[
+"Encore un rapport pour hier…",
+"Another report due yesterday…",
+"Otro informe para ayer…"
+],
+[
+"Tu as vu la vue ? On ne s'en lasse pas.",
+"Have you seen the view? You never get tired of it.",
+"¿Has visto las vistas? Nunca te cansas."
+],
+[
+"La réunion de dix heures est déplacée à dix heures.",
+"The ten o'clock meeting has been moved to ten o'clock.",
+"La reunión de las diez se ha cambiado a las diez."
+],
+[
+"Mon écran me regarde plus que ma famille.",
+"My screen looks at me more than my family does.",
+"Mi pantalla me mira más que mi familia."
+],
+[
+"Tu es le nouveau stagiaire ? Le café est au fond.",
+"Are you the new intern? Coffee's at the back.",
+"¿Eres el nuevo becario? El café está al fondo."
+],
+[
+"Les androïdes du dixième font des heures sup' sans râler.",
+"The androids on the tenth floor do overtime without complaining.",
+"Los androides de la décima hacen horas extra sin quejarse."
+],
+[
+"Shhh… je suis en appel holographique.",
+"Shhh… I'm on a holographic call.",
+"Shhh… estoy en una llamada holográfica."
+],
+[
+"Un jour, je démissionne et j'ouvre un stand de nouilles.",
+"One day I'll quit and open a noodle stand.",
+"Un día dimito y abro un puesto de fideos."
+],
+[
+"BONJOUR. TRAITEMENT DES DONNÉES : 97 %.",
+"HELLO. DATA PROCESSING: 97%.",
+"HOLA. PROCESAMIENTO DE DATOS: 97 %."
+],
+[
+"JE NE DORS PAS. JE DÉFRAGMENTE.",
+"I DO NOT SLEEP. I DEFRAGMENT.",
+"NO DUERMO. DESFRAGMENTO."
+],
+[
+"VOTRE BADGE, S'IL VOUS PLAÎT. … MERCI.",
+"YOUR BADGE, PLEASE. … THANK YOU.",
+"SU CREDENCIAL, POR FAVOR. … GRACIAS."
+],
+[
+"IL Y A 4 812 FENÊTRES DANS CETTE TOUR. JE LES AI COMPTÉES.",
+"THERE ARE 4,812 WINDOWS IN THIS TOWER. I COUNTED THEM.",
+"HAY 4812 VENTANAS EN ESTA TORRE. LAS HE CONTADO."
+],
+[
+"Vous avez rendez-vous ? Non ? Ce n'est pas grave, visitez !",
+"Do you have an appointment? No? Never mind, look around!",
+"¿Tiene cita? ¿No? No pasa nada, ¡visite!"
+],
+[
+"Le dernier étage ? Tout le monde veut y monter.",
+"The top floor? Everyone wants to go up there.",
+"¿La última planta? Todo el mundo quiere subir."
+],
+[
+"J'attends mon rendez-vous depuis une heure.",
+"I've been waiting for my appointment for an hour.",
+"Llevo una hora esperando mi cita."
+],
+[
+"Ces canapés sont plus confortables que mon lit.",
+"These sofas are comfier than my bed.",
+"Estos sofás son más cómodos que mi cama."
+],
+[
+"Tu travailles ici, toi ?",
+"Do you work here?",
+"¿Tú trabajas aquí?"
+],
+[
+"Ces banquettes sont plus confortables que mon lit.",
+"These benches are comfier than my bed.",
+"Estos bancos son más cómodos que mi cama."
+],
+[
+"On dit qu'au dernier étage, il y a un aquarium.",
+"They say there's an aquarium on the top floor.",
+"Dicen que en la última planta hay un acuario."
+],
+[
+"Les étages ? Montez, mais ne touchez à rien.",
+"The floors? Go up, but don't touch anything.",
+"¿Las plantas? Suba, pero no toque nada."
+],
+[
+"Tout est calme. Trop calme.",
+"All quiet. Too quiet.",
+"Todo está tranquilo. Demasiado tranquilo."
+],
+[
+"Il y a des caméras partout. Souriez.",
+"There are cameras everywhere. Smile.",
+"Hay cámaras por todas partes. Sonría."
+],
+[
+"Ici, on refait le monde. Et on boit de l'eau.",
+"Here we fix the world. And drink water.",
+"Aquí arreglamos el mundo. Y bebemos agua."
+],
+[
+"Tu connais la dernière ? Le patron veut une piscine sur le toit.",
+"Heard the latest? The boss wants a pool on the roof.",
+"¿Sabes la última? El jefe quiere una piscina en la azotea."
+],
+[
+"Chut, voilà la cheffe.",
+"Shh, here comes the boss.",
+"Chis, ahí viene la jefa."
+],
+[
+"Bon. Qui a une idée ?",
+"Right. Who has an idea?",
+"Bueno. ¿Quién tiene una idea?"
+],
+[
+"Le budget, encore le budget…",
+"The budget, always the budget…",
+"El presupuesto, siempre el presupuesto…"
+],
+[
+"On pourrait mettre des hologrammes partout ?",
+"Could we put holograms everywhere?",
+"¿Y si ponemos hologramas por todas partes?"
+],
+[
+"Je propose une pause.",
+"I suggest a break.",
+"Propongo una pausa."
+],
+[
+"Comme vous le voyez sur ce graphique… tout monte !",
+"As you can see on this chart… everything's going up!",
+"Como ven en este gráfico… ¡todo sube!"
+],
+[
+"Des questions ? Non ? Parfait.",
+"Any questions? No? Perfect.",
+"¿Preguntas? ¿No? Perfecto."
+],
+[
+"Les nouilles de la cantine sont meilleures que celles du marché. Ne le dis à personne.",
+"The canteen noodles are better than the market's. Don't tell anyone.",
+"Los fideos de la cantina son mejores que los del mercado. No se lo digas a nadie."
+],
+[
+"Pause ! Enfin.",
+"Break! Finally.",
+"¡Pausa! Por fin."
+],
+[
+"Tu as goûté le thé aux bulles ?",
+"Have you tried the bubble tea?",
+"¿Has probado el té de burbujas?"
+],
+[
+"Un café ? La machine fait aussi des smoothies aux algues.",
+"Coffee? The machine also makes seaweed smoothies.",
+"¿Un café? La máquina también hace batidos de algas."
+],
+[
+"Le distributeur m'a encore volé une pièce.",
+"The vending machine stole my coin again.",
+"La máquina expendedora me ha robado otra moneda."
+],
+[
+"Ne touche à rien. Surtout pas au bouton rouge.",
+"Don't touch anything. Especially not the red button.",
+"No toques nada. Sobre todo el botón rojo."
+],
+[
+"Ici il fait 18 degrés toute l'année. J'ai froid.",
+"It's 18 degrees in here all year. I'm cold.",
+"Aquí hace 18 grados todo el año. Tengo frío."
+],
+[
+"Tu entends ce bourdonnement ? Ce sont les données qui chantent.",
+"Hear that hum? That's the data singing.",
+"¿Oyes ese zumbido? Son los datos cantando."
+],
+[
+"Ah, vous voilà. Asseyez-vous… non, restez debout, c'est plus rapide.",
+"Ah, there you are. Sit down… no, stay standing, it's quicker.",
+"Ah, ya está aquí. Siéntese… no, quédese de pie, es más rápido."
+],
+[
+"D'ici, je vois toute la ville. Et la ville me voit.",
+"From here I see the whole city. And the city sees me.",
+"Desde aquí veo toda la ciudad. Y la ciudad me ve."
+],
+[
+"Mon conseil ? Achetez des actions de nouilles.",
+"My advice? Buy noodle stocks.",
+"¿Mi consejo? Compre acciones de fideos."
+],
+[
+"Gâchette : frapper",
+"Trigger: knock",
+"Gatillo: llamar"
+],
+[
+"Bonjour, voisin ! … Ah non, je ne vous connais pas.",
+"Hello, neighbour! … Oh no, I don't know you.",
+"¡Hola, vecino! … Ah, no, no le conozco."
+],
+[
+"L'ascenseur est encore en panne ? Non ? Tant mieux.",
+"Is the elevator broken again? No? Good.",
+"¿El ascensor se ha vuelto a estropear? ¿No? Mejor."
+],
+[
+"Le monsieur du dessus fait du karaoké à trois heures du matin.",
+"The man upstairs does karaoke at three in the morning.",
+"El señor de arriba hace karaoke a las tres de la mañana."
+],
+[
+"Tu as vu les carpes holographiques ? Ma fille les adore.",
+"Have you seen the holographic carp? My daughter loves them.",
+"¿Has visto las carpas holográficas? A mi hija le encantan."
+],
+[
+"Personne ne répond.",
+"No one answers.",
+"Nadie contesta."
+],
+[
+"Une voix étouffée : « Pas aujourd'hui, merci ! »",
+"A muffled voice: \"Not today, thanks!\"",
+"Una voz ahogada: «¡Hoy no, gracias!»"
+],
+[
+"On entend un chat miauler derrière la porte.",
+"You hear a cat meowing behind the door.",
+"Se oye un gato maullar detrás de la puerta."
+],
+[
+"« C'est pour la livraison de nouilles ? … Non ? Dommage. »",
+"\"Is it the noodle delivery? … No? Too bad.\"",
+"«¿Es la entrega de fideos? … ¿No? Qué pena.»"
+],
+[
+"Une télé hurle un jeu télévisé. Personne n'entend.",
+"A TV blares a game show. No one hears.",
+"Una tele grita un concurso. Nadie oye."
+],
+[
+"« Qui est là ? … Je ne vous connais pas ! »",
+"\"Who's there? … I don't know you!\"",
+"«¿Quién es? … ¡No le conozco!»"
+],
+[
+"Un robot ménager répond : « LES OCCUPANTS SONT ABSENTS. VEUILLEZ RÉESSAYER. »",
+"A housebot answers: \"THE OCCUPANTS ARE OUT. PLEASE TRY AGAIN.\"",
+"Un robot doméstico responde: «LOS OCUPANTES ESTÁN AUSENTES. INTÉNTELO DE NUEVO.»"
+],
+[
+"Des rires, de la musique : une fête. On ne vous entend pas.",
+"Laughter, music: a party. No one hears you.",
+"Risas, música: una fiesta. No le oyen."
+]
+]
