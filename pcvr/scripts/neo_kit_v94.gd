@@ -43,9 +43,10 @@ static func mat(key: String) -> Material:
 		return m
 	match key:
 		"beton":
-			m = Decor.stone(Color(0.52, 0.52, 0.54))
+			# V157 : le béton banché (ses panneaux, les trous des tiges), en relief ; sinon la pierre d'avant
+			m = load("res://scripts/neo_mats_v153.gd").mat("in_beton_banche") if ResourceLoader.exists("res://assets/textures/neo156/beton_banche.png") else Decor.stone(Color(0.52, 0.52, 0.54))
 		"beton_clair":
-			m = Decor.stone(Color(0.72, 0.71, 0.69))
+			m = load("res://scripts/neo_mats_v153.gd").mat("in_beton_banche_clair") if ResourceLoader.exists("res://assets/textures/neo156/beton_banche.png") else Decor.stone(Color(0.72, 0.71, 0.69))
 		"metal":
 			m = _std(Color(0.5, 0.52, 0.55), 0.35, 0.85)
 		"metal_noir":

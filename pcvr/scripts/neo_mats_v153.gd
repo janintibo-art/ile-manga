@@ -120,6 +120,10 @@ static func mat(key: String) -> Material:
 			m = _hd("carrelage", Color(1, 1, 1), 0.15, 1.2, 0.0, 0.6)
 		"in_carrelage_sol":
 			m = _hd("carrelage", Color(0.72, 0.75, 0.78), 0.3, 2.4, 0.0, 0.6)
+		"in_beton_banche":
+			m = _hd("beton_banche", Color(0.82, 0.82, 0.84), 0.85, 5.0, 0.0, 0.8)
+		"in_beton_banche_clair":
+			m = _hd("beton_banche", Color(1.0, 0.99, 0.96), 0.85, 5.0, 0.0, 0.8)
 		"in_caoutchouc":
 			m = _hd("beton_cire", Color(0.3, 0.31, 0.34), 0.85, 1.5, 0.0, 0.8)
 		"in_miroir":

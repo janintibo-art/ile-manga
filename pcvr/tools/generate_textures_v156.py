@@ -22,6 +22,11 @@ couleurs sont neutres quand le jeu les teinte (la moquette, le tissu, le cuir).
   ecran_code       un écran : un éditeur (des lignes de couleur sur fond sombre)       (un écran)
   ecran_graphes    un écran : un tableau de bord (des barres, une courbe, des cases)    (un écran)
   ecran_messages   un écran : une messagerie (des bulles, une liste)                    (un écran)
+V157 : les façades de Néopolis (dehors) :
+  briques          des briques (8 × 24 rangs, à joints décalés), le mortier             2,0 m
+  panneaux_metal   un bardage de panneaux de métal (joints, rivets, patine)             3,0 m
+  beton_banche     du béton banché (les panneaux de coffrage, les trous des tiges)      5,0 m
+  toit_gravier     un toit de gravier et de bitume                                      4,0 m
   eau              des vaguelettes (le relief seul : eau_n ; la piscine le fait glisser) 2,0 m
 Lancement (depuis la racine du dépôt) :
     python3 -B pcvr/tools/generate_textures_v156.py
@@ -387,6 +392,75 @@ def ecran_messages():
     _ecran_sauver("ecran_messages", img)
 
 
+def briques():
+    x, y = coords()
+    rangs, cols = 24, 8
+    r = np.floor(y * rangs)
+    dec = (r % 2) * 0.5
+    bx = (x * cols + dec) % 1.0
+    by = (y * rangs) % 1.0
+    joint = (bx < 0.04) | (by < 0.12)
+    idx = (np.floor(x * cols + dec) % cols) + r * cols
+    teinte_b = np.random.default_rng(171).random(rangs * cols + cols)[idx.astype(int)]
+    grain_ = fbm(64, 3, 172)
+    use = fbm(4, 4, 173)
+    v = 0.55 + 0.25 * teinte_b + 0.15 * (grain_ - 0.5) + 0.1 * (use - 0.5)
+    brique = teinte(v, (0.35, 0.16, 0.1), (0.8, 0.45, 0.32))
+    mortier = teinte(0.6 + 0.2 * grain_, (0.45, 0.43, 0.4), (0.75, 0.73, 0.7))
+    c = np.where(joint[..., None], mortier, brique)
+    arrondi = np.clip(np.minimum(np.minimum(bx - 0.04, 1 - bx), np.minimum(by - 0.12, 1 - by)) * 8, 0, 1)
+    h = np.where(joint, 0.0, 0.6 + 0.4 * arrondi + 0.08 * grain_)
+    sauver("briques", c, h, 5.0)
+
+
+def panneaux_metal():
+    x, y = coords()
+    fx = (x * 2) % 1.0
+    fy = (y * 4) % 1.0
+    joint = (np.minimum(fx, 1 - fx) < 0.008) | (np.minimum(fy, 1 - fy) < 0.012)
+    rx = ((x * 2 * 8) % 1.0 - 0.5)
+    ry = (np.minimum(fy, 1 - fy) - 0.05)
+    rivet = ((rx ** 2 + (ry * 6) ** 2) < 0.012) & (ry < 0.03)
+    panneau = np.random.default_rng(181).random(8)[(np.floor(x * 2) + np.floor(y * 4) * 2).astype(int) % 8]
+    patine = fbm(8, 4, 182)
+    coulure = np.repeat(fbm(32, 2, 183)[:1, :], N, 0) * fbm(2, 3, 184)
+    v = 0.45 + 0.15 * panneau + 0.15 * (patine - 0.5) - 0.15 * coulure
+    c = teinte(v, (0.08, 0.09, 0.1), (0.5, 0.52, 0.56))
+    c = np.where(joint[..., None], c * 0.4, c)
+    c = np.where(rivet[..., None], c * 1.4, c)
+    h = np.where(joint, 0.0, 0.7) + 0.25 * rivet
+    sauver("panneaux_metal", c, flou(h.astype(float), 1), 5.0)
+
+
+def beton_banche():
+    x, y = coords()
+    fx = (x * 2) % 1.0
+    fy = (y * 4) % 1.0
+    joint = (np.minimum(fx, 1 - fx) < 0.004) | (np.minimum(fy, 1 - fy) < 0.008)
+    tx = (x * 2 * 3) % 1.0 - 0.5
+    ty = (y * 4 * 2) % 1.0 - 0.5
+    tige = (tx ** 2 + (ty * 0.5) ** 2) < 0.0016
+    nuage = fbm(4, 5, 191)
+    coffrage = valeur(16, 192)
+    bulles = (grain(193) > 0.995).astype(float)
+    v = 0.55 + 0.25 * (nuage - 0.5) + 0.06 * (coffrage - 0.5) - 0.25 * bulles
+    c = teinte(v, (0.3, 0.3, 0.31), (0.76, 0.75, 0.73))
+    c = np.where(joint[..., None], c * 0.75, c)
+    c = np.where(tige[..., None], c * 0.35, c)
+    h = 0.6 - 0.3 * joint - 0.5 * tige - 0.2 * bulles + 0.03 * nuage
+    sauver("beton_banche", c, flou(h.astype(float), 1), 4.0)
+
+
+def toit_gravier():
+    gr = flou(grain(201), 1)
+    caillou = np.minimum(valeur(300, 202), valeur(260, 203))
+    taches = fbm(6, 4, 204)
+    v = 0.4 + 0.3 * caillou + 0.15 * (gr - 0.5) + 0.15 * (taches - 0.5)
+    c = teinte(v, (0.12, 0.12, 0.13), (0.62, 0.6, 0.57))
+    h = caillou * 0.8 + gr * 0.2
+    sauver("toit_gravier", c, h, 6.0)
+
+
 def eau():
     h = fbm(6, 5, 151) * 0.6 + fbm(12, 4, 152) * 0.4
     h = flou(h, 2)
@@ -394,7 +468,8 @@ def eau():
 
 
 TOUT = [plafond_dalles, moquette, beton_cire, enduit, bois_chene, bois_noyer, marbre_blanc, marbre_noir, tissu, cuir, inox_brosse,
-        sol_technique, carrelage, papier_peint, lattes_bois, eau, ecran_code, ecran_graphes, ecran_messages]
+        sol_technique, carrelage, papier_peint, lattes_bois, eau, ecran_code, ecran_graphes, ecran_messages,
+        briques, panneaux_metal, beton_banche, toit_gravier]
 
 
 def main() -> int:

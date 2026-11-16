@@ -2,7 +2,7 @@
 ## télévision, le jardin suspendu, la salle de sport, la piscine sous verrière) se bâtissent et l'on y
 ## tient debout ; on descend dans le bassin ; des gens marchent dans les couloirs ; les portes de
 ## l'ascenseur s'ouvrent et se referment ; la nuit, les bureaux se vident (le vigile, les robots de
-## ménage) ; les matières des intérieurs ; l'anglais.
+## ménage) ; les matières des intérieurs ; V157 : celles des façades, dehors ; l'anglais.
 const NOM := "vie"
 const Langue := preload("res://scripts/langue_v104.gd")
 
@@ -113,6 +113,11 @@ func _serie() -> void:
 	var m: StandardMaterial3D = Mats.mat("in_bois") as StandardMaterial3D
 	var tex: bool = ResourceLoader.exists("res://assets/textures/neo156/bois_noyer.png")
 	_ok(not tex or (m.albedo_texture != null and m.normal_enabled), "les matières des intérieurs (textures : %s)" % str(tex))
+	# --- V157 : dehors, les façades ont leurs matières (béton banché, briques, bardage, gravier des toits)
+	var tm: ShaderMaterial = neo_v94.tours_mat
+	var ok_tex: bool = tm != null and (not tex or (tm.get_shader_parameter("tex_banche") != null and tm.get_shader_parameter("tex_briques_n") != null and tm.get_shader_parameter("tex_toit") != null))
+	var kbet: StandardMaterial3D = preload("res://scripts/neo_kit_v94.gd").mat("beton") as StandardMaterial3D
+	_ok(ok_tex and (not tex or (kbet != null and kbet.albedo_texture != null)), "dehors : les façades et le béton de la ville en textures")
 	T.test_mode = false
 	# --- l'anglais
 	Langue.choisir("en", false)

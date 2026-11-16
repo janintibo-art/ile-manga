@@ -359,6 +359,13 @@ func _towers() -> void:
 	tours_mat = ShaderMaterial.new()
 	tours_mat.shader = load("res://shaders/gratte_ciel_v94.gdshader")
 	tours_mat.set_shader_parameter("sol_y", Y0)
+	# V157 : les matières des façades (béton banché, briques, bardage de métal, toits de gravier)
+	for tx in [["tex_banche", "beton_banche"], ["tex_briques", "briques"], ["tex_panneaux", "panneaux_metal"], ["tex_toit", "toit_gravier"]]:
+		var chemin: String = "res://assets/textures/neo156/%s.png" % str(tx[1])
+		if ResourceLoader.exists(chemin):
+			tours_mat.set_shader_parameter(str(tx[0]), load(chemin))
+		if ResourceLoader.exists(chemin.replace(".png", "_n.png")):
+			tours_mat.set_shader_parameter(str(tx[0]) + "_n", load(chemin.replace(".png", "_n.png")))
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_custom_data = true

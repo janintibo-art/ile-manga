@@ -128,6 +128,10 @@ func _initialize() -> void:
 		await _quartiers(T)
 		quit()
 		return
+	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "dehors":
+		await _dehors(T, fm)
+		quit()
+		return
 	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "vie":
 		await _vie(T, fm)
 		quit()
@@ -350,3 +354,27 @@ func _vie(T: Node, fm: Node) -> void:
 		if int(tk[1]) > 0:
 			await T.aller(0)
 		await T.leave()
+
+
+# =================================================================== V157 : Néopolis dehors
+
+func _dehors(T: Node, fm: Node) -> void:
+	var choix: Array = []
+	for q in ["ruelles", "residences", "hauts", "quai", "arcades"]:
+		for t in T.tours:
+			if str(t["quartier"]) == q and (t["etages"] as Array).size() >= 4:
+				choix.append(t)
+				break
+	for nuit in [false, true]:
+		fm.temps_v56.hour = 22.5 if nuit else 15.0
+		for k in range(40):
+			await process_frame
+		for t in choix:
+			var f: Vector3 = t["face"]
+			var n: Vector3 = t["n"]
+			var side: Vector3 = n.cross(Vector3.UP)
+			_vue(f + n * 9.0 + side * 5.0 + Vector3.UP * 1.7, f + Vector3.UP * 6.0 - side * 3.0)
+			await _photo("%s_%s" % [t["quartier"], "nuit" if nuit else "jour"])
+			if str(t["quartier"]) in ["residences", "hauts"]:
+				_vue(f + n * 3.0 + Vector3.UP * 12.0 + side * 2.0, f + Vector3.UP * 13.0 - side * 4.0 - n * 0.5)
+				await _photo("%s_%s_fenetres" % [t["quartier"], "nuit" if nuit else "jour"])

@@ -30,7 +30,7 @@ fi
 cp "$DEPOT/tests/outils/rendu_tours.gd" "$COPIE/pcvr/rendu_tours.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 1800 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 960x600 --audio-driver Dummy \
-  --script res://rendu_tours.gd -- "$OUT" "${2:-}" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|RENDU|MESSAGE|at: " | head -40
+  --script res://rendu_tours.gd -- "$OUT" "${2:-}" 2>&1 | grep -E "SCRIPT ERROR|SHADER ERROR|Parse Error|ERROR: .*\.gd|ERROR: .*shader|RENDU|MESSAGE|at: |^ *[0-9]+ \\| " | head -40
 rm -f "$COPIE/pcvr/rendu_tours.gd"
 python3 - "$OUT" <<'PY'
 import sys, glob, os
