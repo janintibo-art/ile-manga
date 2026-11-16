@@ -286,9 +286,10 @@ def main() -> int:
     # V94 : les écrans et les enseignes au néon de Néopolis (textures/neo)
     # V159 : les matières du Bois-Doré, de la Montagne de Feu et de Forgefer (textures/beau159 ; les
     # réglages d'import : la passe V158, plus bas) ; V160 : le kit des métaux (textures/beau160) ;
-    # V161 : la Citadelle des Nuées et l'Île des Géants (textures/beau161)
+    # V161 : la Citadelle des Nuées et l'Île des Géants (textures/beau161) ; V162 : l'Atlantide et la
+    # jungle (textures/beau162)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162"):
         d = source / folder
         if not d.is_dir():
             continue

@@ -203,6 +203,12 @@ func _build_mesh(high_quality: bool) -> void:
 	for key in ["soil", "moss", "rock"]:
 		mat.set_shader_parameter(key + "_tex", load(base + "jungle/jungle_" + key + ".png"))
 		mat.set_shader_parameter(key + "_n", load(base + "jungle/jungle_" + key + "_n.png"))
+	# V162 : le calcaire des pitons en haute définition (beau162/karst : les cannelures de la pluie,
+	# les coulures noires, les lichens)
+	if ResourceLoader.exists(base + "beau162/karst.png"):
+		mat.set_shader_parameter("rock_tex", load(base + "beau162/karst.png"))
+		mat.set_shader_parameter("rock_n", load(base + "beau162/karst_n.png"))
+		mat.set_shader_parameter("karst", true)
 	mat.set_shader_parameter("extra_detail", high_quality)
 	var per: int = (count - 1) / CHUNKS
 	for cz in range(CHUNKS):

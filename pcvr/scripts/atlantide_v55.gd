@@ -15,6 +15,10 @@ extends Node3D
 const PnjScript = preload("res://scripts/pnj/pnj_v31.gd")
 const Habitants = preload("res://scripts/pnj/atlantes_habitants_v55.gd")
 const HeroLib = preload("res://scripts/hero_v28.gd")
+const Colonne = preload("res://scripts/colonne_v162.gd")
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+const B162 := "res://assets/textures/beau162/"
 const C := Vector3(-220.0, -30.0, 260.0)
 const DOME_R: float = 46.0
 const DOME_H: float = 24.0
@@ -88,13 +92,19 @@ func mat(key: String) -> StandardMaterial3D:
 			m.roughness = 0.35
 			m.albedo_color = Color(0.62, 0.8, 0.86)
 		"mosaique":
-			m.albedo_texture = _tex("res://assets/textures/atlantide/mosaique.png")
+			# V162 : une vraie mosaïque (beau162 : des tesselles de 2,5 cm, des cercles qui se croisent)
+			var mo: bool = ResourceLoader.exists(B162 + "mosaique.png")
+			m.albedo_texture = _tex(B162 + "mosaique.png") if mo else _tex("res://assets/textures/atlantide/mosaique.png")
 			m.normal_enabled = true
-			m.normal_texture = _tex("res://assets/textures/atlantide/mosaique_n.png")
+			m.normal_texture = _tex(B162 + "mosaique_n.png") if mo else _tex("res://assets/textures/atlantide/mosaique_n.png")
 			m.uv1_triplanar = true
-			m.uv1_scale = Vector3.ONE * 0.12
+			m.uv1_scale = Vector3.ONE * (0.25 if mo else 0.12)
 			m.roughness = 0.4
-			m.albedo_color = Color(0.8, 0.84, 0.86)
+			m.albedo_color = Color(1, 1, 1) if mo else Color(0.8, 0.84, 0.86)
+			if mo:
+				m.roughness_texture = _tex(B162 + "mosaique_r.png")
+				m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+				m.roughness = 0.75
 		"cuivre":
 			m.albedo_texture = _tex("res://assets/textures/atlantide/cuivre_vert.png")
 			m.normal_enabled = true
@@ -107,6 +117,13 @@ func mat(key: String) -> StandardMaterial3D:
 			m.albedo_color = Color(0.92, 0.74, 0.34)
 			m.metallic = 0.95
 			m.roughness = 0.28
+			MetalKit.habille(m, "patine", 2.0)
+		"bronze_porte":
+			# V162 : les portes des maisons, en bronze patiné
+			m.albedo_color = Color(0.46, 0.34, 0.2)
+			m.metallic = 0.8
+			m.roughness = 0.45
+			MetalKit.habille(m, "patine", 1.5)
 		"frise":
 			m.albedo_texture = _tex("res://assets/textures/atlantide/frise.png")
 			m.uv1_scale = Vector3(8.0, 1.0, 1.0)
@@ -220,11 +237,17 @@ func _solid_cyl(name_s: String, center: Vector3, r: float, h: float) -> void:
 
 
 ## Une colonne cannelée : base, fût, chapiteau doré.
+## V162 : sculptée (colonne_v162 : la base aux tores, le fût cannelé, le chapiteau ionique et ses
+## volutes) ; plus basse que 3 m, c'est une colonne brisée.
 func _column(parent: Node3D, pos: Vector3, h: float, r: float = 0.42) -> void:
-	_mesh(parent, _cyl(r * 1.35, r * 1.45, 0.35, 16), mat("marbre"), pos + Vector3(0, 0.175, 0))
-	_mesh(parent, _cyl(r * 0.92, r, h - 0.85, 16), mat("marbre"), pos + Vector3(0, 0.35 + (h - 0.85) * 0.5, 0))
-	_mesh(parent, _cyl(r * 1.45, r * 1.0, 0.3, 16), mat("or"), pos + Vector3(0, h - 0.35, 0))
-	_mesh(parent, _box(Vector3(r * 3.1, 0.2, r * 3.1)), mat("marbre"), pos + Vector3(0, h - 0.1, 0))
+	var mi := MeshInstance3D.new()
+	mi.name = "Colonne_sculptee_%d" % parent.get_child_count()
+	mi.mesh = Colonne.mesh(h, r) if h >= 3.0 else Colonne.brisee(h, r)
+	mi.set_surface_override_material(0, mat("marbre"))
+	if mi.mesh.get_surface_count() > 1:
+		mi.set_surface_override_material(1, mat("or"))
+	mi.position = pos
+	parent.add_child(mi)
 
 
 # =================================================================== construction
@@ -245,6 +268,7 @@ func build(main_node: Node) -> void:
 	_build_statue()
 	_build_gate_and_obelisk()
 	_build_dome()
+	_lumiere_v162()
 	set_lit(false, true)
 	print("ILE_MANGA_V55: Atlantide construite en %d ms" % (Time.get_ticks_msec() - t0))
 
@@ -302,16 +326,23 @@ func _build_tower() -> void:
 	_mesh(root, _cyl(5.6, 6.0, 0.5, 48), mat("marbre"), Vector3(0, 0.25, 0))
 	_mesh(root, _cyl(2.4, 3.2, 1.2, 32), mat("marbre"), Vector3(0, 1.1, 0))
 	# Le fût qui s'affine, cerclé d'or, et les quatre arcs-boutants
-	_mesh(root, _cyl(1.0, 2.2, 13.0, 24), mat("marbre"), Vector3(0, 8.2, 0))
+	# V162 : le fût effilé est cannelé
+	_mesh(root, Colonne.fut_effile(13.0, 2.2, 1.0, 20), mat("marbre"), Vector3(0, 1.7, 0))
 	for y in [3.0, 6.5, 10.0, 13.5]:
 		_mesh(root, _cyl(2.22 - (y - 1.7) * 0.093 + 0.05, 2.24 - (y - 1.7) * 0.093 + 0.05, 0.25, 24), mat("or"), Vector3(0, y, 0))
 	for k in range(4):
 		var a: float = TAU * k / 4.0 + PI * 0.25
 		var d := Vector3(sin(a), 0, -cos(a))
 		_mesh(root, _box(Vector3(0.45, 3.0, 0.8)), mat("marbre"), d * 3.6 + Vector3(0, 1.5, 0), Vector3(0, -a, 0.0))
-		var strut := _mesh(root, _box(Vector3(0.4, 6.0, 0.6)), mat("marbre"), d * 2.6 + Vector3(0, 5.5, 0))
-		strut.look_at_from_position(strut.global_position, root.global_position + Vector3(0, 13.0, 0), Vector3.UP)
-		strut.rotate_object_local(Vector3.RIGHT, PI * 0.5)
+		# V162 : un arc-boutant courbe, du pilier jusqu'au fût, une volute d'or à son pied
+		var arc: Array = []
+		var rs: Array = []
+		for q in range(9):
+			var t: float = float(q) / 8.0
+			arc.append(d * lerpf(3.6, 1.55, sin(t * PI * 0.5)) + Vector3(0, lerpf(3.0, 11.6, 1.0 - cos(t * PI * 0.5)), 0))
+			rs.append(lerpf(0.34, 0.18, t))
+		_sculpte(root, func(acc: Dictionary) -> void: Sculpt._tube(acc, "pierre", arc, rs, 10), "marbre")
+		_sculpte(root, func(acc: Dictionary) -> void: Sculpt._boule(acc, "pierre", d * 3.6 + Vector3(0, 3.1, 0), Vector3(0.36, 0.2, 0.36)), "or")
 	# La couronne dorée et le Grand Cristal
 	_mesh(root, _cyl(1.6, 1.0, 0.6, 24), mat("or"), Vector3(0, 14.9, 0))
 	for k2 in range(6):
@@ -522,11 +553,24 @@ func _build_houses() -> void:
 		_mesh(root, _dome_cap(rad + 0.3, rad * 0.8, 32), mat("cuivre"), Vector3(0, wall_h, 0))
 		_mesh(root, _cyl(0.1, 0.2, 0.8, 10), mat("or"), Vector3(0, wall_h + rad * 0.8 + 0.3, 0))
 		# Porte en arc et fenêtres rondes, qui luisent
-		_mesh(root, _box(Vector3(1.4, 2.4, 0.3)), _glow(Color(0.35, 0.7, 0.8), 0.5), Vector3(0, 1.2, -rad - 0.02))
-		_mesh(root, _cyl(0.7, 0.7, 0.3, 16), _glow(Color(0.35, 0.7, 0.8), 0.5), Vector3(0, 2.4, -rad - 0.02), Vector3(PI * 0.5, 0, 0))
+		# V162 : la porte de bronze dans son arc de marbre, les fenêtres rondes cerclées d'or
+		_mesh(root, _box(Vector3(1.3, 2.3, 0.14)), mat("bronze_porte"), Vector3(0, 1.15, -rad - 0.03))
+		_mesh(root, _cyl(0.65, 0.65, 0.14, 24), mat("bronze_porte"), Vector3(0, 2.3, -rad - 0.03), Vector3(PI * 0.5, 0, 0))
+		for k5 in range(11):
+			var a5: float = PI * float(k5) / 10.0
+			_mesh(root, _box(Vector3(0.26, 0.22, 0.3)), mat("marbre_bleu") if k5 != 5 else mat("or"), Vector3(cos(a5) * 0.86, 2.3 + sin(a5) * 0.86, -rad - 0.06), Vector3(0, 0, a5 - PI * 0.5))
+		for sx3 in [-1.0, 1.0]:
+			_mesh(root, _box(Vector3(0.24, 2.3, 0.3)), mat("marbre_bleu"), Vector3(sx3 * 0.86, 1.15, -rad - 0.06))
+		_mesh(root, _cyl(0.06, 0.06, 0.1, 10), mat("or"), Vector3(0.4, 1.15, -rad - 0.12), Vector3(PI * 0.5, 0, 0))
 		for sx in [-1.0, 1.0]:
 			var wa: float = sx * 0.85
 			_mesh(root, _cyl(0.38, 0.38, 0.2, 14), _glow(Color(0.95, 0.85, 0.55), 0.9), Vector3(sin(wa) * rad, 2.8, -cos(wa) * rad), Vector3(PI * 0.5, 0, -wa))
+			var tor := TorusMesh.new()
+			tor.inner_radius = 0.36
+			tor.outer_radius = 0.48
+			tor.rings = 20
+			tor.ring_segments = 8
+			_mesh(root, tor, mat("or"), Vector3(sin(wa) * (rad + 0.06), 2.8, -cos(wa) * (rad + 0.06)), Vector3(PI * 0.5, 0, -wa))
 		_solid_cyl("Maison_atlante_collision", root.global_position + Vector3(0, wall_h * 0.5, 0), rad + 0.1, wall_h)
 		# V82 : on peut entrer dans la maison (la porte regarde la place)
 		var fwd: Vector3 = -root.global_transform.basis.z
@@ -736,6 +780,43 @@ func _build_dome() -> void:
 	rm.scale = Vector3(1.0, 0.8, 1.0)
 	add_child(rm)
 	rm.global_position = C + Vector3(0, 0.1, 0)
+
+
+## V162 : un morceau sculpté (statue_naine_v159) posé dans « parent », dans la matière « cle ».
+func _sculpte(parent: Node3D, faire: Callable, cle: String) -> void:
+	var acc := {}
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	acc["pierre"] = st
+	faire.call(acc)
+	var mi := MeshInstance3D.new()
+	mi.mesh = st.commit()
+	mi.material_override = mat(cle)
+	parent.add_child(mi)
+
+
+## V162 : la lumière de la mer dans la bulle : les caustiques qui ondulent sur la mosaïque.
+func _lumiere_v162() -> void:
+	var ct: Texture2D = _tex("res://assets/textures/mer/caustiques.png")
+	if ct != null:
+		var cm := ShaderMaterial.new()
+		cm.shader = load("res://shaders/caustiques_v162.gdshader")
+		cm.set_shader_parameter("caustic_tex", ct)
+		cm.set_shader_parameter("centre", C)
+		cm.set_shader_parameter("rayon", DOME_R - 2.0)
+		var disc := CylinderMesh.new()
+		disc.top_radius = DOME_R - 1.0
+		disc.bottom_radius = DOME_R - 1.0
+		disc.height = 0.01
+		disc.radial_segments = 64
+		disc.rings = 1
+		var mi := MeshInstance3D.new()
+		mi.name = "Caustiques_v162"
+		mi.mesh = disc
+		mi.material_override = cm
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(mi)
+		mi.global_position = C + Vector3(0, 0.165, 0)
 
 
 # =================================================================== le Grand Cristal

@@ -127,6 +127,10 @@ func _initialize() -> void:
 			await _hautefond(quoi)
 		"celeste":
 			await _celeste()
+		"jungle", "jungle_piton":
+			await _jungle(quoi == "jungle_piton")
+		"atlantide":
+			await _atlantide()
 	quit()
 
 
@@ -270,6 +274,63 @@ func _w(I, x: float, z: float) -> Vector3:
 	var w: Vector3 = I.W(x, z)
 	w.y = fm._height_at(w.x, w.z)
 	return w
+
+
+# =================================================================== l'île de la jungle et l'Atlantide (V162)
+
+func _jungle(pitons: bool = false) -> void:
+	var J: Node3D = load("res://scripts/jungle_v29.gd").new()
+	fm.add_child(J)
+	J.build(true)
+	fm.ile_node = J
+	var F: Node3D = load("res://scripts/jungle_flora_v30.gd").new()
+	fm.add_child(F)
+	F.build(J, true)
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	await physics_frame
+	_mer(J.CENTER)
+	var C: Vector3 = J.CENTER
+	if pitons:
+		for i in range(3):
+			var tw: Array = J.TOWERS[i]
+			var tc: Vector3 = C + Vector3((tw[0] as Vector2).x, 0, (tw[0] as Vector2).y)
+			var dir := Vector3(1, 0, 0.6).normalized().rotated(Vector3.UP, i * 2.1)
+			var cam_at: Vector3 = _sol(tc + dir * (float(tw[1]) + 9.0)) + Vector3.UP * 1.7
+			await _vue("99_piton_%d" % i, cam_at, _sol(tc) + Vector3.UP * 9.0)
+		return
+	var ds: Vector3 = J.dock_start
+	var de: Vector3 = J.dock_end
+	var terre: Vector3 = ds + (ds - de).normalized() * 6.0
+	await _vue("91_plage", _sol(terre) + Vector3.UP * 1.7, _sol(terre + (ds - de).normalized() * 40.0) + Vector3.UP * 8.0)
+	await _vue("92_baie", de + Vector3(0, 2.5, 0) + (de - ds).normalized() * 6.0, _sol(terre) + Vector3.UP * 6.0)
+	await _vue("93_foret", _sol(C + Vector3(10, 0, 40)) + Vector3.UP * 1.7, _sol(C + Vector3(20, 0, 10)) + Vector3.UP * 5.0)
+	await _vue("94_sous_bois", _sol(C + Vector3(-30, 0, 20)) + Vector3.UP * 1.7, _sol(C + Vector3(-50, 0, 0)) + Vector3.UP * 3.0)
+	var t0: Array = J.TOWERS[1]
+	var tp: Vector3 = C + Vector3((t0[0] as Vector2).x, 0, (t0[0] as Vector2).y)
+	await _vue("95_piton", _sol(tp + Vector3(28, 0, 28)) + Vector3.UP * 1.7, _sol(tp) + Vector3.UP * 20.0)
+	await _vue("96_canopee", C + Vector3(60, 45, 90), C + Vector3(0, 10, 0))
+	await _vue("97_geant", _sol(C + Vector3(0, 0, -20)) + Vector3.UP * 1.7, _sol(C + Vector3(0, 0, -40)) + Vector3.UP * 14.0)
+	await _vue("98_dessus", C + Vector3(-120, 160, 220), C)
+
+
+func _atlantide() -> void:
+	var A: Node3D = load("res://scripts/atlantide_v55.gd").new()
+	fm.add_child(A)
+	A.build(fm)
+	for k in range(6):
+		await process_frame
+	var C: Vector3 = A.C
+	await _vue("71_place", A.at(150.0, 22.0, 1.7), C + Vector3(0, 8.0, 0))
+	await _vue("72_tour", A.at(200.0, 12.0, 1.7), C + Vector3(0, 14.0, 0))
+	await _vue("73_palais", A.at(0.0, 14.0, 1.7), A.at(0.0, 34.0, 5.0))
+	await _vue("74_atelier", A.at(90.0, 18.0, 1.7), A.at(90.0, 34.0, 3.0))
+	await _vue("75_archives", A.at(270.0, 18.0, 1.7), A.at(270.0, 34.0, 3.0))
+	await _vue("76_maisons", A.at(45.0, 26.0, 1.7), A.at(60.0, 38.0, 2.0))
+	await _vue("77_porte", A.at(180.0, 30.0, 1.7), A.at(180.0, 46.0, 4.0))
+	await _vue("78_canal", A.at(120.0, 20.0, 1.7), A.at(70.0, 20.0, 0.5))
+	await _vue("79_dessus", C + Vector3(50, 40, 60), C)
 
 
 # =================================================================== l'île flottante et la Citadelle des Nuées (V161)

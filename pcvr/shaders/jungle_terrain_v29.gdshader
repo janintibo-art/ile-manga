@@ -12,6 +12,7 @@ uniform sampler2D soil_n : hint_normal, filter_linear_mipmap_anisotropic, repeat
 uniform sampler2D moss_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool extra_detail = false;
+uniform bool karst = false;            // V162 : le calcaire HD (beau162/karst), à sa vraie taille
 uniform float water_level = -0.42;
 
 varying vec3 world_position;
@@ -84,9 +85,17 @@ void fragment() {
 	}
 	vec3 tri = pow(abs(n), vec3(4.0));
 	tri /= (tri.x + tri.y + tri.z);
-	vec3 rock = triplanar(rock_tex, wp, tri, 0.09);
+	float rs = karst ? 0.091 : 0.09;
+	vec3 rock = triplanar(rock_tex, wp, tri, rs);
 	// Les parois ruissellent : plus sombres vers le bas.
 	rock *= mix(0.8, 1.05, smoothstep(0.0, 30.0, wp.y));
+	if (karst) {
+		// V162 : de grandes coulures sombres le long des parois, et la mousse qui gagne le pied
+		float le_long = wp.x * abs(n.z) + wp.z * abs(n.x);
+		float coul = noise2(vec2(le_long * 0.35, wp.y * 0.02)) * 0.7 + noise2(vec2(le_long * 1.1, wp.y * 0.05) + 7.0) * 0.3;
+		rock *= 1.0 - 0.35 * smoothstep(0.55, 0.85, coul);
+		rock = mix(rock, moss * 0.8, (1.0 - smoothstep(0.5, 4.0, wp.y - 1.0)) * smoothstep(0.45, 0.7, patch) * 0.6);
+	}
 
 	vec3 ground = mix(soil, moss, moss_w);
 	vec3 albedo = mix(ground, sand, beach);
@@ -98,7 +107,7 @@ void fragment() {
 
 	vec3 nm_sand = untiled_normal(sand_n, uv * 1.25, mixer);
 	vec3 nm_ground = normalize(mix(untiled_normal(soil_n, uv * 1.85, mixer), untiled_normal(moss_n, uv * 0.9, mixer), moss_w));
-	vec3 nm_rock = normalize(triplanar_n(rock_n, wp, tri, 0.09));
+	vec3 nm_rock = normalize(triplanar_n(rock_n, wp, tri, rs));
 	vec3 nm = normalize(mix(mix(nm_ground, nm_sand, beach), nm_rock, rock_w));
 	nm.xy *= mix(1.0, 0.35, smoothstep(25.0, 90.0, dist)) * mix(1.0, 0.4, wet);
 	vec3 t_axis = normalize(vec3(1.0, 0.0, 0.0) - n * n.x);
