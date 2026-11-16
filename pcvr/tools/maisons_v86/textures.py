@@ -1,6 +1,8 @@
 """V86 — textures des intérieurs (papiers peints, lambris, chaux, parquets, carrelages).
 
 Toutes calculées ici (numpy + Pillow), raccordables sur les bords (on peut les répéter).
+V158 : chacune a aussi sa carte de relief (nom_n.png : les joints, les rainures, le grain du
+papier, les coups de taloche), et le bois des meubles (bois_meuble, neutre : le jeu le teinte).
 Sortie : www/assets/textures/maisons/*.png
     python3 pcvr/tools/maisons_v86/textures.py
 """
@@ -41,10 +43,33 @@ def fbm(seed, octaves=(4, 8, 16, 32, 64), n=N):
     return out / tot
 
 
-def save(name, rgb):
+def normale(h, force):
+    """V158 : la carte de relief d'une hauteur (raccordable), en couleurs (x, y, z)."""
+    dx = (np.roll(h, -1, 1) - np.roll(h, 1, 1)) * 0.5 * force
+    dy = (np.roll(h, -1, 0) - np.roll(h, 1, 0)) * 0.5 * force
+    l = np.sqrt(dx * dx + dy * dy + 1.0)
+    return np.stack([-dx / l * 0.5 + 0.5, dy / l * 0.5 + 0.5, 1.0 / l * 0.5 + 0.5], -1)
+
+
+def flou(x, k=1):
+    out = x.copy()
+    for _ in range(k):
+        out = (out + np.roll(out, 1, 0) + np.roll(out, -1, 0) + np.roll(out, 1, 1) + np.roll(out, -1, 1)) / 5.0
+    return out
+
+
+def save(name, rgb, h=None, force=4.0):
+    """L'image (si elle n'est pas déjà faite, ou FORCE=1) et sa carte de relief (V158)."""
     os.makedirs(OUT, exist_ok=True)
-    img = Image.fromarray(np.clip(rgb * 255.0, 0, 255).astype(np.uint8), 'RGB')
-    img.save(os.path.join(OUT, name + '.png'), optimize=True)
+    p = os.path.join(OUT, name + '.png')
+    if os.environ.get('FORCE') == '1' or not os.path.exists(p):
+        img = Image.fromarray(np.clip(rgb * 255.0, 0, 255).astype(np.uint8), 'RGB')
+        img.save(p, optimize=True)
+    if h is not None:
+        pn = os.path.join(OUT, name + '_n.png')
+        if os.environ.get('FORCE') == '1' or not os.path.exists(pn):
+            n = np.clip(normale(h, force) * 255.0, 0, 255).astype(np.uint8)
+            Image.fromarray(n, 'RGB').save(pn, optimize=True)
     print('  ', name)
 
 
@@ -55,6 +80,11 @@ def col(c):
 def paper_grain(seed, k=0.06):
     g = fbm(seed, (32, 64, 128, 256))
     return 1.0 + (g - 0.5) * k * 2
+
+
+def paper_relief(seed):
+    """V158 : le relief du papier (ses fibres), le même grain que paper_grain."""
+    return fbm(seed, (32, 64, 128, 256))
 
 
 # ------------------------------------------------------------------ murs
@@ -72,7 +102,9 @@ def pp_rayures(name, c1, c2, seed, bands=16):
     rgb = np.repeat(rgb, N, axis=0)
     rgb *= paper_grain(seed)[:, :, None]
     rgb *= (0.94 + 0.06 * fbm(seed + 7, (2, 4, 8)))[:, :, None]
-    save(name, rgb)
+    # le relief : le papier, et les bandes satinées à peine en relief
+    h = paper_relief(seed) * 0.5 + np.repeat(m[None, :], N, axis=0) * 0.25 - np.repeat(line[None, :], N, axis=0) * 0.15
+    save(name, rgb, flou(h, 1), 3.0)
 
 
 def pp_motif(name, fond, motif, seed, grid=8, kind='fleur'):
@@ -102,14 +134,18 @@ def pp_motif(name, fond, motif, seed, grid=8, kind='fleur'):
     rgb = rgb * (1 - a[:, :, None]) + col(motif) * a[:, :, None]
     rgb *= paper_grain(seed)[:, :, None]
     rgb *= (0.93 + 0.07 * fbm(seed + 5, (2, 4, 8)))[:, :, None]
-    save(name, rgb)
+    # le relief : le papier ; le motif imprimé en relief (le damas est gaufré)
+    h = paper_relief(seed) * 0.45 + flou(a, 2) * (0.9 if kind != 'fleur' else 0.45)
+    save(name, rgb, h, 3.5)
 
 
 def chaux(name, c, seed):
     n = fbm(seed, (3, 6, 12, 24, 48, 96))
     n2 = fbm(seed + 50, (64, 128, 256))
     rgb = col(c) * (0.82 + 0.3 * n)[:, :, None] * (0.96 + 0.08 * n2)[:, :, None]
-    save(name, rgb)
+    # le relief : les coups de taloche (le grain fin) et les ondulations de l'enduit
+    h = n2 * 0.7 + n * 0.3
+    save(name, rgb, h, 4.0)
 
 
 def lambris(name, c, seed, boards=8):
@@ -133,7 +169,9 @@ def lambris(name, c, seed, boards=8):
     v = tint[idx][None, :] * (0.86 + 0.12 * streak + 0.08 * grain)
     v = v * (1 - 0.55 * groove[None, :])
     rgb = col(c) * v[:, :, None]
-    save(name, rgb)
+    # le relief : les rainures entre les lames, le fil du bois
+    h = (1 - groove[None, :]) * 1.0 + streak * 0.04 + grain * 0.03
+    save(name, rgb, h, 5.0)
 
 
 # ------------------------------------------------------------------ sols
@@ -182,7 +220,9 @@ def parquet_chevron(name, base, seed):
     edge_x = np.clip(1 - np.minimum(xx % (L / np.sqrt(2)), (L / np.sqrt(2)) - xx % (L / np.sqrt(2))) / 1.6, 0, 1)
     val = t * (0.84 + 0.1 * grain + 0.1 * fine) * (1 - 0.5 * np.maximum(joint, edge_x))
     rgb = col(base) * val[:, :, None]
-    save(name, rgb)
+    # le relief : les joints entre les lames (un peu creux), le fil, les lames pas tout à fait à plat
+    h = (1 - np.maximum(joint, edge_x)) * 0.8 + grain * 0.04 + fine * 0.04 + t * 0.12
+    save(name, rgb, h, 4.0)
 
 
 def damier(name, c1, c2, seed, n=8):
@@ -196,7 +236,9 @@ def damier(name, c1, c2, seed, n=8):
     rgb = col(c1) * chk[:, :, None] + col(c2) * (1 - chk)[:, :, None]
     rgb *= (0.9 + 0.14 * wear)[:, :, None]
     rgb = rgb * (1 - grout[:, :, None]) + col((0.55, 0.53, 0.5)) * grout[:, :, None]
-    save(name, rgb)
+    # le relief : les joints creux, les carreaux à peine bombés et usés
+    h = (1 - grout) * 1.0 + wear * 0.05
+    save(name, rgb, flou(h, 1), 4.0)
 
 
 def tomettes(name, base, seed, cells=8):
@@ -224,7 +266,10 @@ def tomettes(name, base, seed, cells=8):
     wear = fbm(seed + 9, (8, 16, 32, 64))
     rgb = col(base) * (t * (0.88 + 0.16 * wear))[:, :, None]
     rgb = rgb * (1 - edge[:, :, None]) + col((0.62, 0.58, 0.52)) * edge[:, :, None]
-    save(name, rgb)
+    # le relief : les joints, les bords des tomettes arrondis, la terre cuite piquée
+    bord = np.clip((d2 - d1) / 10.0, 0, 1)
+    h = np.sqrt(bord) * 0.9 + wear * 0.08 + flou(rng(seed + 5).random((N, N)), 1) * 0.06
+    save(name, rgb, h, 4.0)
 
 
 def carreaux_ciment(name, fond, c1, c2, seed, n=4):
@@ -247,18 +292,57 @@ def carreaux_ciment(name, fond, c1, c2, seed, n=4):
     wear = fbm(seed, (4, 8, 16, 32))
     rgb *= (0.88 + 0.16 * wear)[:, :, None]
     rgb = rgb * (1 - grout[:, :, None]) + col((0.7, 0.68, 0.64)) * grout[:, :, None]
-    save(name, rgb)
+    # le relief : les joints, la surface du ciment (lisse, un peu usée)
+    h = (1 - grout) * 1.0 + wear * 0.04
+    save(name, rgb, flou(h, 1), 4.0)
+
+
+# ------------------------------------------------------------------ V158 : les meubles
+
+def bois_meuble(name, seed, fonce=(0.22, 0.14, 0.07), clair=(0.53, 0.36, 0.22)):
+    """Le bois des meubles (le fil le long de y, des cernes, des fibres, des pores, des
+    maillures), dans la teinte moyenne de l'ancien bois uni : le jeu le teinte comme avant."""
+    yy, xx = np.mgrid[0:N, 0:N] / N
+    deform = (fbm(seed, (3, 6, 12)) - 0.5) * 0.035 + (fbm(seed + 5, (12, 24)) - 0.5) * 0.006
+    cernes = (xx + deform) * 22.0
+    fil = np.abs(np.sin(cernes * np.pi)) ** 0.6
+    r = rng(seed + 3)
+    c = r.random((1, N))
+    for _ in range(2):
+        c = (c + np.roll(c, 1, 1) + np.roll(c, -1, 1)) / 3.0
+    fibres = np.repeat(c, N, 0) + (fbm(seed + 7, (2, 4, 8)) - 0.5) * 0.3
+    pores = (rng(seed + 2).random((N, N)) > 0.985) * (fil < 0.5)
+    maille = np.clip((fbm(seed + 4, (10, 20, 40)) - 0.68) * 6, 0, 1) * 0.12
+    v = np.clip(0.3 + 0.32 * fil + 0.22 * fibres - 0.12 * pores + maille, 0, 1)
+    rgb = col(fonce) * (1 - v[:, :, None]) + col(clair) * v[:, :, None]
+    h = 0.5 + 0.25 * fil + 0.15 * fibres - 0.2 * pores
+    save(name, rgb, h, 2.5)
+
+
+def tissu(name, seed, k=256):
+    """Un tissage clair et neutre (le jeu le teinte : literie, rideaux, coussins, nappes)."""
+    yy, xx = np.mgrid[0:N, 0:N] / N
+    chaine = np.sin(xx * np.pi * 2 * k) * 0.5 + 0.5
+    trame = np.sin(yy * np.pi * 2 * k) * 0.5 + 0.5
+    case = (np.floor(xx * k) + np.floor(yy * k)) % 2
+    tiss = np.where(case > 0, chaine, trame)
+    fils = fbm(seed, (128, 256))
+    chine = fbm(seed + 1, (32, 64, 128))
+    v = 0.88 + 0.07 * tiss + 0.05 * (chine - 0.5) + 0.05 * (fils - 0.5)
+    rgb = np.repeat(np.clip(v, 0, 1)[:, :, None], 3, 2) * col((1.0, 0.99, 0.97))
+    h = tiss * 0.9 + fils * 0.1
+    save(name, rgb, h, 5.0)
 
 
 def _skip_existing():
-    """Sans FORCE=1, on ne recalcule pas les textures déjà faites."""
+    """Sans FORCE=1, on ne recalcule pas les textures déjà faites (l'image et son relief)."""
     if os.environ.get('FORCE') == '1':
         return
     g = globals()
-    for fn in ('pp_rayures', 'pp_motif', 'chaux', 'lambris', 'parquet_chevron', 'damier', 'tomettes', 'carreaux_ciment'):
+    for fn in ('pp_rayures', 'pp_motif', 'chaux', 'lambris', 'parquet_chevron', 'damier', 'tomettes', 'carreaux_ciment', 'bois_meuble', 'tissu'):
         f = g[fn]
         def wrap(name, *a, _f=f, **k):
-            if os.path.exists(os.path.join(OUT, name + '.png')):
+            if os.path.exists(os.path.join(OUT, name + '.png')) and os.path.exists(os.path.join(OUT, name + '_n.png')):
                 return
             _f(name, *a, **k)
         g[fn] = wrap
@@ -288,3 +372,5 @@ if __name__ == '__main__':
     tomettes('tomettes', (0.78, 0.4, 0.26), 71)
     carreaux_ciment('carreaux_ciment_bleu', (0.92, 0.9, 0.84), (0.2, 0.42, 0.62), (0.85, 0.62, 0.22), 81)
     carreaux_ciment('carreaux_ciment_vert', (0.9, 0.88, 0.8), (0.26, 0.5, 0.38), (0.72, 0.28, 0.22), 82)
+    bois_meuble('bois_meuble', 91)
+    tissu('tissu', 92)

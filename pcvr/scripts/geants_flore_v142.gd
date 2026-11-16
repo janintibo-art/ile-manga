@@ -125,6 +125,11 @@ func _finish(parts: Array) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	for p in parts:
 		var st: SurfaceTool = p[0]
+		# V158 : une partie restée vide (pas de tomate verte sur ce pied) : on la saute (sinon
+		# « UVs are required to generate tangents »)
+		var arr: Array = st.commit_to_arrays()
+		if arr.is_empty() or arr[Mesh.ARRAY_VERTEX] == null or (arr[Mesh.ARRAY_VERTEX] as PackedVector3Array).is_empty():
+			continue
 		st.generate_tangents()
 		st.commit(mesh)
 		mesh.surface_set_material(mesh.get_surface_count() - 1, p[1])

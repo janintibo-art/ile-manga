@@ -307,6 +307,7 @@ var occupied: Array = []                  # [Rect2] déjà meublés (repère de 
 var variante: int = 0                     # V86 : 0 = la palette de la ville, sinon une variante
 var wall_marks: Array = []                # V86 : [x, y, z, demi-largeur] déjà pris sur les murs
 var _mats: Dictionary = {}
+static var sondes: bool = true            # V158 : la sonde de reflets (l'outil d'images, sans carte graphique, s'en passe)
 static var _cobweb: Texture2D
 static var _dot: Texture2D
 
@@ -387,7 +388,7 @@ func _texmat(path: String, tint: Color, rough: float = 0.85) -> StandardMaterial
 	m.albedo_texture = _tex(path)
 	m.albedo_color = tint
 	m.roughness = rough
-	var n: String = path.trim_suffix(".png") + "_n.png"
+	var n: String = path.get_basename() + "_n.png"            # V158 : aussi pour les .jpg
 	if ResourceLoader.exists(TX + n):
 		m.normal_enabled = true
 		m.normal_texture = _tex(n)
@@ -400,6 +401,21 @@ func _col(c: Color, rough: float = 0.8, metal: float = 0.0) -> StandardMaterial3
 	m.albedo_color = c
 	m.roughness = rough
 	m.metallic = metal
+	return m
+
+
+## V158 : un tissu de couleur c (la texture de tissage est claire, de valeur 0,9 en moyenne).
+func _tissu(c: Color, tt: Texture2D, tn: Texture2D, rough: float) -> StandardMaterial3D:
+	var m := _col(c, rough)
+	if tt == null:
+		return m
+	m.albedo_texture = tt
+	m.albedo_color = Color(minf(c.r / 0.9, 1.0), minf(c.g / 0.9, 1.0), minf(c.b / 0.9, 1.0))
+	m.uv1_scale = Vector3(2, 2, 1)
+	if tn != null:
+		m.normal_enabled = true
+		m.normal_texture = tn
+		m.normal_scale = 0.5
 	return m
 
 
@@ -418,12 +434,20 @@ func _materials() -> void:
 	var pl: Array = pal["plafond"]
 	_put("plafond", _texmat(str(pl[0]), pl[1], 0.95))
 	var wood: Color = pal["bois"]
-	var wt: Texture2D = load("res://assets/textures/doors/wood_plain.png")
+	# V158 : le bois des meubles a son fil, ses pores et son relief (même teinte moyenne qu'avant)
+	var wt: Texture2D = _tex("maisons/bois_meuble.png")
+	var wn: Texture2D = _tex("maisons/bois_meuble_n.png")
+	if wt == null:
+		wt = load("res://assets/textures/doors/wood_plain.png")
 	for k in [["bois", wood], ["bois_clair", wood.lightened(0.3)], ["bois_sombre", wood.darkened(0.45)], ["poutre", pal["poutre"]]]:
 		var m := StandardMaterial3D.new()
 		m.albedo_texture = wt
 		m.albedo_color = k[1]
 		m.roughness = 0.72
+		if wn != null:
+			m.normal_enabled = true
+			m.normal_texture = wn
+			m.normal_scale = 0.7
 		if bool(pal.get("poutres_metal", false)) and str(k[0]) == "poutre":
 			m.albedo_texture = null
 			m.metallic = 0.6
@@ -433,9 +457,12 @@ func _materials() -> void:
 	var tissus := {"rouge": Color(0.7, 0.16, 0.14), "bleu": Color(0.2, 0.32, 0.62), "vert": Color(0.25, 0.5, 0.3), "jaune": Color(0.92, 0.75, 0.25),
 		"blanc": Color(0.95, 0.94, 0.9), "creme": Color(0.94, 0.88, 0.74), "violet": Color(0.45, 0.25, 0.55), "rose": Color(0.92, 0.6, 0.66),
 		"brun": Color(0.45, 0.3, 0.2), "gris": Color(0.5, 0.5, 0.52), "orange": Color(0.92, 0.5, 0.18), "turquoise": Color(0.2, 0.62, 0.62), "noir": Color(0.08, 0.08, 0.09)}
+	# V158 : un tissage (la texture est claire et neutre : on la teinte), et son relief
+	var tt: Texture2D = _tex("maisons/tissu.png")
+	var tn: Texture2D = _tex("maisons/tissu_n.png")
 	for c in tissus:
-		_put("tissu_" + c, _col(tissus[c], 0.95))
-	var drap := _col(Color(0.92, 0.91, 0.87), 1.0)
+		_put("tissu_" + c, _tissu(tissus[c], tt, tn, 0.95))
+	var drap := _tissu(Color(0.92, 0.91, 0.87), tt, tn, 1.0)
 	_put("drap", drap)
 	_put("metal", _col(Color(0.35, 0.36, 0.38), 0.4, 0.8))
 	_put("fer", _col(Color(0.08, 0.08, 0.09), 0.55, 0.6))
@@ -447,7 +474,19 @@ func _materials() -> void:
 	_put("brique", _texmat("cliquetis/brique.png", Color(0.9, 0.8, 0.75), 0.9))
 	_put("ceramique", _col(Color(0.96, 0.95, 0.92), 0.2))
 	_put("terre_cuite", _col(Color(0.72, 0.4, 0.26), 0.85))
-	_put("cuir", _col(Color(0.42, 0.24, 0.14), 0.6))
+	var cu := _col(Color(0.42, 0.24, 0.14), 0.6)
+	var ct: Texture2D = _tex("neo156/cuir.png")
+	if ct != null:
+		# V158 : un cuir grainé (la texture est presque neutre, plus claire : on éclaircit la teinte)
+		cu.albedo_texture = ct
+		cu.albedo_color = Color(0.68, 0.39, 0.23)
+		cu.uv1_scale = Vector3(2, 2, 1)
+		var cn: Texture2D = _tex("neo156/cuir_n.png")
+		if cn != null:
+			cu.normal_enabled = true
+			cu.normal_texture = cn
+			cu.normal_scale = 0.6
+	_put("cuir", cu)
 	_put("papier", _col(Color(0.95, 0.92, 0.82), 0.95))
 	_put("livres", _texmat("arcanelle/livres.png", Color(1, 1, 1), 0.8))
 	_put("feuillage", _col(Color(0.22, 0.48, 0.2), 0.8))
@@ -1602,6 +1641,26 @@ func commit() -> void:
 	for c in root.get_children():
 		if c is MeshInstance3D:
 			(c as MeshInstance3D).visibility_range_end = 0.0
+	if sondes:
+		_sonde()
+
+
+## V158 : une sonde de reflets pour la pièce : le carrelage, la faïence, le cuivre, les vitres
+## reflètent la pièce et non plus le ciel ; dedans, la lumière d'ambiance est celle de la pièce
+## (douce le jour, plus chaude et plus basse le soir).
+func _sonde() -> void:
+	var s := ReflectionProbe.new()
+	s.name = "Sonde_v158"
+	s.size = Vector3(W + 0.4, H + 0.6, D + 0.4)
+	s.box_projection = true
+	s.interior = true
+	s.update_mode = ReflectionProbe.UPDATE_ONCE
+	s.max_distance = maxf(W, D) * 1.5
+	s.ambient_mode = ReflectionProbe.AMBIENT_COLOR
+	s.ambient_color = Color(0.66, 0.63, 0.58) if day else Color(0.55, 0.45, 0.36)
+	s.ambient_color_energy = 0.6 if day else 0.4
+	root.add_child(s)
+	s.global_position = P(0, H * 0.5, 0)
 
 
 ## Les flammes vacillent (appelé par maisons_v81 à chaque image).

@@ -124,6 +124,10 @@ func _mat(key: String) -> Material:
 			m.uv1_world_triplanar = true
 			m.uv1_scale = Vector3.ONE / 2.0
 			m.roughness = 0.7
+			if ResourceLoader.exists(T + "interior/floor_n.png"):
+				m.normal_enabled = true                 # V158 : le relief du plancher
+				m.normal_texture = load(T + "interior/floor_n.png")
+				m.normal_scale = 0.8
 		"tapis":
 			m.albedo_texture = load(T + "chateau/tapis.png")
 			m.roughness = 0.95

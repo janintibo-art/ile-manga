@@ -52,6 +52,7 @@ selected = [
     "textures/doors/plaster.png",
     "textures/doors/plaster_n.png",
     "textures/interior/floor.png",
+    "textures/interior/floor_n.png",
     "textures/jungle/palm_frond.png",
     "textures/jungle/broadleaf.png",
     "textures/jungle/canopy_leaves.png",
@@ -146,6 +147,7 @@ selected = [
     "textures/items/coeur_moitie.png",
     "textures/items/coeur_vide.png",
     "textures/interior/ceiling.png",
+    "textures/interior/ceiling_n.png",
     # V54 : Ventaile, l'île flottante, la Citadelle des Nuées
     "textures/aigle/plumage.png",
     "textures/aigle/plumage_n.png",
@@ -195,6 +197,7 @@ selected = [
     "textures/atlantide/cuivre_vert.png",
     "textures/atlantide/cuivre_vert_n.png",
     "textures/atlantide/frise.png",
+    "textures/atlantide/frise_n.png",
     "textures/atlantide/fresque.png",
     "textures/pnj/atlante_turquoise.png",
     "textures/pnj/atlante_nacre.png",
@@ -207,6 +210,19 @@ selected = [
     "textures/items/dent_requin.png",
     "textures/items/galette_algue.png",
 ]
+
+
+GARDER_V158 = {"items", "portraits", "ui", "carte", "pixel90"}
+DECOUPES_V158 = {
+    "aigle/couverture", "aigle/rectrice", "aigle/remige",
+    "azur/feuille_bougainvillier", "azur/feuille_cypres", "azur/feuille_laurier", "azur/feuille_olivier",
+    "azur/feuille_pin", "azur/feuille_platane", "azur/balcon", "azur/filet",
+    "chateau/vitrail", "chateau/vitrail_comte", "cliquetis/verriere", "cliquetis/cadran",
+    "coeur/encre_lune", "coeur/rose_sceaux", "fees/fleurs_arbre", "fees/runes_porte",
+    "flora/fern", "flora/flowers", "flora/leaves",
+    "jungle/broadleaf", "jungle/canopy_leaves", "jungle/palm_frond", "jungle/thatch",
+    "mer/algue", "mer/herbier", "mer/poissons", "mer/bulle", "tazira/canisse",
+}
 
 
 IMPORT_V64 = """[remap]
@@ -557,6 +573,26 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n76 += 1
     print(f"Astralys V76: {n76} fichiers")
+    # V158 : toutes les autres textures du monde (importées par défaut sans perte et sans mipmaps :
+    # scintillement et moiré au loin, mémoire vidéo pleine) : compressées, avec mipmaps. Les cartes
+    # de relief (_n) en haute qualité (BPTC : les shaders du terrain lisent leurs trois canaux), les
+    # sols partagés aussi. Restent comme avant : les images de l'interface (objets, portraits,
+    # carte, ui), le pixel art du Clan, et les découpes fines (feuillages, plumes, filets, vitraux)
+    # dont la transparence fondrait au loin.
+    n158 = 0
+    tex_dir = target / "textures"
+    for f in sorted(list(tex_dir.rglob("*.png")) + list(tex_dir.rglob("*.jpg"))):
+        rel = f.relative_to(tex_dir)
+        if len(rel.parts) < 2 or rel.parts[0] in GARDER_V158 or f"{rel.parts[0]}/{f.stem}" in DECOUPES_V158:
+            continue
+        imp = f.with_name(f.name + ".import")
+        old = imp.read_text() if imp.is_file() else ""
+        if "mipmaps/generate=true" in old:
+            continue
+        hq = f.name.endswith("_n.png") or rel.parts[0] == "terrain"
+        imp.write_text(IMPORT_V64.format(nm=2, hq="true" if hq else "false"))
+        n158 += 1
+    print(f"Textures du monde V158 (compressées, mipmaps): {n158} fichiers")
     # V56 : les polices du carnet (Lora, et DejaVu Sans pour les symboles ★ ⚓ ♥ ✓)
     fonts = source / "fonts"
     if fonts.is_dir():

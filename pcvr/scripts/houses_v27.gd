@@ -276,6 +276,12 @@ func _tiled(path: String, scale_value: float, tint: Color) -> StandardMaterial3D
 	m.uv1_world_triplanar = true
 	m.uv1_scale = Vector3.ONE * scale_value
 	m.roughness = 0.9
+	# V158 : les planchers ont leur relief (les joints, le fil du bois)
+	var n: String = path.get_basename() + "_n.png"
+	if ResourceLoader.exists(n):
+		m.normal_enabled = true
+		m.normal_texture = load(n)
+		m.normal_scale = 0.8
 	return m
 
 
