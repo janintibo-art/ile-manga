@@ -134,6 +134,7 @@ func build(high_quality: bool) -> void:
 	_build_mesh(high_quality)
 	_build_collision()
 	_build_lake()
+	_totora_v159()
 	print("ILE_MANGA_V87: Île aux Moaïs ", count, "x", count, " en ", Time.get_ticks_msec() - t0, " ms")
 
 
@@ -354,7 +355,7 @@ func _build_mesh(high_quality: bool) -> void:
 	mat.shader = load("res://shaders/moai_terrain_v87.gdshader")
 	var texs := {"herbe": "res://assets/textures/terrain/grass.jpg", "herbe_n": "res://assets/textures/terrain/grass_n.png",
 		"herbe_seche": "res://assets/textures/boucan/herbe_seche.png", "herbe_seche_n": "res://assets/textures/boucan/herbe_seche_n.png",
-		"roche": "res://assets/textures/volcan/basalte.png", "roche_n": "res://assets/textures/terrain/rock_n.png",
+		"roche": "res://assets/textures/volcan/basalte.png", "roche_n": "res://assets/textures/volcan/basalte_n.png",
 		"sable": "res://assets/textures/terrain/sand.jpg", "sable_n": "res://assets/textures/terrain/sand_n.png",
 		"terre": "res://assets/textures/boucan/terre_noire.png", "terre_n": "res://assets/textures/boucan/terre_noire_n.png"}
 	for k in texs:
@@ -363,6 +364,9 @@ func _build_mesh(high_quality: bool) -> void:
 	mat.set_shader_parameter("biome", ImageTexture.create_from_image(biome))
 	mat.set_shader_parameter("biome_rect", Vector4(CENTER.x - HALF, CENTER.z - HALF, HALF * 2.0, HALF * 2.0))
 	mat.set_shader_parameter("extra_detail", high_quality)
+	var cv: Array = VOLCANS["lac"]
+	var cw: Vector3 = W(float(cv[0]), float(cv[1]))
+	mat.set_shader_parameter("cratere", Vector4(cw.x, cw.z, float(cv[4]) + 6.0, 1.0))     # V159
 	terrain_mat = mat
 	var per: int = (count - 1) / CHUNKS
 	for cz in range(CHUNKS):
@@ -466,5 +470,135 @@ func _build_lake() -> void:
 	m.roughness = 0.05
 	m.metallic_specular = 0.9
 	mi.material_override = m
+	# V159 : une eau douce qui fonce avec la profondeur, ses rides (comme le lac de Rano Kau : sombre,
+	# verte au bord)
+	if ResourceLoader.exists("res://shaders/eau_douce_v69.gdshader"):
+		var em := ShaderMaterial.new()
+		em.shader = load("res://shaders/eau_douce_v69.gdshader")
+		em.set_shader_parameter("deep", Color(0.05, 0.13, 0.12, 1.0))
+		em.set_shader_parameter("shallow", Color(0.22, 0.34, 0.24, 1.0))
+		em.set_shader_parameter("clarity", 1.5)
+		if ResourceLoader.exists("res://assets/textures/water/water_n.png"):
+			em.set_shader_parameter("ripple_n", load("res://assets/textures/water/water_n.png"))
+		mi.material_override = em
 	add_child(mi)
 	mi.global_position = W(float(v[0]), float(v[1]), LAC_Y)
+
+
+## V159 : les roselières du lac du cratère (les totoras de Rano Kau) : des îlots flottants de
+## roseaux, des tapis de tiges couchées, de l'eau libre entre eux (et toujours devant l'œil du lac).
+func _totora_v159() -> void:
+	var v: Array = VOLCANS["lac"]
+	var c := Vector2(float(v[0]), float(v[1]))
+	var R: float = float(v[4]) + 4.0
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 8759
+	var patches: Array = []
+	for k in range(40):
+		if patches.size() >= 13:
+			break
+		var a: float = rng.randf() * TAU
+		var r: float = sqrt(rng.randf()) * (R - 4.0)
+		var pc: Vector2 = c + Vector2(cos(a), sin(a)) * r
+		var pr: float = rng.randf_range(2.6, 6.0)
+		if pc.distance_to(Vector2(-96.0, 32.0)) < pr + 6.0:
+			continue                     # l'œil du lac reste en eau libre
+		var ok: bool = true
+		for q in patches:
+			if pc.distance_to(q[0]) < pr + float(q[1]) + 1.5:
+				ok = false
+		if ok:
+			patches.append([pc, pr])
+	if patches.is_empty():
+		return
+	# les tapis : des disques aux bords irréguliers, juste au-dessus de l'eau
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var xfs: Array = []
+	for q2 in patches:
+		var pc2: Vector2 = q2[0]
+		var pr2: float = q2[1]
+		var n: int = 28
+		var w0: Vector3 = W(pc2.x, pc2.y, LAC_Y + 0.03)
+		var ring: Array = []
+		var ph: float = rng.randf() * TAU
+		for j in range(n):
+			var aa: float = TAU * j / n
+			var rr: float = pr2 * (1.0 + 0.18 * sin(aa * 3.0 + ph) + 0.1 * sin(aa * 7.0 + ph * 2.0))
+			ring.append(w0 + Vector3(cos(aa) * rr, 0, sin(aa) * rr))
+		for j2 in range(n):
+			st.set_normal(Vector3.UP)
+			st.set_uv(Vector2(w0.x, w0.z) * 0.5)
+			st.add_vertex(w0)
+			var a2: Vector3 = ring[j2]
+			st.set_uv(Vector2(a2.x, a2.z) * 0.5)
+			st.add_vertex(a2)
+			var b: Vector3 = ring[(j2 + 1) % n]
+			st.set_uv(Vector2(b.x, b.z) * 0.5)
+			st.add_vertex(b)
+		# les touffes de roseaux sur l'îlot (plus serrées au milieu)
+		var nb: int = int(pr2 * pr2 * 3.2)
+		for t in range(nb):
+			var ta: float = rng.randf() * TAU
+			var tr: float = pow(rng.randf(), 0.7) * pr2 * 0.95
+			var tp: Vector3 = w0 + Vector3(cos(ta) * tr, -0.02, sin(ta) * tr)
+			var sc: float = rng.randf_range(0.75, 1.25) * (1.0 - 0.3 * tr / pr2)
+			xfs.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sc, sc, sc)), tp))
+	var tapis := MeshInstance3D.new()
+	tapis.name = "Totoras_tapis_v159"
+	tapis.mesh = st.commit()
+	var tm := StandardMaterial3D.new()
+	tm.albedo_texture = load("res://assets/textures/terrain/grass.jpg")
+	tm.albedo_color = Color(0.85, 0.74, 0.42)
+	tm.uv1_scale = Vector3(1.0, 1.0, 1.0)
+	tm.roughness = 0.95
+	tapis.material_override = tm
+	add_child(tapis)
+	# les roseaux : un seul maillage (une touffe), répété (MultiMesh)
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = _touffe_v159()
+	mm.instance_count = xfs.size()
+	for i in range(xfs.size()):
+		mm.set_instance_transform(i, xfs[i])
+	var mmi := MultiMeshInstance3D.new()
+	mmi.name = "Totoras_v159"
+	mmi.multimesh = mm
+	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(mmi)
+
+
+## Une touffe de roseaux : douze tiges fines, vertes au pied, blondes en haut, un peu penchées.
+func _touffe_v159() -> ArrayMesh:
+	var r := RandomNumberGenerator.new()
+	r.seed = 8760
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for k in range(18):
+		var a: float = r.randf() * TAU
+		var base := Vector3(cos(a), 0, sin(a)) * r.randf_range(0.0, 0.26)
+		var hh: float = r.randf_range(1.3, 2.5)
+		var lean := Vector3(cos(a), 0, sin(a)) * r.randf_range(0.05, 0.4)
+		var side := Vector3(-sin(a), 0, cos(a)) * 0.026
+		var segs: int = 4
+		for s in range(segs):
+			var t0: float = float(s) / segs
+			var t1: float = float(s + 1) / segs
+			var p0: Vector3 = base + Vector3.UP * hh * t0 + lean * t0 * t0
+			var p1: Vector3 = base + Vector3.UP * hh * t1 + lean * t1 * t1
+			var w0: float = 1.0 - t0 * 0.85
+			var w1: float = 1.0 - t1 * 0.85
+			var c0: Color = Color(0.24, 0.36, 0.14).lerp(Color(0.66, 0.6, 0.34), t0)
+			var c1: Color = Color(0.24, 0.36, 0.14).lerp(Color(0.66, 0.6, 0.34), t1)
+			var nrm := Vector3(cos(a), 0.3, sin(a)).normalized()
+			for q in [[p0 - side * w0, c0], [p0 + side * w0, c0], [p1 + side * w1, c1], [p0 - side * w0, c0], [p1 + side * w1, c1], [p1 - side * w1, c1]]:
+				st.set_color(q[1])
+				st.set_normal(nrm)
+				st.add_vertex(q[0])
+	var m := StandardMaterial3D.new()
+	m.vertex_color_use_as_albedo = true
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.roughness = 0.85
+	var mesh: ArrayMesh = st.commit()
+	mesh.surface_set_material(0, m)
+	return mesh

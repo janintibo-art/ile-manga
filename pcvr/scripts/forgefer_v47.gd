@@ -26,6 +26,8 @@ var s: Node3D
 var habitants: Array = []
 var by_id: Dictionary = {}
 var _banner_mat: StandardMaterial3D
+var _drap_mat: StandardMaterial3D           # V159 : la bannière brodée
+static var sondes: bool = true              # V159 : la sonde de reflets (l'outil d'images, sans carte graphique, s'en passe)
 var _gem_mats: Array = []
 var _clock: float = 0.0
 
@@ -86,6 +88,7 @@ func build() -> void:
 	for zb in range(int(Z0) + 4, int(Z1), 9):
 		n._mesh(s, n._box_mesh(Vector3(X1 - X0, 0.9, 1.0)), stone, Vector3(0, H - 0.45, float(zb)))
 	_pillars()
+	_arcades_v159()
 	_chandeliers()
 	_lava_channels()
 	_throne()
@@ -94,6 +97,11 @@ func build() -> void:
 	_runes()
 	_jeweler()
 	_maisons_v85()
+	# V159 : une sonde de reflets pour la halle : l'or, le bronze et le fer reflètent la lave et
+	# les lustres (sous terre, le ciel ne se reflète plus : sans elle, les métaux restaient ternes)
+	var sonde := ReflectionProbe.new() if sondes else null
+	if sonde != null:
+		_sonde_v159(sonde)
 	# Grand tapis rouge dans l'allée centrale
 	var rug := StandardMaterial3D.new()
 	rug.albedo_color = Color(0.45, 0.08, 0.08)
@@ -105,6 +113,20 @@ func build() -> void:
 		"text": "E : sortir de Forgefer", "vr": "Gâchette : sortir de Forgefer", "call": _leave})
 	d.spawn["forgefer"] = [entry_point(), entry_facing()]
 	_spawn_dwarves()
+
+
+func _sonde_v159(sonde: ReflectionProbe) -> void:
+	sonde.name = "Sonde_halle_v159"
+	sonde.size = Vector3(X1 - X0 + 2.0, H + 1.0, Z1 - Z0 + 12.0)
+	sonde.box_projection = true
+	sonde.interior = true
+	sonde.update_mode = ReflectionProbe.UPDATE_ONCE
+	sonde.max_distance = 60.0
+	sonde.ambient_mode = ReflectionProbe.AMBIENT_COLOR
+	sonde.ambient_color = Color(0.42, 0.33, 0.27)
+	sonde.ambient_color_energy = 0.45
+	s.add_child(sonde)
+	sonde.position = Vector3(0, H * 0.5, (Z0 + Z1 + 10.0) * 0.5)
 
 
 func _leave() -> void:
@@ -184,8 +206,63 @@ func _pillars() -> void:
 			var z: float = (float(PILLAR_Z[k]) + float(PILLAR_Z[k + 1])) * 0.5
 			var bx: float = float(px2) * 1.1
 			n._mesh(s, n._box_mesh(Vector3(0.05, 4.2, 2.2)), _banner_mat, Vector3(bx, H - 4.2, z))
+			# V159 : l'emblème de Forgefer brodé sur les deux faces
+			for fx in [-1.0, 1.0]:
+				_drap_v159(Vector3(bx + fx * 0.03, H - 4.2, z), Vector2(2.2, 4.2), Vector3(0, fx * PI * 0.5, 0))
 			n._mesh(s, n._box_mesh(Vector3(0.07, 0.6, 0.6)), gold, Vector3(bx, H - 3.8, z), Vector3(PI * 0.25, 0, 0))
 			n._mesh(s, n._cyl(0.05, 0.05, 2.5, 6), n._mat("bois"), Vector3(bx, H - 2.05, z), Vector3(PI * 0.5, 0, 0))
+
+
+## V159 : des arcs de pierre d'un pilier à l'autre, le long de la nef (des voussoirs, la clef un peu
+## plus grande, une moulure dorée sous l'arc) : la halle n'est plus une boîte à piliers.
+func _arcades_v159() -> void:
+	var stone: Material = n._mat("pierre")
+	var gold: Material = n._mat("or")
+	for px in PILLAR_X:
+		for k in range(PILLAR_Z.size() - 1):
+			var z0: float = float(PILLAR_Z[k]) + 1.1
+			var z1: float = float(PILLAR_Z[k + 1]) - 1.1
+			var zc: float = (z0 + z1) * 0.5
+			var r: float = (z1 - z0) * 0.5
+			var y0: float = H - 1.0 - r
+			var nv: int = 13
+			for v in range(nv):
+				var a0: float = PI * float(v) / nv
+				var a1: float = PI * float(v + 1) / nv
+				var am: float = (a0 + a1) * 0.5
+				var rm: float = r + 0.45
+				var p := Vector3(float(px), y0 + sin(am) * rm, zc - cos(am) * rm)
+				var corde: float = 2.0 * rm * sin((a1 - a0) * 0.5) + 0.02
+				var cle: bool = v == nv / 2
+				n._mesh(s, n._box_mesh(Vector3(1.3 if cle else 1.15, 0.9 if cle else 0.8, corde)), stone, p, Vector3(am - PI * 0.5, 0, 0))
+				# l'écoinçon : la pierre pleine entre le dos de l'arc et le haut de la nef
+				var dos: float = y0 + sin(am) * (r + 0.85)
+				var haut: float = H - 1.0
+				if haut - dos > 0.05:
+					var larg: float = absf(cos(a0) - cos(a1)) * (r + 0.85) + 0.04
+					n._mesh(s, n._box_mesh(Vector3(0.9, haut - dos + 0.1, larg)), stone, Vector3(float(px), (haut + dos) * 0.5, p.z))
+			# la moulure dorée qui suit l'intrados
+			for v2 in range(nv):
+				var b0: float = PI * float(v2) / nv
+				var b1: float = PI * float(v2 + 1) / nv
+				var bm: float = (b0 + b1) * 0.5
+				var q := Vector3(float(px), y0 + sin(bm) * (r + 0.02), zc - cos(bm) * (r + 0.02))
+				n._mesh(s, n._box_mesh(Vector3(0.6, 0.05, 2.0 * r * sin((b1 - b0) * 0.5) + 0.01)), gold, q, Vector3(bm - PI * 0.5, 0, 0))
+			# le mur de remplissage au-dessus de l'arc (les écoinçons), jusqu'au plafond
+			n._mesh(s, n._box_mesh(Vector3(0.9, 1.0, z1 - z0 + 2.2)), stone, Vector3(float(px), H - 0.5, zc))
+
+
+## V159 : un drap brodé (la bannière de Forgefer : le marteau sur l'enclume sous la montagne).
+func _drap_v159(at: Vector3, taille: Vector2, rot: Vector3) -> void:
+	if _drap_mat == null:
+		_drap_mat = StandardMaterial3D.new()
+		_drap_mat.roughness = 0.88
+		_drap_mat.albedo_texture = load("res://assets/textures/beau159/banniere_naine.png") if ResourceLoader.exists("res://assets/textures/beau159/banniere_naine.png") else null
+		if _drap_mat.albedo_texture == null:
+			_drap_mat.albedo_color = Color(0.55, 0.06, 0.08)
+	var q := QuadMesh.new()
+	q.size = taille
+	n._mesh(s, q, _drap_mat, at, rot)
 
 
 ## Lustres de fer au-dessus de la nef, appliques le long des murs.
@@ -271,6 +348,7 @@ func _throne() -> void:
 		for k2 in range(2):
 			var bxx: float = sx2 * (8.0 + k2 * 6.0)
 			n._mesh(s, n._box_mesh(Vector3(2.4, 6.0, 0.06)), _banner_mat, Vector3(bxx, 8.0, Z0 + 0.1))
+			_drap_v159(Vector3(bxx, 8.0, Z0 + 0.135), Vector2(2.4, 6.0), Vector3.ZERO)
 			n._mesh(s, n._cyl(0.4, 0.4, 0.07, 6), gold, Vector3(bxx, 8.8, Z0 + 0.16), Vector3(PI * 0.5, 0, 0))
 	n._light(s, Vector3(0, 6.0, Z0 + 6.0), Color(1.0, 0.75, 0.45), 2.0, 16.0)
 

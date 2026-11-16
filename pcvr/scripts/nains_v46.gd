@@ -16,6 +16,8 @@ const FauneScript = preload("res://scripts/faune_nains_v47.gd")
 const Decor = preload("res://scripts/decor_v53.gd")
 const Cassable = preload("res://scripts/cassable_v66.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
+const StatueNaine = preload("res://scripts/statue_naine_v159.gd")
+const T159 := "res://assets/textures/beau159/"
 const ASH_R: float = 185.0
 
 var main: Node
@@ -122,6 +124,13 @@ func _mat(key: String) -> Material:
 			m.uv1_triplanar = true
 			m.uv1_scale = Vector3(0.22, 0.22, 0.22)
 			m.albedo_color = Color(0.62, 0.58, 0.56)
+			if ResourceLoader.exists(T159 + "pierre_naine.png"):
+				# V159 : la pierre taillée des nains (grands blocs, joints fins, coups de ciseau)
+				m.albedo_texture = load(T159 + "pierre_naine.png")
+				m.normal_texture = load(T159 + "pierre_naine_n.png")
+				m.normal_scale = 1.0
+				m.uv1_scale = Vector3(0.5, 0.5, 0.5)
+				m.albedo_color = Color(0.6, 0.57, 0.56)
 		"dalle":
 			m.albedo_texture = load("res://assets/textures/temple/temple_floor.png")
 			m.normal_enabled = true
@@ -129,6 +138,13 @@ func _mat(key: String) -> Material:
 			m.uv1_triplanar = true
 			m.uv1_scale = Vector3(0.18, 0.18, 0.18)
 			m.albedo_color = Color(0.55, 0.52, 0.5)
+			if ResourceLoader.exists(T159 + "dalles_naines.png"):
+				# V159 : les grandes dalles gravées d'une rune
+				m.albedo_texture = load(T159 + "dalles_naines.png")
+				m.normal_texture = load(T159 + "dalles_naines_n.png")
+				m.uv1_scale = Vector3(0.5, 0.5, 0.5)
+				m.albedo_color = Color(0.82, 0.8, 0.8)
+				m.roughness = 0.62
 		"fer":
 			# V53 : fer martelé (grain), plus un aplat lisse
 			m.albedo_texture = load("res://assets/textures/terrain/rock.jpg")
@@ -139,6 +155,14 @@ func _mat(key: String) -> Material:
 			m.albedo_color = Color(0.34, 0.32, 0.32)
 			m.metallic = 0.7
 			m.roughness = 0.5
+			if ResourceLoader.exists(T159 + "fer_martele.png"):
+				# V159 : les coups de marteau, la calamine, un peu de rouille
+				m.albedo_texture = load(T159 + "fer_martele.png")
+				m.normal_texture = load(T159 + "fer_martele_n.png")
+				m.uv1_scale = Vector3(1.6, 1.6, 1.6)
+				m.albedo_color = Color(0.85, 0.85, 0.88)
+				m.metallic = 0.75
+				m.roughness = 0.46
 		"bronze":
 			m.albedo_color = Color(0.62, 0.42, 0.22)
 			m.metallic = 0.85
@@ -155,6 +179,27 @@ func _mat(key: String) -> Material:
 		"charbon":
 			m.albedo_color = Color(0.08, 0.07, 0.07)
 			m.roughness = 0.95
+			if ResourceLoader.exists(T159 + "ecorce_calcinee.png"):
+				# V159 : le bois brûlé, sa peau de crocodile et ses fentes
+				m.albedo_texture = load(T159 + "ecorce_calcinee.png")
+				m.normal_enabled = true
+				m.normal_texture = load(T159 + "ecorce_calcinee_n.png")
+				m.uv1_triplanar = true
+				m.uv1_scale = Vector3(1.2, 1.2, 1.2)
+				m.albedo_color = Color(1.0, 1.0, 1.0)
+				m.roughness = 0.88
+		"statue":
+			# V159 : la pierre des rois sculptés (le grain de la roche, un peu de lichen sur le dessus)
+			_mats[key] = Rocks.material(Color(0.6, 0.57, 0.55), 0.08, 0.35)
+			return _mats[key]
+		"basalte":
+			# V159 : les orgues de basalte (la roche du volcan, ses vacuoles)
+			var bm: ShaderMaterial = (Rocks.material(Color(1.25, 1.25, 1.32), 0.05, 0.3) as ShaderMaterial).duplicate()
+			if ResourceLoader.exists("res://assets/textures/volcan/basalte_n.png"):
+				bm.set_shader_parameter("stone_tex", load("res://assets/textures/volcan/basalte.png"))
+				bm.set_shader_parameter("stone_n", load("res://assets/textures/volcan/basalte_n.png"))
+			_mats[key] = bm
+			return bm
 		"braise":
 			m.albedo_color = Color(1.0, 0.45, 0.1)
 			m.emission_enabled = true
@@ -346,22 +391,41 @@ func _build_volcano() -> void:
 	# Lac de lave : un disque qui bouillonne (couleurs qui coulent, croûte sombre)
 	_lava_mat = ShaderMaterial.new()
 	var sh := Shader.new()
+	# V159 : une lave vivante : des plaques de croûte noire qui dérivent lentement, la lave qui
+	# brille dans les fentes entre elles, des plaques encore chaudes çà et là
 	sh.code = """shader_type spatial;
 render_mode cull_disabled;
 float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+vec2 h2(vec2 p) { p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3))); return fract(sin(p) * 43758.5453); }
 float n(vec2 p) { vec2 a = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
 	return mix(mix(h(a), h(a + vec2(1, 0)), f.x), mix(h(a + vec2(0, 1)), h(a + vec2(1, 1)), f.x), f.y); }
+vec2 vor(vec2 p, float t) {
+	vec2 i = floor(p); vec2 f = fract(p);
+	float d1 = 8.0; float d2 = 8.0;
+	for (int y = -1; y <= 1; y++) { for (int x = -1; x <= 1; x++) {
+		vec2 g = vec2(float(x), float(y));
+		vec2 o = h2(i + g); o = 0.5 + 0.38 * sin(t + 6.2831 * o);
+		float d = length(g + o - f);
+		if (d < d1) { d2 = d1; d1 = d; } else if (d < d2) { d2 = d; }
+	} }
+	return vec2(d1, d2 - d1);
+}
 varying vec3 wp;
 void vertex() { wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz; }
 void fragment() {
-	vec2 p = wp.xz * 0.35;
+	vec2 p = wp.xz * 0.3;
 	float t = TIME * 0.12;
-	float a = n(p + vec2(t, -t * 0.7)) * 0.6 + n(p * 2.3 - vec2(t * 1.3, t)) * 0.4;
-	float crust = smoothstep(0.45, 0.62, a);
-	vec3 hot = mix(vec3(1.0, 0.85, 0.3), vec3(1.0, 0.3, 0.05), a);
-	ALBEDO = mix(hot * 0.3, vec3(0.06, 0.04, 0.04), crust);
-	EMISSION = hot * (1.0 - crust) * 3.5;
-	ROUGHNESS = mix(0.3, 0.9, crust);
+	vec2 w = vec2(n(p * 0.6 + t * 0.3), n(p * 0.6 - t * 0.25 + 7.0)) * 0.7;
+	vec2 v = vor(p + vec2(t * 0.35, -t * 0.22) + w, t * 0.6);
+	float fente = 1.0 - smoothstep(0.015, 0.12, v.y);
+	float chaud = smoothstep(0.58, 0.9, n(p * 0.45 + vec2(t * 0.5, t * 0.15)));
+	float plaque = chaud * (1.0 - smoothstep(0.1, 0.55, v.x)) * 0.6;
+	vec3 lave = mix(vec3(1.0, 0.28, 0.04), vec3(1.0, 0.82, 0.35), fente * 0.85);
+	vec3 croute = vec3(0.045, 0.03, 0.025) * (0.6 + 0.8 * n(p * 7.0)) + vec3(0.12, 0.03, 0.0) * chaud;
+	float g = max(fente, plaque);
+	ALBEDO = mix(croute, lave * 0.35, g);
+	EMISSION = lave * (fente * 4.0 + plaque * 1.4) + vec3(0.25, 0.05, 0.0) * chaud;
+	ROUGHNESS = mix(0.82, 0.3, g);
 }
 """
 	_lava_mat.shader = sh
@@ -376,6 +440,24 @@ void fragment() {
 	lava.material_override = _lava_mat
 	add_child(lava)
 	lava.global_position = top + Vector3.UP * 0.7
+	# V159 : le bord du lac : des blocs de basalte à demi noyés cassent le cercle trop net
+	var rr := RandomNumberGenerator.new()
+	rr.seed = 4647
+	var bm := MultiMesh.new()
+	bm.transform_format = MultiMesh.TRANSFORM_3D
+	bm.mesh = Rocks.shape(4648, Vector3(1.6, 0.9, 1.3), 0.7, 0.3)
+	bm.instance_count = 46
+	for k in range(46):
+		var a: float = TAU * k / 46.0 + rr.randf_range(-0.04, 0.04)
+		var r: float = ile.CRATER_R * 0.86 + rr.randf_range(-0.5, 0.6)
+		var sc: float = rr.randf_range(0.6, 1.5)
+		var b := Basis(Vector3.UP, rr.randf() * TAU).scaled(Vector3(sc, sc * rr.randf_range(0.6, 1.0), sc))
+		bm.set_instance_transform(k, Transform3D(b, top + Vector3(cos(a) * r, 0.7 + rr.randf_range(-0.15, 0.1), sin(a) * r)))
+	var bmi := MultiMeshInstance3D.new()
+	bmi.name = "Bord_du_lac_de_lave_v159"
+	bmi.multimesh = bm
+	bmi.material_override = _mat("basalte")
+	add_child(bmi)
 	_light(self, Vector3.ZERO, Color(1.0, 0.45, 0.15), 4.0, 45.0).global_position = top + Vector3.UP * 6.0
 	_smoke(self, top + Vector3.UP * 4.0, 9.0 if pc else 6.0, 60 if pc else 30, 6.0, 1.4).global_position = top + Vector3.UP * 4.0
 	_embers(self, top + Vector3.UP * 2.0, Vector3(8, 1, 8), 70)
@@ -387,7 +469,7 @@ func _build_landscape() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 4640
 	var C: Vector3 = ile.CENTER
-	var rock_mat: Material = Rocks.material(Color(0.42, 0.4, 0.42), 0.08, 0.22)
+	var rock_mat: Material = _mat("basalte")             # V159 : les blocs de lave figée, en basalte
 	var gate_dir := Vector2(cos(ile.BAY_ANGLE), sin(ile.BAY_ANGLE))
 	# Rochers et blocs de lave refroidie
 	for k in range(70):
@@ -404,6 +486,10 @@ func _build_landscape() -> void:
 		var mi := _mesh(self, Rocks.shape(4650 + k % 12, Vector3(sz, sz * rng.randf_range(0.6, 1.1), sz * 1.1), 0.8, 0.2), rock_mat, Vector3(C.x + lx, h + sz * 0.15, C.z + lz), Vector3(0, rng.randf() * TAU, 0))
 		mi.name = "Roche_%d" % k
 	# Orgues de basalte : colonnes hexagonales serrées
+	# V159 : de vraies orgues : des colonnes à six pans jointives (rangées en nid d'abeille), qui
+	# montent en gradins vers le milieu du massif, dans la roche du volcan ; un seul maillage
+	# (MultiMesh) pour toutes. (Le hasard de l'île est tiré comme avant : le reste ne bouge pas.)
+	var orgues: Array = []
 	for g in range(7):
 		var a2: float = rng.randf() * TAU
 		var r2: float = rng.randf_range(55.0, 90.0)
@@ -414,11 +500,11 @@ func _build_landscape() -> void:
 		for c in range(14):
 			var ox: float = rng.randf_range(-2.5, 2.5)
 			var oz: float = rng.randf_range(-2.5, 2.5)
-			var hh: float = rng.randf_range(1.0, 5.0)
-			var y: float = _ground(gx + ox, gz + oz)
-			if y < 0.3:
-				continue
-			_mesh(self, _cyl(0.42, 0.45, hh, 6), rock_mat, Vector3(gx + ox, y + hh * 0.5 - 0.3, gz + oz), Vector3(0, rng.randf() * 0.5, 0))
+			rng.randf_range(1.0, 5.0)
+			if _ground(gx + ox, gz + oz) >= 0.3:
+				rng.randf()
+		orgues.append(Vector2(gx, gz))
+	_orgues_v159(orgues)
 	# Arbres calcinés
 	var char_m: Material = _mat("charbon")
 	for k in range(26):
@@ -453,6 +539,83 @@ func _build_landscape() -> void:
 		var sm := _smoke(self, Vector3(fx, _ground(fx, fz) + 0.2, fz), 2.0, 14, 0.4, 0.5)
 		sm.global_position = Vector3(fx, _ground(fx, fz) + 0.2, fz)
 	gate_dir = gate_dir
+
+
+## V159 : les orgues de basalte (centres des massifs, monde) : des colonnes hexagonales jointives.
+func _orgues_v159(centres: Array) -> void:
+	var xfs: Array = []
+	var cols: Array = []
+	var r2 := RandomNumberGenerator.new()
+	r2.seed = 4659
+	var pas: float = 0.84                       # d'une colonne à l'autre (rayon 0,45 : elles se touchent)
+	for c in centres:
+		var cc: Vector2 = c
+		var R: float = r2.randf_range(2.6, 3.6)
+		var haut: float = r2.randf_range(3.0, 5.5)
+		var pente := Vector2(r2.randf_range(-1, 1), r2.randf_range(-1, 1)).normalized() * 0.25
+		var n: int = int(R / pas) + 1
+		for q in range(-n, n + 1):
+			for rr in range(-n, n + 1):
+				var lp := Vector2((q + rr * 0.5) * pas, rr * pas * 0.866)
+				var d: float = lp.length()
+				if d > R:
+					continue
+				var p: Vector2 = cc + lp
+				var y: float = _ground(p.x, p.y)
+				if y < 0.3:
+					continue
+				var hh: float = 0.8 + haut * pow(1.0 - d / R, 0.6) + lp.dot(pente) + r2.randf_range(-0.35, 0.35)
+				hh = maxf(0.6, hh)
+				var b := Basis(Vector3.UP, r2.randf_range(-0.04, 0.04)).scaled(Vector3(1.0, hh, 1.0))
+				xfs.append(Transform3D(b, Vector3(p.x, y + hh * 0.5 - 0.35, p.y)))
+				var v: float = r2.randf_range(0.82, 1.08)
+				cols.append(Color(v, v, v * 1.02))
+	if xfs.is_empty():
+		return
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = _prisme_hex(0.46)
+	mm.instance_count = xfs.size()
+	for i in range(xfs.size()):
+		mm.set_instance_transform(i, xfs[i])
+		mm.set_instance_color(i, cols[i])
+	var mmi := MultiMeshInstance3D.new()
+	mmi.name = "Orgues_de_basalte_v159"
+	mmi.multimesh = mm
+	mmi.material_override = _mat("basalte")
+	add_child(mmi)
+
+
+## V159 : une colonne de basalte : un prisme à six pans (faces planes, arêtes nettes), haut de 1 m
+## (centré), le dessus un peu bombé ; on l'étire en hauteur.
+func _prisme_hex(r: float) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var pts: Array = []
+	for k in range(6):
+		var a: float = TAU * k / 6.0
+		pts.append(Vector2(cos(a), sin(a)) * r)
+	for k in range(6):
+		var p0: Vector2 = pts[k]
+		var p1: Vector2 = pts[(k + 1) % 6]
+		var nrm := Vector3((p0.x + p1.x) * 0.5, 0, (p0.y + p1.y) * 0.5).normalized()
+		var a0 := Vector3(p0.x, -0.5, p0.y)
+		var a1 := Vector3(p1.x, -0.5, p1.y)
+		var b0 := Vector3(p0.x, 0.5, p0.y)
+		var b1 := Vector3(p1.x, 0.5, p1.y)
+		for v in [a0, a1, b1, a0, b1, b0]:
+			st.set_normal(nrm)
+			st.set_uv(Vector2((v as Vector3).x + (v as Vector3).z, (v as Vector3).y))
+			st.add_vertex(v)
+		# le dessus : un éventail depuis le milieu (un peu plus haut : la colonne est usée en dôme)
+		var c := Vector3(0, 0.5 + 0.03, 0)
+		for v2 in [c, b0, b1]:
+			st.set_normal(Vector3.UP)
+			st.set_uv(Vector2((v2 as Vector3).x, (v2 as Vector3).z))
+			st.add_vertex(v2)
+	st.generate_tangents()
+	return st.commit()
 
 
 func _near_settlement(x: float, z: float, r: float) -> bool:
@@ -616,26 +779,10 @@ func _build_forgefer() -> void:
 
 
 func _statue(parent: Node3D, at: Vector3) -> void:
-	var s := Node3D.new()
-	parent.add_child(s)
-	s.position = at
-	var st: Material = _mat("pierre")
-	_solid(s, Vector3(3.2, 1.6, 3.2), Vector3(0, 0.8, 0), st)
-	_mesh(s, _box_mesh(Vector3(0.9, 2.2, 1.0)), st, Vector3(-0.6, 2.7, 0))
-	_mesh(s, _box_mesh(Vector3(0.9, 2.2, 1.0)), st, Vector3(0.6, 2.7, 0))
-	_mesh(s, _cyl(1.5, 1.7, 3.6, 10), st, Vector3(0, 5.4, 0))
-	_mesh(s, _cyl(0.6, 0.6, 0.5, 10), _mat("bronze"), Vector3(0, 4.0, 0))
-	for sx in [-1.0, 1.0]:
-		_mesh(s, _cyl(0.4, 0.45, 2.6, 8), st, Vector3(sx * 1.6, 5.6, 0.4), Vector3(0.5, 0, sx * 0.25))
-	_mesh(s, _sphere(0.95, 12), st, Vector3(0, 8.1, 0), Vector3.ZERO, Vector3(1.0, 1.05, 1.0))
-	_mesh(s, _cyl(0.0, 1.1, 2.6, 10), st, Vector3(0, 6.6, 0.7), Vector3(-0.15, 0, 0))
-	_mesh(s, _cyl(1.05, 1.15, 0.35, 12), _mat("bronze"), Vector3(0, 8.7, 0))
-	_mesh(s, _cyl(0.0, 1.05, 1.0, 12), _mat("bronze"), Vector3(0, 9.3, 0))
-	for sx in [-1.0, 1.0]:
-		_mesh(s, _sphere(0.12, 6), _mat("rune"), Vector3(sx * 0.35, 8.25, 0.85))
-	# La hache, tête posée au sol devant le roi
-	_mesh(s, _cyl(0.12, 0.12, 4.8, 8), _mat("bois"), Vector3(0, 3.4, 1.9))
-	_mesh(s, _box_mesh(Vector3(2.0, 1.4, 0.2)), _mat("fer"), Vector3(0, 1.3, 1.9))
+	# V159 : le roi est sculpté (statue_naine_v159.gd) ; le socle garde sa collision
+	var s: Node3D = StatueNaine.make(parent, at, {"pierre": _mat("statue"), "bronze": _mat("bronze"), "fer": _mat("fer"), "rune": _mat("rune")})
+	s.name = "Roi_de_pierre_v159_" + ("gauche" if at.x < 0.0 else "droite")
+	_solid(s, Vector3(3.2, 1.6, 3.2), Vector3(0, 0.8, 0), _mat("pierre")).visible = false
 
 
 func _brazier(parent: Node3D, at: Vector3) -> void:

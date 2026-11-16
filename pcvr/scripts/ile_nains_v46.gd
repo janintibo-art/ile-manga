@@ -265,11 +265,12 @@ func _build_mesh(high_quality: bool) -> void:
 	mat.set_shader_parameter("sand_tex", load(v + "sable_noir.png"))
 	mat.set_shader_parameter("sand_n", load(t + "sand_n.png"))
 	mat.set_shader_parameter("soil_tex", load(v + "cendre.png"))
-	mat.set_shader_parameter("soil_n", load(t + "sand_n.png"))
+	# V159 : la cendre et le basalte ont leur propre relief (les lapilli, les vacuoles)
+	mat.set_shader_parameter("soil_n", load(v + "cendre_n.png") if ResourceLoader.exists(v + "cendre_n.png") else load(t + "sand_n.png"))
 	mat.set_shader_parameter("moss_tex", load(v + "herbe_brulee.png"))
 	mat.set_shader_parameter("moss_n", load(t + "grass_n.png"))
 	mat.set_shader_parameter("rock_tex", load(v + "basalte.png"))
-	mat.set_shader_parameter("rock_n", load(t + "rock_n.png"))
+	mat.set_shader_parameter("rock_n", load(v + "basalte_n.png") if ResourceLoader.exists(v + "basalte_n.png") else load(t + "rock_n.png"))
 	mat.set_shader_parameter("extra_detail", high_quality)
 	var per: int = (count - 1) / CHUNKS
 	for cz in range(CHUNKS):

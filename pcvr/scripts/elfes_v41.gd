@@ -44,6 +44,8 @@ var _mist_clock: float = 0.0
 var _mats: Dictionary = {}
 var _body: StaticBody3D
 var village: Node3D                           # V42 : la vie du village (habitants, marché…)
+var _lot: bool = false                        # V159 : les pièces du village sont regroupées par matière
+var _statiques: Array = []
 var feerique: Node3D                          # V43 : la porte de l'Arbre-Mère et le Royaume des Racines
 
 
@@ -79,7 +81,10 @@ func build_island() -> void:
 	for sp in preload("res://scripts/feerique_v43.gd").spots_for(ile):
 		flora.clearings.append([Vector2(sp.x - ile.CENTER.x, sp.z - ile.CENTER.z), 5.0])
 	flora.build_elfes(ile, pc)
+	_lot = true
 	_build_village()
+	_lot = false
+	_regrouper_v159()
 	_build_mist()
 
 
@@ -100,21 +105,51 @@ func _mat(key: String) -> Material:
 			m.uv1_triplanar = true
 			m.uv1_scale = Vector3(0.9, 0.9, 0.9)
 			m.albedo_color = Color(0.92, 0.82, 0.66)
+			if ResourceLoader.exists("res://assets/textures/maisons/bois_meuble_n.png"):
+				# V159 : un vrai bois (le fil, les pores, le relief), de la même teinte moyenne
+				m.albedo_texture = load("res://assets/textures/maisons/bois_meuble.png")
+				m.normal_enabled = true
+				m.normal_texture = load("res://assets/textures/maisons/bois_meuble_n.png")
+				m.normal_scale = 0.8
+				m.roughness = 0.7
 		"pierre":
 			m.albedo_texture = load("res://assets/textures/temple/temple_floor.png")
 			m.uv1_triplanar = true
 			m.uv1_scale = Vector3(0.25, 0.25, 0.25)
 			m.albedo_color = Color(1.0, 0.98, 0.94)
+			m.normal_enabled = true                                  # V159 : le relief des dalles
+			m.normal_texture = load("res://assets/textures/temple/temple_floor_n.png")
 		"mur":
 			m.albedo_texture = load("res://assets/textures/temple/temple_wall.png")
 			m.uv1_triplanar = true
 			m.uv1_scale = Vector3(0.6, 0.6, 0.6)
 			m.albedo_color = Color(1.0, 0.97, 0.9)
 			m.roughness = 0.9
+			m.normal_enabled = true                                  # V159 : le relief des pierres
+			m.normal_texture = load("res://assets/textures/temple/temple_wall_n.png")
 		"toit":
 			m.albedo_color = Color(0.36, 0.56, 0.42)
 			m.metallic = 0.45
 			m.roughness = 0.45
+			if ResourceLoader.exists("res://assets/textures/beau159/tuiles_feuilles.png"):
+				# V159 : un toit d'écailles en feuilles, en cuivre vert-de-gris
+				# (posé selon les UV du cône : les écailles descendent la pente, plus petites en haut)
+				m.albedo_texture = load("res://assets/textures/beau159/tuiles_feuilles.png")
+				m.normal_enabled = true
+				m.normal_texture = load("res://assets/textures/beau159/tuiles_feuilles_n.png")
+				m.uv1_scale = Vector3(4.0, 1.5, 1.0)
+				m.albedo_color = Color(1.0, 1.0, 1.0)
+				m.metallic = 0.35
+				m.roughness = 0.5
+		"pierre_mousse":
+			# V159 : les pierres plates du sentier (la roche du jeu, un peu de mousse dessus)
+			_mats[key] = Rocks.material(Color(0.86, 0.84, 0.8), 0.35, 0.45)
+			return _mats[key]
+		"verre":
+			m.albedo_color = Color(1.0, 0.95, 0.85, 0.28)
+			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			m.roughness = 0.08
+			m.metallic_specular = 0.8
 		"or":
 			m.albedo_color = Color(0.92, 0.76, 0.4)
 			m.metallic = 0.8
@@ -169,6 +204,8 @@ func _mesh(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, rot: Vector3
 	mi.rotation = rot
 	mi.scale = scl
 	parent.add_child(mi)
+	if _lot:
+		_statiques.append(mi)
 	return mi
 
 
@@ -204,6 +241,8 @@ func _solid(size: Vector3, xf: Transform3D, mat: Material, visible_box: bool = t
 		mi.material_override = mat
 		add_child(mi)
 		mi.global_transform = xf
+		if _lot:
+			_statiques.append(mi)
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
 	bs.size = size
@@ -342,7 +381,8 @@ func _build_village() -> void:
 	var side := Vector3(-dir.z, 0, dir.x)
 	var stones := MultiMesh.new()
 	stones.transform_format = MultiMesh.TRANSFORM_3D
-	stones.mesh = Rocks.shape(4170, Vector3(0.9, 0.18, 0.7), 0.5, 0.05)
+	# V159 : des pierres plates et irrégulières, moussues (et non plus des coussins de pierre)
+	stones.mesh = Rocks.shape(4170, Vector3(1.0, 0.16, 0.8), 0.32, 0.28, 0.15)
 	var n_st: int = int(length / 1.1)
 	stones.instance_count = n_st
 	var rng := RandomNumberGenerator.new()
@@ -353,7 +393,7 @@ func _build_village() -> void:
 		stones.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU), q))
 	var smi := MultiMeshInstance3D.new()
 	smi.multimesh = stones
-	smi.material_override = _mat("pierre")
+	smi.material_override = _mat("pierre_mousse")
 	add_child(smi)
 	var posts: int = int(length / 13.0)
 	for k in range(1, posts + 1):
@@ -362,9 +402,7 @@ func _build_village() -> void:
 				continue
 			var q2: Vector3 = start + dir * (k * 13.0) + side * sgn * 1.6
 			q2.y = ile.height(q2.x, q2.z)
-			_mesh(self, _cyl(0.06, 0.08, 2.4, 8), _mat("bois"), q2 + Vector3.UP * 1.2)
-			_mesh(self, _box_mesh(Vector3(0.5, 0.06, 0.06)), _mat("bois"), q2 + Vector3(0, 2.35, 0) - side * sgn * 0.2, Vector3(0, atan2(side.x, side.z) + PI * 0.5, 0))
-			_lantern(q2 + Vector3(0, 2.15, 0) - side * sgn * 0.4, true, 1.1)
+			_lampadaire_v159(q2, -side * sgn)
 	# Une arche de bienvenue au bout du ponton
 	var arch_p: Vector3 = start + dir * 3.0
 	arch_p.y = ile.height(arch_p.x, arch_p.z)
@@ -447,6 +485,7 @@ func _house_tree(i: int) -> void:
 	_mesh(house, _cyl(0.43, 0.43, 0.08, 16), _mat("bois"), Vector3(1.66, 1.87, 0), Vector3(0, 0, PI * 0.5))
 	for wa in [0.9, -0.9, 2.4]:
 		_mesh(house, _sphere(0.24, 12), _mat("fenetre"), Vector3(cos(wa) * 1.66, 1.55, sin(wa) * 1.66), Vector3.ZERO, Vector3(0.25, 1.0, 1.0) if absf(cos(wa)) > 0.5 else Vector3(1.0, 1.0, 0.25))
+	_maison_ouvragee_v159(house)
 	_cyl_collision(hc, 1.7, 2.8)
 	# V82 : on peut entrer dans la maison ronde (sa porte regarde la plate-forme)
 	var ddir: Vector3 = (house.global_transform.basis * Vector3(1, 0, 0)).normalized()
@@ -498,7 +537,143 @@ func _house_tree(i: int) -> void:
 	_solid(Vector3(2.0, 0.26, 2.6), Transform3D(Basis(Vector3.UP, -a_end + PI * 0.5), land), _mat("bois"))
 	# Le pied de la rampe : quelques pierres plates
 	var foot := Vector3(p.x + cos(a0) * R, p.y, p.z + sin(a0) * R)
-	_mesh(self, Rocks.shape(4180 + i, Vector3(1.6, 0.25, 1.2), 0.5, 0.05), _mat("pierre"), foot + Vector3.UP * 0.05)
+	_mesh(self, Rocks.shape(4180 + i, Vector3(1.6, 0.22, 1.2), 0.32, 0.25, 0.15), _mat("pierre_mousse"), foot + Vector3.UP * 0.05)
+
+
+## V159 : une pièce (un cylindre) tendue de a à b (repère de « parent »).
+func _baton(parent: Node3D, a: Vector3, b: Vector3, r: float, mat: Material, segs: int = 6) -> MeshInstance3D:
+	var y: Vector3 = b - a
+	var l: float = y.length()
+	y = y / maxf(l, 0.0001)
+	var x: Vector3 = y.cross(Vector3.FORWARD if absf(y.dot(Vector3.FORWARD)) < 0.95 else Vector3.RIGHT).normalized()
+	var z: Vector3 = x.cross(y)
+	var mi := _mesh(parent, _cyl(r, r, l, segs), mat, Vector3.ZERO)
+	mi.transform = Transform3D(Basis(x, y, z), (a + b) * 0.5)
+	return mi
+
+
+## V159 : un lampadaire elfe (au bord du sentier) : un socle de pierre, un fût de bois fin cerclé
+## d'or, une crosse qui se recourbe au-dessus du sentier (vers d), une lanterne de verre suspendue.
+func _lampadaire_v159(q: Vector3, d: Vector3) -> void:
+	var bois: Material = _mat("bois")
+	var gold: Material = _mat("or")
+	d = (d * Vector3(1, 0, 1)).normalized()
+	_mesh(self, _cyl(0.13, 0.19, 0.3, 8), _mat("pierre"), q + Vector3.UP * 0.12)
+	_mesh(self, _cyl(0.045, 0.07, 2.45, 8), bois, q + Vector3.UP * 1.45)
+	for y in [0.4, 1.55, 2.62]:
+		_mesh(self, _cyl(0.065, 0.065, 0.05, 10), gold, q + Vector3.UP * y)
+	# la crosse : un arc qui monte, passe au-dessus du sentier et redescend un peu
+	var c: Vector3 = q + Vector3.UP * 2.64 + d * 0.24
+	var prev: Vector3 = q + Vector3.UP * 2.64
+	for k in range(1, 8):
+		var t: float = PI * float(k) / 7.0 * 0.92
+		var p: Vector3 = c - d * cos(t) * 0.24 + Vector3.UP * sin(t) * 0.2
+		_baton(self, prev, p, 0.028, bois)
+		prev = p
+	_mesh(self, _sphere(0.04, 8), gold, prev)
+	var hook: Vector3 = prev
+	_baton(self, hook, hook + Vector3.DOWN * 0.16, 0.008, gold, 4)
+	# la lanterne : chapeau d'or, verre, la flamme, quatre montants, le culot
+	var l: Vector3 = hook + Vector3.DOWN * 0.34
+	_mesh(self, _cyl(0.02, 0.13, 0.1, 8), gold, l + Vector3.UP * 0.17)
+	_mesh(self, _cyl(0.085, 0.085, 0.22, 10), _mat("verre"), l)
+	_mesh(self, _sphere(0.055, 8), _mat("lanterne"), l)
+	for k2 in range(4):
+		var a: float = TAU * k2 / 4.0 + 0.4
+		_mesh(self, _cyl(0.008, 0.008, 0.24, 4), gold, l + Vector3(cos(a) * 0.09, 0, sin(a) * 0.09))
+	_mesh(self, _cyl(0.1, 0.07, 0.04, 10), gold, l + Vector3.DOWN * 0.13)
+	var li := OmniLight3D.new()
+	li.light_color = Color(1.0, 0.8, 0.5)
+	li.light_energy = 1.1
+	li.omni_range = 9.0
+	li.omni_attenuation = 1.3
+	add_child(li)
+	li.global_position = l
+
+
+## V159 : la maison ronde ouvragée (repère de la maison : la porte en +x) : un soubassement de
+## pierre, des colombages entre les fenêtres, l'encadrement de la porte en arc, les fenêtres
+## cerclées d'or, les bandeaux d'or sous les deux toits, la flèche.
+func _maison_ouvragee_v159(house: Node3D) -> void:
+	var bois: Material = _mat("bois")
+	var gold: Material = _mat("or")
+	_mesh(house, _cyl(1.75, 1.82, 0.34, 24), _mat("pierre"), Vector3(0, 0.17, 0))
+	var ouvertures: Array = [0.0, 0.9, -0.9, 2.4]
+	for k in range(14):
+		var a: float = TAU * k / 14.0
+		var libre: bool = true
+		for o in ouvertures:
+			if absf(wrapf(a - float(o), -PI, PI)) < 0.33:
+				libre = false
+		if not libre:
+			continue
+		var mi := _mesh(house, _box_mesh(Vector3(0.09, 2.2, 0.11)), bois, Vector3(cos(a) * 1.69, 1.45, sin(a) * 1.69))
+		mi.rotation.y = -a
+	_mesh(house, _cyl(1.71, 1.71, 0.1, 24), bois, Vector3(0, 0.4, 0))
+	_mesh(house, _cyl(1.68, 1.72, 0.12, 24), bois, Vector3(0, 2.55, 0))
+	# l'arc de la porte (en +x), ses montants
+	for sz in [-1.0, 1.0]:
+		_baton(house, Vector3(1.72, 0.0, sz * 0.48), Vector3(1.72, 1.87, sz * 0.48), 0.055, bois)
+	var prev := Vector3(1.72, 1.87, -0.48)
+	for k2 in range(1, 9):
+		var t: float = PI * float(k2) / 8.0
+		var p := Vector3(1.72, 1.87 + sin(t) * 0.48, -cos(t) * 0.48)
+		_baton(house, prev, p, 0.055, bois)
+		prev = p
+	_mesh(house, _sphere(0.05, 8), gold, Vector3(1.75, 2.36, 0))
+	# les fenêtres cerclées d'or
+	for wa in [0.9, -0.9, 2.4]:
+		var c := Vector3(cos(wa) * 1.69, 1.55, sin(wa) * 1.69)
+		var out := Vector3(cos(wa), 0, sin(wa))
+		var tor := TorusMesh.new()
+		tor.inner_radius = 0.22
+		tor.outer_radius = 0.28
+		tor.rings = 16
+		tor.ring_segments = 6
+		var mt := _mesh(house, tor, gold, c)
+		var y: Vector3 = out
+		var x: Vector3 = Vector3.UP.cross(y).normalized()
+		mt.transform = Transform3D(Basis(x, y, x.cross(y)), c)
+		_baton(house, c + Vector3.DOWN * 0.27, c + Vector3.UP * 0.27, 0.018, gold, 4)
+		_mesh(house, _box_mesh(Vector3(0.5, 0.05, 0.14)), bois, c + Vector3.DOWN * 0.31 + out * 0.04).rotation.y = -wa + PI * 0.5
+	# les bandeaux d'or sous les toits, la flèche
+	_mesh(house, _cyl(2.17, 2.17, 0.06, 32), gold, Vector3(0, 2.57, 0))
+	_mesh(house, _cyl(0.97, 0.97, 0.05, 24), gold, Vector3(0, 3.86, 0))
+	_mesh(house, _cyl(0.0, 0.045, 0.7, 6), gold, Vector3(0, 5.85, 0))
+
+
+## V159 : le village est fait de milliers de petites pièces (planches, rambardes, poteaux) : on les
+## regroupe en un maillage par matière (des milliers d'objets à dessiner en moins, en VR surtout).
+func _regrouper_v159() -> void:
+	var groupes: Dictionary = {}
+	var inv: Transform3D = global_transform.affine_inverse()
+	for mi in _statiques:
+		if not is_instance_valid(mi) or not (mi as MeshInstance3D).is_inside_tree() or (mi as MeshInstance3D).mesh == null:
+			continue
+		var m: Material = (mi as MeshInstance3D).material_override
+		if m == null:
+			continue
+		if not groupes.has(m):
+			var st := SurfaceTool.new()
+			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			groupes[m] = st
+		var xf: Transform3D = inv * (mi as MeshInstance3D).global_transform
+		var mesh: Mesh = (mi as MeshInstance3D).mesh
+		for si in range(mesh.get_surface_count()):
+			(groupes[m] as SurfaceTool).append_from(mesh, si, xf)
+		(mi as Node).get_parent().remove_child(mi)
+		(mi as Node).queue_free()
+	_statiques.clear()
+	var lettres := "abcdefghijklmnopqrstuvwxyz"
+	var i_lot: int = 0
+	for m2 in groupes:
+		var r := MeshInstance3D.new()
+		# (des noms uniques : Godot renommerait « …_v159 » en « …_v160 » pour le deuxième)
+		r.name = "Village_elfe_v159_" + lettres[i_lot % 26] + str(i_lot / 26)
+		i_lot += 1
+		r.mesh = (groupes[m2] as SurfaceTool).commit()
+		r.material_override = m2
+		add_child(r)
 
 
 ## Passerelle de cordes entre deux plates-formes (planches qui fléchissent, garde-corps).

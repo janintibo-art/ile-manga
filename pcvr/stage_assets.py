@@ -119,6 +119,8 @@ selected = [
     "textures/volcan/cendre.png",
     "textures/volcan/herbe_brulee.png",
     "textures/volcan/basalte.png",
+    "textures/volcan/cendre_n.png",
+    "textures/volcan/basalte_n.png",
     "textures/items/minerai_fer.png",
     "textures/items/obsidienne.png",
     "textures/items/champignon_braise.png",
@@ -282,8 +284,10 @@ def main() -> int:
     # V63 : la grande enquête et le donjon du Cœur-de-Pierre (textures/coeur)
     # V93 : la toile peinte de la Grande Scène de Larsen (textures/larsen)
     # V94 : les écrans et les enseignes au néon de Néopolis (textures/neo)
+    # V159 : les matières du Bois-Doré, de la Montagne de Feu et de Forgefer (textures/beau159 ; les
+    # réglages d'import : la passe V158, plus bas)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159"):
         d = source / folder
         if not d.is_dir():
             continue

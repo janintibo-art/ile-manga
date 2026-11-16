@@ -10,6 +10,9 @@ uniform sampler2D herbe_tex : source_color, filter_linear_mipmap_anisotropic, re
 uniform sampler2D herbe_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D herbe_seche_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D herbe_seche_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+// V159 : le Cratère du Lac (xz du centre, rayon, w = 1) : ses parois sont vertes, comme celles de
+// Rano Kau (l'herbe tient sur des pentes plus raides, la roche n'affleure que par endroits)
+uniform vec4 cratere = vec4(0.0, 0.0, 0.0, 0.0);
 uniform sampler2D roche_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D roche_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D sable_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -79,7 +82,9 @@ void fragment() {
 	float w_rock = smoothstep(0.25, 0.7, b.g + wob * 0.4);
 	float w_sand = clamp(b.b + wob * 0.5, 0.0, 1.0);
 	float w_lawn = clamp(b.a, 0.0, 1.0);
-	float steep = smoothstep(0.38, 0.58, slope + (patch - 0.5) * 0.1);
+	float in_cr = cratere.w * (1.0 - smoothstep(cratere.z, cratere.z + 6.0, distance(wp.xz, cratere.xy)));
+	float steep = smoothstep(mix(0.38, 0.6, in_cr), mix(0.58, 0.86, in_cr), slope + (patch - 0.5) * mix(0.1, 0.4, in_cr));
+	w_rock *= 1.0 - 0.8 * in_cr * smoothstep(0.3, 0.55, patch);
 
 	// la prairie : de l'herbe verte et de l'herbe sèche dorée, en grandes vagues (le vent)
 	vec3 green = untiled(herbe_tex, uv * 1.1, mixer).rgb * vec3(0.78, 0.84, 0.6);
@@ -88,6 +93,7 @@ void fragment() {
 	vec3 grass = mix(green, dry, dryk * 0.85);
 	// l'herbe rase des lieux sacrés : plus verte, plus égale
 	grass = mix(grass, green * vec3(1.0, 1.04, 0.95), w_lawn * 0.6);
+	grass = mix(grass, green * vec3(0.92, 1.0, 0.88), in_cr * 0.7);
 	vec3 rock = untiled(roche_tex, uv * 0.9, mixer).rgb;
 	vec3 sand = untiled(sable_tex, uv * 1.0, mixer).rgb * vec3(1.08, 1.06, 1.0);
 	vec3 dirt = untiled(terre_tex, uv * 1.2, mixer).rgb * vec3(1.45, 1.12, 0.86);
