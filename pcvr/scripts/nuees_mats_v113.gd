@@ -6,7 +6,9 @@ extends RefCounted
 ## sustentateurs et leur voile, les lampes à diodes, l'eau des bassins, les toiles tendues, les
 ## enseignes. Une clé « genre113_variante » ; null si la clé n'est pas d'ici. Gardées une fois faites.
 
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const S := "res://assets/textures/nuees/"
+const MUR_RIDEAU := "res://shaders/mur_rideau_v160.gdshader"
 static var _cache: Dictionary = {}
 
 
@@ -35,6 +37,10 @@ static func _metal(c: Color, rough: float, metal: float) -> StandardMaterial3D:
 	m.roughness = rough
 	m.metallic = metal
 	m.metallic_specular = 0.6
+	# V160 : le grain du métal (brossé, patiné, vert-de-gris, fer forgé : metal_kit_v160) ; pas sur
+	# les peintures ni sur les miroirs
+	if metal >= 0.5 and rough >= 0.15:
+		MetalKit.habille(m, MetalKit.genre_de(c))
 	return m
 
 
@@ -88,6 +94,15 @@ static func make(key: String) -> Material:
 			sg.metallic_specular = 1.0
 			m = sg
 		"facade113":
+			# V160 : le mur-rideau en haute définition (mur_rideau_v160 : les montants, les allèges, et
+			# derrière chaque vitre une vraie pièce, en profondeur) ; la texture peinte reste en secours
+			if ResourceLoader.exists(MUR_RIDEAU):
+				var sm := ShaderMaterial.new()
+				sm.shader = load(MUR_RIDEAU)
+				sm.set_shader_parameter("tex_l", 6.0)
+				sm.set_shader_parameter("tex_h", 7.2)
+				_cache[key] = sm
+				return sm
 			# le mur-rideau : opaque (pour la nuit et pour le casque), mais qui a l'air de verre
 			var fa := StandardMaterial3D.new()
 			fa.albedo_texture = _t("facade.png")
@@ -168,6 +183,9 @@ static func make(key: String) -> Material:
 			to.albedo_color = {"": Color(0.95, 0.95, 0.93), "bleu": Color(0.55, 0.72, 0.84), "sable": Color(0.88, 0.8, 0.66), "vert": Color(0.56, 0.7, 0.56)}.get(v, Color(0.95, 0.95, 0.93))
 			to.roughness = 0.85
 			to.cull_mode = BaseMaterial3D.CULL_DISABLED
+			# V160 : une toile tendue laisse passer le soleil (vue de dessous, elle luit au lieu d'être noire)
+			to.backlight_enabled = true
+			to.backlight = Color(0.55, 0.55, 0.52)
 			m = to
 		"peint113":
 			m = _metal({"bleu": Color(0.42, 0.6, 0.76), "vert": Color(0.42, 0.58, 0.46), "sable": Color(0.82, 0.74, 0.6), "gris": Color(0.5, 0.52, 0.55), "rouge": Color(0.72, 0.3, 0.26)}.get(v, Color(0.9, 0.9, 0.9)), 0.45, 0.2)
@@ -220,6 +238,17 @@ static func night(k: float) -> void:
 	var lc: StandardMaterial3D = make("led113_chaud") as StandardMaterial3D
 	if lc != null:
 		lc.emission_energy_multiplier = lerpf(0.3, 3.0, k)
-	var fa: StandardMaterial3D = make("facade113") as StandardMaterial3D
+	var fm: Material = make("facade113")
+	if fm is ShaderMaterial:
+		(fm as ShaderMaterial).set_shader_parameter("glow", lerpf(0.0, 1.6, k))
+		(fm as ShaderMaterial).set_shader_parameter("nuit", k)
+	var fa: StandardMaterial3D = fm as StandardMaterial3D
 	if fa != null and fa.emission_enabled:
 		fa.emission_energy_multiplier = lerpf(0.0, 1.6, k)
+
+
+## V160 : le ciel dans les vitres du mur-rideau suit l'heure (k : 0 le jour, 1 la nuit).
+static func facade_nuit(k: float) -> void:
+	var fm: Material = make("facade113")
+	if fm is ShaderMaterial:
+		(fm as ShaderMaterial).set_shader_parameter("nuit", k)

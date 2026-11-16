@@ -6,6 +6,7 @@ extends RefCounted
 ## n'est pas d'ici. Gardées une fois faites ; les globes et les vitres allumées montent à la nuit
 ## (night(), temps_v56). Si une texture manque, la matière garde une couleur plausible.
 
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const S := "res://assets/textures/hautefond/"
 const TEINTES := {
 	"": Color(1.06, 1.0, 0.9), "clair": Color(1.14, 1.08, 0.98), "sombre": Color(0.72, 0.69, 0.64), "chaud": Color(1.06, 0.97, 0.86),
@@ -50,6 +51,10 @@ static func _metal(c: Color, rough: float, metal: float) -> StandardMaterial3D:
 	m.roughness = rough
 	m.metallic = metal
 	m.metallic_specular = 0.6
+	# V160 : le grain du métal (brossé, patiné, vert-de-gris, fer forgé : metal_kit_v160) ; pas sur
+	# les peintures ni sur les miroirs
+	if metal >= 0.5 and rough >= 0.15:
+		MetalKit.habille(m, MetalKit.genre_de(c))
 	return m
 
 
@@ -79,7 +84,7 @@ static func make(key: String) -> Material:
 		"cuivre112":
 			m = _metal(Color(0.9, 0.52, 0.34), 0.34, 0.9)
 		"verdigris112":
-			m = _metal(Color(0.34, 0.58, 0.5), 0.62, 0.35)
+			m = MetalKit.habille(_metal(Color(0.34, 0.58, 0.5), 0.62, 0.35), "verdigris")
 		"acier112":
 			m = _metal(Color(0.2, 0.21, 0.23) if v != "clair" else Color(0.42, 0.43, 0.45), 0.42, 0.85)
 		"bois112":

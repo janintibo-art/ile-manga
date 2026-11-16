@@ -13,6 +13,7 @@ extends RefCounted
 ##    à gaz, les chariots, les poteaux du télégraphe, les panneaux.
 ## Tout est fusionné par matière (Lot) ; les collisions sont des boîtes (Cols de geants_kit_v142).
 
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const GK = preload("res://scripts/geants_kit_v142.gd")
 const MJ := "res://assets/textures/montjoie/"
 const BC := "res://assets/textures/boucan/"
@@ -59,6 +60,9 @@ static func _flat(c: Color, rough: float, metal: float = 0.0) -> StandardMateria
 	m.albedo_color = c
 	m.roughness = rough
 	m.metallic = metal
+	# V160 : le grain des métaux (le cuivre, le laiton, le fer : metal_kit_v160)
+	if metal >= 0.5 and rough >= 0.15:
+		MetalKit.habille(m, MetalKit.genre_de(c))
 	return m
 
 
@@ -93,6 +97,9 @@ static func mat(key: String) -> Material:
 		tm.roughness = 0.9
 		tm.cull_mode = BaseMaterial3D.CULL_DISABLED
 		tm.uv1_scale = Vector3(0.25, 1.0, 1.0)
+		# V160 : la toile laisse passer le soleil (vue de dessous, elle luit)
+		tm.backlight_enabled = true
+		tm.backlight = Color(0.5, 0.5, 0.47)
 		m = tm
 	else:
 		match key:

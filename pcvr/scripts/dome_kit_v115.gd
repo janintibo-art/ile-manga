@@ -30,6 +30,15 @@ func mat(key: String) -> Material:
 	# coupole, on la voit de près) ; dome_mats_v115.night() la règle
 	if key == "facade113":
 		var base: Material = super.mat(key)
+		# V160 : le mur-rideau en profondeur ; sous la mer, la vitre reflète l'eau, et des pièces sont
+		# allumées même le jour
+		if base is ShaderMaterial:
+			var sc: ShaderMaterial = (base as ShaderMaterial).duplicate()
+			sc.set_shader_parameter("eau", 1.0)
+			sc.set_shader_parameter("lampes_jour", 0.75)
+			Mats115.facade = sc
+			mats[key] = sc
+			return sc
 		if base is StandardMaterial3D:
 			var cp: StandardMaterial3D = (base as StandardMaterial3D).duplicate()
 			Mats115.facade = cp
@@ -511,6 +520,63 @@ func totem115(pos: Vector3, yaw: float, sign_id: String) -> void:
 	col_box(Transform3D(b, pos + Vector3.UP * 1.4), Vector3(1.9, 2.8, 0.34))
 
 
+## V160 : un triangle aux normales arrondies (une par sommet), retourné au besoin pour regarder du
+## côté de sa normale moyenne.
+func _tri_lisse(key: String, p: Array, n: Array, uv: Array) -> void:
+	var st: SurfaceTool = _st(key)
+	var nm: Vector3 = (n[0] as Vector3) + (n[1] as Vector3) + (n[2] as Vector3)
+	var o: Array = [0, 1, 2]
+	if ((p[1] as Vector3) - (p[0] as Vector3)).cross((p[2] as Vector3) - (p[0] as Vector3)).dot(nm) > 0.0:
+		o = [0, 2, 1]
+	for i in o:
+		st.set_normal(n[i])
+		st.set_uv(uv[i])
+		st.add_vertex(p[i])
+
+
+## V160 : une branche lisse (pas de facettes : les normales tournent avec la branche), de a à b.
+func _rod_lisse(a: Vector3, b: Vector3, r0: float, r1: float, key: String, seg: int = 8) -> void:
+	var ln: float = a.distance_to(b)
+	if ln < 0.01:
+		return
+	var xf: Transform3D = axis_xf(a, b)
+	var slope: float = (r0 - r1) / ln
+	for i in range(seg):
+		var a0: float = TAU * i / seg
+		var a1: float = TAU * (i + 1) / seg
+		var d0 := Vector3(cos(a0), 0, sin(a0))
+		var d1 := Vector3(cos(a1), 0, sin(a1))
+		var n0: Vector3 = (xf.basis * (d0 + Vector3.UP * slope)).normalized()
+		var n1: Vector3 = (xf.basis * (d1 + Vector3.UP * slope)).normalized()
+		var p0: Vector3 = xf * (d0 * r0)
+		var p1: Vector3 = xf * (d1 * r0)
+		var p2: Vector3 = xf * (d1 * r1 + Vector3.UP * ln)
+		var p3: Vector3 = xf * (d0 * r1 + Vector3.UP * ln)
+		var u0: float = float(i) / seg
+		var u1: float = float(i + 1) / seg
+		_tri_lisse(key, [p0, p1, p2], [n0, n1, n1], [Vector2(u0, 0), Vector2(u1, 0), Vector2(u1, 1)])
+		_tri_lisse(key, [p0, p2, p3], [n0, n1, n0], [Vector2(u0, 0), Vector2(u1, 1), Vector2(u0, 1)])
+
+
+## V160 : une boule lisse (le bout d'une branche de corail).
+func _boule_lisse(c: Vector3, r: float, key: String, seg: int = 8, rings: int = 4) -> void:
+	for j in range(rings):
+		var b0: float = -PI * 0.5 + PI * j / rings
+		var b1: float = -PI * 0.5 + PI * (j + 1) / rings
+		for i in range(seg):
+			var a0: float = TAU * i / seg
+			var a1: float = TAU * (i + 1) / seg
+			var n00 := Vector3(cos(a0) * cos(b0), sin(b0), sin(a0) * cos(b0))
+			var n10 := Vector3(cos(a1) * cos(b0), sin(b0), sin(a1) * cos(b0))
+			var n11 := Vector3(cos(a1) * cos(b1), sin(b1), sin(a1) * cos(b1))
+			var n01 := Vector3(cos(a0) * cos(b1), sin(b1), sin(a0) * cos(b1))
+			var uv := Vector2(float(i) / seg, float(j) / rings)
+			if j > 0:
+				_tri_lisse(key, [c + n00 * r, c + n10 * r, c + n11 * r], [n00, n10, n11], [uv, uv, uv])
+			if j < rings - 1:
+				_tri_lisse(key, [c + n00 * r, c + n11 * r, c + n01 * r], [n00, n11, n01], [uv, uv, uv])
+
+
 ## Un corail qui luit : des branches (une petite arborescence de cylindres) qui partent de pos.
 func coral115(pos: Vector3, h: float, couleur: String, seed_k: int) -> void:
 	var r := RandomNumberGenerator.new()
@@ -526,9 +592,9 @@ func coral115(pos: Vector3, h: float, couleur: String, seed_k: int) -> void:
 		var rad: float = s[3]
 		var depth: int = s[4]
 		var q: Vector3 = p + d * ln
-		rod(p, q, rad, rad * 0.75, "corail115_" + couleur, 6)
+		_rod_lisse(p, q, rad, rad * 0.75, "corail115_" + couleur, 9)
 		if depth >= 3 or ln < 0.12:
-			ball(Transform3D(Basis(), q), rad * 1.4, "corail115_" + couleur, 6, 3)
+			_boule_lisse(q, rad * 1.4, "corail115_" + couleur, 9, 5)
 			continue
 		for k in range(2 + int(r.randf() < 0.4)):
 			var nd: Vector3 = (d + Vector3(r.randf_range(-0.7, 0.7), r.randf_range(0.0, 0.4), r.randf_range(-0.7, 0.7))).normalized()

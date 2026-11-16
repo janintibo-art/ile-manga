@@ -1,6 +1,6 @@
 #!/bin/bash
-# Des images d'une île seule (V159) et des planches.
-#     bash tests/outils/rendu_iles.sh DOSSIER elfes|nains|forgefer|moai
+# Des images d'une île seule (V159, V160) et des planches.
+#     bash tests/outils/rendu_iles.sh DOSSIER elfes|village|nains|forgefer|moai|nuees|nuees_mur|strates|strates_four|dome|dome_v160
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

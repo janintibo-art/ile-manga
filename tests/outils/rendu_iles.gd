@@ -122,6 +122,8 @@ func _initialize() -> void:
 			await _nains(quoi == "forgefer")
 		"moai":
 			await _moai()
+		"nuees", "strates", "dome", "nuees_mur", "strates_four", "dome_v160":
+			await _hautefond(quoi)
 	quit()
 
 
@@ -265,6 +267,117 @@ func _w(I, x: float, z: float) -> Vector3:
 	var w: Vector3 = I.W(x, z)
 	w.y = fm._height_at(w.x, w.z)
 	return w
+
+
+# =================================================================== Hautefond : la Cité des Nuées, les Strates, le Dôme d'Azur (V160)
+
+func _hautefond(quoi: String) -> void:
+	var Hf: Node3D = load("res://scripts/hautefond_v112.gd").new()
+	fm.add_child(Hf)
+	Hf.setup(fm)
+	Hf.pc = true
+	Hf.build_island()
+	fm.ile_node = Hf.ile
+	Hf.build_town()
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	await physics_frame
+	if quoi == "nuees_mur":
+		# le mur-rideau de près (V160), le jour puis le soir
+		_mer(Hf.ile.CENTER)
+		var Rm = load("res://scripts/ile_nuees_v113.gd")
+		var cm: Vector3 = Rm.CENTER
+		await _vue("49a_tour_pres", _ray(cm + Vector3(-8, 0, -30), cm.y + 80.0) + Vector3.UP * 1.7, _ray(cm + Vector3(-6, 0, -52), cm.y + 80.0) + Vector3.UP * 9.0)
+		await _vue("49b_tour_haut", _ray(cm + Vector3(4, 0, -36), cm.y + 80.0) + Vector3.UP * 1.7, _ray(cm + Vector3(0, 0, -62), cm.y + 80.0) + Vector3.UP * 30.0)
+		await _vue("49c_esplanade", _ray(cm + Vector3(26, 0, 22), cm.y + 80.0) + Vector3.UP * 1.7, _ray(cm, cm.y + 80.0) + Vector3.UP * 4.0)
+		load("res://scripts/nuees_mats_v113.gd").night(1.0)
+		sun.light_energy = 0.05
+		env.background_mode = Environment.BG_COLOR
+		env.background_color = Color(0.02, 0.03, 0.06)
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		env.ambient_light_color = Color(0.3, 0.35, 0.5)
+		env.ambient_light_energy = 0.25
+		env.fog_enabled = false
+		await _vue("49d_soir", _ray(cm + Vector3(-8, 0, -30), cm.y + 80.0) + Vector3.UP * 1.7, _ray(cm + Vector3(-6, 0, -52), cm.y + 80.0) + Vector3.UP * 9.0)
+		await _vue("49e_soir_esplanade", _ray(cm + Vector3(26, 0, 22), cm.y + 80.0) + Vector3.UP * 1.7, _ray(cm, cm.y + 80.0) + Vector3.UP * 4.0)
+		return
+	if quoi == "nuees":
+		_mer(Hf.ile.CENTER)
+		var Rn = load("res://scripts/ile_nuees_v113.gd")
+		var c: Vector3 = Rn.CENTER
+		await _vue("41_esplanade", _ray(c + Vector3(26, 0, 22), c.y + 80.0) + Vector3.UP * 1.7, _ray(c, c.y + 80.0) + Vector3.UP * 4.0)
+		await _vue("42_esplanade_b", _ray(c + Vector3(-20, 0, 18), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(10, 0, -10), c.y + 80.0) + Vector3.UP * 6.0)
+		await _vue("43_residences", _ray(c + Vector3(-30, 0, 40), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(-55, 0, 55), c.y + 80.0) + Vector3.UP * 8.0)
+		await _vue("44_serres", _ray(c + Vector3(40, 0, 10), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(70, 0, 0), c.y + 80.0) + Vector3.UP * 5.0)
+		await _vue("45_institut", _ray(c + Vector3(0, 0, -40), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(0, 0, -75), c.y + 80.0) + Vector3.UP * 8.0)
+		await _vue("46_vue_haut", c + Vector3(90, 70, 110), c)
+		await _vue("47_gare", _ray(c + Vector3(45, 0, 45), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(65, 0, 65), c.y + 80.0) + Vector3.UP * 5.0)
+		await _vue("48_parc", _ray(c + Vector3(-35, 0, -25), c.y + 80.0) + Vector3.UP * 1.7, _ray(c + Vector3(-58, 0, -40), c.y + 80.0) + Vector3.UP * 3.0)
+		return
+	# sous terre et au fond de la mer : la lumière vient de la ville
+	sun.visible = false
+	env.fog_enabled = false
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.02, 0.025, 0.03)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.45, 0.45, 0.5)
+	env.ambient_light_energy = 0.6
+	if quoi == "strates_four":
+		Hf.strates_roche.visible = true
+		Hf.strates.visible = true
+		var cf: Transform3D = Hf.strates.cadres118["forge"]
+		await _vue("54b_four", cf * Vector3(-3.6, 1.7, 1.5), cf * Vector3(-6.5, 1.2, -4.2))
+		await _vue("54c_fours", cf * Vector3(0, 1.7, 9.5), cf * Vector3(0, 2.5, -5.0))
+		var o2: Vector3 = load("res://scripts/strates_roche_v114.gd").O
+		await _vue("58b_champignons", _ray(o2 + Vector3(10, 0, 75), -80.0) + Vector3.UP * 1.7, _ray(o2 + Vector3(8, 0, 100), -80.0) + Vector3.UP * 3.0)
+		await _vue("58c_champignon_pres", _ray(o2 + Vector3(4, 0, 88), -80.0) + Vector3.UP * 1.2, _ray(o2 + Vector3(9, 0, 100), -80.0) + Vector3.UP * 2.5)
+		return
+	if quoi == "strates":
+		Hf.strates_roche.visible = true
+		Hf.strates.visible = true
+		var o: Vector3 = load("res://scripts/strates_roche_v114.gd").O
+		var y0: float = -80.0
+		await _vue("51_place", _ray(o + Vector3(14, 0, 14), y0) + Vector3.UP * 1.7, _ray(o, y0) + Vector3.UP * 6.0)
+		await _vue("52_place_b", _ray(o + Vector3(-16, 0, 10), y0) + Vector3.UP * 1.7, _ray(o + Vector3(10, 0, -10), y0) + Vector3.UP * 5.0)
+		await _vue("53_maisons", _ray(o + Vector3(30, 0, -20), y0) + Vector3.UP * 1.7, _ray(o + Vector3(55, 0, -35), y0) + Vector3.UP * 5.0)
+		await _vue("54_forge", _ray(o + Vector3(30, 0, -30), y0) + Vector3.UP * 1.7, _ray(o + Vector3(50, 0, -50), y0) + Vector3.UP * 6.0)
+		await _vue("55_caverne", o + Vector3(-40, -70, 40), o + Vector3(0, -90, 0))
+		await _vue("56_galeries", _ray(o + Vector3(0, 0, -30), y0) + Vector3.UP * 1.7, o + Vector3(0, -82, -70))
+		await _vue("57_marmite", _ray(o + Vector3(30, 0, 30), y0) + Vector3.UP * 1.7, _ray(o + Vector3(50, 0, 50), y0) + Vector3.UP * 4.0)
+		await _vue("58_jardins", _ray(o + Vector3(10, 0, 75), y0) + Vector3.UP * 1.7, _ray(o + Vector3(8, 0, 100), y0) + Vector3.UP * 3.0)
+		return
+	Hf.dome_fosse.visible = true
+	Hf.dome.visible = true
+	Hf.dome_vie.visible = true
+	var od: Vector3 = load("res://scripts/fosse_azur_v115.gd").O
+	var yd: float = od.y + 30.0
+	if quoi == "dome_v160":
+		# le Jardin des Coraux de près, les tours (le mur-rideau sous la mer)
+		var cj: Vector3 = Hf.dome.objets["jardin"]
+		await _vue("69a_coraux", cj + Vector3(3.5, 1.6, 6.5), cj + Vector3(0.0, 1.0, 0.0))
+		await _vue("69b_corail_pres", cj + Vector3(1.6, 1.5, 2.6), cj + Vector3(0.0, 1.1, 0.0))
+		await _vue("69c_tours", _ray(od + Vector3(20, 0, 20), yd) + Vector3.UP * 1.7, _ray(od + Vector3(-60, 0, 10), yd) + Vector3.UP * 14.0)
+		await _vue("69d_tour_pres", _ray(od + Vector3(-24, 0, 10), yd) + Vector3.UP * 1.7, _ray(od + Vector3(-40, 0, 2), yd) + Vector3.UP * 12.0)
+		return
+	await _vue("61_place_perle", _ray(od + Vector3(20, 0, 20), yd) + Vector3.UP * 1.7, _ray(od, yd) + Vector3.UP * 8.0)
+	await _vue("62_place_b", _ray(od + Vector3(-24, 0, 10), yd) + Vector3.UP * 1.7, _ray(od + Vector3(10, 0, -10), yd) + Vector3.UP * 6.0)
+	await _vue("63_maisons", _ray(od + Vector3(30, 0, -25), yd) + Vector3.UP * 1.7, _ray(od + Vector3(50, 0, -40), yd) + Vector3.UP * 4.0)
+	await _vue("64_dome_haut", od + Vector3(40, 35, 40), od + Vector3(0, 5, 0))
+	await _vue("65_serres", _ray(od + Vector3(-110, 0, -10), yd) + Vector3.UP * 1.7, _ray(od + Vector3(-130, 0, -16), yd) + Vector3.UP * 4.0)
+	await _vue("66_institut", _ray(od + Vector3(110, 0, 20), yd) + Vector3.UP * 1.7, _ray(od + Vector3(126, 0, 24), yd) + Vector3.UP * 4.0)
+	await _vue("67_promenade", _ray(od + Vector3(0, 0, 55), yd) + Vector3.UP * 1.7, od + Vector3(0, 8, 90))
+	await _vue("68_tours", _ray(od + Vector3(-30, 0, 30), yd) + Vector3.UP * 1.7, _ray(od + Vector3(-45, 0, 45), yd) + Vector3.UP * 12.0)
+
+
+## Le sol sous (x, z) : un rayon tiré de y_haut vers le bas (les villes ont leurs collisions).
+func _ray(p: Vector3, y_haut: float) -> Vector3:
+	var ss: PhysicsDirectSpaceState3D = root.world_3d.direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(Vector3(p.x, y_haut, p.z), Vector3(p.x, y_haut - 200.0, p.z))
+	var r: Dictionary = ss.intersect_ray(q)
+	if r.is_empty():
+		return Vector3(p.x, fm._height_at(p.x, p.z), p.z)
+	return r["position"]
 
 
 # =================================================================== outils

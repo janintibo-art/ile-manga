@@ -6,7 +6,10 @@ extends RefCounted
 ## bâches, les enseignes, la bannière et les fresques de la Fronde. Une clé « genre114_variante » ;
 ## null si la clé n'est pas d'ici. Gardées une fois faites.
 
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const S := "res://assets/textures/strates/"
+const CHAMPI := "res://shaders/champi_v160.gdshader"
+const CHAMPIS := {"bleu": Color(0.35, 0.7, 1.0), "vert": Color(0.4, 1.0, 0.6), "rose": Color(1.0, 0.5, 0.78), "ambre": Color(1.0, 0.7, 0.3)}
 static var _cache: Dictionary = {}
 
 
@@ -21,6 +24,10 @@ static func _metal(c: Color, rough: float, metal: float) -> StandardMaterial3D:
 	m.roughness = rough
 	m.metallic = metal
 	m.metallic_specular = 0.55
+	# V160 : le grain du métal (brossé, patiné, vert-de-gris, fer forgé : metal_kit_v160) ; pas sur
+	# les peintures ni sur les miroirs
+	if metal >= 0.5 and rough >= 0.15:
+		MetalKit.habille(m, MetalKit.genre_de(c))
 	return m
 
 
@@ -111,12 +118,33 @@ static func make(key: String) -> Material:
 			m = cr
 		"champi114":
 			# le chapeau d'un champignon lumineux (bleu, vert, rose, ambre)
-			var cc: Color = {"bleu": Color(0.35, 0.7, 1.0), "vert": Color(0.4, 1.0, 0.6), "rose": Color(1.0, 0.5, 0.78), "ambre": Color(1.0, 0.7, 0.3)}.get(v, Color(0.4, 1.0, 0.6))
+			var cc: Color = CHAMPIS.get(v, Color(0.4, 1.0, 0.6))
+			# V160 : le chapeau en haute définition (champi_v160 : le bord translucide qui s'allume, les
+			# taches pâles, les stries, la lueur qui respire)
+			if ResourceLoader.exists(CHAMPI):
+				var cs := ShaderMaterial.new()
+				cs.shader = load(CHAMPI)
+				cs.set_shader_parameter("couleur", cc)
+				cs.set_shader_parameter("force", 1.3)
+				_cache[key] = cs
+				return cs
 			var ch := _glow(cc, Color(cc.r * 0.55, cc.g * 0.55, cc.b * 0.55), 1.3)
 			ch.roughness = 0.45
 			ch.rim_enabled = true
 			ch.rim = 0.4
 			m = ch
+		"lamelles114":
+			# V160 : le dessous du chapeau : les lamelles qui rayonnent, allumées vers le bord
+			var cl: Color = CHAMPIS.get(v, Color(0.4, 1.0, 0.6))
+			if ResourceLoader.exists(CHAMPI):
+				var ls := ShaderMaterial.new()
+				ls.shader = load(CHAMPI)
+				ls.set_shader_parameter("couleur", cl)
+				ls.set_shader_parameter("force", 1.3)
+				ls.set_shader_parameter("lamelles", 1.0)
+				m = ls
+			else:
+				m = make("pied114")
 		"pied114":
 			var pi := StandardMaterial3D.new()
 			pi.albedo_color = Color(0.86, 0.84, 0.76)
@@ -150,6 +178,9 @@ static func make(key: String) -> Material:
 			ti.albedo_color = tc
 			ti.roughness = 0.88
 			ti.cull_mode = BaseMaterial3D.CULL_DISABLED
+			# V160 : la toile laisse passer la lumière (vue de dessous, elle luit)
+			ti.backlight_enabled = true
+			ti.backlight = Color(0.5, 0.5, 0.47)
 			m = ti
 		"enseigne114":
 			var en := StandardMaterial3D.new()

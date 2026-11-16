@@ -485,6 +485,47 @@ func _place() -> void:
 
 # =================================================================== la Grande Forge des Strates
 
+## V160 : un four de forge (fx : le milieu du pied, la gueule vers +Z) : un massif de pierre percé d'une
+## vraie gueule voûtée (on voit dedans : le lit de braises, le tas de charbon rougeoyant au fond), l'arc
+## de claveaux autour de la gueule, l'appui de la gueule.
+func _four_v160(fx: Transform3D) -> void:
+	var lw: float = 0.8                      # la demi-largeur de la gueule
+	var y0: float = 0.6                      # l'appui (le lit de braises)
+	var yr: float = 1.45                     # la naissance de l'arc
+	# le socle, les deux côtés, le dessus, le fond
+	kit.box(fx * kit.T(0, y0 * 0.5, 0), Vector3(4.2, y0, 3.2), "pierre112_sombre", 1.5)
+	for sx in [-1.0, 1.0]:
+		var lx: float = (2.1 + lw) * 0.5
+		kit.box(fx * kit.T(sx * lx, (3.2 + y0) * 0.5, 0), Vector3(2.1 - lw, 3.2 - y0, 3.2), "pierre112_sombre", 1.5)
+	var yt: float = yr + lw + 0.1
+	kit.box(fx * kit.T(0, (3.2 + yt) * 0.5, 0), Vector3(lw * 2.0, 3.2 - yt, 3.2), "pierre112_sombre", 1.5)
+	kit.box(fx * kit.T(0, (yt + y0) * 0.5, -1.4), Vector3(lw * 2.0, yt - y0, 0.4), "pierre112_sombre", 1.5)
+	# la voûte de la gueule : des tranches, de l'arc jusqu'au dessus
+	var n: int = 12
+	for i in range(n):
+		var x0: float = -lw + lw * 2.0 * float(i) / n
+		var x1: float = -lw + lw * 2.0 * float(i + 1) / n
+		var xm: float = (x0 + x1) * 0.5
+		var ya: float = yr + sqrt(maxf(lw * lw - xm * xm, 0.0))
+		if yt - ya > 0.01:
+			kit.box(fx * kit.T(xm, (ya + yt) * 0.5, 0), Vector3(x1 - x0 + 0.01, yt - ya, 3.2), "pierre112_sombre", 1.5)
+	# l'arc de claveaux, en pierre claire, et l'appui
+	var k: int = 9
+	for i2 in range(k):
+		var a: float = PI * (float(i2) + 0.5) / k
+		var pc: Vector3 = Vector3(cos(a) * (lw + 0.16), yr + sin(a) * (lw + 0.16), 1.64)
+		kit.box(fx * Transform3D(Basis(Vector3.BACK, a - PI * 0.5), pc), Vector3(0.3, 0.32, 0.12), "pierre112", 1.0)
+	for sx2 in [-1.0, 1.0]:
+		kit.box(fx * kit.T(sx2 * (lw + 0.16), (yr + y0) * 0.5, 1.64), Vector3(0.32, yr - y0, 0.12), "pierre112", 1.0)
+	kit.box(fx * kit.T(0, y0 - 0.05, 1.68), Vector3(lw * 2.0 + 0.7, 0.14, 0.3), "pierre112", 1.0)
+	# dedans : le lit de braises, le tas de charbon rougeoyant au fond
+	kit.box(fx * kit.T(0, y0 + 0.03, 0.1), Vector3(lw * 2.0 - 0.05, 0.06, 2.6), "braise114", 1.0)
+	kit.box(fx * kit.T(0, y0 + 0.25, -1.05), Vector3(lw * 2.0 - 0.1, 0.5, 0.3), "braise114", 1.0)
+	for j in range(7):
+		var cj: Vector3 = Vector3(-lw + 0.25 + float(j) * (lw * 2.0 - 0.5) / 6.0, y0 + 0.1, -0.6 + 0.35 * sin(float(j) * 2.1))
+		kit.box(fx * Transform3D(Basis(Vector3.UP, float(j) * 0.9), cj), Vector3(0.22, 0.14, 0.2), "ardoise112_sombre", 1.0)
+
+
 func _forge() -> void:
 	var xf: Transform3D = XE(0.6, -42.0)
 	var w: float = 24.0
@@ -511,8 +552,7 @@ func _forge() -> void:
 	# les deux fours (des voûtes de brique, une gueule rougeoyante) contre le mur du fond
 	for s2 in [-1.0, 1.0]:
 		var fx: Transform3D = c * kit.T(s2 * 6.5, 0, -d * 0.5 + 2.2)
-		kit.box(fx * kit.T(0, 1.6, 0), Vector3(4.2, 3.2, 3.2), "pierre112_sombre", 1.5)
-		kit.box(fx * kit.T(0, 1.2, 1.62), Vector3(1.5, 1.2, 0.04), "braise114", 1.0)
+		_four_v160(fx)
 		kit.box(fx * kit.T(0, 3.6, 0), Vector3(2.4, 0.8, 2.0), "fer114", 1.0)
 		kit.col_box(fx * kit.T(0, 1.6, 0), Vector3(4.2, 3.2, 3.2))
 		_light(fx * Vector3(0, 1.4, 2.6), Color(1.0, 0.5, 0.2), 2.2, 2.6, 12.0)

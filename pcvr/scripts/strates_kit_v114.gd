@@ -188,7 +188,7 @@ func champi114(pos: Vector3, h: float, r: float, couleur: String, lean: float = 
 	cyl(Transform3D(bs, pos + bs * Vector3(0, h * 0.25, 0)), sr * 1.1, sr * 0.9, h * 0.75, "pied114", 10, false, 1.2)
 	var top: Vector3 = pos + bs * Vector3(0, h, 0)
 	_dome(Transform3D(bs * Basis.from_scale(Vector3(1.0, 0.45, 1.0)), top), r, "champi114_" + couleur, 16, 5)
-	disc(Transform3D(bs * Basis(Vector3.RIGHT, PI), top + bs * Vector3(0, 0.02, 0)), r * 0.96, "pied114", 16, r)
+	disc(Transform3D(bs * Basis(Vector3.RIGHT, PI), top + bs * Vector3(0, 0.02, 0)), r * 0.96, "lamelles114_" + couleur, 24, r * 0.96)
 	if collide and r > 0.4:
 		col_cyl(pos, sr * 1.3, h)
 	return top

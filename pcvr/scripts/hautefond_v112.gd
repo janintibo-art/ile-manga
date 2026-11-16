@@ -972,6 +972,7 @@ func _process(delta: float) -> void:
 			city.colonne.set_night(_night)
 		if nuees_ile != null:
 			nuees_ile.set_night(_night)
+		MatsN.facade_nuit(_night)
 		if nuees != null and nuees.ligne != null:
 			nuees.ligne.set_night(_night)
 		if strates != null:

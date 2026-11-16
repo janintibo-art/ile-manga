@@ -8,11 +8,12 @@ extends RefCounted
 ## de mer, gorgones, vers géants), le bathyscaphe jaune, les hublots, les enseignes. Une clé
 ## « genre115_variante » ; null si la clé n'est pas d'ici. Gardées une fois faites.
 
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const S := "res://assets/textures/dome115/"
 const SN := "res://assets/textures/nuees/"
 const VERRE := "res://shaders/verre_abysse_v115.gdshader"
 static var _cache: Dictionary = {}
-static var facade: StandardMaterial3D = null      # la copie de la façade des tours (dome_kit_v115)
+static var facade: Material = null      # la copie de la façade des tours (dome_kit_v115)
 
 
 static func _t(path: String) -> Texture2D:
@@ -25,6 +26,10 @@ static func _metal(c: Color, rough: float, metal: float) -> StandardMaterial3D:
 	m.roughness = rough
 	m.metallic = metal
 	m.metallic_specular = 0.6
+	# V160 : le grain du métal (brossé, patiné, vert-de-gris, fer forgé : metal_kit_v160) ; pas sur
+	# les peintures ni sur les miroirs
+	if metal >= 0.5 and rough >= 0.15:
+		MetalKit.habille(m, MetalKit.genre_de(c))
 	return m
 
 
@@ -40,6 +45,7 @@ static func _glow(c: Color, energy: float, albedo := Color(-1, 0, 0)) -> Standar
 
 const LED := {"cyan": Color(0.35, 0.95, 1.0), "ambre": Color(1.0, 0.72, 0.38), "rose": Color(1.0, 0.45, 0.72), "violet": Color(0.62, 0.42, 1.0),
 	"blanc": Color(0.92, 0.97, 1.0), "vert": Color(0.4, 1.0, 0.6)}
+const CORAIL_SH := "res://shaders/corail_v160.gdshader"
 const CORAIL := {"rose": Color(1.0, 0.4, 0.62), "orange": Color(1.0, 0.55, 0.25), "violet": Color(0.7, 0.4, 1.0), "cyan": Color(0.3, 0.9, 1.0),
 	"jaune": Color(1.0, 0.85, 0.3), "blanc": Color(0.9, 0.95, 1.0)}
 
@@ -174,7 +180,15 @@ static func make(key: String) -> Material:
 			m = fr
 		"corail115":
 			# un corail qui luit (bioluminescence) : une couleur franche, une lueur douce
-			m = _glow(CORAIL.get(v, CORAIL["rose"]), 0.9, CORAIL.get(v, CORAIL["rose"]) * 0.8)
+			# V160 : en haute définition (corail_v160 : les polypes, la couleur qui varie, le bord qui luit)
+			if ResourceLoader.exists(CORAIL_SH):
+				var cs := ShaderMaterial.new()
+				cs.shader = load(CORAIL_SH)
+				cs.set_shader_parameter("couleur", CORAIL.get(v, CORAIL["rose"]))
+				cs.set_shader_parameter("force", 0.9)
+				m = cs
+			else:
+				m = _glow(CORAIL.get(v, CORAIL["rose"]), 0.9, CORAIL.get(v, CORAIL["rose"]) * 0.8)
 		"eponge115":
 			var ep := StandardMaterial3D.new()
 			if v == "":
@@ -329,5 +343,8 @@ static func night(k: float) -> void:
 	for key in _cache:
 		if str(key).begins_with("enseigne115"):
 			(_cache[key] as StandardMaterial3D).emission_energy_multiplier = lerpf(0.5, 0.85, k)
-	if facade != null and facade.emission_enabled:
-		facade.emission_energy_multiplier = lerpf(0.0, 0.55, k)
+	if facade is ShaderMaterial:
+		(facade as ShaderMaterial).set_shader_parameter("glow", lerpf(0.0, 0.55, k))
+		(facade as ShaderMaterial).set_shader_parameter("nuit", k)
+	elif facade is StandardMaterial3D and (facade as StandardMaterial3D).emission_enabled:
+		(facade as StandardMaterial3D).emission_energy_multiplier = lerpf(0.0, 0.55, k)
