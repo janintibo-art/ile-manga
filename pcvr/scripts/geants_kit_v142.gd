@@ -11,6 +11,9 @@ extends RefCounted
 const Ile = preload("res://scripts/ile_geants_v142.gd")
 const MJ := "res://assets/textures/montjoie/"
 const TX := "res://assets/textures/geants/"
+const B161 := "res://assets/textures/beau161/"
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+const FLEURS := "res://shaders/fleurs_v161.gdshader"
 static var _cache: Dictionary = {}
 
 
@@ -33,6 +36,15 @@ static func _surface(tex: String, normal: String, tint: Color, rough: float, til
 	m.uv1_scale = Vector3.ONE / tile
 	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	return m
+
+
+## V161 : la rugosité d'une texture (le canal rouge), qui module celle de la matière.
+static func _rugueux(m: StandardMaterial3D, path: String) -> void:
+	var t: Texture2D = _t(path)
+	if t != null:
+		m.roughness_texture = t
+		m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+		m.roughness = clampf(m.roughness * 1.25, 0.05, 1.0)
 
 
 static func _flat(c: Color, rough: float, metal: float = 0.0) -> StandardMaterial3D:
@@ -70,7 +82,9 @@ static func mat(key: String) -> Material:
 		"poutre":
 			m = _surface(MJ + "bois_planches.png", MJ + "bois_planches_n.png", Color(0.62, 0.48, 0.38), 0.86, 7.0, 0.9, Color(0.4, 0.3, 0.22))
 		"blanc":
-			m = _flat(Color(0.92, 0.9, 0.86), 0.6)
+			# V161 : le bois peint en blanc, la peinture qui s'écaille par plaques
+			m = _surface(B161 + "bois_peint.png", B161 + "bois_peint_n.png", Color(1, 1, 1), 0.7, 4.0, 0.8, Color(0.92, 0.9, 0.86))
+			_rugueux(m, B161 + "bois_peint_r.png")
 		"vitre":
 			var vf: StandardMaterial3D = _surface(MJ + "fenetre_plomb.png", "", Color(0.62, 0.68, 0.74), 0.14, 1.0)
 			vf.uv1_scale = Vector3.ONE
@@ -87,33 +101,53 @@ static func mat(key: String) -> Material:
 			vo.emission_energy_multiplier = 0.05
 			m = vo
 		"fer":
-			m = _flat(Color(0.12, 0.12, 0.13), 0.42, 0.75)
+			# V161 : le fer forgé (metal_kit_v160), à l'échelle des géants
+			m = MetalKit.habille(_flat(Color(0.12, 0.12, 0.13), 0.42, 0.75), "fer", 0.3)
 		"zinc":
-			m = _flat(Color(0.62, 0.65, 0.68), 0.36, 0.85)
+			# V161 : le zinc galvanisé et ses cristaux
+			var zi: StandardMaterial3D = _surface(B161 + "zinc_galva.png", B161 + "zinc_galva_n.png", Color(1, 1, 1), 0.45, 3.0, 0.7, Color(0.62, 0.65, 0.68))
+			zi.metallic = 0.85
+			_rugueux(zi, B161 + "zinc_galva_r.png")
+			m = zi
 		"cuivre":
-			m = _flat(Color(0.8, 0.5, 0.3), 0.3, 0.9)
+			m = MetalKit.habille(_flat(Color(0.8, 0.5, 0.3), 0.3, 0.9), "patine", 0.4)
 		"caoutchouc":
-			m = _flat(Color(0.2, 0.34, 0.18), 0.55)
+			# V161 : le caoutchouc des bottes : un grain fin, des plis, de la boue
+			m = _surface(B161 + "caoutchouc.png", B161 + "caoutchouc_n.png", Color(0.26, 0.43, 0.22), 0.55, 2.0, 0.8, Color(0.2, 0.34, 0.18))
+		"pneu":
+			m = _surface(B161 + "caoutchouc.png", B161 + "caoutchouc_n.png", Color(0.13, 0.13, 0.13), 0.62, 2.0, 0.8, Color(0.1, 0.1, 0.1))
 		"rouge":
 			m = _flat(Color(0.7, 0.12, 0.1), 0.6)
 		"foin":
 			m = _surface(MJ + "chaume.png", MJ + "chaume_n.png", Color(1.25, 1.15, 0.78), 0.97, 8.0, 1.4, Color(0.82, 0.68, 0.36))
 		"foin_bout":
 			m = _flat(Color(0.8, 0.68, 0.38), 0.97)
+		"foin_rond":
+			# V161 : le bout d'une balle ronde : la paille enroulée en spirale (le centre au milieu)
+			var fr: StandardMaterial3D = _surface(B161 + "foin_rond.png", B161 + "foin_rond_n.png", Color(1, 1, 1), 0.97, 8.5, 1.2, Color(0.8, 0.68, 0.38))
+			fr.uv1_offset = Vector3(0.5, 0.5, 0)
+			m = fr
 		"toile":
-			var tl := _flat(Color(0.92, 0.88, 0.78), 0.92)
+			# V161 : la grosse toile de lin, sa trame
+			var tl: StandardMaterial3D = _surface(B161 + "toile_lin.png", B161 + "toile_lin_n.png", Color(1, 1, 1), 0.92, 3.0, 0.7, Color(0.92, 0.88, 0.78))
 			tl.cull_mode = BaseMaterial3D.CULL_DISABLED
 			m = tl
 		"corde":
-			m = _flat(Color(0.62, 0.52, 0.36), 0.95)
+			m = _surface(B161 + "corde.png", B161 + "corde_n.png", Color(1, 1, 1), 0.95, 0.3, 1.0, Color(0.62, 0.52, 0.36))
 		"terre_cuite":
-			m = _flat(Color(0.72, 0.38, 0.24), 0.86)
-		"geranium":
-			m = _flat(Color(0.86, 0.1, 0.12), 0.7)
-		"geranium_rose":
-			m = _flat(Color(0.95, 0.42, 0.62), 0.7)
-		"feuille":
-			m = _flat(Color(0.18, 0.38, 0.12), 0.8)
+			m = _surface(B161 + "terre_cuite.png", B161 + "terre_cuite_n.png", Color(1, 1, 1), 0.86, 3.0, 0.8, Color(0.72, 0.38, 0.24))
+		"geranium", "geranium_rose", "feuille":
+			# V161 : les géraniums en fleurs (fleurs_v161 : les petites fleurs de l'ombelle, les
+			# feuilles rondes et festonnées)
+			if ResourceLoader.exists(FLEURS):
+				var gs := ShaderMaterial.new()
+				gs.shader = load(FLEURS)
+				gs.set_shader_parameter("couleur", {"geranium": Color(0.86, 0.1, 0.12), "geranium_rose": Color(0.95, 0.42, 0.62)}.get(key, Color(0.2, 0.4, 0.12)))
+				gs.set_shader_parameter("feuille", 1.0 if key == "feuille" else 0.0)
+				gs.set_shader_parameter("densite", 2.6 if key == "feuille" else 6.0)
+				m = gs
+			else:
+				m = _flat({"geranium": Color(0.86, 0.1, 0.12), "geranium_rose": Color(0.95, 0.42, 0.62)}.get(key, Color(0.18, 0.38, 0.12)), 0.7)
 		"roche":
 			m = _surface(MJ + "roche_crocs.png", MJ + "roche_crocs_n.png", Color(1.06, 1.04, 1.0), 0.92, 6.0, 1.2, Color(0.56, 0.52, 0.46))
 		"dalles":
@@ -123,7 +157,7 @@ static func mat(key: String) -> Material:
 		"paille":
 			m = _surface(MJ + "chaume.png", MJ + "chaume_n.png", Color(1.3, 1.18, 0.8), 0.95, 3.0, 1.0, Color(0.86, 0.74, 0.46))
 		"veste":
-			m = _flat(Color(0.3, 0.3, 0.42), 0.95)
+			m = _surface(B161 + "tweed.png", B161 + "tweed_n.png", Color(1.0, 1.0, 1.1), 0.95, 2.5, 0.8, Color(0.3, 0.3, 0.42))
 		"citrouille_tete":
 			m = _flat(Color(0.95, 0.5, 0.1), 0.7)
 		"sable":
@@ -683,7 +717,7 @@ static func brouette(b: Batch, cols: Cols, at: Vector3, yaw: float) -> void:
 	b.box("bois_clair", Transform3D(bs, xf.call(Vector3(0, 2.4, 0))), Vector3(5.0, 0.4, 7.2))
 	b.box("bois_clair", Transform3D(bs * Basis(Vector3.RIGHT, 0.4), xf.call(Vector3(0, 3.4, 3.7))), Vector3(5.6, 2.6, 0.4))
 	b.box("bois_clair", Transform3D(bs * Basis(Vector3.RIGHT, -0.4), xf.call(Vector3(0, 3.4, -3.7))), Vector3(5.6, 2.6, 0.4))
-	b.cyl("caoutchouc", Transform3D(bs * Basis(Vector3.FORWARD, PI * 0.5), xf.call(Vector3(0.45, 1.6, 5.4))), 1.6, 1.6, 0.9, 16)
+	b.cyl("pneu", Transform3D(bs * Basis(Vector3.FORWARD, PI * 0.5), xf.call(Vector3(0.45, 1.6, 5.4))), 1.6, 1.6, 0.9, 16)
 	b.cyl("fer", Transform3D(bs * Basis(Vector3.FORWARD, PI * 0.5), xf.call(Vector3(0.6, 1.6, 5.4))), 0.4, 0.4, 1.2, 8)
 	for s2 in [-1.0, 1.0]:
 		b.tube("poutre", xf.call(Vector3(s2 * 1.8, 1.6, 5.4)), xf.call(Vector3(s2 * 2.2, 2.6, -8.5)), 0.32, 6)
@@ -848,7 +882,7 @@ static func balle_foin(b: Batch, cols: Cols, at: Vector3, yaw: float) -> void:
 	var bs := Basis(Vector3.UP, yaw) * Basis(Vector3.FORWARD, PI * 0.5)
 	b.cyl("foin", Transform3D(bs, at + Vector3(0, 4.3, 0) + Basis(Vector3.UP, yaw) * Vector3(-4.2, 0, 0)), 4.3, 4.3, 8.4, 20, false)
 	for s in [-1.0, 1.0]:
-		b.cyl("foin_bout", Transform3D(bs, at + Vector3(0, 4.3, 0) + Basis(Vector3.UP, yaw) * Vector3(s * 4.2, 0, 0)), 4.25, 4.25, 0.05, 20)
+		b.cyl("foin_rond", Transform3D(bs, at + Vector3(0, 4.3, 0) + Basis(Vector3.UP, yaw) * Vector3(s * 4.2, 0, 0)), 4.25, 4.25, 0.05, 20)
 	cols.cyl_xf(Transform3D(bs, at + Vector3(0, 4.3, 0)), 4.3, 8.4)
 
 

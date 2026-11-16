@@ -132,6 +132,10 @@ func _initialize() -> void:
 		await _dehors(T, fm)
 		quit()
 		return
+	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "rue":
+		await _rue(N, fm)
+		quit()
+		return
 	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "vie":
 		await _vie(T, fm)
 		quit()
@@ -378,3 +382,23 @@ func _dehors(T: Node, fm: Node) -> void:
 			if str(t["quartier"]) in ["residences", "hauts"]:
 				_vue(f + n * 3.0 + Vector3.UP * 12.0 + side * 2.0, f + Vector3.UP * 13.0 - side * 4.0 - n * 0.5)
 				await _photo("%s_%s_fenetres" % [t["quartier"], "nuit" if nuit else "jour"])
+
+
+# =================================================================== V161 : la rue (les feux, les bornes, le sol)
+
+func _rue(N: Node3D, fm: Node) -> void:
+	var up := Vector3.UP
+	for nuit in [false, true]:
+		fm.temps_v56.hour = 22.5 if nuit else 15.0
+		for k in range(40):
+			await process_frame
+		var j: String = "nuit" if nuit else "jour"
+		_vue(N._ground(9.0, 80.0) + up * 1.7, N._ground(0.0, 61.0) + up * 2.2)
+		await _photo("carrefour_" + j)
+		_vue(N._ground(8.2, 98.0) + up * 1.7, N._ground(8.6, 130.0) + up * 0.8)
+		await _photo("boulevard_" + j)
+		if not nuit:
+			_vue(N._ground(66.0, 98.0) + up * 1.7, N._ground(60.0, 122.0) + up * 1.0)
+			await _photo("rue_" + j)
+			_vue(N._ground(5.0, 26.0) + up * 1.6, N._ground(2.6, 31.0))
+			await _photo("sol_" + j)

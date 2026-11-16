@@ -50,6 +50,7 @@ const PRIX_VIRUS: int = 3
 var main: Node
 var ile: Node3D
 var pc: bool = true
+var nb_feux: int = 0                       # V161 : les feux tricolores des carrefours
 var state: Dictionary = {}
 var objets: Dictionary = {}
 var batiments: Array = []                 # {"rect": [x0, z0, x1, z1] (île), "h", "quartier", "style"}
@@ -122,6 +123,9 @@ func build_town() -> void:
 	_jardin()
 	_port()
 	_rues()
+	# V161 : la rue meublée (les feux tricolores qui marchent, les bornes, les poubelles, les bancs et
+	# les bacs à cerisiers du Boulevard)
+	nb_feux = load("res://scripts/neo_rue_v161.gd").build(self)
 	_enseignes()
 	_monorail()
 	_voitures()

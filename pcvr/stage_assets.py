@@ -219,7 +219,7 @@ DECOUPES_V158 = {
     "aigle/couverture", "aigle/rectrice", "aigle/remige",
     "azur/feuille_bougainvillier", "azur/feuille_cypres", "azur/feuille_laurier", "azur/feuille_olivier",
     "azur/feuille_pin", "azur/feuille_platane", "azur/balcon", "azur/filet",
-    "chateau/vitrail", "chateau/vitrail_comte", "cliquetis/verriere", "cliquetis/cadran",
+    "chateau/vitrail", "chateau/vitrail_comte", "beau161/vitrail", "cliquetis/verriere", "cliquetis/cadran",
     "coeur/encre_lune", "coeur/rose_sceaux", "fees/fleurs_arbre", "fees/runes_porte",
     "flora/fern", "flora/flowers", "flora/leaves",
     "jungle/broadleaf", "jungle/canopy_leaves", "jungle/palm_frond", "jungle/thatch",
@@ -285,9 +285,10 @@ def main() -> int:
     # V93 : la toile peinte de la Grande Scène de Larsen (textures/larsen)
     # V94 : les écrans et les enseignes au néon de Néopolis (textures/neo)
     # V159 : les matières du Bois-Doré, de la Montagne de Feu et de Forgefer (textures/beau159 ; les
-    # réglages d'import : la passe V158, plus bas) ; V160 : le kit des métaux (textures/beau160)
+    # réglages d'import : la passe V158, plus bas) ; V160 : le kit des métaux (textures/beau160) ;
+    # V161 : la Citadelle des Nuées et l'Île des Géants (textures/beau161)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161"):
         d = source / folder
         if not d.is_dir():
             continue

@@ -8,6 +8,8 @@ extends RefCounted
 ## devant : chaque triangle est remis dans le bon sens d'après la normale qu'il doit montrer.
 
 const Decor = preload("res://scripts/decor_v53.gd")
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+const B161 := "res://assets/textures/beau161/"
 
 static var _mcache: Dictionary = {}
 
@@ -37,6 +39,14 @@ static func mat(key: String) -> Material:
 	if _mcache.has(key):
 		return _mcache[key]
 	var m: Material
+	# V161 : les lentilles des feux tricolores (« feux_ns_0 » : rues nord-sud, rouge ; shaders/feux_v161)
+	if key.begins_with("feux_"):
+		var fs := ShaderMaterial.new()
+		fs.shader = load("res://shaders/feux_v161.gdshader")
+		fs.set_shader_parameter("phase", 1.0 if key.contains("_ew_") else 0.0)
+		fs.set_shader_parameter("feu", int(key.substr(key.length() - 1)))
+		_mcache[key] = fs
+		return fs
 	if key.begins_with("neon_"):
 		m = _glow(NEONS.get(key.substr(5), Color.WHITE), 3.0)
 		_mcache[key] = m
@@ -48,9 +58,10 @@ static func mat(key: String) -> Material:
 		"beton_clair":
 			m = load("res://scripts/neo_mats_v153.gd").mat("in_beton_banche_clair") if ResourceLoader.exists("res://assets/textures/neo156/beton_banche.png") else Decor.stone(Color(0.72, 0.71, 0.69))
 		"metal":
-			m = _std(Color(0.5, 0.52, 0.55), 0.35, 0.85)
+			# V161 : le grain du métal (brossé ; le noir en fer : metal_kit_v160)
+			m = MetalKit.habille(_std(Color(0.5, 0.52, 0.55), 0.35, 0.85), "brosse")
 		"metal_noir":
-			m = _std(Color(0.08, 0.085, 0.1), 0.4, 0.7)
+			m = MetalKit.habille(_std(Color(0.08, 0.085, 0.1), 0.4, 0.7), "fer")
 		"chrome":
 			m = _std(Color(0.85, 0.86, 0.9), 0.12, 1.0)
 		"peinture_blanche":
@@ -81,14 +92,23 @@ static func mat(key: String) -> Material:
 			m = _std(Color(0.05, 0.35, 0.22), 0.85)
 		"tissu_jaune":
 			m = _std(Color(0.85, 0.62, 0.08), 0.85)
-		"conteneur_orange":
-			m = _std(Color(0.72, 0.3, 0.08), 0.55, 0.5)
-		"conteneur_bleu":
-			m = _std(Color(0.08, 0.22, 0.42), 0.55, 0.5)
-		"conteneur_vert":
-			m = _std(Color(0.1, 0.32, 0.2), 0.55, 0.5)
-		"conteneur_rouge":
-			m = _std(Color(0.45, 0.07, 0.06), 0.55, 0.5)
+		"conteneur_orange", "conteneur_bleu", "conteneur_vert", "conteneur_rouge":
+			# V161 : la tôle ondulée (les ondes, la peinture écaillée, la rouille qui coule)
+			var cc: Color = {"conteneur_orange": Color(0.72, 0.3, 0.08), "conteneur_bleu": Color(0.08, 0.22, 0.42), "conteneur_vert": Color(0.1, 0.32, 0.2), "conteneur_rouge": Color(0.45, 0.07, 0.06)}[key]
+			var co := _std(cc, 0.55, 0.5)
+			if ResourceLoader.exists(B161 + "conteneur.png"):
+				co.albedo_color = Color(cc.r * 1.15, cc.g * 1.15, cc.b * 1.15)
+				co.albedo_texture = load(B161 + "conteneur.png")
+				co.normal_enabled = true
+				co.normal_texture = load(B161 + "conteneur_n.png")
+				co.normal_scale = 1.0
+				co.roughness_texture = load(B161 + "conteneur_r.png")
+				co.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+				co.roughness = 0.7
+				co.metallic = 0.35
+				co.uv1_triplanar = true
+				co.uv1_scale = Vector3.ONE / 2.4
+			m = co
 		"ecorce":
 			m = _std(Color(0.22, 0.14, 0.12), 0.9)
 		"sakura":
@@ -107,6 +127,8 @@ static func mat(key: String) -> Material:
 			g.albedo_color = Color(0.75, 0.85, 0.7)
 			g.roughness = 0.9
 			m = g
+		"terre_bac":
+			m = _std(Color(0.12, 0.09, 0.07), 0.95)
 		"gravier_zen":
 			m = _std(Color(0.42, 0.41, 0.39), 0.95)
 		"eau":

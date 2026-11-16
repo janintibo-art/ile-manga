@@ -11,6 +11,7 @@ extends Node3D
 
 const Flora = preload("res://scripts/flora_v25.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
+const Sculpt = preload("res://scripts/statue_naine_v159.gd")
 const CENTER := Vector3(40.0, 0.0, 400.0)
 const Y0: float = 150.0
 const R0: float = 66.0
@@ -405,29 +406,92 @@ func _build_underside_details() -> void:
 			l.omni_range = 14.0
 			l.position = Vector3(0, -2.0, 0)
 			cluster.add_child(l)
-	# Racines qui pendent dans le vide, depuis le bord
-	var root_m := StandardMaterial3D.new()
-	root_m.albedo_texture = load("res://assets/textures/flora/bark.png")
-	root_m.albedo_color = Color(0.45, 0.36, 0.28)
-	root_m.roughness = 0.95
-	for k in range(46 if pc else 24):
+	# V161 : les racines qui pendent dans le vide, depuis le bord : tordues, ramifiées, effilées ; et des
+	# lianes, plus longues, semées de petites touffes de feuilles (un maillage par matière)
+	_racines_v161()
+
+
+## V161 : les racines et les lianes du dessous de l'île.
+func _racines_v161() -> void:
+	var acc := {}
+	for k in ["ecorce", "liane", "feuilles"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	var nr: int = 64 if pc else 30
+	for k in range(nr):
 		var a3: float = _rng.randf() * TAU
-		var rr3: float = coast_radius(a3) * _rng.randf_range(0.9, 1.0)
-		var length: float = _rng.randf_range(5.0, 18.0)
-		var top := Vector3(CENTER.x + cos(a3) * rr3, Y0 - _rng.randf_range(1.5, 4.0), CENTER.z + sin(a3) * rr3)
-		var cyl := CylinderMesh.new()
-		cyl.top_radius = _rng.randf_range(0.12, 0.35)
-		cyl.bottom_radius = 0.02
-		cyl.height = length
-		cyl.radial_segments = 6
-		cyl.rings = 2
-		var r_mi := MeshInstance3D.new()
-		r_mi.mesh = cyl
-		r_mi.material_override = root_m
-		r_mi.position = top + Vector3.DOWN * length * 0.5
-		r_mi.rotation = Vector3(_rng.randf_range(-0.15, 0.15), 0, _rng.randf_range(-0.15, 0.15))
-		r_mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(r_mi)
+		var rr3: float = coast_radius(a3) * _rng.randf_range(0.88, 1.0)
+		var top := Vector3(CENTER.x + cos(a3) * rr3, Y0 - _rng.randf_range(1.0, 3.5), CENTER.z + sin(a3) * rr3)
+		var long_: float = _rng.randf_range(5.0, 20.0)
+		var r0: float = _rng.randf_range(0.14, 0.4)
+		var pts: Array = _chemin_v161(top, long_, 7, 0.9, Vector3(cos(a3), 0, sin(a3)) * 0.25)
+		var rs: Array = []
+		for q in range(pts.size()):
+			rs.append(lerpf(r0, 0.02, float(q) / (pts.size() - 1)))
+		Sculpt._tube(acc, "ecorce", pts, rs, 7)
+		# une ou deux radicelles
+		for b in range(_rng.randi_range(1, 2)):
+			var q0: int = _rng.randi_range(1, 3)
+			var p0: Vector3 = pts[q0]
+			var sub: Array = _chemin_v161(p0, long_ * 0.4, 4, 0.6, Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1)).normalized() * 0.5)
+			var rs2: Array = []
+			for q2 in range(sub.size()):
+				rs2.append(lerpf(float(rs[q0]) * 0.6, 0.015, float(q2) / (sub.size() - 1)))
+			Sculpt._tube(acc, "ecorce", sub, rs2, 5)
+	var nl: int = 40 if pc else 16
+	for k2 in range(nl):
+		var a4: float = _rng.randf() * TAU
+		var rr4: float = coast_radius(a4) * _rng.randf_range(0.92, 1.0)
+		var top2 := Vector3(CENTER.x + cos(a4) * rr4, Y0 - _rng.randf_range(0.5, 2.0), CENTER.z + sin(a4) * rr4)
+		var l2: float = _rng.randf_range(10.0, 28.0)
+		var lp: Array = _chemin_v161(top2, l2, 10, 0.5, Vector3(cos(a4), 0, sin(a4)) * 0.4)
+		var lr: Array = []
+		for q3 in range(lp.size()):
+			lr.append(0.045)
+		Sculpt._tube(acc, "liane", lp, lr, 5)
+		for q4 in range(1, lp.size()):
+			if _rng.randf() < 0.75:
+				var c: Vector3 = (lp[q4] as Vector3) + Vector3(_rng.randf_range(-0.2, 0.2), 0, _rng.randf_range(-0.2, 0.2))
+				Sculpt._boule(acc, "feuilles", c, Vector3(_rng.randf_range(0.25, 0.45), _rng.randf_range(0.15, 0.3), _rng.randf_range(0.25, 0.45)))
+	var bark := StandardMaterial3D.new()
+	bark.albedo_texture = load("res://assets/textures/flora/bark.png")
+	bark.albedo_color = Color(0.5, 0.4, 0.32)
+	bark.roughness = 0.95
+	bark.uv1_scale = Vector3(1.0, 3.0, 1.0)
+	var liane := StandardMaterial3D.new()
+	liane.albedo_color = Color(0.3, 0.32, 0.16)
+	liane.roughness = 0.9
+	var feu := StandardMaterial3D.new()
+	feu.albedo_color = Color(0.22, 0.42, 0.14)
+	feu.roughness = 0.8
+	feu.backlight_enabled = true
+	feu.backlight = Color(0.35, 0.5, 0.2)
+	var mats := {"ecorce": bark, "liane": liane, "feuilles": feu}
+	for k3 in acc:
+		var mesh: ArrayMesh = (acc[k3] as SurfaceTool).commit()
+		if mesh.get_surface_count() == 0:
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Racines_v161_" + str(k3)
+		mi.mesh = mesh
+		mi.material_override = mats[k3]
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(mi)
+
+
+## V161 : un chemin qui descend en se tordant (de « top », sur « long_ » mètres, en n morceaux).
+func _chemin_v161(top: Vector3, long_: float, n: int, tord: float, derive: Vector3) -> Array:
+	var pts: Array = [top]
+	var p: Vector3 = top
+	var dx: float = _rng.randf_range(-1.0, 1.0)
+	var dz: float = _rng.randf_range(-1.0, 1.0)
+	for q in range(n):
+		dx = clampf(dx + _rng.randf_range(-0.6, 0.6), -1.0, 1.0)
+		dz = clampf(dz + _rng.randf_range(-0.6, 0.6), -1.0, 1.0)
+		p += Vector3(dx * tord, -long_ / n, dz * tord) + derive
+		pts.append(p)
+	return pts
 
 
 # =================================================================== l'eau

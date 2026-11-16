@@ -219,7 +219,7 @@ void fragment() {
 			vec3 rdl = vec3(dot(rdw, au), rdw.y, dot(rdw, -wn));
 			vec4 pc = piece_v157(vec3(cell.x * cw, cell.y * etage, 0.0), rdl, vec3(cw, etage, 3.0 + 2.5 * h3(cid + 5.0)), cid, style == 0 || style == 2, false, allumee * nuit);
 			// le jour, la pièce prend la lumière de la fenêtre (plus sombre au fond) ; le soir, celle de sa lampe
-			float jour = (1.0 - nuit) * mix(0.26, 0.07, pc.w);
+			float jour = (1.0 - nuit) * mix(0.42, 0.14, pc.w);   // V161 : plus clair (on voit dedans)
 			vec3 lampe = lumiere * allumee * nuit * mix(1.15, 0.6, pc.w) * (0.6 + 0.6 * h3(cid + 9.0));
 			e_piece = pc.rgb * (jour + lampe + 0.015) * (1.0 - store * 0.85) * (1.0 - fresnel * 0.85);
 			e_piece += vec3(0.75, 0.7, 0.6) * store * (jour * 0.8 + allumee * nuit * 0.35);

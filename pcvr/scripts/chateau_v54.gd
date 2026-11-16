@@ -13,6 +13,10 @@ const Decor = preload("res://scripts/decor_v53.gd")
 const Cassable = preload("res://scripts/cassable_v66.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 const T := "res://assets/textures/"
+const PIERRE_V161 := "res://shaders/pierre_chateau_v161.gdshader"
+const B161 := "res://assets/textures/beau161/"
+const Mobilier = preload("res://scripts/mobilier_chateau_v161.gd")
+const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const HALF: float = 24.0
 const WALL_T: float = 2.4
 const WALL_H: float = 11.0
@@ -37,6 +41,7 @@ var keep_doors: Array = []               # battants de la grande porte du donjon
 var seal_sockets: Array = []             # les deux logements du Sceau des Vents
 var _body: StaticBody3D
 var _mats: Dictionary = {}
+var _mob: Dictionary = {}                 # V161 : les matières du mobilier sculpté
 var _merlons: Array = []                 # transformations des merlons (une seule instance groupée)
 var _rng := RandomNumberGenerator.new()
 
@@ -68,6 +73,18 @@ func build(main_node: Node, high_quality: bool) -> void:
 func _mat(key: String) -> Material:
 	if _mats.has(key):
 		return _mats[key]
+	# V161 : la pierre vieillie par le vent et la pluie (pierre_chateau_v161 : les coulures, la terre
+	# au pied des murs, la mousse, les lichens)
+	if (key == "pierre" or key == "pierre_sombre") and ResourceLoader.exists(PIERRE_V161):
+		var sp := ShaderMaterial.new()
+		sp.shader = load(PIERRE_V161)
+		sp.set_shader_parameter("tex_albedo", load(T + "chateau/pierre_chateau.png"))
+		sp.set_shader_parameter("tex_normal", load(T + "chateau/pierre_chateau_n.png"))
+		sp.set_shader_parameter("teinte", Color(0.86, 0.83, 0.78) if key == "pierre" else Color(0.72, 0.7, 0.68))
+		sp.set_shader_parameter("echelle", 1.0 / 3.2)
+		sp.set_shader_parameter("sol_y", global_position.y if is_inside_tree() else position.y)
+		_mats[key] = sp
+		return sp
 	var m := StandardMaterial3D.new()
 	match key:
 		"pierre":
@@ -138,13 +155,14 @@ func _mat(key: String) -> Material:
 			m.cull_mode = BaseMaterial3D.CULL_DISABLED
 			m.roughness = 0.9
 		"vitrail":
-			m.albedo_texture = load(T + "chateau/vitrail.png")
+			# V161 : le vitrail en haute définition (beau161 : les losanges sertis de plomb, la grisaille,
+			# la bordure, le médaillon à l'aigle) ; il luit, traversé par le jour
+			var vt: String = B161 + "vitrail.png" if ResourceLoader.exists(B161 + "vitrail.png") else T + "chateau/vitrail.png"
+			m.albedo_texture = load(vt)
+			m.albedo_color = Color(0.92, 0.9, 0.86)
+			m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 			m.alpha_scissor_threshold = 0.5
-			m.emission_enabled = true
-			m.emission_texture = load(T + "chateau/vitrail.png")
-			m.emission = Color(1, 1, 1)
-			m.emission_energy_multiplier = 0.55
 			m.cull_mode = BaseMaterial3D.CULL_DISABLED
 		"or":
 			m.albedo_color = Color(0.92, 0.72, 0.32)
@@ -560,15 +578,70 @@ func _build_library() -> void:
 	add_child(inst)
 	# Le lutrin et le grand livre ouvert (la clé de l'énigme des cloches)
 	var lc := Vector3(x0 + 4.0, 0, 6.5)
-	box(Vector3(0.5, 1.1, 0.5), lc + Vector3.UP * 0.55, "bois", true)
-	var top := box(Vector3(0.9, 0.06, 0.7), lc + Vector3.UP * 1.18, "bois", false)
-	top.rotation.x = -0.35
-	var page := box(Vector3(0.8, 0.03, 0.56), lc + Vector3(0, 1.23, 0.02), "or", false)
-	page.material_override = _paper()
-	page.rotation.x = -0.35
+	# V161 : le lutrin sculpté et le grand livre ouvert (les pages écrites, la lettrine, le signet)
+	Mobilier.lutrin(self, lc, _mats_mobilier())
+	_corps(Vector3(0.6, 1.1, 0.6), lc + Vector3.UP * 0.55)
 	points["lutrin"] = lc
 	# Une table et des chandelles
 	box(Vector3(2.4, 0.1, 1.2), Vector3(x0 + 3.5, 0.85, -2.0), "bois", true)
+
+
+## V161 : les matières du mobilier sculpté (mobilier_chateau_v161).
+func _mats_mobilier() -> Dictionary:
+	if not _mob.is_empty():
+		return _mob
+	var or_: StandardMaterial3D = (_mat("or") as StandardMaterial3D).duplicate()
+	or_.roughness = 0.34
+	MetalKit.habille(or_, "patine", 3.0)
+	var ve := StandardMaterial3D.new()
+	ve.albedo_color = Color(0.1, 0.16, 0.42)
+	ve.roughness = 0.9
+	ve.rim_enabled = true
+	ve.rim = 0.65
+	ve.rim_tint = 0.55
+	if ResourceLoader.exists(T + "maisons/tissu_n.png"):
+		ve.normal_enabled = true
+		ve.normal_texture = load(T + "maisons/tissu_n.png")
+		ve.normal_scale = 0.6
+		ve.uv1_triplanar = true
+		ve.uv1_scale = Vector3.ONE * 6.0
+	var pa := StandardMaterial3D.new()
+	pa.albedo_color = Color(1, 1, 1)
+	pa.albedo_texture = load(B161 + "page_livre.png") if ResourceLoader.exists(B161 + "page_livre.png") else null
+	if pa.albedo_texture == null:
+		pa.albedo_color = Color(0.93, 0.88, 0.74)
+	pa.roughness = 0.92
+	var tr := _paper()
+	tr.albedo_color = Color(0.86, 0.8, 0.66)
+	var cu := StandardMaterial3D.new()
+	cu.albedo_color = Color(0.36, 0.14, 0.08)
+	cu.roughness = 0.6
+	var ge := StandardMaterial3D.new()
+	ge.albedo_color = Color(0.2, 0.4, 1.0)
+	ge.roughness = 0.05
+	ge.metallic_specular = 1.0
+	ge.emission_enabled = true
+	ge.emission = Color(0.25, 0.5, 1.0)
+	ge.emission_energy_multiplier = 1.2
+	var bo: StandardMaterial3D = (_mat("bois") as StandardMaterial3D).duplicate()
+	bo.albedo_color = Color(0.42, 0.28, 0.18)
+	var d := {"or": or_, "velours": ve, "bois": bo, "papier": pa, "tranche": tr, "cuir": cu, "gemme": ge}
+	_mob = d
+	return d
+
+
+## V161 : une collision seule (une boîte), sans maillage.
+func _corps(size: Vector3, pos: Vector3) -> void:
+	var body := StaticBody3D.new()
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var cs := CollisionShape3D.new()
+	var sh := BoxShape3D.new()
+	sh.size = size
+	cs.shape = sh
+	body.add_child(cs)
+	add_child(body)
+	body.position = pos
 
 
 func _paper() -> StandardMaterial3D:
@@ -642,10 +715,9 @@ func _build_keep() -> void:
 	# L'estrade et le trône des Rois-Ciel
 	box(Vector3(7.0, 0.5, 3.0), Vector3(0, 0.25, KEEP_Z0 + 2.0), "pierre_sombre", true)
 	box(Vector3(5.0, 0.3, 2.0), Vector3(0, 0.62, KEEP_Z0 + 1.8), "pierre_sombre", true)
-	box(Vector3(1.6, 0.6, 1.1), Vector3(0, 1.07, KEEP_Z0 + 1.6), "bleu", true)
-	box(Vector3(1.8, 3.4, 0.3), Vector3(0, 2.4, KEEP_Z0 + 1.0), "or", false)
-	for sx in [-1.0, 1.0]:
-		box(Vector3(0.25, 1.0, 1.1), Vector3(sx * 0.9, 1.4, KEEP_Z0 + 1.6), "or", false)
+	# V161 : le trône sculpté (bois doré, velours bleu, la crête et sa pierre) ; l'assise a sa collision
+	Mobilier.trone(self, Vector3(0, 0.77, KEEP_Z0 + 1.55), _mats_mobilier())
+	_corps(Vector3(1.6, 0.6, 1.1), Vector3(0, 1.07, KEEP_Z0 + 1.6))
 	_stone_eagle(Vector3(0, 4.1, KEEP_Z0 + 1.0), 0.0, 0.27)
 	points["trone"] = Vector3(0, 0.8, KEEP_Z0 + 3.5)
 	# Lustres de fer (bougies) et leurs lumières

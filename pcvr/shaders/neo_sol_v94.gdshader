@@ -5,6 +5,8 @@
 // lumière, la promenade du front de mer, et les murs des quais (béton, en projection triplanaire).
 // La ville est toujours un peu mouillée : des flaques où les néons se reflètent, et le soir
 // (« mouille » monte) tout l'asphalte brille.
+// V161 : la rue en détail : des rapiéçages, des fissures, des taches d'huile, les plaques d'égout et les
+// avaloirs, les bandes podotactiles au bout des passages piétons, les chewing-gums des trottoirs.
 shader_type spatial;
 render_mode cull_back, diffuse_burley, specular_schlick_ggx;
 
@@ -110,8 +112,44 @@ void fragment() {
 			}
 		}
 		paint *= 0.75 + 0.25 * noise2(wpos.xz * 3.0);       // la peinture usée
+		// V161 : l'asphalte vit : des rapiéçages plus sombres, des fissures, des taches d'huile
+		vec2 sl = route_x && !route_z ? vec2(l.y, l.x - kx * pas) : vec2(l.x, l.y - kz * pas);
+		float wl = route_x && !route_z ? wx.x : wz.x;
+		vec2 pc = floor(vec2(sl.x / 9.0, sl.y / 3.2));
+		float hp = hash2(pc + 17.0);
+		vec2 pf = fract(vec2(sl.x / 9.0, sl.y / 3.2));
+		float rapiece = step(0.86, hp) * step(0.12, pf.x) * step(pf.x, 0.5 + 0.4 * hash2(pc + 3.0)) * step(0.15, pf.y) * step(pf.y, 0.85);
+		col = mix(col, col * 0.72, rapiece);
+		float fiss = (1.0 - smoothstep(0.0, 0.03, abs(fbm(wpos.xz * 0.45) - 0.5))) * smoothstep(0.55, 0.7, noise2(wpos.xz * 0.06 + 4.0));
+		col *= 1.0 - 0.55 * fiss * (1.0 - rapiece);
+		float huile = smoothstep(0.72, 0.86, noise2(wpos.xz * 0.8 + 9.0)) * smoothstep(0.55, 0.7, noise2(wpos.xz * 0.12 + 2.0)) * step(1.0, abs(sl.y));
+		col *= 1.0 - 0.35 * huile;
+		rough = mix(rough, 0.22, huile);
+		paint *= 1.0 - rapiece * 0.6;
 		col = mix(col, vec3(0.78, 0.78, 0.74), paint);
 		rough = mix(rough, 0.45, paint);
+		// les plaques d'égout (au milieu d'une voie) et les avaloirs le long de la bordure
+		if (!(route_x && route_z)) {
+			float a0 = round((sl.x - 7.0) / 24.0) * 24.0 + 7.0;
+			float voie = (hash2(vec2(a0, wl)) > 0.5 ? 1.0 : -1.0) * wl * 0.45;
+			float dm = length(vec2(sl.x - a0, sl.y - voie));
+			if (dm < 0.37) {
+				float grille = step(0.45, fract(sl.x * 9.0)) * step(0.45, fract(sl.y * 9.0));
+				vec3 fonte = mix(vec3(0.11, 0.11, 0.12), vec3(0.2, 0.2, 0.21), grille);
+				fonte = mix(fonte, vec3(0.26, 0.26, 0.27), step(0.32, dm));
+				col = fonte;
+				rough = 0.38;
+				nmap = vec3(0.5, 0.5, 1.0);
+				paint = 0.0;
+			}
+			float a1 = round((sl.x - 13.0) / 30.0) * 30.0 + 13.0;
+			float bord_d = abs(abs(sl.y) - (wl - 0.28));
+			if (abs(sl.x - a1) < 0.5 && bord_d < 0.18) {
+				float barre = step(0.5, fract(sl.x * 10.0));
+				col = mix(vec3(0.03, 0.03, 0.035), vec3(0.16, 0.16, 0.17), barre);
+				rough = 0.4;
+			}
+		}
 		// le Boulevard : entre ses deux lignes, une bande de diodes qui s'allume le soir
 		if (route_x && !route_z && abs(kx) < 0.5 && dx < 0.12) {
 			float diode = step(fract(l.y / 1.4 - TIME * 0.6), 0.3);
@@ -127,6 +165,16 @@ void fragment() {
 		float bz = route_z ? 99.0 : abs(dz - wz.x);
 		float bord = 1.0 - smoothstep(0.18, 0.3, min(bx, bz));
 		col = mix(col, vec3(0.36, 0.36, 0.38) * beton, bord);
+		// V161 : les bandes podotactiles jaunes au bout des passages piétons, des chewing-gums
+		float tx = abs(dz - wz.y - 2.2) < 1.6 && bx < 0.9 ? 1.0 : 0.0;
+		float tz = abs(dx - wx.y - 2.2) < 1.6 && bz < 0.9 ? 1.0 : 0.0;
+		float podo = max(tx, tz) * (1.0 - bord);
+		float plot = 1.0 - smoothstep(0.045, 0.06, length(fract(wpos.xz / 0.2) - 0.5));
+		col = mix(col, mix(vec3(0.62, 0.5, 0.08), vec3(0.78, 0.64, 0.12), plot), podo);
+		rough = mix(rough, 0.6, podo);
+		vec2 gq = wpos.xz / 0.45;
+		float gum = step(0.94, hash2(floor(gq))) * (1.0 - smoothstep(0.035, 0.06, length(fract(gq) - 0.5 - (vec2(hash2(floor(gq) + 1.3), hash2(floor(gq) + 2.7)) - 0.5) * 0.6)));
+		col = mix(col, vec3(0.22, 0.22, 0.23), gum * (1.0 - podo) * 0.8);
 	} else if (m < anneau) {
 		// l'intérieur des îlots : de grandes dalles sombres (les pieds des tours, les cours)
 		vec2 tq2 = fract(wpos.xz / 3.0);

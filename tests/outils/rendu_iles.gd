@@ -30,6 +30,7 @@ class FakeMain:
 	var combat_v28: Node = null
 	var boat_v29: Node = null
 	var ciel_v54: Node = null
+	var nains_v46: Node = null
 	var hero_v28: Node = null
 	var monstres_v36: Node = null
 	var sfx_v50: Node = null
@@ -124,6 +125,8 @@ func _initialize() -> void:
 			await _moai()
 		"nuees", "strates", "dome", "nuees_mur", "strates_four", "dome_v160":
 			await _hautefond(quoi)
+		"celeste":
+			await _celeste()
 	quit()
 
 
@@ -267,6 +270,38 @@ func _w(I, x: float, z: float) -> Vector3:
 	var w: Vector3 = I.W(x, z)
 	w.y = fm._height_at(w.x, w.z)
 	return w
+
+
+# =================================================================== l'île flottante et la Citadelle des Nuées (V161)
+
+func _celeste() -> void:
+	var Cv: Node3D = load("res://scripts/ciel_v54.gd").new()
+	fm.add_child(Cv)
+	fm.ciel_v54 = Cv
+	Cv.setup(fm)
+	Cv.pc = true
+	Cv.build()
+	fm.ile_node = Cv.ile
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	await physics_frame
+	var I: Node3D = Cv.ile
+	var C: Vector3 = I.CENTER + Vector3.UP * I.Y0
+	_mer(Vector3(I.CENTER.x, 0.0, I.CENTER.z))
+	var K: Node3D = Cv.chateau
+	var esp: Vector3 = I.world(I.ESPLANADE)
+	await _vue("81_esplanade", esp + Vector3(4, 1.7, 8), K.global_position + Vector3(0, 9, 0))
+	await _vue("82_porte", K.at("porte") + Vector3(3, 1.7, 9), K.at("porte") + Vector3(0, 4, 0))
+	await _vue("83_cour", K.at("cour") + Vector3(-6, 1.7, 6), K.at("porte_donjon") + Vector3(0, 4, 0))
+	await _vue("84_salle", K.at("salle") + Vector3(0, 1.7, 5), K.at("salle") + Vector3(0, 1.5, -6))
+	await _vue("85_lutrin", K.at("lutrin") + Vector3(2.5, 1.7, 3), K.at("lutrin") + Vector3(0, 1.0, 0))
+	await _vue("86_trone", K.at("trone") + Vector3(0, 1.7, 9), K.at("trone") + Vector3(0, 2.0, 0))
+	await _vue("87_dessous", C + Vector3(95, -70, 95), C + Vector3(0, -35, 0))
+	var f0: Vector3 = I.falls[0] if I.falls.size() > 0 else C
+	await _vue("88_cascade", f0 + Vector3(35, 25, 35), f0 + Vector3(0, 40, 0))
+	await _vue("89_vue_haut", C + Vector3(110, 70, 120), C + Vector3(0, 8, 0))
+	await _vue("90_bord", I.world(Vector2(30, 30)) + Vector3(0, 1.7, 0), I.world(Vector2(60, 60)) + Vector3(0, -20, 0))
 
 
 # =================================================================== Hautefond : la Cité des Nuées, les Strates, le Dôme d'Azur (V160)
