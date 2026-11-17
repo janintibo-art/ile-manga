@@ -37,7 +37,8 @@ var gangway: Array = []               # [haut (dans la cale), bas (sur la plage)
 var lights_inside: Array = []         # [OmniLight3D, énergie, scintillement]
 var forge_light: OmniLight3D
 var fire_light: OmniLight3D
-var fire_mat: StandardMaterial3D
+var fire_mat: StandardMaterial3D           # V164 : les braises (elles rougeoient la nuit)
+var fire_flamme_v164: ShaderMaterial       # V164 : la flamme qui danse (flamme_v163)
 var boats: Array = []                 # [Node3D, phase, y]
 var walk_boxes: Array = []            # [Transform3D inverse, demi-taille] : pontons, passerelle
 var bell_pos := Vector3.ZERO
@@ -108,6 +109,7 @@ func build(main_node: Node, wreck: Node3D, island: Node3D, high_quality: bool) -
 	pc = high_quality
 	var t0: int = Time.get_ticks_msec()
 	kit = Kit.new()
+	kit.hd_v164 = true
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 5990
 	_hold_market()
@@ -551,13 +553,13 @@ func _tavern() -> void:
 			kit.ring(Transform3D(E.xf.basis * Basis(Vector3(1, 0, 0), PI * 0.5), L(nx + 3.0, E.D + 2.2, wz - side * 0.1)), 0.22, 0.4, 0.12, "peinture_rouge", 16)
 	# le poêle de l'ancienne cuisine, son tuyau, et le fauteuil du conteur
 	var sx2: Transform3D = TF(-67.0, T, 7.5, -90.0)
-	kit.box(sx2 * Transform3D(Basis(), Vector3(0, 0.55, 0)), Vector3(1.4, 1.1, 1.0), "canon", 1.0)
-	kit.box(sx2 * Transform3D(Basis(), Vector3(0, 0.45, -0.51)), Vector3(0.7, 0.4, 0.02), "braise", 1.0)
-	kit.cyl(sx2 * Transform3D(Basis(), Vector3(0, 1.1, 0.2)), 0.14, 0.14, E.QD_Y - E.D - 1.1, "fer", 8)
-	kit.col_box(sx2 * Transform3D(Basis(), Vector3(0, 0.55, 0)), Vector3(1.4, 1.1, 1.0))
+	# V164 : un vrai poêle de fonte (le ventre rond sur ses pieds galbés, la porte et ses braises, la
+	# plaque de cuisson, le tuyau) et un fauteuil club (le coussin, les accoudoirs roulés, les pieds tournés)
+	_poele_v164(sx2)
+	kit.cyl(sx2 * Transform3D(Basis(), Vector3(0, 1.1, 0.2)), 0.11, 0.11, E.QD_Y - E.D - 1.1, "canon", 10)
+	kit.col_box(sx2 * Transform3D(Basis(), Vector3(0, 0.55, 0)), Vector3(1.1, 1.1, 0.9))
 	var arm: Transform3D = TF(-64.9, T, 6.8, -90.0)
-	kit.box(arm * Transform3D(Basis(), Vector3(0, 0.22, 0)), Vector3(0.8, 0.44, 0.75), "tissu_bordeaux", 1.0)
-	kit.box(arm * Transform3D(Basis(), Vector3(0, 0.75, 0.36)), Vector3(0.8, 0.8, 0.14), "tissu_bordeaux", 1.0)
+	_fauteuil_v164(arm)
 	_spot("tav_poele", -64.6, T, 6.8, -60.0, 6.8, "assis", "t3")
 	_light(L(-66.5, E.D + 0.7, 7.0), Color(1.0, 0.5, 0.2), 1.4, 6.0, 0.3)
 	# le lustre : une roue de charrette et ses chandelles
@@ -765,29 +767,82 @@ func _outside() -> void:
 		add_child(sk)
 	# le feu de camp, ses pierres et ses bûches-bancs
 	var fc: Transform3D = TW(44.0, -54.0)
-	for k2 in range(9):
-		var a2: float = TAU * k2 / 9.0
-		kit.box(fc * Transform3D(Basis(Vector3.UP, a2), Vector3(cos(a2) * 0.85, 0.12, sin(a2) * 0.85)), Vector3(0.36, 0.26, 0.3), "pierre_sombre", 0.6)
-	for k3 in range(4):
-		kit.cyl(fc * Transform3D(Basis(Vector3.UP, k3 * 0.8).rotated(Vector3.UP, 0.0) * Basis(Vector3(1, 0, 0), 1.2), Vector3(0, 0.15, 0)), 0.07, 0.07, 0.9, "bois_sombre", 6)
+	# V164 : de vraies pierres rondes, un lit de cendres et de braises, des bûches en tipi (leur écorce,
+	# leur bout charbonneux), une flamme qui danse (flamme_v163), des bancs de rondins
+	var Rocks = load("res://scripts/rocks_v26.gd")
+	var rmat: Material = Rocks.material(Color(0.74, 0.71, 0.66), 0.05, 0.6)
+	for k2 in range(10):
+		var a2: float = TAU * k2 / 10.0 + 0.2
+		var st := MeshInstance3D.new()
+		var sz: float = 0.24 + 0.08 * sin(k2 * 2.3)
+		st.mesh = Rocks.shape(7640 + k2, Vector3(sz * 1.3, sz, sz * 1.1), 0.55, 0.14)
+		st.material_override = rmat
+		var sp0: Vector3 = fc * Vector3(cos(a2) * 0.88, 0.0, sin(a2) * 0.88)
+		sp0.y = ile.height(sp0.x, sp0.z) + sz * 0.3
+		st.position = sp0
+		st.rotation.y = a2 * 1.7
+		add_child(st)
+	var cendre := StandardMaterial3D.new()
+	cendre.albedo_color = Color(0.2, 0.19, 0.18)
+	cendre.roughness = 1.0
+	var lit := MeshInstance3D.new()
+	var lm := CylinderMesh.new()
+	lm.top_radius = 0.72
+	lm.bottom_radius = 0.8
+	lm.height = 0.06
+	lm.radial_segments = 24
+	lit.mesh = lm
+	lit.material_override = cendre
+	lit.position = Vector3(fc.origin.x, ile.height(fc.origin.x, fc.origin.z) + 0.02, fc.origin.z)
+	lit.name = "Cendres_feu_v164"
+	add_child(lit)
 	fire_mat = StandardMaterial3D.new()
-	fire_mat.albedo_color = Color(1.0, 0.6, 0.2, 0.9)
-	fire_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	fire_mat.albedo_color = Color(0.25, 0.08, 0.02, 1.0)
 	fire_mat.emission_enabled = true
-	fire_mat.emission = Color(1.0, 0.5, 0.15)
+	fire_mat.emission = Color(1.0, 0.38, 0.08)
 	fire_mat.emission_energy_multiplier = 0.0
-	fire_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	var flame := MeshInstance3D.new()
-	var fm := CylinderMesh.new()
-	fm.top_radius = 0.02
-	fm.bottom_radius = 0.42
-	fm.height = 1.0
-	fm.radial_segments = 8
-	flame.mesh = fm
-	flame.material_override = fire_mat
-	flame.position = fc.origin + Vector3.UP * 0.55
-	flame.name = "Feu_de_camp"
-	add_child(flame)
+	var braises := MeshInstance3D.new()
+	var bmh := CylinderMesh.new()
+	bmh.top_radius = 0.42
+	bmh.bottom_radius = 0.5
+	bmh.height = 0.08
+	bmh.radial_segments = 16
+	braises.mesh = bmh
+	braises.material_override = fire_mat
+	braises.position = lit.position + Vector3.UP * 0.04
+	add_child(braises)
+	var ecorce: StandardMaterial3D = _ecorce_v164(Color(1.35, 1.28, 1.2))
+	var charbon: StandardMaterial3D = _ecorce_v164(Color(0.5, 0.45, 0.42))
+	for k3 in range(5):
+		var a4: float = TAU * k3 / 5.0
+		var bu := MeshInstance3D.new()
+		var cy := CylinderMesh.new()
+		cy.top_radius = 0.055
+		cy.bottom_radius = 0.075
+		cy.height = 1.0
+		cy.radial_segments = 10
+		bu.mesh = cy
+		bu.material_override = charbon if k3 % 2 == 0 else ecorce
+		var pied: Vector3 = lit.position + Vector3(cos(a4) * 0.42, 0.05, sin(a4) * 0.42)
+		var tete: Vector3 = lit.position + Vector3(cos(a4) * 0.06, 0.78, sin(a4) * 0.06)
+		var ax: Vector3 = (tete - pied).normalized()
+		bu.transform = Transform3D(Basis(Quaternion(Vector3.UP, ax)), (pied + tete) * 0.5)
+		add_child(bu)
+	var fl_q := QuadMesh.new()
+	fl_q.size = Vector2(0.9, 1.5)
+	fl_q.center_offset = Vector3(0, 0.62, 0)
+	fire_flamme_v164 = ShaderMaterial.new()
+	fire_flamme_v164.shader = load("res://shaders/flamme_v163.gdshader")
+	fire_flamme_v164.set_shader_parameter("glow", 0.0)
+	for k5 in range(3):
+		var flame := MeshInstance3D.new()
+		flame.mesh = fl_q
+		flame.material_override = fire_flamme_v164
+		flame.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		flame.position = lit.position + Vector3.UP * 0.05
+		flame.rotation.y = k5 * PI / 3.0
+		flame.name = "Feu_de_camp" if k5 == 0 else "Feu_de_camp_%d" % k5
+		add_child(flame)
 	fire_light = OmniLight3D.new()
 	fire_light.light_color = Color(1.0, 0.55, 0.22)
 	fire_light.omni_range = 11.0
@@ -800,17 +855,15 @@ func _outside() -> void:
 		var seat: Vector3 = fc * Vector3(cos(a3) * 2.4, 0.0, sin(a3) * 2.4)
 		seat.y = ile.height(seat.x, seat.z)
 		var lb := Basis(Vector3.UP, -a3 + PI * 0.5 + E.yaw)
-		kit.cyl(Transform3D(lb * Basis(Vector3(0, 0, 1), PI * 0.5), seat + Vector3.UP * 0.22 + lb * Vector3(0.8, 0, 0)), 0.22, 0.22, 1.6, "bois_sombre", 10)
+		_rondin_v164(Transform3D(lb * Basis(Vector3(0, 0, 1), PI * 0.5), seat + Vector3.UP * 0.22 + lb * Vector3(0.8, 0, 0)), 0.22, 1.6, ecorce)
 		var sp: Vector3 = fc * Vector3(cos(a3) * 2.6, 0.0, sin(a3) * 2.6)
 		sp.y = ile.height(sp.x, sp.z)
 		_spot_w("plage_feu_%d" % (k4 + 1), sp, fc.origin, "assis", "e_feu")
 	# un mât de pavillon et une ancre sur la plage, à côté de la passerelle
 	var an: Transform3D = TW(47.0, -26.0, 30.0)
-	kit.box(an * Transform3D(Basis(), Vector3(0, 1.4, 0)), Vector3(0.2, 2.8, 0.2), "canon", 1.0)
-	kit.box(an * Transform3D(Basis(), Vector3(0, 2.6, 0)), Vector3(1.2, 0.16, 0.16), "canon", 1.0)
-	kit.box(an * Transform3D(Basis(Vector3(0, 0, 1), 0.5), Vector3(-0.7, 0.3, 0)), Vector3(1.3, 0.2, 0.2), "canon", 1.0)
-	kit.box(an * Transform3D(Basis(Vector3(0, 0, 1), -0.5), Vector3(0.7, 0.3, 0)), Vector3(1.3, 0.2, 0.2), "canon", 1.0)
-	kit.ring(an * Transform3D(Basis(Vector3(1, 0, 0), PI * 0.5), Vector3(0, 3.0, 0)), 0.18, 0.28, 0.08, "canon", 14)
+	# V164 : une vraie ancre de fer, plantée de biais dans le sable (la verge, le diamant, les deux bras
+	# courbes et leurs pattes, le jas de bois cerclé de fer, l'organeau)
+	_ancre_v164(an * Transform3D(Basis(Vector3(0, 0, 1), 0.12), Vector3(0, -0.25, 0)))
 	kit.col_box(an * Transform3D(Basis(), Vector3(0, 1.3, 0)), Vector3(1.6, 2.6, 0.4))
 
 
@@ -950,10 +1003,190 @@ func _process(delta: float) -> void:
 	if fire_light != null:
 		var on: bool = night
 		fire_light.light_energy = (1.8 + 0.5 * sin(_clock * 11.0) * sin(_clock * 7.0)) if on else 0.0
-		fire_mat.emission_energy_multiplier = 3.0 if on else 0.0
-		fire_mat.albedo_color.a = 0.85 if on else 0.0
+		fire_mat.emission_energy_multiplier = (2.2 + 0.8 * sin(_clock * 5.0)) if on else 0.0
+		if fire_flamme_v164 != null:
+			fire_flamme_v164.set_shader_parameter("glow", 1.0 if on else 0.0)
 	if E != null:
 		E.set_windows(night)
 		if E.lantern_light != null:
 			E.lantern_light.light_energy = 3.0 if night else 0.0
 			E.lantern_mat.emission_energy_multiplier = 4.0 if night else 0.3
+
+
+# =================================================================== V164 : le bois du feu de camp
+
+func _ecorce_v164(teinte: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	const B := "res://assets/textures/beau164/"
+	if ResourceLoader.exists(B + "ecorce_buche.png"):
+		m.albedo_texture = load(B + "ecorce_buche.png")
+		m.normal_enabled = true
+		m.normal_texture = load(B + "ecorce_buche_n.png")
+		m.uv1_scale = Vector3(1.0, 0.6, 1.0)
+	m.albedo_color = teinte
+	m.roughness = 0.95
+	return m
+
+
+## Un rondin couché (le long de l'axe Y de xf), son écorce, ses deux bouts coupés (les cernes).
+func _rondin_v164(xf: Transform3D, r: float, longueur: float, ecorce: StandardMaterial3D) -> void:
+	var mi := MeshInstance3D.new()
+	var cm := CylinderMesh.new()
+	cm.top_radius = r
+	cm.bottom_radius = r * 1.04
+	cm.height = longueur
+	cm.radial_segments = 14
+	cm.cap_top = false
+	cm.cap_bottom = false
+	mi.mesh = cm
+	mi.material_override = ecorce
+	mi.transform = xf
+	mi.name = "Rondin_v164_%d" % get_child_count()
+	add_child(mi)
+	var bout := StandardMaterial3D.new()
+	const B := "res://assets/textures/beau164/"
+	if ResourceLoader.exists(B + "cerne.png"):
+		bout.albedo_texture = load(B + "cerne.png")
+		bout.normal_enabled = true
+		bout.normal_texture = load(B + "cerne_n.png")
+	bout.roughness = 0.9
+	for sgn in [-1.0, 1.0]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var n := Vector3(0, sgn, 0)
+		var rr: float = r * (1.04 if sgn < 0.0 else 1.0)
+		for k in range(16):
+			var a0: float = TAU * k / 16.0
+			var a1: float = TAU * (k + 1) / 16.0
+			var tri: Array = [Vector3.ZERO, Vector3(cos(a0) * rr, 0, sin(a0) * rr), Vector3(cos(a1) * rr, 0, sin(a1) * rr)]
+			# la face regarde dehors (Godot : sens des aiguilles d'une montre vu de devant)
+			if ((tri[1] as Vector3) - (tri[0] as Vector3)).cross((tri[2] as Vector3) - (tri[0] as Vector3)).dot(n) > 0.0:
+				tri = [tri[0], tri[2], tri[1]]
+			for v in tri:
+				st.set_normal(n)
+				st.set_uv(Vector2(0.5 + (v as Vector3).x / rr * 0.47, 0.5 + (v as Vector3).z / rr * 0.47))
+				st.add_vertex((v as Vector3) + n * longueur * 0.5)
+		st.generate_tangents()
+		var cap := MeshInstance3D.new()
+		cap.mesh = st.commit()
+		cap.material_override = bout
+		cap.transform = xf
+		add_child(cap)
+
+
+## V164 : l'ancre de la plage (repère : la verge le long de +Y, les bras dans le plan XY).
+func _ancre_v164(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+	var acc := {}
+	for k in ["fer", "bois"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	# la verge, un peu renflée vers le bas
+	Sculpt._tube(acc, "fer", [Vector3(0, 0.15, 0), Vector3(0, 1.5, 0), Vector3(0, 3.0, 0)], [0.1, 0.085, 0.075], 10)
+	# les deux bras : un arc qui part du diamant, et les pattes (des fers de lance aplatis)
+	for sx in [-1.0, 1.0]:
+		var pts: Array = []
+		var rs: Array = []
+		for i in range(9):
+			var t: float = float(i) / 8.0
+			var th: float = t * 1.15
+			pts.append(Vector3(sx * sin(th), 1.0 - cos(th) + 0.15, 0.0))
+			rs.append(lerpf(0.095, 0.06, t))
+		Sculpt._tube(acc, "fer", pts, rs, 8)
+		var bout: Vector3 = pts[pts.size() - 1]
+		var dir: Vector3 = ((pts[pts.size() - 1] as Vector3) - (pts[pts.size() - 2] as Vector3)).normalized()
+		var bz := Basis(Vector3(0, 0, 1), atan2(-dir.x, dir.y))
+		Sculpt._boite(acc, "fer", bout - dir * 0.08, Vector3(0.34, 0.3, 0.05), bz * Basis(Vector3(0, 0, 1), PI * 0.25))
+		Sculpt._boite(acc, "fer", bout + dir * 0.12, Vector3(0.07, 0.16, 0.06), bz)
+	Sculpt._boule(acc, "fer", Vector3(0, 0.15, 0), Vector3(0.14, 0.12, 0.12))
+	# le jas (une traverse de bois cerclée de fer), perpendiculaire aux bras, et l'organeau
+	Sculpt._boite(acc, "bois", Vector3(0, 2.7, 0), Vector3(0.16, 0.16, 1.5))
+	for z in [-0.55, -0.2, 0.2, 0.55]:
+		Sculpt._boite(acc, "fer", Vector3(0, 2.7, z), Vector3(0.18, 0.18, 0.04))
+	var anneau: Array = []
+	var ra: Array = []
+	for i2 in range(21):
+		var b: float = TAU * float(i2) / 20.0
+		anneau.append(Vector3(sin(b) * 0.22, 3.25 + cos(b) * 0.22, 0))
+		ra.append(0.035)
+	Sculpt._tube(acc, "fer", anneau, ra, 6)
+	var fer := StandardMaterial3D.new()
+	fer.albedo_color = Color(0.3, 0.24, 0.2)
+	fer.metallic = 0.75
+	fer.roughness = 0.7
+	MetalKit.habille(fer, "fer", 1.6)
+	var bois := StandardMaterial3D.new()
+	bois.albedo_texture = load("res://assets/textures/carene/planches_cabane.png")
+	bois.albedo_color = Color(0.55, 0.45, 0.36)
+	bois.uv1_triplanar = true
+	bois.uv1_scale = Vector3(0.8, 0.8, 0.8)
+	bois.roughness = 0.9
+	for k2 in ["fer", "bois"]:
+		var mi := MeshInstance3D.new()
+		mi.name = "Ancre_v164_" + k2
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = fer if k2 == "fer" else bois
+		mi.transform = xf
+		add_child(mi)
+
+
+## V164 : le poêle de fonte de la taverne (repère : la porte vers -Z).
+func _poele_v164(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc := {}
+	for k in ["canon", "braise", "cuivre"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			Sculpt._tube(acc, "canon", [Vector3(sx * 0.4, 0.0, sz * 0.3), Vector3(sx * 0.36, 0.14, sz * 0.27), Vector3(sx * 0.3, 0.28, sz * 0.22)], [0.045, 0.035, 0.05], 8)
+	Sculpt._boite(acc, "canon", Vector3(0, 0.3, 0), Vector3(0.86, 0.05, 0.66))
+	Sculpt._tour(acc, "canon", Vector3(0, 0.32, 0), [Vector2(0.3, 0.0), Vector2(0.4, 0.12), Vector2(0.45, 0.36), Vector2(0.43, 0.58), Vector2(0.36, 0.74), Vector2(0.33, 0.78)], Vector3(1.0, 1.0, 0.85), true)
+	# la ceinture de laiton, la plaque de cuisson et son rebord
+	Sculpt._tour(acc, "cuivre", Vector3(0, 0.64, 0), [Vector2(0.455, 0.0), Vector2(0.47, 0.025), Vector2(0.455, 0.05)], Vector3(1.0, 1.0, 0.85), false)
+	Sculpt._tour(acc, "canon", Vector3(0, 1.1, 0), [Vector2(0.0, 0.0), Vector2(0.42, 0.0), Vector2(0.44, 0.04), Vector2(0.4, 0.06), Vector2(0.0, 0.06)], Vector3(1.0, 1.0, 0.85), false)
+	# la porte : son cadre, ses barreaux, les braises derrière
+	Sculpt._boite(acc, "braise", Vector3(0, 0.62, -0.36), Vector3(0.26, 0.18, 0.04))
+	Sculpt._boite(acc, "canon", Vector3(0, 0.75, -0.37), Vector3(0.34, 0.05, 0.05))
+	Sculpt._boite(acc, "canon", Vector3(0, 0.5, -0.37), Vector3(0.34, 0.05, 0.05))
+	for x in [-0.15, -0.05, 0.05, 0.15]:
+		Sculpt._boite(acc, "canon", Vector3(x, 0.62, -0.385), Vector3(0.025, 0.22, 0.03))
+	Sculpt._boule(acc, "cuivre", Vector3(0.2, 0.62, -0.4), Vector3(0.025, 0.025, 0.025))
+	for k2 in ["canon", "braise", "cuivre"]:
+		var mi := MeshInstance3D.new()
+		mi.name = "Poele_v164_" + k2
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = kit.mat(k2)
+		mi.transform = xf
+		add_child(mi)
+
+
+## V164 : le fauteuil club du conteur (repère : le dossier vers +Z).
+func _fauteuil_v164(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc := {}
+	for k in ["tissu_bordeaux", "bois_sombre"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	Sculpt._boite(acc, "tissu_bordeaux", Vector3(0, 0.24, 0.02), Vector3(0.74, 0.3, 0.7))
+	Sculpt._boule(acc, "tissu_bordeaux", Vector3(0, 0.43, -0.04), Vector3(0.29, 0.08, 0.3))
+	Sculpt._boite(acc, "tissu_bordeaux", Vector3(0, 0.6, 0.31), Vector3(0.74, 0.62, 0.14))
+	Sculpt._tube(acc, "tissu_bordeaux", [Vector3(-0.37, 0.92, 0.3), Vector3(0.0, 0.94, 0.3), Vector3(0.37, 0.92, 0.3)], [0.08, 0.085, 0.08], 12)
+	Sculpt._boule(acc, "tissu_bordeaux", Vector3(0, 0.66, 0.22), Vector3(0.28, 0.22, 0.06))
+	for sx in [-1.0, 1.0]:
+		Sculpt._boite(acc, "tissu_bordeaux", Vector3(sx * 0.35, 0.36, 0.0), Vector3(0.12, 0.38, 0.66))
+		Sculpt._tube(acc, "tissu_bordeaux", [Vector3(sx * 0.35, 0.56, -0.34), Vector3(sx * 0.35, 0.57, 0.0), Vector3(sx * 0.35, 0.58, 0.3)], [0.085, 0.09, 0.085], 12)
+		Sculpt._boule(acc, "tissu_bordeaux", Vector3(sx * 0.35, 0.56, -0.34), Vector3(0.085, 0.085, 0.03))
+		for sz in [-1.0, 1.0]:
+			Sculpt._tour(acc, "bois_sombre", Vector3(sx * 0.31, 0.0, sz * 0.29), [Vector2(0.025, 0.0), Vector2(0.035, 0.03), Vector2(0.03, 0.06), Vector2(0.04, 0.09)], Vector3.ONE, true)
+	for k2 in ["tissu_bordeaux", "bois_sombre"]:
+		var mi := MeshInstance3D.new()
+		mi.name = "Fauteuil_v164_" + k2
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = kit.mat(k2)
+		mi.transform = xf
+		add_child(mi)

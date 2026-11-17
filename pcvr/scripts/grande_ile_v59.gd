@@ -482,6 +482,12 @@ func _build_mesh(high_quality: bool) -> void:
 	mat.set_shader_parameter("rock_tex", load(t + "terrain/rock.jpg"))
 	mat.set_shader_parameter("rock_n", load(t + "terrain/rock_n.png"))
 	mat.set_shader_parameter("extra_detail", high_quality)
+	# V164 : le sous-bois de la forêt des brumes (la litière de feuilles mortes, les coussins de mousse)
+	if ResourceLoader.exists(B164 + "litiere.png"):
+		mat.set_shader_parameter("soil_tex", load(B164 + "litiere.png"))
+		mat.set_shader_parameter("moss_tex", load(B164 + "mousse_foret.png"))
+		mat.set_shader_parameter("moss_n", load(B164 + "mousse_foret_n.png"))
+		mat.set_shader_parameter("sous_bois", true)
 	var per: int = (count - 1) / CHUNKS
 	for cz in range(CHUNKS):
 		for cx in range(CHUNKS):
@@ -696,16 +702,26 @@ var door_sockets: Array = []            # V63 : centre des quatre creux (repère
 
 
 func _build_door() -> void:
-	var stone := StandardMaterial3D.new()
-	stone.albedo_texture = load("res://assets/textures/terrain/rock.jpg")
-	stone.normal_enabled = true
-	stone.normal_texture = load("res://assets/textures/terrain/rock_n.png")
-	stone.uv1_triplanar = true
-	stone.uv1_scale = Vector3(0.09, 0.09, 0.09)
-	stone.albedo_color = Color(0.86, 0.83, 0.78)
-	stone.roughness = 0.9
-	var dark := stone.duplicate() as StandardMaterial3D
-	dark.albedo_color = Color(0.5, 0.48, 0.45)
+	var stone: Material
+	var dark: Material
+	if ResourceLoader.exists(PIERRE_V164):
+		# V164 : de la pierre de taille vieillie (pierre_chateau_v161 : les blocs, les coulures, la
+		# terre et la mousse au pied, les lichens)
+		stone = _pierre_v164(Color(0.84, 0.8, 0.74))
+		dark = _pierre_v164(Color(0.55, 0.53, 0.5))
+	else:
+		var st0 := StandardMaterial3D.new()
+		st0.albedo_texture = load("res://assets/textures/terrain/rock.jpg")
+		st0.normal_enabled = true
+		st0.normal_texture = load("res://assets/textures/terrain/rock_n.png")
+		st0.uv1_triplanar = true
+		st0.uv1_scale = Vector3(0.09, 0.09, 0.09)
+		st0.albedo_color = Color(0.86, 0.83, 0.78)
+		st0.roughness = 0.9
+		stone = st0
+		var dk0 := st0.duplicate() as StandardMaterial3D
+		dk0.albedo_color = Color(0.5, 0.48, 0.45)
+		dark = dk0
 	door_glow = StandardMaterial3D.new()
 	door_glow.albedo_color = Color(0.2, 0.3, 0.32)
 	door_glow.emission_enabled = true
@@ -748,6 +764,8 @@ func _build_door() -> void:
 		lmi.mesh = lbm
 		lmi.material_override = dark
 		leaf.add_child(lmi)
+		# V164 : la face sculptée du vantail (la moitié de la grande gravure)
+		_face_sculptee_v164(leaf, s)
 		var lb := StaticBody3D.new()
 		lb.collision_layer = 1
 		lb.collision_mask = 0
@@ -839,6 +857,165 @@ func _build_door() -> void:
 		mi2.position = Vector3(side * rng.randf_range(11.0, 15.0), -0.3, rng.randf_range(1.0, 9.0))
 		mi2.rotation.y = rng.randf() * TAU
 		gate.add_child(mi2)
+	_porte_v164(gate, body, stone, dark)
+
+
+# =================================================================== V164 : la Porte sculptée
+
+const PIERRE_V164 := "res://shaders/pierre_chateau_v161.gdshader"
+const B164 := "res://assets/textures/beau164/"
+var door_braseros: Array = []           # V164 : les deux braseros aux flammes bleues (tests)
+
+
+func _pierre_v164(teinte: Color) -> ShaderMaterial:
+	var sp := ShaderMaterial.new()
+	sp.shader = load(PIERRE_V164)
+	sp.set_shader_parameter("tex_albedo", load("res://assets/textures/chateau/pierre_chateau.png"))
+	sp.set_shader_parameter("tex_normal", load("res://assets/textures/chateau/pierre_chateau_n.png"))
+	sp.set_shader_parameter("teinte", teinte)
+	sp.set_shader_parameter("echelle", 1.0 / 4.4)
+	sp.set_shader_parameter("sol_y", door_pos.y)
+	return sp
+
+
+func _mat_sculpte_v164(nom: String) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	if ResourceLoader.exists(B164 + nom + ".png"):
+		m.albedo_texture = load(B164 + nom + ".png")
+		m.normal_enabled = true
+		m.normal_texture = load(B164 + nom + "_n.png")
+		m.normal_scale = 1.4
+		m.roughness_texture = load(B164 + nom + "_r.png")
+		m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+	m.roughness = 1.0
+	return m
+
+
+## Un plan (repère local : face vers +Z), u de u0 à u1 de gauche à droite vu de devant.
+func _plan_v164(w: float, h: float, u0: float, u1: float) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var pts := [Vector3(-w * 0.5, -h * 0.5, 0), Vector3(w * 0.5, -h * 0.5, 0), Vector3(w * 0.5, h * 0.5, 0), Vector3(-w * 0.5, h * 0.5, 0)]
+	var uvs := [Vector2(u0, 1), Vector2(u1, 1), Vector2(u1, 0), Vector2(u0, 0)]
+	for i in [0, 2, 1, 0, 3, 2]:
+		st.set_normal(Vector3.BACK)
+		st.set_uv(uvs[i])
+		st.add_vertex(pts[i])
+	st.generate_tangents()
+	return st.commit()
+
+
+func _face_sculptee_v164(leaf: Node3D, s: float) -> void:
+	if not ResourceLoader.exists(B164 + "porte_sceaux.png"):
+		return
+	var f := MeshInstance3D.new()
+	f.name = "Face_sculptee"
+	# vu de dehors (depuis +Z), -X est à gauche : le vantail gauche (s < 0) porte la moitié gauche
+	f.mesh = _plan_v164(7.2, 18.4, 0.0 if s < 0.0 else 0.5, 0.5 if s < 0.0 else 1.0)
+	f.material_override = _mat_sculpte_v164("porte_sceaux")
+	f.position = Vector3(0, 0, 0.605)
+	leaf.add_child(f)
+
+
+## La frise du linteau, les socles et les chapiteaux des piliers, deux braseros aux flammes bleues.
+func _porte_v164(gate: Node3D, body: StaticBody3D, stone: Material, dark: Material) -> void:
+	if ResourceLoader.exists(B164 + "frise_sceaux.png"):
+		var fr := MeshInstance3D.new()
+		fr.name = "Frise_sceaux"
+		fr.mesh = _plan_v164(24.0, 4.0, 0.0, 1.0)
+		fr.material_override = _mat_sculpte_v164("frise_sceaux")
+		fr.position = Vector3(0, 20.5, 2.81)
+		gate.add_child(fr)
+	# les piliers : un socle mouluré, une bague, un chapiteau à deux gradins
+	for sx in [-9.4, 9.4]:
+		for m in [[Vector3(5.0, 1.4, 5.8), -0.8, stone], [Vector3(4.6, 0.35, 5.4), 0.08, dark], [Vector3(4.5, 0.4, 5.3), 12.0, dark], [Vector3(4.8, 0.6, 5.6), 17.9, stone], [Vector3(5.2, 0.5, 6.0), 18.45, dark]]:
+			var mi := MeshInstance3D.new()
+			var bm := BoxMesh.new()
+			bm.size = m[0]
+			mi.mesh = bm
+			mi.material_override = m[2]
+			mi.position = Vector3(sx, float(m[1]), 0.0)
+			gate.add_child(mi)
+	# deux braseros de pierre : la colonne, la vasque de bronze, la flamme bleue qui ne s'éteint pas
+	var MetalKit = load("res://scripts/metal_kit_v160.gd")
+	var bronze := StandardMaterial3D.new()
+	bronze.albedo_color = Color(0.5, 0.4, 0.24)
+	bronze.metallic = 0.85
+	bronze.roughness = 0.45
+	MetalKit.habille(bronze, "verdigris", 1.0)
+	var fl_mat := ShaderMaterial.new()
+	fl_mat.shader = load("res://shaders/flamme_v163.gdshader")
+	fl_mat.set_shader_parameter("glow", 1.0)
+	fl_mat.set_shader_parameter("coeur_col", Vector3(0.75, 0.97, 1.0))
+	fl_mat.set_shader_parameter("bord_col", Vector3(0.15, 0.5, 1.0))
+	var quad := QuadMesh.new()
+	quad.size = Vector2(1.1, 2.0)
+	quad.center_offset = Vector3(0, 0.9, 0)
+	for sx2 in [-7.6, 7.6]:
+		var b := Node3D.new()
+		b.name = "Brasero_bleu"
+		b.position = Vector3(sx2, -0.3, 5.5)
+		gate.add_child(b)
+		var pied := MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.45
+		cm.bottom_radius = 0.7
+		cm.height = 2.2
+		cm.radial_segments = 16
+		pied.mesh = cm
+		pied.material_override = stone
+		pied.position = Vector3(0, 1.1, 0)
+		b.add_child(pied)
+		var base := MeshInstance3D.new()
+		var bb := BoxMesh.new()
+		bb.size = Vector3(1.8, 0.4, 1.8)
+		base.mesh = bb
+		base.material_override = dark
+		base.position = Vector3(0, 0.2, 0)
+		b.add_child(base)
+		var vasque := MeshInstance3D.new()
+		var vm := CylinderMesh.new()
+		vm.top_radius = 1.05
+		vm.bottom_radius = 0.45
+		vm.height = 0.7
+		vm.radial_segments = 24
+		vasque.mesh = vm
+		vasque.material_override = bronze
+		vasque.position = Vector3(0, 2.5, 0)
+		b.add_child(vasque)
+		var anneau := MeshInstance3D.new()
+		var tm := TorusMesh.new()
+		tm.inner_radius = 0.98
+		tm.outer_radius = 1.12
+		tm.rings = 32
+		tm.ring_segments = 8
+		anneau.mesh = tm
+		anneau.material_override = bronze
+		anneau.position = Vector3(0, 2.85, 0)
+		b.add_child(anneau)
+		for k in range(3):
+			var fm := MeshInstance3D.new()
+			fm.name = "Flamme_bleue_%d" % k
+			fm.mesh = quad
+			fm.material_override = fl_mat
+			fm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			fm.position = Vector3(0, 2.75, 0)
+			fm.rotation.y = k * PI / 3.0
+			b.add_child(fm)
+		var l := OmniLight3D.new()
+		l.light_color = Color(0.45, 0.75, 1.0)
+		l.light_energy = 0.7
+		l.omni_range = 7.0
+		l.position = Vector3(0, 3.6, 0)
+		b.add_child(l)
+		var cs := CollisionShape3D.new()
+		var cy := CylinderShape3D.new()
+		cy.radius = 0.8
+		cy.height = 3.0
+		cs.shape = cy
+		cs.position = Vector3(sx2, 1.2, 5.5)
+		body.add_child(cs)
+		door_braseros.append(b)
 
 
 ## Le point devant la porte (monde), où le joueur peut l'examiner.

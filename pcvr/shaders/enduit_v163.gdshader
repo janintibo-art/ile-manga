@@ -15,6 +15,8 @@ uniform vec4 teinte : source_color = vec4(0.95, 0.92, 0.86, 1.0);
 uniform float sol_y = 1.2;                 // le sol de la ville basse (l'humidité monte de là)
 uniform float normal_force = 0.7;
 uniform float plaques : hint_range(0.0, 1.0) = 1.0;   // l'enduit tombé
+uniform float humidite : hint_range(0.0, 1.0) = 1.0;  // V164 : la bande humide au pied (0 : aucune)
+uniform float echelle_dessous = 2.6;       // V164 : la taille du motif sous l'enduit (moellons, pisé)
 
 varying vec3 wpos;
 varying vec3 wnrm;
@@ -71,6 +73,8 @@ void fragment() {
 		pied = smoothstep(lim, lim - 0.6, hb) * step(-0.3, hb);
 		sel = smoothstep(0.1, 0.0, abs(hb - lim + 0.05)) * 0.35 * step(0.0, hb) * smoothstep(0.35, 0.65, fbm(vec2(q.x * 0.9, 7.0)));
 	}
+	pied *= humidite;
+	sel *= humidite;
 	alb = mix(alb, alb * vec3(0.66, 0.68, 0.62), pied * 0.75);
 	alb = mix(alb, vec3(0.9, 0.89, 0.85), sel * (0.5 + 0.5 * bruit(q * 9.0)));
 	// l'enduit tombé par plaques (plus souvent en bas) : les moellons, le bord cassé
@@ -78,7 +82,7 @@ void fragment() {
 	float seuil = mix(0.82, 0.74, smoothstep(2.5, 0.3, hb));
 	float trou = smoothstep(seuil, seuil + 0.012, pl) * plaques * step(abs(wnrm.y), 0.7);
 	float lev = smoothstep(seuil - 0.03, seuil, pl) * (1.0 - trou) * plaques * step(abs(wnrm.y), 0.7);
-	vec2 qs = q / 2.6;
+	vec2 qs = q / echelle_dessous;
 	vec3 pierre = texture(tex_pierre, qs).rgb * vec3(1.02, 0.94, 0.82);
 	vec3 pn = texture(tex_pierre_n, qs).rgb;
 	alb = mix(alb, alb * 0.82, lev);

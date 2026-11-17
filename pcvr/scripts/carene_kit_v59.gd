@@ -5,6 +5,11 @@ extends "res://scripts/azur_kit_v56.gd"
 ## goudron, braises, lanternes de bord toujours allumées, cuivre, briques du foyer.
 
 const C := "res://assets/textures/carene/"
+const B164 := "res://assets/textures/beau164/"
+const MetalKit164 = preload("res://scripts/metal_kit_v160.gd")
+## V164 : la Grande Île en haute définition (le pont de chêne, les métaux vieillis) ; mis par la ville
+## (Carène, Tazira…) qui crée son kit
+var hd_v164: bool = false
 
 
 func mat(key: String) -> Material:
@@ -31,6 +36,14 @@ func mat(key: String) -> Material:
 			m.normal_enabled = true
 			m.normal_texture = load(C + "pont_n.png")
 			m.roughness = 0.85
+			# V164 : le vieux pont de chêne (la texture couvre 8,3 m ; le kit compte en tuiles de ~1,2 m)
+			if hd_v164 and ResourceLoader.exists(B164 + "pont_leviathan.png"):
+				m.albedo_texture = load(B164 + "pont_leviathan.png")
+				m.normal_texture = load(B164 + "pont_leviathan_n.png")
+				m.roughness_texture = load(B164 + "pont_leviathan_r.png")
+				m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+				m.roughness = 1.0
+				m.uv1_scale = Vector3(0.144, 0.144, 1.0)
 		"toile_rouge", "toile_bleue":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load(C + key + ".png")
@@ -68,11 +81,15 @@ func mat(key: String) -> Material:
 			m.albedo_color = Color(0.62, 0.36, 0.2)
 			m.metallic = 0.85
 			m.roughness = 0.4
+			if hd_v164:
+				MetalKit164.habille(m, "patine", 1.0)        # V164 : le métal vieilli
 		"bronze":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.45, 0.36, 0.2)
 			m.metallic = 0.8
 			m.roughness = 0.45
+			if hd_v164:
+				MetalKit164.habille(m, "verdigris", 1.0)        # V164 : le métal vieilli
 		"brique":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = _tex("moellons.png")
@@ -85,6 +102,8 @@ func mat(key: String) -> Material:
 			m.albedo_color = Color(0.09, 0.09, 0.1)
 			m.metallic = 0.7
 			m.roughness = 0.55
+			if hd_v164:
+				MetalKit164.habille(m, "fer", 1.2)        # V164 : le métal vieilli
 		"carte":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load("res://assets/textures/carte/archipel.png")

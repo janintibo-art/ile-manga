@@ -8,10 +8,40 @@ const TZ := "res://assets/textures/tazira/"
 const CHAUX := {"blanc": Color(1, 1, 1), "bleu": Color(0.86, 0.92, 1.0), "rose": Color(1.0, 0.9, 0.86), "ocre": Color(1.0, 0.86, 0.66)}
 
 
+## V164 : le pisé (les banchées, les cailloux, les trous de boulin) et la chaux vieillie (enduit_v163 :
+## les coulures, les plaques tombées qui montrent le pisé dessous).
+func _mat_v164(key: String) -> Material:
+	if key.begins_with("chaux"):
+		var sm := ShaderMaterial.new()
+		sm.shader = load("res://shaders/enduit_v163.gdshader")
+		sm.set_shader_parameter("tex_albedo", load(B164 + "chaux_tazira.png"))
+		sm.set_shader_parameter("tex_normal", load(B164 + "chaux_tazira_n.png"))
+		sm.set_shader_parameter("tex_pierre", load(B164 + "pise_tazira.png"))
+		sm.set_shader_parameter("tex_pierre_n", load(B164 + "pise_tazira_n.png"))
+		sm.set_shader_parameter("teinte", CHAUX.get(key.substr(6), Color(1, 1, 1)))
+		sm.set_shader_parameter("humidite", 0.0)
+		sm.set_shader_parameter("echelle_dessous", 2.5)
+		sm.set_shader_parameter("normal_force", 0.5)
+		return sm
+	var m := StandardMaterial3D.new()
+	m.albedo_texture = load(B164 + "pise_tazira.png")
+	m.normal_enabled = true
+	m.normal_texture = load(B164 + "pise_tazira_n.png")
+	m.roughness_texture = load(B164 + "pise_tazira_r.png")
+	m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+	m.roughness = 1.0
+	m.albedo_color = Color(1, 1, 1) if key == "pise" else Color(0.82, 0.78, 0.74)
+	return m
+
+
 func mat(key: String) -> Material:
 	if mats.has(key):
 		return mats[key]
 	var m: StandardMaterial3D = null
+	if hd_v164 and (key == "pise" or key == "pise_sombre" or key.begins_with("chaux")) and ResourceLoader.exists(B164 + "pise_tazira.png"):
+		var hd: Material = _mat_v164(key)
+		mats[key] = hd
+		return hd
 	if key == "pise" or key == "pise_sombre":
 		m = StandardMaterial3D.new()
 		m.albedo_texture = load(TZ + "pise.png")

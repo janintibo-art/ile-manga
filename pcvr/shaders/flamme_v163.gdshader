@@ -5,6 +5,8 @@ shader_type spatial;
 render_mode unshaded, blend_add, cull_disabled, depth_draw_never, shadows_disabled;
 
 uniform float glow = 0.0;
+uniform vec3 coeur_col = vec3(1.0, 0.86, 0.5);   // V164 : la couleur du cœur et du bord de la flamme
+uniform vec3 bord_col = vec3(1.0, 0.28, 0.04);
 
 float h2(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -31,7 +33,7 @@ void fragment() {
 	float d = abs(x - tord) / large;
 	float n = bruit(vec2(x * 3.5 + graine * 5.0, y * 5.0 - t * 1.6));
 	float a = smoothstep(1.0, 0.35, d + (n - 0.5) * 0.5) * smoothstep(1.0, 0.6, y + n * 0.25) * smoothstep(0.0, 0.06, y);
-	vec3 c = mix(vec3(1.0, 0.28, 0.04), vec3(1.0, 0.86, 0.5), smoothstep(0.7, 0.05, d) * (1.0 - y * 0.8));
+	vec3 c = mix(bord_col, coeur_col, smoothstep(0.7, 0.05, d) * (1.0 - y * 0.8));
 	ALBEDO = c * 1.1;
 	ALPHA = clamp(a * glow, 0.0, 1.0);
 }

@@ -97,6 +97,7 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 6100
 	kit = Kit.new()
+	kit.hd_v164 = true                    # V164 : les métaux vieillis
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 6101
 	_paving()
@@ -957,11 +958,26 @@ func _monorail() -> void:
 		var p1: Vector3 = _rail_pts[(i + 1) % n]
 		var d: Vector3 = (p1 - p0)
 		var bas := Basis.looking_at(d.normalized(), Vector3.UP)
-		kit.box(Transform3D(bas, (p0 + p1) * 0.5), Vector3(0.6, 0.7, d.length() + 0.05), "fonte", 1.0)
-		kit.box(Transform3D(bas, (p0 + p1) * 0.5 + Vector3.UP * 0.4), Vector3(0.2, 0.12, d.length() + 0.05), "laiton", 1.0)
+		# V164 : une poutre en I de fonte rivetée (les deux semelles, l'âme, les rivets tous les 40 cm),
+		# la bande de laiton où roulent les galets
+		var mid: Vector3 = (p0 + p1) * 0.5
+		var L: float = d.length() + 0.05
+		var xf := Transform3D(bas, mid)
+		kit.box(xf * Transform3D(Basis(), Vector3(0, 0.31, 0)), Vector3(0.62, 0.08, L), "fonte", 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(0, -0.31, 0)), Vector3(0.62, 0.08, L), "fonte", 1.0)
+		kit.box(xf, Vector3(0.1, 0.56, L), "fonte", 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(0, 0.4, 0)), Vector3(0.2, 0.1, L), "laiton", 1.0)
+		var nr: int = maxi(1, int(L / 0.4))
+		for r in range(nr):
+			var z: float = -L * 0.5 + (r + 0.5) * L / nr
+			for sx in [-0.22, 0.22]:
+				for sy in [0.355, -0.355]:
+					kit.box(xf * Transform3D(Basis(), Vector3(sx, sy, z)), Vector3(0.05, 0.025, 0.05), "fer_noir", 1.0)
+			for sx2 in [-0.065, 0.065]:
+				kit.box(xf * Transform3D(Basis(), Vector3(sx2, 0.0, z)), Vector3(0.03, 0.05, 0.05), "fer_noir", 1.0)
 		if i % 6 == 0:
 			var g: Vector3 = p0 - Vector3.UP * RAIL_H
-			kit.cyl(Transform3D(Basis(), g), 0.35, 0.28, RAIL_H - 0.35, "fer_noir", 10)
+			_colonne_fonte_v164(g, RAIL_H - 0.35)
 			kit.col_cyl(g, 0.35, RAIL_H)
 			kit.box(Transform3D(bas, p0 - Vector3.UP * 0.5), Vector3(1.2, 0.3, 1.2), "laiton", 1.0)
 	kit.commit()
@@ -1508,3 +1524,43 @@ func check_visit(p: Vector3) -> void:
 	if not bool(state["visite"]) and zone_at(p).begins_with("cliquetis") and p.y > Y - 3.0:
 		state["visite"] = true
 		main._show_message_v28("Cliquetis, la cité des ingénieurs fous — la Foire des Inventions, le Zéphyr, le téléphérique")
+
+
+## V164 : une colonne de fonte (la base moulurée, le fût cannelé, la bague de laiton, le chapiteau
+## évasé) : celles du monorail.
+func _colonne_fonte_v164(g: Vector3, h: float) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc := {}
+	for k in ["fer_noir", "laiton"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	Sculpt._tour(acc, "fer_noir", g, [Vector2(0.52, 0.0), Vector2(0.52, 0.18), Vector2(0.44, 0.24), Vector2(0.44, 0.34), Vector2(0.36, 0.42), Vector2(0.3, 0.55)], Vector3.ONE, false)
+	var n: int = 16
+	var verts := PackedVector3Array()
+	var uvs := PackedVector2Array()
+	var idx := PackedInt32Array()
+	var na: int = n * 4
+	var ny: int = 6
+	for j in range(ny + 1):
+		var t: float = float(j) / ny
+		var y: float = lerpf(0.55, h - 0.9, t)
+		var rr: float = lerpf(0.3, 0.24, t)
+		for i in range(na + 1):
+			var a: float = TAU * float(i) / na
+			var rad: float = rr * (1.0 - 0.06 * pow(absf(sin(a * n * 0.5)), 0.4))
+			verts.append(g + Vector3(cos(a) * rad, y, sin(a) * rad))
+			uvs.append(Vector2(float(i) / na * TAU * rr, y))
+	for j2 in range(ny):
+		for i2 in range(na):
+			var i0: int = j2 * (na + 1) + i2
+			idx.append_array(PackedInt32Array([i0, i0 + 1, i0 + na + 1, i0 + 1, i0 + na + 2, i0 + na + 1]))
+	Sculpt._fini(acc, "fer_noir", verts, uvs, idx, func(p: Vector3, _t: int) -> Vector3: return Vector3(p.x - g.x, 0.0, p.z - g.z))
+	Sculpt._tour(acc, "laiton", g + Vector3(0, h - 0.95, 0), [Vector2(0.25, 0.0), Vector2(0.29, 0.04), Vector2(0.29, 0.1), Vector2(0.25, 0.14)], Vector3.ONE, false)
+	Sculpt._tour(acc, "fer_noir", g + Vector3(0, h - 0.82, 0), [Vector2(0.24, 0.0), Vector2(0.3, 0.2), Vector2(0.45, 0.45), Vector2(0.6, 0.62), Vector2(0.62, 0.72), Vector2(0.0, 0.72)], Vector3.ONE, false)
+	for k2 in ["fer_noir", "laiton"]:
+		var mi := MeshInstance3D.new()
+		mi.name = "Colonne_fonte_v164_%d" % get_child_count()
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = kit.mat(k2)
+		add_child(mi)

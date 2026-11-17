@@ -60,10 +60,24 @@ func mat(key: String) -> Material:
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.62, 0.5, 0.32)
 			m.roughness = 0.95
+			if hd_v164 and ResourceLoader.exists("res://assets/textures/beau161/corde.png"):
+				# V164 : la corde tressée
+				m.albedo_texture = load("res://assets/textures/beau161/corde.png")
+				m.albedo_color = Color(1, 1, 1)
+				m.uv1_triplanar = true
+				m.uv1_scale = Vector3(3.0, 3.0, 3.0)
 		"bambou":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.7, 0.62, 0.34)
 			m.roughness = 0.6
+			if hd_v164 and ResourceLoader.exists("res://assets/textures/beau163/bambou.png"):
+				# V164 : les fibres du bambou, ses taches
+				m.albedo_texture = load("res://assets/textures/beau163/bambou.png")
+				m.normal_enabled = true
+				m.normal_texture = load("res://assets/textures/beau163/bambou_n.png")
+				m.albedo_color = Color(1, 1, 1)
+				m.uv1_triplanar = true
+				m.uv1_scale = Vector3(1.0, 1.0, 1.0)
 		"papier", "papier_rouge", "papier_bleu":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load(RM + "papier.png")
@@ -88,10 +102,32 @@ func mat(key: String) -> Material:
 			m.albedo_texture = load(RM + "planches.png")
 			m.albedo_color = Color(0.42, 0.28, 0.18)
 			m.roughness = 0.85
+		"ecorce_buche":
+			m = StandardMaterial3D.new()
+			m.albedo_texture = load(B164 + "ecorce_buche.png")
+			m.normal_enabled = true
+			m.normal_texture = load(B164 + "ecorce_buche_n.png")
+			m.albedo_color = Color(1.3, 1.22, 1.15)
+			m.roughness = 0.95
+		"cerne":
+			m = StandardMaterial3D.new()
+			m.albedo_texture = load(B164 + "cerne.png")
+			m.normal_enabled = true
+			m.normal_texture = load(B164 + "cerne_n.png")
+			m.uv1_offset = Vector3(0.5, 0.5, 0.0)
+			m.roughness = 0.9
 		"mousse":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.22, 0.34, 0.14)
 			m.roughness = 1.0
+			if hd_v164 and ResourceLoader.exists(B164 + "mousse_foret.png"):
+				# V164 : un vrai coussin de mousse
+				m.albedo_texture = load(B164 + "mousse_foret.png")
+				m.normal_enabled = true
+				m.normal_texture = load(B164 + "mousse_foret_n.png")
+				m.albedo_color = Color(1.1, 1.1, 1.0)
+				m.uv1_triplanar = true
+				m.uv1_scale = Vector3(0.5, 0.5, 0.5)
 		"champi_lune":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.62, 0.82, 0.95)
@@ -671,7 +707,13 @@ func lantern_post(base: Vector3, yaw: float, key: String = "papier") -> void:
 ## Un banc de rondin (fendu), posé sur deux souches.
 func log_bench(xf: Transform3D, w: float = 2.0) -> void:
 	# le rondin couché (le dessus à 46 cm), calé sur deux billots bas
-	cyl(xf * Transform3D(Basis(Vector3.BACK, PI * 0.5), Vector3(w * 0.5, 0.25, 0)), 0.21, 0.21, w, "rondins", 10, true, 1.0)
+	if hd_v164:
+		# V164 : l'écorce crevassée, les deux bouts coupés (les cernes, les fentes)
+		cyl(xf * Transform3D(Basis(Vector3.BACK, PI * 0.5), Vector3(w * 0.5, 0.25, 0)), 0.21, 0.21, w, "ecorce_buche", 14, false, 1.0)
+		for sgn in [-1.0, 1.0]:
+			disc(xf * Transform3D(Basis(Vector3.BACK, -sgn * PI * 0.5), Vector3(sgn * w * 0.5, 0.25, 0)), 0.21, "cerne", 16, 0.21 * 2.0 / 0.94)
+	else:
+		cyl(xf * Transform3D(Basis(Vector3.BACK, PI * 0.5), Vector3(w * 0.5, 0.25, 0)), 0.21, 0.21, w, "rondins", 10, true, 1.0)
 	for sx in [-w * 0.35, w * 0.35]:
 		cyl(xf * Transform3D(Basis(), Vector3(sx, 0.0, 0)), 0.2, 0.22, 0.1, "poutre", 8)
 	col_box(xf * Transform3D(Basis(), Vector3(0, 0.23, 0)), Vector3(w, 0.46, 0.42))
@@ -704,6 +746,8 @@ func race_arch(c: Vector3, yaw: float, w: float = 4.6) -> void:
 
 ## Un feu de camp entouré de pierres (c : centre au sol). Renvoie le point des flammes.
 func bonfire(c: Vector3) -> Vector3:
+	if hd_v164:
+		return _bonfire_v164(c)
 	for k in range(12):
 		var a: float = TAU * k / 12.0
 		var p: Vector3 = c + Vector3(cos(a) * 1.15, 0.05, sin(a) * 1.15)
@@ -747,3 +791,46 @@ func big_mushroom(c: Vector3, h: float, r: float, lune: bool) -> void:
 			var nn := Vector3(cos((u0 + u1) * 0.5), 1.0, sin((u0 + u1) * 0.5)).normalized()
 			quad4(key, P.call(u0, v0), P.call(u1, v0), P.call(u1, v1), P.call(u0, v1), nn, Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1))
 	disc(Transform3D(Basis(Vector3.RIGHT, PI), c + Vector3.UP * (h + 0.01)), r, "champi_pied", seg)
+
+
+## V164 : le feu du Cercle de la Lune : de vraies pierres rondes, un lit de cendres, des bûches en tipi
+## (leur écorce, leur bout charbonneux).
+func _bonfire_v164(c: Vector3) -> Vector3:
+	var Rocks = load("res://scripts/rocks_v26.gd")
+	var rmat: Material = Rocks.material(Color(0.74, 0.71, 0.66), 0.15, 0.6)
+	for k in range(13):
+		var a: float = TAU * k / 13.0
+		var sz: float = 0.3 + 0.08 * sin(k * 2.7)
+		var mi := MeshInstance3D.new()
+		mi.mesh = Rocks.shape(6240 + k, Vector3(sz * 1.3, sz, sz * 1.15), 0.55, 0.14)
+		mi.material_override = rmat
+		mi.position = c + Vector3(cos(a) * 1.18, sz * 0.3, sin(a) * 1.18)
+		mi.rotation.y = a * 1.9
+		mi.name = "Pierre_feu_v164_%d" % k
+		root.add_child(mi)
+	disc(Transform3D(Basis(), c + Vector3.UP * 0.04), 1.0, "cendre", 14)
+	var ecorce := StandardMaterial3D.new()
+	ecorce.albedo_texture = load(B164 + "ecorce_buche.png")
+	ecorce.normal_enabled = true
+	ecorce.normal_texture = load(B164 + "ecorce_buche_n.png")
+	ecorce.albedo_color = Color(1.3, 1.22, 1.15)
+	ecorce.roughness = 0.95
+	var charbon := ecorce.duplicate() as StandardMaterial3D
+	charbon.albedo_color = Color(0.48, 0.44, 0.4)
+	for k2 in range(7):
+		var a2: float = TAU * k2 / 7.0
+		var pied: Vector3 = c + Vector3(cos(a2) * 0.9, 0.1, sin(a2) * 0.9)
+		var tete: Vector3 = c + Vector3(cos(a2) * 0.08, 1.15, sin(a2) * 0.08)
+		var bu := MeshInstance3D.new()
+		var cy := CylinderMesh.new()
+		cy.top_radius = 0.09
+		cy.bottom_radius = 0.13
+		cy.height = pied.distance_to(tete)
+		cy.radial_segments = 10
+		bu.mesh = cy
+		bu.material_override = charbon if k2 % 2 == 0 else ecorce
+		bu.transform = Transform3D(Basis(Quaternion(Vector3.UP, (tete - pied).normalized())), (pied + tete) * 0.5)
+		bu.name = "Buche_v164_%d" % k2
+		root.add_child(bu)
+	col_cyl(c, 1.35, 0.4)
+	return c + Vector3.UP * 0.5

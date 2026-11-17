@@ -60,6 +60,9 @@ var _mats: Dictionary = {}
 
 
 ## Le repère du navire (avant même d'être dans l'arbre : l'île s'en sert pour l'ensabler).
+const B164 := "res://assets/textures/beau164/"
+const MetalKit164 = preload("res://scripts/metal_kit_v160.gd")
+
 func place(at: Vector3) -> void:
 	origin = at
 	var b := Basis(Vector3.UP, yaw) * Basis(Vector3(0, 0, 1), pitch) * Basis(Vector3(1, 0, 0), roll)
@@ -208,6 +211,14 @@ func mat(key: String) -> Material:
 			s3.normal_enabled = true
 			s3.normal_texture = load(T + "pont_n.png")
 			s3.roughness = 0.85
+			# V164 : le vieux pont de chêne (les bordages de 22 cm, gris argent où le sel les a lavés, les
+			# coutures de brai noir, les chevilles)
+			if ResourceLoader.exists(B164 + "pont_leviathan.png"):
+				s3.albedo_texture = load(B164 + "pont_leviathan.png")
+				s3.normal_texture = load(B164 + "pont_leviathan_n.png")
+				s3.roughness_texture = load(B164 + "pont_leviathan_r.png")
+				s3.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+				s3.roughness = 1.0
 			m = s3
 		"pont_dessous":
 			var s4 := StandardMaterial3D.new()
@@ -234,6 +245,7 @@ func mat(key: String) -> Material:
 			s7.albedo_color = Color(0.2, 0.17, 0.15)
 			s7.metallic = 0.6
 			s7.roughness = 0.65
+			MetalKit164.habille(s7, "fer", 1.2)            # V164 : le fer rouillé, piqué
 			m = s7
 		"corde":
 			var s8 := StandardMaterial3D.new()

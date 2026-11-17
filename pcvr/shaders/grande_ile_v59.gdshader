@@ -13,6 +13,7 @@ uniform sampler2D grass_tex : source_color, filter_linear_mipmap_anisotropic, re
 uniform sampler2D dry_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D moss_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D soil_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool sous_bois = false;            // V164 : la litière et la mousse de la forêt des brumes
 uniform sampler2D rock_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D sand_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D grass_n : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -107,6 +108,12 @@ void fragment() {
 	// forêt des brumes : mousse épaisse et terre noire, vase sur les rives
 	vec3 g_e = mix(soil * vec3(0.55, 0.52, 0.46), moss * vec3(0.5, 0.62, 0.42), smoothstep(0.3, 0.6, patch * 0.7 + macro * 0.5));
 	vec3 s_e = soil * vec3(0.55, 0.5, 0.42);
+	if (sous_bois) {
+		// V164 : le sous-bois (la litière de feuilles mortes, des coussins de mousse, la terre noire
+		// des rives), plus clair : la lumière passe entre les arbres
+		g_e = mix(soil * vec3(1.08, 1.02, 0.96), moss * vec3(1.32, 1.38, 1.18), smoothstep(0.46, 0.7, patch * 0.7 + macro * 0.5));
+		s_e = soil * vec3(0.6, 0.56, 0.5);
+	}
 	vec3 r_e = rock * vec3(0.7, 0.78, 0.68);
 	// désert du sud : dunes ocre, touffes sèches éparses, roche rouge
 	vec3 dune = sand * vec3(1.18, 0.88, 0.58);

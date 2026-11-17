@@ -76,11 +76,16 @@ func mat(key: String) -> Material:
 			m.albedo_color = Color(0.56, 0.58, 0.6)
 			m.metallic = 0.85
 			m.roughness = 0.35
+			if hd_v164:
+				MetalKit164.habille(m, "brosse", 1.0)       # V164 : l'acier brossé
 		"fer_noir":
 			m = StandardMaterial3D.new()
 			m.albedo_color = Color(0.09, 0.09, 0.1)
 			m.metallic = 0.6
 			m.roughness = 0.5
+			if hd_v164:
+				m.albedo_color = Color(0.13, 0.125, 0.12)
+				MetalKit164.habille(m, "fer", 1.0)          # V164 : la fonte noire, un peu rouillée
 		"cadran":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load(CQ + "cadran.png")

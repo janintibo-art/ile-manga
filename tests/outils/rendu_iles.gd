@@ -141,6 +141,12 @@ func _initialize() -> void:
 			await _teuf()
 		"facade":
 			await _facade()
+		"carene", "tazira", "cliquetis", "ramure":
+			await _grande(quoi)
+		"porte":
+			await _porte()
+		"carene_hd", "tazira_hd", "cliquetis_hd", "ramure_hd":
+			await _grande(quoi.trim_suffix("_hd"), true)
 		"atlantide":
 			await _atlantide()
 	quit()
@@ -321,6 +327,153 @@ func _azur() -> void:
 	_nuit()
 	await _vue("10d_soir_fenetres", P.T(13.0, 3.5, 4.2), P.T(10.0, 10.0, 6.0))
 	await _vue("10e_soir_place", P.T(-8.0, 36.0, 1.7), P.T(0.0, 55.0, 4.0))
+
+
+## La Grande Île (V164) : le relief, la porte aux Quatre Sceaux, la végétation et une seule ville
+## (Carène, Tazira, Cliquetis ou Ramure). Les vues : de haut, la porte, puis devant les lieux
+## d'activité des habitants (les étals, les comptoirs, les ateliers), comme un passant les voit.
+## La Porte aux Quatre Sceaux seule (V164) : le relief de la Grande Île, sans les villes.
+func _porte() -> void:
+	var G: Node3D = load("res://scripts/grande_v59.gd").new()
+	G.name = "Grande_v59"
+	fm.add_child(G)
+	G.setup(fm)
+	G.pc = true
+	G.build_island()
+	fm.ile_node = G.ile
+	for k in range(4):
+		await process_frame
+	var dp: Vector3 = G.ile.door_pos
+	var gx: Transform3D = G.ile.door_gate.global_transform
+	_mer(dp)
+	await _vue("161_porte_face", gx * Vector3(0, 2.0, 24.0), gx * Vector3(0, 9.0, 0))
+	await _vue("162_porte_biais", gx * Vector3(-14, 1.8, 14.0), gx * Vector3(0, 8.0, 0))
+	await _vue("163_vantail", gx * Vector3(3.0, 6.0, 7.0), gx * Vector3(-1.0, 9.0, 0))
+	await _vue("164_brasero", gx * Vector3(-4.0, 2.2, 10.0), gx * Vector3(-7.6, 2.6, 5.5))
+	await _vue("165_frise", gx * Vector3(0, 12.0, 14.0), gx * Vector3(0, 19.5, 0))
+	_nuit()
+	await _vue("166_porte_nuit", gx * Vector3(0, 2.0, 24.0), gx * Vector3(0, 9.0, 0))
+
+
+func _grande(ville: String, hd: bool = false) -> void:
+	var G: Node3D = load("res://scripts/grande_v59.gd").new()
+	G.name = "Grande_v59"
+	fm.add_child(G)
+	G.setup(fm)
+	G.pc = true
+	G.build_island()
+	fm.ile_node = G.ile
+	var V: Node3D = null
+	match ville:
+		"carene":
+			V = load("res://scripts/carene_v59.gd").new()
+			V.name = "Carene_v59"
+			G.add_child(V)
+			G.carene = V
+			V.build(fm, G.epave, G.ile, true)
+		"tazira":
+			V = load("res://scripts/tazira_v60.gd").new()
+			V.name = "Tazira_v60"
+			G.add_child(V)
+			G.tazira = V
+			V.build(fm, G.ile, true)
+		"cliquetis":
+			V = load("res://scripts/cliquetis_v61.gd").new()
+			V.name = "Cliquetis_v61"
+			G.add_child(V)
+			G.cliquetis = V
+			V.build(fm, G.ile, true)
+		"ramure":
+			V = load("res://scripts/ramure_v62.gd").new()
+			V.name = "Ramure_v62"
+			G.add_child(V)
+			G.ramure = V
+			V.build(fm, G.ile, true)
+	if not hd:
+		var fl: Node3D = load("res://scripts/grande_flore_v59.gd").new()
+		fl.name = "Flore_grande_ile_v59"
+		G.add_child(fl)
+		G.flore = fl
+		fl.build_island(G.ile, G.epave, true)
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	var noms: Array = V.spots.keys()
+	noms.sort()
+	var c := Vector3.ZERO
+	for n in noms:
+		c += V.spots[n]["pos"]
+	c /= maxf(1.0, float(noms.size()))
+	_mer(c)
+	if not hd:
+		await _vue("141_dessus", c + Vector3(110, 85, 110), c)
+	var dp: Vector3 = G.ile.door_pos
+	if hd:
+		await _vues_hd(ville, V)
+		return
+	if ville == "carene":
+		await _vue("142_porte", dp + Vector3(-16, 2.0, 5), dp + Vector3(0, 5, 0))
+	var pas: int = maxi(1, noms.size() / 6)
+	var k2: int = 0
+	for i in range(0, noms.size(), pas):
+		if k2 >= 6:
+			break
+		var sp: Dictionary = V.spots[noms[i]]
+		var pos: Vector3 = sp["pos"]
+		var face: Vector3 = sp["face"]
+		var d := Vector3(face.x - pos.x, 0, face.z - pos.z)
+		if d.length() < 0.1:
+			d = Vector3(0, 0, 1)
+		d = d.normalized()
+		await _vue("15%d_%s" % [k2, str(noms[i]).substr(0, 18)], pos - d * 3.2 + Vector3.UP * 1.65, pos + d * 6.0 + Vector3.UP * 1.3)
+		k2 += 1
+
+
+## V164 : les vues des nouveautés de chaque ville (devant des lieux nommés).
+func _vues_hd(ville: String, V: Node3D) -> void:
+	var noms: Array = []
+	match ville:
+		"carene":
+			noms = ["tav_poele"]
+		"tazira":
+			noms = ["place_fontaine_1", "fondouk_terrasse_1", "fete_danse_4"]
+		"ramure":
+			noms = ["cercle_banc_6", "cercle_enfants_2", "jeux_enfants_1"]
+		_:
+			var ks: Array = V.spots.keys()
+			ks.sort()
+			noms = ks.slice(0, 3)
+	var k2: int = 0
+	for n in noms:
+		if not V.spots.has(n):
+			continue
+		var sp: Dictionary = V.spots[n]
+		var pos: Vector3 = sp["pos"]
+		var face: Vector3 = sp["face"]
+		var d := Vector3(face.x - pos.x, 0, face.z - pos.z)
+		if d.length() < 0.1:
+			d = Vector3(0, 0, 1)
+		d = d.normalized()
+		await _vue("17%d_%s" % [k2, str(n).substr(0, 18)], pos - d * 3.2 + Vector3.UP * 1.65, pos + d * 6.0 + Vector3.UP * 1.3)
+		k2 += 1
+	if ville == "cliquetis":
+		var rp: Vector3 = V._rail_pts[0]
+		var gp: Vector3 = rp - Vector3.UP * V.RAIL_H
+		await _vue("175_monorail", gp + Vector3(6.0, 1.7, 5.0), rp + Vector3(0, -2.0, 0))
+	if ville == "carene":
+		var an: Transform3D = V.TW(47.0, -26.0, 30.0)
+		await _vue("178_ancre", an * Vector3(3.5, 1.7, 3.0), an * Vector3(0, 1.4, 0))
+		var fc: Transform3D = V.TW(44.0, -54.0)
+		await _vue("179_feu", fc * Vector3(3.0, 1.5, 2.2), fc * Vector3(0, 0.3, 0))
+		_nuit()
+		var t: Node = fm.temps_v56
+		t.lamps_on = true
+		V._clock = 1.0
+		if V.fire_flamme_v164 != null:
+			V.fire_flamme_v164.set_shader_parameter("glow", 1.0)
+			V.fire_mat.emission_energy_multiplier = 2.6
+			V.fire_light.light_energy = 1.8
+		await _vue("17a_feu_nuit", fc * Vector3(3.0, 1.5, 2.2), fc * Vector3(0, 0.3, 0))
 
 
 ## Trois façades de Port-Azur seules (V163) : pour voir de près l'enduit et les fenêtres, vite.
