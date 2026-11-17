@@ -78,6 +78,9 @@ const HORDES := [
 const MAX_ZOMBIES: int = 16
 const REVIENT_S: float = 240.0
 
+const S168 = preload("res://scripts/sculpt_v167.gd")
+var hd_v168: bool = true                  # V168 : les tombes sculptées, la fontaine de la place
+var tombes_v168: int = 0                  # V168 : les tombes sculptées posées
 var main: Node
 var ile: Node3D
 var flore: Node3D
@@ -669,10 +672,13 @@ func _place_marche() -> void:
 	objets["fontaine"] = _ground(cx + 4.0, cz)
 	# la fontaine à sec, au milieu
 	var fc: Vector3 = _ground(cx + 4.0, cz)
-	b.cyl("pierre_tombe", Transform3D(Basis(), fc), 4.0, 4.0, 0.8, 24)
-	b.cyl("interieur", Transform3D(Basis(), fc + Vector3.UP * 0.05), 3.6, 3.6, 0.8, 24)
-	b.cyl("pierre_tombe", Transform3D(Basis(), fc), 0.5, 0.35, 2.6, 10)
-	b.blob("pierre_tombe", fc + Vector3.UP * 2.7, Vector3(0.8, 0.25, 0.8), 10)
+	if hd_v168:
+		_fontaine168(fc)
+	else:
+		b.cyl("pierre_tombe", Transform3D(Basis(), fc), 4.0, 4.0, 0.8, 24)
+		b.cyl("interieur", Transform3D(Basis(), fc + Vector3.UP * 0.05), 3.6, 3.6, 0.8, 24)
+		b.cyl("pierre_tombe", Transform3D(Basis(), fc), 0.5, 0.35, 2.6, 10)
+		b.blob("pierre_tombe", fc + Vector3.UP * 2.7, Vector3(0.8, 0.25, 0.8), 10)
 	_col(Transform3D(Basis(), fc + Vector3.UP * 0.4), Vector3(7.6, 0.8, 7.6))
 	# les squelettes des étals du marché (des cadres de fer rouillé, des bâches déchirées)
 	for k in range(6):
@@ -717,7 +723,8 @@ func _cimetiere() -> void:
 			continue
 		b.box("pierre_tombe", Transform3D(Basis(Vector3.UP, yaw), _ground(mid.x, mid.y) + Vector3.UP * 0.7), Vector3(0.5, 1.6, l))
 		_col(Transform3D(Basis(Vector3.UP, yaw), _ground(mid.x, mid.y) + Vector3.UP * 0.8), Vector3(0.5, 1.6, l))
-	# les tombes, en rangées un peu de travers
+	# les tombes, en rangées un peu de travers (V168 : sculptées, de toutes les formes)
+	var L168: Dictionary = S168.loc(["pierre_tombe", "mousse", "fer_noir"])
 	for row in range(6):
 		for k in range(8):
 			if _rng.randf() < 0.15:
@@ -726,7 +733,12 @@ func _cimetiere() -> void:
 			var gz: float = z0 + 6.0 + row * ((z1 - z0 - 14.0) / 5.0) + _rng.randf_range(-0.4, 0.4)
 			if absf(gx2 - (x0 + x1) * 0.5) < 2.2:
 				continue
-			Kit.grave(b, _ground(gx2, gz), _rng.randf_range(-0.15, 0.15), _rng)
+			if hd_v168:
+				_tombe168(L168, _ground(gx2, gz), _rng.randf_range(-0.15, 0.15))
+			else:
+				Kit.grave(b, _ground(gx2, gz), _rng.randf_range(-0.15, 0.15), _rng)
+	if hd_v168:
+		S168.pose(self, L168, {"pierre_tombe": Kit.mat("pierre_tombe"), "mousse": Kit.mat("mousse"), "fer_noir": Kit.mat("fer_noir")}, Transform3D.IDENTITY, "Tombes_v168")
 	# le mausolée, au fond
 	var mx: float = (x0 + x1) * 0.5
 	var mz: float = z1 - 6.0
@@ -2094,3 +2106,65 @@ func load_data(d: Dictionary) -> void:
 		(e1[0] as Node3D).visible = not bool(state.get("libere", false))
 	if bool(state.get("libere", false)):
 		liberer(false)
+
+
+# =================================================================== V168 : les pièces sculptées
+
+## V168 : une tombe sculptée, posée de travers par les ans : une stèle au sommet arrondi, une croix
+## latine sur son socle à degrés, une croix celtique et son anneau, un petit obélisque, ou une dalle
+## bordée et sa stèle ; la dalle couchée devant, la mousse ; parfois un entourage de fer.
+func _tombe168(L: Dictionary, at: Vector3, yaw: float) -> void:
+	var r := _rng
+	var sorte: int = r.randi() % 5
+	var tilt := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, r.randf_range(-0.2, 0.12)) * Basis(Vector3.FORWARD, r.randf_range(-0.12, 0.12))
+	var B := Basis(Vector3.UP, yaw)
+	var P: String = "pierre_tombe"
+	var h: float = r.randf_range(0.85, 1.25)
+	match sorte:
+		0:
+			S168.boite(L, P, at + tilt * Vector3(0, h * 0.5 - 0.15, 0), Vector3(0.62, h - 0.3, 0.14), tilt)
+			S168.tour(L, P, at + tilt * Vector3(0, h - 0.45, -0.07), [Vector2(0.0, 0.0), Vector2(0.31, 0.0), Vector2(0.31, 0.14), Vector2(0.0, 0.14)], tilt * Basis(Vector3.RIGHT, PI * 0.5), 16)
+			S168.boite(L, P, at + B * Vector3(0, 0.08, 0), Vector3(0.8, 0.16, 0.3), B)
+		1, 2:
+			S168.boite(L, P, at + B * Vector3(0, 0.1, 0), Vector3(0.62, 0.2, 0.42), B)
+			S168.boite(L, P, at + B * Vector3(0, 0.27, 0), Vector3(0.44, 0.16, 0.3), B)
+			S168.boite(L, P, at + tilt * Vector3(0, 0.35 + h * 0.5, 0), Vector3(0.12, h, 0.1), tilt)
+			S168.boite(L, P, at + tilt * Vector3(0, 0.35 + h * 0.72, 0), Vector3(0.52, 0.11, 0.1), tilt)
+			if sorte == 2:
+				var prof: Array = []
+				for i in range(13):
+					var a: float = TAU * i / 12.0
+					prof.append(Vector2(0.17 + 0.025 * cos(a), 0.025 * sin(a)))
+				S168.tour(L, P, at + tilt * Vector3(0, 0.35 + h * 0.72, 0), prof, tilt * Basis(Vector3.RIGHT, PI * 0.5), 18)
+		3:
+			S168.tour(L, P, at, [Vector2(0.24, 0.0), Vector2(0.24, 0.14), Vector2(0.18, 0.18), Vector2(0.13, h + 0.35), Vector2(0.15, h + 0.38), Vector2(0.0, h + 0.55)], tilt * Basis(Vector3.UP, PI * 0.25), 4)
+		_:
+			S168.boite(L, P, at + tilt * Vector3(0, h * 0.35, 0), Vector3(0.5, h * 0.7, 0.12), tilt)
+			S168.tour(L, P, at + tilt * Vector3(0, h * 0.7, 0), [Vector2(0.0, -0.27), Vector2(0.075, -0.27), Vector2(0.075, 0.27), Vector2(0.0, 0.27)], tilt * Basis(Vector3.FORWARD, PI * 0.5), 12)
+	# la dalle couchée devant, son rebord, la mousse
+	var d: Vector3 = at + B * Vector3(0, 0, 1.0)
+	S168.boite(L, P, d + Vector3.UP * 0.07, Vector3(0.82, 0.14, 1.8), B * Basis(Vector3.RIGHT, r.randf_range(-0.03, 0.03)))
+	S168.boite(L, "mousse", d + Vector3.UP * 0.145, Vector3(r.randf_range(0.3, 0.7), 0.02, r.randf_range(0.4, 1.4)), B)
+	if r.randf() < 0.22:
+		for sx in [-0.5, 0.5]:
+			for sz in [-0.05, 1.95]:
+				var pp: Vector3 = at + B * Vector3(sx, 0, sz)
+				S168.tube(L, "fer_noir", [pp, pp + Vector3.UP * 0.62], [0.018, 0.018], 5)
+				S168.boule(L, "fer_noir", pp + Vector3.UP * 0.66, Vector3(0.035, 0.05, 0.035))
+		for rail in [[Vector3(-0.5, 0.5, -0.05), Vector3(0.5, 0.5, -0.05)], [Vector3(-0.5, 0.5, 1.95), Vector3(0.5, 0.5, 1.95)], [Vector3(-0.5, 0.5, -0.05), Vector3(-0.5, 0.5, 1.95)], [Vector3(0.5, 0.5, -0.05), Vector3(0.5, 0.5, 1.95)]]:
+			S168.tube(L, "fer_noir", [at + B * (rail[0] as Vector3), at + B * (rail[1] as Vector3)], [0.012, 0.012], 4)
+	tombes_v168 += 1
+
+
+## V168 : la fontaine à sec de la place du marché : le bassin mouluré, son fond envahi de mousse, la
+## colonne et sa vasque, l'urne qui la couronne.
+func _fontaine168(fc: Vector3) -> void:
+	var L: Dictionary = S168.loc(["pierre_tombe", "mousse"])
+	var P: String = "pierre_tombe"
+	S168.tour(L, P, Vector3.ZERO, [Vector2(4.05, 0.0), Vector2(4.05, 0.6), Vector2(4.12, 0.65), Vector2(4.14, 0.76), Vector2(4.04, 0.82), Vector2(3.64, 0.82), Vector2(3.58, 0.78), Vector2(3.58, 0.08)], Basis.IDENTITY, 40)
+	S168.tour(L, "mousse", Vector3.ZERO, [Vector2(3.6, 0.1), Vector2(0.0, 0.12)], Basis.IDENTITY, 40)
+	S168.tour(L, P, Vector3.ZERO, [Vector2(0.58, 0.05), Vector2(0.58, 0.22), Vector2(0.47, 0.28), Vector2(0.39, 2.2), Vector2(0.48, 2.26), Vector2(0.48, 2.36), Vector2(0.3, 2.38)], Basis.IDENTITY, 20)
+	S168.tour(L, P, Vector3.ZERO, [Vector2(0.3, 2.34), Vector2(0.72, 2.42), Vector2(1.02, 2.6), Vector2(1.08, 2.7), Vector2(1.0, 2.73), Vector2(0.92, 2.63)], Basis.IDENTITY, 28)
+	S168.tour(L, "mousse", Vector3.ZERO, [Vector2(0.93, 2.62), Vector2(0.0, 2.63)], Basis.IDENTITY, 28)
+	S168.tour(L, P, Vector3.ZERO, [Vector2(0.0, 2.62), Vector2(0.18, 2.64), Vector2(0.26, 2.82), Vector2(0.2, 3.02), Vector2(0.12, 3.07), Vector2(0.16, 3.14), Vector2(0.0, 3.16)], Basis.IDENTITY, 16)
+	S168.pose(self, L, {"pierre_tombe": Kit.mat("pierre_tombe"), "mousse": Kit.mat("mousse")}, Transform3D(Basis(), fc), "Fontaine_v168")

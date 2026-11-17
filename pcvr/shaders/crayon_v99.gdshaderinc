@@ -77,7 +77,11 @@ float cr_hachures(vec3 wp, vec3 nw, float dens) {
 	float wob = cr_noise(p * 0.7) * 0.35;
 	float h1 = cr_trait(dot(p, vec2(0.707, 0.707)) * dens + wob, 0.15) * smoothstep(0.52, 0.62, sh);
 	float h2 = cr_trait(dot(p, vec2(0.707, -0.707)) * dens + wob, 0.15) * smoothstep(0.7, 0.8, sh);
-	return max(h1, h2);
+	// V168 : un troisième sens dans le noir le plus profond ; la main appuie plus ou moins le long du
+	// trait (des traits qui pâlissent, reprennent)
+	float h3 = cr_trait(p.x * dens * 0.9 + wob * 1.3, 0.13) * smoothstep(0.86, 0.94, sh);
+	float press = 0.72 + 0.28 * cr_noise(p * 2.6 + vec2(11.0, 3.0));
+	return max(max(h1, h2), h3) * press;
 }
 
 // Le contour : là où la surface fuit le regard.
@@ -160,7 +164,9 @@ float crayon_encre(vec3 wp, vec3 nw, vec3 vw, vec2 uv, float alpha, float t) {
 // Le mélange final : la page (papier et encre) ou la vraie couleur, selon la carte des couleurs.
 vec3 crayon_melange(vec3 reel, vec3 wp, float encre, out float c) {
 	c = cr_couleur(wp);
-	vec3 trait = cr_papier(wp) * (1.0 - 0.9 * encre);
+	// V168 : le trait accroche le grain du papier (un peu moins noir dans ses creux)
+	float grain = cr_noise(wp.xz * 23.0 + wp.y * 17.0) * 0.5 + cr_noise(wp.zy * 31.0) * 0.5;
+	vec3 trait = cr_papier(wp) * (1.0 - 0.9 * encre * (0.86 + 0.14 * grain));
 	// le liseré d'aquarelle, au bord de la tache de couleur
 	float bord = smoothstep(0.0, 0.5, c) * smoothstep(1.0, 0.5, c);
 	vec3 col = reel * (1.0 - 0.32 * bord);

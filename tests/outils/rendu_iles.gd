@@ -154,7 +154,7 @@ func _initialize() -> void:
 			await _grande(quoi)
 		"porte":
 			await _porte()
-		"arcanelle", "coutelas", "soleils", "pandemonia", "montjoie", "boucan", "astralys", "pixel", "larsen":
+		"arcanelle", "coutelas", "soleils", "pandemonia", "montjoie", "boucan", "astralys", "pixel", "larsen", "pasta", "crayon", "sombreval":
 			await _systeme(quoi)
 		"carene_hd", "tazira_hd", "cliquetis_hd", "ramure_hd":
 			await _grande(quoi.trim_suffix("_hd"), true)
@@ -349,7 +349,8 @@ func _azur() -> void:
 func _systeme(nom: String) -> void:
 	var scr: String = {"arcanelle": "res://scripts/arcanelle_v67.gd", "coutelas": "res://scripts/pirates_v68.gd", "soleils": "res://scripts/soleils_v69.gd",
 		"pandemonia": "res://scripts/braise_v70.gd", "montjoie": "res://scripts/montjoie_v71.gd", "boucan": "res://scripts/boucan_v75.gd",
-		"astralys": "res://scripts/astrale_v76.gd", "pixel": "res://scripts/pixel_v90.gd", "larsen": "res://scripts/larsen_v91.gd"}[nom]
+		"astralys": "res://scripts/astrale_v76.gd", "pixel": "res://scripts/pixel_v90.gd", "larsen": "res://scripts/larsen_v91.gd",
+		"pasta": "res://scripts/pasta_v97.gd", "crayon": "res://scripts/crayon_v99.gd", "sombreval": "res://scripts/sombreval_v121.gd"}[nom]
 	var Sy: Node3D = load(scr).new()
 	fm.add_child(Sy)
 	Sy.setup(fm)
@@ -370,7 +371,7 @@ func _systeme(nom: String) -> void:
 			villes = [Sy.egypte, Sy.maya, Sy.azteque]
 		"pandemonia", "montjoie", "boucan", "astralys":
 			villes = [Sy.city]
-		"larsen":
+		"larsen", "pasta":
 			villes = [Sy.ville]
 	var c: Vector3 = Sy.ile.CENTER
 	c.y = fm._height_at(c.x, c.z)
@@ -385,11 +386,21 @@ func _systeme(nom: String) -> void:
 		"montjoie": [["place_fontaine", "marche_fruits", "lavoir_1", "puits", "forge_enclume", "chaumiere_jardin"]],
 		"boucan": [["place_fontaine", "place_banc_1", "jardins_1", "mur_expression_1", "conserverie_assemblee", "cantine_comptoir"]],
 		"astralys": [["agora_fontaine", "cafe_comptoir", "jardins_1", "observatoire_telescope", "spatioport_aire_1", "bulles_no_1"]],
-		"larsen": [["arbre_rubans", "tissage", "garage_chant", "cafe_terrasse_1", "disquaire_1", "scene_1"]]}
+		"larsen": [["arbre_rubans", "tissage", "garage_chant", "cafe_terrasse_1", "disquaire_1", "scene_1"]],
+		"pasta": [["four", "piazza_banc_1", "piazza_violon", "sechoir_1", "tomates_1", "oliviers"]]}
 	# V167 : l'Île Pixelithique n'a pas de rues : des vues choisies (repère île : d'où, vers où)
-	if nom == "pixel":
-		var vp: Array = [["150_camp", Vector2(-36, 20), Vector2(-50, 5)], ["151_falaises", Vector2(-52, 34), Vector2(-78, 6)], ["152_lac", Vector2(-18, 92), Vector2(-44, 76)],
-			["153_plage", Vector2(34, 102), Vector2(22, 136)], ["154_cirque", Vector2(14, -98), Vector2(-8, -118)], ["155_volcan", Vector2(36, -36), Vector2(72, -72)]]
+	var vues_ile: Dictionary = {
+		"pixel": [["150_camp", Vector2(-36, 20), Vector2(-50, 5)], ["151_falaises", Vector2(-52, 34), Vector2(-78, 6)], ["152_lac", Vector2(-18, 92), Vector2(-44, 76)],
+			["153_plage", Vector2(34, 102), Vector2(22, 136)], ["154_cirque", Vector2(14, -98), Vector2(-8, -118)], ["155_volcan", Vector2(36, -36), Vector2(72, -72)]],
+		# V168 : l'Île Crayonnée (la clairière et ses arbres-maisons, l'étang, le carrefour, la plage, le mont)
+		"crayon": [["150_clairiere", Vector2(-20, 50), Vector2(-40, 34)], ["151_arbre", Vector2(-40, 34), Vector2(-62, 20)], ["152_etang", Vector2(48, -14), Vector2(32, -30)],
+			["153_carrefour", Vector2(14, 110), Vector2(2, 98)], ["154_plage", Vector2(6, 120), Vector2(10, 151)], ["155_mont", Vector2(10, -40), Vector2(8, -80)]],
+		# V168 : Sombreval (une rue, la place du marché, le cimetière, la gare, la jetée, le château)
+		"sombreval": [["150_rue", Vector2(-100, -190), Vector2(-100, -110)], ["151_marche", Vector2(-12, -115), Vector2(-21, -125)], ["152_cimetiere", Vector2(116, 110), Vector2(130, 128)],
+			["153_gare", Vector2(125, 3), Vector2(125, -25)], ["154_port", Vector2(0, -246), Vector2(0, -190)], ["155_chateau", Vector2(-34, 24), Vector2(0, 0)]],
+	}
+	if vues_ile.has(nom):
+		var vp: Array = vues_ile[nom]
 		for v in vp:
 			var a: Vector3 = Sy.ile.W((v[1] as Vector2).x, (v[1] as Vector2).y)
 			var b: Vector3 = Sy.ile.W((v[2] as Vector2).x, (v[2] as Vector2).y)

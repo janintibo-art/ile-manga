@@ -38,6 +38,8 @@ const PIAZZA := Vector2(-18.0, 88.0)
 const BARQUE := Vector2(52.0, 121.0)
 const BARQUE_YAW: float = 0.55
 
+const S168 = preload("res://scripts/sculpt_v167.gd")
+var hd_v168: bool = true                  # V168 : le four à pain sculpté, les vraies feuilles de la treille
 var main: Node
 var P: Node3D                             # pasta_v97 (l'île, le temple, le volcan)
 var points: Dictionary = {}               # nom -> Vector3 (monde)
@@ -563,6 +565,22 @@ func _tablee(b: Kit.Batch, az: AzurKit) -> void:
 			v = Vector3(0, s * 0.8, rng.randf_range(-0.1, 0.1))
 		var lv: float = rng.randf_range(0.7, 1.0)
 		var col: Color = Color(lv, lv * rng.randf_range(0.95, 1.05), lv)
+		if hd_v168:
+			# V168 : une vraie feuille à cinq lobes (un éventail de triangles depuis la queue)
+			var uh: Vector3 = u.normalized()
+			var vh: Vector3 = v.normalized()
+			var nn: Vector3 = uh.cross(vh).normalized()
+			if nn.y < 0.0:
+				nn = -nn
+			var prev: Vector3 = Vector3.ZERO
+			for i5 in range(13):
+				var th: float = TAU * i5 / 12.0
+				var rr5: float = s * 0.95 * (0.55 + 0.45 * absf(cos(2.5 * th)))
+				var q5: Vector3 = lp + (uh * cos(th) + vh * sin(th)) * rr5
+				if i5 > 0:
+					b.tri("feuille", [lp, prev, q5], [nn, nn, nn], [Vector2(0.5, 0.5), Vector2(0.5 + cos(th - TAU / 12.0) * 0.5, 0.5 + sin(th - TAU / 12.0) * 0.5), Vector2(0.5 + cos(th) * 0.5, 0.5 + sin(th) * 0.5)], [col, col, col])
+				prev = q5
+			continue
 		b.tri("feuille", [lp - u, lp + v, lp + u], [Vector3.UP, Vector3.UP, Vector3.UP], [Vector2(0, 0.5), Vector2(0.5, 0), Vector2(1, 0.5)], [col, col, col])
 		b.tri("feuille", [lp - u, lp + u, lp - v], [Vector3.UP, Vector3.UP, Vector3.UP], [Vector2(0, 0.5), Vector2(1, 0.5), Vector2(0.5, 1)], [col, col, col])
 	# des grappes de tomates-cerises qui pendent (la treille est une tomate grimpante !)
@@ -587,10 +605,13 @@ func _tablee(b: Kit.Batch, az: AzurKit) -> void:
 	# le four à pain : un socle de pierre, une coupole de briques, une bouche, une cheminée
 	var ov: Vector3 = G(pz.x - 8.6, pz.y + 0.2)
 	b.box("moellons", Transform3D(Basis(), ov + Vector3.UP * 0.5), Vector3(2.6, 1.0, 2.6))
-	b.sphere("terre_cuite", ov + Vector3.UP * 1.0, 1.15, 0.85, 8, 18)
-	b.box("terre_cuite", Transform3D(Basis(), ov + Vector3(0.95, 1.35, 0)), Vector3(0.5, 0.75, 0.9))
-	b.box("suie", Transform3D(Basis(), ov + Vector3(1.21, 1.32, 0)), Vector3(0.02, 0.5, 0.6))
-	b.cyl("terre_cuite", Transform3D(Basis(), ov + Vector3(-0.45, 1.6, 0)), 0.16, 0.2, 1.4, 10, true)
+	if hd_v168:
+		_four168(ov)
+	else:
+		b.sphere("terre_cuite", ov + Vector3.UP * 1.0, 1.15, 0.85, 8, 18)
+		b.box("terre_cuite", Transform3D(Basis(), ov + Vector3(0.95, 1.35, 0)), Vector3(0.5, 0.75, 0.9))
+		b.box("suie", Transform3D(Basis(), ov + Vector3(1.21, 1.32, 0)), Vector3(0.02, 0.5, 0.6))
+		b.cyl("terre_cuite", Transform3D(Basis(), ov + Vector3(-0.45, 1.6, 0)), 0.16, 0.2, 1.4, 10, true)
 	P._col(Transform3D(Basis(), ov + Vector3.UP * 1.0), Vector3(2.6, 2.0, 2.6))
 	var fl: CPUParticles3D = P._fire(ov + Vector3(0.95, 1.12, 0), 0.18, 22)
 	fl.name = "Four_du_Borgo"
@@ -1051,3 +1072,44 @@ func _process(delta: float) -> void:
 			_spawn_crowd()
 		return
 	_crowd_vis()
+
+
+# =================================================================== V168 : les pièces sculptées
+
+## V168 : le four à pain de la piazzetta, à la napolitaine : la coupole de terre cuite, l'avant-four
+## voûté et son arc de briques, la clé, la bouche noire de suie, la sole qui avance, la cheminée au-dessus
+## de la bouche ; sous le four, la réserve de bois et ses bûches ; la pelle appuyée. ov : le pied du
+## socle (1 m de haut) ; la bouche regarde +X.
+func _four168(ov: Vector3) -> void:
+	const Sc = preload("res://scripts/statue_naine_v159.gd")
+	var L: Dictionary = S168.loc(["terre_cuite", "suie", "bois", "bois_clair", "moellons"])
+	S168.tour(L, "terre_cuite", Vector3.ZERO, [Vector2(1.18, 1.0), Vector2(1.18, 1.12), Vector2(1.1, 1.45), Vector2(0.92, 1.76), Vector2(0.62, 1.99), Vector2(0.26, 2.09), Vector2(0.0, 2.11)], Basis.IDENTITY, 28)
+	# l'avant-four, la voûte de la bouche
+	S168.boite(L, "terre_cuite", Vector3(1.12, 1.36, 0), Vector3(0.5, 0.72, 0.98))
+	S168.tour(L, "terre_cuite", Vector3(0.87, 1.72, -0.49), [Vector2(0.0, 0.0), Vector2(0.48, 0.0), Vector2(0.48, 0.98), Vector2(0.0, 0.98)], Basis(Vector3.RIGHT, PI * 0.5) * Basis(Vector3.BACK, 0.0), 12)
+	var arc: Array = []
+	var rs: Array = []
+	for i in range(11):
+		var a: float = PI * i / 10.0
+		arc.append(Vector3(1.38, 1.36 + sin(a) * 0.36, cos(a) * 0.36))
+		rs.append(0.06)
+	S168.tube(L, "terre_cuite", arc, rs, 8)
+	S168.boite(L, "terre_cuite", Vector3(1.41, 1.75, 0), Vector3(0.08, 0.14, 0.12))
+	S168.boite(L, "suie", Vector3(1.381, 1.18, 0), Vector3(0.01, 0.36, 0.6))
+	Sc._tour(L, "suie", Vector3(1.381, 1.36, 0), [Vector2(0.3, 0.0), Vector2(0.0, 0.012)], Vector3.ONE, false, PI, TAU, Basis(Vector3.BACK, -PI * 0.5))
+	S168.boite(L, "moellons", Vector3(1.48, 0.97, 0), Vector3(0.32, 0.08, 1.1))
+	# la cheminée, au-dessus de la bouche
+	S168.tour(L, "terre_cuite", Vector3(1.05, 1.68, 0), [Vector2(0.17, 0.0), Vector2(0.15, 0.9), Vector2(0.22, 0.94), Vector2(0.22, 1.02), Vector2(0.12, 1.04), Vector2(0.12, 0.98)], Basis.IDENTITY, 12)
+	S168.tour(L, "suie", Vector3(1.05, 1.68, 0), [Vector2(0.121, 0.99), Vector2(0.0, 0.99)], Basis.IDENTITY, 12)
+	# la réserve de bois sous le four, ses bûches ; la pelle
+	S168.boite(L, "suie", Vector3(1.301, 0.42, 0), Vector3(0.01, 0.6, 1.4))
+	for k in range(8):
+		var y: float = 0.2 + (k / 4) * 0.2
+		var z: float = -0.5 + (k % 4) * 0.33 + (0.15 if k >= 4 else 0.0)
+		S168.tour(L, "bois", Vector3(1.3, y, z), [Vector2(0.0, 0.0), Vector2(0.08, 0.0), Vector2(0.08, 0.04), Vector2(0.0, 0.04)], Basis(Vector3.BACK, -PI * 0.5), 8)
+	S168.tube(L, "bois_clair", [Vector3(1.75, 0.0, 0.85), Vector3(1.45, 1.8, 0.75)], [0.025, 0.025], 6)
+	S168.boite(L, "bois_clair", Vector3(1.78, 0.18, 0.86), Vector3(0.3, 0.36, 0.02), Basis(Vector3.BACK, 0.16) * Basis(Vector3.UP, -0.3))
+	var mats := {}
+	for k2 in L:
+		mats[k2] = Kit.mat(k2)
+	S168.pose(self, L, mats, Transform3D(Basis(), ov), "Four_v168")

@@ -173,17 +173,27 @@ func tomato_mesh(variant: int) -> ArrayMesh:
 				var fc := Vector3(cos(ga + g * 0.6) * 0.14, y - 0.06 - g * 0.04, sin(ga + g * 0.6) * 0.14)
 				var r: float = rng.randf_range(0.035, 0.055)
 				var ripe: float = clampf(0.3 + k * 0.12 + rng.randf_range(-0.2, 0.2), 0.0, 1.0)
-				for i in range(8):
-					for jj in range(4):
-						var p0: float = PI * jj / 4.0
-						var p1: float = PI * (jj + 1) / 4.0
-						var t0: float = TAU * i / 8.0
-						var t1: float = TAU * (i + 1) / 8.0
-						var dd: Array = [Vector3(sin(p0) * cos(t0), cos(p0) * 0.85, sin(p0) * sin(t0)), Vector3(sin(p0) * cos(t1), cos(p0) * 0.85, sin(p0) * sin(t1)),
-							Vector3(sin(p1) * cos(t1), cos(p1) * 0.85, sin(p1) * sin(t1)), Vector3(sin(p1) * cos(t0), cos(p1) * 0.85, sin(p1) * sin(t0))]
+				# V168 : la tomate plus ronde, un peu côtelée, et son calice vert (cinq sépales)
+				for i in range(14):
+					for jj in range(7):
+						var p0: float = PI * jj / 7.0
+						var p1: float = PI * (jj + 1) / 7.0
+						var t0: float = TAU * i / 14.0
+						var t1: float = TAU * (i + 1) / 14.0
+						var c0: float = 1.0 + 0.04 * cos(t0 * 5.0)
+						var c1: float = 1.0 + 0.04 * cos(t1 * 5.0)
+						var dd: Array = [Vector3(sin(p0) * cos(t0) * c0, cos(p0) * 0.82, sin(p0) * sin(t0) * c0), Vector3(sin(p0) * cos(t1) * c1, cos(p0) * 0.82, sin(p0) * sin(t1) * c1),
+							Vector3(sin(p1) * cos(t1) * c1, cos(p1) * 0.82, sin(p1) * sin(t1) * c1), Vector3(sin(p1) * cos(t0) * c0, cos(p1) * 0.82, sin(p1) * sin(t0) * c0)]
 						for idx in [0, 1, 2, 0, 2, 3]:
 							var d: Vector3 = dd[idx]
 							Flora._vertex(fruits, fc + d * r, d.normalized(), Vector2(ripe, 0.5), 0.2, 0.0)
+				var top := fc + Vector3.UP * r * 0.82
+				for sp in range(5):
+					var sa: float = TAU * sp / 5.0 + g
+					var sd2 := Vector3(cos(sa), 0.0, sin(sa))
+					var sw := Vector3(-sin(sa), 0.0, cos(sa)) * r * 0.22
+					for v3 in [[top, Vector2(0.5, 0)], [top + sd2 * r * 0.7 - Vector3.UP * r * 0.15 + sw, Vector2(1, 1)], [top + sd2 * r * 0.7 - Vector3.UP * r * 0.15 - sw, Vector2(0, 1)]]:
+						Flora._vertex(leaves, v3[0], Vector3.UP, v3[1], 0.2, 0.0)
 	var mesh: ArrayMesh = stake.commit()
 	var sm := StandardMaterial3D.new()
 	sm.albedo_color = Color(0.55, 0.42, 0.28)
