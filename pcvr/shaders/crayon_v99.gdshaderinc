@@ -14,6 +14,9 @@ global uniform float crayon_jour;
 // V101 : la vague de couleur d'un pot versé dans la Palette (x, z du centre, rayon, largeur du bord ;
 // rayon négatif : aucune), avant que la région ne soit peinte pour de bon dans la carte.
 global uniform vec4 crayon_vague;
+// V169 : dans un arbre-maison (maisons_sud_v169) : x, z de sa porte ; sous la hauteur y (la pièce est
+// construite loin sous la mer) ; w > 0,5 : on y est. La pièce prend l'état de coloriage de sa porte.
+global uniform vec4 crayon_dedans;
 
 #ifndef CR_KIND
 #define CR_KIND 0
@@ -34,13 +37,17 @@ float cr_noise(vec2 p) {
 // 0 : la page blanche (le trait seul) ; 1 : en couleurs. Hors de l'île : toujours en couleurs.
 // Le bord d'une tache de couleur est irrégulier, comme un lavis.
 float cr_couleur(vec3 wp) {
-	vec2 uv = (wp.xz - crayon_rect.xy) / crayon_rect.zw;
+	vec2 q = wp.xz;
+	if (crayon_dedans.w > 0.5 && wp.y < crayon_dedans.z) {
+		q = crayon_dedans.xy;
+	}
+	vec2 uv = (q - crayon_rect.xy) / crayon_rect.zw;
 	if (uv.x < 0.0 || uv.y < 0.0 || uv.x > 1.0 || uv.y > 1.0) {
 		return 1.0;
 	}
 	float m = textureLod(crayon_masque, uv, 0.0).r;
 	if (crayon_vague.z > 0.0) {
-		float dv = length(wp.xz - crayon_vague.xy);
+		float dv = length(q - crayon_vague.xy);
 		m = max(m, 1.0 - smoothstep(crayon_vague.z - crayon_vague.w, crayon_vague.z, dv));
 	}
 	float n = cr_noise(wp.xz * 0.45) * 0.6 + cr_noise(wp.xz * 2.1 + 7.0) * 0.4;

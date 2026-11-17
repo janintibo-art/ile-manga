@@ -33,6 +33,8 @@ const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 const Dome119 = preload("res://scripts/maisons_dome_v119.gd")
 const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
+## V169 : les maisons d'Al Dente, de l'Île Crayonnée et de Sombreval
+const Sud169 = preload("res://scripts/maisons_sud_v169.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -96,6 +98,12 @@ static func region(style: String) -> String:
 			return "perchee"
 		"nuees", "nuees_lieu":
 			return "nuees"
+		"pasta":
+			return "pasta"
+		"crayon":
+			return "crayon"
+		"sombreval":
+			return "sombreval"
 	return "azur"
 
 
@@ -146,6 +154,12 @@ static func food(style: String) -> Array:
 			return ["haricots_ranch", "salsepareille", "tarte_figue"]
 		"nuees", "nuees_lieu":
 			return ["lait_nuage", "chouquettes", "fraise_geante"]
+		"pasta":
+			return ["spaghettis_bolo", "focaccia", "tomate_coeur"]
+		"crayon":
+			return ["pain_miel", "jus_pomme", "pomme"]
+		"sombreval":
+			return ["pomme", "jus_pomme"]
 	return ["croissant", "bouillabaisse", "glace"]
 
 
@@ -194,12 +208,16 @@ static func plat(style: String) -> String:
 			return "des haricots du ranch, mijotés trois jours"
 		"nuees", "nuees_lieu":
 			return "de la tarte aux fraises géantes"
+		"pasta":
+			return "des spaghettis à la sauce du volcan"
+		"crayon":
+			return "de la soupe de potiron (elle sera orange quand on aura retrouvé l'orange)"
 	return "de la bouillabaisse"
 
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc) or Lieux147.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc) or Lieux147.has(sc) or Sud169.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -214,6 +232,9 @@ static func pick(M) -> String:
 	# V92 : les yourtes de l'Île de Larsen ont leurs histoires à elles (et « chez » à la mode des yourtes)
 	if Yourtes.is_yourte(str(ctx["style"])):
 		return Yourtes.pick(M)
+	# V169 : Sombreval (une ville morte : ses histoires à elle) et les arbres-maisons de l'Île Crayonnée
+	if Sud169.gere(str(ctx["style"])):
+		return Sud169.pick(M)
 	if str(ctx.get("owner", "")) != "" and ctx.get("owner_node", null) != null:
 		return "chez"
 	var rng := RandomNumberGenerator.new()
@@ -322,6 +343,8 @@ static func build(M) -> void:
 				Lieux119.build(M, str(M.ctx["scenario"]))
 			elif Lieux147.has(str(M.ctx["scenario"])):
 				Lieux147.build(M, str(M.ctx["scenario"]))
+			elif Sud169.has(str(M.ctx["scenario"])):
+				Sud169.build(M, str(M.ctx["scenario"]))
 			else:
 				_b_vide(M)
 

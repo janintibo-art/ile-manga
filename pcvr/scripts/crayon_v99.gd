@@ -483,7 +483,8 @@ func _register_interactions() -> void:
 		var pn: Dictionary = panneaux[j]
 		d._interactions.append({"id": "crayon_panneau_%s" % str(pn["id"]), "pos": pn["at"], "radius": 2.2,
 			"text": "E : lire le panneau", "vr": "Gâchette : lire le panneau", "call": _lire.bind(j)})
-	if village != null:
+	# (V169 : on entre dans les maisons : maisons_v81 a l'invite ; on ne frappe plus)
+	if village != null and not village.entrees_v169:
 		for t2 in village.arbres:
 			var t: Dictionary = t2
 			d._interactions.append({"id": "crayon_porte_%s" % str(t["id"]), "pos": t["porte"], "radius": 1.8,

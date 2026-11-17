@@ -16,6 +16,7 @@ const Strates118 = preload("res://scripts/maisons_strates_v118.gd")
 const Fronde118 = preload("res://scripts/maisons_fronde_v118.gd")
 const Dome119 = preload("res://scripts/maisons_dome_v119.gd")
 const Echoppes = preload("res://scripts/maisons_echoppes_v85.gd")
+const Sud169 = preload("res://scripts/maisons_sud_v169.gd")
 
 ## Les histoires qui ont tout leur décor à elles (rien à ajouter).
 const RIEN := ["envers", "abandon", "fantome", "apesanteur", "fee"]
@@ -41,6 +42,7 @@ const SOL_VILLE := {
 	"strates": [["caisses", 0.8, 0.7], ["porte_manteau", 0.5, 0.5], ["globe", 0.5, 0.5]],
 	"fronde": [["caisses", 0.8, 0.7], ["plante_haute", 0.6, 0.6], ["porte_manteau", 0.5, 0.5]],
 	"dome": [["plante_haute", 0.6, 0.6], ["globe", 0.5, 0.5], ["gueridon", 0.6, 0.6]],
+	"pasta": [["jarre", 0.5, 0.5], ["panier", 0.5, 0.45], ["bois_feu", 0.95, 0.45]],
 }
 ## Sur un mur : [nom, demi-largeur]
 const MUR := [["horloge", 0.3], ["miroir", 0.35], ["patere", 0.45], ["cadres", 0.5], ["etagere_bocaux", 0.6], ["applique", 0.15],
@@ -60,20 +62,23 @@ const MUR_VILLE := {
 	"strates": [["engrenages", 0.55], ["horloge", 0.3], ["cadres", 0.5], ["barometre", 0.25]],
 	"fronde": [["cadres", 0.7], ["engrenages", 0.4], ["horloge", 0.25]],
 	"dome": [["cadres", 0.5], ["miroir", 0.35], ["barometre", 0.25], ["globe_mural", 0.35]],
+	"pasta": [["casseroles", 0.5], ["assiettes", 0.5], ["etagere_bocaux", 0.6]],
 }
 ## Au plafond
 const HAUT := ["herbes", "ail", "cage"]
 const HAUT_VILLE := {"tazira": ["lanterne_ajouree"], "ramure": ["lanterne_papier"], "astralys": ["mobile_cristaux"],
 	"arcanelle": ["bougies_flottantes"], "elfe": ["lianes"], "egypte": ["lanterne_ajouree"], "nain": ["herbes"], "pirate": ["cage"],
 	"moai": ["lanterne_papier", "herbes"], "hautefond": ["cage", "herbes"], "nuees": ["mobile_cristaux"],
-	"strates": ["mobile_cristaux", "herbes"], "fronde": ["cage"], "dome": ["mobile_cristaux"]}
+	"strates": ["mobile_cristaux", "herbes"], "fronde": ["cage"], "dome": ["mobile_cristaux"],
+	"pasta": ["ail", "herbes"]}
 
 
 # =================================================================== placer
 
 static func habiller(M) -> void:
 	var sc: String = str(M.ctx.get("scenario", ""))
-	if sc in RIEN:
+	# (V169 : les histoires de Sombreval ont leur décor à elles : la poussière, pas de plante verte)
+	if sc in RIEN or Sud169.has(sc):
 		return
 	var R = M.R
 	var style: String = str(R.style)

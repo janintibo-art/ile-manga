@@ -803,6 +803,16 @@ func _house_stories() -> Array:
 		"chorale": "Moaïs : la chorale", "mer": "Moaïs : le petit qui n'a jamais vu la mer", "doyenne": "Moaïs : la doyenne et la légende"}
 	for sc4 in M.Scenes.Moais.HISTOIRES:
 		out.append([str(v88.get(str(sc4), str(sc4))), [str(sc4)]])
+	# V169 : Sombreval et l'Île Crayonnée (on va à la porte la plus proche qui a ce style, ou cette histoire)
+	var v169 := {"sv_souper": "Sombreval : le souper interrompu", "sv_refuge": "Sombreval : le refuge de Solène",
+		"sv_enfant": "Sombreval : la chambre d'enfant", "sv_chat": "Sombreval : le chat qui est resté",
+		"sv_pharmacie": "Sombreval : la vieille pharmacie", "sv_gare": "Sombreval : la salle d'attente de la gare",
+		"sv_beffroi": "Sombreval : le mécanisme du beffroi", "cr_maison": "Île Crayonnée : un arbre-maison",
+		"cr_conseil": "Île Crayonnée : la Maison du Conseil"}
+	for sc5 in M.Scenes.Sud169.SCENARIOS:
+		out.append([str(v169.get(str(sc5[0]), str(sc5[0]))), [str(sc5[0])]])
+	for sc6 in M.Scenes.Sud169.FIXES:
+		out.append([str(v169.get(str(sc6), str(sc6))), [str(sc6)]])
 	return out
 
 
@@ -849,14 +859,14 @@ func _visit(sc: String) -> void:
 	var best: int = 0
 	var bd: float = INF
 	var styles: Array = []
-	for sc2 in M.Scenes.Iles.SCENARIOS + M.Scenes.Echoppes.SCENARIOS:
+	for sc2 in M.Scenes.Iles.SCENARIOS + M.Scenes.Echoppes.SCENARIOS + M.Scenes.Sud169.SCENARIOS:
 		if str(sc2[0]) == sc:
 			styles = (sc2[2] as Dictionary).get("style", [])
 	if sc == "fee":
 		styles = ["fee"]
-	var fixe: bool = M.Scenes.Moais.has(sc)
+	var fixe: bool = M.Scenes.Moais.has(sc) or sc in M.Scenes.Sud169.FIXES
 	for i in range(M.portes.size()):
-		var ok: bool = sc == "" or str(M.portes[i].get("owner", "")) == "" or sc == "fee"
+		var ok: bool = sc == "" or str(M.portes[i].get("owner", "")) == "" or sc == "fee" or (fixe and str(M.portes[i].get("histoire", "")) == sc)
 		if not styles.is_empty() and not (str(M.portes[i]["style"]) in styles):
 			ok = false
 		if fixe and str(M.portes[i].get("histoire", "")) != sc:

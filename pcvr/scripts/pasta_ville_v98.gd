@@ -32,6 +32,11 @@ const MAISONS := {
 	"famille": [-21.3, 75.7, 8.0, 6.0, "ocre", "vert", [3.4, 2.8], "gable"],
 	"gardiens": [-31.2, 69.4, 6.0, 5.0, "saumon", "brun", [3.3], "gable"],
 }
+## V169 : à qui est chaque maison (on y entre : maisons_v81, le style « pasta ») ; la Barque-Maison est au
+## Capitaine Rigatoni (le style « pirate »).
+const OWNERS_V169 := {"presbytere": "farfalle", "soeurs": "penne", "ravioli": "ravioli", "fusilli": "fusilli",
+	"famille": "lasagna", "gardiens": "macaroni"}
+var portes_v169: int = 0
 ## La piazzetta du Borgo (la Grande Tablée, la treille, le four)
 const PIAZZA := Vector2(-18.0, 88.0)
 ## La Barque-Maison du Capitaine : le centre, l'angle de la quille (radians)
@@ -446,14 +451,15 @@ func _decor() -> void:
 	var az := AzurKit.new()
 	az.setup(self, main.get("temps_v56"))
 	az.rng.seed = 9898
-	# --- les maisons du Borgo (crépi de couleur, volets, tuiles ; pas de visite : pas_v81)
+	# --- les maisons du Borgo (crépi de couleur, volets, tuiles ; V169 : on y entre, chez leurs habitants :
+	# le style « pasta » de maisons_v81)
 	for nm in maisons:
 		var m: Dictionary = maisons[nm]
 		var f: Vector3 = m["face"]
 		var e: Array = MAISONS[nm]
 		var xf := Transform3D(Basis(Vector3.UP, atan2(-f.x, -f.z)), m["at"])
 		az.building(xf, {"w": float(e[2]), "d": float(e[3]), "floors": e[6], "color": str(e[4]), "volets": str(e[5]),
-			"roof": str(e[7]), "lit": 0.6, "pas_v81": true})
+			"roof": str(e[7]), "lit": 0.6, "style81": "pasta", "owner81": str(OWNERS_V169.get(nm, ""))})
 		# des fenêtres au dos et sur les côtés (on voit les maisons de partout : du chemin, de la piazzetta)
 		var w2: float = float(e[2])
 		var d2: float = float(e[3])
@@ -481,6 +487,11 @@ func _decor() -> void:
 	_tablee(b, az)
 	# --- la Barque-Maison du Capitaine Rigatoni
 	_barque(b)
+	# V169 : on entre dans la Barque-Maison, chez le Capitaine (une cabine de pirate à la retraite)
+	var bd169: Vector3 = _barque_door()
+	var ax169 := Vector2(cos(BARQUE_YAW), sin(BARQUE_YAW))
+	AzurKit.note_v81(bd169 + Vector3.UP * 0.05, Vector3(-ax169.y, 0, ax169.x), 8.5, 4.4, "pirate", 1, "rigatoni")
+	portes_v169 = maisons.size() + 1
 	b.commit(self, "Borgo_et_barque")
 	az.commit()
 

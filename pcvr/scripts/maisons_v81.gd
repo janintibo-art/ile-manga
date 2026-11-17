@@ -24,6 +24,7 @@ const Lieux117 = preload("res://scripts/lieux_nuees_v117.gd")
 const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
+const Sud169 = preload("res://scripts/maisons_sud_v169.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -333,6 +334,7 @@ func inside_stage(p: Vector3) -> bool:
 
 func _teardown() -> void:
 	var dj: Node = main.get("donjon_v35")
+	Sud169.sortir(self)
 	for it in _its:
 		if dj != null:
 			dj._interactions.erase(it)
@@ -407,9 +409,14 @@ func _build() -> Array:
 		var tl5: Vector2 = Lieux147.taille(cur)
 		w = tl5.x
 		d = tl5.y
+	elif Sud169.is_lieu(style):
+		# V169 : un arbre-maison de l'Île Crayonnée (une pièce ronde)
+		var tl6: Vector2 = Sud169.taille(cur)
+		w = tl6.x
+		d = tl6.y
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
-	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) else 0.0
+	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) and not Sud169.is_lieu(style) else 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -442,17 +449,23 @@ func _build() -> Array:
 		Lieux119.shell(self)
 	elif Lieux147.is_lieu(style):
 		Lieux147.shell(self)
+	elif Sud169.is_lieu(style):
+		Sud169.shell(self)
 	else:
 		R.shell()
 	# la porte, de l'intérieur
 	var door_in: Vector3 = R.P(R.door_x, 0, d * 0.5 - 0.6)
 	act(door_in, "E : sortir", func(): leave(), 1.3)
 	Scenes.build(self)
+	# V169 : chez les habitants d'Al Dente (et du Capitaine), ce qui dit leur métier
+	Sud169.touches(self)
 	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
 	# (V116 : ni dans les grands lieux, qui ont tout leur décor)
-	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style):
+	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) and not Sud169.is_lieu(style):
 		Deco.habiller(self)
 	R.commit()
+	# V169 : dans un arbre-maison de l'Île Crayonnée, la pièce est dessinée comme l'île (le coloriage)
+	Sud169.apres(self)
 	print("ILE_MANGA_V81: maison %s (%s, %s) construite en %d ms" % [id, style, scenario, Time.get_ticks_msec() - t0])
 	return [R.P(R.door_x, 0.05, d * 0.5 - 1.1), Vector3(0, 0, -1)]
 

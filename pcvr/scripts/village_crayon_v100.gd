@@ -14,6 +14,9 @@ const IleScript = preload("res://scripts/ile_crayon_v99.gd")
 const Kit = preload("res://scripts/pasta_kit_v97.gd")
 const Flora = preload("res://scripts/flora_v25.gd")
 const Decor = preload("res://scripts/decor_v53.gd")
+## V169 : on entre dans les arbres-maisons (maisons_v81 ; la pièce ronde : maisons_sud_v169)
+const Kit56 = preload("res://scripts/azur_kit_v56.gd")
+var entrees_v169: bool = true
 
 ## Les chênes géants : [id, nom, maison, angle autour du centre de la clairière (degrés, repère île),
 ## distance au centre, rayon du pied, hauteur, hauteur de la plate-forme, rayon de la maison]
@@ -612,6 +615,11 @@ func _maison(b: Kit.Batch, t: Dictionary, center: Vector3, rr: float, nom: Strin
 				b.sphere(["fleur_rouge", "fleur_jaune", "fleur_bleue"][f % 3], fp + up * 0.1 + wd * 0.04, 0.075, 1.0, 4, 7)
 	_cyl_col(center, rr + 0.02, wall_h)
 	t["porte"] = base + d * 0.9
+	if entrees_v169:
+		var gr: bool = str(t["id"]) == "grand"
+		Kit56.PORTES_V81.append({"door": (t["porte"] as Vector3) + up * 0.05, "out": Vector3(d.x, 0, d.z).normalized(), "w": rr * 2.0, "d": rr * 2.0,
+			"style": "crayon", "floors": 1, "owner": "", "histoire": "cr_conseil" if gr else "cr_maison", "maison_id": str(t["id"]),
+			"entrer": ("E : entrer dans la " + nom) if gr else ("E : entrer chez les " + nom.trim_prefix("Maison "))})
 
 
 ## Une porte en arc (un rectangle surmonté d'un demi-cercle), épaisse de th, posée en base,

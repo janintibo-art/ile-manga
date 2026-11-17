@@ -1,6 +1,7 @@
 #!/bin/bash
 # Des images des sols de l'île (V158 : avant / après) et des pièces des maisons, et des planches.
-#     bash tests/outils/rendu_maisons.sh DOSSIER [sols|maisons]
+#     bash tests/outils/rendu_maisons.sh DOSSIER [sols|maisons|sud [début du nom]]
+# (V169 : « sud » : les maisons d'Al Dente, de l'Île Crayonnée et de Sombreval, chacune de deux ou trois points de vue)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
@@ -23,7 +24,7 @@ done
 cp "$DEPOT/tests/outils/rendu_maisons.gd" "$COPIE/pcvr/rendu_maisons.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 1800 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 960x600 --audio-driver Dummy \
-  --script res://rendu_maisons.gd -- "$OUT" "${2:-}" 2>&1 | grep -E "SCRIPT ERROR|SHADER ERROR|Parse Error|ERROR: .*\.gd|ERROR: .*shader|RENDU|at: |^ *[0-9]+ \\| " | head -40
+  --script res://rendu_maisons.gd -- "$OUT" "${2:-}" "${3:-}" 2>&1 | grep -E "SCRIPT ERROR|SHADER ERROR|Parse Error|ERROR: .*\.gd|ERROR: .*shader|RENDU|at: |^ *[0-9]+ \\| " | head -400
 rm -f "$COPIE/pcvr/rendu_maisons.gd"
 python3 - "$OUT" <<'PY'
 import sys, glob, os

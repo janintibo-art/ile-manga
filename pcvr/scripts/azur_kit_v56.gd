@@ -851,7 +851,7 @@ func building(xf: Transform3D, spec: Dictionary) -> Dictionary:
 				window(xf * Transform3D(Basis(), Vector3(wx, 1.8, 0)), 0.9, 1.3, volets, rng.randf() < lit_p, rng.randf() < 0.25)
 			out["door"] = xf * Vector3(door_x, 0, -1.0)
 			if walkin.is_empty() and not bool(spec.get("pas_v81", false)):
-				porte_v81(xf, Vector3(door_x, 0, -1.0), w, d, "azur", floors.size())
+				porte_v81(xf, Vector3(door_x, 0, -1.0), w, d, str(spec.get("style81", "azur")), floors.size(), str(spec.get("owner81", "")))
 	if not walkin.is_empty():
 		out["door"] = xf * Vector3(float(walkin.get("door_x", 0.0)), 0, -1.0)
 	# étages

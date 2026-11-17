@@ -81,6 +81,12 @@ const REVIENT_S: float = 240.0
 const S168 = preload("res://scripts/sculpt_v167.gd")
 var hd_v168: bool = true                  # V168 : les tombes sculptées, la fontaine de la place
 var tombes_v168: int = 0                  # V168 : les tombes sculptées posées
+## V169 : on entre dans tous les bâtiments encore debout (maisons_v81, le style « sombreval ») : chaque
+## immeuble fermé, chaque maison des Faubourgs a sa porte sur la rue ; la gare et le beffroi aussi.
+const Kit56 = preload("res://scripts/azur_kit_v56.gd")
+var hd_v169: bool = true
+var portes_v169: int = 0                  # les portes notées (immeubles, maisons, gare, beffroi)
+var _pb169: Kit.Batch
 var main: Node
 var ile: Node3D
 var flore: Node3D
@@ -176,6 +182,8 @@ func build_town() -> void:
 	_place_marche()
 	_cimetiere()
 	_gare()
+	if _pb169 != null:
+		_pb169.commit(self, "Portes_v169", true, 220.0)
 	_port()
 	_rues()
 	_chateau()
@@ -443,14 +451,18 @@ func _lot(r: Array, floors: int, q: String, face: Vector2) -> void:
 		if _rng.randf() < 0.3:
 			tree_spots.append(IleScript.W(cx - w * 0.2, cz + dpt * 0.2, top))
 	# des fenêtres du bas murées de planches, une porte d'entrée défoncée : seulement des détails
-	if _rng.randf() < 0.25 and q != "port" and not ouvert:
+	# (V169 : une vraie porte, où l'on entre ; une sur quatre a des planches clouées en travers)
+	var cloue: bool = _rng.randf() < 0.25 and q != "port"
+	if not ouvert and hd_v169:
+		_porte169(x0, z0, x1, z1, face, cloue, keep, q)
+	elif cloue and not ouvert:
 		var bp: Vector3 = IleScript.W(cx + face.x * (w * 0.5 + 0.06), cz + face.y * (dpt * 0.5 + 0.06), Y0)
 		_det.box("bois_pourri", Transform3D(Basis(Vector3.UP, atan2(face.x, face.y)), bp + Vector3.UP * 1.2), Vector3(1.4, 2.2, 0.06))
 	# du lierre qui pend du haut de la façade sur la rue
 	if _rng.randf() < 0.45 + ivy * 0.4:
 		for k2 in range(_rng.randi_range(1, 3)):
 			var along2: float = _rng.randf_range(-0.4, 0.4)
-			if ouvert and absf(along2) < 0.25:
+			if (ouvert or hd_v169) and absf(along2) < 0.25:
 				along2 = 0.3 if along2 >= 0.0 else -0.3
 			var p: Vector3
 			if absf(face.y) > 0.5:
@@ -657,6 +669,8 @@ func _place_marche() -> void:
 	_boite_rect(bx - 3.5, bz - 3.5, bx + 3.5, bz + 3.5, Y0 - 1.0, Y0 + 22.0, 0.0, 0.5, 0.3)
 	_boite_rect(bx - 3.0, bz - 3.0, bx + 3.0, bz + 3.0, Y0 + 22.0, Y0 + 23.0, 0.0, 0.0, 0.3)
 	_block(bx - 3.5, bz - 3.5, bx + 3.5, bz + 3.5)
+	if hd_v169:
+		_porte169_beffroi(bx, bz + 3.5)
 	var bt: Vector3 = IleScript.W(bx, bz, Y0 + 23.0)
 	for c in [Vector3(-2.7, 0, -2.7), Vector3(2.7, 0, -2.7), Vector3(-2.7, 0, 2.7), Vector3(2.7, 0, 2.7)]:
 		b.box("pierre_chateau", Transform3D(Basis(), bt + c + Vector3.UP * 2.0), Vector3(0.6, 4.0, 0.6))
@@ -761,6 +775,8 @@ func _gare() -> void:
 	var b := Kit.Batch.new()
 	# le bâtiment des voyageurs (au nord), la grande halle (la verrière crevée)
 	_boite_rect(x0, z0, x1, z0 + 9.0, Y0 - 1.0, Y0 + 10.0, 0.0, 0.4, 0.6)
+	if hd_v169:
+		_porte169_gare(x0 + 17.0, z0)
 	_boite_rect(x0 + 13.0, z0 + 0.5, x0 + 21.0, z0 + 8.5, Y0 + 10.0, Y0 + 15.0, 0.0, 0.2, 0.6)
 	_block(x0, z0, x1, z0 + 9.0)
 	var clk: Vector3 = IleScript.W(x0 + 17.0, z0 - 0.05, Y0 + 12.8)
@@ -2168,3 +2184,113 @@ func _fontaine168(fc: Vector3) -> void:
 	S168.tour(L, "mousse", Vector3.ZERO, [Vector2(0.93, 2.62), Vector2(0.0, 2.63)], Basis.IDENTITY, 28)
 	S168.tour(L, P, Vector3.ZERO, [Vector2(0.0, 2.62), Vector2(0.18, 2.64), Vector2(0.26, 2.82), Vector2(0.2, 3.02), Vector2(0.12, 3.07), Vector2(0.16, 3.14), Vector2(0.0, 3.16)], Basis.IDENTITY, 16)
 	S168.pose(self, L, {"pierre_tombe": Kit.mat("pierre_tombe"), "mousse": Kit.mat("mousse")}, Transform3D(Basis(), fc), "Fontaine_v168")
+
+
+# =================================================================== V169 : les portes
+
+## La porte d'un immeuble fermé (repère île ; face : vers la rue) : un encadrement de pierre (les
+## jambages, le linteau et sa clé, la corniche), la marche, les deux battants de bois à panneaux, la
+## poignée, la fente aux lettres, l'imposte vitrée (cassée) et ses barreaux, la plaque émaillée du
+## numéro ; parfois deux planches clouées en croix. On la note pour maisons_v81 (style « sombreval »).
+func _porte169(x0: float, z0: float, x1: float, z1: float, face: Vector2, cloue: bool, etages: int, q: String) -> void:
+	var w: float = x1 - x0
+	var dpt: float = z1 - z0
+	var cx: float = (x0 + x1) * 0.5
+	var cz: float = (z0 + z1) * 0.5
+	var r := RandomNumberGenerator.new()
+	r.seed = hash(Vector2i(roundi(cx * 10.0), roundi(cz * 10.0)))
+	var larg: float = w if absf(face.y) > 0.5 else dpt
+	var prof: float = dpt if absf(face.y) > 0.5 else w
+	var along := Vector2(-face.y, face.x)
+	var off: float = r.randf_range(-0.25, 0.25) * maxf(larg - 3.5, 0.0)
+	var c2: Vector2 = Vector2(cx, cz) + face * (prof * 0.5) + along * off
+	_porte169_at(c2, face, false, r, cloue)
+	var out: Vector3 = Vector3(face.x, 0, face.y)
+	var door: Vector3 = _ground(c2.x + face.x * 0.9, c2.y + face.y * 0.9) + Vector3.UP * 0.05
+	_note169(door, out, larg, prof, etages, "")
+
+
+## L'encadrement et les battants (c2 : le pied de la porte sur la façade, repère île).
+func _porte169_at(c2: Vector2, face: Vector2, grand: bool, r: RandomNumberGenerator, cloue: bool) -> void:
+	if _pb169 == null:
+		_pb169 = Kit.Batch.new()
+	var b: Kit.Batch = _pb169
+	var g: Vector3 = _ground(c2.x + face.x * 0.4, c2.y + face.y * 0.4)
+	var base := Vector3(IleScript.W(c2.x, c2.y).x, g.y, IleScript.W(c2.x, c2.y).z)
+	var B := Basis(Vector3.UP, atan2(face.x, face.y))
+	var s: float = 1.35 if grand else 1.0
+	var hw: float = 0.75 * s                     # la demi-largeur du passage
+	var hh: float = 2.55 * s                     # la hauteur des battants
+	var X := func(x: float, y: float, z: float) -> Transform3D:
+		return Transform3D(B, base + B * Vector3(x, y, z))
+	var pierre: String = "beton_clair" if r.randf() < 0.7 else "pierre_tombe"
+	# l'encadrement
+	for sx in [-1.0, 1.0]:
+		b.box(pierre, X.call(sx * (hw + 0.12), (hh + 0.45) * 0.5, 0.12), Vector3(0.24, hh + 0.45, 0.24))
+		b.box(pierre, X.call(sx * (hw + 0.12), 0.12, 0.15), Vector3(0.32, 0.24, 0.3))
+	b.box(pierre, X.call(0, hh + 0.45 + 0.15, 0.14), Vector3(hw * 2.0 + 0.6, 0.3, 0.28))
+	b.box(pierre, X.call(0, hh + 0.45 + 0.17, 0.17), Vector3(0.3, 0.42, 0.32))
+	b.box(pierre, X.call(0, hh + 0.45 + 0.34, 0.18), Vector3(hw * 2.0 + 0.78, 0.08, 0.36))
+	# la marche (usée)
+	b.box("beton", X.call(0, -0.06, 0.36), Vector3(hw * 2.0 + 0.7, 0.24, 0.62))
+	# le fond, l'ombre du tableau de la porte
+	b.box("interieur", X.call(0, (hh + 0.45) * 0.5, 0.01), Vector3(hw * 2.0, hh + 0.45, 0.02))
+	# les battants : peints autrefois (vert, bordeaux, bleu), ou de bois nu ; leurs panneaux en relief
+	var peint: String = ["bois_sombre", "bois_sombre", "rouille_verte", "rouille_rouge", "rouille_bleue"][r.randi() % 5]
+	for sx2 in [-1.0, 1.0]:
+		var bx: float = sx2 * (hw * 0.5 + 0.005)
+		b.box(peint, X.call(bx, hh * 0.5 + 0.02, 0.06), Vector3(hw - 0.02, hh, 0.07))
+		for py in [0.62, 1.62]:
+			var ph: float = (0.85 if py < 1.0 else 1.15) * s
+			b.box("bois_pourri", X.call(bx, py * s, 0.1), Vector3(hw - 0.24, ph * 0.82, 0.025))
+		b.box("bois_pourri", X.call(bx, hh - 0.02, 0.1), Vector3(hw - 0.02, 0.05, 0.02))
+	b.box("fer_noir", X.call(0, hh * 0.5, 0.105), Vector3(0.03, hh, 0.02))
+	# la poignée, la fente aux lettres
+	for sx3 in [-0.09, 0.09]:
+		b.box("fer_noir", X.call(sx3, 1.08, 0.12), Vector3(0.035, 0.18, 0.03))
+		b.box("fer_noir", X.call(sx3 + signf(sx3) * 0.04, 1.08, 0.14), Vector3(0.11, 0.025, 0.025))
+	b.box("fer_noir", X.call(hw * 0.5, 0.95, 0.1), Vector3(0.3, 0.06, 0.02))
+	# l'imposte : un vitrage (la vitre cassée), ses barreaux
+	var iy: float = hh + 0.24
+	b.box("verre_brise", X.call(0, iy, 0.05), Vector3(hw * 2.0, 0.4, 0.02))
+	for k in range(5):
+		b.box("fer_noir", X.call(-hw + hw * 2.0 * (k + 0.5) / 5.0, iy, 0.07), Vector3(0.025, 0.4, 0.025))
+	b.box("fer_noir", X.call(0, hh + 0.04, 0.07), Vector3(hw * 2.0, 0.06, 0.04))
+	# la plaque émaillée du numéro, à droite
+	if not grand and r.randf() < 0.75:
+		b.box("rouille_bleue", X.call(hw + 0.42, 2.25, 0.02), Vector3(0.24, 0.17, 0.02))
+		b.box("beton_clair", X.call(hw + 0.42, 2.25, 0.032), Vector3(0.12, 0.08, 0.005))
+	# des planches clouées en croix (on se faufile dessous)
+	if cloue:
+		for sg in [-1.0, 1.0]:
+			var tb := Transform3D(B * Basis(Vector3.BACK, sg * r.randf_range(0.42, 0.62)), base + B * Vector3(r.randf_range(-0.1, 0.1), 1.55 * s, 0.17 + (0.02 if sg > 0.0 else 0.0)))
+			b.box("bois_pourri", tb, Vector3(hw * 2.0 + 0.5, 0.2, 0.04))
+	# les feuilles mortes et la poussière au pied
+	b.box("ordures", X.call(r.randf_range(-0.3, 0.3), 0.07, 0.7), Vector3(r.randf_range(0.5, 1.1), 0.02, r.randf_range(0.3, 0.6)))
+
+
+## Note une porte (monde) pour maisons_v81 : le style « sombreval », l'invite « pousser la porte » ;
+## histoire : une histoire à elle (la gare, le beffroi).
+func _note169(door: Vector3, out: Vector3, w: float, d: float, etages: int, histoire: String) -> void:
+	var e := {"door": door, "out": out.normalized(), "w": w, "d": d, "style": "sombreval", "floors": etages, "owner": "",
+		"entrer": "E : pousser la porte et entrer"}
+	if histoire != "":
+		e["histoire"] = histoire
+		e["entrer"] = {"sv_gare": "E : entrer dans la gare", "sv_beffroi": "E : entrer dans le beffroi"}.get(histoire, "E : entrer")
+	Kit56.PORTES_V81.append(e)
+	portes_v169 += 1
+
+
+## V169 : la grande porte de la gare (sous l'horloge) et la porte du beffroi (côté place).
+func _porte169_gare(x: float, z: float) -> void:
+	var r := RandomNumberGenerator.new()
+	r.seed = 16901
+	_porte169_at(Vector2(x, z), Vector2(0, -1), true, r, false)
+	_note169(_ground(x, z - 1.0) + Vector3.UP * 0.05, Vector3(0, 0, -1), 12.0, 9.0, 1, "sv_gare")
+
+
+func _porte169_beffroi(x: float, z: float) -> void:
+	var r := RandomNumberGenerator.new()
+	r.seed = 16902
+	_porte169_at(Vector2(x, z), Vector2(0, 1), false, r, false)
+	_note169(_ground(x, z + 0.95) + Vector3.UP * 0.05, Vector3(0, 0, 1), 6.0, 6.0, 1, "sv_beffroi")

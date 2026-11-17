@@ -13,6 +13,29 @@ const TX := "res://assets/textures/"
 ## Les ambiances des villes : sol, murs, plafond, poutres, bois des meubles, tapis, tableaux.
 ## [texture, teinte, taille d'un motif en m]
 const STYLES := {
+	# V169 : les maisons du Borgo d'Al Dente : les tomettes, la chaux couleur terre cuite au-dessus d'un
+	# soubassement de moellons, le plafond de planches sur ses poutres, le four de terre ; aux murs,
+	# l'icône du Grand Spaghetti Volant, une nature morte, le Mont Bolognaise
+	"pasta": {"sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2], "mur": ["maisons/chaux_terracotta.png", Color(1, 1, 1), 3.0],
+		"bas": ["azur/moellons.png", Color(0.95, 0.9, 0.84), 1.6], "plafond": ["montjoie/bois_planches.png", Color(0.78, 0.62, 0.48), 2.0],
+		"poutre": Color(0.34, 0.22, 0.13), "bois": Color(0.6, 0.42, 0.28), "h": 3.0,
+		"tapis": ["tazira/tapis_2.png"], "tableaux": ["beau169/pa_icone.png", "beau169/pa_nature_morte.png", "beau169/pa_volcan.png"],
+		"fenetre": "volets", "foyer": "four"},
+	# V169 : les arbres-maisons de l'Île Crayonnée : une pièce ronde (maisons_sud_v169 bâtit sa coque), le
+	# plancher, les lambris de bois miel, le plafond en cône sur ses chevrons, les fenêtres rondes, le poêle
+	"crayon": {"sol": ["montjoie/bois_planches.png", Color(0.92, 0.82, 0.68), 1.8], "mur": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4],
+		"bas": ["maisons/lambris_miel.png", Color(0.85, 0.8, 0.72), 1.4], "plafond": ["montjoie/bois_planches.png", Color(0.74, 0.62, 0.5), 1.6],
+		"poutre": Color(0.36, 0.24, 0.15), "bois": Color(0.62, 0.45, 0.3), "h": 2.5,
+		"tapis": ["tazira/tapis_2.png", "tazira/tapis_3.png"], "tableaux": ["beau169/cr_affiche.png", "beau169/cr_dessin.png", "azur/tableau_2.png"],
+		"fenetre": "rond", "foyer": "poele"},
+	# V169 : les appartements abandonnés de Sombreval : le parquet terni, le papier peint damassé passé
+	# (il se décolle par plaques), le lambris sombre, le plafond de plâtre taché ; aux murs, Sombreval
+	# avant le comte, un vieux portrait de famille
+	"sombreval": {"sol": ["maisons/parquet_chevron.png", Color(0.64, 0.6, 0.54), 2.4], "mur": ["maisons/pp_damas_bordeaux.png", Color(0.7, 0.67, 0.64), 1.8],
+		"bas": ["maisons/lambris_sombre.png", Color(0.72, 0.7, 0.68), 1.4], "plafond": ["boucan/beton.png", Color(0.62, 0.62, 0.6), 3.0],
+		"poutre": Color(0.22, 0.18, 0.15), "bois": Color(0.42, 0.32, 0.24), "h": 3.1, "sans_poutres": true,
+		"tapis": ["chateau/tapis.png"], "tableaux": ["beau169/sv_avant.png", "beau169/sv_portrait.png", "azur/tableau_2.png"],
+		"fenetre": "plomb", "foyer": "cheminee"},
 	# V146 : les maisons de Pile-ou-Face (l'Île Perchée, le Far West) : un plancher de planches, le papier
 	# peint damassé au-dessus d'un lambris sombre, des poutres, un poêle de fonte, les volets de bois ;
 	# aux murs, l'avis de recherche, les affiches des tables de jeu
@@ -218,6 +241,13 @@ const STYLES := {
 ## peints, chaux colorée, lambris, parquet à chevrons, tomettes, carreaux de ciment, damier…).
 ## Chaque entrée remplace une partie de la palette de la ville ; la variante 0 est l'originale.
 const VARIANTES := {
+	"pasta": [{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0]},
+		{"mur": ["maisons/chaux_vert.png", Color(1, 1, 1), 3.0], "sol": ["maisons/carreaux_ciment_vert.png", Color(1, 1, 1), 1.6]},
+		{"mur": ["maisons/chaux_bleu.png", Color(1, 1, 1), 3.0], "sol": ["maisons/carreaux_ciment_bleu.png", Color(1, 1, 1), 1.6]}],
+	"sombreval": [{"mur": ["maisons/pp_damas_bleu.png", Color(0.66, 0.67, 0.68), 1.8]},
+		{"mur": ["maisons/pp_fleurs_creme.png", Color(0.7, 0.67, 0.6), 2.0], "sol": ["maisons/damier_noir_blanc.png", Color(0.68, 0.66, 0.62), 2.4]},
+		{"mur": ["maisons/pp_rayures_sauge.png", Color(0.66, 0.66, 0.6), 2.2], "sol": ["maisons/carreaux_ciment_vert.png", Color(0.7, 0.7, 0.66), 1.6]},
+		{"mur": ["maisons/pp_rayures_rose.png", Color(0.68, 0.64, 0.62), 2.2], "bas": ["maisons/lambris_blanc.png", Color(0.62, 0.62, 0.6), 1.4]}],
 	"perchee": [{"mur": ["maisons/pp_rayures_sauge.png", Color(1, 1, 1), 2.2], "bas": ["maisons/lambris_miel.png", Color(1, 1, 1), 1.4]},
 		{"mur": ["maisons/chaux_ocre.png", Color(1, 1, 1), 3.0], "sol": ["maisons/tomettes.png", Color(1, 1, 1), 2.2]},
 		{"mur": ["maisons/pp_fleurs_creme.png", Color(1, 1, 1), 2.0], "sol": ["maisons/parquet_chevron.png", Color(0.9, 0.85, 0.8), 2.4]},
@@ -558,6 +588,13 @@ func _window_color() -> Color:
 		if hour >= 6.5 and hour < 20.5:
 			return Color(0.06, 0.24, 0.36)
 		return Color(0.02, 0.07, 0.14)
+	if style == "sombreval":
+		# V169 : la brume gris-vert de Sombreval, derrière les carreaux sales (la nuit : noire)
+		if hour >= 7.0 and hour < 19.0:
+			return Color(0.5, 0.56, 0.54)
+		if hour >= 6.0 and hour < 20.5:
+			return Color(0.3, 0.3, 0.34)
+		return Color(0.025, 0.03, 0.04)
 	if style.begins_with("strates") or style.begins_with("fronde"):
 		# la caverne des Strates, sous le Soleil de Laiton : ambrée le jour, braise la nuit
 		if hour >= 6.5 and hour < 20.5:
@@ -1169,6 +1206,9 @@ func foyer(x: float, z: float, yaw: float, allume: bool = true) -> void:
 			kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.1, 0)), Vector3(1.3, 0.2, 1.3))
 			reserve(x, z, 1.6, 1.6)
 		"four":
+			if style == "pasta":
+				_four169(xf, x, z, allume)
+				return
 			kit.cyl(xf, 0.65, 0.55, 0.6, "terre_cuite", 16)
 			kit.cyl(xf * Transform3D(Basis(), Vector3(0, 0.6, 0)), 0.55, 0.05, 0.7, "terre_cuite", 16)
 			kit.box(xf * Transform3D(Basis(), Vector3(0, 0.35, 0.58)), Vector3(0.4, 0.35, 0.02), "flamme" if allume else "noir", 1.0, 16)
@@ -1207,6 +1247,50 @@ func foyer(x: float, z: float, yaw: float, allume: bool = true) -> void:
 			lights.append(l3)
 			kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(0.6, 1.0, 0.6))
 			reserve(x, z, 0.9, 0.9)
+
+
+## V169 : le four à pain des maisons d'Al Dente : le socle de moellons et sa niche à bois, la coupole de
+## terre cuite (une vraie demi-sphère), la bouche en arc et son cintre de briques, la suie, la petite
+## cheminée, la pelle appuyée ; le feu dans la bouche quand il est allumé.
+func _four169(xf: Transform3D, x: float, z: float, allume: bool) -> void:
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.36, 0)), Vector3(1.45, 0.72, 1.3), "pierre", 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.74, 0)), Vector3(1.55, 0.06, 1.38), "pierre_lisse", 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.3, 0.6)), Vector3(0.9, 0.42, 0.12), "noir", 1.0, 16)
+	for k in range(4):
+		kit.cyl(Transform3D(xf.basis * Basis(Vector3.BACK, PI * 0.5), xf * Vector3(0.38, 0.14 + (k % 2) * 0.13, 0.48 - (k / 2) * 0.14)), 0.06, 0.06, 0.76, "bois_sombre", 7)
+	var r0: float = 0.64
+	var n: int = 9
+	for i in range(n):
+		var a0: float = PI * 0.5 * i / n
+		var a1: float = PI * 0.5 * (i + 1) / n
+		var y0: float = 0.77 + r0 * sin(a0) * 0.92
+		var y1: float = 0.77 + r0 * sin(a1) * 0.92
+		kit.cyl(xf * Transform3D(Basis(), Vector3(0, y0, -0.05)), r0 * cos(a0), r0 * cos(a1) + (0.0 if i < n - 1 else 0.0), y1 - y0, "terre_cuite", 24, i == n - 1)
+	# la bouche : un arc sombre, son cintre de briques, la suie au-dessus
+	var mz: float = 0.6
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.93, mz - 0.02)), Vector3(0.4, 0.3, 0.06), "flamme" if allume else "noir", 1.0, 16)
+	kit.cyl(Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), xf * Vector3(0, 1.08, mz - 0.05)), 0.2, 0.2, 0.06, "flamme" if allume else "noir", 16)
+	for s in range(11):
+		var aa: float = PI * s / 10.0
+		kit.box(Transform3D(xf.basis * Basis(Vector3.BACK, aa - PI * 0.5), xf * Vector3(cos(aa) * 0.26, 1.08 + sin(aa) * 0.26, mz)), Vector3(0.09, 0.12, 0.14), "brique", 1.0)
+	for sx in [-0.26, 0.26]:
+		kit.box(xf * Transform3D(Basis(), Vector3(sx, 0.93, mz)), Vector3(0.12, 0.32, 0.14), "brique", 1.0)
+	kit.box(xf * Transform3D(Basis(Vector3.RIGHT, -0.5), Vector3(0, 1.36, mz - 0.1)), Vector3(0.36, 0.22, 0.01), "noir", 1.0, 16)
+	kit.cyl(xf * Transform3D(Basis(), Vector3(0, 1.28, 0.22)), 0.09, 0.08, 0.55, "terre_cuite", 12)
+	kit.ring(xf * Transform3D(Basis(), Vector3(0, 1.8, 0.22)), 0.07, 0.11, 0.05, "terre_cuite", 12)
+	# la pelle à pain, appuyée
+	kit.box(xf * Transform3D(Basis(Vector3.BACK, 0.22), Vector3(0.82, 0.95, 0.5)), Vector3(0.035, 1.8, 0.035), "bois_clair", 1.0)
+	kit.box(xf * Transform3D(Basis(Vector3.BACK, 0.22), Vector3(0.62, 0.1, 0.5)), Vector3(0.26, 0.2, 0.015), "bois_clair", 1.0)
+	kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.7, 0)), Vector3(1.45, 1.4, 1.3))
+	reserve(x, z, 1.7, 1.6)
+	if allume:
+		var l2 := OmniLight3D.new()
+		l2.light_color = Color(1.0, 0.55, 0.25)
+		l2.light_energy = 1.1
+		l2.omni_range = 4.5
+		root.add_child(l2)
+		l2.global_position = xf * Vector3(0, 1.0, 1.0)
+		flames.append([l2, 1.1])
 
 
 ## Un petit feu : des flammes en particules et une lumière chaude qui vacille.
@@ -1659,6 +1743,10 @@ func _sonde() -> void:
 	s.ambient_mode = ReflectionProbe.AMBIENT_COLOR
 	s.ambient_color = Color(0.66, 0.63, 0.58) if day else Color(0.55, 0.45, 0.36)
 	s.ambient_color_energy = 0.6 if day else 0.4
+	if style == "sombreval":
+		# V169 : une lumière grise et froide (la brume, les volets fermés)
+		s.ambient_color = Color(0.44, 0.48, 0.48) if day else Color(0.3, 0.32, 0.38)
+		s.ambient_color_energy = 0.38 if day else 0.22
 	root.add_child(s)
 	s.global_position = P(0, H * 0.5, 0)
 

@@ -189,4 +189,59 @@ func _initialize() -> void:
 					await _photo("%s_v%d_coin" % [sn, R.variante])
 				M._teardown()
 				await process_frame
+	if mode == "sud":
+		# V169 : les maisons d'Al Dente (chez chacun), de l'Île Crayonnée (en couleurs, puis en noir et
+		# blanc : la porte dans une île encore blanche) et de Sombreval
+		sun.visible = false
+		Pieces.sondes = false
+		var noir := Image.create(4, 4, false, Image.FORMAT_RGBA8)
+		noir.fill(Color(0, 0, 0, 1))
+		RenderingServer.global_shader_parameter_set("crayon_masque", ImageTexture.create_from_image(noir))
+		var M2 = Maisons.new()
+		fm.add_child(M2)
+		M2.setup(fm)
+		var cas: Array = [
+			["pasta", "famille", {"owner": "lasagna"}, 14.0, "pates"], ["pasta", "vide", {"owner": "farfalle"}, 20.5, "autel"],
+			["pasta", "vide", {"owner": "fusilli"}, 14.0, "savante"], ["pasta", "vide", {"owner": "macaroni"}, 14.0, "gong"],
+			["pasta", "vide", {"owner": "penne"}, 14.0, "musique"], ["pasta", "vide", {"owner": "ravioli"}, 14.0, "tomates"],
+			["pirate", "vide", {"owner": "rigatoni"}, 14.0, "capitaine"],
+			["crayon", "cr_maison", {"maison_id": "pinceau", "door": Vector3(-500, 0, -500)}, 14.0, "pinceau_couleurs"],
+			["crayon", "cr_maison", {"maison_id": "pinceau", "door": Vector3(1000, 0, 1450)}, 14.0, "pinceau_crayon"],
+			["crayon", "cr_maison", {"maison_id": "gomme", "door": Vector3(-500, 0, -500)}, 21.0, "gomme_soir"],
+			["crayon", "cr_maison", {"maison_id": "buvard", "door": Vector3(-500, 0, -500)}, 14.0, "buvard"],
+			["crayon", "cr_conseil", {"maison_id": "grand", "door": Vector3(-500, 0, -500)}, 14.0, "conseil"],
+			["crayon", "cr_conseil", {"maison_id": "grand", "door": Vector3(1000, 0, 1450)}, 14.0, "conseil_crayon"],
+			["sombreval", "sv_souper", {}, 14.0, "souper"], ["sombreval", "sv_refuge", {}, 21.0, "refuge"],
+			["sombreval", "sv_enfant", {}, 14.0, "enfant"], ["sombreval", "sv_chat", {}, 14.0, "chat"],
+			["sombreval", "sv_pharmacie", {}, 14.0, "pharmacie"], ["sombreval", "sv_gare", {"w": 12.0, "d": 9.0}, 14.0, "gare"],
+			["sombreval", "sv_beffroi", {"w": 6.0, "d": 6.0}, 14.0, "beffroi"], ["sombreval", "abandon", {}, 14.0, "abandon"],
+		]
+		var seul: String = str(OS.get_cmdline_user_args()[2]) if OS.get_cmdline_user_args().size() > 2 else ""
+		for c in cas:
+			if seul != "" and not str(c[4]).begins_with(seul):
+				continue
+			tp.hour = float(c[3])
+			var cur: Dictionary = {"id": "rendu169_" + str(c[4]), "style": str(c[0]), "w": 8.0, "d": 7.5}
+			for k2 in c[2]:
+				cur[k2] = c[2][k2]
+			M2.cur = cur
+			M2.force_scenario = str(c[1])
+			M2._build()
+			for k3 in range(4):
+				await process_frame
+			var R2 = M2.R
+			if str(c[0]) == "crayon":
+				_vue(R2.P(0.0, 1.65, R2.D * 0.5 - 0.5), R2.P(0.0, 0.9, -R2.D * 0.3))
+				await _photo("%s_porte" % str(c[4]))
+				_vue(R2.P(-R2.W * 0.32, 1.6, -R2.D * 0.2), R2.P(R2.W * 0.3, 0.9, R2.D * 0.1))
+				await _photo("%s_dedans" % str(c[4]))
+			else:
+				_vue(R2.P(R2.door_x, 1.65, R2.D * 0.5 - 0.5), R2.P(R2.door_x * 0.3, 0.8, -R2.D * 0.5))
+				await _photo("%s_porte" % str(c[4]))
+				_vue(R2.P(-R2.W * 0.5 + 0.6, 1.5, -R2.D * 0.5 + 0.6), R2.P(R2.W * 0.2, 0.5, R2.D * 0.2))
+				await _photo("%s_coin" % str(c[4]))
+				_vue(R2.P(R2.W * 0.5 - 0.6, 1.5, R2.D * 0.5 - 1.0), R2.P(-R2.W * 0.2, 0.6, -R2.D * 0.3))
+				await _photo("%s_coin2" % str(c[4]))
+			M2._teardown()
+			await process_frame
 	quit()
