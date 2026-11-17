@@ -573,6 +573,11 @@ func _build_mesh(high_quality: bool) -> void:
 	for k in ["herbe", "jungle", "sable", "limon", "roche", "dalles_soleil"]:
 		mat.set_shader_parameter(k + "_tex", load(TEX + k + ".png"))
 		mat.set_shader_parameter(k + "_n", load(TEX + k + "_n.png"))
+	# V165 : le dallage des places et des chaussées en haute définition (des dalles de calcaire en rangs)
+	const DAL165 := "res://assets/textures/beau165/dallage_soleils"
+	if ResourceLoader.exists(DAL165 + ".png"):
+		mat.set_shader_parameter("dalles_soleil_tex", load(DAL165 + ".png"))
+		mat.set_shader_parameter("dalles_soleil_n", load(DAL165 + "_n.png"))
 	mat.set_shader_parameter("biome", ImageTexture.create_from_image(biome))
 	mat.set_shader_parameter("biome_rect", Vector4(CENTER.x - HALF, CENTER.z - HALF, HALF * 2.0, HALF * 2.0))
 	mat.set_shader_parameter("plaza_m", Vector4(W(PLAZA_M.get_center().x, 0.0).x, W(0.0, PLAZA_M.get_center().y).z, PLAZA_M.size.x * 0.5, PLAZA_M.size.y * 0.5))

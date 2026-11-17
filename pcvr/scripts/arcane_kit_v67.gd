@@ -15,6 +15,10 @@ const AR := "res://assets/textures/arcanelle/"
 const TOITS := {"": Color(1, 1, 1), "rouge": Color(1.25, 0.62, 0.55), "vert": Color(0.8, 1.05, 0.82), "bleu": Color(0.85, 1.0, 1.25), "violet": Color(1.1, 0.88, 1.15)}
 
 var orbs: Array = []                     # [OmniLight3D] des réverbères (pour les tests)
+## V165 : Arcanelle et la Balafre en haute définition (les menhirs taillés dans la roche, la mousse et les
+## lichens ; les planches délavées de Port-Coutelas, l'enclume) ; mis par la ville qui crée son kit
+var hd_v165: bool = false
+var menhirs_v165: int = 0
 
 
 func mat(key: String) -> Material:
@@ -141,6 +145,16 @@ func mat(key: String) -> Material:
 			m.albedo_color = Color(0.86, 0.68, 0.3)
 			m.metallic = 0.9
 			m.roughness = 0.3
+		"paille165":
+			# V165 : la paille tressée en boudins (les ruches)
+			m = StandardMaterial3D.new()
+			if ResourceLoader.exists("res://assets/textures/beau165/paille_tressee.png"):
+				m.albedo_texture = load("res://assets/textures/beau165/paille_tressee.png")
+				m.normal_enabled = true
+				m.normal_texture = load("res://assets/textures/beau165/paille_tressee_n.png")
+				m.normal_scale = 1.2
+			m.albedo_color = Color(1.0, 0.96, 0.9)
+			m.roughness = 0.9
 		"paille":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load("res://assets/textures/jungle/thatch.png")
@@ -565,6 +579,9 @@ func brazier(pos: Vector3, h: float = 1.0) -> Vector3:
 func menhir(xf: Transform3D, h: float, w: float, d: float, glow: bool = true) -> void:
 	var lean := Basis(Vector3.RIGHT, rng.randf_range(-0.05, 0.05)) * Basis(Vector3.BACK, rng.randf_range(-0.05, 0.05))
 	var b: Transform3D = xf * Transform3D(lean, Vector3.ZERO)
+	if hd_v165:
+		_menhir_v165(b, xf, h, w, d, glow)
+		return
 	cyl(b * Transform3D(Basis(), Vector3(0, -0.5, 0)), w * 0.55, w * 0.42, h * 0.75, "pierrelune", 7, false, 1.5)
 	cyl(b * Transform3D(Basis(), Vector3(0, h * 0.75 - 0.5, 0)), w * 0.42, w * 0.12, h * 0.25 + 0.5, "pierrelune", 7, true, 1.5)
 	if glow:
@@ -694,3 +711,20 @@ func telescope(xf: Transform3D, aim_up: float = 0.6) -> void:
 	cyl(tb * Transform3D(Basis(), Vector3(0, -0.6, 0)), 0.1, 0.14, 1.9, "laiton", 12)
 	cyl(tb * Transform3D(Basis(), Vector3(0, 1.3, 0)), 0.16, 0.16, 0.12, "laiton", 12)
 	cyl(tb * Transform3D(Basis(), Vector3(0, -0.7, 0)), 0.05, 0.05, 0.14, "laiton", 8)
+
+
+## V165 : un menhir taillé dans la roche (une pierre levée irrégulière, un peu effilée, la mousse au
+## pied, les lichens ; les runes pâles gravées sur la face qui regarde le cercle).
+func _menhir_v165(b: Transform3D, xf: Transform3D, h: float, w: float, d: float, glow: bool) -> void:
+	var Rocks = load("res://scripts/rocks_v26.gd")
+	var mi := MeshInstance3D.new()
+	mi.name = "Menhir_v165_%d" % menhirs_v165
+	menhirs_v165 += 1
+	mi.mesh = Rocks.shape(16500 + menhirs_v165 * 7, Vector3(w * 1.05, h + 0.6, d * 1.1), 0.7, 0.1, 0.8, 28)
+	mi.material_override = Rocks.material(Color(0.64, 0.68, 0.76), 0.35, 0.5)
+	# effilée vers le haut : la pierre s'amincit (un léger cisaillement, plus large au pied)
+	mi.transform = b * Transform3D(Basis().scaled(Vector3(1.0, 1.0, 1.0)), Vector3(0, h * 0.5 - 0.3, 0))
+	root.add_child(mi)
+	if glow:
+		quad(b * Transform3D(Basis(), Vector3(0, h * 0.45, -d * 0.72)), w * 0.6, w * 0.6, "runes_pale", Vector2(0.3, 0.3), Vector2(0.7, 0.7))
+	col_cyl(xf.origin, w * 0.45, h)

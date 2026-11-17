@@ -19,16 +19,128 @@ const Mats69 = preload("res://scripts/soleils_mats_v69.gd")
 
 var fires69: Array = []                   # [Vector3, taille] : les feux à allumer (torches, braseros, fours)
 var animated69: Array = []                # Node3D animés (balanciers des chadoufs…)
+var climat_v165: String = ""              # V165 : « egypte », « maya » ou « azteque » (les matières HD)
+var sol_v165: float = 0.0                 # V165 : le sol du village (l'humidité des murs monte de là)
+var acc165: Dictionary = {}               # V165 : les pièces sculptées (jarres, fours…), par matière
 
 
 func mat(key: String) -> Material:
 	if mats.has(key):
 		return mats[key]
+	if hd_v165:
+		var h: Material = _mat_v165(key)
+		if h != null:
+			mats[key] = h
+			return h
 	var m: Material = Mats69.make(key)
 	if m != null:
 		mats[key] = m
 		return m
 	return super.mat(key)
+
+
+## V165 : les matières des villages en haute définition (le village les demande : hd_v165). Les murs
+## enduits et le stuc rouge prennent le shader de l'enduit vieilli (V163) : la terre et la chaux lissées,
+## les coulures, l'humidité au pied (selon le climat), et l'enduit tombé par plaques sur les briques
+## crues (Égypte, Aztlán) ou sur la pierre (les Mayas). Les briques crues, la terre cuite des jarres, la
+## pierre volcanique rouge d'Aztlán, les dalles. Les donjons (leur propre kit) gardent les leurs.
+func _mat_v165(key: String) -> Material:
+	var parts: PackedStringArray = key.split("_", true, 1)
+	var kind: String = parts[0]
+	var v: String = parts[1] if parts.size() > 1 else ""
+	var tint: Color = Mats69.TEINTES.get(v, Color(1, 1, 1))
+	match kind:
+		"enduit69", "stucr69":
+			if not ResourceLoader.exists(B165 + "enduit_soleils.png"):
+				return null
+			var maya: bool = climat_v165 == "maya"
+			var dessous: String = "res://assets/textures/soleils/pierre_maya" if maya else B165 + "adobe"
+			var sm := ShaderMaterial.new()
+			sm.shader = load("res://shaders/enduit_v163.gdshader")
+			sm.set_shader_parameter("tex_albedo", load(B165 + "enduit_soleils.png"))
+			sm.set_shader_parameter("tex_normal", load(B165 + "enduit_soleils_n.png"))
+			sm.set_shader_parameter("tex_pierre", load(dessous + ".png"))
+			sm.set_shader_parameter("tex_pierre_n", load(dessous + "_n.png"))
+			sm.set_shader_parameter("teinte", Color(0.8, 0.26, 0.19) * tint if kind == "stucr69" else tint)
+			sm.set_shader_parameter("sol_y", sol_v165)
+			sm.set_shader_parameter("humidite", float({"egypte": 0.3, "maya": 1.0, "azteque": 0.7}.get(climat_v165, 0.6)))
+			sm.set_shader_parameter("plaques", 1.0 if kind == "stucr69" else 0.8)
+			sm.set_shader_parameter("echelle_dessous", 2.5 if maya else 2.0)
+			sm.set_shader_parameter("normal_force", 0.6)
+			return sm
+		"brique69":
+			return _tex165("adobe", tint * Color(1.04, 1.03, 1.02), 1.0, 0.8)
+		"argile69":
+			return _tex165("terre_cuite", Color(0.68, 0.42, 0.28) * tint * 1.22, 0.8, 1.0)
+		"tezo69":
+			return _tex165("tezontle", tint * Color(1.15, 1.12, 1.1), 1.2, 1.0)
+		"dalles69":
+			return _tex165("dallage_soleils", tint * 1.04, 1.0, 0.45)
+		"suie165":
+			return _plat165(Color(0.07, 0.06, 0.055), 0.97)
+		"cendre165":
+			return _plat165(Color(0.44, 0.42, 0.4), 0.98)
+		"mais165":
+			return _plat165(Color(0.96, 0.76, 0.28), 0.7)
+	return null
+
+
+func _tex165(nom: String, c: Color, nscale: float, uvs: float) -> StandardMaterial3D:
+	if not ResourceLoader.exists(B165 + nom + ".png"):
+		return null
+	var m := StandardMaterial3D.new()
+	m.albedo_texture = load(B165 + nom + ".png")
+	m.albedo_color = c
+	m.normal_enabled = true
+	m.normal_texture = load(B165 + nom + "_n.png")
+	m.normal_scale = nscale
+	m.roughness_texture = load(B165 + nom + "_r.png")
+	m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+	m.roughness = 1.0
+	m.uv1_scale = Vector3(uvs, uvs, 1.0)
+	return m
+
+
+func _plat165(c: Color, r: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = c
+	m.roughness = r
+	return m
+
+
+## V165 : les pièces sculptées (des maillages indexés, à part de ceux du kit), une par matière.
+func commit() -> void:
+	super.commit()
+	for key in acc165:
+		var mesh: ArrayMesh = (acc165[key] as SurfaceTool).commit()
+		if mesh.get_surface_count() == 0:
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Sculpt_v165_%s" % str(key)
+		mi.mesh = mesh
+		mi.material_override = mat(key)
+		mi.visibility_range_end = 450.0
+		root.add_child(mi)
+	acc165.clear()
+
+
+func _a165(keys: Array) -> Dictionary:
+	for k in keys:
+		if not acc165.has(k):
+			var st := SurfaceTool.new()
+			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			acc165[k] = st
+	return acc165
+
+
+## Un ovoïde (rayons r) posé en c, tourné par b.
+func _ovale165(acc: Dictionary, key: String, c: Vector3, r: Vector3, b: Basis) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var prof: Array = []
+	for i in range(9):
+		var t: float = -PI * 0.5 + PI * float(i) / 8.0
+		prof.append(Vector2(cos(t), sin(t)))
+	Sculpt._tour(acc, key, c, prof, r, false, 0.0, TAU, b)
 
 
 ## Un corps convexe (collision) à partir de points du monde.
@@ -368,6 +480,11 @@ func papyrus_boat(xf: Transform3D, l: float = 5.0) -> void:
 
 ## Un four à pain de terre (une coupole), une jarre, un grenier à coupole.
 func oven(xf: Transform3D) -> Vector3:
+	if hd_v165:
+		_four_v165(xf)
+		col_cyl(xf.origin, 0.9, 1.3)
+		fires69.append([xf * Vector3(0, 0.3, 0.8), 0.25])
+		return xf * Vector3(0, 0, 1.45)
 	cyl(xf, 0.75, 0.7, 0.5, "argile69_terre", 12)
 	cyl(xf * Transform3D(Basis(), Vector3(0, 0.5, 0)), 0.7, 0.05, 0.75, "argile69_terre", 12, false)
 	quadz(xf * Transform3D(Basis(), Vector3(0, 0.3, 0.71)), 0.4, 0.35, "noir69")
@@ -376,11 +493,90 @@ func oven(xf: Transform3D) -> Vector3:
 	return xf * Vector3(0, 0, 1.2)
 
 
+## V165 : un four à pain en terre : la coupole sur son socle, l'œil du dessus noirci par la fumée, la
+## bouche voûtée dans son avancée, cerclée d'un bourrelet, la suie au-dessus, la cendre devant.
+func _four_v165(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc: Dictionary = _a165(["argile69_terre", "noir69", "suie165", "limon69", "cendre165"])
+	var o: Vector3 = xf.origin
+	var b: Basis = xf.basis
+	Sculpt._tour(acc, "limon69", o, [Vector2(0.92, 0.0), Vector2(0.92, 0.15), Vector2(0.84, 0.2)], Vector3.ONE, false, 0.0, TAU, b)
+	Sculpt._tour(acc, "argile69_terre", o, [Vector2(0.8, 0.17), Vector2(0.8, 0.4), Vector2(0.75, 0.64), Vector2(0.64, 0.88), Vector2(0.47, 1.06), Vector2(0.31, 1.16)], Vector3.ONE, false, 0.0, TAU, b)
+	Sculpt._tour(acc, "suie165", o, [Vector2(0.31, 1.16), Vector2(0.26, 1.21), Vector2(0.24, 1.25), Vector2(0.2, 1.26)], Vector3.ONE, false, 0.0, TAU, b)
+	Sculpt._tour(acc, "noir69", o, [Vector2(0.2, 1.255), Vector2(0.0, 1.262)], Vector3.ONE, false, 0.0, TAU, b)
+	# l'avancée de la bouche, le bourrelet, la bouche
+	Sculpt._boite(acc, "argile69_terre", o + b * Vector3(0, 0.46, 0.74), Vector3(0.72, 0.6, 0.32), b)
+	var arc: Array = [o + b * Vector3(0.28, 0.17, 0.9)]
+	var rs: Array = [0.05]
+	for i in range(9):
+		var a: float = PI * float(i) / 8.0
+		arc.append(o + b * Vector3(cos(a) * 0.28, 0.44 + sin(a) * 0.28, 0.9))
+		rs.append(0.055)
+	arc.append(o + b * Vector3(-0.28, 0.17, 0.9))
+	rs.append(0.05)
+	Sculpt._tube(acc, "argile69_terre", arc, rs, 8)
+	Sculpt._boite(acc, "noir69", o + b * Vector3(0, 0.31, 0.903), Vector3(0.46, 0.27, 0.01), b)
+	Sculpt._tour(acc, "noir69", o + b * Vector3(0, 0.44, 0.903), [Vector2(0.23, 0.0), Vector2(0.0, 0.012)], Vector3.ONE, false, PI * 0.5, PI * 1.5, b * Basis(Vector3.RIGHT, PI * 0.5))
+	# la suie au-dessus de la bouche, la cendre devant
+	_ovale165(acc, "suie165", o + b * Vector3(0, 0.84, 0.6), Vector3(0.2, 0.17, 0.08), b)
+	_ovale165(acc, "cendre165", o + b * Vector3(0.05, 0.0, 1.12), Vector3(0.32, 0.035, 0.2), b)
+
+
 func jar(pos: Vector3, h: float = 0.8, key: String = "argile69") -> void:
+	if hd_v165:
+		_jarre_v165(pos, h, key)
+		return
 	var xf := Transform3D(Basis(), pos)
 	cyl(xf, h * 0.12, h * 0.32, h * 0.35, key, 10)
 	cyl(xf * Transform3D(Basis(), Vector3(0, h * 0.35, 0)), h * 0.32, h * 0.2, h * 0.45, key, 10, false)
 	cyl(xf * Transform3D(Basis(), Vector3(0, h * 0.8, 0)), h * 0.13, h * 0.16, h * 0.2, key, 10, false)
+
+
+## V165 : une jarre tournée (la panse, l'épaule, le col, la lèvre roulée ; l'ombre dedans), parfois
+## bouchée d'un tampon de limon.
+func _jarre_v165(pos: Vector3, h: float, key: String) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc: Dictionary = _a165([key, "noir69", "limon69"])
+	var prof: Array = []
+	for p in [Vector2(0.0, 0.0), Vector2(0.08, 0.012), Vector2(0.15, 0.06), Vector2(0.23, 0.19), Vector2(0.275, 0.36), Vector2(0.27, 0.5), Vector2(0.23, 0.65), Vector2(0.165, 0.77), Vector2(0.125, 0.84), Vector2(0.118, 0.9), Vector2(0.142, 0.915), Vector2(0.148, 0.945), Vector2(0.132, 0.965), Vector2(0.108, 0.968)]:
+		prof.append(p * h)
+	var b := Basis(Vector3.UP, rng.randf() * TAU)
+	Sculpt._tour(acc, key, pos, prof, Vector3.ONE, false, 0.0, TAU, b)
+	if rng.randf() < 0.35:
+		_ovale165(acc, "limon69", pos + Vector3(0, 0.955 * h, 0), Vector3(0.14, 0.05, 0.14) * h, b)
+	else:
+		Sculpt._tour(acc, "noir69", pos, [Vector2(0.133 * h, 0.958 * h), Vector2(0.0, 0.962 * h)], Vector3.ONE, false)
+
+
+## V165 : le metate (la pierre à moudre le maïs, creusée en auge, sur ses trois pieds), la mano posée en
+## travers, une calebasse de pâte et des épis à côté. xf : au sol, la meunière vers +Z.
+func metate_v165(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc: Dictionary = _a165(["psombre69", "argile69_rouge", "mais165"])
+	var o: Vector3 = xf.origin
+	var b: Basis = xf.basis
+	var bt: Basis = b * Basis(Vector3.RIGHT, 0.12)
+	var c0: Vector3 = o + b * Vector3(0, 0.3, 0)
+	Sculpt._boite(acc, "psombre69", c0, Vector3(0.5, 0.12, 0.9), bt)
+	for s in [-1.0, 1.0]:
+		Sculpt._boite(acc, "psombre69", c0 + bt * Vector3(s * 0.215, 0.075, 0), Vector3(0.07, 0.04, 0.9), bt)
+	for lp in [Vector3(-0.16, 0, 0.3), Vector3(0.16, 0, 0.3), Vector3(0, 0, -0.32)]:
+		var top: Vector3 = c0 + bt * Vector3(lp.x, -0.05, lp.z)
+		var hh: float = top.y - o.y
+		Sculpt._tour(acc, "psombre69", Vector3(top.x, o.y, top.z), [Vector2(0.075, 0.0), Vector2(0.06, hh * 0.5), Vector2(0.05, hh)], Vector3.ONE, false)
+	var mano: Array = []
+	var mr: Array = []
+	for q in [[-0.28, 0.012], [-0.27, 0.032], [-0.24, 0.042], [-0.15, 0.046], [0.0, 0.046], [0.15, 0.046], [0.24, 0.042], [0.27, 0.032], [0.28, 0.012]]:
+		mano.append(c0 + bt * Vector3(float(q[0]), 0.145, 0.06))
+		mr.append(float(q[1]))
+	Sculpt._tube(acc, "psombre69", mano, mr, 10)
+	# la calebasse de pâte, les épis
+	var cb: Vector3 = o + b * Vector3(0.55, 0.0, 0.15)
+	Sculpt._tour(acc, "argile69_rouge", cb, [Vector2(0.0, 0.0), Vector2(0.1, 0.012), Vector2(0.16, 0.05), Vector2(0.18, 0.1), Vector2(0.17, 0.125)], Vector3.ONE, false)
+	Sculpt._tour(acc, "mais165", cb, [Vector2(0.165, 0.1), Vector2(0.0, 0.13)], Vector3.ONE, false)
+	for k in range(4):
+		var e: Vector3 = o + b * Vector3(-0.5 + (k % 2) * 0.1, 0.035, -0.15 + k * 0.1)
+		_ovale165(acc, "mais165", e, Vector3(0.036, 0.036, 0.1), b * Basis(Vector3.UP, 0.3 * (k - 1.5)))
 
 
 func granary(xf: Transform3D, r: float = 1.8, h: float = 3.2) -> void:

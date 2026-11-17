@@ -91,6 +91,9 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 6920
 	kit = Kit.new()
+	kit.hd_v165 = true
+	kit.climat_v165 = "maya"
+	kit.sol_v165 = Y
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 6921
 	_kukulkan()
@@ -193,7 +196,10 @@ func _place() -> void:
 		_spot(str(mk[4]), xf * Vector3(0, 0.05, -1.0), Vector3(0, 0, 1), "comptoir", "c_marche")
 		_avoid(float(mk[0]), float(mk[1]), 2.2)
 	# la pierre à moudre (le metate) devant une case
-	kit.box(Transform3D(Basis(Vector3.RIGHT, 0.12), W(-36.5, -96.6, Y + 0.3)), Vector3(0.6, 0.18, 1.0), "roche69", 1.0)
+	if kit.hd_v165:
+		kit.metate_v165(Transform3D(Basis(), W(-36.5, -96.6, Y)))
+	else:
+		kit.box(Transform3D(Basis(Vector3.RIGHT, 0.12), W(-36.5, -96.6, Y + 0.3)), Vector3(0.6, 0.18, 1.0), "roche69", 1.0)
 	_spot("metate", W(-36.5, -95.6, Y + 0.05), Vector3(0, 0, -1), "moudre", "s_mw")
 	for tp in [Vector2(-42.0, -112.0), Vector2(6.0, -112.0), Vector2(-42.0, -146.0), Vector2(6.0, -146.0)]:
 		kit.torch_post(W(tp.x, tp.y, Y), 2.6)

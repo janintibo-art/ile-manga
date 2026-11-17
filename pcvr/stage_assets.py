@@ -288,9 +288,9 @@ def main() -> int:
     # réglages d'import : la passe V158, plus bas) ; V160 : le kit des métaux (textures/beau160) ;
     # V161 : la Citadelle des Nuées et l'Île des Géants (textures/beau161) ; V162 : l'Atlantide et la
     # jungle (textures/beau162) ; V163 : Port-Azur, la teuf de la plage, le royaume des fées
-    # (textures/beau163) ; V164 : la Grande Île (textures/beau164)
+    # (textures/beau163) ; V164 : la Grande Île (textures/beau164) ; V165 : Arcanelle, la Balafre, les Trois Soleils (textures/beau165)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164", "textures/beau165"):
         d = source / folder
         if not d.is_dir():
             continue

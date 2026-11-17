@@ -140,6 +140,7 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 6868
 	kit = Kit.new()
+	kit.hd_v165 = true                    # V165 : les planches délavées, l'enclume
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 6869
 	_quai()
@@ -623,10 +624,14 @@ func _boutiques() -> void:
 	kit.box(fxf * Transform3D(Basis(), Vector3(0, 1.3, 5.9)), Vector3(7.6, 2.6, 0.2), "planchesp_sombre", 2.0)
 	kit.col_box(fxf * Transform3D(Basis(), Vector3(0, 1.3, 5.9)), Vector3(7.6, 2.6, 0.2))
 	var hearth: Transform3D = fxf * Transform3D(Basis(), Vector3(-2.2, 0.0, 4.8))
-	kit.box(hearth * Transform3D(Basis(), Vector3(0, 0.45, 0)), Vector3(1.8, 0.9, 1.4), "pierrefort", 1.0)
-	kit.box(hearth * Transform3D(Basis(), Vector3(0, 0.93, 0)), Vector3(1.2, 0.08, 0.9), "braise", 1.0)
-	kit.col_box(hearth * Transform3D(Basis(), Vector3(0, 0.45, 0)), Vector3(1.8, 0.9, 1.4))
-	kit.box(hearth * Transform3D(Basis(), Vector3(0, 2.4, 0.3)), Vector3(0.8, 2.4, 0.8), "pierrefort_sombre", 1.0)
+	if kit.hd_v165:
+		# V165 : le vrai foyer (la margelle, les braises, la hotte, le soufflet, le baquet)
+		kit.forge_v165(hearth)
+	else:
+		kit.box(hearth * Transform3D(Basis(), Vector3(0, 0.45, 0)), Vector3(1.8, 0.9, 1.4), "pierrefort", 1.0)
+		kit.box(hearth * Transform3D(Basis(), Vector3(0, 0.93, 0)), Vector3(1.2, 0.08, 0.9), "braise", 1.0)
+		kit.col_box(hearth * Transform3D(Basis(), Vector3(0, 0.45, 0)), Vector3(1.8, 0.9, 1.4))
+		kit.box(hearth * Transform3D(Basis(), Vector3(0, 2.4, 0.3)), Vector3(0.8, 2.4, 0.8), "pierrefort_sombre", 1.0)
 	fire_spots.append([hearth * Vector3(0, 1.0, 0), 0.6])
 	smoke_spots.append(hearth * Vector3(0, 4.4, 0.3))
 	kit.anvil(fxf * Vector3(0.4, 0.0, 3.0), 0.3)

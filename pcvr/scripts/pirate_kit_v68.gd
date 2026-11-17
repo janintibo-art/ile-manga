@@ -9,6 +9,7 @@ extends "res://scripts/arcane_kit_v67.gd"
 ##    tombstone, grave_cross, hammock, cage, anvil, coins, bottle_row, rib_arc.
 
 const PI68 := "res://assets/textures/pirates/"
+const B165 := "res://assets/textures/beau165/"
 const PLANCHES := {"": Color(1, 1, 1), "sombre": Color(0.6, 0.56, 0.52), "clair": Color(1.15, 1.1, 1.02), "rouge": Color(1.25, 0.62, 0.52),
 	"vert": Color(0.72, 1.0, 0.78), "bleu": Color(0.7, 0.88, 1.15), "jaune": Color(1.2, 1.05, 0.62), "noir": Color(0.36, 0.34, 0.34)}
 
@@ -34,6 +35,15 @@ func mat(key: String) -> Material:
 			m.normal_scale = 1.1
 			m.roughness = 0.92
 			m.albedo_color = PLANCHES.get(variant, Color(1, 1, 1))
+			# V165 : des planches délavées par le sel (le fil du bois, les nœuds, les clous rouillés, la
+			# peinture qui s'écaille)
+			if hd_v165 and ResourceLoader.exists(B165 + "planches_pirate.png"):
+				m.albedo_texture = load(B165 + "planches_pirate.png")
+				m.normal_texture = load(B165 + "planches_pirate_n.png")
+				m.roughness_texture = load(B165 + "planches_pirate_r.png")
+				m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+				m.roughness = 1.0
+				m.normal_scale = 1.0
 		"palmes":
 			m = StandardMaterial3D.new()
 			m.albedo_texture = load(PI68 + "palmes.png")
@@ -690,6 +700,10 @@ func cage(pos: Vector3, r: float = 0.3, h: float = 0.6) -> void:
 ## Une enclume sur son billot.
 func anvil(pos: Vector3, yaw: float) -> void:
 	var xf := Transform3D(Basis(Vector3.UP, yaw), pos)
+	if hd_v165:
+		_enclume_v165(xf)
+		col_cyl(pos, 0.34, 0.9)
+		return
 	cyl(xf, 0.32, 0.3, 0.55, "rondins", 10)
 	box(xf * Transform3D(Basis(), Vector3(0, 0.66, 0)), Vector3(0.3, 0.22, 0.22), "fer", 1.0)
 	box(xf * Transform3D(Basis(), Vector3(0, 0.82, 0)), Vector3(0.62, 0.1, 0.26), "fer", 1.0)
@@ -717,3 +731,127 @@ func rib_arc(a: Vector3, b: Vector3, rise: float, r: float = 0.18) -> void:
 		var rr: float = r * (1.0 - 0.4 * absf(t - 0.5))
 		cyl(axis_xf(prev, p), rr, rr * 0.92, prev.distance_to(p) + 0.04, "osp", 7, false)
 		prev = p
+
+
+## V165 : une vraie enclume (la table, la bigorne en cône, le talon, la taille et le pied, le trou carré)
+## sur son billot (l'écorce, le bout coupé, cerclé de fer).
+func _enclume_v165(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+	var acc := {}
+	for k in ["fer", "bois", "cercle"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	# le billot
+	Sculpt._tour(acc, "bois", Vector3.ZERO, [Vector2(0.34, 0.0), Vector2(0.33, 0.2), Vector2(0.32, 0.52), Vector2(0.0, 0.55)], Vector3.ONE, true)
+	for y in [0.08, 0.46]:
+		Sculpt._tour(acc, "cercle", Vector3(0, y, 0), [Vector2(0.345, 0.0), Vector2(0.35, 0.02), Vector2(0.345, 0.04)], Vector3.ONE, false)
+	# l'enclume : le pied évasé, la taille, la table, le talon, la bigorne
+	Sculpt._boite(acc, "fer", Vector3(0, 0.6, 0), Vector3(0.34, 0.1, 0.24))
+	Sculpt._boite(acc, "fer", Vector3(0, 0.7, 0), Vector3(0.2, 0.12, 0.14))
+	Sculpt._boite(acc, "fer", Vector3(0, 0.81, 0), Vector3(0.42, 0.1, 0.18))
+	Sculpt._boite(acc, "fer", Vector3(-0.27, 0.82, 0), Vector3(0.12, 0.08, 0.13))
+	var cone: Array = []
+	var rs: Array = []
+	for i in range(8):
+		var t: float = float(i) / 7.0
+		cone.append(Vector3(0.21 + t * 0.32, 0.81 - t * t * 0.05, 0))
+		rs.append(lerpf(0.075, 0.008, t))
+	Sculpt._tube(acc, "fer", cone, rs, 10)
+	var fer := StandardMaterial3D.new()
+	fer.albedo_color = Color(0.2, 0.2, 0.21)
+	fer.metallic = 0.85
+	fer.roughness = 0.45
+	MetalKit.habille(fer, "fer", 1.5)
+	var cercle := fer.duplicate() as StandardMaterial3D
+	var bois := StandardMaterial3D.new()
+	if ResourceLoader.exists("res://assets/textures/beau164/ecorce_buche.png"):
+		bois.albedo_texture = load("res://assets/textures/beau164/ecorce_buche.png")
+		bois.normal_enabled = true
+		bois.normal_texture = load("res://assets/textures/beau164/ecorce_buche_n.png")
+	bois.albedo_color = Color(1.2, 1.1, 1.0)
+	bois.roughness = 0.95
+	var mats := {"fer": fer, "bois": bois, "cercle": cercle}
+	for k2 in ["fer", "bois", "cercle"]:
+		var mi := MeshInstance3D.new()
+		mi.name = "Enclume_v165_%s_%d" % [k2, root.get_child_count()]
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = mats[k2]
+		mi.transform = xf
+		root.add_child(mi)
+
+
+## V165 : le foyer de la forge : la maçonnerie et sa margelle, le lit de braises creusé (des charbons
+## noirs, des braises qui rougeoient), la hotte de pierre en pyramide sur son manteau de bois et le
+## conduit ; le soufflet de cuir à côté, son embout dans le foyer ; le baquet d'eau pour tremper le fer.
+## h : le pied du foyer, le forgeron du côté -Z.
+func forge_v165(h: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+	box(h * Transform3D(Basis(), Vector3(0, 0.39, 0)), Vector3(1.8, 0.78, 1.4), "pierrefort", 1.0)
+	for s in [-1.0, 1.0]:
+		box(h * Transform3D(Basis(), Vector3(s * 0.78, 0.85, 0)), Vector3(0.26, 0.14, 1.46), "pierrefort_sombre", 1.0)
+		box(h * Transform3D(Basis(), Vector3(0, 0.85, s * 0.58)), Vector3(1.32, 0.14, 0.3), "pierrefort_sombre", 1.0)
+	col_box(h * Transform3D(Basis(), Vector3(0, 0.46, 0)), Vector3(1.8, 0.92, 1.4))
+	# la hotte sur son manteau, le conduit
+	box(h * Transform3D(Basis(), Vector3(0, 1.62, -0.56)), Vector3(1.95, 0.2, 0.2), "poutre", 1.0)
+	for s2 in [-1.0, 1.0]:
+		box(h * Transform3D(Basis(), Vector3(s2 * 0.88, 1.22, -0.56)), Vector3(0.14, 0.8, 0.14), "poutre", 1.0)
+	var hotte := Basis.from_scale(Vector3(0.92, 1.0, 0.62)) * Basis(Vector3.UP, PI * 0.25)
+	cyl(Transform3D(h.basis * hotte, h * Vector3(0, 1.72, 0.05)), 1.414, 0.48, 0.9, "pierrefort", 4, false, 1.5)
+	box(h * Transform3D(Basis(), Vector3(0, 3.55, 0.05)), Vector3(0.62, 1.9, 0.42), "pierrefort_sombre", 1.0)
+	# ce qui est sculpté : en repère local, posé par h
+	var acc := {}
+	for k in ["charbon", "braise", "cuir", "bois", "fer", "eau"]:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		acc[k] = st
+	var r := RandomNumberGenerator.new()
+	r.seed = 16507
+	for i in range(46):
+		var p := Vector3(r.randf_range(-0.6, 0.6), 0.83, r.randf_range(-0.38, 0.38))
+		var chaud: bool = Vector2(p.x, p.z).length() < 0.38 and r.randf() < 0.75
+		var t: float = r.randf_range(0.035, 0.065)
+		Sculpt._boule(acc, "braise" if chaud else "charbon", p, Vector3(t * 1.2, t * 0.7, t))
+	# le soufflet : deux planches, le cuir entre, l'embout de fer, le levier, le tréteau
+	Sculpt._boite(acc, "bois", Vector3(1.47, 0.49, 0), Vector3(0.82, 0.035, 0.5), Basis(Vector3.BACK, -0.06))
+	Sculpt._boite(acc, "bois", Vector3(1.47, 0.75, 0), Vector3(0.82, 0.035, 0.5), Basis(Vector3.BACK, 0.06))
+	Sculpt._boule(acc, "cuir", Vector3(1.52, 0.62, 0), Vector3(0.36, 0.12, 0.22))
+	Sculpt._tube(acc, "fer", [Vector3(1.12, 0.62, 0), Vector3(0.98, 0.62, 0), Vector3(0.86, 0.62, 0)], [0.05, 0.035, 0.03], 8)
+	Sculpt._tube(acc, "bois", [Vector3(1.8, 0.78, 0), Vector3(2.05, 0.9, 0), Vector3(2.25, 0.98, 0)], [0.025, 0.025, 0.03], 6)
+	for x in [1.25, 1.7]:
+		Sculpt._boite(acc, "bois", Vector3(x, 0.23, 0), Vector3(0.08, 0.46, 0.42))
+	# le baquet d'eau : les douelles, deux cercles de fer, l'eau
+	var bq := Vector3(-1.25, 0, -0.9)
+	Sculpt._tour(acc, "bois", bq, [Vector2(0.3, 0.0), Vector2(0.33, 0.25), Vector2(0.35, 0.46), Vector2(0.32, 0.47)], Vector3.ONE, false)
+	for y in [0.08, 0.36]:
+		Sculpt._tour(acc, "fer", bq + Vector3(0, y, 0), [Vector2(0.315 + y * 0.08, 0.0), Vector2(0.325 + y * 0.08, 0.02), Vector2(0.32 + y * 0.08, 0.04)], Vector3.ONE, false)
+	Sculpt._tour(acc, "eau", bq, [Vector2(0.325, 0.4), Vector2(0.0, 0.402)], Vector3.ONE, false)
+	col_box(h * Transform3D(Basis(), Vector3(1.55, 0.45, 0)), Vector3(1.0, 0.9, 0.5))
+	col_cyl(h * bq, 0.36, 0.5)
+	var charbon := StandardMaterial3D.new()
+	charbon.albedo_color = Color(0.05, 0.045, 0.042)
+	charbon.roughness = 0.55
+	var cuir := StandardMaterial3D.new()
+	cuir.albedo_color = Color(0.3, 0.18, 0.1)
+	cuir.roughness = 0.7
+	var fer := StandardMaterial3D.new()
+	fer.albedo_color = Color(0.2, 0.2, 0.21)
+	fer.metallic = 0.85
+	fer.roughness = 0.45
+	MetalKit.habille(fer, "fer", 1.5)
+	var eau := StandardMaterial3D.new()
+	eau.albedo_color = Color(0.04, 0.06, 0.06)
+	eau.roughness = 0.05
+	var ms := {"charbon": charbon, "braise": mat("braise"), "cuir": cuir, "bois": mat("poutre"), "fer": fer, "eau": eau}
+	for k2 in acc:
+		var mesh: ArrayMesh = (acc[k2] as SurfaceTool).commit()
+		if mesh.get_surface_count() == 0:
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Forge_v165_%s_%d" % [k2, root.get_child_count()]
+		mi.mesh = mesh
+		mi.material_override = ms[k2]
+		mi.transform = h
+		root.add_child(mi)

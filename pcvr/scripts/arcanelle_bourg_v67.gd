@@ -43,6 +43,7 @@ var big_trees: Array = []                 # [Vector3, échelle] : les chênes to
 var lake_water: MeshInstance3D
 var statue_orb := Vector3.ZERO
 var _rng := RandomNumberGenerator.new()
+var taverne_v165: int = 0                 # V165 : les pièces du lambris et du colombage du Chaudron Fumant
 
 
 # =================================================================== repères
@@ -124,6 +125,7 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 6767
 	kit = Kit.new()
+	kit.hd_v165 = true                    # V165 : les menhirs dans la roche
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 6768
 	_chemins()
@@ -454,9 +456,10 @@ func _cercle() -> void:
 		if k == 4:
 			books_high["livre_menhir"] = p + Vector3.UP * (h + 0.1)
 	# l'autel au milieu
-	kit.box(Transform3D(Basis(Vector3.UP, 0.3), c + Vector3.UP * 0.45), Vector3(2.4, 0.9, 1.2), "pierrelune", 1.2)
+	# V165 : l'autel sculpté (le socle à degrés, la table moulurée, les pieds en volute, la rigole)
+	_autel_v165(Transform3D(Basis(Vector3.UP, 0.3), c))
 	kit.col_box(Transform3D(Basis(Vector3.UP, 0.3), c + Vector3.UP * 0.45), Vector3(2.4, 0.9, 1.2))
-	kit.crystal(Transform3D(Basis(), c + Vector3(0.3, 0.9, 0.1)), 0.35, "cristal_bleu")
+	kit.crystal(Transform3D(Basis(), c + Vector3(0.3, 0.95, 0.1)), 0.35, "cristal_bleu")
 	_spot("cercle_autel", c + Vector3(0.0, 0.05, 1.6), c, "observer")
 	_spot("cercle_garde", c + Vector3(5.0, 0.05, 3.0), c, "debout")
 	_spot("cercle_pierre", c + Vector3(-3.8, 0.05, -4.6), c, "lire")
@@ -558,7 +561,8 @@ func _jardin() -> void:
 	kit.box(Transform3D(Basis(Vector3.UP, 1.2), hp + Vector3.UP * 0.4), Vector3(2.6, 0.08, 0.6), "poutre", 1.0)
 	for k in range(3):
 		var sk: Vector3 = hp + Vector3(-0.8 + k * 0.8, 0.44, 0).rotated(Vector3.UP, 1.2)
-		kit.cyl(Transform3D(Basis(), sk), 0.3, 0.05, 0.62, "paille", 12)
+		# V165 : de vraies ruches de paille tressée (le dôme, les boudins de paille, le trou de vol)
+		_ruche_v165(Transform3D(Basis(Vector3.UP, 1.2 + PI * 0.5), sk))
 	kit.col_box(Transform3D(Basis(Vector3.UP, 1.2), hp + Vector3.UP * 0.4), Vector3(2.6, 0.8, 0.6))
 	_spot("jardin_ruches", hp + Vector3(1.2, 0.05, 0.6), hp, "observer")
 	# l'épouvantail au chapeau pointu
@@ -773,6 +777,8 @@ func _bourg() -> void:
 	_socle(txf, 12.0, 10.0)
 	var hd: Dictionary = kit.hall(txf, 12.0, 10.0, {"h": 4.4, "roof_key": "ecailles_rouge", "floor_key": "planches", "inner": "colombage_ocre", "lights": 3, "energy": 1.5, "pitch": 44.0})
 	doors["chaudron"] = hd["door"]
+	if kit.hd_v165:
+		_taverne_v165(txf, 12.0, 10.0, 4.4)
 	_sign(txf * Transform3D(Basis(), Vector3(0, 3.45, -0.14)), 2.8, 0.7, "chaudron")
 	kit.box(txf * Transform3D(Basis(), Vector3(0, -0.05, -0.75)), Vector3(2.4, 0.22, 1.1), "pierrearc_clair", 1.0)
 	kit.col_box(txf * Transform3D(Basis(), Vector3(0, -0.05, -0.75)), Vector3(2.4, 0.22, 1.1))
@@ -1182,3 +1188,140 @@ func _inside_node(p: Vector3) -> String:
 				"salle":
 					return _pt("salle_in", Vector3((doors["salle"] as Vector3).x, float(it[3]), (doors["salle"] as Vector3).z) + (c - doors["salle"]).normalized() * 3.0 * Vector3(1, 0, 1))
 	return ""
+
+
+# =================================================================== V165 : l'autel, les ruches
+
+## Une ruche de paille tressée (repère : le trou de vol vers -Z, le pied au sol de la planche).
+func _ruche_v165(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc := {"paille": SurfaceTool.new(), "sombre": SurfaceTool.new()}
+	for k in acc:
+		(acc[k] as SurfaceTool).begin(Mesh.PRIMITIVE_TRIANGLES)
+	# le dôme : des boudins de paille enroulés (un bourrelet tous les 6 cm)
+	var prof: Array = []
+	var n: int = 11
+	for i in range(n + 1):
+		var t: float = float(i) / n
+		var a: float = t * PI * 0.5
+		var r: float = 0.31 * cos(a) + 0.012
+		var y: float = 0.6 * sin(a)
+		prof.append(Vector2(r, y))
+		if i < n:
+			var t2: float = (float(i) + 0.5) / n
+			var a2: float = t2 * PI * 0.5
+			prof.append(Vector2(0.31 * cos(a2) + 0.03, 0.6 * sin(a2)))
+	prof.append(Vector2(0.0, 0.61))
+	Sculpt._tour(acc, "paille", Vector3.ZERO, prof, Vector3.ONE, false)
+	# le trou de vol, la petite planche d'envol
+	Sculpt._boite(acc, "sombre", Vector3(0, 0.04, -0.3), Vector3(0.1, 0.06, 0.04))
+	Sculpt._boite(acc, "paille", Vector3(0, 0.01, -0.36), Vector3(0.16, 0.02, 0.1))
+	var mats := {"paille": kit.mat("paille165"), "sombre": kit.mat("poutre")}
+	for k2 in acc:
+		var mi := MeshInstance3D.new()
+		mi.name = "Ruche_v165_%s_%d" % [k2, get_child_count()]
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = mats[k2]
+		mi.transform = xf
+		add_child(mi)
+
+
+## L'autel du Cercle de pierres (repère : le centre au sol).
+func _autel_v165(xf: Transform3D) -> void:
+	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
+	var acc := {"pierrelune": SurfaceTool.new(), "runes_or": SurfaceTool.new()}
+	for k in acc:
+		(acc[k] as SurfaceTool).begin(Mesh.PRIMITIVE_TRIANGLES)
+	Sculpt._boite(acc, "pierrelune", Vector3(0, 0.07, 0), Vector3(2.9, 0.14, 1.7))
+	Sculpt._boite(acc, "pierrelune", Vector3(0, 0.2, 0), Vector3(2.6, 0.12, 1.4))
+	# les deux pieds en volute
+	for sx in [-0.85, 0.85]:
+		Sculpt._boite(acc, "pierrelune", Vector3(sx, 0.48, 0), Vector3(0.42, 0.46, 0.9))
+		for sz in [-1.0, 1.0]:
+			var pts: Array = []
+			var rs: Array = []
+			for i in range(14):
+				var t: float = float(i) / 13.0
+				var a: float = t * TAU * 0.85
+				var rr: float = 0.16 * (1.0 - t * 0.6)
+				pts.append(Vector3(sx + signf(sx) * 0.22, 0.56 + sin(a) * rr, sz * 0.22 + cos(a) * rr))
+				rs.append(0.035 * (1.0 - t * 0.5))
+			Sculpt._tube(acc, "runes_or", pts, rs, 6)
+	# la table moulurée (le dessus, le cavet, le filet d'or) et la rigole
+	Sculpt._boite(acc, "pierrelune", Vector3(0, 0.76, 0), Vector3(2.2, 0.1, 1.1))
+	Sculpt._boite(acc, "pierrelune", Vector3(0, 0.86, 0), Vector3(2.5, 0.1, 1.3))
+	Sculpt._boite(acc, "runes_or", Vector3(0, 0.81, 0), Vector3(2.32, 0.02, 1.17))
+	Sculpt._boite(acc, "pierrelune", Vector3(0, 0.93, 0), Vector3(2.4, 0.04, 1.2))
+	var mats := {"pierrelune": kit.mat("pierrelune"), "runes_or": kit.mat("or")}
+	for k2 in acc:
+		var mi := MeshInstance3D.new()
+		mi.name = "Autel_v165_" + k2
+		mi.mesh = (acc[k2] as SurfaceTool).commit()
+		mi.material_override = mats[k2]
+		mi.transform = xf
+		add_child(mi)
+
+
+## V165 : l'intérieur du Chaudron Fumant : le lambris de chêne clair à hauteur d'appui (les montants, la
+## plinthe, la cimaise), le colombage de chêne sombre au-dessus (les poteaux, la sablière, les croix de
+## Saint-André une travée sur deux), autour de la porte, de la cheminée et des étagères de Berthe.
+func _taverne_v165(xf: Transform3D, w: float, d: float, h: float) -> void:
+	var t: float = 0.45
+	var xi: float = w * 0.5 - t
+	# [départ, le long du mur, vers la salle, longueur, trous du bas, trous du haut] (repère du bâtiment)
+	var murs: Array = [
+		[Vector3(-xi, 0, t), Vector3(0, 0, 1), Vector3(1, 0, 0), d - 2.0 * t, [], []],
+		[Vector3(xi, 0, t), Vector3(0, 0, 1), Vector3(-1, 0, 0), d - 2.0 * t, [], [[2.85, 6.25]]],
+		[Vector3(-xi, 0, d - t), Vector3(1, 0, 0), Vector3(0, 0, -1), w - 2.0 * t, [[xi - 1.5, xi + 1.5]], [[xi - 1.5, xi + 1.5]]],
+		[Vector3(-xi, 0, t), Vector3(1, 0, 0), Vector3(0, 0, 1), w - 2.0 * t, [[xi - 1.25, xi + 1.25]], [[xi - 1.25, xi + 1.25]]],
+	]
+	for m in murs:
+		var o: Vector3 = m[0]
+		var dir: Vector3 = m[1]
+		var dedans: Vector3 = m[2]
+		var L: float = float(m[3])
+		var bm := Basis(dir, Vector3.UP, dir.cross(Vector3.UP))
+		# les morceaux de mur hors des trous
+		for haut in [false, true]:
+			var trous: Array = m[5] if haut else m[4]
+			var bornes: Array = [0.0]
+			for tr in trous:
+				bornes.append(float(tr[0]))
+				bornes.append(float(tr[1]))
+			bornes.append(L)
+			for i in range(0, bornes.size(), 2):
+				var a: float = bornes[i]
+				var b: float = bornes[i + 1]
+				if b - a < 0.3:
+					continue
+				var mid: float = (a + b) * 0.5
+				if not haut:
+					_piece165(xf, o, dir, dedans, bm, mid, 0.54, 0.018, Vector3(b - a, 0.92, 0.03), "poutre_clair")
+					_piece165(xf, o, dir, dedans, bm, mid, 0.13, 0.03, Vector3(b - a, 0.12, 0.05), "poutre")
+					_piece165(xf, o, dir, dedans, bm, mid, 1.03, 0.04, Vector3(b - a, 0.08, 0.08), "poutre")
+					var nst: int = maxi(1, int((b - a) / 0.62))
+					for k in range(nst + 1):
+						_piece165(xf, o, dir, dedans, bm, a + (b - a) * float(k) / nst, 0.58, 0.035, Vector3(0.06, 0.82, 0.04), "poutre")
+				else:
+					_piece165(xf, o, dir, dedans, bm, mid, h - 0.38, 0.045, Vector3(b - a, 0.2, 0.09), "poutre")
+					var nb: int = maxi(1, int(round((b - a) / 1.8)))
+					var pas: float = (b - a) / nb
+					for k2 in range(nb + 1):
+						_piece165(xf, o, dir, dedans, bm, a + pas * k2, (1.07 + h - 0.48) * 0.5, 0.04, Vector3(0.18, h - 1.55, 0.08), "poutre")
+					for k3 in range(nb):
+						if (k3 + int(a)) % 2 != 0:
+							continue
+						var s0: float = a + pas * k3 + 0.09
+						var s1: float = a + pas * (k3 + 1) - 0.09
+						var dy: float = h - 0.48 - 1.07
+						var lg: float = Vector2(s1 - s0, dy).length()
+						var ang: float = atan2(dy, s1 - s0)
+						for sg in [-1.0, 1.0]:
+							var p: Vector3 = o + dir * ((s0 + s1) * 0.5) + Vector3.UP * (1.07 + dy * 0.5) + dedans * 0.035
+							kit.box(xf * Transform3D(bm * Basis(Vector3.BACK, sg * ang), p), Vector3(lg, 0.13, 0.06), "poutre", 1.0)
+							taverne_v165 += 1
+
+
+func _piece165(xf: Transform3D, o: Vector3, dir: Vector3, dedans: Vector3, bm: Basis, s: float, y: float, prof: float, taille: Vector3, cle: String) -> void:
+	kit.box(xf * Transform3D(bm, o + dir * s + Vector3.UP * y + dedans * prof), taille, cle, 1.0)
+	taverne_v165 += 1

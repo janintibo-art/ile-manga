@@ -101,6 +101,9 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 6910
 	kit = Kit.new()
+	kit.hd_v165 = true
+	kit.climat_v165 = "egypte"
+	kit.sol_v165 = Y
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.rng.seed = 6911
 	_quai()

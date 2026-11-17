@@ -145,6 +145,8 @@ func _initialize() -> void:
 			await _grande(quoi)
 		"porte":
 			await _porte()
+		"arcanelle", "coutelas", "soleils":
+			await _systeme(quoi)
 		"carene_hd", "tazira_hd", "cliquetis_hd", "ramure_hd":
 			await _grande(quoi.trim_suffix("_hd"), true)
 		"atlantide":
@@ -332,6 +334,67 @@ func _azur() -> void:
 ## La Grande Île (V164) : le relief, la porte aux Quatre Sceaux, la végétation et une seule ville
 ## (Carène, Tazira, Cliquetis ou Ramure). Les vues : de haut, la porte, puis devant les lieux
 ## d'activité des habitants (les étals, les comptoirs, les ateliers), comme un passant les voit.
+## V165 : une île et ses villes (Arcanelle ; Port-Coutelas ; Per-Hâpy, Yaxché, Aztlán) : de haut, puis
+## devant les lieux d'activité des habitants.
+func _systeme(nom: String) -> void:
+	var scr: String = {"arcanelle": "res://scripts/arcanelle_v67.gd", "coutelas": "res://scripts/pirates_v68.gd", "soleils": "res://scripts/soleils_v69.gd"}[nom]
+	var Sy: Node3D = load(scr).new()
+	fm.add_child(Sy)
+	Sy.setup(fm)
+	Sy.pc = true
+	Sy.build_island()
+	fm.ile_node = Sy.ile
+	Sy.build_town()
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	var villes: Array = []
+	match nom:
+		"arcanelle":
+			villes = [Sy.bourg]
+		"coutelas":
+			villes = [Sy.port]
+		"soleils":
+			villes = [Sy.egypte, Sy.maya, Sy.azteque]
+	var c: Vector3 = Sy.ile.CENTER
+	c.y = fm._height_at(c.x, c.z)
+	_mer(c)
+	await _vue("141_dessus", c + Vector3(170, 140, 170), c)
+	var par: int = 6 / villes.size()
+	var k2: int = 0
+	# les Trois Soleils : des lieux choisis (le four et les jarres, le potier ; le metate, le jeu de balle ;
+	# la place, le potier d'Aztlán)
+	var choix: Dictionary = {"soleils": [["four", "potier"], ["metate", "balle_2"], ["place_a2", "potier_az"]]}
+	var iv: int = 0
+	for V in villes:
+		var noms: Array = V.spots.keys()
+		noms.sort()
+		var pas: int = maxi(1, noms.size() / par)
+		if choix.has(nom):
+			noms = choix[nom][iv]
+			pas = 1
+		iv += 1
+		var n: int = 0
+		for i in range(0, noms.size(), pas):
+			if n >= par:
+				break
+			if not V.spots.has(noms[i]):
+				continue
+			var sp: Dictionary = V.spots[noms[i]]
+			var pos: Vector3 = sp["pos"]
+			var face: Vector3 = sp["face"]
+			var d := Vector3(face.x - pos.x, 0, face.z - pos.z)
+			if face.length() < 1.5:
+				# (une direction, pas un point visé)
+				d = Vector3(face.x, 0, face.z)
+			if d.length() < 0.1:
+				d = Vector3(0, 0, 1)
+			d = d.normalized()
+			await _vue("15%d_%s" % [k2, str(noms[i]).substr(0, 18)], pos - d * 3.2 + Vector3.UP * 1.65, pos + d * 6.0 + Vector3.UP * 1.3)
+			n += 1
+			k2 += 1
+
+
 ## La Porte aux Quatre Sceaux seule (V164) : le relief de la Grande Île, sans les villes.
 func _porte() -> void:
 	var G: Node3D = load("res://scripts/grande_v59.gd").new()
