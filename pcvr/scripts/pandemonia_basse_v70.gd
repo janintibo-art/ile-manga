@@ -74,16 +74,23 @@ func HX(alpha: float, rho: float, facing: String = "in", y: float = R.QUAY_Y) ->
 # =================================================================== un étal
 
 func stall70(xf: Transform3D, cloth: String, goods: String) -> void:
-	for sx in [-1.0, 1.0]:
-		for sz in [-1.0, 1.0]:
-			kit.box(xf * T(sx * 1.15, 1.2 + (0.15 if sz < 0 else 0.0), sz * 0.62), Vector3(0.09, 2.4 + (0.3 if sz < 0 else 0.0), 0.09), "boisb70", 1.0)
-	kit.box(xf * T(0, 0.84, 0), Vector3(2.5, 0.08, 1.3), "boisb70", 1.0)
-	kit.box(xf * T(0, 0.42, 0.6), Vector3(2.4, 0.84, 0.05), "boisb70", 1.0)
-	kit.box(xf * Transform3D(Basis(Vector3.RIGHT, 0.2), Vector3(0, 2.5, 0.0)), Vector3(2.8, 0.04, 1.9), cloth, 1.0)
-	for k in range(5):
-		kit.box(xf * T(-1.2 + k * 0.6, 2.22, 0.98), Vector3(0.5, 0.36, 0.02), cloth, 1.0)
+	if kit.hd_v166:
+		# V166 : l'étal sculpté (les poteaux tournés, le comptoir de planches, la toile rayée et ses festons)
+		kit.etal166(xf, 2.4, 1.24, [cloth, "tissu70_noir" if cloth != "tissu70_noir" else "tissu70_or"], "boisb70", "boisb70_sombre", "fer70", 2.4, 2.7)
+	else:
+		for sx in [-1.0, 1.0]:
+			for sz in [-1.0, 1.0]:
+				kit.box(xf * T(sx * 1.15, 1.2 + (0.15 if sz < 0 else 0.0), sz * 0.62), Vector3(0.09, 2.4 + (0.3 if sz < 0 else 0.0), 0.09), "boisb70", 1.0)
+		kit.box(xf * T(0, 0.84, 0), Vector3(2.5, 0.08, 1.3), "boisb70", 1.0)
+		kit.box(xf * T(0, 0.42, 0.6), Vector3(2.4, 0.84, 0.05), "boisb70", 1.0)
+		kit.box(xf * Transform3D(Basis(Vector3.RIGHT, 0.2), Vector3(0, 2.5, 0.0)), Vector3(2.8, 0.04, 1.9), cloth, 1.0)
+		for k in range(5):
+			kit.box(xf * T(-1.2 + k * 0.6, 2.22, 0.98), Vector3(0.5, 0.36, 0.02), cloth, 1.0)
 	kit.col_box(xf * T(0, 0.45, 0), Vector3(2.5, 0.9, 1.3))
 	var rr: RandomNumberGenerator = kit.rng
+	if kit.hd_v166 and (goods == "potions" or goods == "epices" or goods == "pain"):
+		_marchandises166(xf, goods, rr)
+		return
 	match goods:
 		"epices":
 			var cols := ["tissu70_rouge", "tissu70_or", "tissu70_pourpre", "boue70", "soufre70", "tissu70_noir"]
@@ -717,3 +724,72 @@ func link_graph() -> void:
 	# le port : la rampe de la porte du port jusqu'au quai
 	c._pt("po_rampe_haut", c.PW(-45.0, R.PORT_RAMP.x + 0.5, c.BY + 0.05))
 	c._chain(["av-45_porte", "po_rampe_haut", "po_rampe"])
+
+
+## V166 : les marchandises sculptées des étals : les fioles (la panse ronde ou carrée, le col, le bouchon de
+## liège ; le philtre qui luit), les épices (les jattes tournées, les cônes de poudre, les sacs ouverts
+## au col roulé), les pains (des miches fendues, des couronnes, des baguettes).
+func _marchandises166(xf: Transform3D, goods: String, rr: RandomNumberGenerator) -> void:
+	const S = preload("res://scripts/statue_naine_v159.gd")
+	match goods:
+		"potions":
+			var lc := ["lueur70_vert", "lueur70_bleu", "lueur70_pourpre", "lueur70_rouge", "lueur70_or"]
+			var L: Dictionary = kit.loc166(lc + ["cuir70", "vitre70", "boisb70"])
+			for k in range(14):
+				var p := Vector3(-1.02 + (k % 7) * 0.34 + rr.randf_range(-0.04, 0.04), 0.89, -0.28 + (k / 7) * 0.32)
+				var sz: float = rr.randf_range(0.8, 1.25)
+				var li: String = lc[k % lc.size()]
+				if k % 3 == 0:
+					# une fiole ronde au long col
+					S._tour(L, li, p, [Vector2(0.0, 0.0), Vector2(0.04, 0.004), Vector2(0.07, 0.04), Vector2(0.075, 0.075), Vector2(0.06, 0.12), Vector2(0.022, 0.15), Vector2(0.018, 0.22), Vector2(0.0, 0.222)].map(func(v): return v * sz), Vector3.ONE, false)
+				elif k % 3 == 1:
+					# une bouteille à épaule
+					S._tour(L, li, p, [Vector2(0.0, 0.0), Vector2(0.045, 0.004), Vector2(0.05, 0.13), Vector2(0.03, 0.17), Vector2(0.018, 0.2), Vector2(0.0, 0.202)].map(func(v): return v * sz), Vector3.ONE, false)
+				else:
+					# un flacon carré
+					S._boite(L, li, p + Vector3(0, 0.06 * sz, 0), Vector3(0.08, 0.12, 0.08) * sz, Basis(Vector3.UP, rr.randf_range(-0.5, 0.5)))
+					S._tour(L, "vitre70", p + Vector3(0, 0.12 * sz, 0), [Vector2(0.02, 0.0), Vector2(0.018, 0.05), Vector2(0.0, 0.052)].map(func(v): return v * sz), Vector3.ONE, false)
+				# le bouchon
+				var top: float = {0: 0.222, 1: 0.202, 2: 0.172}[k % 3] * sz
+				S._tour(L, "cuir70", p + Vector3(0, top - 0.01, 0), [Vector2(0.016, 0.0), Vector2(0.019, 0.035), Vector2(0.0, 0.037)], Vector3.ONE, false)
+			kit.pose166(L, xf)
+		"epices":
+			var cols := ["tissu70_rouge", "tissu70_or", "tissu70_pourpre", "boue70", "soufre70", "tissu70_noir"]
+			var L2: Dictionary = kit.loc166(cols + ["boisb70", "cuir70"])
+			for k2 in range(6):
+				var p2 := Vector3(-1.0 + k2 * 0.4, 0.89, rr.randf_range(-0.22, 0.12))
+				S._tour(L2, "boisb70", p2, [Vector2(0.0, 0.0), Vector2(0.11, 0.005), Vector2(0.16, 0.05), Vector2(0.175, 0.1), Vector2(0.165, 0.105)], Vector3.ONE, false)
+				S._tour(L2, cols[k2], p2, [Vector2(0.165, 0.098), Vector2(0.09, 0.15), Vector2(0.0, 0.2)], Vector3.ONE, false)
+			for k3 in range(3):
+				# des sacs de jute ouverts, le col roulé
+				var p3 := Vector3(-0.8 + k3 * 0.8, 0.27, -0.2)
+				S._tour(L2, "cuir70", p3, [Vector2(0.0, 0.0), Vector2(0.15, 0.01), Vector2(0.19, 0.12), Vector2(0.17, 0.3), Vector2(0.2, 0.33), Vector2(0.16, 0.34)], Vector3.ONE, false)
+				S._tour(L2, cols[(k3 * 2 + 1) % cols.size()], p3, [Vector2(0.16, 0.3), Vector2(0.0, 0.36)], Vector3.ONE, false)
+			kit.pose166(L2, xf)
+		"pain":
+			var L3: Dictionary = kit.loc166(["cuir70", "boisb70", "pain166"])
+			_pain166_mat()
+			for k4 in range(12):
+				var p4 := Vector3(-1.0 + (k4 % 6) * 0.4, 0.89, -0.25 + (k4 / 6) * 0.38)
+				match k4 % 3:
+					0:
+						kit._ovale165(L3, "pain166", p4 + Vector3(0, 0.05, 0), Vector3(0.13, 0.07, 0.11), Basis(Vector3.UP, rr.randf() * PI))
+					1:
+						S._tube(L3, "pain166", [p4 + Vector3(-0.15, 0.04, -0.05), p4 + Vector3(0, 0.05, 0.02), p4 + Vector3(0.15, 0.04, 0.06)], [0.03, 0.045, 0.03], 8)
+					_:
+						var ring: Array = []
+						var rs: Array = []
+						for i in range(13):
+							var a: float = TAU * i / 12.0
+							ring.append(p4 + Vector3(cos(a) * 0.1, 0.035, sin(a) * 0.1))
+							rs.append(0.035)
+						S._tube(L3, "pain166", ring, rs, 8)
+			kit.pose166(L3, xf)
+
+
+func _pain166_mat() -> void:
+	if not kit.mats.has("pain166"):
+		var m := StandardMaterial3D.new()
+		m.albedo_color = Color(0.72, 0.46, 0.22)
+		m.roughness = 0.8
+		kit.mats["pain166"] = m

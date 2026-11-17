@@ -786,21 +786,21 @@ func _enclume_v165(xf: Transform3D) -> void:
 ## noirs, des braises qui rougeoient), la hotte de pierre en pyramide sur son manteau de bois et le
 ## conduit ; le soufflet de cuir à côté, son embout dans le foyer ; le baquet d'eau pour tremper le fer.
 ## h : le pied du foyer, le forgeron du côté -Z.
-func forge_v165(h: Transform3D) -> void:
+func forge_v165(h: Transform3D, pierre: String = "pierrefort", sombre: String = "pierrefort_sombre", poutre: String = "poutre") -> void:
 	const Sculpt = preload("res://scripts/statue_naine_v159.gd")
 	const MetalKit = preload("res://scripts/metal_kit_v160.gd")
-	box(h * Transform3D(Basis(), Vector3(0, 0.39, 0)), Vector3(1.8, 0.78, 1.4), "pierrefort", 1.0)
+	box(h * Transform3D(Basis(), Vector3(0, 0.39, 0)), Vector3(1.8, 0.78, 1.4), pierre, 1.0)
 	for s in [-1.0, 1.0]:
-		box(h * Transform3D(Basis(), Vector3(s * 0.78, 0.85, 0)), Vector3(0.26, 0.14, 1.46), "pierrefort_sombre", 1.0)
-		box(h * Transform3D(Basis(), Vector3(0, 0.85, s * 0.58)), Vector3(1.32, 0.14, 0.3), "pierrefort_sombre", 1.0)
+		box(h * Transform3D(Basis(), Vector3(s * 0.78, 0.85, 0)), Vector3(0.26, 0.14, 1.46), sombre, 1.0)
+		box(h * Transform3D(Basis(), Vector3(0, 0.85, s * 0.58)), Vector3(1.32, 0.14, 0.3), sombre, 1.0)
 	col_box(h * Transform3D(Basis(), Vector3(0, 0.46, 0)), Vector3(1.8, 0.92, 1.4))
 	# la hotte sur son manteau, le conduit
-	box(h * Transform3D(Basis(), Vector3(0, 1.62, -0.56)), Vector3(1.95, 0.2, 0.2), "poutre", 1.0)
+	box(h * Transform3D(Basis(), Vector3(0, 1.62, -0.56)), Vector3(1.95, 0.2, 0.2), poutre, 1.0)
 	for s2 in [-1.0, 1.0]:
-		box(h * Transform3D(Basis(), Vector3(s2 * 0.88, 1.22, -0.56)), Vector3(0.14, 0.8, 0.14), "poutre", 1.0)
+		box(h * Transform3D(Basis(), Vector3(s2 * 0.88, 1.22, -0.56)), Vector3(0.14, 0.8, 0.14), poutre, 1.0)
 	var hotte := Basis.from_scale(Vector3(0.92, 1.0, 0.62)) * Basis(Vector3.UP, PI * 0.25)
-	cyl(Transform3D(h.basis * hotte, h * Vector3(0, 1.72, 0.05)), 1.414, 0.48, 0.9, "pierrefort", 4, false, 1.5)
-	box(h * Transform3D(Basis(), Vector3(0, 3.55, 0.05)), Vector3(0.62, 1.9, 0.42), "pierrefort_sombre", 1.0)
+	cyl(Transform3D(h.basis * hotte, h * Vector3(0, 1.72, 0.05)), 1.414, 0.48, 0.9, pierre, 4, false, 1.5)
+	box(h * Transform3D(Basis(), Vector3(0, 3.55, 0.05)), Vector3(0.62, 1.9, 0.42), sombre, 1.0)
 	# ce qui est sculpté : en repère local, posé par h
 	var acc := {}
 	for k in ["charbon", "braise", "cuir", "bois", "fer", "eau"]:
@@ -844,7 +844,7 @@ func forge_v165(h: Transform3D) -> void:
 	var eau := StandardMaterial3D.new()
 	eau.albedo_color = Color(0.04, 0.06, 0.06)
 	eau.roughness = 0.05
-	var ms := {"charbon": charbon, "braise": mat("braise"), "cuir": cuir, "bois": mat("poutre"), "fer": fer, "eau": eau}
+	var ms := {"charbon": charbon, "braise": mat("braise"), "cuir": cuir, "bois": mat(poutre), "fer": fer, "eau": eau}
 	for k2 in acc:
 		var mesh: ArrayMesh = (acc[k2] as SurfaceTool).commit()
 		if mesh.get_surface_count() == 0:

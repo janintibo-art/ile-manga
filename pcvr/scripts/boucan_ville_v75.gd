@@ -177,6 +177,8 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_rng.seed = 7571
 	kit = Kit.new()
+	kit.hd_v166 = true
+	kit.sol_v166 = Y
 	kit.setup(self, main.get("temps_v56") if main != null else null)
 	kit.main = main
 	kit.pc = pc

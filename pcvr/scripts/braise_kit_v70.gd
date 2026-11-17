@@ -31,6 +31,11 @@ var light_every: int = 1                 # une vraie lumière tous les n réverb
 var inst: Dictionary = {}                # prototype -> [Transform3D]
 var protos: Dictionary = {}              # prototype -> ArrayMesh
 var inst_count: int = 0
+var hd_v166: bool = false                # V166 : la ville en haute définition (pièces sculptées)
+var acc166: Dictionary = {}              # V166 : les pièces sculptées, par matière
+var etals166: int = 0                    # V166 : les étals sculptés posés
+const B166 := "res://assets/textures/beau166/"
+const Sculpt166 = preload("res://scripts/statue_naine_v159.gd")
 
 
 func mat(key: String) -> Material:
@@ -109,6 +114,17 @@ func commit() -> void:
 		mmi.visibility_range_end = 900.0
 		root.add_child(mmi)
 	inst.clear()
+	for key in acc166:
+		var mesh: ArrayMesh = (acc166[key] as SurfaceTool).commit()
+		if mesh.get_surface_count() == 0:
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Sculpt_v166_%s_%d" % [str(key), root.get_child_count()]
+		mi.mesh = mesh
+		mi.material_override = mat(key)
+		mi.visibility_range_end = 450.0
+		root.add_child(mi)
+	acc166.clear()
 
 
 func T(x: float, y: float, z: float) -> Transform3D:
@@ -1016,24 +1032,42 @@ func gargoyle(xf: Transform3D, s: float = 1.0, key: String = "pgoth70") -> void:
 ## Une fontaine de feu (la Grand-Place) : une vasque de marbre noir pleine de lave, une colonne
 ## à deux coupes de bronze, un feu au sommet. xf : au sol, au centre.
 func fire_fountain(xf: Transform3D, r: float = 3.2) -> Vector3:
-	ring(xf, r - 0.45, r, 0.75, "mnoir70", 36)
-	cyl(xf, r + 0.4, r + 0.3, 0.12, "pgoth70_sombre", 36, true, 2.0)
-	disc(xf * T(0, 0.45, 0), r - 0.44, "lave70", 32, 1.0)
 	col_cyl(xf.origin, r, 0.75)
-	cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), xf.origin), 0.75, 0.6, 1.3, "mnoir70", 8)
-	cyl(xf * T(0, 1.3, 0), 0.4, 1.35, 0.4, "bronze70", 16)
-	disc(xf * T(0, 1.66, 0), 1.25, "lave70", 16, 1.0)
-	cyl(xf * T(0, 1.7, 0), 0.3, 0.24, 1.2, "bronze70", 12)
-	cyl(xf * T(0, 2.9, 0), 0.22, 0.75, 0.3, "bronze70", 12)
-	disc(xf * T(0, 3.17, 0), 0.68, "lave70", 12, 1.0)
 	col_cyl(xf.origin, 0.8, 3.2)
+	if hd_v166:
+		# V166 : la fontaine tournée (la margelle moulurée de marbre noir sur son socle, le fût et ses bagues,
+		# la grande coupe de bronze et ses godrons, la tige, la coupelle du haut ; la lave dedans)
+		var L: Dictionary = loc166(["mnoir70", "pgoth70_sombre", "bronze70", "lave70"])
+		tour166(L, "pgoth70_sombre", Vector3.ZERO, [Vector2(r + 0.42, 0.0), Vector2(r + 0.42, 0.11), Vector2(r + 0.34, 0.14), Vector2(r + 0.06, 0.14)], Basis.IDENTITY, 48)
+		tour166(L, "mnoir70", Vector3.ZERO, [Vector2(r + 0.06, 0.12), Vector2(r + 0.06, 0.2), Vector2(r, 0.24), Vector2(r, 0.56), Vector2(r + 0.05, 0.6), Vector2(r + 0.1, 0.65), Vector2(r + 0.1, 0.73), Vector2(r + 0.04, 0.79), Vector2(r - 0.36, 0.8), Vector2(r - 0.42, 0.76), Vector2(r - 0.42, 0.4)], Basis.IDENTITY, 48)
+		tour166(L, "lave70", Vector3.ZERO, [Vector2(r - 0.41, 0.45), Vector2(0.0, 0.45)], Basis.IDENTITY, 48)
+		tour166(L, "mnoir70", Vector3.ZERO, [Vector2(0.84, 0.4), Vector2(0.84, 0.55), Vector2(0.72, 0.6), Vector2(0.76, 0.66), Vector2(0.62, 0.72), Vector2(0.56, 1.18), Vector2(0.66, 1.22), Vector2(0.66, 1.28), Vector2(0.46, 1.3)], Basis.IDENTITY, 24)
+		tour166(L, "bronze70", Vector3.ZERO, [Vector2(0.4, 1.26), Vector2(0.88, 1.38), Vector2(1.22, 1.54), Vector2(1.38, 1.66), Vector2(1.43, 1.72), Vector2(1.37, 1.75), Vector2(1.26, 1.69), Vector2(1.22, 1.62)], Basis.IDENTITY, 36)
+		tour166(L, "lave70", Vector3.ZERO, [Vector2(1.24, 1.66), Vector2(0.0, 1.66)], Basis.IDENTITY, 36)
+		for k in range(16):
+			var a: float = TAU * (k + 0.5) / 16.0
+			var o := Vector3(sin(a), 0, cos(a))
+			Sculpt166._tube(L, "bronze70", [o * 0.5 + Vector3.UP * 1.3, o * 0.92 + Vector3.UP * 1.41, o * 1.25 + Vector3.UP * 1.57, o * 1.38 + Vector3.UP * 1.67], [0.03, 0.045, 0.045, 0.02], 6)
+		tour166(L, "bronze70", Vector3.ZERO, [Vector2(0.32, 1.64), Vector2(0.27, 1.9), Vector2(0.24, 2.55), Vector2(0.31, 2.62), Vector2(0.31, 2.68), Vector2(0.24, 2.74), Vector2(0.22, 2.88), Vector2(0.48, 2.97), Vector2(0.7, 3.1), Vector2(0.77, 3.18), Vector2(0.73, 3.22), Vector2(0.66, 3.18)], Basis.IDENTITY, 24)
+		tour166(L, "lave70", Vector3.ZERO, [Vector2(0.67, 3.17), Vector2(0.0, 3.17)], Basis.IDENTITY, 24)
+		pose166(L, xf)
+	else:
+		ring(xf, r - 0.45, r, 0.75, "mnoir70", 36)
+		cyl(xf, r + 0.4, r + 0.3, 0.12, "pgoth70_sombre", 36, true, 2.0)
+		disc(xf * T(0, 0.45, 0), r - 0.44, "lave70", 32, 1.0)
+		cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), xf.origin), 0.75, 0.6, 1.3, "mnoir70", 8)
+		cyl(xf * T(0, 1.3, 0), 0.4, 1.35, 0.4, "bronze70", 16)
+		disc(xf * T(0, 1.66, 0), 1.25, "lave70", 16, 1.0)
+		cyl(xf * T(0, 1.7, 0), 0.3, 0.24, 1.2, "bronze70", 12)
+		cyl(xf * T(0, 2.9, 0), 0.22, 0.75, 0.3, "bronze70", 12)
+		disc(xf * T(0, 3.17, 0), 0.68, "lave70", 12, 1.0)
 	# quatre têtes de démon de bronze sur le bord de la coupe
 	for k in range(4):
 		var a: float = TAU * k / 4.0
 		var o := Vector3(cos(a), 0, sin(a))
-		ball(xf * Transform3D(Basis(), o * 1.3 + Vector3.UP * 1.72), 0.16, "bronze70", 8, 4)
+		ball(xf * Transform3D(Basis(), o * (1.36 if hd_v166 else 1.3) + Vector3.UP * (1.8 if hd_v166 else 1.72)), 0.16, "bronze70", 8, 4)
 		for sd in [-1.0, 1.0]:
-			horn(xf * (o * 1.3 + Vector3.UP * 1.82) + (o.cross(Vector3.UP) * sd * 0.1), (o.cross(Vector3.UP) * sd + Vector3.UP).normalized(), 0.25, 0.04, 2.0, "bronze70", 4)
+			horn(xf * (o * (1.36 if hd_v166 else 1.3) + Vector3.UP * (1.9 if hd_v166 else 1.82)) + (o.cross(Vector3.UP) * sd * 0.1), (o.cross(Vector3.UP) * sd + Vector3.UP).normalized(), 0.25, 0.04, 2.0, "bronze70", 4)
 	var top: Vector3 = xf * Vector3(0, 3.35, 0)
 	fires70.append([top, 0.7])
 	return top
@@ -1041,11 +1075,19 @@ func fire_fountain(xf: Transform3D, r: float = 3.2) -> Vector3:
 
 ## Un brasero de bronze sur pied (le feu est allumé par l'île : fires70). Renvoie le point du feu.
 func brazier70(pos: Vector3, h: float = 1.1, key: String = "bronze70", foot: String = "pgoth70_sombre", size: float = 0.5) -> Vector3:
-	cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), pos), 0.34, 0.26, 0.2, foot, 8)
-	cyl(Transform3D(Basis(), pos + Vector3.UP * 0.2), 0.12, 0.09, h - 0.45, foot, 8)
-	cyl(Transform3D(Basis(), pos + Vector3.UP * (h - 0.25)), 0.18, 0.46, 0.3, key, 14)
-	ring(Transform3D(Basis(), pos + Vector3.UP * (h + 0.05)), 0.42, 0.5, 0.06, key, 16)
-	disc(Transform3D(Basis(), pos + Vector3.UP * (h - 0.02)), 0.42, "braise70", 14, 1.0)
+	if hd_v166:
+		# V166 : un brasero tourné (le pied à ressauts, la tige baguée, la coupe à lèvre roulée, les braises)
+		var L: Dictionary = loc166([key, foot, "braise70"])
+		tour166(L, foot, Vector3.ZERO, [Vector2(0.36, 0.0), Vector2(0.36, 0.08), Vector2(0.3, 0.12), Vector2(0.26, 0.2), Vector2(0.14, 0.24)], Basis.IDENTITY, 20)
+		tour166(L, key, Vector3.ZERO, [Vector2(0.12, 0.22), Vector2(0.09, 0.4), Vector2(0.13, 0.45), Vector2(0.09, 0.5), Vector2(0.08, h - 0.32), Vector2(0.14, h - 0.26), Vector2(0.24, h - 0.16), Vector2(0.4, h - 0.04), Vector2(0.5, h + 0.04), Vector2(0.52, h + 0.08), Vector2(0.47, h + 0.09), Vector2(0.44, h + 0.04)], Basis.IDENTITY, 24)
+		tour166(L, "braise70", Vector3.ZERO, [Vector2(0.45, h - 0.01), Vector2(0.0, h + 0.03)], Basis.IDENTITY, 24)
+		pose166(L, Transform3D(Basis(), pos))
+	else:
+		cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), pos), 0.34, 0.26, 0.2, foot, 8)
+		cyl(Transform3D(Basis(), pos + Vector3.UP * 0.2), 0.12, 0.09, h - 0.45, foot, 8)
+		cyl(Transform3D(Basis(), pos + Vector3.UP * (h - 0.25)), 0.18, 0.46, 0.3, key, 14)
+		ring(Transform3D(Basis(), pos + Vector3.UP * (h + 0.05)), 0.42, 0.5, 0.06, key, 16)
+		disc(Transform3D(Basis(), pos + Vector3.UP * (h - 0.02)), 0.42, "braise70", 14, 1.0)
 	col_cyl(pos, 0.4, h + 0.1)
 	var f: Vector3 = pos + Vector3.UP * (h + 0.05)
 	fires70.append([f, size])
@@ -1061,3 +1103,189 @@ func bench70(xf: Transform3D) -> void:
 		box(xf * T(sx, 0.62, -0.22), Vector3(0.06, 0.8, 0.06), "fer70", 1.0)
 		horn(xf * Vector3(sx, 0.5, 0.2), xf.basis * Vector3(0, 0.3, 1), 0.2, 0.03, 2.4, "fer70", 3)
 	col_box(xf * T(0, 0.4, -0.05), Vector3(1.7, 0.8, 0.55))
+
+
+# =================================================================== V166 : les pièces sculptées
+
+## Des accumulateurs (un par matière) : on y sculpte en repère local, puis pose166() les verse dans la
+## ville (repère monde), où commit() en fait un maillage par matière.
+func loc166(keys: Array) -> Dictionary:
+	var d := {}
+	for k in keys:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		d[k] = st
+	return d
+
+
+func pose166(loc: Dictionary, xf: Transform3D) -> void:
+	for k in loc:
+		var mesh: ArrayMesh = (loc[k] as SurfaceTool).commit()
+		if mesh.get_surface_count() == 0:
+			continue
+		if not acc166.has(k):
+			var st := SurfaceTool.new()
+			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			acc166[k] = st
+		(acc166[k] as SurfaceTool).append_from(mesh, 0, xf)
+
+
+## Une nappe à deux faces (une toile) : pts, une grille (nu + 1) × (nv + 1) rangée par lignes (v).
+func nappe166(loc: Dictionary, key: String, pts: Array, nu: int, nv: int, uvs: Array) -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for face in range(2):
+		for i in range(pts.size()):
+			st.set_uv(uvs[i])
+			st.add_vertex(pts[i])
+	var n: int = pts.size()
+	for j in range(nv):
+		for i in range(nu):
+			var a: int = j * (nu + 1) + i
+			var b: int = a + 1
+			var c: int = a + nu + 1
+			var d: int = c + 1
+			for t in [a, b, c, b, d, c]:
+				st.add_index(t)
+			for t2 in [a, c, b, b, c, d]:
+				st.add_index(n + t2)
+	st.generate_normals()
+	st.generate_tangents()
+	(loc[key] as SurfaceTool).append_from(st.commit(), 0, Transform3D.IDENTITY)
+
+
+## La toile tissée (beau166/toile) teinte de la couleur d'une matière de la ville ; renvoie sa clé.
+func toile166(cle: String) -> String:
+	var k: String = "t166" + cle
+	if mats.has(k):
+		return k
+	var base: Material = mat(cle)
+	var m := StandardMaterial3D.new()
+	var c: Color = (base as StandardMaterial3D).albedo_color if base is StandardMaterial3D else Color(0.6, 0.1, 0.08)
+	m.albedo_color = Color(minf(c.r * 1.2, 1.0), minf(c.g * 1.2, 1.0), minf(c.b * 1.2, 1.0))
+	if ResourceLoader.exists(B166 + "toile.png"):
+		m.albedo_texture = load(B166 + "toile.png")
+		m.normal_enabled = true
+		m.normal_texture = load(B166 + "toile_n.png")
+		m.normal_scale = 0.7
+	m.roughness = 0.95
+	mats[k] = m
+	return k
+
+
+## V166 : un étal de marché sculpté (xf : le milieu du comptoir au sol, le client du côté +Z) : quatre
+## poteaux tournés, le comptoir (le plateau et son nez arrondi, la façade et les côtés en planches, les
+## traverses, une tablette dessous), la toile rayée tendue sur sa barre de fer, qui pend un peu, et son
+## lambrequin à festons. raies : [couleur, couleur] (des matières de la ville).
+func etal166(xf: Transform3D, w: float, d: float, raies: Array, bois: String, sombre: String, fer: String, hf: float = 2.4, hb: float = 2.7) -> void:
+	etals166 += 1
+	var ta: String = toile166(str(raies[0]))
+	var tb: String = toile166(str(raies[1 % raies.size()]))
+	var L: Dictionary = loc166([bois, sombre, fer, ta, tb])
+	var r := RandomNumberGenerator.new()
+	r.seed = int(absf(xf.origin.x * 13.0 + xf.origin.z * 7.0))
+	# les poteaux tournés
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			var hh: float = hb if sz < 0 else hf
+			var pp := Vector3(sx * (w * 0.5 - 0.05), 0, sz * (d * 0.5 - 0.03))
+			Sculpt166._tour(L, sombre, pp, [Vector2(0.055, 0.0), Vector2(0.055, 0.12), Vector2(0.044, 0.16), Vector2(0.038, 0.5), Vector2(0.05, 0.54), Vector2(0.038, 0.58), Vector2(0.036, hh - 0.1), Vector2(0.046, hh - 0.06), Vector2(0.03, hh), Vector2(0.0, hh + 0.012)], Vector3.ONE, false)
+	# le comptoir
+	Sculpt166._boite(L, bois, Vector3(0, 0.86, 0), Vector3(w + 0.06, 0.06, d + 0.06))
+	Sculpt166._tube(L, bois, [Vector3(-w * 0.5 - 0.03, 0.86, d * 0.5 + 0.03), Vector3(w * 0.5 + 0.03, 0.86, d * 0.5 + 0.03)], [0.036, 0.036], 8)
+	var nb: int = maxi(3, int(w / 0.19))
+	for i in range(nb):
+		var x: float = -w * 0.5 + (i + 0.5) * w / nb
+		Sculpt166._boite(L, sombre, Vector3(x, 0.42 + r.randf_range(-0.01, 0.01), d * 0.5 - 0.02), Vector3(w / nb - 0.012, 0.8, 0.028))
+	for y in [0.18, 0.68]:
+		Sculpt166._boite(L, bois, Vector3(0, y, d * 0.5 + 0.008), Vector3(w - 0.12, 0.09, 0.03))
+	for s in [-1.0, 1.0]:
+		var nc: int = maxi(2, int(d / 0.19))
+		for j in range(nc):
+			var z: float = -d * 0.5 + (j + 0.5) * d / nc
+			Sculpt166._boite(L, sombre, Vector3(s * (w * 0.5 - 0.02), 0.42, z), Vector3(0.028, 0.8, d / nc - 0.012))
+	Sculpt166._boite(L, bois, Vector3(0, 0.26, -0.05), Vector3(w - 0.16, 0.03, d - 0.2))
+	# la toile rayée : des bandes de deux couleurs, qui pendent un peu entre la barre du fond et celle
+	# de devant ; le lambrequin à festons
+	var x0: float = -w * 0.5 - 0.15
+	var x1: float = w * 0.5 + 0.15
+	var zb: float = -d * 0.5 - 0.15
+	var zf: float = d * 0.5 + 0.32
+	var ns: int = maxi(4, int(round((x1 - x0) / 0.42)))
+	for k in range(ns):
+		var key: String = ta if k % 2 == 0 else tb
+		var xa: float = x0 + (x1 - x0) * k / ns
+		var xb: float = x0 + (x1 - x0) * (k + 1) / ns
+		var pts: Array = []
+		var uvs: Array = []
+		var nv: int = 8
+		for j in range(nv + 1):
+			var v: float = float(j) / nv
+			for i in range(3):
+				var x2: float = lerpf(xa, xb, i * 0.5)
+				var y: float = lerpf(hb, hf, v) + 0.035 - 0.07 * sin(PI * v)
+				pts.append(Vector3(x2, y, lerpf(zb, zf, v)))
+				uvs.append(Vector2(x2 * 0.5, v * (zf - zb) * 0.5))
+		nappe166(L, key, pts, 2, nv, uvs)
+		# le feston : le haut sous la barre de devant, le bas en arrondi
+		var fp: Array = []
+		var fu: Array = []
+		for j2 in range(2):
+			for i2 in range(7):
+				var u: float = i2 / 6.0
+				var x3: float = lerpf(xa, xb, u)
+				var y2: float = hf + 0.035 if j2 == 0 else hf + 0.035 - 0.17 - 0.11 * sin(PI * u)
+				fp.append(Vector3(x3, y2, zf + 0.01))
+				fu.append(Vector2(x3 * 0.5, (hf - y2) * 0.5))
+		nappe166(L, key, fp, 6, 1, fu)
+	for zz in [zb, zf]:
+		var yy: float = (hb if zz == zb else hf) + 0.045
+		Sculpt166._tube(L, fer, [Vector3(x0 - 0.04, yy, zz), Vector3(x1 + 0.04, yy, zz)], [0.022, 0.022], 6)
+	pose166(L, xf)
+
+
+## Un tour (une forme de révolution) à normales franches : profil [Vector2(rayon, hauteur)] parcouru
+## la matière à gauche (vers le haut sur une paroi extérieure, vers le bas sur une paroi intérieure, de
+## l'extérieur vers l'axe sur un dessus) ; arêtes vives là où le profil casse (> 35°), lisse ailleurs.
+## Autour de +Y (b le tourne), posé en c ; seg côtés.
+func tour166(loc: Dictionary, key: String, c: Vector3, prof: Array, b: Basis = Basis.IDENTITY, seg: int = 32) -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var n: int = prof.size()
+	var nseg: Array = []
+	for i in range(n - 1):
+		var t: Vector2 = (prof[i + 1] as Vector2) - (prof[i] as Vector2)
+		nseg.append(Vector2(t.y, -t.x).normalized() if t.length() > 0.0001 else Vector2(1, 0))
+	var arc: float = 0.0
+	var vi: int = 0
+	for i in range(n - 1):
+		var p0: Vector2 = prof[i]
+		var p1: Vector2 = prof[i + 1]
+		var ns: Vector2 = nseg[i]
+		var na: Vector2 = ns
+		var nb: Vector2 = ns
+		if i > 0 and (nseg[i - 1] as Vector2).dot(ns) > 0.82:
+			na = ((nseg[i - 1] as Vector2) + ns).normalized()
+		if i < n - 2 and (nseg[i + 1] as Vector2).dot(ns) > 0.82:
+			nb = ((nseg[i + 1] as Vector2) + ns).normalized()
+		var l: float = p0.distance_to(p1)
+		for j in range(seg + 1):
+			var a: float = TAU * float(j) / seg
+			var dr := Vector3(sin(a), 0, cos(a))
+			for e in range(2):
+				var p: Vector2 = p0 if e == 0 else p1
+				var nn: Vector2 = na if e == 0 else nb
+				st.set_normal((b * (dr * nn.x + Vector3.UP * nn.y)).normalized())
+				st.set_uv(Vector2(float(j) / seg * TAU * maxf(p.x, 0.25) * 0.5, (arc + (l if e == 1 else 0.0)) * 0.5))
+				st.add_vertex(c + b * (dr * p.x + Vector3.UP * p.y))
+		for j2 in range(seg):
+			var q: int = vi + j2 * 2
+			# q : (j, bas) ; q+1 : (j, haut) ; q+2 : (j+1, bas) ; q+3 : (j+1, haut)
+			for t2 in [q, q + 1, q + 2, q + 1, q + 3, q + 2]:
+				st.add_index(t2)
+		vi += (seg + 1) * 2
+		arc += l
+	st.generate_tangents()
+	var m: ArrayMesh = st.commit()
+	# l'ordre des sommets suit la normale voulue (Godot : les faces avant tournent dans le sens horaire)
+	(loc[key] as SurfaceTool).append_from(m, 0, Transform3D.IDENTITY)

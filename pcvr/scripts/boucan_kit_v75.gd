@@ -20,11 +20,17 @@ const CONT_V := ["rouge", "bleu", "vert", "orange", "jaune", "blanc", "gris", "t
 
 var spot_lights: Array = []              # les projecteurs de la scène (OmniLight3D / SpotLight3D)
 var neon_mats: Array = []                # (pour la nuit)
+var sol_v166: float = 3.2                # V166 : le sol de la ville (l'humidité des murs peints monte de là)
 
 
 func mat(key: String) -> Material:
 	if mats.has(key):
 		return mats[key]
+	if hd_v166 and key.begins_with("briquep75"):
+		var hm: Material = _briquep166(key)
+		if hm != null:
+			mats[key] = hm
+			return hm
 	var m: Material = Mats75.make(key)
 	if m != null:
 		mats[key] = m
@@ -862,6 +868,9 @@ func table_bobine75(pos: Vector3) -> Vector3:
 
 ## La fontaine-baignoire de la Place des Palettes (une baignoire sur pieds, un robinet qui coule).
 func baignoire75(xf: Transform3D) -> Vector3:
+	if hd_v166:
+		col_box(xf * T(0, 0.6, 0), Vector3(1.8, 1.2, 0.9))
+		return _baignoire166(xf)
 	box(xf * T(0, 0.75, 0), Vector3(1.7, 0.6, 0.8), "peint75_blanc", 1.0)
 	box(xf * T(0, 0.66, 0), Vector3(1.5, 0.4, 0.62), "eau71", 1.0, 4)
 	for sx in [-0.7, 0.7]:
@@ -921,6 +930,10 @@ func funbox75(xf: Transform3D, w: float = 4.0, d: float = 3.0, h: float = 0.7) -
 func bac75(xf: Transform3D, w: float = 3.0, d: float = 1.2) -> void:
 	box(xf * T(0, 0.25, 0), Vector3(w, 0.5, d), "palette75", 1.0, 63 - 4)
 	box(xf * T(0, 0.48, 0), Vector3(w - 0.1, 0.04, d - 0.1), "terre75", 1.0, 4)
+	if hd_v166:
+		_potager166(xf, w, d)
+		col_box(xf * T(0, 0.25, 0), Vector3(w, 0.5, d))
+		return
 	var n: int = int(w / 0.4)
 	for i in range(n):
 		for j in range(2):
@@ -1099,3 +1112,140 @@ func _dome(xf: Transform3D, r: float, key: String, seg: int, rings: int) -> void
 			var u0: float = float(i) / seg * 3.0
 			var u1: float = float(i + 1) / seg * 3.0
 			quad4(key, xf * p00, xf * p10, xf * p11, xf * p01, nm, Vector2(u0, 1.0 - float(j) / rings), Vector2(u1, 1.0 - float(j) / rings), Vector2(u1, 1.0 - float(j + 1) / rings), Vector2(u0, 1.0 - float(j + 1) / rings))
+
+
+# =================================================================== V166 : les pièces sculptées
+
+## V166 : la brique peinte vieillie : la peinture (sa couleur) sur la brique dont on voit le relief, les
+## coulures, l'humidité au pied, et la peinture tombée par plaques sur la vraie brique rouge (le shader de
+## l'enduit vieilli, V163).
+func _briquep166(key: String) -> Material:
+	if not ResourceLoader.exists(B166 + "brique_badigeon.png"):
+		return null
+	var parts: PackedStringArray = key.split("_", true, 1)
+	var v: String = parts[1] if parts.size() > 1 else ""
+	var sm := ShaderMaterial.new()
+	sm.shader = load("res://shaders/enduit_v163.gdshader")
+	sm.set_shader_parameter("tex_albedo", load(B166 + "brique_badigeon.png"))
+	sm.set_shader_parameter("tex_normal", load("res://assets/textures/boucan/brique_n.png"))
+	sm.set_shader_parameter("tex_pierre", load("res://assets/textures/boucan/brique.png"))
+	sm.set_shader_parameter("tex_pierre_n", load("res://assets/textures/boucan/brique_n.png"))
+	var c: Color = Mats75.PEINTURES.get(v, Color(1, 1, 1))
+	sm.set_shader_parameter("teinte", Color(minf(c.r * 1.05, 1.0), minf(c.g * 1.05, 1.0), minf(c.b * 1.05, 1.0)))
+	sm.set_shader_parameter("sol_y", sol_v166)
+	sm.set_shader_parameter("humidite", 0.7)
+	sm.set_shader_parameter("plaques", 1.0)
+	sm.set_shader_parameter("echelle_dessous", 1.6)
+	sm.set_shader_parameter("normal_force", 1.0)
+	return sm
+
+
+## V166 : un potager sculpté : par rang, des salades (une rosette de feuilles qui se recourbent, le cœur
+## serré), des choux (la pomme, les grandes feuilles bleutées), ou des pieds de tomates sur leur tuteur
+## (les feuilles, les tomates rouges et vertes).
+func _potager166(xf: Transform3D, w: float, d: float) -> void:
+	for k in [["salade166", Color(0.46, 0.72, 0.26), 0.85], ["chou166", Color(0.36, 0.52, 0.42), 0.8], ["tomate166", Color(0.82, 0.12, 0.06), 0.35], ["tomatev166", Color(0.42, 0.62, 0.18), 0.4]]:
+		if not mats.has(k[0]):
+			var m := StandardMaterial3D.new()
+			m.albedo_color = k[1]
+			m.roughness = k[2]
+			mats[k[0]] = m
+	var L: Dictionary = loc166(["salade166", "chou166", "feuille75", "tomate166", "tomatev166", "palette75"])
+	var r := RandomNumberGenerator.new()
+	r.seed = int(absf(xf.origin.x * 31.0 + xf.origin.z * 17.0))
+	var n: int = int(w / 0.4)
+	for j in range(2):
+		var sorte: int = r.randi() % 3
+		for i in range(n):
+			var p := Vector3(-w * 0.5 + 0.25 + i * 0.4 + r.randf_range(-0.03, 0.03), 0.5, -d * 0.25 + j * d * 0.5 + r.randf_range(-0.03, 0.03))
+			match sorte:
+				0:
+					_rosette166(L, "salade166", p, 7, 0.17, 0.11, r)
+					_rosette166(L, "salade166", p, 5, 0.09, 0.13, r)
+					Sculpt166._boule(L, "salade166", p + Vector3(0, 0.07, 0), Vector3(0.06, 0.05, 0.06))
+				1:
+					_rosette166(L, "chou166", p, 6, 0.2, 0.08, r)
+					Sculpt166._boule(L, "chou166", p + Vector3(0, 0.1, 0), Vector3(0.1, 0.09, 0.1))
+				_:
+					Sculpt166._boite(L, "palette75", p + Vector3(0, 0.45, 0), Vector3(0.025, 0.9, 0.025))
+					for h in [0.2, 0.4, 0.6, 0.8]:
+						_rosette166(L, "feuille75", p + Vector3(0, h - 0.06, 0), 5, 0.16, 0.06, r)
+						for t in range(2):
+							var a: float = r.randf() * TAU
+							Sculpt166._boule(L, "tomate166" if r.randf() < 0.6 else "tomatev166", p + Vector3(cos(a) * 0.07, h - 0.02, sin(a) * 0.07), Vector3(0.035, 0.032, 0.035))
+	pose166(L, xf)
+
+
+## Une rosette de n feuilles (à deux faces) autour de p : longues de lg, qui montent de h puis retombent.
+func _rosette166(L: Dictionary, key: String, p: Vector3, n: int, lg: float, h: float, r: RandomNumberGenerator) -> void:
+	var a0: float = r.randf() * TAU
+	for k in range(n):
+		var a: float = a0 + TAU * k / n + r.randf_range(-0.15, 0.15)
+		var dir := Vector3(cos(a), 0, sin(a))
+		var side := Vector3(-dir.z, 0, dir.x)
+		var pts: Array = []
+		var uvs: Array = []
+		for jj in range(4):
+			var t: float = jj / 3.0
+			var larg: float = lg * (0.42 * sin(PI * (0.15 + 0.8 * t)) + 0.04)
+			for ii in range(3):
+				var u: float = ii - 1.0
+				var q: Vector3 = p + dir * (0.015 + lg * t) + Vector3.UP * (0.01 + h * (1.6 * t - 1.0 * t * t)) + side * (u * larg)
+				q.y += 0.018 * absf(u)
+				pts.append(q)
+				uvs.append(Vector2(u * 0.5 + 0.5, t))
+		nappe166(L, key, pts, 2, 3, uvs)
+
+
+## V166 : la fontaine-baignoire de la place : une vraie baignoire en fonte sur ses pieds de lion (la
+## coque peinte en rouge, l'émail blanc dedans, le rebord roulé), l'eau, le col de cygne du robinet.
+func _baignoire166(xf: Transform3D) -> Vector3:
+	var L: Dictionary = loc166(["peint75_rouge", "peint75_blanc", "eau71", "laiton71", "chrome75"])
+	var ext: Array = [[0.0, 0.0, 0.17], [0.5, 0.2, 0.172], [0.66, 0.28, 0.2], [0.75, 0.335, 0.3], [0.79, 0.36, 0.48], [0.81, 0.372, 0.66], [0.83, 0.385, 0.735]]
+	var bord: Array = [[0.83, 0.385, 0.735], [0.835, 0.39, 0.76], [0.82, 0.375, 0.78], [0.795, 0.352, 0.775], [0.778, 0.336, 0.755]]
+	var dedans: Array = [[0.778, 0.336, 0.755], [0.765, 0.322, 0.62], [0.73, 0.295, 0.42], [0.63, 0.24, 0.27], [0.45, 0.16, 0.225], [0.0, 0.0, 0.22]]
+	_cuve166(L, "peint75_rouge", ext)
+	_cuve166(L, "peint75_blanc", bord)
+	_cuve166(L, "peint75_blanc", dedans)
+	_cuve166(L, "eau71", [[0.758, 0.316, 0.6], [0.0, 0.0, 0.6]])
+	for sx in [-0.56, 0.56]:
+		for sz in [-0.22, 0.22]:
+			Sculpt166._tube(L, "laiton71", [Vector3(sx, 0.26, sz * 0.9), Vector3(sx * 1.04, 0.14, sz * 1.08), Vector3(sx * 1.07, 0.05, sz * 1.15)], [0.055, 0.04, 0.035], 8)
+			Sculpt166._boule(L, "laiton71", Vector3(sx * 1.08, 0.035, sz * 1.17), Vector3(0.05, 0.035, 0.05))
+	Sculpt166._tube(L, "chrome75", [Vector3(-0.8, 0.74, 0), Vector3(-0.8, 1.25, 0), Vector3(-0.78, 1.4, 0), Vector3(-0.7, 1.47, 0), Vector3(-0.6, 1.44, 0), Vector3(-0.56, 1.36, 0)], [0.032, 0.03, 0.028, 0.028, 0.026, 0.024], 8)
+	for sd in [-1.0, 1.0]:
+		Sculpt166._tube(L, "chrome75", [Vector3(-0.8, 1.0, 0), Vector3(-0.8, 1.0, sd * 0.12)], [0.012, 0.012], 5)
+		Sculpt166._boule(L, "chrome75", Vector3(-0.8, 1.0, sd * 0.14), Vector3(0.03, 0.02, 0.03))
+	pose166(L, xf)
+	return xf * Vector3(-0.56, 1.34, 0)
+
+
+## Une cuve à fond arrondi : des anneaux [demi-longueur, demi-largeur, hauteur] en superellipse (des
+## coins arrondis), parcourus la matière à gauche (comme tour166 : l'extérieur en montant, l'intérieur
+## en descendant).
+func _cuve166(L: Dictionary, key: String, anneaux: Array) -> void:
+	var nseg: int = 40
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rows: int = anneaux.size()
+	for i in range(rows):
+		var A: Array = anneaux[i]
+		for j in range(nseg + 1):
+			var t: float = TAU * j / nseg
+			var cx: float = cos(t)
+			var sz: float = sin(t)
+			var ex: float = signf(cx) * pow(absf(cx), 0.5)
+			var ez: float = signf(sz) * pow(absf(sz), 0.5)
+			st.set_uv(Vector2(float(j) / nseg * 2.0, float(i) * 0.15))
+			st.add_vertex(Vector3(ex * float(A[0]), float(A[2]), ez * float(A[1])))
+	for i2 in range(rows - 1):
+		for j2 in range(nseg):
+			var a: int = i2 * (nseg + 1) + j2
+			var b: int = a + 1
+			var c: int = a + nseg + 1
+			var d: int = c + 1
+			for q in [a, b, c, b, d, c]:
+				st.add_index(q)
+	st.generate_normals()
+	st.generate_tangents()
+	(L[key] as SurfaceTool).append_from(st.commit(), 0, Transform3D.IDENTITY)

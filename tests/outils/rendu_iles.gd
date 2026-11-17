@@ -37,6 +37,7 @@ class FakeMain:
 	var flora_v30: Node = null
 	var jungle_v29: Node = null
 	var ROOMS_V27: Array = []
+	var pc_root: Node3D = null
 
 	func _player_pos_v27() -> Vector3:
 		return cam.global_position - Vector3.UP * 1.6 if cam != null else Vector3.ZERO
@@ -118,6 +119,7 @@ func _initialize() -> void:
 	root.add_child(cam)
 	cam.current = true
 	fm.cam = cam
+	fm.pc_root = cam
 	for k in range(4):
 		await process_frame
 	match quoi:
@@ -145,7 +147,7 @@ func _initialize() -> void:
 			await _grande(quoi)
 		"porte":
 			await _porte()
-		"arcanelle", "coutelas", "soleils":
+		"arcanelle", "coutelas", "soleils", "pandemonia", "montjoie", "boucan":
 			await _systeme(quoi)
 		"carene_hd", "tazira_hd", "cliquetis_hd", "ramure_hd":
 			await _grande(quoi.trim_suffix("_hd"), true)
@@ -334,10 +336,12 @@ func _azur() -> void:
 ## La Grande Île (V164) : le relief, la porte aux Quatre Sceaux, la végétation et une seule ville
 ## (Carène, Tazira, Cliquetis ou Ramure). Les vues : de haut, la porte, puis devant les lieux
 ## d'activité des habitants (les étals, les comptoirs, les ateliers), comme un passant les voit.
-## V165 : une île et ses villes (Arcanelle ; Port-Coutelas ; Per-Hâpy, Yaxché, Aztlán) : de haut, puis
+## V165 : une île et ses villes (Arcanelle ; Port-Coutelas ; Per-Hâpy, Yaxché, Aztlán ; V166 : Pandémonia,
+## Montjoie, Port-Boucan) : de haut, puis
 ## devant les lieux d'activité des habitants.
 func _systeme(nom: String) -> void:
-	var scr: String = {"arcanelle": "res://scripts/arcanelle_v67.gd", "coutelas": "res://scripts/pirates_v68.gd", "soleils": "res://scripts/soleils_v69.gd"}[nom]
+	var scr: String = {"arcanelle": "res://scripts/arcanelle_v67.gd", "coutelas": "res://scripts/pirates_v68.gd", "soleils": "res://scripts/soleils_v69.gd",
+		"pandemonia": "res://scripts/braise_v70.gd", "montjoie": "res://scripts/montjoie_v71.gd", "boucan": "res://scripts/boucan_v75.gd"}[nom]
 	var Sy: Node3D = load(scr).new()
 	fm.add_child(Sy)
 	Sy.setup(fm)
@@ -356,15 +360,20 @@ func _systeme(nom: String) -> void:
 			villes = [Sy.port]
 		"soleils":
 			villes = [Sy.egypte, Sy.maya, Sy.azteque]
+		"pandemonia", "montjoie", "boucan":
+			villes = [Sy.city]
 	var c: Vector3 = Sy.ile.CENTER
 	c.y = fm._height_at(c.x, c.z)
 	_mer(c)
 	await _vue("141_dessus", c + Vector3(170, 140, 170), c)
 	var par: int = 6 / villes.size()
 	var k2: int = 0
-	# les Trois Soleils : des lieux choisis (le four et les jarres, le potier ; le metate, le jeu de balle ;
-	# la place, le potier d'Aztlán)
-	var choix: Dictionary = {"soleils": [["four", "potier"], ["metate", "balle_2"], ["place_a2", "potier_az"]]}
+	# des lieux choisis (les Trois Soleils : le four et les jarres, le potier ; le metate, le jeu de balle ;
+	# la place, le potier d'Aztlán ; V166 : les places, les marchés, les fontaines)
+	var choix: Dictionary = {"soleils": [["four", "potier"], ["metate", "balle_2"], ["place_a2", "potier_az"]],
+		"pandemonia": [["marche_flane_1", "place_fontaine", "place_lanterne", "forge_coeur", "port_quai_1", "jardin_banc"]],
+		"montjoie": [["place_fontaine", "marche_fruits", "lavoir_1", "puits", "forge_enclume", "chaumiere_jardin"]],
+		"boucan": [["place_fontaine", "place_banc_1", "jardins_1", "mur_expression_1", "conserverie_assemblee", "cantine_comptoir"]]}
 	var iv: int = 0
 	for V in villes:
 		var noms: Array = V.spots.keys()
@@ -877,7 +886,7 @@ func _mer(c: Vector3) -> void:
 	m.roughness = 0.15
 	sea.material_override = m
 	root.add_child(sea)
-	sea.position = c + Vector3(0, -0.42, 0)
+	sea.position = Vector3(c.x, -0.42, c.z)
 
 
 func _monde() -> void:

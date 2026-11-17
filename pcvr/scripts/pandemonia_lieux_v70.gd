@@ -11,6 +11,7 @@ extends RefCounted
 ##    Cercles, la grande flèche, les arcs-boutants) ;
 ##  - la Bibliothèque des Âmes ; l'Académie Infernale (la cour, l'amphithéâtre, l'observatoire).
 
+const Sculpt166 = preload("res://scripts/statue_naine_v159.gd")
 const R = preload("res://scripts/ile_braise_v70.gd")
 
 var c                                    # pandemonia_v70
@@ -346,9 +347,23 @@ func cathedrale() -> void:
 	var hb: Transform3D = cf * T(0, 0.1, -30.0)
 	kit.cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), hb.origin), 3.2, 3.0, 0.4, "pgoth70_sombre", 8)
 	kit.cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), hb.origin + Vector3.UP * 0.4), 2.4, 2.2, 0.4, "pgoth70_sombre", 8)
-	kit.cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), hb.origin + Vector3.UP * 0.8), 1.2, 0.9, 1.3, "mnoir70", 8)
-	kit.cyl(hb * T(0, 2.1, 0), 0.9, 2.7, 1.0, "bronze70", 24)
-	kit.ring(hb * T(0, 3.05, 0), 2.6, 2.85, 0.12, "or70", 24)
+	if kit.hd_v166:
+		# V166 : le Cœur-Brasier tourné : le fût de marbre noir et ses bagues, la grande vasque de bronze à
+		# godrons, sa lèvre d'or, le lit de braises
+		var L: Dictionary = kit.loc166(["mnoir70", "bronze70", "or70", "braise70"])
+		kit.tour166(L, "mnoir70", Vector3.ZERO, [Vector2(1.2, 0.8), Vector2(1.2, 0.92), Vector2(1.05, 0.98), Vector2(1.1, 1.04), Vector2(0.96, 1.1), Vector2(0.92, 1.9), Vector2(1.04, 1.96), Vector2(1.04, 2.04), Vector2(0.9, 2.08)], Basis.IDENTITY, 32)
+		kit.tour166(L, "bronze70", Vector3.ZERO, [Vector2(0.86, 2.02), Vector2(1.5, 2.22), Vector2(2.1, 2.5), Vector2(2.55, 2.84), Vector2(2.72, 3.0)], Basis.IDENTITY, 48)
+		kit.tour166(L, "or70", Vector3.ZERO, [Vector2(2.7, 2.97), Vector2(2.86, 3.02), Vector2(2.9, 3.1), Vector2(2.82, 3.17), Vector2(2.66, 3.12), Vector2(2.56, 3.0)], Basis.IDENTITY, 48)
+		kit.tour166(L, "braise70", Vector3.ZERO, [Vector2(2.58, 2.98), Vector2(1.4, 3.06), Vector2(0.0, 3.12)], Basis.IDENTITY, 48)
+		for k5 in range(24):
+			var a5: float = TAU * (k5 + 0.5) / 24.0
+			var o5 := Vector3(sin(a5), 0, cos(a5))
+			Sculpt166._tube(L, "bronze70", [o5 * 0.95 + Vector3.UP * 2.06, o5 * 1.52 + Vector3.UP * 2.25, o5 * 2.12 + Vector3.UP * 2.54, o5 * 2.56 + Vector3.UP * 2.87, o5 * 2.7 + Vector3.UP * 2.99], [0.04, 0.08, 0.09, 0.07, 0.03], 6)
+		kit.pose166(L, hb)
+	else:
+		kit.cyl(Transform3D(Basis(Vector3.UP, PI / 8.0), hb.origin + Vector3.UP * 0.8), 1.2, 0.9, 1.3, "mnoir70", 8)
+		kit.cyl(hb * T(0, 2.1, 0), 0.9, 2.7, 1.0, "bronze70", 24)
+		kit.ring(hb * T(0, 3.05, 0), 2.6, 2.85, 0.12, "or70", 24)
 	kit.col_cyl(hb.origin, 3.0, 3.1)
 	for k4 in range(6):
 		var a4: float = TAU * k4 / 6.0

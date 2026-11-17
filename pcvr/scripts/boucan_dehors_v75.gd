@@ -455,6 +455,8 @@ func _phare() -> void:
 	l.light_volumetric_fog_energy = 3.0
 	add_child(l)
 	l.position = phare_top
+	# V166 : le faisceau un peu levé (il balaie le ciel et la mer, il n'aveugle plus la ville)
+	l.rotation.x = 0.06
 	phare_light = l
 	city._pt("ph_pied", p + Vector3(-4.4, 0.05, -3.0))
 	city._spot("phare", p + Vector3(-4.0, 0.05, -4.0), Vector3(-0.4, 0, -1).normalized(), "observer", "ph_pied")

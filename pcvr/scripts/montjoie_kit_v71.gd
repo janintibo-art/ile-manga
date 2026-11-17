@@ -359,13 +359,16 @@ func awning71(xf: Transform3D, w: float, out: float, drop: float, color: String)
 ## Une fontaine ronde (xf : le centre, au sol) : le bassin, la colonne, la vasque, l'eau, une
 ## statue d'aventurier (l'épée levée) ; renvoie le centre.
 func fountain71(xf: Transform3D, r: float = 3.4) -> Vector3:
+	col_cyl(xf.origin, r, 0.85)
+	col_cyl(xf.origin, 1.2, 2.4)                # V77 : la colonne, la vasque et la statue sont solides
+	col_cyl(xf.origin, 0.55, 5.1)
+	if hd_v166:
+		_fontaine166(xf, r)
+		return xf.origin
 	ring(xf, r - 0.4, r, 0.75, "dalles71_clair", 32)
 	ring(xf * T(0, 0.75, 0), r - 0.5, r + 0.08, 0.14, "dalles71", 32)
 	disc(xf * T(0, 0.55, 0), r - 0.4, "eau71_claire", 32, 3.0)
 	disc(xf * T(0, 0.05, 0), r - 0.4, "dalles71", 24, 2.0)
-	col_cyl(xf.origin, r, 0.85)
-	col_cyl(xf.origin, 1.2, 2.4)                # V77 : la colonne, la vasque et la statue sont solides
-	col_cyl(xf.origin, 0.55, 5.1)
 	cyl(xf * T(0, 0.0, 0), 0.5, 0.42, 2.0, "dalles71_clair", 12)
 	cyl(xf * T(0, 2.0, 0), 1.2, 0.3, 0.35, "dalles71_clair", 16)
 	disc(xf * T(0, 2.3, 0), 1.05, "eau71_claire", 16)
@@ -385,21 +388,38 @@ func fountain71(xf: Transform3D, r: float = 3.4) -> Vector3:
 
 ## Un puits (xf : le centre au sol) : la margelle, le toit de tuiles sur deux poteaux, le treuil.
 func well71(xf: Transform3D) -> void:
-	ring(xf, 0.75, 1.05, 0.85, "moellons71", 18)
 	disc(xf * T(0, 0.2, 0), 0.75, "eau71", 14)
 	col_cyl(xf.origin, 1.05, 0.9)
 	for s in [-1.0, 1.0]:
 		box(xf * T(s * 0.95, 1.3, 0), Vector3(0.14, 2.6, 0.14), "poutre71", 1.0)
-	cyl(Transform3D(xf.basis * Basis(Vector3.BACK, PI * 0.5), xf * Vector3(0.95, 1.7, 0)), 0.1, 0.1, 1.9, "planches71", 8)
 	roof_gable(xf * T(0, 2.6, 0), 2.4, 1.3, 40.0, 0.15, "tuiles71_rouge", "planches71")
+	if hd_v166:
+		_puits166(xf)
+		return
+	ring(xf, 0.75, 1.05, 0.85, "moellons71", 18)
+	cyl(Transform3D(xf.basis * Basis(Vector3.BACK, PI * 0.5), xf * Vector3(0.95, 1.7, 0)), 0.1, 0.1, 1.9, "planches71", 8)
 	box(xf * T(0, 1.1, 0), Vector3(0.24, 0.28, 0.24), "planches71", 1.0)
 
 
 ## Un étal de marché (xf : le devant, +Z : les clients) : la table, quatre perches, une toile.
 func stall71(xf: Transform3D, w: float = 2.6, d: float = 1.4, color: String = "rouge") -> void:
+	col_box(xf * T(0, 0.45, -d * 0.5), Vector3(w, 0.9, d))
+	if hd_v166:
+		# V166 : l'étal sculpté (les poteaux tournés, le comptoir de planches, la toile rayée et ses festons),
+		# des corbeilles d'osier tressé pleines de fruits et de fleurs
+		etal166(xf * T(0, 0, -d * 0.5), w, d, ["tissu71_" + color, "tissu71_blanc" if color != "blanc" else "tissu71_rouge"], "planches71_clair", "planches71_sombre", "fer71", 2.3, 2.55)
+		var L: Dictionary = loc166(["foin71"])
+		for k2 in range(4):
+			var x2: float = -w * 0.5 + 0.4 + k2 * (w - 0.8) / 3.0
+			tour166(L, "foin71", Vector3(x2, 0.89, -d * 0.45), [Vector2(0.0, 0.0), Vector2(0.17, 0.0), Vector2(0.24, 0.12), Vector2(0.26, 0.15), Vector2(0.235, 0.155), Vector2(0.21, 0.04), Vector2(0.0, 0.04)], Basis.IDENTITY, 18)
+			for j2 in range(5):
+				var a2: float = TAU * j2 / 5.0 + k2
+				ball(xf * T(x2 + cos(a2) * 0.11, 1.0 + (0.03 if j2 % 2 == 0 else 0.0), -d * 0.45 + sin(a2) * 0.11), 0.07, ["fleur71_rouge", "fleur71_jaune", "feuille71", "fleur71_violet"][(k2 + j2) % 4], 8, 4)
+			ball(xf * T(x2, 1.06, -d * 0.45), 0.07, ["fleur71_jaune", "fleur71_rouge", "fleur71_violet", "feuille71"][k2 % 4], 8, 4)
+		pose166(L, xf)
+		return
 	box(xf * T(0, 0.85, -d * 0.5), Vector3(w, 0.08, d), "planches71", 1.0)
 	box(xf * T(0, 0.45, -d * 0.5), Vector3(w - 0.1, 0.8, d - 0.1), "planches71_sombre", 1.0, 63 - 4 - 8)
-	col_box(xf * T(0, 0.45, -d * 0.5), Vector3(w, 0.9, d))
 	for sx in [-1.0, 1.0]:
 		for sz in [0.0, -d]:
 			box(xf * T(sx * (w * 0.5 - 0.05), 1.15, sz), Vector3(0.07, 2.3, 0.07), "poutre71_clair", 1.0)
@@ -655,3 +675,70 @@ func counter71(xf: Transform3D, w: float = 3.0, top_key: String = "planches71") 
 	box(xf * T(0, 1.13, -0.35), Vector3(w + 0.1, 0.07, 0.8), top_key, 1.0)
 	col_box(xf * T(0, 0.55, -0.35), Vector3(w, 1.1, 0.7))
 	return xf * Vector3(0, 0.0, -1.3)
+
+
+# =================================================================== V166 : les pièces sculptées
+
+## V166 : la fontaine de la place, tournée dans la pierre claire : le bassin mouluré (le socle, la panse,
+## la margelle à boudin), la colonne attique (la base, le fût, l'astragale), la vasque à godrons et sa
+## lèvre ; l'eau ; le Fondateur debout sur son piédestal, l'épée levée, le bouclier au bras, la cape.
+func _fontaine166(xf: Transform3D, r: float) -> void:
+	var P: String = "dalles71_clair"
+	var L: Dictionary = loc166([P, "dalles71", "eau71_claire"])
+	tour166(L, P, Vector3.ZERO, [Vector2(r + 0.12, 0.0), Vector2(r + 0.12, 0.1), Vector2(r + 0.03, 0.14), Vector2(r + 0.03, 0.6), Vector2(r + 0.1, 0.64), Vector2(r + 0.15, 0.71), Vector2(r + 0.15, 0.8), Vector2(r + 0.07, 0.87), Vector2(r - 0.42, 0.88), Vector2(r - 0.48, 0.84), Vector2(r - 0.48, 0.06)], Basis.IDENTITY, 56)
+	tour166(L, "dalles71", Vector3.ZERO, [Vector2(r - 0.47, 0.06), Vector2(0.0, 0.06)], Basis.IDENTITY, 40)
+	tour166(L, "eau71_claire", Vector3.ZERO, [Vector2(r - 0.47, 0.6), Vector2(0.0, 0.6)], Basis.IDENTITY, 56)
+	tour166(L, P, Vector3.ZERO, [Vector2(0.64, 0.05), Vector2(0.64, 0.2), Vector2(0.54, 0.25), Vector2(0.58, 0.32), Vector2(0.46, 0.38), Vector2(0.4, 1.88), Vector2(0.48, 1.93), Vector2(0.48, 2.02), Vector2(0.3, 2.04)], Basis.IDENTITY, 28)
+	tour166(L, P, Vector3.ZERO, [Vector2(0.3, 1.98), Vector2(0.7, 2.05), Vector2(1.05, 2.18), Vector2(1.25, 2.33), Vector2(1.3, 2.42), Vector2(1.22, 2.45), Vector2(1.12, 2.38)], Basis.IDENTITY, 40)
+	for k in range(20):
+		var a: float = TAU * (k + 0.5) / 20.0
+		var o := Vector3(sin(a), 0, cos(a))
+		Sculpt166._tube(L, P, [o * 0.4 + Vector3.UP * 2.02, o * 0.75 + Vector3.UP * 2.08, o * 1.08 + Vector3.UP * 2.21, o * 1.24 + Vector3.UP * 2.34], [0.02, 0.045, 0.05, 0.02], 6)
+	tour166(L, "eau71_claire", Vector3.ZERO, [Vector2(1.13, 2.37), Vector2(0.0, 2.37)], Basis.IDENTITY, 40)
+	# le piédestal
+	tour166(L, P, Vector3.ZERO, [Vector2(0.34, 2.3), Vector2(0.3, 2.4), Vector2(0.27, 2.86), Vector2(0.36, 2.92), Vector2(0.36, 3.04), Vector2(0.3, 3.1), Vector2(0.0, 3.11)], Basis.IDENTITY, 20)
+	# le Fondateur : les jambes, le corps, la ceinture, la tête casquée, la cape ; le bras droit levé et
+	# l'épée, le bras gauche et le bouclier
+	for sd in [-1.0, 1.0]:
+		Sculpt166._tube(L, P, [Vector3(sd * 0.12, 3.1, 0.02), Vector3(sd * 0.12, 3.5, 0.0), Vector3(sd * 0.11, 3.98, 0.0)], [0.1, 0.09, 0.11], 10)
+	_ovale165(L, P, Vector3(0, 4.38, 0), Vector3(0.29, 0.46, 0.19), Basis.IDENTITY)
+	tour166(L, P, Vector3(0, 4.0, 0), [Vector2(0.27, 0.0), Vector2(0.29, 0.03), Vector2(0.29, 0.09), Vector2(0.26, 0.12)], Basis.IDENTITY, 20)
+	Sculpt166._tube(L, P, [Vector3(0, 4.78, 0), Vector3(0, 4.92, 0)], [0.07, 0.07], 8)
+	_ovale165(L, P, Vector3(0, 5.03, 0.01), Vector3(0.14, 0.16, 0.15), Basis.IDENTITY)
+	_ovale165(L, P, Vector3(0, 5.1, 0.0), Vector3(0.16, 0.11, 0.17), Basis.IDENTITY)
+	_ovale165(L, P, Vector3(0, 4.15, -0.18), Vector3(0.36, 0.78, 0.05), Basis(Vector3.RIGHT, 0.12))
+	Sculpt166._tube(L, P, [Vector3(0.27, 4.7, 0), Vector3(0.4, 5.0, 0.04), Vector3(0.45, 5.34, 0.1)], [0.08, 0.07, 0.06], 8)
+	Sculpt166._boule(L, P, Vector3(0.45, 5.38, 0.1), Vector3(0.06, 0.06, 0.06))
+	Sculpt166._boite(L, P, Vector3(0.46, 5.43, 0.11), Vector3(0.32, 0.05, 0.07))
+	Sculpt166._boite(L, P, Vector3(0.46, 6.03, 0.11), Vector3(0.07, 1.16, 0.022))
+	Sculpt166._boule(L, P, Vector3(0.46, 5.26, 0.11), Vector3(0.04, 0.04, 0.04))
+	Sculpt166._tube(L, P, [Vector3(-0.27, 4.7, 0), Vector3(-0.37, 4.38, 0.1), Vector3(-0.3, 4.12, 0.22)], [0.08, 0.07, 0.06], 8)
+	_ovale165(L, P, Vector3(-0.36, 4.28, 0.28), Vector3(0.27, 0.36, 0.05), Basis(Vector3.UP, -0.35))
+	pose166(L, xf)
+
+
+## V166 : le puits : la margelle de moellons à boudin, le treuil (le tambour, la corde enroulée, l'axe,
+## la manivelle), le seau cerclé de fer pendu à sa corde.
+func _puits166(xf: Transform3D) -> void:
+	var L: Dictionary = loc166(["moellons71", "planches71", "fer71", "cuir71"])
+	tour166(L, "moellons71", Vector3.ZERO, [Vector2(1.05, 0.0), Vector2(1.05, 0.7), Vector2(1.12, 0.74), Vector2(1.12, 0.86), Vector2(0.98, 0.9), Vector2(0.78, 0.9), Vector2(0.72, 0.86), Vector2(0.72, 0.1)], Basis.IDENTITY, 28)
+	var bx := Basis(Vector3.BACK, -PI * 0.5)
+	tour166(L, "planches71", Vector3(-0.88, 1.7, 0), [Vector2(0.0, 0.0), Vector2(0.11, 0.0), Vector2(0.11, 1.76), Vector2(0.0, 1.76)], bx, 14)
+	for i in range(9):
+		tour166(L, "cuir71", Vector3(-0.3 + i * 0.07, 1.7, 0), [Vector2(0.11, 0.0), Vector2(0.125, 0.02), Vector2(0.125, 0.05), Vector2(0.11, 0.07)], bx, 14)
+	Sculpt166._tube(L, "fer71", [Vector3(0.86, 1.7, 0), Vector3(1.18, 1.7, 0)], [0.025, 0.025], 6)
+	Sculpt166._boite(L, "fer71", Vector3(1.18, 1.56, 0), Vector3(0.04, 0.32, 0.05))
+	Sculpt166._tube(L, "planches71", [Vector3(1.16, 1.42, 0), Vector3(1.4, 1.42, 0)], [0.03, 0.03], 8)
+	# la corde, le seau
+	Sculpt166._tube(L, "cuir71", [Vector3(0.0, 1.6, 0), Vector3(0.0, 1.24, 0)], [0.012, 0.012], 5)
+	tour166(L, "planches71", Vector3(0, 0.98, 0), [Vector2(0.0, 0.0), Vector2(0.12, 0.0), Vector2(0.15, 0.24), Vector2(0.135, 0.25), Vector2(0.11, 0.04), Vector2(0.0, 0.04)], Basis.IDENTITY, 16)
+	for y in [0.05, 0.19]:
+		tour166(L, "fer71", Vector3(0, 0.98 + y, 0), [Vector2(0.124 + y * 0.12, 0.0), Vector2(0.131 + y * 0.12, 0.005), Vector2(0.131 + y * 0.12, 0.03), Vector2(0.124 + y * 0.12, 0.035)], Basis.IDENTITY, 16)
+	var anse: Array = []
+	var rs: Array = []
+	for i2 in range(9):
+		var a2: float = PI * i2 / 8.0
+		anse.append(Vector3(cos(a2) * 0.15, 1.23 + sin(a2) * 0.1, 0))
+		rs.append(0.008)
+	Sculpt166._tube(L, "fer71", anse, rs, 5)
+	pose166(L, xf)

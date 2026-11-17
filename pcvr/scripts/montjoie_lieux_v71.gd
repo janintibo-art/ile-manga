@@ -577,15 +577,23 @@ func forge() -> void:
 	kit.col_box(fx * T(0, 1.9, -7.8), Vector3(9.6, 3.8, 0.4))
 	# le foyer, son soufflet, l'enclume, la cuve, le râtelier d'armes
 	var fo: Transform3D = fx * T(-2.8, 0, -6.4)
-	kit.box(fo * T(0, 0.5, 0), Vector3(2.0, 1.0, 1.6), "moellons71", 1.0)
-	kit.col_box(fo * T(0, 0.5, 0), Vector3(2.0, 1.0, 1.6))
-	kit.box(fo * T(0, 1.02, 0.1), Vector3(1.2, 0.06, 0.9), "terre71", 1.0)
-	kit.cyl(fo * T(0, 1.05, -0.5), 0.7, 0.4, 2.6, "moellons71_sombre", 4)
-	kit.fires70.append([fo * Vector3(0, 1.15, 0.1), 0.45])
 	var an: Transform3D = fx * T(0.4, 0, -3.6)
-	kit.cyl(an, 0.3, 0.26, 0.6, "poutre71", 8)
-	kit.box(an * T(0, 0.75, 0), Vector3(0.9, 0.3, 0.3), "fer71", 1.0)
-	kit.col_box(an * T(0, 0.45, 0), Vector3(0.9, 0.9, 0.4))
+	if kit.hd_v166:
+		# V166 : le vrai foyer (la margelle, le lit de braises, la hotte de pierre et son conduit, le soufflet,
+		# le baquet) et la vraie enclume sur son billot, comme à Port-Coutelas, dans la pierre de Montjoie
+		kit.forge_v165(Transform3D(fo.basis * Basis(Vector3.UP, PI), fo.origin), "moellons71", "moellons71_sombre", "poutre71")
+		kit.fires70.append([fo * Vector3(0, 1.0, 0), 0.45])
+		kit._enclume_v165(an)
+		kit.col_cyl(an.origin, 0.34, 0.9)
+	else:
+		kit.box(fo * T(0, 0.5, 0), Vector3(2.0, 1.0, 1.6), "moellons71", 1.0)
+		kit.col_box(fo * T(0, 0.5, 0), Vector3(2.0, 1.0, 1.6))
+		kit.box(fo * T(0, 1.02, 0.1), Vector3(1.2, 0.06, 0.9), "terre71", 1.0)
+		kit.cyl(fo * T(0, 1.05, -0.5), 0.7, 0.4, 2.6, "moellons71_sombre", 4)
+		kit.fires70.append([fo * Vector3(0, 1.15, 0.1), 0.45])
+		kit.cyl(an, 0.3, 0.26, 0.6, "poutre71", 8)
+		kit.box(an * T(0, 0.75, 0), Vector3(0.9, 0.3, 0.3), "fer71", 1.0)
+		kit.col_box(an * T(0, 0.45, 0), Vector3(0.9, 0.9, 0.4))
 	kit.box(fx * T(3.4, 0.45, -5.6), Vector3(1.4, 0.9, 0.8), "planches71_sombre", 1.0)
 	kit.disc(fx * T(3.4, 0.86, -5.6), 0.5, "eau71", 10)
 	var rack: Transform3D = fx * T(3.4, 0, -7.4)
