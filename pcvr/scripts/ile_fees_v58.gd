@@ -276,6 +276,13 @@ func _build_top() -> void:
 	mat.set_shader_parameter("moss_n", load(base + "terrain/grass_n.png"))
 	mat.set_shader_parameter("soil_tex", load(base + "jungle/jungle_moss.png"))
 	mat.set_shader_parameter("soil_n", load(base + "jungle/jungle_moss_n.png"))
+	# V163 : une vraie prairie (l'herbe drue, les fleurettes en touffes) et, là où l'herbe est rase, le
+	# trèfle et la mousse
+	if ResourceLoader.exists(base + "beau163/prairie_fees.png"):
+		mat.set_shader_parameter("moss_tex", load(base + "beau163/prairie_fees.png"))
+		mat.set_shader_parameter("moss_n", load(base + "beau163/prairie_fees_n.png"))
+		mat.set_shader_parameter("soil_tex", load(base + "beau163/trefle_fees.png"))
+		mat.set_shader_parameter("soil_n", load(base + "beau163/trefle_fees_n.png"))
 	mat.set_shader_parameter("rock_tex", load(base + "ciel/roche_ciel.png"))
 	mat.set_shader_parameter("rock_n", load(base + "ciel/roche_ciel_n.png"))
 	mat.set_shader_parameter("extra_detail", pc)
@@ -453,6 +460,25 @@ func _crystal_mat(c: Color) -> StandardMaterial3D:
 	return m
 
 
+## V163 : les cristaux de la prairie : un verre coloré, profond (pas un bloc blanc), qui luit doucement
+## de l'intérieur et s'allume sur les arêtes.
+func _cristal_v163(c: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(c.r * 0.55, c.g * 0.55, c.b * 0.62, 0.58)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.emission_enabled = true
+	m.emission = c * 0.55
+	m.emission_energy_multiplier = 0.9
+	m.roughness = 0.03
+	m.metallic_specular = 1.0
+	m.rim_enabled = true
+	m.rim = 0.9
+	m.rim_tint = 0.6
+	m.backlight_enabled = true
+	m.backlight = Color(c.r * 0.5, c.g * 0.5, c.b * 0.5)
+	return m
+
+
 ## Feuillage des cerisiers en fleurs (les cartes de feuilles prennent la grappe de fleurs).
 var _blossom: ShaderMaterial
 func blossom_mat() -> ShaderMaterial:
@@ -491,19 +517,25 @@ func _build_water() -> void:
 			rows.append(row)
 		for k in range(n - 1):
 			for i in range(2):
-				for idx in [[k, i], [k, i + 1], [k + 1, i], [k, i + 1], [k + 1, i + 1], [k + 1, i]]:
+				# V163 : la face avant regarde le ciel (l'eau est éclairée par-dessus)
+				for idx in [[k, i], [k + 1, i], [k, i + 1], [k, i + 1], [k + 1, i], [k + 1, i + 1]]:
 					var v: Array = rows[idx[0]][idx[1]]
 					st.set_normal(Vector3.UP)
 					st.set_uv(v[1])
 					st.add_vertex(v[0])
 		var brook := MeshInstance3D.new()
-		brook.name = "Ruisseau_fees"
+		brook.name = "Ruisseau_fees_%d" % streams.find(s)
+		st.generate_tangents()
 		brook.mesh = st.commit()
+		# V163 : une eau claire qui court sur un lit de galets (ruisseau_v163)
+		var long_: float = 0.0
+		for k3 in range(1, n):
+			long_ += (pts[k3] as Vector2).distance_to(pts[k3 - 1])
 		var m := ShaderMaterial.new()
-		m.shader = flow
-		m.set_shader_parameter("fall_length", 40.0)
-		m.set_shader_parameter("flow_speed", 1.4)
-		m.set_shader_parameter("water_color", Color(0.55, 0.78, 0.82))
+		m.shader = load("res://shaders/ruisseau_v163.gdshader")
+		m.set_shader_parameter("longueur", maxf(long_, 1.0))
+		m.set_shader_parameter("largeur", 3.3)
+		m.set_shader_parameter("vitesse", 0.9)
 		brook.material_override = m
 		brook.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(brook)
@@ -812,18 +844,29 @@ func _build_flora() -> void:
 		cs.position = mi.position + Vector3.UP * 2.0
 		_body.add_child(cs)
 	# Herbe, fleurs de toutes les couleurs, buissons, pétales tombés
-	_scatter("Herbe_fees", Flora.grass_clump(11, 0.55, 0.05, 581), Flora.grass_material(), 3800 if pc else 1600, 0.0, Vector2(0.7, 1.4))
+	# V163 : l'herbe plus drue ; les fleurs poussent en touffes (chaque couleur ses massifs), pas en
+	# semis régulier
+	_scatter("Herbe_fees", Flora.grass_clump(11, 0.55, 0.05, 581), Flora.grass_material(), 5600 if pc else 2000, 0.0, Vector2(0.7, 1.4))
 	var colors := [Color(1.0, 0.6, 0.85), Color(0.75, 0.6, 1.0), Color(1.0, 0.92, 0.5), Color(1.0, 0.98, 0.95), Color(0.55, 0.75, 1.0), Color(1.0, 0.55, 0.5)]
 	for i in range(colors.size()):
-		_scatter("Fleurs_fees_%d" % i, Flora.flower_clump(), Flora.flower_material(colors[i]), 300 if pc else 130, -1.0, Vector2(0.7, 1.3))
+		var amas := FastNoiseLite.new()
+		amas.seed = 1631 + i * 7
+		amas.frequency = 0.05
+		_scatter("Fleurs_fees_%d" % i, Flora.flower_clump(), Flora.flower_material(colors[i]), 380 if pc else 150, -1.0, Vector2(0.7, 1.3), amas)
 	_scatter("Buissons_fees", Flora.bush(586), null, 50 if pc else 26, 1.5, Vector2(0.8, 1.5))
 	_scatter("Fougeres_fees", Flora.fern_clump(), Flora.fern_material(), 260 if pc else 120, 0.5, Vector2(0.8, 1.4))
 
 
-func _scatter(label: String, mesh: Mesh, mat: Material, count: int, margin: float, size: Vector2) -> void:
+func _scatter(label: String, mesh: Mesh, mat: Material, count: int, margin: float, size: Vector2, amas: FastNoiseLite = null) -> void:
 	var xfs: Array = []
 	for k in range(count):
 		var l: Vector2 = _random_free(maxf(margin, 0.0)) if margin >= 0.0 else _random_any()
+		if amas != null:
+			# en touffes : on cherche un endroit où le bruit du massif est haut
+			for essai in range(14):
+				if l != Vector2.INF and amas.get_noise_2d(l.x, l.y) > 0.18:
+					break
+				l = _random_free(maxf(margin, 0.0)) if margin >= 0.0 else _random_any()
 		if l == Vector2.INF:
 			continue
 		var b := Basis(Vector3.UP, _rng.randf() * TAU).scaled(Vector3.ONE * _rng.randf_range(size.x, size.y))
@@ -969,8 +1012,8 @@ func _build_rocks() -> void:
 		if s > 1.2:
 			_body.add_child(Rocks.collision_for(mi.mesh, mi.transform))
 	# Cristaux près du cercle et de l'étang
-	var cm_a: StandardMaterial3D = _crystal_mat(Color(0.75, 0.6, 1.0))
-	var cm_b: StandardMaterial3D = _crystal_mat(Color(0.5, 0.95, 1.0))
+	var cm_a: StandardMaterial3D = _cristal_v163(Color(0.75, 0.6, 1.0))
+	var cm_b: StandardMaterial3D = _cristal_v163(Color(0.5, 0.95, 1.0))
 	for k in range(8):
 		var base: Vector2 = (RING + Vector2(-9.0, 4.0)) if k < 4 else (POND + Vector2(10.0, -7.0))
 		var l2: Vector2 = base + Vector2(_rng.randf_range(-2.5, 2.5), _rng.randf_range(-2.5, 2.5))

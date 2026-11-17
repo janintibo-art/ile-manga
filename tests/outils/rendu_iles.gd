@@ -41,7 +41,11 @@ class FakeMain:
 	func _player_pos_v27() -> Vector3:
 		return cam.global_position - Vector3.UP * 1.6 if cam != null else Vector3.ZERO
 
+	var sol_plat: bool = false
+
 	func _height_at(x: float, z: float) -> float:
+		if sol_plat:
+			return 0.0
 		if ile_node != null and ile_node.has_method("height"):
 			return ile_node.height(x, z)
 		return -5.0
@@ -129,6 +133,14 @@ func _initialize() -> void:
 			await _celeste()
 		"jungle", "jungle_piton":
 			await _jungle(quoi == "jungle_piton")
+		"azur":
+			await _azur()
+		"fees":
+			await _fees()
+		"teuf":
+			await _teuf()
+		"facade":
+			await _facade()
 		"atlantide":
 			await _atlantide()
 	quit()
@@ -274,6 +286,142 @@ func _w(I, x: float, z: float) -> Vector3:
 	var w: Vector3 = I.W(x, z)
 	w.y = fm._height_at(w.x, w.z)
 	return w
+
+
+# =================================================================== Port-Azur, le royaume des fées, la teuf (V163)
+
+func _azur() -> void:
+	var Az: Node3D = load("res://scripts/azur_v56.gd").new()
+	fm.add_child(Az)
+	Az.setup(fm)
+	Az.pc = true
+	Az.build_island()
+	fm.ile_node = Az.ile
+	Az.build_town()
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	var I: Node3D = Az.ile
+	_mer(Vector3(I.CENTER.x, 0.0, I.CENTER.z))
+	var P: Node3D = Az.port
+	await _vue("101_quai", P.T(4.0, 3.0, 1.7), P.T(0.0, 30.0, 6.0))
+	await _vue("109_fenetres", P.T(13.0, 3.5, 4.2), P.T(10.0, 10.0, 6.0))
+	await _vue("110_facade", P.T(-22.0, 4.0, 1.7), P.T(-27.0, 10.0, 3.0))
+	await _vue("102_front_de_mer", P.T(-30.0, 6.0, 1.7), P.T(10.0, 14.0, 5.0))
+	await _vue("103_place", P.T(-8.0, 36.0, 1.7), P.T(0.0, 55.0, 4.0))
+	await _vue("104_hotel", P.T(-40.0, 4.0, 1.7), P.T(-60.0, 24.0, 8.0))
+	await _vue("105_plage", P.T(-80.0, 2.0, 1.7), P.T(-55.0, 18.0, 2.0))
+	await _vue("106_phare", P.T(55.0, 2.0, 1.7), P.T(80.0, -10.0, 14.0))
+	await _vue("107_ruelle", P.T(10.0, 50.0, 1.7), P.T(20.0, 70.0, 4.0))
+	await _vue("108_dessus", I.CENTER + Vector3(170, 130, 170), I.CENTER + Vector3(0, 10, 0))
+	# le soir : les fenêtres allumées
+	var fk: Material = P.kit.mats.get("fenetre_nuit")
+	if fk is ShaderMaterial:
+		(fk as ShaderMaterial).set_shader_parameter("glow", 1.6)
+	_nuit()
+	await _vue("10d_soir_fenetres", P.T(13.0, 3.5, 4.2), P.T(10.0, 10.0, 6.0))
+	await _vue("10e_soir_place", P.T(-8.0, 36.0, 1.7), P.T(0.0, 55.0, 4.0))
+
+
+## Trois façades de Port-Azur seules (V163) : pour voir de près l'enduit et les fenêtres, vite.
+func _facade() -> void:
+	fm.sol_plat = true
+	var r3 := Node3D.new()
+	root.add_child(r3)
+	var kit = load("res://scripts/azur_kit_v56.gd").new()
+	kit.hd_v163 = true
+	kit.sol_v163 = 0.0
+	kit.setup(r3, fm.temps_v56)
+	kit.box(Transform3D(Basis(), Vector3(0, -0.05, 2.0)), Vector3(60, 0.1, 30), "dalles", 4.0, 4)
+	var specs: Array = [
+		{"w": 10.0, "floors": [3.6, 3.0, 3.0], "color": "rose", "volets": "bordeaux", "rdc": "porte", "balcons": [1], "pas_v81": true},
+		{"w": 9.0, "floors": [3.6, 3.0, 3.0], "color": "jaune", "volets": "vert", "rdc": "boutique", "auvent": "turquoise"},
+		{"w": 12.0, "floors": [3.6, 3.0], "color": "ocre", "volets": "bleu", "rdc": "porte", "pas_v81": true, "lit": 1.0},
+	]
+	var x: float = -11.0
+	for sp in specs:
+		kit.building(Transform3D(Basis(), Vector3(x, 0, 0)), sp)
+		x += 10.6
+	kit.commit()
+	for k in range(4):
+		await process_frame
+	await _vue("131_facades", Vector3(0.0, 1.7, -13.0), Vector3(0.0, 4.5, 0.0))
+	await _vue("132_fenetre", Vector3(-9.5, 5.0, -2.6), Vector3(-11.0, 5.0, 0.0))
+	await _vue("133_rasant", Vector3(-17.0, 1.7, -3.0), Vector3(0.0, 4.0, 0.0))
+	await _vue("134_rdc", Vector3(10.0, 1.6, -3.5), Vector3(10.6, 1.4, 0.0))
+	var fk: Material = kit.mats.get("fenetre_nuit")
+	if fk is ShaderMaterial:
+		(fk as ShaderMaterial).set_shader_parameter("glow", 1.6)
+	_nuit()
+	await _vue("135_soir", Vector3(0.0, 1.7, -13.0), Vector3(0.0, 4.5, 0.0))
+	await _vue("136_soir_fenetre", Vector3(9.0, 4.6, -2.8), Vector3(10.6, 4.8, 0.0))
+
+
+func _fees() -> void:
+	var Fe: Node3D = load("res://scripts/feerie_v58.gd").new()
+	fm.add_child(Fe)
+	Fe.setup(fm)
+	Fe.pc = true
+	Fe.build()
+	fm.ile_node = Fe.ile
+	for k in range(6):
+		await process_frame
+	await physics_frame
+	var I: Node3D = Fe.ile
+	var C: Vector3 = I.CENTER + Vector3.UP * I.Y0
+	await _vue("111_prairie", I.world(Vector2(0, 40), 1.7), I.world(I.TREE, 20.0))
+	await _vue("112_yggdrasil", I.world(Vector2(6, 8), 1.7), I.world(I.TREE, 26.0))
+	await _vue("113_etang", I.world(I.POND + Vector2(11, 9), 1.7), I.world(I.POND, 0.0))
+	await _vue("114_fleurs", I.world(Vector2(-30, 22), 1.4), I.world(Vector2(-48, 4), 2.0))
+	await _vue("115_clairiere", I.world(Vector2(10, 50), 1.7), I.world(Vector2(-5, 62), 3.0))
+	await _vue("116_dessous", C + Vector3(90, -80, 90), C + Vector3(0, -40, 0))
+	await _vue("117_vue", C + Vector3(130, 60, 130), C + Vector3(0, 5, 0))
+	await _vue("118_bord", I.world(Vector2(40, -30), 1.7), I.world(Vector2(80, -60), -30.0))
+
+
+func _teuf() -> void:
+	fm.sol_plat = true
+	var sol := MeshInstance3D.new()
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(200, 200)
+	sol.mesh = pm
+	var sm := StandardMaterial3D.new()
+	sm.albedo_texture = load("res://assets/textures/terrain/sand.jpg")
+	sm.albedo_color = Color(0.72, 0.66, 0.56)
+	sm.uv1_scale = Vector3(40, 40, 1)
+	sm.roughness = 0.95
+	sol.material_override = sm
+	root.add_child(sol)
+	for g in [["Mur_de_son", Vector3(0, 3.75, 60), 6.0, PI], ["Table_de_mixage", Vector3(9, 0.988, 60), 2.5, 0.0], ["Distributeur_8_6", Vector3(-9, 1.712, 60), 1.8, PI]]:
+		var ps: PackedScene = load("res://assets/models/props/%s.glb" % g[0])
+		var n3: Node3D = ps.instantiate()
+		n3.position = g[1]
+		n3.scale = Vector3.ONE * float(g[2])
+		n3.rotation.y = float(g[3])
+		root.add_child(n3)
+	var Tf: Node3D = load("res://scripts/teuf_v57.gd").new()
+	fm.add_child(Tf)
+	Tf.setup(fm)
+	for k in range(6):
+		await process_frame
+	await _vue("121_piste", Vector3(3.0, 1.7, 38.0), Vector3(1.0, 3.0, 60.0))
+	await _vue("122_mur", Vector3(-6.0, 1.7, 51.0), Vector3(0.0, 3.0, 60.0))
+	await _vue("123_platines", Vector3(12.5, 2.2, 55.5), Vector3(9.0, 1.0, 60.0))
+	await _vue("124_estrade", Vector3(18.0, 1.7, 64.0), Vector3(9.0, 1.5, 60.5))
+	await _vue("125_banderole", Vector3(8.0, 1.6, 54.5), Vector3(9.0, 1.1, 59.0))
+	await _vue("126_palettes", Vector3(-6.0, 1.6, 47.0), Vector3(-12.5, 0.4, 52.0))
+	await _vue("127_portique", Vector3(2.0, 1.7, 47.0), Vector3(0.0, 7.0, 57.0))
+	await _vue("128_large", Vector3(22.0, 9.0, 30.0), Vector3(0.0, 2.0, 52.0))
+	# la nuit : les guirlandes, les flambeaux, les lyres et leurs faisceaux
+	fm.temps_v56.lamps_on = true
+	var D: Node = Tf.decor_v163
+	if D != null:
+		D.ampoules_mat.emission_energy_multiplier = 1.6
+		D.flamme_mat.set_shader_parameter("glow", 1.0)
+	_nuit()
+	await _vue("12a_nuit_piste", Vector3(3.0, 1.7, 38.0), Vector3(1.0, 3.0, 60.0))
+	await _vue("12b_nuit_large", Vector3(22.0, 9.0, 30.0), Vector3(0.0, 2.0, 52.0))
+	await _vue("12c_nuit_danse", Vector3(-4.0, 1.7, 44.0), Vector3(4.0, 3.5, 57.0))
 
 
 # =================================================================== l'île de la jungle et l'Atlantide (V162)
@@ -490,6 +638,17 @@ func _vue(nom: String, at: Vector3, look: Vector3, images: int = 3) -> void:
 		await process_frame
 	root.get_texture().get_image().save_png("%s/%s.png" % [out, nom])
 	print("RENDU ", nom)
+
+
+## La nuit (V163) : le soleil presque éteint, un ciel noir bleuté, un peu de lune.
+func _nuit() -> void:
+	sun.light_energy = 0.06
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.02, 0.03, 0.06)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.3, 0.35, 0.5)
+	env.ambient_light_energy = 0.22
+	env.fog_enabled = false
 
 
 func _mer(c: Vector3) -> void:

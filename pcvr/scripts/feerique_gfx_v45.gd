@@ -284,8 +284,10 @@ func roots_mesh(curves: Array) -> ArrayMesh:
 				var i1: int = i0 + 1
 				var i2: int = i0 + sides + 1
 				var i3: int = i2 + 1
-				st.add_index(i0); st.add_index(i2); st.add_index(i1)
-				st.add_index(i1); st.add_index(i2); st.add_index(i3)
+				# V163 : les faces regardent dehors (Godot : sens des aiguilles d'une montre vu de devant ;
+				# avant, elles regardaient dedans et les racines, à double face, restaient sombres)
+				st.add_index(i0); st.add_index(i1); st.add_index(i2)
+				st.add_index(i1); st.add_index(i3); st.add_index(i2)
 		base += (segs + 1) * (sides + 1)
 	st.generate_tangents()
 	return st.commit()

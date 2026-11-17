@@ -30,6 +30,10 @@ var temps: Node                          # temps_v56 (lampes et fenêtres de nui
 var rng := RandomNumberGenerator.new()
 var lamp_count: int = 0
 var signs: Array = []                    # MeshInstance3D des enseignes
+## V163 : Port-Azur en haute définition (l'enduit vieilli, les fenêtres en profondeur, les dalles de
+## calcaire blond, la pierre fine) ; mis par port_azur_v56 (les autres villes du kit gardent les leurs).
+var hd_v163: bool = false
+var sol_v163: float = 1.2
 ## V81 : les portes des maisons décoratives (on y entre par un fondu : maisons_v81.gd).
 ## {door, out, w, d, style, floors} ; remis à zéro par main avant la construction du monde.
 static var PORTES_V81: Array = []
@@ -75,6 +79,11 @@ func _tex(name: String) -> Texture2D:
 func mat(key: String) -> Material:
 	if mats.has(key):
 		return mats[key]
+	if hd_v163:
+		var hd: Material = _mat_v163(key)
+		if hd != null:
+			mats[key] = hd
+			return hd
 	var m := StandardMaterial3D.new()
 	m.roughness = 0.9
 	var parts: PackedStringArray = key.split("_", true, 1)
@@ -240,6 +249,59 @@ func mat(key: String) -> Material:
 			m.albedo_color = Color(1, 0, 1)
 	mats[key] = m
 	return m
+
+
+## V163 : les matières de Port-Azur en haute définition (null : la matière ordinaire).
+func _mat_v163(key: String) -> Material:
+	const B163 := "res://assets/textures/beau163/"
+	var parts: PackedStringArray = key.split("_", true, 1)
+	var kind: String = parts[0]
+	var variant: String = parts[1] if parts.size() > 1 else ""
+	match kind:
+		"enduit":
+			var sm := ShaderMaterial.new()
+			sm.shader = load("res://shaders/enduit_v163.gdshader")
+			sm.set_shader_parameter("tex_albedo", _tex("enduit.png"))
+			sm.set_shader_parameter("tex_normal", _tex("enduit_n.png"))
+			sm.set_shader_parameter("tex_pierre", _tex("moellons.png"))
+			sm.set_shader_parameter("tex_pierre_n", _tex("moellons_n.png"))
+			sm.set_shader_parameter("teinte", ENDUITS.get(variant, Color(0.95, 0.92, 0.86)))
+			sm.set_shader_parameter("sol_y", sol_v163)
+			return sm
+		"fenetre":
+			var fm := ShaderMaterial.new()
+			fm.shader = load("res://shaders/fenetre_v163.gdshader")
+			fm.set_shader_parameter("glow", 0.0)
+			if variant == "nuit" and temps != null:
+				temps.register_glow(fm, 1.6, 0.0)
+			return fm
+		"dalles":
+			if not ResourceLoader.exists(B163 + "dalles_azur.png"):
+				return null
+			var m := StandardMaterial3D.new()
+			m.albedo_texture = load(B163 + "dalles_azur.png")
+			m.normal_enabled = true
+			m.normal_texture = load(B163 + "dalles_azur_n.png")
+			m.normal_scale = 1.1
+			m.roughness_texture = load(B163 + "dalles_azur_r.png")
+			m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+			m.roughness = 1.0
+			m.metallic_specular = 0.3
+			m.albedo_color = Color(0.84, 0.8, 0.74)
+			return m
+		"pierre":
+			if not ResourceLoader.exists(B163 + "pierre_fine.png"):
+				return null
+			var mp := StandardMaterial3D.new()
+			mp.albedo_texture = load(B163 + "pierre_fine.png")
+			mp.normal_enabled = true
+			mp.normal_texture = load(B163 + "pierre_fine_n.png")
+			mp.roughness_texture = load(B163 + "pierre_fine_r.png")
+			mp.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+			mp.roughness = 1.0
+			mp.albedo_color = Color(1.0, 0.98, 0.94) if variant == "" else Color(0.72, 0.7, 0.66)
+			return mp
+	return null
 
 
 # =================================================================== géométrie regroupée
@@ -463,7 +525,7 @@ func commit() -> void:
 	for key in batch:
 		var st: SurfaceTool = batch[key]
 		var m: Material = mat(key)
-		if m is StandardMaterial3D and (m as StandardMaterial3D).normal_enabled:
+		if (m is StandardMaterial3D and (m as StandardMaterial3D).normal_enabled) or m is ShaderMaterial:
 			st.generate_tangents()
 		var mesh: ArrayMesh = st.commit()
 		var mi := MeshInstance3D.new()

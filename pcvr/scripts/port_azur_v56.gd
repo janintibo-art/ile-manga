@@ -64,6 +64,8 @@ func build(main_node: Node, island: Node3D, high_quality: bool) -> void:
 	Y = ile.TOWN_Y
 	var t0: int = Time.get_ticks_msec()
 	kit = Kit.new()
+	kit.hd_v163 = true
+	kit.sol_v163 = ile.TOWN_Y
 	kit.setup(self, main.get("temps_v56"))
 	_ground()
 	_quay()

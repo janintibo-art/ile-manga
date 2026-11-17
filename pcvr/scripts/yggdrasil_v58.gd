@@ -300,7 +300,7 @@ func _build_crown_platform() -> void:
 # =================================================================== branches et couronne
 
 ## Tube le long d'un chemin (anneaux transportés), faces vers l'extérieur.
-func _tube(st: SurfaceTool, path: Array, radii: Array, sides: int, uv_k: float) -> void:
+func _tube(st: SurfaceTool, path: Array, radii: Array, sides: int, uv_k: float, cap0: bool = false) -> void:
 	var rings: Array = []
 	var along: float = 0.0
 	var prev_side := Vector3.ZERO
@@ -338,6 +338,20 @@ func _tube(st: SurfaceTool, path: Array, radii: Array, sides: int, uv_k: float) 
 				for v in tri:
 					st.set_uv(v[1])
 					st.add_vertex(v[0])
+	# V163 : le premier anneau fermé (le pied d'une charpentière, noyé dans le tronc)
+	if cap0 and rings.size() > 1:
+		var r0c: Array = rings[0][0]
+		var c0c: Vector3 = rings[0][1]
+		var back: Vector3 = (c0c - (rings[1][1] as Vector3)).normalized()
+		for s2 in range(sides):
+			var a2: Array = r0c[s2]
+			var b2: Array = r0c[s2 + 1]
+			var tri2: Array = [[c0c, Vector2(0.5, 0.0)], a2, b2]
+			if ((a2[0] as Vector3) - c0c).cross((b2[0] as Vector3) - c0c).dot(back) > 0.0:
+				tri2 = [[c0c, Vector2(0.5, 0.0)], b2, a2]
+			for v2 in tri2:
+				st.set_uv(v2[1])
+				st.add_vertex(v2[0])
 
 
 func _leaf_card(st: SurfaceTool, center: Vector3, size: float, crown: Vector3, crown_r: float) -> void:
@@ -391,7 +405,13 @@ func _build_branches() -> void:
 			path.append((path[s - 1] as Vector3) + dir * length / segs)
 		for s in range(path.size()):
 			radii.append(lerpf(3.8, 0.5, pow(float(s) / segs, 0.75)))
-		_tube(wood, path, radii, 16 if pc else 9, 1.0)
+		# V163 : le pied de la charpentière naît du tronc (un contrefort qui s'élargit en montant le
+		# long de l'écorce), au lieu de sortir d'un trou ; son bout est fermé, dans le bois
+		var ya: float = CROWN - 11.0
+		var yb: float = CROWN - 7.5
+		var pa: Vector3 = d * (trunk_r(a, ya) - 0.7) + Vector3.UP * ya
+		var pb: Vector3 = d * (trunk_r(a, yb) - 0.35) + Vector3.UP * yb
+		_tube(wood, [pa, pb] + path, [0.9, 2.1] + radii, 16 if pc else 9, 1.0, true)
 		# collision du pied de la branche (on ne traverse pas le bois)
 		for s2 in range(2):
 			var cs := CollisionShape3D.new()

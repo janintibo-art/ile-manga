@@ -33,6 +33,7 @@ var _t0: int = 0
 var _chat_clock: float = 6.0
 var _chat_i: int = 0
 var chats_said: int = 0                   # V58 : pour les tests
+var decor_v163: Node3D                     # V163 : le décor de la teuf (teuf_decor_v163.gd)
 
 
 func setup(main_node: Node) -> void:
@@ -44,6 +45,10 @@ func setup(main_node: Node) -> void:
 	_build_riser(feet_ground)
 	_build_music()
 	_build_lights()
+	# V163 : le portique et ses lyres, les guirlandes, les flambeaux, la banderole, les palettes
+	decor_v163 = preload("res://scripts/teuf_decor_v163.gd").new()
+	add_child(decor_v163)
+	decor_v163.build(self, main)
 	print("ILE_MANGA_V57: teuf de la plage, platines à %.2f m, estrade du DJ à %.2f m (sol %.2f)" % [deck_y, riser_top, feet_ground])
 
 
@@ -304,6 +309,8 @@ func _process(delta: float) -> void:
 			continue
 		var on: bool = (bar + i) % 2 == 0 or i == bar % 4
 		l.light_energy = (3.5 * exp(-ph * 5.0) + 0.4) if on else 0.25
+	if decor_v163 != null:
+		decor_v163.suivre(lights, night and d <= 120.0)
 
 
 # =================================================================== V58 : les teufeurs discutent
