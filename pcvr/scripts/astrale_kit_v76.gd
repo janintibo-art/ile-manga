@@ -16,6 +16,8 @@ const Mats76 = preload("res://scripts/astrale_mats_v76.gd")
 var real_lights: Array = []              # les lumières vraies (pour la nuit)
 
 
+var hd_v167: bool = false                # V167 : Astralys en haute définition (la fontaine, le télescope)
+
 func mat(key: String) -> Material:
 	if mats.has(key):
 		return mats[key]
@@ -229,6 +231,13 @@ func holo76(xf: Transform3D, w: float, h: float, n: int) -> void:
 
 ## La fontaine holographique (c : le centre au sol). Renvoie le centre du jet (pour les planètes).
 func fountain76(c: Vector3, r: float) -> Vector3:
+	if hd_v167:
+		col_cyl(c, r, 0.8)
+		col_cyl(c, 1.2, 1.3)
+		col_cyl(c, 0.3, 6.3)
+		cyl(Transform3D(Basis(), c + Vector3.UP * 2.9), 0.22, 0.05, 3.4, "eau76", 10, false)
+		_fontaine167(c, r)
+		return c + Vector3.UP * 5.0
 	ring(Transform3D(Basis(), c), r - 0.5, r, 0.7, "nacre76_", 40)
 	disc(Transform3D(Basis(), c + Vector3.UP * 0.45), r - 0.45, "eau76", 40)
 	disc(Transform3D(Basis(), c + Vector3.UP * 0.05), r - 0.45, "cristalsol76", 40)
@@ -283,6 +292,10 @@ func arch76(xf: Transform3D, w: float, h: float, color: String = "or") -> void:
 
 ## Le grand télescope de l'Observatoire (xf : le pied ; il vise le ciel vers +Z).
 func telescope76(xf: Transform3D) -> void:
+	if hd_v167:
+		col_cyl(xf.origin, 1.3, 2.0)
+		_telescope167(xf)
+		return
 	cyl(xf, 1.2, 0.9, 1.6, "metal76_", 16)
 	var tube: Transform3D = xf * Transform3D(Basis(Vector3.RIGHT, deg_to_rad(55.0)), Vector3(0, 2.2, 0))
 	cyl(tube * T(0, -3.0, 0), 0.7, 0.9, 9.0, "metal76_bleu", 18)
@@ -354,3 +367,45 @@ func proto(key: String) -> ArrayMesh:
 	batch = saved
 	protos[key] = mesh
 	return mesh
+
+
+# =================================================================== V167 : les pièces sculptées
+
+## V167 : la fontaine de l'Agora, tournée dans la nacre : le bassin évasé et sa margelle où court un
+## filet de lumière, l'eau, la colonne-vase effilée, et, autour du jet, trois anneaux d'or qui flottent.
+func _fontaine167(c: Vector3, r: float) -> void:
+	var L: Dictionary = loc166(["nacre76_", "nacre76_bleu", "eau76", "lumiere76_turquoise", "metal76_or"])
+	tour166(L, "nacre76_", Vector3.ZERO, [Vector2(r + 0.12, 0.0), Vector2(r + 0.12, 0.05), Vector2(r + 0.03, 0.2), Vector2(r - 0.02, 0.6), Vector2(r + 0.05, 0.69), Vector2(r + 0.03, 0.75), Vector2(r - 0.38, 0.76), Vector2(r - 0.45, 0.7), Vector2(r - 0.45, 0.38)], Basis.IDENTITY, 64)
+	tour166(L, "lumiere76_turquoise", Vector3.ZERO, [Vector2(r - 0.1, 0.762), Vector2(r - 0.22, 0.764)], Basis.IDENTITY, 64)
+	tour166(L, "eau76", Vector3.ZERO, [Vector2(r - 0.44, 0.46), Vector2(0.0, 0.46)], Basis.IDENTITY, 48)
+	tour166(L, "nacre76_bleu", Vector3.ZERO, [Vector2(1.22, 0.4), Vector2(1.16, 0.62), Vector2(0.72, 1.0), Vector2(0.46, 1.6), Vector2(0.38, 2.4), Vector2(0.5, 2.7), Vector2(0.63, 2.82), Vector2(0.59, 2.9), Vector2(0.3, 2.92), Vector2(0.0, 2.95)], Basis.IDENTITY, 40)
+	for k in range(3):
+		var R: float = [0.95, 0.72, 0.5][k]
+		var h: float = [3.4, 4.05, 4.6][k]
+		var prof: Array = []
+		for i in range(13):
+			var a: float = TAU * i / 12.0
+			prof.append(Vector2(R + 0.05 * cos(a), h + 0.05 * sin(a)))
+		tour166(L, "metal76_or", Vector3.ZERO, prof, Basis.IDENTITY, 40)
+	pose166(L, Transform3D(Basis(), c))
+
+
+## V167 : le grand télescope de l'Observatoire : le pilier tourné, la fourche, le tube et ses bagues
+## d'or, le pare-buée, l'objectif de cristal, le chercheur, l'oculaire.
+func _telescope167(xf: Transform3D) -> void:
+	var L: Dictionary = loc166(["metal76_", "metal76_bleu", "metal76_or", "cristal76_bleu"])
+	tour166(L, "metal76_", Vector3.ZERO, [Vector2(1.25, 0.0), Vector2(1.25, 0.15), Vector2(1.05, 0.25), Vector2(0.85, 0.42), Vector2(0.75, 1.5), Vector2(0.92, 1.6), Vector2(0.92, 1.75), Vector2(0.0, 1.78)], Basis.IDENTITY, 32)
+	for sx in [-1.0, 1.0]:
+		Sculpt166._boite(L, "metal76_", Vector3(sx * 1.02, 2.15, 0), Vector3(0.18, 0.8, 0.6))
+	Sculpt166._tube(L, "metal76_or", [Vector3(-1.15, 2.2, 0), Vector3(1.15, 2.2, 0)], [0.12, 0.12], 12)
+	var tb := Basis(Vector3.RIGHT, deg_to_rad(55.0))
+	var o := Vector3(0, 2.2, 0)
+	tour166(L, "metal76_bleu", o, [Vector2(0.0, -3.05), Vector2(0.62, -3.05), Vector2(0.72, -2.92), Vector2(0.74, -2.7), Vector2(0.76, 4.6), Vector2(0.86, 4.62), Vector2(0.86, 6.0), Vector2(0.8, 6.02), Vector2(0.8, 5.6)], tb, 36)
+	tour166(L, "cristal76_bleu", o, [Vector2(0.81, 5.6), Vector2(0.0, 5.61)], tb, 36)
+	for z in [-2.0, 0.8, 3.7]:
+		tour166(L, "metal76_or", o + tb * Vector3(0, z, 0), [Vector2(0.75, 0.0), Vector2(0.81, 0.05), Vector2(0.81, 0.25), Vector2(0.75, 0.3)], tb, 36)
+	tour166(L, "metal76_", o + tb * Vector3(0.95, 1.6, 0), [Vector2(0.0, 0.0), Vector2(0.13, 0.0), Vector2(0.13, 1.5), Vector2(0.16, 1.55), Vector2(0.16, 1.75), Vector2(0.0, 1.76)], tb, 14)
+	for y in [1.9, 2.8]:
+		Sculpt166._tube(L, "metal76_", [o + tb * Vector3(0.7, y, 0), o + tb * Vector3(0.9, y, 0)], [0.04, 0.04], 6)
+	Sculpt166._tube(L, "metal76_", [o + tb * Vector3(0, -2.6, 0.72), o + tb * Vector3(0, -2.6, 1.0), o + tb * Vector3(0, -2.45, 1.12)], [0.09, 0.08, 0.07], 10)
+	pose166(L, xf)

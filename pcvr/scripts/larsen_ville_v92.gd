@@ -18,6 +18,8 @@ var L: Node3D                             # larsen_v91 (l'île, les yourtes)
 var points: Dictionary = {}               # nom -> Vector3 (monde)
 var graph: Dictionary = {}                # nom -> [voisins]
 var spots: Dictionary = {}                # nom -> {pos, face, pose, node}
+var hd_v167: bool = true                  # V167 : le mobilier sculpté (le métier à tisser, la terrasse du café, les djembés)
+var pieces_v167: int = 0                  # V167 : les pièces sculptées posées
 var habitants: Array = []
 var by_id: Dictionary = {}
 var door_of: Dictionary = {}              # nom de yourte -> point de sa porte
@@ -371,20 +373,28 @@ func _decor() -> void:
 	var b := Kit.Batch.new()
 	for k in range(3):
 		var sp: Dictionary = spots["djembe_%d" % (k + 1)]
-		b.cyl("bois", Transform3D(Basis(), (sp["pos"] as Vector3) - (sp["face"] as Vector3) * 0.05), 0.17, 0.2, 0.42, 10, true)
+		if hd_v167:
+			_tabouret167(Transform3D(Basis(), (sp["pos"] as Vector3) - (sp["face"] as Vector3) * 0.05))
+			_djembe167((sp["pos"] as Vector3) + (sp["face"] as Vector3) * 0.5)
+		else:
+			b.cyl("bois", Transform3D(Basis(), (sp["pos"] as Vector3) - (sp["face"] as Vector3) * 0.05), 0.17, 0.2, 0.42, 10, true)
 	if spots.has("tissage"):
 		var t: Dictionary = spots["tissage"]
 		var f: Vector3 = t["face"]
 		var at: Vector3 = (t["pos"] as Vector3) + f * 0.7
 		var bs := Basis(Vector3.UP, atan2(f.x, f.z))
 		var xf := Transform3D(bs, at)
-		for sx in [-0.65, 0.65]:
-			b.box("bois_peint", xf * Transform3D(Basis(), Vector3(sx, 0.75, 0)), Vector3(0.07, 1.5, 0.07))
-		b.box("bois_peint", xf * Transform3D(Basis(), Vector3(0, 1.45, 0)), Vector3(1.4, 0.07, 0.07))
-		b.box("bois_peint", xf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(1.4, 0.07, 0.07))
-		b.box("toile_rayee", xf * Transform3D(Basis(), Vector3(0, 0.9, 0)), Vector3(1.2, 0.8, 0.01))
-		b.box("bois", xf * Transform3D(Basis(), Vector3(0, 0.75, -0.18)), Vector3(1.3, 0.05, 0.08))
-		b.cyl("bois", Transform3D(Basis(), (t["pos"] as Vector3) - f * 0.05), 0.16, 0.18, 0.44, 10, true)
+		if hd_v167:
+			_metier167(xf)
+			_tabouret167(Transform3D(bs, (t["pos"] as Vector3) - f * 0.05))
+		else:
+			for sx in [-0.65, 0.65]:
+				b.box("bois_peint", xf * Transform3D(Basis(), Vector3(sx, 0.75, 0)), Vector3(0.07, 1.5, 0.07))
+			b.box("bois_peint", xf * Transform3D(Basis(), Vector3(0, 1.45, 0)), Vector3(1.4, 0.07, 0.07))
+			b.box("bois_peint", xf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(1.4, 0.07, 0.07))
+			b.box("toile_rayee", xf * Transform3D(Basis(), Vector3(0, 0.9, 0)), Vector3(1.2, 0.8, 0.01))
+			b.box("bois", xf * Transform3D(Basis(), Vector3(0, 0.75, -0.18)), Vector3(1.3, 0.05, 0.08))
+			b.cyl("bois", Transform3D(Basis(), (t["pos"] as Vector3) - f * 0.05), 0.16, 0.18, 0.44, 10, true)
 	# la batterie des Gouttières, et le tapis du garage
 	var dk: Vector3 = (spots["garage_batterie"]["pos"] as Vector3)
 	_drum_kit(b, Transform3D(Basis(Vector3.UP, -PI * 0.5), dk))
@@ -398,6 +408,9 @@ func _decor() -> void:
 		b.cyl("chrome", Transform3D(Basis(), cc + Vector3(-0.5 + k2 * 0.5, 1.1, 0.05)), 0.04, 0.035, 0.1, 8, true)
 	for tb in [Vector2(55.5, -23.0), Vector2(64.5, -23.0)]:
 		var tp: Vector3 = G(tb.x, tb.y)
+		if hd_v167:
+			_table_parasol167(Transform3D(Basis(Vector3.UP, tb.x * 0.37), tp))
+			continue
 		b.cyl("fer", Transform3D(Basis(), tp), 0.05, 0.05, 0.72, 8, false)
 		b.cyl("bois", Transform3D(Basis(), tp + Vector3.UP * 0.72), 0.45, 0.45, 0.04, 16, true)
 		b.box("toile_rayee", Transform3D(Basis(), tp + Vector3.UP * 2.2), Vector3(2.2, 0.03, 2.2))
@@ -406,6 +419,9 @@ func _decor() -> void:
 		var sp3: Dictionary = spots[nm]
 		var cp: Vector3 = sp3["pos"]
 		var fc: Vector3 = sp3["face"]
+		if hd_v167:
+			_chaise167(Transform3D(Basis(Vector3.UP, atan2(fc.x, fc.z)), cp))
+			continue
 		b.box("bois", Transform3D(Basis(Vector3.UP, atan2(fc.x, fc.z)), cp + Vector3.UP * 0.44), Vector3(0.45, 0.04, 0.42))
 		b.box("bois", Transform3D(Basis(Vector3.UP, atan2(fc.x, fc.z)), cp + Vector3.UP * 0.72 - fc * 0.2), Vector3(0.45, 0.55, 0.04))
 		for sx in [-0.19, 0.19]:
@@ -499,3 +515,129 @@ func claim_spot(nm: String, who: Node) -> void:
 func release_spot(nm: String, who: Node) -> void:
 	if _claims.get(nm, null) == who:
 		_claims.erase(nm)
+
+
+# =================================================================== V167 : le mobilier sculpté
+
+const S167 = preload("res://scripts/sculpt_v167.gd")
+
+
+func _mats167(keys: Array) -> Dictionary:
+	var d := {}
+	for k in keys:
+		d[k] = Kit.mat(k)
+	return d
+
+
+## V167 : le métier à tisser du Cercle de la Lune (xf : au sol, la tisserande du côté -Z) : les deux
+## montants sur leurs patins, l'ensouple du haut et les fils de chaîne tendus, le peigne et les lices, la
+## toile rayée déjà tissée qui s'enroule sur l'ensouple du bas, la navette posée.
+func _metier167(xf: Transform3D) -> void:
+	var L: Dictionary = S167.loc(["bois_peint", "bois", "toile_rayee", "corde"])
+	for sx in [-0.65, 0.65]:
+		S167.boite(L, "bois_peint", Vector3(sx, 0.78, 0), Vector3(0.07, 1.56, 0.07))
+		S167.boite(L, "bois_peint", Vector3(sx, 0.04, 0), Vector3(0.09, 0.08, 0.7))
+		S167.boite(L, "bois_peint", Vector3(sx, 0.3, 0.12), Vector3(0.05, 0.05, 0.28), Basis(Vector3.RIGHT, -0.6))
+	var bx := Basis(Vector3.BACK, -PI * 0.5)
+	S167.tour(L, "bois", Vector3(-0.72, 1.48, 0), [Vector2(0.0, 0.0), Vector2(0.045, 0.0), Vector2(0.045, 1.44), Vector2(0.0, 1.44)], bx, 12)
+	S167.tour(L, "bois", Vector3(-0.72, 0.5, -0.02), [Vector2(0.0, 0.0), Vector2(0.04, 0.0), Vector2(0.04, 1.44), Vector2(0.0, 1.44)], bx, 12)
+	S167.tour(L, "toile_rayee", Vector3(-0.6, 0.5, -0.02), [Vector2(0.0, 0.0), Vector2(0.075, 0.0), Vector2(0.075, 1.2), Vector2(0.0, 1.2)], bx, 16)
+	# la toile tissée, puis les fils de chaîne jusqu'en haut
+	var pts: Array = []
+	var uvs: Array = []
+	for j in range(2):
+		for i in range(2):
+			pts.append(Vector3(-0.6 + i * 1.2, 0.56 + j * 0.42, -0.075 + j * 0.065))
+			uvs.append(Vector2(i * 6.0, j * 0.42))
+	S167.nappe(L, "toile_rayee", pts, 1, 1, uvs)
+	for k in range(30):
+		var x: float = -0.58 + k * 0.04
+		S167.boite(L, "corde", Vector3(x, 1.22, -0.03), Vector3(0.004, 0.5, 0.004), Basis(Vector3.RIGHT, -0.06))
+	# le peigne et les lices
+	S167.boite(L, "bois", Vector3(0, 1.05, -0.02), Vector3(1.3, 0.04, 0.05))
+	S167.boite(L, "bois", Vector3(0, 1.25, 0.0), Vector3(1.28, 0.03, 0.03))
+	for k2 in range(16):
+		S167.boite(L, "corde", Vector3(-0.56 + k2 * 0.075, 1.17, 0.0), Vector3(0.006, 0.14, 0.006))
+	# la navette, posée sur la toile
+	S167.boule(L, "bois", Vector3(0.2, 0.99, -0.12), Vector3(0.14, 0.02, 0.03))
+	S167.pose(self, L, _mats167(["bois_peint", "bois", "toile_rayee", "corde"]), xf, "Metier_v167")
+	pieces_v167 += 1
+
+
+## V167 : un tabouret tourné (le plateau, trois pieds, une entretoise) ; xf : au sol.
+func _tabouret167(xf: Transform3D) -> void:
+	var L: Dictionary = S167.loc(["bois"])
+	S167.tour(L, "bois", Vector3(0, 0.4, 0), [Vector2(0.16, 0.0), Vector2(0.17, 0.02), Vector2(0.17, 0.04), Vector2(0.0, 0.05)], Basis.IDENTITY, 16)
+	S167.tour(L, "bois", Vector3(0, 0.4, 0), [Vector2(0.0, -0.005), Vector2(0.16, 0.0)], Basis.IDENTITY, 16)
+	for k in range(3):
+		var a: float = TAU * k / 3.0
+		S167.tube(L, "bois", [Vector3(cos(a) * 0.1, 0.4, sin(a) * 0.1), Vector3(cos(a) * 0.17, 0.0, sin(a) * 0.17)], [0.022, 0.018], 6)
+	S167.tour(L, "bois", Vector3(0, 0.16, 0), [Vector2(0.135, 0.0), Vector2(0.145, 0.015), Vector2(0.135, 0.03)], Basis.IDENTITY, 14)
+	S167.pose(self, L, _mats167(["bois"]), xf, "Tabouret_v167")
+	pieces_v167 += 1
+
+
+## V167 : un djembé (le fût en calice, le pied ajouré, la peau, la corde de tension en zigzag).
+func _djembe167(at: Vector3) -> void:
+	var L: Dictionary = S167.loc(["bois_peint", "peau", "corde"])
+	S167.tour(L, "bois_peint", Vector3.ZERO, [Vector2(0.13, 0.0), Vector2(0.14, 0.03), Vector2(0.115, 0.16), Vector2(0.08, 0.3), Vector2(0.075, 0.34), Vector2(0.11, 0.44), Vector2(0.16, 0.56), Vector2(0.175, 0.6)], Basis.IDENTITY, 18)
+	S167.tour(L, "peau", Vector3.ZERO, [Vector2(0.185, 0.58), Vector2(0.19, 0.61), Vector2(0.0, 0.625)], Basis.IDENTITY, 18)
+	S167.tour(L, "corde", Vector3.ZERO, [Vector2(0.18, 0.555), Vector2(0.19, 0.57), Vector2(0.18, 0.585)], Basis.IDENTITY, 18)
+	S167.tour(L, "corde", Vector3.ZERO, [Vector2(0.125, 0.4), Vector2(0.135, 0.415), Vector2(0.125, 0.43)], Basis.IDENTITY, 18)
+	for k in range(12):
+		var a0: float = TAU * k / 12.0
+		var a1: float = TAU * (k + 0.5) / 12.0
+		var p0 := Vector3(cos(a0) * 0.18, 0.565, sin(a0) * 0.18)
+		var p1 := Vector3(cos(a1) * 0.13, 0.415, sin(a1) * 0.13)
+		var p2 := Vector3(cos(a0 + TAU / 12.0) * 0.18, 0.565, sin(a0 + TAU / 12.0) * 0.18)
+		S167.tube(L, "corde", [p0, p1, p2], [0.006, 0.006, 0.006], 4)
+	S167.pose(self, L, _mats167(["bois_peint", "peau", "corde"]), Transform3D(Basis(), at), "Djembe_v167")
+	pieces_v167 += 1
+
+
+## V167 : une table de bistrot (le pied de fonte, le fût, le plateau de bois cerclé) sous son parasol
+## (la toile rayée en huit pans, le lambrequin, les baleines, le mât, la pointe) ; xf : au sol.
+func _table_parasol167(xf: Transform3D) -> void:
+	var L: Dictionary = S167.loc(["fer", "bois", "toile_rayee", "chrome"])
+	S167.tour(L, "fer", Vector3.ZERO, [Vector2(0.3, 0.0), Vector2(0.3, 0.03), Vector2(0.18, 0.06), Vector2(0.06, 0.1), Vector2(0.04, 0.2), Vector2(0.035, 0.66), Vector2(0.07, 0.69), Vector2(0.0, 0.7)], Basis.IDENTITY, 16)
+	S167.tour(L, "bois", Vector3.ZERO, [Vector2(0.0, 0.7), Vector2(0.44, 0.7), Vector2(0.45, 0.715), Vector2(0.45, 0.74), Vector2(0.0, 0.745)], Basis.IDENTITY, 28)
+	S167.tour(L, "chrome", Vector3.ZERO, [Vector2(0.452, 0.705), Vector2(0.462, 0.715), Vector2(0.462, 0.735), Vector2(0.452, 0.745)], Basis.IDENTITY, 28)
+	S167.tube(L, "fer", [Vector3(0, 0.74, 0), Vector3(0, 2.42, 0)], [0.022, 0.022], 8)
+	# la toile : dessus et dessous, en huit pans ; le lambrequin
+	S167.tour(L, "toile_rayee", Vector3.ZERO, [Vector2(1.2, 2.06), Vector2(0.62, 2.28), Vector2(0.05, 2.42)], Basis.IDENTITY, 8)
+	S167.tour(L, "toile_rayee", Vector3.ZERO, [Vector2(0.05, 2.41), Vector2(0.62, 2.27), Vector2(1.2, 2.05)], Basis.IDENTITY, 8)
+	S167.tour(L, "toile_rayee", Vector3.ZERO, [Vector2(1.2, 1.9), Vector2(1.2, 2.06)], Basis.IDENTITY, 8)
+	S167.tour(L, "toile_rayee", Vector3.ZERO, [Vector2(1.19, 2.06), Vector2(1.19, 1.9)], Basis.IDENTITY, 8)
+	for k in range(8):
+		var a: float = TAU * k / 8.0
+		var o := Vector3(sin(a), 0, cos(a))
+		S167.tube(L, "chrome", [Vector3(0, 2.38, 0) + o * 0.06, o * 0.62 + Vector3.UP * 2.25, o * 1.17 + Vector3.UP * 2.04], [0.008, 0.008, 0.008], 4)
+		S167.tube(L, "chrome", [Vector3(0, 1.75, 0), o * 0.55 + Vector3.UP * 2.25], [0.006, 0.006], 4)
+	S167.boule(L, "chrome", Vector3(0, 2.46, 0), Vector3(0.04, 0.05, 0.04))
+	S167.pose(self, L, _mats167(["fer", "bois", "toile_rayee", "chrome"]), xf, "Parasol_v167")
+	pieces_v167 += 1
+
+
+## V167 : une chaise de bistrot (l'assise ronde cannée, quatre pieds de fer un peu évasés, le dossier
+## cintré en arceau) ; xf : au sol, on s'y assied vers +Z.
+func _chaise167(xf: Transform3D) -> void:
+	var L: Dictionary = S167.loc(["bois", "fer"])
+	S167.tour(L, "bois", Vector3(0, 0.43, 0), [Vector2(0.0, -0.01), Vector2(0.2, 0.0), Vector2(0.21, 0.015), Vector2(0.2, 0.035), Vector2(0.0, 0.04)], Basis.IDENTITY, 18)
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			S167.tube(L, "fer", [Vector3(sx * 0.13, 0.43, sz * 0.13), Vector3(sx * 0.16, 0.2, sz * 0.16), Vector3(sx * 0.19, 0.0, sz * 0.19)], [0.013, 0.012, 0.012], 5)
+	S167.tour(L, "fer", Vector3(0, 0.2, 0), [Vector2(0.155, 0.0), Vector2(0.16, 0.008), Vector2(0.155, 0.016)], Basis.IDENTITY, 16)
+	var arc: Array = []
+	var rs: Array = []
+	for i in range(11):
+		var a: float = PI * i / 10.0
+		arc.append(Vector3(cos(a) * 0.19, 0.46 + sin(a) * 0.38, -0.17 - sin(a) * 0.05))
+		rs.append(0.014)
+	S167.tube(L, "fer", arc, rs, 5)
+	var arc2: Array = []
+	for i2 in range(9):
+		var a2: float = PI * (0.1 + 0.8 * i2 / 8.0)
+		arc2.append(Vector3(cos(a2) * 0.17, 0.7 + sin(a2) * 0.08, -0.2))
+	S167.tube(L, "fer", arc2, rs.slice(0, 9), 5)
+	S167.pose(self, L, _mats167(["bois", "fer"]), xf, "Chaise_v167")
+	pieces_v167 += 1

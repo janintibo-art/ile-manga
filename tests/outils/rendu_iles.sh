@@ -1,6 +1,6 @@
 #!/bin/bash
-# Des images d'une île seule (V159 à V166) et des planches.
-#     bash tests/outils/rendu_iles.sh DOSSIER elfes|village|nains|forgefer|moai|nuees|nuees_mur|strates|strates_four|dome|dome_v160|celeste|jungle|jungle_piton|atlantide|azur|fees|teuf|facade|carene|tazira|cliquetis|ramure|porte|carene_hd|tazira_hd|cliquetis_hd|ramure_hd|arcanelle|coutelas|soleils|pandemonia|montjoie|boucan
+# Des images d'une île seule (V159 à V167) et des planches.
+#     bash tests/outils/rendu_iles.sh DOSSIER elfes|village|nains|forgefer|moai|nuees|nuees_mur|strates|strates_four|dome|dome_v160|celeste|jungle|jungle_piton|atlantide|azur|fees|teuf|facade|carene|tazira|cliquetis|ramure|porte|carene_hd|tazira_hd|cliquetis_hd|ramure_hd|arcanelle|coutelas|soleils|pandemonia|montjoie|boucan|astralys|pixel|larsen
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

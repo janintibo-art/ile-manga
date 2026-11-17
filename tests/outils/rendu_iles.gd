@@ -11,8 +11,15 @@ class FakeDonjon:
 	var _interactions: Array = []
 	var spawn: Dictionary = {}
 
-	func _fire(_a: Variant, _b: Variant = null, _c: Variant = null, _d: Variant = null) -> void:
-		pass
+	func _fire(_a: Variant, _b: Variant = null, _c: Variant = null, _d: Variant = null) -> CPUParticles3D:
+		# V167 : comme le vrai donjon, une particule de feu accrochée au parent (Larsen nomme la sienne)
+		var p := CPUParticles3D.new()
+		p.emitting = false
+		if _a is Node3D:
+			(_a as Node3D).add_child(p)
+			if _b is Vector3:
+				p.position = _b
+		return p
 
 
 class FakeMain:
@@ -147,7 +154,7 @@ func _initialize() -> void:
 			await _grande(quoi)
 		"porte":
 			await _porte()
-		"arcanelle", "coutelas", "soleils", "pandemonia", "montjoie", "boucan":
+		"arcanelle", "coutelas", "soleils", "pandemonia", "montjoie", "boucan", "astralys", "pixel", "larsen":
 			await _systeme(quoi)
 		"carene_hd", "tazira_hd", "cliquetis_hd", "ramure_hd":
 			await _grande(quoi.trim_suffix("_hd"), true)
@@ -341,7 +348,8 @@ func _azur() -> void:
 ## devant les lieux d'activité des habitants.
 func _systeme(nom: String) -> void:
 	var scr: String = {"arcanelle": "res://scripts/arcanelle_v67.gd", "coutelas": "res://scripts/pirates_v68.gd", "soleils": "res://scripts/soleils_v69.gd",
-		"pandemonia": "res://scripts/braise_v70.gd", "montjoie": "res://scripts/montjoie_v71.gd", "boucan": "res://scripts/boucan_v75.gd"}[nom]
+		"pandemonia": "res://scripts/braise_v70.gd", "montjoie": "res://scripts/montjoie_v71.gd", "boucan": "res://scripts/boucan_v75.gd",
+		"astralys": "res://scripts/astrale_v76.gd", "pixel": "res://scripts/pixel_v90.gd", "larsen": "res://scripts/larsen_v91.gd"}[nom]
 	var Sy: Node3D = load(scr).new()
 	fm.add_child(Sy)
 	Sy.setup(fm)
@@ -360,20 +368,35 @@ func _systeme(nom: String) -> void:
 			villes = [Sy.port]
 		"soleils":
 			villes = [Sy.egypte, Sy.maya, Sy.azteque]
-		"pandemonia", "montjoie", "boucan":
+		"pandemonia", "montjoie", "boucan", "astralys":
 			villes = [Sy.city]
+		"larsen":
+			villes = [Sy.ville]
 	var c: Vector3 = Sy.ile.CENTER
 	c.y = fm._height_at(c.x, c.z)
 	_mer(c)
 	await _vue("141_dessus", c + Vector3(170, 140, 170), c)
-	var par: int = 6 / villes.size()
+	var par: int = 6 / maxi(villes.size(), 1)
 	var k2: int = 0
 	# des lieux choisis (les Trois Soleils : le four et les jarres, le potier ; le metate, le jeu de balle ;
 	# la place, le potier d'Aztlán ; V166 : les places, les marchés, les fontaines)
 	var choix: Dictionary = {"soleils": [["four", "potier"], ["metate", "balle_2"], ["place_a2", "potier_az"]],
 		"pandemonia": [["marche_flane_1", "place_fontaine", "place_lanterne", "forge_coeur", "port_quai_1", "jardin_banc"]],
 		"montjoie": [["place_fontaine", "marche_fruits", "lavoir_1", "puits", "forge_enclume", "chaumiere_jardin"]],
-		"boucan": [["place_fontaine", "place_banc_1", "jardins_1", "mur_expression_1", "conserverie_assemblee", "cantine_comptoir"]]}
+		"boucan": [["place_fontaine", "place_banc_1", "jardins_1", "mur_expression_1", "conserverie_assemblee", "cantine_comptoir"]],
+		"astralys": [["agora_fontaine", "cafe_comptoir", "jardins_1", "observatoire_telescope", "spatioport_aire_1", "bulles_no_1"]],
+		"larsen": [["arbre_rubans", "tissage", "garage_chant", "cafe_terrasse_1", "disquaire_1", "scene_1"]]}
+	# V167 : l'Île Pixelithique n'a pas de rues : des vues choisies (repère île : d'où, vers où)
+	if nom == "pixel":
+		var vp: Array = [["150_camp", Vector2(-36, 20), Vector2(-50, 5)], ["151_falaises", Vector2(-52, 34), Vector2(-78, 6)], ["152_lac", Vector2(-18, 92), Vector2(-44, 76)],
+			["153_plage", Vector2(34, 102), Vector2(22, 136)], ["154_cirque", Vector2(14, -98), Vector2(-8, -118)], ["155_volcan", Vector2(36, -36), Vector2(72, -72)]]
+		for v in vp:
+			var a: Vector3 = Sy.ile.W((v[1] as Vector2).x, (v[1] as Vector2).y)
+			var b: Vector3 = Sy.ile.W((v[2] as Vector2).x, (v[2] as Vector2).y)
+			a.y = fm._height_at(a.x, a.z) + 1.7
+			b.y = fm._height_at(b.x, b.z) + 1.0
+			await _vue(str(v[0]), a, b)
+		return
 	var iv: int = 0
 	for V in villes:
 		var noms: Array = V.spots.keys()

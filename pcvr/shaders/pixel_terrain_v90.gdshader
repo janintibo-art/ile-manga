@@ -1,4 +1,5 @@
 // V90 : le sol de l'Île Pixelithique, en blocs de 50 cm peints de pixels fins (16 par mètre).
+// V167 : de loin, les blocs et les strates des falaises restent visibles ; le pied des parois s'assombrit.
 // Chaque matière a quatre teintes pour le dessus et quatre pour les côtés ; chaque pixel tire la
 // sienne au hasard (avec des plaques plus claires ou plus sombres, bloc par bloc) ; un liseré sombre
 // d'un pixel dessine le contour des blocs ; sur les côtés, l'herbe déborde de quelques pixels
@@ -107,7 +108,20 @@ void fragment() {
 	// de loin : les pixels se fondent (pas de scintillement)
 	vec2 fw = fwidth(pp);
 	float near = clamp(1.6 - max(fw.x, fw.y), 0.0, 1.0);
-	c = mix(avg * 0.97, c, near);
+	// V167 : plus loin, les blocs restent visibles tant qu'ils font plus d'un pixel à l'écran (chaque bloc
+	// garde sa teinte, les falaises gardent leurs strates) ; puis la teinte moyenne
+	vec2 fwb = fwidth(p * 2.0);
+	float mid = clamp(1.5 - 2.0 * max(fwb.x, fwb.y), 0.0, 1.0);
+	vec3 blocv = avg * (0.86 + 0.28 * rb);
+	if (!is_top && (m == 4 || m == 9 || m == 5)) {
+		blocv *= 0.86 + 0.26 * h21(vec2(floor(lp.y * 2.0), 17.0 + floor(p.x * 0.25)));
+	}
+	vec3 far = mix(avg, blocv, mid);
+	c = mix(far * 0.97, c, near);
+	// V167 : le pied des grandes parois un peu plus sombre (les blocs du dessus lui font de l'ombre)
+	if (!is_top) {
+		c *= mix(1.0, 0.8, clamp((top_y - lp.y) / 8.0, 0.0, 1.0));
+	}
 	ALBEDO = c;
 	ROUGHNESS = (m == 5) ? 0.55 : ((m == 0 || m == 7) ? 0.95 : 0.88);
 	SPECULAR = 0.35;
