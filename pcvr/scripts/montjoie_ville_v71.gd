@@ -12,6 +12,7 @@ extends Node3D
 ##  - le réseau des rues (points, liens) pour les habitants, leurs lieux (spots), leurs portes.
 ## Le repère : polaire autour du centre de la ville (R.TOWN), en degrés (0 = est, 90 = sud).
 
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const R = preload("res://scripts/ile_montjoie_v71.gd")
 const Kit = preload("res://scripts/montjoie_kit_v71.gd")
 const Lieux = preload("res://scripts/montjoie_lieux_v71.gd")
@@ -488,6 +489,9 @@ func _house(ri: int, deg: float, r: float, w: float, depth: float, sens: int) ->
 		_shop_done[shop_id] = true
 	var door: Vector3 = kit.house71(xf, w, depth, opts)
 	door.y = y + 0.05
+	if shop_id != "":
+		# V170 : on entre dans la boutique (boutiques_v170 ; l'agence de Monsieur Prosper reste fermée)
+		B170.porte_ville("montjoie", shop_id, door, xf.basis.z)
 	var h := {"deg": deg, "r": r, "row": ri, "door": door, "w": w, "street": str(row[6]), "xf": xf}
 	if shop_id != "":
 		h["owner"] = shop_id

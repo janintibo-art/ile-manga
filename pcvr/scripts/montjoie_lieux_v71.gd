@@ -12,6 +12,7 @@ extends RefCounted
 ##  - l'auberge « La Grenouille Repue », la forge de Brunehaut ;
 ##  - dans la Basse-Ville : le lavoir, la caserne, l'écurie, le puits.
 
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const R = preload("res://scripts/ile_montjoie_v71.gd")
 
 var c                                    # montjoie_ville_v71
@@ -640,6 +641,7 @@ func caserne() -> void:
 	var a: float = 109.0
 	var fx: Transform3D = c.PX(a, 133.0, y, "in")
 	var door: Vector3 = kit.house71(fx, 12.0, 10.0, {"floors": 2, "base": "rempart71", "wall": "enduit71_gris", "roof": "tuiles71_ardoise", "gable": false, "lit": 0.6, "volet": "rouge"})
+	B170.porte_ville("montjoie", "caserne", door, fx.basis.z)
 	kit.flag69(fx * T(-5.0, 6.0, 0.4) * Transform3D(Basis(Vector3.BACK, -PI * 0.5), Vector3.ZERO), "banniere71", Vector2(2.0, 0.9))
 	# la cour d'entraînement : deux mannequins de paille, un râtelier
 	for k in range(2):

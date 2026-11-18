@@ -17,6 +17,7 @@ const GK = preload("res://scripts/geants_kit_v142.gd")
 const Chaine = preload("res://scripts/chaine_v146.gd")
 const Navette = preload("res://scripts/navette_v146.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const HautefondIle = preload("res://scripts/ile_hautefond_v112.gd")
 const FLORE := "res://scripts/perchee_flore_v146.gd"
 const HABITANTS := "res://scripts/pnj/perchee_habitants_v146.gd"
@@ -695,7 +696,7 @@ func register_interactions() -> void:
 		I.append(ci)
 		_interactions.append(ci)
 	for e in portes:
-		if str(e["lieu"]) == "" or Lieux147.has("pp_" + str(e["lieu"])):
+		if str(e["lieu"]) == "" or Lieux147.has("pp_" + str(e["lieu"])) or B170.ouvre("perchee", str(e["lieu"])):
 			continue
 		var de: Dictionary = e
 		I.append({"id": "pp_porte_" + str(e["id"]), "pos": (e["porte"] as Vector3) + Vector3.UP * 0.4, "radius": 1.6, "text": "E : pousser la porte", "vr": "Gâchette : pousser la porte",

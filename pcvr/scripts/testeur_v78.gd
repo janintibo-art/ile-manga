@@ -813,6 +813,14 @@ func _house_stories() -> Array:
 		out.append([str(v169.get(str(sc5[0]), str(sc5[0]))), [str(sc5[0])]])
 	for sc6 in M.Scenes.Sud169.FIXES:
 		out.append([str(v169.get(str(sc6), str(sc6))), [str(sc6)]])
+	# V170 : les boutiques et les bâtiments publics (on va à la porte la plus proche de ce métier)
+	var vus170: Dictionary = {}
+	for st170 in M.Scenes.B170.VILLES:
+		for id170 in M.Scenes.B170.VILLES[st170]:
+			var met170: String = str(M.Scenes.B170.VILLES[st170][id170][0])
+			if not vus170.has(met170):
+				vus170[met170] = true
+				out.append(["Boutique : " + met170, ["b170:" + met170]])
 	return out
 
 
@@ -858,6 +866,22 @@ func _visit(sc: String) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	var best: int = 0
 	var bd: float = INF
+	if sc.begins_with("b170:"):
+		# V170 : la boutique de ce métier la plus proche
+		best = -1
+		for i0 in range(M.portes.size()):
+			if str(M.portes[i0].get("metier", "")) == sc.substr(5) and str(M.portes[i0].get("histoire", "")) == "b170":
+				var d0: float = (M.portes[i0]["door"] as Vector3).distance_to(p)
+				if d0 < bd:
+					bd = d0
+					best = i0
+		if best < 0:
+			main._show_message_v28("Mode testeur : pas de boutique « %s »." % sc.substr(5))
+			return
+		main.place_player_v35((M.portes[best]["door"] as Vector3) + Vector3.UP * 0.1, -(M.portes[best]["out"] as Vector3))
+		M.force_scenario = ""
+		M.enter(best)
+		return
 	var styles: Array = []
 	for sc2 in M.Scenes.Iles.SCENARIOS + M.Scenes.Echoppes.SCENARIOS + M.Scenes.Sud169.SCENARIOS:
 		if str(sc2[0]) == sc:

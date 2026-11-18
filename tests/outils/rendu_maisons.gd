@@ -4,6 +4,7 @@ extends SceneTree
 
 const Maisons = preload("res://scripts/maisons_v81.gd")
 const Pieces = preload("res://scripts/maisons_pieces_v81.gd")
+const B170 = preload("res://scripts/boutiques_v170.gd")
 
 
 class FakeMain:
@@ -244,4 +245,42 @@ func _initialize() -> void:
 				await _photo("%s_coin2" % str(c[4]))
 			M2._teardown()
 			await process_frame
+	if mode == "boutiques":
+		# V170 : les boutiques et les bâtiments publics (de la porte, puis d'un coin) ; le 3e argument :
+		# le début de « ville_id » (« azur », « perchee_banque »… ; plusieurs, séparés par des virgules),
+		# ou « nuit » pour tout voir le soir
+		sun.visible = false
+		Pieces.sondes = false
+		var M3 = Maisons.new()
+		fm.add_child(M3)
+		M3.setup(fm)
+		var seul3: String = str(OS.get_cmdline_user_args()[2]) if OS.get_cmdline_user_args().size() > 2 else ""
+		for st3 in B170.VILLES:
+			for id3 in B170.VILLES[st3]:
+				var nom3: String = "%s_%s" % [st3, id3]
+				var garde: bool = seul3 == "" or seul3 == "nuit"
+				for pre in seul3.split(","):
+					if pre != "" and nom3.begins_with(pre):
+						garde = true
+				if not garde:
+					continue
+				var e3: Array = B170.VILLES[st3][id3]
+				var t3: Vector2 = B170.METIERS[str(e3[0])][0]
+				tp.hour = 21.5 if seul3 == "nuit" else 14.0
+				M3.cur = {"id": "rendu170_" + nom3, "style": st3, "w": t3.x, "d": t3.y, "histoire": "b170", "metier": str(e3[0]),
+					"proprio": str(e3[1]), "nom170": str(e3[2]), "enseigne170": str(e3[3]), "door": Vector3(-500, 0, -500), "out": Vector3(0, 0, 1)}
+				M3.force_scenario = ""
+				M3._build()
+				for k4 in range(4):
+					await process_frame
+				var R3 = M3.R
+				_vue(R3.P(0.0, 1.65, R3.D * 0.5 - 0.5), R3.P(0.0, 1.0, -R3.D * 0.5))
+				await _photo("%s_porte" % nom3)
+				_vue(R3.P(-R3.W * 0.5 + 0.6, 1.7, R3.D * 0.5 - 0.8), R3.P(R3.W * 0.25, 0.8, -R3.D * 0.3))
+				await _photo("%s_coin" % nom3)
+				if str(e3[0]) == "ecurie":
+					_vue(R3.P(0.0, 1.6, -R3.D * 0.5 + 2.2), R3.P(-R3.W * 0.5 + 1.5, 1.0, -R3.D * 0.5 + 1.2))
+					await _photo("%s_stalle" % nom3)
+				M3._teardown()
+				await process_frame
 	quit()

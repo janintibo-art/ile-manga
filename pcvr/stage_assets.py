@@ -290,9 +290,10 @@ def main() -> int:
     # jungle (textures/beau162) ; V163 : Port-Azur, la teuf de la plage, le royaume des fées
     # (textures/beau163) ; V164 : la Grande Île (textures/beau164) ; V165 : Arcanelle, la Balafre, les Trois Soleils (textures/beau165) ;
     # V166 : Pandémonia, Montjoie, Port-Boucan (textures/beau166) ; V169 : les images des maisons
-    # d'Al Dente, de l'Île Crayonnée et de Sombreval (textures/beau169)
+    # d'Al Dente, de l'Île Crayonnée et de Sombreval (textures/beau169) ; V170 : les images des boutiques
+    # (textures/beau170)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164", "textures/beau165", "textures/beau166", "textures/beau169"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164", "textures/beau165", "textures/beau166", "textures/beau169", "textures/beau170"):
         d = source / folder
         if not d.is_dir():
             continue

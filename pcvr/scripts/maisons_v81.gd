@@ -25,6 +25,7 @@ const Lieux118 = preload("res://scripts/lieux_strates_v118.gd")
 const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 const Sud169 = preload("res://scripts/maisons_sud_v169.gd")
+const B170 = preload("res://scripts/boutiques_v170.gd")
 
 const STAGE := Vector3(6000.0, -260.0, 6000.0)
 const CAVE_DY: float = -7.0              # la cave, sous la pièce
@@ -414,9 +415,16 @@ func _build() -> Array:
 		var tl6: Vector2 = Sud169.taille(cur)
 		w = tl6.x
 		d = tl6.y
+	elif B170.is_b170(cur):
+		# V170 : une boutique, un bâtiment public : la taille de son métier
+		var tl7: Vector2 = B170.taille(cur)
+		w = tl7.x
+		d = tl7.y
 	R = Pieces.new()
 	R.setup(room, main, STAGE, w, d, style, seed_v, hour)
 	R.door_x = rng.randf_range(-w * 0.2, w * 0.2) if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) and not Sud169.is_lieu(style) else 0.0
+	if B170.is_b170(cur):
+		R.door_x = 0.0
 	ctx = {"id": id, "style": style, "rng": rng, "hour": hour, "owner": str(cur.get("owner", "")), "owner_node": cur.get("owner_node", null),
 		"revisite": bool(state().get("vu", false)), "W": w, "D": d}
 	# V83 : la maison retient son histoire (ajouter des histoires plus tard ne la change pas)
@@ -437,7 +445,9 @@ func _build() -> Array:
 			st0["scenario"] = scenario
 	force_scenario = ""
 	ctx["scenario"] = scenario
-	if Yourtes.is_yourte(style):
+	if B170.is_b170(cur):
+		B170.shell(self)
+	elif Yourtes.is_yourte(style):
 		Yourtes.shell(self)
 	elif Lieux116.is_lieu(style):
 		Lieux116.shell(self)
@@ -461,7 +471,7 @@ func _build() -> Array:
 	Sud169.touches(self)
 	# V86 : l'habillage (objets du quotidien et de la ville, fêtes du calendrier) ; pas dans les yourtes
 	# (V116 : ni dans les grands lieux, qui ont tout leur décor)
-	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) and not Sud169.is_lieu(style):
+	if not Yourtes.is_yourte(style) and not Lieux116.is_lieu(style) and not Lieux117.is_lieu(style) and not Lieux118.is_lieu(style) and not Lieux119.is_lieu(style) and not Lieux147.is_lieu(style) and not Sud169.is_lieu(style) and not B170.is_b170(cur):
 		Deco.habiller(self)
 	R.commit()
 	# V169 : dans un arbre-maison de l'Île Crayonnée, la pièce est dessinée comme l'île (le coloriage)

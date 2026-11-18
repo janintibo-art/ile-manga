@@ -1,7 +1,8 @@
 #!/bin/bash
 # Des images des sols de l'île (V158 : avant / après) et des pièces des maisons, et des planches.
-#     bash tests/outils/rendu_maisons.sh DOSSIER [sols|maisons|sud [début du nom]]
+#     bash tests/outils/rendu_maisons.sh DOSSIER [sols|maisons|sud|boutiques [début du nom]]
 # (V169 : « sud » : les maisons d'Al Dente, de l'Île Crayonnée et de Sombreval, chacune de deux ou trois points de vue)
+# (V170 : « boutiques » : les boutiques et les bâtiments publics, « ville_id » ; « nuit » : tout, le soir)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

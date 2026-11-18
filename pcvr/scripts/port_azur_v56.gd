@@ -8,6 +8,7 @@ extends Node3D
 ## lieux d'activité (comptoirs, chaises, serviettes de plage…) et les portes des maisons.
 ## Repère « ville » : voir ile_azur_v56.gd (origine au milieu du quai, -Z vers la mer).
 
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const Kit = preload("res://scripts/azur_kit_v56.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
 
@@ -145,12 +146,20 @@ const WATERFRONT := [
 ]
 
 
+## V170 : on entre dans les boutiques, les cafés, la gare, la poste… (boutiques_v170) ; xf : le repère
+## du bâtiment (sa façade regarde -Z).
+func _b170(id: String, r: Dictionary, xf: Transform3D) -> void:
+	if r.has("door") and B170.ouvre("azur", id):
+		B170.porte_ville("azur", id, r["door"], xf.basis * Vector3(0, 0, -1))
+
+
 func _waterfront() -> void:
 	for b in WATERFRONT:
 		var spec: Dictionary = b.duplicate()
 		spec["d"] = 12.0
 		var r: Dictionary = kit.building(TF(float(b["x"]), 10.0, 0.0), spec)
 		doors[str(b["id"])] = r.get("door", T(float(b["x"]), 9.0))
+		_b170(str(b["id"]), r, TF(float(b["x"]), 10.0, 0.0))
 		if b.has("interieur"):
 			interiors.append([str(b["id"]), T(float(b["x"]), 16.0), Vector2(float(b["w"]) * 0.5 - 0.3, 5.7), 0.0])
 	# bougainvilliers sur quelques façades
@@ -254,16 +263,19 @@ func _square() -> void:
 		spec["d"] = 12.0
 		var r: Dictionary = kit.building(TF(float(b["x"]), 60.0, 0.0), spec)
 		doors[str(b["id"])] = r.get("door", T(float(b["x"]), 59.0))
+		_b170(str(b["id"]), r, TF(float(b["x"]), 60.0, 0.0))
 	for b2 in SQUARE_WEST:
 		var spec2: Dictionary = b2.duplicate()
 		spec2["d"] = 12.0
 		var r2: Dictionary = kit.building(TF(-20.0, float(b2["z"]), -90.0), spec2)
 		doors[str(b2["id"])] = r2.get("door", T(-19.0, float(b2["z"])))
+		_b170(str(b2["id"]), r2, TF(-20.0, float(b2["z"]), -90.0))
 	for b3 in SQUARE_EAST:
 		var spec3: Dictionary = b3.duplicate()
 		spec3["d"] = 14.0
 		var r3: Dictionary = kit.building(TF(20.0, float(b3["z"]), 90.0), spec3)
 		doors[str(b3["id"])] = r3.get("door", T(19.0, float(b3["z"])))
+		_b170(str(b3["id"]), r3, TF(20.0, float(b3["z"]), 90.0))
 	_clock_tower()
 	_fountain()
 	# platanes et leurs grilles
@@ -491,6 +503,7 @@ func _blocks() -> void:
 		var spec: Dictionary = b.duplicate()
 		var r: Dictionary = kit.building(TF(float(b["x"]), float(b["z"]), float(b["rot"])), spec)
 		doors[str(b["id"])] = r.get("door", T(float(b["x"]), float(b["z"])))
+		_b170(str(b["id"]), r, TF(float(b["x"]), float(b["z"]), float(b["rot"])))
 	_spot("armurerie", 38.6, 34.0, 30.0, 34.0, "comptoir")
 
 

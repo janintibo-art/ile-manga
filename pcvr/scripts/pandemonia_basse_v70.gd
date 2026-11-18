@@ -13,6 +13,7 @@ extends RefCounted
 ##  - la Rade de Cendre : les quais, la taverne « Au Diable Repu », la capitainerie, la poste,
 ##    la poissonnerie, les entrepôts, la grue, les navires, la jetée et le phare.
 
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const R = preload("res://scripts/ile_braise_v70.gd")
 const Navire = preload("res://scripts/navire_braise_v70.gd")
 
@@ -150,6 +151,7 @@ func marche() -> void:
 		var hx: Transform3D = c.PX(ang, float(sh[1]), y, "ccw" if s > 0 else "cw")
 		var door: Vector3 = kit.house70(hx, 11.0, 6.0, {"floors": 3, "wall": ["erouge70", "bnoire70", "pgoth70"][int(float(sh[1])) % 3], "roof": "tuile70", "gable": false,
 			"shop": str(sh[2]), "lit": 0.6, "door_x": -2.6, "chimney": str(sh[2]) == "boulangerie", "sides": 0, "back": true})
+		B170.porte_ville("braise", str(sh[2]), door, hx.basis.z)
 		if str(sh[3]) != "":
 			# le comptoir dehors, sous un auvent : le marchand derrière, face à la place
 			var cx: Transform3D = hx * T(1.8, 0, 2.2)
@@ -220,7 +222,8 @@ func _goods_on_counter(cx: Transform3D, goods: String) -> void:
 func caserne() -> void:
 	var y: float = c.BY
 	var hx: Transform3D = c.PX(-60.0, 132.5, y, "in")
-	kit.house70(hx, 14.0, 9.0, {"floors": 3, "wall": "pgoth70_sombre", "base": "basalte70", "roof": "ardoise70", "gable": false, "lit": 0.5, "door_x": 0.0, "banner": true, "chimney": true})
+	var d_cas: Vector3 = kit.house70(hx, 14.0, 9.0, {"floors": 3, "wall": "pgoth70_sombre", "base": "basalte70", "roof": "ardoise70", "gable": false, "lit": 0.5, "door_x": 0.0, "banner": true, "chimney": true})
+	B170.porte_ville("braise", "caserne", d_cas, hx.basis.z)
 	kit.banner70(hx * T(-4.6, 9.0, 0.35), 1.0, 2.6)
 	kit.banner70(hx * T(4.6, 9.0, 0.35), 1.0, 2.6)
 	kit.tower70(c.PW(-63.0, 150.0, y), 3.4, 17.0, {"roof": "cone", "roof_h": 8.0, "windows": [5.0, 10.0], "nwin": 3, "lit": 0.5})
@@ -457,13 +460,15 @@ func artisans() -> void:
 	var sq: Vector3 = c.PW(180.0, 146.0, y)
 	# l'atelier de couture (Grisette), le polisseur de cornes (Tiburce), l'atelier de l'inventeur (Zigomar)
 	var cou: Transform3D = c.PX(185.6, 146.0, y, "ccw")
-	kit.house70(cou, 10.0, 7.0, {"floors": 3, "wall": "erouge70_pourpre", "roof": "ardoise70", "gable": true, "shop": "couture", "lit": 0.7, "door_x": -2.4, "balcony": 2})
+	var d_cou: Vector3 = kit.house70(cou, 10.0, 7.0, {"floors": 3, "wall": "erouge70_pourpre", "roof": "ardoise70", "gable": true, "shop": "couture", "lit": 0.7, "door_x": -2.4, "balcony": 2})
+	B170.porte_ville("braise", "couture", d_cou, cou.basis.z)
 	kit.box(cou * T(1.8, 0.03, 2.0), Vector3(2.4, 0.04, 1.8), "tissu70_rouge", 1.0, 4)
 	kit.box(cou * T(3.3, 0.9, 1.6), Vector3(0.12, 1.8, 0.12), "boisb70", 1.0)
 	kit.box(cou * T(3.3, 1.9, 1.6), Vector3(0.5, 0.6, 0.35), "tissu70_noir", 1.0)
 	c._spot("atelier_couture", cou * Vector3(1.8, 0.05, 2.2), cou.basis * Vector3(0, 0, 1), "tisser", "art_c")
 	var bar: Transform3D = c.PX(174.4, 146.0, y, "cw")
-	kit.house70(bar, 9.0, 7.0, {"floors": 3, "wall": "bnoire70", "roof": "tuile70", "gable": true, "shop": "barbier", "lit": 0.6, "door_x": 2.2})
+	var d_bar: Vector3 = kit.house70(bar, 9.0, 7.0, {"floors": 3, "wall": "bnoire70", "roof": "tuile70", "gable": true, "shop": "barbier", "lit": 0.6, "door_x": 2.2})
+	B170.porte_ville("braise", "barbier", d_bar, bar.basis.z)
 	var chair: Transform3D = bar * T(-1.6, 0, 2.2)
 	kit.box(chair * T(0, 0.3, 0), Vector3(0.7, 0.6, 0.7), "fer70", 1.0)
 	kit.box(chair * T(0, 0.65, 0), Vector3(0.75, 0.12, 0.75), "tissu70_rouge", 1.0)
@@ -472,7 +477,8 @@ func artisans() -> void:
 	kit.box(bar * Transform3D(Basis(Vector3.RIGHT, 0.3), Vector3(-1.6, 3.2, 1.4)), Vector3(3.0, 0.05, 2.6), "tissu70_rouge", 1.0)
 	c._spot("barbier", chair * Vector3(0.0, 0.05, -1.0), bar.basis * Vector3(0, 0, 1), "bricoler", "art_c")
 	var inv: Transform3D = c.PX(180.0, 155.5, y, "in")
-	kit.house70(inv, 12.0, 8.0, {"floors": 3, "wall": "pgoth70", "roof": "cuivre70", "gable": false, "shop": "inventeur", "lit": 0.8, "door_x": -3.0, "chimney": true})
+	var d_inv: Vector3 = kit.house70(inv, 12.0, 8.0, {"floors": 3, "wall": "pgoth70", "roof": "cuivre70", "gable": false, "shop": "inventeur", "lit": 0.8, "door_x": -3.0, "chimney": true})
+	B170.porte_ville("braise", "inventeur", d_inv, inv.basis.z)
 	kit.tower70(inv * Vector3(4.8, 0, -3.5), 2.4, 14.5, {"roof": "none", "windows": [6.0, 10.0], "nwin": 2, "lit": 0.9, "crown": true, "wall": "bnoire70"})
 	kit.telescope(Transform3D(Basis(), inv * Vector3(4.8, 15.4, -3.5)), 0.8)
 	# l'établi de Zigomar, ses fusées, ses engrenages
@@ -629,14 +635,16 @@ func port() -> void:
 	c._chain(["tav_porte", "tav_salle"])
 	# la capitainerie (Charbonnel), sa tour à signaux
 	var cap: Transform3D = HX(112.0, 63.0, "in")
-	kit.house70(cap, 9.0, 8.0, {"floors": 4, "wall": "pgoth70", "roof": "ardoise70", "gable": true, "shop": "capitainerie", "lit": 0.7, "door_x": -1.6, "banner": true})
+	var d_cap: Vector3 = kit.house70(cap, 9.0, 8.0, {"floors": 4, "wall": "pgoth70", "roof": "ardoise70", "gable": true, "shop": "capitainerie", "lit": 0.7, "door_x": -1.6, "banner": true})
+	B170.porte_ville("braise", "capitainerie", d_cap, cap.basis.z)
 	var ct: Vector3 = kit.tower70(cap * Vector3(5.6, 0, -2.0), 2.4, 15.0, {"roof": "cone", "roof_h": 5.0, "windows": [6.0, 11.0], "nwin": 3, "lit": 0.7})
 	kit.flag69(Transform3D(Basis(), ct + Vector3.UP * 7.0), "banniere70", Vector2(1.2, 2.4))
 	c._pt("po_capitainerie", cap * Vector3(-1.6, 0.05, 2.6))
 	c._spot("port_capitainerie", cap * Vector3(0.6, 0.05, 1.8), cap.basis * Vector3(0, 0, 1), "observer", "po_capitainerie")
 	# la poste ailée (Brindille) : un perchoir en haut d'un mât, le comptoir
 	var pst: Transform3D = HX(178.0, 61.5, "in")
-	kit.house70(pst, 9.0, 8.0, {"floors": 3, "wall": "erouge70", "roof": "tuile70", "gable": true, "shop": "poste", "lit": 0.7, "door_x": 2.2})
+	var d_pst: Vector3 = kit.house70(pst, 9.0, 8.0, {"floors": 3, "wall": "erouge70", "roof": "tuile70", "gable": true, "shop": "poste", "lit": 0.7, "door_x": 2.2})
+	B170.porte_ville("braise", "poste", d_pst, pst.basis.z)
 	var mast: Vector3 = pst * Vector3(-5.6, 0, 1.5)
 	kit.cyl(Transform3D(Basis(), mast), 0.16, 0.12, 9.0, "boisb70", 8)
 	kit.cyl(Transform3D(Basis(), mast + Vector3.UP * 9.0), 1.1, 1.1, 0.12, "boisb70", 10)
@@ -648,7 +656,8 @@ func port() -> void:
 	c._spot("poste", pc * Vector3(0, 0.05, -0.75), pst.basis * Vector3(0, 0, 1), "comptoir", "po_poste")
 	# la poissonnerie (Moloka) : des étals sous un auvent, sur le quai
 	var fx: Transform3D = HX(96.0, 58.0, "in")
-	kit.house70(fx * T(0, 0, -4.0), 10.0, 6.0, {"floors": 2, "wall": "bnoire70", "roof": "tuile70", "gable": false, "shop": "poissonnerie", "lit": 0.6, "door_x": 3.0})
+	var d_poi: Vector3 = kit.house70(fx * T(0, 0, -4.0), 10.0, 6.0, {"floors": 2, "wall": "bnoire70", "roof": "tuile70", "gable": false, "shop": "poissonnerie", "lit": 0.6, "door_x": 3.0})
+	B170.porte_ville("braise", "poissonnerie", d_poi, fx.basis.z)
 	stall70(fx * T(-2.0, 0, -1.2), "tissu70_bleu", "poisson")
 	stall70(fx * T(1.4, 0, -1.2), "tissu70_rouge", "poisson")
 	c._pt("po_poisson", fx * Vector3(-0.3, 0.05, 1.6))

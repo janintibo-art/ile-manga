@@ -35,6 +35,7 @@ const Lieux119 = preload("res://scripts/lieux_dome_v119.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
 ## V169 : les maisons d'Al Dente, de l'Île Crayonnée et de Sombreval
 const Sud169 = preload("res://scripts/maisons_sud_v169.gd")
+const B170 = preload("res://scripts/boutiques_v170.gd")
 
 const BLAGUES := [
 	["Qu'est-ce qui est jaune et qui attend ?", "Jonathan !"],
@@ -217,7 +218,7 @@ static func plat(style: String) -> String:
 
 ## V83 : cette histoire existe-t-elle (encore) ?
 static func has_scenario(sc: String) -> bool:
-	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc) or Lieux147.has(sc) or Sud169.has(sc):
+	if sc in ["chez", "fee"] or Iles.has(sc) or Echoppes.has(sc) or Moais.has(sc) or Yourtes.has(sc) or Hautefond116.has(sc) or Lieux116.has(sc) or Nuees117.has(sc) or Lieux117.has(sc) or Strates118.has(sc) or Fronde118.has(sc) or Lieux118.has(sc) or Dome119.has(sc) or Lieux119.has(sc) or Lieux147.has(sc) or Sud169.has(sc) or B170.has(sc):
 		return true
 	for e in SCENARIOS:
 		if str(e[0]) == sc:
@@ -345,6 +346,8 @@ static func build(M) -> void:
 				Lieux147.build(M, str(M.ctx["scenario"]))
 			elif Sud169.has(str(M.ctx["scenario"])):
 				Sud169.build(M, str(M.ctx["scenario"]))
+			elif B170.has(str(M.ctx["scenario"])):
+				B170.build(M)
 			else:
 				_b_vide(M)
 

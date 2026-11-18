@@ -16,6 +16,7 @@ extends Node3D
 ##    sa grue, son remorqueur à vapeur, la route en lacet.
 ## Repère « cité » : voir cliquetis_relief_v61.gd (monde = ORIGIN + (x, y, z), -Z vers la mer).
 
+const B170 = preload("res://scripts/boutiques_v170.gd")
 const R = preload("res://scripts/cliquetis_relief_v61.gd")
 const Kit = preload("res://scripts/cliquetis_kit_v61.gd")
 const Zephyr = preload("res://scripts/dirigeable_v61.gd")
@@ -590,6 +591,7 @@ func _academie() -> void:
 	_gear_spin(xf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(10.0, 6.5, -0.3)), 2.4, 0.3, 16, "laiton", 0.12)
 	_gear_spin(xf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(12.85, 4.2, -0.3)), 1.2, 0.3, 8, "cuivre_poli", -0.24)
 	points["porte_academie"] = xf * Vector3(0, 0, -1.4)
+	B170.porte_ville("cliquetis", "academie", points["porte_academie"], xf.basis * Vector3(0, 0, -1))
 	_spot("academie_porte", 3.0, 31.5, 3.0, 20.0, "bras_croises", "")
 	_spot("horloge", -4.2, 33.0, -4.2, 37.0, "bricoler", "")
 
@@ -637,6 +639,7 @@ func _cafe() -> void:
 		kit.cafe_table(T(tp.x, tp.y), 0.4 * i, 2, "")
 		_spot("cafe_table_%d" % (i + 1), tp.x - 0.62 * cos(0.3 + 0.4 * i) * 0.0 - 0.6, tp.y, tp.x, tp.y, "assis", "")
 	points["porte_cafe"] = xf * Vector3(3.0, 0, -1.2)
+	B170.porte_ville("cliquetis", "cafe", points["porte_cafe"], xf.basis * Vector3(0, 0, -1))
 	_spot("cafe_majordome", -52.0, -6.0, -50.0, -6.0, "debout", "")
 
 
@@ -664,6 +667,7 @@ func _bazar() -> void:
 	_spot_w("bazar_comptoir", bx * Vector3(0, 0, 0.9), bx * Vector3(0, 0, -2.0), "comptoir", "")
 	_spot_w("bazar_client", bx * Vector3(0.6, 0, -1.4), bx * Vector3(0, 0, 0), "debout", "")
 	points["porte_bazar"] = xf * Vector3(-2.5, 0, -1.2)
+	B170.porte_ville("cliquetis", "bazar", points["porte_bazar"], xf.basis * Vector3(0, 0, -1))
 
 
 ## L'Atelier du professeur Boum (ça explose), près des falaises.
@@ -710,6 +714,7 @@ func _boum() -> void:
 	_spot("boum_atelier", -77.0, -27.0, -70.0, -27.0, "bricoler", "")
 	_spot("boum_debris", -76.0, -19.0, -84.0, -19.0, "bras_croises", "")
 	points["porte_boum"] = xf * Vector3(2.5, 0, -1.2)
+	B170.porte_ville("cliquetis", "boum", points["porte_boum"], xf.basis * Vector3(0, 0, -1))
 
 
 ## Le laboratoire Volta et ses deux bobines de Tesla.
@@ -743,6 +748,7 @@ func _volta() -> void:
 	_spot("volta_1", 82.0, 33.0, 82.0, 38.0, "observer", "")
 	_spot("volta_2", 76.0, 21.0, 70.0, 21.0, "bricoler", "")
 	points["porte_volta"] = xf * Vector3(0, 0, -1.2)
+	B170.porte_ville("cliquetis", "volta", points["porte_volta"], xf.basis * Vector3(0, 0, -1))
 
 
 func _observatoire() -> void:
@@ -752,6 +758,7 @@ func _observatoire() -> void:
 	kit.cyl(Transform3D(Basis(Vector3.RIGHT, -0.7), xf * Vector3(0, 13.0, -1.0)), 0.35, 0.28, 4.0, "laiton", 14)
 	_spot("observatoire", 79.0, -30.0, 84.0, -40.0, "observer", "")
 	points["porte_observatoire"] = xf * Vector3(0, 0, -5.4)
+	B170.porte_ville("cliquetis", "observatoire", points["porte_observatoire"], xf.basis * Vector3(0, 0, -1))
 
 
 func _fabrique() -> void:
@@ -770,6 +777,7 @@ func _fabrique() -> void:
 	_spot_w("fabrique_1", bxf * Vector3(0, 0, -0.9), bxf * Vector3(0, 0, 0), "bricoler", "")
 	_spot_w("fabrique_2", bxf * Vector3(-1.6, 0, -0.4), bxf * Vector3(0, 0, 0), "bricoler", "")
 	points["porte_fabrique"] = xf * Vector3(0, 0, -1.2)
+	B170.porte_ville("cliquetis", "fabrique", points["porte_fabrique"], xf.basis * Vector3(0, 0, -1))
 
 
 ## Les maisons-ateliers (chaque porte est un point « porte_maison_n »).

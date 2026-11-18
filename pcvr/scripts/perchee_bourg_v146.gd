@@ -12,6 +12,7 @@ const GK = preload("res://scripts/geants_kit_v142.gd")
 const Ile = preload("res://scripts/ile_perchee_v146.gd")
 const AzurKit = preload("res://scripts/azur_kit_v56.gd")
 const Lieux147 = preload("res://scripts/lieux_perchee_v147.gd")
+const B170 = preload("res://scripts/boutiques_v170.gd")
 
 const FACADE: float = 10.6               # la façade est à 10,6 m de l'axe de la grand-rue
 const FACADE_PIQUE: float = 9.1          # et à 9,1 m de l'axe de la rue du Pique
@@ -120,6 +121,9 @@ static func build(M) -> void:
 		# V147 : les lieux du jeu qui ouvrent (la Fosse aux Dés) : on y entre comme dans une maison
 		if Lieux147.has("pp_" + str(s.get("lieu", ""))):
 			Lieux147.register("pp_" + str(s.get("lieu", "")), r["porte"], r["out"])
+		elif B170.ouvre("perchee", str(s.get("lieu", ""))):
+			# V170 : les boutiques et les lieux publics s'ouvrent aussi (boutiques_v170)
+			B170.porte_ville("perchee", str(s.get("lieu", "")), r["porte"], r["out"])
 		quartier += 1
 	_rue(M, cols, rng)
 	_place(M, cols, rng)
