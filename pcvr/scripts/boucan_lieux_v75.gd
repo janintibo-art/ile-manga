@@ -14,6 +14,8 @@ extends RefCounted
 
 const R = preload("res://scripts/ile_boucan_v75.gd")
 const Y: float = R.TOWN_Y
+## V172 : on entre dans les lieux de la ville (lieux_v172)
+const L172 = preload("res://scripts/lieux_v172.gd")
 
 var c                                    # boucan_ville_v75
 var kit
@@ -766,6 +768,7 @@ func jardins() -> void:
 func bureau() -> void:
 	var xf: Transform3D = c.XF(-58.0, -26.0, 0.0, -1.0)
 	var door: Vector3 = kit.algeco75(xf, 10.0, 4.0)
+	L172.porte_ville("boucan", "bureau", door, xf.basis.z)
 	# les panneaux « BIENTÔT ICI : LE LISSE-CENTER », l'enseigne, un petit gazon en plastique
 	for s in [-1.0, 1.0]:
 		var pxf: Transform3D = xf * T(s * 9.0, 0, 1.0)

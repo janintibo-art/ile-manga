@@ -822,9 +822,11 @@ func _house_stories() -> Array:
 				vus170[met170] = true
 				out.append(["Boutique : " + met170, ["b170:" + met170]])
 	# V171 : les temples, les palais, les ateliers, les tours (Trois Soleils, Arcanelle, Port-Coutelas)
-	for st171 in M.Scenes.B170.L171.VILLES:
-		for id171 in M.Scenes.B170.L171.VILLES[st171]:
-			out.append(["Lieu : " + str(M.Scenes.B170.L171.VILLES[st171][id171][3]), ["b171:" + str(M.Scenes.B170.L171.VILLES[st171][id171][0])]])
+	# (V172 : et ceux de Tazira, de Ramure, de Port-Boucan)
+	for L in M.Scenes.B170.LIEUX:
+		for st171 in L.VILLES:
+			for id171 in L.VILLES[st171]:
+				out.append(["Lieu : " + str(L.VILLES[st171][id171][3]), [str(L.HISTOIRE) + ":" + str(L.VILLES[st171][id171][0])]])
 	return out
 
 
@@ -870,7 +872,7 @@ func _visit(sc: String) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	var best: int = 0
 	var bd: float = INF
-	if sc.begins_with("b170:") or sc.begins_with("b171:"):
+	if sc.begins_with("b170:") or sc.begins_with("b171:") or sc.begins_with("b172:"):
 		# V170 : la boutique de ce métier la plus proche (V171 : le lieu)
 		best = -1
 		for i0 in range(M.portes.size()):

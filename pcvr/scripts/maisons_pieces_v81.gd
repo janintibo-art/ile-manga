@@ -788,6 +788,16 @@ func ceiling_lamp(x: float, z: float) -> void:
 				kit.box(Transform3D(Basis(Vector3.UP, -a3), P(x + cos(a3) * 0.19, y + 0.02, z + sin(a3) * 0.19)), Vector3(0.38, 0.02, 0.02), "or", 1.0)
 				kit.cyl(L(x + cos(a3) * 0.365, y + 0.04, z + sin(a3) * 0.365), 0.03, 0.03, 0.04, "or", 6)
 				kit.cyl(L(x + cos(a3) * 0.365, y + 0.08, z + sin(a3) * 0.365), 0.05, 0.075, 0.14, "lumiere", 10)
+		"tazira":
+			# V172 : une lanterne marocaine de cuivre ajouré, ses verres qui luisent
+			kit.cyl(L(x, y + 0.44, z), 0.006, 0.006, H - y - 0.44, "fer", 4, false)
+			kit.cyl(L(x, y - 0.06, z), 0.04, 0.13, 0.08, "cuivre", 6)
+			kit.cyl(L(x, y + 0.02, z), 0.14, 0.14, 0.28, "lumiere", 6)
+			for k6 in range(6):
+				var a6: float = TAU * k6 / 6.0
+				kit.box(L(x + cos(a6) * 0.145, y + 0.16, z + sin(a6) * 0.145), Vector3(0.025, 0.3, 0.025), "cuivre", 1.0)
+			kit.cyl(L(x, y + 0.3, z), 0.16, 0.03, 0.14, "cuivre", 6)
+			kit.cyl(L(x, y + 0.3, z), 0.16, 0.16, 0.02, "cuivre", 6)
 		"egypte", "maya", "azteque":
 			# V171 : une lampe à huile de bronze, pendue à trois chaînettes ; trois mèches allumées
 			kit.cyl(L(x, y + 0.42, z), 0.006, 0.006, H - y - 0.42, "fer", 4, false)

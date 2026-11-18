@@ -249,7 +249,7 @@ func _initialize() -> void:
 		# V170 : les boutiques et les bâtiments publics (de la porte, puis d'un coin) ; le 3e argument :
 		# le début de « ville_id » (« azur », « perchee_banque »… ; plusieurs, séparés par des virgules),
 		# ou « nuit » pour tout voir le soir (V171 : aussi les lieux de lieux_v171 : « egypte », « maya »,
-		# « azteque », « arcanelle », « pirate »)
+		# « azteque », « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan »)
 		sun.visible = false
 		Pieces.sondes = false
 		var M3 = Maisons.new()
@@ -257,7 +257,11 @@ func _initialize() -> void:
 		M3.setup(fm)
 		var seul3: String = str(OS.get_cmdline_user_args()[2]) if OS.get_cmdline_user_args().size() > 2 else ""
 		var villes3: Dictionary = B170.VILLES.duplicate()
-		villes3.merge(B170.L171.VILLES)
+		var hist3: Dictionary = {}
+		for L3 in B170.LIEUX:
+			villes3.merge(L3.VILLES)
+			for st4 in L3.VILLES:
+				hist3[st4] = str(L3.HISTOIRE)
 		for st3 in villes3:
 			for id3 in villes3[st3]:
 				var nom3: String = "%s_%s" % [st3, id3]
@@ -270,7 +274,7 @@ func _initialize() -> void:
 				var e3: Array = villes3[st3][id3]
 				var t3: Vector2 = B170._met(str(e3[0]))[0]
 				tp.hour = 21.5 if seul3 == "nuit" else 14.0
-				M3.cur = {"id": "rendu170_" + nom3, "style": st3, "w": t3.x, "d": t3.y, "histoire": "b171" if B170.L171.VILLES.has(st3) else "b170", "metier": str(e3[0]),
+				M3.cur = {"id": "rendu170_" + nom3, "style": st3, "w": t3.x, "d": t3.y, "histoire": str(hist3.get(st3, "b170")), "metier": str(e3[0]),
 					"proprio": str(e3[1]), "nom170": str(e3[2]), "enseigne170": str(e3[3]), "door": Vector3(-500, 0, -500), "out": Vector3(0, 0, 1)}
 				M3.force_scenario = ""
 				M3._build()
@@ -279,7 +283,7 @@ func _initialize() -> void:
 				var R3 = M3.R
 				_vue(R3.P(0.0, 1.65, R3.D * 0.5 - 0.5), R3.P(0.0, 1.0, -R3.D * 0.5))
 				await _photo("%s_porte" % nom3)
-				if B170.L171.RONDS.has(str(e3[0])):
+				if B170.L171.RONDS.has(str(e3[0])) or B170.L172.RONDS.has(str(e3[0])):
 					_vue(R3.P(-R3.W * 0.3, 1.7, R3.D * 0.3), R3.P(R3.W * 0.2, 1.0, -R3.D * 0.3))
 				else:
 					_vue(R3.P(-R3.W * 0.5 + 0.6, 1.7, R3.D * 0.5 - 0.8), R3.P(R3.W * 0.25, 0.8, -R3.D * 0.3))

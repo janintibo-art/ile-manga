@@ -21,6 +21,8 @@ const R = preload("res://scripts/tazira_relief_v60.gd")
 const Kit = preload("res://scripts/tazira_kit_v60.gd")
 const NavireScript = preload("res://scripts/navire_v60.gd")
 const Rocks = preload("res://scripts/rocks_v26.gd")
+## V172 : on entre dans les lieux de la ville (lieux_v172)
+const L172 = preload("res://scripts/lieux_v172.gd")
 const JungleFlora = preload("res://scripts/jungle_flora_v30.gd")
 const SHIP_X: float = 63.0             # le galion, le long du quai (milieu, repère ville)
 const SHIP_Z: float = -7.6
@@ -253,6 +255,14 @@ func _jetties() -> void:
 		kit.cyl(Transform3D(Basis(), base + Vector3.UP * 6.8), 0.6, 0.6, 1.0, "lampe", 10, false)
 		kit.cyl(Transform3D(Basis(), base + Vector3.UP * 7.8), 0.8, 0.05, 0.6, "peinture_vert" if green else "peinture_rouge", 10)
 		kit.col_cyl(base, 1.3, 6.5)
+		# V172 : une porte au pied du phare, côté jetée (on entre)
+		var prev: Vector2 = path[path.size() - 2]
+		var dj: Vector3 = W(prev.x, prev.y, JETTY_Y) - base
+		dj.y = 0.0
+		dj = dj.normalized()
+		kit.box(Transform3D(Basis.looking_at(dj, Vector3.UP), base + dj * 1.24 + Vector3.UP * 1.0), Vector3(0.8, 1.9, 0.12), "bois_sombre", 1.0)
+		kit.box(Transform3D(Basis.looking_at(dj, Vector3.UP), base + dj * 1.22 + Vector3.UP * 2.0), Vector3(1.0, 0.12, 0.16), "peinture_vert" if green else "peinture_rouge", 1.0)
+		L172.porte_ville("tazira", "phare_vert" if green else "phare_rouge", base + dj * 2.2 + Vector3.UP * 0.05, dj)
 		if kit.temps != null:
 			var l := OmniLight3D.new()
 			l.light_color = Color(0.3, 1.0, 0.4) if green else Color(1.0, 0.25, 0.2)
@@ -312,6 +322,7 @@ func _skala() -> void:
 	kit.merlons(txf * Transform3D(Basis(), Vector3(0, 0, -2.4)), 5.0, 11.0, 0.3, "pise")
 	kit.merlons(txf * Transform3D(Basis(), Vector3(0, 0, 2.4)), 5.0, 11.0, 0.3, "pise")
 	kit.horseshoe_door(txf * Transform3D(Basis(), Vector3(0, 0, -2.52)), 1.2, 2.4, "porte_arc", "pise")
+	L172.porte_ville("tazira", "skala", txf * Vector3(0, 0.05, -3.4), txf.basis * Vector3(0, 0, -1))
 	kit.maroc_lantern(txf * Transform3D(Basis(), Vector3(0, 3.2, -2.9)), 1.2)
 	# le drapeau de Tazira sur la tour (rouge, une barque blanche)
 	kit.cyl(txf * Transform3D(Basis(), Vector3(0, 11.0, 0)), 0.06, 0.05, 4.0, "bois_sombre", 6)
@@ -710,6 +721,7 @@ func _cat_house() -> Vector3:
 	var xf: Transform3D = TF((x0 + x1) * 0.5, z0, 0.0)
 	var door: Vector3 = kit.riad(xf, w, d, h, "chaux_blanc", "porte_arc", false, true, -2.0)
 	points["porte_maison_chat"] = door
+	kit.porte_v81(xf, Vector3(-2.0, 0, -1.0), w, d, "tazira", 1)
 	# l'escalier extérieur, le long du mur qui donne sur la place (côté x1)
 	var y0: float = R.town_y(x1, z0)
 	var run: float = 7.6
@@ -784,6 +796,7 @@ func _fondouk() -> void:
 	kit.riad(xf, 18.0, 14.0, 7.5, "chaux_ocre", "porte_verte", true, false, 0.0)
 	_sign(xf * Transform3D(Basis(), Vector3(0, 3.5, -0.15)), 3.6, 1.8, "enseigne_fondouk")
 	points["porte_fondouk"] = xf * Vector3(0, 0, -1.0)
+	L172.porte_ville("tazira", "fondouk", xf * Vector3(0, 0, -1.0), -xf.basis.z)
 	# la terrasse de thé devant : tables basses de cuivre, poufs
 	for k in range(3):
 		var tx: float = 9.0 + k * 7.0

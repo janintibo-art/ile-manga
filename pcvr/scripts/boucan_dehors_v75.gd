@@ -11,6 +11,8 @@ extends Node3D
 ##  - les poteaux indicateurs, et le réseau des chemins pour les habitants.
 
 const R = preload("res://scripts/ile_boucan_v75.gd")
+## V172 : on entre dans les lieux de la ville (lieux_v172)
+const L172 = preload("res://scripts/lieux_v172.gd")
 
 var main: Node
 var manager: Node                        # boucan_v75
@@ -99,6 +101,7 @@ func _gazometre() -> void:
 	var rx: Transform3D = GX(R.GAZO.x + 6.0, R.GAZO.y + 2.0, -1.0, 0.4)
 	_roulotte(rx)
 	city.doors["porte_morille"] = city._pt("porte_morille", rx * Vector3(0, 0.05, 2.6))
+	L172.porte_ville("boucan", "morille", rx * Vector3(0, 0.05, 2.0), rx.basis.z)
 	city._pt("ga_roulotte", rx * Vector3(1.6, 0.05, 3.6))
 	city._spot("gazometre_roulotte", rx * Vector3(-1.0, 0.05, 2.8), rx.basis * Vector3(0, 0, 1), "assis", "ga_roulotte")
 	city._pt("ga_centre", G(R.GAZO.x - 4.0, R.GAZO.y + 2.0, 0.05))
@@ -446,6 +449,13 @@ func _plage() -> void:
 func _phare() -> void:
 	var p: Vector3 = G(R.PHARE.x, R.PHARE.y - 4.0)
 	phare_top = kit.phare75(p)
+	# V172 : la porte du phare tagué (on entre), côté chemin
+	var dph := Vector3(-4.4, 0, -3.0).normalized()
+	kit.box(Transform3D(Basis.looking_at(dph, Vector3.UP), p + dph * 3.08 + Vector3.UP * 1.1), Vector3(1.1, 2.2, 0.16), "tolep75_rouge", 1.0)
+	kit.box(Transform3D(Basis.looking_at(dph, Vector3.UP), p + dph * 3.06 + Vector3.UP * 2.3), Vector3(1.4, 0.16, 0.2), "metal75_noir", 1.0)
+	var dpp: Vector3 = p + dph * 4.1
+	dpp.y = ile.height(dpp.x, dpp.z) + 0.05
+	L172.porte_ville("boucan", "phare", dpp, dph)
 	var l := SpotLight3D.new()
 	l.light_color = Color(1.0, 0.92, 0.75)
 	l.light_energy = 8.0

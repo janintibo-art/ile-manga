@@ -18,6 +18,8 @@ const R = preload("res://scripts/ramure_relief_v62.gd")
 const Kit = preload("res://scripts/ramure_kit_v62.gd")
 const Nacelle = preload("res://scripts/nacelle_v62.gd")
 const Flora = preload("res://scripts/flora_v25.gd")
+## V172 : on entre dans les lieux de la ville (lieux_v172)
+const L172 = preload("res://scripts/lieux_v172.gd")
 const LIFT_A: float = 100.0              # l'angle de la nacelle autour du Chêne-Mère
 const ZIP_A: float = 246.0               # l'angle du départ de la tyrolienne (arbre du Guet)
 const ZIP_END := Vector2(22.0, -30.0)
@@ -248,6 +250,9 @@ func _hut(id: String, i: int, a: float, door: String, opts: Dictionary = {}) -> 
 	_link(door, _deck_node(id, i, a))
 	if not opts.has("noren"):
 		kit.porte_v81_dir(dp, to_trunk, r * 2.0, r * 2.0, "ramure", 1)
+	else:
+		# V172 : les échoppes (le rideau à l'entrée) : on entre aussi
+		L172.porte_ville("ramure", door.trim_prefix("porte_"), dp, to_trunk)
 	return dp
 
 
@@ -491,6 +496,7 @@ func _boulangerie() -> void:
 	var c: Vector3 = G(-8.0, -34.0)
 	var door: Vector3 = kit.round_hut(c, 3.0, 2.6, Vector3(1, 0, 0), {"noren": "noren_boulangerie", "toit_h": 3.2})
 	points["porte_boulangerie"] = door
+	L172.porte_ville("ramure", "boulangerie", door, Vector3(1, 0, 0))
 	# le four (une coupole de pierre) et sa cheminée qui fume
 	var ov: Vector3 = G(-8.0, -27.0)
 	kit.cyl(Transform3D(Basis(), ov), 1.3, 1.3, 0.6, "brique", 14)
@@ -564,6 +570,7 @@ func _pecherie() -> void:
 	var hc: Vector3 = G(-12.0, 38.0)
 	var door: Vector3 = kit.round_hut(hc, 2.4, 2.4, Vector3(1, 0, 0), {"noren": "noren_peche"})
 	points["porte_pecherie"] = door
+	L172.porte_ville("ramure", "pecherie", door, Vector3(1, 0, 0))
 	var sxf := Transform3D(Basis(Vector3.UP, PI * 0.5), door + Vector3(0.8, 0, -2.4))
 	kit.stall(sxf, 2.4, "toile_bleue", "poisson")
 	points["peche_etal_b"] = sxf * Vector3(0, 0, 2.8)

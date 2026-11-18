@@ -19,6 +19,10 @@ const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Sud = preload("res://scripts/maisons_sud_v169.gd")
 ## V171 : les temples, les palais, les ateliers et les tours (Trois Soleils, Arcanelle, Port-Coutelas)
 const L171 = preload("res://scripts/lieux_v171.gd")
+## V172 : Tazira, Ramure, Port-Boucan
+const L172 = preload("res://scripts/lieux_v172.gd")
+## Les modules de lieux (chacun : HISTOIRE, METIERS, VILLES, _pal, build)
+const LIEUX := [L171, L172]
 
 const HISTOIRE := "b170"
 const ALCOOL := ["rhum", "biere", "cidre", "hydromel", "grog", "vin_"]
@@ -151,7 +155,16 @@ static func is_b170(cur: Dictionary) -> bool:
 static func _met(metier: String) -> Array:
 	if METIERS.has(metier):
 		return METIERS[metier]
-	return L171.METIERS.get(metier, [])
+	var L: Variant = _lieu(metier)
+	return (L.METIERS as Dictionary)[metier] if L != null else []
+
+
+## Le module de lieux qui connaît ce métier (null : une boutique, ou rien).
+static func _lieu(metier: String) -> Variant:
+	for L in LIEUX:
+		if (L.METIERS as Dictionary).has(metier):
+			return L
+	return null
 
 
 static func taille(cur: Dictionary) -> Vector2:
@@ -160,7 +173,12 @@ static func taille(cur: Dictionary) -> Vector2:
 
 
 static func has(sc: String) -> bool:
-	return sc == HISTOIRE or sc == L171.HISTOIRE
+	if sc == HISTOIRE:
+		return true
+	for L in LIEUX:
+		if sc == str(L.HISTOIRE):
+			return true
+	return false
 
 
 ## La coque : les murs, le sol et le plafond du métier, à la mode de la ville.
@@ -171,7 +189,8 @@ static func shell(M) -> void:
 	R.pal = (R.pal as Dictionary).duplicate()
 	var me: Array = _met(met)
 	R.H = float(me[1]) if not me.is_empty() else 3.3
-	var p: Dictionary = L171._pal(st, met) if L171.has_metier(met) and L171.VILLES.has(st) else _pal(st, met)
+	var L: Variant = _lieu(met)
+	var p: Dictionary = L._pal(st, met) if L != null and (L.VILLES as Dictionary).has(st) else _pal(st, met)
 	for key in ["sol", "mur", "bas", "plafond"]:
 		var e: Array = p[key]
 		R.pal[key] = e
@@ -428,7 +447,9 @@ static func build(M) -> void:
 		"observatoire":
 			_observatoire(M)
 		_:
-			L171.build(M)
+			var L: Variant = _lieu(met)
+			if L != null:
+				L.build(M)
 	if str(M.cur.get("style", "")) == "braise":
 		_lampe(M, 0.0, M.R.H - 0.8, 0.4, Color(1.0, 0.72, 0.5), 0.9, maxf(M.R.W, M.R.D) * 1.1)
 	_accueil(M)
@@ -875,8 +896,7 @@ static func _marchand(M, x: float, z: float, yaw: float, pose: String, role: Str
 	var f: Node = null
 	if n != null:
 		var p: Dictionary = (n.get("profile") as Dictionary).duplicate(true)
-		var scr: String = str((n.get_script() as Script).resource_path)
-		p["classe"] = "pirate" if scr.contains("pirate") else "lumen"
+		p["classe"] = _classe(n)
 		f = Figurant.spawn(M.room, M.main, p, R.P(x, 0, z), Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1), pose)
 		M.people.append(f)
 	else:
@@ -887,6 +907,16 @@ static func _marchand(M, x: float, z: float, yaw: float, pose: String, role: Str
 		M.ctx["menu170"] = menu
 	M.talk_spot(f, func(): _parler(M, f, menu))
 	return f
+
+
+## Le corps d'une vraie personne pour sa copie (V172 : les gens de Ramure gardent leurs oreilles et leur queue).
+static func _classe(n: Node) -> String:
+	var scr: String = str((n.get_script() as Script).resource_path)
+	if scr.contains("pirate"):
+		return "pirate"
+	if scr.contains("ramure"):
+		return "ramure"
+	return "lumen"
 
 
 ## La vraie personne (dans la ville) : son nœud, s'il est là.
@@ -1021,7 +1051,7 @@ static func _habitue(M, id: String, x: float, z: float, yaw: float, pose: String
 	if n == null:
 		return null
 	var p: Dictionary = (n.get("profile") as Dictionary).duplicate(true)
-	p["classe"] = "lumen"
+	p["classe"] = _classe(n)
 	var f: Node = Figurant.spawn(M.room, M.main, p, M.R.P(x, 0, z), Basis(Vector3.UP, deg_to_rad(yaw)) * Vector3(0, 0, 1), pose)
 	M.people.append(f)
 	f.lines = lignes

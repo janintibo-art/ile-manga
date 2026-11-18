@@ -55,6 +55,7 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 | `70_heros` | marcher, sauter, courir, nager, tomber, lever les yeux, se relever, le niveau |
 | `80_sauvegarde` | sauvegarder, nouvelle partie, recharger, copie de secours, Tout public / Public averti |
 | `90_langues` | anglais et espagnol (échantillon des tables, objets, textes à trous, menu) |
+| `91_lieux_bis` | on entre dans les lieux V172 de Tazira, de Ramure et de Port-Boucan (le Fondouk, la tour de la Skala, les petits phares, les Simples, la Poste des chouettes, la boulangerie des lapins, la pêcherie des chats, le bureau de Lisse & Fils, la roulotte de Mère Morille, le phare tagué ; chaque lieu a sa porte, la maison du chat s'ouvre aussi ; quelqu'un tient le lieu — la vraie personne quand elle existe, et à Ramure, avec ses oreilles —, on tient debout, on peut aller lui parler) |
 
 Une nouvelle version ajoute sa série (`series/vNNN_sujet.gd`) ou complète une série existante.
 
