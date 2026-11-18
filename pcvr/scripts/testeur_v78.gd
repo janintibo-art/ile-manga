@@ -872,7 +872,7 @@ func _visit(sc: String) -> void:
 	var p: Vector3 = main._player_pos_v27()
 	var best: int = 0
 	var bd: float = INF
-	if sc.begins_with("b170:") or sc.begins_with("b171:") or sc.begins_with("b172:"):
+	if sc.length() > 5 and sc.begins_with("b17") and sc.substr(4, 1) == ":":
 		# V170 : la boutique de ce métier la plus proche (V171 : le lieu)
 		best = -1
 		for i0 in range(M.portes.size()):

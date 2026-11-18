@@ -12,6 +12,7 @@ extends Node3D
 ## Ses lieux (spots) et ses points s'ajoutent au réseau des rues de la ville (montjoie_ville_v71).
 
 const R = preload("res://scripts/ile_montjoie_v71.gd")
+const L173 = preload("res://scripts/lieux_v173.gd")
 
 var main: Node
 var manager: Node                        # montjoie_v71
@@ -119,7 +120,10 @@ func _port() -> void:
 		_rowboat(Transform3D(Basis(Vector3.UP, a3 + 0.4), Vector3(bp.x, R.WATER + 0.05, bp.z)))
 	# le phare, sur son îlot
 	var ph: Vector3 = ile.pads_world["phare"]
-	var top: Vector3 = kit.tower70(ph, 2.4, 14.0, {"roof": "cone", "roof_key": "tuiles71_rouge", "roof_h": 3.0, "windows": [4.0, 9.0], "nwin": 2, "lit": 0.8, "wall": "enduit71_blanc", "trim": "dalles71"})
+	# V173 : le phare a sa porte (côté port) ; dedans, le logis du Capitaine Isidore (lieux_v173)
+	var pdir := Vector3(hc.x - ph.x, 0, hc.z - ph.z).normalized()
+	var top: Vector3 = kit.tower70(ph, 2.4, 14.0, {"roof": "cone", "roof_key": "tuiles71_rouge", "roof_h": 3.0, "windows": [4.0, 9.0], "nwin": 2, "lit": 0.8, "wall": "enduit71_blanc", "trim": "dalles71", "door_dir": pdir})
+	L173.porte_ville("montjoie", "phare", ph + pdir * 3.4 + Vector3.UP * 0.05, pdir)
 	var l := OmniLight3D.new()
 	l.light_color = Color(1.0, 0.86, 0.6)
 	l.light_energy = 3.0
@@ -155,6 +159,8 @@ func _ferme() -> void:
 	kit.col_box(gx * T(0, 2.4, -5.0), Vector3(9.0, 4.8, 10.0))
 	kit.roof_gable(gx * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(0, 4.8, -5.0)), 10.0, 9.0, 45.0, 0.4, "tuiles71_brun", "planches71_sombre")
 	kit.box(gx * T(0, 1.6, 0.02), Vector3(3.6, 3.2, 0.08), "volet71_rouge", 1.0)
+	# V173 : on entre dans la grange (lieux_v173)
+	L173.porte_ville("montjoie", "grange", gx * Vector3(0, 0.05, 1.0), gx.basis.z)
 	kit.haystack71(gx * Vector3(5.8, 0, -1.5), 1.3)
 	kit.haystack71(gx * Vector3(6.4, 0, -5.0), 1.1)
 	kit.cart71(Transform3D(Basis(Vector3.UP, 0.6), G(fl.x + 2.0, fl.y + 8.0)), true)
@@ -271,6 +277,8 @@ func _moulin() -> void:
 	var mx: Transform3D = GX(ml.x, ml.y, town)
 	kit.windmill71(mx)
 	var door: Vector3 = mx * Vector3(0, 0.25, -3.6)
+	# V173 : on entre dans le moulin (lieux_v173)
+	L173.porte_ville("montjoie", "moulin", mx * Vector3(0, 0.05, -3.7), mx.basis * Vector3(0, 0, -1))
 	city.doors["porte_clovis"] = city._pt("porte_clovis", door)
 	city._pt("moulin_pt", mx * Vector3(3.4, 0.05, -3.0))
 	city._link("porte_clovis", "moulin_pt")

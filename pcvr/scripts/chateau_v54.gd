@@ -17,6 +17,7 @@ const PIERRE_V161 := "res://shaders/pierre_chateau_v161.gdshader"
 const B161 := "res://assets/textures/beau161/"
 const Mobilier = preload("res://scripts/mobilier_chateau_v161.gd")
 const MetalKit = preload("res://scripts/metal_kit_v160.gd")
+const L173 = preload("res://scripts/lieux_v173.gd")
 const HALF: float = 24.0
 const WALL_T: float = 2.4
 const WALL_H: float = 11.0
@@ -64,6 +65,7 @@ func build(main_node: Node, high_quality: bool) -> void:
 	_build_keep()
 	_build_storm_tower()
 	_build_belfry()
+	_portes_v173()
 	_flush_merlons()
 	_merge_static()
 
@@ -342,6 +344,48 @@ func round_tower(c: Vector2, r: float, h: float, roof: bool = true, slits: int =
 		for k in range(n):
 			var a2: float = TAU * k / n
 			_merlons.append(Transform3D(Basis(Vector3.UP, -a2 + PI * 0.5), Vector3(c.x + cos(a2) * (r - 0.35), h + 0.65, c.y + sin(a2) * (r - 0.35))))
+
+
+# =================================================================== V173 : on entre dans les tours
+
+## Trois tours d'angle (la tour de la garde au sud-ouest, la fauconnerie au sud-est, les cuisines au
+## nord-ouest) et les deux tours de la porterie (la salle de la herse à l'ouest, la loge du portier à
+## l'est) ont leur porte côté cour (sur le socle des tours rondes, et trois marches pour y monter) ;
+## derrière la porte, la pièce (lieux_v173). Le beffroi et le donjon gardent les leurs (les quêtes).
+func _portes_v173() -> void:
+	for e in [["garde", Vector2(-HALF, HALF), 5.0, 17.0], ["fauconnerie", Vector2(HALF, HALF), 5.0, 17.0], ["cuisines", Vector2(-HALF, -HALF), 5.4, 20.0]]:
+		var c: Vector2 = e[1]
+		var r: float = float(e[2])
+		var d := Vector3(-c.x, 0, -c.y).normalized()
+		var yaw: float = atan2(d.x, d.z)
+		var base := Vector3(c.x, 0, c.y)
+		# la face de la tour (elle s'évase vers le pied), le socle
+		var rf: float = r * 1.06 - 0.06 * r * 2.2 / float(e[3])
+		var socle: float = r * 1.12
+		_porte_cour_v173(base + d * rf, yaw, 0.8)
+		for k in range(2):
+			box(Vector3(1.9, 0.27 * (k + 1), 0.36), base + d * (socle + 0.18 + (1 - k) * 0.36) + Vector3.UP * 0.135 * (k + 1), "pierre_sombre", true, yaw)
+		L173.porte_ville("citadelle", str(e[0]), to_global(base + d * (socle + 1.3) + Vector3.UP * 0.05), global_transform.basis * d)
+	for e2 in [["herse", -6.6], ["portier", 6.6]]:
+		var z0: float = HALF + 0.4 - 3.0
+		_porte_cour_v173(Vector3(float(e2[1]), 0, z0), PI, 0.0)
+		L173.porte_ville("citadelle", str(e2[0]), to_global(Vector3(float(e2[1]), 0.05, z0 - 1.2)), global_transform.basis * Vector3(0, 0, -1))
+
+
+## Une porte de bois cloutée (fermée), son encadrement de pierre, son heurtoir : at, le bas de la porte
+## sur la face du mur ; yaw : elle regarde la cour ; y0 : la hauteur du seuil.
+func _porte_cour_v173(at: Vector3, yaw: float, y0: float) -> void:
+	var f := Vector3(sin(yaw), 0, cos(yaw))
+	var sd := Vector3(cos(yaw), 0, -sin(yaw))
+	var p: Vector3 = at + Vector3.UP * y0
+	box(Vector3(1.4, 2.5, 0.16), p + Vector3.UP * 1.25 + f * 0.04, "porte", false, yaw)
+	for k in range(3):
+		box(Vector3(1.42, 0.08, 0.04), p + Vector3.UP * (0.35 + k * 0.9) + f * 0.13, "fer", false, yaw)
+	for s in [-1.0, 1.0]:
+		box(Vector3(0.32, 2.9, 0.36), p + Vector3.UP * 1.45 + sd * s * 0.86 + f * 0.06, "pierre_sombre", false, yaw)
+		box(Vector3(0.06, 0.06, 0.05), p + Vector3.UP * 1.2 + sd * s * 0.36 + f * 0.15, "fer", false, yaw)
+	box(Vector3(2.04, 0.4, 0.36), p + Vector3.UP * 2.7 + f * 0.06, "pierre_sombre", false, yaw)
+	box(Vector3(1.6, 0.1, 0.5), p + Vector3.UP * 0.05 + f * 0.2, "pierre_sombre", false, yaw)
 
 
 # =================================================================== remparts et tours

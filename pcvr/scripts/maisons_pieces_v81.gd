@@ -739,7 +739,9 @@ func _after_door(hw: float, hd: float) -> void:
 	root.add_child(l)
 	l.global_position = P(0, H - 0.95, 0)
 	lights.append(l)
-	ceiling_lamp(0, 0)
+	# V173 : sans lampe suspendue (un lieu qui pose ses lumières lui-même : la fauconnerie, le moulin…)
+	if not bool(pal.get("sans_lampe", false)):
+		ceiling_lamp(0, 0)
 	if day and str(pal.get("fenetre", "")) != "aucune":
 		# un peu de jour qui entre par les fenêtres, d'un côté
 		var sl := OmniLight3D.new()

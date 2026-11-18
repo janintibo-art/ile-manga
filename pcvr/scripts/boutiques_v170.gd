@@ -22,7 +22,10 @@ const L171 = preload("res://scripts/lieux_v171.gd")
 ## V172 : Tazira, Ramure, Port-Boucan
 const L172 = preload("res://scripts/lieux_v172.gd")
 ## Les modules de lieux (chacun : HISTOIRE, METIERS, VILLES, _pal, build)
-const LIEUX := [L171, L172]
+## V173 : les tours de la Citadelle des Nuées, le phare, le moulin et la grange de Montjoie, la tour de
+## contrôle d'Astralys, le mausolée de Sombreval.
+const L173 = preload("res://scripts/lieux_v173.gd")
+const LIEUX := [L171, L172, L173]
 
 const HISTOIRE := "b170"
 const ALCOOL := ["rhum", "biere", "cidre", "hydromel", "grog", "vin_"]
@@ -195,7 +198,7 @@ static func shell(M) -> void:
 		var e: Array = p[key]
 		R.pal[key] = e
 		R._put(key, R._texmat(str(e[0]), e[1], {"sol": 0.72, "mur": 0.92, "bas": 0.88, "plafond": 0.95}[key]))
-	for k2 in ["fenetre", "colombage", "tuyaux", "sans_poutres"]:
+	for k2 in ["fenetre", "colombage", "tuyaux", "sans_poutres", "sans_lampe", "porte"]:
 		if p.has(k2):
 			R.pal[k2] = p[k2]
 	R.rideaux = false
@@ -502,7 +505,9 @@ static func _accueil(M) -> void:
 			return
 		var t: String = str(b[_r(M).randi() % b.size()])
 		if not M.R.day:
-			t = str(_pick(M, ["Oh ! Je m'apprêtais à fermer… Entre, entre, puisque tu es là.", "Il est tard ! Mais pour toi, c'est encore ouvert.", "Chut, la boutique dort… Bon, d'accord, entre."]))
+			# V173 : un lieu peut avoir son bonjour du soir (les fantômes de la Citadelle ne ferment jamais)
+			var bn: Array = M.ctx.get("bonjour_nuit170", [])
+			t = str(_pick(M, bn if not bn.is_empty() else ["Oh ! Je m'apprêtais à fermer… Entre, entre, puisque tu es là.", "Il est tard ! Mais pour toi, c'est encore ouvert.", "Chut, la boutique dort… Bon, d'accord, entre."]))
 		elif not first:
 			t = str(_pick(M, ["Re-bonjour ! Tu reviens nous voir ?", "Te revoilà ! Ça fait plaisir.", "Ah, un habitué !"]))
 		f.say(t, 3.5)
@@ -916,6 +921,10 @@ static func _classe(n: Node) -> String:
 		return "pirate"
 	if scr.contains("ramure"):
 		return "ramure"
+	# V173 : les gens de Montjoie (et de Port-Boucan, de Hautefond, de Pile-ou-Face : le même corps)
+	# gardent leur chapeau et ce qu'ils tiennent à la main
+	if scr.contains("montjoie") or scr.contains("boucan"):
+		return "montjoie"
 	return "lumen"
 
 

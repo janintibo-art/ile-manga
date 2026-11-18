@@ -12,6 +12,7 @@ extends Node3D
 const R = preload("res://scripts/ile_astrale_v76.gd")
 const Kit = preload("res://scripts/astrale_kit_v76.gd")
 const Mats = preload("res://scripts/astrale_mats_v76.gd")
+const L173 = preload("res://scripts/lieux_v173.gd")
 
 ## Les grands lieux (repère local) : [nom, centre, rayon] (rien d'autre n'y pousse).
 const AGORA := Vector2(0.0, 52.0)
@@ -471,6 +472,11 @@ func _spatioport() -> void:
 	kit.dome76(Transform3D(Basis(), GV(tw, 17.0)), 3.7, 1.6, "metal76_", 16, 5)
 	kit.ball(Transform3D(Basis(), GV(tw, 19.0)), 0.4, "lumiere76_rose", 8, 5)
 	kit.col_cyl(GV(tw, 0.0), 2.3, 17.0)
+	# V173 : la porte de la tour (un ovale de lumière, côté hangar) ; dedans, la cabine de contrôle
+	var txf := Transform3D(Basis(Vector3.UP, PI * 0.5), GV(tw, 0.0))
+	kit.box(txf * T(0, 1.1, 2.12), Vector3(1.2, 2.1, 0.14), "vitre76_on", 1.0)
+	kit.cyl(txf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 2.45, 2.12)), 0.45, 0.45, 0.06, "lumiere76_turquoise", 14, false)
+	L173.porte_ville("astralys", "tour", txf * Vector3(0, 0.05, 3.5), Vector3(1, 0, 0))
 	_pt("sp_porte_o", hg["door"])
 	_pt("sp_dedans", hangar + Vector3(-3.0, 0, 3.0))
 	_pt("sp_est", hangar + Vector3(18.0, 0, 3.0))

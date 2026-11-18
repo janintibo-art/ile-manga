@@ -407,6 +407,7 @@ func _systeme(nom: String) -> void:
 			a.y = fm._height_at(a.x, a.z) + 1.7
 			b.y = fm._height_at(b.x, b.z) + 1.0
 			await _vue(str(v[0]), a, b)
+		await _portes173(nom)
 		return
 	var iv: int = 0
 	for V in villes:
@@ -436,6 +437,25 @@ func _systeme(nom: String) -> void:
 			await _vue("15%d_%s" % [k2, str(noms[i]).substr(0, 18)], pos - d * 3.2 + Vector3.UP * 1.65, pos + d * 6.0 + Vector3.UP * 1.3)
 			n += 1
 			k2 += 1
+	await _portes173(nom)
+
+
+## V173 : les portes des lieux de lieux_v173 de cette île (de face, un peu de côté).
+func _portes173(nom: String) -> void:
+	var st: String = {"celeste": "citadelle", "montjoie": "montjoie", "astralys": "astralys", "sombreval": "sombreval"}.get(nom, "")
+	if st == "":
+		return
+	var Kit56 = load("res://scripts/azur_kit_v56.gd")
+	var n: int = 0
+	for e in Kit56.PORTES_V81:
+		if str(e.get("histoire", "")) != "b173" or str(e.get("style", "")) != st:
+			continue
+		var dp: Vector3 = e["door"]
+		var o: Vector3 = e["out"]
+		var sd: Vector3 = o.cross(Vector3.UP)
+		var loin: float = 4.0 if st == "astralys" else 6.5
+		await _vue("173%d_%s" % [n, str(e.get("metier", ""))], dp + o * loin + sd * 1.5 + Vector3.UP * 1.8, dp - o * 1.5 + Vector3.UP * 1.6)
+		n += 1
 
 
 ## La Porte aux Quatre Sceaux seule (V164) : le relief de la Grande Île, sans les villes.
@@ -762,6 +782,7 @@ func _celeste() -> void:
 	await _vue("81_esplanade", esp + Vector3(4, 1.7, 8), K.global_position + Vector3(0, 9, 0))
 	await _vue("82_porte", K.at("porte") + Vector3(3, 1.7, 9), K.at("porte") + Vector3(0, 4, 0))
 	await _vue("83_cour", K.at("cour") + Vector3(-6, 1.7, 6), K.at("porte_donjon") + Vector3(0, 4, 0))
+	await _portes173("celeste")
 	await _vue("84_salle", K.at("salle") + Vector3(0, 1.7, 5), K.at("salle") + Vector3(0, 1.5, -6))
 	await _vue("85_lutrin", K.at("lutrin") + Vector3(2.5, 1.7, 3), K.at("lutrin") + Vector3(0, 1.0, 0))
 	await _vue("86_trone", K.at("trone") + Vector3(0, 1.7, 9), K.at("trone") + Vector3(0, 2.0, 0))

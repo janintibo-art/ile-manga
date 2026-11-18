@@ -56,13 +56,17 @@ func _serie() -> void:
 	_ok(_portes("crayon").size() == 4 and _portes("crayon", "cr_conseil").size() == 1, "les quatre arbres-maisons de l'Île Crayonnée (dont la Maison du Conseil)")
 	var S: Node = sombreval_v121
 	_ok(S != null and S.hd_v169, "Sombreval : les portes V169")
-	var nsv: int = _portes("sombreval").size()
+	# (les portes des lieux V17x, comme le mausolée, sont comptées par leurs séries : 92_lieux_ter)
+	var nsv: int = 0
+	for e5 in _portes("sombreval"):
+		if not str(e5.get("histoire", "")).begins_with("b17"):
+			nsv += 1
 	_ok(nsv >= 60 and S != null and S.portes_v169 == nsv, "Sombreval : chaque bâtiment debout a sa porte (%d)" % nsv)
 	_ok(_portes("sombreval", "sv_gare").size() == 1 and _portes("sombreval", "sv_beffroi").size() == 1, "la gare et le beffroi ont leur porte")
 	await _att(5.5)
 	var vus: int = 0
 	for e2 in maisons_v81.portes:
-		if str(e2.get("style", "")) in ["pasta", "crayon", "sombreval"]:
+		if str(e2.get("style", "")) in ["pasta", "crayon", "sombreval"] and not str(e2.get("histoire", "")).begins_with("b17"):
 			vus += 1
 	_ok(vus == 10 + nsv, "maisons_v81 connaît toutes ces portes (%d)" % vus)
 	# --- les histoires de Sombreval : variées

@@ -22,6 +22,7 @@ const Public = preload("res://scripts/public_v111.gd")
 const FLORE := "res://scripts/sombreval_flore_v121.gd"
 const CHATEAU := "res://scripts/comte_v128.gd"            # V128 : le château, avec la Chambre du Comte et les souterrains
 const Comte128 = preload("res://scripts/comte_v128.gd")
+const L173 = preload("res://scripts/lieux_v173.gd")
 
 const Y0: float = IleScript.Y0
 const TOP: float = IleScript.TOP
@@ -759,6 +760,8 @@ func _cimetiere() -> void:
 	_boite_rect(mx - 3.0, mz - 3.0, mx + 3.0, mz + 3.0, Y0 - 1.0, Y0 + 4.5, 1.0, 0.7, 0.2)
 	b.cyl("pierre_tombe", Transform3D(Basis(Vector3.UP, PI * 0.25), _ground(mx, mz) + Vector3.UP * 4.5), 4.6, 0.3, 2.4, 4)
 	b.box("fer_noir", Transform3D(Basis(), _ground(mx, mz - 3.05) + Vector3.UP * 1.3), Vector3(1.6, 2.6, 0.08))
+	# V173 : on entre dans le mausolée des Vauclair (lieux_v173)
+	L173.porte_ville("sombreval", "mausolee", _ground(mx, mz - 3.9) + Vector3.UP * 0.05, Vector3(0, 0, -1))
 	_block(x0, z0, x1, z1)
 	# des arbres morts
 	for k3 in range(5):
