@@ -25,7 +25,9 @@ const L172 = preload("res://scripts/lieux_v172.gd")
 ## V173 : les tours de la Citadelle des Nuées, le phare, le moulin et la grange de Montjoie, la tour de
 ## contrôle d'Astralys, le mausolée de Sombreval.
 const L173 = preload("res://scripts/lieux_v173.gd")
-const LIEUX := [L171, L172, L173]
+## V174 : chez les Géants (la maison des Grandpré, le Moulin de la Butte) ; ils font leur coque eux-mêmes
+const L174 = preload("res://scripts/lieux_v174.gd")
+const LIEUX := [L171, L172, L173, L174]
 
 const HISTOIRE := "b170"
 const ALCOOL := ["rhum", "biere", "cidre", "hydromel", "grog", "vin_"]
@@ -201,6 +203,9 @@ static func shell(M) -> void:
 	for k2 in ["fenetre", "colombage", "tuyaux", "sans_poutres", "sans_lampe", "porte"]:
 		if p.has(k2):
 			R.pal[k2] = p[k2]
+	# V174 : un lieu à l'échelle des géants fait sa coque lui-même (les murs épais, les fenêtres de géant)
+	if L == L174 and L174.coque(M):
+		return
 	R.rideaux = false
 	R.shell()
 	R.rideaux = true

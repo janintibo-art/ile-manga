@@ -15,6 +15,8 @@ const Limace = preload("res://scripts/limace_v142.gd")
 const FLORE := "res://scripts/geants_flore_v142.gd"
 const HABITANTS := "res://scripts/pnj/geants_habitants_v142.gd"
 const PNJ := "res://scripts/pnj/pnj_geant_v142.gd"
+## V174 : on entre chez les Géants (la maison par la chatière, le moulin par le trou de souris)
+const L174 = preload("res://scripts/lieux_v174.gd")
 
 const PLACES := {"gt_ponton": "le Ponton des Petits", "gt_greve": "la grève", "gt_rivage": "le rivage", "gt_maison": "la maison des Grandpré",
 	"gt_cour": "la cour de la ferme", "gt_grange": "la grange", "gt_potager": "le potager", "gt_verger": "le verger",
@@ -132,6 +134,11 @@ func build_town() -> void:
 		flore.avoid.append([Vector2(-60.0, 34.0), 14.0])
 		flore.avoid.append([IleScript.CHATEAU_SABLE, 26.0])
 		flore.build(ile, pc)
+	# V174 : les deux portes des Petits (lieux_v174) : la chatière de la maison des Grandpré, le trou de
+	# souris du Moulin de la Butte
+	var ch: Vector3 = reperes["maison"]["chatiere"]
+	L174.porte_ville("geants", "maison", Vector3(ch.x, y0 + 0.05, ch.z - 1.0), Vector3(0, 0, -1))
+	L174.porte_ville("geants", "moulin", reperes["moulin"]["trou"], reperes["moulin"]["trou_out"])
 	_fumee = _make_smoke(reperes["maison"]["fumee"])
 	_glows()
 	_stations()

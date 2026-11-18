@@ -250,13 +250,16 @@ func _initialize() -> void:
 		# le début de « ville_id » (« azur », « perchee_banque »… ; plusieurs, séparés par des virgules),
 		# ou « nuit » pour tout voir le soir (V171 : aussi les lieux de lieux_v171 : « egypte », « maya »,
 		# « azteque », « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan » ; V173 : « citadelle »,
-		# « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval »)
+		# « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »)
 		sun.visible = false
 		Pieces.sondes = false
 		var M3 = Maisons.new()
 		fm.add_child(M3)
 		M3.setup(fm)
 		var seul3: String = str(OS.get_cmdline_user_args()[2]) if OS.get_cmdline_user_args().size() > 2 else ""
+		# V174 : « geants:nuit » (une partie seulement, le soir)
+		var nuit3: bool = seul3 == "nuit" or seul3.ends_with(":nuit")
+		seul3 = seul3.trim_suffix(":nuit")
 		# V173 : une même ville peut avoir des boutiques (b170) et des lieux (« montjoie ») : on garde
 		# chaque lieu avec son histoire (une liste [ville, id, entrée, histoire])
 		var liste3: Array = []
@@ -280,17 +283,22 @@ func _initialize() -> void:
 					continue
 				var e3: Array = it3[2]
 				var t3: Vector2 = B170._met(str(e3[0]))[0]
-				tp.hour = 21.5 if seul3 == "nuit" else 14.0
+				tp.hour = 21.5 if nuit3 else 14.0
 				M3.cur = {"id": "rendu170_" + nom3, "style": st3, "w": t3.x, "d": t3.y, "histoire": str(it3[3]), "metier": str(e3[0]),
 					"proprio": str(e3[1]), "nom170": str(e3[2]), "enseigne170": str(e3[3]), "door": Vector3(-500, 0, -500), "out": Vector3(0, 0, 1)}
 				M3.force_scenario = ""
 				M3._build()
 				for k4 in range(4):
 					await process_frame
+				# V174 : ce qui bouge prend sa pose (le chat se couche, les rouages tournent un peu)
+				var tk3: Variant = M3.ctx.get("tick", null)
+				if tk3 is Callable:
+					for k5 in range(30):
+						(tk3 as Callable).call(0.05)
 				var R3 = M3.R
 				_vue(R3.P(0.0, 1.65, R3.D * 0.5 - 0.5), R3.P(0.0, 1.0, -R3.D * 0.5))
 				await _photo("%s_porte" % nom3)
-				if B170.L171.RONDS.has(str(e3[0])) or B170.L172.RONDS.has(str(e3[0])) or B170.L173.RONDS.has(str(e3[0])):
+				if B170.L171.RONDS.has(str(e3[0])) or B170.L172.RONDS.has(str(e3[0])) or B170.L173.RONDS.has(str(e3[0])) or B170.L174.RONDS.has(str(e3[0])):
 					_vue(R3.P(-R3.W * 0.3, 1.7, R3.D * 0.3), R3.P(R3.W * 0.2, 1.0, -R3.D * 0.3))
 				else:
 					_vue(R3.P(-R3.W * 0.5 + 0.6, 1.7, R3.D * 0.5 - 0.8), R3.P(R3.W * 0.25, 0.8, -R3.D * 0.3))
@@ -298,6 +306,13 @@ func _initialize() -> void:
 				if str(e3[0]) == "ecurie":
 					_vue(R3.P(0.0, 1.6, -R3.D * 0.5 + 2.2), R3.P(-R3.W * 0.5 + 1.5, 1.0, -R3.D * 0.5 + 1.2))
 					await _photo("%s_stalle" % nom3)
+				# V174 : chez les Géants, des vues choisies (lieux_v174.VUES : la table, l'escalier de livres,
+				# la cheminée, chez Brindille, l'horloge ; la meule, le rouet, le fournil de Pépin)
+				for vu in (B170.L174.VUES as Dictionary).get(str(e3[0]), []):
+					var de: Vector3 = vu[1]
+					var vers: Vector3 = vu[2]
+					_vue(R3.P(de.x, de.y, de.z), R3.P(vers.x, vers.y, vers.z))
+					await _photo("%s_%s" % [nom3, str(vu[0])])
 				M3._teardown()
 				await process_frame
 	quit()

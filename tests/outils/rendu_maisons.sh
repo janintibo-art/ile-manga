@@ -5,7 +5,8 @@
 # (V170 : « boutiques » : les boutiques et les bâtiments publics, « ville_id » ; « nuit » : tout, le soir)
 # (V171 : « boutiques » montre aussi les temples, les palais, les tours : « egypte », « maya », « azteque »,
 #  « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan » ; V173 : « citadelle »,
-#  « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval »)
+#  « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »,
+#  et « geants:nuit » pour une partie seulement, le soir)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

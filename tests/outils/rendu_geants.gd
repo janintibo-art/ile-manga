@@ -2,6 +2,8 @@ extends SceneTree
 ## Des images de l'Île des Géants (V142), pour juger l'effet (lancé par tests/outils/rendu_geants.sh) :
 ## l'île vue de haut, l'arrivée au ponton, la ferme, le potager, le moulin, la mare, le verger, les
 ## géants à leur travail, un géant agenouillé qui parle au tout petit visiteur (un repère de 1,75 m).
+## V174 : « fenetres » : ce qu'on voit par les fenêtres de la maison et du moulin (generate_textures_v174.py
+## vues) ; « portes » : la chatière de la maison et le trou de souris du moulin (les portes des Petits).
 
 const Geants = preload("res://scripts/geants_v142.gd")
 const Ile = preload("res://scripts/ile_geants_v142.gd")
@@ -91,6 +93,37 @@ func _initialize() -> void:
 		await _vue("14_grange", _sol(-70, -60) + Vector3(0, 1.8, 0), C + Vector3(-98, 12, 0))
 		await _vue("15_chateau_sable", _sol(60, -214) + Vector3(0, 1.8, 0), C + Vector3(92, 4, -196))
 		await _vue("16_porte_pres", _sol(4, -40) + Vector3(0, 1.7, 0), C + Vector3(0, 12, -28))
+	if quoi == "fenetres":
+		# V174 : ce qu'on voit par les fenêtres de la maison et du moulin (sans les géants : une image
+		# fixe ne doit pas garder un géant planté devant la vitre) ; generate_textures_v174.py vues
+		for n2 in g.habitants:
+			n2.visible = false
+		await process_frame
+		var yf: float = Ile.PLATEAU_Y + 6.8 + 5.25
+		var fxs := [-31.0, -16.0, 16.0, 31.0]
+		for i2 in range(4):
+			var fx: float = fxs[i2]
+			await _vue("vue_nord_%d" % (i2 + 1), C + Vector3(fx, yf, -31.0), C + Vector3(fx, yf + 9.0, -131.0))
+			await _vue("vue_sud_%d" % (i2 + 1), C + Vector3(fx, yf, 31.0), C + Vector3(fx, yf + 9.0, 131.0))
+		await _vue("vue_est", C + Vector3(45.0, yf, -6.0), C + Vector3(145.0, yf + 9.0, -6.0))
+		await _vue("vue_ouest", C + Vector3(-45.0, yf, -6.0), C + Vector3(-145.0, yf + 9.0, -6.0))
+		var mc: Vector3 = Ile.W(Ile.MOULIN.x, Ile.MOULIN.y, Ile.MOULIN_Y - 0.5)
+		var fa: Vector3 = Vector3(0.62, 0, 0.78).normalized()
+		var am: float = atan2(fa.z, fa.x) + 0.35
+		var dm := Vector3(cos(am), 0, sin(am))
+		var rr: float = lerpf(12.5, 9.6, 14.0 / 38.0)
+		await _vue("vue_moulin", mc + dm * (rr + 2.5) + Vector3.UP * 16.5, mc + dm * (rr + 102.5) + Vector3.UP * 10.0)
+	if quoi == "portes":
+		# V174 : les deux portes des Petits (lieux_v174) : la chatière de la maison, le trou de souris du moulin
+		var dm: Vector3 = g.reperes["maison"]["porte"]
+		var chm: Vector3 = g.reperes["maison"]["chatiere"]
+		await _vue("40_chatiere", chm + Vector3(-1.2, 1.4, -4.5), chm + Vector3(0, 1.0, 0.6))
+		await _vue("41_porte_maison", dm + Vector3(-6.0, 1.7, -14.0), dm + Vector3(0, 6.0, 0))
+		var tr: Vector3 = g.reperes["moulin"]["trou"]
+		var to: Vector3 = g.reperes["moulin"]["trou_out"]
+		var side: Vector3 = Vector3.UP.cross(to).normalized()
+		await _vue("42_trou_souris", tr + to * 3.2 + side * 1.4 + Vector3.UP * 1.2, tr - to * 1.6 + Vector3.UP * 1.0)
+		await _vue("43_moulin_trou", tr + to * 14.0 + side * 5.0 + Vector3.UP * 1.7, tr + Vector3.UP * 6.0)
 	if quoi in ["tout", "geants"]:
 		var noms := ["mathurine_gt", "eustache_gt", "ernestine_gt", "paquerette_gt", "theophile_gt"]
 		for i in range(noms.size()):

@@ -901,6 +901,9 @@ func _visit(sc: String) -> void:
 			ok = false
 		if fixe and str(M.portes[i].get("histoire", "")) != sc:
 			ok = false
+		# V174 : une boutique ou un lieu V17x garde son histoire (la salle des géants n'est pas une maison)
+		if str(M.portes[i].get("histoire", "")).begins_with("b17"):
+			ok = false
 		if ok:
 			var dd: float = (M.portes[i]["door"] as Vector3).distance_to(p)
 			if dd < bd:

@@ -154,6 +154,11 @@ static func mat(key: String) -> Material:
 			m = _surface(MJ + "dalles.png", MJ + "dalles_n.png", Color(1.0, 0.98, 0.94), 0.8, 12.0, 0.9, Color(0.74, 0.72, 0.66))
 		"sombre":
 			m = _flat(Color(0.05, 0.045, 0.04), 1.0)
+		"enseigne_pepin":
+			# V174 : l'enseigne de Pépin, le boulanger des Petits (au pied du moulin)
+			var ep: StandardMaterial3D = _surface("res://assets/textures/beau174/enseigne_pepin.png", "", Color(1, 1, 1), 0.7, 1.0, 1.0, Color(0.55, 0.1, 0.1))
+			ep.uv1_scale = Vector3.ONE
+			m = ep
 		"paille":
 			m = _surface(MJ + "chaume.png", MJ + "chaume_n.png", Color(1.3, 1.18, 0.8), 0.95, 3.0, 1.0, Color(0.86, 0.74, 0.46))
 		"veste":
@@ -639,7 +644,35 @@ static func moulin(b: Batch, cols: Cols, parent: Node3D) -> Dictionary:
 		ab.quad("toile", [p0, p1, p2, p3], Vector3(0, 0, 1), [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
 	ab.cyl("poutre", Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 0, -0.5)), 2.2, 2.2, 1.8, 12)
 	ab.commit(ailes, "Ailes", true)
-	return {"ailes": ailes, "porte": dp + face * 3.0, "pied": c}
+	# V174 : le trou de souris (l'entrée des Petits : lieux_v174, le fournil de Pépin), au-dessus du
+	# soubassement, à l'écart de la porte des géants ; une règle de bois pour y monter, l'enseigne de Pépin
+	var ta: float = atan2(face.z, face.x) - deg_to_rad(80.0)
+	var to := Vector3(cos(ta), 0, sin(ta))
+	var ts: Vector3 = Vector3.UP.cross(to).normalized()
+	var tb := Basis(ts, Vector3.UP, to)
+	var ys: float = 1.2
+	var tp: Vector3 = c + to * (r0 - 0.04) + Vector3.UP * ys
+	b.box("sombre", Transform3D(tb, tp + Vector3.UP * 0.5), Vector3(1.1, 1.0, 0.1))
+	b.cyl("sombre", Transform3D(Basis(ts, to, -Vector3.UP), tp + Vector3.UP * 1.0 - to * 0.05), 0.55, 0.55, 0.1, 14)
+	for g in range(9):
+		var ag: float = PI * (0.05 + 0.9 * g / 8.0)
+		var gp: Vector3 = tp + ts * cos(ag) * 0.62 + Vector3.UP * (1.0 + sin(ag) * 0.62 - (0.45 if g == 0 or g == 8 else 0.0)) + to * 0.06
+		b.blob("enduit", gp, Vector3(0.13, 0.1, 0.08), 6, tb)
+	var r_bas: Vector3 = c + to * 15.1 + Vector3.UP * 0.5
+	var r_haut: Vector3 = c + to * (r0 + 0.75) + Vector3.UP * (ys + 0.04)
+	var rd: Vector3 = r_haut - r_bas
+	var rb: Basis = Basis.looking_at(rd.normalized(), Vector3.UP)
+	b.box("bois_clair", Transform3D(rb, (r_bas + r_haut) * 0.5), Vector3(0.9, 0.08, rd.length() + 0.3))
+	cols.box(Transform3D(rb, (r_bas + r_haut) * 0.5 - rb.y * 0.1), Vector3(0.9, 0.2, rd.length() + 0.3))
+	for gr in range(7):
+		b.box("sombre", Transform3D(rb, r_bas.lerp(r_haut, 0.08 + gr * 0.13) + rb.y * 0.045 + rb.x * 0.3), Vector3(0.3 if gr % 2 == 0 else 0.18, 0.01, 0.025))
+	cols.box(Transform3D(tb, c + to * (r0 + 0.85) + Vector3.UP * (ys * 0.5 - 0.2)), Vector3(2.2, ys + 0.4, 1.0))
+	var ep: Vector3 = c + to * 15.4 + ts * 1.5 + Vector3.UP * 0.5
+	b.box("poutre", Transform3D(tb, ep + Vector3.UP * 0.35 - ts * 0.4), Vector3(0.06, 0.7, 0.06))
+	b.box("poutre", Transform3D(tb, ep + Vector3.UP * 0.35 + ts * 0.4), Vector3(0.06, 0.7, 0.06))
+	b.box("poutre", Transform3D(tb, ep + Vector3.UP * 0.85), Vector3(1.0, 0.52, 0.04))
+	b.quad("enseigne_pepin", [ep + Vector3.UP * 0.62 + ts * 0.46 + to * 0.03, ep + Vector3.UP * 0.62 - ts * 0.46 + to * 0.03, ep + Vector3.UP * 1.08 - ts * 0.46 + to * 0.03, ep + Vector3.UP * 1.08 + ts * 0.46 + to * 0.03], to, [Vector2(1, 1), Vector2(0, 1), Vector2(0, 0), Vector2(1, 0)])
+	return {"ailes": ailes, "porte": dp + face * 3.0, "pied": c, "trou": c + to * 14.6 + Vector3.UP * 0.55, "trou_out": to}
 
 
 # =================================================================== la cour, le puits, le jardin
