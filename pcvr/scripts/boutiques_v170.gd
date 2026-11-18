@@ -17,6 +17,8 @@ const Kit = preload("res://scripts/azur_kit_v56.gd")
 const Inv = preload("res://scripts/inventory_v28.gd")
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Sud = preload("res://scripts/maisons_sud_v169.gd")
+## V171 : les temples, les palais, les ateliers et les tours (Trois Soleils, Arcanelle, Port-Coutelas)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 const HISTOIRE := "b170"
 const ALCOOL := ["rhum", "biere", "cidre", "hydromel", "grog", "vin_"]
@@ -47,13 +49,14 @@ const TEINTES := [Color(0.75, 0.12, 0.15), Color(0.95, 0.62, 0.12), Color(0.35, 
 ## « perchee », « azur », « braise », « montjoie », « cliquetis »), metier (METIERS), proprio (l'id de
 ## la vraie personne qui la tient, ou ""), nom (« au Bazar de la Veuve Clou » : pour « E : entrer … »),
 ## enseigne (ce qu'on lit dedans, au-dessus du comptoir).
-static func porte(door: Vector3, out: Vector3, style: String, metier: String, proprio: String, nom: String, enseigne: String = "") -> bool:
+static func porte(door: Vector3, out: Vector3, style: String, metier: String, proprio: String, nom: String, enseigne: String = "", histoire: String = HISTOIRE) -> bool:
 	out.y = 0.0
-	if out.length() < 0.01 or not METIERS.has(metier):
+	var me: Array = _met(metier)
+	if out.length() < 0.01 or me.is_empty():
 		return false
-	var t: Vector2 = METIERS[metier][0]
+	var t: Vector2 = me[0]
 	Kit.PORTES_V81.append({"door": door, "out": out.normalized(), "w": t.x, "d": t.y, "style": style, "floors": 1, "owner": proprio,
-		"histoire": HISTOIRE, "metier": metier, "proprio": proprio, "nom170": nom, "enseigne170": enseigne if enseigne != "" else nom,
+		"histoire": histoire, "metier": metier, "proprio": proprio, "nom170": nom, "enseigne170": enseigne if enseigne != "" else nom,
 		"entrer": "E : entrer " + nom})
 	return true
 
@@ -139,16 +142,25 @@ static func ouvre(style: String, id: String) -> bool:
 
 # =================================================================== ce que maisons_v81 demande
 
+## (V171 : les lieux de lieux_v171 passent par ici aussi : leur histoire est « b171 »)
 static func is_b170(cur: Dictionary) -> bool:
-	return str(cur.get("histoire", "")) == HISTOIRE
+	return has(str(cur.get("histoire", "")))
+
+
+## Le métier : [taille, hauteur] (les boutiques, puis les lieux de la V171) ; [] s'il n'existe pas.
+static func _met(metier: String) -> Array:
+	if METIERS.has(metier):
+		return METIERS[metier]
+	return L171.METIERS.get(metier, [])
 
 
 static func taille(cur: Dictionary) -> Vector2:
-	return (METIERS.get(str(cur.get("metier", "")), [Vector2(9.0, 7.5), 3.3]) as Array)[0]
+	var me: Array = _met(str(cur.get("metier", "")))
+	return me[0] if not me.is_empty() else Vector2(9.0, 7.5)
 
 
 static func has(sc: String) -> bool:
-	return sc == HISTOIRE
+	return sc == HISTOIRE or sc == L171.HISTOIRE
 
 
 ## La coque : les murs, le sol et le plafond du métier, à la mode de la ville.
@@ -157,8 +169,9 @@ static func shell(M) -> void:
 	var met: String = str(M.cur.get("metier", ""))
 	var st: String = str(M.cur.get("style", ""))
 	R.pal = (R.pal as Dictionary).duplicate()
-	R.H = float((METIERS.get(met, [Vector2.ZERO, 3.3]) as Array)[1])
-	var p: Dictionary = _pal(st, met)
+	var me: Array = _met(met)
+	R.H = float(me[1]) if not me.is_empty() else 3.3
+	var p: Dictionary = L171._pal(st, met) if L171.has_metier(met) and L171.VILLES.has(st) else _pal(st, met)
 	for key in ["sol", "mur", "bas", "plafond"]:
 		var e: Array = p[key]
 		R.pal[key] = e
@@ -414,6 +427,8 @@ static func build(M) -> void:
 			_labo(M)
 		"observatoire":
 			_observatoire(M)
+		_:
+			L171.build(M)
 	if str(M.cur.get("style", "")) == "braise":
 		_lampe(M, 0.0, M.R.H - 0.8, 0.4, Color(1.0, 0.72, 0.5), 0.9, maxf(M.R.W, M.R.D) * 1.1)
 	_accueil(M)
@@ -506,7 +521,7 @@ static func _verre(R, key: String, c: Color, a: float = 0.45, emit: float = 0.0)
 		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		m.roughness = 0.05
 		m.metallic = 0.1
-		m.specular = 0.8
+		m.metallic_specular = 0.8
 		if emit > 0.0:
 			m.emission_enabled = true
 			m.emission = c
@@ -1789,7 +1804,7 @@ static func _apothicaire(M) -> void:
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
 	var st: String = str(M.cur.get("style", ""))
-	var magique: bool = st in ["braise", "montjoie"]
+	var magique: bool = st in ["braise", "montjoie", "arcanelle"]
 	M.ctx["fiole_emit"] = 0.7 if magique else 0.0
 	var zc: float = -hd + 1.8
 	# le mur des tiroirs, derrière le comptoir

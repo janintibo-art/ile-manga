@@ -788,6 +788,16 @@ func ceiling_lamp(x: float, z: float) -> void:
 				kit.box(Transform3D(Basis(Vector3.UP, -a3), P(x + cos(a3) * 0.19, y + 0.02, z + sin(a3) * 0.19)), Vector3(0.38, 0.02, 0.02), "or", 1.0)
 				kit.cyl(L(x + cos(a3) * 0.365, y + 0.04, z + sin(a3) * 0.365), 0.03, 0.03, 0.04, "or", 6)
 				kit.cyl(L(x + cos(a3) * 0.365, y + 0.08, z + sin(a3) * 0.365), 0.05, 0.075, 0.14, "lumiere", 10)
+		"egypte", "maya", "azteque":
+			# V171 : une lampe à huile de bronze, pendue à trois chaînettes ; trois mèches allumées
+			kit.cyl(L(x, y + 0.42, z), 0.006, 0.006, H - y - 0.42, "fer", 4, false)
+			kit.cyl(L(x, y + 0.4, z), 0.03, 0.03, 0.04, "cuivre", 8)
+			for k5 in range(3):
+				var a5: float = TAU * k5 / 3.0
+				kit.box(Transform3D(Basis(Vector3.UP, -a5) * Basis(Vector3.BACK, 0.38), P(x + cos(a5) * 0.1, y + 0.23, z + sin(a5) * 0.1)), Vector3(0.008, 0.38, 0.008), "fer", 1.0)
+				kit.cyl(L(x + cos(a5 + 0.5) * 0.19, y + 0.05, z + sin(a5 + 0.5) * 0.19), 0.006, 0.0, 0.035, "flamme", 5, false)
+			kit.cyl(L(x, y - 0.06, z), 0.05, 0.21, 0.11, "cuivre", 16)
+			kit.ring(L(x, y + 0.04, z), 0.19, 0.22, 0.015, "cuivre", 16)
 		_:
 			# une lanterne de papier / de tissu, ronde
 			kit.cyl(L(x, y + 0.3, z), 0.006, 0.006, H - y - 0.3, "fer", 4, false)

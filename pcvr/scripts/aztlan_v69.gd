@@ -12,6 +12,8 @@ extends Node3D
 
 const R = preload("res://scripts/ile_soleils_v69.gd")
 const Kit = preload("res://scripts/soleils_kit_v69.gd")
+## V171 : on entre dans les temples, les palais, les ateliers (lieux_v171)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 var main: Node
 var ile: Node3D
@@ -211,6 +213,7 @@ func _place() -> void:
 	kit.quadz(cx * Transform3D(Basis(), Vector3(2.8, 1.15, 0.03)), 1.0, 1.7, "lin69_rouge")
 	doors["porte_cuauhtli"] = _pt("porte_cuauhtli", cx * Vector3(-2.8, 0.05, 1.3))
 	doors["porte_citlali"] = _pt("porte_citlali", cx * Vector3(2.8, 0.05, 1.3))
+	L171.porte_ville("azteque", "calmecac", cx * Vector3(2.8, 0.05, 1.2), cx.basis.z)
 	for px in [-5.0, -1.0, 1.0, 5.0]:
 		kit.cyl(cx * Transform3D(Basis(), Vector3(px, 0, 2.4)), 0.22, 0.22, 3.2, "enduit69_rouge", 10)
 	kit.box(cx * Transform3D(Basis(), Vector3(0, 3.3, 1.6)), Vector3(12.0, 0.2, 2.2), "frise69", 2.0)
@@ -222,6 +225,7 @@ func _place() -> void:
 	var pa := XZ(W(-142.0, 133.0, Y), 0.0, -1.0)
 	kit.aztec_house(pa, 13.0, 6.5, 4.6, {"mur": "enduit69_ocre", "rideau": "vert", "patio": false})
 	doors["porte_mixtli"] = _pt("porte_mixtli", pa * Vector3(0, 0.05, 1.3))
+	L171.porte_ville("azteque", "palais", pa * Vector3(0, 0.05, 1.2), pa.basis.z)
 	_spot("guerrier", pa * Vector3(3.5, 0.05, 3.0), Vector3(0, 0, -1), "bras_croises", "pl_s")
 	_avoid(-142.0, 136.0, 8.0)
 
@@ -323,6 +327,8 @@ func _chinampas() -> void:
 		var front: Vector3 = kit.maya_hut(hx, 3.8, 2.6, {"mur": "brique69", "h": 1.6, "toit_h": 2.4})
 		if str(h[1]) != "":
 			doors[str(h[1])] = _pt(str(h[1]), Vector3(front.x, R.LAKE_Y + 0.47, front.z))
+		# V171 : on entre aussi dans les cases des chinampas
+		kit.porte_v81_dir(Vector3(front.x, R.LAKE_Y + 0.47, front.z), hx.basis.z, 4.6, 3.6, "azteque", 1, str(h[1]).trim_prefix("porte_"))
 		objets[str(h[1]) if str(h[1]) != "" else "case_%d" % huts.find(h)] = W(p.x, p.y, R.LAKE_Y + 0.5)
 		_avoid(p.x, p.y, 3.5)
 	for cp in [Vector2(-130.0, 168.0), Vector2(-152.0, 150.0), Vector2(-108.0, 178.0), Vector2(-176.0, 140.0)]:

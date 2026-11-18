@@ -12,6 +12,8 @@ extends Node3D
 
 const R = preload("res://scripts/ile_soleils_v69.gd")
 const Kit = preload("res://scripts/soleils_kit_v69.gd")
+## V171 : on entre dans les temples, les palais, les ateliers (lieux_v171)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 var main: Node
 var ile: Node3D
@@ -160,6 +162,7 @@ func _palais() -> void:
 	var xf := XZ(c + Vector3(0, 2.6, -1.0), 0.0, 1.0)
 	var front: Vector3 = kit.maya_building(xf, 22.0, 8.0, 4.6, {"mur": "stucr69_blanc", "portes": 5, "socle": 0.3, "crete": false})
 	doors["porte_ixkanul"] = _pt("porte_ixkanul", Vector3(front.x - 4.4, c.y + 2.65, front.z - 0.4))
+	L171.porte_ville("maya", "palais", xf * Vector3(0, 0.05, 5.0), xf.basis.z)
 	_avoid(36.0, -168.0, 15.0)
 
 
@@ -168,7 +171,9 @@ func _jaguars() -> void:
 	var c: Vector3 = W(-58.0, -160.0, Y)
 	var top: Vector3 = kit.step_pyramid(c, 16.0, 16.0, 4, 2.0, 2.4, "pmaya69", "dalles69_blanc", 2.5)
 	kit.stair(c + Vector3(15.0, 0, 0), Vector3(c.x + 3.4, top.y, c.z), 5.0, "pmaya69", "pmaya69_sombre", 0.5, 0.5)
-	kit.maya_building(XZ(top + Vector3(-0.8, 0, 0), 1.0, 0.0), 5.6, 5.0, 3.6, {"mur": "stucr69", "portes": 1, "socle": 0.2, "crete_h": 2.0})
+	var jx: Transform3D = XZ(top + Vector3(-0.8, 0, 0), 1.0, 0.0)
+	kit.maya_building(jx, 5.6, 5.0, 3.6, {"mur": "stucr69", "portes": 1, "socle": 0.2, "crete_h": 2.0})
+	L171.porte_ville("maya", "jaguars", jx * Vector3(0, 0.05, 3.5), jx.basis.z)
 	_avoid(-58.0, -160.0, 12.0)
 
 
@@ -229,14 +234,15 @@ func _observatoire() -> void:
 	kit.col_box(Transform3D(Basis(), c + Vector3(0, 1.25, 0)), Vector3(14.0, 2.5, 14.0))
 	kit.stair(c + Vector3(11.0, 0, 0), c + Vector3(7.0, 2.5, 0), 4.0, "pmaya69", "")
 	var t := Transform3D(Basis(), c + Vector3(-1.5, 2.5, 0))
-	kit.cyl(t, 4.0, 4.0, 1.2, "pmaya69", 24)
-	kit.cyl(t * Transform3D(Basis(), Vector3(0, 1.2, 0)), 3.2, 3.2, 4.2, "enduit69_blanc", 24, false)
+	kit.cyl(t, 4.0, 4.0, 0.3, "pmaya69", 24)
+	kit.cyl(t * Transform3D(Basis(), Vector3(0, 0.3, 0)), 3.2, 3.2, 5.1, "enduit69_blanc", 24, false)
 	kit.cyl(t * Transform3D(Basis(), Vector3(0, 5.4, 0)), 3.4, 3.4, 0.3, "pmaya69", 24)
 	kit.cyl(t * Transform3D(Basis(), Vector3(0, 5.7, 0)), 3.0, 0.6, 2.4, "enduit69_blanc", 24, true)
 	kit.col_cyl(t.origin, 3.3, 8.0)
 	for a in [0.4, 1.3, 2.6, 4.1]:
-		kit.quadz(kit.round_face(t.origin, 3.22, a, t.origin.y + 6.9) * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO), 0.5, 0.7, "noir69")
-	kit.quadz(kit.round_face(t.origin, 3.22, 0.0, t.origin.y + 2.2) * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO), 1.2, 2.0, "noir69")
+		kit.quadz(kit.round_face(t.origin, 3.22, a, 4.4) * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO), 0.5, 0.7, "noir69")
+	kit.quadz(kit.round_face(t.origin, 3.22, 0.0, 1.3) * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO), 1.2, 2.0, "noir69")
+	L171.porte_ville("maya", "observatoire", t.origin + Vector3(4.5, 0.05, 0.0), Vector3(1, 0, 0))
 	_spot("observatoire", c + Vector3(3.3, 2.55, 2.2), Vector3(0.3, 0, 1), "observer", "obs_haut")
 	_avoid(R.OBSERVATORY.x, R.OBSERVATORY.y, 10.0)
 
@@ -301,6 +307,9 @@ func _cenote() -> void:
 	var rim_y: float = ile.height(c.x + R.CENOTE_R + 4.0, c.z)
 	var sx := XZ(W(R.CENOTE.x + R.CENOTE_R + 4.5, R.CENOTE.y + 3.0, rim_y), -1.0, 0.0)
 	kit.maya_building(sx, 4.0, 3.6, 3.0, {"mur": "stucr69", "portes": 1, "socle": 0.3, "crete_h": 1.6})
+	var sd: Vector3 = sx * Vector3(0, 0, 2.8)
+	sd.y = maxf(rim_y, ile.height(sd.x, sd.z)) + 0.05
+	L171.porte_ville("maya", "cenote", sd, sx.basis.z)
 	var plat := Transform3D(Basis(), W(R.CENOTE.x + R.CENOTE_R - 0.8, R.CENOTE.y - 2.0, rim_y + 0.15))
 	kit.box(plat, Vector3(3.6, 0.3, 2.2), "pmaya69", 1.5)
 	kit.col_box(plat, Vector3(3.6, 0.3, 2.2))

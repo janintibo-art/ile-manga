@@ -15,6 +15,8 @@ extends Node3D
 
 const R = preload("res://scripts/ile_soleils_v69.gd")
 const Kit = preload("res://scripts/soleils_kit_v69.gd")
+## V171 : on entre dans les temples, les palais, les ateliers (lieux_v171)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 var main: Node
 var ile: Node3D
@@ -251,6 +253,7 @@ func _temple() -> void:
 	kit.col_box(naos * Transform3D(Basis(), Vector3(0, 2.3, 0)), Vector3(6.0, 4.6, 3.2))
 	kit.quadz(naos * Transform3D(Basis(), Vector3(0, 1.4, 1.62)), 1.6, 2.8, "noir69")
 	kit.quadz(naos * Transform3D(Basis(), Vector3(0, 3.6, 1.62)), 3.0, 0.8, "sym69_soleil")
+	L171.porte_ville("egypte", "naos", naos * Vector3(0, 0.05, 2.5), naos.basis.z)
 	kit.seated_statue(XZ(W(191.5, -43.6, Y), 0.0, 1.0), 1.25)
 	kit.seated_statue(XZ(W(200.5, -43.6, Y), 0.0, 1.0), 1.25)
 	# l'autel et ses offrandes
@@ -276,6 +279,7 @@ func _quartier_nord() -> void:
 	var bak := XZ(W(157.0, -41.0, Y), 0.0, 1.0)
 	var bf: Vector3 = kit.mud_house(bak, 10.0, 7.0, 3.4, {"mur": "enduit69_ocre", "escalier": false})
 	doors["porte_merit"] = _pt("porte_merit", Vector3(bf.x, Y + 0.05, bf.z))
+	L171.porte_ville("egypte", "merit", Vector3(bf.x, Y + 0.05, bf.z), bak.basis.z)
 	_avoid(157.0, -41.0, 6.0)
 	for op in [Vector2(151.0, -33.0), Vector2(154.5, -33.0)]:
 		kit.oven(XZ(W(op.x, op.y, Y), 0.0, 1.0))
@@ -293,6 +297,7 @@ func _quartier_nord() -> void:
 	var pr := XZ(W(178.0, -42.0, Y), 0.0, 1.0)
 	var pf: Vector3 = kit.mud_house(pr, 9.0, 7.0, 4.0, {"mur": "enduit69_blanc", "escalier": false, "auvent": false})
 	doors["porte_neferet"] = _pt("porte_neferet", Vector3(pf.x, Y + 0.05, pf.z))
+	L171.porte_ville("egypte", "neferet", Vector3(pf.x, Y + 0.05, pf.z), pr.basis.z)
 	_avoid(178.0, -42.0, 6.0)
 	var pond := W(176.0, -33.2, Y - 0.35)
 	kit.box(Transform3D(Basis(), pond + Vector3(0, 0.25, 0)), Vector3(5.2, 0.5, 2.6), "calc69", 1.5, 1 | 2 | 16 | 32 | 4)
@@ -310,6 +315,7 @@ func _quartier_nord() -> void:
 	var sch := XZ(W(223.0, -41.5, Y), 0.0, 1.0)
 	var sf: Vector3 = kit.mud_house(sch, 15.0, 8.0, 4.2, {"mur": "enduit69_blanc", "escalier": false, "auvent": false, "porte_x": -3.0})
 	doors["porte_ecole"] = _pt("porte_ecole", Vector3(sf.x, Y + 0.05, sf.z))
+	L171.porte_ville("egypte", "ecole", Vector3(sf.x, Y + 0.05, sf.z), sch.basis.z)
 	_avoid(223.0, -41.5, 9.0)
 	for cx in [-6.0, -2.0, 2.0, 6.0]:
 		kit.papyrus_column(sch * Transform3D(Basis(), Vector3(cx, 0, 5.4)), 0.3, 3.4, "calc69", false)
@@ -324,6 +330,7 @@ func _quartier_nord() -> void:
 	var pot := XZ(W(239.0, -39.0, Y), 0.0, 1.0)
 	var ptf: Vector3 = kit.mud_house(pot, 7.0, 6.0, 3.0, {"mur": "brique69", "escalier": false, "auvent": false})
 	doors["porte_ptahmose"] = _pt("porte_ptahmose", Vector3(ptf.x, Y + 0.05, ptf.z))
+	L171.porte_ville("egypte", "ptahmose", Vector3(ptf.x, Y + 0.05, ptf.z), pot.basis.z)
 	kit.awning69(pot * Transform3D(Basis(), Vector3(0, 0, 5.0)), 6.0, 3.0)
 	kit.oven(XZ(W(234.5, -32.5, Y), 0.0, 1.0))
 	smoke_spots.append(W(234.5, -32.5, Y + 1.4))
@@ -411,6 +418,9 @@ func _plateau() -> void:
 	kit.box(vt * Transform3D(Basis(), Vector3(0, 6.2, 0)), Vector3(16.6, 0.4, 11.6), "gres69", 2.0)
 	kit.quadz(vt * Transform3D(Basis(), Vector3(0, 1.6, 5.51)), 2.0, 3.2, "noir69")
 	kit.quadz(vt * Transform3D(Basis(), Vector3(0, 4.3, 5.52)), 8.0, 1.6, "hiero69")
+	var vd: Vector3 = vt * Vector3(0, 0, 6.4)
+	vd.y = maxf(vt.origin.y, ile.height(vd.x, vd.z)) + 0.05
+	L171.porte_ville("egypte", "vallee", vd, vt.basis.z)
 	for ox in [-5.0, 5.0]:
 		kit.obelisk(vt * Vector3(ox, 0.0, 8.0), 7.0)
 	_avoid(R.VALLEY.x, R.VALLEY.y, 11.0)

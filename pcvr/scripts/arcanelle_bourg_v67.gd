@@ -12,6 +12,8 @@ extends Node3D
 
 const R = preload("res://scripts/ile_arcane_v67.gd")
 const Kit = preload("res://scripts/arcane_kit_v67.gd")
+## V171 : on entre dans les temples, les palais, les ateliers (lieux_v171)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 var main: Node
 var ile: Node3D
@@ -245,6 +247,7 @@ func _academie() -> void:
 	var tdir := Vector3(0.45, 0, 0.89).normalized()
 	kit.tower(tc, 5.0, 22.0, {"roof_h": 10.5, "windows": [6.0, 11.0, 16.0, 19.5], "nwin": 4, "door_dir": tdir, "roof_key": "ecailles_violet", "over": 0.7})
 	doors["tour"] = tc + tdir * 6.2
+	L171.porte_ville("arcanelle", "tour", tc + tdir * 6.2 + Vector3.UP * 0.05, tdir)
 	# un balcon de pierre et des bannières côté cour
 	kit.cyl(Transform3D(Basis(), tc + Vector3.UP * 14.0), 5.9, 5.9, 0.25, "pierrearc_clair", 24, true, 2.0)
 	for k in range(24):
@@ -278,6 +281,7 @@ func _academie() -> void:
 	# --- le dortoir des apprentis
 	var dxf: Transform3D = XF(W(-19.5, -9.0, y), 1.0, 0.0)
 	doors["dortoir"] = kit.timber_house(dxf, 7.0, 5.0, {"toit": "violet", "enduit": "", "lucarne": true})
+	L171.porte_ville("arcanelle", "dortoir", dxf * Vector3(0, 0.05, -1.0), -dxf.basis.z)
 	# --- la cour du Grand Cristal
 	var cc: Vector3 = W(-6.0, -4.0, y)
 	kit.disc(Transform3D(Basis(), cc + Vector3.UP * 0.04), 8.5, "dallesarc", 40, 3.0)
@@ -413,6 +417,7 @@ func _observatoire() -> void:
 	var dir := Vector3(0.45, 0, 0.89)
 	kit.tower(c, 3.4, 8.0, {"roof": "none", "windows": [4.0], "nwin": 3, "door_dir": dir, "band": true})
 	doors["observatoire"] = c + dir * 4.6
+	L171.porte_ville("arcanelle", "observatoire", c + dir.normalized() * 4.5 + Vector3.UP * 0.05, dir)
 	# la coupole de cuivre vert, la fente, la lunette
 	var rings: int = 8
 	for k in range(rings):
@@ -823,6 +828,7 @@ func _bourg() -> void:
 	var axf: Transform3D = XF(W(58.0, 44.0, ay), -1.0, 0.0)
 	_socle(axf, 8.0, 7.0)
 	doors["alambic"] = kit.timber_house(axf, 8.0, 7.0, {"toit": "violet", "enduit": "rose", "door_x": 2.6, "lucarne": true})
+	L171.porte_ville("arcanelle", "alambic", axf * Vector3(2.6, 0.05, -1.0), -axf.basis.z)
 	kit.awning(axf * Transform3D(Basis(), Vector3(-1.2, 2.9, 0)), 4.6, 1.8, 0.7, "bordeaux")
 	_sign(axf * Transform3D(Basis(), Vector3(-1.2, 3.25, -0.12)), 2.2, 0.55, "alambic")
 	var sxf: Transform3D = axf * Transform3D(Basis(), Vector3(-1.2, 0, -1.5))
@@ -953,6 +959,7 @@ func _maisons_maitres() -> void:
 	var pdir := Vector3(-0.86, 0, -0.5)
 	kit.tower(pc2, 2.7, 9.0, {"roof_h": 5.0, "windows": [3.5, 6.5], "nwin": 3, "door_dir": pdir, "roof_key": "ecailles_rouge", "over": 0.45})
 	doors["pyra"] = pc2 + pdir * 3.9
+	L171.porte_ville("arcanelle", "pyra", pc2 + pdir.normalized() * 3.9 + Vector3.UP * 0.05, pdir)
 	# Ysolde : une maison de pierre qui regarde le Cercle
 	var yp: Vector3 = W(-54.0, 14.0, PY("ysolde"))
 	var yxf: Transform3D = XF(yp, -0.45, -0.89)
@@ -966,6 +973,7 @@ func _maisons_maitres() -> void:
 	var axf: Transform3D = XF(ap, 1.0, 0.2)
 	_roulotte(axf)
 	doors["roulotte"] = axf * Vector3(1.2, 0, -1.6)
+	L171.porte_ville("arcanelle", "roulotte", axf * Vector3(0, 0.05, -1.9), -axf.basis.z)
 	var tt: Vector3 = axf * Vector3(-0.5, 0.0, -3.2)
 	kit.cafe_table(tt, 0.0, 0, "")
 	kit.crystal(Transform3D(Basis(), tt + Vector3.UP * 0.76), 0.18, "cristal_rose")

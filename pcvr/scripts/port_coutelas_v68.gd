@@ -17,6 +17,8 @@ extends Node3D
 const R = preload("res://scripts/ile_pirate_v68.gd")
 const Kit = preload("res://scripts/pirate_kit_v68.gd")
 const Navire = preload("res://scripts/navire_v68.gd")
+## V171 : on entre dans les temples, les palais, les ateliers (lieux_v171)
+const L171 = preload("res://scripts/lieux_v171.gd")
 
 var main: Node
 var ile: Node3D
@@ -585,6 +587,7 @@ func _boutiques() -> void:
 	var rxf: Transform3D = XF(W(-52.0, 72.0, ry), 0.0, 1.0)
 	_socle(rxf, 6.0, 5.0, 1.4)
 	doors["receleur"] = kit.shack(rxf, 6.0, 5.0, {"couleur": "sombre", "toit": "planches", "porch": 1.6, "door_x": 1.6})
+	L171.porte_ville("pirate", "receleur", rxf * Vector3(1.6, 0, -2.4), -rxf.basis.z)
 	var cxf: Transform3D = rxf * Transform3D(Basis(), Vector3(-1.0, 0.0, -1.0))
 	kit.box(cxf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(2.4, 1.0, 0.5), "planchesp_sombre", 1.0)
 	kit.col_box(cxf * Transform3D(Basis(), Vector3(0, 0.5, 0)), Vector3(2.4, 1.0, 0.5))
@@ -600,6 +603,7 @@ func _boutiques() -> void:
 	var dxf: Transform3D = XF(W(-55.0, 54.0, dy), 1.0, 0.0)
 	_socle(dxf, 6.0, 6.0, 1.4)
 	doors["doc"] = kit.shack(dxf, 6.0, 6.0, {"couleur": "clair", "toit": "palmes", "porch": 1.8})
+	L171.porte_ville("pirate", "doc", dxf * Vector3(0, 0, -2.6), -dxf.basis.z)
 	_sign(dxf * Transform3D(Basis(), Vector3(0.0, 2.4, -0.02)), 2.6, 0.65, "chirurgien")
 	var chair: Transform3D = dxf * Transform3D(Basis(), Vector3(1.8, 0.0, -1.0))
 	kit.box(chair * Transform3D(Basis(), Vector3(0, 0.25, 0)), Vector3(0.6, 0.5, 0.6), "poutre", 1.0)
@@ -651,6 +655,7 @@ func _boutiques() -> void:
 	var bxf: Transform3D = XF(W(58.0, 42.0, by), -1.0, 0.0)
 	_socle(bxf, 5.0, 5.0, 1.6)
 	doors["brutus"] = kit.shack(bxf, 5.0, 5.0, {"couleur": "sombre", "porch": 1.2})
+	kit.porte_v81(bxf, Vector3(0, 0, -2.0), 5.0, 5.0, "pirate", 1, "brutus")
 	_pt("porte_brutus", bxf * Vector3(0, 0.05, 1.0))
 	_pt("devant_brutus", G(55.4, 42.0, 0.05))
 	_link("devant_brutus", "porte_brutus")
@@ -665,6 +670,7 @@ func _boutiques() -> void:
 	_sign(dfx * Transform3D(Basis(), Vector3(0.0, 2.9, -0.16)), 2.2, 0.55, "cartographe")
 	_spot("lunette_porte", dfx * Vector3(0.6, 0.05, -1.2), tc + Vector3(-12.0, 0, 0), "debout")
 	_pt("porte_lunette", dfx * Vector3(0, 0.05, -0.9))
+	L171.porte_ville("pirate", "lunette", dfx * Vector3(0, 0.05, -1.0), Vector3(-1, 0, 0))
 	for k2 in range(2):
 		kit.small_window(kit.round_face(tc, 3.2, door_a + 1.2 + k2 * 2.4, 5.2 + k2 * 1.6), 0.6, 0.9)
 	flora_avoid.append([Vector2(tc.x, tc.z), 6.0])
@@ -678,6 +684,7 @@ func _residence() -> void:
 	var xf: Transform3D = XF(W(float(pad[0]), float(pad[1]) + 3.4, y), 0.0, 1.0)
 	_socle(xf, 11.0, 8.0, 2.0)
 	doors["residence"] = kit.shack(xf, 11.0, 8.0, {"h": 5.6, "couleur": "rouge", "toit": "planches", "porch": 2.4})
+	L171.porte_ville("pirate", "residence", xf * Vector3(0, 0, -3.2), -xf.basis.z)
 	for s in [-1.0, 1.0]:
 		_dummy_window2(xf * Transform3D(Basis(), Vector3(s * 3.4, 4.2, -0.01)))
 	_sign(xf * Transform3D(Basis(), Vector3(0, 4.9, -0.05)), 3.6, 0.9, "residence")
