@@ -250,7 +250,8 @@ func _initialize() -> void:
 		# le début de « ville_id » (« azur », « perchee_banque »… ; plusieurs, séparés par des virgules),
 		# ou « nuit » pour tout voir le soir (V171 : aussi les lieux de lieux_v171 : « egypte », « maya »,
 		# « azteque », « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan » ; V173 : « citadelle »,
-		# « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »)
+		# « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants » ;
+		# V175 : « neo » (l'arcade), « larsen » (les bus))
 		sun.visible = false
 		Pieces.sondes = false
 		var M3 = Maisons.new()
@@ -308,7 +309,10 @@ func _initialize() -> void:
 					await _photo("%s_stalle" % nom3)
 				# V174 : chez les Géants, des vues choisies (lieux_v174.VUES : la table, l'escalier de livres,
 				# la cheminée, chez Brindille, l'horloge ; la meule, le rouet, le fournil de Pépin)
-				for vu in (B170.L174.VUES as Dictionary).get(str(e3[0]), []):
+				# (V175 : et dans l'Arcade du Dragon-Pixel, dans les bus peints : lieux_v175.VUES)
+				var vues3: Array = (B170.L174.VUES as Dictionary).get(str(e3[0]), [])
+				vues3 = vues3 + (B170.L175.VUES as Dictionary).get(str(e3[0]), [])
+				for vu in vues3:
 					var de: Vector3 = vu[1]
 					var vers: Vector3 = vu[2]
 					_vue(R3.P(de.x, de.y, de.z), R3.P(vers.x, vers.y, vers.z))

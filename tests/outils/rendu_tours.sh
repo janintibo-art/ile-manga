@@ -1,6 +1,7 @@
 #!/bin/bash
 # Des images des tours de Néopolis (V153 : une entrée, le hall, les étages, la vue) et des planches.
-#     bash tests/outils/rendu_tours.sh DOSSIER [quartiers | dehors | vie | rue]
+#     bash tests/outils/rendu_tours.sh DOSSIER [quartiers | dehors | vie | rue | arcade]
+# (V175 : « arcade » : la porte de l'Arcade du Dragon-Pixel, le jour et la nuit)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

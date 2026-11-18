@@ -120,6 +120,9 @@ static func _trottoirs(N: Node3D, b: Kit.Batch, rng: RandomNumberGenerator) -> v
 						var at: Vector3 = N._ground(e, mid + o)
 						_bac(N, b, at, rng)
 					var bat: Vector3 = N._ground(side * (w.y - 0.6), mid)
+					# V175 : pas devant la porte de l'Arcade du Dragon-Pixel (on y entre) : un peu plus loin
+					if side < 0.0 and m == 1:
+						bat = N._ground(side * (w.y - 0.6), mid + 13.0)
 					Kit.bench(b, bat, -PI * 0.5 * side)
 					N._col(Transform3D(Basis(), bat + Vector3.UP * 0.45), Vector3(0.6, 0.9, 1.9))
 

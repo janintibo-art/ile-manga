@@ -21,6 +21,8 @@ const FLORE := "res://scripts/larsen_flore_v91.gd"
 const Ville = preload("res://scripts/larsen_ville_v92.gd")
 const AzurKit = preload("res://scripts/azur_kit_v56.gd")
 const Festival = preload("res://scripts/larsen_festival_v93.gd")
+## V175 : on entre dans les quatre bus peints
+const L175 = preload("res://scripts/lieux_v175.gd")
 
 const PLACES := {"plage": "la Plage du Larsen", "festival": "la Prairie du Festival", "fleurs": "le Camp des Fleurs",
 	"rainville": "Rainville", "chanvre": "les champs de chanvre", "coquelicots": "les champs de coquelicots",
@@ -231,6 +233,13 @@ func _add_yurt(list: Array, x: float, z: float, face2: Vector2, s: float, style:
 	_avoid.append([Vector2(at.x, at.z), (Kit.R + 1.2) * s])
 
 
+## V175 : la porte d'un bus peint (devant la porte vitrée, côté droit, près du capot) : on y entre.
+func _porte_bus(xf: Transform3D, id: String) -> void:
+	var d: Vector3 = xf * Vector3(2.75, 0, 1.225 + 0.65)
+	var dl: Vector2 = IleScript.L(d.x, d.z)
+	L175.porte_ville("larsen", id, _ground(dl.x, dl.y), xf.basis * Vector3(0, 0, 1))
+
+
 ## V92 : une boîte de collision (la scène, les bus, les garages, la rampe, les canapés…).
 var _cols: StaticBody3D
 
@@ -328,6 +337,7 @@ func _camp_fleurs() -> void:
 		var yaw: float = -a6 + PI * 0.5
 		Kit.bus(b, Transform3D(Basis(Vector3.UP, yaw), bw), str(bu[2]), bool(bu[3]))
 		_col(Transform3D(Basis(Vector3.UP, yaw), bw + Basis(Vector3.UP, yaw) * Vector3(0, 1.6, 0)), Vector3(8.6, 3.0, 2.45))
+		_porte_bus(Transform3D(Basis(Vector3.UP, yaw), bw), str(bu[2]))
 		if bool(bu[3]):
 			# un tapis sous l'auvent, deux poufs
 			var side: Vector3 = Basis(Vector3.UP, yaw) * Vector3(0, 0, 1)
@@ -759,6 +769,7 @@ func _plage() -> void:
 	var bp: Vector3 = _ground(-38.0, 88.0)
 	Kit.bus(b, Transform3D(Basis(Vector3.UP, 0.35), bp), "bus_3", true)
 	_col(Transform3D(Basis(Vector3.UP, 0.35), bp + Vector3.UP * 1.6), Vector3(8.6, 3.0, 2.45))
+	_porte_bus(Transform3D(Basis(Vector3.UP, 0.35), bp), "bus_3")
 	_avoid.append([Vector2(bp.x, bp.z), 6.0])
 	var sp: Vector3 = _ground(-8.0, 98.0)
 	b.box("bus_1", Transform3D(Basis(Vector3.RIGHT, 0.1), sp + Vector3.UP * 0.8), Vector3(0.5, 2.0, 0.07))

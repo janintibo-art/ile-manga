@@ -45,6 +45,8 @@ const RAIL_Y: float = 10.0
 const TOUR := Vector2(31.25, -30.0)
 const Ville = preload("res://scripts/neo_ville_v95.gd")
 const Virus = preload("res://scripts/virus_v96.gd")
+## V175 : on entre dans l'Arcade du Dragon-Pixel
+const L175 = preload("res://scripts/lieux_v175.gd")
 const PRIX_VIRUS: int = 3
 
 var main: Node
@@ -644,10 +646,23 @@ func _arcade() -> void:
 		b.box("ecran_bleu", Transform3D(Basis(Vector3.UP, PI * 0.5).rotated(Vector3(0, 0, 1), -0.25), bp + Vector3(0.36, 1.35, 0)), Vector3(0.6, 0.45, 0.02))
 		b.box("neon_rose", Transform3D(Basis(), bp + Vector3(0, 1.84, 0)), Vector3(0.8, 0.1, 0.72))
 		_col(Transform3D(Basis(), bp + Vector3.UP * 0.9), Vector3(0.8, 1.8, 0.7))
+	# V175 : entre les deux bornes, les portes vitrées de l'arcade (on y entre) : le cadre chromé, le verre
+	# fumé, l'arche de néon, le tapis
+	var pc: Vector3 = _ground(x1, zm)
+	for s in [-1.0, 1.0]:
+		b.box("chrome", Transform3D(Basis(), pc + Vector3(0.06, 1.38, s * 1.34)), Vector3(0.14, 2.76, 0.08))
+		b.box("verre_fume", Transform3D(Basis(), pc + Vector3(0.04, 1.36, s * 0.65)), Vector3(0.04, 2.7, 1.24))
+		b.box("chrome", Transform3D(Basis(), pc + Vector3(0.08, 1.05, s * 0.16)), Vector3(0.04, 0.9, 0.03))
+		b.box("neon_cyan", Transform3D(Basis(), pc + Vector3(0.1, 1.5, s * 1.62)), Vector3(0.05, 3.0, 0.05))
+	b.box("chrome", Transform3D(Basis(), pc + Vector3(0.06, 2.8, 0)), Vector3(0.14, 0.08, 2.76))
+	b.box("neon_cyan", Transform3D(Basis(), pc + Vector3(0.1, 3.0, 0)), Vector3(0.05, 0.05, 3.3))
+	b.box("metal_noir", Transform3D(Basis(), pc + Vector3(0.8, 0.012, 0)), Vector3(1.2, 0.024, 2.2))
+	b.box("neon_vert", Transform3D(Basis(), pc + Vector3(1.38, 0.026, 0)), Vector3(0.04, 0.012, 2.0))
 	b.commit(self, "Arcade_bornes")
-	arcade_at = _ground(x1 + 2.4, zm)
-	_light(arcade_at + Vector3.UP * 2.5, Color(1.0, 0.3, 0.8), 2.2, 12.0)
-	_interactions.append({"id": "neo_arcade", "pos": arcade_at, "radius": 2.4, "text": "E : jouer à Dragon-Pixel",
+	L175.porte_ville("neo", "arcade", _ground(x1 + 0.9, zm), face)
+	arcade_at = _ground(x1 + 2.05, zm - 3.6)
+	_light(_ground(x1 + 2.4, zm) + Vector3.UP * 2.5, Color(1.0, 0.3, 0.8), 2.2, 12.0)
+	_interactions.append({"id": "neo_arcade", "pos": arcade_at, "radius": 1.3, "text": "E : jouer à Dragon-Pixel",
 		"vr": "Gâchette : jouer à Dragon-Pixel", "call": _arcade_jeu})
 
 

@@ -293,9 +293,10 @@ def main() -> int:
     # d'Al Dente, de l'Île Crayonnée et de Sombreval (textures/beau169) ; V170 : les images des boutiques
     # (textures/beau170) ; V171 : les temples, les palais, les tours (textures/beau171) ; V173 : les tours
     # de la Citadelle, la tour de contrôle d'Astralys (textures/beau173) ; V174 : chez les Géants (la
-    # maison des Grandpré, le Moulin de la Butte : textures/beau174)
+    # maison des Grandpré, le Moulin de la Butte : textures/beau174) ; V175 : l'Arcade du Dragon-Pixel, les
+    # bus peints de l'Île de Larsen (textures/beau175)
     n56 = 0
-    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164", "textures/beau165", "textures/beau166", "textures/beau169", "textures/beau170", "textures/beau171", "textures/beau173", "textures/beau174"):
+    for folder in ("textures/azur", "textures/carte", "textures/portraits", "textures/items", "textures/fees", "textures/carene", "textures/tazira", "textures/cliquetis", "textures/ramure", "textures/coeur", "textures/maisons", "textures/moai", "textures/pixel90", "textures/larsen", "textures/neo", "textures/beau159", "textures/beau160", "textures/beau161", "textures/beau162", "textures/beau163", "textures/beau164", "textures/beau165", "textures/beau166", "textures/beau169", "textures/beau170", "textures/beau171", "textures/beau173", "textures/beau174", "textures/beau175"):
         d = source / folder
         if not d.is_dir():
             continue

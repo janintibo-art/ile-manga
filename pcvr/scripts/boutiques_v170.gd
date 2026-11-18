@@ -27,7 +27,9 @@ const L172 = preload("res://scripts/lieux_v172.gd")
 const L173 = preload("res://scripts/lieux_v173.gd")
 ## V174 : chez les Géants (la maison des Grandpré, le Moulin de la Butte) ; ils font leur coque eux-mêmes
 const L174 = preload("res://scripts/lieux_v174.gd")
-const LIEUX := [L171, L172, L173, L174]
+## V175 : l'Arcade du Dragon-Pixel (Néopolis), les quatre bus peints (l'Île de Larsen) ; les bus font leur coque
+const L175 = preload("res://scripts/lieux_v175.gd")
+const LIEUX := [L171, L172, L173, L174, L175]
 
 const HISTOIRE := "b170"
 const ALCOOL := ["rhum", "biere", "cidre", "hydromel", "grog", "vin_"]
@@ -205,6 +207,8 @@ static func shell(M) -> void:
 			R.pal[k2] = p[k2]
 	# V174 : un lieu à l'échelle des géants fait sa coque lui-même (les murs épais, les fenêtres de géant)
 	if L == L174 and L174.coque(M):
+		return
+	if L == L175 and L175.coque(M):
 		return
 	R.rideaux = false
 	R.shell()

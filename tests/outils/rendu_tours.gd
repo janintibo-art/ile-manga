@@ -132,6 +132,10 @@ func _initialize() -> void:
 		await _dehors(T, fm)
 		quit()
 		return
+	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "arcade":
+		await _arcade_dehors(N, fm)
+		quit()
+		return
 	if OS.get_cmdline_user_args().size() > 1 and str(OS.get_cmdline_user_args()[1]) == "rue":
 		await _rue(N, fm)
 		quit()
@@ -382,6 +386,21 @@ func _dehors(T: Node, fm: Node) -> void:
 			if str(t["quartier"]) in ["residences", "hauts"]:
 				_vue(f + n * 3.0 + Vector3.UP * 12.0 + side * 2.0, f + Vector3.UP * 13.0 - side * 4.0 - n * 0.5)
 				await _photo("%s_%s_fenetres" % [t["quartier"], "nuit" if nuit else "jour"])
+
+
+# =================================================================== V175 : la porte de l'Arcade du Dragon-Pixel
+
+func _arcade_dehors(N: Node3D, fm: Node) -> void:
+	var up := Vector3.UP
+	for nuit in [false, true]:
+		fm.temps_v56.hour = 22.5 if nuit else 15.0
+		for k in range(40):
+			await process_frame
+		var j: String = "nuit" if nuit else "jour"
+		_vue(N._ground(3.5, 96.5) + up * 1.7, N._ground(-9.5, 89.0) + up * 2.0)
+		await _photo("arcade_porte_" + j)
+		_vue(N._ground(4.5, 74.0) + up * 1.8, N._ground(-9.5, 93.0) + up * 3.8)
+		await _photo("arcade_facade_" + j)
 
 
 # =================================================================== V161 : la rue (les feux, les bornes, le sol)

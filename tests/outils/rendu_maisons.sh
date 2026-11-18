@@ -6,7 +6,8 @@
 # (V171 : « boutiques » montre aussi les temples, les palais, les tours : « egypte », « maya », « azteque »,
 #  « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan » ; V173 : « citadelle »,
 #  « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »,
-#  et « geants:nuit » pour une partie seulement, le soir)
+#  et « geants:nuit » pour une partie seulement, le soir ; V175 : « neo » (l'Arcade du Dragon-Pixel), « larsen »
+#  (les bus peints))
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

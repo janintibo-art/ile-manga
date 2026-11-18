@@ -442,13 +442,14 @@ func _systeme(nom: String) -> void:
 
 ## V173 : les portes des lieux de lieux_v173 de cette île (de face, un peu de côté).
 func _portes173(nom: String) -> void:
-	var st: String = {"celeste": "citadelle", "montjoie": "montjoie", "astralys": "astralys", "sombreval": "sombreval"}.get(nom, "")
+	# (V175 : et les portes des bus peints de l'Île de Larsen)
+	var st: String = {"celeste": "citadelle", "montjoie": "montjoie", "astralys": "astralys", "sombreval": "sombreval", "larsen": "larsen"}.get(nom, "")
 	if st == "":
 		return
 	var Kit56 = load("res://scripts/azur_kit_v56.gd")
 	var n: int = 0
 	for e in Kit56.PORTES_V81:
-		if str(e.get("histoire", "")) != "b173" or str(e.get("style", "")) != st:
+		if not (str(e.get("histoire", "")) in ["b173", "b175"]) or str(e.get("style", "")) != st:
 			continue
 		var dp: Vector3 = e["door"]
 		var o: Vector3 = e["out"]
