@@ -4,7 +4,7 @@ extends "res://scripts/pnj/pnj_boucan_v75.gd"
 ##  - leviter : assis en tailleur, à 40 cm du sol, on flotte doucement de haut en bas ;
 ##  - holo : debout, on manipule un hologramme à deux mains (une petite image qui tourne entre
 ##    les paumes) ;
-##  - mediter : assis, les mains sur les genoux, on respire lentement (un léger halo).
+##  - mediter : à genoux, assis sur ses talons (V178), les mains sur les cuisses, on respire lentement (un léger halo).
 ## Et ce qui fait un Lumen (fiche « lumen ») : le bijou de lumière (un halo qui flotte au-dessus de
 ## la tête, un diadème, un collier) et l'objet à la main (une tablette holographique, un bâton de
 ## lumière, un thérémine, un télescope de poche, un plateau, l'holo-photo de Glorb, un livre).
@@ -161,9 +161,13 @@ func _build_lu_poses() -> void:
 	var lev_a := lib._merge(tailleur, {"LeftArm": Vector3(-20, 0, -50), "RightArm": Vector3(-20, 0, 50), "LeftForeArm": Vector3(-30, 0, 0), "RightForeArm": Vector3(-30, 0, 0), "Head": Vector3(-6, 0, 0)})
 	var lev_b := lib._merge(lev_a, {"LeftArm": Vector3(-26, 0, -56), "RightArm": Vector3(-26, 0, 56), "Head": Vector3(4, 0, 0), "Spine02": Vector3(-4, 0, 0)})
 	poses.add_animation("leviter", lib._clip(4.0, true, [[0.0, lev_a, Vector3(0, -40, 0)], [2.0, lev_b, Vector3(0, -34, 0)], [4.0, lev_a, Vector3(0, -40, 0)]]))
-	var med_a := lib._merge(tailleur, {"LeftArm": Vector3(-10, 0, -20), "RightArm": Vector3(-10, 0, 20), "LeftForeArm": Vector3(-50, 0, 0), "RightForeArm": Vector3(-50, 0, 0), "Head": Vector3(12, 0, 0), "Spine02": Vector3(2, 0, 0)})
+	# V178 : méditer à genoux, assis sur ses talons (avant : en tailleur, le bassin à 2 cm du sol, et les
+	# jambes « croisées » plongeaient sous le plancher, jusqu'à 35 cm)
+	var seiza := {"LeftUpLeg": Vector3(-50, 0, 8), "RightUpLeg": Vector3(-50, 0, -8), "LeftLeg": Vector3(150, 0, 0), "RightLeg": Vector3(150, 0, 0),
+		"LeftFoot": Vector3(-35, 0, 0), "RightFoot": Vector3(-35, 0, 0)}
+	var med_a := lib._merge(seiza, {"LeftArm": Vector3(-10, 0, -20), "RightArm": Vector3(-10, 0, 20), "LeftForeArm": Vector3(-50, 0, 0), "RightForeArm": Vector3(-50, 0, 0), "Head": Vector3(12, 0, 0), "Spine02": Vector3(2, 0, 0)})
 	var med_b := lib._merge(med_a, {"Spine02": Vector3(-4, 0, 0), "Head": Vector3(6, 0, 0)})
-	poses.add_animation("mediter", lib._clip(6.0, true, [[0.0, med_a, Vector3(0, -82, 0)], [3.0, med_b, Vector3(0, -81, 0)], [6.0, med_a, Vector3(0, -82, 0)]]))
+	poses.add_animation("mediter", lib._clip(6.0, true, [[0.0, med_a, Vector3(0, -51, 0)], [3.0, med_b, Vector3(0, -50.5, 0)], [6.0, med_a, Vector3(0, -51, 0)]]))
 	# holo : les deux mains levées devant soi, qui tournent un hologramme
 	var h_a := {"LeftArm": Vector3(-60, 20, -20), "RightArm": Vector3(-60, -20, 20), "LeftForeArm": Vector3(-70, 0, 0), "RightForeArm": Vector3(-70, 0, 0), "Head": Vector3(14, 0, 0)}
 	var h_b := lib._merge(h_a, {"LeftArm": Vector3(-70, 40, -10), "RightArm": Vector3(-50, -5, 30), "Head": Vector3(14, 10, 0)})

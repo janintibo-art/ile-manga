@@ -10,6 +10,7 @@
 #  (les bus peints) ; V177 : « geants_donjon » (le donjon du château de sable de Pâquerette))
 # (V176 : « histoires » : des histoires de maisons au choix, « dormeur,perroquet:pirate » : l'histoire, et le
 #  style de la maison ; trois vues : depuis la porte, vers le mur de gauche, vers le mur de droite)
+# (V178 : « audit FICHIER » : les cas relevés par audit_pnj.py, voir ce script)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

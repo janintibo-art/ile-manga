@@ -2913,7 +2913,7 @@ static func _marees(M) -> void:
 		k.box(pres * Transform3D(Basis(Vector3.BACK, af), Vector3(0, 0.95, -0.47)) * Transform3D(Basis(), Vector3(0, 0.55, 0)), Vector3(0.09, 1.1, 0.04), "ceramique", 1.0)
 	k.box(pres * Transform3D(Basis(), Vector3(0, 0.95, -0.47)), Vector3(0.3, 0.12, 0.05), "argent", 1.0)
 	var atl: Array = places[4]
-	var coq: Node3D = I._node(M, R.P(float(atl[0]), 0.53, float(atl[1])), float(atl[2]))
+	var coq: Node3D = I._node(M, R.P(float(atl[0]), 0.41, float(atl[1])), float(atl[2]))
 	var nacre: StandardMaterial3D = L._m(M, "nacre119", Color(0.97, 0.93, 0.95), 0.2, 0.3)
 	L._mesh(coq, I._sph(0.09), nacre, Transform3D(Basis.from_scale(Vector3(1.0, 0.35, 0.9)), Vector3.ZERO))
 	for rb in range(5):

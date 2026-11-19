@@ -2717,7 +2717,7 @@ static func _harpe(M) -> void:
 	R.fauteuil(f1x, f1z, f1yaw, str(_pick(M, ["creme", "blanc", "gris"])))
 	R.fauteuil(f2x, f2z, f2yaw, str(_pick(M, ["creme", "blanc", "gris"])))
 	if not nuit:
-		R.kit.box(R.L(f1x, 0.51, f1z, f1yaw + 12.0), Vector3(0.24, 0.02, 0.31), "papier", 1.0)
+		R.kit.box(R.L(f1x, 0.39, f1z, f1yaw + 12.0), Vector3(0.24, 0.02, 0.31), "papier", 1.0)
 	# le guéridon de céramique : le cahier des airs du vent (ouvert), la théière, une tasse
 	R.kit.cyl(R.L(tx, 0, tz), 0.17, 0.17, 0.02, "argent", 16)
 	R.kit.cyl(R.L(tx, 0.02, tz), 0.02, 0.02, 0.56, "argent", 8, false)

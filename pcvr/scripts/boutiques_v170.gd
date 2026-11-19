@@ -483,6 +483,16 @@ static func _tick(M, delta: float) -> void:
 				n.rotation.z = float(a[2]) * sin(t * float(a[3]))
 			"flotte":
 				n.position.y = float(a[3]) + float(a[2]) * sin(t * 1.3 + float(a[4]))
+			"spectre":
+				# V178 : le voile des fantômes de la Citadelle (lieux_v173._spectral) sur ce qui vient d'être
+				# construit (le corps, quand on approche), quatre fois par seconde
+				if floori(t * 4.0) != floori((t - delta) * 4.0):
+					for g in n.find_children("*", "MeshInstance3D", true, false):
+						var gi: MeshInstance3D = g
+						if gi.material_overlay != a[2]:
+							gi.transparency = 0.42
+							gi.material_overlay = a[2]
+							gi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var f: Variant = M.ctx.get("marchand", null)
 	if bool(M.ctx.get("parle170", false)) and (M.main.dialogue_v31 == null or not M.main.dialogue_v31.opened):
 		M.ctx["parle170"] = false

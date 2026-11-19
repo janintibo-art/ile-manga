@@ -25,6 +25,11 @@ var _rng := RandomNumberGenerator.new()
 var _bubble_far: bool = false
 var _lying: bool = false                 # couché (sur un lit, un canapé) : on ne le tourne plus
 var _plank: Array = []                  # pompes : [pieds, direction]
+## V178 : assis, les plus petits (les enfants) sont relevés à la hauteur d'un siège (la pose « assis » met
+## le bassin à la hauteur d'une chaise pour un adulte ; un enfant s'enfonçait dans le canapé jusqu'au cou)
+const ASSISE_V178 := ["assis", "rire_assis", "tricot", "lire", "manger", "guitare", "dormir_assis"]
+var _releve: float = 0.0                 # de combien on l'a relevé
+var _assise_t: float = -1.0              # dans combien de temps on mesure (la pose a fini de se mettre)
 
 
 ## Crée l'habitant (corps de la bonne ville) à `pos` (pieds), regard `face`.
@@ -91,6 +96,36 @@ func set_pose(p: String, face: Vector3 = Vector3.ZERO) -> void:
 	follow = pose in ["debout", "bras_croises", "colere", "rire", "comptoir", "mains_dos", "applaudir", "pointer"]
 	npc.set("current_anim", "")
 	_apply_anim(true)
+	if pose in ASSISE_V178:
+		_assise_t = 0.5
+	elif _releve != 0.0:
+		_relever(0.0)
+
+
+## V178 : relever le corps (le modèle), pas la personne : ceux qui la déplacent (un fondu vers le canapé,
+## une place à table) n'ont pas à le savoir.
+func _relever(r: float) -> void:
+	_releve = r
+	var mdl: Variant = npc.get("model")
+	if mdl is Node3D:
+		(mdl as Node3D).position.y = r
+
+
+## V178 : la pose a fini de se mettre : on mesure la hauteur du bassin ; plus bas qu'un adulte sur une
+## chaise (0,37 + 0,09 × sa taille), on le relève d'autant (au plus 0,3 m ; un adulte ne bouge pas).
+func _assise() -> void:
+	if not (pose in ASSISE_V178) or _lying:
+		return
+	if _gest > 0.0:
+		_assise_t = 0.5
+		return
+	var sk: Skeleton3D = npc.get("skel")
+	var mdl: Variant = npc.get("model")
+	if sk == null or not (mdl is Node3D) or sk.find_bone("Hips") < 0:
+		return
+	var s: float = (mdl as Node3D).global_transform.basis.get_scale().x
+	var h: float = (sk.global_transform * sk.get_bone_global_pose(sk.find_bone("Hips")).origin).y - npc.global_position.y - _releve
+	_relever(clampf(0.37 + 0.09 * s - h, 0.0, 0.3))
 
 
 func say(text: String, seconds: float = 4.0) -> void:
@@ -100,6 +135,8 @@ func say(text: String, seconds: float = 4.0) -> void:
 ## Couché sur le dos : les pieds en `feet` (à hauteur du matelas), la tête vers `toward`.
 func lie(feet: Vector3, toward: Vector3) -> void:
 	pose = "dormir"
+	_relever(0.0)
+	_assise_t = -1.0
 	follow = false
 	_lying = true
 	_plank = []
@@ -116,6 +153,8 @@ func plank(feet: Vector3, dir: Vector3) -> void:
 	pose = "pompes"
 	follow = false
 	_lying = true
+	_relever(0.0)
+	_assise_t = -1.0
 	_plank = [feet, Vector3(dir.x, 0, dir.z).normalized()]
 	npc.set("current_anim", "")
 	_play("v81/pompes", 0.3)
@@ -137,6 +176,7 @@ func _plank_tick() -> void:
 func stand_up(at: Vector3, face: Vector3) -> void:
 	_lying = false
 	_plank = []
+	_relever(0.0)
 	npc.global_transform = Transform3D(Basis(), at)
 	set_pose("debout", face)
 
@@ -160,7 +200,7 @@ func gesture(kind: String, seconds: float = 2.5) -> void:
 
 
 func _seated() -> bool:
-	return pose in ["assis", "rire_assis", "tricot", "lire", "manger", "guitare", "dormir_assis"]
+	return pose in ["assis", "rire_assis", "tricot", "lire", "manger", "guitare", "dormir_assis", "bain"]
 
 
 func _play(n: String, blend: float = 0.3, speed: float = 1.0, from: float = -1.0) -> void:
@@ -180,6 +220,8 @@ func _apply_anim(force: bool = false) -> void:
 			_play("v81/rire_assis", 0.3)
 		"tricot":
 			_play("v81/tricot", 0.4)
+		"bain":
+			_play("v81/bain", 0.4)
 		"lire":
 			_play("v56/lire", 0.4)
 		"guitare":
@@ -257,6 +299,10 @@ func _process(delta: float) -> void:
 	if npc == null or not is_instance_valid(npc):
 		return
 	_t += delta
+	if _assise_t > 0.0:
+		_assise_t -= delta
+		if _assise_t <= 0.0:
+			_assise()
 	# la bulle s'efface
 	var bc: float = float(npc.get("bubble_clock"))
 	if bc > 0.0:
@@ -362,6 +408,13 @@ func _build_poses() -> void:
 		"Head": Vector3(18, 0, 0), "Spine02": Vector3(8, 0, 0)})
 	var t_b := lib._merge(t_a, {"LeftForeArm": Vector3(-92, 0, 0), "RightForeArm": Vector3(-70, 0, 0)})
 	poses.add_animation("tricot", lib._clip(0.8, true, [[0.0, t_a, sy], [0.4, t_b, sy], [0.8, t_a, sy]]))
+	# V178 : dans le bain : assis au fond, les jambes allongées devant soi, le dos contre la baignoire (avant :
+	# assis comme sur une chaise, les genoux passaient au travers de la baignoire)
+	var bain := {"LeftUpLeg": Vector3(-100, 0, 6), "RightUpLeg": Vector3(-100, 0, -6), "LeftLeg": Vector3(10, 0, 0), "RightLeg": Vector3(10, 0, 0),
+		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(-14, 0, 0), "Head": Vector3(12, 0, 0),
+		"LeftArm": Vector3(-20, 0, 28), "LeftForeArm": Vector3(-35, 0, 0), "RightArm": Vector3(-20, 0, -28), "RightForeArm": Vector3(-35, 0, 0)}
+	var bain_b := lib._merge(bain, {"Spine02": Vector3(-16, 0, 0), "Head": Vector3(8, 0, 0)})
+	poses.add_animation("bain", lib._clip(5.0, true, [[0.0, bain, Vector3(0, -71, 0)], [2.5, bain_b, Vector3(0, -71, 0)], [5.0, bain, Vector3(0, -71, 0)]]))
 	# dormir assis (dans un fauteuil) : la tête tombe sur l'épaule, on respire
 	var ds_a := lib._merge(seated, {"Head": Vector3(26, 0, 14), "Spine02": Vector3(-6, 0, 0), "LeftArm": Vector3(-14, 0, 6), "RightArm": Vector3(-14, 0, -6), "LeftForeArm": Vector3(-20, 0, 0), "RightForeArm": Vector3(-20, 0, 0)})
 	var ds_b := lib._merge(ds_a, {"Spine02": Vector3(-9, 0, 0), "Head": Vector3(22, 0, 14)})
@@ -386,8 +439,9 @@ func _build_poses() -> void:
 	var ap_b := lib._merge(ap_a, {"LeftArm": Vector3(-55, 0, 18), "RightArm": Vector3(-55, 0, -18)})
 	poses.add_animation("applaudir", lib._clip(0.4, true, [[0.0, ap_a, Vector3.ZERO], [0.2, ap_b, Vector3(0, -0.5, 0)], [0.4, ap_a, Vector3.ZERO]]))
 	# se cacher (accroupi, les mains sur la tête)
+	# (V178 : le dos et la tête plus penchés : sous une table, la tête passait au travers du plateau)
 	var ca := {"LeftUpLeg": Vector3(-100, 0, 10), "RightUpLeg": Vector3(-100, 0, -10), "LeftLeg": Vector3(120, 0, 0), "RightLeg": Vector3(120, 0, 0),
-		"LeftFoot": Vector3(-20, 0, 0), "RightFoot": Vector3(-20, 0, 0), "Spine02": Vector3(30, 0, 0), "Head": Vector3(20, 0, 0),
+		"LeftFoot": Vector3(-20, 0, 0), "RightFoot": Vector3(-20, 0, 0), "Spine02": Vector3(46, 0, 0), "Head": Vector3(32, 0, 0),
 		"LeftArm": Vector3(-150, 0, 30), "LeftForeArm": Vector3(-120, 0, 0), "RightArm": Vector3(-150, 0, -30), "RightForeArm": Vector3(-120, 0, 0)}
 	poses.add_animation("cache", lib._clip(2.0, true, [[0.0, ca, Vector3(0, -48, 0)], [1.0, ca, Vector3(0, -47, 0)], [2.0, ca, Vector3(0, -48, 0)]]))
 	# les pompes (le nœud entier est incliné par plank()) : les bras tendus vers le sol, la tête levée

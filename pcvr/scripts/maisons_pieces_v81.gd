@@ -1414,25 +1414,30 @@ func cuisine(x: float, z: float, yaw: float, w: float = 2.4) -> void:
 
 
 ## Un fauteuil (assise basse, accoudoirs).
+## V178 : l'assise basse (0,38, celle d'un fauteuil de salon) et moins profonde (le bord à 0,3 du milieu) :
+## celui qu'on y assoit (au milieu ; la pose « assis » met le bassin à 0,46 du sol) avait les cuisses dans
+## le coussin, et les jambes qui ressortaient par-devant.
 func fauteuil(x: float, z: float, yaw: float, c: String = "rouge") -> void:
 	var xf: Transform3D = L(x, 0, z, yaw)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.25, 0)), Vector3(0.8, 0.3, 0.75), "tissu_" + c, 1.0)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.45, 0.05)), Vector3(0.6, 0.1, 0.6), "tissu_" + c, 1.0)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.75, -0.32)), Vector3(0.8, 0.75, 0.15), "tissu_" + c, 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.18, -0.04)), Vector3(0.8, 0.2, 0.67), "tissu_" + c, 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.33, 0.0)), Vector3(0.6, 0.1, 0.56), "tissu_" + c, 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.7, -0.32)), Vector3(0.8, 0.84, 0.15), "tissu_" + c, 1.0)
 	for sx in [-1.0, 1.0]:
-		kit.box(xf * Transform3D(Basis(), Vector3(sx * 0.36, 0.5, 0.0)), Vector3(0.12, 0.3, 0.72), "tissu_" + c, 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(sx * 0.36, 0.46, -0.04)), Vector3(0.12, 0.36, 0.67), "tissu_" + c, 1.0)
 	kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.4, 0)), Vector3(0.8, 0.8, 0.75))
 	reserve(x, z, 1.0, 1.0)
 
 
+## V178 : comme le fauteuil, l'assise basse (0,39) et moins profonde (le bord à 0,3 du milieu) : les
+## jambes de ceux qu'on y assoit ressortaient par le devant.
 func canape(x: float, z: float, yaw: float, c: String = "vert", w: float = 1.9) -> void:
 	var xf: Transform3D = L(x, 0, z, yaw)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.22, 0)), Vector3(w, 0.3, 0.85), "tissu_" + c, 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.17, -0.06)), Vector3(w, 0.2, 0.73), "tissu_" + c, 1.0)
 	for i in range(2):
-		kit.box(xf * Transform3D(Basis(), Vector3(-w * 0.25 + i * w * 0.5, 0.43, 0.06)), Vector3(w * 0.48, 0.12, 0.66), "tissu_" + c, 1.0)
-	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.66, -0.36)), Vector3(w, 0.65, 0.16), "tissu_" + c, 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(-w * 0.25 + i * w * 0.5, 0.33, -0.01)), Vector3(w * 0.48, 0.12, 0.6), "tissu_" + c, 1.0)
+	kit.box(xf * Transform3D(Basis(), Vector3(0, 0.63, -0.36)), Vector3(w, 0.72, 0.16), "tissu_" + c, 1.0)
 	for sx in [-1.0, 1.0]:
-		kit.box(xf * Transform3D(Basis(), Vector3(sx * (w * 0.5 - 0.06), 0.48, 0.0)), Vector3(0.14, 0.32, 0.85), "tissu_" + c, 1.0)
+		kit.box(xf * Transform3D(Basis(), Vector3(sx * (w * 0.5 - 0.06), 0.45, -0.06)), Vector3(0.14, 0.36, 0.73), "tissu_" + c, 1.0)
 	kit.box(xf * Transform3D(Basis(Vector3.BACK, 0.2), Vector3(w * 0.3, 0.6, -0.15)), Vector3(0.35, 0.3, 0.12), "tissu_" + ["jaune", "rose", "creme", "orange"][rng.randi() % 4], 1.0)
 	kit.col_box(xf * Transform3D(Basis(), Vector3(0, 0.4, 0)), Vector3(w, 0.8, 0.85))
 	reserve(x, z, w + 0.2, 1.1)

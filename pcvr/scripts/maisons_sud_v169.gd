@@ -548,7 +548,7 @@ static func _chat(M) -> void:
 	var fz: float = -hd + 1.0
 	R.fauteuil(fx, fz, -135.0, "vert")
 	var nourri: bool = bool(M.state().get("nourri", false))
-	R.chat(fx - 0.05, fz + 0.05, 45.0 if not nourri else 30.0, Color(0.07, 0.07, 0.08), nourri, 0.5)
+	R.chat(fx - 0.05, fz + 0.05, 45.0 if not nourri else 30.0, Color(0.07, 0.07, 0.08), nourri, 0.38)
 	# les gamelles, près de la porte de la cuisine
 	var gx: float = -hw + 0.6
 	var gz: float = hd * 0.35

@@ -181,6 +181,9 @@ static func _spectral(M, f: Node, y0: float = 0.1) -> void:
 	l.position = Vector3(0, 1.1, 0.25)
 	f.set_meta("fantome173", true)
 	(M.ctx["anims170"] as Array).append([n3, "flotte", 0.05, n3.position.y + y0, R.rng.randf() * 3.0])
+	# V178 : le corps d'une personne se construit quand on approche (pnj/visage_v64.gd), après tout ceci :
+	# sans cela, le fantôme restait en chair et en os (le voile ne touchait que ce qui existait déjà)
+	(M.ctx["anims170"] as Array).append([n3, "spectre", R.mat("fantome173"), 0.0, 0.0])
 
 
 ## Un rai de lumière de a à b (repère de la pièce) : un cône très léger (additif), étroit à la fente,

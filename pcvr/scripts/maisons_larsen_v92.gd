@@ -720,7 +720,8 @@ static func _sieste_flanelle(M) -> void:
 	var R = M.R
 	R.canape(0.0, -1.9, 0.0, "brun", 2.0)
 	var dormeur: Node = _gens(M, "homme", 0.0, -1.9, 0, "dormir", {"larsen": {"style": "grunge", "tenue": "flanelle"}})
-	dormeur.lie(R.P(-0.85, 0.45, -1.95), Vector3(1, 0, 0))
+	# (V178 : le canapé est plus bas, il dort dessus et non plus dedans ; les plaids passent au-dessus de lui)
+	dormeur.lie(R.P(-0.85, 0.35, -1.95), Vector3(1, 0, 0))
 	for k in range(3):
 		R.kit.box(R.L(0.1 - k * 0.05, 0.62 + k * 0.05, -1.9, 4.0 * k), Vector3(1.5, 0.04, 0.85), "y_plaid", 1.0)
 	R.chat(0.4, -1.85, 30.0, Color(0.15, 0.13, 0.12), true, 0.78)

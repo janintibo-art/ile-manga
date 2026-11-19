@@ -594,8 +594,10 @@ static func _b_pyjama(M) -> void:
 	var f: Node
 	if bain:
 		R.baignoire(hw - 1.1, hd * 0.25, 90)
-		f = M.person(str(_pick(M, ["homme", "vieux", "femme"])), hw - 1.1, hd * 0.25 + 0.35, 180, "assis")
-		f.npc.global_position.y -= 0.32
+		# V178 : assis au fond de la baignoire (0,16), le dos contre un bout, les jambes dans la longueur (avant :
+		# contre un côté, assis comme sur une chaise : les genoux traversaient l'autre côté)
+		f = M.person(str(_pick(M, ["homme", "vieux", "femme"])), hw - 1.1 - 0.45, hd * 0.25, 90, "bain")
+		f.npc.global_position.y += 0.16
 	else:
 		f = M.person(str(_pick(M, ["homme", "vieux", "vieille", "femme"])), R.door_x * 0.4, 0.2, 180, "colere")
 		_bonnet_de_nuit(f, r)
@@ -1127,8 +1129,11 @@ static func _b_chats(M) -> void:
 		M.room.add_child(mi)
 		mi.global_position = R.P(r.randf_range(-1.5, 1.5), 0.08, r.randf_range(-0.5, 1.0))
 	var cols: Array = [Color(0.95, 0.6, 0.25), Color(0.15, 0.15, 0.17), Color(0.92, 0.92, 0.9), Color(0.55, 0.55, 0.58), Color(0.6, 0.42, 0.28), Color(0.95, 0.85, 0.7)]
+	# V178 : le chat du fauteuil est couché au pied du fauteuil (avant : sur l'assise, dans le ventre de
+	# la personne qui tricote, assise au même endroit)
+	var pied: Vector3 = Basis(Vector3.UP, deg_to_rad(60.0)) * Vector3(0.62, 0, 0.3)
 	var spots: Array = [[0.4, 0.3, false, 0.0], [-0.6, -0.3, true, 0.0], [hw - 1.0, hd * 0.3, true, 1.66], [hw - 1.0, hd * 0.3, false, 1.06], [1.2, 0.8, true, 0.0],
-		[-hw + 1.1, -hd * 0.2 + 0.05, true, 0.52], [0.0, hd - 1.3, false, 0.0], [R.W * 0.18, -hd + 1.2, true, 0.0], [-1.4, 1.0, false, 0.0]]
+		[-hw + 1.1 + pied.x, -hd * 0.2 + pied.z, true, 0.0], [0.0, hd - 1.3, false, 0.0], [R.W * 0.18, -hd + 1.2, true, 0.0], [-1.4, 1.0, false, 0.0]]
 	var n: int = 6 + r.randi() % 4
 	for i in range(mini(n, spots.size())):
 		var s: Array = spots[i]
@@ -1199,7 +1204,9 @@ static func _b_surprise(M) -> void:
 	R.armoire(hw - 0.35, hd * 0.1, -90)
 	_murs(M, 2)
 	var heros: String = str(_pick(M, ["Gérard", "Tante Ursule", "Bernadette", "Tonton Firmin", "Mamie Lou", "Hector", "Pépita", "Grand-Oncle Barnabé"]))
-	var cache: Array = [[-hw + 1.3, hd * 0.15 - 0.6, 90.0], [hw - 1.0, hd * 0.1 + 0.75, -90.0], [0.0, -hd * 0.35 - 0.8, 0.0], [-0.9, -hd * 0.35 + 0.9, 180.0]]
+	# (V178 : celui de derrière la table, un peu plus loin du bord : penché pour se cacher, il avait la tête
+	# dans le cadre de la table)
+	var cache: Array = [[-hw + 1.3, hd * 0.15 - 0.6, 90.0], [hw - 1.0, hd * 0.1 + 0.75, -90.0], [0.0, -hd * 0.35 - 1.0, 0.0], [-0.9, -hd * 0.35 + 0.9, 180.0]]
 	var gens: Array = []
 	var roles: Array = ["femme", "homme", str(_pick(M, ["garcon", "fille"])), str(_pick(M, ["vieux", "vieille", "femme"]))]
 	var fete_finie: bool = bool(M.state().get("fete", false))
@@ -1724,7 +1731,8 @@ static func _b_dispute(M) -> void:
 	var r := _r(M)
 	var places: Array = _salon(M, 2)
 	var d: Array = DISPUTES[hash(str(M.ctx["id"])) % DISPUTES.size()]
-	var a: Node = M.person(str(_pick(M, ["homme", "vieux"])), -0.9, 0.9, 90, "colere")
+	# (V178 : un pas plus loin de la table : il avait la jambe dans la chaise)
+	var a: Node = M.person(str(_pick(M, ["homme", "vieux"])), -1.15, 1.0, 90, "colere")
 	var b: Node = M.person(str(_pick(M, ["femme", "vieille"])), 0.5, 0.9, -90, "colere")
 	a.lines = [str(d[1]), "Je te dis que si !", "Absolument !"]
 	b.lines = [str(d[2]), "Certainement pas !", "N'importe quoi !"]

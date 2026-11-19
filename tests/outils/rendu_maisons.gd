@@ -49,6 +49,14 @@ class FakeMain:
 		pass
 
 
+## V178 : l'habitant chez qui l'on est (pour l'histoire « chez », tests/outils/audit_pnj.gd)
+class FakeOwner:
+	extends Node
+	var profile: Dictionary = {}
+	var display_name: String = ""
+	var hidden_home: bool = true
+
+
 class FakeTemps:
 	extends Node
 	var hour: float = 15.0
@@ -216,6 +224,83 @@ func _initialize() -> void:
 			_vue(R5.P(-R5.W * 0.2, 1.6, R5.D * 0.3), R5.P(R5.W * 0.5, 0.6, -R5.D * 0.1))
 			await _photo("%s_%s_droite" % [sc5, st5])
 			M5._teardown()
+			await process_frame
+	if mode == "audit":
+		# V178 : les cas relevés par tests/outils/audit_pnj.py (un fichier : [[la porte (var_to_str), l'heure,
+		# [x, y, z] dans la pièce, nom], …]) ; deux vues de chaque endroit, depuis le milieu de la pièce, puis
+		# un peu de côté
+		sun.visible = false
+		Pieces.sondes = false
+		var M6 = Maisons.new()
+		fm.add_child(M6)
+		M6.setup(fm)
+		var liste6: Array = JSON.parse_string(FileAccess.get_file_as_string(str(OS.get_cmdline_user_args()[2])))
+		for ph in liste6:
+			var cur6: Dictionary = str_to_var(str(ph[0]))
+			if cur6.has("owner_fake"):
+				var fo := FakeOwner.new()
+				var of: Dictionary = cur6["owner_fake"]
+				fo.profile = of["profile"]
+				fo.display_name = str(of["display_name"])
+				fo.hidden_home = bool(of["hidden_home"])
+				fm.add_child(fo)
+				cur6["owner_node"] = fo
+				cur6.erase("owner_fake")
+			tp.hour = float(ph[1])
+			M6.cur = cur6
+			M6.force_scenario = ""
+			M6._build()
+			for k6 in range(10):
+				await process_frame
+			var tk6: Variant = M6.ctx.get("tick", null)
+			if tk6 is Callable:
+				for k7 in range(20):
+					(tk6 as Callable).call(0.05)
+			var R6 = M6.R
+			var c6: Vector3 = Vector3(float(ph[2][0]), float(ph[2][1]), float(ph[2][2]))
+			# deux points de vue d'où l'on voit l'endroit (rien de solide entre les deux ; les personnages
+			# ne comptent pas), dans la pièce, à au moins 60° l'un de l'autre ; le milieu de la pièce d'abord
+			var sauf6: Array = []
+			for f6 in M6.people:
+				if is_instance_valid(f6) and f6.get("npc") != null and (f6.npc.get("_body") as CollisionObject3D) != null:
+					sauf6.append((f6.npc.get("_body") as CollisionObject3D).get_rid())
+			var space6 := root.get_world_3d().direct_space_state
+			var vers6: float = atan2(-c6.x, -c6.z)
+			var vues6: Array = []
+			for di in [1.35, 1.0, 1.8]:
+				for k8 in range(12):
+					var an: float = vers6 + (float((k8 + 1) / 2) * (1.0 if k8 % 2 == 1 else -1.0)) * deg_to_rad(30.0)
+					var de: Vector3 = c6 + Vector3(sin(an), 0.0, cos(an)) * di
+					de.y = clampf(c6.y + 0.55, 0.6, R6.H - 0.2)
+					if absf(de.x) > R6.W * 0.5 - 0.2 or absf(de.z) > R6.D * 0.5 - 0.2:
+						continue
+					var cible: Vector3 = R6.P(c6.x, c6.y, c6.z)
+					var dep: Vector3 = R6.P(de.x, de.y, de.z)
+					var q6 := PhysicsRayQueryParameters3D.create(dep, dep.lerp(cible, 0.82), 1)
+					q6.exclude = sauf6
+					if not space6.intersect_ray(q6).is_empty():
+						continue
+					var loin: bool = true
+					for v0 in vues6:
+						if absf(wrapf(an - float(v0[1]), -PI, PI)) < deg_to_rad(60.0):
+							loin = false
+					if loin:
+						vues6.append([de, an])
+					if vues6.size() >= 2:
+						break
+				if vues6.size() >= 2:
+					break
+			if vues6.is_empty():
+				vues6.append([c6 + Vector3(-c6.x, 0, -c6.z).normalized() * 1.4 + Vector3.UP * 0.5, 0.0])
+			var n6: int = 0
+			for v6 in vues6:
+				var de6: Vector3 = v6[0]
+				_vue(R6.P(de6.x, de6.y, de6.z), R6.P(c6.x, c6.y, c6.z))
+				await _photo("%s_%d" % [str(ph[3]), n6])
+				n6 += 1
+			if cur6.get("owner_node", null) is Node:
+				(cur6["owner_node"] as Node).queue_free()
+			M6._teardown()
 			await process_frame
 	if mode == "sud":
 		# V169 : les maisons d'Al Dente (chez chacun), de l'Île Crayonnée (en couleurs, puis en noir et

@@ -533,7 +533,7 @@ static func _coucous(M) -> void:
 	var az: float = hd * 0.05
 	var ayaw: float = 90.0 if ax < 0.0 else -90.0
 	R.fauteuil(ax, az, ayaw, "rouge")
-	R.chat(ax, az, ayaw + 180.0, [Color(0.95, 0.6, 0.25), Color(0.15, 0.15, 0.17), Color(0.6, 0.6, 0.62)][r.randi() % 3], true, 0.47)
+	R.chat(ax, az, ayaw + 180.0, [Color(0.95, 0.6, 0.25), Color(0.15, 0.15, 0.17), Color(0.6, 0.6, 0.62)][r.randi() % 3], true, 0.38)
 	R.table_ronde(ax, az - 0.95, 0.3, 0.6)
 	R.kit.cyl(R.L(ax, 0.6, az - 0.95), 0.07, 0.08, 0.12, "ceramique", 12)
 	R.kit.cyl(Transform3D(Basis(Vector3.BACK, -0.9), R.P(ax + 0.06, 0.65, az - 0.95)), 0.012, 0.02, 0.1, "ceramique", 6)
