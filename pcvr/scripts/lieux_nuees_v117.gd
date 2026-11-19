@@ -291,7 +291,7 @@ static func _bouffee(M, p: CPUParticles3D, n: int, secondes: float) -> void:
 	p.amount = n
 	p.initial_velocity_max = v0 * 4.0
 	var room0 = M.room
-	await M.get_tree().create_timer(secondes).timeout
+	await M.timer(secondes)
 	if not _la(M, room0) or not is_instance_valid(p):
 		return
 	p.amount = n0
@@ -726,7 +726,7 @@ static func _atelier(M) -> void:
 		M.say(str(L._pick(M, ["Tu tires sur la ficelle : l'hélice siffle, le parapluie décolle et monte jusqu'au plafond… puis redescend en rebondissant. « Atterrissage : à revoir », note l'apprenti.",
 			"Frrrr… Le parapluie monte, tout droit, très fier, puis hésite, puis redescend en faisant des petits bonds. Tout le monde applaudit, par politesse.",
 			"L'hélice tourne, le parapluie s'élève d'un étage et demi, fait un petit salut, et retombe sur son socle. « Presque ! », dit-on derrière toi."])), 6.0)
-		await M.get_tree().create_timer(6.2).timeout
+		await M.timer(6.2)
 		if not _la(M, room0):
 			return
 		M.ctx["vite116"] = 1.0
@@ -742,7 +742,7 @@ static func _atelier(M) -> void:
 		M.ctx["drone117"] = 4.0
 		M.say(str(L._pick(M, ["Tu tournes la petite clé : le drone file comme une hirondelle, fait trois tours de l'atelier à toute vitesse… puis ralentit, très content de lui.",
 			"Bzzzz ! Le petit drone accélère, frôle le plafonnier, bip-bip, et reprend sa ronde tranquille. Il s'est cru pressé."])), 5.0)
-		await M.get_tree().create_timer(4.0).timeout
+		await M.timer(4.0)
 		if _la(M, room0):
 			M.ctx["drone117"] = 1.0
 	, 1.6)
@@ -930,7 +930,7 @@ static func _conseil(M) -> void:
 		M.say(str(L._pick(M, ["Tu effleures la table : la carte s'allume plus fort et tourne. Au milieu, l'Esplanade et la Plume ; au sud-est, la Gare ; à l'est, les trois dômes des Serres ; au nord, l'Institut des Vents ; à l'ouest, le Port ; au nord-ouest, le Parc des Brumes et sa Cascade.",
 			"L'hologramme montre l'île vue de dessus, comme un oiseau la voit : un cercle de jardins et de toits blancs, la Navette tout autour, et sous l'île, quatre petits anneaux qui clignotent : les Sustentateurs.",
 			"Un point doré clignote sur la carte : « Vous êtes ici ». Juste à côté, un autre point, plus petit : « Chouquettes chaudes ». Quelqu'un a dû le rajouter."])), 7.0)
-		await M.get_tree().create_timer(4.0).timeout
+		await M.timer(4.0)
 		if _la(M, room0):
 			M.ctx["holo117"] = 1.0
 	, 1.6)
@@ -1131,7 +1131,7 @@ static func _institut(M) -> void:
 		M.ctx["vite116"] = 4.0
 		M.say(str(L._pick(M, ["Tu appuies sur le gros bouton : l'hélice hurle, la fumée file dans le tunnel, les rubans claquent comme des drapeaux, et la petite aile tremble de tout son long.",
 			"VRROUUM ! La soufflerie se déchaîne. Dans le tunnel, les rubans font la fête ; dehors, ta mèche de cheveux aussi."])), 5.0)
-		await M.get_tree().create_timer(6.0).timeout
+		await M.timer(6.0)
 		if not _la(M, room0):
 			return
 		M.ctx["vent117"] = 1.0
@@ -1524,7 +1524,7 @@ static func _machines(M) -> void:
 		M.ctx["vite116"] = 1.8
 		M.say(str(L._pick(M, ["Sous ta main, la rambarde vibre doucement. Le cœur de cristal s'illumine plus fort, comme s'il t'avait senti. Puis il reprend son rythme tranquille.",
 			"Ça vibre, ça chante tout bas. Un technicien sourit : « Il t'aime bien. Il fait ça avec les gens qu'il aime bien. »"])), 6.0)
-		await M.get_tree().create_timer(4.0).timeout
+		await M.timer(4.0)
 		if _la(M, room0):
 			M.ctx["pulse117"] = 1.0
 			M.ctx["vite116"] = 1.0

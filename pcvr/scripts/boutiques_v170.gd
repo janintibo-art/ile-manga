@@ -505,7 +505,7 @@ static func _accueil(M) -> void:
 			M.main.sfx("cloche")
 		if first and entree != "":
 			M.say(entree, 7.0)
-		await M.get_tree().create_timer(0.8).timeout
+		await M.timer(0.8)
 		var f: Variant = M.ctx.get("marchand", null)
 		if not M.inside or f == null or not is_instance_valid(f):
 			return

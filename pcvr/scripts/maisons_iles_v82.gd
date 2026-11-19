@@ -306,7 +306,7 @@ static func _repetition(M) -> void:
 		if first:
 			M.say(str(_pick(M, ["♪ GRAAAANG ! ♪ Tu viens d'entrer en pleine répétition. Les murs tremblent.", "Un ampli, une batterie, deux musiciens qui secouent la tête… et des boules Quies sur la table, pour les invités.", "Ça joue fort ! Très fort ! Le lustre se balance en rythme."])), 6.0)
 		for i in range(4):
-			await M.get_tree().create_timer(7.0 + i * 5.0).timeout
+			await M.timer(7.0 + i * 5.0)
 			if M.inside:
 				M.main.sfx(["guitare_riff", "batterie_roulement", "cymbale"][i % 3])
 
@@ -370,13 +370,13 @@ static func _apesanteur(M) -> void:
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
 	var nodes: Array = []
-	nodes.append(R.movable(func(): R.table_ronde(-0.6, 0.0, 0.5)))
-	nodes.append(R.movable(func(): R.chaise(-1.3, 0.2, 90)))
+	nodes.append(R.movable(func(): R.table_ronde(-0.35, 0.25, 0.5)))
+	nodes.append(R.movable(func(): R.chaise(-1.25, 0.4, 90)))
 	nodes.append(R.movable(func(): R.chaise(0.2, -0.6, 0)))
 	nodes.append(R.movable(func(): R.fauteuil(hw - 1.0, -hd * 0.3, -110, "violet")))
 	nodes.append(R.movable(func(): R.pile(0.8, 0.8, "livres", 5)))
 	nodes.append(R.movable(func(): R.plante(-hw + 0.6, hd * 0.2)))
-	nodes.append(R.movable(func(): R.lit(-hw + 0.7, -hd * 0.25, 90, 1.0, "violet")))
+	nodes.append(R.movable(func(): R.lit(-hw + 1.04, -hd * 0.25, 90, 1.0, "violet")))
 	R.foyer(hw - 0.6, hd * 0.25, -90, true)
 	S._murs(M, 3)
 	var flot: Array = [true]
@@ -473,7 +473,7 @@ static func _robot(M) -> void:
 					var tw3: Tween = M.room.create_tween()
 					tw3.tween_property(rb, "rotation:y", rb.rotation.y + TAU * 3.0, 1.5)
 					M.main.sfx("vapeur", rb.global_position)
-					await M.get_tree().create_timer(1.6).timeout
+					await M.timer(1.6)
 					if not M.inside:
 						return
 					dire.call("VOICI. UNE SOUPE. AUX BOULONS.")
@@ -666,7 +666,8 @@ static func _perroquet(M) -> void:
 	R.kit.cyl(R.L(-hw + 0.8, 1.7, -hd * 0.2), 0.01, 0.01, 0.9, "cuir", 4)
 	R.kit.box(R.L(-hw + 0.8, 1.15, -hd * 0.2, 90), Vector3(1.8, 0.04, 0.8), "tissu_creme", 1.0)
 	var pirate: Node = M.person(str(_pick(M, ["homme", "vieux"])), -hw + 0.8, -hd * 0.2 + 0.1, 90, "dormir")
-	pirate.lie(R.P(-hw + 0.8 + 0.85, 1.2, -hd * 0.2), Vector3(-1, 0, 0))
+	# V176 : couché dans le sens du hamac (avant : en travers, la tête dans le mur)
+	pirate.lie(R.P(-hw + 0.8, 1.2, -hd * 0.2 + 0.8), Vector3(0, 0, -1))
 	pirate.lines = ["Rrron… à l'abordage… zzz…", "Zzz… mon trésor…", "Rrrron… pfff…"]
 	R.tonneau(hw - 0.6, -hd + 0.6)
 	R.tonneau(hw - 1.3, -hd + 0.6)
@@ -744,7 +745,7 @@ static func _bouteille(M) -> void:
 		R.kit.box(R.L(bx, 1.62, -hd + 0.2), Vector3(0.16, 0.04, 0.05), "bois_sombre", 1.0)
 		R.kit.box(R.L(bx, 1.67, -hd + 0.2), Vector3(0.01, 0.08, 0.06), "drap", 1.0)
 	R.kit.box(R.L(-hw * 0.4, 1.55, -hd + 0.15), Vector3(2.6, 0.04, 0.25), "bois", 1.0)
-	R.lit(hw - 0.7, hd * 0.15, -90, 1.0, "bleu")
+	R.lit(hw - 1.06, hd * 0.15, -90, 1.0, "bleu")
 	R.tapis(0.0, 0.5, 0, 2.0, 1.4)
 	S._murs(M, 2)
 	var f: Node = M.person(str(_pick(M, ["vieux", "vieille", "homme"])), 0.0, -hd + 1.2, 180, "bricoler")
@@ -950,7 +951,7 @@ static func _peintre(M) -> void:
 			var c: Color = {"heros": Color(0.85, 0.55, 0.3), "penseur": Color(0.4, 0.5, 0.75), "grimace": Color(0.55, 0.8, 0.35)}.get(id, Color.WHITE)
 			(toile.material_override as StandardMaterial3D).albedo_color = c
 			if dj != null:
-				await M.get_tree().create_timer(0.6).timeout
+				await M.timer(0.6)
 				await dj._fade_to(0.0, 0.4)
 			if not M.inside:
 				return
@@ -978,7 +979,7 @@ static func _chant_elfe(M) -> void:
 	var hd: float = R.D * 0.5
 	R.tapis(0.0, 0.0, 0, 2.6, 2.0)
 	R.foyer(hw - 0.7, -hd + 0.7, -30, true)
-	R.lit(-hw + 0.7, -hd * 0.2, 90, 1.0, "vert")
+	R.lit(-hw + 0.56, -hd * 0.2, 0, 1.0, "vert")
 	S._murs(M, 2)
 	var pots: Array = []
 	for k in range(5):

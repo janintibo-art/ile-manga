@@ -3087,198 +3087,99 @@ func _create_jungle_v29() -> void:
 	boat_v29._make_dock("Ponton_perchee", pp_d[0], pp_d[1])
 
 
-## À pied : on ne s'avance pas dans la mer (l'île du village garde sa limite ronde,
-## la jungle bloque dès que l'eau devient profonde) ; les pontons restent accessibles.
+## À pied : on ne s'avance pas dans la mer (sauf là où l'on a pied, ou là où l'on nage) ; les
+## pontons restent accessibles. V176 : la règle elle-même est dans pied_ok_v176 (le déblocage s'en
+## sert pour ne jamais poser le héros là où il n'a pas le droit d'être).
 func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	var p: Vector3 = body.position
 	# V35 : sous terre, les murs du temple suffisent.
 	if _in_dungeon_v35(p):
 		return
 	var key: String = str(body.name)
+	if pied_ok_v176(p):
+		last_ok_v29[key] = p
+	elif last_ok_v29.has(key):
+		body.position = last_ok_v29[key]
+		body.velocity = Vector3.ZERO
+
+
+## V176 : a-t-on le droit d'être là, à pied ou à la nage ? (la terre ferme de chaque île, ses pontons,
+## ses quais ; l'eau où l'on a pied ; la mer où l'on nage). Avant, l'île du village gardait une
+## limite ronde (63 m) : sur la plage, le héros sortait de l'eau sous le sable, et restait collé.
+func pied_ok_v176(p: Vector3) -> bool:
+	if _in_dungeon_v35(p):
+		return true
 	# V58 : au royaume des fées, on ne s'avance pas au-delà du bord (ni de la Couronne)
 	if feerie_v58 != null and feerie_v58.contains(p):
-		if feerie_v58.walkable_at(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return feerie_v58.walkable_at(p)
 	# V54 : sur l'île flottante, on ne s'avance pas au-delà du bord
 	if ciel_v54 != null and ciel_v54.on_sky(p):
-		if ciel_v54.walkable_at(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return ciel_v54.walkable_at(p)
 	# V55 : dans la mer, on nage où l'on veut (dans les limites du monde)
 	if mer_v55 != null and mer_v55.water_ok(p):
-		last_ok_v29[key] = p
-		return
+		return true
 	if boat_v29 != null and boat_v29.on_dock(p):
-		last_ok_v29[key] = p
-		return
+		return true
 	# V146 : sur les plates-formes de l'Île Perchée (le Mât des Nuées de Hautefond, le Ponton de la Chaîne)
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.on_platform(p):
-		last_ok_v29[key] = p
-		return
+		return true
 	# V67 : à Arcanelle, on ne marche pas dans l'eau du Lac Miroir (sauf sur la glace du sort de gel)
 	if arcanelle_v67 != null and arcanelle_v67.contains(p) and arcanelle_v67.blocks_walk(p):
-		if last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return false
 	# V76 : là-haut, à Astralys : le plateau, les îlots, les ponts de lumière (pas le vide)
 	if astralys_v76 != null and astralys_v76.contains(p) and p.y > 150.0:
-		if astralys_v76.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return astralys_v76.walkable(p)
 	# V146 : là-haut, sur l'Île Perchée : la terre ferme, le Quai des Nuées, la Potence (pas le vide)
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.contains(p) and p.y > 150.0:
-		if perchee_v146.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return perchee_v146.walkable(p)
 	# V87 : l'Île aux Moaïs : la terre ferme
 	if moai_v87 != null and moai_v87.contains(p):
-		if moai_v87.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return moai_v87.walkable(p)
 	# V90 : l'Île Pixelithique : la terre ferme (pas dans la lave du volcan)
 	if pixel_v90 != null and pixel_v90.contains(p):
-		if pixel_v90.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return pixel_v90.walkable(p)
 	# V91 : l'Île de Larsen : la terre ferme
 	if larsen_v91 != null and larsen_v91.contains(p):
-		if larsen_v91.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return larsen_v91.walkable(p)
 	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
 	if neo_v94 != null and neo_v94.contains(p):
-		if neo_v94.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return neo_v94.walkable(p)
 	# V142 : l'Île des Géants : la terre ferme, le ponton ; sur la mare, les nénuphars
 	if geants_v142 != null and geants_v142.contains(p):
-		if geants_v142.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return geants_v142.walkable(p)
 	# V121 : Sombreval : la terre ferme, la jetée
 	if sombreval_v121 != null and sombreval_v121.contains(p):
-		if sombreval_v121.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return sombreval_v121.walkable(p)
 	# V112 : l'Île de Hautefond : la terre ferme, les quais, la Grande Colonne, son Belvédère
 	if hautefond_v112 != null and hautefond_v112.contains(p):
-		if hautefond_v112.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return hautefond_v112.walkable(p)
 	# V99 : l'Île Crayonnée : la terre ferme
 	if crayon_v99 != null and crayon_v99.contains(p):
-		if crayon_v99.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return crayon_v99.walkable(p)
 	# V97 : l'Île Al Dente : la terre ferme (pas dans la sauce : elle est brûlante)
 	if pasta_v97 != null and pasta_v97.contains(p):
-		if pasta_v97.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return pasta_v97.walkable(p)
 	# V75 : l'Île du Boucan : la terre ferme, les quais, le pont du cargo (pas dans le bassin)
 	if boucan_v75 != null and boucan_v75.contains(p):
-		if boucan_v75.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return boucan_v75.walkable(p)
 	# V71 : l'Île de Montjoie : la terre ferme, les pontons, les quais (pas dans le lac)
 	if montjoie_v71 != null and montjoie_v71.contains(p):
-		if montjoie_v71.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return montjoie_v71.walkable(p)
 	# V70 : l'Île de Braise : la terre ferme, les ponts, les quais (la lave : on y entre, elle brûle)
 	if braise_v70 != null and braise_v70.contains(p):
-		if braise_v70.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return braise_v70.walkable(p)
 	# V69 : l'Île des Trois Soleils : la terre ferme, les ponts, les pontons (pas dans le lac)
 	if soleils_v69 != null and soleils_v69.contains(p):
-		if soleils_v69.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return soleils_v69.walkable(p)
 	# V68 : l'Île de la Balafre : la terre ferme, les navires, les pontons de Port-Coutelas
 	if pirates_v68 != null and pirates_v68.contains(p):
-		if pirates_v68.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
+		return pirates_v68.walkable(p)
 	# V59 : la grande île : la terre ferme, le Léviathan et les pontons de Carène
 	if grande_v59 != null and grande_v59.contains(p):
-		if grande_v59.walkable(p):
-			last_ok_v29[key] = p
-		elif last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
-	if jungle_v29 != null and Vector2(p.x, p.z).length() > 120.0:
-		# V127 : jusque dans l'eau peu profonde (sinon le rivage est un mur, dans les deux sens)
-		if _height_at(p.x, p.z) > -1.3:
-			last_ok_v29[key] = p
-			return
-		if last_ok_v29.has(key):
-			body.position = last_ok_v29[key]
-			body.velocity = Vector3.ZERO
-		return
-	var flat := Vector2(p.x, p.z)
-	if flat.length() > ISLAND_LIMIT_V21:
-		flat = flat.normalized() * ISLAND_LIMIT_V21
-		body.position.x = flat.x
-		body.position.z = flat.y
-	last_ok_v29[key] = body.position
+		return grande_v59.walkable(p)
+	# la jungle (V127) et l'île du village (V176) : la terre ferme, et l'eau tant qu'on y a pied (la
+	# mer plus profonde est à la nage, plus haut)
+	return _height_at(p.x, p.z) > -1.3
 
 
 ## V127 : la porte d'une maison (maisons_v81) est-elle plus près que cet habitant ?
@@ -4065,6 +3966,7 @@ var vr_x_hold_v76: float = 0.0            # V76 : depuis quand X (VR) est mainte
 var aeronef_v76: Node3D                    # V76 : l'aéronef qui évolue (Alouette, Alouette à hélice, Albatros, Glisseur stellaire)
 var testeur_v78: Node                      # V78 : le mode testeur (F8)
 var maisons_v81: Node3D                    # V81 : les maisons décoratives qu'on visite
+var deblocage_v176: Node                   # V176 : le héros ne reste jamais coincé (et « Me débloquer »)
 var chantier_v76: Node                     # V76 : le chantier naval de Port-Azur (le bateau qui évolue)
 var atelier_ailes_v76: Node3D              # V76 : l'Atelier des Ailes de Philibert Vis, à Cliquetis
 const Societe_v65 = preload("res://scripts/pnj/societe_v65.gd")
@@ -4327,6 +4229,10 @@ func _create_v76() -> void:
 	maisons_v81 = preload("res://scripts/maisons_v81.gd").new()
 	add_child(maisons_v81)
 	maisons_v81.setup(self)
+	# V176 : le déblocage du héros (pris dans le décor, coincé dans un recoin, le menu « Me débloquer »)
+	deblocage_v176 = preload("res://scripts/deblocage_v176.gd").new()
+	add_child(deblocage_v176)
+	deblocage_v176.setup(self)
 	compagnons_animaux_v76 = preload("res://scripts/compagnons_animaux_v76.gd").new()
 	compagnons_animaux_v76.name = "Compagnons_animaux_v76"
 	add_child(compagnons_animaux_v76)

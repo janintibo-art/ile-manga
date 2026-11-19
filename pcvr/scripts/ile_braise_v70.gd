@@ -22,7 +22,8 @@ const CHUNKS: int = 8
 const WATER: float = -0.42
 const TEX := "res://assets/textures/braise/"
 ## La mer autour de l'île : un cercle, et un chenal vers le nord-est (vers le reste de l'archipel).
-const SEA_R: float = 400.0
+## V176 : 440 m (avant, 400 : au sud-ouest, la côte allait jusqu'à 406 m, hors de la mer)
+const SEA_R: float = 440.0
 const SEA_LANE := Rect2(320.0, -380.0, 300.0, 130.0)
 
 ## Pandémonia : le centre de la cité ; les cercles (rayons, m) et leurs hauteurs.

@@ -175,7 +175,7 @@ static func _blagues(M) -> void:
 		tour[0] += 1
 		_rire(M)
 		comique.gesture("salut", 1.0)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		for p2 in public:
 			if is_instance_valid(p2):
 				p2.gesture("rire", 2.5)
@@ -199,7 +199,7 @@ static func _blagues(M) -> void:
 						M.close_talk()
 						M.say("Tu racontes : « " + str(bb[0]) + " … " + str(bb[1]) + " »", 6.0)
 						_rire(M)
-						await M.get_tree().create_timer(2.5).timeout
+						await M.timer(2.5)
 						for p3 in public:
 							if is_instance_valid(p3):
 								p3.gesture("joie", 2.0)
@@ -208,7 +208,7 @@ static func _blagues(M) -> void:
 						comique.say("… Elle est meilleure que les miennes. Je démissionne. (Je plaisante.)", 4.0)
 						if not bool(M.state().get("scene", false)):
 							M.state()["scene"] = true
-							await M.get_tree().create_timer(2.0).timeout
+							await M.timer(2.0)
 							if M.inside:
 								M.give([["piece", 10], ["coquillage", 1]], "Le public te lance des pièces (et un coquillage). ")
 					)
@@ -272,7 +272,7 @@ static func _statues(M) -> void:
 						j3.freeze(false)
 						j3.gesture("joie", 2.0)
 					chef.say("TOUCHÉ ! Hi hi hi ! On a gagné ! On recommence quand tu veux.", 4.0)
-					await M.get_tree().create_timer(2.5).timeout
+					await M.timer(2.5)
 					reset.call()
 					return
 				j2.global_position += step.normalized() * 0.09
@@ -287,7 +287,7 @@ static func _statues(M) -> void:
 			if not bool(M.state().get("gagne", false)):
 				M.state()["gagne"] = true
 				M.give([["perle", 1], ["piece", 12]], "Les petits Moaïs, beaux joueurs, te donnent leur trésor. ")
-			await M.get_tree().create_timer(3.0).timeout
+			await M.timer(3.0)
 			reset.call()
 	timer.timeout.connect(tick)
 	var cb := func() -> void:
@@ -350,7 +350,7 @@ static func _sieste(M) -> void:
 					d.set_pose("debout")
 					d.gesture("sursaut", 1.0)
 					_rire(M)
-					await M.get_tree().create_timer(1.2).timeout
+					await M.timer(1.2)
 					if not M.inside:
 						return
 					M.state()["reveil"] = true
@@ -448,7 +448,7 @@ static func _cache(M) -> void:
 				hidden.say(str(_pick(M, ["Oh non ! Trouvé !", "Zut ! J'étais si bien caché !", "Comment tu as su ?!"])), 3.0)
 				trouves[0] += 1
 				if trouves[0] >= 3:
-					await M.get_tree().create_timer(1.5).timeout
+					await M.timer(1.5)
 					meneur.gesture("applaudir", 2.0)
 					meneur.say("Tous trouvés ! Tu es le champion du cache-cache !", 4.0)
 					_rire(M)
@@ -503,7 +503,7 @@ static func _chorale(M) -> void:
 						c3.set_pose("dormir")
 						c3.say("La… la… zzz…", 3.0)
 					chef.say("… Ils se sont endormis. C'est la troisième fois cette semaine.", 4.0)
-					await M.get_tree().create_timer(4.0).timeout
+					await M.timer(4.0)
 					for c4 in chanteurs:
 						if is_instance_valid(c4):
 							c4.set_pose("debout")
@@ -511,7 +511,7 @@ static func _chorale(M) -> void:
 			if id != "fermer" and not bool(M.state().get("dirige", false)):
 				M.state()["dirige"] = true
 				_rire(M)
-				await M.get_tree().create_timer(3.5).timeout
+				await M.timer(3.5)
 				if M.inside:
 					M.give([["coquillage", 2], ["piece", 6]], "La chorale te remercie avec ce qu'elle a. ")
 		, "de bonne humeur")
@@ -548,12 +548,12 @@ static func _mer(M) -> void:
 					var tw: Tween = M.room.create_tween()
 					tw.tween_property(p, "rotation:y", p.rotation.y + PI, 1.5).set_trans(Tween.TRANS_SINE)
 					p.face_dir = -p.face_dir
-					await M.get_tree().create_timer(1.8).timeout
+					await M.timer(1.8)
 					if not M.inside:
 						return
 					p.gesture("joie", 2.5)
 					p.say("OH ! … C'est… c'est BLEU ! C'est TRÈS bleu ! Et ça bouge ! Elle me fait coucou !", 5.0)
-					await M.get_tree().create_timer(3.0).timeout
+					await M.timer(3.0)
 					if M.inside:
 						M.give([["perle", 1]], "Les yeux de pierre brillent. « Tiens. Je l'ai trouvée dans mon rêve. C'est pour toi. » ")
 				"raconte":

@@ -802,7 +802,7 @@ static func _pompon(M) -> void:
 		for e in M.ctx.get("betes174", []):
 			if e[0] == chat:
 				e[1] = "content"
-		await M.get_tree().create_timer(5.0).timeout
+		await M.timer(5.0)
 		for e2 in M.ctx.get("betes174", []):
 			if is_instance_valid(e2[0]) and e2[0] == chat:
 				e2[1] = "dort"

@@ -211,6 +211,11 @@ func start_swim_pc(h: Node) -> void:
 
 func _leave_swim_pc(h: Node) -> void:
 	h.state = "sol"
+	# V176 : on reprend pied sur le fond, pas dessous
+	var bp: Vector3 = h.body.global_position
+	var sol: float = main._height_at(bp.x, bp.z)
+	if bp.y < sol:
+		h.body.global_position = Vector3(bp.x, sol + 0.03, bp.z)
 	h.fall_top = h.body.global_position.y
 	swimming = false
 	_vel = Vector3.ZERO
@@ -307,6 +312,10 @@ func _swim_target(feet: Vector3, dir: Vector3, up_in: bool, down_in: bool, sprin
 func _clamp_swimmer(body: CharacterBody3D) -> void:
 	var p: Vector3 = body.global_position
 	var top: float = _surface_feet() + sin(Time.get_ticks_msec() * 0.0016) * 0.04
+	# V176 : près du rivage, le fond remonte plus haut que les pieds du nageur à la surface : on ne
+	# l'enfonce plus dans le sable (avant, le fond le repoussait, on le renfonçait : la nage allait
+	# par à-coups, et on sortait de l'eau à moitié sous la plage)
+	top = maxf(top, main._height_at(p.x, p.z) + 0.03)
 	if p.y > top:
 		p.y = lerpf(p.y, top, 0.5)
 		if _vel.y > 0.0:
@@ -475,6 +484,8 @@ func vr_swim_tick(delta: float) -> bool:
 	body.velocity = Vector3(wanted.x / dt + _vel.x, _vel.y, wanted.z / dt + _vel.z)
 	body.move_and_slide()
 	var p: Vector3 = body.global_position
+	# V176 : pas plus bas que le fond, près du rivage (voir _clamp_swimmer)
+	surf_feet = maxf(surf_feet, main._height_at(p.x, p.z) + 0.03)
 	if p.y > surf_feet:
 		p.y = lerpf(p.y, surf_feet, 0.5)
 		_vel.y = minf(_vel.y, 0.0)

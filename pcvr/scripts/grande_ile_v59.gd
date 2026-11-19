@@ -107,9 +107,11 @@ func _setup_noise() -> void:
 # =================================================================== la mer autour de l'île
 
 ## La mer navigable (barque) et où l'on nage s'étendent jusqu'ici : un cercle autour de l'île
-## et un « couloir » qui la relie à la mer de l'archipel (au large de l'île des elfes).
+## et un « couloir » qui la relie à la mer de l'archipel (au large de l'île des elfes). V176 : le
+## cercle passe bien au-delà du rivage (avant, 360 m : par endroits, la côte allait plus loin que la
+## mer, et l'on ne pouvait pas entrer dans l'eau).
 const EAST_C := Vector2(905.0, -150.0)
-const EAST_R: float = 360.0
+const EAST_R: float = 420.0
 const LANE_A := Vector2(470.0, -160.0)
 const LANE_B := Vector2(640.0, -150.0)
 const LANE_R: float = 130.0

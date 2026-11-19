@@ -191,7 +191,7 @@ static func _boutique(M) -> void:
 	M.talk_spot(f, func(): _menu(M, f, data, ""))
 	M.ctx["on_enter"] = func(first: bool) -> void:
 		M.main.sfx("cloche")
-		await M.get_tree().create_timer(0.6).timeout
+		await M.timer(0.6)
 		if M.inside:
 			f.say(str(_pick(M, ["Bonjour, bonjour ! Entre !", "Ding-dong ! Un client !", "Bienvenue chez " + enseigne + " !"])) if first else "Re-bonjour ! Tu as oublié quelque chose ?", 3.5)
 	M.ctx["entree"] = ""
@@ -420,17 +420,17 @@ static func _tunnel(M) -> void:
 
 static func _percee(M, d: Node, soeur: String) -> void:
 	for k in range(3):
-		await M.get_tree().create_timer(0.45).timeout
+		await M.timer(0.45)
 		if not M.inside:
 			return
 		M.main.sfx("caisse_casse" if k == 2 else "touche_pierre")
 	M.say("CRAC ! Le mur s'ouvre. De l'autre côté : une cuisine, une tarte… et une naine, le rouleau à pâtisserie levé.", 5.0)
-	await M.get_tree().create_timer(2.2).timeout
+	await M.timer(2.2)
 	if not M.inside:
 		return
 	M.say("« %s ?! ENFIN ! Douze ans ! Tu entres, tu t'essuies les pieds, et tu goûtes ma tarte. Ton ami aussi. »" % str(d.npc.display_name).split(" ")[-1], 6.0)
 	d.gesture("joie", 3.0)
-	await M.get_tree().create_timer(2.5).timeout
+	await M.timer(2.5)
 	if M.inside:
 		M.give([["minerai_fer", 2], ["piece", 10 + randi() % 8]], "Pour le coup de pioche, une part de tarte… et la trouvaille du tunnel. ")
 
@@ -443,7 +443,7 @@ static func _berceuse(M) -> void:
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
 	R.foyer(R.W * 0.18, -hd + 0.38, 0, true)
-	R.lit(hw - 0.7, -hd * 0.35, -90, 1.2, "rouge")
+	R.lit(hw - 1.06, -hd * 0.35, -90, 1.2, "rouge")
 	R.tapis(-0.3, 0.0, 0, 2.2, 1.6)
 	R.armoire(-hw + 0.35, -hd * 0.5, 90)
 	S._murs(M, 2)
@@ -481,12 +481,12 @@ static func _berceuse(M) -> void:
 			if id == "chanter":
 				M.close_talk()
 				M.say("« Dors, petit marteau, dors, / la forge veille encore, / la pierre te tient chaud, / dors, petit marteau. »", 7.0)
-				await M.get_tree().create_timer(3.5).timeout
+				await M.timer(3.5)
 				if M.inside:
 					M.say("Dans le berceau : « Rrr… pfff… rrr… » Le bébé nain ronfle déjà comme une forge.", 5.0)
 					if not bool(M.state().get("berce", false)):
 						M.state()["berce"] = true
-						await M.get_tree().create_timer(2.0).timeout
+						await M.timer(2.0)
 						if M.inside:
 							M.give([["fromage_chevre", 1], ["piece", 6]], "La maman te glisse un petit cadeau, sans un bruit. ")
 			elif id == "enclume":
@@ -515,7 +515,8 @@ static func _soupe(M) -> void:
 	R.kit.cyl(R.L(0.0, 0.53, -hd + 1.25), 0.33, 0.33, 0.02, "soupe", 16)
 	R.kit.box(R.L(0.25, 0.75, -hd + 1.2, 30), Vector3(0.04, 0.6, 0.04), "bois", 1.0)
 	R.reserve(0, -hd + 1.25, 1.0, 1.0)
-	S._table(M, -0.6, 0.9, 3, "")
+	# V176 : la table un peu plus loin de la porte (on arrivait dans son coin)
+	S._table(M, -0.6, 0.45, 3, "")
 	R.etagere_murale(hw - 0.15, 1.5, -0.2, -90, 1.4, "terre_cuite", 6)
 	S._murs(M, 2)
 	var vieux: Node = M.person(str(_pick(M, ["vieux", "vieille"])), 0.65, -hd + 1.3, -90, "cuisiner")

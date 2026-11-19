@@ -136,6 +136,8 @@ func _initialize() -> void:
 			await _nains(quoi == "forgefer")
 		"moai":
 			await _moai()
+		"moai_rampe":
+			await _moai(true)
 		"nuees", "strates", "dome", "nuees_mur", "strates_four", "dome_v160":
 			await _hautefond(quoi)
 		"celeste":
@@ -270,7 +272,7 @@ func _nains(dedans: bool) -> void:
 
 # =================================================================== l'Île aux Moaïs
 
-func _moai() -> void:
+func _moai(rampe: bool = false) -> void:
 	var M: Node3D = load("res://scripts/moai_v87.gd").new()
 	fm.add_child(M)
 	M.setup(fm)
@@ -286,6 +288,15 @@ func _moai() -> void:
 	var lac: Array = I.VOLCANS["lac"]
 	var ven: Array = I.VOLCANS["venteux"]
 	var car: Array = I.VOLCANS["carriere"]
+	if rampe:
+		# V176 : la rampe de galets de l'ahu du levant (là où le héros passait au travers)
+		var ah: Array = M.AHUS["ahu_levant"]
+		var c0: Vector3 = _w(I, float(ah[0]), float(ah[1]))
+		var fc := Vector3(float((ah[2] as Vector2).x), 0, float((ah[2] as Vector2).y)).normalized()
+		var sd: Vector3 = fc.cross(Vector3.UP).normalized()
+		await _vue("41_ahu_rampe", c0 + fc * 11.0 + sd * 6.0 + Vector3.UP * 2.6, c0 + fc * 3.0 + Vector3.UP * 1.0)
+		await _vue("42_ahu_rampe_cote", c0 + fc * 5.0 + sd * 10.0 + Vector3.UP * 2.0, c0 + fc * 3.5 + Vector3.UP * 0.6)
+		return
 	await _vue("31_ile", C + Vector3(-60, 160, 330), C)
 	await _vue("32_plage", _w(I, 6, 92) + Vector3.UP * 1.7, _w(I, 0, 0) + Vector3.UP * 12.0)
 	await _vue("33_lac_bord", _w(I, -96, 24) + Vector3.UP * 1.7, I.W(float(lac[0]), float(lac[1]), I.LAC_Y))

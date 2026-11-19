@@ -294,6 +294,16 @@ func _ahu(id: String, e: Array, avoid: Array) -> void:
 	cs.shape = bs
 	cs.position = Vector3(0, 0.55, 0)
 	sb.add_child(cs)
+	# V176 : la rampe de galets est solide (avant, le héros et les bêtes passaient au travers, puis
+	# butaient contre la plateforme) : on monte par elle jusqu'aux pieds des Moaïs
+	var cr := CollisionShape3D.new()
+	cr.name = "Rampe_v176"
+	var br := BoxShape3D.new()
+	br.size = rb.size
+	cr.shape = br
+	cr.position = ramp.position
+	cr.rotation = ramp.rotation
+	sb.add_child(cr)
 	var pk: Array = e[5]
 	for i in range(n):
 		var off: float = (float(i) - (n - 1) * 0.5) * gap

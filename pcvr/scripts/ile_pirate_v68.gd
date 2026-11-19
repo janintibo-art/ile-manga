@@ -19,8 +19,10 @@ const CELL: float = 1.6
 const CHUNKS: int = 6
 const WATER: float = -0.42
 const TEX := "res://assets/textures/pirates/"
-## La mer autour de l'île (on y nage, on y navigue) : un cercle centré sur l'île.
-const SEA_R: float = 232.0
+## La mer autour de l'île (on y nage, on y navigue) : un cercle centré sur l'île. V176 : il passe
+## bien au-delà du rivage (avant, 232 m : la côte sud-est, qui va jusqu'à 235 m, était hors de la
+## mer : on ne pouvait pas y entrer dans l'eau, et le long du bord on nageait par à-coups).
+const SEA_R: float = 300.0
 
 ## Les terre-pleins : nom -> [x, z, rayon plat, hauteur, longueur de la pente]
 const PADS := {

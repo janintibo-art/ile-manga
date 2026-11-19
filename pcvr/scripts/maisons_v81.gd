@@ -269,6 +269,9 @@ func enter(i: int) -> void:
 	var arrive: Array = _build()
 	main.place_player_v35(arrive[0], arrive[1])
 	inside = true
+	# V176 : l'arrivée encombrée (une table, le tableau de bord d'un bus) : on se pose juste à côté
+	if main.get("deblocage_v176") != null:
+		main.deblocage_v176.arrivee()
 	dj.update_inside(true)
 	main.sfx("porte_ferme")
 	await get_tree().create_timer(0.3).timeout
@@ -280,6 +283,22 @@ func enter(i: int) -> void:
 	var first: bool = not bool(st.get("vu", false))
 	st["vu"] = true
 	Scenes.on_enter(self, first)
+
+
+## V176 : une attente qui appartient à la pièce (les histoires s'en servent : « dans 2 s, ils sortent
+## de leur cachette »). Si l'on ressort avant la fin, la pièce part avec son minuteur et la suite
+## n'arrive jamais. Avant, elle reprenait dans la maison suivante, avec des habitants qui n'existaient
+## plus : le jeu plantait (sortir de la fête surprise et entrer aussitôt chez le voisin).
+func timer(t: float) -> Signal:
+	var tm := Timer.new()
+	tm.one_shot = true
+	tm.wait_time = maxf(t, 0.001)
+	tm.process_mode = Node.PROCESS_MODE_ALWAYS
+	var host: Node = room if room != null and is_instance_valid(room) else self
+	host.add_child(tm)
+	tm.timeout.connect(tm.queue_free)
+	tm.start()
+	return tm.timeout
 
 
 ## Sortir par la porte (ou être mis dehors) : retour devant la porte, dehors.
@@ -297,6 +316,8 @@ func leave(text: String = "") -> void:
 	var at: Vector3 = (cur["door"] as Vector3) + out * 0.35
 	_teardown()
 	main.place_player_v35(at + Vector3.UP * 0.1, out)
+	if main.get("deblocage_v176") != null:
+		main.deblocage_v176.oublier()
 	dj.update_inside(true)
 	main.sfx("porte_ferme", at)
 	await get_tree().create_timer(0.25).timeout

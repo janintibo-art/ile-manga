@@ -1080,7 +1080,7 @@ static func _vapeur_matin(M) -> void:
 			tn.position = from.lerp(to, k2) + Vector3(0, sin(k2 * PI) * 0.7, 0)
 			tn.rotation.x = k2 * PI * 2.5, 0.0, 1.0, 1.1)
 		S._say_late(M, pere, "… Une tartine dans mon assiette. Pile dans le miel. Évidemment.", 1.4)
-		await M.get_tree().create_timer(5.5).timeout
+		await M.timer(5.5)
 		if not _la(M, room0) or not is_instance_valid(tn):
 			return
 		var tw3: Tween = M.room.create_tween()
@@ -1196,7 +1196,7 @@ static func _allumettes(M) -> void:
 			tw2.tween_property(pv, "position:x", p0.x + off, 0.3).set_trans(Tween.TRANS_SINE)
 			tw2.tween_property(pv, "position:x", p0.x - off, 0.45).set_trans(Tween.TRANS_SINE)
 			tw2.tween_property(pv, "position:x", p0.x, 0.3).set_trans(Tween.TRANS_SINE)
-		await M.get_tree().create_timer(1.9).timeout
+		await M.timer(1.9)
 		if not _la(M, room0):
 			return
 		kid.set_pose("debout")
@@ -1215,7 +1215,7 @@ static func _allumettes(M) -> void:
 					M.bonne_action_v120()  ## V120 : un service rendu, l'île s'en souvient
 					M.give([["biscuit_engrenage", 1], ["piece", 8 + r.randi() % 8]], "")
 					M.close_talk(), "ému")
-			await M.get_tree().create_timer(4.0).timeout
+			await M.timer(4.0)
 			if _la(M, room0):
 				papi.set_pose("mains_dos")
 				kid.set_pose("debout")
@@ -1249,7 +1249,7 @@ static func _allumettes(M) -> void:
 		else:
 			S._say_late(M, papi, str(_pick(M, ["Ha ha ! Essai numéro %d !" % (47 + int(st["essais"])), "Elle n'aime pas qu'on la presse, la Colonne !", "Encore ! J'adore quand elle fait ça."])), 1.0)
 		# on ramasse tout en riant, et la Colonne est de nouveau debout
-		await M.get_tree().create_timer(4.5).timeout
+		await M.timer(4.5)
 		if not _la(M, room0):
 			return
 		M.main.sfx("touche_bois", R.P(tx, 0.5, tz))
@@ -1262,7 +1262,7 @@ static func _allumettes(M) -> void:
 		der.visible = false
 		der.position = dpos
 		papi.say(str(_pick(M, ["Bon. On recommence. J'ai l'habitude.", "Hop ! Elle est debout. Il ne manque que la dernière… encore.", "Allez, on reconstruit. C'est le meilleur moment."])), 3.5)
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		st["occupe"] = false
 	# ce qui bouge tout seul : la tour tremble un tout petit peu quand on s'approche
 	var centre: Vector3 = R.P(tx, 0, tz)

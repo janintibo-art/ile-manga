@@ -612,7 +612,7 @@ static func _casseroles(M) -> void:
 			chanteuse.say(str(_pick(M, ["Un, deux, trois, quatre !", "Avec nous ! Un, deux, trois, quatre !", "Plus fort que les casseroles ! Un, deux, trois, quatre !"])), 2.5)
 			M.main.sfx("batterie_roulement", kit_c)
 		for i in range(paroles.size()):
-			await M.get_tree().create_timer(2.0 if i == 0 else 2.3).timeout
+			await M.timer(2.0 if i == 0 else 2.3)
 			if not _la(M, room0):
 				return
 			var qui: Node = pb if nuit else chanteuse
@@ -621,7 +621,7 @@ static func _casseroles(M) -> void:
 				M.main.sfx("chant_%d" % (r.randi() % 5), mic_c, -4.0)
 				var coup: Array = st["coup"]
 				coup[i % coup.size()] = 1.4
-		await M.get_tree().create_timer(2.2).timeout
+		await M.timer(2.2)
 		if not _la(M, room0):
 			return
 		st["chante"] = false
@@ -635,7 +635,7 @@ static func _casseroles(M) -> void:
 			_bulle(M, (pa.npc as Node3D).global_position + Vector3(0, 1.5, 0), "Clap clap clap !", Color(1.0, 0.95, 0.8), 38, 0.5, 1.8)
 			_bulle(M, (pb.npc as Node3D).global_position + Vector3(0, 2.0, 0), "Bravo !", Color(1.0, 0.95, 0.8), 40, 0.5, 1.8)
 			chanteuse.say(str(_pick(M, ["Merci, la Fronde !", "On est Les Petites Soupapes ! Merci !", "Ouais ! Le public est en délire ! Enfin, les parents."])), 3.0)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		if not _la(M, room0):
 			return
 		recompense.call()
@@ -654,7 +654,7 @@ static func _casseroles(M) -> void:
 			"Tu rapproches l'entonnoir de l'ampli. Mauvaise idée : un sifflement à décoller la peinture de la tôle !"])), 4.5)
 		for f in [batteur, chanteuse, pa, pb]:
 			f.gesture("sursaut", 1.0)
-		await M.get_tree().create_timer(1.4).timeout
+		await M.timer(1.4)
 		if not _la(M, room0):
 			return
 		chanteuse.gesture("rire", 1.8)
@@ -894,7 +894,7 @@ static func _robot(M) -> void:
 		tw.parallel().tween_property(bn, "rotation", Vector3(3.0, 1.0, 2.0), 0.7)
 		tw.tween_property(bn, "global_position", bouche, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		tw.tween_callback(bn.queue_free)
-		await M.get_tree().create_timer(0.75).timeout
+		await M.timer(0.75)
 		if not _la(M, room0):
 			return
 		M.main.sfx("manger", bouche)
@@ -903,7 +903,7 @@ static func _robot(M) -> void:
 		if not nuit:
 			kid.gesture("rire", 1.5)
 			kid.say(str(_pick(M, ["Il adore ça ! Les boulons de douze, surtout.", "Pas trop, Boulon, tu vas rouiller de l'intérieur !", "Mâche bien, Boulon !"])), 3.0)
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0):
 			return
 		if bool(M.state().get("fr_robot", false)):
@@ -1028,7 +1028,7 @@ static func _robot(M) -> void:
 		_bulle(M, bot.global_position + Vector3(0, 1.1, 0), "Crric, crric, crric !", Color(1.0, 0.9, 0.6), 34 if nuit else 40, 0.4, 1.4)
 		if nuit:
 			S._say_late(M, kid, "Zzz… pas maintenant, Boulon… zzz…", 1.2, 3.0)
-			await M.get_tree().create_timer(1.4).timeout
+			await M.timer(1.4)
 			if not _la(M, room0):
 				return
 			_bulle(M, tete.global_position + Vector3(0, 0.4, 0), "Bip ? … zzz.", Color(0.7, 0.95, 1.0), 32, 0.35, 1.6)
@@ -1071,11 +1071,11 @@ static func _robot(M) -> void:
 		if nuit:
 			st["occupe"] = true
 			M.say("Tu prends un boulon dans le bocal, sur la pointe des pieds, et tu le tends à Boulon.", 3.5)
-			await M.get_tree().create_timer(0.8).timeout
+			await M.timer(0.8)
 			if not _la(M, room0):
 				return
 			croquer.call(bot.global_position + Vector3(0.0, 0.3, 0.0) + Vector3(sin(bot.rotation.y), 0.0, cos(bot.rotation.y)) * 0.45)
-			await M.get_tree().create_timer(3.0).timeout
+			await M.timer(3.0)
 			if _la(M, room0):
 				st["occupe"] = false
 			return
@@ -2583,7 +2583,7 @@ static func _vapeur(M) -> void:
 		M.main.sfx("vapeur", bouche)
 		kid.gesture("joie", 2.0)
 		kid.say(str(_pick(M, ["Douze ! Treize ! Elle monte, elle monte !", "Toutes les aiguilles dans le rouge ! Enfin, presque.", "Ouaaah ! Elle respire à fond !"])), 3.0)
-		await M.get_tree().create_timer(0.9).timeout
+		await M.timer(0.9)
 		if not _la(M, room0):
 			return
 		M.main.sfx("sifflet_compagnons", bouche)
@@ -2639,7 +2639,7 @@ static func _vapeur(M) -> void:
 			S._say_late(M, vieux, str(_pick(M, ["Zzz… Brasero… pas la brouette… zzz…", "Mmh… on était sept… zzz…", "Zzz… pousse… elle roule… zzz…"])), 2.0, 3.5)
 			if not bool(M.state().get("fr_vapeur", false)):
 				M.state()["fr_vapeur"] = true
-				await M.get_tree().create_timer(5.5).timeout
+				await M.timer(5.5)
 				if not _la(M, room0):
 					return
 				M.give([["pain_chaudiere", 1]], "Sur le poêle, sous un torchon, un pain encore tiède et un mot : « Pour qui passe. » ")
@@ -2648,7 +2648,7 @@ static func _vapeur(M) -> void:
 		M.main.sfx("vapeur", bec, -10.0)
 		_bulle(M, bec + Vector3(0, 0.15, 0), "Fuiiiii !", Color(0.85, 0.92, 1.0), 34, 0.4, 1.4)
 		kid.say(str(_pick(M, ["La théière siffle ! Elle parle chaudière, elle aussi.", "Thé ! Thé ! Avec beaucoup de sucre, Papy !"])), 2.5)
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0):
 			return
 		var tw: Tween = M.room.create_tween()
@@ -2656,7 +2656,7 @@ static func _vapeur(M) -> void:
 		tw.tween_interval(0.9)
 		tw.tween_property(tp, "rotation:z", 0.0, 0.5).set_trans(Tween.TRANS_SINE)
 		M.main.sfx("verser", bec)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		if not _la(M, room0):
 			return
 		M.main.sfx("boire", vieux.npc.global_position, -4.0)

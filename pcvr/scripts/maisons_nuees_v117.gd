@@ -975,7 +975,7 @@ static func _cerf_volant(M) -> void:
 		M.main.sfx("mecanisme", vent.global_position)
 		if not nuit:
 			kid.say(str(_pick(M, ["Ohhh… Encore !", "Il s'est posé comme une plume !", "Encore une fois ! Juste une !"])), 3.0)
-		await M.get_tree().create_timer(3.5).timeout
+		await M.timer(3.5)
 		if not _la(M, room0) or bool(st["on"]):
 			return
 		ranger.call()
@@ -1594,22 +1594,22 @@ static func _planeur(M) -> void:
 			kid.set_pose("pointer", R.P(0, 0, zc) - tour))
 		M.say(str(_pick(M, ["Tu te glisses dans le cockpit. Le siège est un peu petit, mais le manche tombe pile sous ta main.",
 			"Tu enjambes le bord du cockpit et tu t'assois. Ça sent le cuir neuf et la colle à bois."])), 4.0)
-		await M.get_tree().create_timer(1.8).timeout
+		await M.timer(1.8)
 		if not _la(M, room0):
 			return
 		var tw2: Tween = M.room.create_tween()
 		tw2.tween_property(verriere, "rotation:x", 0.0, 0.8).set_trans(Tween.TRANS_SINE)
 		M.main.sfx("ui_clic", cockpit_w)
 		bulle_vol.call("Verrière fermée !", false)
-		await M.get_tree().create_timer(1.6).timeout
+		await M.timer(1.6)
 		if not _la(M, room0):
 			return
 		bulle_vol.call("Manche… palonnier… sourire !", false)
-		await M.get_tree().create_timer(1.8).timeout
+		await M.timer(1.8)
 		if not _la(M, room0):
 			return
 		kid.say("Tour de contrôle à pilote : vent de face, force deux ! Décollage autorisé !", 3.0)
-		await M.get_tree().create_timer(1.8).timeout
+		await M.timer(1.8)
 		if not _la(M, room0):
 			return
 		st["envol"] = 1.0
@@ -1620,17 +1620,17 @@ static func _planeur(M) -> void:
 		kid.gesture("joie", 2.5)
 		pere.gesture("joie", 2.5)
 		aide.gesture("applaudir", 2.5)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		if not _la(M, room0):
 			return
 		bulle_vol.call(str(_pick(M, ["Ouaaah ! On survole le Parc des Brumes !", "Virage à gauche… au-dessus de la Cascade !", "On frôle un cumulus ! Il est tout doux !"])), false)
 		S._say_late(M, pere, str(_pick(M, ["Attention au plafonnier !", "Tu vois la boulangerie d'Icare ?", "Pas trop haut, il y a l'étage du dessus !"])), 1.0)
-		await M.get_tree().create_timer(2.2).timeout
+		await M.timer(2.2)
 		if not _la(M, room0):
 			return
 		bulle_vol.call("Atterrissage… en douceur !", false)
 		st["envol"] = 0.0
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0):
 			return
 		M.main.sfx("touche_bois", cockpit_w)
@@ -1638,7 +1638,7 @@ static func _planeur(M) -> void:
 		var tw3: Tween = M.room.create_tween()
 		tw3.tween_property(verriere, "rotation:x", -0.95, 0.8).set_trans(Tween.TRANS_SINE)
 		kid.gesture("applaudir", 2.0)
-		await M.get_tree().create_timer(1.0).timeout
+		await M.timer(1.0)
 		if not _la(M, room0):
 			return
 		if not bool(M.state().get("nu_planeur", false)):
@@ -1668,7 +1668,7 @@ static func _planeur(M) -> void:
 		tw5.tween_property(ruban, "scale:x", 1.1, 1.0).set_trans(Tween.TRANS_SINE)
 		pere.set_pose("pointer", porte - pere.npc.global_position)
 		_bulle(M, porte + Vector3(0, 0.6, 0), "Un mètre dix…", Color(1.0, 0.9, 0.5), 38, 0.4, 1.8)
-		await M.get_tree().create_timer(1.6).timeout
+		await M.timer(1.6)
 		if not _la(M, room0):
 			return
 		if nuit:
@@ -1678,7 +1678,7 @@ static func _planeur(M) -> void:
 				"%d centimètres de porte, %d mètres d'ailes. Bon. Quelqu'un a un tournevis ? Ou une très grande scie ?",
 				"La porte fait %d centimètres, les ailes %d mètres. J'ai refait le calcul trois fois. Le calcul est têtu."])) % [110, envergure], 5.0)
 			S._say_late(M, aide, str(_pick(M, ["Ou on attend que l'île descende.", "On pourrait le sortir par la baie. En biais.", "Je propose de vivre dans le planeur."])), 2.5)
-		await M.get_tree().create_timer(2.5).timeout
+		await M.timer(2.5)
 		if not _la(M, room0):
 			return
 		var tw6: Tween = M.room.create_tween()
@@ -2073,7 +2073,7 @@ static func _meteo(M) -> void:
 		ouvrir_para.call(true)
 		if dit:
 			papi.say("Parapluie ouvert, chef !", 3.0)
-		await M.get_tree().create_timer(4.5).timeout
+		await M.timer(4.5)
 		if not _la(M, room0) or int(st["para_n"]) != jeton:
 			return
 		ouvrir_para.call(false)
@@ -2107,7 +2107,7 @@ static func _meteo(M) -> void:
 		if zi > 1:
 			S._say_late(M, papi, str(baro_papi[zi]), 1.8)
 			return
-		await M.get_tree().create_timer(1.1).timeout
+		await M.timer(1.1)
 		if not _la(M, room0):
 			return
 		alerte.call(true)
@@ -2167,7 +2167,7 @@ static func _meteo(M) -> void:
 		fille.set_pose("peindre", Vector3(0, 0, -1))
 		fille.say(str(_pick(M, ["Mise à jour ! Le ciel a changé d'avis.", "Attendez, je corrige ! Nouveau bulletin !", "Flash spécial ! Je redessine !"])), 3.0)
 		redessiner.call(bi)
-		await M.get_tree().create_timer(1.7).timeout
+		await M.timer(1.7)
 		if not _la(M, room0):
 			return
 		fille.set_pose("enseigner", face_f)
@@ -2190,7 +2190,7 @@ static func _meteo(M) -> void:
 			else:
 				fille.say("Quel souffle ! Assistant, le parapluie d'honneur !" if pc3 else "Quel souffle ! Assistant, la plume d'honneur !", 3.0)
 			papi.gesture("salut", 1.5)
-			await M.get_tree().create_timer(1.4).timeout
+			await M.timer(1.4)
 			if not _la(M, room0) or bool(M.state().get("nu_meteo", false)):
 				return
 			txt = "Bien, chef. (Il te tend un parapluie rouge, très solennellement.) Le parapluie d'honneur de la station. Quand on l'ouvre, l'hélice mesure le vent. Enfin… elle tourne. Ne le montrez pas au Docteur Aurèle : il dit que ça fausse ses mesures." if pc3 else "Bien, chef. (Il te tend une longue plume blanche, très solennellement.) Vous avez déjà un parapluie à hélice ? Alors voici la plume d'honneur de la station : une plume du vent, tombée sur l'anémomètre un jour de grand vent. Le Docteur Aurèle adore ces plumes."
@@ -2220,7 +2220,7 @@ static func _meteo(M) -> void:
 		var record: bool = n > int(M.state().get("nu_meteo_record", 0))
 		if record:
 			M.state()["nu_meteo_record"] = n
-		await M.get_tree().create_timer(1.3).timeout
+		await M.timer(1.3)
 		if not _la(M, room0):
 			return
 		if nuit:
@@ -2235,7 +2235,7 @@ static func _meteo(M) -> void:
 			S._say_late(M, papi, "Record noté, chef." if record else "Noté, chef.", 1.6)
 		if bool(M.state().get("nu_meteo", false)):
 			return
-		await M.get_tree().create_timer(2.4).timeout
+		await M.timer(2.4)
 		if not _la(M, room0):
 			return
 		recompense.call(record)
@@ -3841,7 +3841,7 @@ static func _papillons(M) -> void:
 			var kp: Vector3 = kid.npc.global_position
 			kid.face_dir = Vector3(bp.x - kp.x, 0, bp.z - kp.z)
 			_bulle(M, bp + Vector3(0, 0.14, 0), str(c2 + 1), Color(1.0, 0.96, 0.75), 30, 0.25, 1.0)
-			await M.get_tree().create_timer(0.55).timeout
+			await M.timer(0.55)
 			if not _la(M, room0):
 				return
 		if randf() < 0.18:
@@ -3866,7 +3866,7 @@ static func _papillons(M) -> void:
 		for c3 in range(mini(8, vus2.size())):
 			var bp2: Vector3 = (bs[int(vus2[c3])]["n"] as Node3D).global_position
 			_bulle(M, bp2 + Vector3(0, 0.14, 0), str(c3 + 1), Color(0.85, 0.95, 1.0), 32, 0.25, 1.0)
-			await M.get_tree().create_timer(0.38).timeout
+			await M.timer(0.38)
 			if not _la(M, room0):
 				return
 		var a1: int = nb + randi_range(-9, 9)

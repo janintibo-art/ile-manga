@@ -1410,7 +1410,7 @@ static func _boite(M) -> void:
 		var c0: int = int(st["cur"])
 		if c0 >= 0:
 			ranger.call(c0)
-			await M.get_tree().create_timer(0.6).timeout
+			await M.timer(0.6)
 			if not _la(M, room0):
 				return
 		var i: int = int(st["idx"]) % objs.size()
@@ -1430,7 +1430,7 @@ static func _boite(M) -> void:
 		if not nuit and not bool(st["tout"]) and (st["vus"] as Dictionary).size() >= objs.size():
 			st["tout"] = true
 			S._say_late(M, kid, "Et voilà toute ma boîte. Il reste de la place, tu as vu ? C'est pour les prochains morceaux. Je laisse toujours de la place.", 8.0, 5.0)
-		await M.get_tree().create_timer(1.0).timeout
+		await M.timer(1.0)
 		st["busy"] = false
 	var ouvrir := func() -> void:
 		if bool(st["busy"]):
@@ -1449,13 +1449,13 @@ static func _boite(M) -> void:
 		var c0: int = int(st["cur"])
 		if c0 >= 0:
 			ranger.call(c0)
-			await M.get_tree().create_timer(0.55).timeout
+			await M.timer(0.55)
 			if not _la(M, room0):
 				return
 		couvrir.call(false)
 		if not nuit:
 			kid.say(str(_pick(M, ["On referme bien, sinon le ciel s'échappe.", "Merci d'avoir regardé !", "Clac ! Le ciel est à l'abri."])), 3.0)
-		await M.get_tree().create_timer(0.7).timeout
+		await M.timer(0.7)
 		st["busy"] = false
 	# --- donner une carte postale (si on en a une) : elle vole du sac jusqu'au-dessus de la boîte
 	var cartes_sac := func() -> int:
@@ -1489,7 +1489,7 @@ static func _boite(M) -> void:
 			kid.gesture("joie", 2.5)
 			S._say_late(M, kid, ["Un nouveau morceau ! Tout neuf, avec un phare ! Papi ! Viens voir ! C'est Port-Azur !", "Un nouveau morceau ! Tout neuf, avec un phare ! Mamie ! Viens voir ! C'est Port-Azur !"][gp], 1.0, 4.0)
 			S._say_late(M, gpf, "Port-Azur… C'est là que j'ai grandi. Le phare n'a pas changé. Moi, si.", 4.2, 4.0)
-		await M.get_tree().create_timer(7.5).timeout
+		await M.timer(7.5)
 		if not _la(M, room0):
 			return
 		recompense.call()
@@ -1516,7 +1516,7 @@ static func _boite(M) -> void:
 		var paroles: Array = ["Le bleu d'abord. Beaucoup de bleu. Encore plus ? D'accord…", "Le soleil, je le fais rond, comme la Perle. Il dépasse un peu. Ce n'est pas grave ?",
 			"Et un oiseau ! En forme de V ? Ils sont tous en forme de V ? C'est pratique."]
 		for k5 in range(etapes.size()):
-			await M.get_tree().create_timer(2.6).timeout
+			await M.timer(2.6)
 			if not _la(M, room0):
 				return
 			(etapes[k5] as Node3D).visible = true
@@ -1524,7 +1524,7 @@ static func _boite(M) -> void:
 			_bulle(M, fn.global_position + Vector3(0, 0.2, 0), "✎", Color(0.55, 0.75, 1.0), 40, 0.4, 1.4)
 			if k5 < paroles.size():
 				kid.say(str(paroles[k5]), 3.0)
-		await M.get_tree().create_timer(2.4).timeout
+		await M.timer(2.4)
 		if not _la(M, room0):
 			return
 		kid.set_pose("debout", Vector3(kx - kp.x, 0, kz - kp.y))
@@ -1534,7 +1534,7 @@ static func _boite(M) -> void:
 		lever.call(objs.size() - 1)
 		kid.gesture("joie", 2.5)
 		kid.say("Voilà ! Une carte postale du ciel, dessinée d'après quelqu'un qui l'a vu. Ça compte, hein ? Dis que ça compte !", 4.5)
-		await M.get_tree().create_timer(5.0).timeout
+		await M.timer(5.0)
 		if not _la(M, room0):
 			return
 		recompense.call()
@@ -2203,7 +2203,7 @@ static func _poulpe(M) -> void:
 		M.bonne_action_v120()  ## V120 : une bonne action, l'île s'en souvient
 		if bool(M.state().get("da_poulpe", false)):
 			return
-		await M.get_tree().create_timer(1.6).timeout
+		await M.timer(1.6)
 		if not _la(M, room0):
 			return
 		M.state()["da_poulpe"] = true
@@ -2461,14 +2461,14 @@ static func _poulpe(M) -> void:
 		ouvrir.call(id, true)
 		M.main.sfx("ui_ouvrir" if id != "cuilleres" else "clochette", (spots[id] as Dictionary)["sol"], -14.0 if nuit else -8.0)
 		M.say(str(POULPE_VIDE[id]), 4.0)
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0):
 			return
 		ouvrir.call(id, false)
 		if kid != null:
 			S._say_late(M, kid, str(indice.call()), 0.3, 4.5)
 		elif str(st["mode"]) == "dodo":
-			await M.get_tree().create_timer(2.6).timeout
+			await M.timer(2.6)
 			if _la(M, room0):
 				M.say("Sur la commode, dans le bocal à biscuits, quelque chose respire tout doucement…", 4.0)
 	# --- le remettre dans l'aquarium
@@ -2518,7 +2518,7 @@ static func _poulpe(M) -> void:
 		M.main.sfx("plouf", AQH, -16.0)
 		M.say(str(_pick(M, ["Tu laisses tomber une crevette dans l'eau. Huit bras se tendent en même temps : hop, attrapée ! Il devient tout rouge de plaisir.",
 			"Une crevette descend en tournant. Le poulpe la cueille du bout d'un tentacule, comme une fleur, et vire au rouge."])), 4.5)
-		await M.get_tree().create_timer(1.0).timeout
+		await M.timer(1.0)
 		if not _la(M, room0):
 			return
 		st["faim"] = 3.0
@@ -2917,7 +2917,7 @@ static func _chanteuse(M) -> void:
 				"C'est elle. Soixante ans, et j'ai toujours le cœur qui fait des bulles."])), 1.4)
 			kid.gesture("sursaut", 1.0)
 			S._say_late(M, kid, str(_pick(M, ["Chut ! Chut ! Elle est là !", "Mamie ! Mamie, elle chante !", "J'ai des frissons jusque dans les chaussettes !"])), 2.6)
-		await M.get_tree().create_timer(3.2).timeout
+		await M.timer(3.2)
 		if not _la(M, room0):
 			return
 		M.main.sfx("baleine", a_hublot, (-11.0 if fort else -19.0) - (4.0 if nuit else 0.0))
@@ -2956,11 +2956,11 @@ static func _chanteuse(M) -> void:
 		mamie.say("Chut… Écoutez…" if not nuit else "Chut… tout bas… écoute…", 2.5)
 		if not nuit:
 			kid.set_pose("debout")
-		await M.get_tree().create_timer(1.8).timeout
+		await M.timer(1.8)
 		if not _la(M, room0):
 			return
 		passer.call(true)
-		await M.get_tree().create_timer(5.0).timeout
+		await M.timer(5.0)
 		if not _la(M, room0):
 			return
 		recompense.call()
@@ -3028,7 +3028,7 @@ static func _chanteuse(M) -> void:
 				"On l'écoute une fois par jour. Ça entretient l'oreille."])), 3.5)
 		st["ecoute"] = int(st["ecoute"]) + 1
 		if int(st["ecoute"]) == 1 or r.randf() < 0.4:
-			await M.get_tree().create_timer(2.2).timeout
+			await M.timer(2.2)
 			if not _la(M, room0):
 				return
 			passer.call(true)
@@ -3048,7 +3048,7 @@ static func _chanteuse(M) -> void:
 			S._say_late(M, mamie, ["Le disque numéro un : « Bonjour, le Dôme ». Hippolyte l'a enregistré quand il avait encore des cheveux.",
 				"Le numéro deux : « Il fait bon, là-haut ». Celui-là, je le passe quand quelqu'un a le cafard.",
 				"Le numéro trois : la grande berceuse. Elle ne la chante qu'une fois par an. Hippolyte a attendu onze mois avec son micro."][d], 1.0, 5.0)
-		await M.get_tree().create_timer(0.8).timeout
+		await M.timer(0.8)
 		if not _la(M, room0):
 			return
 		M.main.sfx("baleine", bouche, -16.0 if nuit else -9.0)
@@ -4254,12 +4254,12 @@ static func _potager(M) -> void:
 		else:
 			M.say(str(_pick(M, ["Tu tournes la petite vanne. Dans les tuyaux de verre, l'eau se met en route : glou… glou… gloup ! Ça gargouille jusqu'en haut de chaque colonne.",
 				"Un quart de tour de vanne, et tout le plafond se met à gargouiller, comme un ventre qui a faim. L'eau court dans les tuyaux jusqu'aux colonnes."])), 5.0)
-		await M.get_tree().create_timer(1.4).timeout
+		await M.timer(1.4)
 		if not _la(M, room0):
 			return
 		M.main.sfx("bulles", p_c, -16.0 if nuit else -8.0)
 		_bulle(M, p_c + Vector3(0, -0.2, 0), "Glou… glou…", Color(0.6, 1.0, 0.92), 28 if nuit else 38, 0.3, 1.8)
-		await M.get_tree().create_timer(2.4).timeout
+		await M.timer(2.4)
 		if not _la(M, room0):
 			return
 		if nuit:
@@ -4269,7 +4269,7 @@ static func _potager(M) -> void:
 			parent.say(str(_pick(M, ["Ils gargouillent, mais ils ne fuient jamais. C'est Yolande, de l'Atelier des Scaphandres, qui les a soudés.",
 				"Tu entends ? C'est le bruit du dîner. Le leur, pas le nôtre.", "Pas trop, hein : une salade, ça se noie dans un verre d'eau."])), 4.0)
 			S._say_late(M, kid, str(_pick(M, ["Ça fait glouglou ! Comme mon ventre !", "Les tuyaux ont le hoquet !", "Encore ! Encore une fois !"])), 2.0)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		st["arrose"] = false
 	# --- régler les lampes : rose, puis blanc, puis « soleil d'en haut » (la nuit : la veilleuse)
 	var regler := func() -> void:

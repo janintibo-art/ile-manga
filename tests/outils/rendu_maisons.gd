@@ -190,6 +190,33 @@ func _initialize() -> void:
 					await _photo("%s_v%d_coin" % [sn, R.variante])
 				M._teardown()
 				await process_frame
+	if mode == "histoires":
+		# V176 : des histoires de maisons au choix (« dormeur,perroquet:pirate » : l'histoire, et le style de
+		# la maison) ; trois vues : depuis la porte, vers le mur de gauche, vers le mur de droite
+		sun.visible = false
+		Pieces.sondes = false
+		var M5 = Maisons.new()
+		fm.add_child(M5)
+		M5.setup(fm)
+		var liste: String = str(OS.get_cmdline_user_args()[2]) if OS.get_cmdline_user_args().size() > 2 else "dormeur"
+		for it in liste.split(","):
+			var sc5: String = it.get_slice(":", 0)
+			var st5: String = it.get_slice(":", 1) if it.contains(":") else "montjoie"
+			tp.hour = 14.0
+			M5.cur = {"id": "rendu_" + sc5, "style": st5, "w": 8.0, "d": 7.5}
+			M5.force_scenario = sc5
+			M5._build()
+			for k in range(8):
+				await process_frame
+			var R5 = M5.R
+			_vue(R5.P(R5.door_x, 1.65, R5.D * 0.5 - 0.5), R5.P(R5.door_x * 0.3, 0.8, -R5.D * 0.5))
+			await _photo("%s_%s_porte" % [sc5, st5])
+			_vue(R5.P(R5.W * 0.2, 1.6, R5.D * 0.3), R5.P(-R5.W * 0.5, 0.6, -R5.D * 0.1))
+			await _photo("%s_%s_gauche" % [sc5, st5])
+			_vue(R5.P(-R5.W * 0.2, 1.6, R5.D * 0.3), R5.P(R5.W * 0.5, 0.6, -R5.D * 0.1))
+			await _photo("%s_%s_droite" % [sc5, st5])
+			M5._teardown()
+			await process_frame
 	if mode == "sud":
 		# V169 : les maisons d'Al Dente (chez chacun), de l'Île Crayonnée (en couleurs, puis en noir et
 		# blanc : la porte dans une île encore blanche) et de Sombreval

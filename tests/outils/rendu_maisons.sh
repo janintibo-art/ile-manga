@@ -8,6 +8,8 @@
 #  « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »,
 #  et « geants:nuit » pour une partie seulement, le soir ; V175 : « neo » (l'Arcade du Dragon-Pixel), « larsen »
 #  (les bus peints))
+# (V176 : « histoires » : des histoires de maisons au choix, « dormeur,perroquet:pirate » : l'histoire, et le
+#  style de la maison ; trois vues : depuis la porte, vers le mur de gauche, vers le mur de droite)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

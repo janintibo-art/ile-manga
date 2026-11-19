@@ -717,7 +717,7 @@ static func _canari(M) -> void:
 		var tj: Vector3 = M.main._player_pos_v27() + Vector3(0, 1.75, 0)
 		M.main.sfx("sifflet_compagnons", tj, -16.0 if nuit else -10.0)
 		_bulle(M, tj + Vector3(0, 0.2, 0), "Fuit-fuiii… ♪" if nuit else "Fuit-fuiii ♪", Color(0.85, 0.95, 1.0), 34 if nuit else 40, 0.4, 1.6)
-		await M.get_tree().create_timer(1.1).timeout
+		await M.timer(1.1)
 		if not _la(M, room0):
 			return
 		if nuit:
@@ -726,17 +726,17 @@ static func _canari(M) -> void:
 			st["chant"] = 1
 			M.say("Une petite tête jaune sort de sous l'aile, cligne des yeux… et répond tout bas : une seule note. Puis elle retourne se cacher sous la plume.", 5.0)
 			S._say_late(M, papi, "Zzz… il t'a répondu… c'est bon signe… zzz…", 2.0)
-			await M.get_tree().create_timer(3.0).timeout
+			await M.timer(3.0)
 			st["siffle"] = false
 			return
 		st["chant"] = int(st["chant"]) + 3
-		await M.get_tree().create_timer(2.2).timeout
+		await M.timer(2.2)
 		if not _la(M, room0):
 			return
 		tj = M.main._player_pos_v27() + Vector3(0, 1.75, 0)
 		M.main.sfx("sifflet_compagnons", tj, -10.0)
 		_bulle(M, tj + Vector3(0, 0.2, 0), "Tuii-tuii-tuiiit ♪", Color(0.85, 0.95, 1.0), 40, 0.4, 1.6)
-		await M.get_tree().create_timer(1.0).timeout
+		await M.timer(1.0)
 		if not _la(M, room0):
 			return
 		st["chant"] = int(st["chant"]) + 5
@@ -745,7 +745,7 @@ static func _canari(M) -> void:
 			S._say_late(M, kid, str(_pick(M, ["Il te répond ! Il te répond !", "Il a fait la même chose que toi, en mieux !", "Il t'aime bien ! Moi, il me répond une fois sur deux."])), 1.5)
 		S._say_late(M, papi, str(_pick(M, ["Il siffle juste, ce visiteur. Le canari ne répond qu'aux gens qui sifflent juste.", "Ha ! Vous faites un duo. À la mine, on appelait ça « l'air est bon ».",
 			"C'est comme ça qu'on se parlait, au fond. Un sifflet, une réponse : tout le monde va bien."])), 3.0)
-		await M.get_tree().create_timer(3.5).timeout
+		await M.timer(3.5)
 		st["siffle"] = false
 	# --- ouvrir la cage : il sort, fait le tour de la pièce sous le plafond… et revient tout seul
 	var ouvrir := func() -> void:
@@ -1230,7 +1230,7 @@ static func _train(M) -> void:
 				if not nuit:
 					S._say_late(M, parent, str(_pick(M, ["À toute vapeur ! Papy Ferdinand serait fier.", "Regarde-la filer ! On dirait Bernadette un jour de fête.", "Doucement dans les virages !"])), 1.5)
 				return
-			await M.get_tree().create_timer(3.0).timeout
+			await M.timer(3.0)
 			if not _la(M, room0):
 				return
 			recompense.call()
@@ -1263,7 +1263,7 @@ static func _train(M) -> void:
 		var tw: Tween = M.room.create_tween()
 		tw.tween_property(tunnel, "position:y", tunnel_y + 0.55, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		if bool(st["cache"]):
-			await M.get_tree().create_timer(0.6).timeout
+			await M.timer(0.6)
 			if not _la(M, room0):
 				return
 			_bulle(M, loco.global_position + Vector3(0, 0.3, 0), "Coucou !", Color(1.0, 0.95, 0.7), 42, 0.45, 1.6)
@@ -1278,7 +1278,7 @@ static func _train(M) -> void:
 		else:
 			M.say(str(_pick(M, ["Personne dans le tunnel. Juste une araignée en papier, collée là pour faire peur au train. Elle n'a jamais fait peur à personne.",
 				"Le tunnel est vide. Dessous, quelqu'un a écrit au crayon : « Ici, Petite Bernadette fait la sieste. »"])), 4.5)
-		await M.get_tree().create_timer(2.0).timeout
+		await M.timer(2.0)
 		if not _la(M, room0):
 			return
 		var tw2: Tween = M.room.create_tween()
@@ -1675,7 +1675,7 @@ static func _cristaux(M) -> void:
 			(st["lit"] as Array)[ci] = 1.0
 			M.main.sfx("chant_%d" % ci, cr.global_position, db)
 			_bulle(M, cr.global_position + Vector3(0, 0.38, 0), "♪", CRISTAUX_CHANTEURS[ci], 46, 0.5, 1.5)
-			await M.get_tree().create_timer(0.6).timeout
+			await M.timer(0.6)
 			if not _la(M, room0):
 				return
 		st["chante"] = false
@@ -1724,7 +1724,7 @@ static func _cristaux(M) -> void:
 		if bool(M.state().get("st_cristaux", false)):
 			return
 		M.state()["st_cristaux"] = true
-		await M.get_tree().create_timer(2.4).timeout
+		await M.timer(2.4)
 		if not _la(M, room0):
 			return
 		if nuit:
@@ -1752,7 +1752,7 @@ static func _cristaux(M) -> void:
 				"Tu te penches sur la marmite. Dans la soupe, quelque chose de violet fait des bulles en chantonnant : « Bloup ♪ »."]
 		M.main.sfx(["touche_bois", "ramasse", "bulles"][cache], cache_at)
 		M.say(str(recit[cache]), 6.0)
-		await M.get_tree().create_timer(1.2).timeout
+		await M.timer(1.2)
 		if not _la(M, room0):
 			return
 		# il s'envole jusqu'à sa place, sur le présentoir
@@ -1765,7 +1765,7 @@ static func _cristaux(M) -> void:
 		tw.parallel().tween_property(perdu, "rotation", Vector3(0, TAU, 0), 1.6)
 		tw.tween_property(perdu, "global_position", dest + Vector3(0, 0.35, 0), 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		tw.tween_property(perdu, "global_position", dest, 0.35).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-		await M.get_tree().create_timer(2.35).timeout
+		await M.timer(2.35)
 		if not _la(M, room0):
 			return
 		perdu.rotation = Vector3.ZERO
@@ -2190,11 +2190,11 @@ static func _fuite(M) -> void:
 		var pres: Vector3 = dd["pres"]
 		var home: Vector3 = dd["home"]
 		var d1: float = marcher.call(porteur, pres)
-		await M.get_tree().create_timer(d1 + 0.1).timeout
+		await M.timer(d1 + 0.1)
 		if not _la(M, room0):
 			return
 		porteur.set_pose("bricoler", Vector3(home.x - pres.x, 0, home.z - pres.z))
-		await M.get_tree().create_timer(0.7).timeout
+		await M.timer(0.7)
 		if not _la(M, room0):
 			return
 		dd["porte"] = true
@@ -2203,7 +2203,7 @@ static func _fuite(M) -> void:
 		else:
 			porteur.say(str(_pick(M, ["La casserole, maintenant. Allez.", "Pas de soupe ce soir : la casserole est prise."])), 2.5)
 		var d2: float = marcher.call(porteur, cit_pres)
-		await M.get_tree().create_timer(d2 + 0.1).timeout
+		await M.timer(d2 + 0.1)
 		if not _la(M, room0):
 			return
 		porteur.set_pose("bricoler", Vector3(cit_c.x - cit_pres.x, 0, cit_c.z - cit_pres.z))
@@ -2211,7 +2211,7 @@ static func _fuite(M) -> void:
 		st["verse"] = 1.4
 		M.main.sfx("verser", cit_top)
 		_bulle(M, cit_top + Vector3(0, 0.35, 0), "Glouglouglou…", Color(0.75, 0.88, 1.0), 38, 0.45, 1.8)
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0):
 			return
 		st["verse"] = 0.0
@@ -2219,15 +2219,15 @@ static func _fuite(M) -> void:
 		dd["lvl"] = 0.0
 		st["cit"] = minf(0.96, float(st["cit"]) + 0.04)
 		porteur.say(str(_pick(M, soupirs)), 3.5)
-		await M.get_tree().create_timer(0.9).timeout
+		await M.timer(0.9)
 		if not _la(M, room0):
 			return
 		var d3: float = marcher.call(porteur, pres)
-		await M.get_tree().create_timer(d3 + 0.1).timeout
+		await M.timer(d3 + 0.1)
 		if not _la(M, room0):
 			return
 		porteur.set_pose("bricoler", Vector3(home.x - pres.x, 0, home.z - pres.z))
-		await M.get_tree().create_timer(0.5).timeout
+		await M.timer(0.5)
 		if not _la(M, room0):
 			return
 		dd["porte"] = false
@@ -2235,7 +2235,7 @@ static func _fuite(M) -> void:
 		c.global_position = home
 		c.rotation = Vector3.ZERO
 		var d4: float = marcher.call(porteur, porteur_home)
-		await M.get_tree().create_timer(d4 + 0.1).timeout
+		await M.timer(d4 + 0.1)
 		if not _la(M, room0):
 			return
 		porteur.set_pose(porteur_pose, porteur_face)
@@ -2280,7 +2280,7 @@ static func _fuite(M) -> void:
 				M.say("Sur la pointe des pieds, tu vides la casserole dans la citerne. Glouglou… Personne ne se réveille. Enfin, presque : quelqu'un sourit en dormant.", 5.5)
 			S._say_late(M, mere, "Zzz… merci… zzz…", 1.6, 3.0)
 			if premier:
-				await M.get_tree().create_timer(6.0).timeout
+				await M.timer(6.0)
 				if not _la(M, room0):
 					return
 				recompense.call(false)
@@ -2296,7 +2296,7 @@ static func _fuite(M) -> void:
 			merci.append("Merci ! Mon mari va être jaloux : d'habitude, c'est son seau.")
 		S._say_late(M, mere, str(_pick(M, merci)), 1.0, 3.5)
 		if premier:
-			await M.get_tree().create_timer(2.8).timeout
+			await M.timer(2.8)
 			if not _la(M, room0):
 				return
 			recompense.call(false)

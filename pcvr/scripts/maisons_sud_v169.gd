@@ -377,7 +377,7 @@ static func _souper(M) -> void:
 	M.ctx["on_enter"] = func(first: bool) -> void:
 		if first:
 			M.say(str(M.ctx["entree"]), 7.0)
-		await M.get_tree().create_timer(5.0).timeout
+		await M.timer(5.0)
 		if M.inside:
 			M.main.sfx("porte_grince")
 
@@ -582,7 +582,7 @@ static func _chat(M) -> void:
 	M.ctx["entree"] = "Un salon abandonné, les meubles sous des draps… Deux yeux jaunes brillent dans la pénombre, sur le fauteuil. Un chat noir ! Il te regarde sans bouger." if not nourri else "Le salon de Minuit. Il dort en boule sur son fauteuil, et ronronne en dormant."
 	M.ctx["on_enter"] = func(first: bool) -> void:
 		M.say(str(M.ctx["entree"]), 6.0)
-		await M.get_tree().create_timer(1.6).timeout
+		await M.timer(1.6)
 		if M.inside:
 			M.main.sfx("chat_miaou" if not bool(M.state().get("nourri", false)) else "ronron", R.P(fx, 0.6, fz))
 

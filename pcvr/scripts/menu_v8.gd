@@ -143,6 +143,9 @@ func _show_view(which: String) -> void:
 		options.append("Nouvelle partie")
 		if playing:
 			options.append("Sauvegarder")
+		# V176 : le héros coincé (pris dans un meuble, dans un recoin) repart d'une place libre
+		if playing and get_parent() != null and get_parent().get("deblocage_v176") != null:
+			options.append("Me débloquer")
 		options.append_array(["Charger une partie", "Effacer une sauvegarde", "Paramètres"])
 		# V121 : le mode testeur (F8 au clavier) s'ouvre aussi d'ici : à la manette et en réalité virtuelle
 		if playing and get_parent() != null and get_parent().get("testeur_v78") != null:
@@ -257,6 +260,12 @@ func _activate(index: int) -> void:
 				_show_view("delete")
 			"Paramètres":
 				_show_view("settings")
+			"Me débloquer":
+				_close()
+				resume_requested.emit()
+				var mn176: Node = get_parent()
+				if mn176 != null and mn176.get("deblocage_v176") != null:
+					mn176.deblocage_v176.demande()
 			"Mode testeur":
 				_close()
 				resume_requested.emit()

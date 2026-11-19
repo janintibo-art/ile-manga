@@ -476,11 +476,11 @@ static func _reserve(M) -> void:
 		M.main.sfx("clochette", R.P(bt.x, 1.2, bt.y))
 		M.ctx["pese119"] = float(pe[0]) * 0.4 - 0.25 * signf(float(pe[0]) + 0.001)
 		M.say(str(pe[1]), 7.0)
-		await M.get_tree().create_timer(1.2).timeout
+		await M.timer(1.2)
 		if not _la(M, room0):
 			return
 		M.ctx["pese119"] = float(pe[0])
-		await M.get_tree().create_timer(5.0).timeout
+		await M.timer(5.0)
 		if _la(M, room0):
 			M.ctx["pese119"] = 0.0
 	, 1.2)
@@ -507,7 +507,7 @@ static func _reserve(M) -> void:
 			M.give([["coquillage_chanteur", 1]], "Tu tries toute la caisse : les pommes avec les pommes, les livres avec les livres, les plumes avec beaucoup de patience. Au fond, un petit coquillage fredonnait tout seul. « Garde-le : il a choisi de remonter avec toi. » Tu reçois :\n")
 		else:
 			M.say(str(L._pick(M, RESERVE_TRI)), 6.0)
-		await M.get_tree().create_timer(2.5).timeout
+		await M.timer(2.5)
 		if _la(M, room0):
 			M.ctx["tri119"] = false
 	, 1.2)
@@ -546,7 +546,7 @@ static func _reserve(M) -> void:
 		b0.set_meta("coquille", vide)
 		aqua["vide"] = ancienne
 		M.main.sfx("bulles", R.P(aq.x, 1.0, aq.y))
-		await M.get_tree().create_timer(1.5).timeout
+		await M.timer(1.5)
 		if not _la(M, room0) or not is_instance_valid(b0):
 			return
 		b0.rotation.y = atan2(-dv.x, -dv.z)
@@ -566,7 +566,7 @@ static func _reserve(M) -> void:
 
 ## Les bulles de l'aquarium s'emballent un moment, puis se calment.
 static func _reserve_bulles_calme(M, room0, p: CPUParticles3D, n0: int) -> void:
-	await M.get_tree().create_timer(3.0).timeout
+	await M.timer(3.0)
 	if _la(M, room0) and is_instance_valid(p):
 		p.amount = n0
 
@@ -1042,7 +1042,7 @@ static func _semences(M) -> void:
 		M.ctx["rose119"] = 1.5
 		M.ctx["pousse119"] = minf(1.45, float(M.ctx.get("pousse119", 1.0)) + 0.15)
 		M.say(str(L._pick(M, SEMENCES_ARROSER)), 6.0)
-		await M.get_tree().create_timer(3.0).timeout
+		await M.timer(3.0)
 		if not _la(M, room0):
 			return
 		if is_instance_valid(brume):
@@ -1088,7 +1088,7 @@ static func _semences(M) -> void:
 			M.give([["graines", 2]], "Tu creuses un petit trou du bout du doigt, tu poses une graine, tu la couvres, tu lui dis bonjour. Sous la lampe, une minuscule pousse sort déjà la tête. « Elle t'a entendu », dit-on tout bas. Et pour ton jardin d'en haut, on te glisse un sachet :\n")
 		else:
 			M.say(str(L._pick(M, SEMENCES_PLANTER)), 6.0)
-		await M.get_tree().create_timer(3.0).timeout
+		await M.timer(3.0)
 		if _la(M, room0):
 			M.ctx["plante119"] = false
 	, 1.2)
@@ -1571,7 +1571,7 @@ static func _ciel(M) -> void:
 		for f2 in M.people:
 			if is_instance_valid(f2) and f2.has_method("gesture"):
 				f2.gesture("applaudir", 2.0)
-		await M.get_tree().create_timer(3.5).timeout
+		await M.timer(3.5)
 		if _la(M, room0):
 			M.ctx["planet119"] = 1.0
 	, 1.4)
@@ -1886,7 +1886,7 @@ static func _souffleries(M) -> void:
 		M.say(str(SOUF_TEXTES_VITESSE[niv]), 6.0)
 		if niv != 2:
 			return
-		await M.get_tree().create_timer(8.0).timeout
+		await M.timer(8.0)
 		if not _la(M, room0) or int(M.ctx.get("souf119_niv", 1)) != 2:
 			return
 		_souf_vitesse(M, 1, levier)
@@ -1901,7 +1901,7 @@ static func _souffleries(M) -> void:
 			M.say(SOUF_ATCHOUM, 6.0)
 		else:
 			M.say(str(L._pick(M, SOUF_AIRS_NUIT if L._nuit(M) else SOUF_AIRS_JOUR)), 7.0)
-		await M.get_tree().create_timer(2.5).timeout
+		await M.timer(2.5)
 		if _la(M, room0):
 			M.ctx["souf119_ruban"] = 1.0
 	, 1.2)
@@ -1927,7 +1927,7 @@ static func _souffleries(M) -> void:
 			M.give([["spiruline", 1]], "Tu frottes, tu rinces, et le filtre brun redevient d'un beau vert qui bouillonne. Les algues que tu as récoltées, c'est de la spiruline toute fraîche. « Garde-la, dit-on derrière toi : c'est la paye des nettoyeurs. »\n")
 		else:
 			M.say(str(L._pick(M, SOUF_FILTRE)), 6.0)
-		await M.get_tree().create_timer(2.5).timeout
+		await M.timer(2.5)
 		if _la(M, room0) and is_instance_valid(pb):
 			pb.speed_scale = 1.0
 	, 1.4)
@@ -2191,7 +2191,7 @@ static func _gare(M) -> void:
 		if L._nuit(M):
 			return
 		M.ctx["gare119_v"] = 8.0
-		await M.get_tree().create_timer(3.0).timeout
+		await M.timer(3.0)
 		if _la(M, room0):
 			M.ctx["gare119_v"] = 1.0
 	, 1.2)
@@ -2740,7 +2740,7 @@ static func _plongeon(M) -> void:
 			tw0.tween_property(levier, "rotation:x", 0.8, 0.4)
 			tw0.tween_property(levier, "rotation:x", 0.0, 0.8).set_delay(1.2)
 			M.say(str(L._pick(M, debut)), 6.0)
-			await M.get_tree().create_timer(1.0).timeout
+			await M.timer(1.0)
 			if not _la(M, room0):
 				return
 			M.main.sfx("bulles", lev_pos)
@@ -2754,7 +2754,7 @@ static func _plongeon(M) -> void:
 			tw.tween_property(mer, "emission_energy_multiplier", 0.12, 6.0)
 			for e2 in lums:
 				tw.tween_property(e2[0], "light_energy", float(e2[1]) * 0.35, 6.0)
-			await M.get_tree().create_timer(7.0).timeout
+			await M.timer(7.0)
 			if not _la(M, room0):
 				return
 			var st: Dictionary = M.state()
@@ -2765,11 +2765,11 @@ static func _plongeon(M) -> void:
 				_plongeon_calmar(M, ombre, oeil)
 				M.say(str(L._pick(M, ["Une ombre immense glisse devant le grand hublot. Puis un œil s'ouvre, doré, grand comme une assiette… Un calmar géant ! Il te regarde, cligne doucement, et s'en va. « C'est Augustin, chuchote-t-on derrière toi. Il est très timide. Et très gentil. »",
 					"Tout devient noir derrière le hublot de gauche. Un œil doré apparaît, très calme, très grand. Le calmar géant te regarde un long moment, comme on regarde un aquarium. Puis il cligne de l'œil, et repart dans la nuit de la Faille."])), 9.0)
-				await M.get_tree().create_timer(9.0).timeout
+				await M.timer(9.0)
 			else:
 				M.say(str(L._pick(M, ["Cent quatre-vingt-dix mètres. Derrière les hublots, c'est presque la nuit. Des dizaines de poissons-lanternes passent, chacun avec sa petite lampe. On dirait une procession qui rentre d'une fête.",
 					"Le Petit Plongeon flotte au bord de la Faille. Dehors, des points de lumière bleus et dorés s'allument et s'éteignent tout autour. Bloup se balance. Tout le monde chuchote, sans savoir pourquoi."])), 7.0)
-				await M.get_tree().create_timer(7.0).timeout
+				await M.timer(7.0)
 			if not _la(M, room0):
 				return
 			M.main.sfx("bulles", lev_pos)
@@ -2783,7 +2783,7 @@ static func _plongeon(M) -> void:
 			tw2.tween_property(mer, "emission_energy_multiplier", e0, 5.0)
 			for e3 in lums:
 				tw2.tween_property(e3[0], "light_energy", float(e3[1]), 5.0)
-			await M.get_tree().create_timer(6.5).timeout
+			await M.timer(6.5)
 			if not _la(M, room0):
 				return
 			M.ctx["roulis119"] = 0.0
@@ -2806,7 +2806,7 @@ static func _plongeon(M) -> void:
 			tw.tween_property(mer, "emission_energy_multiplier", 1.4, 1.0)
 			M.say(str(L._pick(M, ["Tu allumes les projecteurs : la nuit de la Fosse s'éclaire d'un coup. Des poissons-lanternes, des crevettes blanches, une pluie de neige marine qui tombe tout doucement. « Pas trop longtemps, dit le mécanicien. Ils dorment, eux aussi. »",
 				"Clac ! Les projecteurs s'allument. Derrière les hublots, des dizaines de petits poissons-lanternes s'arrêtent, étonnés, puis repartent. On dirait qu'ils ont été surpris en pyjama."])), 8.0)
-			await M.get_tree().create_timer(9.0).timeout
+			await M.timer(9.0)
 			if not _la(M, room0):
 				return
 			M.main.sfx("ui_clic", lev_pos)
@@ -2814,7 +2814,7 @@ static func _plongeon(M) -> void:
 			tw2.set_parallel(true)
 			tw2.tween_property(mer, "albedo_color", c0, 2.0)
 			tw2.tween_property(mer, "emission_energy_multiplier", e0, 2.0)
-			await M.get_tree().create_timer(2.0).timeout
+			await M.timer(2.0)
 			if not _la(M, room0):
 				return
 			M.ctx["banc119"] = 5
@@ -3134,7 +3134,7 @@ static func _marees(M) -> void:
 		M.say(str(L._pick(M, ["Sous la cloche de verre, le Dôme d'Azur en petit : le Grand Dôme au milieu, sa Cheminée d'Air et sa Perle qui brille ; à l'ouest, le Dôme des Serres ; à l'est, celui de l'Institut. Un minuscule bathyscaphe jaune plonge et remonte dans son Bassin.",
 			"La maquette des trois dômes, offerte au Conseil par l'École des Abysses. Une étiquette, au crayon bleu : « Échelle : un doigt pour vingt mètres. Ne pas souffler sur la cloche. Les poissons sont trop petits pour être vus. »",
 			"La petite Perle s'allume plus fort. Dans la maquette, quelqu'un a peint une minuscule fenêtre éclairée dans le Grand Dôme. C'est celle de la Présidente, paraît-il. Elle dit qu'elle ne l'a jamais remarquée."])), 8.0)
-		await M.get_tree().create_timer(7.0).timeout
+		await M.timer(7.0)
 		if not _la(M, room0):
 			return
 		var tw2: Tween = M.room.create_tween()
@@ -3434,7 +3434,7 @@ static func _benthos(M) -> void:
 		var n: int = int(M.ctx.get("rouleau119", 0))
 		M.ctx["rouleau119"] = n + 1
 		M.say(str(BENTHOS_ROULEAUX[n % BENTHOS_ROULEAUX.size()]), 8.0)
-		await M.get_tree().create_timer(8.0).timeout
+		await M.timer(8.0)
 		if not _la(M, room0):
 			return
 		M.ctx["joue119"] = false
@@ -3449,7 +3449,7 @@ static func _benthos(M) -> void:
 		tw.tween_property(pav, "scale", Vector3.ONE, 0.6).set_trans(Tween.TRANS_SINE)
 		M.say(str(L._pick(M, ["Tu te penches sur le grand pavillon et tu fredonnes, tout doucement. Le son descend dans le câble, jusqu'à l'hydrophone collé contre le hublot, et part dans la mer.",
 			"Tu fredonnes trois notes graves, puis une aiguë, comme dans le Grand Dictionnaire. Le pavillon de laiton vibre un peu. Puis plus rien. Tout le monde retient son souffle."])), 5.0)
-		await M.get_tree().create_timer(4.0).timeout
+		await M.timer(4.0)
 		if not _la(M, room0):
 			M.ctx["chante119"] = false
 			return
@@ -3470,7 +3470,7 @@ static func _benthos(M) -> void:
 			M.say(str(L._pick(M, ["Une ombre immense passe sur le grand hublot. Puis, à travers la mer, le verre et les murs, un chant très grave te répond : trois notes graves, une aiguë. « Bonjour, le Dôme. » Toutes les méduses de la colonne s'allument en même temps.",
 				"D'abord, rien. Puis l'aiguille du vumètre bondit, le pavillon se met à chanter tout seul, et une voix immense, très douce, remplit le cabinet : deux notes longues. « Il fait bon, là-haut. » Elle t'a répondu !"])), 8.0)
 			if premier:
-				await M.get_tree().create_timer(2.5).timeout
+				await M.timer(2.5)
 				if not _la(M, room0):
 					M.ctx["chante119"] = false
 					return
@@ -3481,11 +3481,11 @@ static func _benthos(M) -> void:
 				else:
 					M.give([["coquillage_chanteur", 1]], "Dans le tiroir du bureau, une boîte porte une étiquette de la main du Professeur : « Pour ceux à qui elle répond : un coquillage qui chante. Notez la date ! » Tu en prends un. ")
 			else:
-				await M.get_tree().create_timer(5.0).timeout
+				await M.timer(5.0)
 		else:
 			M.say(str(L._pick(M, ["Rien. La mer garde le silence. La Chanteuse a peut-être d'autres gens à qui chanter, ce soir. « Elle reviendra, dit-on derrière toi. Elle revient toujours. »",
 				"Tu attends. Un poisson-lanterne passe devant le hublot, l'air curieux. Mais pas de chant. Le Professeur dit que le silence aussi est une réponse. Il dit qu'elle veut dire : « Plus tard. »"])), 7.0)
-			await M.get_tree().create_timer(4.0).timeout
+			await M.timer(4.0)
 		if _la(M, room0):
 			M.ctx["chante119"] = false
 	, 1.1)

@@ -484,7 +484,7 @@ static func _etiquette(M, pos: Vector3, text: String) -> Label3D:
 
 static func _montrer(M, lab: Label3D, secondes: float) -> void:
 	lab.visible = true
-	await M.get_tree().create_timer(secondes).timeout
+	await M.timer(secondes)
 	if is_instance_valid(lab):
 		lab.visible = false
 
@@ -1624,13 +1624,13 @@ static func _moulin(M) -> void:
 		if is_instance_valid(farine):
 			farine.speed_scale = 3.0
 		M.say("Tu lâches le frein : les ailes prennent tout le vent ! L'arbre ronfle, la meule chante plus fort, et il neige de la farine.", 5.0)
-		await M.get_tree().create_timer(2.5).timeout
+		await M.timer(2.5)
 		if not M.inside or not M.ctx.has("anims116"):
 			return
 		if app != null and is_instance_valid(app):
 			M.main.sfx("eternuement", app.npc.global_position)
 			app.say("Atchoum ! … Atchoum !", 2.5)
-		await M.get_tree().create_timer(5.5).timeout
+		await M.timer(5.5)
 		if not M.inside or not M.ctx.has("anims116"):
 			return
 		M.ctx["vite116"] = 1.0

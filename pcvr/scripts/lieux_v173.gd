@@ -833,7 +833,7 @@ static func _salle_herse(M) -> void:
 	var aider := func() -> void:
 		anim[3] = 1.1
 		M.say("Tu montes dans la roue à côté de Fanfan et vous marchez ensemble : grrr, grrr… là-haut, la herse grince. « Pas trop vite ! Sinon elle remonte jusqu'au ciel, et après, il faut tout redescendre. »", 6.0)
-		M.get_tree().create_timer(5.0).timeout.connect(ralentir)
+		M.timer(5.0).connect(ralentir)
 	M.act(R.P(1.0, 0, cz + 1.25), "E : aider Fanfan à faire tourner la roue", aider, 1.0)
 	var f: Node = B._marchand(M, 0.0, cz, -90.0, "marcher", "garcon", "Fanfan", ["Un pas, deux pas, trois pas… la herse monte d'un doigt.", "J'étais page. Maintenant je suis page ET roue. C'est une promotion.", "Ne me fais pas rire, sinon je trébuche."],
 		{"bonjour": "Oh, un visiteur ! Je ne peux pas m'arrêter, sinon la herse redescend. Bonjour quand même !",
@@ -1334,7 +1334,7 @@ static func _grange_gaubert(M) -> void:
 		if not bl.is_empty():
 			var e0: Array = bl[0]
 			e0[1] = "content"
-			M.get_tree().create_timer(3.5).timeout.connect(func() -> void: e0[1] = "dort")
+			M.timer(3.5).connect(func() -> void: e0[1] = "dort")
 		M.say("Tu grattes le dos de Pistache avec un bâton. Elle ouvre un œil, pousse un grognement de bonheur, et se rendort en souriant. « Tu es adopté, dit Gaubert. C'est rare. »", 6.0)
 	M.act(R.P(-1.2, 0, -1.7), "E : gratter le dos de Pistache", gratter, 0.9)
 	B._marchand(M, 0.6, -0.4, 12.0, "bras_croises", "vieux", "Père Gaubert", ["Pistache dort. Pistache dort toujours. C'est son métier.", "Un bon foin, ça sent l'été même en hiver.", "Les poules ? Elles pondent quand elles veulent. Comme Germaine fait la soupe : quand elle veut."],

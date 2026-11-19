@@ -512,7 +512,7 @@ static func _marmite(M) -> void:
 		M.say(str(L._pick(M, ["Tu prends la grande louche et tu remues. Bloup, bloup : la marmite gronde de plaisir et souffle un grand nuage de vapeur jusqu'aux poutres. Ça sent le bouillon jusqu'à la Place des Rouages.",
 			"Tu remues trois fois dans un sens, trois fois dans l'autre : c'est comme ça qu'Honorine fait. La vapeur monte en tourbillon, et quelqu'un, derrière toi, dit « Mmmh ! » sans le faire exprès.",
 			"La louche fait le tour de la marmite, la soupe chante « bloup », et la vapeur embrume les lanternes. Pendant un instant, La Marmite ressemble à un nuage qui sent bon."])), 6.0)
-		await M.get_tree().create_timer(3.0).timeout
+		await M.timer(3.0)
 		if not _la(M, room0):
 			return
 		M.ctx["vite116"] = 1.0
@@ -718,7 +718,7 @@ static func _lumieres(M) -> void:
 		M.say(str(L._pick(M, ["Tu effleures le bord d'un cristal taillé : il chante une note claire, très longue. Tous les autres, dans la vitrine, s'allument plus fort, comme un chœur qui reprend le refrain.",
 			"Liiing… Le cristal chante, et les lanternes les plus proches clignotent en mesure. La Docteure dit que les cristaux bleus chantent en sol. Les violets, en « sol un peu rêveur ».",
 			"Une note pure monte de la vitrine et fait trembler la lumière de toutes les lanternes. Quelque part dans l'atelier, une petite cuillère se met à vibrer, elle aussi."])), 6.0)
-		await M.get_tree().create_timer(3.0).timeout
+		await M.timer(3.0)
 		if _la(M, room0):
 			M.ctx["pulse118"] = 1.0
 	, 1.3)
@@ -926,7 +926,7 @@ static func _guilde(M) -> void:
 		M.say(str(L._pick(M, ["Sous la cloche de verre, toute la caverne en petit : la Colonne Renversée qui pend de la voûte, les maisons de pierre blonde, les Galeries. Tu tournes la petite clé : le Soleil de Laiton s'allume et ses anneaux se mettent à tourner.",
 			"La maquette des Strates, offerte à la Guilde par les apprentis de la Forge. Le petit Soleil de Laiton s'allume, tout doré. Une étiquette dit : « Échelle : un doigt pour vingt mètres. Ne pas souffler sur la cloche. »",
 			"Le petit Soleil de Laiton s'allume et tourne. Dans les Galeries miniatures, quelqu'un a peint une minuscule fenêtre allumée. C'est celle de la Doyenne, paraît-il. Elle dit qu'elle ne l'a jamais remarquée."])), 7.0)
-		await M.get_tree().create_timer(6.0).timeout
+		await M.timer(6.0)
 		if not _la(M, room0):
 			return
 		M.ctx["vite116"] = 1.0
@@ -1105,7 +1105,7 @@ static func _atelier_etincelles(M, at: Vector3) -> CPUParticles3D:
 ## La radio de l'atelier grésille tout bas, une fois, quand on entre.
 static func _atelier_radio(M, at: Vector3) -> void:
 	var room0 = M.room
-	await M.get_tree().create_timer(1.2).timeout
+	await M.timer(1.2)
 	if not _la(M, room0):
 		return
 	M.main.sfx("radio_jingle", at, -14.0)
@@ -1428,7 +1428,7 @@ static func _atelier(M) -> void:
 			bulles.amount = 70
 			bulles.initial_velocity_max = 0.9
 		M.say(str(L._pick(M, ATL118_BULLES)), 6.0)
-		await M.get_tree().create_timer(6.0).timeout
+		await M.timer(6.0)
 		if not _la(M, room0):
 			return
 		M.ctx["bulles118"] = 1.0
@@ -1764,7 +1764,7 @@ static func _troc(M) -> void:
 			tw.tween_property(cornet, "rotation:y", -0.2, 1.6).set_trans(Tween.TRANS_SINE)
 			tw.tween_property(cornet, "rotation:y", 0.0, 1.0).set_trans(Tween.TRANS_SINE)
 		M.say(str(TROC118_PHONO[n2 % TROC118_PHONO.size()]), 7.0)
-		await M.get_tree().create_timer(6.0).timeout
+		await M.timer(6.0)
 		if _la(M, room0):
 			M.ctx["phono118"] = 0.0
 	, 1.1)
@@ -2061,7 +2061,7 @@ static func _mine(M) -> void:
 		M.say(str(L._pick(M, ["Tu mets le casque, tu boucles la jugulaire, et clic : la petite lampe s'allume sur ton front. Partout où tu regardes, il fait jour. « Parfait, dit-on derrière toi. Bien attaché. »",
 			"Le casque est un peu grand : il te tombe sur les yeux. Tu le remontes, et la lampe de laiton s'allume. Pinson te regarde, la tête penchée, comme pour dire : « Ça te va bien. »",
 			"Clic ! Ta lampe frontale s'allume. Tu tournes la tête : la carte des galeries, le registre, le canari… Tout s'éclaire à tour de rôle. Tu te sens prêt à dire bonjour à la Vieille."])), 6.0)
-		await M.get_tree().create_timer(9.0).timeout
+		await M.timer(9.0)
 		if not _la(M, room0):
 			return
 		if is_instance_valid(lum):
@@ -2346,7 +2346,7 @@ static func _horloge(M) -> void:
 		M.say(str(L._pick(M, ["Tu tournes la manivelle : crr, crr, crr. Les roues s'emballent, les câbles s'enroulent, et les deux gros poids de laiton remontent tout en haut, jusque sous les poulies.",
 			"Quarante tours de manivelle ! Les poids remontent lentement, leurs bagues de cristal brillent en passant devant les cadrans. La Grande Horloge en a pour huit jours.",
 			"Crr, crr… Les poids montent, les roues tournent à toute vitesse, puis tout reprend son pas tranquille. Tic… tac. Merci, dit l'horloge. Enfin, c'est ce qu'il semble."])), 6.0)
-		await M.get_tree().create_timer(3.6).timeout
+		await M.timer(3.6)
 		if not _la(M, room0):
 			return
 		M.ctx["vite116"] = 1.0
@@ -2367,7 +2367,7 @@ static func _horloge(M) -> void:
 		M.say(str(L._pick(M, ["Tu fermes les yeux. Tic… tac… Le balancier passe devant toi, lentement, et chaque battement résonne dans toute la tour, jusque dans la pierre. On dirait le cœur de la caverne.",
 			"Tic, la palette de cristal attrape une dent. Tac, elle la relâche. Deux secondes, toujours deux secondes. Depuis deux cents ans, la Grande Horloge n'a jamais perdu le fil.",
 			"Tu comptes avec la petite fille : tic, un… tac, deux… À cinquante, tu t'aperçois que tu respires au même rythme que le balancier. C'est très reposant."])), 7.0)
-		await M.get_tree().create_timer(8.0).timeout
+		await M.timer(8.0)
 		if _la(M, room0):
 			M.ctx["tic118"] = -18.0
 	, 1.2)

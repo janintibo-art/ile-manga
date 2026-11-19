@@ -85,6 +85,14 @@ func position_text() -> String:
 	var zone: String = str(amb.get("zone")) if amb != null and amb.get("zone") != null else ""
 	if zone == "":
 		zone = "?"
+	# V176 : dans une maison ou un lieu, on dit lequel (son histoire, son style, qui y habite), et où
+	# l'on est dans la pièce (avant : « souterrain », et l'on ne savait pas quelle maison c'était)
+	var mv: Node = main.get("maisons_v81")
+	if mv != null and bool(mv.get("inside")) and mv.R != null:
+		var cx: Dictionary = mv.ctx
+		var qui: String = str(cx.get("owner", ""))
+		zone = "maison %s (%s, %s%s)  •  dans la pièce x %.1f  z %.1f" % [str(cx.get("id", "?")), str(cx.get("metier", cx.get("scenario", "?"))), str(cx.get("style", "?")),
+			(", " + qui) if qui != "" else "", p.x - mv.R.P(0, 0, 0).x, p.z - mv.R.P(0, 0, 0).z]
 	var yaw: float = 0.0
 	var root: Node3D = main.get("pc_root")
 	if root != null:

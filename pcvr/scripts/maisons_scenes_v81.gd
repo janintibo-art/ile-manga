@@ -447,7 +447,7 @@ static func _asseoir(M, role: String, place: Array, pose: String = "assis", nom:
 
 
 static func _say_late(M, f: Node, text: String, delay: float, seconds: float = 4.0) -> void:
-	await M.get_tree().create_timer(delay).timeout
+	await M.timer(delay)
 	if is_instance_valid(f) and M.inside:
 		f.say(text, seconds)
 
@@ -586,7 +586,7 @@ static func _b_pyjama(M) -> void:
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
 	var bain: bool = not _nuit(M) and r.randf() < 0.35
-	R.lit(-hw + 0.65, -hd * 0.2, 90, 1.2, str(_pick(M, ["bleu", "rouge", "vert", "violet"])))
+	R.lit(-hw + 1.06, -hd * 0.2, 90, 1.2, str(_pick(M, ["bleu", "rouge", "vert", "violet"])))
 	R.armoire(hw - 0.35, -hd * 0.3, -90)
 	R.tapis(0.2, 0.2, 0, 2.0, 1.4)
 	R.foyer(R.W * 0.15, -hd + 0.38, 0, true)
@@ -610,7 +610,7 @@ static func _b_pyjama(M) -> void:
 			return
 		st["pyjama_vu"] = 1
 		f.gesture("sursaut", 0.8)
-		await M.get_tree().create_timer(0.7).timeout
+		await M.timer(0.7)
 		if not M.inside:
 			return
 		var q: String
@@ -684,17 +684,18 @@ static func _b_dormeur(M) -> void:
 	var r := _r(M)
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
-	var bx: float = -hw + 0.7
+	var bx: float = -hw + 1.06
 	var bz: float = -hd * 0.15
 	R.lit(bx, bz, 90, 1.2, str(_pick(M, ["bleu", "rouge", "vert", "jaune", "violet", "rose"])))
-	R.kit.box(R.L(bx + 0.05, 0.45, bz + 1.35), Vector3(0.45, 0.5, 0.4), "bois", 1.0)
-	R.bougie(bx + 0.05, 0.7, bz + 1.35, false)
+	# V176 : la table de chevet, à la tête du lit (le lit ne rentre plus dans le mur)
+	R.kit.box(R.L(bx - 0.72, 0.45, bz + 0.92), Vector3(0.45, 0.5, 0.4), "bois", 1.0)
+	R.bougie(bx - 0.72, 0.7, bz + 0.92, false)
 	R.armoire(hw - 0.35, -hd * 0.35, -90)
 	R.tapis(0.3, 0.3, 0, 1.8, 1.3)
 	R.etagere(hw - 0.22, hd * 0.35, -90, 0.9, 1.5, true, 3)
 	_murs(M, 2)
 	# le réveil, sur la table de chevet
-	var rv: Vector3 = R.P(bx + 0.05, 0.71, bz + 1.35)
+	var rv: Vector3 = R.P(bx - 0.72, 0.71, bz + 0.92)
 	R.kit.cyl(Transform3D(Basis(Vector3.RIGHT, PI * 0.5), rv + Vector3(0.12, 0.05, 0)), 0.06, 0.06, 0.04, "cuivre", 12)
 	var f: Node = M.person(str(_pick(M, ["homme", "vieux", "femme", "vieille"])), bx + 0.1, bz - 0.2, 90, "debout")
 	f.lie(R.P(bx + 0.88, 0.5, bz), Vector3(-1, 0, 0))
@@ -718,7 +719,7 @@ static func _b_dormeur(M) -> void:
 		f.stand_up(R.P(bx + 1.25, 0, bz + 0.3), Vector3(0, 0, 1))
 		f.gesture("sursaut", 1.0)
 		f.say("AAAAH ! LE RÉVEIL !", 2.5)
-		await M.get_tree().create_timer(2.8).timeout
+		await M.timer(2.8)
 		if not M.inside:
 			return
 		M.talk(f, str(_pick(M, ["Ah, c'est toi ? Merci ! J'allais rater… ma sieste de l'après-midi. Bon. Bonne nuit.", "Quelle heure il est ? … Oh, c'est encore très tôt. Ou très tard. Bonne nuit !", "Tu m'as fait une de ces peurs ! J'ai cru que c'était lundi."])),
@@ -773,7 +774,7 @@ static func _b_abandon(M, fantome: bool) -> void:
 		M.ctx["on_enter"] = func(first: bool) -> void:
 			if first:
 				M.say(str(M.ctx["entree"]), 6.0)
-			await M.get_tree().create_timer(4.0).timeout
+			await M.timer(4.0)
 			if M.inside:
 				M.main.sfx("couinement_rat")
 
@@ -910,7 +911,7 @@ static func _trappe(M, x: float, z: float, contenu: String) -> void:
 		M.go(up, Vector3(0, 0, -1))
 		if not bool(M.state().get("cave", false)):
 			M.state()["cave"] = true
-			await M.get_tree().create_timer(1.0).timeout
+			await M.timer(1.0)
 			M.say(str(M.ctx.get("cave_txt", "Une cave.")), 7.0)
 	, 1.5, func(): return bool(M.state().get("tapis", false)))
 
@@ -1046,7 +1047,7 @@ static func _b_biblio(M) -> void:
 		M.go(S.P(0, 0.05, 1.2), Vector3(0, 0, -1))
 		if not bool(M.state().get("secret_vu", false)):
 			M.state()["secret_vu"] = true
-			await M.get_tree().create_timer(1.0).timeout
+			await M.timer(1.0)
 			M.say(str(M.ctx.get("secret_txt", "")), 7.0)
 	, 1.3, func(): return bool(M.state().get("passage", false)))
 	M.ctx["entree"] = str(_pick(M, ["Des livres du sol au plafond. Ça sent le vieux papier… et le mystère.", "Une bibliothèque immense pour une si petite maison. Un des livres, tout rouge, dépasse un peu.", "Que de livres ! Tous bien rangés… sauf un, rouge, qui n'est pas tout à fait à sa place."]))
@@ -1170,7 +1171,7 @@ static func _b_chats(M) -> void:
 		if first:
 			M.say(str(_pick(M, ["Des chats. Partout. Sur le fauteuil, sous la table, en haut de l'armoire…", "Miaou. Miaou ? Miaaaou. Cette maison appartient visiblement aux chats.", "Un chat roux te fixe. Puis un noir. Puis un blanc. Tu es en infériorité numérique."])), 5.0)
 		for i in range(3):
-			await M.get_tree().create_timer(5.0 + i * 6.0).timeout
+			await M.timer(5.0 + i * 6.0)
 			if M.inside:
 				M.main.sfx(["miaou", "ronron", "chat_miaou"][i % 3])
 
@@ -1218,7 +1219,7 @@ static func _b_surprise(M) -> void:
 	for l in R.lights:
 		(l as OmniLight3D).visible = false
 	M.ctx["on_enter"] = func(first: bool) -> void:
-		await M.get_tree().create_timer(1.1).timeout
+		await M.timer(1.1)
 		if not M.inside:
 			return
 		for l in R.lights:
@@ -1256,7 +1257,7 @@ static func _b_surprise(M) -> void:
 		M.room.add_child(cp)
 		cp.global_position = R.P(0, 1.2, 0)
 		cp.emitting = true
-		await M.get_tree().create_timer(2.6).timeout
+		await M.timer(2.6)
 		if not M.inside:
 			return
 		for g in gens:
@@ -1325,7 +1326,7 @@ static func _b_inventeur(M) -> void:
 			for k2 in range(4):
 				cb.puff(bouton + Vector3(r.randf_range(-0.5, 0.5), 0.8 + k2 * 0.3, r.randf_range(-0.5, 0.5)), Color(0.25, 0.24, 0.22))
 		f.gesture("sursaut", 1.2)
-		await M.get_tree().create_timer(1.4).timeout
+		await M.timer(1.4)
 		if not M.inside:
 			return
 		if not bool(M.state().get("gadget", false)):
@@ -1357,7 +1358,7 @@ static func _b_cache(M) -> void:
 	var r := _r(M)
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
-	var bx: float = -hw + 0.7
+	var bx: float = -hw + 1.06
 	R.lit(bx, -hd * 0.15, 90, 1.0, "rouge", true)
 	R.armoire(hw - 0.35, -hd * 0.3, -90)
 	R.tonneau(hw - 0.6, hd * 0.35)
@@ -1403,12 +1404,12 @@ static func _b_cache(M) -> void:
 					M.talk(kid, "Encore trouvé ! La prochaine fois, je me cache dans la cheminée. Non, je rigole. Ou pas.", [{"id": "fermer", "label": "Ha ha ! À la prochaine !"}], func(_i): M.close_talk())
 			else:
 				M.say(str(rates[str(c[0])]), 4.0)
-				await M.get_tree().create_timer(1.2).timeout
+				await M.timer(1.2)
 				if M.inside and not trouve[0]:
 					M.say("Une petite voix étouffée : « Hi hi hi… froid… tout froid ! »", 3.5)
 		, 1.2, func(): return not trouve[0])
 	M.ctx["on_enter"] = func(first: bool) -> void:
-		await M.get_tree().create_timer(0.8).timeout
+		await M.timer(0.8)
 		if M.inside:
 			M.say(str(_pick(M, ["Une petite voix, quelque part : « Un, deux, trois… Non ! C'est toi qui cherches ! Tu ne me trouveras jamais ! »", "On entend un gloussement étouffé. Quelqu'un joue à cache-cache… et compte sur toi pour chercher.", "« Je suis caché ! Cherche-moi ! » dit une voix d'enfant. La chambre est en désordre : il y a des cachettes partout."])), 7.0)
 
@@ -1578,7 +1579,7 @@ static func _b_sportif(M) -> void:
 				var dj: Node = M.main.get("donjon_v35")
 				if dj != null:
 					await dj._fade_to(1.0, 0.4)
-					await M.get_tree().create_timer(0.8).timeout
+					await M.timer(0.8)
 					await dj._fade_to(0.0, 0.4)
 				if not M.inside:
 					return
@@ -1683,7 +1684,7 @@ static func _b_envers(M) -> void:
 		R.chaise(-0.5, 0.8, 180)
 		R.chaise(0.1, -0.6, 0)
 		R.armoire(-hw + 0.35, -hd * 0.25, 90)
-		R.lit(hw - 0.7, -hd * 0.1, -90, 1.0, "rouge")
+		R.lit(hw - 1.06, -hd * 0.1, -90, 1.0, "rouge")
 		R.tapis(0.0, 0.2, 0, 2.2, 1.6)
 		R.plante(hw - 0.5, hd - 0.6)
 		R.coffre_deco(0.5, -hd + 0.5, 0))
@@ -1841,7 +1842,7 @@ static func _b_coucou(M) -> void:
 			M.say(str(_pick(M, ["Tic. Tac. Tic. Tac. Des horloges partout… et aucune n'indique la même heure.", "Le tic-tac de vingt horloges remplit la pièce. On dirait une pluie très régulière.", "Des coucous, des pendules, des horloges comtoises… Ici, le temps ne manque pas."])), 6.0)
 		var k: int = 0
 		while M.inside and k < 20:
-			await M.get_tree().create_timer(9.0 + r.randf() * 6.0).timeout
+			await M.timer(9.0 + r.randf() * 6.0)
 			if not M.inside:
 				return
 			var p: Vector3 = murs[r.randi() % murs.size()]
@@ -1880,8 +1881,8 @@ static func _b_vide(M) -> void:
 	var places: Array = _salon(M, 3)
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
-	if R.is_free(hw - 0.7, hd * 0.25, 1.0, 2.2):
-		R.lit(hw - 0.7, hd * 0.25 - 0.9, -90, 1.0, str(_pick(M, ["bleu", "vert", "rouge", "jaune"])))
+	if R.is_free(hw - 1.06, hd * 0.25 - 0.9, 2.3, 1.3):
+		R.lit(hw - 1.06, hd * 0.25 - 0.9, -90, 1.0, str(_pick(M, ["bleu", "vert", "rouge", "jaune"])))
 	_mot(M, 0.1, 0.3, 0.79, str(MOTS[hash(str(M.ctx["id"])) % MOTS.size()]))
 	var extra: int = r.randi() % 4
 	match extra:
@@ -1943,8 +1944,8 @@ static func _b_chez(M) -> void:
 	var places: Array = _salon(M, 2)
 	var hw: float = R.W * 0.5
 	var hd: float = R.D * 0.5
-	if R.is_free(hw - 0.7, hd * 0.25, 1.0, 2.2):
-		R.lit(hw - 0.7, hd * 0.25 - 0.9, -90, 1.0, str(_pick(M, ["bleu", "vert", "rouge", "jaune"])))
+	if R.is_free(hw - 1.06, hd * 0.25 - 0.9, 2.3, 1.3):
+		R.lit(hw - 1.06, hd * 0.25 - 0.9, -90, 1.0, str(_pick(M, ["bleu", "vert", "rouge", "jaune"])))
 	# son portrait au mur, au-dessus du foyer
 	var pid: String = str(prof.get("id", ""))
 	var tex_path: String = "res://assets/textures/portraits/%s.png" % pid
