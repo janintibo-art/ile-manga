@@ -179,7 +179,7 @@ func _build_bo_poses() -> void:
 		"LeftUpLeg": Vector3(-4, 0, -4), "LeftLeg": Vector3(4, 0, 0), "RightUpLeg": Vector3(-14, 0, 4), "RightLeg": Vector3(20, 0, 0)})
 	c_b = lib._merge(c_b, lib._bras("Left", Vector3(0.5, 0.6, 0.6), Vector3(0.3, 0.9, 0.3)))
 	var c_c := lib._merge(lib._merge(c_a, {"Spine02": Vector3(18, 0, 0), "Head": Vector3(10, 0, 0)}), lib._bras("Left", Vector3(0.6, -0.7, 0.4), Vector3(0.5, -0.4, 0.77)))
-	poses.add_animation("chanter", lib._clip(2.0, true, [[0.0, c_a, Vector3.ZERO], [0.5, c_b, Vector3(0, -2, 0)], [1.0, c_a, Vector3.ZERO], [1.5, c_c, Vector3(0, -4, 0)], [2.0, c_a, Vector3.ZERO]]))
+	poses.add_animation("chanter", lib._clip(2.0, true, [[0.0, c_a, Vector3.ZERO, "pieds"], [0.5, c_b, Vector3.ZERO, "pieds"], [1.0, c_a, Vector3.ZERO, "pieds"], [1.5, c_c, Vector3.ZERO, "pieds"], [2.0, c_a, Vector3.ZERO, "pieds"]]))
 	# la guitare debout : la main gauche au manche, la droite qui gratte, on headbangue
 	var g_a := {"Head": Vector3(22, -10, 0), "Spine02": Vector3(10, 0, 0), "LeftUpLeg": Vector3(-8, 0, -10), "RightUpLeg": Vector3(-6, 0, 12)}
 	g_a = lib._merge(lib._merge(g_a, lib._main("Left", "Spine", Vector3(30, -4, 26), Vector3(0.5, -1, 0))), lib._main("Right", "Spine02", Vector3(-2, 6, 20), Vector3(-1, -0.5, 0)))
@@ -193,8 +193,9 @@ func _build_bo_poses() -> void:
 	var d_l := lib._merge(lib._merge(lib._merge(seated, {"Head": Vector3(14, 8, 0)}), lib._main("Left", "Spine", Vector3(16, 10, 30), Vector3(1, -1, 0))), lib._main("Right", "Spine02", Vector3(-14, 6, 32), Vector3(-1, -1, 0)))
 	var d_r := lib._merge(lib._merge(lib._merge(seated, {"Head": Vector3(14, -8, 0)}), lib._main("Right", "Spine", Vector3(-16, 10, 30), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(14, 6, 32), Vector3(1, -1, 0)))
 	var d_x := lib._mains(lib._merge(seated, {"Head": Vector3(-10, 0, 0)}), "Spine", Vector3(18, 20, 26), Vector3(1, -1, 0))
-	poses.add_animation("batterie", lib._clip(1.2, true, [[0.0, d_l, Vector3(0, -38, 0)], [0.15, d_r, Vector3(0, -38, 0)], [0.3, d_l, Vector3(0, -38, 0)], [0.45, d_r, Vector3(0, -38, 0)],
-		[0.6, d_l, Vector3(0, -38, 0)], [0.75, d_r, Vector3(0, -38, 0)], [0.9, d_x, Vector3(0, -36, 0)], [1.05, d_r, Vector3(0, -38, 0)], [1.2, d_l, Vector3(0, -38, 0)]]))
+	# (V182 : assis, les pieds posés au sol : la hauteur du bassin calculée, lib._au_sol ; avant, ils s'y enfonçaient de 11 cm)
+	poses.add_animation("batterie", lib._clip(1.2, true, [[0.0, d_l, Vector3.ZERO, "pieds"], [0.15, d_r, Vector3.ZERO, "pieds"], [0.3, d_l, Vector3.ZERO, "pieds"], [0.45, d_r, Vector3.ZERO, "pieds"],
+		[0.6, d_l, Vector3.ZERO, "pieds"], [0.75, d_r, Vector3.ZERO, "pieds"], [0.9, d_x, Vector3.ZERO, "pieds"], [1.05, d_r, Vector3.ZERO, "pieds"], [1.2, d_l, Vector3.ZERO, "pieds"]]))
 	# le skate : de profil sur la planche, genoux fléchis, les bras pour l'équilibre
 	var s_a := {"LeftUpLeg": Vector3(-30, 0, -14), "LeftLeg": Vector3(40, 0, 0), "RightUpLeg": Vector3(-20, 0, 14), "RightLeg": Vector3(30, 0, 0),
 		"Spine02": Vector3(10, 0, 0), "Head": Vector3(0, -60, 0)}

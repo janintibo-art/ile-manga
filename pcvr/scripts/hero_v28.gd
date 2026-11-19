@@ -140,6 +140,7 @@ func _build_animations() -> void:
 			lib.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	if lib.has_animation("Knock_Down"):
 		_pin_root(lib.get_animation("Knock_Down"))
+	_bassin_v182(lib)
 	var poses := AnimationLibrary.new()
 	var arms_in := {"LeftArm": Vector3(0, 0, -13), "RightArm": Vector3(0, 0, 13), "LeftForeArm": Vector3(-14, 0, 0), "RightForeArm": Vector3(-14, 0, 0)}
 	var idle_b := arms_in.duplicate()
@@ -169,7 +170,7 @@ func _build_animations() -> void:
 	var crouch := _bras2({"LeftUpLeg": Vector3(-52, 0, 0), "RightUpLeg": Vector3(-52, 0, 0), "LeftLeg": Vector3(88, 0, 0), "RightLeg": Vector3(88, 0, 0),
 		"LeftFoot": Vector3(-34, 0, 0), "RightFoot": Vector3(-34, 0, 0), "Spine02": Vector3(28, 0, 0), "Head": Vector3(-18, 0, 0)},
 		Vector3(0.3, -0.55, 0.78), Vector3(0.1, -0.35, 0.93))
-	poses.add_animation("land", _clip(0.36, false, [[0.0, crouch, Vector3(0, -17, 0)], [0.36, arms_in, Vector3.ZERO]]))
+	poses.add_animation("land", _clip(0.36, false, [[0.0, crouch, Vector3.ZERO, "pieds"], [0.36, arms_in, Vector3.ZERO]]))
 	# Escalade : main gauche haute / main droite haute, en alternance, les mains sur la paroi devant
 	# soi ; genoux qui montent.
 	var climb_a := _merge(_merge({"LeftUpLeg": Vector3(-18, 0, 0), "LeftLeg": Vector3(30, 0, 0), "RightUpLeg": Vector3(-62, 0, 0), "RightLeg": Vector3(85, 0, 0),
@@ -191,13 +192,13 @@ func _build_animations() -> void:
 	# Pousser une porte : bras droit tendu devant soi, petit pas en avant.
 	var shove := _merge(_merge({"Spine02": Vector3(10, 12, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(20, 0, 0), "RightUpLeg": Vector3(10, 0, 0)},
 		_bras("Right", Vector3(-0.2, 0.15, 0.97), Vector3(-0.08, 0.2, 0.98))), _bras("Left", Vector3(0.22, -0.95, 0.2), Vector3(0.12, -0.85, 0.5)))
-	poses.add_animation("push", _clip(0.7, false, [[0.0, arms_in, Vector3.ZERO], [0.25, shove, Vector3(0, -2, 3)], [0.45, shove, Vector3(0, -2, 4)], [0.7, arms_in, Vector3.ZERO]]))
+	poses.add_animation("push", _clip(0.7, false, [[0.0, arms_in, Vector3.ZERO], [0.25, shove, Vector3(0, 0, 3), "pieds"], [0.45, shove, Vector3(0, 0, 4), "pieds"], [0.7, arms_in, Vector3.ZERO]]))
 	# Ramasser : on s'accroupit, main droite au sol.
 	var reach := crouch.duplicate()
 	reach["Spine02"] = Vector3(45, 0, 0)
 	# V179 : la main droite vers le sol devant soi, la gauche qui pend (avant : les deux bras écartés)
 	reach = _merge(_merge(reach, _bras("Right", Vector3(-0.1, -0.65, 0.75), Vector3(-0.05, -0.6, 0.8))), _bras("Left", Vector3(0.15, -0.75, 0.64), Vector3(0.1, -0.6, 0.8)))
-	poses.add_animation("pickup", _clip(0.75, false, [[0.0, arms_in, Vector3.ZERO], [0.32, reach, Vector3(0, -24, 0)], [0.45, reach, Vector3(0, -24, 0)], [0.75, arms_in, Vector3.ZERO]]))
+	poses.add_animation("pickup", _clip(0.75, false, [[0.0, arms_in, Vector3.ZERO], [0.32, reach, Vector3.ZERO, "pieds"], [0.45, reach, Vector3.ZERO, "pieds"], [0.75, arms_in, Vector3.ZERO]]))
 	# Manger : main droite à la bouche (V180 : le bras de la gorgée de « boire », la tête droite ; avant,
 	# la main partait à côté de la tête).
 	var bite := arms_in.duplicate()
@@ -230,12 +231,12 @@ func _build_animations() -> void:
 	poses.add_animation("hoquet", _clip(0.35, false, [[0.0, arms_in, Vector3.ZERO], [0.08, hic, Vector3(0, 2.5, 0)], [0.35, arms_in, Vector3.ZERO]]))
 	# Touché : recul du buste, les mains qui remontent devant la poitrine (V180 ; avant : les bras en croix).
 	var flinch := _bras2({"Spine02": Vector3(-18, 0, 0), "Head": Vector3(-20, 0, 0)}, Vector3(0.35, -0.65, 0.68), Vector3(-0.2, 0.35, 0.92))
-	poses.add_animation("hurt", _clip(0.4, false, [[0.0, arms_in, Vector3.ZERO], [0.12, flinch, Vector3(0, -3, -6)], [0.4, arms_in, Vector3.ZERO]]))
+	poses.add_animation("hurt", _clip(0.4, false, [[0.0, arms_in, Vector3.ZERO], [0.12, flinch, Vector3(0, 0, -6), "pieds"], [0.4, arms_in, Vector3.ZERO]]))
 	# Parade : avant-bras levés devant le visage, l'arme en travers, la pointe en haut à gauche ; genoux
 	# fléchis (V180 ; avant : les bras levés au ciel, écartés).
 	var guard := _lame(_bras2({"Spine02": Vector3(10, 0, 0), "LeftUpLeg": Vector3(-20, 0, 0), "RightUpLeg": Vector3(-12, 0, 0), "LeftLeg": Vector3(28, 0, 0), "RightLeg": Vector3(22, 0, 0), "Head": Vector3(-6, 0, 0)},
 		Vector3(0.35, -0.35, 0.87), Vector3(-0.35, 0.8, 0.48)), "Right", Vector3(0.8, 0.55, 0.2))
-	poses.add_animation("block", _clip(0.2, true, [[0.0, guard, Vector3(0, -5, 0)], [0.2, guard, Vector3(0, -5, 0)]]))
+	poses.add_animation("block", _clip(0.2, true, [[0.0, guard, Vector3.ZERO, "pieds"], [0.2, guard, Vector3.ZERO, "pieds"]]))
 	# Roulade avant : le bassin fait un tour complet, corps groupé (les mains devant la poitrine).
 	var keys := []
 	var curled := _bras2({"LeftUpLeg": Vector3(-115, 0, 0), "RightUpLeg": Vector3(-115, 0, 0), "LeftLeg": Vector3(130, 0, 0), "RightLeg": Vector3(130, 0, 0),
@@ -254,30 +255,33 @@ func _build_animations() -> void:
 	# balayage reste à l'horizontale, au lieu de passer par la lame dressée au ciel) ; le coup de haut en
 	# bas finit à hauteur de l'adversaire, la lame devant soi (avant : plantée vers le sol).
 	var stance := {"LeftUpLeg": Vector3(-28, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0), "RightLeg": Vector3(12, 0, 0)}
+	# V182 : le coup final en fente (la jambe avant pliée, l'arrière allongée derrière) ; la hauteur du bassin
+	# de chaque coup est calculée pour que les pieds restent au sol (_au_sol : avant, ils s'y enfonçaient de 6 à 14 cm)
+	var fente := {"LeftUpLeg": Vector3(-44, 0, 0), "LeftLeg": Vector3(56, 0, 0), "RightUpLeg": Vector3(22, 0, 0), "RightLeg": Vector3(26, 0, 0)}
 	var w1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, -38, 0)}), _bras("Right", Vector3(-0.85, 0.25, 0.0), Vector3(0.1, 0.8, -0.15))),
 		_bras("Left", Vector3(0.35, -0.8, 0.48), Vector3(0.15, -0.3, 0.94))), "Right", Vector3(0.3, 0.35, -0.89))
 	var m1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(3, 0, 0)}), _bras("Right", Vector3(-0.45, 0.05, 0.89), Vector3(-0.2, 0.1, 0.97))),
 		_bras("Left", Vector3(0.35, -0.85, 0.4), Vector3(0.2, -0.6, 0.77))), "Right", Vector3(0.0, 0.05, 1.0))
 	var s1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, 42, 0)}), _bras("Right", Vector3(0.05, -0.12, 0.99), Vector3(0.3, -0.12, 0.95))),
 		_bras("Left", Vector3(0.35, -0.88, -0.3), Vector3(0.25, -0.9, 0.35))), "Right", Vector3(0.7, -0.15, 0.7))
-	poses.add_animation("slash1", _clip(0.5, false, [[0.0, arms_in, Vector3.ZERO], [0.12, w1, Vector3(0, -6, 0)], [0.17, m1, Vector3(0, -7, 3)],
-		[SLASH_HIT, s1, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
+	poses.add_animation("slash1", _clip(0.5, false, [[0.0, arms_in, Vector3.ZERO], [0.12, w1, Vector3.ZERO, "pieds"], [0.17, m1, Vector3(0, 0, 3), "pieds"],
+		[SLASH_HIT, s1, Vector3(0, 0, 6), "pieds"], [0.5, arms_in, Vector3.ZERO]]))
 	var w2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, 40, 0)}), _bras("Right", Vector3(0.3, -0.4, 0.87), Vector3(0.7, 0.55, 0.1))),
 		_bras("Left", Vector3(0.25, -0.9, 0.35), Vector3(0.05, -0.35, 0.94))), "Right", Vector3(0.45, 0.45, -0.77))
 	var m2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(3, 0, 0)}), _bras("Right", Vector3(0.1, -0.05, 0.99), Vector3(-0.1, 0.05, 0.99))),
 		_bras("Left", Vector3(0.35, -0.85, 0.4), Vector3(0.2, -0.6, 0.77))), "Right", Vector3(0.0, 0.05, 1.0))
 	var s2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, -40, 0)}), _bras("Right", Vector3(-0.65, -0.1, 0.75), Vector3(-0.75, -0.05, 0.66))),
 		_bras("Left", Vector3(0.45, -0.85, 0.25), Vector3(0.3, -0.6, 0.74))), "Right", Vector3(-0.85, 0.0, 0.53))
-	poses.add_animation("slash2", _clip(0.5, false, [[0.0, s1, Vector3(0, -8, 6)], [0.12, w2, Vector3(0, -6, 0)], [0.17, m2, Vector3(0, -7, 3)],
-		[SLASH_HIT, s2, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
+	poses.add_animation("slash2", _clip(0.5, false, [[0.0, s1, Vector3(0, 0, 6), "pieds"], [0.12, w2, Vector3.ZERO, "pieds"], [0.17, m2, Vector3(0, 0, 3), "pieds"],
+		[SLASH_HIT, s2, Vector3(0, 0, 6), "pieds"], [0.5, arms_in, Vector3.ZERO]]))
 	var w3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(-12, 0, 0)}), _bras("Right", Vector3(-0.5, 0.82, 0.28), Vector3(-0.15, 0.95, -0.25))),
 		_bras("Left", Vector3(0.3, -0.25, 0.92), Vector3(0.15, 0.1, 0.98))), "Right", Vector3(-0.1, 0.2, -0.97))
 	var m3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(8, 0, 0)}), _bras("Right", Vector3(-0.3, 0.75, 0.6), Vector3(-0.1, 0.9, 0.42))),
 		_bras("Left", Vector3(0.3, -0.5, 0.81), Vector3(0.15, -0.2, 0.97))), "Right", Vector3(0.0, 0.9, 0.43))
-	var s3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(30, 0, 0)}), _bras("Right", Vector3(-0.12, 0.1, 0.99), Vector3(-0.05, 0.2, 0.98))),
+	var s3 := _lame(_merge(_merge(_merge(_merge(stance, fente), {"Spine02": Vector3(30, 0, 0)}), _bras("Right", Vector3(-0.12, 0.1, 0.99), Vector3(-0.05, 0.2, 0.98))),
 		_bras("Left", Vector3(0.3, -0.85, 0.43), Vector3(0.15, -0.55, 0.82))), "Right", Vector3(0.0, 0.35, 0.94))
-	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [0.22, m3, Vector3(0, -8, 4)],
-		[SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
+	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, 0, -4), "pieds"], [0.22, m3, Vector3(0, 0, 4), "pieds"],
+		[SLASH_HIT + 0.05, s3, Vector3(0, 0, 10), "pieds"], [0.62, arms_in, Vector3.ZERO]]))
 	# V141 : le coup plongeant : l'arme levée, les jambes repliées, puis le sol frappé, accroupi (V180 :
 	# la lame plantée devant soi).
 	var plie := {"LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(72, 0, 0), "RightUpLeg": Vector3(-38, 0, 0), "RightLeg": Vector3(64, 0, 0)}
@@ -285,7 +289,7 @@ func _build_animations() -> void:
 	var accroupi := _lame(_merge(_merge(_merge(s3, {"LeftUpLeg": Vector3(-74, 0, 0), "LeftLeg": Vector3(86, 0, 0), "RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(64, 0, 0),
 		"Spine02": Vector3(40, 0, 0)}), _bras("Right", Vector3(-0.15, -0.6, 0.78), Vector3(-0.05, -0.75, 0.66))),
 		_bras("Left", Vector3(0.3, -0.75, 0.6), Vector3(0.15, -0.7, 0.7))), "Right", Vector3(0.0, -0.85, 0.52))
-	poses.add_animation("plonge_frappe", _clip(0.45, false, [[0.0, accroupi, Vector3(0, -34, 8)], [0.22, accroupi, Vector3(0, -32, 8)], [0.45, arms_in, Vector3.ZERO]]))
+	poses.add_animation("plonge_frappe", _clip(0.45, false, [[0.0, accroupi, Vector3(0, 0, 8), "pieds"], [0.22, accroupi, Vector3(0, 0, 8), "pieds"], [0.45, arms_in, Vector3.ZERO]]))
 	# V29 : assis (sur le banc de la barque, sur une chaise) ; V179 : les mains posées sur les cuisses
 	# (avant : les bras écartés, les mains en l'air devant soi)
 	var seated := _mains({"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
@@ -307,14 +311,14 @@ func _build_animations() -> void:
 		_bras("Right", Vector3(-0.35, 0.55, 0.76), Vector3(-0.1, 0.95, -0.3))), libre), "Right", Vector3(0.0, 0.4, -0.92))   # canne par-dessus l'épaule, vers l'arrière
 	var throw := _lame(_merge(_merge(_merge(hold, {"Spine02": Vector3(14, 8, 0), "LeftUpLeg": Vector3(-26, 0, 0), "LeftLeg": Vector3(22, 0, 0), "RightUpLeg": Vector3(12, 0, 0)}),
 		_bras("Right", Vector3(-0.15, 0.15, 0.98), Vector3(-0.05, 0.25, 0.97))), libre), "Right", Vector3(0.0, 0.3, 0.95))
-	poses.add_animation("peche_armer", _clip(0.35, false, [[0.0, hold, Vector3.ZERO], [0.35, back, Vector3(0, -2, -3)]]))
-	poses.add_animation("peche_lancer", _clip(0.55, false, [[0.0, back, Vector3(0, -2, -3)], [0.16, throw, Vector3(0, -4, 6)], [0.55, hold, Vector3.ZERO]]))
+	poses.add_animation("peche_armer", _clip(0.35, false, [[0.0, hold, Vector3.ZERO, "pieds"], [0.35, back, Vector3(0, 0, -3), "pieds"]]))
+	poses.add_animation("peche_lancer", _clip(0.55, false, [[0.0, back, Vector3(0, 0, -3), "pieds"], [0.16, throw, Vector3(0, 0, 6), "pieds"], [0.55, hold, Vector3.ZERO, "pieds"]]))
 	var reel_a := _lame(_merge(_merge(_merge(hold, {"Spine02": Vector3(-10, 0, 0), "LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0)}),
 		_bras("Right", Vector3(-0.2, -0.8, 0.56), Vector3(0.45, 0.15, 0.88))), _bras("Left", Vector3(0.1, -0.75, 0.65), Vector3(-0.7, 0.25, 0.67))),
 		"Right", Vector3(0.1, 0.55, 0.83))
 	var reel_b := _merge(reel_a, _bras("Left", Vector3(0.1, -0.75, 0.65), Vector3(-0.6, -0.1, 0.79)))
 	reel_b["Spine02"] = Vector3(-14, 4, 0)
-	poses.add_animation("peche_mouliner", _clip(0.5, true, [[0.0, reel_a, Vector3(0, -3, -2)], [0.25, reel_b, Vector3(0, -4, -3)], [0.5, reel_a, Vector3(0, -3, -2)]]))
+	poses.add_animation("peche_mouliner", _clip(0.5, true, [[0.0, reel_a, Vector3(0, 0, -2), "pieds"], [0.25, reel_b, Vector3(0, 0, -3), "pieds"], [0.5, reel_a, Vector3(0, 0, -2), "pieds"]]))
 	# V33 : creuser à la pelle — on enfonce le fer, on fait levier, on rejette la terre (V180 : les deux
 	# mains devant soi sur le manche, la pelle pointée vers le sol, puis devant).
 	var dig_up := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(8, 0, 0)}), _bras("Right", Vector3(-0.25, -0.55, 0.8), Vector3(0.05, 0.55, 0.83))),
@@ -324,8 +328,8 @@ func _build_animations() -> void:
 		"Right", Vector3(0.0, -0.85, 0.53))
 	var dig_lift := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(-6, 22, 0)}), _bras("Right", Vector3(-0.3, -0.45, 0.84), Vector3(0.15, 0.3, 0.94))),
 		_bras("Left", Vector3(0.15, -0.7, 0.7), Vector3(-0.45, 0.1, 0.89))), "Right", Vector3(0.2, -0.1, 0.97))
-	poses.add_animation("creuser", _clip(1.25, false, [[0.0, arms_in, Vector3.ZERO], [0.25, dig_up, Vector3(0, -2, 0)], [0.55, dig_in, Vector3(0, -14, 4)],
-		[0.85, dig_lift, Vector3(0, -4, 0)], [1.25, arms_in, Vector3.ZERO]]))
+	poses.add_animation("creuser", _clip(1.25, false, [[0.0, arms_in, Vector3.ZERO], [0.25, dig_up, Vector3.ZERO, "pieds"], [0.55, dig_in, Vector3(0, 0, 4), "pieds"],
+		[0.85, dig_lift, Vector3.ZERO, "pieds"], [1.25, arms_in, Vector3.ZERO]]))
 	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
 	# V55 : la nage — sur place (bras qui godillent, jambes qui pédalent), la brasse à la
 	# surface (le corps est couché par mer_v55.gd), le crawl sous l'eau (bras en moulinet,
@@ -490,6 +494,127 @@ func _lame(p: Dictionary, cote: String, dir: Vector3) -> Dictionary:
 	return out
 
 
+# =================================================================== V182 : les pieds au sol
+
+## V182 : la rotation d'un os dans la pose (degrés, repère du corps au repos, comme _clip).
+func _rq(p: Dictionary, os: String) -> Quaternion:
+	return Quaternion.from_euler(Vector3(p.get(os, Vector3.ZERO)) * (PI / 180.0))
+
+
+## V182 : où est l'os « b » dans la pose « p », par rapport au bassin (unités du squelette, comme le
+## décalage du bassin des clés de _clip) : chaque os tourne avec tous ceux qui le portent.
+func _pos_pose(p: Dictionary, b: int) -> Vector3:
+	var chaine: Array = []
+	var c: int = b
+	while c >= 0:
+		chaine.push_front(c)
+		c = skel.get_bone_parent(c)
+	var q := Quaternion.IDENTITY
+	var pos := Vector3.ZERO
+	for i in range(1, chaine.size()):
+		var par: int = chaine[i - 1]
+		q = q * _rq(p, skel.get_bone_name(par))
+		pos += q * (skel.get_bone_global_rest(chaine[i]).origin - skel.get_bone_global_rest(par).origin)
+	return pos
+
+
+## V182 : la hauteur du bassin (le Y du décalage des clés de _clip) qui pose la pose « p » sur le sol.
+## Avant, chaque pose donnait la sienne à l'œil : les pieds s'enfonçaient (coups d'épée, ramasser, à
+## genoux, assis par terre) ou flottaient (prier, moudre). « appui » :
+##   « pieds » : debout, accroupi, fendu : le plus bas des pieds à sa hauteur du repos ;
+##   « genoux » : à genoux : les genoux posés, le dessus des pieds (ou les orteils) au sol ;
+##   « fesses » : assis par terre : le bassin posé, les genoux et les pieds au sol ou au-dessus.
+## Calculé sur le squelette de ce corps (la longueur de ses os) ; le bassin des clips est multiplié par
+## motion_scale, les os non.
+func _au_sol(p: Dictionary, appui: String = "pieds") -> float:
+	var hips: int = skel.find_bone("Hips")
+	if hips < 0:
+		return 0.0
+	var ms: float = skel.motion_scale if skel.motion_scale > 0.001 else 1.0
+	var h0: float = skel.get_bone_rest(hips).origin.y
+	var base: float = skel.get_bone_global_rest(hips).origin.y
+	# la hauteur de chaque os au repos, debout (le bassin des clips à h0)
+	var cheville: float = INF
+	var voulu: Dictionary = {}          # os -> sa hauteur voulue au-dessus du sol (au plus bas)
+	for os in ["LeftFoot", "RightFoot", "LeftToeBase", "RightToeBase"]:
+		var b: int = skel.find_bone(os)
+		if b >= 0:
+			voulu[b] = ms * h0 + skel.get_bone_global_rest(b).origin.y - base
+			if os.ends_with("Foot"):
+				cheville = minf(cheville, float(voulu[b]))
+	if cheville == INF:
+		return 0.0
+	if appui != "pieds":
+		# à genoux, assis par terre : les pieds tendus ou couchés, plus bas que debout
+		for b in voulu.keys():
+			voulu[b] = minf(float(voulu[b]), cheville * 0.5)
+		for os in ["LeftLeg", "RightLeg"]:
+			if skel.find_bone(os) >= 0:
+				voulu[skel.find_bone(os)] = cheville * 0.7
+	if appui == "fesses":
+		voulu[hips] = cheville * 1.35
+	var y: float = -INF
+	for b in voulu:
+		y = maxf(y, (float(voulu[b]) - _pos_pose(p, b).y) / ms)
+	return y - h0
+
+
+## V182 : une jambe posée par directions (repère du corps au repos, comme _bras) : « genou » va de la
+## hanche au genou, « pied » du genou à la cheville. Le genou plie comme un vrai genou (la jambe en
+## arrière de la cuisse) : la cuisse tourne sur elle-même pour qu'il plie dans le plan des deux.
+func _jambe(cote: String, genou: Vector3, pied: Vector3) -> Dictionary:
+	var a: int = skel.find_bone(cote + "UpLeg")
+	var l: int = skel.find_bone(cote + "Leg")
+	var f: int = skel.find_bone(cote + "Foot")
+	if a < 0 or l < 0 or f < 0:
+		return {}
+	var da: Vector3 = (skel.get_bone_global_rest(l).origin - skel.get_bone_global_rest(a).origin).normalized()
+	var dl: Vector3 = (skel.get_bone_global_rest(f).origin - skel.get_bone_global_rest(l).origin).normalized()
+	var c: Vector3 = genou.normalized()
+	var m: Vector3 = pied.normalized()
+	var qa: Quaternion
+	var h1: Vector3 = c.cross(m)
+	if h1.length() < 0.08:
+		qa = Quaternion(da, c)
+	else:
+		# la charnière du genou : au repos, la jambe plie vers l'arrière (autour de da × -Z) ; posée,
+		# elle plie de c vers m (autour de c × m)
+		var h0: Vector3 = da.cross(Vector3(0, 0, -1)).normalized()
+		h1 = h1.normalized()
+		var b0 := Basis(da, h0, da.cross(h0))
+		var b1 := Basis(c, h1, c.cross(h1))
+		qa = (b1 * b0.transposed()).get_rotation_quaternion()
+	var ql := Quaternion(dl, (qa.inverse() * m).normalized())
+	return {cote + "UpLeg": Basis(qa).get_euler() * (180.0 / PI), cote + "Leg": Basis(ql).get_euler() * (180.0 / PI)}
+
+
+## V182 : les deux jambes en miroir (directions de la jambe gauche ; la droite : X inversé), ajoutées à
+## la pose « p ».
+func _jambes2(p: Dictionary, genou: Vector3, pied: Vector3) -> Dictionary:
+	var out: Dictionary = p.duplicate()
+	var g: Dictionary = _jambe("Left", genou, pied)
+	var d: Dictionary = _jambe("Right", Vector3(-genou.x, genou.y, genou.z), Vector3(-pied.x, pied.y, pied.z))
+	for k in g:
+		out[k] = g[k]
+	for k in d:
+		out[k] = d[k]
+	return out
+
+
+## V182 : le pied « cote » (de la cheville aux orteils) pointe vers « dir » (repère du corps au repos) ;
+## la jambe est déjà posée dans « p ». Rend la pose complétée.
+func _pied(p: Dictionary, cote: String, dir: Vector3) -> Dictionary:
+	var f: int = skel.find_bone(cote + "Foot")
+	var t: int = skel.find_bone(cote + "ToeBase")
+	if f < 0 or t < 0:
+		return p
+	var out: Dictionary = p.duplicate()
+	var df: Vector3 = (skel.get_bone_global_rest(t).origin - skel.get_bone_global_rest(f).origin).normalized()
+	var q: Quaternion = _rq(p, cote + "UpLeg") * _rq(p, cote + "Leg")
+	out[cote + "Foot"] = Basis(Quaternion(df, (q.inverse() * dir.normalized()).normalized())).get_euler() * (180.0 / PI)
+	return out
+
+
 ## Rotation locale d'un os : « rot » est donnée dans le repère du personnage au repos
 ## (X vers sa gauche, Y vers le haut, Z vers l'avant), autour de l'articulation.
 func _local_rotation(bone: int, rot_deg: Vector3) -> Quaternion:
@@ -505,6 +630,8 @@ func _local_rotation(bone: int, rot_deg: Vector3) -> Quaternion:
 
 
 ## keys : [[instant, {os: rotation en degrés}, décalage du bassin (cm)], ...]
+## V182 : une clé peut finir par un appui (« pieds », « genoux », « fesses », voir _au_sol) : la hauteur
+## du bassin est alors calculée pour que la pose touche le sol (le Y donné ne compte plus).
 func _clip(length: float, loop: bool, keys: Array) -> Animation:
 	var a := Animation.new()
 	a.length = length
@@ -523,8 +650,33 @@ func _clip(length: float, loop: bool, keys: Array) -> Animation:
 	var pt: int = a.add_track(Animation.TYPE_POSITION_3D)
 	a.track_set_path(pt, NodePath(base + "Hips"))
 	for key in keys:
-		a.position_track_insert_key(pt, float(key[0]), skel.get_bone_rest(hips).origin + Vector3(key[2]))
+		var dec: Vector3 = key[2]
+		if key.size() > 3:
+			dec.y = _au_sol(key[1], str(key[3]))
+		a.position_track_insert_key(pt, float(key[0]), skel.get_bone_rest(hips).origin + dec)
 	return a
+
+
+## V182 : des clips du modèle ont le bassin trop haut : on parle au comptoir, on salue, on applaudit… les
+## pieds à 6 cm du sol (8 cm sur un adulte) ; on s'allonge sur la plage… à un mètre au-dessus du sable. On
+## descend leur piste du bassin (unités du squelette, cm), une seule fois : ces clips sont partagés par
+## tous ceux qui ont ce modèle (le héros, les habitants, les compagnons).
+const BASSIN_V182 := {"Talk_with_Right_Hand_Open": -6.4, "Formal_Bow": -6.2, "Motivational_Cheer": -6.3, "Lie_Down_Hands_Spread": -89.0}
+
+
+func _bassin_v182(lib: AnimationLibrary) -> void:
+	for nom in BASSIN_V182:
+		if not lib.has_animation(nom):
+			continue
+		var a: Animation = lib.get_animation(nom)
+		if a.has_meta("bassin_v182"):
+			continue
+		a.set_meta("bassin_v182", true)
+		for t in a.get_track_count():
+			if a.track_get_type(t) == Animation.TYPE_POSITION_3D and str(a.track_get_path(t)).ends_with(":Hips"):
+				for k in a.track_get_key_count(t):
+					var v: Vector3 = a.track_get_key_value(t, k)
+					a.track_set_key_value(t, k, v + Vector3(0, float(BASSIN_V182[nom]), 0))
 
 
 ## Le clip de chute part en arrière de plusieurs mètres : on le ramène sur place.

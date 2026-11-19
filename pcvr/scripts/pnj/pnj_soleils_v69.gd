@@ -29,32 +29,42 @@ func _build_sol_poses() -> void:
 	lib.anim = anim
 	lib.skel = skel
 	var poses := AnimationLibrary.new()
-	var kneel := {"LeftUpLeg": Vector3(-6, 0, -4), "LeftLeg": Vector3(118, 0, 0), "RightUpLeg": Vector3(-6, 0, 4), "RightLeg": Vector3(118, 0, 0),
-		"LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0)}
+	# V182 : les jambes posées par directions (lib._jambes2, lib._pied) et le bassin calculé pour que la pose
+	# touche le sol (« genoux », « fesses » : lib._au_sol). Avant : à genoux, les jambes remontaient derrière
+	# (les pieds en l'air, le corps à 9 cm du sol) ; en tailleur, les jambes plongeaient dans le sol (30 cm).
+	# à genoux : les cuisses droites, les jambes à plat derrière, le dessus des pieds au sol
+	var kneel: Dictionary = lib._jambes2({}, Vector3(0.1, -0.97, 0.2), Vector3(0.02, -0.05, -1.0))
+	kneel = lib._pied(lib._pied(kneel, "Left", Vector3(0.0, -0.3, -0.95)), "Right", Vector3(0.0, -0.3, -0.95))
 	# prier : à genoux, bras levés (on salue le soleil), puis prosterné
 	# (V179 : les bras posés par des cibles et des directions, lib._main / lib._bras ; avant, des angles qui
 	# envoyaient les bras sur les côtés)
 	var pr_a := lib._bras2(lib._merge(kneel, {"Head": Vector3(-22, 0, 0), "Spine02": Vector3(-8, 0, 0)}), Vector3(0.3, 0.85, 0.43), Vector3(0.2, 0.93, 0.3))
 	var pr_b := lib._bras2(lib._merge(kneel, {"Head": Vector3(10, 0, 0), "Spine01": Vector3(36, 0, 0), "Spine02": Vector3(30, 0, 0)}), Vector3(0.15, 0.6, 0.79), Vector3(0.1, 0.65, 0.75))
-	poses.add_animation("prier", lib._clip(9.0, true, [[0.0, pr_a, Vector3(0, -44, 0)], [3.0, pr_a, Vector3(0, -44, 0)], [4.4, pr_b, Vector3(0, -46, -6)], [6.6, pr_b, Vector3(0, -46, -6)], [8.0, pr_a, Vector3(0, -44, 0)], [9.0, pr_a, Vector3(0, -44, 0)]]))
+	poses.add_animation("prier", lib._clip(9.0, true, [[0.0, pr_a, Vector3.ZERO, "genoux"], [3.0, pr_a, Vector3.ZERO, "genoux"], [4.4, pr_b, Vector3(0, 0, -6), "genoux"], [6.6, pr_b, Vector3(0, 0, -6), "genoux"],
+		[8.0, pr_a, Vector3.ZERO, "genoux"], [9.0, pr_a, Vector3.ZERO, "genoux"]]))
 	# moudre : penché sur la pierre, les deux mains poussent la molette en avant, puis la ramènent
 	var mo_a := lib._bras2(lib._merge(kneel, {"Spine01": Vector3(26, 0, 0), "Spine02": Vector3(20, 0, 0), "Head": Vector3(8, 0, 0)}), Vector3(0.1, -0.55, 0.83), Vector3(0.0, -0.45, 0.89))
 	var mo_b := lib._bras2(lib._merge(mo_a, {"Spine01": Vector3(38, 0, 0), "Spine02": Vector3(26, 0, 0)}), Vector3(0.08, -0.3, 0.95), Vector3(0.03, -0.25, 0.97))
-	poses.add_animation("moudre", lib._clip(1.6, true, [[0.0, mo_a, Vector3(0, -44, 0)], [0.8, mo_b, Vector3(0, -45, 3)], [1.6, mo_a, Vector3(0, -44, 0)]]))
+	poses.add_animation("moudre", lib._clip(1.6, true, [[0.0, mo_a, Vector3.ZERO, "genoux"], [0.8, mo_b, Vector3(0, 0, 3), "genoux"], [1.6, mo_a, Vector3.ZERO, "genoux"]]))
 	# assis en tailleur (scribe, tisser, potier)
-	var cross := {"LeftUpLeg": Vector3(-84, 30, -40), "RightUpLeg": Vector3(-84, -30, 40), "LeftLeg": Vector3(120, 0, 0), "RightLeg": Vector3(120, 0, 0), "Spine02": Vector3(8, 0, 0)}
+	# (V182 : les cuisses ouvertes vers l'avant, les genoux près du sol, chaque jambe repliée sous la cuisse d'en
+	# face, les pieds couchés)
+	var cross: Dictionary = lib._jambe("Left", Vector3(0.6, -0.1, 0.79), Vector3(-0.86, -0.03, -0.5))
+	cross = lib._merge(cross, lib._jambe("Right", Vector3(-0.6, -0.1, 0.79), Vector3(0.88, 0.02, -0.46)))
+	cross = lib._pied(lib._pied(cross, "Left", Vector3(-0.55, -0.15, 0.82)), "Right", Vector3(0.55, -0.15, 0.82))
+	cross["Spine02"] = Vector3(8, 0, 0)
 	var sc_a := lib._merge(lib._merge(lib._merge(cross, {"Head": Vector3(22, 0, 0)}), lib._main("Right", "Spine02", Vector3(-6, 2, 26), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(8, 4, 24), Vector3(1, -1, 0)))
 	var sc_b := lib._merge(sc_a, lib._main("Right", "Spine02", Vector3(-2, 2, 27), Vector3(-1, -1, 0)))
 	var sc_c := lib._merge(sc_a, {"Head": Vector3(0, 14, 0)})
-	poses.add_animation("scribe", lib._clip(8.0, true, [[0.0, sc_a, Vector3(0, -58, 0)], [0.6, sc_b, Vector3(0, -58, 0)], [1.2, sc_a, Vector3(0, -58, 0)], [1.8, sc_b, Vector3(0, -58, 0)], [3.0, sc_a, Vector3(0, -58, 0)],
-		[4.4, sc_c, Vector3(0, -58, 0)], [5.6, sc_c, Vector3(0, -58, 0)], [6.4, sc_a, Vector3(0, -58, 0)], [7.2, sc_b, Vector3(0, -58, 0)], [8.0, sc_a, Vector3(0, -58, 0)]]))
+	poses.add_animation("scribe", lib._clip(8.0, true, [[0.0, sc_a, Vector3.ZERO, "fesses"], [0.6, sc_b, Vector3.ZERO, "fesses"], [1.2, sc_a, Vector3.ZERO, "fesses"], [1.8, sc_b, Vector3.ZERO, "fesses"], [3.0, sc_a, Vector3.ZERO, "fesses"],
+		[4.4, sc_c, Vector3.ZERO, "fesses"], [5.6, sc_c, Vector3.ZERO, "fesses"], [6.4, sc_a, Vector3.ZERO, "fesses"], [7.2, sc_b, Vector3.ZERO, "fesses"], [8.0, sc_a, Vector3.ZERO, "fesses"]]))
 	var ti_a := lib._mains(lib._merge(cross, {"Spine02": Vector3(-10, 0, 0), "Head": Vector3(16, 0, 0)}), "Spine02", Vector3(12, 6, 28), Vector3(1, -1, 0))
 	var ti_b := lib._merge(lib._merge(ti_a, lib._main("Right", "Spine02", Vector3(-4, 6, 30), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(20, 4, 26), Vector3(1, -1, 0)))
 	var ti_c := lib._merge(lib._merge(ti_a, lib._main("Left", "Spine02", Vector3(4, 6, 30), Vector3(1, -1, 0))), lib._main("Right", "Spine02", Vector3(-20, 4, 26), Vector3(-1, -1, 0)))
-	poses.add_animation("tisser", lib._clip(3.2, true, [[0.0, ti_a, Vector3(0, -58, 0)], [0.8, ti_b, Vector3(0, -58, 0)], [1.6, ti_a, Vector3(0, -59, -2)], [2.4, ti_c, Vector3(0, -58, 0)], [3.2, ti_a, Vector3(0, -58, 0)]]))
+	poses.add_animation("tisser", lib._clip(3.2, true, [[0.0, ti_a, Vector3.ZERO, "fesses"], [0.8, ti_b, Vector3.ZERO, "fesses"], [1.6, ti_a, Vector3(0, 0, -2), "fesses"], [2.4, ti_c, Vector3.ZERO, "fesses"], [3.2, ti_a, Vector3.ZERO, "fesses"]]))
 	var po_a := lib._mains(lib._merge(cross, {"Spine02": Vector3(22, 0, 0), "Head": Vector3(18, 0, 0)}), "Spine02", Vector3(8, -2, 30), Vector3(1, -1, 0))
 	var po_b := lib._mains(lib._merge(po_a, {"Spine02": Vector3(16, 0, 0)}), "Spine02", Vector3(7, 0, 32), Vector3(1, -1, 0))
-	poses.add_animation("potier", lib._clip(2.4, true, [[0.0, po_a, Vector3(0, -58, 0)], [1.2, po_b, Vector3(0, -57, 0)], [2.4, po_a, Vector3(0, -58, 0)]]))
+	poses.add_animation("potier", lib._clip(2.4, true, [[0.0, po_a, Vector3.ZERO, "fesses"], [1.2, po_b, Vector3.ZERO, "fesses"], [2.4, po_a, Vector3.ZERO, "fesses"]]))
 	anim.add_animation_library("sol", poses)
 	lib.free()
 

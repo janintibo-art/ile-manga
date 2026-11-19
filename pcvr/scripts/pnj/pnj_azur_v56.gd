@@ -97,6 +97,15 @@ func _build_extra_poses() -> void:
 	var read_b := read.duplicate()
 	read_b["Head"] = Vector3(20, 6, 0)
 	poses.add_animation("lire", lib._clip(5.0, true, [[0.0, read, Vector3(0, -38, 0)], [2.5, read_b, Vector3(0, -38, 0)], [5.0, read, Vector3(0, -38, 0)]]))
+	# V182 : regarder autour de soi (à gauche, à droite, un coup d'œil par-dessus l'épaule). Remplace le clip
+	# du modèle « Walking_Scan_with_Sudden_Look_Back » : un clip de marche, qui menait l'habitant 4 m droit
+	# devant lui (à travers le comptoir, le mur), puis le ramenait d'un coup à sa place, les pieds en l'air.
+	var bras := {"LeftArm": Vector3(0, 0, -13), "RightArm": Vector3(0, 0, 13), "LeftForeArm": Vector3(-14, 0, 0), "RightForeArm": Vector3(-14, 0, 0)}
+	var r_g := lib._merge(bras, {"Head": Vector3(-4, 46, 0), "Spine02": Vector3(0, 10, 0)})
+	var r_d := lib._merge(bras, {"Head": Vector3(-2, -48, 0), "Spine02": Vector3(0, -12, 0)})
+	var r_dos := lib._merge(bras, {"Head": Vector3(-6, -70, 0), "Spine02": Vector3(0, -26, 0), "Spine01": Vector3(0, -10, 0)})
+	poses.add_animation("regarder", lib._clip(6.0, false, [[0.0, bras, Vector3.ZERO], [1.0, r_g, Vector3.ZERO], [2.2, r_g, Vector3.ZERO], [3.0, r_d, Vector3.ZERO],
+		[3.9, r_d, Vector3.ZERO], [4.3, r_dos, Vector3(0, -0.5, 0)], [5.1, r_dos, Vector3(0, -0.5, 0)], [6.0, bras, Vector3.ZERO]]))
 	anim.add_animation_library("v56", poses)
 	lib.free()
 
@@ -822,8 +831,8 @@ func _activity(delta: float, dist: float, to_player: Vector3) -> void:
 					return
 				if _rng2.randf() < 0.75 and _geste_v102():
 					return
-				_play("Walking_Scan_with_Sudden_Look_Back" if _rng2.randf() < 0.3 else "v28/idle", 0.4)
-			elif current_anim != "Walking_Scan_with_Sudden_Look_Back" or (anim != null and not anim.is_playing()):
+				_play("v56/regarder" if _rng2.randf() < 0.3 else "v28/idle", 0.4)
+			elif current_anim != "v56/regarder" or (anim != null and not anim.is_playing()):
 				_play("v28/idle", 0.4)
 
 

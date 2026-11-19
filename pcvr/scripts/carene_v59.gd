@@ -758,7 +758,9 @@ func _outside() -> void:
 			kit.box(nx * Transform3D(Basis(), Vector3(s3, 1.1, 0)), Vector3(0.12, 2.2, 0.12), "bois_sombre", 1.0)
 		kit.box(nx * Transform3D(Basis(), Vector3(0, 2.15, 0)), Vector3(4.3, 0.08, 0.08), "bois_sombre", 1.0)
 		kit.quad(nx * Transform3D(Basis(Vector3.RIGHT, 0.08), Vector3(0, 1.3, 0)), 4.0, 1.7, "filet", Vector2(0, 0), Vector2(3, 1.5), true)
-	_spot_w("plage_filets", TW(35.0, -38.4).origin, TW(35.0, -41.0).origin, "debout", "e_filets")
+	# (V182 : devant le filet du milieu, côté plage ; avant, le lieu tombait dans la deuxième barque tirée sur
+	# le sable : on y voyait Anouk debout, les pieds passés sous le fond de la barque)
+	_spot_w("plage_filets", TW(29.5, -37.3).origin, TW(29.5, -39.5).origin, "debout", "e_filets")
 	# deux barques tirées sur le sable
 	for i in range(2):
 		var sk := _skiff(i + 1)

@@ -1,0 +1,10 @@
+Mondes_de_Travers_controle : le dossier de travail de Claude sur ce PC.
+
+Une copie du jeu (dossier jeu), pour prendre de vraies photos de controle avec la carte graphique.
+Rien n'est installe : tout est dans ce dossier, on peut le supprimer quand on veut.
+Cette copie garde ses sauvegardes a part (AppData\Roaming\IleManga_controle) : les parties du vrai jeu ne sont pas touchees.
+
+1_deballer.bat : deballe la copie du jeu (paquets -> jeu).
+2_preparer.bat : Godot prepare le jeu une premiere fois (import des images et des modeles).
+3_photos.bat   : Godot lance le jeu, passe aux endroits de photos_liste.json et range les photos dans photos.
+journaux       : ce que chaque etape a ecrit.

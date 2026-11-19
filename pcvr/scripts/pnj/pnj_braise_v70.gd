@@ -80,7 +80,7 @@ func _build_br_poses() -> void:
 	var f_up := {"Spine02": Vector3(6, 0, 0), "Head": Vector3(16, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "LeftLeg": Vector3(12, 0, 0), "RightUpLeg": Vector3(4, 0, 0), "RightLeg": Vector3(8, 0, 0)}
 	f_up = lib._merge(lib._merge(f_up, lib._main("Right", "Head", Vector3(-16, 8, 6), Vector3(-1, 0, -0.3))), lib._main("Left", "Spine02", Vector3(12, 8, 30), Vector3(1, -1, 0)))
 	var f_hit := lib._merge(lib._merge(f_up, {"Spine02": Vector3(20, 0, 0), "Head": Vector3(22, 0, 0)}), lib._main("Right", "Spine02", Vector3(-8, 6, 34), Vector3(-1, -1, 0)))
-	poses.add_animation("forger", lib._clip(1.4, true, [[0.0, f_up, Vector3.ZERO], [0.4, f_up, Vector3.ZERO], [0.62, f_hit, Vector3(0, -3, 0)], [0.85, f_hit, Vector3(0, -3, 0)], [1.4, f_up, Vector3.ZERO]]))
+	poses.add_animation("forger", lib._clip(1.4, true, [[0.0, f_up, Vector3.ZERO, "pieds"], [0.4, f_up, Vector3.ZERO, "pieds"], [0.62, f_hit, Vector3.ZERO, "pieds"], [0.85, f_hit, Vector3.ZERO, "pieds"], [1.4, f_up, Vector3.ZERO, "pieds"]]))
 	# la gigue : un genou qui monte, l'autre, les bras qui battent la mesure, de petits sauts
 	var d_l := {"LeftUpLeg": Vector3(-58, 0, -4), "LeftLeg": Vector3(74, 0, 0), "RightUpLeg": Vector3(-6, 0, 3), "RightLeg": Vector3(10, 0, 0),
 		"Spine02": Vector3(-4, 0, -7), "Head": Vector3(-6, -8, 6)}
@@ -91,7 +91,7 @@ func _build_br_poses() -> void:
 	var d_r := {"RightUpLeg": Vector3(-58, 0, 4), "RightLeg": Vector3(74, 0, 0), "LeftUpLeg": Vector3(-6, 0, -3), "LeftLeg": Vector3(10, 0, 0),
 		"Spine02": Vector3(-4, 0, 7), "Head": Vector3(-6, 8, -6)}
 	d_r = lib._merge(lib._merge(d_r, lib._bras("Left", Vector3(0.3, 0.93, 0.15), Vector3(0.1, 0.99, 0.05))), lib._bras("Right", Vector3(-0.75, -0.55, 0.3), Vector3(-0.7, -0.3, 0.65)))
-	poses.add_animation("danse", lib._clip(1.2, true, [[0.0, d_l, Vector3(0, 3, 0)], [0.3, d_m, Vector3(0, -5, 0)], [0.6, d_r, Vector3(0, 3, 0)], [0.9, d_m, Vector3(0, -5, 0)], [1.2, d_l, Vector3(0, 3, 0)]]))
+	poses.add_animation("danse", lib._clip(1.2, true, [[0.0, d_l, Vector3(0, 3, 0)], [0.3, d_m, Vector3.ZERO, "pieds"], [0.6, d_r, Vector3(0, 3, 0)], [0.9, d_m, Vector3.ZERO, "pieds"], [1.2, d_l, Vector3(0, 3, 0)]]))
 	anim.add_animation_library("br", poses)
 	lib.free()
 

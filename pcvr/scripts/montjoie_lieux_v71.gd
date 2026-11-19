@@ -161,7 +161,16 @@ func chateau() -> void:
 	kit.col_box(dx * T(0, 0.4, 0), Vector3(1.8, 0.8, 0.9))
 	for k3 in range(4):
 		kit.box(dx * T(-0.6 + k3 * 0.35, 0.82, 0.1), Vector3(0.3, 0.06, 0.22), "tissu71_blanc", 1.0)
-	c._spot("chateau_salon", dx * Vector3(0, 0.05, -0.95), hx.basis * Vector3(0, 0, 1), "scribe", "ch_salle")
+	# V182 : derrière le bureau, sur une chaise, un registre à la main (avant : assis en tailleur par terre,
+	# derrière un bureau de 80 cm : on ne le voyait pas)
+	var ch: Transform3D = dx * T(0, 0, -1.0)
+	kit.box(ch * T(0, 0.46, 0), Vector3(0.46, 0.05, 0.44), "planches71_sombre", 1.0)
+	for sx in [-0.19, 0.19]:
+		for sz in [-0.18, 0.18]:
+			kit.box(ch * T(sx, 0.22, sz), Vector3(0.04, 0.44, 0.04), "planches71_sombre", 1.0)
+		kit.box(ch * T(sx, 0.75, -0.2), Vector3(0.04, 0.6, 0.04), "planches71_sombre", 1.0)
+	kit.box(ch * T(0, 0.92, -0.2), Vector3(0.42, 0.14, 0.03), "planches71_sombre", 1.0)
+	c._spot("chateau_salon", dx * Vector3(0, 0.05, -0.98), hx.basis * Vector3(0, 0, 1), "lire", "ch_salle")
 	c.doors["porte_barthelemy"] = c._pt("porte_barthelemy", hx * Vector3(-6.2, 0.05, -18.0))
 	c.doors["porte_aurore"] = c._pt("porte_aurore", hx * Vector3(6.2, 0.05, -18.0))
 	c._link("porte_barthelemy", "ch_trone")

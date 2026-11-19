@@ -48,7 +48,8 @@ func _build_arc_poses() -> void:
 	var j_a := lib._bras2({"Spine01": Vector3(30, 0, 0), "Spine02": Vector3(24, 0, 0), "Head": Vector3(10, 0, 0),
 		"LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(36, 0, 0), "RightUpLeg": Vector3(-24, 0, 0), "RightLeg": Vector3(36, 0, 0)}, Vector3(0.12, -0.6, 0.79), Vector3(0.03, -0.5, 0.86))
 	var j_b := lib._merge(lib._merge(j_a, lib._bras("Right", Vector3(-0.2, -0.45, 0.87), Vector3(-0.1, -0.35, 0.93))), lib._bras("Left", Vector3(0.12, -0.6, 0.79), Vector3(0.05, -0.6, 0.8)))
-	poses.add_animation("jardiner", lib._clip(3.0, true, [[0.0, j_a, Vector3(0, -16, 0)], [0.8, j_b, Vector3(0, -16, 0)], [1.5, j_a, Vector3(0, -16, 0)], [2.2, j_b, Vector3(0, -16, 0)], [3.0, j_a, Vector3(0, -16, 0)]]))
+	# (V182 : la hauteur du bassin calculée pour que les pieds restent au sol : lib._au_sol ; avant, ils s'y enfonçaient de 17 cm)
+	poses.add_animation("jardiner", lib._clip(3.0, true, [[0.0, j_a, Vector3.ZERO, "pieds"], [0.8, j_b, Vector3.ZERO, "pieds"], [1.5, j_a, Vector3.ZERO, "pieds"], [2.2, j_b, Vector3.ZERO, "pieds"], [3.0, j_a, Vector3.ZERO, "pieds"]]))
 	# pêcher : les deux mains sur la canne, un petit coup de poignet de temps en temps
 	var p_a := lib._merge(lib._merge({"Head": Vector3(8, 0, 0)}, lib._main("Left", "Spine02", Vector3(4, 10, 28), Vector3(1, -1, 0))), lib._main("Right", "Spine02", Vector3(-6, 4, 24), Vector3(-1, -1, 0)))
 	var p_b := lib._merge(p_a, lib._main("Right", "Spine", Vector3(-6, 0, 28), Vector3(-1, -1, 0)))

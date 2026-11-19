@@ -1032,6 +1032,10 @@ func batterie75(xf: Transform3D) -> void:
 		cyl(Transform3D(Basis(), xf * Vector3(float(c[0]), 0.0, float(c[2]))), 0.012, 0.012, float(c[1]), "chrome75", 4, false)
 		cyl(Transform3D(Basis(Vector3.RIGHT, 0.1), p), 0.32, 0.02, 0.03, "laiton71", 16)
 	col_box(xf * T(0, 0.5, 0), Vector3(1.6, 1.0, 1.0))
+	# V182 : le tabouret du batteur (l'assise ronde, la colonne chromée, le pied) ; avant, il jouait assis dans le vide
+	cyl(xf * T(0, 0.4, -0.95), 0.17, 0.17, 0.06, "caoutchouc75", 14)
+	cyl(xf * T(0, 0.03, -0.95), 0.025, 0.025, 0.38, "chrome75", 6)
+	cyl(xf * T(0, 0.0, -0.95), 0.2, 0.06, 0.04, "chrome75", 12)
 
 
 ## Un projecteur de scène (une boîte noire, une lentille qui luit) et sa lumière colorée.

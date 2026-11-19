@@ -129,21 +129,23 @@ func _build_geant_poses() -> void:
 		"Spine": Vector3(8, 0, 0), "Spine01": Vector3(10, 0, 0), "Spine02": Vector3(10, 0, 0), "Neck": Vector3(8, 0, 0), "Head": Vector3(18, 0, 0),
 		"LeftArm": Vector3(-38, 0, -20), "LeftForeArm": Vector3(-62, 0, 0), "RightArm": Vector3(-14, 0, 16), "RightForeArm": Vector3(-30, 0, 0)}
 	var genou_b := lib._merge(genou, {"Spine02": Vector3(12, 0, 0), "Head": Vector3(22, 6, 0)})
-	var down := Vector3(0, -44, 6)
-	poses.add_animation("genou", lib._clip(5.0, true, [[0.0, genou, down], [2.5, genou_b, down + Vector3(0, -0.6, 0)], [5.0, genou, down]]))
+	# (V182 : le bassin calculé pour que le genou droit et le pied gauche touchent le sol : lib._au_sol ; avant,
+	# la géante s'enfonçait de 70 cm)
+	var down := Vector3(0, 0, 6)
+	poses.add_animation("genou", lib._clip(5.0, true, [[0.0, genou, down, "genoux"], [2.5, genou_b, down, "genoux"], [5.0, genou, down, "genoux"]]))
 	var parle_a := lib._merge(genou, {"RightArm": Vector3(-52, 20, 30), "RightForeArm": Vector3(-58, 0, 0), "Head": Vector3(16, -6, 0)})
 	var parle_b := lib._merge(genou, {"RightArm": Vector3(-60, 10, 24), "RightForeArm": Vector3(-82, 0, 0), "Head": Vector3(20, 6, 0)})
-	poses.add_animation("genou_parle", lib._clip(2.4, true, [[0.0, parle_a, down], [1.2, parle_b, down + Vector3(0, -0.4, 0)], [2.4, parle_a, down]]))
+	poses.add_animation("genou_parle", lib._clip(2.4, true, [[0.0, parle_a, down, "genoux"], [1.2, parle_b, down, "genoux"], [2.4, parle_a, down, "genoux"]]))
 	# accroupi (regarder le sol de près, se cacher)
 	var accroupi := {"LeftUpLeg": Vector3(-112, 0, 14), "RightUpLeg": Vector3(-112, 0, -14), "LeftLeg": Vector3(136, 0, 0), "RightLeg": Vector3(136, 0, 0),
 		"LeftFoot": Vector3(-26, 0, 0), "RightFoot": Vector3(-26, 0, 0), "Spine01": Vector3(16, 0, 0), "Spine02": Vector3(18, 0, 0), "Head": Vector3(12, 0, 0),
 		"LeftArm": Vector3(-48, 0, -16), "RightArm": Vector3(-48, 0, 16), "LeftForeArm": Vector3(-70, 0, 0), "RightForeArm": Vector3(-70, 0, 0)}
 	var acc_b := lib._merge(accroupi, {"Head": Vector3(14, 14, 0)})
-	poses.add_animation("accroupi", lib._clip(4.0, true, [[0.0, accroupi, Vector3(0, -62, 10)], [2.0, acc_b, Vector3(0, -62.5, 10)], [4.0, accroupi, Vector3(0, -62, 10)]]))
+	poses.add_animation("accroupi", lib._clip(4.0, true, [[0.0, accroupi, Vector3(0, 0, 10), "pieds"], [2.0, acc_b, Vector3(0, 0, 10), "pieds"], [4.0, accroupi, Vector3(0, 0, 10), "pieds"]]))
 	# se cacher : accroupi, les mains sur la bouche (elle pouffe de rire)
 	var cache := lib._merge(accroupi, {"LeftArm": Vector3(-70, 0, -40), "RightArm": Vector3(-70, 0, 40), "LeftForeArm": Vector3(-130, 0, 0), "RightForeArm": Vector3(-130, 0, 0), "Head": Vector3(6, 0, 0)})
 	var cache_b := lib._merge(cache, {"Head": Vector3(2, 10, 0), "Spine02": Vector3(14, 4, 0)})
-	poses.add_animation("cache", lib._clip(1.2, true, [[0.0, cache, Vector3(0, -62, 10)], [0.6, cache_b, Vector3(0, -60.5, 10)], [1.2, cache, Vector3(0, -62, 10)]]))
+	poses.add_animation("cache", lib._clip(1.2, true, [[0.0, cache, Vector3(0, 0, 10), "pieds"], [0.6, cache_b, Vector3(0, 0, 10), "pieds"], [1.2, cache, Vector3(0, 0, 10), "pieds"]]))
 	# biner : les bras tendus, la binette monte et redescend, le dos courbé
 	var bi_a := {"Spine02": Vector3(24, 0, 0), "Spine01": Vector3(8, 0, 0), "Head": Vector3(10, 0, 0), "LeftArm": Vector3(-78, 0, -12), "RightArm": Vector3(-70, 0, 14),
 		"LeftForeArm": Vector3(-22, 0, 0), "RightForeArm": Vector3(-40, 0, 0), "LeftUpLeg": Vector3(-14, 0, 4), "LeftLeg": Vector3(20, 0, 0), "RightUpLeg": Vector3(10, 0, -4)}

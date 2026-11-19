@@ -42,11 +42,11 @@ func _build_tz_poses() -> void:
 	var e_b := lib._mains(lib._merge(straight, {"Spine02": Vector3(2, 0, 0), "Head": Vector3(-4, 0, 0)}), "Spine", Vector3(14, -4, 22), Vector3(1, -1, 0))
 	var e_c := lib._merge(bent, {"Spine02": Vector3(4, -10, -6), "Head": Vector3(6, 8, 6)})
 	e_c = lib._merge(lib._merge(e_c, lib._main("Left", "Spine", Vector3(12, -2, 22), Vector3(1, -1, 0))), lib._main("Right", "Spine", Vector3(-14, -6, 22), Vector3(-1, -1, 0)))
-	poses.add_animation("epaules", lib._clip(2 * B, true, [[0.0, e_a, Vector3(-2, -5, 0)], [0.5 * B, e_b, Vector3(0, 0, 0)], [B, e_c, Vector3(2, -5, 0)], [1.5 * B, e_b, Vector3(0, 0, 0)], [2 * B, e_a, Vector3(-2, -5, 0)]]))
+	poses.add_animation("epaules", lib._clip(2 * B, true, [[0.0, e_a, Vector3(-2, 0, 0), "pieds"], [0.5 * B, e_b, Vector3(0, 0, 0)], [B, e_c, Vector3(2, 0, 0), "pieds"], [1.5 * B, e_b, Vector3(0, 0, 0)], [2 * B, e_a, Vector3(-2, 0, 0), "pieds"]]))
 	# les mains qui frappent au-dessus de la tête, un pied qui marque le temps
 	var c_a := lib._mains(lib._merge(straight, {"Head": Vector3(-8, 0, 0)}), "Head", Vector3(6, 26, 10), Vector3(1, 0, -0.3))
 	var c_b := lib._mains(lib._merge(bent, {"Head": Vector3(-2, 0, 0), "LeftUpLeg": Vector3(-30, 0, 0), "LeftLeg": Vector3(40, 0, 0)}), "Head", Vector3(2.5, 28, 10), Vector3(1, 0, -0.3))
-	poses.add_animation("mains", lib._clip(B, true, [[0.0, c_a, Vector3(0, 0, 0)], [0.5 * B, c_b, Vector3(0, -5, 0)], [B, c_a, Vector3(0, 0, 0)]]))
+	poses.add_animation("mains", lib._clip(B, true, [[0.0, c_a, Vector3(0, 0, 0)], [0.5 * B, c_b, Vector3.ZERO, "pieds"], [B, c_a, Vector3(0, 0, 0)]]))
 	# le pas chassé : de côté, les bras ouverts, le buste qui tourne
 	var p_a := {"LeftUpLeg": Vector3(-6, 0, -14), "LeftLeg": Vector3(10, 0, 0), "RightUpLeg": Vector3(-20, 0, 4), "RightLeg": Vector3(32, 0, 0),
 		"Spine02": Vector3(4, 14, 0), "Head": Vector3(0, -10, 0)}
@@ -55,7 +55,7 @@ func _build_tz_poses() -> void:
 	var p_c := {"RightUpLeg": Vector3(-6, 0, 14), "RightLeg": Vector3(10, 0, 0), "LeftUpLeg": Vector3(-20, 0, -4), "LeftLeg": Vector3(32, 0, 0),
 		"Spine02": Vector3(4, -14, 0), "Head": Vector3(0, 10, 0)}
 	p_c = lib._bras2(p_c, Vector3(0.7, -0.35, 0.62), Vector3(0.55, -0.1, 0.83))
-	poses.add_animation("chasse", lib._clip(2 * B, true, [[0.0, p_a, Vector3(-6, -2, 0)], [0.5 * B, p_b, Vector3(0, -6, 0)], [B, p_c, Vector3(6, -2, 0)], [1.5 * B, p_b, Vector3(0, -6, 0)], [2 * B, p_a, Vector3(-6, -2, 0)]]))
+	poses.add_animation("chasse", lib._clip(2 * B, true, [[0.0, p_a, Vector3(-6, 0, 0), "pieds"], [0.5 * B, p_b, Vector3.ZERO, "pieds"], [B, p_c, Vector3(6, 0, 0), "pieds"], [1.5 * B, p_b, Vector3.ZERO, "pieds"], [2 * B, p_a, Vector3(-6, 0, 0), "pieds"]]))
 	# le crieur : un bras tendu vers les acheteurs, puis l'autre, la tête suit
 	var k_a := lib._merge({"LeftArm": Vector3(0, 0, -13), "LeftForeArm": Vector3(-14, 0, 0), "Head": Vector3(-6, -18, 0), "Spine02": Vector3(-2, -10, 0)}, lib._bras("Right", Vector3(-0.5, 0.05, 0.86), Vector3(-0.45, 0.1, 0.89)))
 	var k_b := lib._mains({"Head": Vector3(-4, 0, 0)}, "Head", Vector3(6, -2, 14), Vector3(1, -1, 0))
@@ -65,7 +65,7 @@ func _build_tz_poses() -> void:
 	var seated := {"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0), "Spine02": Vector3(6, 0, 0)}
 	var t_a := lib._merge(lib._merge(lib._merge(seated, {"Head": Vector3(10, 8, 0)}), lib._main("Left", "Spine01", Vector3(20, 0, 24), Vector3(1, -1, 0))), lib._main("Right", "Spine01", Vector3(4, 2, 26), Vector3(-1, -1, 0)))
 	var t_b := lib._merge(lib._merge(lib._merge(t_a, {"Head": Vector3(14, 6, 0)}), lib._main("Left", "Spine01", Vector3(20, -2, 26), Vector3(1, -1, 0))), lib._main("Right", "Spine01", Vector3(2, -4, 28), Vector3(-1, -1, 0)))
-	poses.add_animation("tambour", lib._clip(B, true, [[0.0, t_a, Vector3(0, -38, 0)], [0.25 * B, t_b, Vector3(0, -38, 0)], [0.5 * B, t_a, Vector3(0, -38, 0)], [0.75 * B, t_b, Vector3(0, -38, 0)], [B, t_a, Vector3(0, -38, 0)]]))
+	poses.add_animation("tambour", lib._clip(B, true, [[0.0, t_a, Vector3.ZERO, "pieds"], [0.25 * B, t_b, Vector3.ZERO, "pieds"], [0.5 * B, t_a, Vector3.ZERO, "pieds"], [0.75 * B, t_b, Vector3.ZERO, "pieds"], [B, t_a, Vector3.ZERO, "pieds"]]))
 	anim.add_animation_library("tz", poses)
 	lib.free()
 

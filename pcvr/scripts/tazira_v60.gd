@@ -166,14 +166,30 @@ func _paving() -> void:
 				Vector2(sx, sz) * 0.33, Vector2(sx1, sz) * 0.33, Vector2(sx1, sz1) * 0.33, Vector2(sx, sz1) * 0.33)
 			sz = sz1
 		sx += 3.0
+	# V182 : pas de pavés dans la Murène Ivre. La rue monte vers le nord (6 cm par mètre) ; la taverne a
+	# un plancher à plat, au niveau de sa porte : au fond, les pavés de la rue passaient au-dessus du
+	# plancher, jusqu'à 70 cm derrière le comptoir (Mama Lou n'en dépassait plus que la tête). Autour de
+	# la taverne, les pavés sont posés par carrés de 1 m, sauf ceux qui tombent dedans.
+	var mur: Rect2 = MURENE
 	x = -103.0
 	while x < 103.0:
 		var z2: float = 18.0
 		while z2 < 78.0:
 			var xb: float = minf(x + step, 103.0)
 			var zb: float = minf(z2 + step, 78.0)
-			kit.quad4("paves", T(x, z2, 0.04), T(xb, z2, 0.04), T(xb, zb, 0.04), T(x, zb, 0.04), Vector3.UP,
-				Vector2(x, z2) * 0.3, Vector2(xb, z2) * 0.3, Vector2(xb, zb) * 0.3, Vector2(x, zb) * 0.3)
+			if Rect2(x, z2, xb - x, zb - z2).intersects(mur):
+				var xs: float = x
+				while xs < xb - 0.01:
+					var zs: float = z2
+					while zs < zb - 0.01:
+						if not mur.has_point(Vector2(xs + 0.5, zs + 0.5)):
+							kit.quad4("paves", T(xs, zs, 0.04), T(xs + 1.0, zs, 0.04), T(xs + 1.0, zs + 1.0, 0.04), T(xs, zs + 1.0, 0.04), Vector3.UP,
+								Vector2(xs, zs) * 0.3, Vector2(xs + 1.0, zs) * 0.3, Vector2(xs + 1.0, zs + 1.0) * 0.3, Vector2(xs, zs + 1.0) * 0.3)
+						zs += 1.0
+					xs += 1.0
+			else:
+				kit.quad4("paves", T(x, z2, 0.04), T(xb, z2, 0.04), T(xb, zb, 0.04), T(x, zb, 0.04), Vector3.UP,
+					Vector2(x, z2) * 0.3, Vector2(xb, z2) * 0.3, Vector2(xb, zb) * 0.3, Vector2(x, zb) * 0.3)
 			z2 = zb
 		x += step
 

@@ -203,6 +203,9 @@ func _place() -> void:
 	_spot("place_a1", W(-138.0, 104.0, Y + 0.05), Vector3(1, 0, 0), "debout", "pl_c")
 	_spot("place_a2", W(-140.0, 112.0, Y + 0.05), Vector3(0, 0, -1), "debout", "pl_c")
 	_spot("musique", W(-136.0, 96.0, Y + 0.05), Vector3(1, 0, 0), "tambour", "pl_c")
+	# V182 : un siège de tezontle pour le joueur de tambour (avant, il jouait assis dans le vide, au milieu
+	# de la place)
+	kit.cyl(Transform3D(Basis(), W(-136.0, 96.0, Y) - Vector3(0.1, 0.0, 0.0)), 0.22, 0.2, 0.44, "tezo69", 14)
 	_spot("danse_a", W(-139.0, 94.5, Y + 0.05), Vector3(1, 0, 0), "danse", "pl_c")
 	for tp in [Vector2(-134.0, 92.0), Vector2(-134.0, 116.0), Vector2(-146.0, 92.0), Vector2(-146.0, 116.0)]:
 		kit.torch_post(W(tp.x, tp.y, Y), 2.6)
@@ -262,7 +265,8 @@ func _maisons() -> void:
 	# l'atelier du potier : des jarres de Tlaloc qui sèchent au soleil
 	for k in range(5):
 		kit.jar(W(-96.5, 118.5 + k * 1.1, Y), 0.7, "argile69_bleu" if k % 2 == 0 else "argile69")
-	_spot("potier_az", W(-96.0, 117.0, Y + 0.05), Vector3(0, 0, 1), "potier", "e_s")
+	# (V182 : à 60 cm du mur de la maison d'à côté : assis en tailleur, le potier y entrait de l'épaule)
+	_spot("potier_az", W(-96.0, 117.0, Y + 0.05) + Vector3(0.6, 0, 0.3), Vector3(0, 0, 1), "potier", "e_s")
 	objets["atelier_potier"] = W(-96.5, 120.0, Y + 0.5)
 	# derrière le marché, une rue de maisons d'adobe ; une autre au nord, près de la chaussée
 	var r2 := RandomNumberGenerator.new()
