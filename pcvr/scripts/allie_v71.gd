@@ -255,8 +255,10 @@ func _hold(bone: String) -> Node3D:
 	skel.add_child(att)
 	var hold := Node3D.new()
 	hold.position = Vector3(0, 8.5, 2.5)
-	# la poignée traverse le poing, l'arme part vers l'avant (os de main des corps V64)
-	hold.rotation_degrees = Vector3(-90, 0, 0)
+	# la poignée traverse le poing ; V180 : l'arme tenue comme le héros la tient (le long de l'axe Z de
+	# l'os de la main), car les coups d'épée (hero_v28 : slash1, slash2, slash3) pointent maintenant la
+	# lame là où va le coup (avant : -90°, la lame partait à l'opposé pendant les coups)
+	hold.rotation_degrees = Vector3(90, 0, 0)
 	hold.scale = Vector3.ONE * 100.0
 	att.add_child(hold)
 	return hold

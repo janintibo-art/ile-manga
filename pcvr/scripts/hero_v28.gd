@@ -148,43 +148,49 @@ func _build_animations() -> void:
 	idle_b["LeftArm"] = Vector3(-2, 0, -11)
 	idle_b["RightArm"] = Vector3(-2, 0, 11)
 	poses.add_animation("idle", _clip(3.2, true, [[0.0, arms_in, Vector3.ZERO], [1.6, idle_b, Vector3(0, -0.6, 0)], [3.2, arms_in, Vector3.ZERO]]))
-	# Saut : impulsion bras levés, puis jambes repliées.
-	var push := {"LeftArm": Vector3(-75, 0, 18), "RightArm": Vector3(-75, 0, -18), "LeftForeArm": Vector3(-25, 0, 0), "RightForeArm": Vector3(-25, 0, 0),
-		"Spine02": Vector3(-6, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "RightUpLeg": Vector3(8, 0, 0), "RightLeg": Vector3(25, 0, 0), "Head": Vector3(-8, 0, 0)}
-	var tuck := {"LeftArm": Vector3(-35, 0, 45), "RightArm": Vector3(-35, 0, -45), "LeftForeArm": Vector3(-40, 0, 0), "RightForeArm": Vector3(-40, 0, 0),
-		"LeftUpLeg": Vector3(-60, 0, 0), "LeftLeg": Vector3(85, 0, 0), "RightUpLeg": Vector3(-25, 0, 0), "RightLeg": Vector3(70, 0, 0), "Spine02": Vector3(8, 0, 0)}
+	# V180 : les bras des poses du héros (et des habitants, des compagnons, des monstres qui jouent ces
+	# clips) posés par directions (_bras, _bras2) ; l'arme tenue en main pointe là où il faut (_lame).
+	# Avant, des angles autour de X, Y, Z qui, sur ce squelette (au repos les bras en A), écartaient les
+	# bras en croix (touché, saut, chute) ou les levaient au ciel (parade, escalade, coups d'épée).
+	# Saut : impulsion bras lancés devant, vers le haut, puis jambes repliées, les mains devant soi.
+	var push := _bras2({"Spine02": Vector3(-6, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "RightUpLeg": Vector3(8, 0, 0), "RightLeg": Vector3(25, 0, 0), "Head": Vector3(-8, 0, 0)},
+		Vector3(0.25, 0.25, 0.93), Vector3(0.12, 0.6, 0.79))
+	var tuck := _bras2({"LeftUpLeg": Vector3(-60, 0, 0), "LeftLeg": Vector3(85, 0, 0), "RightUpLeg": Vector3(-25, 0, 0), "RightLeg": Vector3(70, 0, 0), "Spine02": Vector3(8, 0, 0)},
+		Vector3(0.4, -0.3, 0.87), Vector3(-0.05, 0.25, 0.97))
 	poses.add_animation("jump", _clip(0.4, false, [[0.0, push, Vector3(0, 2, 0)], [0.4, tuck, Vector3(0, 4, 0)]]))
-	var fall_a := {"LeftArm": Vector3(-25, 0, 62), "RightArm": Vector3(-25, 0, -62), "LeftForeArm": Vector3(-25, 0, 0), "RightForeArm": Vector3(-25, 0, 0),
-		"LeftUpLeg": Vector3(-30, 0, 0), "LeftLeg": Vector3(45, 0, 0), "RightUpLeg": Vector3(-8, 0, 0), "RightLeg": Vector3(25, 0, 0), "Spine02": Vector3(-4, 0, 0), "Head": Vector3(10, 0, 0)}
-	var fall_b := fall_a.duplicate()
-	fall_b["LeftArm"] = Vector3(-30, 0, 70)
-	fall_b["RightArm"] = Vector3(-20, 0, -66)
+	# Chute : les bras écartés devant soi, à hauteur d'épaules, les coudes pliés (on cherche l'équilibre).
+	var fall_a := _bras2({"LeftUpLeg": Vector3(-30, 0, 0), "LeftLeg": Vector3(45, 0, 0), "RightUpLeg": Vector3(-8, 0, 0), "RightLeg": Vector3(25, 0, 0), "Spine02": Vector3(-4, 0, 0), "Head": Vector3(10, 0, 0)},
+		Vector3(0.85, 0.1, 0.5), Vector3(0.6, 0.35, 0.72))
+	var fall_b := _merge(_merge(fall_a, _bras("Left", Vector3(0.9, 0.2, 0.4), Vector3(0.65, 0.5, 0.57))), _bras("Right", Vector3(-0.8, 0.0, 0.6), Vector3(-0.55, 0.25, 0.8)))
 	fall_b["LeftUpLeg"] = Vector3(-14, 0, 0)
 	fall_b["RightUpLeg"] = Vector3(-26, 0, 0)
 	poses.add_animation("fall", _clip(0.9, true, [[0.0, fall_a, Vector3.ZERO], [0.45, fall_b, Vector3.ZERO], [0.9, fall_a, Vector3.ZERO]]))
-	var crouch := {"LeftUpLeg": Vector3(-52, 0, 0), "RightUpLeg": Vector3(-52, 0, 0), "LeftLeg": Vector3(88, 0, 0), "RightLeg": Vector3(88, 0, 0),
-		"LeftFoot": Vector3(-34, 0, 0), "RightFoot": Vector3(-34, 0, 0), "Spine02": Vector3(28, 0, 0), "Head": Vector3(-18, 0, 0),
-		"LeftArm": Vector3(-30, 0, 25), "RightArm": Vector3(-30, 0, -25), "LeftForeArm": Vector3(-30, 0, 0), "RightForeArm": Vector3(-30, 0, 0)}
+	# Réception : accroupi, les mains devant les genoux.
+	var crouch := _bras2({"LeftUpLeg": Vector3(-52, 0, 0), "RightUpLeg": Vector3(-52, 0, 0), "LeftLeg": Vector3(88, 0, 0), "RightLeg": Vector3(88, 0, 0),
+		"LeftFoot": Vector3(-34, 0, 0), "RightFoot": Vector3(-34, 0, 0), "Spine02": Vector3(28, 0, 0), "Head": Vector3(-18, 0, 0)},
+		Vector3(0.3, -0.55, 0.78), Vector3(0.1, -0.35, 0.93))
 	poses.add_animation("land", _clip(0.36, false, [[0.0, crouch, Vector3(0, -17, 0)], [0.36, arms_in, Vector3.ZERO]]))
-	# Escalade : main gauche haute / main droite haute, en alternance, genoux qui montent.
-	var climb_a := {"LeftArm": Vector3(-155, 0, 12), "LeftForeArm": Vector3(-25, 0, 0), "RightArm": Vector3(-100, 0, -14), "RightForeArm": Vector3(-70, 0, 0),
-		"LeftUpLeg": Vector3(-18, 0, 0), "LeftLeg": Vector3(30, 0, 0), "RightUpLeg": Vector3(-62, 0, 0), "RightLeg": Vector3(85, 0, 0),
-		"Spine02": Vector3(6, 0, 0), "Head": Vector3(-22, 0, 0)}
-	var climb_b := {"RightArm": Vector3(-155, 0, -12), "RightForeArm": Vector3(-25, 0, 0), "LeftArm": Vector3(-100, 0, 14), "LeftForeArm": Vector3(-70, 0, 0),
-		"RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(30, 0, 0), "LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(85, 0, 0),
-		"Spine02": Vector3(6, 0, 0), "Head": Vector3(-22, 0, 0)}
+	# Escalade : main gauche haute / main droite haute, en alternance, les mains sur la paroi devant
+	# soi ; genoux qui montent.
+	var climb_a := _merge(_merge({"LeftUpLeg": Vector3(-18, 0, 0), "LeftLeg": Vector3(30, 0, 0), "RightUpLeg": Vector3(-62, 0, 0), "RightLeg": Vector3(85, 0, 0),
+		"Spine02": Vector3(6, 0, 0), "Head": Vector3(-22, 0, 0)}, _bras("Left", Vector3(0.3, 0.85, 0.43), Vector3(0.05, 0.92, 0.39))),
+		_bras("Right", Vector3(-0.4, -0.35, 0.85), Vector3(-0.1, 0.8, 0.6)))
+	var climb_b := _merge(_merge({"RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(30, 0, 0), "LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(85, 0, 0),
+		"Spine02": Vector3(6, 0, 0), "Head": Vector3(-22, 0, 0)}, _bras("Right", Vector3(-0.3, 0.85, 0.43), Vector3(-0.05, 0.92, 0.39))),
+		_bras("Left", Vector3(0.4, -0.35, 0.85), Vector3(0.1, 0.8, 0.6)))
 	poses.add_animation("climb", _clip(1.1, true, [[0.0, climb_a, Vector3(0, 0, -4)], [0.55, climb_b, Vector3(0, 0, -4)], [1.1, climb_a, Vector3(0, 0, -4)]]))
-	# Se hisser : suspendu, traction coudes pliés, appui sur les mains, debout.
-	var hang := {"LeftArm": Vector3(-168, 0, 8), "RightArm": Vector3(-168, 0, -8), "LeftForeArm": Vector3(-10, 0, 0), "RightForeArm": Vector3(-10, 0, 0),
-		"LeftUpLeg": Vector3(-12, 0, 0), "RightUpLeg": Vector3(-4, 0, 0), "LeftLeg": Vector3(20, 0, 0), "RightLeg": Vector3(14, 0, 0), "Head": Vector3(-20, 0, 0)}
-	var pull := {"LeftArm": Vector3(-110, 0, 20), "RightArm": Vector3(-110, 0, -20), "LeftForeArm": Vector3(-105, 0, 0), "RightForeArm": Vector3(-105, 0, 0),
-		"LeftUpLeg": Vector3(-75, 0, 0), "LeftLeg": Vector3(95, 0, 0), "RightUpLeg": Vector3(-30, 0, 0), "RightLeg": Vector3(50, 0, 0), "Spine02": Vector3(25, 0, 0)}
-	var press := {"LeftArm": Vector3(-25, 0, 22), "RightArm": Vector3(-25, 0, -22), "LeftForeArm": Vector3(-20, 0, 0), "RightForeArm": Vector3(-20, 0, 0),
-		"LeftUpLeg": Vector3(-80, 0, 0), "LeftLeg": Vector3(110, 0, 0), "RightUpLeg": Vector3(-10, 0, 0), "RightLeg": Vector3(30, 0, 0), "Spine02": Vector3(35, 0, 0)}
+	# Se hisser : suspendu (les bras tendus vers le rebord), traction (les coudes qui descendent, les mains
+	# au rebord), appui sur les mains, debout.
+	var hang := _bras2({"LeftUpLeg": Vector3(-12, 0, 0), "RightUpLeg": Vector3(-4, 0, 0), "LeftLeg": Vector3(20, 0, 0), "RightLeg": Vector3(14, 0, 0), "Head": Vector3(-20, 0, 0)},
+		Vector3(0.18, 0.95, 0.25), Vector3(0.12, 0.96, 0.25))
+	var pull := _bras2({"LeftUpLeg": Vector3(-75, 0, 0), "LeftLeg": Vector3(95, 0, 0), "RightUpLeg": Vector3(-30, 0, 0), "RightLeg": Vector3(50, 0, 0), "Spine02": Vector3(25, 0, 0)},
+		Vector3(0.65, -0.35, 0.67), Vector3(-0.05, 0.9, 0.43))
+	var press := _bras2({"LeftUpLeg": Vector3(-80, 0, 0), "LeftLeg": Vector3(110, 0, 0), "RightUpLeg": Vector3(-10, 0, 0), "RightLeg": Vector3(30, 0, 0), "Spine02": Vector3(35, 0, 0)},
+		Vector3(0.3, -0.75, 0.6), Vector3(0.15, -0.8, 0.58))
 	poses.add_animation("mantle", _clip(0.85, false, [[0.0, hang, Vector3(0, -6, -6)], [0.35, pull, Vector3(0, -4, 0)], [0.62, press, Vector3(0, -14, 6)], [0.85, arms_in, Vector3.ZERO]]))
-	# Pousser une porte : bras droit tendu, petit pas en avant.
-	var shove := {"RightArm": Vector3(-82, 0, -4), "RightForeArm": Vector3(-8, 0, 0), "LeftArm": Vector3(10, 0, -10), "LeftForeArm": Vector3(-20, 0, 0),
-		"Spine02": Vector3(10, 12, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(20, 0, 0), "RightUpLeg": Vector3(10, 0, 0)}
+	# Pousser une porte : bras droit tendu devant soi, petit pas en avant.
+	var shove := _merge(_merge({"Spine02": Vector3(10, 12, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(20, 0, 0), "RightUpLeg": Vector3(10, 0, 0)},
+		_bras("Right", Vector3(-0.2, 0.15, 0.97), Vector3(-0.08, 0.2, 0.98))), _bras("Left", Vector3(0.22, -0.95, 0.2), Vector3(0.12, -0.85, 0.5)))
 	poses.add_animation("push", _clip(0.7, false, [[0.0, arms_in, Vector3.ZERO], [0.25, shove, Vector3(0, -2, 3)], [0.45, shove, Vector3(0, -2, 4)], [0.7, arms_in, Vector3.ZERO]]))
 	# Ramasser : on s'accroupit, main droite au sol.
 	var reach := crouch.duplicate()
@@ -192,11 +198,12 @@ func _build_animations() -> void:
 	# V179 : la main droite vers le sol devant soi, la gauche qui pend (avant : les deux bras écartés)
 	reach = _merge(_merge(reach, _bras("Right", Vector3(-0.1, -0.65, 0.75), Vector3(-0.05, -0.6, 0.8))), _bras("Left", Vector3(0.15, -0.75, 0.64), Vector3(0.1, -0.6, 0.8)))
 	poses.add_animation("pickup", _clip(0.75, false, [[0.0, arms_in, Vector3.ZERO], [0.32, reach, Vector3(0, -24, 0)], [0.45, reach, Vector3(0, -24, 0)], [0.75, arms_in, Vector3.ZERO]]))
-	# Manger : main droite à la bouche.
+	# Manger : main droite à la bouche (V180 : le bras de la gorgée de « boire », la tête droite ; avant,
+	# la main partait à côté de la tête).
 	var bite := arms_in.duplicate()
-	bite["RightArm"] = Vector3(-38, 0, 30)
-	bite["RightForeArm"] = Vector3(-135, 0, 0)
-	bite["Head"] = Vector3(8, 0, 0)
+	bite["RightArm"] = Vector3(-87.5, 60.6, -20)
+	bite["RightForeArm"] = Vector3(-34.4, 36.9, -5)
+	bite["Head"] = Vector3(-6, 0, 0)
 	poses.add_animation("eat", _clip(1.1, false, [[0.0, arms_in, Vector3.ZERO], [0.3, bite, Vector3.ZERO], [0.8, bite, Vector3.ZERO], [1.1, arms_in, Vector3.ZERO]]))
 	# V66 : boire : le coude se lève devant, la chope monte à la bouche, la tête bascule en
 	# arrière (angles cherchés pour que la main arrive devant la bouche du héros)
@@ -221,18 +228,18 @@ func _build_animations() -> void:
 	hic["RightShoulder"] = Vector3(0, 0, 8)
 	hic["Head"] = Vector3(-8, 0, 0)
 	poses.add_animation("hoquet", _clip(0.35, false, [[0.0, arms_in, Vector3.ZERO], [0.08, hic, Vector3(0, 2.5, 0)], [0.35, arms_in, Vector3.ZERO]]))
-	# Touché : recul du buste.
-	var flinch := {"Spine02": Vector3(-18, 0, 0), "Head": Vector3(-20, 0, 0), "LeftArm": Vector3(-30, 0, 35), "RightArm": Vector3(-30, 0, -35)}
+	# Touché : recul du buste, les mains qui remontent devant la poitrine (V180 ; avant : les bras en croix).
+	var flinch := _bras2({"Spine02": Vector3(-18, 0, 0), "Head": Vector3(-20, 0, 0)}, Vector3(0.35, -0.65, 0.68), Vector3(-0.2, 0.35, 0.92))
 	poses.add_animation("hurt", _clip(0.4, false, [[0.0, arms_in, Vector3.ZERO], [0.12, flinch, Vector3(0, -3, -6)], [0.4, arms_in, Vector3.ZERO]]))
-	# Parade : avant-bras devant le visage, genoux fléchis.
-	var guard := {"LeftArm": Vector3(-72, 0, -22), "RightArm": Vector3(-72, 0, 22), "LeftForeArm": Vector3(-105, 0, 0), "RightForeArm": Vector3(-105, 0, 0),
-		"Spine02": Vector3(10, 0, 0), "LeftUpLeg": Vector3(-20, 0, 0), "RightUpLeg": Vector3(-12, 0, 0), "LeftLeg": Vector3(28, 0, 0), "RightLeg": Vector3(22, 0, 0), "Head": Vector3(-6, 0, 0)}
+	# Parade : avant-bras levés devant le visage, l'arme en travers, la pointe en haut à gauche ; genoux
+	# fléchis (V180 ; avant : les bras levés au ciel, écartés).
+	var guard := _lame(_bras2({"Spine02": Vector3(10, 0, 0), "LeftUpLeg": Vector3(-20, 0, 0), "RightUpLeg": Vector3(-12, 0, 0), "LeftLeg": Vector3(28, 0, 0), "RightLeg": Vector3(22, 0, 0), "Head": Vector3(-6, 0, 0)},
+		Vector3(0.35, -0.35, 0.87), Vector3(-0.35, 0.8, 0.48)), "Right", Vector3(0.8, 0.55, 0.2))
 	poses.add_animation("block", _clip(0.2, true, [[0.0, guard, Vector3(0, -5, 0)], [0.2, guard, Vector3(0, -5, 0)]]))
-	# Roulade avant : le bassin fait un tour complet, corps groupé.
+	# Roulade avant : le bassin fait un tour complet, corps groupé (les mains devant la poitrine).
 	var keys := []
-	var curled := {"LeftUpLeg": Vector3(-115, 0, 0), "RightUpLeg": Vector3(-115, 0, 0), "LeftLeg": Vector3(130, 0, 0), "RightLeg": Vector3(130, 0, 0),
-		"LeftArm": Vector3(-70, 0, 15), "RightArm": Vector3(-70, 0, -15), "LeftForeArm": Vector3(-95, 0, 0), "RightForeArm": Vector3(-95, 0, 0),
-		"Spine02": Vector3(30, 0, 0), "Spine01": Vector3(10, 0, 0), "Head": Vector3(30, 0, 0)}
+	var curled := _bras2({"LeftUpLeg": Vector3(-115, 0, 0), "RightUpLeg": Vector3(-115, 0, 0), "LeftLeg": Vector3(130, 0, 0), "RightLeg": Vector3(130, 0, 0),
+		"Spine02": Vector3(30, 0, 0), "Spine01": Vector3(10, 0, 0), "Head": Vector3(30, 0, 0)}, Vector3(0.3, -0.35, 0.89), Vector3(-0.25, 0.25, 0.93))
 	for k in range(9):
 		var u: float = float(k) / 8.0
 		var pose := curled.duplicate()
@@ -240,23 +247,32 @@ func _build_animations() -> void:
 		var low: float = sin(u * PI)
 		keys.append([u * ROLL_TIME, pose if k > 0 and k < 8 else crouch, Vector3(0, -48.0 * low - (17.0 if k == 0 or k == 8 else 0.0), 0)])
 	poses.add_animation("roll", _clip(ROLL_TIME, false, keys))
-	# Épée : revers, coup droit, coup de haut en bas.
+	# Épée : coup droit (de droite à gauche), revers (de gauche à droite), coup de haut en bas. V180 : le
+	# bras armé posé par directions, la lame qui pointe où va le coup (armée derrière l'épaule, puis
+	# balayée devant soi) ; l'autre bras équilibre (avant : les bras en croix, la lame vers le sol).
 	var stance := {"LeftUpLeg": Vector3(-28, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0), "RightLeg": Vector3(12, 0, 0)}
-	var w1 := _merge(stance, {"Spine02": Vector3(0, -38, 0), "RightArm": Vector3(-70, 0, -75), "RightForeArm": Vector3(-75, 0, 0), "LeftArm": Vector3(-30, 0, 20)})
-	var s1 := _merge(stance, {"Spine02": Vector3(6, 42, 0), "RightArm": Vector3(-88, 0, 18), "RightForeArm": Vector3(-8, 0, 0), "LeftArm": Vector3(-10, 0, 35)})
+	var w1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, -38, 0)}), _bras("Right", Vector3(-0.85, 0.25, 0.0), Vector3(0.1, 0.8, -0.15))),
+		_bras("Left", Vector3(0.35, -0.8, 0.48), Vector3(0.15, -0.3, 0.94))), "Right", Vector3(0.3, 0.35, -0.89))
+	var s1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, 42, 0)}), _bras("Right", Vector3(0.05, -0.12, 0.99), Vector3(0.3, -0.12, 0.95))),
+		_bras("Left", Vector3(0.35, -0.88, -0.3), Vector3(0.25, -0.9, 0.35))), "Right", Vector3(0.7, -0.15, 0.7))
 	poses.add_animation("slash1", _clip(0.5, false, [[0.0, arms_in, Vector3.ZERO], [0.12, w1, Vector3(0, -6, 0)], [SLASH_HIT, s1, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
-	var w2 := _merge(stance, {"Spine02": Vector3(0, 40, 0), "RightArm": Vector3(-85, 0, 25), "RightForeArm": Vector3(-95, 0, 0), "LeftArm": Vector3(-10, 0, 30)})
-	var s2 := _merge(stance, {"Spine02": Vector3(6, -40, 0), "RightArm": Vector3(-80, 0, -70), "RightForeArm": Vector3(-10, 0, 0), "LeftArm": Vector3(-35, 0, 15)})
+	var w2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, 40, 0)}), _bras("Right", Vector3(0.3, -0.4, 0.87), Vector3(0.7, 0.55, 0.1))),
+		_bras("Left", Vector3(0.25, -0.9, 0.35), Vector3(0.05, -0.35, 0.94))), "Right", Vector3(0.45, 0.45, -0.77))
+	var s2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, -40, 0)}), _bras("Right", Vector3(-0.65, -0.1, 0.75), Vector3(-0.75, -0.05, 0.66))),
+		_bras("Left", Vector3(0.45, -0.85, 0.25), Vector3(0.3, -0.6, 0.74))), "Right", Vector3(-0.85, 0.0, 0.53))
 	poses.add_animation("slash2", _clip(0.5, false, [[0.0, s1, Vector3(0, -8, 6)], [0.12, w2, Vector3(0, -6, 0)], [SLASH_HIT, s2, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
-	var w3 := _merge(stance, {"Spine02": Vector3(-12, 0, 0), "RightArm": Vector3(-175, 0, -8), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-150, 0, 10), "LeftForeArm": Vector3(-60, 0, 0)})
-	var s3 := _merge(stance, {"Spine02": Vector3(30, 0, 0), "RightArm": Vector3(-55, 0, -5), "RightForeArm": Vector3(-5, 0, 0), "LeftArm": Vector3(-50, 0, 5), "LeftForeArm": Vector3(-20, 0, 0)})
+	var w3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(-12, 0, 0)}), _bras("Right", Vector3(-0.5, 0.82, 0.28), Vector3(-0.15, 0.95, -0.25))),
+		_bras("Left", Vector3(0.3, -0.25, 0.92), Vector3(0.15, 0.1, 0.98))), "Right", Vector3(-0.1, 0.2, -0.97))
+	var s3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(30, 0, 0)}), _bras("Right", Vector3(-0.15, -0.3, 0.94), Vector3(-0.05, -0.45, 0.89))),
+		_bras("Left", Vector3(0.3, -0.85, 0.43), Vector3(0.15, -0.55, 0.82))), "Right", Vector3(0.0, -0.3, 0.95))
 	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
-	# V141 : le coup plongeant : l'arme levée à deux mains, les jambes repliées, puis le sol frappé,
-	# accroupi.
+	# V141 : le coup plongeant : l'arme levée, les jambes repliées, puis le sol frappé, accroupi (V180 :
+	# la lame plantée devant soi).
 	var plie := {"LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(72, 0, 0), "RightUpLeg": Vector3(-38, 0, 0), "RightLeg": Vector3(64, 0, 0)}
 	poses.add_animation("plonge", _clip(0.22, false, [[0.0, w3, Vector3(0, 2, 0)], [0.22, _merge(w3, plie), Vector3(0, 6, 0)]]))
-	var accroupi := _merge(s3, {"LeftUpLeg": Vector3(-74, 0, 0), "LeftLeg": Vector3(86, 0, 0), "RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(64, 0, 0),
-		"Spine02": Vector3(40, 0, 0), "RightArm": Vector3(-38, 0, -5), "LeftArm": Vector3(-34, 0, 5)})
+	var accroupi := _lame(_merge(_merge(_merge(s3, {"LeftUpLeg": Vector3(-74, 0, 0), "LeftLeg": Vector3(86, 0, 0), "RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(64, 0, 0),
+		"Spine02": Vector3(40, 0, 0)}), _bras("Right", Vector3(-0.15, -0.6, 0.78), Vector3(-0.05, -0.75, 0.66))),
+		_bras("Left", Vector3(0.3, -0.75, 0.6), Vector3(0.15, -0.7, 0.7))), "Right", Vector3(0.0, -0.85, 0.52))
 	poses.add_animation("plonge_frappe", _clip(0.45, false, [[0.0, accroupi, Vector3(0, -34, 8)], [0.22, accroupi, Vector3(0, -32, 8)], [0.45, arms_in, Vector3.ZERO]]))
 	# V29 : assis (sur le banc de la barque, sur une chaise) ; V179 : les mains posées sur les cuisses
 	# (avant : les bras écartés, les mains en l'air devant soi)
@@ -265,33 +281,37 @@ func _build_animations() -> void:
 	var seated_b := seated.duplicate()
 	seated_b["Head"] = Vector3(-4, 8, 0)
 	seated_b["Spine02"] = Vector3(6, 3, 0)
-	# V32 : pêche — canne tenue devant soi, lancer par-dessus l'épaule, moulinet.
-	var hold := _merge(arms_in, {"RightArm": Vector3(-38, 0, -8), "RightForeArm": Vector3(-62, 0, 0), "LeftArm": Vector3(-30, 0, -14), "LeftForeArm": Vector3(-70, 0, 0),
-		"Spine02": Vector3(-3, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "RightUpLeg": Vector3(6, 0, 0),
-		"RightHand": Vector3(-90, 0, 0)})   # poignet cassé : la canne monte devant (~30°)
+	# V32 : pêche — canne tenue devant soi à deux mains (elle monte devant, ~30°), lancer par-dessus
+	# l'épaule, moulinet (V180 : les bras par directions, la canne pointée par _lame).
+	var hold := _lame(_merge(_merge({"Spine02": Vector3(-3, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "RightUpLeg": Vector3(6, 0, 0)},
+		_bras("Right", Vector3(-0.2, -0.8, 0.56), Vector3(0.45, 0.15, 0.88))), _bras("Left", Vector3(0.12, -0.85, 0.5), Vector3(-0.75, 0.1, 0.65))),
+		"Right", Vector3(0.1, 0.5, 0.86))
 	var hold_b := hold.duplicate()
 	hold_b["Head"] = Vector3(3, 4, 0)
 	hold_b["Spine02"] = Vector3(-2, 2, 0)
 	poses.add_animation("peche_tenir", _clip(3.0, true, [[0.0, hold, Vector3.ZERO], [1.5, hold_b, Vector3(0, -0.5, 0)], [3.0, hold, Vector3.ZERO]]))
-	var back := _merge(hold, {"RightArm": Vector3(-165, 0, -15), "RightForeArm": Vector3(-35, 0, 0), "Spine02": Vector3(-12, -18, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(18, 0, 0),
-		"RightHand": Vector3(-80, 0, 0)})   # canne par-dessus l'épaule, vers l'arrière
-	var throw := _merge(hold, {"RightArm": Vector3(-70, 0, -6), "RightForeArm": Vector3(-15, 0, 0), "Spine02": Vector3(14, 8, 0), "LeftUpLeg": Vector3(-26, 0, 0), "LeftLeg": Vector3(22, 0, 0), "RightUpLeg": Vector3(12, 0, 0),
-		"RightHand": Vector3(-60, 0, 0)})
+	var libre := _bras("Left", Vector3(0.25, -0.8, 0.55), Vector3(0.1, -0.2, 0.97))
+	var back := _lame(_merge(_merge(_merge(hold, {"Spine02": Vector3(-12, -18, 0), "LeftUpLeg": Vector3(-22, 0, 0), "LeftLeg": Vector3(18, 0, 0)}),
+		_bras("Right", Vector3(-0.35, 0.55, 0.76), Vector3(-0.1, 0.95, -0.3))), libre), "Right", Vector3(0.0, 0.4, -0.92))   # canne par-dessus l'épaule, vers l'arrière
+	var throw := _lame(_merge(_merge(_merge(hold, {"Spine02": Vector3(14, 8, 0), "LeftUpLeg": Vector3(-26, 0, 0), "LeftLeg": Vector3(22, 0, 0), "RightUpLeg": Vector3(12, 0, 0)}),
+		_bras("Right", Vector3(-0.15, 0.15, 0.98), Vector3(-0.05, 0.25, 0.97))), libre), "Right", Vector3(0.0, 0.3, 0.95))
 	poses.add_animation("peche_armer", _clip(0.35, false, [[0.0, hold, Vector3.ZERO], [0.35, back, Vector3(0, -2, -3)]]))
 	poses.add_animation("peche_lancer", _clip(0.55, false, [[0.0, back, Vector3(0, -2, -3)], [0.16, throw, Vector3(0, -4, 6)], [0.55, hold, Vector3.ZERO]]))
-	var reel_a := _merge(hold, {"Spine02": Vector3(-10, 0, 0), "RightArm": Vector3(-55, 0, -8), "RightForeArm": Vector3(-80, 0, 0), "LeftArm": Vector3(-45, 0, -30), "LeftForeArm": Vector3(-95, 0, 0),
-		"LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0),
-		"RightHand": Vector3(-50, 0, 0)})
-	var reel_b := reel_a.duplicate()
-	reel_b["LeftArm"] = Vector3(-60, 0, -22)
-	reel_b["LeftForeArm"] = Vector3(-70, 0, 0)
+	var reel_a := _lame(_merge(_merge(_merge(hold, {"Spine02": Vector3(-10, 0, 0), "LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0)}),
+		_bras("Right", Vector3(-0.2, -0.8, 0.56), Vector3(0.45, 0.15, 0.88))), _bras("Left", Vector3(0.1, -0.75, 0.65), Vector3(-0.7, 0.25, 0.67))),
+		"Right", Vector3(0.1, 0.55, 0.83))
+	var reel_b := _merge(reel_a, _bras("Left", Vector3(0.1, -0.75, 0.65), Vector3(-0.6, -0.1, 0.79)))
 	reel_b["Spine02"] = Vector3(-14, 4, 0)
 	poses.add_animation("peche_mouliner", _clip(0.5, true, [[0.0, reel_a, Vector3(0, -3, -2)], [0.25, reel_b, Vector3(0, -4, -3)], [0.5, reel_a, Vector3(0, -3, -2)]]))
-	# V33 : creuser à la pelle — on enfonce le fer, on fait levier, on rejette la terre.
-	var dig_up := _merge(stance, {"Spine02": Vector3(8, 0, 0), "RightArm": Vector3(-62, 0, -10), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-55, 0, -28), "LeftForeArm": Vector3(-60, 0, 0)})
-	var dig_in := _merge(stance, {"Spine02": Vector3(34, 0, 0), "Head": Vector3(-10, 0, 0), "RightArm": Vector3(-38, 0, -8), "RightForeArm": Vector3(-40, 0, 0),
-		"LeftArm": Vector3(-42, 0, -26), "LeftForeArm": Vector3(-35, 0, 0), "LeftUpLeg": Vector3(-40, 0, 0), "LeftLeg": Vector3(45, 0, 0)})
-	var dig_lift := _merge(stance, {"Spine02": Vector3(-6, 22, 0), "RightArm": Vector3(-80, 0, -20), "RightForeArm": Vector3(-85, 0, 0), "LeftArm": Vector3(-70, 0, -10), "LeftForeArm": Vector3(-50, 0, 0)})
+	# V33 : creuser à la pelle — on enfonce le fer, on fait levier, on rejette la terre (V180 : les deux
+	# mains devant soi sur le manche, la pelle pointée vers le sol, puis devant).
+	var dig_up := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(8, 0, 0)}), _bras("Right", Vector3(-0.25, -0.55, 0.8), Vector3(0.05, 0.55, 0.83))),
+		_bras("Left", Vector3(0.1, -0.8, 0.6), Vector3(-0.55, 0.0, 0.84))), "Right", Vector3(0.05, -0.9, 0.42))
+	var dig_in := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(34, 0, 0), "Head": Vector3(-10, 0, 0), "LeftUpLeg": Vector3(-40, 0, 0), "LeftLeg": Vector3(45, 0, 0)}),
+		_bras("Right", Vector3(-0.2, -0.8, 0.56), Vector3(0.05, -0.3, 0.95))), _bras("Left", Vector3(0.1, -0.85, 0.5), Vector3(-0.5, -0.4, 0.77))),
+		"Right", Vector3(0.0, -0.85, 0.53))
+	var dig_lift := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(-6, 22, 0)}), _bras("Right", Vector3(-0.3, -0.45, 0.84), Vector3(0.15, 0.3, 0.94))),
+		_bras("Left", Vector3(0.15, -0.7, 0.7), Vector3(-0.45, 0.1, 0.89))), "Right", Vector3(0.2, -0.1, 0.97))
 	poses.add_animation("creuser", _clip(1.25, false, [[0.0, arms_in, Vector3.ZERO], [0.25, dig_up, Vector3(0, -2, 0)], [0.55, dig_in, Vector3(0, -14, 4)],
 		[0.85, dig_lift, Vector3(0, -4, 0)], [1.25, arms_in, Vector3.ZERO]]))
 	poses.add_animation("sit", _clip(4.0, true, [[0.0, seated, Vector3(0, -38, 0)], [2.0, seated_b, Vector3(0, -38, 0)], [4.0, seated, Vector3(0, -38, 0)]]))
@@ -423,6 +443,38 @@ func _bras2(p: Dictionary, coude: Vector3, main: Vector3, roulis: float = 0.0) -
 		out[k] = g[k]
 	for k in d:
 		out[k] = d[k]
+	return out
+
+
+## V180 : ce que tient la main « cote » (l'épée, la canne, la pelle : tenus comme equip les tient, le
+## long de l'axe Z de l'os de la main) pointe vers « dir » (repère du corps au repos, comme _bras) ; le
+## bras est déjà posé dans « p ». L'avant-bras tourne d'abord sur lui-même (comme un vrai poignet qui
+## tourne, jusqu'à 90°), puis la main se plie pour le reste. Rend la pose complétée (l'avant-bras et la
+## main de ce côté).
+func _lame(p: Dictionary, cote: String, dir: Vector3) -> Dictionary:
+	var f: int = skel.find_bone(cote + "ForeArm")
+	var h: int = skel.find_bone(cote + "Hand")
+	if f < 0 or h < 0:
+		return p
+	var out: Dictionary = p.duplicate()
+	var qa := Quaternion.from_euler(Vector3(p.get(cote + "Arm", Vector3.ZERO)) * (PI / 180.0))
+	var qf := Quaternion.from_euler(Vector3(p.get(cote + "ForeArm", Vector3.ZERO)) * (PI / 180.0))
+	var df: Vector3 = (skel.get_bone_global_rest(h).origin - skel.get_bone_global_rest(f).origin).normalized()
+	var z0: Vector3 = skel.get_bone_global_rest(h).basis.orthonormalized().z
+	var b: Vector3 = dir.normalized()
+	var axe: Vector3 = (qa * qf * df).normalized()
+	var cur: Vector3 = qa * qf * z0
+	# la torsion de l'avant-bras autour de son axe : l'arme au plus près de « dir »
+	var c1: Vector3 = cur - axe * cur.dot(axe)
+	var b1: Vector3 = b - axe * b.dot(axe)
+	var t: float = 0.0
+	if c1.length() > 0.05 and b1.length() > 0.05:
+		t = clampf(c1.signed_angle_to(b1, axe), deg_to_rad(-90.0), deg_to_rad(90.0))
+	var qf2: Quaternion = (qa.inverse() * Quaternion(axe, t) * qa * qf).normalized()
+	# puis le poignet qui se plie
+	var qh := Quaternion(z0, ((qa * qf2).inverse() * b).normalized())
+	out[cote + "ForeArm"] = Basis(qf2).get_euler() * (180.0 / PI)
+	out[cote + "Hand"] = Basis(qh).get_euler() * (180.0 / PI)
 	return out
 
 

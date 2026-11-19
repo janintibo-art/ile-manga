@@ -91,4 +91,106 @@ func _serie() -> void:
 		for f2 in gens:
 			f2.npc.queue_free()
 		await _images(3)
+	await _heros98(lieu)
 	lieu.queue_free()
+
+
+## V180 : les poses du héros (hero_v28 : sauter, tomber, se recevoir, grimper, se hisser, pousser une
+## porte, être touché, parer, les trois coups d'épée, le coup plongeant, pêcher, creuser), sur le héros
+## lui-même (hero.glb, la grosse tête, les bras courts) et sur un habitant (un vrai corps : les compagnons,
+## les monstres, les habitants touchés jouent ces clips). Avant V180, des bras en croix (touché, saut,
+## chute), levés au ciel (parade, escalade), la lame vers le sol à la fin d'un coup.
+const CLIPS98 := ["v28/hurt:0.12", "v28/block:0.1", "v28/slash1:0.12", "v28/slash1:0.22", "v28/slash2:0.12", "v28/slash2:0.22",
+	"v28/slash3:0.16", "v28/slash3:0.27", "v28/plonge_frappe:0.1", "v28/fall:0", "v28/fall:0.45", "v28/jump:0", "v28/jump:0.4",
+	"v28/land:0", "v28/climb:0", "v28/climb:0.55", "v28/mantle:0", "v28/mantle:0.35", "v28/mantle:0.62", "v28/push:0.3",
+	"v28/roll:0.155", "v28/peche_tenir:0", "v28/peche_armer:0.35", "v28/peche_lancer:0.16", "v28/creuser:0.55", "v28/creuser:0.85"]
+
+
+func _heros98(lieu: Node3D) -> void:
+	var HL = load("res://scripts/hero_v28.gd")
+	var p: Dictionary = Gens98.profile("f81_montjoie_0")
+	for qui in ["heros", "habitant"]:
+		var defaut: Array = []
+		for k in CLIPS98.size():
+			var clip: String = str(CLIPS98[k]).get_slice(":", 0)
+			var t: float = float(str(CLIPS98[k]).get_slice(":", 1))
+			var sk: Skeleton3D = null
+			var ap: AnimationPlayer = null
+			var corps: Node3D = null
+			if qui == "heros":
+				corps = (load("res://assets/models/characters/hero.glb") as PackedScene).instantiate()
+				lieu.add_child(corps)
+				corps.global_position = lieu.global_position + Vector3(0, 0, -6)
+				ap = corps.find_child("AnimationPlayer", true, false) as AnimationPlayer
+				sk = corps.find_children("*", "Skeleton3D", true, false)[0]
+				var lib = HL.new()
+				lib.hero = corps
+				lib.anim = ap
+				lib.skel = sk
+				lib._build_animations()
+				ap.play(clip, 0.0)
+			else:
+				var fig: Node = Fig98.spawn(lieu, self, p.duplicate(true), lieu.global_position + Vector3(0, 0, -6), Vector3(0, 0, 1), "debout")
+				fig.follow = false
+				fig.lines = []
+				if fig.npc.has_method("body64_build"):
+					fig.npc.call("body64_build")
+				await _images(2)
+				fig._gest = 9999.0
+				fig._play(clip, 0.0)
+				sk = fig.npc.get("skel")
+				ap = fig.npc.get("anim")
+				corps = fig.npc
+			await _images(2)
+			ap.seek(t, true)
+			ap.pause()
+			await _images(3)
+			if not _note(sk != null and sk.find_bone("RightHand") >= 0, "%s %s : le squelette" % [qui, CLIPS98[k]]):
+				corps.queue_free()
+				continue
+			var l: float = (sk.get_bone_rest(sk.find_bone("LeftForeArm")).origin).length()
+			var m: Dictionary = {}
+			for c in ["Left", "Right"]:
+				m[c + "S"] = _os98(sk, c + "Arm")
+				m[c + "E"] = _os98(sk, c + "ForeArm")
+				m[c + "W"] = _os98(sk, c + "Hand")
+			var ch: Vector3 = _os98(sk, "Spine")
+			var hi: Vector3 = _os98(sk, "Hips")
+			var lame: Vector3 = sk.get_bone_global_pose(sk.find_bone("RightHand")).basis.orthonormalized().z
+			var wl: Vector3 = m["LeftW"]
+			var wr: Vector3 = m["RightW"]
+			var nom: String = "%s, %s" % [qui, CLIPS98[k]]
+			# les bras en croix : les deux poignets loin sur les côtés, à hauteur d'épaules
+			if absf(wl.x - ch.x) > 1.6 * l and absf(wr.x - ch.x) > 1.6 * l and absf(wl.y - m["LeftS"].y) < 0.5 * l and absf(wr.y - m["RightS"].y) < 0.5 * l:
+				defaut.append(str(CLIPS98[k]))
+			match str(CLIPS98[k]):
+				"v28/hurt:0.12", "v28/jump:0.4":
+					_ok(wl.z > ch.z + 0.5 * l and wr.z > ch.z + 0.5 * l and absf(wl.x - ch.x) < 1.3 * l and absf(wr.x - ch.x) < 1.3 * l, "%s : les mains devant la poitrine" % nom)
+				"v28/block:0.1":
+					_ok(wl.z > ch.z + 0.6 * l and wr.z > ch.z + 0.6 * l and wr.y > m["RightS"].y - 0.3 * l and absf(wr.x - ch.x) < 1.2 * l, "%s : les avant-bras levés devant le visage" % nom)
+					_ok(lame.x > 0.4 and lame.y > 0.1, "%s : l'épée en travers, la pointe en haut à gauche %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/slash1:0.12", "v28/slash3:0.16":
+					_ok(wr.y > m["RightS"].y + 0.3 * l, "%s : l'épée armée, la main au-dessus de l'épaule" % nom)
+				"v28/slash1:0.22":
+					_ok(wr.z > hi.z + 0.6 * l and lame.x > 0.5 and absf(lame.y) < 0.5, "%s : le coup droit balaie vers la gauche, la lame à plat %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/slash2:0.22":
+					_ok(wr.x < ch.x - 0.8 * l and lame.x < -0.5 and absf(lame.y) < 0.5, "%s : le revers balaie vers la droite, la lame à plat %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/slash3:0.27":
+					_ok(wr.z > hi.z + 0.6 * l and lame.z > 0.3 and lame.y < 0.0, "%s : le coup de haut en bas finit devant soi, la lame vers l'avant et le bas %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/climb:0":
+					_ok(wl.y > m["LeftS"].y + 0.8 * l and wl.z > m["LeftS"].z + 0.2 * l and wr.z > m["RightS"].z + 0.5 * l, "%s : les mains sur la paroi devant soi, la gauche en haut" % nom)
+				"v28/mantle:0":
+					_ok(wl.y > m["LeftS"].y + 1.2 * l and wr.y > m["RightS"].y + 1.2 * l, "%s : suspendu, les bras tendus vers le rebord" % nom)
+				"v28/land:0", "v28/fall:0":
+					_ok(wl.z > m["LeftS"].z + 0.4 * l and wr.z > m["RightS"].z + 0.4 * l, "%s : les mains devant soi" % nom)
+				"v28/push:0.3":
+					_ok(wr.z > m["RightS"].z + 1.3 * l and absf(wr.y - m["RightS"].y) < 0.6 * l, "%s : le bras droit tendu devant soi, à hauteur d'épaule" % nom)
+				"v28/peche_tenir:0":
+					_ok(wl.z > m["LeftS"].z + 0.8 * l and wr.z > m["RightS"].z + 0.8 * l and lame.z > 0.4 and lame.y > 0.2, "%s : la canne tenue devant soi, qui monte %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/peche_armer:0.35":
+					_ok(lame.z < -0.5, "%s : la canne par-dessus l'épaule, vers l'arrière %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/creuser:0.55":
+					_ok(lame.y < -0.6, "%s : la pelle enfoncée vers le sol %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+			corps.queue_free()
+			await _images(1)
+		_ok(defaut.is_empty(), "%s : aucune pose n'a les bras en croix (%s)" % [qui, str(defaut)])

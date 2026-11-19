@@ -4,12 +4,50 @@ extends SceneTree
 ## bras tordus, les mains dans le ventre, les coudes à l'envers.
 ##     args : DOSSIER  corps  poses
 ##     corps : « montjoie:0,pirate:1 » (le style des maisons, le n° du corps : 0 homme, 1 femme, 2 vieux,
-##             3 vieille, 4 garçon, 5 fille) ; vide : montjoie:0
+##             3 vieille, 4 garçon, 5 fille) ; « heros » : le héros du joueur (V180) ; vide : montjoie:0
 ##     poses : « bras_croises,colere » ; « @v102/saluer » : une animation jouée telle quelle (« @v102/saluer:0.6 » :
 ##             arrêtée à 0,6 s) ; vide : toutes
+##     RENDU_ARME=epee (V180) : l'arme en main droite, tenue comme le héros la tient (hero_v28.equip)
 
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
+const HeroLib = preload("res://scripts/hero_v28.gd")
+const Armes = preload("res://scripts/armes_v129.gd")
+
+
+## V180 : le héros du joueur (hero.glb et ses poses v28, comme main.gd + hero_v28.setup), arrêté sur
+## « clip » à l'instant « t ». Rend [le modèle, son squelette].
+func _heros(parent: Node, pos: Vector3, clip: String, t: float) -> Array:
+	var h: Node3D = (load("res://assets/models/characters/hero.glb") as PackedScene).instantiate()
+	parent.add_child(h)
+	h.position = pos
+	var ap: AnimationPlayer = h.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	var sk: Skeleton3D = h.find_children("*", "Skeleton3D", true, false)[0]
+	var lib = HeroLib.new()
+	lib.hero = h
+	lib.anim = ap
+	lib.skel = sk
+	lib._build_animations()
+	ap.play(clip if clip != "" else "v28/idle", 0.0)
+	ap.seek(t, true)
+	ap.pause()
+	return [h, sk]
+
+
+## V180 : l'arme en main droite (même prise que hero_v28.equip).
+func _arme(sk: Skeleton3D) -> void:
+	var id: String = OS.get_environment("RENDU_ARME")
+	if id == "" or sk == null or sk.find_bone("RightHand") < 0 or not Armes.has(id):
+		return
+	var att := BoneAttachment3D.new()
+	att.bone_name = "RightHand"
+	sk.add_child(att)
+	var hold := Node3D.new()
+	hold.position = Vector3(0, 8.5, 2.5)
+	hold.rotation_degrees = Vector3(90, 0, 0)
+	hold.scale = Vector3.ONE * 100.0
+	att.add_child(hold)
+	hold.add_child(Armes.build(id))
 
 const POSES := ["debout", "bras_croises", "colere", "rire", "comptoir", "mains_dos", "applaudir", "pointer",
 	"peindre", "bricoler", "cuisiner", "danse", "violon", "cache", "pompes", "mime", "boire", "guitare_bo",
@@ -80,7 +118,9 @@ func _reperes(npc: Node) -> void:
 	reperes.clear()
 	if OS.get_environment("RENDU_OS") != "1":
 		return
-	var sk: Skeleton3D = npc.get("skel")
+	var sk: Skeleton3D = npc.get("skel") if npc.get("skel") is Skeleton3D else null
+	if sk == null and npc.find_children("*", "Skeleton3D", true, false).size() > 0:
+		sk = npc.find_children("*", "Skeleton3D", true, false)[0]
 	if sk == null:
 		return
 	for nm in ["LeftArm", "LeftForeArm", "LeftHand", "RightArm", "RightForeArm", "RightHand", "Head", "Hips", "LeftShoulder", "RightShoulder"]:
@@ -165,9 +205,10 @@ func _initialize() -> void:
 	for c in corps:
 		var st: String = str(c).get_slice(":", 0)
 		var i: int = int(str(c).get_slice(":", 1)) if str(c).contains(":") else 0
-		var p: Dictionary = Gens.profile("f81_%s_%d" % [Gens.style_of(st), i])
+		var p: Dictionary = {} if st == "heros" else Gens.profile("f81_%s_%d" % [Gens.style_of(st), i])
 		# tous à la fois, en rang (4 m entre deux), le corps construit tout de suite ; puis on les
-		# photographie un par un (les autres cachés)
+		# photographie un par un (les autres cachés). gens : [le figurant (ou null), le corps à
+		# photographier, la pose, « @clip », la place]
 		var gens: Array = []
 		for k in poses.size():
 			var pose: String = str(poses[k])
@@ -176,48 +217,55 @@ func _initialize() -> void:
 				brut = pose.substr(1)
 				pose = "debout"
 			var x0 := Vector3(k * 4.0, 0, 0)
+			if st == "heros":
+				var hs: Array = _heros(fm, x0, brut.get_slice(":", 0) if brut != "" else "v28/idle", float(brut.get_slice(":", 1)) if brut.contains(":") else 0.0)
+				_arme(hs[1])
+				gens.append([null, hs[0], pose, brut, x0])
+				continue
 			var f: Node = Figurant.spawn(fm, fm, p.duplicate(true), x0, Vector3(0, 0, 1), pose)
 			f.follow = false
 			if f.npc.has_method("body64_build"):
 				f.npc.call("body64_build")
-			gens.append([f, pose, brut, x0])
+			gens.append([f, f.npc, pose, brut, x0])
 		await _attendre(4)
-		if OS.get_environment("RENDU_SANS_EPAULES") == "1":
-			for g in gens:
-				var sk0: Skeleton3D = g[0].npc.get("skel")
+		for g in gens:
+			if g[0] == null:
+				continue
+			var sk0: Skeleton3D = g[1].get("skel")
+			_arme(sk0)
+			if OS.get_environment("RENDU_SANS_EPAULES") == "1":
 				var ep: Node = sk0.get_node_or_null("Epaules64") if sk0 != null else null
 				if ep != null:
 					ep.set("active", false)
-		for g in gens:
-			if str(g[2]) != "":
+			if str(g[3]) != "":
 				# « @bibliothèque/clip:instant » : le clip arrêté à cet instant
-				var nom: String = str(g[2]).get_slice(":", 0)
+				var nom: String = str(g[3]).get_slice(":", 0)
 				g[0]._gest = 9999.0
 				g[0]._play(nom, 0.0)
-				var ap: AnimationPlayer = g[0].npc.get("anim")
-				if str(g[2]).contains(":") and ap != null:
-					ap.seek(float(str(g[2]).get_slice(":", 1)), true)
+				var ap: AnimationPlayer = g[1].get("anim")
+				if str(g[3]).contains(":") and ap != null:
+					ap.seek(float(str(g[3]).get_slice(":", 1)), true)
 					ap.pause()
 		await _attendre(50)
 		for g in gens:
-			g[0].npc.visible = false
+			g[1].visible = false
 		for g in gens:
-			var f: Node = g[0]
-			f.npc.visible = true
-			var mdl: Node3D = f.npc.get("model")
+			var n: Node3D = g[1]
+			n.visible = true
+			var mdl: Node3D = n.get("model") if g[0] != null else n
 			var s: float = mdl.global_transform.basis.get_scale().x if mdl != null else 1.0
-			var cible: Vector3 = g[3] + Vector3(0, 0.88 * s, 0)
+			var cible: Vector3 = g[4] + Vector3(0, 0.88 * s, 0)
 			var d: float = 2.5 * s + 0.4
 			for v in vues:
 				var ang: float = deg_to_rad(float(v[1]))
-				f.npc.rotation.y = 0.0
+				n.rotation.y = 0.0
 				cam.global_position = cible + Vector3(sin(ang) * d, 0.25 * s, cos(ang) * d)
 				cam.look_at(cible, Vector3.UP)
-				_reperes(f.npc)
-				await _photo("%s_%d__%s__%s" % [st, i, (str(g[2]).replace("/", "-").replace(":", "_") if str(g[2]) != "" else str(g[1])), v[0]])
-			f.npc.visible = false
-			print("RENDU ", st, ":", i, " ", g[1], " ", g[2])
+				_reperes(n)
+				await _photo("%s_%d__%s__%s" % [st, i, (str(g[3]).replace("/", "-").replace(":", "_") if str(g[3]) != "" else str(g[2])), v[0]])
+			n.visible = false
+			print("RENDU ", st, ":", i, " ", g[2], " ", g[3])
 		for g in gens:
-			g[0].npc.queue_free()
+			g[1].queue_free()
 		await _attendre(3)
 	quit()
