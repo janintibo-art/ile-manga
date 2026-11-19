@@ -1416,8 +1416,10 @@ func _graph() -> void:
 	points["ja2"] = W(-87.0, -92.0, JETTY_Y)
 	_chain(["ja0", "ja1", "ja2"])
 	_link("ja0", _nearest(T(-84.0, 5.5), ["q"]))
-	_spot_w("jetee_peche_1", W(-85.6, -50.0, JETTY_Y), W(-60.0, -50.0, JETTY_Y), "assis", "ja1")
-	_spot_w("jetee_peche_2", W(-85.6, -86.0, JETTY_Y), W(-60.0, -86.0, JETTY_Y), "assis", "ja2")
+	# V181 : assis sur le parapet de la jetée (1,1 m de haut), les jambes côté large ; avant, assis dans le
+	# vide contre le parapet
+	_spot_w("jetee_peche_1", W(-84.95, -50.0, JETTY_Y + 0.72), W(-60.0, -50.0, JETTY_Y), "assis", "ja1")
+	_spot_w("jetee_peche_2", W(-84.95, -86.0, JETTY_Y + 0.72), W(-60.0, -86.0, JETTY_Y), "assis", "ja2")
 	# le galion : la passerelle et le pont
 	_link("n_quai", _nearest(points["n_quai"], ["q"]))
 	_link("n_quai", "n0")

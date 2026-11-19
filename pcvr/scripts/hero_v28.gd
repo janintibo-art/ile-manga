@@ -250,22 +250,34 @@ func _build_animations() -> void:
 	# Épée : coup droit (de droite à gauche), revers (de gauche à droite), coup de haut en bas. V180 : le
 	# bras armé posé par directions, la lame qui pointe où va le coup (armée derrière l'épaule, puis
 	# balayée devant soi) ; l'autre bras équilibre (avant : les bras en croix, la lame vers le sol).
+	# V181 : une pose au milieu de chaque coup (la lame devant soi, à plat, à hauteur de poitrine : le
+	# balayage reste à l'horizontale, au lieu de passer par la lame dressée au ciel) ; le coup de haut en
+	# bas finit à hauteur de l'adversaire, la lame devant soi (avant : plantée vers le sol).
 	var stance := {"LeftUpLeg": Vector3(-28, 0, 0), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(14, 0, 0), "RightLeg": Vector3(12, 0, 0)}
 	var w1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, -38, 0)}), _bras("Right", Vector3(-0.85, 0.25, 0.0), Vector3(0.1, 0.8, -0.15))),
 		_bras("Left", Vector3(0.35, -0.8, 0.48), Vector3(0.15, -0.3, 0.94))), "Right", Vector3(0.3, 0.35, -0.89))
+	var m1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(3, 0, 0)}), _bras("Right", Vector3(-0.45, 0.05, 0.89), Vector3(-0.2, 0.1, 0.97))),
+		_bras("Left", Vector3(0.35, -0.85, 0.4), Vector3(0.2, -0.6, 0.77))), "Right", Vector3(0.0, 0.05, 1.0))
 	var s1 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, 42, 0)}), _bras("Right", Vector3(0.05, -0.12, 0.99), Vector3(0.3, -0.12, 0.95))),
 		_bras("Left", Vector3(0.35, -0.88, -0.3), Vector3(0.25, -0.9, 0.35))), "Right", Vector3(0.7, -0.15, 0.7))
-	poses.add_animation("slash1", _clip(0.5, false, [[0.0, arms_in, Vector3.ZERO], [0.12, w1, Vector3(0, -6, 0)], [SLASH_HIT, s1, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
+	poses.add_animation("slash1", _clip(0.5, false, [[0.0, arms_in, Vector3.ZERO], [0.12, w1, Vector3(0, -6, 0)], [0.17, m1, Vector3(0, -7, 3)],
+		[SLASH_HIT, s1, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
 	var w2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(0, 40, 0)}), _bras("Right", Vector3(0.3, -0.4, 0.87), Vector3(0.7, 0.55, 0.1))),
 		_bras("Left", Vector3(0.25, -0.9, 0.35), Vector3(0.05, -0.35, 0.94))), "Right", Vector3(0.45, 0.45, -0.77))
+	var m2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(3, 0, 0)}), _bras("Right", Vector3(0.1, -0.05, 0.99), Vector3(-0.1, 0.05, 0.99))),
+		_bras("Left", Vector3(0.35, -0.85, 0.4), Vector3(0.2, -0.6, 0.77))), "Right", Vector3(0.0, 0.05, 1.0))
 	var s2 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(6, -40, 0)}), _bras("Right", Vector3(-0.65, -0.1, 0.75), Vector3(-0.75, -0.05, 0.66))),
 		_bras("Left", Vector3(0.45, -0.85, 0.25), Vector3(0.3, -0.6, 0.74))), "Right", Vector3(-0.85, 0.0, 0.53))
-	poses.add_animation("slash2", _clip(0.5, false, [[0.0, s1, Vector3(0, -8, 6)], [0.12, w2, Vector3(0, -6, 0)], [SLASH_HIT, s2, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
+	poses.add_animation("slash2", _clip(0.5, false, [[0.0, s1, Vector3(0, -8, 6)], [0.12, w2, Vector3(0, -6, 0)], [0.17, m2, Vector3(0, -7, 3)],
+		[SLASH_HIT, s2, Vector3(0, -8, 6)], [0.5, arms_in, Vector3.ZERO]]))
 	var w3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(-12, 0, 0)}), _bras("Right", Vector3(-0.5, 0.82, 0.28), Vector3(-0.15, 0.95, -0.25))),
 		_bras("Left", Vector3(0.3, -0.25, 0.92), Vector3(0.15, 0.1, 0.98))), "Right", Vector3(-0.1, 0.2, -0.97))
-	var s3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(30, 0, 0)}), _bras("Right", Vector3(-0.15, -0.3, 0.94), Vector3(-0.05, -0.45, 0.89))),
-		_bras("Left", Vector3(0.3, -0.85, 0.43), Vector3(0.15, -0.55, 0.82))), "Right", Vector3(0.0, -0.3, 0.95))
-	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
+	var m3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(8, 0, 0)}), _bras("Right", Vector3(-0.3, 0.75, 0.6), Vector3(-0.1, 0.9, 0.42))),
+		_bras("Left", Vector3(0.3, -0.5, 0.81), Vector3(0.15, -0.2, 0.97))), "Right", Vector3(0.0, 0.9, 0.43))
+	var s3 := _lame(_merge(_merge(_merge(stance, {"Spine02": Vector3(30, 0, 0)}), _bras("Right", Vector3(-0.12, 0.1, 0.99), Vector3(-0.05, 0.2, 0.98))),
+		_bras("Left", Vector3(0.3, -0.85, 0.43), Vector3(0.15, -0.55, 0.82))), "Right", Vector3(0.0, 0.35, 0.94))
+	poses.add_animation("slash3", _clip(0.62, false, [[0.0, arms_in, Vector3.ZERO], [0.16, w3, Vector3(0, -2, -4)], [0.22, m3, Vector3(0, -8, 4)],
+		[SLASH_HIT + 0.05, s3, Vector3(0, -16, 10)], [0.62, arms_in, Vector3.ZERO]]))
 	# V141 : le coup plongeant : l'arme levée, les jambes repliées, puis le sol frappé, accroupi (V180 :
 	# la lame plantée devant soi).
 	var plie := {"LeftUpLeg": Vector3(-62, 0, 0), "LeftLeg": Vector3(72, 0, 0), "RightUpLeg": Vector3(-38, 0, 0), "RightLeg": Vector3(64, 0, 0)}

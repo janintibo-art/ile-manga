@@ -8,6 +8,7 @@ extends SceneTree
 ##     poses : « bras_croises,colere » ; « @v102/saluer » : une animation jouée telle quelle (« @v102/saluer:0.6 » :
 ##             arrêtée à 0,6 s) ; vide : toutes
 ##     RENDU_ARME=epee (V180) : l'arme en main droite, tenue comme le héros la tient (hero_v28.equip)
+##     RENDU_DOS=1 (V181) : une quatrième photo, de dos (comme la caméra du joueur)
 
 const Figurant = preload("res://scripts/pnj/figurant_v81.gd")
 const Gens = preload("res://scripts/pnj/maisons_habitants_v81.gd")
@@ -202,6 +203,8 @@ func _initialize() -> void:
 	await _attendre(3)
 	Engine.time_scale = 2.0
 	var vues: Array = [["face", 0.0], ["trois_quarts", 50.0], ["profil", 90.0]]
+	if OS.get_environment("RENDU_DOS") == "1":
+		vues.append(["dos", 160.0])   # V181 : de dos, un peu de côté (comme la caméra du joueur)
 	for c in corps:
 		var st: String = str(c).get_slice(":", 0)
 		var i: int = int(str(c).get_slice(":", 1)) if str(c).contains(":") else 0

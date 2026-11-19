@@ -374,7 +374,9 @@ func _lieux() -> void:
 			_link(nm2, via)
 			spots["tablee_%d" % t] = {"pos": G(sp.x, sp.y), "face": Vector3(0, 0, -sz), "pose": "assis", "node": nm2}
 			t += 1
-	_spot("four", pz.x - 7.05, pz.y + 0.2, Vector3(-1, 0, 0), "cuisiner")
+	# V181 : un pas en arrière : le four sculpté de la V168 (la sole, l'avant-four) avance plus loin que
+	# l'ancien, la cuisinière avait la tête et le buste dedans
+	_spot("four", pz.x - 6.6, pz.y + 0.2, Vector3(-1, 0, 0), "cuisiner")
 	_spot("piazza_banc_1", pz.x + 2.5, pz.y - 6.3, Vector3(0, 0, 1), "assis")
 	_spot("piazza_banc_2", pz.x - 2.5, pz.y - 6.3, Vector3(0, 0, 1), "assis")
 	_spot("piazza_banc_3", pz.x + 1.0, pz.y + 6.4, Vector3(0, 0, -1), "assis")

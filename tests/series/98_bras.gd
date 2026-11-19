@@ -100,8 +100,8 @@ func _serie() -> void:
 ## lui-même (hero.glb, la grosse tête, les bras courts) et sur un habitant (un vrai corps : les compagnons,
 ## les monstres, les habitants touchés jouent ces clips). Avant V180, des bras en croix (touché, saut,
 ## chute), levés au ciel (parade, escalade), la lame vers le sol à la fin d'un coup.
-const CLIPS98 := ["v28/hurt:0.12", "v28/block:0.1", "v28/slash1:0.12", "v28/slash1:0.22", "v28/slash2:0.12", "v28/slash2:0.22",
-	"v28/slash3:0.16", "v28/slash3:0.27", "v28/plonge_frappe:0.1", "v28/fall:0", "v28/fall:0.45", "v28/jump:0", "v28/jump:0.4",
+const CLIPS98 := ["v28/hurt:0.12", "v28/block:0.1", "v28/slash1:0.12", "v28/slash1:0.17", "v28/slash1:0.22", "v28/slash2:0.12",
+	"v28/slash2:0.17", "v28/slash2:0.22", "v28/slash3:0.16", "v28/slash3:0.27", "v28/plonge_frappe:0.1", "v28/fall:0", "v28/fall:0.45", "v28/jump:0", "v28/jump:0.4",
 	"v28/land:0", "v28/climb:0", "v28/climb:0.55", "v28/mantle:0", "v28/mantle:0.35", "v28/mantle:0.62", "v28/push:0.3",
 	"v28/roll:0.155", "v28/peche_tenir:0", "v28/peche_armer:0.35", "v28/peche_lancer:0.16", "v28/creuser:0.55", "v28/creuser:0.85"]
 
@@ -175,8 +175,12 @@ func _heros98(lieu: Node3D) -> void:
 					_ok(wr.z > hi.z + 0.6 * l and lame.x > 0.5 and absf(lame.y) < 0.5, "%s : le coup droit balaie vers la gauche, la lame à plat %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
 				"v28/slash2:0.22":
 					_ok(wr.x < ch.x - 0.8 * l and lame.x < -0.5 and absf(lame.y) < 0.5, "%s : le revers balaie vers la droite, la lame à plat %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+				"v28/slash1:0.17", "v28/slash2:0.17":
+					# V181 : au milieu du coup, la lame devant soi, à plat (avant : dressée au ciel)
+					_ok(wr.z > ch.z + 0.8 * l and lame.z > 0.6 and absf(lame.y) < 0.5, "%s : au milieu du coup, la lame devant soi, à plat %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
 				"v28/slash3:0.27":
-					_ok(wr.z > hi.z + 0.6 * l and lame.z > 0.3 and lame.y < 0.0, "%s : le coup de haut en bas finit devant soi, la lame vers l'avant et le bas %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
+					# V181 : le coup final finit à hauteur de l'adversaire (avant : la lame plantée vers le sol)
+					_ok(wr.z > hi.z + 0.6 * l and wr.y > hi.y and lame.z > 0.6 and absf(lame.y) < 0.5, "%s : le coup de haut en bas finit devant soi, la lame à hauteur de l'adversaire %s" % [nom, str(lame.snapped(Vector3.ONE * 0.01))])
 				"v28/climb:0":
 					_ok(wl.y > m["LeftS"].y + 0.8 * l and wl.z > m["LeftS"].z + 0.2 * l and wr.z > m["RightS"].z + 0.5 * l, "%s : les mains sur la paroi devant soi, la gauche en haut" % nom)
 				"v28/mantle:0":

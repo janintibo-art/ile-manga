@@ -187,8 +187,9 @@ func _promenade() -> void:
 	while x < 96.0:
 		kit.globe_lamp(T(x, -39.8))
 		x += 18.0
+	# V181 : les bancs tournés vers la vue (le dossier côté ville) : on s'asseyait face au dossier
 	for bx in [-60.0, -40.0, 20.0, 46.0, 72.0]:
-		kit.bench(TF(bx, -38.8, 180.0))
+		kit.bench(TF(bx, -38.8, 0.0))
 	# la longue-vue de laiton, sur son trépied
 	var lxf: Transform3D = TF(5.0, -39.6, 180.0)
 	for k in range(3):
@@ -196,10 +197,10 @@ func _promenade() -> void:
 		kit.pipe(lxf * Vector3(cos(a) * 0.4, 0, sin(a) * 0.4), lxf * Vector3(0, 1.2, 0), 0.03, "laiton", false)
 	kit.cyl(Transform3D(Basis(Vector3.RIGHT, -1.25) * Basis(), lxf * Vector3(0, 1.25, 0.35)).rotated_local(Vector3.UP, 0.0) * Transform3D(Basis(), Vector3(0, -0.4, 0)), 0.06, 0.1, 1.1, "laiton", 10)
 	_spot("promenade_lunette", 5.0, -38.6, 5.0, -60.0, "observer", "")
-	_spot("promenade_banc_1", -60.0, -38.4, -60.0, -60.0, "assis", "")
-	_spot("promenade_banc_2", -40.0, -38.4, -40.0, -60.0, "assis", "")
-	_spot("promenade_banc_3", 20.0, -38.4, 20.0, -60.0, "assis", "")
-	_spot("promenade_banc_4", 46.0, -38.4, 46.0, -60.0, "assis", "")
+	_spot("promenade_banc_1", -60.0, -38.83, -60.0, -60.0, "assis", "")
+	_spot("promenade_banc_2", -40.0, -38.83, -40.0, -60.0, "assis", "")
+	_spot("promenade_banc_3", 20.0, -38.83, 20.0, -60.0, "assis", "")
+	_spot("promenade_banc_4", 46.0, -38.83, 46.0, -60.0, "assis", "")
 	_spot("promenade_vue_1", -8.0, -40.4, -8.0, -60.0, "comptoir", "")
 	_spot("promenade_vue_2", 32.0, -40.4, 32.0, -60.0, "comptoir", "")
 	_spot("promenade_vue_3", 60.0, -40.4, 60.0, -60.0, "comptoir", "")
@@ -358,10 +359,11 @@ func _place() -> void:
 		for k3 in range(3):
 			var a3: float = TAU * k3 / 3.0
 			kit.quad(Transform3D(Basis(Vector3.UP, -a3 + PI * 0.5), cxf * Vector3(cos(a3) * 0.77, 1.7, sin(a3) * 0.77)), 0.9, 1.3, "affiche_" + ["foire", "dirigeable", "telepherique"][k3])
+	# V181 : les bancs tournés vers la place (on s'asseyait face au dossier), on s'assied dessus
 	for bp in [Vector2(-10.0, -14.0), Vector2(10.0, -14.0)]:
-		kit.bench(TF(bp.x, bp.y, 0.0))
-	_spot("place_banc_1", -10.0, -14.4, -10.0, 0.0, "assis", "")
-	_spot("place_banc_2", 10.0, -14.4, 10.0, 0.0, "assis", "")
+		kit.bench(TF(bp.x, bp.y, 180.0))
+	_spot("place_banc_1", -10.0, -13.97, -10.0, 0.0, "assis", "")
+	_spot("place_banc_2", 10.0, -13.97, 10.0, 0.0, "assis", "")
 	_spot("place_enfants_1", -8.0, 8.0, 0.0, 0.0, "jouer", "")
 	_spot("place_enfants_2", 8.0, -8.0, 0.0, 0.0, "jouer", "")
 	for lp in [Vector2(-30.0, -20.0), Vector2(30.0, -20.0), Vector2(-30.0, 20.0), Vector2(30.0, 20.0)]:
@@ -910,8 +912,10 @@ func _port() -> void:
 	kit.globe_lamp(P(60.0, -86.5))
 	for k in range(3):
 		_spot("port_quai_%d" % (k + 1), -30.0 + k * 28.0, -93.0, -30.0 + k * 28.0, -110.0, "debout", "")
-	_spot("port_peche_1", -50.0, -96.6, -50.0, -110.0, "assis", "")
-	_spot("port_peche_2", 66.0, -96.6, 66.0, -110.0, "assis", "")
+	# V181 : à la hauteur du port (P), pas de la ville haute (T) : on pêchait assis dans le ciel ; assis
+	# sur le mur du quai (1,4 m au-dessus du port, 0,7 m de large), les jambes côté mer
+	_spot_w("port_peche_1", P(-50.0, -97.45, 1.02), P(-50.0, -110.0), "assis", "")
+	_spot_w("port_peche_2", P(66.0, -97.45, 1.02), P(66.0, -110.0), "assis", "")
 	_spot("telepherique_haut", TEL_TOP.x + 3.8, TEL_TOP.y + 1.5, TEL_TOP.x, TEL_TOP.y, "bras_croises", "")
 	_spot("telepherique_bas", TEL_BOTTOM.x + 3.5, TEL_BOTTOM.y + 1.0, TEL_BOTTOM.x, TEL_BOTTOM.y, "bras_croises", "", PY - Y)
 	objets["engrenage_or"] = P(13.0, -95.5, 0.12)

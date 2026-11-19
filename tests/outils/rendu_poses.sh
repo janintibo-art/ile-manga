@@ -4,7 +4,8 @@
 #     bash tests/outils/rendu_poses.sh DOSSIER [corps] [poses]
 #     ex. : bash tests/outils/rendu_poses.sh /tmp/poses "montjoie:0,montjoie:1,pirate:0" "bras_croises,colere"
 #     RENDU_OS=1 : les articulations des bras en petites boules (rouges à gauche, bleues à droite) ;
-#     RENDU_SANS_EPAULES=1 : sans corps_v64.Epaules (les épaules qui suivent le bras), pour comparer
+#     RENDU_SANS_EPAULES=1 : sans corps_v64.Epaules (les épaules qui suivent le bras), pour comparer ;
+#     RENDU_ARME=epee : l'arme en main droite (V180) ; RENDU_DOS=1 : une photo de plus, de dos (V181)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
@@ -35,21 +36,23 @@ w, h = Image.open(files[0]).size
 cells = []
 for f in files:
     base = f[:-len("__face.png")]
-    vues = [base + "__" + v + ".png" for v in ("face", "trois_quarts", "profil")]
-    cell = Image.new("RGB", (w * 3, h))
+    vues = [base + "__" + v + ".png" for v in ("face", "trois_quarts", "profil", "dos")]
+    vues = [v for v in vues if os.path.exists(v)]
+    cell = Image.new("RGB", (w * len(vues), h))
     for k, v in enumerate(vues):
         if os.path.exists(v):
             cell.paste(Image.open(v).convert("RGB"), (k * w, 0))
     d = ImageDraw.Draw(cell)
-    d.rectangle([0, 0, w * 3, 18], fill=(0, 0, 0))
+    d.rectangle([0, 0, w * len(vues), 18], fill=(0, 0, 0))
     d.text((6, 3), os.path.basename(base).replace("__", "  "), fill=(255, 255, 255))
     cells.append(cell)
 for page in range(0, len(cells), 8):
     chunk = cells[page:page + 8]
     rows = (len(chunk) + 1) // 2
-    sheet = Image.new("RGB", (w * 6 + 8, h * rows + 4 * rows), (255, 255, 255))
+    cw = max(c.size[0] for c in chunk)
+    sheet = Image.new("RGB", (cw * 2 + 8, h * rows + 4 * rows), (255, 255, 255))
     for i, c in enumerate(chunk):
-        sheet.paste(c, ((i % 2) * (w * 3 + 8), (i // 2) * (h + 4)))
+        sheet.paste(c, ((i % 2) * (cw + 8), (i // 2) * (h + 4)))
     p = os.path.join(out, "planche_%02d.jpg" % (page // 8))
     sheet.save(p, quality=85)
     print(p)

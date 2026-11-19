@@ -32,6 +32,7 @@ var _flane_rot: float = 0.0
 var _flane_wait: float = 0.0
 var _regard: Node3D                    # le voisin qu'il salue
 var _regard_t: float = 0.0
+const Assises181 = preload("res://scripts/pnj/assises_v181.gd")
 const GESTES_V102 := {"etirer": 3.2, "gratter_tete": 2.6, "visiere": 3.6, "regarder": 4.0, "mains_dos": 4.5, "baille": 2.8}
 
 
@@ -619,6 +620,10 @@ func _arrive() -> void:
 	f.y = 0.0
 	if f.length() > 0.01:
 		rotation.y = atan2(f.x, f.z)
+	# V181 : assis, sur un vrai siège (le banc d'à côté, le bord du quai, ou un tabouret qu'on pose) :
+	# beaucoup de lieux faisaient s'asseoir dans le vide (assises_v181.gd, d'après l'audit des lieux)
+	if pose in ["assis", "guitare", "lire"] and Assises181.corriger(self, azur, target_spot):
+		_body.global_transform = Transform3D(Basis(Vector3.UP, rotation.y), global_position)
 	_gest = _rng2.randf_range(4.0, 12.0)
 	current_anim = ""
 
