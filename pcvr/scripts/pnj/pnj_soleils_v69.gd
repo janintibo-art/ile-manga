@@ -32,26 +32,28 @@ func _build_sol_poses() -> void:
 	var kneel := {"LeftUpLeg": Vector3(-6, 0, -4), "LeftLeg": Vector3(118, 0, 0), "RightUpLeg": Vector3(-6, 0, 4), "RightLeg": Vector3(118, 0, 0),
 		"LeftFoot": Vector3(40, 0, 0), "RightFoot": Vector3(40, 0, 0)}
 	# prier : à genoux, bras levés (on salue le soleil), puis prosterné
-	var pr_a := lib._merge(kneel, {"RightArm": Vector3(-150, 0, 26), "RightForeArm": Vector3(-14, 0, 0), "LeftArm": Vector3(-150, 0, -26), "LeftForeArm": Vector3(-14, 0, 0), "Head": Vector3(-22, 0, 0), "Spine02": Vector3(-8, 0, 0)})
-	var pr_b := lib._merge(kneel, {"RightArm": Vector3(-160, 0, 10), "RightForeArm": Vector3(-6, 0, 0), "LeftArm": Vector3(-160, 0, -10), "LeftForeArm": Vector3(-6, 0, 0), "Head": Vector3(10, 0, 0), "Spine01": Vector3(36, 0, 0), "Spine02": Vector3(30, 0, 0)})
+	# (V179 : les bras posés par des cibles et des directions, lib._main / lib._bras ; avant, des angles qui
+	# envoyaient les bras sur les côtés)
+	var pr_a := lib._bras2(lib._merge(kneel, {"Head": Vector3(-22, 0, 0), "Spine02": Vector3(-8, 0, 0)}), Vector3(0.3, 0.85, 0.43), Vector3(0.2, 0.93, 0.3))
+	var pr_b := lib._bras2(lib._merge(kneel, {"Head": Vector3(10, 0, 0), "Spine01": Vector3(36, 0, 0), "Spine02": Vector3(30, 0, 0)}), Vector3(0.15, 0.6, 0.79), Vector3(0.1, 0.65, 0.75))
 	poses.add_animation("prier", lib._clip(9.0, true, [[0.0, pr_a, Vector3(0, -44, 0)], [3.0, pr_a, Vector3(0, -44, 0)], [4.4, pr_b, Vector3(0, -46, -6)], [6.6, pr_b, Vector3(0, -46, -6)], [8.0, pr_a, Vector3(0, -44, 0)], [9.0, pr_a, Vector3(0, -44, 0)]]))
 	# moudre : penché sur la pierre, les deux mains poussent la molette en avant, puis la ramènent
-	var mo_a := lib._merge(kneel, {"Spine01": Vector3(26, 0, 0), "Spine02": Vector3(20, 0, 0), "Head": Vector3(8, 0, 0), "RightArm": Vector3(-60, 0, 8), "RightForeArm": Vector3(-50, 0, 0), "LeftArm": Vector3(-60, 0, -8), "LeftForeArm": Vector3(-50, 0, 0)})
-	var mo_b := lib._merge(mo_a, {"Spine01": Vector3(38, 0, 0), "Spine02": Vector3(26, 0, 0), "RightArm": Vector3(-82, 0, 6), "RightForeArm": Vector3(-14, 0, 0), "LeftArm": Vector3(-82, 0, -6), "LeftForeArm": Vector3(-14, 0, 0)})
+	var mo_a := lib._bras2(lib._merge(kneel, {"Spine01": Vector3(26, 0, 0), "Spine02": Vector3(20, 0, 0), "Head": Vector3(8, 0, 0)}), Vector3(0.1, -0.55, 0.83), Vector3(0.0, -0.45, 0.89))
+	var mo_b := lib._bras2(lib._merge(mo_a, {"Spine01": Vector3(38, 0, 0), "Spine02": Vector3(26, 0, 0)}), Vector3(0.08, -0.3, 0.95), Vector3(0.03, -0.25, 0.97))
 	poses.add_animation("moudre", lib._clip(1.6, true, [[0.0, mo_a, Vector3(0, -44, 0)], [0.8, mo_b, Vector3(0, -45, 3)], [1.6, mo_a, Vector3(0, -44, 0)]]))
 	# assis en tailleur (scribe, tisser, potier)
 	var cross := {"LeftUpLeg": Vector3(-84, 30, -40), "RightUpLeg": Vector3(-84, -30, 40), "LeftLeg": Vector3(120, 0, 0), "RightLeg": Vector3(120, 0, 0), "Spine02": Vector3(8, 0, 0)}
-	var sc_a := lib._merge(cross, {"Head": Vector3(22, 0, 0), "RightArm": Vector3(-30, 0, 26), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-26, 0, -20), "LeftForeArm": Vector3(-80, 0, 0)})
-	var sc_b := lib._merge(sc_a, {"RightArm": Vector3(-34, 6, 22), "RightForeArm": Vector3(-62, 0, 0)})
+	var sc_a := lib._merge(lib._merge(lib._merge(cross, {"Head": Vector3(22, 0, 0)}), lib._main("Right", "Spine02", Vector3(-6, 2, 26), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(8, 4, 24), Vector3(1, -1, 0)))
+	var sc_b := lib._merge(sc_a, lib._main("Right", "Spine02", Vector3(-2, 2, 27), Vector3(-1, -1, 0)))
 	var sc_c := lib._merge(sc_a, {"Head": Vector3(0, 14, 0)})
 	poses.add_animation("scribe", lib._clip(8.0, true, [[0.0, sc_a, Vector3(0, -58, 0)], [0.6, sc_b, Vector3(0, -58, 0)], [1.2, sc_a, Vector3(0, -58, 0)], [1.8, sc_b, Vector3(0, -58, 0)], [3.0, sc_a, Vector3(0, -58, 0)],
 		[4.4, sc_c, Vector3(0, -58, 0)], [5.6, sc_c, Vector3(0, -58, 0)], [6.4, sc_a, Vector3(0, -58, 0)], [7.2, sc_b, Vector3(0, -58, 0)], [8.0, sc_a, Vector3(0, -58, 0)]]))
-	var ti_a := lib._merge(cross, {"Spine02": Vector3(-10, 0, 0), "Head": Vector3(16, 0, 0), "RightArm": Vector3(-46, 0, 30), "RightForeArm": Vector3(-60, 0, 0), "LeftArm": Vector3(-46, 0, -30), "LeftForeArm": Vector3(-60, 0, 0)})
-	var ti_b := lib._merge(ti_a, {"RightArm": Vector3(-50, 0, 6), "RightForeArm": Vector3(-74, 0, 0), "LeftArm": Vector3(-42, 0, -44), "LeftForeArm": Vector3(-50, 0, 0)})
-	var ti_c := lib._merge(ti_a, {"RightArm": Vector3(-42, 0, 44), "RightForeArm": Vector3(-50, 0, 0), "LeftArm": Vector3(-50, 0, -6), "LeftForeArm": Vector3(-74, 0, 0)})
+	var ti_a := lib._mains(lib._merge(cross, {"Spine02": Vector3(-10, 0, 0), "Head": Vector3(16, 0, 0)}), "Spine02", Vector3(12, 6, 28), Vector3(1, -1, 0))
+	var ti_b := lib._merge(lib._merge(ti_a, lib._main("Right", "Spine02", Vector3(-4, 6, 30), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(20, 4, 26), Vector3(1, -1, 0)))
+	var ti_c := lib._merge(lib._merge(ti_a, lib._main("Left", "Spine02", Vector3(4, 6, 30), Vector3(1, -1, 0))), lib._main("Right", "Spine02", Vector3(-20, 4, 26), Vector3(-1, -1, 0)))
 	poses.add_animation("tisser", lib._clip(3.2, true, [[0.0, ti_a, Vector3(0, -58, 0)], [0.8, ti_b, Vector3(0, -58, 0)], [1.6, ti_a, Vector3(0, -59, -2)], [2.4, ti_c, Vector3(0, -58, 0)], [3.2, ti_a, Vector3(0, -58, 0)]]))
-	var po_a := lib._merge(cross, {"Spine02": Vector3(22, 0, 0), "Head": Vector3(18, 0, 0), "RightArm": Vector3(-44, 0, 14), "RightForeArm": Vector3(-64, 0, 0), "LeftArm": Vector3(-44, 0, -14), "LeftForeArm": Vector3(-64, 0, 0)})
-	var po_b := lib._merge(po_a, {"RightArm": Vector3(-52, 0, 10), "RightForeArm": Vector3(-46, 0, 0), "LeftArm": Vector3(-52, 0, -10), "LeftForeArm": Vector3(-46, 0, 0), "Spine02": Vector3(16, 0, 0)})
+	var po_a := lib._mains(lib._merge(cross, {"Spine02": Vector3(22, 0, 0), "Head": Vector3(18, 0, 0)}), "Spine02", Vector3(8, -2, 30), Vector3(1, -1, 0))
+	var po_b := lib._mains(lib._merge(po_a, {"Spine02": Vector3(16, 0, 0)}), "Spine02", Vector3(7, 0, 32), Vector3(1, -1, 0))
 	poses.add_animation("potier", lib._clip(2.4, true, [[0.0, po_a, Vector3(0, -58, 0)], [1.2, po_b, Vector3(0, -57, 0)], [2.4, po_a, Vector3(0, -58, 0)]]))
 	anim.add_animation_library("sol", poses)
 	lib.free()

@@ -165,13 +165,16 @@ func _build_lu_poses() -> void:
 	# jambes « croisées » plongeaient sous le plancher, jusqu'à 35 cm)
 	var seiza := {"LeftUpLeg": Vector3(-50, 0, 8), "RightUpLeg": Vector3(-50, 0, -8), "LeftLeg": Vector3(150, 0, 0), "RightLeg": Vector3(150, 0, 0),
 		"LeftFoot": Vector3(-35, 0, 0), "RightFoot": Vector3(-35, 0, 0)}
-	var med_a := lib._merge(seiza, {"LeftArm": Vector3(-10, 0, -20), "RightArm": Vector3(-10, 0, 20), "LeftForeArm": Vector3(-50, 0, 0), "RightForeArm": Vector3(-50, 0, 0), "Head": Vector3(12, 0, 0), "Spine02": Vector3(2, 0, 0)})
+	# V179 : les mains posées sur les cuisses (lib._main : là où va le poignet ; avant, des angles qui
+	# laissaient les bras pendre à côté des genoux)
+	var med_a := lib._mains(lib._merge(seiza, {"Head": Vector3(12, 0, 0), "Spine02": Vector3(2, 0, 0)}), "LeftUpLeg", Vector3(1, -10, 22), Vector3(1, -1, -0.4))
 	var med_b := lib._merge(med_a, {"Spine02": Vector3(-4, 0, 0), "Head": Vector3(6, 0, 0)})
 	poses.add_animation("mediter", lib._clip(6.0, true, [[0.0, med_a, Vector3(0, -51, 0)], [3.0, med_b, Vector3(0, -50.5, 0)], [6.0, med_a, Vector3(0, -51, 0)]]))
 	# holo : les deux mains levées devant soi, qui tournent un hologramme
-	var h_a := {"LeftArm": Vector3(-60, 20, -20), "RightArm": Vector3(-60, -20, 20), "LeftForeArm": Vector3(-70, 0, 0), "RightForeArm": Vector3(-70, 0, 0), "Head": Vector3(14, 0, 0)}
-	var h_b := lib._merge(h_a, {"LeftArm": Vector3(-70, 40, -10), "RightArm": Vector3(-50, -5, 30), "Head": Vector3(14, 10, 0)})
-	var h_c := lib._merge(h_a, {"LeftArm": Vector3(-50, 5, -30), "RightArm": Vector3(-70, -40, 10), "Head": Vector3(14, -10, 0)})
+	# (V179 : par cibles ; avant, les bras partaient sur les côtés, les mains au-dessus des épaules)
+	var h_a := lib._mains({"Head": Vector3(14, 0, 0)}, "Spine", Vector3(14, 0, 34), Vector3(1, -1, 0))
+	var h_b := lib._merge(lib._merge(lib._merge(h_a, {"Head": Vector3(14, 10, 0)}), lib._main("Left", "Spine", Vector3(20, 10, 32), Vector3(1, -1, 0))), lib._main("Right", "Spine", Vector3(-8, -4, 34), Vector3(-1, -1, 0)))
+	var h_c := lib._merge(lib._merge(lib._merge(h_a, {"Head": Vector3(14, -10, 0)}), lib._main("Left", "Spine", Vector3(8, -4, 34), Vector3(1, -1, 0))), lib._main("Right", "Spine", Vector3(-20, 10, 32), Vector3(-1, -1, 0)))
 	poses.add_animation("holo", lib._clip(3.0, true, [[0.0, h_a, Vector3.ZERO], [0.8, h_b, Vector3.ZERO], [1.6, h_a, Vector3.ZERO], [2.3, h_c, Vector3.ZERO], [3.0, h_a, Vector3.ZERO]]))
 	anim.add_animation_library("lu", poses)
 	lib.free()

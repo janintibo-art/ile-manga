@@ -189,8 +189,8 @@ func _build_animations() -> void:
 	# Ramasser : on s'accroupit, main droite au sol.
 	var reach := crouch.duplicate()
 	reach["Spine02"] = Vector3(45, 0, 0)
-	reach["RightArm"] = Vector3(-55, 0, -5)
-	reach["RightForeArm"] = Vector3(-10, 0, 0)
+	# V179 : la main droite vers le sol devant soi, la gauche qui pend (avant : les deux bras écartés)
+	reach = _merge(_merge(reach, _bras("Right", Vector3(-0.1, -0.65, 0.75), Vector3(-0.05, -0.6, 0.8))), _bras("Left", Vector3(0.15, -0.75, 0.64), Vector3(0.1, -0.6, 0.8)))
 	poses.add_animation("pickup", _clip(0.75, false, [[0.0, arms_in, Vector3.ZERO], [0.32, reach, Vector3(0, -24, 0)], [0.45, reach, Vector3(0, -24, 0)], [0.75, arms_in, Vector3.ZERO]]))
 	# Manger : main droite à la bouche.
 	var bite := arms_in.duplicate()
@@ -258,10 +258,10 @@ func _build_animations() -> void:
 	var accroupi := _merge(s3, {"LeftUpLeg": Vector3(-74, 0, 0), "LeftLeg": Vector3(86, 0, 0), "RightUpLeg": Vector3(-18, 0, 0), "RightLeg": Vector3(64, 0, 0),
 		"Spine02": Vector3(40, 0, 0), "RightArm": Vector3(-38, 0, -5), "LeftArm": Vector3(-34, 0, 5)})
 	poses.add_animation("plonge_frappe", _clip(0.45, false, [[0.0, accroupi, Vector3(0, -34, 8)], [0.22, accroupi, Vector3(0, -32, 8)], [0.45, arms_in, Vector3.ZERO]]))
-	# V29 : assis sur le banc de la barque, main droite sur la barre.
-	var seated := {"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
-		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0),
-		"RightArm": Vector3(-30, 0, -20), "RightForeArm": Vector3(-45, 0, 0), "LeftArm": Vector3(-35, 0, 12), "LeftForeArm": Vector3(-50, 0, 0)}
+	# V29 : assis (sur le banc de la barque, sur une chaise) ; V179 : les mains posées sur les cuisses
+	# (avant : les bras écartés, les mains en l'air devant soi)
+	var seated := _mains({"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
+		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0)}, "LeftUpLeg", Vector3(2, 9, 24), Vector3(1, -0.5, -0.5))
 	var seated_b := seated.duplicate()
 	seated_b["Head"] = Vector3(-4, 8, 0)
 	seated_b["Spine02"] = Vector3(6, 3, 0)
@@ -334,6 +334,95 @@ func _merge(a: Dictionary, b: Dictionary) -> Dictionary:
 	var out := a.duplicate()
 	for k in b:
 		out[k] = b[k]
+	return out
+
+
+## V179 : un bras posé par directions, dans le repère du corps au repos (X vers sa gauche, Y vers le
+## haut, Z vers l'avant) : « coude » va de l'épaule au coude, « main » du coude au poignet. Le coude
+## plie comme un vrai coude : le haut du bras tourne sur lui-même pour que l'avant-bras plie dans son
+## plan (sans quoi le coude se tord). Rend {cote + "Arm", cote + "ForeArm"} en degrés, pour _clip.
+## (Avant V179, les bras s'écrivaient en angles autour de X, Y, Z : le squelette est au repos les bras
+## écartés en A, l'avant-bras qui part encore plus en dehors ; « plier le coude » autour de X envoyait
+## la main en l'air et sur le côté : les bras croisés devenaient des bras levés, paumes au ciel.)
+func _bras(cote: String, coude: Vector3, main: Vector3, roulis: float = 0.0) -> Dictionary:
+	var a: int = skel.find_bone(cote + "Arm")
+	var f: int = skel.find_bone(cote + "ForeArm")
+	var h: int = skel.find_bone(cote + "Hand")
+	if a < 0 or f < 0 or h < 0:
+		return {}
+	var da: Vector3 = (skel.get_bone_global_rest(f).origin - skel.get_bone_global_rest(a).origin).normalized()
+	var df: Vector3 = (skel.get_bone_global_rest(h).origin - skel.get_bone_global_rest(f).origin).normalized()
+	var c: Vector3 = coude.normalized()
+	var m: Vector3 = main.normalized()
+	var qa: Quaternion
+	var h1: Vector3 = c.cross(m)
+	if h1.length() < 0.08:
+		qa = Quaternion(da, c)
+	else:
+		# la charnière du coude : au repos, l'avant-bras plie vers l'avant (autour de da × Z) ;
+		# posée, il plie de c vers m (autour de c × m)
+		var h0: Vector3 = da.cross(Vector3(0, 0, 1)).normalized()
+		h1 = h1.normalized()
+		var b0 := Basis(da, h0, da.cross(h0))
+		var b1 := Basis(c, h1, c.cross(h1))
+		qa = (b1 * b0.transposed()).get_rotation_quaternion()
+	if roulis != 0.0:
+		qa = Quaternion(c, deg_to_rad(roulis)) * qa
+	var qf := Quaternion(df, (qa.inverse() * m).normalized())
+	return {cote + "Arm": Basis(qa).get_euler() * (180.0 / PI), cote + "ForeArm": Basis(qf).get_euler() * (180.0 / PI)}
+
+
+## V179 : un bras qui va poser le poignet à un endroit du corps : près de l'os « os » (« Hips »,
+## « Spine02 » le ventre, « Spine01 » le bas de la poitrine, « Spine » la poitrine, « Head »,
+## « LeftUpLeg » le haut de la cuisse…), décalé de « decal » (en cm, pour un adulte dont le haut du bras
+## mesure 26 cm : mis à l'échelle de chaque corps), le coude tiré vers « pole ». Au repos (le corps
+## droit) : les poses qui penchent le buste emportent les bras avec lui.
+func _main(cote: String, os: String, decal: Vector3, pole: Vector3) -> Dictionary:
+	var a: int = skel.find_bone(cote + "Arm")
+	var f: int = skel.find_bone(cote + "ForeArm")
+	var h: int = skel.find_bone(cote + "Hand")
+	var b: int = skel.find_bone(os)
+	if a < 0 or f < 0 or h < 0 or b < 0:
+		return {}
+	var pa: Vector3 = skel.get_bone_global_rest(a).origin
+	var l1: float = (skel.get_bone_global_rest(f).origin - pa).length()
+	var l2: float = (skel.get_bone_global_rest(h).origin - skel.get_bone_global_rest(f).origin).length()
+	var w: Vector3 = skel.get_bone_global_rest(b).origin + decal * (l1 / 26.2)
+	var u: Vector3 = w - pa
+	var d: float = clampf(u.length(), absf(l1 - l2) + 0.01 * l1, (l1 + l2) * 0.995)
+	u = u.normalized()
+	var x: float = (l1 * l1 - l2 * l2 + d * d) / (2.0 * d)
+	var y: float = sqrt(maxf(0.0, l1 * l1 - x * x))
+	var p: Vector3 = pole.normalized()
+	var pp: Vector3 = p - u * p.dot(u)
+	if pp.length() < 0.01:
+		pp = Vector3(0, -1, 0) - u * (-u.y)
+	var e: Vector3 = pa + u * x + pp.normalized() * y
+	return _bras(cote, e - pa, pa + u * d - e)
+
+
+## V179 : les deux poignets posés en miroir (decal et pole du bras gauche ; le droit : X inversé).
+func _mains(p: Dictionary, os: String, decal: Vector3, pole: Vector3) -> Dictionary:
+	var out: Dictionary = p.duplicate()
+	var g: Dictionary = _main("Left", os.replace("Right", "Left"), decal, pole)
+	var d: Dictionary = _main("Right", os.replace("Left", "Right"), Vector3(-decal.x, decal.y, decal.z), Vector3(-pole.x, pole.y, pole.z))
+	for k in g:
+		out[k] = g[k]
+	for k in d:
+		out[k] = d[k]
+	return out
+
+
+## V179 : les deux bras, l'un le miroir de l'autre (directions du bras gauche ; le droit : X inversé),
+## ajoutés à la pose « p ».
+func _bras2(p: Dictionary, coude: Vector3, main: Vector3, roulis: float = 0.0) -> Dictionary:
+	var out: Dictionary = p.duplicate()
+	var g: Dictionary = _bras("Left", coude, main, roulis)
+	var d: Dictionary = _bras("Right", Vector3(-coude.x, coude.y, coude.z), Vector3(-main.x, main.y, main.z), -roulis)
+	for k in g:
+		out[k] = g[k]
+	for k in d:
+		out[k] = d[k]
 	return out
 
 

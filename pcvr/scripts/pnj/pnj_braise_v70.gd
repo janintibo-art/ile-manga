@@ -68,27 +68,29 @@ func _build_br_poses() -> void:
 	var poses := AnimationLibrary.new()
 	# le violon : le bras gauche tient le manche, la tête penchée sur la mentonnière, l'archet va
 	# et vient ; le corps se balance en mesure
-	var v_a := {"LeftArm": Vector3(-74, 0, 26), "LeftForeArm": Vector3(-62, 0, 0), "Head": Vector3(12, 18, 0), "Spine02": Vector3(2, 6, 0),
-		"RightArm": Vector3(-52, 0, 30), "RightForeArm": Vector3(-74, 0, 0)}
-	var v_b := lib._merge(v_a, {"RightArm": Vector3(-46, 0, 8), "RightForeArm": Vector3(-24, 0, 0), "Spine02": Vector3(2, 2, 0), "Head": Vector3(10, 14, 0)})
+	# (V179 : les bras posés par des cibles, lib._main / lib._bras ; avant, des angles qui envoyaient les
+	# bras sur les côtés, les mains au-dessus des épaules)
+	var v_a := lib._merge({"Head": Vector3(12, 18, 0), "Spine02": Vector3(2, 6, 0)}, lib._main("Left", "Spine", Vector3(26, 12, 30), Vector3(1, -1, 0)))
+	v_a = lib._merge(v_a, lib._main("Right", "Spine", Vector3(-4, 6, 26), Vector3(-1, -0.5, 0)))
+	var v_b := lib._merge(lib._merge(v_a, {"Spine02": Vector3(2, 2, 0), "Head": Vector3(10, 14, 0)}), lib._main("Right", "Spine", Vector3(-30, -2, 22), Vector3(-1, -0.5, 0)))
 	var v_c := lib._merge(v_a, {"Spine02": Vector3(-2, 10, -4), "Head": Vector3(6, 22, -4)})
 	poses.add_animation("violon", lib._clip(4.0, true, [[0.0, v_a, Vector3(-1, 0, 0)], [0.5, v_b, Vector3(1, -1, 0)], [1.0, v_a, Vector3(-1, 0, 0)],
 		[1.5, v_b, Vector3(1, -1, 0)], [2.0, v_c, Vector3(-1, 0, 0)], [2.5, v_b, Vector3(1, -1, 0)], [3.0, v_c, Vector3(-1, 0, 0)], [3.5, v_b, Vector3(1, -1, 0)], [4.0, v_a, Vector3(-1, 0, 0)]]))
 	# forger : le marteau monte au-dessus de l'épaule, tombe sur l'enclume (la pince dans l'autre main)
-	var f_up := {"Spine02": Vector3(6, 0, 0), "Head": Vector3(16, 0, 0), "RightArm": Vector3(-148, 0, 8), "RightForeArm": Vector3(-46, 0, 0),
-		"LeftArm": Vector3(-42, 0, -12), "LeftForeArm": Vector3(-62, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "LeftLeg": Vector3(12, 0, 0), "RightUpLeg": Vector3(4, 0, 0), "RightLeg": Vector3(8, 0, 0)}
-	var f_hit := lib._merge(f_up, {"RightArm": Vector3(-58, 0, 14), "RightForeArm": Vector3(-28, 0, 0), "Spine02": Vector3(20, 0, 0), "Head": Vector3(22, 0, 0)})
+	var f_up := {"Spine02": Vector3(6, 0, 0), "Head": Vector3(16, 0, 0), "LeftUpLeg": Vector3(-10, 0, 0), "LeftLeg": Vector3(12, 0, 0), "RightUpLeg": Vector3(4, 0, 0), "RightLeg": Vector3(8, 0, 0)}
+	f_up = lib._merge(lib._merge(f_up, lib._main("Right", "Head", Vector3(-16, 8, 6), Vector3(-1, 0, -0.3))), lib._main("Left", "Spine02", Vector3(12, 8, 30), Vector3(1, -1, 0)))
+	var f_hit := lib._merge(lib._merge(f_up, {"Spine02": Vector3(20, 0, 0), "Head": Vector3(22, 0, 0)}), lib._main("Right", "Spine02", Vector3(-8, 6, 34), Vector3(-1, -1, 0)))
 	poses.add_animation("forger", lib._clip(1.4, true, [[0.0, f_up, Vector3.ZERO], [0.4, f_up, Vector3.ZERO], [0.62, f_hit, Vector3(0, -3, 0)], [0.85, f_hit, Vector3(0, -3, 0)], [1.4, f_up, Vector3.ZERO]]))
 	# la gigue : un genou qui monte, l'autre, les bras qui battent la mesure, de petits sauts
 	var d_l := {"LeftUpLeg": Vector3(-58, 0, -4), "LeftLeg": Vector3(74, 0, 0), "RightUpLeg": Vector3(-6, 0, 3), "RightLeg": Vector3(10, 0, 0),
-		"RightArm": Vector3(-150, 0, 24), "RightForeArm": Vector3(-30, 0, 0), "LeftArm": Vector3(-50, 0, -46), "LeftForeArm": Vector3(-40, 0, 0),
 		"Spine02": Vector3(-4, 0, -7), "Head": Vector3(-6, -8, 6)}
+	d_l = lib._merge(lib._merge(d_l, lib._bras("Right", Vector3(-0.3, 0.93, 0.15), Vector3(-0.1, 0.99, 0.05))), lib._bras("Left", Vector3(0.75, -0.55, 0.3), Vector3(0.7, -0.3, 0.65)))
 	var d_m := {"LeftUpLeg": Vector3(-16, 0, -5), "LeftLeg": Vector3(26, 0, 0), "RightUpLeg": Vector3(-16, 0, 5), "RightLeg": Vector3(26, 0, 0),
-		"RightArm": Vector3(-96, 0, 34), "RightForeArm": Vector3(-70, 0, 0), "LeftArm": Vector3(-96, 0, -34), "LeftForeArm": Vector3(-70, 0, 0),
 		"Spine02": Vector3(8, 0, 0), "Head": Vector3(4, 0, 0)}
+	d_m = lib._bras2(d_m, Vector3(0.35, -0.5, 0.8), Vector3(-0.2, 0.3, 0.93))
 	var d_r := {"RightUpLeg": Vector3(-58, 0, 4), "RightLeg": Vector3(74, 0, 0), "LeftUpLeg": Vector3(-6, 0, -3), "LeftLeg": Vector3(10, 0, 0),
-		"LeftArm": Vector3(-150, 0, -24), "LeftForeArm": Vector3(-30, 0, 0), "RightArm": Vector3(-50, 0, 46), "RightForeArm": Vector3(-40, 0, 0),
 		"Spine02": Vector3(-4, 0, 7), "Head": Vector3(-6, 8, -6)}
+	d_r = lib._merge(lib._merge(d_r, lib._bras("Left", Vector3(0.3, 0.93, 0.15), Vector3(0.1, 0.99, 0.05))), lib._bras("Right", Vector3(-0.75, -0.55, 0.3), Vector3(-0.7, -0.3, 0.65)))
 	poses.add_animation("danse", lib._clip(1.2, true, [[0.0, d_l, Vector3(0, 3, 0)], [0.3, d_m, Vector3(0, -5, 0)], [0.6, d_r, Vector3(0, 3, 0)], [0.9, d_m, Vector3(0, -5, 0)], [1.2, d_l, Vector3(0, 3, 0)]]))
 	anim.add_animation_library("br", poses)
 	lib.free()

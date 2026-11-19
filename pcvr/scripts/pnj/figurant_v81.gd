@@ -385,77 +385,77 @@ func _build_poses() -> void:
 	lib.anim = anim
 	lib.skel = skel
 	var poses := AnimationLibrary.new()
-	var seated := {"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
-		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0),
-		"RightArm": Vector3(-30, 0, -20), "RightForeArm": Vector3(-45, 0, 0), "LeftArm": Vector3(-35, 0, 12), "LeftForeArm": Vector3(-50, 0, 0)}
+	# V179 : les bras posés par des cibles (lib._main : là où va le poignet, le coude tiré d'un côté ;
+	# lib._bras : par directions) ; avant, des angles qui, sur ce squelette (au repos les bras en A),
+	# envoyaient les bras sur les côtés, les mains en l'air (assis, en colère, en riant, en applaudissant…)
+	var seated := lib._mains({"LeftUpLeg": Vector3(-88, 0, 6), "RightUpLeg": Vector3(-88, 0, -6), "LeftLeg": Vector3(85, 0, 0), "RightLeg": Vector3(85, 0, 0),
+		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(4, 0, 0)}, "LeftUpLeg", Vector3(2, 9, 24), Vector3(1, -0.5, -0.5))
 	var sy := Vector3(0, -38, 0)
 	# rire debout : on se tient le ventre, le buste part en arrière puis en avant, la tête aussi
-	var r_a := {"Spine02": Vector3(-12, 0, 0), "Spine01": Vector3(-4, 0, 0), "Head": Vector3(-22, 0, 0),
-		"LeftArm": Vector3(-22, 0, 18), "LeftForeArm": Vector3(-100, 0, 0), "RightArm": Vector3(-22, 0, -18), "RightForeArm": Vector3(-100, 0, 0)}
+	var r_a := lib._mains({"Spine02": Vector3(-12, 0, 0), "Spine01": Vector3(-4, 0, 0), "Head": Vector3(-22, 0, 0)}, "Spine02", Vector3(7, 2, 18), Vector3(1, -0.6, -0.2))
 	var r_b := lib._merge(r_a, {"Spine02": Vector3(18, 0, 0), "Spine01": Vector3(6, 0, 0), "Head": Vector3(10, 0, 0)})
 	var r_c := lib._merge(r_a, {"Spine02": Vector3(8, 4, 0), "Head": Vector3(-8, 6, 0)})
 	poses.add_animation("rire", lib._clip(1.2, true, [[0.0, r_a, Vector3(0, 0.5, 0)], [0.3, r_b, Vector3(0, -2.5, 0)], [0.6, r_c, Vector3(0, 0.5, 0)], [0.9, r_b, Vector3(0, -2.5, 0)], [1.2, r_a, Vector3(0, 0.5, 0)]]))
 	# rire assis : le buste rebondit, une main tape la cuisse
-	var ra_a := lib._merge(seated, {"Spine02": Vector3(-10, 0, 0), "Head": Vector3(-18, 0, 0), "RightArm": Vector3(-40, 0, -10), "RightForeArm": Vector3(-30, 0, 0)})
-	var ra_b := lib._merge(seated, {"Spine02": Vector3(22, 0, 0), "Head": Vector3(8, 0, 0), "RightArm": Vector3(-20, 0, -14), "RightForeArm": Vector3(-10, 0, 0)})
+	var ra_a := lib._merge(lib._merge(seated, {"Spine02": Vector3(-10, 0, 0), "Head": Vector3(-18, 0, 0)}), lib._main("Right", "RightUpLeg", Vector3(-2, 24, 24), Vector3(-1, -0.5, -0.5)))
+	var ra_b := lib._merge(lib._merge(seated, {"Spine02": Vector3(22, 0, 0), "Head": Vector3(8, 0, 0)}), lib._main("Right", "RightUpLeg", Vector3(-2, 9, 24), Vector3(-1, -0.5, -0.5)))
 	poses.add_animation("rire_assis", lib._clip(0.9, true, [[0.0, ra_a, sy], [0.25, ra_b, sy + Vector3(0, -1, 0)], [0.45, ra_a, sy], [0.7, ra_b, sy + Vector3(0, -1, 0)], [0.9, ra_a, sy]]))
 	# manger : la cuillère monte à la bouche
-	var m_a := lib._merge(seated, {"RightArm": Vector3(-38, 0, -16), "RightForeArm": Vector3(-60, 0, 0), "Spine02": Vector3(10, 0, 0), "Head": Vector3(8, 0, 0)})
-	var m_b := lib._merge(seated, {"RightArm": Vector3(-62, 0, -26), "RightForeArm": Vector3(-125, 0, 0), "Spine02": Vector3(6, 0, 0), "Head": Vector3(0, 0, 0)})
+	# (la main gauche posée sur la table, la droite qui va de l'assiette à la bouche)
+	var m_0 := lib._merge(seated, lib._main("Left", "Spine01", Vector3(12, -2, 28), Vector3(1, -1, -0.2)))
+	var m_a := lib._merge(lib._merge(m_0, {"Spine02": Vector3(10, 0, 0), "Head": Vector3(8, 0, 0)}), lib._main("Right", "Spine01", Vector3(-10, -2, 30), Vector3(-1, -1, -0.2)))
+	var m_b := lib._merge(lib._merge(m_0, {"Spine02": Vector3(6, 0, 0), "Head": Vector3(0, 0, 0)}), lib._main("Right", "Head", Vector3(-5, 0, 16), Vector3(-1, -1, 0)))
 	poses.add_animation("manger", lib._clip(3.0, true, [[0.0, m_a, sy], [1.0, m_a, sy], [1.4, m_b, sy], [1.8, m_b, sy], [2.2, m_a, sy], [3.0, m_a, sy]]))
 	# tricoter : les deux avant-bras devant, les mains qui s'agitent
-	var t_a := lib._merge(seated, {"LeftArm": Vector3(-30, 0, 20), "LeftForeArm": Vector3(-80, 0, 0), "RightArm": Vector3(-30, 0, -20), "RightForeArm": Vector3(-80, 0, 0),
-		"Head": Vector3(18, 0, 0), "Spine02": Vector3(8, 0, 0)})
-	var t_b := lib._merge(t_a, {"LeftForeArm": Vector3(-92, 0, 0), "RightForeArm": Vector3(-70, 0, 0)})
+	var t_a := lib._mains(lib._merge(seated, {"Head": Vector3(18, 0, 0), "Spine02": Vector3(8, 0, 0)}), "Spine02", Vector3(5, 8, 24), Vector3(1, -1, -0.2))
+	var t_b := lib._merge(lib._merge(t_a, lib._main("Left", "Spine02", Vector3(4, 10, 25), Vector3(1, -1, -0.2))), lib._main("Right", "Spine02", Vector3(-6, 6, 24), Vector3(-1, -1, -0.2)))
 	poses.add_animation("tricot", lib._clip(0.8, true, [[0.0, t_a, sy], [0.4, t_b, sy], [0.8, t_a, sy]]))
 	# V178 : dans le bain : assis au fond, les jambes allongées devant soi, le dos contre la baignoire (avant :
 	# assis comme sur une chaise, les genoux passaient au travers de la baignoire)
 	var bain := {"LeftUpLeg": Vector3(-100, 0, 6), "RightUpLeg": Vector3(-100, 0, -6), "LeftLeg": Vector3(10, 0, 0), "RightLeg": Vector3(10, 0, 0),
-		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(-14, 0, 0), "Head": Vector3(12, 0, 0),
-		"LeftArm": Vector3(-20, 0, 28), "LeftForeArm": Vector3(-35, 0, 0), "RightArm": Vector3(-20, 0, -28), "RightForeArm": Vector3(-35, 0, 0)}
+		"LeftFoot": Vector3(-5, 0, 0), "RightFoot": Vector3(-5, 0, 0), "Spine02": Vector3(-14, 0, 0), "Head": Vector3(12, 0, 0)}
+	bain = lib._mains(bain, "LeftUpLeg", Vector3(3, 10, 18), Vector3(1, -1, 0))
 	var bain_b := lib._merge(bain, {"Spine02": Vector3(-16, 0, 0), "Head": Vector3(8, 0, 0)})
 	poses.add_animation("bain", lib._clip(5.0, true, [[0.0, bain, Vector3(0, -71, 0)], [2.5, bain_b, Vector3(0, -71, 0)], [5.0, bain, Vector3(0, -71, 0)]]))
 	# dormir assis (dans un fauteuil) : la tête tombe sur l'épaule, on respire
-	var ds_a := lib._merge(seated, {"Head": Vector3(26, 0, 14), "Spine02": Vector3(-6, 0, 0), "LeftArm": Vector3(-14, 0, 6), "RightArm": Vector3(-14, 0, -6), "LeftForeArm": Vector3(-20, 0, 0), "RightForeArm": Vector3(-20, 0, 0)})
+	var ds_a := lib._mains(lib._merge(seated, {"Head": Vector3(26, 0, 14), "Spine02": Vector3(-6, 0, 0)}), "LeftUpLeg", Vector3(-3, 8, 18), Vector3(1, -1, -0.3))
 	var ds_b := lib._merge(ds_a, {"Spine02": Vector3(-9, 0, 0), "Head": Vector3(22, 0, 14)})
 	poses.add_animation("dormir_assis", lib._clip(4.0, true, [[0.0, ds_a, sy], [2.0, ds_b, sy + Vector3(0, 0.6, 0)], [4.0, ds_a, sy]]))
 	# dormir couché (sur le dos ; le nœud entier est couché par lie()) : les bras le long du corps,
 	# la tête un peu de côté, la poitrine qui se soulève
-	var lie := {"LeftArm": Vector3(0, 0, -8), "RightArm": Vector3(0, 0, 8), "LeftForeArm": Vector3(-25, 0, 0), "RightForeArm": Vector3(-25, 0, 0),
-		"Head": Vector3(-6, 18, 0), "LeftUpLeg": Vector3(0, 0, 3), "RightUpLeg": Vector3(0, 0, -3), "LeftFoot": Vector3(30, 0, 0), "RightFoot": Vector3(30, 0, 0)}
+	var lie := lib._bras2({"Head": Vector3(-6, 18, 0), "LeftUpLeg": Vector3(0, 0, 3), "RightUpLeg": Vector3(0, 0, -3), "LeftFoot": Vector3(30, 0, 0), "RightFoot": Vector3(30, 0, 0)},
+		Vector3(0.22, -0.97, 0.05), Vector3(0.15, -0.97, 0.18))
 	var lie_b := lib._merge(lie, {"Spine02": Vector3(-5, 0, 0), "Spine01": Vector3(-2, 0, 0), "Head": Vector3(-8, 16, 0)})
 	poses.add_animation("dormir", lib._clip(4.5, true, [[0.0, lie, Vector3.ZERO], [2.2, lie_b, Vector3(0, 0, 0.6)], [4.5, lie, Vector3.ZERO]]))
 	# colère : poings sur les hanches, la tête qui fait non
-	var c_a := {"LeftArm": Vector3(-10, 0, -40), "LeftForeArm": Vector3(-95, 0, 0), "RightArm": Vector3(-10, 0, 40), "RightForeArm": Vector3(-95, 0, 0),
-		"Spine02": Vector3(-4, 0, 0), "Head": Vector3(-4, -14, 0)}
+	var c_a := lib._mains({"Spine02": Vector3(-4, 0, 0), "Head": Vector3(-4, -14, 0)}, "Hips", Vector3(16, 6, 2), Vector3(1, 0, -0.5))
 	var c_b := lib._merge(c_a, {"Head": Vector3(-4, 14, 0)})
 	poses.add_animation("colere", lib._clip(1.0, true, [[0.0, c_a, Vector3.ZERO], [0.25, c_b, Vector3.ZERO], [0.5, c_a, Vector3.ZERO], [0.75, c_b, Vector3.ZERO], [1.0, c_a, Vector3.ZERO]]))
 	# mains dans le dos (le collectionneur, le guide)
-	var md := {"LeftArm": Vector3(14, 0, -10), "LeftForeArm": Vector3(-70, 0, 0), "RightArm": Vector3(14, 0, 10), "RightForeArm": Vector3(-70, 0, 0), "Spine02": Vector3(-3, 0, 0), "Head": Vector3(-4, 0, 0)}
+	var md := lib._mains({"Spine02": Vector3(-3, 0, 0), "Head": Vector3(-4, 0, 0)}, "Spine02", Vector3(6, -6, -14), Vector3(1, -0.3, -0.5))
 	var md_b := lib._merge(md, {"Head": Vector3(-2, 10, 0), "Spine02": Vector3(-4, 4, 0)})
 	poses.add_animation("mains_dos", lib._clip(5.0, true, [[0.0, md, Vector3.ZERO], [2.5, md_b, Vector3(0, -0.5, 0)], [5.0, md, Vector3.ZERO]]))
 	# applaudir
-	var ap_a := {"LeftArm": Vector3(-55, 0, 30), "LeftForeArm": Vector3(-60, 0, 0), "RightArm": Vector3(-55, 0, -30), "RightForeArm": Vector3(-60, 0, 0), "Head": Vector3(-6, 0, 0)}
-	var ap_b := lib._merge(ap_a, {"LeftArm": Vector3(-55, 0, 18), "RightArm": Vector3(-55, 0, -18)})
+	var ap_a := lib._mains({"Head": Vector3(-6, 0, 0)}, "Spine", Vector3(8, -6, 28), Vector3(1, -1, 0))
+	var ap_b := lib._mains(ap_a, "Spine", Vector3(2.5, -6, 28), Vector3(1, -1, 0))
 	poses.add_animation("applaudir", lib._clip(0.4, true, [[0.0, ap_a, Vector3.ZERO], [0.2, ap_b, Vector3(0, -0.5, 0)], [0.4, ap_a, Vector3.ZERO]]))
 	# se cacher (accroupi, les mains sur la tête)
 	# (V178 : le dos et la tête plus penchés : sous une table, la tête passait au travers du plateau)
 	var ca := {"LeftUpLeg": Vector3(-100, 0, 10), "RightUpLeg": Vector3(-100, 0, -10), "LeftLeg": Vector3(120, 0, 0), "RightLeg": Vector3(120, 0, 0),
-		"LeftFoot": Vector3(-20, 0, 0), "RightFoot": Vector3(-20, 0, 0), "Spine02": Vector3(46, 0, 0), "Head": Vector3(32, 0, 0),
-		"LeftArm": Vector3(-150, 0, 30), "LeftForeArm": Vector3(-120, 0, 0), "RightArm": Vector3(-150, 0, -30), "RightForeArm": Vector3(-120, 0, 0)}
+		"LeftFoot": Vector3(-20, 0, 0), "RightFoot": Vector3(-20, 0, 0), "Spine02": Vector3(46, 0, 0), "Head": Vector3(32, 0, 0)}
+	ca = lib._mains(ca, "Head", Vector3(9, 12, -2), Vector3(1, 0.5, 0.6))
 	poses.add_animation("cache", lib._clip(2.0, true, [[0.0, ca, Vector3(0, -48, 0)], [1.0, ca, Vector3(0, -47, 0)], [2.0, ca, Vector3(0, -48, 0)]]))
 	# les pompes (le nœud entier est incliné par plank()) : les bras tendus vers le sol, la tête levée
-	var po_a := {"LeftArm": Vector3(-82, 0, 8), "RightArm": Vector3(-82, 0, -8), "LeftForeArm": Vector3(-4, 0, 0), "RightForeArm": Vector3(-4, 0, 0), "Head": Vector3(-25, 0, 0),
-		"LeftHand": Vector3(-60, 0, 0), "RightHand": Vector3(-60, 0, 0)}
-	var po_b := lib._merge(po_a, {"LeftArm": Vector3(-60, 0, 30), "RightArm": Vector3(-60, 0, -30), "LeftForeArm": Vector3(-55, 0, 0), "RightForeArm": Vector3(-55, 0, 0)})
+	var po_a := lib._bras2({"Head": Vector3(-25, 0, 0)}, Vector3(0.15, -0.05, 0.99), Vector3(0.12, -0.05, 0.99))
+	var po_b := lib._bras2(po_a, Vector3(0.6, -0.2, 0.77), Vector3(-0.25, 0.0, 0.97))
 	poses.add_animation("pompes", lib._clip(1.4, true, [[0.0, po_b, Vector3.ZERO], [0.7, po_a, Vector3.ZERO], [1.4, po_b, Vector3.ZERO]]))
 	# le mime coincé dans sa boîte invisible : les mains à plat devant, qui tâtent le mur
-	var mi_a := {"LeftArm": Vector3(-80, 0, 10), "LeftForeArm": Vector3(-60, 0, 0), "LeftHand": Vector3(-70, 0, 0), "RightArm": Vector3(-80, 0, -10), "RightForeArm": Vector3(-60, 0, 0), "RightHand": Vector3(-70, 0, 0), "Head": Vector3(0, -10, 0)}
-	var mi_b := lib._merge(mi_a, {"LeftArm": Vector3(-110, 0, 30), "RightArm": Vector3(-60, 0, -30), "Head": Vector3(-5, 12, 0), "Spine02": Vector3(0, 8, 0)})
-	var mi_c := lib._merge(mi_a, {"LeftArm": Vector3(-60, 0, 30), "RightArm": Vector3(-110, 0, -30), "Head": Vector3(-5, -12, 0), "Spine02": Vector3(0, -8, 0)})
+	var mi_a := lib._mains({"Head": Vector3(0, -10, 0)}, "Spine", Vector3(16, 4, 38), Vector3(1, -1, 0))
+	var mi_b := lib._merge(lib._merge(lib._merge(mi_a, {"Head": Vector3(-5, 12, 0), "Spine02": Vector3(0, 8, 0)}), lib._main("Left", "Spine", Vector3(16, 18, 36), Vector3(1, -1, 0))), lib._main("Right", "Spine", Vector3(-16, -8, 38), Vector3(-1, -1, 0)))
+	var mi_c := lib._merge(lib._merge(lib._merge(mi_a, {"Head": Vector3(-5, -12, 0), "Spine02": Vector3(0, -8, 0)}), lib._main("Left", "Spine", Vector3(16, -8, 38), Vector3(1, -1, 0))), lib._main("Right", "Spine", Vector3(-16, 18, 36), Vector3(-1, -1, 0)))
 	poses.add_animation("mime", lib._clip(3.0, true, [[0.0, mi_a, Vector3.ZERO], [1.0, mi_b, Vector3.ZERO], [2.0, mi_c, Vector3.ZERO], [3.0, mi_a, Vector3.ZERO]]))
 	# montrer du doigt (« là ! »)
-	var pt := {"RightArm": Vector3(-88, 0, -10), "RightForeArm": Vector3(-6, 0, 0), "LeftArm": Vector3(0, 0, -13), "LeftForeArm": Vector3(-14, 0, 0), "Head": Vector3(0, 0, 0)}
-	poses.add_animation("pointer", lib._clip(2.0, true, [[0.0, pt, Vector3.ZERO], [1.0, lib._merge(pt, {"RightArm": Vector3(-92, 0, -6)}), Vector3.ZERO], [2.0, pt, Vector3.ZERO]]))
+	var pt := lib._merge(lib._merge({"LeftArm": Vector3(0, 0, -13), "LeftForeArm": Vector3(-14, 0, 0), "Head": Vector3(0, 0, 0)}, lib._bras("Right", Vector3(-0.3, 0.08, 0.95), Vector3(-0.3, 0.12, 0.95))), {})
+	poses.add_animation("pointer", lib._clip(2.0, true, [[0.0, pt, Vector3.ZERO], [1.0, lib._merge(pt, lib._bras("Right", Vector3(-0.25, 0.12, 0.96), Vector3(-0.25, 0.16, 0.95))), Vector3.ZERO], [2.0, pt, Vector3.ZERO]]))
 	anim.add_animation_library("v81", poses)
 	lib.free()

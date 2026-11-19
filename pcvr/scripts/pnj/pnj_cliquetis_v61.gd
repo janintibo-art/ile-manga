@@ -23,14 +23,16 @@ func _build_cq_poses() -> void:
 	lib.skel = skel
 	var poses := AnimationLibrary.new()
 	# bricoler : penché, la main droite qui tape, la gauche qui tient la pièce
+	# (V179 : les bras posés par des cibles, lib._main ; avant, des angles qui envoyaient les bras sur
+	# les côtés, les mains en l'air)
 	var b_a := {"Spine02": Vector3(24, 0, 0), "Spine01": Vector3(8, 0, 0), "Head": Vector3(18, 0, 0),
-		"RightArm": Vector3(-70, 0, 10), "RightForeArm": Vector3(-60, 0, 0), "LeftArm": Vector3(-46, 0, -10), "LeftForeArm": Vector3(-80, 0, 0),
 		"LeftUpLeg": Vector3(-6, 0, 0), "LeftLeg": Vector3(10, 0, 0), "RightUpLeg": Vector3(-6, 0, 0), "RightLeg": Vector3(10, 0, 0)}
-	var b_b := lib._merge(b_a, {"RightArm": Vector3(-96, 0, 10), "RightForeArm": Vector3(-30, 0, 0)})
-	var b_c := lib._merge(b_a, {"LeftForeArm": Vector3(-92, 20, 0), "Head": Vector3(22, 6, 0)})
+	b_a = lib._merge(lib._merge(b_a, lib._main("Right", "Spine02", Vector3(-6, 2, 34), Vector3(-1, -1, 0))), lib._main("Left", "Spine02", Vector3(10, 2, 32), Vector3(1, -1, 0)))
+	var b_b := lib._merge(b_a, lib._main("Right", "Spine02", Vector3(-6, 14, 32), Vector3(-1, -1, 0)))
+	var b_c := lib._merge(lib._merge(b_a, {"Head": Vector3(22, 6, 0)}), lib._main("Left", "Spine02", Vector3(4, 6, 36), Vector3(1, -1, 0)))
 	poses.add_animation("bricoler", lib._clip(2.0, true, [[0.0, b_a, Vector3.ZERO], [0.25, b_b, Vector3.ZERO], [0.4, b_a, Vector3.ZERO], [0.65, b_b, Vector3.ZERO], [0.8, b_a, Vector3.ZERO], [1.4, b_c, Vector3.ZERO], [2.0, b_a, Vector3.ZERO]]))
 	# observer : la tête levée, la main droite en visière
-	var o_a := {"Head": Vector3(-26, 0, 0), "Spine02": Vector3(-6, 0, 0), "RightArm": Vector3(-120, 0, 30), "RightForeArm": Vector3(-110, 0, 0), "LeftArm": Vector3(-14, 0, -8), "LeftForeArm": Vector3(-20, 0, 0)}
+	var o_a := lib._merge({"Head": Vector3(-26, 0, 0), "Spine02": Vector3(-6, 0, 0), "LeftArm": Vector3(-14, 0, -8), "LeftForeArm": Vector3(-20, 0, 0)}, lib._main("Right", "Head", Vector3(-8, 10, 14), Vector3(-1, -0.2, 0.3)))
 	var o_b := lib._merge(o_a, {"Head": Vector3(-24, 18, 0), "Spine02": Vector3(-6, 8, 0)})
 	var o_c := lib._merge(o_a, {"Head": Vector3(-28, -16, 0), "Spine02": Vector3(-6, -6, 0)})
 	poses.add_animation("observer", lib._clip(9.0, true, [[0.0, o_a, Vector3.ZERO], [3.0, o_b, Vector3.ZERO], [6.0, o_c, Vector3.ZERO], [9.0, o_a, Vector3.ZERO]]))

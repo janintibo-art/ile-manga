@@ -31,24 +31,27 @@ func _build_arc_poses() -> void:
 	lib.skel = skel
 	var poses := AnimationLibrary.new()
 	# enseigner : la main droite levée, l'index vers le ciel ; la gauche ouverte vers les élèves
-	var e_a := {"RightArm": Vector3(-130, 0, 20), "RightForeArm": Vector3(-40, 0, 0), "LeftArm": Vector3(-50, -20, -14), "LeftForeArm": Vector3(-40, 0, 0), "Head": Vector3(-8, -14, 0), "Spine02": Vector3(-2, -6, 0)}
-	var e_b := lib._merge(e_a, {"RightArm": Vector3(-100, -10, 26), "RightForeArm": Vector3(-60, 0, 0), "Head": Vector3(-4, 0, 0), "Spine02": Vector3(0, 0, 0)})
-	var e_c := {"RightArm": Vector3(-40, 0, 14), "RightForeArm": Vector3(-80, 0, 0), "LeftArm": Vector3(-80, 20, -20), "LeftForeArm": Vector3(-20, 0, 0), "Head": Vector3(-4, 16, 0), "Spine02": Vector3(-2, 8, 0)}
+	# (V179 : les bras posés par des cibles et des directions, lib._main / lib._bras ; avant, des angles
+	# qui envoyaient les bras sur les côtés)
+	var e_a := lib._merge(lib._merge({"Head": Vector3(-8, -14, 0), "Spine02": Vector3(-2, -6, 0)}, lib._bras("Right", Vector3(-0.4, 0.6, 0.7), Vector3(-0.15, 0.95, 0.27))), lib._bras("Left", Vector3(0.55, -0.6, 0.58), Vector3(0.45, -0.1, 0.89)))
+	var e_b := lib._merge(lib._merge(e_a, {"Head": Vector3(-4, 0, 0), "Spine02": Vector3(0, 0, 0)}), lib._bras("Right", Vector3(-0.5, 0.2, 0.84), Vector3(-0.3, 0.45, 0.84)))
+	var e_c := lib._merge(lib._merge({"Head": Vector3(-4, 16, 0), "Spine02": Vector3(-2, 8, 0)}, lib._main("Right", "Spine02", Vector3(-10, 4, 24), Vector3(-1, -1, 0))), lib._bras("Left", Vector3(0.6, -0.3, 0.74), Vector3(0.5, 0.2, 0.84)))
 	poses.add_animation("enseigner", lib._clip(7.0, true, [[0.0, e_a, Vector3.ZERO], [1.8, e_a, Vector3.ZERO], [2.6, e_b, Vector3.ZERO], [4.0, e_c, Vector3.ZERO], [5.6, e_c, Vector3.ZERO], [7.0, e_a, Vector3.ZERO]]))
 	# lancer un sort : on rassemble les mains, on pousse devant soi, on relâche
-	var s_a := {"RightArm": Vector3(-40, 30, 30), "RightForeArm": Vector3(-90, 0, 0), "LeftArm": Vector3(-40, -30, -30), "LeftForeArm": Vector3(-90, 0, 0), "Spine02": Vector3(6, 0, 0), "Head": Vector3(6, 0, 0),
-		"LeftUpLeg": Vector3(-10, 0, -4), "LeftLeg": Vector3(14, 0, 0), "RightUpLeg": Vector3(8, 0, 4), "RightLeg": Vector3(6, 0, 0)}
-	var s_b := lib._merge(s_a, {"RightArm": Vector3(-85, 10, 14), "RightForeArm": Vector3(-10, 0, 0), "LeftArm": Vector3(-85, -10, -14), "LeftForeArm": Vector3(-10, 0, 0), "Spine02": Vector3(-4, 0, 0), "Head": Vector3(-6, 0, 0)})
-	var s_c := lib._merge(s_a, {"RightArm": Vector3(-20, 0, 14), "RightForeArm": Vector3(-30, 0, 0), "LeftArm": Vector3(-20, 0, -14), "LeftForeArm": Vector3(-30, 0, 0), "Spine02": Vector3(0, 0, 0), "Head": Vector3(0, 0, 0)})
+	var s_a := lib._mains({"Spine02": Vector3(6, 0, 0), "Head": Vector3(6, 0, 0),
+		"LeftUpLeg": Vector3(-10, 0, -4), "LeftLeg": Vector3(14, 0, 0), "RightUpLeg": Vector3(8, 0, 4), "RightLeg": Vector3(6, 0, 0)}, "Spine", Vector3(8, -4, 24), Vector3(1, -1, 0))
+	var s_b := lib._bras2(lib._merge(s_a, {"Spine02": Vector3(-4, 0, 0), "Head": Vector3(-6, 0, 0)}), Vector3(0.15, 0.1, 0.98), Vector3(0.1, 0.12, 0.99))
+	var s_c := lib._mains(lib._merge(s_a, {"Spine02": Vector3(0, 0, 0), "Head": Vector3(0, 0, 0)}), "Spine02", Vector3(10, 0, 18), Vector3(1, -1, 0))
 	poses.add_animation("lancer_sort", lib._clip(4.0, true, [[0.0, s_c, Vector3.ZERO], [1.2, s_a, Vector3(0, -2, 0)], [2.2, s_a, Vector3(0, -2, 0)], [2.5, s_b, Vector3(0, -1, 0)], [3.2, s_b, Vector3.ZERO], [4.0, s_c, Vector3.ZERO]]))
 	# jardiner : penché, les mains vers le sol, qui grattent
-	var j_a := {"Spine01": Vector3(30, 0, 0), "Spine02": Vector3(24, 0, 0), "Head": Vector3(10, 0, 0), "RightArm": Vector3(-60, 0, 10), "RightForeArm": Vector3(-30, 0, 0), "LeftArm": Vector3(-56, 0, -10), "LeftForeArm": Vector3(-36, 0, 0),
-		"LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(36, 0, 0), "RightUpLeg": Vector3(-24, 0, 0), "RightLeg": Vector3(36, 0, 0)}
-	var j_b := lib._merge(j_a, {"RightArm": Vector3(-70, 0, 14), "RightForeArm": Vector3(-14, 0, 0), "LeftForeArm": Vector3(-46, 0, 0)})
+	# (le buste penché de 54° : vers le sol, c'est vers le bas et vers l'avant dans le repère du buste)
+	var j_a := lib._bras2({"Spine01": Vector3(30, 0, 0), "Spine02": Vector3(24, 0, 0), "Head": Vector3(10, 0, 0),
+		"LeftUpLeg": Vector3(-24, 0, 0), "LeftLeg": Vector3(36, 0, 0), "RightUpLeg": Vector3(-24, 0, 0), "RightLeg": Vector3(36, 0, 0)}, Vector3(0.12, -0.6, 0.79), Vector3(0.03, -0.5, 0.86))
+	var j_b := lib._merge(lib._merge(j_a, lib._bras("Right", Vector3(-0.2, -0.45, 0.87), Vector3(-0.1, -0.35, 0.93))), lib._bras("Left", Vector3(0.12, -0.6, 0.79), Vector3(0.05, -0.6, 0.8)))
 	poses.add_animation("jardiner", lib._clip(3.0, true, [[0.0, j_a, Vector3(0, -16, 0)], [0.8, j_b, Vector3(0, -16, 0)], [1.5, j_a, Vector3(0, -16, 0)], [2.2, j_b, Vector3(0, -16, 0)], [3.0, j_a, Vector3(0, -16, 0)]]))
 	# pêcher : les deux mains sur la canne, un petit coup de poignet de temps en temps
-	var p_a := {"RightArm": Vector3(-50, 10, 16), "RightForeArm": Vector3(-60, 0, 0), "LeftArm": Vector3(-40, -10, -10), "LeftForeArm": Vector3(-70, 0, 0), "Head": Vector3(8, 0, 0)}
-	var p_b := lib._merge(p_a, {"RightArm": Vector3(-64, 10, 16), "RightForeArm": Vector3(-50, 0, 0)})
+	var p_a := lib._merge(lib._merge({"Head": Vector3(8, 0, 0)}, lib._main("Left", "Spine02", Vector3(4, 10, 28), Vector3(1, -1, 0))), lib._main("Right", "Spine02", Vector3(-6, 4, 24), Vector3(-1, -1, 0)))
+	var p_b := lib._merge(p_a, lib._main("Right", "Spine", Vector3(-6, 0, 28), Vector3(-1, -1, 0)))
 	poses.add_animation("pecher", lib._clip(6.0, true, [[0.0, p_a, Vector3.ZERO], [3.6, p_a, Vector3.ZERO], [3.9, p_b, Vector3.ZERO], [4.4, p_a, Vector3.ZERO], [6.0, p_a, Vector3.ZERO]]))
 	anim.add_animation_library("arc", poses)
 	lib.free()
