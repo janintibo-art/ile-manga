@@ -7,7 +7,7 @@
 #  « arcanelle », « pirate » ; V172 : « tazira », « ramure », « boucan » ; V173 : « citadelle »,
 #  « montjoie_phare », « montjoie_moulin », « montjoie_grange », « astralys », « sombreval » ; V174 : « geants »,
 #  et « geants:nuit » pour une partie seulement, le soir ; V175 : « neo » (l'Arcade du Dragon-Pixel), « larsen »
-#  (les bus peints))
+#  (les bus peints) ; V177 : « geants_donjon » (le donjon du château de sable de Pâquerette))
 # (V176 : « histoires » : des histoires de maisons au choix, « dormeur,perroquet:pirate » : l'histoire, et le
 #  style de la maison ; trois vues : depuis la porte, vers le mur de gauche, vers le mur de droite)
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.

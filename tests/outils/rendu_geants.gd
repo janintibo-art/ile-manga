@@ -4,9 +4,12 @@ extends SceneTree
 ## géants à leur travail, un géant agenouillé qui parle au tout petit visiteur (un repère de 1,75 m).
 ## V174 : « fenetres » : ce qu'on voit par les fenêtres de la maison et du moulin (generate_textures_v174.py
 ## vues) ; « portes » : la chatière de la maison et le trou de souris du moulin (les portes des Petits).
+## V177 : « chateau » : le château de sable de Pâquerette (la motte, la porte du rempart, la cour, la porte
+## du donjon, ses hublots) ; « vue_donjon » : ce qu'on voit par sa meurtrière (generate_textures_v174.py vues).
 
 const Geants = preload("res://scripts/geants_v142.gd")
 const Ile = preload("res://scripts/ile_geants_v142.gd")
+const Kit = preload("res://scripts/geants_kit_v142.gd")
 
 
 class FakeMain:
@@ -124,6 +127,39 @@ func _initialize() -> void:
 		var side: Vector3 = Vector3.UP.cross(to).normalized()
 		await _vue("42_trou_souris", tr + to * 3.2 + side * 1.4 + Vector3.UP * 1.2, tr - to * 1.6 + Vector3.UP * 1.0)
 		await _vue("43_moulin_trou", tr + to * 14.0 + side * 5.0 + Vector3.UP * 1.7, tr + Vector3.UP * 6.0)
+	if quoi == "vue_donjon":
+		# V177 : ce qu'on voit par la meurtrière du donjon de Pâquerette (la mer, au nord) ; puis
+		# python3 -B pcvr/tools/generate_textures_v174.py vues DOSSIER
+		for n4 in g.habitants:
+			n4.visible = false
+		await process_frame
+		var cd: Vector3 = _sol(Ile.CHATEAU_SABLE.x, Ile.CHATEAU_SABLE.y)
+		var yv: float = cd.y - 0.3 + 2.0 + 5.75
+		var rv: float = Kit.DONJON_R0 + (Kit.DONJON_R1 - Kit.DONJON_R0) * clampf((2.0 + 5.75 - 1.6) / 9.0, 0.0, 1.0)
+		await _vue("vue_donjon", Vector3(cd.x, yv, cd.z - rv - 0.6), Vector3(cd.x, yv, cd.z - 104.0))
+	if quoi == "chateau":
+		# V177 : le château de sable de Pâquerette (la porte côté mer, la cour, le donjon et sa porte) ; la
+		# cour est en haut de la motte (2 m au-dessus du pied)
+		var cs: Vector3 = _sol(Ile.CHATEAU_SABLE.x, Ile.CHATEAU_SABLE.y)
+		var haut: float = cs.y - 0.3 + 2.0
+		for n3 in g.habitants:
+			n3.visible = false
+		await process_frame
+		var bas: Array = []
+		for k5 in range(16):
+			var a5: float = TAU * k5 / 16.0
+			for r5 in [Kit.MOTTE_R1, 15.0, Kit.MOTTE_R0]:
+				var q5: Vector3 = _sol(Ile.CHATEAU_SABLE.x + cos(a5) * r5, Ile.CHATEAU_SABLE.y + sin(a5) * r5)
+				bas.append("%d°/%.0f:%+.2f" % [int(rad_to_deg(a5)), r5, q5.y - cs.y])
+		print("ILE_MANGA_V142: CHATEAU sol autour (par rapport au centre) ", " ".join(bas))
+		await _vue("50_chateau_dessus", cs + Vector3(-22, 26, -30), cs)
+		await _vue("51_chateau_mer", _motte(Ile.CHATEAU_SABLE.x - 4.0, Ile.CHATEAU_SABLE.y - 26.0) + Vector3(0, 1.7, 0), cs + Vector3(0, 4.0, 0))
+		await _vue("52_porte_rempart", _motte(Ile.CHATEAU_SABLE.x + 1.0, Ile.CHATEAU_SABLE.y - 15.5) + Vector3(0, 1.7, 0), Vector3(cs.x, haut + 1.6, cs.z - 6.0))
+		await _vue("53_porte_donjon", Vector3(cs.x - 0.6, haut + 1.65, cs.z - 7.1), Vector3(cs.x, haut + 1.4, cs.z - 4.0))
+		await _vue("54_cour", Vector3(cs.x + 4.4, haut + 1.65, cs.z - 3.6), Vector3(cs.x + 2.0, haut + 1.2, cs.z + 5.0))
+		await _vue("55_chateau_jouets", _sol(Ile.CHATEAU_SABLE.x + 4.0, Ile.CHATEAU_SABLE.y + 28.0) + Vector3(0, 2.0, 0), cs + Vector3(0, 3.0, 0))
+		await _vue("56_motte_cote", _motte(Ile.CHATEAU_SABLE.x - 22.0, Ile.CHATEAU_SABLE.y - 12.0) + Vector3(0, 1.7, 0), cs + Vector3(0, 1.0, 0))
+		await _vue("57_hublots", Vector3(cs.x + 5.2, haut + 1.65, cs.z + 2.4), Vector3(cs.x, haut + 1.9, cs.z + 3.6))
 	if quoi in ["tout", "geants"]:
 		var noms := ["mathurine_gt", "eustache_gt", "ernestine_gt", "paquerette_gt", "theophile_gt"]
 		for i in range(noms.size()):
@@ -143,6 +179,16 @@ func _initialize() -> void:
 			at2.y = fm._height_at(at2.x, at2.z) + 3.0
 			await _vue("3%d_%s_loin" % [i, noms[i]], at2, n.global_position + Vector3.UP * float(n.taille) * 0.5, 40)
 	quit()
+
+
+## V177 : le dessus du sol ou de la motte du château de sable (repère île).
+func _motte(x: float, z: float) -> Vector3:
+	var w: Vector3 = _sol(x, z)
+	var cs: Vector3 = _sol(Ile.CHATEAU_SABLE.x, Ile.CHATEAU_SABLE.y)
+	var r: float = Vector2(x - Ile.CHATEAU_SABLE.x, z - Ile.CHATEAU_SABLE.y).length()
+	var y: float = cs.y - 0.3 + 2.0 - maxf(0.0, r - Kit.MOTTE_R1) * (2.0 + Kit.MOTTE_BAS) / (Kit.MOTTE_R0 - Kit.MOTTE_R1)
+	w.y = maxf(w.y, y)
+	return w
 
 
 func _sol(x: float, z: float) -> Vector3:

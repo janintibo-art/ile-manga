@@ -10,6 +10,14 @@ extends RefCounted
 ##  - par un trou de souris, le Moulin de la Butte : la meule dans sa cuve, la trémie, le grand rouet qui
 ##    tourne sous le plafond, les sacs de farine hauts comme des maisons ; dans un coin, le fournil de
 ##    Pépin, le boulanger des Petits (son four est un pot de fleurs retourné).
+## V177 : le donjon du château de sable de Pâquerette, sur la grève (à hauteur de Petit, cette fois :
+## c'est un château pour nous) : des murs de sable mouillé modelés à la main, où Firmin, le gardien,
+## met le coquillage que Pâquerette pose chaque matin devant la porte ; trois hublots de verre de mer ;
+## un escalier taillé dans le mur jusqu'à la galerie et sa meurtrière (la mer) ; le lit d'algues et la
+## chaussette de Pâquerette pour sac de couchage ; la table (un couvercle de confiture sur trois galets),
+## le sablier des marées, l'ardoise ; la grande conque où l'on écoute la mer ; la cuillère avec laquelle
+## Pâquerette a creusé le donjon ; les sept bougies de son anniversaire ; Sire Bernard, le
+## bernard-l'ermite, qui rentre dans sa coquille quand on approche.
 ## Comme lieux_v171 à lieux_v173 (boutiques_v170 délègue ici les métiers qu'il ne connaît pas) ; en plus,
 ## la coque (le sol, les murs épais et leurs fenêtres, le plafond et ses solives) est faite ici, à
 ## l'échelle des géants (coque, appelée par boutiques_v170.shell).
@@ -20,6 +28,7 @@ const L1 = preload("res://scripts/lieux_v171.gd")
 const L3 = preload("res://scripts/lieux_v173.gd")
 const Sud = preload("res://scripts/maisons_sud_v169.gd")
 const Animaux = preload("res://scripts/animaux_v75.gd")
+const Kit142 = preload("res://scripts/geants_kit_v142.gd")
 
 const HISTOIRE := "b174"
 const T := "beau174/"
@@ -27,10 +36,11 @@ const T := "beau174/"
 const METIERS := {
 	"maison_grandpre": [Vector2(76.0, 48.0), 20.0],
 	"moulin_butte": [Vector2(23.4, 23.4), 22.0],
+	"donjon_paquerette": [Vector2(8.2, 8.2), 10.2],
 }
 
 ## Les pièces rondes (le moulin).
-const RONDS := ["moulin_butte"]
+const RONDS := ["moulin_butte", "donjon_paquerette"]
 
 ## Les lieux où personne ne vit (on y entre seul).
 const SEULS: Array = []
@@ -40,6 +50,7 @@ const VILLES := {
 	"geants": {
 		"maison": ["maison_grandpre", "", "dans la maison des Grandpré (par la chatière)", "Maison des Grandpré"],
 		"moulin": ["moulin_butte", "", "dans le Moulin de la Butte (par le trou de souris)", "Moulin de la Butte"],
+		"donjon": ["donjon_paquerette", "", "dans le donjon du château de sable", "Château des Petits"],
 	},
 }
 
@@ -61,6 +72,15 @@ const VUES := {
 		["pepin", Vector3(-2.5, 1.6, 9.0), Vector3(-6.5, 0.8, 4.6)],
 		["sacs", Vector3(2.0, 1.7, 2.0), Vector3(8.0, 3.0, -6.0)],
 	],
+	"donjon_paquerette": [
+		["entree", Vector3(0.0, 1.65, 3.0), Vector3(0.0, 1.4, -3.0)],
+		["escalier", Vector3(-1.6, 1.6, 1.2), Vector3(2.6, 2.4, -1.2)],
+		["firmin", Vector3(0.4, 1.6, 0.6), Vector3(-0.6, 1.0, -1.9)],
+		["lit", Vector3(-0.4, 1.5, 0.9), Vector3(-3.0, 0.5, -0.5)],
+		["conque", Vector3(0.6, 1.3, 0.2), Vector3(0.8, 0.3, -3.0)],
+		["galerie", Vector3(-2.2, 5.8, -2.2), Vector3(0.6, 2.0, 0.6)],
+		["meurtriere", Vector3(0.0, 5.8, 2.4), Vector3(0.0, 5.75, 4.4)],
+	],
 }
 
 
@@ -77,6 +97,11 @@ static func has_metier(met: String) -> bool:
 
 
 static func _pal(_st: String, met: String) -> Dictionary:
+	if met == "donjon_paquerette":
+		# V177 : tout en sable : le sol tassé (plus clair), les murs mouillés, le bas plus sombre
+		return {"sol": ["montjoie/sable_lac.png", Color(1.04, 0.98, 0.86), 2.4], "mur": ["montjoie/sable_lac.png", Color(0.9, 0.84, 0.72), 2.6],
+			"bas": ["montjoie/sable_lac.png", Color(0.7, 0.64, 0.54), 2.6], "plafond": ["montjoie/sable_lac.png", Color(0.92, 0.87, 0.76), 2.6],
+			"fenetre": "aucune", "sans_poutres": true, "sans_lampe": true}
 	if met == "moulin_butte":
 		return {"sol": ["montjoie/bois_planches.png", Color(0.9, 0.84, 0.74), 12.0], "mur": ["montjoie/enduit.png", Color(1.0, 0.99, 0.96), 14.0],
 			"bas": ["montjoie/moellons.png", Color(0.82, 0.79, 0.74), 9.0], "plafond": ["montjoie/bois_planches.png", Color(0.62, 0.5, 0.4), 12.0],
@@ -92,6 +117,8 @@ static func build(M) -> void:
 			_maison_grandpre(M)
 		"moulin_butte":
 			_moulin_butte(M)
+		"donjon_paquerette":
+			_donjon_paquerette(M)
 
 
 # =================================================================== la coque, à l'échelle des géants
@@ -103,6 +130,8 @@ static func coque(M) -> bool:
 		return false
 	if met == "moulin_butte":
 		_coque_moulin(M)
+	elif met == "donjon_paquerette":
+		_coque_donjon(M)
 	else:
 		_coque_maison(M)
 	return true
@@ -2082,3 +2111,834 @@ static func _pepin(M) -> void:
 	M.ctx["bonjour_nuit170"] = ["Chut, Eustache est rentré dormir. Moi, je pétris la pâte du matin.", "La nuit, le moulin se repose. Pas le boulanger !"]
 	M.act(M.R.P(1.6, 0.0, 6.6), "E : regarder tourner le rouet", regarder, 2.4)
 	M.ctx["entree"] = "Le Moulin de la Butte, vu d'en bas : la meule dans sa cuve, la trémie, le grand rouet qui tourne sous le plafond, les sacs de farine hauts comme des maisons… et près du trou de souris, le fournil de Pépin, le boulanger des Petits."
+
+
+# =================================================================== V177 : le donjon de Pâquerette
+
+## Le donjon du château de sable, à hauteur de Petit : son rayon dedans ; la hauteur du mur rond (le toit
+## pointu au-dessus, jusqu'à R.H) ; le dessus de la galerie ; son bord côté vide (celui de l'escalier
+## aussi) ; l'escalier taillé dans le mur (l'angle de la première marche, en degrés : 0 à la porte, en
+## tournant vers la droite quand on entre ; l'angle d'une marche ; leur nombre) ; la largeur de la porte
+## (une arche : 1,6 m tout droit, puis le demi-cercle) ; la meurtrière au-dessus de la porte, évasée (le
+## bas, le haut, la demi-largeur côté pièce ; puis côté dehors) ; le rayon où se promène Sire Bernard.
+const DJ_R: float = 3.9
+const DJ_MUR: float = 7.6
+const DJ_GAL: float = 4.2
+const DJ_BORD: float = 2.6
+const DJ_ESC0: float = 38.0
+const DJ_PAS: float = 7.0
+const DJ_MARCHES: int = 17
+const DJ_PORTE: float = 1.4
+const DJ_MEU := [4.95, 6.55, 0.55, 5.05, 6.45, 0.225]
+const DJ_BERNARD: float = 2.25
+## La table (un couvercle de confiture sur trois galets) et Firmin, le gardien.
+const DJ_TABLE := Vector2(-1.0, -1.0)
+const DJ_FIRMIN := Vector2(0.2, -1.9)
+
+
+## Un point du donjon (repère de la pièce) : un angle (degrés), un rayon, une hauteur.
+static func _dj(a: float, r: float, y: float = 0.0) -> Vector3:
+	var t: float = deg_to_rad(a)
+	return Vector3(sin(t) * r, y, cos(t) * r)
+
+
+## Le dessus de l'escalier à un angle (degrés) : 0 avant la première marche, la galerie après la dernière.
+static func _dj_marche(a: float) -> float:
+	var i: int = int(floor((a - DJ_ESC0 + DJ_PAS * 0.5) / DJ_PAS))
+	if i < 0:
+		return 0.0
+	if i >= DJ_MARCHES:
+		return DJ_GAL
+	return DJ_GAL * float(i + 1) / DJ_MARCHES
+
+
+## Le début et la fin de la galerie (degrés ; la fin passe 360 : elle fait le tour par la porte).
+static func _dj_galerie() -> Vector2:
+	return Vector2(DJ_ESC0 + DJ_PAS * (DJ_MARCHES - 0.5), 360.0 + DJ_ESC0 - DJ_PAS * 0.5)
+
+
+## Un pan tout droit (z fixe, il regarde la pièce : -z), de (x0, y0) à (x1, y1).
+static func _dj_pan(R, key: String, x0: float, x1: float, y0: float, y1: float, z: float, tile: float) -> void:
+	if x1 - x0 < 0.01 or y1 - y0 < 0.01:
+		return
+	R.kit.quad4(key, R.P(x0, y0, z), R.P(x1, y0, z), R.P(x1, y1, z), R.P(x0, y1, z), Vector3(0, 0, -1),
+		Vector2(-x0 / tile, -y0 / tile), Vector2(-x1 / tile, -y0 / tile), Vector2(-x1 / tile, -y1 / tile), Vector2(-x0 / tile, -y1 / tile))
+
+
+## Un triangle lisse (une normale par sommet), retourné au besoin comme ceux du kit.
+static func _tri_lisse(st: SurfaceTool, p: Array, n: Array, uv: Array) -> void:
+	var face: Vector3 = ((p[1] as Vector3) - (p[0] as Vector3)).cross((p[2] as Vector3) - (p[0] as Vector3))
+	var navg: Vector3 = (n[0] as Vector3) + (n[1] as Vector3) + (n[2] as Vector3)
+	var order: Array = [0, 2, 1] if face.dot(navg) > 0.0 else [0, 1, 2]
+	for k in order:
+		st.set_normal(n[k])
+		st.set_uv(uv[k])
+		st.add_vertex(p[k])
+
+
+## Une boule déformée (repère de la pièce : son centre, ses trois rayons, son orientation), fondue dans
+## la pièce : un galet, un coquillage, une bosse de sable.
+static func _galet(R, key: String, c: Vector3, r: Vector3, bs: Basis = Basis(), seg: int = 10) -> void:
+	var st: SurfaceTool = R.kit._st(key)
+	var half: int = maxi(2, int(seg / 2.0))
+	var o: Vector3 = R.P(c.x, c.y, c.z)
+	for j in range(half):
+		var t0: float = PI * j / half
+		var t1: float = PI * (j + 1) / half
+		for i in range(seg):
+			var a0: float = TAU * i / seg
+			var a1: float = TAU * (i + 1) / seg
+			var q: Array = []
+			var nn: Array = []
+			var uv: Array = []
+			for tc in [[t0, a0], [t0, a1], [t1, a1], [t1, a0]]:
+				var dd := Vector3(sin(tc[0]) * cos(tc[1]), cos(tc[0]), sin(tc[0]) * sin(tc[1]))
+				q.append(o + bs * (dd * r))
+				nn.append((bs * Vector3(dd.x / r.x, dd.y / r.y, dd.z / r.z)).normalized())
+				uv.append(Vector2(float(tc[1]) * maxf(r.x, r.z) * 1.5, float(tc[0]) * r.y * 1.5))
+			_tri_lisse(st, [q[0], q[1], q[2]], [nn[0], nn[1], nn[2]], [uv[0], uv[1], uv[2]])
+			_tri_lisse(st, [q[0], q[2], q[3]], [nn[0], nn[2], nn[3]], [uv[0], uv[2], uv[3]])
+
+
+## Un cylindre (ou un cône) de a à b (repère de la pièce).
+static func _tube(R, key: String, a: Vector3, b: Vector3, r0: float, r1: float, seg: int = 8, tile: float = 1.0) -> void:
+	var d: Vector3 = b - a
+	var l: float = d.length()
+	if l < 0.001:
+		return
+	var y: Vector3 = d / l
+	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
+	var z: Vector3 = x.cross(y)
+	R.kit.cyl(Transform3D(Basis(x, y, z), R.P(a.x, a.y, a.z)), r0, r1, l, key, seg, true, tile)
+
+
+## Une orientation contre le mur rond (à l'angle a) : x le long du mur, y vers le haut, z vers la pièce.
+static func _dj_mur(a: float) -> Basis:
+	var t: float = deg_to_rad(a)
+	var zz := Vector3(-sin(t), 0, -cos(t))
+	var xx := Vector3(-cos(t), 0, sin(t))
+	return Basis(xx, Vector3.UP, zz)
+
+
+## La coque du donjon : le sol de sable tassé ; le mur rond (le bas plus mouillé) ; la porte en arche et
+## son passage dans l'épaisseur du mur (le jour au bout) ; la meurtrière évasée et la mer au bout ; le
+## toit pointu, et le bâtonnet du drapeau qui le traverse ; les collisions.
+static func _coque_donjon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var r: float = DJ_R
+	var tm: float = float((R.pal["mur"] as Array)[2])
+	var tb: float = float((R.pal["bas"] as Array)[2])
+	var ts: float = float((R.pal["sol"] as Array)[2])
+	var tp: float = float((R.pal["plafond"] as Array)[2])
+	k.box(R.L(0, -0.1, 0.4), Vector3(R.W + 0.4, 0.2, R.D + 1.2), "sol", ts, 4)
+	k.col_box(R.L(0, -0.5, 0), Vector3(R.W + 4.0, 1.0, R.D + 4.0))
+	k.col_box(R.L(0, R.H + 1.0, 0), Vector3(R.W + 4.0, 1.0, R.D + 4.0))
+	# le mur rond (sans le morceau de la porte, à part)
+	var dh: float = asin(DJ_PORTE * 0.5 / r)
+	var n: int = 46
+	var yb: float = 0.9
+	var pas: float = (TAU - 2.0 * dh) / n
+	for i in range(n):
+		var a0: float = dh + pas * i
+		var a1: float = dh + pas * (i + 1)
+		var p0 := Vector3(sin(a0) * r, 0, cos(a0) * r)
+		var p1 := Vector3(sin(a1) * r, 0, cos(a1) * r)
+		var am: float = (a0 + a1) * 0.5
+		var nm := -Vector3(sin(am), 0, cos(am))
+		for band in [[0.0, yb, "bas", tb], [yb, DJ_MUR, "mur", tm]]:
+			var y0: float = band[0]
+			var y1: float = band[1]
+			var tile: float = band[3]
+			k.quad4(str(band[2]), R.P(p0.x, y0, p0.z), R.P(p1.x, y0, p1.z), R.P(p1.x, y1, p1.z), R.P(p0.x, y1, p0.z), nm,
+				Vector2(a0 * r / tile, -y0 / tile), Vector2(a1 * r / tile, -y0 / tile), Vector2(a1 * r / tile, -y1 / tile), Vector2(a0 * r / tile, -y1 / tile))
+		k.col_box(R.L(sin(am) * (r + 0.6), R.H * 0.5, cos(am) * (r + 0.6), rad_to_deg(am)), Vector3(2.0 * (r + 0.6) * tan(pas * 0.5) + 0.3, R.H + 2.0, 1.2))
+	# le morceau de la porte : tout droit (z = zc), l'arche, la meurtrière au-dessus
+	var zc: float = r * cos(dh)
+	var zt: float = zc + 0.55
+	var hw: float = DJ_PORTE * 0.5
+	var mq: Array = DJ_MEU
+	_dj_pan(R, "mur", -hw, hw, 2.3, float(mq[0]), zc, tm)
+	_dj_pan(R, "mur", -hw, -float(mq[2]), float(mq[0]), float(mq[1]), zc, tm)
+	_dj_pan(R, "mur", float(mq[2]), hw, float(mq[0]), float(mq[1]), zc, tm)
+	_dj_pan(R, "mur", -hw, hw, float(mq[1]), DJ_MUR, zc, tm)
+	for s in [-1.0, 1.0]:
+		var cc: Vector3 = R.P(s * hw, 2.3, zc)
+		for j in range(10):
+			var t0: float = PI * 0.5 * j / 10.0
+			var t1: float = PI * 0.5 * (j + 1) / 10.0
+			var q0 := Vector3(s * cos(t0) * hw, 1.6 + sin(t0) * hw, zc)
+			var q1 := Vector3(s * cos(t1) * hw, 1.6 + sin(t1) * hw, zc)
+			k.tri("mur", cc, R.P(q0.x, q0.y, q0.z), R.P(q1.x, q1.y, q1.z), Vector3(0, 0, -1),
+				Vector2(-s * hw / tm, -2.3 / tm), Vector2(-q0.x / tm, -q0.y / tm), Vector2(-q1.x / tm, -q1.y / tm))
+	# le passage dans l'épaisseur du mur : les côtés, la voûte ; le jour au bout
+	for s2 in [-1.0, 1.0]:
+		k.quad4("mur", R.P(s2 * hw, 0, zc), R.P(s2 * hw, 0, zt), R.P(s2 * hw, 1.6, zt), R.P(s2 * hw, 1.6, zc), Vector3(-s2, 0, 0),
+			Vector2(zc / tm, 0), Vector2(zt / tm, 0), Vector2(zt / tm, -1.6 / tm), Vector2(zc / tm, -1.6 / tm))
+	var jour: String = B._c(R, "dehors174_j" if R.day else "dehors174_n", Color(1.0, 0.94, 0.8) if R.day else Color(0.1, 0.13, 0.25), 0.9, 0.0, 1.6 if R.day else 0.6)
+	k.quad4(jour, R.P(-hw, 0, zt), R.P(hw, 0, zt), R.P(hw, 1.6, zt), R.P(-hw, 1.6, zt), Vector3(0, 0, -1), Vector2(0, 1), Vector2(1, 1), Vector2(1, 0.3), Vector2(0, 0.3))
+	for j2 in range(12):
+		var t2: float = PI * j2 / 12.0
+		var t3: float = PI * (j2 + 1) / 12.0
+		var a := Vector3(cos(t2) * hw, 1.6 + sin(t2) * hw, 0)
+		var b := Vector3(cos(t3) * hw, 1.6 + sin(t3) * hw, 0)
+		var nn := -Vector3(cos((t2 + t3) * 0.5), sin((t2 + t3) * 0.5), 0)
+		k.quad4("mur", R.P(a.x, a.y, zc), R.P(b.x, b.y, zc), R.P(b.x, b.y, zt), R.P(a.x, a.y, zt), nn,
+			Vector2(t2 * hw / tm, zc / tm), Vector2(t3 * hw / tm, zc / tm), Vector2(t3 * hw / tm, zt / tm), Vector2(t2 * hw / tm, zt / tm))
+		k.tri(jour, R.P(0, 1.6, zt), R.P(a.x, a.y, zt), R.P(b.x, b.y, zt), Vector3(0, 0, -1), Vector2(0.5, 0.3), Vector2(0.5, 0), Vector2(0.5, 0))
+	k.col_box(R.L(0, 1.5, zt + 0.3), Vector3(2.4, 3.0, 0.6))
+	for s3 in [-1.0, 1.0]:
+		k.col_box(R.L(s3 * (hw + 0.5), 1.5, (zc + zt) * 0.5), Vector3(1.0, 3.0, zt - zc + 0.4))
+	k.col_box(R.L(0, (2.3 + R.H) * 0.5, zc + 0.6), Vector3(DJ_PORTE + 0.4, R.H - 2.3, 1.2))
+	# la meurtrière : évasée vers la pièce ; la mer au bout
+	var ci: Array = [Vector3(-float(mq[2]), float(mq[0]), zc), Vector3(float(mq[2]), float(mq[0]), zc), Vector3(float(mq[2]), float(mq[1]), zc), Vector3(-float(mq[2]), float(mq[1]), zc)]
+	var co: Array = [Vector3(-float(mq[5]), float(mq[3]), zt), Vector3(float(mq[5]), float(mq[3]), zt), Vector3(float(mq[5]), float(mq[4]), zt), Vector3(-float(mq[5]), float(mq[4]), zt)]
+	var axe := Vector3(0, (float(mq[0]) + float(mq[1])) * 0.5, (zc + zt) * 0.5)
+	for e in range(4):
+		var pa: Vector3 = ci[e]
+		var pb: Vector3 = ci[(e + 1) % 4]
+		var pc: Vector3 = co[(e + 1) % 4]
+		var pd: Vector3 = co[e]
+		var nf: Vector3 = (pb - pa).cross(pd - pa).normalized()
+		if nf.dot(axe - (pa + pb + pc + pd) * 0.25) < 0.0:
+			nf = -nf
+		k.quad4("mur", R.P(pa.x, pa.y, pa.z), R.P(pb.x, pb.y, pb.z), R.P(pc.x, pc.y, pc.z), R.P(pd.x, pd.y, pd.z), nf,
+			Vector2((pa.x + pa.z) / tm, -pa.y / tm), Vector2((pb.x + pb.z) / tm, -pb.y / tm), Vector2((pc.x + pc.z) / tm, -pc.y / tm), Vector2((pd.x + pd.z) / tm, -pd.y / tm))
+	# (la vue est un grand tableau posé à 3 m derrière la meurtrière, à la taille de ce qu'on verrait
+	# d'ici : en bougeant la tête, on voit plus à gauche, plus à droite, comme par une vraie meurtrière)
+	var vue := MeshInstance3D.new()
+	var qm := QuadMesh.new()
+	qm.size = Vector2(2.7, 3.46)
+	vue.mesh = qm
+	var vm := StandardMaterial3D.new()
+	vm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var chemin: String = "res://assets/textures/" + T + ("vue_donjon_jour.png" if R.day else "vue_donjon_nuit.png")
+	if ResourceLoader.exists(chemin):
+		vm.albedo_texture = load(chemin)
+	else:
+		vm.albedo_color = Color(0.62, 0.8, 0.95) if R.day else Color(0.03, 0.05, 0.12)
+	vue.material_override = vm
+	vue.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	M.room.add_child(vue)
+	vue.global_transform = Transform3D(Basis(Vector3.UP, PI), R.P(0, (float(mq[3]) + float(mq[4])) * 0.5, zt + 3.0))
+	# le toit pointu (le dedans du cône), le bâtonnet du drapeau qui passe par la pointe
+	var hc: float = R.H - DJ_MUR
+	var nc: int = 48
+	for i2 in range(nc):
+		var b0: float = TAU * i2 / nc
+		var b1: float = TAU * (i2 + 1) / nc
+		var bm: float = (b0 + b1) * 0.5
+		var nn2 := Vector3(-sin(bm) * hc, -r, -cos(bm) * hc).normalized()
+		k.tri("plafond", R.P(sin(b0) * r, DJ_MUR, cos(b0) * r), R.P(sin(b1) * r, DJ_MUR, cos(b1) * r), R.P(0, R.H, 0), nn2,
+			Vector2(b0 * r / tp, 0), Vector2(b1 * r / tp, 0), Vector2(bm * r / tp, -sqrt(hc * hc + r * r) / tp))
+	k.cyl(R.L(0, R.H - 1.5, 0), 0.08, 0.08, 1.6, _chene(R, false), 8)
+	k.ring(R.L(0, DJ_MUR - 0.12, 0), r - 0.16, r + 0.01, 0.16, "bas", 48)
+
+
+## Dedans : l'escalier et la galerie ; les bosses du sable modelé à la main ; les coquillages ; les
+## hublots ; chez Firmin (le lit, la table, les seaux, la cuillère, l'étoile de mer, l'ardoise) ; la
+## conque ; Sire Bernard ; les bougies ; les lumières ; Firmin.
+static func _donjon_paquerette(M) -> void:
+	var R = M.R
+	M.ctx["tick170"] = func(delta: float) -> void:
+		_tick(M, delta)
+		_tick_donjon(M, delta)
+	_escalier_donjon(M)
+	_galerie_donjon(M)
+	_bosses_donjon(M)
+	_coquillages_donjon(M)
+	_hublots_donjon(M)
+	_chez_firmin(M)
+	_conque_donjon(M)
+	_sablier_donjon(M)
+	_bernard(M)
+	_bougies_donjon(M)
+	_lumieres_donjon(M)
+	_firmin(M)
+	if R.day:
+		M.ctx["entree"] = "Le donjon du château de sable de Pâquerette, à hauteur de Petit : des murs de sable mouillé où brillent des coquillages, des hublots de verre de mer, un escalier taillé dans le mur jusqu'à la meurtrière… Firmin, le gardien, y habite avec Sire Bernard."
+	else:
+		M.ctx["entree"] = "Le donjon, la nuit : les bougies d'anniversaire de Pâquerette brûlent sur la galerie, les hublots luisent à peine, et l'on entend la mer à travers les murs."
+
+
+## L'escalier taillé dans le mur (des blocs de sable mouillé, du sol à chaque marche) et son parapet,
+## côté vide, dès qu'on est un peu haut.
+static func _escalier_donjon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var tb: float = float((R.pal["bas"] as Array)[2])
+	var tm: float = float((R.pal["mur"] as Array)[2])
+	var rc: float = (DJ_BORD + DJ_R + 0.15) * 0.5
+	var lr: float = DJ_R + 0.15 - DJ_BORD
+	var lt: float = rc * deg_to_rad(DJ_PAS) * 1.2
+	for i in range(DJ_MARCHES):
+		var a: float = DJ_ESC0 + DJ_PAS * i
+		var top: float = DJ_GAL * float(i + 1) / DJ_MARCHES
+		var c: Vector3 = _dj(a, rc)
+		var xf: Transform3D = R.L(c.x, top * 0.5, c.z, a)
+		k.box(xf, Vector3(lt, top, lr), "mur", tm)
+		k.col_box(xf, Vector3(lt, top, lr))
+		if i >= 3:
+			var pc: Vector3 = _dj(a, DJ_BORD + 0.11)
+			var xp: Transform3D = R.L(pc.x, top + 0.45, pc.z, a)
+			k.box(xp, Vector3(lt, 0.9, 0.22), "mur", tm)
+			k.col_box(xp, Vector3(lt, 0.9, 0.22))
+
+
+## La galerie (de la dernière marche jusqu'au-dessus de la porte, et la meurtrière) : le dessus, le
+## dessous, le parapet côté vide ; le bout fermé (au-dessus de la première marche).
+static func _galerie_donjon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var tm: float = float((R.pal["mur"] as Array)[2])
+	var ts: float = float((R.pal["sol"] as Array)[2])
+	var g: Vector2 = _dj_galerie()
+	var ng: int = 32
+	var ep: float = 0.35
+	var yh: float = DJ_GAL + 0.95
+	var rc: float = (DJ_BORD + DJ_R + 0.15) * 0.5
+	var lr: float = DJ_R + 0.15 - DJ_BORD
+	var rp: float = DJ_BORD + 0.22
+	for j in range(ng):
+		var b0: float = lerpf(g.x, g.y, float(j) / ng)
+		var b1: float = lerpf(g.x, g.y, float(j + 1) / ng)
+		var bm: float = (b0 + b1) * 0.5
+		var i0: Vector3 = _dj(b0, DJ_BORD)
+		var i1: Vector3 = _dj(b1, DJ_BORD)
+		var o0: Vector3 = _dj(b0, DJ_R + 0.02)
+		var o1: Vector3 = _dj(b1, DJ_R + 0.02)
+		var p0: Vector3 = _dj(b0, rp)
+		var p1: Vector3 = _dj(b1, rp)
+		var vers: Vector3 = _dj(bm, 1.0)
+		# le dessus (de la galerie, et du parapet), le dessous
+		k.quad4("sol", R.P(p0.x, DJ_GAL, p0.z), R.P(p1.x, DJ_GAL, p1.z), R.P(o1.x, DJ_GAL, o1.z), R.P(o0.x, DJ_GAL, o0.z), Vector3.UP,
+			Vector2(p0.x / ts, p0.z / ts), Vector2(p1.x / ts, p1.z / ts), Vector2(o1.x / ts, o1.z / ts), Vector2(o0.x / ts, o0.z / ts))
+		k.quad4("mur", R.P(i0.x, DJ_GAL - ep, i0.z), R.P(i1.x, DJ_GAL - ep, i1.z), R.P(o1.x, DJ_GAL - ep, o1.z), R.P(o0.x, DJ_GAL - ep, o0.z), Vector3.DOWN,
+			Vector2(i0.x / tm, i0.z / tm), Vector2(i1.x / tm, i1.z / tm), Vector2(o1.x / tm, o1.z / tm), Vector2(o0.x / tm, o0.z / tm))
+		k.quad4("mur", R.P(i0.x, yh, i0.z), R.P(i1.x, yh, i1.z), R.P(p1.x, yh, p1.z), R.P(p0.x, yh, p0.z), Vector3.UP,
+			Vector2(i0.x / tm, i0.z / tm), Vector2(i1.x / tm, i1.z / tm), Vector2(p1.x / tm, p1.z / tm), Vector2(p0.x / tm, p0.z / tm))
+		# le parapet : côté vide (jusqu'au dessous de la galerie), côté galerie
+		var u0: float = deg_to_rad(b0) * DJ_BORD / tm
+		var u1: float = deg_to_rad(b1) * DJ_BORD / tm
+		k.quad4("mur", R.P(i0.x, DJ_GAL - ep, i0.z), R.P(i1.x, DJ_GAL - ep, i1.z), R.P(i1.x, yh, i1.z), R.P(i0.x, yh, i0.z), -vers,
+			Vector2(u0, -(DJ_GAL - ep) / tm), Vector2(u1, -(DJ_GAL - ep) / tm), Vector2(u1, -yh / tm), Vector2(u0, -yh / tm))
+		k.quad4("mur", R.P(p0.x, DJ_GAL, p0.z), R.P(p1.x, DJ_GAL, p1.z), R.P(p1.x, yh, p1.z), R.P(p0.x, yh, p0.z), vers,
+			Vector2(u0, -DJ_GAL / tm), Vector2(u1, -DJ_GAL / tm), Vector2(u1, -yh / tm), Vector2(u0, -yh / tm))
+		# les collisions : la dalle, le parapet
+		var cm: Vector3 = _dj(bm, rc)
+		var corde: float = 2.0 * (DJ_R + 0.15) * sin(deg_to_rad((b1 - b0) * 0.5)) + 0.06
+		k.col_box(R.L(cm.x, DJ_GAL - ep * 0.5, cm.z, bm), Vector3(corde, ep, lr))
+		var pm: Vector3 = _dj(bm, DJ_BORD + 0.11)
+		k.col_box(R.L(pm.x, DJ_GAL + 0.475, pm.z, bm), Vector3(2.0 * rp * sin(deg_to_rad((b1 - b0) * 0.5)) + 0.06, 0.95, 0.22))
+	# le bout de la galerie (au-dessus du pied de l'escalier) : la tranche, un petit mur
+	var ge: float = g.y
+	var e0: Vector3 = _dj(ge, DJ_BORD)
+	var e1: Vector3 = _dj(ge, DJ_R + 0.02)
+	var tg: Vector3 = Vector3(cos(deg_to_rad(ge)), 0, -sin(deg_to_rad(ge)))
+	k.quad4("mur", R.P(e0.x, DJ_GAL - ep, e0.z), R.P(e1.x, DJ_GAL - ep, e1.z), R.P(e1.x, DJ_GAL, e1.z), R.P(e0.x, DJ_GAL, e0.z), tg,
+		Vector2(0, 0), Vector2(1.3 / tm, 0), Vector2(1.3 / tm, -ep / tm), Vector2(0, -ep / tm))
+	var am: float = ge - rad_to_deg(0.11 / rc)
+	var cb: Vector3 = _dj(am, rc)
+	k.box(R.L(cb.x, DJ_GAL + 0.475, cb.z, am), Vector3(0.22, 0.95, lr), "mur", tm)
+	k.col_box(R.L(cb.x, DJ_GAL + 0.475, cb.z, am), Vector3(0.22, 0.95, lr))
+
+
+## Le sable modelé à la main : des bosses douces sur le mur (pas sur les coquillages, les hublots,
+## l'ardoise, l'étoile de mer, ni autour de la porte).
+static func _bosses_donjon(M) -> void:
+	var R = M.R
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1771
+	var pris: Array = [[205.0, 1.9, 3.0], [282.0, 2.0, 3.2], [270.0, 5.7, 6.6]]
+	for hb in Kit142.HUBLOTS:
+		pris.append([float(hb[0]), float(hb[1]) - 0.6, float(hb[1]) + 0.6])
+	var n: int = 0
+	var essais: int = 0
+	while n < 70 and essais < 400:
+		essais += 1
+		var a: float = rng.randf_range(20.0, 340.0)
+		var y: float = rng.randf_range(0.35, DJ_MUR - 0.4)
+		if absf(y - 1.45) < 0.3 or absf(y - (_dj_marche(a) + 1.2)) < 0.3 or absf(y - (DJ_GAL + 1.25)) < 0.3:
+			continue
+		var libre: bool = true
+		for p in pris:
+			if absf(a - float(p[0])) < 11.0 and y > float(p[1]) - 0.2 and y < float(p[2]) + 0.2:
+				libre = false
+		if not libre:
+			continue
+		var bs: Basis = _dj_mur(a) * Basis(Vector3.BACK, rng.randf() * TAU)
+		var key: String = "bas" if y < 0.9 else "mur"
+		_galet(R, key, _dj(a, DJ_R + 0.02, y), Vector3(rng.randf_range(0.22, 0.42), rng.randf_range(0.16, 0.3), 0.12), bs, 8)
+		n += 1
+
+
+## Les coquillages que Pâquerette pose chaque matin devant la porte (Firmin les met dans le mur) : une
+## frise tout autour, une qui monte le long de l'escalier, une sur la galerie.
+static func _coquillages_donjon(M) -> void:
+	var R = M.R
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1772
+	var places: Array = []
+	var a: float = 157.0
+	while a < 344.0:
+		places.append([a, 1.45])
+		a += 6.0
+	a = 40.0
+	while a < 152.0:
+		places.append([a, _dj_marche(a) + 1.2])
+		a += 6.0
+	var g: Vector2 = _dj_galerie()
+	a = g.x + 4.0
+	while a < g.y - 2.0:
+		places.append([a, DJ_GAL + 1.25])
+		a += 7.0
+	var cles: Array = [B._c(R, "nacre177", Color(0.95, 0.93, 0.88), 0.35, 0.1), B._c(R, "rose177", Color(0.96, 0.66, 0.68), 0.45),
+		B._c(R, "saumon177", Color(0.96, 0.62, 0.42), 0.5), B._c(R, "creme177", Color(0.94, 0.86, 0.7), 0.6)]
+	var moule: String = B._c(R, "moule177", Color(0.12, 0.13, 0.2), 0.3, 0.3)
+	var n: int = 0
+	for pl in places:
+		var ap: float = fposmod(float(pl[0]), 360.0)
+		var trop: bool = ap < 14.0 or ap > 346.0
+		for hb in Kit142.HUBLOTS:
+			if absf(ap - float(hb[0])) < 7.0 and absf(float(pl[1]) - float(hb[1])) < 0.6:
+				trop = true
+		if absf(ap - 270.0) < 9.0 and float(pl[1]) > DJ_GAL:
+			trop = true
+		if trop:
+			continue
+		var y: float = float(pl[1]) + rng.randf_range(-0.05, 0.05)
+		var bs: Basis = _dj_mur(ap) * Basis(Vector3.BACK, rng.randf_range(-0.5, 0.5))
+		var c: Vector3 = _dj(ap, DJ_R - 0.01, y)
+		var sorte: int = n % 4
+		var key: String = cles[rng.randi() % cles.size()]
+		match sorte:
+			0:
+				# une coquille Saint-Jacques : l'éventail, ses côtes, les deux oreilles
+				_galet(R, key, c, Vector3(0.13, 0.11, 0.035), bs, 10)
+				for j in range(5):
+					var aj: float = deg_to_rad(-50.0 + 25.0 * j)
+					_galet(R, key, c + bs * Vector3(sin(aj) * 0.06, cos(aj) * 0.05 - 0.01, 0.025), Vector3(0.012, 0.06, 0.012), bs * Basis(Vector3.BACK, -aj), 6)
+				R.kit.box(Transform3D(bs, R.P(c.x, c.y, c.z) + bs * Vector3(0, -0.1, 0.01)), Vector3(0.09, 0.03, 0.02), key, 1.0)
+			1:
+				# une coque, bombée
+				_galet(R, key, c, Vector3(0.085, 0.08, 0.06), bs, 10)
+			2:
+				# un bigorneau (une spirale pointue)
+				_galet(R, key, c, Vector3(0.065, 0.06, 0.05), bs, 8)
+				_tube(R, key, c + bs * Vector3(0, 0.03, 0.02), c + bs * Vector3(0.02, 0.15, 0.03), 0.045, 0.0, 8)
+			_:
+				# une moule, bleu nuit, nacrée
+				_galet(R, moule, c, Vector3(0.05, 0.12, 0.03), bs * Basis(Vector3.BACK, 0.6), 8)
+		n += 1
+	M.ctx["coquillages177"] = n
+
+
+## Les hublots de verre de mer (le même tour que dehors : Kit142.HUBLOTS) : le verre dépoli qui laisse
+## passer la lumière, le rebord de sable mouillé ; une lumière colorée devant.
+static func _hublots_donjon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	for hb in Kit142.HUBLOTS:
+		var a: float = float(hb[0])
+		var y: float = float(hb[1])
+		var col: Color = {"verre_mer_vert": Color(0.3, 0.8, 0.45), "verre_mer_bleu": Color(0.3, 0.55, 0.98), "verre_mer_ambre": Color(1.0, 0.6, 0.15)}[str(hb[2])]
+		var key: String = B._c(R, str(hb[2]) + ("177_j" if R.day else "177_n"), col, 0.4, 0.0, 0.85 if R.day else 0.2)
+		var bs: Basis = _dj_mur(a)
+		var c: Vector3 = _dj(a, DJ_R + 0.01, y)
+		for v in Kit142.MOSAIQUE:
+			var vv: Vector2 = v
+			_galet(R, key, c + bs.x * vv.x + Vector3.UP * vv.y, Vector3(0.13, 0.12, 0.07), bs * Basis(Vector3.BACK, vv.x * 7.0), 10)
+		k.ring(Transform3D(bs * Basis(Vector3.RIGHT, PI * 0.5), R.P(c.x, c.y, c.z)), 0.4, 0.52, 0.07, "bas", 22)
+		if R.day:
+			var l: OmniLight3D = _omni(M, _dj(a, DJ_R - 0.6, y), col, 0.55, 3.2)
+			l.light_specular = 0.1
+
+
+## Chez Firmin : le mouchoir de Pâquerette pour tapis ; la table (un couvercle de confiture sur trois
+## galets) et deux bobines pour s'asseoir ; le lit d'algues sèches, la chaussette de Pâquerette pour sac de
+## couchage, une boule de coton pour oreiller ; les seaux d'eau de mer ; la cuillère à café de
+## Pâquerette, contre le mur ; l'étoile de mer ; l'ardoise des marées ; sur la galerie, la papillote, la
+## boîte d'allumettes aux trésors, un galet pour s'asseoir devant la meurtrière.
+static func _chez_firmin(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var chene: String = _chene(R, false)
+	var sombre: String = _chene(R, true)
+	var galet: String = B._c(R, "galet177", Color(0.6, 0.6, 0.58), 0.75)
+	# le mouchoir (vichy rouge et blanc), par terre
+	var vichy: String = B._tex(R, "vichy174", T + "vichy_rouge.png", Color(1, 1, 1), 0.92)
+	k.box(R.L(0.25, 0.006, -0.1, 14.0), Vector3(2.3, 0.012, 2.3), vichy, 0.55, 4)
+	# la table
+	var tx: float = DJ_TABLE.x
+	var tz: float = DJ_TABLE.y
+	_galet(R, galet, Vector3(tx, 0.11, tz), Vector3(0.38, 0.12, 0.32), Basis(Vector3.UP, 0.3), 12)
+	_galet(R, B._c(R, "galet177_b", Color(0.72, 0.68, 0.62), 0.7), Vector3(tx + 0.02, 0.32, tz - 0.02), Vector3(0.32, 0.11, 0.27), Basis(Vector3.UP, 1.2), 12)
+	_galet(R, galet, Vector3(tx, 0.51, tz + 0.01), Vector3(0.28, 0.1, 0.24), Basis(Vector3.UP, 2.1), 12)
+	var rouge: String = B._c(R, "couvercle177", Color(0.72, 0.1, 0.1), 0.35, 0.4)
+	var dore: String = B._c(R, "dore177", Color(0.86, 0.68, 0.3), 0.3, 0.9)
+	k.cyl(R.L(tx, 0.58, tz), 0.52, 0.52, 0.1, rouge, 32)
+	k.ring(R.L(tx, 0.58, tz), 0.5, 0.535, 0.11, dore, 32)
+	k.col_cyl(R.P(tx, 0.0, tz), 0.52, 0.69)
+	# sur la table : le dé à coudre (une tasse : du thé dedans), le bouton (une assiette)
+	k.cyl(R.L(tx - 0.24, 0.68, tz + 0.12), 0.075, 0.068, 0.14, "argent", 14, false)
+	k.cyl(R.L(tx - 0.24, 0.68, tz + 0.12), 0.07, 0.07, 0.11, B._c(R, "the177", Color(0.42, 0.22, 0.1), 0.1), 14)
+	for dd in range(8):
+		var ad: float = TAU * dd / 8.0
+		k.cyl(R.L(tx - 0.24 + cos(ad) * 0.072, 0.74, tz + 0.12 + sin(ad) * 0.072), 0.008, 0.008, 0.06, "fer", 4)
+	var os_key: String = B._c(R, "bouton177", Color(0.93, 0.9, 0.82), 0.3)
+	k.cyl(R.L(tx + 0.05, 0.68, tz - 0.22), 0.12, 0.12, 0.016, os_key, 20)
+	for bt in range(4):
+		var ab: float = PI * 0.5 * bt + 0.4
+		k.cyl(R.L(tx + 0.05 + cos(ab) * 0.03, 0.692, tz - 0.22 + sin(ab) * 0.03), 0.009, 0.009, 0.006, "noir", 6)
+	# deux bobines de fil (pour s'asseoir), côté pièce
+	for bb in [[tx + 0.15, tz + 0.82, Color(0.35, 0.5, 0.85)], [tx + 0.82, tz - 0.12, Color(0.4, 0.7, 0.42)]]:
+		var bx: float = bb[0]
+		var bz: float = bb[1]
+		var fil: String = B._tex(R, "fil177_%d" % int(bx * 100.0), T + "laine.png", bb[2], 0.9)
+		k.cyl(R.L(bx, 0.0, bz), 0.27, 0.27, 0.05, chene, 18)
+		k.cyl(R.L(bx, 0.05, bz), 0.2, 0.2, 0.36, fil, 18, true, 0.3)
+		k.cyl(R.L(bx, 0.41, bz), 0.27, 0.27, 0.05, chene, 18)
+		k.col_cyl(R.P(bx, 0.0, bz), 0.27, 0.46)
+	# le lit : des algues sèches, la chaussette, la boule de coton
+	var al: float = 262.0
+	var lc: Vector3 = _dj(al, 3.0)
+	var xb: Transform3D = R.L(lc.x, 0, lc.z, al + 90.0)
+	var algue: String = B._c(R, "algue177", Color(0.28, 0.27, 0.14), 0.95)
+	var algue2: String = B._c(R, "algue177_b", Color(0.36, 0.3, 0.16), 0.95)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1773
+	for j in range(8):
+		var pz: float = -0.95 + 1.9 * j / 7.0
+		var q: Vector3 = R.xf0.affine_inverse() * (xb * Vector3(rng.randf_range(-0.12, 0.12), 0.12, pz))
+		_galet(R, algue if j % 2 == 0 else algue2, q, Vector3(0.42, 0.15, 0.3), xb.basis * Basis(Vector3.UP, rng.randf_range(-0.4, 0.4)), 10)
+	var laine: String = B._tex(R, "chaussette177", T + "laine.png", Color(0.95, 0.32, 0.3), 0.95)
+	var blanc_l: String = B._tex(R, "chaussette177_b", T + "laine.png", Color(1.0, 0.97, 0.92), 0.95)
+	var pl := func(v: Vector3) -> Vector3:
+		return R.xf0.affine_inverse() * (xb * v)
+	_tube(R, laine, pl.call(Vector3(0.05, 0.42, -0.8)), pl.call(Vector3(0.05, 0.42, 0.6)), 0.28, 0.27, 16, 0.35)
+	_galet(R, laine, pl.call(Vector3(-0.02, 0.43, 0.72)), Vector3(0.29, 0.28, 0.3), xb.basis, 12)
+	_tube(R, laine, pl.call(Vector3(0.0, 0.42, 0.75)), pl.call(Vector3(-0.5, 0.38, 0.95)), 0.25, 0.21, 16, 0.35)
+	_galet(R, laine, pl.call(Vector3(-0.55, 0.38, 0.97)), Vector3(0.22, 0.2, 0.22), xb.basis, 12)
+	k.ring(Transform3D(xb.basis * Basis(Vector3.RIGHT, PI * 0.5), xb * Vector3(0.05, 0.42, -0.86)), 0.2, 0.3, 0.14, blanc_l, 20)
+	_galet(R, B._c(R, "coton177", Color(0.98, 0.97, 0.95), 1.0), pl.call(Vector3(0.0, 0.55, -1.12)), Vector3(0.3, 0.2, 0.24), xb.basis, 12)
+	k.col_box(xb * B.T3(0.1, 0.3, -0.1), Vector3(0.95, 0.6, 2.2))
+	# les seaux d'eau de mer
+	var douelles: String = B._tex(R, "seau177", "montjoie/bois_planches.png", Color(0.82, 0.66, 0.5), 0.8)
+	var eau: String = B._c(R, "eau177", Color(0.2, 0.42, 0.46), 0.05, 0.1)
+	for sa in [300.0, 313.0]:
+		var sp: Vector3 = _dj(sa, 3.25)
+		k.cyl(R.L(sp.x, 0, sp.z), 0.2, 0.24, 0.38, douelles, 16, false, 0.6)
+		k.cyl(R.L(sp.x, 0.01, sp.z), 0.2, 0.2, 0.01, douelles, 16)
+		k.cyl(R.L(sp.x, 0.3, sp.z), 0.225, 0.225, 0.01, eau, 16)
+		for yr in [0.07, 0.29]:
+			k.ring(R.L(sp.x, yr, sp.z), 0.205 + yr * 0.1, 0.225 + yr * 0.1, 0.035, "fer", 16)
+		k.col_cyl(R.P(sp.x, 0, sp.z), 0.24, 0.38)
+	# la cuillère à café de Pâquerette (grande comme une pelle), contre le mur
+	var cb: Vector3 = _dj(335.0, 3.3, 0.05)
+	var ch: Vector3 = _dj(335.0, DJ_R - 0.05, 1.05)
+	var dc: Vector3 = (ch - cb).normalized()
+	var bsc: Basis = Basis(_dj_mur(335.0).x, dc, _dj_mur(335.0).x.cross(dc).normalized())
+	_galet(R, "argent", cb + dc * 0.12, Vector3(0.14, 0.2, 0.05), bsc, 12)
+	k.box(Transform3D(bsc, R.P(0, 0, 0) + (cb + dc * 0.66)), Vector3(0.07, 0.9, 0.022), "argent", 1.0)
+	_galet(R, "argent", cb + dc * 1.1, Vector3(0.05, 0.06, 0.016), bsc, 8)
+	# l'étoile de mer, au mur au-dessus du lit
+	var et: Vector3 = _dj(282.0, DJ_R - 0.05, 2.6)
+	var bse: Basis = _dj_mur(282.0)
+	var orange: String = B._c(R, "etoile177", Color(0.9, 0.5, 0.26), 0.85)
+	_galet(R, orange, et, Vector3(0.13, 0.13, 0.05), bse, 10)
+	for j2 in range(5):
+		var aj: float = PI * 0.5 + TAU * j2 / 5.0 + 0.15
+		var dj: Vector3 = bse * Vector3(cos(aj), sin(aj), 0)
+		_tube(R, orange, et + dj * 0.05, et + dj * 0.4 + bse.z * 0.01, 0.07, 0.018, 8)
+	# l'ardoise des marées (dans son cadre de bois flotté)
+	var ar: Vector3 = _dj(205.0, DJ_R - 0.05, 2.45)
+	var xa: Transform3D = R.L(ar.x, ar.y, ar.z, 205.0)
+	k.box(xa * B.T3(0, 0, 0.02), Vector3(1.0, 0.7, 0.04), sombre, 1.0)
+	k.quad(xa * B.T3(0, 0, -0.005), 0.9, 0.6, B._img(R, "marees177", T + "marees.png"))
+	# sur la galerie : la papillote (un papier de bonbon, au mur), la boîte d'allumettes aux trésors, le
+	# galet devant la meurtrière
+	var pp: Vector3 = _dj(270.0, DJ_R - 0.04, 6.15)
+	var bsp: Basis = _dj_mur(270.0)
+	var papi: String = B._c(R, "papillote177", Color(0.95, 0.32, 0.58), 0.22, 0.75)
+	var papi_o: String = B._c(R, "papillote177_o", Color(0.95, 0.78, 0.25), 0.22, 0.8)
+	k.box(Transform3D(bsp, R.P(pp.x, pp.y, pp.z)), Vector3(0.8, 0.5, 0.02), papi, 0.5)
+	for sg in [-1.0, 1.0]:
+		var bout: Vector3 = R.P(pp.x, pp.y, pp.z) + bsp.x * sg * 0.4 + bsp.z * 0.01
+		k.tri(papi_o, bout, bout + bsp.x * sg * 0.32 + bsp.y * 0.24, bout + bsp.x * sg * 0.32 - bsp.y * 0.24, bsp.z, Vector2(0, 0), Vector2(1, 0), Vector2(1, 1))
+	var bo: Vector3 = _dj(26.0, 3.45, DJ_GAL)
+	var xbo: Transform3D = R.L(bo.x, DJ_GAL, bo.z, 26.0 + 90.0)
+	var boite: String = B._c(R, "boite177", Color(0.85, 0.2, 0.15), 0.6)
+	var frotte: String = B._c(R, "frotte177", Color(0.36, 0.22, 0.14), 0.95)
+	k.box(xbo * B.T3(0, 0.11, -0.12), Vector3(0.5, 0.22, 0.62), boite, 1.0)
+	k.box(xbo * B.T3(0.252, 0.11, -0.12), Vector3(0.01, 0.16, 0.56), frotte, 1.0)
+	k.box(xbo * B.T3(0, 0.1, 0.3), Vector3(0.46, 0.18, 0.4), chene, 1.0)
+	var verres: Array = [Color(0.42, 0.85, 0.58), Color(0.42, 0.66, 0.98), Color(1.0, 0.68, 0.26), Color(0.95, 0.95, 0.9), Color(0.5, 0.8, 0.85)]
+	for vg in range(9):
+		var cv: Color = verres[vg % verres.size()]
+		var gk: String = B._c(R, "verre_mer177_%d" % (vg % verres.size()), cv, 0.35, 0.0, 0.4)
+		var gp: Vector3 = R.xf0.affine_inverse() * (xbo * Vector3(rng.randf_range(-0.15, 0.15), 0.21, 0.3 + rng.randf_range(-0.13, 0.13)))
+		_galet(R, gk, gp, Vector3(0.05, 0.025, 0.04), Basis(Vector3.UP, rng.randf() * TAU), 8)
+	k.col_box(xbo * B.T3(0, 0.11, 0.0), Vector3(0.5, 0.22, 0.95))
+	var gs: Vector3 = _dj(13.0, 3.35, DJ_GAL)
+	_galet(R, galet, gs + Vector3(0, 0.14, 0), Vector3(0.36, 0.16, 0.3), Basis(Vector3.UP, 0.8), 12)
+	k.col_cyl(R.P(gs.x, DJ_GAL, gs.z), 0.34, 0.28)
+	# ce qu'on fait ici
+	M.act(R.P(_dj(205.0, 2.9).x, 0, _dj(205.0, 2.9).z), "E : lire l'ardoise des marées", func(): M.say("Sur l'ardoise, à la craie : la courbe de la mer, deux hautes, deux basses. En bas, souligné deux fois : « arroser les murs : matin et soir ». Dans le coin, un crabe : Sire Bernard a voulu son portrait.", 7.0), 1.0)
+	M.act(R.P(_dj(335.0, 2.75).x, 0, _dj(335.0, 2.75).z), "E : regarder la cuillère de Pâquerette", func(): M.say("Une cuillère à café de géant, grande comme une pelle. C'est avec elle que Pâquerette a creusé le donjon, de l'intérieur, grain par grain, sans le faire tomber. Sur le manche, il y a encore la trace de ses doigts.", 7.0), 0.9)
+	M.act(R.P(_dj(24.0, 3.0).x, DJ_GAL, _dj(24.0, 3.0).z), "E : regarder le trésor de Firmin", func(): M.say("Dans la boîte d'allumettes, des bouts de verre de mer : vert bouteille, bleu, ambre, blanc de lune. La mer les a polis pendant des années. « Pâquerette dit que ce sont des bonbons de sirène. Moi, je ne dis rien. »", 7.0), 1.0)
+	M.act(R.P(_dj(290.0, 3.2).x, DJ_GAL, _dj(290.0, 3.2).z), "E : compter les coquillages de Pâquerette", func(): M.say("Un coquillage par matin, tout autour du donjon, de la porte jusqu'en haut : %d. « Elle les pose devant la porte en disant bonjour. Je n'en ai jamais raté un. »" % int(M.ctx.get("coquillages177", 0)), 7.0), 1.0)
+	M.act(R.P(0, DJ_GAL, 3.2), "E : regarder la mer par la meurtrière", func():
+		if R.day:
+			M.say("Par la meurtrière : la mer à perte de vue, bleue jusqu'au ciel, et tout en bas le bout de la grève, où Pâquerette vient jouer. Le vent sent le sel. C'est d'ici que Firmin guette les bateaux des Petits.", 7.0)
+		else:
+			M.say("La nuit, la mer brille sous la lune, et l'on entend les vagues se coucher sur la grève, une à une.", 6.0), 1.1)
+
+
+## La grande conque (un buccin de géant, couché par terre) : on y écoute la mer.
+static func _conque_donjon(M) -> void:
+	var R = M.R
+	var creme: String = B._c(R, "conque177", Color(0.93, 0.85, 0.72), 0.45)
+	var brun: String = B._c(R, "conque177_b", Color(0.66, 0.46, 0.3), 0.5)
+	var rose: String = B._c(R, "conque177_r", Color(0.96, 0.62, 0.55), 0.3)
+	var ca: float = 168.0
+	var c0: Vector3 = _dj(ca, 3.05, 0.0)
+	var ax: Vector3 = Vector3(cos(deg_to_rad(ca)), 0, -sin(deg_to_rad(ca)))
+	var up := Vector3.UP
+	var side: Vector3 = ax.cross(up).normalized()
+	for j in range(22):
+		var t: float = j / 21.0
+		var rr: float = lerpf(0.3, 0.03, pow(t, 0.8))
+		var tour: float = t * TAU * 3.2
+		var p: Vector3 = c0 + ax * lerpf(-0.3, 0.62, t) + (up * cos(tour) + side * sin(tour)) * rr * 0.28 + up * (0.27 - t * 0.2)
+		_galet(R, brun if (j % 4 == 2) else creme, p, Vector3(rr, rr * 0.92, rr * 1.15), Basis(side, tour).orthonormalized(), 12)
+	_tube(R, creme, c0 + ax * 0.62 + up * 0.07, c0 + ax * 0.8 + up * 0.06, 0.035, 0.0, 8)
+	# l'ouverture (rose nacré dedans), le bord retourné
+	var fz: Vector3 = (-ax - side * 0.7).normalized()
+	var fx: Vector3 = up.cross(fz).normalized()
+	var bo: Basis = Basis(fx, fz.cross(fx), fz)
+	var ou: Vector3 = c0 - ax * 0.36 + up * 0.25 - side * 0.1
+	_galet(R, rose, ou, Vector3(0.2, 0.25, 0.05), bo, 12)
+	_galet(R, creme, ou - fz * 0.02 + fx * 0.16, Vector3(0.06, 0.27, 0.12), bo, 10)
+	R.kit.col_box(R.L(c0.x + ax.x * 0.1, 0.3, c0.z + ax.z * 0.1, ca + 90.0), Vector3(0.6, 0.6, 1.1))
+	M.act(R.P(_dj(ca, 2.45).x, 0, _dj(ca, 2.45).z), "E : écouter la mer dans le grand coquillage", func():
+		M.main.sfx("vague", R.P(c0.x, 0.4, c0.z), -6.0)
+		M.say("Tu colles l'oreille contre la conque : chhhh… la mer, tout entière, qui roule et se retire, comme si la grève était dedans.", 6.0), 1.1)
+
+
+## Le sablier des marées (sur la table) : le sable coule ; on le retourne.
+static func _sablier_donjon(M) -> void:
+	var R = M.R
+	var n := _noeud(M, "Sablier", R.L(DJ_TABLE.x + 0.18, 0.69 + 0.18, DJ_TABLE.y - 0.02))
+	var bois: Material = R.mat(_chene(R, true))
+	var verre: Material = R.mat(B._verre(R, "verre177", Color(0.85, 0.92, 0.95), 0.25))
+	var sable: Material = R.mat(B._c(R, "sable_sablier177", Color(0.95, 0.85, 0.6), 0.9))
+	for sy in [-0.17, 0.17]:
+		_bout(n, B._cylm(0.1, 0.1, 0.025, 16), bois, Vector3(0, sy, 0))
+	for sp in range(3):
+		var ap: float = TAU * sp / 3.0
+		_bout(n, B._cylm(0.008, 0.008, 0.34, 6), bois, Vector3(cos(ap) * 0.085, 0, sin(ap) * 0.085))
+	_bout(n, B._cylm(0.012, 0.075, 0.15, 14), verre, Vector3(0, 0.08, 0))
+	_bout(n, B._cylm(0.075, 0.012, 0.15, 14), verre, Vector3(0, -0.08, 0))
+	var haut := _bout(n, B._cylm(0.01, 0.06, 0.08, 12), sable, Vector3(0, 0.07, 0))
+	var bas := _bout(n, B._cylm(0.008, 0.065, 0.07, 12), sable, Vector3(0, -0.12, 0))
+	var filet := CPUParticles3D.new()
+	filet.amount = 24
+	filet.lifetime = 0.25
+	filet.direction = Vector3.DOWN
+	filet.spread = 2.0
+	filet.initial_velocity_min = 0.3
+	filet.initial_velocity_max = 0.4
+	filet.gravity = Vector3(0, -2.0, 0)
+	var sm := SphereMesh.new()
+	sm.radius = 0.004
+	sm.height = 0.008
+	sm.radial_segments = 4
+	sm.rings = 2
+	sm.material = sable
+	filet.mesh = sm
+	M.room.add_child(filet)
+	filet.global_position = n.global_position
+	M.ctx["sablier177"] = {"n": n, "haut": haut, "bas": bas, "filet": filet, "t": 20.0, "tourne": 0.0, "sens": 0.0}
+	M.act(R.P(DJ_TABLE.x + 0.5, 0, DJ_TABLE.y + 0.5), "E : retourner le sablier des marées", func():
+		var sb: Dictionary = M.ctx["sablier177"]
+		if float(sb["tourne"]) > 0.0:
+			return
+		sb["tourne"] = 0.8
+		sb["sens"] = float(sb["sens"]) + PI
+		M.main.sfx("sable_effondre", n.global_position, -14.0)
+		M.say("Tu retournes le sablier : le sable recommence à couler. « Une heure de sable, une heure de mer », dit Firmin.", 5.0), 1.0)
+
+
+## Sire Bernard, le bernard-l'ermite (gros comme un chat, pour un Petit) : il se promène devant les
+## meubles, s'arrête près de sa conque ; si l'on approche, il rentre dans sa coquille.
+static func _bernard(M) -> void:
+	var R = M.R
+	var root := Node3D.new()
+	root.name = "Bernard"
+	M.room.add_child(root)
+	var sph := SphereMesh.new()
+	sph.radius = 1.0
+	sph.height = 2.0
+	sph.radial_segments = 14
+	sph.rings = 7
+	var coq: Material = R.mat(B._c(R, "coquille_bernard177", Color(0.88, 0.8, 0.66), 0.45))
+	var bande: Material = R.mat(B._c(R, "coquille_bernard177_b", Color(0.62, 0.42, 0.28), 0.5))
+	var rouge: Material = R.mat(B._c(R, "crabe177", Color(0.86, 0.3, 0.16), 0.5))
+	var noir: Material = R.mat("noir")
+	for j in range(6):
+		var t: float = j / 5.0
+		var rr: float = lerpf(0.17, 0.035, t)
+		var tour: float = t * TAU * 1.8
+		_bout(root, sph, bande if j % 2 == 1 else coq, Vector3(sin(tour) * rr * 0.3, 0.16 + t * 0.12 + cos(tour) * rr * 0.25, -0.04 - t * 0.26), Basis().scaled(Vector3(rr, rr * 0.9, rr)))
+	var corps := Node3D.new()
+	corps.name = "Corps"
+	root.add_child(corps)
+	corps.position = Vector3(0, 0, 0.1)
+	_bout(corps, sph, rouge, Vector3(0, 0.1, 0.03), Basis().scaled(Vector3(0.09, 0.065, 0.085)))
+	var pattes: Array = []
+	for s in [-1.0, 1.0]:
+		var gros: float = 1.0 if s > 0.0 else 0.72
+		_bout(corps, sph, rouge, Vector3(s * 0.08, 0.1, 0.13), Basis().scaled(Vector3(0.06, 0.05, 0.08) * gros))
+		_bout(corps, sph, rouge, Vector3(s * 0.08, 0.1, 0.2), Basis().scaled(Vector3(0.035, 0.03, 0.05) * gros))
+		for l in range(3):
+			var pa := Node3D.new()
+			corps.add_child(pa)
+			pa.position = Vector3(s * 0.07, 0.08, 0.06 - l * 0.06)
+			_bout(pa, B._cylm(0.012, 0.018, 0.16, 6), rouge, Vector3(s * 0.06, -0.04, 0), Basis(Vector3.BACK, s * 1.0))
+			pattes.append([pa, l * 1.3 + (0.0 if s > 0.0 else 0.7)])
+		_bout(corps, B._cylm(0.008, 0.008, 0.09, 6), rouge, Vector3(s * 0.03, 0.18, 0.1), Basis(Vector3.RIGHT, 0.3))
+		_bout(corps, sph, noir, Vector3(s * 0.03, 0.225, 0.115), Basis().scaled(Vector3.ONE * 0.016))
+	var a0: float = 250.0
+	M.ctx["bernard177"] = {"n": root, "corps": corps, "pattes": pattes, "a": a0, "sens": 1.0, "pause": 3.0, "cache": 0.0, "t": 0.0}
+	var it: Dictionary = M.act(R.P(_dj(a0, DJ_BERNARD).x, 0, _dj(a0, DJ_BERNARD).z), "E : dire bonjour à Sire Bernard", func():
+		(M.ctx["bernard177"] as Dictionary)["cache"] = 5.0
+		M.say("« Bonjour, Sire Bernard ! » Clac : il rentre dans sa coquille. On voit juste deux yeux au bout de leurs tiges, qui te regardent de travers. « Il est timide, dit Firmin. Et il boude, parce qu'on ne l'a pas salué d'abord. »", 7.0), 1.0)
+	(M.ctx["bernard177"] as Dictionary)["it"] = it
+	_tick_donjon(M, 0.0)
+
+
+## Les sept bougies de l'anniversaire de Pâquerette (elle a sept ans), sur le parapet de la galerie ;
+## allumées la nuit.
+static func _bougies_donjon(M) -> void:
+	var R = M.R
+	var k = R.kit
+	var cols: Array = [Color(0.95, 0.5, 0.7), Color(0.45, 0.65, 0.95), Color(0.98, 0.85, 0.3), Color(0.5, 0.8, 0.45), Color(0.98, 0.98, 0.95), Color(0.98, 0.6, 0.25), Color(0.7, 0.5, 0.9)]
+	var blanc: String = B._c(R, "bougie177_b", Color(0.98, 0.97, 0.94), 0.5)
+	var angles: Array = [172.0, 202.0, 232.0, 262.0, 292.0, 322.0, 352.0]
+	var y0: float = DJ_GAL + 0.95
+	for i in range(7):
+		var a: float = angles[i]
+		var p: Vector3 = _dj(a, DJ_BORD + 0.11, y0)
+		var key: String = B._c(R, "bougie177_%d" % i, cols[i], 0.5)
+		for sg in range(4):
+			k.cyl(R.L(p.x, y0 + sg * 0.1, p.z), 0.045, 0.045, 0.1, key if sg % 2 == 0 else blanc, 10)
+		k.cyl(R.L(p.x, y0 + 0.4, p.z), 0.006, 0.006, 0.04, "noir", 4)
+		if not R.day:
+			k.cyl(R.L(p.x, y0 + 0.44, p.z), 0.02, 0.0, 0.07, "flamme", 6, false)
+	if not R.day:
+		for la in [217.0, 307.0]:
+			var l: OmniLight3D = _omni(M, _dj(la, DJ_BORD + 0.3, y0 + 0.6), Color(1.0, 0.68, 0.38), 0.9, 5.0)
+			(R.flames as Array).append([l, l.light_energy])
+		R.bougie(DJ_TABLE.x - 0.05, 0.69, DJ_TABLE.y + 0.2, true)
+
+
+## Les lumières : le jour, par la porte et la meurtrière (et les hublots : _hublots_donjon) ; la nuit, la
+## lune par la porte, les bougies.
+static func _lumieres_donjon(M) -> void:
+	var R = M.R
+	if R.day:
+		_omni(M, Vector3(0, 6.5, 0), Color(1.0, 0.95, 0.86), 0.55, 12.0)
+		_soleil(M, Vector3(0, 1.9, DJ_R + 0.35), Vector3(0, 0, -1.2), 26.0, 3.2)
+		_soleil(M, Vector3(0, 5.75, DJ_R + 0.4), Vector3(0, DJ_GAL, 2.2), 22.0, 2.0)
+	else:
+		_omni(M, Vector3(0, 6.5, 0), Color(0.55, 0.62, 0.85), 0.12, 12.0)
+		var s: SpotLight3D = _soleil(M, Vector3(0, 1.9, DJ_R + 0.35), Vector3(0, 0, -1.2), 26.0, 0.6)
+		s.light_color = Color(0.6, 0.7, 1.0)
+
+
+## Ce qui bouge dans le donjon : Sire Bernard (il marche, il rentre dans sa coquille), le sablier.
+static func _tick_donjon(M, delta: float) -> void:
+	var R = M.R
+	if R == null:
+		return
+	var b: Variant = M.ctx.get("bernard177", null)
+	if b is Dictionary and is_instance_valid((b as Dictionary)["n"]):
+		var n: Node3D = b["n"]
+		var corps: Node3D = b["corps"]
+		var p: Vector3 = M.main._player_pos_v27()
+		if p.distance_to(n.global_position) < 1.3:
+			b["cache"] = maxf(float(b["cache"]), 2.5)
+		b["cache"] = maxf(0.0, float(b["cache"]) - delta)
+		var cache: bool = float(b["cache"]) > 0.0
+		var sc: float = lerpf(corps.scale.x, 0.12 if cache else 1.0, clampf(delta * 7.0, 0.0, 1.0))
+		corps.scale = Vector3.ONE * sc
+		corps.position.z = lerpf(-0.06, 0.1, sc)
+		b["t"] = float(b["t"]) + delta
+		var marche: bool = false
+		if not cache:
+			if float(b["pause"]) > 0.0:
+				b["pause"] = float(b["pause"]) - delta
+			else:
+				marche = true
+				var a: float = float(b["a"]) + float(b["sens"]) * delta * rad_to_deg(0.13 / DJ_BERNARD)
+				if a > 330.0 or a < 188.0:
+					a = clampf(a, 188.0, 330.0)
+					b["sens"] = -float(b["sens"])
+					b["pause"] = 4.0 + fposmod(float(b["t"]) * 1.7, 4.0)
+				b["a"] = a
+		for pa in b["pattes"]:
+			(pa[0] as Node3D).rotation.x = 0.45 * sin(float(b["t"]) * 13.0 + float(pa[1])) if marche else 0.0
+		var a2: float = float(b["a"])
+		var ou: Vector3 = _dj(a2, DJ_BERNARD)
+		var tg: Vector3 = Vector3(cos(deg_to_rad(a2)), 0, -sin(deg_to_rad(a2))) * float(b["sens"])
+		n.global_transform = Transform3D(Basis.looking_at(-tg, Vector3.UP), R.P(ou.x, 0.0, ou.z))
+		if b.has("it"):
+			(b["it"] as Dictionary)["pos"] = n.global_position
+	var sb: Variant = M.ctx.get("sablier177", null)
+	if sb is Dictionary and is_instance_valid((sb as Dictionary)["n"]):
+		var sn: Node3D = sb["n"]
+		if float(sb["tourne"]) > 0.0:
+			sb["tourne"] = maxf(0.0, float(sb["tourne"]) - delta)
+			var f: float = 1.0 - float(sb["tourne"]) / 0.8
+			sn.rotation.x = float(sb["sens"]) - PI * (1.0 - smoothstep(0.0, 1.0, f))
+			if float(sb["tourne"]) <= 0.0:
+				sb["t"] = 0.0
+				sn.rotation.x = float(sb["sens"])
+		else:
+			sb["t"] = float(sb["t"]) + delta
+		var niveau: float = clampf(float(sb["t"]) / 60.0, 0.0, 1.0)
+		var h: MeshInstance3D = sb["haut"]
+		var bs: MeshInstance3D = sb["bas"]
+		var dessus: MeshInstance3D = h if h.global_position.y > bs.global_position.y else bs
+		var dessous: MeshInstance3D = bs if dessus == h else h
+		dessus.scale = Vector3(1.0, maxf(0.02, 1.0 - niveau), 1.0)
+		dessous.scale = Vector3(1.0, maxf(0.02, niveau), 1.0)
+		(sb["filet"] as CPUParticles3D).emitting = niveau < 1.0 and float(sb["tourne"]) <= 0.0
+
+
+## Firmin, le gardien du château (un Petit) : il arrose les murs, range les coquillages de Pâquerette.
+static func _firmin(M) -> void:
+	var ecouter := func() -> void:
+		M.main.sfx("vague", M.R.P(0.0, 1.0, 0.0), -8.0)
+		M.say("Firmin te tend la grande conque : « Écoute. » Chhhh… la mer, tout entière, qui roule et se retire. « Pâquerette dit que c'est la mer qui habite dedans. Je crois qu'elle a raison. »", 7.0)
+	var arroser := func() -> void:
+		M.say("Firmin plonge un gobelet dans le seau et arrose le mur, à petits coups : le sable boit l'eau de mer et fonce. « Voilà. Un château, ça a soif, comme un jardin. Le sable sec s'écroule ; le sable mouillé tient. »", 7.0)
+	# (Firmin est un vieux marin de Port-Azur, arrivé par le ponton : il en a gardé l'allure)
+	var style0: String = str(M.ctx.get("style", ""))
+	M.ctx["style"] = "azur"
+	B._marchand(M, DJ_FIRMIN.x, DJ_FIRMIN.y, 0.0, "debout", "vieux", "Firmin",
+		["Chut… écoute. On entend la mer à travers les murs. Le sable laisse passer les bruits doux.",
+			"Pâquerette passe tous les matins. Elle se met à genoux, colle un œil à la porte et dit : « Bonjour, Monsieur Firmin ! » Les tours en tremblent.",
+			"Le sable sec s'écroule, le sable mouillé tient. Tout le secret d'un château, c'est ça.",
+			"Ne marche pas sur Sire Bernard. Il est petit, il se vexe pour un rien, et il pince."],
+		{"bonjour": "Bienvenue au Château des Petits ! Essuie tes pieds… enfin, non : ici, tout est en sable.",
+			"services": [{"label": "Écouter la mer dans la conque", "cb": ecouter}, {"label": "Aider Firmin à arroser les murs", "cb": arroser}],
+			"infos": ["Pâquerette l'a construit pour les Petits, un matin d'été, avec son seau rouge et sa cuillère à café. Le donjon, elle l'a creusé de l'intérieur, grain par grain, pour qu'on puisse y habiter. Puis elle a attendu que quelqu'un vienne. Je suis venu.",
+				"Chaque matin, elle pose un coquillage devant la porte. Je les mets dans le mur, tout autour. Un par jour. Compte-les, si tu as le temps : moi, j'ai arrêté à deux cents.",
+				"Deux fois par jour, je monte l'eau de mer et j'arrose les murs. Regarde l'ardoise : la marée, l'arrosage, tout est noté.",
+				"Sire Bernard ? Le bernard-l'ermite. Il était là avant moi : il dit que c'est son château. Je le laisse dire. Le soir, il dort près de la grande conque.",
+				"Mon sac de couchage, c'est une chaussette de Pâquerette. Le vent l'a emportée de la corde à linge ; elle est tombée sur la grève. Elle sent encore le savon."]})
+	M.ctx["style"] = style0
+	M.ctx["cloche170"] = false
+	M.ctx["bonjour170"] = ["Tiens, de la visite ! Entre, il fait frais dedans.", "Attention dans l'escalier : les marches du haut s'effritent un peu."]
+	M.ctx["bonjour_nuit170"] = ["Tu tombes bien : j'ai allumé les bougies d'anniversaire de Pâquerette. Sept, parce qu'elle a sept ans.", "Chut… la mer monte. Écoute : on l'entend à travers le sable."]

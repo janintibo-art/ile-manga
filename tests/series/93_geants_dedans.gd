@@ -121,13 +121,14 @@ func _anime(nom: String) -> bool:
 func _serie() -> void:
 	# --- les portes
 	var ps: Array = _portes()
-	_ok(ps.size() == 2, "les deux portes des Petits chez les Géants (%d)" % ps.size())
+	# (V177 : et la porte du donjon du château de sable : 96_chateau_sable)
+	_ok(ps.size() == 3, "les trois portes des Petits chez les Géants (%d)" % ps.size())
 	await _att(5.5)
 	var vus: int = 0
 	for e in maisons_v81.portes:
 		if str(e.get("histoire", "")) == L174.HISTOIRE:
 			vus += 1
-	_ok(vus == 2, "maisons_v81 connaît les deux portes (%d)" % vus)
+	_ok(vus == 3, "maisons_v81 connaît les trois portes (%d)" % vus)
 	var g: Node = geants_v142
 	if g != null and g.get("reperes") is Dictionary:
 		var ch: Vector3 = g.reperes["maison"]["chatiere"]

@@ -115,7 +115,7 @@ func build_town() -> void:
 	Kit.epouvantail(b, cols, _w(107.0, 38.0), 0.4)
 	for bl in [[Vector2(-58.0, 26.0), 0.3], [Vector2(-52.0, 38.0), 1.2], [Vector2(-66.0, 44.0), 0.2]]:
 		Kit.balle_foin(b, cols, _w((bl[0] as Vector2).x, (bl[0] as Vector2).y), float(bl[1]))
-	Kit.chateau_sable(b, cols, ile, IleScript.CHATEAU_SABLE)
+	reperes["chateau"] = Kit.chateau_sable(b, cols, ile, IleScript.CHATEAU_SABLE)
 	var mr := RandomNumberGenerator.new()
 	mr.seed = 1427
 	for mu in IleScript.MURETS:
@@ -134,11 +134,13 @@ func build_town() -> void:
 		flore.avoid.append([Vector2(-60.0, 34.0), 14.0])
 		flore.avoid.append([IleScript.CHATEAU_SABLE, 26.0])
 		flore.build(ile, pc)
-	# V174 : les deux portes des Petits (lieux_v174) : la chatière de la maison des Grandpré, le trou de
+	# V174 : les portes des Petits (lieux_v174) : la chatière de la maison des Grandpré, le trou de
 	# souris du Moulin de la Butte
 	var ch: Vector3 = reperes["maison"]["chatiere"]
 	L174.porte_ville("geants", "maison", Vector3(ch.x, y0 + 0.05, ch.z - 1.0), Vector3(0, 0, -1))
 	L174.porte_ville("geants", "moulin", reperes["moulin"]["trou"], reperes["moulin"]["trou_out"])
+	# V177 : et la porte du donjon du château de sable de Pâquerette (on y entre par la cour)
+	L174.porte_ville("geants", "donjon", reperes["chateau"]["porte"], reperes["chateau"]["out"])
 	_fumee = _make_smoke(reperes["maison"]["fumee"])
 	_glows()
 	_stations()

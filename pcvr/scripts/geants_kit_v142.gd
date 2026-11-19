@@ -14,6 +14,22 @@ const TX := "res://assets/textures/geants/"
 const B161 := "res://assets/textures/beau161/"
 const MetalKit = preload("res://scripts/metal_kit_v160.gd")
 const FLEURS := "res://shaders/fleurs_v161.gdshader"
+const B174 := "res://assets/textures/beau174/"
+## V177 : le château de sable de Pâquerette : la motte (rayon en bas, en haut ; elle descend de 2,1 m
+## sous le pied du château : côté mer, la grève est plus basse), l'écart des tours, la
+## porte du rempart, le donjon (rayon en bas, en haut) ; les hublots de verre de mer du donjon [angle
+## (dans la pièce : 0 à la porte, en tournant vers la droite en entrant), hauteur au-dessus du sol,
+## matière] : lieux_v174 les pose aussi, dedans.
+const MOTTE_R0: float = 20.8
+const MOTTE_R1: float = 12.6
+const MOTTE_BAS: float = 2.1
+const TOURS_D: float = 9.5
+const PORTE_REMPART: float = 2.6
+const DONJON_R0: float = 4.4
+const DONJON_R1: float = 3.8
+const HUBLOTS := [[175.0, 1.9, "verre_mer_vert"], [245.0, 1.9, "verre_mer_bleu"], [320.0, 1.9, "verre_mer_ambre"]]
+## Un hublot : sept morceaux de verre de mer serrés dans le sable (le long du mur, en hauteur).
+const MOSAIQUE := [Vector2(0, 0), Vector2(0.23, 0.0), Vector2(-0.23, 0.0), Vector2(0.115, 0.2), Vector2(-0.115, 0.2), Vector2(0.115, -0.2), Vector2(-0.115, -0.2)]
 static var _cache: Dictionary = {}
 
 
@@ -171,6 +187,27 @@ static func mat(key: String) -> Material:
 			m = _surface(MJ + "sable_lac.png", MJ + "sable_lac_n.png", Color(0.82, 0.76, 0.64), 0.7, 5.0, 1.2, Color(0.62, 0.56, 0.44))
 		"jouet_rouge":
 			m = _flat(Color(0.86, 0.12, 0.1), 0.32)
+		"coquillage_rose":
+			m = _flat(Color(0.95, 0.62, 0.66), 0.45)
+		"ombre_porte":
+			# V177 : le dedans sombre d'une porte, d'une meurtrière (le château de sable)
+			m = _flat(Color(0.05, 0.04, 0.035), 0.98)
+		"verre_mer_vert", "verre_mer_bleu", "verre_mer_ambre":
+			# V177 : le verre poli par la mer (dépoli, un peu de lumière dedans)
+			var vc: Color = {"verre_mer_vert": Color(0.42, 0.78, 0.55), "verre_mer_bleu": Color(0.4, 0.62, 0.9), "verre_mer_ambre": Color(0.95, 0.66, 0.26)}[key]
+			var vm: StandardMaterial3D = _flat(vc.lerp(Color(0.9, 0.92, 0.9), 0.25), 0.6)
+			vm.emission_enabled = true
+			vm.emission = vc
+			vm.emission_energy_multiplier = 0.35
+			m = vm
+		"panneau_chateau":
+			# V177 : l'écriteau de Pâquerette, au-dessus de la porte du donjon (écrit au crayon)
+			var pm := StandardMaterial3D.new()
+			pm.albedo_texture = _t(B174 + "panneau_chateau.png")
+			if pm.albedo_texture == null:
+				pm.albedo_color = Color(0.93, 0.86, 0.7)
+			pm.roughness = 0.9
+			m = pm
 		"jouet_jaune":
 			m = _flat(Color(0.98, 0.78, 0.12), 0.32)
 		"linge_blanc", "linge_bleu", "linge_jaune", "linge_rouge", "linge_raye", "linge_vert":
@@ -374,6 +411,20 @@ class Cols:
 		c.height = h
 		cs.shape = c
 		cs.position = at + Vector3.UP * h * 0.5
+		body.add_child(cs)
+
+	## V177 : un tronc de cône plein (posé sur « at », vers le haut) : une motte qu'on monte à pied
+	func cone(at: Vector3, r0: float, r1: float, h: float, sides: int = 32) -> void:
+		var pts := PackedVector3Array()
+		for i in range(sides):
+			var a: float = TAU * i / sides
+			pts.append(Vector3(cos(a) * r0, 0.0, sin(a) * r0))
+			pts.append(Vector3(cos(a) * r1, h, sin(a) * r1))
+		var cs := CollisionShape3D.new()
+		var c := ConvexPolygonShape3D.new()
+		c.points = pts
+		cs.shape = c
+		cs.position = at
 		body.add_child(cs)
 
 	func cyl_xf(xf: Transform3D, r: float, h: float) -> void:
@@ -937,58 +988,135 @@ static func epouvantail(b: Batch, cols: Cols, at: Vector3, yaw: float) -> void:
 
 ## Sur la grève : le château de sable de Pâquerette (des tours aussi hautes que des maisons), son
 ## seau rouge et sa pelle jaune ; on en fait le tour, on se glisse dans la cour du château.
-static func chateau_sable(b: Batch, cols: Cols, ile: Node3D, c: Vector2) -> void:
+## V177 : on y entre pour de bon. La motte de sable mouillé est solide (avant, on s'y enfonçait
+## jusqu'aux yeux) et sa pente douce se monte de partout ; la porte du rempart, côté mer, est ouverte
+## (avant, les deux morceaux du mur se touchaient) ; un linteau de bois flotté, des créneaux ; les tours
+## un peu plus écartées (la cour fait le tour du donjon) ; le donjon a sa porte (bordée de coquillages,
+## l'écriteau de Pâquerette au-dessus), ses hublots de verre de mer, sa meurtrière face à la mer.
+## Rend les repères : « porte » (devant la porte du donjon, dehors), « out » (vers la mer), « centre »
+## (le haut de la motte, au pied du donjon).
+static func chateau_sable(b: Batch, cols: Cols, ile: Node3D, c: Vector2) -> Dictionary:
 	var y: float = ile.height_l(c.x, c.y)
 	var base: Vector3 = Ile.W(c.x, c.y, y - 0.3)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1429
-	# la motte du château, les quatre tours aux coins, le donjon au milieu (moulé dans le seau)
-	b.cyl("sable_mouille", Transform3D(Basis(), base + Vector3(0, -0.2, 0)), 13.0, 11.5, 2.2, 28)
+	var ym: float = 2.0
+	# la motte : sa pente douce (27°) se monte de partout ; elle est solide
+	b.cyl("sable_mouille", Transform3D(Basis(), base + Vector3(0, -MOTTE_BAS, 0)), MOTTE_R0, MOTTE_R1, ym + MOTTE_BAS, 56)
+	cols.cone(base + Vector3(0, -MOTTE_BAS, 0), MOTTE_R0, MOTTE_R1, ym + MOTTE_BAS, 56)
+	# les quatre tours aux coins
 	var tours: Array = []
 	for k in range(4):
 		var a: float = TAU * k / 4.0 + PI * 0.25
-		tours.append(base + Vector3(cos(a), 0, sin(a)) * 8.0)
+		tours.append(base + Vector3(cos(a), 0, sin(a)) * TOURS_D)
 	for t in tours:
 		b.cyl("sable", Transform3D(Basis(), t + Vector3(0, 1.6, 0)), 2.8, 2.3, 6.2, 16)
 		for j in range(6):
 			var a2: float = TAU * j / 6.0
 			b.box("sable", Transform3D(Basis(Vector3.UP, -a2), t + Vector3(cos(a2), 0, sin(a2)) * 2.0 + Vector3(0, 8.2, 0)), Vector3(1.0, 1.0, 1.0))
 		cols.cyl(t + Vector3(0, 1.6, 0), 2.6, 6.2)
+	# les remparts (des créneaux dessus) ; la porte côté mer (au nord), sous un linteau de bois flotté
 	for k2 in range(4):
 		var a0: Vector3 = tours[k2]
 		var a1: Vector3 = tours[(k2 + 1) % 4]
 		var mid: Vector3 = (a0 + a1) * 0.5
 		var d: Vector3 = a1 - a0
+		var dn: Vector3 = d.normalized()
 		var yaw: float = -atan2(d.z, d.x)
-		# le mur, avec une porte côté mer (au nord)
+		var bs := Basis(Vector3.UP, yaw)
+		var fin: float = d.length() * 0.5 - 2.0
 		if k2 == 2:
+			var gw: float = PORTE_REMPART * 0.5
 			for sgn in [-1.0, 1.0]:
-				var seg_c: Vector3 = mid + d.normalized() * sgn * (d.length() * 0.5 - 2.6) * 0.62
-				b.box("sable", Transform3D(Basis(Vector3.UP, yaw), seg_c + Vector3(0, 3.0, 0)), Vector3(d.length() * 0.36, 3.6, 1.6))
-				cols.box(Transform3D(Basis(Vector3.UP, yaw), seg_c + Vector3(0, 3.0, 0)), Vector3(d.length() * 0.36, 3.6, 1.6))
+				var seg_c: Vector3 = mid + dn * sgn * (gw + fin) * 0.5
+				b.box("sable", Transform3D(bs, seg_c + Vector3(0, 3.0, 0)), Vector3(fin - gw, 3.6, 1.6))
+				cols.box(Transform3D(bs, seg_c + Vector3(0, 3.0, 0)), Vector3(fin - gw, 3.6, 1.6))
+			# le linteau (une planchette de bois flotté, posée un peu de travers) et le sable au-dessus
+			b.box("bois_clair", Transform3D(bs * Basis(Vector3.BACK, 0.03), mid + Vector3(0, 4.35, 0)), Vector3(PORTE_REMPART + 1.0, 0.2, 1.15))
+			b.box("sable", Transform3D(bs, mid + Vector3(0, 4.62, 0)), Vector3(PORTE_REMPART + 0.2, 0.36, 1.6))
+			cols.box(Transform3D(bs, mid + Vector3(0, 4.53, 0)), Vector3(PORTE_REMPART, 0.54, 1.6))
 		else:
-			b.box("sable", Transform3D(Basis(Vector3.UP, yaw), mid + Vector3(0, 3.0, 0)), Vector3(d.length() - 4.0, 3.6, 1.6))
-			cols.box(Transform3D(Basis(Vector3.UP, yaw), mid + Vector3(0, 3.0, 0)), Vector3(d.length() - 4.0, 3.6, 1.6))
-	b.cyl("sable", Transform3D(Basis(), base + Vector3(0, 1.6, 0)), 3.6, 3.0, 9.0, 18)
-	b.cyl("sable", Transform3D(Basis(), base + Vector3(0, 10.6, 0)), 3.0, 0.4, 3.2, 18)
-	cols.cyl(base + Vector3(0, 1.6, 0), 3.4, 9.0)
+			b.box("sable", Transform3D(bs, mid + Vector3(0, 3.0, 0)), Vector3(d.length() - 4.0, 3.6, 1.6))
+			cols.box(Transform3D(bs, mid + Vector3(0, 3.0, 0)), Vector3(d.length() - 4.0, 3.6, 1.6))
+		var s: float = -fin + 0.6
+		while s <= fin - 0.5:
+			b.box("sable", Transform3D(bs, mid + dn * s + Vector3(0, 5.15, 0)), Vector3(0.8, 0.7, 1.5))
+			s += 1.6
+	# le donjon (moulé dans le seau), ses créneaux, son toit pointu
+	b.cyl("sable", Transform3D(Basis(), base + Vector3(0, 1.6, 0)), DONJON_R0, DONJON_R1, 9.0, 32)
+	for m in range(10):
+		var am: float = TAU * m / 10.0
+		b.box("sable", Transform3D(Basis(Vector3.UP, -am), base + Vector3(cos(am), 0, sin(am)) * (DONJON_R1 - 0.3) + Vector3(0, 11.0, 0)), Vector3(0.6, 0.8, 1.0))
+	b.cyl("sable", Transform3D(Basis(), base + Vector3(0, 10.6, 0)), DONJON_R1 - 0.5, 0.4, 3.6, 24)
+	cols.cyl(base + Vector3(0, 1.6, 0), DONJON_R0 - 0.08, 9.0)
 	# un drapeau : un bâtonnet de sucette et une feuille
-	b.tube("bois_clair", base + Vector3(0, 13.4, 0), base + Vector3(0, 17.0, 0), 0.08, 5)
-	b.box("geranium", Transform3D(Basis(), base + Vector3(0.7, 16.3, 0)), Vector3(1.4, 0.9, 0.05))
-	# le seau renversé (rouge) et la pelle (jaune), à côté
-	var sb: Vector3 = base + Vector3(16.5, 0.2, 4.0)
+	b.tube("bois_clair", base + Vector3(0, 14.0, 0), base + Vector3(0, 17.6, 0), 0.08, 5)
+	b.box("geranium", Transform3D(Basis(), base + Vector3(0.7, 16.9, 0)), Vector3(1.4, 0.9, 0.05))
+	# la porte du donjon (au nord, face à la porte du rempart) : une arche sombre, bordée de coquillages
+	var rp: float = _r_donjon(ym)
+	var po: Vector3 = base + Vector3(0, ym, -rp)
+	b.box("ombre_porte", Transform3D(Basis(), po + Vector3(0, 0.8, 0.02)), Vector3(1.4, 1.6, 0.14))
+	b.cyl("ombre_porte", Transform3D(Basis(Vector3.RIGHT, -PI * 0.5), po + Vector3(0, 1.6, 0.09)), 0.7, 0.7, 0.14, 16)
+	for i in range(15):
+		var u: float = float(i) / 14.0
+		var q: Vector3
+		if u < 0.2:
+			q = Vector3(-0.82, 1.6 * u / 0.2, 0)
+		elif u > 0.8:
+			q = Vector3(0.82, 1.6 * (1.0 - u) / 0.2, 0)
+		else:
+			var aa: float = PI * (1.0 - (u - 0.2) / 0.6)
+			q = Vector3(cos(aa) * 0.82, 1.6 + sin(aa) * 0.82, 0)
+		q.z = rp - sqrt(maxf(rp * rp - q.x * q.x, 0.0)) - 0.03
+		b.blob("blanc" if i % 3 != 1 else "coquillage_rose", po + q + Vector3(0, 0.05, 0), Vector3(0.15, 0.12, 0.08), 8, Basis(Vector3.BACK, rng.randf() * TAU))
+	# l'écriteau de Pâquerette, au-dessus de la porte (une planchette, écrit au crayon)
+	var ec: Vector3 = base + Vector3(0, ym + 3.15, -_r_donjon(ym + 3.15) - 0.07)
+	b.box("bois_clair", Transform3D(Basis(Vector3.BACK, 0.04), ec + Vector3(0, 0, 0.04)), Vector3(2.3, 0.78, 0.08))
+	var ew := Vector3(1.05, 0, 0).rotated(Vector3.BACK, 0.04)
+	var eh := Vector3(0, 0.33, 0).rotated(Vector3.BACK, 0.04)
+	var e0: Vector3 = ec - Vector3(0, 0, 0.005)
+	b.quad("panneau_chateau", [e0 - ew - eh, e0 + ew - eh, e0 + ew + eh, e0 - ew + eh], Vector3(0, 0, -1),
+		[Vector2(1, 1), Vector2(0, 1), Vector2(0, 0), Vector2(1, 0)])
+	# (deux bâtonnets le tiennent au mur, aux deux bouts)
+	for sx in [-0.85, 0.85]:
+		var rr: float = _r_donjon(ym + 3.15)
+		var zw: float = -sqrt(maxf(rr * rr - sx * sx, 0.0))
+		b.tube("bois_clair", Vector3(base.x + sx, ec.y, base.z + zw + 0.1), Vector3(base.x + sx, ec.y, ec.z + 0.02), 0.05, 5)
+	# les hublots de verre de mer (le même tour que dedans : la pièce est vue depuis la porte, +z)
+	for hb in HUBLOTS:
+		var ah: float = deg_to_rad(float(hb[0]))
+		var e := Vector3(-sin(ah), 0, -cos(ah))
+		var yh: float = ym + float(hb[1])
+		var ph: Vector3 = base + Vector3(0, yh, 0) + e * (_r_donjon(yh) - 0.02)
+		var tg := Vector3(e.z, 0, -e.x)
+		var bs := Basis(tg, Vector3.UP, e)
+		for v in MOSAIQUE:
+			b.blob(str(hb[2]), ph + tg * (v as Vector2).x + Vector3.UP * (v as Vector2).y, Vector3(0.115, 0.105, 0.05), 10, bs * Basis(Vector3.BACK, (v as Vector2).x * 7.0))
+	# la meurtrière (au nord, à hauteur de la galerie)
+	var ymt: float = ym + 5.75
+	b.box("ombre_porte", Transform3D(Basis(), base + Vector3(0, ymt, -_r_donjon(ymt) + 0.04)), Vector3(0.45, 1.4, 0.14))
+	# le seau renversé (rouge) et la pelle jaune, à côté (au pied de la motte, posés sur la grève)
+	var sb: Vector3 = Ile.W(c.x + 22.5, c.y + 6.0, ile.height_l(c.x + 22.5, c.y + 6.0) - 0.15)
 	b.cyl("jouet_rouge", Transform3D(Basis(), sb), 3.4, 2.7, 4.6, 22, true)
 	for k3 in range(10):
 		var a3: float = PI * k3 / 10.0
 		var a4: float = PI * (k3 + 1) / 10.0
-		b.tube("jouet_rouge", sb + Vector3(cos(a3) * 3.0, 0.4 + sin(a3) * 0.4, sin(a3) * 0.0 + 0.0) + Vector3(0, 0, 0), sb + Vector3(cos(a4) * 3.0, 0.4 + sin(a4) * 0.4, 0.0), 0.16, 5)
+		b.tube("jouet_rouge", sb + Vector3(cos(a3) * 3.0, 0.4 + sin(a3) * 0.4, 0.0), sb + Vector3(cos(a4) * 3.0, 0.4 + sin(a4) * 0.4, 0.0), 0.16, 5)
 	cols.cyl(sb, 3.3, 4.6)
-	var pb: Vector3 = base + Vector3(-15.0, 0.3, 6.0)
+	var pb: Vector3 = Ile.W(c.x - 21.5, c.y + 9.0, ile.height_l(c.x - 21.5, c.y + 9.0) + 0.1)
 	var dir := Vector3(0.8, 0.0, 0.6).normalized()
 	b.tube("jouet_jaune", pb, pb + dir * 7.5 + Vector3(0, 0.6, 0), 0.32, 8)
 	b.box("jouet_jaune", Transform3D(Basis(Vector3.UP, -atan2(dir.z, dir.x)), pb - dir * 1.6 + Vector3(0, 0.15, 0)), Vector3(3.4, 0.3, 2.8))
 	b.box("jouet_jaune", Transform3D(Basis(Vector3.UP, -atan2(dir.z, dir.x)), pb + dir * 7.8 + Vector3(0, 0.65, 0)), Vector3(0.5, 0.6, 1.8))
-	# des coquillages ramassés (des « galets » roses et blancs gros comme des coussins)
+	# des coquillages ramassés (des « galets » roses et blancs gros comme des coussins), au pied de la motte
 	for k4 in range(9):
-		var q := base + Vector3(rng.randf_range(-18, 18), 0.2, rng.randf_range(10, 18))
-		b.blob("blanc" if k4 % 2 == 0 else "geranium_rose", q, Vector3(0.9, 0.35, 0.7), 8, Basis(Vector3.UP, rng.randf() * TAU))
+		var dq := Vector2(rng.randf_range(-20, 20), rng.randf_range(21, 26))
+		var qq: Vector3 = Ile.W(c.x + dq.x, c.y + dq.y, ile.height_l(c.x + dq.x, c.y + dq.y) + 0.1)
+		b.blob("blanc" if k4 % 2 == 0 else "coquillage_rose", qq, Vector3(0.9, 0.35, 0.7), 8, Basis(Vector3.UP, rng.randf() * TAU))
+	return {"porte": base + Vector3(0, ym + 0.05, -rp - 0.55), "out": Vector3(0, 0, -1), "centre": base + Vector3(0, ym, 0),
+		"porte_rempart": base + Vector3(0, ym, -(TOURS_D * sqrt(0.5)))}
+
+
+## V177 : le rayon du donjon à une hauteur donnée (au-dessus de « base », le pied de la motte).
+static func _r_donjon(h: float) -> float:
+	return lerpf(DONJON_R0, DONJON_R1, clampf((h - 1.6) / 9.0, 0.0, 1.0))

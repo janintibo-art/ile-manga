@@ -1,6 +1,6 @@
 #!/bin/bash
 # Des images de l'Île des Géants (V142) et une planche qui les rassemble.
-#     bash tests/outils/rendu_geants.sh DOSSIER [tout | vues | geants | fenetres | portes]
+#     bash tests/outils/rendu_geants.sh DOSSIER [tout | vues | geants | fenetres | portes | chateau | vue_donjon]
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"

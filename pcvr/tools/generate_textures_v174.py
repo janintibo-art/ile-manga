@@ -16,6 +16,10 @@ Faites ici ; CC0 1.0. Dossier www/assets/textures/beau174/.
   etiquette_sardines l'étiquette de la boîte de sardines (le lit de Tante Brindille).
   timbre             le timbre-poste encadré chez Tante Brindille (un voilier).
   enseigne_pepin     l'enseigne de Pépin, le boulanger des Petits (peinte sur un couvercle de boîte).
+  panneau_chateau    V177 : l'écriteau de Pâquerette au-dessus de la porte du donjon (son château de
+                     sable) : « CHÂTEAU DES PETITS », écrit au crayon gras sur une planchette de bois flotté.
+  marees             V177 : l'ardoise des marées de Firmin, le gardien du château (les heures, la
+                     courbe de la mer, ce qu'il ne faut pas oublier), à la craie.
   vues               ce qu'on voit par les fenêtres (le jour, la nuit) : d'après les images de
                      tests/outils/rendu_geants.sh DOSSIER fenetres, recadrées ; la nuit, bleuie,
                      des étoiles. (python3 -B pcvr/tools/generate_textures_v174.py vues DOSSIER)
@@ -571,6 +575,108 @@ def vues(dossier=None):
         rgb(nuit).save(OUT / (f.stem + "_nuit.png"))
 
 
+
+# =================================================================== V177 : le château de sable
+
+def _lettres(img, texte, x, y, f, couleurs, rng, pas=6, angle=9.0, ss_w=46, ss_h=58):
+    """Des lettres d'enfant : chacune un peu penchée, un peu plus haut ou plus bas."""
+    for i, ch in enumerate(texte):
+        if ch == " ":
+            x += 18 * SS
+            continue
+        lettre = Image.new("RGBA", (ss_w * SS, ss_h * SS), (0, 0, 0, 0))
+        col = couleurs[i % len(couleurs)]
+        dl = ImageDraw.Draw(lettre)
+        for k in range(2):
+            dl.text((4 * SS + k, 2 * SS + k), ch, font=f, fill=col)
+        lettre = lettre.rotate(rng.normal(0, angle), resample=Image.BICUBIC)
+        img.alpha_composite(lettre, (int(x), int(y + rng.normal(0, 3) * SS)))
+        x += (f.getbbox(ch)[2]) + pas * SS
+    return x
+
+
+def panneau_chateau():
+    w, h = 640 * SS, 216 * SS
+    # le bois flotté : gris-beige, le fil du bois en long, des nœuds, blanchi par le sel
+    yy = np.linspace(0, 1, h)[:, None] * np.ones((1, w))
+    fil = bruit(3, 41, w, h) * 0.5 + fbm(40, 4, 42, w, h) * 0.5
+    veines = (np.sin((yy * 26 + fil * 1.2 + bruit(24, 44, w, h) * 0.25) * math.pi) * 0.5 + 0.5) ** 4
+    base = melange((0.74, 0.69, 0.6), (0.6, 0.55, 0.47), fil)
+    base = base * (1 - veines[..., None] * 0.12)
+    sel = np.clip((fbm(12, 4, 43, w, h) - 0.55) * 3, 0, 1)
+    base = base * (1 - sel[..., None] * 0.3) + np.array((0.92, 0.9, 0.86))[None, None, :] * sel[..., None] * 0.3
+    img = rgb(base).convert("RGBA")
+    d = ImageDraw.Draw(img)
+    rng = np.random.default_rng(177)
+    f = police("DejaVuSans-Bold.ttf", 58)
+    x = _lettres(img, "CHÂTEAU", 70 * SS, 8 * SS, f, [(205, 40, 50, 255), (40, 90, 190, 255), (230, 150, 30, 255), (60, 150, 70, 255)], rng)
+    f2 = police("DejaVuSans-Bold.ttf", 46)
+    _lettres(img, "DES PETITS", 150 * SS, 104 * SS, f2, [(140, 60, 170, 255), (205, 40, 50, 255), (40, 90, 190, 255)], rng, 5)
+    # un cœur, un coquillage dessiné, des points (le crayon appuie trop)
+    def cire(pts, col, larg=5):
+        for k in range(3):
+            q = [(px + rng.normal(0, 1.2 * SS), py + rng.normal(0, 1.2 * SS)) for (px, py) in pts]
+            d.line(q, fill=col, width=int(larg * SS * (0.6 + 0.2 * k)), joint="curve")
+    cx, cy = w * 0.88, h * 0.3
+    coeur = [(cx + 16 * SS * (16 * math.sin(t) ** 3) / 16, cy - 16 * SS * (13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)) / 16) for t in np.linspace(0, 2 * math.pi, 40)]
+    cire(coeur, (220, 50, 90, 255), 4)
+    sx, sy = w * 0.08, h * 0.72
+    for k in range(7):
+        a = math.pi * (0.15 + 0.7 * k / 6)
+        cire([(sx, sy + 18 * SS), (sx + math.cos(a) * 34 * SS, sy + 18 * SS - math.sin(a) * 34 * SS)], (235, 130, 150, 255), 3)
+    d.arc([sx - 34 * SS, sy - 16 * SS, sx + 34 * SS, sy + 52 * SS], 200, 340, fill=(235, 130, 150, 255), width=4 * SS)
+    img.convert("RGB").resize((640, 216), Image.LANCZOS).save(OUT / "panneau_chateau.png")
+
+
+def marees():
+    w, h = 768 * SS, 512 * SS
+    # l'ardoise : gris-vert sombre, les traces de craie effacée
+    n = fbm(10, 5, 501, w, h)
+    base = melange((0.17, 0.2, 0.2), (0.24, 0.27, 0.26), n)
+    efface = np.clip((fbm(4, 4, 502, w, h) - 0.45) * 1.6, 0, 1)
+    base = base * (1 - efface[..., None] * 0.25) + np.array((0.55, 0.56, 0.54))[None, None, :] * efface[..., None] * 0.25
+    img = rgb(base).convert("RGBA")
+    d = ImageDraw.Draw(img)
+    rng = np.random.default_rng(503)
+    craie = (236, 234, 224, 255)
+
+    def trait(pts, col=craie, larg=3):
+        for k in range(2):
+            q = [(px + rng.normal(0, 0.8 * SS), py + rng.normal(0, 0.8 * SS)) for (px, py) in pts]
+            d.line(q, fill=col, width=int(larg * SS), joint="curve")
+    f = police("DejaVuSans-Bold.ttf", 40)
+    _lettres(img, "MARÉES", 250 * SS, 18 * SS, f, [craie], rng, 4, 4.0)
+    # les heures, la courbe de la mer (deux hautes, deux basses), la vague dessinée au-dessus
+    x0, x1, y0, y1 = 70 * SS, 720 * SS, 120 * SS, 360 * SS
+    trait([(x0, y1 + 20 * SS), (x1, y1 + 20 * SS)], craie, 2)
+    f2 = police("DejaVuSans.ttf", 22)
+    for i, hh in enumerate(["0 h", "6 h", "12 h", "18 h", "24 h"]):
+        xx = x0 + (x1 - x0) * i / 4
+        trait([(xx, y1 + 12 * SS), (xx, y1 + 28 * SS)], craie, 2)
+        d.text((xx - 20 * SS, y1 + 34 * SS), hh, font=f2, fill=craie)
+    pts = []
+    for k in range(120):
+        t = k / 119
+        pts.append((x0 + (x1 - x0) * t, (y0 + y1) / 2 - 10 * SS - math.cos(t * 4 * math.pi - 0.6) * (y1 - y0) * 0.36))
+    trait(pts, (150, 200, 235, 255), 4)
+    f3 = police("DejaVuSans-Bold.ttf", 22)
+    for t, mot in [(0.05, "haute"), (0.3, "basse"), (0.55, "haute"), (0.8, "basse")]:
+        xx = x0 + (x1 - x0) * t
+        yy = (y0 + y1) / 2 - 10 * SS - math.cos(t * 4 * math.pi - 0.6) * (y1 - y0) * 0.36
+        d.text((xx - 26 * SS, yy + (-40 if mot == "haute" else 14) * SS), mot, font=f3, fill=craie)
+    # ce qu'il ne faut pas oublier
+    f4 = police("DejaVuSans.ttf", 24)
+    d.text((40 * SS, 440 * SS), "arroser les murs : matin et soir", font=f4, fill=(240, 220, 150, 255))
+    # un petit crabe (Sire Bernard) dans le coin
+    cx, cy = 690 * SS, 70 * SS
+    d.ellipse([cx - 26 * SS, cy - 18 * SS, cx + 26 * SS, cy + 18 * SS], outline=(240, 150, 120, 255), width=3 * SS)
+    for s in (-1, 1):
+        trait([(cx + s * 22 * SS, cy - 10 * SS), (cx + s * 40 * SS, cy - 34 * SS)], (240, 150, 120, 255), 3)
+        d.ellipse([cx + s * 40 * SS - 9 * SS, cy - 46 * SS, cx + s * 40 * SS + 9 * SS, cy - 30 * SS], outline=(240, 150, 120, 255), width=3 * SS)
+        for j in range(3):
+            trait([(cx + s * 20 * SS, cy + (j * 6) * SS), (cx + s * 40 * SS, cy + (8 + j * 8) * SS)], (240, 150, 120, 255), 2)
+    img.convert("RGB").resize((768, 512), Image.LANCZOS).save(OUT / "marees.png")
+
 TOUT = {
     "vichy_rouge": vichy_rouge,
     "laine": laine,
@@ -586,6 +692,8 @@ TOUT = {
     "etiquette_sardines": etiquette_sardines,
     "timbre": timbre,
     "enseigne_pepin": enseigne_pepin,
+    "panneau_chateau": panneau_chateau,
+    "marees": marees,
 }
 
 
