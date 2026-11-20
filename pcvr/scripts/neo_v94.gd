@@ -158,7 +158,7 @@ func build_town() -> void:
 ## les reconnaît à un point de leur terrain (repère de la ville) ; leurs boîtes ne sont plus dessinées (elles
 ## gardent leurs collisions et leurs étages : on y entre comme avant), leurs enseignes tirées au sort non plus.
 const UNIQUES := [
-	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd"},
+	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd", "dedans": "res://scripts/neo/tour_kumo_dedans_v188.gd"},
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
 
@@ -170,6 +170,8 @@ func _uniques_marque() -> void:
 			var r: Array = bt["rect"]
 			if p.x > float(r[0]) and p.x < float(r[2]) and p.y > float(r[1]) and p.y < float(r[3]) and bt.has("xfs") and ResourceLoader.exists(str(u["script"])):
 				bt["unique"] = str(u["script"])
+				if u.has("dedans"):
+					bt["unique_dedans"] = str(u["dedans"])       # V188 : ses étages
 				bt["boites_cachees"] = int(bt["xfs"][1]) - int(bt["xfs"][0])
 				for k in range(int(bt["xfs"][0]), int(bt["xfs"][1])):
 					_xfs[k] = Transform3D(Basis().scaled(Vector3(0.001, 0.001, 0.001)), (_xfs[k] as Transform3D).origin * Vector3(1, 0, 1) + Vector3.DOWN * 60.0)

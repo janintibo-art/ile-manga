@@ -1,3 +1,5 @@
 # Les séries lancées à part (un Godot pour elles seules), une par ligne.
 # V185 : 42_foule visite des étages de tours ; en fin de groupe, Godot (déjà à plus de 5 Go) s'arrêtait sans rien dire.
 42_foule
+# V188 : 45_tour_kumo_dedans visite les treize étages de la Tour Kumo.
+45_tour_kumo_dedans

@@ -18,6 +18,7 @@ extends Node3D
 
 const IleScript = preload("res://scripts/ile_neo_v94.gd")
 const Kit = preload("res://scripts/neo_kit_v94.gd")
+const Flora = preload("res://scripts/flora_v25.gd")
 const TEX := "res://assets/textures/neo187/"
 const E: float = 3.5                  # la hauteur d'un étage
 const SORTES := ["hangar", "bureaux", "cafeteria", "bureaux", "bureaux", "serveurs", "bureaux", "jardin", "cafeteria", "bureaux", "bureaux", "bureaux", "direction"]
@@ -251,6 +252,15 @@ func _image(nom: String, at: Vector3, face: Vector3, size: Vector2, ecran: bool 
 	return mi
 
 
+## V188 : une plante vraie (les feuillages du reste du jeu), qu'on ne dessine plus de loin.
+func _plante(mesh: Mesh, at: Vector3, sc: Vector3, parent: Node3D) -> void:
+	var mi := MeshInstance3D.new()
+	mi.mesh = mesh
+	mi.visibility_range_end = 160.0
+	parent.add_child(mi)
+	mi.global_transform = Transform3D(Basis(Vector3.UP, fposmod(at.x * 12.9898 + at.z * 78.233, TAU)).scaled(sc), at)
+
+
 ## Une image peinte sur un mur (la fresque), sans lumière propre.
 func _peinture(nom: String, at: Vector3, face: Vector3, size: Vector2) -> void:
 	var m := StandardMaterial3D.new()
@@ -349,7 +359,8 @@ func _loggia(f: Dictionary, s0: float, s1: float, y: float) -> void:
 		var s: float = s0 + (float(i) + 0.5) * (s1 - s0) / float(n)
 		var r: float = _rng.randf_range(0.28, 0.5)
 		var key: String = "k187_feuillage" if _rng.randf() < 0.6 else "k187_feuillage_clair"
-		b.blob(key, _p(f, s, yb + 0.6 + r * 0.5, -0.2 + _rng.randf_range(-0.1, 0.2)), Vector3(r * 1.1, r * 0.8, r), 6)
+		# (V188 : un vrai buisson, pas une boule)
+		_plante(Flora.bush(1870 + i % 4), _p(f, s, yb + 0.5, -0.2 + _rng.randf_range(-0.1, 0.2)), Vector3(r * 1.5, r * 1.6, r * 1.5), self)
 		if _rng.randf() < 0.55:
 			# une liane qui pend le long de la façade
 			var ll: float = _rng.randf_range(0.6, 2.4)
@@ -359,8 +370,7 @@ func _loggia(f: Dictionary, s0: float, s1: float, y: float) -> void:
 			b.blob("k187_fleurs", _p(f, s + 0.1, yb + 0.75 + r * 0.6, 0.05), Vector3(0.12, 0.1, 0.12), 5)
 	# deux petits arbres, et des lanternes
 	for sa in [s0 + 0.9, s1 - 0.9]:
-		bd.cyl_at("ecorce", _p(f, sa, yb, -1.5), 0.07, 0.05, 1.5, 6)
-		bd.blob("k187_feuillage_clair", _p(f, sa, yb + 1.9, -1.5), Vector3(0.75, 0.6, 0.75), 7)
+		_plante(Flora.tree(1876, 7.0, 220), _p(f, sa, yb, -1.5), Vector3(0.4, 0.36, 0.4), dedans)
 	b.blob("lampe_chaude", _p(f, (s0 + s1) * 0.5, yh - 0.35, -0.9), Vector3(0.16, 0.16, 0.16), 6)
 
 
@@ -754,9 +764,7 @@ func _terrasse(F0: Array) -> void:
 		var at: Vector3 = IleScript.W(c[0], c[1], YT)
 		b.box_at("metal_noir", at, Vector3(1.3, 0.55, 1.3))
 		b.box_at("terre_bac", at + Vector3.UP * 0.5, Vector3(1.2, 0.06, 1.2))
-		b.cyl_at("ecorce", at + Vector3.UP * 0.5, 0.07, 0.05, 1.3, 6)
-		b.blob("k187_feuillage", at + Vector3.UP * 2.1, Vector3(0.85, 0.7, 0.85), 7)
-		b.blob("k187_feuillage_clair", at + Vector3(0.3, 1.7, 0.2), Vector3(0.5, 0.4, 0.5), 6)
+		_plante(Flora.tree(1877, 7.0, 240), at + Vector3.UP * 0.5, Vector3(0.42, 0.38, 0.42), self)
 	# côté quai : trois tables et leurs parasols (la pause, face à la mer)
 	var zt: float = (float(R0[1]) + float(R1[1])) * 0.5
 	for i2 in range(3):

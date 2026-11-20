@@ -407,6 +407,12 @@ func _nom_etage(k: int) -> String:
 		return "Le toit"
 	var ty: String = type_etage(inside, k)
 	var nom: String = "Rez-de-chaussée" if k == 0 else ("1er étage" if k == 1 else "%dᵉ étage" % k)
+	# V188 : une tour faite à la main donne elle-même le nom de ses étages
+	if (t["b"] as Dictionary).has("unique_dedans") and ResourceLoader.exists(str(t["b"]["unique_dedans"])):
+		var un: RefCounted = (load(str(t["b"]["unique_dedans"])) as Script).new()
+		var qn: String = str(un.call("nom", k)) if un.has_method("nom") else ""
+		if qn != "":
+			return "%s — %s" % [nom, qn]
 	var quoi := {"hall": "le hall", "bureaux": "les bureaux de %s" % str(t.get("societe", "")), "cafeteria": "la cafétéria", "serveurs": "la salle des serveurs",
 		"direction": "la direction de %s" % str(t.get("societe", "")), "logements": "les logements", "hangar": "le hangar", "atelier": str(t.get("enseigne", "l'atelier")),
 		"nouilles": str(t.get("enseigne", "les nouilles")), "boutique": str(t.get("enseigne", "la boutique")), "salle_jeux": "la salle de jeux", "karaoke": "le karaoké",
@@ -638,10 +644,20 @@ func _batir(k: int) -> void:
 		"call": _escalier})
 	# les murs extérieurs, leurs fenêtres (et la porte, au rez-de-chaussée)
 	var colw: float = float(COLW.get(int(t["style"]), 2.6))
-	_facade(b, Vector3(X0, y_sol, Z0), Vector3(X1, y_sol, Z0), Vector3(0, 0, 1), hc, colw, k == 0 and n.z < -0.5, t)
-	_facade(b, Vector3(X0, y_sol, Z1), Vector3(X1, y_sol, Z1), Vector3(0, 0, -1), hc, colw, k == 0 and n.z > 0.5, t)
-	_facade(b, Vector3(X0, y_sol, Z0), Vector3(X0, y_sol, Z1), Vector3(1, 0, 0), hc, colw, k == 0 and n.x < -0.5, t)
-	_facade(b, Vector3(X1, y_sol, Z0), Vector3(X1, y_sol, Z1), Vector3(-1, 0, 0), hc, colw, k == 0 and n.x > 0.5, t)
+	# V188 : un immeuble fait à la main a ses murs à lui (ils reprennent sa façade du dehors) et ses étages
+	var uni: RefCounted = null
+	if (t["b"] as Dictionary).has("unique_dedans") and ResourceLoader.exists(str(t["b"]["unique_dedans"])):
+		uni = (load(str(t["b"]["unique_dedans"])) as Script).new()
+	if uni != null:
+		uni.facade(self, b, Vector3(X0, y_sol, Z0), Vector3(X1, y_sol, Z0), Vector3(0, 0, 1), hc, k, ty)
+		uni.facade(self, b, Vector3(X0, y_sol, Z1), Vector3(X1, y_sol, Z1), Vector3(0, 0, -1), hc, k, ty)
+		uni.facade(self, b, Vector3(X0, y_sol, Z0), Vector3(X0, y_sol, Z1), Vector3(1, 0, 0), hc, k, ty)
+		uni.facade(self, b, Vector3(X1, y_sol, Z0), Vector3(X1, y_sol, Z1), Vector3(-1, 0, 0), hc, k, ty)
+	else:
+		_facade(b, Vector3(X0, y_sol, Z0), Vector3(X1, y_sol, Z0), Vector3(0, 0, 1), hc, colw, k == 0 and n.z < -0.5, t)
+		_facade(b, Vector3(X0, y_sol, Z1), Vector3(X1, y_sol, Z1), Vector3(0, 0, -1), hc, colw, k == 0 and n.z > 0.5, t)
+		_facade(b, Vector3(X0, y_sol, Z0), Vector3(X0, y_sol, Z1), Vector3(1, 0, 0), hc, colw, k == 0 and n.x < -0.5, t)
+		_facade(b, Vector3(X1, y_sol, Z0), Vector3(X1, y_sol, Z1), Vector3(-1, 0, 0), hc, colw, k == 0 and n.x > 0.5, t)
 	# les plafonniers et les lumières
 	var nx: int = maxi(1, int(w / 4.5))
 	var nz: int = maxi(1, int(d / 4.5))
@@ -704,7 +720,13 @@ func _batir(k: int) -> void:
 			pz += 8.0
 		px += 8.0
 	# le contenu
-	match ty:
+	var ty_contenu: String = ty
+	if uni != null and uni.fait(k):
+		info["son"] = uni.etage(self, b, rng, t, k)
+		ty_contenu = "fait_main"
+	match ty_contenu:
+		"fait_main":
+			pass
 		"hall":
 			_hall(b, rng, t)
 		"bureaux":
@@ -741,7 +763,8 @@ func _batir(k: int) -> void:
 			info["son"] = Q.piscine(self, b, rng, t)
 		_:
 			_logements(b, rng, t)
-	_promeneurs(rng, t, ty, nuit)
+	if not bool(info.get("sans_promeneurs", false)):
+		_promeneurs(rng, t, ty, nuit)
 	b.commit(_node, "Etage_maillage", false)
 	# on arrive : les portes sont ouvertes, elles se referment derrière nous
 	for pa in info.get("portes_asc", []):
