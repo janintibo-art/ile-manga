@@ -511,6 +511,7 @@ func _choix_ascenseur(id: String) -> void:
 ## Le repère de l'étage (monde) : les murs intérieurs, le cœur (l'ascenseur), la place libre.
 func _batir(k: int) -> void:
 	etage = k
+	Gens.debut_lieu()          # V185 : pas deux personnes au même corps dans l'étage
 	var t: Dictionary = tours[inside]
 	var et: Dictionary = (t["etages"] as Array)[k]
 	var rng := RandomNumberGenerator.new()
@@ -895,6 +896,7 @@ func toit_at(p: Vector3) -> Dictionary:
 
 
 func _defaire() -> void:
+	Gens.fin_lieu()
 	var dj: Node = main.get("donjon_v35")
 	for it in _its:
 		if dj != null:

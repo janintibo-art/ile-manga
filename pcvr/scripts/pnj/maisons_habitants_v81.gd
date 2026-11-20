@@ -7,18 +7,27 @@ extends RefCounted
 ## « classe » (la classe d'habitant qui sait les habiller : lumen, pirate ou ramure).
 
 ## [style de pièce] -> [village du générateur, classe, nombre de corps]
+## V185 : 32 corps par ville (avant : de 4 à 10 ; dans un étage de tour de Néopolis, jusqu'à 14 personnes
+## pour 10 corps, dont 3 hommes : les mêmes revenaient, côte à côte). Les villes qui empruntent les gens
+## d'une autre (ALIAS) ont leurs 32 corps à elles, à la suite (DECALAGE).
+const LOT := 32
 const STYLES := {
-	"montjoie": ["montjoie", "lumen", 10], "braise": ["pandemonia", "lumen", 10], "boucan": ["boucan", "lumen", 10],
-	"tazira": ["tazira", "lumen", 8], "astralys": ["astralys", "lumen", 8], "azur": ["azur", "lumen", 6],
-	"cliquetis": ["cliquetis", "lumen", 6], "ramure": ["ramure", "ramure", 6], "arcanelle": ["arcanelle", "lumen", 6],
-	"pirate": ["balafre", "pirate", 6], "carene": ["carene", "lumen", 6], "egypte": ["egypte", "lumen", 6],
-	"maya": ["maya", "lumen", 6], "azteque": ["azteque", "lumen", 6],
-	"elfe": ["elfes", "lumen", 6], "atlante": ["atlantes", "lumen", 4],
-	"nain": ["nains", "lumen", 8],
-	"yourte_fleurs": ["larsen", "lumen", 10], "yourte_rainville": ["larsen", "lumen", 10],
-	"neo": ["neo", "lumen", 10], "neo_android": ["neo", "lumen", 6],
-	"pasta": ["pasta", "lumen", 10],
+	"montjoie": ["montjoie", "lumen", 96], "braise": ["pandemonia", "lumen", 32], "boucan": ["boucan", "lumen", 64],
+	"tazira": ["tazira", "lumen", 32], "astralys": ["astralys", "lumen", 32], "azur": ["azur", "lumen", 32],
+	"cliquetis": ["cliquetis", "lumen", 32], "ramure": ["ramure", "ramure", 32], "arcanelle": ["arcanelle", "lumen", 32],
+	"pirate": ["balafre", "pirate", 32], "carene": ["carene", "lumen", 64], "egypte": ["egypte", "lumen", 32],
+	"maya": ["maya", "lumen", 32], "azteque": ["azteque", "lumen", 32],
+	"elfe": ["elfes", "lumen", 32], "atlante": ["atlantes", "lumen", 32],
+	"nain": ["nains", "lumen", 32],
+	"yourte_fleurs": ["larsen", "lumen", 32], "yourte_rainville": ["larsen", "lumen", 32],
+	"neo": ["neo", "lumen", 96], "neo_android": ["neo", "lumen", 24],
+	"pasta": ["pasta", "lumen", 32],
 }
+## V185 : où commencent, dans les corps de la ville prêteuse, ceux de la ville qui emprunte (et combien).
+const DECALAGE := {"hautefond": [32, 32], "hautefond_lieu": [32, 32], "strates": [64, 32], "strates_lieu": [64, 32],
+	"nuees": [32, 32], "nuees_lieu": [32, 32], "dome": [64, 32], "dome_lieu": [64, 32],
+	"fronde": [32, 32], "fronde_lieu": [32, 32], "perchee": [32, 32], "perchee_lieu": [32, 32],
+	"nuees_android": [12, 12], "neo_android": [0, 12]}
 ## Les autres styles de pièce empruntent les gens d'une ville.
 const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee": "elfe", "hautefond": "montjoie", "hautefond_lieu": "montjoie",
 	"nuees": "neo", "nuees_lieu": "neo", "nuees_android": "neo_android",
@@ -27,7 +36,32 @@ const ALIAS := {"boucan_entrepot": "boucan", "boucan_conteneur": "boucan", "fee"
 	# V175 : les bus peints de l'Île de Larsen (les gens du Camp des Fleurs)
 	"larsen": "yourte_fleurs"}
 ## Les rôles, dans l'ordre des corps de chaque ville (les 6 premiers partout).
-const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme"]
+const ROLES := ["homme", "femme", "vieux", "vieille", "garcon", "fille", "homme", "femme", "homme", "femme",
+	# V185 : les 22 suivants (surtout des adultes : ce sont eux qu'on croise le plus)
+	"homme", "femme", "homme", "femme", "homme", "femme", "vieux", "vieille", "homme", "femme", "homme", "femme",
+	"garcon", "fille", "homme", "femme", "homme", "femme", "vieux", "vieille", "homme", "femme"]
+static var _graine_lieu: int = -1          # V185 : la graine du tirage en cours (un lieu, un étage)
+static var _pris: Dictionary = {}          # les corps déjà pris dans ce lieu
+static var _lieu_fixe: bool = false
+
+
+## V185 : un lieu commence (ses gens seront tirés avec plusieurs graines : pas deux fois le même corps
+## jusqu'à fin_lieu).
+static func debut_lieu() -> void:
+	_lieu_fixe = true
+	_graine_lieu = -1
+	_pris.clear()
+
+
+static func fin_lieu() -> void:
+	_lieu_fixe = false
+	_graine_lieu = -1
+	_pris.clear()
+
+
+## V185 : le rôle du corps n° i de sa ville (les lots de 32 se suivent).
+static func role_de(i: int) -> String:
+	return ROLES[i % LOT]
 
 const PRENOMS := {
 	# V146 : Pile-ou-Face (les corps de Carène ; des prénoms de Far West, à la française)
@@ -121,22 +155,38 @@ static func profile(id: String) -> Dictionary:
 static func pick(style: String, role: String, rng: RandomNumberGenerator) -> Dictionary:
 	var st: String = style_of(style)
 	var n: int = int(STYLES[st][2])
+	# V185 : les corps de cette ville-ci (son lot, dans ceux de la ville prêteuse)
+	var i0: int = 0
+	var i1: int = mini(n, LOT)
+	if DECALAGE.has(style):
+		i0 = int(DECALAGE[style][0])
+		i1 = mini(n, i0 + int(DECALAGE[style][1]))
 	var cands: Array = []
-	for i in range(n):
-		if ROLES[i] == role or (role == "adulte" and ROLES[i] in ["homme", "femme"]) or (role == "enfant" and ROLES[i] in ["garcon", "fille"]) or (role == "ancien" and ROLES[i] in ["vieux", "vieille"]):
+	for i in range(i0, i1):
+		var ro: String = role_de(i)
+		if ro == role or (role == "adulte" and ro in ["homme", "femme"]) or (role == "enfant" and ro in ["garcon", "fille"]) or (role == "ancien" and ro in ["vieux", "vieille"]):
 			cands.append(i)
 	# V84 : un homme aux cheveux longs sans barbe passe pour une femme (« Barnabé ») : on l'évite
 	if not femme(role):
 		var nets: Array = []
 		for c in cands:
 			var az: Dictionary = profile("f81_%s_%d" % [st, int(c)]).get("azur", {})
-			if femme(str(ROLES[int(c)])) or not (str(az.get("coiffure", "")) == "long" and not az.has("barbe")):
+			if femme(role_de(int(c))) or not (str(az.get("coiffure", "")) == "long" and not az.has("barbe")):
 				nets.append(c)
 		if not nets.is_empty():
 			cands = nets
 	if cands.is_empty():
-		cands = [0]
+		cands = [i0]
+	# V185 : dans un même lieu (la même graine de tirage), pas deux fois le même corps tant qu'il en reste
+	# (un lieu qui tire ses gens avec plusieurs graines — un étage de tour — s'annonce : debut_lieu, fin_lieu)
+	if not _lieu_fixe and int(rng.seed) != _graine_lieu:
+		_graine_lieu = int(rng.seed)
+		_pris.clear()
+	var libres: Array = cands.filter(func(c): return not _pris.has(st + str(c)))
+	if not libres.is_empty():
+		cands = libres
 	var i2: int = int(cands[rng.randi() % cands.size()])
+	_pris[st + str(i2)] = true
 	var p: Dictionary = profile("f81_%s_%d" % [st, i2])
 	if style.begins_with("nuees"):
 		p = clair(p, rng)
@@ -205,7 +255,7 @@ static func _c(r: RandomNumberGenerator, pal: Array) -> Array:
 static func _make(st: String, i: int) -> Dictionary:
 	var r := RandomNumberGenerator.new()
 	r.seed = hash("f81_" + st + str(i))
-	var role: String = ROLES[i]
+	var role: String = role_de(i)
 	var f: bool = femme(role)
 	var old: bool = role in ["vieux", "vieille"]
 	var kid: bool = role in ["garcon", "fille"]
@@ -230,6 +280,11 @@ static func _make(st: String, i: int) -> Dictionary:
 		"yeux": _c(r, [[0.3, 0.45, 0.6], [0.25, 0.18, 0.1], [0.3, 0.5, 0.3], [0.4, 0.3, 0.15]]),
 		"coiffure": (["long", "chignon", "tresse", "queue", "boucles", "carre"] if f else ["court", "court", "boucles", "chauve" if old else "court", "long"])[r.randi() % (6 if f else 5)],
 	}
+	if i >= 10:
+		# V185 : les nouveaux corps : plus de coiffures, des tailles et des carrures plus variées
+		az["coiffure"] = (["long", "chignon", "tresse", "queue", "boucles", "carre", "court", "dreads"] if f else ["court", "boucles", "queue", "long", "chauve" if old or r.randf() < 0.3 else "court", "carre", "court"])[r.randi() % (8 if f else 7)]
+		if not kid:
+			az["taille"] = snappedf(r.randf_range(0.93, 1.07), 0.01)
 	if not f and not kid and r.randf() < 0.45:
 		az["barbe"] = ["courte", "longue", "moustache"][r.randi() % 3]
 	if f and r.randf() < 0.6:

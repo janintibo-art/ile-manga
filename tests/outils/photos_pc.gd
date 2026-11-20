@@ -8,6 +8,7 @@
 ##   "pnj" : le nom d'un habitant (on va le voir là où il est, à l'heure de la liste) ; sans "pnj", une vue
 ##           libre : "oeil" et "cible" ([x, y, z]) ;
 ##   "lieu" : on l'envoie à ce lieu, comme s'il y arrivait (assis : sur son siège) ;
+##   "tour" : [n° de tour, étage] : V185, les portraits des gens d'un étage d'une tour de Néopolis ;
 ##   "pos", "face" ([x, y, z]) : V184, on le pose là, tourné par là (en chemin : "geste": ["Walking", t]) ;
 ##   "geste" : ["clip", instant] : il joue ce clip, figé à cet instant ;
 ##   "vues" : parmi "face" (de trois quarts), "profil", "dos", "dessus", "pieds" (au ras du sol, de côté) ;
@@ -64,6 +65,8 @@ func _pp_une(p: Dictionary) -> int:
 	print("PHOTO_DEBUT ", nom)
 	if p.has("heure"):
 		temps_v56.set_hour(float(p["heure"]))
+	if p.has("tour"):
+		return await _pp_tour(p)
 	if not p.has("pnj"):
 		if not (p.has("oeil") and p.has("cible")):
 			return 0
@@ -191,6 +194,51 @@ func _pp_corps() -> void:
 			print("CORPS_ANCIEN\t%s\t%s\t%s\t%s" % [str(e[0]), id, ville, str(npc.global_position.snapped(Vector3.ONE))])
 			n += 1
 	print("CORPS_ANCIEN_TOTAL %d sur %d" % [n, testeur_v78._npcs().size()])
+
+
+## V185 : « tour » : [n° de la tour de Néopolis, étage] : on y monte par l'ascenseur, et l'on tire le
+## portrait de chaque personne de l'étage (au plus « combien », 12 par défaut).
+func _pp_tour(p: Dictionary) -> int:
+	var nom: String = str(p.get("nom", "tour"))
+	var T: Node = neo_v94.tours if neo_v94 != null else null
+	if T == null:
+		return 0
+	var ti: int = int(p["tour"][0])
+	var k: int = int(p["tour"][1])
+	for _w in range(40):
+		if not bool(T.get("busy")) and int(T.get("inside")) < 0:
+			break
+		await _att(0.25)
+	await T.enter(ti)
+	await _att(0.8)
+	if k > 0:
+		await T.aller(k)
+	await _att(1.5)
+	var n: int = 0
+	var i: int = 0
+	for f in T.get("_gens"):
+		if i >= int(p.get("combien", 12)):
+			break
+		if not is_instance_valid(f) or (f as Node).get("npc") == null:
+			continue
+		var npc: Node3D = (f as Node).get("npc")
+		var ech: float = 1.0
+		if npc.get("model") is Node3D:
+			ech = (npc.get("model") as Node3D).global_transform.basis.get_scale().x
+		var tete: Vector3 = npc.global_position + Vector3.UP * 1.5 * ech
+		var sk: Skeleton3D = npc.get("skel")
+		if sk != null and sk.find_bone("Head") >= 0:
+			tete = sk.global_transform * sk.get_bone_global_pose(sk.find_bone("Head")).origin
+		var av: Vector3 = _pp_avant(npc)
+		var pr: Variant = npc.get("profile")
+		var id: String = str((pr as Dictionary).get("id", "?")) if pr is Dictionary else "?"
+		print("PHOTO_TOUR %s %d %s" % [nom, i, id])
+		if await _pp_photo("%s_%02d_%s" % [nom, i, id], tete + av * 1.25 + Vector3.UP * 0.05, tete - Vector3.UP * 0.12):
+			n += 1
+		i += 1
+	await T.leave()
+	await _att(0.6)
+	return n
 
 
 func _pp_poser(npc: Node3D, p: Dictionary) -> void:
