@@ -34,7 +34,8 @@ const GEANTS := {
 	"paquerette_gt": {"de": ["f81_montjoie_5", "f81_carene_5"], "t": 0.5, "look": {
 		"peau": [0.95, 0.78, 0.66], "rose": 0.7, "cheveux": [0.88, 0.7, 0.36], "poils": [0.88, 0.7, 0.36], "sourcils": [0.66, 0.5, 0.26],
 		"iris": [0.25, 0.48, 0.75], "cheveux_style": "tresse", "barbe_style": "",
-		"tenue": [{"v": "corsage", "c": [0.98, 0.8, 0.22], "tissu": "coton", "boutons": 1.0}, {"v": "jupe", "c": [0.98, 0.8, 0.22], "tissu": "coton"},
+		# (V186 : une enfant : une tunique à manches, pas un corsage ajusté)
+		"tenue": [{"v": "tunique_haut", "c": [0.98, 0.8, 0.22], "tissu": "coton"}, {"v": "jupe", "c": [0.98, 0.8, 0.22], "tissu": "coton"},
 			{"v": "tablier_court_sur_jupe", "c": [0.96, 0.95, 0.92], "tissu": "lin"}, {"v": "chaussures", "c": [0.75, 0.12, 0.1], "tissu": "cuir"},
 			{"v": "collant", "c": [0.94, 0.93, 0.9], "tissu": "coton"}]}},
 	# Oncle Théophile, le jardinier : long et sec, le chapeau de paille, le tablier de jardin

@@ -9,6 +9,11 @@
 ##           libre : "oeil" et "cible" ([x, y, z]) ;
 ##   "lieu" : on l'envoie à ce lieu, comme s'il y arrivait (assis : sur son siège) ;
 ##   "tour" : [n° de tour, étage] : V185, les portraits des gens d'un étage d'une tour de Néopolis ;
+##   "neo": true : V187, "oeil" et "cible" sont [x, hauteur au-dessus du sol, z] dans le repère de Néopolis ;
+##   "salles": true : V187, l'intérieur des tours de Néopolis : un étage de chaque sorte, huit vues larges ;
+##   "foule" : un style de la réserve des figurants ("neo", "boucan"…) : V186, les corps n° "de" à "de" +
+##             "combien" (8) de ce style, debout en rang sur un plateau nu (300 m au-dessus du joueur), en pied sur une seule photo
+##             (ou "ids" : la liste des fiches à aligner) ;
 ##   "pos", "face" ([x, y, z]) : V184, on le pose là, tourné par là (en chemin : "geste": ["Walking", t]) ;
 ##   "geste" : ["clip", instant] : il joue ce clip, figé à cet instant ;
 ##   "vues" : parmi "face" (de trois quarts), "profil", "dos", "dessus", "pieds" (au ras du sol, de côté) ;
@@ -67,11 +72,21 @@ func _pp_une(p: Dictionary) -> int:
 		temps_v56.set_hour(float(p["heure"]))
 	if p.has("tour"):
 		return await _pp_tour(p)
+	if p.has("salles"):
+		return await _pp_salles(p)
+	if p.has("foule"):
+		return await _pp_foule(p)
 	if not p.has("pnj"):
 		if not (p.has("oeil") and p.has("cible")):
 			return 0
 		var oeil: Vector3 = _pp_v(p["oeil"])
 		var cible: Vector3 = _pp_v(p["cible"])
+		if bool(p.get("neo", false)) and neo_v94 != null:
+			# V187 : à Néopolis : [x, hauteur au-dessus du sol, z] dans le repère de la ville
+			var so: Vector3 = neo_v94._ground(oeil.x, oeil.z)
+			var sc: Vector3 = neo_v94._ground(cible.x, cible.z)
+			oeil = Vector3(so.x, so.y + oeil.y, so.z)
+			cible = Vector3(sc.x, sc.y + cible.y, sc.z)
 		_pp_joueur(oeil - (cible - oeil).normalized() * 2.0, cible - oeil)
 		await _att(float(p.get("attente", 4.0)))
 		return 1 if await _pp_photo(nom, oeil, cible) else 0
@@ -239,6 +254,139 @@ func _pp_tour(p: Dictionary) -> int:
 	await T.leave()
 	await _att(0.6)
 	return n
+
+
+## V187 : « salles » : l'état des lieux des tours de Néopolis. On passe les tours en revue, et pour chaque
+## sorte d'étage pas encore vue (hall, bureaux, cafétéria, logements…), on y monte et l'on prend huit vues
+## larges : quatre de la sortie de l'ascenseur, quatre de six mètres plus loin dans la salle.
+func _pp_salles(p: Dictionary) -> int:
+	var nom: String = str(p.get("nom", "salle"))
+	var T: Node = neo_v94.tours if neo_v94 != null else null
+	if T == null:
+		return 0
+	var vus: Dictionary = {}
+	var n: int = 0
+	var max_par: int = int(p.get("par_sorte", 1))
+	for ti in range((T.get("tours") as Array).size()):
+		var t: Dictionary = (T.get("tours") as Array)[ti]
+		var ne: int = (t["etages"] as Array).size()
+		var ici: Array = []
+		for k in range(ne):
+			var ty: String = str(T.type_etage(ti, k))
+			if int(vus.get(ty, 0)) < max_par and not (ty in ici):
+				ici.append(ty)
+				vus[ty] = int(vus.get(ty, 0)) + 1
+				ici.append(k)
+		if ici.is_empty():
+			continue
+		for _w in range(40):
+			if not bool(T.get("busy")) and int(T.get("inside")) < 0:
+				break
+			await _att(0.25)
+		await T.enter(ti)
+		await _att(0.8)
+		for q in range(0, ici.size(), 2):
+			var k2: int = int(ici[q + 1])
+			if k2 > 0:
+				await T.aller(k2)
+			await _att(1.5)
+			var inf: Dictionary = T.get("info")
+			var base: Vector3 = (inf["ascenseur"] as Vector3) + Vector3.UP * 1.6
+			var reg: Vector3 = inf["regard"]
+			print("PHOTO_SALLE %s tour %d étage %d %s" % [nom, ti, k2, str(ici[q])])
+			var a: int = 0
+			for depart in [base, base + reg * 6.0]:
+				for dir in [reg, -reg, reg.cross(Vector3.UP), -reg.cross(Vector3.UP)]:
+					if await _pp_photo("%s_%s_t%d_e%d_%d" % [nom, str(ici[q]), ti, k2, a], depart, depart + (dir as Vector3) * 8.0 - Vector3.UP * 0.6):
+						n += 1
+					a += 1
+		await T.leave()
+		await _att(0.6)
+	return n
+
+
+## V186 : « foule » : les corps d'un style de la réserve des figurants, en rang, là où est le joueur.
+func _pp_foule(p: Dictionary) -> int:
+	var Gens: Script = load("res://scripts/pnj/maisons_habitants_v81.gd")
+	var Fig: Script = load("res://scripts/pnj/figurant_v81.gd")
+	var st: String = str(p["foule"])
+	var i0: int = int(p.get("de", 0))
+	var nb: int = int(p.get("combien", 8))
+	var c0: Vector3 = _player_pos_v27()
+	# un plateau nu, 300 m au-dessus du joueur : le rang entier sur un sol plat, sans décor devant ni derrière
+	var c: Vector3 = c0 + Vector3.UP * 300.0
+	var plateau := StaticBody3D.new()
+	plateau.name = "Plateau_photos"
+	add_child(plateau)
+	plateau.global_position = c - Vector3.UP * 0.1
+	var bm := BoxMesh.new()
+	bm.size = Vector3(60.0, 0.2, 60.0)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.56, 0.53, 0.48)
+	mat.roughness = 1.0
+	bm.material = mat
+	var mi := MeshInstance3D.new()
+	mi.mesh = bm
+	plateau.add_child(mi)
+	var cs := CollisionShape3D.new()
+	var bx := BoxShape3D.new()
+	bx.size = bm.size
+	cs.shape = bx
+	plateau.add_child(cs)
+	_pp_joueur(c, Vector3(0, 0, -1))
+	await _att(0.4)
+	var crees: Array = []
+	var ys: float = 0.0
+	# (« ids » : la liste des fiches à aligner, au lieu de « de » et « combien »)
+	var ids: Array = p.get("ids", [])
+	if ids.is_empty():
+		for k0 in range(nb):
+			ids.append("f81_%s_%d" % [st, i0 + k0])
+	nb = ids.size()
+	for k in range(nb):
+		var prof: Dictionary = Gens.profile(str(ids[k]))
+		if prof.is_empty():
+			prof = _pp_fiche(str(ids[k]))
+		if prof.is_empty():
+			continue
+		var at := c + Vector3((float(k) - float(nb - 1) * 0.5) * 0.72, 0.0, -4.4)
+		var f: Node = Fig.spawn(self, self, prof, at, Vector3(0, 0, 1), "debout")
+		crees.append(f.get("npc"))
+		ys += at.y
+	if crees.is_empty():
+		print("PHOTO_FOULE %s : aucun corps (%s, %d)" % [str(p.get("nom", "")), st, i0])
+		return 0
+	await _att(float(p.get("attente", 2.0)))
+	var y0: float = ys / float(crees.size())
+	var mil := Vector3(c.x, y0 + 0.95, c.z - 4.4)
+	print("PHOTO_FOULE %s %s %d %d" % [str(p.get("nom", "")), st, i0, crees.size()])
+	var ok: bool = await _pp_photo(str(p.get("nom", "foule_" + st)), mil + Vector3(0, 0.15, 4.3), mil)
+	for n in crees:
+		if is_instance_valid(n):
+			(n as Node).queue_free()
+	_pp_joueur(c0, Vector3(0, 0, -1))
+	plateau.queue_free()
+	await _att(0.3)
+	return 1 if ok else 0
+
+
+## La fiche d'un habitant nommé (cherchée dans les listes d'habitants des villes).
+func _pp_fiche(id: String) -> Dictionary:
+	for m in ["azur_habitants_v56", "carene_habitants_v59", "cliquetis_habitants_v61", "tazira_habitants_v60", "ramure_habitants_v62",
+			"teufeurs_v57", "arcanelle_habitants_v67", "pirates_habitants_v68", "soleils_habitants_v69", "braise_habitants_v70",
+			"montjoie_habitants_v71", "boucan_habitants_v75", "astralys_habitants_v76", "larsen_habitants_v92", "neo_habitants_v95",
+			"pasta_habitants_v98", "crayon_habitants_v101", "hautefond_habitants_v112", "nuees_habitants_v113", "strates_habitants_v114",
+			"fronde_habitants_v114", "dome_habitants_v115"]:
+		var s: Script = load("res://scripts/pnj/%s.gd" % m)
+		if s == null:
+			continue
+		for d in s.all_profiles():
+			if d is Dictionary and str((d as Dictionary).get("id", "")) == id:
+				var f: Dictionary = (d as Dictionary).duplicate(true)
+				if not f.has("classe"):
+					f["classe"] = "lumen"
+				return f
+	return {}
 
 
 func _pp_poser(npc: Node3D, p: Dictionary) -> void:

@@ -92,7 +92,9 @@ const GENS := {
 	"pistache_pp": {"de": ["f81_montjoie_4", "f81_carene_4"], "t": 0.5, "look": {
 		"peau": [0.98, 0.84, 0.74], "rose": 0.75, "cheveux": [0.8, 0.32, 0.1], "poils": [0.8, 0.32, 0.1], "sourcils": [0.65, 0.25, 0.08],
 		"iris": [0.3, 0.5, 0.28], "cheveux_style": "court", "barbe_style": "",
-		"tenue": [{"v": "chemise_rentree", "c": [0.86, 0.82, 0.72], "tissu": "coton"}, {"v": "bermuda", "c": [0.4, 0.3, 0.2], "tissu": "toile"},
+		# (V186 : un enfant : la chemise sortie, ample sur les hanches)
+		"tenue": [{"v": "chemise_courte", "c": [0.86, 0.82, 0.72], "tissu": "coton"}, {"v": "tunique_bas", "c": [0.86, 0.82, 0.72], "tissu": "coton"},
+			{"v": "bermuda", "c": [0.4, 0.3, 0.2], "tissu": "toile"},
 			{"v": "chaussures", "c": [0.3, 0.18, 0.1], "tissu": "cuir"}, {"v": "ch_casquette", "c": [0.42, 0.32, 0.2], "c2": [0.3, 0.22, 0.14], "motif": 2, "echelle": 0.03, "tissu": "laine"}]}},
 	# Marius Maillon, le gardien de la Chaîne : vieux marin, la barbe grise, le pull bleu, le bonnet de marin
 	"maillon_pp": {"de": ["f81_pirate_2", "f81_nain_0"], "t": 0.4, "look": {

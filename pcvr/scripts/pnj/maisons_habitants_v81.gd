@@ -376,14 +376,48 @@ static func _make(st: String, i: int) -> Dictionary:
 			var poil: Array = _c(r, [[0.62, 0.48, 0.36], [0.86, 0.42, 0.14], [0.45, 0.45, 0.5], [0.95, 0.92, 0.88], [0.42, 0.28, 0.17], [0.12, 0.12, 0.13]])
 			p["kemo"] = {"espece": str(esp[r.randi() % esp.size()]), "poil": poil, "interieur": _c(r, [[0.9, 0.84, 0.82], [0.75, 0.66, 0.55], [0.98, 0.78, 0.76]]), "queue": r.randf_range(1.0, 1.3)}
 		"tazira":
-			p["tz"] = {}
-			if not f and r.randf() < 0.4:
-				if r.randf() < 0.5:
-					p["tz"]["fez"] = true
-				else:
-					p["tz"]["turban"] = _c(r, [[0.9, 0.85, 0.75], [0.2, 0.3, 0.6], [0.85, 0.15, 0.15]])
-			elif f and r.randf() < 0.6:
-				p["tz"]["foulard_tete"] = _c(r, [[0.2, 0.55, 0.3], [0.85, 0.3, 0.1], [0.95, 0.75, 0.2], [0.9, 0.85, 0.75]])
+			# V186 : le désert : djellabas (unies ou rayées), chèches, caftans à motifs, gilets brodés, tons chauds.
+			# Avant : une chemise et un pantalon comme à Port-Azur, un turban de temps en temps.
+			var chauds: Array = [[0.93, 0.9, 0.82], [0.85, 0.72, 0.5], [0.8, 0.5, 0.22], [0.68, 0.3, 0.18], [0.16, 0.22, 0.48], [0.42, 0.45, 0.24],
+				[0.55, 0.72, 0.8], [0.5, 0.33, 0.2], [0.9, 0.72, 0.2], [0.55, 0.16, 0.22]]
+			var cheches: Array = [[0.14, 0.2, 0.5], [0.93, 0.9, 0.82], [0.8, 0.5, 0.22], [0.1, 0.1, 0.12], [0.7, 0.14, 0.12], [0.25, 0.5, 0.52]]
+			# (pour les femmes, pas d'orangé ni de brun en haut : près du corps, ils se confondent avec la peau)
+			var hauts_f: Array = [[0.93, 0.9, 0.82], [0.16, 0.22, 0.48], [0.42, 0.45, 0.24], [0.55, 0.72, 0.8], [0.9, 0.72, 0.2], [0.55, 0.16, 0.22],
+				[0.12, 0.5, 0.5], [0.15, 0.4, 0.28], [0.45, 0.25, 0.5]]
+			var tz := {"reserve": true}
+			az["haut"] = _c(r, hauts_f if f else chauds)
+			if f:
+				az["robe"] = _c(r, chauds)
+				az["robe_longue"] = true
+				if not kid:
+					if r.randf() < 0.5:
+						tz["caftan"] = true
+						az["robe"] = _c(r, hauts_f)
+					if r.randf() < 0.45:
+						tz["motif"] = [[4, 5, 3, 2][r.randi() % 4], _c(r, [[0.9, 0.72, 0.2], [0.93, 0.9, 0.82], [0.7, 0.14, 0.12], [0.14, 0.2, 0.5]])]
+					if r.randf() < 0.6:
+						tz["ceinture"] = _c(r, [[0.9, 0.72, 0.2], [0.7, 0.14, 0.12], [0.14, 0.2, 0.5], [0.25, 0.5, 0.52]])
+					if r.randf() < 0.25:
+						tz["chale"] = _c(r, chauds)
+					if r.randf() < 0.65:
+						tz["foulard_tete"] = _c(r, cheches + [[0.2, 0.55, 0.3], [0.95, 0.75, 0.2], [0.85, 0.3, 0.1]])
+			elif not kid:
+				if r.randf() < 0.55:
+					az["robe"] = _c(r, chauds)
+					if r.randf() < 0.4:
+						tz["rayures"] = _c(r, [[0.93, 0.9, 0.82], [0.5, 0.33, 0.2], [0.14, 0.2, 0.5], [0.1, 0.1, 0.12]])
+				elif r.randf() < 0.6:
+					tz["gilet"] = _c(r, [[0.55, 0.16, 0.22], [0.14, 0.2, 0.5], [0.2, 0.36, 0.24], [0.1, 0.1, 0.12]])
+					tz["ceinture"] = _c(r, [[0.7, 0.14, 0.12], [0.9, 0.72, 0.2], [0.93, 0.9, 0.82]])
+				var ch: float = r.randf()
+				if ch < 0.5:
+					tz["turban"] = _c(r, cheches)
+				elif ch < 0.62:
+					tz["fez"] = true
+			else:
+				if r.randf() < 0.3:
+					tz["fez"] = true
+			p["tz"] = tz
 		"cliquetis":
 			p["cq"] = {}
 			if r.randf() < 0.4 and not kid:
@@ -407,9 +441,26 @@ static func _make(st: String, i: int) -> Dictionary:
 			if not kid and r.randf() < 0.3:
 				p["tz"]["boucle"] = true
 		"egypte":
-			p["sol"] = {"tenue": "enfant" if kid else ["peuple", "peuple", "scribe"][r.randi() % 3]}
-			if f and not kid and r.randf() < 0.5:
-				p["sol"]["usekh"] = _c(r, [[0.2, 0.35, 0.6], [0.85, 0.65, 0.2]])
+			# V186 : Per-Hâpy : la coupe et la couleur du lin se décident dans le générateur des corps (« reserve ») ;
+			# ici les parures : le grand collier pour deux adultes sur trois, hommes compris (avant : une femme sur
+			# deux), la coiffe de lin rayée, les perruques noires au carré, les crânes rasés.
+			p["sol"] = {"tenue": "enfant" if kid else ["peuple", "peuple", "scribe"][r.randi() % 3], "reserve": true}
+			if not kid and r.randf() < 0.66:
+				p["sol"]["usekh"] = _c(r, [[0.2, 0.35, 0.6], [0.85, 0.65, 0.2], [0.15, 0.6, 0.62], [0.75, 0.2, 0.15], [0.2, 0.5, 0.42]])
+			if not kid and r.randf() < (0.3 if f else 0.4):
+				p["sol"]["coiffe"] = [[[0.93, 0.9, 0.8], [0.2, 0.35, 0.6]], [[0.9, 0.72, 0.25], [0.2, 0.35, 0.6]], [[0.93, 0.9, 0.8], [0.75, 0.2, 0.15]], [[0.95, 0.94, 0.9], [0.9, 0.72, 0.25]]][r.randi() % 4]
+			if not old:
+				az["cheveux"] = _c(r, [[0.05, 0.04, 0.04], [0.08, 0.06, 0.05], [0.1, 0.08, 0.06]])
+			if f:
+				az["coiffure"] = ["carre", "carre", "long", "tresse", "queue"][r.randi() % 5]
+			elif not kid:
+				az["coiffure"] = ["chauve", "chauve", "court", "court", "carre"][r.randi() % 5]
+				# (pas de longue barbe à Per-Hâpy : rasé, ou une barbe courte de temps en temps)
+				if az.has("barbe"):
+					if r.randf() < 0.75:
+						az.erase("barbe")
+					else:
+						az["barbe"] = "courte"
 		"maya":
 			p["sol"] = {"tenue": "enfant" if kid else ["peuple", "chasseur", "peuple"][r.randi() % 3]}
 			if not kid and r.randf() < 0.4:
@@ -480,7 +531,15 @@ static func _make(st: String, i: int) -> Dictionary:
 				pa["chapeau"] = ["paille", "foulard", "beret"][r.randi() % 3] if f else ["paille", "beret", "bandana"][r.randi() % 3]
 			p["pasta"] = pa
 		"azteque":
-			p["sol"] = {"tenue": "enfant" if kid else "peuple"}
+			# V186 : Aztlán : les tissages de couleur se décident dans le générateur des corps (« reserve ») ; ici
+			# les parures : les coiffes de plumes (avant : aucune), le jade aux oreilles.
+			p["sol"] = {"tenue": "enfant" if kid else "peuple", "reserve": true}
 			if r.randf() < 0.5:
 				p["sol"]["jade"] = true
+			if not kid and r.randf() < 0.45:
+				p["sol"]["plumes"] = _c(r, [[0.1, 0.5, 0.3], [0.75, 0.15, 0.08], [0.1, 0.55, 0.6], [0.9, 0.7, 0.15], [0.94, 0.92, 0.86]])
+			if f:
+				az["coiffure"] = ["tresse", "tresse", "long", "chignon", "queue"][r.randi() % 5]
+			elif az.has("barbe") and not old:
+				az.erase("barbe")
 	return p

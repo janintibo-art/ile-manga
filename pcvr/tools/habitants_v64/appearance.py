@@ -325,6 +325,15 @@ def decide(pid, p):
         lumen_decide(D, p)
     if p.get('village') == 'neo':
         neo_decide(D, p)
+    if D['child']:
+        # V186 : un corps d'enfant : ni poitrine ni hanches de femme (avant : le corps d'une fille était tiré
+        # du corps de femme, en plus petit). Garçons et filles ont presque la même silhouette ; et pas de part
+        # de « bébé » dans les formes (les trois plus petits : Gland, Myrtille, Théo).
+        mm = D['morph']
+        mm['gender'] = 0.5 + (mm['gender'] - 0.5) * 0.15
+        mm['breastsize'] = 0.0
+        mm['breastfirmness'] = 0.5
+        mm['age'] = max(0.19, mm['age'])
     return D
 
 
@@ -600,6 +609,43 @@ def darker(c, k=0.6):
 
 
 def outfit(D, p):
+    """la tenue d'un habitant ; V186 : un enfant est toujours couvert, dans une tenue ample (tenue_enfant)"""
+    T = tenue_brute(D, p)
+    return tenue_enfant(T) if D['child'] else T
+
+
+def tenue_enfant(T):
+    """V186 : aucun enfant en tenue près du corps ni torse nu. Les hauts sans manches ou décolletés deviennent
+    un tee-shirt, le corsage ajusté une tunique ; sans haut, on en met un ; le collant et le short deviennent un pantalon et un bermuda ; et
+    s'il n'y a ni jupe ni tunique, le haut se prolonge en tunique ample sur les hanches (tunique_bas)."""
+    hauts = SLOTS[0][1]
+    amples = ('jupe', 'jupe_longue', 'tunique_bas', 'djellaba_bas', 'blouse_bas')
+    for g in T:
+        if g['v'] in ('corsage_nu', 'debardeur', 'corsage'):
+            g['v'] = 'tshirt'
+        elif g['v'] == 'corsage_long':
+            g['v'] = 'tunique_haut'
+        elif g['v'] == 'short':
+            g['v'] = 'bermuda'
+    jupe = any(g['v'] in ('jupe', 'jupe_longue', 'djellaba_bas') for g in T)
+    for g in T:
+        if g['v'] == 'collant' and not jupe:
+            g['v'] = 'pantalon'
+    haut = next((g for g in T if g['v'] in hauts), None)
+    if haut is None:
+        bas = next((g for g in T if g['v'] in amples), None)
+        c = [0.93, 0.91, 0.85] if bas is None or lum(bas['c']) < 0.75 else [min(1.0, x * 0.9) for x in bas['c']]
+        haut = {'v': 'tshirt', 'c': col(c), 'tissu': 'coton' if bas is None else bas.get('tissu', 'coton')}
+        T.insert(0, haut)
+    if not any(g['v'] in amples for g in T):
+        g = dict(haut)
+        g['v'] = 'tunique_bas'
+        g.pop('boutons', None)
+        T.insert(T.index(haut) + 1, g)
+    return T
+
+
+def tenue_brute(D, p):
     r = rng_for(D['id'], 'tenue')
     az = p.get('azur', {})
     el = p.get('elfe', {})
@@ -1383,6 +1429,9 @@ def outfit(D, p):
         tenue = str(sol.get('tenue', 'peuple'))
         lin = [0.95, 0.93, 0.86]
         sandales = [0.62, 0.48, 0.3]
+        if sol.get('reserve') and vil in ('egypte', 'azteque'):
+            # V186 : les figurants de la réserve (maisons_habitants_v81.gd) : chacun sa coupe et ses couleurs
+            return soleils_reserve(D, sol, vil, add, r, T)
         if vil == 'egypte':
             if female or (child and female):
                 add('corsage_long', lin, 'lin')
@@ -1507,8 +1556,10 @@ def outfit(D, p):
     robe = az.get('robe')
     is_djellaba = (vil == 'tazira' and robe is not None and not female)
     if is_djellaba:
-        add('djellaba_haut', robe, 'laine' if old else 'lin')
-        add('djellaba_bas', robe, 'laine' if old else 'lin')
+        # V186 : les djellabas rayées des figurants (tz « rayures » : la couleur des raies)
+        ray = {'motif': 3, 'c2': col(tz['rayures']), 'echelle': 0.05} if isinstance(tz.get('rayures'), list) else {}
+        add('djellaba_haut', robe, 'laine' if old else 'lin', **ray)
+        add('djellaba_bas', robe, 'laine' if old else 'lin', **ray)
         add('pantalon', trous, 'lin')
         add('chaussures', [0.85, 0.65, 0.25] if r.random() < 0.5 else [0.6, 0.15, 0.1], 'cuir')
     elif female and robe is not None:
@@ -1516,9 +1567,15 @@ def outfit(D, p):
         top = 'corsage_long' if (long_dress or old or vil in ('carene', 'cliquetis')) else ('corsage' if (r.random() < 0.65 or 'capitaine' in titre) else 'corsage_nu')
         if vil == 'teuf':
             top = 'debardeur'
-        add(top, haut, 'coton', **motif)
-        add('jupe_longue' if long_dress else 'jupe', robe, 'coton' if not long_dress else 'lin')
-        add('chaussures', shoe, 'cuir')
+        # V186 : Tazira, les figurants : la robe à motifs (tz « motif » : [n°, couleur]), la ceinture, le châle
+        rm = {'motif': int(tz['motif'][0]), 'c2': col(tz['motif'][1]), 'echelle': 0.05} if vil == 'tazira' and isinstance(tz.get('motif'), list) else {}
+        add(top, haut if not (vil == 'tazira' and tz.get('caftan')) else robe, 'coton', **(rm if tz.get('caftan') else motif))
+        add('jupe_longue' if long_dress else 'jupe', robe, 'coton' if not long_dress else 'lin', **rm)
+        if vil == 'tazira' and isinstance(tz.get('ceinture'), list):
+            add('ceinture_ample', tz['ceinture'], 'soie')
+        if vil == 'tazira' and isinstance(tz.get('chale'), list):
+            add('chale', tz['chale'], 'laine')
+        add('chaussures', shoe if vil != 'tazira' or not tz.get('reserve') else [[0.85, 0.65, 0.25], [0.6, 0.15, 0.1], [0.45, 0.3, 0.18]][int(r.integers(3))], 'cuir')
     else:
         # haut
         if vil == 'teuf' or any(w in titre for w in ('maître-nageur', 'docker')):
@@ -1540,6 +1597,10 @@ def outfit(D, p):
         if p.get('pirate'):
             add('gilet', [0.25, 0.16, 0.1], 'cuir')
             add('ceinture_ample', [0.6, 0.12, 0.1], 'laine')
+        # V186 : Tazira, les figurants sans djellaba : le gilet brodé sur la chemise, la large ceinture de laine
+        if vil == 'tazira' and isinstance(tz.get('gilet'), list) and not female:
+            add('gilet', tz['gilet'], 'laine', motif=4, c2=[0.85, 0.65, 0.25], echelle=0.03)
+            add('ceinture_ample', tz.get('ceinture', [0.6, 0.12, 0.1]), 'laine')
         # bas
         if female and not (vil in ('teuf',) and r.random() < 0.5):
             if r.random() < 0.55 and vil not in ('cliquetis',):
@@ -1576,6 +1637,140 @@ def outfit(D, p):
     if not any(g['v'] in ('ceinture_ample',) for g in T) and any(g['v'] == 'pantalon' for g in T) and not female and r.random() < 0.5 \
             and not any(g['v'] in ('chemise_courte', 'chemise_longue', 'pull', 'veste', 'tshirt', 'debardeur') for g in T[:1]):
         add('ceinture_ample', [0.25, 0.16, 0.1], 'cuir')
+    return T
+
+
+# V186 : les lins de Per-Hâpy (du blanc au sable, quelques teintes), les ceintures, les couleurs vives d'Aztlán
+LINS_186 = [[0.95, 0.93, 0.86], [0.95, 0.93, 0.86], [0.92, 0.88, 0.76], [0.86, 0.78, 0.62], [0.74, 0.83, 0.86], [0.62, 0.74, 0.84], [0.72, 0.83, 0.73]]
+CEINTURES_186 = [[0.75, 0.2, 0.15], [0.2, 0.38, 0.62], [0.85, 0.65, 0.2], [0.2, 0.5, 0.42], [0.15, 0.6, 0.62], [0.12, 0.12, 0.14]]
+VIVES_186 = [[0.75, 0.14, 0.12], [0.1, 0.55, 0.58], [0.9, 0.7, 0.15], [0.2, 0.5, 0.25], [0.16, 0.22, 0.5], [0.85, 0.42, 0.12], [0.94, 0.92, 0.86], [0.3, 0.16, 0.1]]
+
+
+def soleils_reserve(D, sol, vil, add, r, T):
+    """V186 : les tenues des figurants de Per-Hâpy (Égyptiens) et d'Aztlán (Aztèques). Avant : la même robe de
+    lin blanc pour toutes les Égyptiennes, la même jupe blanche pour tous les Aztèques."""
+    female, child, old = D['female'], D['child'], D['old']
+    pick = lambda L: col(L[int(r.integers(len(L)))])
+    sandales = [[0.62, 0.48, 0.3], [0.45, 0.32, 0.2], [0.75, 0.6, 0.35]][int(r.integers(3))]
+    if vil == 'egypte':
+        lin = pick(LINS_186)
+        cein = pick(CEINTURES_186)
+        # le lin plissé : de fines raies ton sur ton, dans le sens de la hauteur
+        plis = {'motif': 3, 'c2': darker(lin, 0.86), 'echelle': 0.016} if r.random() < 0.45 else {}
+        if child:
+            # (les enfants : une tunique à manches et une jupe, jamais torse nu ; voir tenue_enfant)
+            add('tunique_haut', [0.95, 0.93, 0.86] if lin[2] <= lin[0] - 0.12 else lin, 'lin')
+            add('jupe' if not female or r.random() < 0.5 else 'jupe_longue', lin, 'lin', **plis)
+            add('ceinture_ample', cein, 'lin')
+        elif female:
+            coupe = ['fourreau', 'bretelles', 'manches', 'courte', 'plissee', 'deux_tons'][int(r.integers(6))]
+            # un haut couleur de sable, près du corps, se confond avec la peau : le haut reste clair ou bleuté
+            linh = lin if lin[2] > lin[0] - 0.12 else [0.95, 0.93, 0.86]
+            if old and coupe in ('fourreau', 'courte'):
+                coupe = 'manches'
+            if coupe == 'fourreau':
+                add('corsage_nu', linh, 'lin')
+                add('jupe_longue', lin, 'lin', **plis)
+            elif coupe == 'bretelles':
+                add('debardeur', linh, 'lin')
+                add('jupe_longue', lin, 'lin', **plis)
+            elif coupe == 'manches':
+                add('corsage_long', linh, 'lin')
+                add('jupe_longue', lin, 'lin', **plis)
+            elif coupe == 'courte':
+                add('corsage', linh, 'lin')
+                add('jupe', lin, 'lin', **plis)
+            elif coupe == 'plissee':
+                add('corsage_long', linh, 'lin', motif=3, c2=darker(linh, 0.86), echelle=0.016)
+                add('jupe_longue', lin, 'lin', motif=3, c2=darker(lin, 0.86), echelle=0.016)
+                add('chale', mix(lin, [1.0, 1.0, 1.0], 0.4), 'soie')
+            else:
+                add('corsage', pick(CEINTURES_186[:5]), 'lin')
+                add('jupe_longue', lin, 'lin', **plis)
+            add('ceinture_ample', cein, 'soie')
+            if coupe not in ('plissee',) and r.random() < 0.18:
+                add('chale', pick([[0.95, 0.94, 0.9], [0.85, 0.65, 0.2], [0.2, 0.38, 0.62], [0.75, 0.2, 0.15]]), 'soie')
+        else:
+            coupe = ['pagne', 'pagne', 'pagne_long', 'tunique', 'robe', 'bretelles'][int(r.integers(6))]
+            if old and coupe == 'pagne':
+                coupe = 'robe'
+            if coupe == 'pagne':
+                add('jupe', lin, 'lin', **plis)
+            elif coupe == 'pagne_long':
+                add('jupe_longue', lin, 'lin', **plis)
+            elif coupe == 'tunique':
+                add('tunique_haut', lin, 'lin')
+                add('jupe', lin, 'lin', **plis)
+            elif coupe == 'robe':
+                add('tunique_haut', lin, 'lin')
+                add('jupe_longue', lin, 'lin', **plis)
+                if r.random() < 0.4:
+                    add('cape', mix(lin, [1.0, 1.0, 1.0], 0.3), 'lin')
+            else:
+                add('debardeur', lin, 'lin')
+                add('jupe', pick(LINS_186[:4]), 'lin', **plis)
+            add('ceinture_ample', cein, 'lin')
+        add('chaussures', sandales, 'cuir')
+        return T
+    # ------------------------------------------------------------------ Aztlán
+    vive = pick(VIVES_186)
+    vive2 = pick(VIVES_186)
+    blanc = [0.94, 0.92, 0.86]
+    tissage = lambda c: {'motif': 5, 'c2': c, 'echelle': 0.04 + 0.02 * float(r.random())}
+    if child:
+        if female:
+            add('tunique_haut', vive, 'coton', **tissage(vive2))
+            add('jupe', pick([blanc, vive2]), 'coton')
+        else:
+            add('tunique_haut', blanc, 'coton', **tissage(vive))
+            add('jupe', pick([blanc, vive]), 'coton')
+            add('ceinture_ample', vive2, 'coton')
+    elif female:
+        coupe = ['huipil', 'huipil', 'jupe_vive', 'jupe_tissee', 'quechquemitl', 'unie'][int(r.integers(6))]
+        if coupe == 'huipil':
+            add('tunique_haut', blanc, 'coton', **tissage(vive))
+            add('jupe_longue', vive2 if lum(vive2) < 0.8 else vive, 'coton')
+        elif coupe == 'jupe_vive':
+            add('tunique_haut', vive, 'coton', **tissage(blanc))
+            add('jupe' if not old and r.random() < 0.5 else 'jupe_longue', vive2, 'coton')
+        elif coupe == 'jupe_tissee':
+            add('corsage', vive, 'coton')
+            add('jupe_longue', vive2, 'coton', **tissage(blanc if lum(vive2) < 0.6 else [0.3, 0.16, 0.1]))
+        elif coupe == 'quechquemitl':
+            add('corsage_long', blanc, 'coton')
+            add('jupe_longue', vive2, 'coton')
+            add('chale', vive, 'coton', **tissage(blanc if lum(vive) < 0.6 else [0.75, 0.14, 0.12]))
+        else:
+            # (une robe d'une seule couleur, tissée de bandes de losanges ; avant : de larges raies, trop souvent)
+            add('tunique_haut', vive, 'coton')
+            add('jupe_longue', vive, 'coton', **tissage(blanc if lum(vive) < 0.6 else [0.3, 0.16, 0.1]))
+        add('ceinture_ample', pick(VIVES_186[:6]), 'coton')
+    else:
+        coupe = ['tilma', 'tilma', 'pagne', 'tunique', 'marchand', 'guerrier'][int(r.integers(6))]
+        if old and coupe in ('pagne', 'guerrier'):
+            coupe = 'marchand'
+        raies = lambda c: blanc if lum(c) < 0.6 else [0.3, 0.16, 0.1]
+        if coupe == 'tilma':
+            if r.random() < 0.5:
+                add('debardeur', blanc, 'coton')
+            add('jupe', blanc if r.random() < 0.4 else vive2, 'coton')
+            add('cape', vive, 'coton', **tissage(vive2 if vive2 != vive else blanc))
+        elif coupe == 'pagne':
+            add('jupe', pick([blanc, vive2]), 'coton')
+            add('cape', vive, 'coton')
+        elif coupe == 'tunique':
+            add('tunique_haut', vive, 'coton', **tissage(blanc if lum(vive) < 0.6 else [0.3, 0.16, 0.1]))
+            add('jupe', pick([blanc, vive2]), 'coton')
+        elif coupe == 'marchand':
+            add('tunique_haut', vive, 'coton')
+            add('jupe_longue', vive, 'coton', motif=1, c2=raies(vive), echelle=0.12)
+            add('cape', vive2, 'coton')
+        else:
+            add('collant', [0.85, 0.65, 0.2], 'coton', motif=4, c2=[0.15, 0.1, 0.06], echelle=0.05)
+            add('debardeur', [0.85, 0.65, 0.2], 'coton', motif=4, c2=[0.15, 0.1, 0.06], echelle=0.05)
+            add('cape', vive, 'coton')
+        add('ceinture_ample', pick(VIVES_186[:6]), 'coton' if coupe != 'guerrier' else 'cuir')
+    add('chaussures', sandales, 'cuir')
     return T
 
 
@@ -1658,6 +1853,10 @@ def hats_for(D, p):
         if key in tz:
             c = tz[key] if isinstance(tz[key], list) else dflt
             out.append({'v': v, 'c': col(c), 'tissu': tissu})
+    # V186 : la coiffe de lin rayée de Per-Hâpy (fiche « sol », « coiffe » : [fond, raies])
+    so = p.get('sol', {})
+    if isinstance(so, dict) and isinstance(so.get('coiffe'), list):
+        out.append({'v': 'ch_foulard_tete', 'c': col(so['coiffe'][0]), 'tissu': 'lin', 'motif': 1, 'c2': col(so['coiffe'][1]), 'echelle': 0.022})
     if 'haut_de_forme' in cq:
         out.append({'v': 'ch_haut_de_forme', 'c': col(cq['haut_de_forme']), 'tissu': 'laine'})
     if 'casque_aviateur' in cq:
