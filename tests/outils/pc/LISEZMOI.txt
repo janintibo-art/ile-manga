@@ -7,4 +7,9 @@ Cette copie garde ses sauvegardes a part (AppData\Roaming\IleManga_controle) : l
 1_deballer.bat : deballe la copie du jeu (paquets -> jeu).
 2_preparer.bat : Godot prepare le jeu une premiere fois (import des images et des modeles).
 3_photos.bat   : Godot lance le jeu, passe aux endroits de photos_liste.json et range les photos dans photos.
+4_corps_preparer.bat : prepare la fabrication des corps des habitants, dans le dossier corps :
+                       un Python a part (corps\venv, avec numpy, scipy et Pillow ; le Python du PC
+                       n'est pas touche) et les donnees de MakeHuman et de MPFB2 (licence CC0, corps\mh).
+5_corps.bat          : fabrique les corps (corps\www\assets\models\pnj64) et les range dans
+                       journaux\corps_resultat.zip.
 journaux       : ce que chaque etape a ecrit.

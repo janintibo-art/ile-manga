@@ -146,8 +146,8 @@ def apply_targets(V0, tlist):
 
 # ------------------------------------------------------------------ rig mixamo (MPFB2, CC0)
 
-RIG = json.load(open(MPFB + '/rigs/standard/rig.mixamo.json'))['bones']
-WEIGHTS = json.load(open(MPFB + '/rigs/standard/weights.mixamo.json'))['weights']
+RIG = json.load(open(MPFB + '/rigs/standard/rig.mixamo.json', encoding='utf-8'))['bones']
+WEIGHTS = json.load(open(MPFB + '/rigs/standard/weights.mixamo.json', encoding='utf-8'))['weights']
 
 
 def joint_pos(base, V, spec):

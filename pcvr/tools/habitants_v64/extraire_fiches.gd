@@ -44,6 +44,17 @@ func _initialize() -> void:
 	var mh = load("res://scripts/pnj/maisons_habitants_v81.gd")
 	for d81 in mh.all_profiles():
 		_add(out, str(d81.get("village", "azur")), d81)
+	# V183 : l'île de Hautefond (la ville, la Cité des Nuées, les Strates, la Fronde, le Dôme d'Azur) : ses
+	# 58 habitants n'avaient pas de corps (ils gardaient celui du héros). Le style de leur tenue : celui de
+	# Néopolis pour les Nuées et le Dôme (fiche « neo »), celui du Boucan pour la Fronde (fiche « punk »).
+	var hf := {"hautefond_habitants_v112": "hautefond", "nuees_habitants_v113": "neo", "strates_habitants_v114": "strates",
+		"fronde_habitants_v114": "boucan", "dome_habitants_v115": "neo"}
+	for k3 in hf:
+		var m3 = load("res://scripts/pnj/%s.gd" % k3)
+		for d3 in m3.all_profiles():
+			var d4: Dictionary = (d3 as Dictionary).duplicate()
+			d4["village"] = str(hf[k3])          # (la fiche dit sa ville : on la remplace par le style)
+			_add(out, str(hf[k3]), d4)
 	for k2 in ["barnabe_v31", "octave_v33", "lyra_v41"]:
 		var m2 = load("res://scripts/pnj/%s.gd" % k2)
 		_add(out, k2.get_slice("_", 0), m2.DATA)

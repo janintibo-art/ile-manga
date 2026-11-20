@@ -9,6 +9,8 @@ const HeroLib = preload("res://scripts/hero_v28.gd")
 const PnjLumen = preload("res://scripts/pnj/pnj_lumen_v76.gd")
 const PnjPirate = preload("res://scripts/pnj/pnj_pirate_v68.gd")
 const PnjRamure = preload("res://scripts/pnj/pnj_ramure_v62.gd")
+## V183 : les bancs de Hautefond (où s'asseoir : on y pose le bassin, voir _assise)
+const Bancs183 = preload("res://scripts/pnj/bancs_v183.gd")
 
 var main: Node
 var npc: Node3D
@@ -98,6 +100,15 @@ func set_pose(p: String, face: Vector3 = Vector3.ZERO) -> void:
 	_apply_anim(true)
 	if pose in ASSISE_V178:
 		_assise_t = 0.5
+		# V183 : sur un banc de Hautefond : au milieu de l'assise, face au devant du banc (le passant y était
+		# posé à la hauteur de l'assise, sur le bord de devant)
+		if Bancs183.nombre() > 0 and not _lying:
+			var bc: Dictionary = Bancs183.sous(npc.global_position)
+			if not bc.is_empty():
+				npc.global_position = Vector3(bc["pos"].x, npc.global_position.y, bc["pos"].z)
+				var av: Vector3 = bc["avant"]
+				npc.rotation.y = atan2(av.x, av.z)
+				face_dir = av
 	elif _releve != 0.0:
 		_relever(0.0)
 
@@ -125,6 +136,13 @@ func _assise() -> void:
 		return
 	var s: float = (mdl as Node3D).global_transform.basis.get_scale().x
 	var h: float = (sk.global_transform * sk.get_bone_global_pose(sk.find_bone("Hips")).origin).y - npc.global_position.y - _releve
+	# V183 : sur un banc de Hautefond (bancs_v183.gd) : le bassin 10 cm au-dessus de l'assise (la racine du
+	# passant est au sol du banc, ou à la hauteur de l'assise : on monte ou l'on descend le corps d'autant)
+	if Bancs183.nombre() > 0:
+		var bc: Dictionary = Bancs183.sous(npc.global_position)
+		if not bc.is_empty():
+			_relever(clampf(float(bc["y"]) + 0.1 * s - (npc.global_position.y + h), -1.0, 0.6))
+			return
 	_relever(clampf(0.37 + 0.09 * s - h, 0.0, 0.3))
 
 

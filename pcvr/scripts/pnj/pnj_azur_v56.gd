@@ -33,6 +33,7 @@ var _flane_wait: float = 0.0
 var _regard: Node3D                    # le voisin qu'il salue
 var _regard_t: float = 0.0
 const Assises181 = preload("res://scripts/pnj/assises_v181.gd")
+const Bancs183 = preload("res://scripts/pnj/bancs_v183.gd")
 const GESTES_V102 := {"etirer": 3.2, "gratter_tete": 2.6, "visiere": 3.6, "regarder": 4.0, "mains_dos": 4.5, "baille": 2.8}
 
 
@@ -630,12 +631,34 @@ func _arrive() -> void:
 	if f.length() > 0.01:
 		rotation.y = atan2(f.x, f.z)
 	# V181 : assis, sur un vrai siège (le banc d'à côté, le bord du quai, ou un tabouret qu'on pose) :
-	# beaucoup de lieux faisaient s'asseoir dans le vide (assises_v181.gd, d'après l'audit des lieux)
-	if pose in ["assis", "guitare", "lire"] and Assises181.corriger(self, azur, target_spot):
+	# beaucoup de lieux faisaient s'asseoir dans le vide (assises_v181.gd, d'après l'audit des lieux).
+	# V183 : sur un banc de Hautefond (bancs_v183.gd), d'abord : l'audit ne les voyait pas.
+	if pose in ["assis", "guitare", "lire"] and (_banc_v183() or Assises181.corriger(self, azur, target_spot)):
 		_body.global_transform = Transform3D(Basis(Vector3.UP, rotation.y), global_position)
 	_gest = _rng2.randf_range(4.0, 12.0)
 	current_anim = ""
 
+
+
+## V183 : assis sur un banc de Hautefond (bancs_v183.gd) : au milieu de l'assise, face au devant du banc,
+## le bassin 10 cm au-dessus (la hauteur de son bassin dans la pose assise : celle de son corps).
+func _banc_v183() -> bool:
+	if Bancs183.nombre() == 0:
+		return false
+	var bc: Dictionary = Bancs183.sous(global_position)
+	if bc.is_empty():
+		return false
+	var av: Vector3 = bc["avant"]
+	rotation.y = atan2(av.x, av.z)
+	global_position = bc["pos"]
+	var h: float = Bancs183.bassin(self, {"lire": "v56/lire", "guitare": "v56/guitare"}.get(pose, "v28/sit"))
+	if is_nan(h):
+		h = Bancs183.bassin(self, "v28/sit")
+	if is_nan(h):
+		h = 0.46
+	var s: float = model.global_transform.basis.get_scale().y if model != null else 1.0
+	global_position.y = float(bc["y"]) + 0.1 * s - h
+	return true
 
 
 ## V75 : le « face » d'un lieu est un point à regarder (Port-Azur) ou une direction (les îles d'après,

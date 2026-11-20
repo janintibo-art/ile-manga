@@ -4,7 +4,7 @@ import numpy as np, json
 from mh import RIG, WEIGHTS, mixamo_joints
 
 from chemins import cache
-HERO = json.load(open(cache('hero_skel.json')))
+HERO = json.load(open(cache('hero_skel.json'), encoding='utf-8'))
 HB = [b['name'] for b in HERO['bones']]
 HPARENT = [b['parent'] for b in HERO['bones']]
 

@@ -252,10 +252,18 @@ def etape_corps(only=None):
     hr, href = head_refs(b)
     tr, tref = torso_refs(b)
     write_base(topo, W, Vw0, OUT + '/base.bin', refs={'head_ids': hr, 'head_ref': [float(x) for x in href], 'torso_ids': tr, 'torso_ref': [float(x) for x in tref]})
-    prof = json.load(open(cache('pnj.json')))
+    prof = json.load(open(cache('pnj.json'), encoding='utf-8'))
+    # (V183 : un nom demandé qui n'a pas de fiche, on le dit au lieu de l'oublier)
+    for pid in (only or []):
+        if pid not in prof:
+            print('  PAS_DE_FICHE', pid, flush=True)
+    t0 = time.time()
+    k = 0
     for pid, p in prof.items():
         if only and pid not in only:
             continue
+        k += 1
+        print('  %s (%d/%d, %.0f s)' % (pid, k, len(only) if only else len(prof), time.time() - t0), flush=True)
         D = decide(pid, p)
         Vw, HJ, s = make_body(base, topo, W, macro_targets(D['morph']) + modifier_targets(D['mods']))
         hgt = Vw[:topo.nb, 1].max()

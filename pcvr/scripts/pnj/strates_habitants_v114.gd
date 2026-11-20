@@ -141,6 +141,7 @@ static func all_profiles() -> Array:
 	return out
 
 
+## V183 : « femme » : pour le générateur des corps (pcvr/tools/habitants_v64), qui ne le devine pas.
 static func _all() -> Array:
 	return [
 		# ================================================================ la Gare des Strates
@@ -191,7 +192,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de toi ? Bien sûr ! Je ne retiens pas les voix, {surnom}, je retiens les visages. Et le tien a souri quand la porte s'est ouverte sur la caverne. Ça, je l'ai vu.", {})],
 			}},
 		# ================================================================ la Grande Forge des Strates
-		{"id": "brunehaut_st", "nom": "Maîtresse Brunehaut Enclume", "titre": "cheffe de la Grande Forge des Strates", "maison": "porte_brunehaut", "village": "strates",
+		{"id": "brunehaut_st", "femme": true, "nom": "Maîtresse Brunehaut Enclume", "titre": "cheffe de la Grande Forge des Strates", "maison": "porte_brunehaut", "village": "strates",
 			"agenda": [[6, 12, "st_forge_enclume"], [12, 13, "st_marmite_table_2"], [13, 18, "st_forge_four"], [18, 20, "st_forge_comptoir"], [20, 22, "st_place_banc_2"], [22, 6, "maison"]],
 			"azur": {"cheveux": NOIR, "coiffure": "tresse", "yeux": Y_BRUN, "haut": [0.5, 0.32, 0.22], "tablier": CUIR, "taille": 1.12, "carrure": 1.5},
 			"teinte": PEAU[4],
@@ -328,7 +329,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de vous ? Je me souviens de tous ceux qui sont entrés dans ma mine, {surnom}. Et de tous ceux qui en sont ressortis. C'est-à-dire tout le monde. C'est ça, mon métier.", {})],
 			}},
 		# ================================================================ l'Atelier des Lumières
-		{"id": "opaline", "nom": "Docteure Opaline Quartz", "titre": "cristallière de l'Atelier des Lumières", "maison": "porte_opaline", "village": "strates", "vouvoie": true,
+		{"id": "opaline", "femme": true, "nom": "Docteure Opaline Quartz", "titre": "cristallière de l'Atelier des Lumières", "maison": "porte_opaline", "village": "strates", "vouvoie": true,
 			"agenda": [[7, 8, "st_mine_entree"], [8, 13, "st_lumieres_etabli"], [13, 14, "st_marmite_table_1"], [14, 18, "st_lumieres_etabli"], [18, 20, "st_lumieres_comptoir"], [20, 22, "st_jardin_bassin"], [22, 7, "maison"]],
 			"azur": {"cheveux": BLOND_PALE, "coiffure": "chignon", "yeux": Y_VIOLET, "haut": [0.3, 0.36, 0.56], "robe": [0.22, 0.26, 0.42], "robe_longue": true, "tablier": [0.78, 0.75, 0.68], "lunettes": true, "taille": 0.98, "carrure": 0.9},
 			"teinte": PEAU[0],
@@ -373,7 +374,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de vous ? Oh oui. Je me souviens de tout ce qui brille. Vous aviez les yeux qui brillaient, la première fois, devant les lanternes. Je l'ai noté. Quelque part. Sur un cristal, peut-être.", {})],
 			}},
 		# ================================================================ les Jardins des Champignons
-		{"id": "bertille", "nom": "Bertille Champignac", "titre": "jardinière des Jardins des Champignons", "maison": "porte_bertille", "village": "strates",
+		{"id": "bertille", "femme": true, "nom": "Bertille Champignac", "titre": "jardinière des Jardins des Champignons", "maison": "porte_bertille", "village": "strates",
 			"agenda": [[6, 9, "st_jardin_bassin"], [9, 13, "st_jardin_1"], [13, 14, "st_marmite_table_2"], [14, 18, "st_jardin_2"], [18, 20, "st_jardin_3"], [20, 22, "st_jardin_banc"], [22, 6, "maison"]],
 			"azur": {"cheveux": CHATAIN, "coiffure": "boucles", "yeux": Y_VERT, "chapeau": "capeline", "haut": [0.45, 0.55, 0.4], "robe": [0.35, 0.3, 0.25], "tablier": [0.42, 0.32, 0.2], "taille": 0.96, "carrure": 1.05},
 			"teinte": PEAU[2],
@@ -421,7 +422,7 @@ static func _all() -> Array:
 				"boutique": [L("Des champignons bruns pour la soupe, et des graines pour ton jardin d'en haut. Les lumineux, eux, ne se vendent pas : ils se regardent. Tu as {pieces} pièces.", {})],
 			}},
 		# ================================================================ la Place des Rouages
-		{"id": "honorine_st", "nom": "Honorine Lanterne", "titre": "cantinière de La Marmite", "maison": "porte_honorine", "village": "strates",
+		{"id": "honorine_st", "femme": true, "nom": "Honorine Lanterne", "titre": "cantinière de La Marmite", "maison": "porte_honorine", "village": "strates",
 			"agenda": [[5, 7, "st_marmite_cuisine"], [7, 14, "st_marmite_comptoir"], [14, 16, "st_marmite_cuisine"], [16, 22, "st_marmite_comptoir"], [22, 5, "maison"]],
 			"azur": {"cheveux": BRUN, "coiffure": "chignon", "yeux": Y_BRUN, "haut": [0.7, 0.32, 0.24], "robe": [0.5, 0.25, 0.2], "tablier": [0.95, 0.92, 0.85], "foulard": [0.9, 0.7, 0.2], "taille": 0.96, "carrure": 1.35},
 			"teinte": PEAU[5],
@@ -512,7 +513,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de toi ? Évidemment ! Tu as fait un tour entier en tenant ton chapeau, alors qu'on roule à la vitesse d'une poule. C'était très prudent. J'ai apprécié.", {}, "rire")],
 			}},
 		# ================================================================ la Maison de la Guilde
-		{"id": "agathe_st", "nom": "Doyenne Agathe Basalte", "titre": "Doyenne de la Guilde des Strates", "maison": "porte_agathe", "village": "strates", "vouvoie": true,
+		{"id": "agathe_st", "femme": true, "nom": "Doyenne Agathe Basalte", "titre": "Doyenne de la Guilde des Strates", "maison": "porte_agathe", "village": "strates", "vouvoie": true,
 			"agenda": [[7, 8, "st_guilde_balcon"], [8, 12, "st_guilde_bureau"], [12, 13, "st_place_banc_4"], [13, 17, "st_guilde_bureau"], [17, 19, "st_horloge"], [19, 21, "st_guilde_balcon"], [21, 7, "maison"]],
 			"azur": {"cheveux": ARGENT, "coiffure": "chignon", "yeux": Y_GRIS, "haut": [0.28, 0.24, 0.22], "robe": [0.22, 0.19, 0.17], "robe_longue": true, "foulard": [0.62, 0.3, 0.16], "lunettes": true, "vieux": true, "taille": 0.92},
 			"teinte": PEAU[3],

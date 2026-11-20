@@ -38,7 +38,8 @@ func _serie() -> void:
 		print("PHOTOS liste illisible")
 		return
 	temps_v56.frozen = true
-	temps_v56.set_hour(14.0)
+	# (V183 : pas l'heure pile, où les habitants changent de lieu)
+	temps_v56.set_hour(14.3)
 	_pp_cam = Camera3D.new()
 	_pp_cam.name = "Camera_photos"
 	add_child(_pp_cam)
@@ -110,8 +111,14 @@ func _pp_une(p: Dictionary) -> int:
 		await _att(float(p.get("attente", 3.5)))
 		if npc.global_position.distance_to(ici) < 3.0:
 			break
-	if not npc.is_visible_in_tree():
-		print("PHOTO %s : %s est caché (chez lui ?)" % [nom, p["pnj"]])
+	# (V183 : son corps peut être caché un instant, quand il change de lieu à l'heure pile : on l'attend)
+	var corps0: Node3D = npc.get("model") if npc.get("model") is Node3D else npc
+	for _i in range(12):
+		if npc.is_visible_in_tree() and corps0.is_visible_in_tree():
+			break
+		await _att(0.5)
+	if not (npc.is_visible_in_tree() and corps0.is_visible_in_tree()):
+		print("PHOTO %s : %s est caché (chez lui, ou en chemin ?)" % [nom, p["pnj"]])
 		return 0
 	var an0: AnimationPlayer = npc.get("anim")
 	print("PHOTO_PNJ %s %s %s %s" % [nom, str(npc.global_position), str(npc.get("pose")), an0.current_animation if an0 != null else "?"])

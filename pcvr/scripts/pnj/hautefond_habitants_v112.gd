@@ -135,10 +135,11 @@ static func all_profiles() -> Array:
 	return out
 
 
+## V183 : « femme » : pour le générateur des corps (pcvr/tools/habitants_v64), qui ne le devine pas.
 static func _all() -> Array:
 	return [
 		# ================================================================ la Place de la Colonne
-		{"id": "capucine_hf", "nom": "Maîtresse Capucine Rouage", "titre": "Grande Liftière, cheffe de la Confrérie des Liftiers", "maison": "porte_capucine", "village": "hautefond", "vouvoie": true,
+		{"id": "capucine_hf", "femme": true, "nom": "Maîtresse Capucine Rouage", "titre": "Grande Liftière, cheffe de la Confrérie des Liftiers", "maison": "porte_capucine", "village": "hautefond", "vouvoie": true,
 			"agenda": [[6, 7, "place_fontaine"], [7, 19, "colonne_guichet"], [19, 22, "place_banc_1"], [22, 6, "maison"]],
 			"azur": {"cheveux": CUIVRE, "coiffure": "chignon", "yeux": Y_AMBRE, "chapeau": "casquette", "chapeau_c": LIFTIER, "haut": LIFTIER, "robe": [0.2, 0.22, 0.3], "robe_longue": true, "lunettes": true, "taille": 1.02},
 			"teinte": PEAU[1],
@@ -220,7 +221,7 @@ static func _all() -> Array:
 				"au_revoir": [L("Salut, {surnom} ! Moi, je reste ici. Au rez-de-chaussée. Pour l'instant.", {}, "salut"), L("À plus ! Et si tu vois Maîtresse Capucine, dis-lui que j'ai regardé en bas aujourd'hui. Une fois. Un peu.", {}, "rire"), L("Bonne nuit ! Moi, je vais dormir au rez-de-chaussée. J'ai choisi mon appartement exprès.", {"soir": true}, "rire")],
 				"souvenir": [L("Si je me souviens de toi ? Évidemment ! Tu es la personne qui m'a tenu compagnie pendant que je fermais les yeux. C'est comme ça que je reconnais mes vrais amis.", {})],
 			}},
-		{"id": "pimprenelle_hf", "nom": "Pimprenelle", "titre": "collectionneuse de boulons, future liftière", "maison": "porte_pimprenelle", "village": "hautefond",
+		{"id": "pimprenelle_hf", "femme": true, "nom": "Pimprenelle", "titre": "collectionneuse de boulons, future liftière", "maison": "porte_pimprenelle", "village": "hautefond",
 			"agenda": [[8, 12, "place_fontaine"], [12, 13, "forge_comptoir"], [13, 17, "marche_fontaine"], [17, 19, "place_fontaine"], [19, 20, "forge_comptoir"], [20, 8, "maison"]],
 			"azur": {"cheveux": ROUX, "coiffure": "tresse", "yeux": Y_VERT, "haut": [0.85, 0.55, 0.2], "tablier": [0.4, 0.28, 0.16], "enfant": true, "taille": 0.7},
 			"teinte": PEAU[0],
@@ -302,7 +303,7 @@ static func _all() -> Array:
 				"au_revoir": [L("Au revoir, {surnom}. Levez la tête de temps en temps : le ciel aime qu'on le regarde.", {}, "salut"), L("À bientôt ! Si vous voyez une étoile cligner, notez l'heure. Pour la science. Et pour moi.", {}), L("Bonne nuit, {surnom}. Moi, je commence ma journée. Trois mille quatre cent… zut.", {"soir": true}, "rire")],
 				"souvenir": [L("Si je me souviens de vous ? Bien sûr ! Vous êtes entre l'étoile trois mille douze et l'étoile trois mille treize, dans mon carnet. C'est une très bonne place.", {})],
 			}},
-		{"id": "philippine", "nom": "Mademoiselle Philippine Feuillet", "titre": "bibliothécaire de la Bibliothèque des Cartes", "maison": "porte_philippine", "village": "hautefond", "vouvoie": true,
+		{"id": "philippine", "femme": true, "nom": "Mademoiselle Philippine Feuillet", "titre": "bibliothécaire de la Bibliothèque des Cartes", "maison": "porte_philippine", "village": "hautefond", "vouvoie": true,
 			"agenda": [[8, 12, "bibliotheque_bureau"], [12, 13, "haute_banc_1"], [13, 18, "bibliotheque_rayons"], [18, 20, "haute_banc_1"], [20, 8, "maison"]],
 			"azur": {"cheveux": CHATAIN, "coiffure": "chignon", "yeux": Y_VERT, "haut": [0.35, 0.45, 0.35], "robe": [0.28, 0.36, 0.3], "robe_longue": true, "lunettes": true, "taille": 0.94},
 			"teinte": PEAU[3],
@@ -384,7 +385,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de vous ? Mon cher, je n'oublie jamais un visage ! Ni un nom. Ni une poignée de main. Vous avez une excellente poignée de main. Je l'ai notée.", {})],
 			}},
 		# ================================================================ la Ville-Moyenne
-		{"id": "rosalie_hf", "nom": "Rosalie Cannelle", "titre": "marchande d'épices et de fruits du Grand Marché", "maison": "porte_rosalie", "village": "hautefond",
+		{"id": "rosalie_hf", "femme": true, "nom": "Rosalie Cannelle", "titre": "marchande d'épices et de fruits du Grand Marché", "maison": "porte_rosalie", "village": "hautefond",
 			"agenda": [[6, 18, "marche_etal_1"], [18, 22, "taverne_table_1"], [22, 6, "maison"]],
 			"azur": {"cheveux": NOIR, "coiffure": "boucles", "yeux": Y_BRUN, "haut": [0.85, 0.4, 0.2], "tablier": [0.95, 0.85, 0.6], "robe": [0.6, 0.25, 0.18], "carrure": 1.15},
 			"teinte": PEAU[4],
@@ -508,7 +509,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de toi ? Par ma moustache, oui ! Tu as fait le saut le plus haut de la taverne la première fois que la machine a sifflé.", {}, "rire")],
 				"boutique": [L("Chocolat chaud, café à la vapeur, limonade, sirop, et biscuits-engrenages tout juste sortis du four ! Sans une goutte de boisson forte : ici, on est joyeux tout seul. Tu as {pieces} pièces.", {}, "rire")],
 			}},
-		{"id": "heloise_hf", "nom": "Capitaine Héloïse Nimbus", "titre": "aéronaute, capitaine du dirigeable « l'Albatros »", "maison": "porte_heloise", "village": "hautefond",
+		{"id": "heloise_hf", "femme": true, "nom": "Capitaine Héloïse Nimbus", "titre": "aéronaute, capitaine du dirigeable « l'Albatros »", "maison": "porte_heloise", "village": "hautefond",
 			"agenda": [[7, 11, "mat_pied"], [11, 17, "mat_passerelle"], [17, 19, "mat_pied"], [19, 23, "taverne_table_2"], [23, 7, "maison"]],
 			"azur": {"cheveux": BLOND_PALE, "coiffure": "queue", "yeux": Y_BLEU, "haut": [0.5, 0.32, 0.2], "foulard": [0.85, 0.2, 0.18], "lunettes": true, "taille": 1.04},
 			"teinte": PEAU[2],
@@ -547,7 +548,7 @@ static func _all() -> Array:
 				"au_revoir": [L("Bon vent, {surnom} ! Et si tu vois un ballon rouge, dis-lui que je le cherche.", {}, "salut"), L("À la prochaine ! Garde la tête dans les nuages, mais les pieds sur la passerelle.", {}, "rire"), L("Bonne nuit ! Ce soir, l'Albatros dort au Mât. Il ronfle un peu quand le vent souffle dans ses cordages.", {"soir": true}, "rire")],
 				"souvenir": [L("Si je me souviens de toi ? D'en haut, je reconnais tout le monde, {surnom}. Toi, tu es celui qui lève la tête quand l'Albatros passe. Ils ne sont pas si nombreux.", {})],
 			}},
-		{"id": "ysae", "nom": "Ysaé", "titre": "créatrice de bijoux, « qui vient d'en bas »", "maison": "porte_ysae", "village": "hautefond",
+		{"id": "ysae", "femme": true, "nom": "Ysaé", "titre": "créatrice de bijoux, « qui vient d'en bas »", "maison": "porte_ysae", "village": "hautefond",
 			"agenda": [[9, 17, "marche_etal_3"], [17, 21, "rue_2"], [21, 9, "maison"]],
 			"azur": {"cheveux": BLEU_VIF, "coiffure": "carre", "yeux": Y_VIOLET, "haut": [0.12, 0.12, 0.14], "foulard": [0.2, 0.75, 0.75], "taille": 0.98, "carrure": 0.95},
 			"teinte": PEAU[3],
@@ -589,7 +590,7 @@ static func _all() -> Array:
 				"souvenir": [L("Si je me souviens de toi ? Évidemment. Tu es la première personne d'en haut qui m'a demandé comment c'était, en bas. Ça, on ne l'oublie pas.", {})],
 			}},
 		# ================================================================ la Basse-Ville
-		{"id": "mathilde", "nom": "Mathilde Soufflet", "titre": "forgeronne de la Forge à vapeur", "maison": "porte_mathilde", "village": "hautefond",
+		{"id": "mathilde", "femme": true, "nom": "Mathilde Soufflet", "titre": "forgeronne de la Forge à vapeur", "maison": "porte_mathilde", "village": "hautefond",
 			"agenda": [[6, 12, "forge_enclume"], [12, 13, "forge_comptoir"], [13, 18, "forge_enclume"], [18, 20, "forge_comptoir"], [20, 6, "maison"]],
 			"azur": {"cheveux": ROUX, "coiffure": "queue", "yeux": Y_VERT, "haut": [0.45, 0.3, 0.2], "tablier": [0.25, 0.18, 0.12], "taille": 1.1, "carrure": 1.4},
 			"teinte": PEAU[1],
@@ -671,7 +672,7 @@ static func _all() -> Array:
 				"au_revoir": [L("Hm. Bon vent, {surnom}. Et bonne mer.", {}, "salut"), L("Va. Et si tu prends un bateau, dis-lui bonjour de ma part. Il comprendra.", {}), L("Bonne nuit. Les bateaux dorment. Moi aussi, bientôt. Hm.", {"soir": true})],
 				"souvenir": [L("Si je me souviens de toi ? Hm. Je me souviens de tous ceux qui sont descendus du bateau de ligne. Toi, tu as dit merci au capitaine. Ça, c'est rare.", {})],
 			}},
-		{"id": "margot_hf", "nom": "Margot", "titre": "gardienne du Phare de la Pointe", "maison": "porte_margot", "village": "hautefond",
+		{"id": "margot_hf", "femme": true, "nom": "Margot", "titre": "gardienne du Phare de la Pointe", "maison": "porte_margot", "village": "hautefond",
 			"agenda": [[6, 10, "phare_rochers"], [10, 17, "phare_porte"], [17, 20, "phare_rochers"], [20, 6, "maison"]],
 			"azur": {"cheveux": GRIS, "coiffure": "tresse", "yeux": Y_BLEU, "haut": [0.85, 0.82, 0.75], "foulard": [0.2, 0.35, 0.6], "taille": 0.96},
 			"teinte": PEAU[1],

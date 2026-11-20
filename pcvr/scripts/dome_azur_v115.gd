@@ -21,6 +21,7 @@ extends Node3D
 ## tours-coquillages, la maisonnette de Mélisande ; huit grands lieux ont leur porte dessinée (portes119 :
 ## lieux_dome_v119) ; les repères des lieux ouverts pour l'activité (cadres119 : dome_activite_v119).
 
+const Bancs183 = preload("res://scripts/pnj/bancs_v183.gd")
 const F = preload("res://scripts/fosse_azur_v115.gd")
 const Kit56 = preload("res://scripts/azur_kit_v56.gd")
 const Kit = preload("res://scripts/dome_kit_v115.gd")
@@ -824,10 +825,13 @@ func _conque() -> void:
 		kit.col_cyl(tp, 0.7, 0.78)
 		var sp: Vector3 = tp + xf.basis * Vector3(0, 0, 1.0)
 		kit.cyl(Transform3D(Basis(), sp), 0.22, 0.2, 0.45, "nacre115_bleu", 12, true)
+		# V183 : le tabouret s'inscrit (où s'asseoir : pnj/bancs_v183.gd), le devant vers la table
+		Bancs183.ajouter(XL(sp, tp), 0.45, 0.4, -0.2, 0.2)
 		_sp("da_conque_table_%d" % (k7 + 1), sp + Vector3.UP * 0.4, tp, "assis")
 		if k7 % 2 == 0:
 			var sp2: Vector3 = tp - xf.basis * Vector3(0, 0, 1.0)
 			kit.cyl(Transform3D(Basis(), sp2), 0.22, 0.2, 0.45, "nacre115_bleu", 12, true)
+			Bancs183.ajouter(XL(sp2, tp), 0.45, 0.4, -0.2, 0.2)
 			_crowd("da_c_conque_%d" % k7, sp2 + Vector3.UP * 0.4, tp, "assis")
 	kit.totem115(xf * Vector3(6.5, 0, 9.0), atan2((xf.basis * Vector3.BACK).x, (xf.basis * Vector3.BACK).z), "conque")
 	## V119 : le repère de la terrasse (son milieu, au sol, devant la Conque ; +Z vers la Place)

@@ -8,6 +8,7 @@
 const NOM := "assises181"
 const COUCHE99 := 1 << 19
 const Tab99 = preload("res://scripts/pnj/assises_table_v181.gd")
+const Bancs99 = preload("res://scripts/pnj/bancs_v183.gd")
 
 
 ## Les maillages autour de p, en triangles (sur COUCHE99) ; les personnages exclus.
@@ -119,6 +120,9 @@ func _serie() -> void:
 				continue
 			var sp: Dictionary = az.call("spot", lieu)
 			if sp.is_empty() or str(sp.get("pose", "")) != "assis":
+				continue
+			# (V183 : les bancs de Hautefond, que l'audit ne voyait pas, ont leur propre série : 58_corps)
+			if not Bancs99.sous(sp["pos"]).is_empty():
 				continue
 			var quoi: String = str(Tab99.TABLE[ville + ":" + lieu][0]) if Tab99.TABLE.has(ville + ":" + lieu) else "bien"
 			if int(nb.get(quoi, 0)) >= int(voulus.get(quoi, 0)):

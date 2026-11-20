@@ -12,6 +12,8 @@ extends "res://scripts/astrale_kit_v76.gd"
 ## Repères : comme les autres kits, une façade « xf » regarde +Z local.
 
 const Mats112 = preload("res://scripts/hautefond_mats_v112.gd")
+## V183 : les bancs s'inscrivent (où s'asseoir : pnj/bancs_v183.gd), ici et dans les kits des Nuées et du Dôme
+const Bancs183 = preload("res://scripts/pnj/bancs_v183.gd")
 const MURS := ["pierre112", "pierre112", "pierre112_clair", "pierre112_chaud", "pierre112_rose", "pierre112_clair"]
 const STORES := ["bleu", "rouge", "vert", "or", "creme"]
 
@@ -296,6 +298,8 @@ func bench112(xf: Transform3D) -> void:
 	for k2 in range(2):
 		box(xf * T(0, 0.66 + k2 * 0.16, -0.26), Vector3(1.7, 0.1, 0.03), "bois112", 1.0)
 	col_box(xf * T(0, 0.3, 0.0), Vector3(1.7, 0.6, 0.55))
+	# V183 : l'assise (les lattes) : dessus à 48 cm, de 22,5 cm derrière à 22,5 cm devant
+	Bancs183.ajouter(xf, 0.48, 1.7, -0.225, 0.225)
 
 
 ## Une grande horloge à cadran (xf : le centre du cadran, +Z : devant) : cadran, chiffres, aiguilles.

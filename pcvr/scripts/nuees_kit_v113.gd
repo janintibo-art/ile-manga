@@ -255,6 +255,8 @@ func bench113(xf: Transform3D, w: float = 2.2) -> void:
 	for k in range(4):
 		box(xf * T(0, 0.45, -0.18 + k * 0.12), Vector3(w, 0.05, 0.1), "bois113", 1.0)
 	col_box(xf * T(0, 0.25, 0), Vector3(w, 0.5, 0.5))
+	# V183 : l'assise (les lattes) : dessus à 47,5 cm, sans dossier (où s'asseoir : pnj/bancs_v183.gd)
+	Bancs183.ajouter(xf, 0.475, w, -0.23, 0.23)
 
 
 ## Un bac de béton blanc, sa terre, une haie ou un arbre.

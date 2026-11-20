@@ -154,8 +154,9 @@ func chateau() -> void:
 				_:
 					kit.cyl(Transform3D(Basis(), hp + Vector3.UP * 0.16), 0.15, 0.13, 0.12, col, 12)
 					kit.beam(hp + Vector3(0.05, 0.25, 0), hp + Vector3(0.25, 0.55, -0.05), 0.03, "tissu71_blanc")
-	# le bureau de l'intendante (près de la porte, à droite)
-	var dx: Transform3D = hx * T(5.0, 0, -4.0)
+	# le bureau de l'intendante (près de la porte, à droite ; V183 : devant la rangée de colonnes, plus
+	# dedans : il était pris dans la première colonne de droite, qui cachait aussi celui qui s'y assied)
+	var dx: Transform3D = hx * T(3.1, 0, -4.0)
 	kit.box(dx * T(0, 0.75, 0), Vector3(1.8, 0.08, 0.9), "planches71_sombre", 1.0)
 	kit.box(dx * T(0, 0.37, 0), Vector3(1.6, 0.74, 0.7), "planches71_sombre", 1.0, 63 - 4)
 	kit.col_box(dx * T(0, 0.4, 0), Vector3(1.8, 0.8, 0.9))

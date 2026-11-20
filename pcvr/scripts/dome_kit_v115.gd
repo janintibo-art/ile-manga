@@ -502,6 +502,8 @@ func bench115(xf: Transform3D, w: float = 2.4, cushion: String = "") -> void:
 	box(xf * T(0, 0.8, -0.3), Vector3(w, 0.6, 0.1), "nacre115", 1.0)
 	box(xf * T(0, 0.53, 0.02), Vector3(w - 0.2, 0.06, 0.5), "tissu115" + ("" if cushion == "" else "_" + cushion), 1.0)
 	col_box(xf * T(0, 0.3, 0), Vector3(w, 0.6, 0.62))
+	# V183 : l'assise (le coussin) : dessus à 56 cm, devant le dossier (où s'asseoir : pnj/bancs_v183.gd)
+	Bancs183.ajouter(xf, 0.56, w - 0.2, -0.23, 0.27)
 
 
 ## Une enseigne du Dôme (une plaque de verre bleu nuit cerclée de nacre).

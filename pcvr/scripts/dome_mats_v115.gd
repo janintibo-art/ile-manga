@@ -102,7 +102,14 @@ static func make(key: String) -> Material:
 				te.albedo_color = Color(0.72, 0.84, 0.9)
 			m = te
 		"titane115":
-			m = _metal(Color(0.66, 0.69, 0.72) if v == "" else (Color(0.3, 0.32, 0.35) if v == "sombre" else Color(0.86, 0.88, 0.9)), 0.3, 0.92)
+			# V183 : moins métallique (0,55 au lieu de 0,92). Sous la mer, il n'y a pas de ciel à refléter : un
+			# métal presque pur y rendait noir (les socles des bancs, les anneaux, les disques des places
+			# ressemblaient à des trous) ; le titane des portes (titane119) l'avait déjà réglé ainsi. Le titane
+			# sombre (les socles, les disques), plus clair et mat : à 0,55, il restait noir (photos du PC).
+			if v == "sombre":
+				m = _metal(Color(0.5, 0.52, 0.55), 0.4, 0.3)
+			else:
+				m = _metal(Color(0.66, 0.69, 0.72) if v == "" else Color(0.86, 0.88, 0.9), 0.34, 0.55)
 		"joint115":
 			var jo := StandardMaterial3D.new()
 			jo.albedo_color = Color(0.12, 0.13, 0.14)
