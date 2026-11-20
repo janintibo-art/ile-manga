@@ -8,6 +8,7 @@ extends Node3D
 const Brain = preload("res://scripts/pnj/pnj_brain_v31.gd")
 const HeroLib = preload("res://scripts/hero_v28.gd")
 const Corps64 = preload("res://scripts/pnj/corps_v64.gd")
+const Chemins184 = preload("res://scripts/pnj/chemins_v184.gd")
 const WALK: float = 0.9
 const TALK_REACH: float = 2.8
 
@@ -21,6 +22,7 @@ var skel: Skeleton3D
 var floor_offset: float = 0.0
 var points: Dictionary = {}
 var links: Dictionary = {}
+var _ch184_taille: int = -1            # V184 : la taille du plan quand on y a mis les détours
 var at_point: String = ""
 var route: Array = []
 var state: String = "repos"          # repos, marche, parle
@@ -60,6 +62,9 @@ func setup(main_node: Node, profile_data: Dictionary, spots: Dictionary, graph: 
 	brain.setup(profile)
 	points = spots
 	links = graph
+	# V184 : les bouts de chemin qui traversaient le décor passent par un détour (chemins_v184.gd)
+	Chemins184.appliquer(points, links)
+	_ch184_taille = links.size()
 	at_point = start
 	_build_body()
 	global_position = points[start]
@@ -1007,6 +1012,11 @@ func _play(name_anim: String, blend: float = 0.25, speed: float = 1.0, from: flo
 
 ## Chemin dans le graphe des points (parcours en largeur).
 func _route_to(goal: String) -> Array:
+	# V184 : des liens ajoutés au plan après l'installation des habitants (les portes de certaines villes) :
+	# leurs détours aussi (appliquer ne refait rien de ce qui est fait)
+	if links.size() != _ch184_taille:
+		Chemins184.appliquer(points, links)
+		_ch184_taille = links.size()
 	var prev := {at_point: ""}
 	var queue: Array = [at_point]
 	while not queue.is_empty():
@@ -1106,7 +1116,8 @@ func _idle_anim() -> void:
 
 
 func _pick_destination() -> void:
-	var options: Array = points.keys().filter(func(k): return k != at_point and k != "marche")
+	# (V184 : pas un point de détour : ce n'est pas un lieu, on ne fait qu'y passer)
+	var options: Array = points.keys().filter(func(k): return k != at_point and k != "marche" and not Chemins184.est_detour(str(k)))
 	if options.is_empty():
 		idle_clock = 6.0
 		return

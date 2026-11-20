@@ -197,7 +197,8 @@ func _flane_start() -> bool:
 		return false
 	var p0: Vector3 = points[home_node]
 	var ok := func(nb: String, ref: Vector3) -> bool:
-		if not points.has(nb) or nb.begins_with("porte_") or nb.begins_with("villa_"):
+		# (V184 : ni un point de détour : on ne s'y arrête pas pour regarder autour de soi)
+		if not points.has(nb) or nb.begins_with("porte_") or nb.begins_with("villa_") or Chemins184.est_detour(nb):
 			return false
 		var q: Vector3 = points[nb]
 		return q.distance_to(p0) < 12.0 and absf(q.y - ref.y) < 1.2 and q.distance_to(ref) > 1.0
@@ -566,7 +567,9 @@ func _start_slot(i: int, teleport: bool) -> void:
 	_pair.clear()
 	_run_loop.clear()
 	if target_spot.begins_with("course:"):
-		_run_loop = target_spot.substr(7).split(",")
+		# V184 : la boucle passe par le plan de la ville (avant : en ligne droite d'un point au suivant, à
+		# travers ce qui se trouvait entre eux : les bornes du quai, une fontaine)
+		_run_loop = _boucle_v184(target_spot.substr(7).split(","))
 		_run_i = 0
 	elif i >= 0 and agenda[i].size() > 3:
 		for extra in agenda[i][3]:
@@ -590,6 +593,37 @@ func _start_slot(i: int, teleport: bool) -> void:
 			_arrive()
 		else:
 			state = "marche"
+
+
+## V184 : la boucle de course, de point en point par le plan de la ville (le plus court en nombre
+## d'étapes) : les détours du plan (chemins_v184.gd) y sont.
+func _boucle_v184(boucle: PackedStringArray) -> Array:
+	var out: Array = []
+	for k in range(boucle.size()):
+		var a: String = boucle[k]
+		var b: String = boucle[(k + 1) % boucle.size()]
+		out.append(a)
+		if a == b or not points.has(a) or not points.has(b) or (links.get(a, []) as Array).has(b):
+			continue
+		var prev := {a: ""}
+		var file: Array = [a]
+		while not file.is_empty():
+			var cur: String = file.pop_front()
+			if cur == b:
+				break
+			for nb in links.get(cur, []):
+				if not prev.has(nb):
+					prev[nb] = cur
+					file.append(nb)
+		if not prev.has(b):
+			continue
+		var milieu: Array = []
+		var c: String = str(prev[b])
+		while c != a and c != "":
+			milieu.push_front(c)
+			c = str(prev[c])
+		out.append_array(milieu)
+	return out
 
 
 func _free_spot() -> void:
@@ -827,7 +861,10 @@ func _activity(delta: float, dist: float, to_player: Vector3) -> void:
 				var nxt: String = str(_pair[_rng2.randi() % _pair.size()])
 				var sp: Dictionary = azur.spot(nxt)
 				if not sp.is_empty():
-					route = [str(sp["node"])] if points.has(str(sp["node"])) else []
+					# V184 : par le plan de la ville (en ligne droite, on traversait la fontaine du jeu)
+					route = _route_to(str(sp["node"])) if points.has(str(sp["node"])) else []
+					if route.is_empty() and points.has(str(sp["node"])) and str(sp["node"]) != at_point:
+						route = [str(sp["node"])]
 					if not route.is_empty():
 						state = "marche"
 						return

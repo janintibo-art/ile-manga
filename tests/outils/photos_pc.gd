@@ -8,6 +8,7 @@
 ##   "pnj" : le nom d'un habitant (on va le voir là où il est, à l'heure de la liste) ; sans "pnj", une vue
 ##           libre : "oeil" et "cible" ([x, y, z]) ;
 ##   "lieu" : on l'envoie à ce lieu, comme s'il y arrivait (assis : sur son siège) ;
+##   "pos", "face" ([x, y, z]) : V184, on le pose là, tourné par là (en chemin : "geste": ["Walking", t]) ;
 ##   "geste" : ["clip", instant] : il joue ce clip, figé à cet instant ;
 ##   "vues" : parmi "face" (de trois quarts), "profil", "dos", "dessus", "pieds" (au ras du sol, de côté) ;
 ##   "dist", "haut", "cible_h" : la caméra (m, à l'échelle de l'habitant) ; "heure" : l'heure du jeu.
@@ -90,7 +91,11 @@ func _pp_une(p: Dictionary) -> int:
 					break
 		if not p.has("lieu"):
 			print("PHOTO %s : %s n'a pas de lieu « %s »" % [nom, p["pnj"], p["lieu_pose"]])
-	if p.has("lieu"):
+	# V184 : « pos » ([x, y, z]) et « face » ([x, y, z]) : on le pose là, tourné par là (en marche sur un
+	# chemin : avec "geste": ["Walking", instant])
+	if p.has("pos"):
+		_pp_poser(npc, p)
+	elif p.has("lieu"):
 		npc.set("slot", npc.call("_slot_now"))
 		npc.call("_set_hidden", false)
 		npc.set("state", "repos")
@@ -120,6 +125,9 @@ func _pp_une(p: Dictionary) -> int:
 	if not (npc.is_visible_in_tree() and corps0.is_visible_in_tree()):
 		print("PHOTO %s : %s est caché (chez lui, ou en chemin ?)" % [nom, p["pnj"]])
 		return 0
+	if p.has("pos"):
+		# (il a pu repartir pendant qu'on approchait : on le repose)
+		_pp_poser(npc, p)
 	var an0: AnimationPlayer = npc.get("anim")
 	print("PHOTO_PNJ %s %s %s %s" % [nom, str(npc.global_position), str(npc.get("pose")), an0.current_animation if an0 != null else "?"])
 	# on le fige (le même geste pour chaque vue)
@@ -183,6 +191,21 @@ func _pp_corps() -> void:
 			print("CORPS_ANCIEN\t%s\t%s\t%s\t%s" % [str(e[0]), id, ville, str(npc.global_position.snapped(Vector3.ONE))])
 			n += 1
 	print("CORPS_ANCIEN_TOTAL %d sur %d" % [n, testeur_v78._npcs().size()])
+
+
+func _pp_poser(npc: Node3D, p: Dictionary) -> void:
+	npc.set("state", "repos")
+	npc.set("route", [])
+	npc.set("_flane", [])
+	if npc.has_method("_set_hidden"):
+		npc.call("_set_hidden", false)
+	npc.global_position = _pp_v(p["pos"])
+	if npc.has_method("_snap_to_floor"):
+		npc.call("_snap_to_floor")
+	var f: Vector3 = _pp_v(p.get("face", [0, 0, 1]))
+	f.y = 0.0
+	if f.length() > 0.01:
+		npc.rotation.y = atan2(f.x, f.z)
 
 
 func _pp_v(a: Variant) -> Vector3:

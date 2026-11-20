@@ -71,7 +71,8 @@ func core_link(ramp_top: String, deg: float) -> void:
 		if d < bd:
 			bd = d
 			best = nm
-	var inner: String = c._pt(ramp_top + "_place", c.PW(deg, R.CORE_R - 4.0, R.CORE_Y + 0.05))
+	# (V184 : 5,5 m en deçà du bord de la Place, pas 4 : là, le relief descend déjà vers le mur)
+	var inner: String = c._pt(ramp_top + "_place", c.PW(deg, R.CORE_R - 5.5, R.CORE_Y + 0.05))
 	c._link(ramp_top, inner)
 	if best != "":
 		c._link(inner, best)

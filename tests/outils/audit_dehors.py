@@ -36,7 +36,201 @@ ap.add_argument("--debug", action="store_true")
 ap.add_argument("--affiner", action="store_true")
 ap.add_argument("--radar", default="")
 ap.add_argument("--dossier", default="")
+ap.add_argument("--chemins", action="store_true")
+ap.add_argument("--villes", default="")
+ap.add_argument("--detours", action="store_true")
+ap.add_argument("--table", action="store_true")
+ap.add_argument("--depuis", default="")
+ap.add_argument("--aretes", default="")
+ap.add_argument("--oublier", default="")
+ap.add_argument("--apres", default="")
+ap.add_argument("--radar_chemins", default="")
 args = ap.parse_args()
+
+def tracer_plans(items, dossier):
+    # le chemin d'avant en rouge, le détour en vert, sur les plans faits par le jeu ; des planches de six
+    from PIL import Image, ImageDraw
+    faits = []
+    for it in items:
+        base = os.path.join(dossier, it["nom"].replace("/", "_").replace("|", "_").replace(" ", "_"))
+        if not os.path.exists(base + ".png"):
+            continue
+        meta = json.load(open(base + ".json", encoding="utf-8"))
+        im = Image.open(base + ".png").convert("RGB")
+        d = ImageDraw.Draw(im)
+        px = lambda q: ((q[0] - meta["lo"][0]) * meta["ech"], (q[2] - meta["lo"][1]) * meta["ech"])
+        d.line([px(it["A"]), px(it["B"])], fill=(230, 40, 30), width=3)
+        if it.get("detour"):
+            d.line([px(it["A"])] + [px(w) for w in it["detour"]] + [px(it["B"])], fill=(40, 220, 60), width=3)
+        for q, c in [(it["A"], (255, 255, 255)), (it["B"], (255, 255, 0))]:
+            x, y = px(q)
+            d.ellipse([x - 4, y - 4, x + 4, y + 4], outline=c, width=2)
+        if not it.get("sans_nom"):
+            d.text((4, 2), it["nom"][:60], fill=(255, 255, 255))
+        im.save(base + "_trace.png")
+        faits.append(base + "_trace.png")
+    for page in range(0, len(faits), 6):
+        chunk = [Image.open(f0) for f0 in faits[page:page + 6]]
+        w = max(i.width for i in chunk)
+        h = max(i.height for i in chunk)
+        sheet = Image.new("RGB", (w * 2 + 6, (h + 6) * ((len(chunk) + 1) // 2)), (255, 255, 255))
+        for j, i in enumerate(chunk):
+            sheet.paste(i, ((j % 2) * (w + 6), (j // 2) * (h + 6)))
+        sheet.save(os.path.join(dossier, "planche_%02d.png" % (page // 6)))
+    return faits
+
+
+def preparer_plans():
+    import glob
+    dossier = os.path.abspath(args.dossier)
+    os.makedirs(dossier, exist_ok=True)
+    for x in glob.glob(os.path.join(dossier, "*.png")) + glob.glob(os.path.join(dossier, "*.json")):
+        os.remove(x)
+    return dossier, json.load(open(args.radar_chemins, encoding="utf-8"))
+
+
+if args.radar_chemins and not args.chemins:
+    # V184 : les plans des chemins, vus de dessus (voir audit_dehors.gd, _ad_radars_chemins)
+    lancer.synchroniser()
+    dossier, items = preparer_plans()
+    with open(os.path.join(lancer.COPIE, "pcvr", "audit_args.json"), "w", encoding="utf-8") as f:
+        json.dump({"radar_chemins": items, "dossier": dossier}, f)
+    main = open(lancer.MAIN_SRC, encoding="utf-8").read()
+    main += "\n\n" + open(os.path.join(lancer.SERIES, "_commun.gd"), encoding="utf-8").read()
+    main += "\n\n" + open(os.path.join(ICI, "audit_dehors.gd"), encoding="utf-8").read()
+    rc = lancer.godot(main, os.path.join(lancer.SORTIES, args.sortie + "_radar_chemins.log"), args.delai)
+    os.remove(os.path.join(lancer.COPIE, "pcvr", "audit_args.json"))
+    faits = tracer_plans(items, dossier)
+    print("plans des chemins : code %d, %d -> %s" % (rc, len(faits), dossier))
+    sys.exit(rc)
+
+if args.chemins:
+    # V184 : les chemins des habitants (voir audit_dehors.gd, _ad_chemins) ; le relevé : un bilan par ville,
+    # puis les bouts de chemin, du plus enfoncé dans le décor au moins enfoncé
+    lancer.synchroniser()
+    sortie = args.sortie if args.sortie != "audit_dehors" else "audit_chemins"
+    params = {"chemins": True, "heures": [float(h) for h in args.heures.split(",") if h], "de": args.de, "a": args.a,
+              "villes": [x for x in args.villes.split(",") if x], "detours": args.detours,
+              "aretes": json.load(open(args.aretes, encoding="utf-8")) if args.aretes else [],
+              "apres": json.loads(args.apres) if args.apres else []}
+    plans_items = None
+    if args.radar_chemins:
+        plans_dossier, plans_items = preparer_plans()
+        params["radar_chemins"] = plans_items
+        params["dossier"] = plans_dossier
+    with open(os.path.join(lancer.COPIE, "pcvr", "audit_args.json"), "w", encoding="utf-8") as f:
+        json.dump(params, f)
+    # pour refaire la table (--table), les plans tels qu'ils sont écrits : la copie du jeu sans les détours
+    TABLE = os.path.join("pcvr", "scripts", "pnj", "chemins_table_v184.gd")
+    if args.table:
+        with open(os.path.join(lancer.COPIE, TABLE), "w", encoding="utf-8") as f:
+            f.write("extends RefCounted\nconst TABLE := {\n}\n")
+    os.makedirs(lancer.SORTIES, exist_ok=True)
+    log = os.path.join(lancer.SORTIES, sortie + ".log")
+    if args.depuis:
+        # (--depuis LOG1,LOG2… : sans relancer le jeu, d'après les journaux d'audits déjà faits, mis bout à
+        # bout ; un bout de chemin revu dans un journal plus récent prend sa nouvelle ligne ; --oublier
+        # v1,v2 : les détours de ces villes ne viennent que du dernier journal)
+        oublier = [x for x in args.oublier.split(",") if x]
+        journaux = [x for x in args.depuis.split(",") if x]
+        tout = []
+        for n_j, lj in enumerate(journaux):
+            for x in open(lj, encoding="utf-8", errors="replace").read().splitlines():
+                c = x.split("\t")
+                if x.startswith("CHEMIN") and len(c) > 2 and n_j < len(journaux) - 1 and c[2].split(":")[0] in oublier:
+                    continue
+                tout.append(x)
+        log = os.path.join(lancer.SORTIES, sortie + "_fusion.log")
+        open(log, "w", encoding="utf-8").write("\n".join(tout) + "\n")
+        rc = 0
+    else:
+        main = open(lancer.MAIN_SRC, encoding="utf-8").read()
+        main += "\n\n" + open(os.path.join(lancer.SERIES, "_commun.gd"), encoding="utf-8").read()
+        main += "\n\n" + open(os.path.join(ICI, "audit_dehors.gd"), encoding="utf-8").read()
+        rc = lancer.godot(main, log, args.delai)
+    os.remove(os.path.join(lancer.COPIE, "pcvr", "audit_args.json"))
+    if args.table:
+        import shutil
+        shutil.copy(os.path.join(lancer.REPO, TABLE), os.path.join(lancer.COPIE, TABLE))
+    lignes = open(log, encoding="utf-8", errors="replace").read().splitlines()
+    cas = [x.split("\t") for x in lignes if x.startswith("CHEMIN\t")]
+    detours = [x.split("\t") for x in lignes if x.startswith("CHEMIN_DETOUR")]
+    plans = [x for x in lignes if x.startswith("CHEMIN_PLAN\t")]
+    erreurs = [x for x in lignes if "SCRIPT ERROR" in x or "Parse Error" in x]
+    fin = [x for x in lignes if x.startswith("CHEMINS_") or x.startswith("SERIE_FINIE")]
+    out = os.path.join(lancer.SORTIES, sortie + ".txt")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write("\n".join(fin) + "\n")
+        for e in erreurs[:20]:
+            f.write("ERREUR " + e + "\n")
+        f.write("\n== les plans\n" + "\n".join(plans) + "\n")
+        par_ville = collections.Counter()
+        par_quoi = collections.Counter()
+        for c in cas:
+            # i ville a b L touchés libre_min A B pas sauts
+            if float(c[7]) < 0.1:
+                par_ville[c[2]] += 1
+                for p in c[10].split(";"):
+                    if p and float(p.split("/")[1]) < 0.1:
+                        par_quoi[p.split("/", 2)[2].split("<")[0].split("@")[0]] += 1
+        f.write("\n== par ville (bouts de chemin où l'axe du corps passe à moins de 10 cm du décor)\n")
+        for k, n in par_ville.most_common():
+            f.write("%5d  %s\n" % (n, k))
+        f.write("\n== ce qui est traversé (pas à moins de 10 cm)\n")
+        for k, n in par_quoi.most_common(80):
+            f.write("%5d  %s\n" % (n, k))
+        if detours:
+            f.write("\n== les détours (%d)\n" % len(detours))
+            for d in detours:
+                f.write("\t".join(d) + "\n")
+        f.write("\n== les bouts de chemin\n")
+        for c in sorted(cas, key=lambda c: float(c[7])):
+            f.write("\t".join(c[1:]) + "\n")
+    if plans_items is not None:
+        print("plans des chemins : %d -> %s" % (len(tracer_plans(plans_items, plans_dossier)), plans_dossier))
+    if args.table and rc == 0 and any(x.startswith("CHEMINS_FIN") for x in lignes):
+        # la table des détours (pcvr/scripts/pnj/chemins_table_v184.gd), d'après les lignes CHEMIN_DETOUR
+        table = collections.defaultdict(list)
+        # (le dernier détour d'un bout de chemin l'emporte : les journaux plus récents viennent après)
+        # (un bout de chemin refait plus tard sans trouver de détour perd celui d'avant : il était moins bon
+        # que le chemin d'origine)
+        derniers = {}
+        for d in detours:
+            if d[0] == "CHEMIN_DETOUR":
+                derniers[(d[2], d[3], d[4])] = d
+            elif d[0] == "CHEMIN_DETOUR_ECHEC":
+                derniers.pop((d[2], d[3], d[4]), None)
+        detours = list(derniers.values())
+        for d in detours:
+            # (pas les tours de course ni les jeux des enfants : ils ne passent pas par le plan)
+            if d[0] != "CHEMIN_DETOUR" or d[2].endswith(":course") or d[2].endswith(":jeu"):
+                continue
+            # i ville a b ax,az bx,bz L L2 points
+            a, b = d[3], d[4]
+            ax, az = [float(v) for v in d[5].split(",")]
+            pts = [[float(v) for v in p.split(",")] for p in d[9].split(";") if p]
+            if a > b:
+                a, b = b, a
+                ax, az = [float(v) for v in d[6].split(",")]
+                pts.reverse()
+            table[a + "|" + b].append([ax, az, pts, 1 if len(d) > 10 and d[10] == "souple" else 0])
+        dst = os.path.join(lancer.REPO, TABLE)
+        with open(dst, "w", encoding="utf-8") as f:
+            f.write("extends RefCounted\n")
+            f.write("## V184 : écrit par tests/outils/audit_dehors.py --chemins --detours --table (ne pas modifier à la main :\n")
+            f.write("## refaire l'audit des chemins). \"<a>|<b>\" : [[ax, az, [x, y, z, x, y, z, …]], …] : le bout de chemin entre\n")
+            f.write("## les points a et b du plan d'une ville (ax, az : où est a, pour reconnaître la ville) passe par ces\n")
+            f.write("## points, dans l'ordre de a vers b ; un 1 à la fin : un détour « souple » (trouvé au second essai, il\n")
+            f.write("## frôle le décor à moins de 1,5 m des deux bouts). Voir chemins_v184.gd.\n")
+            f.write("const TABLE := {\n")
+            for k in sorted(table):
+                f.write('\t"%s": [%s],\n' % (k, ", ".join("[%.2f, %.2f, [%s]%s]" % (e[0], e[1], ", ".join("%.2f" % v for p in e[2] for v in p), ", 1" if e[3] else "") for e in table[k])))
+            f.write("}\n")
+        print("table : %d bouts de chemin avec un détour -> %s" % (sum(len(v) for v in table.values()), dst))
+    print("%d bouts de chemin touchent le décor, code %d -> %s" % (len(cas), rc, out))
+    for x in fin + erreurs[:5]:
+        print(x)
+    sys.exit(rc)
 
 if args.radar:
     # les « radars » : sans écran (comme les séries), une image faite de rayons (voir audit_dehors.gd)

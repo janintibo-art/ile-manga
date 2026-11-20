@@ -22,6 +22,7 @@ var _ad_args: Dictionary = {}
 var _ad_n: int = 0
 var _ad_cas: int = 0
 var _ad_grille: Dictionary = {}       # case de 8 m -> [[maillage, boîte], …]
+var _ad_grille_gros: Dictionary = {}  # V184 : case de 64 m -> les très grands maillages (plus de 160 m)
 var _ad_noeuds: int = -1
 var _ad_ou: Vector3 = Vector3(1e9, 0, 0)  # où l'on a rangé les maillages la dernière fois
 var _ad_faits: Dictionary = {}        # maillage -> le corps de triangles déjà fait (ou null)
@@ -34,6 +35,17 @@ func _serie() -> void:
 	var liste: Array = testeur_v78._npcs()
 	if _ad_args.has("radar"):
 		await _ad_radars(liste)
+		return
+	if _ad_args.get("chemins", false):
+		temps_v56.hour = float((_ad_args.get("heures", [14.0]) as Array)[0])
+		await _ad_chemins()
+		# (et les plans de quelques bouts de chemin, dans le même lancement)
+		if _ad_args.has("radar_chemins"):
+			await _ad_radars_chemins(_ad_args["radar_chemins"], str(_ad_args.get("dossier", "/tmp")))
+		return
+	if _ad_args.has("radar_chemins"):
+		temps_v56.hour = 14.0
+		await _ad_radars_chemins(_ad_args["radar_chemins"], str(_ad_args.get("dossier", "/tmp")))
 		return
 	if _ad_args.get("sans_assises", false):
 		var As = load("res://scripts/pnj/assises_v181.gd")
@@ -61,13 +73,16 @@ func _serie() -> void:
 
 ## Les maillages qu'on voit, rangés par cases de 8 m (refait quand le monde a changé : les villes, les
 ## maisons se construisent quand on approche).
-func _ad_ranger(ici: Vector3) -> void:
+func _ad_ranger(ici: Vector3, force: bool = false) -> void:
 	var n: int = get_tree().get_node_count()
-	if absi(n - _ad_noeuds) < 300 and ici.distance_to(_ad_ou) < 150.0:
+	# (V184 : force, à chaque nouvel endroit des chemins : les maisons d'à côté finissent de se construire
+	# quand on arrive, avec moins de 300 nœuds parfois ; sans elles, l'audit ne voyait pas leurs murs)
+	if not force and absi(n - _ad_noeuds) < 300 and ici.distance_to(_ad_ou) < 150.0:
 		return
 	_ad_noeuds = n
 	_ad_ou = ici
 	_ad_grille.clear()
+	_ad_grille_gros.clear()
 	for mi in get_tree().root.find_children("*", "MeshInstance3D", true, false):
 		var m: MeshInstance3D = mi
 		# pas les corps des personnages (des maillages déformés par un squelette)
@@ -98,11 +113,16 @@ func _ad_mettre(quoi: Variant, bx: AABB) -> void:
 	var z0: int = floori(bx.position.z / 8.0)
 	var z1: int = floori(bx.end.z / 8.0)
 	if (x1 - x0 + 1) * (z1 - z0 + 1) > 400:
-		# très grand (le relief, la mer) : rangé seulement au milieu (le sol solide le remplace au besoin)
-		x0 = floori(bx.get_center().x / 8.0)
-		x1 = x0
-		z0 = floori(bx.get_center().z / 8.0)
-		z1 = z0
+		# très grand : V184, dans une grille à part, de cases de 64 m (avant : rangé seulement au milieu ;
+		# un maillage qui réunit tout le verre ou tout le décor d'une ville — plus de 160 m — n'était vu
+		# qu'en son centre : l'audit des chemins passait à travers sans le voir)
+		for gx in range(floori(bx.position.x / 64.0), floori(bx.end.x / 64.0) + 1):
+			for gz in range(floori(bx.position.z / 64.0), floori(bx.end.z / 64.0) + 1):
+				var cg := Vector2i(gx, gz)
+				if not _ad_grille_gros.has(cg):
+					_ad_grille_gros[cg] = []
+				(_ad_grille_gros[cg] as Array).append([quoi, bx])
+		return
 	for x in range(x0, x1 + 1):
 		for z in range(z0, z1 + 1):
 			var c := Vector2i(x, z)
@@ -115,16 +135,25 @@ func _ad_mettre(quoi: Variant, bx: AABB) -> void:
 func _ad_triangles(p: Vector3, sauf: Array) -> void:
 	var zone := AABB(p - Vector3(1.6, 0.6, 1.6), Vector3(3.2, 3.2, 3.2))
 	var vus: Dictionary = {}
+	var listes: Array = []
 	for x in range(floori(zone.position.x / 8.0), floori(zone.end.x / 8.0) + 1):
 		for z in range(floori(zone.position.z / 8.0), floori(zone.end.z / 8.0) + 1):
-			for e in _ad_grille.get(Vector2i(x, z), []):
+			listes.append(_ad_grille.get(Vector2i(x, z), []))
+	for gx in range(floori(zone.position.x / 64.0), floori(zone.end.x / 64.0) + 1):
+		for gz in range(floori(zone.position.z / 64.0), floori(zone.end.z / 64.0) + 1):
+			listes.append(_ad_grille_gros.get(Vector2i(gx, gz), []))
+	for liste in listes:
+		if true:
+			for e in liste:
 				if not (e[1] as AABB).intersects(zone):
 					continue
-				var obj: Variant = e[0] if e[0] is Object else (e[0] as Array)[0]
+				# (V184 : un maillage rangé a pu être libéré depuis : un quartier qu'on a quitté)
+				var multi: bool = typeof(e[0]) == TYPE_ARRAY
+				var obj: Variant = (e[0] as Array)[0] if multi else e[0]
 				if not is_instance_valid(obj):
 					continue
 				var nd: Node3D = obj
-				var cle: String = str(nd.get_instance_id()) + ("" if e[0] is Object else ":" + str((e[0] as Array)[1]))
+				var cle: String = str(nd.get_instance_id()) + (":" + str((e[0] as Array)[1]) if multi else "")
 				if vus.has(cle) or _ad_faits.has(cle):
 					continue
 				vus[cle] = true
@@ -161,10 +190,10 @@ func _ad_triangles(p: Vector3, sauf: Array) -> void:
 
 
 ## On rend les triangles des endroits qu'on a quittés (plus de 150 m).
-func _ad_oublier(p: Vector3) -> void:
+func _ad_oublier(p: Vector3, rayon: float = 150.0) -> void:
 	for cle in _ad_faits.keys():
 		var sb: Variant = _ad_faits[cle]
-		if sb is StaticBody3D and is_instance_valid(sb) and ((sb as Node).get_meta("ad_pos") as Vector3).distance_to(p) > 150.0:
+		if sb is StaticBody3D and is_instance_valid(sb) and ((sb as Node).get_meta("ad_pos") as Vector3).distance_to(p) > rayon:
 			(sb as Node).queue_free()
 			_ad_faits.erase(cle)
 
@@ -706,3 +735,645 @@ func _ad_sieges_poses() -> void:
 			(st as Node).set_meta("ad_range", true)
 			for mi in (st as Node).find_children("*", "MeshInstance3D", true, false):
 				_ad_mettre(mi, (mi as MeshInstance3D).global_transform * (mi as MeshInstance3D).get_aabb())
+
+
+## V184 : le grand contrôle des bugs visuels, les chemins des habitants (audit_dehors.py --chemins). Un
+## habitant va d'un lieu à l'autre en ligne droite, de point en point du plan de sa ville (« points » et
+## « links », partagés par les habitants de la ville) ; on parcourt chaque bout de chemin comme lui, tous
+## les 25 cm, le sol pris comme il le prend (pnj_v31._snap_to_floor : un rayon de 2 m au-dessus à 3 m
+## dessous, ou le relief), et l'on regarde si son corps (trois boules de 18 cm, aux genoux, au ventre, à
+## la poitrine) passe dans le décor qu'on voit (les maillages, changés en triangles). Une ligne « CHEMIN »
+## par bout de chemin qui touche quelque chose : les pas qui touchent (à quelle fraction du chemin, la
+## place libre autour de l'axe du corps, ce qui est touché, à quelle hauteur) et les sauts du sol (plus de
+## 60 cm d'un pas à l'autre : on monte sur une table, un toit, ou l'on tombe d'un mur).
+const AC_PAS := 0.25
+const AC_RAYON := 0.18
+const AC_HAUTEURS := [0.5, 1.0, 1.45]
+
+
+## Les plans des villes : [[ville (le script), points, links, [habitants]], …] (les habitants d'une ville
+## partagent les mêmes dictionnaires).
+func _ad_graphes() -> Array:
+	var out: Array = []
+	for nn in npcs_v31:
+		if not is_instance_valid(nn):
+			continue
+		var pts: Variant = nn.get("points")
+		var lk: Variant = nn.get("links")
+		if not (pts is Dictionary) or not (lk is Dictionary) or (lk as Dictionary).is_empty():
+			continue
+		# (certains habitants ont chacun leur copie du même plan : on ne le parcourt qu'une fois)
+		var sig: int = hash(str(pts) + str(lk))
+		var g: Array = []
+		for e in out:
+			if is_same(e[2], lk) or int(e[4]) == sig:
+				g = e
+				break
+		if g.is_empty():
+			var ville: Variant = nn.get("azur")
+			var src: Object = ville if ville is Object else nn
+			var sc: Script = src.get_script()
+			var cle: String = sc.resource_path.get_file() if sc != null else str(src)
+			if not (ville is Object):
+				cle += ":" + str(nn.get("display_name"))
+			g = [cle, pts, lk, [], sig]
+			out.append(g)
+		(g[3] as Array).append(str(nn.get("display_name")))
+	return out
+
+
+## Ce qui n'est pas du décor : les personnages, le héros, les bêtes, les bateaux qui passent.
+func _ad_sauf() -> Array:
+	var sauf: Array = []
+	for nn in npcs_v31:
+		if is_instance_valid(nn):
+			sauf.append(nn)
+	for x in [pc_hero, pc_root, monstres_v36, faune_v132, trafic_v103, oiseaux_v103, compagnons_animaux_v76]:
+		if x != null and is_instance_valid(x):
+			sauf.append(x)
+	for gr in ["cibles_v28", "faune_v132", "monstres_v36"]:
+		for x2 in get_tree().get_nodes_in_group(gr):
+			sauf.append(x2)
+	return sauf
+
+
+func _ad_corps() -> Array:
+	var corps: Array = []
+	for hb in [pc_body, vr_body]:
+		if hb != null:
+			corps.append((hb as CollisionObject3D).get_rid())
+	for nn in npcs_v31:
+		if is_instance_valid(nn):
+			var b: Variant = (nn as Node).get("_body")
+			if b is CollisionObject3D:
+				corps.append((b as CollisionObject3D).get_rid())
+	return corps
+
+
+## Le sol sous un habitant qui est en p (comme pnj_v31._snap_to_floor).
+func _ac_sol(space: PhysicsDirectSpaceState3D, p: Vector3, corps: Array) -> float:
+	var q := PhysicsRayQueryParameters3D.create(p + Vector3.UP * 2.0, p + Vector3.DOWN * 3.0, 1, corps)
+	var hit: Dictionary = space.intersect_ray(q)
+	if not hit.is_empty():
+		return (hit["position"] as Vector3).y
+	var g: float = _height_at(p.x, p.z)
+	var dessus: float = p.y - g
+	return g if dessus < 1.5 and dessus > -3.0 else p.y
+
+
+func _ac_nom(hit: Dictionary) -> String:
+	var col: Object = hit.get("collider")
+	if col != null and col.has_meta("au_mi"):
+		var mi: Node = col.get_meta("au_mi")
+		var s: String = str(mi.name)
+		var p: Node = mi.get_parent()
+		for k in range(2):
+			if p == null:
+				break
+			s += "<" + str(p.name)
+			p = p.get_parent()
+		return s.replace("\t", " ").replace(";", ",").replace("/", "-")
+	return str(col.get("name")) if col != null else "?"
+
+
+## Autour d'un vrai bout de chemin, ce qu'on laisse libre (m) : 0,75 ; 1,5 sur un détour « souple » de la table.
+func _ac_bout(nom: String, e: Array) -> float:
+	for nm in [str(e[1]), str(e[2])]:
+		if nm.begins_with("ch184|"):
+			var pp: PackedStringArray = nm.split("|")
+			var T = load("res://scripts/pnj/chemins_table_v184.gd")
+			var cle: String = pp[1] + "|" + pp[2]
+			for v in T.TABLE.get(cle, []):
+				if (v as Array).size() > 3 and int(v[3]) == 1:
+					return 1.5
+	return AC_APPROCHE
+
+
+## Un bout de chemin d'un détour (ses points : « ch184|a|b|k ») dont le bout de chemin d'origine a-b est demandé.
+func _ac_du_detour(voulues: Dictionary, ville: String, a: String, b: String) -> bool:
+	for nm in [a, b]:
+		if nm.begins_with("ch184|"):
+			var pp: PackedStringArray = nm.split("|")
+			if pp.size() >= 3 and voulues.has("%s|%s|%s" % [ville, pp[1], pp[2]]):
+				return true
+	return false
+
+
+func _ac_apres(apres: Array, pa: Vector3, pb: Vector3, a: String, b: String) -> bool:
+	if apres.is_empty():
+		return false
+	var m: Vector3 = (pa + pb) * 0.5
+	var cx: int = floori(m.x / 64.0)
+	var cz: int = floori(m.z / 64.0)
+	if cx != int(apres[0]):
+		return cx > int(apres[0])
+	if cz != int(apres[1]):
+		return cz > int(apres[1])
+	return a + b > str(apres[2])
+
+
+func _ac_ordre(x: Array, y: Array) -> bool:
+	var mx: Vector3 = ((x[3] as Vector3) + (x[4] as Vector3)) * 0.5
+	var my: Vector3 = ((y[3] as Vector3) + (y[4] as Vector3)) * 0.5
+	var cx := Vector2i(floori(mx.x / 64.0), floori(mx.z / 64.0))
+	var cy := Vector2i(floori(my.x / 64.0), floori(my.z / 64.0))
+	if cx.x != cy.x:
+		return cx.x < cy.x
+	if cx.y != cy.y:
+		return cx.y < cy.y
+	return str(x[1]) + str(x[2]) < str(y[1]) + str(y[2])
+
+
+func _ad_chemins() -> void:
+	var graphes: Array = _ad_graphes()
+	var villes: Array = _ad_args.get("villes", [])
+	# (--aretes : seulement ces bouts de chemin, [[ville, a, b], …], en plus des villes demandées)
+	var voulues: Dictionary = {}
+	for w in _ad_args.get("aretes", []):
+		voulues["%s|%s|%s" % [w[0], w[1], w[2]]] = true
+		voulues["%s|%s|%s" % [w[0], w[2], w[1]]] = true
+	# (--apres : les bouts de chemin rangés après celui-là, [case x, case z, a + b] : reprendre un audit)
+	var apres: Array = _ad_args.get("apres", [])
+	var tout: bool = villes.is_empty() and voulues.is_empty() and apres.is_empty()
+	var aretes: Array = []
+	for gi in range(graphes.size()):
+		var g: Array = graphes[gi]
+		var pts: Dictionary = g[1]
+		var lk: Dictionary = g[2]
+		print("CHEMIN_PLAN\t%s\t%d points\t%d habitants\t%s" % [g[0], pts.size(), (g[3] as Array).size(), ", ".join(PackedStringArray((g[3] as Array).slice(0, 6)))])
+		var ville_ok: bool = tout or str(g[0]) in villes or str(g[0]).get_slice(":", 0) in villes
+		for a in lk:
+			for b in lk[a]:
+				if not pts.has(a) or not pts.has(b) or str(a) == str(b):
+					continue
+				# chaque bout une seule fois (dans les deux sens)
+				if str(a) > str(b) and (lk.get(b, []) as Array).has(a):
+					continue
+				# un ascenseur, une échelle (on monte plus qu'on n'avance) : on n'y marche pas
+				var pa: Vector3 = pts[a]
+				var pb: Vector3 = pts[b]
+				var dy: float = absf(pb.y - pa.y)
+				if dy > 2.5 and dy > Vector2(pb.x - pa.x, pb.z - pa.z).length():
+					print("CHEMIN_VERTICAL\t%s\t%s\t%s\t%.1f" % [g[0], a, b, dy])
+					continue
+				if not ville_ok and not voulues.has("%s|%s|%s" % [g[0], a, b]) and not _ac_apres(apres, pa, pb, str(a), str(b)) and not _ac_du_detour(voulues, str(g[0]), str(a), str(b)):
+					continue
+				aretes.append([str(g[0]), str(a), str(b), pa, pb])
+	# les tours de course (en ligne droite d'un point de la boucle au suivant) et les jeux des enfants
+	# (d'un lieu de jeu à l'autre, en ligne droite) : pas par le plan
+	var vus_dir: Dictionary = {}
+	for nn in npcs_v31:
+		if not is_instance_valid(nn) or not (nn.get("agenda") is Array) or nn.get("azur") == null:
+			continue
+		var az: Object = nn.get("azur")
+		var pts2: Dictionary = nn.get("points")
+		var nom_v: String = (az.get_script() as Script).resource_path.get_file()
+		if not tout and not (nom_v in villes) and apres.is_empty():
+			continue
+		for en in nn.get("agenda"):
+			if not (en is Array) or (en as Array).size() < 3:
+				continue
+			var cible: Variant = en[2]
+			var segs: Array = []
+			if str(cible).begins_with("course:"):
+				var boucle: Array = Array(str(cible).substr(7).split(","))
+				# (V184 : la boucle passe par le plan de la ville : seuls comptent les pas d'un point à un
+				# autre qui n'est pas son voisin dans le plan)
+				if nn.has_method("_boucle_v184"):
+					boucle = nn.call("_boucle_v184", str(cible).substr(7).split(","))
+				var lk2: Dictionary = nn.get("links")
+				for k in range(boucle.size()):
+					var b0: String = str(boucle[k])
+					var b1: String = str(boucle[(k + 1) % boucle.size()])
+					if not (lk2.get(b0, []) as Array).has(b1):
+						segs.append([b0, b1, "course"])
+			elif (en as Array).size() > 3 and en[3] is Array:
+				var lieux_j: Array = (en[3] as Array).duplicate()
+				lieux_j.append(cible)
+				var noeuds: Array = []
+				for lj in lieux_j:
+					var sp: Dictionary = az.call("spot", str(lj))
+					if not sp.is_empty() and str(sp.get("pose", "")) == "jouer":
+						noeuds.append(str(sp.get("node", "")))
+				# (V184 : d'un lieu de jeu à l'autre par le plan, quand il les relie ; sinon en ligne droite)
+				var relie: bool = nn.has_method("_boucle_v184")
+				for k1 in range(noeuds.size()):
+					for k2 in range(k1 + 1, noeuds.size()):
+						if not relie or (nn.call("_boucle_v184", PackedStringArray([noeuds[k1], noeuds[k2]])) as Array).size() <= 2:
+							segs.append([noeuds[k1], noeuds[k2], "jeu"])
+			for sg in segs:
+				var sa: String = str(sg[0])
+				var sb: String = str(sg[1])
+				if sa == sb or not pts2.has(sa) or not pts2.has(sb):
+					continue
+				var cle_d: String = nom_v + ":" + (sa + "|" + sb if sa < sb else sb + "|" + sa)
+				if vus_dir.has(cle_d):
+					continue
+				if not tout and not (nom_v in villes) and not _ac_apres(apres, pts2[sa], pts2[sb], sa, sb):
+					continue
+				vus_dir[cle_d] = true
+				aretes.append([nom_v + ":" + str(sg[2]), sa, sb, pts2[sa], pts2[sb]])
+	# rangés par cases de 64 m (on se déplace le moins possible)
+	aretes.sort_custom(_ac_ordre)
+	var de: int = int(_ad_args.get("de", 0))
+	var a2: int = mini(int(_ad_args.get("a", aretes.size())), aretes.size())
+	print("CHEMINS_DEBUT %d plans, %d bouts de chemin, de %d à %d" % [graphes.size(), aretes.size(), de, a2])
+	var cellule := Vector2i(1 << 30, 0)
+	var ici := Vector3(1e9, 0, 0)
+	var n_cas: int = 0
+	for i in range(de, a2):
+		var e: Array = aretes[i]
+		var A: Vector3 = e[3]
+		var B: Vector3 = e[4]
+		var mil: Vector3 = (A + B) * 0.5
+		var c := Vector2i(floori(mil.x / 64.0), floori(mil.z / 64.0))
+		if c != cellule or ici.distance_to(mil) > 80.0:
+			cellule = c
+			ici = mil
+			place_player_v35(A + Vector3.UP * 0.3, B - A)
+			await _att(2.0)
+			_ad_ranger(A, true)
+			# (V184 : on rend les triangles plus tôt : à garder ceux de tout le jeu, la mémoire n'y suffit pas)
+			_ad_oublier(A, 100.0)
+		if (i - de) % 200 == 199:
+			print("CHEMINS_MEMOIRE %d bouts, %d Mo, %d maillages en triangles" % [i - de + 1, OS.get_static_memory_usage() / 1048576, _ad_faits.size()])
+		var cas: bool = await _ad_arete(i, e)
+		if cas:
+			n_cas += 1
+	print("CHEMINS_FIN %d bouts de chemin regardés, %d touchent le décor" % [a2 - de, n_cas])
+
+
+## Un bout de chemin : vrai s'il touche le décor qu'on voit (ou si le sol saute).
+func _ad_arete(i: int, e: Array) -> bool:
+	var A: Vector3 = e[3]
+	var B: Vector3 = e[4]
+	var plat := Vector3(B.x - A.x, 0.0, B.z - A.z)
+	var L: float = plat.length()
+	var n: int = maxi(1, ceili(L / AC_PAS))
+	var sauf: Array = _ad_sauf()
+	var s: float = 0.0
+	while true:
+		_ad_triangles(A.lerp(B, clampf(s / maxf(L, 0.01), 0.0, 1.0)), sauf)
+		if s >= L:
+			break
+		s = minf(s + 2.4, L)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var space := get_world_3d().direct_space_state
+	var corps: Array = _ad_corps()
+	var y: float = _ac_sol(space, A, corps)
+	var pas: Array = []            # les pas qui touchent : "t/libre/quoi@hauteur"
+	var sauts: Array = []
+	var libre_min: float = AC_RAYON
+	var grave: bool = false        # l'axe du corps à moins de 10 cm du décor, loin des deux bouts
+	for k in range(n + 1):
+		var t: float = float(k) / float(n)
+		var p := Vector3(lerpf(A.x, B.x, t), y, lerpf(A.z, B.z, t))
+		var y2: float = _ac_sol(space, p, corps)
+		if absf(y2 - y) > 0.6:
+			sauts.append("%.2f/%.2f/%.2f" % [t, y, y2])
+			grave = true
+		y = y2
+		p.y = y
+		var lib: float = AC_RAYON
+		var nom: String = ""
+		for h in AC_HAUTEURS:
+			var cc: Vector3 = p + Vector3.UP * float(h)
+			var hit: Dictionary = _au_boule(space, cc, AC_RAYON, AD_COUCHE, [])
+			if hit.is_empty():
+				continue
+			var lb: float = _au_libre(space, cc, AC_RAYON, AD_COUCHE, [])
+			if nom == "" or lb < lib:
+				lib = minf(lib, lb)
+				nom = _ac_nom(hit) + "@" + str(h)
+		if nom != "":
+			pas.append("%.2f/%.3f/%s" % [t, lib, nom])
+			libre_min = minf(libre_min, lib)
+			# (près d'un vrai bout de chemin, on y arrive comme avant ; près d'un point de détour, non : le
+			# détour doit être libre tout du long ; un détour « souple » : 1,5 m libres autour des vrais bouts)
+			if lib < AC_SEUIL and (t * L > _ac_bout(str(e[1]), e) or e[1].begins_with("ch184|")) and ((1.0 - t) * L > _ac_bout(str(e[2]), e) or e[2].begins_with("ch184|")):
+				grave = true
+	if pas.is_empty() and sauts.is_empty():
+		return false
+	print("CHEMIN\t%d\t%s\t%s\t%s\t%.1f\t%d/%d\t%.3f\t%.2f,%.2f,%.2f\t%.2f,%.2f,%.2f\t%s\t%s" % [i, e[0], e[1], e[2], L, pas.size(), n + 1, libre_min,
+		A.x, A.y, A.z, B.x, B.y, B.z, ";".join(PackedStringArray(pas)), ";".join(PackedStringArray(sauts))])
+	if grave and _ad_args.get("detours", false):
+		var det: Array = []
+		var souple: bool = false
+		for essai in range(2):
+			souple = essai == 1
+			_ac_marge = 0.15 if souple else AC_MARGE
+			_ac_marche = 0.5 if souple else 0.35
+			_ac_approche = 1.5 if souple else AC_APPROCHE
+			for large in [4.0, 9.0, 15.0]:
+				det = await _ac_detour(A, B, large, corps)
+				if not det.is_empty():
+					break
+			if not det.is_empty():
+				break
+		_ac_marge = AC_MARGE
+		_ac_marche = 0.35
+		_ac_approche = AC_APPROCHE
+		if det.is_empty():
+			print("CHEMIN_DETOUR_ECHEC\t%d\t%s\t%s\t%s" % [i, e[0], e[1], e[2]])
+		else:
+			var long: float = 0.0
+			var prec: Vector3 = A
+			var txt: Array = []
+			for w in det:
+				long += Vector2((w as Vector3).x - prec.x, (w as Vector3).z - prec.z).length()
+				prec = w
+				txt.append("%.2f,%.2f,%.2f" % [(w as Vector3).x, (w as Vector3).y, (w as Vector3).z])
+			long += Vector2(B.x - prec.x, B.z - prec.z).length()
+			print("CHEMIN_DETOUR\t%d\t%s\t%s\t%s\t%.2f,%.2f\t%.2f,%.2f\t%.1f\t%.1f\t%s\t%s" % [i, e[0], e[1], e[2], A.x, A.z, B.x, B.z, L, long, ";".join(PackedStringArray(txt)), "souple" if souple else ""])
+	return true
+
+
+## Les détours (audit_dehors.py --chemins --detours) : pour un bout de chemin où l'axe du corps passe à
+## moins de 10 cm du décor (loin des deux bouts), une grille de 30 cm le long du chemin (« large » m de
+## chaque côté, 1,8 m avant et après) ; une case est libre si le corps y tient (trois boules de 22 cm) ;
+## près des deux bouts (75 cm), on passe toujours (on y arrive comme avant) ; d'une case à l'autre, le sol
+## ne saute pas de plus de 35 cm. Le plus court chemin (A*), puis tendu : le moins de points possible,
+## chaque ligne droite gardant le corps hors du décor. Les points du détour (sans A ni B), ou [].
+const AC_SEUIL := 0.1
+const AC_CASE := 0.3
+const AC_MARGE := 0.22
+const AC_APPROCHE := 0.75
+var _ac_marge: float = AC_MARGE
+var _ac_marche: float = 0.35
+var _ac_approche: float = AC_APPROCHE
+
+
+func _ac_libre_ici(space: PhysicsDirectSpaceState3D, p: Vector3) -> bool:
+	for h in AC_HAUTEURS:
+		if not _au_boule(space, p + Vector3.UP * float(h), _ac_marge, AD_COUCHE, []).is_empty():
+			return false
+	return true
+
+
+func _ac_pres(p: Vector3, A: Vector3, B: Vector3) -> bool:
+	return Vector2(p.x - A.x, p.z - A.z).length() < _ac_approche or Vector2(p.x - B.x, p.z - B.z).length() < _ac_approche
+
+
+func _ac_ligne_libre(space: PhysicsDirectSpaceState3D, P: Vector3, Q: Vector3, A: Vector3, B: Vector3, corps: Array) -> bool:
+	var d := Vector3(Q.x - P.x, 0.0, Q.z - P.z)
+	var n: int = maxi(1, ceili(d.length() / 0.15))
+	var y: float = P.y
+	for k in range(1, n + 1):
+		var t: float = float(k) / float(n)
+		var p := Vector3(lerpf(P.x, Q.x, t), y, lerpf(P.z, Q.z, t))
+		var y2: float = _ac_sol(space, p, corps)
+		if absf(y2 - y) > _ac_marche - 0.05:
+			return false
+		y = y2
+		p.y = y
+		if not _ac_pres(p, A, B) and not _ac_libre_ici(space, p):
+			return false
+	return true
+
+
+func _ac_detour(A: Vector3, B: Vector3, large: float, corps: Array) -> Array:
+	var plat := Vector3(B.x - A.x, 0.0, B.z - A.z)
+	var L: float = plat.length()
+	if L < 0.3:
+		return []
+	var u: Vector3 = plat / L
+	var v := Vector3(-u.z, 0.0, u.x)
+	var h: float = AC_CASE
+	var u0: float = -6.0 * h
+	var nu: int = ceili((L - 2.0 * u0) / h) + 1
+	var nv: int = ceili(2.0 * large / h) + 1
+	var v0: float = -float(nv - 1) * 0.5 * h
+	# les triangles du décor de toute la zone
+	var sauf: Array = _ad_sauf()
+	var su: float = u0 - 1.0
+	while su <= L - u0 + 1.0:
+		var sv: float = v0 - 1.0
+		while sv <= -v0 + 1.0:
+			_ad_triangles(Vector3(A.x, lerpf(A.y, B.y, clampf(su / L, 0.0, 1.0)), A.z) + u * su + v * sv, sauf)
+			sv += 2.4
+		su += 2.4
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var space := get_world_3d().direct_space_state
+	var n: int = nu * nv
+	# chaque case n'est regardée que si le chemin y passe (0 : pas encore regardée, 1 : libre, 2 : prise)
+	var sol := PackedFloat32Array()
+	sol.resize(n)
+	var etat := PackedByteArray()
+	etat.resize(n)
+	var s: int = roundi(-u0 / h) * nv + roundi(-v0 / h)
+	var but: int = roundi((L - u0) / h) * nv + roundi(-v0 / h)
+	if s < 0 or s >= n or but < 0 or but >= n:
+		return []
+	for c0 in [s, but]:
+		var p0: Vector3 = Vector3(A.x, 0.0, A.z) + u * (u0 + (c0 / nv) * h) + v * (v0 + (c0 % nv) * h)
+		p0.y = A.y if c0 == s else B.y
+		sol[c0] = _ac_sol(space, p0, corps)
+		etat[c0] = 1
+	var g := PackedFloat32Array()
+	g.resize(n)
+	g.fill(INF)
+	var prev := PackedInt32Array()
+	prev.resize(n)
+	prev.fill(-1)
+	var ferme := PackedByteArray()
+	ferme.resize(n)
+	var hf: Array = []
+	var hi: Array = []
+	g[s] = 0.0
+	var bu: int = but / nv
+	var bv: int = but % nv
+	hf.append(0.0)
+	hi.append(s)
+	var dirs := [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]]
+	var trouve: bool = false
+	var vus: int = 0
+	while not hi.is_empty():
+		var cur: int = hi[0]
+		var lf: float = hf.pop_back()
+		var li: int = hi.pop_back()
+		if not hi.is_empty():
+			hf[0] = lf
+			hi[0] = li
+			var j: int = 0
+			while true:
+				var l: int = 2 * j + 1
+				if l >= hi.size():
+					break
+				var m: int = l
+				if l + 1 < hi.size() and float(hf[l + 1]) < float(hf[l]):
+					m = l + 1
+				if float(hf[m]) < float(hf[j]):
+					var tf: float = hf[m]
+					hf[m] = hf[j]
+					hf[j] = tf
+					var ti: int = hi[m]
+					hi[m] = hi[j]
+					hi[j] = ti
+					j = m
+				else:
+					break
+		if ferme[cur] == 1:
+			continue
+		ferme[cur] = 1
+		if cur == but:
+			trouve = true
+			break
+		var cu: int = cur / nv
+		var cv: int = cur % nv
+		# les voisines, regardées au besoin (le sol pris depuis la case où l'on est)
+		for dd in dirs:
+			var nu2: int = cu + int(dd[0])
+			var nv2: int = cv + int(dd[1])
+			if nu2 < 0 or nu2 >= nu or nv2 < 0 or nv2 >= nv:
+				continue
+			var nb: int = nu2 * nv + nv2
+			if etat[nb] == 0:
+				var p: Vector3 = Vector3(A.x, sol[cur], A.z) + u * (u0 + nu2 * h) + v * (v0 + nv2 * h)
+				var y: float = _ac_sol(space, p, corps)
+				p.y = y
+				sol[nb] = y
+				etat[nb] = 1 if (_ac_pres(p, A, B) or _ac_libre_ici(space, p)) else 2
+				vus += 1
+		for dd in dirs:
+			var nu3: int = cu + int(dd[0])
+			var nv3: int = cv + int(dd[1])
+			if nu3 < 0 or nu3 >= nu or nv3 < 0 or nv3 >= nv:
+				continue
+			var nb3: int = nu3 * nv + nv3
+			if etat[nb3] != 1 or ferme[nb3] == 1:
+				continue
+			var diag: bool = int(dd[0]) != 0 and int(dd[1]) != 0
+			if absf(sol[nb3] - sol[cur]) > (_ac_marche + 0.1 if diag else _ac_marche):
+				continue
+			if diag and (etat[cu * nv + nv3] != 1 or etat[nu3 * nv + cv] != 1):
+				continue
+			# (le sol au milieu du pas aussi : en coupant le coin d'un comptoir, d'un muret, on montait dessus)
+			var pmil: Vector3 = Vector3(A.x, sol[cur], A.z) + u * (u0 + (cu + nu3) * 0.5 * h) + v * (v0 + (cv + nv3) * 0.5 * h)
+			var ymil: float = _ac_sol(space, pmil, corps)
+			if absf(ymil - sol[cur]) > _ac_marche or absf(sol[nb3] - ymil) > _ac_marche:
+				continue
+			var ng: float = g[cur] + h * (1.4142 if diag else 1.0)
+			if ng < g[nb3]:
+				g[nb3] = ng
+				prev[nb3] = cur
+				hf.append(ng + h * Vector2(nu3 - bu, nv3 - bv).length())
+				hi.append(nb3)
+				var j2: int = hf.size() - 1
+				while j2 > 0:
+					var p2: int = (j2 - 1) / 2
+					if float(hf[p2]) > float(hf[j2]):
+						var tf2: float = hf[p2]
+						hf[p2] = hf[j2]
+						hf[j2] = tf2
+						var ti2: int = hi[p2]
+						hi[p2] = hi[j2]
+						hi[j2] = ti2
+						j2 = p2
+					else:
+						break
+	if not trouve:
+		return []
+	# les cases du chemin, de A à B
+	var cases: Array = []
+	var c: int = but
+	while c != -1:
+		cases.push_front(c)
+		c = prev[c]
+	var pts: Array = [A]
+	for k in range(1, cases.size() - 1):
+		var ck: int = cases[k]
+		var q: Vector3 = Vector3(A.x, 0.0, A.z) + u * (u0 + (ck / nv) * h) + v * (v0 + (ck % nv) * h)
+		q.y = sol[ck]
+		pts.append(q)
+	pts.append(B)
+	# tendu : de point en point, aussi loin qu'on peut aller en ligne droite
+	var out: Array = []
+	var i: int = 0
+	var der: int = pts.size() - 1
+	while i < der:
+		var j3: int = i + 1
+		while j3 + 1 <= der and _ac_ligne_libre(space, pts[i], pts[j3 + 1], A, B, corps):
+			j3 += 1
+		if j3 < der:
+			out.append(pts[j3])
+		i = j3
+	return out
+
+
+## Les plans des chemins (audit_dehors.py --radar_chemins liste.json --dossier DOSSIER) : vu de dessus, une
+## coupe du décor à hauteur d'homme (des rayons qui descendent de 1,7 m au-dessus du chemin) : le sol en
+## gris (plus clair plus haut), ce qu'on coupe (un mur, un tronc) en brun foncé, rien en noir. Une image
+## par bout de chemin (et un fichier .json : où est l'image dans le monde) ; audit_dehors.py y trace le
+## chemin d'avant (rouge) et le détour (vert). liste.json : [{"nom", "A": [x, y, z], "B": [x, y, z],
+## "detour": [[x, y, z], …]}, …].
+func _ad_radars_chemins(items: Array, dossier: String) -> void:
+	var sauf: Array = _ad_sauf()
+	for it in items:
+		var A := Vector3(float(it["A"][0]), float(it["A"][1]), float(it["A"][2]))
+		var B := Vector3(float(it["B"][0]), float(it["B"][1]), float(it["B"][2]))
+		var tous: Array = [A, B]
+		for w in it.get("detour", []):
+			tous.append(Vector3(float(w[0]), float(w[1]), float(w[2])))
+		var lo := Vector2(1e9, 1e9)
+		var hi := Vector2(-1e9, -1e9)
+		for q in tous:
+			lo = Vector2(minf(lo.x, (q as Vector3).x), minf(lo.y, (q as Vector3).z))
+			hi = Vector2(maxf(hi.x, (q as Vector3).x), maxf(hi.y, (q as Vector3).z))
+		lo -= Vector2(4.0, 4.0)
+		hi += Vector2(4.0, 4.0)
+		var taille: Vector2 = hi - lo
+		var ech: float = minf(420.0 / taille.x, 320.0 / taille.y)
+		var w_px: int = maxi(40, int(taille.x * ech))
+		var h_px: int = maxi(40, int(taille.y * ech))
+		var mil: Vector3 = (A + B) * 0.5
+		place_player_v35(mil + Vector3.UP * 0.3, B - A)
+		await _att(1.4)
+		_ad_ranger(mil)
+		_ad_oublier(mil)
+		_ad_sieges_poses()
+		sauf = _ad_sauf()
+		var y_moy: float = (A.y + B.y) * 0.5
+		var sx: float = lo.x
+		while sx <= hi.x + 2.4:
+			var sz: float = lo.y
+			while sz <= hi.y + 2.4:
+				_ad_triangles(Vector3(sx, y_moy, sz), sauf)
+				sz += 2.4
+			sx += 2.4
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		var space := get_world_3d().direct_space_state
+		var img := Image.create(w_px, h_px, false, Image.FORMAT_RGB8)
+		var ab := Vector2(B.x - A.x, B.z - A.z)
+		var L2: float = maxf(ab.length_squared(), 0.0001)
+		for py in range(h_px):
+			for px in range(w_px):
+				var x: float = lo.x + (float(px) + 0.5) / ech
+				var z: float = lo.y + (float(py) + 0.5) / ech
+				var t: float = clampf(Vector2(x - A.x, z - A.z).dot(ab) / L2, 0.0, 1.0)
+				var y0: float = lerpf(A.y, B.y, t)
+				var q := PhysicsRayQueryParameters3D.create(Vector3(x, y0 + 1.7, z), Vector3(x, y0 - 2.5, z), AD_COUCHE | 1)
+				q.hit_back_faces = true
+				var r: Dictionary = space.intersect_ray(q)
+				var col := Color(0.05, 0.05, 0.07)
+				if not r.is_empty():
+					var nrm: Vector3 = r["normal"]
+					var hy: float = (r["position"] as Vector3).y - y0
+					var vu: bool = (r["collider"] as Object).has_meta("au_mi")
+					if nrm.y < 0.35:
+						col = Color(0.42, 0.22, 0.12) if vu else Color(0.3, 0.25, 0.3)
+					elif hy > 0.3:
+						col = Color(0.85, 0.62, 0.3).lerp(Color(0.95, 0.85, 0.6), clampf((hy - 0.3) / 1.4, 0.0, 1.0))
+					else:
+						col = Color(0.5, 0.52, 0.5).lerp(Color(0.8, 0.82, 0.8), clampf((hy + 0.6) / 0.9, 0.0, 1.0))
+						if not vu:
+							col = col * Color(0.85, 0.9, 1.0)
+				img.set_pixel(px, py, col)
+		var base: String = "%s/%s" % [dossier, str(it["nom"]).replace("/", "_").replace("|", "_").replace(" ", "_")]
+		img.save_png(base + ".png")
+		var f := FileAccess.open(base + ".json", FileAccess.WRITE)
+		f.store_string(JSON.stringify({"lo": [lo.x, lo.y], "ech": ech, "w": w_px, "h": h_px}))
+		f.close()
+		print("RADAR_CHEMIN ", it["nom"])

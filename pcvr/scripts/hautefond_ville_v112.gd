@@ -641,24 +641,34 @@ func _graph() -> void:
 	# les rampes : du bas (la rue du bas) au haut (la rue de la terrasse d'en haut)
 	var ends := {"r1": ["bi", "mo"], "r1b": ["bi", "mo"], "r2": ["mi", "ho"], "r2b": ["mi", "ho"], "r3": ["hi", ""], "r3b": ["hi", ""]}
 	for k4 in R.RAMPS:
+		var rp: Array = R.RAMPS[k4]
+		# V184 : le haut de la rampe 1,6 m avant son bout : au bout même, le relief retombe déjà vers la
+		# terrasse d'en bas (les habitants y descendaient de cinq mètres, puis remontaient à travers le mur)
+		var t_haut: float = 1.0 - 1.6 / (absf(deg_to_rad(R.ramp_span(str(k4)))) * (float(rp[0]) + float(rp[1]) * 0.5))
+		var a_haut: float = float(rp[2]) + R.ramp_span(str(k4)) * t_haut
 		var names: Array = []
 		for i in range(5):
-			names.append(_pt("rampe_%s_%d" % [k4, i], ramp_point(str(k4), float(i) / 4.0)))
-		var rp: Array = R.RAMPS[k4]
+			names.append(_pt("rampe_%s_%d" % [k4, i], ramp_point(str(k4), t_haut * float(i) / 4.0)))
 		var lo: String = nearest_ring(str(ends[k4][0]), float(rp[2]))
 		_link(lo, names[0])
 		_chain(names)
 		if str(ends[k4][1]) != "":
-			var up: String = nearest_ring(str(ends[k4][1]), float(rp[3]))
-			var top_in: String = _pt("rampe_%s_haut" % k4, PW(float(rp[3]), float(rp[0]) - 3.5, float(rp[5]) + 0.05))
+			var up: String = nearest_ring(str(ends[k4][1]), a_haut)
+			# (V184 : 5 m en deçà du bord, pas 3,5 : là, le relief descend déjà vers le mur)
+			var top_in: String = _pt("rampe_%s_haut" % k4, PW(a_haut, float(rp[0]) - 5.0, float(rp[5]) + 0.05))
 			_chain([names[4], top_in, up])
 		else:
-			lieux.core_link(str(names[4]), float(rp[3]))
+			lieux.core_link(str(names[4]), a_haut)
 	# les sorties de la ville : de la rue du bord au dehors
 	for g in R.GATES:
 		var a5: float = float(R.GATES[g])
 		var gp: String = _pt("sortie_" + str(g), PW(a5, R.TOWN_R - 1.0, BY + 0.05))
-		var out: String = _pt("dehors_" + str(g), PG(a5, R.TOWN_R + 16.0, 0.05))
+		# V184 : le dehors sur la terre ferme (à la porte du port, 16 m plus loin, c'était le fond du bassin :
+		# les habitants descendaient dans l'eau)
+		var r_out: float = R.TOWN_R + 16.0
+		while r_out > R.TOWN_R + 2.0 and PG(a5, r_out).y < R.WATER + 1.0:
+			r_out -= 1.0
+		var out: String = _pt("dehors_" + str(g), PG(a5, r_out, 0.05))
 		var inner: String = _pt("avenue_" + str(g), PW(a5, 150.0, BY + 0.05))
 		_chain([nearest_ring("bi", a5), inner, nearest_ring("bo", a5), gp, out])
 		_link(inner, nearest_ring("bo", a5))
