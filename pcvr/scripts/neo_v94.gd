@@ -117,6 +117,7 @@ func dock() -> Array:
 func build_town() -> void:
 	var t0: int = Time.get_ticks_msec()
 	_layout()
+	_uniques_marque()
 	_towers()
 	_axiome()
 	_place()
@@ -149,7 +150,38 @@ func build_town() -> void:
 	tours = load("res://scripts/tours_v153.gd").new()
 	add_child(tours)
 	tours.setup(main, self)
+	_uniques_batit()
 	print("ILE_MANGA_V94: Néopolis est prête (%d tours, %d boîtes, %d ms)" % [batiments.size(), nb_boites, Time.get_ticks_msec() - t0])
+
+
+## V187 : les immeubles faits à la main, un par un (chacun son script, sa forme, ses matières, sa vie). On
+## les reconnaît à un point de leur terrain (repère de la ville) ; leurs boîtes ne sont plus dessinées (elles
+## gardent leurs collisions et leurs étages : on y entre comme avant), leurs enseignes tirées au sort non plus.
+const UNIQUES := [
+	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd"},
+]
+var uniques: Array = []                   # les nœuds des immeubles faits à la main
+
+
+func _uniques_marque() -> void:
+	for u in UNIQUES:
+		var p: Vector2 = u["p"]
+		for bt in batiments:
+			var r: Array = bt["rect"]
+			if p.x > float(r[0]) and p.x < float(r[2]) and p.y > float(r[1]) and p.y < float(r[3]) and bt.has("xfs") and ResourceLoader.exists(str(u["script"])):
+				bt["unique"] = str(u["script"])
+				bt["boites_cachees"] = int(bt["xfs"][1]) - int(bt["xfs"][0])
+				for k in range(int(bt["xfs"][0]), int(bt["xfs"][1])):
+					_xfs[k] = Transform3D(Basis().scaled(Vector3(0.001, 0.001, 0.001)), (_xfs[k] as Transform3D).origin * Vector3(1, 0, 1) + Vector3.DOWN * 60.0)
+
+
+func _uniques_batit() -> void:
+	for bt in batiments:
+		if bt.has("unique"):
+			var n: Node3D = (load(str(bt["unique"])) as Script).new()
+			add_child(n)
+			n.build(self, bt)
+			uniques.append(n)
 
 
 func _ground(x: float, z: float) -> Vector3:
@@ -227,6 +259,7 @@ func _tour(r: Array, h: float, style: int, quartier: String, socle: bool) -> voi
 	h = minf(h, 198.0)                    # la Tour Axiome reste la plus haute
 	_segs_tour = []
 	_cols_tour = []
+	var xa: int = _xfs.size()             # V187 : ses boîtes, dans la liste (pour les cacher si l'immeuble est fait à la main)
 	var x0: float = r[0]
 	var z0: float = r[1]
 	var x1: float = r[2]
@@ -257,7 +290,7 @@ func _tour(r: Array, h: float, style: int, quartier: String, socle: bool) -> voi
 				x1 -= sb
 				z1 -= sb
 	batiments.append({"rect": [float(r[0]), float(r[1]), float(r[2]), float(r[3])], "h": h, "quartier": quartier, "style": style, "hue": hue,
-		"top": [x0, z0, x1, z1], "segs": _segs_tour, "cols": _cols_tour})
+		"top": [x0, z0, x1, z1], "segs": _segs_tour, "cols": _cols_tour, "xfs": [xa, _xfs.size()]})
 	# le toit
 	var cx: float = (x0 + x1) * 0.5
 	var cz: float = (z0 + z1) * 0.5
@@ -942,18 +975,25 @@ func _enseignes() -> void:
 				continue
 			var base: Vector3 = IleScript.W(mid.x, mid.y, Y0)
 			var p_plat: float = 0.55 if q in ["ruelles", "arcades", "quai"] else 0.3
+			var fait_main: bool = bt.has("unique")          # V187
 			if l > 6.0 and _rng.randf() < p_plat:
 				var off: float = _rng.randf_range(-0.25, 0.25) * (l - 5.0)
-				_sign_plat(PLATS[_rng.randi() % PLATS.size()], base + along * off + n * 0.1 + Vector3.UP * 5.2, n, minf(4.6, l - 1.0))
-				n_plat += 1
+				var quel: String = PLATS[_rng.randi() % PLATS.size()]
+				if not fait_main:
+					_sign_plat(quel, base + along * off + n * 0.1 + Vector3.UP * 5.2, n, minf(4.6, l - 1.0))
+					n_plat += 1
 			var p_drap: float = 0.6 if q == "ruelles" else (0.4 if q in ["arcades", "quai", "residences"] else 0.15)
 			if l > 5.0 and _rng.randf() < p_drap:
 				var off2: float = _rng.randf_range(-0.4, 0.4) * l
 				var hy: float = _rng.randf_range(7.5, minf(14.0, float(bt["h"]) - 3.0))
 				if hy > 7.0:
-					_sign_drapeau(b, COLONNES[_rng.randi() % COLONNES.size()], base + along * off2 + n * 0.75 + Vector3.UP * hy, along)
+					var quelle: String = COLONNES[_rng.randi() % COLONNES.size()]
+					if not fait_main:
+						_sign_drapeau(b, quelle, base + along * off2 + n * 0.75 + Vector3.UP * hy, along)
 					if _rng.randf() < 0.4:
-						_light(base + along * off2 + n * 2.0 + Vector3.UP * (hy - 2.0), Kit.NEONS.values()[_rng.randi() % 6], 1.4, 9.0)
+						var teinte: Color = Kit.NEONS.values()[_rng.randi() % 6]
+						if not fait_main:
+							_light(base + along * off2 + n * 2.0 + Vector3.UP * (hy - 2.0), teinte, 1.4, 9.0)
 			# les grands écrans, sur les tours
 			if rue and float(bt["h"]) > 55.0 and l > 16.0 and _rng.randf() < 0.32:
 				var large: bool = _rng.randf() < 0.55

@@ -110,7 +110,11 @@ func setup(main_node: Node, neo: Node3D) -> void:
 		if (t["etages"] as Array).is_empty():
 			continue
 		_porte(t)
-		_entree(b_entrees, t, rng)
+		# V187 : un immeuble fait à la main a sa propre entrée (au même endroit)
+		if not b.has("unique"):
+			_entree(b_entrees, t, rng)
+		else:
+			rng.randi()                   # (le tirage du néon de l'entrée : le même hasard pour les tours suivantes)
 		tours.append(t)
 	b_entrees.commit(self, "Neo_entrees_v153")
 

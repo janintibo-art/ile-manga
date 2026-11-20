@@ -10,7 +10,8 @@
 ##   "lieu" : on l'envoie à ce lieu, comme s'il y arrivait (assis : sur son siège) ;
 ##   "tour" : [n° de tour, étage] : V185, les portraits des gens d'un étage d'une tour de Néopolis ;
 ##   "neo": true : V187, "oeil" et "cible" sont [x, hauteur au-dessus du sol, z] dans le repère de Néopolis ;
-##   "salles": true : V187, l'intérieur des tours de Néopolis : un étage de chaque sorte, huit vues larges ;
+##   "salles": true : V187, l'intérieur des tours de Néopolis : un étage de chaque sorte, huit vues larges
+##             ("tour_seule": n° : tous les étages de cette tour) ;
 ##   "foule" : un style de la réserve des figurants ("neo", "boucan"…) : V186, les corps n° "de" à "de" +
 ##             "combien" (8) de ce style, debout en rang sur un plateau nu (300 m au-dessus du joueur), en pied sur une seule photo
 ##             (ou "ids" : la liste des fiches à aligner) ;
@@ -267,13 +268,23 @@ func _pp_salles(p: Dictionary) -> int:
 	var vus: Dictionary = {}
 	var n: int = 0
 	var max_par: int = int(p.get("par_sorte", 1))
+	# (« tour_seule » : tous les étages de cette tour-là, et d'elle seule ; « vues » : par étage ("7": […]), des
+	# vues choisies [x, h, z de l'œil, x, h, z de la cible], en mètres depuis le coin nord-ouest de l'étage)
+	var seule: int = int(p.get("tour_seule", -1))
+	var vues: Dictionary = p.get("vues", {})
 	for ti in range((T.get("tours") as Array).size()):
+		if seule >= 0 and ti != seule:
+			continue
 		var t: Dictionary = (T.get("tours") as Array)[ti]
 		var ne: int = (t["etages"] as Array).size()
 		var ici: Array = []
 		for k in range(ne):
 			var ty: String = str(T.type_etage(ti, k))
-			if int(vus.get(ty, 0)) < max_par and not (ty in ici):
+			if seule >= 0:
+				if vues.is_empty() or vues.has(str(k)):
+					ici.append("%02d_%s" % [k, ty])
+					ici.append(k)
+			elif int(vus.get(ty, 0)) < max_par and not (ty in ici):
 				ici.append(ty)
 				vus[ty] = int(vus.get(ty, 0)) + 1
 				ici.append(k)
@@ -295,6 +306,14 @@ func _pp_salles(p: Dictionary) -> int:
 			var reg: Vector3 = inf["regard"]
 			print("PHOTO_SALLE %s tour %d étage %d %s" % [nom, ti, k2, str(ici[q])])
 			var a: int = 0
+			if vues.has(str(k2)):
+				var rc: Rect2 = inf["rect"]
+				var o0 := Vector3(rc.position.x, float(inf["y"]), rc.position.y)
+				for v in vues[str(k2)]:
+					if await _pp_photo("%s_%s_v%d" % [nom, str(ici[q]), a], o0 + Vector3(float(v[0]), float(v[1]), float(v[2])), o0 + Vector3(float(v[3]), float(v[4]), float(v[5]))):
+						n += 1
+					a += 1
+				continue
 			for depart in [base, base + reg * 6.0]:
 				for dir in [reg, -reg, reg.cross(Vector3.UP), -reg.cross(Vector3.UP)]:
 					if await _pp_photo("%s_%s_t%d_e%d_%d" % [nom, str(ici[q]), ti, k2, a], depart, depart + (dir as Vector3) * 8.0 - Vector3.UP * 0.6):
