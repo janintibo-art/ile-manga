@@ -31,6 +31,7 @@ const CrayonIle = preload("res://scripts/ile_crayon_v99.gd")
 const HautefondIle = preload("res://scripts/ile_hautefond_v112.gd")
 const SombrevalIle = preload("res://scripts/ile_sombreval_v121.gd")
 const GeantsIle = preload("res://scripts/ile_geants_v142.gd")
+const OmbrelacIle = preload("res://scripts/ext_chateau/ile_ombrelac.gd")   # extension : l'île d'Ombrelac
 const CENTER := Vector3(940.0, 0.0, -150.0)       # le centre de l’île (le massif)
 const GRID := Vector3(900.0, 0.0, -120.0)         # le centre de la grille du relief
 const HALF: float = 371.2
@@ -143,7 +144,7 @@ static func east_clamp(x: float, z: float) -> Vector2:
 ## (V75) celle de l'Île du Boucan, au sud du village ; (V112) celle de l'Île de Hautefond, au sud-ouest ;
 ## (V142) celle de l'Île des Géants, au sud-est.
 static func sea_contains(x: float, z: float, mid: Vector2, radius: float) -> bool:
-	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z) or PastaIle.sea_contains(x, z) or CrayonIle.sea_contains(x, z) or HautefondIle.sea_contains(x, z) or SombrevalIle.sea_contains(x, z) or GeantsIle.sea_contains(x, z)
+	return Vector2(x, z).distance_to(mid) < radius or east_contains(x, z) or PirateIle.sea_contains(x, z) or SoleilsIle.sea_contains(x, z) or BraiseIle.sea_contains(x, z) or MontjoieIle.sea_contains(x, z) or BoucanIle.sea_contains(x, z) or AstraleIle.sea_contains(x, z) or MoaiIle.sea_contains(x, z) or PixelIle.sea_contains(x, z) or LarsenIle.sea_contains(x, z) or NeoIle.sea_contains(x, z) or PastaIle.sea_contains(x, z) or CrayonIle.sea_contains(x, z) or HautefondIle.sea_contains(x, z) or SombrevalIle.sea_contains(x, z) or GeantsIle.sea_contains(x, z) or OmbrelacIle.sea_contains(x, z)
 
 
 static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector2:
@@ -182,7 +183,9 @@ static func sea_clamp(x: float, z: float, mid: Vector2, radius: float) -> Vector
 	best = best if p.distance_to(best) < p.distance_to(c13) else c13
 	best = best if p.distance_to(best) < p.distance_to(c14) else c14
 	best = best if p.distance_to(best) < p.distance_to(c15) else c15
-	return best if p.distance_to(best) < p.distance_to(c16) else c16
+	best = best if p.distance_to(best) < p.distance_to(c16) else c16
+	var c17: Vector2 = OmbrelacIle.sea_clamp(x, z)
+	return best if p.distance_to(best) < p.distance_to(c17) else c17
 
 
 # =================================================================== régions

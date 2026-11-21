@@ -586,6 +586,15 @@ def main() -> int:
                 imp.write_text(IMPORT_V64.format(nm=1 if f.name.endswith("_n.png") else 2, hq="false"))
             n76 += 1
     print(f"Astralys V76: {n76} fichiers")
+    # Extension « Le Château d'Ombrelac » : ses textures (pierre de taille, pierre fine, dalles),
+    # copiées telles quelles ; la règle V158 ci-dessous leur donne compression et mipmaps.
+    ext_ch = source / "textures" / "ext_chateau"
+    if ext_ch.is_dir():
+        for f in sorted(ext_ch.glob("*.png")):
+            dest = target / f.relative_to(source)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+        print(f"Château d'Ombrelac: {len(list(ext_ch.glob('*.png')))} textures")
     # V158 : toutes les autres textures du monde (importées par défaut sans perte et sans mipmaps :
     # scintillement et moiré au loin, mémoire vidéo pleine) : compressées, avec mipmaps. Les cartes
     # de relief (_n) en haute qualité (BPTC : les shaders du terrain lisent leurs trois canaux), les

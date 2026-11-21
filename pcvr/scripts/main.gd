@@ -205,6 +205,8 @@ func _ready() -> void:
 	_create_v146()
 	_create_v147()
 	await chargement_v131.pas("perchee_vie")
+	_create_ombrelac_ext()
+	await chargement_v131.pas("ombrelac_vie")
 	_create_v103()
 	_create_v120()
 	_create_v132()
@@ -291,6 +293,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# V142 : l'Île des Géants (au sud-est, au sud de l'Île Crayonnée ; son carré ne touche aucune autre île)
 	if geants_v142 != null and geants_v142.ile != null and geants_v142.ile.contains(x, z):
 		return maxf(h, geants_v142.ile.height(x, z))
+	# Extension : l'île d'Ombrelac, tout au nord (au nord de l'Île aux Moaïs ; son carré ne touche aucune autre île)
+	if ombrelac_ext != null and ombrelac_ext.ile != null and ombrelac_ext.ile.contains(x, z):
+		return maxf(h, ombrelac_ext.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1182,6 +1187,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			geants_v142.load_data({})
 		if perchee_v146 != null and perchee_v146.ile != null:
 			perchee_v146.load_data({})
+		if ombrelac_ext != null and ombrelac_ext.ile != null:
+			ombrelac_ext.load_data({})
 		if jeux_v147 != null:
 			jeux_v147.load_data({})
 		if compagnons_animaux_v76 != null:
@@ -1387,6 +1394,10 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and perchee_v146 != null and perchee_v146.ile != null:
 		var ppdata: Variant = SaveStore.read_slot(slot).get("perchee", {})
 		perchee_v146.load_data(ppdata if ppdata is Dictionary else {})
+	# Extension : l'île d'Ombrelac
+	if not new_game and ombrelac_ext != null and ombrelac_ext.ile != null:
+		var omdata: Variant = SaveStore.read_slot(slot).get("ombrelac", {})
+		ombrelac_ext.load_data(omdata if omdata is Dictionary else {})
 	# V147 : les jeux de Pile-ou-Face (la réputation, les jetons du jour)
 	if not new_game and jeux_v147 != null:
 		var jxdata: Variant = SaveStore.read_slot(slot).get("jeux", {})
@@ -1550,6 +1561,8 @@ func _save_slot(slot: int) -> bool:
 		extra["geants"] = geants_v142.serialize()
 	if perchee_v146 != null and perchee_v146.ile != null:
 		extra["perchee"] = perchee_v146.serialize()
+	if ombrelac_ext != null and ombrelac_ext.ile != null:
+		extra["ombrelac"] = ombrelac_ext.serialize()
 	if jeux_v147 != null:
 		extra["jeux"] = jeux_v147.serialize()
 	if compagnons_animaux_v76 != null:
@@ -3085,6 +3098,16 @@ func _create_jungle_v29() -> void:
 	await chargement_v131.pas("perchee")
 	var pp_d: Array = perchee_v146.dock()
 	boat_v29._make_dock("Ponton_perchee", pp_d[0], pp_d[1])
+	# Extension : l'île d'Ombrelac (le relief d'abord ; le château et la végétation après l'heure du
+	# jour, voir _create_ombrelac_ext) ; son débarcadère au sud.
+	ombrelac_ext = preload("res://scripts/ext_chateau/ombrelac.gd").new()
+	ombrelac_ext.name = "Ombrelac_ext"
+	add_child(ombrelac_ext)
+	ombrelac_ext.setup(self)
+	ombrelac_ext.build_island()
+	await chargement_v131.pas("ombrelac")
+	var om_d: Array = ombrelac_ext.dock()
+	boat_v29._make_dock("Ponton_ombrelac", om_d[0], om_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (sauf là où l'on a pied, ou là où l'on nage) ; les
@@ -3958,6 +3981,7 @@ var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cit�
 var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
 var geants_v142: Node3D                    # V142 : l'Île des Géants (la ferme des Grandpré, cinq géants gentils)
 var perchee_v146: Node3D                   # V146 : l'Île Perchée (Pile-ou-Face, le bourg du Far West dans le ciel)
+var ombrelac_ext: Node3D                   # Extension : l'île d'Ombrelac et son château géant (scripts/ext_chateau/)
 var jeux_v147: Node                        # V147 : les jeux de Pile-ou-Face (les tables, les mises, la réputation)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
 var oiseaux_v103: Node3D                   # V103 : les goélands, les moineaux, les vols qui passent
@@ -4360,6 +4384,13 @@ func _create_v146() -> void:
 	perchee_v146.build_town()
 	if journal_v56 != null:
 		perchee_v146.register_services(journal_v56)
+
+
+## Extension : le château d'Ombrelac, l'eau du lac et du torrent, la végétation de l'île.
+func _create_ombrelac_ext() -> void:
+	if ombrelac_ext == null:
+		return
+	ombrelac_ext.build_town()
 
 
 ## V147 : les jeux de Pile-ou-Face (les tables de la Fosse aux Dés ; plus tard le blackjack, le poker).

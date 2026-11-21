@@ -23,6 +23,7 @@ const PLACES := [
 	["crayon", "L'Île Crayonnée, la Grève Blanche"],
 	["sombreval", "Sombreval, le Port des Brumes"],
 	["geants", "L'Île des Géants, le Ponton des Petits"],
+	["ombrelac", "L'île d'Ombrelac, le débarcadère"], ["ombrelac_cour", "L'Académie d'Ombrelac, la Cour d'Honneur"],
 	["perchee", "L'Île Perchée, Pile-ou-Face"], ["perchee_ponton", "Le Ponton de la Chaîne"],
 	["hautefond", "Hautefond, la Place de la Colonne"], ["hautefond_port", "Le Port des Cordages"], ["nuees", "La Cité des Nuées, l'Esplanade du Ciel"], ["strates", "Les Strates, la Gare"], ["fronde", "La Fronde, l'entrée"], ["dome", "Le Dôme d'Azur, la Place de la Perle"],
 ]
@@ -142,6 +143,9 @@ func spot(id: String) -> Array:
 		"geants":
 			var gt: Node = main.get("geants_v142")
 			return gt.village_point(id) if gt != null and gt.get("ile") != null and gt.ile != null else []
+		"ombrelac", "ombrelac_cour":
+			var om: Node = main.get("ombrelac_ext")
+			return om.village_point(id) if om != null and om.get("chateau") != null and om.chateau != null else []
 		"perchee", "perchee_ponton":
 			var pp: Node = main.get("perchee_v146")
 			return pp.village_point(id) if pp != null and pp.get("ile") != null and pp.ile != null else []
@@ -231,6 +235,10 @@ func current_place() -> String:
 	var gt2: Node = main.get("geants_v142")
 	if gt2 != null and gt2.get("ile") != null and gt2.ile != null and gt2.contains(p) and p.y > -10.0 and gt2.ile.height(p.x, p.z) > -0.42:
 		return "geants"
+	var om2: Node = main.get("ombrelac_ext")
+	if om2 != null and om2.get("ile") != null and om2.ile != null and om2.contains(p) and p.y > -10.0 and om2.ile.height(p.x, p.z) > -0.42:
+		var omz: String = str(om2.zone_at(p))
+		return "ombrelac_cour" if omz == "ombrelac_cour" else "ombrelac"
 	var pp2: Node = main.get("perchee_v146")
 	if pp2 != null and pp2.get("ile") != null and pp2.ile != null:
 		var ppz: String = str(pp2.zone_at(p))

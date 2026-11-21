@@ -2204,6 +2204,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.sombreval_v121.place_name(p))
 	if main.get("geants_v142") != null and main.geants_v142 != null and main.geants_v142.ile != null and main.geants_v142.owns_point(p):
 		return str(main.geants_v142.place_name(p))
+	if main.get("ombrelac_ext") != null and main.ombrelac_ext != null and main.ombrelac_ext.ile != null and main.ombrelac_ext.owns_point(p):
+		return str(main.ombrelac_ext.place_name(p))
 	if main.get("perchee_v146") != null and main.perchee_v146 != null and main.perchee_v146.ile != null and main.perchee_v146.zone_at(p) != "":
 		return str(main.perchee_v146.place_name(p))
 	# V92 : dans une yourte de l'Île de Larsen
