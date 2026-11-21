@@ -3,3 +3,5 @@
 42_foule
 # V188 : 45_tour_kumo_dedans visite les treize étages de la Tour Kumo.
 45_tour_kumo_dedans
+# V190 : 47_tour_vertex_dedans visite les onze étages de la Tour Vertex.
+47_tour_vertex_dedans

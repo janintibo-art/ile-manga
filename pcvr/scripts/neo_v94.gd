@@ -159,7 +159,7 @@ func build_town() -> void:
 ## gardent leurs collisions et leurs étages : on y entre comme avant), leurs enseignes tirées au sort non plus.
 const UNIQUES := [
 	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd", "dedans": "res://scripts/neo/tour_kumo_dedans_v188.gd"},
-	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd"},      # V189 : la banque, en face
+	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd", "dedans": "res://scripts/neo/tour_vertex_dedans_v190.gd"},      # V189 : la banque, en face
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
 
@@ -1105,7 +1105,8 @@ func _monorail() -> void:
 			b.cyl_at("beton_clair", gg, 0.5, 0.5, pg.y - gg.y, 10)
 			_col(Transform3D(Basis(), gg + Vector3.UP * (pg.y - gg.y) * 0.5), Vector3(1.0, pg.y - gg.y, 1.0))
 		# l'escalier-tour (une cage de verre) et sa borne, au pied du quai
-		var tq: Vector2 = p2 + out * 10.0 + d2 * 16.0
+		# (V190 : à la Station du Quai, la cage se dressait dans la Tour Vertex, dix mètres en retrait ; elle est au bout du quai)
+		var tq: Vector2 = p2 + out * (4.0 if k == 0 else 10.0) + d2 * (16.4 if k == 0 else 16.0)
 		var tg: Vector3 = _ground(tq.x, tq.y)
 		b.box("verre_fume", Transform3D(bs, tg + Vector3.UP * (y - tg.y + 1.0) * 0.5), Vector3(3.2, y - tg.y + 1.0, 3.2))
 		b.box("neon_cyan", Transform3D(bs, tg + Vector3.UP * (y - tg.y + 1.05)), Vector3(3.3, 0.1, 3.3))
