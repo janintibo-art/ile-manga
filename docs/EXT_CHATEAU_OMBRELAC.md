@@ -24,7 +24,16 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
     vitraux flamboient vus du dedans ; la nuit, les bougies éclairent davantage ;
   - la **Tour de l'Astrolabe** (le donjon) : carrée, puis octogonale, puis une flèche d'ardoise ;
   - la **Tour de l'Horloge** et ses quatre cadrans dorés ;
-  - l'**Aile des Dortoirs**, la **Grosse Tour** du nord-est ;
+  - l'**Aile des Dortoirs**, la **Grosse Tour** du nord-est. Au rez-de-chaussée de l'Aile des
+    Dortoirs, trois **salles d'étude** (**on y entre** par la galerie nord du Cloître) :
+    - la **Salle des Astres** : le tableau noir couvert de schémas à la craie, la table du maître,
+      les pupitres des élèves, le grand planétaire de cuivre suspendu (le soleil et six planètes),
+      les cartes du ciel, la lunette, la bibliothèque ;
+    - la **Salle des Élixirs** : l'athanor de moellons et sa hotte de cuivre (le feu y brûle),
+      les paillasses chargées de ballons, de cornues et d'alambics aux liquides lumineux, les
+      étagères de bocaux, la cuve de cuivre et son serpentin, les herbes qui sèchent au plafond ;
+    - l'**Amphithéâtre** : quatre gradins de chêne avec bancs et tablettes, la chaire du maître sur
+      son estrade, le grand tableau de géométrie, la carte du ciel, les bannières, le lustre de fer ;
   - l'**Aile des Études**, qui abrite la **Bibliothèque de l'Académie** (**on y entre**, par la
     cour) : une grande salle sur toute la hauteur, deux rangs de baies, des épis de rayonnages
     chargés de livres, une table de lecture et sa lampe à abat-jour vert dans chaque alcôve, une
@@ -42,8 +51,7 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les autres intérieurs (les salles d'étude, les dortoirs, les
-tours), les habitants de l'Académie, les cours et les quêtes.
+Pour la suite (pas encore faits) : les autres intérieurs (les dortoirs à l'étage, les tours), les habitants de l'Académie, les cours et les quêtes.
 
 ## Les fichiers
 
@@ -57,6 +65,7 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/archi_ombrelac.gd` | la boîte à outils de l'architecte (tours, toits, flèches, créneaux, baies, roses, contreforts…) |
 | `pcvr/scripts/ext_chateau/interieurs_ombrelac.gd` | les intérieurs : la Grande Salle (meubles, charpente, cheminée, lustres, bannières, lumières) |
 | `pcvr/scripts/ext_chateau/bibliotheque_ombrelac.gd` | la Bibliothèque (rayonnages, galerie, escalier, tables, lampes, sphère armillaire) |
+| `pcvr/scripts/ext_chateau/salles_ombrelac.gd` | les salles d'étude de l'Aile des Dortoirs (Astres, Élixirs, Amphithéâtre) |
 | `pcvr/scripts/ext_chateau/flore_ombrelac.gd` | la végétation et les rochers (reprend les outils de `grande_flore_v59.gd`) |
 | `pcvr/shaders/ext_chateau/ombrelac_ardoise.gdshader` | les toits d'ardoises en écailles |
 | `pcvr/shaders/ext_chateau/ombrelac_vitre.gdshader` | les fenêtres et les vitraux (jour / nuit, vus du dehors et du dedans) |
@@ -64,6 +73,8 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/shaders/ext_chateau/ombrelac_tissu.gdshader` | les bannières et le tapis |
 | `pcvr/shaders/ext_chateau/ombrelac_lambris.gdshader` | les plafonds peints (bleu de nuit semé d'étoiles d'or) |
 | `pcvr/shaders/ext_chateau/ombrelac_livres.gdshader` | les livres sur les rayons (dos de cuir, nerfs et filets dorés) |
+| `pcvr/shaders/ext_chateau/ombrelac_tableau.gdshader` | les tableaux noirs (schémas à la craie sur l'ardoise) |
+| `pcvr/shaders/ext_chateau/ombrelac_carte_ciel.gdshader` | les cartes du ciel (constellations sur papier bleu de nuit) |
 | `pcvr/tools/ext_chateau_textures.py` | fabrique les textures du château (à lancer une fois) |
 | `www/assets/textures/ext_chateau/*.png` | pierre de taille, pierre fine, dalles (et leur relief) |
 | `tests/series/48_ombrelac.gd` | la série de tests de l'extension |

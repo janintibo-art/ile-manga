@@ -16,13 +16,15 @@ const ARDOISE := "res://shaders/ext_chateau/ombrelac_ardoise.gdshader"
 const VITRE := "res://shaders/ext_chateau/ombrelac_vitre.gdshader"
 const LAMBRIS := "res://shaders/ext_chateau/ombrelac_lambris.gdshader"
 const LIVRES := "res://shaders/ext_chateau/ombrelac_livres.gdshader"
+const TABLEAU := "res://shaders/ext_chateau/ombrelac_tableau.gdshader"
+const CARTE_CIEL := "res://shaders/ext_chateau/ombrelac_carte_ciel.gdshader"
 const FLAMME := "res://shaders/ext_chateau/ombrelac_flamme.gdshader"
 const TISSU := "res://shaders/ext_chateau/ombrelac_tissu.gdshader"
 
 static var _mats: Dictionary = {}
 
 var _st: Dictionary = {}
-var _uv_mats := {"ardoise": true, "vitre": true, "vitrail": true, "flamme": true, "livres": true, "banniere_bleu": true, "banniere_pourpre": true, "tapis": true}
+var _uv_mats := {"ardoise": true, "vitre": true, "vitrail": true, "flamme": true, "livres": true, "tableau": true, "tableau_amphi": true, "carte_ciel": true, "banniere_bleu": true, "banniere_pourpre": true, "tapis": true}
 ## Les formes de collision : [Shape3D, Transform3D]
 var shapes: Array = []
 var sol_y: float = 0.0
@@ -161,6 +163,66 @@ static func mat(key: String) -> Material:
 			sln.roughness = 0.1
 			sln.cull_mode = BaseMaterial3D.CULL_DISABLED
 			m = sln
+		"tableau", "tableau_amphi":
+			var stb := ShaderMaterial.new()
+			stb.shader = load(TABLEAU)
+			stb.set_shader_parameter("mode", 0 if key == "tableau" else 1)
+			m = stb
+		"carte_ciel":
+			var scc := ShaderMaterial.new()
+			scc.shader = load(CARTE_CIEL)
+			m = scc
+		"potion_vert", "potion_bleu", "potion_rouge", "potion_ambre", "potion_violet":
+			var cols := {"potion_vert": Color(0.25, 0.95, 0.35), "potion_bleu": Color(0.2, 0.55, 1.0), "potion_rouge": Color(1.0, 0.2, 0.18),
+				"potion_ambre": Color(1.0, 0.62, 0.15), "potion_violet": Color(0.7, 0.3, 1.0)}
+			var spo := StandardMaterial3D.new()
+			var cc: Color = cols[key]
+			spo.albedo_color = cc * 0.6
+			spo.emission_enabled = true
+			spo.emission = cc
+			spo.emission_energy_multiplier = 1.4
+			spo.roughness = 0.05
+			spo.metallic_specular = 1.0
+			m = spo
+		"verre":
+			var sve := StandardMaterial3D.new()
+			sve.albedo_color = Color(0.55, 0.66, 0.66)
+			sve.roughness = 0.04
+			sve.metallic = 0.3
+			sve.metallic_specular = 1.0
+			m = sve
+		"cuivre_neuf":
+			var scn := StandardMaterial3D.new()
+			scn.albedo_color = Color(0.86, 0.47, 0.3)
+			scn.metallic = 1.0
+			scn.roughness = 0.33
+			m = scn
+		"moellons":
+			var smo := StandardMaterial3D.new()
+			smo.albedo_texture = load(T + "montjoie/moellons.png")
+			smo.normal_enabled = true
+			smo.normal_texture = load(T + "montjoie/moellons_n.png")
+			smo.uv1_triplanar = true
+			smo.uv1_world_triplanar = true
+			smo.uv1_scale = Vector3.ONE / 1.5
+			smo.albedo_color = Color(0.95, 0.72, 0.58)
+			smo.roughness = 0.95
+			m = smo
+		"herbes":
+			var she := StandardMaterial3D.new()
+			she.albedo_color = Color(0.32, 0.36, 0.17)
+			she.roughness = 1.0
+			she.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = she
+		"soleil":
+			var sso := StandardMaterial3D.new()
+			sso.albedo_color = Color(1.0, 0.75, 0.3)
+			sso.emission_enabled = true
+			sso.emission = Color(1.0, 0.7, 0.3)
+			sso.emission_energy_multiplier = 2.5
+			sso.metallic = 0.6
+			sso.roughness = 0.3
+			m = sso
 		"lambris":
 			var sl := ShaderMaterial.new()
 			sl.shader = load(LAMBRIS)

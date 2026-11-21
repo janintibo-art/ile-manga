@@ -100,6 +100,18 @@ func _serie() -> void:
 	_ok(_pos().y > IleO.ROC_Y + 5.0, "à l'étage, pas retombé en bas (y %.1f)" % _pos().y)
 	var bib = ombrelac_ext.chateau.get_node_or_null("Ombrelac_bibliotheque")
 	_ok(bib != null and bib.lumieres.size() >= 4 and bib.sonde != null, "la Bibliothèque est éclairée (%d lumières)" % (bib.lumieres.size() if bib != null else 0))
+	# les salles d'étude : on y entre depuis la galerie nord du Cloître
+	var salles := [["salle_astres", "la Salle des Astres", "ombrelac_salle_astres"],
+		["salle_elixirs", "la Salle des Élixirs", "ombrelac_salle_elixirs"],
+		["amphitheatre", "l'Amphithéâtre", "ombrelac_amphitheatre"]]
+	for i in range(3):
+		var sa: Array = salles[i]
+		_ok(_voie_libre(_wc(lx["salles_porte_%d" % i], 0.3), _wc(lx[sa[0]], 0.3)), "on entre dans %s depuis le Cloître" % sa[1])
+		await _poser(_wc(lx[sa[0]], 1.0))
+		_ok(await _debout(str(sa[1])), "on tient debout dans %s" % sa[1])
+		_ok(str(ombrelac_ext.zone_at(_pos())) == sa[2], "le lieu : %s (%s)" % [sa[1], str(ombrelac_ext.zone_at(_pos()))])
+	var sl = ombrelac_ext.chateau.get_node_or_null("Ombrelac_salles")
+	_ok(sl != null and sl.lumieres.size() >= 6 and sl.sondes.size() == 3, "les salles sont éclairées (%d lumières)" % (sl.lumieres.size() if sl != null else 0))
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)

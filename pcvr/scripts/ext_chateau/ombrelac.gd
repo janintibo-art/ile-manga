@@ -15,7 +15,9 @@ const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le d�
 	"ombrelac_chateau": "l'Académie d'Ombrelac", "ombrelac_cloitre": "le Cloître", "ombrelac_lac": "le Lac d'Ombre",
 	"ombrelac_monts": "les Monts Gris", "ombrelac_gorge": "la gorge du Torrent", "ombrelac_pont": "le Pont Couvert",
 	"ombrelac_vents": "la Tour des Vents", "ombrelac_grande_salle": "la Grande Salle d'Ombrelac",
-	"ombrelac_bibliotheque": "la Bibliothèque de l'Académie"}
+	"ombrelac_bibliotheque": "la Bibliothèque de l'Académie",
+	"ombrelac_salle_astres": "la Salle des Astres", "ombrelac_salle_elixirs": "la Salle des Élixirs",
+	"ombrelac_amphitheatre": "l'Amphithéâtre"}
 
 var main: Node
 var ile: Node3D
@@ -158,6 +160,13 @@ func zone_at(p: Vector3) -> String:
 			return "ombrelac_grande_salle"
 		if c.x > 46.7 and c.x < 57.3 and c.y > -28.8 and c.y < 12.8:
 			return "ombrelac_bibliotheque"
+		if c.y > -51.3 and c.y < -40.7 and c.x > -11.4 and c.x < 35.4:
+			if c.x < 0.5:
+				return "ombrelac_salle_astres"
+			if c.x > 1.1 and c.x < 22.9:
+				return "ombrelac_salle_elixirs"
+			if c.x > 23.5:
+				return "ombrelac_amphitheatre"
 		if c.x > -18.0 and c.x < 38.0 and c.y > -37.0 and c.y < -9.0:
 			return "ombrelac_cloitre"
 		if c.y > 20.0 and absf(c.x) < 30.0:
@@ -220,7 +229,7 @@ func _process(delta: float) -> void:
 		_nuit = nuit
 		for m in Kit.vitres():
 			(m as ShaderMaterial).set_shader_parameter("nuit", nuit)
-		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque"]:
+		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles"]:
 			var inter: Node = chateau.get_node_or_null(nom) if chateau != null else null
 			if inter != null:
 				inter.set_nuit(nuit)

@@ -19,10 +19,16 @@
 ##   "geste" : ["clip", instant] : il joue ce clip, figé à cet instant ;
 ##   "vues" : parmi "face" (de trois quarts), "profil", "dos", "dessus", "pieds" (au ras du sol, de côté) ;
 ##   "dist", "haut", "cible_h" : la caméra (m, à l'échelle de l'habitant) ; "heure" : l'heure du jeu.
+## V192 : la fluidité. Avant chaque photo, on mesure le jeu pendant "mesure" secondes (2 par défaut, en tête
+## de liste ; 0 : pas de mesure), sans synchro verticale : le temps de chaque image (médiane et pire 5 %),
+## le temps de la carte graphique et du processeur pour le rendu, les appels de dessin, les triangles, la
+## mémoire vidéo, le temps des scripts et de la physique. Une ligne MESURE dans le journal, et mesures.csv dans le dossier des photos.
 const NOM := "photos_pc"
 const PP_ASSIS := ["assis", "allonge", "guitare", "lire"]
 var _pp_cam: Camera3D
 var _pp_dossier: String = ""
+var _pp_mesure: float = 2.0
+var _pp_csv: String = ""
 
 
 func _serie() -> void:
@@ -41,6 +47,7 @@ func _serie() -> void:
 			DirAccess.make_dir_recursive_absolute(_pp_dossier)
 		if (liste as Dictionary).get("corps", false):
 			_pp_corps()
+		_pp_mesure = float((liste as Dictionary).get("mesure", 2.0))
 		liste = (liste as Dictionary).get("photos", [])
 	if not (liste is Array):
 		print("PHOTOS liste illisible")
@@ -58,6 +65,8 @@ func _serie() -> void:
 	_pp_cam.fov = 50.0
 	_pp_cam.near = 0.05
 	_pp_cam.far = 4000.0
+	if _pp_mesure > 0.0:
+		_pp_mesure_debut()
 	await _att(2.0)
 	var n: int = 0
 	for p in liste:
@@ -456,6 +465,8 @@ func _pp_photo(nom: String, oeil: Vector3, cible: Vector3) -> bool:
 			(cl as CanvasLayer).visible = false
 			caches.append(cl)
 	await _images(5)
+	if _pp_mesure > 0.0:
+		await _pp_mesurer(nom)
 	var img: Image = null
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
@@ -469,3 +480,65 @@ func _pp_photo(nom: String, oeil: Vector3, cible: Vector3) -> bool:
 	var err: int = img.save_jpg(_pp_dossier.path_join(nom + ".jpg"), 0.88)
 	print("PHOTO %s %s" % [nom, "ok" if err == OK else "erreur %d" % err])
 	return err == OK
+
+
+## V192 : la fluidité, mesurée sur le vrai PC (la synchro verticale coupée : le temps réel de chaque image)
+func _pp_mesure_debut() -> void:
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	Engine.max_fps = 0
+	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
+	var taille: Vector2i = get_viewport().get_visible_rect().size
+	var carte: String = RenderingServer.get_video_adapter_name()
+	print("MESURE_MACHINE carte « %s », pilote %s, image %dx%d" % [carte, RenderingServer.get_video_adapter_api_version(), taille.x, taille.y])
+	_pp_csv = _pp_dossier.path_join("mesures.csv")
+	var f := FileAccess.open(_pp_csv, FileAccess.WRITE)
+	if f != null:
+		f.store_line("# %s ; %dx%d ; %s" % [carte, taille.x, taille.y, str(ProjectSettings.get_setting("application/config/name", ""))])
+		f.store_line("vue;images;mediane_ms;p95_ms;pire_ms;ips;gpu_ms;cpu_ms;appels;triangles;vram_mo;scripts_ms;physique_ms")
+		f.close()
+
+
+func _pp_mesurer(nom: String) -> void:
+	var rid: RID = get_viewport().get_viewport_rid()
+	await _images(10)
+	var dts: Array = []
+	var gpu: Array = []
+	var cpu: Array = []
+	var scr: Array = []
+	var phy: Array = []
+	var t0: int = Time.get_ticks_usec()
+	var prec: int = t0
+	while Time.get_ticks_usec() - t0 < int(_pp_mesure * 1000000.0) and dts.size() < 2000:
+		await get_tree().process_frame
+		var t: int = Time.get_ticks_usec()
+		dts.append(float(t - prec) / 1000.0)
+		prec = t
+		gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(rid))
+		cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(rid))
+		scr.append(Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0)
+		phy.append(Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0)
+	if dts.is_empty():
+		return
+	dts.sort()
+	gpu.sort()
+	cpu.sort()
+	scr.sort()
+	phy.sort()
+	var n: int = dts.size()
+	var med: float = dts[n / 2]
+	var p95: float = dts[mini(n - 1, int(n * 0.95))]
+	var pire: float = dts[n - 1]
+	var g: float = gpu[n / 2]
+	var c: float = cpu[n / 2]
+	var sc: float = scr[n / 2]
+	var ph: float = phy[n / 2]
+	var appels: int = int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
+	var tri: int = int(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
+	var vram: float = Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0
+	var ips: float = 1000.0 / med if med > 0.0 else 0.0
+	print("MESURE %s : %d images, médiane %.2f ms (%.0f i/s), pire 5 %% %.2f ms, pire %.2f ms, carte %.2f ms, processeur %.2f ms, %d appels, %d triangles, %.0f Mo, scripts %.2f ms, physique %.2f ms" % [nom, n, med, ips, p95, pire, g, c, appels, tri, vram, sc, ph])
+	var f := FileAccess.open(_pp_csv, FileAccess.READ_WRITE)
+	if f != null:
+		f.seek_end()
+		f.store_line("%s;%d;%.2f;%.2f;%.2f;%.0f;%.2f;%.2f;%d;%d;%.0f;%.2f;%.2f" % [nom, n, med, p95, pire, ips, g, c, appels, tri, vram, sc, ph])
+		f.close()

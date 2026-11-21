@@ -84,6 +84,7 @@ var coups_v141: Node3D
 var indicateurs_v130: Node3D
 # V131 : l'écran de chargement (le monde se construit par étapes, la barre avance).
 var chargement_v131: CanvasLayer
+var portee_v192: Node                 # V192 : les petites choses lointaines ne sont plus dessinées
 var chargement_bilan_v131: Dictionary = {}
 # V132 : la faune sauvage des îles (crabes, mouettes, sangliers, loups, salamandres, boucs…).
 var faune_v132: Node3D
@@ -115,6 +116,10 @@ func _ready() -> void:
 	chargement_v131 = preload("res://scripts/chargement_v131.gd").new()
 	add_child(chargement_v131)
 	chargement_v131.setup(self)
+	# V192 : avant toute construction : chaque petite chose reçoit sa portée (portee_v192.gd)
+	portee_v192 = preload("res://scripts/portee_v192.gd").new()
+	portee_v192.name = "Portee_v192"
+	add_child(portee_v192)
 	get_tree().paused = true
 	await chargement_v131.pas("debut")
 	# V81 : les portes des maisons décoratives sont notées pendant la construction des villes
@@ -213,6 +218,7 @@ func _ready() -> void:
 	await chargement_v131.pas("fin")
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
+	print("ILE_MANGA_V192: %d petites choses ont leur portée" % portee_v192.reglees)
 	# V131 : le monde est prêt : tout se remet à vivre, l'écran de chargement s'efface
 	get_tree().paused = false
 	chargement_v131.finir()

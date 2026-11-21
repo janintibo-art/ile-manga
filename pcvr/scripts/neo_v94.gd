@@ -151,6 +151,8 @@ func build_town() -> void:
 	add_child(tours)
 	tours.setup(main, self)
 	_uniques_batit()
+	# V192 : la rue vitrine, entre la Tour Kumo et la Tour Vertex (neo/rue_vitrine_v192.gd)
+	rue_v192 = load("res://scripts/neo/rue_vitrine_v192.gd").build(self)
 	print("ILE_MANGA_V94: Néopolis est prête (%d tours, %d boîtes, %d ms)" % [batiments.size(), nb_boites, Time.get_ticks_msec() - t0])
 
 
@@ -162,6 +164,7 @@ const UNIQUES := [
 	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd", "dedans": "res://scripts/neo/tour_vertex_dedans_v190.gd"},      # V189 : la banque, en face
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
+var rue_v192: Dictionary = {}             # V192 : la rue vitrine (ce qui y est posé)
 
 
 func _uniques_marque() -> void:

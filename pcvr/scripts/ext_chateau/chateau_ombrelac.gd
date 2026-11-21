@@ -26,6 +26,13 @@ const Bibliotheque = preload("res://scripts/ext_chateau/bibliotheque_ombrelac.gd
 const BIBLIO_T := 1.2
 const BIBLIO_PORTE := Vector2(3.0, 5.6)
 const BIBLIO_VOUTE := 6.5
+const Salles = preload("res://scripts/ext_chateau/salles_ombrelac.gd")
+## Les salles d'étude (le rez-de-chaussée de l'Aile nord, repère de l'aile) : la hauteur sous
+## plafond, les murs de refend (x), les portes sur le cloître (x)
+const SALLES_RZ := 6.0
+const SALLES_REFENDS := [-11.2, 11.2]
+const SALLES_PORTES := [-19.6, 0.0, 22.4]
+const SALLES_BOUT := 4.0          # les tours d'angle mordent de 3,5 m dans l'aile
 const Ile = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 var ile: Node3D
@@ -508,15 +515,22 @@ func _horloge() -> void:
 # =================================================================== les ailes
 
 ## Une aile : un long bâtiment à deux pans ; c au milieu, à terre ; yaw : faîtage selon x tourné
-func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, et: int) -> void:
+## (rez > 0 : le rez-de-chaussée est laissé vide, jusqu'à la hauteur rez ; on y bâtit des salles)
+func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, et: int, rez: float = 0.0) -> void:
 	var b := Basis(Vector3.UP, yaw)
-	k.box("socle", Transform3D(b, c + Vector3(0, -4.0, 0)), Vector3(L + 1.2, 5.2, W + 1.2), true)
-	k.box("pierre", Transform3D(b, c + Vector3(0, 1.2, 0)), Vector3(L, H - 1.2, W), true)
+	if rez > 0.0:
+		k.box("socle", Transform3D(b, c + Vector3(0, -4.0, 0)), Vector3(L + 1.2, 3.95, W + 1.2), true)
+		k.box("pierre", Transform3D(b, c + Vector3(0, rez, 0)), Vector3(L, H - rez, W), true)
+	else:
+		k.box("socle", Transform3D(b, c + Vector3(0, -4.0, 0)), Vector3(L + 1.2, 5.2, W + 1.2), true)
+		k.box("pierre", Transform3D(b, c + Vector3(0, 1.2, 0)), Vector3(L, H - 1.2, W), true)
 	k.gable_roof(Transform3D(b, c + Vector3(0, H, 0)), L, W, W * 0.7)
 	var n: int = int(L / 5.5)
 	for s in [-1.0, 1.0]:
 		var out: Vector3 = b * Vector3(0, 0, s)
 		for e in range(et):
+			if rez > 0.0 and e == 0:
+				continue
 			var y: float = 3.5 + e * (H - 4.0) / et
 			var a: Vector3 = c + b * Vector3(-L * 0.5, y, s * W * 0.5)
 			var bb: Vector3 = c + b * Vector3(L * 0.5, y, s * W * 0.5)
@@ -538,15 +552,66 @@ func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, 
 
 
 func _aile_nord() -> void:
+	# l'Aile des Dortoirs ; au rez-de-chaussée, côté cloître, les trois salles d'étude (la Salle des
+	# Astres, la Salle des Élixirs, l'Amphithéâtre), chacune sa porte sous la galerie du cloître
 	var k := Kit.new()
 	var c := Vector3(12.0, 0, -46.0)
-	_aile(k, c, 0.0, 56.0, 13.0, 18.0, 3)
+	var L: float = 56.0
+	var W: float = 13.0
+	var T: float = 1.2
+	var rz: float = SALLES_RZ
+	_aile(k, c, 0.0, L, W, 18.0, 3, rz)
+	var xf := Transform3D(Basis.IDENTITY, c)
+	var n: int = 10
+	var bay: float = L / n
+	for s in [-1.0, 1.0]:
+		var trous: Array = []
+		var portes: Array = SALLES_PORTES if s > 0 else []
+		for i in range(n):
+			var x: float = -L * 0.5 + (i + 0.5) * bay
+			var gene: bool = false
+			for px in portes:
+				if absf(px - x) < 2.2:
+					gene = true
+			if gene:
+				continue
+			trous.append(Kit.trou_ogive(x * s, 1.1, 1.6, 3.4))
+			k.window(xf * Transform3D(Basis(Vector3.UP, 0.0 if s > 0 else PI), Vector3(x, 1.1, s * W * 0.5)), 1.6, 3.4)
+		for px2 in portes:
+			trous.append(Kit.trou_ogive(px2, 0.0, 2.4, 4.4))
+			_portail(k, xf * Transform3D(Basis.IDENTITY, Vector3(px2, 0, W * 0.5)), 2.4, 4.4)
+		trous.sort_custom(func(u, v): return u["xl"] < v["xl"])
+		k.mur(xf * Transform3D(Basis(Vector3.UP, 0.0 if s > 0 else PI), Vector3(0, 0, s * W * 0.5)), L, rz, T, trous)
+	for e in [-1.0, 1.0]:
+		k.mur(xf * Transform3D(Basis(Vector3.UP, e * PI * 0.5), Vector3(e * L * 0.5, 0, 0)), W - 2.0 * T, rz, T, [])
+	# les murs de refend entre les salles
+	for xr in SALLES_REFENDS:
+		k.box("pierre_int", xf * at(xr, 0.0, 0.0), Vector3(0.6, rz, W - 2.0 * T), true)
 	_tour_ronde(k, -17.5, -46.0, 5.6, 38.0, 16.0, 5)
 	_tour_ronde(k, 41.5, -46.0, 5.6, 44.0, 17.0, 5)
 	# la Grosse Tour du nord-est : massive, crénelée, un haut toit
 	_tour_ronde(k, 62.0, -40.0, 8.5, 48.0, 22.0, 6, true, -12.0)
 	_emit(k, "Ombrelac_aile_nord")
 	lieux["dortoirs"] = c + Vector3(0, 0, 8.5)
+	var sl = Salles.new()
+	sl.name = "Ombrelac_salles"
+	add_child(sl)
+	sl.construire_salles(xf, L, W, rz, T, SALLES_REFENDS, SALLES_PORTES, SALLES_BOUT)
+	for key in sl.lieux:
+		lieux[key] = sl.lieux[key]
+
+
+## Un portail en ogive (l'encadrement de pierre claire), xf au milieu du bas, sur la face du mur
+func _portail(k: RefCounted, fx: Transform3D, w: float, h: float) -> void:
+	var outl: PackedVector2Array = Kit.ogive(w, h, 10)
+	var outer: PackedVector2Array = Kit.ogive(w + 1.0, h + 0.5, 10)
+	for i in range(outl.size() - 1):
+		var a2: Vector2 = outl[i]
+		var b2: Vector2 = outl[i + 1]
+		var oa: Vector2 = outer[i]
+		var ob: Vector2 = outer[i + 1]
+		k.quad("pierre_claire", fx, Vector3(a2.x, a2.y, 0.3), Vector3(b2.x, b2.y, 0.3), Vector3(ob.x, ob.y, 0.3), Vector3(oa.x, oa.y, 0.3), Vector3(0, 0, 1))
+		k.quad("pierre_claire", fx, Vector3(oa.x, oa.y, 0.0), Vector3(ob.x, ob.y, 0.0), Vector3(ob.x, ob.y, 0.3), Vector3(oa.x, oa.y, 0.3), Vector3((oa.x + ob.x) * 0.5, (oa.y + ob.y) * 0.5 - h * 0.5, 0))
 
 
 func _aile_est() -> void:
