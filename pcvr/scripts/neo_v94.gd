@@ -159,6 +159,7 @@ func build_town() -> void:
 ## gardent leurs collisions et leurs étages : on y entre comme avant), leurs enseignes tirées au sort non plus.
 const UNIQUES := [
 	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd", "dedans": "res://scripts/neo/tour_kumo_dedans_v188.gd"},
+	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd"},      # V189 : la banque, en face
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
 
