@@ -7,6 +7,9 @@
 ## ses murs arrêtent le héros, ses lumières. La Bibliothèque : on y entre, on tient debout en bas et
 ## sur la galerie, ses lumières. Les salles d'étude : on y entre depuis le Cloître. Les dortoirs : on
 ## entre dans la tour de l'escalier, on monte l'escalier à vis à pied, on passe d'une salle à l'autre.
+## La Tour de l'Astrolabe : on entre dans la salle du bas, la Nacelle monte le héros à l'Observatoire
+## et le redescend, la grille du puits arrête le héros quand elle n'est pas là, on tient debout dans
+## l'Observatoire et sur la terrasse, dont le parapet arrête le héros.
 const NOM := "48_ombrelac"
 const IleO := preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
@@ -153,6 +156,49 @@ func _serie() -> void:
 	_ok(_voie_libre(_wc(lx["salle_commune_est"], 0.4), _wc(lx["dortoirs_passage_e"], 0.4)), "de la Salle Commune, on passe dans le Dortoir du Crépuscule")
 	var dt = ombrelac_ext.chateau.get_node_or_null("Ombrelac_dortoirs")
 	_ok(dt != null and dt.lumieres.size() >= 6 and dt.feu != null, "les dortoirs sont éclairés, le feu brûle (%d lumières)" % (dt.lumieres.size() if dt != null else 0))
+	# la Tour de l'Astrolabe : la salle du bas, la Nacelle, l'Observatoire, la terrasse
+	var ast = ombrelac_ext.chateau.get_node_or_null("Ombrelac_astrolabe_dedans")
+	_ok(ast != null and ast.main != null, "la Tour de l'Astrolabe a son dedans, la Nacelle connaît le héros")
+	_ok(_voie_libre(_wc(lx["astrolabe_porte"], 0.4), _wc(lx["astrolabe_salle"], 0.4)), "on entre dans la Salle de l'Astrolabe par sa porte")
+	await _poser(_wc(lx["astrolabe_salle"], 1.0))
+	_ok(await _debout("la Salle de l'Astrolabe"), "on tient debout dans la Salle de l'Astrolabe")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_salle_astrolabe", "le lieu : la Salle de l'Astrolabe (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	if ast != null:
+		ast.t_nacelle = 1.0
+		ast.en_route = false
+		await _att(1.5)
+		_ok(not _voie_libre(_wc(lx["nacelle_attente_bas"], 0.4), _wc(lx["nacelle_bas"], 0.4)), "la Nacelle en haut, la grille du bas est fermée")
+		ast.t_nacelle = 0.0
+		await _att(2.5)
+		_ok(_voie_libre(_wc(lx["nacelle_attente_bas"], 0.4), _wc(lx["nacelle_bas"], 0.4)), "la Nacelle en bas, sa grille s'ouvre")
+		var v0: int = ast.voyages
+		await _poser(_wc(lx["nacelle_bas"], 1.0))
+		_ok(_pos().y < IleO.ROC_Y + 2.0 and ast.dans_nacelle(ast.to_local(_pos())), "on entre dans la Nacelle (y %.1f)" % _pos().y)
+		await _att(ast.NACELLE_ATTENTE + ast.NACELLE_DUREE + 3.0)
+		_ok(ast.voyages == v0 + 1 and ast.en_haut(), "la Nacelle part seule et arrive en haut (%d voyage, t %.2f)" % [ast.voyages - v0, ast.t_nacelle])
+		_ok(_pos().y > IleO.ROC_Y + 53.0, "elle a monté le héros jusqu'à l'Observatoire (y %.1f)" % _pos().y)
+		_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_observatoire", "le lieu : l'Observatoire (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	await _poser(_wc(lx["observatoire"], 1.0))
+	_ok(await _debout("l'Observatoire"), "on tient debout dans l'Observatoire")
+	_ok(_pos().y > IleO.ROC_Y + 53.0, "en haut de la tour (y %.1f)" % _pos().y)
+	_ok(_voie_libre(_wc(lx["observatoire"], 0.4), _wc(lx["terrasse_astrolabe"], 0.4)), "de l'Observatoire, on sort sur la terrasse")
+	await _poser(_wc(lx["terrasse_astrolabe"], 1.0))
+	_ok(await _debout("la terrasse"), "on tient debout sur la terrasse de l'Astrolabe")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_terrasse_astrolabe", "le lieu : la Terrasse de l'Astrolabe (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["terrasse_astrolabe"], 0.4), _wc(lx["terrasse_astrolabe_dehors"], 0.4)), "le parapet de la terrasse arrête le héros")
+	if ast != null:
+		await _poser(_wc(lx["nacelle_attente_haut"], 1.0))
+		ast.t_nacelle = 0.0
+		ast.en_route = false
+		await _att(1.0)
+		_ok(ast.en_route or ast.en_haut(), "on l'attend devant sa grille : la Nacelle vient")
+		await _att(ast.NACELLE_DUREE + 1.0)
+		_ok(ast.en_haut(), "la Nacelle est arrivée en haut (t %.2f)" % ast.t_nacelle)
+		await _poser(_wc(lx["nacelle_haut"], 1.0))
+		await _att(ast.NACELLE_ATTENTE + ast.NACELLE_DUREE + 3.0)
+		_ok(ast.en_bas() and _pos().y < IleO.ROC_Y + 3.0, "elle redescend le héros à la Salle de l'Astrolabe (y %.1f)" % _pos().y)
+		_ok(await _debout("la Nacelle en bas"), "on tient debout dans la Nacelle, en bas")
+		_ok(ast.lumieres.size() >= 4 and ast.anneaux.size() >= 3, "la tour est éclairée, les anneaux de l'astrolabe tournent (%d lumières)" % ast.lumieres.size())
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)

@@ -19,7 +19,9 @@ const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le d�
 	"ombrelac_salle_astres": "la Salle des Astres", "ombrelac_salle_elixirs": "la Salle des Élixirs",
 	"ombrelac_amphitheatre": "l'Amphithéâtre", "ombrelac_tour_dortoirs": "la Tour des Dortoirs",
 	"ombrelac_dortoir_aube": "le Dortoir de l'Aube", "ombrelac_salle_commune": "la Salle Commune",
-	"ombrelac_dortoir_crepuscule": "le Dortoir du Crépuscule"}
+	"ombrelac_dortoir_crepuscule": "le Dortoir du Crépuscule",
+	"ombrelac_salle_astrolabe": "la Salle de l'Astrolabe", "ombrelac_observatoire": "l'Observatoire",
+	"ombrelac_terrasse_astrolabe": "la Terrasse de l'Astrolabe"}
 
 var main: Node
 var ile: Node3D
@@ -57,6 +59,9 @@ func build_town() -> void:
 	chateau.name = "Chateau_ombrelac"
 	add_child(chateau)
 	chateau.build(ile)
+	var astro: Node = chateau.get_node_or_null("Ombrelac_astrolabe_dedans")
+	if astro != null:
+		astro.main = main
 	flore = FloreScript.new()
 	flore.name = "Flore_ombrelac"
 	add_child(flore)
@@ -164,6 +169,16 @@ func zone_at(p: Vector3) -> String:
 			return "ombrelac_bibliotheque"
 		if c.distance_to(Vector2(41.5, -46.0)) < 4.6:
 			return "ombrelac_tour_dortoirs"
+		var d: Vector2 = c - Vector2(-44.0, -26.0)
+		if absf(d.x) < 9.5 and absf(d.y) < 9.5:
+			if p.y > IleScript.ROC_Y + 53.0:
+				# l'octogone : |x|, |z| et |x|±|z| sous l'apothème
+				var a: float = 5.9
+				if absf(d.x) < a and absf(d.y) < a and (absf(d.x) + absf(d.y)) < a * 1.4142:
+					return "ombrelac_observatoire"
+				return "ombrelac_terrasse_astrolabe"
+			if p.y < IleScript.ROC_Y + 11.5:
+				return "ombrelac_salle_astrolabe"
 		if c.y > -51.3 and c.y < -40.7 and c.x > -11.4 and c.x < 37.4 and p.y > IleScript.ROC_Y + 5.7:
 			if c.x < 0.5:
 				return "ombrelac_dortoir_aube"
@@ -240,7 +255,7 @@ func _process(delta: float) -> void:
 		_nuit = nuit
 		for m in Kit.vitres():
 			(m as ShaderMaterial).set_shader_parameter("nuit", nuit)
-		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs"]:
+		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs", "Ombrelac_astrolabe_dedans"]:
 			var inter: Node = chateau.get_node_or_null(nom) if chateau != null else null
 			if inter != null:
 				inter.set_nuit(nuit)

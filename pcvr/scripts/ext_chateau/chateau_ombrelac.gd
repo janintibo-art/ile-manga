@@ -42,6 +42,20 @@ const TOUR_ESC := Vector3(41.5, 0.0, -46.0)
 const TOUR_ESC_R := 5.6
 const TOUR_ESC_T := 1.2
 const TOUR_ESC_PORTES := [[6, 0.0, 2, 2.8], [13, 6.25, 2, 2.6]]
+const Astrolabe = preload("res://scripts/ext_chateau/astrolabe_ombrelac.gd")
+## La Tour de l'Astrolabe (le donjon) : son centre, le demi-côté de la tour carrée, l'épaisseur de
+## ses murs, le plafond de la salle du bas, le haut de la partie carrée (la terrasse), la hauteur de
+## l'Observatoire (dans l'octogone) ; le puits de la Nacelle (son centre, repère du donjon ; son
+## demi-côté)
+const DONJON := Vector3(-44.0, 0.0, -26.0)
+const DONJON_HS := 9.5
+const DONJON_T := 1.6
+const DONJON_HALL := 11.0
+const DONJON_H1 := 54.0
+const DONJON_OBS := 12.5
+const DONJON_R2 := 7.2
+const PUITS := Vector3(0.0, 0.0, -3.2)
+const PUITS_HS := 1.7
 const Ile = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 var ile: Node3D
@@ -424,11 +438,44 @@ func _grande_salle() -> void:
 
 func _donjon() -> void:
 	var k := Kit.new()
-	var p := Vector3(-44.0, 0, -26.0)
-	var hs: float = 9.5          # demi-côté de la tour carrée
-	var h1: float = 54.0         # le haut de la partie carrée
-	k.box("socle", at(p.x, -10.0, p.z), Vector3(hs * 2.0 + 2.0, 11.4, hs * 2.0 + 2.0), true)
-	k.box("pierre", at(p.x, 1.4, p.z), Vector3(hs * 2.0, h1 - 1.4, hs * 2.0), true)
+	var p := DONJON
+	var hs: float = DONJON_HS    # demi-côté de la tour carrée
+	var h1: float = DONJON_H1    # le haut de la partie carrée
+	var T: float = DONJON_T
+	var HH: float = DONJON_HALL
+	# le socle (le plancher de la salle du bas à 0), son bandeau tout autour, coupé devant la porte
+	k.box("socle", at(p.x, -10.0, p.z), Vector3(hs * 2.0 + 2.0, 9.95, hs * 2.0 + 2.0), true)
+	for f0 in range(4):
+		var yw: float = f0 * PI * 0.5
+		var o0 := Vector3(sin(yw), 0, cos(yw))
+		var r0 := Vector3(cos(yw), 0, -sin(yw))
+		if f0 == 1:
+			for e0 in [-1.0, 1.0]:
+				var lg: float = hs + 1.0 - 1.6
+				k.box("socle", Transform3D(Basis(Vector3.UP, yw), p + o0 * (hs + 0.5) + r0 * e0 * (1.6 + lg * 0.5) + Vector3(0, -0.05, 0)), Vector3(lg, 1.45, 1.0), true)
+		else:
+			k.box("socle", Transform3D(Basis(Vector3.UP, yw), p + o0 * (hs + 0.5) + Vector3(0, -0.05, 0)), Vector3(hs * 2.0 + 2.0, 1.45, 1.0), true)
+	# la salle du bas : quatre murs épais percés de leurs baies (et, à l'est, de la porte)
+	for f1 in range(4):
+		var yw1: float = f1 * PI * 0.5
+		var o1 := Vector3(sin(yw1), 0, cos(yw1))
+		var trous: Array = [Kit.trou_ogive(-3.6, 5.0, 1.5, 4.2), Kit.trou_ogive(3.6, 5.0, 1.5, 4.2)]
+		if f1 == 1:
+			trous.insert(1, Kit.trou_ogive(0.0, 0.0, 2.6, 4.6))
+			_portail(k, Transform3D(Basis(Vector3.UP, yw1), p + o1 * hs), 2.6, 4.6)
+		var lw: float = hs * 2.0 if f1 % 2 == 0 else hs * 2.0 - 2.0 * T
+		k.mur(Transform3D(Basis(Vector3.UP, yw1), p + o1 * hs), lw, HH, T, trous)
+	# au-dessus, la maçonnerie pleine jusqu'à la terrasse, percée du puits de la Nacelle
+	var pz0: float = PUITS.z - PUITS_HS
+	var pz1: float = PUITS.z + PUITS_HS
+	var hp: float = h1 - HH
+	k.box("pierre", at(p.x, HH, p.z + (pz1 + hs) * 0.5), Vector3(hs * 2.0, hp, hs - pz1), true)
+	k.box("pierre", at(p.x, HH, p.z + (pz0 - hs) * 0.5), Vector3(hs * 2.0, hp, pz0 + hs), true)
+	for e1 in [-1.0, 1.0]:
+		k.box("pierre", at(p.x + e1 * (PUITS_HS + hs) * 0.5, HH, p.z + PUITS.z), Vector3(hs - PUITS_HS, hp, PUITS_HS * 2.0), true)
+	# un perron devant la porte (à l'est)
+	var ys0: float = sol(p.x + hs + 1.6, p.z)
+	k.box("pierre_claire", at(p.x + hs + 1.4, minf(ys0, 0.0) - 1.0, p.z), Vector3(1.8, 1.0 - minf(ys0, 0.0), 3.6), true)
 	# les contreforts d'angle, les cordons à chaque étage, les baies
 	for cx in [-1.0, 1.0]:
 		for cz in [-1.0, 1.0]:
@@ -460,15 +507,40 @@ func _donjon() -> void:
 		var right := Vector3(cos(yaw), 0, -sin(yaw))
 		var face: Vector3 = p + out * (hs - 0.3)
 		k.crenels(Transform3D.IDENTITY, face - right * (hs - 2.2) + Vector3(0, h1 + 1.0, 0), face + right * (hs - 2.2) + Vector3(0, h1 + 1.0, 0), 0.6)
-	# la partie octogonale
-	var r2: float = 7.2
+	# le parapet de la terrasse (on ne tombe pas), les échauguettes (on ne les traverse pas)
+	for f2 in range(4):
+		var yw2: float = f2 * PI * 0.5
+		var o2 := Vector3(sin(yw2), 0, cos(yw2))
+		var col := BoxShape3D.new()
+		col.size = Vector3(hs * 2.0, 1.7, 0.7)
+		k.shapes.append([col, Transform3D(Basis(Vector3.UP, yw2), p + o2 * (hs - 0.3) + Vector3(0, h1 + 0.85, 0))])
+	for cx2 in [-1.0, 1.0]:
+		for cz2 in [-1.0, 1.0]:
+			var ce := CylinderShape3D.new()
+			ce.radius = 2.2
+			ce.height = 6.0
+			k.shapes.append([ce, at(p.x + cx2 * hs, h1, p.z + cz2 * hs)])
+	# la partie octogonale : en bas, l'Observatoire (huit pans de mur, des portes sur la terrasse à
+	# l'est, au sud, à l'ouest) ; au-dessus, plein
+	var r2: float = DONJON_R2
 	var h2: float = 30.0
-	k.prism("pierre", at(p.x, h1, p.z), Kit.ngon(r2, 8, PI / 8.0), 0.0, h2)
+	var OH: float = DONJON_OBS
+	var apo: float = r2 * cos(PI / 8.0)
+	var cote: float = 2.0 * r2 * sin(PI / 8.0)
+	k.prism("pierre", at(p.x, h1 + OH, p.z), Kit.ngon(r2, 8, PI / 8.0), 0.0, h2 - OH)
 	for i in range(8):
 		var a: float = TAU * i / 8.0
 		var d := Vector3(cos(a), 0, sin(a))
-		var face: Vector3 = p + d * (r2 * cos(PI / 8.0))
-		k.window(Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), face + Vector3(0, h1 + 4.0, 0)), 1.6, 7.0, "vitre")
+		var face: Vector3 = p + d * apo
+		var bs := Basis(Vector3.UP, atan2(d.x, d.z))
+		var porte: bool = i == 0 or i == 2 or i == 4
+		var lb: float = 1.8 if porte else 1.6
+		var colonne: Array = [Kit.trou_ogive(0.0, 4.0, lb, 7.0)]
+		if porte:
+			colonne.insert(0, Kit.trou_ogive(0.0, 0.0, lb, 3.4))
+			_portail(k, Transform3D(bs, face + Vector3(0, h1, 0)), lb, 3.4)
+		k.mur_col(Transform3D(bs, face + Vector3(0, h1, 0)), cote + 0.02, OH, 1.0, [colonne])
+		k.window(Transform3D(bs, face + Vector3(0, h1 + 4.0, 0)), lb, 7.0, "vitre")
 		k.window(Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), face + Vector3(0, h1 + 15.0, 0)), 1.6, 7.5, "vitre")
 		# les pinacles aux angles de l'octogone
 		var corner: Vector3 = p + Vector3(cos(a + PI / 8.0), 0, sin(a + PI / 8.0)) * r2
@@ -478,6 +550,12 @@ func _donjon() -> void:
 	k.prism("pierre", at(p.x, h1 + h2, p.z), Kit.ngon(r2 * 0.8, 8, PI / 8.0), 0.0, 3.0)
 	k.spire(at(p.x, h1 + h2 + 3.0, p.z), r2 * 0.85, 44.0)
 	_emit(k, "Ombrelac_astrolabe")
+	var astro = Astrolabe.new()
+	astro.name = "Ombrelac_astrolabe_dedans"
+	add_child(astro)
+	astro.construire_astrolabe(p, hs, T, HH, h1, OH, apo - 1.0, PUITS, PUITS_HS)
+	for key in astro.lieux:
+		lieux[key] = astro.lieux[key]
 	lieux["astrolabe"] = p + Vector3(0, 0, hs + 2.0)
 
 
