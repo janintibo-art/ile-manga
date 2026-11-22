@@ -18,7 +18,7 @@ func _serie() -> void:
 	var noms_u: Array = []
 	for n in u:
 		noms_u.append(str((n as Node).name))
-	_ok(noms_u == ["Tour_Kumo_v187", "Tour_Vertex_v189", "Tour_Hikari_v195"], "trois immeubles faits à la main, dans l'ordre (%s)" % ", ".join(PackedStringArray(noms_u)))
+	_ok(noms_u.slice(0, 3) == ["Tour_Kumo_v187", "Tour_Vertex_v189", "Tour_Hikari_v195"], "les trois premiers immeubles faits à la main, dans l'ordre (%s)" % ", ".join(PackedStringArray(noms_u)))
 	if u.size() < 3:
 		return
 	var k: Node3D = u[2]

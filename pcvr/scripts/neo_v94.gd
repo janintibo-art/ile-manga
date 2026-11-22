@@ -163,6 +163,7 @@ const UNIQUES := [
 	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd", "dedans": "res://scripts/neo/tour_kumo_dedans_v188.gd"},
 	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd", "dedans": "res://scripts/neo/tour_vertex_dedans_v190.gd"},      # V189 : la banque, en face
 	{"p": Vector2(-44.0, -163.0), "script": "res://scripts/neo/tour_hikari_v195.gd"},      # V195 : la maison de la lumière, à l'ouest de Kumo
+	{"p": Vector2(-44.0, -137.0), "script": "res://scripts/neo/tour_orion_v197.gd"},       # V197 : la maison du vivant, au sud de Hikari
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
 var rue_v192: Dictionary = {}             # V192 : la rue vitrine (ce qui y est posé)
@@ -800,7 +801,7 @@ func _port() -> void:
 
 ## V195 : devant la porte d'un immeuble fait à la main (le tunnel de lumière de la Tour Hikari), pas de
 ## réverbère ni de distributeur : on les décale de 6 m le long de la rue (axe).
-const PORTES_LIBRES := [Vector2(-53.0, -163.27)]
+const PORTES_LIBRES := [Vector2(-53.0, -163.27), Vector2(-53.0, -137.27), Vector2(-53.0, -142.74)]   # (V197 : la porte de la Tour Orion, son Hélice)
 
 
 func _hors_porte(p: Vector2, axe: Vector2) -> Vector2:
