@@ -22,7 +22,11 @@ const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le d�
 	"ombrelac_dortoir_crepuscule": "le Dortoir du Crépuscule",
 	"ombrelac_salle_astrolabe": "la Salle de l'Astrolabe", "ombrelac_observatoire": "l'Observatoire",
 	"ombrelac_terrasse_astrolabe": "la Terrasse de l'Astrolabe",
-	"ombrelac_tour_horloge": "la Tour de l'Horloge", "ombrelac_chambre_rouages": "la Chambre des Rouages"}
+	"ombrelac_tour_horloge": "la Tour de l'Horloge", "ombrelac_chambre_rouages": "la Chambre des Rouages",
+	"ombrelac_tour_sortileges": "la Tour des Sortilèges", "ombrelac_cabinet_sortileges": "le Cabinet des Sortilèges",
+	"ombrelac_balcon_sortileges": "le Balcon des Sortilèges",
+	"ombrelac_salle_conseil": "la Salle du Conseil", "ombrelac_vis_grosse_tour": "l'escalier de la Grosse Tour",
+	"ombrelac_bureau_recteur": "le Bureau du Recteur", "ombrelac_salle_reliques": "la Salle des Reliques"}
 
 var main: Node
 var ile: Node3D
@@ -66,6 +70,12 @@ func build_town() -> void:
 	var horl: Node = chateau.get_node_or_null("Ombrelac_horloge_dedans")
 	if horl != null:
 		horl.main = main
+	var so: Node = chateau.get_node_or_null("Ombrelac_sortileges_dedans")
+	if so != null:
+		so.main = main
+	var gt: Node = chateau.get_node_or_null("Ombrelac_grosse_tour_dedans")
+	if gt != null:
+		gt.main = main
 	flore = FloreScript.new()
 	flore.name = "Flore_ombrelac"
 	add_child(flore)
@@ -173,6 +183,20 @@ func zone_at(p: Vector3) -> String:
 			return "ombrelac_bibliotheque"
 		if c.distance_to(Vector2(41.5, -46.0)) < 4.6:
 			return "ombrelac_tour_dortoirs"
+		var ds: float = c.distance_to(Vector2(-52.0, 34.0))
+		if ds < 6.6 and p.y < IleScript.ROC_Y + 34.5:
+			return "ombrelac_cabinet_sortileges" if p.y > IleScript.ROC_Y + 23.5 else "ombrelac_tour_sortileges"
+		if ds < 10.0 and p.y > IleScript.ROC_Y + 23.0 and p.y < IleScript.ROC_Y + 30.0:
+			return "ombrelac_balcon_sortileges"
+		# la Grosse Tour : la cage de l'escalier (contre le mur, au nord-est), les trois salles
+		if c.distance_to(Vector2(62.0, -40.0)) < 6.95 and p.y < IleScript.ROC_Y + 36.0:
+			if c.distance_to(Vector2(62.0, -40.0) + Vector2(cos(deg_to_rad(300.0)), sin(deg_to_rad(300.0))) * 4.3) < 2.6:
+				return "ombrelac_vis_grosse_tour"
+			if p.y > IleScript.ROC_Y + 23.5:
+				return "ombrelac_salle_reliques"
+			if p.y > IleScript.ROC_Y + 11.5:
+				return "ombrelac_bureau_recteur"
+			return "ombrelac_salle_conseil"
 		var dh: Vector2 = c - Vector2(36.0, 34.0)
 		if absf(dh.x) < 6.0 and absf(dh.y) < 6.0 and p.y < IleScript.ROC_Y + 40.0:
 			return "ombrelac_chambre_rouages" if p.y > IleScript.ROC_Y + 27.5 else "ombrelac_tour_horloge"
@@ -262,7 +286,7 @@ func _process(delta: float) -> void:
 		_nuit = nuit
 		for m in Kit.vitres():
 			(m as ShaderMaterial).set_shader_parameter("nuit", nuit)
-		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs", "Ombrelac_astrolabe_dedans", "Ombrelac_horloge_dedans"]:
+		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs", "Ombrelac_astrolabe_dedans", "Ombrelac_horloge_dedans", "Ombrelac_sortileges_dedans", "Ombrelac_grosse_tour_dedans"]:
 			var inter: Node = chateau.get_node_or_null(nom) if chateau != null else null
 			if inter != null:
 				inter.set_nuit(nuit)

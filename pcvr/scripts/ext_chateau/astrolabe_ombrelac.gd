@@ -51,8 +51,8 @@ func construire_astrolabe(p: Vector3, hs: float, T: float, HH: float, h1: float,
 	col.radius = 1.0
 	col.height = 1.4
 	k.shapes.append([col, _tr(0.0, 0.7, 3.4)])
-	k.cyl("velours_bleu", _tr(0.0, 0.0, 3.4), 3.4, 3.4, 0.015, 32)
-	k.cyl("or", _tr(0.0, 0.0, 3.4), 3.5, 3.5, 0.01, 32)
+	k.cyl("velours_bleu", _tr(0.0, 0.0, 3.4), 3.4, 3.4, 0.03, 32)
+	k.cyl("or", _tr(0.0, 0.0, 3.4), 3.5, 3.5, 0.026, 32)
 	# les bancs contre les murs ouest et sud, les bannières entre les baies
 	for zb in [-4.6, 4.6]:
 		k.box("chene", _tr(-hi + 0.35, 0.0, zb), Vector3(0.5, 0.45, 2.4), true)

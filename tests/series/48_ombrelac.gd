@@ -11,7 +11,11 @@
 ## et le redescend, la grille du puits arrête le héros quand elle n'est pas là, on tient debout dans
 ## l'Observatoire et sur la terrasse, dont le parapet arrête le héros. La Tour de l'Horloge : on entre
 ## dans la Salle des Poids, on monte à pied les huit volées jusqu'à la Chambre des Rouages, les
-## rambardes arrêtent le héros, les aiguilles donnent l'heure du jeu, la cloche sonne les heures.
+## rambardes arrêtent le héros, les aiguilles donnent l'heure du jeu, la cloche sonne les heures. La
+## Tour des Sortilèges : on entre dans la Salle des Cercles, on monte à pied les marches flottantes
+## jusqu'au Cabinet, la rambarde de lumière arrête le héros, on sort sur le balcon. La Grosse Tour :
+## on entre dans la Salle du Conseil, on monte à pied l'escalier à vis jusqu'à la Salle des Reliques,
+## on entre dans le Bureau du Recteur, la Couronne des Fondateurs tourne.
 const NOM := "48_ombrelac"
 const IleO := preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
@@ -254,6 +258,96 @@ func _serie() -> void:
 		await _att(1.0)
 		_ok(absf(hz.balancier.rotation.z - b0) > 0.001, "le balancier bat")
 		_ok(hz.lumieres.size() >= 6, "la tour est éclairée (%d lumières)" % hz.lumieres.size())
+	# la Tour des Sortilèges : la Salle des Cercles, les marches flottantes, le Cabinet, le balcon
+	var so = ombrelac_ext.chateau.get_node_or_null("Ombrelac_sortileges_dedans")
+	_ok(so != null, "la Tour des Sortilèges a son dedans")
+	_ok(_voie_libre(_wc(lx["sortileges_porte"], 0.4), _wc(lx["sortileges_salle"], 0.4)), "on entre dans la Tour des Sortilèges par sa porte")
+	await _poser(_wc(lx["sortileges_salle"], 1.0))
+	_ok(await _debout("la Salle des Cercles"), "on tient debout dans la Salle des Cercles")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_tour_sortileges", "le lieu : la Tour des Sortilèges (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["sortileges_escalier_mi"], 0.4), _wc(lx["sortileges_vide_mi"], 0.4)), "la rambarde de lumière arrête le héros au bord du vide")
+	# on monte à pied : en tournant le long du mur
+	await _poser(_wc(lx["sortileges_escalier_bas"], 1.0))
+	var scw: Vector3 = _wc(lx["sortileges_centre"], 0.0)
+	for i in range(220):
+		var rv: Vector3 = _pos() - scw
+		rv.y = 0.0
+		var rl: float = rv.length()
+		rv = rv / maxf(rl, 0.01)
+		var dirm: Vector3 = (rv.cross(Vector3.UP) + rv * clampf(4.6 - rl, -0.6, 0.6)).normalized()
+		place_player_v35(_pos() + Vector3.UP * 0.03, dirm)
+		await _att(0.05)
+		_touche(KEY_Z, true)
+		_touche(KEY_W, true)
+		await _att(0.3)
+		_touche(KEY_Z, false)
+		_touche(KEY_W, false)
+		if _pos().y > IleO.ROC_Y + 23.8:
+			break
+	await _att(0.4)
+	_ok(_pos().y > IleO.ROC_Y + 23.5, "on monte à pied les marches flottantes jusqu'au Cabinet (y %.1f)" % (_pos().y - IleO.ROC_Y))
+	await _poser(_wc(lx["sortileges_cabinet"], 1.0))
+	_ok(await _debout("le Cabinet des Sortilèges"), "on tient debout dans le Cabinet des Sortilèges")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_cabinet_sortileges", "le lieu : le Cabinet des Sortilèges (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["sortileges_bord_tremie"], 0.4), _wc(lx["sortileges_dans_tremie"], 0.4)), "la rambarde de la trémie arrête le héros")
+	_ok(_voie_libre(_wc(lx["sortileges_avant_balcon"], 0.4), _wc(lx["sortileges_balcon"], 0.4)), "du Cabinet, on sort sur le balcon")
+	await _poser(_wc(lx["sortileges_balcon"], 1.0))
+	_ok(await _debout("le balcon"), "on tient debout sur le balcon, au-dessus du lac")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_balcon_sortileges", "le lieu : le Balcon des Sortilèges (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["sortileges_balcon"], 0.4), _wc(lx["sortileges_balcon_dehors"], 0.4)), "la balustrade du balcon arrête le héros")
+	if so != null:
+		var f0: Vector3 = (so.follets[0][0] as Node3D).position
+		await _att(0.5)
+		_ok((so.follets[0][0] as Node3D).position.distance_to(f0) > 0.01 and so.livres.size() == 6, "les feux follets montent, les livres volent")
+		_ok(so.lumieres.size() >= 6, "la tour est éclairée (%d lumières)" % so.lumieres.size())
+	# la Grosse Tour : la Salle du Conseil, l'escalier à vis, le Bureau du Recteur, la Salle des Reliques
+	var gt = ombrelac_ext.chateau.get_node_or_null("Ombrelac_grosse_tour_dedans")
+	_ok(gt != null, "la Grosse Tour a son dedans")
+	_ok(_voie_libre(_wc(lx["grosse_porte"], 0.4), _wc(lx["grosse_conseil"], 0.4)), "on entre dans la Grosse Tour par sa porte")
+	await _poser(_wc(lx["grosse_conseil"], 1.0))
+	_ok(await _debout("la Salle du Conseil"), "on tient debout dans la Salle du Conseil")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_salle_conseil", "le lieu : la Salle du Conseil (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(_voie_libre(_wc(lx["grosse_vis_porte"], 0.4), _wc(lx["grosse_vis_bas"], 0.4)), "on entre dans la cage de l'escalier par sa porte")
+	_ok(not _voie_libre(_wc(lx["grosse_vis_mi"], 0.6), _wc(lx["grosse_vis_mi_dehors"], 0.6)), "le mur de la cage arrête le héros")
+	# on monte à pied : en tournant autour du noyau
+	await _poser(_wc(lx["grosse_vis_bas"], 1.0))
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_vis_grosse_tour", "le lieu : l'escalier de la Grosse Tour (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	var gvc: Vector3 = _wc(lx["grosse_vis_c"], 0.0)
+	var y_e1: float = -1.0
+	for i in range(300):
+		var rv: Vector3 = _pos() - gvc
+		rv.y = 0.0
+		var rl: float = rv.length()
+		rv = rv / maxf(rl, 0.01)
+		var dirm: Vector3 = (rv.cross(Vector3.UP) + rv * clampf(1.3 - rl, -0.6, 0.6)).normalized()
+		place_player_v35(_pos() + Vector3.UP * 0.03, dirm)
+		await _att(0.05)
+		_touche(KEY_Z, true)
+		_touche(KEY_W, true)
+		await _att(0.3)
+		_touche(KEY_Z, false)
+		_touche(KEY_W, false)
+		if y_e1 < 0.0 and _pos().y > IleO.ROC_Y + 11.8:
+			y_e1 = _pos().y
+		if _pos().y > IleO.ROC_Y + 23.8:
+			break
+	await _att(0.4)
+	_ok(y_e1 > 0.0, "on passe le palier du Bureau du Recteur (12 m)")
+	_ok(_pos().y > IleO.ROC_Y + 23.5, "on monte à pied l'escalier à vis jusqu'à la Salle des Reliques (y %.1f)" % (_pos().y - IleO.ROC_Y))
+	_ok(not _voie_libre(_wc(lx["grosse_vis_haut"], 0.4), _wc(lx["grosse_vis_vide"], 0.4)), "la rambarde du dernier palier arrête le héros")
+	_ok(_voie_libre(_wc(lx["grosse_vis_e1"], 0.4), _wc(lx["grosse_bureau_porte"], 0.4)), "du palier, on entre dans le Bureau du Recteur")
+	await _poser(_wc(lx["grosse_bureau"], 1.0))
+	_ok(await _debout("le Bureau du Recteur"), "on tient debout dans le Bureau du Recteur")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_bureau_recteur", "le lieu : le Bureau du Recteur (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(_voie_libre(_wc(lx["grosse_vis_e2"], 0.4), _wc(lx["grosse_reliques_porte"], 0.4)), "du dernier palier, on entre dans la Salle des Reliques")
+	await _poser(_wc(lx["grosse_reliques"], 1.0))
+	_ok(await _debout("la Salle des Reliques"), "on tient debout dans la Salle des Reliques")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_salle_reliques", "le lieu : la Salle des Reliques (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	if gt != null:
+		var r0: float = (gt.couronne as Node3D).rotation.y
+		await _att(0.5)
+		_ok(absf((gt.couronne as Node3D).rotation.y - r0) > 0.01, "la Couronne des Fondateurs tourne")
+		_ok(gt.lumieres.size() >= 8, "la tour est éclairée (%d lumières)" % gt.lumieres.size())
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)

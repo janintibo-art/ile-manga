@@ -65,6 +65,29 @@ const HORLOGE_H := 40.0
 const HORLOGE_T := 1.2
 const HORLOGE_CADRAN_Y := 35.0
 const HORLOGE_CADRAN_R := 3.7
+const Sortileges = preload("res://scripts/ext_chateau/sortileges_ombrelac.gd")
+## La Tour des Sortilèges : creuse jusqu'au plafond du Cabinet ; l'escalier de marches flottantes,
+## le Cabinet des Sortilèges à 24 m et son balcon sur le lac. Portes : [premier pan, bas, pans, haut]
+const SORT := Vector3(-52.0, 0.0, 34.0)
+const SORT_R := 6.5
+const SORT_T := 1.2
+const SORT_H := 68.0
+const SORT_CABINET := 24.0
+const SORT_PLAFOND := 34.0
+const SORT_PORTES := [[27, 0.0, 2, 3.4], [13, 24.0, 2, 3.2]]
+const GrosseTour = preload("res://scripts/ext_chateau/grosse_tour_ombrelac.gd")
+## La Grosse Tour (au nord-est, sur l'enceinte) : creuse ; la Salle du Conseil (au pied), le Bureau
+## du Recteur (12 m), la Salle des Reliques (24 m), l'escalier à vis dans sa cage de pierre
+const GROSSE := Vector3(62.0, 0.0, -40.0)
+const GROSSE_R := 8.5
+const GROSSE_T := 1.6
+const GROSSE_H := 48.0
+const GROSSE_E1 := 12.0
+const GROSSE_E2 := 24.0
+const GROSSE_PLAFOND := 35.5
+const GROSSE_PORTES := [[10, 0.0, 2, 3.6]]
+## Les baies : [angle (degrés), bas] ; celles sous le plafond ont leur verre vu du dedans
+const GROSSE_BAIES := [[40.0, 3.6], [230.0, 3.6], [20.0, 15.0], [110.0, 15.0], [30.0, 27.0], [120.0, 27.0], [220.0, 27.0], [80.0, 39.0], [190.0, 39.0], [340.0, 39.0]]
 const Ile = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 var ile: Node3D
@@ -88,6 +111,7 @@ func build(the_ile: Node3D) -> void:
 	_aile_est()
 	_cloitre()
 	_tour_sortileges()
+	_grosse_tour()
 	_pont_couvert()
 	_serres()
 	print("OMBRELAC: le château construit en ", Time.get_ticks_msec() - t0, " ms")
@@ -173,37 +197,61 @@ func _enceinte() -> void:
 			a = a + dir * 12.0
 		if i == pts.size() - 1:
 			b = b - dir * 12.0
-		var len: float = a.distance_to(b)
-		var mid: Vector3 = (a + b) * 0.5
-		var yaw: float = atan2(dir.x, dir.z) + PI * 0.5
-		var base: float = minf(sol(mid.x, mid.z), minf(sol(a.x, a.z), sol(b.x, b.z))) - 6.0
-		var xf := Transform3D(Basis(Vector3.UP, yaw), mid)
-		# le talus de la base (le mur s'élargit en descendant sur la falaise)
-		k.box("socle", xf * Transform3D(Basis.IDENTITY, Vector3(0, base, 0)), Vector3(len, -base + 1.0, ep + 2.4))
-		k.box("pierre", xf * Transform3D(Basis.IDENTITY, Vector3(0, 1.0, 0)), Vector3(len, h - 1.0, ep), true)
-		var out: Vector3 = mid.normalized() * Vector3(1, 0, 1)
-		k.crenels(Transform3D.IDENTITY, a + Vector3(0, h + 1.0, 0) + out * (ep * 0.5 - 0.3), b + Vector3(0, h + 1.0, 0) + out * (ep * 0.5 - 0.3), 0.6)
-		k.crenels(Transform3D.IDENTITY, a + Vector3(0, h + 0.4, 0) - out * (ep * 0.5 - 0.25), b + Vector3(0, h + 0.4, 0) - out * (ep * 0.5 - 0.25), 0.5)
-		k.cordon(Transform3D.IDENTITY, a + Vector3(0, 1.2, 0) + out * ep * 0.5, b + Vector3(0, 1.2, 0) + out * ep * 0.5, out, 0.35)
-		# les meurtrières
-		var n: int = int(len / 9.0)
-		for j in range(n):
-			var p: Vector3 = a.lerp(b, (j + 0.5) / n) + out * (ep * 0.5 + 0.02) + Vector3(0, 5.0, 0)
-			k.box("fer", Transform3D(Basis(Vector3.UP, yaw), p), Vector3(0.25, 2.2, 0.05))
+		# (la courtine s'arrête dans le mur de la Grosse Tour, qui est creuse)
+		for seg in _hors_grosse_tour(a, b):
+			a = seg[0]
+			b = seg[1]
+			var len: float = a.distance_to(b)
+			var mid: Vector3 = (a + b) * 0.5
+			var yaw: float = atan2(dir.x, dir.z) + PI * 0.5
+			var base: float = minf(sol(mid.x, mid.z), minf(sol(a.x, a.z), sol(b.x, b.z))) - 6.0
+			var xf := Transform3D(Basis(Vector3.UP, yaw), mid)
+			# le talus de la base (le mur s'élargit en descendant sur la falaise)
+			k.box("socle", xf * Transform3D(Basis.IDENTITY, Vector3(0, base, 0)), Vector3(len, -base + 1.0, ep + 2.4))
+			k.box("pierre", xf * Transform3D(Basis.IDENTITY, Vector3(0, 1.0, 0)), Vector3(len, h - 1.0, ep), true)
+			var out: Vector3 = mid.normalized() * Vector3(1, 0, 1)
+			k.crenels(Transform3D.IDENTITY, a + Vector3(0, h + 1.0, 0) + out * (ep * 0.5 - 0.3), b + Vector3(0, h + 1.0, 0) + out * (ep * 0.5 - 0.3), 0.6)
+			k.crenels(Transform3D.IDENTITY, a + Vector3(0, h + 0.4, 0) - out * (ep * 0.5 - 0.25), b + Vector3(0, h + 0.4, 0) - out * (ep * 0.5 - 0.25), 0.5)
+			k.cordon(Transform3D.IDENTITY, a + Vector3(0, 1.2, 0) + out * ep * 0.5, b + Vector3(0, 1.2, 0) + out * ep * 0.5, out, 0.35)
+			# les meurtrières
+			var n: int = int(len / 9.0)
+			for j in range(n):
+				var p: Vector3 = a.lerp(b, (j + 0.5) / n) + out * (ep * 0.5 + 0.02) + Vector3(0, 5.0, 0)
+				k.box("fer", Transform3D(Basis(Vector3.UP, yaw), p), Vector3(0.25, 2.2, 0.05))
 	# les tours de l'enceinte (pas aux deux points de la porte : les tours de la porte y sont)
 	for i in range(1, pts.size()):
 		var p: Vector3 = pts[i]
 		var tall: bool = i % 3 == 0
 		_tour_ronde(k, p.x, p.z, 5.0 if not tall else 6.0, 19.0 if not tall else 25.0, 9.0 if not tall else 13.0, 2, tall, -10.0)
-	# le sol du plateau : de grandes dalles dans toute l'enceinte
-	var ctr := Vector3(0, 0.04, 0)
+	# le sol du plateau : de grandes dalles dans toute l'enceinte (V197 : à 1,2 cm, sous le dallage des tours,
+	# 2 cm : à 4 cm, il recouvrait le sol des salles du bas, le cercle de runes, la rose des vents, le tapis)
+	var ctr := Vector3(0, 0.012, 0)
 	for i in range(pts.size()):
-		var a: Vector3 = pts[i] * 0.97 + Vector3(0, 0.04, 0)
-		var b: Vector3 = pts[(i + 1) % pts.size()] * 0.97 + Vector3(0, 0.04, 0)
+		var a: Vector3 = pts[i] * 0.97 + Vector3(0, 0.012, 0)
+		var b: Vector3 = pts[(i + 1) % pts.size()] * 0.97 + Vector3(0, 0.012, 0)
 		k.tri("dalles", Transform3D.IDENTITY, ctr, a, b, Vector3.UP)
 	_emit(k, "Ombrelac_enceinte")
 	# l'esplanade (le sol du plateau près des murs : rien, le relief suffit)
 	lieux["enceinte"] = Vector3.ZERO
+
+
+## Les morceaux de [a, b] (une courtine) hors de la Grosse Tour : coupés à 6,75 m de part et d'autre
+## du point le plus proche de son centre (les coins de la courtine restent dans l'épaisseur du mur)
+func _hors_grosse_tour(a: Vector3, b: Vector3) -> Array:
+	var g := Vector3(GROSSE.x, 0.0, GROSSE.z)
+	var ab: Vector3 = b - a
+	var L: float = ab.length()
+	var d: Vector3 = ab / L
+	var t: float = (g - a).dot(d)
+	var dist: float = (a + d * t).distance_to(g)
+	if dist > 6.0 or t < -7.0 or t > L + 7.0:
+		return [[a, b]]
+	var res: Array = []
+	if t - 6.75 > 0.5:
+		res.append([a, a + d * (t - 6.75)])
+	if t + 6.75 < L - 0.5:
+		res.append([a + d * (t + 6.75), b])
+	return res
 
 
 # =================================================================== la porte et le viaduc
@@ -732,8 +780,7 @@ func _aile_nord() -> void:
 		k.box("pierre_int", xf * at(xr, F + 2.6, (dp.x + dp.y) * 0.5), Vector3(0.6, E - F - 2.6, dp.y - dp.x), true)
 	_tour_ronde(k, -17.5, -46.0, 5.6, 38.0, 16.0, 5)
 	_tour_escalier(k, TOUR_ESC.x, TOUR_ESC.z, TOUR_ESC_R, 44.0, 17.0, 5)
-	# la Grosse Tour du nord-est : massive, crénelée, un haut toit
-	_tour_ronde(k, 62.0, -40.0, 8.5, 48.0, 22.0, 6, true, -12.0)
+	# (la Grosse Tour du nord-est : _grosse_tour)
 	_emit(k, "Ombrelac_aile_nord")
 	lieux["dortoirs"] = c + Vector3(0, 0, 8.5)
 	var sl = Salles.new()
@@ -1067,13 +1114,204 @@ func _cloitre() -> void:
 
 func _tour_sortileges() -> void:
 	var k := Kit.new()
-	_tour_ronde(k, -52.0, 34.0, 6.5, 68.0, 26.0, 7, true, -14.0)
+	_tour_creuse(k, SORT.x, SORT.z, SORT_R, SORT_H, SORT_T, SORT_PORTES, SORT_PLAFOND, -14.0)
+	for i in range(7):
+		var a: float = 0.7 + i * 2.1
+		var d := Vector3(cos(a), 0, sin(a))
+		var y: float = 4.0 + (SORT_H - 10.0) * (i + 0.5) / 7
+		k.window(Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), d * (SORT_R - 0.05) + Vector3(SORT.x, y, SORT.z)), 1.0, 2.4)
+	k.crown(at(SORT.x, 0, SORT.z), SORT_R, SORT_H)
+	k.cyl("pierre", at(SORT.x, SORT_H, SORT.z), SORT_R * 0.7, SORT_R * 0.7, 3.0, 20, true)
+	k.cone_roof(at(SORT.x, SORT_H + 3.0, SORT.z), SORT_R * 0.7, 26.0)
+	# le plancher de la salle du bas, plein dessous
+	k.cyl("socle", at(SORT.x, -1.2, SORT.z), SORT_R - SORT_T + 0.15, SORT_R - SORT_T + 0.15, 1.18, 28, true, true)
+	# le perron de la porte (à l'est), l'encadrement ; le balcon (à l'ouest, sur le lac)
+	_portes_tour_creuse(k, SORT.x, SORT.z, SORT_R, SORT_PORTES)
+	_balcon_sortileges(k)
 	# une galerie qui la relie à la Grande Salle
 	k.box("pierre", at(-40.0, 0.0, 22.0), Vector3(16.0, 10.0, 6.0), true)
 	k.gable_roof(at(-40.0, 10.0, 22.0), 16.0, 6.0, 4.0, false)
 	_baies(k, Vector3(-48.0, 3.5, 25.0), Vector3(-32.0, 3.5, 25.0), Vector3(0, 0, 1), 3, 1.4, 4.0)
 	_emit(k, "Ombrelac_sortileges")
 	lieux["sortileges"] = Vector3(-52.0, 0, 42.0)
+	var so = Sortileges.new()
+	so.name = "Ombrelac_sortileges_dedans"
+	add_child(so)
+	so.construire_sortileges(SORT, SORT_R, SORT_T, SORT_CABINET, SORT_PLAFOND)
+	for key in so.lieux:
+		lieux[key] = so.lieux[key]
+
+
+## Une tour ronde creuse, pan par pan (comme la Tour des Dortoirs) : le socle, le fût (un peu de
+## fruit), le parement du dedans jusqu'à « ihaut », les portes (des pans ouverts, qui peuvent
+## passer d'un bout à l'autre du cercle), la collision par pan et par tranche
+func _tour_creuse(k: RefCounted, x: float, z: float, r: float, h: float, T: float, portes: Array, ihaut: float, base: float) -> void:
+	var sides: int = 28
+	var ri: float = r - T
+	var y0: float = minf(base, sol(x, z) - 1.0)
+	var c := Vector3(x, 0, z)
+	var slope: float = (r * 1.04 - r) / (h - 1.2)
+	for i in range(sides):
+		var a0: float = TAU * i / sides
+		var a1: float = TAU * (i + 1) / sides
+		var d0 := Vector3(cos(a0), 0, sin(a0))
+		var d1 := Vector3(cos(a1), 0, sin(a1))
+		var dm: Vector3 = (d0 + d1).normalized()
+		var pleins: Array = [[y0, h]]
+		for po in portes:
+			var i0: int = int(po[0])
+			var np: int = int(po[2])
+			var rel: int = posmod(i - i0, sides)
+			if rel >= np:
+				continue
+			var yb: float = float(po[1])
+			var yt: float = yb + float(po[3])
+			var nv: Array = []
+			for pl in pleins:
+				if yt <= pl[0] or yb >= pl[1]:
+					nv.append(pl)
+				else:
+					if yb > pl[0]:
+						nv.append([pl[0], yb])
+					if yt < pl[1]:
+						nv.append([yt, pl[1]])
+			pleins = nv
+			var ro: float = r * 1.04 - slope * maxf(yb - 1.2, 0.0)
+			if yb < 1.2:
+				ro = r * 1.12
+			if rel == 0:
+				k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * ri + Vector3(0, yb, 0), c + d0 * ro + Vector3(0, yb, 0), c + d0 * ro + Vector3(0, yt, 0), c + d0 * ri + Vector3(0, yt, 0), d0.cross(Vector3.UP))
+			if rel == np - 1:
+				k.quad("pierre_claire", Transform3D.IDENTITY, c + d1 * ro + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yt, 0), c + d1 * ro + Vector3(0, yt, 0), Vector3.UP.cross(d1))
+			k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * ri + Vector3(0, yt, 0), c + d1 * ri + Vector3(0, yt, 0), c + d1 * ro + Vector3(0, yt, 0), c + d0 * ro + Vector3(0, yt, 0), Vector3.DOWN)
+			k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * ro + Vector3(0, yb, 0), c + d1 * ro + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yb, 0), c + d0 * ri + Vector3(0, yb, 0), Vector3.UP)
+		for pl in pleins:
+			var ya: float = float(pl[0])
+			var yb2: float = float(pl[1])
+			var ys: float = clampf(1.2, ya, yb2)
+			if ys > ya:
+				var rs0: float = lerpf(r * 1.12, r * 1.04, (ya - y0) / (1.2 - y0))
+				var rs1: float = lerpf(r * 1.12, r * 1.04, (ys - y0) / (1.2 - y0))
+				k.quad("socle", Transform3D.IDENTITY, c + d0 * rs0 + Vector3(0, ya, 0), c + d1 * rs0 + Vector3(0, ya, 0), c + d1 * rs1 + Vector3(0, ys, 0), c + d0 * rs1 + Vector3(0, ys, 0), dm)
+				if absf(ys - 1.2) < 0.001:
+					k.quad("socle", Transform3D.IDENTITY, c + d0 * r * 1.04 + Vector3(0, 1.2, 0), c + d1 * r * 1.04 + Vector3(0, 1.2, 0), c + d1 * r * 1.12 * 0.999 + Vector3(0, 1.2, 0), c + d0 * r * 1.12 * 0.999 + Vector3(0, 1.2, 0), Vector3.UP)
+			if yb2 > ys:
+				var ra: float = r * 1.04 - slope * (ys - 1.2)
+				var rb: float = r * 1.04 - slope * (yb2 - 1.2)
+				k.quad("pierre", Transform3D.IDENTITY, c + d0 * ra + Vector3(0, ys, 0), c + d1 * ra + Vector3(0, ys, 0), c + d1 * rb + Vector3(0, yb2, 0), c + d0 * rb + Vector3(0, yb2, 0), dm)
+			var ia: float = maxf(ya, -0.3)
+			var ib: float = minf(yb2, ihaut + 0.3)
+			if ib > ia:
+				k.quad("pierre_int", Transform3D.IDENTITY, c + d1 * ri + Vector3(0, ia, 0), c + d0 * ri + Vector3(0, ia, 0), c + d0 * ri + Vector3(0, ib, 0), c + d1 * ri + Vector3(0, ib, 0), -dm)
+			var cy0: float = maxf(ya, -2.0)
+			if yb2 > cy0:
+				var rm: float = (ri + r) * 0.5
+				var bs := BoxShape3D.new()
+				bs.size = Vector3((r + 0.1) * TAU / sides * 1.08, yb2 - cy0, r - ri + 0.1)
+				var yaw: float = atan2(dm.x, dm.z)
+				k.shapes.append([bs, Transform3D(Basis(Vector3.UP, yaw), c + dm * rm + Vector3(0, (cy0 + yb2) * 0.5, 0))])
+	# le dessus du creux : un disque plein au plafond (on ne voit pas le ciel par les côtés)
+	k.cyl("pierre", at(x, ihaut + 0.3, z), ri, ri, 0.02, 28, true)
+
+
+## Les portes d'une tour creuse : l'encadrement (piédroits, linteau, clé), un perron devant celle
+## du bas
+func _portes_tour_creuse(k: RefCounted, x: float, z: float, r: float, portes: Array) -> void:
+	var sides: int = 28
+	var c := Vector3(x, 0, z)
+	for po in portes:
+		var dp: float = TAU * (float(po[0]) + 0.5 * float(po[2])) / sides
+		var dd := Vector3(cos(dp), 0, sin(dp))
+		var yb: float = float(po[1])
+		var tg := Vector3(-dd.z, 0, dd.x)
+		var bp := Basis(tg, Vector3.UP, dd)
+		var hp: float = float(po[3])
+		var dmi: float = (r * 1.12 if yb < 1.2 else r * 1.04) * 0.97
+		var demi: float = r * 1.04 * sin(TAU / sides * float(po[2]) * 0.5)
+		var b0 := Vector3(0, yb, 0)
+		if yb < 1.2:
+			var pp: Vector3 = c + dd * (r * 1.12 + 0.6)
+			var ys0: float = sol(pp.x, pp.z)
+			k.box("pierre_claire", Transform3D(Basis(Vector3.UP, atan2(dd.x, dd.z)), pp + Vector3(0, minf(ys0, 0.0) - 1.0, 0)), Vector3(demi * 2.0 + 0.8, 1.0 - minf(ys0, 0.0), 1.4), true)
+		for e in [-1.0, 1.0]:
+			k.box("pierre_claire", Transform3D(bp, c + dd * dmi + tg * e * (demi + 0.2) + b0), Vector3(0.45, hp, 0.5))
+		k.box("pierre_claire", Transform3D(bp, c + dd * dmi + b0 + Vector3(0, hp, 0)), Vector3(demi * 2.0 + 0.85, 0.5, 0.55))
+		k.box("pierre_claire", Transform3D(bp, c + dd * (dmi + 0.08) + b0 + Vector3(0, hp - 0.12, 0)), Vector3(0.4, 0.72, 0.5))
+
+
+## Le balcon du Cabinet des Sortilèges, à l'ouest, au-dessus du lac : la dalle sur ses consoles, la
+## balustrade (qui arrête le héros)
+func _balcon_sortileges(k: RefCounted) -> void:
+	var po: Array = SORT_PORTES[1]
+	var dp: float = TAU * (float(po[0]) + 0.5 * float(po[2])) / 28.0
+	var dd := Vector3(cos(dp), 0, sin(dp))
+	var tg := Vector3(-dd.z, 0, dd.x)
+	var bp := Basis(-tg, Vector3.UP, dd)
+	var y: float = float(po[1])
+	var r0: float = SORT_R * 0.98
+	var prof: float = 2.4
+	var lg: float = 3.6
+	var cpl: Vector3 = SORT + dd * (r0 + prof * 0.5) + Vector3(0, y, 0)
+	k.box("pierre_claire", Transform3D(bp, cpl - Vector3(0, 0.35, 0)), Vector3(lg, 0.35, prof + 0.4), true)
+	k.box("dalles", Transform3D(bp, cpl - Vector3(0, 0.02, 0)), Vector3(lg - 0.1, 0.03, prof + 0.3))
+	for e in [-1.2, 0.0, 1.2]:
+		k.box("pierre", Transform3D(bp, SORT + dd * (r0 + 0.6) + tg * e + Vector3(0, y - 1.6, 0)), Vector3(0.45, 1.25, 1.2))
+		k.box("pierre", Transform3D(bp, SORT + dd * (r0 + 1.4) + tg * e + Vector3(0, y - 0.95, 0)), Vector3(0.4, 0.6, 0.9))
+	# la balustrade : trois côtés, des balustres, la main courante, la collision
+	var bout: Vector3 = SORT + dd * (r0 + prof) + Vector3(0, y, 0)
+	var cotes: Array = [[bout - tg * lg * 0.5, bout + tg * lg * 0.5]]
+	for e2 in [-1.0, 1.0]:
+		cotes.append([SORT + dd * r0 * 1.03 + tg * e2 * lg * 0.5 + Vector3(0, y, 0), bout + tg * e2 * lg * 0.5])
+	for cc in cotes:
+		var a: Vector3 = cc[0]
+		var b: Vector3 = cc[1]
+		var n: int = int(a.distance_to(b) / 0.32)
+		for i in range(n + 1):
+			var q: Vector3 = a.lerp(b, float(i) / n)
+			k.cyl("pierre_claire", Transform3D(Basis.IDENTITY, q), 0.07, 0.1, 0.9, 6)
+		var dir: Vector3 = (b - a).normalized()
+		var bb := Basis(Vector3.UP.cross(dir).normalized(), Vector3.UP, dir)
+		k.box("pierre_claire", Transform3D(bb, (a + b) * 0.5 + Vector3(0, 0.9, 0)), Vector3(0.24, 0.14, a.distance_to(b) + 0.24))
+		var gs := BoxShape3D.new()
+		gs.size = Vector3(0.3, 1.4, a.distance_to(b) + 0.2)
+		k.shapes.append([gs, Transform3D(bb, (a + b) * 0.5 + Vector3(0, 0.7, 0))])
+
+
+# =================================================================== la Grosse Tour
+
+## La Grosse Tour du nord-est : massive, crénelée, un haut toit ; creuse : la porte sur la cour (au
+## sud-ouest), le dedans (grosse_tour_ombrelac.gd)
+func _grosse_tour() -> void:
+	var k := Kit.new()
+	var x: float = GROSSE.x
+	var z: float = GROSSE.z
+	var r: float = GROSSE_R
+	_tour_creuse(k, x, z, r, GROSSE_H, GROSSE_T, GROSSE_PORTES, GROSSE_PLAFOND, -12.0)
+	for b in GROSSE_BAIES:
+		var d := Vector3(cos(deg_to_rad(float(b[0]))), 0, sin(deg_to_rad(float(b[0]))))
+		var y: float = float(b[1])
+		var rr: float = r * 1.04 - (r * 1.04 - r) * (y - 1.2) / (GROSSE_H - 1.2)
+		k.window(Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), d * (rr - 0.05) + Vector3(x, y, z)), 1.1, 2.8)
+	k.crown(at(x, 0, z), r, GROSSE_H)
+	# le dessus du mur, sous le chemin de ronde (on ne voit pas dans le creux)
+	k.cyl("pierre", at(x, GROSSE_H - 0.02, z), r - GROSSE_T + 0.05, r - GROSSE_T + 0.05, 0.02, 28, true)
+	k.cyl("pierre", at(x, GROSSE_H, z), r * 0.7, r * 0.7, 3.0, 20, true)
+	k.cone_roof(at(x, GROSSE_H + 3.0, z), r * 0.7, 22.0)
+	# le plancher de la salle du bas, plein dessous
+	k.cyl("socle", at(x, -1.2, z), r - GROSSE_T + 0.15, r - GROSSE_T + 0.15, 1.18, 28, true, true)
+	_portes_tour_creuse(k, x, z, r, GROSSE_PORTES)
+	_emit(k, "Ombrelac_grosse_tour")
+	lieux["grosse_tour"] = GROSSE + Vector3(-9.0, 0.0, 7.0)
+	var gt = GrosseTour.new()
+	gt.name = "Ombrelac_grosse_tour_dedans"
+	add_child(gt)
+	var vb: Array = []
+	for b2 in GROSSE_BAIES:
+		if float(b2[1]) + 2.8 < GROSSE_PLAFOND:
+			vb.append(b2)
+	gt.construire_grosse_tour(GROSSE, r, GROSSE_T, GROSSE_E1, GROSSE_E2, GROSSE_PLAFOND, vb)
+	for key in gt.lieux:
+		lieux[key] = gt.lieux[key]
 
 
 # =================================================================== le Pont Couvert et la Tour des Vents

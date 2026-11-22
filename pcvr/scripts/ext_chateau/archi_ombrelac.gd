@@ -20,11 +20,12 @@ const TABLEAU := "res://shaders/ext_chateau/ombrelac_tableau.gdshader"
 const CARTE_CIEL := "res://shaders/ext_chateau/ombrelac_carte_ciel.gdshader"
 const FLAMME := "res://shaders/ext_chateau/ombrelac_flamme.gdshader"
 const TISSU := "res://shaders/ext_chateau/ombrelac_tissu.gdshader"
+const PORTRAIT := "res://shaders/ext_chateau/ombrelac_portrait.gdshader"
 
 static var _mats: Dictionary = {}
 
 var _st: Dictionary = {}
-var _uv_mats := {"ardoise": true, "vitre": true, "vitrail": true, "flamme": true, "livres": true, "tableau": true, "tableau_amphi": true, "carte_ciel": true, "banniere_bleu": true, "banniere_pourpre": true, "tapis": true}
+var _uv_mats := {"ardoise": true, "vitre": true, "vitrail": true, "flamme": true, "livres": true, "tableau": true, "tableau_amphi": true, "carte_ciel": true, "portrait": true, "banniere_bleu": true, "banniere_pourpre": true, "tapis": true}
 ## Les formes de collision : [Shape3D, Transform3D]
 var shapes: Array = []
 var sol_y: float = 0.0
@@ -172,6 +173,20 @@ static func mat(key: String) -> Material:
 			var scc := ShaderMaterial.new()
 			scc.shader = load(CARTE_CIEL)
 			m = scc
+		"vitrine":
+			# le verre des vitrines de la Salle des Reliques : presque invisible, un reflet
+			var svt := StandardMaterial3D.new()
+			svt.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			svt.albedo_color = Color(0.85, 0.92, 0.95, 0.1)
+			svt.metallic_specular = 1.0
+			svt.roughness = 0.03
+			svt.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = svt
+		"portrait":
+			# les portraits des Recteurs (le Bureau du Recteur, dans la Grosse Tour)
+			var spt := ShaderMaterial.new()
+			spt.shader = load(PORTRAIT)
+			m = spt
 		"potion_vert", "potion_bleu", "potion_rouge", "potion_ambre", "potion_violet":
 			var cols := {"potion_vert": Color(0.25, 0.95, 0.35), "potion_bleu": Color(0.2, 0.55, 1.0), "potion_rouge": Color(1.0, 0.2, 0.18),
 				"potion_ambre": Color(1.0, 0.62, 0.15), "potion_violet": Color(0.7, 0.3, 1.0)}
@@ -271,6 +286,40 @@ static func mat(key: String) -> Material:
 			sb.metallic = 0.35
 			sb.roughness = 0.5
 			m = sb
+		"rune", "rune_violet":
+			# les runes et les lueurs de la Tour des Sortilèges : une lumière froide, sans ombre
+			var sr := StandardMaterial3D.new()
+			sr.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			sr.albedo_color = Color(0.55, 0.95, 1.0) if key == "rune" else Color(0.82, 0.55, 1.0)
+			sr.emission_enabled = true
+			sr.emission = sr.albedo_color
+			sr.emission_energy_multiplier = 1.6
+			m = sr
+		"voile":
+			# la rambarde de lumière de l'escalier : un voile violet, presque transparent
+			var sv2 := StandardMaterial3D.new()
+			sv2.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			sv2.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			sv2.albedo_color = Color(0.7, 0.5, 1.0, 0.22)
+			sv2.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = sv2
+		"cristal":
+			var sc2 := StandardMaterial3D.new()
+			sc2.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			sc2.albedo_color = Color(0.62, 0.8, 1.0, 0.45)
+			sc2.metallic_specular = 1.0
+			sc2.roughness = 0.04
+			sc2.rim_enabled = true
+			sc2.rim = 0.8
+			sc2.emission_enabled = true
+			sc2.emission = Color(0.45, 0.7, 1.0)
+			sc2.emission_energy_multiplier = 0.6
+			m = sc2
+		"paille":
+			var sp2 := StandardMaterial3D.new()
+			sp2.albedo_color = Color(0.78, 0.66, 0.36)
+			sp2.roughness = 1.0
+			m = sp2
 		"drap":
 			var sd := StandardMaterial3D.new()
 			sd.albedo_color = Color(0.86, 0.83, 0.76)

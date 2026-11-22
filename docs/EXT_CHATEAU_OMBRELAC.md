@@ -46,8 +46,22 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
       mouvement aux quatre cadrans, dont on voit le dos (et l'ombre des aiguilles) ;
     - sous le toit, la **cloche** de bronze : elle sonne les heures du jeu, autant de coups que
       l'heure ;
-  - l'**Aile des Dortoirs**, la **Grosse Tour** du nord-est. Au rez-de-chaussée de l'Aile des
-    Dortoirs, trois **salles d'étude** (**on y entre** par la galerie nord du Cloître) :
+  - la **Grosse Tour** du nord-est, sur l'enceinte : massive, crénelée, un haut toit. **On y
+    entre** par sa porte sud-ouest, sur la cour :
+    - la **Salle du Conseil**, au pied : la grande table ronde de chêne et son étoile d'or
+      incrustée, les hautes chaises des maîtres et le siège du Recteur, le tapis rond, la couronne
+      de fer et ses bougies, les bannières de l'Académie, les lanternes de la porte ;
+    - l'**escalier à vis**, dans sa cage de pierre ronde contre le mur : deux fois trois tours, la
+      main courante de fer, une porte à chaque étage (on monte à pied) ;
+    - le **Bureau du Recteur**, à 12 m : le grand bureau (les papiers, l'encrier, le grimoire, le
+      sablier), le fauteuil du Recteur, la cheminée et son feu, le globe, les bibliothèques, et la
+      **galerie des portraits** des anciens Recteurs, peints à l'huile (barbes, chapeaux pointus,
+      robes de cérémonie, vernis craquelé) ;
+    - la **Salle des Reliques**, à 24 m : la Couronne des Fondateurs, qui tourne lentement dans sa
+      colonne de lumière au-dessus d'un cercle de runes, les vitrines et leurs reliques (l'épée, la
+      coupe, le cristal, le grimoire, la baguette, l'astrolabe de poche), les coffres ferrés, les
+      écus et les épées croisées, le plafond étoilé ;
+  - l'**Aile des Dortoirs**. À son rez-de-chaussée, trois **salles d'étude** (**on y entre** par la galerie nord du Cloître) :
     - la **Salle des Astres** : le tableau noir couvert de schémas à la craie, la table du maître,
       les pupitres des élèves, le grand planétaire de cuivre suspendu (le soleil et six planètes),
       les cartes du ciel, la lunette, la bibliothèque ;
@@ -69,7 +83,17 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
     longue table dans l'allée, une galerie de chêne tout autour (on peut y monter par le grand
     escalier), l'échelle de bibliothèque, la sphère armillaire, les lanternes, le plafond peint ;
   - le **Cloître** (galeries d'arcades, jardin, fontaine) ;
-  - la **Tour des Sortilèges**, au-dessus du lac ;
+  - la **Tour des Sortilèges**, au-dessus du lac (**on y entre** par sa porte est, sur la cour) :
+    - la **Salle des Cercles**, au pied : un grand cercle de runes lumineuses gravé dans les dalles
+      (heptagramme et glyphes qui palpitent), trois mannequins d'entraînement, le râtelier de
+      baguettes, la bannière ;
+    - les **marches flottantes** : 120 marches de pierre qui tournent trois fois dans le vide, sans
+      appui, chacune marquée d'une rune ; une **rambarde de lumière** violette retient le héros
+      côté vide (on monte à pied) ; des feux follets montent en hélice et des bougies flottent ;
+    - le **Cabinet des Sortilèges**, à 24 m : la sphère de cristal et son cœur de lumière, le
+      pupitre et son grimoire dont les pages tournent, les bibliothèques, les livres qui volent,
+      le plafond étoilé, l'oculus et sa balustrade de laiton au-dessus de la salle ;
+    - le **balcon**, côté ouest, au-dessus du lac, avec sa balustrade de pierre ;
   - le **Pont Couvert**, qui file au-dessus du lac jusqu'à la **Tour des Vents**, sur l'Aiguille ;
   - les **Serres** de la terrasse est.
 - **Les graphismes** : toits d'ardoises taillées en écailles (shader), pierre de taille vieillie
@@ -80,7 +104,7 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les autres intérieurs (la Tour des Sortilèges, la Grosse Tour), les habitants de l'Académie, les cours et les quêtes.
+Pour la suite (pas encore faits) : les habitants de l'Académie, les cours et les quêtes.
 
 ## Les fichiers
 
@@ -98,6 +122,8 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/dortoirs_ombrelac.gd` | les dortoirs et la Salle Commune (l'étage de l'Aile des Dortoirs), l'escalier à vis de la Tour des Dortoirs |
 | `pcvr/scripts/ext_chateau/astrolabe_ombrelac.gd` | le dedans de la Tour de l'Astrolabe : la Salle de l'Astrolabe, la Nacelle et ses grilles, l'Observatoire |
 | `pcvr/scripts/ext_chateau/horloge_ombrelac.gd` | le dedans de la Tour de l'Horloge : la Salle des Poids, l'escalier, la Chambre des Rouages, les cadrans et leurs aiguilles, la cloche |
+| `pcvr/scripts/ext_chateau/sortileges_ombrelac.gd` | le dedans de la Tour des Sortilèges : la Salle des Cercles, les marches flottantes et leur rambarde de lumière, le Cabinet, les feux follets, les bougies et les livres volants |
+| `pcvr/scripts/ext_chateau/grosse_tour_ombrelac.gd` | le dedans de la Grosse Tour : la Salle du Conseil, l'escalier à vis et sa cage, le Bureau du Recteur, la Salle des Reliques et la Couronne des Fondateurs |
 | `pcvr/scripts/ext_chateau/flore_ombrelac.gd` | la végétation et les rochers (reprend les outils de `grande_flore_v59.gd`) |
 | `pcvr/shaders/ext_chateau/ombrelac_ardoise.gdshader` | les toits d'ardoises en écailles |
 | `pcvr/shaders/ext_chateau/ombrelac_vitre.gdshader` | les fenêtres et les vitraux (jour / nuit, vus du dehors et du dedans) |
@@ -107,6 +133,7 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/shaders/ext_chateau/ombrelac_livres.gdshader` | les livres sur les rayons (dos de cuir, nerfs et filets dorés) |
 | `pcvr/shaders/ext_chateau/ombrelac_tableau.gdshader` | les tableaux noirs (schémas à la craie sur l'ardoise) |
 | `pcvr/shaders/ext_chateau/ombrelac_carte_ciel.gdshader` | les cartes du ciel (constellations sur papier bleu de nuit) |
+| `pcvr/shaders/ext_chateau/ombrelac_portrait.gdshader` | les portraits des anciens Recteurs (peints à l'huile) |
 | `pcvr/tools/ext_chateau_textures.py` | fabrique les textures du château (à lancer une fois) |
 | `www/assets/textures/ext_chateau/*.png` | pierre de taille, pierre fine, dalles (et leur relief) |
 | `tests/series/48_ombrelac.gd` | la série de tests de l'extension |
