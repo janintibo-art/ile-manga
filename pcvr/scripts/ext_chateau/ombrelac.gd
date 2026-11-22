@@ -21,7 +21,8 @@ const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le d�
 	"ombrelac_dortoir_aube": "le Dortoir de l'Aube", "ombrelac_salle_commune": "la Salle Commune",
 	"ombrelac_dortoir_crepuscule": "le Dortoir du Crépuscule",
 	"ombrelac_salle_astrolabe": "la Salle de l'Astrolabe", "ombrelac_observatoire": "l'Observatoire",
-	"ombrelac_terrasse_astrolabe": "la Terrasse de l'Astrolabe"}
+	"ombrelac_terrasse_astrolabe": "la Terrasse de l'Astrolabe",
+	"ombrelac_tour_horloge": "la Tour de l'Horloge", "ombrelac_chambre_rouages": "la Chambre des Rouages"}
 
 var main: Node
 var ile: Node3D
@@ -62,6 +63,9 @@ func build_town() -> void:
 	var astro: Node = chateau.get_node_or_null("Ombrelac_astrolabe_dedans")
 	if astro != null:
 		astro.main = main
+	var horl: Node = chateau.get_node_or_null("Ombrelac_horloge_dedans")
+	if horl != null:
+		horl.main = main
 	flore = FloreScript.new()
 	flore.name = "Flore_ombrelac"
 	add_child(flore)
@@ -169,6 +173,9 @@ func zone_at(p: Vector3) -> String:
 			return "ombrelac_bibliotheque"
 		if c.distance_to(Vector2(41.5, -46.0)) < 4.6:
 			return "ombrelac_tour_dortoirs"
+		var dh: Vector2 = c - Vector2(36.0, 34.0)
+		if absf(dh.x) < 6.0 and absf(dh.y) < 6.0 and p.y < IleScript.ROC_Y + 40.0:
+			return "ombrelac_chambre_rouages" if p.y > IleScript.ROC_Y + 27.5 else "ombrelac_tour_horloge"
 		var d: Vector2 = c - Vector2(-44.0, -26.0)
 		if absf(d.x) < 9.5 and absf(d.y) < 9.5:
 			if p.y > IleScript.ROC_Y + 53.0:
@@ -255,7 +262,7 @@ func _process(delta: float) -> void:
 		_nuit = nuit
 		for m in Kit.vitres():
 			(m as ShaderMaterial).set_shader_parameter("nuit", nuit)
-		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs", "Ombrelac_astrolabe_dedans"]:
+		for nom in ["Ombrelac_interieurs", "Ombrelac_bibliotheque", "Ombrelac_salles", "Ombrelac_dortoirs", "Ombrelac_astrolabe_dedans", "Ombrelac_horloge_dedans"]:
 			var inter: Node = chateau.get_node_or_null(nom) if chateau != null else null
 			if inter != null:
 				inter.set_nuit(nuit)

@@ -56,6 +56,15 @@ const DONJON_OBS := 12.5
 const DONJON_R2 := 7.2
 const PUITS := Vector3(0.0, 0.0, -3.2)
 const PUITS_HS := 1.7
+const Horloge = preload("res://scripts/ext_chateau/horloge_ombrelac.gd")
+## La Tour de l'Horloge : creuse ; la salle des poids en bas, l'escalier le long des murs, la
+## chambre des rouages en haut, derrière les quatre cadrans de verre ; la cloche sous le toit
+const HORLOGE := Vector3(36.0, 0.0, 34.0)
+const HORLOGE_HS := 6.0
+const HORLOGE_H := 40.0
+const HORLOGE_T := 1.2
+const HORLOGE_CADRAN_Y := 35.0
+const HORLOGE_CADRAN_R := 3.7
 const Ile = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 var ile: Node3D
@@ -563,28 +572,48 @@ func _donjon() -> void:
 
 func _horloge() -> void:
 	var k := Kit.new()
-	var p := Vector3(36.0, 0, 34.0)
-	var hs: float = 6.0
-	var h: float = 40.0
-	k.box("socle", at(p.x, -4.0, p.z), Vector3(hs * 2.0 + 1.2, 5.2, hs * 2.0 + 1.2), true)
-	k.box("pierre", at(p.x, 1.2, p.z), Vector3(hs * 2.0, h - 1.2, hs * 2.0), true)
+	var p := HORLOGE
+	var hs: float = HORLOGE_HS
+	var h: float = HORLOGE_H
+	var T: float = HORLOGE_T
+	var cy: float = HORLOGE_CADRAN_Y
+	# le socle (le plancher de la salle des poids à 0), son bandeau tout autour, coupé devant la porte
+	k.box("socle", at(p.x, -5.0, p.z), Vector3(hs * 2.0 + 1.2, 4.95, hs * 2.0 + 1.2), true)
+	for f0 in range(4):
+		var yw: float = f0 * PI * 0.5
+		var o0 := Vector3(sin(yw), 0, cos(yw))
+		var r0 := Vector3(cos(yw), 0, -sin(yw))
+		if f0 == 3:
+			for e0 in [-1.0, 1.0]:
+				var lg: float = hs + 0.6 - 1.5
+				k.box("socle", Transform3D(Basis(Vector3.UP, yw), p + o0 * (hs + 0.3) + r0 * e0 * (1.5 + lg * 0.5) + Vector3(0, -0.05, 0)), Vector3(lg, 1.25, 0.6), true)
+		else:
+			k.box("socle", Transform3D(Basis(Vector3.UP, yw), p + o0 * (hs + 0.3) + Vector3(0, -0.05, 0)), Vector3(hs * 2.0 + 1.2, 1.25, 0.6), true)
+	# quatre murs épais : en bas la porte (à l'ouest, sur la cour), au milieu trois rangs de baies,
+	# en haut le cadran (un oculus fermé d'un verre, voir horloge_ombrelac.gd)
 	for f in range(4):
 		var yaw: float = f * PI * 0.5
 		var out := Vector3(sin(yaw), 0, cos(yaw))
 		var right := Vector3(cos(yaw), 0, -sin(yaw))
 		var face: Vector3 = p + out * hs
+		var bs := Basis(Vector3.UP, yaw)
+		var lw: float = hs * 2.0 if f % 2 == 0 else hs * 2.0 - 2.0 * T
+		var bas: Array = []
+		if f == 3:
+			bas.append(Kit.trou_ogive(0.0, 0.0, 2.4, 4.2))
+			_portail(k, Transform3D(bs, face), 2.4, 4.2)
+		k.mur(Transform3D(bs, face), lw, 5.0, T, bas)
+		var baies: Array = []
 		for et in range(3):
-			k.window(Transform3D(Basis(Vector3.UP, yaw), face + Vector3(0, 6.0 + et * 8.0, 0)), 1.4, 4.0)
+			baies.append(Kit.trou_ogive(0.0, 1.0 + et * 8.0, 1.4, 4.0))
+			k.window(Transform3D(bs, face + Vector3(0, 6.0 + et * 8.0, 0)), 1.4, 4.0)
 			k.cordon(Transform3D.IDENTITY, face - right * hs + Vector3(0, 4.6 + et * 8.0, 0), face + right * hs + Vector3(0, 4.6 + et * 8.0, 0), out, 0.25)
-		# le cadran : un disque d'or, les heures en fer, les aiguilles
-		var cx: Transform3D = Transform3D(Basis(Vector3.UP, yaw), face + Vector3(0, h - 5.0, 0))
-		k.cyl("pierre_claire", cx * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 0, 0.0)), 4.2, 4.2, 0.35, 32)
-		k.cyl("or", cx * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 0, 0.0)), 3.6, 3.6, 0.42, 32)
-		for hr in range(12):
-			var a: float = TAU * hr / 12.0
-			k.box("fer", cx * Transform3D(Basis(Vector3(0, 0, 1), -a), Vector3(sin(a) * 3.0, cos(a) * 3.0 - 0.35, 0.45)), Vector3(0.22, 0.7, 0.05))
-		k.box("fer", cx * Transform3D(Basis(Vector3(0, 0, 1), -0.9), Vector3(0, 0, 0.5)), Vector3(0.25, 2.0, 0.05))
-		k.box("fer", cx * Transform3D(Basis(Vector3(0, 0, 1), 2.3), Vector3(0, 0, 0.52)), Vector3(0.18, 3.0, 0.05))
+		k.mur_col(Transform3D(bs, face + Vector3(0, 5.0, 0)), lw, 25.0, T, [baies])
+		k.mur(Transform3D(bs, face + Vector3(0, 30.0, 0)), lw, h - 30.0, T, [Kit.trou_rond(0.0, cy - 30.0, HORLOGE_CADRAN_R)])
+		# le verre du cadran arrête le héros
+		var vc := BoxShape3D.new()
+		vc.size = Vector3(HORLOGE_CADRAN_R * 2.0, HORLOGE_CADRAN_R * 2.0, 0.4)
+		k.shapes.append([vc, Transform3D(bs, face + Vector3(0, cy, 0) - out * 0.4)])
 		# les échauguettes d'angle
 		var q: Vector3 = p + out * hs + right * hs
 		k.cyl("pierre", at(q.x, h - 4.0, q.z), 0.3, 1.5, 2.0, 12, false)
@@ -592,11 +621,18 @@ func _horloge() -> void:
 		k.cone_roof(at(q.x, h + 2.0, q.z), 1.5, 5.0, 12)
 	k.cyl("pierre_claire", at(p.x, h - 0.3, p.z), hs * 1.45, hs * 1.45, 0.5, 4, false)
 	k.hip_roof(Transform3D(Basis(Vector3.UP, 0.0), Vector3(p.x, h, p.z)), hs, hs, 10.0, false)
-	# le lanternon de la cloche
+	# le lanternon
 	k.box("pierre_claire", at(p.x, h + 8.0, p.z), Vector3(3.0, 4.0, 3.0))
 	k.hip_roof(at(p.x, h + 12.0, p.z), 1.5, 1.5, 4.5)
 	_emit(k, "Ombrelac_horloge")
 	lieux["horloge"] = p + Vector3(0, 0, hs + 2.0)
+	# le dedans : la salle des poids, l'escalier, la chambre des rouages, les cadrans, la cloche
+	var horl = Horloge.new()
+	horl.name = "Ombrelac_horloge_dedans"
+	add_child(horl)
+	horl.construire_horloge(p, hs, T, h, cy, HORLOGE_CADRAN_R)
+	for key in horl.lieux:
+		lieux[key] = horl.lieux[key]
 
 
 # =================================================================== les ailes

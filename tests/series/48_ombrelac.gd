@@ -9,7 +9,9 @@
 ## entre dans la tour de l'escalier, on monte l'escalier à vis à pied, on passe d'une salle à l'autre.
 ## La Tour de l'Astrolabe : on entre dans la salle du bas, la Nacelle monte le héros à l'Observatoire
 ## et le redescend, la grille du puits arrête le héros quand elle n'est pas là, on tient debout dans
-## l'Observatoire et sur la terrasse, dont le parapet arrête le héros.
+## l'Observatoire et sur la terrasse, dont le parapet arrête le héros. La Tour de l'Horloge : on entre
+## dans la Salle des Poids, on monte à pied les huit volées jusqu'à la Chambre des Rouages, les
+## rambardes arrêtent le héros, les aiguilles donnent l'heure du jeu, la cloche sonne les heures.
 const NOM := "48_ombrelac"
 const IleO := preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
@@ -199,6 +201,59 @@ func _serie() -> void:
 		_ok(ast.en_bas() and _pos().y < IleO.ROC_Y + 3.0, "elle redescend le héros à la Salle de l'Astrolabe (y %.1f)" % _pos().y)
 		_ok(await _debout("la Nacelle en bas"), "on tient debout dans la Nacelle, en bas")
 		_ok(ast.lumieres.size() >= 4 and ast.anneaux.size() >= 3, "la tour est éclairée, les anneaux de l'astrolabe tournent (%d lumières)" % ast.lumieres.size())
+	# la Tour de l'Horloge : la Salle des Poids, l'escalier à pied, la Chambre des Rouages
+	var hz = ombrelac_ext.chateau.get_node_or_null("Ombrelac_horloge_dedans")
+	_ok(hz != null and hz.main != null, "la Tour de l'Horloge a son dedans, elle connaît l'heure du jeu")
+	_ok(_voie_libre(_wc(lx["horloge_porte"], 0.4), _wc(lx["horloge_salle"], 0.4)), "on entre dans la Tour de l'Horloge par sa porte")
+	await _poser(_wc(lx["horloge_salle"], 1.0))
+	_ok(await _debout("la Salle des Poids"), "on tient debout dans la Salle des Poids")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_tour_horloge", "le lieu : la Tour de l'Horloge (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["horloge_volee_mi"], 0.4), _wc(lx["horloge_vide_mi"], 0.4)), "la rampe de l'escalier arrête le héros au bord du vide")
+	# on monte à pied : chaque volée tout droit, on tourne au palier
+	if hz != null:
+		await _poser(_wc(lx["horloge_escalier_bas"], 1.0))
+		var hcw: Vector3 = _wc(lx["horloge_centre"], 0.0)
+		var hi_t: float = 6.0 - 1.2
+		var volees_ok: int = 0
+		for i in range(hz.VOLEES):
+			var v: Array = hz.volee(i, hi_t)
+			var dv: Vector3 = v[1]
+			var fin: Vector3 = hcw + (v[0] as Vector3) + dv * (2.0 * (hi_t - hz.LARGEUR) + hz.LARGEUR * 0.5)
+			for n in range(40):
+				var vers: Vector3 = fin - _pos()
+				vers.y = 0.0
+				if vers.dot(dv) < 0.15:
+					break
+				# (on garde le milieu de la volée)
+				var lat: Vector3 = vers - dv * vers.dot(dv)
+				place_player_v35(_pos() + Vector3.UP * 0.03, (dv + lat * 0.8).normalized())
+				await _att(0.05)
+				_touche(KEY_Z, true)
+				_touche(KEY_W, true)
+				await _att(0.25)
+				_touche(KEY_Z, false)
+				_touche(KEY_W, false)
+			if _pos().y > IleO.ROC_Y + (i + 1) * hz.MONTEE - 0.6:
+				volees_ok += 1
+		await _att(0.5)
+		_ok(volees_ok == hz.VOLEES and _pos().y > IleO.ROC_Y + 27.5, "on monte à pied les huit volées jusqu'à la Chambre des Rouages (%d volées, y %.1f)" % [volees_ok, _pos().y - IleO.ROC_Y])
+	await _poser(_wc(lx["horloge_rouages"], 1.0))
+	_ok(await _debout("la Chambre des Rouages"), "on tient debout dans la Chambre des Rouages")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_chambre_rouages", "le lieu : la Chambre des Rouages (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	_ok(not _voie_libre(_wc(lx["horloge_bord_vide"], 0.4), _wc(lx["horloge_dans_vide"], 0.4)), "la rambarde de la trémie arrête le héros")
+	_ok(not _voie_libre(_wc(lx["horloge_cadran_dedans"], 5.0), _wc(lx["horloge_cadran_dehors"], 5.0)), "le verre du cadran arrête le héros")
+	if hz != null:
+		temps_v56.set_hour(15.5)
+		await _att(0.3)
+		_ok(absf(hz.angle_heure - TAU * 3.5 / 12.0) < 0.02 and absf(hz.angle_minute - PI) < 0.05, "les aiguilles donnent l'heure du jeu (15 h 30 : %.2f, %.2f)" % [hz.angle_heure, hz.angle_minute])
+		var c0: int = hz.coups_sonnes
+		hz.sonner(2)
+		await _att(hz.COUP_INTERVALLE * 2.0 + 0.8)
+		_ok(hz.coups_sonnes == c0 + 2 and hz.son != null and hz.son.stream != null, "la cloche sonne les coups (%d)" % (hz.coups_sonnes - c0))
+		var b0: float = hz.balancier.rotation.z
+		await _att(1.0)
+		_ok(absf(hz.balancier.rotation.z - b0) > 0.001, "le balancier bat")
+		_ok(hz.lumieres.size() >= 6, "la tour est éclairée (%d lumières)" % hz.lumieres.size())
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)

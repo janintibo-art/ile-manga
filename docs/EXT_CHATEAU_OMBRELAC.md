@@ -33,7 +33,19 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
       table des cartes du ciel et sa lampe, les bibliothèques, le plafond étoilé, la balustrade du
       puits ; trois portes donnent sur la **terrasse crénelée**, d'où l'on voit tout le château,
       le lac et la mer ;
-  - la **Tour de l'Horloge** et ses quatre cadrans dorés ;
+  - la **Tour de l'Horloge** et ses quatre cadrans de verre opalin cerclés d'or ; leurs aiguilles
+    donnent **l'heure du jeu**, et la nuit les cadrans s'allument. **On y entre** par sa porte
+    ouest, sur la cour :
+    - la **Salle des Poids**, au pied : le grand balancier (plus de 20 m) descend de tout en haut et
+      bat lentement au-dessus d'une rose des vents de laiton ; les poids de fonte pendent au bout de
+      leurs chaînes ; l'établi de l'horloger ;
+    - l'**escalier** de pierre : huit volées le long des murs, autour du vide, avec leur rampe de
+      chêne (on monte à pied) ;
+    - la **Chambre des Rouages**, à 28 m : le bâti de fer et ses roues de laiton qui tournent,
+      l'ancre et la roue d'échappement qui battent avec le balancier, les arbres qui portent le
+      mouvement aux quatre cadrans, dont on voit le dos (et l'ombre des aiguilles) ;
+    - sous le toit, la **cloche** de bronze : elle sonne les heures du jeu, autant de coups que
+      l'heure ;
   - l'**Aile des Dortoirs**, la **Grosse Tour** du nord-est. Au rez-de-chaussée de l'Aile des
     Dortoirs, trois **salles d'étude** (**on y entre** par la galerie nord du Cloître) :
     - la **Salle des Astres** : le tableau noir couvert de schémas à la craie, la table du maître,
@@ -68,7 +80,7 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les autres intérieurs (la Tour de l'Horloge, la Tour des Sortilèges, la Grosse Tour), les habitants de l'Académie, les cours et les quêtes.
+Pour la suite (pas encore faits) : les autres intérieurs (la Tour des Sortilèges, la Grosse Tour), les habitants de l'Académie, les cours et les quêtes.
 
 ## Les fichiers
 
@@ -85,6 +97,7 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/salles_ombrelac.gd` | les salles d'étude de l'Aile des Dortoirs (Astres, Élixirs, Amphithéâtre) |
 | `pcvr/scripts/ext_chateau/dortoirs_ombrelac.gd` | les dortoirs et la Salle Commune (l'étage de l'Aile des Dortoirs), l'escalier à vis de la Tour des Dortoirs |
 | `pcvr/scripts/ext_chateau/astrolabe_ombrelac.gd` | le dedans de la Tour de l'Astrolabe : la Salle de l'Astrolabe, la Nacelle et ses grilles, l'Observatoire |
+| `pcvr/scripts/ext_chateau/horloge_ombrelac.gd` | le dedans de la Tour de l'Horloge : la Salle des Poids, l'escalier, la Chambre des Rouages, les cadrans et leurs aiguilles, la cloche |
 | `pcvr/scripts/ext_chateau/flore_ombrelac.gd` | la végétation et les rochers (reprend les outils de `grande_flore_v59.gd`) |
 | `pcvr/shaders/ext_chateau/ombrelac_ardoise.gdshader` | les toits d'ardoises en écailles |
 | `pcvr/shaders/ext_chateau/ombrelac_vitre.gdshader` | les fenêtres et les vitraux (jour / nuit, vus du dehors et du dedans) |

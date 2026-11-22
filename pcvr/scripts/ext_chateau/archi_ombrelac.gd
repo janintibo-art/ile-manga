@@ -255,6 +255,22 @@ static func mat(key: String) -> Material:
 			sv.rim_tint = 0.6
 			sv.cull_mode = BaseMaterial3D.CULL_DISABLED
 			m = sv
+		"cadran":
+			# le verre opalin des cadrans de l'horloge : laiteux le jour, éclairé du dedans la nuit
+			var sc := StandardMaterial3D.new()
+			sc.albedo_color = Color(0.93, 0.9, 0.8)
+			sc.roughness = 0.45
+			sc.emission_enabled = true
+			sc.emission = Color(1.0, 0.86, 0.58)
+			sc.emission_energy_multiplier = 0.25
+			sc.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = sc
+		"bronze":
+			var sb := StandardMaterial3D.new()
+			sb.albedo_color = Color(0.72, 0.5, 0.27)
+			sb.metallic = 0.35
+			sb.roughness = 0.5
+			m = sb
 		"drap":
 			var sd := StandardMaterial3D.new()
 			sd.albedo_color = Color(0.86, 0.83, 0.76)
