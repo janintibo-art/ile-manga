@@ -608,6 +608,11 @@ const ITEMS := {
 		"desc": "Un grand rouleau de plans tout gris : quatre cents boutiques, deux mille places de parking, une fontaine qui joue un hymne, et à la place de la Halle Hurlante… un parking. À rapporter à Mamie Barricade."},
 	"soupe_prix_libre": {"name": "Soupe de Lentille", "art": "un bocal de soupe de Lentille", "kind": "nourriture", "max": 10, "heal": 4,
 		"desc": "Un bocal de « soupe de tout le monde », fumante, avec un couvercle en bois de palette fait par Copeau. On ne sait jamais exactement ce qu'il y a dedans, mais c'est toujours bon. Rend deux cœurs."},
+	# V193 : Public averti (Port-Boucan, la nuit)
+	"biere_hurlante": {"name": "Pinte de la Hurlante", "art": "une pinte de la Hurlante", "kind": "nourriture", "max": 10, "heal": 2,
+		"desc": "La bière blonde de Sirène, brassée dans une cuve de la Conserverie qui servait autrefois aux sardines (on l'a bien lavée, elle jure). Mousse épaisse, goût de miel et d'agrumes, un fond d'amertume. Rend un cœur… et fait tourner la tête si on enchaîne."},
+	"champi_rieur": {"name": "Rieur", "art": "un Rieur", "kind": "outil", "max": 5,
+		"desc": "Un petit champignon de Mère Morille au chapeau pointu, mauve tacheté d'or, qui pousse seulement dans le coin le plus sombre de la Cathédrale des Spores. « Croquer » : le monde respire, les couleurs coulent, les sons s'étirent et tout devient très, très drôle (pendant une minute et demie). Mère Morille : « Un à la fois, assis quelque part de doux, avec des amis. Et jamais dans la vraie forêt. »"},
 	"limonade_boucan": {"name": "Limonade de Sirène", "art": "une limonade de Sirène", "kind": "nourriture", "max": 10, "heal": 2,
 		"desc": "La limonade maison de Sirène, au bar de la Halle Hurlante : citron, gingembre, et un secret (des bulles très bavardes). Sans alcool. Rend un cœur."},
 	"sirop_menthe": {"name": "Sirop de menthe", "art": "un sirop de menthe", "kind": "nourriture", "max": 10, "heal": 2,
@@ -1992,6 +1997,28 @@ func make_model(id: String) -> Node3D:
 			_part(m, _box_mesh(Vector3(0.07, 0.16, 0.003)), laiton, Vector3(sin(a5) * 0.035, 0.08, cos(a5) * 0.035), Vector3(0, rad_to_deg(a5), 0))
 		_part(m, _box_mesh(Vector3(0.074, 0.004, 0.074)), laiton, Vector3(0, 0.162, 0))
 		_part(m, _cyl(0.008, 0.008, 0.07, 8), _mat("rape_manche", Color(0.32, 0.18, 0.08), 0.5), Vector3(0, 0.19, 0), Vector3(0, 0, 90))
+	elif id == "biere_hurlante":
+		# V193 : une pinte : le verre (légèrement évasé), la bière ambrée, une mousse épaisse
+		var verre := _mat("pinte_verre", Color(0.85, 0.9, 0.92, 0.35), 0.05)
+		verre.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		var blonde := _mat("pinte_biere", Color(0.86, 0.52, 0.12), 0.15)
+		blonde.emission_enabled = true
+		blonde.emission = Color(0.45, 0.22, 0.03)
+		blonde.emission_energy_multiplier = 0.25
+		_part(m, _cyl(0.04, 0.034, 0.15, 18), verre, Vector3(0, 0.075, 0))
+		_part(m, _cyl(0.037, 0.031, 0.12, 18), blonde, Vector3(0, 0.064, 0))
+		_part(m, _cyl(0.039, 0.037, 0.026, 18), _mat("pinte_mousse", Color(0.98, 0.95, 0.86), 0.85), Vector3(0, 0.135, 0))
+	elif id == "champi_rieur":
+		# V193 : le Rieur : un chapeau pointu mauve tacheté d'or, un pied fin et tordu
+		var mauve := _mat("rieur_chapeau", Color(0.62, 0.3, 0.78), 0.45)
+		mauve.emission_enabled = true
+		mauve.emission = Color(0.55, 0.2, 0.8)
+		mauve.emission_energy_multiplier = 0.6
+		_part(m, _cyl(0.007, 0.011, 0.09, 8), _mat("rieur_pied", Color(0.93, 0.9, 0.82), 0.8), Vector3(0, 0.045, 0), Vector3(0, 0, 8))
+		_part(m, _cyl(0.0, 0.032, 0.05, 14), mauve, Vector3(0.006, 0.105, 0))
+		for k4 in range(5):
+			var a6: float = TAU * k4 / 5.0
+			_part(m, _sphere(0.004), _mat("rieur_or", Color(1.0, 0.82, 0.3), 0.3), Vector3(0.006 + cos(a6) * 0.018, 0.1, sin(a6) * 0.018))
 	elif id == "parapluie_rainville":
 		var toile := _mat("parapluie_noir", Color(0.06, 0.06, 0.07), 0.5)
 		_part(m, _cyl(0.008, 0.008, 0.75, 6), _mat("parapluie_manche", Color(0.3, 0.18, 0.1), 0.6), Vector3(0, 0.375, 0))

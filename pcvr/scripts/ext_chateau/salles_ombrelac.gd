@@ -64,7 +64,7 @@ func set_nuit(n: float) -> void:
 
 # =================================================================== les trois salles
 
-func construire_salles(the_xf: Transform3D, L: float, W: float, rz: float, T: float, refends: Array, portes: Array, bout: float = 0.0) -> void:
+func construire_salles(the_xf: Transform3D, L: float, W: float, rz: float, T: float, refends: Array, portes: Array, bout: float = 0.0, bouts: Array = [true, true]) -> void:
 	# bout : l'épaisseur de maçonnerie pleine aux deux extrémités (les tours d'angle mordent sur l'aile)
 	xf = the_xf
 	_rng.seed = 51177
@@ -73,6 +73,8 @@ func construire_salles(the_xf: Transform3D, L: float, W: float, rz: float, T: fl
 	var hl: float = L * 0.5 - T - bout
 	if bout > 0.0:
 		for e in [-1.0, 1.0]:
+			if not bool(bouts[0 if e < 0.0 else 1]):
+				continue
 			k.box("pierre_int", _tr(e * (L * 0.5 - T - bout * 0.5), -0.2, 0.0), Vector3(bout, rz + 0.2, hw * 2.0), true)
 	var xa0: float = -hl
 	var xa1: float = float(refends[0]) - 0.3
@@ -95,7 +97,7 @@ func construire_salles(the_xf: Transform3D, L: float, W: float, rz: float, T: fl
 	if not k.shapes.is_empty():
 		add_child(k.body("Ombrelac_salles_meubles_col"))
 	for r2 in [[xa0, xa1], [xb0, xb1], [xc0, xc1]]:
-		_sonde(Vector3((r2[0] + r2[1]) * 0.5, rz * 0.5 - 1.0, 0.0), Vector3(r2[1] - r2[0] + 1.2, rz + 3.0, hw * 2.0 + 1.2))
+		_sonde(Vector3((r2[0] + r2[1]) * 0.5, rz * 0.5 - 1.0, 0.0), Vector3(r2[1] - r2[0] + 1.2, rz + 2.0, hw * 2.0 + 1.2))
 	lieux["salle_astres"] = _p(float(portes[0]), 0.0, hw - 1.1)
 	lieux["salle_elixirs"] = _p(float(portes[1]), 0.0, hw - 1.1)
 	lieux["amphitheatre"] = _p(float(portes[2]), 0.0, hw - 1.3)

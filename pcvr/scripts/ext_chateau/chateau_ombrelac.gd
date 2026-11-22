@@ -31,8 +31,17 @@ const Salles = preload("res://scripts/ext_chateau/salles_ombrelac.gd")
 ## plafond, les murs de refend (x), les portes sur le cloître (x)
 const SALLES_RZ := 6.0
 const SALLES_REFENDS := [-11.2, 11.2]
-const SALLES_PORTES := [-19.6, 0.0, 22.4]
+const SALLES_PORTES := [-19.6, 0.0, 19.6]
 const SALLES_BOUT := 4.0          # les tours d'angle mordent de 3,5 m dans l'aile
+const Dortoirs = preload("res://scripts/ext_chateau/dortoirs_ombrelac.gd")
+## Les dortoirs (le premier étage de l'Aile nord) : le haut de l'étage (repère de l'aile), la tour
+## de l'escalier (repère château), son rayon, l'épaisseur de son mur ; les portes de la tour
+## (le numéro du pan de mur sur 28, la hauteur du seuil, le nombre de pans, la hauteur de la porte)
+const DORTOIRS_HAUT := 11.6
+const TOUR_ESC := Vector3(41.5, 0.0, -46.0)
+const TOUR_ESC_R := 5.6
+const TOUR_ESC_T := 1.2
+const TOUR_ESC_PORTES := [[6, 0.0, 2, 2.8], [13, 6.25, 2, 2.6]]
 const Ile = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 var ile: Node3D
@@ -516,11 +525,12 @@ func _horloge() -> void:
 
 ## Une aile : un long bâtiment à deux pans ; c au milieu, à terre ; yaw : faîtage selon x tourné
 ## (rez > 0 : le rez-de-chaussée est laissé vide, jusqu'à la hauteur rez ; on y bâtit des salles)
-func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, et: int, rez: float = 0.0) -> void:
+func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, et: int, rez: float = 0.0, etage: float = 0.0) -> void:
 	var b := Basis(Vector3.UP, yaw)
 	if rez > 0.0:
+		var plein: float = etage if etage > 0.0 else rez
 		k.box("socle", Transform3D(b, c + Vector3(0, -4.0, 0)), Vector3(L + 1.2, 3.95, W + 1.2), true)
-		k.box("pierre", Transform3D(b, c + Vector3(0, rez, 0)), Vector3(L, H - rez, W), true)
+		k.box("pierre", Transform3D(b, c + Vector3(0, plein, 0)), Vector3(L, H - plein, W), true)
 	else:
 		k.box("socle", Transform3D(b, c + Vector3(0, -4.0, 0)), Vector3(L + 1.2, 5.2, W + 1.2), true)
 		k.box("pierre", Transform3D(b, c + Vector3(0, 1.2, 0)), Vector3(L, H - 1.2, W), true)
@@ -530,6 +540,8 @@ func _aile(k: RefCounted, c: Vector3, yaw: float, L: float, W: float, H: float, 
 		var out: Vector3 = b * Vector3(0, 0, s)
 		for e in range(et):
 			if rez > 0.0 and e == 0:
+				continue
+			if etage > 0.0 and e == 1:
 				continue
 			var y: float = 3.5 + e * (H - 4.0) / et
 			var a: Vector3 = c + b * Vector3(-L * 0.5, y, s * W * 0.5)
@@ -560,15 +572,21 @@ func _aile_nord() -> void:
 	var W: float = 13.0
 	var T: float = 1.2
 	var rz: float = SALLES_RZ
-	_aile(k, c, 0.0, L, W, 18.0, 3, rz)
+	var E: float = DORTOIRS_HAUT
+	_aile(k, c, 0.0, L, W, 18.0, 3, rz, E)
 	var xf := Transform3D(Basis.IDENTITY, c)
 	var n: int = 10
 	var bay: float = L / n
 	for s in [-1.0, 1.0]:
 		var trous: Array = []
+		var trous1: Array = []
 		var portes: Array = SALLES_PORTES if s > 0 else []
+		var rot := Basis(Vector3.UP, 0.0 if s > 0 else PI)
 		for i in range(n):
 			var x: float = -L * 0.5 + (i + 0.5) * bay
+			# l'étage des dortoirs : une baie par travée
+			trous1.append(Kit.trou_ogive(x * s, 1.5, 1.6, 3.2))
+			k.window(xf * Transform3D(rot, Vector3(x, rz + 1.5, s * W * 0.5)), 1.6, 3.2)
 			var gene: bool = false
 			for px in portes:
 				if absf(px - x) < 2.2:
@@ -576,19 +594,30 @@ func _aile_nord() -> void:
 			if gene:
 				continue
 			trous.append(Kit.trou_ogive(x * s, 1.1, 1.6, 3.4))
-			k.window(xf * Transform3D(Basis(Vector3.UP, 0.0 if s > 0 else PI), Vector3(x, 1.1, s * W * 0.5)), 1.6, 3.4)
+			k.window(xf * Transform3D(rot, Vector3(x, 1.1, s * W * 0.5)), 1.6, 3.4)
 		for px2 in portes:
 			trous.append(Kit.trou_ogive(px2, 0.0, 2.4, 4.4))
 			_portail(k, xf * Transform3D(Basis.IDENTITY, Vector3(px2, 0, W * 0.5)), 2.4, 4.4)
 		trous.sort_custom(func(u, v): return u["xl"] < v["xl"])
-		k.mur(xf * Transform3D(Basis(Vector3.UP, 0.0 if s > 0 else PI), Vector3(0, 0, s * W * 0.5)), L, rz, T, trous)
-	for e in [-1.0, 1.0]:
-		k.mur(xf * Transform3D(Basis(Vector3.UP, e * PI * 0.5), Vector3(e * L * 0.5, 0, 0)), W - 2.0 * T, rz, T, [])
-	# les murs de refend entre les salles
+		trous1.sort_custom(func(u, v): return u["xl"] < v["xl"])
+		k.mur(xf * Transform3D(rot, Vector3(0, 0, s * W * 0.5)), L, rz, T, trous)
+		k.mur(xf * Transform3D(rot, Vector3(0, rz, s * W * 0.5)), L, E - rz, T, trous1)
+		# le cordon qui marque le plancher de l'étage
+		k.cordon(Transform3D.IDENTITY, c + Vector3(-L * 0.5, rz, s * W * 0.5), c + Vector3(L * 0.5, rz, s * W * 0.5), Vector3(0, 0, s), 0.25)
+	# le pignon ouest (au pied de la tour ronde) ; à l'est, la tour de l'escalier
+	k.mur(xf * Transform3D(Basis(Vector3.UP, -PI * 0.5), Vector3(-L * 0.5, 0, 0)), W - 2.0 * T, E, T, [])
+	_bout_est(k, xf, L, W, T, rz, E)
+	# les murs de refend entre les salles (et, à l'étage, entre les dortoirs et la salle commune)
+	var dp: Vector2 = Dortoirs.PORTE_REFEND
+	var F: float = rz + Dortoirs.PLANCHER
+	var hw: float = W * 0.5 - T
 	for xr in SALLES_REFENDS:
 		k.box("pierre_int", xf * at(xr, 0.0, 0.0), Vector3(0.6, rz, W - 2.0 * T), true)
+		k.box("pierre_int", xf * at(xr, rz, (-hw + dp.x) * 0.5), Vector3(0.6, E - rz, dp.x + hw), true)
+		k.box("pierre_int", xf * at(xr, rz, (dp.y + hw) * 0.5), Vector3(0.6, E - rz, hw - dp.y), true)
+		k.box("pierre_int", xf * at(xr, F + 2.6, (dp.x + dp.y) * 0.5), Vector3(0.6, E - F - 2.6, dp.y - dp.x), true)
 	_tour_ronde(k, -17.5, -46.0, 5.6, 38.0, 16.0, 5)
-	_tour_ronde(k, 41.5, -46.0, 5.6, 44.0, 17.0, 5)
+	_tour_escalier(k, TOUR_ESC.x, TOUR_ESC.z, TOUR_ESC_R, 44.0, 17.0, 5)
 	# la Grosse Tour du nord-est : massive, crénelée, un haut toit
 	_tour_ronde(k, 62.0, -40.0, 8.5, 48.0, 22.0, 6, true, -12.0)
 	_emit(k, "Ombrelac_aile_nord")
@@ -596,9 +625,149 @@ func _aile_nord() -> void:
 	var sl = Salles.new()
 	sl.name = "Ombrelac_salles"
 	add_child(sl)
-	sl.construire_salles(xf, L, W, rz, T, SALLES_REFENDS, SALLES_PORTES, SALLES_BOUT)
+	sl.construire_salles(xf, L, W, rz, T, SALLES_REFENDS, SALLES_PORTES, SALLES_BOUT, [true, false])
 	for key in sl.lieux:
 		lieux[key] = sl.lieux[key]
+	var dt = Dortoirs.new()
+	dt.name = "Ombrelac_dortoirs"
+	add_child(dt)
+	dt.construire_dortoirs(xf, L, W, rz, E, T, SALLES_REFENDS, SALLES_BOUT, TOUR_ESC - c, TOUR_ESC_R - TOUR_ESC_T, TOUR_ESC_PORTES)
+	for key2 in dt.lieux:
+		lieux[key2] = dt.lieux[key2]
+
+
+## Le bout est de l'Aile nord, contre la tour de l'escalier : de la maçonnerie pleine (des
+## tranches, qui s'arrêtent au mur rond du dedans de la tour) ; à l'étage, le passage de la tour
+## vers le dortoir
+func _bout_est(k: RefCounted, xf: Transform3D, L: float, W: float, T: float, rz: float, E: float) -> void:
+	var tc: Vector3 = TOUR_ESC - xf.origin
+	var ri: float = TOUR_ESC_R - TOUR_ESC_T
+	var x0: float = L * 0.5 - T - SALLES_BOUT
+	var hw: float = W * 0.5 - T
+	var F: float = rz + Dortoirs.PLANCHER
+	var pz: float = Dortoirs.PASSAGE_Z
+	var bornes: Array = [-hw]
+	var z: float = -hw
+	while z < -pz - 0.01:
+		z = minf(z + 0.5, -pz)
+		bornes.append(z)
+	bornes.append(pz)
+	z = pz
+	while z < hw - 0.01:
+		z = minf(z + 0.5, hw)
+		bornes.append(z)
+	for i in range(bornes.size() - 1):
+		var za: float = bornes[i]
+		var zb: float = bornes[i + 1]
+		var zp: float = minf(absf(za), absf(zb)) if za * zb > 0.0 else 0.0
+		var x1: float = L * 0.5
+		if zp < ri:
+			x1 = minf(x1, tc.x - sqrt(ri * ri - zp * zp) - 0.02)
+		if x1 <= x0:
+			continue
+		var t := Transform3D(Basis.IDENTITY, Vector3((x0 + x1) * 0.5, 0.0, (za + zb) * 0.5))
+		if absf(za + zb) < 0.01:
+			# le passage : la maçonnerie dessous (jusqu'au dallage), dessus (le linteau)
+			k.box("pierre_int", xf * t, Vector3(x1 - x0, F - 0.1, zb - za), true)
+			k.box("pierre_int", xf * t * Transform3D(Basis.IDENTITY, Vector3(0, F + 2.6, 0)), Vector3(x1 - x0, E - F - 2.6, zb - za), true)
+		else:
+			k.box("pierre_int", xf * t, Vector3(x1 - x0, E, zb - za), true)
+
+
+## La tour de l'escalier (au bout est de l'Aile nord) : une tour ronde creuse, son mur épais monté
+## pan par pan (le dehors, le dedans, la collision), percé de ses portes ; le haut comme les autres
+func _tour_escalier(k: RefCounted, x: float, z: float, r: float, h: float, toit: float, baies: int) -> void:
+	var sides: int = 28
+	var ri: float = r - TOUR_ESC_T
+	var y0: float = minf(-8.0, sol(x, z) - 1.0)
+	var c := Vector3(x, 0, z)
+	var slope: float = (r * 1.04 - r) / (h - 1.2)
+	for i in range(sides):
+		var a0: float = TAU * i / sides
+		var a1: float = TAU * (i + 1) / sides
+		var d0 := Vector3(cos(a0), 0, sin(a0))
+		var d1 := Vector3(cos(a1), 0, sin(a1))
+		var dm: Vector3 = (d0 + d1).normalized()
+		# les tranches de hauteur pleines de ce pan : [bas, haut], percées par les portes
+		var pleins: Array = [[y0, h]]
+		for po in TOUR_ESC_PORTES:
+			var i0: int = int(po[0])
+			if i < i0 or i >= i0 + int(po[2]):
+				continue
+			var yb: float = float(po[1])
+			var yt: float = yb + float(po[3])
+			var nv: Array = []
+			for pl in pleins:
+				if yt <= pl[0] or yb >= pl[1]:
+					nv.append(pl)
+				else:
+					if yb > pl[0]:
+						nv.append([pl[0], yb])
+					if yt < pl[1]:
+						nv.append([yt, pl[1]])
+			pleins = nv
+			# les ébrasements de la porte (sur les bords du groupe de pans), le linteau, le seuil
+			if i == i0:
+				k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * ri + Vector3(0, yb, 0), c + d0 * r * 1.04 + Vector3(0, yb, 0), c + d0 * r * 1.04 + Vector3(0, yt, 0), c + d0 * ri + Vector3(0, yt, 0), d0.cross(Vector3.UP))
+			if i == i0 + int(po[2]) - 1:
+				k.quad("pierre_claire", Transform3D.IDENTITY, c + d1 * r * 1.04 + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yt, 0), c + d1 * r * 1.04 + Vector3(0, yt, 0), Vector3.UP.cross(d1))
+			k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * ri + Vector3(0, yt, 0), c + d1 * ri + Vector3(0, yt, 0), c + d1 * r * 1.04 + Vector3(0, yt, 0), c + d0 * r * 1.04 + Vector3(0, yt, 0), Vector3.DOWN)
+			k.quad("pierre_claire", Transform3D.IDENTITY, c + d0 * r * 1.04 + Vector3(0, yb, 0), c + d1 * r * 1.04 + Vector3(0, yb, 0), c + d1 * ri + Vector3(0, yb, 0), c + d0 * ri + Vector3(0, yb, 0), Vector3.UP)
+		for pl in pleins:
+			var ya: float = float(pl[0])
+			var yb2: float = float(pl[1])
+			# le dehors : le socle (jusqu'à 1,2 m), puis le fût, un peu de fruit
+			var ys: float = clampf(1.2, ya, yb2)
+			if ys > ya:
+				var rs0: float = lerpf(r * 1.12, r * 1.04, (ya - y0) / (1.2 - y0))
+				var rs1: float = lerpf(r * 1.12, r * 1.04, (ys - y0) / (1.2 - y0))
+				k.quad("socle", Transform3D.IDENTITY, c + d0 * rs0 + Vector3(0, ya, 0), c + d1 * rs0 + Vector3(0, ya, 0), c + d1 * rs1 + Vector3(0, ys, 0), c + d0 * rs1 + Vector3(0, ys, 0), dm)
+				if ys >= 1.2 and absf(ys - 1.2) < 0.001:
+					k.quad("socle", Transform3D.IDENTITY, c + d0 * r * 1.04 + Vector3(0, 1.2, 0), c + d1 * r * 1.04 + Vector3(0, 1.2, 0), c + d1 * r * 1.12 * 0.999 + Vector3(0, 1.2, 0), c + d0 * r * 1.12 * 0.999 + Vector3(0, 1.2, 0), Vector3.UP)
+			if yb2 > ys:
+				var ra: float = r * 1.04 - slope * (ys - 1.2)
+				var rb: float = r * 1.04 - slope * (yb2 - 1.2)
+				k.quad("pierre", Transform3D.IDENTITY, c + d0 * ra + Vector3(0, ys, 0), c + d1 * ra + Vector3(0, ys, 0), c + d1 * rb + Vector3(0, yb2, 0), c + d0 * rb + Vector3(0, yb2, 0), dm)
+			# le dedans (au-dessus du sol de la tour, jusqu'au plafond de l'étage)
+			var ia: float = maxf(ya, -0.3)
+			var ib: float = minf(yb2, DORTOIRS_HAUT + 0.3)
+			if ib > ia:
+				k.quad("pierre_int", Transform3D.IDENTITY, c + d1 * ri + Vector3(0, ia, 0), c + d0 * ri + Vector3(0, ia, 0), c + d0 * ri + Vector3(0, ib, 0), c + d1 * ri + Vector3(0, ib, 0), -dm)
+			# la collision : une boîte par pan et par tranche
+			var cy0: float = maxf(ya, -2.0)
+			if yb2 > cy0:
+				var rm: float = (ri + r) * 0.5
+				var bs := BoxShape3D.new()
+				bs.size = Vector3((r + 0.1) * TAU / sides * 1.08, yb2 - cy0, r - ri + 0.1)
+				var yaw: float = atan2(dm.x, dm.z)
+				k.shapes.append([bs, Transform3D(Basis(Vector3.UP, yaw), c + dm * rm + Vector3(0, (cy0 + yb2) * 0.5, 0))])
+	# les baies : en spirale autour du fût
+	for i in range(baies):
+		var a: float = 0.7 + i * 2.1
+		var d := Vector3(cos(a), 0, sin(a))
+		var y: float = 4.0 + (h - 10.0) * (i + 0.5) / baies
+		k.window(Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), d * (r - 0.05) + Vector3(x, y, z)), 1.0, 2.4)
+	k.cyl("pierre_claire", at(x, h - 0.4, z), r + 0.3, r + 0.3, 0.6, 28, false)
+	k.cone_roof(at(x, h, z), r, toit)
+	# le dessus du mur, au pied du toit (on ne voit pas dedans par les côtés du toit)
+	k.cyl("pierre", at(x, h - 0.02, z), ri, ri, 0.02, 28, true)
+	# un perron de trois marches devant la porte du bas
+	var dp: float = TAU * (float(TOUR_ESC_PORTES[0][0]) + 0.5 * float(TOUR_ESC_PORTES[0][2])) / sides
+	var dd := Vector3(cos(dp), 0, sin(dp))
+	var pp: Vector3 = c + dd * (r * 1.12 + 0.6)
+	var ys0: float = sol(pp.x, pp.z)
+	k.box("pierre_claire", Transform3D(Basis(Vector3.UP, atan2(dd.x, dd.z)), pp + Vector3(0, minf(ys0, 0.0) - 1.0, 0)), Vector3(2.0, 1.0 - minf(ys0, 0.0), 1.4), true)
+	# l'encadrement de la porte : les piédroits, le linteau, la clé
+	var tg := Vector3(-dd.z, 0, dd.x)
+	var bp := Basis(tg, Vector3.UP, dd)
+	var hp: float = float(TOUR_ESC_PORTES[0][3])
+	var dmi: float = r * 1.12 * 0.97
+	var demi: float = r * 1.04 * sin(TAU / sides * float(TOUR_ESC_PORTES[0][2]) * 0.5)
+	for e in [-1.0, 1.0]:
+		k.box("pierre_claire", Transform3D(bp, c + dd * dmi + tg * e * (demi + 0.2)), Vector3(0.45, hp, 0.5))
+	k.box("pierre_claire", Transform3D(bp, c + dd * dmi + Vector3(0, hp, 0)), Vector3(demi * 2.0 + 0.85, 0.5, 0.55))
+	k.box("pierre_claire", Transform3D(bp, c + dd * (dmi + 0.08) + Vector3(0, hp - 0.12, 0)), Vector3(0.4, 0.72, 0.5))
+	k.box("pierre", Transform3D(bp, c + dd * dmi + Vector3(0, hp + 0.5, 0)), Vector3(demi * 2.0 + 1.05, 0.12, 0.7))
 
 
 ## Un portail en ogive (l'encadrement de pierre claire), xf au milieu du bas, sur la face du mur

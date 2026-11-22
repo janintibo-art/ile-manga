@@ -13,10 +13,16 @@ extends Node
 const TEXTES := "res://scripts/pnj/boucan_textes_v75.gd"
 const KINDS := {"champi_ressort": [45.0, "Bolet-Ressort", Color(1.0, 0.55, 0.15)], "champi_lune": [60.0, "Lunaire", Color(0.85, 0.9, 1.0)],
 	"champi_babil": [60.0, "Babillard", Color(0.55, 0.4, 1.0)], "champi_arcenciel": [40.0, "Arc-en-ciel", Color(1.0, 0.3, 0.6)],
-	"champi_geant": [30.0, "Petit-Géant", Color(0.3, 0.75, 1.0)]}
+	"champi_geant": [30.0, "Petit-Géant", Color(0.3, 0.75, 1.0)],
+	# V193 : en « Public averti » seulement (il pousse dans le coin le plus sombre ; l'effet : boucan_nuit_v193)
+	"champi_rieur": [90.0, "Rieur", Color(0.62, 0.3, 0.78)]}
 ## Les coins de cueillette dans la Cathédrale des Spores (repère : le centre du gazomètre).
 const PICKS := [[-6.0, 14.0, "champi_ressort"], [9.0, -4.0, "champi_ressort"], [-17.0, -9.0, "champi_lune"], [20.0, 12.0, "champi_babil"],
-	[-2.0, -15.0, "champi_arcenciel"], [11.0, 20.0, "champi_geant"], [-21.0, 2.0, "champi_babil"], [3.0, 8.0, "champi_lune"]]
+	[-2.0, -15.0, "champi_arcenciel"], [11.0, 20.0, "champi_geant"], [-21.0, 2.0, "champi_babil"], [3.0, 8.0, "champi_lune"],
+	[-14.0, -18.0, "champi_rieur"], [17.0, -14.0, "champi_rieur"]]
+## V193 : ce qui ne pousse qu'en « Public averti »
+const AVERTI := ["champi_rieur"]
+const Public = preload("res://scripts/public_v111.gd")
 const REGROW: float = 300.0
 ## Les cachettes que seule la Lunaire montre : [lieu (spot), décalage, récompense, texte].
 const SECRETS := [["phare", Vector3(2.4, 0, 1.0), [["piece", 25]], "Au pied du phare, sous une pierre qui luit : une boîte en fer pleine de pièces, et un mot : « Pour le prochain qui verra. — T. »"],
@@ -102,7 +108,9 @@ func eat(id: String) -> bool:
 	var t: String = _text(id, "manger")
 	if t == "":
 		t = "Tu croques le %s. Ça pétille sous la langue !" % str(KINDS[id][1])
-	if first:
+	if first and id == "champi_rieur":
+		t += "  (Mère Morille te l'a dit : un seul, assis quelque part de doux, avec des amis autour. Et dans la vraie forêt : JAMAIS.)"
+	elif first:
 		t += "  (Mère Morille te l'a dit : un champignon de conte, oui ; un champignon inconnu dans la vraie forêt : JAMAIS.)"
 	bo.say(t, 8.0)
 	return true
@@ -140,6 +148,9 @@ func _begin(id: String) -> void:
 			if h != null:
 				h.speed_mult = 1.5
 			_make_trail(true)
+		"champi_rieur":
+			if bo.get("nuit") != null and bo.nuit != null:
+				bo.nuit.trip(true)
 		"champi_geant":
 			if h != null:
 				h.temp_force = int(h.temp_force) + 2
@@ -168,6 +179,9 @@ func _end(id: String, silent: bool = false) -> void:
 				h.speed_mult = 1.0
 			_make_trail(false)
 			_restore_env()
+		"champi_rieur":
+			if bo.get("nuit") != null and bo.nuit != null:
+				bo.nuit.trip(false)
 		"champi_geant":
 			if h != null and _grown:
 				h.temp_force = maxi(0, int(h.temp_force) - 2)
@@ -299,6 +313,8 @@ func _build_picks() -> void:
 func _pick_near(p: Vector3) -> int:
 	for i in range(_picks.size()):
 		var e: Dictionary = _picks[i]
+		if AVERTI.has(str(e["kind"])) and not Public.averti():
+			continue
 		if float(e["t"]) <= 0.0 and p.distance_to(e["pos"]) < 1.6:
 			return i
 	return -1
@@ -426,11 +442,15 @@ func _process(delta: float) -> void:
 	if main == null or bo == null:
 		return
 	_clock += delta
+	var averti: bool = Public.averti()
 	for e in _picks:
 		if float(e["t"]) > 0.0:
 			e["t"] = float(e["t"]) - delta
 			if float(e["t"]) <= 0.0:
 				(e["node"] as Node3D).visible = true
+		# V193 : le Rieur ne se montre qu'en Public averti
+		if AVERTI.has(str(e["kind"])):
+			(e["node"] as Node3D).visible = averti and float(e["t"]) <= 0.0
 	for k in active.keys():
 		active[k] = float(active[k]) - delta
 		if float(active[k]) <= 0.0:

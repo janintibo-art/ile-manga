@@ -168,11 +168,15 @@ const BOISSONS := {
 	"biere_heqet": [0.3, ""], "cacao": [-0.4, "cafe"],
 	"grog_soufre": [0.0, ""], "cafe_brasier": [-0.5, "cafe"], "lave_glacee": [0.0, ""],
 	"cidre_montjoie": [0.0, ""], "jus_pomme": [0.0, ""],
-	"limonade_boucan": [0.0, ""], "soda_neon": [0.0, ""], "sirop_menthe": [-0.2, ""],
+	"limonade_boucan": [0.0, ""], "biere_hurlante": [0.35, ""], "soda_neon": [0.0, ""], "sirop_menthe": [-0.2, ""],
 	"chocolat_chaud": [-0.3, "cafe"],
 	"lait_nuage": [0.0, ""], "the_sommets": [-0.35, "the"], "jus_soleil": [0.0, ""],
 	"chocolat_mineur": [-0.3, "cafe"], "sirop_cascade": [-0.2, ""], "limonade_gouffre": [0.0, ""],
 	"limonade_bleue": [0.0, ""], "chocolat_abysses": [-0.3, "cafe"],
+}
+## V193 : en « Public averti » seulement, des comptoirs servent aussi autre chose : pnj -> [boisson, prix, libellé]
+const COMPTOIRS_AVERTI := {
+	"sirene": ["biere_hurlante", 3, "Une pinte de la Hurlante"],
 }
 const FORCE_TEMPS: float = 120.0
 const DEGRISE: float = 0.0075             # par seconde
@@ -1156,13 +1160,18 @@ func _bar_topics(npc: Node, id: String, prev: Variant) -> Array:
 		out = ((prev as Array)[0] as Callable).call(npc).duplicate()
 	var c: Array = COMPTOIRS[id]
 	out.append({"id": "q56:service:boire66", "label": "%s (%d pièces)" % [str(c[2]), int(c[1])]})
+	if Public.averti() and COMPTOIRS_AVERTI.has(id):
+		var c2: Array = COMPTOIRS_AVERTI[id]
+		out.append({"id": "q56:service:boire193", "label": "%s (%d pièces)" % [str(c2[2]), int(c2[1])]})
 	return out
 
 
 func _bar_choose(npc: Node, choice: String, id: String, prev: Variant) -> Dictionary:
-	if choice != "q56:service:boire66":
+	if choice != "q56:service:boire66" and choice != "q56:service:boire193":
 		return ((prev as Array)[1] as Callable).call(npc, choice) if prev != null else {}
 	var c: Array = COMPTOIRS[id]
+	if choice == "q56:service:boire193" and COMPTOIRS_AVERTI.has(id):
+		c = COMPTOIRS_AVERTI[id]
 	var vous: bool = npc.get("brain") != null and bool(npc.brain.get("vous"))
 	var deg: float = float((BOISSONS.get(str(c[0]), [0.0, ""]) as Array)[0])
 	if deg > 0.0 and ivresse >= 1.5:
@@ -1170,6 +1179,12 @@ func _bar_choose(npc: Node, choice: String, id: String, prev: Variant) -> Dictio
 	if main.inventory_v28.count("piece") < int(c[1]):
 		return {"texte": ("Il vous manque quelques pièces. Revenez quand vous aurez de quoi payer." if vous else "Il te manque quelques pièces. Reviens quand tu auras de quoi payer."), "geste": "parle"}
 	var lines: Array = ["Et voilà ! À la vôtre !", "Servi bien frais. Santé !", "Pour vous, la meilleure du tonneau."] if vous else ["Et voilà ! À la tienne !", "Servi bien frais. Santé !", "Pour toi, la meilleure du tonneau."]
+	# V193 : Sirène, en Public averti : elle sert la pinte avec un clin d'œil
+	if choice == "q56:service:boire193" and id == "sirene":
+		lines = ["Une Hurlante, tirée lentement, avec deux doigts de mousse. Comme toi : un peu amère au début, et après, on en redemande.",
+			"Tiens, mon cœur. Si tu la bois trop vite, tu danses mal. Si tu la bois lentement, tu danses avec moi.",
+			"La Hurlante ! Brassée dans une cuve à sardines. Ne fais pas cette tête : la cuve a été lavée. Deux fois. Par Tapage. … Bon, bois.",
+			"Pour toi, la pinte du soir. Et si quelqu'un t'embête dans la fosse, tu me fais signe : j'ai un bras de batteur."]
 	if deg <= 0.0:
 		lines = ["Et voilà. Prenez le temps de le savourer.", "Bien chaud, comme il faut."] if vous else ["Et voilà. Prends le temps de le savourer.", "Bien chaud, comme il faut."]
 	return {"texte": str(lines[_rng.randi() % lines.size()]), "geste": "salut", "fin": true, "prendre": [["piece", int(c[1])]], "_boire66": str(c[0])}

@@ -5,7 +5,8 @@
 ## d'Honneur, dans le Cloître, sur le Pont Couvert ; les noms des lieux ; les fenêtres s'allument la
 ## nuit et s'éteignent le jour ; la sauvegarde. La Grande Salle : on y entre, on y tient debout,
 ## ses murs arrêtent le héros, ses lumières. La Bibliothèque : on y entre, on tient debout en bas et
-## sur la galerie, ses lumières.
+## sur la galerie, ses lumières. Les salles d'étude : on y entre depuis le Cloître. Les dortoirs : on
+## entre dans la tour de l'escalier, on monte l'escalier à vis à pied, on passe d'une salle à l'autre.
 const NOM := "48_ombrelac"
 const IleO := preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
@@ -112,6 +113,46 @@ func _serie() -> void:
 		_ok(str(ombrelac_ext.zone_at(_pos())) == sa[2], "le lieu : %s (%s)" % [sa[1], str(ombrelac_ext.zone_at(_pos()))])
 	var sl = ombrelac_ext.chateau.get_node_or_null("Ombrelac_salles")
 	_ok(sl != null and sl.lumieres.size() >= 6 and sl.sondes.size() == 3, "les salles sont éclairées (%d lumières)" % (sl.lumieres.size() if sl != null else 0))
+	# les dortoirs : la tour de l'escalier (sa porte sur le cloître), l'étage, la Salle Commune
+	_ok(_voie_libre(_wc(lx["tour_dortoirs_porte"], 0.4), _wc(lx["tour_dortoirs_bas"], 0.4)), "on entre dans la tour de l'escalier par sa porte")
+	await _poser(_wc(lx["tour_dortoirs_bas"], 1.0))
+	_ok(await _debout("le bas de la tour de l'escalier"), "on tient debout au pied de l'escalier")
+	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_tour_dortoirs", "le lieu : la Tour des Dortoirs (%s)" % str(ombrelac_ext.zone_at(_pos())))
+	# on monte l'escalier à vis à pied : on marche en tournant autour du noyau
+	var tcw: Vector3 = _wc(lx["tour_dortoirs_centre"], 0.0)
+	for i in range(60):
+		var rv: Vector3 = _pos() - tcw
+		rv.y = 0.0
+		var rl: float = rv.length()
+		rv = rv / maxf(rl, 0.01)
+		var dirm: Vector3 = (rv.cross(Vector3.UP) + rv * clampf(2.4 - rl, -0.6, 0.6)).normalized()
+		place_player_v35(_pos() + Vector3.UP * 0.05, dirm)
+		await _att(0.1)
+		_touche(KEY_Z, true)
+		_touche(KEY_W, true)
+		await _att(0.3)
+		_touche(KEY_Z, false)
+		_touche(KEY_W, false)
+		if _pos().y > IleO.ROC_Y + 6.0:
+			break
+	await _att(0.4)
+	_ok(_pos().y > IleO.ROC_Y + 5.9, "on monte l'escalier à vis à pied jusqu'à l'étage (y %.2f, l'étage à %.2f)" % [_pos().y, IleO.ROC_Y + 6.25])
+	await _poser(_wc(lx["tour_dortoirs_haut"], 1.0))
+	_ok(await _debout("le palier de l'étage"), "on tient debout sur le palier de l'étage")
+	_ok(_pos().y > IleO.ROC_Y + 5.5, "en haut de l'escalier (y %.1f)" % _pos().y)
+	_ok(_voie_libre(_wc(lx["tour_dortoirs_haut"], 0.4), _wc(lx["dortoir_crepuscule"], 0.4)), "du palier, on passe dans le Dortoir du Crépuscule")
+	var dortoirs := [["dortoir_crepuscule", "le Dortoir du Crépuscule", "ombrelac_dortoir_crepuscule"],
+		["salle_commune", "la Salle Commune", "ombrelac_salle_commune"],
+		["dortoir_aube", "le Dortoir de l'Aube", "ombrelac_dortoir_aube"]]
+	for dd in dortoirs:
+		await _poser(_wc(lx[dd[0]], 1.0))
+		_ok(await _debout(str(dd[1])), "on tient debout dans %s" % dd[1])
+		_ok(_pos().y > IleO.ROC_Y + 5.5, "à l'étage (y %.1f)" % _pos().y)
+		_ok(str(ombrelac_ext.zone_at(_pos())) == dd[2], "le lieu : %s (%s)" % [dd[1], str(ombrelac_ext.zone_at(_pos()))])
+	_ok(_voie_libre(_wc(lx["salle_commune"], 0.4), _wc(lx["dortoirs_passage_o"], 0.4)), "de la Salle Commune, on passe dans le Dortoir de l'Aube")
+	_ok(_voie_libre(_wc(lx["salle_commune_est"], 0.4), _wc(lx["dortoirs_passage_e"], 0.4)), "de la Salle Commune, on passe dans le Dortoir du Crépuscule")
+	var dt = ombrelac_ext.chateau.get_node_or_null("Ombrelac_dortoirs")
+	_ok(dt != null and dt.lumieres.size() >= 6 and dt.feu != null, "les dortoirs sont éclairés, le feu brûle (%d lumières)" % (dt.lumieres.size() if dt != null else 0))
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)

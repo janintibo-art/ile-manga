@@ -34,6 +34,13 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
       étagères de bocaux, la cuve de cuivre et son serpentin, les herbes qui sèchent au plafond ;
     - l'**Amphithéâtre** : quatre gradins de chêne avec bancs et tablettes, la chaire du maître sur
       son estrade, le grand tableau de géométrie, la carte du ciel, les bannières, le lustre de fer ;
+    - au premier étage, **les dortoirs** (**on y monte** par l'escalier à vis de la **Tour des
+      Dortoirs**, au bout est de l'aile, dont la porte donne sur le coin nord-est du Cloître) : le
+      **Dortoir de l'Aube** (rideaux bleus) et le **Dortoir du Crépuscule** (rideaux pourpres), six
+      lits à baldaquin chacun, leurs malles, leurs tables de chevet et leurs bougies, le poêle de
+      fonte, le tapis, les bannières ; entre les deux, la **Salle Commune** : la cheminée et son
+      feu, le canapé et les fauteuils de velours, le tapis rond, la table basse, l'échiquier, la
+      grande table d'étude, les bibliothèques, le lustre à bougies ;
   - l'**Aile des Études**, qui abrite la **Bibliothèque de l'Académie** (**on y entre**, par la
     cour) : une grande salle sur toute la hauteur, deux rangs de baies, des épis de rayonnages
     chargés de livres, une table de lecture et sa lampe à abat-jour vert dans chaque alcôve, une
@@ -51,7 +58,7 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les autres intérieurs (les dortoirs à l'étage, les tours), les habitants de l'Académie, les cours et les quêtes.
+Pour la suite (pas encore faits) : les autres intérieurs (les tours), les habitants de l'Académie, les cours et les quêtes.
 
 ## Les fichiers
 
@@ -66,6 +73,7 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/interieurs_ombrelac.gd` | les intérieurs : la Grande Salle (meubles, charpente, cheminée, lustres, bannières, lumières) |
 | `pcvr/scripts/ext_chateau/bibliotheque_ombrelac.gd` | la Bibliothèque (rayonnages, galerie, escalier, tables, lampes, sphère armillaire) |
 | `pcvr/scripts/ext_chateau/salles_ombrelac.gd` | les salles d'étude de l'Aile des Dortoirs (Astres, Élixirs, Amphithéâtre) |
+| `pcvr/scripts/ext_chateau/dortoirs_ombrelac.gd` | les dortoirs et la Salle Commune (l'étage de l'Aile des Dortoirs), l'escalier à vis de la Tour des Dortoirs |
 | `pcvr/scripts/ext_chateau/flore_ombrelac.gd` | la végétation et les rochers (reprend les outils de `grande_flore_v59.gd`) |
 | `pcvr/shaders/ext_chateau/ombrelac_ardoise.gdshader` | les toits d'ardoises en écailles |
 | `pcvr/shaders/ext_chateau/ombrelac_vitre.gdshader` | les fenêtres et les vitraux (jour / nuit, vus du dehors et du dedans) |

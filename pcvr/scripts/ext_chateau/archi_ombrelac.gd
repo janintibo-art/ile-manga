@@ -240,6 +240,26 @@ static func mat(key: String) -> Material:
 			sw.emission = Color(1.0, 0.6, 0.25)
 			sw.emission_energy_multiplier = 0.25
 			m = sw
+		"velours_bleu", "velours_pourpre", "velours_vert":
+			# les rideaux des lits, les édredons, les fauteuils : un velours (un peu de reflet rasant)
+			var sv := StandardMaterial3D.new()
+			if key == "velours_bleu":
+				sv.albedo_color = Color(0.1, 0.14, 0.36)
+			elif key == "velours_pourpre":
+				sv.albedo_color = Color(0.36, 0.07, 0.14)
+			else:
+				sv.albedo_color = Color(0.12, 0.26, 0.14)
+			sv.roughness = 0.85
+			sv.rim_enabled = true
+			sv.rim = 0.45
+			sv.rim_tint = 0.6
+			sv.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = sv
+		"drap":
+			var sd := StandardMaterial3D.new()
+			sd.albedo_color = Color(0.86, 0.83, 0.76)
+			sd.roughness = 0.92
+			m = sd
 		"suie":
 			var su := StandardMaterial3D.new()
 			su.albedo_color = Color(0.05, 0.045, 0.04)

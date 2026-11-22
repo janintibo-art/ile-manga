@@ -19,6 +19,11 @@
 ##   "geste" : ["clip", instant] : il joue ce clip, figé à cet instant ;
 ##   "vues" : parmi "face" (de trois quarts), "profil", "dos", "dessus", "pieds" (au ras du sol, de côté) ;
 ##   "dist", "haut", "cible_h" : la caméra (m, à l'échelle de l'habitant) ; "heure" : l'heure du jeu.
+## V193 : "public" : "averti" ou "tout" (la version du jeu, pour cette photo et les suivantes) ; "repere" :
+## "halle" ou "conserverie" : "oeil" et "cible" dans le repère de ce lieu de Port-Boucan (boucan_nuit_v193) ;
+## "ombrelac" : le nom d'un lieu du château d'Ombrelac : "oeil" et "cible" en décalage de ce lieu ;
+## "action" : "trip" (on croque un Rieur : l'écran du trip reste sur la photo), "douche" (Rouille arrose la
+## fosse juste avant la photo).
 ## V192 : la fluidité. Avant chaque photo, on mesure le jeu pendant "mesure" secondes (2 par défaut, en tête
 ## de liste ; 0 : pas de mesure), sans synchro verticale : le temps de chaque image (médiane et pire 5 %),
 ## le temps de la carte graphique et du processeur pour le rendu, les appels de dessin, les triangles, la
@@ -80,6 +85,8 @@ func _pp_une(p: Dictionary) -> int:
 	print("PHOTO_DEBUT ", nom)
 	if p.has("heure"):
 		temps_v56.set_hour(float(p["heure"]))
+	if p.has("public"):
+		load("res://scripts/public_v111.gd").choisir(str(p["public"]), false)
 	if p.has("tour"):
 		return await _pp_tour(p)
 	if p.has("salles"):
@@ -97,8 +104,25 @@ func _pp_une(p: Dictionary) -> int:
 			var sc: Vector3 = neo_v94._ground(cible.x, cible.z)
 			oeil = Vector3(so.x, so.y + oeil.y, so.z)
 			cible = Vector3(sc.x, sc.y + cible.y, sc.z)
+		var nuit: Node = boucan_v75.get("nuit") if boucan_v75 != null else null
+		# V193 : "ombrelac" : un lieu du château d'Ombrelac (chateau.lieux) ; "oeil" et "cible" en décalage de ce lieu
+		if p.has("ombrelac") and ombrelac_ext != null and ombrelac_ext.chateau != null:
+			var base_o: Vector3 = ombrelac_ext.chateau.position + (ombrelac_ext.chateau.lieux.get(str(p["ombrelac"]), Vector3.ZERO) as Vector3)
+			oeil += base_o
+			cible += base_o
+		if p.has("repere") and nuit != null:
+			var xf: Transform3D = nuit.halle_xf if str(p["repere"]) == "halle" else nuit.conserverie_xf
+			oeil = xf * oeil
+			cible = xf * cible
 		_pp_joueur(oeil - (cible - oeil).normalized() * 2.0, cible - oeil)
 		await _att(float(p.get("attente", 4.0)))
+		if str(p.get("action", "")) == "trip" and nuit != null:
+			inventory_v28.add("champi_rieur", 1)
+			boucan_v75.champis.eat("champi_rieur")
+			await _att(14.0)
+		elif str(p.get("action", "")) == "douche" and nuit != null:
+			nuit.douche()
+			await _att(0.7)
 		return 1 if await _pp_photo(nom, oeil, cible) else 0
 	var npc: Node3D = null
 	for e in testeur_v78._npcs():
@@ -461,7 +485,7 @@ func _pp_photo(nom: String, oeil: Vector3, cible: Vector3) -> bool:
 	# l'écran du jeu (messages, boussole, barres) caché le temps de la photo
 	var caches: Array = []
 	for cl in get_tree().root.find_children("*", "CanvasLayer", true, false):
-		if (cl as CanvasLayer).visible:
+		if (cl as CanvasLayer).visible and cl.name != "Trip193":
 			(cl as CanvasLayer).visible = false
 			caches.append(cl)
 	await _images(5)

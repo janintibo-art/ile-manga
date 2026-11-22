@@ -303,6 +303,14 @@ const DESCENTE := {
 }
 
 const CHAMPIGNONS := {
+	# V193 : Public averti seulement
+	"champi_rieur": {
+		"nom": "Rieur",
+		"morille": "Le Rieur. Celui-là, petit, ce n'est pas un champignon de conte pour enfants. Il fait respirer les murs et rire les cailloux. Un seul, assis quelque part de doux, avec des gens que tu aimes. Si ça tourne mal, tu reviens me voir : je fais une tisane, et on attend que ça passe. Ça passe toujours.",
+		"manger": ["Tu croques le Rieur. Il a un goût de terre et de noisette… Rien. Rien du tout. Et puis le sol se met à respirer, doucement, comme un gros chat endormi.",
+			"Le Rieur fond sur la langue. Une seconde plus tard, une couleur que tu ne connaissais pas te passe devant les yeux, et tu ris. Tu ne sais pas pourquoi. C'est très drôle de ne pas savoir pourquoi."],
+		"fin": "Les couleurs reviennent à leur place, les murs arrêtent de respirer. Tu as soif, et un peu faim. Quelque part, quelqu'un rit encore. Ah non : c'est toi.",
+	},
 	"champi_ressort": {
 		"nom": "Bolet-Ressort",
 		"morille": "Le Bolet-Ressort, au chapeau orange. Dans le conte, il donne des jambes de sauterelle : on saute trois fois plus haut, et ça fait « boïng ». Attention à l'atterrissage, il ne s'en occupe pas. Et souviens-toi : dans un conte, oui. Dans la vraie forêt : jamais !",

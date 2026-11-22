@@ -25,6 +25,7 @@ const PNJ := "res://scripts/pnj/pnj_boucan_v75.gd"
 const DONJON := "res://scripts/usine_grise_v75.gd"
 const EVENEMENTS := "res://scripts/evenements_v75.gd"
 const CHAMPIGNONS := "res://scripts/champignons_v75.gd"
+const NUIT := "res://scripts/boucan_nuit_v193.gd"         # V193 : la nuit en « Public averti »
 const FAUNE := "res://scripts/faune_v75.gd"
 const CHIEN := "res://scripts/chien_v75.gd"
 
@@ -54,6 +55,7 @@ var lairs: Array = []
 var dungeon: Node3D                      # l'Usine Grise
 var events: Node                         # les concerts, la Descente, les graffitis…
 var champis: Node                        # les champignons féeriques
+var nuit: Node                           # V193 : la nuit en « Public averti » (boucan_nuit_v193)
 var _claims: Dictionary = {}
 var _clock: float = 0.0
 var _rng := RandomNumberGenerator.new()
@@ -148,6 +150,11 @@ func build_town() -> void:
 		champis.name = "Champignons_v75"
 		add_child(champis)
 		champis.setup(main, self)
+	if ResourceLoader.exists(NUIT):
+		nuit = load(NUIT).new()
+		nuit.name = "Nuit_v193"
+		add_child(nuit)
+		nuit.setup(main, self)
 	print("ILE_MANGA_V75: l'Île du Boucan est prête (%d ms)" % (Time.get_ticks_msec() - t0))
 
 
@@ -188,6 +195,8 @@ func _register_interactions() -> void:
 		events.register_interactions(d)
 	if champis != null and champis.has_method("register_interactions"):
 		champis.register_interactions(d)
+	if nuit != null and nuit.has_method("register_interactions"):
+		nuit.register_interactions(d)
 
 
 func _ia(d: Node, it: Dictionary) -> void:
@@ -631,6 +640,8 @@ func serialize() -> Dictionary:
 		d["champignons"] = champis.serialize()
 	if chien != null and chien.has_method("serialize"):
 		d["sardine"] = chien.serialize()
+	if nuit != null:
+		d["nuit"] = nuit.serialize()
 	return d
 
 
@@ -645,7 +656,7 @@ func load_data(d: Dictionary) -> void:
 		if d.has(k):
 			state[k] = d[k] if not (d[k] is Dictionary) else (d[k] as Dictionary).duplicate(true)
 	_claims.clear()
-	for sub in [[dungeon, "donjon"], [events, "evenements"], [champis, "champignons"], [chien, "sardine"]]:
+	for sub in [[dungeon, "donjon"], [events, "evenements"], [champis, "champignons"], [chien, "sardine"], [nuit, "nuit"]]:
 		if sub[0] != null and sub[0].has_method("load_data"):
 			var sd: Variant = d.get(str(sub[1]), {})
 			sub[0].load_data(sd if sd is Dictionary else {})
