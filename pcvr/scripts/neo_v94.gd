@@ -162,6 +162,7 @@ func build_town() -> void:
 const UNIQUES := [
 	{"p": Vector2(-19.5, -162.5), "script": "res://scripts/neo/tour_kumo_v187.gd", "dedans": "res://scripts/neo/tour_kumo_dedans_v188.gd"},
 	{"p": Vector2(31.0, -162.5), "script": "res://scripts/neo/tour_vertex_v189.gd", "dedans": "res://scripts/neo/tour_vertex_dedans_v190.gd"},      # V189 : la banque, en face
+	{"p": Vector2(-44.0, -163.0), "script": "res://scripts/neo/tour_hikari_v195.gd"},      # V195 : la maison de la lumière, à l'ouest de Kumo
 ]
 var uniques: Array = []                   # les nœuds des immeubles faits à la main
 var rue_v192: Dictionary = {}             # V192 : la rue vitrine (ce qui y est posé)
@@ -181,13 +182,16 @@ func _uniques_marque() -> void:
 					_xfs[k] = Transform3D(Basis().scaled(Vector3(0.001, 0.001, 0.001)), (_xfs[k] as Transform3D).origin * Vector3(1, 0, 1) + Vector3.DOWN * 60.0)
 
 
+## (V195 : dans l'ordre de UNIQUES : Kumo, Vertex, Hikari…, pas dans celui des immeubles de la ville)
 func _uniques_batit() -> void:
-	for bt in batiments:
-		if bt.has("unique"):
-			var n: Node3D = (load(str(bt["unique"])) as Script).new()
-			add_child(n)
-			n.build(self, bt)
-			uniques.append(n)
+	for u in UNIQUES:
+		for bt in batiments:
+			if str(bt.get("unique", "")) == str(u["script"]):
+				var n: Node3D = (load(str(bt["unique"])) as Script).new()
+				add_child(n)
+				n.build(self, bt)
+				uniques.append(n)
+				break
 
 
 func _ground(x: float, z: float) -> Vector3:
@@ -794,6 +798,18 @@ func _port() -> void:
 
 # =================================================================== les rues
 
+## V195 : devant la porte d'un immeuble fait à la main (le tunnel de lumière de la Tour Hikari), pas de
+## réverbère ni de distributeur : on les décale de 6 m le long de la rue (axe).
+const PORTES_LIBRES := [Vector2(-53.0, -163.27)]
+
+
+func _hors_porte(p: Vector2, axe: Vector2) -> Vector2:
+	for q in PORTES_LIBRES:
+		if p.distance_to(q as Vector2) < 3.5:
+			return p + axe * 6.0
+	return p
+
+
 func _rues() -> void:
 	var b := Kit.Batch.new()
 	var n_light: int = 0
@@ -814,6 +830,7 @@ func _rues() -> void:
 		var p: Vector2 = e[0]
 		if maxf(absf(p.x), absf(p.y)) > IleScript.ANNEAU + 6.0:
 			continue
+		p = _hors_porte(p, Vector2(absf((e[1] as Vector3).z), absf((e[1] as Vector3).x)))
 		var at: Vector3 = _ground(p.x, p.y)
 		var head: Vector3 = Kit.lamp_post(b, at, e[1])
 		_col(Transform3D(Basis(), at + Vector3.UP * 1.5), Vector3(0.3, 3.0, 0.3))
@@ -842,7 +859,8 @@ func _rues() -> void:
 		var wx: Vector2 = IleScript.largeur(kx)
 		var x: float = kx * IleScript.PAS + wx.y - 0.7
 		var z: float = kz * IleScript.PAS + 12.0 + (q % 3) * 5.0
-		var at3: Vector3 = _ground(x, z)
+		var pd: Vector2 = _hors_porte(Vector2(x, z), Vector2(0, 1))
+		var at3: Vector3 = _ground(pd.x, pd.y)
 		var face := Vector3(-1, 0, 0)
 		Kit.vending(b, at3, face, couleurs[q % 3])
 		_col(Transform3D(Basis(), at3 + Vector3.UP * 0.95), Vector3(0.8, 1.9, 1.05))
