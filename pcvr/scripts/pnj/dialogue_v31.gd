@@ -30,6 +30,15 @@ var _vr_panel: Node3D
 var _vr_text: Label3D
 var _vr_back: MeshInstance3D            # V65 : le fond grandit avec le texte (histoires, anecdotes)
 var _vr_neutral: bool = true
+# V199 : en VR, une ligne par réponse, et le rayon de la manette droite pour choisir (comme le menu)
+const VR_LIGNE := 0.0445                # hauteur d'une ligne de texte (m)
+const VR_CAR := 52                      # lettres par ligne, environ
+var _vr_choix: Array = []               # Label3D, une par réponse affichée
+var _vr_y: Array = []                   # [haut, bas] de chaque réponse, dans le panneau
+var _vr_aide: Label3D
+var _vr_barre: MeshInstance3D           # la barre dorée derrière la réponse visée
+var vr_rayon: MeshInstance3D
+var vr_point: MeshInstance3D
 var _vr_trigger_ready: bool = false
 var _vr_b_ready: bool = false
 var _npc: Node3D
@@ -154,6 +163,75 @@ func _build_vr() -> void:
 	_vr_text.position = Vector3(0, 0, 0.005)
 	_vr_text.no_depth_test = true
 	_vr_panel.add_child(_vr_text)
+	# V199 : la barre dorée, les réponses, l'aide, le rayon
+	_vr_barre = MeshInstance3D.new()
+	var qb := QuadMesh.new()
+	qb.size = Vector2(0.97, 0.05)
+	var mb := StandardMaterial3D.new()
+	mb.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mb.albedo_color = Color(0.85, 0.66, 0.25, 0.4)
+	mb.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	qb.material = mb
+	_vr_barre.mesh = qb
+	_vr_barre.visible = false
+	_vr_panel.add_child(_vr_barre)
+	_vr_aide = _label_vr()
+	_vr_aide.modulate = Color(0.7, 0.8, 0.88)
+	_vr_aide.text = "Visez avec la manette droite, gâchette : répondre   |   Stick droit : choisir   |   B : partir"
+	_vr_aide.font_size = 24
+	var mr := StandardMaterial3D.new()
+	mr.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mr.albedo_color = Color(0.75, 0.92, 1.0, 0.55)
+	mr.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	vr_rayon = MeshInstance3D.new()
+	vr_rayon.name = "Rayon_dialogue_v199"
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.0025
+	cyl.bottom_radius = 0.0025
+	cyl.height = 1.0
+	cyl.radial_segments = 6
+	cyl.rings = 1
+	vr_rayon.mesh = cyl
+	vr_rayon.material_override = mr
+	vr_rayon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	vr_rayon.top_level = true
+	vr_rayon.visible = false
+	add_child(vr_rayon)
+	vr_point = MeshInstance3D.new()
+	var sp := SphereMesh.new()
+	sp.radius = 0.012
+	sp.height = 0.024
+	vr_point.mesh = sp
+	var mp := StandardMaterial3D.new()
+	mp.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mp.albedo_color = Color(1.0, 0.85, 0.45)
+	vr_point.material_override = mp
+	vr_point.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	vr_point.top_level = true
+	vr_point.visible = false
+	add_child(vr_point)
+
+
+func _label_vr() -> Label3D:
+	var l := Label3D.new()
+	l.font_size = 32
+	l.pixel_size = 0.0011
+	l.width = 860
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	l.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	l.offset = Vector2(-430, 0)
+	l.no_depth_test = true
+	l.render_priority = 2
+	_vr_panel.add_child(l)
+	return l
+
+
+func _lignes(t: String) -> int:
+	var n: int = 0
+	for l in t.split("\n"):
+		n += maxi(1, int(ceil(float(l.length()) / float(VR_CAR))))
+	return n
 
 
 func open(npc: Node3D) -> void:
@@ -176,6 +254,8 @@ func close() -> void:
 		_portrait_vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	if _vr_panel != null:
 		_vr_panel.visible = false
+		vr_rayon.visible = false
+		vr_point.visible = false
 
 
 func _mood_color(word: String) -> Color:
@@ -285,6 +365,8 @@ func _aim_portrait() -> void:
 
 
 func _process(delta: float) -> void:
+	if opened and _vr_panel != null:
+		_viser_vr()
 	if not opened or _layer == null:
 		return
 	_aim_portrait()
@@ -352,6 +434,15 @@ func _place_vr() -> void:
 	var head: Vector3 = main.xr_camera.global_position
 	var to_head: Vector3 = head - _npc.global_position
 	to_head.y = 0.0
+	if to_head.length() < 1.2:
+		# V199 : pas d'habitant en face (le mode testeur, un panneau) : le texte se pose devant soi
+		var regard: Vector3 = -main.xr_camera.global_basis.z
+		regard.y = 0.0
+		regard = regard.normalized() if regard.length() > 0.01 else Vector3.FORWARD
+		_vr_panel.global_position = head + regard * 1.3 + Vector3.DOWN * 0.15
+		_vr_panel.look_at(head, Vector3.UP)
+		_vr_panel.rotate_object_local(Vector3.UP, PI)
+		return
 	to_head = to_head.normalized() if to_head.length() > 0.01 else Vector3.FORWARD
 	var side: Vector3 = to_head.cross(Vector3.UP).normalized()
 	_vr_panel.global_position = _npc.global_position + to_head * 0.9 + side * 0.75 + Vector3.UP * 1.45
@@ -360,21 +451,81 @@ func _place_vr() -> void:
 
 
 func _refresh_vr() -> void:
-	var lines: Array = [str(_vr_text.get_meta("entete", "")), "", str(_vr_text.get_meta("texte", "")), ""]
+	var tete: String = str(_vr_text.get_meta("entete", "")) + "\n\n" + str(_vr_text.get_meta("texte", ""))
+	_vr_text.text = tete
+	var y: float = 0.33 - (_lignes(tete) + 1) * VR_LIGNE
 	var shown: Array = _shown_choices()
-	for i in range(shown.size()):
-		lines.append(("> " if i == selection else "   ") + str(shown[i]["label"]))
-	lines.append("")
-	lines.append("Stick droit : choisir   Gâchette : répondre   B : partir")
-	_vr_text.text = "\n".join(lines)
-	# V65 : hauteur du fond selon le nombre de lignes (environ 52 caractères par ligne)
+	while _vr_choix.size() < shown.size():
+		_vr_choix.append(_label_vr())
+	_vr_y.clear()
+	for i in range(_vr_choix.size()):
+		var l: Label3D = _vr_choix[i]
+		l.visible = i < shown.size()
+		if not l.visible:
+			continue
+		l.text = "%d.  %s" % [(i + 1) % 10, str(shown[i]["label"])]
+		l.position = Vector3(0, y, 0.006)
+		var h: float = _lignes(l.text) * VR_LIGNE
+		_vr_y.append([y + 0.006, y - h - 0.006])
+		y -= h + 0.012
+	_vr_aide.position = Vector3(0, y - 0.02, 0.006)
+	y -= 0.02 + 2 * VR_LIGNE * 0.75
+	_barre()
+	# le fond suit le texte et les réponses
 	if _vr_back != null and _vr_back.mesh is QuadMesh:
-		var n: int = 0
-		for l in _vr_text.text.split("\n"):
-			n += maxi(1, int(ceil(float(l.length()) / 52.0)))
-		var h: float = maxf(0.72, n * 0.0445 + 0.1)
-		(_vr_back.mesh as QuadMesh).size = Vector2(1.0, h)
-		_vr_back.position.y = 0.36 - h * 0.5
+		var h2: float = maxf(0.72, 0.36 - y + 0.03)
+		(_vr_back.mesh as QuadMesh).size = Vector2(1.0, h2)
+		_vr_back.position.y = 0.36 - h2 * 0.5
+
+
+func _barre() -> void:
+	if _vr_barre == null:
+		return
+	_vr_barre.visible = selection >= 0 and selection < _vr_y.size()
+	if not _vr_barre.visible:
+		return
+	var hb: Array = _vr_y[selection]
+	var haut: float = float(hb[0])
+	var bas: float = float(hb[1])
+	(_vr_barre.mesh as QuadMesh).size = Vector2(0.97, haut - bas)
+	_vr_barre.position = Vector3(0, (haut + bas) * 0.5, 0.003)
+
+
+## Le rayon de la manette droite (pose « aim ») : la réponse visée devient le choix en cours.
+func _viser_vr() -> void:
+	var main: Node = get_parent()
+	var c: Node3D = null
+	if main != null:
+		c = main.get("visee_droite_v199")
+		if c == null:
+			c = main.get("right_hand")
+	if c == null or not _vr_panel.visible:
+		vr_rayon.visible = false
+		vr_point.visible = false
+		return
+	var o: Vector3 = c.global_position
+	var d: Vector3 = -c.global_basis.z
+	var plan_n: Vector3 = _vr_panel.global_basis.z
+	var den: float = d.dot(plan_n)
+	var longueur: float = 3.0
+	if absf(den) > 0.0001:
+		var tt: float = (_vr_panel.global_position - o).dot(plan_n) / den
+		if tt > 0.0 and tt < 6.0:
+			var hit: Vector3 = o + d * tt
+			var loc: Vector3 = _vr_panel.to_local(hit)
+			var hb: Vector2 = (_vr_back.mesh as QuadMesh).size if _vr_back != null else Vector2(1, 1)
+			if absf(loc.x) < 0.5 and loc.y < 0.37 and loc.y > 0.36 - hb.y - 0.01:
+				longueur = tt
+				vr_point.global_position = hit + plan_n * 0.008
+				for i in range(_vr_y.size()):
+					if loc.y <= float(_vr_y[i][0]) and loc.y > float(_vr_y[i][1]) - 0.006 and i != selection:
+						selection = i
+						_barre()
+	vr_point.visible = longueur < 3.0
+	vr_rayon.visible = true
+	var mid: Vector3 = o + d * longueur * 0.5
+	var b := Basis(Quaternion(Vector3.UP, d.normalized()))
+	vr_rayon.global_transform = Transform3D(b.scaled(Vector3(1.0, longueur, 1.0)), mid)
 
 
 func vr_tick(stick_y: float, trigger: float, b_button: bool) -> void:
@@ -385,7 +536,7 @@ func vr_tick(stick_y: float, trigger: float, b_button: bool) -> void:
 	elif _vr_neutral and not choices.is_empty():
 		selection = wrapi(selection + (1 if stick_y < 0.0 else -1), 0, _shown_choices().size())
 		_vr_neutral = false
-		_refresh_vr()
+		_barre()
 	var pressed: bool = trigger > 0.7
 	if pressed and _vr_trigger_ready and not choices.is_empty():
 		_pick(selection)

@@ -23,6 +23,19 @@ var menu_glow_time: float = 0.0
 var vr_panel: Node3D
 var vr_text: Label3D
 var vr_help: Label3D
+## V199 : en VR, le menu est posé devant soi dans le monde (il ne suit plus la tête) ; un rayon part de
+## la manette droite : la ligne visée s'éclaire, la gâchette la choisit (le joystick marche toujours).
+const RANGEES_VR := 13
+const RANGEE_H := 0.075
+const RANGEE_HAUT := 0.36
+var vr_rangees: Array = []                 # les lignes du menu (Label3D)
+var vr_surbrillance: MeshInstance3D        # la barre dorée derrière la ligne choisie
+var vr_rayon: MeshInstance3D               # le rayon de la manette
+var vr_point: MeshInstance3D               # là où il touche le panneau
+var visee: XRController3D                  # la manette droite, pose « aim » (pour viser)
+var _vise: int = -1
+var _hors_vue: float = 0.0
+var _pose_ok: bool = false
 var right_hand: XRController3D
 var xr_camera: XRCamera3D
 var xr_mode: bool = false
@@ -103,8 +116,10 @@ func _make_pc_panel() -> void:
 func _make_vr_panel() -> void:
 	vr_panel = Node3D.new()
 	vr_panel.name = "Menu_VR_3D"
-	xr_camera.add_child(vr_panel)
-	vr_panel.position = Vector3(0.0, -0.04, -2.0)
+	# V199 : posé dans le monde (enfant de l'origine VR, il suit les déplacements, pas la tête)
+	var origine: Node = xr_camera.get_parent() if xr_camera.get_parent() != null else xr_camera
+	origine.add_child(vr_panel)
+	vr_panel.position = Vector3(0.0, 1.5, -1.8)
 	var background := MeshInstance3D.new()
 	var rect := QuadMesh.new()
 	rect.size = Vector2(1.9, 1.45)
@@ -118,18 +133,119 @@ func _make_vr_panel() -> void:
 	background.position.z = -0.03
 	vr_panel.add_child(background)
 	vr_text = Label3D.new()
-	vr_text.font_size = 56
+	vr_text.font_size = 52
 	vr_text.pixel_size = 0.0015
 	vr_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vr_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	vr_text.position = Vector3(0, 0.06, 0.0)
+	vr_text.position = Vector3(0, 0.53, 0.0)
 	vr_panel.add_child(vr_text)
+	vr_surbrillance = MeshInstance3D.new()
+	var barre := QuadMesh.new()
+	barre.size = Vector2(1.78, RANGEE_H * 0.92)
+	vr_surbrillance.mesh = barre
+	var mb := StandardMaterial3D.new()
+	mb.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mb.albedo_color = Color(0.99, 0.76, 0.32, 0.28)
+	mb.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	vr_surbrillance.material_override = mb
+	vr_surbrillance.position = Vector3(0, RANGEE_HAUT, -0.015)
+	vr_panel.add_child(vr_surbrillance)
+	for i in range(RANGEES_VR):
+		var r := Label3D.new()
+		r.font_size = 44
+		r.pixel_size = 0.0013
+		r.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		r.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		r.position = Vector3(0, RANGEE_HAUT - RANGEE_H * i, 0.0)
+		r.modulate = Color(0.86, 0.92, 1.0)
+		r.outline_size = 6
+		vr_panel.add_child(r)
+		vr_rangees.append(r)
 	vr_help = Label3D.new()
-	vr_help.text = "Joystick droit : choisir | Gâchette droite : valider | Bouton ≡ gauche : menu"
-	vr_help.font_size = 38
+	vr_help.text = "Visez avec la manette droite, gâchette : valider  |  Joystick droit : choisir  |  Bouton ≡ gauche : menu"
+	vr_help.font_size = 34
 	vr_help.pixel_size = 0.001
-	vr_help.position = Vector3(0, -0.61, 0.01)
+	vr_help.position = Vector3(0, -0.64, 0.01)
 	vr_panel.add_child(vr_help)
+	# le rayon de la manette et son point lumineux
+	var mr := StandardMaterial3D.new()
+	mr.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mr.albedo_color = Color(0.75, 0.92, 1.0, 0.55)
+	mr.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	vr_rayon = MeshInstance3D.new()
+	vr_rayon.name = "Rayon_menu_v199"
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.0025
+	cyl.bottom_radius = 0.0025
+	cyl.height = 1.0
+	cyl.radial_segments = 6
+	cyl.rings = 1
+	vr_rayon.mesh = cyl
+	vr_rayon.material_override = mr
+	vr_rayon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	vr_rayon.top_level = true
+	vr_rayon.visible = false
+	add_child(vr_rayon)
+	vr_point = MeshInstance3D.new()
+	var sp := SphereMesh.new()
+	sp.radius = 0.012
+	sp.height = 0.024
+	vr_point.mesh = sp
+	var mp := StandardMaterial3D.new()
+	mp.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mp.albedo_color = Color(1.0, 0.85, 0.45)
+	vr_point.material_override = mp
+	vr_point.top_level = true
+	vr_point.visible = false
+	add_child(vr_point)
+
+
+## V199 : le panneau, devant la tête, à 1,8 m, à la hauteur des yeux (un peu plus bas), tourné vers elle.
+func _poser_panneau() -> void:
+	if vr_panel == null or xr_camera == null or not xr_camera.is_inside_tree():
+		return
+	var tete: Vector3 = xr_camera.global_position
+	var f: Vector3 = -xr_camera.global_basis.z
+	f.y = 0.0
+	f = f.normalized() if f.length() > 0.05 else Vector3.FORWARD
+	var at: Vector3 = tete + f * 1.8 + Vector3.DOWN * 0.12
+	vr_panel.global_position = at
+	vr_panel.look_at(at + f, Vector3.UP)
+	_hors_vue = 0.0
+
+
+## V199 : le rayon de la manette droite (pose « aim ») sur le panneau : la ligne visée, ou -1.
+func _viser() -> int:
+	var c: Node3D = visee if visee != null else right_hand
+	if c == null or vr_panel == null or not vr_panel.visible:
+		vr_rayon.visible = false
+		vr_point.visible = false
+		return -1
+	var o: Vector3 = c.global_position
+	var d: Vector3 = -c.global_basis.z
+	var plan_n: Vector3 = vr_panel.global_basis.z
+	var plan_o: Vector3 = vr_panel.global_position
+	var den: float = d.dot(plan_n)
+	var longueur: float = 3.0
+	var ligne: int = -1
+	if absf(den) > 0.0001:
+		var tt: float = (plan_o - o).dot(plan_n) / den
+		if tt > 0.0 and tt < 6.0:
+			var hit: Vector3 = o + d * tt
+			var loc: Vector3 = vr_panel.to_local(hit)
+			if absf(loc.x) < 0.95 and absf(loc.y) < 0.725:
+				longueur = tt
+				vr_point.global_position = hit + plan_n * 0.005
+				var k: int = int(round((RANGEE_HAUT - loc.y) / RANGEE_H))
+				if k >= 0 and k < options.size() and absf(loc.x) < 0.9:
+					ligne = k
+	vr_point.visible = longueur < 3.0
+	vr_rayon.visible = true
+	var mid: Vector3 = o + d * longueur * 0.5
+	var b := Basis(Quaternion(Vector3.UP, d.normalized()))
+	vr_rayon.global_transform = Transform3D(b.scaled(Vector3(1.0, longueur, 1.0)), mid)
+	return ligne
+
 
 func _show_view(which: String) -> void:
 	view = which
@@ -174,6 +290,14 @@ func _show_view(which: String) -> void:
 		options.append(_version_option())
 		# V126 : la luminosité (pour les lieux sombres : château, donjons, nuit)
 		options.append(Lumi126.libelle())
+		# V199 : en VR, la vue dans la peau du héros ou de dehors
+		var vue: Variant = get_parent().get("vue_v199") if get_parent() != null else null
+		if xr_mode and vue != null:
+			options.append(str(vue.libelle()))
+			options.append(str(vue.libelle_rotation()))
+		var flu: Variant = get_parent().get("fluidite_v199") if get_parent() != null else null
+		if xr_mode and flu != null:
+			options.append(str(flu.libelle()))
 		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
@@ -184,9 +308,16 @@ func _redraw() -> void:
 		var lines: PackedStringArray = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", Langue.t("6 emplacements de sauvegarde"), ""])
 		if view == "public":
 			lines = PackedStringArray(["LES MONDES DE TRAVERS  •  " + _version_v21(), "", Langue.t("Quelle version du jeu ?"), ""])
-		for i in range(options.size()):
-			lines.append(("➤ " if i == selection else "   ") + Langue.t(options[i]))
 		vr_text.text = "\n".join(lines)
+		# V199 : une ligne par choix, la barre dorée derrière le choix en cours
+		for i in range(vr_rangees.size()):
+			var r: Label3D = vr_rangees[i]
+			r.visible = i < options.size()
+			if i < options.size():
+				r.text = ("➤  " if i == selection else "") + Langue.t(options[i])
+				r.modulate = Color(1.0, 0.95, 0.8) if i == selection else Color(0.8, 0.88, 1.0)
+		vr_surbrillance.visible = selection >= 0 and selection < options.size()
+		vr_surbrillance.position.y = RANGEE_HAUT - RANGEE_H * selection
 	else:
 		for n in list_box.get_children():
 			n.queue_free()
@@ -302,6 +433,30 @@ func _activate(index: int) -> void:
 			var keep3: int = index
 			_show_view("settings")
 			selection = keep3
+			_redraw()
+		elif action.begins_with("Vue VR : "):
+			var vue2: Variant = get_parent().get("vue_v199") if get_parent() != null else null
+			if vue2 != null:
+				vue2.basculer()
+			var keep4: int = index
+			_show_view("settings")
+			selection = keep4
+			_redraw()
+		elif action.begins_with("Fluidité VR : "):
+			var flu2: Variant = get_parent().get("fluidite_v199") if get_parent() != null else null
+			if flu2 != null:
+				flu2.basculer()
+			var keep7: int = index
+			_show_view("settings")
+			selection = keep7
+			_redraw()
+		elif action.begins_with("Rotation VR : "):
+			var vue3: Variant = get_parent().get("vue_v199") if get_parent() != null else null
+			if vue3 != null:
+				vue3.basculer_rotation()
+			var keep6: int = index
+			_show_view("settings")
+			selection = keep6
 			_redraw()
 		elif action == "Retour":
 			_show_view("home")
@@ -429,6 +584,8 @@ func _close() -> void:
 	opened = false
 	if xr_mode:
 		vr_panel.visible = false
+		vr_rayon.visible = false
+		vr_point.visible = false
 	else:
 		frame.visible = false
 
@@ -436,6 +593,7 @@ func open_menu() -> void:
 	opened = true
 	if xr_mode:
 		vr_panel.visible = true
+		_poser_panneau()
 	else:
 		frame.visible = true
 	_show_view("home")
@@ -450,6 +608,26 @@ func _process(delta: float) -> void:
 		seconds += delta
 	if not opened or not xr_mode or right_hand == null:
 		return
+	# V199 : au lancement, le casque met un instant à donner la position de la tête : on pose le
+	# panneau dès qu'elle est là ; puis, si on le perd de vue plus d'une seconde, il revient devant soi
+	if not _pose_ok and xr_camera.position.y > 0.3:
+		_pose_ok = true
+		_poser_panneau()
+	var vers: Vector3 = vr_panel.global_position - xr_camera.global_position
+	var regard: Vector3 = -xr_camera.global_basis.z
+	vers.y = 0.0
+	regard.y = 0.0
+	if vers.length() > 0.1 and regard.length() > 0.1 and vers.normalized().dot(regard.normalized()) < 0.5:
+		_hors_vue += delta
+		if _hors_vue > 1.2:
+			_poser_panneau()
+	else:
+		_hors_vue = 0.0
+	var vise: int = _viser()
+	if vise >= 0 and vise != selection:
+		selection = vise
+		_redraw()
+	_vise = vise
 	var stick: Vector2 = right_hand.get_vector2("primary")
 	if absf(stick.y) < 0.25:
 		neutral = true

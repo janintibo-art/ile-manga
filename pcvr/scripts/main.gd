@@ -13,6 +13,7 @@ const WALK_SPEED: float = 3.1
 const DEADZONE: float = 0.22
 const TURN_STICK_THRESHOLD: float = 0.75
 const SNAP_TURN: float = PI / 6.0
+const ROTATION_DOUCE: float = deg_to_rad(120.0)   # V199 : la rotation continue, joystick à fond
 
 var xr_active: bool = false
 var xr_origin: XROrigin3D
@@ -32,6 +33,9 @@ var ocean_material: ShaderMaterial
 var xr_restart_button: Button
 var ultranet_pc: bool = false
 var game_menu: Node
+var vue_v199: Node                         # V199 : la vue VR (dans la peau / de dehors)
+var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
+var visee_droite_v199: XRController3D      # V199 : la manette droite, pose « aim » (le rayon du menu)
 var menu_panorama: Camera3D
 var panorama_seconds: float = 0.0
 var autosave_clock: float = 0.0
@@ -913,6 +917,12 @@ func _create_players() -> void:
 	xr_origin.add_child(right_hand)
 	_make_hand(left_hand, Color(0.29, 0.80, 1.0))
 	_make_hand(right_hand, Color(1.0, 0.61, 0.34))
+	# V199 : la même manette droite, pose « aim » : vers où elle pointe (le rayon du menu)
+	visee_droite_v199 = XRController3D.new()
+	visee_droite_v199.name = "Visee_droite"
+	visee_droite_v199.tracker = "right_hand"
+	visee_droite_v199.pose = "aim"
+	xr_origin.add_child(visee_droite_v199)
 
 	pc_root = Node3D.new()
 	pc_root.name = "Joueur_ecran"
@@ -1007,15 +1017,11 @@ func _hud_tick_v53(delta: float) -> void:
 	info.modulate.a = move_toward(info.modulate.a, target, delta * 1.5)
 
 
-func _make_hand(controller: XRController3D, color: Color) -> void:
-	var mesh := MeshInstance3D.new()
-	mesh.name = "Manette_visible"
-	var box := BoxMesh.new()
-	box.size = Vector3(0.075, 0.10, 0.18)
-	mesh.mesh = box
-	mesh.material_override = _material(color)
-	mesh.position.z = -0.06
-	controller.add_child(mesh)
+func _make_hand(controller: XRController3D, _color: Color) -> void:
+	# V199 : une vraie main (paume, doigts qui suivent la gâchette et la poignée), plus une boîte
+	var main_vr: Node3D = preload("res://scripts/vr_mains_v199.gd").new()
+	main_vr.setup(controller, controller == left_hand)
+	main_vr.name = "Manette_visible"
 
 
 func _init_native_xr() -> void:
@@ -1039,6 +1045,14 @@ func _init_native_xr() -> void:
 	if xr_active:
 		XRServer.primary_interface = native_vr
 		get_viewport().use_xr = true
+		# V199 : la fluidité sans toucher à l'image au centre : la carte graphique calcule moins finement
+		# le bord de l'image (que les lentilles du casque rendent flou de toute façon), le centre reste net
+		get_viewport().vrs_mode = Viewport.VRS_XR
+		if native_vr is OpenXRInterface:
+			(native_vr as OpenXRInterface).vrs_min_radius = 32.0
+			(native_vr as OpenXRInterface).vrs_strength = 0.6
+		print("ILE_MANGA_V199: rendu fovéal (bord de l'image allégé, centre net)")
+		print("ILE_MANGA_V199: préparation de l'image sur un second cœur : ", int(ProjectSettings.get_setting_with_override("rendering/driver/threads/thread_model")) == 2)
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		pc_camera.current = false
 		pc_root.visible = false
@@ -1094,7 +1108,15 @@ func _create_game_menu_v8() -> void:
 			_show_message_v28("Partie sauvegardée (emplacement %d)." % s))
 	game_menu.delete_requested.connect(_delete_slot)
 	game_menu.resume_requested.connect(func(): pass)
+	game_menu.visee = visee_droite_v199
 	game_menu.setup(xr_active, xr_camera, right_hand)
+	# V199 : la vue VR de dehors (le héros vu de dos), au choix
+	if xr_active:
+		vue_v199 = preload("res://scripts/vr_vue_v199.gd").new()
+		vue_v199.setup(self)
+		# V199 : la fluidité en VR (les modèles lourds allégés de loin, voir vr_fluidite_v199.gd)
+		fluidite_v199 = preload("res://scripts/vr_fluidite_v199.gd").new()
+		fluidite_v199.setup(self)
 	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
 	if OS.has_feature("ile_manga_pc"):
 		menu_panorama = Camera3D.new()
@@ -1721,11 +1743,23 @@ func _move_xr(delta: float) -> void:
 		right = right.normalized()
 		# Axe Quest 3 : pousser le stick vers l’avant = direction de la tête.
 		var move: Vector3 = (right * stick.x + forward * stick.y)
-		_move_xr_body_v23(move * minf(stick.length(), 1.0) * WALK_SPEED * delta)
+		_move_xr_body_v23(move * minf(stick.length(), 1.0) * _vitesse_xr_v199(delta) * delta)
 	else:
+		course_v199 = false
+		_clic_course_v199 = left_hand.is_button_pressed("primary_click")
 		_move_xr_body_v23(Vector3.ZERO)
 	var turn: float = right_hand.get_vector2("primary").x
-	if absf(turn) < 0.35:
+	# V199 : on tourne en continu, comme on avance (plus vite quand on pousse plus) ; « par crans »
+	# reste au choix dans Paramètres.
+	var doux: bool = vue_v199 == null or not bool(vue_v199.get("crans"))
+	if doux:
+		if absf(turn) > 0.2:
+			var k: float = clampf((absf(turn) - 0.2) / 0.75, 0.0, 1.0)
+			var pivot_d: Vector3 = xr_camera.global_position
+			xr_origin.rotate_y(-signf(turn) * pow(k, 1.4) * ROTATION_DOUCE * delta)
+			var after_d: Vector3 = xr_camera.global_position
+			xr_origin.global_position += Vector3(pivot_d.x - after_d.x, 0.0, pivot_d.z - after_d.z)
+	elif absf(turn) < 0.35:
 		turn_ready = true
 	elif absf(turn) > TURN_STICK_THRESHOLD and turn_ready:
 		# V23 : rotation autour de la tête, le joueur ne glisse plus de côté.
@@ -1734,6 +1768,31 @@ func _move_xr(delta: float) -> void:
 		var after: Vector3 = xr_camera.global_position
 		xr_origin.global_position += Vector3(pivot.x - after.x, 0.0, pivot.z - after.z)
 		turn_ready = false
+
+
+## V199 : courir en VR : un clic sur le joystick gauche en marchant (un autre clic, ou s'arrêter : on
+## remarche). Comme sur PC, courir coûte de l'endurance ; à bout de souffle, on marche.
+var course_v199: bool = false
+var _clic_course_v199: bool = false
+
+
+func _vitesse_xr_v199(delta: float) -> float:
+	var clic: bool = left_hand.is_button_pressed("primary_click")
+	if clic and not _clic_course_v199:
+		course_v199 = not course_v199
+		_show_message_v28("Vous courez. (Clic du joystick gauche : marcher)" if course_v199 else "Vous marchez.")
+	_clic_course_v199 = clic
+	if not course_v199:
+		return WALK_SPEED
+	var h: Variant = get("hero_v28")
+	if h == null:
+		return 5.0
+	if bool(h.stamina_lock) or float(h.stamina) <= 0.0:
+		course_v199 = false
+		return WALK_SPEED
+	if vr_body != null and vr_body.is_on_floor():
+		h._spend(1.2 * delta * (0.5 if h.talents.has("pas_du_vent") else 1.0))
+	return float(h.RUN_SPEED) * (1.1 if h.talents.has("pas_du_vent") else 1.0)
 
 
 func _move_desktop(delta: float) -> void:
@@ -2603,9 +2662,10 @@ func _on_equip_v28(item_id: String) -> void:
 		holder.position = Vector3(0, -0.01, 0.03)
 		holder.add_child(inventory_v28.make_model(item_id))
 		right_hand.add_child(holder)
-		right_hand.get_node("Manette_visible").visible = false
+		# V199 : la main reste là, fermée sur la poignée de l'arme
+		right_hand.get_node("Manette_visible").set("tient", true)
 	else:
-		right_hand.get_node("Manette_visible").visible = true
+		right_hand.get_node("Manette_visible").set("tient", false)
 	# V63 : la lame trempée ou runique (forge) brille dans la main
 	if progression_v63 != null:
 		progression_v63.on_equip(item_id)
