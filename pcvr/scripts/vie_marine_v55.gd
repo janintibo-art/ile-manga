@@ -33,6 +33,7 @@ var _sting_cool: float = 0.0
 var kills: int = 0                    # requins vaincus (pour les tests et les dialogues)
 var stings: int = 0
 var bites: int = 0
+var ambiante: Node3D                  # V202 : les bancs et les crabes autour du plongeur
 
 
 func build(main_node: Node, mer_node: Node) -> void:
@@ -53,6 +54,10 @@ func build(main_node: Node, mer_node: Node) -> void:
 	_build_whale()
 	_build_sharks()
 	_build_jellies()
+	# V202 : la vie qui accompagne le plongeur, partout où il plonge
+	ambiante = preload("res://scripts/vie_ambiante_v202.gd").new()
+	add_child(ambiante)
+	ambiante.build(main, mer, self)
 	print("ILE_MANGA_V55: vie marine (%d bancs, %d requins, %d méduses) en %d ms" % [schools.size(), sharks.size(), jellies.size(), Time.get_ticks_msec() - t0])
 
 
