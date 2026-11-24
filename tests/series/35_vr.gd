@@ -216,6 +216,9 @@ func _serie() -> void:
 		maison = mi
 	_ok(fl.lourds.size() >= 5 and fl.lourds.has(maison), "les modèles lourds sont trouvés (%d), la maison du village en est" % fl.lourds.size())
 	_ok(is_equal_approx(maison.lod_bias, fl.BIAIS_LOURD) and is_equal_approx(get_viewport().mesh_lod_threshold, fl.SEUIL_FLUIDE), "fluidité optimisée : les versions allégées arrivent plus tôt")
+	var tri_casque: int = fl._triangles(maison.mesh)
+	_ok(fl.casques.size() == 7 and fl.casques.has(maison) and maison.mesh == fl.casques[maison] and tri_casque < 300000, "les sept modèles lourds ont leur version casque (%d), la maison : %d k triangles au lieu de 1923 k" % [fl.casques.size(), tri_casque / 1000])
+	_ok(maison.mesh.surface_get_material(0) == (fl.entiers[maison] as Mesh).surface_get_material(0) and maison.mesh.get_aabb().size.distance_to((fl.entiers[maison] as Mesh).get_aabb().size) < 0.02, "la version casque garde la matière et la taille de l'original")
 	var basse: GeometryInstance3D = fl.basses[0] if not fl.basses.is_empty() else null
 	_ok(basse != null and basse.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "l'herbe rase ne fait plus d'ombre (%d nappes)" % fl.basses.size())
 	var grand := 0
@@ -226,6 +229,6 @@ func _serie() -> void:
 	_ok(grand > 20, "les arbres et les grandes plantes gardent leur ombre (%d nappes)" % grand)
 	fl.fluide = false
 	fl.appliquer()
-	_ok(is_equal_approx(maison.lod_bias, 1.0) and is_equal_approx(get_viewport().mesh_lod_threshold, fl.SEUIL_MAX) and basse.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON, "détail maximum : tout revient comme avant")
+	_ok(is_equal_approx(maison.lod_bias, 1.0) and is_equal_approx(get_viewport().mesh_lod_threshold, fl.SEUIL_MAX) and basse.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON and maison.mesh == fl.entiers[maison], "détail maximum : tout revient comme avant")
 	_ok(fl.libelle() == "Fluidité VR : détail maximum", "le réglage se lit dans les Paramètres (%s)" % fl.libelle())
 	fl.queue_free()

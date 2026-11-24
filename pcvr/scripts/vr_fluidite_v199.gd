@@ -13,6 +13,9 @@ extends Node
 ##   - l'herbe rase et les petites fleurs (moins de 70 cm) ne projettent plus d'ombre : on ne la voyait pas.
 ## Gain mesuré au village : 6 ms pour les trois derniers ; les modèles lourds, eux, y pèsent les trois quarts
 ## des triangles. Rien de cela ne s'applique au jeu sur PC.
+## V203 : de près, ces sept modèles restaient entiers (jusqu'à 2 millions de triangles pour une maison).
+## En fluidité optimisée, le casque reçoit leur version « casque » (res://allege/, fabriquée par
+## tools/alleger_v203.gd) : huit à trente fois moins de triangles, à 2,5 cm près au plus de l'original.
 ## Menu > Paramètres > « Fluidité VR » : optimisée (au départ) ou détail maximum (comme avant).
 
 const REGLAGES := "user://reglages_son.cfg"
@@ -22,7 +25,20 @@ const LOURD := 200000            # triangles : au-delà, un modèle est « lourd
 const BIAIS_LOURD := 0.5         # ses versions allégées arrivent deux fois plus tôt
 const PLANTE_BASSE := 0.7        # m : en dessous, une nappe de plantes ne fait pas d'ombre
 
+# V203 : les versions « casque », rangées par nombre de triangles du modèle d'origine
+const CASQUE := {
+	2094153: "res://allege/Petite_maison_2094153.res",
+	1923054: "res://allege/Maison_1923054.res",
+	614603: "res://allege/Ile_flottante_614603.res",
+	1727404: "res://allege/Mur_de_son_1727404.res",
+	1530130: "res://allege/Feu_1530130.res",
+	1252914: "res://allege/Distributeur_8_6_1252914.res",
+	623612: "res://allege/Table_de_mixage_623612.res",
+}
+
 var main: Node
+var entiers: Dictionary = {}     # modèle lourd -> son maillage d'origine
+var casques: Dictionary = {}     # modèle lourd -> sa version « casque »
 var fluide: bool = true
 var lourds: Array = []           # les modèles lourds trouvés
 var basses: Array = []           # les nappes de petites plantes
@@ -108,6 +124,16 @@ func _regler(n: Variant) -> void:
 		if mi.mesh != null and _triangles(mi.mesh) > LOURD and not lourds.has(mi):
 			lourds.append(mi)
 			mi.lod_bias = BIAIS_LOURD if fluide else 1.0
+			var chemin: String = CASQUE.get(_triangles(mi.mesh), "")
+			if chemin != "" and ResourceLoader.exists(chemin):
+				var leger: ArrayMesh = load(chemin) as ArrayMesh
+				if leger != null and leger.get_surface_count() == mi.mesh.get_surface_count():
+					for s in leger.get_surface_count():
+						leger.surface_set_material(s, mi.mesh.surface_get_material(s))
+					entiers[mi] = mi.mesh
+					casques[mi] = leger
+					if fluide:
+						mi.mesh = leger
 	elif n is MultiMeshInstance3D:
 		var mm: MultiMeshInstance3D = n
 		if mm.multimesh == null or mm.multimesh.mesh == null or mm.multimesh.instance_count < 40:
@@ -129,6 +155,8 @@ func appliquer() -> void:
 	for mi in lourds:
 		if is_instance_valid(mi):
 			(mi as MeshInstance3D).lod_bias = BIAIS_LOURD if fluide else 1.0
+			if casques.has(mi):
+				(mi as MeshInstance3D).mesh = casques[mi] if fluide else entiers[mi]
 	for mm in basses:
 		if is_instance_valid(mm):
 			(mm as GeometryInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if fluide else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
