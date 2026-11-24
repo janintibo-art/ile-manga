@@ -811,6 +811,9 @@ func _pepites() -> void:
 
 ## En vol (Ventaile, l'aéronef, les ailes de l'atelier) : le filet ne s'en mêle pas.
 func _en_vol() -> bool:
+	# V201 : sous un parachute aussi
+	if main.get("parachute_v201") != null and main.parachute_v201.actif():
+		return true
 	for k in ["ciel_v54", "aeronef_v76"]:
 		var n: Variant = main.get(k)
 		if n != null and n is Object and is_instance_valid(n):

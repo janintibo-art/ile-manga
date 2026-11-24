@@ -34,6 +34,7 @@ var xr_restart_button: Button
 var ultranet_pc: bool = false
 var game_menu: Node
 var vue_v199: Node                         # V199 : la vue VR (dans la peau / de dehors)
+var parachute_v201: Node3D                 # V201 : le parachute (le Saut des Nuées)
 var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
 var visee_droite_v199: XRController3D      # V199 : la manette droite, pose « aim » (le rayon du menu)
 var menu_panorama: Camera3D
@@ -219,6 +220,7 @@ func _ready() -> void:
 	_create_v103()
 	_create_v120()
 	_create_v132()
+	_create_v201()
 	await chargement_v131.pas("fin")
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
@@ -1720,7 +1722,10 @@ func _physics_process(delta: float) -> void:
 			jeux_v147.vr_tick(right_hand.get_vector2("primary"), right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
 		else:
 			# V55 : dans l'eau, on nage (voir mer_v55.gd) ; sinon on marche
-			if mer_v55 == null or not mer_v55.vr_swim_tick(delta):
+			# V201 : en chute libre ou sous la voile, le parachute mène
+			if parachute_v201 != null and parachute_v201.vr_tick(delta):
+				pass
+			elif mer_v55 == null or not mer_v55.vr_swim_tick(delta):
 				_move_xr(delta)
 			_vr_actions_v28(delta)
 	else:
@@ -3187,6 +3192,9 @@ func _limit_on_foot_v29(body: CharacterBody3D) -> void:
 	var key: String = str(body.name)
 	if pied_ok_v176(p):
 		last_ok_v29[key] = p
+	elif parachute_v201 != null and (parachute_v201.actif() or parachute_v201.laisse_sauter(p)):
+		# V201 : avec un parachute, on a le droit de sauter du bord d'une île flottante
+		return
 	elif last_ok_v29.has(key):
 		body.position = last_ok_v29[key]
 		body.velocity = Vector3.ZERO
@@ -4550,6 +4558,13 @@ func _create_v132() -> void:
 	faune_v132 = preload("res://scripts/faune_v132.gd").new()
 	add_child(faune_v132)
 	faune_v132.setup(self)
+
+
+## V201 : le parachute et les kiosques du Saut des Nuées, au bord des îles flottantes.
+func _create_v201() -> void:
+	parachute_v201 = preload("res://scripts/parachute_v201.gd").new()
+	parachute_v201.setup(self)
+	parachute_v201.poser_kiosques()
 
 
 func _create_manette_v74() -> void:

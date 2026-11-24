@@ -298,6 +298,10 @@ func _show_view(which: String) -> void:
 		var flu: Variant = get_parent().get("fluidite_v199") if get_parent() != null else null
 		if xr_mode and flu != null:
 			options.append(str(flu.libelle()))
+		# V201 : en VR, un voile sombre sur les bords de la vue pendant la chute libre (au choix)
+		var para: Variant = get_parent().get("parachute_v201") if get_parent() != null else null
+		if xr_mode and para != null:
+			options.append(str(para.libelle_confort()))
 		options.append_array(["Graphismes : PC/VR automatiques", "Retour"])
 	_redraw()
 
@@ -449,6 +453,14 @@ func _activate(index: int) -> void:
 			var keep7: int = index
 			_show_view("settings")
 			selection = keep7
+			_redraw()
+		elif action.begins_with("Confort de chute : "):
+			var para2: Variant = get_parent().get("parachute_v201") if get_parent() != null else null
+			if para2 != null:
+				para2.basculer_confort()
+			var keep5: int = index
+			_show_view("settings")
+			selection = keep5
 			_redraw()
 		elif action.begins_with("Rotation VR : "):
 			var vue3: Variant = get_parent().get("vue_v199") if get_parent() != null else null

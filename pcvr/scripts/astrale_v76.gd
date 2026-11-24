@@ -529,7 +529,10 @@ func _process(delta: float) -> void:
 	# les étoiles filantes
 	_meteors_tick(delta, p)
 	# on ne tombe pas : si par malheur on passe par-dessus bord, un filet de lumière nous rattrape
-	if ile.on_top(p) or on_structure(p):
+	# (V201 : sauf si l'on a sauté en parachute : là, c'est voulu)
+	if main.get("parachute_v201") != null and main.parachute_v201.actif():
+		_last_safe = Vector3.ZERO
+	elif ile.on_top(p) or on_structure(p):
 		_last_safe = p
 	elif p.y < IleScript.Y0 - 25.0 and _last_safe != Vector3.ZERO and p.y > IleScript.Y0 - 300.0:
 		main.place_player_v35(respawn_point()[0], respawn_point()[1])

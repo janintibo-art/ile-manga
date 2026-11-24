@@ -1208,6 +1208,10 @@ func _nuees_tick(p: Vector3) -> void:
 	if nuees.ligne != null and nuees.ligne.inside(p):
 		_last_safe_n = Vector3.ZERO
 		return
+	# V201 : un saut en parachute depuis la Cité : le filet ne s'en mêle pas
+	if main.get("parachute_v201") != null and main.parachute_v201.actif():
+		_last_safe_n = Vector3.ZERO
+		return
 	var on_top: bool = nuees_ile.on_top(p) or (nuees.on_structure(p) and p.y > NueesIle.Y0 - 6.0)
 	if on_top:
 		_last_safe_n = p

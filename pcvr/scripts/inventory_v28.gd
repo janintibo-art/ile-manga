@@ -144,6 +144,8 @@ const ITEMS := {
 		"desc": "Une selle de cuir et de bronze, forgée à Forgefer pour les chevaucheurs d'aigles d'autrefois. Le roi Thorgal te l'a confiée : Ventaile, la dernière des grands aigles, niche au bord du cratère."},
 	"plume_ventaile": {"name": "Plume de Ventaile", "art": "la plume de Ventaile", "kind": "outil", "max": 1,
 		"desc": "Une grande plume dorée. Utilise-la (ou G au PC, bouton X en VR) pour appeler Ventaile : elle arrive et se pose près de toi. Puis E (gâchette) pour monter sur son dos."},
+	"parachute": {"name": "Parachute", "art": "un parachute", "kind": "outil", "max": 1,
+		"desc": "Le sac du Saut des Nuées. Avec lui, saute du bord d'une île flottante : la chute libre, puis la voile s'ouvre toute seule près du sol. Sous la voile, tourne avec le joystick ; en avant tu accélères, en arrière tu freines. Il se replie tout seul : il sert à chaque saut."},
 	"cristal_levant": {"name": "Cristal du Levant", "art": "le Cristal du Levant", "kind": "quete", "max": 1,
 		"desc": "Un cristal doré, tiède comme le soleil du matin, gagné en sonnant le beffroi de la Citadelle. Il s'emboîte dans le Sceau des Vents."},
 	"cristal_couchant": {"name": "Cristal du Couchant", "art": "le Cristal du Couchant", "kind": "quete", "max": 1,
@@ -1677,6 +1679,12 @@ func make_model(id: String) -> Node3D:
 			_part(m, _sphere(0.02), _mat("germe_ygg", Color(0.4, 0.7, 0.25), 0.5), Vector3(0.01, 0.12, 0), Vector3(0, 0, -30), Vector3(1.4, 0.4, 0.8))
 		"plume_ventaile":
 			_part(m, _box_mesh(Vector3(0.06, 0.004, 0.32)), _mat("plume_or", Color(0.55, 0.4, 0.2), 0.6), Vector3(0, 0.004, 0), Vector3(0, 25, 0))
+		"parachute":
+			# V201 : le sac du parachute, couché sur le dos
+			var sac: Node3D = load("res://scripts/parachute_v201.gd")._sac()
+			sac.rotation_degrees = Vector3(-90, 0, 0)
+			sac.position.y = 0.08
+			m.add_child(sac)
 		"selle_aigle":
 			_part(m, _box_mesh(Vector3(0.42, 0.08, 0.5)), _mat("cuir", Color(0.36, 0.24, 0.14), 0.9), Vector3(0, 0.04, 0))
 			_part(m, _sphere(0.06), _mat("cuir_fonce", Color(0.22, 0.13, 0.07), 0.8), Vector3(0, 0.1, -0.2))

@@ -514,6 +514,9 @@ func _process(delta: float) -> void:
 	if riding:
 		return
 	var sky: bool = on_sky(p)
+	# V201 : un saut en parachute n'est pas une chute : personne ne vous rattrape
+	if main.get("parachute_v201") != null and main.parachute_v201.actif():
+		_was_on_sky = false
 	if sky and ile.walkable(p.x, p.z) and p.y > ile.Y0 - 4.0:
 		_was_on_sky = true
 		if not bool(state["visite_ciel"]):

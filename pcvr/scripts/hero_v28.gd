@@ -782,6 +782,16 @@ func physics(delta: float) -> void:
 			_mantle_tick(delta)
 		"ko":
 			_ko_tick(delta)
+		"parachute":
+			# V201 : la chute libre, puis la voile (voir parachute_v201.gd)
+			var pa: Node = main.get("parachute_v201")
+			if pa == null:
+				state = "air"
+			else:
+				pa.pc_tick(self, delta, dir, axis)
+				var an: String = "v28/fall" if str(pa.etat) == "chute" else "v28/idle"
+				if state == "parachute" and current_anim != an:
+					_play(an, 0.3)
 		"nage":
 			# V55 : dans l'eau (voir mer_v55.gd)
 			if main.get("mer_v55") != null and main.mer_v55 != null:
@@ -910,6 +920,12 @@ func _ground_tick(delta: float, dir: Vector3, axis: Vector2) -> void:
 		fall_top = maxf(fall_top, body.position.y)
 		if state == "sol":
 			state = "air"
+		# V201 : on tombe dans le vide avec un parachute : la chute libre commence
+		var pa201: Node = main.get("parachute_v201")
+		if state == "air" and pa201 != null and pa201.peut_sauter(body):
+			state = "parachute"
+			pa201.commencer(body)
+			return
 	elif state == "air":
 		_landed()
 	elif state == "plonge":
