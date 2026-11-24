@@ -14,6 +14,7 @@ var longcous: Array = []                 # {"root", "parts", "a" (angle sur le t
 var becs: Array = []                     # {"root", "parts", "a", "r", "h", "v"}
 var _t: float = 0.0
 var _cri_t: float = 20.0
+var _places: bool = false                # V204 : les bêtes ont été posées sur leur île au moins une fois
 
 
 func setup(main_node: Node, pixel_node: Node) -> void:
@@ -76,8 +77,11 @@ func _process(delta: float) -> void:
 		return
 	var p: Vector3 = main._player_pos_v27()
 	var near: bool = pixel.ile.contains(p.x, p.z) or p.distance_to(IleScript.CENTER) < 420.0
-	if not near:
+	# V204 : les bêtes naissaient au point zéro du monde (à côté du feu de camp de l'île de départ) et
+	# n'étaient posées sur leur île que lorsqu'on s'en approchait : on les y pose dès la première image.
+	if not near and _places:
 		return
+	_places = true
 	var lc: Array = IleScript.LAC
 	for e in longcous:
 		var root: Node3D = e["root"]

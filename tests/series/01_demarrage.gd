@@ -31,3 +31,13 @@ func _serie() -> void:
 	_close_dialogue_v31()
 	await _att(0.2)
 	_ok(not dialogue_v31.opened, "et se ferme")
+	# V204 : les Long-Cous et les Grand-Becs sont sur l'Île Pixelithique, pas à côté du feu de camp
+	var egares204: int = 0
+	var betes204: int = 0
+	for motif204 in ["Long_Cou_*", "Grand_Bec_*"]:
+		for bete204 in find_children(str(motif204), "Node3D", true, false):
+			betes204 += 1
+			var pb204: Vector3 = (bete204 as Node3D).global_position
+			if Vector2(pb204.x, pb204.z).length() < 300.0:
+				egares204 += 1
+	_ok(betes204 == 9 and egares204 == 0, "les bêtes de l'Île Pixelithique sont chez elles dès le départ (%d bêtes, %d égarées près du village)" % [betes204, egares204])
