@@ -24,6 +24,8 @@
 ## "ombrelac" : le nom d'un lieu du château d'Ombrelac : "oeil" et "cible" en décalage de ce lieu ;
 ## "action" : "trip" (on croque un Rieur : l'écran du trip reste sur la photo), "douche" (Rouille arrose la
 ## fosse juste avant la photo).
+## V205 : "fluidite" : "optimisee" ou "maximum" : le réglage « Fluidité VR » (vr_fluidite_v199.gd), essayé au PC
+## pour cette photo et les suivantes ; "fov" : l'angle de la caméra (50 au départ).
 ## V192 : la fluidité. Avant chaque photo, on mesure le jeu pendant "mesure" secondes (2 par défaut, en tête
 ## de liste ; 0 : pas de mesure), sans synchro verticale : le temps de chaque image (médiane et pire 5 %),
 ## le temps de la carte graphique et du processeur pour le rendu, les appels de dessin, les triangles, la
@@ -34,6 +36,9 @@ var _pp_cam: Camera3D
 var _pp_dossier: String = ""
 var _pp_mesure: float = 2.0
 var _pp_csv: String = ""
+
+
+var _pp_fluidite: Node = null
 
 
 func _serie() -> void:
@@ -87,6 +92,16 @@ func _pp_une(p: Dictionary) -> int:
 		temps_v56.set_hour(float(p["heure"]))
 	if p.has("public"):
 		load("res://scripts/public_v111.gd").choisir(str(p["public"]), false)
+	if p.has("fov"):
+		_pp_cam.fov = float(p["fov"])
+	if p.has("fluidite"):
+		# V205 : la fluidité VR ("optimisee" ou "maximum") essayée au PC, pour comparer ce qu'on voit au loin
+		if _pp_fluidite == null:
+			_pp_fluidite = load("res://scripts/vr_fluidite_v199.gd").new()
+			_pp_fluidite.setup(self)
+		_pp_fluidite.fluide = str(p["fluidite"]) == "optimisee"
+		_pp_fluidite.appliquer()
+		await _images(10)
 	if p.has("tour"):
 		return await _pp_tour(p)
 	if p.has("salles"):

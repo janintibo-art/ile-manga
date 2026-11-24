@@ -298,6 +298,10 @@ func _show_view(which: String) -> void:
 		var flu: Variant = get_parent().get("fluidite_v199") if get_parent() != null else null
 		if xr_mode and flu != null:
 			options.append(str(flu.libelle()))
+		# V205 : en VR, jouer debout ou assis
+		var pos205: Variant = get_parent().get("posture_v205") if get_parent() != null else null
+		if xr_mode and pos205 != null:
+			options.append(str(pos205.libelle()))
 		# V201 : en VR, un voile sombre sur les bords de la vue pendant la chute libre (au choix)
 		var para: Variant = get_parent().get("parachute_v201") if get_parent() != null else null
 		if xr_mode and para != null:
@@ -453,6 +457,14 @@ func _activate(index: int) -> void:
 			var keep7: int = index
 			_show_view("settings")
 			selection = keep7
+			_redraw()
+		elif action.begins_with("Posture VR : "):
+			var pos205b: Variant = get_parent().get("posture_v205") if get_parent() != null else null
+			if pos205b != null:
+				pos205b.basculer()
+			var keep205: int = index
+			_show_view("settings")
+			selection = keep205
 			_redraw()
 		elif action.begins_with("Confort de chute : "):
 			var para2: Variant = get_parent().get("parachute_v201") if get_parent() != null else null

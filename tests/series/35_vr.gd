@@ -232,3 +232,22 @@ func _serie() -> void:
 	_ok(is_equal_approx(maison.lod_bias, 1.0) and is_equal_approx(get_viewport().mesh_lod_threshold, fl.SEUIL_MAX) and basse.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON and maison.mesh == fl.entiers[maison], "détail maximum : tout revient comme avant")
 	_ok(fl.libelle() == "Fluidité VR : détail maximum", "le réglage se lit dans les Paramètres (%s)" % fl.libelle())
 	fl.queue_free()
+	# ------------------------------------------------------------------ V205 : debout ou assis
+	var po205: Node = load("res://scripts/vr_posture_v205.gd").new()
+	po205.setup(self)
+	po205.assis = false
+	po205.appliquer()
+	_ok(socle_v205 != null and xr_origin.get_parent() == socle_v205 and is_zero_approx(socle_v205.position.y), "le joueur VR est sur son socle, au sol quand on joue debout")
+	xr_origin.position = Vector3(2, 5, 8)
+	var tete205: float = xr_camera.global_position.y
+	var main205: float = right_hand.global_position.y
+	_ok(is_equal_approx(po205.mesurer(1.2), 0.45) and is_zero_approx(po205.mesurer(1.75)) and is_equal_approx(po205.mesurer(0.5), po205.REHAUSSE_MAX) and is_equal_approx(po205.mesurer(0.0), po205.REHAUSSE_DEFAUT), "la rehausse se mesure au casque : 45 cm pour des yeux à 1,20 m, rien pour quelqu'un debout")
+	po205.assis = true
+	po205.rehausse = po205.mesurer(1.2)
+	po205.appliquer()
+	_ok(is_equal_approx(xr_camera.global_position.y - tete205, 0.45) and is_equal_approx(right_hand.global_position.y - main205, 0.45), "assis : la tête et les mains montent de 45 cm")
+	_ok(is_equal_approx(xr_origin.position.y, 5.0) and po205.libelle().begins_with("Posture VR : assis"), "… et le jeu règle toujours les pieds au même endroit")
+	po205.assis = false
+	po205.appliquer()
+	_ok(is_equal_approx(xr_camera.global_position.y, tete205) and po205.libelle() == "Posture VR : debout", "debout : tout revient comme avant")
+	po205.queue_free()

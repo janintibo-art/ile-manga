@@ -41,3 +41,12 @@ func _serie() -> void:
 			if Vector2(pb204.x, pb204.z).length() < 300.0:
 				egares204 += 1
 	_ok(betes204 == 9 and egares204 == 0, "les bêtes de l'Île Pixelithique sont chez elles dès le départ (%d bêtes, %d égarées près du village)" % [betes204, egares204])
+	# V205 : envoyé ailleurs alors qu'on tient la barre, on quitte le bateau (avant : coincé à bord)
+	_board_boat_v29()
+	await _images(3)
+	var bord205: bool = boat_v29.driving
+	var but205 := Vector3(2.0, _height_at(2.0, 8.0) + 0.2, 8.0)
+	place_player_v35(but205, Vector3.FORWARD)
+	await _images(6)
+	var ou205: Vector3 = _player_pos_v27()
+	_ok(bord205 and not boat_v29.driving and Vector2(ou205.x - but205.x, ou205.z - but205.z).length() < 1.5, "téléporté depuis la barque : on la quitte et on reste à l'arrivée (%.1f, %.1f)" % [ou205.x, ou205.z])

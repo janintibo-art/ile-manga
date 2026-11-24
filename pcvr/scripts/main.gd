@@ -36,6 +36,8 @@ var game_menu: Node
 var vue_v199: Node                         # V199 : la vue VR (dans la peau / de dehors)
 var parachute_v201: Node3D                 # V201 : le parachute (le Saut des Nuées)
 var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
+var posture_v205: Node                     # V205 : jouer debout ou assis en VR
+var socle_v205: Node3D                     # V205 : le socle du joueur VR (monté quand on joue assis)
 var visee_droite_v199: XRController3D      # V199 : la manette droite, pose « aim » (le rayon du menu)
 var menu_panorama: Camera3D
 var panorama_seconds: float = 0.0
@@ -903,7 +905,11 @@ func _create_players() -> void:
 	xr_origin = XROrigin3D.new()
 	xr_origin.name = "Joueur_VR"
 	xr_origin.position = Vector3(2, maxf(0.0, _height_at(2, 8)), 8)
-	add_child(xr_origin)
+	# V205 : le joueur VR est posé sur un socle, qu'on monte quand il joue assis (vr_posture_v205.gd)
+	socle_v205 = Node3D.new()
+	socle_v205.name = "Socle_VR_v205"
+	add_child(socle_v205)
+	socle_v205.add_child(xr_origin)
 	xr_camera = XRCamera3D.new()
 	xr_camera.name = "Tete"
 	xr_origin.add_child(xr_camera)
@@ -1119,6 +1125,9 @@ func _create_game_menu_v8() -> void:
 		# V199 : la fluidité en VR (les modèles lourds allégés de loin, voir vr_fluidite_v199.gd)
 		fluidite_v199 = preload("res://scripts/vr_fluidite_v199.gd").new()
 		fluidite_v199.setup(self)
+		# V205 : jouer debout ou assis (assis, le joueur est rehaussé à hauteur d'adulte debout)
+		posture_v205 = preload("res://scripts/vr_posture_v205.gd").new()
+		posture_v205.setup(self)
 	# Caméra cinématique PC indépendante du joueur. En VR le monde reste stable.
 	if OS.has_feature("ile_manga_pc"):
 		menu_panorama = Camera3D.new()
@@ -1712,7 +1721,13 @@ func _physics_process(delta: float) -> void:
 			vr_buttons_v28["ride_v146"] = trig_ride146
 	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
-			_drive_boat_vr_v29(delta)
+			# V205 : à bord, une question à l'écran (le mode testeur, un habitant) passe avant la barre :
+			# avant, on ne pouvait pas choisir une réponse, et la gâchette faisait débarquer.
+			if dialogue_v31 != null and dialogue_v31.opened:
+				dialogue_v31.vr_tick(right_hand.get_vector2("primary").y, right_hand.get_float("trigger"), right_hand.is_button_pressed("by_button"))
+				boat_v29._vr_trigger_ready = false
+			else:
+				_drive_boat_vr_v29(delta)
 		elif not vr_ladder_v33.is_empty():
 			_vr_ladder_tick_v33(delta)
 		elif dialogue_v31 != null and dialogue_v31.opened:
@@ -3302,6 +3317,12 @@ func _in_dungeon_v35(p: Vector3) -> bool:
 func place_player_v35(at: Vector3, facing: Vector3) -> void:
 	facing.y = 0.0
 	facing = facing.normalized() if facing.length() > 0.01 else Vector3.FORWARD
+	# V205 : envoyé ailleurs (téléportation, mode testeur, réveil) alors qu'on tenait la barre : on quitte
+	# le bateau, qui reste où il est. Avant, il nous ramenait à son siège à chaque image : on restait coincé.
+	if boat_v29 != null and boat_v29.driving:
+		boat_v29.driving = false
+		boat_v29.speed = 0.0
+		boat_v29._spy_off_now()
 	if xr_active:
 		var head: Vector3 = xr_camera.global_position
 		var head_offset := Vector3(head.x - xr_origin.global_position.x, 0.0, head.z - xr_origin.global_position.z)
