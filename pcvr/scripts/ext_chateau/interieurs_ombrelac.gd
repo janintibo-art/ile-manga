@@ -23,6 +23,7 @@ var nuit: float = 0.0
 ## Les lieux de la salle (repère château) : nom → Vector3
 var lieux: Dictionary = {}
 var _t: float = 0.0
+var rayons: ShaderMaterial          # (v13) les rayons de soleil des baies : éteints la nuit
 
 
 ## Une poutre de section s (carrée) de a à b ; « large » : l'axe des x de la section
@@ -55,6 +56,148 @@ func _bougie(k: RefCounted, p: Vector3, hc: float = 0.22) -> void:
 	_flamme(k, p + Vector3(0, hc + 0.005, 0), 0.07, 0.16)
 
 
+## (v11) Une colonne tournée (le pied de lit, la rampe) : le dé carré du bas, le fût et ses bagues,
+## les renflements ; t : le repère au pied de la colonne (y vers le haut), h sa hauteur, r son rayon
+func _colonne_tournee(k: RefCounted, m: String, t: Transform3D, h: float, r: float) -> void:
+	var d: float = minf(0.5, h * 0.25)
+	k.box(m, t, Vector3(r * 2.2, d, r * 2.2))
+	var y: float = d
+	var prof := [[0.0, 0.08, 1.0, 1.25], [0.08, 0.04, 1.25, 0.8], [0.12, 0.3, 0.8, 0.6], [0.42, 0.04, 1.15, 1.15],
+		[0.46, 0.14, 0.7, 1.05], [0.6, 0.14, 1.05, 0.7], [0.74, 0.04, 1.15, 1.15], [0.78, 0.22, 0.6, 0.72]]
+	var reste: float = h - d
+	for e in prof:
+		k.cyl(m, t * Transform3D(Basis.IDENTITY, Vector3(0, y + e[0] * reste, 0)), r * e[2], r * e[3], e[1] * reste, 10, false)
+	k.cyl(m, t * Transform3D(Basis.IDENTITY, Vector3(0, h, 0)), r * 0.72, r * 1.0, 0.03, 10)
+
+
+## (v11) Une tenture plissée, pendue (le haut en a, le long de « le_long », vers le bas sur h) : des plis
+## ronds qui se touchent, chacun un peu plus ou moins profond ; out : le côté que l'on voit
+func _tenture(k: RefCounted, m: String, a: Vector3, le_long: Vector3, w: float, h: float, out: Vector3) -> void:
+	var n: int = maxi(3, int(w / 0.09))
+	var pas: float = w / n
+	for i in range(n):
+		var c: Vector3 = a + le_long * (pas * (i + 0.5)) - Vector3(0, h, 0)
+		var r: float = pas * (0.55 + 0.12 * sin(i * 2.3 + a.x * 3.0))
+		k.cyl(m, Transform3D(Basis.IDENTITY, c - out * r * 0.35), r, r * 0.9, h, 8, false)
+
+
+## (v11) Un rideau noué à une colonne : il tombe en éventail du haut (y1), serré par l'embrasse (yn),
+## s'évase vers le bas (y0) ; c : la colonne du rideau (au sol), le tout en repère monde
+func _rideau_noue(k: RefCounted, m: String, c: Vector3, y0: float, yn: float, y1: float, r_haut: float, r_bas: float) -> void:
+	k.cyl(m, Transform3D(Basis.IDENTITY, c + Vector3(0, yn, 0)), 0.055, r_haut, y1 - yn, 10, false)
+	k.cyl(m, Transform3D(Basis.IDENTITY, c + Vector3(0, y0, 0)), r_bas, 0.055, yn - y0, 10, true)
+	# l'embrasse : un cordon d'or et son gland
+	k.cyl("or", Transform3D(Basis.IDENTITY, c + Vector3(0, yn - 0.03, 0)), 0.065, 0.065, 0.06, 10)
+	k.cyl("or", Transform3D(Basis.IDENTITY, c + Vector3(0.07, yn - 0.2, 0)), 0.012, 0.028, 0.14, 6)
+
+
+## (v11) Un livre ouvert posé (t : le milieu du dessous ; w × d : sa taille ouvert) : la reliure, les
+## deux blocs de pages qui montent vers le dos, les lignes d'écriture, le signet
+func _livre_ouvert(k: RefCounted, t: Transform3D, w: float, d: float, cuir: String = "velours_pourpre") -> void:
+	if w > d:
+		t = t * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3.ZERO)
+		var tmp: float = w
+		w = d
+		d = tmp
+	# le dos le long de x ; les pages vers ±z
+	k.box(cuir, t, Vector3(w + 0.02, 0.008, d + 0.02))
+	for e in [-1.0, 1.0]:
+		var tp: Transform3D = t * Transform3D(Basis(Vector3.RIGHT, e * 0.07), Vector3(0, 0.008, e * d * 0.245))
+		k.box("drap", tp, Vector3(w, 0.016, d * 0.48))
+		for i in range(7):
+			var lx: float = -w * 0.36 + i * w * 0.12
+			var ll: float = d * (0.34 if i < 6 else 0.2)
+			k.box("suie", tp * Transform3D(Basis.IDENTITY, Vector3(lx, 0.016, -e * (d * 0.24 - ll * 0.5 - d * 0.06))), Vector3(0.005, 0.0015, ll))
+	k.box("velours_bleu", t * Transform3D(Basis.IDENTITY, Vector3(w * 0.15, 0.025, 0.0)), Vector3(0.012, 0.002, d * 0.02 + 0.01))
+	k.box("velours_bleu", t * Transform3D(Basis.IDENTITY, Vector3(w * 0.5 + 0.03, -0.03, 0.0)), Vector3(0.012, 0.055, 0.004))
+
+
+## (v11) Un livre fermé, posé à plat (t : le milieu du dessous ; taille : largeur, épaisseur, hauteur) :
+## les plats de la reliure, le dos arrondi, la tranche des pages, les nerfs dorés du dos
+func _livre_ferme(k: RefCounted, t: Transform3D, taille: Vector3, cuir: String) -> void:
+	var w: float = taille.x
+	var h: float = taille.y
+	var d: float = taille.z
+	for y in [0.0, h - 0.006]:
+		k.box(cuir, t * Transform3D(Basis.IDENTITY, Vector3(0, y, 0)), Vector3(w, 0.006, d))
+	k.box("drap", t * Transform3D(Basis.IDENTITY, Vector3(0.004, 0.006, 0)), Vector3(w - 0.016, h - 0.012, d - 0.012))
+	k.box(cuir, t * Transform3D(Basis.IDENTITY, Vector3(-w * 0.5 + 0.004, 0, 0)), Vector3(0.012, h, d))
+	for i in range(3):
+		k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(-w * 0.5 - 0.0025, h * 0.2, -d * 0.3 + i * d * 0.3)), Vector3(0.003, h * 0.6, 0.008))
+
+
+## (v12) Un banc à dossier contre un mur (t : le milieu du pied, au sol ; x le long, z+ vers la salle) :
+## l'assise, son coussin de velours, les pieds tournés, le dossier à panneaux, les accoudoirs
+func _banc(k: RefCounted, t: Transform3D, lg: float, velours: String = "velours_bleu") -> void:
+	var n: int = maxi(2, int(lg / 1.1) + 1)
+	for i in range(n):
+		var x: float = -lg * 0.5 + 0.08 + (lg - 0.16) * i / (n - 1)
+		_colonne_tournee(k, "chene", t * Transform3D(Basis.IDENTITY, Vector3(x, 0, 0.17)), 0.4, 0.035)
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(x, 0, -0.18)), Vector3(0.07, 0.4, 0.07))
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(x, 0.1, 0)), Vector3(0.04, 0.04, 0.36))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.4, 0)), Vector3(lg, 0.05, 0.46), true)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.34, 0.215)), Vector3(lg - 0.1, 0.06, 0.02))
+	k.box(velours, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.45, 0.02)), Vector3(lg - 0.12, 0.05, 0.4))
+	k.cyl(velours, t * Transform3D(Basis(Vector3.BACK, -PI * 0.5), Vector3(-lg * 0.5 + 0.06, 0.475, 0.22)), 0.025, 0.025, lg - 0.12, 8, false)
+	# le dossier : le cadre, les panneaux en relief, la corniche
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.45, -0.21)), Vector3(lg, 0.75, 0.05))
+	var np: int = maxi(1, int(lg / 0.6))
+	for j in range(np):
+		var px: float = -lg * 0.5 + (j + 0.5) * lg / np
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(px, 0.55, -0.18)), Vector3(lg / np - 0.12, 0.5, 0.015))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.2, -0.2)), Vector3(lg + 0.06, 0.05, 0.1))
+	for e in [-1.0, 1.0]:
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(e * (lg * 0.5 - 0.03), 0.45, 0.0)), Vector3(0.05, 0.25, 0.44))
+		k.cyl("chene", t * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(e * (lg * 0.5 - 0.03), 0.7, -0.22)), 0.04, 0.04, 0.46, 8)
+
+
+## (v12) Un coffre ferré (t : le milieu du dessous ; z+ : sa face) : le corps, le couvercle, les
+## bandes et les coins de fer, la serrure, les poignées, les petits pieds
+func _coffre_ferre(k: RefCounted, t: Transform3D, w: float, h: float, d: float, collide: bool = true) -> void:
+	for ex in [-1.0, 1.0]:
+		for ez in [-1.0, 1.0]:
+			k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(ex * (w * 0.5 - 0.05), 0, ez * (d * 0.5 - 0.05))), Vector3(0.08, 0.05, 0.08))
+	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.05, 0)), Vector3(w, h - 0.15, d), collide)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, h - 0.1, 0)), Vector3(w + 0.04, 0.1, d + 0.04))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, h - 0.13, 0)), Vector3(w + 0.02, 0.03, d + 0.02))
+	var nb: int = maxi(2, int(w / 0.45) + 1)
+	for i in range(nb):
+		var x: float = -w * 0.5 + 0.08 + (w - 0.16) * i / (nb - 1)
+		k.box("fer", t * Transform3D(Basis.IDENTITY, Vector3(x, 0.045, 0)), Vector3(0.05, h - 0.04, d + 0.03))
+	for ex2 in [-1.0, 1.0]:
+		for ez2 in [-1.0, 1.0]:
+			k.box("fer", t * Transform3D(Basis.IDENTITY, Vector3(ex2 * (w * 0.5 - 0.02), 0.045, ez2 * (d * 0.5 - 0.02))), Vector3(0.07, h - 0.04, 0.07))
+		k.box("fer", t * Transform3D(Basis.IDENTITY, Vector3(ex2 * (w * 0.5 + 0.015), h * 0.6, 0)), Vector3(0.02, 0.03, 0.2))
+		for ez3 in [-0.08, 0.08]:
+			k.box("fer", t * Transform3D(Basis.IDENTITY, Vector3(ex2 * (w * 0.5 + 0.015), h * 0.6 - 0.06, ez3)), Vector3(0.02, 0.07, 0.02))
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, h * 0.62, d * 0.5 + 0.01)), Vector3(0.13, 0.16, 0.015))
+	k.box("suie", t * Transform3D(Basis.IDENTITY, Vector3(0, h * 0.66, d * 0.5 + 0.018)), Vector3(0.02, 0.05, 0.004))
+
+
+## (v12) Un tabouret (t : au sol) : trois pieds tournés écartés, l'entretoise, l'assise ronde
+func _tabouret(k: RefCounted, t: Transform3D, h: float = 0.5) -> void:
+	for i in range(3):
+		var a: float = TAU * i / 3.0 + 0.5
+		_poutre(k, "chene", t * Vector3(cos(a) * 0.19, 0, sin(a) * 0.19), t * Vector3(cos(a) * 0.12, h - 0.03, sin(a) * 0.12), 0.04)
+		_poutre(k, "chene", t * Vector3(cos(a) * 0.16, h * 0.3, sin(a) * 0.16), t * Vector3(cos(a + TAU / 3.0) * 0.16, h * 0.3, sin(a + TAU / 3.0) * 0.16), 0.022)
+	k.cyl("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, h - 0.04, 0)), 0.19, 0.2, 0.045, 16, true, true)
+
+
+## (v11) Un encrier et sa plume d'oie (p : le dessous de l'encrier, en repère monde)
+func _encrier(k: RefCounted, p: Vector3) -> void:
+	k.cyl("verre", Transform3D(Basis.IDENTITY, p), 0.038, 0.034, 0.05, 10)
+	k.cyl("suie", Transform3D(Basis.IDENTITY, p + Vector3(0, 0.004, 0)), 0.03, 0.028, 0.04, 10)
+	k.cyl("or", Transform3D(Basis.IDENTITY, p + Vector3(0, 0.05, 0)), 0.026, 0.018, 0.012, 10)
+	var dir := Vector3(0.25, 1.0, 0.35).normalized()
+	var a: Vector3 = p + Vector3(0, 0.02, 0)
+	_poutre(k, "drap", a, a + dir * 0.32, 0.005)
+	var cote: Vector3 = dir.cross(Vector3.UP).normalized()
+	for e in [-1.0, 1.0]:
+		var b0: Vector3 = a + dir * 0.1
+		var b1: Vector3 = a + dir * 0.33
+		k.quad("drap", Transform3D.IDENTITY, b0, b1, b1 + cote * e * 0.012, b0 + dir * 0.06 + cote * e * 0.03, Vector3.UP)
+
+
 func _lumiere(p: Vector3, portee: float, jour: float, nuit_e: float) -> OmniLight3D:
 	var l := OmniLight3D.new()
 	l.position = p
@@ -83,6 +226,7 @@ func grande_salle(c: Vector3, L: float, W: float, H: float, T: float, voute: flo
 	_cheminee(k, c, hl, hw)
 	_lustres(k, c, H, voute, hw)
 	_bannieres(k, c, L, hl, hw, bx)
+	_rayons(c, hw, bx)
 	# le tapis de l'allée : de la porte jusqu'au mur nord
 	k.quad("tapis", Transform3D.IDENTITY, Vector3(-1.3, 0.012, c.z + hw - 0.3), Vector3(1.3, 0.012, c.z + hw - 0.3),
 		Vector3(1.3, 0.012, c.z - hw + 0.6), Vector3(-1.3, 0.012, c.z - hw + 0.6), Vector3.UP,
@@ -109,6 +253,51 @@ func grande_salle(c: Vector3, L: float, W: float, H: float, T: float, voute: flo
 	lieux["salle"] = c
 	lieux["table_honneur"] = Vector3(-hl + 3.2, 0.6, c.z)
 	lieux["cheminee"] = Vector3(hl - 3.0, 0.0, c.z)
+
+
+## (v13) Les rayons de soleil : depuis les baies du côté sud (le soleil de midi), un volume oblique
+## de lumière poudreuse qui descend vers l'allée. Ajouté à l'image, sans ombre, éteint la nuit.
+func _rayons(c: Vector3, hw: float, bx: Array) -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var d: Vector3 = Vector3(0.12, -0.72, -0.68).normalized()
+	var lg: float = 15.0
+	for x in bx:
+		if absf(x) < 6.0:
+			continue
+		var z: float = c.z + hw - 0.2
+		# la baie : 2,2 m de large, de 6,6 à 16 m de haut (le rayon part du haut de l'embrasure)
+		var a := [Vector3(x - 1.1, 6.6, z), Vector3(x + 1.1, 6.6, z), Vector3(x + 1.1, 16.0, z), Vector3(x - 1.1, 16.0, z)]
+		# les quatre faces du volume (UV.x le long du rayon, UV.y en travers)
+		for f in range(4):
+			var p0: Vector3 = a[f]
+			var p1: Vector3 = a[(f + 1) % 4]
+			var q0: Vector3 = p0 + d * lg
+			var q1: Vector3 = p1 + d * lg
+			var nrm: Vector3 = (p1 - p0).cross(d).normalized()
+			for v in [[p0, Vector2(0, 0)], [p1, Vector2(0, 1)], [q1, Vector2(1, 1)], [p0, Vector2(0, 0)], [q1, Vector2(1, 1)], [q0, Vector2(1, 0)]]:
+				st.set_normal(nrm)
+				st.set_uv(v[1])
+				st.add_vertex(v[0])
+		# une nappe au milieu, pour que le rayon se voie aussi de face
+		var m0: Vector3 = (a[0] + a[3]) * 0.5
+		var m1: Vector3 = (a[1] + a[2]) * 0.5
+		var mid: Array = [[a[0].lerp(a[1], 0.5), Vector2(0, 0)], [a[3].lerp(a[2], 0.5), Vector2(0, 1)], [a[3].lerp(a[2], 0.5) + d * lg, Vector2(1, 1)],
+			[a[0].lerp(a[1], 0.5), Vector2(0, 0)], [a[3].lerp(a[2], 0.5) + d * lg, Vector2(1, 1)], [a[0].lerp(a[1], 0.5) + d * lg, Vector2(1, 0)]]
+		for v2 in mid:
+			st.set_normal((m1 - m0).normalized())
+			st.set_uv(v2[1])
+			st.add_vertex(v2[0])
+	rayons = ShaderMaterial.new()
+	rayons.shader = load("res://shaders/ext_chateau/ombrelac_rayon.gdshader")
+	var mesh: ArrayMesh = st.commit()
+	mesh.surface_set_material(0, rayons)
+	var mi := MeshInstance3D.new()
+	mi.name = "Ombrelac_salle_rayons"
+	mi.mesh = mesh
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.visibility_range_end = 120.0
+	add_child(mi)
 
 
 ## La charpente : à chaque travée une ferme à blochets (les poteaux sur leurs corbeaux, les
@@ -193,6 +382,13 @@ func _table(k: RefCounted, p: Vector3, lg: float, lar: float, travers: bool = fa
 		k.box("bois", Transform3D(b, q), Vector3(0.12, 0.7, lar * 0.7))
 		k.box("bois", Transform3D(b, q), Vector3(0.18, 0.1, lar * 0.85))
 	k.box("bois", Transform3D(b, p + Vector3(0, 0.22, 0)), Vector3(lg - 1.0, 0.1, 0.1))
+	# (v11) la ceinture sous le plateau, le chemin de table de velours (il retombe aux deux bouts)
+	for s2 in [-1.0, 1.0]:
+		k.box("bois", Transform3D(b, p + sx * s2 * (lar * 0.5 - 0.06) + Vector3(0, 0.6, 0)), Vector3(lg - 0.3, 0.1, 0.04))
+	var chemin: String = "velours_pourpre" if travers else "velours_bleu"
+	k.box(chemin, Transform3D(b, p + Vector3(0, 0.79, 0)), Vector3(lg + 0.02, 0.006, 0.46))
+	for e2 in [-1.0, 1.0]:
+		k.box(chemin, Transform3D(b, p + ax * e2 * (lg * 0.5 + 0.004) + Vector3(0, 0.5, 0)), Vector3(0.008, 0.296, 0.46))
 	# les couverts : une assiette et un gobelet tous les 0,8 m, des deux côtés
 	var m: int = int(lg / 0.8)
 	for i in range(m):
@@ -201,17 +397,70 @@ func _table(k: RefCounted, p: Vector3, lg: float, lar: float, travers: bool = fa
 			if travers and s > 0:
 				continue
 			var a: Vector3 = p + ax * u + sx * s * (lar * 0.5 - 0.25) + Vector3(0, 0.79, 0)
-			k.cyl("or", Transform3D(Basis.IDENTITY, a), 0.13, 0.14, 0.018, 12)
-			k.cyl("or", Transform3D(Basis.IDENTITY, a + ax * 0.24 + sx * s * 0.08), 0.03, 0.045, 0.16, 8)
+			# (v11) l'assiette creuse et son marli, le gobelet sur son pied, le couteau
+			k.cyl("or", Transform3D(Basis.IDENTITY, a), 0.08, 0.13, 0.012, 16)
+			k.cyl("or", Transform3D(Basis.IDENTITY, a + Vector3(0, 0.012, 0)), 0.13, 0.145, 0.01, 16, false)
+			var g: Vector3 = a + ax * 0.24 + sx * s * 0.08
+			k.cyl("or", Transform3D(Basis.IDENTITY, g), 0.035, 0.03, 0.008, 10)
+			k.cyl("or", Transform3D(Basis.IDENTITY, g + Vector3(0, 0.008, 0)), 0.008, 0.008, 0.06, 6, false)
+			k.cyl("or", Transform3D(Basis.IDENTITY, g + Vector3(0, 0.068, 0)), 0.012, 0.042, 0.03, 10, false)
+			k.cyl("or", Transform3D(Basis.IDENTITY, g + Vector3(0, 0.098, 0)), 0.042, 0.046, 0.07, 10, false)
+			k.box("fer", Transform3D(b, a - ax * 0.2 + Vector3(0, 0.004, 0)), Vector3(0.02, 0.006, 0.2))
+			# un petit pain sur une assiette sur trois
+			if (i + int(s > 0.0)) % 3 == 0:
+				k.cyl("pain", Transform3D(Basis.IDENTITY, a + Vector3(0.02, 0.014, 0.02)), 0.045, 0.03, 0.04, 10)
 	# les chandeliers à trois branches
 	var nc: int = int(lg / 3.4)
 	for i in range(nc):
 		var cp: Vector3 = p + ax * (-lg * 0.5 + (i + 0.5) * lg / nc) + Vector3(0, 0.79, 0)
-		k.cyl("or", Transform3D(Basis.IDENTITY, cp), 0.1, 0.03, 0.32, 8)
+		# (v11) le pied mouluré du chandelier, et une coupe de fruits entre deux chandeliers
+		k.cyl("or", Transform3D(Basis.IDENTITY, cp), 0.11, 0.1, 0.02, 12)
+		k.cyl("or", Transform3D(Basis.IDENTITY, cp + Vector3(0, 0.02, 0)), 0.09, 0.03, 0.08, 12, false)
+		k.cyl("or", Transform3D(Basis.IDENTITY, cp + Vector3(0, 0.1, 0)), 0.03, 0.03, 0.22, 8, false)
+		k.cyl("or", Transform3D(Basis.IDENTITY, cp + Vector3(0, 0.16, 0)), 0.045, 0.045, 0.025, 10)
+		if i < nc - 1 or nc == 1:
+			var fp: Vector3 = cp + ax * (lg / nc * 0.5) if i < nc - 1 else cp + ax * 0.9
+			_coupe_fruits(k, fp)
 		for j in [-1.0, 0.0, 1.0]:
 			var bp: Vector3 = cp + ax * j * 0.16 + Vector3(0, 0.32 + (0.06 if j == 0.0 else 0.0), 0)
 			k.cyl("or", Transform3D(Basis.IDENTITY, bp - Vector3(0, 0.03, 0)), 0.045, 0.05, 0.03, 8)
 			_bougie(k, bp, 0.2)
+
+
+## (v11) Une coupe de fruits dorée : le pied, la vasque, des pommes rouges et vertes, des poires
+func _coupe_fruits(k: RefCounted, p: Vector3) -> void:
+	k.cyl("or", Transform3D(Basis.IDENTITY, p), 0.07, 0.05, 0.015, 12)
+	k.cyl("or", Transform3D(Basis.IDENTITY, p + Vector3(0, 0.015, 0)), 0.02, 0.02, 0.07, 8, false)
+	k.cyl("or", Transform3D(Basis.IDENTITY, p + Vector3(0, 0.085, 0)), 0.05, 0.17, 0.06, 16)
+	var h: float = absf(sin(p.x * 3.7 + p.z * 1.3))
+	for j in range(7):
+		var a: float = TAU * j / 6.0 + h * 2.0
+		var r: float = 0.09 if j < 6 else 0.0
+		var y: float = 0.165 if j < 6 else 0.215
+		var fr: String = ["pomme_rouge", "pomme_verte", "poire"][(j + int(h * 5.0)) % 3]
+		_fruit(k, fr, p + Vector3(cos(a) * r, y, sin(a) * r), 0.042)
+
+
+func _fruit(k: RefCounted, m: String, c: Vector3, r: float) -> void:
+	var nl: int = 5
+	var nm: int = 8
+	var allonge: float = 1.25 if m == "poire" else 0.92
+	for i in range(nl):
+		var t0: float = PI * i / nl - PI * 0.5
+		var t1: float = PI * (i + 1) / nl - PI * 0.5
+		for j in range(nm):
+			var p0: float = TAU * j / nm
+			var p1: float = TAU * (j + 1) / nm
+			var d := [Vector3(cos(t0) * cos(p0), sin(t0), cos(t0) * sin(p0)), Vector3(cos(t0) * cos(p1), sin(t0), cos(t0) * sin(p1)),
+				Vector3(cos(t1) * cos(p1), sin(t1), cos(t1) * sin(p1)), Vector3(cos(t1) * cos(p0), sin(t1), cos(t1) * sin(p0))]
+			var e := [d[0], d[1], d[2], d[3]]
+			for q in range(4):
+				var v: Vector3 = d[q]
+				# la poire s'affine vers le haut
+				var w: float = (1.0 - 0.35 * maxf(v.y, 0.0)) if m == "poire" else 1.0
+				e[q] = Vector3(v.x * w, v.y * allonge, v.z * w) * r
+			k.quad_smooth(m, Transform3D(Basis.IDENTITY, c), e[0], e[1], e[2], e[3], d[0], d[1], d[2], d[3])
+	k.cyl("bois", Transform3D(Basis.IDENTITY, c + Vector3(0, r * allonge * 0.9, 0)), 0.004, 0.003, 0.025, 4, false)
 
 
 ## Trois longues tables (de part et d'autre de l'allée), leurs bancs
@@ -282,6 +531,7 @@ func _cheminee(k: RefCounted, c: Vector3, hl: float, hw: float) -> void:
 		var fh: float = 1.25 - absf(j - 3) * 0.17
 		_flamme(k, Vector3(xm - 0.7 - 0.08 * (j % 2), 0.32, fz), 0.75, fh)
 	feu = _lumiere(Vector3(xm - 1.4, 1.2, c.z), 16.0, 1.6, 2.6)
+	_ombres(feu)
 
 
 ## Quatre lustres de fer : une grande couronne à seize bougies, une petite au-dessus, les chaînes
@@ -341,8 +591,19 @@ func _banniere(k: RefCounted, m: String, p: Vector3, w: float, h: float, n: Vect
 # =================================================================== la vie
 
 ## 0 le jour, 1 la nuit : les bougies éclairent plus fort, le dedans s'assombrit
+## (v13) Le feu porte des ombres douces (les pieds des tables, les fauteuils, les chenets sur le sol)
+func _ombres(l: OmniLight3D) -> void:
+	l.shadow_enabled = true
+	l.light_size = 0.25
+	l.shadow_blur = 1.6
+	l.shadow_bias = 0.06
+	l.shadow_normal_bias = 1.5
+
+
 func set_nuit(n: float) -> void:
 	nuit = n
+	if rayons != null:
+		rayons.set_shader_parameter("force", 0.1 * clampf(1.0 - n * 1.6, 0.0, 1.0))
 	for e in lumieres:
 		(e[0] as OmniLight3D).light_energy = lerpf(float(e[1]), float(e[2]), n)
 	if sonde != null:

@@ -55,9 +55,13 @@ func construire_horloge(p: Vector3, hs: float, T: float, h: float, cy: float, rc
 	_dallage(k, hi, 0.0, Vector3(1e6, 0, 1e6), 0.0, func(x: float, z: float) -> bool: return absf(x) < hi + 0.3 and absf(z) < hi + 0.3)
 	_rose_des_vents(k, Vector3(0.0, 0.0, PIVOT.z), 1.9)
 	_etabli(k, Vector3(hi - 0.45, 0.0, -1.6), -PI * 0.5)
-	k.box("chene", _tr(-1.8, 0.0, -hi + 0.35), Vector3(2.4, 0.45, 0.5), true)
-	k.box("chene", _tr(1.6, 0.0, -hi + 0.4), Vector3(1.4, 0.9, 0.7), true)       # le coffre aux pièces de rechange
-	k.box("fer", _tr(1.6, 0.9, -hi + 0.4), Vector3(1.44, 0.04, 0.74))
+	_banc(k, _tr(-1.8, 0.0, -hi + 0.3), 2.4)
+	_coffre_ferre(k, _tr(1.6, 0.0, -hi + 0.4), 1.4, 0.9, 0.7)                        # le coffre aux pièces de rechange
+	# (v12) sur le coffre : une roue de rechange, une burette d'huile
+	_anneau(k, _p(1.3, 0.92, -hi + 0.4), Vector3.UP, 0.18, 0.025)
+	k.cyl("or", _tr(1.3, 0.9, -hi + 0.4), 0.035, 0.035, 0.03, 8)
+	k.cyl("cuivre_neuf", _tr(1.95, 0.9, -hi + 0.45), 0.06, 0.05, 0.09, 10)
+	_poutre(k, "cuivre_neuf", _p(1.95, 0.99, -hi + 0.45), _p(2.1, 1.07, -hi + 0.55), 0.012)
 	_banniere(k, "banniere_bleu", _p(0.0, 4.6, -hi + 0.06), 1.4, 3.6, Vector3(0, 0, 1))
 	_escalier(k, hi)
 	_poids(k)
@@ -66,8 +70,19 @@ func construire_horloge(p: Vector3, hs: float, T: float, h: float, cy: float, rc
 	_bati(k)
 	_plafond_cloche(k, hi, h)
 	_etabli(k, Vector3(hi - 0.45, ROUAGES_Y, 1.8), -PI * 0.5)
-	k.box("chene", _tr(-1.6, ROUAGES_Y, hi - 0.4), Vector3(1.6, 1.1, 0.6), true)    # le pupitre du gardien
-	k.box("livres", _tr(-1.6, ROUAGES_Y + 1.1, hi - 0.45), Vector3(0.5, 0.06, 0.36))
+	# le pupitre du gardien (v12 : sur pieds, le plateau incliné, le registre ouvert, l'encrier, le tabouret)
+	var tg: Transform3D = _tr(-1.6, ROUAGES_Y, hi - 0.4)
+	for ex in [-0.7, 0.7]:
+		for ez in [-0.22, 0.22]:
+			_colonne_tournee(k, "chene", tg * Transform3D(Basis.IDENTITY, Vector3(ex, 0, ez)), 0.95, 0.04)
+	k.box("chene", tg * Transform3D(Basis.IDENTITY, Vector3(0, 0.25, 0)), Vector3(1.4, 0.05, 0.05), true)
+	k.box("chene", tg * Transform3D(Basis.IDENTITY, Vector3(0, 0.82, 0)), Vector3(1.5, 0.13, 0.55), true)
+	var dessus: Transform3D = tg * Transform3D(Basis(Vector3.RIGHT, -0.2), Vector3(0, 0.98, 0))
+	k.box("chene", dessus, Vector3(1.6, 0.04, 0.62))
+	k.box("chene", dessus * Transform3D(Basis.IDENTITY, Vector3(0, 0.04, -0.3)), Vector3(1.6, 0.03, 0.03))
+	_livre_ouvert(k, dessus * Transform3D(Basis.IDENTITY, Vector3(-0.15, 0.04, 0.02)), 0.5, 0.36, "velours_pourpre")
+	_encrier(k, tg * Vector3(0.55, 1.0, 0.02))
+	_tabouret(k, _tr(-1.6, ROUAGES_Y, hi - 1.15), 0.62)
 	# --- les lanternes et les lumières
 	var lp: Array = [Vector3(-2.6, 3.2, -hi + 0.35), Vector3(2.6, 3.2, -hi + 0.35), Vector3(hi - 0.35, 10.0, -hi + 0.35),
 		Vector3(-hi + 0.35, 17.0, hi - 0.35), Vector3(hi - 0.35, 24.0, hi - 0.35), Vector3(-hi + 0.35, ROUAGES_Y + 3.4, -hi + 0.35), Vector3(hi - 0.35, ROUAGES_Y + 3.4, hi - 0.35)]
@@ -147,7 +162,28 @@ func _etabli(k: RefCounted, c: Vector3, yaw: float) -> void:
 		_anneau(k, gc + Vector3(0, 0.01, 0), Vector3.UP, float(g[1]), 0.03)
 		k.cyl("or", Transform3D(Basis.IDENTITY, gc), 0.04, 0.04, 0.03, 8)
 	_lampe(k, t * Vector3(0.95, 0.86, -0.2))
-	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0, 0.75)), Vector3(0.4, 0.5, 0.4))
+	# (v12) le tabouret ; les outils : le marteau, la lime, les brucelles, le tournevis ; la loupe ;
+	# le râtelier d'outils contre le mur, ses outils pendus
+	_tabouret(k, t * Transform3D(Basis.IDENTITY, Vector3(0, 0, 0.8)), 0.6)
+	var o: Transform3D = t * Transform3D(Basis.IDENTITY, Vector3(0, 0.86, 0))
+	_poutre(k, "chene", o * Vector3(0.2, 0.015, 0.3), o * Vector3(0.4, 0.015, 0.24), 0.022)
+	k.box("fer", o * Transform3D(Basis(Vector3.UP, 0.3), Vector3(0.42, 0.0, 0.23)), Vector3(0.09, 0.03, 0.03))
+	_poutre(k, "fer", o * Vector3(-0.1, 0.006, 0.3), o * Vector3(0.1, 0.006, 0.28), 0.01)
+	_poutre(k, "chene", o * Vector3(-0.18, 0.01, 0.3), o * Vector3(-0.1, 0.01, 0.3), 0.02)
+	_poutre(k, "or", o * Vector3(0.65, 0.004, 0.3), o * Vector3(0.78, 0.004, 0.26), 0.006)
+	_poutre(k, "or", o * Vector3(0.65, 0.004, 0.3), o * Vector3(0.78, 0.004, 0.28), 0.006)
+	var lo: Vector3 = o * Vector3(-0.45, 0.02, -0.15)
+	_anneau(k, lo + Vector3(0, 0.12, 0), t.basis.z, 0.05, 0.01)
+	_poutre(k, "or", lo, lo + Vector3(0, 0.07, 0), 0.01)
+	k.cyl("or", Transform3D(Basis.IDENTITY, lo - Vector3(0, 0.02, 0)), 0.04, 0.035, 0.02, 10)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.1, -0.38)), Vector3(1.8, 0.5, 0.03))
+	for ti in range(7):
+		var tx: float = -0.75 + ti * 0.25
+		var tp: Vector3 = t * Vector3(tx, 1.52, -0.35)
+		k.box("fer", Transform3D(t.basis, tp), Vector3(0.012, 0.012, 0.03))
+		var lgo: float = 0.18 + 0.05 * float(ti % 3)
+		_poutre(k, "fer" if ti % 2 == 0 else "or", tp - t.basis.y * 0.01, tp - t.basis.y * lgo, 0.012)
+		_poutre(k, "chene", tp - t.basis.y * lgo, tp - t.basis.y * (lgo + 0.09), 0.022)
 
 
 ## Les poids de fonte au bout de leurs chaînes, qui pendent du plancher des rouages

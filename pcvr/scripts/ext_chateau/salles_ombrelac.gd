@@ -113,6 +113,10 @@ func _astres(k: RefCounted, x0: float, x1: float, hw: float, rz: float, porte: f
 	var xt: float = x0 + 0.05
 	_panneau(k, "tableau", Vector3(xt, 1.0, 2.7), Vector3(xt, 1.0, -2.7), 2.3, Vector3(1, 0, 0))
 	k.box("bois", _tr(xt + 0.08, 0.92, 0.0), Vector3(0.16, 0.06, 5.2))
+	# (v11) sur la tablette : les craies, l'éponge
+	for ci in range(5):
+		k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(xt + 0.06 + 0.02 * (ci % 2), 0.99, -1.6 + ci * 0.37)), 0.008, 0.008, 0.07 - 0.008 * ci, 6)
+	k.box("pain", _tr(xt + 0.09, 0.98, 1.2, 0.1), Vector3(0.09, 0.04, 0.15))
 	# la table du maître, sa chaise, ses instruments
 	_table_l(k, x0 + 2.4, 0.0, 1.0, 2.2)
 	_chaise(k, x0 + 1.5, 0.0, -PI * 0.5)
@@ -120,19 +124,37 @@ func _astres(k: RefCounted, x0: float, x1: float, hw: float, rz: float, porte: f
 	_anneau(k, _p(x0 + 2.3, 1.02, -0.6), Vector3.UP, 0.2, 0.015)
 	_anneau(k, _p(x0 + 2.3, 1.02, -0.6), xf.basis * Vector3(1, 0, 0), 0.2, 0.015)
 	_sphere(k, "lambris", _p(x0 + 2.3, 1.02, -0.6), 0.09)
-	_lampe(k, _p(x0 + 2.4, 0.77, 0.7))
+	_lampe(k, _p(x0 + 2.4, 0.8, 0.7))
 	# les pupitres des élèves : quatre rangs, deux colonnes, leurs bancs (face au tableau)
 	for xr in [x0 + 4.8, x0 + 7.0, x0 + 9.2, x0 + 11.4]:
 		for zc in [-2.3, 1.3]:
 			var lg: float = 2.6
-			k.box("bois", _tr(xr, 0.0, zc), Vector3(0.06, 0.72, lg))
+			# (v11) le pupitre : le panneau de devant (ajouré en bas), la tablette à livres, le rebord du
+			# plumier, les livres rangés dessous
+			k.box("bois", _tr(xr, 0.28, zc), Vector3(0.05, 0.44, lg))
+			k.box("chene", _tr(xr, 0.08, zc), Vector3(0.05, 0.06, lg))
+			k.box("bois", _tr(xr - 0.3, 0.5, zc), Vector3(0.56, 0.025, lg - 0.06))
+			k.box("chene", _tr(xr - 0.05, 0.8, zc), Vector3(0.12, 0.03, lg - 0.04))
+			var cuirs := ["velours_pourpre", "velours_bleu", "velours_vert"]
+			for pi in range(3):
+				var zl: float = zc - lg * 0.5 + 0.4 + pi * 0.9
+				var yl: float = 0.525
+				var nb: int = 1 + int(absf(xr * 1.7 + zl * 2.3)) % 3
+				for bi in range(nb):
+					var ep: float = 0.03 + 0.012 * float((bi + pi) % 3)
+					_livre_ferme(k, _tr(xr - 0.3, yl, zl, PI * 0.5 + (bi - 1) * 0.15), Vector3(0.2, ep, 0.28), cuirs[(bi + pi + int(zc)) % 3])
+					yl += ep
 			k.box("bois", _tr(xr - 0.3, 0.72, zc) * Transform3D(Basis(Vector3(0, 0, 1), 0.12), Vector3.ZERO), Vector3(0.62, 0.05, lg + 0.06), true)
 			for e in [-1.0, 1.0]:
 				k.box("bois", _tr(xr - 0.3, 0.0, zc + e * (lg * 0.5 - 0.03)), Vector3(0.58, 0.74, 0.05))
-			k.box("bois", _tr(xr + 0.45, 0.0, zc), Vector3(0.34, 0.44, lg))
+			# (v11) le banc : la planche, ses trois pieds, l'entretoise
+			k.box("chene", _tr(xr + 0.45, 0.4, zc), Vector3(0.34, 0.045, lg))
+			for zb in [zc - lg * 0.5 + 0.12, zc, zc + lg * 0.5 - 0.12]:
+				k.box("bois", _tr(xr + 0.45, 0.0, zb), Vector3(0.28, 0.4, 0.05))
+			k.box("bois", _tr(xr + 0.45, 0.12, zc), Vector3(0.05, 0.06, lg - 0.24))
 			# un encrier, un livre ouvert
-			k.cyl("suie", _tr(xr - 0.5, 0.76, zc - 0.7), 0.035, 0.03, 0.06, 6)
-			k.box("cire", _tr(xr - 0.3, 0.78, zc + 0.3, 0.1), Vector3(0.3, 0.02, 0.42))
+			_encrier(k, _p(xr - 0.52, 0.765, zc - 0.7))
+			_livre_ouvert(k, _tr(xr - 0.3, 0.775, zc + 0.3, 0.1) * Transform3D(Basis(Vector3(0, 0, 1), 0.12), Vector3.ZERO), 0.3, 0.42, ["velours_pourpre", "velours_bleu", "velours_vert"][int(absf(xr * 3.0 + zc)) % 3])
 	# le grand planétaire, pendu au plafond : le soleil, six planètes sur leurs bras
 	var c: Vector3 = _p(xm + 1.0, 3.7, 0.0)
 	_poutre(k, "fer", c + Vector3(0, 0.3, 0), _p(xm + 1.0, rz - 0.3, 0.0), 0.06)
@@ -193,6 +215,18 @@ func _alambic(k: RefCounted, p: Vector3, m: String) -> void:
 func _paillasse(k: RefCounted, x0: float, x1: float, z: float) -> void:
 	var lg: float = x1 - x0
 	k.box("bois", _tr((x0 + x1) * 0.5, 0.0, z), Vector3(lg, 0.85, 0.9), true)
+	# (v11) les portes des placards (des panneaux en relief, leurs boutons), les tiroirs, la plinthe
+	var np: int = maxi(1, int(lg / 0.75))
+	var pw: float = lg / np
+	for e in [-1.0, 1.0]:
+		k.box("chene", _tr((x0 + x1) * 0.5, 0.0, z + e * 0.44), Vector3(lg + 0.02, 0.08, 0.04))
+		for i in range(np):
+			var px: float = x0 + pw * (i + 0.5)
+			k.box("chene", _tr(px, 0.14, z + e * 0.455), Vector3(pw - 0.12, 0.46, 0.012))
+			k.box("bois", _tr(px, 0.2, z + e * 0.462), Vector3(pw - 0.26, 0.34, 0.01))
+			k.box("chene", _tr(px, 0.66, z + e * 0.455), Vector3(pw - 0.12, 0.14, 0.012))
+			k.box("or", _tr(px, 0.72, z + e * 0.465), Vector3(0.08, 0.015, 0.012))
+			k._ball(Transform3D(xf.basis, _p(px + pw * 0.3, 0.42, z + e * 0.475)), 0.016)
 	k.box("pierre_claire", _tr((x0 + x1) * 0.5, 0.85, z), Vector3(lg + 0.1, 0.07, 1.0))
 	var pots := ["potion_vert", "potion_bleu", "potion_rouge", "potion_ambre", "potion_violet"]
 	var x: float = x0 + 0.35
@@ -216,8 +250,8 @@ func _paillasse(k: RefCounted, x0: float, x1: float, z: float) -> void:
 			5:
 				_bougie(k, _p(x, y, zz), 0.18)
 			6:
-				k.box("banniere_pourpre", _tr(x, y, zz, _rng.randf() * 0.6), Vector3(0.22, 0.05, 0.3))
-				k.box("banniere_bleu", _tr(x, y + 0.05, zz, _rng.randf() * 0.6), Vector3(0.2, 0.05, 0.28))
+				_livre_ferme(k, _tr(x, y, zz, _rng.randf() * 0.6), Vector3(0.22, 0.05, 0.3), "velours_pourpre")
+				_livre_ferme(k, _tr(x, y + 0.05, zz, _rng.randf() * 0.6), Vector3(0.2, 0.05, 0.28), "velours_bleu")
 		x += _rng.randf_range(0.32, 0.6)
 
 
@@ -256,6 +290,7 @@ func _elixirs(k: RefCounted, x0: float, x1: float, hw: float, rz: float) -> void
 	for j in range(4):
 		_flamme(k, _p(xm - 0.3 + j * 0.2, 0.18, az + 0.96), 0.32, 0.5 - absf(j - 1.5) * 0.08)
 	feu = _lumiere(_p(xm, 0.8, az + 1.5), 10.0, 1.4, 2.0)
+	_ombres(feu)
 	# une cornue sur la coupole
 	_ballon(k, Vector3(xm, 2.2, az + 0.45), 0.16, "potion_vert")
 	# les paillasses (deux rangs, l'allée au milieu pour la porte)
@@ -317,13 +352,34 @@ func _amphi(k: RefCounted, x0: float, x1: float, hw: float, rz: float) -> void:
 		k.box("chene", _tr((xa + xm2) * 0.5, 0.0, zg1 + 0.55), Vector3(xm2 - xa, y, 1.1), true)
 		k.box("bois", _tr(xb - 0.02, y - 0.19, zg1 + 0.55), Vector3(0.05, 0.19, 1.1))
 		for zl in [-3.2, -0.4, 2.0]:
-			k.box("cire", _tr(xb - 0.2, y + 0.76, zl, 0.1), Vector3(0.24, 0.02, 0.3))
+			_livre_ouvert(k, _tr(xb - 0.2, y + 0.76, zl, 0.1), 0.24, 0.3, "velours_vert" if g % 2 == 0 else "velours_bleu")
 	# la chaire du maître, sur une estrade
 	var xc: float = x1 - 3.0
 	k.box("chene", _tr(xc, 0.0, 0.0), Vector3(2.6, 0.3, 3.0), true)
 	k.prism("bois", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.55, 6, 0.0), 0.0, 1.15)
+	# (v11) la chaire : le socle et la corniche moulurés, les panneaux de chaque pan, la frise d'or
+	k.prism("chene", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.62, 6, 0.0), 0.0, 0.12, true)
+	k.prism("chene", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.59, 6, 0.0), 0.12, 0.18, true)
+	k.prism("chene", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.6, 6, 0.0), 1.05, 1.15, true)
+	k.prism("or", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.565, 6, 0.0), 0.98, 1.0, false)
+	var hx: PackedVector2Array = Kit.ngon(0.55, 6, 0.0)
+	for i in range(6):
+		var a: Vector2 = hx[i]
+		var b: Vector2 = hx[(i + 1) % 6]
+		var mid: Vector2 = (a + b) * 0.5
+		var nrm: Vector2 = mid.normalized()
+		var yaw: float = atan2(nrm.x, nrm.y)
+		var pc: Vector3 = Vector3(xc - 0.4 + mid.x + nrm.x * 0.01, 0.55, mid.y + nrm.y * 0.01)
+		k.box("chene", _tr(pc.x, pc.y, pc.z, yaw), Vector3(a.distance_to(b) - 0.16, 0.6, 0.02))
+		k.box("bois", _tr(pc.x + nrm.x * 0.012, pc.y + 0.06, pc.z + nrm.y * 0.012, yaw), Vector3(a.distance_to(b) - 0.28, 0.48, 0.01))
+	for e in [-1.0, 1.0]:
+		var cp: Vector3 = _p(xc - 0.75, 1.47, e * 0.42)
+		k.cyl("or", Transform3D(xf.basis, cp), 0.05, 0.04, 0.02, 10)
+		k.cyl("or", Transform3D(xf.basis, cp + Vector3(0, 0.02, 0)), 0.012, 0.012, 0.16, 8)
+		k.cyl("or", Transform3D(xf.basis, cp + Vector3(0, 0.18, 0)), 0.025, 0.035, 0.015, 10)
+		_bougie(k, cp + Vector3(0, 0.195, 0), 0.16)
 	k.box("bois", _tr(xc - 0.5, 1.45, 0.0) * Transform3D(Basis(Vector3(0, 0, 1), 0.3), Vector3.ZERO), Vector3(0.7, 0.05, 0.9))
-	k.box("cire", _tr(xc - 0.5, 1.52, 0.0) * Transform3D(Basis(Vector3(0, 0, 1), 0.3), Vector3.ZERO), Vector3(0.4, 0.02, 0.6))
+	_livre_ouvert(k, _tr(xc - 0.5, 1.5, 0.0) * Transform3D(Basis(Vector3(0, 0, 1), 0.3), Vector3.ZERO), 0.4, 0.6)
 	# le grand tableau de géométrie, au mur est ; la règle, le compas
 	var xt: float = x1 - 0.05
 	_panneau(k, "tableau_amphi", Vector3(xt, 1.0, -3.6), Vector3(xt, 1.0, 3.6), 2.9, Vector3(-1, 0, 0))

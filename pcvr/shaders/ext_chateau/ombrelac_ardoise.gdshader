@@ -2,7 +2,7 @@
 // mètres : u le long de l'égout du toit, v le long de la pente (0 en bas). Chaque rang d'ardoises
 // est décalé d'une demi-ardoise ; le bas de chaque ardoise est arrondi (l'écaille) ; chaque ardoise
 // a sa nuance (bleu-gris, gris-violet, presque noir), un peu de lichen et de mousse sur les plus
-// vieilles, et l'ombre de la suivante qui la recouvre. Le grain vient de la texture d'ardoise.
+// vieilles, et l'ombre de la suivante qui la recouvre. Le grain est procédural (v10).
 shader_type spatial;
 render_mode cull_back, diffuse_burley, specular_schlick_ggx;
 
@@ -51,25 +51,39 @@ void fragment() {
 	vec3 base = mix(teinte, teinte2, r1);
 	base *= 0.78 + 0.38 * r2;
 	// le grain de la pierre
-	float g = dot(texture(grain, uv * 0.37).rgb, vec3(0.3, 0.4, 0.3));
-	base *= 0.88 + 0.35 * (g - 0.35);
+	// (v10) un grain procédural : la texture d'ardoise portait ses propres rangs et des taches de
+	// lichen qui, agrandies, faisaient de grandes traînées pâles sur les toits
+	vec2 gq = uv * vec2(9.0, 26.0) + tid * 3.1;
+	float g = n2(gq) * 0.6 + n2(gq * 2.7) * 0.4;
+	float fin = smoothstep(40.0, 6.0, dist);
+	base *= 1.0 + (g - 0.5) * 0.22 * fin;
+	// un éclat plus clair sur l'arête basse de l'écaille (la tranche de l'ardoise)
+	base *= 1.0 + 0.18 * (1.0 - smoothstep(0.0, 0.035, ly - courbe)) * dans * smoothstep(50.0, 8.0, dist);
 	// l'ombre portée de l'ardoise du dessus (en haut du rang) et le bord de l'écaille (en bas)
 	float ombre = smoothstep(0.75, 1.0, ly) * 0.45 + (1.0 - smoothstep(0.0, 0.07, abs(ly - courbe))) * 0.35;
 	base *= 1.0 - ombre * smoothstep(60.0, 8.0, dist);
 	// les joints entre deux ardoises du même rang
 	base *= mix(1.0, 0.55, (1.0 - smoothstep(0.0, 0.06, 1.0 - abs(lx))) * dans * smoothstep(80.0, 10.0, dist));
 	// l'usure : quelques ardoises plus claires, du lichen, de la mousse vers le bas du toit
-	float lich = smoothstep(0.72, 0.85, n2(wp.xz * 1.7 + wp.y * 0.6)) * usure;
-	base = mix(base, vec3(0.45, 0.46, 0.38), lich * 0.25);
+	// (v10) le lichen pousse par ardoise : quelques ardoises seulement, en petites taches rondes
+	// (avant : une grande tache continue qui faisait des traînées pâles, comme de la neige)
+	float vieille = step(0.88, h2(tid + 5.1)) * usure;
+	vec2 pl = vec2(lx, (ly - 0.5) * 2.0 * rang / largeur * 2.0);
+	float tache = smoothstep(0.55, 0.75, n2(pl * 3.0 + tid * 7.0)) * (1.0 - smoothstep(0.6, 1.0, length(pl)));
+	float lich = vieille * tache * dans * smoothstep(90.0, 20.0, dist);
+	base = mix(base, mix(vec3(0.5, 0.5, 0.4), vec3(0.62, 0.5, 0.26), step(0.5, h2(tid + 9.7))), lich * 0.45);
+	// de grandes nuances très douces (les ardoises posées à des époques différentes)
+	base *= 0.92 + 0.12 * n2(wp.xz * 0.11 + wp.y * 0.05);
 	float m = smoothstep(0.55, 0.8, n2(uv * vec2(0.6, 1.4) + 3.0)) * (1.0 - smoothstep(0.0, 3.0, uv.y)) * mousse;
 	base = mix(base, vec3(0.2, 0.27, 0.1), m * 0.8);
 	ALBEDO = base;
-	ROUGHNESS = mix(0.72, 0.95, m + lich * 0.5) - r2 * 0.1;
+	ROUGHNESS = mix(0.68, 0.95, m + lich * 0.5) - r2 * 0.12 + (g - 0.5) * 0.1;
 	SPECULAR = 0.3;
 	// le relief : chaque ardoise est un peu inclinée (le bas se soulève) ; le grain
-	vec3 gn = texture(grain_n, uv * 0.37).xyz * 2.0 - 1.0;
+	float gx = n2(gq + vec2(0.05, 0.0)) - n2(gq);
+	float gy = n2(gq + vec2(0.0, 0.05)) - n2(gq);
 	float tilt = (ly - 0.5) * 0.5 * dans;
-	vec3 nt = normalize(vec3(gn.x * 0.4 + (r1 - 0.5) * 0.12, gn.y * 0.4 - tilt, 1.0));
+	vec3 nt = normalize(vec3(gx * 1.6 * fin + (r1 - 0.5) * 0.14, gy * 1.6 * fin - tilt + (r2 - 0.5) * 0.08, 1.0));
 	NORMAL_MAP = nt * 0.5 + 0.5;
 	NORMAL_MAP_DEPTH = 1.0;
 }

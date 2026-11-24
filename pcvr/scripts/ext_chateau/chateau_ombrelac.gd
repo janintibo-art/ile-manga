@@ -103,6 +103,7 @@ func build(the_ile: Node3D) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_enceinte()
 	_porte()
+	_cour()
 	_viaduc()
 	_grande_salle()
 	_donjon()
@@ -233,6 +234,87 @@ func _enceinte() -> void:
 	_emit(k, "Ombrelac_enceinte")
 	# l'esplanade (le sol du plateau près des murs : rien, le relief suffit)
 	lieux["enceinte"] = Vector3.ZERO
+
+
+## (v10) Le mobilier de la Cour d'Honneur, le long de l'allée de la porte à la Grande Salle : des
+## réverbères (leur lanterne s'allume la nuit), des bancs de pierre, des bacs de pierre plantés d'un
+## buis taillé en cône. Rien sur l'allée elle-même (x de -2,5 à 2,5) ni vers les portes des tours.
+func _cour() -> void:
+	var k := Kit.new()
+	for e in [-1.0, 1.0]:
+		for z in [30.0, 42.0, 54.0, 64.0]:
+			var x: float = e * 3.6
+			k.box("pierre", at(x, 0.0, z), Vector3(0.6, 0.5, 0.6), true)
+			k.box("pierre_claire", at(x, 0.5, z), Vector3(0.5, 0.12, 0.5))
+			k.cyl("fer", at(x, 0.62, z), 0.1, 0.07, 3.0, 8, false)
+			k.cyl("fer", at(x, 3.55, z), 0.14, 0.1, 0.1, 8, true)
+			k.box("fer", at(x, 3.62, z), Vector3(0.42, 0.06, 0.42))
+			k.box("vitre", at(x, 3.68, z), Vector3(0.36, 0.52, 0.36))
+			k.box("fer", at(x, 4.2, z), Vector3(0.5, 0.06, 0.5))
+			k.cyl("fer", at(x, 4.26, z), 0.36, 0.0, 0.36, 4, false)
+			k._ball(at(x, 4.66, z), 0.06)
+		# les bancs, face à l'allée
+		for zb in [35.0, 48.0]:
+			var xb: float = e * 7.6
+			for dz in [-0.8, 0.8]:
+				k.box("pierre", at(xb, 0.0, zb + dz), Vector3(0.45, 0.42, 0.3), true)
+			k.box("pierre_claire", at(xb, 0.42, zb), Vector3(0.62, 0.1, 2.2), true)
+		# les bacs de pierre, le buis taillé
+		for zp in [27.5, 41.0, 58.0]:
+			var xp: float = e * 7.6
+			k.box("pierre", at(xp, 0.0, zp), Vector3(1.5, 0.75, 1.5), true)
+			k.box("pierre_claire", at(xp, 0.75, zp), Vector3(1.66, 0.1, 1.66))
+			k.box("buis", at(xp, 0.8, zp), Vector3(1.3, 0.06, 1.3))
+			k.cyl("buis", at(xp, 0.85, zp), 0.62, 0.0, 2.1, 14, false)
+	_emit(k, "Ombrelac_cour")
+
+
+## (v10) La haie de buis autour d'un carré du jardin [x0, x1] x [z0, z1] ; le coin près de la fontaine
+## (c) est coupé par un arc de rayon r
+func _haies_carre(k: Kit, x0: float, x1: float, z0: float, z1: float, c: Vector3, r: float) -> void:
+	var pts := [Vector3(x0, 0, z0), Vector3(x1, 0, z0), Vector3(x1, 0, z1), Vector3(x0, 0, z1)]
+	for i in range(4):
+		var a: Vector3 = pts[i]
+		var b: Vector3 = pts[(i + 1) % 4]
+		var ab: Vector3 = b - a
+		var lg: float = ab.length()
+		var d: Vector3 = ab / lg
+		# les morceaux du côté hors du cercle de la fontaine
+		var t0: float = -1.0
+		var n: int = int(lg / 0.5)
+		for j in range(n + 1):
+			var t: float = lg * j / n
+			var dehors: bool = Vector2(a.x + d.x * t - c.x, a.z + d.z * t - c.z).length() > r
+			if dehors and t0 < 0.0:
+				t0 = t
+			if (not dehors or j == n) and t0 >= 0.0:
+				var t1: float = t if dehors else t - lg / n
+				if t1 - t0 > 0.3:
+					var m: Vector3 = a + d * (t0 + t1) * 0.5
+					k.box("buis", Transform3D(Basis(Vector3.UP, atan2(d.x, d.z)), m + Vector3(0, 0.1, 0)), Vector3(0.55, 0.62, t1 - t0 + 0.55))
+				t0 = -1.0
+	# l'arc autour de la fontaine, dans ce carré
+	var mid := Vector3((x0 + x1) * 0.5, 0, (z0 + z1) * 0.5)
+	var am: float = atan2(mid.z - c.z, mid.x - c.x)
+	for j2 in range(-6, 6):
+		var a0: float = am + j2 * 0.13
+		var a1: float = a0 + 0.13
+		var p0: Vector3 = c + Vector3(cos(a0), 0, sin(a0)) * r
+		var p1: Vector3 = c + Vector3(cos(a1), 0, sin(a1)) * r
+		var pm: Vector3 = (p0 + p1) * 0.5
+		if pm.x < x0 or pm.x > x1 or pm.z < z0 or pm.z > z1:
+			continue
+		var dd: Vector3 = p1 - p0
+		k.box("buis", Transform3D(Basis(Vector3.UP, atan2(dd.x, dd.z)), pm + Vector3(0, 0.1, 0)), Vector3(0.55, 0.62, dd.length() + 0.1))
+
+
+## (v10) Une poutre de a à b (section l x h), « chêne »
+func _poutre_c(k: Kit, a: Vector3, b: Vector3, l: float, h: float) -> void:
+	var d: Vector3 = (b - a).normalized()
+	var x: Vector3 = d.cross(Vector3.UP).normalized()
+	var y: Vector3 = x.cross(d).normalized()
+	var bs := Basis(x, y, -d)
+	k.box("chene", Transform3D(bs, (a + b) * 0.5 - y * h * 0.5), Vector3(l, h, a.distance_to(b)))
 
 
 ## Les morceaux de [a, b] (une courtine) hors de la Grosse Tour : coupés à 6,75 m de part et d'autre
@@ -1070,8 +1152,14 @@ func _cloitre() -> void:
 		# les colonnettes et les arcs
 		for i in range(n + 1):
 			var p: Vector3 = a + dir * (len * i / n) + inw * gw
-			k.cyl("pierre_claire", at(p.x, 0.0, p.z), 0.32, 0.28, gh - 1.2, 10, false, true)
-			k.box("pierre_claire", at(p.x, gh - 1.2, p.z), Vector3(0.8, 0.3, 0.8))
+			# (v10) la colonnette : la plinthe, la base moulurée, le fût, le chapiteau évasé, le tailloir
+			k.box("pierre", at(p.x, 0.0, p.z), Vector3(0.86, 0.22, 0.86))
+			k.cyl("pierre_claire", at(p.x, 0.22, p.z), 0.4, 0.34, 0.14, 16, true)
+			k.cyl("pierre_claire", at(p.x, 0.36, p.z), 0.34, 0.31, 0.1, 16, false)
+			k.cyl("pierre_claire", at(p.x, 0.0, p.z), 0.3, 0.26, gh - 1.65, 16, false, true)
+			k.cyl("pierre_claire", at(p.x, gh - 1.75, p.z), 0.3, 0.3, 0.08, 16, false)
+			k.cyl("pierre_claire", at(p.x, gh - 1.67, p.z), 0.27, 0.44, 0.47, 16, false)
+			k.box("pierre_claire", at(p.x, gh - 1.2, p.z), Vector3(0.9, 0.3, 0.9))
 		var yaw: float = atan2(inw.x, inw.z)
 		for i in range(n):
 			var p: Vector3 = a + dir * (len * (i + 0.5) / n) + inw * gw
@@ -1095,6 +1183,17 @@ func _cloitre() -> void:
 		var r3: Vector3 = a + Vector3(0, gh + 4.2, 0) - dir * 0.4
 		var sl: float = r1.distance_to(r2)
 		k.quad("ardoise", Transform3D.IDENTITY, r0, r1, r2, r3, inw + Vector3(0, 1.6, 0), Vector2(0, 0), Vector2(len, 0), Vector2(len, sl), Vector2(0, sl))
+		# (v10) le plafond de la galerie, sous le toit : un lambris en pente, une poutre à chaque colonne
+		var c0: Vector3 = a + inw * (gw + 0.3) + Vector3(0, gh + 1.8, 0) - dir * 0.3
+		var c1: Vector3 = b + inw * (gw + 0.3) + Vector3(0, gh + 1.8, 0) + dir * 0.3
+		var c2: Vector3 = b + Vector3(0, gh + 3.75, 0) + dir * 0.3
+		var c3: Vector3 = a + Vector3(0, gh + 3.75, 0) - dir * 0.3
+		k.quad("lambris", Transform3D.IDENTITY, c0, c1, c2, c3, -inw - Vector3(0, 1.6, 0))
+		for i in range(n + 1):
+			var pb: Vector3 = a + dir * (len * i / n)
+			var q0: Vector3 = pb + inw * (gw + 0.3) + Vector3(0, gh + 1.5, 0)
+			var q1: Vector3 = pb + Vector3(0, gh + 3.45, 0)
+			_poutre_c(k, q0, q1, 0.24, 0.3)
 		# le sol de la galerie
 		k.box("dalles", Transform3D(Basis(Vector3.UP, yaw), (a + b) * 0.5 + inw * gw * 0.5 + Vector3(0, 0.0, 0)), Vector3(len, 0.2, gw))
 	# le jardin : un gazon (le relief), des allées en croix, la fontaine
@@ -1102,11 +1201,33 @@ func _cloitre() -> void:
 	k.box("gazon", at(cc.x, 0.0, cc.z), Vector3(x1 - x0 - gw * 2.0, 0.12, z1 - z0 - gw * 2.0))
 	k.box("dalles", at(cc.x, 0.0, cc.z), Vector3(x1 - x0 - gw * 2.0, 0.16, 2.4))
 	k.box("dalles", at(cc.x, 0.0, cc.z), Vector3(2.4, 0.16, z1 - z0 - gw * 2.0))
-	k.cyl("pierre_claire", at(cc.x, -0.1, cc.z), 4.2, 4.2, 0.8, 24, true, true)
-	k.cyl("pierre_claire", at(cc.x, 0.7, cc.z), 4.4, 4.4, 0.2, 24, true)
-	k.cyl("pierre", at(cc.x, 0.0, cc.z), 0.8, 0.6, 2.8, 12)
-	k.cyl("pierre_claire", at(cc.x, 2.8, cc.z), 0.3, 1.6, 0.6, 16)
-	k.cyl("pierre_claire", at(cc.x, 3.4, cc.z), 0.3, 0.3, 1.2, 8)
+	# (v10) la fontaine : un bassin creux (sa margelle moulurée), l'eau, la vasque sur son pied, l'eau
+	# qui déborde de la vasque, un petit pommeau au sommet
+	var nb: int = 32
+	for i in range(nb):
+		var a0: float = TAU * (i + 0.5) / nb
+		var dv := Vector3(cos(a0), 0, sin(a0))
+		var seg: float = TAU * 4.0 / nb + 0.06
+		var yw: float = atan2(dv.x, dv.z)
+		k.box("pierre_claire", Transform3D(Basis(Vector3.UP, yw), cc + dv * 4.0 + Vector3(0, 0.0, 0)), Vector3(seg, 0.72, 0.46), true)
+		k.box("pierre_claire", Transform3D(Basis(Vector3.UP, yw), cc + dv * 4.03 + Vector3(0, 0.72, 0)), Vector3(seg + 0.05, 0.16, 0.66))
+		k.box("pierre", Transform3D(Basis(Vector3.UP, yw), cc + dv * 4.12 + Vector3(0, 0.0, 0)), Vector3(seg + 0.05, 0.14, 0.4))
+	k.cyl("pierre", at(cc.x, 0.0, cc.z), 3.8, 3.8, 0.14, 32, true)
+	k.cyl("eau_fontaine", at(cc.x, 0.0, cc.z), 3.8, 3.8, 0.58, 32, true)
+	k.cyl("pierre", at(cc.x, 0.0, cc.z), 0.85, 0.7, 0.4, 16, true, true)
+	k.cyl("pierre_claire", at(cc.x, 0.4, cc.z), 0.55, 0.42, 1.9, 16, false)
+	k.cyl("pierre_claire", at(cc.x, 2.3, cc.z), 0.5, 0.55, 0.15, 16, false)
+	k.cyl("pierre_claire", at(cc.x, 2.45, cc.z), 0.35, 1.7, 0.55, 24, false)
+	k.cyl("pierre_claire", at(cc.x, 3.0, cc.z), 1.7, 1.75, 0.12, 24, true)
+	k.cyl("eau_fontaine", at(cc.x, 3.0, cc.z), 1.58, 1.58, 0.13, 24, true)
+	k.cyl("pierre_claire", at(cc.x, 3.0, cc.z), 0.22, 0.16, 0.7, 12, false)
+	k._ball(at(cc.x, 3.8, cc.z), 0.2)
+	# l'eau qui retombe de la vasque : une nappe fine, du bord de la vasque au bassin
+	k.cyl("eau_fontaine", at(cc.x, 0.58, cc.z), 2.1, 1.76, 2.5, 32, false)
+	# les haies de buis autour des quatre carrés, coupées en arc autour de la fontaine
+	for cr in [[x0 + gw + 0.6, cc.x - 1.6, z0 + gw + 0.6, cc.z - 1.6], [cc.x + 1.6, x1 - gw - 0.6, z0 + gw + 0.6, cc.z - 1.6],
+			[x0 + gw + 0.6, cc.x - 1.6, cc.z + 1.6, z1 - gw - 0.6], [cc.x + 1.6, x1 - gw - 0.6, cc.z + 1.6, z1 - gw - 0.6]]:
+		_haies_carre(k, float(cr[0]), float(cr[1]), float(cr[2]), float(cr[3]), cc, 5.4)
 	_emit(k, "Ombrelac_cloitre")
 	lieux["cloitre"] = cc + Vector3(0, 0, 5.0)
 	lieux["fontaine"] = cc

@@ -117,54 +117,150 @@ func _dortoir(k: RefCounted, x0: float, x1: float, hw: float, H: float, velours:
 
 
 ## Un lit à baldaquin, la tête contre le mur (z = s * hw), les pieds vers l'allée
+## (v11 : les colonnes tournées, la tête de lit à panneaux, le matelas, l'édredon qui retombe sur les
+## côtés, les oreillers, les rideaux plissés noués par leurs embrasses, la frange d'or du ciel de lit,
+## la malle cerclée de fer et ses poignées)
 func _lit(k: RefCounted, x: float, s: float, hw: float, velours: String) -> void:
 	var zt: float = s * (hw - 0.02)        # la tête
 	var zp: float = s * (hw - 2.1)         # le pied
 	var zc: float = (zt + zp) * 0.5
-	k.box("chene", _tr(x, 0.08, zc), Vector3(1.3, 0.34, 2.06), true)
+	# le bois de lit : les traverses, le sommier ; les colonnes tournées et leurs pommes de pin
+	k.box("chene", _tr(x, 0.08, zc), Vector3(1.3, 0.3, 2.06), true)
+	k.box("chene", _tr(x, 0.36, zc), Vector3(1.34, 0.04, 2.1))
 	for ex in [-1.0, 1.0]:
 		for zz in [zt - s * 0.05, zp + s * 0.05]:
-			k.box("chene", _tr(x + ex * 0.62, 0.0, zz), Vector3(0.1, 2.45, 0.1))
-			k.cyl("or", _tr(x + ex * 0.62, 2.45, zz), 0.05, 0.0, 0.12, 6)
-	k.box("chene", _tr(x, 0.0, zt - s * 0.05), Vector3(1.24, 1.25, 0.06))
-	k.box("drap", _tr(x, 0.42, zc), Vector3(1.18, 0.16, 1.98))
-	# l'édredon, le drap rabattu, l'oreiller
-	k.box(velours, _tr(x, 0.4, zp + s * 0.78), Vector3(1.28, 0.24, 1.56))
-	k.box("drap", _tr(x, 0.41, zp + s * 1.6), Vector3(1.24, 0.25, 0.1))
-	k.box("drap", _tr(x, 0.58, zt - s * 0.32), Vector3(0.9, 0.14, 0.38))
-	# le ciel de lit, ses pentes, les rideaux noués aux colonnes du pied, celui de la tête
+			_colonne_tournee(k, "chene", _tr(x + ex * 0.62, 0.0, zz), 2.45, 0.05)
+			k.cyl("or", _tr(x + ex * 0.62, 2.48, zz), 0.045, 0.0, 0.12, 8)
+	# la tête de lit : le cadre, deux panneaux en relief, le fronton
+	var zh: float = zt - s * 0.05
+	k.box("chene", _tr(x, 0.0, zh), Vector3(1.24, 1.25, 0.06))
+	for ex4 in [-0.29, 0.29]:
+		k.box("bois", _tr(x + ex4, 0.5, zh - s * 0.035), Vector3(0.48, 0.6, 0.02))
+		k.box("chene", _tr(x + ex4, 0.56, zh - s * 0.05), Vector3(0.38, 0.48, 0.02))
+	k.box("chene", _tr(x, 1.25, zh), Vector3(1.3, 0.06, 0.1))
+	k.cyl("or", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x, 1.06, zh - s * 0.05)), 0.05, 0.05, 0.015, 12)
+	# le pied de lit : un bandeau bas
+	k.box("chene", _tr(x, 0.36, zp + s * 0.05), Vector3(1.24, 0.3, 0.05))
+	# le matelas (les bords arrondis), le drap
+	k.box("drap", _tr(x, 0.4, zc), Vector3(1.14, 0.16, 1.94))
+	for ex5 in [-1.0, 1.0]:
+		k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x + ex5 * 0.57, 0.48, zc - 0.97)), 0.08, 0.08, 1.94, 8, false)
+	# l'édredon : le dessus, les retombées sur les côtés et au pied, le revers du drap
+	var ze: float = zp + s * 0.8
+	k.box(velours, _tr(x, 0.56, ze), Vector3(1.28, 0.08, 1.5))
+	for ex6 in [-1.0, 1.0]:
+		k.box(velours, _tr(x + ex6 * 0.63, 0.3, ze), Vector3(0.04, 0.32, 1.5))
+		k.cyl(velours, Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x + ex6 * 0.62, 0.6, ze - 0.75)), 0.045, 0.045, 1.5, 8, false)
+	k.box(velours, _tr(x, 0.32, zp + s * 0.06), Vector3(1.3, 0.3, 0.04))
+	k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.BACK, -PI * 0.5), _p(x - 0.62, 0.62, zp + s * 1.58)), 0.06, 0.06, 1.24, 8, true)
+	k.box("drap", _tr(x, 0.56, zp + s * 1.62), Vector3(1.22, 0.06, 0.18))
+	# deux oreillers, ronds aux bouts
+	for ex7 in [-0.27, 0.27]:
+		var po: Vector3 = _p(x + ex7, 0.6, zt - s * 0.34)
+		k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.BACK, -PI * 0.5), po - xf.basis.x * 0.26), 0.08, 0.08, 0.52, 10, true)
+	# le ciel de lit, sa frange, les pentes ; les rideaux plissés de la tête et des côtés, noués au pied
 	k.box(velours, _tr(x, 2.42, zc), Vector3(1.42, 0.05, 2.2))
 	k.box(velours, _tr(x, 2.12, zp), Vector3(1.42, 0.3, 0.03))
+	k.box("or", _tr(x, 2.1, zp - s * 0.015), Vector3(1.44, 0.03, 0.01))
 	for ex2 in [-1.0, 1.0]:
 		k.box(velours, _tr(x + ex2 * 0.7, 2.12, zc), Vector3(0.03, 0.3, 2.2))
-		k.box(velours, _tr(x + ex2 * 0.58, 0.2, zp + s * 0.12), Vector3(0.26, 1.92, 0.16))
-		k.box("or", _tr(x + ex2 * 0.58, 1.1, zp + s * 0.12), Vector3(0.28, 0.05, 0.18))
-	k.box(velours, _tr(x, 1.25, zt - s * 0.09), Vector3(1.2, 0.87, 0.02))
-	# la malle au pied du lit
+		k.box("or", _tr(x + ex2 * 0.715, 2.1, zc), Vector3(0.01, 0.03, 2.22))
+		_rideau_noue(k, velours, _p(x + ex2 * 0.56, 0.0, zp + s * 0.14), 0.06, 1.05, 2.12, 0.15, 0.12)
+		# les rideaux du côté de la tête, ouverts, plissés contre les colonnes
+		_tenture(k, velours, _p(x + ex2 * 0.7, 2.12, zt - s * 0.1), xf.basis.z * -s, 0.35, 2.0, xf.basis.x * ex2)
+	_tenture(k, velours, _p(x - 0.58, 2.12, zt - s * 0.1), xf.basis.x, 1.16, 0.9, xf.basis.z * -s)
+	# la malle au pied du lit : le coffre, le couvercle, les cercles et les coins de fer, la serrure,
+	# les poignées, les petits pieds
 	var zm: float = zp - s * 0.32
-	k.box("bois", _tr(x, 0.0, zm), Vector3(0.9, 0.44, 0.5), true)
-	k.box("chene", _tr(x, 0.44, zm), Vector3(0.94, 0.08, 0.54))
-	for ex3 in [-0.28, 0.28]:
-		k.box("fer", _tr(x + ex3, -0.005, zm), Vector3(0.05, 0.53, 0.53))
-	k.box("or", _tr(x, 0.32, zm - s * 0.27), Vector3(0.1, 0.1, 0.02))
+	for ex8 in [-0.4, 0.4]:
+		for ez8 in [-0.2, 0.2]:
+			k.box("bois", _tr(x + ex8, 0.0, zm + ez8), Vector3(0.07, 0.04, 0.07))
+	k.box("bois", _tr(x, 0.04, zm), Vector3(0.9, 0.4, 0.5), true)
+	k.box("chene", _tr(x, 0.44, zm), Vector3(0.94, 0.06, 0.54))
+	k.cyl("chene", Transform3D(xf.basis * Basis(Vector3.BACK, -PI * 0.5), _p(x - 0.47, 0.5, zm)), 0.2, 0.2, 0.94, 12, true)
+	for ex3 in [-0.3, 0.0, 0.3]:
+		k.box("fer", _tr(x + ex3, 0.035, zm), Vector3(0.045, 0.47, 0.525))
+		k.cyl("fer", Transform3D(xf.basis * Basis(Vector3.BACK, -PI * 0.5), _p(x + ex3 - 0.0225, 0.5, zm)), 0.205, 0.205, 0.045, 12, false)
+	for ex9 in [-1.0, 1.0]:
+		for ez9 in [-1.0, 1.0]:
+			k.box("fer", _tr(x + ex9 * 0.43, 0.035, zm + ez9 * 0.235), Vector3(0.06, 0.47, 0.06))
+		k.box("fer", _tr(x + ex9 * 0.465, 0.26, zm), Vector3(0.02, 0.03, 0.18))
+		k.box("fer", _tr(x + ex9 * 0.475, 0.23, zm - 0.07), Vector3(0.02, 0.06, 0.02))
+		k.box("fer", _tr(x + ex9 * 0.475, 0.23, zm + 0.07), Vector3(0.02, 0.06, 0.02))
+	k.box("or", _tr(x, 0.3, zm - s * 0.26), Vector3(0.12, 0.14, 0.015))
+	k.box("suie", _tr(x, 0.33, zm - s * 0.268), Vector3(0.02, 0.05, 0.004))
 
 
 ## Le poêle de fonte : la plaque de pierre, les pieds, le corps, la porte rougeoyante, le tuyau
+## (v11 : les pieds en griffes, le socle mouluré, les côtes de fonte, la porte à charnières et sa
+## poignée de laiton, le cendrier, la plaque du dessus et sa galerie, la bouilloire de cuivre, les
+## colliers du tuyau, le coude, le pare-feu)
 func _poele(k: RefCounted, x: float, z: float, H: float) -> void:
 	k.box("pierre_claire", _tr(x, 0.0, z), Vector3(1.4, 0.06, 1.4), true)
+	k.box("pierre_claire", _tr(x, 0.0, z), Vector3(1.44, 0.03, 1.44))
 	for i in range(4):
 		var a: float = TAU * (i + 0.5) / 4.0
-		k.box("fer", _tr(x + cos(a) * 0.3, 0.06, z + sin(a) * 0.3), Vector3(0.08, 0.22, 0.08))
-	k.cyl("fer", _tr(x, 0.26, z), 0.42, 0.4, 0.9, 16, true, true)
-	k.cyl("fer", _tr(x, 1.16, z), 0.47, 0.3, 0.14, 16)
-	k.cyl("cuivre_neuf", _tr(x + 0.12, 1.3, z - 0.08), 0.13, 0.1, 0.16, 10)
-	k.box("suie", _tr(x, 0.42, z + 0.38), Vector3(0.36, 0.34, 0.06))
-	_flamme(k, _p(x - 0.08, 0.44, z + 0.42), 0.14, 0.26)
-	_flamme(k, _p(x + 0.07, 0.44, z + 0.42), 0.12, 0.22)
-	k.box("fer", _tr(x, 0.4, z + 0.42), Vector3(0.42, 0.04, 0.03))
-	k.box("fer", _tr(x, 0.76, z + 0.42), Vector3(0.42, 0.04, 0.03))
-	k.cyl("fer", _tr(x, 1.3, z), 0.1, 0.1, H - 1.3, 8)
-	k.cyl("fer", _tr(x, H - 0.25, z), 0.16, 0.16, 0.06, 8)
+		var pp: Vector3 = _p(x + cos(a) * 0.3, 0.06, z + sin(a) * 0.3)
+		k.cyl("fer", Transform3D(xf.basis, pp), 0.05, 0.03, 0.08, 8)
+		k.cyl("fer", Transform3D(xf.basis, pp + Vector3(0, 0.08, 0)), 0.03, 0.045, 0.14, 8)
+	# le socle, le corps et ses côtes, la ceinture, le dôme
+	k.cyl("fer", _tr(x, 0.22, z), 0.46, 0.44, 0.06, 20)
+	k.cyl("fer", _tr(x, 0.28, z), 0.42, 0.41, 0.86, 20, true, true)
+	for c in range(12):
+		var ac: float = TAU * c / 12.0 + 0.13
+		if absf(wrapf(ac - PI * 0.5, -PI, PI)) < 0.55:
+			continue
+		k.box("fer", Transform3D(xf.basis * Basis(Vector3.UP, -ac), _p(x + cos(ac) * 0.415, 0.34, z + sin(ac) * 0.415)), Vector3(0.025, 0.74, 0.035))
+	for yb in [0.34, 0.7, 1.08]:
+		k.cyl("fer", _tr(x, yb, z), 0.44, 0.44, 0.03, 20, false)
+	k.cyl("fer", _tr(x, 1.14, z), 0.43, 0.48, 0.04, 20)
+	k.cyl("fer", _tr(x, 1.18, z), 0.48, 0.46, 0.04, 20)
+	k.cyl("fer", _tr(x, 1.22, z), 0.42, 0.3, 0.1, 20)
+	# la galerie du dessus : de petits balustres et leur anneau
+	for g in range(16):
+		var ag: float = TAU * g / 16.0
+		k.cyl("fer", _tr(x + cos(ag) * 0.44, 1.22, z + sin(ag) * 0.44), 0.008, 0.008, 0.07, 4, false)
+	k.cyl("fer", _tr(x, 1.29, z), 0.45, 0.45, 0.015, 20, false)
+	# la bouilloire de cuivre : le corps, le couvercle et son bouton, le bec, l'anse
+	var bk: Vector3 = _p(x + 0.15, 1.32, z - 0.1)
+	k.cyl("cuivre_neuf", Transform3D(xf.basis, bk), 0.1, 0.13, 0.08, 14)
+	k.cyl("cuivre_neuf", Transform3D(xf.basis, bk + Vector3(0, 0.08, 0)), 0.13, 0.08, 0.07, 14)
+	k.cyl("cuivre_neuf", Transform3D(xf.basis, bk + Vector3(0, 0.15, 0)), 0.03, 0.01, 0.03, 8)
+	_poutre(k, "cuivre_neuf", bk + xf.basis * Vector3(0.1, 0.05, 0), bk + xf.basis * Vector3(0.22, 0.13, 0), 0.025)
+	_poutre(k, "fer", bk + xf.basis * Vector3(-0.07, 0.14, 0), bk + Vector3(0, 0.26, 0), 0.012)
+	_poutre(k, "fer", bk + Vector3(0, 0.26, 0), bk + xf.basis * Vector3(0.07, 0.14, 0), 0.012)
+	# la porte du foyer : le cadre, les vitres de mica qui rougeoient, les charnières, la poignée
+	var zf: float = z + 0.4
+	k.box("suie", _tr(x, 0.44, zf - 0.02), Vector3(0.36, 0.32, 0.06))
+	_flamme(k, _p(x - 0.08, 0.46, zf + 0.02), 0.14, 0.24)
+	_flamme(k, _p(x + 0.07, 0.46, zf + 0.02), 0.12, 0.2)
+	for yb2 in [0.42, 0.76]:
+		k.box("fer", _tr(x, yb2, zf + 0.02), Vector3(0.44, 0.035, 0.03))
+	for xb in [-0.2, 0.0, 0.2]:
+		k.box("fer", _tr(x + xb, 0.42, zf + 0.02), Vector3(0.03 if xb != 0.0 else 0.015, 0.37, 0.03))
+	for yc in [0.48, 0.7]:
+		k.cyl("fer", _tr(x - 0.22, yc, zf + 0.03), 0.018, 0.018, 0.05, 6)
+	k.cyl("or", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x + 0.18, 0.6, zf + 0.03)), 0.012, 0.012, 0.06, 6)
+	k._ball(Transform3D(xf.basis, _p(x + 0.18, 0.6, zf + 0.1)), 0.022)
+	# le cendrier (un tiroir sous la porte) et sa poignée
+	k.box("fer", _tr(x, 0.29, zf), Vector3(0.32, 0.08, 0.05))
+	k.box("or", _tr(x, 0.32, zf + 0.03), Vector3(0.1, 0.015, 0.02))
+	# le tuyau : la buse, les colliers, la porte de ramonage, le coude vers le plafond
+	k.cyl("fer", _tr(x - 0.1, 1.3, z + 0.05), 0.12, 0.1, 0.08, 12)
+	k.cyl("fer", _tr(x - 0.1, 1.38, z + 0.05), 0.1, 0.1, H - 1.38, 12)
+	var yc2: float = 1.7
+	while yc2 < H - 0.4:
+		k.cyl("fer", _tr(x - 0.1, yc2, z + 0.05), 0.112, 0.112, 0.03, 12, false)
+		yc2 += 0.6
+	k.cyl("or", _tr(x - 0.1, 1.9, z + 0.05), 0.105, 0.105, 0.015, 12, false)
+	k.cyl("fer", _tr(x - 0.1, H - 0.25, z + 0.05), 0.18, 0.18, 0.06, 12)
+	k.cyl("fer", _tr(x - 0.1, H - 0.19, z + 0.05), 0.24, 0.18, 0.04, 12)
+	# le pare-feu : une petite grille d'arceaux devant la porte
+	for gx in range(7):
+		var xg: float = -0.3 + gx * 0.1
+		k.cyl("fer", _tr(x + xg, 0.06, zf + 0.22), 0.008, 0.008, 0.38, 4, false)
+	k.box("fer", _tr(x, 0.42, zf + 0.22), Vector3(0.64, 0.025, 0.025))
+	k.box("fer", _tr(x, 0.2, zf + 0.22), Vector3(0.64, 0.02, 0.02))
 
 
 # =================================================================== la Salle Commune
@@ -178,8 +274,14 @@ func _commune(k: RefCounted, x0: float, x1: float, hw: float, H: float) -> void:
 	_canape(k, 0.0, zc + 1.9, 0.0, 2.4, "velours_pourpre")
 	_canape(k, -2.1, zc, -PI * 0.5, 0.8, "velours_bleu")
 	_canape(k, 2.1, zc, PI * 0.5, 0.8, "velours_vert")
-	k.box("chene", _tr(0.0, 0.0, zc), Vector3(1.1, 0.4, 0.6), true)
-	k.box("bois", _tr(0.0, 0.4, zc), Vector3(1.2, 0.04, 0.7))
+	# (v11) la table basse : le plateau mouluré, la ceinture, les pieds tournés, l'entretoise
+	k.box("bois", _tr(0.0, 0.4, zc), Vector3(1.2, 0.04, 0.7), true)
+	k.box("chene", _tr(0.0, 0.385, zc), Vector3(1.16, 0.02, 0.66))
+	k.box("chene", _tr(0.0, 0.3, zc), Vector3(1.0, 0.09, 0.5))
+	for ex in [-0.5, 0.5]:
+		for ez in [-0.25, 0.25]:
+			_colonne_tournee(k, "chene", _tr(ex, 0.0, zc + ez), 0.39, 0.035)
+	k.box("chene", _tr(0.0, 0.08, zc), Vector3(1.0, 0.03, 0.05))
 	k.box("velours_bleu", _tr(-0.3, 0.44, zc + 0.1, 0.3), Vector3(0.26, 0.05, 0.34))
 	k.box("velours_vert", _tr(-0.28, 0.49, zc + 0.08, 0.1), Vector3(0.24, 0.04, 0.32))
 	_bougie(k, _p(0.35, 0.44, zc - 0.1), 0.2)
@@ -233,7 +335,45 @@ func _cheminee_c(k: RefCounted, x: float, zw: float, H: float) -> void:
 		var p1: Vector3 = a1 if e2 < 0 else b1
 		k.quad("pierre_int", xf, p0, Vector3(p0.x, y0, zw), Vector3(p1.x, H, zw), p1, Vector3(e2, 0, 0))
 	# le blason doré sur la hotte
-	k.cyl("or", _tr(x, 3.1, zw + 0.78) * Transform3D(Basis(Vector3.RIGHT, PI * 0.5 - 0.12), Vector3.ZERO), 0.32, 0.32, 0.04, 12)
+	_blason(k, _tr(x, 3.1, zw + 0.78) * Transform3D(Basis(Vector3.RIGHT, -0.12), Vector3.ZERO))
+	# (v11) sur le manteau : la pendule, deux chandeliers, deux vases de cuivre
+	var zm: float = zw + 0.99
+	k.box("chene", _tr(x, 2.0, zm), Vector3(0.34, 0.06, 0.14))
+	k.box("chene", _tr(x, 2.06, zm), Vector3(0.28, 0.3, 0.12))
+	k.cyl("chene", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x, 2.36, zm - 0.06)), 0.14, 0.14, 0.12, 16)
+	k.cyl("or", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x, 2.25, zm + 0.055)), 0.1, 0.1, 0.012, 20)
+	k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), _p(x, 2.25, zm + 0.06)), 0.085, 0.085, 0.012, 20)
+	_poutre(k, "suie", _p(x, 2.25, zm + 0.075), _p(x + 0.03, 2.31, zm + 0.075), 0.008)
+	_poutre(k, "suie", _p(x, 2.25, zm + 0.075), _p(x - 0.05, 2.22, zm + 0.075), 0.008)
+	k._ball(Transform3D(xf.basis, _p(x, 2.52, zm)), 0.025)
+	for e5 in [-1.0, 1.0]:
+		var cp: Vector3 = _p(x + e5 * 1.25, 2.0, zm)
+		k.cyl("or", Transform3D(xf.basis, cp), 0.06, 0.05, 0.02, 10)
+		k.cyl("or", Transform3D(xf.basis, cp + Vector3(0, 0.02, 0)), 0.014, 0.012, 0.22, 8)
+		k._ball(Transform3D(xf.basis, cp + Vector3(0, 0.12, 0)), 0.022)
+		k.cyl("or", Transform3D(xf.basis, cp + Vector3(0, 0.24, 0)), 0.03, 0.045, 0.02, 10)
+		_bougie(k, cp + Vector3(0, 0.26, 0), 0.18)
+		var vp: Vector3 = _p(x + e5 * 0.7, 2.0, zm)
+		k.cyl("cuivre_neuf", Transform3D(xf.basis, vp), 0.04, 0.08, 0.1, 14)
+		k.cyl("cuivre_neuf", Transform3D(xf.basis, vp + Vector3(0, 0.1, 0)), 0.08, 0.035, 0.1, 14)
+		k.cyl("cuivre_neuf", Transform3D(xf.basis, vp + Vector3(0, 0.2, 0)), 0.03, 0.045, 0.05, 14, false)
+	# (v11) le serviteur de cheminée : le pied, la tige, le tisonnier, la pelle, la balayette
+	var sp: Vector3 = _p(x + lw * 0.5 + 0.35, 0.08, zw + 1.25)
+	k.cyl("fer", Transform3D(xf.basis, sp), 0.13, 0.11, 0.03, 12)
+	k.cyl("fer", Transform3D(xf.basis, sp), 0.012, 0.012, 0.72, 6)
+	k.cyl("or", Transform3D(xf.basis, sp + Vector3(0, 0.72, 0)), 0.025, 0.0, 0.05, 8)
+	k.cyl("fer", Transform3D(xf.basis, sp + Vector3(0, 0.62, 0)), 0.09, 0.09, 0.012, 12, false)
+	for o in range(3):
+		var ao: float = TAU * o / 3.0
+		var hp: Vector3 = sp + xf.basis * Vector3(cos(ao) * 0.085, 0.0, sin(ao) * 0.085)
+		_poutre(k, "fer", hp + Vector3(0, 0.08, 0), hp + Vector3(0, 0.66, 0), 0.012)
+		k._ball(Transform3D(xf.basis, hp + Vector3(0, 0.68, 0)), 0.018)
+		if o == 0:
+			k.box("fer", Transform3D(xf.basis, hp + Vector3(0, 0.04, 0)), Vector3(0.1, 0.1, 0.01))
+		elif o == 1:
+			k.cyl("suie", Transform3D(xf.basis, hp + Vector3(0, 0.03, 0)), 0.04, 0.03, 0.1, 8)
+		else:
+			_poutre(k, "fer", hp + Vector3(0, 0.08, 0), hp + xf.basis * Vector3(0.05, 0.03, 0), 0.012)
 	# le foyer : le contrecœur, l'âtre, les chenets, les bûches, le feu
 	k.box("suie", _tr(x, 0.0, zw + 0.04), Vector3(lw - 1.2, 1.45, 0.08))
 	for e3 in [-1.0, 1.0]:
@@ -252,17 +392,73 @@ func _cheminee_c(k: RefCounted, x: float, zw: float, H: float) -> void:
 		var fx: float = x + (j2 - 2) * 0.22
 		_flamme(k, _p(fx, 0.25, zw + 0.5 + 0.05 * (j2 % 2)), 0.42, 0.75 - absf(j2 - 2) * 0.12)
 	feu = _lumiere(_p(x, 0.9, zw + 1.6), 12.0, 1.4, 2.4)
+	_ombres(feu)
+
+
+## (v11) Le blason d'Ombrelac sur la hotte (le repère t : x en travers, y vers le haut, z vers la salle) :
+## l'écu bleu bordé d'or, le croissant de lune, trois étoiles
+func _blason(k: RefCounted, t: Transform3D) -> void:
+	var pts: Array = [Vector2(-0.3, 0.4), Vector2(0.3, 0.4)]
+	for i in range(9):
+		var a: float = PI * 0.5 * i / 8.0
+		pts.append(Vector2(0.3 * cos(a), -0.4 * sin(a)))
+	for i2 in range(1, 9):
+		var a2: float = PI * 0.5 + PI * 0.5 * i2 / 8.0
+		pts.append(Vector2(0.3 * cos(a2), -0.4 * sin(a2)))
+	for couche in [["or", 1.12, 0.015], ["velours_bleu", 1.0, 0.03]]:
+		var sc: float = couche[1]
+		var c := Vector3(0, 0.05, couche[2])
+		for i3 in range(pts.size()):
+			var p0: Vector2 = pts[i3] * sc
+			var p1: Vector2 = pts[(i3 + 1) % pts.size()] * sc
+			k.tri(couche[0], t, c, Vector3(p0.x, p0.y, couche[2]), Vector3(p1.x, p1.y, couche[2]), Vector3.BACK,
+				Vector2(0.5, 0.5), Vector2(0.5 + p0.x, 0.5 + p0.y), Vector2(0.5 + p1.x, 0.5 + p1.y))
+	var bz := Basis(Vector3.RIGHT, PI * 0.5)
+	k.cyl("or", t * Transform3D(bz, Vector3(0, 0.0, 0.03)), 0.17, 0.17, 0.012, 24)
+	k.cyl("velours_bleu", t * Transform3D(bz, Vector3(0.07, 0.05, 0.03)), 0.15, 0.15, 0.02, 24)
+	for st in [Vector3(-0.17, 0.28, 0.035), Vector3(0.0, 0.3, 0.035), Vector3(0.17, 0.28, 0.035)]:
+		k._ball(t * Transform3D(Basis.IDENTITY, st), 0.028)
 
 
 ## Un canapé (lg) ou un fauteuil (lg petit) : le dossier du côté z+ du repère tourné de yaw
+## (v11 : les pieds tournés, les coussins de l'assise et leurs bords arrondis, le dossier capitonné
+## et son boudin, les accoudoirs roulés et leurs volutes, le galon d'or)
 func _canape(k: RefCounted, x: float, z: float, yaw: float, lg: float, m: String) -> void:
 	var t: Transform3D = _tr(x, 0.0, z, yaw)
-	k.box("chene", t, Vector3(lg + 0.3, 0.12, 0.85), true)
-	k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.12, -0.05)), Vector3(lg, 0.3, 0.72))
-	k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.12, 0.32)), Vector3(lg + 0.3, 0.85, 0.22))
+	var bx := Basis(Vector3.BACK, -PI * 0.5)      # y → x
+	var bz := Basis(Vector3.RIGHT, PI * 0.5)      # y → z
+	var W: float = lg + 0.3
+	for ex in [-1.0, 1.0]:
+		for ez in [-1.0, 1.0]:
+			var fp := Vector3(ex * (W * 0.5 - 0.08), 0, ez * 0.34)
+			k.cyl("chene", t * Transform3D(Basis.IDENTITY, fp), 0.035, 0.05, 0.06, 10)
+			k.cyl("chene", t * Transform3D(Basis.IDENTITY, fp + Vector3(0, 0.06, 0)), 0.05, 0.045, 0.04, 10)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.1, 0)), Vector3(W, 0.1, 0.85), true)
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.19, -0.03)), Vector3(lg, 0.02, 0.8))
+	# l'assise : un, deux ou trois coussins
+	var n: int = 1 if lg < 1.0 else (2 if lg < 2.0 else 3)
+	var cw: float = lg / n
+	for i in range(n):
+		var cx: float = -lg * 0.5 + cw * (i + 0.5)
+		k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(cx, 0.2, -0.02)), Vector3(cw - 0.02, 0.16, 0.56))
+		k.cyl(m, t * Transform3D(bx, Vector3(cx - cw * 0.5 + 0.01, 0.28, -0.3)), 0.08, 0.08, cw - 0.02, 10, true)
+	# le dossier capitonné, son boudin
+	k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.2, 0.32)), Vector3(W, 0.72, 0.22))
+	k.cyl(m, t * Transform3D(bx, Vector3(-W * 0.5, 0.92, 0.32)), 0.11, 0.11, W, 12, true)
+	var rangs: int = int(lg / 0.2)
+	for r in range(3):
+		for c in range(rangs + (r % 2)):
+			var bxp: float = -lg * 0.5 + 0.1 + (c + (0.0 if r % 2 == 1 else 0.5)) * (lg - 0.2) / maxf(rangs, 1)
+			if absf(bxp) > lg * 0.5 - 0.05:
+				continue
+			k.cyl("suie", t * Transform3D(bz, Vector3(bxp, 0.48 + r * 0.14, 0.198)), 0.012, 0.012, 0.008, 6)
+	# les accoudoirs roulés, leurs volutes
 	for e in [-1.0, 1.0]:
-		k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(e * (lg * 0.5 + 0.08), 0.12, 0.0)), Vector3(0.16, 0.5, 0.85))
-	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.96, 0.32)), Vector3(lg + 0.32, 0.03, 0.24))
+		var ax: float = e * (lg * 0.5 + 0.08)
+		k.box(m, t * Transform3D(Basis.IDENTITY, Vector3(ax, 0.2, -0.02)), Vector3(0.16, 0.4, 0.8))
+		k.cyl(m, t * Transform3D(bz, Vector3(ax + e * 0.02, 0.6, -0.42)), 0.1, 0.1, 0.72, 12, true)
+		k.cyl("or", t * Transform3D(bz, Vector3(ax + e * 0.02, 0.6, -0.43)), 0.055, 0.055, 0.012, 12)
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.025, 0.32)), Vector3(W + 0.02, 0.012, 0.06))
 
 
 ## Le guéridon de l'échiquier, ses deux chaises
@@ -275,12 +471,50 @@ func _echiquier(k: RefCounted, x: float, z: float) -> void:
 		for j in range(8):
 			var m: String = "drap" if (i + j) % 2 == 0 else "suie"
 			k.box(m, _tr(x + (i - 3.5) * c, 0.75, z + (j - 3.5) * c), Vector3(c, 0.006, c))
-	for i2 in range(6):
-		var px: float = x + (i2 - 2.5) * c
-		k.cyl("drap", _tr(px, 0.756, z - 0.15), 0.018, 0.012, 0.06, 6)
-		k.cyl("suie", _tr(px, 0.756, z + 0.15), 0.018, 0.012, 0.06, 6)
+	# (v11) le cadre de l'échiquier ; les pièces : les pions, les tours, les cavaliers, les fous, les
+	# rois et les dames (une partie en cours : quelques pièces avancées, d'autres prises, à côté)
+	k.box("bois", _tr(x, 0.75, z - 4.15 * c), Vector3(8.6 * c, 0.012, 0.3 * c))
+	k.box("bois", _tr(x, 0.75, z + 4.15 * c), Vector3(8.6 * c, 0.012, 0.3 * c))
+	k.box("bois", _tr(x - 4.15 * c, 0.75, z), Vector3(0.3 * c, 0.012, 8.0 * c))
+	k.box("bois", _tr(x + 4.15 * c, 0.75, z), Vector3(0.3 * c, 0.012, 8.0 * c))
+	var places: Array = [
+		["drap", 0, 1, 0], ["drap", 1, 1, 0], ["drap", 2, 2, 0], ["drap", 3, 3, 0], ["drap", 4, 3, 0], ["drap", 5, 1, 0], ["drap", 7, 1, 0],
+		["drap", 0, 0, 1], ["drap", 5, 2, 2], ["drap", 2, 0, 3], ["drap", 3, 0, 4], ["drap", 4, 0, 5], ["drap", 7, 0, 1],
+		["suie", 0, 6, 0], ["suie", 2, 6, 0], ["suie", 3, 4, 0], ["suie", 4, 5, 0], ["suie", 5, 6, 0], ["suie", 6, 6, 0], ["suie", 7, 5, 0],
+		["suie", 0, 7, 1], ["suie", 2, 5, 2], ["suie", 5, 7, 3], ["suie", 3, 7, 4], ["suie", 4, 7, 5], ["suie", 7, 7, 1]]
+	for pc in places:
+		_piece(k, pc[0], _p(x + (pc[1] - 3.5) * c, 0.756, z + (pc[2] - 3.5) * c), pc[3])
+	# les pièces prises, posées à côté du plateau
+	_piece(k, "suie", _p(x + 0.33, 0.75, z - 0.3), 0)
+	_piece(k, "suie", _p(x + 0.38, 0.75, z - 0.25), 2)
+	_piece(k, "drap", _p(x - 0.34, 0.75, z + 0.3), 0)
 	_chaise(k, x - 0.9, z, PI * 0.5)
 	_chaise(k, x + 0.9, z, -PI * 0.5)
+
+## (v11) Une pièce d'échecs posée en p : 0 le pion, 1 la tour, 2 le cavalier, 3 le fou, 4 la dame, 5 le roi
+func _piece(k: RefCounted, m: String, p: Vector3, sorte: int) -> void:
+	var h: float = [0.035, 0.045, 0.05, 0.055, 0.065, 0.07][sorte]
+	k.cyl(m, Transform3D(xf.basis, p), 0.019, 0.017, 0.008, 10)
+	k.cyl(m, Transform3D(xf.basis, p + Vector3(0, 0.008, 0)), 0.014, 0.008, h - 0.008, 10, false)
+	var top: Vector3 = p + Vector3(0, h, 0)
+	match sorte:
+		0:
+			k.cyl(m, Transform3D(xf.basis, top - Vector3(0, 0.004, 0)), 0.011, 0.011, 0.004, 8)
+			k.cyl(m, Transform3D(xf.basis, top), 0.009, 0.003, 0.014, 8)
+		1:
+			k.cyl(m, Transform3D(xf.basis, top - Vector3(0, 0.01, 0)), 0.012, 0.014, 0.016, 8)
+		2:
+			k.box(m, Transform3D(xf.basis * Basis(Vector3.RIGHT, 0.5), top - Vector3(0, 0.008, 0)), Vector3(0.012, 0.028, 0.016))
+		3:
+			k.cyl(m, Transform3D(xf.basis, top - Vector3(0, 0.004, 0)), 0.006, 0.01, 0.01, 8)
+			k.cyl(m, Transform3D(xf.basis, top + Vector3(0, 0.006, 0)), 0.01, 0.0, 0.014, 8)
+		4:
+			k.cyl(m, Transform3D(xf.basis, top - Vector3(0, 0.004, 0)), 0.009, 0.013, 0.01, 8)
+			k.cyl(m, Transform3D(xf.basis, top + Vector3(0, 0.006, 0)), 0.006, 0.0, 0.008, 8)
+		_:
+			k.cyl(m, Transform3D(xf.basis, top - Vector3(0, 0.004, 0)), 0.009, 0.012, 0.01, 8)
+			k.box(m, Transform3D(xf.basis, top + Vector3(0, 0.006, 0)), Vector3(0.004, 0.018, 0.004))
+			k.box(m, Transform3D(xf.basis, top + Vector3(0, 0.014, 0)), Vector3(0.012, 0.004, 0.004))
 
 
 # =================================================================== la tour de l'escalier

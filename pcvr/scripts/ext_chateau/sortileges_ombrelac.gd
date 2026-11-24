@@ -167,17 +167,34 @@ func _cercle_runes(k: RefCounted, y0: float) -> void:
 
 
 ## Un mannequin d'entraînement : le pied en croix, le poteau, le corps de paille, la tête, les bras
+## (v12 : le corps rond serré de cordes, les bras de paille liés, la tête en sac, la cible à trois anneaux,
+## les jambes de force du pied)
 func _mannequin(k: RefCounted, c: Vector3, yaw: float) -> void:
 	var t: Transform3D = _tr(c.x, 0.0, c.z, yaw)
 	for e in [0.0, PI * 0.5]:
 		k.box("chene", t * Transform3D(Basis(Vector3.UP, e), Vector3.ZERO), Vector3(0.9, 0.1, 0.12))
-	k.box("chene", t, Vector3(0.1, 1.7, 0.1))
-	k.box("paille", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.85, 0)), Vector3(0.5, 0.7, 0.3))
-	k.box("drap", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.2, 0.0)), Vector3(0.54, 0.08, 0.34))
-	_sphere(k, "paille", t * Vector3(0, 1.82, 0), 0.19)
-	k.box("chene", t * Transform3D(Basis(Vector3(0, 0, 1), PI * 0.5), Vector3(0.45, 1.35, 0)), Vector3(0.06, 0.9, 0.06))
-	# une cible peinte sur la poitrine
-	k.cyl("banniere_pourpre", t * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 1.0, 0.15)), 0.16, 0.16, 0.01, 12)
+	for e2 in range(4):
+		var a: float = PI * 0.5 * e2
+		var dd := Vector3(cos(a), 0, sin(a))
+		_poutre(k, "chene", t * (dd * 0.4 + Vector3(0, 0.1, 0)), t * (dd * 0.05 + Vector3(0, 0.45, 0)), 0.05)
+	k.cyl("chene", t, 0.055, 0.05, 1.7, 8)
+	k.cyl("paille", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.7, 0)), 0.2, 0.25, 0.25, 12)
+	k.cyl("paille", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.95, 0)), 0.25, 0.26, 0.25, 12)
+	k.cyl("paille", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.2, 0)), 0.26, 0.18, 0.2, 12)
+	for yc in [0.78, 0.98, 1.18]:
+		k.cyl("drap", t * Transform3D(Basis.IDENTITY, Vector3(0, yc, 0)), 0.265, 0.265, 0.025, 12, false)
+	k.cyl("paille", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.4, 0)), 0.07, 0.08, 0.25, 8)
+	_sphere(k, "drap", t * Vector3(0, 1.8, 0), 0.19)
+	k.cyl("drap", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.62, 0)), 0.1, 0.07, 0.06, 8)
+	k.cyl("paille", t * Transform3D(Basis(Vector3(0, 0, 1), PI * 0.5), Vector3(0.48, 1.3, 0)), 0.06, 0.07, 0.96, 8)
+	for xa in [-0.42, -0.3, 0.3, 0.42]:
+		k.cyl("drap", t * Transform3D(Basis(Vector3(0, 0, 1), PI * 0.5), Vector3(xa + 0.012, 1.3, 0)), 0.075, 0.075, 0.025, 8, false)
+	# une cible peinte sur la poitrine : trois anneaux
+	var bz := Basis(Vector3.RIGHT, PI * 0.5)
+	k.cyl("drap", t * Transform3D(bz, Vector3(0, 1.0, 0.25)), 0.17, 0.17, 0.01, 16)
+	k.cyl("banniere_pourpre", t * Transform3D(bz, Vector3(0, 1.0, 0.255)), 0.12, 0.12, 0.01, 16)
+	k.cyl("drap", t * Transform3D(bz, Vector3(0, 1.0, 0.26)), 0.07, 0.07, 0.01, 16)
+	k.cyl("banniere_pourpre", t * Transform3D(bz, Vector3(0, 1.0, 0.265)), 0.03, 0.03, 0.01, 12)
 	var col := CylinderShape3D.new()
 	col.radius = 0.32
 	col.height = 1.9
@@ -185,19 +202,35 @@ func _mannequin(k: RefCounted, c: Vector3, yaw: float) -> void:
 
 
 ## Le râtelier des baguettes, contre le mur : un banc, un casier, des baguettes debout
+## (v12 : le meuble sur pieds, ses tiroirs, le casier percé ; chaque baguette sa poignée, sa virole,
+## son bout qui luit pour certaines)
 func _ratelier(k: RefCounted, a: float) -> void:
 	var d := _dir(a)
 	var c: Vector3 = d * (ri - 0.35)
 	var t: Transform3D = _tr(c.x, 0.0, c.z, atan2(-d.x, -d.z))
-	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.0, 0)), Vector3(2.2, 0.85, 0.5), true)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.08, 0)), Vector3(2.2, 0.77, 0.5), true)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0, 0)), Vector3(2.1, 0.08, 0.44))
+	for xi in range(3):
+		var xd: float = -0.72 + xi * 0.72
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(xd, 0.5, 0.255)), Vector3(0.62, 0.22, 0.012))
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(xd, 0.14, 0.255)), Vector3(0.62, 0.3, 0.012))
+		k._ball(t * Transform3D(Basis.IDENTITY, Vector3(xd, 0.61, 0.27)), 0.018)
+		k._ball(t * Transform3D(Basis.IDENTITY, Vector3(xd, 0.29, 0.27)), 0.018)
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.85, -0.1)), Vector3(2.0, 0.08, 0.3))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 1.08, -0.1)), Vector3(2.0, 0.03, 0.22))
+	for ex in [-1.0, 1.0]:
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(ex * 0.98, 0.93, -0.1)), Vector3(0.04, 0.2, 0.22))
 	for i in range(14):
 		var x: float = -0.9 + i * 0.138
 		var lg: float = 0.32 + _rng.randf() * 0.12
 		var m: String = ["chene", "bois", "fer", "chene"][i % 4]
-		k.box(m, t * Transform3D(Basis(Vector3(0, 0, 1), _rng.randf_range(-0.08, 0.08)), Vector3(x, 0.93, -0.1)), Vector3(0.025, lg, 0.025))
+		var b := Basis(Vector3(0, 0, 1), _rng.randf_range(-0.08, 0.08))
+		var p0: Transform3D = t * Transform3D(b, Vector3(x, 0.93, -0.1))
+		k.cyl(m, p0, 0.012, 0.007, lg, 6)
+		k.cyl("chene" if m != "chene" else "bois", p0, 0.016, 0.014, 0.12, 8)
+		k.cyl("or", p0 * Transform3D(Basis.IDENTITY, Vector3(0, 0.12, 0)), 0.017, 0.017, 0.012, 8)
 		if i % 3 == 0:
-			k.box("rune" if i % 2 == 0 else "rune_violet", t * Transform3D(Basis.IDENTITY, Vector3(x, 0.93 + lg, -0.1)), Vector3(0.03, 0.03, 0.03))
+			_sphere(k, "rune" if i % 2 == 0 else "rune_violet", p0 * Vector3(0, lg, 0), 0.014)
 
 
 # =================================================================== l'escalier
@@ -354,8 +387,17 @@ func _pupitre(k: RefCounted, c: Vector3) -> void:
 	var d: Vector3 = -Vector3(c.x, 0, c.z).normalized()
 	var yaw: float = atan2(d.x, d.z)
 	var t: Transform3D = _tr(c.x, c.y, c.z, yaw)
-	k.box("chene", t, Vector3(0.4, 1.0, 0.4), true)
-	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0, 0)), Vector3(0.7, 0.08, 0.6))
+	# (v12) le pied : quatre griffes, la colonne tournée, le chapiteau qui porte le plateau
+	var cb := BoxShape3D.new()
+	cb.size = Vector3(0.4, 1.0, 0.4)
+	k.shapes.append([cb, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.5, 0))])
+	for e in range(4):
+		var a: float = PI * 0.5 * e + PI * 0.25
+		var dd := Vector3(cos(a), 0, sin(a))
+		_poutre(k, "chene", t * (dd * 0.3 + Vector3(0, 0.02, 0)), t * (dd * 0.08 + Vector3(0, 0.2, 0)), 0.07)
+		k._ball(t * Transform3D(Basis.IDENTITY, dd * 0.32 + Vector3(0, 0.035, 0)), 0.04)
+	_colonne_tournee(k, "chene", t, 0.95, 0.09)
+	k.cyl("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.95, 0)), 0.12, 0.25, 0.08, 12)
 	var plateau: Transform3D = t * Transform3D(Basis(Vector3.RIGHT, -0.35), Vector3(0, 1.05, 0))
 	k.box("chene", plateau, Vector3(0.8, 0.05, 0.6))
 	k.box("velours_pourpre", plateau * Transform3D(Basis.IDENTITY, Vector3(0, 0.05, 0)), Vector3(0.66, 0.03, 0.46))

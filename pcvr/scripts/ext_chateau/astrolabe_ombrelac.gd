@@ -54,10 +54,11 @@ func construire_astrolabe(p: Vector3, hs: float, T: float, HH: float, h1: float,
 	k.cyl("velours_bleu", _tr(0.0, 0.0, 3.4), 3.4, 3.4, 0.03, 32)
 	k.cyl("or", _tr(0.0, 0.0, 3.4), 3.5, 3.5, 0.026, 32)
 	# les bancs contre les murs ouest et sud, les bannières entre les baies
+	# (v12) des bancs à dossier, leurs coussins
 	for zb in [-4.6, 4.6]:
-		k.box("chene", _tr(-hi + 0.35, 0.0, zb), Vector3(0.5, 0.45, 2.4), true)
-	k.box("chene", _tr(-4.6, 0.0, hi - 0.35), Vector3(2.4, 0.45, 0.5), true)
-	k.box("chene", _tr(4.6, 0.0, hi - 0.35), Vector3(2.4, 0.45, 0.5), true)
+		_banc(k, _tr(-hi + 0.3, 0.0, zb, PI * 0.5), 2.4)
+	_banc(k, _tr(-4.6, 0.0, hi - 0.3, PI), 2.4, "velours_pourpre")
+	_banc(k, _tr(4.6, 0.0, hi - 0.3, PI), 2.4, "velours_pourpre")
 	_banniere(k, "banniere_bleu", _p(0.0, HH - 1.0, hi - 0.06), 1.6, 4.4, Vector3(0, 0, -1))
 	_banniere(k, "banniere_pourpre", _p(-hi + 0.06, HH - 1.0, 0.0), 1.6, 4.4, Vector3(1, 0, 0))
 	_banniere(k, "banniere_pourpre", _p(hi - 0.06, HH - 1.0, 4.2), 1.6, 4.4, Vector3(-1, 0, 0))
@@ -311,8 +312,20 @@ func _lunette(k: RefCounted, c: Vector3, dir: Vector3) -> void:
 	_poutre(k, "or", ch + dir * 1.0, ch + dir * 1.0 - zb * 0.22, 0.03)
 	# la chaise de l'astronome, derrière l'oculaire
 	var pc: Vector3 = arr - dir * 0.9
-	k.box("bois", _tr(pc.x - xf.origin.x, c.y, pc.z - xf.origin.z, atan2(dir.x, dir.z)), Vector3(0.5, 0.5, 0.5), true)
-	k.box("velours_pourpre", _tr(pc.x - xf.origin.x, c.y + 0.5, pc.z - xf.origin.z, atan2(dir.x, dir.z)), Vector3(0.48, 0.06, 0.48))
+	# (v12) le tabouret à vis de l'astronome : trois pieds, la vis de laiton, l'assise ronde capitonnée
+	var tb: Transform3D = _tr(pc.x - xf.origin.x, c.y, pc.z - xf.origin.z, atan2(dir.x, dir.z))
+	for i in range(3):
+		var a: float = TAU * i / 3.0
+		_poutre(k, "chene", tb * Vector3(cos(a) * 0.26, 0, sin(a) * 0.26), tb * Vector3(cos(a) * 0.08, 0.38, sin(a) * 0.08), 0.045)
+		_poutre(k, "chene", tb * Vector3(cos(a) * 0.19, 0.14, sin(a) * 0.19), tb * Vector3(cos(a + TAU / 3.0) * 0.19, 0.14, sin(a + TAU / 3.0) * 0.19), 0.025)
+	k.cyl("chene", tb * Transform3D(Basis.IDENTITY, Vector3(0, 0.36, 0)), 0.1, 0.1, 0.06, 12)
+	k.cyl("or", tb * Transform3D(Basis.IDENTITY, Vector3(0, 0.42, 0)), 0.025, 0.025, 0.1, 8)
+	k.cyl("chene", tb * Transform3D(Basis.IDENTITY, Vector3(0, 0.52, 0)), 0.24, 0.24, 0.04, 16, true, true)
+	k.cyl("velours_pourpre", tb * Transform3D(Basis.IDENTITY, Vector3(0, 0.56, 0)), 0.23, 0.2, 0.06, 16)
+	var cs := CylinderShape3D.new()
+	cs.radius = 0.26
+	cs.height = 0.6
+	k.shapes.append([cs, tb * Transform3D(Basis.IDENTITY, Vector3(0, 0.3, 0))])
 
 
 ## Le globe céleste sur son pied de chêne
@@ -347,6 +360,20 @@ func _table_cartes(k: RefCounted, c: Vector3) -> void:
 	_chaise(k, c.x + 0.5, c.z - 0.95, 0.0)
 	_anneau(k, _p(c.x + 0.75, 0.86, c.z + 0.3), Vector3.UP, 0.14, 0.02)
 	_poutre(k, "or", _p(c.x + 0.6, 0.81, c.z + 0.1), _p(c.x + 0.95, 0.81, c.z + 0.45), 0.02, Vector3.UP)
+	# (v12) l'encrier, le compas ouvert sur la carte, des cartes roulées, une loupe
+	_encrier(k, _p(c.x - 0.85, 0.8, c.z - 0.3))
+	var cp: Vector3 = _p(c.x - 0.2, 0.81, c.z)
+	_poutre(k, "or", cp + Vector3(0, 0.12, 0), cp + xf.basis * Vector3(-0.08, 0, 0.05), 0.008)
+	_poutre(k, "or", cp + Vector3(0, 0.12, 0), cp + xf.basis * Vector3(0.08, 0, -0.03), 0.008)
+	k._ball(Transform3D(Basis.IDENTITY, cp + Vector3(0, 0.125, 0)), 0.012)
+	for r in range(3):
+		var rp: Vector3 = _p(c.x - 0.95 + r * 0.04, 0.8 + 0.04 + (0.06 if r == 2 else 0.0), c.z + 0.2 + r * 0.09 - (0.06 if r == 2 else 0.0))
+		k.cyl("drap", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), rp - xf.basis.z * 0.28), 0.035, 0.035, 0.56, 10)
+		k.cyl("velours_bleu", Transform3D(xf.basis * Basis(Vector3.RIGHT, PI * 0.5), rp - xf.basis.z * 0.03), 0.037, 0.037, 0.03, 10, false)
+	var lp: Vector3 = _p(c.x + 0.25, 0.81, c.z + 0.3)
+	_anneau(k, lp + Vector3(0, 0.01, 0), Vector3.UP, 0.06, 0.012)
+	k.cyl("verre", Transform3D(Basis.IDENTITY, lp + Vector3(0, 0.005, 0)), 0.055, 0.055, 0.008, 14)
+	_poutre(k, "chene", lp + xf.basis * Vector3(0.06, 0.01, 0), lp + xf.basis * Vector3(0.2, 0.01, 0.04), 0.022)
 	xf = old
 
 

@@ -330,8 +330,23 @@ func _cathedre(k: RefCounted, q: Vector3, d: Vector3, recteur: bool) -> void:
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.44, -0.24)), Vector3(0.56, hd, 0.08))
 	k.box(v, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.56, -0.19)), Vector3(0.42, hd - 0.3, 0.03))
 	for e in [-1.0, 1.0]:
-		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(e * 0.26, 0.44, 0.0)), Vector3(0.06, 0.3, 0.46))
+		# (v11) l'accoudoir sur sa colonnette tournée, sa crosse
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(e * 0.26, 0.7, -0.03)), Vector3(0.07, 0.04, 0.48))
+		_colonne_tournee(k, "chene", t * Transform3D(Basis.IDENTITY, Vector3(e * 0.26, 0.44, 0.17)), 0.26, 0.025)
+		k.cyl("chene", t * Transform3D(Basis(Vector3.BACK, -PI * 0.5), Vector3(e * 0.26 - 0.04, 0.72, 0.2)), 0.03, 0.03, 0.08, 8)
+		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(e * 0.26, 0.44, -0.12)), Vector3(0.05, 0.26, 0.04))
 		k.cyl("or", t * Transform3D(Basis.IDENTITY, Vector3(e * 0.24, 0.44 + hd, -0.24)), 0.05, 0.0, 0.16, 8)
+	# (v11) le fronton pointu du dossier, la bordure d'or du velours, la ceinture du siège
+	var yh: float = 0.44 + hd
+	for zf in [-0.2, -0.28]:
+		k.tri("chene", t, Vector3(-0.2, yh, zf), Vector3(0.2, yh, zf), Vector3(0, yh + 0.22, zf), Vector3(0, 0, 1 if zf > -0.24 else -1))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, yh, -0.24)), Vector3(0.4, 0.02, 0.08))
+	k._ball(t * Transform3D(Basis.IDENTITY, Vector3(0, yh + 0.25, -0.24)), 0.035)
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.55, -0.175)), Vector3(0.44, 0.012, 0.004))
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.26 + hd, -0.175)), Vector3(0.44, 0.012, 0.004))
+	for e7 in [-1.0, 1.0]:
+		k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(e7 * 0.215, 0.55, -0.175)), Vector3(0.012, hd - 0.28, 0.004))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.3, 0.255)), Vector3(0.56, 0.1, 0.02))
 	if recteur:
 		k.cyl("or", t * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 0.44 + hd - 0.3, -0.165)), 0.16, 0.16, 0.02, 14)
 
@@ -388,9 +403,15 @@ func _bureau(k: RefCounted) -> void:
 	# sur le bureau : les papiers, l'encrier et sa plume, le grimoire, le sablier, la bougie
 	k.box("drap", t * Transform3D(Basis(Vector3.UP, 0.15), Vector3(-0.1, 0.855, 0.1)), Vector3(0.42, 0.01, 0.3))
 	k.box("drap", t * Transform3D(Basis(Vector3.UP, -0.1), Vector3(0.2, 0.86, 0.15)), Vector3(0.42, 0.01, 0.3))
-	k.cyl("fer", t * Transform3D(Basis.IDENTITY, Vector3(0.55, 0.855, 0.2)), 0.06, 0.05, 0.08, 10)
-	_poutre(k, "drap", t * Vector3(0.55, 0.9, 0.2), t * Vector3(0.68, 1.15, 0.12), 0.012)
-	k.box("velours_pourpre", t * Transform3D(Basis(Vector3.UP, 0.3), Vector3(-0.75, 0.855, 0.05)), Vector3(0.34, 0.08, 0.46))
+	_encrier(k, t * Vector3(0.55, 0.855, 0.2))
+	_livre_ferme(k, t * Transform3D(Basis(Vector3.UP, 0.3), Vector3(-0.75, 0.855, 0.05)), Vector3(0.34, 0.08, 0.46), "velours_pourpre")
+	_livre_ferme(k, t * Transform3D(Basis(Vector3.UP, -0.2), Vector3(-0.95, 0.855, -0.3)), Vector3(0.22, 0.05, 0.3), "velours_vert")
+	_livre_ferme(k, t * Transform3D(Basis(Vector3.UP, -0.1), Vector3(-0.96, 0.905, -0.3)), Vector3(0.2, 0.04, 0.27), "velours_bleu")
+	# (v11) le sceau du Recteur, le bâton de cire rouge, le coupe-papier
+	k.cyl("or", t * Transform3D(Basis.IDENTITY, Vector3(0.3, 0.855, -0.25)), 0.025, 0.02, 0.07, 10)
+	k._ball(t * Transform3D(Basis.IDENTITY, Vector3(0.3, 0.935, -0.25)), 0.022)
+	k.box("potion_rouge", t * Transform3D(Basis(Vector3.UP, 0.6), Vector3(0.42, 0.855, -0.3)), Vector3(0.1, 0.014, 0.014))
+	k.box("or", t * Transform3D(Basis(Vector3.UP, -0.4), Vector3(0.05, 0.855, -0.1)), Vector3(0.2, 0.004, 0.014))
 	k.box("or", t * Transform3D(Basis(Vector3.UP, 0.3), Vector3(-0.75, 0.935, 0.05)), Vector3(0.1, 0.005, 0.1))
 	_sablier(k, t * Vector3(-0.35, 0.855, -0.3))
 	_bougie(k, t * Vector3(0.85, 0.855, -0.25), 0.22)
@@ -513,9 +534,20 @@ func _reliques(k: RefCounted) -> void:
 ## coussin, la relique
 func _vitrine(k: RefCounted, q: Vector3, yaw: float, n: int) -> void:
 	var t: Transform3D = _tr(q.x, 0.0, q.z, yaw)
-	k.box("chene", t, Vector3(0.9, 0.9, 0.8), true)
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.1, 0)), Vector3(0.9, 0.8, 0.8), true)
 	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.88, 0)), Vector3(0.96, 0.05, 0.86))
-	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.35, 0.405)), Vector3(0.5, 0.2, 0.01))
+	# (v12) le socle mouluré, les pieds en boule, les panneaux en relief de chaque face, la plaque
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.06, 0)), Vector3(0.96, 0.06, 0.86))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.84, 0)), Vector3(0.94, 0.04, 0.84))
+	for ex in [-1.0, 1.0]:
+		for ez in [-1.0, 1.0]:
+			k._ball(t * Transform3D(Basis.IDENTITY, Vector3(ex * 0.4, 0.035, ez * 0.35)), 0.04)
+	for f in [[Vector3(0, 0.2, 0.405), 0.0], [Vector3(0, 0.2, -0.405), PI], [Vector3(0.455, 0.2, 0), PI * 0.5], [Vector3(-0.455, 0.2, 0), -PI * 0.5]]:
+		var fp: Vector3 = f[0]
+		var w: float = 0.62 if absf(fp.z) > 0.1 else 0.52
+		k.box("bois", t * Transform3D(Basis(Vector3.UP, float(f[1])), fp), Vector3(w, 0.56, 0.012))
+		k.box("chene", t * Transform3D(Basis(Vector3.UP, float(f[1])), fp * 1.025 + Vector3(0, 0.06, 0)), Vector3(w - 0.12, 0.44, 0.012))
+	k.box("or", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.38, 0.42)), Vector3(0.3, 0.1, 0.008))
 	var hv: float = 0.62
 	var y0: float = 0.93
 	var g := Vector3(0.42, 0, 0.37)

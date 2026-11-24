@@ -8,6 +8,7 @@ extends Node3D
 const IleScript = preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 const ChateauScript = preload("res://scripts/ext_chateau/chateau_ombrelac.gd")
 const FloreScript = preload("res://scripts/ext_chateau/flore_ombrelac.gd")
+const FalaisesScript = preload("res://scripts/ext_chateau/falaises_ombrelac.gd")
 const Kit = preload("res://scripts/ext_chateau/archi_ombrelac.gd")
 
 const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le débarcadère d'Ombrelac",
@@ -32,6 +33,7 @@ var main: Node
 var ile: Node3D
 var chateau: Node3D
 var flore: Node3D
+var falaises: Node3D
 var pc: bool = true
 var state := {"visite": false}
 var _nuit: float = -1.0
@@ -59,7 +61,12 @@ func dock() -> Array:
 ## Le château, l'eau, la végétation (après l'heure du jour)
 func build_town() -> void:
 	_lac()
+	_brume()
 	_torrent()
+	falaises = FalaisesScript.new()
+	falaises.name = "Falaises_ombrelac"
+	add_child(falaises)
+	falaises.build(ile, pc)
 	chateau = ChateauScript.new()
 	chateau.name = "Chateau_ombrelac"
 	add_child(chateau)
@@ -82,7 +89,16 @@ func build_town() -> void:
 	flore.plant(ile, pc)
 
 
-func _eau_mat(deep: Color, shallow: Color) -> Material:
+func _eau_mat(deep: Color, shallow: Color, vif: float = 0.0) -> Material:
+	# (v13) l'eau de l'extension : rides, reflet du ciel, transparence au bord, écume des berges
+	if ResourceLoader.exists("res://shaders/ext_chateau/ombrelac_eau.gdshader"):
+		var me := ShaderMaterial.new()
+		me.shader = load("res://shaders/ext_chateau/ombrelac_eau.gdshader")
+		me.set_shader_parameter("profond", Vector3(deep.r, deep.g, deep.b))
+		me.set_shader_parameter("clair", Vector3(shallow.r, shallow.g, shallow.b))
+		me.set_shader_parameter("vif", vif)
+		me.set_shader_parameter("clarte", 1.2 if vif > 0.5 else 2.5)
+		return me
 	if ResourceLoader.exists("res://shaders/eau_douce_v69.gdshader"):
 		var m := ShaderMaterial.new()
 		m.shader = load("res://shaders/eau_douce_v69.gdshader")
@@ -121,6 +137,38 @@ func _lac() -> void:
 	add_child(mi)
 
 
+## (v13) La brume du lac : trois nappes de lambeaux, à 0,7 m, 2 m et 4 m au-dessus de l'eau
+func _brume() -> void:
+	var c: Vector3 = IleScript.W(IleScript.LAC.x, IleScript.LAC.y, IleScript.LAC_Y)
+	var sh: Shader = load("res://shaders/ext_chateau/ombrelac_brume.gdshader")
+	var couches := [[0.7, 0.17, 0.0], [2.0, 0.11, 1.0], [4.0, 0.07, 2.0]]
+	for cc in couches:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var n: int = 48
+		var o: Vector3 = c + Vector3(0, float(cc[0]), 0)
+		for i in range(n):
+			var a0: float = TAU * i / n
+			var a1: float = TAU * (i + 1) / n
+			var d0 := Vector2(cos(a0), sin(a0))
+			var d1 := Vector2(cos(a1), sin(a1))
+			var k: float = 1.15
+			for q in [[Vector2.ZERO, o], [d1, o + Vector3(d1.x * IleScript.LAC_AX.x * k, 0, d1.y * IleScript.LAC_AX.y * k)], [d0, o + Vector3(d0.x * IleScript.LAC_AX.x * k, 0, d0.y * IleScript.LAC_AX.y * k)]]:
+				st.set_normal(Vector3.UP)
+				st.set_uv(q[0])
+				st.add_vertex(q[1])
+		var mi := MeshInstance3D.new()
+		mi.name = "Brume_lac"
+		mi.mesh = st.commit()
+		var m := ShaderMaterial.new()
+		m.shader = sh
+		m.set_shader_parameter("epaisseur", float(cc[1]))
+		m.set_shader_parameter("graine", float(cc[2]))
+		mi.material_override = m
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(mi)
+
+
 ## Le torrent dans la gorge : un ruban d'eau qui suit le lit, du lac à la mer
 func _torrent() -> void:
 	var st := SurfaceTool.new()
@@ -152,7 +200,7 @@ func _torrent() -> void:
 	var mi := MeshInstance3D.new()
 	mi.name = "Torrent_ombrelac"
 	mi.mesh = st.commit()
-	mi.material_override = _eau_mat(Color(0.05, 0.16, 0.17, 1.0), Color(0.2, 0.36, 0.33, 1.0))
+	mi.material_override = _eau_mat(Color(0.05, 0.16, 0.17, 1.0), Color(0.2, 0.36, 0.33, 1.0), 1.0)
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mi)
 

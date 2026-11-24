@@ -100,6 +100,78 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   (coulures, mousse, lichens), baies en ogive à petits losanges sertis de plomb, vitraux de couleur,
   fenêtres qui s'allument le soir (lumière de bougie qui vacille) et s'éteignent à l'aube, eau sombre
   du lac et du torrent.
+- **La passe graphique (v10)** :
+  - les **falaises** du Roc et de l'Aiguille sont sculptées dans la roche : une paroi qui épouse le
+    relief, en bancs de roche (chacun avance ou recule, un joint creusé à sa base), coupés en blocs,
+    de grosses bosses, des fissures ; la roche est peinte dans le monde (strates grises, beiges, un banc
+    ocre, mousse sur les corniches, lichens, coulures, pied mouillé) ; la collision suit la paroi ;
+  - les **éboulis** au pied des falaises : des blocs anguleux de la même roche ;
+  - les **toits** : le grain de l'ardoise refait (plus de grandes traînées pâles), le lichen par
+    ardoise, en petites taches ;
+  - le **dallage** des cours, des galeries et du viaduc : des rangs de dalles de longueurs inégales,
+    chaque dalle sa pierre et son usure, les joints sombres, la mousse et l'herbe dans les joints ;
+    dedans, la pierre polie ;
+  - le **cloître** : des haies de buis taillées autour de quatre carrés de gazon, des massifs de fleurs
+    (blanches, mauves, jaunes, rouges), un arbre au milieu de chaque carré, un cyprès à chaque coin ;
+    la fontaine refaite (un bassin creux et sa margelle, l'eau, la vasque qui déborde) ; des
+    colonnettes moulurées (base, chapiteau) ; un plafond de bois sous le toit des galeries ;
+  - la **Cour d'Honneur** : des réverbères (allumés la nuit), des bancs de pierre, des buis taillés en
+    cône dans des bacs ;
+  - les piles du viaduc moins tachées ; une lande plus fournie (bruyère, herbe, fleurs).
+- **Les détails des intérieurs (v11)** :
+  - de nouvelles **matières**, peintes dans le monde : le **bois** (les cernes clairs et sombres, le
+    fil dans le sens de chaque pièce, les pores, les nœuds, une nuance par planche, le vernis du chêne
+    ciré ; le parquet en lames de 16 cm aux bouts décalés), les **métaux** (le fer forgé martelé et
+    sa rouille dans les creux, l'or et le laiton un peu ternis, le bronze et le cuivre au vert-de-gris,
+    de fines rayures), les **étoffes** (le velours et son reflet rasant, la trame, les plis, l'usure ;
+    le drap des lits) ;
+  - la **Grande Salle** : les tables garnies (chemins de table en velours qui retombent aux bouts,
+    assiettes creuses, gobelets à pied, couteaux, petits pains, coupes de fruits, chandeliers
+    moulurés) ;
+  - la **Bibliothèque** : les lampes de lecture (pied mouluré, abat-jour de verre vert cerclé de
+    laiton, verre opalin qui s'éclaire), les chaises à barreaux et leur coussin, les tables aux pieds
+    tournés, des livres ouverts (pages, lignes d'écriture, signet) et des livres fermés ;
+  - les **dortoirs** : les lits à colonnes tournées, la tête de lit à panneaux, le matelas, l'édredon
+    qui retombe, les oreillers, les rideaux plissés et leurs embrasses à glands, la frange d'or du
+    ciel de lit, les malles cerclées de fer ; le poêle de fonte refait (pieds, côtes, galerie, porte
+    à charnières, cendrier, bouilloire de cuivre, colliers du tuyau, pare-feu) ;
+  - la **Salle Commune** et le **Bureau du Recteur** : les canapés et fauteuils capitonnés (coussins,
+    boudins, accoudoirs roulés, pieds tournés), le blason d'Ombrelac sur la hotte (l'écu bleu, le
+    croissant, trois étoiles), la pendule, les chandeliers et les vases sur le manteau, le serviteur
+    de cheminée ; la table basse ; un vrai jeu d'échecs (une partie en cours) ;
+  - les **salles d'étude** : les pupitres ajourés et leurs livres rangés, les bancs sur pieds, les
+    encriers et leurs plumes, les craies et l'éponge, les paillasses à placards ;
+  - la **Salle du Conseil** : les hauts sièges à fronton, aux accoudoirs tournés ; le bureau du
+    Recteur (son sceau, son bâton de cire, son coupe-papier, ses livres).
+- **Les détails des tours (v12)** :
+  - la **Tour de l'Astrolabe** : des bancs à dossier (pieds tournés, panneaux, coussins de velours) ;
+    dans l'Observatoire, le tabouret à vis de l'astronome, et sur la table des cartes l'encrier et sa
+    plume, le compas ouvert, des cartes roulées, une loupe ;
+  - la **Tour de l'Horloge** : le banc, le coffre ferré aux pièces de rechange (une roue, la burette
+    d'huile) ; l'établi de l'horloger (son tabouret, le marteau, la lime, les brucelles, le tournevis,
+    la loupe, le râtelier d'outils au mur) ; le pupitre du gardien sur pieds tournés, son registre
+    ouvert, son encrier, son tabouret ;
+  - la **Tour des Sortilèges** : les mannequins (corps de paille rond serré de cordes, bras liés,
+    tête en sac, cible à trois anneaux, jambes de force) ; le râtelier des baguettes (tiroirs, casier,
+    chaque baguette sa poignée et sa virole, certaines au bout qui luit) ; le lutrin du grimoire sur
+    sa colonne tournée et ses griffes ;
+  - la **Grosse Tour** : les vitrines des reliques (socle mouluré, pieds en boule, panneaux en relief).
+- **La passe graphique de l'île (v13)** :
+  - les **murs** : une vraie maçonnerie dessinée dans le monde (rien d'étiré, aucune répétition) :
+    des assises de hauteurs inégales, des pierres de longueurs inégales, chacune sa nuance, ses
+    marbrures et son grain, les arêtes émoussées et rongées, les joints de mortier en creux et la
+    crasse le long des joints ; dehors le lichen, la mousse dans les joints du bas, les coulures et
+    les grandes nuances de l'usure ; dedans la patine et un peu de suie en haut des murs ;
+  - la **lumière des salles** : les feux de cheminée projettent des ombres douces ; dans la Grande
+    Salle, des rayons de soleil poudreux tombent des hautes baies du côté sud (éteints la nuit) ;
+  - l'**eau** du lac et du torrent : des rides en plusieurs tailles qui avancent avec le vent (le
+    courant, plus vif et plus serré dans le torrent), le reflet du ciel plus fort de biais, l'eau
+    transparente près des rives (on voit le fond) qui fonce avec la profondeur, l'écume le long des
+    berges et des rochers ;
+  - la **brume** : des nappes basses en lambeaux qui glissent lentement sur le lac ;
+  - la **végétation** : des bosquets de feuillus sur les basses pentes, des buissons en lisière et
+    sur la rive, l'herbe haute autour du lac, des taches de fleurs mauves et jaunes, des nénuphars
+    sur l'eau peu profonde (quelques-uns en fleur, blancs ou roses).
 - **Dans le jeu** : on y va en bateau (la mer de l'île rejoint celle de l'Île aux Moaïs) ; on peut
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
@@ -125,7 +197,18 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/sortileges_ombrelac.gd` | le dedans de la Tour des Sortilèges : la Salle des Cercles, les marches flottantes et leur rambarde de lumière, le Cabinet, les feux follets, les bougies et les livres volants |
 | `pcvr/scripts/ext_chateau/grosse_tour_ombrelac.gd` | le dedans de la Grosse Tour : la Salle du Conseil, l'escalier à vis et sa cage, le Bureau du Recteur, la Salle des Reliques et la Couronne des Fondateurs |
 | `pcvr/scripts/ext_chateau/flore_ombrelac.gd` | la végétation et les rochers (reprend les outils de `grande_flore_v59.gd`) |
+| `pcvr/scripts/ext_chateau/falaises_ombrelac.gd` | (v10) les falaises sculptées du Roc et de l'Aiguille, leur collision ; les blocs des éboulis |
 | `pcvr/shaders/ext_chateau/ombrelac_ardoise.gdshader` | les toits d'ardoises en écailles |
+| `pcvr/shaders/ext_chateau/ombrelac_roche.gdshader` | (v10) la roche des falaises et des éboulis |
+| `pcvr/shaders/ext_chateau/ombrelac_dallage.gdshader` | (v10) le dallage (dehors : mousse dans les joints ; dedans : pierre polie) |
+| `pcvr/shaders/ext_chateau/ombrelac_buis.gdshader` | (v10) les haies de buis taillées |
+| `pcvr/shaders/ext_chateau/ombrelac_bois.gdshader` | (v11) le bois des meubles, des charpentes et du parquet (le fil dans le sens de la pièce) |
+| `pcvr/shaders/ext_chateau/ombrelac_metal.gdshader` | (v11) le fer forgé, l'or, le laiton, le bronze, le cuivre |
+| `pcvr/shaders/ext_chateau/ombrelac_etoffe.gdshader` | (v11) le velours et le drap |
+| `pcvr/shaders/ext_chateau/ombrelac_maconnerie.gdshader` | (v13) la maçonnerie des murs (dehors et dedans) |
+| `pcvr/shaders/ext_chateau/ombrelac_eau.gdshader` | (v13) l'eau du lac et du torrent |
+| `pcvr/shaders/ext_chateau/ombrelac_brume.gdshader` | (v13) la brume du lac |
+| `pcvr/shaders/ext_chateau/ombrelac_rayon.gdshader` | (v13) les rayons de soleil de la Grande Salle |
 | `pcvr/shaders/ext_chateau/ombrelac_vitre.gdshader` | les fenêtres et les vitraux (jour / nuit, vus du dehors et du dedans) |
 | `pcvr/shaders/ext_chateau/ombrelac_flamme.gdshader` | les flammes des bougies et du feu |
 | `pcvr/shaders/ext_chateau/ombrelac_tissu.gdshader` | les bannières et le tapis |

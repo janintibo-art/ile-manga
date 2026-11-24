@@ -16,12 +16,26 @@
 ## jusqu'au Cabinet, la rambarde de lumière arrête le héros, on sort sur le balcon. La Grosse Tour :
 ## on entre dans la Salle du Conseil, on monte à pied l'escalier à vis jusqu'à la Salle des Reliques,
 ## on entre dans le Bureau du Recteur, la Couronne des Fondateurs tourne.
+## v10 : les falaises, le jardin du cloître, la Cour d'Honneur. v11 : les matières du bois, des métaux et
+## des étoffes ; les tables garnies, les lampes, les lits faits. v12 : les détails des tours.
 const NOM := "48_ombrelac"
 const IleO := preload("res://scripts/ext_chateau/ile_ombrelac.gd")
 
 
 func _wo(x: float, z: float, dy: float = 0.4) -> Vector3:
 	return IleO.W(x, z, ombrelac_ext.ile.height_l(x, z) + dy)
+
+
+## (v11) Le maillage de meubles « nom » (sous le château) : la surface faite de la matière « cle », ou -1
+func _surface_de(nom: String, cle: String) -> Array:
+	var mi := ombrelac_ext.chateau.find_child(nom, true, false) as MeshInstance3D
+	if mi == null or mi.mesh == null:
+		return [null, -1]
+	var m: Material = ombrelac_ext.Kit.mat(cle)
+	for i in range(mi.mesh.get_surface_count()):
+		if mi.mesh.surface_get_material(i) == m:
+			return [mi.mesh, i]
+	return [mi.mesh, -1]
 
 
 ## Le monde, au-dessus d'un point du château (repère château), posé sur ce qu'il y a dessous
@@ -351,12 +365,83 @@ func _serie() -> void:
 	await _poser(_wc(ombrelac_ext.chateau.lieux["pont_milieu"], 1.0))
 	_ok(await _debout("le Pont Couvert"), "on tient debout au milieu du Pont Couvert, au-dessus du lac (y %.1f)" % _pos().y)
 	_ok(_pos().y > IleO.ROC_Y - 1.5, "sur le tablier, pas dans le lac (y %.1f)" % _pos().y)
+	# --- v10 : la passe graphique (les falaises sculptées, le jardin du cloître, la Cour d'Honneur)
+	var fal: Node = ombrelac_ext.falaises
+	_ok(fal != null and fal.get_node_or_null("Ombrelac_falaises_roc") != null and fal.get_node_or_null("Ombrelac_falaises_aiguille") != null,
+		"les falaises du Roc et de l'Aiguille sont sculptées")
+	var esp := get_world_3d().direct_space_state
+	var roc_c: Vector3 = IleO.W(IleO.ROC.x, IleO.ROC.y, 30.0)
+	var depuis: Vector3 = IleO.W(IleO.ROC.x - 170.0, IleO.ROC.y, 30.0)
+	var qf := PhysicsRayQueryParameters3D.create(depuis, roc_c, 1)
+	var hf: Dictionary = esp.intersect_ray(qf)
+	_ok(not hf.is_empty() and str((hf["collider"] as Node).name).begins_with("Ombrelac_falaises"),
+		"la roche de la falaise arrête le héros, devant le sol (%s)" % (str((hf["collider"] as Node).name) if not hf.is_empty() else "rien"))
+	if not hf.is_empty():
+		var dr: float = Vector2(hf["position"].x, hf["position"].z).distance_to(Vector2(roc_c.x, roc_c.z))
+		var sol_r: float = 0.0
+		for k2 in range(400):
+			var rr: float = IleO.ROC_R0 + k2 * 0.25
+			if ombrelac_ext.ile.height_l(IleO.ROC.x - rr, IleO.ROC.y) < 30.0:
+				sol_r = rr
+				break
+		_ok(dr > sol_r - 0.2 and dr < sol_r + 4.0, "la paroi suit le relief (%.1f m du centre, le sol à %.1f m)" % [dr, sol_r])
+	var fl: Node = ombrelac_ext.flore
+	_ok(fl != null and int(fl.placed.get("o_cloitre_gazon", 0)) > 500 and int(fl.placed.get("o_cloitre_arbre", 0)) == 4,
+		"le jardin du cloître est planté (%d touffes de gazon)" % (int(fl.placed.get("o_cloitre_gazon", 0)) if fl != null else 0))
+	_ok(ombrelac_ext.chateau.get_node_or_null("Ombrelac_cour") != null, "la Cour d'Honneur a ses réverbères et ses bancs")
+	_ok(_voie_libre(_wc(lx["porte"], 0.0), _wc(lx["grande_salle_porte"], 0.0)), "l'allée de la Cour d'Honneur reste libre")
+	_ok(_voie_libre(_wc(lx["cour"], 0.0), _wc(lx["sortileges"], 0.0)), "on va de la cour à la Tour des Sortilèges")
+	await _poser(_wc(lx["cloitre"], 1.0))
+	_ok(await _debout("le jardin du cloître"), "on tient debout dans le jardin du cloître")
+	# --- v11 : les détails des intérieurs (le bois, les métaux, les étoffes ; la table garnie, les lits)
+	var Kt = ombrelac_ext.Kit
+	var sh_ok: bool = true
+	for paire in [["bois", "ombrelac_bois"], ["chene", "ombrelac_bois"], ["parquet", "ombrelac_bois"], ["fer", "ombrelac_metal"],
+			["or", "ombrelac_metal"], ["bronze", "ombrelac_metal"], ["velours_bleu", "ombrelac_etoffe"], ["drap", "ombrelac_etoffe"]]:
+		var mt: Material = Kt.mat(str(paire[0]))
+		if not (mt is ShaderMaterial and str((mt as ShaderMaterial).shader.resource_path).ends_with(str(paire[1]) + ".gdshader")):
+			sh_ok = false
+	_ok(sh_ok, "le bois, les métaux et les étoffes ont leurs matières dessinées")
+	var sb: Array = _surface_de("Ombrelac_salle_meubles", "chene")
+	var axe_ok: bool = false
+	if int(sb[1]) >= 0:
+		var cols11 = (sb[0] as ArrayMesh).surface_get_arrays(int(sb[1]))[Mesh.ARRAY_COLOR]
+		axe_ok = cols11 != null and cols11.size() > 0 and (cols11[0] as Color).a > 0.5
+	_ok(axe_ok, "le bois des meubles connaît le sens de son fil")
+	_ok(int(_surface_de("Ombrelac_salle_meubles", "pomme_rouge")[1]) >= 0 and int(_surface_de("Ombrelac_salle_meubles", "pain")[1]) >= 0,
+		"les tables de la Grande Salle sont garnies (les fruits, le pain)")
+	_ok(int(_surface_de("Ombrelac_biblio_meubles", "lampe_dedans")[1]) >= 0, "les lampes de la Bibliothèque ont leur verre opalin")
+	_ok(int(_surface_de("Ombrelac_dortoirs_meubles", "cuivre_neuf")[1]) >= 0 and int(_surface_de("Ombrelac_dortoirs_meubles", "drap")[1]) >= 0,
+		"les dortoirs ont leurs lits faits et la bouilloire sur le poêle")
+	# --- v12 : les détails des tours (la table des cartes de l'Observatoire, le registre du gardien de l'horloge)
+	_ok(int(_surface_de("Ombrelac_astrolabe_meubles", "drap")[1]) >= 0, "l'Observatoire a ses cartes roulées et sa plume")
+	_ok(int(_surface_de("Ombrelac_horloge_meubles", "drap")[1]) >= 0 and int(_surface_de("Ombrelac_horloge_meubles", "velours_bleu")[1]) >= 0,
+		"la Tour de l'Horloge a son registre ouvert et son banc à coussin")
+	# --- v13 : la passe graphique de l'île (la maçonnerie, l'eau, la brume, les rayons, la végétation)
+	var mac_ok: bool = true
+	for cle13 in ["pierre", "pierre_int", "pierre_claire"]:
+		var mt13: Material = Kt.mat(cle13)
+		if not (mt13 is ShaderMaterial and str((mt13 as ShaderMaterial).shader.resource_path).ends_with("ombrelac_maconnerie.gdshader")):
+			mac_ok = false
+	_ok(mac_ok, "les murs sont une vraie maçonnerie (les assises, les pierres une à une, les joints)")
+	var eau_ok: bool = true
+	for nom13 in ["Lac_ombrelac", "Torrent_ombrelac"]:
+		var mi13 := ombrelac_ext.find_child(nom13, true, false) as MeshInstance3D
+		if mi13 == null or not (mi13.material_override is ShaderMaterial) or not str((mi13.material_override as ShaderMaterial).shader.resource_path).ends_with("ombrelac_eau.gdshader"):
+			eau_ok = false
+	_ok(eau_ok, "le lac et le torrent ont leur eau (les rides, la transparence au bord, l'écume)")
+	_ok(ombrelac_ext.find_child("Brume_lac", true, false) != null, "la brume flotte sur le lac")
+	_ok(inter != null and inter.find_child("Ombrelac_salle_rayons", true, false) != null and inter.rayons != null, "les rayons du soleil tombent des baies de la Grande Salle")
+	_ok(fl != null and int(fl.placed.get("o_nenuphar", 0)) > 40 and int(fl.placed.get("o_herbe_haute", 0)) > 1000
+		and int(fl.placed.get("o_bosquet_0", 0)) + int(fl.placed.get("o_bosquet_1", 0)) > 50,
+		"l'île a ses bosquets, son herbe haute et ses nénuphars (%d)" % (int(fl.placed.get("o_nenuphar", 0)) if fl != null else 0))
 	# --- les fenêtres : allumées la nuit, éteintes le jour
 	temps_v56.set_hour(22.0)
 	await _att(1.5)
 	var vit: ShaderMaterial = ombrelac_ext.Kit.mat("vitre")
 	_ok(float(vit.get_shader_parameter("nuit")) > 0.9, "la nuit, les fenêtres s'allument")
 	_ok(inter != null and inter.nuit > 0.9, "la nuit, les bougies de la Grande Salle éclairent plus fort")
+	_ok(inter != null and inter.rayons != null and float(inter.rayons.get_shader_parameter("force")) < 0.01, "la nuit, pas de rayons de soleil")
 	temps_v56.set_hour(12.0)
 	await _att(1.5)
 	_ok(float(vit.get_shader_parameter("nuit")) < 0.1, "le jour, elles s'éteignent")

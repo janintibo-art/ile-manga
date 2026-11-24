@@ -65,26 +65,58 @@ func _rayonnage(k: RefCounted, tr: Transform3D, lg: float, h: float, prof: float
 
 
 ## Une lampe de lecture : un pied de laiton, un abat-jour de verre vert
+## (v11 : le pied mouluré, la tige et sa bague, l'abat-jour cerclé de laiton et doublé de verre
+## blanc qui s'éclaire, la flamme dans son verre, la petite pomme du dessus)
 func _lampe(k: RefCounted, p: Vector3) -> void:
-	k.cyl("or", Transform3D(xf.basis, p), 0.09, 0.08, 0.03, 10)
-	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.03, 0)), 0.014, 0.014, 0.36, 6)
-	k.cyl("lampe", Transform3D(xf.basis, p + Vector3(0, 0.3, 0)), 0.15, 0.06, 0.13, 12)
-	k.cyl("cire", Transform3D(xf.basis, p + Vector3(0, 0.28, 0)), 0.03, 0.03, 0.04, 6)
+	k.cyl("or", Transform3D(xf.basis, p), 0.095, 0.09, 0.015, 16)
+	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.015, 0)), 0.08, 0.05, 0.03, 16)
+	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.045, 0)), 0.03, 0.016, 0.03, 10)
+	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.075, 0)), 0.013, 0.013, 0.2, 8)
+	k._ball(Transform3D(xf.basis, p + Vector3(0, 0.17, 0)), 0.024)
+	# le réservoir, la galerie, le verre de la flamme
+	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.27, 0)), 0.035, 0.045, 0.03, 12)
+	k.cyl("or", Transform3D(xf.basis, p + Vector3(0, 0.3, 0)), 0.045, 0.03, 0.02, 12)
+	k.cyl("cire", Transform3D(xf.basis, p + Vector3(0, 0.32, 0)), 0.022, 0.026, 0.07, 10)
+	# l'abat-jour : la coupe de verre vert (dehors), le verre blanc (dedans), les deux cercles
+	var b: Vector3 = p + Vector3(0, 0.33, 0)
+	k.cyl("lampe", Transform3D(xf.basis, b), 0.16, 0.12, 0.05, 20, false)
+	k.cyl("lampe", Transform3D(xf.basis, b + Vector3(0, 0.05, 0)), 0.12, 0.05, 0.08, 20, false)
+	k.cyl("lampe_dedans", Transform3D(xf.basis, b + Vector3(0, 0.004, 0)), 0.152, 0.114, 0.05, 20, false)
+	k.cyl("or", Transform3D(xf.basis, b - Vector3(0, 0.006, 0)), 0.165, 0.163, 0.014, 20, false)
+	k.cyl("or", Transform3D(xf.basis, b + Vector3(0, 0.125, 0)), 0.055, 0.04, 0.02, 12)
+	k._ball(Transform3D(xf.basis, b + Vector3(0, 0.16, 0)), 0.016)
 
 
 ## Une chaise (repère de l'aile), le dossier du côté de yaw
+## (v11 : quatre pieds, l'assise et son coussin, le dossier à barreaux)
 func _chaise(k: RefCounted, x: float, z: float, yaw: float) -> void:
-	k.box("bois", _tr(x, 0.0, z, yaw), Vector3(0.46, 0.46, 0.46))
-	k.box("bois", _tr(x, 0.0, z, yaw) * Transform3D(Basis.IDENTITY, Vector3(0, 0.46, -0.21)), Vector3(0.46, 0.55, 0.05))
+	var t: Transform3D = _tr(x, 0.0, z, yaw)
+	for ex in [-0.19, 0.19]:
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(ex, 0, 0.19)), Vector3(0.045, 0.42, 0.045))
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(ex, 0, -0.19)), Vector3(0.05, 1.0, 0.05))
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(ex, 0.14, 0)), Vector3(0.025, 0.03, 0.38))
+	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.39, 0)), Vector3(0.46, 0.04, 0.46))
+	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.33, 0)), Vector3(0.42, 0.06, 0.42))
+	k.box("velours_vert", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.43, 0.01)), Vector3(0.4, 0.035, 0.38))
+	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.88, -0.19)), Vector3(0.44, 0.1, 0.05))
+	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.55, -0.19)), Vector3(0.38, 0.04, 0.035))
+	for bx in [-0.1, 0.0, 0.1]:
+		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(bx, 0.59, -0.19)), Vector3(0.03, 0.29, 0.025))
 
 
 ## Une table (repère de l'aile), le long de x
+## (v11 : le plateau et son chant, la ceinture, les pieds tournés, l'entretoise)
 func _table_l(k: RefCounted, x: float, z: float, lg: float, lar: float) -> void:
-	k.box("bois", _tr(x, 0.74, z), Vector3(lg, 0.06, lar), true)
+	k.box("chene", _tr(x, 0.74, z), Vector3(lg, 0.06, lar), true)
+	k.box("chene", _tr(x, 0.73, z), Vector3(lg - 0.04, 0.02, lar - 0.04))
 	for ex in [-1.0, 1.0]:
 		for ez in [-1.0, 1.0]:
-			k.box("bois", _tr(x + ex * (lg * 0.5 - 0.12), 0.0, z + ez * (lar * 0.5 - 0.1)), Vector3(0.09, 0.74, 0.09))
-	k.box("bois", _tr(x, 0.6, z), Vector3(lg - 0.3, 0.12, lar - 0.25))
+			_colonne_tournee(k, "bois", _tr(x + ex * (lg * 0.5 - 0.12), 0.0, z + ez * (lar * 0.5 - 0.1)), 0.73, 0.045)
+	for ez2 in [-1.0, 1.0]:
+		k.box("bois", _tr(x, 0.6, z + ez2 * (lar * 0.5 - 0.1)), Vector3(lg - 0.3, 0.13, 0.03))
+	for ex2 in [-1.0, 1.0]:
+		k.box("bois", _tr(x + ex2 * (lg * 0.5 - 0.12), 0.6, z), Vector3(0.03, 0.13, lar - 0.25))
+	k.box("bois", _tr(x, 0.12, z), Vector3(lg - 0.3, 0.05, 0.05))
 
 
 ## Une petite sphère (pour le globe), lissée
@@ -136,11 +168,11 @@ func construire(the_xf: Transform3D, L: float, W: float, H: float, T: float, vou
 			_table_l(k, x, s * (hw - 1.15), 2.6, 0.95)
 			_chaise(k, x - 0.7, s * (hw - 2.05), 0.0 if s > 0 else PI)
 			_chaise(k, x + 0.7, s * (hw - 2.05), 0.0 if s > 0 else PI)
-			_lampe(k, _p(x, 0.77, s * (hw - 0.9)))
+			_lampe(k, _p(x, 0.8, s * (hw - 0.9)))
 			# des livres posés, un livre ouvert
-			k.box("banniere_pourpre", _tr(x + 0.6, 0.77, s * (hw - 1.1), 0.2), Vector3(0.24, 0.06, 0.32))
-			k.box("banniere_bleu", _tr(x + 0.62, 0.83, s * (hw - 1.1), 0.5), Vector3(0.22, 0.05, 0.3))
-			k.box("cire", _tr(x - 0.35, 0.77, s * (hw - 1.3), 0.1), Vector3(0.5, 0.02, 0.34))
+			_livre_ferme(k, _tr(x + 0.6, 0.8, s * (hw - 1.1), 0.2), Vector3(0.24, 0.06, 0.32), "velours_pourpre")
+			_livre_ferme(k, _tr(x + 0.62, 0.86, s * (hw - 1.1), 0.5), Vector3(0.22, 0.05, 0.3), "velours_bleu")
+			_livre_ouvert(k, _tr(x - 0.35, 0.8, s * (hw - 1.3), 0.1), 0.5, 0.34, "velours_vert")
 	# --- la longue table de l'allée (de part et d'autre de l'entrée)
 	for seg in [[-7.8, -1.6], [1.6, 12.5]]:
 		var x0: float = seg[0]
@@ -153,7 +185,7 @@ func construire(the_xf: Transform3D, L: float, W: float, H: float, T: float, vou
 			_chaise(k, cx, 0.95, 0.0)
 		var nl: int = int((x1 - x0) / 2.6)
 		for i in range(nl):
-			_lampe(k, _p(x0 + (i + 0.5) * (x1 - x0) / nl, 0.77, 0.0))
+			_lampe(k, _p(x0 + (i + 0.5) * (x1 - x0) / nl, 0.8, 0.0))
 	# --- les rayonnages des pignons (au nord du sol au plafond de la galerie, au sud sous la galerie)
 	_rayonnage(k, _tr(hl - 0.33, 0.0, 0.0, -PI * 0.5), hw * 2.0 - 0.1, GALERIE - 0.35, 0.6, false)
 	_rayonnage(k, _tr(-hl + 0.33, 0.0, 0.0, PI * 0.5), hw * 2.0 - 0.1, GALERIE - 0.35, 0.6, false)

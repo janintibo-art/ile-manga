@@ -12,7 +12,12 @@ extends RefCounted
 
 const T := "res://assets/textures/"
 const PIERRE := "res://shaders/pierre_chateau_v161.gdshader"
+const MACONNERIE := "res://shaders/ext_chateau/ombrelac_maconnerie.gdshader"
 const ARDOISE := "res://shaders/ext_chateau/ombrelac_ardoise.gdshader"
+const DALLAGE := "res://shaders/ext_chateau/ombrelac_dallage.gdshader"
+const BOIS := "res://shaders/ext_chateau/ombrelac_bois.gdshader"
+const METAL := "res://shaders/ext_chateau/ombrelac_metal.gdshader"
+const ETOFFE := "res://shaders/ext_chateau/ombrelac_etoffe.gdshader"
 const VITRE := "res://shaders/ext_chateau/ombrelac_vitre.gdshader"
 const LAMBRIS := "res://shaders/ext_chateau/ombrelac_lambris.gdshader"
 const LIVRES := "res://shaders/ext_chateau/ombrelac_livres.gdshader"
@@ -38,13 +43,46 @@ static func mat(key: String) -> Material:
 		return _mats[key]
 	var m: Material
 	match key:
-		"pierre", "pierre_claire", "socle", "pierre_int":
+		"pierre", "pierre_int", "pierre_claire":
+			# (v13) la maçonnerie dessinée dans le monde : les assises inégales, les pierres une à une,
+			# les joints en creux ; dehors le lichen et la mousse, dedans la patine
+			var smc := ShaderMaterial.new()
+			smc.shader = load(MACONNERIE)
+			if key == "pierre":
+				smc.set_shader_parameter("teinte", Vector3(0.37, 0.345, 0.31))
+				smc.set_shader_parameter("mortier", Vector3(0.44, 0.42, 0.38))
+				smc.set_shader_parameter("dehors", 1.0)
+				smc.set_shader_parameter("mousse", 0.7)
+				smc.set_shader_parameter("assise", 0.68)
+				smc.set_shader_parameter("longueur", 1.45)
+				smc.set_shader_parameter("joint", 0.022)
+				smc.set_shader_parameter("variete", 1.8)
+			elif key == "pierre_int":
+				smc.set_shader_parameter("teinte", Vector3(0.6, 0.5, 0.39))
+				smc.set_shader_parameter("mortier", Vector3(0.56, 0.5, 0.42))
+				smc.set_shader_parameter("dehors", 0.0)
+				smc.set_shader_parameter("assise", 0.5)
+				smc.set_shader_parameter("longueur", 1.0)
+				smc.set_shader_parameter("joint", 0.02)
+				smc.set_shader_parameter("variete", 1.5)
+			else:
+				# la pierre fine des encadrements, des marches, des manteaux : de grands blocs, des joints fins
+				smc.set_shader_parameter("teinte", Vector3(0.74, 0.7, 0.62))
+				smc.set_shader_parameter("mortier", Vector3(0.66, 0.63, 0.57))
+				smc.set_shader_parameter("dehors", 1.0)
+				smc.set_shader_parameter("mousse", 0.3)
+				smc.set_shader_parameter("assise", 0.5)
+				smc.set_shader_parameter("longueur", 1.1)
+				smc.set_shader_parameter("joint", 0.008)
+				smc.set_shader_parameter("variete", 0.6)
+			m = smc
+		"socle":
 			var sp := ShaderMaterial.new()
 			sp.shader = load(PIERRE)
 			if key == "socle":
 				sp.set_shader_parameter("tex_albedo", load(T + "montjoie/pierre_rempart.png"))
 				sp.set_shader_parameter("tex_normal", load(T + "montjoie/pierre_rempart_n.png"))
-				sp.set_shader_parameter("teinte", Color(0.66, 0.64, 0.62))
+				sp.set_shader_parameter("teinte", Color(0.8, 0.77, 0.72))
 				sp.set_shader_parameter("echelle", 1.0 / 4.0)
 			elif key == "pierre":
 				sp.set_shader_parameter("tex_albedo", load(T + "ext_chateau/pierre_ombrelac.png"))
@@ -63,7 +101,8 @@ static func mat(key: String) -> Material:
 				sp.set_shader_parameter("teinte", Color(1.0, 0.98, 0.94))
 				sp.set_shader_parameter("echelle", 1.0 / 2.0)
 			sp.set_shader_parameter("relief", 1.1)
-			sp.set_shader_parameter("mousse", 0.0 if key == "pierre_int" else (0.7 if key != "pierre_claire" else 0.35))
+			# (v10) le soubassement : moins de mousse (ses lichens pâles faisaient des points blancs)
+			sp.set_shader_parameter("mousse", 0.0 if key == "pierre_int" else (0.3 if key == "socle" else (0.7 if key != "pierre_claire" else 0.35)))
 			sp.set_shader_parameter("sol_y", 52.0)
 			m = sp
 		"ardoise":
@@ -77,42 +116,55 @@ static func mat(key: String) -> Material:
 			sv.shader = load(VITRE)
 			sv.set_shader_parameter("vitrail", key == "vitrail")
 			m = sv
-		"or":
-			var so := StandardMaterial3D.new()
-			so.albedo_color = Color(0.95, 0.72, 0.3)
-			so.metallic = 1.0
-			so.roughness = 0.32
-			m = so
-		"fer":
-			var sf := StandardMaterial3D.new()
-			sf.albedo_color = Color(0.12, 0.12, 0.13)
-			sf.metallic = 0.85
-			sf.roughness = 0.55
-			m = sf
-		"bois", "chene":
-			var sb := StandardMaterial3D.new()
-			sb.albedo_texture = load(T + "montjoie/bois_planches.png")
-			sb.normal_enabled = true
-			sb.normal_texture = load(T + "montjoie/bois_planches_n.png")
-			sb.uv1_triplanar = true
-			sb.uv1_world_triplanar = true
-			sb.uv1_scale = Vector3.ONE / 2.0
-			sb.albedo_color = Color(0.55, 0.38, 0.26) if key == "bois" else Color(0.9, 0.66, 0.44)
-			sb.roughness = 0.8
-			m = sb
+		"or", "fer", "bronze", "cuivre_neuf":
+			# (v11) les métaux dessinés dans le monde : martelage, rouille, vert-de-gris, or terni
+			var smt := ShaderMaterial.new()
+			smt.shader = load(METAL)
+			var reg := {"or": [Vector3(0.95, 0.72, 0.3), 1.0, 0.3, 0.0, 0.0, 0.0, 0.4],
+				"fer": [Vector3(0.12, 0.12, 0.13), 0.85, 0.55, 1.0, 0.35, 0.0, 0.0],
+				"bronze": [Vector3(0.72, 0.5, 0.27), 0.5, 0.45, 0.3, 0.0, 0.35, 0.2],
+				"cuivre_neuf": [Vector3(0.86, 0.47, 0.3), 1.0, 0.33, 0.0, 0.0, 0.05, 0.2]}
+			var rg: Array = reg[key]
+			smt.set_shader_parameter("teinte", rg[0])
+			smt.set_shader_parameter("metal", rg[1])
+			smt.set_shader_parameter("rugosite", rg[2])
+			smt.set_shader_parameter("martele", rg[3])
+			smt.set_shader_parameter("rouille", rg[4])
+			smt.set_shader_parameter("patine", rg[5])
+			smt.set_shader_parameter("terni", rg[6])
+			m = smt
+		"bois", "chene", "parquet":
+			# (v11) le bois dessiné dans le monde, le fil dans le sens de chaque pièce (l'axe est donné
+			# par le kit dans la couleur des sommets) ; le parquet en lames
+			var sbo := ShaderMaterial.new()
+			sbo.shader = load(BOIS)
+			if key == "bois":
+				sbo.set_shader_parameter("teinte", Vector3(0.34, 0.22, 0.13))
+				sbo.set_shader_parameter("teinte_ete", Vector3(0.2, 0.12, 0.065))
+				sbo.set_shader_parameter("rugosite", 0.75)
+				sbo.set_shader_parameter("vernis", 0.1)
+			elif key == "chene":
+				sbo.set_shader_parameter("teinte", Vector3(0.48, 0.32, 0.19))
+				sbo.set_shader_parameter("teinte_ete", Vector3(0.29, 0.18, 0.1))
+				sbo.set_shader_parameter("rugosite", 0.6)
+				sbo.set_shader_parameter("vernis", 0.6)
+			else:
+				sbo.set_shader_parameter("teinte", Vector3(0.44, 0.29, 0.17))
+				sbo.set_shader_parameter("teinte_ete", Vector3(0.27, 0.16, 0.09))
+				sbo.set_shader_parameter("rugosite", 0.55)
+				sbo.set_shader_parameter("vernis", 0.5)
+				sbo.set_shader_parameter("planches", 1.0)
+			m = sbo
 		"dalles", "dalles_int":
-			var sd := StandardMaterial3D.new()
-			sd.albedo_texture = load(T + "ext_chateau/dalles_ombrelac.png")
-			sd.normal_enabled = true
-			sd.normal_texture = load(T + "ext_chateau/dalles_ombrelac_n.png")
-			sd.uv1_triplanar = true
-			sd.uv1_world_triplanar = true
-			sd.uv1_scale = Vector3.ONE / 4.0
-			sd.albedo_color = Color(1.0, 0.94, 0.84)
-			sd.roughness = 0.95
+			# (v10) le dallage dessiné dans le monde : les dalles inégales, les joints, la mousse dehors
+			var sd := ShaderMaterial.new()
+			sd.shader = load(DALLAGE)
 			if key == "dalles_int":
-				sd.albedo_color = Color(0.92, 0.8, 0.66)
-				sd.metallic_specular = 0.2
+				sd.set_shader_parameter("dehors", 0.0)
+				sd.set_shader_parameter("poli", 0.6)
+				sd.set_shader_parameter("teinte", Vector3(1.02, 0.92, 0.8))
+				sd.set_shader_parameter("rang", 0.7)
+				sd.set_shader_parameter("longueur", 0.95)
 			m = sd
 		"gazon":
 			var sg := StandardMaterial3D.new()
@@ -135,26 +187,32 @@ static func mat(key: String) -> Material:
 			var sli := ShaderMaterial.new()
 			sli.shader = load(LIVRES)
 			m = sli
-		"parquet":
-			var spq := StandardMaterial3D.new()
-			spq.albedo_texture = load(T + "montjoie/bois_planches.png")
-			spq.normal_enabled = true
-			spq.normal_texture = load(T + "montjoie/bois_planches_n.png")
-			spq.uv1_triplanar = true
-			spq.uv1_world_triplanar = true
-			spq.uv1_scale = Vector3.ONE / 1.6
-			spq.albedo_color = Color(0.62, 0.42, 0.27)
-			spq.roughness = 0.55
-			m = spq
 		"lampe":
 			var sla := StandardMaterial3D.new()
-			sla.albedo_color = Color(0.2, 0.42, 0.26)
+			sla.albedo_color = Color(0.07, 0.3, 0.13)
 			sla.emission_enabled = true
-			sla.emission = Color(0.55, 0.85, 0.45)
-			sla.emission_energy_multiplier = 0.6
-			sla.roughness = 0.15
-			sla.metallic_specular = 0.8
+			sla.emission = Color(0.3, 0.65, 0.3)
+			sla.emission_energy_multiplier = 0.35
+			sla.roughness = 0.08
+			sla.metallic_specular = 0.9
+			sla.cull_mode = BaseMaterial3D.CULL_DISABLED
+			sla.rim_enabled = true
+			sla.rim = 0.4
+			sla.rim_tint = 0.2
+			sla.clearcoat_enabled = true
+			sla.clearcoat = 0.8
+			sla.clearcoat_roughness = 0.05
 			m = sla
+		"lampe_dedans":
+			# (v11) le verre opalin sous l'abat-jour : il s'éclaire de la flamme
+			var sld := StandardMaterial3D.new()
+			sld.albedo_color = Color(0.95, 0.92, 0.82)
+			sld.emission_enabled = true
+			sld.emission = Color(1.0, 0.85, 0.6)
+			sld.emission_energy_multiplier = 1.6
+			sld.roughness = 0.4
+			sld.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = sld
 		"lanterne":
 			var sln := StandardMaterial3D.new()
 			sln.albedo_color = Color(0.9, 0.6, 0.25)
@@ -206,12 +264,6 @@ static func mat(key: String) -> Material:
 			sve.metallic = 0.3
 			sve.metallic_specular = 1.0
 			m = sve
-		"cuivre_neuf":
-			var scn := StandardMaterial3D.new()
-			scn.albedo_color = Color(0.86, 0.47, 0.3)
-			scn.metallic = 1.0
-			scn.roughness = 0.33
-			m = scn
 		"moellons":
 			var smo := StandardMaterial3D.new()
 			smo.albedo_texture = load(T + "montjoie/moellons.png")
@@ -238,6 +290,29 @@ static func mat(key: String) -> Material:
 			sso.metallic = 0.6
 			sso.roughness = 0.3
 			m = sso
+		"pomme_rouge", "pomme_verte", "poire", "pain":
+			# (v11) les fruits (un peu brillants), le pain (doré, mat)
+			var sfr := StandardMaterial3D.new()
+			var tf := {"pomme_rouge": Color(0.62, 0.08, 0.06), "pomme_verte": Color(0.45, 0.62, 0.16), "poire": Color(0.72, 0.6, 0.22), "pain": Color(0.66, 0.42, 0.18)}
+			sfr.albedo_color = tf[key]
+			sfr.roughness = 0.85 if key == "pain" else 0.35
+			if key != "pain":
+				sfr.rim_enabled = true
+				sfr.rim = 0.2
+			m = sfr
+		"buis":
+			var sbu := ShaderMaterial.new()
+			sbu.shader = load("res://shaders/ext_chateau/ombrelac_buis.gdshader")
+			m = sbu
+		"eau_fontaine":
+			var se := ShaderMaterial.new()
+			se.shader = load("res://shaders/eau_douce_v69.gdshader")
+			se.set_shader_parameter("deep", Color(0.05, 0.14, 0.14, 1.0))
+			se.set_shader_parameter("shallow", Color(0.22, 0.36, 0.32, 1.0))
+			se.set_shader_parameter("clarity", 1.2)
+			if ResourceLoader.exists("res://assets/textures/water/water_n.png"):
+				se.set_shader_parameter("ripple_n", load("res://assets/textures/water/water_n.png"))
+			m = se
 		"lambris":
 			var sl := ShaderMaterial.new()
 			sl.shader = load(LAMBRIS)
@@ -255,20 +330,16 @@ static func mat(key: String) -> Material:
 			sw.emission = Color(1.0, 0.6, 0.25)
 			sw.emission_energy_multiplier = 0.25
 			m = sw
-		"velours_bleu", "velours_pourpre", "velours_vert":
-			# les rideaux des lits, les édredons, les fauteuils : un velours (un peu de reflet rasant)
-			var sv := StandardMaterial3D.new()
-			if key == "velours_bleu":
-				sv.albedo_color = Color(0.1, 0.14, 0.36)
-			elif key == "velours_pourpre":
-				sv.albedo_color = Color(0.36, 0.07, 0.14)
-			else:
-				sv.albedo_color = Color(0.12, 0.26, 0.14)
-			sv.roughness = 0.85
-			sv.rim_enabled = true
-			sv.rim = 0.45
-			sv.rim_tint = 0.6
-			sv.cull_mode = BaseMaterial3D.CULL_DISABLED
+		"velours_bleu", "velours_pourpre", "velours_vert", "drap":
+			# (v11) les étoffes : la trame, les plis, le reflet rasant du velours
+			var sv := ShaderMaterial.new()
+			sv.shader = load(ETOFFE)
+			var tv := {"velours_bleu": Vector3(0.1, 0.14, 0.36), "velours_pourpre": Vector3(0.36, 0.07, 0.14),
+				"velours_vert": Vector3(0.12, 0.26, 0.14), "drap": Vector3(0.86, 0.83, 0.76)}
+			sv.set_shader_parameter("teinte", tv[key])
+			if key == "drap":
+				sv.set_shader_parameter("velours", 0.0)
+				sv.set_shader_parameter("rugosite", 0.92)
 			m = sv
 		"cadran":
 			# le verre opalin des cadrans de l'horloge : laiteux le jour, éclairé du dedans la nuit
@@ -280,12 +351,6 @@ static func mat(key: String) -> Material:
 			sc.emission_energy_multiplier = 0.25
 			sc.cull_mode = BaseMaterial3D.CULL_DISABLED
 			m = sc
-		"bronze":
-			var sb := StandardMaterial3D.new()
-			sb.albedo_color = Color(0.72, 0.5, 0.27)
-			sb.metallic = 0.35
-			sb.roughness = 0.5
-			m = sb
 		"rune", "rune_violet":
 			# les runes et les lueurs de la Tour des Sortilèges : une lumière froide, sans ombre
 			var sr := StandardMaterial3D.new()
@@ -320,11 +385,6 @@ static func mat(key: String) -> Material:
 			sp2.albedo_color = Color(0.78, 0.66, 0.36)
 			sp2.roughness = 1.0
 			m = sp2
-		"drap":
-			var sd := StandardMaterial3D.new()
-			sd.albedo_color = Color(0.86, 0.83, 0.76)
-			sd.roughness = 0.92
-			m = sd
 		"suie":
 			var su := StandardMaterial3D.new()
 			su.albedo_color = Color(0.05, 0.045, 0.04)
@@ -365,10 +425,26 @@ func _tool(m: String) -> SurfaceTool:
 		var st := SurfaceTool.new()
 		st.begin(Mesh.PRIMITIVE_TRIANGLES)
 		_st[m] = st
+		if m in BOIS_MATS:
+			_st_bois[st] = true
 	return _st[m]
 
 
+## (v11) Le sens du fil des pièces de bois : l'axe (dans le repère du maillage) de la boîte ou du
+## cylindre en cours, rangé dans la couleur des sommets (a = 0 : pas d'axe)
+const BOIS_MATS := ["bois", "chene", "parquet"]
+var _st_bois := {}
+var _axe_col := Color(0, 0, 0, 0)
+
+
+func _axe(a: Vector3) -> void:
+	var d: Vector3 = a.normalized()
+	_axe_col = Color(d.x * 0.5 + 0.5, d.y * 0.5 + 0.5, d.z * 0.5 + 0.5, 1.0) if d != Vector3.ZERO else Color(0, 0, 0, 0)
+
+
 func _v(st: SurfaceTool, p: Vector3, n: Vector3, uv: Vector2, uv2: Vector2) -> void:
+	if _st_bois.has(st):
+		st.set_color(_axe_col)
 	st.set_normal(n)
 	st.set_uv(uv)
 	st.set_uv2(uv2)
@@ -425,6 +501,10 @@ func box(m: String, xf: Transform3D, size: Vector3, collide: bool = false) -> vo
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
 	var h: float = size.y
+	var garde: Color = _axe_col
+	if m in BOIS_MATS:
+		var lg: Vector3 = xf.basis.x * size.x if size.x >= size.y and size.x >= size.z else (xf.basis.y * size.y if size.y >= size.z else xf.basis.z * size.z)
+		_axe(lg)
 	var p := [Vector3(-hx, 0, -hz), Vector3(hx, 0, -hz), Vector3(hx, 0, hz), Vector3(-hx, 0, hz),
 		Vector3(-hx, h, -hz), Vector3(hx, h, -hz), Vector3(hx, h, hz), Vector3(-hx, h, hz)]
 	quad(m, xf, p[4], p[5], p[6], p[7], Vector3.UP)
@@ -433,6 +513,7 @@ func box(m: String, xf: Transform3D, size: Vector3, collide: bool = false) -> vo
 	quad(m, xf, p[1], p[0], p[4], p[5], Vector3.FORWARD)
 	quad(m, xf, p[2], p[1], p[5], p[6], Vector3.RIGHT)
 	quad(m, xf, p[0], p[3], p[7], p[4], Vector3.LEFT)
+	_axe_col = garde
 	if collide:
 		var s := BoxShape3D.new()
 		s.size = size
@@ -442,6 +523,9 @@ func box(m: String, xf: Transform3D, size: Vector3, collide: bool = false) -> vo
 ## Un tronc de cône (une tour ronde) : xf au centre de la base ; r0 en bas, r1 en haut
 func cyl(m: String, xf: Transform3D, r0: float, r1: float, h: float, sides: int = 24, caps: bool = true, collide: bool = false) -> void:
 	var slope: float = (r0 - r1) / maxf(h, 0.001)
+	var garde: Color = _axe_col
+	if m in BOIS_MATS:
+		_axe(xf.basis.y if h >= maxf(r0, r1) else xf.basis.x)
 	for i in range(sides):
 		var a0: float = TAU * i / sides
 		var a1: float = TAU * (i + 1) / sides
@@ -452,6 +536,7 @@ func cyl(m: String, xf: Transform3D, r0: float, r1: float, h: float, sides: int 
 		quad_smooth(m, xf, d0 * r0, d1 * r0, d1 * r1 + Vector3(0, h, 0), d0 * r1 + Vector3(0, h, 0), n0, n1, n1, n0)
 		if caps:
 			tri(m, xf, Vector3(0, h, 0), d0 * r1 + Vector3(0, h, 0), d1 * r1 + Vector3(0, h, 0), Vector3.UP)
+	_axe_col = garde
 	if collide:
 		var s := CylinderShape3D.new()
 		s.radius = maxf(r0, r1)
