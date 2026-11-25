@@ -1,6 +1,6 @@
 #!/bin/bash
 # Des images de l'Île Foraine (V209) et des planches qui les rassemblent.
-#     bash tests/outils/rendu_foraine.sh DOSSIER [tout | vues | tour]
+#     bash tests/outils/rendu_foraine.sh DOSSIER [tout | vues | tour | maneges]
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
@@ -10,13 +10,13 @@ QUOI="${2:-tout}"
 mkdir -p "$OUT"
 rm -f "$OUT"/*.png
 for f in pcvr/scripts/ile_foraine_v209.gd pcvr/scripts/foraine_v209.gd pcvr/scripts/foraine_kit_v209.gd pcvr/scripts/grand_huit_v209.gd \
-    pcvr/scripts/grand_huit_trace_v209.gd pcvr/scripts/geants_kit_v142.gd pcvr/scripts/metal_kit_v160.gd pcvr/shaders/geants_sol_v142.gdshader; do
+    pcvr/scripts/grand_huit_trace_v209.gd pcvr/scripts/manege_v210.gd pcvr/scripts/marteau_v210.gd pcvr/scripts/chute_v210.gd pcvr/scripts/balancoire_v210.gd pcvr/scripts/geants_kit_v142.gd pcvr/scripts/metal_kit_v160.gd pcvr/shaders/geants_sol_v142.gdshader; do
   cp "$DEPOT/$f" "$COPIE/$f"
 done
 cp "$DEPOT/tests/outils/rendu_foraine.gd" "$COPIE/pcvr/rendu_foraine.gd"
 cd "$COPIE" && flock /tmp/godot77.lock timeout 1500 xvfb-run -a -s "-screen 0 1280x800x24" "$GODOT" --path pcvr \
   --rendering-method gl_compatibility --rendering-driver opengl3 --resolution "${RENDU_RES:-640x400}" --audio-driver Dummy \
-  --script res://rendu_foraine.gd -- "$OUT" "$QUOI" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|ILE_MANGA_V209|at: " | head -60
+  --script res://rendu_foraine.gd -- "$OUT" "$QUOI" 2>&1 | grep -E "SCRIPT ERROR|Parse Error|ERROR: .*\.gd|ILE_MANGA_V2|at: " | head -60
 rm -f "$COPIE/pcvr/rendu_foraine.gd"
 python3 - "$OUT" <<'PY'
 import sys, glob, os

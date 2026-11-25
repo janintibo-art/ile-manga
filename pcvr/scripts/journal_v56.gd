@@ -1481,7 +1481,8 @@ const AVENTURES := [
 	# V209 : l'Île Foraine
 	{"id": "foraine", "titre": "La fête foraine", "lieu": "L'Île Foraine, à l'est de l'archipel", "debut": "foraine",
 		"etapes": [["foraine", "Aborder l'Île Foraine (à l'est, au large de Montjoie)"], ["fo_billet", "Acheter un billet au guichet du Grand Portail"],
-			["fo_tour", "Faire un tour de Grand Frisson, le grand huit"]]},
+			["fo_tour", "Faire un tour de Grand Frisson, le grand huit"], ["fo_marteau", "Tenir un tour de Marteau, la tête en bas à 60 m"],
+			["fo_chute", "Se laisser tomber de la Chute, au sommet de la Butte"], ["fo_balancoire", "Monter sur la Grande Balançoire, au bord de la mer"]]},
 	# V128 : le comte lui-même, puis les prisonniers des souterrains
 	{"id": "comte_dracula", "titre": "Le comte Dracula", "lieu": "Sombreval, tout en haut de la Tour du Comte", "debut": "sv_chambre",
 		"etapes": [["sv_chambre", "Pousser la porte de fer, tout en haut de la Tour du Comte"], ["sv_comte", "Vaincre le comte Dracula (l'aube est derrière les rideaux)"],

@@ -2,7 +2,8 @@ extends Node3D
 ## V209 : l'Île Foraine, à l'est de l'archipel (au large de Montjoie). L'île des sensations fortes :
 ## on paie son billet au guichet (en pièces, il vaut pour la journée), on passe le tourniquet sous le
 ## grand portail, et tout au bout de l'allée, le Grand Frisson — un grand huit de 1,7 km qui fait
-## le tour de l'île (grand_huit_v209). D'autres manèges viendront sur l'esplanade et sur la Butte.
+## le tour de l'île (grand_huit_v209). V210 : le Marteau (au bord de l'allée), la Chute (au sommet
+## de la Butte) et la Grande Balançoire (au bord de la mer, au sud) ; le billet vaut pour tout.
 ## Tout public : rien ne change ici entre les deux modes du jeu.
 
 const IleScript = preload("res://scripts/ile_foraine_v209.gd")
@@ -10,15 +11,25 @@ const Kit = preload("res://scripts/foraine_kit_v209.gd")
 const GK = preload("res://scripts/geants_kit_v142.gd")
 const Huit = preload("res://scripts/grand_huit_v209.gd")
 const Trace = preload("res://scripts/grand_huit_trace_v209.gd")
+const Marteau = preload("res://scripts/marteau_v210.gd")
+const Chute = preload("res://scripts/chute_v210.gd")
+const Balancoire = preload("res://scripts/balancoire_v210.gd")
+
+# V210 : où sont les manèges (sur l'île)
+const MARTEAU_AT := Vector2(36.0, 44.0)
+const CHUTE_AT := Vector2(18.0, -116.0)
+const BALANCOIRE_AT := Vector2(20.0, 160.0)
 
 const PRIX: int = 25                      # le billet d'entrée (en pièces), pour la journée
 const QUAI_Y: float = 5.32                # le plancher du quai du grand huit
 const PLACES := {"fo_ponton": "le ponton", "fo_entree": "le Grand Portail", "fo_quai": "le quai du Grand Frisson",
-	"fo_butte": "la Butte aux Frissons", "fo_place": "la Place du Mât", "fo_plage": "la plage", "fo_esplanade": "l'esplanade"}
+	"fo_butte": "la Butte aux Frissons", "fo_place": "la Place du Mât", "fo_plage": "la plage", "fo_esplanade": "l'esplanade",
+	"fo_marteau": "le Marteau", "fo_chute": "la Chute", "fo_balancoire": "la Grande Balançoire"}
 
 var main: Node
 var ile: Node3D
 var huit: Node3D
+var maneges: Array = []                   # V210 : le Marteau, la Chute, la Grande Balançoire
 var pc: bool = true
 var state: Dictionary = {}
 var guichet_pos := Vector3.ZERO
@@ -40,7 +51,7 @@ func setup(main_node: Node) -> void:
 
 
 func _fresh_state() -> Dictionary:
-	return {"visite": false, "billet_jour": -1, "billets": 0, "tours": 0, "doux": false}
+	return {"visite": false, "billet_jour": -1, "billets": 0, "tours": 0, "doux": false, "marteau": 0, "chute": 0, "balancoire": 0}
 
 
 # =================================================================== construction
@@ -82,6 +93,17 @@ func build_town() -> void:
 	huit.name = "Grand_huit_v209"
 	add_child(huit)
 	huit.setup(main, ile)
+	# V210 : les manèges à sensations
+	for spec in [[Marteau, MARTEAU_AT, PI * 0.5], [Chute, CHUTE_AT, 0.0], [Balancoire, BALANCOIRE_AT, 0.0]]:
+		var m: Node3D = spec[0].new()
+		m.name = "%s_v210" % str(m.cle).capitalize()
+		add_child(m)
+		m.setup(main, ile, self, spec[1], float(spec[2]))
+		m.tours = int(state.get(str(m.cle), 0))
+		maneges.append(m)
+	# ils ne partent pas tous en même temps
+	for k in range(maneges.size()):
+		maneges[k].attente = 9.0 + k * 7.0
 	_actions()
 
 
@@ -408,7 +430,7 @@ func acheter_billet() -> bool:
 
 
 func monter() -> bool:
-	if huit == null:
+	if huit == null or riding():
 		return false
 	if not billet_valide():
 		main._show_message_v28("Il faut un billet pour monter : le guichet est à l'entrée, près du Grand Portail.")
@@ -420,6 +442,38 @@ func monter() -> bool:
 		return false
 	main._show_message_v28("Au premier rang du Grand Frisson ! La barre se baisse… %s" % ("(en douceur : l'horizon reste droit)" if bool(state.get("doux", false)) else "(toutes les sensations)"))
 	return true
+
+
+## V210 : monter dans un des manèges à sensations
+func monter_manege(m: Node3D) -> bool:
+	if m == null or riding():
+		return false
+	if not billet_valide():
+		main._show_message_v28("Il faut un billet pour monter : le guichet est à l'entrée, près du Grand Portail.")
+		return false
+	if not m.a_quai():
+		main._show_message_v28("%s est en marche… il s'arrête dans un instant." % str(m.titre))
+		return false
+	if not m.monter(bool(state.get("doux", false))):
+		return false
+	main._show_message_v28("%s ! Le harnais se referme… %s" % [str(m.titre), "(en douceur : l'horizon reste droit)" if bool(state.get("doux", false)) else "(toutes les sensations)"])
+	return true
+
+
+func manege(cle: String) -> Node3D:
+	for m in maneges:
+		if str(m.cle) == cle:
+			return m
+	return null
+
+
+func _a_bord() -> Node3D:
+	if huit != null and bool(huit.a_bord):
+		return huit
+	for m in maneges:
+		if bool(m.a_bord):
+			return m
+	return null
 
 
 func changer_sensations() -> void:
@@ -436,29 +490,37 @@ func _actions() -> void:
 		"when": func(): return not me.billet_valide()})
 	_interactions.append({"id": "fo_monter", "pos": huit.quai_pos, "radius": 4.2, "text": "E : monter dans le Grand Frisson",
 		"vr": "Gâchette : monter dans le Grand Frisson", "call": func(): me.monter(),
-		"when": func(): return me.huit != null and not me.huit.a_bord and me.huit.a_quai()})
+		"when": func(): return me.huit != null and not me.riding() and me.huit.a_quai()})
 	_interactions.append({"id": "fo_sensations", "pos": reglage_pos, "radius": 1.8, "text": "E : régler les sensations",
 		"vr": "Gâchette : régler les sensations", "call": func(): me.changer_sensations(),
-		"when": func(): return me.huit != null and not me.huit.a_bord})
+		"when": func(): return me.huit != null and not me.riding()})
+	for m in maneges:
+		var mm: Node3D = m
+		_interactions.append({"id": "fo_monter_%s" % str(mm.cle), "pos": mm.quai_pos, "radius": 3.4, "text": "E : monter — %s" % str(mm.titre),
+			"vr": "Gâchette : monter — %s" % str(mm.titre), "call": func(): me.monter_manege(mm),
+			"when": func(): return not me.riding() and mm.a_quai()})
 
 
 # =================================================================== les manèges qui nous portent
 
 func riding() -> bool:
-	return huit != null and bool(huit.a_bord)
+	return _a_bord() != null
 
 
 func ride_interact() -> void:
-	if huit != null:
-		huit.descendre_avant_depart()
+	var m: Node3D = _a_bord()
+	if m != null:
+		m.descendre_avant_depart()
 
 
 func ride_prompt() -> String:
-	return str(huit.texte()) if huit != null else ""
+	var m: Node3D = _a_bord()
+	return str(m.texte()) if m != null else ""
 
 
 func ride_safe_pos() -> Vector3:
-	return huit.lieu_sur() if huit != null else respawn_point()[0]
+	var m: Node3D = _a_bord()
+	return m.lieu_sur() if m != null else respawn_point()[0]
 
 
 # =================================================================== les repères des autres
@@ -493,6 +555,12 @@ func zone_at(p: Vector3) -> String:
 		return "fo_entree"
 	if Vector2((l.x - IleScript.GARE.x) * 0.5, l.y - IleScript.GARE.y - 4.0).length() < 14.0:
 		return "fo_quai"
+	if l.distance_to(CHUTE_AT) < 14.0:
+		return "fo_chute"
+	if l.distance_to(MARTEAU_AT) < 16.0:
+		return "fo_marteau"
+	if l.distance_to(BALANCOIRE_AT) < 18.0:
+		return "fo_balancoire"
 	if l.distance_to(IleScript.BUTTE) < IleScript.BUTTE_R * 0.75:
 		return "fo_butte"
 	if l.distance_to(IleScript.PLACE) < IleScript.PLACE_R + 6.0:
@@ -511,6 +579,11 @@ func village_point(id: String) -> Array:
 		return []
 	if id == "foraine_quai":
 		return [_a(-78.0, QUAI_Y + 0.3, 64.5), Vector3(0, 0, 1)]
+	# V210 : devant chaque manège (à quelques pas de l'embarquement)
+	for pair in [["foraine_marteau", "marteau"], ["foraine_chute", "chute"], ["foraine_balancoire", "balancoire"]]:
+		if id == str(pair[0]):
+			var m: Node3D = manege(str(pair[1]))
+			return [m.quai_pos, m.quai_face] if m != null else []
 	return respawn_point()
 
 
@@ -553,6 +626,8 @@ func _process(delta: float) -> void:
 		main._show_message_v28("L'Île Foraine — l'île des sensations fortes. Le guichet est près du Grand Portail ; tout au bout de l'allée, le Grand Frisson.")
 	if huit != null:
 		state["tours"] = maxi(int(state.get("tours", 0)), int(huit.tours))
+	for m in maneges:
+		state[str(m.cle)] = maxi(int(state.get(str(m.cle), 0)), int(m.tours))
 	# la barrière du tourniquet : ouverte avec un billet (ou quand on est déjà dans la fête)
 	var dedans: bool = p.x > portail_pos.x + 0.4
 	if _barriere != null:
@@ -571,7 +646,10 @@ func _process(delta: float) -> void:
 func trouvailles() -> Dictionary:
 	return {"foraine": 1 if bool(state["visite"]) else 0,
 		"fo_billet": 1 if int(state.get("billets", 0)) > 0 or int(state.get("billet_jour", -1)) >= 0 else 0,
-		"fo_tour": 1 if int(state.get("tours", 0)) > 0 else 0}
+		"fo_tour": 1 if int(state.get("tours", 0)) > 0 else 0,
+		"fo_marteau": 1 if int(state.get("marteau", 0)) > 0 else 0,
+		"fo_chute": 1 if int(state.get("chute", 0)) > 0 else 0,
+		"fo_balancoire": 1 if int(state.get("balancoire", 0)) > 0 else 0}
 
 
 func serialize() -> Dictionary:
@@ -586,3 +664,6 @@ func load_data(dd: Dictionary) -> void:
 	if huit != null:
 		huit.lacher()
 		huit.tours = int(state.get("tours", 0))
+	for m in maneges:
+		m.lacher()
+		m.tours = int(state.get(str(m.cle), 0))

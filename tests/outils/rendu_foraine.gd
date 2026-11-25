@@ -117,6 +117,51 @@ func _initialize() -> void:
 			g.huit.avancer(0.02)
 			garde2 += 1
 		print("ILE_MANGA_V209 rendu : fin du tour, à bord ", g.huit.a_bord, " tours ", g.huit.tours, " ", fm.messages.back())
+	if quoi in ["tout", "maneges"]:
+		# V210 : les manèges à sensations, vus du sol puis de notre siège
+		await _vue("40_marteau", _sol(60, 22) + Vector3(0, 1.7, 0), C + Vector3(36, 26, 44))
+		await _vue("41_marteau_quai", _sol(40, 30) + Vector3(0, 1.7, 0), C + Vector3(36, 5, 44))
+		await _vue("42_chute", _sol(22, -78) + Vector3(0, 1.7, 0), C + Vector3(18, 62, -116))
+		await _vue("43_chute_pied", _sol(19, -104) + Vector3(0, 1.7, 0), C + Vector3(18, 24, -116))
+		await _vue("44_balancoire", _sol(-28, 150) + Vector3(0, 1.7, 0), C + Vector3(20, 20, 160))
+		await _vue("45_balancoire_quai", _sol(12, 150) + Vector3(0, 1.7, 0), C + Vector3(20, 6, 160))
+		await _vue("46_ensemble", C + Vector3(-150, 70, 150), C + Vector3(20, 20, 0))
+		g.offrir_billet()
+		for spec in [["marteau", [4.0, 9.0, 12.5, 16.0, 22.0, 26.5, 28.0, 36.0]], ["chute", [6.0, 14.0, 22.0, 900.0, 901.2, 902.4, 903.2, 906.0]],
+				["balancoire", [8.0, 20.0, 31.0, 33.5, 36.5, 39.0, 42.0, 55.0]]]:
+			var m: Node3D = g.manege(str(spec[0]))
+			m.etat = "quai"
+			m.attente = 0.3
+			fm.pc_root.global_position = m.quai_pos
+			print("ILE_MANGA_V210 rendu : monter ", spec[0], " ", g.monter_manege(m))
+			var n: int = 0
+			var chute_t0: float = -1.0
+			for cible in spec[1]:
+				var but: float = float(cible)
+				var garde: int = 0
+				while garde < 60000 and m.a_bord:
+					# la Chute : les instants après 900 se comptent depuis le lâcher
+					if str(spec[0]) == "chute" and but >= 900.0:
+						if chute_t0 < 0.0 and str(m.phase) == "chute":
+							chute_t0 = float(m.t)
+						if chute_t0 >= 0.0 and float(m.t) - chute_t0 >= but - 900.0:
+							break
+					elif m.etat == "marche" and float(m.t) >= but:
+						break
+					m.avancer(0.02)
+					garde += 1
+				m._porter(0.0)
+				for k4 in range(5):
+					await process_frame
+				root.get_texture().get_image().save_png("%s/5%d_%s_%d.png" % [out, ["marteau", "chute", "balancoire"].find(str(spec[0])), str(spec[0]), n])
+				print("ILE_MANGA_V210 rendu : ", spec[0], " t ", snappedf(float(m.t), 0.1), " v ", snappedf(float(m.vitesse) * 3.6, 1.0), " km/h, h ",
+					snappedf(m.siege().origin.y - m.global_position.y, 0.1), " m, g ", snappedf(float(m.g_ressenti), 0.1), " haut.y ", snappedf(m.siege().basis.y.y, 0.01))
+				n += 1
+			var garde3: int = 0
+			while m.a_bord and garde3 < 60000:
+				m.avancer(0.02)
+				garde3 += 1
+			print("ILE_MANGA_V210 rendu : fin, à bord ", m.a_bord, " ", fm.messages.back())
 	quit()
 
 

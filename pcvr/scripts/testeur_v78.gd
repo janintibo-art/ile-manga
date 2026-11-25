@@ -934,7 +934,7 @@ func _visit(sc: String) -> void:
 
 
 ## V206 : les îles les plus récentes en tête (avant : à la fin, derrière six pages de « Suivants »).
-const RECENTES_V206 := ["foraine", "foraine_quai", "ombrelac", "ombrelac_cour", "perchee", "perchee_ponton", "nuees", "strates", "fronde", "dome",
+const RECENTES_V206 := ["foraine", "foraine_quai", "foraine_marteau", "foraine_chute", "foraine_balancoire", "ombrelac", "ombrelac_cour", "perchee", "perchee_ponton", "nuees", "strates", "fronde", "dome",
 	"hautefond", "hautefond_port", "geants", "sombreval"]
 
 

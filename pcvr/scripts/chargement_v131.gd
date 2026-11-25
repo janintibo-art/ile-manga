@@ -70,7 +70,7 @@ const ETAPES := {
 	"sombreval_vie": ["Le château du comte", 1580],
 	"geants_vie": ["La ferme des Grandpré", 1500],
 	"perchee_vie": ["Pile-ou-Face, la ville qui mise", 9000],
-	"foraine_vie": ["Le Grand Frisson, un grand huit de 1,7 km", 2500],
+	"foraine_vie": ["Le Grand Frisson et les manèges de l'Île Foraine", 2700],
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [

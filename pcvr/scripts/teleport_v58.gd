@@ -24,6 +24,7 @@ const PLACES := [
 	["sombreval", "Sombreval, le Port des Brumes"],
 	["geants", "L'Île des Géants, le Ponton des Petits"],
 	["foraine", "L'Île Foraine, le Grand Portail"], ["foraine_quai", "L'Île Foraine, le quai du Grand Frisson"],
+	["foraine_marteau", "L'Île Foraine, le Marteau"], ["foraine_chute", "L'Île Foraine, la Chute"], ["foraine_balancoire", "L'Île Foraine, la Grande Balançoire"],
 	["ombrelac", "L'île d'Ombrelac, le débarcadère"], ["ombrelac_cour", "L'Académie d'Ombrelac, la Cour d'Honneur"],
 	["perchee", "L'Île Perchée, Pile-ou-Face"], ["perchee_ponton", "Le Ponton de la Chaîne"],
 	["hautefond", "Hautefond, la Place de la Colonne"], ["hautefond_port", "Le Port des Cordages"], ["nuees", "La Cité des Nuées, l'Esplanade du Ciel"], ["strates", "Les Strates, la Gare"], ["fronde", "La Fronde, l'entrée"], ["dome", "Le Dôme d'Azur, la Place de la Perle"],
@@ -144,7 +145,7 @@ func spot(id: String) -> Array:
 		"geants":
 			var gt: Node = main.get("geants_v142")
 			return gt.village_point(id) if gt != null and gt.get("ile") != null and gt.ile != null else []
-		"foraine", "foraine_quai":
+		"foraine", "foraine_quai", "foraine_marteau", "foraine_chute", "foraine_balancoire":
 			var fo: Node = main.get("foraine_v209")
 			return fo.village_point(id) if fo != null and fo.get("ile") != null and fo.ile != null else []
 		"ombrelac", "ombrelac_cour":
@@ -241,7 +242,8 @@ func current_place() -> String:
 		return "geants"
 	var fo2: Node = main.get("foraine_v209")
 	if fo2 != null and fo2.get("ile") != null and fo2.ile != null and fo2.contains(p) and p.y > -10.0 and fo2.ile.height(p.x, p.z) > -0.42:
-		return "foraine_quai" if str(fo2.zone_at(p)) == "fo_quai" else "foraine"
+		var zf: String = str(fo2.zone_at(p))
+		return str({"fo_quai": "foraine_quai", "fo_marteau": "foraine_marteau", "fo_chute": "foraine_chute", "fo_balancoire": "foraine_balancoire"}.get(zf, "foraine"))
 	var om2: Node = main.get("ombrelac_ext")
 	if om2 != null and om2.get("ile") != null and om2.ile != null and om2.contains(p) and p.y > -10.0 and om2.ile.height(p.x, p.z) > -0.42:
 		var omz: String = str(om2.zone_at(p))

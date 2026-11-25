@@ -31,7 +31,9 @@ const ALLEES := [
 	[[[-78.0, 20.0], [-78.0, 58.0]], 3.2],
 	[[[-20.0, 20.0], [-20.0, -18.0], [10.0, -62.0], [18.0, -100.0]], 2.6],
 	[[[-20.0, 20.0], [-10.0, 100.0], [20.0, 150.0]], 2.6],
+	[[[38.0, 20.0], [38.0, 38.0]], 2.6],        # V210 : vers le Marteau
 ]
+const PLATS_V210 := [[36.0, 44.0, 15.0], [20.0, 158.0, 11.0]]   # V210 : sous le Marteau, sous la Grande Balançoire
 const BIOME_RES: int = 301
 
 var count: int = 0
@@ -122,6 +124,8 @@ func _shape(x: float, z: float) -> float:
 	var plat: float = 1.0 - smoothstep(al.y, al.y + 5.0, al.x)
 	plat = maxf(plat, 1.0 - smoothstep(PLACE_R, PLACE_R + 6.0, Vector2(x, z).distance_to(PLACE)))
 	plat = maxf(plat, 1.0 - smoothstep(22.0, 30.0, Vector2((x - GARE.x) * 0.5, z - GARE.y - 6.0).length()))
+	for pv in PLATS_V210:
+		plat = maxf(plat, 1.0 - smoothstep(float(pv[2]), float(pv[2]) + 6.0, Vector2(x - float(pv[0]), z - float(pv[1])).length()))
 	if db > BUTTE_R * 0.55 and inland > 24.0:
 		h = lerpf(h, SOL, plat)
 	return h
