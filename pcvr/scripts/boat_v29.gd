@@ -61,6 +61,8 @@ const KEY_CONFETTIS := KEY_K
 const SPY_FOV: float = 13.0
 
 var main: Node
+var echelles: Array = []                 # V206 : {"pied", "haut", "face"} : l'échelle de chaque ponton
+var _hisse_cd: float = 0.0
 var driving: bool = false
 var speed: float = 0.0
 var yaw: float = PI                    # cap (rotation Y) ; la proue regarde vers -Z local
@@ -218,6 +220,26 @@ func _make_dock(label: String, start: Vector3, end: Vector3) -> void:
 	body.add_child(cs)
 	root.add_child(body)
 	body.global_transform = Transform3D(basis, center + Vector3.DOWN * 0.15)
+	# V206 : une échelle au bout du ponton, du côté où la barque ne s'amarre pas : le plancher est à
+	# 1,40 m au-dessus de l'eau, et à la nage rien ne montrait qu'on pouvait y monter.
+	var pied: Vector3 = end - axis * 1.2 - side * 1.32
+	var montant := BoxMesh.new()
+	montant.size = Vector3(0.07, 3.3, 0.07)
+	for sd2 in [-1.0, 1.0]:
+		var mm2 := MeshInstance3D.new()
+		mm2.mesh = montant
+		mm2.material_override = _wood
+		root.add_child(mm2)
+		mm2.global_transform = Transform3D(basis, pied + axis * sd2 * 0.27 + Vector3.DOWN * 0.75)
+	var barreau := BoxMesh.new()
+	barreau.size = Vector3(0.05, 0.05, 0.54)
+	for kb in range(8):
+		var mb2 := MeshInstance3D.new()
+		mb2.mesh = barreau
+		mb2.material_override = _wood
+		root.add_child(mb2)
+		mb2.global_transform = Transform3D(basis, pied + Vector3.UP * (-2.2 + kb * 0.3))
+	echelles.append({"pied": Vector3(pied.x, WATER, pied.z), "haut": end - axis * 1.2 + Vector3.UP * 0.1, "face": side})
 	docks.append({"name": label, "start": start, "end": end, "axis": axis, "side": side, "length": length_d})
 
 
@@ -1982,9 +2004,30 @@ func _float_motion(delta: float, turn: float) -> void:
 ## V52 : la mer ne se dessine pas à l'intérieur de la coque (shaders water*.gdshader).
 ## V76 : les shaders connaissent la forme de la barque ; on leur passe la coque ramenée à ces
 ## mesures (la forme des grandes coques est la même, mise à l'échelle).
+## V206 : à la nage au pied d'une échelle de ponton : on se hisse sur le plancher.
+func _hisser_v206(delta: float) -> void:
+	_hisse_cd = maxf(_hisse_cd - delta, 0.0)
+	var mer: Node = main.get("mer_v55")
+	if _hisse_cd > 0.0 or driving or mer == null or not bool(mer.get("swimming")):
+		return
+	var p: Vector3 = main._player_pos_v27()
+	if p.y > DECK_Y - 0.6:
+		return
+	for e in echelles:
+		var pied: Vector3 = e["pied"]
+		if Vector2(p.x - pied.x, p.z - pied.z).length() < 1.0:
+			_hisse_cd = 3.0
+			main.place_player_v35(e["haut"], e["face"])
+			if main.has_method("sfx"):
+				main.sfx("pas_bois", e["haut"])
+			main._show_message_v28("Tu te hisses sur le ponton par l'échelle.")
+			return
+
+
 func _process(delta: float) -> void:
 	if hull == null or main == null:
 		return
+	_hisser_v206(delta)
 	var m: ShaderMaterial = main.get("ocean_material")
 	if m != null:
 		var inv: Transform3D = hull.global_transform.affine_inverse()

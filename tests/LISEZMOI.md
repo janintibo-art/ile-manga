@@ -10,8 +10,8 @@ des outils communs (`series/_commun.gd`), et le jeu est lancé sans écran.
 
 | Série | Ce qu'elle passe en revue |
 |---|---|
-| `01_demarrage` | le monde est construit, une nouvelle partie commence au village, l'heure avance, le mode testeur s'ouvre ; V204 : aucun dinosaure de l'Île Pixelithique au village ; V205 : téléporté depuis la barque, on la quitte |
-| `10_voyages` | toutes les îles et grandes places, et un quart des lieux de quête (un autre quart à chaque version) : on y arrive et l'on tient debout |
+| `01_demarrage` | le monde est construit, une nouvelle partie commence au village, l'heure avance, le mode testeur s'ouvre ; V204 : aucun dinosaure de l'Île Pixelithique au village ; V205 : téléporté depuis la barque, on la quitte ; V206 : une échelle à chaque ponton, à la nage on s'y hisse |
+| `10_voyages` | toutes les îles et grandes places, et un quart des lieux de quête (un autre quart à chaque version) : on y arrive et l'on tient debout ; V206 : Ombrelac en tête, le parachute et les quatre kiosques du Saut des Nuées au mode testeur |
 | `20_habitants` | tous les habitants : chacun parle et a des sujets ; un sur quatre en anglais, un sur quatre en espagnol |
 | `30_maisons` | toutes les histoires de maisons : on entre, la pièce est construite ; V176 : on n'arrive pas pris dans un meuble, personne n'a la tête dans un mur |
 | `32_public_averti` | V193 : Port-Boucan la nuit en Public averti (rien en Tout public) : couples enlacés, fumeurs du toit, la Hurlante chez Sirène, le Rieur et son trip, la douche de bière, le slam jusqu'à la régie |

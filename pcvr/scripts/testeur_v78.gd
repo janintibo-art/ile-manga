@@ -132,6 +132,7 @@ func open_menu() -> void:
 func _menu_voyage() -> void:
 	var ch: Array = [
 		{"id": "iles", "label": "Aller sur une île ou une grande place"},
+		{"id": "saut206", "label": "Le Saut des Nuées : devant un kiosque, le parachute dans le sac"},
 		{"id": "lieux", "label": "Aller à un lieu de quête (carnet)"},
 		{"id": "pnj", "label": "Aller près d'un habitant"},
 		{"id": "maisons", "label": "Visiter une maison (choisir l'histoire)"},
@@ -220,6 +221,7 @@ func _menu_armes() -> void:
 		{"id": "a_outils", "label": "Tous les outils (masque, palmes, boussoles, sifflet, pelle…)"},
 		{"id": "a_forge", "label": "Forge au maximum (lame runique, armure runique)"},
 		{"id": "a_alouette", "label": "L'Alouette au dernier niveau"},
+		{"id": "a_parachute", "label": "Le parachute (pour sauter des îles flottantes)"},
 		{"id": "menu", "label": "(Retour)"},
 	]
 	main.ask_v69(_anchor, "Mode testeur", "malin", "Armes, outils et forge", ch, _pick)
@@ -385,6 +387,11 @@ func _pick(id: String) -> void:
 			if ae != null:
 				ae.set_level(4, false)
 			_done("l'Alouette est au dernier niveau.", _menu_armes)
+		"a_parachute":
+			_done("le parachute est dans le sac." if _parachute_v206() else "tu as déjà le parachute.", _menu_armes)
+		"saut206":
+			_parachute_v206()
+			_open_list("saut206", _kiosques_v206(), 0)
 		"iles":
 			_open_list("iles", _islands(), 0)
 		"lieux":
@@ -923,13 +930,46 @@ func _visit(sc: String) -> void:
 	M.enter(best)
 
 
+## V206 : les îles les plus récentes en tête (avant : à la fin, derrière six pages de « Suivants »).
+const RECENTES_V206 := ["ombrelac", "ombrelac_cour", "perchee", "perchee_ponton", "nuees", "strates", "fronde", "dome",
+	"hautefond", "hautefond_port", "geants", "sombreval"]
+
+
 func _islands() -> Array:
 	var out: Array = []
 	var tp: Node = main.get("teleport_v58")
 	if tp == null:
 		return out
+	var noms: Dictionary = {}
 	for pl in tp.PLACES:
-		out.append([str(pl[1]), str(pl[0])])
+		noms[str(pl[0])] = str(pl[1])
+	for id in RECENTES_V206:
+		if noms.has(id):
+			out.append([str(noms[id]), str(id)])
+	for pl in tp.PLACES:
+		if not RECENTES_V206.has(str(pl[0])):
+			out.append([str(pl[1]), str(pl[0])])
+	return out
+
+
+## V206 : le parachute dans le sac (vrai s'il vient d'y être mis).
+func _parachute_v206() -> bool:
+	var inv: Node = main.get("inventory_v28")
+	if inv == null or int(inv.count("parachute")) > 0:
+		return false
+	inv.add("parachute", 1)
+	return true
+
+
+## V206 : les kiosques du Saut des Nuées : [libellé, où se tenir devant le comptoir].
+func _kiosques_v206() -> Array:
+	var out: Array = []
+	var pa: Node = main.get("parachute_v201")
+	if pa == null:
+		return out
+	var noms: Dictionary = {"astralys": "Astralys", "nuees": "la Cité des Nuées", "perchee": "l'Île Perchée", "citadelle": "l'île flottante de la citadelle"}
+	for a in pa.arrivees:
+		out.append(["Le Saut des Nuées : " + str(noms.get(str(a[0]), str(a[0]))), a[1]])
 	return out
 
 

@@ -50,3 +50,14 @@ func _serie() -> void:
 	await _images(6)
 	var ou205: Vector3 = _player_pos_v27()
 	_ok(bord205 and not boat_v29.driving and Vector2(ou205.x - but205.x, ou205.z - but205.z).length() < 1.5, "téléporté depuis la barque : on la quitte et on reste à l'arrivée (%.1f, %.1f)" % [ou205.x, ou205.z])
+	# V206 : une échelle au bout de chaque ponton ; à la nage, à son pied, on se hisse sur le plancher
+	var ech206: Dictionary = boat_v29.echelles[0] if not boat_v29.echelles.is_empty() else {}
+	_ok(boat_v29.echelles.size() == boat_v29.docks.size() and boat_v29.echelles.size() >= 10, "chaque ponton a son échelle (%d)" % boat_v29.echelles.size())
+	var pied206: Vector3 = ech206.get("pied", Vector3.ZERO)
+	place_player_v35(pied206 + Vector3(0.0, -0.9, 0.0), Vector3.FORWARD)
+	await _att(1.5)
+	var haut206: Vector3 = ech206.get("haut", Vector3.ZERO)
+	var la206: Vector3 = _player_pos_v27()
+	_ok(Vector2(la206.x - haut206.x, la206.z - haut206.z).length() < 1.5 and absf(la206.y - boat_v29.DECK_Y) < 0.6, "à la nage au pied de l'échelle du ponton du village : on se retrouve sur le plancher (%.1f m de haut)" % la206.y)
+	place_player_v35(Vector3(2.0, _height_at(2.0, 8.0) + 0.2, 8.0), Vector3.FORWARD)
+	await _images(4)

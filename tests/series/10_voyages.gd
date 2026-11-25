@@ -35,6 +35,21 @@ func _serie() -> void:
 	var n2: int = await _tour(lieux, "lieu de quête", 0.8)
 	_ok(n2 == lieux.size(), "arrivée aux lieux de quête (un quart) : %d sur %d" % [n2, lieux.size()])
 	_ranger()
+	# V206 : les îles récentes en tête de liste, le parachute, les kiosques du Saut des Nuées
+	_ok(str(iles[0][1]) == "ombrelac" and str(iles[1][1]) == "ombrelac_cour", "Ombrelac est en tête de la liste des îles (%s)" % str(iles[0][0]))
+	var kios206: Array = testeur_v78._kiosques_v206()
+	_ok(kios206.size() == 4, "les quatre kiosques du Saut des Nuées au menu (%d)" % kios206.size())
+	inventory_v28.remove("parachute", int(inventory_v28.count("parachute")))
+	testeur_v78._pick("saut206")
+	await _images(2)
+	_ok(int(inventory_v28.count("parachute")) == 1 and testeur_v78._list.size() == 4, "« Le Saut des Nuées » met le parachute dans le sac et propose les kiosques")
+	_close_dialogue_v31()
+	var n206: int = await _tour(kios206, "kiosque", 1.0)
+	_ok(n206 == kios206.size(), "arrivée devant les kiosques : %d sur %d" % [n206, kios206.size()])
+	var village206: int = 0
+	for i206 in iles.size():
+		if str(iles[i206][1]) == "village":
+			village206 = i206
 	testeur_v78._list = iles
-	testeur_v78._go(0)
+	testeur_v78._go(village206)
 	await _debout("retour au village")

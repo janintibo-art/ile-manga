@@ -39,6 +39,7 @@ var _trainees: GPUParticles3D
 var _nuages: GPUParticles3D
 var _vent: AudioStreamPlayer
 var kiosques: Array = []          # [nom de l'île, position]
+var arrivees: Array = []          # V206 : [nom de l'île, où se tenir devant le kiosque] (mode testeur)
 var nb_sauts: int = 0
 var confort: bool = false         # VR : un voile sombre sur les bords pendant la chute (Paramètres)
 var _vignette: MeshInstance3D
@@ -164,6 +165,7 @@ func _kiosque(nom: String, at: Vector3, vers: Vector3) -> void:
 	add_child(k)
 	k.global_position = at
 	k.look_at(at + vers, Vector3.UP)
+	arrivees.append([nom, at - vers.normalized() * 2.6 + Vector3.UP * 0.3])
 	var bois := StandardMaterial3D.new()
 	bois.albedo_color = Color(0.48, 0.33, 0.2)
 	bois.roughness = 0.8

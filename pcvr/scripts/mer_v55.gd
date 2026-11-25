@@ -441,7 +441,8 @@ func vr_swim_tick(delta: float) -> bool:
 	var up_in: bool = main.right_hand.is_button_pressed("ax_button")
 	var down_in: bool = main.right_hand.is_button_pressed("by_button")
 	var sprint: bool = main.left_hand.get_float("trigger") > 0.6
-	var eye: float = cam.global_position.y - main.xr_origin.global_position.y
+	# V206 : la hauteur des yeux au-dessus des pieds, socle de la posture « assis » compris (vr_posture_v205)
+	var eye: float = cam.global_position.y - main.xr_origin.position.y
 	_pitch = 0.0
 	var surf_feet: float = eau + 0.14 - eye
 	var surf: bool = feet.y > surf_feet - 0.35
