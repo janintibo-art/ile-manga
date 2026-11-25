@@ -23,6 +23,7 @@ const PLACES := [
 	["crayon", "L'Île Crayonnée, la Grève Blanche"],
 	["sombreval", "Sombreval, le Port des Brumes"],
 	["geants", "L'Île des Géants, le Ponton des Petits"],
+	["foraine", "L'Île Foraine, le Grand Portail"], ["foraine_quai", "L'Île Foraine, le quai du Grand Frisson"],
 	["ombrelac", "L'île d'Ombrelac, le débarcadère"], ["ombrelac_cour", "L'Académie d'Ombrelac, la Cour d'Honneur"],
 	["perchee", "L'Île Perchée, Pile-ou-Face"], ["perchee_ponton", "Le Ponton de la Chaîne"],
 	["hautefond", "Hautefond, la Place de la Colonne"], ["hautefond_port", "Le Port des Cordages"], ["nuees", "La Cité des Nuées, l'Esplanade du Ciel"], ["strates", "Les Strates, la Gare"], ["fronde", "La Fronde, l'entrée"], ["dome", "Le Dôme d'Azur, la Place de la Perle"],
@@ -143,6 +144,9 @@ func spot(id: String) -> Array:
 		"geants":
 			var gt: Node = main.get("geants_v142")
 			return gt.village_point(id) if gt != null and gt.get("ile") != null and gt.ile != null else []
+		"foraine", "foraine_quai":
+			var fo: Node = main.get("foraine_v209")
+			return fo.village_point(id) if fo != null and fo.get("ile") != null and fo.ile != null else []
 		"ombrelac", "ombrelac_cour":
 			var om: Node = main.get("ombrelac_ext")
 			return om.village_point(id) if om != null and om.get("chateau") != null and om.chateau != null else []
@@ -235,6 +239,9 @@ func current_place() -> String:
 	var gt2: Node = main.get("geants_v142")
 	if gt2 != null and gt2.get("ile") != null and gt2.ile != null and gt2.contains(p) and p.y > -10.0 and gt2.ile.height(p.x, p.z) > -0.42:
 		return "geants"
+	var fo2: Node = main.get("foraine_v209")
+	if fo2 != null and fo2.get("ile") != null and fo2.ile != null and fo2.contains(p) and p.y > -10.0 and fo2.ile.height(p.x, p.z) > -0.42:
+		return "foraine_quai" if str(fo2.zone_at(p)) == "fo_quai" else "foraine"
 	var om2: Node = main.get("ombrelac_ext")
 	if om2 != null and om2.get("ile") != null and om2.ile != null and om2.contains(p) and p.y > -10.0 and om2.ile.height(p.x, p.z) > -0.42:
 		var omz: String = str(om2.zone_at(p))
@@ -315,7 +322,7 @@ func _process(delta: float) -> void:
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
 	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
-	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"], ["moai", "moai"], ["pixel", "pixel"], ["larsen", "larsen"], ["neo", "neo"], ["pasta", "pasta"], ["crayon", "crayon"], ["sombreval", "sombreval"], ["geants", "geants"], ["perchee", "perchee"], ["hautefond", "hautefond_ville"], ["hautefond_port", "hautefond"], ["nuees", "nuees"], ["strates", "strates"], ["fronde", "fronde"], ["dome", "dome"]]:
+	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"], ["moai", "moai"], ["pixel", "pixel"], ["larsen", "larsen"], ["neo", "neo"], ["pasta", "pasta"], ["crayon", "crayon"], ["sombreval", "sombreval"], ["geants", "geants"], ["perchee", "perchee"], ["hautefond", "hautefond_ville"], ["hautefond_port", "hautefond"], ["nuees", "nuees"], ["strates", "strates"], ["fronde", "fronde"], ["dome", "dome"], ["foraine", "foraine"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true
 

@@ -99,6 +99,8 @@ func _lecture() -> bool:
 		return true
 	if main.perchee_v146 != null and main.perchee_v146.get("ile") != null and main.perchee_v146.riding():
 		return true
+	if main.get("foraine_v209") != null and main.foraine_v209 != null and main.foraine_v209.get("ile") != null and main.foraine_v209.riding():
+		return true
 	if main.boat_v29 != null and bool(main.boat_v29.get("driving")):
 		return true
 	if not (main.vr_ladder_v33 as Dictionary).is_empty():

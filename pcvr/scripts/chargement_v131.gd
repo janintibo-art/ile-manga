@@ -42,6 +42,7 @@ const ETAPES := {
 	"sombreval": ["Sombreval, la ville morte", 370],
 	"geants": ["L'Île des Géants", 1760],
 	"perchee": ["L'Île Perchée", 1900],
+	"foraine": ["L'Île Foraine", 900],
 	"heros": ["Le héros se réveille", 410],
 	"menu": ["Le carnet de voyage", 650],
 	"rivages": ["Les rivages et les vagues", 2160],
@@ -69,6 +70,7 @@ const ETAPES := {
 	"sombreval_vie": ["Le château du comte", 1580],
 	"geants_vie": ["La ferme des Grandpré", 1500],
 	"perchee_vie": ["Pile-ou-Face, la ville qui mise", 9000],
+	"foraine_vie": ["Le Grand Frisson, un grand huit de 1,7 km", 2500],
 	"fin": ["Les bateaux, les oiseaux, les derniers détails", 200],
 }
 const ASTUCES := [

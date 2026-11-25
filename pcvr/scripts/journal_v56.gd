@@ -1478,6 +1478,10 @@ const AVENTURES := [
 	{"id": "geants", "titre": "Le pays des géants", "lieu": "L'Île des Géants, au sud-est de l'archipel", "debut": "geants",
 		"etapes": [["geants", "Aborder l'Île des Géants (au sud de l'Île Crayonnée)"], ["gt_ferme", "Arriver à la ferme des Grandpré"],
 			["gt_moulin", "Monter au Moulin de la Butte"], ["gt_limaces", "Chasser les limaces du potager"], ["gt_cache", "Trouver Pâquerette trois fois, à cache-cache"]]},
+	# V209 : l'Île Foraine
+	{"id": "foraine", "titre": "La fête foraine", "lieu": "L'Île Foraine, à l'est de l'archipel", "debut": "foraine",
+		"etapes": [["foraine", "Aborder l'Île Foraine (à l'est, au large de Montjoie)"], ["fo_billet", "Acheter un billet au guichet du Grand Portail"],
+			["fo_tour", "Faire un tour de Grand Frisson, le grand huit"]]},
 	# V128 : le comte lui-même, puis les prisonniers des souterrains
 	{"id": "comte_dracula", "titre": "Le comte Dracula", "lieu": "Sombreval, tout en haut de la Tour du Comte", "debut": "sv_chambre",
 		"etapes": [["sv_chambre", "Pousser la porte de fer, tout en haut de la Tour du Comte"], ["sv_comte", "Vaincre le comte Dracula (l'aube est derrière les rideaux)"],
@@ -2204,6 +2208,8 @@ func place_name(p: Vector3) -> String:
 		return str(main.sombreval_v121.place_name(p))
 	if main.get("geants_v142") != null and main.geants_v142 != null and main.geants_v142.ile != null and main.geants_v142.owns_point(p):
 		return str(main.geants_v142.place_name(p))
+	if main.get("foraine_v209") != null and main.foraine_v209 != null and main.foraine_v209.ile != null and main.foraine_v209.owns_point(p):
+		return str(main.foraine_v209.place_name(p))
 	if main.get("ombrelac_ext") != null and main.ombrelac_ext != null and main.ombrelac_ext.ile != null and main.ombrelac_ext.owns_point(p):
 		return str(main.ombrelac_ext.place_name(p))
 	if main.get("perchee_v146") != null and main.perchee_v146 != null and main.perchee_v146.ile != null and main.perchee_v146.zone_at(p) != "":

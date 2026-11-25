@@ -118,6 +118,8 @@ const PLACES := [
 	["Le Mât des Nuées", Vector2(-939, 1654), "pp_navette"],
 	["La Grande Chaîne", Vector2(-667, 2318), "pp_chaine"],
 	["L'Île des Géants", Vector2(800, 1872), "geants"],
+	["L'Île Foraine", Vector2(1592, 320), "foraine"],
+	["Le Grand Frisson", Vector2(1672, 362), "fo_tour"],
 	["La ferme des Grandpré", Vector2(800, 2086), "gt_ferme"],
 	["Le Moulin de la Butte", Vector2(650, 1990), "gt_moulin"],
 	["Hautefond", Vector2(-980, 1420), "hautefond_ville"],

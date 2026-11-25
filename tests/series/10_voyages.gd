@@ -36,7 +36,7 @@ func _serie() -> void:
 	_ok(n2 == lieux.size(), "arrivée aux lieux de quête (un quart) : %d sur %d" % [n2, lieux.size()])
 	_ranger()
 	# V206 : les îles récentes en tête de liste, le parachute, les kiosques du Saut des Nuées
-	_ok(str(iles[0][1]) == "ombrelac" and str(iles[1][1]) == "ombrelac_cour", "Ombrelac est en tête de la liste des îles (%s)" % str(iles[0][0]))
+	_ok(str(iles[0][1]) == "foraine" and str(iles[1][1]) == "foraine_quai" and str(iles[2][1]) == "ombrelac" and str(iles[3][1]) == "ombrelac_cour", "l'Île Foraine puis Ombrelac sont en tête de la liste des îles (%s)" % str(iles[0][0]))
 	var kios206: Array = testeur_v78._kiosques_v206()
 	_ok(kios206.size() == 4, "les quatre kiosques du Saut des Nuées au menu (%d)" % kios206.size())
 	inventory_v28.remove("parachute", int(inventory_v28.count("parachute")))

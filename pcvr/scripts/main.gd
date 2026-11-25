@@ -219,6 +219,8 @@ func _ready() -> void:
 	await chargement_v131.pas("perchee_vie")
 	_create_ombrelac_ext()
 	await chargement_v131.pas("ombrelac_vie")
+	_create_v209()
+	await chargement_v131.pas("foraine_vie")
 	_create_v103()
 	_create_v120()
 	_create_v132()
@@ -310,6 +312,9 @@ func _height_land_v55(x: float, z: float) -> float:
 	# Extension : l'île d'Ombrelac, tout au nord (au nord de l'Île aux Moaïs ; son carré ne touche aucune autre île)
 	if ombrelac_ext != null and ombrelac_ext.ile != null and ombrelac_ext.ile.contains(x, z):
 		return maxf(h, ombrelac_ext.ile.height(x, z))
+	# V209 : l'Île Foraine, à l'est (au large de Montjoie ; son carré ne touche aucune autre île)
+	if foraine_v209 != null and foraine_v209.ile != null and foraine_v209.ile.contains(x, z):
+		return maxf(h, foraine_v209.ile.height(x, z))
 	if jungle_v29 != null and jungle_v29.contains(x, z):
 		return maxf(h, jungle_v29.height(x, z))
 	# V41 : l'île des elfes
@@ -1228,6 +1233,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			perchee_v146.load_data({})
 		if ombrelac_ext != null and ombrelac_ext.ile != null:
 			ombrelac_ext.load_data({})
+		if foraine_v209 != null and foraine_v209.ile != null:
+			foraine_v209.load_data({})
 		if jeux_v147 != null:
 			jeux_v147.load_data({})
 		if compagnons_animaux_v76 != null:
@@ -1437,6 +1444,9 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 	if not new_game and ombrelac_ext != null and ombrelac_ext.ile != null:
 		var omdata: Variant = SaveStore.read_slot(slot).get("ombrelac", {})
 		ombrelac_ext.load_data(omdata if omdata is Dictionary else {})
+	if not new_game and foraine_v209 != null and foraine_v209.ile != null:
+		var fodata: Variant = SaveStore.read_slot(slot).get("foraine", {})
+		foraine_v209.load_data(fodata if fodata is Dictionary else {})
 	# V147 : les jeux de Pile-ou-Face (la réputation, les jetons du jour)
 	if not new_game and jeux_v147 != null:
 		var jxdata: Variant = SaveStore.read_slot(slot).get("jeux", {})
@@ -1602,6 +1612,8 @@ func _save_slot(slot: int) -> bool:
 		extra["perchee"] = perchee_v146.serialize()
 	if ombrelac_ext != null and ombrelac_ext.ile != null:
 		extra["ombrelac"] = ombrelac_ext.serialize()
+	if foraine_v209 != null and foraine_v209.ile != null:
+		extra["foraine"] = foraine_v209.serialize()
 	if jeux_v147 != null:
 		extra["jeux"] = jeux_v147.serialize()
 	if compagnons_animaux_v76 != null:
@@ -1640,6 +1652,9 @@ func _save_slot(slot: int) -> bool:
 	# V146 : dans la Navette des Nuées ou dans une cage de la Grande Chaîne
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
 		save_pos = perchee_v146.ride_safe_pos()
+	# V209 : dans le wagon du Grand Frisson : on se réveillera sur le quai
+	if foraine_v209 != null and foraine_v209.ile != null and foraine_v209.riding():
+		save_pos = foraine_v209.ride_safe_pos()
 	# V72 : à bord de L'Hirondelle, on se réveillera sur le quai d'arrivée (pas en pleine mer)
 	if azur_v56 != null and azur_v56.get("ferry") != null and azur_v56.ferry != null and bool(azur_v56.ferry.riding) and teleport_v58 != null:
 		var side: String = str(azur_v56.ferry.dest) if str(azur_v56.ferry.at) == "" else str(azur_v56.ferry.at)
@@ -1719,6 +1734,13 @@ func _physics_process(delta: float) -> void:
 			if trig_ride146 and not bool(vr_buttons_v28.get("ride_v146", false)):
 				perchee_v146.ride_interact()
 			vr_buttons_v28["ride_v146"] = trig_ride146
+	elif foraine_v209 != null and foraine_v209.ile != null and foraine_v209.riding():
+		# V209 : au premier rang du Grand Frisson (le wagon nous porte ; la gâchette : descendre avant le départ)
+		if xr_active:
+			var trig_ride209: bool = right_hand.get_float("trigger") > 0.8
+			if trig_ride209 and not bool(vr_buttons_v28.get("ride_v209", false)):
+				foraine_v209.ride_interact()
+			vr_buttons_v28["ride_v209"] = trig_ride209
 	elif xr_active:
 		if boat_v29 != null and boat_v29.driving:
 			# V205 : à bord, une question à l'écran (le mode testeur, un habitant) passe avant la barre :
@@ -2284,6 +2306,14 @@ func _doors_update_v27() -> void:
 		if donjon_v35 != null:
 			donjon_v35.show_vr_hint(_player_pos_v27(), false)
 		return
+	# V209 : dans le wagon du Grand Frisson
+	if foraine_v209 != null and foraine_v209.ile != null and foraine_v209.riding():
+		if door_prompt_v27 != null:
+			var rp209: String = foraine_v209.ride_prompt()
+			door_prompt_v27.text = rp209 if not xr_active else rp209.replace("E :", "Gâchette :")
+		if donjon_v35 != null:
+			donjon_v35.show_vr_hint(_player_pos_v27(), false)
+		return
 	# V146 : dans la Navette des Nuées, dans une cage de la Grande Chaîne
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
 		if door_prompt_v27 != null:
@@ -2603,6 +2633,9 @@ func _interact_v28() -> void:
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.riding():
 		perchee_v146.ride_interact()
 		return
+	if foraine_v209 != null and foraine_v209.ile != null and foraine_v209.riding():
+		foraine_v209.ride_interact()
+		return
 	var p: Vector3 = _player_pos_v27()
 	var npc: Node3D = _nearest_npc_v31()
 	# V56 : dans la foule de Port-Azur, un objet juste à nos pieds passe avant la conversation
@@ -2753,6 +2786,10 @@ func _respawn_v28() -> void:
 	# V146 : sur l'Île Perchée : sur un banc de la place de la Roue
 	if perchee_v146 != null and perchee_v146.ile != null and perchee_v146.owns_point(_player_pos_v27()):
 		perchee_v146.on_faint(_player_pos_v27())
+		return
+	# V209 : sur l'Île Foraine : à l'ombre du Grand Portail
+	if foraine_v209 != null and foraine_v209.ile != null and foraine_v209.owns_point(_player_pos_v27()):
+		foraine_v209.on_faint(_player_pos_v27())
 		return
 	# V142 : sur l'Île des Géants : Mère Mathurine vous pose sur le seuil de la porte
 	if geants_v142 != null and geants_v142.ile != null and geants_v142.owns_point(_player_pos_v27()):
@@ -3194,6 +3231,16 @@ func _create_jungle_v29() -> void:
 	await chargement_v131.pas("ombrelac")
 	var om_d: Array = ombrelac_ext.dock()
 	boat_v29._make_dock("Ponton_ombrelac", om_d[0], om_d[1])
+	# V209 : l'Île Foraine (le relief d'abord ; le portail, le quai et le grand huit après l'heure du
+	# jour, voir _create_v209) ; son ponton à l'ouest, vers Montjoie.
+	foraine_v209 = preload("res://scripts/foraine_v209.gd").new()
+	foraine_v209.name = "Foraine_v209"
+	add_child(foraine_v209)
+	foraine_v209.setup(self)
+	foraine_v209.build_island()
+	await chargement_v131.pas("foraine")
+	var fo_d: Array = foraine_v209.dock()
+	boat_v29._make_dock("Ponton_foraine", fo_d[0], fo_d[1])
 
 
 ## À pied : on ne s'avance pas dans la mer (sauf là où l'on a pied, ou là où l'on nage) ; les
@@ -3256,6 +3303,9 @@ func pied_ok_v176(p: Vector3) -> bool:
 	# V94 : Néopolis : la dalle, la jetée, la Terrasse du Ciel
 	if neo_v94 != null and neo_v94.contains(p):
 		return neo_v94.walkable(p)
+	# V209 : l'Île Foraine : la terre ferme, le ponton, le quai du grand huit
+	if foraine_v209 != null and foraine_v209.contains(p):
+		return foraine_v209.walkable(p)
 	# V142 : l'Île des Géants : la terre ferme, le ponton ; sur la mare, les nénuphars
 	if geants_v142 != null and geants_v142.contains(p):
 		return geants_v142.walkable(p)
@@ -3819,7 +3869,7 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(perchee_v146.trouvailles() if perchee_v146 != null and perchee_v146.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(perchee_v146.trouvailles() if perchee_v146 != null and perchee_v146.ile != null else {}).merged(foraine_v209.trouvailles() if foraine_v209 != null and foraine_v209.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,
@@ -4076,6 +4126,7 @@ var hautefond_v112: Node3D                 # V112 : l'Île de Hautefond (la cit�
 var sombreval_v121: Node3D                 # V121 : Sombreval, la ville morte (les morts-vivants, le château du comte)
 var geants_v142: Node3D                    # V142 : l'Île des Géants (la ferme des Grandpré, cinq géants gentils)
 var perchee_v146: Node3D                   # V146 : l'Île Perchée (Pile-ou-Face, le bourg du Far West dans le ciel)
+var foraine_v209: Node3D                   # V209 : l'Île Foraine (le Grand Frisson, un grand huit qui fait le tour de l'île)
 var ombrelac_ext: Node3D                   # Extension : l'île d'Ombrelac et son château géant (scripts/ext_chateau/)
 var jeux_v147: Node                        # V147 : les jeux de Pile-ou-Face (les tables, les mises, la réputation)
 var trafic_v103: Node3D                    # V103 : les navettes, leurs passagers et les voiliers
@@ -4481,6 +4532,15 @@ func _create_v146() -> void:
 		perchee_v146.register_services(journal_v56)
 
 
+## V209 : l'Île Foraine : le Grand Portail, le guichet, le quai et la voie du Grand Frisson.
+func _create_v209() -> void:
+	if foraine_v209 == null:
+		return
+	foraine_v209.build_town()
+	if journal_v56 != null:
+		foraine_v209.register_services(journal_v56)
+
+
 ## Extension : le château d'Ombrelac, l'eau du lac et du torrent, la végétation de l'île.
 func _create_ombrelac_ext() -> void:
 	if ombrelac_ext == null:
@@ -4742,6 +4802,8 @@ func _bake_shore_v48() -> void:
 		boxes.append([Vector2(sombreval_v121.ile.CENTER.x, sombreval_v121.ile.CENTER.z), sombreval_v121.ile.HALF])
 	if geants_v142 != null and geants_v142.ile != null:
 		boxes.append([Vector2(geants_v142.ile.CENTER.x, geants_v142.ile.CENTER.z), geants_v142.ile.HALF])
+	if foraine_v209 != null and foraine_v209.ile != null:
+		boxes.append([Vector2(foraine_v209.ile.CENTER.x, foraine_v209.ile.CENTER.z), foraine_v209.ile.HALF])
 	var px: float = SHORE_SIZE_V48 / SHORE_RES_V48
 	var samples: int = 0
 	for b in boxes:

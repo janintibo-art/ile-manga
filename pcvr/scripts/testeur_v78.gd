@@ -727,6 +727,9 @@ func _go(i: int) -> void:
 		_land(sp[0], sp[1])
 		if tp != null:
 			tp.visited[str(v)] = true
+		# V209 : le mode testeur offre le billet de l'Île Foraine
+		if str(v).begins_with("foraine") and main.get("foraine_v209") != null and main.foraine_v209 != null:
+			main.foraine_v209.offrir_billet()
 	elif v is Node3D:
 		var n: Node3D = v
 		if not is_instance_valid(n):
@@ -931,7 +934,7 @@ func _visit(sc: String) -> void:
 
 
 ## V206 : les îles les plus récentes en tête (avant : à la fin, derrière six pages de « Suivants »).
-const RECENTES_V206 := ["ombrelac", "ombrelac_cour", "perchee", "perchee_ponton", "nuees", "strates", "fronde", "dome",
+const RECENTES_V206 := ["foraine", "foraine_quai", "ombrelac", "ombrelac_cour", "perchee", "perchee_ponton", "nuees", "strates", "fronde", "dome",
 	"hautefond", "hautefond_port", "geants", "sombreval"]
 
 
