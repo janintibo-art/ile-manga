@@ -61,3 +61,15 @@ func _serie() -> void:
 	_ok(Vector2(la206.x - haut206.x, la206.z - haut206.z).length() < 1.5 and absf(la206.y - boat_v29.DECK_Y) < 0.6, "à la nage au pied de l'échelle du ponton du village : on se retrouve sur le plancher (%.1f m de haut)" % la206.y)
 	place_player_v35(Vector3(2.0, _height_at(2.0, 8.0) + 0.2, 8.0), Vector3.FORWARD)
 	await _images(4)
+	# V207 : le temple englouti (70 m sous terre) n'est montré que si l'on est sous terre, pas trop loin
+	await _images(4)
+	var sec207: Node3D = donjon_v35.sections.get("village", null)
+	var blocs207: int = sec207.get_child_count() if sec207 != null else 0
+	_ok(sec207 != null and blocs207 > 500 and not sec207.visible and not donjon_v35.montre, "à la surface, le temple englouti n'est pas dessiné (%d morceaux)" % blocs207)
+	place_player_v35(sec207.global_position + sec207.global_transform.basis * Vector3(0.0, 0.6, -10.0), Vector3.FORWARD)
+	await _images(6)
+	_ok(sec207.visible and (donjon_v35.sections["jungle"] as Node3D).visible, "dans le temple, il est dessiné")
+	_ok(not donjon_v35.voir_v207(Vector3(900.0, -90.0, 1400.0)) and donjon_v35.voir_v207(sec207.global_position), "sous terre mais à l'autre bout de la carte : pas dessiné")
+	place_player_v35(Vector3(2.0, _height_at(2.0, 8.0) + 0.2, 8.0), Vector3.FORWARD)
+	await _images(6)
+	_ok(not sec207.visible, "revenu au village : il n'est plus dessiné")

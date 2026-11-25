@@ -1948,8 +1948,32 @@ func update_inside(force: bool = false) -> void:
 		_env_saved = {}
 
 
+## V207 : le temple est à 70 m sous terre : de la surface, on n'en voit rien, mais la carte graphique
+## dessinait quand même ses 2 300 blocs (et leurs ombres) dès qu'ils étaient dans le champ de vision, depuis
+## le village, la jungle, les Nains… On ne le montre que si le joueur est sous terre, pas trop loin.
+const MONTRE_SOUS := -12.0              # m : en dessous, on est (ou on tombe) sous terre
+const MONTRE_PRES := 700.0              # m : autour de la trappe du village
+var montre: bool = true
+
+
+func voir_v207(p: Vector3) -> bool:
+	if p.y > MONTRE_SOUS or village_trap == Vector3.INF:
+		return false
+	return Vector2(p.x - village_trap.x, p.z - village_trap.z).length() < MONTRE_PRES
+
+
+func _montrer_v207() -> void:
+	var v: bool = voir_v207(main._player_pos_v27())
+	if v == montre:
+		return
+	montre = v
+	for k in sections:
+		(sections[k] as Node3D).visible = v
+
+
 func _process(_delta: float) -> void:
 	if main != null and main.game_started:
+		_montrer_v207()
 		update_inside()
 		_boss_tick()
 
