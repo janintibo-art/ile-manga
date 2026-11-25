@@ -10,6 +10,8 @@ const ChateauScript = preload("res://scripts/ext_chateau/chateau_ombrelac.gd")
 const FloreScript = preload("res://scripts/ext_chateau/flore_ombrelac.gd")
 const FalaisesScript = preload("res://scripts/ext_chateau/falaises_ombrelac.gd")
 const Kit = preload("res://scripts/ext_chateau/archi_ombrelac.gd")
+const VieScript = preload("res://scripts/ext_chateau/vie_ombrelac.gd")
+const ObjetsScript = preload("res://scripts/ext_chateau/objets_ombrelac.gd")
 
 const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le débarcadère d'Ombrelac",
 	"ombrelac_guet": "la Colline du Guet", "ombrelac_viaduc": "le grand viaduc", "ombrelac_cour": "la Cour d'Honneur",
@@ -34,6 +36,9 @@ var ile: Node3D
 var chateau: Node3D
 var flore: Node3D
 var falaises: Node3D
+var vie: Node3D                           # (v14) les habitants de l'Académie (vie_ombrelac.gd)
+var objets: Node3D                        # (v15) les objets avec lesquels on fait quelque chose (objets_ombrelac.gd)
+var _attente_pnj: float = 0.0
 var pc: bool = true
 var state := {"visite": false}
 var _nuit: float = -1.0
@@ -87,6 +92,16 @@ func build_town() -> void:
 	flore.name = "Flore_ombrelac"
 	add_child(flore)
 	flore.plant(ile, pc)
+	# (v14) la vie au château : les lieux, les sièges, les chemins (les habitants arrivent ensuite)
+	vie = VieScript.new()
+	vie.name = "Vie_ombrelac"
+	add_child(vie)
+	vie.build(main, chateau)
+	# (v15) s'asseoir, lire, faire tourner, sonner… (une entrée dans les interactions du jeu)
+	objets = ObjetsScript.new()
+	objets.name = "Objets_ombrelac"
+	add_child(objets)
+	objets.build(main, self, chateau, vie)
 
 
 func _eau_mat(deep: Color, shallow: Color, vif: float = 0.0) -> Material:
@@ -323,6 +338,12 @@ func hour() -> float:
 
 func _process(delta: float) -> void:
 	_clock += delta
+	# (v14) les habitants, une fois le jeu prêt (la liste des habitants, la position du joueur)
+	if vie != null and vie.habitants.is_empty() and main != null and main.get("npcs_v31") != null and main.has_method("_player_pos_v27"):
+		_attente_pnj += delta
+		if _attente_pnj > 2.0:
+			vie.spawn_npcs()
+			_attente_pnj = -1e9               # une seule fois
 	if _clock < 0.5:
 		return
 	_clock = 0.0

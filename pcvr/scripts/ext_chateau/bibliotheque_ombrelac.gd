@@ -36,6 +36,10 @@ func _pl(k: RefCounted, m: String, a: Vector3, b: Vector3, s: float, large := Ve
 ## Un meuble de rayonnages : tr au milieu du pied, x le long, z+ la face (et z- si « double »)
 func _rayonnage(k: RefCounted, tr: Transform3D, lg: float, h: float, prof: float, double: bool) -> void:
 	var m := "bois"
+	# (v15) on y prend un livre, d'un côté (ou des deux)
+	for sf in ([-1.0, 1.0] if double else [1.0]):
+		var zf: float = sf * (prof * 0.5 + 0.1)
+		_objet("livres", tr * Vector3(-lg * 0.5 + 0.25, 0, zf), tr * Vector3(lg * 0.5 - 0.25, 0, zf), tr.basis * Vector3(0, 0, sf))
 	k.box(m, tr * Transform3D(Basis.IDENTITY, Vector3(0, 0, 0)), Vector3(lg, 0.2, prof - 0.05), true)
 	k.box(m, tr * Transform3D(Basis.IDENTITY, Vector3(0, h - 0.04, 0)), Vector3(lg + 0.16, 0.18, prof + 0.12))
 	k.box(m, tr * Transform3D(Basis.IDENTITY, Vector3(0, h + 0.14, 0)), Vector3(lg + 0.06, 0.06, prof + 0.04))
@@ -96,6 +100,7 @@ func _chaise(k: RefCounted, x: float, z: float, yaw: float) -> void:
 		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(ex, 0, -0.19)), Vector3(0.05, 1.0, 0.05))
 		k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(ex, 0.14, 0)), Vector3(0.025, 0.03, 0.38))
 	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.39, 0)), Vector3(0.46, 0.04, 0.46))
+	_assise(t, 0.41, 0.46, -0.2, 0.23, -0.6)
 	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.33, 0)), Vector3(0.42, 0.06, 0.42))
 	k.box("velours_vert", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.43, 0.01)), Vector3(0.4, 0.035, 0.38))
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.88, -0.19)), Vector3(0.44, 0.1, 0.05))
@@ -148,6 +153,7 @@ func _anneau(k: RefCounted, c: Vector3, n: Vector3, r: float, s: float = 0.035) 
 # =================================================================== la salle
 
 func construire(the_xf: Transform3D, L: float, W: float, H: float, T: float, voute: float) -> void:
+	piece = "bibliotheque"
 	xf = the_xf
 	var k := Kit.new()
 	var hl: float = L * 0.5 - T
@@ -181,8 +187,9 @@ func construire(the_xf: Transform3D, L: float, W: float, H: float, T: float, vou
 		var nc: int = int((x1 - x0) / 1.2)
 		for i in range(nc):
 			var cx: float = x0 + 0.6 + i * (x1 - x0 - 1.2) / maxf(nc - 1, 1)
-			_chaise(k, cx, -0.95, PI)
-			_chaise(k, cx, 0.95, 0.0)
+			# (v14) face à la table (elles lui tournaient le dos)
+			_chaise(k, cx, -0.95, 0.0)
+			_chaise(k, cx, 0.95, PI)
 		var nl: int = int((x1 - x0) / 2.6)
 		for i in range(nl):
 			_lampe(k, _p(x0 + (i + 0.5) * (x1 - x0) / nl, 0.8, 0.0))

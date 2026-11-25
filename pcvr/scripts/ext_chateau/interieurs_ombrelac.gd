@@ -24,6 +24,34 @@ var nuit: float = 0.0
 var lieux: Dictionary = {}
 var _t: float = 0.0
 var rayons: ShaderMaterial          # (v13) les rayons de soleil des baies : éteints la nuit
+## (v14) Les assises (pour les habitants) : [repère (château ; +Z : devant, y : le sol), le dessus de
+## l'assise, la largeur, l'arrière et l'avant de l'assise (z), d'où l'on s'en approche (z), la pièce]
+var bancs: Array = []
+var piece: String = ""
+## (v14) Les postes (pour les habitants, debout) : nom → [position (château), direction du regard, pièce]
+var postes: Dictionary = {}
+## (v15) Les objets avec lesquels le joueur peut faire quelque chose (lire, regarder, faire tourner…) :
+## {"sorte", "a", "b" : le segment où l'on se tient devant (repère château, au niveau du sol), "face" : le
+## côté d'où l'on s'en sert (ou zéro), "n" : un numéro, …}. objets_ombrelac.gd les rend actifs.
+var objets: Array = []
+
+
+## (v14) Une assise, pour les habitants (voir « bancs »)
+func _assise(t: Transform3D, dessus: float, largeur: float, arriere: float, avant: float, approche: float) -> void:
+	bancs.append([t, dessus, largeur, arriere, avant, approche, piece])
+
+
+## (v14) Un poste, pour un habitant debout (le maître au tableau, l'élève à la paillasse)
+func _poste(nom: String, p: Vector3, face: Vector3) -> void:
+	postes[nom] = [p, face.normalized(), piece]
+
+
+## (v15) Un objet avec lequel le joueur peut faire quelque chose (voir « objets ») ; a, b : repère château
+func _objet(sorte: String, a: Vector3, b: Vector3, face: Vector3 = Vector3.ZERO, extra: Dictionary = {}) -> void:
+	var o: Dictionary = {"sorte": sorte, "a": a, "b": b, "face": face.normalized() if face.length() > 0.01 else Vector3.ZERO,
+		"n": objets.size(), "piece": piece}
+	o.merge(extra, true)
+	objets.append(o)
 
 
 ## Une poutre de section s (carrée) de a à b ; « large » : l'axe des x de la section
@@ -136,6 +164,7 @@ func _banc(k: RefCounted, t: Transform3D, lg: float, velours: String = "velours_
 		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(x, 0, -0.18)), Vector3(0.07, 0.4, 0.07))
 		k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(x, 0.1, 0)), Vector3(0.04, 0.04, 0.36))
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.4, 0)), Vector3(lg, 0.05, 0.46), true)
+	_assise(t, 0.5, lg, -0.18, 0.22, 0.75)
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.34, 0.215)), Vector3(lg - 0.1, 0.06, 0.02))
 	k.box(velours, t * Transform3D(Basis.IDENTITY, Vector3(0, 0.45, 0.02)), Vector3(lg - 0.12, 0.05, 0.4))
 	k.cyl(velours, t * Transform3D(Basis(Vector3.BACK, -PI * 0.5), Vector3(-lg * 0.5 + 0.06, 0.475, 0.22)), 0.025, 0.025, lg - 0.12, 8, false)
@@ -362,6 +391,9 @@ func _estrade(k: RefCounted, c: Vector3, hl: float, hw: float) -> void:
 		var haut: float = 2.9 if i == 4 else 1.7
 		var xc: float = xt - 1.15
 		k.box("bois", Transform3D(Basis.IDENTITY, Vector3(xc, 0.64, z)), Vector3(0.55, 0.48, 0.55))
+		piece = "estrade"
+		_assise(Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(xc, 0.64, z)), 0.48, 0.55, -0.22, 0.27, -0.6)
+		piece = ""
 		k.box("bois", Transform3D(Basis.IDENTITY, Vector3(xc - 0.26, 0.64, z)), Vector3(0.08, haut, 0.55))
 		if i == 4:
 			k.cyl("or", Transform3D(Basis.IDENTITY, Vector3(xc - 0.26, 0.64 + haut, z)), 0.16, 0.0, 0.4, 8)
@@ -478,6 +510,10 @@ func _tables(k: RefCounted, c: Vector3, hl: float, hw: float) -> void:
 			for s in [-1.0, 1.0]:
 				var bz: float = z + s * 1.05
 				k.box("bois", Transform3D(Basis.IDENTITY, Vector3(mid, 0.4, bz)), Vector3(lg, 0.07, 0.4), true)
+				# (v14) on s'y assied face à la table ; on y vient par l'allée de derrière
+				piece = "grande_salle"
+				_assise(Transform3D(Basis(Vector3.UP, 0.0 if s < 0.0 else PI), Vector3(mid, 0.0, bz)), 0.47, lg, -0.2, 0.2, -0.75)
+				piece = ""
 				var n: int = int(lg / 3.0) + 1
 				for i in range(n):
 					var bxp: float = lerpf(x0 + 0.4, x1 - 0.4, float(i) / (n - 1))

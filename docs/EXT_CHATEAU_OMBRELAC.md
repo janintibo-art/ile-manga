@@ -172,11 +172,79 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   - la **végétation** : des bosquets de feuillus sur les basses pentes, des buissons en lisière et
     sur la rive, l'herbe haute autour du lac, des taches de fleurs mauves et jaunes, des nénuphars
     sur l'eau peu profonde (quelques-uns en fleur, blancs ou roses).
+- **Les habitants de l'Académie (v14)** : dix-huit personnages qui vivent à l'heure du jeu et à qui
+  l'on parle (même cerveau, mêmes gestes et même vie réglée que les autres habitants de l'archipel) :
+  - les **élèves** : quatre du Dortoir de l'Aube (bleu et or : Lison, Barnabé, Nour, Tobie) et quatre
+    du Dortoir du Crépuscule (pourpre et vieil or : Ombeline la préfète, Anatole, Sidonie, Malo), en
+    uniforme (chemise blanche, gilet et cravate aux couleurs du dortoir, cape noire) ;
+  - les **maîtres** : la Rectrice Aldegonde Vespérine, Maître Fauconnier (les astres), Maîtresse
+    Alambic (les élixirs), Maître Équerre (la géométrie), Dame Sortelame (les sortilèges), Dame
+    Reliure (la bibliothécaire), Maître Rouage (le gardien de l'horloge) ;
+  - les **gens du château** : Gaspard Herse (le portier), Mère Fournil (l'intendante), Firmin Buis
+    (le jardinier) ;
+  - chacun a **son corps** (deux corps du jeu mêlés, sa tenue, ses couleurs) et ses **répliques** :
+    l'accueil, son humeur, ce qu'il dit de lui, de l'île, les rumeurs du château, ce qu'il lance quand
+    on passe ;
+  - **la journée** : le petit déjeuner à 7 h dans la Grande Salle (chaque dortoir à sa table, les
+    maîtres sur l'estrade, la Rectrice au milieu), les cours (8 h 30, 11 h, 13 h 30 : les Astres,
+    les Élixirs à la paillasse, la géométrie à l'Amphithéâtre, le cercle des sortilèges), la
+    récréation autour de la fontaine du cloître à 10 h, le déjeuner à midi, le temps libre l'après-midi (la Bibliothèque, la
+    fontaine du cloître, les jeux de la cour), le dîner à 19 h, la Salle Commune le soir, au lit à
+    22 h (une heure de jeu dure une minute : les trajets prennent leur temps). Les maîtres font cours, tiennent conseil, lisent au bureau ou à l'Observatoire ; le portier
+    garde la porte, l'intendante sert à table et tient le feu, le jardinier taille les haies ;
+  - **les places assises** : les bancs de la Grande Salle, les chaises de l'estrade, les bancs des
+    Astres et de l'Amphithéâtre, les chaises de la Bibliothèque, les canapés de la Salle Commune, le
+    fauteuil du Bureau du Recteur, la chaise de l'Observatoire : on s'y assied à la bonne hauteur,
+    face au bon côté, chacun à sa place (deux habitants n'ont jamais la même) ;
+  - **les chemins** : un plan des couloirs calculé à partir des collisions du château
+    (`pcvr/tools/ext_chateau_chemins.gd`, à relancer quand le château change) : sur chaque étage, les
+    passages libres d'un lieu à l'autre (rien ne coupe le passage, le sol continue) ; d'un étage à
+    l'autre (les dortoirs, les tours), l'habitant passe d'un coup. Loin du joueur, la journée passe
+    d'un coup aussi ;
+  - (au passage) les chaises de la longue table de la Bibliothèque tournaient le dos à la table : elles
+    lui font face.
+- **Les objets du château (v15)** : on s'en sert avec E (PC) ou la gâchette (VR) ; l'invite dit ce
+  qu'on va faire (« E : prendre un livre »). Un habitant plus proche que l'objet passe avant (E lui parle).
+  - **s'asseoir** : sur tous les sièges du château (les 104 places des bancs, chaises, fauteuils et
+    canapés que prennent aussi les habitants) : le héros s'assied à la bonne hauteur, face au bon côté ;
+    on se lève avec E, en avançant ou en sautant. La place est retenue (les habitants vont ailleurs) ;
+    une place déjà prise par un habitant ne l'est pas deux fois. PC seulement (en VR, on est son propre
+    corps) ;
+    - assis dans la **Salle des Astres** ou l'**Amphithéâtre** pendant le cours (le maître à son
+      tableau), on écoute la leçon de Maître Fauconnier ou de Maître Équerre, phrase après phrase ;
+    - assis à une table de la **Grande Salle** à l'heure du repas (12 h, 19 h), Mère Fournil vous sert :
+      tous les cœurs reviennent (une fois par repas) ;
+  - **lire** : les **livres** des rayonnages (69 rayons : vingt livres à la Bibliothèque sur l'histoire
+    de l'Académie, le lac, la brume, les fondateurs… ; l'astronomie aux Astres et à l'Observatoire ; les
+    livres des élèves à la Salle Commune ; les grimoires du cabinet des Sortilèges ; les registres du
+    Bureau du Recteur) : on en prend un au hasard, ceux qu'on n'a pas lus d'abord ; les **tableaux**
+    des salles de cours, les **cartes du ciel**, les quatorze **portraits** des anciens Recteurs (leur
+    nom, leur histoire), les six **reliques** des vitrines, la **devise des fondateurs** au-dessus de la
+    cheminée du Bureau, le **grimoire** du pupitre, le **registre** de Maître Rouage ;
+  - **agir** :
+    - faire tourner le **Grand Astrolabe** (ses trois anneaux s'emballent, puis reprennent le pas du
+      ciel) et les **globes** célestes ;
+    - regarder dans la **Grande Lunette** de l'Observatoire ou la lunette de la Salle des Astres : le
+      jour, le lac et les îles ; la nuit, on découvre les **sept constellations** d'Ombrelac, une à
+      chaque regard (la dernière : Gertrude) ; la **table des cartes** tient le compte ;
+    - tirer la **corde de la cloche** (nouvelle : elle pend dans la Chambre des Rouages) : la cloche sonne ;
+    - jeter une **pièce** dans la **fontaine** du cloître et faire un vœu (la grenouille rend parfois la
+      monnaie) ;
+    - **dormir** dans un lit des dortoirs : la nuit jusqu'à 7 h, le jour une sieste jusqu'à 19 h (comme
+      la Chaumière : les cœurs reviennent) ;
+    - préparer un **élixir** à une paillasse de la Salle des Élixirs : une potion de sève, une potion de
+      magie ou, plus rarement, un élixir d'étoile, dans le sac (un par jour) ;
+    - jouer aux **échecs** à la Salle Commune : on s'assied à l'échiquier, face à l'élève le plus proche,
+      la partie se joue en trois temps (gagnée, nulle ou perdue) ;
+    - regarder dans la **sphère de cristal**, lancer un sort d'entraînement sur les **mannequins** de la
+      Salle des Cercles ;
+  - ce qu'on a lu, vu et fait (les livres, les portraits, les constellations, les vœux, les parties,
+    l'élixir du jour, le repas) est enregistré avec la partie (`state["objets"]`).
 - **Dans le jeu** : on y va en bateau (la mer de l'île rejoint celle de l'Île aux Moaïs) ; on peut
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les habitants de l'Académie, les cours et les quêtes.
+Pour la suite (pas encore faits) : les quêtes.
 
 ## Les fichiers
 
@@ -217,6 +285,14 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/shaders/ext_chateau/ombrelac_tableau.gdshader` | les tableaux noirs (schémas à la craie sur l'ardoise) |
 | `pcvr/shaders/ext_chateau/ombrelac_carte_ciel.gdshader` | les cartes du ciel (constellations sur papier bleu de nuit) |
 | `pcvr/shaders/ext_chateau/ombrelac_portrait.gdshader` | les portraits des anciens Recteurs (peints à l'huile) |
+| `pcvr/scripts/ext_chateau/vie_ombrelac.gd` | (v14) la vie au château : les lieux des habitants (places assises, postes debout, groupes), les sièges, le plan des chemins, l'arrivée des habitants |
+| `pcvr/scripts/ext_chateau/habitants_ombrelac.gd` | (v14) les dix-huit habitants : leurs fiches, leurs emplois du temps, leurs répliques |
+| `pcvr/scripts/ext_chateau/chemins_ombrelac.gd` | (v14) le plan des chemins (calculé par l'outil ci-dessous ; ne pas écrire à la main) |
+| `pcvr/tools/ext_chateau_chemins.gd` | (v14) calcule le plan des chemins : `godot --headless --path pcvr -s tools/ext_chateau_chemins.gd` |
+| `pcvr/tools/ext_chateau_habitants.gd` | (v14) fabrique les corps des habitants (deux corps du jeu mêlés, la tenue) |
+| `www/assets/models/pnj64/*_om.bin` | (v14) les dix-huit corps des habitants (suffixe `_om`) |
+| `pcvr/scripts/ext_chateau/objets_ombrelac.gd` | (v15) les objets du château : s'asseoir, lire, agir (une entrée dans `donjon_v35._interactions`, la touche E avant les habitants) |
+| `pcvr/scripts/ext_chateau/textes_ombrelac.gd` | (v15) les textes des objets : livres, leçons, tableaux, cartes du ciel, portraits, reliques, constellations… |
 | `pcvr/tools/ext_chateau_textures.py` | fabrique les textures du château (à lancer une fois) |
 | `www/assets/textures/ext_chateau/*.png` | pierre de taille, pierre fine, dalles (et leur relief) |
 | `tests/series/48_ombrelac.gd` | la série de tests de l'extension |

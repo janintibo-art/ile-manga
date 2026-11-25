@@ -70,8 +70,12 @@ func construire_horloge(p: Vector3, hs: float, T: float, h: float, cy: float, rc
 	_bati(k)
 	_plafond_cloche(k, hi, h)
 	_etabli(k, Vector3(hi - 0.45, ROUAGES_Y, 1.8), -PI * 0.5)
+	# (v15) la corde de la cloche : elle descend du joug, passe par une poulie sous les poutres et pend
+	# dans la chambre des rouages (on la tire : la cloche sonne)
+	_corde_cloche(k, h)
 	# le pupitre du gardien (v12 : sur pieds, le plateau incliné, le registre ouvert, l'encrier, le tabouret)
 	var tg: Transform3D = _tr(-1.6, ROUAGES_Y, hi - 0.4)
+	_objet("registre", tg * Vector3(0, 0, -0.95), tg * Vector3(0, 0, -0.95), tg.basis * Vector3(0, 0, -1))
 	for ex in [-0.7, 0.7]:
 		for ez in [-0.22, 0.22]:
 			_colonne_tournee(k, "chene", tg * Transform3D(Basis.IDENTITY, Vector3(ex, 0, ez)), 0.95, 0.04)
@@ -546,6 +550,27 @@ func _cadrans(hs: float, T: float, cy: float, rc: float) -> void:
 
 
 ## La cloche de bronze, pendue à sa poutre sous le toit (elle se balance quand elle sonne)
+## (v15) La corde de la cloche (repère de la tour) : de la poulie sous la charpente jusqu'à hauteur de main,
+## la poignée de velours, le gland ; une seconde poulie au joug de la cloche
+const CORDE := Vector3(3.5, 0.0, -3.5)
+
+func _corde_cloche(k: RefCounted, h: float) -> void:
+	var haut: Vector3 = _p(CORDE.x, h - 0.75, CORDE.z)
+	var bas: Vector3 = _p(CORDE.x, ROUAGES_Y + 0.95, CORDE.z)
+	_poutre(k, "paille", bas, haut, 0.035)
+	# la poulie, accrochée à la poutre de -3,2 par une ferrure
+	k.cyl("fer", Transform3D(Basis(Vector3.FORWARD, PI * 0.5), haut + Vector3(0.0, 0.1, 0.0)), 0.13, 0.13, 0.06, 12)
+	_poutre(k, "fer", haut + Vector3(0.0, 0.1, 0.0), _p(CORDE.x, h - 0.4, -3.2), 0.04)
+	# du haut de la poulie au joug de la cloche, en biais dans l'ombre de la charpente
+	_poutre(k, "paille", haut + Vector3(0.0, 0.22, 0.0), _p(0.35, h + 4.3, 0.0), 0.03)
+	# la poignée (velours pourpre, rayée d'or) et le gland
+	k.cyl("velours_pourpre", Transform3D(Basis.IDENTITY, bas - Vector3(0, 0.5, 0)), 0.05, 0.05, 0.5, 10)
+	for yo in [0.12, 0.25, 0.38]:
+		k.cyl("or", Transform3D(Basis.IDENTITY, bas - Vector3(0, 0.5 - yo, 0)), 0.055, 0.055, 0.025, 10)
+	k.cyl("or", Transform3D(Basis.IDENTITY, bas - Vector3(0, 0.68, 0)), 0.07, 0.03, 0.18, 10)
+	_objet("cloche", _p(CORDE.x, ROUAGES_Y, CORDE.z), _p(CORDE.x, ROUAGES_Y, CORDE.z))
+
+
 func _cloche(h: float) -> void:
 	cloche = Node3D.new()
 	cloche.name = "Cloche"

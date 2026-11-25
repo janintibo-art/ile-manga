@@ -124,6 +124,8 @@ func _lit(k: RefCounted, x: float, s: float, hw: float, velours: String) -> void
 	var zt: float = s * (hw - 0.02)        # la tête
 	var zp: float = s * (hw - 2.1)         # le pied
 	var zc: float = (zt + zp) * 0.5
+	# (v15) on s'y couche (au pied du lit, ou le long, du côté de l'allée)
+	_objet("lit", _p(x - 0.5, 0.0, zp - s * 0.75), _p(x + 0.5, 0.0, zp - s * 0.75), xf.basis * Vector3(0, 0, -s), {"velours": velours})
 	# le bois de lit : les traverses, le sommier ; les colonnes tournées et leurs pommes de pin
 	k.box("chene", _tr(x, 0.08, zc), Vector3(1.3, 0.3, 2.06), true)
 	k.box("chene", _tr(x, 0.36, zc), Vector3(1.34, 0.04, 2.1))
@@ -266,6 +268,7 @@ func _poele(k: RefCounted, x: float, z: float, H: float) -> void:
 # =================================================================== la Salle Commune
 
 func _commune(k: RefCounted, x0: float, x1: float, hw: float, H: float) -> void:
+	piece = "commune"
 	_cheminee_c(k, 0.0, -hw, H)
 	# le tapis rond, le canapé, les deux fauteuils, la table basse
 	var zc: float = -hw + 3.5
@@ -428,6 +431,7 @@ func _canape(k: RefCounted, x: float, z: float, yaw: float, lg: float, m: String
 	var bx := Basis(Vector3.BACK, -PI * 0.5)      # y → x
 	var bz := Basis(Vector3.RIGHT, PI * 0.5)      # y → z
 	var W: float = lg + 0.3
+	_assise(t * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO), 0.36, lg, -0.26, 0.3, 0.7)
 	for ex in [-1.0, 1.0]:
 		for ez in [-1.0, 1.0]:
 			var fp := Vector3(ex * (W * 0.5 - 0.08), 0, ez * 0.34)
@@ -463,6 +467,8 @@ func _canape(k: RefCounted, x: float, z: float, yaw: float, lg: float, m: String
 
 ## Le guéridon de l'échiquier, ses deux chaises
 func _echiquier(k: RefCounted, x: float, z: float) -> void:
+	# (v15) on y joue une partie (assis sur l'une des deux chaises)
+	_objet("echecs", _p(x, 0.0, z), _p(x, 0.0, z), Vector3.ZERO, {"prio": 0.5})
 	k.cyl("bois", _tr(x, 0.0, z), 0.3, 0.2, 0.05, 12)
 	k.cyl("bois", _tr(x, 0.05, z), 0.06, 0.06, 0.66, 8)
 	k.cyl("chene", _tr(x, 0.71, z), 0.55, 0.55, 0.04, 20, true, true)

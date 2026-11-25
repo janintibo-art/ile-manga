@@ -171,6 +171,7 @@ func _cercle_runes(k: RefCounted, y0: float) -> void:
 ## les jambes de force du pied)
 func _mannequin(k: RefCounted, c: Vector3, yaw: float) -> void:
 	var t: Transform3D = _tr(c.x, 0.0, c.z, yaw)
+	_objet("mannequin", t.origin, t.origin)
 	for e in [0.0, PI * 0.5]:
 		k.box("chene", t * Transform3D(Basis(Vector3.UP, e), Vector3.ZERO), Vector3(0.9, 0.1, 0.12))
 	for e2 in range(4):
@@ -356,6 +357,7 @@ func _plafond_etoile(k: RefCounted) -> void:
 ## La sphère de cristal sur son trépied de bronze, la lueur qui bat au cœur (un nœud à part)
 func _sphere_cristal(k: RefCounted, c: Vector3) -> void:
 	var pc: Vector3 = _p(c.x, c.y, c.z)
+	_objet("sphere", pc, pc)
 	for i in range(3):
 		var a: float = TAU * i / 3.0
 		var pied: Vector3 = pc + _dir(a) * 0.55
@@ -387,6 +389,7 @@ func _pupitre(k: RefCounted, c: Vector3) -> void:
 	var d: Vector3 = -Vector3(c.x, 0, c.z).normalized()
 	var yaw: float = atan2(d.x, d.z)
 	var t: Transform3D = _tr(c.x, c.y, c.z, yaw)
+	_objet("grimoire", t.origin, t.origin)
 	# (v12) le pied : quatre griffes, la colonne tournée, le chapiteau qui porte le plateau
 	var cb := BoxShape3D.new()
 	cb.size = Vector3(0.4, 1.0, 0.4)

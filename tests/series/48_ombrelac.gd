@@ -143,7 +143,8 @@ func _serie() -> void:
 	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_tour_dortoirs", "le lieu : la Tour des Dortoirs (%s)" % str(ombrelac_ext.zone_at(_pos())))
 	# on monte l'escalier à vis à pied : on marche en tournant autour du noyau
 	var tcw: Vector3 = _wc(lx["tour_dortoirs_centre"], 0.0)
-	for i in range(60):
+	# (v15) jusqu'à 90 pas : quand la machine est chargée, chaque pas avance moins
+	for i in range(90):
 		var rv: Vector3 = _pos() - tcw
 		rv.y = 0.0
 		var rl: float = rv.length()
@@ -452,3 +453,402 @@ func _serie() -> void:
 	_ok(not bool(ombrelac_ext.state.get("visite", false)), "une nouvelle partie oublie la visite")
 	ombrelac_ext.load_data(d)
 	_ok(bool(ombrelac_ext.state.get("visite", false)), "une partie chargée la retrouve")
+	# --- v14 : les habitants de l'Académie (vie_ombrelac.gd, habitants_ombrelac.gd, chemins_ombrelac.gd)
+	await _habitants_v14()
+	# --- v15 : les objets du château (objets_ombrelac.gd, textes_ombrelac.gd)
+	await _objets_v15()
+
+
+## (v14) Les dix-huit habitants : leurs lieux, leurs chemins, leurs corps, leur journée, la parole
+func _habitants_v14() -> void:
+	var vie: Node = ombrelac_ext.vie
+	_ok(vie != null and vie._built, "la vie au château est en place")
+	if vie == null:
+		return
+	for k in range(20):
+		if vie.habitants.size() >= 18:
+			break
+		await _att(0.5)
+	_ok(vie.habitants.size() == 18, "les dix-huit habitants de l'Académie sont là (%d)" % vie.habitants.size())
+	var dans_liste: int = 0
+	for h in vie.habitants:
+		if npcs_v31.has(h):
+			dans_liste += 1
+	_ok(dans_liste == 18, "ils comptent parmi les habitants du jeu (la sauvegarde, la parole)")
+	_ok(vie.spots.size() > 150, "les lieux des habitants (%d places)" % vie.spots.size())
+	var g_ok: bool = true
+	for g in ["gs_aube", "gs_crepuscule", "astres", "elixirs", "amphi", "cercle", "biblio", "commune", "fontaine", "cour_jeu", "cour", "conseil", "service", "jardin", "serres"]:
+		if (vie.groupes.get(g, []) as Array).size() < 4 and not (g in ["conseil", "serres"] and (vie.groupes.get(g, []) as Array).size() >= 3):
+			g_ok = _note(false, "le groupe de places « %s » : %d" % [g, (vie.groupes.get(g, []) as Array).size()])
+	_ok(g_ok, "chaque groupe de places a assez de places (les bancs, les pupitres, la cour…)")
+	var lieux_ok: bool = true
+	var corps_ok: bool = true
+	for h2 in vie.habitants:
+		for e in h2.agenda:
+			var cibles: Array = e[2] if e[2] is Array else [e[2]]
+			for c in cibles:
+				if str(c) != "maison" and not vie.spots.has(str(c)):
+					lieux_ok = _note(false, "%s : le lieu « %s » n'existe pas" % [h2.display_name, str(c)])
+		if not vie.points.has(h2.home):
+			lieux_ok = _note(false, "%s : sa maison « %s » n'est pas sur le plan" % [h2.display_name, h2.home])
+		if h2.v64.is_empty():
+			corps_ok = _note(false, "%s : pas de corps à lui" % h2.display_name)
+	_ok(lieux_ok, "chaque lieu de chaque emploi du temps existe, chaque maison est sur le plan")
+	_ok(corps_ok, "chacun a son propre corps (tenue de son dortoir, robe de maître…)")
+	var liens_ok: bool = true
+	for a in vie.graph:
+		for b in vie.graph[a]:
+			if not vie.points.has(str(a)) or not vie.points.has(str(b)):
+				liens_ok = false
+	for s in vie.spots:
+		if not vie.points.has(str(vie.spots[s]["node"])):
+			liens_ok = false
+	_ok(liens_ok, "le plan des chemins tient (chaque lien, chaque lieu a son point)")
+	# les chemins : pas de mur au travers, le sol continue (à hauteur de genou et de poitrine)
+	var space := get_world_3d().direct_space_state
+	var murs: int = 0
+	var n_liens: int = 0
+	# (les habitants ne comptent pas : ils se tiennent sur leurs lieux)
+	var sans_pnj: Array[RID] = []
+	if not vie.habitants.is_empty():
+		sans_pnj.append_array(vie.habitants[0]._npc_bodies)
+	if pc_body != null:
+		sans_pnj.append(pc_body.get_rid())
+	for a2 in vie.graph:
+		for b2 in vie.graph[a2]:
+			# (du siège au point d'approche : on se lève, ce n'est pas un chemin)
+			if str(a2) < str(b2) and not str(a2).ends_with("~") and not str(b2).ends_with("~"):
+				n_liens += 1
+				var pa: Vector3 = vie.points[a2]
+				var pb: Vector3 = vie.points[b2]
+				for hh in [0.5, 1.3]:
+					if not space.intersect_ray(PhysicsRayQueryParameters3D.create(pa + Vector3.UP * hh, pb + Vector3.UP * hh, 1, sans_pnj)).is_empty():
+						murs += 1
+						print("  mur entre %s et %s" % [a2, b2])
+						break
+	_ok(murs == 0, "aucun chemin ne traverse un mur ou un meuble (%d liens)" % n_liens)
+	var aube: Array = []
+	for id in ["lison_om", "barnabe_om", "nour_om", "tobie_om"]:
+		if vie.by_id.has(id):
+			aube.append(vie.by_id[id])
+	var tous_eleves: Array = aube.duplicate()
+	for id2 in ["ombeline_om", "anatole_om", "sidonie_om", "malo_om"]:
+		if vie.by_id.has(id2):
+			tous_eleves.append(vie.by_id[id2])
+	# loin du château, la journée passe d'un coup : chacun est à sa place
+	var loin: Array = ombrelac_ext.village_point("ombrelac")
+	await _poser(loin[0] + Vector3(0, 1.0, 0))
+	var d_min: float = INF
+	for h3 in vie.habitants:
+		d_min = minf(d_min, h3.global_position.distance_to(_pos()))
+	temps_v56.set_hour(8.5)
+	await _att(3.0)
+	var en_cours: int = 0
+	for e2 in aube:
+		if str(e2.target_spot).begins_with("astres_") and e2.pose == "assis" and not e2.hidden_home:
+			en_cours += 1
+	_ok(en_cours == aube.size(), "à 8 h 30, l'Aube est au cours des astres, assise sur les bancs (%d/%d)" % [en_cours, aube.size()])
+	var maitre = vie.by_id.get("fauconnier_om")
+	_ok(maitre != null and maitre.target_spot == "astres_maitre" and maitre.global_position.distance_to(vie.spots["astres_maitre"]["pos"]) < 1.0,
+		"Maître Fauconnier fait son cours, debout devant les élèves")
+	temps_v56.set_hour(12.5)
+	await _att(3.0)
+	var a_table: int = 0
+	var bien_assis: int = 0
+	for e3 in tous_eleves:
+		if str(e3.target_spot).begins_with("gs_") and e3.pose == "assis":
+			a_table += 1
+			var bc: Dictionary = vie.Bancs183.sous(e3.global_position + Vector3.UP * 0.2)
+			var sp: Dictionary = vie.spots[e3.target_spot]
+			if not bc.is_empty() and Vector2(e3.global_position.x - sp["pos"].x, e3.global_position.z - sp["pos"].z).length() < 0.5:
+				bien_assis += 1
+	_ok(a_table == tous_eleves.size(), "à midi et demi, les élèves déjeunent dans la Grande Salle (%d/%d)" % [a_table, tous_eleves.size()])
+	_ok(bien_assis == a_table, "ils sont assis sur les bancs, à leur place (%d/%d)" % [bien_assis, a_table])
+	var rectrice = vie.by_id.get("vesperine_om")
+	_ok(rectrice != null and rectrice.target_spot == "estrade_s4" and rectrice.pose == "assis", "la Rectrice préside, au milieu de l'estrade")
+	var places: Dictionary = {}
+	var double: bool = false
+	for h4 in vie.habitants:
+		if h4.hidden_home or str(h4.target_spot) == "":
+			continue
+		if places.has(h4.target_spot):
+			double = true
+		places[h4.target_spot] = true
+	_ok(not double, "deux habitants n'ont jamais la même place")
+	temps_v56.set_hour(23.5)
+	await _att(3.0)
+	var couches: int = 0
+	for e4 in tous_eleves:
+		if e4.hidden_home:
+			couches += 1
+	_ok(couches == tous_eleves.size(), "à 23 h 30, les élèves sont couchés dans leur dortoir (%d/%d)" % [couches, tous_eleves.size()])
+	# près des élèves : à 10 h, la récréation, ils sortent de leur salle de cours et marchent jusqu'à la
+	# fontaine du cloître
+	temps_v56.set_hour(9.9)
+	await _att(3.0)
+	# (le héros sur la vasque de la fontaine : près d'eux, mais pas sur leur chemin ; un habitant qui
+	# croise le héros s'arrête et attend qu'il passe)
+	await _poser(_wc(lx_v14("fontaine"), 3.6))
+	temps_v56.set_hour(10.05)
+	var dans_mur: int = 0
+	var arrives: int = 0
+	var p_dep: Array = []
+	for e0 in tous_eleves:
+		p_dep.append(e0.global_position)
+	for k2 in range(110):
+		await _att(0.5)
+		for e5 in tous_eleves:
+			if e5.state == "marche" and not e5.hidden_home:
+				var pq := PhysicsPointQueryParameters3D.new()
+				pq.position = e5.global_position + Vector3.UP * 1.0
+				pq.collision_mask = 1
+				var sauf: Array[RID] = []
+				sauf.append_array(e5._npc_bodies)
+				if pc_body != null:
+					sauf.append(pc_body.get_rid())
+				pq.exclude = sauf
+				for r in space.intersect_point(pq, 4):
+					if r["collider"] is StaticBody3D:
+						dans_mur += 1
+						if dans_mur <= 6:
+							print("  %s dans %s à %s (vers %s)" % [e5.display_name, r["collider"].name, e5.global_position, e5.route.slice(0, 2)])
+		arrives = 0
+		for e6 in tous_eleves:
+			if str(e6.target_spot).begins_with("fontaine") and e6.state != "marche":
+				arrives += 1
+		if arrives == tous_eleves.size():
+			break
+	var bouge: int = 0
+	for i7 in range(tous_eleves.size()):
+		var e7 = tous_eleves[i7]
+		if e7.global_position.distance_to(p_dep[i7]) > 5.0:
+			bouge += 1
+		if not str(e7.target_spot).begins_with("fontaine") or e7.state == "marche":
+			print("  %s : %s, %s, %.1f h, à %s, reste %d étapes" % [e7.display_name, e7.target_spot, e7.state, vie.hour(), e7.global_position, e7.route.size()])
+	_ok(bouge >= tous_eleves.size() - 1, "à 10 h, ils quittent leur salle de cours (%d/%d)" % [bouge, tous_eleves.size()])
+	_ok(arrives >= tous_eleves.size() - 1, "ils vont à pied jusqu'à la fontaine du cloître (%d/%d arrivés)" % [arrives, tous_eleves.size()])
+	_ok(dans_mur == 0, "en chemin, personne ne passe dans un mur (%d)" % dans_mur)
+	# la parole
+	var parle: int = 0
+	for id3 in ["lison_om", "vesperine_om", "herse_om"]:
+		var n = vie.by_id.get(id3)
+		if n == null:
+			continue
+		var f: Vector3 = -n.global_transform.basis.z
+		f.y = 0.0
+		f = f.normalized() if f.length() > 0.01 else Vector3.FORWARD
+		place_player_v35(n.global_position + f * 1.6 + Vector3.UP * 0.1, -f)
+		await _images(2)
+		_talk_v31(n)
+		await _images(3)
+		if dialogue_v31.opened and dialogue_v31._text != null and dialogue_v31._text.text.strip_edges() != "" and not n.brain.topics(_npc_ctx_v31()).is_empty():
+			parle += 1
+		_close_dialogue_v31()
+		await _images(1)
+	_ok(parle == 3, "on leur parle : une élève, la Rectrice, le portier (%d/3)" % parle)
+	temps_v56.set_hour(12.0)
+	_ranger()
+
+
+func lx_v14(nom: String) -> Vector3:
+	return ombrelac_ext.chateau.lieux.get(nom, Vector3.ZERO)
+
+
+# =================================================================== v15 : les objets du château
+
+## (v15) Un objet du château (le premier de cette sorte qui convient), ou {}
+func ob_v15(sorte: String, filtre: Callable = Callable()) -> Dictionary:
+	for o in ombrelac_ext.objets.objets:
+		if str(o["sorte"]) == sorte and (not filtre.is_valid() or bool(filtre.call(o))):
+			return o
+	return {}
+
+
+## (v15) Se poser devant un objet (du côté de sa face ; sinon à « d » mètres, du côté libre)
+func devant_v15(o: Dictionary, d: float = 0.6) -> void:
+	var m: Vector3 = (o["a"] as Vector3).lerp(o["b"], 0.5)
+	var f: Vector3 = o["face"]
+	if f == Vector3.ZERO:
+		f = Vector3.BACK
+		var space := get_world_3d().direct_space_state
+		var cyl := CylinderShape3D.new()
+		cyl.radius = 0.3
+		cyl.height = 1.2
+		for k in range(16):
+			var a: float = TAU * k / 16.0
+			var dd := Vector3(cos(a), 0, sin(a))
+			var q := PhysicsShapeQueryParameters3D.new()
+			q.shape = cyl
+			q.transform = Transform3D(Basis(), m + dd * d + Vector3.UP * 1.0)
+			var sauf: Array[RID] = []
+			if pc_body != null:
+				sauf.append(pc_body.get_rid())
+			q.exclude = sauf
+			if space.intersect_shape(q, 1).is_empty():
+				f = dd
+				break
+	await _poser(m + f * d + Vector3.UP * 0.3, -f)
+	await _att(0.4)
+
+
+func _message_v15() -> String:
+	return str(message.text) if message != null else ""
+
+
+## (v15) S'asseoir, lire, faire tourner, sonner, dormir, préparer un élixir, jouer aux échecs…
+func _objets_v15() -> void:
+	var O: Node = ombrelac_ext.objets
+	_ok(O != null, "les objets du château sont en place")
+	if O == null:
+		return
+	var compte_ok: bool = true
+	for e in [["siege", 90], ["livres", 60], ["portrait", 14], ["relique", 6], ["lit", 12], ["paillasse", 4], ["tableau", 2], ["carte_ciel", 3],
+			["lunette", 2], ["globe", 2], ["astrolabe", 1], ["cloche", 1], ["fontaine", 1], ["echecs", 1], ["grimoire", 1], ["sphere", 1],
+			["mannequin", 3], ["devise", 1], ["registre", 1], ["table_cartes", 1]]:
+		if O.nombre(str(e[0])) < int(e[1]):
+			compte_ok = _note(false, "objets « %s » : %d (au moins %d)" % [e[0], O.nombre(str(e[0])), e[1]])
+	_ok(compte_ok, "les objets : %d sièges, %d rayonnages, 14 portraits, 6 reliques, 12 lits, les paillasses, les lunettes, la cloche, la fontaine…" % [O.nombre("siege"), O.nombre("livres")])
+	_ok(donjon_v35._interactions.has(O._ia), "ils passent par les interactions du jeu (E, la gâchette)")
+	# la nuit : les élèves dorment, les couloirs sont calmes
+	temps_v56.set_hour(23.5)
+	await _att(1.0)
+	# --- lire : un livre de la Bibliothèque (loin du comptoir), avec la touche E
+	var bp: Vector3 = ombrelac_ext.chateau.global_transform * (lx_v14("bibliotheque_porte") + Vector3(7.6, 0, -1.0))
+	var liv: Dictionary = ob_v15("livres", func(o): return str(o["fonds"]) == "bibliotheque" and absf((o["a"] as Vector3).y - bp.y) < 0.5 and (o["a"] as Vector3).lerp(o["b"], 0.5).distance_to(bp) > 9.0)
+	_ok(not liv.is_empty(), "un rayonnage de la Bibliothèque")
+	if not liv.is_empty():
+		await devant_v15(liv)
+		_ok(str(O.courant.get("sorte", "")) == "livres" and donjon_v35.prompt(_pos()) == "E : prendre un livre", "devant un rayonnage : « E : prendre un livre » (%s)" % donjon_v35.prompt(_pos()))
+		var avant: int = O._liste("livres").size()
+		await _appui(KEY_E)
+		_ok(_message_v15().begins_with("Tu prends un livre") and O._liste("livres").size() == avant + 1, "E : on lit un livre de la Bibliothèque (%s…)" % _message_v15().left(60))
+		_ok(dialogue_v31 == null or not dialogue_v31.opened, "E lit le livre (sans parler à personne)")
+	# --- s'asseoir : un banc de la Salle des Astres ; le héros assis à la bonne hauteur ; E pour se lever
+	var banc: Dictionary = ob_v15("siege", func(o): return str(o["piece"]) == "astres")
+	_ok(not banc.is_empty(), "un banc de la Salle des Astres")
+	if not banc.is_empty():
+		var t: Transform3D = banc["banc"]
+		await _poser(t * Vector3(0, 0, float(banc["arriere"]) - 0.6) + Vector3.UP * 0.3, t.basis.z)
+		await _att(0.4)
+		var p0: Vector3 = pc_body.global_position
+		_ok(str(O.courant.get("sorte", "")) == "siege" and donjon_v35.prompt(_pos()) == "E : s'asseoir", "près d'un banc : « E : s'asseoir » (%s)" % donjon_v35.prompt(_pos()))
+		await _appui(KEY_E)
+		await _att(1.0)
+		_ok(not O.assis.is_empty() and hero_v28.state == "bateau" and hero_v28.current_anim == "v28/sit", "E : le héros s'assied (%s, %s)" % [hero_v28.state, hero_v28.current_anim])
+		var dessus: float = (t * Vector3(0, float(banc["dessus"]), 0)).y
+		var hips: int = hero_v28.skel.find_bone("Hips") if hero_v28.skel != null else -1
+		var hy: float = (hero_v28.skel.global_transform * hero_v28.skel.get_bone_global_pose(hips).origin).y if hips >= 0 else -99.0
+		_ok(hips >= 0 and absf(hy - dessus - 0.1) < 0.15, "assis à la bonne hauteur : le bassin %.2f m au-dessus de l'assise" % (hy - dessus))
+		var sv: Vector3 = (O.assis["siege"] as Transform3D).origin
+		var sur_banc: bool = Vector2(hero_v28.hero.global_position.x - sv.x, hero_v28.hero.global_position.z - sv.z).length() < 0.05
+		_ok(sur_banc and hero_v28.facing.dot(t.basis.z) > 0.7, "sur le banc, face au tableau")
+		await _att(1.0)
+		_ok(pc_body.global_position.distance_to(p0) < 0.3 and hero_v28.state == "bateau", "on reste assis (le corps ne glisse pas)")
+		await _appui(KEY_E)
+		await _att(0.5)
+		_ok(O.assis.is_empty() and hero_v28.state == "sol", "E : on se lève (%s)" % hero_v28.state)
+		_ok(_pos().distance_to(p0) < 1.5, "debout, là d'où l'on s'était assis")
+		# marcher : on se lève aussi
+		await _appui(KEY_E)
+		await _att(0.5)
+		_touche(KEY_W, true)
+		await _att(0.4)
+		_touche(KEY_W, false)
+		await _att(0.3)
+		_ok(O.assis.is_empty() and hero_v28.state != "bateau", "assis, on avance : on se lève")
+		# le cours : le maître à son tableau, on écoute la leçon
+		var m: Node3D = ombrelac_ext.vie.by_id.get("fauconnier_om")
+		var sp: Dictionary = ombrelac_ext.vie.spots.get("astres_maitre", {})
+		if m != null and not sp.is_empty():
+			m.global_position = sp["pos"]
+			await _poser(t * Vector3(0, 0, float(banc["arriere"]) - 0.6) + Vector3.UP * 0.3, t.basis.z)
+			await _att(0.3)
+			O.asseoir(banc)
+			await _att(2.2)
+			m.global_position = sp["pos"]
+			_ok(_message_v15().begins_with("Maître Fauconnier"), "assis en classe, le maître au tableau : on écoute la leçon (%s…)" % _message_v15().left(50))
+			O.lever()
+			await _att(0.3)
+	# --- le repas : à table dans la Grande Salle à midi, Mère Fournil sert, les cœurs reviennent
+	temps_v56.set_hour(12.6)
+	await _att(0.5)
+	var servi: bool = false
+	for s in O.objets:
+		if str(s["sorte"]) != "siege" or str(s["piece"]) != "grande_salle":
+			continue
+		var t2: Transform3D = s["banc"]
+		await _poser(t2 * Vector3(0, 0, float(s["arriere"]) - 0.6) + Vector3.UP * 0.3, t2.basis.z)
+		await _att(0.2)
+		hero_v28.hp = 1
+		if O.asseoir(s):
+			await _att(6.0)
+			servi = _message_v15().contains("Mère Fournil") and hero_v28.hp == hero_v28.HP_MAX
+			O.lever()
+			await _att(0.3)
+			break
+	_ok(servi, "à table à midi : Mère Fournil sert, les cœurs reviennent")
+	temps_v56.set_hour(23.5)
+	await _att(0.5)
+	# --- agir
+	var ast: Node = ombrelac_ext.chateau.get_node("Ombrelac_astrolabe_dedans")
+	var o_ast: Dictionary = ob_v15("astrolabe")
+	await devant_v15(o_ast, 2.6)
+	_ok(str(O.courant.get("sorte", "")) == "astrolabe", "devant le Grand Astrolabe : « %s »" % donjon_v35.prompt(_pos()))
+	O.agir_sur(o_ast)
+	_ok(float(ast.elan) > 4.0, "on fait tourner l'astrolabe : ses anneaux s'emballent (×%.1f)" % float(ast.elan))
+	await _att(3.0)
+	_ok(float(ast.elan) < 6.0 and float(ast.elan) > 1.0, "puis ils ralentissent (×%.1f)" % float(ast.elan))
+	O.agir_sur(ob_v15("lunette", func(o): return bool(o.get("grande", false))))
+	_ok(O._liste("constellations").size() == 1 and _message_v15().contains("étoile du Nord"), "la nuit, dans la Grande Lunette : une constellation (%s…)" % _message_v15().left(60))
+	var horl: Node = ombrelac_ext.chateau.get_node("Ombrelac_horloge_dedans")
+	var coups: int = int(horl.coups_sonnes) + int(horl.coups_a_sonner)
+	var o_cl: Dictionary = ob_v15("cloche")
+	await devant_v15(o_cl, 0.7)
+	_ok(str(O.courant.get("sorte", "")) == "cloche", "dans la Chambre des Rouages, la corde : « %s »" % donjon_v35.prompt(_pos()))
+	O.agir_sur(o_cl)
+	await _att(0.5)
+	_ok(int(horl.coups_sonnes) + int(horl.coups_a_sonner) == coups + 1 and int(horl.coups_sonnes) >= 1, "on tire la corde : la cloche sonne un coup de plus (%d)" % (int(horl.coups_sonnes) + int(horl.coups_a_sonner) - coups))
+	var o_fo: Dictionary = ob_v15("fontaine")
+	inventory_v28.add("piece", 3)
+	var pieces: int = inventory_v28.count("piece")
+	O.agir_sur(o_fo)
+	_ok(inventory_v28.count("piece") == pieces - 1 and int(O._st().get("voeux", 0)) == 1, "une pièce dans la fontaine : un vœu")
+	var potions := func() -> int: return inventory_v28.count("potion_seve") + inventory_v28.count("potion_mana") + inventory_v28.count("elixir_etoile")
+	var avant_p: int = potions.call()
+	var o_pa: Dictionary = ob_v15("paillasse")
+	O.agir_sur(o_pa)
+	_ok(potions.call() == avant_p + 1, "à la paillasse : on prépare un élixir (il va dans le sac)")
+	O.agir_sur(o_pa)
+	_ok(potions.call() == avant_p + 1 and _message_v15().contains("un élixir par jour"), "un seul par jour")
+	for so in ["portrait", "relique", "grimoire", "sphere", "devise", "registre", "tableau", "carte_ciel", "table_cartes", "globe", "mannequin"]:
+		message.text = ""
+		O.agir_sur(ob_v15(so))
+		_note(_message_v15().length() > 20, "« %s » : un texte" % so)
+	_ok(O._liste("portraits").size() == 1, "les portraits des anciens Recteurs, les reliques, le grimoire, la sphère, la devise… ont leur texte")
+	# les échecs : assis devant l'échiquier, une partie
+	var o_ec: Dictionary = ob_v15("echecs")
+	await devant_v15(o_ec, 1.3)
+	O.agir_sur(o_ec)
+	await _att(0.5)
+	_ok(not O.assis.is_empty() and O.assis.has("partie"), "à l'échiquier : on s'assied pour une partie")
+	await _att(18.0)
+	_ok(int(O._st().get("parties", 0)) == 1, "la partie se joue jusqu'au bout (%s)" % _message_v15().left(50))
+	O.lever()
+	await _att(0.3)
+	# dormir : un lit du dortoir, la nuit, jusqu'au matin
+	temps_v56.set_hour(22.0)
+	var o_li: Dictionary = ob_v15("lit")
+	await devant_v15(o_li, 0.6)
+	_ok(str(O.courant.get("sorte", "")) == "lit" and donjon_v35.prompt(_pos()) == "E : dormir", "au pied d'un lit, la nuit : « E : dormir » (%s)" % donjon_v35.prompt(_pos()))
+	var jour: int = temps_v56.day_count
+	O.agir_sur(o_li)
+	await _att(3.5)
+	_ok(temps_v56.day_count == jour + 1 and absf(temps_v56.hour - 7.0) < 0.3, "on dort jusqu'au matin (%.1f h)" % temps_v56.hour)
+	# la sauvegarde
+	var d: Dictionary = ombrelac_ext.serialize()
+	ombrelac_ext.load_data({})
+	_ok(O._liste("livres").is_empty(), "une nouvelle partie oublie les livres lus")
+	ombrelac_ext.load_data(d)
+	_ok(O._liste("livres").size() >= 1 and O._liste("constellations").size() == 1 and int(O._st().get("voeux", 0)) == 1, "une partie chargée retrouve les livres lus, les constellations, les vœux")
+	temps_v56.set_hour(12.0)
+	_ranger()

@@ -36,6 +36,12 @@ func _cadre(k: RefCounted, a: Vector3, b: Vector3, h: float, n: Vector3) -> void
 ## Un panneau (carte, tableau) : de a à b en bas (de gauche à droite vu de devant), h de haut
 func _panneau(k: RefCounted, m: String, a: Vector3, b: Vector3, h: float, n: Vector3) -> void:
 	var up := Vector3(0, h, 0)
+	# (v15) on lit le tableau, on regarde la carte du ciel (debout devant, au sol de la salle)
+	if m in ["tableau", "tableau_amphi", "carte_ciel"]:
+		var fa: Vector3 = Vector3(a.x, 0.0, a.z) + n * 0.7
+		var fb: Vector3 = Vector3(b.x, 0.0, b.z) + n * 0.7
+		var cote: Vector3 = (fb - fa).normalized() * minf(0.4, (fb - fa).length() * 0.3)
+		_objet("tableau" if m.begins_with("tableau") else "carte_ciel", xf * (fa + cote), xf * (fb - cote), xf.basis * n, {"m": m})
 	k.quad(m, xf, a, b, b + up, a + up, n, Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1))
 	_cadre(k, a, b, h, n)
 
@@ -125,6 +131,10 @@ func _astres(k: RefCounted, x0: float, x1: float, hw: float, rz: float, porte: f
 	_anneau(k, _p(x0 + 2.3, 1.02, -0.6), xf.basis * Vector3(1, 0, 0), 0.2, 0.015)
 	_sphere(k, "lambris", _p(x0 + 2.3, 1.02, -0.6), 0.09)
 	_lampe(k, _p(x0 + 2.4, 0.8, 0.7))
+	# (v14) le maître, au tableau, face aux élèves
+	piece = "astres"
+	_poste("astres_maitre", _p(x0 + 1.0, 0.0, 0.6), xf.basis * Vector3(1, 0, 0))
+	piece = ""
 	# les pupitres des élèves : quatre rangs, deux colonnes, leurs bancs (face au tableau)
 	for xr in [x0 + 4.8, x0 + 7.0, x0 + 9.2, x0 + 11.4]:
 		for zc in [-2.3, 1.3]:
@@ -149,6 +159,10 @@ func _astres(k: RefCounted, x0: float, x1: float, hw: float, rz: float, porte: f
 				k.box("bois", _tr(xr - 0.3, 0.0, zc + e * (lg * 0.5 - 0.03)), Vector3(0.58, 0.74, 0.05))
 			# (v11) le banc : la planche, ses trois pieds, l'entretoise
 			k.box("chene", _tr(xr + 0.45, 0.4, zc), Vector3(0.34, 0.045, lg))
+			# (v14) on s'y assied face au tableau (vers -x) ; on y vient par l'allée de derrière
+			piece = "astres"
+			_assise(xf * Transform3D(Basis(Vector3.UP, -PI * 0.5), Vector3(xr + 0.45, 0.0, zc)), 0.445, lg, -0.17, 0.17, -0.75)
+			piece = ""
 			for zb in [zc - lg * 0.5 + 0.12, zc, zc + lg * 0.5 - 0.12]:
 				k.box("bois", _tr(xr + 0.45, 0.0, zb), Vector3(0.28, 0.4, 0.05))
 			k.box("bois", _tr(xr + 0.45, 0.12, zc), Vector3(0.05, 0.06, lg - 0.24))
@@ -185,6 +199,7 @@ func _astres(k: RefCounted, x0: float, x1: float, hw: float, rz: float, porte: f
 			_panneau(k, "carte_ciel", Vector3(xc + 0.8, 1.4, hw - 0.05), Vector3(xc - 0.8, 1.4, hw - 0.05), 2.2, Vector3(0, 0, -1))
 	# la lunette sur son trépied, près d'une baie
 	var tp: Vector3 = Vector3(x1 - 2.2, 1.45, hw - 1.4)
+	_objet("lunette", xf * Vector3(tp.x, 0.0, tp.z), xf * Vector3(tp.x, 0.0, tp.z), Vector3.ZERO, {"grande": false})
 	for i in range(3):
 		var a2: float = TAU * i / 3.0 + 0.3
 		_pl(k, "chene", tp, tp + Vector3(cos(a2) * 0.55, -1.45, sin(a2) * 0.55), 0.05)
@@ -214,6 +229,15 @@ func _alambic(k: RefCounted, p: Vector3, m: String) -> void:
 
 func _paillasse(k: RefCounted, x0: float, x1: float, z: float) -> void:
 	var lg: float = x1 - x0
+	# (v14) les postes des élèves, le long de la paillasse, du côté de la salle
+	piece = "elixirs"
+	var sz: float = -1.0 if z > 0.0 else 1.0
+	var npo: int = maxi(1, int(lg / 1.3))
+	for ip in range(npo):
+		_poste("elixirs_%d_%d" % [int(x0 * 10.0), ip], _p(x0 + lg * (ip + 0.5) / npo, 0.0, z + sz * 0.85), xf.basis * Vector3(0, 0, -sz))
+	# (v15) on y prépare un élixir
+	_objet("paillasse", _p(x0 + 0.4, 0.0, z + sz * 0.75), _p(x1 - 0.4, 0.0, z + sz * 0.75), xf.basis * Vector3(0, 0, sz))
+	piece = ""
 	k.box("bois", _tr((x0 + x1) * 0.5, 0.0, z), Vector3(lg, 0.85, 0.9), true)
 	# (v11) les portes des placards (des panneaux en relief, leurs boutons), les tiroirs, la plinthe
 	var np: int = maxi(1, int(lg / 0.75))
@@ -281,6 +305,9 @@ func _elixirs(k: RefCounted, x0: float, x1: float, hw: float, rz: float) -> void
 	var xm: float = (x0 + x1) * 0.5
 	# l'athanor : le fourneau de moellons, sa coupole, la gueule du feu, la hotte de cuivre
 	var az: float = -1.3
+	piece = "elixirs"
+	_poste("elixirs_maitre", _p(xm + 1.7, 0.0, az + 1.5), xf.basis * Vector3(0, 0, 1))
+	piece = ""
 	k.box("moellons", _tr(xm, 0.0, az), Vector3(2.2, 1.4, 2.0), true)
 	k.cyl("moellons", _tr(xm, 1.4, az), 1.15, 0.45, 1.0, 16)
 	k.cyl("cuivre_neuf", _tr(xm, 2.4, az), 0.3, 0.24, rz - 2.4, 10)
@@ -344,6 +371,10 @@ func _amphi(k: RefCounted, x0: float, x1: float, hw: float, rz: float) -> void:
 		k.box("chene", _tr((xa + xb) * 0.5, 0.0, (zg0 + zg1) * 0.5), Vector3(xb - xa, y, zg1 - zg0), true)
 		# le banc (au fond du gradin), la tablette (devant)
 		k.box("bois", _tr(xa + 0.3 if g < 3 else xb - 0.85, y, (zg0 + zg1) * 0.5), Vector3(0.38, 0.44, zg1 - zg0 - 0.4))
+		# (v14) face au tableau (vers +x) ; on y vient par l'étroit passage entre le banc et la tablette
+		piece = "amphi"
+		_assise(xf * Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(xa + 0.3 if g < 3 else xb - 0.85, y, (zg0 + zg1) * 0.5)), 0.44, zg1 - zg0 - 0.4, -0.19, 0.19, 0.36)
+		piece = ""
 		k.box("bois", _tr(xb - 0.2, y + 0.72, (zg0 + zg1) * 0.5), Vector3(0.36, 0.04, zg1 - zg0 - 0.4))
 		k.box("bois", _tr(xb - 0.05, y, (zg0 + zg1) * 0.5), Vector3(0.04, 0.72, zg1 - zg0 - 0.4))
 		# les marches de l'allée
@@ -355,6 +386,9 @@ func _amphi(k: RefCounted, x0: float, x1: float, hw: float, rz: float) -> void:
 			_livre_ouvert(k, _tr(xb - 0.2, y + 0.76, zl, 0.1), 0.24, 0.3, "velours_vert" if g % 2 == 0 else "velours_bleu")
 	# la chaire du maître, sur une estrade
 	var xc: float = x1 - 3.0
+	piece = "amphi"
+	_poste("amphi_maitre", _p(xc + 0.35, 0.3, 0.0), xf.basis * Vector3(-1, 0, 0))
+	piece = ""
 	k.box("chene", _tr(xc, 0.0, 0.0), Vector3(2.6, 0.3, 3.0), true)
 	k.prism("bois", _tr(xc - 0.4, 0.3, 0.0), Kit.ngon(0.55, 6, 0.0), 0.0, 1.15)
 	# (v11) la chaire : le socle et la corniche moulurés, les panneaux de chaque pan, la frise d'or

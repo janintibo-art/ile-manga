@@ -387,6 +387,8 @@ func _bureau(k: RefCounted) -> void:
 	var af: float = deg_to_rad(200.0)
 	xf = base * Transform3D(Basis(Vector3.UP, atan2(-cos(af), -sin(af))), Vector3(0, e1, 0))
 	_cheminee_c(k, 0.0, -(ri - 0.22), h)
+	# (v15) la devise des fondateurs, gravée au-dessus de la cheminée
+	_objet("devise", _p(0.0, 0.0, -(ri - 0.22) + 1.6), _p(0.0, 0.0, -(ri - 0.22) + 1.6), xf.basis * Vector3(0, 0, 1))
 	_etage(e1)
 	# le grand bureau (tourné vers le milieu), le fauteuil du Recteur, les deux fauteuils devant
 	var ad: float = deg_to_rad(60.0)
@@ -451,6 +453,7 @@ func _portrait(k: RefCounted, a: float, y: float, n: int) -> void:
 	var w: float = 1.0
 	var h: float = 1.28
 	var c: Vector3 = d * (ri - 0.08)
+	_objet("portrait", xf * (c - d * 1.1), xf * (c - d * 1.1), xf.basis * -d, {"portrait": n})
 	var pa: Vector3 = c - tg * w * 0.5 + Vector3(0, y, 0)
 	var pb: Vector3 = c + tg * w * 0.5 + Vector3(0, y, 0)
 	# (vu de face, la gauche est du côté -tg : de pa à pb)
@@ -534,6 +537,7 @@ func _reliques(k: RefCounted) -> void:
 ## coussin, la relique
 func _vitrine(k: RefCounted, q: Vector3, yaw: float, n: int) -> void:
 	var t: Transform3D = _tr(q.x, 0.0, q.z, yaw)
+	_objet("relique", t * Vector3(0, 0, 0.85), t * Vector3(0, 0, 0.85), t.basis.z, {"relique": n})
 	k.box("chene", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.1, 0)), Vector3(0.9, 0.8, 0.8), true)
 	k.box("bois", t * Transform3D(Basis.IDENTITY, Vector3(0, 0.88, 0)), Vector3(0.96, 0.05, 0.86))
 	# (v12) le socle mouluré, les pieds en boule, les panneaux en relief de chaque face, la plaque

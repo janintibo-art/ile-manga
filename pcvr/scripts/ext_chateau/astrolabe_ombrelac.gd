@@ -17,6 +17,7 @@ const CAGE := 1.3                 # le demi-côté du dedans de la cage
 
 var main: Node                    # (posé par ombrelac.gd : pour porter le héros)
 var anneaux: Array = []           # [Node3D, axe, vitesse]
+var elan: float = 1.0             # (v15) la vitesse des anneaux (1 : leur pas ; plus quand on les lance)
 var nacelle: Node3D
 var grilles: Array = []           # [Node3D, CollisionShape3D, y fermée, haut ?]
 var y_bas: float = 0.0
@@ -44,6 +45,8 @@ func construire_astrolabe(p: Vector3, hs: float, T: float, HH: float, h1: float,
 	_plafond_salle(k, hi, HH, puits, phs)
 	_cadre_puits(k, puits, phs, HH)
 	_grand_astrolabe(Vector3(0.0, 0.0, 3.4))
+	# (v15) on le fait tourner (tout autour, sur le tapis)
+	_objet("astrolabe", _p(0.0, 0.0, 3.4), _p(0.0, 0.0, 3.4))
 	k.prism("pierre_claire", _tr(0.0, 0.0, 3.4), Kit.ngon(1.1, 8, PI / 8.0), 0.0, 0.25, true)
 	k.prism("pierre_claire", _tr(0.0, 0.25, 3.4), Kit.ngon(0.55, 8, PI / 8.0), 0.0, 1.1, true)
 	k.cyl("or", _tr(0.0, 1.35, 3.4), 0.12, 0.08, 1.0, 10)
@@ -81,6 +84,7 @@ func construire_astrolabe(p: Vector3, hs: float, T: float, HH: float, h1: float,
 	_plafond_obs(k, ri_oct, h1 + OH)
 	_garde_corps(k, puits, phs, h1)
 	_lunette(k, Vector3(0.0, h1, 2.4), Vector3(-0.62, 0.42, 0.66).normalized())
+	_objet("lunette", _p(0.0, h1, 2.4), _p(0.0, h1, 2.4), Vector3.ZERO, {"grande": true})
 	_globe(k, Vector3(3.7, h1, 2.2))
 	_table_cartes(k, Vector3(-3.3, h1, 0.4))
 	for fi in [1, 5, 7]:
@@ -330,6 +334,7 @@ func _lunette(k: RefCounted, c: Vector3, dir: Vector3) -> void:
 
 ## Le globe céleste sur son pied de chêne
 func _globe(k: RefCounted, c: Vector3) -> void:
+	_objet("globe", _p(c.x, c.y, c.z), _p(c.x, c.y, c.z))
 	k.cyl("chene", _tr(c.x, c.y, c.z), 0.45, 0.3, 0.08, 12)
 	for i in range(3):
 		var a: float = TAU * i / 3.0
@@ -349,6 +354,7 @@ func _globe(k: RefCounted, c: Vector3) -> void:
 
 ## La table des cartes du ciel, ses chaises, sa lampe, ses instruments
 func _table_cartes(k: RefCounted, c: Vector3) -> void:
+	_objet("table_cartes", _p(c.x - 0.8, c.y, c.z), _p(c.x + 0.8, c.y, c.z))
 	var t0 := Transform3D(Basis.IDENTITY, Vector3(0, c.y, 0))
 	var old: Transform3D = xf
 	xf = xf * t0
@@ -561,5 +567,7 @@ func _porter(dy: float) -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	# (v15) l'élan qu'on lui donne (on le fait tourner) retombe doucement
+	elan = 1.0 + (elan - 1.0) * exp(-delta * 0.35)
 	for a in anneaux:
-		(a[0] as Node3D).rotate(a[1], float(a[2]) * delta)
+		(a[0] as Node3D).rotate(a[1], float(a[2]) * delta * elan)
