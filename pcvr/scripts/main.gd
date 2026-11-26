@@ -35,6 +35,7 @@ var ultranet_pc: bool = false
 var game_menu: Node
 var vue_v199: Node                         # V199 : la vue VR (dans la peau / de dehors)
 var parachute_v201: Node3D                 # V201 : le parachute (le Saut des Nuées)
+var allege_v211: Node                      # V211 : le détail allégé de loin, progressivement
 var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
 var posture_v205: Node                     # V205 : jouer debout ou assis en VR
 var socle_v205: Node3D                     # V205 : le socle du joueur VR (monté quand on joue assis)
@@ -229,6 +230,13 @@ func _ready() -> void:
 	_create_manette_v74()
 	print("ILE_MANGA_NATIVE: scene construite; OpenXR actif = ", xr_active)
 	print("ILE_MANGA_V192: %d petites choses ont leur portée" % portee_v192.reglees)
+	# V211 : le détail s'allège avec la distance, progressivement (voir allege_loin_v211.gd) ;
+	# le calcul se fait à part, dans la minute qui suit le chargement
+	allege_v211 = preload("res://scripts/allege_loin_v211.gd").new()
+	add_child(allege_v211)
+	allege_v211.setup(self)
+	allege_v211.recenser(self)
+	allege_v211.demarrer()
 	# V131 : le monde est prêt : tout se remet à vivre, l'écran de chargement s'efface
 	get_tree().paused = false
 	chargement_v131.finir()

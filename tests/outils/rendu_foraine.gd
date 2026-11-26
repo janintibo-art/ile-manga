@@ -162,6 +162,22 @@ func _initialize() -> void:
 				m.avancer(0.02)
 				garde3 += 1
 			print("ILE_MANGA_V210 rendu : fin, à bord ", m.a_bord, " ", fm.messages.back())
+	if quoi == "paliers":
+		# V211 : l'île vue de loin, à plein détail puis avec le détail allégé (au téléobjectif, pour voir les défauts)
+		var al = load("res://scripts/allege_loin_v211.gd").new()
+		root.add_child(al)
+		al.setup(null)
+		print("ILE_MANGA_V211 rendu : ", al.recenser(root), " gros maillages")
+		al.tout()
+		print("ILE_MANGA_V211 rendu : %d allégés sur %d, de %d k à %d k triangles au plus léger, %.0f ms" % [al.gagnes, al.faits, al.tri_avant / 1000, al.tri_loin / 1000, al.ms_total])
+		var fov0: float = cam.fov
+		for d in [[300.0, 40.0, 70.0], [900.0, 60.0, 30.0], [2000.0, 80.0, 14.0]]:
+			cam.fov = float(d[2])
+			for seuil in [0.0, 0.6, 1.0]:
+				root.mesh_lod_threshold = float(seuil)
+				await _vue("6_paliers_%dm_seuil_%s" % [int(d[0]), str(seuil).replace(".", "")], C + Vector3(-float(d[0]), float(d[1]), float(d[0]) * 0.5), C + Vector3(0, 12, 0), 8)
+				print("ILE_MANGA_V211 rendu : à %d m, seuil %.1f : %d k triangles dessinés" % [int(d[0]), float(seuil), int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)) / 1000])
+		cam.fov = fov0
 	quit()
 
 

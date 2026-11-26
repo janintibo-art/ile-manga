@@ -70,6 +70,35 @@ func _fl7_vues(nom: String, ou: Vector3) -> void:
 			int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)),
 			int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME)),
 			gpu / 20.0, cpu / 20.0, int(Engine.get_frames_per_second())])
+		# V211 "paliers" : la même vue sans le détail allégé de loin (tout à plein détail), pour comparer ;
+		# et, aux endroits demandés, les deux photos (avec / sans) à mettre côte à côte
+		if not bool(_fl7_args.get("paliers", false)):
+			continue
+		var veut_photo: bool = (_fl7_args.get("photos", []) as Array).has(nom)
+		if veut_photo:
+			_fl7_photo("%s_%s_avec" % [nom, c[0]])
+		var seuil7: float = get_viewport().mesh_lod_threshold
+		get_viewport().mesh_lod_threshold = 0.0
+		await _att(0.6)
+		var gpu2 := 0.0
+		for i2 in 20:
+			await get_tree().process_frame
+			gpu2 += RenderingServer.viewport_get_measured_render_time_gpu(vp)
+		print("FLU_VUE_SANS\t%s\t%s\t%d\t%d\t%d\t%.2f" % [nom, c[0],
+			int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)),
+			int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)),
+			int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME)), gpu2 / 20.0])
+		if veut_photo:
+			_fl7_photo("%s_%s_sans" % [nom, c[0]])
+		get_viewport().mesh_lod_threshold = seuil7
+
+
+func _fl7_photo(nom: String) -> void:
+	var dossier: String = ProjectSettings.globalize_path("res://").path_join("../photos/paliers")
+	DirAccess.make_dir_recursive_absolute(dossier)
+	var img: Image = get_viewport().get_texture().get_image()
+	if img != null:
+		img.save_png(dossier.path_join(nom + ".png"))
 
 
 func _fl7_lieu(nom: String, ou: Vector3, poser: bool = true) -> void:
@@ -173,6 +202,13 @@ func _serie() -> void:
 		_fl7_args = JSON.parse_string(fa.get_as_text())
 	if temps_v56 != null:
 		temps_v56.hour = float(_fl7_args.get("heure", 14.0))
+	# V211 : on attend que le détail allégé de loin soit prêt partout
+	var garde7: int = 0
+	while get("allege_v211") != null and allege_v211 != null and not allege_v211.fini and garde7 < 900:
+		await _att(0.5)
+		garde7 += 1
+	if get("allege_v211") != null and allege_v211 != null:
+		print("FLU_PALIERS\t%d\t%d\t%d\t%d\t%.0f" % [allege_v211.faits, allege_v211.gagnes, allege_v211.tri_avant, allege_v211.tri_loin, allege_v211.ms_total])
 	var lieux: Array = []
 	for l in _fl7_args.get("lieux", []):
 		lieux.append([str(l[0]), Vector3(float(l[1]), float(l[2]), float(l[3]))])
