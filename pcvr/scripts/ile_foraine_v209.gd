@@ -35,6 +35,19 @@ const ALLEES := [
 ]
 const PLATS_V210 := [[36.0, 44.0, 15.0], [20.0, 158.0, 11.0]]   # V210 : sous le Marteau, sous la Grande Balançoire
 const BIOME_RES: int = 301
+## V213 : l'île devient volcanique. La Butte est un volcan : sa crête à 58 m, le cratère au milieu (la
+## Chute se dresse sur son îlot, la croûte de lave autour), la Brèche par où l'allée y entre. Au pied
+## de la grande chute du grand huit, la Faille : une arête de basalte que la voie fend, de la lave au fond.
+const VOLCAN_R: float = 110.0
+const CRATERE_R: float = 34.0
+const CRATERE_Y: float = 58.0
+const ILOT_R: float = 13.0                 # l'îlot de la Chute, au milieu du cratère
+const LAVE_Y: float = BUTTE_Y - 1.5        # la croûte de lave du cratère
+const FAILLE_A := Vector2(121.5, -4.0)
+const FAILLE_B := Vector2(121.5, -56.0)
+const FAILLE_Y: float = 15.0
+## La coulée du nord : de la bouche, sur le flanc, jusqu'à la mer
+const COULEE := [[19.0, -150.0], [27.0, -166.0], [24.0, -180.0], [31.0, -200.0]]
 
 var count: int = 0
 var heights := PackedFloat32Array()
@@ -114,11 +127,7 @@ func _shape(x: float, z: float) -> float:
 	var h: float = lerpf(0.5, 2.2, smoothstep(0.0, 14.0, inland))
 	var doux: float = SOL + _noise.get_noise_2d(x, z) * 0.5
 	h = lerpf(h, doux, smoothstep(10.0, 30.0, inland))
-	# la Butte aux Frissons : un dôme d'herbe, son sommet aplati
 	var db: float = Vector2(x, z).distance_to(BUTTE)
-	if db < BUTTE_R:
-		var k: float = smoothstep(BUTTE_R, 16.0, db)
-		h = lerpf(h, BUTTE_Y + _noise2.get_noise_2d(x, z) * 0.6, k * k * (3.0 - 2.0 * k) * smoothstep(0.0, 22.0, inland))
 	# les allées, la place, l'entrée, le quai : bien à plat
 	var al: Vector2 = allee_at(x, z)
 	var plat: float = 1.0 - smoothstep(al.y, al.y + 5.0, al.x)
@@ -126,8 +135,56 @@ func _shape(x: float, z: float) -> float:
 	plat = maxf(plat, 1.0 - smoothstep(22.0, 30.0, Vector2((x - GARE.x) * 0.5, z - GARE.y - 6.0).length()))
 	for pv in PLATS_V210:
 		plat = maxf(plat, 1.0 - smoothstep(float(pv[2]), float(pv[2]) + 6.0, Vector2(x - float(pv[0]), z - float(pv[1])).length()))
-	if db > BUTTE_R * 0.55 and inland > 24.0:
+	if inland > 24.0:
 		h = lerpf(h, SOL, plat)
+	return _volcanique(x, z, h, inland)
+
+
+static func _dist_ligne(p: Vector2, pts: Array) -> float:
+	var best: float = 1e9
+	for i in range(pts.size() - 1):
+		var a := Vector2(float(pts[i][0]), float(pts[i][1]))
+		var b := Vector2(float(pts[i + 1][0]), float(pts[i + 1][1]))
+		best = minf(best, p.distance_to(Geometry2D.get_closest_point_to_segment(p, a, b)))
+	return best
+
+
+## V213 : le volcan (ses flancs ravinés, la crête, le cratère et son îlot, la Brèche), la coulée du
+## nord, l'arête de la Faille. « h » : le sol de l'île sans tout cela.
+func _volcanique(x: float, z: float, h: float, inland: float) -> float:
+	var p := Vector2(x, z)
+	var db: float = p.distance_to(BUTTE)
+	if db < VOLCAN_R:
+		var a: float = atan2(z - BUTTE.y, x - BUTTE.x)
+		var crete: float = CRATERE_Y + sin(a * 2.0 + 0.7) * 3.2 + sin(a * 5.0 + 2.1) * 1.4
+		var u: float = clampf((db - CRATERE_R) / (VOLCAN_R - CRATERE_R), 0.0, 1.0)
+		var vh: float = SOL + (crete - SOL) * pow(1.0 - u, 1.9)
+		# les ravines du flanc
+		var milieu: float = sin(u * PI)
+		vh -= (0.5 + 0.5 * sin(a * 11.0 + _noise.get_noise_2d(x * 3.0, z * 3.0) * 4.0)) * 3.2 * milieu
+		vh += _noise2.get_noise_2d(x * 1.5, z * 1.5) * 1.5 * milieu
+		if db < CRATERE_R:
+			vh = lerpf(LAVE_Y, crete, pow(smoothstep(22.0, CRATERE_R, db), 1.3))
+			if db < ILOT_R + 2.5:
+				vh = lerpf(BUTTE_Y, LAVE_Y, smoothstep(ILOT_R, ILOT_R + 2.5, db))
+		h = lerpf(h, maxf(h, vh), smoothstep(-4.0, 8.0, inland))
+		# la Brèche : l'allée monte au cratère par une gorge taillée dans le flanc
+		var pts: Array = ALLEES[2][0]
+		var dg: float = _dist_ligne(p, pts)
+		if dg < 16.0:
+			var sentier: float = lerpf(BUTTE_Y, SOL, smoothstep(ILOT_R, VOLCAN_R - 6.0, db))
+			if dg < 2.8:
+				h = sentier
+			else:
+				h = minf(h, sentier + (dg - 2.8) * 2.4)
+		# la coulée : un lit creusé dans le flanc
+		var dc: float = _dist_ligne(p, COULEE)
+		h -= 1.3 * (1.0 - smoothstep(2.0, 5.5, dc)) * smoothstep(-6.0, 4.0, inland)
+	# l'arête de la Faille
+	var df: float = p.distance_to(Geometry2D.get_closest_point_to_segment(p, FAILLE_A, FAILLE_B))
+	if df < 32.0:
+		var arete: float = FAILLE_Y + _noise2.get_noise_2d(x * 2.0, z * 2.0) * 2.4 + _noise.get_noise_2d(x * 4.0, z * 4.0) * 1.6
+		h = lerpf(h, maxf(h, arete), 1.0 - smoothstep(13.0, 30.0, df + _noise2.get_noise_2d(x * 3.0, z * 3.0 + 40.0) * 5.0))
 	return h
 
 
@@ -140,14 +197,15 @@ func _creuser() -> void:
 			continue
 		var cx: int = int(round((p.x + HALF) / CELL))
 		var cz: int = int(round((p.z + HALF) / CELL))
-		for dz in range(-3, 4):
-			for dx in range(-3, 4):
+		for dz in range(-4, 5):
+			for dx in range(-4, 5):
 				var xi: int = cx + dx
 				var zi: int = cz + dz
 				if xi < 0 or zi < 0 or xi >= count or zi >= count:
 					continue
 				var dist: float = Vector2(-HALF + xi * CELL - p.x, -HALF + zi * CELL - p.z).length()
-				var plafond: float = p.y - 2.2 + maxf(dist - 3.0, 0.0) * 0.8
+				# V213 : des parois raides (la voie fend la roche : on la voit défiler)
+				var plafond: float = p.y - 2.2 + maxf(dist - 3.2, 0.0) * 2.6
 				var i: int = zi * count + xi
 				if heights[i] > plafond:
 					heights[i] = plafond
@@ -174,8 +232,8 @@ func contains(wx: float, wz: float) -> bool:
 	return absf(wx - CENTER.x) < HALF and absf(wz - CENTER.z) < HALF
 
 
-## R : la terre battue (au pied de la butte, sous le grand huit) ; B : le sous-bois (la butte) ;
-## A : les dalles (les allées, la place, l'entrée, le quai).
+## R : la terre battue (le bord des allées) ; G : la lave (V213 : le cratère, la coulée, le fond de la
+## Faille) ; B : la mousse rase (V213 : par plaques sur l'esplanade) ; A : les dalles.
 func _bake_biome() -> void:
 	biome = Image.create(BIOME_RES, BIOME_RES, false, Image.FORMAT_RGBA8)
 	var px: float = HALF * 2.0 / float(BIOME_RES - 1)
@@ -185,23 +243,39 @@ func _bake_biome() -> void:
 			var x: float = -HALF + xi * px
 			var al: Vector2 = allee_at(x, z)
 			var pave: float = 1.0 - smoothstep(al.y - 0.6, al.y + 0.6, al.x)
+			# V213 : dans la Brèche, les dalles ne montent pas sur les parois
+			if Vector2(x, z).distance_to(BUTTE) < VOLCAN_R:
+				pave = 1.0 - smoothstep(2.0, 2.8, al.x)
 			pave = maxf(pave, 1.0 - smoothstep(PLACE_R - 1.0, PLACE_R + 1.0, Vector2(x, z).distance_to(PLACE)))
 			pave = maxf(pave, 1.0 - smoothstep(13.0, 15.0, Vector2(x, z).distance_to(ENTREE)))
 			var dirt: float = (1.0 - smoothstep(al.y + 0.5, al.y + 3.0, al.x)) * 0.6 * (1.0 - pave)
 			var db: float = Vector2(x, z).distance_to(BUTTE)
-			var forest: float = (1.0 - smoothstep(BUTTE_R * 0.5, BUTTE_R * 0.95, db)) * (0.45 + 0.3 * _noise2.get_noise_2d(x * 2.0, z * 2.0))
-			biome.set_pixel(xi, zi, Color(clampf(dirt, 0.0, 1.0), 0.0, clampf(forest, 0.0, 1.0), clampf(pave, 0.0, 1.0)))
+			var pp := Vector2(x, z)
+			var lave: float = 0.0
+			if db < CRATERE_R:
+				lave = smoothstep(ILOT_R + 1.5, ILOT_R + 3.5, db) * (1.0 - smoothstep(22.5, 25.5, db)) * smoothstep(3.0, 5.0, _dist_ligne(pp, ALLEES[2][0]))
+			lave = maxf(lave, 1.0 - smoothstep(1.6, 4.4, _dist_ligne(pp, COULEE)))
+			if z < FAILLE_A.y + 2.0 and z > FAILLE_B.y - 4.0:
+				lave = maxf(lave, 1.0 - smoothstep(1.4, 3.6, absf(x - FAILLE_A.x)))
+			var mousse: float = (1.0 - lave) * smoothstep(VOLCAN_R * 0.8, VOLCAN_R * 1.1, db) * (0.55 + 0.45 * _noise.get_noise_2d(x * 2.0, z * 2.0))
+			biome.set_pixel(xi, zi, Color(clampf(dirt, 0.0, 1.0), clampf(lave, 0.0, 1.0), clampf(mousse, 0.0, 1.0), clampf(pave, 0.0, 1.0)))
 
 
 func _build_mesh() -> void:
 	var mat := ShaderMaterial.new()
-	mat.shader = load("res://shaders/geants_sol_v142.gdshader")
+	mat.shader = load("res://shaders/volcan_sol_v213.gdshader")
+	# V213 : la cendre, la mousse rase, le basalte, le sable noir, les pavés de basalte, la croûte de lave
 	var S := "res://assets/textures/montjoie/"
-	for k in ["prairie", "champ", "chemin", "sous_bois", "roche_crocs", "sable_lac", "paves"]:
-		if ResourceLoader.exists(S + k + ".png"):
-			mat.set_shader_parameter(k + "_tex", load(S + k + ".png"))
-		if ResourceLoader.exists(S + k + "_n.png"):
-			mat.set_shader_parameter(k + "_n", load(S + k + "_n.png"))
+	var BR := "res://assets/textures/braise/"
+	for paire in [["prairie", BR + "cendre"], ["chemin", S + "chemin"], ["sous_bois", BR + "mousse_braise"], ["roche_crocs", BR + "basalte"],
+			["sable_lac", BR + "sable_noir"], ["paves", BR + "paves_basalte"]]:
+		if ResourceLoader.exists(str(paire[1]) + ".png"):
+			mat.set_shader_parameter(str(paire[0]) + "_tex", load(str(paire[1]) + ".png"))
+		if ResourceLoader.exists(str(paire[1]) + "_n.png"):
+			mat.set_shader_parameter(str(paire[0]) + "_n", load(str(paire[1]) + "_n.png"))
+	mat.set_shader_parameter("lave_tex", load(BR + "lave_croute.png"))
+	mat.set_shader_parameter("lave_e", load(BR + "lave_croute_e.png"))
+	mat.set_shader_parameter("volcan", Vector3(CENTER.x + BUTTE.x, CENTER.z + BUTTE.y, VOLCAN_R))
 	mat.set_shader_parameter("biome", ImageTexture.create_from_image(biome))
 	mat.set_shader_parameter("biome_rect", Vector4(CENTER.x - HALF, CENTER.z - HALF, HALF * 2.0, HALF * 2.0))
 	mat.set_shader_parameter("lake", Vector4(CENTER.x, CENTER.z - 5000.0, 1.0, 1.0))

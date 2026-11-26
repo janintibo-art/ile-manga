@@ -81,6 +81,16 @@ func _serie() -> void:
 		if hauts209[i209].y < -0.5:
 			tete_bas209 += 1
 	_ok(pire209 > 1.6, "le sol reste partout sous les rails (au plus près : %.1f m)" % pire209)
+	# V213 : l'île volcanique
+	var il213: Node3D = fo209.ile
+	_ok(float(il213.height_l(18.0 + 34.0, -116.0)) > 45.0 and float(il213.height_l(18.0, -116.0 - 34.0)) > 45.0, "V213 : la crête du volcan dépasse 45 m (%.0f m à l'est)" % float(il213.height_l(52.0, -116.0)))
+	_ok(absf(float(il213.height_l(18.0, -116.0)) - 21.0) < 0.6 and float(il213.height_l(18.0 - 18.0, -116.0)) < 20.5, "V213 : au fond du cratère, l'îlot de la Chute et la croûte de lave autour")
+	_ok(float(il213.height_l(18.0, -90.0)) < 26.0 and float(il213.height_l(18.0 + 14.0, -84.0)) > 34.0, "V213 : la Brèche entaille le flanc jusqu'au cratère (le sentier à %.0f m, la paroi à %.0f m)" % [float(il213.height_l(18.0, -90.0)), float(il213.height_l(32.0, -84.0))])
+	_ok(float(il213.height_l(121.5, -30.0)) < 6.0 and float(il213.height_l(121.5 + 11.0, -30.0)) > 11.0 and float(il213.height_l(121.5 - 11.0, -30.0)) > 11.0, "V213 : la Faille : la voie passe entre deux parois de basalte (le fond à %.1f m, les bords à %.0f et %.0f m)" % [float(il213.height_l(121.5, -30.0)), float(il213.height_l(110.5, -30.0)), float(il213.height_l(132.5, -30.0))])
+	var vo213: Node3D = fo209.volcan
+	_ok(vo213 != null and int(vo213.colonnes) > 600 and int(vo213.bouquets) > 30, "V213 : %d colonnes de basalte en %d bouquets le long de la voie" % [int(vo213.colonnes), int(vo213.bouquets)])
+	_ok(int(vo213.arches) == 4 and float(vo213.au_plus_pres) > 3.0, "V213 : quatre arches de roche ; rien à moins de %.1f m de l'axe de la voie" % float(vo213.au_plus_pres))
+	_ok(vo213.lueurs.size() == 2 and vo213.get_node_or_null("Panache_v213") != null, "V213 : le panache du cratère, la lueur de la lave")
 	_ok(tete_bas209 > 20 and tete_bas209 < 120, "on a la tête en bas sur %d m (la boucle, la vrille)" % tete_bas209)
 	_ok(int(hu209.supports) > 120, "%d poteaux portent la voie" % int(hu209.supports))
 	_ok(hu209.wagons.size() == 3, "le train a trois wagons")

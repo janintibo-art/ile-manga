@@ -12,6 +12,8 @@ const FalaisesScript = preload("res://scripts/ext_chateau/falaises_ombrelac.gd")
 const Kit = preload("res://scripts/ext_chateau/archi_ombrelac.gd")
 const VieScript = preload("res://scripts/ext_chateau/vie_ombrelac.gd")
 const ObjetsScript = preload("res://scripts/ext_chateau/objets_ombrelac.gd")
+const QuetesScript = preload("res://scripts/ext_chateau/quetes_ombrelac.gd")
+const CoursScript = preload("res://scripts/ext_chateau/cours_ombrelac.gd")
 
 const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le débarcadère d'Ombrelac",
 	"ombrelac_guet": "la Colline du Guet", "ombrelac_viaduc": "le grand viaduc", "ombrelac_cour": "la Cour d'Honneur",
@@ -29,7 +31,8 @@ const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le d�
 	"ombrelac_tour_sortileges": "la Tour des Sortilèges", "ombrelac_cabinet_sortileges": "le Cabinet des Sortilèges",
 	"ombrelac_balcon_sortileges": "le Balcon des Sortilèges",
 	"ombrelac_salle_conseil": "la Salle du Conseil", "ombrelac_vis_grosse_tour": "l'escalier de la Grosse Tour",
-	"ombrelac_bureau_recteur": "le Bureau du Recteur", "ombrelac_salle_reliques": "la Salle des Reliques"}
+	"ombrelac_bureau_recteur": "le Bureau du Recteur", "ombrelac_salle_reliques": "la Salle des Reliques",
+	"ombrelac_caves_minuit": "les caves de la Maison de Minuit"}
 
 var main: Node
 var ile: Node3D
@@ -38,6 +41,8 @@ var flore: Node3D
 var falaises: Node3D
 var vie: Node3D                           # (v14) les habitants de l'Académie (vie_ombrelac.gd)
 var objets: Node3D                        # (v15) les objets avec lesquels on fait quelque chose (objets_ombrelac.gd)
+var quetes: Node3D                        # (v16) les quêtes des habitants, la Maison de Minuit (quetes_ombrelac.gd)
+var cours: Node3D                         # (v17) les cours de l'Académie, le bulletin, le diplôme (cours_ombrelac.gd)
 var _attente_pnj: float = 0.0
 var pc: bool = true
 var state := {"visite": false}
@@ -102,6 +107,16 @@ func build_town() -> void:
 	objets.name = "Objets_ombrelac"
 	add_child(objets)
 	objets.build(main, self, chateau, vie)
+	# (v16) les quêtes des habitants ; sous la fontaine du cloître, les caves de la Maison de Minuit
+	quetes = QuetesScript.new()
+	quetes.name = "Quetes_ombrelac"
+	add_child(quetes)
+	quetes.build(main, self, chateau, vie, objets)
+	# (v17) les cours de l'Académie : cinq matières, trois leçons chacune, le bulletin, le diplôme
+	cours = CoursScript.new()
+	cours.name = "Cours_ombrelac"
+	add_child(cours)
+	cours.build(main, self, chateau, vie, objets, quetes)
 
 
 func _eau_mat(deep: Color, shallow: Color, vif: float = 0.0) -> Material:
@@ -234,6 +249,10 @@ func zone_at(p: Vector3) -> String:
 	if not contains(p):
 		return ""
 	var l: Vector2 = IleScript.L(p.x, p.z)
+	# (v16) les caves de la Maison de Minuit, sous le cloître (minuit_ombrelac.gd)
+	var cm: Vector2 = l - IleScript.ROC
+	if p.y < IleScript.ROC_Y - 88.0 and p.y > IleScript.ROC_Y - 110.0 and cm.x > 3.0 and cm.x < 32.0 and cm.y > -41.0 and cm.y < -17.0:
+		return "ombrelac_caves_minuit"
 	if l.distance_to(IleScript.DOCK_A) < 30.0:
 		return "ombrelac_debarcadere"
 	if l.distance_to(IleScript.AIGUILLE) < IleScript.AIGUILLE_R + 4.0:
@@ -371,3 +390,9 @@ func load_data(d: Dictionary) -> void:
 	state = {"visite": false}
 	for k in d:
 		state[k] = d[k]
+	# (v16) les portes des caves, les roues, le coffre, la chaussette : comme la partie les a laissés
+	if quetes != null and quetes.has_method("apres_chargement"):
+		quetes.apres_chargement()
+	# (v17) les notes, le diplôme (l'exercice en cours reprend du début)
+	if cours != null and cours.has_method("apres_chargement"):
+		cours.apres_chargement()

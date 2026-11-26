@@ -457,6 +457,10 @@ func _serie() -> void:
 	await _habitants_v14()
 	# --- v15 : les objets du château (objets_ombrelac.gd, textes_ombrelac.gd)
 	await _objets_v15()
+	# --- v16 : les quêtes des habitants, la Maison de Minuit (quetes_ombrelac.gd, minuit_ombrelac.gd)
+	await _quetes_v16()
+	# --- v17 : les cours de l'Académie (cours_ombrelac.gd)
+	await _cours_v17()
 
 
 ## (v14) Les dix-huit habitants : leurs lieux, leurs chemins, leurs corps, leur journée, la parole
@@ -850,5 +854,530 @@ func _objets_v15() -> void:
 	_ok(O._liste("livres").is_empty(), "une nouvelle partie oublie les livres lus")
 	ombrelac_ext.load_data(d)
 	_ok(O._liste("livres").size() >= 1 and O._liste("constellations").size() == 1 and int(O._st().get("voeux", 0)) == 1, "une partie chargée retrouve les livres lus, les constellations, les vœux")
+	temps_v56.set_hour(12.0)
+	_ranger()
+
+
+# =================================================================== v16 : les quêtes, la Maison de Minuit
+
+## (v16) Une réplique de l'habitant, comme si on avait cliqué le choix (le sac, les récompenses : comme en jeu)
+func dire_v16(id_pnj: String, choix: String) -> Dictionary:
+	var n: Node = ombrelac_ext.vie.by_id.get(id_pnj)
+	var boite: Dictionary = {}
+	_brain_reply_v48(n, func():
+		boite["r"] = journal_v56.choose(n, choix)
+		return boite["r"])
+	return boite.get("r", {})
+
+
+## (v16) Les sujets « ★ » qu'un habitant propose (leurs identifiants)
+func sujets_v16(id_pnj: String) -> Array:
+	var n: Node = ombrelac_ext.vie.by_id.get(id_pnj)
+	return journal_v56.topics_for(n).map(func(t): return str(t["id"]))
+
+
+## (v16) Une quête du carnet (onglet « Quêtes »), par son titre : [la liste, l'entrée] ou []
+func carnet_v16(titre: String) -> Array:
+	var l: Dictionary = journal_v56.listing()
+	for k in ["en_cours", "a_faire", "accomplies"]:
+		for e in l[k]:
+			if str(e["titre"]) == titre:
+				return [k, e]
+	return []
+
+
+func accepter_v16(qid: String) -> void:
+	var Qn: Node = ombrelac_ext.quetes
+	var qui: String = str(Qn.Q[qid]["qui"])
+	dire_v16(qui, Qn._id(qid, "offre"))
+	dire_v16(qui, Qn._id(qid, "accepte"))
+	await _att(0.6)
+
+
+func _quetes_v16() -> void:
+	var Qn: Node = ombrelac_ext.quetes
+	var O: Node = ombrelac_ext.objets
+	_ok(Qn != null and Qn.minuit != null, "les quêtes et les caves de la Minuit sont en place")
+	if Qn == null or Qn.minuit == null:
+		return
+	var M: Node = Qn.minuit
+	var vie: Node = ombrelac_ext.vie
+	_ok(not O.objet("hortense").is_empty() and not O.objet("escalier_fontaine").is_empty() and not O.objet("coffre_minuit").is_empty() and not O.objet("roue_2").is_empty(),
+		"leurs objets : Hortense, l'escalier, les énigmes des caves, le coffre")
+	_ok(Qn.eau_surfaces.size() == 1, "l'eau de la fontaine est trouvée dans le maillage du cloître")
+	var bien: int = 0
+	for id in Qn.SERVICES:
+		if journal_v56.services.has(id):
+			bien += 1
+	_ok(bien == Qn.SERVICES.size(), "les habitants ont leurs sujets dans le carnet (%d/%d)" % [bien, Qn.SERVICES.size()])
+	# les caves sont dans le roc, sous le cloître
+	var dessus: float = 999.0
+	for c in [[4.0, -40.0], [31.0, -40.0], [31.0, -18.0], [4.0, -18.0], [16.0, -30.0], [10.0, -23.0]]:
+		var w: Vector3 = M.monde(Vector3(float(c[0]), M.FY + M.H + 0.6, float(c[1])))
+		dessus = minf(dessus, ombrelac_ext.ile.height(w.x, w.z) - w.y)
+	_ok(dessus > 8.0, "les caves sont dans le roc : au moins %.0f m de roche au-dessus" % dessus)
+	# --- le carnet : la quête de Tobie, avant même qu'il en parle (le point d'exclamation au-dessus de lui)
+	var tobie: Node = vie.by_id.get("tobie_om")
+	tobie.brain.memoire["visites"] = maxi(1, int(tobie.brain.memoire.get("visites", 0)))
+	await _att(0.7)
+	var c0: Array = carnet_v16("La chaussette de Tobie")
+	_ok(not c0.is_empty() and str(c0[0]) == "a_faire", "dans le carnet : « La chaussette de Tobie », à faire (%s)" % str(c0))
+	_ok(indicateurs_v130 == null or indicateurs_v130._genre_cerveau(tobie.brain) == "quete", "un point d'exclamation au-dessus de Tobie")
+	_ok(sujets_v16("tobie_om").has(Qn._id("chaussette", "offre")), "Tobie : « ★ Ta chaussette est encore sur la girouette ? »")
+	# --- comme en jeu : on lui parle, on choisit, on accepte
+	place_player_v35(tobie.global_position + Vector3(1.4, 0.1, 0), Vector3(-1, 0, 0))
+	await _images(2)
+	_talk_v31(tobie)
+	await _images(3)
+	_on_dialogue_choice_v31(Qn._id("chaussette", "offre"))
+	await _images(2)
+	var vu: bool = dialogue_v31.opened and str(dialogue_v31._text.text).contains("girouette")
+	_on_dialogue_choice_v31(Qn._id("chaussette", "accepte"))
+	await _images(2)
+	_close_dialogue_v31()
+	_ok(vu and Qn.etape("chaussette") == 0, "Tobie raconte, on accepte : la quête commence")
+	await _att(0.7)
+	c0 = carnet_v16("La chaussette de Tobie")
+	_ok(not c0.is_empty() and str(c0[0]) == "en_cours" and str(c0[1]["objectif"]).to_lower().contains("grande lunette"), "le carnet : en cours, « %s »" % (str(c0[1]["objectif"]) if not c0.is_empty() else "?"))
+	_ok(str(tobie.brain.choose("quete", _npc_ctx_v31()).get("texte", "")).contains("Lunette"), "Tobie, si on lui en reparle : où chercher")
+	# la chaussette : la lunette, la cloche, au pied de la tour, Tobie
+	var lun: Dictionary = ob_v15("lunette", func(o): return bool(o.get("grande", false)))
+	temps_v56.set_hour(12.0)
+	O.agir_sur(lun)
+	_ok(Qn.etape("chaussette") == 1 and _message_v15().contains("chaussette"), "à la Grande Lunette : la chaussette sur la girouette")
+	O.agir_sur(ob_v15("cloche"))
+	_ok(Qn.etape("chaussette") == 2 and _message_v15().contains("chaussette"), "on sonne la cloche : la chaussette tombe")
+	await _att(4.0)
+	_ok(Qn.chaussette_sol.visible and not Qn.chaussette_haut.visible, "elle est au pied de la Tour de l'Horloge")
+	await devant_v15(O.objet("chaussette"), 0.5)
+	_ok(str(O.courant.get("id", "")) == "chaussette" and donjon_v35.prompt(_pos()) == "E : ramasser la chaussette", "« %s »" % donjon_v35.prompt(_pos()))
+	await _appui(KEY_E)
+	_ok(Qn.etape("chaussette") == 3 and not Qn.chaussette_sol.visible, "E : on la ramasse")
+	var pieces: int = inventory_v28.count("piece")
+	var r: Dictionary = dire_v16("tobie_om", Qn._id("chaussette", "rendre"))
+	_ok(Qn.finie("chaussette") and Qn.indices() == 1 and str(r.get("texte", "")).contains("Indice de la Minuit (1 / 5)"), "on la rend à Tobie : la quête est accomplie, premier indice de la Minuit")
+	_ok(inventory_v28.count("piece") == pieces + 6 and inventory_v28.count("croissant") >= 2, "la récompense de Tobie (6 pièces, 2 croissants)")
+	await _att(0.7)
+	c0 = carnet_v16("La chaussette de Tobie")
+	_ok(not c0.is_empty() and str(c0[0]) == "accomplies", "le carnet : accomplie")
+	# --- le pari du miel : la lunette la nuit, Fauconnier, Mère Fournil, Rouage
+	await accepter_v16("miel")
+	_ok(Qn.etape("miel") == 0, "Maître Rouage : le pari du miel commence")
+	O.agir_sur(lun)
+	_ok(Qn.etape("miel") == 0, "le jour, la lunette ne dit rien de l'heure des étoiles")
+	temps_v56.set_hour(23.0)
+	O.agir_sur(lun)
+	_ok(Qn.etape("miel") == 1, "la nuit : on relève l'heure des étoiles")
+	_ok(sujets_v16("fauconnier_om").has(Qn._id("miel", "etoiles")), "Fauconnier : « ★ J'ai relevé l'heure des étoiles. »")
+	r = dire_v16("fauconnier_om", Qn._id("miel", "etoiles"))
+	_ok(Qn.etape("miel") == 2 and str(r.get("texte", "")).contains("treizième"), "Fauconnier fait ses calculs (le treizième coup)")
+	inventory_v28.remove("miel", inventory_v28.count("miel"))
+	dire_v16("fournil_om", Qn._id("miel", "pot"))
+	await _att(0.7)
+	_ok(inventory_v28.count("miel") == 1 and Qn.etape("miel") == 3, "Mère Fournil donne un pot de miel")
+	var rouages: int = inventory_v28.count("rouage")
+	dire_v16("rouage_om", Qn._id("miel", "rendre"))
+	_ok(Qn.finie("miel") and inventory_v28.count("miel") == 0 and inventory_v28.count("rouage") == rouages + 1 and Qn.indices() == 2, "Rouage prend le miel : pari tranché, deuxième indice")
+	# --- l'élixir de rire : trois ingrédients, la paillasse, Maître Équerre, Sidonie
+	for it in ["fleur_lune", "chouette_plume", "fiole_vide"]:
+		inventory_v28.remove(it, inventory_v28.count(it))
+	await accepter_v16("elixir")
+	_ok(Qn.etape("elixir") == 0 and sujets_v16("buis_om").has(Qn._id("elixir", "fleur")) and sujets_v16("alambic_om").has(Qn._id("elixir", "fiole")), "Sidonie : l'élixir de rire ; Firmin et Maîtresse Alambic ont de quoi aider")
+	dire_v16("buis_om", Qn._id("elixir", "fleur"))
+	dire_v16("fauconnier_om", Qn._id("elixir", "plume"))
+	dire_v16("alambic_om", Qn._id("elixir", "fiole"))
+	await _att(0.8)
+	_ok(Qn.etape("elixir") == 1, "les trois ingrédients dans le sac : à la paillasse")
+	O.agir_sur(ob_v15("paillasse"))
+	_ok(Qn.etape("elixir") == 2 and inventory_v28.count("fiole_vide") == 0 and inventory_v28.count("fleur_lune") == 0, "à la paillasse : l'élixir de rire (les ingrédients y passent)")
+	r = dire_v16("equerre_om", Qn._id("elixir", "gouter"))
+	_ok(Qn.etape("elixir") == 3 and str(r.get("geste", "")) == "rire", "Maître Équerre goûte… et rit")
+	dire_v16("sidonie_om", Qn._id("elixir", "rendre"))
+	_ok(Qn.finie("elixir") and Qn.indices() == 3, "Sidonie : accomplie, troisième indice")
+	# --- la fougère géante : les racines la nuit, la fontaine, Firmin
+	await accepter_v16("fougere")
+	temps_v56.set_hour(12.0)
+	await devant_v15(O.objet("racines"), 0.3)
+	_ok(str(O.courant.get("id", "")) == "racines", "devant la serre : « %s »" % donjon_v35.prompt(_pos()))
+	O.agir_sur(O.objet("racines"))
+	_ok(Qn.etape("fougere") == 0, "le jour, la fougère fait semblant de dormir")
+	temps_v56.set_hour(22.5)
+	O.agir_sur(O.objet("racines"))
+	_ok(Qn.etape("fougere") == 1, "la nuit, ses racines filent vers le cloître")
+	pieces = inventory_v28.count("piece")
+	O.agir_sur(ob_v15("fontaine"))
+	_ok(Qn.etape("fougere") == 2 and inventory_v28.count("piece") == pieces, "à la fontaine : on écoute l'eau (sans y jeter de pièce)")
+	dire_v16("buis_om", Qn._id("fougere", "rendre"))
+	_ok(Qn.finie("fougere") and Qn.indices() == 4, "Firmin : accomplie, quatrième indice")
+	# --- le livre bien élevé : deux rayons de la Bibliothèque, Dame Reliure
+	await accepter_v16("livre")
+	var r1: Dictionary = ob_v15("livres", func(o): return str(o.get("noeud", "")) == "Ombrelac_bibliotheque")
+	var r2: Dictionary = ob_v15("livres", func(o): return str(o.get("noeud", "")) == "Ombrelac_bibliotheque" and int(o["n"]) != int(r1.get("n", -1)))
+	O.agir_sur(r1)
+	_ok(Qn.etape("livre") == 0 and _message_v15().contains("autre rayon"), "un premier rayon : pas là")
+	O.agir_sur(r1)
+	_ok(Qn.etape("livre") == 0, "le même rayon : toujours pas")
+	O.agir_sur(r2)
+	_ok(Qn.etape("livre") == 1 and _message_v15().contains("Journal de la Maison de Minuit"), "un autre rayon : le Journal de la Maison de Minuit")
+	r = dire_v16("reliure_om", Qn._id("livre", "rendre"))
+	_ok(Qn.finie("livre") and Qn.indices() == 5 and str(r.get("texte", "")).contains("cinq indices"), "Dame Reliure : accomplie, les cinq indices")
+	# --- la Maison de Minuit : Anatole, Hortense, l'escalier
+	await accepter_v16("minuit")
+	await _att(0.7)
+	_ok(Qn.etape("minuit") == 1, "Anatole : les cinq indices sont déjà là, il faut parler à Hortense")
+	temps_v56.set_hour(14.0)
+	var oh: Dictionary = O.objet("hortense")
+	await devant_v15(oh, 0.5)
+	_ok(str(O.courant.get("id", "")) == "hortense" and donjon_v35.prompt(_pos()) == "E : parler à Hortense, la grenouille", "au bord de la fontaine : « %s »" % donjon_v35.prompt(_pos()))
+	await _appui(KEY_E)
+	_ok(not Qn.ouverte and _message_v15().contains("la nuit"), "le jour, Hortense dort")
+	temps_v56.set_hour(23.5)
+	await _appui(KEY_E)
+	_ok(Qn.ouverte and Qn.etape("minuit") == 2, "la nuit, avec les cinq indices : Hortense ouvre le passage")
+	await _att(5.0)
+	_ok(not Qn.eau_visible() and Qn.trou.visible, "le bassin s'est vidé, l'escalier est là")
+	await _poser(M.monde(M.FONTAINE + Vector3(4.9, 0.3, -1.6)), Vector3(-1, 0, 0))
+	await _att(0.5)
+	_ok(str(O.courant.get("id", "")) == "escalier_fontaine", "au bord du bassin : « %s »" % donjon_v35.prompt(_pos()))
+	await Qn.descendre()
+	await _att(1.5)
+	var fy: float = M.monde(Vector3(0, M.FY, 0)).y
+	_ok(absf(_pos().y - fy) < 0.6 and Qn.etape("minuit") == 3, "en bas de l'escalier : les caves de la Minuit (%.1f m sous le cloître)" % (M.monde(Vector3.ZERO).y - _pos().y))
+	_ok(ombrelac_ext.zone_at(_pos()) == "ombrelac_caves_minuit" and str(journal_v56.place_name(_pos())).contains("Minuit"), "le lieu : %s" % str(journal_v56.place_name(_pos())))
+	await _att(2.0)
+	_ok(absf(_pos().y - fy) < 0.6, "on tient debout sur le sol des caves")
+	# la Porte du Treizième Coup : douze coups puis le silence, quatorze, treize
+	var g1: StaticBody3D = M.portes["treize"]
+	for i in 12:
+		O.agir_sur(O.objet("cloche_minuit"))
+		await _att(0.2)
+	await _att(8.6)
+	_ok(not M.ouverte("treize") and M.coups == 0, "douze coups, puis trop de silence : le compte s'efface")
+	for i in 14:
+		O.agir_sur(O.objet("cloche_minuit"))
+		await _att(0.2)
+	await _att(3.0)
+	_ok(not M.ouverte("treize"), "quatorze coups : la porte reste fermée")
+	for i in 13:
+		O.agir_sur(O.objet("cloche_minuit"))
+		await _att(0.2)
+	await _att(3.0)
+	_ok(M.ouverte("treize"), "treize coups, puis le silence : la Porte du Treizième Coup s'ouvre")
+	await _att(3.0)
+	_ok(g1.position.y < M.FY - 3.0, "la grille s'est enfoncée dans le sol")
+	# on passe la porte à pied (la grille ne bloque plus)
+	await _poser(M.monde(Vector3(10.0, M.FY + 0.2, -26.6)), M.monde(Vector3(10.0, 0, -40.0)) - M.monde(Vector3(10.0, 0, -26.6)))
+	_touche(KEY_W, true)
+	await _att(1.6)
+	_touche(KEY_W, false)
+	await _att(0.3)
+	var lp: Vector3 = ombrelac_ext.chateau.global_transform.affine_inverse() * _pos()
+	_ok(lp.z < -28.5, "on passe la porte à pied, dans la Salle des Veilleurs (z %.1f)" % lp.z)
+	# la Salle des Veilleurs
+	await devant_v15(O.objet("statue_coq"), 0.6)
+	_ok(str(O.courant.get("id", "")) == "statue_coq", "devant une statue : « %s »" % donjon_v35.prompt(_pos()))
+	await _appui(KEY_E)
+	_ok(not M.ouverte("veilleurs"), "le Coq : rien ne se passe")
+	O.agir_sur(O.objet("statue_chouette"))
+	_ok(M.ouverte("veilleurs"), "la Chouette (celle qui veille la nuit) : la porte s'ouvre")
+	# la Galerie des Trois Angles
+	O.agir_sur(O.objet("roue_0"))
+	_ok(not M.ouverte("angles") and M.roue_haut(0) == 1, "un quart de tour : la roue change de signe")
+	for i in 2:
+		O.agir_sur(O.objet("roue_0"))
+	for i in 2:
+		O.agir_sur(O.objet("roue_1"))
+	_ok(not M.ouverte("angles"), "deux lunes noires sur trois : fermé")
+	O.agir_sur(O.objet("roue_2"))
+	_ok(M.ouverte("angles"), "les trois lunes noires en haut : la dernière porte s'ouvre")
+	# le trésor, la lettre
+	var po: int = inventory_v28.count("piece_or")
+	O.agir_sur(O.objet("coffre_minuit"))
+	_ok(M.ouverte("coffre") and inventory_v28.count("piece_or") == po + 8 and inventory_v28.count("carte_tresor") >= 1, "le coffre de la Minuit : le trésor")
+	_ok(Qn.etape("minuit") == 4, "le carnet : tout raconter à Anatole")
+	O.agir_sur(O.objet("coffre_minuit"))
+	_ok(inventory_v28.count("piece_or") == po + 8, "le coffre ne se vide qu'une fois")
+	message.text = ""
+	O.agir_sur(O.objet("lettre_minuit"))
+	_ok(_message_v15().contains("Séraphine"), "la lettre de la dernière préfète")
+	# remonter
+	await Qn.remonter()
+	await _att(1.0)
+	_ok(ombrelac_ext.zone_at(_pos()) == "ombrelac_cloitre", "on remonte au cloître")
+	await _att(12.0)
+	_ok(not Qn.ouverte and Qn.eau_visible() and not Qn.trou.visible, "derrière nous, l'eau revient dans le bassin")
+	r = dire_v16("anatole_om", Qn._id("minuit", "rendre"))
+	_ok(Qn.finie("minuit") and str(r.get("texte", "")).contains("JE LE SAVAIS"), "Anatole : « JE LE SAVAIS ! » (accomplie)")
+	_ok(sujets_v16("vesperine_om").has(Qn._id("minuit", "rectrice")), "la Rectrice a un mot à dire")
+	dire_v16("vesperine_om", Qn._id("minuit", "rectrice"))
+	_ok(bool(Qn.st().get("rectrice", false)) and not sujets_v16("vesperine_om").has(Qn._id("minuit", "rectrice")), "une seule fois")
+	await _att(0.7)
+	var acc: int = 0
+	for qid in Qn.ORDRE:
+		var cq: Array = carnet_v16(str(Qn.Q[qid]["titre"]))
+		if not cq.is_empty() and str(cq[0]) == "accomplies":
+			acc += 1
+	_ok(acc == 6, "le carnet : les six quêtes du château accomplies (%d/6)" % acc)
+	# Hortense rouvre quand on veut (le jour aussi)
+	temps_v56.set_hour(11.0)
+	Qn.parler_hortense()
+	_ok(Qn.ouverte, "Hortense rouvre le passage, une fois qu'on la connaît")
+	Qn.fermer()
+	# la sauvegarde
+	var d: Dictionary = ombrelac_ext.serialize()
+	ombrelac_ext.load_data({})
+	_ok(Qn.etape("minuit") < 0 and not M.ouverte("treize") and M.portes["treize"].position.y == M.FY and Qn.chaussette_haut.visible, "une nouvelle partie : rien n'est fait, les portes sont fermées")
+	ombrelac_ext.load_data(d)
+	_ok(Qn.finie("minuit") and Qn.indices() == 5 and M.ouverte("angles") and M.portes["angles"].position.y < M.FY - 3.0 and M.roue_haut(1) == 3, "une partie chargée : les quêtes, les portes, les roues")
+	temps_v56.set_hour(12.0)
+	_ranger()
+
+
+# =================================================================== v17 : les cours de l'Académie
+
+## (v17) Le maître à son poste de cours (comme pendant le cours)
+func en_classe_v17(m: String, l: int) -> Node:
+	var Cn: Node = ombrelac_ext.cours
+	var le: Dictionary = Cn.lecon(m, l)
+	var n: Node3D = ombrelac_ext.vie.by_id.get(str(Cn.C[m]["maitre"]))
+	n.global_position = ombrelac_ext.vie.spots[str(le["poste"])]["pos"]
+	return n
+
+
+## (v17) L'objet d'un exercice « jauge » (la paillasse, le grand tableau, une lunette)
+func objet_jauge_v17(p: Dictionary) -> Dictionary:
+	var Cn: Node = ombrelac_ext.cours
+	for o in ombrelac_ext.objets.objets:
+		if Cn._bon_objet(o, p):
+			return o
+	return {}
+
+
+## (v17) Une leçon entière : le maître à son poste, les questions (justes ou fausses), l'exercice (réussi ou
+## manqué), la note. Rend la réponse de la note.
+func lecon_v17(m: String, justes: bool = true, exercice: bool = true) -> Dictionary:
+	var Cn: Node = ombrelac_ext.cours
+	var O: Node = ombrelac_ext.objets
+	var qui: String = str(Cn.C[m]["maitre"])
+	var l: int = Cn.reussies(m)
+	var le: Dictionary = Cn.lecon(m, l)
+	temps_v56.set_hour(22.5 if bool(le.get("nuit", false)) else 12.0)
+	en_classe_v17(m, l)
+	dire_v16(qui, Cn._id(m, "lecon"))
+	dire_v16(qui, Cn._id(m, "reprendre"))
+	var qs: Array = le["questions"]
+	for i in range(qs.size()):
+		var k: int = int(qs[i][2]) if justes else (int(qs[i][2]) + 1) % (qs[i][1] as Array).size()
+		dire_v16(qui, Cn._id(m, "r%dx%d" % [i, k]))
+	var p: Dictionary = le["pratique"]
+	match str(p.get("type", "")):
+		"cartes":
+			for o in Cn.cartes_astres():
+				if str(Cn.actuelle().get("etape", "")) == "pratique":
+					O.agir_sur(o)
+		"jauge":
+			var o: Dictionary = objet_jauge_v17(p)
+			await devant_v15(o, 0.7)
+			O.agir_sur(o)
+			for i in range(int(p.get("besoin", 3)) + 3):
+				if Cn.jeu.is_empty():
+					break
+				Cn.caler(exercice)
+				O.agir_sur(o)
+		"runes":
+			await _poser(Cn._centre_cercle() + Vector3(0.3, 0.3, 0.0), Vector3.FORWARD)
+			await _att(0.5)
+			for i in range(int(p.get("n", 3)) + 3):
+				if Cn.jeu.is_empty():
+					break
+				Cn.jeu["phase"] = "joue"
+				var seq: Array = Cn.jeu["seq"]
+				var r: int = int(seq[int(Cn.jeu["k"])])
+				Cn.marcher_sur(r if exercice else (r + 1) % Cn.RUNES_N)
+		"mannequins":
+			var ms: Array = O.objets.filter(func(x): return str(x["sorte"]) == "mannequin")
+			await devant_v15(ms[0], 0.9)
+			O.agir_sur(ms[0])
+			for i in range(int(p.get("n", 5)) + 3):
+				if Cn.jeu.is_empty():
+					break
+				Cn.allumer_mannequin(i % ms.size())
+				O.agir_sur(ms[i % ms.size()] if exercice else ms[(i + 1) % ms.size()])
+	return dire_v16(qui, Cn._id(m, "note"))
+
+
+func _cours_v17() -> void:
+	var Cn: Node = ombrelac_ext.cours
+	var O: Node = ombrelac_ext.objets
+	_ok(Cn != null and Cn.runes.size() == 5 and Cn.chevalet != null and not O.objet("bulletin").is_empty(), "les cours sont en place : les cinq runes du Cercle, le chevalet du bulletin")
+	if Cn == null:
+		return
+	var vie: Node = ombrelac_ext.vie
+	_ok(journal_v56.services.has("sortelame_om"), "Dame Sortelame a ses sujets dans le carnet")
+	var nb: Dictionary = {"jauge": 0, "cartes": 0, "runes": 0, "mannequins": 0}
+	for m in Cn.ORDRE:
+		for le in Cn.C[m]["lecons"]:
+			var t: String = str(le["pratique"].get("type", ""))
+			if nb.has(t):
+				nb[t] += 1
+			if t == "jauge":
+				_ok(not objet_jauge_v17(le["pratique"]).is_empty(), "l'exercice « %s » a son objet (%s)" % [str(le["titre"]), str(le["pratique"]["sorte"])])
+	_ok(Cn.cartes_astres().size() >= 2, "des cartes du ciel dans la Salle des Astres (%d)" % Cn.cartes_astres().size())
+	_ok(O.objets.filter(func(x): return str(x["sorte"]) == "mannequin").size() >= 2, "des mannequins d'entraînement")
+	_ok(nb["jauge"] == 8 and nb["cartes"] == 1 and nb["runes"] == 2 and nb["mannequins"] == 1, "les exercices : %s" % str(nb))
+	for m in Cn.ORDRE:
+		for l in range(3):
+			var po: String = str(Cn.lecon(m, l)["poste"])
+			_ok(vie.spots.has(po), "%s, leçon %d : le maître a son poste « %s »" % [m, l + 1, po])
+	# --- le carnet : la Rectrice et le diplôme
+	var ves: Node = vie.by_id.get("vesperine_om")
+	ves.brain.memoire["visites"] = maxi(1, int(ves.brain.memoire.get("visites", 0)))
+	await _att(0.7)
+	var c0: Array = carnet_v16("Le diplôme de l'Académie")
+	_ok(not c0.is_empty() and str(c0[0]) == "a_faire", "dans le carnet : « Le diplôme de l'Académie », à faire (%s)" % str(c0))
+	_ok(sujets_v16("vesperine_om").has(Cn._id("rectrice", "cours")), "la Rectrice : « ★ Comment suivre les cours de l'Académie ? »")
+	var r: Dictionary = dire_v16("vesperine_om", Cn._id("rectrice", "cours"))
+	_ok(str(r.get("texte", "")).contains("Cinq matières"), "elle explique les cours")
+	# --- hors des heures de cours : le maître donne son horaire
+	var fau: Node3D = vie.by_id.get("fauconnier_om")
+	_ok(sujets_v16("fauconnier_om").has(Cn._id("astres", "lecon")), "Fauconnier : « ★ Suivre la leçon : L'étoile du Nord (1/3) »")
+	fau.global_position = vie.spots["terrasse"]["pos"]
+	r = dire_v16("fauconnier_om", Cn._id("astres", "lecon"))
+	_ok(Cn.actuelle().is_empty() and str(r.get("texte", "")).contains("13 h"), "hors du cours : « Mon cours a lieu… »")
+	# --- comme en jeu : on lui parle pendant le cours
+	en_classe_v17("astres", 0)
+	place_player_v35(fau.global_position + Vector3(1.2, 0.1, 0), Vector3(-1, 0, 0))
+	await _images(2)
+	en_classe_v17("astres", 0)
+	_talk_v31(fau)
+	await _images(3)
+	en_classe_v17("astres", 0)
+	_on_dialogue_choice_v31(Cn._id("astres", "lecon"))
+	await _images(2)
+	var vu: bool = dialogue_v31.opened and str(dialogue_v31._text.text).contains("Grande Casserole")
+	_on_dialogue_choice_v31(Cn._id("astres", "reprendre"))
+	await _images(2)
+	var vu2: bool = dialogue_v31.opened and str(dialogue_v31._text.text).contains("Question 1 sur 2")
+	_on_dialogue_choice_v31(Cn._id("astres", "r0x0"))
+	await _images(2)
+	var vu3: bool = str(dialogue_v31._text.text).contains("Gertrude bouge beaucoup") and str(dialogue_v31._text.text).contains("Question 2 sur 2")
+	_on_dialogue_choice_v31(Cn._id("astres", "r1x0"))
+	await _images(2)
+	_close_dialogue_v31()
+	_ok(vu and vu2, "la leçon : l'explication, puis « Question 1 sur 2 »")
+	_ok(vu3, "une mauvaise réponse : le maître corrige, et pose la question suivante")
+	_ok(str(Cn.actuelle().get("etape", "")) == "pratique" and int(Cn.actuelle()["pts"]) == 1, "une bonne réponse sur deux ; place à l'exercice")
+	await _att(0.7)
+	c0 = carnet_v16("Le diplôme de l'Académie")
+	_ok(not c0.is_empty() and str(c0[0]) == "en_cours", "le carnet : le diplôme, en cours")
+	_ok(str(ves.brain.choose("quete", _npc_ctx_v31()).get("texte", "")).contains("cartes du ciel"), "la Rectrice rappelle l'exercice")
+	_ok(sujets_v16("fauconnier_om").has(Cn._id("astres", "consigne")) and not sujets_v16("alambic_om").has(Cn._id("elixirs", "lecon")), "une leçon à la fois")
+	# l'exercice : la bonne carte du ciel
+	var cartes: Array = Cn.cartes_astres()
+	await devant_v15(cartes[0], 0.6)
+	var vus: int = 0
+	for o in cartes:
+		if str(Cn.actuelle().get("etape", "")) == "pratique":
+			O.agir_sur(o)
+			vus += 1
+	_ok(str(Cn.actuelle().get("etape", "")) == "note" and _message_v15().contains("étoile du Nord"), "l'exercice : la carte de la Petite Ourse trouvée (%d regards)" % vus)
+	_ok(sujets_v16("fauconnier_om").has(Cn._id("astres", "note")), "Fauconnier : « ★ J'ai fini l'exercice : ma note ? »")
+	r = dire_v16("fauconnier_om", Cn._id("astres", "note"))
+	_ok(Cn.reussies("astres") == 1 and str(r.get("texte", "")).contains("Mention"), "la note : %s" % str(r.get("texte", "")).left(60))
+	_ok(sujets_v16("fauconnier_om").has(Cn._id("astres", "lecon")), "la leçon suivante est proposée")
+	# --- la jauge : la lunette de la Salle des Astres (une erreur, puis trois justes)
+	var le1: Dictionary = Cn.lecon("astres", 1)
+	en_classe_v17("astres", 1)
+	dire_v16("fauconnier_om", Cn._id("astres", "lecon"))
+	dire_v16("fauconnier_om", Cn._id("astres", "reprendre"))
+	for i in range(2):
+		dire_v16("fauconnier_om", Cn._id("astres", "r%dx%d" % [i, int(le1["questions"][i][2])]))
+	var lun: Dictionary = objet_jauge_v17(le1["pratique"])
+	await devant_v15(lun, 0.7)
+	O.agir_sur(lun)
+	_ok(str(Cn.jeu.get("mode", "")) == "balancier" and Cn.jeu["noeud"].is_inside_tree(), "E à la lunette : Vénus traverse le cercle")
+	await _att(0.8)
+	Cn.caler(false)
+	O.agir_sur(lun)
+	_ok(int(Cn.jeu.get("rates", 0)) == 1 and int(Cn.jeu.get("touches", 0)) == 0, "trop tôt : une erreur")
+	for i in range(3):
+		Cn.caler(true)
+		_ok(Cn.dans_la_fenetre(), "au centre du cercle (%d)" % (i + 1))
+		O.agir_sur(lun)
+	_ok(Cn.jeu.is_empty() and str(Cn.actuelle().get("etape", "")) == "note" and int(Cn.actuelle()["pts"]) == 3, "trois fois au centre : l'exercice est fait (une erreur : 1 point sur 2)")
+	r = dire_v16("fauconnier_om", Cn._id("astres", "note"))
+	_ok(Cn.reussies("astres") == 2 and str(r.get("texte", "")).contains("3 sur 4") and str(r.get("texte", "")).contains("Très bien"), "3 sur 4 : « Très bien »")
+	# --- la nuit, à l'Observatoire
+	temps_v56.set_hour(12.0)
+	en_classe_v17("astres", 2)
+	r = dire_v16("fauconnier_om", Cn._id("astres", "lecon"))
+	_ok(Cn.actuelle().is_empty() and str(r.get("texte", "")).contains("Observatoire"), "la troisième leçon se donne la nuit, à l'Observatoire")
+	var gouttes: int = inventory_v28.count("goutte_rosee")
+	r = await lecon_v17("astres")
+	_ok(Cn.matiere_finie("astres") and str(r.get("texte", "")).contains("Excellent") and inventory_v28.count("goutte_rosee") == gouttes + 1, "la nuit : les étoiles filantes ; les astres sont réussis (le cadeau de Fauconnier)")
+	# --- les élixirs : un échec (à revoir), puis trois réussites
+	r = await lecon_v17("elixirs", false, false)
+	_ok(Cn.reussies("elixirs") == 0 and Cn.actuelle().is_empty() and str(r.get("texte", "")).contains("à revoir"), "tout faux, la fiole ratée : « à revoir », on recommencera")
+	for l in range(3):
+		r = await lecon_v17("elixirs")
+		_ok(Cn.reussies("elixirs") == l + 1 and str(r.get("texte", "")).contains("Excellent"), "élixirs, leçon %d : Excellent" % (l + 1))
+	# --- la géométrie : la règle de craie au grand tableau
+	for l in range(3):
+		r = await lecon_v17("geometrie")
+		_ok(Cn.reussies("geometrie") == l + 1, "géométrie, leçon %d : %s" % [l + 1, str(r.get("texte", "")).left(50)])
+	# --- les sortilèges : les runes (en marchant dessus), la passe d'armes
+	var le_s: Dictionary = Cn.lecon("sortileges", 0)
+	en_classe_v17("sortileges", 0)
+	temps_v56.set_hour(14.0)
+	dire_v16("sortelame_om", Cn._id("sortileges", "lecon"))
+	dire_v16("sortelame_om", Cn._id("sortileges", "reprendre"))
+	for i in range(2):
+		dire_v16("sortelame_om", Cn._id("sortileges", "r%dx%d" % [i, int(le_s["questions"][i][2])]))
+	await _poser(Cn._centre_cercle() + Vector3(0.3, 0.3, 0.0), Vector3.FORWARD)
+	await _att(0.6)
+	_ok(str(Cn.jeu.get("type", "")) == "runes" and (Cn.runes[0] as Node3D).visible, "dans le Cercle : les runes s'éveillent")
+	await _att(3.4)
+	_ok(str(Cn.jeu.get("phase", "")) == "joue", "elles se sont allumées l'une après l'autre ; à nous")
+	var seq: Array = Cn.jeu["seq"]
+	for i in range(seq.size()):
+		await _poser(Cn.rune_pos(int(seq[i])) + Vector3(0, 0.3, 0), Vector3.FORWARD)
+		await _att(0.4)
+		if i < seq.size() - 1:
+			await _poser(Cn._centre_cercle() + Vector3(0, 0.3, 0), Vector3.FORWARD)
+			await _att(0.3)
+	_ok(str(Cn.actuelle().get("etape", "")) == "note", "on marche sur les trois runes, dans l'ordre : réussi")
+	r = dire_v16("sortelame_om", Cn._id("sortileges", "note"))
+	_ok(Cn.reussies("sortileges") == 1, "sortilèges, leçon 1 : %s" % str(r.get("texte", "")).left(40))
+	r = await lecon_v17("sortileges")
+	_ok(Cn.reussies("sortileges") == 2, "les cinq runes : %s" % str(r.get("texte", "")).left(40))
+	r = await lecon_v17("sortileges")
+	_ok(Cn.matiere_finie("sortileges") and str(r.get("texte", "")).contains("poussière de fée"), "la passe d'armes contre les mannequins : les sortilèges sont réussis")
+	# --- la calligraphie : seulement des questions
+	_ok(not sujets_v16("vesperine_om").has(Cn._id("rectrice", "diplome")), "pas encore de diplôme : il manque la calligraphie")
+	for l in range(3):
+		r = await lecon_v17("calligraphie")
+		_ok(Cn.reussies("calligraphie") == l + 1, "calligraphie, leçon %d : %s" % [l + 1, str(r.get("texte", "")).left(40)])
+	_ok(Cn.tout_fini() and (Cn.st()["recues"] as Array).size() == 5, "les cinq matières réussies, les cinq cadeaux des maîtres")
+	# --- le bulletin, le diplôme
+	message.text = ""
+	await devant_v15(O.objet("bulletin"), 0.4)
+	_ok(str(O.courant.get("id", "")) == "bulletin" and donjon_v35.prompt(_pos()) == "E : lire le bulletin de l'Académie", "au cloître, le chevalet : « %s »" % donjon_v35.prompt(_pos()))
+	await _appui(KEY_E)
+	_ok(_message_v15().contains("Astres : ") and _message_v15().contains("Très bien, Excellent (réussi !)"), "le bulletin : %s" % _message_v15().left(90))
+	_ok(sujets_v16("vesperine_om").has(Cn._id("rectrice", "diplome")), "la Rectrice : « ★ J'ai réussi mes cinq matières. »")
+	var por: int = inventory_v28.count("piece_or")
+	r = dire_v16("vesperine_om", Cn._id("rectrice", "diplome"))
+	_ok(Cn.diplome() and inventory_v28.count("piece_or") == por + 10 and str(r.get("texte", "")).contains("diplômé"), "le diplôme de l'Académie (et dix pièces d'or)")
+	_ok(Cn.sceau.visible and Cn.bulletin().contains("DIPLÔMÉ"), "le sceau d'or sur le bulletin")
+	_ok(not sujets_v16("vesperine_om").has(Cn._id("rectrice", "diplome")), "une seule fois")
+	await _att(0.7)
+	c0 = carnet_v16("Le diplôme de l'Académie")
+	_ok(not c0.is_empty() and str(c0[0]) == "accomplies", "le carnet : le diplôme, accompli")
+	# --- la sauvegarde
+	var d: Dictionary = ombrelac_ext.serialize()
+	ombrelac_ext.load_data({})
+	_ok(not Cn.diplome() and Cn.reussies("astres") == 0 and not Cn.sceau.visible, "une nouvelle partie : pas de notes, pas de sceau")
+	ombrelac_ext.load_data(JSON.parse_string(JSON.stringify(d)))
+	_ok(Cn.diplome() and Cn.tout_fini() and Cn.sceau.visible and Cn.bulletin().contains("Excellent"), "une partie chargée : les notes, le diplôme, le sceau")
 	temps_v56.set_hour(12.0)
 	_ranger()

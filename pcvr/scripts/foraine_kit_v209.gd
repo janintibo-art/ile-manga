@@ -51,6 +51,9 @@ static func mat(key: String) -> Material:
 			f.metallic = 0.7
 			f.roughness = 0.55
 			m = MetalKit.habille(f, "fer")
+		"basalte":
+			# V213 : le basalte des orgues et des arches
+			m = GK._surface("res://assets/textures/braise/basalte.png", "res://assets/textures/braise/basalte_n.png", Color(0.82, 0.8, 0.84), 0.86, 4.0, 1.0, Color(0.2, 0.2, 0.22))
 		"jaune":
 			m = _peint(Color(0.96, 0.74, 0.08))
 		"bleu":

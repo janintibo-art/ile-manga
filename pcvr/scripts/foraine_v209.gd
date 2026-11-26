@@ -30,6 +30,7 @@ var main: Node
 var ile: Node3D
 var huit: Node3D
 var maneges: Array = []                   # V210 : le Marteau, la Chute, la Grande Balançoire
+var volcan: Node3D                        # V213 : la roche (les orgues, les arches), le panache
 var pc: bool = true
 var state: Dictionary = {}
 var guichet_pos := Vector3.ZERO
@@ -101,6 +102,10 @@ func build_town() -> void:
 		m.setup(main, ile, self, spec[1], float(spec[2]))
 		m.tours = int(state.get(str(m.cle), 0))
 		maneges.append(m)
+	# V213 : la roche du volcan (les orgues de basalte, les arches), tout près de la voie
+	volcan = load("res://scripts/volcan_v213.gd").new()
+	add_child(volcan)
+	volcan.setup(main, ile, _cols)
 	# ils ne partent pas tous en même temps
 	for k in range(maneges.size()):
 		maneges[k].attente = 9.0 + k * 7.0

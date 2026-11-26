@@ -14,6 +14,9 @@ extends Node3D
 ## Les objets sont posés par les intérieurs (interieurs_ombrelac.gd : « objets », « bancs ») ; ici, une
 ## seule entrée dans les interactions du jeu (donjon_v35._interactions) suit l'objet le plus proche.
 ## PC : E ; VR : la gâchette (on ne s'assied pas en VR). Ce qu'on a lu, vu, gagné : ombrelac.state["objets"].
+## (v16) Les quêtes (quetes_ombrelac.gd) passent avant l'objet (intercepte), et ajoutent leurs propres objets
+## (ajouter : Hortense, la chaussette tombée, les racines, l'escalier de la fontaine, les énigmes des caves).
+## (v17) Les exercices des cours (cours_ombrelac.gd, intercepte) passent avant les quêtes ; le bulletin du cloître.
 
 const T = preload("res://scripts/ext_chateau/textes_ombrelac.gd")
 
@@ -38,6 +41,8 @@ var objets: Array = []              # {sorte, a, b, face, portee, …} (monde)
 var courant: Dictionary = {}        # l'objet devant lequel on se tient
 var assis: Dictionary = {}          # {siege (Transform3D), pied, regard, piece, spot, t, lecon, partie…}
 var _ia: Dictionary = {}
+var cours: Node                     # (v17) les cours de l'Académie (cours_ombrelac.gd) : leurs exercices passent avant tout
+var quetes: Node                    # (v16) les quêtes des habitants (quetes_ombrelac.gd) : elles passent avant
 var _inscrit: bool = false
 var _t: float = 0.0
 var _rng := RandomNumberGenerator.new()
@@ -82,6 +87,29 @@ func build(the_main: Node, the_ombrelac: Node, the_chateau: Node3D, the_vie: Nod
 	var me = self
 	_ia = {"id": "ombrelac_objets", "pos": Vector3(0, -9999, 0), "radius": 0.1, "text": "", "vr": "",
 		"call": func(): me.agir(), "when": func(): return not me.courant.is_empty() or not me.assis.is_empty()}
+
+
+## (v16) Un objet de plus (les quêtes, les caves de la Minuit) : {id, a (monde), portee, verbe (texte ou
+## Callable), call (Callable), si (Callable, facultatif : l'objet n'est là que si…), prio, face, b}
+func ajouter(o0: Dictionary) -> void:
+	var o: Dictionary = o0.duplicate()
+	o["sorte"] = "quete"
+	if not o.has("b"):
+		o["b"] = o["a"]
+	var f: Vector3 = o.get("face", Vector3.ZERO)
+	o["face"] = f.normalized() if f.length() > 0.01 else Vector3.ZERO
+	if not o.has("portee"):
+		o["portee"] = 1.2
+	o["n"] = objets.size()
+	objets.append(o)
+
+
+## (v16) L'objet de quête qui porte cet identifiant (ou {})
+func objet(id: String) -> Dictionary:
+	for o in objets:
+		if str(o.get("id", "")) == id:
+			return o
+	return {}
 
 
 ## Combien d'objets de cette sorte (pour les tests)
@@ -196,6 +224,8 @@ func cherche(p: Vector3, regard: Vector3 = Vector3.ZERO) -> Dictionary:
 		var f: Vector3 = o["face"]
 		if f != Vector3.ZERO and off.dot(Vector2(f.x, f.z)) < -0.05:
 			continue
+		if o.has("si") and not bool((o["si"] as Callable).call()):
+			continue
 		var s: float = d - float(o.get("prio", 0.0))
 		if d > 0.05 and regard != Vector3.ZERO:
 			s -= 0.35 * maxf(Vector2(regard.x, regard.z).dot(-off / d), 0.0)
@@ -206,6 +236,9 @@ func cherche(p: Vector3, regard: Vector3 = Vector3.ZERO) -> Dictionary:
 
 
 func _verbe(o: Dictionary) -> String:
+	if o.has("verbe"):
+		var v: Variant = o["verbe"]
+		return str((v as Callable).call()) if v is Callable else str(v)
 	match str(o.get("sorte", "")):
 		"livres":
 			return "prendre un livre"
@@ -334,7 +367,15 @@ func agir() -> void:
 
 func agir_sur(o: Dictionary) -> void:
 	var p: Vector3 = (o["a"] as Vector3).lerp(o["b"], 0.5)
+	# (v17) un exercice de cours se fait avec cet objet (la paillasse, le tableau, une lunette, les cartes, les mannequins)
+	if cours != null and cours.has_method("intercepte") and cours.intercepte(o):
+		return
+	# (v16) une quête a besoin de cet objet (la lunette, la cloche, la paillasse, un rayon de livres, la fontaine)
+	if quetes != null and quetes.has_method("intercepte") and quetes.intercepte(o):
+		return
 	match str(o["sorte"]):
+		"quete":
+			(o["call"] as Callable).call()
 		"siege":
 			asseoir(o)
 		"livres":

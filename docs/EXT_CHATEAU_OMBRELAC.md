@@ -244,7 +244,71 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
   ensuite s'y téléporter (le débarcadère, la Cour d'Honneur) ; les lieux ont leur nom dans le carnet ;
   la visite est enregistrée avec la partie.
 
-Pour la suite (pas encore faits) : les quêtes.
+- **Les quêtes des habitants (v16)** : six quêtes, chacune partie d'une rumeur qu'on entend déjà au
+  château. Elles sont dans le carnet (onglet Quêtes, « Habitants » : le titre, ce qu'il reste à faire,
+  accomplies) ; le donneur a un point d'exclamation au-dessus de la tête ; on lui en parle avec les
+  questions « ★ » de la conversation (et s'il en reparle, il dit où chercher). Une quête accomplie : la
+  récompense, de l'expérience, la nouvelle qui fait le tour du château ;
+  - **La chaussette de Tobie** (Tobie) : la repérer sur la girouette de l'horloge à la Grande Lunette,
+    tirer la corde de la cloche (elle tombe), la ramasser au pied de la Tour de l'Horloge, la rendre ;
+  - **Le pari du miel** (Maître Rouage) : relever l'heure des étoiles à la Grande Lunette, la nuit ;
+    Maître Fauconnier fait ses calculs (le treizième coup de minuit) ; Mère Fournil donne un pot de miel ;
+    Rouage le prend, le pari est tranché (égalité) ;
+  - **L'élixir de rire** (Sidonie) : une fleur de lune (Firmin), une plume de chouette (Maître
+    Fauconnier), une fiole de cristal (Maîtresse Alambic) ; le préparer à une paillasse ; le faire
+    goûter à Maître Équerre (il rit) ; le raconter à Sidonie ;
+  - **La fougère géante** (Firmin Buis) : une grande fougère de trois mètres dans la serre du fond ;
+    la nuit, ses racines filent vers le cloître ; à la fontaine, on entend l'eau couler dessous ;
+  - **Le livre bien élevé** (Dame Reliure) : le chercher dans les rayonnages de la Bibliothèque (pas au
+    premier rayon) : le Journal de la Maison de Minuit ;
+  - chacune des cinq donne un **indice de la Minuit** (la lune noire, le treizième coup, trois fois à
+    angle droit, l'eau qu'on rend à sa source, la chouette) ;
+  - **La Maison de Minuit** (Anatole) : avec les cinq indices, la nuit, **Hortense**, la grenouille assise
+    sur la margelle de la fontaine du cloître, vide le bassin : une dalle glisse, un escalier descend.
+    En bas, 100 m sous le cloître, dans le roc (sous la cote des souterrains du jeu : leur ambiance), les **caves de la Maison de Minuit** (on descend et on
+    remonte d'un fondu au noir, comme dans les souterrains du jeu) :
+    - la **Porte du Treizième Coup** : une cloche ; treize coups d'une traite, puis le silence (douze, ou
+      quatorze : à recommencer) ;
+    - la **Salle des Veilleurs** : le Soleil, le Coq, la Chouette, le Papillon ; toucher celle qui veille
+      la nuit ;
+    - la **Galerie des Trois Angles** : trois roues de bronze à tourner d'un quart de tour, jusqu'à ce que
+      la lune noire soit en haut des trois ;
+    - la **Salle du Trésor** : la bannière de la Minuit, la lettre de la dernière préfète, le coffre
+      (huit pièces d'or, deux élixirs d'étoile, une carte au trésor, un éclat de lune) ;
+    - on remonte au cloître : l'eau revient dans le bassin ; Hortense rouvre le passage quand on veut ;
+      la Rectrice a un mot (et un cadeau) pour qui a trouvé la Minuit ;
+  - tout est enregistré avec la partie (`state["quetes"]`, `state["minuit"]`).
+
+- **Les cours de l'Académie (v17)** : cinq matières, trois leçons chacune, avec le maître de la matière,
+  à l'heure de son cours (il est à son poste, dans sa salle ; sinon il donne son horaire). On lui parle :
+  « ★ Suivre la leçon » ; il explique, puis il interroge (deux ou trois questions à choix, dans la
+  conversation : une bonne réponse, un point ; une mauvaise, il corrige) ; puis l'exercice, dans la salle ;
+  puis on revient le voir : « ★ J'ai fini l'exercice : ma note ? » (Excellent, Très bien, Bien ; « À
+  revoir » : on reprend la leçon depuis le début). Une leçon à la fois ;
+  - **Les astres** (Maître Fauconnier, Salle des Astres, 8 h-10 h et 13 h-15 h) : l'étoile du Nord
+    (chercher la carte du ciel de la Petite Ourse, E sur les cartes de la salle), les planètes (la lunette de
+    la salle : E quand Vénus passe au centre du cercle, trois fois), les étoiles filantes (la nuit, à
+    l'Observatoire, à la Grande Lunette ; plus vite) ;
+  - **Les élixirs** (Maîtresse Alambic, Salle des Élixirs, 8 h-12 h et 13 h-17 h) : la tisane de sommeil,
+    l'élixir de lumière, l'élixir des étoiles ; à une paillasse, E quand la fiole devient verte (trop tôt
+    ou trop tard : une bouffée de fumée) ; trois puis quatre ingrédients, de plus en plus vite ;
+  - **La géométrie** (Maître Équerre, Amphithéâtre, 10 h 30-12 h et 16 h-19 h) : l'angle droit, les
+    triangles, le cercle ; au grand tableau, une règle de craie tourne : E quand elle fait un angle droit
+    avec la ligne ;
+  - **Les sortilèges** (Dame Sortelame, Salle des Cercles, 13 h-19 h) : en entrant dans le Cercle, des
+    runes s'allument l'une après l'autre (trois, puis cinq) : marcher dessus dans le même ordre (une
+    erreur : elles se rallument depuis le début) ; la passe d'armes : E sur le mannequin qui s'allume,
+    avant qu'il ne s'éteigne (cinq touches) ;
+  - **La calligraphie** (Dame Reliure, comptoir de la Bibliothèque, 8 h-12 h et 13 h-21 h) : les lettres
+    anciennes, les mots d'autrefois, les copistes (trois questions, sans exercice) ;
+  - un exercice : deux points sans erreur, un avec une ou deux, zéro avec trois (on garde les points des
+    questions) ; une matière réussie (ses trois leçons) : le cadeau du maître ;
+  - **le bulletin** : sur un chevalet du cloître, au bord de l'allée, près de la fontaine (E : les
+    mentions de chaque leçon) ; dans le carnet, chez la Rectrice : « Le diplôme de l'Académie » (où en
+    sont les cinq matières) ;
+  - **le diplôme** : les cinq matières réussies, la Rectrice Vespérine le remet (dix pièces d'or) ; un
+    sceau d'or s'ajoute au bulletin ;
+  - tout est enregistré avec la partie (`state["cours"]` ; un exercice commencé reprend du début).
 
 ## Les fichiers
 
@@ -293,6 +357,9 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `www/assets/models/pnj64/*_om.bin` | (v14) les dix-huit corps des habitants (suffixe `_om`) |
 | `pcvr/scripts/ext_chateau/objets_ombrelac.gd` | (v15) les objets du château : s'asseoir, lire, agir (une entrée dans `donjon_v35._interactions`, la touche E avant les habitants) |
 | `pcvr/scripts/ext_chateau/textes_ombrelac.gd` | (v15) les textes des objets : livres, leçons, tableaux, cartes du ciel, portraits, reliques, constellations… |
+| `pcvr/scripts/ext_chateau/quetes_ombrelac.gd` | (v16) les quêtes des habitants (le carnet, les questions « ★ », les étapes), Hortense, la chaussette, la grande fougère, la fontaine qui se vide |
+| `pcvr/scripts/ext_chateau/minuit_ombrelac.gd` | (v16) les caves de la Maison de Minuit : les quatre salles, les trois portes à énigmes, le trésor, descendre et remonter |
+| `pcvr/scripts/ext_chateau/cours_ombrelac.gd` | (v17) les cours de l'Académie : les cinq matières, les leçons et leurs questions, les exercices (la jauge, les cartes, les runes, les mannequins), les notes, le bulletin et son chevalet, le diplôme |
 | `pcvr/tools/ext_chateau_textures.py` | fabrique les textures du château (à lancer une fois) |
 | `www/assets/textures/ext_chateau/*.png` | pierre de taille, pierre fine, dalles (et leur relief) |
 | `tests/series/48_ombrelac.gd` | la série de tests de l'extension |
