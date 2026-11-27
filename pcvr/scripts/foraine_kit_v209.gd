@@ -80,6 +80,23 @@ static func mat(key: String) -> Material:
 			m = _toile(Color(0.98, 0.78, 0.16))
 		"toile_bleue":
 			m = _toile(Color(0.16, 0.36, 0.74))
+		"chaume":
+			# V217 : le chaume des huttes du Parc du Volcan (les baraques de l'allée)
+			var ch: StandardMaterial3D = GK._surface(MJ + "chaume.png", MJ + "chaume_n.png", Color(0.92, 0.84, 0.66), 0.95, 0.45, 1.0, Color(0.62, 0.52, 0.32))
+			ch.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m = ch
+		"toile_ocre":
+			m = _toile(Color(0.86, 0.6, 0.22))
+		"toile_terre":
+			m = _toile(Color(0.68, 0.3, 0.17))
+		"toile_feuille":
+			m = _toile(Color(0.36, 0.5, 0.22))
+		"toile_os":
+			m = _toile(Color(0.9, 0.86, 0.72))
+		"peau_claire":
+			m = _toile(Color(0.8, 0.62, 0.4))
+		"peau_sombre":
+			m = _toile(Color(0.46, 0.31, 0.19))
 		"ampoule":
 			var e := StandardMaterial3D.new()
 			e.albedo_color = Color(1.0, 0.86, 0.55)

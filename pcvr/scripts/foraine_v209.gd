@@ -30,6 +30,7 @@ var main: Node
 var ile: Node3D
 var huit: Node3D
 var maneges: Array = []                   # V210 : le Marteau, la Chute, la Grande Balançoire
+var prehistoire: Node3D                   # V217 : le Parc du Volcan (les animaux de décoration, les massifs)
 var volcan: Node3D                        # V213 : la roche (les orgues, les arches), le panache
 var pc: bool = true
 var state: Dictionary = {}
@@ -109,6 +110,11 @@ func build_town() -> void:
 	volcan = load("res://scripts/volcan_v213.gd").new()
 	add_child(volcan)
 	volcan.setup(main, ile, _cols)
+	# V217 : le Parc du Volcan, au temps des dinosaures (des animaux de décoration, des massifs de plantes)
+	prehistoire = load("res://scripts/prehistoire_v217.gd").new()
+	prehistoire.name = "Prehistoire_v217"
+	add_child(prehistoire)
+	prehistoire.setup(main, ile, _cols)
 	# ils ne partent pas tous en même temps
 	for k in range(maneges.size()):
 		maneges[k].attente = 9.0 + k * 7.0
@@ -142,15 +148,15 @@ func _portail() -> void:
 	for sg in [-1.0, 1.0]:
 		var z: float = e.y + sg * 6.2
 		for k in range(7):
-			b.box("bois_rouge" if k % 2 == 0 else "bois_blanc", Transform3D(Basis(), _a(e.x, y0 + 0.5 + k, z)), Vector3(2.2, 1.0, 2.2))
+			b.box("basalte", Transform3D(Basis(), _a(e.x, y0 + 0.5 + k, z)), Vector3(2.2 - (k % 2) * 0.12, 1.0, 2.2 - (k % 2) * 0.12))
 		_cols.box_at(_a(e.x, y0, z), Vector3(2.2, 7.0, 2.2))
 		# le toit pointu de la tour, sa boule
-		b.cyl("toile_bleue", Transform3D(Basis(), _a(e.x, y0 + 7.0, z)), 1.9, 0.05, 2.6, 8)
+		b.cyl("chaume", Transform3D(Basis(), _a(e.x, y0 + 6.9, z)), 2.1, 0.05, 2.8, 9)
 		b.blob("ampoule", _a(e.x, y0 + 9.75, z), Vector3(0.22, 0.22, 0.22), 6)
 	# l'enseigne, d'une tour à l'autre
-	b.box("bois_bleu", Transform3D(Basis(), _a(e.x, y0 + 6.2, e.y)), Vector3(0.5, 2.0, 10.4))
-	b.box("jaune", Transform3D(Basis(), _a(e.x, y0 + 7.28, e.y)), Vector3(0.6, 0.16, 10.6))
-	b.box("jaune", Transform3D(Basis(), _a(e.x, y0 + 5.12, e.y)), Vector3(0.6, 0.16, 10.6))
+	b.box("planches", Transform3D(Basis(), _a(e.x, y0 + 6.2, e.y)), Vector3(0.5, 2.0, 10.4))
+	b.box("basalte", Transform3D(Basis(), _a(e.x, y0 + 7.28, e.y)), Vector3(0.6, 0.16, 10.6))
+	b.box("basalte", Transform3D(Basis(), _a(e.x, y0 + 5.12, e.y)), Vector3(0.6, 0.16, 10.6))
 	for k in range(17):
 		for yy in [5.0, 7.42]:
 			b.blob("ampoule", _a(e.x - 0.34, y0 + yy, e.y - 4.8 + k * 0.6), Vector3(0.09, 0.09, 0.09), 6)
@@ -159,13 +165,13 @@ func _portail() -> void:
 	# le guichet (au nord du passage, côté ponton)
 	var g := Vector2(e.x - 7.0, e.y - 9.5)
 	var gy: float = ile.height_l(g.x, g.y)
-	b.box("bois_rouge", Transform3D(Basis(), _a(g.x, gy + 0.55, g.y)), Vector3(2.6, 1.1, 2.6))
+	b.box("planches", Transform3D(Basis(), _a(g.x, gy + 0.55, g.y)), Vector3(2.6, 1.1, 2.6))
 	for cx in [-1.2, 1.2]:
 		for cz in [-1.2, 1.2]:
-			b.box("bois_blanc", Transform3D(Basis(), _a(g.x + cx, gy + 1.3, g.y + cz)), Vector3(0.16, 2.6, 0.16))
-	b.box("bois_blanc", Transform3D(Basis(), _a(g.x, gy + 1.12, g.y + 1.45)), Vector3(2.7, 0.08, 0.5))
+			b.box("planches", Transform3D(Basis(), _a(g.x + cx, gy + 1.3, g.y + cz)), Vector3(0.16, 2.6, 0.16))
+	b.box("planches", Transform3D(Basis(), _a(g.x, gy + 1.12, g.y + 1.45)), Vector3(2.7, 0.08, 0.5))
 	b.box("vitre", Transform3D(Basis(), _a(g.x, gy + 1.85, g.y - 1.25)), Vector3(2.3, 1.4, 0.04))
-	b.cyl("toile_rouge", Transform3D(Basis(), _a(g.x, gy + 2.6, g.y)), 2.3, 0.05, 1.3, 8)
+	b.cyl("chaume", Transform3D(Basis(), _a(g.x, gy + 2.55, g.y)), 2.4, 0.05, 1.45, 9)
 	b.blob("ampoule", _a(g.x, gy + 3.98, g.y), Vector3(0.16, 0.16, 0.16), 6)
 	_cols.box_at(_a(g.x, gy, g.y), Vector3(2.6, 2.6, 2.6))
 	_etiquette("BILLETS", _a(g.x, gy + 2.95, g.y + 1.5), Vector3(0, 0, 1), 0.42, Color(1.0, 0.95, 0.8))
@@ -220,9 +226,9 @@ func _clotures() -> void:
 				break
 			var a: Vector3 = _a(prec.x, h0, prec.y)
 			var c: Vector3 = _a(suiv.x, h1, suiv.y)
-			b.box("bois_blanc" if k % 2 == 0 else "bois_rouge", Transform3D(Basis(), a + Vector3.UP * 1.0), Vector3(0.14, 2.0, 0.14))
+			b.cyl("planches", Transform3D(Basis(), a - Vector3.UP * 0.1), 0.09, 0.07, 2.2, 6)
 			for yy in [0.5, 1.2, 1.8]:
-				b.tube("bois_blanc", a + Vector3.UP * yy, c + Vector3.UP * yy, 0.04, 4)
+				b.tube("planches", a + Vector3.UP * yy, c + Vector3.UP * yy, 0.045, 5)
 			var mil: Vector3 = (a + c) * 0.5
 			var dir: Vector3 = c - a
 			_cols.box(Transform3D(Basis(Vector3.UP, atan2(dir.x, dir.z)), mil + Vector3.UP * 1.0), Vector3(0.2, 2.4, dir.length() + 0.1))
@@ -243,7 +249,7 @@ func _gare() -> void:
 	# les pilotis
 	for x in range(-100, -52, 8):
 		for z in [62.4, 68.6, zq + 1.4, zq + 2.9]:
-			b.box("bois_blanc", Transform3D(Basis(), _a(x, (sol + QUAI_Y) * 0.5 - 0.2, z)), Vector3(0.22, QUAI_Y - sol, 0.22))
+			b.box("planches", Transform3D(Basis(), _a(x, (sol + QUAI_Y) * 0.5 - 0.2, z)), Vector3(0.22, QUAI_Y - sol, 0.22))
 	# la rampe (depuis l'allée)
 	var r0 := Vector3(-78.0, sol - 0.05, 48.0)
 	var r1 := Vector3(-78.0, QUAI_Y, 62.0)
@@ -253,36 +259,36 @@ func _gare() -> void:
 	b.box("planches", xr, Vector3(3.6, 0.24, long))
 	_cols.box(xr, Vector3(3.6, 0.24, long))
 	for sg in [-1.0, 1.0]:
-		b.tube("bois_rouge", _a(-78.0 + sg * 1.8, r0.y + 1.0, r0.z), _a(-78.0 + sg * 1.8, r1.y + 1.0, r1.z), 0.05, 6)
+		b.tube("planches", _a(-78.0 + sg * 1.8, r0.y + 1.0, r0.z), _a(-78.0 + sg * 1.8, r1.y + 1.0, r1.z), 0.05, 6)
 		for k in range(6):
 			var f: float = k / 5.0
-			b.box("bois_blanc", Transform3D(Basis(), _a(-78.0 + sg * 1.8, lerpf(r0.y, r1.y, f) + 0.5, lerpf(r0.z, r1.z, f))), Vector3(0.1, 1.0, 0.1))
+			b.box("planches", Transform3D(Basis(), _a(-78.0 + sg * 1.8, lerpf(r0.y, r1.y, f) + 0.5, lerpf(r0.z, r1.z, f))), Vector3(0.1, 1.0, 0.1))
 	# la rambarde du quai (ouverte devant la rampe)
 	for seg in [[-102.0, -79.8], [-76.2, -52.0]]:
 		var x0: float = seg[0]
 		var x1: float = seg[1]
 		for yy in [0.55, 1.05]:
-			b.tube("bois_rouge", _a(x0, QUAI_Y + yy, 62.05), _a(x1, QUAI_Y + yy, 62.05), 0.045, 6)
+			b.tube("planches", _a(x0, QUAI_Y + yy, 62.05), _a(x1, QUAI_Y + yy, 62.05), 0.045, 6)
 		var nb: int = int((x1 - x0) / 2.4)
 		for k in range(nb + 1):
-			b.box("bois_blanc", Transform3D(Basis(), _a(lerpf(x0, x1, float(k) / nb), QUAI_Y + 0.55, 62.05)), Vector3(0.1, 1.1, 0.1))
+			b.box("planches", Transform3D(Basis(), _a(lerpf(x0, x1, float(k) / nb), QUAI_Y + 0.55, 62.05)), Vector3(0.1, 1.1, 0.1))
 		_cols.box(Transform3D(Basis(), _a((x0 + x1) * 0.5, QUAI_Y + 0.7, 62.05)), Vector3(x1 - x0, 1.4, 0.2))
 	for xx in [-102.0, -52.0]:
-		b.tube("bois_rouge", _a(xx, QUAI_Y + 1.05, 62.05), _a(xx, QUAI_Y + 1.05, 68.6), 0.045, 6)
+		b.tube("planches", _a(xx, QUAI_Y + 1.05, 62.05), _a(xx, QUAI_Y + 1.05, 68.6), 0.045, 6)
 		_cols.box(Transform3D(Basis(), _a(xx, QUAI_Y + 0.7, 65.3)), Vector3(0.2, 1.4, 6.6))
 	# le toit : des poteaux, deux pans de toile rayée
 	var faite: float = QUAI_Y + 5.6
 	var bord: float = QUAI_Y + 3.9
 	for x in [-100.0, -84.0, -68.0, -54.0]:
 		for z in [61.6, zq + 3.6]:
-			b.box("bois_blanc", Transform3D(Basis(), _a(x, (sol + bord) * 0.5, z)), Vector3(0.26, bord - sol, 0.26))
-		b.tube("bois_blanc", _a(x, bord, 61.6), _a(x, faite, 67.6), 0.09, 6)
-		b.tube("bois_blanc", _a(x, bord, zq + 3.6), _a(x, faite, 67.6), 0.09, 6)
-	b.tube("bois_blanc", _a(-101.0, faite, 67.6), _a(-53.0, faite, 67.6), 0.1, 6)
+			b.box("planches", Transform3D(Basis(), _a(x, (sol + bord) * 0.5, z)), Vector3(0.26, bord - sol, 0.26))
+		b.tube("planches", _a(x, bord, 61.6), _a(x, faite, 67.6), 0.09, 6)
+		b.tube("planches", _a(x, bord, zq + 3.6), _a(x, faite, 67.6), 0.09, 6)
+	b.tube("planches", _a(-101.0, faite, 67.6), _a(-53.0, faite, 67.6), 0.1, 6)
 	var bande: int = 0
 	var x: float = -101.0
 	while x < -53.0:
-		var key: String = "toile_rouge" if bande % 2 == 0 else "toile_blanche"
+		var key: String = "chaume"
 		for pan in [[61.0, 67.6], [zq + 4.2, 67.6]]:
 			var za: float = pan[0]
 			var zb: float = pan[1]
@@ -297,18 +303,18 @@ func _gare() -> void:
 		x += 3.0
 		bande += 1
 	# la cabine du machiniste, au bout du quai
-	b.box("bois_bleu", Transform3D(Basis(), _a(-54.5, QUAI_Y + 0.6, 64.0)), Vector3(2.6, 1.2, 2.6))
+	b.box("planches", Transform3D(Basis(), _a(-54.5, QUAI_Y + 0.6, 64.0)), Vector3(2.6, 1.2, 2.6))
 	b.box("vitre", Transform3D(Basis(), _a(-54.5, QUAI_Y + 1.8, 64.0)), Vector3(2.5, 1.2, 2.5))
-	b.box("bois_blanc", Transform3D(Basis(), _a(-54.5, QUAI_Y + 2.5, 64.0)), Vector3(2.9, 0.14, 2.9))
+	b.box("planches", Transform3D(Basis(), _a(-54.5, QUAI_Y + 2.5, 64.0)), Vector3(2.9, 0.14, 2.9))
 	_cols.box_at(_a(-54.5, QUAI_Y, 64.0), Vector3(2.6, 2.5, 2.6))
 	# le panneau des sensations, en haut de la rampe
-	b.box("bois_blanc", Transform3D(Basis(), _a(-75.0, QUAI_Y + 0.8, 62.6)), Vector3(0.12, 1.6, 0.12))
-	b.box("bois_bleu", Transform3D(Basis(), _a(-75.0, QUAI_Y + 1.45, 62.6)), Vector3(1.3, 0.7, 0.08))
+	b.box("planches", Transform3D(Basis(), _a(-75.0, QUAI_Y + 0.8, 62.6)), Vector3(0.12, 1.6, 0.12))
+	b.box("planches", Transform3D(Basis(), _a(-75.0, QUAI_Y + 1.45, 62.6)), Vector3(1.3, 0.7, 0.08))
 	reglage_pos = _a(-75.0, QUAI_Y, 63.6)
 	b.commit(self, "Gare_v209", true)
 	# l'enseigne, au-dessus de la rampe
 	var e2 := Kit.Lot.new()
-	e2.box("bois_rouge", Transform3D(Basis(), _a(-78.0, bord + 0.5, 60.9)), Vector3(11.0, 1.7, 0.2))
+	e2.box("planches", Transform3D(Basis(), _a(-78.0, bord + 0.5, 60.9)), Vector3(11.0, 1.7, 0.2))
 	for k in range(19):
 		for yy in [-0.75, 0.75]:
 			e2.blob("ampoule", _a(-83.4 + k * 0.6, bord + 0.5 + yy, 60.76), Vector3(0.08, 0.08, 0.08), 6)
@@ -317,23 +323,24 @@ func _gare() -> void:
 	_etiquette("114 km/h · 56 m · une boucle · une vrille", _a(-78.0, bord - 0.02, 60.78), Vector3(0, 0, -1), 0.26, Color(1.0, 0.96, 0.85))
 
 
-## La Place du Mât : le grand mât, ses guirlandes de fanions, les bancs.
+## La Place du Mât : le grand mât, ses guirlandes de fanions, les bancs. (V217 : au Parc du Volcan, des
+## poteaux de bois et des fanions couleur de terre, d'ocre, de feuille et d'os.)
 func _place() -> void:
 	var b := Kit.Lot.new()
 	var c: Vector2 = IleScript.PLACE
 	var y0: float = ile.height_l(c.x, c.y)
 	var pied: Vector3 = _a(c.x, y0, c.y)
 	b.cyl("dalles", Transform3D(Basis(), pied), 2.2, 1.9, 0.5, 16)
-	b.cyl("bois_blanc", Transform3D(Basis(), pied + Vector3.UP * 0.5), 0.22, 0.12, 15.5, 10)
+	b.cyl("planches", Transform3D(Basis(), pied + Vector3.UP * 0.5), 0.24, 0.13, 15.5, 9)
 	b.blob("ampoule", pied + Vector3.UP * 16.3, Vector3(0.4, 0.4, 0.4), 8)
 	_cols.cyl(pied, 2.0, 1.2)
-	var couleurs: Array = ["toile_rouge", "toile_jaune", "toile_bleue", "toile_blanche"]
+	var couleurs: Array = ["toile_ocre", "toile_terre", "toile_feuille", "toile_os"]
 	for k in range(8):
 		var ang: float = TAU * k / 8.0 + 0.2
 		var loin := Vector2(c.x + cos(ang) * 21.0, c.y + sin(ang) * 21.0)
 		var yl: float = ile.height_l(loin.x, loin.y)
 		var poteau: Vector3 = _a(loin.x, yl, loin.y)
-		b.cyl("bois_rouge" if k % 2 == 0 else "bois_bleu", Transform3D(Basis(), poteau), 0.1, 0.08, 4.6, 8)
+		b.cyl("planches", Transform3D(Basis(), poteau), 0.11, 0.08, 4.6, 7)
 		b.blob("ampoule", poteau + Vector3.UP * 4.75, Vector3(0.16, 0.16, 0.16), 6)
 		_cols.cyl(poteau, 0.15, 2.0)
 		_fanions(b, pied + Vector3.UP * 15.6, poteau + Vector3.UP * 4.5, 26, couleurs, 2.2)
@@ -366,10 +373,12 @@ func _fanions(b: Kit.Lot, a: Vector3, c: Vector3, nb: int, couleurs: Array, flec
 		prec = p
 
 
-## Les baraques de l'allée (fermées pour l'instant : les stands ouvriront plus tard)
+## Les baraques de l'allée (fermées pour l'instant : les stands ouvriront plus tard). V217 : le Parc du
+## Volcan est au temps des dinosaures : des huttes, des peaux tendues, des poteaux de bois, un toit de chaume
+## (avant : des toiles rayées de cirque, rouge, bleu, jaune et blanc).
 func _baraques() -> void:
 	var b := Kit.Lot.new()
-	var toiles: Array = [["toile_rouge", "toile_blanche"], ["toile_bleue", "toile_blanche"], ["toile_jaune", "toile_rouge"], ["toile_bleue", "toile_jaune"]]
+	var toiles: Array = [["peau_claire", "peau_sombre"], ["peau_sombre", "peau_claire"]]
 	var k: int = 0
 	for spot in [[-128.0, 9.0], [-112.0, 9.0], [-128.0, 31.0], [-112.0, 31.0], [-56.0, 9.0], [-40.0, 9.0]]:
 		var x: float = spot[0]
@@ -378,10 +387,10 @@ func _baraques() -> void:
 		var vers: float = 1.0 if z < 20.0 else -1.0          # la façade regarde l'allée
 		var t: Array = toiles[k % toiles.size()]
 		# le comptoir, les montants
-		b.box("bois_blanc" if k % 2 == 0 else "bois_bleu", Transform3D(Basis(), _a(x, y0 + 0.5, z + vers * 2.0)), Vector3(5.6, 1.0, 0.3))
+		b.box("planches", Transform3D(Basis(), _a(x, y0 + 0.5, z + vers * 2.0)), Vector3(5.6, 1.0, 0.3))
 		for cx in [-2.8, 2.8]:
 			for cz in [-2.0, 2.0]:
-				b.box("bois_blanc", Transform3D(Basis(), _a(x + cx, y0 + 1.4, z + cz)), Vector3(0.14, 2.8, 0.14))
+				b.cyl("planches", Transform3D(Basis(), _a(x + cx, y0 - 0.1, z + cz)), 0.12, 0.1, 3.05, 7)
 		# le fond et les côtés de toile, le rideau baissé sur la façade
 		b.box(str(t[1]), Transform3D(Basis(), _a(x, y0 + 1.4, z - vers * 2.0)), Vector3(5.6, 2.8, 0.04))
 		for cx2 in [-2.8, 2.8]:
@@ -398,7 +407,7 @@ func _baraques() -> void:
 			var nrm: Vector3 = (p1 - p0).cross(top - p0).normalized()
 			if nrm.y < 0.0:
 				nrm = -nrm
-			b.tri(str(t[bande2 % 2]), [p0, p1, top], [nrm, nrm, nrm], [Vector2(0, 0), Vector2(1, 0), Vector2(0.5, 1)])
+			b.tri("chaume", [p0, p1, top], [nrm, nrm, nrm], [Vector2(0, 0), Vector2(1, 0), Vector2(0.5, 1)])
 		b.blob("ampoule", _a(x, y0 + 5.0, z), Vector3(0.14, 0.14, 0.14), 6)
 		_cols.box_at(_a(x, y0, z), Vector3(5.6, 2.8, 4.0))
 		k += 1
@@ -499,7 +508,7 @@ func changer_sensations() -> void:
 func _guirlandes() -> void:
 	var b := Kit.Lot.new()
 	var teintes: Array = ["lampion_rouge", "lampion_jaune", "lampion_bleu", "lampion_vert", "lampion_orange"]
-	var toiles: Array = ["toile_rouge", "toile_jaune", "toile_bleue", "toile_blanche"]
+	var toiles: Array = ["toile_ocre", "toile_terre", "toile_feuille", "toile_os"]
 	var n: int = 0
 	for c in IleScript.ALLEES:
 		var pts: Array = c[0]
@@ -537,8 +546,8 @@ func _guirlandes() -> void:
 				for cote_k in range(2):
 					var pied: Vector3 = _a(g.x, yg, g.y) if cote_k == 0 else _a(dr.x, yd, dr.y)
 					for an in range(5):
-						b.cyl("bois_rouge" if (an + n) % 2 == 0 else "bois_blanc", Transform3D(Basis(), pied + Vector3.UP * (0.52 + an * 1.04)), 0.09, 0.09, 1.04, 8, false)
-					b.blob("jaune", pied + Vector3.UP * 5.32, Vector3(0.17, 0.17, 0.17), 6)
+						b.cyl("planches", Transform3D(Basis(), pied + Vector3.UP * (0.52 + an * 1.04)), 0.1 - an * 0.004, 0.1 - (an + 1) * 0.004, 1.04, 7, false)
+					b.blob("basalte", pied + Vector3.UP * 5.32, Vector3(0.19, 0.17, 0.19), 6)
 					_cols.cyl(pied, 0.14, 2.2)
 				# la guirlande de lampions en travers de l'allée
 				var av: Vector3 = hg

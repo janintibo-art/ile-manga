@@ -387,6 +387,23 @@ func _systeme(nom: String) -> void:
 	var c: Vector3 = Sy.ile.CENTER
 	c.y = fm._height_at(c.x, c.z)
 	_mer(c)
+	if nom == "pasta" and OS.get_environment("RENDU_CASCADE") != "":
+		# V217 : la Cascade Arrabbiata, de la mer, de côté, de près et d'en haut
+		var nd: Array = Sy.ile.flows_world["nord"]
+		var hautc: Vector3 = nd[-1]
+		var avc: Vector3 = nd[-4]
+		var oc: Vector3 = Vector3(hautc.x - avc.x, 0, hautc.z - avc.z).normalized()
+		var cc: Vector3 = oc.cross(Vector3.UP)
+		var pied: Vector3 = Sy.cascade_at
+		var milc: Vector3 = pied + Vector3.UP * (hautc.y - pied.y) * 0.5
+		print("RENDU cascade : haut ", hautc, " pied ", pied, " chute ", snappedf(hautc.y - pied.y, 0.1), " m")
+		await _vue("160_cascade_mer", pied + oc * 30.0 + Vector3.UP * 3.0, milc)
+		await _vue("161_cascade_biais", pied + oc * 20.0 + cc * 16.0 + Vector3.UP * 4.0, milc)
+		await _vue("162_cascade_cote", pied + oc * 4.0 + cc * 22.0 + Vector3.UP * 6.0, milc)
+		await _vue("163_cascade_pres", pied + oc * 10.0 - cc * 4.0 + Vector3.UP * 1.7, milc)
+		await _vue("164_cascade_haut", hautc - oc * 9.0 + Vector3.UP * 3.0, pied + oc * 6.0)
+		await _vue("165_cascade_loin", pied + oc * 70.0 + cc * 20.0 + Vector3.UP * 8.0, milc)
+		return
 	await _vue("141_dessus", c + Vector3(170, 140, 170), c)
 	var par: int = 6 / maxi(villes.size(), 1)
 	var k2: int = 0

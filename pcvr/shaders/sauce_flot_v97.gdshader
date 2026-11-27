@@ -102,7 +102,12 @@ void vertex() {
 		// la sauce bombe un peu au milieu du lit, et roule en vaguelettes
 		VERTEX.y += (1.0 - across * across) * 0.12 + sin(UV.y * 1.7 - TIME * speed * 6.0) * 0.025;
 	} else if (mode == 1) {
-		VERTEX += NORMAL * (sin(UV.y * 2.3 + TIME * 9.0) * 0.06 + (vnoise(vec2(UV.x * 5.0, UV.y * 0.8 + TIME * 3.0)) - 0.5) * 0.18);
+		// V217 : la nappe n'est pas une planche : elle bombe au milieu, ondule, et chaque filet tombe à son
+		// rythme
+		float across1 = UV.x * 2.0 - 1.0;
+		float ond = sin(UV.y * 2.3 + TIME * 9.0 + across1 * 2.0) * 0.07 + (vnoise(vec2(UV.x * 5.0, UV.y * 0.8 + TIME * 3.0)) - 0.5) * 0.34;
+		float ventre = (1.0 - across1 * across1) * 0.22 * (0.6 + 0.4 * sin(UV.y * 0.45 + 1.3));
+		VERTEX += NORMAL * (ond + ventre);
 	}
 }
 
@@ -142,10 +147,18 @@ void fragment() {
 		a = smoothstep(0.02, 0.2 + wob, edge);
 		col *= mix(0.7, 1.0, smoothstep(0.05, 0.3, edge));
 		if (mode == 1) {
-			// la cascade : des filets plus clairs, des trous de lumière, l'écume rose au pied
-			float streak = fbm(vec2(UV.x * 14.0, v * 0.15));
+			// la cascade : des filets plus clairs, des cordes plus sombres et plus épaisses, des trous de
+			// lumière ; V217 : les bords déchirés (ils changent en tombant), des filets qui serpentent un peu,
+			// des paquets de sauce qui tombent plus vite que le reste
+			float rag = vnoise(vec2(UV.y * 1.3 - t * sp * 0.9, UV.x * 3.0 + 7.0));
+			a = smoothstep(0.02, 0.1 + rag * 0.3, edge);
+			float streak = fbm(vec2(UV.x * 9.0 + sin(v * 0.4 + UV.x * 3.0) * 0.5, v * 0.12));
+			float corde = fbm(vec2(UV.x * 23.0 + 3.0, v * 0.3 + 4.0));
 			col = mix(col, vec3(0.74, 0.2, 0.08), smoothstep(0.55, 0.8, streak) * 0.5);
-			a *= smoothstep(0.18, 0.4, streak + 0.2);
+			col = mix(col, col * 0.62, smoothstep(0.58, 0.85, corde) * 0.6);
+			float paquet = smoothstep(0.72, 0.9, vnoise(vec2(UV.x * 6.0, UV.y * 0.9 - t * sp * 1.6)));
+			col = mix(col, vec3(0.8, 0.24, 0.09), paquet * 0.45);
+			a *= smoothstep(0.1, 0.4, streak + 0.3 * corde + 0.15 + paquet * 0.3);
 		}
 	}
 	vec3 tn = normalize(TANGENT * n.x + BINORMAL * n.y + NORMAL * n.z);

@@ -99,6 +99,41 @@ func _initialize() -> void:
 		await _vue("21_allee_est", _sol(10, 20) + Vector3(0, 1.7, 0), C + Vector3(70, 6, 20))
 		await _vue("15_plage_nord", _sol(20, -182) + Vector3(0, 1.7, 0), C + Vector3(80, 4, -200))
 		await _vue("16_sous_la_voie", _sol(118, -60) + Vector3(0, 1.7, 0), C + Vector3(121, 22, -88))
+	if quoi == "prehistoire" and g.prehistoire != null:
+		# V217 : chaque animal de face, de côté et de trois quarts, puis le parc vu des allées
+		var num: int = 40
+		var filtre: String = OS.get_environment("RENDU_ANIMAUX")
+		for st in g.prehistoire.statues:
+			if filtre != "" and not str(st["cle"]) in filtre.split(","):
+				continue
+			var sp: Vector3 = st["pos"]
+			var cap: float = float(st["cap"])
+			var bo: AABB = _boite(st["noeud"])
+			var sr: float = maxf(maxf(bo.size.x, bo.size.z), bo.size.y) * 0.5
+			var mil: Vector3 = bo.get_center()
+			if st.has("allee"):
+				# de l'allée la plus proche : ce que le promeneur voit
+				var al2: Vector2 = st["allee"]
+				var vu: Vector3 = Ile.W(al2.x, al2.y, 0.0)
+				vu.y = g.ile.height(vu.x, vu.z) + 1.7
+				await _vue("%d_%s_0_allee" % [num, str(st["cle"])], vu, mil)
+			for vue in [["trois_quarts", cap + PI * 0.22, 2.3]]:
+				var dir: Vector3 = Vector3(sin(float(vue[1])), 0, cos(float(vue[1])))
+				var at2: Vector3 = mil + dir * (sr * float(vue[2]) + 2.0)
+				at2.y = maxf(g.ile.height(at2.x, at2.z), 0.0) + 1.7
+				await _vue("%d_%s_%s" % [num, str(st["cle"]), str(vue[0])], at2, mil)
+			num += 1
+			print("ILE_MANGA_V217 rendu : ", st["cle"], " à ", (sp - C).snapped(Vector3(0.1, 0.1, 0.1)), " cap ", snappedf(cap, 0.01))
+		await _vue("60_dessus", C + Vector3(-40, 420, 260), C)
+		await _vue("61_portail", _sol(-176, 21) + Vector3(0, 1.7, 0), C + Vector3(-158, 8, 20))
+		await _vue("62_allee", _sol(-146, 20) + Vector3(0, 1.7, 0), C + Vector3(0, 16, 30))
+		await _vue("63_allee2", _sol(-100, 20) + Vector3(0, 1.7, 0), C + Vector3(-20, 8, 20))
+		await _vue("64_place", _sol(-48, 22) + Vector3(0, 1.7, 0), C + Vector3(-20, 10, 20))
+		await _vue("65_gare", _sol(-78, 36) + Vector3(0, 1.7, 0), C + Vector3(-78, 9, 66))
+		await _vue("66_volcan", _sol(4, -52) + Vector3(0, 1.7, 0), C + Vector3(18, 30, -116))
+		await _vue("67_allee_est", _sol(10, 20) + Vector3(0, 1.7, 0), C + Vector3(70, 6, 20))
+		await _vue("68_haut", C + Vector3(-110, 60, 90), C + Vector3(-30, 0, 10))
+		print("ILE_MANGA_V217 rendu : plantes ", g.prehistoire.plantes, " triangles ", g.prehistoire.triangles, " refusées (voie) ", g.prehistoire.refusees_voie, " (vue) ", g.prehistoire.refusees_vue)
 	if quoi in ["tout", "tour"]:
 		g.offrir_billet()
 		g.huit.attente = 0.5
@@ -185,6 +220,21 @@ func _initialize() -> void:
 				print("ILE_MANGA_V211 rendu : à %d m, seuil %.1f : %d k triangles dessinés" % [int(d[0]), float(seuil), int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)) / 1000])
 		cam.fov = fov0
 	quit()
+
+
+func _boite(n: Node) -> AABB:
+	var b: AABB = AABB()
+	var premier: bool = true
+	var pile: Array = [n]
+	while not pile.is_empty():
+		var c: Node = pile.pop_back()
+		for e in c.get_children():
+			pile.append(e)
+		if c is MeshInstance3D and (c as MeshInstance3D).mesh != null:
+			var bb: AABB = (c as MeshInstance3D).global_transform * (c as MeshInstance3D).get_aabb()
+			b = bb if premier else b.merge(bb)
+			premier = false
+	return b
 
 
 func _sol(x: float, z: float) -> Vector3:

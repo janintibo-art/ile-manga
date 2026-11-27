@@ -1,6 +1,6 @@
 #!/bin/bash
 # Des images de l'Île Foraine (V209) et des planches qui les rassemblent.
-#     bash tests/outils/rendu_foraine.sh DOSSIER [tout | vues | tour | maneges | paliers]
+#     bash tests/outils/rendu_foraine.sh DOSSIER [tout | vues | tour | maneges | paliers | prehistoire]
 # Il faut xvfb-run (un écran virtuel) : le rendu passe par OpenGL.
 DEPOT="$(cd "$(dirname "$0")/../.." && pwd)"
 COPIE="${TESTS_COPIE:-/root/t38}"
@@ -10,7 +10,7 @@ QUOI="${2:-tout}"
 mkdir -p "$OUT"
 rm -f "$OUT"/*.png
 for f in pcvr/scripts/ile_foraine_v209.gd pcvr/scripts/foraine_v209.gd pcvr/scripts/foraine_kit_v209.gd pcvr/scripts/grand_huit_v209.gd \
-    pcvr/scripts/grand_huit_trace_v209.gd pcvr/scripts/allege_loin_v211.gd pcvr/scripts/manege_v210.gd pcvr/scripts/marteau_v210.gd pcvr/scripts/chute_v210.gd pcvr/scripts/balancoire_v210.gd pcvr/scripts/geants_kit_v142.gd pcvr/scripts/metal_kit_v160.gd pcvr/shaders/geants_sol_v142.gdshader pcvr/shaders/volcan_sol_v213.gdshader pcvr/scripts/volcan_v213.gd; do
+    pcvr/scripts/grand_huit_trace_v209.gd pcvr/scripts/allege_loin_v211.gd pcvr/scripts/manege_v210.gd pcvr/scripts/marteau_v210.gd pcvr/scripts/chute_v210.gd pcvr/scripts/balancoire_v210.gd pcvr/scripts/geants_kit_v142.gd pcvr/scripts/metal_kit_v160.gd pcvr/shaders/geants_sol_v142.gdshader pcvr/shaders/volcan_sol_v213.gdshader pcvr/scripts/volcan_v213.gd pcvr/scripts/prehistoire_v217.gd; do
   cp "$DEPOT/$f" "$COPIE/$f"
 done
 cp "$DEPOT/tests/outils/rendu_foraine.gd" "$COPIE/pcvr/rendu_foraine.gd"

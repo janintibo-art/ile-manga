@@ -94,6 +94,9 @@ var _boil: float = 0.0
 var _hot_t: float = 0.0
 var _hot_msg_t: float = 0.0
 var cascade_at := Vector3.ZERO
+var chute_v217: Array = []                # V217 : les points de la nappe qui tombe (du bec jusqu'à la mer)
+var sauce_heros_v217: Node3D              # V217 : la sauce sur le personnage (sauce_heros_v217.gd)
+var chute_haut_v217: float = 0.0          # la hauteur du bout du bec
 var _sauce_t: float = 0.0                 # le dernier coup de louche (secondes)
 # V98 : la vie de l'île (le Borgo, les adeptes, la Barque-Maison) et l'humeur du Grand Spaghetti
 const Ville = preload("res://scripts/pasta_ville_v98.gd")
@@ -650,27 +653,115 @@ func _rivieres() -> void:
 	var top: Vector3 = (nord[-1] as Vector3) + Vector3.UP * 0.42
 	var prev: Vector3 = nord[-4]
 	var out: Vector3 = Vector3(top.x - prev.x, 0, top.z - prev.z).normalized()
+	# V217 : une vraie cascade. La rivière finissait en ruban couché sur la pente, loin au-dessus de la mer :
+	# elle passe maintenant sur le Bec de la Saucière (une dalle de pierre en surplomb), décolle, tombe en
+	# nappe épaisse, et finit dans la mer (si la roche l'arrête avant, elle ruisselle dessus jusqu'à l'eau).
+	var cote: Vector3 = out.cross(Vector3.UP).normalized()
+	var bec: float = 6.5
+	var pente: float = 0.07
+	var bout: Vector3 = top + out * bec - Vector3.UP * bec * pente
+	var bb := Kit.Batch.new()
+	var bas_bec: Basis = Basis(cote, Vector3.UP, -out).rotated(cote, -atan(pente))
+	var mi_bec: Vector3 = top + out * (bec * 0.5 - 1.2) - Vector3.UP * ((bec * 0.5 - 1.2) * pente + 0.75)
+	bb.box("pierre", Transform3D(bas_bec, mi_bec), Vector3(5.6, 0.7, bec + 2.4))
+	for sg in [-1.0, 1.0]:
+		bb.box("pierre", Transform3D(bas_bec, mi_bec + cote * sg * 2.55 + Vector3.UP * 0.55), Vector3(0.5, 0.6, bec + 2.4))
+		# les corbeaux qui portent la dalle
+		bb.box("pierre", Transform3D(bas_bec.rotated(cote, -0.6), mi_bec + cote * sg * 1.7 + out * 0.6 - Vector3.UP * 1.5), Vector3(0.7, 0.7, 5.0))
+	bb.commit(self, "Bec_de_la_Sauciere_v217")
+	_col(Transform3D(bas_bec, mi_bec), Vector3(5.6, 0.7, bec + 2.4))
 	var fall: Array = []
-	var depth: float = top.y - IleScript.WATER
-	for k in range(14):
-		var t: float = float(k) / 13.0
-		fall.append(top + out * (0.4 + 2.2 * sqrt(t)) - Vector3.UP * (depth + 0.3) * t)
-	var cas: MeshInstance3D = _ribbon("Cascade_Arrabbiata", fall, 3.6, 1)
+	var v0: float = 3.2
+	var d: float = 0.0
+	var au_sol: bool = false
+	var y: float = top.y
+	chute_v217.clear()
+	while fall.size() < 90:
+		var pt: Vector3 = top + out * d
+		if d <= bec:
+			y = top.y - d * pente
+		else:
+			var dd: float = d - bec
+			var libre: float = bout.y - 4.9 * (dd / v0) * (dd / v0) - dd * pente
+			var sol: float = ile.height(pt.x, pt.z) + 0.3
+			if not au_sol and libre <= sol:
+				au_sol = true
+			y = sol if au_sol else libre
+		pt.y = maxf(y, IleScript.WATER - 0.35)
+		if d > bec:
+			# (la nappe ne tombe pas au cordeau : elle se tord un peu en tombant)
+			pt += cote * sin((d - bec) * 1.7) * minf((d - bec) * 0.12, 0.3)
+		fall.append(pt)
+		chute_v217.append(pt)
+		if y <= IleScript.WATER - 0.35:
+			break
+		d += 0.3 if d > bec else 0.8
+	var pied: Vector3 = fall[-1]
+	var cas: MeshInstance3D = _ribbon("Cascade_Arrabbiata", fall, 3.4, 1)
 	cas.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	cascade_at = top + out * 2.6
-	cascade_at.y = IleScript.WATER
+	# l'épaisseur : une deuxième nappe, plus étroite, un peu en avant ; et deux filets sur les côtés
+	var devant: Array = []
+	var filet_g: Array = []
+	var filet_d: Array = []
+	for k in range(fall.size()):
+		var fp: Vector3 = fall[k]
+		var kk: float = float(k) / float(fall.size() - 1)
+		devant.append(fp + out * 0.28 + Vector3.UP * 0.05)
+		if fp.distance_to(top) > bec - 0.5:
+			filet_g.append(fp - cote * (1.9 + 0.9 * kk) - out * 0.15)
+			filet_d.append(fp + cote * (2.0 + 0.7 * kk) - out * 0.2)
+	var cas2: MeshInstance3D = _ribbon("Cascade_Arrabbiata_devant", devant, 2.1, 1)
+	cas2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	(cas2.material_override as ShaderMaterial).set_shader_parameter("speed", 0.62)
+	for fl in [filet_g, filet_d]:
+		if (fl as Array).size() > 2:
+			var cf: MeshInstance3D = _ribbon("Cascade_Arrabbiata_filet", fl, 0.7, 1)
+			cf.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			(cf.material_override as ShaderMaterial).set_shader_parameter("speed", 0.4)
+	chute_haut_v217 = bout.y
+	# V217 : qui tombe dans la sauce en ressort couvert
+	sauce_heros_v217 = load("res://scripts/sauce_heros_v217.gd").new()
+	sauce_heros_v217.name = "Sauce_sur_le_heros_v217"
+	add_child(sauce_heros_v217)
+	sauce_heros_v217.setup(main, self)
+	cascade_at = Vector3(pied.x, IleScript.WATER, pied.z)
+	# les gouttes qui s'échappent de la nappe pendant la chute
+	var gt := CPUParticles3D.new()
+	gt.name = "Gouttes_de_la_cascade_v217"
+	gt.amount = 46
+	gt.lifetime = 1.5
+	gt.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	gt.emission_box_extents = Vector3(2.4, 0.15, 0.3)
+	gt.direction = out
+	gt.spread = 22.0
+	gt.initial_velocity_min = 2.4
+	gt.initial_velocity_max = 4.6
+	gt.gravity = Vector3(0, -9.8, 0)
+	gt.scale_amount_min = 0.5
+	gt.scale_amount_max = 1.3
+	var gm := SphereMesh.new()
+	gm.radius = 0.1
+	gm.height = 0.26
+	gm.radial_segments = 6
+	gm.rings = 3
+	gm.material = _goutte_mat
+	gt.mesh = gm
+	add_child(gt)
+	gt.global_position = bout + out * 0.4
+	gt.global_transform = Transform3D(Basis(cote, Vector3.UP, -out), bout + out * 0.4)
+	gt.direction = Vector3(0, 0, -1)
 	# le panache rouge dans la mer, au pied de la cascade, et au bout du déversoir
-	_panache(cascade_at + out * 9.0, 30.0)
+	_panache(cascade_at + out * 7.0, 34.0)
 	var dv: Array = ile.flows_world["deversoir"]
 	var dend: Vector3 = dv[-1]
 	_panache(Vector3(dend.x + 6.0, IleScript.WATER, dend.z + 2.0), 18.0)
 	# l'écume au pied de la cascade
 	var sp := CPUParticles3D.new()
 	sp.name = "Ecume_de_la_cascade"
-	sp.amount = 60
+	sp.amount = 110
 	sp.lifetime = 1.4
 	sp.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
-	sp.emission_box_extents = Vector3(1.8, 0.2, 1.2)
+	sp.emission_box_extents = Vector3(2.4, 0.2, 1.6)
 	sp.direction = Vector3.UP
 	sp.spread = 40.0
 	sp.initial_velocity_min = 2.0
@@ -686,8 +777,8 @@ func _rivieres() -> void:
 	dm.material = _goutte_mat
 	sp.mesh = dm
 	add_child(sp)
-	sp.global_position = cascade_at + out * 1.0
-	var vap: GPUParticles3D = Decor.smoke(self, cascade_at + out * 1.0 - global_position + Vector3.UP * 0.4, 18, 1.0, 3.0)
+	sp.global_position = cascade_at + out * 0.3
+	var vap: GPUParticles3D = Decor.smoke(self, cascade_at + out * 0.3 - global_position + Vector3.UP * 0.4, 26, 1.0, 3.6)
 	vap.name = "Brume_de_la_cascade"
 	# le Lac Napolitain : une grande nappe de sauce, calme
 	var lac := MeshInstance3D.new()
@@ -1146,6 +1237,8 @@ func _splat(at: Vector3, s: float, p: Vector3) -> void:
 		sfx("splotch", at)
 	if Vector2(p.x - at.x, p.z - at.z).length() < 3.5 and absf(p.y - at.y) < 3.0:
 		state["eclabousse"] = true
+		if sauce_heros_v217 != null:
+			sauce_heros_v217.couvrir(0.8, "goutte")
 		say("SPLOTCH ! Une grosse goutte de sauce t'est tombée juste à côté… Tu es éclaboussé de la tête aux pieds. (Ça sent très bon.)", 6.0)
 
 
