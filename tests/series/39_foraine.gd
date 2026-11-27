@@ -91,6 +91,37 @@ func _serie() -> void:
 	_ok(vo213 != null and int(vo213.colonnes) > 600 and int(vo213.bouquets) > 30, "V213 : %d colonnes de basalte en %d bouquets le long de la voie" % [int(vo213.colonnes), int(vo213.bouquets)])
 	_ok(int(vo213.arches) == 4 and float(vo213.au_plus_pres) > 3.0, "V213 : quatre arches de roche ; rien à moins de %.1f m de l'axe de la voie" % float(vo213.au_plus_pres))
 	_ok(vo213.lueurs.size() == 2 and vo213.get_node_or_null("Panache_v213") != null, "V213 : le panache du cratère, la lueur de la lave")
+
+	# V214 : les bornes « monter ici », les invites pendant que ça tourne, les lampions
+	var fo214: Node3D = foraine_v209
+	_ok(fo214.bornes.size() == 4, "V214 : une borne « monter ici » par attraction (%d)" % fo214.bornes.size())
+	var pres214: bool = true
+	for bk214 in range(fo214.bornes.size()):
+		var bo214: Dictionary = fo214.bornes[bk214]
+		var ma214: Node3D = bo214["manege"]
+		pres214 = pres214 and (bo214["disque"] as Node3D).global_position.distance_to(ma214.quai_pos) < 0.3
+	_ok(pres214, "V214 : chaque disque est à l'endroit exact où l'on monte")
+	fo214.state["billet_jour"] = -5
+	fo214._bornes(0.0, true)
+	var eb214: String = fo214.etat_borne(0)
+	_ok(eb214 == "billet" or eb214 == "marche", "V214 : sans billet, la borne le dit (%s)" % eb214)
+	fo214.offrir_billet()
+	fo214._bornes(0.0, true)
+	var ep214: String = fo214.etat_borne(0)
+	_ok(ep214 == "pret" or ep214 == "marche", "V214 : avec le billet, la borne passe au vert (%s)" % ep214)
+	var ids214: Array = []
+	for in214 in fo214._interactions:
+		ids214.append(str(in214["id"]))
+	_ok(ids214.has("fo_attendre") and ids214.has("fo_attendre_marteau"), "V214 : une invite aussi pendant que l'attraction tourne")
+	_ok(int(fo214.lampions["portiques"]) > 20 and int(fo214.lampions["lampions"]) > 160 and fo214.get_node_or_null("Guirlandes_v214") != null, "V214 : les portiques de lampions le long des allées (%d portiques, %d lampions)" % [int(fo214.lampions["portiques"]), int(fo214.lampions["lampions"])])
+	# V214 : la barque — la bôme au-dessus de la tête, la voile ouverte sur le côté
+	var gr214: Node3D = boat_v29.hull.find_child("Greement_v214", true, false) as Node3D
+	if gr214 != null:
+		var vo214: Node3D = gr214.get_node("Voile") as Node3D
+		var bas214: float = (vo214 as MeshInstance3D).get_aabb().position.y
+		_ok(bas214 > 2.0 and absf(gr214.rotation.y) > 0.3, "V214 : la voile de la barque passe au-dessus de la tête (bas à %.2f m) et s'ouvre sur le côté" % bas214)
+	else:
+		_ok(float(boat_v29.BOME_Y) > 2.0, "V214 : la bôme de la barque au-dessus de la tête (autre coque à l'essai)")
 	_ok(tete_bas209 > 20 and tete_bas209 < 120, "on a la tête en bas sur %d m (la boucle, la vrille)" % tete_bas209)
 	_ok(int(hu209.supports) > 120, "%d poteaux portent la voie" % int(hu209.supports))
 	_ok(hu209.wagons.size() == 3, "le train a trois wagons")

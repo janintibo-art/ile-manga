@@ -95,6 +95,8 @@ func _initialize() -> void:
 		await _vue("18_faille", C + Vector3(121.5, 24, 6), C + Vector3(121.5, 5, -40))
 		await _vue("19_volcan", C + Vector3(-90, 45, -10), C + Vector3(18, 25, -116))
 		await _vue("19b_est", C + Vector3(60, 14, 60), C + Vector3(95, 10, 20))
+		await _vue("20_borne_marteau", _sol(38, 24) + Vector3(0, 1.7, 0), C + Vector3(36, 6, 44))
+		await _vue("21_allee_est", _sol(10, 20) + Vector3(0, 1.7, 0), C + Vector3(70, 6, 20))
 		await _vue("15_plage_nord", _sol(20, -182) + Vector3(0, 1.7, 0), C + Vector3(80, 4, -200))
 		await _vue("16_sous_la_voie", _sol(118, -60) + Vector3(0, 1.7, 0), C + Vector3(121, 22, -88))
 	if quoi in ["tout", "tour"]:

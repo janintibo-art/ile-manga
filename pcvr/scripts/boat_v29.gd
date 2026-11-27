@@ -18,6 +18,10 @@ extends Node3D
 const LENGTH: float = 4.6
 const BEAM: float = 1.6
 const DEPTH: float = 0.72
+## V214 : la barque — hauteur du mât, de la bôme (au-dessus d'une tête debout) et son ouverture sur tribord
+const MAT_H: float = 4.9
+const BOME_Y: float = 2.15
+const BOME_ANGLE: float = 24.0
 const DRAFT: float = 0.28              # partie de la coque sous l'eau
 const MAX_SPEED: float = 8.0
 const MAX_REVERSE: float = 2.2
@@ -348,16 +352,25 @@ func _model_barque() -> void:
 	hull.add_child(floor_m)
 	# Mât, bôme, voile, gouvernail.
 	var mast_z: float = -0.9
+	# V214 : la bôme passait à 1,10 m, dans l'axe, juste devant le visage du barreur (en VR la voile
+	# coupait la vue en deux). Elle monte au-dessus d'une tête debout et s'ouvre sur tribord, comme une
+	# voile bordée au portant : la vue vers l'avant est dégagée.
 	var mast := MeshInstance3D.new()
 	var mm := CylinderMesh.new()
 	mm.top_radius = 0.035
 	mm.bottom_radius = 0.055
-	mm.height = 3.7
+	mm.height = MAT_H
 	mast.mesh = mm
 	mast.material_override = _wood
-	mast.position = Vector3(0, 0.1 + 1.85, mast_z)
+	mast.position = Vector3(0, 0.1 + MAT_H * 0.5, mast_z)
 	hull.add_child(mast)
+	var greement := Node3D.new()
+	greement.name = "Greement_v214"
+	greement.position = Vector3(0, 0, mast_z)
+	greement.rotation.y = deg_to_rad(BOME_ANGLE)
+	hull.add_child(greement)
 	var boom := MeshInstance3D.new()
+	boom.name = "Bome"
 	var bm2 := CylinderMesh.new()
 	bm2.top_radius = 0.03
 	bm2.bottom_radius = 0.03
@@ -365,18 +378,18 @@ func _model_barque() -> void:
 	boom.mesh = bm2
 	boom.material_override = _wood
 	boom.rotation_degrees = Vector3(90, 0, 0)
-	boom.position = Vector3(0, 1.05, mast_z + 1.15)
-	hull.add_child(boom)
+	boom.position = Vector3(0, BOME_Y - 0.05, 1.15)
+	greement.add_child(boom)
 	var sail := MeshInstance3D.new()
 	sail.name = "Voile"
-	sail.mesh = _sail_mesh(Vector3(0, 3.65, mast_z), Vector3(0, 1.1, mast_z), Vector3(0, 1.1, mast_z + 2.25))
+	sail.mesh = _sail_mesh(Vector3(0, MAT_H + 0.05, 0), Vector3(0, BOME_Y, 0), Vector3(0, BOME_Y, 2.25))
 	sail.material_override = _sail_mat
-	hull.add_child(sail)
+	greement.add_child(sail)
 	var stay := MeshInstance3D.new()
 	var sm := CylinderMesh.new()
 	sm.top_radius = 0.008
 	sm.bottom_radius = 0.008
-	var a := Vector3(0, 3.7, mast_z)
+	var a := Vector3(0, MAT_H + 0.1, mast_z)
 	var bow := Vector3(0, DEPTH + 0.15, -LENGTH * 0.5 + 0.1)
 	sm.height = a.distance_to(bow)
 	stay.mesh = sm

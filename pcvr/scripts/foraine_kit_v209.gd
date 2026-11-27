@@ -87,6 +87,15 @@ static func mat(key: String) -> Material:
 			e.emission = Color(1.0, 0.78, 0.4)
 			e.emission_energy_multiplier = 2.2
 			m = e
+		"lampion_rouge", "lampion_jaune", "lampion_bleu", "lampion_vert", "lampion_orange":
+			# V214 : les lampions des allées (ils éclairent de leur couleur, jour et nuit)
+			var teinte: Color = {"lampion_rouge": Color(1.0, 0.18, 0.14), "lampion_jaune": Color(1.0, 0.82, 0.16), "lampion_bleu": Color(0.2, 0.5, 1.0), "lampion_vert": Color(0.25, 0.9, 0.35), "lampion_orange": Color(1.0, 0.5, 0.1)}[key]
+			var lp := StandardMaterial3D.new()
+			lp.albedo_color = teinte
+			lp.emission_enabled = true
+			lp.emission = teinte
+			lp.emission_energy_multiplier = 0.55
+			m = lp
 		"vitre":
 			var g := StandardMaterial3D.new()
 			g.albedo_color = Color(0.6, 0.75, 0.8, 0.35)

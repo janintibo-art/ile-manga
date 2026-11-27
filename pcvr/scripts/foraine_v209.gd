@@ -40,6 +40,9 @@ var _cols: GK.Cols
 var _barriere: CollisionShape3D
 var _bras: Node3D
 var _interactions: Array = []
+var bornes: Array = []                  # V214 : les bornes « monter ici » (une par attraction)
+var _borne_t := 0.0
+var lampions := {"portiques": 0, "lampions": 0}   # V214
 var _registered: bool = false
 var _built: bool = false
 var _bras_t: float = 0.0
@@ -109,6 +112,8 @@ func build_town() -> void:
 	# ils ne partent pas tous en même temps
 	for k in range(maneges.size()):
 		maneges[k].attente = 9.0 + k * 7.0
+	_guirlandes()
+	_embarquements()
 	_actions()
 
 
@@ -488,6 +493,166 @@ func changer_sensations() -> void:
 	main._show_message_v28("Sensations : %s" % ("en douceur — la vue reste droite, sans se pencher ni se retourner." if bool(state["doux"]) else "toutes — la vue penche et se retourne avec le wagon, comme en vrai."))
 
 
+## V214 : la fête manquait de couleur. Le long de toutes les allées, des portiques de mâts rayés,
+## une guirlande de lampions de cinq couleurs en travers et des fanions d'un portique au suivant.
+## Rien dans la Place (elle a ses guirlandes), rien contre la voie du grand huit ni sur les parois.
+func _guirlandes() -> void:
+	var b := Kit.Lot.new()
+	var teintes: Array = ["lampion_rouge", "lampion_jaune", "lampion_bleu", "lampion_vert", "lampion_orange"]
+	var toiles: Array = ["toile_rouge", "toile_jaune", "toile_bleue", "toile_blanche"]
+	var n: int = 0
+	for c in IleScript.ALLEES:
+		var pts: Array = c[0]
+		var demi: float = float(c[1]) + 1.1
+		var reste: float = 6.0
+		var prec: Array = []
+		for i in range(pts.size() - 1):
+			var a := Vector2(float(pts[i][0]), float(pts[i][1]))
+			var z := Vector2(float(pts[i + 1][0]), float(pts[i + 1][1]))
+			var l: float = a.distance_to(z)
+			var d: Vector2 = (z - a) / maxf(l, 0.01)
+			var cote := Vector2(-d.y, d.x)
+			var s: float = reste
+			while s < l:
+				var m: Vector2 = a + d * s
+				s += 15.0
+				var g: Vector2 = m - cote * demi
+				var dr: Vector2 = m + cote * demi
+				var y0: float = ile.height_l(m.x, m.y)
+				var yg: float = ile.height_l(g.x, g.y)
+				var yd: float = ile.height_l(dr.x, dr.y)
+				var libre: bool = m.distance_to(IleScript.PLACE) > IleScript.PLACE_R + 3.0 and y0 > 1.0
+				libre = libre and absf(yg - y0) < 1.2 and absf(yd - y0) < 1.2
+				# pas de mât planté au milieu d'une autre allée (aux croisements)
+				for c2 in IleScript.ALLEES:
+					if c2 != c and (IleScript._dist_ligne(g, c2[0]) < float(c2[1]) + 0.7 or IleScript._dist_ligne(dr, c2[0]) < float(c2[1]) + 0.7):
+						libre = false
+				var hg: Vector3 = _a(g.x, yg + 5.2, g.y)
+				var hd: Vector3 = _a(dr.x, yd + 5.2, dr.y)
+				if libre and volcan != null and volcan.has_method("_a_la_voie"):
+					libre = float(volcan._a_la_voie(Vector3(m.x, y0, m.y), y0 + 9.0)) > 7.0   # (repère de l'île, comme la voie)
+				if not libre:
+					prec = []
+					continue
+				for cote_k in range(2):
+					var pied: Vector3 = _a(g.x, yg, g.y) if cote_k == 0 else _a(dr.x, yd, dr.y)
+					for an in range(5):
+						b.cyl("bois_rouge" if (an + n) % 2 == 0 else "bois_blanc", Transform3D(Basis(), pied + Vector3.UP * (0.52 + an * 1.04)), 0.09, 0.09, 1.04, 8, false)
+					b.blob("jaune", pied + Vector3.UP * 5.32, Vector3(0.17, 0.17, 0.17), 6)
+					_cols.cyl(pied, 0.14, 2.2)
+				# la guirlande de lampions en travers de l'allée
+				var av: Vector3 = hg
+				for k in range(1, 10):
+					var f: float = k / 9.0
+					var q: Vector3 = hg.lerp(hd, f) - Vector3.UP * 0.9 * 4.0 * f * (1.0 - f)
+					b.tube("fer", av, q, 0.012, 3)
+					if k < 9:
+						b.blob(str(teintes[(k + n) % teintes.size()]), q - Vector3.UP * 0.2, Vector3(0.16, 0.2, 0.16), 6)
+						lampions["lampions"] = int(lampions["lampions"]) + 1
+					av = q
+				# les fanions depuis le portique d'avant
+				if prec.size() == 2:
+					_fanions(b, prec[0], hg, 14, toiles, 0.7)
+					_fanions(b, prec[1], hd, 14, toiles, 0.7)
+				prec = [hg, hd]
+				n += 1
+			reste = s - l
+	lampions["portiques"] = n
+	b.commit(self, "Guirlandes_v214", false, 320.0)
+	print("ILE_MANGA_V214: la fête en couleur : %d portiques, %d lampions le long des allées" % [n, int(lampions["lampions"])])
+
+
+## V214 : on ne savait pas où monter. Chaque attraction a sa borne à l'endroit exact : un disque
+## lumineux au sol, une flèche qui danse au-dessus et un panneau lisible de loin, verts quand on peut
+## monter, jaunes s'il manque le billet, orange pendant que le manège tourne.
+func _embarquements() -> void:
+	var liste: Array = [huit] + maneges
+	for r in liste:
+		var at: Vector3 = r.quai_pos
+		var sous_toit: bool = r == huit          # la gare a un toit : la borne y est plus basse et plus petite
+		var bas: float = 1.5 if sous_toit else 0.0
+		var ech: float = 0.6 if sous_toit else 1.0
+		var mat := StandardMaterial3D.new()
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.albedo_color = Color(0.3, 1.0, 0.45, 0.55)
+		var disque := MeshInstance3D.new()
+		disque.name = "Borne_disque_v214"
+		var dm := CylinderMesh.new()
+		dm.top_radius = 1.6
+		dm.bottom_radius = 1.6
+		dm.height = 0.03
+		dm.radial_segments = 28
+		disque.mesh = dm
+		disque.material_override = mat
+		disque.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(disque)
+		disque.global_position = at + Vector3(0, 0.05, 0)
+		var fleche := MeshInstance3D.new()
+		fleche.name = "Borne_fleche_v214"
+		var fm := CylinderMesh.new()
+		fm.top_radius = 0.8 * ech
+		fm.bottom_radius = 0.0
+		fm.height = 1.4 * ech
+		fm.radial_segments = 4
+		fleche.mesh = fm
+		fleche.material_override = mat
+		fleche.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(fleche)
+		fleche.global_position = at + Vector3(0, 3.3 - bas * 0.6, 0)
+		var l := Label3D.new()
+		l.name = "Borne_panneau_v214"
+		l.text = "MONTER ICI"
+		l.font_size = 96
+		l.pixel_size = 0.95 * ech / 96.0
+		l.outline_size = 22
+		l.outline_modulate = Color(0.05, 0.05, 0.06)
+		l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+		l.visibility_range_end = 160.0
+		add_child(l)
+		l.global_position = at + Vector3(0, 5.4 - bas, 0)
+		bornes.append({"manege": r, "mat": mat, "fleche": fleche, "panneau": l, "disque": disque, "y": at.y + 3.3 - bas * 0.6, "etat": ""})
+	_bornes(0.0, true)
+
+
+## l'état d'une borne : "pret", "billet", "marche"
+func etat_borne(k: int) -> String:
+	var r: Node3D = bornes[k]["manege"]
+	if not r.a_quai():
+		return "marche"
+	return "pret" if billet_valide() else "billet"
+
+
+func _bornes(delta: float, forcer: bool = false) -> void:
+	_borne_t += delta
+	var a_bord: bool = riding()
+	for k in range(bornes.size()):
+		var b: Dictionary = bornes[k]
+		var fl: MeshInstance3D = b["fleche"]
+		fl.global_position.y = float(b["y"]) + sin(_borne_t * 2.6 + k) * 0.18
+		fl.rotation.y = _borne_t * 1.4
+		var e: String = "bord" if a_bord else etat_borne(k)
+		if e == str(b["etat"]) and not forcer:
+			continue
+		b["etat"] = e
+		var voir: bool = e != "bord"
+		fl.visible = voir
+		(b["disque"] as MeshInstance3D).visible = voir
+		var l: Label3D = b["panneau"]
+		l.visible = voir
+		var c := Color(0.3, 1.0, 0.45)
+		var t: String = "MONTER ICI"
+		if e == "billet":
+			c = Color(1.0, 0.86, 0.2)
+			t = "BILLET AU GUICHET\n(au Grand Portail)"
+		elif e == "marche":
+			c = Color(1.0, 0.55, 0.15)
+			t = "EN MARCHE\nrevient ici"
+		l.text = t
+		l.modulate = c
+		(b["mat"] as StandardMaterial3D).albedo_color = Color(c.r, c.g, c.b, 0.55)
+
+
 func _actions() -> void:
 	var me = self
 	_interactions.append({"id": "fo_guichet", "pos": guichet_pos, "radius": 2.6, "text": "E : acheter un billet (%d pièces)" % PRIX,
@@ -496,6 +661,9 @@ func _actions() -> void:
 	_interactions.append({"id": "fo_monter", "pos": huit.quai_pos, "radius": 4.2, "text": "E : monter dans le Grand Frisson",
 		"vr": "Gâchette : monter dans le Grand Frisson", "call": func(): me.monter(),
 		"when": func(): return me.huit != null and not me.riding() and me.huit.a_quai()})
+	_interactions.append({"id": "fo_attendre", "pos": huit.quai_pos, "radius": 4.2, "text": "Le Grand Frisson est en route… il revient à quai",
+		"vr": "Le Grand Frisson est en route… il revient à quai", "call": func(): me.monter(),
+		"when": func(): return me.huit != null and not me.riding() and not me.huit.a_quai()})
 	_interactions.append({"id": "fo_sensations", "pos": reglage_pos, "radius": 1.8, "text": "E : régler les sensations",
 		"vr": "Gâchette : régler les sensations", "call": func(): me.changer_sensations(),
 		"when": func(): return me.huit != null and not me.riding()})
@@ -504,6 +672,9 @@ func _actions() -> void:
 		_interactions.append({"id": "fo_monter_%s" % str(mm.cle), "pos": mm.quai_pos, "radius": 3.4, "text": "E : monter — %s" % str(mm.titre),
 			"vr": "Gâchette : monter — %s" % str(mm.titre), "call": func(): me.monter_manege(mm),
 			"when": func(): return not me.riding() and mm.a_quai()})
+		_interactions.append({"id": "fo_attendre_%s" % str(mm.cle), "pos": mm.quai_pos, "radius": 3.4, "text": "%s tourne… il s'arrête dans un instant" % str(mm.titre),
+			"vr": "%s tourne… il s'arrête dans un instant" % str(mm.titre), "call": func(): me.monter_manege(mm),
+			"when": func(): return not me.riding() and not mm.a_quai()})
 
 
 # =================================================================== les manèges qui nous portent
@@ -628,7 +799,8 @@ func _process(delta: float) -> void:
 		return
 	if not bool(state["visite"]) and ile.height(p.x, p.z) > -0.3 and p.y < 40.0:
 		state["visite"] = true
-		main._show_message_v28("L'Île Foraine — l'île des sensations fortes. Le guichet est près du Grand Portail ; tout au bout de l'allée, le Grand Frisson.")
+		main._show_message_v28("L'Île Foraine — l'île des sensations fortes. Le guichet est près du Grand Portail ; pour monter dans une attraction, allez sur son disque vert, sous la flèche.")
+	_bornes(delta)
 	if huit != null:
 		state["tours"] = maxi(int(state.get("tours", 0)), int(huit.tours))
 	for m in maneges:
