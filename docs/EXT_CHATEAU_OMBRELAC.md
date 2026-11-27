@@ -327,6 +327,12 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
     lecture de la Bibliothèque) et sa lanterne (Salle du Trésor des caves) ; les lui rendre (une lanterne de fée, cinq
     pièces d'or) : elle s'en va en lumières bleues ;
   - tout est enregistré avec la partie (`state["creatures"]`).
+- **v18.1** : Mistigri est le chat du jeu (`animaux_v75.gd`, celui de Port-Boucan et de Brioche), en
+  tigré brun, avec ses vraies allures (il marche, s'assoit la queue autour des pattes, dort en rond) ;
+  Minerve est une chouette hulotte aux formes lisses (corps en œuf, disque de la face, grands yeux noirs,
+  bec crochu, ailes repliées, grandes ailes ouvertes en vol), dans la matière de plumes des oiseaux du
+  jeu. Le dallage du dehors, à l'ombre, ne prend plus le bleu vif du ciel (`ombrelac_dallage.gdshader` :
+  `ombre_ciel`, et une fonction `light()` qui rend au soleil et aux lanternes leur couleur).
 - **L'escalier de la Tour des Dortoirs (v18)** : le palier de l'étage ne recouvre plus les dernières marches
   (il commençait 45 cm au-dessus d'elles : on restait coincé dessous, à 57,80 pour un étage à 58,25).
 

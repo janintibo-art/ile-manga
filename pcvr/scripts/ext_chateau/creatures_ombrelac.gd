@@ -17,6 +17,10 @@ extends Node3D
 ## objets_ombrelac.gd (ajouter) ; les sujets de Gaspard par les services que tiennent les quêtes.
 
 const Societe = preload("res://scripts/pnj/societe_v65.gd")
+const Animaux = preload("res://scripts/animaux_v75.gd")
+## Mistigri : un tigré brun (le chat du jeu, animaux_v75.gd), le ventre et le menton crème
+const MISTIGRI := {"taille": 0.95, "base": Color(0.46, 0.36, 0.25), "tigre": 0.9, "rayure": Color(0.14, 0.1, 0.06),
+	"ventre": Color(0.82, 0.74, 0.6), "museau_c": Color(0.85, 0.78, 0.66), "museau_k": 0.6, "oeil": Color(0.62, 0.78, 0.22), "seed": 18}
 
 ## La Cour d'Honneur (repère château) : là où Mistigri se promène le jour
 const COUR := Vector3(0.0, 0.0, 44.0)
@@ -51,7 +55,10 @@ var vie: Node
 var objets: Node
 var quetes: Node
 var chat: Node3D
+var chat_modele: Node3D                   # le chat du jeu (animaux_v75.gd), dans le nœud de Mistigri
 var chouette: Node3D
+var _plumes: Dictionary = {}
+var _sphere: SphereMesh
 var fantome: Node3D
 var nuee: Node3D                          # les chauves-souris du clocher
 var caves: Node3D                         # celles des caves
@@ -158,79 +165,124 @@ func _boite(parent: Node3D, sz: Vector3, p: Vector3, m: Material, rot: Vector3 =
 	return mi
 
 
-## Mistigri : un chat tigré roux (le corps, la tête, les oreilles, les yeux, la queue, quatre pattes)
+## Mistigri : le chat du jeu (animaux_v75.gd, celui de Port-Boucan et de Brioche), en tigré brun
 func _chat_corps() -> Node3D:
 	var n := Node3D.new()
 	n.name = "Mistigri"
 	add_child(n)
-	var roux := _mat(Color(0.86, 0.52, 0.22))
-	var clair := _mat(Color(0.98, 0.88, 0.72))
-	var raie := _mat(Color(0.55, 0.28, 0.1))
-	var corps := Node3D.new()
-	corps.name = "corps"
-	n.add_child(corps)
-	_boule(corps, 0.13, Vector3(0, 0.2, 0), roux, Vector3(1.0, 0.95, 1.9))
-	_boule(corps, 0.1, Vector3(0, 0.16, 0.12), clair, Vector3(0.9, 0.8, 1.2))
-	for i in range(3):
-		_boite(corps, Vector3(0.2, 0.02, 0.035), Vector3(0, 0.31, -0.1 + i * 0.09), raie)
-	var tete := Node3D.new()
-	tete.name = "tete"
-	corps.add_child(tete)
-	tete.position = Vector3(0, 0.3, 0.27)
-	_boule(tete, 0.1, Vector3.ZERO, roux, Vector3(1.05, 0.95, 0.95))
-	_boule(tete, 0.05, Vector3(0, -0.03, 0.08), clair, Vector3(1.2, 0.8, 0.7))
-	for sx in [-1.0, 1.0]:
-		_boite(tete, Vector3(0.05, 0.07, 0.02), Vector3(0.055 * sx, 0.1, 0.0), roux, Vector3(0, 0, -0.35 * sx))
-		_boule(tete, 0.018, Vector3(0.042 * sx, 0.02, 0.085), _mat(Color(0.55, 0.85, 0.3), 0.6))
-		_boule(tete, 0.009, Vector3(0.042 * sx, 0.02, 0.1), _mat(Color(0.05, 0.05, 0.05)))
-	_boule(tete, 0.012, Vector3(0, -0.015, 0.105), _mat(Color(0.9, 0.5, 0.5)))
-	var queue := Node3D.new()
-	queue.name = "queue"
-	corps.add_child(queue)
-	queue.position = Vector3(0, 0.27, -0.23)
-	_boite(queue, Vector3(0.04, 0.04, 0.3), Vector3(0, 0.07, -0.13), roux, Vector3(0.6, 0, 0))
-	var pattes := Node3D.new()
-	pattes.name = "pattes"
-	corps.add_child(pattes)
-	for pz in [-0.15, 0.15]:
-		for sx2 in [-1.0, 1.0]:
-			var pt := Node3D.new()
-			pattes.add_child(pt)
-			pt.position = Vector3(0.07 * sx2, 0.15, pz)
-			_boite(pt, Vector3(0.05, 0.15, 0.05), Vector3(0, -0.075, 0), roux)
-			_boite(pt, Vector3(0.055, 0.03, 0.065), Vector3(0, -0.14, 0.01), clair)
+	chat_modele = Animaux.build("chat", MISTIGRI)
+	n.add_child(chat_modele)
+	Animaux.animate(chat_modele, 0.0, 0.0, "assis", 0.0, 1.0)
 	return n
 
 
-## Minerve : une chouette effraie (le corps, le disque de la face, les grands yeux, les ailes)
+## Une matière de plumes (celle des oiseaux du jeu), d'une couleur
+func _plume(c: Color) -> StandardMaterial3D:
+	var k: String = c.to_html(false)
+	if _plumes.has(k):
+		return _plumes[k]
+	var m: StandardMaterial3D = (Animaux.feather_mat() as StandardMaterial3D).duplicate()
+	m.vertex_color_use_as_albedo = false
+	m.albedo_color = c
+	m.roughness = 0.85
+	_plumes[k] = m
+	return m
+
+
+func _piece(parent: Node3D, mesh: Mesh, m: Material, p: Vector3 = Vector3.ZERO, sc: Vector3 = Vector3.ONE, rot: Vector3 = Vector3.ZERO) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	mi.mesh = mesh
+	mi.material_override = m
+	mi.position = p
+	mi.scale = sc
+	mi.rotation = rot
+	parent.add_child(mi)
+	return mi
+
+
+func _sphere_lisse() -> SphereMesh:
+	if _sphere == null:
+		_sphere = SphereMesh.new()
+		_sphere.radius = 1.0
+		_sphere.height = 2.0
+		_sphere.radial_segments = 24
+		_sphere.rings = 14
+	return _sphere
+
+
+## Minerve : une chouette hulotte (38 cm) : un corps en œuf, la grosse tête ronde sans aigrettes, le
+## disque de la face, les grands yeux noirs, le bec crochu, les ailes repliées (ouvertes en vol)
 func _chouette_corps() -> Node3D:
 	var n := Node3D.new()
 	n.name = "Minerve"
 	add_child(n)
-	var brun := _mat(Color(0.62, 0.46, 0.3))
-	var creme := _mat(Color(0.97, 0.92, 0.82))
-	_boule(n, 0.14, Vector3(0, 0.2, 0), brun, Vector3(1.0, 1.35, 0.95))
-	_boule(n, 0.1, Vector3(0, 0.16, 0.06), creme, Vector3(1.0, 1.4, 0.7))
+	var sp: SphereMesh = _sphere_lisse()
+	var brun := _plume(Color(0.47, 0.32, 0.2))
+	var fauve := _plume(Color(0.62, 0.45, 0.28))
+	var ventre := _plume(Color(0.78, 0.64, 0.46))
+	var disque := _plume(Color(0.72, 0.56, 0.38))
+	var sombre := _plume(Color(0.3, 0.2, 0.12))
+	var noir := _mat(Color(0.03, 0.025, 0.02))
+	noir.roughness = 0.08
+	noir.metallic_specular = 0.9
+	var corne := _mat(Color(0.78, 0.74, 0.58))
+	corne.roughness = 0.4
+	var corps := Node3D.new()
+	corps.name = "corps"
+	n.add_child(corps)
+	_piece(corps, sp, fauve, Vector3(0, 0.15, -0.01), Vector3(0.105, 0.145, 0.098))
+	_piece(corps, sp, ventre, Vector3(0, 0.13, 0.035), Vector3(0.085, 0.12, 0.07))
+	_piece(corps, sp, brun, Vector3(0, 0.2, -0.04), Vector3(0.09, 0.1, 0.07))
+	# la queue, courte, et les pattes emplumées aux serres sombres
+	_piece(corps, Animaux.tube([Vector3(0, 0.07, -0.07), Vector3(0, 0.03, -0.12), Vector3(0, 0.0, -0.15)], 0.045, 0.03, 6, 10), brun, Vector3.ZERO, Vector3(1.0, 0.45, 1.0))
+	for sx in [-1.0, 1.0]:
+		_piece(corps, sp, ventre, Vector3(sx * 0.035, 0.025, 0.04), Vector3(0.028, 0.03, 0.03))
+		for k in range(3):
+			var a: float = (float(k) - 1.0) * 0.45
+			_piece(corps, Animaux.tube([Vector3(0, 0, 0), Vector3(0, -0.004, 0.018), Vector3(0, -0.014, 0.026)], 0.0045, 0.0015, 4, 6), sombre,
+				Vector3(sx * 0.035 + sin(a) * 0.012, 0.012, 0.055), Vector3.ONE, Vector3(0, a, 0))
+	# la tête
 	var tete := Node3D.new()
 	tete.name = "tete"
 	n.add_child(tete)
-	tete.position = Vector3(0, 0.42, 0.01)
-	_boule(tete, 0.11, Vector3.ZERO, brun)
-	_boule(tete, 0.095, Vector3(0, -0.005, 0.045), creme, Vector3(1.0, 1.0, 0.5))
+	tete.position = Vector3(0, 0.29, 0.0)
+	_piece(tete, sp, fauve, Vector3.ZERO, Vector3(0.09, 0.08, 0.085))
+	_piece(tete, sp, brun, Vector3(0, 0.03, -0.015), Vector3(0.08, 0.05, 0.07))
 	for sx in [-1.0, 1.0]:
-		var oeil := _boule(tete, 0.025, Vector3(0.04 * sx, 0.01, 0.09), _mat(Color(0.05, 0.04, 0.03)))
+		_piece(tete, sp, disque, Vector3(sx * 0.03, -0.004, 0.058), Vector3(0.042, 0.047, 0.024))
+		_piece(tete, sp, sombre, Vector3(sx * 0.031, -0.002, 0.066), Vector3(0.024, 0.026, 0.012))
+		var oeil := _piece(tete, sp, noir, Vector3(sx * 0.031, 0.0, 0.073), Vector3(0.017, 0.018, 0.01))
 		oeil.name = "oeil"
-		_boite(tete, Vector3(0.03, 0.06, 0.02), Vector3(0.065 * sx, 0.1, 0.0), brun, Vector3(0, 0, -0.4 * sx))
-	_boite(tete, Vector3(0.02, 0.035, 0.02), Vector3(0, -0.035, 0.105), _mat(Color(0.8, 0.6, 0.3)), Vector3(0.3, 0, 0))
-	for sx2 in [-1.0, 1.0]:
+		_piece(tete, sp, _mat(Color(1, 1, 1), 0.6), Vector3(sx * 0.034, 0.006, 0.081), Vector3.ONE * 0.003)
+	# le sourcil clair en V, le bec crochu
+	_piece(tete, sp, ventre, Vector3(0, 0.022, 0.068), Vector3(0.012, 0.03, 0.012), Vector3(0.4, 0, 0))
+	_piece(tete, Animaux.tube([Vector3(0, -0.006, 0.072), Vector3(0, -0.018, 0.086), Vector3(0, -0.032, 0.083)], 0.009, 0.002, 6, 8), corne)
+	# les ailes repliées le long des flancs
+	var plie := Node3D.new()
+	plie.name = "ailes_pliees"
+	n.add_child(plie)
+	for sx in [-1.0, 1.0]:
+		var w := Node3D.new()
+		plie.add_child(w)
+		w.position = Vector3(sx * 0.085, 0.235, -0.01)
+		w.scale = Vector3(0.5, 1.0, 1.0)
+		_piece(w, Animaux.tube([Vector3.ZERO, Vector3(sx * 0.02, -0.09, -0.035), Vector3(-sx * 0.01, -0.19, -0.085), Vector3(-sx * 0.03, -0.24, -0.13)], 0.06, 0.02, 10, 12), brun)
+	# les ailes ouvertes (en vol) : le bras, puis les rémiges en éventail
+	for sx in [-1.0, 1.0]:
 		var aile := Node3D.new()
-		aile.name = "aile_g" if sx2 < 0 else "aile_d"
+		aile.name = "aile_g" if sx < 0 else "aile_d"
 		n.add_child(aile)
-		aile.position = Vector3(0.12 * sx2, 0.3, -0.01)
-		_boite(aile, Vector3(0.34, 0.025, 0.2), Vector3(0.15 * sx2, 0, 0), brun)
-		aile.rotation.z = -1.25 * sx2
-	for sx3 in [-0.05, 0.05]:
-		_boite(n, Vector3(0.03, 0.04, 0.05), Vector3(sx3, 0.02, 0.03), _mat(Color(0.75, 0.6, 0.4)))
+		aile.position = Vector3(sx * 0.075, 0.22, -0.01)
+		var bras := Node3D.new()
+		aile.add_child(bras)
+		bras.scale = Vector3(1.0, 0.2, 1.0)
+		_piece(bras, Animaux.tube([Vector3.ZERO, Vector3(sx * 0.14, 0.01, -0.03), Vector3(sx * 0.3, 0.0, -0.05)], 0.085, 0.06, 8, 12), brun)
+		for k in range(6):
+			var b0 := Vector3(sx * (0.26 - float(k) * 0.01), 0.0, -0.01 - float(k) * 0.022)
+			var b1 := Vector3(sx * (0.48 - float(k) * 0.035), -0.004, -0.04 - float(k) * 0.045)
+			var f := _piece(aile, Animaux.tube([b0, (b0 + b1) * 0.5, b1], 0.03, 0.012, 5, 8), fauve if k % 2 == 0 else brun)
+			f.scale = Vector3(1.0, 0.25, 1.0)
+		aile.visible = false
 	return n
 
 
@@ -706,33 +758,23 @@ func _chat_tick(delta: float, tt: float) -> void:
 	if chat.position.distance_to(ou) > COUR_R + 4.0 and chat.position.distance_to(j) > 18.0 and ou.distance_to(j) > 12.0:
 		chat.position = _dessus(ou + (Vector3(0.0, 0.0, 0.0) if dedans else Vector3(_rng.randf_range(-6, 6), 0, _rng.randf_range(-6, 6))), 1.5)
 		_chat = {"etat": "dort" if dedans else "assis", "t": 0.0}
-	var corps: Node3D = chat.get_node("corps")
-	var pattes: Node3D = corps.get_node("pattes")
-	var queue: Node3D = corps.get_node("queue")
 	var etat: String = str(_chat.get("etat", "assis"))
 	_chat["t"] = float(_chat.get("t", 0.0)) + delta
 	if dedans and chat.position.distance_to(ou) < 3.0:
 		etat = "dort"
 		_chat["etat"] = "dort"
+	var vitesse: float = 0.0
+	var pose: String = "assis"
 	match etat:
 		"dort":
-			corps.position.y = lerpf(corps.position.y, -0.1, 0.1)
-			corps.rotation.z = lerpf(corps.rotation.z, 1.3, 0.1)
-			corps.scale = Vector3.ONE * (1.0 + 0.02 * sin(tt * 1.6))
-			queue.rotation.y = 0.9
+			pose = "dort"
 			if not dedans:
 				_chat["etat"] = "assis"
 		"assis":
-			corps.position.y = lerpf(corps.position.y, 0.0, 0.2)
-			corps.rotation.z = lerpf(corps.rotation.z, 0.0, 0.2)
-			corps.rotation.x = lerpf(corps.rotation.x, -0.25, 0.2)
-			corps.scale = Vector3.ONE
-			queue.rotation.y = 0.5 * sin(tt * 1.2)
 			if float(_chat["t"]) > 4.0 and not dedans:
 				_cible_chat()
 		"marche":
-			corps.rotation.x = lerpf(corps.rotation.x, 0.0, 0.2)
-			corps.rotation.z = 0.0
+			pose = ""
 			var cible: Vector3 = _chat["cible"]
 			var d: Vector3 = cible - chat.position
 			d.y = 0.0
@@ -740,15 +782,12 @@ func _chat_tick(delta: float, tt: float) -> void:
 				_chat = {"etat": "assis", "t": 0.0}
 			else:
 				var v: Vector3 = d.normalized()
-				chat.position += v * minf(0.7 * delta, d.length())
+				vitesse = 0.7
+				chat.position += v * minf(vitesse * delta, d.length())
 				chat.position.y = lerpf(chat.position.y, cible.y, 0.1)
 				chat.rotation.y = lerp_angle(chat.rotation.y, atan2(v.x, v.z), 0.15)
-				var i: int = 0
-				for pt in pattes.get_children():
-					(pt as Node3D).rotation.x = 0.5 * sin(tt * 9.0 + (PI if i % 3 == 0 else 0.0))
-					i += 1
-				corps.position.y = 0.015 * absf(sin(tt * 9.0))
-				queue.rotation.y = 0.25 * sin(tt * 3.0)
+	# le chat du jeu : la marche, assis (la queue autour des pattes), couché en rond pour dormir
+	Animaux.animate(chat_modele, tt, vitesse, pose, 0.0, delta)
 
 
 func _cible_chat() -> void:
@@ -777,12 +816,14 @@ func _chouette_tick(delta: float, tt: float) -> void:
 	var ag: Node3D = chouette.get_node("aile_g")
 	var ad: Node3D = chouette.get_node("aile_d")
 	var tete: Node3D = chouette.get_node("tete")
+	var plie: Node3D = chouette.get_node("ailes_pliees")
 	var c: Vector3 = monde(DONJON)
 	match etat:
 		"posee":
 			chouette.position = chouette.position.lerp(perchoir, 0.2)
-			ag.rotation.z = 1.25
-			ad.rotation.z = -1.25
+			ag.visible = false
+			ad.visible = false
+			plie.visible = true
 			tete.rotation.y = 0.8 * sin(tt * 0.4) if _nuit() else 0.0
 			tete.scale = Vector3.ONE
 			# la nuit, elle repart de temps en temps (sauf si on est tout près d'elle)
@@ -807,7 +848,11 @@ func _chouette_tick(delta: float, tt: float) -> void:
 			chouette.position = p
 			if dvol.length() > 0.01:
 				chouette.rotation.y = lerp_angle(chouette.rotation.y, atan2(dvol.x, dvol.z), 0.1)
-			var b: float = 0.6 * sin(tt * 7.0)
+			# en vol : les grandes ailes ouvertes, de lents battements, puis un plané
+			ag.visible = true
+			ad.visible = true
+			plie.visible = false
+			var b: float = 0.55 * sin(tt * 5.5) if fmod(tt, 4.0) < 2.4 else 0.08
 			ag.rotation.z = b
 			ad.rotation.z = -b
 

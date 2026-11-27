@@ -146,23 +146,33 @@ func _serie() -> void:
 	# (v18) pas de rebord entre les dernières marches et le palier de l'étage (le héros s'y coinçait)
 	var rebord: float = _rebord_palier_v18()
 	_ok(rebord < 0.2, "de la dernière marche au palier, pas de rebord (au plus %.2f m d'une mesure à l'autre)" % rebord)
-	# (v15) jusqu'à 90 pas : quand la machine est chargée, chaque pas avance moins
-	for i in range(90):
+	# (v18.1) chaque pas se compte en images de physique, pas en secondes : quand la série tourne en
+	# groupe, la machine est chargée, et un pas « de 0,3 s » n'avançait presque plus (le héros n'arrivait
+	# pas en haut à temps). Jusqu'à 160 pas ; un pas qui ne monte pas recommence un peu plus au large.
+	var pas_rates: int = 0
+	var y_max: float = _pos().y
+	for i in range(160):
 		var rv: Vector3 = _pos() - tcw
 		rv.y = 0.0
 		var rl: float = rv.length()
 		rv = rv / maxf(rl, 0.01)
-		var dirm: Vector3 = (rv.cross(Vector3.UP) + rv * clampf(2.4 - rl, -0.6, 0.6)).normalized()
+		var r_vise: float = 2.4 + 0.3 * float(pas_rates % 3)
+		var dirm: Vector3 = (rv.cross(Vector3.UP) + rv * clampf(r_vise - rl, -0.6, 0.6)).normalized()
 		place_player_v35(_pos() + Vector3.UP * 0.05, dirm)
-		await _att(0.1)
+		await _physique_v181(6)
 		_touche(KEY_Z, true)
 		_touche(KEY_W, true)
-		await _att(0.3)
+		await _physique_v181(18)
 		_touche(KEY_Z, false)
 		_touche(KEY_W, false)
+		if _pos().y > y_max + 0.02:
+			y_max = _pos().y
+			pas_rates = 0
+		else:
+			pas_rates += 1
 		if _pos().y > IleO.ROC_Y + 6.0:
 			break
-	await _att(0.4)
+	await _physique_v181(24)
 	_ok(_pos().y > IleO.ROC_Y + 5.9, "on monte l'escalier à vis à pied jusqu'à l'étage (y %.2f, l'étage à %.2f)" % [_pos().y, IleO.ROC_Y + 6.25])
 	await _poser(_wc(lx["tour_dortoirs_haut"], 1.0))
 	_ok(await _debout("le palier de l'étage"), "on tient debout sur le palier de l'étage")
@@ -1595,3 +1605,9 @@ func _creatures_v18() -> void:
 	_ok(Cr.etape() == 3 and Cr.trouves() == 3, "une partie chargée : Séraphine repose en paix")
 	temps_v56.set_hour(12.0)
 	_ranger()
+
+
+## (v18.1) Attendre n images de physique (le temps du jeu, et non celui de la machine)
+func _physique_v181(n: int) -> void:
+	for i in n:
+		await get_tree().physics_frame

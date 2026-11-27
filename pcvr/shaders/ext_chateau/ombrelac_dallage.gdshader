@@ -11,9 +11,14 @@ uniform float rang = 0.85;              // la largeur d'un rang de dalles (m)
 uniform float longueur = 1.15;          // la longueur moyenne d'une dalle (m)
 uniform vec3 teinte = vec3(1.08, 0.99, 0.86);   // une pierre blonde : à l'ombre, le ciel bleuit le sol
 uniform float poli = 0.0;               // 1 : la pierre polie (les reflets)
+// (v18.1) dehors, à l'ombre, le sol ne reçoit que le ciel : sans lumière rebondie (en VR, ou sur les
+// photos), la cour sortait d'un bleu vif. La pierre garde sa couleur au soleil et sous les lanternes
+// (light() rend ce qu'on retire ici) ; seule la lumière du ciel est moins bleue sur les dalles.
+uniform vec3 ombre_ciel = vec3(1.0, 0.7, 0.4);
 
 varying vec3 wp;
 varying vec3 wn;
+varying vec3 v_teinte;
 
 float h2(vec2 p) {
 	p = fract(p * vec2(0.1031, 0.1030));
@@ -129,7 +134,8 @@ void fragment() {
 		col *= 0.9 + 0.2 * fbm2(q * 0.05);
 	}
 	col = mix(col, mortier, joint);
-	ALBEDO = col;
+	v_teinte = (dehors > 0.5 && sol) ? ombre_ciel : vec3(1.0);
+	ALBEDO = col * v_teinte;
 	float rough = mix(0.86, 0.5, poli) - 0.08 * r2 * poli;
 	if (dehors > 0.5) {
 		rough -= 0.15 * smoothstep(0.6, 0.85, fbm2(q * 0.12 + 1.0));
@@ -153,4 +159,15 @@ void fragment() {
 		AO = (1.0 - 0.5 * joint - 0.15 * bord) * mix(0.85, 0.72, dehors);
 		AO_LIGHT_AFFECT = 0.0;
 	}
+}
+
+// (v18.1) le soleil et les lanternes : la lumière diffuse (Lambert), rendue telle quelle à la pierre
+// (on divise par ce que l'ombre bleue a retiré à l'albédo), et un reflet doux
+void light() {
+	float nl = clamp(dot(NORMAL, LIGHT), 0.0, 1.0);
+	DIFFUSE_LIGHT += nl * ATTENUATION * LIGHT_COLOR / PI / v_teinte;
+	vec3 h = normalize(VIEW + LIGHT);
+	float brillance = mix(64.0, 6.0, ROUGHNESS);
+	float sp = pow(clamp(dot(NORMAL, h), 0.0, 1.0), brillance) * (brillance + 2.0) / (8.0 * PI);
+	SPECULAR_LIGHT += sp * nl * ATTENUATION * LIGHT_COLOR * SPECULAR_AMOUNT * 0.25;
 }
