@@ -36,6 +36,7 @@ var game_menu: Node
 var vue_v199: Node                         # V199 : la vue VR (dans la peau / de dehors)
 var parachute_v201: Node3D                 # V201 : le parachute (le Saut des Nuées)
 var allege_v211: Node                      # V211 : le détail allégé de loin, progressivement
+var cache_v215: Node                       # V215 : ce qu'on ne peut pas voir n'est pas dessiné
 var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
 var posture_v205: Node                     # V205 : jouer debout ou assis en VR
 var socle_v205: Node3D                     # V205 : le socle du joueur VR (monté quand on joue assis)
@@ -237,6 +238,11 @@ func _ready() -> void:
 	allege_v211.setup(self)
 	allege_v211.recenser(self)
 	allege_v211.demarrer()
+	# V215 : ce qu'on ne peut pas voir n'est pas dessiné (le Royaume des Racines vu de la surface, le dessus
+	# des îles aériennes vu d'en bas) : voir cache_v215.gd
+	cache_v215 = preload("res://scripts/cache_v215.gd").new()
+	add_child(cache_v215)
+	cache_v215.setup(self)
 	# V131 : le monde est prêt : tout se remet à vivre, l'écran de chargement s'efface
 	get_tree().paused = false
 	chargement_v131.finir()

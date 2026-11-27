@@ -310,6 +310,26 @@ explorer : l'Académie d'Ombrelac. Tout est original (noms, architecture, textur
     sceau d'or s'ajoute au bulletin ;
   - tout est enregistré avec la partie (`state["cours"]` ; un exercice commencé reprend du début).
 
+- **Les créatures du château (v18)** :
+  - **Mistigri**, le chat de l'Académie : le jour, il se promène dans la Cour d'Honneur (il marche, s'assoit,
+    repart) ; le soir et la nuit, il dort devant la cheminée de la Grande Salle. E : on le caresse ; avec une
+    sardine dans le sac, on la lui donne et il rapporte un petit cadeau (un par jour) ;
+  - **Minerve**, la chouette de l'Observatoire : le jour, elle dort sur la terrasse de la Tour de l'Astrolabe ;
+    la nuit, elle part tourner autour de la tour et revient se poser. Posée, la nuit, E : une plume de
+    chouette (une par nuit) ;
+  - **les chauves-souris** : la nuit, une nuée autour du clocher de la Tour de l'Horloge ; d'autres vivent
+    toujours dans les caves de la Maison de Minuit ;
+  - **Séraphine**, le fantôme de la dernière préfète de la Minuit : la nuit, une dame pâle fait le tour des
+    galeries du cloître. Tant qu'on ne connaît pas la Minuit, elle s'efface quand on approche, et Gaspard
+    Herse (le portier) n'a qu'une rumeur. Après : « ★ On dit qu'une dame pâle erre la nuit dans le
+    cloître ? », puis la quête **« Le repos de Séraphine »** (dans le carnet, chez Gaspard) : lui parler la
+    nuit ; retrouver la nuit son ruban (table de l'échiquier, Salle Commune), sa plume d'argent (une table de
+    lecture de la Bibliothèque) et sa lanterne (Salle du Trésor des caves) ; les lui rendre (une lanterne de fée, cinq
+    pièces d'or) : elle s'en va en lumières bleues ;
+  - tout est enregistré avec la partie (`state["creatures"]`).
+- **L'escalier de la Tour des Dortoirs (v18)** : le palier de l'étage ne recouvre plus les dernières marches
+  (il commençait 45 cm au-dessus d'elles : on restait coincé dessous, à 57,80 pour un étage à 58,25).
+
 ## Les fichiers
 
 Nouveaux (tout le code de l'extension est rangé à part) :
@@ -360,6 +380,7 @@ Nouveaux (tout le code de l'extension est rangé à part) :
 | `pcvr/scripts/ext_chateau/quetes_ombrelac.gd` | (v16) les quêtes des habitants (le carnet, les questions « ★ », les étapes), Hortense, la chaussette, la grande fougère, la fontaine qui se vide |
 | `pcvr/scripts/ext_chateau/minuit_ombrelac.gd` | (v16) les caves de la Maison de Minuit : les quatre salles, les trois portes à énigmes, le trésor, descendre et remonter |
 | `pcvr/scripts/ext_chateau/cours_ombrelac.gd` | (v17) les cours de l'Académie : les cinq matières, les leçons et leurs questions, les exercices (la jauge, les cartes, les runes, les mannequins), les notes, le bulletin et son chevalet, le diplôme |
+| `pcvr/scripts/ext_chateau/creatures_ombrelac.gd` | (v18) les créatures du château : Mistigri le chat, Minerve la chouette, les chauves-souris, Séraphine le fantôme du cloître et sa quête |
 | `pcvr/tools/ext_chateau_textures.py` | fabrique les textures du château (à lancer une fois) |
 | `www/assets/textures/ext_chateau/*.png` | pierre de taille, pierre fine, dalles (et leur relief) |
 | `tests/series/48_ombrelac.gd` | la série de tests de l'extension |

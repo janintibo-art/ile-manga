@@ -143,6 +143,9 @@ func _serie() -> void:
 	_ok(str(ombrelac_ext.zone_at(_pos())) == "ombrelac_tour_dortoirs", "le lieu : la Tour des Dortoirs (%s)" % str(ombrelac_ext.zone_at(_pos())))
 	# on monte l'escalier à vis à pied : on marche en tournant autour du noyau
 	var tcw: Vector3 = _wc(lx["tour_dortoirs_centre"], 0.0)
+	# (v18) pas de rebord entre les dernières marches et le palier de l'étage (le héros s'y coinçait)
+	var rebord: float = _rebord_palier_v18()
+	_ok(rebord < 0.2, "de la dernière marche au palier, pas de rebord (au plus %.2f m d'une mesure à l'autre)" % rebord)
 	# (v15) jusqu'à 90 pas : quand la machine est chargée, chaque pas avance moins
 	for i in range(90):
 		var rv: Vector3 = _pos() - tcw
@@ -461,6 +464,8 @@ func _serie() -> void:
 	await _quetes_v16()
 	# --- v17 : les cours de l'Académie (cours_ombrelac.gd)
 	await _cours_v17()
+	# --- v18 : les créatures du château (creatures_ombrelac.gd)
+	await _creatures_v18()
 
 
 ## (v14) Les dix-huit habitants : leurs lieux, leurs chemins, leurs corps, leur journée, la parole
@@ -1379,5 +1384,214 @@ func _cours_v17() -> void:
 	_ok(not Cn.diplome() and Cn.reussies("astres") == 0 and not Cn.sceau.visible, "une nouvelle partie : pas de notes, pas de sceau")
 	ombrelac_ext.load_data(JSON.parse_string(JSON.stringify(d)))
 	_ok(Cn.diplome() and Cn.tout_fini() and Cn.sceau.visible and Cn.bulletin().contains("Excellent"), "une partie chargée : les notes, le diplôme, le sceau")
+	temps_v56.set_hour(12.0)
+	_ranger()
+
+
+## (v18) Le sol, tous les degrés, en tournant de 60° avant le palier de l'étage jusqu'à 25° après (à 1,2 m
+## et 2,4 m du noyau, là où l'on marche) : la plus grande marche d'une mesure à la suivante
+func _rebord_palier_v18() -> float:
+	var dt: Node = ombrelac_ext.chateau.get_node_or_null("Ombrelac_dortoirs")
+	if dt == null:
+		return 99.0
+	var xs: Transform3D = dt.xf_sol
+	var tc: Vector3 = xs.affine_inverse() * (dt.lieux["tour_dortoirs_centre"] as Vector3)
+	var cg: Transform3D = ombrelac_ext.chateau.global_transform
+	var F: float = 6.25
+	var space := get_world_3d().direct_space_state
+	var pire: float = 0.0
+	for r in [1.2, 2.4]:
+		var prec: float = -99.0
+		for k in range(-60, 26):
+			var a: float = PI + deg_to_rad(float(k))
+			var p: Vector3 = cg * (xs * (tc + Vector3(cos(a), 0, sin(a)) * float(r)))
+			var q := PhysicsRayQueryParameters3D.create(p + Vector3.UP * (F + 0.6), p + Vector3.UP * (F - 1.8))
+			if pc_body != null:
+				q.exclude = [pc_body.get_rid()]
+			var h: Dictionary = space.intersect_ray(q)
+			if h.is_empty():
+				continue
+			var y: float = (h["position"] as Vector3).y
+			if prec > -90.0:
+				pire = maxf(pire, absf(y - prec))
+			prec = y
+	return pire
+
+
+# =================================================================== v18 : les créatures du château
+
+## (v18) Faire E devant un objet de quête (comme en jeu) : vrai si c'est bien lui qu'on visait
+func e_devant_v18(id: String, d: float = 0.7) -> bool:
+	var O: Node = ombrelac_ext.objets
+	await devant_v15(O.objet(id), d)
+	var vise: bool = str(O.courant.get("id", "")) == id
+	if vise:
+		await _appui(KEY_E)
+	else:
+		O.agir_sur(O.objet(id))
+	await _att(0.3)
+	return vise
+
+
+## (v18) Mistigri, Minerve, les chauves-souris, Séraphine
+func _creatures_v18() -> void:
+	var Cr: Node = ombrelac_ext.creatures
+	var O: Node = ombrelac_ext.objets
+	var Qn: Node = ombrelac_ext.quetes
+	_ok(Cr != null and Cr.chat != null and Cr.chouette != null and Cr.fantome != null and Cr.nuee != null and Cr.souvenirs.size() == 3,
+		"les créatures sont là : Mistigri, Minerve, les chauves-souris, la dame pâle, ses trois souvenirs")
+	if Cr == null:
+		return
+	_ok(not O.objet("chat").is_empty() and not O.objet("chouette").is_empty() and not O.objet("seraphine").is_empty() and not O.objet("souvenir_lanterne").is_empty(),
+		"leurs objets (E) : le chat, la chouette, la dame pâle, les souvenirs")
+	_ok(journal_v56.services.has("herse_om"), "Gaspard Herse a ses sujets dans le carnet")
+	for id in Cr.souvenirs:
+		var sp: Vector3 = (Cr.souvenirs[id] as Node3D).position
+		_ok(sp.length() > 1.0 and Cr.chateau.global_transform.affine_inverse() * sp != Vector3.ZERO, "le souvenir « %s » a sa place (%s)" % [id, str(sp)])
+	# --- Mistigri, le jour, dans la Cour d'Honneur
+	temps_v56.set_hour(12.0)
+	var cour: Vector3 = Cr.monde(Cr.COUR)
+	await _poser(cour + Vector3(0, 0.5, 6.0), Vector3(0, 0, -1))
+	await _att(1.0)
+	_ok(Cr.chat.position.distance_to(cour) < Cr.COUR_R + 1.0 and absf(Cr.chat.position.y - cour.y) < 0.6, "le jour, Mistigri est dans la cour, sur le pavé (%s)" % str(Cr.chat.position - cour))
+	var p0: Vector3 = Cr.chat.position
+	Cr._cible_chat()
+	await _att(3.0)
+	_ok(Cr.chat.position.distance_to(p0) > 0.5, "il se promène (%.1f m en 3 s)" % Cr.chat.position.distance_to(p0))
+	# on le caresse, sans sardine
+	inventory_v28.remove("sardine", inventory_v28.count("sardine"))
+	Cr._chat = {"etat": "assis", "t": -1000.0}
+	await _att(0.3)
+	var vise: bool = await e_devant_v18("chat", 0.6)
+	_ok(vise and _message_v15().contains("Mistigri") and int(Cr.st().get("caresses", 0)) >= 1, "E : on caresse Mistigri (« %s »)" % _message_v15().left(60))
+	# une sardine : un cadeau, un seul par jour
+	inventory_v28.add("sardine", 2)
+	Cr._chat = {"etat": "assis", "t": -1000.0}
+	_ok(str(O.objet("chat")["verbe"].call()) == "donner une sardine à Mistigri", "avec une sardine : « donner une sardine à Mistigri »")
+	var avant: Dictionary = {}
+	for c in Cr.CADEAUX:
+		avant[c[0]] = inventory_v28.count(str(c[0]))
+	O.agir_sur(O.objet("chat"))
+	var recu: int = 0
+	for c in Cr.CADEAUX:
+		recu += inventory_v28.count(str(c[0])) - int(avant[c[0]])
+	_ok(inventory_v28.count("sardine") == 1 and recu >= 1 and _message_v15().contains("cadeau"), "il croque la sardine et rapporte un cadeau")
+	O.agir_sur(O.objet("chat"))
+	_ok(inventory_v28.count("sardine") == 1 and not _message_v15().contains("cadeau"), "un seul cadeau par jour (la deuxième sardine reste dans le sac)")
+	Cr.st()["chat_jour"] = Cr._jour() - 1
+	O.agir_sur(O.objet("chat"))
+	_ok(inventory_v28.count("sardine") == 0 and _message_v15().contains("cadeau"), "le lendemain : un autre cadeau")
+	# le soir, il dort devant la cheminée de la Grande Salle (il y va quand personne ne le voit)
+	var ter: Vector3 = Cr.monde(ombrelac_ext.chateau.lieux["terrasse_astrolabe"])
+	await _poser(ter + Vector3(-1.0, 0.5, -1.0))
+	temps_v56.set_hour(21.0)
+	await _att(1.5)
+	_ok(Cr.chat.position.distance_to(Cr.monde(Cr.CHEMINEE)) < 3.0 and str(Cr._chat.get("etat", "")) == "dort", "le soir, Mistigri dort devant la cheminée de la Grande Salle")
+	temps_v56.set_hour(12.0)
+	await _att(1.5)
+	_ok(Cr.chat.position.distance_to(cour) < Cr.COUR_R + 4.0, "le matin, il retourne dans la cour")
+	# --- Minerve, la chouette (si elle s'est envolée pendant la soirée de Mistigri, elle revient se poser)
+	for i in range(20):
+		if str(Cr._vol.get("etat", "")) == "posee" and Cr.chouette.position.distance_to(Cr.perchoir) < 0.5:
+			break
+		await _att(0.5)
+	_ok(Cr.chouette.position.distance_to(Cr.perchoir) < 0.5 and Cr.perchoir.y > cour.y + 40.0, "le jour, Minerve dort sur la terrasse de la Tour de l'Astrolabe")
+	vise = await e_devant_v18("chouette", 0.8)
+	_ok(vise and _message_v15().contains("dort"), "E : elle dort (« %s »)" % _message_v15().left(50))
+	temps_v56.set_hour(23.0)
+	await _att(0.3)
+	inventory_v28.remove("chouette_plume", inventory_v28.count("chouette_plume"))
+	Cr._vol = {"etat": "posee", "t": 0.0}
+	O.agir_sur(O.objet("chouette"))
+	_ok(inventory_v28.count("chouette_plume") == 1 and _message_v15().contains("plume"), "la nuit, on lui parle : elle laisse une plume")
+	inventory_v28.remove("chouette_plume", 1)
+	O.agir_sur(O.objet("chouette"))
+	_ok(inventory_v28.count("chouette_plume") == 0, "une seule plume par nuit")
+	# elle s'envole (on s'éloigne), tourne autour de la tour, puis revient
+	await _poser(cour + Vector3(0, 0.5, 6.0), Vector3(0, 0, -1))
+	Cr._vol = {"etat": "posee", "t": 30.0}
+	await _att(3.0)
+	_ok(str(Cr._vol.get("etat", "")) == "vole" and Cr.chouette.position.distance_to(Cr.perchoir) > 1.0 and O.courant.get("id", "") != "chouette", "la nuit, elle s'envole autour de la tour")
+	temps_v56.set_hour(12.0)
+	await _att(6.0)
+	_ok(str(Cr._vol.get("etat", "")) == "posee" and Cr.chouette.position.distance_to(Cr.perchoir) < 0.5, "au matin, elle revient se poser")
+	# --- les chauves-souris
+	_ok(not Cr.nuee.visible and Cr.caves.visible and Cr.caves.get_child_count() == 2, "le jour : pas de chauves-souris au clocher (mais dans les caves, toujours)")
+	temps_v56.set_hour(23.0)
+	await _images(2)
+	var b0: Vector3 = (Cr.nuee.get_child(0) as Node3D).global_position
+	await _att(0.5)
+	var b1: Vector3 = (Cr.nuee.get_child(0) as Node3D).global_position
+	_ok(Cr.nuee.visible and Cr.nuee.get_child_count() == 12 and b0.distance_to(b1) > 0.2 and b1.distance_to(Cr.monde(Cr.CLOCHER)) < 12.0, "la nuit, elles tournent autour du clocher")
+	# --- Séraphine : tant qu'on ne connaît pas la Minuit, elle s'efface
+	var minuit_e: int = Qn.etape("minuit")
+	Qn.st()["etapes"]["minuit"] = 0
+	temps_v56.set_hour(12.0)
+	await _att(1.5)
+	_ok(not Cr.fantome.visible and O.objet("seraphine")["si"].call() == false, "le jour, pas de dame pâle")
+	temps_v56.set_hour(23.0)
+	Cr.placer_fantome(0, 0.4)
+	await _att(1.8)
+	_ok(Cr.fantome.visible and float(Cr._fant["alpha"]) > 0.9, "la nuit, une dame pâle sous les galeries du cloître")
+	var pf: Vector3 = Cr.fantome.position
+	await _poser(pf + Vector3(0, 0.3, 1.5), Vector3(0, 0, -1))
+	await _att(2.0)
+	_ok(float(Cr._fant["alpha"]) < 0.3 and not O.objet("seraphine")["si"].call() and _message_v15().contains("Gaspard"), "on approche : elle s'efface (« %s »)" % _message_v15().left(50))
+	var herse: Node = ombrelac_ext.vie.by_id.get("herse_om")
+	herse.brain.memoire["visites"] = maxi(1, int(herse.brain.memoire.get("visites", 0)))
+	_ok(sujets_v16("herse_om").has("q56:service:omk_fantome"), "Gaspard : « ★ On dit qu'une dame pâle erre la nuit dans le cloître ? »")
+	var r: Dictionary = dire_v16("herse_om", "q56:service:omk_fantome")
+	await _att(0.7)
+	_ok(str(r.get("texte", "")).contains("Anatole") and Cr.etape() == -1 and carnet_v16("Le repos de Séraphine").is_empty(), "sans la Minuit : une rumeur, pas de quête")
+	# --- avec la Minuit : la quête
+	Qn.st()["etapes"]["minuit"] = minuit_e
+	_ok(Qn.finie("minuit"), "la Maison de Minuit est trouvée (série v16)")
+	await _att(0.7)
+	var c0: Array = carnet_v16("Le repos de Séraphine")
+	_ok(not c0.is_empty() and str(c0[0]) == "a_faire", "dans le carnet : « Le repos de Séraphine », à faire (%s)" % str(c0))
+	r = dire_v16("herse_om", "q56:service:omk_fantome")
+	await _att(0.7)
+	c0 = carnet_v16("Le repos de Séraphine")
+	_ok(Cr.etape() == 0 and str(r.get("texte", "")).contains("Minuit") and not c0.is_empty() and str(c0[0]) == "en_cours" and str(c0[1]["objectif"]).contains("dame pâle"),
+		"Gaspard en dit plus : la quête commence (« %s »)" % (str(c0[1]["objectif"]) if not c0.is_empty() else "?"))
+	_ok(not sujets_v16("herse_om").has("q56:service:omk_fantome"), "le sujet ne revient pas")
+	Cr.placer_fantome(1, 0.5)
+	await _poser(Cr.fantome.position + Vector3(0, 0.3, 2.2), Vector3(0, 0, -1))
+	await _att(2.0)
+	_ok(float(Cr._fant["alpha"]) > 0.8 and Cr.fantome.position.distance_to(_pos()) < 4.5, "elle ne s'efface plus : elle s'arrête et nous regarde")
+	vise = await e_devant_v18("seraphine", 1.2)
+	c0 = carnet_v16("Le repos de Séraphine")
+	_ok(vise and Cr.etape() == 1 and _message_v15().contains("Séraphine") and not c0.is_empty() and str(c0[1]["objectif"]).contains("0 / 3"), "E : Séraphine raconte ; le carnet : les trois souvenirs (0 / 3)")
+	# --- les souvenirs : seulement la nuit
+	temps_v56.set_hour(12.0)
+	await _att(0.8)
+	_ok(not (Cr.souvenirs["ruban"] as Node3D).visible and not O.objet("souvenir_ruban")["si"].call(), "le jour, les souvenirs ne se voient pas")
+	temps_v56.set_hour(23.0)
+	await _att(0.8)
+	var n: int = 0
+	for id in ["ruban", "plume", "lanterne"]:
+		_ok((Cr.souvenirs[id] as Node3D).visible, "la nuit : %s" % Cr.SOUVENIRS[id]["nom"])
+		vise = await e_devant_v18("souvenir_" + id, 1.0)
+		n += 1
+		_ok(vise and (Cr.st()["souvenirs"] as Array).has(id) and not (Cr.souvenirs[id] as Node3D).visible, "E : on prend %s (%d / 3)" % [Cr.SOUVENIRS[id]["nom"], n])
+	c0 = carnet_v16("Le repos de Séraphine")
+	_ok(Cr.etape() == 2 and not c0.is_empty() and str(c0[1]["objectif"]).to_lower().contains("rendre"), "les trois souvenirs : les rendre à Séraphine")
+	# --- on les lui rend
+	var lf: int = inventory_v28.count("lanterne_fee")
+	var po: int = inventory_v28.count("piece_or")
+	Cr.placer_fantome(2, 0.5)
+	await _poser(Cr.fantome.position + Vector3(-2.0, 0.3, 0.0), Vector3(1, 0, 0))
+	await _att(1.5)
+	vise = await e_devant_v18("seraphine", 1.2)
+	_ok(vise and Cr.etape() == 3 and inventory_v28.count("lanterne_fee") == lf + 1 and inventory_v28.count("piece_or") == po + 5, "Séraphine reprend ses souvenirs : une lanterne de fée, cinq pièces d'or")
+	await _att(1.5)
+	c0 = carnet_v16("Le repos de Séraphine")
+	_ok(not Cr.fantome.visible and not O.objet("seraphine")["si"].call() and not c0.is_empty() and str(c0[0]) == "accomplies", "elle s'en va en lumières bleues ; le carnet : accomplie")
+	# --- la partie enregistrée
+	var d: Dictionary = ombrelac_ext.serialize()
+	ombrelac_ext.load_data({})
+	_ok(Cr.etape() == -1 and Cr.trouves() == 0, "une nouvelle partie : Séraphine attend encore")
+	ombrelac_ext.load_data(JSON.parse_string(JSON.stringify(d)))
+	_ok(Cr.etape() == 3 and Cr.trouves() == 3, "une partie chargée : Séraphine repose en paix")
 	temps_v56.set_hour(12.0)
 	_ranger()

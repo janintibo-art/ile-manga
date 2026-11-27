@@ -16,6 +16,7 @@ const PORTE_REFEND := Vector2(0.6, 2.0)  # les portes des murs de refend, à l'�
 const PASSAGE_Z := 0.95                  # le passage de la tour au dortoir : de -z à z
 const MARCHES := 31
 const PAS_ANGLE := 13.5                  # degrés par marche
+const PALIER_Z0 := 0.12                  # (v18) le bord du palier côté marches (les marches arrivent par z > 0)
 
 var xf_sol: Transform3D
 
@@ -565,8 +566,10 @@ func _tour(k: RefCounted, tc: Vector3, ri: float, F: float, E: float, portes: Ar
 		_poutre(k, "fer", xf_sol * q0, xf_sol * q1, 0.045, xf_sol.basis * Vector3.UP)
 		if j % 3 == 0:
 			_poutre(k, "fer", xf_sol * (tc + d * (ri - 0.02) + Vector3(0, j * rise + 1.0, 0)), xf_sol * q0, 0.03)
-	# le palier de l'étage, devant le passage
-	k.box("pierre_claire", _t0(tc.x - (ri + r0) * 0.5, F - 0.3, tc.z), Vector3(ri - r0 + 0.1, 0.3, 2.0), true)
+	# le palier de l'étage, devant le passage. (v18) Il commence là où les marches arrivent (z = PALIER_Z0) :
+	# avant, il couvrait aussi les deux dernières marches et leur faisait un rebord de 45 cm, où le héros
+	# restait coincé (y 5,80 pour un étage à 6,25)
+	k.box("pierre_claire", _t0(tc.x - (ri + r0) * 0.5, F - 0.3, tc.z - (1.0 - PALIER_Z0) * 0.5), Vector3(ri - r0 + 0.1, 0.3, 1.0 + PALIER_Z0), true)
 	# deux lanternes au mur
 	for ld in [[deg_to_rad(30.0), 3.2], [deg_to_rad(250.0), F + 2.4]]:
 		var dl := Vector3(cos(float(ld[0])), 0, sin(float(ld[0])))

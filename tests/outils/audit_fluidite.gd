@@ -72,6 +72,27 @@ func _fl7_vues(nom: String, ou: Vector3) -> void:
 			gpu / 20.0, cpu / 20.0, int(Engine.get_frames_per_second())])
 		# V211 "paliers" : la même vue sans le détail allégé de loin (tout à plein détail), pour comparer ;
 		# et, aux endroits demandés, les deux photos (avec / sans) à mettre côte à côte
+		# V215 "murs" : la même vue avec les murs-écrans (les immeubles cachent ce qui est derrière eux)
+		if bool(_fl7_args.get("murs", false)):
+			var photo9: bool = (_fl7_args.get("photos", []) as Array).has(nom) or nom.begins_with("neo_")
+			if photo9:
+				_fl7_photo("%s_%s_sans_murs" % [nom, c[0]])
+			get_viewport().use_occlusion_culling = true
+			await _att(0.8)
+			var gpu9 := 0.0
+			var cpu9 := 0.0
+			for i9 in 20:
+				await get_tree().process_frame
+				gpu9 += RenderingServer.viewport_get_measured_render_time_gpu(vp)
+				cpu9 += RenderingServer.viewport_get_measured_render_time_cpu(vp)
+			print("FLU_VUE_MURS\t%s\t%s\t%d\t%d\t%d\t%.2f\t%.2f" % [nom, c[0],
+				int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)),
+				int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)),
+				int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME)), gpu9 / 20.0, cpu9 / 20.0])
+			if photo9:
+				_fl7_photo("%s_%s_avec_murs" % [nom, c[0]])
+			get_viewport().use_occlusion_culling = false
+			await _att(0.3)
 		if not bool(_fl7_args.get("paliers", false)):
 			continue
 		var veut_photo: bool = (_fl7_args.get("photos", []) as Array).has(nom)
@@ -91,6 +112,37 @@ func _fl7_vues(nom: String, ou: Vector3) -> void:
 		if veut_photo:
 			_fl7_photo("%s_%s_sans" % [nom, c[0]])
 		get_viewport().mesh_lod_threshold = seuil7
+
+
+## V215 "murs" : un mur-écran (une boîte invisible qui cache ce qui est derrière elle) dans chaque boîte de
+## chaque immeuble ordinaire de Néopolis, un peu plus petite que lui (0,5 m de marge sur chaque face).
+func _fl7_murs() -> int:
+	if neo_v94 == null or neo_v94.get("batiments") == null:
+		return 0
+	var racine9 := Node3D.new()
+	racine9.name = "Murs_essai_v215"
+	add_child(racine9)
+	var n9: int = 0
+	for bt9 in neo_v94.batiments:
+		if (bt9 as Dictionary).has("unique"):
+			continue
+		for sg9 in (bt9 as Dictionary).get("segs", []):
+			var x09: float = float(sg9[0]) + 0.5
+			var z09: float = float(sg9[1]) + 0.5
+			var x19: float = float(sg9[2]) - 0.5
+			var z19: float = float(sg9[3]) - 0.5
+			var y09: float = float(sg9[4])
+			var y19: float = float(sg9[5]) - 0.5
+			if x19 - x09 < 3.0 or z19 - z09 < 3.0 or y19 - y09 < 3.0:
+				continue
+			var oc9 := OccluderInstance3D.new()
+			var bo9 := BoxOccluder3D.new()
+			bo9.size = Vector3(x19 - x09, y19 - y09, z19 - z09)
+			oc9.occluder = bo9
+			racine9.add_child(oc9)
+			oc9.global_position = neo_v94.IleScript.W((x09 + x19) * 0.5, (z09 + z19) * 0.5, (y09 + y19) * 0.5)
+			n9 += 1
+	return n9
 
 
 func _fl7_photo(nom: String) -> void:
@@ -122,9 +174,10 @@ func _fl7_lieu(nom: String, ou: Vector3, poser: bool = true) -> void:
 	var reste_a: Array = [0, 0, 0]
 	var loin_a: Array = [0, 0, 0, 0, 0]  # appels à moins de 100 m, 100-300, 300-800, au-delà, nappes à la place inconnue
 	var inc_t := 0
+	var sous8: Dictionary = {}
 	for g in find_children("*", "GeometryInstance3D", true, false):
 		var gi: GeometryInstance3D = g
-		if not gi.is_visible_in_tree():
+		if not gi.is_visible_in_tree() or gi.layers == 0:
 			continue
 		var m: Mesh = null
 		var fois := 1
@@ -185,7 +238,38 @@ func _fl7_lieu(nom: String, ou: Vector3, poser: bool = true) -> void:
 				print("FLU_DETAIL\t%s\t%s\t%s\tpos %s\tboîte %s taille %s\t%d tri\t%s" % [nom, cle, str(gi.get_path()).right(110), str(gi.global_position.snapped(Vector3.ONE)), str(boite.position.snapped(Vector3.ONE)), str(boite.size.snapped(Vector3.ONE * 0.1)), t, gi.get_class()])
 		loin_a[bande] += a
 		f[6 + bande] += a
+		# V215 : ce qui est dessiné alors qu'on ne peut pas le voir d'ici : tout entier sous la mer (peu profond :
+		# le haut entre 1 et 6 m sous l'eau ; profond : plus bas), ou tout entier sous le sol d'une île.
+		if not inconnue and oeil.y > mer_v55.SEA_Y and not _in_dungeon_v35(oeil):
+			var haut8: float = boite.end.y
+			var c8: Vector3 = boite.get_center()
+			var sol8: float = _height_land_v55(c8.x, c8.z)
+			var cat8 := ""
+			if sol8 > mer_v55.SEA_Y + 0.5 and haut8 < sol8 - 1.5:
+				cat8 = "sous_terre"
+			elif sol8 <= mer_v55.SEA_Y + 0.5 and haut8 < mer_v55.SEA_Y - 6.0:
+				cat8 = "mer_profonde"
+			elif sol8 <= mer_v55.SEA_Y + 0.5 and haut8 < mer_v55.SEA_Y - 1.0:
+				cat8 = "mer_peu_profonde"
+			# en l'air (une île aérienne et ce qu'elle porte), plus haut que le joueur : d'en bas, l'île masque
+			# son propre dessus (sauf ce qui dépasse au bord) ; c'est donc un plafond de ce qu'on peut effacer
+			if cat8 == "" and boite.position.y > maxf(sol8, mer_v55.SEA_Y) + 30.0 and oeil.y < boite.position.y - 10.0:
+				cat8 = "en_l_air"
+			if cat8 != "":
+				var k8: String = cat8 + "\t" + cle
+				if not sous8.has(k8):
+					sous8[k8] = [0, 0, 0, 1e9, -1e9]
+				var s8: Array = sous8[k8]
+				s8[0] += t
+				s8[1] += a
+				s8[2] += 1
+				s8[3] = minf(s8[3], dc)
+				s8[4] = maxf(s8[4], haut8)
 	print("FLU_LIEU\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d" % [nom, int(ou.x), int(ou.y), int(ou.z), tot_t, tot_a, tot_o, tot_omb, fam.size()])
+	var cles8: Array = sous8.keys()
+	cles8.sort_custom(func(x, y): return sous8[x][0] > sous8[y][0])
+	for c8k in cles8:
+		print("FLU_SOUS\t%s\t%s\t%d\t%d\t%d\t%.0f\t%.1f" % [nom, c8k, sous8[c8k][0], sous8[c8k][1], sous8[c8k][2], sous8[c8k][3], sous8[c8k][4]])
 	print("FLU_REGLE\t%s\t%s\t%s\t%s\t%d" % [nom, str(reste_t), str(reste_a), str(loin_a), inc_t])
 	var cles: Array = fam.keys()
 	cles.sort_custom(func(x, y): return fam[x][0] > fam[y][0])
@@ -217,6 +301,17 @@ func _serie() -> void:
 			var sp: Array = teleport_v58.spot(str(pl[0]))
 			if sp.size() >= 1 and sp[0] is Vector3:
 				lieux.append([str(pl[0]), sp[0]])
+	if bool(_fl7_args.get("murs", false)):
+		get_viewport().use_occlusion_culling = false
+		print("FLU_MURS\t%d" % _fl7_murs())
+		# des rues de Néopolis : devant la porte de la première tour de chaque quartier
+		if neo_v94 != null and neo_v94.get("tours") != null and neo_v94.tours != null:
+			var vus9: Dictionary = {}
+			for t9 in neo_v94.tours.tours:
+				var q9: String = str(t9["quartier"])
+				if not vus9.has(q9) and t9.has("sortie"):
+					vus9[q9] = true
+					lieux.append(["neo_" + q9, (t9["sortie"] as Vector3) + Vector3.UP * 0.3])
 	for l in lieux:
 		await _fl7_lieu(l[0], l[1])
 	# "dedans" : dans le hall de la plus grande tour de bureaux de Néopolis (ce que le dehors coûte quand on est dedans)

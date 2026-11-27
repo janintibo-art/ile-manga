@@ -128,7 +128,7 @@ const Q := {
 
 ## Les services des autres habitants (des étapes, des ingrédients)
 const SERVICES := ["tobie_om", "rouage_om", "fauconnier_om", "fournil_om", "sidonie_om", "alambic_om", "buis_om",
-	"equerre_om", "reliure_om", "anatole_om", "vesperine_om", "sortelame_om"]
+	"equerre_om", "reliure_om", "anatole_om", "vesperine_om", "sortelame_om", "herse_om"]
 
 const HORTENSE_A := 0.35                       # l'angle d'Hortense sur la margelle (repère château)
 const DALLE := Vector3(12.7, 0.165, -23.0)     # la dalle qui cache l'escalier, au fond du bassin (sur l'allée, haute de 0.16)
@@ -144,6 +144,7 @@ var vie: Node
 var objets: Node
 var minuit: Node3D
 var cours: Node                         # (v17) les cours de l'Académie (cours_ombrelac.gd) : leurs sujets passent par ici
+var creatures: Node                     # (v18) les créatures (creatures_ombrelac.gd) : le fantôme, chez Gaspard Herse
 var hortense: Node3D
 var chaussette_haut: Node3D
 var chaussette_sol: Node3D
@@ -621,6 +622,8 @@ func _sujets(npc: Node) -> Array:
 				out.append({"id": _id("minuit", "rectrice"), "label": "★ Madame la Rectrice… j'ai trouvé la Maison de Minuit."})
 	if cours != null and cours.has_method("sujets"):
 		out.append_array(cours.sujets(npc))
+	if creatures != null and creatures.has_method("sujets"):
+		out.append_array(creatures.sujets(npc))
 	return out
 
 
@@ -638,6 +641,8 @@ func _choisir(npc: Node, choice: String) -> Dictionary:
 	var parts: PackedStringArray = choice.split(":")
 	if parts.size() >= 3 and parts[2].begins_with("omc_") and cours != null:
 		return cours.choisir(npc, parts[2].substr(4))
+	if parts.size() >= 3 and parts[2].begins_with("omk_") and creatures != null:
+		return creatures.choisir(npc, parts[2].substr(4))
 	if parts.size() < 3 or not parts[2].begins_with("om_"):
 		return {}
 	var rest: String = parts[2].substr(3)

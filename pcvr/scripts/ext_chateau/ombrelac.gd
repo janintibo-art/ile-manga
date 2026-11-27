@@ -14,6 +14,7 @@ const VieScript = preload("res://scripts/ext_chateau/vie_ombrelac.gd")
 const ObjetsScript = preload("res://scripts/ext_chateau/objets_ombrelac.gd")
 const QuetesScript = preload("res://scripts/ext_chateau/quetes_ombrelac.gd")
 const CoursScript = preload("res://scripts/ext_chateau/cours_ombrelac.gd")
+const CreaturesScript = preload("res://scripts/ext_chateau/creatures_ombrelac.gd")
 
 const PLACES := {"ombrelac": "l'île d'Ombrelac", "ombrelac_debarcadere": "le débarcadère d'Ombrelac",
 	"ombrelac_guet": "la Colline du Guet", "ombrelac_viaduc": "le grand viaduc", "ombrelac_cour": "la Cour d'Honneur",
@@ -43,6 +44,7 @@ var vie: Node3D                           # (v14) les habitants de l'Académie (
 var objets: Node3D                        # (v15) les objets avec lesquels on fait quelque chose (objets_ombrelac.gd)
 var quetes: Node3D                        # (v16) les quêtes des habitants, la Maison de Minuit (quetes_ombrelac.gd)
 var cours: Node3D                         # (v17) les cours de l'Académie, le bulletin, le diplôme (cours_ombrelac.gd)
+var creatures: Node3D                     # (v18) Mistigri, Minerve, les chauves-souris, Séraphine (creatures_ombrelac.gd)
 var _attente_pnj: float = 0.0
 var pc: bool = true
 var state := {"visite": false}
@@ -117,6 +119,11 @@ func build_town() -> void:
 	cours.name = "Cours_ombrelac"
 	add_child(cours)
 	cours.build(main, self, chateau, vie, objets, quetes)
+	# (v18) les créatures du château : le chat, la chouette, les chauves-souris, le fantôme du cloître
+	creatures = CreaturesScript.new()
+	creatures.name = "Creatures_ombrelac"
+	add_child(creatures)
+	creatures.build(main, self, chateau, vie, objets, quetes)
 
 
 func _eau_mat(deep: Color, shallow: Color, vif: float = 0.0) -> Material:
@@ -396,3 +403,6 @@ func load_data(d: Dictionary) -> void:
 	# (v17) les notes, le diplôme (l'exercice en cours reprend du début)
 	if cours != null and cours.has_method("apres_chargement"):
 		cours.apres_chargement()
+	# (v18) Séraphine, ses souvenirs, le cadeau du jour de Mistigri
+	if creatures != null and creatures.has_method("apres_chargement"):
+		creatures.apres_chargement()
