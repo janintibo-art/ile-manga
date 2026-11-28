@@ -255,6 +255,9 @@ func hit(m: Node3D, element: String, dmg: int, from: Vector3, arme: bool = false
 		"foudre":
 			if not arme:
 				_secouer(m, 0.8)
+			var mg_f: Node = main.get("magie_v219")
+			if mg_f != null:
+				mg_f.electriser(m, maxf(float(m.get("hit_radius")), 0.3), maxf(float(m.get("hit_height")), 0.3), 0.3 if arme else 0.8)
 		"eau":
 			if e0 == "brule":
 				_efface(m)
@@ -313,7 +316,11 @@ func enflammer(m: Node3D, coups: int = BRULE_COUPS) -> void:
 	var fx: Node = main.get("combat_fx_v129")
 	var r: float = maxf(float(m.get("hit_radius")), 0.3)
 	var h: float = maxf(float(m.get("hit_height")), 0.3)
-	if fx != null:
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		# V219 : de vraies flammes l'enveloppent, des braises, une fumée
+		(e["fx"] as Array).append_array(mg.embraser(m, r, h))
+	elif fx != null:
 		var f1: Node = fx._burst(Vector3.UP * h * 0.8, {"amount": 44, "life": 0.7, "v0": 0.5, "v1": 1.6, "dir": Vector3.UP, "spread": 30.0, "radius": r * 1.05,
 			"grav": Vector3(0, 3.5, 0), "size": 0.5 * clampf(r * 1.6, 0.7, 2.4), "explo": 0.0, "loop": true, "parent": m,
 			"cols": [Color(1, 0.95, 0.6), Color(1.0, 0.6, 0.15, 0.9), Color(0.9, 0.25, 0.05, 0.5), Color(0.3, 0.08, 0.03, 0.0)]})
@@ -329,6 +336,8 @@ func enflammer(m: Node3D, coups: int = BRULE_COUPS) -> void:
 	m.add_child(l)
 	l.position = Vector3.UP * h
 	(e["fx"] as Array).append(l)
+	if mg != null:
+		mg.palpiter(l, 1.1, 2.2)
 	main.sfx("brulure", _centre(m))
 	_texte(m, "En feu !", COULEURS["feu"])
 
@@ -345,6 +354,9 @@ func geler(m: Node3D, t: float = GEL_TEMPS) -> void:
 		m.set("state", "recul")
 		m.set("timer", t)
 	(e["fx"] as Array).append(_coque(m))
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		mg.saisir_glace(_centre(m), maxf(float(m.get("hit_radius")), 0.3), maxf(float(m.get("hit_height")), 0.3))
 
 
 ## La gangue de glace : une coque translucide et des cristaux plantés tout autour.
@@ -379,15 +391,17 @@ func _coque(m: Node3D) -> Node3D:
 	shell.position = Vector3.UP * (h * 0.68 + 0.05)
 	root.add_child(shell)
 	var fx: Node = main.get("combat_fx_v129")
+	# V219 : les cristaux plantés autour sont les bouquets de magie_v219 (inégaux, en éventail), dans sa glace
+	var mg_c: Node = main.get("magie_v219")
 	if fx != null:
 		var mesh: ArrayMesh = fx.ice_mesh()
 		var n: int = 7
 		for k in range(n):
 			var a: float = TAU * k / n + randf_range(-0.25, 0.25)
 			var mi := MeshInstance3D.new()
-			mi.mesh = mesh
-			mi.material_override = fx._ice_mat
-			var sz: float = randf_range(0.55, 0.95) * clampf(r * 1.3 + h * 0.4, 0.5, 2.6)
+			mi.mesh = mg_c.bouquet() if mg_c != null else mesh
+			mi.material_override = mg_c.matiere_glace() if mg_c != null else fx._ice_mat
+			var sz: float = randf_range(0.55, 0.95) * clampf(r * 1.3 + h * 0.4, 0.5, 2.6) * (0.62 if mg_c != null else 1.0)
 			mi.scale = Vector3(sz, sz * randf_range(0.8, 1.3), sz)
 			mi.position = Vector3(cos(a), 0, sin(a)) * r * 1.1
 			mi.rotation = Vector3(sin(a) * 0.35, randf() * TAU, -cos(a) * 0.35)
@@ -435,11 +449,15 @@ func _vapeur(at: Vector3, m: Node3D) -> void:
 	_compte("vapeur")
 	main.sfx("vapeur_feu", at)
 	var fx: Node = main.get("combat_fx_v129")
+	var mg: Node = main.get("magie_v219")
 	if fx != null:
 		fx._n("vapeur")
-		fx._puffs(at, 16, Color(0.95, 0.97, 1.0, 0.42), 0.6, 2.6, 1.5, 1.2, 3.2, 0.6, 0.4)
-		var rg: MeshInstance3D = fx._flat(Vector3(at.x, fx._ground_y(at, at.y - 1.0) + 0.06, at.z), Vector3.UP, fx.ring_tex(), Color(0.9, 0.96, 1.0, 0.45), 1.0)
-		fx._add(rg, 0.5, Color(0.9, 0.96, 1.0, 0.45), rg.get_meta("mat"), 0.5, 5.5)
+		if mg != null:
+			mg.vapeur(at)
+		else:
+			fx._puffs(at, 16, Color(0.95, 0.97, 1.0, 0.42), 0.6, 2.6, 1.5, 1.2, 3.2, 0.6, 0.4)
+			var rg: MeshInstance3D = fx._flat(Vector3(at.x, fx._ground_y(at, at.y - 1.0) + 0.06, at.z), Vector3.UP, fx.ring_tex(), Color(0.9, 0.96, 1.0, 0.45), 1.0)
+			fx._add(rg, 0.5, Color(0.9, 0.96, 1.0, 0.45), rg.get_meta("mat"), 0.5, 5.5)
 		fx._light(at, Color(0.9, 0.95, 1.0), 2.0, 6.0, 0.4)
 	_autour(at, m, 3.5, 2)
 	if _vivant(m):
@@ -454,10 +472,14 @@ func _eclats(at: Vector3, m: Node3D) -> void:
 	_compte("eclats")
 	main.sfx("brise_glace", at)
 	var fx: Node = main.get("combat_fx_v129")
+	var mg: Node = main.get("magie_v219")
 	if fx != null:
 		fx._n("eclats")
-		fx._burst(at, {"amount": 26, "life": 0.8, "v0": 4.0, "v1": 9.0, "dir": Vector3.UP, "spread": 110.0, "grav": Vector3(0, -9.0, 0),
-			"size": 0.09, "mesh": "box", "add": false, "cols": [Color(0.85, 0.95, 1.0), Color(0.7, 0.88, 1.0)]})
+		if mg != null:
+			mg.eclats_glace(at)
+		else:
+			fx._burst(at, {"amount": 26, "life": 0.8, "v0": 4.0, "v1": 9.0, "dir": Vector3.UP, "spread": 110.0, "grav": Vector3(0, -9.0, 0),
+				"size": 0.09, "mesh": "box", "add": false, "cols": [Color(0.85, 0.95, 1.0), Color(0.7, 0.88, 1.0)]})
 		fx._light(at, Color(0.7, 0.85, 1.0), 4.0, 7.0, 0.35)
 	_autour(at, m, 3.0, 2)
 	if _vivant(m):
@@ -477,6 +499,10 @@ func _surcharge(at: Vector3, m: Node3D) -> void:
 
 
 func _arcs(at: Vector3, n: int) -> void:
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		mg.arcs(at, n)
+		return
 	var fx: Node = main.get("combat_fx_v129")
 	if fx != null:
 		fx._bolts(at, Color(1, 1, 1), Color(0.55, 0.7, 1.0), n)
@@ -621,20 +647,30 @@ func _frappe_fx(at: Vector3) -> void:
 	if fx == null:
 		return
 	fx._n("foudre")
-	var fl: MeshInstance3D = fx._quad(at, preload("res://scripts/armes_v129.gd").dot(), Color(0.85, 0.9, 1.0), 1.0)
-	fx._add(fl, 0.22, Color(0.85, 0.9, 1.0), fl.get_meta("mat"), 0.6, 2.6)
-	fx._bolts(at, Color(1, 1, 1), Color(0.55, 0.7, 1.0), 6)
-	fx._burst(at, {"amount": 16, "life": 0.45, "v0": 3.0, "v1": 8.0, "grav": Vector3(0, -6.0, 0), "size": 0.12, "mesh": "streak", "damping": 2.0,
-		"cols": [Color(1, 1, 1), Color(0.7, 0.8, 1.0), Color(0.5, 0.6, 1.0, 0.0)]})
-	fx._light(at, Color(0.75, 0.82, 1.0), 7.0, 11.0, 0.3)
+	# V219 : l'éclat qui éclaire tout le décor, les étincelles, l'onde, les arcs qui courent encore
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		mg.frappe_foudre(at)
+	else:
+		var fl: MeshInstance3D = fx._quad(at, preload("res://scripts/armes_v129.gd").dot(), Color(0.85, 0.9, 1.0), 1.0)
+		fx._add(fl, 0.22, Color(0.85, 0.9, 1.0), fl.get_meta("mat"), 0.6, 2.6)
+		fx._bolts(at, Color(1, 1, 1), Color(0.55, 0.7, 1.0), 6)
+		fx._burst(at, {"amount": 16, "life": 0.45, "v0": 3.0, "v1": 8.0, "grav": Vector3(0, -6.0, 0), "size": 0.12, "mesh": "streak", "damping": 2.0,
+			"cols": [Color(1, 1, 1), Color(0.7, 0.8, 1.0), Color(0.5, 0.6, 1.0, 0.0)]})
+		fx._light(at, Color(0.75, 0.82, 1.0), 7.0, 11.0, 0.3)
 	var d: float = at.distance_to(fx._player_pos())
 	if d < 16.0:
-		fx.shake(0.06 * (1.0 - d / 16.0) + 0.015)
+		fx.shake((0.1 if mg != null else 0.06) * (1.0 - d / 16.0) + 0.015)
 		fx.haptic(0.6, 0.1)
 
 
 ## Un éclair brisé de a à b : un cœur blanc, un halo bleu, deux ou trois branches.
 func eclair(a: Vector3, b: Vector3, gros: float = 1.0) -> void:
+	# V219 : l'éclair épais au cœur blanc, qui tremble et se ramifie
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		mg.eclair(a, b, gros)
+		return
 	var fx: Node = main.get("combat_fx_v129")
 	var im := ImmediateMesh.new()
 	var mi := MeshInstance3D.new()

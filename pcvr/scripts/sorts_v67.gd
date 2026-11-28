@@ -414,6 +414,11 @@ func _ice_path(o: Vector3, dir: Vector3) -> void:
 
 
 func _frost_fx(o: Vector3, dir: Vector3) -> void:
+	# V219 : le cône de brume glacée, les éclats de glace, le givre qui prend sur le sol
+	var mg: Node = main.get("magie_v219")
+	if mg != null:
+		mg.givre(o, dir)
+		return
 	var fx := CPUParticles3D.new()
 	fx.name = "Souffle_de_givre_v67"
 	fx.amount = 70

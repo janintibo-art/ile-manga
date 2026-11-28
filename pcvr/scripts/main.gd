@@ -91,6 +91,7 @@ var monstres_v36: Node3D
 var trainee_v34: Node3D
 # V129 : le spectacle du combat et de la magie (impacts, croissants, cercles de runes…).
 var combat_fx_v129: Node3D
+var magie_v219: Node3D                     # V219 : les matières des sorts (flammes, fumée, givre, éclairs)
 # V141 : les sensations des coups (l'ennemi plie, titube, tombe ; l'onde de choc au sol).
 var coups_v141: Node3D
 # V130 : un signe au-dessus des personnages qui ont « un truc en plus » (quête, secret, commerce).
@@ -2456,6 +2457,10 @@ func _create_gameplay_v28() -> void:
 	combat_fx_v129.name = "Combat_fx_v129"
 	add_child(combat_fx_v129)
 	combat_fx_v129.setup(self)
+	# V219 : les matières des sorts (flammes, fumée, givre, éclairs), calculées par la carte graphique
+	magie_v219 = preload("res://scripts/magie_v219.gd").new()
+	add_child(magie_v219)
+	magie_v219.setup(self)
 	coups_v141 = preload("res://scripts/coups_v141.gd").new()
 	add_child(coups_v141)
 	coups_v141.setup(self)

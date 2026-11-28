@@ -644,6 +644,11 @@ func dress_fireball(ball: Node3D) -> void:
 	if ball == null:
 		return
 	_n("boule")
+	# V219 : la vraie boule de feu (un cœur en fusion, une chevelure de flammes, des braises, de la fumée)
+	var mg: Node = main.get("magie_v219") if main != null else null
+	if mg != null:
+		mg.habiller_boule(ball)
+		return
 	_burst(Vector3.ZERO, {"amount": 24, "life": 0.22, "v0": 0.0, "v1": 0.3, "radius": 0.06, "grav": Vector3.ZERO, "size": 0.2, "explo": 0.0,
 		"loop": true, "parent": ball, "cols": [Color(1, 1, 0.9), Color(1.0, 0.8, 0.35, 0.8), Color(1.0, 0.5, 0.1, 0.0)]})
 	_smoke_trail(ball, Color(0.36, 0.33, 0.31, 0.32), 0.035)
@@ -654,6 +659,20 @@ func dress_fireball(ball: Node3D) -> void:
 ## L'explosion de la boule de feu.
 func explosion(at: Vector3) -> void:
 	_n("explosion")
+	# V219 : la vraie explosion (boule de flammes, braises, colonne de fumée, onde, sol noirci)
+	var mg: Node = main.get("magie_v219") if main != null else null
+	if mg != null:
+		mg.explosion(at)
+	else:
+		_explosion_v129(at)
+	var d: float = at.distance_to(_player_pos())
+	if d < 14.0:
+		shake((0.16 if mg != null else 0.1) * (1.0 - d / 14.0) + 0.02)
+		haptic(0.5, 0.12)
+
+
+## L'explosion d'avant la V219 (des points lumineux) : elle sert si magie_v219 n'est pas là.
+func _explosion_v129(at: Vector3) -> void:
 	var fl := _quad(at, Armes.dot(), Color(1.0, 0.8, 0.45), 1.0)
 	_add(fl, 0.32, Color(1.0, 0.8, 0.45), fl.get_meta("mat"), 0.5, 3.2)
 	_burst(at, {"amount": 36, "life": 0.6, "v0": 2.0, "v1": 5.5, "grav": Vector3(0, 1.5, 0), "size": 0.42, "damping": 5.0, "radius": 0.2,
@@ -666,10 +685,6 @@ func explosion(at: Vector3) -> void:
 		var rg := _flat(Vector3(at.x, gy + 0.06, at.z), Vector3.UP, ring_tex(), Color(1.0, 0.55, 0.2), 1.0)
 		_add(rg, 0.45, Color(1.0, 0.55, 0.2), rg.get_meta("mat"), 0.4, 5.0)
 	_light(at, Color(1.0, 0.6, 0.25), 6.0, 9.0, 0.5)
-	var d: float = at.distance_to(_player_pos())
-	if d < 14.0:
-		shake(0.1 * (1.0 - d / 14.0) + 0.02)
-		haptic(0.5, 0.12)
 
 
 func _ground_y(p: Vector3, fallback: float) -> float:
@@ -689,6 +704,10 @@ func _ground_y(p: Vector3, fallback: float) -> float:
 ## Le gel : des pics de glace jaillissent du sol devant soi, puis éclatent.
 func frost(o: Vector3, dir: Vector3) -> void:
 	_n("glace")
+	# V219 : les bouquets de cristaux, la brume et la poussière de givre sont ceux de magie_v219
+	# (sorts_v67._frost_fx) ; sans lui, les pics alignés et les bouffées d'avant
+	if main != null and main.get("magie_v219") != null:
+		return
 	dir.y = 0.0
 	dir = dir.normalized() if dir.length() > 0.01 else Vector3.FORWARD
 	var side: Vector3 = dir.cross(Vector3.UP).normalized()

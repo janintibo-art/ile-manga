@@ -37,8 +37,10 @@ static func portee(taille: float) -> float:
 	return clampf(PORTEE_MIN + PAR_METRE * taille, PORTEE_MIN, PORTEE_MAX)
 
 
-func _regler(n: Node) -> void:
-	if not is_instance_valid(n) or not n.is_inside_tree():
+## (V219 : « n » sans type : un objet créé puis détruit dans la même image — un effet de sort, un essai —
+## arrivait ici déjà détruit, et le moteur écrivait une erreur dans le journal avant même d'entrer.)
+func _regler(n: Variant) -> void:
+	if n == null or not is_instance_valid(n) or not (n is GeometryInstance3D) or not (n as Node).is_inside_tree():
 		return
 	var g := n as GeometryInstance3D
 	if g.visibility_range_end > 0.0 or g.visibility_range_begin > 0.0 or g.has_meta("portee_libre"):

@@ -317,56 +317,62 @@ func _flamme() -> void:
 	ball.name = "Flamme_v63"
 	add_child(ball)
 	ball.global_position = o
-	var core := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 0.17
-	sm.height = 0.34
-	core.mesh = sm
-	var cm := StandardMaterial3D.new()
-	cm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	cm.albedo_color = Color(1.0, 0.8, 0.4)
-	cm.emission_enabled = true
-	cm.emission = Color(1.0, 0.55, 0.15)
-	cm.emission_energy_multiplier = 4.0
-	core.material_override = cm
-	core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	ball.add_child(core)
+	# V219 : avec la vraie boule de feu (magie_v219), ni la bille ni les points d'avant ne sont créés
+	var neuf_v219: bool = main.get("magie_v219") != null
+	if not neuf_v219:
+		var core := MeshInstance3D.new()
+		var sm := SphereMesh.new()
+		sm.radius = 0.17
+		sm.height = 0.34
+		core.mesh = sm
+		var cm := StandardMaterial3D.new()
+		cm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		cm.albedo_color = Color(1.0, 0.8, 0.4)
+		cm.emission_enabled = true
+		cm.emission = Color(1.0, 0.55, 0.15)
+		cm.emission_energy_multiplier = 4.0
+		core.material_override = cm
+		core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		ball.add_child(core)
 	var light := OmniLight3D.new()
 	light.light_color = Color(1.0, 0.55, 0.2)
 	light.light_energy = 2.2
 	light.omni_range = 6.0
 	ball.add_child(light)
-	var trail := CPUParticles3D.new()
-	trail.amount = 50
-	trail.lifetime = 0.45
-	trail.local_coords = false
-	trail.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
-	trail.emission_sphere_radius = 0.12
-	trail.gravity = Vector3(0, 2.5, 0)
-	trail.initial_velocity_min = 0.2
-	trail.initial_velocity_max = 0.8
-	trail.scale_amount_min = 0.6
-	trail.scale_amount_max = 1.5
-	var q := QuadMesh.new()
-	q.size = Vector2(0.22, 0.22)
-	var tm := StandardMaterial3D.new()
-	tm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	tm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
-	tm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	tm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	tm.vertex_color_use_as_albedo = true
-	if main.has_method("_soft_dot_v24"):
-		tm.albedo_texture = main._soft_dot_v24()
-	q.material = tm
-	trail.mesh = q
-	var grad := Gradient.new()
-	grad.set_color(0, Color(1.0, 0.85, 0.4, 1.0))
-	grad.add_point(0.4, Color(1.0, 0.4, 0.08, 0.8))
-	grad.set_color(grad.get_point_count() - 1, Color(0.25, 0.08, 0.04, 0.0))
-	trail.color_ramp = grad
-	ball.add_child(trail)
+	if not neuf_v219:
+		var trail := CPUParticles3D.new()
+		trail.amount = 50
+		trail.lifetime = 0.45
+		trail.local_coords = false
+		trail.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+		trail.emission_sphere_radius = 0.12
+		trail.gravity = Vector3(0, 2.5, 0)
+		trail.initial_velocity_min = 0.2
+		trail.initial_velocity_max = 0.8
+		trail.scale_amount_min = 0.6
+		trail.scale_amount_max = 1.5
+		var q := QuadMesh.new()
+		q.size = Vector2(0.22, 0.22)
+		var tm := StandardMaterial3D.new()
+		tm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		tm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+		tm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		tm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		tm.vertex_color_use_as_albedo = true
+		if main.has_method("_soft_dot_v24"):
+			tm.albedo_texture = main._soft_dot_v24()
+		q.material = tm
+		trail.mesh = q
+		var grad := Gradient.new()
+		grad.set_color(0, Color(1.0, 0.85, 0.4, 1.0))
+		grad.add_point(0.4, Color(1.0, 0.4, 0.08, 0.8))
+		grad.set_color(grad.get_point_count() - 1, Color(0.25, 0.08, 0.04, 0.0))
+		trail.color_ramp = grad
+		ball.add_child(trail)
 	_balls.append({"node": ball, "dir": dir, "speed": 17.0, "left": 24.0, "dmg": 6 if _talent("echo_sceaux") else 4})
 	# V129 : un cœur blanc, des flammèches, de la fumée, des braises
+	# V219 : la boule dit où elle va (ses flammes naissent le long de sa course)
+	ball.set_meta("dir_v219", dir)
 	if main.get("combat_fx_v129") != null:
 		main.combat_fx_v129.dress_fireball(ball)
 	main.sfx("flamme_lance", o)
@@ -443,6 +449,9 @@ func _explode(at: Vector3) -> void:
 	if main.get("combat_fx_v129") != null:
 		main.combat_fx_v129.explosion(at)
 		main.sfx("explosion_feu", at)
+		# V219 : la vraie explosion suffit (plus de points lumineux par-dessus)
+		if main.get("magie_v219") != null:
+			return
 	if main.combat_v28 != null:
 		main.combat_v28.puff(at, Color(1.0, 0.55, 0.2))
 	var flash := OmniLight3D.new()
