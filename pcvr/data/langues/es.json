@@ -54685,6 +54685,16 @@
   "Tu croques le Rieur. Il a un goût de terre et de noisette… Rien. Rien du tout. Et puis le sol se met à respirer, doucement, comme un gros chat endormi.": "Muerdes el Risueño. Sabe a tierra y a avellana… Nada. Nada de nada. Y entonces el suelo empieza a respirar, despacio, como un gato grande dormido.",
   "Le Rieur fond sur la langue. Une seconde plus tard, une couleur que tu ne connaissais pas te passe devant les yeux, et tu ris. Tu ne sais pas pourquoi. C'est très drôle de ne pas savoir pourquoi.": "El Risueño se deshace en la lengua. Un segundo después, un color que no conocías te pasa por delante de los ojos, y te ríes. No sabes por qué. No saber por qué es muy gracioso.",
   "Les couleurs reviennent à leur place, les murs arrêtent de respirer. Tu as soif, et un peu faim. Quelque part, quelqu'un rit encore. Ah non : c'est toi.": "Los colores vuelven a su sitio, las paredes dejan de respirar. Tienes sed, y un poco de hambre. En algún sitio, alguien sigue riéndose. Ah, no: eres tú.",
-  "(Mère Morille te l'a dit : un seul, assis quelque part de doux, avec des amis autour. Et dans la vraie forêt : JAMAIS.)": "(Mère Morille te lo dijo: solo una, sentado en algún sitio blandito, con amigos alrededor. Y en un bosque de verdad: NUNCA.)"
+  "(Mère Morille te l'a dit : un seul, assis quelque part de doux, avec des amis autour. Et dans la vraie forêt : JAMAIS.)": "(Mère Morille te lo dijo: solo una, sentado en algún sitio blandito, con amigos alrededor. Y en un bosque de verdad: NUNCA.)",
+  "Mains nues": "Manos desnudas",
+  "Mains nues.": "Manos desnudas.",
+  "Rien d'autre à tenir pour l'instant.": "Nada más que empuñar por ahora.",
+  "Ce pouvoir dort encore : un des quatre sceaux de la grande île le garde.": "Este poder aún duerme: lo guarda uno de los cuatro sellos de la isla grande.",
+  "Dans le casque : gardez la poignée droite serrée pour changer d'arme (un coup bref : l'arme d'avant) ; gardez la gâchette gauche pour changer de sort ; gardez B pour changer de pouvoir.": "En el visor: mantén apretada la empuñadura derecha para cambiar de arma (un apretón breve: el arma anterior); mantén el gatillo izquierdo para cambiar de hechizo; mantén B para cambiar de poder.",
+  "Astuce : en VR, la poignée droite tenue ouvre la roue des armes autour de la main ; un coup bref reprend l'arme d'avant.": "Consejo: en RV, mantener la empuñadura derecha abre la rueda de armas alrededor de la mano; un apretón breve recupera el arma anterior.",
+  "Astuce : en VR, B tenu ouvre la roue des pouvoirs ; B tapé lance le pouvoir choisi.": "Consejo: en RV, mantener B abre la rueda de poderes; una pulsación breve lanza el poder elegido.",
+  "dégâts : %d": "daño: %d",
+  "Pouvoir choisi : %s (B pour le lancer)": "Poder elegido: %s (B para lanzarlo)",
+  "Astuce : en VR, pour refermer une roue sans rien choisir, éloignez la main.": "Consejo: en RV, para cerrar una rueda sin elegir nada, aleja la mano."
  }
 }

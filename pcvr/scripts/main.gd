@@ -1285,6 +1285,8 @@ func _start_save_slot(slot: int, new_game: bool) -> void:
 			cibles_v144.reset()
 		if roue_v145 != null:
 			roue_v145.reset()
+		if roue_armes_v220 != null:
+			roue_armes_v220.reset()
 		if teleport_v58 != null:
 			teleport_v58.load_data({})
 		if sceaux_v63 != null:
@@ -2957,6 +2959,9 @@ func _vr_actions_v28(delta: float) -> void:
 	# V67 : les sorts d'Arcanelle (gâchette gauche : lancer ; maintenue : sort suivant)
 	if sorts_v67 != null:
 		sorts_v67.vr_tick(delta)
+	# V220 : la main droite : poignée tenue, la roue des armes (tapée : l'arme d'avant) ; B tenu, celle des pouvoirs
+	if roue_armes_v220 != null:
+		roue_armes_v220.vr_tick(delta)
 	# V56 : gâchette près de la cloche du quai : appeler L'Hirondelle
 	var trig_now: bool = right_hand.get_float("trigger") > 0.7
 	if azur_v56 != null and azur_v56.ferry != null and trig_now and not vr_buttons_v28.get("cloche", false) and _nearest_npc_v31() == null:
@@ -2991,6 +2996,11 @@ func _vr_actions_v28(delta: float) -> void:
 			points["pointe"] = [tip, 0.12, dmg, xr_origin.to_local(tip)]
 		else:
 			points["droite"] = [right_hand.global_position, 0.12, 1, right_hand.position]
+		# V220 : la main droite choisit dans sa roue : elle ne donne pas de coups pendant ce temps
+		if roue_armes_v220 != null and roue_armes_v220.main_droite_occupee():
+			points.erase("lame")
+			points.erase("pointe")
+			points.erase("droite")
 		combat_v28.vr_tick(delta, points, xr_camera.global_position)
 
 
@@ -4193,6 +4203,7 @@ var objets_v66: Node                       # V66 : objets à casser, coffres cac
 var arcanelle_v67: Node3D                  # V67 : Arcanelle, l'île des sorciers et sa communauté
 var sorts_v67: Node3D                      # V67 : les sorts appris des maîtres d'Arcanelle
 var roue_v145: Node3D                      # V145 : la roue des sorts et les gestes de la magie
+var roue_armes_v220: Node3D                # V220 : en VR, la roue des armes et celle des pouvoirs (main droite)
 var cibles_v144: Node3D                    # V144 : la cible, le verrouillage, les barres de vie, les alertes
 var elements_v143: Node3D                  # V143 : la magie élémentaire (états, réactions, faiblesses, la Foudre)
 var pirates_v68: Node3D                    # V68 : l'Île de la Balafre, Port-Coutelas et ses pirates
@@ -4411,6 +4422,10 @@ func _create_v67() -> void:
 	roue_v145.setup(self)
 	if hud_v28 != null and not xr_active:
 		roue_v145.make_hud(hud_v28)
+	# V220 : en VR, la roue des armes (poignée droite) et celle des pouvoirs (B), autour de la main droite
+	roue_armes_v220 = preload("res://scripts/roue_armes_v220.gd").new()
+	add_child(roue_armes_v220)
+	roue_armes_v220.setup(self)
 	if hud_v28 != null and not xr_active:
 		sorts_v67.make_hud(hud_v28)
 	if arcanelle_v67 == null:

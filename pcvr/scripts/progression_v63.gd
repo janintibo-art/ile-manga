@@ -601,6 +601,12 @@ func vr_tick(delta: float) -> void:
 	var rh: Node = main.right_hand
 	var lh: Node = main.left_hand
 	var b_now: bool = rh.is_button_pressed("by_button")
+	# V220 : B est mené par la roue de la main droite (tapé : lancer ; tenu : la roue des pouvoirs), sauf dans
+	# l'eau, où il garde son usage d'avant
+	var roue220: Node = main.get("roue_armes_v220")
+	if roue220 != null and not bool(roue220.b_comme_avant()):
+		b_now = false
+		_vr_b = -1.0
 	if b_now:
 		if _vr_b < 0.0:
 			_vr_b = 0.0

@@ -54685,6 +54685,16 @@
   "Tu croques le Rieur. Il a un goût de terre et de noisette… Rien. Rien du tout. Et puis le sol se met à respirer, doucement, comme un gros chat endormi.": "You bite into the Giggler. It tastes of earth and hazelnut… Nothing. Nothing at all. And then the ground starts to breathe, gently, like a big sleeping cat.",
   "Le Rieur fond sur la langue. Une seconde plus tard, une couleur que tu ne connaissais pas te passe devant les yeux, et tu ris. Tu ne sais pas pourquoi. C'est très drôle de ne pas savoir pourquoi.": "The Giggler melts on your tongue. A second later, a colour you'd never seen drifts past your eyes, and you laugh. You don't know why. Not knowing why is very funny.",
   "Les couleurs reviennent à leur place, les murs arrêtent de respirer. Tu as soif, et un peu faim. Quelque part, quelqu'un rit encore. Ah non : c'est toi.": "The colours go back where they belong, the walls stop breathing. You're thirsty, and a bit hungry. Somewhere, someone is still laughing. Oh, no: it's you.",
-  "(Mère Morille te l'a dit : un seul, assis quelque part de doux, avec des amis autour. Et dans la vraie forêt : JAMAIS.)": "(Mère Morille told you: just one, sitting somewhere soft, with friends around. And in a real forest: NEVER.)"
+  "(Mère Morille te l'a dit : un seul, assis quelque part de doux, avec des amis autour. Et dans la vraie forêt : JAMAIS.)": "(Mère Morille told you: just one, sitting somewhere soft, with friends around. And in a real forest: NEVER.)",
+  "Mains nues": "Bare hands",
+  "Mains nues.": "Bare hands.",
+  "Rien d'autre à tenir pour l'instant.": "Nothing else to hold for now.",
+  "Ce pouvoir dort encore : un des quatre sceaux de la grande île le garde.": "This power still sleeps: one of the four seals of the great island guards it.",
+  "Dans le casque : gardez la poignée droite serrée pour changer d'arme (un coup bref : l'arme d'avant) ; gardez la gâchette gauche pour changer de sort ; gardez B pour changer de pouvoir.": "In the headset: keep the right grip squeezed to change weapon (a quick squeeze: the previous weapon); hold the left trigger to change spell; hold B to change power.",
+  "Astuce : en VR, la poignée droite tenue ouvre la roue des armes autour de la main ; un coup bref reprend l'arme d'avant.": "Tip: in VR, holding the right grip opens the weapon wheel around your hand; a quick squeeze brings back the previous weapon.",
+  "Astuce : en VR, B tenu ouvre la roue des pouvoirs ; B tapé lance le pouvoir choisi.": "Tip: in VR, holding B opens the power wheel; a quick press casts the chosen power.",
+  "dégâts : %d": "damage: %d",
+  "Pouvoir choisi : %s (B pour le lancer)": "Power chosen: %s (B to cast it)",
+  "Astuce : en VR, pour refermer une roue sans rien choisir, éloignez la main.": "Tip: in VR, to close a wheel without choosing anything, move your hand away."
  }
 }
