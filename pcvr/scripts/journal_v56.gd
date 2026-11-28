@@ -1915,7 +1915,7 @@ func _process(delta: float) -> void:
 				if all_taken:
 					_advance(qid)
 			"etat":
-				var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
+				var tr: Dictionary = main._trouvailles_v218() if main.has_method("_trouvailles_v218") else main._npc_ctx_v31().get("trouvailles", {})
 				if int(tr.get(str(e["cle"]), 0)) > 0:
 					_advance(qid)
 			"quetes":

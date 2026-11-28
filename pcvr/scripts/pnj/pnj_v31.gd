@@ -1039,6 +1039,25 @@ func _route_to(goal: String) -> Array:
 
 # =================================================================== comportement
 
+## V218 : endormi loin du joueur (et pas en pleine conversation) : la veille (veille_v218.gd) peut ne plus
+## l'appeler à chaque image ; elle le visite deux fois par seconde, et il se réveille de lui-même.
+## Un habitant sans sommeil (Barnabé, Octave, Lyra… : leur vie continue où que soit le joueur) passe au
+## ralenti au-delà de la distance où l'on ne le dessine plus : il continue de vivre, par visites.
+const VEILLE_SANS_SOMMEIL_V218 := 340.0
+
+
+func veille_dist_v218() -> float:
+	return sleep_far if sleep_far > 0.0 else VEILLE_SANS_SOMMEIL_V218
+
+
+func ralenti_ok_v218() -> bool:
+	if state == "parle":
+		return false
+	if sleep_far > 0.0:
+		return _asleep
+	return main != null and global_position.distance_to(main._player_pos_v27()) > VEILLE_SANS_SOMMEIL_V218 + 10.0
+
+
 func _process(delta: float) -> void:
 	if sleep_far > 0.0:
 		var far: bool = global_position.distance_to(main._player_pos_v27()) > sleep_far

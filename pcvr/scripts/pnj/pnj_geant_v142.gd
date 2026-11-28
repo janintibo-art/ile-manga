@@ -200,6 +200,12 @@ func _anim(name_anim: String, blend: float = 0.6, speed: float = 1.0) -> void:
 
 # =================================================================== la vie
 
+## V218 : un géant n'a pas de sommeil de loin (sa vie continue) ; mais au-delà de la distance où son corps
+## n'est plus dessiné (veille + 85 m), la veille le fait vivre par visites au lieu de chaque image.
+func ralenti_ok_v218() -> bool:
+	return etat != "parle" and main != null and global_position.distance_to(main._player_pos_v27()) > sleep_far + 100.0
+
+
 func _process(delta: float) -> void:
 	if main == null or geants == null:
 		return

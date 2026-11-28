@@ -209,6 +209,9 @@ func _entree(b: Kit.Batch, t: Dictionary, rng: RandomNumberGenerator) -> void:
 	b.box_at("metal_noir", f + n * 1.0 + Vector3.UP * 0.005, Vector3(2.6, 0.012, 1.6), yaw)
 
 
+var _filet_v218: float = 0.0
+
+
 func _process(delta: float) -> void:
 	if main == null:
 		return
@@ -249,7 +252,11 @@ func _process(delta: float) -> void:
 		if not rr.grow(3.0).has_point(Vector2(pq.x, pq.z)) or absf(pq.y - float(info.get("y", pq.y))) > 6.0:
 			sortir_vite()
 		# le filet de sécurité : dehors, on n'est jamais coincé dans une tour (une sauvegarde faite dedans…)
-	if inside < 0 and not busy and _grace <= 0.0 and int(_t * 2.0) % 2 == 0:
+	# (V218 : ce filet était tendu à chaque image, une demi-seconde sur deux, en parcourant toutes les tours ;
+	# quatre fois par seconde suffisent, et il réagit plus vite qu'avant)
+	_filet_v218 -= delta
+	if inside < 0 and not busy and _grace <= 0.0 and _filet_v218 <= 0.0:
+		_filet_v218 = 0.25
 		var p: Vector3 = main._player_pos_v27()
 		var t: Dictionary = tour_at(p)
 		if not t.is_empty() and p.y < IleScript.Y0 + float(t["b"]["h"]) - 0.5:

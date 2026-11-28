@@ -324,6 +324,11 @@ func _pir_accessories(data: Dictionary) -> void:
 
 # =================================================================== chaque image
 
+## V218 : jamais au ralenti en pleine bagarre, ni étendu par terre.
+func ralenti_ok_v218() -> bool:
+	return ko_left <= 0.0 and _ko_phase == "" and fight.is_empty() and super.ralenti_ok_v218()
+
+
 func _process(delta: float) -> void:
 	if ko_left > 0.0 or _ko_phase != "":
 		_ko_tick(delta)

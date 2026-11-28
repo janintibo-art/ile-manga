@@ -25,7 +25,41 @@ static func _game_version() -> String:
 	var n: String = str(ProjectSettings.get_setting("application/config/name", ""))
 	return n.get_slice(" ", n.get_slice_count(" ") - 1)
 
+## V218 : la sauvegarde automatique figeait le jeu 45 à 100 ms toutes les 90 secondes (dans le casque :
+## plusieurs images perdues d'un coup). Le plus long n'était pas de rassembler la partie, mais de l'écrire :
+## la mettre en texte, écrire le fichier, le relire pour le vérifier, relire l'ancien, les renommer. Cette
+## écriture se fait maintenant à part (sur un autre cœur), sur une copie de la partie prise à l'instant de
+## la sauvegarde ; le jeu continue. C'est la même écriture sûre qu'avant (fichier temporaire, vérifié, puis
+## mis à la place de l'ancien, gardé en .bak). Tout ce qui touche aux fichiers de sauvegarde (lire, écrire,
+## effacer) attend d'abord la fin d'une écriture en cours : jamais deux à la fois.
+static var _tache_v218: int = -1            # l'écriture en cours (WorkerThreadPool), ou -1
+static var _tache_ok_v218: bool = true      # la dernière écriture à part a-t-elle réussi ?
+
+
+## Attend la fin de l'écriture en cours, s'il y en a une.
+static func attendre_v218() -> void:
+	if _tache_v218 >= 0:
+		WorkerThreadPool.wait_for_task_completion(_tache_v218)
+		_tache_v218 = -1
+
+
+## L'écriture à part est-elle finie ? (vrai aussi s'il n'y en a pas)
+static func tache_finie_v218() -> bool:
+	if _tache_v218 < 0:
+		return true
+	if not WorkerThreadPool.is_task_completed(_tache_v218):
+		return false
+	WorkerThreadPool.wait_for_task_completion(_tache_v218)
+	_tache_v218 = -1
+	return true
+
+
+static func tache_reussie_v218() -> bool:
+	return _tache_ok_v218
+
+
 static func read_slot(slot: int) -> Dictionary:
+	attendre_v218()
 	if slot < 0 or slot > SLOT_COUNT:
 		return {}
 	var path: String = path_for(slot)
@@ -46,10 +80,30 @@ static func read_slot(slot: int) -> Dictionary:
 ## V72 : écriture sûre : un fichier temporaire, vérifié, puis mis à la place de l'ancien (gardé en
 ## .bak) ; une coupure en pleine écriture ne détruit plus la partie.
 static func write_slot(slot: int, position: Vector3, facing: float, seconds: float, extra: Dictionary = {}) -> bool:
+	attendre_v218()
 	if slot < 0 or slot > SLOT_COUNT:
 		return false
 	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(SAVE_DIR)) != OK:
 		return false
+	return _ecrire_v218(slot, _donnees_v218(slot, position, facing, seconds, extra))
+
+
+## V218 : la même sauvegarde, écrite à part (la sauvegarde automatique). Vrai si elle est partie ; son
+## résultat se lit ensuite avec tache_finie_v218() puis tache_reussie_v218().
+static func write_slot_en_tache_v218(slot: int, position: Vector3, facing: float, seconds: float, extra: Dictionary = {}) -> bool:
+	attendre_v218()
+	if slot < 0 or slot > SLOT_COUNT:
+		return false
+	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(SAVE_DIR)) != OK:
+		return false
+	# une copie complète, prise maintenant : le jeu peut continuer de changer la partie pendant l'écriture
+	var copie: Dictionary = _donnees_v218(slot, position, facing, seconds, extra).duplicate(true)
+	_tache_ok_v218 = true
+	_tache_v218 = WorkerThreadPool.add_task(func(): _tache_ok_v218 = _ecrire_v218(slot, copie), false, "sauvegarde automatique")
+	return true
+
+
+static func _donnees_v218(slot: int, position: Vector3, facing: float, seconds: float, extra: Dictionary) -> Dictionary:
 	var data: Dictionary = {
 		"format": 1,
 		"jeu": _game_version(),
@@ -62,6 +116,10 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 	}
 	for key in extra:
 		data[key] = extra[key]
+	return data
+
+
+static func _ecrire_v218(slot: int, data: Dictionary) -> bool:
 	var path: String = path_for(slot)
 	var tmp: String = path + ".tmp"
 	var text: String = JSON.stringify(data)
@@ -98,6 +156,7 @@ static func write_slot(slot: int, position: Vector3, facing: float, seconds: flo
 	return true
 
 static func delete_slot(slot: int) -> bool:
+	attendre_v218()
 	if slot < 1 or slot > SLOT_COUNT:
 		return false
 	_cache.erase(path_for(slot))

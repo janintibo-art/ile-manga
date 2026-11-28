@@ -41,6 +41,20 @@ var _regard := Vector3.INF
 var _tour: int = 0
 var _file: Array = []                   # le recensement en cours : les objets pas encore rangés
 var _attente: float = -1.0
+# V218 : le contrôle suit le regard (ce qu'on voit ou non ne dépend que de la place du regard). Regard en
+# marche : juste assez d'objets par image pour finir un tour avant d'avoir parcouru 3 m (la marge du disque
+# est de 5 m) ; PAR_IMAGE reste le plafond (en vol rapide, comme avant). Regard immobile (à 0,75 m près) et
+# tour complet fait : un petit contrôle de fond seulement (8 objets par image : ce qui bouge sur l'île — un
+# habitant, une nacelle — est revu toutes les quelques secondes).
+const IMMOBILE_V218 := 0.75             # m
+const TOUR_SUR_V218 := 3.0              # m : un tour complet avant que le regard ait fait ce chemin
+const PAR_IMAGE_MIN_V218 := 8
+var a_controler_v218: int = 0           # objets des îles « actives » (celles dont on est dessous), au dernier contrôle
+var par_image_v218: int = 0             # combien d'objets ont été contrôlés à la dernière image (pour les essais)
+var _repere_v218 := Vector3.INF         # le regard au début du tour en cours
+var _vus_v218: int = 0                  # objets vus depuis le début du tour
+var _oeil_v218 := Vector3.INF
+var _vitesse_v218: float = 0.0
 
 
 func setup(main_node: Node) -> void:
@@ -206,6 +220,9 @@ func controler(e: Vector3, n: int) -> void:
 			actives.append(il)
 		else:
 			_montrer_ile(il)
+	a_controler_v218 = 0
+	for il1 in actives:
+		a_controler_v218 += (il1["objets"] as Array).size()
 	if actives.is_empty():
 		return
 	var reste: int = n
@@ -255,4 +272,18 @@ func _process(delta: float) -> void:
 	var cam: Camera3D = get_viewport().get_camera_3d()
 	if cam == null:
 		return
-	controler(cam.global_position, PAR_IMAGE)
+	var e: Vector3 = cam.global_position
+	if _oeil_v218 != Vector3.INF and delta > 0.0:
+		var v: float = e.distance_to(_oeil_v218) / delta
+		if v < 400.0:
+			_vitesse_v218 = lerpf(_vitesse_v218, v, clampf(delta * 6.0, 0.0, 1.0))
+	_oeil_v218 = e
+	if _repere_v218 == Vector3.INF or e.distance_to(_repere_v218) > IMMOBILE_V218:
+		_repere_v218 = e
+		_vus_v218 = 0
+	var n: int = PAR_IMAGE_MIN_V218
+	if _vus_v218 < a_controler_v218:
+		n = clampi(int(ceil(float(a_controler_v218) * maxf(_vitesse_v218, 1.0) * delta / TOUR_SUR_V218)), PAR_IMAGE_MIN_V218, PAR_IMAGE)
+		_vus_v218 += n
+	par_image_v218 = n
+	controler(e, n)

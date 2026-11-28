@@ -37,6 +37,10 @@ var vue_v199: Node                         # V199 : la vue VR (dans la peau / de
 var parachute_v201: Node3D                 # V201 : le parachute (le Saut des Nuées)
 var allege_v211: Node                      # V211 : le détail allégé de loin, progressivement
 var cache_v215: Node                       # V215 : ce qu'on ne peut pas voir n'est pas dessiné
+var veille_v218: Node                      # V218 : ce qui est loin du joueur ne travaille plus à chaque image
+var _sauve_a_part_v218: bool = false       # V218 : une sauvegarde automatique est en train de s'écrire à part
+var _pres_npc_v218: Node3D                 # V218 : l'habitant le plus proche, cherché une fois par pas de physique
+var _pres_npc_pas_v218: int = -1
 var fluidite_v199: Node                    # V199 : la fluidité en VR (optimisée / détail maximum)
 var posture_v205: Node                     # V205 : jouer debout ou assis en VR
 var socle_v205: Node3D                     # V205 : le socle du joueur VR (monté quand on joue assis)
@@ -243,6 +247,17 @@ func _ready() -> void:
 	cache_v215 = preload("res://scripts/cache_v215.gd").new()
 	add_child(cache_v215)
 	cache_v215.setup(self)
+	# V218 : ce qui est loin du joueur ne travaille plus à chaque image (les habitants endormis ou rentrés
+	# chez eux, les particules hors de portée) : voir veille_v218.gd
+	veille_v218 = preload("res://scripts/veille_v218.gd").new()
+	add_child(veille_v218)
+	veille_v218.setup(self)
+	# (les décors animés d'Ombrelac — créatures, feux follets, horloge, astrolabe, feux des cheminées — ne
+	# s'animent plus quand le joueur est à plus d'un kilomètre du château)
+	if ombrelac_ext != null and ombrelac_ext.get("ile") != null and ombrelac_ext.ile != null:
+		veille_v218.decor_lointain(ombrelac_ext, ombrelac_ext.ile.CENTER, float(ombrelac_ext.ile.HALF) + 600.0,
+			["creatures_ombrelac.gd", "sortileges_ombrelac.gd", "astrolabe_ombrelac.gd", "horloge_ombrelac.gd", "grosse_tour_ombrelac.gd",
+			"interieurs_ombrelac.gd", "bibliotheque_ombrelac.gd", "salles_ombrelac.gd", "dortoirs_ombrelac.gd"])
 	# V131 : le monde est prêt : tout se remet à vivre, l'écran de chargement s'efface
 	get_tree().paused = false
 	chargement_v131.finir()
@@ -1539,7 +1554,15 @@ func _delete_slot(slot: int) -> void:
 	print("ILE_MANGA_DELETE: ", slot, " = ", SaveStore.delete_slot(slot))
 
 
-func _save_slot(slot: int) -> bool:
+## V218 : on quitte le jeu : une sauvegarde automatique en train de s'écrire à part se termine d'abord.
+func _exit_tree() -> void:
+	SaveStore.attendre_v218()
+
+
+## V218 : « a_part » (la sauvegarde automatique) : la partie est rassemblée ici, à l'instant, comme toujours ;
+## mais son écriture dans le fichier (le plus long : 45 à 100 ms d'arrêt dans le casque) se fait à part,
+## pendant que le jeu continue. Voir save_manager.gd.
+func _save_slot(slot: int, a_part: bool = false) -> bool:
 	if not game_started:
 		return false
 	var origin: Node3D = xr_origin if xr_active else pc_root
@@ -1684,7 +1707,12 @@ func _save_slot(slot: int) -> bool:
 	# V90 : dans une grotte du Clan, on se réveillera devant son entrée
 	if pixel_v90 != null and pixel_v90.get("grottes") != null and pixel_v90.grottes.inside:
 		save_pos = pixel_v90.grottes.outside()[0]
-	var ok: bool = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
+	var ok: bool = false
+	if a_part:
+		ok = SaveStore.write_slot_en_tache_v218(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
+		_sauve_a_part_v218 = ok
+	else:
+		ok = SaveStore.write_slot(slot, save_pos, origin.rotation.y, game_menu.seconds, extra)
 	print("ILE_MANGA_SAVE: ", slot, " = ", ok)
 	# V83 : une sauvegarde ratée se voit (la sauvegarde automatique aussi, si elle échoue)
 	if not ok:
@@ -1721,8 +1749,13 @@ func _physics_process(delta: float) -> void:
 		return
 	autosave_clock += delta
 	if autosave_clock >= 90.0:
-		_save_slot(0)
+		_save_slot(0, true)
 		autosave_clock = 0.0
+	# V218 : l'écriture à part de la sauvegarde automatique est finie : si elle a échoué, on le dit (V83)
+	if _sauve_a_part_v218 and SaveStore.tache_finie_v218():
+		_sauve_a_part_v218 = false
+		if not SaveStore.tache_reussie_v218():
+			_show_message_v28("La sauvegarde a échoué (disque plein ou dossier protégé ?). Ta partie précédente est intacte.")
 	if aeronef_v76 != null and aeronef_v76.riding:
 		# V76 : à bord de son aéronef (de l'Alouette au Glisseur stellaire)
 		aeronef_v76.ride_tick(delta)
@@ -3770,16 +3803,36 @@ func _tree_spot_v33() -> Dictionary:
 
 
 func _nearest_npc_v31() -> Node3D:
+	# V218 : cherché une seule fois par pas de physique (en VR, la question était posée trois fois de suite),
+	# et seulement parmi les habitants éveillés (ceux qui dorment sont à plus de 70 m, ou rentrés chez eux)
+	var pas218: int = Engine.get_physics_frames()
+	if pas218 == _pres_npc_pas_v218 and (_pres_npc_v218 == null or is_instance_valid(_pres_npc_v218)):
+		return _pres_npc_v218
+	_pres_npc_pas_v218 = pas218
+	_pres_npc_v218 = _nearest_npc_calcul_v218()
+	return _pres_npc_v218
+
+
+func _nearest_npc_calcul_v218() -> Node3D:
 	var p: Vector3 = _player_pos_v27()
 	var best: Node3D = null
 	var best_d: float = 2.8
 	# V42 : au milieu de la foule elfe, on parle de préférence à celui qu'on regarde.
 	var look: Vector3 = hero_v28.facing if hero_v28 != null else Vector3.ZERO
-	for npc in npcs_v31:
+	var parmi: Array = npcs_v31
+	if veille_v218 != null and veille_v218.actif and veille_v218._connus == npcs_v31.size():
+		parmi = veille_v218.eveilles
+	for npc in parmi:
+		if not is_instance_valid(npc) or not npc.is_inside_tree():
+			continue
+		# V218 : d'abord la distance (une soustraction), ensuite seulement les questions qui coûtent
+		var gp: Vector3 = npc.global_position
+		var off := Vector2(gp.x - p.x, gp.z - p.z)
+		if absf(off.x) > 12.5 or absf(off.y) > 12.5:
+			continue
 		# V68 : pas à un habitant rentré chez lui, ni en pleine bagarre (ni étendu par terre)
 		if not npc.visible or (npc.has_method("can_talk") and not npc.can_talk()):
 			continue
-		var off := Vector2(npc.global_position.x - p.x, npc.global_position.z - p.z)
 		var d: float = off.length()
 		# V142 : à un géant, on parle de plus loin (il s'agenouille)
 		var reach: float = 2.8
@@ -3787,7 +3840,7 @@ func _nearest_npc_v31() -> Node3D:
 		if npc.get("talk_reach") != null:
 			reach = float(npc.get("talk_reach"))
 			dy_max = 9.0
-		if d >= reach or absf(npc.global_position.y - p.y) >= dy_max:
+		if d >= reach or absf(gp.y - p.y) >= dy_max:
 			continue
 		var score: float = d * 2.8 / reach
 		if d > 0.05:
@@ -3816,25 +3869,12 @@ func _giftable_v72() -> Array:
 	return out
 
 
-## État du jeu que le personnage peut « voir » : objets portés, arme, vie, temps.
-func _npc_ctx_v31() -> Dictionary:
-	var noms := {}
-	var arts := {}
-	for id in inventory_v28.ITEMS:
-		noms[id] = str(inventory_v28.ITEMS[id]["name"])
-		arts[id] = str(inventory_v28.ITEMS[id].get("art", noms[id]))
-	return {
-		"now": game_menu.seconds if game_menu != null else 0.0,
-		"objets": inventory_v28.counts() if inventory_v28 != null else {},
-		"arme": inventory_v28.equipped if inventory_v28 != null else "",
-		"vie": hero_v28.hp if hero_v28 != null else 10,
-		"offrables": _giftable_v72(),
-		"vie_max": hero_v28.HP_MAX if hero_v28 != null else 10,
-		"noms": noms, "articles": arts,
-		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
-		"vr": xr_active,
-		"rencontres": _encounters_v33(),
-		"trouvailles": {"mouette": 1 if digging_v33 != null and digging_v33.mouette_found else 0,
+## V218 : les « trouvailles » seules (ce que le joueur a déjà fait dans le monde : une clé par aventure).
+## Le voyage rapide, l'expérience, les quêtes du carnet et la carte ne veulent qu'elles, une fois par seconde
+## chacun ; ils demandaient tout l'état du jeu (les noms de tous les objets, les 540 habitants rencontrés ou
+## non, les quêtes…) : plusieurs millisecondes à chaque fois, pour n'en lire qu'un morceau.
+func _trouvailles_v218() -> Dictionary:
+	return {"mouette": 1 if digging_v33 != null and digging_v33.mouette_found else 0,
 			"tresors": digging_v33.treasures_total if digging_v33 != null else 0,
 			"arbres": bucheron_v34.total_cut if bucheron_v34 != null else 0,
 			"trappe_village": int(donjon_v35.state["trappe_village"]) if donjon_v35 != null else 0,
@@ -3883,7 +3923,34 @@ func _npc_ctx_v31() -> Dictionary:
 			"perles_3": 1 if mer_v55 != null and mer_v55.pearls_found() >= 3 else 0,
 			"cristal": 1 if mer_v55 != null and bool(mer_v55.state["cristal"]) else 0,
 			"palmes": 1 if mer_v55 != null and mer_v55.has_fins() else 0,
-			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(perchee_v146.trouvailles() if perchee_v146 != null and perchee_v146.ile != null else {}).merged(foraine_v209.trouvailles() if foraine_v209 != null and foraine_v209.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {}),
+			"azur": 1 if azur_v56 != null and bool(azur_v56.state.get("visite", false)) else 0}.merged(feerie_v58.trouvailles() if feerie_v58 != null else {}).merged(grande_v59.trouvailles() if grande_v59 != null else {}).merged(arcanelle_v67.trouvailles() if arcanelle_v67 != null and arcanelle_v67.bourg != null else {}).merged(pirates_v68.trouvailles() if pirates_v68 != null and pirates_v68.port != null else {}).merged(soleils_v69.trouvailles() if soleils_v69 != null and soleils_v69.egypte != null else {}).merged(braise_v70.trouvailles() if braise_v70 != null and braise_v70.city != null else {}).merged(montjoie_v71.trouvailles() if montjoie_v71 != null and montjoie_v71.city != null else {}).merged(boucan_v75.trouvailles() if boucan_v75 != null and boucan_v75.city != null else {}).merged(astralys_v76.trouvailles() if astralys_v76 != null and astralys_v76.city != null else {}).merged(moai_v87.trouvailles() if moai_v87 != null and moai_v87.ile != null else {}).merged(pixel_v90.trouvailles() if pixel_v90 != null and pixel_v90.ile != null else {}).merged(larsen_v91.trouvailles() if larsen_v91 != null and larsen_v91.ile != null else {}).merged(neo_v94.trouvailles() if neo_v94 != null and neo_v94.ile != null else {}).merged(pasta_v97.trouvailles() if pasta_v97 != null and pasta_v97.ile != null else {}).merged(crayon_v99.trouvailles() if crayon_v99 != null and crayon_v99.ile != null else {}).merged(hautefond_v112.trouvailles() if hautefond_v112 != null and hautefond_v112.ile != null else {}).merged(sombreval_v121.trouvailles() if sombreval_v121 != null and sombreval_v121.ile != null else {}).merged(geants_v142.trouvailles() if geants_v142 != null and geants_v142.ile != null else {}).merged(perchee_v146.trouvailles() if perchee_v146 != null and perchee_v146.ile != null else {}).merged(foraine_v209.trouvailles() if foraine_v209 != null and foraine_v209.ile != null else {}).merged(compagnons_animaux_v76.trouvailles() if compagnons_animaux_v76 != null else {}).merged(aeronef_v76.trouvailles() if aeronef_v76 != null else {}).merged(atelier_ailes_v76.trouvailles() if atelier_ailes_v76 != null else {}).merged(chantier_v76.trouvailles() if chantier_v76 != null and chantier_v76.built else {})
+
+
+## V218 : les noms et les articles des objets ne changent jamais : on les range une fois.
+var _noms_objets_v218: Dictionary = {}
+var _articles_objets_v218: Dictionary = {}
+
+
+## État du jeu que le personnage peut « voir » : objets portés, arme, vie, temps.
+func _npc_ctx_v31() -> Dictionary:
+	if _noms_objets_v218.size() != inventory_v28.ITEMS.size():
+		for id in inventory_v28.ITEMS:
+			_noms_objets_v218[id] = str(inventory_v28.ITEMS[id]["name"])
+			_articles_objets_v218[id] = str(inventory_v28.ITEMS[id].get("art", _noms_objets_v218[id]))
+	var noms: Dictionary = _noms_objets_v218
+	var arts: Dictionary = _articles_objets_v218
+	return {
+		"now": game_menu.seconds if game_menu != null else 0.0,
+		"objets": inventory_v28.counts() if inventory_v28 != null else {},
+		"arme": inventory_v28.equipped if inventory_v28 != null else "",
+		"vie": hero_v28.hp if hero_v28 != null else 10,
+		"offrables": _giftable_v72(),
+		"vie_max": hero_v28.HP_MAX if hero_v28 != null else 10,
+		"noms": noms, "articles": arts,
+		"peche": fishing_v32.serialize() if fishing_v32 != null else {},
+		"vr": xr_active,
+		"rencontres": _encounters_v33(),
+		"trouvailles": _trouvailles_v218(),
 		"heure": temps_v56.hour if temps_v56 != null else 12.0,
 		"q56": journal_v56.ctx_states() if journal_v56 != null else {},
 		"rep": journal_v56.reputation if journal_v56 != null else 0,

@@ -307,7 +307,7 @@ func on_chest(at: Vector3) -> void:
 func _poll_finds() -> void:
 	if main == null or not main.has_method("_npc_ctx_v31"):
 		return
-	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
+	var tr: Dictionary = main._trouvailles_v218() if main.has_method("_trouvailles_v218") else main._npc_ctx_v31().get("trouvailles", {})
 	var total: int = 0
 	var names: Array = []
 	for k in tr:

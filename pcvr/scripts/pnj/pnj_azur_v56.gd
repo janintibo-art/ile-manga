@@ -723,6 +723,14 @@ func is_hittable() -> bool:
 
 # =================================================================== chaque image
 
+## V218 : rentré chez lui, ou endormi loin du joueur : la veille le visite deux fois par seconde (son agenda
+## continue : il sort à l'heure).
+func ralenti_ok_v218() -> bool:
+	if azur == null or agenda.is_empty():
+		return super.ralenti_ok_v218()
+	return (hidden_home or _asleep) and state != "parle"
+
+
 func _process(delta: float) -> void:
 	if azur == null or agenda.is_empty():
 		super._process(delta)

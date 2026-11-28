@@ -464,6 +464,116 @@ func find_path(from: Vector3, to: Vector3) -> Array:
 	return out
 
 
+## V218 : la même recherche, étalée sur plusieurs images. Chercher la route d'un bateau prenait jusqu'à
+## plusieurs dizaines de millisecondes d'un seul coup (une saccade dans le casque, à chaque départ de
+## navette ou de voilier) : elle se fait maintenant par tranches d'une milliseconde, une par image. Le
+## bateau attendait déjà sa route ; il l'a une demi-seconde plus tard. Le résultat est le même.
+const BUDGET_US_V218 := 1000
+var _tranche_v218: int = 0
+
+
+func _souffler_v218() -> void:
+	if Time.get_ticks_usec() - _tranche_v218 > BUDGET_US_V218:
+		await get_tree().process_frame
+		_tranche_v218 = Time.get_ticks_usec()
+
+
+func _clear_line_etale_v218(a: Vector3, b: Vector3) -> bool:
+	var d: float = Vector2(b.x - a.x, b.z - a.z).length()
+	var n: int = maxi(1, int(d / 5.0))
+	for i in range(1, n):
+		var p: Vector3 = a.lerp(b, float(i) / n)
+		if main._height_at(p.x, p.z) > -2.0:
+			return false
+		if i % 16 == 0:
+			await _souffler_v218()
+	return true
+
+
+func find_path_etale_v218(from: Vector3, to: Vector3) -> Array:
+	_tranche_v218 = Time.get_ticks_usec()
+	if await _clear_line_etale_v218(from, to):
+		return [to]
+	var s: int = _cell(from)
+	var g: int = _cell(to)
+	var n: int = GRID_N * GRID_N
+	var cost := PackedFloat32Array()
+	cost.resize(n)
+	cost.fill(1e20)
+	var came := PackedInt32Array()
+	came.resize(n)
+	came.fill(-1)
+	var closed := PackedByteArray()
+	closed.resize(n)
+	var free_r: float = 3.0
+	var heap_f := PackedFloat32Array()
+	var heap_c := PackedInt32Array()
+	cost[s] = 0.0
+	_hpush(heap_f, heap_c, 0.0, s)
+	var gx: int = g % GRID_N
+	var gz: int = g / GRID_N
+	var sx: int = s % GRID_N
+	var sz: int = s / GRID_N
+	var found: bool = false
+	var iters: int = 0
+	while heap_c.size() > 0 and iters < 60000:
+		iters += 1
+		if iters % 64 == 0:
+			await _souffler_v218()
+		var c: int = _hpop(heap_f, heap_c)
+		if closed[c] == 1:
+			continue
+		closed[c] = 1
+		if c == g:
+			found = true
+			break
+		var cx: int = c % GRID_N
+		var cz: int = c / GRID_N
+		for dz in [-1, 0, 1]:
+			for dx in [-1, 0, 1]:
+				if dx == 0 and dz == 0:
+					continue
+				var nx: int = cx + dx
+				var nz: int = cz + dz
+				if nx < 0 or nz < 0 or nx >= GRID_N or nz >= GRID_N:
+					continue
+				var nc: int = nz * GRID_N + nx
+				if closed[nc] == 1:
+					continue
+				if _grid[nc] == 1:
+					# près du départ et de l'arrivée (au pied des pontons), on passe quand même
+					if Vector2(nx - sx, nz - sz).length() > free_r and Vector2(nx - gx, nz - gz).length() > free_r:
+						continue
+				var step: float = 1.4142 if dx != 0 and dz != 0 else 1.0
+				var nv: float = cost[c] + step
+				if nv < cost[nc]:
+					cost[nc] = nv
+					came[nc] = c
+					var h: float = Vector2(nx - gx, nz - gz).length() * 1.2
+					_hpush(heap_f, heap_c, nv + h, nc)
+	if not found:
+		return [to]
+	var cells: Array = []
+	var k: int = g
+	while k != -1 and k != s:
+		cells.push_front(k)
+		k = came[k]
+	var pts: Array = [from]
+	for c2 in cells:
+		pts.append(_cell_pos(c2))
+	pts[pts.size() - 1] = to
+	# la corde tendue
+	var out: Array = []
+	var i: int = 0
+	while i < pts.size() - 1:
+		var j: int = i + 1
+		while j + 1 < pts.size() and await _clear_line_etale_v218(pts[i], pts[j + 1]):
+			j += 1
+		out.append(pts[j])
+		i = j
+	return out
+
+
 func _hpush(f: PackedFloat32Array, c: PackedInt32Array, v: float, id: int) -> void:
 	f.append(v)
 	c.append(id)
@@ -527,11 +637,8 @@ func _process(delta: float) -> void:
 	delta = minf(delta, 0.1)
 	if not _grid_ready:
 		_grid_step(3)
-	elif not _jobs.is_empty():
-		var job: Array = _jobs.pop_front()
-		var b: Dictionary = job[0]
-		var path: Array = find_path(job[1], job[2])
-		_on_path(b, path)
+	elif not _jobs.is_empty() and not _cherche_v218:
+		_chercher_v218(_jobs.pop_front())
 	var h: float = _hour()
 	var night: bool = h < 6.0 or h >= 22.0
 	if night != _night:
@@ -553,6 +660,18 @@ func _process(delta: float) -> void:
 	for p2 in _people:
 		if not (p2["walk"] as Array).is_empty():
 			_walk_tick(p2, delta)
+
+
+## V218 : une route à la fois, cherchée par tranches (voir find_path_etale_v218).
+var _cherche_v218: bool = false
+
+
+func _chercher_v218(job: Array) -> void:
+	_cherche_v218 = true
+	var path: Array = await find_path_etale_v218(job[1], job[2])
+	_cherche_v218 = false
+	if is_inside_tree():
+		_on_path(job[0], path)
 
 
 func _on_path(b: Dictionary, path: Array) -> void:

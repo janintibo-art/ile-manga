@@ -26,6 +26,8 @@ var actif: bool = true
 var genres: Dictionary = {}       # pnj -> genre ("" : rien)
 var signes: Dictionary = {}       # pnj -> Sprite3D
 var _i: int = 0
+var _avec_v218: Dictionary = {}   # V218 : les seuls habitants qui ont un signe en ce moment (pnj -> true)
+var _menage_v218: float = 0.0
 var _ctx: Dictionary = {}
 var _ctx_clock: float = 0.0
 static var _tex: Dictionary = {}
@@ -234,20 +236,41 @@ func _process(delta: float) -> void:
 		if n == null or not is_instance_valid(n):
 			continue
 		var d: float = (n as Node3D).global_position.distance_to(pp)
-		genres[n] = genre_de(n) if (actif and d < LOIN + 10.0) else ""
+		var g0: String = genre_de(n) if (actif and d < LOIN + 10.0) else ""
+		genres[n] = g0
+		# V218 : on ne repasse à chaque image que sur ceux qui ont un signe (une quarantaine au plus, et non
+		# les cinq cents habitants du monde) ; celui qui perd le sien est caché ici, une fois
+		if g0 == "":
+			if _avec_v218.has(n):
+				_avec_v218.erase(n)
+				if signes.has(n) and is_instance_valid(signes[n]):
+					(signes[n] as Sprite3D).visible = false
+		else:
+			_avec_v218[n] = true
+	# (de temps en temps : les habitants disparus quittent les listes)
+	_menage_v218 -= delta
+	if _menage_v218 <= 0.0:
+		_menage_v218 = 5.0
+		for n0 in genres.keys():
+			if not is_instance_valid(n0):
+				genres.erase(n0)
+				signes.erase(n0)
+				_avec_v218.erase(n0)
 	# les signes : visibles, flottants, cachés quand il le faut
 	var t: float = Time.get_ticks_msec() / 1000.0
 	var parle: Node = main.get("talking_npc_v31")
-	for n in genres.keys():
+	for n in _avec_v218.keys():
 		if not is_instance_valid(n):
 			genres.erase(n)
 			signes.erase(n)
+			_avec_v218.erase(n)
 			continue
 		var g: String = genres[n]
 		var npc: Node3D = n
 		if g == "":
 			if signes.has(npc) and is_instance_valid(signes[npc]):
 				(signes[npc] as Sprite3D).visible = false
+			_avec_v218.erase(n)
 			continue
 		var d2: float = npc.global_position.distance_to(pp)
 		var portee: float = PRES if g == "service" else LOIN

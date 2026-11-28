@@ -323,7 +323,7 @@ func _process(delta: float) -> void:
 	if here != "":
 		visited[here] = true
 	# les aventures déjà vécues (parties enregistrées avant la V58)
-	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
+	var tr: Dictionary = main._trouvailles_v218() if main.has_method("_trouvailles_v218") else main._npc_ctx_v31().get("trouvailles", {})
 	for pair in [["jungle", "trappe_jungle"], ["elfes", "ile_elfes"], ["nains", "ile_nains"], ["ciel", "citadelle"], ["azur", "azur"], ["atlantide", "atlantide"], ["fees", "royaume_fees"], ["carene", "grande_ile"], ["porte_sceaux", "porte_sceaux"], ["tazira", "tazira"], ["cliquetis", "cliquetis"], ["ramure", "ramure"], ["arcanelle", "arcanelle"], ["balafre", "balafre"], ["per_hapy", "soleils_egypte"], ["yaxche", "soleils_maya"], ["aztlan", "soleils_azteque"], ["pandemonia", "pandemonia"], ["montjoie", "montjoie_ville"], ["montjoie_port", "montjoie"], ["boucan", "boucan_ville"], ["boucan_port", "boucan"], ["astralys", "astralys_ville"], ["astralys_bouee", "astralys"], ["moai", "moai"], ["pixel", "pixel"], ["larsen", "larsen"], ["neo", "neo"], ["pasta", "pasta"], ["crayon", "crayon"], ["sombreval", "sombreval"], ["geants", "geants"], ["perchee", "perchee"], ["hautefond", "hautefond_ville"], ["hautefond_port", "hautefond"], ["nuees", "nuees"], ["strates", "strates"], ["fronde", "fronde"], ["dome", "dome"], ["foraine", "foraine"]]:
 		if int(tr.get(str(pair[1]), 0)) > 0:
 			visited[str(pair[0])] = true

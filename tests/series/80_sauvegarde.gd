@@ -52,6 +52,28 @@ func _serie() -> void:
 	_ok(not relu.is_empty(), "partie abîmée : la copie de secours prend le relais")
 	_ok(_save_slot(1), "on resauvegarde par-dessus")
 	_ok(not Saves.read_slot(1).is_empty(), "la partie est de nouveau saine")
+	# --- V218 : la sauvegarde automatique s'écrit à part (sur un autre cœur) : même fichier que sur place
+	_ok(_save_slot(0), "sauvegarde automatique, écrite sur place")
+	var sur_place218: Dictionary = Saves.read_slot(0)
+	var pommes218: int = inventory_v28.count("pomme")
+	var t218: int = Time.get_ticks_usec()
+	_ok(_save_slot(0, true), "sauvegarde automatique, écrite à part : elle part")
+	var parti218: float = float(Time.get_ticks_usec() - t218) / 1000.0
+	# (la partie change aussitôt : ce qui s'écrit est la copie prise à l'instant de la sauvegarde)
+	inventory_v28.add("pomme", 5)
+	var a_part218: Dictionary = Saves.read_slot(0)          # (lire attend la fin de l'écriture)
+	_ok(Saves.tache_finie_v218() and Saves.tache_reussie_v218(), "l'écriture à part se termine et réussit (partie en %.1f ms)" % parti218)
+	for cle218 in ["saved_at", "play_seconds"]:
+		sur_place218.erase(cle218)
+		a_part218.erase(cle218)
+	_ok(not a_part218.is_empty() and JSON.stringify(sur_place218) == JSON.stringify(a_part218), "le fichier écrit à part est le même que le fichier écrit sur place (%d octets ; les 5 pommes ajoutées ensuite n'y sont pas)" % JSON.stringify(a_part218).length())
+	_ok(FileAccess.file_exists(Saves.path_for(0) + ".bak") and not FileAccess.file_exists(Saves.path_for(0) + ".tmp"), "la copie de secours est là, pas de fichier temporaire oublié")
+	# une sauvegarde à la main juste après une sauvegarde automatique : l'une après l'autre, les deux saines
+	_ok(_save_slot(0, true) and _save_slot(1), "une sauvegarde à la main juste derrière la sauvegarde automatique")
+	var auto218: Dictionary = Saves.read_slot(0)
+	var main218: Dictionary = Saves.read_slot(1)
+	_ok(not auto218.is_empty() and not main218.is_empty() and int(auto218.get("slot", -1)) == 0 and int(main218.get("slot", -1)) == 1, "les deux fichiers sont sains")
+	inventory_v28.remove("pomme", inventory_v28.count("pomme") - pommes218)
 	# --- Tout public / Public averti
 	var avant: bool = Public.averti()
 	Public.choisir("averti", false)

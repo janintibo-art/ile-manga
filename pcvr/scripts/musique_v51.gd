@@ -225,6 +225,9 @@ func jingle(name: String) -> void:
 
 # =================================================================== chaque image
 
+var _actifs_v218: Dictionary = {}      # V218 : les morceaux qui ont quelque chose à faire (nom -> true)
+
+
 func _process(delta: float) -> void:
 	if main == null:
 		return
@@ -232,11 +235,21 @@ func _process(delta: float) -> void:
 	if _tick <= 0.0:
 		_decide(0.25 - _tick)
 		_tick = 0.25
+		# V218 : quatre fois par seconde, on relève les morceaux qui ont quelque chose à faire (demandés, en
+		# train de jouer ou de s'éteindre) ; à chaque image on ne s'occupe que de ceux-là (un ou deux, sur
+		# plusieurs dizaines)
+		for k0 in tracks:
+			var t0: Dictionary = tracks[k0]
+			if float(t0["target"]) > 0.001 or float(t0["cur"]) > 0.001 or (t0["player"] as AudioStreamPlayer).playing:
+				_actifs_v218[k0] = true
 	var duck: float = 0.3 if _jingle.playing else 1.0
-	for k in tracks:
+	for k in _actifs_v218.keys():
 		var t: Dictionary = tracks[k]
 		var p: AudioStreamPlayer = t["player"]
 		var target: float = float(t["target"])
+		if target <= 0.001 and float(t["cur"]) <= 0.001 and not p.playing:
+			_actifs_v218.erase(k)
+			continue
 		# un morceau joué une fois s'éteint doucement avant sa fin
 		if p.playing and not (str(k) in LOOPED) and p.stream != null:
 			var left: float = p.stream.get_length() - p.get_playback_position()
@@ -369,6 +382,7 @@ func _start(name: String) -> void:
 	var t: Dictionary = tracks[name]
 	var p: AudioStreamPlayer = t["player"]
 	t["target"] = 1.0
+	_actifs_v218[name] = true
 	if p.stream == null:
 		return
 	if not p.playing:

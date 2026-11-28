@@ -54,6 +54,7 @@ var _look: Vector2 = Vector2.ZERO
 var _look_goal: Vector2 = Vector2.ZERO
 var _look_clock: float = 2.0
 var _path: Array = []                  # arrivée : [départ, contrôle, arrivée]
+var _pose_loin_v218: int = 0
 var _path_t: float = 0.0
 var _path_len: float = 1.0
 var _land_from: Vector3
@@ -770,6 +771,12 @@ func _physics_process(delta: float) -> void:
 		"atterrit":
 			_tick_landing(delta)
 	_look = _look.lerp(_look_goal, clampf(delta * 3.0, 0.0, 1.0))
+	# V218 : posée (ou enchaînée) à plus de 300 m du joueur, ses petits mouvements ne se voient pas : la pose
+	# n'est refaite que 6 fois par seconde (elle l'était à chaque pas de physique, où que soit le joueur)
+	if state in ["chaine", "perche"] and main != null and global_position.distance_squared_to(main._player_pos_v27()) > 90000.0:
+		_pose_loin_v218 += 1
+		if _pose_loin_v218 % 12 != 0:
+			return
 	_apply_pose()
 
 

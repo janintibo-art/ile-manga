@@ -367,6 +367,11 @@ func _race_tick(delta: float) -> void:
 	_play("Running", 0.2, v / 3.0)
 
 
+## V218 : jamais au ralenti en pleine course.
+func ralenti_ok_v218() -> bool:
+	return not racing and super.ralenti_ok_v218()
+
+
 func _process(delta: float) -> void:
 	if racing:
 		_race_tick(delta)

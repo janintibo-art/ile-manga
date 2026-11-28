@@ -479,10 +479,20 @@ func _tick_dog(delta: float) -> void:
 
 
 # --- les endroits à creuser brillent
+## V218 : la liste des endroits à creuser est relue trois fois par seconde (elle parcourait toutes les quêtes
+## du carnet à chaque image) ; le scintillement, lui, reste à chaque image.
+var _sparkles_t_v218: float = -10.0
+
+
 func _tick_sparkles() -> void:
 	var j: Node = main.get("journal_v56")
 	if j == null:
 		return
+	if absf(_clock - _sparkles_t_v218) < 0.33:
+		for sp0 in _sparkles.values():
+			(sp0 as MeshInstance3D).scale = Vector3.ONE * (0.6 + 0.4 * absf(sin(_clock * 3.0)))
+		return
+	_sparkles_t_v218 = _clock
 	var want: Array = j.dig_spots()
 	for w in want:
 		var key: String = str(Vector3i(w))

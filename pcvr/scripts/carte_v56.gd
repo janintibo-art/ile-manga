@@ -463,7 +463,7 @@ func _draw() -> void:
 		draw_rect(Rect2(tl, ts * _z()), Color(0.16, 0.36, 0.48))
 		draw_string(ThemeDB.fallback_font, size * 0.5, "(carte en préparation)", HORIZONTAL_ALIGNMENT_CENTER, -1, 20)
 	var j: Node = main.get("journal_v56")
-	var tr: Dictionary = main._npc_ctx_v31().get("trouvailles", {})
+	var tr: Dictionary = main._trouvailles_v218() if main.has_method("_trouvailles_v218") else main._npc_ctx_v31().get("trouvailles", {})
 	# les lieux
 	if mode == "archipel":
 		for pl in PLACES:

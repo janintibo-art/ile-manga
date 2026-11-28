@@ -1550,17 +1550,56 @@ func _say(text: String, seconds: float = 4.0) -> void:
 		main.combat_v28.float_text(head + f * 1.2 + Vector3.DOWN * 0.15, text, Color(1, 0.95, 0.8))
 
 
-func _current(p: Vector3) -> Dictionary:
+## V218 : le monde compte plus de cinq cents de ces points (portes, coffres, leviers de toutes les îles), et
+## l'on posait à chacun sa question (« as-tu les pots de couleur ? », « la porte est-elle ouverte ? ») à
+## chaque image, deux fois, où que soit le joueur. Maintenant : une liste courte des points proches du
+## joueur, refaite cinq fois par seconde (ou dès qu'il a fait deux pas, ou qu'un point apparaît) ; la
+## distance d'abord, la question seulement à celui qui est à portée ; et une seule recherche par pas de
+## physique. « exact » (quand on appuie pour agir) : la liste entière, comme avant.
+const PRES_MARGE_V218 := 6.0
+var _pres_v218: Array = []
+var _pres_t_v218: float = -1.0
+var _pres_n_v218: int = -1
+var _pres_p_v218 := Vector3.INF
+var _cur_pas_v218: int = -1
+var _cur_p_v218 := Vector3.INF
+var _cur_v218: Dictionary = {}
+
+
+func _current(p: Vector3, exact: bool = false) -> Dictionary:
+	var parmi: Array = _interactions
+	if not exact:
+		var pas: int = Engine.get_physics_frames()
+		if pas == _cur_pas_v218 and p == _cur_p_v218:
+			return _cur_v218
+		_cur_pas_v218 = pas
+		_cur_p_v218 = p
+		var t: float = Time.get_ticks_msec() * 0.001
+		if t - _pres_t_v218 > 0.2 or _pres_n_v218 != _interactions.size() or p.distance_squared_to(_pres_p_v218) > 4.0:
+			_pres_t_v218 = t
+			_pres_n_v218 = _interactions.size()
+			_pres_p_v218 = p
+			_pres_v218.clear()
+			for it0 in _interactions:
+				var q0: Vector3 = it0["pos"]
+				var r0: float = float(it0["radius"]) + PRES_MARGE_V218
+				# (un point « rangé » très bas sous terre attend qu'on le pose devant le joueur — l'objet devant
+				# lequel on se tient à Ombrelac, le pinceau de l'Île Crayonnée : il reste dans la liste)
+				if q0.y < -500.0 or (absf(q0.x - p.x) < r0 and absf(q0.z - p.z) < r0 and absf(q0.y - p.y) < 2.5 + PRES_MARGE_V218):
+					_pres_v218.append(it0)
+		parmi = _pres_v218
 	var best: Dictionary = {}
 	var best_d: float = INF
-	for it in _interactions:
-		if it.has("when") and not bool((it["when"] as Callable).call()):
-			continue
+	for it in parmi:
 		var q: Vector3 = it["pos"]
 		var d: float = Vector2(q.x - p.x, q.z - p.z).length()
 		if d < float(it["radius"]) and absf(q.y - p.y) < 2.5 and d < best_d:
+			if it.has("when") and not bool((it["when"] as Callable).call()):
+				continue
 			best_d = d
 			best = it
+	if not exact:
+		_cur_v218 = best
 	return best
 
 
@@ -1583,7 +1622,7 @@ func show_vr_hint(p: Vector3, on: bool) -> void:
 func interact(p: Vector3) -> bool:
 	if _busy:
 		return true
-	var it: Dictionary = _current(p)
+	var it: Dictionary = _current(p, true)
 	if it.is_empty():
 		return false
 	(it["call"] as Callable).call()

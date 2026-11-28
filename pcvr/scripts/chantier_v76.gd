@@ -809,8 +809,8 @@ func _found(key: String) -> bool:
 		return bool(force_found[key])
 	if main == null or not main.has_method("_npc_ctx_v31"):
 		return false
-	var ctx: Dictionary = main._npc_ctx_v31()
-	return int((ctx.get("trouvailles", {}) as Dictionary).get(key, 0)) > 0
+	var tr: Dictionary = main._trouvailles_v218() if main.has_method("_trouvailles_v218") else main._npc_ctx_v31().get("trouvailles", {})
+	return int(tr.get(key, 0)) > 0
 
 
 # =================================================================== prix, achats

@@ -82,6 +82,7 @@ var bus_main: int = -1
 var bus_cave: int = -1
 var built: bool = false
 var anvil_hits: int = 0             # nombre de coups d'enclume joués (pour les tests)
+var _actives_v218: Dictionary = {}  # V218 : les nappes qui ont quelque chose à faire (nom -> true)
 
 
 func setup(main_node: Node) -> void:
@@ -241,10 +242,22 @@ func _process(delta: float) -> void:
 		if zone != _last_zone_v67:
 			_last_zone_v67 = zone
 			_event_clock = minf(_event_clock, 1.5)
+		# V218 : quatre fois par seconde (quand les volumes voulus viennent d'être choisis), on relève les
+		# nappes qui ont quelque chose à faire ; à chaque image on ne s'occupe que de celles-là (deux ou
+		# trois, sur plusieurs dizaines)
+		for k0 in beds:
+			var b0: Dictionary = beds[k0]
+			if float(targets.get(k0, 0.0)) > 0.001 or float(b0["cur"]) > 0.001 or (b0["player"] as AudioStreamPlayer).playing:
+				_actives_v218[k0] = true
 	# Fondu des nappes vers leur volume cible
-	for k in beds:
+	for k in _actives_v218.keys():
 		var b: Dictionary = beds[k]
 		var t: float = float(targets.get(k, 0.0))
+		if t <= 0.001 and float(b["cur"]) <= 0.001:
+			if (b["player"] as AudioStreamPlayer).playing:
+				(b["player"] as AudioStreamPlayer).stop()
+			_actives_v218.erase(k)
+			continue
 		var cur: float = move_toward(float(b["cur"]), t, delta * 0.5)
 		b["cur"] = cur
 		var p: AudioStreamPlayer = b["player"]
